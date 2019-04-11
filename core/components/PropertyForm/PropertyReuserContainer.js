@@ -17,10 +17,10 @@ export default compose(
   }),
   mapProps(({ loans, loanId }) => {
     const currentLoan = loans.find(({ _id }) => _id === loanId);
-    const { properties: currentProperties } = currentLoan;
+    const { properties: currentProperties = [] } = currentLoan;
     const allOtherLoans = loans.filter(({ _id }) => _id !== loanId);
     const propertiesToReuse = allOtherLoans
-      .reduce((array, { properties }) => [...array, ...properties], [])
+      .reduce((array, { properties = [] }) => [...array, ...properties], [])
       .filter(({ _id: propertyId }) =>
         !currentProperties.find(({ _id }) => _id === propertyId));
 

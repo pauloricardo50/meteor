@@ -4,7 +4,7 @@ import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
 import moment from 'moment';
 
-import formatMessage from '../../../utils/intl';
+import Intl from '../../../utils/server/intl';
 import { toMoney } from '../../../utils/conversionFunctions';
 import { percentFormatters } from '../../../utils/formHelpers';
 import { BORROWERS_COLLECTION, PROPERTIES_COLLECTION } from '../../constants';
@@ -187,7 +187,7 @@ class UpdateWatcherService extends CollectionService {
     const doc = Mongo.Collection.get(collection).findOne({ _id: docId });
 
     // Document has been deleted
-    if(!doc){
+    if (!doc) {
       return;
     }
 
@@ -221,16 +221,17 @@ class UpdateWatcherService extends CollectionService {
         return this.formatArrayDiff(fieldName, previousValue, currentValue);
       }
 
-      return `*${formatMessage(`Forms.${fieldName}`)}*: ${this.formatValue(
-        previousValue,
+      return `*${Intl.formatMessage({
+        id: `Forms.${fieldName}`,
+      })}*: ${this.formatValue(previousValue, fieldName)} -> ${this.formatValue(
+        currentValue,
         fieldName,
-      )} -> ${this.formatValue(currentValue, fieldName)}`;
+      )}`;
     }
 
-    return `*${formatMessage(`Forms.${fieldName}`)}*: ${this.formatValue(
-      currentValue,
-      fieldName,
-    )}`;
+    return `*${Intl.formatMessage({
+      id: `Forms.${fieldName}`,
+    })}*: ${this.formatValue(currentValue, fieldName)}`;
   }
 
   formatArrayDiff(fieldName, previousValue, currentValue) {
@@ -281,7 +282,9 @@ class UpdateWatcherService extends CollectionService {
         .join('\n')
       : '';
 
-    return `*${formatMessage(`Forms.${fieldName}`)}*:\n${diff}${removedValues}`;
+    return `*${Intl.formatMessage({
+      id: `Forms.${fieldName}`,
+    })}*:\n${diff}${removedValues}`;
   }
 
   formatObjectDiff(parentName, previousValue, currentValue) {
@@ -295,10 +298,14 @@ class UpdateWatcherService extends CollectionService {
         }
 
         if (previous !== undefined) {
-          return `*${formatMessage(`Forms.${parentName}.${key}`)}*: ${previous} -> ${value}`;
+          return `*${Intl.formatMessage({
+            id: `Forms.${parentName}.${key}`,
+          })}*: ${previous} -> ${value}`;
         }
 
-        return `*${formatMessage(`Forms.${parentName}.${key}`)}*: ${value}`;
+        return `*${Intl.formatMessage({
+          id: `Forms.${parentName}.${key}`,
+        })}*: ${value}`;
       })
       .filter(x => x)
       .join('\n');
@@ -340,7 +347,9 @@ class UpdateWatcherService extends CollectionService {
             return this.formatValue(val, `${parentKey}.${key}`);
           }
 
-          return `*${formatMessage(`Forms.${parentKey}.${key}`)}*: ${this.formatValue(val, `${parentKey}.${key}`)}`;
+          return `*${Intl.formatMessage({
+            id: `Forms.${parentKey}.${key}`,
+          })}*: ${this.formatValue(val, `${parentKey}.${key}`)}`;
         })
         .join(', ');
     }

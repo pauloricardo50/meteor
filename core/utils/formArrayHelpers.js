@@ -1,6 +1,8 @@
 // @flow
 import get from 'lodash/get';
 
+import { arrayify, simpleHash } from './general';
+
 // Returns the current value of an autoForm input
 const getCurrentValue = (input, doc) => get(doc, input.id);
 
@@ -24,9 +26,11 @@ const conditionalInputIsTriggered = (rootField, doc) =>
 
 // getCountedArray - Returns an array of values that are mandatory and should
 // be counted to determine a completion percentage of a form
-export const getCountedArray = (formArray, doc, arr = []) => {
+export const getCountedArray = (formArray, doc, shouldCountAllFields) => {
+  const arr = [];
+
   formArray.forEach((i) => {
-    if (shouldCountField(i)) {
+    if (shouldCountAllFields || shouldCountField(i)) {
       if (i.type === 'conditionalInput') {
         if (conditionalInputIsTriggered(i, doc)) {
           // If the conditional input is triggering the next input, add all values
@@ -91,3 +95,23 @@ export const getMissingFieldIds = (formArray, doc) =>
 
     return missingFieldIds;
   }, []);
+
+/**
+ * Returns the hash of a form's values
+ *
+ * @param {Array} formArray
+ * @param {Object} doc
+ * @returns {Number} 32-bit integer hash
+ */
+export const getFormValuesHash = (formArray, doc) => {
+  const values = getCountedArray(formArray, doc, true);
+
+  return simpleHash(values);
+};
+
+// Sums multiple hashes together from multiple forms
+export const getFormValuesHashMultiple = combos =>
+  combos.reduce(
+    (tot, { formArray, doc }) => tot + getFormValuesHash(formArray, doc),
+    0,
+  );

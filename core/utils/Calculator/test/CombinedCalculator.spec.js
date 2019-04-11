@@ -33,7 +33,7 @@ describe('CombinedCalculator', () => {
             },
           ],
           properties: [property],
-          step: STEPS.PREPARATION,
+          step: STEPS.SOLVENCY,
         },
       });
       expect(progress.percent).to.be.within(0.15, 0.16);
@@ -59,7 +59,7 @@ describe('CombinedCalculator', () => {
               additionalDocuments: borrowerDocuments,
             },
           ],
-          step: STEPS.PREPARATION,
+          step: STEPS.SOLVENCY,
         },
       });
       expect(progress.percent).to.be.within(0.23, 0.24);

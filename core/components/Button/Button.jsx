@@ -54,8 +54,29 @@ const getVariant = ({ raised, outlined }) => {
   return undefined;
 };
 
+const getContent = ({ icon, fab, label, children, iconAfter }) => {
+  if (iconAfter) {
+    return (
+      <>
+        {label || children}
+        {icon && !fab && <span style={{ height: '100%', width: 8 }} />}
+        {icon}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {icon}
+      {icon && !fab && <span style={{ height: '100%', width: 8 }} />}
+      {label || children}
+    </>
+  );
+};
+
 const Button = (props) => {
   const childProps = omit(props, [
+    'iconAfter',
     'primary',
     'secondary',
     'label',
@@ -84,11 +105,7 @@ const Button = (props) => {
         [props.classes.raised]: !!(color === 'error' && variant === 'raised'),
       })}
     >
-      {props.icon}
-      {props.icon && !props.fab && (
-        <span style={{ height: '100%', width: 8 }} />
-      )}
-      {props.label || props.children}
+      {getContent(props)}
     </Comp>
   );
 

@@ -303,7 +303,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [
             { _id: 'borrowerId', additionalDocuments: initialDocuments },
           ],
-          step: STEPS.PREPARATION,
+          step: STEPS.SOLVENCY,
         },
       })).to.deep.equal(initialDocuments.map(({ id }) => id));
     });
@@ -614,6 +614,47 @@ describe('BorrowerCalculator', () => {
         add: 2,
         subtract: 15,
       });
+    });
+  });
+
+  describe('getBorrowerFormHash', () => {
+    it('returns a value for a borrower', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 10 },
+            { description: EXPENSES.PENSIONS, value: 1 },
+          ],
+        },
+      ];
+
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-559003621);
+    });
+
+    it('changes for non required form values as well', () => {
+      const borrower1 = { company: 'a' };
+      const borrower2 = { company: 'b' };
+
+      expect(Calculator.getBorrowerFormHash({ borrowers: borrower1 })).to.not.equal(Calculator.getBorrowerFormHash({ borrowers: borrower2 }));
+    });
+
+    it('returns a different value for multiple borrowers', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 10 },
+            { description: EXPENSES.PENSIONS, value: 1 },
+          ],
+        },
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 5 },
+            { description: EXPENSES.OTHER, value: 1 },
+          ],
+        },
+      ];
+
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1188420103);
     });
   });
 });

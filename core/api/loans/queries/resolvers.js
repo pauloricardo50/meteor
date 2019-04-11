@@ -13,6 +13,14 @@ import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 
+const handleLoanSolvencySharing = (loanObject) => {
+  const { maxPropertyValue, shareSolvency, ...loan } = loanObject;
+  return {
+    ...loan,
+    maxPropertyValue: shareSolvency ? maxPropertyValue : null,
+  };
+};
+
 const anonymizePromotionLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { promotions } = loan;
@@ -74,7 +82,7 @@ export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans;
   } catch (error) {
-    return anonymizeReferredByLoans({ loans, userId: calledByUserId });
+    return anonymizeReferredByLoans({ loans, userId: calledByUserId }).map(handleLoanSolvencySharing);
   }
 };
 
@@ -88,7 +96,7 @@ export const proPromotionLoansResolver = ({ calledByUserId, promotionId }) => {
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans;
   } catch (error) {
-    return anonymizePromotionLoans({ loans, userId: calledByUserId });
+    return anonymizePromotionLoans({ loans, userId: calledByUserId }).map(handleLoanSolvencySharing);
   }
 };
 
@@ -105,7 +113,7 @@ export const proPropertyLoansResolver = ({
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans;
   } catch (error) {
-    return anonymizePropertyLoans({ loans, userId: calledByUserId });
+    return anonymizePropertyLoans({ loans, userId: calledByUserId }).map(handleLoanSolvencySharing);
   }
 };
 

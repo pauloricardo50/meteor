@@ -30,7 +30,7 @@ describe('ContactButton', () => {
   });
 
   it('renders the opened version', () => {
-    props.open = true;
+    props.openContact = true;
     expect(component(props)
       .find('.contact-button-overlay')
       .hasClass('closed')).to.equal(false);

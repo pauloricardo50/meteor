@@ -33,6 +33,7 @@ export const LENDER_RULES_VARIABLES = {
   PROPERTY_VALUE: 'propertyValue',
   INSIDE_AREA: 'insideArea',
   BANK_FORTUNE: 'bankFortune',
+  PROPERTY_TYPE: 'propertyType',
 };
 
 export const LENDER_RULES_OPERATORS = {

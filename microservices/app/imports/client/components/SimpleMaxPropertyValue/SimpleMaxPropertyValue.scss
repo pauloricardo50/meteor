@@ -1,0 +1,38 @@
+.simple-max-property-value {
+  display: flex;
+  flex-direction: column;
+
+  &.loading {
+    align-items: center;
+    justify-content: center;
+
+    > * {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .empty {
+    flex-grow: 1;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 300px;
+
+    .icon {
+      height: 64px;
+      width: 64px;
+    }
+  }
+
+  .mui-select {
+    max-width: 200px;
+    min-width: 160px;
+    width: calc(50% - 4px);
+  }
+}

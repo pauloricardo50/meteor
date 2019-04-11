@@ -12,7 +12,7 @@ import { PROPERTIES_COLLECTION } from '../../api/constants';
 const columnOptions = [
   { id: 'address' },
   { id: 'status' },
-  { id: 'value' },
+  { id: 'value', style: { whiteSpace: 'nowrap' } },
   { id: 'customers' },
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 

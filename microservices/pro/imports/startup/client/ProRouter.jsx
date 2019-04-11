@@ -15,6 +15,7 @@ import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import PasswordResetPage from 'core/components/PasswordResetPage';
 import EmailVerificationPage from 'core/components/EmailVerificationPage';
 import AccountPage from 'core/components/AccountPage';
+
 import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
 import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
 import ProLayout from '../../client/layout';

@@ -19,12 +19,10 @@ const component = (props) => {
         </div>
       ))
     }
-  </TableFilters>);
+                          </TableFilters>);
 
-  return wrapper
-    .dive()
-    .dive()
-    // .dive();
+  return wrapper.dive().dive();
+  // .dive();
 };
 
 const mountedComponent = props =>

@@ -111,7 +111,7 @@ const makeMapOption = ({ promotionLot, currentUser }) => (promotionOption) => {
 };
 
 const columnOptions = [
-  { id: 'loanName' },
+  { id: 'loanName', style: { whiteSpace: 'nowrap' } },
   { id: 'name' },
   { id: 'date' },
   { id: 'phone' },

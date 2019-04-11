@@ -5,6 +5,7 @@ import {
   LENDER_RULES_VARIABLES,
   RESIDENCE_TYPE,
   CANTONS,
+  PROPERTY_TYPE,
 } from 'core/api/constants';
 import MoneyInput from 'core/components/MoneyInput';
 import { NumberField } from 'core/components/NumberInput';
@@ -27,6 +28,14 @@ const getSelectProps = (variable) => {
       allowedValues: Object.keys(CANTONS),
       multiple: true,
       intlId: 'canton',
+    };
+  }
+
+  if (variable === LENDER_RULES_VARIABLES.PROPERTY_TYPE) {
+    return {
+      allowedValues: Object.keys(PROPERTY_TYPE),
+      multiple: true,
+      intlId: 'propertyType',
     };
   }
 

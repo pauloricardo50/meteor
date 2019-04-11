@@ -21,6 +21,7 @@ const BORROW_RATIO_ACCURACY = 0.05;
 const ROUNDING_DIGITS = Math.log10(ACCURACY);
 const MAX_BOUND_MULTIPLICATION_FACTOR = 2;
 const OWN_FUNDS_ROUNDING_ALGO = 100;
+const INITIAL_BORROW_RATIO_STEP_SIZE = 0.05;
 
 export const withSolvencyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -307,7 +308,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       let borrowRatio = 0.7;
       let foundValue = false;
       let iterations = 0;
-      let stepSize = 0.05;
+      let stepSize = INITIAL_BORROW_RATIO_STEP_SIZE;
       const deltaX = 0.01;
       let maxPropertyValue = 0;
       let optimalBorrowRatio;
@@ -359,7 +360,13 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
         const slope = yRight - yLeft;
 
-        if (slope > 0) {
+        if (yRight === 0 && yLeft === 0) {
+          // If the algorithm is at 0 on both sides, it means the borrowRatio
+          // is way too high, so start him over again at 0, but with a large
+          // step size to allow it to recover quickly
+          borrowRatio = INITIAL_BORROW_RATIO_STEP_SIZE;
+          stepSize = 0.2;
+        } else if (slope > 0) {
           stepSize = this.getNextStepSize({
             currentMax: center,
             currentBorrowRatio: borrowRatio,

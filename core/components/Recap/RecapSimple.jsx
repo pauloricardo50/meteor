@@ -4,12 +4,12 @@ import classnames from 'classnames';
 
 import T from '../Translation';
 
-const renderLabel = ({ label, noIntl }) => {
+const renderLabel = ({ label, noIntl, intlValues }) => {
   if (typeof label !== 'string' || noIntl) {
     return label;
   }
 
-  return <T id={label} tooltipPlacement="bottom" />;
+  return <T id={label} values={intlValues} tooltipPlacement="bottom" />;
 };
 
 const RecapSimple = ({ array, noScale, className }) => (
@@ -32,11 +32,11 @@ const RecapSimple = ({ array, noScale, className }) => (
         spacing,
         spacingTop,
         value,
-        key,
+        intlValues,
       },
       index,
     ) => {
-      const finalLabel = renderLabel({ label, noIntl });
+      const finalLabel = renderLabel({ label, noIntl, intlValues });
       if (hide) {
         return null;
       }

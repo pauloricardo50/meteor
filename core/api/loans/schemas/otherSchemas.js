@@ -68,6 +68,7 @@ export const maxPropertyValueSchema = {
     type: String,
     allowedValues: Object.keys(CANTONS),
   },
+  'maxPropertyValue.borrowerHash': { type: String, optional: true },
   'maxPropertyValue.date': Date,
   'maxPropertyValue.main': Object,
   'maxPropertyValue.main.min': Object,

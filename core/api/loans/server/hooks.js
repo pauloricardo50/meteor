@@ -34,7 +34,7 @@ UpdateWatcherService.addUpdateWatching({
   collection: Loans,
   fields: [
     'residenceType',
-    'structures',
+    // 'structures', // The structures notifications are hard to read in slack
     'selectedStructure',
     'purchaseType',
     'verificationStatus',

@@ -13,9 +13,11 @@ import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import PasswordResetPage from 'core/components/PasswordResetPage';
 import EmailVerificationPage from 'core/components/EmailVerificationPage';
-import AccountPage from 'core/components/AccountPage';
+
 import messagesFR from '../../../lang/fr.json';
+
 import AppStore from '../../client/components/AppStore';
+import AppAccountPage from '../../client/pages/AppAccountPage/loadable';
 import AppWidget1Page from '../../client/pages/AppWidget1Page/loadable';
 import AppPage from '../../client/pages/AppPage/loadable';
 import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
@@ -29,6 +31,8 @@ import AppLayout from '../../client/layouts/AppLayout';
 import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
 import AppPromotionOptionPage from '../../client/pages/AppPromotionOptionPage/loadable';
 import AppPromotionLotPage from '../../client/pages/AppPromotionLotPage/loadable';
+import WelcomePage from '../../client/pages/WelcomePage/loadable';
+import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
 
 import * as ROUTES from './appRoutes';
 
@@ -42,7 +46,7 @@ const AppRouter = () => (
     <AppLayout>
       <Switch>
         <Route path={ROUTES.REFINANCING_PAGE} component={RefinancingPage} />
-        <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
+        <Route path={ROUTES.ACCOUNT_PAGE} component={AppAccountPage} />
         <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />
         {/* Keep BORROWERS_PAGE above BORROWERS_PAGE_NO_TAB */}
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
@@ -61,6 +65,8 @@ const AppRouter = () => (
           component={AppPromotionOptionPage}
         />
         <Route path={ROUTES.APP_PROMOTION_PAGE} component={AppPromotionPage} />
+        <Route path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
+        <Route path={ROUTES.SOLVENCY_PAGE} component={SolvencyPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}

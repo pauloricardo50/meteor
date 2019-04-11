@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
+import useMedia from 'core/hooks/useMedia';
+import Calculator from 'core/utils/Calculator';
 import MoneyRange from './MoneyRange';
 
 type MaxPropertyValueResultsTableProps = {
@@ -13,7 +15,10 @@ type MaxPropertyValueResultsTableProps = {
 const MaxPropertyValueResultsTable = ({
   min,
   max,
+  residenceType,
+  canton,
 }: MaxPropertyValueResultsTableProps) => {
+  const isSmallMobile = useMedia({ maxWidth: 480 });
   const {
     propertyValue: minPropertyValue,
     borrowRatio: minBorrowRatio,
@@ -28,55 +33,65 @@ const MaxPropertyValueResultsTable = ({
   const minLoan = minPropertyValue * minBorrowRatio;
   const maxLoan = maxPropertyValue * maxBorrowRatio;
 
-  const minOwnFunds = minPropertyValue * (1 - minBorrowRatio);
-  const maxOwnFunds = maxPropertyValue * (1 - maxBorrowRatio);
+  const minNotaryFees = Calculator.getFees({
+    loan: Calculator.createLoanObject({
+      residenceType,
+      wantedLoan: minLoan,
+      propertyValue: minPropertyValue,
+      canton,
+    }),
+  }).total;
+  const maxNotaryFees = Calculator.getFees({
+    loan: Calculator.createLoanObject({
+      residenceType,
+      wantedLoan: maxLoan,
+      propertyValue: maxPropertyValue,
+      canton,
+    }),
+  }).total;
+
+  const minOwnFunds = minPropertyValue * (1 - minBorrowRatio) + minNotaryFees;
+  const maxOwnFunds = maxPropertyValue * (1 - maxBorrowRatio) + maxNotaryFees;
 
   return (
-    <table>
-      <tr>
-        <td />
-        <td>
-          <div className="flex-col">
-            <span className="secondary">Prêteur le moins compétitif</span>
-            {Meteor.microservice === 'admin' && (
-              <span>[ADMIN] {minOrganisationName}</span>
-            )}
-          </div>
-        </td>
-        <td />
-        <td>
-          <div className="flex-col">
-            <span className="secondary">Prêteur le plus compétitif</span>
-            {Meteor.microservice === 'admin' && (
-              <span>[ADMIN] {maxOrganisationName}</span>
-            )}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <h4 className="secondary">Hypothèque</h4>
-        </td>
-        <MoneyRange
-          min={minLoan}
-          minRatio={minBorrowRatio}
-          max={maxLoan}
-          maxRatio={maxBorrowRatio}
-        />
-      </tr>
-      <tr>
-        <td>
-          <h4 className="secondary">Fonds propres</h4>
-        </td>
-        <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
-      </tr>
-      <tr className="money-range-big">
-        <td>
-          <h3 className="secondary">Prix d'achat max.</h3>
-        </td>
-        <MoneyRange min={minPropertyValue} max={maxPropertyValue} />
-      </tr>
-    </table>
+    <>
+      <div className="flex labels">
+        <div className="flex-col">
+          <span className="secondary">
+            {isSmallMobile ? '- compétitif' : 'Prêteur le - compétitif'}
+          </span>
+          {Meteor.microservice === 'admin' && (
+            <span>[ADMIN] {minOrganisationName}</span>
+          )}
+        </div>
+        <div className="flex-col">
+          <span className="secondary">
+            {isSmallMobile ? '+ compétitif' : 'Prêteur le + compétitif'}
+          </span>
+          {Meteor.microservice === 'admin' && (
+            <span>[ADMIN] {maxOrganisationName}</span>
+          )}
+        </div>
+      </div>
+
+      <span className="label">Fonds propres</span>
+      <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
+      <span className="label">Hypothèque</span>
+      <MoneyRange
+        min={minLoan}
+        minRatio={minBorrowRatio}
+        max={maxLoan}
+        maxRatio={maxBorrowRatio}
+      />
+
+      <hr />
+
+      <span className="label">Prix d'achat max.</span>
+      <MoneyRange min={minPropertyValue} max={maxPropertyValue} big />
+
+      <span className="label">Frais de notaire</span>
+      <MoneyRange min={minNotaryFees} max={maxNotaryFees} />
+    </>
   );
 };
 

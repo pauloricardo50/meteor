@@ -1,0 +1,137 @@
+@import './Properties/PropertyCard/PropertyCard.scss';
+
+.simple-dashboard-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  &-borrowers {
+    align-self: center;
+    display: flex;
+    overflow: hidden;
+    margin-top: 40px;
+    width: 100%;
+    max-width: calc(#{$borrowers-item-width} * 2);
+
+    @include screen(med) {
+      flex-direction: column;
+    }
+
+    .borrowers-progress,
+    .simple-max-property-value {
+      flex-basis: 50%;
+      flex-shrink: 1;
+      flex-grow: 1;
+      max-width: $borrowers-item-width;
+      box-sizing: content-box;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+
+      @include screen(med) {
+        max-width: unset;
+      }
+
+      @include screen(xsmall) {
+        padding: 16px;
+      }
+
+      h3 {
+        margin: 0;
+      }
+    }
+
+    .borrowers-progress {
+      &-recap {
+        margin: 16px 0;
+      }
+
+      &-borrowers {
+        flex-grow: 1;
+      }
+
+      &-empty {
+        text-align: center;
+        margin: 40px 0;
+      }
+
+      &-cta {
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        span {
+          display: flex;
+          align-items: center;
+          white-space: nowrap;
+
+          &.secondary {
+            margin-right: 16px;
+          }
+        }
+      }
+
+      .validator {
+        max-width: unset;
+      }
+
+      .recap-item {
+        margin-bottom: 8px;
+      }
+
+      .recap-value {
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        margin: 16px 0;
+
+        .icon {
+          width: 40px;
+          height: 40px;
+          margin-right: 16px;
+          color: #666;
+        }
+      }
+    }
+
+    .simple-max-property-value {
+      background-color: $primary;
+      color: white;
+
+      h2,
+      h3,
+      h4 {
+        color: white;
+      }
+    }
+  }
+
+  &-ctas {
+    width: 100%;
+    max-width: calc(#{$borrowers-item-width} * 2);
+    margin: auto;
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+}

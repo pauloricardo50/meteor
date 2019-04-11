@@ -5,10 +5,10 @@ import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 const inviteUser = ({ firstName, lastName, email, phoneNumber }) => {
   cy.contains('Inviter un client').click();
 
-  cy.get('input[name="user.email"]').type(email);
-  cy.get('input[name="user.firstName"]').type(firstName);
-  cy.get('input[name="user.lastName"]').type(lastName);
-  cy.get('input[name="user.phoneNumber"]').type(phoneNumber);
+  cy.get('input[name="email"]').type(email);
+  cy.get('input[name="firstName"]').type(firstName);
+  cy.get('input[name="lastName"]').type(lastName);
+  cy.get('input[name="phoneNumber"]').type(phoneNumber);
 };
 
 describe('Promotion pages', () => {
@@ -60,7 +60,7 @@ describe('Promotion pages', () => {
     });
     cy.setSelect('propertyIds', 0);
     cy.get('body').trigger('keydown', { keyCode: 27, which: 27 }); // Hit escape to restore keyboard control
-    cy.get('input[name="user.phoneNumber"]').type('{enter}');
+    cy.get('input[name="phoneNumber"]').type('{enter}');
 
     cy.get('.pro-customers').contains('Marie Dupont');
     cy.get('.pro-customers').contains('Rue du test 1');

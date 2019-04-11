@@ -6,7 +6,6 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
-
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -15,6 +14,7 @@ import {
   OWNER,
   CANTONS,
   STEPS,
+  APPLICATION_TYPES,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
 import StructureSchema from './StructureSchema';
@@ -97,6 +97,12 @@ const LoanSchema = new SimpleSchema({
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
   previousLender: { type: String, optional: true },
   customName: { type: String, optional: true },
+  applicationType: {
+    type: String,
+    allowedValues: Object.values(APPLICATION_TYPES),
+    defaultValue: APPLICATION_TYPES.SIMPLE,
+    uniforms: { placeholder: null },
+  },
   ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
@@ -112,11 +118,17 @@ const LoanSchema = new SimpleSchema({
   },
   step: {
     type: String,
-    defaultValue: STEPS.PREPARATION,
+    defaultValue: STEPS.SOLVENCY,
     allowedValues: Object.values(STEPS),
     uniforms: { placeholder: '' },
   },
+  displayWelcomeScreen: {
+    type: Boolean,
+    defaultValue: true,
+    optional: true,
+  },
   ...maxPropertyValueSchema,
+  shareSolvency: { type: Boolean, defaultValue: false, optional: true },
 });
 
 export default LoanSchema;

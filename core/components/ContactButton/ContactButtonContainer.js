@@ -1,6 +1,7 @@
-import employees from 'core/arrays/epotekEmployees';
+import { withProps, compose } from 'recompose';
 
-import { compose, withProps, withState } from 'recompose';
+import employees from 'core/arrays/epotekEmployees';
+import { withContactButtonContext } from './ContactButtonContext';
 
 const getStaffByEmail = email =>
   employees.find(employee => employee.email === email);
@@ -16,7 +17,7 @@ const ContactButtonContainer = compose(
     }
     return { staff };
   }),
-  withState('open', 'toggleOpen', false),
+  withContactButtonContext,
 );
 
 export default ContactButtonContainer;

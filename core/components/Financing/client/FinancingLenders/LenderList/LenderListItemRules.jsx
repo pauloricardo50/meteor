@@ -57,6 +57,11 @@ const LenderListItemRules = ({
               :&nbsp;
               <Money value={expenses} />
             </div>
+            <ul>
+              {calc.matchedRules.map(name => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
           </div>
         )}
       />

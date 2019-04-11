@@ -1,6 +1,8 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
+
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import * as constants from '../../config/constants';
 import colors from '../../config/colors';
@@ -25,6 +27,20 @@ const styles = {
   },
 };
 
+const cleanValue = v => (v === 0 ? 0 : v || '');
+
+const isEqual = (value, currentValue, type) => {
+  if (type === 'date') {
+    // To avoid the saving icon from firing twice when chaning the date,
+    // only compare the date without times
+    // If we ever have date inputs in autoform that need time, we'll have to find another hack
+
+    return moment(value).isSame(currentValue, 'day');
+  }
+
+  return value === cleanValue(currentValue);
+};
+
 class AutoFormTextInput extends Component {
   constructor(props) {
     super(props);
@@ -33,10 +49,11 @@ class AutoFormTextInput extends Component {
 
     this.state = {
       // Make sure 0 values are displayed properly
-      value: currentValue === 0 ? 0 : currentValue || '',
+      value: cleanValue(currentValue),
       errorText: '',
       saving: false,
       showInfo: false,
+      history: [cleanValue(currentValue)],
     };
 
     if (number) {
@@ -55,10 +72,17 @@ class AutoFormTextInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.inputProps.currentValue !== this.props.inputProps.currentValue
-    ) {
-      this.handleChange(null, nextProps.inputProps.currentValue);
+    const valueIsDifferent = nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
+    if (valueIsDifferent) {
+      // To handle race conditions, check if the new value from the DB
+      // has been typed in the past
+      // If it has, then don't update the textfield
+      // If it hasn't, override it, because the backend says it should be a new value
+      const valueExistsInHistory = this.state.history.includes(nextProps.inputProps.currentValue);
+
+      if (!valueExistsInHistory) {
+        this.handleChange(null, nextProps.inputProps.currentValue);
+      }
     }
   }
 
@@ -70,19 +94,31 @@ class AutoFormTextInput extends Component {
   };
 
   handleChange = (_, value) => {
-    const { saveOnChange, showValidIconOnChange } = this.props;
+    const {
+      saveOnChange,
+      showValidIconOnChange,
+      inputProps: { currentValue, inputType },
+    } = this.props;
+
     // Make sure value is a number if this is a number or money input
     // const safeValue =
     //   this.props.number || this.props.money
     //     ? toNumber(event.target.value)
     //     : event.target.value;
 
-    this.setState({ value }, () => {
-      // do not show saving icon when changing text, only show it on blur
-      if (saveOnChange) {
-        this.saveValue(showValidIconOnChange);
-      }
-    });
+    if (isEqual(value, currentValue, inputType)) {
+      return;
+    }
+
+    this.setState(
+      ({ history }) => ({ value, history: [...history, value] }),
+      () => {
+        // do not show saving icon when changing text, only show it on blur
+        if (saveOnChange) {
+          this.saveValue(showValidIconOnChange);
+        }
+      },
+    );
   };
 
   handleFocus = () => {
@@ -93,15 +129,22 @@ class AutoFormTextInput extends Component {
     const {
       updateFunc,
       docId,
-      inputProps: { id, currentValue },
+      inputProps: { id, currentValue, inputType },
     } = this.props;
     const { value } = this.state;
     // Save data to DB
     const object = { [id]: value };
+    let shouldSave = true;
+
+    // Don't save if value hasn't changed
+    if (isEqual(value, currentValue, inputType)) {
+      shouldSave = false;
+    }
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      updateFunc({ object, id: docId })
+      Promise.resolve()
+        .then(() => shouldSave && updateFunc({ object, id: docId }))
         // on success, set saving briefly to true, before setting it to false again to trigger icon
         .then(() => this.setState({ errorText: '', saving: showSaving }))
         // If there was an error, reset value to the backend value

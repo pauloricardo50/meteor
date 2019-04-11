@@ -11,13 +11,18 @@ const AppPage = ({ currentUser: { emails, loans } }) => {
   }
 
   return (
-    <section id="app-page" className="app-page flex-col center">
+    <section id="app-page" className="app-page flex-col center animated fadeIn">
       {!emails[0].verified && (
         <div style={{ marginBottom: 16 }}>
           <DashboardUnverified />
         </div>
       )}
 
+      {loans.length > 0 && (
+        <h1>
+          <T id="AppPage.title" />
+        </h1>
+      )}
       {loans.map(loan => (
         <AppItem loan={loan} key={loan._id} />
       ))}

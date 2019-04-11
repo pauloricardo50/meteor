@@ -8,9 +8,14 @@ import {
 import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
+  getBorrowerSimpleArray,
 } from '../../arrays/BorrowerFormArray';
 import { arrayify, getPercent } from '../general';
-import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
+import {
+  getCountedArray,
+  getMissingFieldIds,
+  getFormValuesHashMultiple,
+} from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
 import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
 import { borrowerExtractorMiddleware } from './middleware';
@@ -324,8 +329,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     // personalInfoPercent - Determines the completion rate of the borrower's
     // personal information forms
     personalInfoPercent({ borrowers }) {
-      const a = [];
-      arrayify(borrowers).forEach((b) => {
+      const array = arrayify(borrowers).reduce((arr, b) => {
         const personalFormArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
@@ -334,37 +338,73 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
         });
-        getCountedArray(personalFormArray, b, a);
-        getCountedArray(financeFormArray, b, a);
-      });
+        return [
+          ...arr,
+          ...getCountedArray(personalFormArray, b),
+          ...getCountedArray(financeFormArray, b),
+        ];
+      }, []);
 
-      return getPercent(a);
+      return getPercent(array);
+    }
+
+    personalInfoPercentSimple({ borrowers }) {
+      const array = arrayify(borrowers).reduce((arr, b) => {
+        const simpleFormArray = getBorrowerSimpleArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        return [...arr, ...getCountedArray(simpleFormArray, b)];
+      }, []);
+
+      return getPercent(array);
     }
 
     borrowerInfoPercent({ borrowers }) {
-      const a = [];
-      arrayify(borrowers).forEach((b) => {
+      const array = arrayify(borrowers).reduce((arr, b) => {
         const personalFormArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
         });
-        getCountedArray(personalFormArray, b, a);
-      });
+        return [...arr, ...getCountedArray(personalFormArray, b)];
+      }, []);
 
-      return getPercent(a);
+      return getPercent(array);
     }
 
     borrowerFinancePercent({ borrowers }) {
-      const a = [];
-      arrayify(borrowers).forEach((b) => {
+      const array = arrayify(borrowers).reduce((arr, b) => {
         const financeFormArray = getBorrowerFinanceArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
         });
-        getCountedArray(financeFormArray, b, a);
-      });
+        return [...arr, ...getCountedArray(financeFormArray, b)];
+      }, []);
 
-      return getPercent(a);
+      return getPercent(array);
+    }
+
+    getBorrowerFormHash({ borrowers }) {
+      return getFormValuesHashMultiple(arrayify(borrowers).reduce(
+        (arr, borrower) => [
+          ...arr,
+          {
+            formArray: getBorrowerFinanceArray({
+              borrowers: arrayify(borrowers),
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+          {
+            formArray: getBorrowerInfoArray({
+              borrowers: arrayify(borrowers),
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+        ],
+        [],
+      ));
     }
 
     sumValues({ borrowers, keys }) {
@@ -506,5 +546,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           ...otherIncomeOfType.map(({ comment }) => comment),
         ].filter(x => x);
       }, []);
+    }
+
+    canCalculateSolvency({ borrowers }) {
+      if (!borrowers.length) {
+        return false;
+      }
+
+      if (this.getCashFortune({ borrowers }) === 0) {
+        return false;
+      }
+
+      if (this.getSalary({ borrowers }) === 0) {
+        return false;
+      }
+
+      return true;
     }
   };

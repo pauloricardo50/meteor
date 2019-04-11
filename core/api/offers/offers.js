@@ -61,6 +61,11 @@ export const OfferSchema = new SimpleSchema({
   'feedback.date': { type: Date, optional: true },
   withCounterparts: { type: Boolean, optional: true },
   enableOffer: { type: Boolean, defaultValue: true, optional: true },
+  lenderCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
 });
 
 export const AdminOfferSchema = OfferSchema.omit(
@@ -70,6 +75,7 @@ export const AdminOfferSchema = OfferSchema.omit(
   'createdAt',
   'updatedAt',
   'feedback',
+  'lenderCache',
 );
 
 // Attach schema
