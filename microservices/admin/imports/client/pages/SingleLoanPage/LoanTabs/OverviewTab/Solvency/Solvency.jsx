@@ -19,23 +19,22 @@ const Solvency = ({
 
   return (
     <div className="card1 card-top solvency">
-      <div className="flex">
+      <form
+        className="flex"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setShowResults(false);
+          setTimeout(() => setShowResults(true), 0);
+        }}
+      >
         <h3>Capacité d'achat</h3>
 
         <PercentInput value={maxBorrowRatio} onChange={setMaxborrowRatio} />
 
-        <Button
-          primary
-          raised
-          onClick={() => {
-            setShowResults(false);
-            setTimeout(() => setShowResults(true), 0);
-          }}
-          style={{ marginLeft: 8 }}
-        >
+        <Button primary raised style={{ marginLeft: 8 }} type="submit">
           Calculer
         </Button>
-      </div>
+      </form>
 
       {showResults && (
         <SolvencyResults
