@@ -7,6 +7,7 @@ import {
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
   STEPS,
+  APPLICATION_TYPES,
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
@@ -143,12 +144,16 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   };
 
   switch (step) {
-  case 3:
+  case STEPS.OFFERS:
     loan.step = STEPS.OFFERS;
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
+    loan.applicationType = APPLICATION_TYPES.FULL;
+    loan.displayWelcomeScreen = false;
     break;
-  case 2:
+  case STEPS.REQUEST:
     loan.step = STEPS.REQUEST;
+    loan.applicationType = APPLICATION_TYPES.FULL;
+    loan.displayWelcomeScreen = false;
     break;
   default:
     loan.step = STEPS.SOLVENCY;

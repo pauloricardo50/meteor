@@ -9,6 +9,7 @@ import {
   ROLES,
   TASK_TYPE,
   PURCHASE_TYPE,
+  APPLICATION_TYPES,
 } from '../../api/constants';
 import {
   Borrowers,
@@ -101,7 +102,7 @@ const createTestUserWithData = () => {
     twoBorrowers: true,
   });
   createFakeLoanFixture({
-    step: STEPS.SOLVENCY,
+    step: STEPS.REQUEST,
     userId: testUserId,
     adminId: admins[0]._id,
     completeFiles: true,
@@ -125,9 +126,10 @@ Meteor.methods({
           // based on index, always generate 0, 1 and 2 numbers
           const loanStep = index % 3;
 
-          range(LOANS_PER_USER).forEach(() => {
+          range(LOANS_PER_USER).forEach((_, loanIndex) => {
+            const step = LOANS_PER_USER < 3 ? loanStep : loanIndex % 3;
             createFakeLoanFixture({
-              step: STEP_ORDER[loanStep],
+              step: STEP_ORDER[step],
               userId,
               adminId,
               twoBorrowers: true,

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import omit from 'lodash/omit';
 
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
@@ -182,7 +183,9 @@ export class LoanService extends CollectionService {
     const shouldCopyExistingStructure = !isFirstStructure && !structure && selectedStructure;
 
     if (shouldCopyExistingStructure) {
-      structure = structures.find(({ id }) => selectedStructure === id);
+      structure = omit(structures.find(({ id }) => selectedStructure === id), [
+        'name',
+      ]);
     }
 
     const propertyId = (structure && structure.propertyId)

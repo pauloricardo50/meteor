@@ -152,6 +152,7 @@ describe('dashboardTodos', () => {
       const callEpotek = defaultTodos.find(({ id }) => id === 'callEpotek');
 
       expect(callEpotek.hide({
+        maxPropertyValue: { date: new Date() },
         structure: { property: { valuation: {} }, offer: {} },
         structures: [{}, {}],
         borrowers: [{ salary: 2000, bankFortune: 3000 }],
