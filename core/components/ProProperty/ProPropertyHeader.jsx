@@ -37,7 +37,6 @@ const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
   } = property;
 
   const { ogTitle, ogDescription, ogSiteName } = openGraphData;
-  console.log('openGraphData:', openGraphData);
 
   return (
     <div className="header">

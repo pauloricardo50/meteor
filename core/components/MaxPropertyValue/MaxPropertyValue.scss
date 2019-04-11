@@ -105,6 +105,10 @@
         &.big {
           font-size: 1.2em;
 
+          @include screen(xsmall) {
+            font-size: 1.05em;
+          }
+
           @include screen(med, min) {
             font-size: 1.4em;
           }
@@ -134,6 +138,31 @@
 
     button {
       margin-top: 16px;
+    }
+  }
+}
+
+.max-property-sharing {
+  @include screen(xsmall) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &-label {
+    display: inline-flex;
+    align-items: center;
+    color: white;
+
+    > * {
+      display: inline-flex;
+      align-items: center;
+
+      &.error {
+        background-color: $error;
+        color: white;
+        border-radius: 6px;
+        padding: 0 2px 0 4px;
+      }
     }
   }
 }

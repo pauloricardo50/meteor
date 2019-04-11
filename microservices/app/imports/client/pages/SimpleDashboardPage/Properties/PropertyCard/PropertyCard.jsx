@@ -4,7 +4,6 @@ import Button from 'core/components/Button';
 
 import PropertyCardContainer from './PropertyCardContainer';
 import PropertyCardInfos from './PropertyCardInfos';
-import PropertyCardToggle from './PropertyCardToggle';
 import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 
 type PropertyCardProps = {
@@ -18,7 +17,6 @@ type PropertyCardProps = {
 
 const PropertyCard = (props: PropertyCardProps) => {
   const { buttonLabel, onClick } = props;
-  console.log('props:', props);
 
   return (
     <div className="card1 property-card">
@@ -28,7 +26,6 @@ const PropertyCard = (props: PropertyCardProps) => {
           <Button className="button" onClick={onClick} secondary raised>
             {buttonLabel}
           </Button>
-          <PropertyCardToggle {...props} />
         </div>
       </div>
       <div className="bottom">
