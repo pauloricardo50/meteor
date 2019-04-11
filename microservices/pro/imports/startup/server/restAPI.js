@@ -3,10 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
 import {
   inviteUserToPromotionAPI,
-  inviteUserToProPropertyAPI,
   inviteUserToProPropertiesAPI,
   testEndpointAPI,
   referCustomerAPI,
+  getPropertyLoansAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 
 const api = new RESTAPI();
@@ -16,15 +16,12 @@ api.addEndpoint(
   inviteUserToPromotionAPI,
 );
 api.addEndpoint(
-  '/properties/:propertyId/invite-customer',
-  'POST',
-  inviteUserToProPropertyAPI,
-);
-api.addEndpoint(
   '/properties/invite-customer',
   'POST',
   inviteUserToProPropertiesAPI,
 );
+api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
+
 api.addEndpoint('/users', 'POST', referCustomerAPI);
 api.addEndpoint('/test', 'POST', testEndpointAPI);
 api.addEndpoint('/test', 'GET', testEndpointAPI);
