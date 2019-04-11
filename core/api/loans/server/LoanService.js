@@ -33,6 +33,7 @@ import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
+import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -482,9 +483,11 @@ export class LoanService extends CollectionService {
       min,
       max: {
         ...secondMax,
-        organisationName: `${secondMax.organisationName} / ${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`,
+        organisationName: `${
+          secondMax.organisationName
+        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
+          max.borrowRatio * 100
+        ).toFixed(2)}%)`,
       },
     };
   }
@@ -557,9 +560,10 @@ export class LoanService extends CollectionService {
       loan,
       canton,
     });
+    const firstOrganisationName = organisationName.split(ORGANISATION_NAME_SEPARATOR)[0];
 
     const organisation = OrganisationService.fetchOne({
-      $filters: { name: organisationName },
+      $filters: { name: firstOrganisationName },
       lenderRules: lenderRulesFragment(),
     });
 
