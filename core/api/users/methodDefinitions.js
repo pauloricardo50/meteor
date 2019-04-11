@@ -124,7 +124,7 @@ export const proInviteUser = new Method({
     propertyIds: Match.Maybe(Match.Where((x) => {
       check(x, [String]);
       if (x && x.length === 0) {
-        throw new Meteor.Error('propertyIds cannot be empty');
+        throw new Meteor.Error('properties cannot be empty');
       }
 
       return true;
@@ -137,7 +137,7 @@ export const proInviteUser = new Method({
 
       return true;
     })),
-    property: Match.Maybe(Object),
+    properties: Match.Maybe(Array),
   },
 });
 

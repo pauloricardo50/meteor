@@ -144,7 +144,12 @@ export class PropertyService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
       userId,
-      params: { proName, address: formattedAddresses, ctaUrl, multiple: addresses.length > 1 },
+      params: {
+        proName,
+        address: formattedAddresses,
+        ctaUrl,
+        multiple: addresses.length > 1,
+      },
     });
   }
 
@@ -203,7 +208,10 @@ export class PropertyService extends CollectionService {
       throw new Meteor.Error(`Property with externalId "${externalId}" exists already`);
     }
 
-    this.proPropertyInsert({ userId, property: { externalId, ...property } });
+    return this.proPropertyInsert({
+      userId,
+      property: { externalId, ...property },
+    });
   }
 }
 
