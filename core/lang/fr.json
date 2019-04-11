@@ -1,4 +1,7 @@
 {
+  "PasswordResetPage.errorTitle": "Zut, une erreur",
+  "PasswordResetPage.errorButton": "Se connecter",
+  "PasswordResetPage.errorDescription": "Vous avez déjà choisi votre mot de passe. Connectez-vous à votre compte sur la page de login.",
   "Forms.variable.propertyType": "Type de bien immobilier",
   "SimpleDashboardPage.shareSolvency.title": "Activer le partage de solvabilité",
   "SimpleDashboardPage.shareSolvency.disclaimer": "En activant le partage de solvabilité, vous donnez accès à votre courtier au montant de votre capacité d'achat maximale. Aucune autre information personnelle ne sera partagée.",

@@ -39,11 +39,11 @@ class UserService extends CollectionService {
   };
 
   adminCreateUser = ({
-    options: { email, sendEnrollmentEmail, ...additionalData },
+    options: { email, password, sendEnrollmentEmail, ...additionalData },
     role = ROLES.USER,
     adminId,
   }) => {
-    const newUserId = this.createUser({ options: { email }, role });
+    const newUserId = this.createUser({ options: { email, password }, role });
 
     this.update({ userId: newUserId, object: additionalData });
 
@@ -65,7 +65,15 @@ class UserService extends CollectionService {
     Accounts.sendVerificationEmail(userId);
 
   sendEnrollmentEmail = ({ userId }) => {
-    Accounts.sendEnrollmentEmail(userId);
+    try { 
+      Accounts.sendEnrollmentEmail(userId);
+    } catch (error) {
+      // FIXME: Temporary fix for meteor toys in dev
+      // https://github.com/MeteorToys/meteor-devtools/issues/111
+      if (error.message !== 'MeteorToys is not defined') {
+        throw error;
+      }
+    }
   };
 
   // This is used to hook into Accounts
@@ -92,6 +100,17 @@ class UserService extends CollectionService {
       { 'services.password.reset.token': token },
       { fields: { firstName: 1, lastName: 1, emails: 1 } },
     );
+
+  getLoginToken = ({ userId }) => {
+    const user = Users.findOne(userId, { fields: { services: 1 } });
+    console.log('getLoginToken user:', user);
+
+    return (
+      user.services.password
+      && user.services.password.reset
+      && user.services.password.reset.token
+    );
+  };
 
   testCreateUser = ({ user }) => Users.insert(user);
 

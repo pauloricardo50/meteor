@@ -23,9 +23,21 @@ export const PasswordResetPage = ({
 
   if (error) {
     return (
-      <h3 className="error" id="password-reset-page">
-        {error.message}
-      </h3>
+      <div className="password-reset-page" id="password-reset-page">
+        <div className="card1 card-top">
+          <h3 className="error">
+            <T id="PasswordResetPage.errorTitle" />
+          </h3>
+
+          <p className="description">
+            <T id="PasswordResetPage.errorDescription" />
+          </p>
+
+          <Button raised primary link to="/login">
+            <T id="PasswordResetPage.errorButton" />
+          </Button>
+        </div>
+      </div>
     );
   }
 
@@ -45,9 +57,9 @@ export const PasswordResetPage = ({
             <FontAwesomeIcon icon={faUserCircle} className="icon" />
             <h1>{getUserDisplayName(user)}</h1>
           </div>
-          <h3 className="secondary">
+          <h4 className="secondary">
             <T id="PasswordResetPage.description" />
-          </h3>
+          </h4>
         </div>
         <TextField
           label={<T id="PasswordResetPage.password" />}
