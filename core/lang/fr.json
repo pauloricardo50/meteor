@@ -1,4 +1,8 @@
 {
+  "PropertyCardSubtitle.solvent": "Solvable",
+  "PropertyCardSubtitle.nonSolvent": "Non-solvable",
+  "PropertyCardSubtitle.solvent.tooltip": "Votre capacité d'achat est suffisante pour acquérir ce bien.",
+  "PropertyCardSubtitle.nonSolvent.tooltip": "Votre capacité d'achat est insuffisante pour acquérir ce bien. Vous pouvez appeler votre conseiller e-Potek pour identifier des solutions.",
   "Forms.solvency.NOT_SHARED": "Pas partagé",
   "Forms.variable.propertyType": "Type de bien immobilier",
   "SimpleDashboardPage.shareSolvency.title": "Activer le partage de solvabilité",

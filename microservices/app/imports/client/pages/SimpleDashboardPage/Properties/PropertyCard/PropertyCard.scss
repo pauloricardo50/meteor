@@ -87,4 +87,11 @@ $borrowers-item-width: 500px;
       font-size: 1em;
     }
   }
+
+  &-subtitle {
+    > span {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
