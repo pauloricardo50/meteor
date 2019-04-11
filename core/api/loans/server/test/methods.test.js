@@ -156,12 +156,12 @@ describe('Loan methods', () => {
           expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
           expect(main.min.borrowRatio).to.equal(0.65);
           expect(main.min.propertyValue).to.equal(1496000);
-          expect(main.max.borrowRatio).to.equal(0.8713);
-          expect(main.max.propertyValue).to.equal(3278000);
-          expect(second.min.borrowRatio).to.equal(0.65);
-          expect(second.min.propertyValue).to.equal(1244000);
-          expect(second.max.borrowRatio).to.equal(0.7);
-          expect(second.max.propertyValue).to.equal(1420000);
+          expect(main.max.borrowRatio).to.equal(0.835);
+          expect(main.max.propertyValue).to.equal(2760000);
+          expect(second.min.borrowRatio).to.equal(0.5);
+          expect(second.min.propertyValue).to.equal(908000);
+          expect(second.max.borrowRatio).to.equal(0.65);
+          expect(second.max.propertyValue).to.equal(1244000);
         });
     });
   });

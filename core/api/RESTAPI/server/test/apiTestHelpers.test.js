@@ -9,8 +9,10 @@ const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
 const checkResponse = ({ res, expectedResponse }) =>
   res.json().then((body) => {
-    expect(body).to.deep.equal(expectedResponse);
-    return Promise.resolve();
+    if (expectedResponse) {
+      expect(body).to.deep.equal(expectedResponse);
+    }
+    return Promise.resolve(body);
   });
 
 export const getTimestampAndNonce = () => {

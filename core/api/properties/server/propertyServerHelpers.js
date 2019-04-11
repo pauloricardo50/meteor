@@ -104,7 +104,7 @@ export const makeProPropertyLoanAnonymizer = ({
   }
 
   return (loan) => {
-    const { user = {}, ...rest } = loan;
+    const { user = {}, properties = [], ...rest } = loan;
     const { _id: customerId } = user;
 
     const shouldAnonymizeUser = anonymize === undefined
@@ -126,6 +126,9 @@ export const makeProPropertyLoanAnonymizer = ({
 
     return {
       user: shouldAnonymizeUser ? anonymizeUser({ user }) : user,
+      properties: shouldAnonymizeUser
+        ? properties.map(({ solvent, ...property }) => property)
+        : properties,
       ...rest,
     };
   };
