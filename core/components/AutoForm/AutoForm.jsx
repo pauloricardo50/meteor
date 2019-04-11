@@ -48,9 +48,9 @@ const inputSwitch = (childProps, index, parentProps) => {
   case 'textInput':
     return <AutoFormTextInput multiline={false} {...childProps} />;
   case 'radioInput':
-      return <AutoFormRadioInput {...childProps} />;
+    return <AutoFormRadioInput {...childProps} />;
   case 'selectFieldInput':
-      return <AutoFormSelectFieldInput {...childProps} />;
+    return <AutoFormSelectFieldInput {...childProps} />;
   case 'conditionalInput':
     return (
       <AutoFormConditionalInput
@@ -163,10 +163,15 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   return inputSwitch(childProps, index, parentProps);
 };
 
-const AutoForm = props => (
-  <form className={props.formClasses} onSubmit={e => e.preventDefault()}>
+const AutoForm = ({ formClasses, showDisclaimer, children, ...props }) => (
+  <form className={formClasses} onSubmit={e => e.preventDefault()}>
     {props.inputs.map(makeMapInputs(props))}
-    {props.children}
+    {children}
+    {showDisclaimer && (
+      <p className="text-center">
+        <T id="AutoForm.autosaveDisclaimer" />
+      </p>
+    )}
   </form>
 );
 
@@ -180,6 +185,7 @@ AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.objectOf(PropTypes.any),
   noPlaceholders: PropTypes.bool,
+  showDisclaimer: PropTypes.bool,
 };
 
 AutoForm.defaultProps = {
@@ -188,6 +194,7 @@ AutoForm.defaultProps = {
   fullWidth: false,
   disabled: false,
   noPlaceholders: false,
+  showDisclaimer: true,
 };
 
 export default AutoFormContainer(AutoForm);

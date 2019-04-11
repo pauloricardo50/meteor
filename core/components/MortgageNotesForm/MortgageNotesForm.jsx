@@ -46,6 +46,7 @@ const MortgageNotesForm = ({
         collection={MORTGAGE_NOTES_COLLECTION}
         doc={mortgageNote}
         disabled={disabled}
+        showDisclaimer={false}
       >
         <div className="flex center">
           <Button onClick={() => mortgageNoteRemove(mortgageNote._id)} raised>
