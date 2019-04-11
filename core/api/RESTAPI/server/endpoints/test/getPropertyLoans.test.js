@@ -18,20 +18,20 @@ import {
   PROPERTY_PERMISSIONS_FULL_ACCESS,
 } from '../../../../constants';
 
-let keyPair;
+const keyPairs = { pro: {}, pro2: {} };
 
 const api = new RESTAPI();
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
 
-const getPropertyLoans = (propertyId) => {
+const getPropertyLoans = ({ propertyId, userId }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   return fetchAndCheckResponse({
     url: `/properties/${propertyId}/loans`,
     data: {
       method: 'GET',
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        publicKey: keyPairs[userId].publicKey,
+        privateKey: keyPairs[userId].privateKey,
         timestamp,
         nonce,
       }),
@@ -47,7 +47,7 @@ const makeCustomers = count =>
     loans: [{ _id: `loan${index}`, propertyIds: ['property'] }],
   }));
 
-describe.only('REST: getPropertyLoans', function () {
+describe('REST: getPropertyLoans', function () {
   this.timeout(10000);
 
   before(function () {
@@ -66,14 +66,22 @@ describe.only('REST: getPropertyLoans', function () {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: {
-        _factory: 'pro',
-        _id: 'pro',
-        organisations: [{ _id: 'org' }],
-        proProperties: [{ _id: 'property', category: PROPERTY_CATEGORY.PRO }],
-      },
+      users: [
+        {
+          _factory: 'pro',
+          _id: 'pro',
+          organisations: [{ _id: 'org' }],
+          proProperties: [{ _id: 'property', category: PROPERTY_CATEGORY.PRO }],
+        },
+        {
+          _factory: 'pro',
+          _id: 'pro2',
+          organisations: [{ _id: 'org2' }],
+        },
+      ],
     });
-    keyPair = UserService.generateKeyPair({ userId: 'pro' });
+    keyPairs.pro = UserService.generateKeyPair({ userId: 'pro' });
+    keyPairs.pro2 = UserService.generateKeyPair({ userId: 'pro2' });
   });
 
   it('returns property loans', () => {
@@ -82,11 +90,36 @@ describe.only('REST: getPropertyLoans', function () {
       userId: 'pro',
       permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
     });
-    generator({
-      users: makeCustomers(5),
-    });
-    return getPropertyLoans('property').then((loans) => {
+    generator({ users: makeCustomers(5) });
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro' }).then((loans) => {
       expect(loans.length).to.equal(5);
+      expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
+    });
+  });
+
+  it('returns property anonymized loans', () => {
+    PropertyService.addProUser({ propertyId: 'property', userId: 'pro2' });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property',
+      userId: 'pro2',
+      permissions: { displayCustomersNames: false },
+    });
+    generator({ users: makeCustomers(5) });
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro2' }).then((loans) => {
+      expect(loans.length).to.equal(5);
+      expect(loans.every(({ user }) => user.name === 'XXX')).to.equal(true);
+      expect(loans.every(({ solvent }) => !solvent)).to.equal(true);
+    });
+  });
+
+  it('returns an error if user has no access to property', () => {
+    generator({ users: makeCustomers(5) });
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro2' }).then((response) => {
+      expect(response).to.deep.equal({
+        status: 400,
+        message:
+            "Vous n'avez pas accès à ce bien immobilier [NOT_AUTHORIZED]",
+      });
     });
   });
 });
