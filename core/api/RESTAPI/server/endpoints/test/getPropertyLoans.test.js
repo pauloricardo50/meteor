@@ -86,7 +86,6 @@ describe.only('REST: getPropertyLoans', function () {
       users: makeCustomers(5),
     });
     return getPropertyLoans('property').then((loans) => {
-      console.log(JSON.stringify(loans, null, 2));
       expect(loans.length).to.equal(5);
     });
   });

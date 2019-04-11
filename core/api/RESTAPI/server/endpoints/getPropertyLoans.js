@@ -7,7 +7,7 @@ const getPropertyLoansAPI = ({ user: { _id: userId }, params }) => {
 
   const loans = proPropertyLoans.clone({ propertyId }).fetch({ userId });
 
-  return loans.map(loan =>
+  const filteredLoans = loans.map(loan =>
     pick(loan, [
       'user.name',
       'user.phoneNumbers',
@@ -18,7 +18,14 @@ const getPropertyLoansAPI = ({ user: { _id: userId }, params }) => {
       'name',
       'loanProgress',
       'status',
+      'properties',
     ]));
+
+  return filteredLoans.map(({ properties, ...loan }) => {
+    const property = properties.find(({ _id }) => _id === propertyId) || {};
+    const { solvent } = property;
+    return { ...loan, solvent };
+  });
 };
 
 export default getPropertyLoansAPI;
