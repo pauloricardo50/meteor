@@ -1,10 +1,10 @@
-import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
-
 import Calculator from 'core/utils/Calculator';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import {
   PROPERTIES_COLLECTION,
   PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+  PROPERTY_SOLVENCY,
 } from 'core/api/properties/propertyConstants';
 import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
@@ -13,11 +13,64 @@ import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 
-const handleLoanSolvencySharing = (loanObject) => {
+const isSolventForProProperty = ({
+  isAdmin,
+  property,
+  maxPropertyValue,
+  residenceType,
+  shareSolvency,
+}) => {
+  if (!maxPropertyValue) {
+    return PROPERTY_SOLVENCY.UNDETERMINED;
+  }
+
+  if (!shareSolvency && !isAdmin) {
+    return PROPERTY_SOLVENCY.NOT_SHARED;
+  }
+
+  const {
+    main: {
+      max: { propertyValue: mainMaxValue },
+    },
+    second: {
+      max: { propertyValue: secondMaxValue },
+    },
+  } = maxPropertyValue;
+  const { totalValue } = property;
+
+  switch (residenceType) {
+  case RESIDENCE_TYPE.MAIN_RESIDENCE: {
+    return totalValue <= mainMaxValue
+      ? PROPERTY_SOLVENCY.SOLVENT
+      : PROPERTY_SOLVENCY.INSOLVENT;
+  }
+  case RESIDENCE_TYPE.SECOND_RESIDENCE: {
+    return totalValue <= secondMaxValue
+      ? PROPERTY_SOLVENCY.SOLVENT
+      : PROPERTY_SOLVENCY.INSOLVENT;
+  }
+  default:
+    return null;
+  }
+};
+
+const handleLoanSolvencySharing = ({ isAdmin = false }) => (loanObject) => {
   const { maxPropertyValue, shareSolvency, ...loan } = loanObject;
+
+  const propertiesWithSolvency = loan.properties.map(property => ({
+    ...property,
+    solvent: isSolventForProProperty({
+      isAdmin,
+      property,
+      maxPropertyValue,
+      residenceType: loan.residenceType,
+      shareSolvency,
+    }),
+  }));
+
   return {
     ...loan,
-    maxPropertyValue: shareSolvency ? maxPropertyValue : null,
+    properties: propertiesWithSolvency,
   };
 };
 
@@ -82,7 +135,7 @@ export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans;
   } catch (error) {
-    return anonymizeReferredByLoans({ loans, userId: calledByUserId }).map(handleLoanSolvencySharing);
+    return anonymizeReferredByLoans({ loans, userId: calledByUserId });
   }
 };
 
@@ -96,14 +149,11 @@ export const proPromotionLoansResolver = ({ calledByUserId, promotionId }) => {
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans;
   } catch (error) {
-    return anonymizePromotionLoans({ loans, userId: calledByUserId }).map(handleLoanSolvencySharing);
+    return anonymizePromotionLoans({ loans, userId: calledByUserId });
   }
 };
 
-export const proPropertyLoansResolver = ({
-  calledByUserId,
-  propertyId,
-}) => {
+export const proPropertyLoansResolver = ({ calledByUserId, propertyId }) => {
   const loans = LoanService.fetch({
     $filters: { propertyIds: propertyId },
     ...proLoans(),
@@ -111,9 +161,12 @@ export const proPropertyLoansResolver = ({
 
   try {
     SecurityService.checkUserIsAdmin(calledByUserId);
-    return loans;
+    return loans.map(handleLoanSolvencySharing({ isAdmin: true }));
   } catch (error) {
-    return anonymizePropertyLoans({ loans, userId: calledByUserId }).map(handleLoanSolvencySharing);
+    return anonymizePropertyLoans({
+      loans: loans.map(handleLoanSolvencySharing({ isAdmin: false })),
+      userId: calledByUserId,
+    });
   }
 };
 

@@ -21,6 +21,7 @@ const columnOptions = [
   { id: 'createdAt' },
   { id: 'referredBy' },
   { id: 'progress', label: <LoanProgressHeader /> },
+  { id: 'solvency' },
   { id: 'actions' },
 ].map(({ id, label }) => ({
   id,
@@ -57,7 +58,7 @@ const makeMapLoan = ({
   currentUser,
   property,
 }) => (loan) => {
-  const { _id: loanId, user, createdAt, loanProgress } = loan;
+  const { _id: loanId, user, createdAt, loanProgress, properties } = loan;
   const { isAdmin } = permissions;
 
   const canRemoveCustomer = canRemoveCustomerFromProperty({
@@ -66,6 +67,8 @@ const makeMapLoan = ({
     property,
     isAdmin,
   });
+
+  const { solvent } = properties.find(({ _id }) => _id === property._id) || {};
 
   return {
     id: loanId,
@@ -78,6 +81,10 @@ const makeMapLoan = ({
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
+      },
+      {
+        raw: solvent,
+        label: solvent ? <T id={`Forms.solvency.${solvent}`} /> : '-',
       },
       canRemoveCustomer ? (
         <ConfirmMethod
