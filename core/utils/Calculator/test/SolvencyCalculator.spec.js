@@ -98,6 +98,30 @@ describe('SolvencyCalculator', () => {
         },
       ]);
     });
+
+    it('always gets up to the exact value', () => {
+      const loanValue = 800000;
+      loan.structure = {
+        wantedLoan: loanValue,
+        property: { totalValue: 1000000, canton: 'GE' },
+        propertyWork: 100000,
+      };
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      const required = Calculator.getRequiredOwnFunds({ loan });
+      borrower.bankFortune = 200000;
+      borrower.insurance2 = [{ value: 150000 }];
+      const ownFunds = Calculator.suggestStructure({
+        loan,
+        propertyValue: 1100000,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        loanValue,
+        canton: 'GE',
+        notaryFees: 32258.1,
+      });
+      const total = ownFunds.reduce((t, { value }) => t + value, 0);
+
+      expect(total).to.equal(Math.round(required));
+    });
   });
 
   describe('getMaxPropertyValue', () => {

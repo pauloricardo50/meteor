@@ -12,12 +12,8 @@ import { roundValue } from '../conversionFunctions';
 const INITIAL_MIN_BOUND = 0;
 const INITIAL_MAX_BOUND = 1000000;
 const INITIAL_ABSOLUTE_MAX_BOUND = 100000000;
-const INITIAL_MIN_BOUND_BORROW_RATIO = 0;
-const INITIAL_MAX_BOUND_BORROW_RATIO = 0.9;
-const INITIAL_ABSOLUTE_MAX_BOUND_BORROW_RATIO = 1;
 const MAX_ITERATIONS = 50;
 const ACCURACY = 1000;
-const BORROW_RATIO_ACCURACY = 0.05;
 const ROUNDING_DIGITS = Math.log10(ACCURACY);
 const MAX_BOUND_MULTIPLICATION_FACTOR = 2;
 const OWN_FUNDS_ROUNDING_ALGO = 100;
@@ -99,7 +95,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         }).total;
       }
 
-      let requiredOwnFunds = propertyValue + notaryFees - finalLoanValue;
+      let requiredOwnFunds = Math.round(propertyValue + notaryFees - finalLoanValue);
       let ownFunds = [];
 
       // Get all possible OWN_FUNDS_TYPES

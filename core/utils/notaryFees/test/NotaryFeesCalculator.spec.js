@@ -65,6 +65,15 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(32258.1);
     });
 
+    it('ignores propertyWork', () => {
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      loan.structure.propertyWork = 100000;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.total).to.equal(32258.1);
+    });
+
     it('caps casatax deductions for very small properties', () => {
       loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
       loan.structure.property.value = 400000;
@@ -147,6 +156,20 @@ describe('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
       expect(fees.total).to.equal(50000);
+    });
+  });
+
+  describe('getNotaryFeesWithoutLoan', () => {
+    it('should work', () => {
+      calc = new NotaryFeesCalculator({ canton: 'GE' });
+
+      const notaryFees = calc.getNotaryFeesWithoutLoan({
+        propertyValue: 1000000,
+        mortgageNoteIncrease: 800000,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      }).total;
+
+      expect(notaryFees).to.equal(32258.1);
     });
   });
 });
