@@ -34,6 +34,7 @@ const config = {
         'Forms',
         'Impersonation',
         'InterestRates',
+        'InterestsChart',
         'InterestsTable',
         'Irs10y',
         'Lenders',
