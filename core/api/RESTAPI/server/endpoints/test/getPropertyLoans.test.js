@@ -18,15 +18,17 @@ import {
   PROPERTY_PERMISSIONS_FULL_ACCESS,
 } from '../../../../constants';
 
-const keyPairs = { pro: {}, pro2: {} };
+const keyPairs = { pro: {}, pro3: {} };
 
 const api = new RESTAPI();
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
 
-const getPropertyLoans = ({ propertyId, userId }) => {
+const getPropertyLoans = ({ propertyId, userId, impersonateUser }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
+  const query = impersonateUser && { impersonateUser };
   return fetchAndCheckResponse({
     url: `/properties/${propertyId}/loans`,
+    query,
     data: {
       method: 'GET',
       headers: makeHeaders({
@@ -34,6 +36,7 @@ const getPropertyLoans = ({ propertyId, userId }) => {
         privateKey: keyPairs[userId].privateKey,
         timestamp,
         nonce,
+        query,
       }),
     },
   });
@@ -71,41 +74,51 @@ describe('REST: getPropertyLoans', function () {
           _factory: 'pro',
           _id: 'pro',
           organisations: [{ _id: 'org' }],
-          proProperties: [{ _id: 'property', category: PROPERTY_CATEGORY.PRO }],
         },
         {
           _factory: 'pro',
           _id: 'pro2',
+          organisations: [{ _id: 'org' }],
+          emails: [{ address: 'pro2@org.com', verified: true }],
+          proProperties: [{ _id: 'property', category: PROPERTY_CATEGORY.PRO }],
+        },
+        {
+          _factory: 'pro',
+          _id: 'pro3',
           organisations: [{ _id: 'org2' }],
         },
       ],
     });
     keyPairs.pro = UserService.generateKeyPair({ userId: 'pro' });
-    keyPairs.pro2 = UserService.generateKeyPair({ userId: 'pro2' });
+    keyPairs.pro3 = UserService.generateKeyPair({ userId: 'pro3' });
   });
 
   it('returns property loans', () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property',
-      userId: 'pro',
+      userId: 'pro2',
       permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
     });
     generator({ users: makeCustomers(5) });
-    return getPropertyLoans({ propertyId: 'property', userId: 'pro' }).then((loans) => {
+    return getPropertyLoans({
+      propertyId: 'property',
+      userId: 'pro',
+      impersonateUser: 'pro2@org.com',
+    }).then((loans) => {
       expect(loans.length).to.equal(5);
       expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
     });
   });
 
   it('returns property anonymized loans', () => {
-    PropertyService.addProUser({ propertyId: 'property', userId: 'pro2' });
+    PropertyService.addProUser({ propertyId: 'property', userId: 'pro3' });
     PropertyService.setProUserPermissions({
       propertyId: 'property',
-      userId: 'pro2',
+      userId: 'pro3',
       permissions: { displayCustomersNames: false },
     });
     generator({ users: makeCustomers(5) });
-    return getPropertyLoans({ propertyId: 'property', userId: 'pro2' }).then((loans) => {
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro3' }).then((loans) => {
       expect(loans.length).to.equal(5);
       expect(loans.every(({ user }) => user.name === 'XXX')).to.equal(true);
       expect(loans.every(({ solvent }) => !solvent)).to.equal(true);
@@ -114,7 +127,7 @@ describe('REST: getPropertyLoans', function () {
 
   it('returns an error if user has no access to property', () => {
     generator({ users: makeCustomers(5) });
-    return getPropertyLoans({ propertyId: 'property', userId: 'pro2' }).then((response) => {
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro3' }).then((response) => {
       expect(response).to.deep.equal({
         status: 400,
         message:

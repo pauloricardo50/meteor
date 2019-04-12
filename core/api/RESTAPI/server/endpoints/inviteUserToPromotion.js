@@ -1,9 +1,15 @@
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
 
-const inviteUserToPromotionAPI = ({ user: { _id: userId }, body, params }) => {
+const inviteUserToPromotionAPI = ({
+  user: { _id: userId },
+  body,
+  params,
+  query,
+}) => {
   const { user } = body;
   const { promotionId } = params;
+  const { impersonateUser } = query; // TODO: Implement this
 
   return withMeteorUserId(userId, () =>
     proInviteUser.run({

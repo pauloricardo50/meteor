@@ -266,7 +266,7 @@ class UserService extends CollectionService {
     user,
     propertyIds = [],
     promotionIds = [],
-    property,
+    properties = [],
     proUserId,
     adminId,
   }) => {
@@ -312,8 +312,40 @@ class UserService extends CollectionService {
           })),
       ];
     }
-    if (property) {
-      // Not yet implemented
+    if (properties && properties.length) {
+      const internalPropertyIds = properties.map((property) => {
+        let propertyId;
+
+        const existingProperty = PropertyService.fetchOne({
+          $filters: { externalId: property.externalId },
+        });
+
+        if (!existingProperty) {
+          propertyId = PropertyService.insertExternalProperty({
+            userId: pro._id,
+            property,
+          });
+        } else {
+          propertyId = existingProperty._id;
+        }
+
+        if (!propertyId) {
+          throw new Meteor.Error('No property found');
+        }
+
+        return propertyId;
+      });
+
+      promises = [
+        ...promises,
+        PropertyService.inviteUser({
+          propertyIds: internalPropertyIds,
+          admin,
+          pro,
+          userId,
+          isNewUser,
+        }),
+      ];
     }
 
     return Promise.all(promises);

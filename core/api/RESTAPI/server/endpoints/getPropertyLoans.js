@@ -1,11 +1,20 @@
 import pick from 'lodash/pick';
 
 import proPropertyLoans from '../../../loans/queries/proPropertyLoans';
+import { getImpersonateUserId } from './helpers';
 
-const getPropertyLoansAPI = ({ user: { _id: userId }, params }) => {
+const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
   const { propertyId } = params;
+  const { impersonateUser } = query;
 
-  const loans = proPropertyLoans.clone({ propertyId }).fetch({ userId });
+  let proId;
+  if (impersonateUser) {
+    proId = getImpersonateUserId({ userId, impersonateUser });
+  }
+
+  const loans = proPropertyLoans
+    .clone({ propertyId })
+    .fetch({ userId: proId || userId });
 
   const filteredLoans = loans.map(loan =>
     pick(loan, [
