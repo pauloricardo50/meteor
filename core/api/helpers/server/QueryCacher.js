@@ -43,12 +43,16 @@ export default class QueryCacher extends BaseResultCacher {
     return data;
   }
 
+  invalidateCache(cacheId) {
+    delete this.store[cacheId];
+  }
+
   storeData({ cacheId, data, hash }) {
     const ttl = this.config.ttl || DEFAULT_TTL;
     this.store[cacheId] = { data: cloneDeep(data), hash };
 
     Meteor.setTimeout(() => {
-      delete this.store[cacheId];
+      this.invalidateCache(cacheId);
     }, ttl);
   }
 }
