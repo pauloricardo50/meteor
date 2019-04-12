@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
+import omit from 'lodash/omit';
 
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
@@ -21,10 +22,7 @@ class UserService extends CollectionService {
   }
 
   get(userId) {
-    return this.fetchOne({
-      $filters: { _id: userId },
-      ...fullUser(),
-    });
+    return this.fetchOne({ $filters: { _id: userId }, ...fullUser() });
   }
 
   getByEmail(email) {
@@ -32,6 +30,12 @@ class UserService extends CollectionService {
   }
 
   createUser = ({ options, role }) => {
+    if (!options.password) {
+      // password is not allowed to be undefined, it has to be stripped from
+      // the options object
+      options = omit(options, ['password']);
+    }
+
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
 
@@ -65,7 +69,7 @@ class UserService extends CollectionService {
     Accounts.sendVerificationEmail(userId);
 
   sendEnrollmentEmail = ({ userId }) => {
-    try { 
+    try {
       Accounts.sendEnrollmentEmail(userId);
     } catch (error) {
       // FIXME: Temporary fix for meteor toys in dev
@@ -103,7 +107,6 @@ class UserService extends CollectionService {
 
   getLoginToken = ({ userId }) => {
     const user = Users.findOne(userId, { fields: { services: 1 } });
-    console.log('getLoginToken user:', user);
 
     return (
       user.services.password

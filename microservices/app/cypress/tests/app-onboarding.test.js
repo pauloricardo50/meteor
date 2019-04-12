@@ -53,6 +53,24 @@ describe('App onboarding', () => {
           .click();
 
         cy.get('.simple-dashboard-page').should('exist');
+        cy.get('.borrowers-progress').contains('0%');
+
+        cy.get('.borrowers-progress a').click();
+        cy.url().should('include', '/borrowers');
+
+        cy.get('input#firstName').type('Test');
+        cy.get('input#lastName').type('User');
+        cy.get('input#salary').type('180000');
+        cy.get('input#netSalary').type('150000');
+        cy.get('#bonusExists [type="radio"]')
+          .last()
+          .check();
+        cy.get('#hasOwnCompany [type="radio"]')
+          .last()
+          .check();
+        cy.get('input#bankFortune').type('250000');
+
+        cy.get('.simple-borrowers-page-header').contains('100%');
       });
     });
   });

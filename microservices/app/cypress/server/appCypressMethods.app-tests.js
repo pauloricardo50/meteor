@@ -61,10 +61,10 @@ Meteor.methods({
     const userId = UserService.adminCreateUser({
       options: {
         email: USER_EMAIL,
-        password: withPassword && USER_PASSWORD,
         firstName: 'Test',
         lastName: 'User',
         sendEnrollmentEmail: true,
+        password: withPassword && USER_PASSWORD,
       },
     });
     LoanService.adminLoanInsert({ userId });
