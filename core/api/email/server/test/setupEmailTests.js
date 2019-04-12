@@ -16,7 +16,11 @@ if (isEmailTestEnv) {
     storeTestEmail(email) {
       return emailTestCollection.insert({ ...email });
     },
-    getAllTestEmails({ expected = 1 } = {}) {
+    getAllTestEmails({
+      expected = 1,
+      timeout = TIMEOUT,
+      pollingInterval = POLLING_INTERVAL,
+    } = {}) {
       // Because emails are sent asynchronously after the actions that trigger
       // them, poll the DB for 10 seconds until something is found
       let counter = 0;
@@ -32,10 +36,10 @@ if (isEmailTestEnv) {
             resolve(emails);
           }
 
-          if (counter > TIMEOUT / POLLING_INTERVAL) {
+          if (counter > timeout / pollingInterval) {
             resolve(emails);
           }
-        }, POLLING_INTERVAL);
+        }, pollingInterval);
       });
     },
   });

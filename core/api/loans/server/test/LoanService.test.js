@@ -901,7 +901,7 @@ describe('LoanService', function () {
       });
       LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1, { timeout: 2000 }).then((emails) => {
         expect(emails.length).to.equal(0);
       });
     });

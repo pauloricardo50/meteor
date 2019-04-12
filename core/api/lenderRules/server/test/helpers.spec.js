@@ -1,9 +1,15 @@
 // @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
+import omit from 'lodash/omit';
 
 import { getMatchingRules } from '../../helpers';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
+
+const checkRules = (result, expected) => {
+  // Don't check the names variable
+  expect(omit(result, 'names')).to.deep.equal(expected);
+};
 
 describe('lenderRules helpers', () => {
   describe('getMatchingRules', () => {
@@ -25,9 +31,7 @@ describe('lenderRules helpers', () => {
         },
       ];
 
-      expect(getMatchingRules(lenderRules, variables)).to.deep.equal({
-        hello: 'dude',
-      });
+      checkRules(getMatchingRules(lenderRules, variables), { hello: 'dude' });
     });
 
     it('merges rules in the order of the filters', () => {
@@ -62,7 +66,7 @@ describe('lenderRules helpers', () => {
         },
       ];
 
-      expect(getMatchingRules(lenderRules, variables)).to.deep.equal({
+      checkRules(getMatchingRules(lenderRules, variables), {
         yo: 'dawg',
         hello: 'ma dude',
       });
@@ -100,7 +104,7 @@ describe('lenderRules helpers', () => {
         },
       ];
 
-      expect(getMatchingRules(lenderRules, variables)).to.deep.equal({
+      checkRules(getMatchingRules(lenderRules, variables), {
         hello: 'ma dude',
       });
     });
@@ -114,7 +118,7 @@ describe('lenderRules helpers', () => {
         },
       ];
 
-      expect(getMatchingRules(lenderRules, variables)).to.deep.equal({
+      checkRules(getMatchingRules(lenderRules, variables), {
         hello: 'dude',
       });
     });
@@ -140,7 +144,7 @@ describe('lenderRules helpers', () => {
         },
       ];
 
-      expect(getMatchingRules(lenderRules, variables)).to.deep.equal({
+      checkRules(getMatchingRules(lenderRules, variables), {
         hello: 'dude',
       });
     });

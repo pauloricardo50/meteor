@@ -83,8 +83,8 @@ export const userLogin = ({ email, password, role }) => {
   }
 };
 
-export const checkEmails = expected =>
+export const checkEmails = (expected, options = {}) =>
   new Promise((resolve, reject) => {
-    Meteor.call('getAllTestEmails', { expected }, (err, emails) =>
+    Meteor.call('getAllTestEmails', { expected, ...options }, (err, emails) =>
       (err ? reject(err) : resolve(emails)));
   });

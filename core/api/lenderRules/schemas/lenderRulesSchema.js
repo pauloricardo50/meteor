@@ -34,12 +34,21 @@ export const incomeConsideration = {
   investmentIncomeConsideration: percentageField,
   expensesSubtractFromIncome: {
     type: Array,
-    defaultValue: [],
     optional: true,
     uniforms: {
       intlId: 'expenses',
       placeholder: 'Ajouter toutes les charges aux charges théoriques',
       label: 'Charges à soustraire aux revenus',
+    },
+    autoValue() {
+      if (
+        Meteor.isServer
+        && this.isSet
+        && Array.isArray(this.value)
+        && this.value.length === 0
+      ) {
+        return { $unset: true };
+      }
     },
   },
   'expensesSubtractFromIncome.$': {

@@ -26,7 +26,11 @@ const mergeRules = ({ names = [], ...oldRules }, newRules) => {
   };
 };
 
-export const getMatchingRules = (lenderRules, variables, storeOrigin) =>
+export const getMatchingRules = (
+  lenderRules,
+  variables,
+  storeOrigin = () => {},
+) =>
   lenderRules.reduce((validRules, { filter, ...rules }) => {
     if (filterIsValid(filter, variables)) {
       storeOrigin(rules, rules._id);

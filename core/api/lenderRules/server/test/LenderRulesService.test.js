@@ -6,7 +6,9 @@ import jsonLogic from 'json-logic-js';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import generator from 'core/api/factories';
 import LenderRulesService from '../LenderRulesService';
+import { EXPENSE_TYPES } from '../../lenderRulesConstants';
 
 describe('LenderRulesService', () => {
   let organisationId;
@@ -71,6 +73,21 @@ describe('LenderRulesService', () => {
           lenderRulesId: '',
           object: { filter: 'stuff' },
         })).to.throw('can not');
+    });
+
+    it('unsets expensesSubtractFromIncome if it is set to an empty array', () => {
+      generator({
+        lenderRules: {
+          _id: 'rulesId',
+          expensesSubtractFromIncome: [EXPENSE_TYPES.LEASING],
+        },
+      });
+      LenderRulesService.update({
+        lenderRulesId: 'rulesId',
+        object: { expensesSubtractFromIncome: [] },
+      });
+
+      expect(LenderRulesService.get('rulesId').expensesSubtractFromIncome).to.equal(undefined);
     });
   });
 
