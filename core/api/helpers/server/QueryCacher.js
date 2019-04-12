@@ -14,6 +14,10 @@ export default class QueryCacher extends BaseResultCacher {
   }
 
   generateQueryId(queryName, params) {
+    // Store the queryname for reuse later
+    if (!this.queryName) {
+      this.queryName = queryName;
+    }
     return `${queryName}::${EJSON.stringify(params)}`;
   }
 
@@ -47,9 +51,24 @@ export default class QueryCacher extends BaseResultCacher {
     delete this.store[cacheId];
   }
 
+  cacheExists(cacheId) {
+    return !!this.store[cacheId];
+  }
+
+  setCache(cacheId, cacheData) {
+    this.store[cacheId] = cacheData;
+  }
+
+  findAndInvalidateCache(params) {
+    const cacheId = this.generateQueryId(this.queryName, params);
+    if (this.cacheExists(cacheId)) {
+      this.invalidateCache(cacheId);
+    }
+  }
+
   storeData({ cacheId, data, hash }) {
     const ttl = this.config.ttl || DEFAULT_TTL;
-    this.store[cacheId] = { data: cloneDeep(data), hash };
+    this.setCache(cacheId, { data: cloneDeep(data), hash });
 
     Meteor.setTimeout(() => {
       this.invalidateCache(cacheId);
