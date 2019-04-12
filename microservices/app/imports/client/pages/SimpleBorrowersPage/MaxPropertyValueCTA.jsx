@@ -4,24 +4,24 @@ import { scroller as scroll } from 'react-scroll';
 
 import Calculator from 'core/utils/Calculator';
 import Button from 'core/components/Button';
-import useMedia from 'core/hooks/useMedia';
 
 type MaxPropertyValueCTAProps = {
   loan: Object,
+  isMobile: boolean,
+  hasEnoughHeight: boolean,
 };
 
 const SCROLL_DURATION = 600;
 const SCROLL_DELAY = 100;
 const MAX_PROPERTY_VALUE_PADDING = 32;
 
-const displayButton = (loan) => {
+const displayButton = (loan, isMobile, hasEnoughHeight) => {
   const { borrowers = [], maxPropertyValue: { borrowerHash } = {} } = loan;
-  const isMobile = useMedia({ maxWidth: 992 });
   const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
   const hash = Calculator.getBorrowerFormHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
-  if (isMobile) {
+  if (isMobile || hasEnoughHeight) {
     return false;
   }
 
@@ -45,8 +45,12 @@ const scrollToTop = () => {
   );
 };
 
-const MaxPropertyValueCTA = ({ loan }: MaxPropertyValueCTAProps) =>
-  (displayButton(loan) ? (
+const MaxPropertyValueCTA = ({
+  loan,
+  isMobile,
+  hasEnoughHeight,
+}: MaxPropertyValueCTAProps) =>
+  (displayButton(loan, isMobile, hasEnoughHeight) ? (
     <Button
       onClick={scrollToTop}
       secondary

@@ -105,6 +105,7 @@ export default compose(
   withSmartQuery({
     query: adminOrganisations,
     queryOptions: { reactive: false },
+    params: { $body: { _id: 1 } },
     dataName: 'existingOrganisations',
     smallLoader: true,
   }),

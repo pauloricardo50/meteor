@@ -3,6 +3,7 @@ import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
+import { PROPERTY_SOLVENCY } from 'core/api/constants';
 import LoanProgress from '../../LoanProgress/LoanProgress';
 import LoanProgressHeader from '../../LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
@@ -13,6 +14,8 @@ import T from '../../Translation';
 import { removeCustomerFromProperty, getReferredBy } from '../../../api';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
+import Icon from '../../Icon';
+import Tooltip from '../../Material/Tooltip';
 
 const columnOptions = [
   { id: 'name' },
@@ -21,6 +24,7 @@ const columnOptions = [
   { id: 'createdAt' },
   { id: 'referredBy' },
   { id: 'progress', label: <LoanProgressHeader /> },
+  { id: 'solvency' },
   { id: 'actions' },
 ].map(({ id, label }) => ({
   id,
@@ -51,13 +55,45 @@ const canRemoveCustomerFromProperty = ({
   });
 };
 
+const getSolvencyLabel = (solvent) => {
+  const title = <T id={`Forms.solvency.${solvent}`} />;
+  let props = {};
+  switch (solvent) {
+  case PROPERTY_SOLVENCY.UNDETERMINED: {
+    props = { type: 'waiting', className: 'warning' };
+    break;
+  }
+  case PROPERTY_SOLVENCY.NOT_SHARED: {
+    props = { type: 'eyeCrossed', className: 'warning' };
+    break;
+  }
+  case PROPERTY_SOLVENCY.SOLVENT: {
+    props = { type: 'check', className: 'success' };
+    break;
+  }
+  case PROPERTY_SOLVENCY.INSOLVENT: {
+    props = { type: 'close', className: 'error' };
+    break;
+  }
+  default:
+    break;
+  }
+
+  return (
+    <span className="customers-table-solvency">
+      <Icon {...props} />
+      &nbsp;{title}
+    </span>
+  );
+};
+
 const makeMapLoan = ({
   history,
   permissions,
   currentUser,
   property,
 }) => (loan) => {
-  const { _id: loanId, user, createdAt, loanProgress } = loan;
+  const { _id: loanId, user, createdAt, loanProgress, properties } = loan;
   const { isAdmin } = permissions;
 
   const canRemoveCustomer = canRemoveCustomerFromProperty({
@@ -66,6 +102,8 @@ const makeMapLoan = ({
     property,
     isAdmin,
   });
+
+  const { solvent } = properties.find(({ _id }) => _id === property._id) || {};
 
   return {
     id: loanId,
@@ -78,6 +116,10 @@ const makeMapLoan = ({
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
+      },
+      {
+        raw: solvent,
+        label: solvent ? getSolvencyLabel(solvent) : '-',
       },
       canRemoveCustomer ? (
         <ConfirmMethod

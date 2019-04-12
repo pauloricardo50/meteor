@@ -15,44 +15,9 @@ import {
   LOAN_STATUS,
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
-  RESIDENCE_TYPE,
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
-
-const getMaxPropertyValue = ({ maxPropertyValue, residenceType }) => {
-  if (maxPropertyValue === null) {
-    return {
-      raw: maxPropertyValue,
-      label: (
-        <T
-          id="ProCustomersTable.maxPropertyValue.placeHolder"
-          values={{ computed: true }}
-        />
-      ),
-    };
-  }
-
-  return {
-    raw:
-      maxPropertyValue
-      && (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE
-        ? maxPropertyValue.second.max.propertyValue
-        : maxPropertyValue.main.max.propertyValue),
-    label: maxPropertyValue ? (
-      residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? (
-        <Money value={maxPropertyValue.second.max.propertyValue} />
-      ) : (
-        <Money value={maxPropertyValue.main.max.propertyValue} />
-      )
-    ) : (
-      <T
-        id="ProCustomersTable.maxPropertyValue.placeHolder"
-        values={{ computed: false }}
-      />
-    ),
-  };
-};
 
 const columnOptions = [
   { id: 'loanName', style: { whiteSpace: 'nowrap' } },
@@ -63,7 +28,6 @@ const columnOptions = [
   { id: 'email' },
   { id: 'createdAt' },
   { id: 'referredBy' },
-  { id: 'maxPropertyValue', style: { whiteSpace: 'nowrap' } },
   { id: 'relatedTo' },
   // { id: 'estimatedRevenues' },
 ].map(({ id, label }) => ({
@@ -81,8 +45,6 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
     relatedTo: relatedDocs = [],
     loanProgress,
     estimatedRevenues,
-    maxPropertyValue,
-    residenceType,
   } = loan;
 
   return {
@@ -111,7 +73,6 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       getReferredBy({ user, proUser, isAdmin }),
-      getMaxPropertyValue({ maxPropertyValue, residenceType }),
       {
         raw: relatedDocs.length ? relatedDocs[0]._id : '-',
         label: relatedDocs.length

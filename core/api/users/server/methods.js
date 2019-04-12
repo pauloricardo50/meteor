@@ -25,6 +25,7 @@ import {
   proInviteUserToOrganisation,
 } from '../methodDefinitions';
 import UserService from './UserService';
+import PropertyService from '../../properties/server/PropertyService';
 import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
@@ -126,7 +127,7 @@ generateApiKeyPair.setHandler((context, params) => {
 
 proInviteUser.setHandler((context, params) => {
   const { userId } = context;
-  const { propertyIds, promotionIds, property } = params;
+  const { propertyIds, promotionIds, properties } = params;
   SecurityService.checkUserIsPro(userId);
 
   if (propertyIds && propertyIds.length) {
@@ -145,8 +146,18 @@ proInviteUser.setHandler((context, params) => {
       }));
   }
 
-  if (property) {
-    // Not yet implemented
+  if (properties && properties.length) {
+    properties.forEach(({ externalId }) => {
+      const existingProperty = PropertyService.fetchOne({
+        $filters: { externalId },
+      });
+      if (existingProperty) {
+        SecurityService.properties.isAllowedToInviteCustomers({
+          userId,
+          propertyId: existingProperty._id,
+        });
+      }
+    });
   }
 
   // Only pass proUserId if this is a pro user

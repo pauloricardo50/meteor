@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import Calculator from 'core/utils/Calculator';
@@ -8,6 +10,7 @@ import Select from '../Select';
 import Button from '../Button';
 import Icon from '../Icon';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
+import MaxPropertyValueSharing from './MaxPropertyValueSharing';
 
 type MaxPropertyValueResultsProps = {
   loan: Object,
@@ -28,7 +31,10 @@ const MaxPropertyValueResults = ({
 }: MaxPropertyValueResultsProps) => {
   const {
     maxPropertyValue: { main, second, borrowerHash },
-    borrowers,
+    hasProProperty,
+    hasPromotion,
+    shareSolvency,
+    _id: loanId,
   } = loan;
   const hash = Calculator.getBorrowerFormHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
@@ -76,12 +82,19 @@ const MaxPropertyValueResults = ({
       </div>
       <Button
         raised
+        disabled={Meteor.microservice === 'app' && !shouldRecalculate}
         secondary={shouldRecalculate}
         onClick={recalculate}
         icon={<Icon type="loop" />}
       >
         Recalculer
       </Button>
+      <MaxPropertyValueSharing
+        hasProProperty={hasProProperty}
+        hasPromotion={hasPromotion}
+        shareSolvency={shareSolvency}
+        loanId={loanId}
+      />
     </div>
   );
 };

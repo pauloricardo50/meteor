@@ -7,15 +7,15 @@ import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 type PropertyCardInfosProps = {
   image: String,
   name: String,
-  address: String,
-  additionalInfos: String,
+  title: String,
+  subtitle: String,
 };
 
 const PropertyCardInfos = ({
   image,
   name,
-  address,
-  additionalInfos,
+  title,
+  subtitle,
 }: PropertyCardInfosProps) => (
   <div className="property-card-infos">
     {image ? (
@@ -24,9 +24,8 @@ const PropertyCardInfos = ({
       <FontAwesomeIcon icon={faHome} className="icon" />
     )}
     <div className="property-card-infos-description">
-      <h3>{name}</h3>
-      <p>{address}</p>
-      {additionalInfos && <p>{additionalInfos}</p>}
+      <h3>{title}</h3>
+      <p>{subtitle}</p>
     </div>
   </div>
 );

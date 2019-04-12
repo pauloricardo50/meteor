@@ -13,7 +13,7 @@
       margin: 0 8px;
     }
 
-     > * {
+    > * {
       margin-right: 8px !important;
     }
 
@@ -22,7 +22,7 @@
     }
   }
 
-   > * {
+  > * {
     margin-bottom: 16px;
   }
 
@@ -31,10 +31,16 @@
       align-items: center;
       justify-content: space-between;
 
-       > * {
+      > * {
         margin: 0;
         margin-left: 8px;
       }
+    }
+
+    &-solvency {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   }
 
@@ -43,7 +49,7 @@
       align-items: center;
       justify-content: space-between;
 
-       > * {
+      > * {
         margin: 0;
         margin-left: 8px;
       }

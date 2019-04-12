@@ -1,18 +1,28 @@
 // @flow
 import React from 'react';
+
 import {
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
+import T from 'core/components/Translation';
 import PropertyCard from './PropertyCard';
 import PromotionCard from './PropertyCard/PromotionCard';
+import PropertyCardSubtitle from './PropertyCard/PropertyCardSubtitle';
 
 type PropertiesProps = {
   loan: Object,
 };
 
 const Properties = ({ loan }: PropertiesProps) => {
-  const { properties = [], promotions = [], _id: loanId, shareSolvency } = loan;
+  const {
+    properties = [],
+    promotions = [],
+    _id: loanId,
+    shareSolvency,
+    maxPropertyValue,
+    residenceType,
+  } = loan;
 
   return (
     <>
@@ -24,6 +34,8 @@ const Properties = ({ loan }: PropertiesProps) => {
             collection={PROMOTIONS_COLLECTION}
             loanId={loanId}
             loan={loan}
+            title={promotion.name}
+            subtitle={promotion.address}
           />
         )),
         ...properties.map(property => (
@@ -33,6 +45,18 @@ const Properties = ({ loan }: PropertiesProps) => {
             collection={PROPERTIES_COLLECTION}
             loanId={loanId}
             shareSolvency={shareSolvency}
+            title={
+              property.address1 || (
+                <T id="FinancingPropertyPicker.placeholder" />
+              )
+            }
+            subtitle={(
+              <PropertyCardSubtitle
+                property={property}
+                maxPropertyValue={maxPropertyValue}
+                residenceType={residenceType}
+              />
+            )}
           />
         )),
       ]}
