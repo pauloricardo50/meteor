@@ -42,6 +42,13 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     storeRuleOrigin(rules, lenderRulesId) {
       Object.keys(rules).forEach((ruleName) => {
+        const ruleValue = rules[ruleName];
+
+        if (Array.isArray(ruleValue) && ruleValue.length === 0) {
+          // Don't store origin of a rule if it is an empty object
+          return;
+        }
+
         this.ruleOrigin[ruleName] = lenderRulesId;
       });
     }
