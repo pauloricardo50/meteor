@@ -121,8 +121,11 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     }
 
     applyRules(rules) {
-      if (rules.name) {
-        this.matchedRules = [...this.matchedRules, rules.name];
+      if (rules.names) {
+        this.matchedRules = [
+          ...this.matchedRules,
+          ...rules.names.filter(x => x),
+        ];
       }
 
       const rulesToApply = [

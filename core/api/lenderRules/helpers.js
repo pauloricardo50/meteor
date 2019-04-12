@@ -4,7 +4,7 @@ const rulesToMerge = ['pdfComments', 'adminComments'];
 
 const filterIsValid = (filter, variables) => jsonLogic.apply(filter, variables);
 
-const mergeRules = (oldRules, newRules) => {
+const mergeRules = ({ names = [], ...oldRules }, newRules) => {
   let mergedObject = { ...oldRules };
 
   Object.keys(newRules).forEach((newRuleName) => {
@@ -20,7 +20,10 @@ const mergeRules = (oldRules, newRules) => {
     }
   });
 
-  return mergedObject;
+  return {
+    ...mergedObject,
+    names: [...names, newRules.name],
+  };
 };
 
 export const getMatchingRules = (lenderRules, variables) =>
