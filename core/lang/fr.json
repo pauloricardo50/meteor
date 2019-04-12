@@ -2,7 +2,7 @@
   "AutoForm.autosaveDisclaimer": "Les informations dans ce formulaire sont sauvegardées à chaque instant, naviguez en toute liberté.",
   "MaxPropertyValueSharing.buttonLabel": "Partager avec mon courtier",
   "PropertyCardSubtitle.solvent": "Solvable",
-  "PropertyCardSubtitle.nonSolvent": "Non-solvable",
+  "PropertyCardSubtitle.nonSolvent": "Non solvable",
   "PropertyCardSubtitle.solvent.tooltip": "Votre capacité d'achat est suffisante pour acquérir ce bien.",
   "PropertyCardSubtitle.nonSolvent.tooltip": "Votre capacité d'achat est insuffisante pour acquérir ce bien. Vous pouvez appeler votre conseiller e-Potek pour identifier des solutions.",
   "Forms.solvency.NOT_SHARED": "Pas partagé",
