@@ -24,6 +24,7 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
   const defaultCalculator = new Calculator({ loan, lenderRules });
   return [
     {
+      id: 'cover',
       Component: LoanBankCover,
       data: {
         loan,
@@ -37,17 +38,20 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
       const calculator = new Calculator({ loan, structureId, lenderRules });
 
       return {
+        id: structureId,
         Component: StructurePdfPage,
         data: { loan, structureId, structureIndex: index, options, calculator },
       };
     }),
     {
+      id: 'borrowers',
       Component: BorrowersPdfPage,
       data: { loan, options, calculator: defaultCalculator },
     },
-    { Component: PropertyPdfPage, data: { loan, options } },
+    { id: 'property', Component: PropertyPdfPage, data: { loan, options } },
     lenderRules
       && lenderRules.length > 0 && {
+      id: 'lenderRules',
       Component: LenderRulesPdfPage,
       data: { loan, organisation, options },
     },

@@ -40,7 +40,7 @@ const StructurePdfPage = ({
         <span>
           <PercentWithStatus
             value={borrowRatio}
-            status={incomeRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
+            status={borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
           />
         </span>
       </h3>

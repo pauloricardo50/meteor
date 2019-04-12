@@ -55,7 +55,7 @@ const getRows = ({ loan, structureIds, organisation }) => {
                 <PercentWithStatus
                   value={borrowRatio}
                   status={
-                    incomeRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS
+                    borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS
                   }
                 />
               </div>
