@@ -4,10 +4,12 @@ import { APPLICATION_TYPES } from 'core/api/constants';
 
 export const { Consumer, Provider } = React.createContext();
 
-const routesWithoutSidenav = ['/'];
+const exactRoutesWithoutSidenav = ['/'];
+const routesWithoutSidenav = ['/enroll-account', '/reset-password'];
 
 const getShowSideNav = ({ location }, { applicationType }) =>
-  routesWithoutSidenav.indexOf(location.pathname) === -1
+  exactRoutesWithoutSidenav.indexOf(location.pathname) === -1
+  && routesWithoutSidenav.every(route => !location.pathname.startsWith(route))
   && applicationType !== APPLICATION_TYPES.SIMPLE;
 
 export const withSideNavContextProvider = Component => (props) => {

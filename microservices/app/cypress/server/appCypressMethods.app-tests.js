@@ -15,6 +15,9 @@ import {
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 import 'core/cypress/server/methods';
 import { E2E_USER_EMAIL } from 'core/cypress/utils';
+import LoanService from 'core/api/loans/server/LoanService';
+import UserService from 'core/api/users/server/UserService';
+import { USER_EMAIL, USER_PASSWORD } from '../appE2eConstants';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
@@ -53,5 +56,26 @@ Meteor.methods({
       userId,
       IMPERSONATE_SESSION_KEY,
     };
+  },
+  inviteTestUser({ withPassword } = {}) {
+    const userId = UserService.adminCreateUser({
+      options: {
+        email: USER_EMAIL,
+        firstName: 'Test',
+        lastName: 'User',
+        sendEnrollmentEmail: true,
+        password: withPassword && USER_PASSWORD,
+      },
+    });
+    LoanService.adminLoanInsert({ userId });
+
+    const loginToken = UserService.getLoginToken({ userId });
+    return loginToken;
+  },
+  removeTestUser(email) {
+    const user = UserService.getByEmail(email);
+    if (user) {
+      UserService.remove({ userId: user._id });
+    }
   },
 });

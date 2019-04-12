@@ -17,7 +17,7 @@ import {
   PRO_EMAIL_3,
   PRO_PASSWORD,
   ORG_NAME,
-} from '../constants';
+} from '../proE2eConstants';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
