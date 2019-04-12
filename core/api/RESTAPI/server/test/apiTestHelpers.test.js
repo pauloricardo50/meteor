@@ -24,13 +24,20 @@ export const getTimestampAndNonce = () => {
   return { timestamp, nonce };
 };
 
-export const fetchAndCheckResponse = ({ url, query, data, expectedResponse }) =>
-  fetch(
-    `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
+export const fetchAndCheckResponse = ({
+  url,
+  query,
+  data,
+  expectedResponse,
+}) => {
+  const path = query
+    ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
       encode: true,
-    })}`,
-    data,
-  ).then(res => checkResponse({ res, expectedResponse }));
+    })}`
+    : `http://localhost:${API_PORT}/api${url}`;
+  return fetch(path, data).then(res =>
+    checkResponse({ res, expectedResponse }));
+};
 
 const signBody = ({ body, privateKey }) => {
   const key = new NodeRSA();

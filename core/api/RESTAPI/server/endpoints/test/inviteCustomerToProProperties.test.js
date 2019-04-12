@@ -33,16 +33,17 @@ const inviteCustomerToProProperties = ({
   userData,
   expectedResponse,
   properties,
-  referredBy,
+  impersonateUser,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = {
     user: userData || customerToInvite,
     properties,
-    referredBy,
   };
+  const query = impersonateUser ? { impersonateUser } : undefined;
   return fetchAndCheckResponse({
     url: '/properties/invite-customer',
+    query,
     data: {
       method: 'POST',
       headers: makeHeaders({
@@ -51,6 +52,7 @@ const inviteCustomerToProProperties = ({
         timestamp,
         nonce,
         body,
+        query,
       }),
       body: JSON.stringify(body),
     },
@@ -158,7 +160,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
   });
 
-  it('invites a customer to multiple properties with referredBy', () => {
+  it('invites a customer to multiple properties with impersonateUser', () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property4',
       userId: 'pro2',
@@ -187,7 +189,7 @@ describe('REST: inviteCustomerToProProperties', function () {
         { externalId: 'ext2' },
         { externalId: 'ext3', category: PROPERTY_CATEGORY.PRO },
       ],
-      referredBy: 'pro2@org.com',
+      impersonateUser: 'pro2@org.com',
       expectedResponse: {
         message: `Successfully invited user \"${
           customerToInvite.email
@@ -222,7 +224,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
   });
 
-  it('returns an error when the user has not the right permissions with referredBy', () => {
+  it('returns an error when the user has not the right permissions with impersonateUser', () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property4',
       userId: 'pro2',
@@ -240,7 +242,7 @@ describe('REST: inviteCustomerToProProperties', function () {
         { _id: 'property5' },
         { _id: 'property6' },
       ],
-      referredBy: 'pro2@org.com',
+      impersonateUser: 'pro2@org.com',
       expectedResponse: {
         status: 400,
         message:
@@ -249,14 +251,14 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
   });
 
-  it('returns an error when the user is not in the same organisation as referredBy', () =>
+  it('returns an error when the user is not in the same organisation as impersonateUser', () =>
     inviteCustomerToProProperties({
       properties: [
         { _id: 'property4' },
         { _id: 'property5' },
         { _id: 'property6' },
       ],
-      referredBy: 'pro3@org2.com',
+      impersonateUser: 'pro3@org2.com',
       expectedResponse: {
         status: 400,
         message:
@@ -264,14 +266,14 @@ describe('REST: inviteCustomerToProProperties', function () {
       },
     }));
 
-  it('returns an error when referredBy does not exist', () =>
+  it('returns an error when impersonateUser does not exist', () =>
     inviteCustomerToProProperties({
       properties: [
         { _id: 'property4' },
         { _id: 'property5' },
         { _id: 'property6' },
       ],
-      referredBy: 'pro4@org.com',
+      impersonateUser: 'pro4@org.com',
       expectedResponse: {
         status: 400,
         message: '[No user found for email address "pro4@org.com"]',

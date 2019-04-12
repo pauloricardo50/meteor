@@ -1,13 +1,14 @@
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { getInvitedByUserId } from './helpers';
+import { getImpersonateUserId } from './helpers';
 
-const referCustomerAPI = ({ user: { _id: userId }, body }) => {
-  const { user, referredBy } = body;
+const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
+  const { user } = body;
+  const { impersonateUser } = query;
 
   let proId;
-  if (referredBy) {
-    proId = getInvitedByUserId({ userId, referredBy });
+  if (impersonateUser) {
+    proId = getImpersonateUserId({ userId, impersonateUser });
   }
 
   return withMeteorUserId(proId || userId, () =>

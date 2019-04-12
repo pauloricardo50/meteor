@@ -24,11 +24,13 @@ const customerToRefer = {
 const api = new RESTAPI();
 api.addEndpoint('/users', 'POST', referCustomerAPI);
 
-const referCustomer = ({ userData, referredBy, expectedResponse }) => {
+const referCustomer = ({ userData, impersonateUser, expectedResponse }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData || customerToRefer, referredBy };
+  const body = { user: userData || customerToRefer };
+  const query = impersonateUser ? { impersonateUser } : undefined;
   return fetchAndCheckResponse({
     url: '/users',
+    query,
     data: {
       method: 'POST',
       headers: makeHeaders({
@@ -37,6 +39,7 @@ const referCustomer = ({ userData, referredBy, expectedResponse }) => {
         timestamp,
         nonce,
         body,
+        query,
       }),
       body: JSON.stringify(body),
     },
@@ -95,9 +98,9 @@ describe('REST: referCustomer', function () {
       expect(customer.referredByOrganisationLink).to.equal('org');
     }));
 
-  it('refers a customer with referredBy', () =>
+  it('refers a customer with impersonateUser', () =>
     referCustomer({
-      referredBy: 'pro2@org.com',
+      impersonateUser: 'pro2@org.com',
       expectedResponse: {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
@@ -109,9 +112,9 @@ describe('REST: referCustomer', function () {
       expect(customer.referredByOrganisationLink).to.equal('org');
     }));
 
-  it('returns an error when referredBy is not in the same organisation', () =>
+  it('returns an error when impersonateUser is not in the same organisation', () =>
     referCustomer({
-      referredBy: 'pro3@org2.com',
+      impersonateUser: 'pro3@org2.com',
       expectedResponse: {
         status: 400,
         message:

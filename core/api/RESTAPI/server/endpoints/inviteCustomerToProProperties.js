@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { getInvitedByUserId } from './helpers';
+import { getImpersonateUserId } from './helpers';
 
 const formatPropertyIds = (propertyIds) => {
   const ids = propertyIds.map(id => `"${id}"`);
@@ -21,8 +21,13 @@ const getExternalProperties = properties =>
   properties.filter(({ externalId }) => externalId);
 const getInternalProperties = properties => properties.filter(({ _id }) => _id);
 
-const inviteCustomerToProPropertiesAPI = ({ user: { _id: userId }, body }) => {
-  const { user, properties = [], referredBy } = body;
+const inviteCustomerToProPropertiesAPI = ({
+  user: { _id: userId },
+  body,
+  query,
+}) => {
+  const { user, properties = [] } = body;
+  const { impersonateUser } = query;
 
   checkProperties(properties);
 
@@ -35,8 +40,8 @@ const inviteCustomerToProPropertiesAPI = ({ user: { _id: userId }, body }) => {
   ]);
 
   let proId;
-  if (referredBy) {
-    proId = getInvitedByUserId({ userId, referredBy });
+  if (impersonateUser) {
+    proId = getImpersonateUserId({ userId, impersonateUser });
   }
 
   return withMeteorUserId(proId || userId, () =>
