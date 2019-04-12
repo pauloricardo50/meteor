@@ -24,9 +24,9 @@ const customerToRefer = {
 const api = new RESTAPI();
 api.addEndpoint('/users', 'POST', referCustomerAPI);
 
-const referCustomer = ({ userData, expectedResponse }) => {
+const referCustomer = ({ userData, referredBy, expectedResponse }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData || customerToRefer };
+  const body = { user: userData || customerToRefer, referredBy };
   return fetchAndCheckResponse({
     url: '/users',
     data: {
@@ -63,7 +63,21 @@ describe('REST: referCustomer', function () {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: { _factory: 'pro', _id: 'pro', organisations: [{ _id: 'org' }] },
+      users: [
+        { _factory: 'pro', _id: 'pro', organisations: [{ _id: 'org' }] },
+        {
+          _factory: 'pro',
+          _id: 'pro2',
+          emails: [{ address: 'pro2@org.com', verified: true }],
+          organisations: [{ _id: 'org' }],
+        },
+        {
+          _factory: 'pro',
+          _id: 'pro3',
+          emails: [{ address: 'pro3@org2.com', verified: true }],
+          organisations: [{ _id: 'org2' }],
+        },
+      ],
     });
     keyPair = UserService.generateKeyPair({ userId: 'pro' });
   });
@@ -79,6 +93,30 @@ describe('REST: referCustomer', function () {
       });
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
+    }));
+
+  it('refers a customer with referredBy', () =>
+    referCustomer({
+      referredBy: 'pro2@org.com',
+      expectedResponse: {
+        message: `Successfully referred user "${customerToRefer.email}"`,
+      },
+    }).then(() => {
+      const customer = UserService.findOne({
+        'emails.address': { $in: [customerToRefer.email] },
+      });
+      expect(customer.referredByUserLink).to.equal('pro2');
+      expect(customer.referredByOrganisationLink).to.equal('org');
+    }));
+
+  it('returns an error when referredBy is not in the same organisation', () =>
+    referCustomer({
+      referredBy: 'pro3@org2.com',
+      expectedResponse: {
+        status: 400,
+        message:
+          '[User with email address "pro3@org2.com" is not part of your organisation]',
+      },
     }));
 
   it('returns an error if the user already exists', () => {
