@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
+import omit from 'lodash/omit';
 
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
@@ -21,10 +22,7 @@ class UserService extends CollectionService {
   }
 
   get(userId) {
-    return this.fetchOne({
-      $filters: { _id: userId },
-      ...fullUser(),
-    });
+    return this.fetchOne({ $filters: { _id: userId }, ...fullUser() });
   }
 
   getByEmail(email) {
@@ -32,6 +30,12 @@ class UserService extends CollectionService {
   }
 
   createUser = ({ options, role }) => {
+    if (!options.password) {
+      // password is not allowed to be undefined, it has to be stripped from
+      // the options object
+      options = omit(options, ['password']);
+    }
+
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
 
@@ -39,11 +43,11 @@ class UserService extends CollectionService {
   };
 
   adminCreateUser = ({
-    options: { email, sendEnrollmentEmail, ...additionalData },
+    options: { email, password, sendEnrollmentEmail, ...additionalData },
     role = ROLES.USER,
     adminId,
   }) => {
-    const newUserId = this.createUser({ options: { email }, role });
+    const newUserId = this.createUser({ options: { email, password }, role });
 
     this.update({ userId: newUserId, object: additionalData });
 
@@ -65,7 +69,15 @@ class UserService extends CollectionService {
     Accounts.sendVerificationEmail(userId);
 
   sendEnrollmentEmail = ({ userId }) => {
-    Accounts.sendEnrollmentEmail(userId);
+    try {
+      Accounts.sendEnrollmentEmail(userId);
+    } catch (error) {
+      // FIXME: Temporary fix for meteor toys in dev
+      // https://github.com/MeteorToys/meteor-devtools/issues/111
+      if (error.message !== 'MeteorToys is not defined') {
+        throw error;
+      }
+    }
   };
 
   // This is used to hook into Accounts
@@ -92,6 +104,16 @@ class UserService extends CollectionService {
       { 'services.password.reset.token': token },
       { fields: { firstName: 1, lastName: 1, emails: 1 } },
     );
+
+  getLoginToken = ({ userId }) => {
+    const user = Users.findOne(userId, { fields: { services: 1 } });
+
+    return (
+      user.services.password
+      && user.services.password.reset
+      && user.services.password.reset.token
+    );
+  };
 
   testCreateUser = ({ user }) => Users.insert(user);
 

@@ -37,6 +37,7 @@ const RadioButtons = ({
       }
       value={`${value}`}
       name={id}
+      id={id}
       className="flex"
       style={{ justifyContent: 'flex-start', flexDirection: 'row' }}
     >

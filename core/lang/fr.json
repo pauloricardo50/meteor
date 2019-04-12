@@ -1,4 +1,7 @@
 {
+  "PasswordResetPage.errorTitle": "Zut, une erreur",
+  "PasswordResetPage.errorButton": "Se connecter",
+  "PasswordResetPage.errorDescription": "Vous avez déjà choisi votre mot de passe. Connectez-vous à votre compte sur la page de login.",
   "AutoForm.autosaveDisclaimer": "Les informations dans ce formulaire sont sauvegardées à chaque instant, naviguez en toute liberté.",
   "MaxPropertyValueSharing.buttonLabel": "Partager avec mon courtier",
   "PropertyCardSubtitle.solvent": "Solvable",

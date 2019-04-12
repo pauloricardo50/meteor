@@ -9,7 +9,8 @@ import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 
-const mobilePaths = ['/account', '/'];
+const exactMobilePaths = ['/account', '/'];
+const mobilePaths = ['/enroll-account', '/reset-password'];
 
 const renderMobile = (props) => {
   const {
@@ -23,9 +24,14 @@ const renderMobile = (props) => {
   if (isSimple) {
     return true;
   }
-  if (mobilePaths.some(path => pathname === path)) {
+  if (exactMobilePaths.some(path => pathname === path)) {
     return true;
   }
+  if (mobilePaths.some(path => pathname.startsWith(path))) {
+    return true;
+  }
+
+  return false;
 };
 
 const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {

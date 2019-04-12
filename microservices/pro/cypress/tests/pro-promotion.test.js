@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../constants';
+import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../proE2eConstants';
 
 describe('Pro', () => {
   before(() => {
