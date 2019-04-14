@@ -23,34 +23,34 @@ const SingleOrganisationPage = ({
   return (
     <>
       <div className="single-organisation-page-header">
-        <h1>
-          <span className="flex flex-row center">
-            {logo ? <img src={logo} alt={name} /> : name}
-            <div className="single-organisation-page-header-type secondary">
+        <span className="flex flex-row center">
+          {logo ? <img src={logo} alt={name} /> : name}
+          <div className="single-organisation-page-header-type">
+            <h1>{name}</h1>
+            <h2 className="secondary">
               <T id={`Forms.type.${type}`} />
-              <small className="secondary">
-                {features
-                  .map(feature =>
-                    formatMessage({ id: `Forms.features.${feature}` }))
-                  .join(', ')}
-              </small>
-              <small className="flex center space-children">
-                {tags.map(tag => (
-                  <Chip
-                    label={formatMessage({ id: `Forms.tags.${tag}` })}
-                    key={tag}
-                    onClick={() =>
-                      history.push(`/organisations?${queryString.stringify(
-                        { tags: [tag] },
-                        { arrayFormat: 'bracket' },
-                      )}`)
-                    }
-                  />
-                ))}
-              </small>
-            </div>
-          </span>
-        </h1>
+              {features.length > 0 && <>&nbsp;-&nbsp;</>}
+              {features
+                .map(feature =>
+                  formatMessage({ id: `Forms.features.${feature}` }))
+                .join(', ')}
+            </h2>
+            <h3 className="flex center space-children">
+              {tags.map(tag => (
+                <Chip
+                  label={formatMessage({ id: `Forms.tags.${tag}` })}
+                  key={tag}
+                  onClick={() =>
+                    history.push(`/organisations?${queryString.stringify(
+                      { tags: [tag] },
+                      { arrayFormat: 'bracket' },
+                    )}`)
+                  }
+                />
+              ))}
+            </h3>
+          </div>
+        </span>
         <OrganisationModifier organisation={organisation} />
       </div>
       <p>{address}</p>
