@@ -35,4 +35,8 @@
     min-width: 160px;
     width: calc(50% - 4px);
   }
+
+  &.blue .max-property-sharing-label {
+    color: white;
+  }
 }

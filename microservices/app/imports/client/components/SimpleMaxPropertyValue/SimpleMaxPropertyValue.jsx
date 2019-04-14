@@ -2,6 +2,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
+import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
@@ -15,7 +16,7 @@ import { CANTONS } from 'core/api/constants';
 type SimpleMaxPropertyValueProps = {};
 
 export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
-  const { state, onChangeCanton, canton: cantonValue, loading } = props;
+  const { blue, state, onChangeCanton, canton: cantonValue, loading } = props;
 
   if (loading) {
     return (
@@ -66,7 +67,7 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
   }
 
   return (
-    <div className="simple-max-property-value">
+    <div className={cx('simple-max-property-value', { blue })}>
       <MaxPropertyValueResults {...props} />
     </div>
   );

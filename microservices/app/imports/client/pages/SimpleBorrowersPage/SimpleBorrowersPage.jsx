@@ -42,6 +42,7 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => {
         loan={loan}
         isMobile={isMobile}
         hasEnoughHeight={hasEnoughHeight}
+        blue
       />
     </div>
   );

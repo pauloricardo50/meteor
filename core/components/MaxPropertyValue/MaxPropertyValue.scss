@@ -140,6 +140,10 @@
       margin-top: 16px;
     }
   }
+
+  &.blue .max-property-sharing-label {
+    color: white;
+  }
 }
 
 .max-property-sharing {
@@ -151,7 +155,6 @@
   &-label {
     display: inline-flex;
     align-items: center;
-    color: white;
 
     > * {
       display: inline-flex;

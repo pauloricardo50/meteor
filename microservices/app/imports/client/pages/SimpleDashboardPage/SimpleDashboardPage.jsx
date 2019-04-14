@@ -21,7 +21,7 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
         <div className="simple-dashboard-page-borrowers card1">
           <BorrowersProgress {...props} />
           <SimpleMaxPropertyValueLightTheme>
-            <SimpleMaxPropertyValue {...props} />
+            <SimpleMaxPropertyValue blue {...props} />
           </SimpleMaxPropertyValueLightTheme>
         </div>
         <Properties loan={loan} />
