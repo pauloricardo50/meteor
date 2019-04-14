@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import useMedia from 'core/hooks/useMedia';
 import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
@@ -21,7 +22,11 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => {
 
   return (
     <div className="simple-borrowers-page animated fadeIn">
-      <div className="simple-borrowers-page-container">
+      <div
+        className={cx('simple-borrowers-page-container', {
+          grow: hasEnoughHeight,
+        })}
+      >
         <div className="card1 card-top simple-borrowers-page-forms">
           <SimpleBorrowersPageHeader loan={loan} />
 

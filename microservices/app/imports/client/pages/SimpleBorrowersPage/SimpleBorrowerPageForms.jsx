@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import Calculator from 'core/utils/Calculator';
 import Tabs from 'core/components/Tabs';
@@ -11,9 +12,10 @@ type SimpleBorrowerPageFormsProps = {};
 
 const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
   const { borrowers, userFormsEnabled, _id: loanId } = loan;
+  const twoBorrowers = borrowers.length === 2;
 
   return (
-    <div className="forms">
+    <div className={cx('forms', { 'two-borrowers': twoBorrowers })}>
       {borrowers.length === 1 && (
         <BorrowerForm
           borrowers={borrowers}
@@ -22,7 +24,7 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
           loanId={loanId}
         />
       )}
-      {borrowers.length === 2 && (
+      {twoBorrowers && (
         <Tabs
           tabs={borrowers.map((borrower, index) => {
             const progress = Calculator.personalInfoPercentSimple({
