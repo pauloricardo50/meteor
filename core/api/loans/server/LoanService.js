@@ -82,19 +82,24 @@ export class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, userId } = this.fetchOne({
+    const { step, userId, user } = this.fetchOne({
       $filters: { _id: loanId },
       step: 1,
       userId: 1,
+      user: { assignedEmployee: { name: 1 } },
     });
 
     this.update({ loanId, object: { step: nextStep } });
 
     if (shouldSendStepNotification(step, nextStep)) {
+      if (!user || !user.assignedEmployee) {
+        throw new Meteor.Error('Il faut un conseiller sur ce dossier pour envoyer un email');
+      }
+
       sendEmail.run({
         emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
         userId,
-        params: { loanId },
+        params: { loanId, assigneeName: user.assignedEmployee.name },
       });
     }
   }

@@ -1230,7 +1230,7 @@
   "emails.RESET_PASSWORD.SUBJECT": "Mot de passe réinitialisé",
   "emails.RESET_PASSWORD.TITLE": "Votre mot de passe a été réinitialisé",
   "emails.unsubscribe": "Me Désabonner",
-  "emails.FIND_LENDER_NOTIFICATION.BODY": "Vous pouvez dès à présent consulter les offres, et choisir votre prêteur ",
+  "emails.FIND_LENDER_NOTIFICATION.BODY": "Vous pouvez dès à présent consulter les offres que nous avons négociées pour vous.{verticalSpace}Votre conseiller {assigneeName} se tient à votre disposition pour avancer avec le prêteur de votre choix.{verticalSpace}Nous vous proposons une rencontre ou un échange téléphonique afin de parcourir les offres obtenues et ainsi aborder les sujets stratégiques de votre acquisition (répartition des fonds propres, choix des taux, méthode d’amortissement).{verticalSpace}Pour ce faire, nous vous remercions de bien vouloir nous communiquer quelques disponibilités.",
   "emails.FIND_LENDER_NOTIFICATION.CTA": "Consulter les offres",
   "emails.FIND_LENDER_NOTIFICATION.SUBJECT": "[e-Potek] Identifiez votre prêteur",
   "emails.FIND_LENDER_NOTIFICATION.TITLE": "Identifiez votre prêteur",

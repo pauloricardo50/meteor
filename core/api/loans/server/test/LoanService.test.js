@@ -818,22 +818,31 @@ describe('LoanService', function () {
   describe('setStep', () => {
     it('sets the step', () => {
       generator({
-        loans: { _id: 'id', step: STEPS.REQUEST },
+        loans: { _id: 'id', step: STEPS.SOLVENCY },
       });
 
-      LoanService.setStep({ loanId: 'id', nextStep: STEPS.OFFERS });
+      LoanService.setStep({ loanId: 'id', nextStep: STEPS.REQUEST });
 
       loan = LoanService.get('id');
 
-      expect(loan.step).to.equal(STEPS.OFFERS);
+      expect(loan.step).to.equal(STEPS.REQUEST);
     });
 
     it('sends a notification email if the step goes from SOLVENCY to OFFERS', () => {
       generator({
+        users: {
+          _id: 'admin',
+          _factory: 'admin',
+          firstName: 'Admin',
+          lastName: 'User',
+        },
         loans: {
           _id: 'myLoan',
           step: STEPS.SOLVENCY,
-          user: { emails: [{ address: 'john@doe.com', verified: false }] },
+          user: {
+            emails: [{ address: 'john@doe.com', verified: false }],
+            assignedEmployeeId: 'admin',
+          },
         },
       });
 
@@ -867,15 +876,20 @@ describe('LoanService', function () {
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
         expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
+        expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Admin User');
       });
     });
 
     it('sends a notification email if the step goes from REQUEST to OFFERS', () => {
       generator({
+        users: { _id: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.REQUEST,
-          user: { emails: [{ address: 'john@doe.com', verified: false }] },
+          user: {
+            emails: [{ address: 'john@doe.com', verified: false }],
+            assignedEmployeeId: 'admin',
+          },
         },
       });
       LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
