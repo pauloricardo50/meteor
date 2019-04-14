@@ -11,6 +11,7 @@ import {
   Lenders,
   Revenues,
 } from '..';
+import { PromotionLots } from '../index';
 
 Loans.addLinks({
   properties: {
@@ -62,5 +63,9 @@ Loans.addLinks({
     field: 'revenueLinks',
     collection: Revenues,
     type: 'many',
+  },
+  attributedPromotionLots: {
+    collection: PromotionLots,
+    inversedBy: 'attributedTo',
   },
 });

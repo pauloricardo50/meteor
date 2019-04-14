@@ -198,15 +198,27 @@ export class PromotionService extends CollectionService {
   }
 
   removeUser({ promotionId, loanId }) {
-    const loan = LoanService.get(loanId);
-    LoanService.removeLink({
-      id: loanId,
-      linkName: 'promotions',
-      linkId: promotionId,
+    const {
+      promotionOptionLinks = [],
+      attributedPromotionLots = [],
+    } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      promotionOptionLinks: { _id: 1 },
+      attributedPromotionLots: { _id: 1 },
     });
 
-    loan.promotionOptionLinks.forEach(({ _id }) => {
+    this.removeLink({
+      id: promotionId,
+      linkName: 'loans',
+      linkId: loanId,
+    });
+
+    promotionOptionLinks.forEach(({ _id }) => {
       PromotionOptionService.remove({ promotionOptionId: _id });
+    });
+
+    attributedPromotionLots.forEach(({ _id }) => {
+      PromotionLotService.cancelPromotionLotBooking({ promotionLotId: _id });
     });
   }
 }

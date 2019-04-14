@@ -3,8 +3,9 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { Accounts } from 'meteor/accounts-base';
 
+import generator from 'core/api/factories';
+import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_STATUS } from '../../../constants';
 import { EMAIL_IDS } from '../../../email/emailConstants';
@@ -69,22 +70,23 @@ describe('PromotionService', function () {
     let lotId;
 
     beforeEach(() => {
-      lotId = Factory.create('lot')._id;
-      promotionLotId = Factory.create('promotionLot')._id;
-      promotionId = Factory.create('promotion', {
-        _id: 'promotion',
-        lotLinks: [{ _id: lotId }],
-        promotionLotLinks: [{ _id: promotionLotId }],
-      })._id;
-      promotionOptionId = Factory.create('promotionOption', {
-        promotionLotLinks: [{ _id: promotionLotId }],
-      })._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: [promotionOptionId] },
-        ],
-      })._id;
+      promotionId = 'promoId';
+      promotionLotId = 'pLotId';
+      promotionOptionId = 'pOptId';
+      loanId = 'loanId';
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: promotionId,
+          promotionLots: {
+            _id: promotionLotId,
+            propertyLinks: [{ _id: 'propId' }],
+            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+          },
+          loans: { _id: loanId },
+          lots: {},
+        },
+      });
     });
 
     it('deletes the promotion', () => {
@@ -316,30 +318,61 @@ describe('PromotionService', function () {
     });
 
     it('removes all promotionOptions from the loan', () => {
-      const promotionLotId1 = Factory.create('promotionLot')._id;
-      const promotionLotId2 = Factory.create('promotionLot')._id;
-      promotionId = Factory.create('promotion', {
-        promotionLotLinks: [{ _id: promotionLotId1 }, { _id: promotionLotId2 }],
-      })._id;
+      generator({
+        properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
+        promotions: {
+          _id: 'promotionId',
+          promotionLots: [
+            {
+              promotionOptions: { loan: { _id: 'loanId' } },
+              propertyLinks: [{ _id: 'prop1' }],
+            },
+            {
+              promotionOptions: { loan: { _id: 'loanId' } },
+              propertyLinks: [{ _id: 'prop2' }],
+            },
+          ],
+          loans: { _id: 'loanId' },
+        },
+      });
 
-      const promotionOptionId1 = Factory.create('promotionOption', {
-        promotionLotLinks: [{ _id: promotionLotId1 }],
-      })._id;
-      const promotionOptionId2 = Factory.create('promotionOption', {
-        promotionLotLinks: [{ _id: promotionLotId2 }],
-      })._id;
-
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [
-          { _id: promotionOptionId1 },
-          { _id: promotionOptionId2 },
-        ],
-      })._id;
-
-      PromotionService.removeUser({ promotionId, loanId });
+      PromotionService.removeUser({
+        promotionId: 'promotionId',
+        loanId: 'loanId',
+      });
+      loan = LoanService.fetchOne({
+        $filters: { _id: 'loanId' },
+        promotionOptionLinks: 1,
+      });
 
       expect(loan.promotionOptionLinks).to.deep.equal([]);
       expect(PromotionOptionService.find({}).count()).to.equal(0);
+    });
+
+    it('removes any status from the promotionLot as well as the attributedTo', () => {
+      generator({
+        properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
+        promotions: {
+          _id: 'promotionId',
+          promotionLots: {
+            _id: 'lot1',
+            status: 'SOLD',
+            promotionOptions: { loan: { _id: 'loanId' } },
+            propertyLinks: [{ _id: 'prop1' }],
+            attributedTo: { _id: 'loanId' },
+          },
+          loans: { _id: 'loanId' },
+        },
+      });
+
+      PromotionService.removeUser({
+        promotionId: 'promotionId',
+        loanId: 'loanId',
+      });
+      const promotionLot = PromotionLotService.get('lot1');
+
+      expect(promotionLot.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
+      expect(promotionLot.attributedToLink).to.deep.equal({});
     });
   });
 

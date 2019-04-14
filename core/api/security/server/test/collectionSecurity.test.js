@@ -7,10 +7,9 @@ import sinon from 'sinon';
 
 import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
-import { DOCUMENT_USER_PERMISSIONS } from '../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LoanService from '../../../loans/server/LoanService';
-import generator from '../../../factories/factoriesHelpers';
+import generator from '../../../factories';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 
 describe('Collection Security', () => {
@@ -254,53 +253,46 @@ describe('Collection Security', () => {
 
     describe('hasAccessToPromotionLot', () => {
       it('throws if the user is not on this promotion', () => {
-        userId = Factory.create('user')._id;
-        const loanId = Factory.create('loan', { userId })._id;
-        const promotionId = Factory.create('promotion')._id;
-        const promotionId2 = Factory.create('promotion', {
-          promotionLotLinks: [],
-        })._id;
-        const promotionLotId = Factory.create('promotionLot')._id;
-
-        PromotionService.addLink({
-          id: promotionId,
-          linkName: 'promotionLots',
-          linkId: promotionLotId,
-        });
-        PromotionService.addLink({
-          id: promotionId2,
-          linkName: 'loans',
-          linkId: loanId,
+        generator({
+          users: { _id: 'userId', loans: { _id: 'loanId' } },
+          properties: { _id: 'propId' },
+          promotions: [
+            {
+              promotionLots: {
+                _id: 'pLotId',
+                propertyLinks: [{ _id: 'propId' }],
+              },
+            },
+            { loans: { _id: 'loanId' } },
+          ],
         });
 
         expect(() =>
           SecurityService.promotions.hasAccessToPromotionLot({
-            promotionLotId,
-            userId,
+            promotionLotId: 'pLotId',
+            userId: 'userId',
           })).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the user is on the promotion', () => {
-        userId = Factory.create('user')._id;
-        const loanId = Factory.create('loan', { userId })._id;
-        const promotionId = Factory.create('promotion')._id;
-        const promotionLotId = Factory.create('promotionLot')._id;
-
-        PromotionService.addLink({
-          id: promotionId,
-          linkName: 'promotionLots',
-          linkId: promotionLotId,
-        });
-        PromotionService.addLink({
-          id: promotionId,
-          linkName: 'loans',
-          linkId: loanId,
+        generator({
+          users: { _id: 'userId', loans: { _id: 'loanId' } },
+          properties: { _id: 'propId' },
+          promotions: [
+            {
+              promotionLots: {
+                _id: 'pLotId',
+                propertyLinks: [{ _id: 'propId' }],
+              },
+              loans: { _id: 'loanId' },
+            },
+          ],
         });
 
         expect(() =>
           SecurityService.promotions.hasAccessToPromotionLot({
-            promotionLotId,
-            userId,
+            promotionLotId: 'pLotId',
+            userId: 'userId',
           })).to.not.throw(SECURITY_ERROR);
       });
     });

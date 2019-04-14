@@ -3,9 +3,10 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import LotService from '../LotService';
+import generator from '../../../factories';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 import PromotionService from '../../../promotions/server/PromotionService';
+import LotService from '../LotService';
 
 describe('LotService', () => {
   beforeEach(() => {
@@ -17,11 +18,17 @@ describe('LotService', () => {
     let lotId;
 
     beforeEach(() => {
-      lotId = Factory.create('lot', { _id: 'lotId' })._id;
-      promotionLotId = Factory.create('promotionLot', {
-        _id: 'promotionLotId',
-        lotLinks: [{ _id: lotId }],
-      })._id;
+      lotId = 'lotId';
+      promotionLotId = 'pLotId';
+      generator({
+        lots: { _id: lotId },
+        properties: { _id: 'propertyId' },
+        promotionLots: {
+          _id: promotionLotId,
+          propertyLinks: [{ _id: 'propertyId' }],
+          lots: { _id: lotId },
+        },
+      });
     });
 
     it('updates the name', () => {
@@ -36,15 +43,17 @@ describe('LotService', () => {
     });
 
     it('adds a new link', () => {
-      const newPromotionLotId = Factory.create('promotionLot', {
-        _id: 'promotionLotId2',
-      })._id;
+      const id = 'promotionLotId2';
+      generator({
+        properties: { _id: 'propertyId2' },
+        promotionLots: { _id: id, propertyLinks: [{ _id: 'propertyId2' }] },
+      });
       LotService.update({
         lotId,
-        object: { promotionLotId: newPromotionLotId },
+        object: { promotionLotId: id },
       });
       const { lotLinks } = PromotionLotService.get(promotionLotId);
-      const { lotLinks: newLotLinks } = PromotionLotService.get(newPromotionLotId);
+      const { lotLinks: newLotLinks } = PromotionLotService.get(id);
 
       expect(newLotLinks.length).to.equal(1);
       expect(newLotLinks[0]._id).to.equal(lotId);

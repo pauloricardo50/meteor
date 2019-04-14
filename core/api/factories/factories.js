@@ -125,15 +125,10 @@ Factory.define('offer', Offers, {
 Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
-  promotionLotLinks: [{ _id: 'lotId' }],
 });
 
-Factory.define('promotionOption', PromotionOptions, {
-  promotionLotLinks: [{ _id: 'lotId' }],
-});
-Factory.define('promotionLot', PromotionLots, {
-  propertyLinks: [{ _id: 'propertyId' }],
-});
+Factory.define('promotionOption', PromotionOptions, {});
+Factory.define('promotionLot', PromotionLots, {});
 
 Factory.define('lot', Lots, {
   name: 'test',
