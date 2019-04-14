@@ -19,7 +19,7 @@ const emailConfigs = {};
 const emailDefaults = {
   allowUnsubscribe: false,
   footerType: FOOTER_TYPES.USER,
-  createIntlValues: () => ({ variables: [] }),
+  createIntlValues: params => ({ variables: [], ...params }),
 };
 
 /**
@@ -215,7 +215,6 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       bccAddress: assigneeAddress,
     };
   },
-  createIntlValues: params => params,
 });
 
 // Required params:
@@ -236,7 +235,6 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROPERTY, {
       ],
     };
   },
-  createIntlValues: params => params,
 });
 
 // Required params
@@ -255,7 +253,6 @@ addEmailConfig(EMAIL_IDS.REFER_USER, {
       ],
     };
   },
-  createIntlValues: params => params,
 });
 
 addEmailConfig(EMAIL_IDS.FIND_LENDER_NOTIFICATION, {
