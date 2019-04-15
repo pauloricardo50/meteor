@@ -1,7 +1,11 @@
 import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
+import {
+  ORGANISATION_FEATURES,
+  RESIDENCE_TYPE,
+  CANTONS,
+} from 'core/api/constants';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import { lenderRules } from 'core/api/fragments';
 
@@ -19,4 +23,7 @@ export default compose(
     organisations: organisations.filter(({ lenderRules }) => lenderRules && lenderRules.length > 0),
   })),
   withState('showAll', 'setShowAll', false),
+  withState('singleLender', 'setSingleLender', false),
+  withState('residenceType', 'setResidenceType', RESIDENCE_TYPE.MAIN_RESIDENCE),
+  withState('canton', 'setCanton', 'GE'),
 );
