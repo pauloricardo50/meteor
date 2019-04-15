@@ -6,7 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import generator from 'core/api/factories/index';
 import { getBestPromotionLotStatus } from '../promotionServerHelpers';
 
-describe.only('promotionServerHelpers', () => {
+describe('promotionServerHelpers', () => {
   beforeEach(() => {
     resetDatabase();
   });
