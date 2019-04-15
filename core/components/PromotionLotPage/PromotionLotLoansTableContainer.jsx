@@ -82,6 +82,7 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
           promotion={promotion}
           promotionOptions={promotionOptions}
           userId={user && user._id}
+          currentId={promotionLotId}
         />
       ),
     },

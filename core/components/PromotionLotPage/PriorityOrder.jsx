@@ -8,22 +8,20 @@ import PromotionOptionSolvency from './PromotionOptionSolvency';
 
 type PriorityOrderProps = {};
 
-const getChipColor = ({
-  currentId,
-  promotionOptionId,
-  userId,
-  promotionLots,
-}) => {
+const getChipColor = ({ currentId, userId, promotionLots }) => {
   const attributedTo = promotionLots[0].attributedTo && promotionLots[0].attributedTo.user._id;
-  if (attributedTo === userId) {
+  const promotionLotId = promotionLots[0]._id;
+
+  if (attributedTo && attributedTo === userId) {
     return 'success';
   }
   if (attributedTo && attributedTo !== userId) {
     return 'error';
   }
-  if (currentId === promotionOptionId) {
+  if (currentId === promotionLotId) {
     return 'primary';
   }
+
   return '';
 };
 
@@ -53,13 +51,7 @@ const PriorityOrder = ({
           <Chip
             clickable
             label={name}
-            key={_id}
-            className={getChipColor({
-              currentId,
-              promotionOptionId: _id,
-              userId,
-              promotionLots,
-            })}
+            className={getChipColor({ currentId, userId, promotionLots })}
             icon={<PromotionOptionSolvency solvency={solvency} />}
             style={{ cursor: 'pointer' }}
           />
