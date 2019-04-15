@@ -54,10 +54,9 @@ describe('PasswordResetPage', () => {
   });
 
   it('renders an error', () => {
-    const message = 'Test error';
-    props.error = { message };
-
-    expect(shallowComponent().contains(message)).to.equal(true);
+    props.error = { message: 'Test error' };
+    
+    expect(shallowComponent().find('.error').length).to.equal(1);
   });
 
   context('disables submit button when', () => {
