@@ -59,8 +59,10 @@ const OverviewTab = (props) => {
         ))}
       </div>
       <LoanStatusCheck loan={loan} />
-      <MaxPropertyValue loan={loan} />
-      <Solvency loan={loan} />
+      <div className="max-property-value-tools">
+        <MaxPropertyValue loan={loan} />
+        <Solvency loan={loan} />
+      </div>
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">
