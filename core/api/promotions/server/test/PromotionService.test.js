@@ -119,12 +119,29 @@ describe('PromotionService', function () {
     let adminId;
 
     beforeEach(() => {
-      adminId = Factory.create('admin')._id;
-      promotionId = Factory.create('promotion', {
-        _id: 'promotion',
-        status: PROMOTION_STATUS.OPEN,
-        assignedEmployeeId: adminId,
-      })._id;
+      adminId = 'adminId';
+      promotionId = 'promotionId';
+      generator({
+        users: [
+          {
+            _id: adminId,
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: 'User',
+          },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            firstName: 'Pro',
+            lastName: 'User',
+          },
+        ],
+        promotions: {
+          _id: promotionId,
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: adminId,
+        },
+      });
     });
 
     it('creates user and sends the invitation email if user does not exist', () => {
@@ -141,7 +158,12 @@ describe('PromotionService', function () {
         user: newUser,
       });
 
-      return PromotionService.inviteUser({ promotionId, userId, isNewUser })
+      return PromotionService.inviteUser({
+        promotionId,
+        userId,
+        isNewUser,
+        pro: { _id: 'proId' },
+      })
         .then((loanId) => {
           const user = UserService.getByEmail(newUser.email);
           const {
@@ -173,6 +195,13 @@ describe('PromotionService', function () {
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
           expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include(resetToken);
+          expect(merge_vars[0].vars
+            .find(({ name }) => name === 'BODY')
+            .content.startsWith('Pro User')).to.equal(true);
+
+          expect(merge_vars[0].vars
+            .find(({ name }) => name === 'BODY')
+            .content.endsWith('Admin User')).to.equal(true);
         });
     });
 

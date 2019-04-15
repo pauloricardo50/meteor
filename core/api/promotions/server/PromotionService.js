@@ -127,13 +127,20 @@ export class PromotionService extends CollectionService {
         isNewUser,
         promotionId,
         firstName: user.firstName,
+        proId: pro._id,
       }).then(() => loanId);
     }
 
     return Promise.resolve(loanId);
   }
 
-  sendPromotionInvitationEmail({ userId, isNewUser, promotionId, firstName }) {
+  sendPromotionInvitationEmail({
+    userId,
+    isNewUser,
+    promotionId,
+    firstName,
+    proId,
+  }) {
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
       const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
       const logoUrls = logos && logos.map(({ url }) => url);
@@ -147,6 +154,15 @@ export class PromotionService extends CollectionService {
         ctaUrl = UserService.getEnrollmentUrl({ userId });
       }
 
+      let invitedBy;
+
+      if (proId) {
+        invitedBy = UserService.fetchOne({
+          $filters: { _id: proId },
+          name: 1,
+        }).name;
+      }
+
       return sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
@@ -156,6 +172,7 @@ export class PromotionService extends CollectionService {
           logoUrls,
           ctaUrl,
           name: firstName,
+          invitedBy,
         },
       });
     });
