@@ -12,7 +12,9 @@ type CustomerAdderProps = {
   promotionStatus: String,
 };
 
-export const CustomerAdderUserSchema = ({ promotion: { users = [] } }) =>
+export const CustomerAdderUserSchema = ({
+  promotion: { users = [], promotionLots = [] },
+}) =>
   new SimpleSchema({
     email: String,
     firstName: String,
@@ -33,6 +35,30 @@ export const CustomerAdderUserSchema = ({ promotion: { users = [] } }) =>
         displayEmpty: false,
         placeholder: '',
       },
+    },
+    promotionLotIds: {
+      type: Array,
+      defaultValue: [],
+      uniforms: {
+        placeholder: null,
+      },
+      optional: true,
+    },
+    'promotionLotIds.$': {
+      type: String,
+      allowedValues: promotionLots.map(({ _id }) => _id),
+      uniforms: {
+        transform: (promotionLotId) => {
+          const { name } = promotionLots.find(({ _id }) => _id === promotionLotId);
+          return name;
+        },
+      },
+    },
+    showAllLots: {
+      type: Boolean,
+      defaultValue: true,
+      condition: ({ promotionLotIds = [] }) => promotionLotIds.length > 0,
+      optional: true,
     },
   });
 

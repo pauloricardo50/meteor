@@ -1,4 +1,5 @@
 import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
+import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export const getCurrentUserPermissionsForPromotion = ({
   currentUser: { promotions = [] } = {},
@@ -33,6 +34,25 @@ export const getPromotionCustomerOwnerType = ({ invitedBy, currentUser }) => {
 
   // Is invited by someone else
   return PROMOTION_INVITED_BY_TYPE.ANY;
+};
+
+export const clientGetBestPromotionLotStatus = (promotionOptions, loanId) => {
+  const myPromotionLotStatuses = promotionOptions
+    .reduce((arr, { promotionLots }) => [...arr, ...promotionLots], [])
+    .filter(({ attributedToLink = {} }) => attributedToLink._id === loanId)
+    .map(({ status }) => status);
+
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.SOLD) >= 0) {
+    return PROMOTION_LOT_STATUS.SOLD;
+  }
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.BOOKED) >= 0) {
+    return PROMOTION_LOT_STATUS.BOOKED;
+  }
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.AVAILABLE) >= 0) {
+    return PROMOTION_LOT_STATUS.AVAILABLE;
+  }
+
+  // return undefined if no promotion lots are attributed to this user
 };
 
 export const shouldAnonymize = ({

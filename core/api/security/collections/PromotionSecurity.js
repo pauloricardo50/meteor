@@ -20,7 +20,10 @@ import {
   isAllowedToSellPromotionLotToCustomer,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
-import { getPromotionCustomerOwnerType } from '../../promotions/server/promotionServerHelpers';
+import {
+  getPromotionCustomerOwnerType,
+  makeLoanAnonymizer,
+} from '../../promotions/server/promotionServerHelpers';
 import { proPromotion, proUser, proLoans } from '../../fragments';
 import LotService from '../../lots/server/LotService';
 
@@ -31,7 +34,7 @@ class PromotionSecurity {
     checkingFunction,
     errorMessage,
   }) {
-    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
     const promotion = PromotionService.safeFetchOne({
@@ -78,7 +81,7 @@ class PromotionSecurity {
   }
 
   static hasAccessToPromotionOption({ promotionOptionId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -159,7 +162,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToRemoveCustomer({ promotionId, loanId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -204,7 +207,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToViewPromotionLot({ promotionLotId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -215,7 +218,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToViewPromotionOption({ promotionOptionId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -253,7 +256,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -365,6 +368,22 @@ class PromotionSecurity {
     });
 
     this.isAllowedToRemoveLots({ promotionId: promotions._id, userId });
+  }
+
+  static isAllowedToSeePromotionCustomer({ userId, promotionId, loanId }) {
+    if (Security.isUserAdmin(userId)) {
+      return;
+    }
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      _id: 1,
+      user: { _id: 1 },
+    });
+    const anonymizer = makeLoanAnonymizer({ userId, promotionId });
+    if (anonymizer(loan).anonymous) {
+      Security.handleUnauthorized("Vous n'avez pas accès à ce client");
+    }
   }
 }
 

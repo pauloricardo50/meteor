@@ -1,22 +1,22 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { compose, withProps } from 'recompose';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
 
-import { removeUserFromPromotion, withSmartQuery } from '../../api';
+import proPromotionSimple from '../../api/promotions/queries/proPromotionSimple';
+import { withSmartQuery } from '../../api';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 import { getUserNameAndOrganisation } from '../../api/helpers';
-import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
 import { LOANS_COLLECTION } from '../../api/constants';
 import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
 import LoanProgress from '../LoanProgress/LoanProgress';
 import PriorityOrder from '../PromotionLotPage/PriorityOrder';
-import ConfirmMethod from '../ConfirmMethod';
 import T from '../Translation';
 import { CollectionIconLink } from '../IconLink';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
+import PromotionUsersTableActions from './PromotionUsersTableActions';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -33,7 +33,13 @@ const columnOptions = [
   label: label || <T id={`PromotionLotLoansTable.${id}`} />,
 }));
 
-const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
+const getColumns = ({
+  promotionId,
+  promotionUsers,
+  loan,
+  currentUser,
+  promotionLots,
+}) => {
   const {
     _id: loanId,
     name: loanName,
@@ -109,38 +115,37 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         />
       ),
     },
-    isAllowedToRemoveCustomerFromPromotion({
-      promotion,
-      currentUser,
-      customerOwnerType,
-    }) ? (
-      <ConfirmMethod
-          method={() => removeUserFromPromotion.run({ promotionId, loanId })}
-          label={<T id="general.remove" />}
-          key="remove"
-        />
-      ) : (
-        <span key="actions">-</span>
-      ),
+    <PromotionUsersTableActions
+      key="actions"
+      promotion={{ ...promotion, promotionLots }}
+      currentUser={currentUser}
+      customerOwnerType={customerOwnerType}
+      loan={loan}
+    />,
   ];
 };
 
 const makeMapLoan = ({
   promotionId,
-  history,
   promotionUsers,
   currentUser = {},
+  promotionLots,
 }) => (loan) => {
   const { _id: loanId } = loan;
 
   return {
     id: loanId,
-    columns: getColumns({ promotionId, promotionUsers, loan, currentUser }),
+    columns: getColumns({
+      promotionId,
+      promotionUsers,
+      loan,
+      currentUser,
+      promotionLots,
+    }),
   };
 };
 
 export default compose(
-  withRouter,
   withSmartQuery({
     query: proPromotionUsers,
     params: ({ promotionId }) => ({ promotionId }),
@@ -148,12 +153,28 @@ export default compose(
     dataName: 'promotionUsers',
     smallLoader: true,
   }),
-  withProps(({ loans, promotionId, history, promotionUsers, currentUser }) => ({
+  withSmartQuery({
+    query: proPromotionSimple,
+    params: ({ promotionId }) => ({
+      promotionId,
+      $body: { promotionLots: { name: 1 } },
+    }),
+    queryOptions: { single: true, shouldRefetch: () => false },
+    dataName: 'simplePromotion',
+    refetchOnMethodCall: false,
+  }),
+  withProps(({
+    loans,
+    promotionId,
+    promotionUsers,
+    currentUser,
+    simplePromotion: { promotionLots },
+  }) => ({
     rows: loans.map(makeMapLoan({
       promotionId,
-      history,
       promotionUsers,
       currentUser,
+      promotionLots,
     })),
     columnOptions,
   })),

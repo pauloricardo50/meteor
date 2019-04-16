@@ -443,6 +443,7 @@ describe('UserService', function () {
 
     it('invites user to promotion', () => {
       generator({
+        properties: { _id: 'prop' },
         promotions: {
           _id: 'promotionId',
           status: PROMOTION_STATUS.OPEN,
@@ -451,11 +452,12 @@ describe('UserService', function () {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
         },
       });
 
       return UserService.proInviteUser({
-        user: userToInvite,
+        user: { ...userToInvite, showAllLots: false, promotionLotIds: ['pLotId'] },
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       }).then(() => {
@@ -469,6 +471,8 @@ describe('UserService', function () {
         expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
         expect(loan.promotionLinks[0]._id).to.equal('promotionId');
         expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
+        expect(loan.promotionLinks[0].showAllLots).to.equal(false);
+        expect(loan.promotionOptionLinks.length).to.equal(1);
 
         return checkEmails(1);
       });
@@ -518,8 +522,10 @@ describe('UserService', function () {
         expect(loans.length).to.equal(2);
         expect(loans[0].promotionLinks[0]._id).to.equal('promotionId1');
         expect(loans[0].promotionLinks[0].invitedBy).to.equal('proId');
+        expect(loans[0].promotionLinks[0].showAllLots).to.equal(true);
         expect(loans[1].promotionLinks[0]._id).to.equal('promotionId2');
         expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
+        expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
 
         return checkEmails(2);
       });

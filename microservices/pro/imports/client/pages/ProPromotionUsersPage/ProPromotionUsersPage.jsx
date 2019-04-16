@@ -30,6 +30,7 @@ const ProPromotionUsersPage = (props: ProPromotionUsersPageProps) => {
     </div>
   );
 };
+
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({

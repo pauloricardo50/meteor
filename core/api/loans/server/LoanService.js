@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
 
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
 import {
@@ -124,7 +125,13 @@ export class LoanService extends CollectionService {
     });
   };
 
-  insertPromotionLoan = ({ userId, promotionId, invitedBy }) => {
+  insertPromotionLoan = ({
+    userId,
+    promotionId,
+    invitedBy,
+    showAllLots,
+    promotionLotIds = [],
+  }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
       $filters: { _id: promotionId },
@@ -133,10 +140,14 @@ export class LoanService extends CollectionService {
     const loanId = this.insert({
       loan: {
         borrowerIds: [borrowerId],
-        promotionLinks: [{ _id: promotionId, invitedBy }],
+        promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
       },
       userId,
+    });
+
+    promotionLotIds.forEach((promotionLotId) => {
+      PromotionOptionService.insert({ promotionLotId, loanId });
     });
 
     this.addNewStructure({ loanId });

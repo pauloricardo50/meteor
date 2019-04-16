@@ -1,11 +1,13 @@
-import Calculator from 'core/utils/Calculator';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { Meteor } from 'meteor/meteor';
+
+import Calculator from '../../../utils/Calculator';
 import {
   PROPERTIES_COLLECTION,
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
   PROPERTY_SOLVENCY,
-} from 'core/api/properties/propertyConstants';
+} from '../../properties/propertyConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
@@ -78,7 +80,13 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { promotions } = loan;
     const promotionId = promotions[0]._id;
-    return makePromotionLoanAnonymizer({ userId, promotionId })(loan);
+
+    const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
+      userId,
+      promotionId,
+    });
+
+    return promotionLoanAnonymizer(loan);
   });
 
 const anonymizePropertyLoans = ({ loans = [], userId }) =>

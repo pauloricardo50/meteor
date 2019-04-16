@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import SecurityService from '../../security';
 import query from './adminOrganisations';
 

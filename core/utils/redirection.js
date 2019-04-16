@@ -11,6 +11,7 @@ const WITHOUT_LOGIN = [
   '/login',
   '/enroll-account',
   '/reset-password',
+  '/verify-email',
   IMPERSONATE_ROUTE,
 ];
 

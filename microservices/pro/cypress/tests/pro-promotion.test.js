@@ -105,10 +105,13 @@ describe('Pro', () => {
         },
       });
 
+      cy.get('.actions')
+        .first()
+        .click();
+
       cy.contains('Supprimer')
         .first()
         .click();
-      cy.contains('Confirmer').click();
 
       cy.reload();
 

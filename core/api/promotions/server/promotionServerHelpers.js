@@ -1,10 +1,9 @@
-import { array } from 'prop-types';
-import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
   shouldAnonymize as clientShouldAnonymize,
   getPromotionCustomerOwnerType as getCustomerOwnerType,
+  clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
 import LoanService from '../../loans/server/LoanService';
 
@@ -21,9 +20,15 @@ const getUserPromotionPermissions = ({ userId, promotionId }) => {
     promotions: { _id: 1 },
   });
 
+  const promotion = promotions.find(({ _id }) => _id === promotionId);
+
+  if (!promotion) {
+    return {};
+  }
+
   const {
     $metadata: { permissions = {} },
-  } = promotions.find(({ _id }) => _id === promotionId);
+  } = promotion;
 
   return permissions;
 };
@@ -73,20 +78,7 @@ export const getBestPromotionLotStatus = ({ loanId }) => {
     },
   });
 
-  const myPromotionLotStatuses = promotionOptions
-    .reduce((arr, { promotionLots }) => [...arr, ...promotionLots], [])
-    .filter(({ attributedToLink = {} }) => attributedToLink._id === loanId)
-    .map(({ status }) => status);
-
-  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.SOLD) >= 0) {
-    return PROMOTION_LOT_STATUS.SOLD;
-  }
-  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.BOOKED) >= 0) {
-    return PROMOTION_LOT_STATUS.BOOKED;
-  }
-  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.AVAILABLE) >= 0) {
-    return PROMOTION_LOT_STATUS.AVAILABLE;
-  }
+  return clientGetBestPromotionLotStatus(promotionOptions, loanId);
 };
 
 export const getPromotionCustomerOwnerType = ({
@@ -166,6 +158,8 @@ export const makeLoanAnonymizer = ({
 
     return {
       user: anonymizeUser ? ANONYMIZED_USER : user,
+      _id: loanId,
+      anonymous: !!anonymizeUser,
       ...rest,
     };
   };

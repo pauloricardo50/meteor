@@ -97,6 +97,8 @@ export class PromotionService extends CollectionService {
     isNewUser,
     pro = {},
     sendInvitation = true,
+    promotionLotIds,
+    showAllLots,
   }) {
     const promotion = this.get(promotionId);
     const user = UserService.get(userId);
@@ -114,6 +116,8 @@ export class PromotionService extends CollectionService {
       userId,
       promotionId,
       invitedBy: pro._id,
+      showAllLots,
+      promotionLotIds,
     });
 
     if (isNewUser) {
@@ -236,6 +240,54 @@ export class PromotionService extends CollectionService {
 
     attributedPromotionLots.forEach(({ _id }) => {
       PromotionLotService.cancelPromotionLotBooking({ promotionLotId: _id });
+    });
+  }
+
+  editPromotionLoan({
+    loanId,
+    promotionId,
+    promotionLotIds = [],
+    showAllLots,
+  }) {
+    if (showAllLots !== undefined) {
+      this.updateLinkMetadata({
+        id: promotionId,
+        linkName: 'loans',
+        linkId: loanId,
+        metadata: { showAllLots },
+      });
+    }
+
+    const { promotionOptions = [] } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      promotionOptions: {
+        promotionLots: { attributedTo: { _id: 1 }, name: 1 },
+      },
+    });
+
+    // Add any new promotionOptions if they don't already exist
+    promotionLotIds.forEach((promotionLotId) => {
+      const existingPromotionOption = promotionOptions.find(({ promotionLots: promotionOptionLots }) =>
+        promotionOptionLots[0]._id === promotionLotId);
+
+      if (!existingPromotionOption) {
+        PromotionOptionService.insert({ promotionLotId, loanId });
+      }
+    });
+
+    // Remove all promotionOptions that aren't in the specified array
+    const promotionOptionsToRemove = promotionOptions.filter(({ promotionLots }) => promotionLotIds.indexOf(promotionLots[0]._id) < 0);
+
+    promotionOptionsToRemove.forEach((promotionOption) => {
+      // Try to remove this promotion option
+      const { promotionLots, _id: promotionOptionId } = promotionOption;
+      const { attributedTo, name } = promotionLots[0];
+
+      if (attributedTo && attributedTo._id === loanId) {
+        throw new Meteor.Error(`Vous ne pouvez pas supprimer le lot "${name}" de ce client, car il lui est attribué.`);
+      }
+
+      PromotionOptionService.remove({ promotionOptionId });
     });
   }
 }

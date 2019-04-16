@@ -54,7 +54,7 @@ describe('PromotionOptionService', () => {
       PromotionOptionService.remove({ promotionOptionId });
       const loan = LoanService.get(loanId);
       expect(loan.promotionLinks).to.deep.equal([
-        { _id: promotionId, priorityOrder: [] },
+        { _id: promotionId, priorityOrder: [], showAllLots: true },
       ]);
     });
   });

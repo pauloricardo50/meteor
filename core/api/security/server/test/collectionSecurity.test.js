@@ -5,6 +5,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
+import { PROMOTION_PERMISSIONS } from 'core/api/promotions/promotionConstants';
 import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
@@ -278,15 +279,13 @@ describe('Collection Security', () => {
         generator({
           users: { _id: 'userId', loans: { _id: 'loanId' } },
           properties: { _id: 'propId' },
-          promotions: [
-            {
-              promotionLots: {
-                _id: 'pLotId',
-                propertyLinks: [{ _id: 'propId' }],
-              },
-              loans: { _id: 'loanId' },
+          promotions: {
+            promotionLots: {
+              _id: 'pLotId',
+              propertyLinks: [{ _id: 'propId' }],
             },
-          ],
+            loans: { _id: 'loanId' },
+          },
         });
 
         expect(() =>
@@ -341,6 +340,153 @@ describe('Collection Security', () => {
           })).to.not.throw(SECURITY_ERROR);
       });
     });
+
+    describe('isAllowedToSeePromotionCustomer', () => {
+      it('does not throw if the user is admin', () => {
+        generator({
+          users: { _factory: 'admin', _id: 'adminId' },
+          promotions: { _id: 'promotionId', loans: { _id: 'loanId' } },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToSeePromotionCustomer({
+            promotionId: 'promotionId',
+            userId: 'adminId',
+            loanId: 'loanId',
+          })).to.not.throw();
+      });
+
+      it('throws if the pro is not on this promotion', () => {
+        generator({
+          users: { _factory: 'pro', _id: 'proId' },
+          promotions: { _id: 'promotionId', loans: { _id: 'loanId' } },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToSeePromotionCustomer({
+            promotionId: 'promotionId',
+            userId: 'proId',
+            loanId: 'loanId',
+          })).to.throw(SECURITY_ERROR);
+      });
+
+      it('throws if the pro is not allowed to see customers', () => {
+        generator({
+          promotions: {
+            _id: 'promotionId',
+            loans: { _id: 'loanId' },
+            users: {
+              _factory: 'pro',
+              _id: 'proId',
+              $metadata: { permissions: {} },
+            },
+          },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToSeePromotionCustomer({
+            promotionId: 'promotionId',
+            userId: 'proId',
+            loanId: 'loanId',
+          })).to.throw(SECURITY_ERROR);
+      });
+
+      it('does not throw if the pro is allowed to see customers', () => {
+        generator({
+          promotions: {
+            _id: 'promotionId',
+            loans: {
+              _id: 'loanId',
+              $metadata: { invitedBy: 'proId' },
+              user: {},
+            },
+            users: {
+              _factory: 'pro',
+              _id: 'proId',
+              $metadata: {
+                permissions: {
+                  displayCustomerNames: {
+                    invitedBy: 'ANY',
+                    forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                      .FOR_LOT_STATUS),
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToSeePromotionCustomer({
+            promotionId: 'promotionId',
+            userId: 'proId',
+            loanId: 'loanId',
+          })).to.not.throw(SECURITY_ERROR);
+      });
+
+      it('does not throw if the pro is allowed to see customers 2', () => {
+        generator({
+          properties: { _id: 'prop' },
+          promotions: {
+            _id: 'promotionId',
+            loans: [
+              {
+                _id: 'loanId',
+                $metadata: { invitedBy: 'proId' },
+                user: {},
+                promotionOptions: {
+                  promotionLots: {
+                    _id: 'bookedPromotionLot',
+                    status: 'BOOKED',
+                    propertyLinks: [{ _id: 'prop' }],
+                    attributedTo: { _id: 'loanId' },
+                  },
+                },
+              },
+              {
+                _id: 'loanId2',
+                $metadata: { invitedBy: 'proId' },
+                user: {},
+                promotionOptions: {
+                  promotionLots: {
+                    _id: 'soldPromotionLot',
+                    status: 'SOLD',
+                    propertyLinks: [{ _id: 'prop' }],
+                    attributedTo: { _id: 'loanId2' },
+                  },
+                },
+              },
+            ],
+            users: {
+              _factory: 'pro',
+              _id: 'proId',
+              $metadata: {
+                permissions: {
+                  displayCustomerNames: {
+                    invitedBy: 'ANY',
+                    forLotStatus: 'SOLD',
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToSeePromotionCustomer({
+            promotionId: 'promotionId',
+            userId: 'proId',
+            loanId: 'loanId',
+          })).to.throw(SECURITY_ERROR);
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToSeePromotionCustomer({
+            promotionId: 'promotionId',
+            userId: 'proId',
+            loanId: 'loanId2',
+          })).to.not.throw(SECURITY_ERROR);
+      });
+    });
   });
 
   describe('PropertySecurity', () => {
@@ -392,18 +538,14 @@ describe('Collection Security', () => {
       it('does not throw if user is pro and is allowed to update PRO property', () => {
         generator({
           users: [{ _id: 'proId', _factory: 'pro' }],
-          properties: [
-            {
-              _id: 'propertyId',
-              category: PROPERTY_CATEGORY.PRO,
-              users: [
-                {
-                  _id: 'proId',
-                  $metadata: { permissions: { canModifyProperty: true } },
-                },
-              ],
+          properties: {
+            _id: 'propertyId',
+            category: PROPERTY_CATEGORY.PRO,
+            users: {
+              _id: 'proId',
+              $metadata: { permissions: { canModifyProperty: true } },
             },
-          ],
+          },
         });
 
         expect(() =>
@@ -413,18 +555,14 @@ describe('Collection Security', () => {
       it('does throw if user is pro and is not allowed to update PRO property', () => {
         generator({
           users: [{ _id: 'proId', _factory: 'pro' }],
-          properties: [
-            {
-              _id: 'propertyId',
-              category: PROPERTY_CATEGORY.PRO,
-              users: [
-                {
-                  _id: 'proId',
-                  $metadata: { permissions: { canModifyProperty: false } },
-                },
-              ],
+          properties: {
+            _id: 'propertyId',
+            category: PROPERTY_CATEGORY.PRO,
+            users: {
+              _id: 'proId',
+              $metadata: { permissions: { canModifyProperty: false } },
             },
-          ],
+          },
         });
 
         expect(() =>
@@ -434,24 +572,20 @@ describe('Collection Security', () => {
       it('does throw if user is pro and is not allowed to update PROMOTION property', () => {
         generator({
           users: [{ _id: 'proId', _factory: 'pro' }],
-          properties: [
-            {
-              _id: 'propertyId',
-              category: PROPERTY_CATEGORY.PROMOTION,
+          properties: {
+            _id: 'propertyId',
+            category: PROPERTY_CATEGORY.PROMOTION,
+          },
+
+          promotions: {
+            _id: 'promotionId',
+            users: {
+              _id: 'proId',
+              $metadata: { permissions: { canModifyPromotion: false } },
             },
-          ],
-          promotions: [
-            {
-              _id: 'promotionId',
-              users: [
-                {
-                  _id: 'proId',
-                  $metadata: { permissions: { canModifyPromotion: false } },
-                },
-              ],
-              propertyLinks: [{ _id: 'propertyId' }],
-            },
-          ],
+
+            propertyLinks: [{ _id: 'propertyId' }],
+          },
         });
 
         expect(() =>
@@ -460,25 +594,20 @@ describe('Collection Security', () => {
 
       it('does not throw if user is pro and is allowed to update PROMOTION property', () => {
         generator({
-          users: [{ _id: 'proId', _factory: 'pro' }],
-          properties: [
-            {
-              _id: 'propertyId',
-              category: PROPERTY_CATEGORY.PROMOTION,
+          users: { _id: 'proId', _factory: 'pro' },
+          properties: {
+            _id: 'propertyId',
+            category: PROPERTY_CATEGORY.PROMOTION,
+          },
+
+          promotions: {
+            _id: 'promotionId',
+            users: {
+              _id: 'proId',
+              $metadata: { permissions: { canModifyPromotion: true } },
             },
-          ],
-          promotions: [
-            {
-              _id: 'promotionId',
-              users: [
-                {
-                  _id: 'proId',
-                  $metadata: { permissions: { canModifyPromotion: true } },
-                },
-              ],
-              propertyLinks: [{ _id: 'propertyId' }],
-            },
-          ],
+            propertyLinks: [{ _id: 'propertyId' }],
+          },
         });
 
         expect(() =>
