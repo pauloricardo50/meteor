@@ -86,10 +86,7 @@ export const getPromotionCustomerOwnerType = ({
   promotionId,
   userId,
 }) => {
-  console.log('customerId:', customerId);
-  console.log('promotionId:', promotionId);
   const invitedBy = getCustomerInvitedBy({ customerId, promotionId });
-  console.log('getPromotionCustomerOwnerType:', invitedBy);
   const { organisations = [] } = UserService.fetchOne({
     $filters: { _id: userId },
     organisations: { users: { _id: 1 } },

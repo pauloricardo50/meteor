@@ -341,7 +341,7 @@ describe('Collection Security', () => {
       });
     });
 
-    describe.only('isAllowedToSeePromotionCustomer', () => {
+    describe('isAllowedToSeePromotionCustomer', () => {
       it('does not throw if the user is admin', () => {
         generator({
           users: { _factory: 'admin', _id: 'adminId' },
