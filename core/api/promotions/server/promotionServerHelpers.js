@@ -84,8 +84,9 @@ export const getBestPromotionLotStatus = ({ loanId }) => {
   if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.BOOKED) >= 0) {
     return PROMOTION_LOT_STATUS.BOOKED;
   }
-
-  return PROMOTION_LOT_STATUS.AVAILABLE;
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.AVAILABLE) >= 0) {
+    return PROMOTION_LOT_STATUS.AVAILABLE;
+  }
 };
 
 export const getPromotionCustomerOwnerType = ({
