@@ -4,7 +4,7 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import moment from 'moment';
 
-import proPromotionSimple from 'core/api/promotions/queries/proPromotionSimple';
+import proPromotionSimple from '../../api/promotions/queries/proPromotionSimple';
 import { withSmartQuery } from '../../api';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';

@@ -265,16 +265,17 @@ export class PromotionService extends CollectionService {
       },
     });
 
+    // Add any new promotionOptions if they don't already exist
     promotionLotIds.forEach((promotionLotId) => {
       const existingPromotionOption = promotionOptions.find(({ promotionLots: promotionOptionLots }) =>
         promotionOptionLots[0]._id === promotionLotId);
 
       if (!existingPromotionOption) {
-        // Add a new promotion option
         PromotionOptionService.insert({ promotionLotId, loanId });
       }
     });
 
+    // Remove all promotionOptions that aren't in the specified array
     const promotionOptionsToRemove = promotionOptions.filter(({ promotionLots }) => promotionLotIds.indexOf(promotionLots[0]._id) < 0);
 
     promotionOptionsToRemove.forEach((promotionOption) => {

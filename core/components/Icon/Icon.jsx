@@ -152,7 +152,7 @@ export const iconMap = {
   delete: Delete,
   phoneLink: Phonelink,
   openInNew: OpenInNew,
-  settings:Settings,
+  settings: Settings,
 };
 
 const Icon = ({
