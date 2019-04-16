@@ -331,6 +331,8 @@ class UserService extends CollectionService {
             userId,
             pro,
             isNewUser,
+            promotionLots: user.promotionLots,
+            showAllLots: user.showAllLots,
           })),
       ];
     }

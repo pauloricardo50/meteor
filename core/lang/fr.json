@@ -1,4 +1,6 @@
 {
+  "Forms.promotionLots": "Préselection de lots",
+  "Forms.showAllLots": "Le client peut voir tous les lots",
   "Recap.realEstateCosts": "Charges immobilières théoriques",
   "PasswordResetPage.errorTitle": "Zut, une erreur",
   "PasswordResetPage.errorButton": "Se connecter",

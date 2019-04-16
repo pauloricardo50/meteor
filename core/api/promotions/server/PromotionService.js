@@ -97,6 +97,8 @@ export class PromotionService extends CollectionService {
     isNewUser,
     pro = {},
     sendInvitation = true,
+    promotionLots,
+    showAllLots,
   }) {
     const promotion = this.get(promotionId);
     const user = UserService.get(userId);
@@ -114,6 +116,8 @@ export class PromotionService extends CollectionService {
       userId,
       promotionId,
       invitedBy: pro._id,
+      showAllLots,
+      promotionLots,
     });
 
     if (isNewUser) {
