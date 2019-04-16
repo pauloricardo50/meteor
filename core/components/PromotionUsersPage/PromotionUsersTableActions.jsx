@@ -53,7 +53,7 @@ const PromotionUsersTableActions = ({
 
   return (
     <>
-      <DropdownMenu iconType="settings" options={options} />
+      <DropdownMenu iconType="settings" className="actions" options={options} />
       <AutoFormDialog
         open={openDialog}
         schema={CustomerAdderUserSchema({
