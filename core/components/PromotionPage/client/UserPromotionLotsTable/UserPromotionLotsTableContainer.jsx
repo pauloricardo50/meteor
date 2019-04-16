@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, branch, renderNothing } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { createRoute } from '../../../../utils/routerUtils';
@@ -100,6 +100,10 @@ const columnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
     }));
 
 export default compose(
+  branch(({ promotion }) => {
+    const { $metadata } = promotion.loans[0];
+    return !($metadata && $metadata.showAllLots);
+  }, renderNothing),
   withRouter,
   mapProps(({
     promotion: { promotionLots, _id: promotionId, status: promotionStatus },
