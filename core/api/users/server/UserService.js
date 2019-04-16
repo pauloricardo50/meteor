@@ -31,13 +31,16 @@ class UserService extends CollectionService {
 
   createUser = ({ options, role }) => {
     if (!options.password) {
-      // password is not allowed to be undefined, it has to be stripped from
-      // the options object
+      // password is not even allowed to be undefined,
+      // it has to be stripped from the options object
       options = omit(options, ['password']);
     }
 
     const newUserId = Accounts.createUser(options);
-    Roles.addUsersToRoles(newUserId, role);
+
+    if (role) {
+      Roles.setUserRoles(newUserId, role);
+    }
 
     return newUserId;
   };
@@ -79,9 +82,6 @@ class UserService extends CollectionService {
       }
     }
   };
-
-  // This is used to hook into Accounts
-  onCreateUser = (options, user) => ({ ...user, roles: [ROLES.USER] });
 
   remove = ({ userId }) => Users.remove(userId);
 

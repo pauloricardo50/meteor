@@ -56,6 +56,7 @@ export const UserSchema = new SimpleSchema({
   roles: {
     type: Array,
     optional: true,
+    defaultValue: [ROLES.USER],
   },
   'roles.$': {
     type: String,

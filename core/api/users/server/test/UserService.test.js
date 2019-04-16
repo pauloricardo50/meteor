@@ -34,12 +34,20 @@ describe('UserService', function () {
   });
 
   describe('createUser', () => {
-    it('creates a user with a role', () => {
+    it('creates a user with a USER role by default', () => {
       const options = { email: 'test@test.com' };
-      const userId = UserService.createUser({ options, role: ROLES.USER });
+      const userId = UserService.createUser({ options });
       user = UserService.getUserById({ userId });
 
-      expect(!!user).to.equal(true);
+      expect(user.roles).to.deep.equal([ROLES.USER]);
+    });
+
+    it('creates a user with a PRO role', () => {
+      const options = { email: 'test@test.com' };
+      const userId = UserService.createUser({ options, role: ROLES.PRO });
+      user = UserService.getUserById({ userId });
+
+      expect(user.roles).to.deep.equal([ROLES.PRO]);
     });
 
     it('uses all options to create the user', () => {
