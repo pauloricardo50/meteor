@@ -75,6 +75,7 @@ import Delete from '@material-ui/icons/Delete';
 import Phonelink from '@material-ui/icons/Phonelink';
 import OpenInNew from '@material-ui/icons/OpenInNew';
 import Add from '@material-ui/icons/Add';
+import Settings from '@material-ui/icons/Settings';
 
 export const iconMap = {
   close: CloseIcon,
@@ -151,6 +152,7 @@ export const iconMap = {
   delete: Delete,
   phoneLink: Phonelink,
   openInNew: OpenInNew,
+  settings:Settings,
 };
 
 const Icon = ({

@@ -13,7 +13,7 @@ type CustomerAdderProps = {
 };
 
 export const CustomerAdderUserSchema = ({
-  promotion: { users = [], promotionLots },
+  promotion: { users = [], promotionLots = [] },
 }) =>
   new SimpleSchema({
     email: String,
@@ -36,7 +36,7 @@ export const CustomerAdderUserSchema = ({
         placeholder: '',
       },
     },
-    promotionLots: {
+    promotionLotIds: {
       type: Array,
       defaultValue: [],
       uniforms: {
@@ -44,7 +44,7 @@ export const CustomerAdderUserSchema = ({
       },
       optional: true,
     },
-    'promotionLots.$': {
+    'promotionLotIds.$': {
       type: String,
       allowedValues: promotionLots.map(({ _id }) => _id),
       uniforms: {
@@ -57,8 +57,7 @@ export const CustomerAdderUserSchema = ({
     showAllLots: {
       type: Boolean,
       defaultValue: true,
-      condition: ({ promotionLots: chosenPromotionLots = [] }) =>
-        chosenPromotionLots.length > 0,
+      condition: ({ promotionLotIds = [] }) => promotionLotIds.length > 0,
       optional: true,
     },
   });

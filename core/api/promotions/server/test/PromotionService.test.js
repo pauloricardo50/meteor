@@ -442,4 +442,163 @@ describe('PromotionService', function () {
       });
     });
   });
+
+  describe('editPromotionLoan', () => {
+    it('updates showAllLots without overwriting other metadata', () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: {
+            _id: 'pLot1',
+            propertyLinks: [{ _id: 'prop' }],
+            promotionOptions: { _id: 'pOpt1' },
+          },
+          loans: {
+            _id: 'loanId',
+            $metadata: { showAllLots: true, priorityOrder: ['pOpt1'] },
+          },
+        },
+      });
+
+      const { loans: loans1 } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { _id: 1 },
+      });
+
+      expect(loans1[0].$metadata.showAllLots).to.equal(true);
+
+      expect(loans1[0].$metadata.priorityOrder).to.deep.equal(['pOpt1']);
+
+      PromotionService.editPromotionLoan({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: [],
+        showAllLots: false,
+      });
+
+      const { loans } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { _id: 1 },
+      });
+
+      expect(loans[0].$metadata.showAllLots).to.equal(false);
+      expect(loans[0].$metadata.priorityOrder).to.deep.equal(['pOpt1']);
+    });
+
+    it('adds new promotionOptions', () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [
+            {
+              _id: 'pLot1',
+              propertyLinks: [{ _id: 'prop' }],
+            },
+            {
+              _id: 'pLot2',
+              propertyLinks: [{ _id: 'prop' }],
+            },
+          ],
+          loans: { _id: 'loanId' },
+        },
+      });
+
+      const { loans: loans1 } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptionLinks: 1 },
+      });
+
+      expect(loans1[0].promotionOptionLinks.length).to.equal(0);
+
+      PromotionService.editPromotionLoan({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: ['pLot2'],
+      });
+
+      const { loans } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptions: { promotionLots: { _id: 1 } } },
+      });
+
+      expect(loans[0].promotionOptions.length).to.equal(1);
+      expect(loans[0].promotionOptions[0].promotionLots[0]._id).to.equal('pLot2');
+    });
+
+    it('removes any old promotionOptions', () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [
+            {
+              _id: 'pLot1',
+              propertyLinks: [{ _id: 'prop' }],
+              promotionOptions: { _id: 'pOpt1' },
+            },
+            {
+              _id: 'pLot2',
+              propertyLinks: [{ _id: 'prop' }],
+              promotionOptions: { _id: 'pOpt2' },
+            },
+          ],
+          loans: {
+            _id: 'loanId',
+            promotionOptions: [{ _id: 'pOpt1' }, { _id: 'pOpt2' }],
+          },
+        },
+      });
+
+      const { loans: loans1 } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptionLinks: 1 },
+      });
+
+      expect(loans1[0].promotionOptionLinks.length).to.equal(2);
+
+      PromotionService.editPromotionLoan({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: ['pLot2'],
+      });
+
+      const { loans } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptions: { promotionLots: { _id: 1 } } },
+      });
+
+      expect(loans[0].promotionOptions.length).to.equal(1);
+      expect(loans[0].promotionOptions[0].promotionLots[0]._id).to.equal('pLot2');
+    });
+
+    it('throws if one of the promotionOptions is attributed to this loan', () => {
+      generator({
+        properties: { _id: 'prop', name: 'lot 1' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [
+            {
+              _id: 'pLot1',
+              propertyLinks: [{ _id: 'prop' }],
+              promotionOptions: { _id: 'pOpt1' },
+              attributedTo: {
+                _id: 'loanId',
+                promotionOptions: [{ _id: 'pOpt1' }],
+              },
+            },
+          ],
+          loans: { _id: 'loanId' },
+        },
+      });
+
+      expect(() =>
+        PromotionService.editPromotionLoan({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+          promotionLotIds: [],
+        })).to.throw('"lot 1"');
+    });
+  });
 });

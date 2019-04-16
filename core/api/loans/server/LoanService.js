@@ -130,7 +130,7 @@ export class LoanService extends CollectionService {
     promotionId,
     invitedBy,
     showAllLots,
-    promotionLots = [],
+    promotionLotIds = [],
   }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
@@ -146,8 +146,8 @@ export class LoanService extends CollectionService {
       userId,
     });
 
-    if (promotionLots) {
-      promotionLots.forEach((promotionLotId) => {
+    if (promotionLotIds.length > 0) {
+      promotionLotIds.forEach((promotionLotId) => {
         PromotionOptionService.insert({ promotionLotId, loanId });
       });
     }

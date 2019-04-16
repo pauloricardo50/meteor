@@ -1,3 +1,5 @@
+// @flow
+import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const promotionInsert = new Method({
@@ -71,5 +73,15 @@ export const removeUserFromPromotion = new Method({
   params: {
     promotionId: String,
     loanId: String,
+  },
+});
+
+export const editPromotionLoan = new Method({
+  name: 'editPromotionLoan',
+  params: {
+    promotionId: String,
+    loanId: String,
+    promotionLotIds: [String],
+    showAllLots: Match.Optional(Boolean),
   },
 });

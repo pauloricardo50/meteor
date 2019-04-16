@@ -457,7 +457,7 @@ describe('UserService', function () {
       });
 
       return UserService.proInviteUser({
-        user: { ...userToInvite, showAllLots: false, promotionLots: ['pLotId'] },
+        user: { ...userToInvite, showAllLots: false, promotionLotIds: ['pLotId'] },
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       }).then(() => {

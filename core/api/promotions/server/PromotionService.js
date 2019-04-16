@@ -97,7 +97,7 @@ export class PromotionService extends CollectionService {
     isNewUser,
     pro = {},
     sendInvitation = true,
-    promotionLots,
+    promotionLotIds,
     showAllLots,
   }) {
     const promotion = this.get(promotionId);
@@ -117,7 +117,7 @@ export class PromotionService extends CollectionService {
       promotionId,
       invitedBy: pro._id,
       showAllLots,
-      promotionLots,
+      promotionLotIds,
     });
 
     if (isNewUser) {
@@ -240,6 +240,53 @@ export class PromotionService extends CollectionService {
 
     attributedPromotionLots.forEach(({ _id }) => {
       PromotionLotService.cancelPromotionLotBooking({ promotionLotId: _id });
+    });
+  }
+
+  editPromotionLoan({
+    loanId,
+    promotionId,
+    promotionLotIds = [],
+    showAllLots,
+  }) {
+    if (showAllLots !== undefined) {
+      this.updateLinkMetadata({
+        id: promotionId,
+        linkName: 'loans',
+        linkId: loanId,
+        metadata: { showAllLots },
+      });
+    }
+
+    const { promotionOptions = [] } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      promotionOptions: {
+        promotionLots: { attributedTo: { _id: 1 }, name: 1 },
+      },
+    });
+
+    promotionLotIds.forEach((promotionLotId) => {
+      const existingPromotionOption = promotionOptions.find(({ promotionLots: promotionOptionLots }) =>
+        promotionOptionLots[0]._id === promotionLotId);
+
+      if (!existingPromotionOption) {
+        // Add a new promotion option
+        PromotionOptionService.insert({ promotionLotId, loanId });
+      }
+    });
+
+    const promotionOptionsToRemove = promotionOptions.filter(({ promotionLots }) => promotionLotIds.indexOf(promotionLots[0]._id) < 0);
+
+    promotionOptionsToRemove.forEach((promotionOption) => {
+      // Try to remove this promotion option
+      const { promotionLots, _id: promotionOptionId } = promotionOption;
+      const { attributedTo, name } = promotionLots[0];
+
+      if (attributedTo && attributedTo._id === loanId) {
+        throw new Meteor.Error(`Vous ne pouvez pas supprimer le lot "${name}" de cet utilisateur, car il lui est attribué.`);
+      }
+
+      PromotionOptionService.remove({ promotionOptionId });
     });
   }
 }

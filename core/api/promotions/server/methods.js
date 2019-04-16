@@ -10,6 +10,7 @@ import {
   removeProFromPromotion,
   sendPromotionInvitationEmail,
   removeUserFromPromotion,
+  editPromotionLoan,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -67,4 +68,14 @@ removeUserFromPromotion.setHandler(({ userId }, params) => {
     userId,
   });
   return PromotionService.removeUser(params);
+});
+
+editPromotionLoan.setHandler(({ userId }, params) => {
+  const { promotionId, loanId } = params;
+  SecurityService.promotions.isAllowedToRemoveCustomer({
+    promotionId,
+    loanId,
+    userId,
+  });
+  return PromotionService.editPromotionLoan(params);
 });
