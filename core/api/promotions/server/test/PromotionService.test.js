@@ -342,7 +342,7 @@ describe('PromotionService', function () {
 
       loan = LoanService.get(loanId);
       expect(loan.promotionLinks).to.deep.equal([
-        { _id: 'someOtherPromotion', priorityOrder: [] },
+        { _id: 'someOtherPromotion', priorityOrder: [], showAllLots: true },
       ]);
     });
 
