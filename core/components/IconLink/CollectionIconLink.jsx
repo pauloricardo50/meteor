@@ -19,7 +19,9 @@ import {
 } from '../../api/constants';
 import collectionIcons from '../../arrays/collectionIcons';
 
-type CollectionIconLinkProps = {};
+type CollectionIconLinkProps = {
+  relatedDoc: Object,
+};
 
 const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   if (!docId) {
