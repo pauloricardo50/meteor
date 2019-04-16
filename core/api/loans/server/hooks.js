@@ -35,7 +35,7 @@ UpdateWatcherService.addUpdateWatching({
   fields: [
     'residenceType',
     // 'structures', // The structures notifications are hard to read in slack
-    'selectedStructure',
+    // 'selectedStructure',
     'purchaseType',
     'verificationStatus',
     'customName',

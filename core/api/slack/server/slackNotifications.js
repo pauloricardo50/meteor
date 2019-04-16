@@ -23,12 +23,14 @@ export const propertyInviteNotification = ({ currentUser, property, user }) => {
 };
 
 export const promotionInviteNotification = ({
+  currentUser,
   promotion: { name, assignedEmployee, _id: promotionId },
   user,
 }) => {
   const { firstName, lastName, email } = user;
 
   SlackService.notifyAssignee({
+    currentUser,
     title: `Promotion ${name}`,
     message: `${firstName} ${lastName} a été invité! ${email}`,
     link: `${
@@ -39,13 +41,18 @@ export const promotionInviteNotification = ({
   });
 };
 
-export const promotionLotBooked = ({ promotionLot, user: { name } }) => {
+export const promotionLotBooked = ({
+  currentUser,
+  promotionLot,
+  user: { name },
+}) => {
   const {
     name: lotName,
     promotion: { name: promotionName, assignedEmployee, _id: promotionId },
   } = promotionLot;
 
   SlackService.notifyAssignee({
+    currentUser,
     title: `Promotion ${promotionName}`,
     message: `Le lot ${lotName} a été réservé pour ${name}`,
     link: `${
@@ -56,13 +63,18 @@ export const promotionLotBooked = ({ promotionLot, user: { name } }) => {
   });
 };
 
-export const promotionLotSold = ({ promotionLot, user: { name } }) => {
+export const promotionLotSold = ({
+  currentUser,
+  promotionLot,
+  user: { name },
+}) => {
   const {
     name: lotName,
     promotion: { name: promotionName, assignedEmployee, _id: promotionId },
   } = promotionLot;
 
   SlackService.notifyAssignee({
+    currentUser,
     title: `Promotion ${promotionName}`,
     message: `Le lot ${lotName} a été vendu à ${name}`,
     link: `${

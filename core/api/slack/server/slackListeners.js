@@ -1,25 +1,26 @@
-import PropertyService from 'core/api/properties/server/PropertyService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
   sellPromotionLot,
   proInviteUser,
 } from '../../methods';
-import PromotionService from '../../promotions/server/PromotionService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import {
-  promotionInviteNotification,
   promotionLotBooked,
   promotionLotSold,
-  propertyInviteNotification,
   referralOnlyNotification,
 } from './slackNotifications';
+import {
+  sendPropertyInvitations,
+  sendPromotionInvitations,
+} from './slackNotificationHelpers';
 
 ServerEventService.addMethodListener(
   bookPromotionLot,
-  (context, { promotionLotId, loanId }) => {
+  ({ userId }, { promotionLotId, loanId }) => {
+    const currentUser = UserService.get(userId);
     const promotionLot = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
       name: 1,
@@ -30,13 +31,14 @@ ServerEventService.addMethodListener(
       user: { name: 1 },
     });
 
-    promotionLotBooked({ promotionLot, user });
+    promotionLotBooked({currentUser, promotionLot, user });
   },
 );
 
 ServerEventService.addMethodListener(
   sellPromotionLot,
-  (context, { promotionLotId }) => {
+  ({ userId }, { promotionLotId }) => {
+    const currentUser = UserService.get(userId);
     const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
       name: 1,
@@ -48,7 +50,7 @@ ServerEventService.addMethodListener(
       user: { name: 1 },
     });
 
-    promotionLotSold({ promotionLot, user });
+    promotionLotSold({currentUser, promotionLot, user });
   },
 );
 
@@ -58,22 +60,21 @@ ServerEventService.addMethodListener(
     const currentUser = UserService.get(userId);
     const invitedUser = UserService.getByEmail(user.email);
 
-    propertyIds.map((id) => {
-      const property = PropertyService.get(id);
-      propertyInviteNotification({ currentUser, user: invitedUser, property });
+    sendPropertyInvitations(propertyIds, currentUser, {
+      ...invitedUser,
+      email: user.email,
     });
 
-    promotionIds.map((id) => {
-      const promotion = PromotionService.fetchOne({
-        $filters: { _id: id },
-        name: 1,
-        assignedEmployee: { email: 1 },
-      });
-      promotionInviteNotification({ promotion, user: invitedUser });
+    sendPromotionInvitations(promotionIds, currentUser, {
+      ...invitedUser,
+      email: user.email,
     });
 
     if (propertyIds.length === 0 && promotionIds.length === 0) {
-      referralOnlyNotification({ currentUser, user: invitedUser });
+      referralOnlyNotification({
+        currentUser,
+        user: { ...invitedUser, email: user.email },
+      });
     }
   },
 );
