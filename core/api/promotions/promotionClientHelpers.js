@@ -58,16 +58,16 @@ export const clientGetBestPromotionLotStatus = (promotionOptions, loanId) => {
 export const shouldAnonymize = ({
   customerOwnerType,
   permissions,
-  promotionLotStatus,
+  promotionLotStatus = PROMOTION_LOT_STATUS.AVAILABLE,
 }) => {
   const { displayCustomerNames } = permissions;
 
   if (displayCustomerNames === false || !customerOwnerType) {
     return true;
   }
+  const { forLotStatus = [] } = displayCustomerNames;
 
-  const shouldHideForLotStatus = !!promotionLotStatus
-    && !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
+  const shouldHideForLotStatus = !!promotionLotStatus && !forLotStatus.includes(promotionLotStatus);
 
   if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY_TYPE.ANY) {
     return shouldHideForLotStatus;

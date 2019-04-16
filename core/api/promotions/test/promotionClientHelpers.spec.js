@@ -8,7 +8,7 @@ import {
 import { PROMOTION_INVITED_BY_TYPE } from '../promotionConstants';
 import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
 
-describe('promotionClientHelpers', () => {
+describe.only('promotionClientHelpers', () => {
   context('shouldAnonymize', () => {
     it('returns true if user cannot view the promotion', () => {
       expect(shouldAnonymize({ permissions: {} })).to.equal(true);
@@ -72,6 +72,27 @@ describe('promotionClientHelpers', () => {
       })).to.equal(false);
     });
 
+    it('returns true if lot status is undefined', () => {
+      const currentUser = { _id: 'bob' };
+      const invitedBy = 'bob';
+      const customerOwnerType = getPromotionCustomerOwnerType({
+        currentUser,
+        invitedBy,
+      });
+      expect(shouldAnonymize({
+        customerOwnerType,
+        permissions: {
+          displayCustomerNames: {
+            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+            forLotStatus: [
+              PROMOTION_LOT_STATUS.BOOKED,
+              PROMOTION_LOT_STATUS.SOLD,
+            ],
+          },
+        },
+      })).to.equal(true);
+    });
+
     it('returns true if customer is not invited by current user', () => {
       const currentUser = { _id: 'bob' };
       const invitedBy = 'john';
@@ -127,6 +148,7 @@ describe('promotionClientHelpers', () => {
         permissions: {
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+            forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
           },
         },
       })).to.equal(false);
