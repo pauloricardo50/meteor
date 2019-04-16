@@ -48,8 +48,11 @@ export const clientGetBestPromotionLotStatus = (promotionOptions, loanId) => {
   if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.BOOKED) >= 0) {
     return PROMOTION_LOT_STATUS.BOOKED;
   }
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.AVAILABLE) >= 0) {
+    return PROMOTION_LOT_STATUS.AVAILABLE;
+  }
 
-  return PROMOTION_LOT_STATUS.AVAILABLE;
+  // return undefined if no promotion lots are attributed to this user
 };
 
 export const shouldAnonymize = ({
