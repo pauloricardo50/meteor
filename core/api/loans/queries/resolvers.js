@@ -78,7 +78,11 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { promotions } = loan;
     const promotionId = promotions[0]._id;
-    return makePromotionLoanAnonymizer({ userId, promotionId })(loan);
+    const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
+      userId,
+      promotionId,
+    });
+    return promotionLoanAnonymizer(loan);
   });
 
 const anonymizePropertyLoans = ({ loans = [], userId }) =>

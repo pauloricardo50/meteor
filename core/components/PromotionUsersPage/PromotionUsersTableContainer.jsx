@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { compose, withProps } from 'recompose';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
 
 import proPromotionSimple from 'core/api/promotions/queries/proPromotionSimple';
 import { withSmartQuery } from '../../api';

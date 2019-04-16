@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
+import { shouldAnonymize } from '../../api/promotions/promotionClientHelpers';
 import DropdownMenu from '../DropdownMenu';
 import T from '../Translation';
 import PromotionUsersTableActionsContainer from './PromotionUsersTableActionsContainer';
@@ -22,19 +23,23 @@ const PromotionUsersTableActions = ({
   loan,
   loading,
 }: PromotionUsersTableActionsProps) => {
+  const { user = {}, promotionOptions = [], anonymous } = loan;
   const options = [];
   const isAllowedToRemove = isAllowedToRemoveCustomerFromPromotion({
     promotion,
     currentUser,
     customerOwnerType,
   });
+  const isAllowedToSee = !anonymous;
 
-  if (isAllowedToRemove) {
+  if (isAllowedToSee) {
     options.push({
       id: 'edit',
       label: <T id="PromotionUsersTableActions.editLots" />,
       onClick: handleOpenForm,
     });
+  }
+  if (isAllowedToRemove && isAllowedToSee) {
     options.push({
       id: 'remove',
       label: <T id="general.remove" />,
@@ -45,8 +50,6 @@ const PromotionUsersTableActions = ({
   if (options.length === 0) {
     return <span className="actions">-</span>;
   }
-
-  const { user = {}, promotionOptions = [] } = loan;
 
   return (
     <>

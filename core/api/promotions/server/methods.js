@@ -72,7 +72,7 @@ removeUserFromPromotion.setHandler(({ userId }, params) => {
 
 editPromotionLoan.setHandler(({ userId }, params) => {
   const { promotionId, loanId } = params;
-  SecurityService.promotions.isAllowedToRemoveCustomer({
+  SecurityService.promotions.isAllowedToSeePromotionCustomer({
     promotionId,
     loanId,
     userId,

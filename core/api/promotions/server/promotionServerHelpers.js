@@ -1,5 +1,3 @@
-import { array } from 'prop-types';
-import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
@@ -22,9 +20,15 @@ const getUserPromotionPermissions = ({ userId, promotionId }) => {
     promotions: { _id: 1 },
   });
 
+  const promotion = promotions.find(({ _id }) => _id === promotionId);
+
+  if (!promotion) {
+    return {};
+  }
+
   const {
     $metadata: { permissions = {} },
-  } = promotions.find(({ _id }) => _id === promotionId);
+  } = promotion;
 
   return permissions;
 };
@@ -82,7 +86,10 @@ export const getPromotionCustomerOwnerType = ({
   promotionId,
   userId,
 }) => {
+  console.log('customerId:', customerId);
+  console.log('promotionId:', promotionId);
   const invitedBy = getCustomerInvitedBy({ customerId, promotionId });
+  console.log('getPromotionCustomerOwnerType:', invitedBy);
   const { organisations = [] } = UserService.fetchOne({
     $filters: { _id: userId },
     organisations: { users: { _id: 1 } },
@@ -154,6 +161,8 @@ export const makeLoanAnonymizer = ({
 
     return {
       user: anonymizeUser ? ANONYMIZED_USER : user,
+      _id: loanId,
+      anonymous: !!anonymizeUser,
       ...rest,
     };
   };
