@@ -283,7 +283,7 @@ export class PromotionService extends CollectionService {
       const { attributedTo, name } = promotionLots[0];
 
       if (attributedTo && attributedTo._id === loanId) {
-        throw new Meteor.Error(`Vous ne pouvez pas supprimer le lot "${name}" de cet utilisateur, car il lui est attribué.`);
+        throw new Meteor.Error(`Vous ne pouvez pas supprimer le lot "${name}" de ce client, car il lui est attribué.`);
       }
 
       PromotionOptionService.remove({ promotionOptionId });
