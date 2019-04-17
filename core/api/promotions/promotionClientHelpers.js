@@ -55,28 +55,52 @@ export const clientGetBestPromotionLotStatus = (promotionOptions, loanId) => {
   // return undefined if no promotion lots are attributed to this user
 };
 
+const shouldHideForLotStatus = (
+  { forLotStatus = [] },
+  promotionLotStatus,
+  isAttributed,
+) => {
+  if (
+    promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE
+    && forLotStatus.includes(promotionLotStatus)
+  ) {
+    return false;
+  }
+
+  // For status BOOKED and SOLD, we check that it is attributed
+  if (forLotStatus.includes(promotionLotStatus) && isAttributed) {
+    return false;
+  }
+
+  return true;
+};
+
 export const shouldAnonymize = ({
   customerOwnerType,
   permissions,
   promotionLotStatus = PROMOTION_LOT_STATUS.AVAILABLE,
+  isAttributed,
 }) => {
   const { displayCustomerNames } = permissions;
 
   if (displayCustomerNames === false || !customerOwnerType) {
     return true;
   }
-  const { forLotStatus = [] } = displayCustomerNames;
 
-  const shouldHideForLotStatus = !!promotionLotStatus && !forLotStatus.includes(promotionLotStatus);
+  const shouldHide = shouldHideForLotStatus(
+    displayCustomerNames,
+    promotionLotStatus,
+    isAttributed,
+  );
 
   if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY_TYPE.ANY) {
-    return shouldHideForLotStatus;
+    return shouldHide;
   }
 
   switch (customerOwnerType) {
   case PROMOTION_INVITED_BY_TYPE.USER:
     return (
-      shouldHideForLotStatus
+      shouldHide
         || ![
           PROMOTION_INVITED_BY_TYPE.USER,
           PROMOTION_INVITED_BY_TYPE.ORGANISATION,
@@ -84,7 +108,7 @@ export const shouldAnonymize = ({
     );
   case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
     return (
-      shouldHideForLotStatus
+      shouldHide
         || displayCustomerNames.invitedBy
           !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
     );

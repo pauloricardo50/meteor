@@ -135,7 +135,7 @@ export default compose(
   withSmartQuery({
     query: proPromotionOptions,
     params: ({ promotionOptionIds }) => ({ promotionOptionIds }),
-    queryOptions: { reactive: false },
+    queryOptions: { reactive: false, shouldRefetch: () => false },
     dataName: 'promotionOptions',
   }),
   withRouter,

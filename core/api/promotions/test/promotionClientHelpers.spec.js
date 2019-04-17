@@ -50,7 +50,7 @@ describe('promotionClientHelpers', () => {
       })).to.equal(true);
     });
 
-    it('returns false if lot status is in permissions', () => {
+    it('returns true if lot status is in permissions and belongs to owner, but not attributed', () => {
       const currentUser = { _id: 'bob' };
       const invitedBy = 'bob';
       const customerOwnerType = getPromotionCustomerOwnerType({
@@ -69,6 +69,30 @@ describe('promotionClientHelpers', () => {
           },
         },
         promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+        isAttributed: false,
+      })).to.equal(true);
+    });
+
+    it('returns false if lot status is in permissions and belongs to owner', () => {
+      const currentUser = { _id: 'bob' };
+      const invitedBy = 'bob';
+      const customerOwnerType = getPromotionCustomerOwnerType({
+        currentUser,
+        invitedBy,
+      });
+      expect(shouldAnonymize({
+        customerOwnerType,
+        permissions: {
+          displayCustomerNames: {
+            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+            forLotStatus: [
+              PROMOTION_LOT_STATUS.AVAILABLE,
+              PROMOTION_LOT_STATUS.BOOKED,
+            ],
+          },
+        },
+        promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+        isAttributed: true,
       })).to.equal(false);
     });
 
