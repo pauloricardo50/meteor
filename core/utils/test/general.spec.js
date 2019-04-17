@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { _ } from 'lodash';
+import times from 'lodash/times';
 
 import { getAggregatePercent } from 'core/utils/general';
 import {
@@ -49,7 +49,7 @@ describe('general helpers', () => {
     });
 
     it('returns 0.2 for an array with 10 values and 8 undefined values', () => {
-      const array = _.times(10, 0);
+      const array = times(10, 0);
       array[0] = true;
       array[1] = true;
 
