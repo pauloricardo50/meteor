@@ -4,7 +4,6 @@ import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
-import { baseBorrower } from '../../fragments';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER_SEARCH, {
   $filter({ filters, params: { searchQuery } }) {
@@ -27,6 +26,8 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER_SEARCH, {
       },
     ];
   },
-  ...baseBorrower(),
+  name: 1,
+  createdAt: 1,
+  updatedAt: 1,
   $options: { sort: { createdAt: -1 }, limit: 5 },
 });

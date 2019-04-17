@@ -6,7 +6,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import T from 'core/components/Translation';
-import Calculator from 'core/utils/Calculator';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -26,13 +25,10 @@ const getBorrowerInfo = ({ name, createdAt, updatedAt }) => ({
 
 const getLoanInfo = (loan) => {
   const { name, createdAt, updatedAt, step } = loan;
-  const value = Calculator.selectLoanValue({ loan });
 
   return {
     primary: name || <T id="general.loan" />,
-    secondary: (
-      <ResultSecondaryText infos={{ createdAt, updatedAt, step, value }} />
-    ),
+    secondary: <ResultSecondaryText infos={{ createdAt, updatedAt, step }} />,
   };
 };
 
@@ -41,7 +37,7 @@ const getPropertyInfo = ({
   zipCode,
   address1,
   address2,
-  value,
+  totalValue,
   status,
   style,
   insideArea,
@@ -49,13 +45,12 @@ const getPropertyInfo = ({
   primary: address1 || address2 || <T id="general.property" />,
   secondary: (
     <ResultSecondaryText
-      infos={{ city, zipCode, value, status, style, insideArea }}
+      infos={{ city, zipCode, totalValue, status, style, insideArea }}
     />
   ),
 });
 
-const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
-  const organisation = profile && profile.organisation;
+const getUserInfo = ({ roles, createdAt, assignedEmployee, name }) => {
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.name
     : 'unassigned';
@@ -65,7 +60,6 @@ const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
     secondary: (
       <ResultSecondaryText
         infos={{
-          organisation,
           roles,
           createdAt,
           assignedTo: assignedEmployeeName,

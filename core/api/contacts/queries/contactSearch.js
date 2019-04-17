@@ -22,6 +22,7 @@ export default Contacts.createQuery(CONTACTS_QUERIES.CONTACT_SEARCH, {
       },
     ];
   },
-  ...contact(),
+  name: 1,
+  organisations: { name: 1 },
   $options: { sort: { createdAt: -1 }, limit: 5 },
 });

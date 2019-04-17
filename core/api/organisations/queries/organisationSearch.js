@@ -1,6 +1,5 @@
 import Organisations from '../organisations';
 import { ORGANISATION_QUERIES } from '../organisationConstants';
-import { fullOrganisation } from '../../fragments';
 import { createSearchFilters } from '../../helpers';
 
 export default Organisations.createQuery(
@@ -12,7 +11,7 @@ export default Organisations.createQuery(
         createSearchFilters(['name', '_id', 'type'], searchQuery),
       );
     },
-    ...fullOrganisation(),
+    name: 1,
     $options: { sort: { name: 1 }, limit: 5 },
   },
 );

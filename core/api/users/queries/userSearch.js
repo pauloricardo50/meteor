@@ -4,7 +4,6 @@ import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
-import { adminUser } from '../../fragments';
 
 const queryHasSpace = query => query.indexOf(' ') > -1;
 
@@ -17,7 +16,6 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
     filters.$or = [
       createRegexQuery('_id', searchQuery),
       createRegexQuery('emails.0.address', searchQuery),
-      createRegexQuery('organisation', searchQuery),
       createRegexQuery('firstName', searchQuery),
       createRegexQuery('lastName', searchQuery),
       {
@@ -32,6 +30,11 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
       filters.$or.push();
     }
   },
-  ...adminUser(),
+  assignedEmployee: { name: 1 },
+  createdAt: 1,
+  email: 1,
+  name: 1,
+  organisations: { name: 1 },
+  roles: 1,
   $options: { limit: 5 },
 });
