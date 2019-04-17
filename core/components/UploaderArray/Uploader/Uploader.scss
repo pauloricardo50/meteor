@@ -43,6 +43,10 @@
 
     border-top: 1px solid $light-grey;
 
+    .actions {
+      flex-wrap: nowrap;
+    }
+
     .VALID {
       color: $success;
     }

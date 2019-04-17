@@ -47,7 +47,7 @@ const File = ({
       >
         {Meteor.microservice === 'admin' ? <a>{name}</a> : name}
       </h5>
-      <div className="flex center">
+      <div className="actions flex center">
         <span className={`${status} bold`}>
           <T id={`File.status.${status}`} />
         </span>
