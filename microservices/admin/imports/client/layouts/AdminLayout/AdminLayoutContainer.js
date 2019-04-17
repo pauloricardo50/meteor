@@ -8,7 +8,15 @@ export default compose(
   withFileViewer,
   withSmartQuery({
     query: currentUser,
-    params: () => ({}),
+    params: () => ({
+      $body: {
+        email: 1,
+        emails: 1,
+        name: 1,
+        organisations: { name: 1 },
+        roles: 1,
+      },
+    }),
     queryOptions: { reactive: true, single: true },
     dataName: 'currentUser',
     renderMissingDoc: false,
