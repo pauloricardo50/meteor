@@ -11,7 +11,7 @@ const DashboardProgressBarStep = ({ id, isDone, nb, displayLabel }) => (
   <Tooltip
     title={
       id === STEPS.CLOSING ? (
-        <Icon type="monetizationOn" className="heart-beat" size={40} />
+        <Icon type="monetizationOn" size={40} />
       ) : (
         <T id={`Forms.step.${id}.tooltip`} />
       )
