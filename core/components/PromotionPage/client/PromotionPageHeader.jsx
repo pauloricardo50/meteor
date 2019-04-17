@@ -2,8 +2,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import ImageCarrousel from 'core/components/ImageCarrousel';
-import { PROMOTIONS_COLLECTION } from '../../../api/constants';
+import { promotionRemove } from '../../../api/methods';
+import { PROMOTIONS_COLLECTION, ROLES } from '../../../api/constants';
+import ImageCarrousel from '../../ImageCarrousel';
+import ConfirmMethod from '../../ConfirmMethod';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionModifier from './PromotionModifier';
@@ -38,6 +40,7 @@ const PromotionPageHeader = ({
   invitedByUser,
   promotion,
   canModifyPromotion,
+  currentUser,
 }: PromotionPageHeaderProps) => {
   const {
     _id: promotionId,
@@ -52,6 +55,7 @@ const PromotionPageHeader = ({
     invitedByUser,
   });
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
+  const userIsDev = currentUser.roles.includes(ROLES.DEV);
 
   return (
     <div className="promotion-page-header">
@@ -69,6 +73,13 @@ const PromotionPageHeader = ({
               />
             )}
             {canModifyPromotion && <PromotionModifier promotion={promotion} />}
+            {userIsDev && (
+              <ConfirmMethod
+                method={() => promotionRemove.run({ promotionId })}
+                label={<T id="general.remove" />}
+                buttonProps={{ error: true, outlined: true }}
+              />
+            )}
           </h1>
           <h3 className="secondary">
             <T

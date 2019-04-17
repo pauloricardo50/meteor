@@ -23,9 +23,9 @@ promotionUpdate.setHandler(({ userId }, { promotionId, object }) => {
   return PromotionService.update({ promotionId, object });
 });
 
-promotionRemove.setHandler(({ userId }, { promotionId }) => {
+promotionRemove.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.remove(promotionId);
+  return PromotionService.remove(params);
 });
 
 insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
