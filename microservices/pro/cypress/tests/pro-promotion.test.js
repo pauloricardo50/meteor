@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
 import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../proE2eConstants';
 
 describe('Pro', () => {
@@ -38,7 +39,12 @@ describe('Pro', () => {
 
       // customers are invited by nobody
       cy.callMethod('setUserPermissions', {
-        permissions: { displayCustomerNames: { invitedBy: 'USER' } },
+        permissions: {
+          displayCustomerNames: {
+            invitedBy: 'USER',
+            forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+          },
+        },
       });
 
       cy.get('tbody')
@@ -79,7 +85,12 @@ describe('Pro', () => {
 
       // customers are invited by user's organisation member
       cy.callMethod('setUserPermissions', {
-        permissions: { displayCustomerNames: { invitedBy: 'ORGANISATION' } },
+        permissions: {
+          displayCustomerNames: {
+            invitedBy: 'ORGANISATION',
+            forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+          },
+        },
       });
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
       cy.refetch();
@@ -100,7 +111,10 @@ describe('Pro', () => {
       // Can now delete customers
       cy.callMethod('setUserPermissions', {
         permissions: {
-          displayCustomerNames: { invitedBy: 'ORGANISATION' },
+          displayCustomerNames: {
+            invitedBy: 'ORGANISATION',
+            forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+          },
           canInviteCustomers: true,
         },
       });
@@ -122,7 +136,7 @@ describe('Pro', () => {
         });
     });
 
-    it('Can access the promotion lot page', () => {
+    it.only('Can access the promotion lot page', () => {
       let loanCount;
       let additionalLotsCount;
 
@@ -139,7 +153,7 @@ describe('Pro', () => {
           canInviteCustomers: true,
           canAddLots: true,
           displayCustomerNames: {
-            forLotStatus: ['BOOKED', 'SOLD', 'AVAILABLE'],
+            forLotStatus: Object.values(PROMOTION_LOT_STATUS),
             invitedBy: 'ANY',
           },
         },
