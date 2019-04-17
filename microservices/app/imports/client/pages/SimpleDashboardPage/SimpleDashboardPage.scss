@@ -133,5 +133,15 @@
     align-self: center;
     justify-content: space-between;
     margin-top: 16px;
+
+
+    @include screen(small) {
+      flex-direction: column-reverse;
+      align-items: stretch;
+
+       > * {
+         margin-bottom: 16px;
+       }
+    }
   }
 }
