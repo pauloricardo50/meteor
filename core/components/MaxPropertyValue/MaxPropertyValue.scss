@@ -60,6 +60,20 @@
       }
     }
 
+    .show-best-toggle {
+      align-self: center;
+
+      > * {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > * {
+          font-size: initial;
+        }
+      }
+    }
+
     &-selects {
       display: flex;
       align-self: stretch;
@@ -73,52 +87,26 @@
       align-items: stretch;
       margin: 32px 0;
 
-      .money-range {
-        margin: 0;
+      .balance-sheet,
+      .sums {
         display: flex;
-        align-items: center;
 
-        > * {
-          flex-basis: 45%;
-          flex-grow: 1;
-
-          &.divider {
-            flex-shrink: 1;
-            text-align: center;
-            flex-basis: 10%;
-
-            svg {
-              width: 24px;
-              height: 24px;
-            }
-          }
-
-          &:last-child {
-            text-align: right;
-          }
+        .left,
+        .right {
+          flex-basis: 50%;
+          display: flex;
+          flex-direction: column;
         }
 
-        @include screen(med, min) {
-          font-size: 1.3em;
+        .right {
+          text-align: right;
         }
 
-        &.big {
-          font-size: 1.2em;
-
-          @include screen(xsmall) {
-            font-size: 1.05em;
-          }
-
+        .money {
           @include screen(med, min) {
-            font-size: 1.4em;
+            font-size: 1.3em;
           }
         }
-
-        white-space: nowrap;
-      }
-
-      .labels {
-        justify-content: space-between;
       }
 
       .label {

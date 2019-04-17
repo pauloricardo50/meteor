@@ -1,10 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import Switch from '@material-ui/core/Switch';
 
-const Toggle = ({ toggled, onToggle, labelTop, labelLeft, labelRight }) => (
-  <div className="toggle">
+const Toggle = ({
+  toggled,
+  onToggle,
+  labelTop,
+  labelLeft,
+  labelRight,
+  className,
+}) => (
+  <div className={cx('toggle', className)}>
     {labelTop && (
       <div className="toggle-label toggle-label-top">{labelTop}</div>
     )}
@@ -24,6 +32,7 @@ const Toggle = ({ toggled, onToggle, labelTop, labelLeft, labelRight }) => (
 );
 
 Toggle.propTypes = {
+  className: PropTypes.string,
   labelLeft: PropTypes.node,
   labelRight: PropTypes.node,
   labelTop: PropTypes.node,
@@ -32,6 +41,7 @@ Toggle.propTypes = {
 };
 
 Toggle.defaultProps = {
+  className: undefined,
   labelTop: undefined,
   labelLeft: undefined,
   labelRight: undefined,
