@@ -193,8 +193,12 @@ export class PromotionService extends CollectionService {
 
   removeProUser({ promotionId, userId }) {
     const loans = LoanService.fetch({
-      $filters: { 'promotionLinks.invitedBy': userId },
-    }) || [];
+      $filters: {
+        'promotionLinks.invitedBy': userId,
+        'promotionLinks._id': promotionId,
+      },
+    });
+    
     loans.forEach(({ _id: loanId }) => {
       this.updateLinkMetadata({
         id: promotionId,

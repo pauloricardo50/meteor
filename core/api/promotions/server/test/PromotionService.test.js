@@ -443,6 +443,75 @@ describe('PromotionService', function () {
     });
   });
 
+  describe('removeProUser', () => {
+    it('removes the pro from the promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotionId',
+          users: { _id: 'proId', _factory: 'pro' },
+        },
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+
+      PromotionService.removeProUser({
+        promotionId: 'promotionId',
+        userId: 'proId',
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+    });
+
+    it('does not fail if no loans are attributed to the pro', () => {
+      generator({
+        promotions: {
+          _id: 'promotionId',
+          users: { _id: 'proId', _factory: 'pro' },
+          loans: [{}, {}],
+        },
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+
+      PromotionService.removeProUser({
+        promotionId: 'promotionId',
+        userId: 'proId',
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+    });
+
+    it('only removes him from the current promotion', () => {
+      generator({
+        promotions: [
+          {
+            _id: 'promotionId',
+            users: { _id: 'proId', _factory: 'pro' },
+            loans: { _id: 'loanId', $metadata: { invitedBy: 'proId' } },
+          },
+          {
+            _id: 'promotionId2',
+            users: { _id: 'proId' },
+            loans: { _id: 'loanId2', $metadata: { invitedBy: 'proId' } },
+          },
+        ],
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+
+      PromotionService.removeProUser({
+        promotionId: 'promotionId',
+        userId: 'proId',
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+      expect(LoanService.findOne('loanId').promotionLinks[0].invitedBy).to.equal(undefined);
+      expect(LoanService.findOne('loanId2').promotionLinks[0].invitedBy).to.equal('proId');
+    });
+  });
+
   describe('editPromotionLoan', () => {
     it('updates showAllLots without overwriting other metadata', () => {
       generator({

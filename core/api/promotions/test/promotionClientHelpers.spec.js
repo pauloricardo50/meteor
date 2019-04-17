@@ -8,7 +8,7 @@ import {
 import { PROMOTION_INVITED_BY_TYPE } from '../promotionConstants';
 import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
 
-describe.only('promotionClientHelpers', () => {
+describe('promotionClientHelpers', () => {
   context('shouldAnonymize', () => {
     it('returns true if user cannot view the promotion', () => {
       expect(shouldAnonymize({ permissions: {} })).to.equal(true);
