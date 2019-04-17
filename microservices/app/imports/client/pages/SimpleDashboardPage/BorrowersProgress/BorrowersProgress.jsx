@@ -2,15 +2,13 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import Calculator from 'core/utils/Calculator';
 import BorrowersProgressRecap from './BorrowersProgressRecap';
 import BorrowersProgressHeader from './BorrowersProgressHeader';
 
 type BorrowersProgressProps = {};
 
-const BorrowersProgress = ({ loan }: BorrowersProgressProps) => {
+const BorrowersProgress = ({ loan, progress }: BorrowersProgressProps) => {
   const { borrowers, _id: loanId } = loan;
-  const progress = Calculator.personalInfoPercentSimple({ loan });
 
   return (
     <div className="borrowers-progress">

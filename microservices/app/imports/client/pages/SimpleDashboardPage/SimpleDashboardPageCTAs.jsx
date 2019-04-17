@@ -12,14 +12,18 @@ import { WELCOME_PAGE } from 'imports/startup/client/appRoutes';
 
 type SimpleDashboardPageCTAsProps = {};
 
-const SimpleDashboardPageCTAs = ({ loanId }: SimpleDashboardPageCTAsProps) => (
+const SimpleDashboardPageCTAs = ({
+  loanId,
+  progress,
+}: SimpleDashboardPageCTAsProps) => (
   <div className="simple-dashboard-page-ctas">
     <Button raised primary link to={createRoute(WELCOME_PAGE, { loanId })}>
       <T id="BorrowersProgress.welcomePage" />
     </Button>
     <ConfirmMethod
       buttonProps={{
-        primary: true,
+        primary: progress < 1,
+        secondary: progress >= 1,
         raised: true,
         label: <T id="BorrowersProgress.fullApplication" />,
         icon: <Icon type="right" />,
