@@ -68,6 +68,7 @@ $step-circle-size: 25px;
 
 .dashboard-progress-bar {
   position: relative;
+  z-index: 0;
 }
 
 .dashboard-progress-bar .steps {
@@ -82,6 +83,20 @@ $step-circle-size: 25px;
   flex-basis: 25%;
   flex-direction: column;
   flex-grow: 1;
+  border-radius: 16px;
+  padding: 8px;
+
+  &:hover {
+    background-color: white;
+
+    .step-name {
+      color: $primary !important;
+    }
+
+    .step {
+      color: white;
+    }
+  }
 
   .step-name {
     opacity: 0.9;
@@ -121,13 +136,14 @@ $step-circle-size: 25px;
 
 .dashboard-progress-bar .absolute-lines {
   position: absolute;
-  top: 11px; // Circle height, and space for 3px height
+  top: 19px; // Circle height, and space for 3px height, and padding
   left: 12.5%;
 
   display: flex;
   flex-direction: row;
 
   width: calc(75%);
+  z-index: -1;
 }
 
 .absolute-lines .line {
@@ -163,6 +179,16 @@ $step-circle-size: 25px;
 
     &.done {
       background-color: $success;
+    }
+  }
+}
+
+.dashboard-progress-bar.light .dashboard-progress-bar-step {
+  &:hover {
+    background-color: $primary;
+
+    .step-name {
+      color: white !important;
     }
   }
 }
