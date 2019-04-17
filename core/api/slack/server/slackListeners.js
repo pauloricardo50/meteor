@@ -31,7 +31,7 @@ ServerEventService.addMethodListener(
       user: { name: 1 },
     });
 
-    promotionLotBooked({currentUser, promotionLot, user });
+    promotionLotBooked({ currentUser, promotionLot, user });
   },
 );
 
@@ -50,7 +50,7 @@ ServerEventService.addMethodListener(
       user: { name: 1 },
     });
 
-    promotionLotSold({currentUser, promotionLot, user });
+    promotionLotSold({ currentUser, promotionLot, user });
   },
 );
 
