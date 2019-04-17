@@ -33,15 +33,15 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
   if (state !== STATE.DONE) {
     return (
       <div className="simple-max-property-value">
-        <h3>
+        <h2>
           <T id="MaxPropertyValue.title" />
-        </h3>
+        </h2>
         <div className="empty">
           {state === STATE.MISSING_INFOS ? (
             <>
               <FontAwesomeIcon className="icon" icon={faUsers} />
 
-              <h4>
+              <h4 className="secondary">
                 <T id="MaxPropertyValue.missingInfos" />
               </h4>
             </>

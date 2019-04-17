@@ -29,7 +29,7 @@ const MaxPropertyValueEmptyState = ({
     <div className="flex-col center">
       {state === STATE.MISSING_INFOS ? (
         <>
-          <h3>Complétez vos informations</h3>
+          <h2>Complétez vos informations</h2>
           <p className="description">
             <T id="MaxPropertyValue.missingInfos" />
           </p>

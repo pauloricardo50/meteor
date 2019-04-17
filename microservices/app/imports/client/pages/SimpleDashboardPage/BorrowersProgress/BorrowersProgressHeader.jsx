@@ -20,7 +20,7 @@ const BorrowersProgressHeader = ({
         values={{
           percent: (
             <>
-                &nbsp;
+              &nbsp;
               <PercentWithStatus
                 value={progress}
                 status={progress < 1 ? null : undefined}
@@ -34,11 +34,20 @@ const BorrowersProgressHeader = ({
 
     <Button
       raised={progress < 1}
-      primary
+      secondary={progress < 1}
+      primary={progress >= 1}
       link
       to={createRoute(BORROWERS_PAGE_NO_TAB, { loanId })}
     >
-      <T id={progress < 1 ? 'general.continue' : 'general.modify'} />
+      <T
+        id={
+          progress < 1
+            ? progress === 0
+              ? 'general.start'
+              : 'general.continue'
+            : 'general.modify'
+        }
+      />
     </Button>
   </div>
 );

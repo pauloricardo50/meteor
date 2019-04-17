@@ -43,7 +43,9 @@ const MaxPropertyValueResults = ({
     <div className="max-property-value-results animated fadeIn">
       <div className="top">
         <div>
-          <h2>Capacité d'achat maximale</h2>
+          <h2>
+            <T id="MaxPropertyValue.title" />
+          </h2>
         </div>
         <div className="max-property-value-results-selects">
           <Select
