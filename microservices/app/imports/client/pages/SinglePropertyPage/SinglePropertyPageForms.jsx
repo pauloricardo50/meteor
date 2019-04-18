@@ -29,6 +29,7 @@ const SinglePropertyPageForms = ({
           doc={loan}
           docId={loan._id}
           disabled={!userFormsEnabled}
+          showDisclaimer={false}
         />
       </div>
 

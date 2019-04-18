@@ -10,9 +10,11 @@ import {
   TASK_TYPE,
   PURCHASE_TYPE,
   APPLICATION_TYPES,
+  ORGANISATION_TYPES,
 } from '../../api/constants';
 import {
   Borrowers,
+  Contacts,
   Loans,
   Lots,
   Offers,
@@ -23,7 +25,6 @@ import {
   Properties,
   Tasks,
   Users,
-  Contacts,
 } from '../../api';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
@@ -285,5 +286,26 @@ Meteor.methods({
       userId,
       addOffers: true,
     });
+  },
+
+  addUserToOrg() {
+    SecurityService.checkCurrentUserIsDev();
+
+    let orgId;
+    const org = Organisations.findOne({ name: 'Dev Org' });
+
+    if (org) {
+      orgId = org._id;
+    } else {
+      orgId = Organisations.insert({
+        name: 'Dev Org',
+        type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+      });
+    }
+
+    Organisations.update(
+      { _id: orgId },
+      { $set: { userLinks: [{ _id: this.userId }] } },
+    );
   },
 });

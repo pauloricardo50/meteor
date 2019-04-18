@@ -271,6 +271,15 @@ class DevPage extends Component {
             Créer des taux d'intérêt
           </Button>
           <hr className="mbt20" />
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() => Meteor.call('addUserToOrg')}
+          >
+            Add me in org
+          </Button>
+          <hr className="mbt20" />
           <ConfirmMethod
             method={cb => migrateToLatest().then(cb)}
             keyword="MIGRATE"

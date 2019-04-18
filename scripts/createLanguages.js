@@ -62,6 +62,7 @@ const config = {
       id: 'app',
       path: __dirname + '/../microservices/app',
       exceptions: [
+        'AutoForm',
         'AccountPage',
         'AdminFilesTab',
         'AmortizationChart',
@@ -110,8 +111,9 @@ const config = {
         'LoginPage',
         'PasswordChange',
         'PasswordResetPage',
-        // 'ProCustomerAdder',
-        // 'ProCustomersTable',
+        'ProCustomerAdder',
+        'ProCustomersTable',
+        'PropertiesTable',
         'Promotion',
         'PromotionLotPage',
         'ProOrganisationUserAdder',
@@ -175,7 +177,7 @@ const findFilesWithExtension = (startPath, extension) => {
   for (let i = 0; i < files.length; i++) {
     if (files[i] === 'core') {
       // don't scan core directory, add those to exceptions
-      break;
+      continue;
     }
 
     const filename = path.join(startPath, files[i]);
