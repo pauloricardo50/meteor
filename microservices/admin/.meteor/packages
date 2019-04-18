@@ -59,7 +59,7 @@ meteorhacks:inject-initial
 # Production
 force-ssl@1.1.0                     # Automatically route users to https
 dynamic-import@0.5.1
-dburles:google-maps
+epotek:google-maps
 # lmachens:kadira
 okgrow:analytics
 

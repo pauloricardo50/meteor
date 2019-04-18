@@ -58,7 +58,7 @@ force-ssl@1.1.0                      # Automatically route users to https
 dynamic-import@0.5.1
 accounts-password@1.5.1
 wylio:mandrill
-dburles:google-maps
+epotek:google-maps
 tmeasday:acceptance-test-driver
 okgrow:analytics
 underscore@1.0.10
