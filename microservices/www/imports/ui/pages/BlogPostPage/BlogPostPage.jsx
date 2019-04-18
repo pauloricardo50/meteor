@@ -6,7 +6,7 @@ import PageHead from 'core/components/PageHead';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import Loading from 'core/components/Loading';
-import NotFound from 'core/components/loadable';
+import NotFound from 'core/components/NotFound/loadable';
 import withMatchParam from 'core/containers/withMatchParam';
 import { fetchBlogPostBySlug } from 'core/api/blog';
 import BlogPostPageContent from './BlogPostPageContent';

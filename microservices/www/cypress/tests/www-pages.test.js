@@ -22,6 +22,16 @@ const pages = {
 
   Interests: route('/interests', { shouldRender: '.interests-page' }),
 
+  Blog: route('/blog', { shouldRender: '.blog-page' }),
+
+  BlogPost: route('/blog/notre-vision-de-le-potek', {
+    shouldRender: '.blog-post-page-content',
+  }),
+
+  'Not Found BlogPost': route('/blog/unknown', {
+    shouldRender: '#not-found-page',
+  }),
+
   'Not Found': route('/an-inexistent-page', {
     shouldRender: '#not-found-page',
   }),
