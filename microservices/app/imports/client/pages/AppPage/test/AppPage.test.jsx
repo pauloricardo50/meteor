@@ -11,7 +11,7 @@ describe('AppPage', () => {
   const component = () => shallow(<AppPage {...props} />);
 
   beforeEach(() => {
-    props = { currentUser: { emails: [{}], loans: [] } };
+    props = { currentUser: { emails: [{}], loans: [], roles: [] } };
   });
 
   it('renders some text if no loan is passed', () => {
