@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +6,6 @@ import { injectIntl } from 'react-intl';
 
 import { impersonateUser } from 'core/api';
 import notification from 'core/utils/notification';
-import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 
 class ImpersonatePage extends Component {
   static propTypes = {
@@ -28,7 +26,6 @@ class ImpersonatePage extends Component {
 
     impersonateUser.run({ userId, authToken }).then(({ emails }) => {
       Meteor.connection.setUserId(userId);
-      Session.setPersistent(IMPERSONATE_SESSION_KEY, true);
 
       notification.success({
         message: <span id="impersonation-success-message">Yay</span>,
