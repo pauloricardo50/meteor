@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
-import { impersonateUser } from 'core/api';
-import notification from 'core/utils/notification';
+import { impersonateUser } from '../../api';
 
 class ImpersonatePage extends Component {
   static propTypes = {
@@ -26,14 +25,15 @@ class ImpersonatePage extends Component {
 
     impersonateUser.run({ userId, authToken }).then(({ emails }) => {
       Meteor.connection.setUserId(userId);
-
-      notification.success({
-        message: <span id="impersonation-success-message">Yay</span>,
-        description: formatMessage(
-          { id: 'Impersonation.impersonationSuccess' },
-          { email: emails[0].address },
-        ),
-        duration: 5,
+      import('../../utils/notification').then(({ default: notification }) => {
+        notification.success({
+          message: <span id="impersonation-success-message">Yay</span>,
+          description: formatMessage(
+            { id: 'Impersonation.impersonationSuccess' },
+            { email: emails[0].address },
+          ),
+          duration: 5,
+        });
       });
 
       history.push('/');

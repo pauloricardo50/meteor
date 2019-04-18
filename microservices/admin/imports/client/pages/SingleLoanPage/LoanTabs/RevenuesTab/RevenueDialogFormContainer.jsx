@@ -8,7 +8,6 @@ import {
   revenueUpdate,
   revenueRemove,
 } from 'core/api/revenues/index';
-import message from 'core/utils/message';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { COMMISSION_STATUS } from 'core/api/constants';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
@@ -71,7 +70,9 @@ export default compose(
         .run({ revenueId, object })
         .then(() => {
           setOpen(false);
-          message.success("C'est dans la boîte !", 2);
+          import('../../../../../core/utils/message').then(({ default: message }) => {
+            message.success("C'est dans la boîte !", 2);
+          });
         })
         .finally(() => setSubmitting(false));
     },

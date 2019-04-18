@@ -5,9 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/pro-light-svg-icons/faKey';
 import moment from 'moment';
 
-import message from 'core/utils/message';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
+import Button from '../../Button';
+import T from '../../Translation';
 import RsaKey from './RsaKey';
 
 type KeyProps = {
@@ -25,7 +24,9 @@ const copyKeyToClipboard = (key) => {
   dummyInput.select();
   document.execCommand('copy');
   document.body.removeChild(dummyInput);
-  message.success('Clé copiée dans le presse-papier !');
+  import('../../../utils/message').then(({ default: message }) => {
+    message.success('Clé copiée dans le presse-papier !');
+  });
 };
 
 const formatKey = ({ key, type }) =>

@@ -5,7 +5,6 @@ import pick from 'lodash/pick';
 import MuiDialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import message from '../../utils/message';
 import Button from '../Button';
 import AutoForm from './AutoForm';
 import { makeCustomAutoField } from './AutoFormComponents';
@@ -107,14 +106,16 @@ export default compose(
     onSubmit: (...args) =>
       onSubmit(...args).then(() => {
         setOpen(false);
-        message.success(
-          onSuccessMessage
-            ? typeof onSuccessMessage === 'function'
-              ? onSuccessMessage(...args)
-              : onSuccessMessage
-            : "C'est dans la boite !",
-          5,
-        );
+        import('../../utils/message').then(({ default: message }) => {
+          message.success(
+            onSuccessMessage
+              ? typeof onSuccessMessage === 'function'
+                ? onSuccessMessage(...args)
+                : onSuccessMessage
+              : "C'est dans la boite !",
+            5,
+          );
+        });
       }),
   })),
 )(AutoFormDialog);

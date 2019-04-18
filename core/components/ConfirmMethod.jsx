@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import message from '../utils/message';
 import Dialog from './Material/Dialog';
 import Button from './Button';
 import TextField from './Material/TextField';
@@ -35,7 +34,9 @@ export default class ConfirmMethod extends Component {
         .finally(() => this.setState({ loading: false }))
         .then(() => {
           this.setState({ open: false });
-          return message.success('Succès !', 2);
+          return import('../utils/message').then(({ default: message }) => {
+            message.success('Succès !', 2);
+          });
         });
     }
   };

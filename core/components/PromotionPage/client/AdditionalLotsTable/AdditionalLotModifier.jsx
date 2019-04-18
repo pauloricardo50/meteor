@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-
 import { compose, withState, withProps } from 'recompose';
-import T from '../../../Translation';
-import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
-import message from '../../../../utils/message';
-import Button from '../../../Button';
+
 import { lotRemove, lotUpdate } from '../../../../api';
+import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
+import T from '../../../Translation';
+import Button from '../../../Button';
 import { lotSchema } from '../ProPromotionLotsTable/ProPromotionLotsTable';
 
 type AdditionalLotModifierProps = {
@@ -107,7 +106,9 @@ export default compose(
         })
         .then(() => {
           setOpen(false);
-          message.success("C'est dans la boite !", 2);
+          import('../../../../utils/message').then(({ default: message }) => {
+            message.success("C'est dans la boite !", 2);
+          });
         })
         .finally(() => setSubmitting(false));
     },
