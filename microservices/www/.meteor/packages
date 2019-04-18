@@ -21,7 +21,7 @@ server-render@0.3.1
 fourseven:scss
 
 # Put this before factory
-aldeed:collection2-core
+aldeed:collection2@3.0.2
 
 # Testing
 dburles:factory

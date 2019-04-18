@@ -23,7 +23,7 @@ meteortoys:allthings
 fourseven:scss
 
 # Put this before factory
-aldeed:collection2-core
+aldeed:collection2@3.0.2
 
 # Testing
 dburles:factory

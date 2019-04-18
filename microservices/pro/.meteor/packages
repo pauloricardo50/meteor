@@ -23,6 +23,7 @@ meteortoys:allthings
 fourseven:scss
 
 # Put this before factory
+aldeed:collection2@3.0.2
 
 
 # Testing
@@ -44,7 +45,6 @@ edgee:slingshot
 herteby:denormalize
 cultofcoders:grapher
 matb33:collection-hooks
-aldeed:collection2-core
 cultofcoders:mutations
 dburles:mongo-collection-instances
 
