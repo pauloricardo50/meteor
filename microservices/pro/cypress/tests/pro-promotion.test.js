@@ -2,7 +2,7 @@
 import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
 import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../proE2eConstants';
 
-describe('Pro', () => {
+describe('Pro promotion', () => {
   before(() => {
     cy.initiateTest();
     cy.callMethod('resetDatabase');

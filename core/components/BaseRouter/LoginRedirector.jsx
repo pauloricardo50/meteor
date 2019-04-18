@@ -17,7 +17,7 @@ class LoginRedirector extends Component {
       return;
     }
 
-    const isLoggedIn = Meteor.user();
+    const isLoggedIn = Meteor.userId();
     const isAllowed = isOnAllowedRoute(
       history.location.pathname,
       WITHOUT_LOGIN,
