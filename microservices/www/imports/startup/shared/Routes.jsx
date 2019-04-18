@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import ScrollToTop from 'core/components/ScrollToTop';
-import NotFound from 'core/components/NotFound';
+import NotFound from 'core/components/NotFound/loadable';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
 import BlogPostPage from '../../ui/pages/BlogPostPage/loadable';

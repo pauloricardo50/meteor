@@ -7,25 +7,25 @@ import React from 'react';
 // import 'core-js/modules/es7.promise.finally';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import NotFound from 'core/components/NotFound';
+import NotFound from 'core/components/NotFound/loadable';
 import { getUserLocale, getFormats } from 'core/utils/localization';
-import DevPage from 'core/components/DevPage';
-import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
+import DevPage from 'core/components/DevPage/loadable';
+import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage/loadable';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
-import PasswordResetPage from 'core/components/PasswordResetPage';
-import EmailVerificationPage from 'core/components/EmailVerificationPage';
-import AccountPage from 'core/components/AccountPage';
+import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
+import EmailVerificationPage from 'core/components/EmailVerificationPage/loadable';
+import AccountPage from 'core/components/AccountPage/loadable';
 
-import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
-import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
-import ProLayout from '../../client/layout';
 import messagesFR from '../../../lang/fr.json';
-import * as ROUTES from './proRoutes';
 import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
-import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
-import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
-import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
+import ProLayout from '../../client/layout/loadable';
 import ProOrganisationPage from '../../client/pages/ProOrganisationPage/loadable';
+import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
+import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
+import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
+import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
+import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
+import * as ROUTES from './proRoutes';
 
 const ProRouter = () => (
   <BaseRouter

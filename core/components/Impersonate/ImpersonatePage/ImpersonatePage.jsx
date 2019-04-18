@@ -25,7 +25,7 @@ class ImpersonatePage extends Component {
 
     impersonateUser.run({ userId, authToken }).then(({ emails }) => {
       Meteor.connection.setUserId(userId);
-      import('../../utils/notification').then(({ default: notification }) => {
+      import('../../../utils/notification').then(({ default: notification }) => {
         notification.success({
           message: <span id="impersonation-success-message">Yay</span>,
           description: formatMessage(
