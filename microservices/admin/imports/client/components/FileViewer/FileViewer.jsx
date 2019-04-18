@@ -5,7 +5,9 @@ import Loadable from 'core/utils/loadable';
 import IconButton from 'core/components/IconButton';
 import { withFileViewerContext } from 'core/containers/FileViewerContext';
 
-const ReactFileViewer = Loadable({ loader: () => 'react-file-viewer' });
+// import ReactFileViewer from 'react-file-viewer';
+
+const ReactFileViewer = Loadable({ loader: () => import('react-file-viewer') });
 
 type FileViewerProps = {};
 
