@@ -12,7 +12,6 @@ import {
   createLoginToken,
   createEmailVerificationToken,
 } from 'core/utils/testHelpers/testHelpers';
-import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 import 'core/cypress/server/methods';
 import { E2E_USER_EMAIL } from 'core/cypress/utils';
 import LoanService from 'core/api/loans/server/LoanService';
@@ -54,7 +53,6 @@ Meteor.methods({
       adminLoginToken,
       emailVerificationToken,
       userId,
-      IMPERSONATE_SESSION_KEY,
     };
   },
   inviteTestUser({ withPassword } = {}) {

@@ -21,7 +21,7 @@ server-render@0.3.1
 fourseven:scss
 
 # Put this before factory
-aldeed:collection2-core
+aldeed:collection2@3.0.2
 
 # Testing
 dburles:factory
@@ -43,7 +43,7 @@ accounts-password@1.5.1
 force-ssl@1.1.0                      # Automatically route users to https
 wylio:mandrill
 edgee:slingshot
-dburles:google-maps
+epotek:google-maps
 tmeasday:acceptance-test-driver
 lmachens:kadira
 okgrow:analytics

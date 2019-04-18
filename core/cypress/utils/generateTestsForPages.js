@@ -22,14 +22,6 @@ const generateTestsForPages = (pages, getTestData) => {
             cy.visit('/login');
             cy.meteorLogin(getTestUserByRole(pageAuthentication));
           }
-
-          // logout the impersonated user
-          const { IMPERSONATE_SESSION_KEY } = testData;
-          cy.window().then((context) => {
-            if (context && context.Session) {
-              context.Session.clear(IMPERSONATE_SESSION_KEY);
-            }
-          });
         });
 
         it('Pages should render without errors', () => {

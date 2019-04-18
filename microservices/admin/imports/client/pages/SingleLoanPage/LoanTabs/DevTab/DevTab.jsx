@@ -3,7 +3,6 @@ import React from 'react';
 import omit from 'lodash/omit';
 
 import Tabs from 'core/components/Tabs';
-import message from 'core/utils/message';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { loanUpdate } from 'core/api/loans/index';
 import BorrowerSchema from 'core/api/borrowers/schemas/BorrowerSchema';
@@ -40,7 +39,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                       'documents',
                     ]),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
             />
           ),
@@ -58,7 +61,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     propertyId: property._id,
                     object: omit(doc, ['loans', 'user', 'documents']),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
             />
           ),
@@ -76,7 +83,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     borrowerId: borrower._id,
                     object: omit(doc, ['loans', 'user', 'documents']),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
             />
           ),
@@ -94,7 +105,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     offerId: offer._id,
                     object: omit(doc, ['loan', 'user', 'documents']),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
             />
           ),

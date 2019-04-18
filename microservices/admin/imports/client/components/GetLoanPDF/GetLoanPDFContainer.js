@@ -3,7 +3,6 @@ import { compose, withProps } from 'recompose';
 
 import { PDF_TYPES } from 'core/api/constants';
 import { generatePDF } from 'core/api/pdf/methodDefinitions';
-import message from 'core/utils/message';
 import { base64ToBlob } from './base64-to-blob';
 
 const savePdf = ({ base64, pdfName }) => {
@@ -14,7 +13,9 @@ const savePdf = ({ base64, pdfName }) => {
   try {
     return fileSaver.saveAs(base64ToBlob(base64), `${pdfName}.pdf`);
   } catch (error) {
-    message.error(error.message, 5);
+    import('../../../core/utils/message').then(({ default: message }) => {
+      message.error(error.message, 5);
+    });
   }
 };
 
@@ -22,7 +23,9 @@ const saveHtmlFile = ({ html, pdfName }) => {
   try {
     return fileSaver.saveAs(new Blob([html]), `${pdfName}.html`);
   } catch (error) {
-    message.error(error.message, 5);
+    import('../../../core/utils/message').then(({ default: message }) => {
+      message.error(error.message, 5);
+    });
   }
 };
 
@@ -35,7 +38,11 @@ export default compose(withProps(({ loan: { _id: loanId } }) => ({
         options: { anonymous },
       })
       .then(savePdf)
-      .catch(error => message.error(error.message, 5)),
+      .catch((error) => {
+          import('../../../core/utils/message').then(({ default: message }) => {
+            message.error(error.message, 5);
+          });
+      }),
   handleHTML: ({ anonymous, organisationId, structureIds }) =>
     generatePDF
       .run({

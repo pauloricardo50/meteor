@@ -1,9 +1,9 @@
 import React from 'react';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import NotFound from 'core/components/NotFound';
+import NotFound from 'core/components/NotFound/loadable';
 import { getUserLocale, getFormats } from 'core/utils/localization';
-import DevPage from 'core/components/DevPage';
+import DevPage from 'core/components/DevPage/loadable';
 
 import messagesFR from '../../../lang/fr.json';
 

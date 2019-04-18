@@ -7,7 +7,7 @@ import { IMPERSONATE_ROUTE } from '../api/impersonation/impersonation';
 
 export const isLogin = path => path.slice(0, 6) === '/login';
 
-const WITHOUT_LOGIN = [
+export const WITHOUT_LOGIN = [
   '/login',
   '/enroll-account',
   '/reset-password',
@@ -47,7 +47,9 @@ const getBaseRedirect = (currentUser, pathname) => {
   }
 
   const isDev = Roles.userIsInRole(currentUser, ROLES.DEV);
-  if (isDev) return false;
+  if (isDev) {
+    return false;
+  }
 
   // redirectIfInRoleForOtherApp(currentUser, ROLES.USER, 'app');
   // redirectIfInRoleForOtherApp(currentUser, ROLES.PRO, 'pro');

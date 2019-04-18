@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { GoogleMaps } from 'meteor/dburles:google-maps';
+import { GoogleMaps } from 'meteor/epotek:google-maps';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';

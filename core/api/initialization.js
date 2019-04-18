@@ -1,5 +1,9 @@
 // Leave this imported here for autoforms to work
-import uniforms from 'uniforms-material';
+import 'uniforms/SimpleSchema2Bridge';
 import SimpleSchema from 'simpl-schema';
 
-SimpleSchema.extendOptions(['condition', 'customAllowedValues','customAutoValue']);
+SimpleSchema.extendOptions([
+  'condition',
+  'customAllowedValues',
+  'customAutoValue',
+]);

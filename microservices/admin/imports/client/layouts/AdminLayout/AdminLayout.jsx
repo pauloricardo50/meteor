@@ -13,7 +13,7 @@ import getBaseRedirect from 'core/utils/redirection';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
-import FileViewer from '../../components/FileViewer/FileViewer';
+import FileViewer from '../../components/FileViewer';
 
 const getRedirect = ({ currentUser, history }) => {
   const baseRedirect = getBaseRedirect(currentUser, history.location.pathname);

@@ -1,15 +1,13 @@
 // @flow
 import React from 'react';
-import {
-  FacebookShareButton,
-  LinkedinShareButton,
-  WhatsappShareButton,
-  EmailShareButton,
-  FacebookIcon,
-  LinkedinIcon,
-  WhatsappIcon,
-  EmailIcon,
-} from 'react-share';
+import FacebookShareButton from 'react-share/lib/FacebookShareButton';
+import LinkedinShareButton from 'react-share/lib/LinkedinShareButton';
+import WhatsappShareButton from 'react-share/lib/WhatsappShareButton';
+import EmailShareButton from 'react-share/lib/EmailShareButton';
+import FacebookIcon from 'react-share/lib/FacebookIcon';
+import LinkedinIcon from 'react-share/lib/LinkedinIcon';
+import WhatsappIcon from 'react-share/lib/WhatsappIcon';
+import EmailIcon from 'react-share/lib/EmailIcon';
 
 type BlogPostPageShareProps = {};
 

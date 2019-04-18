@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 import { injectIntl } from 'react-intl';
-import message from '../../utils/message';
 
 class EmailVerificationPage extends Component {
   componentDidMount() {
@@ -21,15 +20,20 @@ class EmailVerificationPage extends Component {
     Accounts.verifyEmail(token, (error) => {
       if (error) {
         history.push('/');
-        message.error(
-          intl.formatMessage({
-            id: 'EmailVerification.error',
-          }),
-          5,
-        );
+
+        import('../../utils/message').then(({ default: message }) => {
+          message.error(
+            intl.formatMessage({
+              id: 'EmailVerification.error',
+            }),
+            5,
+          );
+        });
       } else {
         const msg = intl.formatMessage({ id: 'EmailVerification.message' });
-        message.success(msg, 2);
+        import('../../utils/message').then(({ default: message }) => {
+          message.success(msg, 2);
+        });
         history.push('/');
       }
     });

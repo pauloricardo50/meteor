@@ -1,4 +1,4 @@
-import { INTEREST_RATES } from 'imports/core/api/constants';
+import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 
 const colors = {
   primary: '#005bea',

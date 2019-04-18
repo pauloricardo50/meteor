@@ -8,7 +8,6 @@ const PRO_URL = Meteor.settings.public.subdomains.pro;
 export const IMPERSONATE_ROUTE = '/impersonate';
 export const IMPERSONATE_USER_ID = 'userId';
 export const IMPERSONATE_TOKEN = 'authToken';
-export const IMPERSONATE_SESSION_KEY = 'impersonate';
 
 export function generateImpersonateLink({ _id: userId, roles }) {
   // eslint-disable-next-line no-underscore-dangle

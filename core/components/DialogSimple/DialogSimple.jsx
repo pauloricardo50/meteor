@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from './Material/Dialog';
-import Button from './Button';
-import T from './Translation';
+import Dialog from '../Material/Dialog';
+import Button from '../Button';
+import T from '../Translation';
 
 export default class DialogSimple extends Component {
   constructor(props) {

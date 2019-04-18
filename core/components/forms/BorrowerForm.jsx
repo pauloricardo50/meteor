@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 
 import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { borrowerUpdate, mortgageNoteInsert } from 'core/api';
-import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
 
@@ -67,18 +66,37 @@ const otherSchema = BorrowerSchemaAdmin.omit(
 );
 
 const handleSubmit = borrowerId => (doc) => {
-  const hideLoader = message.loading('...', 0);
-  return borrowerUpdate
-    .run({ borrowerId, object: omit(doc, omittedFields) })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return borrowerUpdate.run({
+        borrowerId,
+        object: omit(doc, omittedFields),
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
 const insertMortgageNote = (borrowerId) => {
-  const hideLoader = message.loading('...', 0);
-  return mortgageNoteInsert
-    .run({ borrowerId })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return mortgageNoteInsert.run({ borrowerId });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
