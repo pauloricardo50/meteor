@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
-import { impersonateUser } from '../../api';
+import { impersonateUser } from '../../../api/methods';
 
 class ImpersonatePage extends Component {
   static propTypes = {
