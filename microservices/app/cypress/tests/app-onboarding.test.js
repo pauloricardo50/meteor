@@ -4,7 +4,7 @@ import { USER_EMAIL, USER_PASSWORD } from '../appE2eConstants';
 describe('App onboarding', () => {
   [
     { name: 'desktop', someString: 'yo' },
-    // { width: 320, height: 568, name: 'iPhone 5' },
+    { width: 320, height: 568, name: 'iPhone 5' },
   ].forEach(({ width, height, name }) => {
     context(name, () => {
       before(() => {
@@ -41,7 +41,7 @@ describe('App onboarding', () => {
         cy.get('.error').should('exist');
       });
 
-      it.only('should see the welcomescreen and get to the dashboard', () => {
+      it('should see the welcomescreen and get to the dashboard', () => {
         cy.callMethod('inviteTestUser', { withPassword: true });
         cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
         cy.visit('/');

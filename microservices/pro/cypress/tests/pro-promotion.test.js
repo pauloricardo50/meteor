@@ -136,7 +136,7 @@ describe('Pro', () => {
         });
     });
 
-    it.only('Can access the promotion lot page', () => {
+    it('Can access the promotion lot page', () => {
       let loanCount;
       let additionalLotsCount;
 
