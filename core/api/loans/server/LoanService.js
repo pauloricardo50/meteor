@@ -47,8 +47,10 @@ export class LoanService extends CollectionService {
     super(Loans);
   }
 
-  insert = ({ loan = {}, userId }) =>
-    Loans.insert({ ...loan, name: this.getNewLoanName(), userId });
+  insert = ({ loan = {}, userId }) => {
+    const name = this.getNewLoanName();
+    return Loans.insert({ ...loan, name, userId });
+  };
 
   getNewLoanName = (now = new Date()) => {
     const year = now.getYear();

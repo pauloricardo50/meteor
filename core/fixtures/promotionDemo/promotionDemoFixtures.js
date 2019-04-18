@@ -86,44 +86,14 @@ const addPromotionOptions = (loanId, promotion) => {
   });
 };
 
-export const createPromotionDemo = async (
-  userId,
-  addCurrentUser,
-  withPromotionOptions,
+const createUsers = async ({
   users,
-  withInvitedBy = false,
-) => {
-  console.log('Creating promotion demo...');
-  const promotionId = PromotionService.insert({
-    promotion: DEMO_PROMOTION,
-    userId,
-  });
-
-  console.log('creating lots');
-  createLots(promotionId);
-
-  const promotion = PromotionService.get(promotionId);
-
-  if (addCurrentUser) {
-    console.log('Adding current user');
-
-    const loanId = await PromotionService.inviteUser({
-      promotionId,
-      userId: Meteor.userId(),
-      sendInvitation: false,
-    });
-    if (withPromotionOptions) {
-      const promotionOptionIds = addPromotionOptions(loanId, promotion);
-      LoanService.setPromotionPriorityOrder({
-        loanId,
-        promotionId,
-        priorityOrder: promotionOptionIds,
-      });
-    }
-  }
-
+  promotionId,
+  promotion,
+  withInvitedBy,
+}) => {
   console.log('creating users');
-  range(users).forEach(async (i) => {
+  for (let i = 0; i < range(users).length; i += 1) {
     console.log(`creating user ${i + 1}`);
 
     const user = {
@@ -163,6 +133,51 @@ export const createPromotionDemo = async (
       promotionId,
       priorityOrder: promotionOptionIds,
     });
+  }
+};
+
+export const createPromotionDemo = async (
+  userId,
+  addCurrentUser,
+  withPromotionOptions,
+  users,
+  withInvitedBy = false,
+) => {
+  console.log('Creating promotion demo...');
+  const promotionId = PromotionService.insert({
+    promotion: DEMO_PROMOTION,
+    userId,
   });
+
+  console.log('creating lots');
+  createLots(promotionId);
+
+  const promotion = PromotionService.get(promotionId);
+
+  if (addCurrentUser) {
+    console.log('Adding current user');
+
+    const loanId = await PromotionService.inviteUser({
+      promotionId,
+      userId: Meteor.userId(),
+      sendInvitation: false,
+    });
+    if (withPromotionOptions) {
+      const promotionOptionIds = addPromotionOptions(loanId, promotion);
+      LoanService.setPromotionPriorityOrder({
+        loanId,
+        promotionId,
+        priorityOrder: promotionOptionIds,
+      });
+    }
+  }
+
+  await createUsers({
+    users,
+    promotionId,
+    promotion,
+    withInvitedBy,
+  });
+
   console.log('Done creating promotion');
 };

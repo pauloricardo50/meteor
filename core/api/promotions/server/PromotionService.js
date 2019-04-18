@@ -198,7 +198,7 @@ export class PromotionService extends CollectionService {
         'promotionLinks._id': promotionId,
       },
     });
-    
+
     loans.forEach(({ _id: loanId }) => {
       this.updateLinkMetadata({
         id: promotionId,
