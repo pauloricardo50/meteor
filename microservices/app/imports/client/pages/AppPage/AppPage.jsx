@@ -1,14 +1,20 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+
 import T from 'core/components/Translation';
+import { ROLES } from 'core/api/constants';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
 
-const AppPage = ({ currentUser: { emails, loans } }) => {
+const AppPage = ({ currentUser: { emails, loans, roles } }) => {
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }
+
+  const userIsPro = roles.includes(ROLES.PRO);
 
   return (
     <section id="app-page" className="app-page flex-col center animated fadeIn">
@@ -30,6 +36,17 @@ const AppPage = ({ currentUser: { emails, loans } }) => {
       {loans.length === 0 && (
         <p className="description">
           <T id="AppPage.empty" />
+          {userIsPro && (
+            <>
+              <br />
+              <br />
+              Pour accéder à votre interface e-Potek Pro, veuillez vous rendre
+              sur{' '}
+              <a className="color" href={Meteor.settings.public.subdomains.pro}>
+                pro.e-potek.ch
+              </a>
+            </>
+          )}
         </p>
       )}
     </section>
