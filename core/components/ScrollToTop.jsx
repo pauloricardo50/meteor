@@ -2,6 +2,8 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
+/* Every route change should scroll to top, which isn't automatic */
+
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {

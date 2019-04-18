@@ -16,6 +16,7 @@ import Switch from './Switch';
 import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
+import LoginRedirector from './LoginRedirector';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -55,20 +56,30 @@ const BaseRouter = ({
         <DisconnectModal />
 
         <Router history={history}>
-          {/* Every route change should scroll to top,
-              which isn't automatic */}
-          <ScrollToTop>
-            <Switch>
-              <Route exact path="/login-token/:token" render={loginWithToken} />
-              {/* LoginPage has to be above / path */}
-              {hasLogin && <Route exact path="/login" component={LoginPage} />}
-              {isDev && <Route exact path="/grapher" component={GrapherPage} />}
-              <Route
-                path="/"
-                render={childProps => React.cloneElement(children, childProps)}
-              />
-            </Switch>
-          </ScrollToTop>
+          <LoginRedirector hasLogin={hasLogin}>
+            <ScrollToTop>
+              <Switch>
+                <Route
+                  exact
+                  path="/login-token/:token"
+                  render={loginWithToken}
+                />
+                {/* LoginPage has to be above / path */}
+                {hasLogin && (
+                  <Route exact path="/login" component={LoginPage} />
+                )}
+                {isDev && (
+                  <Route exact path="/grapher" component={GrapherPage} />
+                )}
+                <Route
+                  path="/"
+                  render={childProps =>
+                    React.cloneElement(children, childProps)
+                  }
+                />
+              </Switch>
+            </ScrollToTop>
+          </LoginRedirector>
         </Router>
       </ErrorBoundary>
     </LibraryWrappers>
