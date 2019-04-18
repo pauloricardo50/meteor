@@ -47,7 +47,7 @@ const DashboardUnverified = props => (
       <div style={{ display: 'flex' }}>
         <p style={{ margin: 0 }}>
           <T id="DashboardUnverified.description" />{' '}
-          <a onClick={e => handleClick(e, props)}>
+          <a className="color" onClick={e => handleClick(e, props)}>
             <T id="DashboardUnverified.CTA" />
           </a>
         </p>
