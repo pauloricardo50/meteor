@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { logError } from 'core/api/slack/methodDefinitions';
-import Link from './Link';
+import Link from '../Link';
 
 const styles = {
   section: {
