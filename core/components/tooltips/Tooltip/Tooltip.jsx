@@ -4,12 +4,12 @@ import omit from 'lodash/omit';
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/Popover';
 
-import track from '../../utils/analytics';
-import DialogSimple from '../DialogSimple';
-import Button from '../Button';
-import defaultIntlValues from '../Translation/defaultIntlValues';
-import T from '../Translation';
-import TooltipSynonyms from './TooltipSynonyms';
+import track from '../../../utils/analytics';
+import DialogSimple from '../../DialogSimple/loadable';
+import Button from '../../Button';
+import defaultIntlValues from '../../Translation/defaultIntlValues';
+import T from '../../Translation';
+import TooltipSynonyms from '../TooltipSynonyms';
 
 const getTooltip1Id = id => (id.includes('tooltip') ? id : `tooltip.${id}`);
 const getTooltip2Id = id => (id.includes('tooltip') ? id : `tooltip2.${id}`);

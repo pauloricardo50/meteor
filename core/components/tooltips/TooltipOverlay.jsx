@@ -7,7 +7,7 @@ import { tooltips } from 'core/arrays/tooltips';
 import track from 'core/utils/analytics';
 
 import { isArray } from 'util';
-import Tooltip from './Tooltip';
+import Tooltip from './Tooltip/loadable';
 
 const onEntered = id => track('Tooltip - tooltip clicked', { id });
 
