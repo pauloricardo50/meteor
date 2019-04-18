@@ -144,7 +144,16 @@ Factory.define('mortgageNote', MortgageNotes, {
 });
 
 Factory.define('organisation', Organisations, {
-  name: 'UBS SA',
+  name: () => {
+    // Make sure organisation names don't collide
+    while (true) {
+      const name = faker.company.companyName();
+
+      if (!Organisations.findOne({ name })) {
+        return name;
+      }
+    }
+  },
   type: ORGANISATION_TYPES.BANK,
 });
 
