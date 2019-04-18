@@ -6,33 +6,35 @@
     align-items: center;
     justify-content: center;
 
-    > * {
+     > * {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
+
       text-align: center;
     }
   }
 
   .empty {
-    flex-grow: 1;
-    align-self: center;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    align-self: center;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+
     text-align: center;
 
     .icon {
-      height: 64px;
       width: 64px;
+      height: 64px;
     }
   }
 
   .mui-select {
-    max-width: 200px;
-    min-width: 160px;
     width: calc(50% - 4px);
+    min-width: 160px;
+    max-width: 200px;
   }
 
   &.blue .max-property-sharing-label {

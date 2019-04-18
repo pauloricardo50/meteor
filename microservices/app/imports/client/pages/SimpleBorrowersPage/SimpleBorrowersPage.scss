@@ -3,19 +3,19 @@ $footer-height: 64px;
 .simple-borrowers-page {
   display: flex;
   flex-direction: column;
+
   padding: 0 16px;
 
   @include screen(large, min) {
+    align-items: flex-start;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
 
     .card1 {
-      padding: 32px;
       box-sizing: border-box;
+      padding: 32px;
     }
   }
-
   @include screen(large) {
     padding-bottom: calc(#{$footer-height});
   }
@@ -30,18 +30,19 @@ $footer-height: 64px;
     }
 
     h4 {
-      margin-top: 0;
-      margin-bottom: 40px;
       display: flex;
       align-items: center;
+
+      margin-top: 0;
+      margin-bottom: 40px;
     }
   }
 
   &-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
     align-self: center;
+    flex-direction: column;
 
     &.grow {
       flex-grow: 1;
@@ -53,9 +54,10 @@ $footer-height: 64px;
   }
 
   &-forms {
+    align-self: center;
+
     width: 100%;
     max-width: 600px;
-    align-self: center;
 
     .borrower-forms-tabs {
       width: 100%;
@@ -69,15 +71,17 @@ $footer-height: 64px;
 
     .borrower-form {
       display: flex;
-      flex-direction: column;
       align-items: stretch;
-      max-width: 400px;
+      flex-direction: column;
+
       width: 100%;
+      max-width: 400px;
       margin: auto;
     }
 
     .borrower-remover {
       align-self: flex-end;
+
       margin-bottom: 16px;
     }
 
@@ -95,8 +99,13 @@ $footer-height: 64px;
   }
 
   &-max-property-value {
-    background-color: $primary;
     color: white;
+    background-color: $primary;
+
+    @include screen(large, min) {
+      min-width: 400px;
+      min-height: 200px;
+    }
 
     &.fixed {
       position: fixed;
@@ -110,22 +119,20 @@ $footer-height: 64px;
       color: white;
     }
 
-    @include screen(large, min) {
-      min-width: 400px;
-      min-height: 200px;
-    }
-
     &-sticky {
-      background-color: $primary;
-      color: white;
       position: fixed;
       bottom: 0;
-      width: 100%;
       left: 0;
-      height: $footer-height;
+
       display: flex;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
+
+      width: 100%;
+      height: $footer-height;
+
+      color: white;
+      background-color: $primary;
 
       h2,
       h3,

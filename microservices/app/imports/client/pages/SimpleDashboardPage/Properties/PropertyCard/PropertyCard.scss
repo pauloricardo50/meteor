@@ -1,16 +1,16 @@
 $borrowers-item-width: 500px;
 
 .property-card {
-  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
   align-items: stretch;
+  align-self: center;
+  flex-direction: column;
+
+  box-sizing: border-box;
   width: 100%;
   max-width: calc(#{$borrowers-item-width} * 2);
-
-  padding: 32px;
   margin-top: 16px;
-  align-self: center;
+  padding: 32px;
 
   @include screen(small) {
     padding: 16px;
@@ -18,8 +18,8 @@ $borrowers-item-width: 500px;
 
   .top {
     display: flex;
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     justify-content: space-between;
 
     @include screen(med) {
@@ -29,13 +29,13 @@ $borrowers-item-width: 500px;
 
   &-infos {
     display: flex;
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
 
     img,
     .icon {
-      height: 100px;
       width: 100px;
+      height: 100px;
       margin-right: 32px;
 
       @include screen(med) {
@@ -60,19 +60,19 @@ $borrowers-item-width: 500px;
   }
 
   .button {
-    padding: 8px 48px 8px 48px;
     width: 300px;
+    padding: 8px 48px 8px 48px;
 
     @include screen(med) {
-      margin-top: 16px;
       width: 100%;
+      margin-top: 16px;
     }
   }
 
   &-actions {
     display: flex;
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
 
     @include screen(med) {
       width: 100%;
@@ -89,7 +89,7 @@ $borrowers-item-width: 500px;
   }
 
   &-subtitle {
-    > span {
+     > span {
       display: flex;
       align-items: center;
     }

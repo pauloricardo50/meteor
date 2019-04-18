@@ -52,10 +52,10 @@
 }
 
 .app-layout .wrapper .page {
+  box-sizing: border-box;
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  box-sizing: border-box;
 }
 
 .app-layout .wrapper .page.full-width {

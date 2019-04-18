@@ -12,38 +12,40 @@
 
   &-top {
     display: flex;
+    overflow: hidden;
+
+    box-sizing: border-box;
     width: 100%;
     max-width: 1200px;
     margin: auto;
-    margin-bottom: 64px;
     margin-top: 64px;
-    box-sizing: border-box;
-    overflow: hidden;
+    margin-bottom: 64px;
 
     @include screen(med) {
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
     }
 
-    > * {
+     > * {
       flex-basis: 50%;
     }
 
     &-text {
       display: flex;
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
+
       padding: 80px;
 
       @include screen(med) {
-        padding: 32px;
         align-items: center;
 
-        > * {
+        padding: 32px;
+
+         > * {
           text-align: center !important;
         }
       }
-
       @include screen(small) {
         padding: 16px;
       }
@@ -59,14 +61,15 @@
 
     &-img {
       position: relative;
+
       display: flex;
+      align-items: center;
       flex-direction: column;
       justify-content: flex-end;
-      align-items: center;
 
       @include screen(med) {
-        height: 400px;
         width: 100%;
+        height: 400px;
       }
 
       img {
@@ -74,14 +77,16 @@
         // top: -40%;
         bottom: 0;
         left: -30%;
+
         width: 900px;
         // width: 200%;
         // height: 200%;
 
         @include screen(med) {
           position: relative;
-          width: 800px;
           left: unset;
+
+          width: 800px;
         }
       }
     }
@@ -96,17 +101,18 @@
   }
 
   &-links {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
     width: 100%;
     max-width: 1200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     margin: auto;
 
     @include screen(med) {
+      align-items: center;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: center;
     }
 
     h4 {
@@ -115,27 +121,32 @@
 
     &-link {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
+
       padding: 8px;
 
       .icon {
         width: 64px;
         height: 64px;
-        opacity: 0.7;
         margin-bottom: 16px;
+
+        opacity: 0.7;
       }
 
       &-items {
         display: flex;
-        flex-direction: column;
         align-items: center;
+        flex-direction: column;
       }
 
       a {
-        color: $primary;
         margin-bottom: 8px;
+
         text-align: center;
+
+        color: $primary;
+
         font-size: 0.9em;
 
         &:hover {

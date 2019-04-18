@@ -83,8 +83,10 @@ $step-circle-size: 25px;
   flex-basis: 25%;
   flex-direction: column;
   flex-grow: 1;
-  border-radius: 16px;
+
   padding: 8px;
+
+  border-radius: 16px;
 
   &:hover {
     background-color: white;
@@ -136,6 +138,7 @@ $step-circle-size: 25px;
 
 .dashboard-progress-bar .absolute-lines {
   position: absolute;
+  z-index: -1;
   top: 19px; // Circle height, and space for 3px height, and padding
   left: 12.5%;
 
@@ -143,7 +146,6 @@ $step-circle-size: 25px;
   flex-direction: row;
 
   width: calc(75%);
-  z-index: -1;
 }
 
 .absolute-lines .line {
@@ -160,8 +162,8 @@ $step-circle-size: 25px;
 
 .dashboard-progress-bar.light {
   .step {
-    background-color: $border-grey;
     color: #aaa;
+    background-color: $border-grey;
 
     &.done {
       color: white;
@@ -170,8 +172,9 @@ $step-circle-size: 25px;
   }
 
   .step-name {
-    color: #888;
     padding: 0 4px;
+
+    color: #888;
   }
 
   .absolute-lines .line {

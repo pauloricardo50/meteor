@@ -11,7 +11,7 @@
     min-width: 200px;
   }
 
-  > * {
+   > * {
     margin-right: 8px;
   }
 }
@@ -120,25 +120,28 @@
 }
 
 .overview-tab .lender-solvency {
-  padding: 32px;
   display: flex;
   flex-direction: row;
 
-  > * {
+  padding: 32px;
+
+   > * {
     display: flex;
     flex-direction: column;
+
     padding: 8px;
   }
 }
 
 .max-property-value-tools {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
   align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
   margin-bottom: 40px;
 
-  > * {
+   > * {
     margin-top: 16px;
   }
 }

@@ -4,10 +4,11 @@
 html {
   letter-spacing: 0.048em; /* 0.75px / 16px  */
 
-  font-family: 'Eina04-Regular', 'Helvetica';
-  line-height: 1.4em;
-  font-weight: normal;
   color: $body-text;
+
+  font-family: 'Eina04-Regular', 'Helvetica';
+  font-weight: normal;
+  line-height: 1.4em;
 
   @include font-size($font-size-xs);
 }
@@ -22,10 +23,11 @@ h6 {
 
   letter-spacing: 0.048em; /* 0.75px / 16px  */
 
+  color: $title-text;
+
   font-family: 'Eina04-Bold', 'Helvetica';
   font-weight: bold;
   line-height: 1.3em;
-  color: $title-text;
 }
 
 h1 {

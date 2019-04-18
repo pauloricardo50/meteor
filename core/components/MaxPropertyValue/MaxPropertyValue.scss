@@ -30,9 +30,9 @@
   }
 
   .mui-select {
-    max-width: 200px;
-    min-width: 160px;
     width: calc(50% - 4px);
+    min-width: 160px;
+    max-width: 200px;
   }
 
   &-results {
@@ -48,8 +48,8 @@
 
     .top {
       display: flex;
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
 
       h2 {
         margin: 0;
@@ -63,12 +63,12 @@
     .show-best-toggle {
       align-self: center;
 
-      > * {
+       > * {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
 
-        > * {
+         > * {
           font-size: initial;
         }
       }
@@ -83,8 +83,9 @@
 
     &-table {
       display: flex;
-      flex-direction: column;
       align-items: stretch;
+      flex-direction: column;
+
       margin: 32px 0;
 
       .balance-sheet,
@@ -93,8 +94,8 @@
 
         .left,
         .right {
-          flex-basis: 50%;
           display: flex;
+          flex-basis: 50%;
           flex-direction: column;
         }
 
@@ -112,7 +113,9 @@
       .label {
         margin-top: 16px;
         margin-bottom: 4px;
+
         text-transform: uppercase;
+
         opacity: 0.8;
       }
     }
@@ -136,23 +139,24 @@
 
 .max-property-sharing {
   @include screen(xsmall) {
-    padding-left: 0;
     padding-right: 0;
+    padding-left: 0;
   }
 
   &-label {
     display: inline-flex;
     align-items: center;
 
-    > * {
+     > * {
       display: inline-flex;
       align-items: center;
 
       &.error {
-        background-color: $error;
+        padding: 0 2px 0 4px;
+
         color: white;
         border-radius: 6px;
-        padding: 0 2px 0 4px;
+        background-color: $error;
       }
     }
   }
