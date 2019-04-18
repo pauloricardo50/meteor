@@ -49,7 +49,7 @@ describe('general helpers', () => {
     });
 
     it('returns 0.2 for an array with 10 values and 8 undefined values', () => {
-      const array = times(10, 0);
+      const array = times(10, () => undefined);
       array[0] = true;
       array[1] = true;
 
