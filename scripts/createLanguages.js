@@ -110,6 +110,8 @@ const config = {
         'LoginPage',
         'PasswordChange',
         'PasswordResetPage',
+        // 'ProCustomerAdder',
+        // 'ProCustomersTable',
         'Promotion',
         'PromotionLotPage',
         'ProOrganisationUserAdder',
@@ -171,6 +173,11 @@ const findFilesWithExtension = (startPath, extension) => {
 
   const files = fs.readdirSync(startPath);
   for (let i = 0; i < files.length; i++) {
+    if (files[i] === 'core') {
+      // don't scan core directory, add those to exceptions
+      break;
+    }
+
     const filename = path.join(startPath, files[i]);
     const stat = fs.lstatSync(filename);
 
