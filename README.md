@@ -77,13 +77,17 @@ Here we can keep track of bundle size changes over time.
 | 18/12/2018 | 3.27MB | 4.69MB | 4.77MB  | 3.81MB |                                          |
 | 18/12/2018 |        | 4.04MB |         |        | Added `loadable` on all of `app`'s pages |
 | 18/12/2018 |        |        |         | 3.67MB | Added `loadable` on all of `pro`'s pages |
+| 18/04/2019 | 2.04MB | 2.56MB |         |        | PR #456                                  |
 
 Main things to optimize:
 
-- [ ] Antd icons: https://github.com/ant-design/ant-design/issues/12011
+- [x] Antd icons: https://github.com/ant-design/ant-design/issues/12011
 - [x] redux-form
-- [ ] Remove jquery: Required by `themeteorchef:bert`, `cultofcoders:persistent-session` and `meteortoys`, which can be ignored since it's dev-only
+- [x] Remove jquery: Required by `themeteorchef:bert`, `cultofcoders:persistent-session` and `meteortoys`, which can be ignored since it's dev-only
   - https://github.com/cult-of-coders/meteor-persistent-session/issues/2
+- [ ] Material-ui initial load size
+- [ ] Don't load all the meteor collection stuff on first load, but only when on a page that requires them
+- [ ] Figure out why some components are being loaded, such as in `core/components/Financing`
 
 ## Troubleshooting tricks
 
