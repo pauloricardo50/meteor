@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import { withState } from 'recompose';
+import cx from 'classnames';
 
 import useMedia from '../../hooks/useMedia';
 import Calculator from '../../utils/Calculator';
@@ -71,8 +72,10 @@ const MaxPropertyValueResultsTable = ({
           onToggle={(_, v) => setShowBest(v)}
           labelLeft={(
             <div className="flex-col">
-              <span className="secondary">
-                {isSmallMobile ? 'Le moins compétitif' : 'Prêteur le - compétitif'}
+              <span className={cx({ secondary: showBest })}>
+                {isSmallMobile
+                  ? 'Le moins compétitif'
+                  : 'Prêteur le - compétitif'}
               </span>
               {Meteor.microservice === 'admin' && (
                 <span>[ADMIN] {minOrganisationName}</span>
@@ -81,8 +84,10 @@ const MaxPropertyValueResultsTable = ({
           )}
           labelRight={(
             <div className="flex-col">
-              <span className="secondary">
-                {isSmallMobile ? 'Le plus compétitif' : 'Prêteur le + compétitif'}
+              <span className={cx({ secondary: !showBest })}>
+                {isSmallMobile
+                  ? 'Le plus compétitif'
+                  : 'Prêteur le + compétitif'}
               </span>
               {Meteor.microservice === 'admin' && (
                 <span>[ADMIN] {maxOrganisationName}</span>
@@ -97,24 +102,24 @@ const MaxPropertyValueResultsTable = ({
           <span className="label">Prix d'achat max.</span>
           <Money className="money bold" value={propertyValue} />
           <span className="label">Frais de notaire</span>
-          <Money className="money" value={notaryFees} />
+          <Money className="money bold" value={notaryFees} />
         </div>
         <div className="right">
           <span className="label">Fonds propres</span>
-          <Money className="money" value={ownFunds} />
+          <Money className="money bold" value={ownFunds} />
           <span className="label">Hypothèque</span>
-          <Money className="money" value={loan} />
+          <Money className="money bold" value={loan} />
         </div>
       </div>
       <hr />
       <div className="sums">
         <div className="left">
           <span className="label">Coût total</span>
-          <Money className="money" value={propertyValue + notaryFees} />
+          <Money className="money bold" value={propertyValue + notaryFees} />
         </div>
         <div className="right">
           <span className="label">Financement total</span>
-          <Money className="money" value={ownFunds + loan} />
+          <Money className="money bold" value={ownFunds + loan} />
         </div>
       </div>
     </>
