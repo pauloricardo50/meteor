@@ -51,6 +51,10 @@ export default class Security {
     return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
   }
 
+  static isUserDev(userId) {
+    return this.hasRole(userId || Meteor.userId(), ROLES.DEV);
+  }
+
   static isUserPro(userId) {
     return (
       this.hasRole(userId, ROLES.PRO)
