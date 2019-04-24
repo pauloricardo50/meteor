@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 import moment from 'moment';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 
+import generator from 'core/api/factories';
 import currentInterestRates from '../../currentInterestRates';
 import { TRENDS } from '../../../interestRatesConstants';
 
@@ -14,33 +14,37 @@ describe('currentInterestRates', () => {
   });
 
   it('fetches the correct rates', () => {
-    Factory.create('interestRates', {
-      date: moment()
-        .subtract(1, 'day')
-        .toDate(),
-      interest10: {
-        rateLow: 0.1,
-        rateHigh: 0.1,
-        trend: TRENDS.DOWN,
-      },
-    });
-    Factory.create('interestRates', {
-      date: moment().toDate(),
-      interest10: {
-        rateLow: 0.2,
-        rateHigh: 0.2,
-        trend: TRENDS.DOWN,
-      },
-    });
-    Factory.create('interestRates', {
-      date: moment()
-        .add(1, 'day')
-        .toDate(),
-      interest10: {
-        rateLow: 0.3,
-        rateHigh: 0.3,
-        trend: TRENDS.DOWN,
-      },
+    generator({
+      interestRates: [
+        {
+          date: moment()
+            .subtract(1, 'day')
+            .toDate(),
+          interest10: {
+            rateLow: 0.1,
+            rateHigh: 0.1,
+            trend: TRENDS.DOWN,
+          },
+        },
+        {
+          date: moment().toDate(),
+          interest10: {
+            rateLow: 0.2,
+            rateHigh: 0.2,
+            trend: TRENDS.DOWN,
+          },
+        },
+        {
+          date: moment()
+            .add(1, 'day')
+            .toDate(),
+          interest10: {
+            rateLow: 0.3,
+            rateHigh: 0.3,
+            trend: TRENDS.DOWN,
+          },
+        },
+      ],
     });
 
     const { rates } = currentInterestRates.fetch();
