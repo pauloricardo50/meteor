@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 import { tooltips } from '../../arrays/tooltips';
 import track from '../../utils/analytics';
