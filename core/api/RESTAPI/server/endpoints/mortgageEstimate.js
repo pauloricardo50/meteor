@@ -15,7 +15,22 @@ import {
 } from '../../../constants';
 import currentInterestRates from '../../../interestRates/queries/currentInterestRates';
 
+const LUXURY_VALUE_THRESHOLD = 2500000;
+const SECOND_OR_LUXURY_AMORTIZATION_GOAL = 0.5;
+const SECOND_OR_LUXURY_BORROW_RATIO = 0.67;
+
 const roundToCents = val => Number(val.toFixed(2));
+const getBorrowRatio = (residenceType, propertyValue) => {
+  if (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE) {
+    return SECOND_OR_LUXURY_BORROW_RATIO;
+  }
+
+  if (propertyValue >= LUXURY_VALUE_THRESHOLD) {
+    return SECOND_OR_LUXURY_BORROW_RATIO;
+  }
+
+  return MAX_BORROW_RATIO_PRIMARY_PROPERTY;
+};
 
 const querySchema = new SimpleSchema({
   'property-value': { type: Number, min: 50000 },
@@ -61,9 +76,10 @@ const mortgageEstimateAPI = ({ query }) => {
   const includeNotaryFees = cleanQuery['include-notary-fees'];
   const { canton } = cleanQuery;
 
+  const date = Date.now();
   const { averageRates: interestRates } = currentInterestRates.clone().fetch();
   const finalCanton = zipCode ? zipcodes(zipCode) : canton;
-  const borrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY;
+  const borrowRatio = getBorrowRatio(residenceType, propertyValue);
   const loanValue = roundToCents(propertyValue * borrowRatio);
   const loanObject = Calculator.createLoanObject({
     residenceType,
@@ -73,8 +89,11 @@ const mortgageEstimateAPI = ({ query }) => {
     currentInterestRates: interestRates,
     loanTranches: [{ value: 1, type: INTEREST_RATES.YEARS_10 }],
   });
+  const amortizationGoal = borrowRatio === SECOND_OR_LUXURY_BORROW_RATIO
+    ? SECOND_OR_LUXURY_AMORTIZATION_GOAL
+    : undefined;
 
-  const calc = new CalculatorClass({ loan: loanObject });
+  const calc = new CalculatorClass({ loan: loanObject, amortizationGoal });
   const interests10 = calc.getInterests({ loan: loanObject });
   const interests5 = calc.getInterests({
     loan: Calculator.createLoanObject({
@@ -96,13 +115,14 @@ const mortgageEstimateAPI = ({ query }) => {
       loanTranches: [{ value: 1, type: INTEREST_RATES.LIBOR }],
     }),
   });
-  const amortization = calc.getAmortization({ loan: loanObject });
+  const amortization = roundToCents(calc.getAmortization({ loan: loanObject }));
   const notaryFees = includeNotaryFees
     ? calc.getFees({ loan: loanObject })
     : null;
 
   return {
     borrowRatio,
+    date,
     loanValue,
     monthlyAmortization: amortization,
     monthlyInterests: {
@@ -123,8 +143,10 @@ const mortgageEstimateAPI = ({ query }) => {
         total: notaryFees.total,
       }
       : undefined,
-    propertyValue,
     ownFunds: roundToCents(propertyValue + (notaryFees ? notaryFees.total : 0) - loanValue),
+    propertyValue,
+    purchaseType,
+    residenceType,
   };
 };
 

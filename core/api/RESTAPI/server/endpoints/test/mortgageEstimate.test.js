@@ -3,7 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import moment from 'moment';
+import sinon from 'sinon';
 
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import generator from '../../../../factories';
 import UserService from '../../../../users/server/UserService';
 import { TRENDS } from '../../../../constants';
@@ -42,6 +45,8 @@ const getResult = ({ expectedResponse, query }) => {
 
 describe('REST: mortgageEstimate', function () {
   this.timeout(10000);
+  let now;
+  let clock;
 
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
@@ -82,11 +87,18 @@ describe('REST: mortgageEstimate', function () {
       ],
     });
     keyPair = UserService.generateKeyPair({ userId: 'pro' });
+    now = new Date();
+    clock = sinon.useFakeTimers(now.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it('Returns default response if only the propertyValue is given', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
+      date: now.getTime(),
       monthlyInterests: {
         interests10: 1080,
         interests5: 880,
@@ -106,6 +118,8 @@ describe('REST: mortgageEstimate', function () {
         interests5: 1880,
         interestsLibor: 1600,
       },
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
     };
 
     const query = { 'property-value': '1200000' };
@@ -115,6 +129,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses the canton if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
+      date: now.getTime(),
       monthlyInterests: {
         interests10: 1080,
         interests5: 880,
@@ -135,6 +150,8 @@ describe('REST: mortgageEstimate', function () {
         interests5: 1880,
         interestsLibor: 1600,
       },
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
     };
 
     const query = { 'property-value': '1200000', canton: 'GE' };
@@ -144,6 +161,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses maintenance if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
+      date: now.getTime(),
       monthlyInterests: {
         interests10: 1080,
         interests5: 880,
@@ -163,6 +181,8 @@ describe('REST: mortgageEstimate', function () {
         interests5: 2880,
         interestsLibor: 2600,
       },
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
     };
 
     const query = {
@@ -175,6 +195,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses zipCode if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
+      date: now.getTime(),
       monthlyInterests: {
         interests10: 1080,
         interests5: 880,
@@ -195,6 +216,8 @@ describe('REST: mortgageEstimate', function () {
         interests5: 1880,
         interestsLibor: 1600,
       },
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
     };
 
     const query = {
@@ -207,6 +230,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses includeNotaryFees if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
+      date: now.getTime(),
       monthlyInterests: {
         interests10: 1080,
         interests5: 880,
@@ -222,10 +246,42 @@ describe('REST: mortgageEstimate', function () {
         interests5: 1880,
         interestsLibor: 1600,
       },
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
     };
 
     const query = {
       'property-value': '1200000',
+      'include-notary-fees': 'false',
+    };
+    return getResult({ query, expectedResponse });
+  });
+
+  it('Uses reduces the borrowRatio for expensive properties', () => {
+    const expectedResponse = {
+      borrowRatio: 0.67,
+      date: now.getTime(),
+      monthlyInterests: {
+        interests10: 2713.5,
+        interests5: 2211,
+        interestsLibor: 1507.5,
+      },
+      loanValue: 2412000,
+      monthlyMaintenance: 0,
+      monthlyAmortization: 3400,
+      ownFunds: 1188000,
+      propertyValue: 3600000,
+      monthlyTotals: {
+        interests10: 6113.5,
+        interests5: 5611,
+        interestsLibor: 4907.5,
+      },
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+    };
+
+    const query = {
+      'property-value': '3600000',
       'include-notary-fees': 'false',
     };
     return getResult({ query, expectedResponse });
