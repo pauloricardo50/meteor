@@ -33,14 +33,16 @@ Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
 UpdateWatcherService.addUpdateWatching({
   collection: Loans,
   fields: [
-    'residenceType',
-    // 'structures', // The structures notifications are hard to read in slack
-    // 'selectedStructure',
-    'purchaseType',
-    'verificationStatus',
-    'customName',
+    'applicationType',
     'contacts',
+    'customName',
     'previousLoanTranches',
+    'purchaseType',
+    'residenceType',
+    'step',
+    'verificationStatus',
+    // 'selectedStructure',
+    // 'structures', // The structures notifications are hard to read in slack
   ],
   shouldWatch: ({ userId }) =>
     SecurityService.hasRole(userId, ROLES.USER)

@@ -31,7 +31,7 @@ a:not([role='button']) {
     transition: color 300ms $bezier;
 
     color: $primary;
-    
+
     &:hover {
       color: $success;
     }
@@ -218,6 +218,10 @@ p.description,
 
 .secondary {
   opacity: 0.5;
+
+  &.not-secondary {
+    opacity: 1;
+  }
 }
 
 // This also adds the right cursor on disabled elements
