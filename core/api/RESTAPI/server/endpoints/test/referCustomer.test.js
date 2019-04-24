@@ -24,9 +24,14 @@ const customerToRefer = {
 const api = new RESTAPI();
 api.addEndpoint('/users', 'POST', referCustomerAPI);
 
-const referCustomer = ({ userData, impersonateUser, expectedResponse }) => {
+const referCustomer = ({
+  userData,
+  impersonateUser,
+  expectedResponse,
+  shareSolvency = false,
+}) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData || customerToRefer };
+  const body = { user: userData || customerToRefer, shareSolvency };
   const query = impersonateUser ? { impersonateUser } : undefined;
   return fetchAndCheckResponse({
     url: '/users',
@@ -91,11 +96,33 @@ describe('REST: referCustomer', function () {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.findOne({
-        'emails.address': { $in: [customerToRefer.email] },
+      const customer = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [customerToRefer.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
       });
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
+      expect(customer.loans[0].shareSolvency).to.equal(false);
+    }));
+
+  it('refers a customer with solvency sharing', () =>
+    referCustomer({
+      shareSolvency: true,
+      expectedResponse: {
+        message: `Successfully referred user "${customerToRefer.email}"`,
+      },
+    }).then(() => {
+      const customer = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [customerToRefer.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+      expect(customer.referredByUserLink).to.equal('pro');
+      expect(customer.referredByOrganisationLink).to.equal('org');
+      expect(customer.loans[0].shareSolvency).to.equal(true);
     }));
 
   it('refers a customer with impersonateUser', () =>

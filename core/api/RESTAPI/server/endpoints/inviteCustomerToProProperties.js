@@ -26,7 +26,7 @@ const inviteCustomerToProPropertiesAPI = ({
   body,
   query,
 }) => {
-  const { user, properties = [] } = body;
+  const { user, properties = [], shareSolvency = false } = body;
   const { impersonateUser } = query;
 
   checkProperties(properties);
@@ -49,6 +49,7 @@ const inviteCustomerToProPropertiesAPI = ({
       propertyIds: internalProperties.map(({ _id }) => _id),
       properties: externalProperties,
       user,
+      shareSolvency,
     })).then(() => ({
     message: `Successfully invited user "${
       user.email

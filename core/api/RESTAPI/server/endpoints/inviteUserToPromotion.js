@@ -7,7 +7,7 @@ const inviteUserToPromotionAPI = ({
   params,
   query,
 }) => {
-  const { user } = body;
+  const { user, shareSolvency = false } = body;
   const { promotionId } = params;
   const { impersonateUser } = query; // TODO: Implement this
 
@@ -15,6 +15,7 @@ const inviteUserToPromotionAPI = ({
     proInviteUser.run({
       promotionIds: [promotionId].filter(x => x),
       user: { ...user, invitedBy: userId },
+      shareSolvency,
     })).then(() => ({
     message: `Successfully invited user "${
       user.email

@@ -217,9 +217,7 @@ class UserService extends CollectionService {
     });
 
     const loanId = LoanService.adminLoanInsert({ userId });
-    if (shareSolvency) {
-      LoanService.update({ loanId, object: { shareSolvency } });
-    }
+    LoanService.update({ loanId, object: { shareSolvency } });
 
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
