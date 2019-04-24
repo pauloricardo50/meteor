@@ -3,7 +3,7 @@ import { withMeteorUserId } from '../helpers';
 import { getImpersonateUserId } from './helpers';
 
 const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
-  const { user } = body;
+  const { user, shareSolvency = false } = body;
   const { impersonateUser } = query;
 
   let proId;
@@ -14,6 +14,7 @@ const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
   return withMeteorUserId(proId || userId, () =>
     proInviteUser.run({
       user: { ...user, invitedBy: userId },
+      shareSolvency,
     })).then(() => ({
     message: `Successfully referred user "${user.email}"`,
   }));

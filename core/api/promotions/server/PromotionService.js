@@ -99,6 +99,7 @@ export class PromotionService extends CollectionService {
     sendInvitation = true,
     promotionLotIds,
     showAllLots,
+    shareSolvency = false,
   }) {
     const promotion = this.get(promotionId);
     const user = UserService.get(userId);
@@ -118,6 +119,7 @@ export class PromotionService extends CollectionService {
       invitedBy: pro._id,
       showAllLots,
       promotionLotIds,
+      shareSolvency,
     });
 
     if (isNewUser) {
