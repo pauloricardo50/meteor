@@ -23,6 +23,10 @@ class RootCalculator {
   parentFunc() {
     return this.childFunc();
   }
+
+  static staticFunc() {
+    return 'hi';
+  }
 }
 
 const addClass = SuperClass => class extends SuperClass {};
@@ -190,5 +194,28 @@ describe('Class composition', () => {
 
   it('parent can call child funcs', () => {
     expect(new UberClass().parentFunc()).to.equal('it works');
+  });
+
+  it('does not inherit static methods as expected', () => {
+    class MyClass extends UberClass {
+      constructor(props) {
+        super(props);
+      }
+
+      return2(): string {
+        return '2';
+      }
+
+      static returnNumber() {
+        return 5;
+      }
+
+      static returnNumber2 = () => 5;
+    }
+
+    const myClass = new MyClass();
+    expect(myClass.returnNumber2).to.equal(undefined);
+    expect(myClass.returnNumber).to.equal(undefined);
+    expect(myClass.staticFunc).to.equal(undefined);
   });
 });
