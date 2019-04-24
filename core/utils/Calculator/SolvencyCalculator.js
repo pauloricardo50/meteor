@@ -130,6 +130,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       propertyValue,
       canton,
       ownFunds = [],
+      loanTranches = [],
+      ...rest
     }) {
       return {
         residenceType,
@@ -139,7 +141,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           propertyValue,
           property: { canton },
           ownFunds,
+          loanTranches,
         },
+        ...rest,
       };
     }
 

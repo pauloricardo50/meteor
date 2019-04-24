@@ -51,7 +51,8 @@ const findCollectionNameByLinkName = ({ collection, linkName }) =>
     ._name;
 
 const findLinkKeys = ({ collection }) => {
-  const links = Object.keys(Mongo.Collection.get(collection).__links);
+  const { __links: linkNames = {} } = Mongo.Collection.get(collection);
+  const links = Object.keys(linkNames);
   return links;
 };
 
