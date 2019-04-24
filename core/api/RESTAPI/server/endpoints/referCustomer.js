@@ -1,10 +1,11 @@
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { getImpersonateUserId } from './helpers';
+import { getImpersonateUserId, getUserMainOrganisationId } from './helpers';
+import UserService from '../../../users/server/UserService';
 
 const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
   const { user } = body;
-  const { impersonateUser } = query;
+  const { 'impersonate-user': impersonateUser } = query;
 
   let proId;
   if (impersonateUser) {
@@ -14,9 +15,17 @@ const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
   return withMeteorUserId(proId || userId, () =>
     proInviteUser.run({
       user: { ...user, invitedBy: userId },
-    })).then(() => ({
-    message: `Successfully referred user "${user.email}"`,
-  }));
+    }))
+    .then(() => {
+      const customerId = UserService.getByEmail(user.email)._id;
+      return UserService.setReferredByOrganisation({
+        userId: customerId,
+        organisationId: getUserMainOrganisationId(userId),
+      });
+    })
+    .then(() => ({
+      message: `Successfully referred user "${user.email}"`,
+    }));
 };
 
 export default referCustomerAPI;

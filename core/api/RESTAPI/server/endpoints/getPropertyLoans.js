@@ -5,7 +5,7 @@ import { getImpersonateUserId } from './helpers';
 
 const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
   const { propertyId } = params;
-  const { impersonateUser } = query;
+  const { 'impersonate-user': impersonateUser } = query;
 
   let proId;
   if (impersonateUser) {

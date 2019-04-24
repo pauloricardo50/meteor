@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { getImpersonateUserId } from './helpers';
+import { getImpersonateUserId, getUserMainOrganisationId } from './helpers';
+import UserService from '../../../users/server/UserService';
 
 const formatPropertyIds = (propertyIds) => {
   const ids = propertyIds.map(id => `"${id}"`);
@@ -27,7 +28,7 @@ const inviteCustomerToProPropertiesAPI = ({
   query,
 }) => {
   const { user, properties = [] } = body;
-  const { impersonateUser } = query;
+  const { 'impersonate-user': impersonateUser } = query;
 
   checkProperties(properties);
 
@@ -49,11 +50,19 @@ const inviteCustomerToProPropertiesAPI = ({
       propertyIds: internalProperties.map(({ _id }) => _id),
       properties: externalProperties,
       user,
-    })).then(() => ({
-    message: `Successfully invited user "${
-      user.email
-    }" to property ids ${formattedIds}`,
-  }));
+    }))
+    .then(() => {
+      const customerId = UserService.getByEmail(user.email)._id;
+      return UserService.setReferredByOrganisation({
+        userId: customerId,
+        organisationId: getUserMainOrganisationId(userId),
+      });
+    })
+    .then(() => ({
+      message: `Successfully invited user "${
+        user.email
+      }" to property ids ${formattedIds}`,
+    }));
 };
 
 export default inviteCustomerToProPropertiesAPI;

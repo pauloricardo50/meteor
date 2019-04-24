@@ -390,7 +390,13 @@ class UserService extends CollectionService {
       $filters: { _id: proId },
       organisations: { _id: 1 },
     });
-    const organisationId = organisations.length ? organisations[0]._id : null;
+    let organisationId = null;
+    if (organisations.length === 1) {
+      organisationId = organisations[0]._id;
+    } else if (organisations.length > 1) {
+      organisationId = organisations.find(({ $metadata: { isMain } } = {}) => isMain)._id
+        || organisations[0]._id;
+    }
     return this.update({
       userId,
       object: {

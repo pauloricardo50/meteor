@@ -9,7 +9,7 @@ const inviteUserToPromotionAPI = ({
 }) => {
   const { user } = body;
   const { promotionId } = params;
-  const { impersonateUser } = query; // TODO: Implement this
+  const { 'impersonate-user': impersonateUser } = query; // TODO: Implement this
 
   return withMeteorUserId(userId, () =>
     proInviteUser.run({
