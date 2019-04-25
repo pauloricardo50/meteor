@@ -1,13 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 import UserService from '../../../users/server/UserService';
 
+const anyOrganisationMatches = ({
+  userOrganisations = [],
+  proOrganisations = [],
+}) =>
+  userOrganisations.some(userOrganisation =>
+    proOrganisations.some(proOrganisation => userOrganisation._id === proOrganisation._id));
+
 export const getImpersonateUserId = ({ userId, impersonateUser }) => {
-  const { organisations: userOrganisationIds = [] } = UserService.fetchOne({
+  const { organisations: userOrganisations = [] } = UserService.fetchOne({
     $filters: { _id: userId },
     organisations: { _id: 1 },
   });
 
-  const { _id: proId, organisations: proOrganisationIds = [] } = UserService.fetchOne({
+  const { _id: proId, organisations: proOrganisations = [] } = UserService.fetchOne({
     $filters: { 'emails.address': { $in: [impersonateUser] } },
     organisations: { _id: 1 },
   }) || {};
@@ -17,9 +24,9 @@ export const getImpersonateUserId = ({ userId, impersonateUser }) => {
   }
 
   if (
-    userOrganisationIds.length === 0
-    || proOrganisationIds.length === 0
-    || userOrganisationIds[0]._id !== proOrganisationIds[0]._id
+    userOrganisations.length === 0
+    || proOrganisations.length === 0
+    || !anyOrganisationMatches({ userOrganisations, proOrganisations })
   ) {
     throw new Meteor.Error(`User with email address "${impersonateUser}" is not part of your organisation`);
   }

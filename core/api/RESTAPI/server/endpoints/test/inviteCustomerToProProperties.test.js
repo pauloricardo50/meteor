@@ -43,7 +43,9 @@ const inviteCustomerToProProperties = ({
     properties,
     shareSolvency,
   };
-  const query = impersonateUser ? { impersonateUser } : undefined;
+  const query = impersonateUser
+    ? { 'impersonate-user': impersonateUser }
+    : undefined;
   return fetchAndCheckResponse({
     url: '/properties/invite-customer',
     query,

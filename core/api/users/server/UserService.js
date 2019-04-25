@@ -173,12 +173,7 @@ class UserService extends CollectionService {
       }));
 
     newOrganisations.forEach(({ _id: organisationId, metadata }) =>
-      this.addLink({
-        id: userId,
-        linkName: 'organisations',
-        linkId: organisationId,
-        metadata,
-      }));
+      this.linkOrganisation({ userId, organisationId, metadata }));
   };
 
   testUserAccount = ({ email, password, role }) => {
@@ -396,11 +391,8 @@ class UserService extends CollectionService {
   }
 
   setReferredBy({ userId, proId }) {
-    const { organisations = [] } = this.fetchOne({
-      $filters: { _id: proId },
-      organisations: { _id: 1 },
-    });
-    const organisationId = organisations.length ? organisations[0]._id : null;
+    const organisationId = this.getUserMainOrganisationId(proId);
+
     return this.update({
       userId,
       object: {
@@ -445,14 +437,42 @@ class UserService extends CollectionService {
       adminId: assigneeId,
     });
 
+    this.linkOrganisation({ userId, organisationId, metadata: { title } });
+
+    return userId;
+  }
+
+  linkOrganisation({ userId, organisationId, metadata }) {
+    const { organisations: userOrganisations = [] } = this.fetchOne({
+      $filters: { _id: userId },
+      organisations: { _id: 1 },
+    });
+    const isMain = userOrganisations.length === 0;
+
     this.addLink({
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { title },
+      metadata: { ...metadata, isMain },
     });
+  }
 
-    return userId;
+  getUserMainOrganisationId(userId) {
+    const { organisations = [] } = this.fetchOne({
+      $filters: { _id: userId },
+      organisations: { _id: 1 },
+    });
+    let mainOrganisationId = null;
+    if (organisations.length === 1) {
+      mainOrganisationId = organisations[0]._id;
+    } else if (organisations.length > 1) {
+      mainOrganisationId = (
+        organisations.find(({ $metadata: { isMain } }) => isMain)
+        || organisations[0]
+      )._id;
+    }
+
+    return mainOrganisationId;
   }
 }
 

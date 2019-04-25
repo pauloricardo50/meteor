@@ -1,9 +1,7 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
-import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
-import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { Roles } from 'meteor/alanning:roles';
 
 import { getUserNameAndOrganisation } from '../../api/helpers';
 import IconLink from './IconLink';
@@ -75,9 +73,13 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     };
   case ORGANISATIONS_COLLECTION: {
     let text;
+    const isDev = Roles.userIsInRole(Meteor.userId(), 'dev');
+    const isMain = data.$metadata && data.$metadata.isMain;
 
     if (data.$metadata && data.$metadata.title) {
-      text = `${data.$metadata.title} @ ${data.name}`;
+      text = `${data.$metadata.title} @ ${data.name}${
+        isDev && isMain ? ' (main)' : ''
+      }`;
     } else if (data.logo) {
       text = (
         <div style={{ width: 100, height: 30 }}>
@@ -89,7 +91,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
         </div>
       );
     } else {
-      text = data.name;
+      text = `${data.name}${isDev && isMain ? ' (main)' : ''}`;
     }
 
     return {
