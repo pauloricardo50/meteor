@@ -24,10 +24,18 @@ const customerToRefer = {
 const api = new RESTAPI();
 api.addEndpoint('/users', 'POST', referCustomerAPI);
 
-const referCustomer = ({ userData, impersonateUser, expectedResponse }) => {
+const referCustomer = ({
+  userData,
+  impersonateUser,
+  expectedResponse,
+  shareSolvency = false,
+}) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData || customerToRefer };
-  const query = impersonateUser ? { impersonateUser } : undefined;
+
+  const body = { user: userData || customerToRefer, shareSolvency };
+  const query = impersonateUser
+    ? { 'impersonate-user': impersonateUser }
+    : undefined;
   return fetchAndCheckResponse({
     url: '/users',
     query,
@@ -67,18 +75,31 @@ describe('REST: referCustomer', function () {
     resetDatabase();
     generator({
       users: [
-        { _factory: 'pro', _id: 'pro', organisations: [{ _id: 'org' }] },
+        {
+          _factory: 'pro',
+          _id: 'pro',
+          organisations: [
+            { _id: 'org', $metadata: { isMain: true } },
+            { _id: 'org3' },
+          ],
+        },
         {
           _factory: 'pro',
           _id: 'pro2',
           emails: [{ address: 'pro2@org.com', verified: true }],
-          organisations: [{ _id: 'org' }],
+          organisations: [{ _id: 'org', $metadata: { isMain: true } }],
         },
         {
           _factory: 'pro',
           _id: 'pro3',
           emails: [{ address: 'pro3@org2.com', verified: true }],
-          organisations: [{ _id: 'org2' }],
+          organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
+        },
+        {
+          _factory: 'pro',
+          _id: 'pro4',
+          emails: [{ address: 'pro4@org3.com', verified: true }],
+          organisations: [{ _id: 'org3', $metadata: { isMain: true } }],
         },
       ],
     });
@@ -91,11 +112,33 @@ describe('REST: referCustomer', function () {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.findOne({
-        'emails.address': { $in: [customerToRefer.email] },
+      const customer = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [customerToRefer.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
       });
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
+      expect(customer.loans[0].shareSolvency).to.equal(false);
+    }));
+
+  it('refers a customer with solvency sharing', () =>
+    referCustomer({
+      shareSolvency: true,
+      expectedResponse: {
+        message: `Successfully referred user "${customerToRefer.email}"`,
+      },
+    }).then(() => {
+      const customer = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [customerToRefer.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+      expect(customer.referredByUserLink).to.equal('pro');
+      expect(customer.referredByOrganisationLink).to.equal('org');
+      expect(customer.loans[0].shareSolvency).to.equal(true);
     }));
 
   it('refers a customer with impersonateUser', () =>
@@ -105,10 +148,20 @@ describe('REST: referCustomer', function () {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.findOne({
-        'emails.address': { $in: [customerToRefer.email] },
-      });
+      const customer = UserService.getByEmail(customerToRefer.email);
       expect(customer.referredByUserLink).to.equal('pro2');
+      expect(customer.referredByOrganisationLink).to.equal('org');
+    }));
+
+  it('refers a customer with impersonateUser in another org', () =>
+    referCustomer({
+      impersonateUser: 'pro4@org3.com',
+      expectedResponse: {
+        message: `Successfully referred user "${customerToRefer.email}"`,
+      },
+    }).then(() => {
+      const customer = UserService.getByEmail(customerToRefer.email);
+      expect(customer.referredByUserLink).to.equal('pro4');
       expect(customer.referredByOrganisationLink).to.equal('org');
     }));
 

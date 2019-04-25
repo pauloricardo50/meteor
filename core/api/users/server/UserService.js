@@ -173,12 +173,7 @@ class UserService extends CollectionService {
       }));
 
     newOrganisations.forEach(({ _id: organisationId, metadata }) =>
-      this.addLink({
-        id: userId,
-        linkName: 'organisations',
-        linkId: organisationId,
-        metadata,
-      }));
+      this.linkOrganisation({ userId, organisationId, metadata }));
   };
 
   testUserAccount = ({ email, password, role }) => {
@@ -204,7 +199,7 @@ class UserService extends CollectionService {
     return { publicKey, privateKey, createdAt };
   };
 
-  proReferUser = ({ user, proUserId }) => {
+  proReferUser = ({ user, proUserId, shareSolvency = false }) => {
     const { email } = user;
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
@@ -216,7 +211,8 @@ class UserService extends CollectionService {
       sendInvitation: false,
     });
 
-    LoanService.adminLoanInsert({ userId });
+    const loanId = LoanService.adminLoanInsert({ userId });
+    LoanService.update({ loanId, object: { shareSolvency } });
 
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
@@ -291,10 +287,11 @@ class UserService extends CollectionService {
     properties = [],
     proUserId,
     adminId,
+    shareSolvency = false,
   }) => {
     const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
     if (referOnly) {
-      return this.proReferUser({ user, proUserId });
+      return this.proReferUser({ user, proUserId, shareSolvency });
     }
 
     if (!propertyIds && !promotionIds) {
@@ -319,6 +316,7 @@ class UserService extends CollectionService {
           pro,
           userId,
           isNewUser,
+          shareSolvency,
         }),
       ];
     }
@@ -333,6 +331,7 @@ class UserService extends CollectionService {
             isNewUser,
             promotionLotIds: user.promotionLotIds,
             showAllLots: user.showAllLots,
+            shareSolvency,
           })),
       ];
     }
@@ -368,6 +367,7 @@ class UserService extends CollectionService {
           pro,
           userId,
           isNewUser,
+          shareSolvency,
         }),
       ];
     }
@@ -391,11 +391,8 @@ class UserService extends CollectionService {
   }
 
   setReferredBy({ userId, proId }) {
-    const { organisations = [] } = this.fetchOne({
-      $filters: { _id: proId },
-      organisations: { _id: 1 },
-    });
-    const organisationId = organisations.length ? organisations[0]._id : null;
+    const organisationId = this.getUserMainOrganisationId(proId);
+
     return this.update({
       userId,
       object: {
@@ -440,14 +437,42 @@ class UserService extends CollectionService {
       adminId: assigneeId,
     });
 
+    this.linkOrganisation({ userId, organisationId, metadata: { title } });
+
+    return userId;
+  }
+
+  linkOrganisation({ userId, organisationId, metadata }) {
+    const { organisations: userOrganisations = [] } = this.fetchOne({
+      $filters: { _id: userId },
+      organisations: { _id: 1 },
+    });
+    const isMain = userOrganisations.length === 0;
+
     this.addLink({
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { title },
+      metadata: { ...metadata, isMain },
     });
+  }
 
-    return userId;
+  getUserMainOrganisationId(userId) {
+    const { organisations = [] } = this.fetchOne({
+      $filters: { _id: userId },
+      organisations: { _id: 1 },
+    });
+    let mainOrganisationId = null;
+    if (organisations.length === 1) {
+      mainOrganisationId = organisations[0]._id;
+    } else if (organisations.length > 1) {
+      mainOrganisationId = (
+        organisations.find(({ $metadata: { isMain } }) => isMain)
+        || organisations[0]
+      )._id;
+    }
+
+    return mainOrganisationId;
   }
 }
 

@@ -10,6 +10,7 @@ import './7';
 import './8';
 import './9';
 import './10';
+import './11';
 
 // To migrate to a specific version
 // Migrations.migrateTo(2);

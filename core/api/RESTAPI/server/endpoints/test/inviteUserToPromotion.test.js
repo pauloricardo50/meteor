@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { expect } from 'chai';
 
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
@@ -32,9 +33,15 @@ api.addEndpoint(
   inviteUserToPromotion,
 );
 
-const inviteUser = ({ userData, expectedResponse, status, id }) => {
+const inviteUser = ({
+  userData,
+  expectedResponse,
+  status,
+  id,
+  shareSolvency = false,
+}) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData };
+  const body = { user: userData, shareSolvency };
   return fetchAndCheckResponse({
     url: `/promotions/${id || promotionId}/invite-customer`,
     data: {
@@ -100,6 +107,39 @@ describe('REST: inviteUserToPromotion', function () {
         }" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
+    }).then(() => {
+      const invitedUser = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [userToInvite.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+
+      expect(invitedUser.loans[0].shareSolvency).to.equal(false);
+    });
+  });
+
+  it('invites a user to promotion with solvency sharing', () => {
+    setupPromotion();
+
+    return inviteUser({
+      userData: userToInvite,
+      shareSolvency: true,
+      expectedResponse: {
+        message: `Successfully invited user "${
+          userToInvite.email
+        }" to promotion id "${promotionId}"`,
+      },
+      status: HTTP_STATUS_CODES.OK,
+    }).then(() => {
+      const invitedUser = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [userToInvite.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+
+      expect(invitedUser.loans[0].shareSolvency).to.equal(true);
     });
   });
 
@@ -172,7 +212,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 400,
-          message: '[promotionIds cannot be empty]',
+          message: '[ClientError: Promotion ID is required]',
         },
       });
     });

@@ -25,7 +25,7 @@ api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
 
 const getPropertyLoans = ({ propertyId, userId, impersonateUser }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const query = impersonateUser && { impersonateUser };
+  const query = impersonateUser && { 'impersonate-user': impersonateUser };
   return fetchAndCheckResponse({
     url: `/properties/${propertyId}/loans`,
     query,

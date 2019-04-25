@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { expect } from 'chai';
 
 import UserService from '../../../../users/server/UserService';
 import PropertyService from '../../../../properties/server/PropertyService';
@@ -34,13 +35,17 @@ const inviteCustomerToProProperties = ({
   expectedResponse,
   properties,
   impersonateUser,
+  shareSolvency = false,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = {
     user: userData || customerToInvite,
     properties,
+    shareSolvency,
   };
-  const query = impersonateUser ? { impersonateUser } : undefined;
+  const query = impersonateUser
+    ? { 'impersonate-user': impersonateUser }
+    : undefined;
   return fetchAndCheckResponse({
     url: '/properties/invite-customer',
     query,
@@ -157,6 +162,62 @@ describe('REST: inviteCustomerToProProperties', function () {
           customerToInvite.email
         }\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
+    }).then(() => {
+      const customer = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [customerToInvite.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+
+      expect(customer.loans[0].shareSolvency).to.equal(false);
+    });
+  });
+
+  it('invites a customer to multiple properties with solvency sharing', () => {
+    PropertyService.setProUserPermissions({
+      propertyId: 'property1',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property2',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property3',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'externalProperty1',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    return inviteCustomerToProProperties({
+      properties: [
+        { _id: 'property1' },
+        { _id: 'property2' },
+        { _id: 'property3' },
+        { externalId: 'ext1' },
+        { externalId: 'ext3', category: PROPERTY_CATEGORY.PRO },
+      ],
+      shareSolvency: true,
+      expectedResponse: {
+        message: `Successfully invited user \"${
+          customerToInvite.email
+        }\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
+      },
+    }).then(() => {
+      const customer = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [customerToInvite.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+
+      expect(customer.loans[0].shareSolvency).to.equal(true);
     });
   });
 

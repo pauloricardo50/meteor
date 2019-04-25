@@ -138,6 +138,7 @@ export const proInviteUser = new Method({
       return true;
     })),
     properties: Match.Maybe(Array),
+    shareSolvency: Match.Maybe(Boolean),
   },
 });
 

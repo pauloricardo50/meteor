@@ -109,14 +109,21 @@ export class PropertyService extends CollectionService {
     propertyIds.some(propertyId =>
       UserService.hasProperty({ userId, propertyId }));
 
-  inviteUser = ({ propertyIds, admin, pro, userId, isNewUser }) => {
+  inviteUser = ({
+    propertyIds,
+    admin,
+    pro,
+    userId,
+    isNewUser,
+    shareSolvency = false,
+  }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
 
     if (this.hasOneOfProperties({ userId, propertyIds })) {
       throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
     }
 
-    LoanService.insertPropertyLoan({ userId, propertyIds });
+    LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });
 
     const addresses = properties.map(({ address1 }) => `"${address1}"`);
 
