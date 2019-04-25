@@ -1,8 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+import SimpleSchema from 'simpl-schema';
+
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { getImpersonateUserId, getUserMainOrganisationId } from './helpers';
+import { getImpersonateUserId } from './helpers';
 import UserService from '../../../users/server/UserService';
+
+const querySchema = new SimpleSchema({
+  'impersonate-user': { type: String, optional: true },
+});
 
 const formatPropertyIds = (propertyIds) => {
   const ids = propertyIds.map(id => `"${id}"`);
@@ -28,7 +34,15 @@ const inviteCustomerToProPropertiesAPI = ({
   query,
 }) => {
   const { user, properties = [] } = body;
-  const { 'impersonate-user': impersonateUser } = query;
+  const cleanQuery = querySchema.clean(query);
+
+  try {
+    querySchema.validate(cleanQuery);
+  } catch (error) {
+    throw new Meteor.Error(error);
+  }
+
+  const impersonateUser = cleanQuery['impersonate-user'];
 
   checkProperties(properties);
 
@@ -52,11 +66,14 @@ const inviteCustomerToProPropertiesAPI = ({
       user,
     }))
     .then(() => {
-      const customerId = UserService.getByEmail(user.email)._id;
-      return UserService.setReferredByOrganisation({
-        userId: customerId,
-        organisationId: getUserMainOrganisationId(userId),
-      });
+      if (impersonateUser) {
+        const customerId = UserService.getByEmail(user.email)._id;
+        return UserService.setReferredByOrganisation({
+          userId: customerId,
+          organisationId: UserService.getUserMainOrganisationId(userId),
+        });
+      }
+      return Promise.resolve();
     })
     .then(() => ({
       message: `Successfully invited user "${

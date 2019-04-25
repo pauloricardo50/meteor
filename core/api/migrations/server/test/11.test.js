@@ -16,22 +16,13 @@ describe('Migration 11', () => {
     it('sets first organisation as main', () => {
       generator({
         organisations: [
-          {
-            name: 'org1',
-            users: [{ _id: 'user1' }, { _id: 'user2' }],
-          },
-          {
-            name: 'org2',
-            users: [{ _id: 'user1' }],
-          },
+          { name: 'org1', users: [{ _id: 'user1' }, { _id: 'user2' }] },
+          { name: 'org2', users: [{ _id: 'user1' }] },
           {
             name: 'org3',
             users: [{ _id: 'user1' }, { _id: 'user2' }, { _id: 'user3' }],
           },
-          {
-            name: 'org4',
-            users: [{ _id: 'user2' }],
-          },
+          { name: 'org4', users: [{ _id: 'user2' }] },
         ],
         users: [{ _id: 'user4' }],
       });
@@ -62,10 +53,7 @@ describe('Migration 11', () => {
               { _id: 'user2' },
             ],
           },
-          {
-            name: 'org2',
-            users: [{ _id: 'user1' }],
-          },
+          { name: 'org2', users: [{ _id: 'user1' }] },
           {
             name: 'org3',
             users: [

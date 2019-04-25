@@ -33,18 +33,3 @@ export const getImpersonateUserId = ({ userId, impersonateUser }) => {
 
   return proId;
 };
-
-export const getUserMainOrganisationId = (userId) => {
-  const { organisations = [] } = UserService.fetchOne({
-    $filters: { _id: userId },
-    organisations: { _id: 1 },
-  });
-  let mainOrganisation;
-  if (organisations.length === 1) {
-    mainOrganisation = organisations[0];
-  } else {
-    mainOrganisation = organisations.find(({ $metadata: { isMain } }) => isMain);
-  }
-
-  return mainOrganisation._id;
-};

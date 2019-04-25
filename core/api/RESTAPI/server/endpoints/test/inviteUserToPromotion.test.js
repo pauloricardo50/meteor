@@ -172,7 +172,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 400,
-          message: '[promotionIds cannot be empty]',
+          message: '[ClientError: Promotion ID is required]',
         },
       });
     });

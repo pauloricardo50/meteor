@@ -106,9 +106,7 @@ describe('REST: referCustomer', function () {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.findOne({
-        'emails.address': { $in: [customerToRefer.email] },
-      });
+      const customer = UserService.getByEmail(customerToRefer.email);
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
     }));
@@ -120,9 +118,7 @@ describe('REST: referCustomer', function () {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.findOne({
-        'emails.address': { $in: [customerToRefer.email] },
-      });
+      const customer = UserService.getByEmail(customerToRefer.email);
       expect(customer.referredByUserLink).to.equal('pro2');
       expect(customer.referredByOrganisationLink).to.equal('org');
     }));
@@ -134,9 +130,7 @@ describe('REST: referCustomer', function () {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.findOne({
-        'emails.address': { $in: [customerToRefer.email] },
-      });
+      const customer = UserService.getByEmail(customerToRefer.email);
       expect(customer.referredByUserLink).to.equal('pro4');
       expect(customer.referredByOrganisationLink).to.equal('org');
     }));

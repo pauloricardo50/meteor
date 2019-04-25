@@ -386,17 +386,8 @@ class UserService extends CollectionService {
   }
 
   setReferredBy({ userId, proId }) {
-    const { organisations = [] } = this.fetchOne({
-      $filters: { _id: proId },
-      organisations: { _id: 1 },
-    });
-    let organisationId = null;
-    if (organisations.length === 1) {
-      organisationId = organisations[0]._id;
-    } else if (organisations.length > 1) {
-      organisationId = organisations.find(({ $metadata: { isMain } } = {}) => isMain)._id
-        || organisations[0]._id;
-    }
+    const organisationId = this.getUserMainOrganisationId(proId);
+
     return this.update({
       userId,
       object: {
@@ -459,6 +450,24 @@ class UserService extends CollectionService {
       linkId: organisationId,
       metadata: { ...metadata, isMain },
     });
+  }
+
+  getUserMainOrganisationId(userId) {
+    const { organisations = [] } = this.fetchOne({
+      $filters: { _id: userId },
+      organisations: { _id: 1 },
+    });
+    let mainOrganisationId = null;
+    if (organisations.length === 1) {
+      mainOrganisationId = organisations[0]._id;
+    } else if (organisations.length > 1) {
+      mainOrganisationId = (
+        organisations.find(({ $metadata: { isMain } }) => isMain)
+        || organisations[0]
+      )._id;
+    }
+
+    return mainOrganisationId;
   }
 }
 
