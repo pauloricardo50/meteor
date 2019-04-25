@@ -1,4 +1,5 @@
 {
+  "Forms.loanName": "No.",
   "EmailVerification.error": "Il y a eu un souci lors de la vérification de votre email, merci de contacter info@e-potek.ch si vous avez besoin d'assistance.",
   "EmailVerification.message": "Votre adresse email a bien été vérifiée, merci!",
   "PromotionUsersTableActions.editLots.title": "Modifier lots de {name}",
