@@ -18,6 +18,7 @@ import Icon from '../../Icon';
 import Tooltip from '../../Material/Tooltip';
 
 const columnOptions = [
+  { id: 'loanName' },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -93,7 +94,14 @@ const makeMapLoan = ({
   currentUser,
   property,
 }) => (loan) => {
-  const { _id: loanId, user, createdAt, loanProgress, properties } = loan;
+  const {
+    _id: loanId,
+    name: loanName,
+    user,
+    createdAt,
+    loanProgress,
+    properties,
+  } = loan;
   const { isAdmin } = permissions;
 
   const canRemoveCustomer = canRemoveCustomerFromProperty({
@@ -108,6 +116,7 @@ const makeMapLoan = ({
   return {
     id: loanId,
     columns: [
+      loanName,
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
