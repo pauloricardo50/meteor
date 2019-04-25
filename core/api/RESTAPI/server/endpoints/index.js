@@ -5,3 +5,4 @@ export {
 } from './inviteCustomerToProProperties';
 export { default as referCustomerAPI } from './referCustomer';
 export { default as getPropertyLoansAPI } from './getPropertyLoans';
+export { default as getUserAPI } from './getUser';

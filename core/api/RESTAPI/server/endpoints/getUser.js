@@ -44,10 +44,11 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
     $filters: { _id: proId || userId },
     organisations: { users: { _id: 1 } },
   });
+
   if (
-    !organisations.some(({ _id }) => _id === user.referredByOrganisation)
+    !organisations.some(({ _id }) => _id === user.referredByOrganisation._id)
     && !organisations.some(({ users = [] }) =>
-      users.some(({ _id }) => _id === user.referredByUser))
+      users.some(({ _id }) => _id === user.referredByUser._id))
   ) {
     throw new Meteor.Error(`User with email "${email}" not found, or you don't have access to it.`);
   }
