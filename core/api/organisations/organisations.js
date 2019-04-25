@@ -25,7 +25,11 @@ Organisations.allow({
 });
 
 export const OrganisationSchema = new SimpleSchema({
-  name: { type: String, uniforms: { placeholder: 'Crédit Suisse' }, unique: true },
+  name: {
+    type: String,
+    uniforms: { placeholder: 'Crédit Suisse' },
+    unique: true,
+  },
   type: {
     type: String,
     allowedValues: Object.values(ORGANISATION_TYPES),
@@ -62,6 +66,7 @@ export const OrganisationSchema = new SimpleSchema({
   'userLinks.$': Object,
   'userLinks.$._id': { type: String, optional: true },
   'userLinks.$.title': { type: String, optional: true },
+  'userLinks.$.isMain': { type: Boolean, optional: true },
   commissionRates: { type: Array, defaultValue: [] },
   'commissionRates.$': Object,
   'commissionRates.$.rate': percentageField,
