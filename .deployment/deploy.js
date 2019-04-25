@@ -25,10 +25,14 @@ const main = () => {
     .help('h')
     .alias('h', 'help').argv;
 
-  return prepareDeployment({
-    environment,
-    applicationFilter: applications,
-  }).then(() => CloudFoundryService.selectSpace(SPACES[environment]));
+  return CloudFoundryService.checkUserIsLoggedIn()
+    .then(() =>
+      prepareDeployment({
+        environment,
+        applicationFilter: applications,
+      }),
+    )
+    .then(() => CloudFoundryService.selectSpace(SPACES[environment]));
 };
 
 main();
