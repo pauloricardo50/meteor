@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import { TASK_TYPE, TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
@@ -35,6 +36,9 @@ const TasksPage = () => (
     className="card1 card-top tasks-page"
     style={{ overflow: 'initial' }}
   >
+    <Helmet>
+      <title>Tâches</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[TASKS_COLLECTION]}

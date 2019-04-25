@@ -42,6 +42,7 @@ const SinglePropertyPage = (props) => {
 
   return (
     <section className={cx('single-property-page', className)}>
+
       <SinglePropertyPageHeader property={property} loanId={loanId} />
       {/* {residenceType && (
         <Valuation property={property} loanResidenceType={residenceType} />

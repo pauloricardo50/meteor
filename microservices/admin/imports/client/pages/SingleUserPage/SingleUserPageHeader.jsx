@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
@@ -39,6 +39,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
   return (
     <div className="single-user-page-header">
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
       <div className="top">
         <h1>
           {name}
@@ -111,7 +114,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             </div>
             <div className="assigned-employee space-children">
               <ReferredByAssignDropdown user={user} />
-            </div><div className="assigned-employee space-children">
+            </div>
+            <div className="assigned-employee space-children">
               <ReferredByOrganisationAssignDropdown user={user} />
             </div>
           </div>

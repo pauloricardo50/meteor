@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
@@ -13,6 +14,9 @@ type PromotionsPageProps = {};
 
 const PromotionsPage = ({ addPromotion }: PromotionsPageProps) => (
   <section className="card1 card-top promotions-page">
+    <Helmet>
+      <title>Promotions</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[PROMOTIONS_COLLECTION]}

@@ -1,6 +1,8 @@
 // @flow
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
+
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
 
@@ -28,6 +30,9 @@ const PromotionPage = (props: PromotionPageProps) => {
 
   return (
     <div className="card1 promotion-page">
+      <Helmet>
+        <title>{promotion.name}</title>
+      </Helmet>
       <PromotionPageHeader {...props} />
 
       {Meteor.microservice !== 'app' && <PromotionPageButtons {...props} />}
