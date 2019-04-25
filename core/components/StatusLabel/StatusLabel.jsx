@@ -34,7 +34,6 @@ const getStatuses = (collection) => {
   switch (collection) {
   case LOANS_COLLECTION:
     return {
-      [LOAN_STATUS.TEST]: colors.warning,
       [LOAN_STATUS.LEAD]: colors.secondary,
       [LOAN_STATUS.ONGOING]: colors.primary,
       [LOAN_STATUS.PENDING]: colors.warning,
@@ -42,6 +41,7 @@ const getStatuses = (collection) => {
       [LOAN_STATUS.BILLING]: colors.success,
       [LOAN_STATUS.FINALIZED]: colors.success,
       [LOAN_STATUS.UNSUCCESSFUL]: colors.error,
+      [LOAN_STATUS.TEST]: colors.warning,
     };
 
   case PROMOTIONS_COLLECTION:

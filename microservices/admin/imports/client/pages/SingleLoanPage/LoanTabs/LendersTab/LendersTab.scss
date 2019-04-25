@@ -2,6 +2,19 @@
   margin-top: 40px;
 }
 
+.lenders-tab-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .collection-icon {
+    width: 100px;
+    height: 100px;
+    padding: 40px;
+  }
+}
+
 .lenders-list {
   margin-top: 32px;
 
