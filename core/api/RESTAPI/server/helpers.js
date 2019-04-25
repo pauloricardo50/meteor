@@ -7,6 +7,7 @@ import NodeRSA from 'node-rsa';
 
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
+import UserService from '../../users/server/UserService';
 
 export const AUTH_ITEMS = {
   RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',

@@ -17,7 +17,6 @@ import {
 } from '../../test/apiTestHelpers.test';
 
 let user;
-let keyPair;
 let promotionId;
 const userToInvite = {
   email: 'test@example.com',
@@ -47,8 +46,7 @@ const inviteUser = ({
     data: {
       method: 'POST',
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        userId: user._id,
         timestamp,
         nonce,
         body,
@@ -92,7 +90,6 @@ describe('REST: inviteUserToPromotion', function () {
   beforeEach(() => {
     resetDatabase();
     user = Factory.create('pro');
-    keyPair = UserService.generateKeyPair({ userId: user._id });
     promotionId = Factory.create('promotion')._id;
   });
 
@@ -212,7 +209,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 400,
-          message: '[ClientError: Promotion ID is required]',
+          message: '[promotionIds cannot be empty]',
         },
       });
     });

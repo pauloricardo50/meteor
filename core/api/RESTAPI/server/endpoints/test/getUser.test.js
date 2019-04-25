@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
-import UserService from '../../../../users/server/UserService';
 import generator from '../../../../factories/index';
 import RESTAPI from '../../RESTAPI';
 import { getUserAPI } from '..';
@@ -12,8 +11,6 @@ import {
   makeHeaders,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
-
-const keyPairs = { pro: {}, pro2: {}, pro3: {} };
 
 const api = new RESTAPI();
 api.addEndpoint('/users', 'GET', getUserAPI);
@@ -30,8 +27,7 @@ const getUser = ({ email, userId, impersonateUser }) => {
     data: {
       method: 'GET',
       headers: makeHeaders({
-        publicKey: keyPairs[userId].publicKey,
-        privateKey: keyPairs[userId].privateKey,
+        userId,
         timestamp,
         nonce,
         query,
@@ -99,9 +95,6 @@ describe('REST: getUser', function () {
         },
       ],
     });
-    keyPairs.pro = UserService.generateKeyPair({ userId: 'pro' });
-    keyPairs.pro2 = UserService.generateKeyPair({ userId: 'pro2' });
-    keyPairs.pro3 = UserService.generateKeyPair({ userId: 'pro3' });
   });
 
   it('returns user referred by org and pro', () =>
@@ -155,7 +148,7 @@ describe('REST: getUser', function () {
       userId: 'pro3',
     }).then((response) => {
       expect(response.status).to.equal(400);
-      expect(response.message).to.equal('[User with email "user1@test.com" not found, or you don\'t have access to it.]');
+      expect(response.message).to.include('"user1@test.com"');
     }));
 
   it('returns an error when user does not exist', () =>
@@ -164,6 +157,6 @@ describe('REST: getUser', function () {
       userId: 'pro',
     }).then((response) => {
       expect(response.status).to.equal(400);
-      expect(response.message).to.equal('[User with email "user3@test.com" not found, or you don\'t have access to it.]');
+      expect(response.message).to.include('"user3@test.com"');
     }));
 });

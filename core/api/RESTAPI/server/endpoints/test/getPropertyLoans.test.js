@@ -18,8 +18,6 @@ import {
   PROPERTY_PERMISSIONS_FULL_ACCESS,
 } from '../../../../constants';
 
-const keyPairs = { pro: {}, pro3: {} };
-
 const api = new RESTAPI();
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
 
@@ -32,8 +30,7 @@ const getPropertyLoans = ({ propertyId, userId, impersonateUser }) => {
     data: {
       method: 'GET',
       headers: makeHeaders({
-        publicKey: keyPairs[userId].publicKey,
-        privateKey: keyPairs[userId].privateKey,
+        userId,
         timestamp,
         nonce,
         query,
@@ -89,8 +86,6 @@ describe('REST: getPropertyLoans', function () {
         },
       ],
     });
-    keyPairs.pro = UserService.generateKeyPair({ userId: 'pro' });
-    keyPairs.pro3 = UserService.generateKeyPair({ userId: 'pro3' });
   });
 
   it('returns property loans', () => {

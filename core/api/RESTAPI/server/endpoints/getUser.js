@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
 
-import { getImpersonateUserId } from './helpers';
+import { getImpersonateUserId, checkQuery, checkAccessToUser } from './helpers';
 import UserService from '../../../users/server/UserService';
 
 const querySchema = new SimpleSchema({
@@ -11,15 +11,10 @@ const querySchema = new SimpleSchema({
 });
 
 const getUserAPI = ({ user: { _id: userId }, query }) => {
-  const cleanQuery = querySchema.clean(query);
-  try {
-    querySchema.validate(cleanQuery);
-  } catch (error) {
-    throw new Meteor.Error(error);
-  }
-
-  const impersonateUser = cleanQuery['impersonate-user'];
-  const { email } = cleanQuery;
+  const { email, 'impersonate-user': impersonateUser } = checkQuery({
+    query,
+    schema: querySchema,
+  });
 
   let proId;
   if (impersonateUser) {
@@ -40,18 +35,7 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
     throw new Meteor.Error(`User with email "${email}" not found, or you don't have access to it.`);
   }
 
-  const { organisations = [] } = UserService.fetchOne({
-    $filters: { _id: proId || userId },
-    organisations: { users: { _id: 1 } },
-  });
-
-  if (
-    !organisations.some(({ _id }) => _id === user.referredByOrganisation._id)
-    && !organisations.some(({ users = [] }) =>
-      users.some(({ _id }) => _id === user.referredByUser._id))
-  ) {
-    throw new Meteor.Error(`User with email "${email}" not found, or you don't have access to it.`);
-  }
+  checkAccessToUser({ user, proId: proId || userId });
 
   return pick(user, ['firstName', 'lastName', 'email', 'phoneNumber']);
 };

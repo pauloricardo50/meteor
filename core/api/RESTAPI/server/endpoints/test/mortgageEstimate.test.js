@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
 
@@ -18,7 +17,6 @@ import {
 } from '../../test/apiTestHelpers.test';
 import { mortgageEstimateAPI } from '..';
 
-let keyPair;
 const url = '/calculator/mortgage-estimate';
 const api = new RESTAPI();
 api.addEndpoint(url, 'GET', mortgageEstimateAPI);
@@ -32,8 +30,7 @@ const getResult = ({ expectedResponse, query }) => {
     data: {
       method: 'GET',
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        userId: 'pro',
         timestamp,
         nonce,
         query,
@@ -86,7 +83,6 @@ describe('REST: mortgageEstimate', function () {
         },
       ],
     });
-    keyPair = UserService.generateKeyPair({ userId: 'pro' });
     now = new Date();
     clock = sinon.useFakeTimers(now.getTime());
   });

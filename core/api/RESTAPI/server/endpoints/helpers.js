@@ -33,3 +33,31 @@ export const getImpersonateUserId = ({ userId, impersonateUser }) => {
 
   return proId;
 };
+
+export const checkQuery = ({ query, schema }) => {
+  const cleanQuery = schema.clean(query);
+  try {
+    schema.validate(cleanQuery);
+  } catch (error) {
+    throw new Meteor.Error(error);
+  }
+
+  return cleanQuery;
+};
+
+export const checkAccessToUser = ({ user, proId }) => {
+  const { organisations = [] } = UserService.fetchOne({
+    $filters: { _id: proId },
+    organisations: { users: { _id: 1 } },
+  });
+
+  if (
+    !organisations.some(({ _id }) => _id === user.referredByOrganisation._id)
+    && !organisations.some(({ users = [] }) =>
+      users.some(({ _id }) => _id === user.referredByUser._id))
+  ) {
+    throw new Meteor.Error(`User with email "${
+      user.email
+    }" not found, or you don't have access to it.`);
+  }
+};

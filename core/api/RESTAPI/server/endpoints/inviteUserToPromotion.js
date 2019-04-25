@@ -1,12 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-
-const paramsSchema = new SimpleSchema({
-  promotionId: { type: String, optional: false },
-});
+import { checkQuery } from './helpers';
 
 const querySchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },
@@ -19,17 +15,11 @@ const inviteUserToPromotionAPI = ({
   query,
 }) => {
   const { user, shareSolvency = false } = body;
-  const cleanParams = paramsSchema.clean(params);
-  const cleanQuery = querySchema.clean(query);
-  try {
-    paramsSchema.validate(cleanParams);
-    querySchema.validate(cleanQuery);
-  } catch (error) {
-    throw new Meteor.Error(error);
-  }
-
-  const { promotionId } = cleanParams;
-  const impersonateUser = cleanQuery['impersonate-user']; // TODO: implement this
+  const { promotionId } = params;
+  const { 'impersonate-user': impersonateUser } = checkQuery({
+    query,
+    schema: querySchema,
+  }); // TODO: implement this
 
   return withMeteorUserId(userId, () =>
     proInviteUser.run({
