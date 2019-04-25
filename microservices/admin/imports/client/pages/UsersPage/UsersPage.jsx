@@ -1,6 +1,7 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation/';
+import T from 'core/components/Translation';
 import { ROLES, USERS_COLLECTION } from 'core/api/constants';
 import adminsQuery from 'core/api/users/queries/admins';
 import collectionIcons from 'core/arrays/collectionIcons';
@@ -30,6 +31,9 @@ const usersTableFilters = {
 
 const UsersPage = () => (
   <section className="card1 card-top users-page">
+    <Helmet>
+      <title>Utilisateurs</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[USERS_COLLECTION]}

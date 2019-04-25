@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import Icon from 'core/components/Icon/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
@@ -13,6 +14,9 @@ type ContactsPageProps = {
 
 const ContactsPage = ({ contacts }: ContactsPageProps) => (
   <div className="card1 card-top">
+    <Helmet>
+      <title>Contacts</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[CONTACTS_COLLECTION]}

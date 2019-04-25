@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
@@ -18,6 +19,9 @@ const SingleLoanPage = ({ loan, ...rest }) => {
 
   return (
     <section className="single-loan-page">
+      <Helmet>
+        <title>{loan.user ? loan.user.name : loan.name}</title>
+      </Helmet>
       <SingleLoanPageHeader loan={loan} />
       <SingleLoanPageTasks loan={loan} />
       <LoanTabs {...dataToPassDown} />

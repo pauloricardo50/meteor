@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
@@ -60,6 +61,9 @@ const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => (
   <div className="card1 card-top single-organisation-page">
+    <Helmet>
+      <title>{organisation.name}</title>
+    </Helmet>
     <SingleOrganisationPageHeader organisation={organisation} />
     <Tabs tabs={tabs(organisation)} routerParamName="tabId" />
   </div>

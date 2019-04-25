@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import Icon from 'core/components/Icon';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
@@ -23,6 +24,9 @@ const OrganisationsPage = ({
   setFilters,
 }: OrganisationsPageProps) => (
   <div className="card1 card-top organisations-page">
+      <Helmet>
+      <title>Organisations</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[ORGANISATIONS_COLLECTION]}
