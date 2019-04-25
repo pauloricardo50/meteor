@@ -1,11 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { expect } from 'chai';
 import moment from 'moment';
 
 import generator from '../../../../factories';
-import UserService from '../../../../users/server/UserService';
 import { TRENDS, INTEREST_RATES } from '../../../../constants';
 import RESTAPI from '../../RESTAPI';
 import {
@@ -14,8 +12,6 @@ import {
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 import { interestRatesAPI } from '..';
-
-let keyPair;
 
 const api = new RESTAPI();
 api.addEndpoint('/interest-rates/latest', 'GET', interestRatesAPI);
@@ -28,8 +24,7 @@ const getRates = ({ expectedResponse }) => {
     data: {
       method: 'GET',
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        userId: 'pro',
         timestamp,
         nonce,
       }),
@@ -59,7 +54,6 @@ describe('REST: interestRates', function () {
     generator({
       users: [{ _factory: 'pro', _id: 'pro', organisations: [{ _id: 'org' }] }],
     });
-    keyPair = UserService.generateKeyPair({ userId: 'pro' });
   });
 
   it('Returns empty response if no rates exist', () => {

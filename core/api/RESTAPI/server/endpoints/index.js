@@ -5,5 +5,6 @@ export {
 } from './inviteCustomerToProProperties';
 export { default as referCustomerAPI } from './referCustomer';
 export { default as getPropertyLoansAPI } from './getPropertyLoans';
+export { default as getUserAPI } from './getUser';
 export { default as interestRatesAPI } from './interestRates';
 export { default as mortgageEstimateAPI } from './mortgageEstimate';

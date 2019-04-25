@@ -14,6 +14,7 @@ import {
   PURCHASE_TYPE,
 } from '../../../constants';
 import currentInterestRates from '../../../interestRates/queries/currentInterestRates';
+import { checkQuery } from './helpers';
 
 const LUXURY_VALUE_THRESHOLD = 2500000;
 const SECOND_OR_LUXURY_AMORTIZATION_GOAL = 0.5;
@@ -61,20 +62,15 @@ const querySchema = new SimpleSchema({
 });
 
 const mortgageEstimateAPI = ({ query }) => {
-  const cleanQuery = querySchema.clean(query);
-  try {
-    querySchema.validate(cleanQuery);
-  } catch (error) {
-    throw new Meteor.Error(error);
-  }
-
-  const propertyValue = cleanQuery['property-value'];
-  const residenceType = cleanQuery['residence-type'];
-  const purchaseType = cleanQuery['purchase-type'];
-  const zipCode = cleanQuery['zip-code'];
-  const maintenance = cleanQuery['monthly-maintenance'];
-  const includeNotaryFees = cleanQuery['include-notary-fees'];
-  const { canton } = cleanQuery;
+  const {
+    'property-value': propertyValue,
+    'residence-type': residenceType,
+    'purchase-type': purchaseType,
+    'zip-code': zipCode,
+    'monthly-maintenance': maintenance,
+    'include-notary-fees': includeNotaryFees,
+    canton,
+  } = checkQuery({ query, schema: querySchema });
 
   const date = Date.now();
   const { averageRates: interestRates } = currentInterestRates.clone().fetch();

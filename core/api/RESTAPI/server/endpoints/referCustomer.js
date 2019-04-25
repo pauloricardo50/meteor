@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { getImpersonateUserId } from './helpers';
+import { getImpersonateUserId, checkQuery } from './helpers';
 import UserService from '../../../users/server/UserService';
 
 const querySchema = new SimpleSchema({
@@ -12,15 +12,10 @@ const querySchema = new SimpleSchema({
 
 const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
   const { user, shareSolvency = false } = body;
-  const cleanQuery = querySchema.clean(query);
-
-  try {
-    querySchema.validate(cleanQuery);
-  } catch (error) {
-    throw new Meteor.Error(error);
-  }
-
-  const impersonateUser = cleanQuery['impersonate-user'];
+  const { 'impersonate-user': impersonateUser } = checkQuery({
+    query,
+    schema: querySchema,
+  });
 
   let proId;
   if (impersonateUser) {

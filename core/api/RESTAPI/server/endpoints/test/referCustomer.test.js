@@ -13,7 +13,6 @@ import {
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 
-let keyPair;
 const customerToRefer = {
   email: 'test@example.com',
   firstName: 'Test',
@@ -42,8 +41,7 @@ const referCustomer = ({
     data: {
       method: 'POST',
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        userId: 'pro',
         timestamp,
         nonce,
         body,
@@ -103,7 +101,6 @@ describe('REST: referCustomer', function () {
         },
       ],
     });
-    keyPair = UserService.generateKeyPair({ userId: 'pro' });
   });
 
   it('refers a customer', () =>
