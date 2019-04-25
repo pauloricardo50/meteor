@@ -119,6 +119,7 @@ const mortgageEstimateAPI = ({ query }) => {
   const notaryFees = includeNotaryFees
     ? calc.getFees({ loan: loanObject })
     : null;
+  const totalValue = roundToCents(propertyValue + (notaryFees ? notaryFees.total : 0));
 
   return {
     borrowRatio,
@@ -143,10 +144,10 @@ const mortgageEstimateAPI = ({ query }) => {
         total: notaryFees.total,
       }
       : undefined,
-    ownFunds: roundToCents(propertyValue + (notaryFees ? notaryFees.total : 0) - loanValue),
-    propertyValue,
+    ownFunds: roundToCents(totalValue - loanValue),
     purchaseType,
     residenceType,
+    totalValue,
   };
 };
 

@@ -112,7 +112,6 @@ describe('REST: mortgageEstimate', function () {
         total: 60000,
       },
       ownFunds: 300000,
-      propertyValue: 1200000,
       monthlyTotals: {
         interests10: 2080,
         interests5: 1880,
@@ -120,6 +119,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      totalValue: 1260000,
     };
 
     const query = { 'property-value': '1200000' };
@@ -144,7 +144,6 @@ describe('REST: mortgageEstimate', function () {
         total: 65427.96,
       },
       ownFunds: 305427.96,
-      propertyValue: 1200000,
       monthlyTotals: {
         interests10: 2080,
         interests5: 1880,
@@ -152,6 +151,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      totalValue: 1265427.96,
     };
 
     const query = { 'property-value': '1200000', canton: 'GE' };
@@ -175,7 +175,6 @@ describe('REST: mortgageEstimate', function () {
         total: 60000,
       },
       ownFunds: 300000,
-      propertyValue: 1200000,
       monthlyTotals: {
         interests10: 3080,
         interests5: 2880,
@@ -183,6 +182,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      totalValue: 1260000,
     };
 
     const query = {
@@ -210,7 +210,6 @@ describe('REST: mortgageEstimate', function () {
         total: 65427.96,
       },
       ownFunds: 305427.96,
-      propertyValue: 1200000,
       monthlyTotals: {
         interests10: 2080,
         interests5: 1880,
@@ -218,6 +217,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      propertyValue: 1265427.96,
     };
 
     const query = {
@@ -240,7 +240,6 @@ describe('REST: mortgageEstimate', function () {
       monthlyMaintenance: 0,
       monthlyAmortization: 1000,
       ownFunds: 240000,
-      propertyValue: 1200000,
       monthlyTotals: {
         interests10: 2080,
         interests5: 1880,
@@ -248,6 +247,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      totalValue: 1200000,
     };
 
     const query = {
@@ -270,7 +270,6 @@ describe('REST: mortgageEstimate', function () {
       monthlyMaintenance: 0,
       monthlyAmortization: 3400,
       ownFunds: 1188000,
-      propertyValue: 3600000,
       monthlyTotals: {
         interests10: 6113.5,
         interests5: 5611,
@@ -278,6 +277,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      totalValue: 3600000,
     };
 
     const query = {
