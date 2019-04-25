@@ -18,7 +18,7 @@ const inviteUserToPromotionAPI = ({
   params,
   query,
 }) => {
-  const { user } = body;
+  const { user, shareSolvency = false } = body;
   const cleanParams = paramsSchema.clean(params);
   const cleanQuery = querySchema.clean(query);
   try {
@@ -35,6 +35,7 @@ const inviteUserToPromotionAPI = ({
     proInviteUser.run({
       promotionIds: [promotionId].filter(x => x),
       user: { ...user, invitedBy: userId },
+      shareSolvency,
     })).then(() => ({
     message: `Successfully invited user "${
       user.email

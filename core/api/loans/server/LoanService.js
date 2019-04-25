@@ -133,6 +133,7 @@ export class LoanService extends CollectionService {
     invitedBy,
     showAllLots,
     promotionLotIds = [],
+    shareSolvency = false,
   }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
@@ -144,6 +145,7 @@ export class LoanService extends CollectionService {
         borrowerIds: [borrowerId],
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
+        shareSolvency,
       },
       userId,
     });
@@ -157,14 +159,19 @@ export class LoanService extends CollectionService {
     return loanId;
   };
 
-  insertPropertyLoan = ({ userId, propertyIds }) => {
+  insertPropertyLoan = ({ userId, propertyIds, shareSolvency = false }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PropertyService.fetchOne({
       $filters: { _id: propertyIds[0] },
       address1: 1,
     }).address1;
     const loanId = this.insert({
-      loan: { borrowerIds: [borrowerId], propertyIds, customName },
+      loan: {
+        borrowerIds: [borrowerId],
+        propertyIds,
+        customName,
+        shareSolvency,
+      },
       userId,
     });
     this.addNewStructure({ loanId });

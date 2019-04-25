@@ -199,7 +199,7 @@ class UserService extends CollectionService {
     return { publicKey, privateKey, createdAt };
   };
 
-  proReferUser = ({ user, proUserId }) => {
+  proReferUser = ({ user, proUserId, shareSolvency = false }) => {
     const { email } = user;
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
@@ -211,7 +211,8 @@ class UserService extends CollectionService {
       sendInvitation: false,
     });
 
-    LoanService.adminLoanInsert({ userId });
+    const loanId = LoanService.adminLoanInsert({ userId });
+    LoanService.update({ loanId, object: { shareSolvency } });
 
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
@@ -286,10 +287,11 @@ class UserService extends CollectionService {
     properties = [],
     proUserId,
     adminId,
+    shareSolvency = false,
   }) => {
     const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
     if (referOnly) {
-      return this.proReferUser({ user, proUserId });
+      return this.proReferUser({ user, proUserId, shareSolvency });
     }
 
     if (!propertyIds && !promotionIds) {
@@ -314,6 +316,7 @@ class UserService extends CollectionService {
           pro,
           userId,
           isNewUser,
+          shareSolvency,
         }),
       ];
     }
@@ -328,6 +331,7 @@ class UserService extends CollectionService {
             isNewUser,
             promotionLotIds: user.promotionLotIds,
             showAllLots: user.showAllLots,
+            shareSolvency,
           })),
       ];
     }
@@ -363,6 +367,7 @@ class UserService extends CollectionService {
           pro,
           userId,
           isNewUser,
+          shareSolvency,
         }),
       ];
     }

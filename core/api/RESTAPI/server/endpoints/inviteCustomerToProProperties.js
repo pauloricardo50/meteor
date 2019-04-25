@@ -33,7 +33,7 @@ const inviteCustomerToProPropertiesAPI = ({
   body,
   query,
 }) => {
-  const { user, properties = [] } = body;
+  const { user, properties = [], shareSolvency = false } = body;
   const cleanQuery = querySchema.clean(query);
 
   try {
@@ -64,6 +64,7 @@ const inviteCustomerToProPropertiesAPI = ({
       propertyIds: internalProperties.map(({ _id }) => _id),
       properties: externalProperties,
       user,
+      shareSolvency,
     }))
     .then(() => {
       if (impersonateUser) {
