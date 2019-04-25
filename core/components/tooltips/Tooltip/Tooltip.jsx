@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import { FormattedMessage } from 'react-intl';
-import Popover from 'react-bootstrap/Popover';
+import Popover from 'react-bootstrap/lib/Popover';
 
 import track from '../../../utils/analytics';
 import DialogSimple from '../../DialogSimple/loadable';

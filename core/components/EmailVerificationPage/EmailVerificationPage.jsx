@@ -23,9 +23,7 @@ class EmailVerificationPage extends Component {
 
         import('../../utils/message').then(({ default: message }) => {
           message.error(
-            intl.formatMessage({
-              id: 'EmailVerification.error',
-            }),
+            intl.formatMessage({ id: 'EmailVerification.error' }),
             5,
           );
         });

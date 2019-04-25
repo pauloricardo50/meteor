@@ -63,6 +63,7 @@ class NotaryFeesCalculator {
       mortgageNoteFees: roundObjectKeys(mortgageNoteFees),
       deductions: roundObjectKeys(deductions),
       canton: this.canton,
+      estimate: false,
     });
 
     return roundedResult;
@@ -97,6 +98,7 @@ class NotaryFeesCalculator {
       mortgageNoteFees: roundObjectKeys(mortgageNoteFees),
       deductions: roundObjectKeys(deductions),
       canton: this.canton,
+      estimate: false,
     });
 
     return roundedResult;
