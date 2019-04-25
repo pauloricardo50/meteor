@@ -7,6 +7,7 @@ import {
   testEndpointAPI,
   referCustomerAPI,
   getPropertyLoansAPI,
+  getUserAPI,
   interestRatesAPI,
   mortgageEstimateAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
@@ -24,6 +25,7 @@ api.addEndpoint(
 );
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
 api.addEndpoint('/users', 'POST', referCustomerAPI);
+api.addEndpoint('/users', 'GET', getUserAPI);
 api.addEndpoint('/test', 'POST', testEndpointAPI);
 api.addEndpoint('/test', 'GET', testEndpointAPI);
 api.addEndpoint('/test', 'PUT', testEndpointAPI);

@@ -15,7 +15,6 @@ import {
 } from '../../test/apiTestHelpers.test';
 
 let user;
-let keyPair;
 
 const api = new RESTAPI();
 api.addEndpoint('/test', 'POST', testEndpointAPI);
@@ -43,8 +42,7 @@ const testEndpoint = ({
     data: {
       method,
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        userId: 'pro',
         timestamp,
         nonce,
         body,
@@ -75,8 +73,7 @@ describe('REST: testEndpoint', function () {
 
   beforeEach(() => {
     resetDatabase();
-    const createdUser = Factory.create('pro');
-    keyPair = UserService.generateKeyPair({ userId: createdUser._id });
+    const createdUser = Factory.create('pro', {_id: 'pro'});
     user = pick(UserService.get(createdUser._id), [
       'emails',
       'firstName',

@@ -15,7 +15,6 @@ import {
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 
-let keyPair;
 const customerToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
@@ -52,8 +51,7 @@ const inviteCustomerToProProperties = ({
     data: {
       method: 'POST',
       headers: makeHeaders({
-        publicKey: keyPair.publicKey,
-        privateKey: keyPair.privateKey,
+        userId: 'pro',
         timestamp,
         nonce,
         body,
@@ -125,7 +123,6 @@ describe('REST: inviteCustomerToProProperties', function () {
         },
       ],
     });
-    keyPair = UserService.generateKeyPair({ userId: 'pro' });
   });
 
   it('invites a customer to multiple properties', () => {

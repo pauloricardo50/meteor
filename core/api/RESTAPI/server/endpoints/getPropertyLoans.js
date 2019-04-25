@@ -1,30 +1,19 @@
-import { Meteor } from 'meteor/meteor';
 import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
 
 import proPropertyLoans from '../../../loans/queries/proPropertyLoans';
-import { getImpersonateUserId } from './helpers';
-
-const paramsSchema = new SimpleSchema({
-  propertyId: { type: String, optional: false },
-});
+import { getImpersonateUserId, checkQuery } from './helpers';
 
 const querySchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },
 });
 
 const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
-  const cleanParams = paramsSchema.clean(params);
-  const cleanQuery = querySchema.clean(query);
-  try {
-    paramsSchema.validate(cleanParams);
-    querySchema.validate(cleanQuery);
-  } catch (error) {
-    throw new Meteor.Error(error);
-  }
-
-  const { propertyId } = cleanParams;
-  const impersonateUser = cleanQuery['impersonate-user'];
+  const { propertyId } = params;
+  const { 'impersonate-user': impersonateUser } = checkQuery({
+    query,
+    schema: querySchema,
+  });
 
   let proId;
   if (impersonateUser) {

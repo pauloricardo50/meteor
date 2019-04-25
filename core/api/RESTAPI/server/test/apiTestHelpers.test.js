@@ -4,6 +4,7 @@ import NodeRSA from 'node-rsa';
 import queryString from 'query-string';
 
 import { sortObject } from 'core/api/helpers/index';
+import UserService from 'core/api/users/server/UserService';
 
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
@@ -96,23 +97,32 @@ export const makeBody = ({
 
 export const makeHeaders = ({
   publicKey,
+  privateKey,
+  userId,
   body,
   timestamp,
   nonce,
   query,
-  privateKey,
-}) => ({
-  'Content-Type': 'application/json',
-  'X-EPOTEK-Authorization': `EPOTEK ${publicKey.replace(
-    /\r?\n|\r/g,
-    '',
-  )}:${signRequest({
-    body,
-    query,
-    privateKey,
-    timestamp,
-    nonce,
-  })}`,
-  'X-EPOTEK-Nonce': nonce,
-  'X-EPOTEK-Timestamp': timestamp,
-});
+}) => {
+  let keyPair = { publicKey, privateKey };
+
+  if (userId) {
+    keyPair = UserService.generateKeyPair({ userId });
+  }
+
+  return {
+    'Content-Type': 'application/json',
+    'X-EPOTEK-Authorization': `EPOTEK ${keyPair.publicKey.replace(
+      /\r?\n|\r/g,
+      '',
+    )}:${signRequest({
+      body,
+      query,
+      privateKey: keyPair.privateKey,
+      timestamp,
+      nonce,
+    })}`,
+    'X-EPOTEK-Nonce': nonce,
+    'X-EPOTEK-Timestamp': timestamp,
+  };
+};
