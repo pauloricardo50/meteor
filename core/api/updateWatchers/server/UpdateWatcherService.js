@@ -4,6 +4,8 @@ import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
 import moment from 'moment';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { LoanService } from 'core/api/loans/server/LoanService';
 import Intl from '../../../utils/server/intl';
 import { toMoney } from '../../../utils/conversionFunctions';
 import { percentFormatters } from '../../../utils/formHelpers';
@@ -201,6 +203,18 @@ class UpdateWatcherService extends CollectionService {
     case PROPERTIES_COLLECTION: {
       const { address1 } = doc;
       return `Modifications pour le bien immo "${address1}"`;
+    }
+
+    case LOANS_COLLECTION: {
+      const { name, promotions, hasPromotion } = LoanService.fetchOne({
+        $filters: { _id: docId },
+        name: 1,
+        promotions: { name: 1 },
+        hasPromotion: 1,
+      });
+      const text = `Modifications dans le dossier ${name}`;
+      const suffix = hasPromotion ? ` (${promotions[0].name})` : '';
+      return text + suffix;
     }
 
     default:
