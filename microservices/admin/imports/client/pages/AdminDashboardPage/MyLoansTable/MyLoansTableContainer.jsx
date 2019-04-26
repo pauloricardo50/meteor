@@ -7,7 +7,6 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import loansAssignedToAdmin from 'core/api/loans/queries/loansAssignedToAdmin';
 import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
-import withLoansDocuments from 'core/api/files/withLoansDocuments';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -70,7 +69,6 @@ const MyLoansTableContainer = compose(
     dataName: 'loans',
     renderMissingDoc: false,
   }),
-  withLoansDocuments,
   withRouter,
   withProps(({ loans, history }) => ({
     columnOptions,
