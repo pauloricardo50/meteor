@@ -85,12 +85,14 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
               ),
             }}
           />
-          {loan.user ? (
-            <Link to={`/users/${loan.user._id}`}>
+          {user ? (
+            <Link to={`/users/${user._id}`}>
               <small className="secondary">
                 {' - '}
-                {loan.user.name}
-                {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+                {user.name}
+                {(user.phoneNumbers
+                  && user.phoneNumbers.length > 0)
+                  && `, ${user.phoneNumbers}`}
               </small>
             </Link>
           ) : (
