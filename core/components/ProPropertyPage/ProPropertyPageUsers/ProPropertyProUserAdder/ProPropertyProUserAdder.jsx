@@ -59,6 +59,7 @@ const ProPropertyProUserAdder = ({
     raised
     label={<T id="ProPropertyPage.addUser.label" />}
     title={<T id="ProPropertyPage.addUser.title" />}
+    text={<T id="ProPropertyPage.addUser.description" />}
     closeOnly
     onClose={() => {
       setSearchQuery(null);
@@ -72,7 +73,7 @@ const ProPropertyProUserAdder = ({
           value={searchQuery}
           onChange={event => setSearchQuery(event.target.value)}
           placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}
-          style={{ width: '100%', marginBottom: '16px' }}
+          style={{ width: '100%', margin: '16px 0' }}
         />
       </form>
       {showUsers({ users, searchResult, property, addUser, isAdmin })}
