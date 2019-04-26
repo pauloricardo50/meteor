@@ -218,6 +218,7 @@ class UserService extends CollectionService {
       emailId: EMAIL_IDS.REFER_USER,
       userId,
       params: {
+        proUserId,
         proName: getUserNameAndOrganisation({ user: pro }),
         ctaUrl: this.getEnrollmentUrl({ userId }),
       },

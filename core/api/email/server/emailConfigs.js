@@ -243,8 +243,6 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROPERTY, {
 addEmailConfig(EMAIL_IDS.REFER_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides({ ctaUrl, ...rest }, { title, body, cta, ...rest2 }) {
-    console.log('rest2:', rest2);
-    console.log('rest:', rest);
     const { variables } = this.template;
 
     return {
@@ -275,6 +273,10 @@ addEmailConfig(EMAIL_IDS.FIND_LENDER_NOTIFICATION, {
       ],
     };
   },
+});
+
+addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
 });
 
 export default emailConfigs;

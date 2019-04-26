@@ -387,6 +387,7 @@ describe('UserService', function () {
             _factory: 'pro',
             firstName: 'John',
             lastName: 'Doe',
+            emails: [{ address: 'john@doe.com', verified: true }],
           },
         ],
       });
@@ -406,8 +407,8 @@ describe('UserService', function () {
         expect(userCreated.referredByUserLink).to.equal('proId');
         expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
 
-        return checkEmails(1).then((emails) => {
-          expect(emails.length).to.equal(1);
+        return checkEmails(2).then((emails) => {
+          expect(emails.length).to.equal(2);
           const {
             emailId,
             address,
@@ -416,7 +417,7 @@ describe('UserService', function () {
               template_name,
               message: { from_email, subject, global_merge_vars, from_name },
             },
-          } = emails[0];
+          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.REFER_USER);
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.REFER_USER);
           expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
@@ -425,6 +426,25 @@ describe('UserService', function () {
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('Vous avez été invité sur e-Potek');
           expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('John Doe (bank)');
+          {
+            const {
+              emailId,
+              address,
+              response: { status },
+              template: {
+                template_name,
+                message: { from_email, subject, global_merge_vars, from_name },
+              },
+            } = emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION);
+            expect(status).to.equal('sent');
+            expect(emailId).to.equal(EMAIL_IDS.CONFIRM_USER_INVITATION);
+            expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+            expect(address).to.equal('john@doe.com');
+            expect(from_email).to.equal('info@e-potek.ch');
+            expect(from_name).to.equal('e-Potek');
+            expect(subject).to.equal('Invitation réussie');
+            expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Bob Dylan (bob@dylan.com)');
+          }
         });
       }));
 
@@ -478,7 +498,7 @@ describe('UserService', function () {
         expect(loan.promotionLinks[0].showAllLots).to.equal(false);
         expect(loan.promotionOptionLinks.length).to.equal(1);
 
-        return checkEmails(1);
+        return checkEmails(2);
       });
     });
 
@@ -531,7 +551,7 @@ describe('UserService', function () {
         expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
         expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
 
-        return checkEmails(2);
+        return checkEmails(4);
       });
     });
 
@@ -591,7 +611,7 @@ describe('UserService', function () {
         expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
         expect(loan.propertyIds[0]).to.equal('propertyId');
 
-        return checkEmails(1);
+        return checkEmails(2);
       });
     });
 
@@ -634,7 +654,7 @@ describe('UserService', function () {
         expect(loan.propertyIds[0]).to.equal('propertyId1');
         expect(loan.propertyIds[1]).to.equal('propertyId2');
 
-        return checkEmails(1);
+        return checkEmails(2);
       });
     });
 
@@ -708,7 +728,7 @@ describe('UserService', function () {
         expect(loans[2].promotionLinks[0]._id).to.equal('promotionId2');
         expect(loans[2].promotionLinks[0].invitedBy).to.equal('proId');
 
-        return checkEmails(3);
+        return checkEmails(6);
       });
     });
 
@@ -730,9 +750,9 @@ describe('UserService', function () {
         propertyIds: ['propertyId2'],
         proUserId: 'proId',
       })
-        .then(() => checkEmails(1))
+        .then(() => checkEmails(2))
         .then((emails) => {
-          expect(emails.length).to.equal(1);
+          expect(emails.length).to.equal(2);
           const {
             emailId,
             address,
@@ -741,7 +761,7 @@ describe('UserService', function () {
               template_name,
               message: { from_email, subject, merge_vars, from_name },
             },
-          } = emails[0];
+          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY);
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
           expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
@@ -749,6 +769,8 @@ describe('UserService', function () {
           expect(from_email).to.equal('info@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('e-Potek - "Rue du four 1"');
+
+          expect(emails.filter(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION).length).to.equal(1);
         });
     });
 

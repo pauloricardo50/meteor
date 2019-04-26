@@ -29,7 +29,9 @@ if (isEmailTestEnv) {
         const interval = Meteor.setInterval(() => {
           counter += 1;
 
-          const emails = emailTestCollection.find().fetch();
+          const emails = emailTestCollection
+            .find({}, { sort: { date: 1 } })
+            .fetch();
 
           if (emails && emails.length >= expected) {
             Meteor.clearInterval(interval);

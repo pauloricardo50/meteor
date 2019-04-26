@@ -180,17 +180,17 @@ describe('PromotionService', function () {
           expect(!!userId).to.equal(true);
           expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
-          return checkEmails(1);
+          return checkEmails(2);
         })
         .then((emails) => {
-          expect(emails.length).to.equal(1);
+          expect(emails.length).to.equal(2);
           const {
             emailId,
             response: { status },
             template: {
               message: { global_merge_vars },
             },
-          } = emails[0];
+          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION);
 
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
@@ -201,6 +201,8 @@ describe('PromotionService', function () {
           expect(global_merge_vars
             .find(({ name }) => name === 'BODY')
             .content.endsWith('Admin User')).to.equal(true);
+
+          expect(emails.filter(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION).length).to.equal(1);
         });
     });
 
@@ -318,7 +320,7 @@ describe('PromotionService', function () {
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
 
-        return checkEmails(1);
+        return checkEmails(2);
       });
     });
   });

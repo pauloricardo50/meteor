@@ -180,6 +180,7 @@ export class PromotionService extends CollectionService {
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
+          proUserId: proId,
           promotion: { ...promotion, assignedEmployee },
           coverImageUrl,
           logoUrls,

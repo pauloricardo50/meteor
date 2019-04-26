@@ -206,8 +206,8 @@ describe('PropertyService', function () {
         expect(referredByUser._id).to.equal('proUser');
         expect(referredByOrganisation._id).to.equal('organisation');
 
-        return checkEmails(1).then((emails) => {
-          expect(emails.length).to.equal(1);
+        return checkEmails(2).then((emails) => {
+          expect(emails.length).to.equal(2);
           const {
             emailId,
             address,
@@ -216,8 +216,22 @@ describe('PropertyService', function () {
               template_name,
               message: { from_email, subject, from_name },
             },
-          } = emails[0];
+          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+
           expect(subject).to.equal('e-Potek - "Rue du parc 3"');
+
+          {
+            const {
+              emailId,
+              address,
+              response: { status },
+              template: {
+                template_name,
+                message: { from_email, subject, from_name },
+              },
+            } = emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION);
+            expect(subject).to.equal('Invitation réussie');
+          }
         });
       });
     });

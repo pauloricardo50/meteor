@@ -97,6 +97,7 @@ class EmailService {
     if (isEmailTestEnv) {
       // Store all sent emails in the DB, to be asserted in tests
       return Meteor.call('storeTestEmail', {
+        date: Date.now(),
         emailId,
         address,
         template,
