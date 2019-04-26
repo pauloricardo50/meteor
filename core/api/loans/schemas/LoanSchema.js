@@ -6,6 +6,7 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -129,6 +130,7 @@ const LoanSchema = new SimpleSchema({
   },
   ...maxPropertyValueSchema,
   shareSolvency: { type: Boolean, optional: true },
+  documents: documentsField,
 });
 
 export default LoanSchema;

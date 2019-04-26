@@ -2,7 +2,12 @@ import { Mongo } from 'meteor/mongo';
 
 import SimpleSchema from 'simpl-schema';
 
-import { address, percentageField, moneyField } from '../helpers/sharedSchemas';
+import {
+  address,
+  percentageField,
+  moneyField,
+  documentsField,
+} from '../helpers/sharedSchemas';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_TYPES,
@@ -71,6 +76,7 @@ export const OrganisationSchema = new SimpleSchema({
   'commissionRates.$': Object,
   'commissionRates.$.rate': percentageField,
   'commissionRates.$.threshold': moneyField,
+  documents: documentsField,
 });
 
 Organisations.attachSchema(OrganisationSchema);

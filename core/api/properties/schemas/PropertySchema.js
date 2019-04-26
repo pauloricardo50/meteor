@@ -9,6 +9,7 @@ import {
   mortgageNoteLinks,
   moneyField,
   userLinksSchema,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
@@ -308,6 +309,7 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Url,
   },
+  documents: documentsField,
 });
 
 const protectedKeys = [
@@ -323,6 +325,7 @@ const protectedKeys = [
   'updatedAt',
   'userId',
   'valuation',
+  'documents',
 ];
 export const PropertySchemaAdmin = PropertySchema.omit(...protectedKeys);
 export default PropertySchema;

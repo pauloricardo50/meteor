@@ -11,6 +11,7 @@ import {
   userLinksSchema,
   createdAt,
   updatedAt,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
@@ -94,6 +95,7 @@ const PromotionSchema = new SimpleSchema({
   'promotionLotLinks.$._id': { type: String, optional: true },
   assignedEmployeeId: { type: String, optional: true },
   ...userLinksSchema(promotionPermissionsSchema),
+  documents: documentsField,
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
