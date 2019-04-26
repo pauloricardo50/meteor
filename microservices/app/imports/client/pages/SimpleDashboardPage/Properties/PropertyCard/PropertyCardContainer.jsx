@@ -13,11 +13,11 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
   }
 
   if (documents.propertyImages && documents.propertyImages.length) {
-    images = [...images, documents.propertyImages.map(({ url }) => url)];
+    images = [...images, ...documents.propertyImages.map(({ url }) => url)];
   }
 
   if (documents.promotionImage && documents.promotionImage.length) {
-    images = [...images, documents.promotionImage.map(({ url }) => url)];
+    images = [...images, ...documents.promotionImage.map(({ url }) => url)];
   }
 
   if (images.length === 0) {
