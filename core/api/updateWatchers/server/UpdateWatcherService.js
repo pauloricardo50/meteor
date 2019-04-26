@@ -5,7 +5,7 @@ import difference from 'lodash/difference';
 import moment from 'moment';
 
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { LoanService } from 'core/api/loans/server/LoanService';
+import LoanService from 'core/api/loans/server/LoanService';
 import Intl from '../../../utils/server/intl';
 import { toMoney } from '../../../utils/conversionFunctions';
 import { percentFormatters } from '../../../utils/formHelpers';
