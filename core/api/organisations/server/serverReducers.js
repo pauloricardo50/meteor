@@ -1,10 +1,8 @@
 import Organisations from '..';
-import filesReducer from '../../reducers/filesReducer';
 import RevenueService from '../../revenues/server/RevenueService';
 import { getCurrentRate } from '../helpers';
 
 Organisations.addReducers({
-  ...filesReducer,
   generatedRevenues: {
     body: { _id: 1 },
     reduce: ({ _id: organisationId }) =>
