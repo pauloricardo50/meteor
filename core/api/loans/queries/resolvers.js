@@ -116,20 +116,34 @@ const anonymizeReferredByLoans = ({ loans = [], userId }) => [
   // ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
 ];
 
+const doesUserShareCustomers = (user) => {
+  const {
+    $metadata: { shareCustomers },
+  } = user;
+  return shareCustomers;
+};
+
 export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
-  const { organisations = [] } = UserService.fetch({
+  const { organisations = [] } = UserService.fetchOne({
     $filters: { _id: userId },
-    organisations: { _id: 1 },
+    organisations: { _id: 1, users: { _id: 1 } },
   });
 
-  const organisationId = !!organisations.length && organisations[0]._id;
+  const organisationsUsers = organisations.reduce(
+    (orgUsers, { users = [] }) => [
+      ...orgUsers,
+      ...users
+        .filter(({ _id }) => _id !== userId)
+        .filter(doesUserShareCustomers),
+    ],
+    [],
+  );
 
   const users = UserService.fetch({
     $filters: {
-      $or: [
-        { referredByUserLink: userId },
-        organisationId && { referredByOrganisationLink: organisationId },
-      ].filter(x => x),
+      referredByUserLink: {
+        $in: [userId, ...organisationsUsers.map(({ _id }) => _id)],
+      },
     },
     loans: proLoans(),
   });
