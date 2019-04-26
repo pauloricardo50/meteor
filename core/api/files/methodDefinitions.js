@@ -38,3 +38,11 @@ export const getSignedUrl = new Method({
     key: String,
   },
 });
+
+export const updateDocumentsCache = new Method({
+  name: 'getSignedUrl',
+  params: {
+    docId: String,
+    collection: String,
+  },
+});

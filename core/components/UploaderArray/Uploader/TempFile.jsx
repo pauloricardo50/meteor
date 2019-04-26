@@ -5,6 +5,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import { updateDocumentsCache } from 'core/api/methods/index';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
   EXOSCALE_PATH,
@@ -53,6 +54,7 @@ export default class TempFile extends Component {
           status: FILE_STATUS.VALID,
         };
         handleUploadComplete(fileObject, downloadUrl);
+        updateDocumentsCache.run({ docId, collection });
       }
     });
   }

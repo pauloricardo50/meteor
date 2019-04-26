@@ -82,6 +82,8 @@ const props = withProps(({
   fileMeta: { id, label },
   loanId,
   setTempSuccessFiles,
+  docId,
+  collection,
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
