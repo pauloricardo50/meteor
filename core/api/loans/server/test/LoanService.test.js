@@ -858,13 +858,11 @@ describe('LoanService', function () {
           address,
           response: { status },
           template: {
-            template_name,
             message: {
               from_email,
               subject,
               merge_vars,
               from_name,
-              bcc_address,
             },
           },
         } = emails[0];

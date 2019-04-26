@@ -213,7 +213,7 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
-      bccAddress: assigneeAddress,
+      bccAddresses: [{ email: assigneeAddress, name: assigneeName }],
     };
   },
 });
@@ -242,7 +242,9 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROPERTY, {
 // proName
 addEmailConfig(EMAIL_IDS.REFER_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ ctaUrl }, { title, body, cta }) {
+  createOverrides({ ctaUrl, ...rest }, { title, body, cta, ...rest2 }) {
+    console.log('rest2:', rest2);
+    console.log('rest:', rest);
     const { variables } = this.template;
 
     return {

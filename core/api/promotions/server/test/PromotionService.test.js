@@ -188,7 +188,7 @@ describe('PromotionService', function () {
             emailId,
             response: { status },
             template: {
-              message: { merge_vars },
+              message: { merge_vars, to },
             },
           } = emails[0];
 
@@ -198,10 +198,10 @@ describe('PromotionService', function () {
           expect(merge_vars[0].vars
             .find(({ name }) => name === 'BODY')
             .content.startsWith('Pro User')).to.equal(true);
-
           expect(merge_vars[0].vars
             .find(({ name }) => name === 'BODY')
             .content.endsWith('Admin User')).to.equal(true);
+          expect(to.length).to.equal(3);
         });
     });
 

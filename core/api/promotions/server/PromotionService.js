@@ -127,6 +127,11 @@ export class PromotionService extends CollectionService {
       UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
     }
 
+    const { assignedEmployeeId } = UserService.fetchOne({
+      $filters: { _id: userId },
+      assignedEmployeeId: 1,
+    });
+
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({
         userId,
@@ -134,6 +139,7 @@ export class PromotionService extends CollectionService {
         promotionId,
         firstName: user.firstName,
         proId: pro._id,
+        adminId: assignedEmployeeId,
       }).then(() => loanId);
     }
 
@@ -146,6 +152,7 @@ export class PromotionService extends CollectionService {
     promotionId,
     firstName,
     proId,
+    adminId,
   }) {
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
       const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
@@ -172,6 +179,7 @@ export class PromotionService extends CollectionService {
       return sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
+        bccUserIds: [proId, adminId].filter(x => x),
         params: {
           promotion: { ...promotion, assignedEmployee },
           coverImageUrl,

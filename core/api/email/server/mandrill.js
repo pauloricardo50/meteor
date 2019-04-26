@@ -35,6 +35,11 @@ export const getSimpleMandrillTemplate = ({
   merge_vars: variables,
 });
 
+const makeRecipients = (recipients, bccAdresses = []) => [
+  ...recipients.map(({ email, name }) => ({ email, name, type: 'to' })),
+  ...bccAdresses.map(({ email, name }) => ({ email, name, type: 'bcc' })),
+];
+
 // Used for all other emails
 export const getMandrillTemplate = ({
   templateName,
@@ -42,13 +47,14 @@ export const getMandrillTemplate = ({
   allowUnsubscribe,
   variables,
   recipientAddress,
+  recipientName,
   senderAddress,
   senderName,
   subject,
   sendAt,
   templateContent = [],
   replyTo,
-  bccAddress,
+  bccAddresses,
 }) => ({
   template_name: templateName,
   template_content: [
@@ -59,12 +65,14 @@ export const getMandrillTemplate = ({
     from_email: senderAddress,
     from_name: senderName,
     subject,
-    to: [{ email: recipientAddress, type: 'to' }],
+    to: makeRecipients(
+      [{ email: recipientAddress, name: recipientName }],
+      bccAddresses,
+    ),
     merge_vars: [{ rcpt: recipientAddress, vars: variables }],
     headers: {
       'Reply-To': replyTo || senderAddress,
     },
-    bcc_address: bccAddress,
   },
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });

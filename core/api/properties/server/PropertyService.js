@@ -132,10 +132,17 @@ export class PropertyService extends CollectionService {
       isNewUser,
       addresses,
       proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
+      bccUserIds: [pro && pro._id, admin && admin._id].filter(x => x),
     });
   };
 
-  sendPropertyInvitationEmail({ userId, isNewUser, proName, addresses }) {
+  sendPropertyInvitationEmail({
+    userId,
+    isNewUser,
+    proName,
+    addresses,
+    bccUserIds,
+  }) {
     let ctaUrl = Meteor.settings.public.subdomains.app;
 
     const formattedAddresses = [
@@ -151,6 +158,7 @@ export class PropertyService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
       userId,
+      bccUserIds,
       params: {
         proName,
         address: formattedAddresses,

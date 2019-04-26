@@ -27,7 +27,7 @@ export class OfferService extends CollectionService {
       createdAt,
       lender: {
         organisation: { name: organisationName },
-        contact: { email: address },
+        contact: { email: address, name },
         loan: {
           name: loanName,
           user: { assignedEmployee },
@@ -40,6 +40,7 @@ export class OfferService extends CollectionService {
     return sendEmailToAddress.run({
       emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
       address,
+      name,
       params: {
         assigneeAddress,
         assigneeName,

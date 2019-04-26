@@ -205,7 +205,7 @@ class UserService extends CollectionService {
       throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
     }
 
-    const { userId, pro } = this.proCreateUser({
+    const { userId, pro, admin } = this.proCreateUser({
       user,
       proUserId,
       sendInvitation: false,
@@ -217,6 +217,7 @@ class UserService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
       userId,
+      bccUserIds: [proUserId, admin._id].filter(x => x),
       params: {
         proName: getUserNameAndOrganisation({ user: pro }),
         ctaUrl: this.getEnrollmentUrl({ userId }),

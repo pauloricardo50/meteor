@@ -214,10 +214,11 @@ describe('PropertyService', function () {
             response: { status },
             template: {
               template_name,
-              message: { from_email, subject, merge_vars, from_name },
+              message: { from_email, subject, merge_vars, from_name, to },
             },
           } = emails[0];
           expect(subject).to.equal('e-Potek - "Rue du parc 3"');
+          expect(to.length).to.equal(3);
         });
       });
     });

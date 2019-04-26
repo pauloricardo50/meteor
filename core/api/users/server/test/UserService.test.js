@@ -414,7 +414,7 @@ describe('UserService', function () {
             response: { status },
             template: {
               template_name,
-              message: { from_email, subject, merge_vars, from_name },
+              message: { from_email, subject, merge_vars, from_name, to },
             },
           } = emails[0];
           expect(status).to.equal('sent');
@@ -425,6 +425,9 @@ describe('UserService', function () {
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('Vous avez été invité sur e-Potek');
           expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('John Doe (bank)');
+          expect(to.length).to.equal(3);
+          expect(to.filter(({ type }) => type === 'to').length).to.equal(1);
+          expect(to.filter(({ type }) => type === 'bcc').length).to.equal(2);
         });
       }));
 
@@ -457,7 +460,11 @@ describe('UserService', function () {
       });
 
       return UserService.proInviteUser({
-        user: { ...userToInvite, showAllLots: false, promotionLotIds: ['pLotId'] },
+        user: {
+          ...userToInvite,
+          showAllLots: false,
+          promotionLotIds: ['pLotId'],
+        },
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       }).then(() => {

@@ -84,6 +84,8 @@ describe('OfferService', () => {
       const loanId = Factory.create('loan', { userId })._id;
       const contactId = Factory.create('contact', {
         emails: [{ address: 'john@doe.com' }],
+        firstName: 'John',
+        lastName: 'Doe',
       })._id;
       const organisationId = Factory.create('organisation', {
         contactIds: [{ _id: contactId }],
@@ -112,21 +114,26 @@ describe('OfferService', () => {
           response: { status },
           template: {
             template_name,
-            message: {
-              from_email,
-              subject,
-              merge_vars,
-              from_name,
-              bcc_address,
-            },
+            message: { from_email, subject, merge_vars, from_name, to },
           },
         } = emails[0];
+
         expect(status).to.equal('sent');
         expect(emailId).to.equal(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER);
         expect(template_name).to.equal(EMAIL_TEMPLATES.SIMPLE.mandrillId);
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('dev@e-potek.ch');
-        expect(bcc_address).to.equal('dev@e-potek.ch');
+        expect(to.length).to.equal(2);
+        expect(to[0]).to.deep.equal({
+          email: 'john@doe.com',
+          name: 'John Doe',
+          type: 'to',
+        });
+        expect(to[1]).to.deep.equal({
+          email: 'dev@e-potek.ch',
+          name: 'Dev e-Potek',
+          type: 'bcc',
+        });
         expect(from_name).to.equal('Dev e-Potek');
         expect(subject).to.include('Feedback client sur');
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
