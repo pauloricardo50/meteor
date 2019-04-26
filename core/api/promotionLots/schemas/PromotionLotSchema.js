@@ -3,7 +3,6 @@ import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 import {
   createdAt,
   updatedAt,
-  documentsField,
 } from '../../helpers/sharedSchemas';
 
 const PromotionLotSchema = new SimpleSchema({
@@ -22,7 +21,6 @@ const PromotionLotSchema = new SimpleSchema({
   'lotLinks.$._id': { type: String, optional: true },
   attributedToLink: { type: Object, optional: true },
   'attributedToLink._id': { type: String, optional: true },
-  documents: documentsField,
 });
 
 export default PromotionLotSchema;

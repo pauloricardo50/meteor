@@ -5,8 +5,6 @@ import { createRoute } from 'core/utils/routerUtils';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import { APP_PROMOTION_PAGE } from 'imports/startup/client/appRoutes';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
-import promotionFiles from 'core/api/promotions/queries/promotionFiles';
 import cx from 'classnames';
 import { PROMOTION_STATUS } from 'core/api/constants';
 
@@ -50,8 +48,4 @@ const DashboardRecapPromotion = ({
     </Link>
   );
 };
-export default mergeFilesWithQuery(
-  promotionFiles,
-  ({ promotion: { _id: promotionId } }) => ({ promotionId }),
-  'promotion',
-)(DashboardRecapPromotion);
+export default DashboardRecapPromotion;
