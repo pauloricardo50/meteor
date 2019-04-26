@@ -37,6 +37,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   city: 1,
   civilStatus: 1,
   company: 1,
+  documents: 1,
   expenses: 1,
   gender: 1,
   hasOwnCompany: 1,
@@ -262,6 +263,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
   displayWelcomeScreen: 1,
+  documents: 1,
   offers: fullOffer(),
   properties: userProperty({ withSort }),
   user: appUser(),
@@ -304,6 +306,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   signingDate: 1,
   status: 1,
 });
+
 export const adminLoans = () => ({
   ...loanBase(),
   borrowers: { name: 1 },
@@ -418,6 +421,7 @@ export const fullOrganisation = () => ({
   commissionRate: 1,
   commissionRates: 1,
   contacts: contact(),
+  documents: 1,
   generatedRevenues: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
@@ -437,6 +441,7 @@ export const userOrganisation = () => ({
 export const proPromotionLot = () => ({
   attributedTo: { user: { name: 1 } },
   createdAt: 1,
+  documents: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
   name: 1,
   promotion: {
@@ -462,6 +467,7 @@ export const proPromotionLot = () => ({
 export const appPromotionLot = () => ({
   attributedTo: { user: { _id: 1 } },
   createdAt: 1,
+  documents: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
   name: 1,
   promotion: { name: 1, status: 1 },
@@ -553,6 +559,7 @@ export const basePromotion = () => ({
   city: 1,
   contacts: 1,
   createdAt: 1,
+  documents: 1,
   loans: { _id: 1 },
   lots: {
     value: 1,
@@ -674,6 +681,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   createdAt: 1,
   customFields: 1,
   description: 1,
+  documents: 1,
   flatType: 1,
   floorNumber: 1,
   gardenArea: 1,
