@@ -48,13 +48,12 @@ class FileService {
       return { ...groupedFiles, [category]: [...currentCategoryFiles, file] };
     }, {});
 
-  updateDocumentsCache = ({ docId, collection }) => {
-    const documents = this.listFilesForDocByCategory(docId);
-    return Mongo.Collection.get(collection).update(
-      { _id: docId },
-      { $set: documents },
-    );
-  };
+  updateDocumentsCache = ({ docId, collection }) =>
+    this.listFilesForDocByCategory(docId).then(documents =>
+      Mongo.Collection.get(collection).update(
+        { _id: docId },
+        { $set: { documents } },
+      ));
 }
 
 export default new FileService();
