@@ -114,7 +114,14 @@ describe('OfferService', () => {
           response: { status },
           template: {
             template_name,
-            message: { from_email, subject, merge_vars, from_name, to },
+            message: {
+              from_email,
+              subject,
+              global_merge_vars,
+              from_name,
+              to,
+              bcc_address,
+            },
           },
         } = emails[0];
 
@@ -123,20 +130,10 @@ describe('OfferService', () => {
         expect(template_name).to.equal(EMAIL_TEMPLATES.SIMPLE.mandrillId);
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('dev@e-potek.ch');
-        expect(to.length).to.equal(2);
-        expect(to[0]).to.deep.equal({
-          email: 'john@doe.com',
-          name: 'John Doe',
-          type: 'to',
-        });
-        expect(to[1]).to.deep.equal({
-          email: 'dev@e-potek.ch',
-          name: 'Dev e-Potek',
-          type: 'bcc',
-        });
+        expect(bcc_address).to.equal('dev@e-potek.ch');
         expect(from_name).to.equal('Dev e-Potek');
         expect(subject).to.include('Feedback client sur');
-        expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
+        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
       });
     });
   });

@@ -1,6 +1,7 @@
 import { Mandrill } from 'meteor/wylio:mandrill';
 import { Meteor } from 'meteor/meteor';
 
+import { logError } from 'core/api/methods/index';
 import { getEmailFooter } from './emailHelpers';
 import { isEmailTestEnv, skipEmails } from './EmailService';
 
@@ -35,11 +36,6 @@ export const getSimpleMandrillTemplate = ({
   merge_vars: variables,
 });
 
-const makeRecipients = (recipients, bccAdresses = []) => [
-  ...recipients.map(({ email, name }) => ({ email, name, type: 'to' })),
-  ...bccAdresses.map(({ email, name }) => ({ email, name, type: 'bcc' })),
-];
-
 // Used for all other emails
 export const getMandrillTemplate = ({
   templateName,
@@ -54,7 +50,7 @@ export const getMandrillTemplate = ({
   sendAt,
   templateContent = [],
   replyTo,
-  bccAddresses,
+  bccAddress,
 }) => ({
   template_name: templateName,
   template_content: [
@@ -65,14 +61,10 @@ export const getMandrillTemplate = ({
     from_email: senderAddress,
     from_name: senderName,
     subject,
-    to: makeRecipients(
-      [{ email: recipientAddress, name: recipientName }],
-      bccAddresses,
-    ),
-    merge_vars: [{ rcpt: recipientAddress, vars: variables }],
-    headers: {
-      'Reply-To': replyTo || senderAddress,
-    },
+    to: [{ email: recipientAddress, name: recipientName }],
+    global_merge_vars: variables,
+    headers: { 'Reply-To': replyTo || senderAddress },
+    bcc_address: bccAddress,
   },
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });
@@ -88,6 +80,10 @@ export const sendMandrillTemplate = (mandrillTemplate) => {
   return new Promise((resolve, reject) => {
     Mandrill.messages.sendTemplate(mandrillTemplate, (error, result) => {
       if (error) {
+        logError.run({
+          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          additionalData: ['Mandrill error'],
+        });
         reject(error);
       }
       resolve(result.data[0]);
@@ -108,7 +104,10 @@ export const getEmailsForAddress = email =>
       { query: `email:${email}`, date_from: getDate30DaysAgo() },
       (error, result) => {
         if (error) {
-          console.log('error', error);
+          logError.run({
+            error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+            additionalData: ['Mandrill error'],
+          });
           resolve(error);
         } else if (result.statusCode !== 200) {
           resolve(result);

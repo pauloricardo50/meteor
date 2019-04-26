@@ -12,17 +12,16 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmailTestEnv;
-// export const skipEmails = false;
+// export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmailTestEnv;
+export const skipEmails = false;
 
 class EmailService {
-  sendEmail = ({ emailId, address, name, params, bccUserIds }) => {
+  sendEmail = ({ emailId, address, name, params }) => {
     const templateOptions = this.createTemplateOptions({
       emailId,
       address,
       name,
       params,
-      bccUserIds,
     });
     const template = getMandrillTemplate(templateOptions);
     return sendMandrillTemplate(template).then((response) => {
@@ -30,24 +29,18 @@ class EmailService {
     });
   };
 
-  sendEmailToUser = ({ emailId, userId, params, bccUserIds }) => {
+  sendEmailToUser = ({ emailId, userId, params }) => {
     const { email, name } = UserService.fetchOne({
       $filters: { _id: userId },
       email: 1,
       name: 1,
     });
-    this.sendEmail({ emailId, address: email, name, params, bccUserIds });
+    this.sendEmail({ emailId, address: email, name, params });
   };
 
   getEmailConfig = emailId => emailConfigs[emailId];
 
-  createTemplateOptions = ({
-    emailId,
-    address,
-    name,
-    params,
-    bccUserIds = [],
-  }) => {
+  createTemplateOptions = ({ emailId, address, name, params }) => {
     const emailConfig = this.getEmailConfig(emailId);
     const {
       template: { mandrillId: templateName },
@@ -61,14 +54,6 @@ class EmailService {
     // Make sure you call `createOverrides` from emailConfig, to preserve `this`
     // See: https://github.com/Microsoft/vscode/issues/43930
     const overrides = emailConfig.createOverrides(params, emailContent);
-    const bccAddresses = bccUserIds.map((id) => {
-      const { email, name: userName } = UserService.fetchOne({
-        $filters: { _id: id },
-        email: 1,
-        name: 1,
-      });
-      return { email, name: userName };
-    });
 
     return {
       templateName,
@@ -78,7 +63,6 @@ class EmailService {
       senderName: FROM_NAME,
       subject: emailContent.subject,
       sendAt: undefined,
-      bccAddresses,
       ...overrides,
       ...otherOptions,
     };

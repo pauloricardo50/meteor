@@ -188,20 +188,19 @@ describe('PromotionService', function () {
             emailId,
             response: { status },
             template: {
-              message: { merge_vars, to },
+              message: { global_merge_vars },
             },
           } = emails[0];
 
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-          expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include(resetToken);
-          expect(merge_vars[0].vars
+          expect(global_merge_vars.find(({ name }) => name === 'CTA_URL').content).to.include(resetToken);
+          expect(global_merge_vars
             .find(({ name }) => name === 'BODY')
             .content.startsWith('Pro User')).to.equal(true);
-          expect(merge_vars[0].vars
+          expect(global_merge_vars
             .find(({ name }) => name === 'BODY')
             .content.endsWith('Admin User')).to.equal(true);
-          expect(to.length).to.equal(3);
         });
     });
 

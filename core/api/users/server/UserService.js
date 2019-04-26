@@ -217,7 +217,6 @@ class UserService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
       userId,
-      bccUserIds: [proUserId, admin._id].filter(x => x),
       params: {
         proName: getUserNameAndOrganisation({ user: pro }),
         ctaUrl: this.getEnrollmentUrl({ userId }),

@@ -861,7 +861,7 @@ describe('LoanService', function () {
             message: {
               from_email,
               subject,
-              merge_vars,
+              global_merge_vars,
               from_name,
             },
           },
@@ -873,8 +873,8 @@ describe('LoanService', function () {
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
-        expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Admin User');
+        expect(global_merge_vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
+        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Admin User');
       });
     });
 

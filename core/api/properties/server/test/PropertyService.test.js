@@ -214,11 +214,10 @@ describe('PropertyService', function () {
             response: { status },
             template: {
               template_name,
-              message: { from_email, subject, merge_vars, from_name, to },
+              message: { from_email, subject, from_name },
             },
           } = emails[0];
           expect(subject).to.equal('e-Potek - "Rue du parc 3"');
-          expect(to.length).to.equal(3);
         });
       });
     });
@@ -307,7 +306,7 @@ describe('PropertyService', function () {
           response: { status },
           template: {
             template_name,
-            message: { from_email, subject, merge_vars, from_name },
+            message: { from_email, subject, global_merge_vars, from_name },
           },
         } = emails[0];
         expect(status).to.equal('sent');
@@ -317,7 +316,7 @@ describe('PropertyService', function () {
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('e-Potek - "Rue du parc 4"');
-        expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
+        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
       });
     });
   });

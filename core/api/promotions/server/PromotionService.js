@@ -179,7 +179,6 @@ export class PromotionService extends CollectionService {
       return sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
-        bccUserIds: [proId, adminId].filter(x => x),
         params: {
           promotion: { ...promotion, assignedEmployee },
           coverImageUrl,
