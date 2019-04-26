@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
@@ -87,6 +89,27 @@ export const PasswordResetPage = ({
             primary
             loading={submitting}
           />
+        </div>
+
+        <div className="secondary disclaimer">
+          <small>
+            <T
+              id="PasswordResetPage.disclaimer"
+              values={{
+                link: (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`${
+                      Meteor.settings.public.subdomains.app
+                    }/files/Privacy Policy - e-Potek.pdf`}
+                  >
+                    <T id="PasswordResetPage.disclaimer.privacyPolicy" />
+                  </a>
+                ),
+              }}
+            />
+          </small>
         </div>
       </div>
     </form>
