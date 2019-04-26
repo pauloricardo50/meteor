@@ -157,7 +157,6 @@ export const getDashboardTodosArray = list =>
     {
       id: 'uploadDocuments',
       isDone: loan => Calculator.filesProgress({ loan }).percent >= 1,
-      hide: loan => !loan.documents,
       link: ({ _id: loanId }) => createRoute(FILES_PAGE, { ':loanId': loanId }),
     },
     {
