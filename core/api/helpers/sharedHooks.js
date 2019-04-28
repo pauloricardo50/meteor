@@ -47,7 +47,7 @@ export const additionalDocumentsHook = ({
   conditionalDocuments,
 }) => (userId, doc) => {
   let documents = [];
-  const { additionalDocuments } = doc || { additionalDocuments: [] };
+  const { additionalDocuments = [] } = doc || {};
   if (additionalDocuments.length === 0) {
     documents = initialDocuments;
   } else {

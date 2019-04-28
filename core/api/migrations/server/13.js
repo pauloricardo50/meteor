@@ -7,7 +7,6 @@ import {
   PROPERTIES_COLLECTION,
   ORGANISATIONS_COLLECTION,
   PROMOTIONS_COLLECTION,
-  PROMOTION_LOTS_COLLECTION,
 } from 'core/api/constants';
 import FileService from 'core/api/files/server/FileService';
 
@@ -17,7 +16,6 @@ const collections = [
   PROPERTIES_COLLECTION,
   ORGANISATIONS_COLLECTION,
   PROMOTIONS_COLLECTION,
-  PROMOTION_LOTS_COLLECTION,
 ];
 
 export const up = async () => {
