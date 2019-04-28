@@ -98,19 +98,6 @@ describe('dashboardTodos', () => {
   });
 
   describe('uploadDocuments', () => {
-    it('hides when documents are not there yet', () => {
-      expect(dashboardTodosObject.uploadDocuments.hide({})).to.equal(true);
-      expect(dashboardTodosObject.uploadDocuments.hide({
-        documents: undefined,
-      })).to.equal(true);
-    });
-
-    it('does not hide when documents is an empty object', () => {
-      expect(dashboardTodosObject.uploadDocuments.hide({
-        documents: {},
-      })).to.equal(false);
-    });
-
     it('should be done when all files are uploaded', () => {
       expect(dashboardTodosObject.uploadDocuments.isDone({})).to.equal(true);
     });

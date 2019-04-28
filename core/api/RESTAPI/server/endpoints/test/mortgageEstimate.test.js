@@ -213,7 +213,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      propertyValue: 1265427.96,
+      totalValue: 1265427.96,
     };
 
     const query = {

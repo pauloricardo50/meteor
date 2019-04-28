@@ -6,7 +6,8 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { up, down } from '../13';
 import { Loans, Borrowers } from '../../..';
 
-describe('Migration 13', () => {
+describe('Migration 13', function () {
+  this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
   });
