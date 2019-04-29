@@ -14,6 +14,8 @@ const body = merge(
     'promotions',
     'user',
     'promotionOptions',
+    'borrowers.mortgageNotes',
+    'borrowers.loans',
   ]),
   {
     documents: 1,
