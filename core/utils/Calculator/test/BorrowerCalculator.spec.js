@@ -134,6 +134,30 @@ describe('BorrowerCalculator', () => {
     });
   });
 
+  describe.only('getBonuses', () => {
+    it('returns the sum of bonuses for a given year', () => {
+      expect(Calculator.getBonuses({
+        borrowers: [
+          {
+            bonusExists: 10,
+            bonus2018: null,
+            bonus2016: 200,
+          },
+          {
+            bonusExists: false,
+            bonus2017: 5,
+            bonus2016: 200,
+            bonus2019: 5,
+          },
+        ],
+      })).to.deep.equal({
+        bonus2016: 400,
+        bonus2017: 5,
+        bonus2019: 5,
+      });
+    });
+  });
+
   describe('getBorrowerCompletion', () => {
     it('should be 0% for a new borrower', () => {
       expect(Calculator.getBorrowerCompletion({

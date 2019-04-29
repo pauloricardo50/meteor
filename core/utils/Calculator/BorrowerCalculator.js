@@ -50,6 +50,28 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return Math.max(0, Math.round(sum));
     }
 
+    getBonuses({ borrowers }) {
+      return arrayify(borrowers).reduce((obj, borrower) => {
+        const bonusKeys = Object.keys(borrower).filter(key =>
+          key.includes('bonus')
+            && key !== 'bonusExists'
+            && borrower[key] >= 0
+            && borrower[key] !== null);
+
+        bonusKeys.forEach((key) => {
+          const value = borrower[key];
+
+          if (obj[key]) {
+            obj = { ...obj, [key]: obj[key] + value };
+          } else {
+            obj = { ...obj, [key]: value };
+          }
+        });
+
+        return obj;
+      }, {});
+    }
+
     getBonusIncome({ borrowers }) {
       const bonusKeys = [
         'bonus2015',
