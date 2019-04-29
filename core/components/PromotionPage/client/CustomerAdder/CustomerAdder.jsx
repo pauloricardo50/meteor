@@ -83,7 +83,7 @@ const CustomerAdder = ({ promotion, promotionStatus }: CustomerAdderProps) => {
         proInviteUser.run({ user, promotionIds: [promotionId] })
       }
       title="Inviter un client"
-      description="Invitez un client à la promotion avec son addresse email. Il recevra un mail (ainsi que son conseiller et le courtier en bcc) avec un lien pour se connecter à e-Potek."
+      description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
       onSuccessMessage={onSuccessMessage}
     />
   );

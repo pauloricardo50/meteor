@@ -92,7 +92,7 @@
   "ProPropertyPage.removeCustomer.alert": "Êtes-vous sûr de vouloir enlever l'accès à ce bien immobilier à {customerName} ?",
   "ProPropertyPage.customersTable": "Acheteurs",
   "PropertyCustomerAdder.title": "Ajouter acheteur",
-  "PropertyCustomerAdder.description": "Ajoute un compte pour cet acheteur, et le notifiera par email (ainsi que son conseiller et vous en bcc) que vous l'avez invité sur e-Potek. Si c'est un client déjà existant chez e-Potek, cette invitation lui créera un nouveau dossier hypothécaire.",
+  "PropertyCustomerAdder.description": "Ajoute un compte pour cet acheteur, et le notifiera par email que vous l'avez invité sur e-Potek (vous recevrez aussi un email de confirmation). Si c'est un client déjà existant chez e-Potek, cette invitation lui créera un nouveau dossier hypothécaire.",
   "PropertyCustomerAdder.referredUsers": "Vos clients existants",
   "PropertyCustomerAdder.referredUsers.tooltip": "Sélectionnez un de vos clients existants",
   "Forms.loans": "Dossiers",
