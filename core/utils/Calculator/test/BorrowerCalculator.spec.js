@@ -6,6 +6,7 @@ import Calculator, { Calculator as CalculatorClass } from '..';
 import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
+import { BONUS_ALGORITHMS } from '../../../config/financeConstants';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
@@ -131,6 +132,21 @@ describe('BorrowerCalculator', () => {
           },
         ],
       })).to.equal(50);
+    });
+
+    it('uses the AVERAGE algorithm', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 2,
+        bonusAlgorithm: BONUS_ALGORITHMS.AVERAGE,
+      });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2019: 200,
+        },
+      })).to.equal(100);
     });
   });
 

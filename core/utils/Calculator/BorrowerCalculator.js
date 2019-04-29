@@ -19,6 +19,7 @@ import {
 import MiddlewareManager from '../MiddlewareManager';
 import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
 import { borrowerExtractorMiddleware } from './middleware';
+import { BONUS_ALGORITHMS } from '../../config/financeConstants';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -63,7 +64,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           return acc + 0;
         }
 
-        const arr = bonusKeys.map(key => borrower[key]);
+        const arr = bonusKeys.map((key) => {
+          if (this.bonusAlgorithm === BONUS_ALGORITHMS.AVERAGE) {
+            // The regular average puts all the values to 0, instead of undefined
+            // This ensures that the average is taken over all the history to consider
+            return borrower[key] || 0;
+          }
+          return borrower[key];
+        });
 
         return (
           acc

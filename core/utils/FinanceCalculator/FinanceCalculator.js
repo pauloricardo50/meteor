@@ -34,6 +34,7 @@ import {
   ESTIMATED_COMMISSION,
   REFERRAL_COMMISSION,
   REFERRAL_COMMISSION_SPLIT,
+  BONUS_ALGORITHMS,
 } from '../../config/financeConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
@@ -54,6 +55,7 @@ export class FinanceCalculator {
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
     amortizationYears = AMORTIZATION_YEARS,
+    bonusAlgorithm = BONUS_ALGORITHMS.WEAK_AVERAGE,
     bonusConsideration = BONUS_CONSIDERATION,
     bonusHistoryToConsider = BONUS_HISTORY_TO_CONSIDER,
     companyIncomeHistoryToConsider = COMPANY_INCOME_TO_CONSIDER,
@@ -86,6 +88,7 @@ export class FinanceCalculator {
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
     this.amortizationYears = amortizationYears;
+    this.bonusAlgorithm = bonusAlgorithm;
     this.bonusConsideration = bonusConsideration;
     this.bonusHistoryToConsider = bonusHistoryToConsider;
     this.companyIncomeHistoryToConsider = companyIncomeHistoryToConsider;

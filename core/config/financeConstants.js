@@ -36,3 +36,7 @@ export const REFERRAL_COMMISSION_SPLIT = 0.5;
 // Add extra 1 so that rounding errors don't break the comparison
 // f.ex: ???
 export const OWN_FUNDS_ROUNDING_AMOUNT = 1001;
+export const BONUS_ALGORITHMS = {
+  AVERAGE: 'AVERAGE',
+  WEAK_AVERAGE: 'WEAK_AVERAGE',
+};
