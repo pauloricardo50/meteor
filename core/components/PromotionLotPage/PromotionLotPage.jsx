@@ -12,7 +12,6 @@ import PromotionLotModifier from './PromotionLotModifier';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
-import PromotionLotPageContainer from './PromotionLotPageContainer';
 import DocumentDownloadList from '../DocumentDownloadList';
 import PromotionLotRecapTable from './PromotionLotRecapTable';
 
@@ -109,4 +108,4 @@ const PromotionLotPage = ({
   );
 };
 
-export default PromotionLotPageContainer(PromotionLotPage);
+export default PromotionLotPage;

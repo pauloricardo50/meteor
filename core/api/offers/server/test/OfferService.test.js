@@ -72,7 +72,8 @@ describe('OfferService', () => {
     });
   });
 
-  describe('send feedback', () => {
+  describe('send feedback', function () {
+    this.timeout(10000);
     it('sends the feedback to the lender', () => {
       const adminId = Factory.create('admin', {
         firstName: 'Dev',

@@ -142,3 +142,10 @@ export const moneyField = {
   optional: true,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
 };
+
+export const documentsField = {
+  type: Object,
+  defaultValue: {},
+  optional: true,
+  blackbox: true,
+};

@@ -17,12 +17,18 @@ import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/
 import { APP_PROMOTION_PAGE } from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
-type AppPromotionLotPageProps = {};
+type AppPromotionLotPageProps = {
+  promotionOption: Object,
+  promotionLot: Object,
+  loan: Object,
+  promotionId: String,
+  setCustom: Function,
+};
 
 export const AppPromotionLotPage = ({
   promotionOption,
   promotionLot,
-  loan: { _id: loanId, promotions: loanPromotions },
+  loan: { _id: loanId },
   promotionId,
   setCustom,
 }: AppPromotionLotPageProps) => {
@@ -30,12 +36,10 @@ export const AppPromotionLotPage = ({
     name,
     reducedStatus,
     promotion,
-    value,
     lots,
     documents,
     properties,
   } = promotionLot;
-  const { name: promotionName } = promotion;
   const { custom, attributedToMe } = promotionOption || {};
   const property = properties.length > 0 && properties[0];
   const { description } = property;

@@ -1,7 +1,6 @@
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 
-import filesReducer from '../../reducers/filesReducer';
 import Calculator from '../../../utils/Calculator';
 import Loans from '../loans';
 import assigneeReducer from '../../reducers/assigneeReducer';
@@ -28,7 +27,6 @@ const body = merge(
 );
 
 Loans.addReducers({
-  ...filesReducer,
   ...assigneeReducer(),
   loanProgress: {
     body,

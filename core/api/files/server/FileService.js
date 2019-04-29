@@ -1,3 +1,5 @@
+import { Mongo } from 'meteor/mongo';
+
 import { FILE_STATUS } from '../fileConstants';
 import S3Service from './S3Service';
 
@@ -45,6 +47,13 @@ class FileService {
       const currentCategoryFiles = groupedFiles[category] || [];
       return { ...groupedFiles, [category]: [...currentCategoryFiles, file] };
     }, {});
+
+  updateDocumentsCache = ({ docId, collection }) =>
+    this.listFilesForDocByCategory(docId).then(documents =>
+      Mongo.Collection.get(collection).update(
+        { _id: docId },
+        { $set: { documents } },
+      ));
 }
 
 export default new FileService();

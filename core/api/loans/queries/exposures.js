@@ -1,7 +1,6 @@
 import './adminLoan.expose';
 import './adminLoans.expose';
 import './fullLoan.expose';
-import './loanFiles.expose';
 import './loansAssignedToAdmin.expose';
 import './loanSearch.expose';
 import './loanWithName.expose';

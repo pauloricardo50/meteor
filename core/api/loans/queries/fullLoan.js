@@ -1,9 +1,6 @@
-import merge from 'lodash/merge';
-
 import Loans from '../loans';
 import { LOAN_QUERIES } from '../../constants';
 import { adminLoan } from '../../fragments';
-import { loanFilesFragment } from './loanFiles';
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 
 // This query can be used on the server to get a complete loan, just like on the client
@@ -14,5 +11,5 @@ export default Loans.createQuery(LOAN_QUERIES.FULL_LOAN, {
   $postFilter(loans = []) {
     return loans.map(formatLoanWithDocuments);
   },
-  ...merge({}, adminLoan({ withSort: true }), loanFilesFragment),
+  ...adminLoan({ withSort: true }),
 });

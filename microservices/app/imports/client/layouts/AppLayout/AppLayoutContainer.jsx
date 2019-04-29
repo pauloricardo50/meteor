@@ -6,10 +6,8 @@ import { withRouter } from 'react-router-dom';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import userLoan from 'core/api/loans/queries/userLoan';
-import loanFiles from 'core/api/loans/queries/loanFiles';
 import appUser from 'core/api/users/queries/appUser';
 import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
-import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
 import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
@@ -80,15 +78,7 @@ const withRedirect = withProps(({ currentUser, history }) => {
 export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
-  // Reset the layout on loanId change, this avoids weird desync issues
-  // because of mergeFilesIntoLoanStructure
-  Component => props => (
-    <React.Fragment key={props.loanId}>
-      <Component {...props} />
-    </React.Fragment>
-  ),
   withUserLoan,
-  mergeFilesIntoLoanStructure(loanFiles, ({ loanId }) => ({ loanId }), 'loan'),
   withInterestRates,
   mapProps(({ loan, currentInterestRates: { averageRates }, ...props }) => ({
     ...props,

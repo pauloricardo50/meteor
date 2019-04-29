@@ -53,7 +53,7 @@ class CollectionService {
   }
 
   checkQuery(body) {
-    if (body.$filter) {
+    if (body && body.$filter) {
       throw new Meteor.Error('$filter found in query body, did you mean $filters?');
     }
   }

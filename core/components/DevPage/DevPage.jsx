@@ -31,6 +31,7 @@ class DevPage extends Component {
       addOffers,
       isRefinancing,
       numberOfRates,
+      withInvitedBy,
     } = this.state;
     const {
       currentUser,
@@ -204,12 +205,21 @@ class DevPage extends Component {
             </Button>
           </Tooltip>
           <hr className="mbt20" />
-          Nb. d'utilisateurs
+          Nb. of users
           <input
             type="number"
             value={users}
             onChange={e => this.makeHandleChange('users')(e.target.value)}
           />
+          <input
+            type="checkbox"
+            name="withInvitedBy"
+            value={withInvitedBy}
+            onChange={() =>
+              this.makeHandleChange('withInvitedBy')(!withInvitedBy)
+            }
+          />
+          With invitedBy
           <Button
             raised
             secondary
@@ -217,6 +227,7 @@ class DevPage extends Component {
             onClick={() =>
               Meteor.call('createDemoPromotion', {
                 users,
+                withInvitedBy,
               })
             }
           >
@@ -231,6 +242,7 @@ class DevPage extends Component {
                 users,
                 addCurrentUser: true,
                 withPromotionOptions: true,
+                withInvitedBy,
               })
             }
           >

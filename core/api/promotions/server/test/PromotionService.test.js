@@ -320,7 +320,7 @@ describe('PromotionService', function () {
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
 
-        return checkEmails(2);
+        return checkEmails(1);
       });
     });
   });

@@ -1,9 +1,7 @@
 import { compose, withProps } from 'recompose';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
-import promotionFiles from 'core/api/promotions/queries/promotionFiles';
 import { withSmartQuery } from 'core/api';
 import withMatchParam from 'core/containers/withMatchParam';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 import {
   isAllowedToModifyPromotion,
   isAllowedToInviteCustomersToPromotion,
@@ -32,10 +30,5 @@ export default compose(
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
   }),
-  mergeFilesWithQuery(
-    promotionFiles,
-    ({ promotion: { _id: promotionId } }) => ({ promotionId }),
-    'promotion',
-  ),
   withProps(makePermissions),
 );

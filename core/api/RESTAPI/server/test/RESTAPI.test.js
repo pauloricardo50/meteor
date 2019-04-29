@@ -163,7 +163,7 @@ describe('RESTAPI', () => {
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
       }));
 
-    it('attemps a replay attack with same nonce', () => {
+    it('attempts a replay attack with same nonce', () => {
       const { timestamp, nonce } = getTimestampAndNonce();
 
       return fetchAndCheckResponse({
@@ -189,7 +189,7 @@ describe('RESTAPI', () => {
         }));
     });
 
-    it('attemps a replay attack with old timestamp', () => {
+    it('attempts a replay attack with old timestamp', () => {
       const timestamp = (
         Math.round(new Date().valueOf() / 1000) - 32
       ).toString();

@@ -5,8 +5,6 @@ import cx from 'classnames';
 
 import { createRoute } from 'core/utils/routerUtils';
 import StatusLabel from 'core/components/StatusLabel';
-import promotionFiles from 'core/api/promotions/queries/promotionFiles';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 import { PROMOTIONS_COLLECTION, PROMOTION_STATUS } from 'core/api/constants';
 import { APP_PROMOTION_PAGE } from '../../../../startup/client/appRoutes';
 
@@ -49,8 +47,4 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
   );
 };
 
-export default mergeFilesWithQuery(
-  promotionFiles,
-  ({ promotion: { _id: promotionId } }) => ({ promotionId }),
-  'promotion',
-)(PromotionCard);
+export default PromotionCard;

@@ -3,8 +3,6 @@ import { compose, withProps } from 'recompose';
 import { withSmartQuery, promotionOptionUpdate } from 'core/api';
 import appPromotionOption from 'core/api/promotionOptions/queries/appPromotionOption';
 import withMatchParam from 'core/containers/withMatchParam';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
-import propertyFiles from 'core/api/properties/queries/propertyFiles';
 import { AppPromotionLotPage } from '../AppPromotionLotPage/AppPromotionLotPage';
 
 export default compose(
@@ -23,9 +21,4 @@ export default compose(
         object: { custom: value },
       }),
   })),
-  mergeFilesWithQuery(
-    propertyFiles,
-    ({ promotionLot: { properties } }) => ({ propertyId: properties[0]._id }),
-    'promotionLot',
-  ),
 )(AppPromotionLotPage);
