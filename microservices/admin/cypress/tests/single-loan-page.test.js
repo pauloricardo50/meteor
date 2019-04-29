@@ -44,6 +44,8 @@ describe('Loans', () => {
 
   it('should add lenders', () => {
     cy.contains('Nouvelle hypothèque').click();
+    cy.contains('Prospect').click();
+    cy.contains('En cours').click();
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
 
