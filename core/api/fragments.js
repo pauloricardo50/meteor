@@ -342,7 +342,6 @@ export const proLoans = () => ({
   hasPromotion: 1,
   hasProProperty: 1,
   properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
-  revenues: fullRevenues(),
   structure: 1,
   maxPropertyValue: userMaxPropertyValue,
   residenceType: 1,
