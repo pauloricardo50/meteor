@@ -35,7 +35,18 @@ class Tabs extends Component {
     const { value } = this.state;
     const { tabs } = this.props;
 
-    return tabs[value].content;
+    if (tabs.length === 0) {
+      return null;
+    }
+
+    const currentTab = tabs[value];
+
+    if (!currentTab) {
+      // When tabs are added or removed, tabs can break, so readjust current tab value
+      return this.setState({ value: tabs.length - 1 });
+    }
+
+    return currentTab.content;
   };
 
   render() {
