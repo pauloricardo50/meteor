@@ -8,6 +8,7 @@ import { Loans, Borrowers } from '../../..';
 
 describe('Migration 13', function () {
   this.timeout(10000);
+  
   beforeEach(() => {
     resetDatabase();
   });

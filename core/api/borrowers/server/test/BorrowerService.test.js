@@ -25,7 +25,7 @@ const checkDocuments = ({
     expectedDocuments.every(({ id }) => id !== doc.id))).to.not.exist;
 };
 
-describe('BorrowerService', () => {
+describe('BorrowerService ', () => {
   let borrower;
   let borrowerId;
   let user;
