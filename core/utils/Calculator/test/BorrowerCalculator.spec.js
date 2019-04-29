@@ -134,7 +134,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe.only('getBonuses', () => {
+  describe('getBonuses', () => {
     it('returns the sum of bonuses for a given year', () => {
       expect(Calculator.getBonuses({
         borrowers: [
