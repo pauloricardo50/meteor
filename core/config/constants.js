@@ -1,1 +1,1 @@
-export const CHARACTERS_TYPES_PER_SECOND_AVG = 300; // milliseconds
+export const AUTOSAVE_DEBOUNCE = 400; // milliseconds
