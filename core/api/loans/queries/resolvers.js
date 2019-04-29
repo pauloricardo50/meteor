@@ -14,6 +14,7 @@ import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
+import OrganisationService from '../../organisations/server/OrganisationService';
 
 const isSolventForProProperty = ({
   isAdmin,
@@ -124,25 +125,20 @@ const doesUserShareCustomers = (user) => {
 };
 
 export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
-  const { organisations = [] } = UserService.fetchOne({
-    $filters: { _id: userId },
-    organisations: { _id: 1, users: { _id: 1 } },
+  const mainOrganisationId = UserService.getUserMainOrganisationId(userId);
+  const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
+    $filters: { _id: mainOrganisationId },
+    users: { _id: 1 },
   });
-
-  const organisationsUsers = organisations.reduce(
-    (orgUsers, { users = [] }) => [
-      ...orgUsers,
-      ...users
-        .filter(({ _id }) => _id !== userId)
-        .filter(doesUserShareCustomers),
-    ],
-    [],
-  );
+  const mainOrganisationsUserIds = mainOrganisationUsers
+    .filter(({ _id }) => _id !== userId)
+    .filter(doesUserShareCustomers)
+    .map(({ _id }) => _id);
 
   const users = UserService.fetch({
     $filters: {
       referredByUserLink: {
-        $in: [userId, ...organisationsUsers.map(({ _id }) => _id)],
+        $in: [userId, ...mainOrganisationsUserIds],
       },
     },
     loans: proLoans(),
