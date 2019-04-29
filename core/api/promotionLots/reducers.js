@@ -12,7 +12,7 @@ PromotionLots.addReducers({
       properties && properties[0] && properties[0].name,
   },
   documents: {
-    body: { properties: { _id: 1 } },
+    body: { properties: { documents: 1 } },
     reduce: ({ properties }) =>
       properties && properties[0] && properties[0].documents,
   },
