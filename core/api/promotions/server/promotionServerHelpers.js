@@ -175,7 +175,7 @@ export const makeLoanAnonymizer = ({
       : anonymize;
 
     return {
-      user: anonymizeUser ? ANONYMIZED_USER : user,
+      user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
       _id: loanId,
       anonymous: !!anonymizeUser,
       ...rest,

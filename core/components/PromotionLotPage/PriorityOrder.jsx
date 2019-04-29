@@ -60,4 +60,5 @@ const PriorityOrder = ({
     </div>
   );
 };
+
 export default PriorityOrder;
