@@ -454,7 +454,7 @@ class UserService extends CollectionService {
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { ...metadata, isMain, shareCustomers: false },
+      metadata: { ...metadata, isMain, shareCustomers: true },
     });
   }
 

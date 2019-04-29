@@ -11,7 +11,7 @@ export const up = () => {
         id: userId,
         linkName: 'organisations',
         linkId: organisationId,
-        metadata: { ...metadata, shareCustomers: false },
+        metadata: { ...metadata, shareCustomers: true },
       }))));
 };
 
