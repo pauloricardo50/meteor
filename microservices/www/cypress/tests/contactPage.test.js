@@ -17,7 +17,9 @@ const assertEmails = () => {
 describe('ContactPage', () => {
   before(() => {
     cy.initiateTest();
+  });
 
+  beforeEach(() => {
     cy.callMethod('resetDatabase');
   });
 
