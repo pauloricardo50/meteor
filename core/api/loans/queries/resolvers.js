@@ -14,6 +14,7 @@ import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
+import OrganisationService from '../../organisations/server/OrganisationService';
 
 const isSolventForProProperty = ({
   isAdmin,
@@ -116,20 +117,29 @@ const anonymizeReferredByLoans = ({ loans = [], userId }) => [
   // ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
 ];
 
-export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
-  const { organisations = [] } = UserService.fetch({
-    $filters: { _id: userId },
-    organisations: { _id: 1 },
-  });
+const doesUserShareCustomers = (user) => {
+  const {
+    $metadata: { shareCustomers },
+  } = user;
+  return shareCustomers;
+};
 
-  const organisationId = !!organisations.length && organisations[0]._id;
+export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
+  const mainOrganisationId = UserService.getUserMainOrganisationId(userId);
+  const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
+    $filters: { _id: mainOrganisationId },
+    users: { _id: 1 },
+  });
+  const mainOrganisationsUserIds = mainOrganisationUsers
+    .filter(({ _id }) => _id !== userId)
+    .filter(doesUserShareCustomers)
+    .map(({ _id }) => _id);
 
   const users = UserService.fetch({
     $filters: {
-      $or: [
-        { referredByUserLink: userId },
-        organisationId && { referredByOrganisationLink: organisationId },
-      ].filter(x => x),
+      referredByUserLink: {
+        $in: [userId, ...mainOrganisationsUserIds],
+      },
     },
     loans: proLoans(),
   });
