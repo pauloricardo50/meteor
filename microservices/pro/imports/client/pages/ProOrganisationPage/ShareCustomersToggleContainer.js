@@ -29,9 +29,7 @@ export default compose(
       setLoading(true);
       return proSetShareCustomers
         .run({ userId, organisationId, shareCustomers: true })
-        .then(() => {
-          setOpenDialog(false);
-        })
+        .then(() => setOpenDialog(false))
         .finally(() => setLoading(false));
     },
   })),
