@@ -21,6 +21,17 @@ export const MONGO_SERVICES = {
   }),
 };
 
+export const REDIS_SERVICES = {
+  [ENVIRONMENT.STAGING]: generateServiceName({
+    environment: ENVIRONMENT.STAGING,
+    service: SERVICES.REDIS,
+  }),
+  [ENVIRONMENT.PRODUCTION]: generateServiceName({
+    environment: ENVIRONMENT.PRODUCTION,
+    service: SERVICES.REDIS,
+  }),
+};
+
 export const HOST = 'kubernetes-service-node.service.consul';
 
 const applicationManifestData = environment => ({
@@ -41,6 +52,20 @@ const writeApplicationManifest = environment =>
     file: `${__dirname}/${environment}-${SSH_ID}/manifest.yml`,
     data: applicationManifestData(environment),
   });
+
+// Parse and remove any trailing comma from the credentials
+const cleanCredentials = creds => {
+  const res = JSON.parse(
+    '{' +
+      creds
+        .split('\n')
+        .map(line => line.replace(/,\s*$/, ''))
+        .filter(str => str && str.length >= 5)
+        .join(',') +
+      '}',
+  );
+  return res;
+};
 
 const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
   let environment;
@@ -82,15 +107,12 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
         `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\" -e \\"ports\\"`,
       ),
     )
-    .then(credentials => {
-      const parsedCredentials = JSON.parse(`{${credentials}}`);
-      return {
-        ...parsedCredentials,
-        mongoPort: Number(parsedCredentials.ports.split(',')[2]),
-        sshId: SSH_ID,
-        environment,
-      };
-    });
+    .then(credentials => ({
+      ...cleanCredentials(credentials),
+      mongoPort: Number(cleanCredentials(credentials).ports.split(',')[2]),
+      sshId: SSH_ID,
+      environment,
+    }));
 };
 
 export default openSSHTunnel;
