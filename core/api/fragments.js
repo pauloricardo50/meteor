@@ -674,6 +674,7 @@ export const propertySummary = () => ({
 export const fullProperty = ({ withSort } = {}) => ({
   ...propertySummary(),
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalMargin: 1,
   adminValidation: 1,
   areaNorm: 1,
   bathroomCount: 1,
@@ -697,7 +698,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   latitude: 1,
   loans: loanBase(),
   longitude: 1,
-  additionalMargin: 1,
   minergie: 1,
   monthlyExpenses: 1,
   mortgageNotes: mortgageNote(),
@@ -719,6 +719,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   users: { _id: 1 },
   volume: 1,
   volumeNorm: 1,
+  yearlyExpenses: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
@@ -745,6 +746,7 @@ export const promotionProperty = () => ({
   terraceArea: 1,
   totalValue: 1,
   value: 1,
+  yearlyExpenses: 1,
 });
 
 export const sideNavProperty = () => ({

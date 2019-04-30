@@ -280,6 +280,7 @@ export const PropertySchema = new SimpleSchema({
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   monthlyExpenses: moneyField,
+  yearlyExpenses: moneyField,
   landValue: moneyField,
   constructionValue: moneyField,
   additionalMargin: moneyField,

@@ -75,9 +75,9 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
             },
             { label: 'FinancingOffers.interests', value: toMoney(interests) },
             {
-              label: 'Forms.monthlyExpenses.short',
-              value: toMoney(property.monthlyExpenses),
-              hide: !(property && property.monthlyExpenses),
+              label: 'Forms.yearlyExpenses.short',
+              value: toMoney(property.yearlyExpenses),
+              hide: !(property && property.yearlyExpenses),
             },
             {
               label: 'general.total',

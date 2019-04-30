@@ -33,7 +33,7 @@ const getPropertyRows = (loan) => {
     parkingInside = 0,
     parkingOutside = 0,
     minergie,
-    monthlyExpenses,
+    yearlyExpenses,
     promotion,
   } = Calculator.selectProperty({ loan });
   const { residenceType } = loan;
@@ -154,8 +154,8 @@ const getPropertyRows = (loan) => {
     },
     {
       label: <T id="PDF.projectInfos.property.maintenance" />,
-      data: toMoney(monthlyExpenses),
-      condition: !!monthlyExpenses,
+      data: toMoney(yearlyExpenses),
+      condition: !!yearlyExpenses,
     },
   ];
 };

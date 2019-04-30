@@ -39,7 +39,7 @@ export const getAmortization = (params) => {
 
 export const getPropertyExpenses = (data) => {
   const property = getProperty(data);
-  return (property && property.monthlyExpenses) || 0;
+  return Math.round((property && property.yearlyExpenses) / 12 || 0);
 };
 
 const getNonPledgedFundsOfType = ({ structure: { ownFunds }, type }) =>

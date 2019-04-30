@@ -87,7 +87,7 @@ const getPromotionLotRecapArray = (promotionLot) => {
     bathroomCount,
     gardenArea,
     insideArea,
-    monthlyExpenses,
+    yearlyExpenses,
     roomCount,
     terraceArea,
   } = property;
@@ -124,13 +124,13 @@ const getPromotionLotRecapArray = (promotionLot) => {
       hide: !bathroomCount,
     },
     {
-      label: 'Forms.monthlyExpenses',
+      label: 'Forms.yearlyExpenses',
       value: (
         <span>
-          {toMoney(monthlyExpenses)} <small>/mois</small>
+          {toMoney(yearlyExpenses)} <small>/mois</small>
         </span>
       ),
-      hide: !monthlyExpenses,
+      hide: !yearlyExpenses,
     },
     ...getPromotionLotValueRecapArray({ lots, property, promotionLot }),
   ];
