@@ -35,6 +35,8 @@ export const LENDER_RULES_VARIABLES = {
   INSIDE_AREA: 'insideArea',
   BANK_FORTUNE: 'bankFortune',
   PROPERTY_TYPE: 'propertyType',
+  ZIP_CODE: 'zipCode',
+  REMAINING_BANK_FORTUNE: 'remainingBankFortune',
 };
 
 export const LENDER_RULES_OPERATORS = {

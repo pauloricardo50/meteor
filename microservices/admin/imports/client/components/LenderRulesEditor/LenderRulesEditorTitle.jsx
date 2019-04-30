@@ -5,6 +5,7 @@ import { LENDER_RULES_OPERATORS } from 'core/api/constants';
 import T, { Percent, Money } from 'core/components/Translation';
 import { parseFilter } from 'core/api/lenderRules/helpers';
 import Chip from 'core/components/Material/Chip';
+import { LENDER_RULES_VARIABLES } from 'imports/core/api/constants';
 
 type LenderRulesEditorTitleProps = {};
 
@@ -40,6 +41,10 @@ const renderValue = (name, value) => {
         />
       ))
       .map((tag, i) => [i !== 0 && ', ', tag]);
+  }
+
+  if (name === LENDER_RULES_VARIABLES.ZIP_CODE) {
+    return value;
   }
 
   return <T id={`Forms.${name}.${value}`} />;

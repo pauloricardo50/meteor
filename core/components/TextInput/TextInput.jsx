@@ -11,8 +11,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import classnames from 'classnames';
 
-import { swissFrancMask, percentMask } from '../utils/textMasks';
-import { toNumber } from '../utils/conversionFunctions';
+import { swissFrancMask, percentMask } from '../../utils/textMasks';
+import { toNumber } from '../../utils/conversionFunctions';
 
 const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   if (simpleOnChange) {
