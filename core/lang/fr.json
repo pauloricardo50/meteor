@@ -1,4 +1,9 @@
 {
+  "Forms.expenses.REAL_ESTATE_DELTA_POSITIVE": "Delta immobilier négatif",
+  "Forms.expenses.REAL_ESTATE_DELTA_NEGATIVE": "Delta immobilier positif",
+  "Forms.realEstateIncomeAlgorithm": "Calcul des revenus/charges immobilières",
+  "Forms.realEstateIncomeAlgorithm.DEFAULT": "Charges et revenus séparés",
+  "Forms.realEstateIncomeAlgorithm.POSITIVE_NEGATIVE_SPLIT": "Deltas positifs/négatifs",
   "Forms.bonusAlgorithm": "Calcul des bonus",
   "Forms.bonusAlgorithm.AVERAGE": "Moyenne des bonus (y compris 0)",
   "Forms.bonusAlgorithm.WEAK_AVERAGE": "Moyenne des bonus existants",

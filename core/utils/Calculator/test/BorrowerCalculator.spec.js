@@ -6,7 +6,10 @@ import Calculator, { Calculator as CalculatorClass } from '..';
 import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
-import { BONUS_ALGORITHMS } from '../../../config/financeConstants';
+import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../../config/financeConstants';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
@@ -375,9 +378,7 @@ describe('BorrowerCalculator', () => {
   describe('getRealEstateFortune', () => {
     it('returns the difference between property values and loans', () => {
       expect(Calculator.getRealEstateFortune({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
+        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
       })).to.equal(1);
     });
   });
@@ -385,9 +386,7 @@ describe('BorrowerCalculator', () => {
   describe('getRealEstateValue', () => {
     it('returns value of all realEstate', () => {
       expect(Calculator.getRealEstateValue({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
+        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
       })).to.equal(2);
     });
   });
@@ -395,10 +394,25 @@ describe('BorrowerCalculator', () => {
   describe('getRealEstateValue', () => {
     it('returns loans of all realEstate', () => {
       expect(Calculator.getRealEstateDebt({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
+        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
       })).to.equal(1);
+    });
+  });
+
+  describe('getRealEstateIncome', () => {
+    it('returns realEstate income', () => {
+      expect(Calculator.getRealEstateIncome({
+        borrowers: { realEstate: [{ income: 10 }] },
+      })).to.equal(10);
+    });
+
+    it('changes with realEstateIncomeConsideration', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeConsideration: 0.5,
+      });
+      expect(calc.getRealEstateIncome({
+        borrowers: { realEstate: [{ income: 10 }, { income: 20 }] },
+      })).to.equal(15);
     });
   });
 
@@ -671,6 +685,54 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1188420103);
+    });
+  });
+
+  describe('real estate income algorithm', () => {
+    it('adds income to totalIncome for DEFAULT', () => {
+      const borrowers = [
+        { realEstate: [{ income: 50000, value: 1200000, debt: 960000 }] },
+        { realEstate: [{ income: 50000, value: 1200000, debt: 960000 }] },
+      ];
+
+      expect(Calculator.getRealEstateIncome({ borrowers })).to.equal(100000);
+      expect(Calculator.getTotalIncome({ borrowers })).to.equal(100000);
+    });
+
+    context('with algoritm POSITIVE_NEGATIVE_SPLIT', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      it('adds to income if delta is positive', () => {
+        const borrowers = [
+          { realEstate: [{ income: 50000, value: 1200000, loan: 960000 }] },
+          { realEstate: [{ income: 73000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getTotalIncome({ borrowers })).to.equal(1000);
+      });
+
+      it('adds to income if delta is positive', () => {
+        const borrowers = [
+          { realEstate: [{ income: 100000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getTotalIncome({ borrowers })).to.equal(28000);
+      });
+
+      it('adds to expenses if delta is negative', () => {
+        const borrowers = [
+          { realEstate: [{ income: 50000, value: 1200000, loan: 960000 }] },
+          { realEstate: [{ income: 100000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getFormattedExpenses({ borrowers })).to.deep.equal({
+          subtract: -28000,
+          add: 22000,
+        });
+      });
     });
   });
 });

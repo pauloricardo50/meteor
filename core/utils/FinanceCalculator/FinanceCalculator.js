@@ -12,12 +12,14 @@ import {
   AMORTIZATION_STOP,
   AMORTIZATION_YEARS,
   AVERAGE_TAX_RATE,
+  BONUS_ALGORITHMS,
   BONUS_CONSIDERATION,
   BONUS_HISTORY_TO_CONSIDER,
   COMPANY_INCOME_TO_CONSIDER,
   DEFAULT_AMORTIZATION,
   DIVIDENDS_CONSIDERATION,
   DIVIDENDS_HISTORY_TO_CONSIDER,
+  ESTIMATED_COMMISSION,
   FORTUNE_RETURNS_RATIO,
   INTERESTS_FINMA,
   INVESTMENT_INCOME_CONSIDERATION,
@@ -30,11 +32,10 @@ import {
   NOTARY_FEES,
   OWN_FUNDS_ROUNDING_AMOUNT,
   PENSION_INCOME_CONSIDERATION,
+  REAL_ESTATE_INCOME_ALGORITHMS,
   REAL_ESTATE_INCOME_CONSIDERATION,
-  ESTIMATED_COMMISSION,
-  REFERRAL_COMMISSION,
   REFERRAL_COMMISSION_SPLIT,
-  BONUS_ALGORITHMS,
+  REFERRAL_COMMISSION,
 } from '../../config/financeConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
@@ -72,6 +73,7 @@ export class FinanceCalculator {
     notaryFees = NOTARY_FEES,
     ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_AMOUNT,
     pensionIncomeConsideration = PENSION_INCOME_CONSIDERATION,
+    realEstateIncomeAlgorithm = REAL_ESTATE_INCOME_ALGORITHMS.DEFAULT,
     realEstateIncomeConsideration = REAL_ESTATE_INCOME_CONSIDERATION,
     realEstateIncomeConsiderationType = REAL_ESTATE_CONSIDERATION_TYPES.ADD_TO_INCOME,
     taxRate = AVERAGE_TAX_RATE,
@@ -105,6 +107,7 @@ export class FinanceCalculator {
     this.notaryFees = notaryFees;
     this.ownFundsRoundingAmount = ownFundsRoundingAmount;
     this.pensionIncomeConsideration = pensionIncomeConsideration;
+    this.realEstateIncomeAlgorithm = realEstateIncomeAlgorithm;
     this.realEstateIncomeConsideration = realEstateIncomeConsideration;
     this.realEstateIncomeConsiderationType = realEstateIncomeConsiderationType;
     this.taxRate = taxRate;

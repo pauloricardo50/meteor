@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
-import { BONUS_ALGORITHMS } from '../../../config/financeConstants';
+import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../../config/financeConstants';
 import {
   createdAt,
   updatedAt,
@@ -32,6 +35,11 @@ export const incomeConsideration = {
   },
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
+  realEstateIncomeAlgorithm: {
+    type: String,
+    allowedValues: Object.values(REAL_ESTATE_INCOME_ALGORITHMS),
+    optional: true,
+  },
   realEstateIncomeConsideration: percentageField,
   // realEstateIncomeConsiderationType: {
   //   type: String,
@@ -60,7 +68,8 @@ export const incomeConsideration = {
   },
   'expensesSubtractFromIncome.$': {
     type: String,
-    allowedValues: Object.values(EXPENSE_TYPES),
+    // REAL_ESTATE_DELTAS are handled internally
+    allowedValues: Object.values(EXPENSE_TYPES).filter(value => !value.includes('DELTA')),
   },
   fortuneReturnsRatio: percentageField,
 };
