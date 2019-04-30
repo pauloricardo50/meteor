@@ -309,7 +309,7 @@
   "Forms.option.POSITIVE": "Positif",
   "Forms.option.NEGATIVE_NOT_COMPETITIVE": "Négatif pas compétitif",
   "Forms.option.NEGATIVE_WITHOUT_FOLLOW_UP": "Négatif sans suite",
-  "Forms.option.CUSTOM": "Personalisé",
+  "Forms.option.CUSTOM": "Personnalisé",
   "Forms.feedbackPreview": "Apperçu du feedback",
   "Forms.customFeedback": "Feedback",
   "Forms.customFeedback.placeholder": "Bonjour Mathilde,<br/><br/>Je vous écris concernant votre offre du...",
