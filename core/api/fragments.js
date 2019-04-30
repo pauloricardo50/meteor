@@ -381,6 +381,7 @@ export const fullOffer = () => ({
   fees: 1,
   lender: {
     loan: {
+      status: 1,
       name: 1,
       user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
       borrowers: { name: 1 },
