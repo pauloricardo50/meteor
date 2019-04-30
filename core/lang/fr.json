@@ -319,7 +319,7 @@
   "Feedback.NEGATIVE_WITHOUT_FOLLOW_UP.introduction.twoBorrowers": "<br/><br/>Nous faisons référence à votre offre du <b>{date}</b> que nous avions présentée ce jour à <b>{borrower1}</b> et <b>{borrower2}</b> concernant le financement de leur projet sis <b>{address}</b>.",
   "Feedback.NEGATIVE_WITHOUT_FOLLOW_UP.body": "<br/><br/>Le projet {singleBorrower, select, true {du client} other {des clients}} n’a malheureusement pas abouti.<br/><br/>Nous nous permettrons de vous solliciter à nouveau lorsque {singleBorrower, select, true {le client aura} other {les clients auront}} trouvé un nouveau projet.",
   "Feedback.NEGATIVE_NOT_COMPETITIVE.comments": "<br/><br/>{singleBorrower, select, true {Il a émis} other {Ils ont émis}} les objections suivantes:<br/>",
-  "Feedback.NEGATIVE_NOT_COMPETITIVE.body": "<br/><br/>Nous n'avons malheureusement pas résussi à attirer l'attention {singleBorrower, select, true {du client} other {des clients}} sur votre offre.",
+  "Feedback.NEGATIVE_NOT_COMPETITIVE.body": "<br/><br/>Nous n'avons malheureusement pas réussi à attirer l'attention {singleBorrower, select, true {du client} other {des clients}} sur votre offre.",
   "Feedback.POSITIVE.outro.singleBorrower": "<br/><br/>Pourriez-vous me contacter rapidement afin d’orchestrer ensemble les prochaines étapes ?",
   "Feedback.POSITIVE.outro.twoBorrowers": "<br/><br/>Pourriez-vous me contacter rapidement afin d’orchestrer ensemble les prochaines étapes ?",
   "Feedback.POSITIVE.body": "<br/><br/>{singleBorrower, select, true {Il est ravi et souhaite} other {Ils sont ravis et souhaitent}} poursuivre l'expérience afin d'obtenir une offre ferme de financement.",
