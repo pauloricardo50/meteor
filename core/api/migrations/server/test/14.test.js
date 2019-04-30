@@ -6,7 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Properties } from '../../..';
 import { up, down } from '../14';
 
-describe.only('Migration 14', () => {
+describe('Migration 14', () => {
   beforeEach(() => {
     resetDatabase();
   });
