@@ -475,6 +475,15 @@ class UserService extends CollectionService {
 
     return mainOrganisationId;
   }
+
+  proSetShareCustomers({ userId, organisationId, shareCustomers }) {
+    this.updateLinkMetadata({
+      id: userId,
+      linkName: 'organisations',
+      linkId: organisationId,
+      metadata: { shareCustomers },
+    });
+  }
 }
 
 export default new UserService();

@@ -167,3 +167,8 @@ export const proInviteUserToOrganisation = new Method({
   name: 'proInviteUserToOrganisation',
   params: { user: Object, organisationId: String, title: String },
 });
+
+export const proSetShareCustomers = new Method({
+  name: 'proSetShareCustomers',
+  params: { userId: String, organisationId: String, shareCustomers: Boolean },
+});
