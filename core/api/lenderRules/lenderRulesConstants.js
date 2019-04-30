@@ -73,6 +73,8 @@ export const EXPENSE_TYPES = {
   REAL_ESTATE_DELTA_NEGATIVE: 'REAL_ESTATE_DELTA_NEGATIVE',
 };
 
+export const EXPENSE_TYPES_WITHOUT_DELTAS = Object.values(EXPENSE_TYPES).filter(value => !value.includes('DELTA'));
+
 export const DEFAULT_VALUE_FOR_ALL = {
   incomeConsiderationType: INCOME_CONSIDERATION_TYPES.GROSS,
   bonusAlgorithm: BONUS_ALGORITHMS.WEAK_AVERAGE,
@@ -87,7 +89,7 @@ export const DEFAULT_VALUE_FOR_ALL = {
   realEstateIncomeConsiderationType:
     REAL_ESTATE_CONSIDERATION_TYPES.SUBTRACT_FROM_EXPENSES,
   investmentIncomeConsideration: 1,
-  expensesSubtractFromIncome: Object.values(EXPENSE_TYPES),
+  expensesSubtractFromIncome: EXPENSE_TYPES_WITHOUT_DELTAS,
   theoreticalInterestRate: 0.05,
   theoreticalMaintenanceRate: 0.01,
   amortizationGoal: 0.65,

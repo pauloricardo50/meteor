@@ -12,7 +12,7 @@ import {
 } from '../../helpers/sharedSchemas';
 import {
   INCOME_CONSIDERATION_TYPES,
-  EXPENSE_TYPES,
+  EXPENSE_TYPES_WITHOUT_DELTAS,
 } from '../lenderRulesConstants';
 
 export const incomeConsideration = {
@@ -69,7 +69,7 @@ export const incomeConsideration = {
   'expensesSubtractFromIncome.$': {
     type: String,
     // REAL_ESTATE_DELTAS are handled internally
-    allowedValues: Object.values(EXPENSE_TYPES).filter(value => !value.includes('DELTA')),
+    allowedValues: EXPENSE_TYPES_WITHOUT_DELTAS,
   },
   fortuneReturnsRatio: percentageField,
 };
