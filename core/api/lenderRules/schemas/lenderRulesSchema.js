@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
+import { BONUS_ALGORITHMS } from '../../../config/financeConstants';
 import {
   createdAt,
   updatedAt,
@@ -17,6 +18,11 @@ export const incomeConsideration = {
     allowedValues: Object.values(INCOME_CONSIDERATION_TYPES),
     optional: true,
   },
+  bonusAlgorithm: {
+    type: String,
+    allowedValues: Object.values(BONUS_ALGORITHMS),
+    optional: true,
+  },
   bonusConsideration: percentageField,
   bonusHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
   companyIncomeConsideration: percentageField,
@@ -26,6 +32,7 @@ export const incomeConsideration = {
   },
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
+  realEstateIncomeConsideration: percentageField,
   // realEstateIncomeConsiderationType: {
   //   type: String,
   //   allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),

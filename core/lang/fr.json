@@ -1,4 +1,8 @@
 {
+  "Forms.bonusAlgorithm": "Calcul des bonus",
+  "Forms.bonusAlgorithm.AVERAGE": "Moyenne des bonus (y compris 0)",
+  "Forms.bonusAlgorithm.WEAK_AVERAGE": "Moyenne des bonus existants",
+  "Forms.realEstateIncomeConsideration": "Considération des revenus immobiliers",
   "PasswordResetPage.disclaimer": "En continuant, vous certifiez avoir lu et accepté notre {link}.",
   "PasswordResetPage.disclaimer.privacyPolicy": "Politique de confidentialité",
   "Forms.loanName": "No.",

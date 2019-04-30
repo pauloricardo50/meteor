@@ -1,3 +1,4 @@
+import { BONUS_ALGORITHMS } from 'core/config/financeConstants';
 import { RESIDENCE_TYPE } from '../properties/propertyConstants';
 import { EXPENSES } from '../borrowers/borrowerConstants';
 
@@ -70,6 +71,7 @@ export const EXPENSE_TYPES = {
 
 export const DEFAULT_VALUE_FOR_ALL = {
   incomeConsiderationType: INCOME_CONSIDERATION_TYPES.GROSS,
+  bonusAlgorithm: BONUS_ALGORITHMS.WEAK_AVERAGE,
   bonusConsideration: 0.5,
   bonusHistoryToConsider: 3,
   companyIncomeConsideration: 1,
@@ -77,6 +79,7 @@ export const DEFAULT_VALUE_FOR_ALL = {
   dividendsConsideration: 1,
   dividendsHistoryToConsider: 1,
   pensionIncomeConsideration: 1,
+  realEstateIncomeConsideration: 1,
   realEstateIncomeConsiderationType:
     REAL_ESTATE_CONSIDERATION_TYPES.SUBTRACT_FROM_EXPENSES,
   investmentIncomeConsideration: 1,
