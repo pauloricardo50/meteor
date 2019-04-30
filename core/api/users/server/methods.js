@@ -23,6 +23,7 @@ import {
   setUserReferredBy,
   setUserReferredByOrganisation,
   proInviteUserToOrganisation,
+  proSetShareCustomers,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -211,4 +212,9 @@ proInviteUserToOrganisation.setHandler(({ userId }, params) => {
   }
 
   return UserService.proInviteUserToOrganisation(params);
+});
+
+proSetShareCustomers.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return UserService.proSetShareCustomers(params);
 });
