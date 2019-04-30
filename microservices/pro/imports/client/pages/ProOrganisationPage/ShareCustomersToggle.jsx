@@ -40,7 +40,7 @@ const ShareCustomersToggle = ({
       <Dialog
         open={openDialog}
         title="Partager mes dossiers"
-        text={`En activant le partage de clients, tous les utilisateurs de l'organisation ${organisationName} pourront voir les dossiers des clients que vous avez référrés.`}
+        text={`En activant le partage de clients, tous les utilisateurs de l'organisation ${organisationName} pourront voir les dossiers des clients que vous avez référés.`}
         actions={[
           <Button
             label={<T id="ConfirmMethod.buttonCancel" />}
