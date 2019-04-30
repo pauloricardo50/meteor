@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { getFinalPlaceholder } from '../TextInput.jsx';
+import { getFinalPlaceholder } from '../TextInput';
 
 describe('getFinalPlaceholder', () => {
   context('when noIntl is false', () => {
