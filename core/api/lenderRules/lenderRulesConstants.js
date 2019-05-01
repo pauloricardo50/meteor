@@ -74,7 +74,11 @@ export const EXPENSE_TYPES = {
   THEORETICAL_REAL_ESTATE: 'THEORETICAL_REAL_ESTATE',
 };
 
-export const EXPENSE_TYPES_WITHOUT_DELTAS = Object.values(EXPENSE_TYPES).filter(value => !value.includes('DELTA'));
+export const EXPENSE_TYPES_WITHOUT_DELTAS = Object.values(EXPENSE_TYPES).filter(value =>
+  ![
+    EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE,
+    EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE,
+  ].includes(value));
 
 export const DEFAULT_VALUE_FOR_ALL = {
   incomeConsiderationType: INCOME_CONSIDERATION_TYPES.GROSS,

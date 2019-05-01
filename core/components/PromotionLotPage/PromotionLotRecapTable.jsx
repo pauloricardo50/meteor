@@ -127,7 +127,7 @@ const getPromotionLotRecapArray = (promotionLot) => {
       label: 'Forms.yearlyExpenses',
       value: (
         <span>
-          {toMoney(yearlyExpenses)} <small>/mois</small>
+          {toMoney(yearlyExpenses)} <small>/année</small>
         </span>
       ),
       hide: !yearlyExpenses,

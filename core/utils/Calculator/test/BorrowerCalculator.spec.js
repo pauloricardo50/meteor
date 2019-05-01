@@ -713,14 +713,14 @@ describe('BorrowerCalculator', () => {
   });
 
   describe('real estate income algorithm', () => {
-    it('adds income to totalIncome for DEFAULT', () => {
+    it('adds income to - and subtract theoretical cost from - totalIncome for DEFAULT', () => {
       const borrowers = [
-        { realEstate: [{ income: 50000, value: 1200000, debt: 960000 }] },
-        { realEstate: [{ income: 50000, value: 1200000, debt: 960000 }] },
+        { realEstate: [{ income: 72000, value: 1200000, loan: 960000 }] },
+        { realEstate: [{ income: 72000, value: 1200000, loan: 960000 }] },
       ];
 
-      expect(Calculator.getRealEstateIncome({ borrowers })).to.equal(100000);
-      expect(Calculator.getTotalIncome({ borrowers })).to.equal(100000);
+      expect(Calculator.getRealEstateIncome({ borrowers })).to.equal(144000);
+      expect(Calculator.getTotalIncome({ borrowers })).to.equal(0);
     });
 
     context('with algoritm POSITIVE_NEGATIVE_SPLIT', () => {

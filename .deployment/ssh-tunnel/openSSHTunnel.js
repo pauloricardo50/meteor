@@ -60,6 +60,8 @@ const cleanCredentials = creds => {
       creds
         .split('\n')
         .map(line => line.replace(/,\s*$/, ''))
+        // Filter out some empty character lines, if this causes
+        // valid lines to be filtered, find a better solution
         .filter(str => str && str.length >= 5)
         .join(',') +
       '}',

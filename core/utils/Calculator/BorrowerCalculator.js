@@ -517,7 +517,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     sumArray(arr) {
-      return arr.reduce((tot, v) => tot + (v || 0), 0);
+      return arr.reduce((tot, v = 0) => tot + v, 0);
     }
 
     // Returns an object with all the types of expenses, combined between
@@ -568,7 +568,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     shouldSubtractExpenseFromIncome(expenseType) {
-      return this.expensesSubtractFromIncome.indexOf(expenseType) >= 0;
+      return this.expensesSubtractFromIncome.includes(expenseType);
     }
 
     groupRealEstateDeltas({ groupedExpenses, expenses, toSubtractFromIncome }) {
@@ -600,10 +600,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       const expensesBySide = Object.keys(expenses)
         .filter(expenseType => !this.expenseTypeIsDelta(expenseType))
-        .filter(expenseType =>
-          (toSubtractFromIncome
-            ? this.expensesSubtractFromIncome.indexOf(expenseType) >= 0
-            : this.expensesSubtractFromIncome.indexOf(expenseType) < 0));
+        .filter((expenseType) => {
+          const subtractExpenseTypeFromIncome = this.expensesSubtractFromIncome.includes(expenseType);
+          return toSubtractFromIncome
+            ? subtractExpenseTypeFromIncome
+            : !subtractExpenseTypeFromIncome;
+        });
 
       const groupedExpenses = expensesBySide.reduce(
         (obj, expenseType) => ({
@@ -628,10 +630,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     expenseTypeIsDelta(expenseType) {
-      return (
-        expenseType === EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE
-        || expenseType === EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE
-      );
+      return [
+        EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE,
+        EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE,
+      ].includes(expenseType);
     }
 
     formatRealEstateExpenses({ obj, expenseType, value }) {
