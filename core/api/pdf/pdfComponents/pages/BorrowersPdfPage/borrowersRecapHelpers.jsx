@@ -7,6 +7,25 @@ import {
   OWN_FUNDS_TYPES,
 } from '../../../../borrowers/borrowerConstants';
 
+const renderWithComments = (value, comments = []) => {
+  if (comments.length === 0) {
+    return value;
+  }
+
+  const func = ({ negative }) => (
+    <div>
+      <div>{negative ? `-${toMoney(value)}` : toMoney(value)}</div>
+      <div className="secondary finance-comment">
+        {/* Make sure we can "join" strings or JSX */}
+        {comments.map((comment, i) => [i !== 0 && ', ', comment])}
+      </div>
+    </div>
+  );
+  func.rawValue = value;
+
+  return func;
+};
+
 export const getBorrowersSingleInfo = (borrowers, info) =>
   borrowers.map(borrower => borrower[info] || 0);
 
@@ -33,23 +52,7 @@ export const getBorrowersOtherIncome = (borrowers, types, calculator) =>
         type: types[0],
       });
 
-    const renderFunction = ({ negative }) => (
-      <div>
-        <div>
-          {negative
-            ? `-${toMoney(otherIncomeValue)}`
-            : toMoney(otherIncomeValue)}
-        </div>
-        <div className="secondary finance-comment">
-          {otherIncomeComments.join(', ')}
-        </div>
-      </div>
-    );
-    renderFunction.rawValue = otherIncomeValue;
-
-    return otherIncomeComments && otherIncomeComments.length > 0
-      ? renderFunction
-      : otherIncomeValue;
+    return renderWithComments(otherIncomeValue, otherIncomeComments);
   });
 
 export const getBorrowersOtherIncomes = (borrowers, types, calculator) =>
@@ -82,21 +85,7 @@ export const getBorrowersExpense = (borrowers, types, calculator) =>
         type: types[0],
       });
 
-    const renderFunction = ({ negative }) => (
-      <div>
-        <div>
-          {negative ? `-${toMoney(expenseValue)}` : toMoney(expenseValue)}
-        </div>
-        <div className="secondary finance-comment">
-          {expenseComments.join(', ')}
-        </div>
-      </div>
-    );
-    renderFunction.rawValue = expenseValue;
-
-    return expenseComments && expenseComments.length > 0
-      ? renderFunction
-      : expenseValue;
+    return renderWithComments(expenseValue, expenseComments);
   });
 
 export const getBorrowersExpenses = (borrowers, types, calculator) =>
@@ -133,6 +122,24 @@ export const getBorrowersAddress = (borrowers) => {
   const cities = getBorrowersSingleInfo(borrowers, 'city');
   return zipCodes.map((zipCode, index) => `${zipCode} ${cities[index]}`);
 };
+
+export const getBonus = (borrowers, calculator) =>
+  borrowers.map((borrower) => {
+    const bonus = calculator.getBonusIncome({ borrowers: borrower });
+    const bonuses = calculator.getBonuses({ borrowers: borrower });
+    const comments = Object.keys(bonuses).map((key) => {
+      const value = bonuses[key];
+      const year = key.slice(7);
+      return (
+        <span key={borrower._id} style={{ whiteSpace: 'nowrap' }}>
+          '{year}: {toMoney(value)}
+        </span>
+      );
+      return `'${year}: ${toMoney(value)}`;
+    });
+
+    return renderWithComments(bonus, comments);
+  });
 
 export const getBorrowersInfos = (borrowers, calculator) => ({
   ...getBorrowersSingleInfos(borrowers, [
@@ -175,8 +182,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
       calculator,
     ),
   },
-  bonus: borrowers.map(borrower =>
-    calculator.getBonusIncome({ borrowers: borrower })),
+  bonus: getBonus(borrowers, calculator),
   otherFortune: borrowers.map(borrower =>
     calculator.getOtherFortune({ borrowers: borrower })),
   realEstateValue: borrowers.map(borrower =>

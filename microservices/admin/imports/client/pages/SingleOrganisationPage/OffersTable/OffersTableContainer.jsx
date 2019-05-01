@@ -11,6 +11,7 @@ import HtmlPreview from 'core/components/HtmlPreview';
 const columnOptions = [
   { id: 'createdAt', label: <T id="offer.createdAt" /> },
   { id: 'loanId', label: <T id="Forms.loan" /> },
+  { id: 'status', label: <T id="Forms.status" /> },
   { id: 'contact', label: <T id="Forms.contact" /> },
   { id: 'feedback', label: <T id="Forms.feedback" /> },
 ];
@@ -30,7 +31,7 @@ const makeMapOffer = ({ setOfferDialog }) => (offer) => {
         label: moment(createdAt).format('DD.MM.YYYY'),
       },
       {
-        raw: loan._id,
+        raw: loan.name,
         label: (
           <CollectionIconLink
             relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
@@ -38,7 +39,11 @@ const makeMapOffer = ({ setOfferDialog }) => (offer) => {
         ),
       },
       {
-        raw: contact,
+        raw: loan.status,
+        label: <T id={`Forms.status.${loan.status}`} />,
+      },
+      {
+        raw: contact.name,
         label: (
           <CollectionIconLink
             relatedDoc={{ ...contact, collection: CONTACTS_COLLECTION }}

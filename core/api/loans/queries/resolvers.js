@@ -281,7 +281,7 @@ export const proLoansResolver = ({
   }));
   loans = [...loans, ...referredByLoans];
 
-  return filterLoans(loans).map(getLoanEstimatedRevenues);
+  return filterLoans(loans);
 };
 
 export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => {
