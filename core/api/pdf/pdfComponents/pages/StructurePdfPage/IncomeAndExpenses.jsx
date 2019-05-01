@@ -8,12 +8,31 @@ import { shouldRenderRow } from '../../PdfTable/PdfTable';
 
 type IncomeAndExpensesProps = {};
 
+const renderExpenses = expenses =>
+  Object.keys(expenses).map((expenseType) => {
+    const value = expenses[expenseType];
+    return {
+      label: <T id={`Forms.expenses.${expenseType}`} />,
+      // When an expense is positive, it means it has to be substracted from
+      // the income
+      // When it is negative, it has to be added to it
+      value:
+        value < 0 ? (
+          <span>{toMoney(value, { noPrefix: true })}</span>
+        ) : (
+          <span>-{toMoney(value)}</span>
+        ),
+      condition: !!value,
+      money: false,
+    };
+  });
+
 const getIncomeRows = ({ loan, structureId, calculator }) => {
   const salary = calculator.getSalary({ loan, structureId });
   const bonus = calculator.getBonusIncome({ loan, structureId });
   const otherIncome = calculator.getOtherIncome({ loan, structureId });
   const fortuneReturns = calculator.getFortuneReturns({ loan, structureId });
-  const realEstateIncome = calculator.getRealEstateIncome({
+  const realEstateIncome = calculator.getRealEstateIncomeTotal({
     loan,
     structureId,
   });
@@ -50,12 +69,7 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
       value: realEstateIncome,
       condition: !!realEstateIncome,
     },
-    ...Object.keys(expenses).map(expenseType => ({
-      label: <T id={`Forms.expenses.${expenseType}`} />,
-      value: <span>-{toMoney(expenses[expenseType])}</span>,
-      condition: !!expenses[expenseType],
-      money: false,
-    })),
+    ...renderExpenses(expenses),
   ].filter(({ condition }) => shouldRenderRow(condition));
 };
 

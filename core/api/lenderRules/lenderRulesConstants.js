@@ -66,11 +66,12 @@ export const DEFAULT_SECONDARY_RESIDENCE_RULES = [
   },
 ];
 
+// Keep the deltas above other expenses so they appear in the right order
 export const EXPENSE_TYPES = {
-  ...EXPENSES,
-  THEORETICAL_REAL_ESTATE: 'THEORETICAL_REAL_ESTATE',
   REAL_ESTATE_DELTA_POSITIVE: 'REAL_ESTATE_DELTA_POSITIVE',
   REAL_ESTATE_DELTA_NEGATIVE: 'REAL_ESTATE_DELTA_NEGATIVE',
+  ...EXPENSES,
+  THEORETICAL_REAL_ESTATE: 'THEORETICAL_REAL_ESTATE',
 };
 
 export const EXPENSE_TYPES_WITHOUT_DELTAS = Object.values(EXPENSE_TYPES).filter(value => !value.includes('DELTA'));

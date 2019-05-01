@@ -150,7 +150,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'thirdPartyFortune',
   ]),
   realEstateIncome: borrowers.map(borrower =>
-    calculator.getRealEstateIncome({ borrowers: borrower })),
+    calculator.getRealEstateIncomeTotal({ borrowers: borrower })),
   salary: borrowers.map(borrower =>
     calculator.getSalary({ borrowers: borrower })),
   address: getBorrowersAddress(borrowers),

@@ -1,8 +1,8 @@
 {
   "Forms.variable.zipCode": "Code postal du bien immobilier",
   "Forms.variable.remainingBankFortune": "Fortune bancaire post-décaissement",
-  "Forms.expenses.REAL_ESTATE_DELTA_POSITIVE": "Delta immobilier négatif",
-  "Forms.expenses.REAL_ESTATE_DELTA_NEGATIVE": "Delta immobilier positif",
+  "Forms.expenses.REAL_ESTATE_DELTA_POSITIVE": "Delta immobilier positif",
+  "Forms.expenses.REAL_ESTATE_DELTA_NEGATIVE": "Delta immobilier négatif",
   "Forms.realEstateIncomeAlgorithm": "Calcul des revenus/charges immobilières",
   "Forms.realEstateIncomeAlgorithm.DEFAULT": "Charges et revenus séparés",
   "Forms.realEstateIncomeAlgorithm.POSITIVE_NEGATIVE_SPLIT": "Deltas positifs/négatifs",

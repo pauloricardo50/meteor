@@ -15,6 +15,9 @@ import {
   EXPENSE_TYPES_WITHOUT_DELTAS,
 } from '../lenderRulesConstants';
 
+// When adding new rules to lenderRules, make sure to edit the
+// applyRules method on LenderRulesInitializator
+
 export const incomeConsideration = {
   incomeConsiderationType: {
     type: String,
@@ -25,6 +28,7 @@ export const incomeConsideration = {
     type: String,
     allowedValues: Object.values(BONUS_ALGORITHMS),
     optional: true,
+    uniforms: { placeholder: null },
   },
   bonusConsideration: percentageField,
   bonusHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
@@ -39,6 +43,7 @@ export const incomeConsideration = {
     type: String,
     allowedValues: Object.values(REAL_ESTATE_INCOME_ALGORITHMS),
     optional: true,
+    uniforms: { placeholder: null },
   },
   realEstateIncomeConsideration: percentageField,
   // realEstateIncomeConsiderationType: {

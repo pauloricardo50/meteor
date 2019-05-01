@@ -6,7 +6,7 @@ import {
   WARNING,
   RESIDENCE_TYPE,
   REAL_ESTATE_CONSIDERATION_TYPES,
-  EXPENSE_TYPES,
+  EXPENSE_TYPES_WITHOUT_DELTAS,
 } from '../../api/constants';
 import {
   AMORTIZATION_STOP,
@@ -62,7 +62,7 @@ export class FinanceCalculator {
     companyIncomeHistoryToConsider = COMPANY_INCOME_TO_CONSIDER,
     dividendsConsideration = DIVIDENDS_CONSIDERATION,
     dividendsHistoryToConsider = DIVIDENDS_HISTORY_TO_CONSIDER,
-    expensesSubtractFromIncome = Object.values(EXPENSE_TYPES),
+    expensesSubtractFromIncome = EXPENSE_TYPES_WITHOUT_DELTAS,
     fortuneReturnsRatio = FORTUNE_RETURNS_RATIO,
     investmentIncomeConsideration = INVESTMENT_INCOME_CONSIDERATION,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,

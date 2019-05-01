@@ -476,7 +476,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         const { income } = realEstate;
         const expenses = this.getRealEstateCost(realEstate) * 12;
 
-        return income - expenses;
+        return Math.round(income * this.realEstateIncomeConsideration) - expenses;
       });
     }
 
@@ -588,8 +588,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       if (
         this.realEstateIncomeAlgorithm
-          === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
-        && !toSubtractFromIncome
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
       ) {
         return this.groupRealEstateDeltas({
           groupedExpenses,

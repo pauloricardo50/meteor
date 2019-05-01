@@ -700,9 +700,13 @@ describe('BorrowerCalculator', () => {
     });
 
     context('with algoritm POSITIVE_NEGATIVE_SPLIT', () => {
-      const calc = new CalculatorClass({
-        realEstateIncomeAlgorithm:
-          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      let calc;
+
+      beforeEach(() => {
+        calc = new CalculatorClass({
+          realEstateIncomeAlgorithm:
+            REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+        });
       });
 
       it('adds to income if delta is positive', () => {
@@ -732,6 +736,19 @@ describe('BorrowerCalculator', () => {
           subtract: -28000,
           add: 22000,
         });
+      });
+
+      it('considers income based on realEstateIncomeConsideration', () => {
+        calc = new CalculatorClass({
+          realEstateIncomeAlgorithm:
+            REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+          realEstateIncomeConsideration: 0.8,
+        });
+        const borrowers = [
+          { realEstate: [{ income: 100000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getTotalIncome({ borrowers })).to.equal(8000);
       });
     });
   });
