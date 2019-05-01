@@ -1,6 +1,6 @@
 // Rounds the value, adds thousands markers every 3 digits
 // (and removes non-digit characters)
-export function toMoney(value) {
+export function toMoney(value, { noPrefix } = {}) {
   if (value === 0) {
     return 0;
   }
@@ -13,7 +13,7 @@ export function toMoney(value) {
     return value;
   }
   const roundedValue = Math.round(Number(Math.round(value)));
-  const negativePrefix = value < 0 && roundedValue !== 0 ? '-' : '';
+  const negativePrefix = !noPrefix && value < 0 && roundedValue !== 0 ? '-' : '';
   return (
     negativePrefix
     + String(roundedValue)

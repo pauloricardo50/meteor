@@ -52,7 +52,7 @@ describe('offerPickerHelpers', () => {
               amortizationYears: 20,
             },
           ],
-          properties: [{ _id: 'prop', value: 1200000, monthlyExpenses: 1000 }],
+          properties: [{ _id: 'prop', value: 1200000, yearlyExpenses: 12000 }],
         },
         structure: {
           wantedLoan: 960000,

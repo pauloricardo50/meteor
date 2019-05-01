@@ -43,7 +43,7 @@ const detailFields = [
   'copropertyPercentage',
   'qualityProfileCondition',
   'qualityProfileStandard',
-  'monthlyExpenses',
+  'yearlyExpenses',
 ];
 
 const omittedFields = [

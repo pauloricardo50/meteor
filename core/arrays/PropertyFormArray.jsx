@@ -272,7 +272,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       options: Object.values(MINERGIE_CERTIFICATE),
     },
     {
-      id: 'monthlyExpenses',
+      id: 'yearlyExpenses',
       type: 'textInput',
       money: true,
       required: false,

@@ -1,6 +1,6 @@
 import { parseFilter } from 'core/api/lenderRules/helpers';
 import { getMatchingRules } from '../../api/lenderRules/helpers';
-import { LENDER_RULES_VARIABLES } from '../../api/constants';
+import { LENDER_RULES_VARIABLES, OWN_FUNDS_TYPES } from '../../api/constants';
 
 // @flow
 
@@ -86,6 +86,16 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           structureId,
           key: LENDER_RULES_VARIABLES.PROPERTY_TYPE,
         }),
+        [LENDER_RULES_VARIABLES.ZIP_CODE]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.ZIP_CODE,
+        }),
+        [LENDER_RULES_VARIABLES.REMAINING_BANK_FORTUNE]: this.getRemainingFundsOfType({
+          loan,
+          structureId,
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+        }),
       };
     }
 
@@ -134,8 +144,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'allowPledge',
         'amortizationGoal',
         'amortizationYears',
+        'bonusAlgorithm',
         'bonusConsideration',
         'bonusHistoryToConsider',
+        'companyIncomeConsideration',
         'companyIncomeHistoryToConsider',
         'dividendsConsideration',
         'dividendsHistoryToConsider',
@@ -147,6 +159,8 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'maxIncomeRatio',
         'pdfComments',
         'pensionIncomeConsideration',
+        'realEstateIncomeAlgorithm',
+        'realEstateIncomeConsideration',
         'realEstateIncomeConsiderationType',
         'theoreticalInterestRate',
         'theoreticalInterestRate2ndRank',

@@ -150,7 +150,7 @@ class AutoFormTextInput extends Component {
         // If there was an error, reset value to the backend value
         .catch(() => this.setState({ value: currentValue }))
         .finally(() => this.setState({ saving: false }));
-    }, constants.CHARACTERS_TYPES_PER_SECOND_AVG);
+    }, constants.AUTOSAVE_DEBOUNCE);
   };
 
   render() {

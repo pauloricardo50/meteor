@@ -166,6 +166,7 @@ export const lenderRules = () => ({
   allowPledge: 1,
   amortizationGoal: 1,
   amortizationYears: 1,
+  bonusAlgorithm: 1,
   bonusConsideration: 1,
   bonusHistoryToConsider: 1,
   companyIncomeConsideration: 1,
@@ -186,6 +187,8 @@ export const lenderRules = () => ({
   order: 1,
   pdfComments: 1,
   pensionIncomeConsideration: 1,
+  realEstateIncomeAlgorithm: 1,
+  realEstateIncomeConsideration: 1,
   realEstateIncomeConsiderationType: 1,
   theoreticalInterestRate: 1,
   theoreticalInterestRate2ndRank: 1,
@@ -672,6 +675,7 @@ export const propertySummary = () => ({
 export const fullProperty = ({ withSort } = {}) => ({
   ...propertySummary(),
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalMargin: 1,
   adminValidation: 1,
   areaNorm: 1,
   bathroomCount: 1,
@@ -695,9 +699,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   latitude: 1,
   loans: loanBase(),
   longitude: 1,
-  additionalMargin: 1,
   minergie: 1,
-  monthlyExpenses: 1,
   mortgageNotes: mortgageNote(),
   name: 1,
   numberOfFloors: 1,
@@ -717,6 +719,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   users: { _id: 1 },
   volume: 1,
   volumeNorm: 1,
+  yearlyExpenses: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
@@ -736,13 +739,13 @@ export const promotionProperty = () => ({
   gardenArea: 1,
   insideArea: 1,
   landValue: 1,
-  monthlyExpenses: 1,
   name: 1,
   propertyType: 1,
   roomCount: 1,
   terraceArea: 1,
   totalValue: 1,
   value: 1,
+  yearlyExpenses: 1,
 });
 
 export const sideNavProperty = () => ({

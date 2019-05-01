@@ -11,7 +11,7 @@ import adminLoan from '../../loans/queries/adminLoan';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
 import { lenderRules } from '../../fragments';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import LoanBankPDF from '../pdfComponents/LoanBankPDF';
+import LoanBankPDF from './pdfComponents/LoanBankPDF';
 import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
 

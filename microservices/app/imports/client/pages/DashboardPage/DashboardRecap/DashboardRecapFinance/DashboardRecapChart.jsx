@@ -21,12 +21,12 @@ const getChartData = ({ loan }) => {
     },
   ];
 
-  const expenses = Calculator.makeSelectPropertyKey('monthlyExpenses')({
+  const expenses = Calculator.makeSelectPropertyKey('yearlyExpenses')({
     loan,
   });
 
   if (expenses) {
-    data = [...data, { id: 'Forms.monthlyExpenses.short', value: expenses }];
+    data = [...data, { id: 'Forms.yearlyExpenses.short', value: expenses }];
   }
 
   return data.map(dataPoint => ({

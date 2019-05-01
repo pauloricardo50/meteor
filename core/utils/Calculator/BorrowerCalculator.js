@@ -19,6 +19,10 @@ import {
 import MiddlewareManager from '../MiddlewareManager';
 import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
 import { borrowerExtractorMiddleware } from './middleware';
+import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../config/financeConstants';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -85,7 +89,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           return acc + 0;
         }
 
-        const arr = bonusKeys.map(key => borrower[key]);
+        const arr = bonusKeys.map((key) => {
+          if (this.bonusAlgorithm === BONUS_ALGORITHMS.AVERAGE) {
+            // The regular average puts all the values to 0, instead of undefined
+            // This ensures that the average is taken over all the history to consider
+            return borrower[key] || 0;
+          }
+          return borrower[key];
+        });
 
         return (
           acc
@@ -284,11 +295,24 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getRealEstateIncome({ borrowers }) {
-      return this.getArrayValues({
+      const realEstateIncome = this.getArrayValues({
         borrowers,
         key: 'realEstate',
         mapFunc: ({ income = 0 }) => income,
-      });
+      }) * this.realEstateIncomeConsideration;
+
+      return realEstateIncome;
+    }
+
+    getRealEstateIncomeTotal({ borrowers }) {
+      if (
+        this.realEstateIncomeAlgorithm
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+      ) {
+        return 0;
+      }
+
+      return this.getRealEstateIncome({ borrowers });
     }
 
     shouldUseNetSalary() {
@@ -322,11 +346,11 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
         borrowerIncome
-          += this.getRealEstateIncome({ borrowers: borrower }) || 0;
+          += this.getRealEstateIncomeTotal({ borrowers: borrower }) || 0;
         return total + borrowerIncome;
       }, 0);
 
-      sum -= this.getFormattedExpenses({ borrowers }).subtract;
+      sum -= this.getFormattedExpenses({ borrowers }).subtract || 0;
 
       return sum;
     }
@@ -465,6 +489,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return realEstateCost;
     }
 
+    getRealEstateDeltas({ borrowers }) {
+      const allRealEstate = arrayify(borrowers)
+        .map(({ realEstate }) => realEstate)
+        .reduce((arr, realEstate) => [...arr, ...realEstate], []);
+
+      return allRealEstate.map((realEstate) => {
+        const { income } = realEstate;
+        const expenses = this.getRealEstateCost(realEstate) * 12;
+
+        return (
+          Math.round(income * this.realEstateIncomeConsideration) - expenses
+        );
+      });
+    }
+
     getRealEstateCost({ loan, value }) {
       const amortizationRate = this.getAmortizationRateBase({
         borrowRatio: super.getBorrowRatio({ loan, propertyValue: value }),
@@ -477,6 +516,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }).total;
     }
 
+    sumArray(arr) {
+      return arr.reduce((tot, v = 0) => tot + v, 0);
+    }
+
     // Returns an object with all the types of expenses, combined between
     // borrowers:
     // {
@@ -486,6 +529,23 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     //  etc
     // }
     getAllExpenses({ borrowers }) {
+      if (
+        this.realEstateIncomeAlgorithm
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+      ) {
+        const deltas = this.getRealEstateDeltas({
+          borrowers,
+        });
+        return {
+          // Negative deltas should be made positive so they can be added to expenses
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE]: -this.sumArray(deltas.filter(delta => delta < 0)),
+          // Positive deltas should be made negative so they can be subtracted from income,
+          // and therefore increase income
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: -this.sumArray(deltas.filter(delta => delta > 0)),
+          ...this.getGroupedExpenses({ borrowers }),
+        };
+      }
+
       return {
         [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
           this.getRealEstateExpenses({ borrowers }) * 12, // All expenses are annualized
@@ -508,7 +568,26 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     shouldSubtractExpenseFromIncome(expenseType) {
-      return this.expensesSubtractFromIncome.indexOf(expenseType) >= 0;
+      return this.expensesSubtractFromIncome.includes(expenseType);
+    }
+
+    groupRealEstateDeltas({ groupedExpenses, expenses, toSubtractFromIncome }) {
+      const negativeDeltas = expenses[EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE];
+      const positiveDeltas = expenses[EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE];
+
+      if (toSubtractFromIncome) {
+        // If we want to get expenses to subtract from income, add the
+        // positiveDeltas negatively, so they are in fact added to income
+        return {
+          ...groupedExpenses,
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: positiveDeltas,
+        };
+      }
+
+      return {
+        ...groupedExpenses,
+        [EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE]: negativeDeltas,
+      };
     }
 
     // Returns an object with all expenses to subtract from income
@@ -519,18 +598,50 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getGroupedExpensesBySide({ borrowers, toSubtractFromIncome = true }) {
       const expenses = this.getAllExpenses({ borrowers });
 
-      return Object.keys(expenses)
-        .filter(expenseType =>
-          (toSubtractFromIncome
-            ? this.expensesSubtractFromIncome.indexOf(expenseType) >= 0
-            : this.expensesSubtractFromIncome.indexOf(expenseType) < 0))
-        .reduce(
-          (obj, expenseType) => ({
-            ...obj,
-            [expenseType]: expenses[expenseType],
-          }),
-          {},
-        );
+      const expensesBySide = Object.keys(expenses)
+        .filter(expenseType => !this.expenseTypeIsDelta(expenseType))
+        .filter((expenseType) => {
+          const subtractExpenseTypeFromIncome = this.expensesSubtractFromIncome.includes(expenseType);
+          return toSubtractFromIncome
+            ? subtractExpenseTypeFromIncome
+            : !subtractExpenseTypeFromIncome;
+        });
+
+      const groupedExpenses = expensesBySide.reduce(
+        (obj, expenseType) => ({
+          ...obj,
+          [expenseType]: expenses[expenseType],
+        }),
+        {},
+      );
+
+      if (
+        this.realEstateIncomeAlgorithm
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+      ) {
+        return this.groupRealEstateDeltas({
+          groupedExpenses,
+          expenses,
+          toSubtractFromIncome,
+        });
+      }
+
+      return groupedExpenses;
+    }
+
+    expenseTypeIsDelta(expenseType) {
+      return [
+        EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE,
+        EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE,
+      ].includes(expenseType);
+    }
+
+    formatRealEstateExpenses({ obj, expenseType, value }) {
+      if (expenseType === EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE) {
+        return { ...obj, add: obj.add + value };
+      }
+
+      return { ...obj, subtract: obj.subtract + value };
     }
 
     // Returns an object with 2 keys, `subtract` and `add` that contain the sum
@@ -540,11 +651,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       return Object.keys(expenses).reduce(
         (obj, expenseType) => {
-          if (this.expensesSubtractFromIncome.indexOf(expenseType) >= 0) {
-            return { ...obj, subtract: obj.subtract + expenses[expenseType] };
+          const value = expenses[expenseType];
+          if (this.expenseTypeIsDelta(expenseType)) {
+            return this.formatRealEstateExpenses({ obj, expenseType, value });
           }
 
-          return { ...obj, add: obj.add + expenses[expenseType] };
+          if (this.expensesSubtractFromIncome.indexOf(expenseType) >= 0) {
+            return { ...obj, subtract: obj.subtract + value };
+          }
+
+          return { ...obj, add: obj.add + value };
         },
         { subtract: 0, add: 0 },
       );

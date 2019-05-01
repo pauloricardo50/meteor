@@ -18,11 +18,7 @@ import { PercentField } from '../../../PercentInput';
 import { CustomAutoField } from '../../AutoFormComponents';
 
 let props;
-const component = () =>
-  getMountedComponent({
-    Component: AutoForm,
-    props,
-  });
+const component = () => getMountedComponent({ Component: AutoForm, props });
 
 const setInput = (name, value) => {
   component()
