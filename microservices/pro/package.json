@@ -95,7 +95,6 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-preset-meteor": "^7.3.4",
-    "canvas": "^2.4.1",
     "chai": "^4.2.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
