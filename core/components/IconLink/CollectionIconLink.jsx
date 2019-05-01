@@ -16,10 +16,13 @@ import {
   CONTACTS_COLLECTION,
 } from '../../api/constants';
 import collectionIcons from '../../arrays/collectionIcons';
+import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
 
 type CollectionIconLinkProps = {
   relatedDoc: Object,
 };
+
+const showPopups = Meteor.microservice === 'admin';
 
 const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   if (!docId) {
@@ -35,6 +38,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     return {
       link: `/loans/${docId}`,
       text: data.name,
+      hasPopup: true,
     };
   case USERS_COLLECTION: {
     let text;
@@ -49,27 +53,32 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     return {
       link: `/users/${docId}`,
       text,
+      hasPopup: true,
     };
   }
   case BORROWERS_COLLECTION:
     return {
       link: `/borrowers/${docId}`,
       text: data.name,
+      hasPopup: true,
     };
   case PROPERTIES_COLLECTION:
     return {
       link: `/properties/${docId}`,
       text: data.address1,
+      hasPopup: true,
     };
   case OFFERS_COLLECTION:
     return {
       link: `/offers/${docId}`,
       text: data.organisation,
+      hasPopup: true,
     };
   case PROMOTIONS_COLLECTION:
     return {
       link: `/promotions/${docId}`,
       text: data.name,
+      hasPopup: true,
     };
   case ORGANISATIONS_COLLECTION: {
     let text;
@@ -97,12 +106,14 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     return {
       link: `/organisations/${docId}`,
       text,
+      hasPopup: true,
     };
   }
   case CONTACTS_COLLECTION:
     return {
       link: `/contacts/${docId}`,
       text: data.name,
+      hasPopup: true,
     };
   case 'NOT_FOUND':
     return {
@@ -112,15 +123,31 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     };
 
   default:
-    return {
-      text: 'Unknown collection',
-    };
+    return { text: 'Unknown collection' };
   }
 };
 
 const CollectionIconLink = ({ relatedDoc }: CollectionIconLinkProps) => {
   const { collection } = relatedDoc;
-  const { link, icon = collectionIcons[collection], text } = getIconConfig(relatedDoc);
+  const {
+    link,
+    icon = collectionIcons[collection],
+    text,
+    hasPopup,
+  } = getIconConfig(relatedDoc);
+
+  if (showPopups && hasPopup) {
+    return (
+      <CollectionIconLinkPopup {...relatedDoc} key={relatedDoc._id}>
+        <IconLink
+          link={link}
+          icon={icon}
+          text={text}
+          className="collection-icon"
+        />
+      </CollectionIconLinkPopup>
+    );
+  }
 
   return (
     <IconLink link={link} icon={icon} text={text} className="collection-icon" />
