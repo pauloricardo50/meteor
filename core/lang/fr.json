@@ -2015,6 +2015,8 @@
   "PDF.borrowersInfos.expenses.PERSONAL_LOAN": "Crédits personnels",
   "PDF.borrowersInfos.expenses.THIRD_PARTY_FORTUNE_REIMBURSEMENT": "Remboursement prêt de tiers",
   "PDF.borrowersInfos.expenses.THEORETICAL_REAL_ESTATE": "Charges théoriques immobilières",
+  "PDF.borrowersInfos.expenses.REAL_ESTATE_DELTA_POSITIVE": "Delta immobilier positif",
+  "PDF.borrowersInfos.expenses.REAL_ESTATE_DELTA_NEGATIVE": "Delta immobilier négatif",
   "PDF.borrowersInfos.otherFortune": "Autre fortune",
   "PDF.borrowersInfos.otherIncome.INVESTMENT": "Revenus de titres",
   "PDF.borrowersInfos.otherIncome.OTHER": "Autres revenus",

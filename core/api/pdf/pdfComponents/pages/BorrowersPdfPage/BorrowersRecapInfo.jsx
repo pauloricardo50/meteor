@@ -55,7 +55,7 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
         (status && <T id={`PDF.borrowersInfos.civilStatus.${status}`} />)
           || '-'),
 
-      condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
+      condition: shouldRenderArray(borrowersInfos.civilStatus),
     },
   ];
 };

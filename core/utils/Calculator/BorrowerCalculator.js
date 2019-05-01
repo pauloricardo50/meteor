@@ -476,7 +476,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         const { income } = realEstate;
         const expenses = this.getRealEstateCost(realEstate) * 12;
 
-        return Math.round(income * this.realEstateIncomeConsideration) - expenses;
+        return (
+          Math.round(income * this.realEstateIncomeConsideration) - expenses
+        );
       });
     }
 
@@ -513,8 +515,11 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           borrowers,
         });
         return {
+          // Negative deltas should be made positive so they can be added to expenses
           [EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE]: -this.sumArray(deltas.filter(delta => delta < 0)),
-          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: this.sumArray(deltas.filter(delta => delta > 0)),
+          // Positive deltas should be made negative so they can be subtracted from income,
+          // and therefore increase income
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: -this.sumArray(deltas.filter(delta => delta > 0)),
           ...this.getGroupedExpenses({ borrowers }),
         };
       }
@@ -553,7 +558,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         // positiveDeltas negatively, so they are in fact added to income
         return {
           ...groupedExpenses,
-          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: -positiveDeltas,
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: positiveDeltas,
         };
       }
 
@@ -612,7 +617,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         return { ...obj, add: obj.add + value };
       }
 
-      return { ...obj, subtract: obj.subtract - value };
+      return { ...obj, subtract: obj.subtract + value };
     }
 
     // Returns an object with 2 keys, `subtract` and `add` that contain the sum

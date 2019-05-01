@@ -28,10 +28,10 @@ export const getBorrowersOtherIncome = (borrowers, types, calculator) =>
 
     // Only render comments if this is for one single expense type
     const otherIncomeComments = types.length === 1
-    && calculator.getCommentsForOtherIncomeType({
-      borrowers: borrower,
-      type: types[0],
-    });
+      && calculator.getCommentsForOtherIncomeType({
+        borrowers: borrower,
+        type: types[0],
+      });
 
     const renderFunction = ({ negative }) => (
       <div>
@@ -63,19 +63,16 @@ export const getBorrowersOtherIncomes = (borrowers, types, calculator) =>
 
 export const getBorrowersExpense = (borrowers, types, calculator) =>
   borrowers.map((borrower) => {
-    const { expenses } = borrower;
-    const allExpenses = [
-      ...expenses,
-      {
-        value: calculator.getRealEstateExpenses({ borrowers: borrower }) * 12,
-        description: EXPENSE_TYPES.THEORETICAL_REAL_ESTATE,
-      },
-    ];
+    let allExpenses = calculator.getGroupedExpensesBySide({
+      borrowers: borrower,
+    });
+    allExpenses = Object.keys(allExpenses).map(key => ({
+      description: key,
+      value: allExpenses[key],
+    }));
 
     const expenseValue = allExpenses
       .filter(expense => types.includes(expense.description))
-      .filter(({ description }) =>
-        calculator.shouldSubtractExpenseFromIncome(description))
       .reduce((sum, expense) => sum + expense.value, 0);
 
     // Only render comments if this is for one single expense type
@@ -240,16 +237,16 @@ export const shouldRenderArray = array => array.filter(x => x).length > 0;
 export const makeTableMoneyLine = twoBorrowers => ({
   label,
   field,
-  negative,
-  condition,
+  negative = false,
+  condition = shouldRenderArray(field),
 }) => ({
   label,
   data: getFormattedMoneyArray({
     array: field,
-    negative: negative || false,
+    negative,
     twoBorrowers,
   }),
-  condition: condition || shouldRenderArray(field),
+  condition,
 });
 
 export const addTableEmptyLine = () => ({
