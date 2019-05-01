@@ -1,19 +1,15 @@
 // @flow
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
+
 import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
-import {
-  BONUS_ALGORITHMS,
-  REAL_ESTATE_INCOME_ALGORITHMS,
-} from 'core/config/financeConstants';
+import { REAL_ESTATE_INCOME_ALGORITHMS } from 'core/config/financeConstants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';
 import BorrowersPdfPage from '../BorrowersPdfPage';
 
-describe('BorrowersPdfPage', () => {
+describe.only('BorrowersPdfPage', () => {
   let props;
   const component = () =>
     getMountedComponent({ Component: BorrowersPdfPage, props });
@@ -33,6 +29,7 @@ describe('BorrowersPdfPage', () => {
       .text();
 
   beforeEach(() => {
+    getMountedComponent.reset();
     getMountedComponent.reset();
     props = {
       loan: { borrowers: [{ expenses: [] }] },
