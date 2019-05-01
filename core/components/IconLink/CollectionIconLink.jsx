@@ -89,16 +89,6 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
       text = `${data.$metadata.title} @ ${data.name}${
         isDev && isMain ? ' (main)' : ''
       }`;
-    } else if (data.logo) {
-      text = (
-        <div style={{ width: 100, height: 30 }}>
-          <img
-            src={data.logo}
-            alt={data.name}
-            style={{ maxWidth: 100, maxHeight: 30 }}
-          />
-        </div>
-      );
     } else {
       text = `${data.name}${isDev && isMain ? ' (main)' : ''}`;
     }

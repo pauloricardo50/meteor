@@ -26,7 +26,7 @@ export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
     query: proPromotion,
-    params: ({ promotionId }) => ({ promotionId }),
+    params: ({ promotionId }) => ({ _id: promotionId }),
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
   }),

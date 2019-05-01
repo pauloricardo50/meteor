@@ -9,7 +9,7 @@ export default compose(
   Component => props => <Component {...props} key={props.promotionId} />,
   withSmartQuery({
     query: proPromotion,
-    params: ({ promotionId }) => ({ promotionId }),
+    params: ({ promotionId }) => ({ _id: promotionId }),
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
   }),

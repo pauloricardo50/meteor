@@ -12,7 +12,7 @@ import LoanProgress from '../LoanProgress/LoanProgress';
 import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
-import { LOANS_COLLECTION } from '../../api/constants';
+import { LOANS_COLLECTION, USERS_COLLECTION } from '../../api/constants';
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
@@ -59,9 +59,8 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
           ? user && (
             <CollectionIconLink
               relatedDoc={{
-                ...loan,
-                name: user.name,
-                collection: LOANS_COLLECTION,
+                ...user,
+                collection: USERS_COLLECTION,
               }}
             />
           )

@@ -18,13 +18,13 @@ query.expose({
     });
   },
   validateParams: {
-    promotionId: String,
+    _id: String,
     userId: String,
     $body: Match.Maybe(Object),
   },
 });
 
-query.resolve(({ userId, promotionId, $body }) => {
+query.resolve(({ userId, _id, $body }) => {
   let fragment = proPromotion();
 
   if ($body) {
@@ -32,7 +32,7 @@ query.resolve(({ userId, promotionId, $body }) => {
   }
 
   const promotion = PromotionService.fetchOne({
-    $filters: { _id: promotionId },
+    $filters: { _id },
     ...fragment,
   });
 

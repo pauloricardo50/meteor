@@ -21,30 +21,61 @@ const makeQuery = (query, params, cb) => query.clone(params).fetchOne(cb);
 
 export default {
   [LOANS_COLLECTION]: (_id, cb) =>
-    makeQuery(adminLoans, { loanId: _id, $body: { name: 1, status: 1 } }, cb),
+    makeQuery(
+      adminLoans,
+      {
+        _id,
+        $body: {
+          name: 1,
+          status: 1,
+          user: { name: 1, assignedEmployee: { name: 1 } },
+        },
+      },
+      cb,
+    ),
   [USERS_COLLECTION]: (_id, cb) =>
     makeQuery(
       adminUsers,
-      { _id, $body: { $filter: 1, name: 1, loans: { name: 1 }, roles: 1 } },
+      {
+        _id,
+        $body: {
+          $filter: 1,
+          name: 1,
+          loans: { name: 1 },
+          roles: 1,
+          email: 1,
+          phoneNumber: 1,
+          assignedEmployee: { name: 1 },
+        },
+      },
       cb,
     ),
 
   [BORROWERS_COLLECTION]: (_id, cb) =>
     makeQuery(
       adminBorrowers,
-      { _id, $body: { name: 1, loans: { name: 1 }, user: { name: 1 } } },
+      {
+        _id,
+        $body: {
+          name: 1,
+          loans: { name: 1 },
+          user: { name: 1, assignedEmployee: { name: 1 } },
+        },
+      },
       cb,
     ),
   [PROPERTIES_COLLECTION]: (_id, cb) =>
     makeQuery(
       adminProperties,
       {
-        propertyId: _id,
+        _id,
         $body: {
-          address: 1,
+          name: 1,
+          address1: 1,
           category: 1,
           totalValue: 1,
           documents: { propertyImages: 1 },
+          status: 1,
         },
       },
       cb,
@@ -55,7 +86,9 @@ export default {
       {
         _id,
         $body: {
-          lender: { organisation: { name: 1, logo: 1 } },
+          maxAmount: 1,
+          feedback: 1,
+          lender: { organisation: { name: 1, logo: 1 }, loan: { name: 1 } },
         },
       },
       cb,
@@ -64,7 +97,7 @@ export default {
     makeQuery(
       proPromotion,
       {
-        promotionId: _id,
+        _id,
         $body: {
           name: 1,
           status: 1,
@@ -80,7 +113,7 @@ export default {
     makeQuery(
       adminOrganisations,
       {
-        organisationId: _id,
+        _id,
         $body: { name: 1, logo: 1, type: 1 },
       },
       cb,
@@ -90,7 +123,12 @@ export default {
       adminContacts,
       {
         _id,
-        $body: { name: 1, organisations: { name: 1, logo: 1 } },
+        $body: {
+          name: 1,
+          email: 1,
+          phoneNumber: 1,
+          organisations: { name: 1, logo: 1 },
+        },
       },
       cb,
     ),

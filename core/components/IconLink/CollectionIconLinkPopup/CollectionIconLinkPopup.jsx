@@ -5,7 +5,7 @@ import Popover from 'react-bootstrap/lib/Popover';
 
 import Loading from '../../Loading';
 import queries from './queries';
-import components from './CollectionIconLinkPopupComponents';
+import { titles, components } from './CollectionIconLinkPopupComponents';
 
 type CollectionIconLinkPopupProps = {
   _id: string,
@@ -42,11 +42,22 @@ export default class CollectionIconLinkPopup extends Component<
       return <Loading small />;
     }
 
-    return <span>{JSON.stringify(data, null, 2)}</span>;
-
     const CollectionComponent = components[collection];
 
     return <CollectionComponent {...data} />;
+  };
+
+  getPopoverTitle = () => {
+    const { data } = this.state;
+    const { collection } = this.props;
+
+    if (!data) {
+      return null;
+    }
+
+    const CollectionTitle = titles[collection];
+
+    return <CollectionTitle {...data} />;
   };
 
   render() {
@@ -55,7 +66,11 @@ export default class CollectionIconLinkPopup extends Component<
 
     return (
       <OverlayTrigger
-        overlay={<Popover>{this.getPopoverContent()}</Popover>}
+        overlay={(
+          <Popover title={this.getPopoverTitle()}>
+            {this.getPopoverContent()}
+          </Popover>
+        )}
         onEnter={() => this.loadData()}
         delay={data ? 0 : 200}
       >
