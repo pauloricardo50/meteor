@@ -1,9 +1,11 @@
-import SecurityService from '../../security';
+import { exposeQuery } from '../../queries/queryHelpers';
 import query from './loansAssignedToAdmin';
 
-query.expose({
-  firewall(userId) {
-    SecurityService.checkUserIsAdmin(userId);
-  },
+exposeQuery(query, {
   validateParams: { adminId: String },
+  embody: {
+    $filter({ filters, params: { adminId } }) {
+      filters.assignedEmployeeId = adminId;
+    },
+  },
 });

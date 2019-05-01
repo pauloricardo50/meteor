@@ -7,4 +7,5 @@ export const OFFERS_COLLECTION = 'offers';
 
 export const OFFER_QUERIES = {
   LOAN_OFFERS: 'LOAN_OFFERS',
+  ADMIN_OFFERS: 'ADMIN_OFFERS',
 };

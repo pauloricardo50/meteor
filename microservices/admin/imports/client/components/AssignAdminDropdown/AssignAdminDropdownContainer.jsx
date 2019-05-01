@@ -1,5 +1,5 @@
 import { compose, withProps } from 'recompose';
-import query from 'core/api/users/queries/admins';
+import query from 'core/api/users/queries/adminUsers';
 import { withSmartQuery } from 'core/api';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
@@ -24,6 +24,7 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
 export default compose(
   withSmartQuery({
     query,
+    params: { admins: true, $body: { name: 1 } },
     queryOptions: { reactive: true },
     dataName: 'admins',
     smallLoader: true,

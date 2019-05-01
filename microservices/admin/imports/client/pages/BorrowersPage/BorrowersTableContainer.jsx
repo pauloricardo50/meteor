@@ -7,6 +7,7 @@ import { withSmartQuery } from 'core/api';
 import query from 'core/api/borrowers/queries/adminBorrowers';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { baseBorrower } from 'core/api/fragments';
 
 const columnOptions = [
   { id: '#', style: { width: 32, textAlign: 'left' } },
@@ -50,6 +51,13 @@ const mapBorrower = ({ history }) => (
 export default compose(
   withSmartQuery({
     query,
+    params: {
+      $body: {
+        ...baseBorrower(),
+        loans: { name: 1 },
+        user: { name: 1 },
+      },
+    },
     queryOptions: { reactive: false },
     dataName: 'borrowers',
     renderMissingDoc: false,

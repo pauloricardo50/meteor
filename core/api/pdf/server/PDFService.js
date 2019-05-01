@@ -7,7 +7,7 @@ import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
-import adminLoan from '../../loans/queries/adminLoan';
+import adminLoans from '../../loans/queries/adminLoans';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
 import { lenderRules } from '../../fragments';
 import OrganisationService from '../../organisations/server/OrganisationService';
@@ -86,7 +86,7 @@ class PDFService {
             name: 1,
             logo: 1,
           });
-      const loan = adminLoan.clone({ loanId }).fetchOne();
+      const loan = adminLoans.clone({ _id: loanId }).fetchOne();
 
       if (loan.hasPromotion) {
         return {

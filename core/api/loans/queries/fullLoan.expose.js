@@ -1,9 +1,4 @@
-import SecurityService from '../../security';
+import { exposeQuery } from '../../queries/queryHelpers';
 import query from './fullLoan';
 
-query.expose({
-  firewall() {
-    SecurityService.currentUserIsAdmin();
-  },
-  validateParams: { loanId: String },
-});
+exposeQuery(query);

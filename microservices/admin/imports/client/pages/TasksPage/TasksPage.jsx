@@ -3,14 +3,16 @@ import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import { TASK_TYPE, TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
-import adminsQuery from 'core/api/users/queries/admins';
+import adminUsers from 'core/api/users/queries/adminUsers';
 import Icon from 'core/components/Icon/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 
 const getAdminsEmails = async () => {
   try {
-    const admins = await adminsQuery.clone().fetchSync();
+    const admins = await adminUsers
+      .clone({ admins: true, $body: { email: 1 } })
+      .fetchSync();
     const adminsEmails = admins.map(({ email }) => email);
     return [...adminsEmails, undefined];
   } catch (error) {

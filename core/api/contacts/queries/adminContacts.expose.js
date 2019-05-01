@@ -1,4 +1,4 @@
+import query from './adminContacts';
 import { exposeQuery } from '../../queries/queryHelpers';
-import query from './adminPromotions';
 
 exposeQuery(query);

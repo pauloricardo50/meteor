@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 
-import query from 'core/api/borrowers/queries/adminBorrower';
+import query from 'core/api/borrowers/queries/adminBorrowers';
 import { withSmartQuery } from 'core/api';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 

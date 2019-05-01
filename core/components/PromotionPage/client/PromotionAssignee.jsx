@@ -3,7 +3,7 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import query from 'core/api/users/queries/admins';
+import query from 'core/api/users/queries/adminUsers';
 import { withSmartQuery, promotionUpdate } from '../../../api';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
@@ -42,6 +42,7 @@ const PromotionAssignee = ({ schema, promotion }: PromotionAssigneeProps) => (
 export default compose(
   withSmartQuery({
     query,
+    params: { admins: true, $body: { name: 1 } },
     queryoptions: { reactive: true },
     dataName: 'admins',
     smallLoader: true,

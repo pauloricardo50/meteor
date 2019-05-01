@@ -1,3 +1,6 @@
+import { Match } from 'meteor/check';
+import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
+
 import SecurityService from '../../security';
 import { proPromotion } from '../../fragments';
 import { makePromotionLotAnonymizer } from '../server/promotionServerHelpers';
@@ -14,13 +17,23 @@ query.expose({
       userId,
     });
   },
-  validateParams: { promotionId: String, userId: String },
+  validateParams: {
+    promotionId: String,
+    userId: String,
+    $body: Match.Maybe(Object),
+  },
 });
 
-query.resolve(({ userId, promotionId }) => {
+query.resolve(({ userId, promotionId, $body }) => {
+  let fragment = proPromotion();
+
+  if ($body) {
+    fragment = intersectDeep(proPromotion(), $body);
+  }
+
   const promotion = PromotionService.fetchOne({
     $filters: { _id: promotionId },
-    ...proPromotion(),
+    ...fragment,
   });
 
   try {

@@ -1,11 +1,11 @@
-import adminLoan from 'core/api/loans/queries/adminLoan';
-import adminUser from 'core/api/users/queries/adminUser';
-import adminBorrower from 'core/api/borrowers/queries/adminBorrower';
-import adminProperty from 'core/api/properties/queries/adminProperty';
-import adminOffer from 'core/api/offers/queries/adminOffer';
+import adminLoans from 'core/api/loans/queries/adminLoans';
+import adminUsers from 'core/api/users/queries/adminUsers';
+import adminBorrowers from 'core/api/borrowers/queries/adminBorrowers';
+import adminProperties from 'core/api/properties/queries/adminProperties';
+import adminOffers from 'core/api/offers/queries/adminOffers';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
-import adminOrganisation from 'core/api/organisations/queries/adminOrganisation';
-import contacts from 'core/api/contacts/queries/contacts';
+import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import adminContacts from 'core/api/contacts/queries/adminContacts';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
@@ -21,23 +21,23 @@ const makeQuery = (query, params, cb) => query.clone(params).fetchOne(cb);
 
 export default {
   [LOANS_COLLECTION]: (_id, cb) =>
-    makeQuery(adminLoan, { loanId: _id, $body: { name: 1, status: 1 } }, cb),
+    makeQuery(adminLoans, { loanId: _id, $body: { name: 1, status: 1 } }, cb),
   [USERS_COLLECTION]: (_id, cb) =>
     makeQuery(
-      adminUser,
+      adminUsers,
       { _id, $body: { $filter: 1, name: 1, loans: { name: 1 }, roles: 1 } },
       cb,
     ),
 
   [BORROWERS_COLLECTION]: (_id, cb) =>
     makeQuery(
-      adminBorrower,
+      adminBorrowers,
       { _id, $body: { name: 1, loans: { name: 1 }, user: { name: 1 } } },
       cb,
     ),
   [PROPERTIES_COLLECTION]: (_id, cb) =>
     makeQuery(
-      adminProperty,
+      adminProperties,
       {
         propertyId: _id,
         $body: {
@@ -51,7 +51,7 @@ export default {
     ),
   [OFFERS_COLLECTION]: (_id, cb) =>
     makeQuery(
-      adminOffer,
+      adminOffers,
       {
         _id,
         $body: {
@@ -78,7 +78,7 @@ export default {
     ),
   [ORGANISATIONS_COLLECTION]: (_id, cb) =>
     makeQuery(
-      adminOrganisation,
+      adminOrganisations,
       {
         organisationId: _id,
         $body: { name: 1, logo: 1, type: 1 },
@@ -87,7 +87,7 @@ export default {
     ),
   [CONTACTS_COLLECTION]: (_id, cb) =>
     makeQuery(
-      contacts,
+      adminContacts,
       {
         _id,
         $body: { name: 1, organisations: { name: 1, logo: 1 } },
