@@ -43,7 +43,6 @@ export default compose(
   withSmartQuery({
     query,
     params: { admins: true, $body: { name: 1 } },
-    queryoptions: { reactive: true },
     dataName: 'admins',
     smallLoader: true,
   }),

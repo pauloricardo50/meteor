@@ -12,7 +12,6 @@ export default compose(
   }),
   withSmartQuery({
     query: currentInterestRates,
-    queryOptions: { reactive: true },
     dataName: 'generalInterestRates',
     smallLoader: true,
   }),

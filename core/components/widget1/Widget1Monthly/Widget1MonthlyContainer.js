@@ -55,7 +55,6 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   withSmartQuery({
     query: currentInterestRates,
-    queryOptions: { reactive: true },
     dataName: 'currentInterestRates',
     smallLoader: true,
   }),

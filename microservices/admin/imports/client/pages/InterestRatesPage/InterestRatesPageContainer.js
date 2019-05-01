@@ -8,19 +8,16 @@ import currentRates from 'core/api/interestRates/queries/currentInterestRates';
 export default compose(
   withSmartQuery({
     query: interestRates,
-    queryOptions: { reactive: true },
     dataName: 'interestRates',
     smallLoader: true,
   }),
   withSmartQuery({
     query: irs10y,
-    queryOptions: { reactive: true },
     dataName: 'irs10y',
     smallLoader: true,
   }),
   withSmartQuery({
     query: currentRates,
-    queryOptions: { reactive: true },
     dataName: 'currentInterestRates',
     smallLoader: true,
   }),
