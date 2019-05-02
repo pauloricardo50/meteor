@@ -7,7 +7,7 @@ import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
 import SingleLoanPageTasks from './SingleLoanPageTasks';
 
-const SingleLoanPage = ({ loan, ...rest }) => {
+const SingleLoanPage = ({ loan, Calculator, ...rest }) => {
   const dataToPassDown = {
     ...rest,
     loan,

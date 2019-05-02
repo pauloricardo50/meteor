@@ -23,6 +23,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.ruleOrigin = {};
       this.matchedRules = [];
 
+      // Primary rules depend only on raw data
       const primaryRules = this.getPrimaryLenderRules({
         loan,
         structureId,
@@ -30,6 +31,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       });
       this.applyRules(primaryRules);
 
+      // Secondary rules depend on what is calculated with the rules applied from the primary rules
       const secondaryRules = this.getSecondaryLenderRules({
         loan,
         structureId,

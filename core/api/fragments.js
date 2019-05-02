@@ -70,12 +70,6 @@ export const adminBorrower = () => ({
   user: appUser(),
 });
 
-export const sideNavBorrower = () => ({
-  ...baseBorrower(),
-  loans: { name: 1 },
-  user: { assignedEmployee: { email: 1 } },
-});
-
 // //
 // // Contact fragments
 // //
@@ -217,9 +211,10 @@ export const loan = () => ({
   previousLender: 1,
   previousLoanTranches: 1,
   promotions: {
-    name: 1,
     address: 1,
     contacts: 1,
+    lenderOrganisationLink: 1,
+    name: 1,
     type: 1,
     users: { name: 1, email: 1, phoneNumber: 1 },
   },
@@ -296,6 +291,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         address: 1,
         contacts: 1,
         documents: { promotionImage: 1 },
+        lenderOrganisationLink: 1,
         name: 1,
         status: 1,
         users: {
@@ -343,7 +339,12 @@ export const proLoans = () => ({
   createdAt: 1,
   name: 1,
   status: 1,
-  promotions: { name: 1, users: { _id: 1 }, status: 1 },
+  promotions: {
+    name: 1,
+    users: { _id: 1 },
+    status: 1,
+    lenderOrganisationLink: 1,
+  },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
@@ -367,12 +368,6 @@ export const proLoans = () => ({
   maxPropertyValue: userMaxPropertyValue,
   residenceType: 1,
   shareSolvency: 1,
-});
-
-export const sideNavLoan = () => ({
-  ...loanBase(),
-  status: 1,
-  user: { assignedEmployee: { email: 1 }, name: 1 },
 });
 
 // //
@@ -582,6 +577,7 @@ export const basePromotion = () => ({
   contacts: 1,
   createdAt: 1,
   documents: 1,
+  lenderOrganisation: { name: 1, logo: 1 },
   loans: { _id: 1 },
   lots: {
     value: 1,
@@ -764,19 +760,6 @@ export const promotionProperty = () => ({
   totalValue: 1,
   value: 1,
   yearlyExpenses: 1,
-});
-
-export const sideNavProperty = () => ({
-  address1: 1,
-  city: 1,
-  createdAt: 1,
-  loans: { name: 1 },
-  name: 1,
-  promotion: { name: 1 },
-  updatedAt: 1,
-  user: { assignedEmployee: { email: 1 } },
-  totalValue: 1,
-  zipCode: 1,
 });
 
 export const userProperty = ({ withSort } = {}) => ({

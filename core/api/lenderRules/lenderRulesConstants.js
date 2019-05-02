@@ -5,9 +5,7 @@ import { EXPENSES } from '../borrowers/borrowerConstants';
 export const LENDER_RULES_COLLECTION = 'lenderRules';
 
 export const LENDER_RULES_QUERIES = {
-  // Insert your queries name here
-  // Example:
-  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+  ORGANISATION_LENDER_RULES: 'ORGANISATION_LENDER_RULES',
 };
 
 export const INCOME_CONSIDERATION_TYPES = {
