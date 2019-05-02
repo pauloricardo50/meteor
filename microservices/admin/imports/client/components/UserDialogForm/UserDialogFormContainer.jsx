@@ -10,7 +10,7 @@ import {
   userUpdateOrganisations,
 } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
-import admins from 'core/api/users/queries/admins';
+import adminUsers from 'core/api/users/queries/adminUsers';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({
@@ -56,7 +56,10 @@ const userSchema = new SimpleSchema({
   'phoneNumbers.$': String,
   assignedEmployeeId: {
     type: String,
-    customAllowedValues: { query: admins },
+    customAllowedValues: {
+      query: adminUsers,
+      params: () => ({ $body: { name: 1 }, admins: true }),
+    },
     optional: true,
     uniforms: {
       transform: ({ name }) => name,

@@ -71,6 +71,7 @@ const PromotionUsersTableActions = ({
             values={{ name: user.name }}
           />
         )}
+        noButton
       />
     </>
   );

@@ -1,9 +1,4 @@
-import Security from '../../security';
+import { exposeQuery } from '../../queries/queryHelpers';
 import query from './adminProperties';
 
-query.expose({
-  firewall(userId) {
-    Security.checkUserIsAdmin(userId);
-  },
-  validateParams: {},
-});
+exposeQuery(query);

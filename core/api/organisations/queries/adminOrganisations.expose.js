@@ -1,6 +1,6 @@
 import { Match } from 'meteor/check';
 
-import SecurityService from '../../security';
+import { exposeQuery } from 'core/api/queries/queryHelpers';
 import query from './adminOrganisations';
 
 const makeFilter = ({ param, field, filters }) => {
@@ -9,19 +9,19 @@ const makeFilter = ({ param, field, filters }) => {
   }
 };
 
-query.expose({
-  firewall: () => {
-    SecurityService.checkCurrentUserIsAdmin();
-  },
+exposeQuery(query, {
   validateParams: {
     features: Match.Maybe(Match.OneOf(String, [String])),
     tags: Match.Maybe(Match.OneOf(String, [String])),
     type: Match.Maybe(Match.OneOf(String, [String])),
-    name: Match.Maybe(String),
-    $body: Match.Maybe(Object),
+    _id: Match.Maybe(String),
   },
   embody: {
-    $filter({ filters, params: { features, tags, type } }) {
+    $filter({ filters, params: { features, tags, type, _id } }) {
+      if (_id) {
+        filters._id = _id;
+      }
+
       makeFilter({ param: features, field: 'features', filters });
       makeFilter({ param: tags, field: 'tags', filters });
       makeFilter({ param: type, field: 'type', filters });

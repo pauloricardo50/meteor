@@ -7,7 +7,7 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
 import { loanDelete, loanUpdate, assignLoanToUser } from 'core/api';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import loanWithName from 'core/api/loans/queries/loanWithName';
+import adminLoans from 'core/api/loans/queries/adminLoans';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">
@@ -16,8 +16,8 @@ const ActionsTab = ({ loan }) => (
       schema={LoanSchema.pick('name')}
       model={loan}
       onSubmit={doc =>
-        loanWithName
-          .clone({ name: doc.name })
+        adminLoans
+          .clone({ name: doc.name, $body: { _id: 1 } })
           .fetchOneSync()
           .then((result) => {
             if (result) {

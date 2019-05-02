@@ -1,9 +1,4 @@
-import SecurityService from '../../security';
+import { exposeQuery } from '../../queries/queryHelpers';
 import query from './interestRates';
 
-query.expose({
-  firewall(userId) {
-    SecurityService.checkUserIsAdmin(userId);
-  },
-  validateParams: {},
-});
+exposeQuery(query);

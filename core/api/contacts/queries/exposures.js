@@ -1,3 +1,2 @@
-import './contacts.expose';
+import './adminContacts.expose';
 import './contactSearch.expose';
-import './singleContact.expose';

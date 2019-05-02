@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
-
-import withHider from 'core/containers/withHider';
-import query from 'core/api/users/queries/userEmails';
-import Table from 'core/components/Table';
-import { withSmartQuery } from 'imports/core/api/containerToolkit/index';
 import { compose } from 'recompose';
+
+import userEmails from 'core/api/users/queries/userEmails';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import withHider from 'core/containers/withHider';
+import Table from 'core/components/Table';
 
 type EmailListProps = {};
 
@@ -42,7 +42,8 @@ const EmailList = ({ user: { sentEmails } }: EmailListProps) => (
 export default compose(
   withHider({ raised: true, primary: true, label: 'Afficher emails' }),
   withSmartQuery({
-    query: ({ userId }) => query.clone({ userId }),
+    query: userEmails,
+    params: ({ userId }) => ({ _id: userId }),
     queryOptions: { single: true },
     dataName: 'user',
   }),

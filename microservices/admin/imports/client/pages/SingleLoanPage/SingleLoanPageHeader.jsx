@@ -2,7 +2,6 @@
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 
-import Link from 'core/components/Link';
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -11,6 +10,7 @@ import {
   PROMOTIONS_COLLECTION,
   LOANS_COLLECTION,
   LOAN_STATUS,
+  USERS_COLLECTION,
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
@@ -86,15 +86,9 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
             }}
           />
           {user ? (
-            <Link to={`/users/${user._id}`}>
-              <small className="secondary">
-                {' - '}
-                {user.name}
-                {(user.phoneNumbers
-                  && user.phoneNumbers.length > 0)
-                  && `, ${user.phoneNumbers}`}
-              </small>
-            </Link>
+            <CollectionIconLink
+              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+            />
           ) : (
             <small className="secondary">
               {' - '}

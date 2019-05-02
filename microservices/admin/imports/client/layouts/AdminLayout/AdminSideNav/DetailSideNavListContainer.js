@@ -1,10 +1,7 @@
 import { withRouter } from 'react-router-dom';
 import { withState, withProps, lifecycle, compose } from 'recompose';
 
-import sideNavBorrowers from 'core/api/borrowers/queries/sideNavBorrowers';
-import sideNavLoans from 'core/api/loans/queries/sideNavLoans';
-import sideNavProperties from 'core/api/properties/queries/sideNavProperties';
-import sideNavUsers from 'core/api/users/queries/sideNavUsers';
+import adminLoans from 'core/api/loans/queries/adminLoans';
 import { withSmartQuery } from 'core/api';
 import withDataFilterAndSort from 'core/api/containerToolkit/withDataFilterAndSort';
 import {
@@ -15,25 +12,42 @@ import {
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import adminPromotions from 'core/api/promotions/queries/adminPromotions';
-import contacts from 'core/api/contacts/queries/contacts';
+import adminContacts from 'core/api/contacts/queries/adminContacts';
 import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
+import adminUsers from 'core/api/users/queries/adminUsers';
+import adminProperties from 'core/api/properties/queries/adminProperties';
+import adminBorrowers from 'core/api/borrowers/queries/adminBorrowers';
 
 const PAGINATION_AMOUNT = 10;
 
-const getQuery = ({ collectionName }) => {
+const getQuery = (collectionName) => {
   switch (collectionName) {
   case BORROWERS_COLLECTION:
-    return sideNavBorrowers;
+    return { query: adminBorrowers, body: { name: 1, loans: { name: 1 } } };
   case LOANS_COLLECTION:
-    return sideNavLoans;
+    return {
+      query: adminLoans,
+      body: { structure: 1, name: 1, status: 1, user: { name: 1 } },
+    };
   case PROPERTIES_COLLECTION:
-    return sideNavProperties;
+    return {
+      query: adminProperties,
+      body: {
+        address1: 1,
+        name: 1,
+        loans: { name: 1 },
+        promotion: { name: 1 },
+      },
+    };
   case USERS_COLLECTION:
-    return sideNavUsers;
+    return { query: adminUsers, body: { name: 1, roles: 1 } };
   case PROMOTIONS_COLLECTION:
-    return adminPromotions;
+    return { query: adminPromotions, body: { name: 1, status: 1 } };
   case CONTACTS_COLLECTION:
-    return contacts;
+    return {
+      query: adminContacts,
+      body: { name: 1, organisations: { name: 1 } },
+    };
   default:
     return null;
   }
@@ -41,7 +55,7 @@ const getQuery = ({ collectionName }) => {
 
 const setTotalCount = (props) => {
   const { collectionName, updateTotalCount } = props;
-  getQuery({ collectionName }).getCount((err, result) => {
+  getQuery(collectionName).query.getCount((err, result) => {
     updateTotalCount(result);
   });
 };
@@ -72,10 +86,11 @@ export const withSetTotalCountLifecycle = lifecycle({
 });
 
 export const withSideNavQuery = withSmartQuery({
-  query: ({ collectionName }) => getQuery({ collectionName }),
-  params: ({ showMoreCount }) => ({
+  query: ({ collectionName }) => getQuery(collectionName).query,
+  params: ({ showMoreCount, collectionName }) => ({
     limit: getQueryLimit(showMoreCount),
     skip: 0,
+    $body: getQuery(collectionName).body,
   }),
   queryOptions: { reactive: false },
 });

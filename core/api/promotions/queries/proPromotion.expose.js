@@ -1,3 +1,6 @@
+import { Match } from 'meteor/check';
+import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
+
 import SecurityService from '../../security';
 import { proPromotion } from '../../fragments';
 import { makePromotionLotAnonymizer } from '../server/promotionServerHelpers';
@@ -6,7 +9,7 @@ import query from './proPromotion';
 
 query.expose({
   firewall(userId, params) {
-    const { promotionId } = params;
+    const { _id: promotionId } = params;
     params.userId = userId;
     SecurityService.checkUserIsPro(userId);
     SecurityService.promotions.isAllowedToView({
@@ -14,13 +17,23 @@ query.expose({
       userId,
     });
   },
-  validateParams: { promotionId: String, userId: String },
+  validateParams: {
+    _id: String,
+    userId: String,
+    $body: Match.Maybe(Object),
+  },
 });
 
-query.resolve(({ userId, promotionId }) => {
+query.resolve(({ userId, _id, $body }) => {
+  let fragment = proPromotion();
+
+  if ($body) {
+    fragment = intersectDeep(proPromotion(), $body);
+  }
+
   const promotion = PromotionService.fetchOne({
-    $filters: { _id: promotionId },
-    ...proPromotion(),
+    $filters: { _id },
+    ...fragment,
   });
 
   try {

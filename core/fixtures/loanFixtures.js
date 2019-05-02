@@ -11,7 +11,7 @@ import {
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
-import adminLoan from '../api/loans/queries/adminLoan';
+import adminLoans from '../api/loans/queries/adminLoans';
 import BorrowerService from '../api/borrowers/server/BorrowerService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createFakeOffer } from './offerFixtures';
@@ -174,7 +174,7 @@ export const addLoanWithData = ({
 }) => {
   const loanId = LoanService.adminLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
-  const loan = adminLoan.clone({ loanId }).fetchOne();
+  const loan = adminLoans.clone({ _id: loanId }).fetchOne();
   const propertyId = properties.length
     ? PropertyService.insert({ property: {}, userId })
     : undefined;

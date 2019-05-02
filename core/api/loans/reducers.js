@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 import Loans from '.';
 import { formatLoanWithStructure } from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
-import { fullOffer, userProperty } from '../fragments';
+import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
 
 Loans.addReducers({
@@ -12,6 +12,7 @@ Loans.addReducers({
       structures: 1,
       properties: omit(userProperty(), ['loans', '$options', 'user']),
       offers: 1,
+      promotionOptions: loanPromotionOption(),
     },
     reduce: formatLoanWithStructure,
   },
@@ -31,10 +32,8 @@ Loans.addReducers({
   },
   enableOffers: {
     body: { step: 1 },
-    reduce: ({ step }) => (
-      step
-        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.OFFERS)
-    ),
+    reduce: ({ step }) =>
+      step && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.OFFERS),
   },
   hasProProperty: {
     body: { properties: { category: 1 } },

@@ -10,7 +10,7 @@ import T from '../../../Translation';
 
 const searchUser = ({ isAdmin, searchQuery, setSearchResult }) => {
   if (isAdmin) {
-    userSearch
+    return userSearch
       .clone({ searchQuery, roles: [ROLES.PRO] })
       .fetch((err, users) => {
         if (err) {
@@ -19,15 +19,13 @@ const searchUser = ({ isAdmin, searchQuery, setSearchResult }) => {
 
         setSearchResult(users);
       });
-    return;
   }
 
-  getUserByEmail.run({ email: searchQuery, roles: [ROLES.PRO] }).then((user) => {
+  getUserByEmail.run({ email: searchQuery }).then((user) => {
     if (!user) {
-      setSearchResult({
+      return setSearchResult({
         error: <T id="ProPropertyPage.proUserAdder.noUserFound" />,
       });
-      return;
     }
 
     setSearchResult([user]);
@@ -42,16 +40,12 @@ export default compose(
     onSearch: (event) => {
       event.preventDefault();
       if (searchQuery) {
-        searchUser({ isAdmin, searchQuery, setSearchResult });
-        return;
+        return searchUser({ isAdmin, searchQuery, setSearchResult });
       }
 
       setSearchResult(null);
     },
     addUser: ({ userId }) =>
-      addProUserToProperty.run({
-        propertyId: property._id,
-        userId,
-      }),
+      addProUserToProperty.run({ propertyId: property._id, userId }),
   })),
 );

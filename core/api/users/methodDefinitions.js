@@ -146,7 +146,6 @@ export const getUserByEmail = new Method({
   name: 'getUserByEmail',
   params: {
     email: String,
-    roles: Match.Maybe(Array),
   },
 });
 

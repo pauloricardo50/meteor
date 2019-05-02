@@ -4,6 +4,4 @@ import messagesFR from '../../../lang/fr.json';
 
 localizationStartup({ setupAccounts: false, messages: messagesFR });
 
-Meteor.startup(() => {
-  Meteor.microservice = 'www';
-});
+Meteor.microservice = 'www';
