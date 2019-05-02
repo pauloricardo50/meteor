@@ -8,7 +8,7 @@ import history from 'core/utils/history';
 
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
-import LoginPage from '../LoginPage';
+import LoginPage from '../LoginPage/loadable';
 import DisconnectModal from '../DisconnectModal';
 import MicroserviceHead from '../MicroserviceHead';
 
