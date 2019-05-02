@@ -64,9 +64,8 @@ const withUserLoan = withSmartQuery({
 
 const withInterestRates = withSmartQuery({
   query: currentInterestRates,
-  queryOptions: { reactive: false, shouldRefetch: () => false },
+  queryOptions: { shouldRefetch: () => false },
   dataName: 'currentInterestRates',
-  smallLoader: true,
   refetchOnMethodCall: false,
 });
 

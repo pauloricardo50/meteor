@@ -11,6 +11,5 @@ export default compose(
     params: ({ organisationId }) => ({ _id: organisationId }),
     queryOptions: { single: true },
     dataName: 'organisation',
-    smallLoader: true,
   }),
 );
