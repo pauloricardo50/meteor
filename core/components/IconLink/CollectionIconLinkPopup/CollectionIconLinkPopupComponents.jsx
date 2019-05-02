@@ -12,7 +12,7 @@ import {
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
-import { Money, IntlDate } from '../../Translation';
+import T, { Money, IntlDate } from '../../Translation';
 
 export const titles = {
   [LOANS_COLLECTION]: ({ name, status }) => (
@@ -51,7 +51,10 @@ export const titles = {
   ),
   [ORGANISATIONS_COLLECTION]: ({ name, type }) => (
     <span>
-      {name} <span className="secondary">{type}</span>
+      {name}{' '}
+      <span className="secondary">
+        <T id={`Forms.type.${type}`} />
+      </span>
     </span>
   ),
   [CONTACTS_COLLECTION]: ({ name, organisations = [] }) => (
