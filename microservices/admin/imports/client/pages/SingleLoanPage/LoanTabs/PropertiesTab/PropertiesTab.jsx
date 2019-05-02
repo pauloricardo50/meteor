@@ -5,7 +5,7 @@ import Tabs from 'core/components/Tabs';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
 import Calculator from 'core/utils/Calculator';
-import SinglePropertyPage from '../../SinglePropertyPage/SinglePropertyPage';
+import SinglePropertyPage from '../../../SinglePropertyPage';
 
 type PropertiesTabProps = {
   loan: Object,

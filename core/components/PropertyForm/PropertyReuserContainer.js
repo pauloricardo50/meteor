@@ -11,9 +11,10 @@ export default compose(
       userId: propertyUserId,
       $body: { properties: { _id: 1, totalValue: 1, address: 1 } },
     }),
-    queryOptions: { reactive: false, single: false },
+    queryOptions: { single: false, shouldRefetch: () => false },
     dataName: 'loans',
     renderMissingDoc: false,
+    refetchOnMethodCall: false,
   }),
   mapProps(({ loans, loanId }) => {
     const currentLoan = loans.find(({ _id }) => _id === loanId);

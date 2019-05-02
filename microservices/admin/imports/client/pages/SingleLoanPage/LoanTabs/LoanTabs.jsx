@@ -2,24 +2,24 @@ import React from 'react';
 
 import Tabs from 'core/components/Tabs';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import T, { Percent } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { ROLES, PURCHASE_TYPE } from 'core/api/constants';
-import FileTabs from 'core/components/FileTabs';
+import FileTabs from 'core/components/FileTabs/loadable';
 import { createRoute } from 'core/utils/routerUtils';
 import Calculator from 'core/utils/Calculator';
 import { SINGLE_LOAN_PAGE } from '../../../../startup/client/adminRoutes';
-import OverviewTab from './OverviewTab';
-import BorrowersTab from './BorrowersTab';
-import PropertiesTab from './PropertiesTab';
-import CommunicationTab from './CommunicationTab';
-import MixpanelAnalytics from './AnalyticsTab';
-import ActionsTab from './ActionsTab';
-import StructuresTab from './StructuresTab';
+import OverviewTab from './OverviewTab/loadable';
+import BorrowersTab from './BorrowersTab/loadable';
+import PropertiesTab from './PropertiesTab/loadable';
+// import CommunicationTab from './CommunicationTab';
+// import MixpanelAnalytics from './AnalyticsTab';
+import ActionsTab from './ActionsTab/loadable';
+import FinancingTab from './FinancingTab/loadable';
 import DevTab from './DevTab/loadable';
-import PromotionsTab from './PromotionsTab';
-import RefinancingTab from './RefinancingTab';
-import LendersTab from './LendersTab';
-import RevenuesTab from './RevenuesTab';
+import PromotionsTab from './PromotionsTab/loadable';
+import RefinancingTab from './RefinancingTab/loadable';
+import LendersTab from './LendersTab/loadable';
+import RevenuesTab from './RevenuesTab/loadable';
 
 const getTabs = (props) => {
   const { loan } = props;
@@ -29,7 +29,7 @@ const getTabs = (props) => {
 
   return [
     { id: 'overview', Component: OverviewTab },
-    { id: 'structures', Component: StructuresTab },
+    { id: 'structures', Component: FinancingTab },
     props.loan.hasPromotion && {
       id: 'promotion',
       Component: PromotionsTab,
