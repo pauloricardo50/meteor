@@ -171,16 +171,14 @@ proInviteUser.setHandler((context, params) => {
   });
 });
 
-getUserByEmail.setHandler((context, params) => {
-  const { userId } = context;
-  const { email, roles } = params;
+getUserByEmail.setHandler(({ userId }, { email }) => {
   SecurityService.checkUserIsPro(userId);
   return UserService.fetchOne({
     $filters: {
       $and: [
         { 'emails.address': { $in: [email] } },
-        { roles: roles ? { $in: roles } : undefined },
-      ].filter(x => x),
+        { roles: { $in: [ROLES.PRO] } },
+      ],
     },
     name: 1,
     organisations: { name: 1 },
