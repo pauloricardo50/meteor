@@ -129,13 +129,18 @@ export const getBonus = (borrowers, calculator) =>
     const bonuses = calculator.getBonuses({ borrowers: borrower });
     const comments = Object.keys(bonuses).map((key) => {
       const value = bonuses[key];
+
+      if (!value) {
+        // Filter out bonuses that are 0 to shorten the comments
+        return null;
+      }
+
       const year = key.slice(7);
       return (
         <span key={borrower._id} style={{ whiteSpace: 'nowrap' }}>
           '{year}: {toMoney(value)}
         </span>
       );
-      return `'${year}: ${toMoney(value)}`;
     });
 
     return renderWithComments(bonus, comments);
