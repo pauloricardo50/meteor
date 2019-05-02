@@ -12,7 +12,7 @@ import {
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
-import { Money } from '../../Translation';
+import { Money, IntlDate } from '../../Translation';
 
 export const titles = {
   [LOANS_COLLECTION]: ({ name, status }) => (
@@ -82,12 +82,14 @@ export const components = {
       Conseiller: {assignedEmployee ? assignedEmployee.name : '-'}
     </span>
   ),
-  [BORROWERS_COLLECTION]: ({ user }) => (
+  [BORROWERS_COLLECTION]: ({ user, loans = [] }) => (
     <span>
       {user && user.name}
       <br />
       Conseiller:{' '}
       {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+      <br />
+      Dossiers: {loans.map(({ name }) => name).join(', ')}
     </span>
   ),
   [PROPERTIES_COLLECTION]: ({ totalValue }) => (
@@ -100,8 +102,10 @@ export const components = {
       <Money value={maxAmount} />
       <br />
       Feedback:{' '}
-      {feedback && feedback.message ? (
-        <span className="success">Donné</span>
+      {feedback && feedback.date ? (
+        <span className="success">
+          Donné <IntlDate type="relative" value={feedback.date} />
+        </span>
       ) : (
         <span>Non</span>
       )}

@@ -29,9 +29,7 @@ export default class CollectionIconLinkPopup extends Component<
     const { collection, _id } = this.props;
     const query = queries[collection];
 
-    query(_id, (err, data) => {
-      this.setState({ data });
-    });
+    query(_id, (err, data) => this.setState({ data }));
   };
 
   getPopoverContent = () => {
