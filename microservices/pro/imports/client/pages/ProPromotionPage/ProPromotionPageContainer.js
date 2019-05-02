@@ -27,7 +27,7 @@ export default compose(
   withSmartQuery({
     query: proPromotion,
     params: ({ promotionId }) => ({ _id: promotionId }),
-    queryOptions: { reactive: false, single: true },
+    queryOptions: { single: true },
     dataName: 'promotion',
   }),
   withProps(makePermissions),

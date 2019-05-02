@@ -9,7 +9,7 @@ import query from './proPromotion';
 
 query.expose({
   firewall(userId, params) {
-    const { promotionId } = params;
+    const { _id: promotionId } = params;
     params.userId = userId;
     SecurityService.checkUserIsPro(userId);
     SecurityService.promotions.isAllowedToView({
