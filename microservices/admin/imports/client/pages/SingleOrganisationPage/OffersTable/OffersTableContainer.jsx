@@ -2,11 +2,12 @@ import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
 
+import { LOANS_COLLECTION, CONTACTS_COLLECTION } from 'core/api/constants';
 import T from 'core/components/Translation';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { LOANS_COLLECTION, CONTACTS_COLLECTION } from 'core/api/constants';
-import DialogSimple from 'imports/core/components/DialogSimple';
+import DialogSimple from 'core/components/DialogSimple';
 import HtmlPreview from 'core/components/HtmlPreview';
+import StatusLabel from 'core/components/StatusLabel';
 
 const columnOptions = [
   { id: 'createdAt', label: <T id="offer.createdAt" /> },
@@ -40,7 +41,9 @@ const makeMapOffer = ({ setOfferDialog }) => (offer) => {
       },
       {
         raw: loan.status,
-        label: <T id={`Forms.status.${loan.status}`} />,
+        label: (
+          <StatusLabel status={loan.status} collection={LOANS_COLLECTION} />
+        ),
       },
       {
         raw: contact.name,
