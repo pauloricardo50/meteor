@@ -1,4 +1,4 @@
 import { exposeQuery } from '../../queries/queryHelpers';
-import query from './loanOffers';
+import query from './adminOffers';
 
 exposeQuery(query);
