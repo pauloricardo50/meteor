@@ -1,9 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Popover from 'react-bootstrap/lib/Popover';
 
 import Loading from '../../Loading';
+import StickyPopover from '../../StickyPopover';
 import queries from './queries';
 import { titles, components } from './CollectionIconLinkPopupComponents';
 
@@ -63,17 +62,14 @@ export default class CollectionIconLinkPopup extends Component<
     const { data } = this.state;
 
     return (
-      <OverlayTrigger
-        overlay={(
-          <Popover title={this.getPopoverTitle()}>
-            {this.getPopoverContent()}
-          </Popover>
-        )}
-        onEnter={() => this.loadData()}
+      <StickyPopover
+        component={this.getPopoverContent()}
+        title={this.getPopoverTitle()}
+        onMouseEnter={this.loadData}
         delay={data ? 0 : 200}
       >
         {children}
-      </OverlayTrigger>
+      </StickyPopover>
     );
   }
 }
