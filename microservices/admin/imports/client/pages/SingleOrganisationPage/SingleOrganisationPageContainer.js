@@ -9,7 +9,7 @@ export default compose(
   withSmartQuery({
     query: adminOrganisations,
     params: ({ organisationId }) => ({ _id: organisationId }),
-    queryOptions: { reactive: true, single: true },
+    queryOptions: { single: true },
     dataName: 'organisation',
     smallLoader: true,
   }),
