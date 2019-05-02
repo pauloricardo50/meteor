@@ -29,6 +29,8 @@ export default {
           name: 1,
           status: 1,
           user: { name: 1, assignedEmployee: { name: 1 } },
+          structures: { wantedLoan: 1, id: 1 },
+          selectedStructure: 1,
         },
       },
       cb,
@@ -50,7 +52,6 @@ export default {
       },
       cb,
     ),
-
   [BORROWERS_COLLECTION]: (_id, cb) =>
     makeQuery(
       adminBorrowers,

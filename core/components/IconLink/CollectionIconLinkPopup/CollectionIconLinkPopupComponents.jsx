@@ -65,14 +65,29 @@ export const titles = {
 };
 
 export const components = {
-  [LOANS_COLLECTION]: ({ user }) => (
-    <span>
-      {user && user.name}
-      <br />
-      Conseiller:{' '}
-      {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
-    </span>
-  ),
+  [LOANS_COLLECTION]: ({ user, structures = [], selectedStructure }) => {
+    const structure = structures.find(({ id }) => id === selectedStructure);
+
+    return (
+      <span>
+        <span>
+          Hypothèque:{' '}
+          {structure ? (
+            <b>
+              <Money value={structure.wantedLoan} />
+            </b>
+          ) : (
+            '-'
+          )}
+        </span>
+        <br />
+        {user && user.name}
+        <br />
+        Conseiller:{' '}
+        {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+      </span>
+    );
+  },
   [USERS_COLLECTION]: ({ email, phoneNumber, assignedEmployee }) => (
     <span>
       {email}
