@@ -173,16 +173,15 @@ proInviteUser.setHandler((context, params) => {
 
 getUserByEmail.setHandler(({ userId }, { email }) => {
   SecurityService.checkUserIsPro(userId);
-  return UserService.fetchOne({
-    $filters: {
-      $and: [
-        { 'emails.address': { $in: [email] } },
-        { roles: { $in: [ROLES.PRO] } },
-      ],
-    },
-    name: 1,
-    organisations: { name: 1 },
-  });
+  const user = UserService.getByEmail(email);
+
+  if (user) {
+    return UserService.fetchOne({
+      $filters: { $and: [{ _id: user._id }, { roles: { $in: [ROLES.PRO] } }] },
+      name: 1,
+      organisations: { name: 1 },
+    });
+  }
 });
 
 setUserReferredBy.setHandler((context, params) => {

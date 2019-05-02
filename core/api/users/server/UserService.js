@@ -273,7 +273,8 @@ class UserService extends CollectionService {
       const {
         _id: existingUserId,
         assignedEmployeeId: existingAssignedEmployeeId,
-      } = this.findOne({ 'emails.address': { $in: [email] } });
+      } = this.getByEmail(email);
+
       admin = this.get(existingAssignedEmployeeId);
       userId = existingUserId;
     }
