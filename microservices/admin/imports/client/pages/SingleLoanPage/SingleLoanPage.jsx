@@ -15,6 +15,7 @@ const SingleLoanPage = ({ loan, Calculator, ...rest }) => {
     properties: loan.properties,
     borrowers: loan.borrowers,
     offers: loan.offers,
+    Calculator,
   };
 
   return (

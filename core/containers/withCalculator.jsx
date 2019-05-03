@@ -91,25 +91,29 @@ const getParams = ({ loan }) => {
   return false;
 };
 
-const withLenderRules = withSmartQuery({
-  query,
-  params: getParams,
-  queryOptions: { shouldRefetch: () => false },
-  refetchOnMethodCall: false,
-  dataName: 'lenderRules',
-});
+const withLenderRules = Component => (props) => {
+  let WrappedComponent = Component;
+
+  if (getParams(props)) {
+    WrappedComponent = withSmartQuery({
+      query,
+      params: getParams,
+      queryOptions: { shouldRefetch: () => false },
+      refetchOnMethodCall: false,
+      dataName: 'lenderRules',
+    })(Component);
+  }
+
+  return <WrappedComponent {...props} />;
+};
 
 export const injectCalculator = (getStructureId = () => {}) => {
   // Insnstantiate a new memoizer for each place where this is calculated
   const getCalculator = getCalculatorMemo();
 
-  return compose((Component) => {
-    const WrappedComponent = (props) => {
-      let QueryComponent = Component;
-      if (getParams(props)) {
-        QueryComponent = withLenderRules(Component);
-      }
-
+  return compose(
+    withLenderRules,
+    Component => (props) => {
       const { loan } = props;
       const lenderRules = getLenderRules(props);
 
@@ -118,20 +122,20 @@ export const injectCalculator = (getStructureId = () => {}) => {
         getStructureId(props),
       );
 
-      return (
+      const WrappedComponent = (
         <Provider value={calculator}>
-          <QueryComponent {...props} />
+          <Component {...props} />
         </Provider>
       );
-    };
 
-    WrappedComponent.displayName = wrapDisplayName(
-      WrappedComponent,
-      'InjectCalculator',
-    );
+      WrappedComponent.displayName = wrapDisplayName(
+        WrappedComponent,
+        'InjectCalculator',
+      );
 
-    return WrappedComponent;
-  });
+      return WrappedComponent;
+    },
+  );
 };
 
 export const withCalculator = Component => props => (

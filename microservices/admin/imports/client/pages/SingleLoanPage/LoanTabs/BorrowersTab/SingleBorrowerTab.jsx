@@ -7,14 +7,18 @@ import withTranslationContext from 'core/components/Translation/withTranslationC
 import BorrowerRemover from 'core/components/BorrowerRemover';
 import BorrowerReuser from 'core/components/BorrowerReuser';
 
-const BorrowerTab = ({ borrower, loan: { borrowers, _id: loanId } }) => (
+const BorrowerTab = ({
+  borrower,
+  loan: { borrowers, _id: loanId },
+  Calculator,
+}) => (
   <div className="single-borrower-tab">
     <h2>{borrower.name}</h2>
     {borrowers && borrowers.length > 1 && (
       <BorrowerRemover borrower={borrower} loanId={loanId} />
     )}
     <BorrowerReuser loanId={loanId} borrowerId={borrower._id} />
-    <Recap arrayName="borrower" borrower={borrower} />
+    <Recap arrayName="borrower" borrower={borrower} Calculator={Calculator} />
     <BorrowerForm borrower={borrower} />
   </div>
 );

@@ -133,9 +133,18 @@ export const components = {
     availablePromotionLots,
     bookedPromotionLots,
     soldPromotionLots,
+    lenderOrganisation,
   }) => (
     <span>
-      Lots: {availablePromotionLots.length}
+      {lenderOrganisation && (
+        <>
+          <span>
+            Prêteur: <b>{lenderOrganisation.name}</b>
+          </span>
+          <br />
+        </>
+      )}
+      Lots dispo: {availablePromotionLots.length}
       <br />
       Réservés: {bookedPromotionLots.length}
       <br />
