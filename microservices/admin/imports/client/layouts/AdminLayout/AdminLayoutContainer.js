@@ -1,11 +1,12 @@
 // @flow
-import { compose } from 'recompose';
+import { compose, shouldUpdate } from 'recompose';
 import currentUser from 'core/api/users/queries/currentUser';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { withFileViewer } from 'core/containers/FileViewerContext';
 
 export default compose(
   withFileViewer,
+  shouldUpdate(() => false),
   withSmartQuery({
     query: currentUser,
     params: () => ({

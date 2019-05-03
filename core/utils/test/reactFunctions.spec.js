@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { arePathsUnequal } from '../reactFunctions';
 
-describe.only('reactFunctions', () => {
+describe('reactFunctions', () => {
   describe('arePathsUnequal', () => {
     it('returns true or false if paths are unequal', () => {
       const func = arePathsUnequal(['a']);

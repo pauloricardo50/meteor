@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
+import { shouldUpdate } from 'recompose';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
@@ -14,6 +15,7 @@ import {
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { arePathsUnequal } from 'core/utils/reactFunctions';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 
 type SingleLoanPageHeaderProps = {};
@@ -125,4 +127,10 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
   );
 };
 
-export default SingleLoanPageHeader;
+export default shouldUpdate(arePathsUnequal([
+  'loan.name',
+  'loan.user._id',
+  'loan.status',
+  'loan.structure.wantedLoan',
+  'loan.selectedStructure',
+]))(SingleLoanPageHeader);

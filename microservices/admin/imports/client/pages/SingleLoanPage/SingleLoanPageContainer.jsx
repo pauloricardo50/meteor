@@ -1,8 +1,9 @@
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, shouldUpdate } from 'recompose';
 import query from 'core/api/loans/queries/adminLoans';
 import { withSmartQuery } from 'core/api';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import interestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { arePathsUnequal } from 'core/utils/reactFunctions';
 
 const withInterestRates = withSmartQuery({
   query: interestRates,
@@ -13,6 +14,7 @@ const withInterestRates = withSmartQuery({
 });
 
 export default compose(
+  shouldUpdate(arePathsUnequal(['match.params.loanId'])),
   withSmartQuery({
     query,
     params: ({ match }) => ({ _id: match.params.loanId }),
