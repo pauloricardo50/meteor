@@ -32,5 +32,7 @@ const isEqual = (a, b) => {
 export const arePathsEqual = paths => (object1, object2) =>
   paths.every(path => isEqual(get(object1, path), get(object2, path)));
 
-export const arePathsUnequal = paths => (...args) =>
-  !arePathsEqual(paths)(...args);
+export const arePathsUnequal = (paths) => {
+  const testFunc = arePathsEqual(paths);
+  return (...args) => !testFunc(...args);
+};

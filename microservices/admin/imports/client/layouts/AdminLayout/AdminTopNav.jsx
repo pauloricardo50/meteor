@@ -1,7 +1,6 @@
 import React from 'react';
-import { shouldUpdate } from 'recompose';
 
-import { arePathsUnequal } from 'core/utils/reactFunctions';
+import updateForProps from 'core/containers/updateForProps';
 import TopNav from 'core/components/TopNav';
 import SearchIcon from '../../pages/SearchPage/SearchIcon';
 
@@ -15,8 +14,8 @@ const AdminTopNav = props => (
 
 AdminTopNav.propTypes = {};
 
-export default shouldUpdate(arePathsUnequal([
+export default updateForProps([
   'currentUser._id',
   'currentUser.organisation._id',
   'currentUser.roles',
-]))(AdminTopNav);
+])(AdminTopNav);
