@@ -56,6 +56,7 @@ class Tabs extends Component {
       initialIndex,
       className,
       onChangeCallback,
+      disableTouchRipple,
       ...otherProps
     } = this.props;
     const { value } = this.state;
@@ -85,6 +86,7 @@ class Tabs extends Component {
               to={to}
               key={id || i}
               className="core-tabs-tab"
+              disableTouchRipple={disableTouchRipple}
             />
           ))}
         </MuiTabs>

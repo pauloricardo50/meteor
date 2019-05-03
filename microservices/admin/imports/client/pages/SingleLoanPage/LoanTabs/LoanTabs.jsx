@@ -110,6 +110,7 @@ const LoanTabs = (props) => {
       routerParamName="tabId"
       variant="scrollable"
       scrollButtons="auto"
+      disableTouchRipple
     />
   );
 };
