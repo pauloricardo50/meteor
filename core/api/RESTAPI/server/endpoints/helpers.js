@@ -14,10 +14,17 @@ export const getImpersonateUserId = ({ userId, impersonateUser }) => {
     organisations: { _id: 1 },
   });
 
-  const { _id: proId, organisations: proOrganisations = [] } = UserService.fetchOne({
-    $filters: { 'emails.address': { $in: [impersonateUser] } },
-    organisations: { _id: 1 },
-  }) || {};
+  const user = UserService.getByEmail(impersonateUser);
+  let proId;
+  let proOrganisations;
+
+  if (user) {
+    proId = user._id;
+    proOrganisations = UserService.fetchOne({
+      $filters: { _id: user._id },
+      organisations: { _id: 1 },
+    }).organisations || [];
+  }
 
   if (!proId) {
     throw new Meteor.Error(`No user found for email address "${impersonateUser}"`);

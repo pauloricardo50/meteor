@@ -21,15 +21,7 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
     proId = getImpersonateUserId({ userId, impersonateUser });
   }
 
-  const user = UserService.fetchOne({
-    $filters: { 'emails.address': { $in: [email] } },
-    firstName: 1,
-    lastName: 1,
-    email: 1,
-    phoneNumber: 1,
-    referredByUser: { _id: 1 },
-    referredByOrganisation: { _id: 1 },
-  });
+  const user = UserService.getByEmail(email);
 
   if (!user) {
     throw new Meteor.Error(`User with email "${email}" not found, or you don't have access to it.`);

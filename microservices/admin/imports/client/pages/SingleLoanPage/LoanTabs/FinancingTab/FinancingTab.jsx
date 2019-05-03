@@ -3,10 +3,9 @@ import React from 'react';
 
 import Financing from 'core/components/Financing';
 
-type StructuresTabProps = {};
+type FinancingTabProps = {};
 
-const StructuresTab = ({ loan }: StructuresTabProps) => (
+const FinancingTab = ({ loan }: FinancingTabProps) => (
   <Financing loan={loan} />
 );
-
-export default StructuresTab;
+export default FinancingTab;

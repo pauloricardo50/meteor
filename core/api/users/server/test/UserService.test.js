@@ -399,9 +399,7 @@ describe('UserService', function () {
         referOnly: true,
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.findOne({
-          'emails.address': { $in: [userToInvite.email] },
-        });
+        const userCreated = UserService.getByEmail(userToInvite.email);
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
@@ -485,9 +483,7 @@ describe('UserService', function () {
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.findOne({
-          'emails.address': { $in: [userToInvite.email] },
-        });
+        const userCreated = UserService.getByEmail(userToInvite.email);
         const loan = LoanService.findOne({ userId: userCreated._id });
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
@@ -532,9 +528,7 @@ describe('UserService', function () {
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.findOne({
-          'emails.address': { $in: [userToInvite.email] },
-        });
+        const userCreated = UserService.getByEmail(userToInvite.email);
         const loans = LoanService.fetch({
           $filters: { userId: userCreated._id },
           promotionLinks: 1,
@@ -601,9 +595,7 @@ describe('UserService', function () {
         propertyIds: ['propertyId'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.findOne({
-          'emails.address': { $in: [userToInvite.email] },
-        });
+        const userCreated = UserService.getByEmail(userToInvite.email);
         const loan = LoanService.findOne({ userId: userCreated._id });
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
@@ -642,9 +634,7 @@ describe('UserService', function () {
         propertyIds: ['propertyId1', 'propertyId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.findOne({
-          'emails.address': { $in: [userToInvite.email] },
-        });
+        const userCreated = UserService.getByEmail(userToInvite.email);
         const loan = LoanService.findOne({ userId: userCreated._id });
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
@@ -707,9 +697,7 @@ describe('UserService', function () {
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.findOne({
-          'emails.address': { $in: [userToInvite.email] },
-        });
+        const userCreated = UserService.getByEmail(userToInvite.email);
         const loans = LoanService.fetch({
           $filters: { userId: userCreated._id },
           promotionLinks: 1,
@@ -774,7 +762,7 @@ describe('UserService', function () {
         });
     });
 
-    it('throws if user to is already invited pro property', () => {
+    it('throws if user is already invited to pro property', () => {
       generator({
         properties: {
           _id: 'propertyId',
@@ -797,6 +785,46 @@ describe('UserService', function () {
             propertyIds: ['propertyId'],
             proUserId: 'proId',
           })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
+      });
+    });
+
+    it('invites existing users to a new promotion', () => {
+      generator({
+        users: {
+          _id: 'userId',
+          emails: [{ address: 'test@e-potek.ch', verified: true }],
+        },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+        },
+      });
+
+      return UserService.proInviteUser({
+        user: {
+          email: 'Test@e-potek.ch',
+          firstName: 'John',
+          lastName: 'Doe',
+          phoneNumber: '1234',
+          showAllLots: false,
+          promotionLotIds: [],
+          invitedBy: 'proId',
+        },
+        promotionIds: ['promotionId'],
+        proUserId: 'proId',
+        adminId: 'adminId',
+        shareSolvency: false,
+      }).then(() => {
+        const { loans } = UserService.fetchOne({
+          $filters: { _id: 'userId' },
+          loans: { _id: 1 },
+        });
+        expect(loans.length).to.equal(1);
       });
     });
   });

@@ -5,6 +5,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
+import { withRouter } from 'react-router-dom';
 
 import { ROLES } from '../../api/constants';
 import T from '../Translation';
@@ -101,4 +102,4 @@ TopNavDropdown.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-export default TopNavDropdown;
+export default withRouter(TopNavDropdown);
