@@ -858,12 +858,7 @@ describe('LoanService', function () {
           address,
           response: { status },
           template: {
-            message: {
-              from_email,
-              subject,
-              global_merge_vars,
-              from_name,
-            },
+            message: { from_email, subject, global_merge_vars, from_name },
           },
         } = emails[0];
 
@@ -916,6 +911,49 @@ describe('LoanService', function () {
       return checkEmails(1, { timeout: 2000 }).then((emails) => {
         expect(emails.length).to.equal(0);
       });
+    });
+  });
+
+  describe('getLoanCalculator', () => {
+    it('returns an uninitialized calculator by default', () => {
+      generator({ loans: { _id: 'myLoan' } });
+
+      const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
+
+      expect(calc.organisationName).to.equal(undefined);
+    });
+
+    it('initializes a calculator if an offer has been chosen', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          lenders: {
+            organisation: { name: 'Org1', lenderRules: {} },
+            offers: { _id: 'offerId' },
+          },
+          structures: [{ offerId: 'offerId', id: 'struct' }],
+          selectedStructure: 'struct',
+        },
+      });
+
+      const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
+
+      expect(calc.organisationName).to.equal('Org1');
+    });
+
+    it('initializes a calculator if a promotion has a lenderOrganisation on it', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          promotions: {
+            lenderOrganisation: { name: 'Org2', lenderRules: {} },
+          },
+        },
+      });
+
+      const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
+
+      expect(calc.organisationName).to.equal('Org2');
     });
   });
 });

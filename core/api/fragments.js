@@ -179,6 +179,7 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   order: 1,
+  organisationCache: 1,
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeAlgorithm: 1,

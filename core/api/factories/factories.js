@@ -167,7 +167,7 @@ Factory.define('contact', Contacts, {
 });
 
 Factory.define('lenderRules', LenderRules, {
-  filter: {},
+  filter: { and: [] },
   order: 0,
 });
 

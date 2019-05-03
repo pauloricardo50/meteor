@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
 
+import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
@@ -35,6 +36,7 @@ import OrganisationService from '../../organisations/server/OrganisationService'
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
 import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
+import fullLoan from '../queries/fullLoan';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -635,6 +637,33 @@ export class LoanService extends CollectionService {
         propertyValue: createNewProperty ? undefined : propertyValue,
         wantedLoan: Math.round(propertyValue * borrowRatio),
       },
+    });
+  }
+
+  getLoanCalculator({ loanId, structureId }) {
+    const loan = fullLoan.clone({ _id: loanId }).fetchOne();
+
+    let lenderRules;
+
+    if (loan && loan.structure && loan.structure.offerId) {
+      lenderRules = loan.structure.offer.lender.organisation.lenderRules;
+    } else if (loan.hasPromotion) {
+      const { lenderOrganisationLink } = loan.promotions[0];
+      if (lenderOrganisationLink) {
+        lenderRules = LenderRulesService.find({
+          'organisationLink._id': lenderOrganisationLink._id,
+        }).fetch();
+      }
+    }
+
+    if (!lenderRules || lenderRules.length === 0) {
+      return Calculator;
+    }
+
+    return new CalculatorClass({
+      loan,
+      structureId,
+      lenderRules,
     });
   }
 }

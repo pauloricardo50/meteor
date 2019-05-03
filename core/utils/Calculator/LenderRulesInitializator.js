@@ -20,6 +20,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
+      this.organisationName = sortedlenderRules.length > 0
+        ? sortedlenderRules[0].organisationCache
+            && sortedlenderRules[0].organisationCache.name
+        : null;
       this.ruleOrigin = {};
       this.matchedRules = [];
 

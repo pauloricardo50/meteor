@@ -96,6 +96,8 @@ const PromotionSchema = new SimpleSchema({
   assignedEmployeeId: { type: String, optional: true },
   ...userLinksSchema(promotionPermissionsSchema),
   documents: documentsField,
+  lenderOrganisationLink: { type: Object, optional: true },
+  'lenderOrganisationLink._id': { type: String, optional: true },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
