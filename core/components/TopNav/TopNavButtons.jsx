@@ -25,7 +25,7 @@ const TopNavButtons = (props: TopNavButtonsProps) => {
                 && organisations[0].name}
             </span>
           </div>
-          <TopNavDropdown {...props} />
+          <TopNavDropdown currentUser={currentUser} />
         </React.Fragment>
       ) : (
         <Button
