@@ -26,6 +26,7 @@ const isEqual = (a, b) => {
     throw new Error('Should not compare objects between each other, use a more nested key');
   }
 
+  // Ignore edge cases, normally our props should never be NaN or Infinity
   return a === b;
 };
 
