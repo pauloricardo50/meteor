@@ -29,7 +29,7 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
 
   checkAccessToUser({ user, proId: proId || userId });
 
-  return pick(user, ['firstName', 'lastName', 'email', 'phoneNumber']);
+  return pick(user, ['firstName', 'lastName', 'emails', 'phoneNumbers']);
 };
 
 export default getUserAPI;
