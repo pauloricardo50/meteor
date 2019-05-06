@@ -1,5 +1,9 @@
 import { ROLES } from '../../constants';
 import { additionalDocumentsHook } from '../../helpers/sharedHooks';
+import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
+import SecurityService from '../../security';
+import FileService from '../../files/server/FileService';
+import { BorrowerSchemaAdmin } from '../schemas/BorrowerSchema';
 import Borrowers from '../borrowers';
 import { BORROWERS_COLLECTION } from '../borrowerConstants';
 import {
@@ -7,9 +11,6 @@ import {
   conditionalDocuments,
 } from '../borrowersAdditionalDocuments';
 import BorrowerService from './BorrowerService';
-import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
-import SecurityService from '../../security';
-import { BorrowerSchemaAdmin } from '../schemas/BorrowerSchema';
 
 Borrowers.after.insert(additionalDocumentsHook({
   collection: BORROWERS_COLLECTION,
@@ -35,3 +36,6 @@ UpdateWatcherService.addUpdateWatching({
     SecurityService.hasRole(userId, ROLES.USER)
     || SecurityService.hasRole(userId, ROLES.PRO),
 });
+
+Borrowers.after.remove((userId, { _id }) =>
+  FileService.deleteAllFilesForDoc(_id));

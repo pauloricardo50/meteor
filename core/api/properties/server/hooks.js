@@ -9,6 +9,7 @@ import {
 } from '../propertiesAdditionalDocuments';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
 import { ROLES } from '../../constants';
+import FileService from '../../files/server/FileService';
 import { PropertySchemaAdmin } from '../schemas/PropertySchema';
 import { removePropertyFromLoan } from './propertyServerHelpers';
 
@@ -40,3 +41,6 @@ UpdateWatcherService.addUpdateWatching({
     SecurityService.hasRole(userId, ROLES.USER)
     || SecurityService.hasRole(userId, ROLES.PRO),
 });
+
+Properties.after.remove((userId, { _id }) =>
+  FileService.deleteAllFilesForDoc(_id));
