@@ -81,7 +81,6 @@ export const getBorrowRatio = (params) => {
 };
 
 export const getIncomeRatio = (params) => {
-  console.log('getIncomeRatio params:', params);
   const calc = initCalc(params);
   const { loan, structureId } = params;
   return calc.getIncomeRatio({ loan, structureId });

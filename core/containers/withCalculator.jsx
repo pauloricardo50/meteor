@@ -91,20 +91,23 @@ const getParams = ({ loan }) => {
   return false;
 };
 
-const withLenderRules = Component => (props) => {
-  let WrappedComponent = Component;
+const withLenderRules = (Component) => {
+  const WrappedComponent = withSmartQuery({
+    query,
+    params: getParams,
+    queryOptions: { shouldRefetch: () => false, loadOnRefetch: false },
+    refetchOnMethodCall: false,
+    dataName: 'lenderRules',
+  })(Component);
 
-  if (getParams(props)) {
-    WrappedComponent = withSmartQuery({
-      query,
-      params: getParams,
-      queryOptions: { shouldRefetch: () => false },
-      refetchOnMethodCall: false,
-      dataName: 'lenderRules',
-    })(Component);
-  }
+  return (props) => {
+    // Only fetch lender Rules if necessary
+    if (getParams(props)) {
+      return <WrappedComponent {...props} />;
+    }
 
-  return <WrappedComponent {...props} />;
+    return <Component {...props} />;
+  };
 };
 
 export const injectCalculator = (getStructureId = () => {}) => {
