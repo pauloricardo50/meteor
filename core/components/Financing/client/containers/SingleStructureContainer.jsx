@@ -8,7 +8,7 @@ export default Component => (props) => {
   const { structureId } = props;
   return (
     <Consumer>
-      {(loan) => {
+      {({ loan }) => {
         const structure = loan.structures.find(({ id }) => id === structureId);
         return (
           <Component

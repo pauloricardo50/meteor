@@ -5,7 +5,8 @@ import Financing from 'core/components/Financing';
 
 type FinancingTabProps = {};
 
-const FinancingTab = ({ loan }: FinancingTabProps) => (
-  <Financing loan={loan} />
+const FinancingTab = ({ loan, Calculator }: FinancingTabProps) => (
+  <Financing loan={loan} Calculator={Calculator} />
 );
+
 export default FinancingTab;

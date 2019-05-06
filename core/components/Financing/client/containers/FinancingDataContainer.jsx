@@ -9,9 +9,10 @@ const filterOffers = offers =>
 
 export default Component => props => (
   <Consumer>
-    {loan => (
+    {({ loan, Calculator }) => (
       <Component
         {...props}
+        Calculator={Calculator}
         loan={loan}
         structures={loan.structures}
         borrowers={loan.borrowers}

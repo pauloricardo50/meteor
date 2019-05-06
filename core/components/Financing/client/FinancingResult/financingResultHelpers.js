@@ -5,7 +5,12 @@ import Calculator, {
 import FinanceCalculator, { getProperty } from '../FinancingCalculator';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
 
-const initCalc = ({ loan, structureId, offer }) => {
+const initCalc = ({
+  loan,
+  structureId,
+  offer,
+  Calculator: InitializedCalculator,
+}) => {
   let finalOffer = offer;
 
   if (!finalOffer) {
@@ -14,14 +19,15 @@ const initCalc = ({ loan, structureId, offer }) => {
     finalOffer = offers.find(({ _id }) => offerId === _id);
   }
 
-  return new CalculatorClass({
-    loan,
-    structureId,
-    lenderRules:
-      finalOffer
-      && finalOffer.organisation
-      && finalOffer.organisation.lenderRules,
-  });
+  if (finalOffer && finalOffer.organisation && finalOffer.organisation.lenderRules) {
+    return new CalculatorClass({
+      loan,
+      structureId,
+      lenderRules: finalOffer.organisation.lenderRules,
+    });
+  }
+
+  return InitializedCalculator;
 };
 export const getInterests = (params) => {
   const {
@@ -75,6 +81,7 @@ export const getBorrowRatio = (params) => {
 };
 
 export const getIncomeRatio = (params) => {
+  console.log('getIncomeRatio params:', params);
   const calc = initCalc(params);
   const { loan, structureId } = params;
   return calc.getIncomeRatio({ loan, structureId });

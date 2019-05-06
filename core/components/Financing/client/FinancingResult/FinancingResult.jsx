@@ -2,7 +2,6 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import { lifecycle } from 'recompose';
 import FinancingSection, {
   CalculatedValue,
   FinmaRatio,
@@ -132,11 +131,4 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
     />
   ));
 
-export default lifecycle({
-  componentDidCatch(error) {
-    this.setState({ error });
-  },
-  componentWillReceiveProps() {
-    this.setState({ error: null });
-  },
-})(FinancingResult);
+export default FinancingResult;
