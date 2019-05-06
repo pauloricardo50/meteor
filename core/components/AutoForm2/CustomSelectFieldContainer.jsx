@@ -42,16 +42,18 @@ export default (Component) => {
         customAllowedValues
         && typeof customAllowedValues === 'object'
       ) {
-        const { query, params = () => ({}) } = customAllowedValues;
+        const { query, params = () => ({}), allowNull } = customAllowedValues;
 
         query.clone(params(model)).fetch((error, data) => {
           if (error) {
             return this.setState({ error });
           }
 
+          const ids = data.map(({ _id }) => _id);
+
           this.setState({
-            values: data.map(({ _id }) => _id),
-            data,
+            values: allowNull ? [null, ...ids] : ids,
+            data: allowNull ? [null, ...data] : data,
             error: null,
             loading: false,
           });
@@ -98,7 +100,13 @@ export default (Component) => {
       const { transform } = this.props;
       const { data } = this.state;
       if (data) {
-        return value => transform(data.find(({ _id }) => _id === value));
+        return (value) => {
+          if (!value) {
+            // If the value is falsy, just transform it
+            return transform(value);
+          }
+          return transform(data.find(item => (item && item._id) === value));
+        };
       }
       return transform;
     };
