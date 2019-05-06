@@ -17,7 +17,9 @@ const renderWithComments = (value, comments = []) => {
       <div>{negative ? `-${toMoney(value)}` : toMoney(value)}</div>
       <div className="secondary finance-comment">
         {/* Make sure we can "join" strings or JSX */}
-        {comments.map((comment, i) => [i !== 0 && ', ', comment])}
+        {comments
+          .filter(x => x)
+          .map((comment, i) => [i !== 0 && ', ', comment])}
       </div>
     </div>
   );
@@ -204,8 +206,9 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
 
 export const getArraySum = array =>
   array.reduce((sum, val) => {
-    if (val && val.rawValue) {
-      return sum + val.rawValue;
+    if (val && val.rawValue >= 0) {
+      // Avoid null values
+      return sum + Number(val.rawValue);
     }
 
     return sum + val;
