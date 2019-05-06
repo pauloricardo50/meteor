@@ -113,7 +113,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getConsideredValue({ values, history, weighting }) {
-      // const cleanedUpArray = values.filter(v => v !== undefined);
       const valuesToConsider = values.slice(Math.max(0, values.length - history));
       const sum = valuesToConsider.reduce((tot, val = 0) => tot + val, 0);
       return (weighting * sum) / valuesToConsider.length || 0;

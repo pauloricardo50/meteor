@@ -144,7 +144,6 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
     {
       title: true,
       label: 'Recap.fortune',
-      // hide: !(realEstateFortune || insuranceFortune),
     },
     {
       label: 'Recap.bankFortune',

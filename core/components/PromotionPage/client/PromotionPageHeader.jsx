@@ -89,10 +89,10 @@ const PromotionPageHeader = ({
             />
           </h3>
           {Meteor.microservice === 'admin' && (
-            <PromotionAssignee promotion={promotion} />
-          )}
-          {Meteor.microservice === 'admin' && (
-            <PromotionLender promotion={promotion} />
+            <>
+              <PromotionAssignee promotion={promotion} />
+              <PromotionLender promotion={promotion} />
+            </>
           )}
         </div>
 

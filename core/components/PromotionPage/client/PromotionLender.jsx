@@ -36,11 +36,7 @@ const PromotionLender = ({ promotion }: PromotionLenderProps) => (
   <AutoForm
     autosave
     schema={schema}
-    model={{
-      lenderOrganisationLink: promotion.lenderOrganisation
-        ? promotion.lenderOrganisation
-        : null,
-    }}
+    model={{ lenderOrganisationLink: promotion.lenderOrganisation }}
     onSubmit={values =>
       promotionUpdate.run({ promotionId: promotion._id, object: values })
     }
