@@ -14,6 +14,7 @@ import getBaseRedirect, {
 } from 'core/utils/redirection';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
+import { injectCalculator } from 'core/containers/withCalculator';
 import {
   withSideNavContextProvider,
   withSideNavContext,
@@ -78,6 +79,7 @@ export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
+  injectCalculator(),
   withInterestRates,
   mapProps(({ loan, currentInterestRates: { averageRates }, ...props }) => ({
     ...props,

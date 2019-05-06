@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
 
+import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
@@ -35,6 +36,7 @@ import OrganisationService from '../../organisations/server/OrganisationService'
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
 import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
+import fullLoan from '../queries/fullLoan';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -496,30 +498,46 @@ export class LoanService extends CollectionService {
 
     const sortedValues = maxPropertyValues.sort(({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
       propertyValueA - propertyValueB);
+    // Only show min if there is more than 1 result
+    const showMin = sortedValues.length >= 2;
+    // Only show second max if there are more than 3 results
+    const showSecondMax = sortedValues.length >= 3;
 
-    const min = sortedValues[0];
+    const min = showMin ? sortedValues[0] : undefined;
 
     // Don't take the max value, because that means there is only one single
     // lender who can make an offer on this loan
-    const secondMax = sortedValues[sortedValues.length - 2];
     const max = sortedValues[sortedValues.length - 1];
+    const secondMax = showSecondMax
+      ? sortedValues[sortedValues.length - 2]
+      : max;
+
+    // If there are at least 3 organisations, show a special label
+    // that combines the best and secondBest org
+    const maxOrganisationLabel = showSecondMax
+      ? `${secondMax
+          && secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+        max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      : max.organisationName;
 
     return {
       min,
       max: {
         ...secondMax,
-        organisationName: `${
-          secondMax.organisationName
-        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
-          max.borrowRatio * 100
-        ).toFixed(2)}%)`,
+        organisationName: maxOrganisationLabel,
       },
     };
   }
 
   getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
+    let query = { features: { $in: [ORGANISATION_FEATURES.LENDER] } };
+    if (loan.hasPromotion && loan.promotions[0].lenderOrganisationLink) {
+      query = { _id: loan.promotions[0].lenderOrganisationLink._id };
+    }
+
     const lenderOrganisations = OrganisationService.fetch({
-      $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
+      $filters: query,
       lenderRules: lenderRulesFragment(),
       name: 1,
     });
@@ -635,6 +653,33 @@ export class LoanService extends CollectionService {
         propertyValue: createNewProperty ? undefined : propertyValue,
         wantedLoan: Math.round(propertyValue * borrowRatio),
       },
+    });
+  }
+
+  getLoanCalculator({ loanId, structureId }) {
+    const loan = fullLoan.clone({ _id: loanId }).fetchOne();
+
+    let lenderRules;
+
+    if (loan && loan.structure && loan.structure.offerId) {
+      lenderRules = loan.structure.offer.lender.organisation.lenderRules;
+    } else if (loan.hasPromotion) {
+      const { lenderOrganisationLink } = loan.promotions[0];
+      if (lenderOrganisationLink) {
+        lenderRules = LenderRulesService.find({
+          'organisationLink._id': lenderOrganisationLink._id,
+        }).fetch();
+      }
+    }
+
+    if (!lenderRules || lenderRules.length === 0) {
+      return Calculator;
+    }
+
+    return new CalculatorClass({
+      loan,
+      structureId,
+      lenderRules,
     });
   }
 }

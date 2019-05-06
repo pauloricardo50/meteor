@@ -9,6 +9,7 @@ import { OWN_FUNDS_TYPES } from 'core/api/constants';
 import { FinancingResultErrors } from '../FinancingResultErrors';
 import FinancingResultChart from '../FinancingResultChart';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
+import Calculator from '../../../../../utils/Calculator';
 
 describe('FinancingResultErrors', () => {
   let props;
@@ -42,6 +43,7 @@ describe('FinancingResultErrors', () => {
         offers: [offer],
         borrowers: [borrower],
       },
+      Calculator,
       structureId,
     };
   });

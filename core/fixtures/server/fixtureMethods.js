@@ -281,6 +281,7 @@ Meteor.methods({
         purchaseType: isRefinancing
           ? PURCHASE_TYPE.REFINANCING
           : PURCHASE_TYPE.ACQUISITION,
+        applicationType: APPLICATION_TYPES.FULL,
         customName: 'Ma maison à la plage',
       },
       userId,

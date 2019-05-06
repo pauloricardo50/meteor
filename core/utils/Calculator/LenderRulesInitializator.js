@@ -20,9 +20,14 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
+      this.organisationName = sortedlenderRules.length
+        ? sortedlenderRules[0].organisationCache
+          && sortedlenderRules[0].organisationCache.name
+        : null;
       this.ruleOrigin = {};
       this.matchedRules = [];
 
+      // Primary rules depend only on raw data
       const primaryRules = this.getPrimaryLenderRules({
         loan,
         structureId,
@@ -30,6 +35,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       });
       this.applyRules(primaryRules);
 
+      // Secondary rules depend on what is calculated with the rules applied from the primary rules
       const secondaryRules = this.getSecondaryLenderRules({
         loan,
         structureId,

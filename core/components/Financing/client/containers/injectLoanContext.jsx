@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from './loan-context';
 
 export default Component => props => (
-  <Provider value={props.loan}>
+  <Provider value={{ loan: props.loan, Calculator: props.Calculator }}>
     <Component {...props} />
   </Provider>
 );

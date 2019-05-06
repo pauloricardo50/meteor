@@ -15,11 +15,16 @@ exposeQuery(query, {
     tags: Match.Maybe(Match.OneOf(String, [String])),
     type: Match.Maybe(Match.OneOf(String, [String])),
     _id: Match.Maybe(String),
+    hasRules: Match.Maybe(Boolean),
   },
   embody: {
-    $filter({ filters, params: { features, tags, type, _id } }) {
+    $filter({ filters, params: { features, tags, type, _id, hasRules } }) {
       if (_id) {
         filters._id = _id;
+      }
+
+      if (hasRules) {
+        filters.lenderRulesCount = { $gte: 1 };
       }
 
       makeFilter({ param: features, field: 'features', filters });

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { compose } from 'recompose';
 
 import AutoForm from 'core/components/AutoForm';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
@@ -9,10 +10,12 @@ import * as financeConstants from 'core/config/financeConstants';
 import T from 'core/components/Translation';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
+import { withCalculator } from 'core/containers/withCalculator';
 
 const BorrowerFinancePage = (props) => {
   const {
     loan: { userFormsEnabled, borrowers },
+    Calculator,
   } = props;
 
   return (
@@ -31,7 +34,11 @@ const BorrowerFinancePage = (props) => {
                 </h3>
               </div>
 
-              <Recap arrayName="borrower" borrower={borrower} />
+              <Recap
+                arrayName="borrower"
+                borrower={borrower}
+                Calculator={Calculator}
+              />
 
               <AutoForm
                 formClasses="user-form user-form__info user-form__finance"
@@ -61,4 +68,7 @@ BorrowerFinancePage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withMatchParam('borrowerId')(BorrowerFinancePage);
+export default compose(
+  withMatchParam('borrowerId'),
+  withCalculator,
+)(BorrowerFinancePage);

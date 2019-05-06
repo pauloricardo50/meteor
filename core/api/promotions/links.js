@@ -1,6 +1,13 @@
 import Promotions from '.';
 
-import { Properties, Lots, PromotionLots, Users, Loans } from '..';
+import {
+  Properties,
+  Lots,
+  PromotionLots,
+  Users,
+  Loans,
+  Organisations,
+} from '..';
 
 Promotions.addLinks({
   properties: {
@@ -41,5 +48,11 @@ Promotions.addLinks({
     collection: Users,
     field: 'assignedEmployeeId',
     type: 'one',
+  },
+  lenderOrganisation: {
+    field: 'lenderOrganisationLink',
+    type: 'one',
+    metadata: true,
+    collection: Organisations,
   },
 });

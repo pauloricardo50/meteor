@@ -106,6 +106,7 @@ export default {
           bookedPromotionLots: 1,
           soldPromotionLots: 1,
           documents: { promotionImage: 1 },
+          lenderOrganisation: { name: 1 },
         },
       },
       cb,

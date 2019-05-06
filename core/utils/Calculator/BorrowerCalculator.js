@@ -93,14 +93,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           return acc + 0;
         }
 
-        const arr = bonusKeys.map((key) => {
-          if (this.bonusAlgorithm === BONUS_ALGORITHMS.AVERAGE) {
-            // The regular average puts all the values to 0, instead of undefined
-            // This ensures that the average is taken over all the history to consider
-            return borrower[key] || 0;
-          }
-          return borrower[key];
-        });
+        const arr = bonusKeys
+          .map(key => borrower[key])
+          .filter(val =>
+            (this.bonusAlgorithm === BONUS_ALGORITHMS.WEAK_AVERAGE
+              ? val > 0
+              : true));
 
         return (
           acc
@@ -111,14 +109,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           })
         );
       }, 0);
-
       return Math.max(0, Math.round(total));
     }
 
     getConsideredValue({ values, history, weighting }) {
-      const cleanedUpArray = values.filter(v => v !== undefined);
-      const valuesToConsider = cleanedUpArray.slice(Math.max(0, cleanedUpArray.length - history));
-      const sum = valuesToConsider.reduce((tot, val) => tot + val, 0);
+      const valuesToConsider = values.slice(Math.max(0, values.length - history));
+      const sum = valuesToConsider.reduce((tot, val = 0) => tot + val, 0);
       return (weighting * sum) / valuesToConsider.length || 0;
     }
 

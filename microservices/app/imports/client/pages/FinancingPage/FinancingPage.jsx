@@ -9,12 +9,13 @@ import ReturnToDashboard from '../../components/ReturnToDashboard';
 
 type FinancingPageProps = {
   loan: userLoan,
+  Calculator: Class,
 };
 
-const FinancingPage = ({ loan }: FinancingPageProps) => (
+const FinancingPage = ({ loan, Calculator }: FinancingPageProps) => (
   <PageApp id="FinancingPage" fullWidth>
     <PageHead titleId="FinancingPage" />
-    <Financing loan={loan} />
+    <Financing loan={loan} Calculator={Calculator} />
     <ReturnToDashboard />
   </PageApp>
 );

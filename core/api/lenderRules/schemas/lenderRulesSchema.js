@@ -121,6 +121,11 @@ const LenderRulesSchema = new SimpleSchema({
   filter: { type: Object, blackbox: true },
   name: { type: String, optional: true },
   order: { type: Number, min: 0 },
+  organisationCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
   ...incomeConsideration,
   ...theoreticalExpenses,
   ...cutOffCriteria,

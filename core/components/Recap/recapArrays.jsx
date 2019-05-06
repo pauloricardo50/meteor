@@ -1,42 +1,61 @@
 import React from 'react';
+import { ERROR, SUCCESS } from 'core/api/constants';
 import Calculator from '../../utils/Calculator';
 import { T, Percent, MetricArea } from '../Translation';
 import { toMoney } from '../../utils/conversionFunctions';
-import { Money } from '../Translation/numberComponents/index';
+import PercentWithStatus from '../PercentWithStatus/PercentWithStatus';
 
-export const getDashboardArray = (props) => {
-  const bonusIncome = Calculator.getBonusIncome(props);
-  const borrowRatio = Calculator.getBorrowRatio(props);
-  const expenses = Calculator.getExpenses(props);
-  const fortune = Calculator.getFortune(props);
-  const incomeRatio = Calculator.getIncomeRatio(props);
-  const insuranceFortune = Calculator.getInsuranceFortune(props);
-  const loanValue = Calculator.selectLoanValue(props);
-  const maxBorrowRatio = Calculator.getMaxBorrowRatio(props);
-  const monthly = Calculator.getMonthly(props);
-  const notaryFees = Calculator.getFees(props).total;
-  const otherIncome = Calculator.getOtherIncome(props);
-  const ownFundsNonPledged = Calculator.getNonPledgedOwnFunds(props);
-  const ownFundsPledged = Calculator.getTotalPledged(props);
-  const project = Calculator.getProjectValue(props);
-  const propAndWork = Calculator.getPropAndWork(props);
-  const propertyValue = Calculator.selectPropertyValue(props);
-  const propertyWork = Calculator.makeSelectStructureKey('propertyWork')(props);
-  const realEstateDebt = Calculator.getRealEstateDebt(props);
-  const realEstateExpenses = Calculator.getRealEstateExpenses(props) * 12;
-  const realEstateFortune = Calculator.getRealEstateFortune(props);
-  const realEstateIncome = Calculator.getRealEstateIncome(props);
-  const realEstateValue = Calculator.getRealEstateValue(props);
-  const salary = Calculator.getSalary(props);
-  const totalFinancing = Calculator.getTotalFinancing(props);
-  const totalFunds = Calculator.getTotalFunds(props);
-  const totalIncome = Calculator.getTotalIncome(props);
+export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
+  const bonusIncome = calc.getBonusIncome({ loan });
+  const borrowRatio = calc.getBorrowRatio({ loan });
+  const fortune = calc.getFortune({ loan });
+  const incomeRatio = calc.getIncomeRatio({ loan });
+  const insuranceFortune = calc.getInsuranceFortune({ loan });
+  const loanValue = calc.selectLoanValue({ loan });
+  const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
+  const monthly = calc.getMonthly({ loan });
+  const notaryFees = calc.getFees({ loan }).total;
+  const otherIncome = calc.getOtherIncome({ loan });
+  const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
+  const ownFundsPledged = calc.getTotalPledged({ loan });
+  const project = calc.getProjectValue({ loan });
+  const propAndWork = calc.getPropAndWork({ loan });
+  const propertyValue = calc.selectPropertyValue({ loan });
+  const propertyWork = calc.selectStructureKey({
+    loan,
+    key: 'propertyWork',
+  });
+  const realEstateDebt = calc.getRealEstateDebt({ loan });
+  const realEstateFortune = calc.getRealEstateFortune({ loan });
+  const realEstateIncome = calc.getRealEstateIncomeTotal({ loan });
+  const realEstateValue = calc.getRealEstateValue({ loan });
+  const salary = calc.getSalary({ loan });
+  const expenses = calc.getFormattedExpenses({ loan }).subtract;
+  const totalFinancing = calc.getTotalFinancing({ loan });
+  const totalFunds = calc.getTotalFunds({ loan });
+  const totalIncome = calc.getTotalIncome({ loan });
 
   return [
     {
       title: true,
-      label: 'Recap.title',
+      label: (
+        <span>
+          <T id="Recap.title" />
+          &nbsp;
+          {calc.organisationName && (
+            <span className="secondary">
+              (
+              <T
+                id="Recap.consideredBy"
+                values={{ organisationName: calc.organisationName }}
+              />
+              )
+            </span>
+          )}
+        </span>
+      ),
       props: { style: { marginTop: 0 } },
+      noIntl: true,
     },
     {
       label: 'Recap.purchasePrice',
@@ -103,14 +122,10 @@ export const getDashboardArray = (props) => {
     {
       label: propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
-        <span>
-          <Percent value={borrowRatio} />{' '}
-          <span
-            className={
-              borrowRatio <= maxBorrowRatio + 0.001 // add 0.1% to avoid rounding errors
-                ? 'fa fa-check success'
-                : 'fa fa-times error'
-            }
+        <span className="flex center">
+          <PercentWithStatus
+            value={borrowRatio}
+            status={borrowRatio > maxBorrowRatio ? ERROR : SUCCESS}
           />
         </span>
       ),
@@ -118,16 +133,10 @@ export const getDashboardArray = (props) => {
     {
       label: 'Recap.incomeRatio',
       value: (
-        <span>
-          <Percent value={incomeRatio} />{' '}
-          <span
-            className={
-              incomeRatio <= 1 / 3
-                ? 'fa fa-check success'
-                : incomeRatio <= 0.38
-                  ? 'fa fa-exclamation warning'
-                  : 'fa fa-times error'
-            }
+        <span className="flex center">
+          <PercentWithStatus
+            value={incomeRatio}
+            status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
           />
         </span>
       ),
@@ -135,7 +144,6 @@ export const getDashboardArray = (props) => {
     {
       title: true,
       label: 'Recap.fortune',
-      hide: !(realEstateFortune || insuranceFortune),
     },
     {
       label: 'Recap.bankFortune',
@@ -201,11 +209,6 @@ export const getDashboardArray = (props) => {
       hide: !expenses,
     },
     {
-      label: 'Recap.realEstateCosts',
-      value: `- ${toMoney(realEstateExpenses)}`,
-      hide: !realEstateExpenses,
-    },
-    {
       label: 'Recap.consideredIncome',
       value: <span className="sum">{toMoney(totalIncome)}</span>,
       spacingTop: true,
@@ -218,30 +221,47 @@ export const getDashboardArray = (props) => {
   ];
 };
 
-export const getBorrowerArray = ({ borrower: borrowers }) => {
-  const bonusIncome = Calculator.getBonusIncome({ borrowers });
-  const expenses = Calculator.getExpenses({ borrowers });
-  const fortune = Calculator.getFortune({ borrowers });
-  const insuranceFortune = Calculator.getInsuranceFortune({ borrowers });
-  const netSalary = Calculator.getNetSalary({ borrowers });
-  const otherFortune = Calculator.getOtherFortune({ borrowers });
-  const otherIncome = Calculator.getOtherIncome({ borrowers });
-  const realEstateDebt = Calculator.getRealEstateDebt({ borrowers });
-  const realEstateExpenses = Calculator.getRealEstateExpenses({ borrowers }) * 12;
-  const realEstateFortune = Calculator.getRealEstateFortune({ borrowers });
-  const realEstateIncome = Calculator.getRealEstateIncome({ borrowers });
-  const realEstateValue = Calculator.getRealEstateValue({ borrowers });
-  const salary = Calculator.getSalary({ borrowers });
-  const thirdPartyFortune = Calculator.getThirdPartyFortune({ borrowers });
-  const totalFunds = Calculator.getTotalFunds({ borrowers });
-  const totalIncome = Calculator.getTotalIncome({ borrowers });
+export const getBorrowerArray = ({
+  Calculator: calc = Calculator,
+  borrower: borrowers,
+}) => {
+  const bonusIncome = calc.getBonusIncome({ borrowers });
+  const fortune = calc.getFortune({ borrowers });
+  const insuranceFortune = calc.getInsuranceFortune({ borrowers });
+  const netSalary = calc.getNetSalary({ borrowers });
+  const otherFortune = calc.getOtherFortune({ borrowers });
+  const otherIncome = calc.getOtherIncome({ borrowers });
+  const realEstateDebt = calc.getRealEstateDebt({ borrowers });
+  const realEstateFortune = calc.getRealEstateFortune({ borrowers });
+  const realEstateIncome = calc.getRealEstateIncomeTotal({ borrowers });
+  const realEstateValue = calc.getRealEstateValue({ borrowers });
+  const salary = calc.getSalary({ borrowers });
+  const thirdPartyFortune = calc.getThirdPartyFortune({ borrowers });
+  const totalFunds = calc.getTotalFunds({ borrowers });
+  const totalIncome = calc.getTotalIncome({ borrowers });
+  const expenses = calc.getFormattedExpenses({ borrowers }).subtract;
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;
 
   return [
     {
       title: true,
-      label: 'Recap.fortune',
+      label: (
+        <span>
+          <T id="Recap.fortune" />
+          &nbsp;
+          {calc.organisationName && (
+            <span className="secondary">
+              (
+              <T
+                id="Recap.consideredBy"
+                values={{ organisationName: calc.organisationName }}
+              />
+              )
+            </span>
+          )}
+        </span>
+      ),
     },
     {
       label: 'Recap.bankFortune',
@@ -331,11 +351,6 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
       label: 'Recap.expenses',
       value: `- ${toMoney(expenses)}`,
       hide: !expenses,
-    },
-    {
-      label: 'Recap.realEstateExpenses',
-      value: `- ${toMoney(realEstateExpenses)}`,
-      hide: !realEstateExpenses,
     },
     {
       label: 'Recap.consideredIncome',

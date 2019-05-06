@@ -10,6 +10,7 @@ import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionModifier from './PromotionModifier';
 import PromotionAssignee from './PromotionAssignee';
+import PromotionLender from './PromotionLender';
 
 type PromotionPageHeaderProps = {};
 
@@ -88,7 +89,10 @@ const PromotionPageHeader = ({
             />
           </h3>
           {Meteor.microservice === 'admin' && (
-            <PromotionAssignee promotion={promotion} />
+            <>
+              <PromotionAssignee promotion={promotion} />
+              <PromotionLender promotion={promotion} />
+            </>
           )}
         </div>
 
