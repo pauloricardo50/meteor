@@ -56,6 +56,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getBonuses({ borrowers }) {
       return arrayify(borrowers).reduce((obj, borrower) => {
+        if (!borrower.bonusExists) {
+          return obj;
+        }
+
         const bonusKeys = Object.keys(borrower).filter(key =>
           key.includes('bonus')
             && key !== 'bonusExists'
