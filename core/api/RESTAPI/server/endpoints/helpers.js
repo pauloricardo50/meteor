@@ -58,13 +58,15 @@ export const checkAccessToUser = ({ user, proId }) => {
     organisations: { users: { _id: 1 } },
   });
 
+  console.log('organisations:', organisations);
+
   if (
-    !organisations.some(({ _id }) => _id === user.referredByOrganisation._id)
+    !organisations.some(({ _id }) => _id === user.referredByOrganisationLink)
     && !organisations.some(({ users = [] }) =>
-      users.some(({ _id }) => _id === user.referredByUser._id))
+      users.some(({ _id }) => _id === user.referredByUserLink))
   ) {
     throw new Meteor.Error(`User with email "${
-      user.email
+      user.emails[0].address
     }" not found, or you don't have access to it.`);
   }
 };

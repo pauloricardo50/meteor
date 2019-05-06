@@ -102,10 +102,11 @@ describe('REST: getUser', function () {
       email: 'user1@test.com',
       userId: 'pro',
     }).then((user) => {
+      console.log('user:', user);
       expect(user.firstName).to.equal('firstName1');
       expect(user.lastName).to.equal('lastName1');
-      expect(user.email).to.equal('user1@test.com');
-      expect(user.phoneNumber).to.equal('12345');
+      expect(user.emails[0].address).to.equal('user1@test.com');
+      expect(user.phoneNumbers[0]).to.equal('12345');
     }));
 
   it('returns user referred by org with impersonate', () =>
@@ -116,8 +117,8 @@ describe('REST: getUser', function () {
     }).then((user) => {
       expect(user.firstName).to.equal('firstName2');
       expect(user.lastName).to.equal('lastName2');
-      expect(user.email).to.equal('user2@test.com');
-      expect(user.phoneNumber).to.equal('12345');
+      expect(user.emails[0].address).to.equal('user2@test.com');
+      expect(user.phoneNumbers[0]).to.equal('12345');
     }));
 
   it('returns user referred by org without impersonate', () =>
@@ -127,8 +128,8 @@ describe('REST: getUser', function () {
     }).then((user) => {
       expect(user.firstName).to.equal('firstName2');
       expect(user.lastName).to.equal('lastName2');
-      expect(user.email).to.equal('user2@test.com');
-      expect(user.phoneNumber).to.equal('12345');
+      expect(user.emails[0].address).to.equal('user2@test.com');
+      expect(user.phoneNumbers[0]).to.equal('12345');
     }));
 
   it('returns user referred by pro', () =>
@@ -138,8 +139,8 @@ describe('REST: getUser', function () {
     }).then((user) => {
       expect(user.firstName).to.equal('firstName2');
       expect(user.lastName).to.equal('lastName2');
-      expect(user.email).to.equal('user2@test.com');
-      expect(user.phoneNumber).to.equal('12345');
+      expect(user.emails[0].address).to.equal('user2@test.com');
+      expect(user.phoneNumbers[0]).to.equal('12345');
     }));
 
   it('returns an error when user is not referred by org neither by user', () =>
