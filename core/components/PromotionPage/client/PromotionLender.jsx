@@ -10,13 +10,17 @@ import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
 type PromotionLenderProps = {};
 
-const getSchema = lenders =>
-  new SimpleSchema({
+const getSchema = (lenders) => {
+  const lenderIds = lenders
+    .filter(({ lenderRules = [] }) => lenderRules.length > 0)
+    .map(({ _id }) => _id);
+
+  return new SimpleSchema({
     lenderOrganisationLink: Object,
     'lenderOrganisationLink._id': {
       type: String,
       optional: true,
-      allowedValues: [null, ...lenders.map(({ _id }) => _id)],
+      allowedValues: [null, ...lenderIds],
       uniforms: {
         transform: lenderId =>
           (lenderId
@@ -28,7 +32,7 @@ const getSchema = lenders =>
       },
     },
   });
-
+};
 const PromotionLender = ({ schema, promotion }: PromotionLenderProps) => (
   <AutoForm
     autosave
@@ -49,7 +53,10 @@ const PromotionLender = ({ schema, promotion }: PromotionLenderProps) => (
 export default compose(
   withSmartQuery({
     query,
-    params: { features: ORGANISATION_FEATURES.LENDER, $body: { name: 1 } },
+    params: {
+      features: ORGANISATION_FEATURES.LENDER,
+      $body: { name: 1, lenderRules: { _id: 1 } },
+    },
     dataName: 'lenders',
     smallLoader: true,
   }),
