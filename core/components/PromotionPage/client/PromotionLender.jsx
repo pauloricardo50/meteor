@@ -18,6 +18,7 @@ const schema = new SimpleSchema({
       query: adminOrganisations,
       params: () => ({
         features: ORGANISATION_FEATURES.LENDER,
+        hasRules: true,
         $body: { name: 1, lenderRules: { _id: 1 } },
       }),
       allowNull: true,

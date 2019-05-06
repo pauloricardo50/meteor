@@ -15,6 +15,8 @@ const OrganisationAdder = ({ insertOrganisation }: OrganisationAdderProps) => (
       'contactIds',
       'canton',
       'userLinks',
+      'lenderRulesCount',
+      'documents',
     )}
     buttonProps={{
       label: 'Ajouter organisation',

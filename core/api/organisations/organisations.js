@@ -78,6 +78,7 @@ export const OrganisationSchema = new SimpleSchema({
   'commissionRates.$.rate': percentageField,
   'commissionRates.$.threshold': moneyField,
   documents: documentsField,
+  lenderRulesCount: { type: Number, optional: true },
 });
 
 Organisations.attachSchema(OrganisationSchema);
