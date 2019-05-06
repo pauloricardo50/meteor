@@ -102,7 +102,6 @@ describe('REST: getUser', function () {
       email: 'user1@test.com',
       userId: 'pro',
     }).then((user) => {
-      console.log('user:', user);
       expect(user.firstName).to.equal('firstName1');
       expect(user.lastName).to.equal('lastName1');
       expect(user.emails[0].address).to.equal('user1@test.com');

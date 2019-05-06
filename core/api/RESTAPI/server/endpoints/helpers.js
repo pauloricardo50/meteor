@@ -58,8 +58,6 @@ export const checkAccessToUser = ({ user, proId }) => {
     organisations: { users: { _id: 1 } },
   });
 
-  console.log('organisations:', organisations);
-
   if (
     !organisations.some(({ _id }) => _id === user.referredByOrganisationLink)
     && !organisations.some(({ users = [] }) =>
