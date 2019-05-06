@@ -1,39 +1,37 @@
 // @flow
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import query from 'core/api/organisations/queries/adminOrganisations';
+import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import { ORGANISATION_FEATURES } from 'core/api/constants';
-import { withSmartQuery, promotionUpdate } from '../../../api';
+import { promotionUpdate } from '../../../api';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
 type PromotionLenderProps = {};
 
-const getSchema = (lenders) => {
-  const lenderIds = lenders
-    .filter(({ lenderRules = [] }) => lenderRules.length > 0)
-    .map(({ _id }) => _id);
-
-  return new SimpleSchema({
-    lenderOrganisationLink: Object,
-    'lenderOrganisationLink._id': {
-      type: String,
-      optional: true,
-      allowedValues: [null, ...lenderIds],
-      uniforms: {
-        transform: lenderId =>
-          (lenderId
-            ? lenders.find(({ _id }) => lenderId === _id).name
-            : 'Pas de prêteur'),
-        labelProps: { shrink: true },
-        label: 'Prêteur',
-        placeholder: null,
-      },
+const schema = new SimpleSchema({
+  lenderOrganisationLink: Object,
+  'lenderOrganisationLink._id': {
+    type: String,
+    optional: true,
+    customAllowedValues: {
+      query: adminOrganisations,
+      params: () => ({
+        features: ORGANISATION_FEATURES.LENDER,
+        $body: { name: 1, lenderRules: { _id: 1 } },
+      }),
+      allowNull: true,
     },
-  });
-};
-const PromotionLender = ({ schema, promotion }: PromotionLenderProps) => (
+    uniforms: {
+      transform: lender => (lender ? lender.name : 'Pas de prêteur'),
+      labelProps: { shrink: true },
+      label: 'Prêteur',
+      placeholder: null,
+    },
+  },
+});
+
+const PromotionLender = ({ promotion }: PromotionLenderProps) => (
   <AutoForm
     autosave
     schema={schema}
@@ -50,15 +48,4 @@ const PromotionLender = ({ schema, promotion }: PromotionLenderProps) => (
   </AutoForm>
 );
 
-export default compose(
-  withSmartQuery({
-    query,
-    params: {
-      features: ORGANISATION_FEATURES.LENDER,
-      $body: { name: 1, lenderRules: { _id: 1 } },
-    },
-    dataName: 'lenders',
-    smallLoader: true,
-  }),
-  withProps(({ lenders }) => ({ schema: getSchema(lenders) })),
-)(PromotionLender);
+export default PromotionLender;
