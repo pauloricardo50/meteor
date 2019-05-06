@@ -4,11 +4,13 @@ import omit from 'lodash/omit';
 
 import { lenderRules as lenderRulesFragment } from 'core/api/fragments';
 import memoizeOne from 'core/utils/memoizeOne';
+import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
 import { withSmartQuery } from '../api/containerToolkit';
 import Calculator, { Calculator as CalculatorClass } from '../utils/Calculator';
 import query from '../api/lenderRules/queries/organisationLenderRules';
 
-export const { Consumer, Provider } = React.createContext();
+const Context = React.createContext();
+const { Consumer, Provider } = Context;
 
 const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
   if (lenderRules.length) {
@@ -141,6 +143,7 @@ export const injectCalculator = (getStructureId = () => {}) => {
   );
 };
 
-export const withCalculator = Component => props => (
-  <Consumer>{calc => <Component {...props} Calculator={calc} />}</Consumer>
-);
+export const withCalculator = withContextConsumer({
+  Context,
+  contextName: 'Calculator',
+});
