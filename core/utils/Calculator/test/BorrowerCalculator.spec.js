@@ -61,7 +61,7 @@ describe('BorrowerCalculator', () => {
     it('returns half of average 2 bonuses', () => {
       expect(Calculator.getBonusIncome({
         borrowers: { bonusExists: true, bonus2018: 100, bonus2015: 0 },
-      })).to.equal(25);
+      })).to.equal(50);
     });
 
     it('returns half of average 3 bonuses', () => {
@@ -72,7 +72,7 @@ describe('BorrowerCalculator', () => {
           bonus2017: 0,
           bonus2016: 200,
         },
-      })).to.equal(50);
+      })).to.equal(75);
     });
 
     it('returns 0 if bonusExists is false', () => {
@@ -134,7 +134,7 @@ describe('BorrowerCalculator', () => {
             bonus2016: 200,
           },
         ],
-      })).to.equal(50);
+      })).to.equal(75);
     });
 
     it('uses the AVERAGE algorithm', () => {
@@ -150,6 +150,23 @@ describe('BorrowerCalculator', () => {
           bonus2019: 200,
         },
       })).to.equal(100);
+    });
+
+    it('uses the WEAK_AVERAGE algorithm', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 3,
+        bonusAlgorithm: BONUS_ALGORITHMS.WEAK_AVERAGE,
+      });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2019: 200,
+          bonus2018: 200,
+          bonus2017: 0,
+        },
+      })).to.equal(200);
     });
   });
 
