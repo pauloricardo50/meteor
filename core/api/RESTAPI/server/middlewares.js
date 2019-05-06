@@ -90,7 +90,7 @@ const authMiddleware = (req, res, next) => {
 // Handles all errors, should be added as the very last middleware
 const errorMiddleware = (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
-  const { user = {}, body, params, query } = req;
+  const { user = {}, body = {}, params = {}, query = {} } = req;
 
   SlackService.sendError({
     error,
