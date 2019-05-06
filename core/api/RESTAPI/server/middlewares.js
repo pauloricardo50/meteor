@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import moment from 'moment';
 
+import SlackService from '../../slack/server/SlackService';
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
 import { Services } from '../../api-server';
 import { USERS_COLLECTION } from '../../users/userConstants';
@@ -89,6 +90,18 @@ const authMiddleware = (req, res, next) => {
 // Handles all errors, should be added as the very last middleware
 const errorMiddleware = (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
+  const { user = {}, body = {}, params = {}, query = {} } = req;
+
+  SlackService.sendError({
+    error,
+    additionalData: [
+      Object.keys(body).length > 0 && { body },
+      Object.keys(params).length > 0 && { params },
+      Object.keys(query).length > 0 && { query },
+    ].filter(x => x),
+    userId: user._id,
+    url: getRequestPath(req),
+  });
 
   res.writeHead(status);
   res.write(JSON.stringify({ status, errorName, message }));
