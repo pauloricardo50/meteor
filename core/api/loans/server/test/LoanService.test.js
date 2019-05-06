@@ -3,15 +3,23 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker/locale/fr';
+import moment from 'moment';
 
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
 import LoanService from '../LoanService';
-import { OWN_FUNDS_TYPES, STEPS, EMAIL_IDS } from '../../../constants';
+import {
+  OWN_FUNDS_TYPES,
+  STEPS,
+  EMAIL_IDS,
+  ORGANISATION_TYPES,
+  ORGANISATION_FEATURES,
+} from '../../../constants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
+import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
 
 describe('LoanService', function () {
   this.timeout(10000);
@@ -954,6 +962,99 @@ describe('LoanService', function () {
       const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
 
       expect(calc.organisationName).to.equal('Org2');
+    });
+  });
+
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+    this.timeout(10000);
+
+    it('finds the ideal borrowRatio', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+        },
+        organisations: [
+          ...generateOrganisationsWithLenderRules({
+            number: 5,
+            mainBorrowRatio: { min: 0.65, max: 0.9 },
+            secondaryBorrowRatio: { min: 0.5, max: 0.7 },
+          }),
+          {
+            name: 'no lender rules',
+            type: ORGANISATION_TYPES.BANK,
+            features: [ORGANISATION_FEATURES.LENDER],
+          },
+        ],
+      });
+
+      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+        loanId: 'loanId',
+        canton: 'GE',
+      });
+
+      const {
+        maxPropertyValue: { canton, date, main, second },
+      } = LoanService.fetchOne({
+        $filters: { _id: 'loanId' },
+        maxPropertyValue: 1,
+      });
+
+      expect(canton).to.equal('GE');
+      expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+      expect(main.min.borrowRatio).to.equal(0.65);
+      expect(main.min.propertyValue).to.equal(1496000);
+      expect(main.max.borrowRatio).to.equal(0.835);
+      expect(main.max.propertyValue).to.equal(2760000);
+      expect(second.min.borrowRatio).to.equal(0.5);
+      expect(second.min.propertyValue).to.equal(908000);
+      expect(second.max.borrowRatio).to.equal(0.65);
+      expect(second.max.propertyValue).to.equal(1244000);
+    });
+
+    it('Only uses the promotion lender', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+          promotions: {
+            lenderOrganisation: generateOrganisationsWithLenderRules({
+              number: 1,
+              mainBorrowRatio: { min: 0.75, max: 0.75 },
+              secondaryBorrowRatio: { min: 0.7, max: 0.7 },
+            }),
+          },
+        },
+      });
+
+      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+        loanId: 'loanId',
+        canton: 'GE',
+      });
+
+      const {
+        maxPropertyValue: { canton, date, main, second },
+      } = LoanService.fetchOne({
+        $filters: { _id: 'loanId' },
+        maxPropertyValue: 1,
+      });
+
+      expect(canton).to.equal('GE');
+      expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+      expect(main.min).to.equal(undefined);
+      expect(main.max.borrowRatio).to.equal(0.75);
+      expect(main.max.propertyValue).to.equal(1987000);
+      expect(second.min).to.equal(undefined);
+      expect(second.max.borrowRatio).to.equal(0.7);
+      expect(second.max.propertyValue).to.equal(1420000);
     });
   });
 });

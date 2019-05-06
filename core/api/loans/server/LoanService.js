@@ -498,30 +498,46 @@ export class LoanService extends CollectionService {
 
     const sortedValues = maxPropertyValues.sort(({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
       propertyValueA - propertyValueB);
+      // Only show min if there is more than 1 result
+    const showMin = sortedValues.length >= 2;
+    // Only show second max if there are more than 3 results
+    const showSecondMax = sortedValues.length >= 3;
 
-    const min = sortedValues[0];
+    const min = showMin ? sortedValues[0] : undefined;
 
     // Don't take the max value, because that means there is only one single
     // lender who can make an offer on this loan
-    const secondMax = sortedValues[sortedValues.length - 2];
     const max = sortedValues[sortedValues.length - 1];
+    const secondMax = showSecondMax
+      ? sortedValues[sortedValues.length - 2]
+      : max;
+
+    // If there are at least 3 organisations, show a special label
+    // that combines the best and secondBest org
+    const maxOrganisationLabel = showSecondMax
+      ? `${secondMax
+          && secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+        max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      : max.organisationName;
 
     return {
       min,
       max: {
         ...secondMax,
-        organisationName: `${
-          secondMax.organisationName
-        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
-          max.borrowRatio * 100
-        ).toFixed(2)}%)`,
+        organisationName: maxOrganisationLabel,
       },
     };
   }
 
   getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
+    let query = { features: { $in: [ORGANISATION_FEATURES.LENDER] } };
+    if (loan.hasPromotion && loan.lenderOrganisationLink) {
+      query = { _id: loan.lenderOrganisationLink._id };
+    }
+
     const lenderOrganisations = OrganisationService.fetch({
-      $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
+      $filters: query,
       lenderRules: lenderRulesFragment(),
       name: 1,
     });
