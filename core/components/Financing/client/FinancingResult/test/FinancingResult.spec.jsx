@@ -37,7 +37,7 @@ describe('FinancingResult', () => {
   const component = () =>
     mount(
       <ScrollSync>
-        <Provider value={loan}>
+        <Provider value={{ loan, Calculator }}>
           <FinancingResult {...props} />
         </Provider>
       </ScrollSync>,
