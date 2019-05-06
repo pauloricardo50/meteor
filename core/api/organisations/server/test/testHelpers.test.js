@@ -19,9 +19,9 @@ export const generateOrganisationsWithLenderRules = ({
     .map((_, x) => x)
     .forEach((index) => {
       const mainRange = maxMainBorrowRatio - minMainBorrowRatio;
-      const mainStep = mainRange / (number - 1) || 0;
+      const mainStep = number > 1 ? mainRange / (number - 1) : 0;
       const secondaryRange = maxSecondaryBorrowRatio - minSecondaryBorrowRatio;
-      const secondaryStep = secondaryRange / (number - 1) || 0;
+      const secondaryStep = number > 1 ? secondaryRange / (number - 1) : 0;
 
       const main = minMainBorrowRatio + index * mainStep;
       const secondary = minSecondaryBorrowRatio + index * secondaryStep;
