@@ -825,6 +825,8 @@ describe('UserService', function () {
           loans: { _id: 1 },
         });
         expect(loans.length).to.equal(1);
+
+        return checkEmails(2);
       });
     });
   });
