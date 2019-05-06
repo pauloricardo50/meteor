@@ -498,7 +498,7 @@ export class LoanService extends CollectionService {
 
     const sortedValues = maxPropertyValues.sort(({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
       propertyValueA - propertyValueB);
-      // Only show min if there is more than 1 result
+    // Only show min if there is more than 1 result
     const showMin = sortedValues.length >= 2;
     // Only show second max if there are more than 3 results
     const showSecondMax = sortedValues.length >= 3;
@@ -532,8 +532,8 @@ export class LoanService extends CollectionService {
 
   getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
     let query = { features: { $in: [ORGANISATION_FEATURES.LENDER] } };
-    if (loan.hasPromotion && loan.lenderOrganisationLink) {
-      query = { _id: loan.lenderOrganisationLink._id };
+    if (loan.hasPromotion && loan.promotions[0].lenderOrganisationLink) {
+      query = { _id: loan.promotions[0].lenderOrganisationLink._id };
     }
 
     const lenderOrganisations = OrganisationService.fetch({
