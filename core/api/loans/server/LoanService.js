@@ -498,6 +498,11 @@ export class LoanService extends CollectionService {
 
     const sortedValues = maxPropertyValues.sort(({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
       propertyValueA - propertyValueB);
+
+    if (sortedValues.length === 0) {
+      throw new Meteor.Error("Nous ne sommes pas parvenus à calculer votre capacité d'achat, contactez votre conseiller pour plus d'informations");
+    }
+
     // Only show min if there is more than 1 result
     const showMin = sortedValues.length >= 2;
     // Only show second max if there are more than 3 results
