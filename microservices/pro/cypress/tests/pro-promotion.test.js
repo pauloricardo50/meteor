@@ -181,11 +181,12 @@ describe('Pro promotion', () => {
         expect(trs.length).to.equal(loanCount + 1);
       });
 
-      cy.contains('Réserver').click();
+      // Some buttons are sometimes off-screen to the right, force click on them
+      cy.contains('Réserver').click({ force: true });
       cy.contains('Confirmer').click();
       cy.contains('Confirmer vente').should('exist');
       cy.contains('Annuler réservation').should('exist');
-      cy.contains('Annuler réservation').click();
+      cy.contains('Annuler réservation').click({ force: true });
       cy.contains('sûr')
         .parentsUntil('[role="document"]')
         .contains('Confirmer')
