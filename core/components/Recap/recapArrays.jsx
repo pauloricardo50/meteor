@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { ERROR, SUCCESS } from 'core/api/constants';
 import Calculator from '../../utils/Calculator';
@@ -42,7 +44,7 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
         <span>
           <T id="Recap.title" />
           &nbsp;
-          {calc.organisationName && (
+          {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
@@ -250,7 +252,7 @@ export const getBorrowerArray = ({
         <span>
           <T id="Recap.fortune" />
           &nbsp;
-          {calc.organisationName && (
+          {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
