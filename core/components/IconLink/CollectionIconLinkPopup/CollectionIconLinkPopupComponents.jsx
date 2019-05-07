@@ -93,9 +93,18 @@ export const components = {
   },
   [USERS_COLLECTION]: ({ email, phoneNumber, assignedEmployee }) => (
     <span>
-      {email}
+      <a
+        className="color"
+        href={`mailto:${email}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {email}
+      </a>
       <br />
-      {phoneNumber}
+      <a className="color" href={`tel:${phoneNumber}`}>
+        {phoneNumber}
+      </a>
       <br />
       Conseiller: {assignedEmployee ? assignedEmployee.name : '-'}
     </span>
@@ -164,9 +173,18 @@ export const components = {
     <span>
       {organisations.length > 0 && organisations[0].$metadata.title}
       <br />
-      {email}
+      <a
+        className="color"
+        href={`mailto:${email}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {email}
+      </a>
       <br />
-      {phoneNumber}
+      <a className="color" href={`tel:${phoneNumber}`}>
+        {phoneNumber}
+      </a>
     </span>
   ),
 };

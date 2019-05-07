@@ -28,7 +28,7 @@ a:not([role='button']) {
 
   color: inherit;
   &.color {
-    transition: color 300ms $bezier;
+    transition: color 200ms $bezier;
 
     color: $primary;
 
