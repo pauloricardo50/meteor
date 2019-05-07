@@ -9,7 +9,7 @@ import LinkToCollection from '../../LinkToCollection';
 import SearchResultsContainer from './SearchResultsContainer';
 import ResultsPerCollection from './ResultsPerCollection';
 
-const SearchResults = ({ isLoading, error, results }) => {
+const SearchResults = ({ isLoading, error, results, closeSearch }) => {
   if (isLoading || !results) {
     return <Loading />;
   }
@@ -40,7 +40,11 @@ const SearchResults = ({ isLoading, error, results }) => {
         }
 
         return (
-          <ListItem key={collectionName} className="search-results-collection">
+          <ListItem
+            onClick={closeSearch}
+            key={collectionName}
+            className="search-results-collection"
+          >
             <h3>
               <LinkToCollection collection={collectionName} />
             </h3>
@@ -56,6 +60,7 @@ const SearchResults = ({ isLoading, error, results }) => {
 };
 
 SearchResults.propTypes = {
+  closeSearch: PropTypes.func.isRequired,
   error: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
   results: PropTypes.any.isRequired,

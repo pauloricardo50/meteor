@@ -26,7 +26,12 @@ class SearchPage extends Component {
           className="admin-search"
         >
           <SearchForm onSubmit={this.handleSubmit} />
-          {searchQuery && <SearchResults searchQuery={searchQuery} />}
+          {searchQuery && (
+            <SearchResults
+              searchQuery={searchQuery}
+              closeSearch={() => setOpenSearch(false)}
+            />
+          )}
         </Dialog>
       </>
     );
