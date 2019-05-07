@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 import {
   BORROWERS_COLLECTION,

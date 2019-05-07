@@ -20,7 +20,6 @@ import LoansPage from '../../client/pages/LoansPage/loadable';
 import OrganisationsPage from '../../client/pages/OrganisationsPage/loadable';
 import PromotionsPage from '../../client/pages/PromotionsPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
-import SearchPage from '../../client/pages/SearchPage/loadable';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage/loadable';
 import SingleContactPage from '../../client/pages/SingleContactPage/loadable';
 import SingleLoanPage from '../../client/pages/SingleLoanPage/loadable';
@@ -76,7 +75,6 @@ const AdminRouter = () => (
         />
         <Route path={adminRoutes.BORROWERS_PAGE} component={BorrowersPage} />
         <Route path={adminRoutes.PROMOTIONS_PAGE} component={PromotionsPage} />
-        <Route path={adminRoutes.SEARCH_PAGE} component={SearchPage} />
         <Route path={adminRoutes.ACCOUNT_PAGE} component={AdminAccountPage} />
         <Route
           path={adminRoutes.SINGLE_ORGANISATION_PAGE}

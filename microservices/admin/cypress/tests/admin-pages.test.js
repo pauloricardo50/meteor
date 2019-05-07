@@ -18,8 +18,6 @@ const pages = {
       shouldRender: '.admin-dashboard-page .tasks-table',
     }),
 
-    Search: route('/search', { shouldRender: '.search-page' }),
-
     Profile: route('/account', { shouldRender: '.admin-account-page' }),
 
     Users: route('/users', { shouldRender: '.users-page .users-table' }),

@@ -12,7 +12,6 @@ export const LOANS_PAGE = '/loans';
 export const ORGANISATIONS_PAGE = '/organisations';
 export const PROMOTIONS_PAGE = '/promotions';
 export const PROPERTIES_PAGE = '/properties';
-export const SEARCH_PAGE = '/search';
 export const SINGLE_BORROWER_PAGE = '/borrowers/:borrowerId';
 export const SINGLE_CONTACT_PAGE = '/contacts/:contactId';
 export const SINGLE_LOAN_PAGE = '/loans/:loanId/:tabId?';

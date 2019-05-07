@@ -2,12 +2,12 @@ import React from 'react';
 
 import updateForProps from 'core/containers/updateForProps';
 import TopNav from 'core/components/TopNav';
-import SearchIcon from '../../pages/SearchPage/SearchIcon';
+import Search from '../../components/Search';
 
-const AdminTopNav = props => (
+const AdminTopNav = ({ setOpenSearch, openSearch, ...props }) => (
   <div className="admin-top-nav">
     <TopNav {...props}>
-      <SearchIcon />
+      <Search openSearch={openSearch} setOpenSearch={setOpenSearch} />
     </TopNav>
   </div>
 );
@@ -18,4 +18,5 @@ export default updateForProps([
   'currentUser._id',
   'currentUser.organisation._id',
   'currentUser.roles',
+  'openSearch',
 ])(AdminTopNav);

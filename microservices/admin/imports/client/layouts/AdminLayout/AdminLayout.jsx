@@ -36,7 +36,7 @@ const getRedirect = ({ currentUser, history }) => {
   return false;
 };
 
-const AdminLayout = (props) => {
+const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
   handleLoggedOut();
 
   if (window.isRedirectingLoggedOutUser) {
@@ -45,7 +45,7 @@ const AdminLayout = (props) => {
     return null;
   }
 
-  const { history, children } = props;
+  const { history } = props;
   const redirect = getRedirect(props);
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
@@ -57,12 +57,22 @@ const AdminLayout = (props) => {
   return (
     <div className="admin-layout">
       <HotKeys
-        handlers={{ space: () => history.push('/search') }}
+        handlers={{
+          space: (e) => {
+            // Prevent the space key to be sent to the search input
+            e.preventDefault();
+            setOpenSearch(true);
+          },
+        }}
         focused
         attach={window}
       />
       <PageHead titleId="AdminLayout" />
-      <AdminTopNav {...props} />
+      <AdminTopNav
+        {...props}
+        openSearch={openSearch}
+        setOpenSearch={setOpenSearch}
+      />
 
       <div className="main-row">
         <AdminSideNav {...props} />
