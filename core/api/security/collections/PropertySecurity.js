@@ -310,6 +310,14 @@ class PropertySecurity {
         'Vous ne pouvez pas gérer les permissions sur ce bien immobilier',
     });
   }
+
+  static isAllowedToAddAnonymousLoan({ propertyId }) {
+    const property = this.getProperty({ propertyId });
+
+    if (!property || property.category !== PROPERTY_CATEGORY.PRO) {
+      this.handleUnauthorized('Unauthorized propertyId');
+    }
+  }
 }
 
 export default PropertySecurity;

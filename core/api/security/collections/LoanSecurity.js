@@ -1,5 +1,6 @@
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import Security from '../Security';
-import { Loans } from '../..';
+import LoanService from '../../loans/server/LoanService';
 
 class LoanSecurity {
   static isAllowedToInsert() {
@@ -11,12 +12,32 @@ class LoanSecurity {
       return;
     }
 
-    const loan = Loans.findOne(loanId);
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      userId: 1,
+      userLinks: 1,
+    });
     Security.checkOwnership(loan);
   }
 
   static isAllowedToDelete() {
     Security.checkCurrentUserIsAdmin();
+  }
+
+  static checkAnonymousLoan({ loanId }) {
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      anonymous: 1,
+      status: 1,
+    });
+
+    if (
+      !loan
+      || loan.anonymous !== true
+      || loan.status === LOAN_STATUS.UNSUCCESSFUL
+    ) {
+      this.handleUnauthorized();
+    }
   }
 }
 

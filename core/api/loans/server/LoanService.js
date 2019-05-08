@@ -3,6 +3,7 @@ import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
@@ -52,6 +53,20 @@ export class LoanService extends CollectionService {
   insert = ({ loan = {}, userId }) => {
     const name = this.getNewLoanName();
     return Loans.insert({ ...loan, name, userId });
+  };
+
+  insertAnonymousLoan = ({ proPropertyId }) => {
+    let loanId;
+    if (proPropertyId) {
+      loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
+    } else {
+      const borrowerId = BorrowerService.insert({});
+      loanId = this.insert({ loan: { borrowerIds: [borrowerId] } });
+    }
+
+    this.update({ loanId, object: { anonymous: true } });
+
+    return loanId;
   };
 
   getNewLoanName = (now = new Date()) => {
@@ -341,16 +356,9 @@ export class LoanService extends CollectionService {
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const {
-      propertyIds = [],
-      borrowerIds = [],
-      properties = [],
-      borrowers = [],
-    } = this.fetchOne({
+    const { properties = [], borrowers = [] } = this.fetchOne({
       $filters: { _id: loanId },
-      propertyIds: 1,
-      borrowerIds: 1,
-      properties: { loans: { _id: 1 }, address1: 1 },
+      properties: { loans: { _id: 1 }, address1: 1, category: 1 },
       borrowers: { loans: { _id: 1 }, name: 1 },
     });
 
@@ -359,8 +367,8 @@ export class LoanService extends CollectionService {
         throw new Meteor.Error(`Peut pas réassigner l'hypothèque, l'emprunteur "${name}" est assigné à plus d'une hypothèque`);
       }
     });
-    properties.forEach(({ loans = [], address1 }) => {
-      if (loans.length > 1) {
+    properties.forEach(({ loans = [], address1, category }) => {
+      if (category === PROPERTY_CATEGORY.USER && loans.length > 1) {
         throw new Meteor.Error(`Peut pas réassigner l'hypothèque, le bien immobilier "${address1}" est assigné à plus d'une hypothèque`);
       }
     });
@@ -368,11 +376,13 @@ export class LoanService extends CollectionService {
     const object = { userId };
 
     this.update({ loanId, object });
-    propertyIds.forEach((propertyId) => {
-      PropertyService.update({ propertyId, object });
-    });
-    borrowerIds.forEach((borrowerId) => {
+    borrowers.forEach(({ _id: borrowerId }) => {
       BorrowerService.update({ borrowerId, object });
+    });
+    properties.forEach(({ _id: propertyId, category }) => {
+      if (category === PROPERTY_CATEGORY.USER) {
+        PropertyService.update({ propertyId, object });
+      }
     });
   }
 

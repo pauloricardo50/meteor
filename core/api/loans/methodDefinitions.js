@@ -158,3 +158,10 @@ export const loanShareSolvency = new Method({
   name: 'loanShareSolvency',
   params: { loanId: String, shareSolvency: Boolean },
 });
+
+export const anonymousLoanInsert = new Method({
+  name: 'anonymousLoanInsert',
+  params: {
+    proPropertyId: Match.Optional(String),
+  },
+});
