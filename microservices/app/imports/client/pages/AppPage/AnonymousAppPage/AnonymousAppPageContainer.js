@@ -18,7 +18,7 @@ export default compose(
         loanId = sessionStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
       }
 
-      return { _id: loanId };
+      return { _id: loanId, $body: { updatedAt: 1, name: 1 } };
     },
     queryOptions: { reactive: false, single: true },
     dataName: 'anonymousLoan',

@@ -3,8 +3,10 @@ import React from 'react';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+
 import AnonymousAppPageContainer from './AnonymousAppPageContainer';
 import NoLoanStart from './NoLoanStart';
+import WithLoanStart from './WithLoanStart';
 
 type AnonymousAppPageProps = {};
 
@@ -16,8 +18,8 @@ const AnonymousAppPage = (props: AnonymousAppPageProps) => {
       {!anonymousLoan && (
         <NoLoanStart insertAnonymousLoan={insertAnonymousLoan} />
       )}
-      {anonymousLoan && <span>Continuer!</span>}
-      <div className="flex-col center">
+      {anonymousLoan && <WithLoanStart anonymousLoan={anonymousLoan} />}
+      <div className="flex-col center text-center">
         <T id="AnonymousAppPage.alreadyAccount" />
         <Button primary link to="/login">
           <T id="general.login" />

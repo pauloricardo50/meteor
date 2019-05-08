@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import SecurityService from 'core/api/security';
 import query from './anonymousLoan';
 
@@ -10,5 +12,5 @@ query.expose({
       filters._id = params._id;
     },
   },
-  validateParams: { _id: String },
+  validateParams: { _id: String, $body: Match.Maybe(Object) },
 });

@@ -1,4 +1,6 @@
 {
+  "AnonymousAppPage.withLoanTitle": "Dossier anonyme",
+  "AnonymousAppPage.lastModifiedAt": "Dernière modification {date} depuis cet appareil",
   "AnonymousAppPage.start": "Commencer",
   "AnonymousAppPage.alreadyAccount": "Vous avez déjà un compte e-Potek?",
   "Recap.consideredBy": "Considéré par {organisationName}",
