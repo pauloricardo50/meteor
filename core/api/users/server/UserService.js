@@ -65,6 +65,18 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
+  anonymousCreateUser = ({ user, loanId }) => {
+    const userId = this.adminCreateUser({
+      options: { ...user, sendEnrollmentEmail: true },
+    });
+    
+    if (loanId) {
+      LoanService.assignLoanToUser({ userId, loanId });
+    }
+
+    return userId;
+  };
+
   // This should remain a simple inequality check
   doesUserExist = ({ email }) => this.getByEmail(email) != null;
 

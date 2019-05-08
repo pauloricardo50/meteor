@@ -24,6 +24,7 @@ import {
   setUserReferredByOrganisation,
   proInviteUserToOrganisation,
   proSetShareCustomers,
+  anonymousCreateUser,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -214,4 +215,11 @@ proInviteUserToOrganisation.setHandler(({ userId }, params) => {
 proSetShareCustomers.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
   return UserService.proSetShareCustomers(params);
+});
+
+anonymousCreateUser.setHandler((context, params) => {
+  if (params.loanId) {
+    SecurityService.loans.checkAnonymousLoan(params.loanId);
+  }
+  return UserService.anonymousCreateUser(params);
 });
