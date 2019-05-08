@@ -126,7 +126,6 @@
   "Forms.externalUrl.placeholder": "https://www.google.com/mon-bien-immo",
   "Forms.imageUrls": "Images du bien immobilier (URLs)",
   "Forms.imageUrls.placeholder": "https://www.google.com/mon-bien-immo.jpg",
-  "ProCustomersTable.cacheDisclaimer": "Les informations dans ce tableau peuvent prendre jusqu'à 1h pour se mettre à jour",
   "ProOrganisationPageTabs.referredCustomers": "Clients référés",
   "OrganisationTabs.referredUsers": "Clients référés",
   "WwwTopNavLinks.appLogin": "Login Clients",
