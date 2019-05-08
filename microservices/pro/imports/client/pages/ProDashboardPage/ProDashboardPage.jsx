@@ -12,20 +12,20 @@ import ProOrganisationPropertiesTable from './ProOrganisationPropertiesTable';
 
 import ExternalPropertyAdder from './ExternalPropertyAdder';
 
-type ProDashboardPageProps = {};
+type ProDashboardPageProps = {
+  currentUser: Object,
+};
 
-const ProDashboardPage = (props: ProDashboardPageProps) => (
+const ProDashboardPage = ({ currentUser }: ProDashboardPageProps) => (
   <div className="card1 pro-dashboard-page">
     <h1>
       <T id="ProDashboardPage.title" />
     </h1>
     <div className="buttons">
-      <PromotionAdder currentUser={props.currentUser} />
-      <ProPropertyAdder currentUser={props.currentUser} />
-      {props.currentUser && props.currentUser.apiPublicKey && (
-        <ExternalPropertyAdder />
-      )}
-      <ProCustomerAdder currentUser={props.currentUser} />
+      <PromotionAdder currentUser={currentUser} />
+      <ProPropertyAdder currentUser={currentUser} />
+      {currentUser.apiPublicKey && <ExternalPropertyAdder />}
+      <ProCustomerAdder currentUser={currentUser} />
     </div>
     <ProPromotionsTable />
     <ProPropertiesTable />
@@ -33,7 +33,7 @@ const ProDashboardPage = (props: ProDashboardPageProps) => (
     <h3 className="text-center">
       <T id="Forms.loans" />
     </h3>
-    <ProCustomersTable proUser={props.currentUser} />
+    <ProCustomersTable proUser={currentUser} />
   </div>
 );
 

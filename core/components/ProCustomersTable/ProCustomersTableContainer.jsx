@@ -5,7 +5,7 @@ import moment from 'moment';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
 import { getReferredBy } from 'core/api/helpers';
-import T, { Money } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 import LoanProgress from 'core/components/LoanProgress/LoanProgress';
@@ -17,7 +17,6 @@ import {
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
 
 const columnOptions = [
   { id: 'loanName', style: { whiteSpace: 'nowrap' } },
@@ -29,7 +28,6 @@ const columnOptions = [
   { id: 'createdAt' },
   { id: 'referredBy' },
   { id: 'relatedTo' },
-  // { id: 'estimatedRevenues' },
 ].map(({ id, label }) => ({
   id,
   label: label || <T id={`ProCustomersTable.${id}`} />,
@@ -44,7 +42,6 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
     name: loanName,
     relatedTo: relatedDocs = [],
     loanProgress,
-    estimatedRevenues,
   } = loan;
 
   return {
@@ -84,14 +81,6 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
           ))
           : '-',
       },
-      // {
-      //   raw: estimatedRevenues,
-      //   label: estimatedRevenues ? (
-      //     <Money value={estimatedRevenues} />
-      //   ) : (
-      //     '-'
-      //   ),
-      // },
     ],
   };
 };
@@ -140,7 +129,6 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  // makeTableFiltersContainer(undefined, 'loans'),
   withProps(({ loans, proUser, isAdmin = false }) => ({
     rows: loans.map(makeMapLoan({ proUser, isAdmin })),
     columnOptions,

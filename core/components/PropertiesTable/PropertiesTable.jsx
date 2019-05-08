@@ -6,9 +6,8 @@ import PropertiesTableContainer from './PropertiesTableContainer';
 
 type PropertiesTableProps = {};
 
-export const PropertiesTable = ({
-  rows,
-  columnOptions,
-}: PropertiesTableProps) => <Table rows={rows} columnOptions={columnOptions} />;
+export const PropertiesTable = (props: PropertiesTableProps) => (
+  <Table {...props} />
+);
 
 export default PropertiesTableContainer(PropertiesTable);

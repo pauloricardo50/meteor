@@ -15,7 +15,7 @@ const mergeRules = ({ names = [], ...oldRules }, newRules) => {
         ...mergedObject,
         [newRuleName]: [...mergedObject[newRuleName], ...newRule],
       };
-    } else {
+    } else if (newRule !== undefined && newRule !== null) {
       mergedObject = { ...mergedObject, [newRuleName]: newRule };
     }
   });
