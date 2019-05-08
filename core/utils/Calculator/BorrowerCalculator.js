@@ -394,11 +394,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(array);
     }
 
-    personalInfoPercentSimple({ borrowers }) {
+    personalInfoPercentSimple({ borrowers, loan }) {
       const array = arrayify(borrowers).reduce((arr, b) => {
         const simpleFormArray = getBorrowerSimpleArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
+          loan,
         });
         return [...arr, ...getCountedArray(simpleFormArray, b)];
       }, []);

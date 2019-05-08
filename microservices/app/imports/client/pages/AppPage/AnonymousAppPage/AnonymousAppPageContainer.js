@@ -1,4 +1,4 @@
-import { withProps, compose } from 'recompose';
+import { withProps, compose, withState, lifecycle } from 'recompose';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import anonymousLoan from 'core/api/loans/queries/anonymousLoan';
@@ -8,21 +8,25 @@ import { createRoute } from 'core/utils/routerUtils';
 import { DASHBOARD_PAGE } from '../../../../startup/client/appRoutes';
 
 export default compose(
+  withState('anonymousLoanId', 'setAnonymousLoanId', () =>
+    localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN)),
   withSmartQuery({
     query: anonymousLoan,
-    params: () => {
-      let loanId;
-      loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-
-      if (!loanId) {
-        loanId = sessionStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      }
-
-      return { _id: loanId, $body: { updatedAt: 1, name: 1 } };
-    },
+    params: ({ anonymousLoanId }) => ({
+      _id: anonymousLoanId,
+      $body: { updatedAt: 1, name: 1 },
+    }),
     queryOptions: { reactive: false, single: true },
     dataName: 'anonymousLoan',
     renderMissingDoc: false,
+  }),
+  lifecycle({
+    componentDidMount() {
+      if (this.props.anonymousLoanId && !this.props.anonymousLoan) {
+        localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+        this.props.setAnonymousLoanId(undefined);
+      }
+    },
   }),
   withProps(({ history }) => ({
     insertAnonymousLoan: () =>

@@ -271,7 +271,11 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
 };
 
-export const getBorrowerSimpleArray = ({ borrowers, borrowerId }) => {
+export const getBorrowerSimpleArray = ({
+  borrowers,
+  borrowerId,
+  loan = {},
+}) => {
   const b = borrowers.find(borrower => borrower._id === borrowerId);
 
   if (!b) {
@@ -279,8 +283,8 @@ export const getBorrowerSimpleArray = ({ borrowers, borrowerId }) => {
   }
 
   return [
-    { id: 'firstName', type: 'textInput' },
-    { id: 'lastName', type: 'textInput' },
+    { id: 'firstName', type: 'textInput', condition: !loan.anonymous },
+    { id: 'lastName', type: 'textInput', condition: !loan.anonymous },
     ...getBorrowerFinanceArray({ borrowers, borrowerId }),
   ];
 };
