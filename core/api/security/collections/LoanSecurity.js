@@ -7,7 +7,7 @@ class LoanSecurity {
     Security.checkLoggedIn();
   }
 
-  static isAllowedToUpdate(loanId) {
+  static isAllowedToUpdate(loanId, userId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
@@ -17,7 +17,11 @@ class LoanSecurity {
       userId: 1,
       userLinks: 1,
     });
-    Security.checkOwnership(loan);
+    if (loan.userId) {
+      Security.checkOwnership(loan, userId);
+    } else {
+      this.checkAnonymousLoan({ loanId });
+    }
   }
 
   static isAllowedToDelete() {
@@ -35,6 +39,7 @@ class LoanSecurity {
       !loan
       || loan.anonymous !== true
       || loan.status === LOAN_STATUS.UNSUCCESSFUL
+      || loan.userId
     ) {
       Security.handleUnauthorized();
     }
