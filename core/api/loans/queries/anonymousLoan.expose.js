@@ -3,7 +3,7 @@ import query from './anonymousLoan';
 
 query.expose({
   firewall(userId, params) {
-    SecurityService.loans.checkAnonymousLoan({ loanId: params._id });
+    SecurityService.loans.checkAnonymousLoan(params._id);
   },
   embody: {
     $filter({ filters, params }) {

@@ -110,7 +110,7 @@ assignLoanToUser.setHandler(({ userId }, params) => {
   });
 
   if (anonymous) {
-    SecurityService.loans.checkAnonymousLoan({ loanId: params.loanId });
+    SecurityService.loans.checkAnonymousLoan(params.loanId);
   } else {
     SecurityService.checkUserIsAdmin(userId);
   }

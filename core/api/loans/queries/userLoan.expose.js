@@ -8,7 +8,7 @@ userLoan.expose({
     params.userId = userId;
 
     if (!userId) {
-      SecurityService.loans.checkAnonymousLoan({ loanId: params.loanId });
+      SecurityService.loans.checkAnonymousLoan(params.loanId);
     }
   },
   embody: {

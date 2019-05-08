@@ -176,7 +176,7 @@ describe('Collection Security', () => {
     });
   });
 
-  describe.only('BorrowerSecurity', () => {
+  describe('BorrowerSecurity', () => {
     beforeEach(() => {
       resetDatabase();
       sinon.stub(Meteor, 'userId').callsFake(() => undefined);

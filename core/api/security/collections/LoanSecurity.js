@@ -8,6 +8,10 @@ class LoanSecurity {
   }
 
   static isAllowedToUpdate(loanId, userId) {
+    if (!loanId) {
+      Security.handleUnauthorized();
+    }
+
     if (Security.currentUserIsAdmin()) {
       return;
     }
@@ -20,7 +24,7 @@ class LoanSecurity {
     if (loan.userId) {
       Security.checkOwnership(loan, userId);
     } else {
-      this.checkAnonymousLoan({ loanId });
+      this.checkAnonymousLoan(loanId);
     }
   }
 
@@ -28,7 +32,7 @@ class LoanSecurity {
     Security.checkCurrentUserIsAdmin();
   }
 
-  static checkAnonymousLoan({ loanId }) {
+  static checkAnonymousLoan(loanId) {
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       anonymous: 1,

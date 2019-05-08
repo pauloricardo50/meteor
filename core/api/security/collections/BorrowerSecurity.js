@@ -8,6 +8,10 @@ class BorrowerSecurity {
   }
 
   static isAllowedToUpdate(borrowerId, userId) {
+    if (!borrowerId) {
+      Security.handleUnauthorized();
+    }
+
     if (Security.currentUserIsAdmin()) {
       return;
     }
@@ -21,7 +25,7 @@ class BorrowerSecurity {
     if (borrower.userId) {
       Security.checkOwnership(borrower, userId);
     } else if (borrower.loans.length === 1 && borrower.loans[0].anonymous) {
-      LoanSecurity.checkAnonymousLoan({ loanId: borrower.loans[0]._id });
+      LoanSecurity.checkAnonymousLoan(borrower.loans[0]._id);
     } else {
       Security.handleUnauthorized('borrowerUpdate not allowed');
     }
