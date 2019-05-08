@@ -11,7 +11,9 @@ import 'core/api/files/meteor-slingshot';
 
 import '../accounts-config';
 import './css';
+import initHotjar from 'core/utils/hotjar';
 import ProRouter from './ProRouter';
+
 
 const start = (testElement) => {
   // Initial injected html done in server startup index.js
@@ -22,6 +24,9 @@ const start = (testElement) => {
 
   // Render react-router routes
   render(ProRouter(), testElement || document.getElementById('react-root'));
+
+  // Hotjar
+  initHotjar('pro');
 };
 
 export default start;

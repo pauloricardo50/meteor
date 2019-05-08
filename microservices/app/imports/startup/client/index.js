@@ -10,6 +10,7 @@ import 'core/api/client/api';
 
 import '../accounts-config';
 import './css';
+import initHotjar from 'core/utils/hotjar';
 import AppRouter from './AppRouter';
 
 /**
@@ -28,6 +29,9 @@ const start = (testElement) => {
 
   // Render react-router routes
   render(AppRouter(), testElement || document.getElementById('react-root'));
+
+  // Hotjar
+  initHotjar('app');
 };
 
 export default start;
