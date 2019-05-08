@@ -28,3 +28,14 @@
     }
   }
 }
+
+.anonymous-app-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .card1{
+    margin-bottom: 40px;
+  }
+}

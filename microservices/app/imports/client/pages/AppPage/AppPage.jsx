@@ -8,6 +8,7 @@ import T from 'core/components/Translation';
 import { ROLES } from 'core/api/constants';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
+import AppPageContainer from './AppPageContainer';
 
 const AppPage = ({ currentUser: { emails, loans, roles } }) => {
   if (loans.length === 1) {
@@ -59,4 +60,4 @@ AppPage.propTypes = {
 
 AppPage.defaultProps = {};
 
-export default AppPage;
+export default AppPageContainer(AppPage);

@@ -39,9 +39,9 @@ const redirectIfInRoleForOtherApp = (...args) => {
   if (url) window.location.replace(url);
 };
 
-const getBaseRedirect = (currentUser, pathname) => {
+const getBaseRedirect = (currentUser, pathname, withoutLoginRoutes = []) => {
   if (!currentUser) {
-    return isOnAllowedRoute(pathname, WITHOUT_LOGIN)
+    return isOnAllowedRoute(pathname, [...WITHOUT_LOGIN, ...withoutLoginRoutes])
       ? false
       : `/login?path=${pathname}`;
   }

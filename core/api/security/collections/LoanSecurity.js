@@ -36,7 +36,7 @@ class LoanSecurity {
       || loan.anonymous !== true
       || loan.status === LOAN_STATUS.UNSUCCESSFUL
     ) {
-      this.handleUnauthorized();
+      Security.handleUnauthorized();
     }
   }
 }

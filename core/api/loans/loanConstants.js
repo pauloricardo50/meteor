@@ -143,3 +143,5 @@ export const APPLICATION_TYPES = {
 };
 
 export const ORGANISATION_NAME_SEPARATOR = ' / ';
+
+export const LOCAL_STORAGE_ANONYMOUS_LOAN = 'ANONYMOUS_LOAN_ID';

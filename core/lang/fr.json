@@ -1,4 +1,6 @@
 {
+  "AnonymousAppPage.start": "Commencer",
+  "AnonymousAppPage.alreadyAccount": "Vous avez déjà un compte e-Potek?",
   "Recap.consideredBy": "Considéré par {organisationName}",
   "Forms.variable.zipCode": "Code postal du bien immobilier",
   "Forms.variable.remainingBankFortune": "Fortune bancaire post-décaissement",

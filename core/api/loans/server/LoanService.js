@@ -64,7 +64,10 @@ export class LoanService extends CollectionService {
       loanId = this.insert({ loan: { borrowerIds: [borrowerId] } });
     }
 
-    this.update({ loanId, object: { anonymous: true } });
+    this.update({
+      loanId,
+      object: { anonymous: true, displayWelcomeScreen: false },
+    });
 
     return loanId;
   };
