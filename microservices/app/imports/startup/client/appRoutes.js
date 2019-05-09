@@ -20,3 +20,4 @@ export const PROPERTY_PAGE = '/loans/:loanId/properties/:propertyId';
 export const REFINANCING_PAGE = '/loans/:loanId/refinancing';
 export const WELCOME_PAGE = '/loans/:loanId/welcome';
 export const SOLVENCY_PAGE = '/loans/:loanId/solvency';
+export const SIGNUP_SUCCESS_PAGE = '/signup/:email';

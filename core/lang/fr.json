@@ -1,4 +1,6 @@
 {
+  "SignupSuccessPage.title": "Un email vous a été envoyé à {email}",
+  "SignupSuccessPage.description": "Ouvrez le pour continuer votre expérience e-Potek",
   "UserCreator.title": "Créez votre compte e-Potek",
   "UserCreator.description": "Soyez accompagné par votre conseiller e-Potek, accédez à l'interface complète e-Potek, et obtenez des offres de tous les prêteurs du marché!",
   "AnonymousAppPage.withLoanTitle": "Dossier anonyme",

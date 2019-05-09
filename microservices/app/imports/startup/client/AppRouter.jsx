@@ -25,6 +25,7 @@ import FilesPage from '../../client/pages/FilesPage/loadable';
 import FinancingPage from '../../client/pages/FinancingPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
 import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
+import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
 import WelcomePage from '../../client/pages/WelcomePage/loadable';
@@ -63,6 +64,10 @@ const AppRouter = () => (
         <Route path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
         <Route path={ROUTES.SOLVENCY_PAGE} component={SolvencyPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
+        <Route
+          path={ROUTES.SIGNUP_SUCCESS_PAGE}
+          component={SignupSuccessPage}
+        />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
           component={PasswordResetPage}

@@ -14,7 +14,7 @@ export default compose(
     query: anonymousLoan,
     params: ({ anonymousLoanId }) => ({
       _id: anonymousLoanId,
-      $body: { updatedAt: 1, name: 1 },
+      $body: { updatedAt: 1, name: 1, borrowers: { updatedAt: 1 } },
     }),
     queryOptions: { reactive: false, single: true },
     dataName: 'anonymousLoan',
