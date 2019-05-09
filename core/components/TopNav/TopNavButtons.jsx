@@ -12,6 +12,7 @@ type TopNavButtonsProps = {};
 const TopNavButtons = (props: TopNavButtonsProps) => {
   const { children, currentUser } = props;
   const { name, organisations } = currentUser || {};
+
   return (
     <div className="buttons">
       {children}

@@ -7,6 +7,8 @@ import TopNavlogo from 'core/components/TopNav/TopNavLogo';
 import TopNavButtons from 'core/components/TopNav/TopNavButtons';
 import IconButton from 'core/components/IconButton';
 import useMedia from 'core/hooks/useMedia';
+import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
+import UserCreator from '../../components/UserCreator';
 
 type AppTopNavProps = {};
 
@@ -16,6 +18,7 @@ const AppTopNav = ({
   ...props
 }: AppTopNavProps) => {
   const isMobile = useMedia({ maxWidth: 768 });
+  const anonymousLoanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
 
   return (
     <Toolbar className="top-nav">
@@ -24,7 +27,18 @@ const AppTopNav = ({
           <IconButton onClick={toggleDrawer} type="menu" />
         )}
         <TopNavlogo />
-        <TopNavButtons {...props} />
+        <div className="flex space-children">
+          {anonymousLoanId && (
+            <UserCreator
+              buttonProps={{
+                raised: true,
+                secondary: true,
+                label: 'Créez votre compte',
+              }}
+            />
+          )}
+          <TopNavButtons {...props} />
+        </div>
       </div>
     </Toolbar>
   );
