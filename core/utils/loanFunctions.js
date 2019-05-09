@@ -7,7 +7,7 @@ export const formatLoanWithStructure = ({
   properties,
   offers,
   promotionOptions,
-  borrowers,
+  borrowers = [],
 }) => {
   let structure = {};
 
