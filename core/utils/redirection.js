@@ -16,7 +16,12 @@ export const WITHOUT_LOGIN = [
 ];
 
 export const isOnAllowedRoute = (path, routes) =>
-  routes.some(allowedRoute => path.startsWith(allowedRoute));
+  routes.some((allowedRoute) => {
+    if (allowedRoute === '/') {
+      return path === allowedRoute;
+    }
+    return path.startsWith(allowedRoute);
+  });
 
 export const getRedirectIfInRoleForOtherApp = (currentUser, role, app) => {
   const inApp = Meteor.settings.public.microservice === app;
@@ -41,7 +46,9 @@ const redirectIfInRoleForOtherApp = (...args) => {
 
 const getBaseRedirect = (currentUser, pathname, withoutLoginRoutes = []) => {
   if (!currentUser) {
-    return isOnAllowedRoute(pathname, [...WITHOUT_LOGIN, ...withoutLoginRoutes])
+    const allowedRoutes = [...WITHOUT_LOGIN, ...withoutLoginRoutes];
+
+    return isOnAllowedRoute(pathname, allowedRoutes)
       ? false
       : `/login?path=${pathname}`;
   }

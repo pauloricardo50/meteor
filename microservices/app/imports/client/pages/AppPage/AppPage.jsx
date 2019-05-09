@@ -10,7 +10,7 @@ import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
 import AppPageContainer from './AppPageContainer';
 
-const AppPage = ({ currentUser: { emails, loans, roles } }) => {
+export const AppPage = ({ currentUser: { emails, loans, roles } }) => {
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }

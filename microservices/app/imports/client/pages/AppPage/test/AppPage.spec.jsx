@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Redirect } from 'react-router-dom';
 
-import AppPage from '../AppPage';
+import { AppPage } from '../AppPage';
 
 describe('AppPage', () => {
   let props;
