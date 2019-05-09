@@ -7,7 +7,7 @@ import { anonymousLoanInsert } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
 import { DASHBOARD_PAGE } from '../../../../startup/client/appRoutes';
 
-export default compose(
+export const withAnonymousLoan = compose(
   withState('anonymousLoanId', 'setAnonymousLoanId', () =>
     localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN)),
   withSmartQuery({
@@ -19,6 +19,7 @@ export default compose(
     queryOptions: { reactive: false, single: true },
     dataName: 'anonymousLoan',
     renderMissingDoc: false,
+    refetchOnMethodCall: false,
   }),
   lifecycle({
     componentDidMount() {
@@ -28,6 +29,10 @@ export default compose(
       }
     },
   }),
+);
+
+export default compose(
+  withAnonymousLoan,
   withProps(({ history }) => ({
     insertAnonymousLoan: () =>
       anonymousLoanInsert.run({}).then((loanId) => {

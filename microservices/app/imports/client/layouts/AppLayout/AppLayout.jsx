@@ -8,6 +8,7 @@ import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
+import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password'];
@@ -53,6 +54,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
       </div>
 
       <ContactButton />
+      <AnonymousLoanClaimer currentUser={props.currentUser} />
     </div>
   );
 };

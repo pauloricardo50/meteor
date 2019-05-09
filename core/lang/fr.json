@@ -1,4 +1,7 @@
 {
+  "AnonymousLoanClaimer.title": "Ajouter ce dossier à votre compte?",
+  "AnonymousLoanClaimer.refuse": "Non, supprimer",
+  "AnonymousLoanClaimer.claim": "Ajouter à mon compte",
   "SignupSuccessPage.title": "Un email vous a été envoyé à {email}",
   "SignupSuccessPage.description": "Ouvrez le pour continuer votre expérience e-Potek",
   "UserCreator.title": "Créez votre compte e-Potek",
