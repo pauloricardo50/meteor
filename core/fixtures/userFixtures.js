@@ -72,11 +72,6 @@ export const createAdmins = () => {
       lastName: 'Abraha',
     },
     {
-      email: 'joel@e-potek.ch',
-      firstName: 'Joel',
-      lastName: 'Santos',
-    },
-    {
       email: 'yannis@e-potek.ch',
       firstName: 'Yannis',
       lastName: 'Eggert',
