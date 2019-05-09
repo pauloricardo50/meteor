@@ -27,7 +27,13 @@ const getQuery = (collectionName) => {
   case LOANS_COLLECTION:
     return {
       query: adminLoans,
-      body: { structure: 1, name: 1, status: 1, user: { name: 1 } },
+      body: {
+        structure: 1,
+        name: 1,
+        status: 1,
+        user: { name: 1 },
+        anonymous: 1,
+      },
     };
   case PROPERTIES_COLLECTION:
     return {

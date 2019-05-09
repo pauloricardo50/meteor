@@ -68,7 +68,12 @@ export const titles = {
 };
 
 export const components = {
-  [LOANS_COLLECTION]: ({ user, structures = [], selectedStructure }) => {
+  [LOANS_COLLECTION]: ({
+    user,
+    structures = [],
+    selectedStructure,
+    anonymous,
+  }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
 
     return (
@@ -84,6 +89,7 @@ export const components = {
           )}
         </span>
         <br />
+        {anonymous && 'Anonyme'}
         {user && user.name}
         <br />
         Conseiller:{' '}

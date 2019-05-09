@@ -289,6 +289,24 @@ Meteor.methods({
     });
   },
 
+  addAnonymousLoan({ twoBorrowers, isRefinancing }) {
+    SecurityService.checkCurrentUserIsDev();
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [emptyFakeBorrower, emptyFakeBorrower]
+        : [emptyFakeBorrower],
+      properties: [],
+      loan: {
+        ...emptyLoan,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+        anonymous: true,
+      },
+    });
+  },
+
   addUserToOrg() {
     SecurityService.checkCurrentUserIsDev();
 
