@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
+import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
@@ -376,15 +377,13 @@ export class LoanService extends CollectionService {
       }
     });
 
-    const object = { userId };
-
-    this.update({ loanId, object });
+    this.update({ loanId, object: { userId, anonymous: false } });
     borrowers.forEach(({ _id: borrowerId }) => {
-      BorrowerService.update({ borrowerId, object });
+      BorrowerService.update({ borrowerId, object: { userId } });
     });
     properties.forEach(({ _id: propertyId, category }) => {
       if (category === PROPERTY_CATEGORY.USER) {
-        PropertyService.update({ propertyId, object });
+        PropertyService.update({ propertyId, object: { userId } });
       }
     });
   }
@@ -699,6 +698,22 @@ export class LoanService extends CollectionService {
       structureId,
       lenderRules,
     });
+  }
+
+  expireAnonymousLoans() {
+    const lastWeek = moment()
+      .subtract('days', 7)
+      .toDate();
+      
+    return this.baseUpdate(
+      {
+        anonymous: true,
+        status: { $ne: LOAN_STATUS.UNSUCCESSFUL },
+        updatedAt: { $lte: lastWeek },
+      },
+      { $set: { status: LOAN_STATUS.UNSUCCESSFUL } },
+      { multi: true },
+    );
   }
 }
 

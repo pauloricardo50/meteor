@@ -44,6 +44,7 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 'off',
     'no-nested-ternary': 'off',
+    'newline-per-chained-call': [2, { ignoreChainWithDepth: 3 }],
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
     // and then remove these comments

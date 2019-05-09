@@ -20,6 +20,7 @@ import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
 import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
+import { LOAN_STATUS } from '../../loanConstants';
 
 describe('LoanService', function () {
   this.timeout(10000);
@@ -1055,6 +1056,51 @@ describe('LoanService', function () {
       expect(second.min).to.equal(undefined);
       expect(second.max.borrowRatio).to.equal(0.7);
       expect(second.max.propertyValue).to.equal(1420000);
+    });
+  });
+
+  describe('expireAnonymousLoans', () => {
+    it('does not update any unmatched loans', () => {
+      generator({
+        loans: [
+          { anonymous: true },
+          { anonymous: true, status: LOAN_STATUS.UNSUCCESSFUL },
+        ],
+      });
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(0);
+    });
+
+    it('only updates loans from more than a week ago', async () => {
+      const promises = [];
+      for (let index = 0; index < 10; index++) {
+        promises.push(LoanService.rawCollection.insert({
+          anonymous: true,
+          updatedAt: moment()
+            .subtract('days', index)
+            .toDate(),
+          _id: index,
+          name: index,
+        }));
+      }
+
+      await Promise.all(promises);
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(3);
+    });
+
+    it('does not update loans already at UNSUCCESSFUL status', async () => {
+      await LoanService.rawCollection.insert({
+        anonymous: true,
+        updatedAt: moment()
+          .subtract('days', 10)
+          .toDate(),
+        _id: 'a',
+        name: 'b',
+        status: LOAN_STATUS.UNSUCCESSFUL,
+      });
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(0);
     });
   });
 });

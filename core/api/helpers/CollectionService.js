@@ -101,6 +101,10 @@ class CollectionService {
     return this.find({}).fetch();
   }
 
+  get rawCollection() {
+    return this.collection.rawCollection();
+  }
+
   // Don't return the results from linker
   addLink({ id, linkName, linkId, metadata = {} }) {
     const linker = this.collection.getLink(id, linkName);
