@@ -28,7 +28,7 @@ const AppTopNav = ({
         )}
         <TopNavlogo />
         <div className="flex space-children">
-          {!props.currentUser && anonymousLoanId && (
+          {!props.currentUser && (
             <UserCreator
               buttonProps={{
                 raised: true,

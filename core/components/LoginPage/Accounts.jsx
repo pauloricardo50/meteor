@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
 import { TextField, Snackbar } from '@material-ui/core';
@@ -64,7 +66,7 @@ class Button extends Accounts.ui.Button {
       icon,
     } = this.props;
 
-    if (id !== 'switchToSignUp') {
+    if (Meteor.microservice !== 'app' && id !== 'switchToSignUp') {
       return type === 'link' ? (
         <MuiButton
           href={href}
