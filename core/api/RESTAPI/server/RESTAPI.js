@@ -5,7 +5,7 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { formatParams } from './helpers';
+import { formatParams, getRequestPath, logRequest } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -66,7 +66,7 @@ export default class RESTAPI {
                 query: req.query,
                 params: formatParams(params),
               }))
-            .then(result => this.handleSuccess(result, res))
+            .then(result => this.handleSuccess(result, req, res))
             .catch(next);
         } catch (error) {
           next(error);
@@ -85,8 +85,12 @@ export default class RESTAPI {
     });
   }
 
-  handleSuccess(result = '', res) {
+  handleSuccess(result = '', req, res) {
     const stringified = JSON.stringify(result);
+
+    // LOGS
+    logRequest({ req, result: stringified });
+
     res.setHeader('Content-Type', 'application/json');
     res.write(stringified);
 
