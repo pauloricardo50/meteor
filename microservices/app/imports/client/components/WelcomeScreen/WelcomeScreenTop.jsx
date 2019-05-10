@@ -11,6 +11,8 @@ const WelcomeScreenTop = ({
   handleClick,
   setDontShowAgain,
   dontShowAgain,
+  displayCheckbox = true,
+  buttonProps,
 }: WelcomeScreenTopProps) => (
   <div className="card1 welcome-screen-top">
     <div className="welcome-screen-top-text">
@@ -22,18 +24,21 @@ const WelcomeScreenTop = ({
         <T id="WelcomeScreen.description" />
       </p>
 
-      <Checkbox
-        value={dontShowAgain}
-        onChange={() => setDontShowAgain(!dontShowAgain)}
-        label={<T id="WelcomeScreen.dontShowAgain" />}
-        className="checkbox"
-      />
+      {displayCheckbox && (
+        <Checkbox
+          value={dontShowAgain}
+          onChange={() => setDontShowAgain(!dontShowAgain)}
+          label={<T id="WelcomeScreen.dontShowAgain" />}
+          className="checkbox"
+        />
+      )}
 
       <Button
         raised
         secondary
         onClick={handleClick}
         className="welcome-screen-cta"
+        {...buttonProps}
       >
         <T id="general.begin" />
       </Button>

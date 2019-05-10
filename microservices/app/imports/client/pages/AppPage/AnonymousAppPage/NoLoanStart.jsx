@@ -4,6 +4,7 @@ import { withState } from 'recompose';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import { WelcomeScreen } from '../../../components/WelcomeScreen/WelcomeScreen';
 
 type NoLoanStartProps = {};
 
@@ -12,19 +13,13 @@ const NoLoanStart = ({
   loading,
   setLoading,
 }: NoLoanStartProps) => (
-  <div className="card1 card-top">
-    <Button
-      secondary
-      raised
-      onClick={() => {
-        setLoading(true);
-        insertAnonymousLoan().finally(() => setLoading(false));
-      }}
-      loading={loading}
-    >
-      <T id="AnonymousAppPage.start" />
-    </Button>
-  </div>
+  <WelcomeScreen
+    displayCheckbox={false}
+    handleClick={() => {
+      setLoading(true);
+      insertAnonymousLoan().finally(() => setLoading(false));
+    }}
+    buttonProps={{ loading }}
+  />
 );
-
 export default withState('loading', 'setLoading', false)(NoLoanStart);

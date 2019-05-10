@@ -66,33 +66,37 @@ class Button extends Accounts.ui.Button {
       icon,
     } = this.props;
 
-    if (Meteor.microservice !== 'app' && id !== 'switchToSignUp') {
-      return type === 'link' ? (
-        <MuiButton
-          href={href}
-          label={label}
-          icon={icon ? <span className={`fa ${icon}`} /> : null}
-          className={className}
-          onClick={onClick}
-          disabled={disabled}
-          style={{ marginRight: 5, marginTop: 8 }}
-        />
-      ) : (
-        <MuiButton
-          raised
-          label={label}
-          icon={icon ? <span className={`fa ${icon}`} /> : null}
-          primary
-          type={type}
-          className={className}
-          onClick={onClick}
-          disabled={disabled}
-          style={{ marginRight: 5, marginTop: 8 }}
-        />
-      );
+    const switchToSignUp = id === 'switchToSignUp';
+    const isApp = Meteor.microservice === 'app';
+
+    // Disable signups on pro and admin
+    if (!isApp && switchToSignUp) {
+      return null;
     }
 
-    return null;
+    return type === 'link' ? (
+      <MuiButton
+        href={href}
+        label={label}
+        icon={icon ? <span className={`fa ${icon}`} /> : null}
+        className={className}
+        onClick={onClick}
+        disabled={disabled}
+        style={{ marginRight: 5, marginTop: 8 }}
+      />
+    ) : (
+      <MuiButton
+        raised
+        label={label}
+        icon={icon ? <span className={`fa ${icon}`} /> : null}
+        primary
+        type={type}
+        className={className}
+        onClick={onClick}
+        disabled={disabled}
+        style={{ marginRight: 5, marginTop: 8 }}
+      />
+    );
   }
 }
 class Fields extends Accounts.ui.Fields {

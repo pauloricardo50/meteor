@@ -54,7 +54,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
       </div>
 
       <ContactButton />
-      <AnonymousLoanClaimer currentUser={props.currentUser} />
+      {props.currentUser && <AnonymousLoanClaimer currentUser={props.currentUser} />}
     </div>
   );
 };
