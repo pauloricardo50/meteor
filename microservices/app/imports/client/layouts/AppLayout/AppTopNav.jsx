@@ -28,7 +28,7 @@ const AppTopNav = ({
         )}
         <TopNavlogo />
         <div className="flex space-children">
-          {!props.currentUser && (
+          {!isMobile && !props.currentUser && (
             <UserCreator
               buttonProps={{
                 raised: true,
