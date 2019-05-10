@@ -364,11 +364,17 @@ export class LoanService extends CollectionService {
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const { properties = [], borrowers = [], referralId } = this.fetchOne({
+    const {
+      properties = [],
+      borrowers = [],
+      referralId,
+      anonymous,
+    } = this.fetchOne({
       $filters: { _id: loanId },
       referralId: 1,
       properties: { loans: { _id: 1 }, address1: 1, category: 1 },
       borrowers: { loans: { _id: 1 }, name: 1 },
+      anonymous: 1,
     });
 
     borrowers.forEach(({ loans = [], name }) => {
@@ -382,7 +388,15 @@ export class LoanService extends CollectionService {
       }
     });
 
-    this.update({ loanId, object: { userId, anonymous: false } });
+    this.update({
+      loanId,
+      object: {
+        userId,
+        anonymous: false,
+        // If the loan was anonymous before, don't show welcome screen again
+        displayWelcomeScreen: anonymous ? false : undefined,
+      },
+    });
     this.update({ loanId, object: { referralId: true }, operator: '$unset' });
 
     borrowers.forEach(({ _id: borrowerId }) => {
@@ -396,7 +410,10 @@ export class LoanService extends CollectionService {
 
     // Refer this user only if he hasn't already been referred
     if (referralId && UserService.exists(referralId)) {
-      const { referredByUserLink, referredByOrganisationLink } = UserService.fetchOne({
+      const {
+        referredByUserLink,
+        referredByOrganisationLink,
+      } = UserService.fetchOne({
         $filters: { _id: userId },
         referredByUserLink: 1,
         referredByOrganisationLink: 1,

@@ -16,6 +16,7 @@ import 'core/cypress/server/methods';
 import { E2E_USER_EMAIL } from 'core/cypress/utils';
 import LoanService from 'core/api/loans/server/LoanService';
 import UserService from 'core/api/users/server/UserService';
+import PropertyService from 'core/api/properties/server/PropertyService';
 import { USER_EMAIL, USER_PASSWORD } from '../appE2eConstants';
 
 // remove login rate limits in E2E tests
@@ -75,5 +76,44 @@ Meteor.methods({
     if (user) {
       UserService.remove({ userId: user._id });
     }
+  },
+  updateLoan({ loanId, object }) {
+    LoanService.update({ loanId, object });
+  },
+  getLoginToken() {
+    const user = UserService.findOne({});
+    const loginToken = UserService.getLoginToken({ userId: user._id });
+    return loginToken;
+  },
+  addProProperty() {
+    const userId = UserService.adminCreateUser({
+      options: {
+        email: USER_EMAIL,
+        firstName: 'Pro',
+        lastName: 'Test User',
+      },
+      role: ROLES.PRO,
+    });
+    const propertyId = PropertyService.proPropertyInsert({
+      property: {
+        address1: 'Chemin Auguste-Vilbert 14',
+        zipCode: 1218,
+        city: 'Le Grand-Saconnex',
+        value: 1500000,
+      },
+      userId,
+    });
+
+    return propertyId;
+  },
+  addUserProperty() {
+    return PropertyService.insert({
+      property: {
+        address1: 'Chemin Auguste-Vilbert 14',
+        zipCode: 1218,
+        city: 'Le Grand-Saconnex',
+        value: 1500000,
+      },
+    });
   },
 });

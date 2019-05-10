@@ -2,6 +2,7 @@
 import React from 'react';
 import moment from 'moment';
 import { withProps, compose, withState } from 'recompose';
+import { withRouter } from 'react-router-dom';
 
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
@@ -9,6 +10,8 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { assignLoanToUser } from 'core/api/methods/index';
+import { createRoute } from 'core/utils/routerUtils';
+import { DASHBOARD_PAGE } from 'imports/startup/client/appRoutes';
 import { withAnonymousLoan } from '../../../pages/AppPage/AnonymousAppPage/AnonymousAppPageContainer';
 
 type AnonymousLoanClaimerProps = {};
@@ -63,8 +66,15 @@ const AnonymousLoanClaimer = ({
 
 export default compose(
   withAnonymousLoan,
+  withRouter,
   withState('loading', 'setLoading', false),
-  withProps(({ anonymousLoan, setAnonymousLoanId, currentUser, setLoading }) => ({
+  withProps(({
+    anonymousLoan,
+    setAnonymousLoanId,
+    currentUser,
+    setLoading,
+    history,
+  }) => ({
     open: !!anonymousLoan,
     claimLoan: () => {
       setLoading(true);
@@ -73,6 +83,7 @@ export default compose(
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           setAnonymousLoanId(undefined);
+          history.push(createRoute(DASHBOARD_PAGE, { loanId: anonymousLoan._id }));
         })
         .finally(() => setLoading(false));
     },

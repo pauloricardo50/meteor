@@ -26,7 +26,7 @@ const WITHOUT_LOAN = [
   '/reset-password',
 ];
 
-const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties'];
+const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
 
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
   (!loans || loans.length < 1)

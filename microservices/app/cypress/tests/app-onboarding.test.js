@@ -43,8 +43,8 @@ describe('App onboarding', () => {
 
       it('should see the welcomescreen and get to the dashboard', () => {
         cy.callMethod('inviteTestUser', { withPassword: true });
-        cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
         cy.visit('/');
+        cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
         cy.url().should('include', '/loans/');
         cy.get('.welcome-screen').should('exist');
 

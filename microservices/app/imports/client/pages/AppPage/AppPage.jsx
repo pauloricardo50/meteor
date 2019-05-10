@@ -29,7 +29,7 @@ export const AppPage = ({
       )}
 
       {loans.length > 0 && (
-        <h1>
+        <h1 className="app-item-title">
           <T id="AppPage.title" />
         </h1>
       )}

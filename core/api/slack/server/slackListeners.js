@@ -1,4 +1,4 @@
-import { PropertyService } from 'core/api/properties/server/PropertyService';
+import PropertyService from 'core/api/properties/server/PropertyService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
