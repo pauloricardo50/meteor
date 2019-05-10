@@ -1,8 +1,14 @@
-import { branch, renderComponent, compose, withProps } from 'recompose';
+import {
+  branch,
+  renderComponent,
+  compose,
+  withProps,
+  withState,
+} from 'recompose';
 
+import { userLoanInsert } from 'core/api/methods/index';
 import AnonymousAppPage from './AnonymousAppPage';
 import PropertyStartPage from './PropertyStartPage';
-import { userLoanInsert } from 'core/api/methods/index';
 
 export default compose(
   withProps(({ location }) => {
@@ -19,7 +25,13 @@ export default compose(
   }),
   branch(({ propertyId }) => !!propertyId, renderComponent(PropertyStartPage)),
   branch(({ currentUser }) => !currentUser, renderComponent(AnonymousAppPage)),
-  withProps(() => ({
-    insertLoan: () => userLoanInsert.run(),
+  withState('loading', 'setLoading', false),
+  withProps(({ setLoading }) => ({
+    insertLoan: () => {
+      setLoading(true);
+      // Don't unset loading, as the page will refresh anyways to head to the new loan
+      // reactively
+      userLoanInsert.run().catch(() => setLoading(false));
+    },
   })),
 );

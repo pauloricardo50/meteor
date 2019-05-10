@@ -9,7 +9,11 @@ import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
 import AppPageContainer from './AppPageContainer';
 
-export const AppPage = ({ currentUser: { emails, loans, roles }, insertLoan }) => {
+export const AppPage = ({
+  currentUser: { emails, loans, roles },
+  insertLoan,
+  loading,
+}) => {
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }
@@ -17,7 +21,7 @@ export const AppPage = ({ currentUser: { emails, loans, roles }, insertLoan }) =
   const userIsPro = roles.includes(ROLES.PRO);
 
   return (
-    <section id="app-page" className="app-page flex-col center animated fadeIn">
+    <section id="app-page" className="app-page animated fadeIn">
       {!emails[0].verified && (
         <div className="unverified-email">
           <DashboardUnverified />
@@ -35,13 +39,18 @@ export const AppPage = ({ currentUser: { emails, loans, roles }, insertLoan }) =
 
       {loans.length === 0 && (
         <>
-          <WelcomeScreen displayCheckbox={false} handleClick={insertLoan} />
+          <WelcomeScreen
+            displayCheckbox={false}
+            handleClick={insertLoan}
+            buttonProps={{ loading }}
+          />
           {userIsPro && (
             <p className="description">
               <br />
               <br />
               Pour accéder à votre interface e-Potek Pro, veuillez vous rendre
-              sur{' '}
+              sur
+              {' '}
               <a className="color" href={Meteor.settings.public.subdomains.pro}>
                 pro.e-potek.ch
               </a>

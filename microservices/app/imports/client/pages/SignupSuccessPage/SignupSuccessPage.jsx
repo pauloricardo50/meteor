@@ -8,7 +8,7 @@ import AnimatedSuccess from 'core/components/AnimatedSuccess';
 type SignupSuccessPageProps = {};
 
 const SignupSuccessPage = ({ email }: SignupSuccessPageProps) => (
-  <div className="signup-success">
+  <div className="signup-success animated fadeIn">
     <div className="card1 card-top">
       <AnimatedSuccess />
 

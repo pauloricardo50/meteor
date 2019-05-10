@@ -73,7 +73,10 @@ adminLoanInsert.setHandler(adminLoanInsertHandler);
 
 userLoanInsert.setHandler(({ userId }) => {
   SecurityService.checkLoggedIn();
-  return LoanService.fullLoanInsert({ userId });
+  return LoanService.fullLoanInsert({
+    userId,
+    loan: { displayWelcomeScreen: false },
+  });
 });
 
 export const addStructureHandler = (context, { loanId }) => {
