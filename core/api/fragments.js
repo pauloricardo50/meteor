@@ -338,6 +338,7 @@ export const adminLoans = () => ({
 });
 
 export const proLoans = () => ({
+  anonymous: 1,
   createdAt: 1,
   name: 1,
   status: 1,

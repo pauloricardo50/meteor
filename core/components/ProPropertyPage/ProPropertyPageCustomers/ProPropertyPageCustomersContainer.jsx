@@ -15,7 +15,6 @@ import { removeCustomerFromProperty, getReferredBy } from '../../../api';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import Icon from '../../Icon';
-import Tooltip from '../../Material/Tooltip';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -101,6 +100,7 @@ const makeMapLoan = ({
     createdAt,
     loanProgress,
     properties,
+    anonymous,
   } = loan;
   const { isAdmin } = permissions;
 
@@ -117,7 +117,7 @@ const makeMapLoan = ({
     id: loanId,
     columns: [
       loanName,
-      user && user.name,
+      anonymous ? 'Anonyme' : user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
@@ -141,7 +141,7 @@ const makeMapLoan = ({
           <p>
             <T
               id="ProPropertyPage.removeCustomer.alert"
-              values={{ customerName: user.name }}
+              values={{ customerName: anonymous ? 'Anonyme' : user.name }}
             />
           </p>
         </ConfirmMethod>
