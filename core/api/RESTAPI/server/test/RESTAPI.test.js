@@ -5,7 +5,7 @@ import { Factory } from 'meteor/dburles:factory';
 
 import { REST_API_ERRORS } from '../restApiConstants';
 import RESTAPI from '../RESTAPI';
-import { withMeteorUserId } from '../helpers';
+import { withMeteorUserId, OBJECT_FORMATS } from '../helpers';
 import {
   fetchAndCheckResponse,
   makeHeaders,
@@ -352,6 +352,7 @@ describe('RESTAPI', () => {
         testBool: true,
         testEmptyObject: {},
         testEmptyArray: [],
+        testEmptyString: '',
       };
 
       return fetchAndCheckResponse({
@@ -370,7 +371,7 @@ describe('RESTAPI', () => {
               timestamp,
               nonce,
               privateKey,
-              formatting: SIGNATURE_FORMATTINGS.TO_STRING,
+              format: OBJECT_FORMATS.TO_STRING,
             }),
           }),
           body: JSON.stringify(body),
@@ -396,6 +397,7 @@ describe('RESTAPI', () => {
         testBool: true,
         testEmptyObject: {},
         testEmptyArray: [],
+        testEmptyString: '',
       };
 
       return fetchAndCheckResponse({
@@ -414,7 +416,7 @@ describe('RESTAPI', () => {
               timestamp,
               nonce,
               privateKey,
-              formatting: SIGNATURE_FORMATTINGS.TO_LITERRAL,
+              format: OBJECT_FORMATS.TO_LITERRAL,
             }),
           }),
           body: JSON.stringify(body),

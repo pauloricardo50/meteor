@@ -15,6 +15,12 @@ export const AUTH_ITEMS = {
   RSA_SIGNATURE: 'RSA_SIGNATURE',
 };
 
+export const OBJECT_FORMATS = {
+  DEFAULT: 'DEFAULT',
+  TO_LITERRAL: 'TO_LITERRAL',
+  TO_STRING: 'TO_STRING',
+};
+
 export const getHeader = (req, name) => req.headers[name];
 
 const getAuthItem = ({ req, item }) => {
@@ -158,42 +164,33 @@ const getObjectPropertiesPath = (obj, stack, res) => {
   return arr;
 };
 
-// Return each possible formatting of an object
-export const getEveryPossibleFormatting = (obj) => {
-  const properties = getObjectPropertiesPath(obj, '', []);
-  // 3 possible formattings of each object's properties:
-  // * No change
-  // * String to literal
-  // * Literal to string
-  return Array(3)
-    .fill()
-    .map((_, format) => {
-      const formattedObject = {};
-      properties.forEach((property) => {
-        const value = get(obj, property);
-        switch (format) {
-        // No change
-        case 0: {
-          set(formattedObject, property, value);
-          break;
-        }
-        // String to literal
-        case 1: {
-          set(formattedObject, property, stringToLiteral(value));
-          break;
-        }
-        // Literal to string
-        case 2: {
-          set(formattedObject, property, literalToString(value));
-          break;
-        }
-        default:
-          break;
-        }
-      });
+export const formatObject = (obj, format) => {
+  if (format === OBJECT_FORMATS.DEFAULT) {
+    return obj;
+  }
 
-      return formattedObject;
-    });
+  const properties = getObjectPropertiesPath(obj, '', []);
+  const formattedObject = {};
+
+  properties.forEach((property) => {
+    const value = get(obj, property);
+    switch (format) {
+    // String to literal
+    case OBJECT_FORMATS.TO_LITERRAL: {
+      set(formattedObject, property, stringToLiteral(value));
+      break;
+    }
+    // Literal to string
+    case OBJECT_FORMATS.TO_STRING: {
+      set(formattedObject, property, literalToString(value));
+      break;
+    }
+    default:
+      break;
+    }
+  });
+
+  return formattedObject;
 };
 
 export const formatParams = params =>
@@ -212,6 +209,7 @@ export const logRequest = ({ req, result }) => {
     params = {},
     query = {},
     headers = {},
+    verifiedFormat,
   } = req;
   console.log('----- API CALL -----');
   console.log('USER:', JSON.stringify({ _id, emails }, null, 2));
@@ -220,6 +218,7 @@ export const logRequest = ({ req, result }) => {
   console.log('BODY:', JSON.stringify(body, null, 2));
   console.log('PARAMS:', JSON.stringify(params, null, 2));
   console.log('QUERY:', JSON.stringify(query, null, 2));
+  console.log('VERIFIED FORMAT:', verifiedFormat);
   console.log('RESULT:', result);
   console.log('-----------------');
 };
@@ -248,15 +247,17 @@ export const verifySignature = (req) => {
     objectToVerify = { ...objectToVerify, body: sortObject(body) };
   }
 
-  const possibilities = getEveryPossibleFormatting(objectToVerify);
-
-  const verified = possibilities.some((possibility) => {
+  const verified = Object.keys(OBJECT_FORMATS).some((format) => {
     const isValid = key.verify(
-      JSON.stringify(possibility),
+      JSON.stringify(formatObject(objectToVerify, format)),
       signature,
       'utf8',
       'base64',
     );
+
+    if (isValid) {
+      req.verifiedFormat = format;
+    }
     return isValid;
   });
 

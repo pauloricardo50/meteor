@@ -5,15 +5,13 @@ import queryString from 'query-string';
 
 import { sortObject } from 'core/api/helpers/index';
 import UserService from 'core/api/users/server/UserService';
-import { getEveryPossibleFormatting } from '../helpers';
+import {
+  getEveryPossibleFormatting,
+  OBJECT_FORMATS,
+  formatObject,
+} from '../helpers';
 
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
-
-export const SIGNATURE_FORMATTINGS = {
-  DEFAULT: 'DEFAULT',
-  TO_LITERRAL: 'TO_LITERRAL',
-  TO_STRING: 'TO_STRING',
-};
 
 const checkResponse = ({ res, expectedResponse }) =>
   res.json().then((body) => {
@@ -63,7 +61,7 @@ export const signRequest = ({
   timestamp,
   nonce,
   privateKey,
-  formatting,
+  format,
 }) => {
   if (!privateKey) {
     return '12345';
@@ -82,10 +80,8 @@ export const signRequest = ({
     objectToSign = { ...objectToSign, body: sortObject(body) };
   }
 
-  if (Object.values(SIGNATURE_FORMATTINGS).includes(formatting)) {
-    const formattedObject = getEveryPossibleFormatting(objectToSign)[
-      Object.values(SIGNATURE_FORMATTINGS).indexOf(formatting)
-    ];
+  if (Object.values(OBJECT_FORMATS).includes(format)) {
+    const formattedObject = formatObject(objectToSign, format);
     const signature = key.sign(
       JSON.stringify(formattedObject),
       'base64',
