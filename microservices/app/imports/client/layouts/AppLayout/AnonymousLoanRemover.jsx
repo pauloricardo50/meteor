@@ -21,7 +21,11 @@ const AnonymousLoanRemover = (props: AnonymousLoanRemoverProps) => {
     <button
       style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.5 }}
       type="button"
-      onClick={() => localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN)}
+      onClick={() => {
+        localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+        // Reload page for react to know about new localStorage
+        window.location.reload();
+      }}
     >
       Remove anon loan
     </button>
