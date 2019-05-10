@@ -10,6 +10,8 @@ import {
   fetchAndCheckResponse,
   makeHeaders,
   getTimestampAndNonce,
+  signRequest,
+  SIGNATURE_FORMATTINGS,
 } from './apiTestHelpers.test';
 
 const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
@@ -318,12 +320,107 @@ describe('RESTAPI', () => {
       url: '/test/subtest',
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
+        headers: makeHeaders({
+          publicKey,
+          privateKey,
+          timestamp,
+          nonce,
+        }),
       },
       expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
         path: '/api/test/subtest',
         method: 'POST',
       }),
+    });
+  });
+
+  context('can authenticate when signature is performed on', () => {
+    it('string only object', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+      const query = {
+        param1: 'hello?this/is=a-test',
+        param2: '?yay!this/is/so#cool',
+        'param-3': 1200000,
+        'param-4': '1234',
+      };
+      const body = {
+        testString: 'hello',
+        testNumber: 12345,
+        testObject: {
+          testArray: ['test1', 'test2', null],
+        },
+        testBool: true,
+        testEmptyObject: {},
+        testEmptyArray: [],
+      };
+
+      return fetchAndCheckResponse({
+        url: '/test',
+        query,
+        data: {
+          method: 'POST',
+          headers: makeHeaders({
+            publicKey,
+            privateKey,
+            timestamp,
+            nonce,
+            signature: signRequest({
+              body,
+              query,
+              timestamp,
+              nonce,
+              privateKey,
+              formatting: SIGNATURE_FORMATTINGS.TO_STRING,
+            }),
+          }),
+          body: JSON.stringify(body),
+        },
+        expectedResponse: makeTestRoute('POST')({ user }),
+      });
+    });
+
+    it('literal only object', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+      const query = {
+        param1: 'hello?this/is=a-test',
+        param2: '?yay!this/is/so#cool',
+        'param-3': 1200000,
+        'param-4': '1234',
+      };
+      const body = {
+        testString: 'hello',
+        testNumber: 12345,
+        testObject: {
+          testArray: ['test1', 'test2', null],
+        },
+        testBool: true,
+        testEmptyObject: {},
+        testEmptyArray: [],
+      };
+
+      return fetchAndCheckResponse({
+        url: '/test',
+        query,
+        data: {
+          method: 'POST',
+          headers: makeHeaders({
+            publicKey,
+            privateKey,
+            timestamp,
+            nonce,
+            signature: signRequest({
+              body,
+              query,
+              timestamp,
+              nonce,
+              privateKey,
+              formatting: SIGNATURE_FORMATTINGS.TO_LITERRAL,
+            }),
+          }),
+          body: JSON.stringify(body),
+        },
+        expectedResponse: makeTestRoute('POST')({ user }),
+      });
     });
   });
 });

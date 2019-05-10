@@ -57,15 +57,13 @@ export default class RESTAPI {
     return (req, res, next) => {
       Fiber(() => {
         try {
-          const { params = {} } = req;
           Promise.resolve()
             .then(() =>
               handler({
                 user: req.user,
                 body: req.body,
                 query: req.query,
-                params,
-                // params: formatParams(params),
+                params: req.params,
               }))
             .then(result => this.handleSuccess(result, req, res))
             .catch(next);
