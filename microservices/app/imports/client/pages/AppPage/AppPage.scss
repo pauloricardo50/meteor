@@ -37,6 +37,7 @@
 
   .welcome-screen {
     margin-bottom: 40px;
+    align-self: stretch;
   }
 }
 
@@ -47,7 +48,7 @@
   align-items: center;
   text-align: center;
   margin-bottom: 40px;
-
+  align-self: center;
   @include screen(small) {
     padding: 24px;
   }

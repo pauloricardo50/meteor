@@ -9,6 +9,7 @@ import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
+import AnonymousLoanRemover from './AnonymousLoanRemover';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password'];
@@ -54,7 +55,10 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
       </div>
 
       <ContactButton />
-      {props.currentUser && <AnonymousLoanClaimer currentUser={props.currentUser} />}
+      {props.currentUser && (
+        <AnonymousLoanClaimer currentUser={props.currentUser} />
+      )}
+      <AnonymousLoanRemover />
     </div>
   );
 };

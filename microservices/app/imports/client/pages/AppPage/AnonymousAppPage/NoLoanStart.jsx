@@ -22,4 +22,5 @@ const NoLoanStart = ({
     buttonProps={{ loading }}
   />
 );
+
 export default withState('loading', 'setLoading', false)(NoLoanStart);
