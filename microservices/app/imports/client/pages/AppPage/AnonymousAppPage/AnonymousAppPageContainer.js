@@ -14,7 +14,12 @@ export const withAnonymousLoan = compose(
     query: anonymousLoan,
     params: ({ anonymousLoanId }) => ({
       _id: anonymousLoanId,
-      $body: { updatedAt: 1, name: 1, borrowers: { updatedAt: 1 } },
+      $body: {
+        updatedAt: 1,
+        name: 1,
+        borrowers: { updatedAt: 1 },
+        properties: { name: 1, address1: 1, totalValue: 1 },
+      },
     }),
     queryOptions: { reactive: false, single: true },
     dataName: 'anonymousLoan',

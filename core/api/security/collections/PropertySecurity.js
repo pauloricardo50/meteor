@@ -157,6 +157,21 @@ class PropertySecurity {
     }
   }
 
+  static isPropertyPublic({ propertyId }) {
+    const property = PropertyService.fetchOne({
+      $filters: { _id: propertyId },
+      category: 1,
+    });
+
+    return property && property.category === PROPERTY_CATEGORY.PRO;
+  }
+
+  static checkPropertyIsPublic({ propertyId }) {
+    if (!this.isPropertyPublic({ propertyId })) {
+      Security.handleUnauthorized();
+    }
+  }
+
   static isAllowedToView({ userId, propertyId }) {
     this.checkPermissions({
       propertyId,

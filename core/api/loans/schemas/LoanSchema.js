@@ -132,6 +132,7 @@ const LoanSchema = new SimpleSchema({
   shareSolvency: { type: Boolean, optional: true },
   documents: documentsField,
   anonymous: { type: Boolean, optional: true },
+  referralId: { type: String, optional: true },
 });
 
 export default LoanSchema;

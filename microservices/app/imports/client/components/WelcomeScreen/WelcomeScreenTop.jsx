@@ -13,6 +13,7 @@ const WelcomeScreenTop = ({
   dontShowAgain,
   displayCheckbox = true,
   buttonProps,
+  cta,
 }: WelcomeScreenTopProps) => (
   <div className="card1 welcome-screen-top">
     <div className="welcome-screen-top-text">
@@ -33,15 +34,17 @@ const WelcomeScreenTop = ({
         />
       )}
 
-      <Button
-        raised
-        secondary
-        onClick={handleClick}
-        className="welcome-screen-cta"
-        {...buttonProps}
-      >
-        <T id="general.begin" />
-      </Button>
+      {cta || (
+        <Button
+          raised
+          secondary
+          onClick={handleClick}
+          className="welcome-screen-cta"
+          {...buttonProps}
+        >
+          <T id="general.begin" />
+        </Button>
+      )}
     </div>
 
     <div className="welcome-screen-top-img">

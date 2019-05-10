@@ -34,6 +34,7 @@ import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
+import UserService from '../../users/server/UserService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
@@ -56,7 +57,7 @@ export class LoanService extends CollectionService {
     return Loans.insert({ ...loan, name, userId });
   };
 
-  insertAnonymousLoan = ({ proPropertyId }) => {
+  insertAnonymousLoan = ({ proPropertyId, referralId }) => {
     let loanId;
     if (proPropertyId) {
       loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
@@ -67,7 +68,7 @@ export class LoanService extends CollectionService {
 
     this.update({
       loanId,
-      object: { anonymous: true, displayWelcomeScreen: false },
+      object: { anonymous: true, displayWelcomeScreen: false, referralId },
     });
 
     return loanId;
@@ -360,8 +361,9 @@ export class LoanService extends CollectionService {
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const { properties = [], borrowers = [] } = this.fetchOne({
+    const { properties = [], borrowers = [], referralId } = this.fetchOne({
       $filters: { _id: loanId },
+      referralId: 1,
       properties: { loans: { _id: 1 }, address1: 1, category: 1 },
       borrowers: { loans: { _id: 1 }, name: 1 },
     });
@@ -378,6 +380,8 @@ export class LoanService extends CollectionService {
     });
 
     this.update({ loanId, object: { userId, anonymous: false } });
+    this.update({ loanId, object: { referralId: true }, operator: '$unset' });
+
     borrowers.forEach(({ _id: borrowerId }) => {
       BorrowerService.update({ borrowerId, object: { userId } });
     });
@@ -386,6 +390,17 @@ export class LoanService extends CollectionService {
         PropertyService.update({ propertyId, object: { userId } });
       }
     });
+
+    // Refer this user only if he hasn't already been referred
+    if (referralId && UserService.exists(referralId)) {
+      const { referredByUserLink } = UserService.fetchOne({
+        $filters: { _id: userId },
+        referredByUserLink: 1,
+      });
+      if (!referredByUserLink) {
+        UserService.setReferredBy({ userId, proId: referralId });
+      }
+    }
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
@@ -704,7 +719,7 @@ export class LoanService extends CollectionService {
     const lastWeek = moment()
       .subtract('days', 7)
       .toDate();
-      
+
     return this.baseUpdate(
       {
         anonymous: true,
