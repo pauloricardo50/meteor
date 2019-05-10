@@ -5,11 +5,7 @@ import queryString from 'query-string';
 
 import { sortObject } from 'core/api/helpers/index';
 import UserService from 'core/api/users/server/UserService';
-import {
-  getEveryPossibleFormatting,
-  OBJECT_FORMATS,
-  formatObject,
-} from '../helpers';
+import { OBJECT_FORMATS, formatObject } from '../helpers';
 
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
