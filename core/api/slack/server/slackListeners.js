@@ -1,8 +1,10 @@
+import { PropertyService } from 'core/api/properties/server/PropertyService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
   sellPromotionLot,
   proInviteUser,
+  anonymousLoanInsert,
 } from '../../methods';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import UserService from '../../users/server/UserService';
@@ -19,7 +21,7 @@ import {
 
 ServerEventService.addMethodListener(
   bookPromotionLot,
-  ({ userId }, { promotionLotId, loanId }) => {
+  ({ context: { userId }, params: { promotionLotId, loanId } }) => {
     const currentUser = UserService.get(userId);
     const promotionLot = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -37,7 +39,7 @@ ServerEventService.addMethodListener(
 
 ServerEventService.addMethodListener(
   sellPromotionLot,
-  ({ userId }, { promotionLotId }) => {
+  ({ context: { userId }, params: { promotionLotId } }) => {
     const currentUser = UserService.get(userId);
     const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -56,7 +58,10 @@ ServerEventService.addMethodListener(
 
 ServerEventService.addMethodListener(
   proInviteUser,
-  ({ userId }, { propertyIds = [], promotionIds = [], user }) => {
+  ({
+    context: { userId },
+    params: { propertyIds = [], promotionIds = [], user },
+  }) => {
     const currentUser = UserService.get(userId);
     const invitedUser = UserService.getByEmail(user.email);
 
@@ -76,5 +81,28 @@ ServerEventService.addMethodListener(
         user: { ...invitedUser, email: user.email },
       });
     }
+  },
+);
+
+ServerEventService.addMethodListener(
+  anonymousLoanInsert,
+  ({ params: { proPropertyId, referralId }, result: loanId }) => {
+    const property = proPropertyId
+      && PropertyService.fetchOne({
+        $filters: { _id: proPropertyId },
+        address1: 1,
+      });
+    const { name: loanName } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      name: 1,
+    });
+    const referral = referralId
+      && UserService.fetchOne({
+        $filters: { _id: referralId },
+        name: 1,
+        organisations: { name: 1 },
+      });
+
+    promotionLotBooked({ loanName, loanId, property, referral });
   },
 );
