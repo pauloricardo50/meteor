@@ -9,51 +9,55 @@ import Icon from 'core/components/Icon/Icon';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
 import MyLoansTable from './MyLoansTable';
+import AdminDashboardStats from './AdminDashboardStats';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
-  <section className="card1 card-top admin-dashboard-page">
-    <Helmet>
-      <title>Dashboard</title>
-    </Helmet>
-    <h1 className="flex center-align">
-      <Icon type="home" style={{ marginRight: 8 }} size={32} />
-      <span>Admin Dashboard</span>
-    </h1>
+  <>
+    <AdminDashboardStats />
+    <section className="card1 card-top admin-dashboard-page">
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
+      <h1 className="flex center-align">
+        <Icon type="home" style={{ marginRight: 8 }} size={32} />
+        <span>Admin Dashboard</span>
+      </h1>
 
-    <div className="flex space-children">
-      <UserAdder currentUser={currentUser} />
-      <Button
-        primary
-        raised
-        onClick={() =>
-          adminLoanInsert
-            .run({})
-            .then(loanId => history.push(`/loans/${loanId}`))
-        }
-      >
-        Nouvelle hypothèque
-      </Button>
-    </div>
+      <div className="flex space-children">
+        <UserAdder currentUser={currentUser} />
+        <Button
+          primary
+          raised
+          onClick={() =>
+            adminLoanInsert
+              .run({})
+              .then(loanId => history.push(`/loans/${loanId}`))
+          }
+        >
+          Nouvelle hypothèque
+        </Button>
+      </div>
 
-    <h2 className="text-center">
-      <T id="AdminDashboardPage.tasks" />
-    </h2>
-    <AllTasksTable
-      tableFilters={{
-        filters: {
-          assignedEmployee: { emails: [{ address: true }] },
-          status: [TASK_STATUS.ACTIVE],
-        },
-        options: {
-          address: [currentUser.email, undefined],
-          status: Object.values(TASK_STATUS),
-        },
-      }}
-    />
+      <h2 className="text-center">
+        <T id="AdminDashboardPage.tasks" />
+      </h2>
+      <AllTasksTable
+        tableFilters={{
+          filters: {
+            assignedEmployee: { emails: [{ address: true }] },
+            status: [TASK_STATUS.ACTIVE],
+          },
+          options: {
+            address: [currentUser.email, undefined],
+            status: Object.values(TASK_STATUS),
+          },
+        }}
+      />
 
-    <h2 className="text-center">Mes dossiers</h2>
-    <MyLoansTable currentUser={currentUser} />
-  </section>
+      <h2 className="text-center">Mes dossiers</h2>
+      <MyLoansTable currentUser={currentUser} />
+    </section>
+  </>
 );
 
 export default AdminDashboardPage;
