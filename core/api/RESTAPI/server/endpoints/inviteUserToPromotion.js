@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 
 import { proInviteUser } from '../../../methods';
-import { withMeteorUserId } from '../helpers';
+import { withMeteorUserId, literalToString, stringToLiteral } from '../helpers';
 import { checkQuery } from './helpers';
 
 const querySchema = new SimpleSchema({
@@ -23,7 +23,10 @@ const inviteUserToPromotionAPI = ({
 
   return withMeteorUserId(userId, () =>
     proInviteUser.run({
-      promotionIds: [promotionId].filter(x => x),
+      promotionIds: [promotionId]
+        .map(stringToLiteral)
+        .filter(x => x)
+        .map(literalToString),
       user: { ...user, invitedBy: userId },
       shareSolvency,
     })).then(() => ({
