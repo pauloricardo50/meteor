@@ -2,6 +2,7 @@ import { branch, renderComponent, compose, withProps } from 'recompose';
 
 import AnonymousAppPage from './AnonymousAppPage';
 import PropertyStartPage from './PropertyStartPage';
+import { userLoanInsert } from 'core/api/methods/index';
 
 export default compose(
   withProps(({ location }) => {
@@ -18,4 +19,7 @@ export default compose(
   }),
   branch(({ propertyId }) => !!propertyId, renderComponent(PropertyStartPage)),
   branch(({ currentUser }) => !currentUser, renderComponent(AnonymousAppPage)),
+  withProps(() => ({
+    insertLoan: () => userLoanInsert.run(),
+  })),
 );

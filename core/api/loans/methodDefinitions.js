@@ -63,6 +63,10 @@ export const adminLoanInsert = new Method({
   },
 });
 
+export const userLoanInsert = new Method({
+  name: 'userLoanInsert',
+});
+
 export const addNewStructure = new Method({
   name: 'addNewStructure',
   params: {

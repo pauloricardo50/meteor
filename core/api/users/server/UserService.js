@@ -223,7 +223,7 @@ class UserService extends CollectionService {
       sendInvitation: false,
     });
 
-    const loanId = LoanService.adminLoanInsert({ userId });
+    const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
     return sendEmail.run({

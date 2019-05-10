@@ -65,7 +65,7 @@ Meteor.methods({
         password: withPassword && USER_PASSWORD,
       },
     });
-    LoanService.adminLoanInsert({ userId });
+    LoanService.fullLoanInsert({ userId });
 
     const loginToken = UserService.getLoginToken({ userId });
     return loginToken;

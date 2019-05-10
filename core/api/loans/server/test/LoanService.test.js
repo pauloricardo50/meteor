@@ -94,7 +94,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('adminLoanInsert', () => {
+  describe('fullLoanInsert', () => {
     let userId;
 
     beforeEach(() => {
@@ -105,14 +105,14 @@ describe('LoanService', function () {
       expect(LoanService.countAll()).to.equal(0, 'loans 0');
       expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
 
-      LoanService.adminLoanInsert({ userId });
+      LoanService.fullLoanInsert({ userId });
 
       expect(LoanService.countAll()).to.equal(1, 'loans 1');
       expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
     });
 
     it('adds the same userId on all 3 documents', () => {
-      LoanService.adminLoanInsert({ userId });
+      LoanService.fullLoanInsert({ userId });
 
       expect(LoanService.findOne({}).userId).to.equal(userId, 'loans userId');
       expect(BorrowerService.findOne({}).userId).to.equal(

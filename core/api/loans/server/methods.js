@@ -24,6 +24,7 @@ import {
   setLoanStep,
   loanShareSolvency,
   anonymousLoanInsert,
+  userLoanInsert,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -66,9 +67,14 @@ popLoanValue.setHandler((context, { loanId, object }) => {
 
 export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  return LoanService.adminLoanInsert({ userId });
+  return LoanService.fullLoanInsert({ userId });
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
+
+userLoanInsert.setHandler(({ userId }) => {
+  SecurityService.checkLoggedIn();
+  return LoanService.fullLoanInsert({ userId });
+});
 
 export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);

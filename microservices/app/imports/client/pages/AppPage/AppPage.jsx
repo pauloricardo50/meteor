@@ -1,16 +1,15 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import { ROLES } from 'core/api/constants';
+import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
 import AppPageContainer from './AppPageContainer';
 
-export const AppPage = ({ currentUser: { emails, loans, roles } }) => {
+export const AppPage = ({ currentUser: { emails, loans, roles }, insertLoan }) => {
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }
@@ -20,7 +19,7 @@ export const AppPage = ({ currentUser: { emails, loans, roles } }) => {
   return (
     <section id="app-page" className="app-page flex-col center animated fadeIn">
       {!emails[0].verified && (
-        <div style={{ marginBottom: 16 }}>
+        <div className="unverified-email">
           <DashboardUnverified />
         </div>
       )}
@@ -35,10 +34,10 @@ export const AppPage = ({ currentUser: { emails, loans, roles } }) => {
       ))}
 
       {loans.length === 0 && (
-        <p className="description">
-          <T id="AppPage.empty" />
+        <>
+          <WelcomeScreen displayCheckbox={false} handleClick={insertLoan} />
           {userIsPro && (
-            <>
+            <p className="description">
               <br />
               <br />
               Pour accéder à votre interface e-Potek Pro, veuillez vous rendre
@@ -46,9 +45,9 @@ export const AppPage = ({ currentUser: { emails, loans, roles } }) => {
               <a className="color" href={Meteor.settings.public.subdomains.pro}>
                 pro.e-potek.ch
               </a>
-            </>
+            </p>
           )}
-        </p>
+        </>
       )}
     </section>
   );
