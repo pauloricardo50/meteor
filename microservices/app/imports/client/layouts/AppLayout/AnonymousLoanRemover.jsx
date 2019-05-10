@@ -2,7 +2,7 @@
 import React from 'react';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
 
-let AnonymousLoanRemover;
+let AnonymousLoanRemover = () => null;
 
 if (process.env.NODE_ENV !== 'production') {
   AnonymousLoanRemover = () => {
@@ -22,12 +22,10 @@ if (process.env.NODE_ENV !== 'production') {
           window.location.reload();
         }}
       >
-        Remove anon loan
+        [DEV] Remove anon loan
       </button>
     );
   };
 }
-
-AnonymousLoanRemover = () => null;
 
 export default AnonymousLoanRemover;
