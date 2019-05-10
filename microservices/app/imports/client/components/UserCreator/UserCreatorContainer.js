@@ -7,7 +7,7 @@ import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import { SIGNUP_SUCCESS_PAGE } from 'imports/startup/client/appRoutes';
 
-const schema = new SimpleSchema({
+export const userSchema = new SimpleSchema({
   firstName: String,
   lastName: String,
   email: { type: String, regEx: SimpleSchema.RegEx.Email },
@@ -18,7 +18,7 @@ const schema = new SimpleSchema({
 export default compose(
   withRouter,
   withProps(({ history }) => ({
-    schema,
+    schema: userSchema,
     onSubmit: values =>
       anonymousCreateUser
         .run({

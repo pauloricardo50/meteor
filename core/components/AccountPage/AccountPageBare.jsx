@@ -8,6 +8,7 @@ import AccountResetter from '../AccountResetter/AccountResetter';
 import PasswordChange from './PasswordChange';
 import DeveloperSection from './DeveloperSection';
 import AccountPageHeader from './AccountPageHeader';
+import AccountModifier from './AccountModifier';
 
 type AccountPageBareProps = {};
 
@@ -39,7 +40,11 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
         )}
       </div>
 
-      <PasswordChange />
+      <span className="flex-col space-children">
+        <AccountModifier currentUser={currentUser} />
+
+        <PasswordChange />
+      </span>
 
       {Meteor.microservice === 'pro' && <DeveloperSection user={currentUser} />}
 
@@ -47,4 +52,5 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
     </div>
   );
 };
+
 export default AccountPageBare;
