@@ -14,13 +14,15 @@ import {
   EMAIL_IDS,
   ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
+  LOAN_STATUS,
+  PROPERTY_CATEGORY,
 } from '../../../constants';
+import UserService from '../../../users/server/UserService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
 import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
-import { LOAN_STATUS } from '../../loanConstants';
 
 describe('LoanService', function () {
   this.timeout(10000);
@@ -683,6 +685,77 @@ describe('LoanService', function () {
       expect(() =>
         LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
     });
+
+    it('does not throw for a PRO property, and assigns only USER properties', () => {
+      const propertyId1 = Factory.create('property', {
+        category: PROPERTY_CATEGORY.PRO,
+      })._id;
+      const propertyId2 = Factory.create('property')._id;
+
+      Factory.create('loan', { propertyIds: [propertyId1] })._id;
+      loanId = Factory.create('loan', {
+        propertyIds: [propertyId2, propertyId1],
+      })._id;
+
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.not.throw();
+      expect(PropertyService.get(propertyId1).userId).to.equal(undefined);
+      expect(PropertyService.get(propertyId2).userId).to.equal('dude');
+    });
+
+    it('refers a user if this is his first loan', () => {
+      generator({
+        users: [
+          { _id: 'userId' },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'proId' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.include({
+        referredByUserLink: 'proId',
+        referredByOrganisationLink: 'orgId',
+      });
+    });
+
+    it('does not change referredBy if it is already set', () => {
+      generator({
+        users: [
+          { _id: 'userId', referredByUser: { _id: 'proId1' } },
+          {
+            _id: 'proId2',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'proId2' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.equal({
+        _id: 'userId',
+        referredByUserLink: 'proId1',
+      });
+    });
   });
 
   describe('sendNegativeFeedbackToAllLenders', () => {
@@ -1101,6 +1174,27 @@ describe('LoanService', function () {
       });
 
       expect(LoanService.expireAnonymousLoans()).to.equal(0);
+    });
+  });
+
+  describe('insertAnonymousLoan', () => {
+    it('inserts an anonymous loan', () => {
+      LoanService.insertAnonymousLoan({ referralId: 'someId' });
+
+      expect(LoanService.findOne({})).to.deep.include({
+        anonymous: true,
+        displayWelcomeScreen: false,
+        referralId: 'someId',
+      });
+    });
+
+    it('creates a link with a property if provided', () => {
+      generator({ properties: { _id: 'propertyId' } });
+      LoanService.insertAnonymousLoan({ proPropertyId: 'propertyId' });
+
+      expect(LoanService.findOne({})).to.deep.include({
+        propertyIds: ['propertyId'],
+      });
     });
   });
 });

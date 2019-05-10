@@ -396,11 +396,12 @@ export class LoanService extends CollectionService {
 
     // Refer this user only if he hasn't already been referred
     if (referralId && UserService.exists(referralId)) {
-      const { referredByUserLink } = UserService.fetchOne({
+      const { referredByUserLink, referredByOrganisationLink } = UserService.fetchOne({
         $filters: { _id: userId },
         referredByUserLink: 1,
+        referredByOrganisationLink: 1,
       });
-      if (!referredByUserLink) {
+      if (!referredByUserLink && !referredByOrganisationLink) {
         UserService.setReferredBy({ userId, proId: referralId });
       }
     }
