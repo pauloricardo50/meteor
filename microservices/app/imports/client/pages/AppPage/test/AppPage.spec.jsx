@@ -5,6 +5,7 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Redirect } from 'react-router-dom';
 
 import { AppPage } from '../AppPage';
+import { WelcomeScreen } from '../../../components/WelcomeScreen/WelcomeScreen';
 
 describe('AppPage', () => {
   let props;
@@ -14,13 +15,8 @@ describe('AppPage', () => {
     props = { currentUser: { emails: [{}], loans: [], roles: [] } };
   });
 
-  it('renders some text if no loan is passed', () => {
-    expect(component().find('p').length).to.equal(1);
-    expect(component()
-      .find('p')
-      .first()
-      .children()
-      .text()).to.equal('<T />');
+  it('renders WelcomeScreen if no loan is passed', () => {
+    expect(component().find(WelcomeScreen).length).to.equal(1);
   });
 
   it('redirects to the loan if only one loan exists', () => {

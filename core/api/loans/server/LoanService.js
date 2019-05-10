@@ -140,7 +140,7 @@ export class LoanService extends CollectionService {
       || loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
     ) {
       // Don't do anything if this loan is already in requested mode
-      throw new Meteor.Error('La demande est déjà en cours, ou effectuée.');
+      throw new Meteor.Error('La vérification est déjà en cours, ou effectuée.');
     }
 
     return this.update({

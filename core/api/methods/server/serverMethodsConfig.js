@@ -31,6 +31,6 @@ Method.addAfterExecution(({ context, config, params, result, error }) => {
   }
 
   if (!error) {
-    ServerEventService.emitMethod({ context, config, params, result, error });
+    ServerEventService.emitMethod(config, { context, config, params, result, error });
   }
 });

@@ -13,7 +13,6 @@ import LoanService from '../LoanService';
 let userId;
 let adminId;
 
-
 describe('Loan methods', () => {
   beforeEach(() => {
     resetDatabase();
