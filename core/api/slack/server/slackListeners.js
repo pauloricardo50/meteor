@@ -5,6 +5,7 @@ import {
   sellPromotionLot,
   proInviteUser,
   anonymousLoanInsert,
+  userLoanInsert,
 } from '../../methods';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import UserService from '../../users/server/UserService';
@@ -13,6 +14,8 @@ import {
   promotionLotBooked,
   promotionLotSold,
   referralOnlyNotification,
+  newAnonymousLoan,
+  newLoan,
 } from './slackNotifications';
 import {
   sendPropertyInvitations,
@@ -103,6 +106,19 @@ ServerEventService.addMethodListener(
         organisations: { name: 1 },
       });
 
-    promotionLotBooked({ loanName, loanId, property, referral });
+    newAnonymousLoan({ loanName, loanId, property, referral });
+  },
+);
+
+ServerEventService.addMethodListener(
+  userLoanInsert,
+  ({ context: { userId }, result: loanId }) => {
+    const currentUser = UserService.get(userId);
+    const { name: loanName } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      name: 1,
+    });
+
+    newLoan({ loanId, loanName, currentUser });
   },
 );
