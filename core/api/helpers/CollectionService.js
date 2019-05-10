@@ -106,7 +106,7 @@ class CollectionService {
   }
 
   exists(_id) {
-    return !!this.findOne({ _id }, { fields: { _id: 1 } });
+    return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
   }
 
   // Don't return the results from linker
