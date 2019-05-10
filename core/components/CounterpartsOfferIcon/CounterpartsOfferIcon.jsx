@@ -9,7 +9,7 @@ import T from '../Translation';
 type CounterpartsOfferIconProps = {};
 
 const CounterpartsOfferIcon = (props: CounterpartsOfferIconProps) => (
-  <Tooltip title={<T id="Forms.withCounterparts" />}>
+  <Tooltip title={<T id="Forms.withCounterparts" />} enterTouchDelay={0}>
     <FontAwesomeIcon icon={faExclamationCircle} className="icon primary" />
   </Tooltip>
 );

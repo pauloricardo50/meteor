@@ -44,19 +44,19 @@ const LoanProgress = ({
   const { icon, text, className = '' } = getVerificationData(verificationStatus);
   return (
     <div className="promotion-progress">
-      <Tooltip title="Formulaires remplis">
+      <Tooltip title="Formulaires remplis" enterTouchDelay={0}>
         <span>
           <Percent value={info} rounded />
         </span>
       </Tooltip>
 
-      <Tooltip title="Documents uploadés">
+      <Tooltip title="Documents uploadés" enterTouchDelay={0}>
         <span>
           <Percent value={documents} rounded />
         </span>
       </Tooltip>
 
-      <Tooltip title={text}>
+      <Tooltip title={text} enterTouchDelay={0}>
         <Icon type={icon} className={className} />
       </Tooltip>
     </div>
