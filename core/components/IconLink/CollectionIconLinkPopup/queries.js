@@ -116,7 +116,7 @@ export default {
       adminOrganisations,
       {
         _id,
-        $body: { name: 1, logo: 1, type: 1 },
+        $body: { name: 1, logo: 1, type: 1, offerCount: 1 },
       },
       cb,
     ),

@@ -23,7 +23,7 @@ const tagPickerSchema = new SimpleSchema({
 });
 
 export default compose(
-  withState('tags', 'setTags', undefined),
+  withState('tags', 'setTags', [ORGANISATION_TAGS.CH_RETAIL]),
   withSmartQuery({
     query: adminOrganisations,
     params: ({ tags }) => ({
