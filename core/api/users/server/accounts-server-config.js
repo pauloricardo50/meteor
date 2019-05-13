@@ -1,6 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
+import pick from 'lodash/pick';
 import Analytics from '../../analytics/Analytics';
 
 // Accounts.onCreateUser((options, user) => user);
@@ -25,4 +25,14 @@ Accounts.onLogin(({ user }) => {
     userId,
     event: 'User Logged in',
   });
+});
+
+Accounts.onCreateUser((options, user) => {
+  if (options.profile) {
+    return {
+      ...pick(options.profile, ['firstName', 'lastName', 'phoneNumbers']),
+      ...user,
+    };
+  }
+  return user;
 });

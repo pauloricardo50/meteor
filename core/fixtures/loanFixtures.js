@@ -172,7 +172,7 @@ export const addLoanWithData = ({
   userId,
   addOffers,
 }) => {
-  const loanId = LoanService.adminLoanInsert({ userId });
+  const loanId = LoanService.fullLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
   const loan = adminLoans.clone({ _id: loanId }).fetchOne();
   const propertyId = properties.length

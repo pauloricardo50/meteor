@@ -14,7 +14,6 @@ import {
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import updateForProps from 'core/containers/updateForProps';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 
 type SingleLoanPageHeaderProps = {};
@@ -67,7 +66,7 @@ const additionalActions = loan => (status, prevStatus) => {
 };
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
-  const { user } = loan;
+  const { user, anonymous } = loan;
 
   return (
     <div className="single-loan-page-header">
@@ -86,7 +85,12 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
               ),
             }}
           />
-          {user ? (
+          {anonymous ? (
+            <small className="secondary">
+              {' - '}
+              Anonyme
+            </small>
+          ) : user ? (
             <CollectionIconLink
               relatedDoc={{ ...user, collection: USERS_COLLECTION }}
             />
@@ -126,10 +130,4 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
   );
 };
 
-export default updateForProps([
-  'loan.name',
-  'loan.user._id',
-  'loan.status',
-  'loan.structure.wantedLoan',
-  'loan.selectedStructure',
-])(SingleLoanPageHeader);
+export default SingleLoanPageHeader;

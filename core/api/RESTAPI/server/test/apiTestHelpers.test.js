@@ -5,6 +5,7 @@ import queryString from 'query-string';
 
 import { sortObject } from 'core/api/helpers/index';
 import UserService from 'core/api/users/server/UserService';
+import { OBJECT_FORMATS, formatObject } from '../helpers';
 
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
@@ -50,7 +51,14 @@ const signBody = ({ body, privateKey }) => {
   return signature;
 };
 
-const signRequest = ({ body, query, timestamp, nonce, privateKey }) => {
+export const signRequest = ({
+  body,
+  query,
+  timestamp,
+  nonce,
+  privateKey,
+  format,
+}) => {
   if (!privateKey) {
     return '12345';
   }
@@ -66,6 +74,16 @@ const signRequest = ({ body, query, timestamp, nonce, privateKey }) => {
 
   if (body) {
     objectToSign = { ...objectToSign, body: sortObject(body) };
+  }
+
+  if (Object.values(OBJECT_FORMATS).includes(format)) {
+    const formattedObject = formatObject(objectToSign, format);
+    const signature = key.sign(
+      JSON.stringify(formattedObject),
+      'base64',
+      'utf8',
+    );
+    return signature;
   }
 
   const signature = key.sign(JSON.stringify(objectToSign), 'base64', 'utf8');
@@ -103,6 +121,7 @@ export const makeHeaders = ({
   timestamp,
   nonce,
   query,
+  signature,
 }) => {
   let keyPair = { publicKey, privateKey };
 
@@ -115,13 +134,14 @@ export const makeHeaders = ({
     'X-EPOTEK-Authorization': `EPOTEK ${keyPair.publicKey.replace(
       /\r?\n|\r/g,
       '',
-    )}:${signRequest({
-      body,
-      query,
-      privateKey: keyPair.privateKey,
-      timestamp,
-      nonce,
-    })}`,
+    )}:${signature
+      || signRequest({
+        body,
+        query,
+        privateKey: keyPair.privateKey,
+        timestamp,
+        nonce,
+      })}`,
     'X-EPOTEK-Nonce': nonce,
     'X-EPOTEK-Timestamp': timestamp,
   };

@@ -97,16 +97,18 @@ export const getAccountsUrl = path => (user, url) => {
   const userIsPro = Roles.userIsInRole(user, ROLES.PRO);
   const userIsAdmin = Roles.userIsInRole(user, ROLES.ADMIN)
     || Roles.userIsInRole(user, ROLES.DEV);
-  const enrollToken = url.split(`/${path}/`)[1];
+  const token = url.split(`/${path}/`)[1];
 
   if (userIsUser) {
-    return `${APP_URL}/${path}/${enrollToken}`;
+    return `${APP_URL}/${path}/${token}`;
   }
   if (userIsPro) {
-    return `${PRO_URL}/${path}/${enrollToken}`;
+    return `${PRO_URL}/${path}/${token}`;
   }
   if (userIsAdmin) {
-    return `${ADMIN_URL}/${path}/${enrollToken}`;
+    // Admin does not have the enroll, verify, and reset-password pages
+    // Just send them to APP
+    return `${APP_URL}/${path}/${token}`;
   }
 
   return url;

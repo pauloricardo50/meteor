@@ -68,7 +68,12 @@ export const titles = {
 };
 
 export const components = {
-  [LOANS_COLLECTION]: ({ user, structures = [], selectedStructure }) => {
+  [LOANS_COLLECTION]: ({
+    user,
+    structures = [],
+    selectedStructure,
+    anonymous,
+  }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
 
     return (
@@ -84,6 +89,7 @@ export const components = {
           )}
         </span>
         <br />
+        {anonymous && 'Anonyme'}
         {user && user.name}
         <br />
         Conseiller:{' '}
@@ -160,13 +166,14 @@ export const components = {
       Vendus: {soldPromotionLots.length}
     </span>
   ),
-  [ORGANISATIONS_COLLECTION]: ({ logo }) => (
+  [ORGANISATIONS_COLLECTION]: ({ logo, offerCount }) => (
     <span>
       {logo && (
         <div style={{ width: 100, height: 50 }}>
           <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
         </div>
       )}
+      {offerCount > 0 && `Offres: ${offerCount}`}
     </span>
   ),
   [CONTACTS_COLLECTION]: ({ organisations = [], email, phoneNumber }) => (

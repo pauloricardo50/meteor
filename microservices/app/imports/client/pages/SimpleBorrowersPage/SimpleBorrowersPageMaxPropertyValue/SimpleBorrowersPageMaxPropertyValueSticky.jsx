@@ -14,6 +14,16 @@ import { SimpleMaxPropertyValue } from '../../../components/SimpleMaxPropertyVal
 
 type SimpleBorrowersPageMaxPropertyValueStickyProps = {};
 
+const displayPropertyValueRange = (values) => {
+  const { min, max } = values;
+
+  if (min) {
+    return `${toMoney(min.propertyValue)} - ${toMoney(max.propertyValue)}`;
+  }
+
+  return toMoney(max.propertyValue);
+};
+
 const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
   const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
 
@@ -36,10 +46,7 @@ const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
         Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
-      <h3>
-        {toMoney(values.min.propertyValue)}&nbsp;-&nbsp;
-        {toMoney(values.max.propertyValue)}
-      </h3>
+      <h3>{displayPropertyValueRange(values)}</h3>
     </div>
   );
 };

@@ -118,4 +118,20 @@ describe('LenderRulesInitializator', () => {
     const calc = new Calculator({ loan, lenderRules });
     expect(calc.adminComments).to.deep.equal(['a', 'b']);
   });
+
+  it('does not skip a rule if it is 0', () => {
+    lenderRules = [{ filter: { and: [true] }, dividendsConsideration: 0 }];
+    const calc = new Calculator({ loan, lenderRules });
+    expect(calc.dividendsConsideration).to.equal(0);
+  });
+
+  it('skips undefined and null rules', () => {
+    lenderRules = [
+      { filter: { and: [true] }, dividendsConsideration: 0.5 },
+      { filter: { and: [true] }, dividendsConsideration: undefined },
+      { filter: { and: [true] }, dividendsConsideration: null },
+    ];
+    const calc = new Calculator({ loan, lenderRules });
+    expect(calc.dividendsConsideration).to.equal(0.5);
+  });
 });

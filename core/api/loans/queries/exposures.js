@@ -1,3 +1,4 @@
+import './anonymousLoan.expose';
 import './adminLoans.expose';
 import './fullLoan.expose';
 import './loansAssignedToAdmin.expose';

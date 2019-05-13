@@ -184,7 +184,7 @@ const Icon = ({
 
   if (tooltip) {
     return (
-      <Tooltip placement={tooltipPlacement} title={tooltip}>
+      <Tooltip placement={tooltipPlacement} title={tooltip} enterTouchDelay={0}>
         {icon}
       </Tooltip>
     );

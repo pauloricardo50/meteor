@@ -63,6 +63,10 @@ export const adminLoanInsert = new Method({
   },
 });
 
+export const userLoanInsert = new Method({
+  name: 'userLoanInsert',
+});
+
 export const addNewStructure = new Method({
   name: 'addNewStructure',
   params: {
@@ -157,4 +161,12 @@ export const setLoanStep = new Method({
 export const loanShareSolvency = new Method({
   name: 'loanShareSolvency',
   params: { loanId: String, shareSolvency: Boolean },
+});
+
+export const anonymousLoanInsert = new Method({
+  name: 'anonymousLoanInsert',
+  params: {
+    proPropertyId: Match.Maybe(String),
+    referralId: Match.Maybe(String),
+  },
 });

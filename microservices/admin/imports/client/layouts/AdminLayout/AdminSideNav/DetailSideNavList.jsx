@@ -33,6 +33,7 @@ const getListItemDetails = (
     status,
     promotion,
     organisations = [],
+    anonymous,
   },
 ) => {
   switch (collectionName) {
@@ -46,7 +47,9 @@ const getListItemDetails = (
     const loanValueText = loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
 
     return {
-      primary: `${name} - ${user ? user.name : "Pas d'utilisateur"}`,
+      primary: `${name} - ${
+        anonymous ? 'Anonyme' : user ? user.name : "Pas d'utilisateur"
+      }`,
       secondary: (
         <span>
           <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}

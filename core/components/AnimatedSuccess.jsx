@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const AnimatedSuccess = ({ width, height }) => (
+const AnimatedSuccess = () => (
   <span className="animated-success">
     <svg
       className="checkmark"
@@ -12,8 +11,8 @@ const AnimatedSuccess = ({ width, height }) => (
         className="checkmark__circle"
         cx="26"
         cy="26"
-        r="25"
-        fill="none"
+        r="100"
+        fill="red"
       />
       <path
         className="checkmark__check"
@@ -23,7 +22,5 @@ const AnimatedSuccess = ({ width, height }) => (
     </svg>
   </span>
 );
-
-AnimatedSuccess.propTypes = {};
 
 export default AnimatedSuccess;
