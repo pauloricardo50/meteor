@@ -36,7 +36,7 @@ const TopNavButtons = ({
         <Button
           label={<T id="TopNav.login" />}
           primary
-          onClick={() => history.push('login')}
+          onClick={() => history.push('/login')}
         />
       )}
     </div>
