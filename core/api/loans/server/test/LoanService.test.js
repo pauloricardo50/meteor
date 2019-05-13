@@ -639,7 +639,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('assignLoanToUser', () => {
+  describe.only('assignLoanToUser', () => {
     it('assigns all properties and borrowers to the new user', () => {
       const userId = Factory.create('user')._id;
       const borrowerId1 = Factory.create('borrower')._id;
@@ -661,46 +661,32 @@ describe('LoanService', function () {
     });
 
     it('throws if a borrower is assigned to multiple loans', () => {
-      const borrowerId1 = Factory.create('borrower')._id;
-      const borrowerId2 = Factory.create('borrower')._id;
-
-      loanId = Factory.create('loan', {
-        borrowerIds: [borrowerId1],
-      })._id;
-      Factory.create('loan', {
-        borrowerIds: [borrowerId1, borrowerId2],
-      });
+      generator({
+        loans: [{_id: 'loanId', borrowers: {_id: 'borr1'}}, {borrowers: [{_id: 'borr1'}, {}]}]
+      })
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('emprunteur');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('emprunteur');
     });
 
     it('throws if a property is assigned to multiple loans', () => {
-      const propertyId1 = Factory.create('property')._id;
-      const propertyId2 = Factory.create('property')._id;
-
-      loanId = Factory.create('loan', { propertyIds: [propertyId1] })._id;
-      Factory.create('loan', { propertyIds: [propertyId2, propertyId1] });
+      generator({
+        loans: [{_id: 'loanId', properties: {_id: 'propId1'}}, {properties: [{_id: 'propId1'}, {}]}]
+      })
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('bien immobilier');
     });
 
     it('does not throw for a PRO property, and assigns only USER properties', () => {
-      const propertyId1 = Factory.create('property', {
-        category: PROPERTY_CATEGORY.PRO,
-      })._id;
-      const propertyId2 = Factory.create('property')._id;
-
-      Factory.create('loan', { propertyIds: [propertyId1] })._id;
-      loanId = Factory.create('loan', {
-        propertyIds: [propertyId2, propertyId1],
-      })._id;
+      generator({
+        loans: [{ properties: {_id: 'propId1', category: PROPERTY_CATEGORY.PRO }}, {_id: 'loanId',properties: [{_id: 'propId2'},{_id: 'propId1'}]}]
+      })
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.not.throw();
-      expect(PropertyService.get(propertyId1).userId).to.equal(undefined);
-      expect(PropertyService.get(propertyId2).userId).to.equal('dude');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.not.throw();
+      expect(PropertyService.get('propId1').userId).to.equal(undefined);
+      expect(PropertyService.get('propId2').userId).to.equal('dude');
     });
 
     it('refers a user if this is his first loan', () => {

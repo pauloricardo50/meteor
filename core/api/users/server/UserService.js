@@ -69,7 +69,7 @@ class UserService extends CollectionService {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
-    
+
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
     }
@@ -404,8 +404,8 @@ class UserService extends CollectionService {
     return `${domain}/enroll-account/${token}`;
   }
 
-  setReferredBy({ userId, proId }) {
-    const organisationId = this.getUserMainOrganisationId(proId);
+  setReferredBy({ userId, proId, organisationId }) {
+    organisationId = organisationId || this.getUserMainOrganisationId(proId);
 
     return this.update({
       userId,

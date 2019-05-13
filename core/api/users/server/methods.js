@@ -106,8 +106,8 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+changeEmail.setHandler(({ userId }, params) => {
+  SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });
 

@@ -210,14 +210,6 @@ Meteor.methods({
     }
   },
 
-  resetYannisAccount({ userId }) {
-    SecurityService.checkCurrentUserIsDev();
-    Loans.remove({ userId });
-    Borrowers.remove({ userId });
-    Properties.remove({ userId });
-    return createYannisData(userId);
-  },
-
   createFakeOffer({ loanId }) {
     SecurityService.checkCurrentUserIsDev();
 

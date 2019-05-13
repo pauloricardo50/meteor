@@ -5,7 +5,7 @@ import T from '../Translation';
 import Button from '../Button';
 import Loading from '../Loading';
 
-class MisisngDoc extends Component {
+class MissingDoc extends Component {
   constructor() {
     super();
     this.state = { render: false };
@@ -46,4 +46,4 @@ class MisisngDoc extends Component {
     );
   }
 }
-export default MisisngDoc;
+export default MissingDoc;
