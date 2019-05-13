@@ -90,7 +90,7 @@ class CollectionService {
 
   count(...args) {
     this.checkQuery(args[0]);
-    return this.createQuery(...args).count();
+    return this.createQuery(...args).getCount();
   }
 
   countAll() {

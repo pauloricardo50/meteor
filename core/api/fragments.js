@@ -445,7 +445,8 @@ export const fullOrganisation = () => ({
   generatedRevenues: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
-  offers: fullOffer(),
+  offers: 1,
+  offerCount: 1,
   users: organisationUser(),
 });
 

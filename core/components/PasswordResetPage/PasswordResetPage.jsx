@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { Redirect } from 'react-router-dom';
 
 import TextField from '../Material/TextField';
 import Loading from '../Loading/Loading';
@@ -24,23 +25,7 @@ export const PasswordResetPage = ({
   const isValid = !!newPassword && newPassword === newPassword2;
 
   if (error) {
-    return (
-      <div className="password-reset-page" id="password-reset-page">
-        <div className="card1 card-top">
-          <h3 className="error">
-            <T id="PasswordResetPage.errorTitle" />
-          </h3>
-
-          <p className="description">
-            <T id="PasswordResetPage.errorDescription" />
-          </p>
-
-          <Button raised primary link to="/login">
-            <T id="PasswordResetPage.errorButton" />
-          </Button>
-        </div>
-      </div>
-    );
+    return <Redirect to="/login" />;
   }
 
   if (!user) {

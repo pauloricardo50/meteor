@@ -7,13 +7,6 @@ const employees = [
     phoneNumber: '+41 22 566 82 92',
   },
   {
-    email: 'joel@e-potek.ch',
-    src: '/img/team/joel.jpg',
-    name: 'Joel Xavier Santos',
-    title: 'Conseiller en financement',
-    phoneNumber: '+41 22 566 82 95',
-  },
-  {
     email: 'florian@e-potek.ch',
     src: '/img/team/florian.jpg',
     name: 'Florian Bienefelt',

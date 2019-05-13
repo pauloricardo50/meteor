@@ -5,6 +5,7 @@ import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton/IconButton';
 import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
+import { ORGANISATION_TAGS } from 'core/api/constants';
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
 
@@ -51,6 +52,7 @@ const LenderPicker = ({
         schema={tagPickerSchema}
         onSubmit={filterOrganisations}
         autosave
+        model={{ tags: [ORGANISATION_TAGS.CH_RETAIL] }}
       >
         <CustomAutoField name="tags" />
       </AutoForm>
