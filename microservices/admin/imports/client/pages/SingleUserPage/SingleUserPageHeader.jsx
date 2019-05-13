@@ -19,7 +19,7 @@ import EmailModifier from 'core/components/EmailModifier';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import { UserModifier } from '../../components/UserDialogForm';
-import UserDeleter from './../../../../../../core/components/EmailModifier
+import UserDeleter from '../../components/UserDeleter';
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
 import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
 
