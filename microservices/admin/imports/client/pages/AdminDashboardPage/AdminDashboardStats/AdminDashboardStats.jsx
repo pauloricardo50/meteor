@@ -22,7 +22,7 @@ const AdminDashboardStats = ({
       title="Nouveaux dossiers"
     >
       <Select
-        options={[{ id: 7, label: 'Semaine' }, { id: 30, label: 'Mois' }]}
+        options={[{ id: 7, label: '7 derniers jours' }, { id: 30, label: '30 derniers jours' }]}
         onChange={(_, v) => setPeriod(v)}
         value={period}
       />
