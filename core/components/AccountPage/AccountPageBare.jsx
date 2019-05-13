@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import T from '../Translation';
-import AccountResetter from '../AccountResetter/AccountResetter';
+import EmailModifier from '../EmailModifier';
 import PasswordChange from './PasswordChange';
 import DeveloperSection from './DeveloperSection';
 import AccountPageHeader from './AccountPageHeader';
@@ -24,7 +24,11 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
           <h4>
             <T id="AccountPage.email" />
           </h4>
-          <span className="secondary">{email}</span>
+          <span className="secondary">
+            {email}
+            {' '}
+            <EmailModifier userId={userId} email={email} />
+          </span>
         </div>
         {phoneNumbers && phoneNumbers.length > 0 && (
           <div>
@@ -47,8 +51,6 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
       </span>
 
       {Meteor.microservice === 'pro' && <DeveloperSection user={currentUser} />}
-
-      {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
     </div>
   );
 };

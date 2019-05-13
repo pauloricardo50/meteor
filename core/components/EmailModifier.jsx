@@ -2,8 +2,8 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { changeEmail } from 'core/api';
-import { AutoFormDialog } from 'imports/core/components/AutoForm2';
+import { changeEmail } from '../api/methods';
+import { AutoFormDialog } from './AutoForm2';
 
 type EmailModifierProps = {};
 
