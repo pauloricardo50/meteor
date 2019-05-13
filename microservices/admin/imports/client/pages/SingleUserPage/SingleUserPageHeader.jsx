@@ -15,11 +15,11 @@ import {
   ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import EmailModifier from 'core/components/EmailModifier';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import { UserModifier } from '../../components/UserDialogForm';
-import UserDeleter from './UserDeleter';
-import EmailModifier from './EmailModifier';
+import UserDeleter from './../../../../../../core/components/EmailModifier
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
 import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
 
@@ -77,12 +77,16 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             ))}
         </div>
         <div className="email">
-          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>{' '}
+          <Icon type="mail" />
+          {' '}
+          <a href={`mailto:${email}`}>{email}</a>
+          {' '}
           <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
-            <Icon type="phone" />{' '}
+            <Icon type="phone" />
+            {' '}
             {phoneNumbers.map(number => (
               <a key={number} href={`tel:${number}`}>
                 {number}
@@ -92,7 +96,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         )}
 
         <p className="secondary created-at">
-          <T id="UsersTable.createdAt" />{' '}
+          <T id="UsersTable.createdAt" />
+          {' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
 

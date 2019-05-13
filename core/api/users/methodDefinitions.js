@@ -171,3 +171,16 @@ export const proSetShareCustomers = new Method({
   name: 'proSetShareCustomers',
   params: { userId: String, organisationId: String, shareCustomers: Boolean },
 });
+
+export const anonymousCreateUser = new Method({
+  name: 'anonymousCreateUser',
+  params: {
+    loanId: Match.Maybe(String),
+    user: {
+      firstName: String,
+      lastName: String,
+      email: String,
+      phoneNumbers: [String],
+    },
+  },
+});

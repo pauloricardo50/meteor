@@ -1,5 +1,13 @@
-import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-// Accounts.onCreateUser((options, user) => user);
-Accounts.config({ forbidClientAccountCreation: !Meteor.isTest });
+import pick from 'lodash/pick';
+
+Accounts.onCreateUser((options, user) => {
+  if (options.profile) {
+    return {
+      ...pick(options.profile, ['firstName', 'lastName', 'phoneNumbers']),
+      ...user,
+    };
+  }
+  return user;
+});

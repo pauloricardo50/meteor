@@ -31,6 +31,8 @@ const getRedirect = ({ currentUser, history }) => {
     setTimeout(() => {
       window.location.replace(Meteor.settings.public.subdomains.app);
     }, 1000);
+    // Return REDIRECT to make sure nothing is rendered if we're waiting for a redirect
+    return 'REDIRECT';
   }
 
   return false;
@@ -50,7 +52,12 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
 
+  if (redirect === 'REDIRECT') {
+    return null;
+  }
+
   if (redirect && !isLogin) {
+    debugger;
     return <Redirect to={redirect} />;
   }
 

@@ -5,7 +5,7 @@ import { APPLICATION_TYPES } from 'core/api/constants';
 export const { Consumer, Provider } = React.createContext();
 
 const exactRoutesWithoutSidenav = ['/'];
-const routesWithoutSidenav = ['/enroll-account', '/reset-password'];
+const routesWithoutSidenav = ['/enroll-account', '/reset-password', '/signup'];
 
 const getShowSideNav = ({ location }, { applicationType }) =>
   exactRoutesWithoutSidenav.indexOf(location.pathname) === -1

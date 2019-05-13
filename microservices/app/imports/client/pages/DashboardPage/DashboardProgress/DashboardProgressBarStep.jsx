@@ -16,6 +16,7 @@ const DashboardProgressBarStep = ({ id, isDone, nb, displayLabel }) => (
         <T id={`Forms.step.${id}.tooltip`} />
       )
     }
+    enterTouchDelay={0}
   >
     <div key={nb} className="dashboard-progress-bar-step">
       <span className={classnames({ step: true, done: isDone })}>{nb}</span>

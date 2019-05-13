@@ -48,7 +48,6 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     storeRuleOrigin(rules, lenderRulesId) {
       Object.keys(rules).forEach((ruleName) => {
-        const ruleValue = rules[ruleName];
         this.ruleOrigin[ruleName] = lenderRulesId;
       });
     }

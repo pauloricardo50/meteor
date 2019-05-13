@@ -6,7 +6,7 @@ import { LOANS_COLLECTION } from '../../constants';
 
 ServerEventService.addMethodListener(
   requestLoanVerification,
-  (context, { loanId }) => {
+  ({ params: { loanId } }) => {
     const type = TASK_TYPE.VERIFY;
     TaskService.insert({ type, docId: loanId, collection: LOANS_COLLECTION });
   },

@@ -24,6 +24,7 @@ import {
   setUserReferredByOrganisation,
   proInviteUserToOrganisation,
   proSetShareCustomers,
+  anonymousCreateUser,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -105,8 +106,8 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+changeEmail.setHandler(({ userId }, params) => {
+  SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });
 
@@ -214,4 +215,11 @@ proInviteUserToOrganisation.setHandler(({ userId }, params) => {
 proSetShareCustomers.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
   return UserService.proSetShareCustomers(params);
+});
+
+anonymousCreateUser.setHandler((context, params) => {
+  if (params.loanId) {
+    SecurityService.loans.checkAnonymousLoan(params.loanId);
+  }
+  return UserService.anonymousCreateUser(params);
 });

@@ -4,6 +4,12 @@ import query from './appUser';
 
 query.expose({
   firewall(userId, params) {
+    if (!userId) {
+      // Don't throw unauthorized error here, it causes race-conditions in E2E tests
+      // to not reload this subscription
+      // So simply set userId to an impossible id
+      params.userId = 'none';
+    }
     params.userId = userId;
   },
   embody: {

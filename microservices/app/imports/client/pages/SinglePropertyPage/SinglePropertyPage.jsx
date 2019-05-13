@@ -27,7 +27,7 @@ const SinglePropertyPage = (props) => {
     loan,
     propertyId,
     history,
-    currentUser: { loans },
+    currentUser: { loans } = {},
   } = props;
   const { borrowers, properties, _id: loanId, residenceType, applicationType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);

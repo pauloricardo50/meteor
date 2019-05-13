@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
@@ -64,17 +63,16 @@ const LenderPicker = ({
               <T id={`Forms.type.${type}`} />
             </h3>
             {organisations[type].every(org => !isActive({ loan, org })) && (
-              <Tooltip title="Tout choisir">
-                <IconButton
-                  className="success"
-                  type="add"
-                  onClick={addAllLendersOfType({
-                    organisations,
-                    type,
-                    addLender,
-                  })}
-                />
-              </Tooltip>
+              <IconButton
+                tooltip="Tout choisir"
+                className="success"
+                type="add"
+                onClick={addAllLendersOfType({
+                  organisations,
+                  type,
+                  addLender,
+                })}
+              />
             )}
           </div>
           {organisations[type].map(org => (

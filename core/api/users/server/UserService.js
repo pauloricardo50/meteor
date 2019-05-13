@@ -65,6 +65,18 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
+  anonymousCreateUser = ({ user, loanId }) => {
+    const userId = this.adminCreateUser({
+      options: { ...user, sendEnrollmentEmail: true },
+    });
+
+    if (loanId) {
+      LoanService.assignLoanToUser({ userId, loanId });
+    }
+
+    return userId;
+  };
+
   // This should remain a simple inequality check
   doesUserExist = ({ email }) => this.getByEmail(email) != null;
 
@@ -211,7 +223,7 @@ class UserService extends CollectionService {
       sendInvitation: false,
     });
 
-    const loanId = LoanService.adminLoanInsert({ userId });
+    const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
     return sendEmail.run({
@@ -392,8 +404,8 @@ class UserService extends CollectionService {
     return `${domain}/enroll-account/${token}`;
   }
 
-  setReferredBy({ userId, proId }) {
-    const organisationId = this.getUserMainOrganisationId(proId);
+  setReferredBy({ userId, proId, organisationId }) {
+    organisationId = organisationId || this.getUserMainOrganisationId(proId);
 
     return this.update({
       userId,

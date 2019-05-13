@@ -1,5 +1,3 @@
-import { Match } from 'meteor/check';
-
 import SecurityService from '../../security';
 import query from './proPropertyLoans';
 import { proPropertyLoansResolver } from './resolvers';

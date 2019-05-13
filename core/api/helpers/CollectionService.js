@@ -101,6 +101,14 @@ class CollectionService {
     return this.find({}).fetch();
   }
 
+  get rawCollection() {
+    return this.collection.rawCollection();
+  }
+
+  exists(_id) {
+    return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
+  }
+
   // Don't return the results from linker
   addLink({ id, linkName, linkId, metadata = {} }) {
     const linker = this.collection.getLink(id, linkName);

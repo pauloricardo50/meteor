@@ -47,6 +47,7 @@ export default class AllLoansTable extends Component {
         updatedAt,
         structure,
         step,
+        anonymous,
       } = loan;
 
       return {
@@ -55,7 +56,9 @@ export default class AllLoansTable extends Component {
           name,
           {
             raw: user && user.name,
-            label: (
+            label: anonymous ? (
+              'Anonyme'
+            ) : (
               <CollectionIconLink
                 relatedDoc={{ ...user, collection: USERS_COLLECTION }}
                 key="user"

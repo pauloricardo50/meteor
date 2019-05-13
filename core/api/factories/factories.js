@@ -33,6 +33,7 @@ import {
   Tasks,
   Users,
 } from '..';
+import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -111,6 +112,7 @@ Factory.define('loan', Loans, {
 
 Factory.define('property', Properties, {
   value: 1000000,
+  category: PROPERTY_CATEGORY.USER,
 });
 
 Factory.define('offer', Offers, {

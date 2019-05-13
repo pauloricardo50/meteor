@@ -93,6 +93,10 @@ const isReferredByOrganisationUser = ({ organisationUsers, referredByUser }) =>
   organisationUsers.some(({ _id }) => referredByUser._id === _id);
 
 export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
+  if (!user) {
+    return { raw: null, label: '' };
+  }
+
   const { organisations = [] } = proUser;
   const organisationUsers = organisations.length ? organisations[0].users : [];
   const { referredByUser = {}, referredByOrganisation = {} } = user;
@@ -107,10 +111,7 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
     label = getUserNameAndOrganisation({ user: referredByUser });
   }
 
-  return {
-    raw: referredByUser.name,
-    label,
-  };
+  return { raw: referredByUser.name, label };
 };
 
 export const sortObject = (object) => {

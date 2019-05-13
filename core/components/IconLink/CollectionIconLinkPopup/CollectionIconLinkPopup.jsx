@@ -65,7 +65,7 @@ export default class CollectionIconLinkPopup extends Component<
       <StickyPopover
         component={this.getPopoverContent()}
         title={this.getPopoverTitle()}
-        onMouseEnter={this.loadData}
+        onMouseEnter={!data ? this.loadData : null}
         delay={data ? 0 : 200}
       >
         {children}

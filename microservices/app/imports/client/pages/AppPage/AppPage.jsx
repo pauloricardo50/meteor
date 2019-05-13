@@ -1,15 +1,19 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import { ROLES } from 'core/api/constants';
+import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
+import AppPageContainer from './AppPageContainer';
 
-const AppPage = ({ currentUser: { emails, loans, roles } }) => {
+export const AppPage = ({
+  currentUser: { emails, loans, roles },
+  insertLoan,
+  loading,
+}) => {
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }
@@ -17,15 +21,15 @@ const AppPage = ({ currentUser: { emails, loans, roles } }) => {
   const userIsPro = roles.includes(ROLES.PRO);
 
   return (
-    <section id="app-page" className="app-page flex-col center animated fadeIn">
+    <section id="app-page" className="app-page animated fadeIn">
       {!emails[0].verified && (
-        <div style={{ marginBottom: 16 }}>
+        <div className="unverified-email">
           <DashboardUnverified />
         </div>
       )}
 
       {loans.length > 0 && (
-        <h1>
+        <h1 className="app-item-title">
           <T id="AppPage.title" />
         </h1>
       )}
@@ -34,20 +38,25 @@ const AppPage = ({ currentUser: { emails, loans, roles } }) => {
       ))}
 
       {loans.length === 0 && (
-        <p className="description">
-          <T id="AppPage.empty" />
+        <>
+          <WelcomeScreen
+            displayCheckbox={false}
+            handleClick={insertLoan}
+            buttonProps={{ loading }}
+          />
           {userIsPro && (
-            <>
+            <p className="description">
               <br />
               <br />
               Pour accéder à votre interface e-Potek Pro, veuillez vous rendre
-              sur{' '}
+              sur
+              {' '}
               <a className="color" href={Meteor.settings.public.subdomains.pro}>
                 pro.e-potek.ch
               </a>
-            </>
+            </p>
           )}
-        </p>
+        </>
       )}
     </section>
   );
@@ -59,4 +68,4 @@ AppPage.propTypes = {
 
 AppPage.defaultProps = {};
 
-export default AppPage;
+export default AppPageContainer(AppPage);

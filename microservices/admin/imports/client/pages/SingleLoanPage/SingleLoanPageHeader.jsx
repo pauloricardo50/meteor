@@ -66,7 +66,7 @@ const additionalActions = loan => (status, prevStatus) => {
 };
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
-  const { user } = loan;
+  const { user, anonymous } = loan;
 
   return (
     <div className="single-loan-page-header">
@@ -85,7 +85,12 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
               ),
             }}
           />
-          {user ? (
+          {anonymous ? (
+            <small className="secondary">
+              {' - '}
+              Anonyme
+            </small>
+          ) : user ? (
             <CollectionIconLink
               relatedDoc={{ ...user, collection: USERS_COLLECTION }}
             />

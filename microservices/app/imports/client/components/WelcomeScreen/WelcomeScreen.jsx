@@ -8,11 +8,14 @@ import WelcomeScreenTop from './WelcomeScreenTop';
 
 type WelcomeScreenProps = {};
 
-const WelcomeScreen = ({
+export const WelcomeScreen = ({
   handleClick,
   setDontShowAgain,
   dontShowAgain,
   handleContact,
+  displayCheckbox,
+  buttonProps,
+  cta,
 }: WelcomeScreenProps) => (
   <div className="welcome-screen animated fadeIn">
     <Waves noSlope={false} />
@@ -21,6 +24,9 @@ const WelcomeScreen = ({
         handleClick={handleClick}
         setDontShowAgain={setDontShowAgain}
         dontShowAgain={dontShowAgain}
+        displayCheckbox={displayCheckbox}
+        buttonProps={buttonProps}
+        cta={cta}
       />
 
       <WelcomeScreenLinks handleContact={handleContact} />

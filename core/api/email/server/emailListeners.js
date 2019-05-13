@@ -7,7 +7,7 @@ import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 
 ServerEventService.addMethodListener(
   requestLoanVerification,
-  (context, params) => {
+  ({ context, params }) => {
     context.unblock();
     const { loanId } = params;
     const { userId } = Loans.findOne(loanId);
@@ -20,27 +20,33 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(submitContactForm, (context, params) => {
-  context.unblock();
-  return sendEmailToAddress.run({
-    emailId: EMAIL_IDS.CONTACT_US,
-    address: params.email,
-    params,
-  });
-});
+ServerEventService.addMethodListener(
+  submitContactForm,
+  ({ context, params }) => {
+    context.unblock();
+    return sendEmailToAddress.run({
+      emailId: EMAIL_IDS.CONTACT_US,
+      address: params.email,
+      params,
+    });
+  },
+);
 
-ServerEventService.addMethodListener(submitContactForm, (context, params) => {
-  context.unblock();
-  return sendEmailToAddress.run({
-    emailId: EMAIL_IDS.CONTACT_US_ADMIN,
-    address: INTERNAL_EMAIL,
-    params,
-  });
-});
+ServerEventService.addMethodListener(
+  submitContactForm,
+  ({ context, params }) => {
+    context.unblock();
+    return sendEmailToAddress.run({
+      emailId: EMAIL_IDS.CONTACT_US_ADMIN,
+      address: INTERNAL_EMAIL,
+      params,
+    });
+  },
+);
 
 ServerEventService.addMethodListener(
   sendEmail,
-  (context, { emailId, params, userId }) => {
+  ({ context, params: { emailId, params, userId } }) => {
     context.unblock();
     const emailsToWatch = [
       EMAIL_IDS.INVITE_USER_TO_PROMOTION,

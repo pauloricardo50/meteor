@@ -197,6 +197,7 @@ export const lenderRules = () => ({
 export const loan = () => ({
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   applicationType: 1,
+  anonymous: 1,
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   canton: 1,
@@ -337,6 +338,7 @@ export const adminLoans = () => ({
 });
 
 export const proLoans = () => ({
+  anonymous: 1,
   createdAt: 1,
   name: 1,
   status: 1,

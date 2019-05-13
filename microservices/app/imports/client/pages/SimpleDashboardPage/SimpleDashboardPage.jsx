@@ -13,7 +13,7 @@ import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
 type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
-  const { loan } = props;
+  const { loan, currentUser } = props;
   const progress = Calculator.personalInfoPercentSimple({ loan });
 
   return (
@@ -27,7 +27,11 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
           </SimpleMaxPropertyValueLightTheme>
         </div>
         <Properties loan={loan} />
-        <SimpleDashboardPageCTAs loanId={loan._id} progress={progress} />
+        <SimpleDashboardPageCTAs
+          loanId={loan._id}
+          progress={progress}
+          currentUser={currentUser}
+        />
       </div>
       <div className="simple-dashboard-page-footer">
         <span>
