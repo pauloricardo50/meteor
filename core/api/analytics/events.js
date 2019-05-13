@@ -21,7 +21,7 @@ import { addEvent } from './eventsHelpers';
 //   },
 // });
 
-const EVENTS = {
+export const EVENTS = {
   USER: {
     CREATED: 'USER_CREATED',
     LOGGED_IN: 'USER_LOGGED_IN',
@@ -47,6 +47,16 @@ const EVENTS = {
   },
   CTA: {
     CLICKED: 'CTA_CLICKED',
+  },
+};
+
+export const EVENTS_CONFIG = {
+  [EVENTS.USER.CREATED]: {
+    name: 'User Created',
+    properties: ['userId', 'referral', 'origin'],
+  },
+  [EVENTS.USER.LOGGED_IN]: {
+    name: 'User Logged in',
   },
 };
 

@@ -1,30 +1,17 @@
 import { Accounts } from 'meteor/accounts-base';
 
 import pick from 'lodash/pick';
+import EVENTS from 'core/api/analytics/events';
 import Analytics from '../../analytics/Analytics';
 
 // Accounts.onCreateUser((options, user) => user);
 Accounts.config({ forbidClientAccountCreation: !Meteor.isTest });
 
 Accounts.onLogin(({ user }) => {
-  const { _id: userId, firstName, lastName, emails, roles } = user;
-  const email = emails[0].address;
-  const role = roles[0];
+  const { _id: userId } = user;
 
-  Analytics.identify({
-    userId,
-    traits: {
-      firstName,
-      lastName,
-      email,
-      role,
-    },
-  });
-
-  Analytics.track({
-    userId,
-    event: 'User Logged in',
-  });
+  Analytics.identify(user);
+  Analytics.track({ userId, event: EVENTS.USER.LOGGED_IN });
 });
 
 Accounts.onCreateUser((options, user) => {
