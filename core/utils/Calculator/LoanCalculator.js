@@ -7,9 +7,9 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
+import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
-import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
