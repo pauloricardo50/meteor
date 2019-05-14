@@ -55,7 +55,7 @@ const DashboardUnverified = props => (
     </div>
     <span
       className="fa fa-info fa-2x"
-      style={{ color: colors.lightBorder, paddingRight: 16, paddingLeft: 16 }}
+      style={{ color: colors.borderGrey, paddingRight: 16, paddingLeft: 16 }}
     />
   </div>
 );
