@@ -78,7 +78,6 @@ export default class Chart extends Component {
 
   render() {
     const { config } = this.props;
-    console.log('config:', config);
 
     return (
       <ReactHighcharts
