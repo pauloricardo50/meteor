@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { analytics } from 'meteor/okgrow:analytics';
+// import { analytics } from 'meteor/okgrow:analytics';
 import { storageAvailable } from './browserFunctions';
 
 /**
@@ -20,7 +20,7 @@ export const addUserTracking = (userId, metadata) => {
     throw new Error('no tracking identification userId provided');
   }
   if (allowTracking()) {
-    analytics.identify(userId, metadata);
+    // analytics.identify(userId, metadata);
   }
 };
 
@@ -29,7 +29,7 @@ const track = (eventName, metadata) => {
     throw new Error('no tracking eventName provided');
   }
   if (allowTracking()) {
-    analytics.track(eventName, metadata);
+    // analytics.track(eventName, metadata);
   }
 };
 

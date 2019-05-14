@@ -1,11 +1,19 @@
 import NodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 import { EVENTS_CONFIG } from './events';
+import initClient from './initClient';
 
 class Analytics {
-  constructor(key) {
+  constructor() {
+    const { Segment = {} } = Meteor.settings.public.analyticsSettings;
+    const { key } = Segment;
+    this.key = key;
     this.analytics = new NodeAnalytics(key);
     this.events = EVENTS_CONFIG;
+  }
+
+  initializeClient() {
+    initClient(this.key);
   }
 
   identify(user) {
@@ -38,6 +46,11 @@ class Analytics {
 
     this.analytics.track({ userId, event: name, properties: eventProperties });
   }
+
+  alias(newId, previousId) {
+    this.analytics.alias({ userId: newId, previousId });
+    this.analytics.flush();
+  }
 }
 
-export default new Analytics('XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d');
+export default new Analytics();

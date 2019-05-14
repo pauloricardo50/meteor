@@ -4,6 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
+import Analytics from 'core/api/analytics/Analytics';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
 import LoanService from '../../loans/server/LoanService';
@@ -65,13 +66,16 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
-  anonymousCreateUser = ({ user, loanId }) => {
+  anonymousCreateUser = ({ user, loanId, anonymousId }) => {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
 
+    Analytics.alias(anonymousId, userId);
+
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
+      Analytics.alias(loanId, userId);
     }
 
     return userId;

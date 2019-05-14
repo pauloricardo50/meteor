@@ -24,6 +24,7 @@ export default compose(
         .run({
           user: values,
           loanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
+          anonymousId: window.analytics.user()._getId(),
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);

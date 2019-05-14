@@ -4,6 +4,9 @@ import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 import { ROLES } from 'core/api/constants';
 
+import EVENTS from 'core/api/analytics/events';
+import Analytics from 'core/api/analytics/Analytics';
+
 import 'core/api/api-server';
 import 'core/api/api';
 import 'core/fixtures';
@@ -26,3 +29,10 @@ Accounts.validateLoginAttempt(({ allowed, user }) => {
 });
 
 Accounts.config({ forbidClientAccountCreation: true });
+
+Accounts.onLogin(({ user }) => {
+  const { _id: userId } = user;
+
+  Analytics.identify(user);
+  Analytics.track({ userId, event: EVENTS.USER.LOGGED_IN });
+});

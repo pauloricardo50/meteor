@@ -36,6 +36,7 @@ export default compose(
         .run({ proPropertyId: propertyId, referralId })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
+          window.analytics.alias(loanId);
           history.push(createRoute(BORROWERS_PAGE, { loanId, tabId: '' }));
         }),
   })),

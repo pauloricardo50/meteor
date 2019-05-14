@@ -9,6 +9,9 @@
       },
       "Google Analytics": {
         "trackingId": "UA-84358947-3"
+      },
+      "Segment": {
+        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
       }
     },
     "google_maps_key": "AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8",

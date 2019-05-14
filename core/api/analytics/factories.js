@@ -98,7 +98,7 @@ export const makeClientAnalytics = (
 
       const trackFunction = () => {
         const { eventName, metadata } = getEventConfig(event, params);
-        okgrowAnalytics.track(eventName, metadata);
+        // okgrowAnalytics.track(eventName, metadata);
       };
 
       const performMaybePerSessionTrack = makeLimitedOncePerSessionTrackFunction(

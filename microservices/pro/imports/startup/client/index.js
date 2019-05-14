@@ -12,8 +12,8 @@ import 'core/api/files/meteor-slingshot';
 import '../accounts-config';
 import './css';
 import initHotjar from 'core/utils/hotjar';
+import Analytics from 'core/api/analytics/Analytics';
 import ProRouter from './ProRouter';
-
 
 const start = (testElement) => {
   // Initial injected html done in server startup index.js
@@ -27,6 +27,9 @@ const start = (testElement) => {
 
   // Hotjar
   initHotjar('pro');
+
+  // Init client Analytics
+  Analytics.initializeClient();
 };
 
 export default start;

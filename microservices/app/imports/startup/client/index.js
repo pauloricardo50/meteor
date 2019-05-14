@@ -11,6 +11,7 @@ import 'core/api/client/api';
 import '../accounts-config';
 import './css';
 import initHotjar from 'core/utils/hotjar';
+import Analytics from 'core/api/analytics/Analytics';
 import AppRouter from './AppRouter';
 
 /**
@@ -32,6 +33,9 @@ const start = (testElement) => {
 
   // Hotjar
   initHotjar('app');
+
+  // Init client Analytics
+  Analytics.initializeClient();
 };
 
 export default start;
