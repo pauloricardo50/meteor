@@ -54,7 +54,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton />
+      <ContactButton currentUser={props.currentUser} />
       {props.currentUser && (
         <AnonymousLoanClaimer currentUser={props.currentUser} />
       )}
