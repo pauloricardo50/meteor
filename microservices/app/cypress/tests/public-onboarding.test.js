@@ -79,6 +79,7 @@ describe('Public onboarding', () => {
       .click();
 
     cy.get('input#salary').type('300');
+    cy.wait(500);
     cy.contains('Créez').click();
     cy.get('input[name="firstName"]').type('Jean');
     cy.get('input[name="lastName"]').type('Dujardin');
@@ -127,6 +128,7 @@ describe('Public onboarding', () => {
       .find('button')
       .click();
     cy.get('input#salary').type('300');
+    cy.wait(500);
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
     cy.visit('/');
     cy.url().should('include', '/loans/');

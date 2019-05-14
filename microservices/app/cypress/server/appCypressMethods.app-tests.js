@@ -24,7 +24,7 @@ Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
   getAppEndToEndTestData() {
-    const { _id: userId } = Users.findOne({ 'emails.address': E2E_USER_EMAIL });
+    const { _id: userId } = UserService.getByEmail(E2E_USER_EMAIL);
 
     const admin = Users.findOne(
       { roles: { $in: [ROLES.ADMIN] } },
@@ -47,6 +47,20 @@ Meteor.methods({
       E2E_USER_EMAIL,
     );
 
+    const userId2 = UserService.createUser({
+      options: { email: USER_EMAIL, password: USER_PASSWORD },
+    });
+
+    try {
+      // Wrap due to meteor toys issue
+      // https://github.com/MeteorToys/meteor-devtools/issues/111
+      Accounts.sendResetPasswordEmail(userId2);
+    } catch (error) {}
+
+    const user = UserService.findOne(userId2, { fields: { services: 1 } });
+
+    const passwordResetToken = user.services.password.reset.token;
+
     return {
       solvencyLoan,
       requestLoan,
@@ -54,6 +68,7 @@ Meteor.methods({
       adminLoginToken,
       emailVerificationToken,
       userId,
+      passwordResetToken,
     };
   },
   inviteTestUser({ withPassword } = {}) {
