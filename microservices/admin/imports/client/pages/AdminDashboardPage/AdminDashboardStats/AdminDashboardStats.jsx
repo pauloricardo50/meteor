@@ -47,14 +47,16 @@ const AdminDashboardStats = ({
       )}
     >
       {showChart && (
-        <Histogram
-          data={loanHistogram.map(({ date, count }) => [
-            formatDate(date),
-            count,
-          ])}
-          legend={{ enabled: false }}
-          name="Nouveaux dossiers"
-        />
+        <div className="chart">
+          <Histogram
+            data={loanHistogram.map(({ date, count }) => [
+              formatDate(date),
+              count,
+            ])}
+            legend={{ enabled: false }}
+            name="Nouveaux dossiers"
+          />
+        </div>
       )}
     </StatItem>
   </div>
