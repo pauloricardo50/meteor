@@ -220,7 +220,7 @@ export class LoanService extends CollectionService {
     Loans.update(loanId, {
       $push: {
         structures: {
-          $each: [{ ...structure, id: newStructureId }],
+          $each: [{ ...structure, id: newStructureId, disabled: false }],
           $position: atIndex,
         },
       },
