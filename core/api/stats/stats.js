@@ -20,3 +20,44 @@ export const newLoansResolver = ({ period = 7 } = {}) => {
 
   return { count: period1, change };
 };
+
+export const loanHistogramResolver = async ({
+  resolution = 'day',
+  period = 7,
+}) => {
+  const grouping = {
+    year: { $year: '$createdAt' },
+    month: { $month: '$createdAt' },
+  };
+
+  if (resolution === 'day') {
+    grouping.day = { $dayOfMonth: '$createdAt' };
+  }
+
+  const aggregation = await LoanService.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: moment()
+            .subtract(period, 'days')
+            .toDate(),
+        },
+      },
+    },
+    { $group: { _id: grouping, count: { $sum: 1 } } },
+    {
+      $project: {
+        count: 1,
+        date: {
+          $dateFromParts: {
+            year: '$_id.year',
+            month: '$_id.month',
+            day: '$_id.day',
+          },
+        },
+      },
+    },
+    { $sort: { date: 1 } },
+  ]).toArray();
+  return aggregation;
+};
