@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 
     return (
       <button
-        style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.5 }}
+        style={{ position: 'fixed', bottom: 0, right: 0, opacity: 0.5 }}
         type="button"
         onClick={() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
