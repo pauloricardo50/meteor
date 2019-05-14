@@ -115,7 +115,7 @@ export class PropertyService extends CollectionService {
     pro,
     userId,
     isNewUser,
-    shareSolvency = false,
+    shareSolvency,
   }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
 

@@ -11,7 +11,7 @@ const querySchema = new SimpleSchema({
 });
 
 const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
-  const { user, shareSolvency = false } = body;
+  const { user, shareSolvency } = body;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: querySchema,

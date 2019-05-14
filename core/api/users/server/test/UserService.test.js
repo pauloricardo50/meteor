@@ -818,7 +818,7 @@ describe('UserService', function () {
         promotionIds: ['promotionId'],
         proUserId: 'proId',
         adminId: 'adminId',
-        shareSolvency: false,
+        shareSolvency,
       }).then(() => {
         const { loans } = UserService.fetchOne({
           $filters: { _id: 'userId' },

@@ -33,7 +33,7 @@ const inviteCustomerToProPropertiesAPI = ({
   body,
   query,
 }) => {
-  const { user, properties = [], shareSolvency = false } = body;
+  const { user, properties = [], shareSolvency } = body;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: querySchema,

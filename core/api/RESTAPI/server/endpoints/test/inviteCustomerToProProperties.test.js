@@ -34,7 +34,7 @@ const inviteCustomerToProProperties = ({
   expectedResponse,
   properties,
   impersonateUser,
-  shareSolvency = false,
+  shareSolvency,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = {
@@ -167,7 +167,7 @@ describe('REST: inviteCustomerToProProperties', function () {
         loans: { shareSolvency: 1 },
       });
 
-      expect(customer.loans[0].shareSolvency).to.equal(false);
+      expect(customer.loans[0].shareSolvency).to.equal(undefined);
     });
   });
 
