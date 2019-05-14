@@ -2,13 +2,15 @@ import moment from 'moment';
 
 import LoanService from '../loans/server/LoanService';
 
+const dateInPast = days =>
+  moment()
+    .subtract(days, 'days')
+    .startOf('day')
+    .toDate();
+
 export const newLoansResolver = ({ period = 7 } = {}) => {
-  const end1 = moment()
-    .subtract(period, 'days')
-    .toDate();
-  const end2 = moment()
-    .subtract(period * 2, 'days')
-    .toDate();
+  const end1 = dateInPast(period);
+  const end2 = dateInPast(period * 2);
   const period1 = LoanService.count({
     $filters: { createdAt: { $gte: end1 } },
   });
@@ -21,43 +23,17 @@ export const newLoansResolver = ({ period = 7 } = {}) => {
   return { count: period1, change };
 };
 
-export const loanHistogramResolver = async ({
-  resolution = 'day',
-  period = 7,
-}) => {
-  const grouping = {
-    year: { $year: '$createdAt' },
-    month: { $month: '$createdAt' },
-  };
-
-  if (resolution === 'day') {
-    grouping.day = { $dayOfMonth: '$createdAt' };
-  }
-
+export const loanHistogramResolver = async ({ period = 7 }) => {
   const aggregation = await LoanService.aggregate([
-    {
-      $match: {
-        createdAt: {
-          $gte: moment()
-            .subtract(period, 'days')
-            .toDate(),
-        },
-      },
-    },
-    { $group: { _id: grouping, count: { $sum: 1 } } },
+    { $match: { createdAt: { $gte: dateInPast(period) } } },
     {
       $project: {
-        count: 1,
-        date: {
-          $dateFromParts: {
-            year: '$_id.year',
-            month: '$_id.month',
-            day: '$_id.day',
-          },
-        },
+        // Filter out time of day
+        date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
       },
     },
-    { $sort: { date: 1 } },
+    { $group: { _id: '$date', count: { $sum: 1 } } },
+    { $sort: { _id: 1 } },
   ]).toArray();
   return aggregation;
 };
