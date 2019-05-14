@@ -58,7 +58,10 @@ const runTestsCommand = (name, testsType) => {
     case 'e2e':
       return runCommand(
         'Run e2e tests',
-        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+        `
+        meteor npm --prefix microservices/backend start &
+        meteor npm --prefix microservices/${name} run test-e2e-CI
+        `,
       );
     case 'unit':
       return runCommand(
