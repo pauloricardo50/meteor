@@ -9,5 +9,6 @@ Accounts.onCreateUser((options, user) => {
       ...user,
     };
   }
+
   return user;
 });

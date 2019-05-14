@@ -2233,7 +2233,7 @@
   "TableFilters.noneLabels.assignedEmployee.emails.0.address": "Non assigné",
   "TaskStatusSetter.ACTIVE": "Actif",
   "Forms.status.ACTIVE": "Actif",
-  "TaskStatusSetter.ADD_ASSIGNED_TO": "Ajouter assigné à",
+  "TaskStatusSetter.ADD_ASSIGNED_TO": "Ajouter un conseiller",
   "TaskStatusSetter.CANCELLED": "Annulé",
   "TaskStatusSetter.changeTaskStatus": "Changer le statut de la tâche",
   "TaskStatusSetter.COMPLETED": "Terminé",

@@ -19,15 +19,19 @@ export default compose(
   withRouter,
   withProps(({ history }) => ({
     schema: userSchema,
-    onSubmit: values =>
-      anonymousCreateUser
+    onSubmit: (values) => {
+      const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+
+      return anonymousCreateUser
         .run({
           user: values,
-          loanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
+          // Remove null values
+          loanId: loanId || undefined,
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           history.push(createRoute(SIGNUP_SUCCESS_PAGE, { email: values.email }));
-        }),
+        });
+    },
   })),
 );
