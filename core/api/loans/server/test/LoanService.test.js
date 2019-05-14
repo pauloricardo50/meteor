@@ -662,8 +662,11 @@ describe('LoanService', function () {
 
     it('throws if a borrower is assigned to multiple loans', () => {
       generator({
-        loans: [{_id: 'loanId', borrowers: {_id: 'borr1'}}, {borrowers: [{_id: 'borr1'}, {}]}]
-      })
+        loans: [
+          { _id: 'loanId', borrowers: { _id: 'borr1' } },
+          { borrowers: [{ _id: 'borr1' }, {}] },
+        ],
+      });
 
       expect(() =>
         LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('emprunteur');
@@ -671,8 +674,11 @@ describe('LoanService', function () {
 
     it('throws if a property is assigned to multiple loans', () => {
       generator({
-        loans: [{_id: 'loanId', properties: {_id: 'propId1'}}, {properties: [{_id: 'propId1'}, {}]}]
-      })
+        loans: [
+          { _id: 'loanId', properties: { _id: 'propId1' } },
+          { properties: [{ _id: 'propId1' }, {}] },
+        ],
+      });
 
       expect(() =>
         LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('bien immobilier');
@@ -680,8 +686,14 @@ describe('LoanService', function () {
 
     it('does not throw for a PRO property, and assigns only USER properties', () => {
       generator({
-        loans: [{ properties: {_id: 'propId1', category: PROPERTY_CATEGORY.PRO }}, {_id: 'loanId',properties: [{_id: 'propId2'},{_id: 'propId1'}]}]
-      })
+        loans: [
+          { properties: { _id: 'propId1', category: PROPERTY_CATEGORY.PRO } },
+          {
+            _id: 'loanId',
+            properties: [{ _id: 'propId2' }, { _id: 'propId1' }],
+          },
+        ],
+      });
 
       expect(() =>
         LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.not.throw();
@@ -1136,7 +1148,7 @@ describe('LoanService', function () {
         promises.push(LoanService.rawCollection.insert({
           anonymous: true,
           updatedAt: moment()
-            .subtract('days', index)
+            .subtract(index, 'days')
             .toDate(),
           _id: index,
           name: index,
@@ -1152,7 +1164,7 @@ describe('LoanService', function () {
       await LoanService.rawCollection.insert({
         anonymous: true,
         updatedAt: moment()
-          .subtract('days', 10)
+          .subtract(10, 'days')
           .toDate(),
         _id: 'a',
         name: 'b',

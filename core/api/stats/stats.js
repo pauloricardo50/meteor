@@ -4,10 +4,10 @@ import LoanService from '../loans/server/LoanService';
 
 export const newLoansResolver = ({ period = 7 } = {}) => {
   const end1 = moment()
-    .subtract('days', period)
+    .subtract(period, 'days')
     .toDate();
   const end2 = moment()
-    .subtract('days', period * 2)
+    .subtract(period * 2, 'days')
     .toDate();
   const period1 = LoanService.count({
     $filters: { createdAt: { $gte: end1 } },
