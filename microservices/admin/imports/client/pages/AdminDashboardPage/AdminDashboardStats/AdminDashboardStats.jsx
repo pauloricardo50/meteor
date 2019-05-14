@@ -53,6 +53,7 @@ const AdminDashboardStats = ({
             count,
           ])}
           legend={{ enabled: false }}
+          name="Nouveaux dossiers"
         />
       )}
     </StatItem>
