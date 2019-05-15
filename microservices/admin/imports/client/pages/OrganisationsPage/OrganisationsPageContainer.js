@@ -5,8 +5,8 @@ import queryString from 'query-string';
 import { organisationInsert } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
-import { SINGLE_ORGANISATION_PAGE } from 'imports/startup/client/adminRoutes';
-import { createRoute } from 'imports/core/utils/routerUtils';
+import { createRoute } from 'core/utils/routerUtils';
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 export default compose(
   withRouter,
@@ -15,7 +15,9 @@ export default compose(
   withProps(({ history }) => ({
     insertOrganisation: organisation =>
       organisationInsert.run({ organisation }).then((organisationId) => {
-        history.push(createRoute(SINGLE_ORGANISATION_PAGE, { organisationId }));
+        history.push(createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE, {
+          organisationId,
+        }));
       }),
   })),
   withSmartQuery({

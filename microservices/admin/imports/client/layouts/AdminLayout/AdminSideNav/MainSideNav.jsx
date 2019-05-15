@@ -21,16 +21,15 @@ import {
 import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import MainSideNavListItem from './MainSideNavListItem';
-import {
-  DASHBOARD_PAGE,
-  DEV_PAGE,
-  INTEREST_RATES_PAGE,
-  ORGANISATIONS_PAGE,
-  TASKS_PAGE,
-} from '../../../../startup/client/adminRoutes';
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 const items = [
-  { label: 'Dashboard', icon: 'home', to: DASHBOARD_PAGE, exact: true },
+  {
+    label: 'Dashboard',
+    icon: 'home',
+    to: ADMIN_ROUTES.DASHBOARD_PAGE,
+    exact: true,
+  },
   {
     detail: true,
     collection: USERS_COLLECTION,
@@ -53,12 +52,12 @@ const items = [
   },
   {
     label: 'Tâches',
-    to: TASKS_PAGE,
+    to: ADMIN_ROUTES.TASKS_PAGE,
     collection: TASKS_COLLECTION,
   },
   {
     label: 'Organisations',
-    to: ORGANISATIONS_PAGE,
+    to: ADMIN_ROUTES.ORGANISATIONS_PAGE,
     collection: ORGANISATIONS_COLLECTION,
   },
   {
@@ -68,10 +67,10 @@ const items = [
   },
   {
     label: 'Taux',
-    to: INTEREST_RATES_PAGE,
+    to: ADMIN_ROUTES.INTEREST_RATES_PAGE,
     collection: INTEREST_RATES_COLLECTION,
   },
-  { label: 'Dev', icon: 'developerMode', to: DEV_PAGE },
+  { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE },
 ].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (
