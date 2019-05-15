@@ -5,7 +5,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
 import { createRoute } from 'core/utils/routerUtils';
-import { PRO_ORGANISATION_PAGE } from '../../../startup/client/proRoutes';
+import PRO_ROUTES from '../../../startup/client/proRoutes';
 import ProOrganisationUsersTable from './ProOrganisationUsersTable';
 import ReferredCustomersTable from './ReferredCustomersTable';
 
@@ -44,7 +44,7 @@ const getTabs = ({ organisation, currentUser }) => {
         />
       ),
       label: <T id={`ProOrganisationPageTabs.${id}`} />,
-      to: createRoute(PRO_ORGANISATION_PAGE, { tabId: id }),
+      to: createRoute(PRO_ROUTES.PRO_ORGANISATION_PAGE.path, { tabId: id }),
     };
   });
 };

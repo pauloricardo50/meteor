@@ -7,7 +7,7 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
 import { promotionInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
-import { PRO_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
+import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 type PromotionAdderProps = {};
 
@@ -24,7 +24,7 @@ const PromotionAdder = ({ history }: PromotionAdderProps) => (
       promotionInsert
         .run({ promotion })
         .then(promotionId =>
-          history.push(createRoute(PRO_PROMOTION_PAGE, { promotionId })))
+          history.push(createRoute(PRO_ROUTES.PRO_PROMOTION_PAGE.path, { promotionId })))
     }
     autoFieldProps={{
       labels: {
