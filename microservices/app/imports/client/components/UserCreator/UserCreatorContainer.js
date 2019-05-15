@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { anonymousCreateUser } from 'core/api/methods/index';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
-import { SIGNUP_SUCCESS_PAGE } from 'imports/startup/client/appRoutes';
+import ROUTES from 'imports/startup/client/appRoutes';
 
 export const userSchema = new SimpleSchema({
   firstName: String,
@@ -24,11 +24,13 @@ export default compose(
         .run({
           user: values,
           loanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
-          anonymousId: window.analytics.user()._getId(),
+          anonymousId: window.analytics.user().anonymousId(),
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-          history.push(createRoute(SIGNUP_SUCCESS_PAGE, { email: values.email }));
+          history.push(createRoute(ROUTES.SIGNUP_SUCCESS_PAGE.path, {
+            email: values.email,
+          }));
         }),
   })),
 );

@@ -14,7 +14,7 @@ import {
 import { createRoute } from 'core/utils/routerUtils';
 import { toMoney } from 'core/utils/conversionFunctions';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
-import { APP_PROMOTION_PAGE } from '../../../startup/client/appRoutes';
+import ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
 type AppPromotionLotPageProps = {
@@ -50,7 +50,7 @@ export const AppPromotionLotPage = ({
         raised
         primary
         link
-        to={createRoute(APP_PROMOTION_PAGE, {
+        to={createRoute(ROUTES.APP_PROMOTION_PAGE.path, {
           loanId,
           promotionId,
         })}
@@ -60,7 +60,10 @@ export const AppPromotionLotPage = ({
 
       <div className="card1 app-promotion-option-page">
         <h1 style={{ marginBottom: '4px' }}>
-          {name} - CHF {toMoney(promotionLot.value)}
+          {name}
+          {' '}
+- CHF
+          {toMoney(promotionLot.value)}
           &nbsp;
           <StatusLabel
             status={reducedStatus}

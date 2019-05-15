@@ -3,6 +3,7 @@ import './init';
 
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
+import { Accounts } from 'meteor/accounts-base';
 
 import 'url-search-params-polyfill';
 import 'core/api/api';
@@ -35,9 +36,11 @@ const start = (testElement) => {
   initHotjar('app');
 
   // Init client Analytics
-  Analytics.initializeClient();
+  // Analytics.initializeClient();
 };
 
 export default start;
 
 Meteor.startup(start);
+
+// Accounts.onLogin(() => window.analytic.identify({ userId: Meteor.userId() }));

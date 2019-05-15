@@ -11,7 +11,7 @@ import { T, MetricArea } from 'core/components/Translation';
 import { PropertyModifier } from 'core/components/PropertyForm';
 import { toMoney } from 'core/utils/conversionFunctions';
 import SwitzerlandMap from 'core/components/maps/SwitzerlandMap';
-import { PROPERTY_PAGE } from '../../../../../startup/client/appRoutes';
+import ROUTES from '../../../../../startup/client/appRoutes';
 import DashboardRecapPropertyEmpty from './DashboardRecapPropertyEmpty';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
@@ -99,7 +99,7 @@ const DashboardRecapProperty = ({ property, loanId, growRecap }) => {
 
   return (
     <Link
-      to={createRoute(PROPERTY_PAGE, {
+      to={createRoute(ROUTES.PROPERTY_PAGE.path, {
         ':propertyId': property._id,
         ':loanId': loanId,
       })}

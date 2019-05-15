@@ -8,7 +8,7 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import { WELCOME_PAGE } from 'imports/startup/client/appRoutes';
+import ROUTES from 'imports/startup/client/appRoutes';
 import UserCreator from 'imports/client/components/UserCreator/UserCreator';
 
 type SimpleDashboardPageCTAsProps = {};
@@ -29,7 +29,12 @@ const SimpleDashboardPageCTAs = ({
 
   return (
     <div className="simple-dashboard-page-ctas">
-      <Button raised primary link to={createRoute(WELCOME_PAGE, { loanId })}>
+      <Button
+        raised
+        primary
+        link
+        to={createRoute(ROUTES.WELCOME_PAGE.path, { loanId })}
+      >
         <T id="BorrowersProgress.welcomePage" />
       </Button>
 
