@@ -68,7 +68,7 @@ const DatePicker = ({ minDate, maxDate, value, ...props }) => {
       hideKeyboardShortcutsPanel
       showClearDate
       showDefaultInputIcon
-      placeholder="Choisissez"
+      placeholder="p.ex: 01/01/1980"
       firstDayOfWeek={1}
       enableOutsideDays
       isOutsideRange={

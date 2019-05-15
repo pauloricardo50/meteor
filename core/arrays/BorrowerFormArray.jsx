@@ -285,6 +285,7 @@ export const getBorrowerSimpleArray = ({
   return [
     { id: 'firstName', type: 'textInput', condition: !loan.anonymous },
     { id: 'lastName', type: 'textInput', condition: !loan.anonymous },
+    { id: 'birthDate', type: 'dateInput', condition: !loan.anonymous },
     ...getBorrowerFinanceArray({ borrowers, borrowerId }),
   ];
 };
