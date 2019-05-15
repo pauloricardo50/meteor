@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import queryString from 'query-string';
+import { matchPath } from 'react-router-dom';
+
 import { TRACKING_COOKIE } from 'core/api/analytics/constants';
 
 export default class HistoryWatcher extends Component {
   componentDidMount() {
     const { history } = this.props;
-    this.generateAnonymousId();
+    this.generateTrackingId();
     this.loadPage(history.location.pathname);
-    history.listen(({ pathname }) => this.loadPage(pathname));
+    this.unlisten = history.listen(({ pathname }) => this.loadPage(pathname));
+  }
+
+  componentWillUnmount() {
+    this.unlisten();
   }
 
   getCookie(cookieName) {
@@ -21,18 +26,47 @@ export default class HistoryWatcher extends Component {
     document.cookie = `${cookieName}=${value}`;
   }
 
-  generateAnonymousId() {
-    const anonymousId = this.getCookie(TRACKING_COOKIE);
-    if (!anonymousId) {
-      const randomId = Random.id();
+  getMatchingPath(pathname) {
+    const { routes = {} } = this.props;
+    let matchingPath = null;
+
+    Object.keys(routes).forEach((route) => {
+      if (matchingPath === null && route !== 'NOT_FOUND') {
+        const match = matchPath(pathname, routes[route]);
+        matchingPath = match && { path: pathname, route, params: match.params };
+      }
+    });
+
+    return matchingPath || { path: pathname, route: 'NOT_FOUND', params: {} };
+  }
+
+  generateTrackingId() {
+    const trackingId = this.getCookie(TRACKING_COOKIE);
+    if (!trackingId) {
+      const randomId = Math.random()
+        .toString(36)
+        .substr(2)
+        + Math.random()
+          .toString(36)
+          .substr(2);
       this.setCookie(TRACKING_COOKIE, randomId);
     }
   }
 
   loadPage(pathname) {
-    const query = { path: pathname, userId: Meteor.userId() };
+    const { path, route, params } = this.getMatchingPath(pathname);
+    const query = {
+      path,
+      route,
+      meteorUserId: Meteor.userId(),
+      ...params,
+    };
+    const { subdomain } = this.props;
+    const trackingUrl = `${
+      Meteor.settings.public.subdomains[subdomain]
+    }/pagetrack`;
     fetch(
-      `http://localhost:4000/pagetrack?${queryString.stringify(query, {
+      `${trackingUrl}?${queryString.stringify(query, {
         encode: true,
       })}`,
       {

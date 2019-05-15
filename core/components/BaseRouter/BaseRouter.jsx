@@ -41,6 +41,8 @@ const BaseRouter = ({
   children,
   WrapperComponent,
   hasLogin,
+  routes,
+  subdomain,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
@@ -56,7 +58,11 @@ const BaseRouter = ({
         <DisconnectModal />
 
         <Router history={history}>
-          <HistoryWatcher history={history}>
+          <HistoryWatcher
+            history={history}
+            routes={routes}
+            subdomain={subdomain}
+          >
             <ScrollToTop>
               <Switch>
                 <Route

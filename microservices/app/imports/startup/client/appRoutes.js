@@ -21,30 +21,6 @@ import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import AppPage from '../../client/pages/AppPage/loadable';
 
-// @flow
-// export const ACCOUNT_PAGE = '/account';
-// export const ADD_LOAN_PAGE = '/add-loan/:loanId';
-// export const APP_PAGE = '/';
-// export const APP_PROMOTION_LOT_PAGE = '/loans/:loanId/promotions/:promotionId/promotionLots/:promotionLotId';
-// export const APP_PROMOTION_OPTION_PAGE = '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId';
-// export const APP_PROMOTION_PAGE = '/loans/:loanId/promotions/:promotionId';
-// export const APP_WIDGET1_PAGE = '/loans/:loanId/widget1';
-// export const BORROWERS_PAGE_NO_TAB = '/loans/:loanId/borrowers';
-// export const BORROWERS_PAGE = `${BORROWERS_PAGE_NO_TAB}/:tabId`;
-// export const DASHBOARD_PAGE = '/loans/:loanId';
-// export const DEV_PAGE = '/dev';
-// export const EMAIL_VERIFICATION_PAGE = '/verify-email/:token';
-// export const ENROLL_ACCOUNT_PAGE = '/enroll-account/:token';
-// export const FILES_PAGE = '/loans/:loanId/files';
-// export const FINANCING_PAGE = '/loans/:loanId/financing';
-// export const PASSWORD_RESET_PAGE = '/reset-password/:token';
-// export const PROPERTIES_PAGE = '/loans/:loanId/properties';
-// export const PROPERTY_PAGE = '/loans/:loanId/properties/:propertyId';
-// export const REFINANCING_PAGE = '/loans/:loanId/refinancing';
-// export const WELCOME_PAGE = '/loans/:loanId/welcome';
-// export const SOLVENCY_PAGE = '/loans/:loanId/solvency';
-// export const SIGNUP_SUCCESS_PAGE = '/signup/:email';
-
 export default {
   REFINANCING_PAGE: {
     path: '/loans/:loanId/refinancing',

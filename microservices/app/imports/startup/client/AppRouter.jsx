@@ -14,6 +14,8 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     WrapperComponent={AppStore}
+    routes={ROUTES}
+    subdomain="app"
   >
     <AppLayout>
       <Switch>

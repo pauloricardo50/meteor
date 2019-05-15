@@ -1,7 +1,9 @@
 import NodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
+import { WebApp } from 'meteor/webapp';
+
 import { EVENTS_CONFIG } from './events';
-import initClient from './initClient';
+import { TRACKING_COOKIE } from './constants';
 
 class Analytics {
   constructor() {
@@ -10,10 +12,6 @@ class Analytics {
     this.key = key;
     this.analytics = new NodeAnalytics(key);
     this.events = EVENTS_CONFIG;
-  }
-
-  initializeClient() {
-    initClient(this.key);
   }
 
   identify(user) {
@@ -50,6 +48,60 @@ class Analytics {
   alias(newId, previousId) {
     this.analytics.alias({ userId: newId, previousId });
     this.analytics.flush();
+  }
+
+  formatRoute(route) {
+    return route
+      .toLowerCase()
+      .split('_')
+      .map((w, i) => {
+        if (i === 0) {
+          return w.slice(0, 1).toUpperCase() + w.slice(1);
+        }
+
+        return w;
+      })
+      .join(' ');
+  }
+
+  page({ path, route, meteorUserId, trackingId, ...params }) {
+    const formattedRoute = this.formatRoute(route);
+
+    const properties = {
+      path,
+      url: `${this.baseUrl}${path}`,
+      host: this.baseUrl,
+      ...params,
+    };
+
+    this.analytics.page({
+      name: formattedRoute,
+      anonymousId: trackingId,
+      userId: meteorUserId,
+      properties,
+      integrations: {
+        All: true,
+        Mixpanel: false,
+      },
+    });
+
+    this.analytics.track({
+      event: `Viewed ${formattedRoute}`,
+      anonymousId: trackingId,
+      userId: meteorUserId,
+      properties,
+      integrations: { All: false, Mixpanel: true },
+    });
+  }
+
+  startPageTracking(subdomain) {
+    this.baseUrl = Meteor.settings.public.subdomains[subdomain];
+    WebApp.connectHandlers.use('/pagetrack', (req, res, next) => {
+      const { cookies = {}, query = {} } = req;
+      const trackingId = cookies[TRACKING_COOKIE];
+      this.page({ ...query, trackingId });
+      next();
+    });
   }
 }
 
