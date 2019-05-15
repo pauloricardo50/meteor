@@ -65,6 +65,9 @@ export const adminLoanInsert = new Method({
 
 export const userLoanInsert = new Method({
   name: 'userLoanInsert',
+  params: {
+    test: Match.Optional(Boolean),
+  },
 });
 
 export const addNewStructure = new Method({

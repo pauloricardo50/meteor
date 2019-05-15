@@ -27,11 +27,11 @@ export default compose(
   branch(({ currentUser }) => !currentUser, renderComponent(AnonymousAppPage)),
   withState('loading', 'setLoading', false),
   withProps(({ setLoading }) => ({
-    insertLoan: () => {
+    insertLoan: ({ test } = {}) => {
       setLoading(true);
       // Don't unset loading, as the page will refresh anyways to head to the new loan
       // reactively
-      userLoanInsert.run().catch(() => setLoading(false));
+      return userLoanInsert.run({ test }).catch(() => setLoading(false));
     },
   })),
 );
