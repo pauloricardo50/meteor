@@ -27,7 +27,7 @@ const items = [
   {
     label: 'Dashboard',
     icon: 'home',
-    to: ADMIN_ROUTES.DASHBOARD_PAGE,
+    to: ADMIN_ROUTES.DASHBOARD_PAGE.path,
     exact: true,
   },
   {
@@ -52,12 +52,12 @@ const items = [
   },
   {
     label: 'Tâches',
-    to: ADMIN_ROUTES.TASKS_PAGE,
+    to: ADMIN_ROUTES.TASKS_PAGE.path,
     collection: TASKS_COLLECTION,
   },
   {
     label: 'Organisations',
-    to: ADMIN_ROUTES.ORGANISATIONS_PAGE,
+    to: ADMIN_ROUTES.ORGANISATIONS_PAGE.path,
     collection: ORGANISATIONS_COLLECTION,
   },
   {
@@ -67,10 +67,10 @@ const items = [
   },
   {
     label: 'Taux',
-    to: ADMIN_ROUTES.INTEREST_RATES_PAGE,
+    to: ADMIN_ROUTES.INTEREST_RATES_PAGE.path,
     collection: INTEREST_RATES_COLLECTION,
   },
-  { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE },
+  { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },
 ].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (

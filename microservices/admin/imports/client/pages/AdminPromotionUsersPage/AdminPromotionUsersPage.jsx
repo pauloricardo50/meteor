@@ -21,7 +21,7 @@ const AdminPromotionUsersPage = (props: AdminPromotionUsersPageProps) => {
         raised
         primary
         link
-        to={createRoute(ADMIN_ROUTES.ADMIN_PROMOTION_PAGE, { promotionId })}
+        to={createRoute(ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path, { promotionId })}
       >
         <T id="general.back" />
       </Button>

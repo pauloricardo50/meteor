@@ -29,8 +29,8 @@ const shouldRenderInPrimaryColor = ({
   }
 
   if (
-    path === ADMIN_ROUTES.DASHBOARD_PAGE
-    && to === ADMIN_ROUTES.DASHBOARD_PAGE
+    path === ADMIN_ROUTES.DASHBOARD_PAGE.path
+    && to === ADMIN_ROUTES.DASHBOARD_PAGE.path
   ) {
     return true;
   }

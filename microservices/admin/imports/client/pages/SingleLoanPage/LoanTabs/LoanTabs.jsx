@@ -98,7 +98,7 @@ const getTabs = (props) => {
           )}
         </span>
       ),
-      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE, { loanId: props.loan._id, tabId: id }),
+      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, { loanId: props.loan._id, tabId: id }),
     }));
 };
 const LoanTabs = (props) => {

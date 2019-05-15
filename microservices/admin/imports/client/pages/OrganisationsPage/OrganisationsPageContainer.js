@@ -15,7 +15,7 @@ export default compose(
   withProps(({ history }) => ({
     insertOrganisation: organisation =>
       organisationInsert.run({ organisation }).then((organisationId) => {
-        history.push(createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE, {
+        history.push(createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
           organisationId,
         }));
       }),

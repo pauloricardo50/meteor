@@ -51,7 +51,7 @@ const tabs = organisation =>
       </span>
     ),
     condition,
-    to: createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE, {
+    to: createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
       organisationId: organisation._id,
       tabId: id,
     }),
