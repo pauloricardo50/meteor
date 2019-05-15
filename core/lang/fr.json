@@ -14,7 +14,7 @@
   "AnonymousAppPage.lastModifiedAt": "Dernière modification {date} depuis cet appareil",
   "AnonymousAppPage.start": "Commencer",
   "AnonymousAppPage.alreadyAccount": "Vous avez déjà un compte e-Potek?",
-  "WwwTopNavLinks.home": "Accueil",
+  "WwwTopNavLinks.": "Accueil",
   "Recap.consideredBy": "Considéré par {organisationName}",
   "Forms.variable.zipCode": "Code postal du bien immobilier",
   "Forms.variable.remainingBankFortune": "Fortune bancaire post-décaissement",
