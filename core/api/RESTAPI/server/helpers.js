@@ -211,6 +211,11 @@ export const logRequest = ({ req, result }) => {
     headers = {},
     verifiedFormat,
   } = req;
+
+  if (Meteor.isTest) {
+    return;
+  }
+
   console.log('----- API CALL -----');
   console.log('USER:', JSON.stringify({ _id, emails }, null, 2));
   console.log('URL:', getRequestPath(req));

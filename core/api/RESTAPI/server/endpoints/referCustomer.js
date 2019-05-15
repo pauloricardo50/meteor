@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import { proInviteUser } from '../../../methods';
