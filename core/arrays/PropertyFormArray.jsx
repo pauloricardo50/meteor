@@ -1,6 +1,4 @@
 import React from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
 
 import {
   PROPERTY_TYPE,
@@ -11,12 +9,9 @@ import {
   HOUSE_TYPE,
   FLAT_TYPE,
   VOLUME_NORM,
-  AREA_NORM,
 } from 'core/api/constants';
-import AutoFormTextInput from 'core/components/AutoForm/AutoFormTextInput';
-import T from 'core/components/Translation';
-import { QUALITY } from '../api/constants';
 import CantonField from 'core/components/CantonField/CantonField';
+import { QUALITY } from '../api/constants';
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -50,7 +45,7 @@ const getOwnerOptions = ({ borrowers }) =>
       const isSecond = value === OWNER.SECOND;
       let borrowerFirstName;
 
-      if (!isFirst && borrowers.length <= 1) {
+      if (borrowers.length <= 1) {
         borrowerFirstName = null;
       } else {
         borrowerFirstName = borrowers[isFirst ? 0 : 1].firstName;
@@ -187,7 +182,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     {
       type: 'custom',
       id: 'canton',
-      component: (<CantonField canton={property.canton} />)
+      component: <CantonField canton={property.canton} />,
     },
     {
       type: 'h3',
