@@ -164,10 +164,11 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
           type: 'radioInput',
           options: [true, false],
         },
-        ...[2018, 2017, 2016, 2015].map(year => ({
+        ...[2019, 2018, 2017, 2016, 2015].map(year => ({
           id: `bonus${year}`,
           type: 'textInput',
           money: true,
+          condition: year === 2015 ? !!b.bonus2015 : true,
         })),
       ],
     },

@@ -30,6 +30,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   bonus2016: 1,
   bonus2017: 1,
   bonus2018: 1,
+  bonus2019: 1,
   bonusExists: 1,
   canton: 1,
   childrenCount: 1,

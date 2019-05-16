@@ -80,6 +80,7 @@ export const financeInfoSchema = {
   bonus2016: moneyField,
   bonus2017: moneyField,
   bonus2018: moneyField,
+  bonus2019: moneyField,
   [OWN_FUNDS_TYPES.BANK_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
