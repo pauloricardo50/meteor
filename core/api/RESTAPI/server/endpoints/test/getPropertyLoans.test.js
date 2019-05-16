@@ -47,7 +47,7 @@ const makeCustomers = count =>
     loans: [{ _id: `loan${index}`, propertyIds: ['property'] }],
   }));
 
-describe('REST: getPropertyLoans', function () {
+describe.only('REST: getPropertyLoans', function () {
   this.timeout(10000);
 
   before(function () {
@@ -77,7 +77,13 @@ describe('REST: getPropertyLoans', function () {
           _id: 'pro2',
           organisations: [{ _id: 'org' }],
           emails: [{ address: 'pro2@org.com', verified: true }],
-          proProperties: [{ _id: 'property', category: PROPERTY_CATEGORY.PRO }],
+          proProperties: [
+            {
+              _id: 'property',
+              externalId: 'extId',
+              category: PROPERTY_CATEGORY.PRO,
+            },
+          ],
         },
         {
           _factory: 'pro',
@@ -128,6 +134,23 @@ describe('REST: getPropertyLoans', function () {
         message:
             "Vous n'avez pas accès à ce bien immobilier [NOT_AUTHORIZED]",
       });
+    });
+  });
+
+  it('returns property loans', () => {
+    PropertyService.setProUserPermissions({
+      propertyId: 'property',
+      userId: 'pro2',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
+    generator({ users: makeCustomers(5) });
+    return getPropertyLoans({
+      propertyId: 'extId',
+      userId: 'pro',
+      impersonateUser: 'pro2@org.com',
+    }).then((loans) => {
+      expect(loans.length).to.equal(5);
+      expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
     });
   });
 });
