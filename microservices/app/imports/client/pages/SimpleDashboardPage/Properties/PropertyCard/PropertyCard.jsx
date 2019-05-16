@@ -16,7 +16,7 @@ type PropertyCardProps = {
 };
 
 const PropertyCard = (props: PropertyCardProps) => {
-  const { buttonLabel, onClick } = props;
+  const { buttonLabel, onClick, loan } = props;
 
   return (
     <div className="card1 property-card">
@@ -28,9 +28,11 @@ const PropertyCard = (props: PropertyCardProps) => {
           </Button>
         </div>
       </div>
-      <div className="bottom">
-        <PropertyCardPromotionOptions {...props} />
-      </div>
+      {loan.promotionOptions && loan.promotionOptions.length > 0 && (
+        <div className="bottom">
+          <PropertyCardPromotionOptions {...props} />
+        </div>
+      )}
     </div>
   );
 };
