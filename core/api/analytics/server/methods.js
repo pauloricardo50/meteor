@@ -8,6 +8,7 @@ import Analytics from './Analytics';
 import EVENTS from '../events';
 
 analyticsLogin.setHandler(({ userId }, params) => {
+  console.log('params:', params);
   SecurityService.checkLoggedIn();
   Analytics.identify({ userId, ...params });
   Analytics.track({ userId, event: EVENTS.USER.LOGGED_IN });

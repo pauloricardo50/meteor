@@ -30,10 +30,6 @@ const start = (testElement) => {
     loader.parentNode.removeChild(loader);
   }
 
-  Accounts.onLogin(() => {
-    analyticsLogin.run({ trackingId: getCookie(TRACKING_COOKIE) });
-  });
-
   // Render react-router routes
   render(AdminRouter(), testElement || document.getElementById('react-root'));
 };
