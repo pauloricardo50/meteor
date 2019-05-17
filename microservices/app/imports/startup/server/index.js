@@ -9,16 +9,9 @@ import 'core/fixtures';
 
 import '../accounts-config';
 import './kadira.js';
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
-import { Meteor } from 'meteor/meteor';
 
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client
 Inject.rawHead('loader', Assets.getText('loader.html'));
 
 Accounts.config({ forbidClientAccountCreation: false });
-
-Accounts.onLogin(() => {
-  Analytics.track({ userId: Meteor.userId(), event: EVENTS.USER.LOGGED_IN });
-});

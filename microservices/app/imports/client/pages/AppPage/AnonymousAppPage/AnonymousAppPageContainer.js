@@ -42,7 +42,6 @@ export default compose(
     insertAnonymousLoan: () =>
       anonymousLoanInsert.run({}).then((loanId) => {
         localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-        window.analytics.alias({userId: loanId, previousId: window.analytics.user().anonymousId()});
         history.push(createRoute(ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
       }),
   })),

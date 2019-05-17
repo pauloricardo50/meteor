@@ -58,6 +58,13 @@ export const EVENTS_CONFIG = {
   [EVENTS.USER.LOGGED_IN]: {
     name: 'User Logged in',
   },
+  [EVENTS.USER.VERIFIED_EMAIL]: {
+    name: 'User Verified',
+  },
+  [EVENTS.LOAN.ANONYMOUS_LOAN_CLAIMED]: {
+    name: 'Loan Anonymous loan claimed',
+    properties: ['loanId'],
+  },
 };
 
 export default EVENTS;

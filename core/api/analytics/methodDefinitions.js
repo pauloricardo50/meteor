@@ -1,7 +1,7 @@
 import { Method } from '../methods/methods';
 
-export const analyticsIdentify = new Method({
-  name: 'analyticsIdentify',
+export const analyticsLogin = new Method({
+  name: 'analyticsLogin',
   params: {
     trackingId: String,
   },
@@ -16,4 +16,8 @@ export const analyticsPage = new Method({
     route: String,
     queryParams: Object,
   },
+});
+
+export const analyticsVerifyEmail = new Method({
+  name: 'analyticsVerifyEmail',
 });

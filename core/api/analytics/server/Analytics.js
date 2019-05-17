@@ -1,6 +1,5 @@
 import NodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
-import { WebApp } from 'meteor/webapp';
 
 import UserService from 'core/api/users/server/UserService';
 import { EVENTS_CONFIG } from '../events';
@@ -24,9 +23,7 @@ class Analytics {
       roles: 1,
     });
 
-    if (trackingId) {
-      this.alias(userId, trackingId);
-    }
+    this.alias(userId, trackingId);
 
     this.analytics.identify({
       anonymousId: trackingId,
@@ -40,6 +37,7 @@ class Analytics {
     });
   }
 
+  // All tracked events shall be called with a logged in user
   track({ userId, event, data }) {
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
@@ -52,7 +50,6 @@ class Analytics {
       {},
     );
 
-    this.identify({ userId });
     this.analytics.track({
       userId,
       event: name,
@@ -67,6 +64,8 @@ class Analytics {
     this.analytics.alias({ userId: newId, previousId });
   }
 
+  // Returns the route string in a more readable format
+  // ex: APP_LOGIN_PAGE => App login page
   formatRoute(route) {
     return route
       .toLowerCase()
@@ -98,37 +97,15 @@ class Analytics {
       anonymousId: trackingId,
       ...(userId ? { userId } : {}),
       context: {
-        // ip: clientAddress,
-        ip: '83.79.150.149',
+        ip: clientAddress,
         userAgent,
       },
       properties: {
         path,
         url: `${host}${path}`,
-        // ip: clientAddress,
         ...queryParams,
       },
     });
-
-    // this.analytics.track({
-    //   event: `Viewed ${formattedRoute}`,
-    //   anonymousId: trackingId,
-    //   ...(userId ? { userId } : {}),
-    //   context: {
-    //     ip: clientAddress,
-    //     userAgent,
-    //   },
-    //   properties: {
-    //     path,
-    //     url: `${host}${path}`,
-    //     $ip: clientAddress,
-    //     ...queryParams,
-    //   },
-    //   integrations: {
-    //     All: false,
-    //     Mixpanel: true,
-    //   },
-    // });
   }
 }
 

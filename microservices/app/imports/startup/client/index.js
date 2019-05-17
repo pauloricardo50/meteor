@@ -15,7 +15,7 @@ import initHotjar from 'core/utils/hotjar';
 // import Analytics from 'core/api/analytics/Analytics';
 import { TRACKING_COOKIE } from 'core/api/analytics/constants';
 import { getCookie } from 'core/utils/cookiesHelpers';
-import { analyticsIdentify } from 'core/api/methods';
+import { analyticsLogin } from 'core/api/methods';
 import AppRouter from './AppRouter';
 
 /**
@@ -39,12 +39,10 @@ const start = (testElement) => {
   initHotjar('app');
 
   Accounts.onLogin(() => {
-    analyticsIdentify.run({ trackingId: getCookie(TRACKING_COOKIE) });
+    analyticsLogin.run({ trackingId: getCookie(TRACKING_COOKIE) });
   });
 };
 
 export default start;
 
 Meteor.startup(start);
-
-// Accounts.onLogin(() => window.analytic.identify({ userId: Meteor.userId() }));
