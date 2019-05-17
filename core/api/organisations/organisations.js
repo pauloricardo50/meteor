@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 
 import SimpleSchema from 'simpl-schema';
+import 'uniforms/SimpleSchema2Bridge';
 
 import {
   address,
