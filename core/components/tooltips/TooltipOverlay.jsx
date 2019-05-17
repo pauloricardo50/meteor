@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 import { tooltips } from '../../arrays/tooltips';
-import track from '../../utils/analytics';
 import Tooltip from './Tooltip/loadable';
-
-const onEntered = id => track('Tooltip - tooltip clicked', { id });
 
 const handleClick = (event) => {
   // Trigger tooltip instead of another onClick handler in a parent
@@ -42,7 +39,6 @@ const TooltipOverlay = ({
       animation={false}
       trigger={trigger}
       delayShow={delayShow}
-      onEntered={() => onEntered()}
       container={global.document !== undefined ? document.body : undefined}
       onClick={handleClick}
     >

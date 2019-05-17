@@ -42,7 +42,6 @@ const BaseRouter = ({
   WrapperComponent,
   hasLogin,
   routes,
-  subdomain,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
@@ -66,7 +65,6 @@ const BaseRouter = ({
               GRAPHER_PAGE: { path: '/grapher' },
               LOGIN_WITH_TOKEN_PAGE: { path: '/login-token/:token' },
             }}
-            subdomain={subdomain}
           >
             <ScrollToTop>
               <Switch>

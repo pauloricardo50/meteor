@@ -15,7 +15,6 @@ const AppRouter = () => (
     formats={getFormats()}
     WrapperComponent={AppStore}
     routes={ROUTES}
-    subdomain="app"
   >
     <AppLayout>
       <Switch>

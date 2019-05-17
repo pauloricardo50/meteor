@@ -13,6 +13,7 @@ const AdminRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     WrapperComponent={AdminStore}
+    routes={ADMIN_ROUTES}
   >
     <AdminLayout type="admin">
       <Switch>

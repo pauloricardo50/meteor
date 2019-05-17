@@ -12,7 +12,6 @@ import 'core/api/client/api';
 import '../accounts-config';
 import './css';
 import initHotjar from 'core/utils/hotjar';
-// import Analytics from 'core/api/analytics/Analytics';
 import { TRACKING_COOKIE } from 'core/api/analytics/constants';
 import { getCookie } from 'core/utils/cookiesHelpers';
 import { analyticsLogin } from 'core/api/methods';

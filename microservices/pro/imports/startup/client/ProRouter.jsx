@@ -18,6 +18,7 @@ const ProRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
+    routes={PRO_ROUTES}
   >
     <ProLayout>
       <Switch>

@@ -9,8 +9,12 @@ import 'core/api/client/api';
 
 import '../accounts-config';
 import './css';
-import AdminRouter from './AdminRouter';
 import 'react-dates/initialize'; // Fix issue #750
+import { Accounts } from 'meteor/accounts-base';
+import { analyticsLogin } from 'core/api/methods/index';
+import { TRACKING_COOKIE } from 'core/api/analytics/constants';
+import { getCookie } from 'core/utils/cookiesHelpers';
+import AdminRouter from './AdminRouter';
 
 /**
  * start - sets the app up
@@ -25,6 +29,10 @@ const start = (testElement) => {
   if (loader) {
     loader.parentNode.removeChild(loader);
   }
+
+  Accounts.onLogin(() => {
+    analyticsLogin.run({ trackingId: getCookie(TRACKING_COOKIE) });
+  });
 
   // Render react-router routes
   render(AdminRouter(), testElement || document.getElementById('react-root'));

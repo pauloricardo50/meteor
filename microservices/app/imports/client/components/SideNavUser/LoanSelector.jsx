@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import T from 'core/components/Translation';
-import track from 'core/utils/analytics';
 import Select from 'core/components/Select';
 
 const handleChange = (value, closeDrawer, history) => {
   if (value === 0) {
-    track('LoanSelector - clicked on new loan', {});
     window.location.replace(`${Meteor.settings.public.subdomains.www}/start/1`);
   } else {
-    track('LoanSelector - switched to loan', { loanId: value });
     closeDrawer();
     history.push(`/loans/${value}`);
   }
