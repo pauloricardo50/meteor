@@ -303,13 +303,11 @@ class UserService extends CollectionService {
     adminId,
     shareSolvency,
   }) => {
-    const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
+    const referOnly = propertyIds.length === 0
+      && promotionIds.length === 0
+      && properties.length === 0;
     if (referOnly) {
       return this.proReferUser({ user, proUserId, shareSolvency });
-    }
-
-    if (!propertyIds && !promotionIds) {
-      throw new Meteor.Error('No property given');
     }
 
     const { invitedBy } = user;

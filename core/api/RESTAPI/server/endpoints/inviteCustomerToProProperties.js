@@ -1,14 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
 
+import PropertyService from 'core/api/properties/server/PropertyService';
 import { proInviteUser } from '../../../methods';
-import { withMeteorUserId } from '../helpers';
-import { getImpersonateUserId, checkQuery } from './helpers';
 import UserService from '../../../users/server/UserService';
-
-const querySchema = new SimpleSchema({
-  'impersonate-user': { type: String, optional: true },
-});
+import PropertySchema, {
+  userAllowedKeys,
+} from '../../../properties/schemas/PropertySchema';
+import { withMeteorUserId } from '../helpers';
+import { getImpersonateUserId, checkQuery, impersonateSchema } from './helpers';
 
 const formatPropertyIds = (propertyIds) => {
   const ids = propertyIds.map(id => `"${id}"`);
@@ -16,11 +15,23 @@ const formatPropertyIds = (propertyIds) => {
 };
 
 const checkProperties = (properties) => {
-  properties.forEach((property) => {
+  const schema = PropertySchema.pick(...userAllowedKeys);
+
+  return properties.map((property) => {
     const { _id, externalId } = property;
     if ((!_id && !externalId) || (_id && externalId)) {
-      throw new Meteor.Error('Every property must have either a "_id" or "externalId" key');
+      throw new Meteor.Error('Each property must have either a "_id" or "externalId" key');
     }
+    if (_id) {
+      const exists = PropertyService.exists(_id);
+      if (!exists) {
+        throw new Meteor.Error(`Property with _id "${_id}" does not exist`);
+      }
+    } else {
+      return checkQuery({ schema, query: property });
+    }
+
+    return property;
   });
 };
 
@@ -33,14 +44,13 @@ const inviteCustomerToProPropertiesAPI = ({
   body,
   query,
 }) => {
-  const { user, properties = [], shareSolvency } = body;
+  let { user, properties = [], shareSolvency } = body;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
-    schema: querySchema,
+    schema: impersonateSchema,
   });
 
-  checkProperties(properties);
-
+  properties = checkProperties(properties);
   const externalProperties = getExternalProperties(properties);
   const internalProperties = getInternalProperties(properties);
 
@@ -49,18 +59,23 @@ const inviteCustomerToProPropertiesAPI = ({
     ...internalProperties.map(({ _id }) => _id),
   ]);
 
-  let proId;
+  let proId = userId;
   if (impersonateUser) {
     proId = getImpersonateUserId({ userId, impersonateUser });
   }
 
-  return withMeteorUserId(proId || userId, () =>
-    proInviteUser.run({
-      propertyIds: internalProperties.map(({ _id }) => _id),
-      properties: externalProperties,
-      user,
-      shareSolvency,
-    }))
+  const payload = {
+    propertyIds: internalProperties.map(({ _id }) => _id),
+    properties: externalProperties,
+    user,
+    shareSolvency,
+  };
+
+  if (!payload.propertyIds.length && !payload.properties.length) {
+    throw new Meteor.Error('You must provide at least one valid property');
+  }
+
+  return withMeteorUserId(proId, () => proInviteUser.run(payload))
     .then(() => {
       if (impersonateUser) {
         const customerId = UserService.getByEmail(user.email)._id;

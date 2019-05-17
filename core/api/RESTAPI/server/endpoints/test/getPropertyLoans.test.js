@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
-import UserService from '../../../../users/server/UserService';
 import PropertyService from '../../../../properties/server/PropertyService';
 import generator from '../../../../factories/index';
 import RESTAPI from '../../RESTAPI';
@@ -47,7 +46,7 @@ const makeCustomers = count =>
     loans: [{ _id: `loan${index}`, propertyIds: ['property'] }],
   }));
 
-describe.only('REST: getPropertyLoans', function () {
+describe('REST: getPropertyLoans', function () {
   this.timeout(10000);
 
   before(function () {
