@@ -58,7 +58,7 @@ export const formatLoanWithStructure = ({
 
 export const formatLoanWithDocuments = (loan) => {
   if (!loan || !loan.structure) {
-    return undefined;
+    return loan;
   }
 
   const { structure, properties = [] } = loan;
