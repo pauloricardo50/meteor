@@ -81,52 +81,54 @@ class Analytics {
       .join(' ');
   }
 
-  page({ path, route, meteorUserId, trackingId, context, ...params }) {
+  page({ context, params }) {
+    const {
+      userId,
+      connection: {
+        clientAddress,
+        httpHeaders: { host, 'user-agent': userAgent },
+      },
+    } = context;
+    const { cookies, sessionStorage, path, route, queryParams } = params;
+    const trackingId = cookies[TRACKING_COOKIE];
     const formattedRoute = this.formatRoute(route);
-
-    const properties = {
-      path,
-      url: `${this.baseUrl}${path}`,
-      host: this.baseUrl,
-      ...params,
-    };
 
     this.analytics.page({
       name: formattedRoute,
       anonymousId: trackingId,
-      userId: meteorUserId,
-      context,
-      properties,
+      ...(userId ? { userId } : {}),
+      context: {
+        // ip: clientAddress,
+        ip: '83.79.150.149',
+        userAgent,
+      },
+      properties: {
+        path,
+        url: `${host}${path}`,
+        // ip: clientAddress,
+        ...queryParams,
+      },
     });
 
-    // // Mixpanel does not use page, but event instead
     // this.analytics.track({
     //   event: `Viewed ${formattedRoute}`,
     //   anonymousId: trackingId,
-    //   userId: meteorUserId,
-    //   properties,
-    //   integrations: { All: false, Mixpanel: true },
+    //   ...(userId ? { userId } : {}),
+    //   context: {
+    //     ip: clientAddress,
+    //     userAgent,
+    //   },
+    //   properties: {
+    //     path,
+    //     url: `${host}${path}`,
+    //     $ip: clientAddress,
+    //     ...queryParams,
+    //   },
+    //   integrations: {
+    //     All: false,
+    //     Mixpanel: true,
+    //   },
     // });
-  }
-
-  startPageTracking(subdomain) {
-    this.baseUrl = Meteor.settings.public.subdomains[subdomain];
-    WebApp.connectHandlers.use('/pagetrack', (req, res, next) => {
-      const { cookies = {}, query = {}, headers = {} } = req;
-      console.log('cookies:', cookies);
-      const {
-        'x-forwarded-for': ip,
-        'user-agent': userAgent,
-        referer,
-      } = headers;
-      const context = { ip, userAgent, referer };
-      console.log('context:', context);
-
-      const trackingId = cookies[TRACKING_COOKIE];
-      console.log('trackingId:', trackingId);
-      this.page({ ...query, context, trackingId });
-      next();
-    });
   }
 }
 

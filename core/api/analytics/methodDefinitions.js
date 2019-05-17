@@ -6,3 +6,14 @@ export const analyticsIdentify = new Method({
     trackingId: String,
   },
 });
+
+export const analyticsPage = new Method({
+  name: 'analyticsPage',
+  params: {
+    cookies: Object,
+    sessionStorage: Object,
+    path: String,
+    route: String,
+    queryParams: Object,
+  },
+});

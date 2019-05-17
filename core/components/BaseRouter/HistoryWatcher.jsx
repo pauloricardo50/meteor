@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
-import queryString from 'query-string';
 import { matchPath } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/constants';
+import { analyticsPage } from 'core/api/methods';
 
-import { getCookie, setCookie } from 'core/utils/cookiesHelpers';
+import { getCookie, setCookie, parseCookies } from 'core/utils/cookiesHelpers';
 
 export default class HistoryWatcher extends Component {
   componentDidMount() {
@@ -48,27 +47,15 @@ export default class HistoryWatcher extends Component {
 
   loadPage(pathname) {
     const { path, route, params } = this.getMatchingPath(pathname);
-    const query = {
+    const cookies = parseCookies();
+    const { sessionStorage } = window;
+    analyticsPage.run({
+      cookies,
+      sessionStorage,
       path,
       route,
-      meteorUserId: Meteor.userId(),
-      ...params,
-    };
-    const { subdomain } = this.props;
-    const trackingUrl = `${
-      Meteor.settings.public.subdomains[subdomain]
-    }/pagetrack`;
-    fetch(
-      `${trackingUrl}?${queryString.stringify(query, {
-        encode: true,
-      })}`,
-      {
-        headers: {
-          cookie: document.cookie,
-        },
-        method: 'GET',
-      },
-    );
+      queryParams: params,
+    });
   }
 
   render() {

@@ -19,8 +19,6 @@ Inject.rawHead('loader', Assets.getText('loader.html'));
 
 Accounts.config({ forbidClientAccountCreation: false });
 
-Analytics.startPageTracking('app');
-
 Accounts.onLogin(() => {
   Analytics.track({ userId: Meteor.userId(), event: EVENTS.USER.LOGGED_IN });
 });
