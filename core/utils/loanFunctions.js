@@ -3,12 +3,16 @@ import Calculator from './Calculator';
 
 export const formatLoanWithStructure = ({
   selectedStructure,
-  structures,
+  structures = [],
   properties,
   offers,
   promotionOptions,
   borrowers = [],
 }) => {
+  if (structures.length === 0) {
+    return undefined;
+  }
+
   let structure = {};
 
   if (selectedStructure) {
