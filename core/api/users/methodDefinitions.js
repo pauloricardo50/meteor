@@ -121,22 +121,8 @@ export const proInviteUser = new Method({
   name: 'proInviteUser',
   params: {
     user: Object,
-    propertyIds: Match.Maybe(Match.Where((x) => {
-      check(x, [String]);
-      if (x && x.length === 0) {
-        throw new Meteor.Error('properties cannot be empty');
-      }
-
-      return true;
-    })),
-    promotionIds: Match.Maybe(Match.Where((x) => {
-      check(x, [String]);
-      if (x && x.length === 0) {
-        throw new Meteor.Error('promotionIds cannot be empty');
-      }
-
-      return true;
-    })),
+    propertyIds: Match.Maybe([String]),
+    promotionIds: Match.Maybe([String]),
     properties: Match.Maybe(Array),
     shareSolvency: Match.Maybe(Match.OneOf(Boolean, undefined)),
   },

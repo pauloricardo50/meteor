@@ -5,7 +5,7 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { formatParams, getRequestPath, logRequest } from './helpers';
+import { logRequest } from './helpers';
 
 export default class RESTAPI {
   constructor({

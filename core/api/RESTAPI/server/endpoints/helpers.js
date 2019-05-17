@@ -1,4 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+
+import SimpleSchema from 'simpl-schema';
+
 import UserService from '../../../users/server/UserService';
 
 const anyOrganisationMatches = ({
@@ -68,3 +71,7 @@ export const checkAccessToUser = ({ user, proId }) => {
     }" not found, or you don't have access to it.`);
   }
 };
+
+export const impersonateSchema = new SimpleSchema({
+  'impersonate-user': { type: String, optional: true },
+});
