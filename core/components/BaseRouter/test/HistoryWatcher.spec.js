@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import { TRACKING_COOKIE } from 'core/api/analytics/constants';
 
+import { getCookie } from 'core/utils/cookiesHelpers';
 import HistoryWatcher from '../HistoryWatcher';
 
 const routes = {
@@ -54,16 +55,16 @@ describe.only('HistoryWatcher', () => {
     });
 
     it('generates a new tracking id', () => {
-      expect(watcher.getCookie(TRACKING_COOKIE)).to.equal('');
+      expect(getCookie(TRACKING_COOKIE)).to.equal('');
       watcher.generateTrackingId();
-      expect(watcher.getCookie(TRACKING_COOKIE)).to.not.equal('');
+      expect(getCookie(TRACKING_COOKIE)).to.not.equal('');
     });
 
     it('does not generate a new tracking id if one already exists', () => {
       watcher.generateTrackingId();
-      const trackingId = watcher.getCookie(TRACKING_COOKIE);
+      const trackingId = getCookie(TRACKING_COOKIE);
       watcher.generateTrackingId();
-      expect(watcher.getCookie(TRACKING_COOKIE)).to.equal(trackingId);
+      expect(getCookie(TRACKING_COOKIE)).to.equal(trackingId);
     });
   });
 });

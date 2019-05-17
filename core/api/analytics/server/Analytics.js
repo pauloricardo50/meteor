@@ -2,8 +2,9 @@ import NodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 
-import { EVENTS_CONFIG } from './events';
-import { TRACKING_COOKIE } from './constants';
+import UserService from 'core/api/users/server/UserService';
+import { EVENTS_CONFIG } from '../events';
+import { TRACKING_COOKIE } from '../constants';
 
 class Analytics {
   constructor() {
@@ -14,18 +15,27 @@ class Analytics {
     this.events = EVENTS_CONFIG;
   }
 
-  identify(user) {
-    const { _id: userId, firstName, lastName, emails, roles } = user;
-    const email = emails[0].address;
-    const role = roles[0];
+  identify({ userId, trackingId }) {
+    const { firstName, lastName, email, roles } = UserService.fetchOne({
+      $filters: { _id: userId },
+      firstName: 1,
+      lastName: 1,
+      email: 1,
+      roles: 1,
+    });
+
+    if (trackingId) {
+      this.alias(userId, trackingId);
+    }
 
     this.analytics.identify({
+      anonymousId: trackingId,
       userId,
       traits: {
         firstName,
         lastName,
         email,
-        role,
+        role: roles[0],
       },
     });
   }
@@ -42,12 +52,19 @@ class Analytics {
       {},
     );
 
-    this.analytics.track({ userId, event: name, properties: eventProperties });
+    this.identify({ userId });
+    this.analytics.track({
+      userId,
+      event: name,
+      properties: { ...eventProperties },
+      context: {
+        userAgent: 'test',
+      },
+    });
   }
 
   alias(newId, previousId) {
     this.analytics.alias({ userId: newId, previousId });
-    this.analytics.flush();
   }
 
   formatRoute(route) {
@@ -64,7 +81,7 @@ class Analytics {
       .join(' ');
   }
 
-  page({ path, route, meteorUserId, trackingId, ...params }) {
+  page({ path, route, meteorUserId, trackingId, context, ...params }) {
     const formattedRoute = this.formatRoute(route);
 
     const properties = {
@@ -78,31 +95,47 @@ class Analytics {
       name: formattedRoute,
       anonymousId: trackingId,
       userId: meteorUserId,
+      context,
       properties,
-      integrations: {
-        All: true,
-        Mixpanel: false,
-      },
     });
 
-    this.analytics.track({
-      event: `Viewed ${formattedRoute}`,
-      anonymousId: trackingId,
-      userId: meteorUserId,
-      properties,
-      integrations: { All: false, Mixpanel: true },
-    });
+    // // Mixpanel does not use page, but event instead
+    // this.analytics.track({
+    //   event: `Viewed ${formattedRoute}`,
+    //   anonymousId: trackingId,
+    //   userId: meteorUserId,
+    //   properties,
+    //   integrations: { All: false, Mixpanel: true },
+    // });
   }
 
   startPageTracking(subdomain) {
     this.baseUrl = Meteor.settings.public.subdomains[subdomain];
     WebApp.connectHandlers.use('/pagetrack', (req, res, next) => {
-      const { cookies = {}, query = {} } = req;
+      const { cookies = {}, query = {}, headers = {} } = req;
+      console.log('cookies:', cookies);
+      const {
+        'x-forwarded-for': ip,
+        'user-agent': userAgent,
+        referer,
+      } = headers;
+      const context = { ip, userAgent, referer };
+      console.log('context:', context);
+
       const trackingId = cookies[TRACKING_COOKIE];
-      this.page({ ...query, trackingId });
+      console.log('trackingId:', trackingId);
+      this.page({ ...query, context, trackingId });
       next();
     });
   }
 }
 
-export default new Analytics();
+let analytics;
+
+if (Meteor.isTest) {
+  analytics = '';
+} else {
+  analytics = new Analytics();
+}
+
+export default analytics;

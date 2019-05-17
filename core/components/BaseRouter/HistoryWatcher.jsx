@@ -5,6 +5,8 @@ import { matchPath } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/constants';
 
+import { getCookie, setCookie } from 'core/utils/cookiesHelpers';
+
 export default class HistoryWatcher extends Component {
   componentDidMount() {
     const { history } = this.props;
@@ -15,15 +17,6 @@ export default class HistoryWatcher extends Component {
 
   componentWillUnmount() {
     this.unlisten();
-  }
-
-  getCookie(cookieName) {
-    const cookie = RegExp(`${cookieName}[^;]+`).exec(document.cookie);
-    return decodeURIComponent(cookie ? cookie.toString().replace(/^[^=]+./, '') : '');
-  }
-
-  setCookie(cookieName, value) {
-    document.cookie = `${cookieName}=${value}`;
   }
 
   getMatchingPath(pathname) {
@@ -41,7 +34,7 @@ export default class HistoryWatcher extends Component {
   }
 
   generateTrackingId() {
-    const trackingId = this.getCookie(TRACKING_COOKIE);
+    const trackingId = getCookie(TRACKING_COOKIE);
     if (!trackingId) {
       const randomId = Math.random()
         .toString(36)
@@ -49,7 +42,7 @@ export default class HistoryWatcher extends Component {
         + Math.random()
           .toString(36)
           .substr(2);
-      this.setCookie(TRACKING_COOKIE, randomId);
+      setCookie(TRACKING_COOKIE, randomId);
     }
   }
 

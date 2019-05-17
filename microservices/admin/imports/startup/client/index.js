@@ -4,8 +4,6 @@ import './init';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
-import Analytics from 'core/api/analytics/Analytics';
-
 import 'core/api/api';
 import 'core/api/client/api';
 
@@ -30,9 +28,6 @@ const start = (testElement) => {
 
   // Render react-router routes
   render(AdminRouter(), testElement || document.getElementById('react-root'));
-
-  // Init client Analytics
-  Analytics.initializeClient();
 };
 
 export default start;

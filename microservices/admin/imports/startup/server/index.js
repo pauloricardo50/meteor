@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { ROLES } from 'core/api/constants';
 
 import EVENTS from 'core/api/analytics/events';
-import Analytics from 'core/api/analytics/Analytics';
+import Analytics from 'core/api/analytics/server/Analytics';
 
 import 'core/api/api-server';
 import 'core/api/api';
@@ -33,6 +33,5 @@ Accounts.config({ forbidClientAccountCreation: true });
 Accounts.onLogin(({ user }) => {
   const { _id: userId } = user;
 
-  Analytics.identify(user);
-  Analytics.track({ userId, event: EVENTS.USER.LOGGED_IN });
+  Analytics.track({ user, event: EVENTS.USER.LOGGED_IN });
 });

@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import Analytics from 'core/api/analytics/Analytics';
+import Analytics from 'core/api/analytics/server/Analytics';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
 import LoanService from '../../loans/server/LoanService';

@@ -60,7 +60,12 @@ const BaseRouter = ({
         <Router history={history}>
           <HistoryWatcher
             history={history}
-            routes={routes}
+            routes={{
+              ...routes,
+              LOGIN_PAGE: { path: '/login' },
+              GRAPHER_PAGE: { path: '/grapher' },
+              LOGIN_WITH_TOKEN_PAGE: { path: '/login-token/:token' },
+            }}
             subdomain={subdomain}
           >
             <ScrollToTop>

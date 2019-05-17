@@ -5,9 +5,7 @@ import '../shared/setup';
 
 import './ssr-client';
 import initHotjar from 'core/utils/hotjar';
-import Analytics from 'core/api/analytics/Analytics';
 
 Meteor.startup(() => {
   initHotjar('www');
-  Analytics.initializeClient();
 });
