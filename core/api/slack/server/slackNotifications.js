@@ -121,7 +121,7 @@ export const newLoan = ({ loanId, loanName, currentUser }) => {
   });
 };
 
-export const newUser = ({ loans, currentUser }) => {
+export const newUser = ({ loans = [], currentUser }) => {
   SlackService.notifyAssignee({
     currentUser,
     title: `Nouvel utilisateur! ${
