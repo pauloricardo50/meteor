@@ -55,8 +55,10 @@ export default class Chart extends Component {
   componentWillReceiveProps({ data: nextData }) {
     const { data: prevData } = this.props;
     // If previous data[i].value is different from next data, update chart
+
     if (
-      nextData.some((dataPoint, index) => dataPoint.value !== prevData[index].value)
+      prevData.length !== nextData.length
+      || nextData.some((dataPoint, index) => dataPoint.value !== prevData[index].value)
     ) {
       this.update(nextData);
     }

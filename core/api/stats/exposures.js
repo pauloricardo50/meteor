@@ -1,9 +1,9 @@
 import { exposeQuery } from '../queries/queryHelpers';
-import { newLoans } from './queries';
-import { newLoansResolver } from './stats';
+import { newLoans, loanHistogram } from './queries';
+import { newLoansResolver, loanHistogramResolver } from './stats';
 
-exposeQuery(newLoans, {
-  validateParams: { period: Number },
-});
-
+exposeQuery(newLoans, { validateParams: { period: Number } });
 newLoans.resolve(newLoansResolver);
+
+exposeQuery(loanHistogram, { validateParams: { period: Number } });
+loanHistogram.resolve(loanHistogramResolver);

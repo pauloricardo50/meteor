@@ -68,13 +68,13 @@ const DatePicker = ({ minDate, maxDate, value, ...props }) => {
       hideKeyboardShortcutsPanel
       showClearDate
       showDefaultInputIcon
-      placeholder="Choisissez"
+      placeholder="p.ex: 1/1/1980"
       firstDayOfWeek={1}
       enableOutsideDays
       isOutsideRange={
         minDate || maxDate ? setDateRange(minDate, maxDate) : () => false
       }
-      displayFormat="D MMMM YYYY"
+      displayFormat="D/M/YYYY"
       renderMonthElement={renderMonthElement}
     />
   );

@@ -327,5 +327,28 @@ const protectedKeys = [
   'valuation',
   'documents',
 ];
+
+export const userAllowedKeys = [
+  'externalId',
+  'address1',
+  'address2',
+  'zipCode',
+  'city',
+  'value',
+  'description',
+  'propertyType',
+  'flatType',
+  'houseType',
+  'roomCount',
+  'insideArea',
+  'landArea',
+  'terraceArea',
+  'gardenArea',
+  'constructionYear',
+  'externalUrl',
+  'useOpenGraph',
+  'imageUrls',
+];
+
 export const PropertySchemaAdmin = PropertySchema.omit(...protectedKeys);
 export default PropertySchema;

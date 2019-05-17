@@ -6,6 +6,7 @@ import {
   proInviteUser,
   anonymousLoanInsert,
   userLoanInsert,
+  anonymousCreateUser,
 } from '../../methods';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import UserService from '../../users/server/UserService';
@@ -16,6 +17,7 @@ import {
   referralOnlyNotification,
   newAnonymousLoan,
   newLoan,
+  newUser,
 } from './slackNotifications';
 import {
   sendPropertyInvitations,
@@ -120,5 +122,15 @@ ServerEventService.addMethodListener(
     });
 
     newLoan({ loanId, loanName, currentUser });
+  },
+);
+
+ServerEventService.addMethodListener(
+  anonymousCreateUser,
+  ({ result: userId }) => {
+    const currentUser = UserService.get(userId);
+    const { loans, name } = UserService.get(userId);
+
+    newUser({ loans, name, currentUser });
   },
 );

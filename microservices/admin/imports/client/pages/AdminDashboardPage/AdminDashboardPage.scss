@@ -27,4 +27,15 @@
       text-align: center;
     }
   }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    align-self: stretch;
+  }
+
+  .chart {
+    width: 100%;
+  }
 }

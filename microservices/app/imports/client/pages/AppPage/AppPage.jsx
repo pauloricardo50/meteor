@@ -8,17 +8,22 @@ import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
 import AppPageContainer from './AppPageContainer';
+import ProAppPage from './ProAppPage';
 
 export const AppPage = ({
   currentUser: { emails, loans, roles },
   insertLoan,
   loading,
 }) => {
+  const userIsPro = roles.includes(ROLES.PRO);
+
+  if (userIsPro) {
+    return <ProAppPage loans={loans} insertLoan={insertLoan} />;
+  }
+
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }
-
-  const userIsPro = roles.includes(ROLES.PRO);
 
   return (
     <section id="app-page" className="app-page animated fadeIn">
@@ -38,25 +43,11 @@ export const AppPage = ({
       ))}
 
       {loans.length === 0 && (
-        <>
-          <WelcomeScreen
-            displayCheckbox={false}
-            handleClick={insertLoan}
-            buttonProps={{ loading }}
-          />
-          {userIsPro && (
-            <p className="description">
-              <br />
-              <br />
-              Pour accéder à votre interface e-Potek Pro, veuillez vous rendre
-              sur
-              {' '}
-              <a className="color" href={Meteor.settings.public.subdomains.pro}>
-                pro.e-potek.ch
-              </a>
-            </p>
-          )}
-        </>
+        <WelcomeScreen
+          displayCheckbox={false}
+          handleClick={insertLoan}
+          buttonProps={{ loading }}
+        />
       )}
     </section>
   );

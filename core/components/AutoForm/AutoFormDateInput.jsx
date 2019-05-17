@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import AutoFormTextInput from './AutoFormTextInput';
 import DatePicker from '../DateInput/DatePicker';
 
-class DateInput extends Component {
+class AutoFormDateInput extends Component {
   constructor() {
     super();
     this.state = { focused: false };
@@ -35,7 +35,7 @@ class DateInput extends Component {
   }
 }
 
-DateInput.propTypes = {
+AutoFormDateInput.propTypes = {
   docId: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
@@ -46,11 +46,11 @@ DateInput.propTypes = {
   updateFunc: PropTypes.string.isRequired,
 };
 
-DateInput.defaultProps = {
+AutoFormDateInput.defaultProps = {
   maxDate: undefined,
   minDate: undefined,
   style: {},
   openDirection: undefined,
 };
 
-export default DateInput;
+export default AutoFormDateInput;

@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
-import UserService from '../../users/server/UserService';
-import SlackService from '../../slack/server/SlackService';
 import CollectionService from '../../helpers/CollectionService';
 import { TASK_STATUS, TASK_TYPE } from '../taskConstants';
 import { validateTask } from '../taskValidation';
@@ -43,8 +41,6 @@ class TaskService extends CollectionService {
       dueAt,
     });
 
-    const user = UserService.get(Meteor.userId());
-    SlackService.notifyOfTask(user);
     return taskId;
   };
 

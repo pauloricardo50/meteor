@@ -21,18 +21,23 @@ export default compose(
   withRouter,
   withProps(({ history }) => ({
     schema: userSchema,
-    onSubmit: values =>
-      anonymousCreateUser
+    onSubmit: (values) => {
+      const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+
+      return anonymousCreateUser
         .run({
           user: values,
-          loanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
           trackingId: getCookie(TRACKING_COOKIE),
+
+          // Remove null values
+          loanId: loanId || undefined,
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           history.push(createRoute(ROUTES.SIGNUP_SUCCESS_PAGE.path, {
             email: values.email,
           }));
-        }),
+        });
+    },
   })),
 );

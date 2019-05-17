@@ -37,7 +37,7 @@ const inviteUser = ({
   expectedResponse,
   status,
   id,
-  shareSolvency = false,
+  shareSolvency = undefined,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = { user: userData, shareSolvency };
@@ -112,7 +112,7 @@ describe('REST: inviteUserToPromotion', function () {
         loans: { shareSolvency: 1 },
       });
 
-      expect(invitedUser.loans[0].shareSolvency).to.equal(false);
+      expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
     });
   });
 

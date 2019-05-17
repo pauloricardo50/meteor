@@ -2,6 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+import { Redirect } from 'react-router-dom';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { testCreateUser } from '../../../../api';
@@ -53,10 +54,10 @@ describe('PasswordResetPage', () => {
       .then(() => expect(component().contains('John Doe')).to.equal(true));
   });
 
-  it('renders an error', () => {
+  it('Redirects to the login page if there is an error', () => {
     props.error = { message: 'Test error' };
     
-    expect(shallowComponent().find('.error').length).to.equal(1);
+    expect(shallowComponent().find(Redirect).length).to.equal(1);
   });
 
   context('disables submit button when', () => {

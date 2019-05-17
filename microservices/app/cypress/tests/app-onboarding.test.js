@@ -38,7 +38,7 @@ describe('App onboarding', () => {
 
       it('should not be able to login with the token twice', () => {
         cy.visit('/enroll-account/unknown-token');
-        cy.get('.error').should('exist');
+        cy.url().should('include', '/login');
       });
 
       it('should see the welcomescreen and get to the dashboard', () => {

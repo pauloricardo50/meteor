@@ -165,13 +165,6 @@ export class SlackService {
     return this.sendAttachments(slackPayload);
   };
 
-  notifyOfTask = currentUser =>
-    this.notifyAssignee({
-      currentUser,
-      title: `Nouvelle tâche créée par ${currentUser && currentUser.name}`,
-      link: Meteor.settings.public.subdomains.admin,
-    });
-
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 

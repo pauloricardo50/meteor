@@ -14,7 +14,7 @@ const inviteUserToPromotionAPI = ({
   params,
   query,
 }) => {
-  const { user, shareSolvency = false } = body;
+  const { user, shareSolvency } = body;
   const { promotionId } = params;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,

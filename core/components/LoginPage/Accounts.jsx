@@ -67,10 +67,9 @@ class Button extends Accounts.ui.Button {
     } = this.props;
 
     const switchToSignUp = id === 'switchToSignUp';
-    const isApp = Meteor.microservice === 'app';
 
-    // Disable signups on pro and admin
-    if (!isApp && switchToSignUp) {
+    // Disable signups here
+    if (switchToSignUp) {
       return null;
     }
 

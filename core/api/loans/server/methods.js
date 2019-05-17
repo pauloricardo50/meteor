@@ -28,7 +28,7 @@ import {
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
-import { STEPS } from '../loanConstants';
+import { STEPS, LOAN_STATUS } from '../loanConstants';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -71,11 +71,14 @@ export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 
-userLoanInsert.setHandler(({ userId }) => {
+userLoanInsert.setHandler(({ userId }, { test }) => {
   SecurityService.checkLoggedIn();
   return LoanService.fullLoanInsert({
     userId,
-    loan: { displayWelcomeScreen: false },
+    loan: {
+      displayWelcomeScreen: false,
+      status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
+    },
   });
 });
 
