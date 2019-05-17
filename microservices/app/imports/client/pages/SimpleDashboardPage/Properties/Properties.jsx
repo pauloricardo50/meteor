@@ -32,7 +32,6 @@ const Properties = ({ loan }: PropertiesProps) => {
             document={promotion}
             key={promotion._id}
             collection={PROMOTIONS_COLLECTION}
-            loanId={loanId}
             loan={loan}
             title={promotion.name}
             subtitle={promotion.address}
@@ -43,7 +42,7 @@ const Properties = ({ loan }: PropertiesProps) => {
             document={property}
             key={property._id}
             collection={PROPERTIES_COLLECTION}
-            loanId={loanId}
+            loan={loan}
             shareSolvency={shareSolvency}
             title={
               property.address1 || (
