@@ -3,12 +3,12 @@ import MortgageNotes from '../mortgageNotes';
 import MortgageNoteService from './MortgageNoteService';
 
 MortgageNotes.before.remove((userId, { _id: mortgageNoteId }) => {
-  const { borrowers = [] } = MortgageNoteService.createQuery({
+  const { borrower } = MortgageNoteService.fetchOne({
     $filters: { _id: mortgageNoteId },
-    borrowers: { _id: 1 },
-  }).fetchOne();
-
-  borrowers.forEach(({ _id: borrowerId }) => {
-    BorrowerService.cleanUpMortgageNotes({ borrowerId });
+    borrower: { _id: 1 },
   });
+
+  if (borrower) {
+    BorrowerService.cleanUpMortgageNotes({ borrowerId: borrower._id });
+  }
 });

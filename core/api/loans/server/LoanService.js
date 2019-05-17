@@ -262,18 +262,18 @@ export class LoanService extends CollectionService {
   removeStructure = ({ loanId, structureId }) => {
     const { selectedStructure: currentlySelected } = this.get(loanId);
 
-    if (currentlySelected !== structureId) {
-      const updateObj = {
-        $pull: { structures: { id: structureId } },
-      };
-
-      return Loans.update(loanId, updateObj, {
-        // Edge case fix: https://github.com/meteor/meteor/issues/4342
-        getAutoValues: false,
-      });
+    if (currentlySelected === structureId) {
+      throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
     }
 
-    throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
+    const updateObj = {
+      $pull: { structures: { id: structureId } },
+    };
+
+    return Loans.update(loanId, updateObj, {
+      // Edge case fix: https://github.com/meteor/meteor/issues/4342
+      getAutoValues: false,
+    });
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
