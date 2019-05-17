@@ -48,7 +48,7 @@ const updateProperty = ({
   });
 };
 
-describe.only('REST: updateProperty', function () {
+describe('REST: updateProperty', function () {
   this.timeout(10000);
 
   before(function () {
