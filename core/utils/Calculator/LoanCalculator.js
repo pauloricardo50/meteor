@@ -231,13 +231,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     loanHasMinimalInformation({ loan }) {
-      const {
-        structure: { ownFunds },
-      } = loan;
+      const structure = this.selectStructure({ loan });
 
       return !!(
-        ownFunds
-        && ownFunds.length > 0
+        structure.ownFunds
+        && structure.ownFunds.length > 0
         && this.selectPropertyValue({ loan })
         && this.selectLoanValue({ loan })
       );
