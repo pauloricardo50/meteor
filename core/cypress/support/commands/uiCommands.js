@@ -86,6 +86,7 @@ Cypress.Commands.add('routeTo', (path) => {
 // connections
 Cypress.Commands.add('initiateTest', () => {
   const projectName = Cypress.config('projectName');
+  cy.meteorLogout();
 
   // Visit login page on all microservices except www to start tests
   if (projectName === 'www') {

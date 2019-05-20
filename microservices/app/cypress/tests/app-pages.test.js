@@ -15,10 +15,6 @@ const pages = {
         shouldRender: '#impersonation-success-message',
       }),
 
-    'Verify Email (Invalid Token)': route('/verify-email/invalidToken', {
-      shouldRender: '#email-verification-page',
-    }),
-
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
       route(`/verify-email/${emailVerificationToken}`, {
         shouldRender: '#email-verification-page',

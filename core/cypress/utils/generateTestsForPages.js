@@ -16,7 +16,6 @@ const generateTestsForPages = (pages, getTestData) => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
           cy.initiateTest();
-          cy.meteorLogout();
 
           if (pageAuthentication !== 'public') {
             cy.visit('/login');
