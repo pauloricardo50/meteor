@@ -14,7 +14,7 @@ import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
 import ProProperty from 'core/components/ProProperty';
-import ROUTES from '../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../startup/client/appRoutes';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 // import LaunchValuationButton from './LaunchValuationButton';
@@ -73,7 +73,7 @@ const SinglePropertyPage = (props) => {
           }}
           method={() =>
             propertyDelete.run({ propertyId, loanId }).then(() =>
-              history.push(createRoute(ROUTES.PROPERTIES_PAGE.path, {
+              history.push(createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
                 ':loanId': loan._id,
               })))
           }

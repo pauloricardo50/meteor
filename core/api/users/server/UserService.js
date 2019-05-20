@@ -4,8 +4,6 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
 import LoanService from '../../loans/server/LoanService';
@@ -67,25 +65,13 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
-  anonymousCreateUser = ({ user, loanId, trackingId }) => {
+  anonymousCreateUser = ({ user, loanId }) => {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
 
-    Analytics.alias(trackingId, userId);
-    Analytics.track({
-      userId,
-      event: EVENTS.USER.CREATED,
-      data: { userId, origin: 'anonymous' },
-    });
-
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
-      Analytics.track({
-        userId,
-        event: EVENTS.LOAN.ANONYMOUS_LOAN_CLAIMED,
-        data: { loanId },
-      });
     }
 
     return userId;

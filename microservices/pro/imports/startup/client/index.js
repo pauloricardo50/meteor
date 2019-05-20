@@ -12,10 +12,6 @@ import 'core/api/files/meteor-slingshot';
 import '../accounts-config';
 import './css';
 import initHotjar from 'core/utils/hotjar';
-import { analyticsLogin } from 'core/api/methods/index';
-import { TRACKING_COOKIE } from 'core/api/analytics/constants';
-import { getCookie } from 'core/utils/cookiesHelpers';
-import { Accounts } from 'meteor/accounts-base';
 import ProRouter from './ProRouter';
 
 const start = (testElement) => {
@@ -30,10 +26,6 @@ const start = (testElement) => {
 
   // Hotjar
   initHotjar('pro');
-
-  Accounts.onLogin(() => {
-    analyticsLogin.run({ trackingId: getCookie(TRACKING_COOKIE) });
-  });
 };
 
 export default start;

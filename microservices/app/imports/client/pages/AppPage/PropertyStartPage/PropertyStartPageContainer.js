@@ -5,7 +5,7 @@ import anonymousProperty from 'core/api/properties/queries/anonymousProperty';
 import { createRoute } from 'core/utils/routerUtils';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import ROUTES from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export default compose(
   withSmartQuery({
@@ -37,7 +37,7 @@ export default compose(
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
           window.analytics.alias(loanId);
-          history.push(createRoute(ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
         }),
   })),
 );

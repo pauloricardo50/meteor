@@ -11,7 +11,7 @@ import Icon from 'core/components/Icon';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { assignLoanToUser } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
-import ROUTES from 'imports/startup/client/appRoutes';
+import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { withAnonymousLoan } from '../../../pages/AppPage/AnonymousAppPage/AnonymousAppPageContainer';
 
 type AnonymousLoanClaimerProps = {};
@@ -83,7 +83,7 @@ export default compose(
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           setAnonymousLoanId(undefined);
-          history.push(createRoute(ROUTES.DASHBOARD_PAGE.path, {
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
             loanId: anonymousLoan._id,
           }));
         })

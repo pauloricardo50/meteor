@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { loanUpdate } from 'core/api/methods';
 import { withContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import { createRoute } from 'core/utils/routerUtils';
-import ROUTES from 'imports/startup/client/appRoutes';
+import APP_ROUTES from 'imports/startup/client/appRoutes';
 
 export default compose(
   withState(
@@ -29,7 +29,7 @@ export default compose(
 
       if (page) {
         // If this is the welcome page, simply route to the dashboard
-        history.push(createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId }));
+        history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
       } else {
         // Else, this is shown instead of the dashboard, so hide it using the
         // `window` object, but react does not re-render when you change window

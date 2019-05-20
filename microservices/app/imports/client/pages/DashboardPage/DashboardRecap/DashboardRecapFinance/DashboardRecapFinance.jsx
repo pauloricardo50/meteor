@@ -8,7 +8,7 @@ import T from 'core/components/Translation';
 import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
-import ROUTES from '../../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
 import DashboardRecapFinanceEmpty from './DashboardRecapFinanceEmpty';
 
 const shouldDisplayRecap = loan => Calculator.selectPropertyValue({ loan });
@@ -25,7 +25,7 @@ const DashboardRecapFinance = (props) => {
   return (
     <Link
       className="dashboard-recap-finance card1 card-hover"
-      to={createRoute(ROUTES.FINANCING_PAGE.path, { loanId: loan._id })}
+      to={createRoute(APP_ROUTES.FINANCING_PAGE.path, { loanId: loan._id })}
     >
       <div className="card-top">
         <h3>

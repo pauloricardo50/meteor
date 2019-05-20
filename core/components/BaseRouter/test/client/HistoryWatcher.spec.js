@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { TRACKING_COOKIE } from 'core/api/analytics/constants';
+import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 
 import { getCookie } from 'core/utils/cookiesHelpers';
-import HistoryWatcher from '../HistoryWatcher';
+import HistoryWatcher from '../../HistoryWatcher';
 
 const routes = {
   bar: { path: '/foo/:id' },
@@ -21,7 +21,7 @@ const deleteAllCookies = () => {
   }
 };
 
-describe.only('HistoryWatcher', () => {
+describe('HistoryWatcher', () => {
   const watcher = new HistoryWatcher({ routes });
 
   context('getMatchingPath', () => {

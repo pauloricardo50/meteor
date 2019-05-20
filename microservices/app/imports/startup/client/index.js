@@ -3,7 +3,6 @@ import './init';
 
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
-import { Accounts } from 'meteor/accounts-base';
 
 import 'url-search-params-polyfill';
 import 'core/api/api';
@@ -12,9 +11,6 @@ import 'core/api/client/api';
 import '../accounts-config';
 import './css';
 import initHotjar from 'core/utils/hotjar';
-import { TRACKING_COOKIE } from 'core/api/analytics/constants';
-import { getCookie } from 'core/utils/cookiesHelpers';
-import { analyticsLogin } from 'core/api/methods';
 import AppRouter from './AppRouter';
 
 /**
@@ -36,10 +32,6 @@ const start = (testElement) => {
 
   // Hotjar
   initHotjar('app');
-
-  Accounts.onLogin(() => {
-    analyticsLogin.run({ trackingId: getCookie(TRACKING_COOKIE) });
-  });
 };
 
 export default start;

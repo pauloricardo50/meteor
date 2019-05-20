@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { matchPath } from 'react-router-dom';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/constants';
+import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { analyticsPage } from 'core/api/methods';
 
 import { getCookie, setCookie, parseCookies } from 'core/utils/cookiesHelpers';

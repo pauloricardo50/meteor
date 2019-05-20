@@ -6,7 +6,7 @@ import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
-import ROUTES from '../../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
 type DashboardRecapFinanceEmptyProps = {};
 
@@ -23,7 +23,7 @@ const DashboardRecapFinanceEmpty = ({
     </p>
     <Button
       link
-      to={createRoute(ROUTES.FINANCING_PAGE.path, { loanId: loan._id })}
+      to={createRoute(APP_ROUTES.FINANCING_PAGE.path, { loanId: loan._id })}
       primary
     >
       <T id="DashboardRecapFinance.emptyButton" />

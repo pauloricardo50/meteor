@@ -5,9 +5,9 @@ import { withRouter } from 'react-router-dom';
 import { anonymousCreateUser } from 'core/api/methods/index';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
-import ROUTES from 'imports/startup/client/appRoutes';
+import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { getCookie } from 'core/utils/cookiesHelpers';
-import { TRACKING_COOKIE } from 'core/api/analytics/constants';
+import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 
 export const userSchema = new SimpleSchema({
   firstName: String,
@@ -34,7 +34,7 @@ export default compose(
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-          history.push(createRoute(ROUTES.SIGNUP_SUCCESS_PAGE.path, {
+          history.push(createRoute(APP_ROUTES.SIGNUP_SUCCESS_PAGE.path, {
             email: values.email,
           }));
         });

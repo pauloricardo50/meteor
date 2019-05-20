@@ -6,7 +6,7 @@ import messagesFR from '../../../lang/fr.json';
 import AppLayout from '../../client/layouts/AppLayout/loadable';
 import AppStore from '../../client/components/AppStore';
 
-import ROUTES from './appRoutes';
+import APP_ROUTES from './appRoutes';
 
 const AppRouter = () => (
   <BaseRouter
@@ -14,12 +14,12 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     WrapperComponent={AppStore}
-    routes={ROUTES}
+    routes={APP_ROUTES}
   >
     <AppLayout>
       <Switch>
-        {Object.keys(ROUTES).map(route => (
-          <Route {...ROUTES[route]} key={route} />
+        {Object.keys(APP_ROUTES).map(route => (
+          <Route {...APP_ROUTES[route]} key={route} />
         ))}
       </Switch>
     </AppLayout>

@@ -23,28 +23,6 @@ import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import TasksPage from '../../client/pages/TasksPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
 
-// export const ACCOUNT_PAGE = '/account';
-// export const ADMIN_PROMOTION_LOT_PAGE = '/promotions/:promotionId/promotionLots/:promotionLotId';
-// export const ADMIN_PROMOTION_PAGE = '/promotions/:promotionId';
-// export const ADMIN_PROMOTION_USERS_PAGE = '/promotions/:promotionId/users';
-// export const BORROWERS_PAGE = '/borrowers';
-// export const CONTACTS_PAGE = '/contacts';
-// export const DASHBOARD_PAGE = '/';
-// export const DEV_PAGE = '/dev';
-// export const INTEREST_RATES_PAGE = '/interestRates';
-// export const LOANS_PAGE = '/loans';
-// export const ORGANISATIONS_PAGE = '/organisations';
-// export const PROMOTIONS_PAGE = '/promotions';
-// export const PROPERTIES_PAGE = '/properties';
-// export const SINGLE_BORROWER_PAGE = '/borrowers/:borrowerId';
-// export const SINGLE_CONTACT_PAGE = '/contacts/:contactId';
-// export const SINGLE_LOAN_PAGE = '/loans/:loanId/:tabId?';
-// export const SINGLE_ORGANISATION_PAGE = '/organisations/:organisationId/:tabId?';
-// export const SINGLE_PROPERTY_PAGE = '/properties/:propertyId';
-// export const SINGLE_USER_PAGE = '/users/:userId';
-// export const TASKS_PAGE = '/tasks';
-// export const USERS_PAGE = '/users';
-
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
 

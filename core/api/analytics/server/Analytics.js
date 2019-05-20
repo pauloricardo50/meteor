@@ -1,72 +1,126 @@
-import NodeAnalytics from 'analytics-node';
+import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 
 import UserService from 'core/api/users/server/UserService';
-import { EVENTS_CONFIG } from '../events';
-import { TRACKING_COOKIE } from '../constants';
+import { EVENTS_CONFIG } from './eventsConfig';
+import { TRACKING_COOKIE } from '../analyticsConstants';
+import MiddlewareManager from '../../../utils/MiddlewareManager';
+import { impersonateMiddleware } from '../analyticsHelpers';
 
-class Analytics {
-  constructor() {
-    const { Segment = {} } = Meteor.settings.public.analyticsSettings;
-    const { key } = Segment;
-    this.key = key;
-    this.analytics = new NodeAnalytics(key);
-    this.events = EVENTS_CONFIG;
+class NodeAnalytics extends DefaultNodeAnalytics {
+  constructor(...args) {
+    super(...args);
+    this.middlewareManager = new MiddlewareManager(this);
   }
 
-  identify({ userId, trackingId }) {
-    const { firstName, lastName, email, roles } = UserService.fetchOne({
+  initAnalytics(context) {
+    ['identify', 'track', 'page', 'alias'].forEach((method) => {
+      this.middlewareManager.applyToMethod(
+        method,
+        impersonateMiddleware(context),
+      );
+    });
+  }
+}
+
+const { Segment = {} } = Meteor.settings.public.analyticsSettings;
+const { key } = Segment;
+const nodeAnalytics = new NodeAnalytics(key);
+
+class Analytics {
+  constructor(context) {
+    this.init(context);
+  }
+
+  init(context) {
+    this.events = EVENTS_CONFIG;
+    if (Meteor.isTest || Meteor.isAppTest) {
+      this.analytics = class {
+        identify() {}
+
+        page() {}
+
+        track() {}
+
+        alias() {}
+      };
+    } else {
+      this.analytics = nodeAnalytics;
+    }
+
+    this.context(context);
+  }
+
+  context(context) {
+    const {
+      userId,
+      connection: {
+        clientAddress,
+        httpHeaders: { host, 'user-agent': userAgent },
+      },
+    } = context;
+    this.userId = userId;
+    this.user = UserService.fetchOne({
       $filters: { _id: userId },
       firstName: 1,
       lastName: 1,
       email: 1,
       roles: 1,
     });
+    this.clientAddress = clientAddress;
+    this.host = host;
+    this.userAgent = userAgent;
 
-    this.alias(userId, trackingId);
+    this.analytics.initAnalytics(context);
+  }
+
+  identify(trackingId) {
+    this.alias(trackingId);
 
     this.analytics.identify({
       anonymousId: trackingId,
-      userId,
+      userId: this.userId,
       traits: {
-        firstName,
-        lastName,
-        email,
-        role: roles[0],
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        email: this.user.email,
+        role: this.user.roles[0],
       },
     });
   }
 
-  // All tracked events shall be called with a logged in user
-  track({ userId, event, data }) {
+  // All tracked events should be called with a logged in user
+  track(event, data) {
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
     }
     const eventConfig = this.events[event];
-    const { name, properties = [] } = eventConfig;
+    console.log('eventConfig:', eventConfig);
+    const { name, transform } = eventConfig;
+    console.log('name:', name);
+    console.log('transform:', transform);
 
-    const eventProperties = properties.reduce(
-      (obj, property) => ({ ...obj, [property]: data[property] }),
-      {},
-    );
+    const eventProperties = transform ? transform(data) : {};
+    console.log('eventProperties:', eventProperties);
 
     this.analytics.track({
-      userId,
+      userId: this.userId,
       event: name,
-      properties: { ...eventProperties },
+      properties: eventProperties,
       context: {
-        userAgent: 'test',
+        ip: this.clientAddress,
+        userAgent: this.userAgent,
       },
     });
   }
 
-  alias(newId, previousId) {
-    this.analytics.alias({ userId: newId, previousId });
+  alias(trackingId) {
+    this.analytics.alias({ userId: this.userId, previousId: trackingId });
   }
 
   // Returns the route string in a more readable format
   // ex: APP_LOGIN_PAGE => App login page
-  formatRoute(route) {
+  formatRouteName(route) {
     return route
       .toLowerCase()
       .split('_')
@@ -80,41 +134,26 @@ class Analytics {
       .join(' ');
   }
 
-  page({ context, params }) {
-    const {
-      userId,
-      connection: {
-        clientAddress,
-        httpHeaders: { host, 'user-agent': userAgent },
-      },
-    } = context;
+  page(params) {
     const { cookies, sessionStorage, path, route, queryParams } = params;
     const trackingId = cookies[TRACKING_COOKIE];
-    const formattedRoute = this.formatRoute(route);
+    const formattedRoute = this.formatRouteName(route);
 
     this.analytics.page({
       name: formattedRoute,
       anonymousId: trackingId,
-      ...(userId ? { userId } : {}),
+      ...(this.userId ? { userId: this.userId } : {}),
       context: {
-        ip: clientAddress,
-        userAgent,
+        ip: this.clientAddress,
+        userAgent: this.userAgent,
       },
       properties: {
         path,
-        url: `${host}${path}`,
+        url: `${this.host}${path}`,
         ...queryParams,
       },
     });
   }
 }
 
-let analytics;
-
-if (Meteor.isTest) {
-  analytics = '';
-} else {
-  analytics = new Analytics();
-}
-
-export default analytics;
+export default Analytics;

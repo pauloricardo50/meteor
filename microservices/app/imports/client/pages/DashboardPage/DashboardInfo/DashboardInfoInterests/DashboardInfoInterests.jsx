@@ -4,7 +4,7 @@ import cx from 'classnames';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import ROUTES from '../../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
 import DashboardInfoInterestsTable from './DashboardInfoInterestsTable';
 import DashboardInfoInterestsContainer from './DashboardInfoInterestsContainer';
 
@@ -37,7 +37,7 @@ const DashboardInfoInterests = (props) => {
             <Button
               primary
               link
-              to={createRoute(ROUTES.FINANCING_PAGE.path, { loanId })}
+              to={createRoute(APP_ROUTES.FINANCING_PAGE.path, { loanId })}
             >
               <T
                 id="DashboardInfoInterests.link"

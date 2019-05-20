@@ -6,7 +6,7 @@ import cx from 'classnames';
 import { createRoute } from 'core/utils/routerUtils';
 import StatusLabel from 'core/components/StatusLabel';
 import { PROMOTIONS_COLLECTION, PROMOTION_STATUS } from 'core/api/constants';
-import ROUTES from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 type PromotionCardProps = {
   promotion: Object,
@@ -19,7 +19,7 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
 
   return (
     <Link
-      to={createRoute(ROUTES.APP_PROMOTION_PAGE.path, {
+      to={createRoute(APP_ROUTES.APP_PROMOTION_PAGE.path, {
         ':promotionId': promotion._id,
         ':loanId': loanId,
       })}

@@ -7,7 +7,7 @@ import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
-import ROUTES from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 type PromotionOptionDetailProps = {};
 
@@ -26,7 +26,7 @@ const PromotionOptionDetail = ({
 
   return (
     <Link
-      to={createRoute(ROUTES.APP_PROMOTION_OPTION_PAGE.path, {
+      to={createRoute(APP_ROUTES.APP_PROMOTION_OPTION_PAGE.path, {
         loanId,
         promotionId: promotion._id,
         promotionOptionId,

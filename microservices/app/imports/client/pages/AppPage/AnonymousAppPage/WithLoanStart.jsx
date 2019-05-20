@@ -6,7 +6,7 @@ import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import T, { Money } from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import ROUTES from 'imports/startup/client/appRoutes';
+import APP_ROUTES from 'imports/startup/client/appRoutes';
 
 type WithLoanStartProps = {};
 
@@ -43,7 +43,7 @@ const WithLoanStart = ({
         secondary
         raised
         link
-        to={createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId })}
+        to={createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId })}
       >
         <T id="general.continue" />
       </Button>
