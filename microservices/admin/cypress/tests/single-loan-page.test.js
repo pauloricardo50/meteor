@@ -60,11 +60,6 @@ describe('Loans', () => {
       .click();
     cy.contains('Fermer').click();
 
-    // Wait for reactive query to come back
-    cy.wait(2000);
-
-    cy.get('.lender.card1').then((lenders) => {
-      expect(lenders.length).to.equal(2);
-    });
+    cy.get('.lender.card1').should('have.length', 2);
   });
 });

@@ -3,7 +3,7 @@ import random from 'lodash/random';
 
 import OrganisationService from '../api/organisations/server/OrganisationService';
 import ContactService from '../api/contacts/server/ContactService';
-import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../api/constants';
+import { ORGANISATION_TYPES, ORGANISATION_FEATURES, ORGANISATION_TAGS } from '../api/constants';
 import { createLenderRules } from './lenderRulesFixtures';
 
 const orgs = [
@@ -12,24 +12,28 @@ const orgs = [
     type: ORGANISATION_TYPES.BANK,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/ubs-logo.png',
     features: [ORGANISATION_FEATURES.LENDER],
+    tags: [ORGANISATION_TAGS.CH_RETAIL],
   },
   {
     name: 'Crédit Suisse',
     type: ORGANISATION_TYPES.BANK,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/cs-logo.png',
     features: [ORGANISATION_FEATURES.LENDER],
+    tags: [ORGANISATION_TAGS.CH_RETAIL],
   },
   {
     name: 'Allianz',
     type: ORGANISATION_TYPES.INSURANCE,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/allianz-logo.png',
     features: [ORGANISATION_FEATURES.LENDER],
+    tags: [ORGANISATION_TAGS.CH_RETAIL],
   },
   {
     name: 'Pictet',
     type: ORGANISATION_TYPES.PRIVATE_BANK,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/pictet-logo.png',
     features: [ORGANISATION_FEATURES.LENDER],
+    tags: [ORGANISATION_TAGS.CH_RETAIL],
   },
 ];
 
