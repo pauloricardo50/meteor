@@ -26,8 +26,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       }
     }
 
-    propertyPercent({ loan, property }) {
-      const { borrowers, structure } = loan;
+    propertyPercent({ loan, structureId, property }) {
+      const { borrowers } = loan;
+      const structure = this.selectStructure({ loan, structureId });
       const propertyToCalculateWith = property || structure.property;
 
       if (!propertyToCalculateWith) {
@@ -53,11 +54,12 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     getPropAndWork({ loan, structureId }) {
       const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'propertyWork',
-      }) || 0;
+      const propertyWork =
+        this.selectStructureKey({
+          loan,
+          structureId,
+          key: 'propertyWork',
+        }) || 0;
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
@@ -145,10 +147,12 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         loan,
         structureId,
       });
-      const constructionValue = this.makeSelectPropertyKey('constructionValue')({
-        loan,
-        structureId,
-      });
+      const constructionValue = this.makeSelectPropertyKey('constructionValue')(
+        {
+          loan,
+          structureId,
+        },
+      );
 
       return !propertyExactValue || !!(landValue && constructionValue);
     }
