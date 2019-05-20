@@ -41,6 +41,7 @@ import { sendEmail } from '../../methods';
 import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
 import fullLoan from '../queries/fullLoan';
 
+
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
   const zero = places - num.toString().length + 1;

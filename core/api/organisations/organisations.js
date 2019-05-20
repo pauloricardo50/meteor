@@ -1,7 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 
 import SimpleSchema from 'simpl-schema';
-import 'uniforms/SimpleSchema2Bridge';
 
 import {
   address,
@@ -15,6 +14,8 @@ import {
   ORGANISATION_FEATURES,
   ORGANISATION_TAGS,
 } from './organisationConstants';
+
+// console.trace();
 
 const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
 
