@@ -52,7 +52,7 @@ class Analytics {
       userId,
       connection: {
         clientAddress,
-        httpHeaders: { host, 'user-agent': userAgent },
+        httpHeaders: { host, 'user-agent': userAgent, 'x-real-ip': realIp },
       },
     } = context;
     this.userId = userId;
@@ -63,7 +63,7 @@ class Analytics {
       email: 1,
       roles: 1,
     });
-    this.clientAddress = clientAddress;
+    this.clientAddress = realIp || clientAddress;
     this.host = host;
     this.userAgent = userAgent;
 

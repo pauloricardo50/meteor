@@ -8,7 +8,6 @@ process.env.NODE_ENV = 'production';
 process.env.ROOT_URL = appEnv.url;
 process.env.MONGO_URL = appEnv.getService(mongoServiceName).credentials.uri;
 process.env.METEOR_SETTINGS = JSON.stringify(settings);
-process.env.HTTP_FORWARDED_COUNT = appEnv.HTTP_FORWARDED_COUNT;
 
 // PORT is set correctly by cloud foundry
 

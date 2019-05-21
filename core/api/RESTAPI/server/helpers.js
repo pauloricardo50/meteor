@@ -296,11 +296,11 @@ export const verifySignature = (req) => {
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
-  const { 'x-forwarded-for': clientAddress, host } = headers;
+  const { 'x-forwarded-for': clientAddress, host, 'x-real-ip': realIp } = headers;
 
   const analytics = new Analytics({
     userId,
-    connection: { clientAddress, httpHeaders: { host } },
+    connection: { clientAddress, httpHeaders: { host, 'x-real-ip': realIp } },
   });
 
   if (userId) {
