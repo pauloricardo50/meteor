@@ -1,4 +1,4 @@
-import { LOGIN_IP_BLACKLIST } from './analyticsConstants';
+import { LOGIN_IP_BLACKLIST } from '../analyticsConstants';
 
 export const impersonateMiddleware = context => () => next => (...args) => {
   const {

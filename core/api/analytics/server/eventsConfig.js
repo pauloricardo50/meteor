@@ -19,4 +19,8 @@ export const EVENTS_CONFIG = {
     name: 'Loan Anonymous loan claimed',
     transform: curryPick(['userId', 'origin', 'referral']),
   },
+  [EVENTS.API_CALLED]: {
+    name: 'Api Called',
+    transform: curryPick(['endpoint', 'result']),
+  },
 };

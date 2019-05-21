@@ -5,7 +5,8 @@ import UserService from 'core/api/users/server/UserService';
 import { EVENTS_CONFIG } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
-import { impersonateMiddleware } from '../analyticsHelpers';
+import { impersonateMiddleware } from './analyticsHelpers';
+import TestAnalytics from './TestAnalytics';
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -35,15 +36,7 @@ class Analytics {
   init(context) {
     this.events = EVENTS_CONFIG;
     if (Meteor.isTest || Meteor.isAppTest) {
-      this.analytics = class {
-        identify() {}
-
-        page() {}
-
-        track() {}
-
-        alias() {}
-      };
+      this.analytics = new TestAnalytics();
     } else {
       this.analytics = nodeAnalytics;
     }
@@ -95,13 +88,9 @@ class Analytics {
       throw new Meteor.Error(`Unknown event ${event}`);
     }
     const eventConfig = this.events[event];
-    console.log('eventConfig:', eventConfig);
     const { name, transform } = eventConfig;
-    console.log('name:', name);
-    console.log('transform:', transform);
 
     const eventProperties = transform ? transform(data) : {};
-    console.log('eventProperties:', eventProperties);
 
     this.analytics.track({
       userId: this.userId,
