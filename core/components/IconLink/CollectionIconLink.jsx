@@ -118,7 +118,12 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
 };
 
 const CollectionIconLink = ({ relatedDoc }: CollectionIconLinkProps) => {
-  const { collection } = relatedDoc;
+  const { collection, _id: docId } = relatedDoc;
+
+  if (!docId) {
+    return null;
+  }
+
   const {
     link,
     icon = collectionIcons[collection],
