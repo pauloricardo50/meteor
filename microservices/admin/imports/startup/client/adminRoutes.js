@@ -29,15 +29,31 @@ const ADMIN_ROUTES = {
   //   "All" pages
   USERS_PAGE: { component: UsersPage, path: '/users', exact: true },
   LOANS_PAGE: { component: LoansPage, path: '/loans', exact: true },
-  BORROWERS_PAGE: { component: BorrowersPage, path: '/borrowers' },
-  CONTACTS_PAGE: { component: ContactsPage, path: '/contacts' },
-  ORGANISATIONS_PAGE: { component: OrganisationsPage, path: '/organisations' },
-  PROMOTIONS_PAGE: { component: PromotionsPage, path: '/promotions' },
-  PROPERTIES_PAGE: { component: PropertiesPage, path: '/properties' },
-  TASKS_PAGE: { component: TasksPage, path: '/tasks' },
-  INTEREST_RATES_PAGE: { component: InterestRatesPage, path: '/interestRates' },
+  BORROWERS_PAGE: { component: BorrowersPage, path: '/borrowers', exact: true },
+  CONTACTS_PAGE: { component: ContactsPage, path: '/contacts', exact: true },
+  ORGANISATIONS_PAGE: {
+    component: OrganisationsPage,
+    path: '/organisations',
+    exact: true,
+  },
+  PROMOTIONS_PAGE: {
+    component: PromotionsPage,
+    path: '/promotions',
+    exact: true,
+  },
+  PROPERTIES_PAGE: {
+    component: PropertiesPage,
+    path: '/properties',
+    exact: true,
+  },
+  TASKS_PAGE: { component: TasksPage, path: '/tasks', exact: true },
+  INTEREST_RATES_PAGE: {
+    component: InterestRatesPage,
+    path: '/interestRates',
+    exact: true,
+  },
 
-  //   "Signle" pages
+  //   "Single" pages
   SINGLE_BORROWER_PAGE: {
     component: SingleBorrowerPage,
     path: '/borrowers/:borrowerId',
