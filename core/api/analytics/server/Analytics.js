@@ -27,6 +27,9 @@ class NodeAnalytics extends DefaultNodeAnalytics {
 const { Segment = {} } = Meteor.settings.public.analyticsSettings;
 const { key } = Segment;
 const nodeAnalytics = new NodeAnalytics(key);
+if (Meteor.isProduction && !key) {
+  throw new Meteor.Error('No segment key found !');
+}
 
 class Analytics {
   constructor(context) {
