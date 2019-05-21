@@ -7,17 +7,8 @@ import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
 import SingleLoanPageTasks from './SingleLoanPageTasks';
 
-const SingleLoanPage = ({ loan, Calculator, ...rest }) => {
-  const dataToPassDown = {
-    ...rest,
-    loan,
-    property: (loan.structure && loan.structure.property) || loan.properties[0],
-    properties: loan.properties,
-    borrowers: loan.borrowers,
-    offers: loan.offers,
-    Calculator,
-  };
-
+const SingleLoanPage = (props) => {
+  const { loan } = props;
   return (
     <section className="single-loan-page">
       <Helmet>
@@ -25,7 +16,7 @@ const SingleLoanPage = ({ loan, Calculator, ...rest }) => {
       </Helmet>
       <SingleLoanPageHeader loan={loan} />
       <SingleLoanPageTasks loan={loan} />
-      <LoanTabs {...dataToPassDown} />
+      <LoanTabs {...props} />
     </section>
   );
 };

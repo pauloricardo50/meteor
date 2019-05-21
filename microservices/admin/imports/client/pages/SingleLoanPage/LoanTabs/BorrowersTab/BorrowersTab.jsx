@@ -23,7 +23,8 @@ const borrowersTabLabel = (borrower, index) => {
 };
 
 const BorrowersTab = (props) => {
-  const { borrowers, loan } = props;
+  const { loan } = props;
+  const { borrowers } = loan;
 
   return borrowers && borrowers.length > 0 ? (
     <div>

@@ -1,4 +1,6 @@
 {
+  "Forms.category.STANDARD": "Retail",
+  "Forms.category.PREMIUM": "Premium",
   "LoginPage.noAccountApp": "Vous n'avez pas de compte? Commencez {link}",
   "LoginPage.noAccount": "Vous n'avez pas de compte? {contactUs}",
   "AccountPage.updateUser": "Modifier mes informations",

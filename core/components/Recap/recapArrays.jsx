@@ -113,7 +113,9 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       label: 'Recap.monthlyCost',
       value: (
         <span>
-          {toMoney(monthly)} <small>/mois</small>
+          {toMoney(monthly)}
+          {' '}
+          <small>/mois</small>
         </span>
       ),
     },
@@ -479,7 +481,9 @@ export const getStructureArray = (props) => {
       label: 'Recap.monthlyCost',
       value: (
         <span>
-          {toMoney(monthly)} <small>/mois</small>
+          {toMoney(monthly)}
+          {' '}
+          <small>/mois</small>
         </span>
       ),
     },
@@ -491,7 +495,8 @@ export const getStructureArray = (props) => {
       label: propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
-          <Percent value={borrowRatio} />{' '}
+          <Percent value={borrowRatio} />
+          {' '}
           <span
             className={
               borrowRatio <= maxBorrowRatio + 0.001 // add 0.1% to avoid rounding errors
@@ -506,7 +511,8 @@ export const getStructureArray = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          <Percent value={incomeRatio} />{' '}
+          <Percent value={incomeRatio} />
+          {' '}
           <span
             className={
               incomeRatio <= 1 / 3
@@ -628,6 +634,106 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       label: 'Recap.notaryFeesRatio',
       value: `${((total / propAndWork) * 100).toFixed(2)}%`,
       spacingTop: true,
+    },
+  ];
+};
+
+export const getPremiumArray = ({ Calculator: calc = Calculator, loan }) => {
+  const borrowRatio = calc.getBorrowRatio({ loan });
+  const loanValue = calc.selectLoanValue({ loan });
+  const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
+  const notaryFees = calc.getFees({ loan }).total;
+  const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
+  const project = calc.getProjectValue({ loan });
+  const propAndWork = calc.getPropAndWork({ loan });
+  const propertyValue = calc.selectPropertyValue({ loan });
+  const propertyWork = calc.selectStructureKey({
+    loan,
+    key: 'propertyWork',
+  });
+  const totalFinancing = calc.getTotalFinancing({ loan });
+
+  return [
+    {
+      title: true,
+      label: (
+        <span>
+          <T id="Recap.title" />
+          &nbsp;
+          {Meteor.microservice === 'admin' && calc.organisationName && (
+            <span className="secondary">
+              (
+              <T
+                id="Recap.consideredBy"
+                values={{ organisationName: calc.organisationName }}
+              />
+              )
+            </span>
+          )}
+        </span>
+      ),
+      props: { style: { marginTop: 0 } },
+      noIntl: true,
+    },
+    {
+      label: "Valeur de l'objet",
+      value: toMoney(Math.round(propertyValue)),
+      noIntl: true,
+    },
+    {
+      label: 'Recap.propertyWork',
+      value: toMoney(Math.round(propertyWork)),
+      hide: !propertyWork,
+      spacing: true,
+    },
+    {
+      label: 'Recap.propAndWork',
+      value: <span className="sum">{toMoney(Math.round(propAndWork))}</span>,
+      hide: !propertyWork,
+    },
+    {
+      label: 'Frais',
+      value: toMoney(Math.round(notaryFees)),
+      noIntl: true,
+    },
+    {
+      label: 'Recap.totalCost',
+      labelStyle: { fontWeight: 400 },
+      value: <span className="sum">{toMoney(project)}</span>,
+      spacingTop: true,
+      spacing: true,
+      bold: true,
+    },
+    {
+      title: true,
+      label: 'Recap.financing',
+    },
+    {
+      label: 'Autres fonds',
+      value: toMoney(ownFundsNonPledged),
+      noIntl: true,
+    },
+    {
+      label: 'general.mortgageLoan',
+      value: toMoney(loanValue),
+    },
+    {
+      label: 'Recap.totalFinancing',
+      value: <span className="sum">{toMoney(totalFinancing)}</span>,
+      spacingTop: true,
+      spacing: true,
+      bold: true,
+    },
+    {
+      label: propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
+      value: (
+        <span className="flex center">
+          <PercentWithStatus
+            value={borrowRatio}
+            status={borrowRatio > maxBorrowRatio ? ERROR : SUCCESS}
+          />
+        </span>
+      ),
     },
   ];
 };

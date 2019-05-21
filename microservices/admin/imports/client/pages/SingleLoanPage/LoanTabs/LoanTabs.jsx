@@ -22,7 +22,7 @@ import LendersTab from './LendersTab/loadable';
 import RevenuesTab from './RevenuesTab/loadable';
 
 const getTabs = (props) => {
-  const { loan } = props;
+  const { loan, currentUser } = props;
   const borrowersProgress = Calculator.personalInfoPercent({ loan });
   const propertyProgress = Calculator.propertyPercent({ loan });
   const filesProgress = Calculator.filesProgress({ loan }).percent;
@@ -30,12 +30,12 @@ const getTabs = (props) => {
   return [
     { id: 'overview', Component: OverviewTab },
     { id: 'structures', Component: FinancingTab },
-    props.loan.hasPromotion && {
+    loan.hasPromotion && {
       id: 'promotion',
       Component: PromotionsTab,
       style: { color: 'red' },
     },
-    props.loan.purchaseType === PURCHASE_TYPE.REFINANCING && {
+    loan.purchaseType === PURCHASE_TYPE.REFINANCING && {
       id: 'refinancing',
       Component: RefinancingTab,
       style: { color: 'red' },
@@ -78,11 +78,15 @@ const getTabs = (props) => {
     },
     { id: 'revenues', Component: RevenuesTab },
     { id: 'actions', Component: ActionsTab },
-    props.currentUser.roles.includes(ROLES.DEV) && {
+    currentUser.roles.includes(ROLES.DEV) && {
       id: 'dev',
       Component: DevTab,
     },
-  ]
+  ];
+};
+
+const formatTabs = (tabs, props) =>
+  tabs
     .filter(x => x)
     .map(({ id, Component, style = {}, additionalLabel }) => ({
       id,
@@ -98,15 +102,18 @@ const getTabs = (props) => {
           )}
         </span>
       ),
-      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, { loanId: props.loan._id, tabId: id }),
+      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
+        loanId: props.loan._id,
+        tabId: id,
+      }),
     }));
-};
-const LoanTabs = (props) => {
-  const tabs = getTabs(props);
+
+const LoanTabs = ({ tabs, ...props }) => {
+  const formattedTabs = formatTabs(tabs || getTabs(props), props);
 
   return (
     <Tabs
-      tabs={tabs}
+      tabs={formattedTabs}
       routerParamName="tabId"
       variant="scrollable"
       scrollButtons="auto"
