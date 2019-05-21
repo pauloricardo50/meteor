@@ -2,12 +2,11 @@ import { Meteor } from 'meteor/meteor';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
 import { proInviteUser } from '../../../methods';
-import UserService from '../../../users/server/UserService';
 import PropertySchema, {
   userAllowedKeys,
 } from '../../../properties/schemas/PropertySchema';
-import { withMeteorUserId } from '../helpers';
-import { getImpersonateUserId, checkQuery, impersonateSchema } from './helpers';
+import { withMeteorUserId, updateCustomerReferral } from '../helpers';
+import { checkQuery, impersonateSchema } from './helpers';
 
 const formatPropertyIds = (propertyIds) => {
   const ids = propertyIds.map(id => `"${id}"`);
@@ -59,11 +58,6 @@ const inviteCustomerToProPropertiesAPI = ({
     ...internalProperties.map(({ _id }) => _id),
   ]);
 
-  let proId = userId;
-  if (impersonateUser) {
-    proId = getImpersonateUserId({ userId, impersonateUser });
-  }
-
   const payload = {
     propertyIds: internalProperties.map(({ _id }) => _id),
     properties: externalProperties,
@@ -75,17 +69,10 @@ const inviteCustomerToProPropertiesAPI = ({
     throw new Meteor.Error('You must provide at least one valid property');
   }
 
-  return withMeteorUserId(proId, () => proInviteUser.run(payload))
-    .then(() => {
-      if (impersonateUser) {
-        const customerId = UserService.getByEmail(user.email)._id;
-        return UserService.setReferredByOrganisation({
-          userId: customerId,
-          organisationId: UserService.getUserMainOrganisationId(userId),
-        });
-      }
-      return Promise.resolve();
-    })
+  return withMeteorUserId({ userId, impersonateUser }, () =>
+    proInviteUser.run(payload))
+    .then(() =>
+      updateCustomerReferral({ customer: user, userId, impersonateUser }))
     .then(() => ({
       message: `Successfully invited user "${
         user.email

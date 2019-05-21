@@ -64,7 +64,7 @@ describe('RESTAPI', () => {
       params: { id },
     }) =>
       withMeteorUserId(
-        userId,
+        { userId },
         () =>
           new Promise((resolve, reject) =>
             Meteor.call('apiTestMethod', (err, res) =>

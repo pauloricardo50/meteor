@@ -10,8 +10,10 @@ import set from 'lodash/set';
 import Analytics from 'core/api/analytics/server/Analytics';
 import { Random } from 'meteor/random';
 import EVENTS from 'core/api/analytics/events';
+import UserService from 'core/api/users/server/UserService';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
+import { getImpersonateUserId } from './endpoints/helpers';
 
 export const AUTH_ITEMS = {
   RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',
@@ -61,9 +63,29 @@ export const getRequestPath = (req) => {
 
 export const getRequestMethod = req => req.method;
 
-export const withMeteorUserId = (userId, func) => {
+export const updateCustomerReferral = ({
+  customer,
+  userId,
+  impersonateUser,
+}) => {
+  if (impersonateUser) {
+    const customerId = UserService.getByEmail(customer.email)._id;
+    return UserService.setReferredByOrganisation({
+      userId: customerId,
+      organisationId: UserService.getUserMainOrganisationId(userId),
+    });
+  }
+  return Promise.resolve();
+};
+
+export const withMeteorUserId = ({ userId, impersonateUser }, func) => {
+  let impersonateUserId;
+  if (impersonateUser) {
+    impersonateUserId = getImpersonateUserId({ userId, impersonateUser });
+  }
+
   const invocation = new DDPCommon.MethodInvocation({
-    userId,
+    userId: impersonateUserId || userId,
     // isSimulation: false,
     // setUserId,
     // unblock,

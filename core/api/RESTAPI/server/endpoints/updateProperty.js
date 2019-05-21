@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropertyService from '../../../properties/server/PropertyService';
 import { propertyUpdate } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
+import { checkQuery, impersonateSchema } from './helpers';
 
 const updatePropertyAPI = ({
   user: { _id: userId },
@@ -30,12 +30,7 @@ const updatePropertyAPI = ({
     }
   }
 
-  let proId = userId;
-  if (impersonateUser) {
-    proId = getImpersonateUserId({ userId, impersonateUser });
-  }
-
-  return withMeteorUserId(proId, () =>
+  return withMeteorUserId({ userId, impersonateUser }, () =>
     propertyUpdate.run({ propertyId, object }));
 };
 

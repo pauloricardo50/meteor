@@ -1,7 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import { proInviteUser } from '../../../methods';
-import { withMeteorUserId, literalToString, stringToLiteral } from '../helpers';
+import {
+  withMeteorUserId,
+  literalToString,
+  stringToLiteral,
+  updateCustomerReferral,
+} from '../helpers';
 import { checkQuery, impersonateSchema } from './helpers';
 
 const inviteUserToPromotionAPI = ({
@@ -26,16 +31,19 @@ const inviteUserToPromotionAPI = ({
     throw new Meteor.Error('No promotionId provided');
   }
 
-  return withMeteorUserId(userId, () =>
+  return withMeteorUserId({ userId, impersonateUser }, () =>
     proInviteUser.run({
       promotionIds,
       user: { ...user, invitedBy: userId },
       shareSolvency,
-    })).then(() => ({
-    message: `Successfully invited user "${
-      user.email
-    }" to promotion id "${promotionId}"`,
-  }));
+    }))
+    .then(() =>
+      updateCustomerReferral({ customer: user, userId, impersonateUser }))
+    .then(() => ({
+      message: `Successfully invited user "${
+        user.email
+      }" to promotion id "${promotionId}"`,
+    }));
 };
 
 export default inviteUserToPromotionAPI;
