@@ -150,3 +150,8 @@ export const EMPTY_STRUCTURE = {
   ownFunds: [],
   loanTranches: [],
 };
+
+export const LOAN_CATEGORIES = {
+  STANDARD: 'STANDARD',
+  PREMIUM: 'PREMIUM',
+};

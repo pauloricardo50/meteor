@@ -8,7 +8,6 @@ import UpdateField from 'core/components/UpdateField';
 import DateModifier from 'core/components/DateModifier';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'imports/core/api/constants';
-import { COLLECTIONS } from 'core/api/constants';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
@@ -19,10 +18,9 @@ import Solvency from './Solvency';
 const OverviewTab = (props) => {
   const {
     loan,
-    borrowers,
     currentUser: { roles },
   } = props;
-  const { user } = loan;
+  const { user, borrowers } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -34,19 +32,24 @@ const OverviewTab = (props) => {
         <VerificationSetter loan={loan} />
         <UpdateField
           doc={loan}
+          fields={['category']}
+          collection={LOANS_COLLECTION}
+        />
+        <UpdateField
+          doc={loan}
           fields={['residenceType']}
-          collection={COLLECTIONS.LOANS_COLLECTION}
+          collection={LOANS_COLLECTION}
         />
         <UpdateField
           doc={loan}
           fields={['purchaseType']}
-          collection={COLLECTIONS.LOANS_COLLECTION}
+          collection={LOANS_COLLECTION}
           disabled
         />
         <UpdateField
           doc={loan}
           fields={['applicationType']}
-          collection={COLLECTIONS.LOANS_COLLECTION}
+          collection={LOANS_COLLECTION}
         />
         <LoanStepSetter loan={loan} />
         {['signingDate', 'closingDate'].map(dateType => (

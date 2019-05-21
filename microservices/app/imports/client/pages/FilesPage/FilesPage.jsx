@@ -8,8 +8,6 @@ const FilesPage = props => (
   <PageApp id="FilesPage">
     <FileTabs
       {...props}
-      properties={props.loan.properties}
-      borrowers={props.loan.borrowers}
       // disabled={!props.loan.userFormsEnabled}
       disabled={false}
     />
