@@ -7,7 +7,8 @@ import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import DateModifier from 'core/components/DateModifier';
 import Calculator from 'core/utils/Calculator';
-import { LOANS_COLLECTION } from 'imports/core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/constants';
+import AdminNote from '../../../../components/AdminNote/AdminNote';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
@@ -60,6 +61,13 @@ const OverviewTab = (props) => {
             key={`${loan._id}${dateType}`}
           />
         ))}
+      </div>
+      <div className="admin-note">
+        <AdminNote
+          docId={loan._id}
+          adminNote={loan.adminNote}
+          collection={LOANS_COLLECTION}
+        />
       </div>
       <LoanStatusCheck loan={loan} />
       <div className="max-property-value-tools">

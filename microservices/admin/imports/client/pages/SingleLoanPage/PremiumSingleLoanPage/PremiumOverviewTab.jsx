@@ -1,14 +1,13 @@
 // @flow
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
-import { LOANS_COLLECTION } from 'imports/core/api/constants';
-import ClickToEditField from 'core/components/ClickToEditField';
-import { loanUpdate } from 'core/api/loans/index';
+import { LOANS_COLLECTION } from 'core/api/constants';
+
 import DateModifier from 'core/components/DateModifier';
 import StructureForm from './StructureForm';
+import AdminNote from '../../../components/AdminNote/AdminNote';
 
 type PremiumOverviewTabProps = {};
 
@@ -38,21 +37,11 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
       </div>
 
       <div>
-        <ClickToEditField
-          value={loan.adminNote}
-          onSubmit={value =>
-            loanUpdate.run({ loanId: loan._id, object: { adminNote: value } })
-          }
-          placeholder="# Ajouter une note"
-          inputProps={{
-            style: { width: '100%' },
-            multiline: true,
-            placeholder:
-              '# Un titre - ## Un sous-titre - * liste - **En gras** - *En italique* -- "CMD + Enter" pour enregistrer',
-          }}
-        >
-          {value => <ReactMarkdown source={value} />}
-        </ClickToEditField>
+        <AdminNote
+          docId={loan._id}
+          adminNote={loan.adminNote}
+          collection={LOANS_COLLECTION}
+        />
       </div>
 
       <div className="structure-form">
