@@ -18,10 +18,9 @@ import Solvency from './Solvency';
 const OverviewTab = (props) => {
   const {
     loan,
-    borrowers,
     currentUser: { roles },
   } = props;
-  const { user } = loan;
+  const { user, borrowers } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
