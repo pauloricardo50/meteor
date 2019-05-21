@@ -138,6 +138,11 @@ const LoanSchema = new SimpleSchema({
     type: String,
     defaultValue: LOAN_CATEGORIES.STANDARD,
     allowedValues: Object.values(LOAN_CATEGORIES),
+    uniforms: { placeholder: null },
+  },
+  adminNote: {
+    type: String,
+    optional: true,
   },
 });
 

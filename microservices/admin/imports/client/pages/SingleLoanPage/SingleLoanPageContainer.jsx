@@ -1,4 +1,4 @@
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, branch, renderComponent } from 'recompose';
 
 import query from 'core/api/loans/queries/adminLoans';
 import { withSmartQuery } from 'core/api';
@@ -9,6 +9,8 @@ import {
   withCalculator,
 } from 'core/containers/withCalculator';
 import updateForProps from 'core/containers/updateForProps';
+import { LOAN_CATEGORIES } from 'core/api/constants';
+import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
 const withInterestRates = withSmartQuery({
   query: interestRates,
@@ -36,4 +38,8 @@ export default compose(
     loan: { ...loan, currentInterestRates: currentInterestRates.averageRates },
   })),
   withCalculator,
+  branch(
+    ({ loan: { category } }) => category === LOAN_CATEGORIES.PREMIUM,
+    renderComponent(PremiumSingleLoanPage),
+  ),
 );

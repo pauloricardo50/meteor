@@ -7,6 +7,7 @@
 
   &.not-editing {
     cursor: pointer;
+    white-space: pre-wrap;
 
     &.is-placeholder {
       opacity: 0.5;
@@ -16,6 +17,13 @@
       opacity: 1;
       color: white;
       background-color: $primary;
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: white;
+      }
     }
   }
   &.not-allowed-to-edit.is-placeholder {
