@@ -2,11 +2,13 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
+import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
 import { LOANS_COLLECTION } from 'imports/core/api/constants';
 import ClickToEditField from 'core/components/ClickToEditField';
 import { loanUpdate } from 'core/api/loans/index';
 import DateModifier from 'core/components/DateModifier';
+import StructureForm from './StructureForm';
 
 type PremiumOverviewTabProps = {};
 
@@ -51,6 +53,11 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
         >
           {value => <ReactMarkdown source={value} />}
         </ClickToEditField>
+      </div>
+
+      <div className="structure-form">
+        <StructureForm {...props} />
+        <Recap {...props} arrayName="premium" />
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import {
   getStructureArray,
   getPropertyArray,
   getNotaryFeesArray,
+  getPremiumArray,
 } from './recapArrays';
 
 const arraySwitch = (props) => {
@@ -25,6 +26,8 @@ const arraySwitch = (props) => {
     return getPropertyArray(props);
   case 'notaryFees':
     return getNotaryFeesArray(props);
+  case 'premium':
+    return getPremiumArray(props);
   default:
     throw new Meteor.Error('Not a valid recap array');
   }

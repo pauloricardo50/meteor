@@ -148,4 +148,16 @@
       margin-right: 8px;
     }
   }
+
+  .click-to-edit-field {
+    margin-bottom: 40px;
+  }
+
+  .structure-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
 }
