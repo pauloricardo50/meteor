@@ -10,24 +10,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import { createRoute } from 'core/utils/routerUtils';
-import {
-  PRO_DASHBOARD_PAGE,
-  PRO_ORGANISATION_PAGE,
-  PRO_REVENUES_PAGE,
-} from '../../startup/client/proRoutes';
+import PRO_ROUTES from '../../startup/client/proRoutes';
 
 const getItems = (currentUser = {}) => {
   const { organisations = [] } = currentUser;
   return [
     {
       label: <T id="ProSideNav.dashboard" />,
-      to: PRO_DASHBOARD_PAGE,
+      to: PRO_ROUTES.PRO_DASHBOARD_PAGE.path,
       icon: 'home',
       exact: true,
     },
     {
       label: <T id="ProSideNav.revenues" />,
-      to: createRoute(PRO_REVENUES_PAGE),
+      to: createRoute(PRO_ROUTES.PRO_REVENUES_PAGE.path),
       icon: 'monetizationOn',
       condition: !!(
         organisations.length
@@ -37,7 +33,7 @@ const getItems = (currentUser = {}) => {
     },
     {
       label: <T id="ProSideNav.organisation" />,
-      to: createRoute(PRO_ORGANISATION_PAGE, { tabId: '' }),
+      to: createRoute(PRO_ROUTES.PRO_ORGANISATION_PAGE.path, { tabId: '' }),
       icon: <FontAwesomeIcon icon={faBriefcase} className="collection-icon" />,
     },
   ].filter(({ condition = true }) => condition);

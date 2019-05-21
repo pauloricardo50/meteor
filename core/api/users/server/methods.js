@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
+import Analytics from 'core/api/analytics/server/Analytics';
+import EVENTS from 'core/api/analytics/events';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -221,5 +223,17 @@ anonymousCreateUser.setHandler((context, params) => {
   if (params.loanId) {
     SecurityService.loans.checkAnonymousLoan(params.loanId);
   }
-  return UserService.anonymousCreateUser(params);
+
+  const userId = UserService.anonymousCreateUser(params);
+
+  const analytics = new Analytics({ ...context, userId });
+  analytics.alias(params.trackingId);
+  analytics.track(EVENTS.USER_CREATED, { userId, origin: 'anonymous' });
+  if (params.loanId) {
+    analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
+      _id: params.loanId,
+    });
+  }
+
+  return userId;
 });

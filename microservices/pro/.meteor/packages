@@ -60,7 +60,6 @@ accounts-password@1.5.1
 wylio:mandrill
 epotek:google-maps
 tmeasday:acceptance-test-driver
-okgrow:analytics
 underscore@1.0.10
 aldeed:schema-index
 aldeed:schema-deny

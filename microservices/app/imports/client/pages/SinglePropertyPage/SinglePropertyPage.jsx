@@ -3,14 +3,18 @@ import React from 'react';
 // import { Element } from 'react-scroll';
 
 import T from 'core/components/Translation';
-import { VALUATION_STATUS, PROPERTY_CATEGORY, APPLICATION_TYPES } from 'core/api/constants';
+import {
+  VALUATION_STATUS,
+  PROPERTY_CATEGORY,
+  APPLICATION_TYPES,
+} from 'core/api/constants';
 // import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
 import ProProperty from 'core/components/ProProperty';
-import { PROPERTIES_PAGE } from '../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../startup/client/appRoutes';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 // import LaunchValuationButton from './LaunchValuationButton';
@@ -23,13 +27,14 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
 
 const SinglePropertyPage = (props) => {
+  const { loan, propertyId, history, currentUser: { loans } = {} } = props;
   const {
-    loan,
-    propertyId,
-    history,
-    currentUser: { loans } = {},
-  } = props;
-  const { borrowers, properties, _id: loanId, residenceType, applicationType } = loan;
+    borrowers,
+    properties,
+    _id: loanId,
+    residenceType,
+    applicationType,
+  } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
@@ -67,10 +72,10 @@ const SinglePropertyPage = (props) => {
             className: 'property-deleter',
           }}
           method={() =>
-            propertyDelete
-              .run({ propertyId, loanId })
-              .then(() =>
-                history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
+            propertyDelete.run({ propertyId, loanId }).then(() =>
+              history.push(createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
+                ':loanId': loan._id,
+              })))
           }
           label={<T id="general.delete" />}
         >

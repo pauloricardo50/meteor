@@ -15,6 +15,8 @@ import {
   ORGANISATION_TAGS,
 } from './organisationConstants';
 
+// console.trace();
+
 const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
 
 Organisations.deny({

@@ -18,7 +18,7 @@ import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 import { SUCCESS, PURCHASE_TYPE, PROPERTY_CATEGORY } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
-import * as ROUTES from '../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../startup/client/appRoutes';
 import PercentWithStatus from '../../../core/components/PercentWithStatus/PercentWithStatus';
 
 const isOnProProperty = (loan) => {
@@ -46,30 +46,30 @@ type linksType = Array<{|
 const sideNavLinks: linksType = [
   {
     id: 'DashboardPage',
-    to: ROUTES.DASHBOARD_PAGE,
+    to: APP_ROUTES.DASHBOARD_PAGE.path,
     exact: true,
     icon: faTachometer,
   },
-  { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
-  // { id: 'AppWidget1Page', to: ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
-  { id: 'SolvencyPage', to: ROUTES.SOLVENCY_PAGE, icon: faScroll },
+  { id: 'FinancingPage', to: APP_ROUTES.FINANCING_PAGE.path, icon: faChartBar },
+  // { id: 'AppWidget1Page', to: APP_ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
+  { id: 'SolvencyPage', to: APP_ROUTES.SOLVENCY_PAGE.path, icon: faScroll },
   { id: 'divider', Component: () => <Divider className="divider" /> },
   {
     id: 'RefinancingPage',
-    to: ROUTES.REFINANCING_PAGE,
+    to: APP_ROUTES.REFINANCING_PAGE.path,
     icon: faUsdCircle,
     percent: loan => Calculator.refinancingPercent({ loan }),
     condition: loan => loan.purchaseType === PURCHASE_TYPE.REFINANCING,
   },
   {
     id: 'BorrowersPage',
-    to: ROUTES.BORROWERS_PAGE_NO_TAB,
+    to: APP_ROUTES.BORROWERS_PAGE_NO_TAB.path,
     icon: faUsers,
     percent: loan => Calculator.personalInfoPercent({ loan }),
   },
   {
     id: 'PropertiesPage',
-    to: ROUTES.PROPERTIES_PAGE,
+    to: APP_ROUTES.PROPERTIES_PAGE.path,
     icon: faHome,
     percent: loan =>
       !loan.hasPromotion
@@ -78,7 +78,7 @@ const sideNavLinks: linksType = [
   },
   {
     id: 'FilesPage',
-    to: ROUTES.FILES_PAGE,
+    to: APP_ROUTES.FILES_PAGE.path,
     icon: faFolderOpen,
     percent: loan => Calculator.filesProgress({ loan }).percent,
   },

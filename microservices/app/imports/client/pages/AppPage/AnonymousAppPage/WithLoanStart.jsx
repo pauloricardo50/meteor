@@ -6,7 +6,7 @@ import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import T, { Money } from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import { DASHBOARD_PAGE } from 'imports/startup/client/appRoutes';
+import APP_ROUTES from 'imports/startup/client/appRoutes';
 
 type WithLoanStartProps = {};
 
@@ -26,7 +26,8 @@ const WithLoanStart = ({
       </h2>
       {properties && properties[0] && (
         <h4 className="secondary">
-          {properties[0].name || properties[0].address1}&nbsp;-&nbsp;
+          {properties[0].name || properties[0].address1}
+          &nbsp;-&nbsp;
           <Money value={properties[0].totalValue} />
         </h4>
       )}
@@ -42,7 +43,7 @@ const WithLoanStart = ({
         secondary
         raised
         link
-        to={createRoute(DASHBOARD_PAGE, { loanId })}
+        to={createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId })}
       >
         <T id="general.continue" />
       </Button>

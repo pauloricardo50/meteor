@@ -1,5 +1,4 @@
 import { Accounts } from 'meteor/accounts-base';
-
 import pick from 'lodash/pick';
 
 Accounts.onCreateUser((options, user) => {

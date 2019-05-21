@@ -5,7 +5,7 @@ import anonymousLoan from 'core/api/loans/queries/anonymousLoan';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
-import { BORROWERS_PAGE } from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export const withAnonymousLoan = compose(
   withState('anonymousLoanId', 'setAnonymousLoanId', () =>
@@ -42,7 +42,7 @@ export default compose(
     insertAnonymousLoan: () =>
       anonymousLoanInsert.run({}).then((loanId) => {
         localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-        history.push(createRoute(BORROWERS_PAGE, { loanId, tabId: '' }));
+        history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
       }),
   })),
 );

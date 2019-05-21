@@ -29,6 +29,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "analytics-node": "^3.3.0",
     "antd": "^3.16.1",
     "aws-sdk": "^2.435.0",
     "base64topdf": "^1.1.8",

@@ -108,7 +108,12 @@ const PromotionPageHeader = ({
                   <div className="logo-wrapper">
                     <img src={logo.url} alt="" />
                   </div>
-                  <p className="text-center bold">{logo.name.split('.')[0]}</p>
+                  <p className="text-center bold">
+                    {logo.name
+                      .split('.')
+                      .slice(0, -1)
+                      .join('.')}
+                  </p>
                 </div>
               ))}
             </div>

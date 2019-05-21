@@ -7,7 +7,7 @@ import { ROLES, PURCHASE_TYPE } from 'core/api/constants';
 import FileTabs from 'core/components/FileTabs/loadable';
 import { createRoute } from 'core/utils/routerUtils';
 import Calculator from 'core/utils/Calculator';
-import { SINGLE_LOAN_PAGE } from '../../../../startup/client/adminRoutes';
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import OverviewTab from './OverviewTab/loadable';
 import BorrowersTab from './BorrowersTab/loadable';
 import PropertiesTab from './PropertiesTab/loadable';
@@ -98,7 +98,7 @@ const getTabs = (props) => {
           )}
         </span>
       ),
-      to: createRoute(SINGLE_LOAN_PAGE, { loanId: props.loan._id, tabId: id }),
+      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, { loanId: props.loan._id, tabId: id }),
     }));
 };
 const LoanTabs = (props) => {

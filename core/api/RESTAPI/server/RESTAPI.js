@@ -5,7 +5,7 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { logRequest } from './helpers';
+import { logRequest, trackRequest } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -89,6 +89,8 @@ export default class RESTAPI {
 
     // LOGS
     logRequest({ req, result: stringified });
+
+    trackRequest({ req, result: stringified });
 
     res.setHeader('Content-Type', 'application/json');
     res.write(stringified);

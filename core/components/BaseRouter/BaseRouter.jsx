@@ -16,6 +16,7 @@ import Switch from './Switch';
 import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
+import HistoryWatcher from './HistoryWatcher';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -40,6 +41,7 @@ const BaseRouter = ({
   children,
   WrapperComponent,
   hasLogin,
+  routes,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
@@ -55,18 +57,38 @@ const BaseRouter = ({
         <DisconnectModal />
 
         <Router history={history}>
-          <ScrollToTop>
-            <Switch>
-              <Route exact path="/login-token/:token" render={loginWithToken} />
-              {/* LoginPage has to be above / path */}
-              {hasLogin && <Route exact path="/login" component={LoginPage} />}
-              {isDev && <Route exact path="/grapher" component={GrapherPage} />}
-              <Route
-                path="/"
-                render={childProps => React.cloneElement(children, childProps)}
-              />
-            </Switch>
-          </ScrollToTop>
+          <HistoryWatcher
+            history={history}
+            routes={{
+              ...routes,
+              LOGIN_PAGE: { path: '/login' },
+              GRAPHER_PAGE: { path: '/grapher' },
+              LOGIN_WITH_TOKEN_PAGE: { path: '/login-token/:token' },
+            }}
+          >
+            <ScrollToTop>
+              <Switch>
+                <Route
+                  exact
+                  path="/login-token/:token"
+                  render={loginWithToken}
+                />
+                {/* LoginPage has to be above / path */}
+                {hasLogin && (
+                  <Route exact path="/login" component={LoginPage} />
+                )}
+                {isDev && (
+                  <Route exact path="/grapher" component={GrapherPage} />
+                )}
+                <Route
+                  path="/"
+                  render={childProps =>
+                    React.cloneElement(children, childProps)
+                  }
+                />
+              </Switch>
+            </ScrollToTop>
+          </HistoryWatcher>
         </Router>
       </ErrorBoundary>
     </LibraryWrappers>

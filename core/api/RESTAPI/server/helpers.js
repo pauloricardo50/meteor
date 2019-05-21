@@ -7,6 +7,9 @@ import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
 
+import Analytics from 'core/api/analytics/server/Analytics';
+import { Random } from 'meteor/random';
+import EVENTS from 'core/api/analytics/events';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 
@@ -267,4 +270,20 @@ export const verifySignature = (req) => {
   });
 
   return verified;
+};
+
+export const trackRequest = ({ req, result }) => {
+  const { user: { _id: userId } = {}, headers = {} } = req;
+  const { 'x-forwarded-for': clientAddress, host } = headers;
+
+  const analytics = new Analytics({
+    userId,
+    connection: { clientAddress, httpHeaders: { host } },
+  });
+
+  if (userId) {
+    analytics.identify(Random.id(16));
+  }
+
+  analytics.track(EVENTS.API_CALLED, { endpoint: getRequestPath(req), result });
 };
