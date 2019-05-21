@@ -18,9 +18,9 @@ type KeyProps = {
 };
 
 const copyKeyToClipboard = (key) => {
-  const dummyInput = document.createElement('input');
+  const dummyInput = document.createElement('textarea');
+  dummyInput.value = key;
   document.body.appendChild(dummyInput);
-  dummyInput.setAttribute('value', key);
   dummyInput.select();
   document.execCommand('copy');
   document.body.removeChild(dummyInput);
@@ -29,12 +29,13 @@ const copyKeyToClipboard = (key) => {
   });
 };
 
-const formatKey = ({ key, type }) =>
-  key
-    .split(`-----BEGIN RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`)
-    .join(`-----BEGIN RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----\n`)
-    .split(`-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`)
-    .join(`\n-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`);
+const formatKey = (keyValue) => {
+  const [header, key, footer] = keyValue
+    .split(/(\W+\w+\s+\w+\s+\w+\s+\w+\W+)([A-Za-z0-9+\/=]+)(\W+\w+\s+\w+\s+\w+\s+\w+\W+)/g)
+    .filter(x => x);
+
+  return `${header}\n${key.match(/.{1,45}/g).join('\n')}\n${footer}`;
+};
 
 const Key = ({ keyValue, createdAt, type, hideKey, setHideKey }: KeyProps) => (
   <>
@@ -50,7 +51,10 @@ const Key = ({ keyValue, createdAt, type, hideKey, setHideKey }: KeyProps) => (
               <T id="AccountPage.DevelopperSection.key.hide" />
             )}
           </Button>
-          <Button onClick={() => copyKeyToClipboard(keyValue)} primary>
+          <Button
+            onClick={() => copyKeyToClipboard(formatKey(keyValue))}
+            primary
+          >
             <T id="AccountPage.DevelopperSection.key.copy" />
           </Button>
         </h4>
@@ -62,7 +66,7 @@ const Key = ({ keyValue, createdAt, type, hideKey, setHideKey }: KeyProps) => (
         </p>
       </div>
     </div>
-    <RsaKey keyValue={formatKey({ key: keyValue, type })} hide={hideKey} />
+    <RsaKey keyValue={formatKey(keyValue)} hide={hideKey} />
     {type === 'private' && (
       <p className="rsa-key-warning">
         <T id="AccountPage.DevelopperSection.key.warning" />
