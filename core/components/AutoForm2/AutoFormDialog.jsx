@@ -58,6 +58,7 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
   } = props;
   const autoField = makeCustomAutoField(autoFieldProps);
   const handleOpen = (event) => {
+    event.stopPropagation();
     event.preventDefault();
     setOpen(true);
   };

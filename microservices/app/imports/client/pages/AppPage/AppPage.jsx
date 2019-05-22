@@ -33,15 +33,6 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
 
       {loans.length > 0 && <Superdashboard currentUser={currentUser} />}
 
-      {loans.length > 0 && (
-        <h1 className="app-item-title">
-          <T id="AppPage.title" />
-        </h1>
-      )}
-      {loans.map(loan => (
-        <AppItem loan={loan} key={loan._id} />
-      ))}
-
       {loans.length === 0 && (
         <WelcomeScreen
           displayCheckbox={false}

@@ -13,7 +13,11 @@ const schema = new SimpleSchema({
   customName: { type: String, optional: true },
 });
 
-const LoanRenamer = ({ customName, updateLoanName }: LoanRenamerProps) => (
+const LoanRenamer = ({
+  customName,
+  updateLoanName,
+  ...props
+}: LoanRenamerProps) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={updateLoanName}
@@ -21,6 +25,7 @@ const LoanRenamer = ({ customName, updateLoanName }: LoanRenamerProps) => (
     triggerComponent={handleOpen => (
       <IconButton onClick={handleOpen} type="edit" />
     )}
+    {...props}
   />
 );
 
