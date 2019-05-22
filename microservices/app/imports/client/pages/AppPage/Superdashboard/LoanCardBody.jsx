@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
+
 import { createRoute } from 'core/utils/routerUtils';
 import BorrowersSummary from 'core/components/BorrowersSummary';
 import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 import LoanProgress from './LoanProgress';
 
 type LoanCardBodyProps = {
@@ -15,7 +17,9 @@ const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
   return (
     <div className="loancard-body">
       <div className="borrowers">
-        <h4 className="secondary">Emprunteurs</h4>
+        <h4 className="secondary">
+          <T id="collection.borrowers" />
+        </h4>
         <BorrowersSummary borrowers={borrowers} showTitle={false} />
       </div>
       <LoanProgress step={step} />
@@ -27,9 +31,9 @@ const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
         }
         primary
         raised
-        className="button"
+        className="button-link"
       >
-        Ouvrir le dossier
+        <T id="Superdashboard.openLoan" />
       </Button>
     </div>
   );

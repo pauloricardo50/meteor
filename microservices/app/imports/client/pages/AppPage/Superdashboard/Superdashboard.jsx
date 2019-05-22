@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import T from 'core/components/Translation';
+
 import LoanCards from './LoanCards';
 
 type SuperdashboardProps = {
@@ -12,10 +14,11 @@ const Superdashboard = ({ currentUser = {} }: SuperdashboardProps) => {
     <div className="superdashboard">
       <div className="superdashboard-title">
         <h1>
-          Bienvenue,&nbsp;
-          {name}
+          <T id="Superdashboard.welcome" values={{ name }} />
         </h1>
-        <p>Vos dossiers</p>
+        <p>
+          <T id="Superdashboard.welcome.subtitle" />
+        </p>
       </div>
       <LoanCards loans={loans} />
     </div>

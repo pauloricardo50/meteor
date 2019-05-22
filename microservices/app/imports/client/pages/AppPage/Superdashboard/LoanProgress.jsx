@@ -19,7 +19,6 @@ const isDone = (currentStep, step) => {
 const LoanProgress = ({ step: currentStep }: LoanProgressProps) => (
   <div className="loan-progress">
     <h4 className="secondary">
-      {' '}
       <T id={`Forms.step.${currentStep}`} />
     </h4>
     <div className="flex-row">

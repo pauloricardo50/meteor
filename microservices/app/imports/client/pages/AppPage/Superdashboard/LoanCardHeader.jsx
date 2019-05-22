@@ -63,7 +63,7 @@ const LoanCardHeader = ({ loan, disableLink }: LoanCardHeaderProps) => {
       {image && (
         <div className="loancard-header-cover">
           <div className="gradient" />
-          <img src={image} />
+          <img src={image} alt="property" />
         </div>
       )}
       <div className="loancard-header-title">
