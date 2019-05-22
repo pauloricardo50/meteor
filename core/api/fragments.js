@@ -863,6 +863,10 @@ export const appUser = () => ({
     name: 1,
     purchaseType: 1,
     customName: 1,
+    hasProProperty: 1,
+    hasPromotion: 1,
+    properties: { address: 1, documents: { propertyImages: 1 } },
+    promotions: { address: 1, name: 1, documents: { promotionImage: 1 } },
   },
   properties: { _id: 1 },
 });

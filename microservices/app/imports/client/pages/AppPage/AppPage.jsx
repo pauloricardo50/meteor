@@ -9,12 +9,10 @@ import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
+import Superdashboard from './Superdashboard';
 
-export const AppPage = ({
-  currentUser: { emails, loans, roles },
-  insertLoan,
-  loading,
-}) => {
+export const AppPage = ({ currentUser, insertLoan, loading }) => {
+  const { emails, loans, roles } = currentUser;
   const userIsPro = roles.includes(ROLES.PRO);
 
   if (userIsPro) {
@@ -32,6 +30,8 @@ export const AppPage = ({
           <DashboardUnverified />
         </div>
       )}
+
+      {loans.length > 0 && <Superdashboard currentUser={currentUser} />}
 
       {loans.length > 0 && (
         <h1 className="app-item-title">
