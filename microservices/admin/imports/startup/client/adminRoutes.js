@@ -80,13 +80,13 @@ const ADMIN_ROUTES = {
     component: AdminPromotionLotPage,
     path: '/promotions/:promotionId/promotionLots/:promotionLotId',
   },
-  ADMIN_PROMOTION_PAGE: {
-    component: AdminPromotionPage,
-    path: '/promotions/:promotionId',
-  },
   ADMIN_PROMOTION_USERS_PAGE: {
     component: AdminPromotionUsersPage,
     path: '/promotions/:promotionId/users',
+  },
+  ADMIN_PROMOTION_PAGE: {
+    component: AdminPromotionPage,
+    path: '/promotions/:promotionId',
   },
 
   //   Other
