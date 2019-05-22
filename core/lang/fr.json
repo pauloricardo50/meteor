@@ -1,4 +1,7 @@
 {
+  "Superdashboard.welcome": "Bienvenue, {name}",
+  "Superdashboard.welcome.subtitle": "Vos dossiers",
+  "Superdashboard.openLoan": "Ouvrir le dossier",
   "Forms.category.STANDARD": "Retail",
   "Forms.category.PREMIUM": "Premium",
   "LoginPage.noAccountApp": "Vous n'avez pas de compte? Commencez {link}",
