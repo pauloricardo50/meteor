@@ -18,7 +18,7 @@ const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
     <div className="loancard-body">
       <div className="borrowers">
         <h4 className="secondary">
-          <T id="collection.borrowers" />
+          <T id="collections.borrowers" />
         </h4>
         <BorrowersSummary borrowers={borrowers} showTitle={false} />
       </div>
