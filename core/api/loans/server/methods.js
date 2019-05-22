@@ -1,3 +1,5 @@
+import Analytics from 'core/api/analytics/server/Analytics';
+import EVENTS from 'core/api/analytics/events';
 import SecurityService from '../../security';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import {
@@ -190,5 +192,17 @@ anonymousLoanInsert.setHandler((context, params) => {
     });
   }
 
-  return LoanService.insertAnonymousLoan(params);
+  const loanId = LoanService.insertAnonymousLoan(params);
+  const analytics = new Analytics(context);
+  analytics.track(
+    EVENTS.LOAN_CREATED,
+    {
+      loanId,
+      propertyId: params.proPropertyId,
+      referralId: params.referralId,
+      anonymous: true,
+    },
+    params.trackingId,
+  );
+  return loanId;
 });

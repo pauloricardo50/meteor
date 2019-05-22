@@ -85,8 +85,7 @@ class Analytics {
     });
   }
 
-  // All tracked events should be called with a logged in user
-  track(event, data) {
+  track(event, data, trackingId) {
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
     }
@@ -96,6 +95,7 @@ class Analytics {
     const eventProperties = transform ? transform(data) : {};
 
     this.analytics.track({
+      ...(trackingId ? { anonymousId: trackingId } : {}),
       userId: this.userId,
       event: name,
       properties: eventProperties,

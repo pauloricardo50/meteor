@@ -231,7 +231,7 @@ anonymousCreateUser.setHandler((context, params) => {
   analytics.track(EVENTS.USER_CREATED, { userId, origin: 'anonymous' });
   if (params.loanId) {
     analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
-      _id: params.loanId,
+      loanId: params.loanId,
     });
   }
 

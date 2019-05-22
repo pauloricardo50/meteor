@@ -17,10 +17,20 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED]: {
     name: 'Loan Anonymous loan claimed',
-    transform: curryPick(['userId', 'origin', 'referral']),
+    transform: curryPick(['loanId']),
   },
   [EVENTS.API_CALLED]: {
     name: 'Api Called',
     transform: curryPick(['endpoint', 'result']),
+  },
+  [EVENTS.LOAN_CREATED]: {
+    name: 'Loan Created',
+    transform: curryPick([
+      'loanId',
+      'propertyId',
+      'promotionId',
+      'referralId',
+      'anonymous',
+    ]),
   },
 };

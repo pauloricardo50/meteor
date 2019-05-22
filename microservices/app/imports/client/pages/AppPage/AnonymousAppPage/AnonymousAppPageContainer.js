@@ -5,6 +5,8 @@ import anonymousLoan from 'core/api/loans/queries/anonymousLoan';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
+import { parseCookies } from 'core/utils/cookiesHelpers';
+import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export const withAnonymousLoan = compose(
@@ -40,9 +42,11 @@ export default compose(
   withAnonymousLoan,
   withProps(({ history }) => ({
     insertAnonymousLoan: () =>
-      anonymousLoanInsert.run({}).then((loanId) => {
-        localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-        history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
-      }),
+      anonymousLoanInsert
+        .run({ trackingId: parseCookies()[TRACKING_COOKIE] })
+        .then((loanId) => {
+          localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
+          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+        }),
   })),
 );
