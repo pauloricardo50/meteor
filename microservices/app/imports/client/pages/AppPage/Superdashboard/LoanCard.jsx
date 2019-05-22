@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import BorrowersSummary from 'core/components/BorrowersSummary';
+import T from 'core/components/Translation';
 import LoanRenamer from '../LoanRenamer';
+import LoanProgress from './LoanProgress';
 
 type LoanCardProps = {
   loan: Object,
@@ -69,7 +71,9 @@ const LoanCard = ({ loan = {} }: LoanCardProps) => {
         )}
         <div className="loancard-header-title">
           <h4>
-            <small>{purchaseType}</small>
+            <small>
+              <T id={`Forms.purchaseType.${purchaseType}`} />
+            </small>
           </h4>
           <h2>{getLoanTitle(name, customName)}</h2>
           <p>{getAddress({ promotions, properties, hasPromotion })}</p>
@@ -85,8 +89,7 @@ const LoanCard = ({ loan = {} }: LoanCardProps) => {
           <h4 className="secondary">Emprunteurs</h4>
           <BorrowersSummary borrowers={borrowers} showTitle={false} />
         </div>
-        {/* <p>{step}</p> */}
-        <p>{step}</p>
+        <LoanProgress step={step} />
       </div>
     </div>
   );

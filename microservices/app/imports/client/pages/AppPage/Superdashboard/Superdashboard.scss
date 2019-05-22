@@ -74,7 +74,6 @@
         left: 0;
         width: 100%;
         height: 100%;
-        // height: calc(200px - 32px);
 
         img {
           width: 100%;
@@ -153,7 +152,40 @@
         }
       }
 
-      .step {
+      .loan-progress {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        h4 {
+          text-align: right;
+        }
+        .step {
+          position: relative;
+          width: 12px;
+          height: 12px;
+          border-radius: 12px;
+          background-color: #c4c4c4;
+          margin-right: 16px;
+          z-index: 5;
+        }
+        .step:last-of-type {
+          margin: 0;
+        }
+        .step:not(:last-of-type):after {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 32px;
+          height: 1px;
+          background-color: #c4c4c4;
+          z-index: 1;
+          content: '';
+        }
+        .step.done,
+        .step.done:after {
+          background-color: $success;
+        }
       }
     }
   }
