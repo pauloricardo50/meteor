@@ -52,9 +52,15 @@ class Analytics {
       userId,
       connection: {
         clientAddress,
-        httpHeaders: { host, 'user-agent': userAgent, 'x-real-ip': realIp },
+        httpHeaders: {
+          host,
+          'user-agent': userAgent,
+          'x-real-ip': realIp,
+          referer: referrer,
+        },
       },
     } = context;
+    console.log('context:', context);
     this.userId = userId;
     this.user = UserService.fetchOne({
       $filters: { _id: userId },
@@ -64,8 +70,9 @@ class Analytics {
       roles: 1,
     });
     this.clientAddress = realIp || clientAddress;
-    this.host = host;
+    this.host = this.formatHost(host);
     this.userAgent = userAgent;
+    this.referrer = referrer;
 
     this.analytics.initAnalytics(context);
   }
@@ -126,6 +133,25 @@ class Analytics {
       .join(' ');
   }
 
+  formatHost(host) {
+    const isProduction = host.includes('production');
+    const isStaging = host.includes('staging');
+
+    let subdomain;
+
+    ['www', 'app', 'admin', 'pro'].forEach((sub) => {
+      if (host.includes(sub)) {
+        subdomain = sub;
+      }
+    });
+
+    if (!subdomain || (!isProduction && !isStaging)) {
+      return host;
+    }
+
+    return `${subdomain}${isStaging ? '.staging' : ''}.e-potek.ch`;
+  }
+
   page(params) {
     const { cookies, sessionStorage, path, route, queryParams } = params;
     const trackingId = cookies[TRACKING_COOKIE];
@@ -141,7 +167,8 @@ class Analytics {
       },
       properties: {
         path,
-        url: `${this.host}${path}`,
+        url: `${this.host}${path === '/' ? '' : path}`,
+        referrer: this.referrer,
         ...queryParams,
       },
     });
