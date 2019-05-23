@@ -6,7 +6,7 @@ import {
   getUserAPI,
   interestRatesAPI,
   inviteUserToPromotionAPI,
-  inviteUserToProPropertiesAPI,
+  inviteCustomerToProPropertiesAPI,
   mortgageEstimateAPI,
   referCustomerAPI,
   testEndpointAPI,
@@ -22,7 +22,7 @@ api.addEndpoint(
 api.addEndpoint(
   '/properties/invite-customer',
   'POST',
-  inviteUserToProPropertiesAPI,
+  inviteCustomerToProPropertiesAPI,
 );
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
 api.addEndpoint('/properties/:propertyId', 'POST', updatePropertyAPI);
