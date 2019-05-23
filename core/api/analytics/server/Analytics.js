@@ -140,7 +140,7 @@ class Analytics {
 
     ['www-', 'app-', 'admin-', 'pro-'].forEach((sub) => {
       if (host.includes(sub)) {
-        subdomain = sub;
+        subdomain = sub.split('-')[0];
       }
     });
 
