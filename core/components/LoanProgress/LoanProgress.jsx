@@ -47,11 +47,11 @@ const LoanProgress = ({
     <div className="promotion-progress">
       <ProgressCircle
         percent={info}
-        options={{ squareSize: 24, strokeWidth: 5 }}
+        options={{ squareSize: 24, strokeWidth: 5, animated: true }}
       />
       <ProgressCircle
         percent={documents}
-        options={{ squareSize: 24, strokeWidth: 5 }}
+        options={{ squareSize: 24, strokeWidth: 5, animated: true }}
       />
       <Tooltip title={text} enterTouchDelay={0}>
         <Icon type={icon} className={className} />
