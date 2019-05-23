@@ -60,7 +60,6 @@ class Analytics {
         },
       },
     } = context;
-    console.log('context:', context);
     this.userId = userId;
     this.user = UserService.fetchOne({
       $filters: { _id: userId },
@@ -139,7 +138,7 @@ class Analytics {
 
     let subdomain;
 
-    ['www', 'app', 'admin', 'pro'].forEach((sub) => {
+    ['www-', 'app-', 'admin-', 'pro-'].forEach((sub) => {
       if (host.includes(sub)) {
         subdomain = sub;
       }
