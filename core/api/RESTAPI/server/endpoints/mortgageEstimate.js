@@ -70,7 +70,7 @@ const mortgageEstimateAPI = ({ query }) => {
     canton,
   } = checkQuery({ query, schema: querySchema });
 
-  const date = Date.now();
+  const date = new Date().toISOString();
   const rates = currentInterestRates.clone().fetch();
   const interestRates = rates.rates.reduce(
     (obj, { type, rateLow }) => ({ ...obj, [type]: rateLow }),

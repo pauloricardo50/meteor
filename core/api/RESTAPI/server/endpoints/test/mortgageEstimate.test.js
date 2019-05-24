@@ -63,7 +63,7 @@ describe('REST: mortgageEstimate', function () {
       users: [{ _factory: 'pro', _id: 'pro', organisations: [{ _id: 'org' }] }],
       interestRates: [
         {
-          date: moment().toDate(),
+          date: new Date().toISOString(),
           interestLibor: {
             rateLow: 0.005,
             rateHigh: 0.01,
@@ -93,7 +93,7 @@ describe('REST: mortgageEstimate', function () {
   it('Returns default response if only the propertyValue is given', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
         interests10: 960,
         interests5: 800,
@@ -124,7 +124,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses the canton if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
         interests10: 960,
         interests5: 800,
@@ -156,7 +156,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses maintenance if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
         interests10: 960,
         interests5: 800,
@@ -190,7 +190,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses zipCode if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
         interests10: 960,
         interests5: 800,
@@ -225,7 +225,7 @@ describe('REST: mortgageEstimate', function () {
   it('Uses includeNotaryFees if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
         interests10: 960,
         interests5: 800,
@@ -255,7 +255,7 @@ describe('REST: mortgageEstimate', function () {
   it('reduces the borrowRatio for expensive properties', () => {
     const expectedResponse = {
       borrowRatio: 0.67,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
         interests10: 2412,
         interests5: 2010,
