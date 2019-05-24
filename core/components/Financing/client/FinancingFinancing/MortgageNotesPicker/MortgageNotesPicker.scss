@@ -23,3 +23,28 @@
     max-width: 400px;
   }
 }
+.mortgage-note-list-item {
+  width: 500px;
+  height: 64px;
+  padding: 12px;
+  position: relative;
+
+  .mortgage-note-list-item-description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &-canton {
+      margin: 0;
+      position: absolute;
+      top: calc((64px - 12px - 8px) / 2);
+      padding-right: 8px;
+      right: 50px;
+    }
+  }
+
+  .icon {
+    margin-right: 12px !important;
+  }
+}
