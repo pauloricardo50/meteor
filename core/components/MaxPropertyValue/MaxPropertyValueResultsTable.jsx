@@ -65,7 +65,7 @@ const MaxPropertyValueResultsTable = ({
 
   return (
     <>
-      {!!min.propertyValue && (
+      {!!min.propertyValue && min.propertyValue !== max.propertyValue && (
         <Toggle
           className="show-best-toggle"
           toggled={showBest}
@@ -78,7 +78,10 @@ const MaxPropertyValueResultsTable = ({
                   : 'Prêteur le - compétitif'}
               </span>
               {Meteor.microservice === 'admin' && (
-                <span>[ADMIN] {minOrganisationName}</span>
+                <span>
+                  [ADMIN]&nbsp;
+                  {minOrganisationName}
+                </span>
               )}
             </div>
           )}
@@ -90,11 +93,22 @@ const MaxPropertyValueResultsTable = ({
                   : 'Prêteur le + compétitif'}
               </span>
               {Meteor.microservice === 'admin' && (
-                <span>[ADMIN] {maxOrganisationName}</span>
+                <span>
+                  [ADMIN]&nbsp;
+                  {maxOrganisationName}
+                </span>
               )}
             </div>
           )}
         />
+      )}
+      {!!min.propertyValue
+        && min.propertyValue === max.propertyValue
+        && Meteor.microservice === 'admin' && (
+        <span>
+            [ADMIN]&nbsp;
+          {minOrganisationName}
+        </span>
       )}
 
       <div className="balance-sheet">
