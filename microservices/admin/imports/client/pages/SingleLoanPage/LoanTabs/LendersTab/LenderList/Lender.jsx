@@ -7,6 +7,8 @@ import {
 } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
+import ClickToEditField from 'core/components/ClickToEditField';
+import AdminNote from 'imports/client/components/AdminNote/AdminNote';
 import LenderContact from './LenderContact';
 import LenderOffer from './LenderOffer';
 
@@ -14,9 +16,15 @@ type LenderProps = {
   lender: Object,
 };
 
-const Lender = ({
-  lender: { organisation, status, contact, _id: lenderId, offers = [] },
-}: LenderProps) => {
+const Lender = ({ lender }: LenderProps) => {
+  const {
+    organisation,
+    status,
+    contact,
+    _id: lenderId,
+    offers = [],
+    adminNote,
+  } = lender;
   // Organisation is undefined at the start, before grapher data settles down
   if (!organisation) {
     return null;
@@ -48,6 +56,23 @@ const Lender = ({
         contacts={contacts}
         lenderId={lenderId}
       />
+      <AdminNote
+        docId={lenderId}
+        adminNote={adminNote}
+        collection={LENDERS_COLLECTION}
+        placeholder="#### Ajouter un commentaire"
+      />
+      {/* <ClickToEditField
+        placeholder="Ajouter un commentaire"
+        value={comment}
+        onSubmit={setComment}
+        className="comment-edit"
+        inputProps={{
+          multiline: true,
+          disableUnderline: true,
+          fullWidth: true,
+        }}
+      /> */}
 
       <div className="offers">
         {offers.map(offer => (

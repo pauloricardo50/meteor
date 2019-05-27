@@ -7,13 +7,18 @@ import { updateDocument } from 'core/api/methods/index';
 
 type AdminNoteProps = {};
 
-const AdminNote = ({ adminNote, docId, collection }: AdminNoteProps) => (
+const AdminNote = ({
+  adminNote,
+  docId,
+  collection,
+  placeholder,
+}: AdminNoteProps) => (
   <ClickToEditField
     value={adminNote}
     onSubmit={value =>
       updateDocument.run({ collection, docId, object: { adminNote: value } })
     }
-    placeholder="# Ajouter une note"
+    placeholder={placeholder || '# Ajouter une note'}
     inputProps={{
       style: { width: '100%' },
       multiline: true,

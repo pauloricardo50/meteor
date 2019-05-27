@@ -151,6 +151,7 @@ export const lender = () => ({
 export const adminLender = () => ({
   ...lender(),
   status: 1,
+  adminNote: 1,
 });
 
 // //
