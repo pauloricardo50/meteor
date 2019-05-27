@@ -526,6 +526,7 @@ export const proPromotionOption = () => ({
   loan: {
     name: 1,
     solvency: 1,
+    status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
     promotions: { users: { _id: 1 } },
     promotionOptions: {

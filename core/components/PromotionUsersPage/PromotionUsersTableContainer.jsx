@@ -17,9 +17,11 @@ import T from '../Translation';
 import { CollectionIconLink } from '../IconLink';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 import PromotionUsersTableActions from './PromotionUsersTableActions';
+import StatusLabel from '../StatusLabel/StatusLabel';
 
 const columnOptions = [
   { id: 'loanName' },
+  { id: 'status', label: <T id="Forms.status" /> },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -43,6 +45,7 @@ const getColumns = ({
   const {
     _id: loanId,
     name: loanName,
+    status,
     user,
     loanProgress,
     promotionOptions = [],
@@ -81,6 +84,10 @@ const getColumns = ({
         ) : (
           loanName
         ),
+    },
+    {
+      raw: status,
+      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
     },
     user && user.name,
     user && user.phoneNumbers && user.phoneNumbers[0],
