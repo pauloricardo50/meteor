@@ -949,7 +949,7 @@
   "SingleLoanPageHeader.title": "{name} - Emprunt de {value}",
   "FinancingSection.expandHelper": "Afficher les détails",
   "UploaderArray.empty": "Pas encore de documents dans cette catégorie. Ajoutez-en et ils apparaîtront ici.",
-  "DashboardProgressInfo.createStructure": "Créez votre premier plan financier",
+  "DashboardProgressInfo.createStructure": "Complétez votre premier plan financier",
   "DashboardProgressInfo.addProperty": "Ajoutez votre premier bien immobilier",
   "DashboardProgressInfo.completeProperty": "Complétez les informations de votre bien immobilier",
   "DashboardProgressInfo.doAnExpertise": "Expertisez votre bien immobilier",
