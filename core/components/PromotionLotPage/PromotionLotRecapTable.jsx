@@ -8,6 +8,38 @@ type PromotionLotRecapTableProps = {
   promotionLot: Object,
 };
 
+const isApp = Meteor.microservice === 'app';
+
+const getPropertyValue = ({
+  promotionLot,
+  propertyValue = 0,
+  totalValue = 0,
+  landValue = 0,
+  constructionValue = 0,
+  additionalMargin = 0,
+}) => {
+  const label = promotionLot.name;
+  let value;
+  let hide;
+
+  if (isApp) {
+    value = propertyValue
+      ? toMoney(propertyValue)
+      : toMoney(landValue + constructionValue + additionalMargin);
+    hide = false;
+  } else {
+    value = toMoney(propertyValue);
+    hide = propertyValue !== totalValue;
+  }
+
+  return {
+    label,
+    value,
+    spacing: false,
+    hide,
+  };
+};
+
 const getPromotionLotValueRecapArray = ({
   promotionLot,
   property: {
@@ -29,43 +61,56 @@ const getPromotionLotValueRecapArray = ({
       spacingTop: true,
       bold: true,
     },
-    {
-      label: promotionLot.name,
-      value: toMoney(propertyValue),
-      spacing: false,
-      hide: propertyValue !== totalValue,
-    },
+    getPropertyValue({
+      promotionLot,
+      propertyValue,
+      totalValue,
+      landValue,
+      constructionValue,
+      additionalMargin,
+    }),
     {
       label: (
         <span>
-          {promotionLot.name} - <T id="Forms.landValue" />
+          {promotionLot.name}
+          {' '}
+-
+          <T id="Forms.landValue" />
         </span>
       ),
       value: toMoney(landValue),
-      hide: !landValue,
+      hide: !landValue || isApp,
     },
     {
       label: (
         <span>
-          {promotionLot.name} - <T id="Forms.constructionValue" />
+          {promotionLot.name}
+          {' '}
+-
+          <T id="Forms.constructionValue" />
         </span>
       ),
       value: toMoney(constructionValue),
-      hide: !constructionValue,
+      hide: !constructionValue || isApp,
     },
     {
       label: (
         <span>
-          {promotionLot.name} - <T id="Forms.additionalMargin" />
+          {promotionLot.name}
+          {' '}
+-
+          <T id="Forms.additionalMargin" />
         </span>
       ),
       value: toMoney(additionalMargin),
-      hide: !additionalMargin,
+      hide: !additionalMargin || isApp,
     },
     ...lots.map(({ _id, name, type, value }) => ({
       label: (
         <span>
-          <T id={`Forms.type.${type}`} /> {name}
+          <T id={`Forms.type.${type}`} />
+          {' '}
+          {name}
         </span>
       ),
       key: _id,
@@ -127,7 +172,9 @@ const getPromotionLotRecapArray = (promotionLot) => {
       label: 'Forms.yearlyExpenses',
       value: (
         <span>
-          {toMoney(yearlyExpenses)} <small>/année</small>
+          {toMoney(yearlyExpenses)}
+          {' '}
+          <small>/année</small>
         </span>
       ),
       hide: !yearlyExpenses,
