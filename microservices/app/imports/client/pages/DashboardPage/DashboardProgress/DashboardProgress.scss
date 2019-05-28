@@ -86,7 +86,7 @@ $step-circle-size: 25px;
 
   padding: 8px;
 
-  border-radius: 16px;
+  border-radius: $border-radius;
 
   &:hover {
     background-color: white;
