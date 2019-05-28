@@ -4,10 +4,15 @@ import React from 'react';
 import DialogSimple from '../../DialogSimple';
 import UploaderArray from '../../UploaderArray';
 import T from '../../Translation';
-import { PROMOTIONS_COLLECTION, S3_ACLS } from '../../../api/constants';
+import { PROMOTIONS_COLLECTION, S3_ACLS, ONE_KB } from '../../../api/constants';
 
 const promotionDocuments = [
-  { id: 'promotionImage', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  {
+    id: 'promotionImage',
+    acl: S3_ACLS.PUBLIC_READ,
+    noTooltips: true,
+    maxSize: 500 * ONE_KB,
+  },
   {
     id: 'promotionDocuments',
     acl: S3_ACLS.PUBLIC_READ,
