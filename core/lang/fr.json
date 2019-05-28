@@ -1,7 +1,7 @@
 {
-  "Superdashboard.welcome": "Bienvenue, {name}",
-  "Superdashboard.welcome.subtitle": "Vos dossiers",
-  "Superdashboard.openLoan": "Ouvrir le dossier",
+  "SuperDashboard.welcome": "Bienvenue, {name}",
+  "SuperDashboard.welcome.subtitle": "Vos dossiers",
+  "SuperDashboard.openLoan": "Ouvrir le dossier",
   "Forms.category.STANDARD": "Retail",
   "Forms.category.PREMIUM": "Premium",
   "LoginPage.noAccountApp": "Vous n'avez pas de compte? Commencez {link}",
@@ -870,8 +870,6 @@
 
   "Forms.purchaseType.ACQUISITION": "Acquisition",
   "Forms.purchaseType.REFINANCING": "Refinancement",
-  "AppItem.title": "Hypothèque - {purchaseType}",
-  "AppItem.name": "Dossier no. {name}",
   "LoanSelector.name": "Dossier {name}",
   "SinglePropertyPage.noDelete": "Vous ne pouvez pas supprimer votre dernier bien immobilier",
   "Forms.status": "Statut",
@@ -1048,7 +1046,7 @@
   "AppPage.step": "{step, plural, one {1ère Étape} other {#ème Étape}}",
   "ArrayInput.add": "Ajouter",
   "AssignAdminDropdown.assignAdmin": "Assigner un conseiller",
-  "bert.emailVerificationSent": "Vérification envoyée à {email}!",
+  "DashboardUnverified.emailVerificationSent": "Vérification envoyée à {email}!",
   "BorrowerAdder.label": "+ Ajouter 2e emprunteur",
   "BorrowerAddPartner.label": "Ajouter votre partenaire comme 2e emprunteur",
   "BorrowerHeader.age": "{value} ans",

@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { withState, compose } from 'recompose';
 
 import { createRoute } from 'core/utils/routerUtils';
-
 import LoanCardHeader from './LoanCardHeader';
 import LoanCardBody from './LoanCardBody';
 
@@ -17,9 +16,7 @@ type LoanCardProps = {
 
 const handleCardClick = ({ history, linkDisabled, loanId }) => () => {
   if (!linkDisabled) {
-    history.push(createRoute('/loans/:loanId', {
-      loanId,
-    }));
+    history.push(createRoute('/loans/:loanId', { loanId }));
   }
 };
 
@@ -33,7 +30,7 @@ const LoanCard = ({
 
   return (
     <div
-      className="loancard"
+      className="loan-card"
       onClick={handleCardClick({ loanId, history, linkDisabled })}
     >
       <LoanCardHeader loan={loan} disableLink={disableLink} />

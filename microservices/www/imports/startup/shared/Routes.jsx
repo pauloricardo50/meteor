@@ -38,7 +38,7 @@ export const WWW_ROUTES = {
     },
   }),
 
-  NOT_FOUND_PAGE: { component: NotFound },
+  NOT_FOUND: { component: NotFound },
 };
 
 const Routes = () => (

@@ -1,1 +1,1 @@
-export { default } from './Superdashboard';
+export { default } from './SuperDashboard';

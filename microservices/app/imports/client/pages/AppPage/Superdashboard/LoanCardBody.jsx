@@ -15,7 +15,7 @@ type LoanCardBodyProps = {
 const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
   const { _id: loanId, borrowers = [], step } = loan;
   return (
-    <div className="loancard-body">
+    <div className="loan-card-body">
       <div className="borrowers">
         <h4 className="secondary">
           <T id="collections.borrowers" />

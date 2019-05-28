@@ -2,14 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import T from 'core/components/Translation';
 import { ROLES } from 'core/api/constants';
 import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
 import DashboardUnverified from '../../components/DashboardUnverified';
-import AppItem from './AppItem';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
-import Superdashboard from './Superdashboard';
+import SuperDashboard from './SuperDashboard';
 
 export const AppPage = ({ currentUser, insertLoan, loading }) => {
   const { emails, loans, roles } = currentUser;
@@ -31,7 +29,7 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
         </div>
       )}
 
-      {loans.length > 0 && <Superdashboard currentUser={currentUser} />}
+      {loans.length > 0 && <SuperDashboard currentUser={currentUser} />}
 
       {loans.length === 0 && (
         <WelcomeScreen

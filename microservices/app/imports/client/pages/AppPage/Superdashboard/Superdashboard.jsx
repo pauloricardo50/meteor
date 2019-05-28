@@ -1,23 +1,23 @@
 // @flow
 import React from 'react';
-import T from 'core/components/Translation';
 
+import T from 'core/components/Translation';
 import LoanCards from './LoanCards';
 
-type SuperdashboardProps = {
+type SuperDashboardProps = {
   currentUser: Object,
 };
 
-const Superdashboard = ({ currentUser = {} }: SuperdashboardProps) => {
+const SuperDashboard = ({ currentUser = {} }: SuperDashboardProps) => {
   const { name, loans = [] } = currentUser;
   return (
-    <div className="superdashboard">
-      <div className="superdashboard-title">
+    <div className="super-dashboard">
+      <div className="super-dashboard-title">
         <h1>
-          <T id="Superdashboard.welcome" values={{ name }} />
+          <T id="SuperDashboard.welcome" values={{ name }} />
         </h1>
         <p>
-          <T id="Superdashboard.welcome.subtitle" />
+          <T id="SuperDashboard.welcome.subtitle" />
         </p>
       </div>
       <LoanCards loans={loans} />
@@ -25,4 +25,4 @@ const Superdashboard = ({ currentUser = {} }: SuperdashboardProps) => {
   );
 };
 
-export default Superdashboard;
+export default SuperDashboard;

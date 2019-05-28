@@ -1,4 +1,4 @@
-.superdashboard {
+.super-dashboard {
   margin: -16px;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
   }
 }
 
-.loancards {
+.loan-cards {
   width: 80%;
   display: flex;
   flex-direction: row;
@@ -40,7 +40,7 @@
     flex-wrap: unset;
   }
 
-  .loancard {
+  .loan-card {
     box-sizing: border-box;
     height: 450px;
     display: flex;
@@ -221,7 +221,7 @@
     }
   }
 
-  .loancard:hover {
+  .loan-card:hover {
     box-shadow: 0 4px 15px 0 rgba(33, 37, 41, 0.3);
     cursor: pointer;
   }

@@ -141,7 +141,7 @@ describe('Public onboarding', () => {
       .should('exist');
 
     cy.get('.logo-home').click();
-    cy.get('.app-item').should('have.length', 2);
+    cy.get('.loan-card').should('have.length', 2);
   });
 
   it('should create a loan based on a PRO property', () => {
