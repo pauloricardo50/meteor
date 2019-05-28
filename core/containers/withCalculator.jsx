@@ -14,6 +14,8 @@ const { Consumer, Provider } = Context;
 
 const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
   if (lenderRules.length) {
+    console.log('new calculator!');
+    
     return new CalculatorClass({
       loan,
       structureId,
