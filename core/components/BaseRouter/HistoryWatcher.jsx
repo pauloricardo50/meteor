@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { matchPath } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
@@ -15,7 +15,10 @@ export default class HistoryWatcher extends Component {
   }
 
   componentWillUnmount() {
-    this.unlisten();
+    // Sometimes the component unmounts before listening is done
+    if (this.unlisten) {
+      this.unlisten();
+    }
   }
 
   getMatchingPath(pathname) {
