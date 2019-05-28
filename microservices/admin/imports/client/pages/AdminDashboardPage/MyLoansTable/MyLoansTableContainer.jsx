@@ -34,7 +34,7 @@ const columnOptions = [
 
 const mapLoan = history => (loan) => {
   const { _id: loanId, status, name, updatedAt, user } = loan;
-  
+
   return {
     id: loanId,
     columns: [
@@ -50,7 +50,7 @@ const mapLoan = history => (loan) => {
       />,
       {
         raw: updatedAt && updatedAt.getTime(),
-        label: moment(updatedAt).fromNow(),
+        label: updatedAt ? moment(updatedAt).fromNow() : '-',
       },
       Calculator.selectPropertyValue({ loan }),
       Calculator.selectLoanValue({ loan }),

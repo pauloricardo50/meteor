@@ -45,7 +45,7 @@ const mapProperty = history => ({
     },
     {
       raw: updatedAt && updatedAt.getTime(),
-      label: moment(updatedAt).fromNow(),
+      label: updatedAt ? moment(updatedAt).fromNow() : '-',
     },
     value,
     expertiseValue,

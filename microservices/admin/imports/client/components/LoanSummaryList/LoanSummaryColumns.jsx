@@ -23,7 +23,9 @@ const getLoanSummaryColumns = ({ status, createdAt, updatedAt, ...loan }) => {
     },
     {
       translationId: 'LoanSummaryColumn.updatedAt',
-      content: moment(updatedAt).format('D MMM YY à HH:mm:ss'),
+      content: updatedAt
+        ? moment(updatedAt).format('D MMM YY à HH:mm:ss')
+        : '-',
     },
     {
       translationId: 'LoanSummaryColumn.propertyValue',

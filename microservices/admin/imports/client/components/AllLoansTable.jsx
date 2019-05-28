@@ -81,7 +81,7 @@ export default class AllLoansTable extends Component {
           },
           {
             raw: updatedAt && updatedAt.getTime(),
-            label: moment(updatedAt).fromNow(),
+            label: updatedAt ? moment(updatedAt).fromNow() : '-',
           },
           {
             label: <T id={`Forms.step.${step}`} key="step" />,
