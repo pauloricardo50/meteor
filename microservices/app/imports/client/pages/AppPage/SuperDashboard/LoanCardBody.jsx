@@ -33,7 +33,7 @@ const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
         raised
         className="button-link"
       >
-        <T id="Superdashboard.openLoan" />
+        <T id="SuperDashboard.openLoan" />
       </Button>
     </div>
   );
