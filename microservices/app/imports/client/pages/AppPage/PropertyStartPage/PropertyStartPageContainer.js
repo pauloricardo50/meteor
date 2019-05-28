@@ -33,17 +33,15 @@ export default compose(
     refetchOnMethodCall: false,
   }),
   withProps(({ propertyId, referralId, history }) => ({
-    insertAnonymousLoan: () =>
-      anonymousLoanInsert
-        .run({
-          proPropertyId: propertyId,
-          referralId,
-          trackingId: parseCookies()[TRACKING_COOKIE],
-        })
-        .then((loanId) => {
-          localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          window.analytics.alias(loanId);
-          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
-        }),
+    insertAnonymousLoan: () => anonymousLoanInsert
+      .run({
+        proPropertyId: propertyId,
+        referralId,
+        trackingId: parseCookies()[TRACKING_COOKIE],
+      })
+      .then((loanId) => {
+        localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
+        history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+      }),
   })),
 );
