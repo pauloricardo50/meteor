@@ -326,6 +326,7 @@ const protectedKeys = [
   'userId',
   'valuation',
   'documents',
+  'userLinks',
 ];
 
 export const userAllowedKeys = [
