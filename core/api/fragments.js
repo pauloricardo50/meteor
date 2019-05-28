@@ -763,6 +763,7 @@ export const promotionProperty = () => ({
   gardenArea: 1,
   insideArea: 1,
   landValue: 1,
+  mortgageNotes: mortgageNote(),
   name: 1,
   propertyType: 1,
   roomCount: 1,
