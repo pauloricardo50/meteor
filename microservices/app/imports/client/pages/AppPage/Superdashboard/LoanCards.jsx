@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+
 import LoanCard from './LoanCard';
 
 type LoanCardsProps = {
@@ -7,7 +8,7 @@ type LoanCardsProps = {
 };
 
 const LoanCards = ({ loans = [] }: LoanCardsProps) => (
-  <div className="loancards">
+  <div className="loan-cards">
     {loans.map(loan => (
       <LoanCard loan={loan} key={loan._id} />
     ))}

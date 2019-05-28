@@ -59,14 +59,14 @@ const LoanCardHeader = ({ loan, disableLink }: LoanCardHeaderProps) => {
   });
 
   return (
-    <div className="loancard-header">
+    <div className="loan-card-header">
       {image && (
-        <div className="loancard-header-cover">
+        <div className="loan-card-header-cover">
           <div className="gradient" />
           <img src={image} alt="property" />
         </div>
       )}
-      <div className="loancard-header-title">
+      <div className="loan-card-header-title">
         <h4>
           <small>
             <T id={`Forms.purchaseType.${purchaseType}`} />
