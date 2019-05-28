@@ -30,7 +30,7 @@ const LoanCard = ({
 
   return (
     <div
-      className="loan-card"
+      className="loan-card card1 card-hover"
       onClick={handleCardClick({ loanId, history, linkDisabled })}
     >
       <LoanCardHeader loan={loan} disableLink={disableLink} />
