@@ -22,7 +22,7 @@ export const getRecapArray = (property) => {
     landArea,
     insideArea,
     value,
-    valuation: { status, min, max },
+    // valuation: { status, min, max },
   } = property;
   return [
     {
