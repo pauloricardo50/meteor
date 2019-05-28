@@ -10,12 +10,10 @@ import Calculator, { Calculator as CalculatorClass } from '../utils/Calculator';
 import query from '../api/lenderRules/queries/organisationLenderRules';
 
 const Context = React.createContext();
-const { Consumer, Provider } = Context;
+const { Provider } = Context;
 
 const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
   if (lenderRules.length) {
-    console.log('new calculator!');
-    
     return new CalculatorClass({
       loan,
       structureId,
