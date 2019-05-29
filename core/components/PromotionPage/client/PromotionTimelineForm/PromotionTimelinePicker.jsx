@@ -34,10 +34,9 @@ const Dropdown = ({ handleOpen, promotionId, promotions }) => (
         id: _id,
         label: name,
         onClick: () =>
-          reuseConstructionTimeline.run({
-            fromPromotionId: _id,
-            toPromotionId: promotionId,
-          }),
+          reuseConstructionTimeline
+            .run({ fromPromotionId: _id, toPromotionId: promotionId })
+            .then(handleOpen),
       })),
     ]}
     buttonProps={{
