@@ -79,7 +79,7 @@ describe('REST: getUser', function () {
           _id: 'user1',
           firstName: 'firstName1',
           lastName: 'lastName1',
-          phoneNumbers: ['12345'],
+          phoneNumbers: ['+41 22 566 01 10'],
           emails: [{ address: 'user1@test.com', verified: true }],
           referredByUserLink: 'pro',
           referredByOrganisationLink: 'org',
@@ -88,7 +88,7 @@ describe('REST: getUser', function () {
           _id: 'user2',
           firstName: 'firstName2',
           lastName: 'lastName2',
-          phoneNumbers: ['12345'],
+          phoneNumbers: ['+41 22 566 01 10'],
           emails: [{ address: 'user2@test.com', verified: true }],
           referredByUserLink: 'pro2',
           referredByOrganisationLink: 'org',
@@ -105,7 +105,7 @@ describe('REST: getUser', function () {
       expect(user.firstName).to.equal('firstName1');
       expect(user.lastName).to.equal('lastName1');
       expect(user.emails[0].address).to.equal('user1@test.com');
-      expect(user.phoneNumbers[0]).to.equal('12345');
+      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
 
   it('returns user referred by org with impersonate', () =>
@@ -117,7 +117,7 @@ describe('REST: getUser', function () {
       expect(user.firstName).to.equal('firstName2');
       expect(user.lastName).to.equal('lastName2');
       expect(user.emails[0].address).to.equal('user2@test.com');
-      expect(user.phoneNumbers[0]).to.equal('12345');
+      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
 
   it('returns user referred by org without impersonate', () =>
@@ -128,7 +128,7 @@ describe('REST: getUser', function () {
       expect(user.firstName).to.equal('firstName2');
       expect(user.lastName).to.equal('lastName2');
       expect(user.emails[0].address).to.equal('user2@test.com');
-      expect(user.phoneNumbers[0]).to.equal('12345');
+      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
 
   it('returns user referred by pro', () =>
@@ -139,7 +139,7 @@ describe('REST: getUser', function () {
       expect(user.firstName).to.equal('firstName2');
       expect(user.lastName).to.equal('lastName2');
       expect(user.emails[0].address).to.equal('user2@test.com');
-      expect(user.phoneNumbers[0]).to.equal('12345');
+      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
 
   it('returns an error when user is not referred by org neither by user', () =>

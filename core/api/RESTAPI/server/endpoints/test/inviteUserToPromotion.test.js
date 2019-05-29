@@ -22,7 +22,7 @@ const userToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
-  phoneNumber: '1234',
+  phoneNumber: '+41 22 566 01 10',
 };
 
 const api = new RESTAPI();
