@@ -1,0 +1,56 @@
+.timeline.vertical {
+  list-style: none;
+  padding: 16px;
+  width: 250px;
+
+  li {
+    max-width: 250px;
+    padding-bottom: 20px;
+    padding-left: 2em;
+    position: relative;
+    color: $icon;
+
+    .left {
+      position: absolute;
+      transform: translate(-100%, 0);
+      left: 0;
+      padding: 0 16px;
+      text-align: right;
+    }
+
+    &:before {
+      position: absolute;
+      left: 0;
+      content: '';
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid $icon;
+      z-index: 2;
+    }
+
+    &:not(:last-of-type):after {
+      position: absolute;
+      left: 9px;
+      top: 18px;
+      content: '';
+      width: 2px;
+      height: calc(100% - 18px);
+      background-color: $icon;
+      z-index: 1;
+    }
+
+    &.complete {
+      color: $grey4;
+    }
+
+    &.complete:before,
+    &.complete:after {
+      background-color: $grey4;
+    }
+
+    &.complete:before {
+      border: 2px solid $grey4;
+    }
+  }
+}

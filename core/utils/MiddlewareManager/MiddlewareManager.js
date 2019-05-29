@@ -41,16 +41,23 @@ class MiddlewareManager {
     return instance;
   }
 
-  applyToAllMethods(_middlewares: MiddlewareType) {
+  applyToAllMethods(_middlewares: MiddlewareType, omit) {
     const middlewares = this.arrayify(_middlewares);
     const methods = this.getAllMethodNames(this._target);
 
-    methods.forEach(method => this.applyToMethod(method, middlewares));
+    methods
+      .filter((name) => {
+        if (omit) {
+          return !omit.includes(name);
+        }
+        return true;
+      })
+      .forEach(method => this.applyToMethod(method, middlewares));
 
     return this;
   }
 
-  getAllMethodNames(obj: Object, stop: mixed) {
+  getAllMethodNames(obj: Object = {}, stop: mixed) {
     const methodNames = [];
     let proto = Object.getPrototypeOf(obj);
     while (proto && proto !== stop) {
