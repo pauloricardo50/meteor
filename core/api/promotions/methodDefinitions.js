@@ -85,3 +85,11 @@ export const editPromotionLoan = new Method({
     showAllLots: Match.Optional(Boolean),
   },
 });
+
+export const reuseConstructionTimeline = new Method({
+  name: 'reuseConstructionTimeline',
+  params: {
+    fromPromotionId: String,
+    toPromotionId: String,
+  },
+});

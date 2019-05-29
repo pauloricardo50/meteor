@@ -1,4 +1,9 @@
 {
+  "Forms.constructionTimeline": "Échéancier",
+  "Forms.constructionTimeline.description": "Déscription",
+  "Forms.constructionTimeline.description.placeholder": "Terrassement",
+  "Forms.constructionTimeline.duration": "Durée en mois",
+  "Forms.constructionTimeline.percent": "% EG",
   "FinancingCollapser.expand": "Afficher les détails",
   "FinancingCollapser.collapse": "Masquer les détails",
   "SuperDashboard.welcome": "Bienvenue, {name}",
