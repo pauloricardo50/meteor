@@ -149,3 +149,9 @@ export const documentsField = {
   optional: true,
   blackbox: true,
 };
+
+export const dateField = {
+  type: Date,
+  optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+}

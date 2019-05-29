@@ -21,7 +21,7 @@ const OverviewTab = (props) => {
     loan,
     currentUser: { roles },
   } = props;
-  const { user, borrowers } = loan;
+  const { borrowers } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
