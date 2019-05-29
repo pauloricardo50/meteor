@@ -16,6 +16,7 @@ import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
 import FinancingRefinancing from './FinancingRefinancing';
 import FinancingLenders from './FinancingLenders';
+import FinancingCollapser from './FinancingCollapser';
 
 type FinancingProps = {
   loan: userLoan,
@@ -30,6 +31,8 @@ const Financing = ({ loan }: FinancingProps) => {
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
         <FinancingHeader selectedStructure={loan.selectedStructure} />
+
+        <FinancingCollapser />
 
         <FinancingProject />
 

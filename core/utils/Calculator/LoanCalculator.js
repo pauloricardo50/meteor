@@ -420,4 +420,26 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
       return missingOwnFunds <= -this.ownFundsRoundingAmount;
     }
+
+    hasCompleteStructure({ loan }) {
+      return loan.structures.some(({ id }) => {
+        const fundsRequired = this.getRequiredOwnFunds({
+          loan,
+          structureId: id,
+        });
+
+        if (fundsRequired === 0) {
+          return false;
+        }
+
+        if (
+          !this.isMissingOwnFunds({ loan, structureId: id })
+          && !this.hasTooMuchOwnFunds({ loan, structureId: id })
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+    }
   };
