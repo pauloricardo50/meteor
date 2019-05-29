@@ -2,6 +2,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { compose } from 'recompose';
+import memoizeOne, { memoizeOneObjectArg } from '../../memoizeOne';
+import MiddlewareManager from '../../MiddlewareManager';
+import { borrowerExtractorMiddleware } from '../middleware';
+import { precisionMiddleware } from '../../FinanceCalculator/financeCalculatorMiddlewares';
 
 class RootCalculator {
   constructor() {
@@ -217,5 +221,116 @@ describe('Class composition', () => {
     expect(myClass.returnNumber2).to.equal(undefined);
     expect(myClass.returnNumber).to.equal(undefined);
     expect(myClass.staticFunc).to.equal(undefined);
+  });
+
+  describe('memoization', () => {
+    const memoizeMiddleware = calc => (next) => {
+      const memoFunc = memoizeOne(next);
+      return (...args) => {
+        calc.memo += 1;
+        return memoFunc(...args);
+      };
+    };
+
+    const preMiddleware = precisionMiddleware;
+    const postMiddleware = borrowerExtractorMiddleware;
+
+    class MemoizedClass {
+      constructor() {
+        this.count = 0;
+        this.memo = 0;
+        this.init();
+      }
+
+      init() {
+        const middlewareManager = new MiddlewareManager(this);
+        middlewareManager.applyToAllMethods([
+          preMiddleware,
+          memoizeMiddleware,
+          postMiddleware,
+        ]);
+      }
+
+      add({ a, b }) {
+        this.count += 1;
+        return a + b;
+      }
+
+      div({ a, b }) {
+        this.count += 1;
+        return a / b;
+      }
+
+      stuff({ borrowers }) {
+        this.count += 1;
+        return borrowers.a;
+      }
+
+      nothing() {
+        this.count += 1;
+        return 'yo';
+      }
+
+      stringArg(index) {
+        this.count += 1;
+        return [1, 2, 3][index];
+      }
+    }
+
+    it('memoizes additions once', () => {
+      const myClass = new MemoizedClass();
+
+      expect(myClass.add({ a: 1, b: 2 })).to.equal(3);
+      expect(myClass.add({ a: 1, b: 2 })).to.equal(3);
+      expect(myClass.add({ a: 2, b: 2 })).to.equal(4);
+      expect(myClass.add({ a: 1, b: 2 })).to.equal(3);
+
+      expect(myClass.memo).to.equal(4);
+      expect(myClass.count).to.equal(3);
+    });
+
+    it('memoizes divisions', () => {
+      const myClass = new MemoizedClass();
+
+      expect(myClass.div({ a: 2, b: 3 })).to.equal(0.6666666667);
+      expect(myClass.div({ a: 2, b: 3 })).to.equal(0.6666666667);
+
+      expect(myClass.memo).to.equal(2);
+      expect(myClass.count).to.equal(1);
+    });
+
+    it('does not care about other middlewares', () => {
+      const loan = { borrowers: { a: 3 } };
+      const myClass = new MemoizedClass();
+
+      expect(myClass.stuff({ loan })).to.equal(3);
+      expect(myClass.stuff({ loan })).to.equal(3);
+
+      expect(myClass.memo).to.equal(2);
+      expect(myClass.count).to.equal(1);
+    });
+
+    it('works for functions without arguments', () => {
+      const loan = { borrowers: { a: 3 } };
+      const myClass = new MemoizedClass();
+
+      expect(myClass.nothing({ loan })).to.equal('yo');
+      expect(myClass.nothing({ loan })).to.equal('yo');
+
+      expect(myClass.memo).to.equal(2);
+      expect(myClass.count).to.equal(1);
+    });
+
+    it('works for regular functions', () => {
+      const myClass = new MemoizedClass();
+
+      expect(myClass.stringArg(0)).to.equal(1);
+      expect(myClass.stringArg(1)).to.equal(2);
+      expect(myClass.stringArg(1)).to.equal(2);
+      expect(myClass.stringArg(2)).to.equal(3);
+
+      expect(myClass.memo).to.equal(4);
+      expect(myClass.count).to.equal(3);
+    });
   });
 });

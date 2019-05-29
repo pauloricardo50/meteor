@@ -39,6 +39,7 @@ import {
 } from '../../config/financeConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
+import { memoizeMiddleware } from '../Calculator/middleware';
 
 export class FinanceCalculator {
   constructor(settings?: Object) {
@@ -122,7 +123,11 @@ export class FinanceCalculator {
 
   setMiddleware = (middlewares?: Array<Function>, middlewareObject) => {
     const middlewareManager = new MiddlewareManager(this, middlewareObject);
-    middlewareManager.applyToAllMethods([precisionMiddleware, ...middlewares]);
+    middlewareManager.applyToAllMethods([
+      precisionMiddleware,
+      memoizeMiddleware,
+      ...middlewares,
+    ]);
   };
 
   getLoanValue({
