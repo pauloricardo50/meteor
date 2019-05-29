@@ -6,7 +6,8 @@ import S3Service from './S3Service';
 class FileService {
   listFilesForDoc = (docId, subdocument) => {
     const prefix = subdocument ? `${docId}/${subdocument}` : docId;
-    return S3Service.listObjectsWithMetadata(prefix);
+    return S3Service.listObjectsWithMetadata(prefix).then(results =>
+      results.map(this.formatFile));
   };
 
   listFilesForDocByCategory = (docId, subdocument) =>
@@ -47,6 +48,15 @@ class FileService {
         { _id: docId },
         { $set: { documents } },
       ));
+
+  formatFile = (file) => {
+    let fileName = file.name;
+    if (fileName) {
+      const keyParts = file.Key.split('/');
+      fileName = keyParts[keyParts.length - 1];
+    }
+    return { ...file, name: fileName };
+  };
 }
 
 export default new FileService();
