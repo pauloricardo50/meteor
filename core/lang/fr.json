@@ -1,4 +1,6 @@
 {
+  "FinancingCollapser.expand": "Afficher les détails",
+  "FinancingCollapser.collapse": "Masquer les détails",
   "SuperDashboard.welcome": "Bienvenue, {name}",
   "SuperDashboard.welcome.subtitle": "Vos dossiers",
   "SuperDashboard.openLoan": "Ouvrir le dossier",

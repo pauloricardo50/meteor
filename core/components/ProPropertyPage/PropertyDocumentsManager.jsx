@@ -4,12 +4,17 @@ import React from 'react';
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
 import UploaderArray from 'core/components/UploaderArray';
-import { PROPERTIES_COLLECTION, S3_ACLS } from 'core/api/constants';
+import { PROPERTIES_COLLECTION, S3_ACLS, ONE_KB } from 'core/api/constants';
 
 type PropertyDocumentsManagerProps = {};
 
 const propertyDocuments = [
-  { id: 'propertyImages', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  {
+    id: 'propertyImages',
+    acl: S3_ACLS.PUBLIC_READ,
+    noTooltips: true,
+    maxSize: 500 * ONE_KB,
+  },
   {
     id: 'propertyDocuments',
     acl: S3_ACLS.PUBLIC_READ,

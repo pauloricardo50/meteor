@@ -73,7 +73,7 @@
   backgorund-color 200ms $bezier;
   text-decoration: none;
 
-  border-radius: 16px;
+  border-radius: $border-radius;
 
   .careers-page-job-hover {
     display: none;

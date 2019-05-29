@@ -135,6 +135,12 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
   const array = [
     { id: 'value', type: 'textInput', money: true },
     {
+      id: 'investmentRent',
+      type: 'textInput',
+      money: true,
+      condition: r.residenceType === RESIDENCE_TYPE.INVESTMENT,
+    },
+    {
       id: 'propertyType',
       type: 'radioInput',
       options: Object.values(PROPERTY_TYPE),
@@ -206,7 +212,6 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'numberOfFloors',
       type: 'textInput',
       number: true,
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       id: 'floorNumber',

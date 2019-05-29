@@ -12,8 +12,10 @@ export const ALLOWED_FILE_TYPES = [
   'application/pdf',
 ];
 
+export const ONE_KB = 1024;
+
 // 50 MB (use null for unlimited)
-export const MAX_FILE_SIZE = 50 * 1024 * 1024;
+export const MAX_FILE_SIZE = 50 * ONE_KB * ONE_KB;
 
 export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
 

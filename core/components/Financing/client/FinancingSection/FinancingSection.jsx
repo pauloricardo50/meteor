@@ -8,7 +8,6 @@ import { ScrollSyncPane } from 'react-scroll-sync';
 import { compose, withState, lifecycle } from 'recompose';
 import cx from 'classnames';
 
-import T from '../../../Translation';
 import FinancingLabels from '../FinancingLabels';
 import { makeRenderDetail, makeRenderSummary } from './financingSectionHelpers';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
@@ -75,9 +74,6 @@ const FinancingSection = ({
         <ExpansionPanelSummary
           className="section-summary"
           classes={{ content, expanded: expandedClass }}
-          onDoubleClick={() => {
-            ClientEventService.emit('expandAll', expanded);
-          }}
         >
           <FinancingLabels config={summaryConfig} className="summary-labels" />
 
@@ -94,19 +90,26 @@ const FinancingSection = ({
 };
 
 export default compose(
-  withState('expanded', 'changeExpanded', true),
+  FinancingDataContainer,
+  withState(
+    'expanded',
+    'changeExpanded',
+    ({ Calculator, loan }) => !Calculator.hasCompleteStructure({ loan }),
+  ),
   lifecycle({
     componentDidMount() {
       const { changeExpanded } = this.props;
-      ClientEventService.addListener('expandAll', current =>
-        changeExpanded(!current));
+      ClientEventService.addListener('expandAll', () => changeExpanded(true));
+      ClientEventService.addListener('collapseAll', () =>
+        changeExpanded(false));
     },
     componentWillUnmount() {
       const { changeExpanded } = this.props;
-      ClientEventService.removeListener('expandAll', current =>
-        changeExpanded(!current));
+      ClientEventService.removeListener('expandAll', () =>
+        changeExpanded(true));
+      ClientEventService.removeListener('collapseAll', () =>
+        changeExpanded(false));
     },
   }),
-  FinancingDataContainer,
   withStyles(styles),
 )(FinancingSection);

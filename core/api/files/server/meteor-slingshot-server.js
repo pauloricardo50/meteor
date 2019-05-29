@@ -1,15 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
-import { Roles } from 'meteor/alanning:roles';
 
 import { ROLES } from 'core/api/constants';
-import {
-  LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  COLLECTIONS,
-} from '../../constants';
+import { COLLECTIONS } from '../../constants';
 import SecurityService from '../../security';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
