@@ -24,11 +24,12 @@ class PropertySecurity {
   static getProperty({ propertyId }) {
     const property = PropertyService.fetchOne({
       $filters: { _id: propertyId },
+      category: 1,
+      loans: { user: { _id: 1 } },
+      status: 1,
       userId: 1,
       userLinks: { _id: 1 },
       users: { _id: 1 },
-      loans: { user: { _id: 1 } },
-      status: 1,
     });
 
     return property;
@@ -37,8 +38,8 @@ class PropertySecurity {
   static getCurrentUser({ userId }) {
     const currentUser = UserService.fetchOne({
       $filters: { _id: userId },
-      properties: { _id: 1, permissions: 1, status: 1 },
       organisations: { users: { _id: 1 } },
+      properties: { _id: 1, permissions: 1, status: 1 },
     });
 
     return currentUser;
@@ -276,7 +277,7 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      this.handleUnauthorized('Vous ne pouvez pas réserver ce bien immobilier à ce client');
+      Security.handleUnauthorized('Vous ne pouvez pas réserver ce bien immobilier à ce client');
     }
   }
 
@@ -316,7 +317,7 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      this.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
+      Security.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
     }
   }
 
@@ -334,7 +335,7 @@ class PropertySecurity {
     const property = this.getProperty({ propertyId });
 
     if (!property || property.category !== PROPERTY_CATEGORY.PRO) {
-      this.handleUnauthorized('Unauthorized propertyId');
+      Security.handleUnauthorized('Unauthorized propertyId');
     }
   }
 }
