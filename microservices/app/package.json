@@ -52,6 +52,7 @@
     "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "js-search": "^1.4.2",
     "json-logic-js": "^1.2.2",
+    "libphonenumber-js": "^1.7.18",
     "meteor-accounts-t9n": "^2.3.1",
     "meteor-node-stubs": "^0.4.1",
     "moment": "^2.22.2",
