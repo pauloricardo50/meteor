@@ -7,9 +7,8 @@ import formatNumbersHook, {
 Promotions.after.remove((userId, { _id }) =>
   FileService.deleteAllFilesForDoc(_id));
 
-formatNumbersHook(Promotions, 'contacts', ({ modifier }) => {
-  modifier.$set.contacts = modifier.$set.contacts.map(contact => ({
+formatNumbersHook(Promotions, 'contacts', oldContacts =>
+  oldContacts.map(contact => ({
     ...contact,
     phoneNumber: formatPhoneNumber(contact.phoneNumber),
-  }));
-});
+  })));
