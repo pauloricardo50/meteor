@@ -17,7 +17,7 @@ export const baseBorrower = () => ({
 
 export const loanBorrower = ({ withSort } = {}) => ({
   ...baseBorrower(),
-  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalDocuments: 1,
   address1: 1,
   address2: 1,
   adminValidation: 1,
@@ -197,7 +197,7 @@ export const lenderRules = () => ({
 // // Loan fragments
 // //
 export const loan = () => ({
-  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalDocuments: 1,
   applicationType: 1,
   anonymous: 1,
   borrowerIds: 1,
@@ -700,7 +700,7 @@ export const propertySummary = () => ({
 
 export const fullProperty = ({ withSort } = {}) => ({
   ...propertySummary(),
-  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalDocuments: 1,
   additionalMargin: 1,
   adminValidation: 1,
   areaNorm: 1,
