@@ -45,5 +45,8 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     return true;
   },
-  key: (file, { docId, id }) => `${docId}/${id}/${file.name}`,
+  key: (file, { docId, id }) =>
+    `${docId}/${id}/${file.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')}`,
 });

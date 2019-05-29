@@ -167,6 +167,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return this.getAmortizationRateBase({
         borrowRatio,
         amortizationYears,
+        // Prevent caching of this function if amortizationGoal has changed
+        cacheFix: this.amortizationGoal,
       });
     }
 
