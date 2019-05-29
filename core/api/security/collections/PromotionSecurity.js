@@ -24,7 +24,6 @@ import {
   getPromotionCustomerOwnerType,
   makeLoanAnonymizer,
 } from '../../promotions/server/promotionServerHelpers';
-import { proPromotion, proUser, proLoans } from '../../fragments';
 import LotService from '../../lots/server/LotService';
 
 class PromotionSecurity {
@@ -39,11 +38,19 @@ class PromotionSecurity {
     }
     const promotion = PromotionService.safeFetchOne({
       $filters: { _id: promotionId },
-      ...proPromotion(),
+      status: 1,
+      users: { _id: 1 },
+      userLinks: { _id: 1 },
     });
+
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     if (!checkingFunction({ promotion, currentUser })) {
@@ -168,16 +175,23 @@ class PromotionSecurity {
 
     const promotion = PromotionService.safeFetchOne({
       $filters: { _id: promotionId },
-      ...proPromotion(),
+      status: 1,
+      users: { _id: 1 },
+      userLinks: { _id: 1 },
     });
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
-      ...proLoans(),
+      user: { _id: 1 },
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -267,7 +281,7 @@ class PromotionSecurity {
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
-      ...proLoans(),
+      user: {_id: 1},
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -278,7 +292,12 @@ class PromotionSecurity {
 
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     if (
@@ -327,7 +346,7 @@ class PromotionSecurity {
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: attributedTo._id },
-      ...proLoans(),
+      user: {_id: 1},
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -338,7 +357,12 @@ class PromotionSecurity {
 
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     if (
