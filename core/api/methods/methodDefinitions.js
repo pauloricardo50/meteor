@@ -82,6 +82,7 @@ export const setAdditionalDoc = new Method({
     additionalDocId: String,
     requiredByAdmin: Boolean,
     label: Match.Optional(String),
+    category: Match.Optional(String),
   },
 });
 

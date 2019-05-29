@@ -127,14 +127,9 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   throw new Meteor.Error(400, 'Dev error!');
 });
 
-setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
+setAdditionalDoc.setHandler((context, { collection, ...rest }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return Services[collection].setAdditionalDoc({
-    id,
-    additionalDocId,
-    requiredByAdmin,
-    label,
-  });
+  return Services[collection].setAdditionalDoc(rest);
 });
 
 migrateToLatest.setHandler(({ userId }) => {

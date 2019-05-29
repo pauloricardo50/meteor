@@ -192,7 +192,7 @@ class CollectionService {
     return undefined;
   }
 
-  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
+  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
     const { additionalDocuments } = this.get(id);
 
     const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
@@ -204,6 +204,7 @@ class CollectionService {
           id: additionalDocId,
           requiredByAdmin,
           label: this.getAdditionalDocLabel({ label, additionalDoc }),
+          category,
         },
       ];
       return this._update({
@@ -217,7 +218,7 @@ class CollectionService {
       object: {
         additionalDocuments: [
           ...additionalDocuments,
-          { id: additionalDocId, requiredByAdmin, label },
+          { id: additionalDocId, requiredByAdmin, label, category },
         ],
       },
     });
