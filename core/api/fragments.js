@@ -407,7 +407,7 @@ export const fullOffer = () => ({
     loan: {
       status: 1,
       name: 1,
-      user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+      user: { name: 1, assignedEmployee: { email: 1, name: 1, firstName: 1 } },
       borrowers: { name: 1 },
     },
     contact: { name: 1, email: 1 },
