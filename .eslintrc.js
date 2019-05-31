@@ -117,6 +117,7 @@ module.exports = {
     // And not always practical
     'react/jsx-one-expression-per-line': [2, { allow: 'single-child' }],
     'react/display-name': 'off',
+    'react/no-multi-comp': 'off',
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',
