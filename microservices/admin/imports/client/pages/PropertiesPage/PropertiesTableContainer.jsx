@@ -41,7 +41,7 @@ const mapProperty = history => ({
     ),
     {
       raw: createdAt && createdAt.getTime(),
-      label: moment(createdAt).format('D.M.YY à H:mm'),
+      label: moment(createdAt).fromNow(),
     },
     {
       raw: updatedAt && updatedAt.getTime(),

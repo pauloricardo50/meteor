@@ -76,16 +76,16 @@ export default class AllLoansTable extends Component {
             ),
           },
           {
-            label: moment(createdAt).format('D.M.YY à H:mm'),
             raw: createdAt && createdAt.getTime(),
+            label: moment(createdAt).fromNow(),
           },
           {
             raw: updatedAt && updatedAt.getTime(),
             label: updatedAt ? moment(updatedAt).fromNow() : '-',
           },
           {
-            label: <T id={`Forms.step.${step}`} key="step" />,
             raw: step,
+            label: <T id={`Forms.step.${step}`} key="step" />,
           },
           Calculator.selectPropertyValue({ loan }),
           Calculator.selectLoanValue({ loan }),

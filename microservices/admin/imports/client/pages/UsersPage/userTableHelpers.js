@@ -37,7 +37,7 @@ const getColumns = ({ showAssignee, user }) => {
     email,
     {
       raw: createdAt.getTime(),
-      label: moment(createdAt).format('D MMM YY à HH:mm'),
+      label: moment(createdAt).fromNow(),
     },
     { label: <Roles roles={roles} />, raw: roles && roles.toString() },
   ];
