@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 
@@ -29,7 +29,7 @@ const initialazeHighcharts = () => {
   );
 };
 
-export default class Chart extends Component {
+export default class Chart extends PureComponent {
   constructor(props) {
     super(props);
     this.chart = null;
