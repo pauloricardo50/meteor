@@ -59,6 +59,7 @@ const ResultSecondaryText = ({ infos, related = [] }) => (
             key={relatedDoc._id}
             relatedDoc={relatedDoc}
             stopPropagation={false}
+            iconClassName="focusable-result"
           />
         ))}
       </div>
