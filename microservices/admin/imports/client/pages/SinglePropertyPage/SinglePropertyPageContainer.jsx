@@ -6,6 +6,6 @@ export default withSmartQuery({
   params: ({ match, propertyId }) => ({
     _id: propertyId || match.params.propertyId,
   }),
-  queryOptions: { reactive: true, single: true },
+  queryOptions: { reactive: false, single: true },
   dataName: 'property',
 });

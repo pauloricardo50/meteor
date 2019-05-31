@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import PropertyService from './PropertyService';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import {
   propertyInsert,
   propertyUpdate,
@@ -16,8 +16,7 @@ import {
   removeCustomerFromProperty,
   insertExternalProperty,
 } from '../methodDefinitions';
-import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
-import { ROLES } from '../../users/userConstants';
+import PropertyService from './PropertyService';
 
 propertyInsert.setHandler((context, params) => {
   const userId = checkInsertUserId(params.userId);

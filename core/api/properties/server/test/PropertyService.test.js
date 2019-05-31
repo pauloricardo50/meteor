@@ -25,6 +25,23 @@ describe('PropertyService', function () {
     resetDatabase();
   });
 
+  describe('insert', () => {
+    it('adds a new property', () => {
+      PropertyService.insert({
+        property: {
+          value: 100,
+          address1: 'Chemin 1',
+          city: 'Genève',
+          zipCode: 1201,
+        },
+      });
+
+      expect(PropertyService.find().fetch()[0]).to.deep.include({
+        value: 100,
+      });
+    });
+  });
+
   describe.skip('evaluateProperty', () => {
     const getValueRange = value => ({
       min: value * 0.9,

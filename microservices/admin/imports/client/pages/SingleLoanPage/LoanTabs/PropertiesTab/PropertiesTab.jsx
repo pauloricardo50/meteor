@@ -46,6 +46,7 @@ const PropertiesTab = ({ loan }: PropertiesTabProps) => {
             label: propertiesTabLabel(loan, property, index),
             content: (
               <SinglePropertyPage
+                key={property._id}
                 propertyId={property._id}
                 displayLoans={false}
                 loanResidenceType={loanResidenceType}

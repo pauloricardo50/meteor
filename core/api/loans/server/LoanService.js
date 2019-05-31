@@ -41,7 +41,6 @@ import { sendEmail } from '../../methods';
 import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
 import fullLoan from '../queries/fullLoan';
 
-
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
   const zero = places - num.toString().length + 1;
@@ -205,10 +204,7 @@ export class LoanService extends CollectionService {
   };
 
   confirmClosing = ({ loanId, object }) =>
-    this.update({
-      loanId,
-      object: { status: LOAN_STATUS.BILLING, ...object },
-    });
+    this.update({ loanId, object: { status: LOAN_STATUS.BILLING, ...object } });
 
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
