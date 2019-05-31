@@ -15,12 +15,12 @@ export default compose(
     params: ({ propertyId }) => ({
       _id: propertyId,
       $body: {
-        name: 1,
         address1: 1,
-        totalValue: 1,
         description: 1,
+        thumbnail: 1,
+        name: 1,
         openGraphData: 1,
-        documents: 1,
+        totalValue: 1,
       },
     }),
     queryOptions: {

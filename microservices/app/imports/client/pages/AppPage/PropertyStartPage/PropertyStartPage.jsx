@@ -33,6 +33,7 @@ const PropertyStartPage = ({
           </Button>
         </div>
       )}
+      img={anonymousProperty.thumbnail}
     />
   );
 };

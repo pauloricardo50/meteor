@@ -16,6 +16,7 @@ export const WelcomeScreen = ({
   displayCheckbox,
   buttonProps,
   cta,
+  img,
 }: WelcomeScreenProps) => (
   <div className="welcome-screen animated fadeIn">
     <Waves noSlope={false} />
@@ -27,6 +28,7 @@ export const WelcomeScreen = ({
         displayCheckbox={displayCheckbox}
         buttonProps={buttonProps}
         cta={cta}
+        img={img}
       />
 
       <WelcomeScreenLinks handleContact={handleContact} />

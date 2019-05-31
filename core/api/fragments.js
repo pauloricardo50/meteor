@@ -692,6 +692,7 @@ export const propertySummary = () => ({
   promotion: { name: 1 },
   propertyType: 1,
   status: 1,
+  thumbnail: 1,
   totalValue: 1,
   userId: 1,
   value: 1,

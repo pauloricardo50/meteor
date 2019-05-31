@@ -14,6 +14,7 @@ const WelcomeScreenTop = ({
   displayCheckbox = true,
   buttonProps,
   cta,
+  img,
 }: WelcomeScreenTopProps) => (
   <div className="card1 welcome-screen-top">
     <div className="welcome-screen-top-text">
@@ -47,9 +48,17 @@ const WelcomeScreenTop = ({
       )}
     </div>
 
-    <div className="welcome-screen-top-img">
-      <img src="/img/homepage-closing-big.svg" alt="e-Potek" />
-    </div>
+    {!img && (
+      <div className="welcome-screen-top-img">
+        <img src="/img/homepage-closing-big.svg" alt="e-Potek" />
+      </div>
+    )}
+    {img && (
+      <div
+        className="welcome-screen-top-img-override"
+        style={{ backgroundImage: `url("${img}")` }}
+      />
+    )}
   </div>
 );
 
