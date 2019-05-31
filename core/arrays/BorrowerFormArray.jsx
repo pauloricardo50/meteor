@@ -210,7 +210,6 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
         {
           id: 'ownCompanies',
           type: 'arrayInput',
-          required: false,
           inputs: [
             { id: 'description', type: 'textInput' },
             { id: 'ownership', type: 'textInput', percent: true },

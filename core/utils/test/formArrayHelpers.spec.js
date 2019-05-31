@@ -75,7 +75,7 @@ describe('formArrayHelpers', () => {
 
     describe('conditional values', () => {
       const trueValue = 'something';
-      const array = [
+      let array = [
         {
           type: 'conditionalInput',
           id: 'id1',
@@ -90,6 +90,18 @@ describe('formArrayHelpers', () => {
 
       it('should count the conditional value and the following if it is true', () => {
         expect(getCountedArray(array, { conditional: trueValue })).to.deep.equal([trueValue, undefined]);
+      });
+
+      it('should not count the additionalValue if its not required', () => {
+        array = [
+          {
+            type: 'conditionalInput',
+            id: 'id1',
+            conditionalTrueValue: trueValue,
+            inputs: [{ id: 'conditional', required: false }, { id: 'test' }],
+          },
+        ];
+        expect(getCountedArray(array, { conditional: trueValue })).to.deep.equal([undefined]);
       });
     });
   });
@@ -172,6 +184,19 @@ describe('formArrayHelpers', () => {
       doc.conditional = trueValue;
       doc.test = 'stuff';
       expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+
+    it('does not count non required fields', () => {
+      const trueValue = 'something';
+      array = [
+        {
+          type: 'conditionalInput',
+          id: 'id1',
+          conditionalTrueValue: trueValue,
+          inputs: [{ id: 'conditional' }, { id: 'test', required: false }],
+        },
+      ];
+      expect(getMissingFieldIds(array, doc)).to.deep.equal(['conditional']);
     });
 
     it('deals with custom fields', () => {
