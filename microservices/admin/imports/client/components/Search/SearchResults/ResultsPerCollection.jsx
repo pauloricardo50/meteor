@@ -50,7 +50,7 @@ const getPropertyInfo = ({
   ),
 });
 
-const getUserInfo = ({ roles, createdAt, assignedEmployee, name, loans }) => {
+const getUserInfo = ({ roles, createdAt, assignedEmployee, name, loans = [] }) => {
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.name
     : 'unassigned';

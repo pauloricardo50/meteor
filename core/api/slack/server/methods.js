@@ -26,5 +26,5 @@ notifyOfUpload.setHandler((context, params) => {
 
 logError.setHandler((context, params) => {
   context.unblock();
-  SlackService.sendError(params);
+  SlackService.sendError({ ...params, connection: context.connection });
 });

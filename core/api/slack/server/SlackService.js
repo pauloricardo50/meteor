@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
+import pick from 'lodash/pick';
 import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
@@ -60,7 +61,7 @@ export class SlackService {
     ...rest,
   });
 
-  sendError = ({ error, additionalData = [], userId, url }) => {
+  sendError = ({ error, additionalData = [], userId, url, connection }) => {
     if (Meteor.isDevelopment && !Meteor.isTest) {
       console.log('error', error);
       console.log('additionalData', additionalData);
@@ -89,42 +90,54 @@ export class SlackService {
       user = UserService.get(userId);
     }
 
+    const attachments = [
+      {
+        title: error && error.name,
+        pretext: `Une erreur est arrivée sur *e-Potek ${Meteor.microservice}*`,
+        text: error && (error.message || error.reason),
+        color: colors.error,
+        footer: 'c la merde',
+        ts: new Date() / 1000,
+      },
+      {
+        title: 'Stack',
+        text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
+        color: colors.error,
+      },
+      {
+        title: 'User',
+        text: `\`\`\`${JSON.stringify(user, null, 2)}\`\`\``,
+        color: colors.primary,
+      },
+      {
+        title: 'URL',
+        text: url,
+        color: colors.primary,
+      },
+    ];
+
+    if (additionalData.length > 0) {
+      attachments.push(...additionalData.map((data, index) => ({
+        title: `Additional data ${index + 1}`,
+        text: JSON.stringify(data),
+      })));
+    }
+
+    if (connection) {
+      attachments.push({
+        title: 'Connection',
+        text: `\`\`\`${JSON.stringify(
+          pick(connection, ['clientAdress', 'httpHeaders']),
+          null,
+          2,
+        )}\`\`\``,
+      });
+    }
+
     return this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
       username: user ? user.name : undefined,
-      attachments: [
-        {
-          title: error && error.name,
-          pretext: `Une erreur est arrivée sur *e-Potek ${
-            Meteor.microservice
-          }*`,
-          text: error && (error.message || error.reason),
-          color: colors.error,
-          footer: 'c la merde',
-          ts: new Date() / 1000,
-        },
-        {
-          title: 'Stack',
-          text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
-          color: colors.error,
-        },
-        {
-          title: 'User',
-          text: `\`\`\`${JSON.stringify(user, null, 2)}\`\`\``,
-          color: colors.primary,
-        },
-        {
-          title: 'URL',
-          text: url,
-          color: colors.primary,
-        },
-        ...(additionalData && additionalData.length > 0
-          ? additionalData.map((data, index) => ({
-            title: `Additional data ${index + 1}`,
-            text: JSON.stringify(data),
-          }))
-          : []),
-      ],
+      attachments,
     });
   };
 
