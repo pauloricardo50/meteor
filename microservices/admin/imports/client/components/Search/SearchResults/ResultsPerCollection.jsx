@@ -50,7 +50,7 @@ const getPropertyInfo = ({
   ),
 });
 
-const getUserInfo = ({ roles, createdAt, assignedEmployee, name }) => {
+const getUserInfo = ({ roles, createdAt, assignedEmployee, name, loans }) => {
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.name
     : 'unassigned';
@@ -64,6 +64,7 @@ const getUserInfo = ({ roles, createdAt, assignedEmployee, name }) => {
           createdAt,
           assignedTo: assignedEmployeeName,
         }}
+        related={loans.map(loan => ({ ...loan, collection: LOANS_COLLECTION }))}
       />
     ),
   };
@@ -105,16 +106,24 @@ const getInfoToDisplay = (result, collection) => {
   }
 };
 
-const ResultsPerCollection = ({ results, collection }) => (
+const ResultsPerCollection = ({ results, collection, closeSearch }) => (
   <List>
     {results.map((result) => {
       const { _id } = result;
-      const { primary, secondary } = getInfoToDisplay(result, collection);
+      const { primary, secondary } = getInfoToDisplay(
+        result,
+        collection,
+        closeSearch,
+      );
 
       return (
         <ListItem button divider key={_id}>
           <Link to={`/${collection}/${_id}`} className="link">
-            <ListItemText primary={primary} secondary={secondary} />
+            <ListItemText
+              onClick={closeSearch}
+              primary={primary}
+              secondary={secondary}
+            />
           </Link>
         </ListItem>
       );

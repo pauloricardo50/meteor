@@ -4,11 +4,19 @@ import PropTypes from 'prop-types';
 import Icon from '../Icon';
 import Link from '../Link';
 
-const IconLink = React.forwardRef(({ link, icon, text, children, className, ...rest }, ref) => (
+const IconLink = React.forwardRef((
+  { link, icon, text, children, className, stopPropagation = true, ...rest },
+  ref,
+) => (
   <Link
     to={link}
     className="icon-link"
-    onClick={e => e.stopPropagation()}
+    onClick={(e) => {
+      console.log('stopPropagation:', stopPropagation);
+      if (stopPropagation) {
+        e.stopPropagation();
+      }
+    }}
     innerRef={ref}
     {...rest}
   >

@@ -347,3 +347,8 @@ p.description,
     color: $primary !important;
   }
 }
+
+// Allow popovers to show above material-ui modals
+.popover {
+  z-index: 1301 !important;
+}

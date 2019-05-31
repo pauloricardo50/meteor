@@ -51,6 +51,7 @@ const SearchResults = ({ isLoading, error, results, closeSearch }) => {
             <ResultsPerCollection
               collection={collectionName}
               results={resultsFromThisCollection}
+              closeSearch={closeSearch}
             />
           </ListItem>
         );

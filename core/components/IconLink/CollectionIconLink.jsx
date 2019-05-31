@@ -20,6 +20,7 @@ import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLin
 
 type CollectionIconLinkProps = {
   relatedDoc: Object,
+  stopPropagation?: Boolean,
 };
 
 const showPopups = Meteor.microservice === 'admin';
@@ -117,7 +118,10 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   }
 };
 
-const CollectionIconLink = ({ relatedDoc }: CollectionIconLinkProps) => {
+const CollectionIconLink = ({
+  relatedDoc,
+  stopPropagation,
+}: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
   if (!docId) {
@@ -139,13 +143,20 @@ const CollectionIconLink = ({ relatedDoc }: CollectionIconLinkProps) => {
           icon={icon}
           text={text}
           className="collection-icon"
+          stopPropagation={stopPropagation}
         />
       </CollectionIconLinkPopup>
     );
   }
 
   return (
-    <IconLink link={link} icon={icon} text={text} className="collection-icon" />
+    <IconLink
+      link={link}
+      icon={icon}
+      text={text}
+      stopPropagation={stopPropagation}
+      className="collection-icon"
+    />
   );
 };
 
