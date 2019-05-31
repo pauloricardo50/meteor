@@ -80,6 +80,12 @@ export default class Security {
     }
   }
 
+  static checkUserIsDev(userId) {
+    if (!this.isUserDev(userId)) {
+      this.handleUnauthorized('Checking if user is dev');
+    }
+  }
+
   static checkUserIsPro(userId) {
     if (!this.isUserPro(userId)) {
       this.handleUnauthorized('Checking if user is pro');

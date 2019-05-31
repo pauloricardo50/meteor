@@ -20,6 +20,7 @@ import {
   setAdditionalDoc,
   migrateToLatest,
   updateDocument,
+  updateDocumentUnset,
   generateScenario,
 } from '../methodDefinitions';
 import generator from '../../factories';
@@ -151,6 +152,13 @@ updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   }
 
   return service._update({ id: docId, object });
+});
+
+updateDocumentUnset.setHandler(({ userId }, { collection, docId, object }) => {
+  const service = Services[collection];
+  SecurityService.checkUserIsDev(userId);
+
+  return service._update({ id: docId, object, operator: '$unset' });
 });
 
 generateScenario.setHandler(({ userId }, { scenario }) => {

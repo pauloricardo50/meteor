@@ -99,6 +99,15 @@ export const updateDocument = new Method({
   },
 });
 
+export const updateDocumentUnset = new Method({
+  name: 'updateDocumentUnset',
+  params: {
+    collection: String,
+    docId: String,
+    object: Object,
+  },
+});
+
 export const generateScenario = new Method({
   name: 'generateScenario',
   params: {
