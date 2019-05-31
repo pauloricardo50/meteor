@@ -5,6 +5,13 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import FinancingLabels from '../FinancingLabels';
 import { makeRenderSummary } from './financingSectionHelpers';
 
+const SummaryContent = React.memo(({ structures, summaryConfig, sectionProps, renderSummary }) => (
+  <>
+    <FinancingLabels config={summaryConfig} className="summary-labels" />
+    {structures.map(structure => renderSummary(structure, sectionProps))}
+  </>
+));
+
 export default class FinancingSectionSummary extends PureComponent {
   constructor(props) {
     super(props);
@@ -29,10 +36,12 @@ export default class FinancingSectionSummary extends PureComponent {
         classes={{ content, expanded: expandedClass }}
         {...rest}
       >
-        <FinancingLabels config={summaryConfig} className="summary-labels" />
-
-        {structures.map(structure =>
-          this.renderSummary(structure, sectionProps))}
+        <SummaryContent
+          structures={structures}
+          summaryConfig={summaryConfig}
+          sectionProps={sectionProps}
+          renderSummary={this.renderSummary}
+        />
       </ExpansionPanelSummary>
     );
   }
