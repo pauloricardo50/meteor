@@ -10,7 +10,6 @@ import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator from '../FinancingCalculator';
 
-
 type FinancingResultErrorsProps = {};
 
 export const ERROR_TYPES = {

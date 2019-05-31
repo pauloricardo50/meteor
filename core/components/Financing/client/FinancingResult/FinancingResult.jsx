@@ -131,4 +131,4 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
     />
   ));
 
-export default FinancingResult;
+export default React.memo(FinancingResult);
