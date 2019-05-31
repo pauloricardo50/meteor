@@ -14,5 +14,4 @@ const DateField = (props: DateFieldProps) => (
     InputLabelProps={{ shrink: true }}
   />
 );
-
 export default DateField;

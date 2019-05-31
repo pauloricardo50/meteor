@@ -2,7 +2,9 @@
 import React from 'react';
 import SelectField from 'uniforms-material/SelectField';
 
+import { compose } from 'recompose';
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
+import { ignoreProps } from '../../containers/updateForProps';
 
 type CustomSelectFieldProps = {
   transform: Function,
@@ -26,4 +28,8 @@ const CustomSelectField = ({
   />
 );
 
-export default CustomSelectFieldContainer(CustomSelectField);
+export default compose(
+  CustomSelectFieldContainer,
+  React.memo,
+  ignoreProps(['label', 'InputLabelProps', 'onChange', 'changedMap']),
+)(CustomSelectField);

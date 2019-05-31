@@ -1,11 +1,11 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import AutoForm from 'uniforms-material/AutoForm';
 import pickBy from 'lodash/pickBy';
 import pick from 'lodash/pick';
 
 import { withProps } from 'recompose';
-import { makeCustomAutoField } from './AutoFormComponents';
+import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
 
@@ -19,34 +19,49 @@ type CustomAutoFormProps = {
   submitting?: Boolean,
 };
 
-const CustomAutoForm = ({
-  autoFieldProps = {},
-  children,
-  model,
-  omitFields,
-  placeholder = true,
-  submitFieldProps,
-  ...props
-}: CustomAutoFormProps) => {
-  const AutoField = makeCustomAutoField(autoFieldProps);
-  return (
-    <AutoForm
-      showInlineError
-      model={pickBy(model, (_, key) => !key.startsWith('$'))}
-      placeholder={placeholder}
-      className="autoform"
-      {...props}
-    >
-      {children || (
-        <>
-          <CustomAutoFields omitFields={omitFields} autoField={AutoField} />
-          <CustomSubmitField {...submitFieldProps} />
-        </>
-      )}
-    </AutoForm>
-  );
-};
+class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
+  constructor(props) {
+    super(props);
+    const { autoFieldProps } = props;
 
+    if (autoFieldProps) {
+      this.autoField = makeCustomAutoField(autoFieldProps);
+    } else {
+      this.autoField = CustomAutoField;
+    }
+  }
+
+  render() {
+    const {
+      children,
+      model,
+      omitFields,
+      placeholder = true,
+      submitFieldProps,
+      ...props
+    } = this.props;
+
+    return (
+      <AutoForm
+        showInlineError
+        model={pickBy(model, (_, key) => !key.startsWith('$'))}
+        placeholder={placeholder}
+        className="autoform"
+        {...props}
+      >
+        {children || (
+          <>
+            <CustomAutoFields
+              omitFields={omitFields}
+              autoField={this.autoField}
+            />
+            <CustomSubmitField {...submitFieldProps} />
+          </>
+        )}
+      </AutoForm>
+    );
+  }
+}
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;
   return { onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])) };

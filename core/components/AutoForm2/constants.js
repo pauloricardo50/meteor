@@ -17,3 +17,14 @@ export const COMPONENT_TYPES = {
   RENDER: 'RENDER',
   HTML_PREVIEW: 'HTML_PREVIEW',
 };
+
+export const FIELDS_TO_IGNORE = [
+  'label',
+  'field',
+  'fields',
+  'uniforms',
+  'InputLabelProps',
+  'onChange',
+  'model',
+  'changedMap',
+];
