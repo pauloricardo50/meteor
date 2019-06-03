@@ -5,5 +5,6 @@ export const testCollectionInsert = new Method({
   params: {
     value: Number,
     name: String,
+    _id: String,
   },
 });

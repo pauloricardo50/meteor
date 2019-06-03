@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-describe.only('test suite name', () => {
+describe('test suite name', () => {
   it('test name', () => {
     // Test code
   });
