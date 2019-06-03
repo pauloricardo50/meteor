@@ -33,6 +33,7 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
   assignedEmployee: { name: 1 },
   createdAt: 1,
   email: 1,
+  loans: { name: 1 },
   name: 1,
   organisations: { name: 1 },
   roles: 1,

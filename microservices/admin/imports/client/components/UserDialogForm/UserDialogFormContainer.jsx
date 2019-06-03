@@ -51,7 +51,7 @@ const userSchema = new SimpleSchema({
       displayEmpty: true,
     },
   },
-  email: { type: String, optional: false },
+  email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
   phoneNumbers: { type: Array, optional: true },
   'phoneNumbers.$': String,
   assignedEmployeeId: {

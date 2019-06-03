@@ -38,11 +38,11 @@ const mapBorrower = ({ history }) => (
     )),
     {
       raw: createdAt && createdAt.getTime(),
-      label: moment(createdAt).format('D MMM YY à HH:mm'),
+      label: moment(createdAt).fromNow(),
     },
     {
       raw: updatedAt && updatedAt.getTime(),
-      label: moment(updatedAt).fromNow(),
+      label: updatedAt ? moment(updatedAt).fromNow() : '-',
     },
   ],
   handleClick: () => history.push(`/borrowers/${borrowerId}`),

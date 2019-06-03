@@ -27,7 +27,7 @@ const referCustomer = ({
   userData,
   impersonateUser,
   expectedResponse,
-  shareSolvency = false,
+  shareSolvency,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
 
@@ -117,7 +117,7 @@ describe('REST: referCustomer', function () {
       });
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
-      expect(customer.loans[0].shareSolvency).to.equal(false);
+      expect(customer.loans[0].shareSolvency).to.equal(undefined);
     }));
 
   it('refers a customer with solvency sharing', () =>

@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
 
-import track from '../../../utils/analytics';
 import DialogSimple from '../../DialogSimple/loadable';
 import Button from '../../Button';
 import defaultIntlValues from '../../Translation/defaultIntlValues';
@@ -35,7 +34,6 @@ const Tooltip = ({
           buttonStyle={{ marginTop: 16 }}
           label={<FormattedMessage id="general.learnMore" />}
           autoFocus
-          onEntered={() => track('Tooltip - opened dialog', { tooltipId: id })}
           actions={handleClose => (
             <Button
               primary

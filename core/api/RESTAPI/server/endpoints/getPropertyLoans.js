@@ -1,6 +1,7 @@
 import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
 
+import PropertyService from 'core/api/properties/server/PropertyService';
 import proPropertyLoans from '../../../loans/queries/proPropertyLoans';
 import { getImpersonateUserId, checkQuery } from './helpers';
 
@@ -9,11 +10,22 @@ const querySchema = new SimpleSchema({
 });
 
 const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
-  const { propertyId } = params;
+  let { propertyId } = params;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: querySchema,
   });
+
+  const exists = PropertyService.exists(propertyId);
+
+  if (!exists) {
+    const propertyByExternalId = PropertyService.fetchOne({
+      $filters: { externalId: propertyId },
+    });
+    if (propertyByExternalId) {
+      propertyId = propertyByExternalId._id;
+    }
+  }
 
   let proId;
   if (impersonateUser) {

@@ -11,17 +11,16 @@ import BorrowerForm from './BorrowerForm';
 type SimpleBorrowerPageFormsProps = {};
 
 const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
-  const { borrowers, userFormsEnabled, _id: loanId } = loan;
+  const { borrowers, userFormsEnabled } = loan;
   const twoBorrowers = borrowers.length === 2;
 
   return (
     <div className={cx('forms', { 'two-borrowers': twoBorrowers })}>
       {borrowers.length === 1 && (
         <BorrowerForm
-          borrowers={borrowers}
           borrowerId={borrowers[0]._id}
           userFormsEnabled={userFormsEnabled}
-          loanId={loanId}
+          loan={loan}
         />
       )}
       {twoBorrowers && (
@@ -29,17 +28,17 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
           tabs={borrowers.map((borrower, index) => {
             const progress = Calculator.personalInfoPercentSimple({
               borrowers: borrower,
+              loan,
             });
 
             return {
               id: borrower._id,
               content: (
                 <BorrowerForm
-                  borrowers={borrowers}
                   borrowerId={borrowers[index]._id}
                   userFormsEnabled={userFormsEnabled}
+                  loan={loan}
                   key={borrowers[index]._id}
-                  loanId={loanId}
                 />
               ),
               label: (

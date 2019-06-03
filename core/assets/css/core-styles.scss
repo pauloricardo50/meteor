@@ -54,7 +54,7 @@ hr {
 
 // White backgrounds with shadows to put things on
 .card1 {
-  border-radius: 16px;
+  border-radius: $border-radius;
   background: #fff;
   box-shadow: $shadow-level-1;
 }
@@ -83,13 +83,14 @@ hr {
   padding: 16px;
 
   &:hover {
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: $shadow-level-2;
   }
 }
 
 .card1.shadow-2,
 .card1.card-hover:hover {
+  border-radius: 4px;
   box-shadow: $shadow-level-2;
 }
 
@@ -345,4 +346,9 @@ p.description,
   &:hover {
     color: $primary !important;
   }
+}
+
+// Allow popovers to show above material-ui modals
+.popover {
+  z-index: 1301 !important;
 }

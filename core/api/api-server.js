@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import './initialization';
 
 import '../fixtures/server/fixtureMethods';
@@ -47,17 +48,22 @@ import LenderRulesService from './lenderRules/server/LenderRulesService';
 import RevenueService from './revenues/server/RevenueService';
 
 process.on('uncaughtException', (error) => {
-  console.log('uncaughtException error', JSON.stringify(error, null, 2));
+  if (!Meteor.isProduction) {
+    console.log('uncaughtException error', JSON.stringify(error, null, 2));
+  }
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],
   });
 });
+
 process.on('unhandledRejection', (error) => {
-  console.log('unhandledRejection error', JSON.stringify(error, null, 2));
+  if (!Meteor.isProduction) {
+    console.log('unhandledRejection error', JSON.stringify(error, null, 2));
+  }
   SlackService.sendError({
     error,
-    additionalData: ['Server uncaughtException'],
+    additionalData: ['Server unhandledRejection'],
   });
 });
 

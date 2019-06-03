@@ -27,7 +27,7 @@ const FileStatusIcon = ({ files, status }) => {
         style={{
           ...styles.icon,
           borderRadius: '50%',
-          border: `2px solid ${colors.lightBorder}`,
+          border: `2px solid ${colors.borderGrey}`,
           width: 24,
           marginRight: 8,
         }}
@@ -39,7 +39,7 @@ const FileStatusIcon = ({ files, status }) => {
   }
   if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
     return (
-      <Icon type="waiting" color={colors.lightBorder} style={styles.icon} />
+      <Icon type="waiting" color={colors.borderGrey} style={styles.icon} />
     );
   }
 

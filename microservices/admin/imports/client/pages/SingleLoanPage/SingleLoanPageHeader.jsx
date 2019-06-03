@@ -11,6 +11,7 @@ import {
   LOANS_COLLECTION,
   LOAN_STATUS,
   USERS_COLLECTION,
+  LOAN_CATEGORIES,
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
@@ -65,9 +66,43 @@ const additionalActions = loan => (status, prevStatus) => {
   return Promise.resolve();
 };
 
-const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
-  const { user } = loan;
+const getUserName = ({ anonymous, user, category }) => {
+  if (anonymous) {
+    return (
+      <small className="secondary">
+        {' - '}
+        Anonyme
+      </small>
+    );
+  }
 
+  if (user) {
+    return (
+      <CollectionIconLink
+        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+      />
+    );
+  }
+
+  if (category === LOAN_CATEGORIES.PREMIUM) {
+    return null;
+  }
+
+  return (
+    <small className="secondary">
+      {' - '}
+      Pas d'utilisateur
+    </small>
+  );
+};
+
+const SingleLoanPageHeader = ({
+  loan,
+  withPdf = true,
+  withCustomName = true,
+}: SingleLoanPageHeaderProps) => {
+  const { user } = loan;
+  const userName = getUserName(loan);
   return (
     <div className="single-loan-page-header">
       <div className="left">
@@ -85,16 +120,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
               ),
             }}
           />
-          {user ? (
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-            />
-          ) : (
-            <small className="secondary">
-              {' - '}
-              Pas d'utilisateur
-            </small>
-          )}
+          {userName}
 
           <StatusLabel
             collection={LOANS_COLLECTION}
@@ -104,7 +130,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
             additionalActions={additionalActions(loan)}
           />
         </h1>
-        {loan.customName && !loan.hasPromotion && (
+        {withCustomName && loan.customName && !loan.hasPromotion && (
           <h3 className="secondary" style={{ marginTop: 0 }}>
             {loan.customName}
           </h3>
@@ -118,9 +144,11 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
           />
         )}
       </div>
-      <div className="right">
-        <GetLoanPDF loan={loan} />
-      </div>
+      {withPdf && (
+        <div className="right">
+          <GetLoanPDF loan={loan} />
+        </div>
+      )}
     </div>
   );
 };

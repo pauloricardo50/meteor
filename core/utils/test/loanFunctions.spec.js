@@ -65,5 +65,12 @@ describe('Loan functions', () => {
         property: { _id: 'property1', value: 100 },
       });
     });
+
+    it('returns undefined if no structures exist', () => {
+      expect(formatLoanWithStructure({
+        selectedStructure: 'test',
+        structures: [],
+      })).to.deep.equal(undefined);
+    });
   });
 });

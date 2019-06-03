@@ -14,6 +14,7 @@ import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../api/constants';
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
+import StatusLabel from '../StatusLabel/StatusLabel';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
@@ -27,6 +28,7 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
     _id: loanId,
     name: loanName,
+    status,
     user,
     loanProgress,
     promotionOptions = [],
@@ -52,6 +54,10 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     ) : (
       loanName
     ),
+    {
+      raw: status,
+      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+    },
     {
       raw: user.name,
       label:
@@ -112,6 +118,7 @@ const makeMapOption = ({ promotionLot, currentUser }) => (promotionOption) => {
 
 const columnOptions = [
   { id: 'loanName', style: { whiteSpace: 'nowrap' } },
+  { id: 'status', label: <T id="Forms.status" /> },
   { id: 'name' },
   { id: 'date' },
   { id: 'phone' },

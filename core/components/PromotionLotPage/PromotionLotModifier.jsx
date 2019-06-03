@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { withProps, compose, withState } from 'recompose';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
@@ -17,6 +18,13 @@ type ProPromotionLotModifierProps = {
   deletePromotionLot: Function,
 };
 
+const disableModification = (promotionLotStatus) => {
+  const isAdmin = Meteor.microservice === 'admin';
+  return isAdmin
+    ? false
+    : promotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE;
+};
+
 const ProPromotionLotModifier = ({
   promotionLot,
   updateProperty,
@@ -32,7 +40,7 @@ const ProPromotionLotModifier = ({
         label: <T id="PromotionLotPage.modifyPromotionLot" />,
         raised: true,
         primary: true,
-        disabled: promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE,
+        disabled: disableModification(promotionLot.status),
       }}
       title={<T id="PromotionLotPage.modifyPromotionLot" />}
       description={<T id="PromotionPage.promotionLotValueDescription" />}

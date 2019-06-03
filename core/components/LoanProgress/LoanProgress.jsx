@@ -5,6 +5,7 @@ import { Percent } from '../Translation';
 import Icon from '../Icon';
 import Tooltip from '../Material/Tooltip';
 import { LOAN_VERIFICATION_STATUS } from '../../api/constants';
+import ProgressCircle from '../ProgressCircle/ProgressCircle';
 
 type LoanProgressProps = {
   loanProgress: Object,
@@ -44,19 +45,15 @@ const LoanProgress = ({
   const { icon, text, className = '' } = getVerificationData(verificationStatus);
   return (
     <div className="promotion-progress">
-      <Tooltip title="Formulaires remplis">
-        <span>
-          <Percent value={info} rounded />
-        </span>
-      </Tooltip>
-
-      <Tooltip title="Documents uploadés">
-        <span>
-          <Percent value={documents} rounded />
-        </span>
-      </Tooltip>
-
-      <Tooltip title={text}>
+      <ProgressCircle
+        percent={info}
+        options={{ squareSize: 24, strokeWidth: 5, animated: true }}
+      />
+      <ProgressCircle
+        percent={documents}
+        options={{ squareSize: 24, strokeWidth: 5, animated: true }}
+      />
+      <Tooltip title={text} enterTouchDelay={0}>
         <Icon type={icon} className={className} />
       </Tooltip>
     </div>

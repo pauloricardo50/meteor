@@ -13,6 +13,8 @@ import {
   getPublicKey,
   verifySignature,
   getSignature,
+  logRequest,
+  trackRequest,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -103,6 +105,14 @@ const errorMiddleware = (error, req, res, next) => {
     userId: user._id,
     url: getRequestPath(req),
   });
+
+  logRequest({ req, result: JSON.stringify({ status, errorName, message }) });
+  if (Object.keys(user) > 0) {
+    trackRequest({
+      req,
+      result: JSON.stringify({ status, errorName, message }),
+    });
+  }
 
   res.writeHead(status);
   res.write(JSON.stringify({ status, errorName, message }));

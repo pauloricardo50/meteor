@@ -16,16 +16,23 @@ import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
 import FinancingRefinancing from './FinancingRefinancing';
 import FinancingLenders from './FinancingLenders';
+import FinancingCollapser from './FinancingCollapser';
 
 type FinancingProps = {
   loan: userLoan,
 };
 
-const Financing = ({ loan }: FinancingProps) =>
-  (loan.structures.length > 0 ? (
+const Financing = ({ loan }: FinancingProps) => {
+  if (!loan.structures.length) {
+    return <Loading />;
+  }
+
+  return (
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
         <FinancingHeader selectedStructure={loan.selectedStructure} />
+
+        <FinancingCollapser />
 
         <FinancingProject />
 
@@ -46,8 +53,6 @@ const Financing = ({ loan }: FinancingProps) =>
         {Meteor.microservice === 'admin' && <FinancingLenders loan={loan} />}
       </div>
     </ScrollSync>
-  ) : (
-    <Loading />
-  ));
-
+  );
+};
 export default FinancingContainer(Financing);

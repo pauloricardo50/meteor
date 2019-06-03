@@ -13,22 +13,22 @@ const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
 type BorrowerFormProps = {};
 
 const BorrowerForm = ({
-  borrowers,
   borrowerId,
   userFormsEnabled,
-  loanId,
+  loan,
 }: BorrowerFormProps) => {
-  const borrower = borrowers.find(({ _id }) => _id === borrowerId);
+  const borrower = loan.borrowers.find(({ _id }) => _id === borrowerId);
 
   return (
     <div className="borrower-form">
-      {borrowers.length === 2 && (
-        <BorrowerRemover borrower={borrower} loanId={loanId} />
+      {loan.borrowers.length === 2 && (
+        <BorrowerRemover borrower={borrower} loanId={loan._id} />
       )}
       <TranslatedAutoForm
         inputs={getBorrowerSimpleArray({
-          borrowers,
+          borrowers: loan.borrowers,
           borrowerId,
+          loan,
         })}
         formClasses="user-form user-form__info"
         docId={borrowerId}

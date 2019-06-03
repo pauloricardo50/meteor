@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 
@@ -29,7 +29,7 @@ const initialazeHighcharts = () => {
   );
 };
 
-export default class Chart extends Component {
+export default class Chart extends PureComponent {
   constructor(props) {
     super(props);
     this.chart = null;
@@ -55,8 +55,10 @@ export default class Chart extends Component {
   componentWillReceiveProps({ data: nextData }) {
     const { data: prevData } = this.props;
     // If previous data[i].value is different from next data, update chart
+
     if (
-      nextData.some((dataPoint, index) => dataPoint.value !== prevData[index].value)
+      prevData.length !== nextData.length
+      || nextData.some((dataPoint, index) => dataPoint.value !== prevData[index].value)
     ) {
       this.update(nextData);
     }

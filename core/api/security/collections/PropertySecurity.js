@@ -17,7 +17,6 @@ import {
   isAllowedToSellProPropertyToCustomer,
   isAllowedToManageProPropertyPermissions,
 } from '../clientSecurityHelpers';
-import { proUser, fullProperty } from '../../fragments';
 import LoanService from '../../loans/server/LoanService';
 import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
 
@@ -25,7 +24,12 @@ class PropertySecurity {
   static getProperty({ propertyId }) {
     const property = PropertyService.fetchOne({
       $filters: { _id: propertyId },
-      ...fullProperty(),
+      category: 1,
+      loans: { user: { _id: 1 } },
+      status: 1,
+      userId: 1,
+      userLinks: { _id: 1 },
+      users: { _id: 1 },
     });
 
     return property;
@@ -34,7 +38,8 @@ class PropertySecurity {
   static getCurrentUser({ userId }) {
     const currentUser = UserService.fetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      organisations: { users: { _id: 1 } },
+      properties: { _id: 1, permissions: 1, status: 1 },
     });
 
     return currentUser;
@@ -157,6 +162,21 @@ class PropertySecurity {
     }
   }
 
+  static isPropertyPublic({ propertyId }) {
+    const property = PropertyService.fetchOne({
+      $filters: { _id: propertyId },
+      category: 1,
+    });
+
+    return property && property.category === PROPERTY_CATEGORY.PRO;
+  }
+
+  static checkPropertyIsPublic({ propertyId }) {
+    if (!this.isPropertyPublic({ propertyId })) {
+      Security.handleUnauthorized();
+    }
+  }
+
   static isAllowedToView({ userId, propertyId }) {
     this.checkPermissions({
       propertyId,
@@ -257,7 +277,7 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      this.handleUnauthorized('Vous ne pouvez pas réserver ce bien immobilier à ce client');
+      Security.handleUnauthorized('Vous ne pouvez pas réserver ce bien immobilier à ce client');
     }
   }
 
@@ -297,7 +317,7 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      this.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
+      Security.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
     }
   }
 
@@ -309,6 +329,14 @@ class PropertySecurity {
       errorMessage:
         'Vous ne pouvez pas gérer les permissions sur ce bien immobilier',
     });
+  }
+
+  static isAllowedToAddAnonymousLoan({ propertyId }) {
+    const property = this.getProperty({ propertyId });
+
+    if (!property || property.category !== PROPERTY_CATEGORY.PRO) {
+      Security.handleUnauthorized('Unauthorized propertyId');
+    }
   }
 }
 

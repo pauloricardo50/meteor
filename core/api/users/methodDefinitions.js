@@ -121,24 +121,10 @@ export const proInviteUser = new Method({
   name: 'proInviteUser',
   params: {
     user: Object,
-    propertyIds: Match.Maybe(Match.Where((x) => {
-      check(x, [String]);
-      if (x && x.length === 0) {
-        throw new Meteor.Error('properties cannot be empty');
-      }
-
-      return true;
-    })),
-    promotionIds: Match.Maybe(Match.Where((x) => {
-      check(x, [String]);
-      if (x && x.length === 0) {
-        throw new Meteor.Error('promotionIds cannot be empty');
-      }
-
-      return true;
-    })),
+    propertyIds: Match.Maybe([String]),
+    promotionIds: Match.Maybe([String]),
     properties: Match.Maybe(Array),
-    shareSolvency: Match.Maybe(Boolean),
+    shareSolvency: Match.Maybe(Match.OneOf(Boolean, undefined)),
   },
 });
 
@@ -170,4 +156,18 @@ export const proInviteUserToOrganisation = new Method({
 export const proSetShareCustomers = new Method({
   name: 'proSetShareCustomers',
   params: { userId: String, organisationId: String, shareCustomers: Boolean },
+});
+
+export const anonymousCreateUser = new Method({
+  name: 'anonymousCreateUser',
+  params: {
+    loanId: Match.Maybe(String),
+    user: {
+      firstName: String,
+      lastName: String,
+      email: String,
+      phoneNumbers: [String],
+    },
+    trackingId: String,
+  },
 });

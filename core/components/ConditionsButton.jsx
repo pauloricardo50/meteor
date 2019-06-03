@@ -5,7 +5,6 @@ import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
-import track from 'core/utils/analytics';
 
 const styles = {
   hr: {
@@ -30,7 +29,6 @@ export default class ConditionsButton extends Component {
 
   handleOpen = (e) => {
     e.stopPropagation();
-    track('ConditionsButton - clicked open', {});
     this.setState({ open: true });
   };
 

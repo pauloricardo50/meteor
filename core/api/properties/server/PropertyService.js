@@ -21,7 +21,7 @@ export class PropertyService extends CollectionService {
   }
 
   insert = ({ property, userId, loanId }) => {
-    const propertyId = Properties.insert({ ...property, userId });
+    const propertyId = super.insert({ ...property, userId });
     if (loanId) {
       LoanService.addPropertyToLoan({ loanId, propertyId });
     }
@@ -115,7 +115,7 @@ export class PropertyService extends CollectionService {
     pro,
     userId,
     isNewUser,
-    shareSolvency = false,
+    shareSolvency,
   }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
 
@@ -178,9 +178,8 @@ export class PropertyService extends CollectionService {
   }
 
   proPropertyInsert({ property, userId }) {
-    const propertyId = Properties.insert({
-      ...property,
-      category: PROPERTY_CATEGORY.PRO,
+    const propertyId = this.insert({
+      property: { ...property, category: PROPERTY_CATEGORY.PRO },
     });
     this.addLink({
       id: propertyId,

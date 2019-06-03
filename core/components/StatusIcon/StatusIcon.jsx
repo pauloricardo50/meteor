@@ -39,6 +39,7 @@ const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
           )
         }
         placement="right"
+        enterTouchDelay={0}
       >
         {icon}
       </Tooltip>

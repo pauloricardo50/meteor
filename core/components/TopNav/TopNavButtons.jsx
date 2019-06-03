@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import TopNavDropdown from './TopNavDropdown';
 import Button from '../Button';
@@ -9,9 +10,13 @@ import T from '../Translation';
 
 type TopNavButtonsProps = {};
 
-const TopNavButtons = (props: TopNavButtonsProps) => {
-  const { children, currentUser } = props;
+const TopNavButtons = ({
+  children,
+  currentUser,
+  history,
+}: TopNavButtonsProps) => {
   const { name, organisations } = currentUser || {};
+
   return (
     <div className="buttons">
       {children}
@@ -31,13 +36,11 @@ const TopNavButtons = (props: TopNavButtonsProps) => {
         <Button
           label={<T id="TopNav.login" />}
           primary
-          onClick={() =>
-            window.location.replace(`${Meteor.settings.public.subdomains.app}/login`)
-          }
+          onClick={() => history.push('/login')}
         />
       )}
     </div>
   );
 };
 
-export default TopNavButtons;
+export default withRouter(TopNavButtons);

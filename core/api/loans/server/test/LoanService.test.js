@@ -14,7 +14,10 @@ import {
   EMAIL_IDS,
   ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
+  LOAN_STATUS,
+  PROPERTY_CATEGORY,
 } from '../../../constants';
+import UserService from '../../../users/server/UserService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
@@ -93,7 +96,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('adminLoanInsert', () => {
+  describe('fullLoanInsert', () => {
     let userId;
 
     beforeEach(() => {
@@ -104,14 +107,14 @@ describe('LoanService', function () {
       expect(LoanService.countAll()).to.equal(0, 'loans 0');
       expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
 
-      LoanService.adminLoanInsert({ userId });
+      LoanService.fullLoanInsert({ userId });
 
       expect(LoanService.countAll()).to.equal(1, 'loans 1');
       expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
     });
 
     it('adds the same userId on all 3 documents', () => {
-      LoanService.adminLoanInsert({ userId });
+      LoanService.fullLoanInsert({ userId });
 
       expect(LoanService.findOne({}).userId).to.equal(userId, 'loans userId');
       expect(BorrowerService.findOne({}).userId).to.equal(
@@ -658,29 +661,98 @@ describe('LoanService', function () {
     });
 
     it('throws if a borrower is assigned to multiple loans', () => {
-      const borrowerId1 = Factory.create('borrower')._id;
-      const borrowerId2 = Factory.create('borrower')._id;
-
-      loanId = Factory.create('loan', {
-        borrowerIds: [borrowerId1],
-      })._id;
-      Factory.create('loan', {
-        borrowerIds: [borrowerId1, borrowerId2],
+      generator({
+        loans: [
+          { _id: 'loanId', borrowers: { _id: 'borr1' } },
+          { borrowers: [{ _id: 'borr1' }, {}] },
+        ],
       });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('emprunteur');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('emprunteur');
     });
 
     it('throws if a property is assigned to multiple loans', () => {
-      const propertyId1 = Factory.create('property')._id;
-      const propertyId2 = Factory.create('property')._id;
-
-      loanId = Factory.create('loan', { propertyIds: [propertyId1] })._id;
-      Factory.create('loan', { propertyIds: [propertyId2, propertyId1] });
+      generator({
+        loans: [
+          { _id: 'loanId', properties: { _id: 'propId1' } },
+          { properties: [{ _id: 'propId1' }, {}] },
+        ],
+      });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('bien immobilier');
+    });
+
+    it('does not throw for a PRO property, and assigns only USER properties', () => {
+      generator({
+        loans: [
+          { properties: { _id: 'propId1', category: PROPERTY_CATEGORY.PRO } },
+          {
+            _id: 'loanId',
+            properties: [{ _id: 'propId2' }, { _id: 'propId1' }],
+          },
+        ],
+      });
+
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.not.throw();
+      expect(PropertyService.get('propId1').userId).to.equal(undefined);
+      expect(PropertyService.get('propId2').userId).to.equal('dude');
+    });
+
+    it('refers a user if this is his first loan', () => {
+      generator({
+        users: [
+          { _id: 'userId' },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'proId' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.include({
+        referredByUserLink: 'proId',
+        referredByOrganisationLink: 'orgId',
+      });
+    });
+
+    it('does not change referredBy if it is already set', () => {
+      generator({
+        users: [
+          { _id: 'userId', referredByUser: { _id: 'proId1' } },
+          {
+            _id: 'proId2',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'proId2' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.equal({
+        _id: 'userId',
+        referredByUserLink: 'proId1',
+      });
     });
   });
 
@@ -1055,6 +1127,72 @@ describe('LoanService', function () {
       expect(second.min).to.equal(undefined);
       expect(second.max.borrowRatio).to.equal(0.7);
       expect(second.max.propertyValue).to.equal(1420000);
+    });
+  });
+
+  describe('expireAnonymousLoans', () => {
+    it('does not update any unmatched loans', () => {
+      generator({
+        loans: [
+          { anonymous: true },
+          { anonymous: true, status: LOAN_STATUS.UNSUCCESSFUL },
+        ],
+      });
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(0);
+    });
+
+    it('only updates loans from more than a week ago', async () => {
+      const promises = [];
+      for (let index = 0; index < 10; index++) {
+        promises.push(LoanService.rawCollection.insert({
+          anonymous: true,
+          updatedAt: moment()
+            .subtract(index, 'days')
+            .toDate(),
+          _id: index,
+          name: index,
+        }));
+      }
+
+      await Promise.all(promises);
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(3);
+    });
+
+    it('does not update loans already at UNSUCCESSFUL status', async () => {
+      await LoanService.rawCollection.insert({
+        anonymous: true,
+        updatedAt: moment()
+          .subtract(10, 'days')
+          .toDate(),
+        _id: 'a',
+        name: 'b',
+        status: LOAN_STATUS.UNSUCCESSFUL,
+      });
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(0);
+    });
+  });
+
+  describe('insertAnonymousLoan', () => {
+    it('inserts an anonymous loan', () => {
+      LoanService.insertAnonymousLoan({ referralId: 'someId' });
+
+      expect(LoanService.findOne({})).to.deep.include({
+        anonymous: true,
+        displayWelcomeScreen: false,
+        referralId: 'someId',
+      });
+    });
+
+    it('creates a link with a property if provided', () => {
+      generator({ properties: { _id: 'propertyId' } });
+      LoanService.insertAnonymousLoan({ proPropertyId: 'propertyId' });
+
+      expect(LoanService.findOne({})).to.deep.include({
+        propertyIds: ['propertyId'],
+      });
     });
   });
 });

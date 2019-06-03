@@ -52,6 +52,12 @@ const employees = [
     name: 'Harrison Mean',
     title: 'Operations',
   },
+  {
+    email: 'yann@e-potek.ch',
+    src: '/img/team/yann.jpg',
+    name: 'Yann Roy',
+    title: 'UX/UI Designer',
+  },
 ];
 
 export const employeesByEmail = employees.reduce(

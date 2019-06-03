@@ -4,10 +4,11 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import T from '../Translation';
-import AccountResetter from '../AccountResetter/AccountResetter';
+import EmailModifier from '../EmailModifier';
 import PasswordChange from './PasswordChange';
 import DeveloperSection from './DeveloperSection';
 import AccountPageHeader from './AccountPageHeader';
+import AccountModifier from './AccountModifier';
 
 type AccountPageBareProps = {};
 
@@ -23,7 +24,11 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
           <h4>
             <T id="AccountPage.email" />
           </h4>
-          <span className="secondary">{email}</span>
+          <span className="secondary">
+            {email}
+            {' '}
+            <EmailModifier userId={userId} email={email} />
+          </span>
         </div>
         {phoneNumbers && phoneNumbers.length > 0 && (
           <div>
@@ -39,12 +44,15 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
         )}
       </div>
 
-      <PasswordChange />
+      <span className="flex-col space-children">
+        <AccountModifier currentUser={currentUser} />
+
+        <PasswordChange />
+      </span>
 
       {Meteor.microservice === 'pro' && <DeveloperSection user={currentUser} />}
-
-      {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
     </div>
   );
 };
+
 export default AccountPageBare;

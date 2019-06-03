@@ -9,7 +9,7 @@ import { proPropertyInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
 import { moneyField, address } from 'core/api/helpers/sharedSchemas';
-import { PRO_PROPERTY_PAGE } from '../../../startup/client/proRoutes';
+import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 type PropertyAdderProps = {};
 
@@ -40,7 +40,7 @@ const PropertyAdder = ({
           userId,
         })
         .then(propertyId =>
-          history.push(createRoute(PRO_PROPERTY_PAGE, { propertyId })))
+          history.push(createRoute(PRO_ROUTES.PRO_PROPERTY_PAGE.path, { propertyId })))
     }
   />
 );

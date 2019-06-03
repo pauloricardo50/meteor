@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
 import { TextField, Snackbar } from '@material-ui/core';
@@ -64,33 +66,36 @@ class Button extends Accounts.ui.Button {
       icon,
     } = this.props;
 
-    if (id !== 'switchToSignUp') {
-      return type === 'link' ? (
-        <MuiButton
-          href={href}
-          label={label}
-          icon={icon ? <span className={`fa ${icon}`} /> : null}
-          className={className}
-          onClick={onClick}
-          disabled={disabled}
-          style={{ marginRight: 5, marginTop: 8 }}
-        />
-      ) : (
-        <MuiButton
-          raised
-          label={label}
-          icon={icon ? <span className={`fa ${icon}`} /> : null}
-          primary
-          type={type}
-          className={className}
-          onClick={onClick}
-          disabled={disabled}
-          style={{ marginRight: 5, marginTop: 8 }}
-        />
-      );
+    const switchToSignUp = id === 'switchToSignUp';
+
+    // Disable signups here
+    if (switchToSignUp) {
+      return null;
     }
 
-    return null;
+    return type === 'link' ? (
+      <MuiButton
+        href={href}
+        label={label}
+        icon={icon ? <span className={`fa ${icon}`} /> : null}
+        className={className}
+        onClick={onClick}
+        disabled={disabled}
+        style={{ marginRight: 5, marginTop: 8 }}
+      />
+    ) : (
+      <MuiButton
+        raised
+        label={label}
+        icon={icon ? <span className={`fa ${icon}`} /> : null}
+        primary
+        type={type}
+        className={className}
+        onClick={onClick}
+        disabled={disabled}
+        style={{ marginRight: 5, marginTop: 8 }}
+      />
+    );
   }
 }
 class Fields extends Accounts.ui.Fields {

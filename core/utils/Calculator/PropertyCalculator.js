@@ -26,8 +26,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       }
     }
 
-    propertyPercent({ loan, property }) {
-      const { borrowers, structure } = loan;
+    propertyPercent({ loan, structureId, property }) {
+      const { borrowers } = loan;
+      const structure = this.selectStructure({ loan, structureId });
       const propertyToCalculateWith = property || structure.property;
 
       if (!propertyToCalculateWith) {
@@ -65,8 +66,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return this.selectPropertyWork({ loan, structureId });
     }
 
-    getPropertyFilesProgress({ loan, property }) {
-      const { structure } = loan;
+    getPropertyFilesProgress({ loan, structureId, property }) {
+      const structure = this.selectStructure({ loan, structureId });
       const propertyToCalculateWith = property || structure.property;
 
       if (!propertyToCalculateWith) {

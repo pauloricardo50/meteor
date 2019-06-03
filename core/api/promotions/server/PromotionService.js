@@ -99,7 +99,7 @@ export class PromotionService extends CollectionService {
     sendInvitation = true,
     promotionLotIds,
     showAllLots,
-    shareSolvency = false,
+    shareSolvency,
   }) {
     const promotion = this.get(promotionId);
     const user = UserService.get(userId);

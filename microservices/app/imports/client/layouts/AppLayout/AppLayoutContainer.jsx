@@ -1,5 +1,4 @@
 // @flow
-import React from 'react';
 import { compose, withProps, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
@@ -27,13 +26,15 @@ const WITHOUT_LOAN = [
   '/reset-password',
 ];
 
+const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
+
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
   (!loans || loans.length < 1)
   && path !== '/'
   && !isOnAllowedRoute(path, WITHOUT_LOAN);
 
 export const getRedirect = (currentUser, pathname) => {
-  const baseRedirect = getBaseRedirect(currentUser, pathname);
+  const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
   if (baseRedirect !== undefined) {
     return baseRedirect;
   }
@@ -81,7 +82,13 @@ export default compose(
   withUserLoan,
   injectCalculator(),
   withInterestRates,
-  mapProps(({ loan, currentInterestRates: { averageRates }, ...props }) => ({
+  mapProps(({
+    loan,
+    query,
+    refetch,
+    currentInterestRates: { averageRates },
+    ...props
+  }) => ({
     ...props,
     loan: { ...loan, currentInterestRates: averageRates },
   })),

@@ -11,13 +11,15 @@ import { CollectionIconLink } from '../IconLink';
 import T from '../Translation';
 import { BORROWERS_COLLECTION } from '../../api/constants';
 
-const BorrowersSummary = ({ borrowers }) => {
+const BorrowersSummary = ({ borrowers, showTitle = true }) => {
   const isAdmin = Meteor.microservice === 'admin';
   return (
     <div className="borrowers-summary">
-      <h5>
-        <T id="collections.borrowers" />
-      </h5>
+      {showTitle && (
+        <h5>
+          <T id="collections.borrowers" />
+        </h5>
+      )}
       <div className="borrowers-list">
         {borrowers.length > 0 ? (
           borrowers.map((borrower, index) =>

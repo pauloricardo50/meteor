@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
+import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
@@ -32,6 +34,7 @@ import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
+import UserService from '../../users/server/UserService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
@@ -52,6 +55,23 @@ export class LoanService extends CollectionService {
   insert = ({ loan = {}, userId }) => {
     const name = this.getNewLoanName();
     return Loans.insert({ ...loan, name, userId });
+  };
+
+  insertAnonymousLoan = ({ proPropertyId, referralId }) => {
+    let loanId;
+    if (proPropertyId) {
+      loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
+    } else {
+      const borrowerId = BorrowerService.insert({});
+      loanId = this.insert({ loan: { borrowerIds: [borrowerId] } });
+    }
+
+    this.update({
+      loanId,
+      object: { anonymous: true, displayWelcomeScreen: false, referralId },
+    });
+
+    return loanId;
   };
 
   getNewLoanName = (now = new Date()) => {
@@ -79,9 +99,12 @@ export class LoanService extends CollectionService {
 
   remove = ({ loanId }) => Loans.remove(loanId);
 
-  adminLoanInsert = ({ userId }) => {
+  fullLoanInsert = ({ userId, loan = {} }) => {
     const borrowerId = BorrowerService.insert({ userId });
-    const loanId = this.insert({ loan: { borrowerIds: [borrowerId] }, userId });
+    const loanId = this.insert({
+      loan: { borrowerIds: [borrowerId], ...loan },
+      userId,
+    });
     this.addNewStructure({ loanId });
     return loanId;
   };
@@ -117,7 +140,7 @@ export class LoanService extends CollectionService {
       || loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
     ) {
       // Don't do anything if this loan is already in requested mode
-      throw new Meteor.Error('La demande est déjà en cours, ou effectuée.');
+      throw new Meteor.Error('La vérification est déjà en cours, ou effectuée.');
     }
 
     return this.update({
@@ -135,7 +158,7 @@ export class LoanService extends CollectionService {
     invitedBy,
     showAllLots,
     promotionLotIds = [],
-    shareSolvency = false,
+    shareSolvency,
   }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
@@ -161,7 +184,7 @@ export class LoanService extends CollectionService {
     return loanId;
   };
 
-  insertPropertyLoan = ({ userId, propertyIds, shareSolvency = false }) => {
+  insertPropertyLoan = ({ userId, propertyIds, shareSolvency }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PropertyService.fetchOne({
       $filters: { _id: propertyIds[0] },
@@ -181,10 +204,7 @@ export class LoanService extends CollectionService {
   };
 
   confirmClosing = ({ loanId, object }) =>
-    this.update({
-      loanId,
-      object: { status: LOAN_STATUS.BILLING, ...object },
-    });
+    this.update({ loanId, object: { status: LOAN_STATUS.BILLING, ...object } });
 
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
@@ -197,7 +217,7 @@ export class LoanService extends CollectionService {
     Loans.update(loanId, {
       $push: {
         structures: {
-          $each: [{ ...structure, id: newStructureId }],
+          $each: [{ ...structure, id: newStructureId, disabled: false }],
           $position: atIndex,
         },
       },
@@ -239,18 +259,18 @@ export class LoanService extends CollectionService {
   removeStructure = ({ loanId, structureId }) => {
     const { selectedStructure: currentlySelected } = this.get(loanId);
 
-    if (currentlySelected !== structureId) {
-      const updateObj = {
-        $pull: { structures: { id: structureId } },
-      };
-
-      return Loans.update(loanId, updateObj, {
-        // Edge case fix: https://github.com/meteor/meteor/issues/4342
-        getAutoValues: false,
-      });
+    if (currentlySelected === structureId) {
+      throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
     }
 
-    throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
+    const updateObj = {
+      $pull: { structures: { id: structureId } },
+    };
+
+    return Loans.update(loanId, updateObj, {
+      // Edge case fix: https://github.com/meteor/meteor/issues/4342
+      getAutoValues: false,
+    });
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
@@ -342,16 +362,16 @@ export class LoanService extends CollectionService {
 
   assignLoanToUser({ loanId, userId }) {
     const {
-      propertyIds = [],
-      borrowerIds = [],
       properties = [],
       borrowers = [],
+      referralId,
+      anonymous,
     } = this.fetchOne({
       $filters: { _id: loanId },
-      propertyIds: 1,
-      borrowerIds: 1,
-      properties: { loans: { _id: 1 }, address1: 1 },
+      referralId: 1,
+      properties: { loans: { _id: 1 }, address1: 1, category: 1 },
       borrowers: { loans: { _id: 1 }, name: 1 },
+      anonymous: 1,
     });
 
     borrowers.forEach(({ loans = [], name }) => {
@@ -359,21 +379,46 @@ export class LoanService extends CollectionService {
         throw new Meteor.Error(`Peut pas réassigner l'hypothèque, l'emprunteur "${name}" est assigné à plus d'une hypothèque`);
       }
     });
-    properties.forEach(({ loans = [], address1 }) => {
-      if (loans.length > 1) {
+    properties.forEach(({ loans = [], address1, category }) => {
+      if (category === PROPERTY_CATEGORY.USER && loans.length > 1) {
         throw new Meteor.Error(`Peut pas réassigner l'hypothèque, le bien immobilier "${address1}" est assigné à plus d'une hypothèque`);
       }
     });
 
-    const object = { userId };
+    this.update({
+      loanId,
+      object: {
+        userId,
+        anonymous: false,
+        // If the loan was anonymous before, don't show welcome screen again
+        displayWelcomeScreen: anonymous ? false : undefined,
+      },
+    });
+    this.update({ loanId, object: { referralId: true }, operator: '$unset' });
 
-    this.update({ loanId, object });
-    propertyIds.forEach((propertyId) => {
-      PropertyService.update({ propertyId, object });
+    borrowers.forEach(({ _id: borrowerId }) => {
+      BorrowerService.update({ borrowerId, object: { userId } });
     });
-    borrowerIds.forEach((borrowerId) => {
-      BorrowerService.update({ borrowerId, object });
+    properties.forEach(({ _id: propertyId, category }) => {
+      if (category === PROPERTY_CATEGORY.USER) {
+        PropertyService.update({ propertyId, object: { userId } });
+      }
     });
+
+    // Refer this user only if he hasn't already been referred
+    if (referralId && UserService.exists(referralId)) {
+      const {
+        referredByUserLink,
+        referredByOrganisationLink,
+      } = UserService.fetchOne({
+        $filters: { _id: userId },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+      if (!referredByUserLink && !referredByOrganisationLink) {
+        UserService.setReferredBy({ userId, proId: referralId });
+      }
+    }
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
@@ -686,6 +731,22 @@ export class LoanService extends CollectionService {
       structureId,
       lenderRules,
     });
+  }
+
+  expireAnonymousLoans() {
+    const lastWeek = moment()
+      .subtract(7, 'days')
+      .toDate();
+
+    return this.baseUpdate(
+      {
+        anonymous: true,
+        status: { $ne: LOAN_STATUS.UNSUCCESSFUL },
+        updatedAt: { $lte: lastWeek },
+      },
+      { $set: { status: LOAN_STATUS.UNSUCCESSFUL } },
+      { multi: true },
+    );
   }
 }
 

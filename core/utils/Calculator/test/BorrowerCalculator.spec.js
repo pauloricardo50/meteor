@@ -412,6 +412,10 @@ describe('BorrowerCalculator', () => {
         borrowers: { hasOwnCompany: true, ownCompanies: [] },
       });
       expect(result).to.include('ownCompanies');
+      const result2 = Calculator.getMissingBorrowerFields({
+        borrowers: { hasOwnCompany: false, ownCompanies: [] },
+      });
+      expect(result2).to.not.include('ownCompanies');
     });
   });
 

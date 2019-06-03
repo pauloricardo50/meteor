@@ -14,7 +14,6 @@ import './css';
 import initHotjar from 'core/utils/hotjar';
 import ProRouter from './ProRouter';
 
-
 const start = (testElement) => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');

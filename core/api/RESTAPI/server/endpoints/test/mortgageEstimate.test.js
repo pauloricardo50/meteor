@@ -7,7 +7,6 @@ import sinon from 'sinon';
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import generator from '../../../../factories';
-import UserService from '../../../../users/server/UserService';
 import { TRENDS } from '../../../../constants';
 import RESTAPI from '../../RESTAPI';
 import {
@@ -64,7 +63,7 @@ describe('REST: mortgageEstimate', function () {
       users: [{ _factory: 'pro', _id: 'pro', organisations: [{ _id: 'org' }] }],
       interestRates: [
         {
-          date: moment().toDate(),
+          date: new Date().toISOString(),
           interestLibor: {
             rateLow: 0.005,
             rateHigh: 0.01,
@@ -94,11 +93,11 @@ describe('REST: mortgageEstimate', function () {
   it('Returns default response if only the propertyValue is given', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
-        interests10: 1080,
-        interests5: 880,
-        interestsLibor: 600,
+        interests10: 960,
+        interests5: 800,
+        interestsLibor: 400,
       },
       loanValue: 960000,
       monthlyMaintenance: 0,
@@ -109,9 +108,9 @@ describe('REST: mortgageEstimate', function () {
       },
       ownFunds: 300000,
       monthlyTotals: {
-        interests10: 2080,
-        interests5: 1880,
-        interestsLibor: 1600,
+        interests10: 1960,
+        interests5: 1800,
+        interestsLibor: 1400,
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
@@ -125,11 +124,11 @@ describe('REST: mortgageEstimate', function () {
   it('Uses the canton if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
-        interests10: 1080,
-        interests5: 880,
-        interestsLibor: 600,
+        interests10: 960,
+        interests5: 800,
+        interestsLibor: 400,
       },
       loanValue: 960000,
       monthlyMaintenance: 0,
@@ -141,9 +140,9 @@ describe('REST: mortgageEstimate', function () {
       },
       ownFunds: 305427.96,
       monthlyTotals: {
-        interests10: 2080,
-        interests5: 1880,
-        interestsLibor: 1600,
+        interests10: 1960,
+        interests5: 1800,
+        interestsLibor: 1400,
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
@@ -157,11 +156,11 @@ describe('REST: mortgageEstimate', function () {
   it('Uses maintenance if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
-        interests10: 1080,
-        interests5: 880,
-        interestsLibor: 600,
+        interests10: 960,
+        interests5: 800,
+        interestsLibor: 400,
       },
       loanValue: 960000,
       monthlyMaintenance: 1000,
@@ -172,9 +171,9 @@ describe('REST: mortgageEstimate', function () {
       },
       ownFunds: 300000,
       monthlyTotals: {
-        interests10: 3080,
-        interests5: 2880,
-        interestsLibor: 2600,
+        interests10: 2960,
+        interests5: 2800,
+        interestsLibor: 2400,
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
@@ -191,11 +190,11 @@ describe('REST: mortgageEstimate', function () {
   it('Uses zipCode if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
-        interests10: 1080,
-        interests5: 880,
-        interestsLibor: 600,
+        interests10: 960,
+        interests5: 800,
+        interestsLibor: 400,
       },
       loanValue: 960000,
       monthlyMaintenance: 0,
@@ -207,9 +206,9 @@ describe('REST: mortgageEstimate', function () {
       },
       ownFunds: 305427.96,
       monthlyTotals: {
-        interests10: 2080,
-        interests5: 1880,
-        interestsLibor: 1600,
+        interests10: 1960,
+        interests5: 1800,
+        interestsLibor: 1400,
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
@@ -226,20 +225,20 @@ describe('REST: mortgageEstimate', function () {
   it('Uses includeNotaryFees if provided', () => {
     const expectedResponse = {
       borrowRatio: 0.8,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
-        interests10: 1080,
-        interests5: 880,
-        interestsLibor: 600,
+        interests10: 960,
+        interests5: 800,
+        interestsLibor: 400,
       },
       loanValue: 960000,
       monthlyMaintenance: 0,
       monthlyAmortization: 1000,
       ownFunds: 240000,
       monthlyTotals: {
-        interests10: 2080,
-        interests5: 1880,
-        interestsLibor: 1600,
+        interests10: 1960,
+        interests5: 1800,
+        interestsLibor: 1400,
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
@@ -253,23 +252,23 @@ describe('REST: mortgageEstimate', function () {
     return getResult({ query, expectedResponse });
   });
 
-  it('Uses reduces the borrowRatio for expensive properties', () => {
+  it('reduces the borrowRatio for expensive properties', () => {
     const expectedResponse = {
       borrowRatio: 0.67,
-      date: now.getTime(),
+      date: now.toISOString(),
       monthlyInterests: {
-        interests10: 2713.5,
-        interests5: 2211,
-        interestsLibor: 1507.5,
+        interests10: 2412,
+        interests5: 2010,
+        interestsLibor: 1005,
       },
       loanValue: 2412000,
       monthlyMaintenance: 0,
       monthlyAmortization: 3400,
       ownFunds: 1188000,
       monthlyTotals: {
-        interests10: 6113.5,
-        interests5: 5611,
-        interestsLibor: 4907.5,
+        interests10: 5812,
+        interests5: 5410,
+        interestsLibor: 4405,
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,

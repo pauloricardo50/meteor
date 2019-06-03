@@ -26,11 +26,12 @@ export default {
       {
         _id,
         $body: {
+          anonymous: true,
           name: 1,
-          status: 1,
-          user: { name: 1, assignedEmployee: { name: 1 } },
-          structures: { wantedLoan: 1, id: 1 },
           selectedStructure: 1,
+          status: 1,
+          structures: { wantedLoan: 1, id: 1 },
+          user: { name: 1, assignedEmployee: { name: 1 } },
         },
       },
       cb,
@@ -42,12 +43,12 @@ export default {
         _id,
         $body: {
           $filter: 1,
-          name: 1,
-          loans: { name: 1 },
-          roles: 1,
-          email: 1,
-          phoneNumber: 1,
           assignedEmployee: { name: 1 },
+          email: 1,
+          loans: { name: 1 },
+          name: 1,
+          phoneNumber: 1,
+          roles: 1,
         },
       },
       cb,
@@ -58,8 +59,8 @@ export default {
       {
         _id,
         $body: {
-          name: 1,
           loans: { name: 1 },
+          name: 1,
           user: { name: 1, assignedEmployee: { name: 1 } },
         },
       },
@@ -71,12 +72,12 @@ export default {
       {
         _id,
         $body: {
-          name: 1,
           address1: 1,
           category: 1,
-          totalValue: 1,
           documents: { propertyImages: 1 },
+          name: 1,
           status: 1,
+          totalValue: 1,
         },
       },
       cb,
@@ -87,9 +88,9 @@ export default {
       {
         _id,
         $body: {
-          maxAmount: 1,
           feedback: 1,
           lender: { organisation: { name: 1, logo: 1 }, loan: { name: 1 } },
+          maxAmount: 1,
         },
       },
       cb,
@@ -100,13 +101,13 @@ export default {
       {
         _id,
         $body: {
-          name: 1,
-          status: 1,
           availablePromotionLots: 1,
           bookedPromotionLots: 1,
-          soldPromotionLots: 1,
           documents: { promotionImage: 1 },
           lenderOrganisation: { name: 1 },
+          name: 1,
+          soldPromotionLots: 1,
+          status: 1,
         },
       },
       cb,
@@ -116,7 +117,7 @@ export default {
       adminOrganisations,
       {
         _id,
-        $body: { name: 1, logo: 1, type: 1 },
+        $body: { name: 1, logo: 1, type: 1, offerCount: 1 },
       },
       cb,
     ),
@@ -126,10 +127,10 @@ export default {
       {
         _id,
         $body: {
-          name: 1,
           email: 1,
-          phoneNumber: 1,
+          name: 1,
           organisations: { name: 1, logo: 1 },
+          phoneNumber: 1,
         },
       },
       cb,

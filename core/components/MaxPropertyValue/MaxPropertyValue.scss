@@ -63,12 +63,12 @@
     .show-best-toggle {
       align-self: center;
 
-       > * {
+      > * {
         display: flex;
         align-items: center;
         justify-content: center;
 
-         > * {
+        > * {
           font-size: initial;
         }
       }
@@ -117,6 +117,13 @@
         text-transform: uppercase;
 
         opacity: 0.8;
+
+        @include screen(small) {
+          font-size: 0.85em;
+        }
+        @include screen(xsmall) {
+          font-size: 0.75em;
+        }
       }
     }
 
@@ -147,7 +154,7 @@
     display: inline-flex;
     align-items: center;
 
-     > * {
+    > * {
       display: inline-flex;
       align-items: center;
 

@@ -5,26 +5,18 @@ import {
   PURCHASE_TYPE,
   PROPERTY_CATEGORY,
 } from 'core/api/constants';
-import {
-  FINANCING_PAGE,
-  PROPERTY_PAGE,
-  BORROWERS_PAGE,
-  FILES_PAGE,
-  PROPERTIES_PAGE,
-  REFINANCING_PAGE,
-  SOLVENCY_PAGE,
-} from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 import VerificationRequester from './VerificationRequester';
 
 const createFinancingLink = ({ _id: loanId }) =>
-  createRoute(FINANCING_PAGE, { ':loanId': loanId });
+  createRoute(APP_ROUTES.FINANCING_PAGE.path, { ':loanId': loanId });
 
 const createPropertiesLink = ({ _id: loanId }) =>
-  createRoute(PROPERTIES_PAGE, { loanId });
+  createRoute(APP_ROUTES.PROPERTIES_PAGE.path, { loanId });
 
 const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
   (propertyId
-    ? createRoute(PROPERTY_PAGE, { loanId, propertyId })
+    ? createRoute(APP_ROUTES.PROPERTY_PAGE.path, { loanId, propertyId })
     : createPropertiesLink({ _id: loanId }));
 
 export const checkArrayIsDone = (array = [], params) =>
@@ -74,14 +66,20 @@ export const getDashboardTodosArray = list =>
         return false;
       },
       link: ({ _id: loanId }) =>
-        createRoute(BORROWERS_PAGE, { loanId, tabId: 'personal' }),
+        createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+          loanId,
+          tabId: 'personal',
+        }),
     },
     {
       id: 'solvency',
       isDone: ({ maxPropertyValue }) =>
         maxPropertyValue && maxPropertyValue.date,
       link: ({ _id: loanId }) =>
-        createRoute(SOLVENCY_PAGE, { loanId, tabId: 'personal' }),
+        createRoute(APP_ROUTES.SOLVENCY_PAGE.path, {
+          loanId,
+          tabId: 'personal',
+        }),
     },
     {
       id: 'addProperty',
@@ -127,7 +125,8 @@ export const getDashboardTodosArray = list =>
         return false;
       },
       hide: ({ purchaseType }) => purchaseType !== PURCHASE_TYPE.REFINANCING,
-      link: ({ _id: loanId }) => createRoute(REFINANCING_PAGE, { loanId }),
+      link: ({ _id: loanId }) =>
+        createRoute(APP_ROUTES.REFINANCING_PAGE.path, { loanId }),
     },
     // {
     //   id: 'doAnExpertise',
@@ -157,7 +156,8 @@ export const getDashboardTodosArray = list =>
     {
       id: 'uploadDocuments',
       isDone: loan => Calculator.filesProgress({ loan }).percent >= 1,
-      link: ({ _id: loanId }) => createRoute(FILES_PAGE, { ':loanId': loanId }),
+      link: ({ _id: loanId }) =>
+        createRoute(APP_ROUTES.FILES_PAGE.path, { ':loanId': loanId }),
     },
     {
       id: 'verification',

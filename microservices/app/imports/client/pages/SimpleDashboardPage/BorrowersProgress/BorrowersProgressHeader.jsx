@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import { createRoute } from 'core/utils/routerUtils';
 import Button from 'core/components/Button';
-import { BORROWERS_PAGE_NO_TAB } from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 type BorrowersProgressHeaderProps = {};
 
@@ -37,7 +37,7 @@ const BorrowersProgressHeader = ({
       secondary={progress < 1}
       primary={progress >= 1}
       link
-      to={createRoute(BORROWERS_PAGE_NO_TAB, { loanId })}
+      to={createRoute(APP_ROUTES.BORROWERS_PAGE_NO_TAB.path, { loanId })}
     >
       <T
         id={

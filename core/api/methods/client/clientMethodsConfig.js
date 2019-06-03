@@ -46,4 +46,6 @@ Method.addAfterCall(({ config, params, result, error }) => {
 
 if (Meteor.isTest) {
   Method.isDebugEnabled = false;
+} else {
+  Method.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
 }

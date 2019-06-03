@@ -91,6 +91,7 @@ export const PAYMENT_SCHEDULES = {
 
 export const LOAN_QUERIES = {
   ADMIN_LOANS: 'ADMIN_LOANS',
+  ANONYMOUS_LOAN: 'ANONYMOUS_LOAN',
   FULL_LOAN: 'FULL_LOAN',
   LOAN_FILES: 'LOAN_FILES',
   LOAN_SEARCH: 'LOAN_SEARCH',
@@ -142,3 +143,15 @@ export const APPLICATION_TYPES = {
 };
 
 export const ORGANISATION_NAME_SEPARATOR = ' / ';
+
+export const LOCAL_STORAGE_ANONYMOUS_LOAN = 'ANONYMOUS_LOAN_ID';
+
+export const EMPTY_STRUCTURE = {
+  ownFunds: [],
+  loanTranches: [],
+};
+
+export const LOAN_CATEGORIES = {
+  STANDARD: 'STANDARD',
+  PREMIUM: 'PREMIUM',
+};

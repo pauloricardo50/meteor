@@ -5,8 +5,10 @@ import connectField from 'uniforms/connectField';
 import filterDOMProps from 'uniforms/filterDOMProps';
 import joinName from 'uniforms/joinName';
 
+import { shouldUpdate } from 'recompose';
 import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
+import { FIELDS_TO_IGNORE } from './constants';
 
 const List = ({
   addIcon,
@@ -58,7 +60,34 @@ List.defaultProps = {
   dense: true,
 };
 
-export default connectField(List, {
+const CustomListField = connectField(List, {
   ensureValue: false,
   includeInChain: false,
 });
+
+export const OptimizedListField = shouldUpdate((props, nextProps) => {
+  let update = false;
+
+  Object.keys(nextProps)
+    .filter(propName => ![...FIELDS_TO_IGNORE, 'value'].includes(propName))
+    .some((propName) => {
+      const prop = nextProps[propName];
+
+      if (prop !== props[propName]) {
+        update = true;
+        return true;
+      }
+
+      return false;
+    });
+
+  if (JSON.stringify(props.value) !== JSON.stringify(nextProps.value)) {
+    // Add an exception for list value, as it is an array,
+    // it always updates because [] !== []
+    update = true;
+  }
+
+  return update;
+})(CustomListField);
+
+export default CustomListField;

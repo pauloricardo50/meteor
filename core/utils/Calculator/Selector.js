@@ -1,6 +1,8 @@
 // @flow
 import { createSelector } from 'reselect';
 
+import { EMPTY_STRUCTURE } from '../../api/loans/loanConstants';
+
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
     selectProperty({ loan, structureId } = {}) {
@@ -64,6 +66,7 @@ export const withSelector = (SuperClass = class {}) =>
       return (
         loan.structure
         || loan.structures.find(({ id }) => id === loan.selectedStructure)
+        || EMPTY_STRUCTURE
       );
     }
 

@@ -70,6 +70,8 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return;
       }
 
+      const property = promotionOption.promotionLots[0].properties[0];
+
       return {
         // Get the address from the promotion
         ...pick(promotionOption.promotion, [
@@ -79,7 +81,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
           'city',
         ]),
         ...promotionOption,
-        ...promotionOption.promotionLots[0].properties[0],
+        ...property,
         totalValue: promotionOption.value,
       };
     }

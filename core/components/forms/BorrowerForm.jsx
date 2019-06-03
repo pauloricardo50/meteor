@@ -35,6 +35,7 @@ export const financeFields = [
   'bonus2016',
   'bonus2017',
   'bonus2018',
+  'bonus2019',
   'otherIncome',
   'otherFortune',
   'expenses',

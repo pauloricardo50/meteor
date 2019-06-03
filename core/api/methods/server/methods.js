@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+
+import { LOANS_COLLECTION } from '../../constants';
 import SecurityService from '../../security';
 import { Services } from '../../api-server';
 import LoanService from '../../loans/server/LoanService';
@@ -16,12 +18,13 @@ import {
   addUserToDoc,
   throwDevError,
   setAdditionalDoc,
+  removeAdditionalDoc,
   migrateToLatest,
   updateDocument,
+  updateDocumentUnset,
   generateScenario,
 } from '../methodDefinitions';
 import generator from '../../factories';
-
 import { migrate } from '../../migrations/server';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -126,14 +129,14 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   throw new Meteor.Error(400, 'Dev error!');
 });
 
-setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
+setAdditionalDoc.setHandler((context, { collection, ...rest }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return Services[collection].setAdditionalDoc({
-    id,
-    additionalDocId,
-    requiredByAdmin,
-    label,
-  });
+  return Services[collection].setAdditionalDoc(rest);
+});
+
+removeAdditionalDoc.setHandler((context, { collection, ...rest }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return Services[collection].removeAdditionalDoc(rest);
 });
 
 migrateToLatest.setHandler(({ userId }) => {
@@ -143,14 +146,25 @@ migrateToLatest.setHandler(({ userId }) => {
 
 updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   const service = Services[collection];
-  const doc = service.findOne(docId);
   try {
     SecurityService.checkUserIsAdmin(userId);
   } catch (error) {
-    SecurityService.checkOwnership(doc);
+    if (collection === LOANS_COLLECTION) {
+      SecurityService.loans.isAllowedToUpdate(docId);
+    } else {
+      const doc = service.findOne(docId);
+      SecurityService.checkOwnership(doc);
+    }
   }
 
   return service._update({ id: docId, object });
+});
+
+updateDocumentUnset.setHandler(({ userId }, { collection, docId, object }) => {
+  const service = Services[collection];
+  SecurityService.checkUserIsDev(userId);
+
+  return service._update({ id: docId, object, operator: '$unset' });
 });
 
 generateScenario.setHandler(({ userId }, { scenario }) => {

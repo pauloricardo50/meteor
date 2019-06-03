@@ -6,7 +6,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import { ORGANISATION_FEATURES } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
-import { SINGLE_ORGANISATION_PAGE } from '../../../startup/client/adminRoutes';
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import LenderRulesEditor from '../../components/LenderRulesEditor';
 import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
@@ -51,7 +51,7 @@ const tabs = organisation =>
       </span>
     ),
     condition,
-    to: createRoute(SINGLE_ORGANISATION_PAGE, {
+    to: createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
       organisationId: organisation._id,
       tabId: id,
     }),

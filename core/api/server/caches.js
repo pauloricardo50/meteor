@@ -8,11 +8,11 @@ Organisations.cacheCount({
   cacheField: 'lenderRulesCount',
 });
 
-migrate('loans', 'userCache', { userCache: { $exists: false } });
-migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
-migrate('lenderRules', 'organisationCache', {
-  organisationCache: { $exists: false },
-});
-migrate('organisations', 'lenderRulesCount', {
-  lenderRulesCount: { $exists: false },
-});
+// migrate('loans', 'userCache', { userCache: { $exists: false } });
+// migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
+// migrate('lenderRules', 'organisationCache', {
+//   organisationCache: { $exists: false },
+// });
+// migrate('organisations', 'lenderRulesCount', {
+//   lenderRulesCount: { $exists: false },
+// });

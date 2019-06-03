@@ -6,22 +6,17 @@ import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 
-import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
 import adminLoans from '../../loans/queries/adminLoans';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
 import { lenderRules } from '../../fragments';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanBankPDF from './pdfComponents/LoanBankPDF';
-import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
-import { frenchErrors } from './pdfHelpers';
+import { PDF_TYPES } from '../pdfConstants';
+import { validateLoanPdf } from './pdfValidators';
 
 const PDF_URL = 'https://docraptor.com/docs';
 
 class PDFService {
-  constructor() {
-    this.module = null;
-  }
-
   makePDF = ({ type, params, options, htmlOnly }) => {
     this.checkParams({ params, type });
     const data = this.getDataForPDF(type, params);
@@ -45,10 +40,7 @@ class PDFService {
     switch (type) {
     case PDF_TYPES.LOAN: {
       try {
-        const { loan } = data;
-        const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
-
-        checkObjectStructure({ obj: loan, template: TEMPLATES[type] });
+        validateLoanPdf(data);
       } catch (error) {
         throw new Meteor.Error(error);
       }

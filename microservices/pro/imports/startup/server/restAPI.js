@@ -2,14 +2,15 @@ import { Meteor } from 'meteor/meteor';
 
 import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
 import {
-  inviteUserToPromotionAPI,
-  inviteUserToProPropertiesAPI,
-  testEndpointAPI,
-  referCustomerAPI,
   getPropertyLoansAPI,
   getUserAPI,
   interestRatesAPI,
+  inviteUserToPromotionAPI,
+  inviteCustomerToProPropertiesAPI,
   mortgageEstimateAPI,
+  referCustomerAPI,
+  testEndpointAPI,
+  updatePropertyAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 
 const api = new RESTAPI();
@@ -21,9 +22,10 @@ api.addEndpoint(
 api.addEndpoint(
   '/properties/invite-customer',
   'POST',
-  inviteUserToProPropertiesAPI,
+  inviteCustomerToProPropertiesAPI,
 );
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
+api.addEndpoint('/properties/:propertyId', 'POST', updatePropertyAPI);
 api.addEndpoint('/users', 'POST', referCustomerAPI);
 api.addEndpoint('/users', 'GET', getUserAPI);
 api.addEndpoint('/test', 'POST', testEndpointAPI);

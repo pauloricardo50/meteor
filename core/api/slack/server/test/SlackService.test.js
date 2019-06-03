@@ -43,7 +43,7 @@ describe('SlackService', function () {
         assignedEmployeeId: yannis._id,
       })._id;
       const loanId1 = Factory.create('loan', { userId, name: '19-0001' })._id;
-      const loanId2 = LoanService.adminLoanInsert({ userId });
+      const loanId2 = LoanService.fullLoanInsert({ userId });
       const user = UserService.get(userId);
 
       return SlackService.notifyOfUpload({
@@ -81,7 +81,7 @@ describe('SlackService', function () {
       })._id;
       const promotionId = Factory.create('promotion', { name: 'A Promotion' })
         ._id;
-      const loanId = LoanService.adminLoanInsert({ userId });
+      const loanId = LoanService.fullLoanInsert({ userId });
       LoanService.addLink({
         id: loanId,
         linkName: 'promotions',

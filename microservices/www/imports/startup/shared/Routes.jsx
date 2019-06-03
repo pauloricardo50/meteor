@@ -18,34 +18,34 @@ import InterestsPage from '../../ui/pages/InterestsPage/loadable';
 import BlogPage from '../../ui/pages/BlogPage/loadable';
 
 const liteVersionModifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
-const notProductionReadyModifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
 
-const routesConfig = [
-  { exact: true, path: '/', component: HomePage },
-  { path: '/start/1', component: Widget1Page },
-  { path: '/contact', component: ContactPage },
-  { path: '/interests', component: InterestsPage },
-  { path: '/careers', component: CareersPage },
-  { path: '/about', component: AboutPage },
-  { path: '/faq', component: FaqPage },
-  { path: '/blog/:slug', component: BlogPostPage },
-  { path: '/blog', component: BlogPage },
+export const WWW_ROUTES = {
+  HOME_PAGE: { exact: true, path: '/', component: HomePage },
+  WIDGET1_PAGE: { path: '/start/1', component: Widget1Page },
+  CONTACT_PAGE: { path: '/contact', component: ContactPage },
+  INTERESTS_PAGE: { path: '/interests', component: InterestsPage },
+  CAREERS_PAGE: { path: '/careers', component: CareersPage },
+  ABOUT_PAGE: { path: '/about', component: AboutPage },
+  FAQ_PAGE: { path: '/faq', component: FaqPage },
+  BLOG_POST_PAGE: { path: '/blog/:slug', component: BlogPostPage },
+  BLOG_PAGE: { path: '/blog', component: BlogPage },
 
-  ...liteVersionModifier([
-    { path: '/conditions', component: ConditionsPage },
-    { path: '/checkYourMailbox/:email', component: CheckMailboxPage },
-  ]),
+  ...liteVersionModifier({
+    CONDITIONS_PAGE: { path: '/conditions', component: ConditionsPage },
+    CHECK_MAILBOX_PAGE: {
+      path: '/checkYourMailbox/:email',
+      component: CheckMailboxPage,
+    },
+  }),
 
-  ...notProductionReadyModifier([]),
-
-  { component: NotFound },
-];
+  NOT_FOUND: { component: NotFound },
+};
 
 const Routes = () => (
   <ScrollToTop>
     <Switch>
-      {routesConfig.map((routeProps, index) => (
-        <Route key={index} {...routeProps} />
+      {Object.keys(WWW_ROUTES).map(route => (
+        <Route key={route} {...WWW_ROUTES[route]} />
       ))}
     </Switch>
   </ScrollToTop>

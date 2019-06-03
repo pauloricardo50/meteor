@@ -6,6 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
 import { PROMOTION_PERMISSIONS } from 'core/api/promotions/promotionConstants';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
@@ -135,6 +136,94 @@ describe('Collection Security', () => {
 
         expect(userId).to.not.equal(userId2);
         expect(() => SecurityService.loans.isAllowedToUpdate(loanId)).to.throw(SECURITY_ERROR);
+      });
+
+      it('should not do anything for anonymous loans', () => {
+        generator({ loans: { _id: 'loanId', anonymous: true } });
+
+        expect(() =>
+          SecurityService.loans.isAllowedToUpdate('loanId')).to.not.throw();
+      });
+
+      it('should not do anything for non anonymous loans without userIds', () => {
+        generator({ loans: { _id: 'loanId' } });
+
+        expect(() =>
+          SecurityService.loans.isAllowedToUpdate('loanId')).to.throw(SECURITY_ERROR);
+      });
+
+      it('should throw for expired anonymous loans', () => {
+        generator({
+          loans: {
+            _id: 'loanId',
+            anonymous: true,
+            status: LOAN_STATUS.UNSUCCESSFUL,
+          },
+        });
+
+        expect(() =>
+          SecurityService.loans.isAllowedToUpdate('loanId')).to.throw(SECURITY_ERROR);
+      });
+
+      it('should throw for accidental anonymous loans', () => {
+        generator({
+          loans: { _id: 'loanId', anonymous: true, userId: 'someId' },
+        });
+
+        expect(() =>
+          SecurityService.loans.isAllowedToUpdate('loanId')).to.throw(SECURITY_ERROR);
+      });
+    });
+  });
+
+  describe('BorrowerSecurity', () => {
+    beforeEach(() => {
+      resetDatabase();
+      sinon.stub(Meteor, 'userId').callsFake(() => undefined);
+    });
+
+    afterEach(() => {
+      Meteor.userId.restore();
+    });
+
+    describe('isAllowedToUpdate', () => {
+      it('should not do anything if the user is the owner', () => {
+        generator({
+          borrowers: { _id: 'borrowerId', user: { _id: 'userId' } },
+        });
+
+        expect(() =>
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.not.throw();
+      });
+
+      it('should not do anything if the user is an admin', () => {
+        generator({
+          borrowers: { _id: 'borrowerId' },
+          users: { _id: 'adminId', _factory: 'admin' },
+        });
+        Meteor.userId.restore();
+        sinon.stub(Meteor, 'userId').callsFake(() => 'adminId');
+
+        expect(() =>
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.not.throw();
+      });
+
+      it('should not do anything if the borrower is on one anonymous loan', () => {
+        generator({
+          borrowers: { _id: 'borrowerId', loans: { anonymous: true } },
+        });
+
+        expect(() =>
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.not.throw();
+      });
+
+      it('should throw if the borrower is on multiple loans', () => {
+        generator({
+          borrowers: { _id: 'borrowerId', loans: [{ anonymous: true }, {}] },
+        });
+
+        expect(() =>
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.throw(SECURITY_ERROR);
       });
     });
   });

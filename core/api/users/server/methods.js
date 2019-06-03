@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
+import Analytics from 'core/api/analytics/server/Analytics';
+import EVENTS from 'core/api/analytics/events';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -24,6 +26,7 @@ import {
   setUserReferredByOrganisation,
   proInviteUserToOrganisation,
   proSetShareCustomers,
+  anonymousCreateUser,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -105,8 +108,8 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+changeEmail.setHandler(({ userId }, params) => {
+  SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });
 
@@ -214,4 +217,23 @@ proInviteUserToOrganisation.setHandler(({ userId }, params) => {
 proSetShareCustomers.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
   return UserService.proSetShareCustomers(params);
+});
+
+anonymousCreateUser.setHandler((context, params) => {
+  if (params.loanId) {
+    SecurityService.loans.checkAnonymousLoan(params.loanId);
+  }
+
+  const userId = UserService.anonymousCreateUser(params);
+
+  const analytics = new Analytics({ ...context, userId });
+  analytics.alias(params.trackingId);
+  analytics.track(EVENTS.USER_CREATED, { userId, origin: 'anonymous' });
+  if (params.loanId) {
+    analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
+      loanId: params.loanId,
+    });
+  }
+
+  return userId;
 });

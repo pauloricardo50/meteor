@@ -11,11 +11,9 @@ import {
 } from 'core/api/lenderRules/schemas/lenderRulesSchema';
 import AutoForm from 'core/components/AutoForm2';
 import CustomSubmitField from 'core/components/AutoForm2/CustomSubmitField';
-import { makeCustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
+import { CustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
 
 type LenderRulesEditorSingleFormProps = {};
-
-const AutoField = makeCustomAutoField();
 
 const getAutoFormParts = formKeys =>
   [
@@ -54,7 +52,7 @@ const LenderRulesEditorSingleForm = ({
         <>
           <h2>{title}</h2>
           {keys.map(key => (
-            <AutoField name={key} key={key} />
+            <CustomAutoField name={key} key={key} />
           ))}
         </>
       ))}

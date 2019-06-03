@@ -9,8 +9,8 @@ import 'core/api/client/api';
 
 import '../accounts-config';
 import './css';
-import AdminRouter from './AdminRouter';
 import 'react-dates/initialize'; // Fix issue #750
+import AdminRouter from './AdminRouter';
 
 /**
  * start - sets the app up

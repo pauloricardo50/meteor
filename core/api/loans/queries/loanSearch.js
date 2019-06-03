@@ -4,7 +4,10 @@ import { LOAN_QUERIES } from '../loanConstants';
 
 export default Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
   $filter({ filters, params: { searchQuery } }) {
-    Object.assign(filters, createSearchFilters(['name', '_id'], searchQuery));
+    Object.assign(
+      filters,
+      createSearchFilters(['name', '_id', 'customName'], searchQuery),
+    );
   },
   name: 1,
   createdAt: 1,

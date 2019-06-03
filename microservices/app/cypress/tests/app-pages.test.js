@@ -5,22 +5,15 @@ const pages = {
   public: {
     Login: route('/login', { shouldRender: 'section.login-page' }),
 
-    'Reset Password': route('/reset-password/fakeToken', {
-      shouldRender: '#password-reset-page',
-    }),
-
-    'Enroll Account': route('/enroll-account/fakeToken', {
-      shouldRender: '#password-reset-page',
-    }),
+    'Reset Password': ({ passwordResetToken }) =>
+      route(`/reset-password/${passwordResetToken}`, {
+        shouldRender: '#password-reset-page',
+      }),
 
     'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
       route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
         shouldRender: '#impersonation-success-message',
       }),
-
-    'Verify Email (Invalid Token)': route('/verify-email/invalidToken', {
-      shouldRender: '#email-verification-page',
-    }),
 
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
       route(`/verify-email/${emailVerificationToken}`, {

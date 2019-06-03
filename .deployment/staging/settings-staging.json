@@ -12,6 +12,9 @@
       "Mixpanel": {
         "token": "8fd61d69bbe35690f6c3925e3cb5d21b",
         "people": true
+      },
+      "Segment": {
+        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
       }
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",

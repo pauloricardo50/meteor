@@ -1,6 +1,13 @@
 .promotion-users-table {
   margin-bottom: 16px;
-  padding: 50px;
+
+  > div.flex {
+    justify-content: space-between;
+  }
+
+  h2 {
+    margin: 0;
+  }
 }
 
 .user-list {
@@ -14,7 +21,7 @@
   justify-content: space-between;
 
   width: 100%;
-   > * {
+  > * {
     padding: 8px;
   }
 }

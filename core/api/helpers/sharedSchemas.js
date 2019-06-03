@@ -31,6 +31,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.id': String,
   'additionalDocuments.$.label': { type: String, optional: true },
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
+  'additionalDocuments.$.category': { type: String, optional: true },
 });
 
 export const address = {
@@ -148,4 +149,10 @@ export const documentsField = {
   defaultValue: {},
   optional: true,
   blackbox: true,
+};
+
+export const dateField = {
+  type: Date,
+  optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
 };

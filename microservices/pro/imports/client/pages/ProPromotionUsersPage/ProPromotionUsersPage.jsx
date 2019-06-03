@@ -10,7 +10,7 @@ import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
-import { PRO_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
+import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 type ProPromotionUsersPageProps = {};
 
@@ -22,7 +22,7 @@ const ProPromotionUsersPage = (props: ProPromotionUsersPageProps) => {
         raised
         primary
         link
-        to={createRoute(PRO_PROMOTION_PAGE, { promotionId })}
+        to={createRoute(PRO_ROUTES.PRO_PROMOTION_PAGE.path, { promotionId })}
       >
         <T id="general.back" />
       </Button>

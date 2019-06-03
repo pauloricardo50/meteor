@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import { compose } from 'recompose';
 import CalculatedValue from './CalculatedValue';
 import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
@@ -24,4 +25,7 @@ const FinmaRatio = ({ status, tooltip, id, ...props }: FinmaRatioProps) => (
   </CalculatedValue>
 );
 
-export default FinancingDataContainer(FinmaRatio);
+export default compose(
+  FinancingDataContainer,
+  React.memo,
+)(FinmaRatio);

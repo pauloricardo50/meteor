@@ -17,7 +17,7 @@ export const baseBorrower = () => ({
 
 export const loanBorrower = ({ withSort } = {}) => ({
   ...baseBorrower(),
-  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalDocuments: 1,
   address1: 1,
   address2: 1,
   adminValidation: 1,
@@ -30,6 +30,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   bonus2016: 1,
   bonus2017: 1,
   bonus2018: 1,
+  bonus2019: 1,
   bonusExists: 1,
   canton: 1,
   childrenCount: 1,
@@ -150,6 +151,7 @@ export const lender = () => ({
 export const adminLender = () => ({
   ...lender(),
   status: 1,
+  adminNote: 1,
 });
 
 // //
@@ -195,8 +197,9 @@ export const lenderRules = () => ({
 // // Loan fragments
 // //
 export const loan = () => ({
-  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalDocuments: 1,
   applicationType: 1,
+  anonymous: 1,
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   canton: 1,
@@ -295,6 +298,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         lenderOrganisationLink: 1,
         name: 1,
         status: 1,
+        type: 1,
         users: {
           _id: 1,
           name: 1,
@@ -316,8 +320,9 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 
 export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
+  adminNote: 1,
+  category: 1,
   closingDate: 1,
-  displayWelcomeScreen: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
   properties: adminProperty({ withSort }),
@@ -329,6 +334,7 @@ export const adminLoan = ({ withSort } = {}) => ({
 export const adminLoans = () => ({
   ...loanBase(),
   borrowers: { name: 1 },
+  category: 1,
   closingDate: 1,
   properties: { totalValue: 1, address1: 1 },
   signingDate: 1,
@@ -337,6 +343,7 @@ export const adminLoans = () => ({
 });
 
 export const proLoans = () => ({
+  anonymous: 1,
   createdAt: 1,
   name: 1,
   status: 1,
@@ -400,7 +407,7 @@ export const fullOffer = () => ({
     loan: {
       status: 1,
       name: 1,
-      user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+      user: { name: 1, assignedEmployee: { email: 1, name: 1, firstName: 1 } },
       borrowers: { name: 1 },
     },
     contact: { name: 1, email: 1 },
@@ -443,7 +450,8 @@ export const fullOrganisation = () => ({
   generatedRevenues: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
-  offers: fullOffer(),
+  offers: 1,
+  offerCount: 1,
   users: organisationUser(),
 });
 
@@ -518,6 +526,7 @@ export const proPromotionOption = () => ({
   loan: {
     name: 1,
     solvency: 1,
+    status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
     promotions: { users: { _id: 1 } },
     promotionOptions: {
@@ -575,6 +584,7 @@ export const basePromotion = () => ({
   bookedPromotionLots: 1,
   canton: 1,
   city: 1,
+  constructionTimeline: 1,
   contacts: 1,
   createdAt: 1,
   documents: 1,
@@ -597,6 +607,7 @@ export const basePromotion = () => ({
     name: 1,
   },
   properties: promotionProperty(),
+  signingDate: 1,
   soldPromotionLots: 1,
   status: 1,
   type: 1,
@@ -681,6 +692,7 @@ export const propertySummary = () => ({
   promotion: { name: 1 },
   propertyType: 1,
   status: 1,
+  thumbnail: 1,
   totalValue: 1,
   userId: 1,
   value: 1,
@@ -689,7 +701,7 @@ export const propertySummary = () => ({
 
 export const fullProperty = ({ withSort } = {}) => ({
   ...propertySummary(),
-  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  additionalDocuments: 1,
   additionalMargin: 1,
   adminValidation: 1,
   areaNorm: 1,
@@ -754,6 +766,7 @@ export const promotionProperty = () => ({
   gardenArea: 1,
   insideArea: 1,
   landValue: 1,
+  mortgageNotes: mortgageNote(),
   name: 1,
   propertyType: 1,
   roomCount: 1,
@@ -856,6 +869,10 @@ export const appUser = () => ({
     name: 1,
     purchaseType: 1,
     customName: 1,
+    hasProProperty: 1,
+    hasPromotion: 1,
+    properties: { address: 1, documents: { propertyImages: 1 } },
+    promotions: { address: 1, name: 1, documents: { promotionImage: 1 } },
   },
   properties: { _id: 1 },
 });

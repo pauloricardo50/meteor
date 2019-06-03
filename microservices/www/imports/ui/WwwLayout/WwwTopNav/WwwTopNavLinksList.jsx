@@ -8,6 +8,7 @@ import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
 
 export const links = [
+  '',
   'about',
   'interests',
   'faq',

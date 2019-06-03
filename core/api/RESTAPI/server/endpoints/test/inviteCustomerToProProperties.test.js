@@ -5,7 +5,10 @@ import { expect } from 'chai';
 
 import UserService from '../../../../users/server/UserService';
 import PropertyService from '../../../../properties/server/PropertyService';
-import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
+import {
+  PROPERTY_CATEGORY,
+  PROPERTY_STATUS,
+} from '../../../../properties/propertyConstants';
 import generator from '../../../../factories';
 import RESTAPI from '../../RESTAPI';
 import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
@@ -19,7 +22,7 @@ const customerToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
-  phoneNumber: '1234',
+  phoneNumber: '+41 22 566 01 10',
 };
 
 const api = new RESTAPI();
@@ -34,7 +37,7 @@ const inviteCustomerToProProperties = ({
   expectedResponse,
   properties,
   impersonateUser,
-  shareSolvency = false,
+  shareSolvency,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = {
@@ -167,7 +170,7 @@ describe('REST: inviteCustomerToProProperties', function () {
         loans: { shareSolvency: 1 },
       });
 
-      expect(customer.loans[0].shareSolvency).to.equal(false);
+      expect(customer.loans[0].shareSolvency).to.equal(undefined);
     });
   });
 
@@ -344,7 +347,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       expectedResponse: {
         status: 400,
         message:
-          '[Every property must have either a "_id" or "externalId" key]',
+          '[Each property must have either a "_id" or "externalId" key]',
       },
     }));
 
@@ -353,7 +356,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       properties: [],
       expectedResponse: {
         status: 400,
-        message: '[properties cannot be empty]',
+        message: '[You must provide at least one valid property]',
       },
     }));
 
@@ -361,7 +364,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     inviteCustomerToProProperties({
       expectedResponse: {
         status: 400,
-        message: '[properties cannot be empty]',
+        message: '[You must provide at least one valid property]',
       },
     }));
 
@@ -400,5 +403,39 @@ describe('REST: inviteCustomerToProProperties', function () {
           message: '[Cet utilisateur est déjà invité à ce bien immobilier]',
         },
       }));
+  });
+
+  it('cleans invalid fields in insert', () => {
+    const newProperty = {
+      externalId: 'myId',
+      status: PROPERTY_STATUS.SOLD,
+    };
+
+    return inviteCustomerToProProperties({
+      properties: [newProperty],
+      expectedResponse: {
+        message: `Successfully invited user \"${
+          customerToInvite.email
+        }\" to property ids \"myId\"`,
+      },
+    }).then(() => {
+      const property = PropertyService.findOne({ externalId: 'myId' });
+      expect(property.status).to.equal(PROPERTY_STATUS.FOR_SALE);
+    });
+  });
+
+  it('does not allow invalid fields in insert', () => {
+    const newProperty = {
+      externalId: 'myId',
+      propertyType: 'FALSE_TYPE',
+    };
+
+    return inviteCustomerToProProperties({
+      properties: [newProperty],
+      expectedResponse: {
+        status: 400,
+        message: '[ClientError: FALSE_TYPE is not an allowed value]',
+      },
+    });
   });
 });

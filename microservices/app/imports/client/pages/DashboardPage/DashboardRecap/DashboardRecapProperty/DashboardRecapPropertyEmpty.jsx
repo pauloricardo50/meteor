@@ -6,7 +6,7 @@ import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
-import { PROPERTIES_PAGE } from '../../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
 type DashboardRecapPropertyEmptyProps = {
   loanId: string,
@@ -23,7 +23,11 @@ const DashboardRecapPropertyEmpty = ({
     <p className="description">
       <T id="DashboardRecapProperty.emptyDescription" />
     </p>
-    <Button link to={createRoute(PROPERTIES_PAGE, { loanId })} primary>
+    <Button
+      link
+      to={createRoute(APP_ROUTES.PROPERTIES_PAGE.path, { loanId })}
+      primary
+    >
       <T id="DashboardRecapProperty.emptyButton" />
     </Button>
   </div>

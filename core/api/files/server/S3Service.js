@@ -112,11 +112,15 @@ class S3Service {
   listObjectsWithMetadata = Prefix =>
     this.listObjects(Prefix).then(results =>
       Promise.all(results.map(object =>
-        this.headObject(object.Key).then(({ Metadata }) => ({
-          ...object,
-          ...Metadata,
-          url: this.buildFileUrl(object),
-        })))));
+        this.headObject(object.Key).then(({ Metadata, ContentDisposition }) => {
+          const name = ContentDisposition && decodeURIComponent(ContentDisposition.match(/filename="(.*)"/)[1]);
+          return {
+            ...object,
+            ...Metadata,
+            url: this.buildFileUrl(object),
+            name,
+          };
+        }))));
 
   copyObject = params => this.callS3Method('copyObject', params);
 
@@ -136,11 +140,12 @@ class S3Service {
 
   buildFileUrl = file => `${OBJECT_STORAGE_PATH}/${file.Key}`;
 
-  makeSignedUrl = Key => this.s3.getSignedUrl('getObject', {
-    Bucket: this.params.Bucket,
-    Key,
-    Expires: 180,
-  });
+  makeSignedUrl = Key =>
+    this.s3.getSignedUrl('getObject', {
+      Bucket: this.params.Bucket,
+      Key,
+      Expires: 180,
+    });
 }
 
 export default new S3Service();

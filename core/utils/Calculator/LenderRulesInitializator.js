@@ -33,7 +33,6 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         structureId,
         lenderRules: sortedlenderRules,
       });
-      console.log('primaryRules:', primaryRules);
       this.applyRules(primaryRules);
 
       // Secondary rules depend on what is calculated with the rules applied from the primary rules
@@ -45,12 +44,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.applyRules(secondaryRules);
 
       this.cleanUpUnusedRules();
-      console.log('this.dividendsConsideration:', this.dividendsConsideration);
     }
 
     storeRuleOrigin(rules, lenderRulesId) {
       Object.keys(rules).forEach((ruleName) => {
-        const ruleValue = rules[ruleName];
         this.ruleOrigin[ruleName] = lenderRulesId;
       });
     }
@@ -176,7 +173,6 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       ];
 
       rulesToApply.forEach((rule) => {
-        console.log('rules[rule]:', rules[rule]);
         if (rules[rule] !== undefined && rules[rule] !== null) {
           this[rule] = rules[rule];
         }

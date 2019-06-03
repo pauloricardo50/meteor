@@ -16,6 +16,7 @@ import {
   CANTONS,
   STEPS,
   APPLICATION_TYPES,
+  LOAN_CATEGORIES,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
 import StructureSchema from './StructureSchema';
@@ -131,6 +132,18 @@ const LoanSchema = new SimpleSchema({
   ...maxPropertyValueSchema,
   shareSolvency: { type: Boolean, optional: true },
   documents: documentsField,
+  anonymous: { type: Boolean, optional: true, defaultValue: false },
+  referralId: { type: String, optional: true },
+  category: {
+    type: String,
+    defaultValue: LOAN_CATEGORIES.STANDARD,
+    allowedValues: Object.values(LOAN_CATEGORIES),
+    uniforms: { placeholder: null },
+  },
+  adminNote: {
+    type: String,
+    optional: true,
+  },
 });
 
 export default LoanSchema;

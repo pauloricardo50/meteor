@@ -7,9 +7,9 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
+import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
-import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -167,6 +167,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return this.getAmortizationRateBase({
         borrowRatio,
         amortizationYears,
+        // Prevent caching of this function if amortizationGoal has changed
+        cacheFix: this.amortizationGoal,
       });
     }
 
@@ -231,13 +233,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     loanHasMinimalInformation({ loan }) {
-      const {
-        structure: { ownFunds },
-      } = loan;
+      const structure = this.selectStructure({ loan });
 
       return !!(
-        ownFunds
-        && ownFunds.length > 0
+        structure.ownFunds
+        && structure.ownFunds.length > 0
         && this.selectPropertyValue({ loan })
         && this.selectLoanValue({ loan })
       );
@@ -421,5 +421,27 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     hasTooMuchOwnFunds({ loan, structureId }) {
       const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
       return missingOwnFunds <= -this.ownFundsRoundingAmount;
+    }
+
+    hasCompleteStructure({ loan }) {
+      return loan.structures.some(({ id }) => {
+        const fundsRequired = this.getRequiredOwnFunds({
+          loan,
+          structureId: id,
+        });
+
+        if (fundsRequired === 0) {
+          return false;
+        }
+
+        if (
+          !this.isMissingOwnFunds({ loan, structureId: id })
+          && !this.hasTooMuchOwnFunds({ loan, structureId: id })
+        ) {
+          return true;
+        }
+
+        return false;
+      });
     }
   };

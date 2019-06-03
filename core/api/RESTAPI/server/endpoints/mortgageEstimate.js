@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import SimpleSchema from 'simpl-schema';
 
 import { address } from 'core/api/helpers/sharedSchemas';
@@ -72,8 +70,12 @@ const mortgageEstimateAPI = ({ query }) => {
     canton,
   } = checkQuery({ query, schema: querySchema });
 
-  const date = Date.now();
-  const { averageRates: interestRates } = currentInterestRates.clone().fetch();
+  const date = new Date().toISOString();
+  const rates = currentInterestRates.clone().fetch();
+  const interestRates = rates.rates.reduce(
+    (obj, { type, rateLow }) => ({ ...obj, [type]: rateLow }),
+    {},
+  );
   const finalCanton = zipCode ? zipcodes(zipCode) : canton;
   const borrowRatio = getBorrowRatio(residenceType, propertyValue);
   const loanValue = roundToCents(propertyValue * borrowRatio);

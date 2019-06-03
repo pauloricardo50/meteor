@@ -11,7 +11,7 @@
     min-width: 200px;
   }
 
-   > * {
+  > * {
     margin-right: 8px;
   }
 }
@@ -40,6 +40,10 @@
 
       width: 400px;
     }
+  }
+
+  .admin-note {
+    margin-top: 40px;
   }
 }
 
@@ -125,7 +129,7 @@
 
   padding: 32px;
 
-   > * {
+  > * {
     display: flex;
     flex-direction: column;
 
@@ -141,7 +145,7 @@
 
   margin-bottom: 40px;
 
-   > * {
+  > * {
     margin-top: 16px;
   }
 }

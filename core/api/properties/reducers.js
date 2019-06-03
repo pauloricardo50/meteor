@@ -3,6 +3,18 @@ import Properties from '.';
 
 Properties.addReducers({
   ...addressReducer,
+  thumbnail: {
+    body: { documents: { propertyImages: { url: 1 } }, imageUrls: 1 },
+    reduce: ({ documents = {}, imageUrls = [] }) => {
+      if (imageUrls.length > 0) {
+        return imageUrls[0];
+      }
+
+      if (documents && documents.propertyImages) {
+        return documents.propertyImages[0].url;
+      }
+    },
+  },
   totalValue: {
     body: { value: 1, landValue: 1, constructionValue: 1, additionalMargin: 1 },
     reduce: ({

@@ -40,6 +40,7 @@ class DevPage extends Component {
       purgeAndGenerateDatabase,
       migrateToLatest,
       addCompleteLoan,
+      addAnonymousLoan,
     } = this.props;
     const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
 
@@ -172,6 +173,14 @@ class DevPage extends Component {
             }
           >
             Loan - complete
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() => addAnonymousLoan()}
+          >
+            Loan - anonymous
           </Button>
           <hr className="mbt20" />
           <Tooltip title="Insert task related to a random borrower">

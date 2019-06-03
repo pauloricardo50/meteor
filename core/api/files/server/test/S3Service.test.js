@@ -8,10 +8,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Loans, Borrowers, Properties, Promotions } from '../../..';
 import S3Service from '../S3Service';
-import {
-  DOCUMENT_USER_PERMISSIONS,
-  PROPERTY_CATEGORY,
-} from '../../../constants';
+import { PROPERTY_CATEGORY } from '../../../constants';
 
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');

@@ -38,13 +38,13 @@ describe('App onboarding', () => {
 
       it('should not be able to login with the token twice', () => {
         cy.visit('/enroll-account/unknown-token');
-        cy.get('.error').should('exist');
+        cy.url().should('include', '/login');
       });
 
       it('should see the welcomescreen and get to the dashboard', () => {
         cy.callMethod('inviteTestUser', { withPassword: true });
-        cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
         cy.visit('/');
+        cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
         cy.url().should('include', '/loans/');
         cy.get('.welcome-screen').should('exist');
 
@@ -60,6 +60,7 @@ describe('App onboarding', () => {
 
         cy.get('input#firstName').type('Test');
         cy.get('input#lastName').type('User');
+        cy.get('input#birthDate').type('01/03/2018');
         cy.get('input#salary').type('180000');
         cy.get('input#netSalary').type('150000');
         cy.get('#bonusExists [type="radio"]')

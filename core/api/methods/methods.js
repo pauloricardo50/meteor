@@ -5,6 +5,8 @@ import { Mutation } from 'meteor/cultofcoders:mutations';
 
 if (Meteor.isTest) {
   Mutation.isDebugEnabled = false;
+} else {
+  Mutation.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
 }
 
 export class Method extends Mutation {

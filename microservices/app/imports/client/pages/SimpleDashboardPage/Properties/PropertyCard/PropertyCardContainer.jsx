@@ -30,11 +30,11 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
 export default compose(
   withRouter,
   withProps(({
-    history,
-    document,
-    collection,
-    loanId,
     additionalInfos,
+    collection,
+    document,
+    history,
+    loan: { _id: loanId },
     shareSolvency,
   }) => ({
     name: <span>{document.name || document.address1}</span>,

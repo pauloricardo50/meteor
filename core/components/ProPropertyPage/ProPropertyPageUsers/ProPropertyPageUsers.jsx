@@ -1,12 +1,19 @@
 // @flow
 import React from 'react';
 
+import withHider from 'core/containers/withHider';
 import Table from 'core/components/Table';
 import ProPropertyPageUsersContainer from './ProPropertyPageUsersContainer';
 import ProPropertyProUserAdder from './ProPropertyProUserAdder/ProPropertyProUserAdder';
 import T from '../../Translation';
 
 type ProPropertyPageUsersProps = {};
+
+const HiddenUsers = withHider(hide => ({
+  label: hide ? 'Afficher les utilisateurs' : 'Masquer les utilisateurs',
+  primary: true,
+  style: { display: 'block', margin: '0 auto' },
+}))(Table);
 
 const ProPropertyPageUsers = ({
   property,
@@ -23,7 +30,7 @@ const ProPropertyPageUsers = ({
         <ProPropertyProUserAdder property={property} />
       )}
     </span>
-    <Table rows={rows} columnOptions={columnOptions} />
+    <HiddenUsers rows={rows} columnOptions={columnOptions} />
   </div>
 );
 

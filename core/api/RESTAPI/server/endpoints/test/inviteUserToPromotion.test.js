@@ -22,7 +22,7 @@ const userToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
-  phoneNumber: '1234',
+  phoneNumber: '+41 22 566 01 10',
 };
 
 const api = new RESTAPI();
@@ -37,7 +37,7 @@ const inviteUser = ({
   expectedResponse,
   status,
   id,
-  shareSolvency = false,
+  shareSolvency = undefined,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = { user: userData, shareSolvency };
@@ -112,7 +112,7 @@ describe('REST: inviteUserToPromotion', function () {
         loans: { shareSolvency: 1 },
       });
 
-      expect(invitedUser.loans[0].shareSolvency).to.equal(false);
+      expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
     });
   });
 
@@ -209,7 +209,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 400,
-          message: '[promotionIds cannot be empty]',
+          message: '[No promotionId provided]',
         },
       });
     });

@@ -28,7 +28,7 @@ const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
           <MortgageNotesPickerSummary
             handleOpen={handleOpen}
             currentMortgageNotes={currentMortgageNotes}
-            borrowerMortgageNotes={borrowerMortgageNotes}
+            borrowerMortgageNotes={borrowerMortgageNotes.filter(({ selected }) => selected)}
             wantedLoan={wantedLoan}
             disabled={disableForms}
           />

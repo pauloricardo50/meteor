@@ -16,7 +16,7 @@ import Switch from './Switch';
 import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
-import LoginRedirector from './LoginRedirector';
+import HistoryWatcher from './HistoryWatcher';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -41,6 +41,7 @@ const BaseRouter = ({
   children,
   WrapperComponent,
   hasLogin,
+  routes,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
@@ -56,7 +57,15 @@ const BaseRouter = ({
         <DisconnectModal />
 
         <Router history={history}>
-          <LoginRedirector hasLogin={hasLogin}>
+          <HistoryWatcher
+            history={history}
+            routes={{
+              ...routes,
+              LOGIN_PAGE: { path: '/login' },
+              GRAPHER_PAGE: { path: '/grapher' },
+              LOGIN_WITH_TOKEN_PAGE: { path: '/login-token/:token' },
+            }}
+          >
             <ScrollToTop>
               <Switch>
                 <Route
@@ -79,7 +88,7 @@ const BaseRouter = ({
                 />
               </Switch>
             </ScrollToTop>
-          </LoginRedirector>
+          </HistoryWatcher>
         </Router>
       </ErrorBoundary>
     </LibraryWrappers>

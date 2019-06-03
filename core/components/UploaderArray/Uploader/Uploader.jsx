@@ -18,7 +18,7 @@ const Uploader = (props) => {
     showFull,
     collection,
     docId,
-    fileMeta: { id, requiredByAdmin },
+    fileMeta: { id, requiredByAdmin, category },
     isDocumentToHide,
     allowRequireByAdmin,
   } = props;
@@ -34,6 +34,7 @@ const Uploader = (props) => {
               id: docId,
               additionalDocId: id,
               requiredByAdmin: event.target.checked,
+              category,
             });
           }}
           id={id}

@@ -65,6 +65,18 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
+  anonymousCreateUser = ({ user, loanId }) => {
+    const userId = this.adminCreateUser({
+      options: { ...user, sendEnrollmentEmail: true },
+    });
+
+    if (loanId) {
+      LoanService.assignLoanToUser({ userId, loanId });
+    }
+
+    return userId;
+  };
+
   // This should remain a simple inequality check
   doesUserExist = ({ email }) => this.getByEmail(email) != null;
 
@@ -199,7 +211,7 @@ class UserService extends CollectionService {
     return { publicKey, privateKey, createdAt };
   };
 
-  proReferUser = ({ user, proUserId, shareSolvency = false }) => {
+  proReferUser = ({ user, proUserId, shareSolvency }) => {
     const { email } = user;
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
@@ -211,7 +223,7 @@ class UserService extends CollectionService {
       sendInvitation: false,
     });
 
-    const loanId = LoanService.adminLoanInsert({ userId });
+    const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
     return sendEmail.run({
@@ -289,15 +301,13 @@ class UserService extends CollectionService {
     properties = [],
     proUserId,
     adminId,
-    shareSolvency = false,
+    shareSolvency,
   }) => {
-    const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
+    const referOnly = propertyIds.length === 0
+      && promotionIds.length === 0
+      && properties.length === 0;
     if (referOnly) {
       return this.proReferUser({ user, proUserId, shareSolvency });
-    }
-
-    if (!propertyIds && !promotionIds) {
-      throw new Meteor.Error('No property given');
     }
 
     const { invitedBy } = user;
@@ -392,8 +402,8 @@ class UserService extends CollectionService {
     return `${domain}/enroll-account/${token}`;
   }
 
-  setReferredBy({ userId, proId }) {
-    const organisationId = this.getUserMainOrganisationId(proId);
+  setReferredBy({ userId, proId, organisationId }) {
+    organisationId = organisationId || this.getUserMainOrganisationId(proId);
 
     return this.update({
       userId,

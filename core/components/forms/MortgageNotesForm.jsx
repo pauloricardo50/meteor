@@ -4,7 +4,7 @@ import React from 'react';
 import MortgageNoteSchema from '../../api/mortgageNotes/schemas/MortgageNoteSchema';
 import { mortgageNoteUpdate, mortgageNoteRemove } from '../../api';
 import AutoForm from '../AutoForm2';
-import { makeCustomAutoField } from '../AutoForm2/AutoFormComponents';
+import { CustomAutoField } from '../AutoForm2/AutoFormComponents';
 import CustomAutoFields from '../AutoForm2/CustomAutoFields';
 import Button from '../Button';
 import T from '../Translation';
@@ -44,8 +44,6 @@ const removeMortgageNote = (mortgageNoteId) => {
     .then(() => message.success('Supprimé', 2));
 };
 
-const AutoField = makeCustomAutoField();
-
 const MortgageNotesForm = ({
   mortgageNotes = [],
   insertMortgageNote,
@@ -67,7 +65,7 @@ const MortgageNotesForm = ({
           className="form"
           key={note._id}
         >
-          <CustomAutoFields autoField={AutoField} />
+          <CustomAutoFields autoField={CustomAutoField} />
           <div className="flex">
             <CustomSubmitField
               raised

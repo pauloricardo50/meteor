@@ -47,6 +47,7 @@ export default class AllLoansTable extends Component {
         updatedAt,
         structure,
         step,
+        anonymous,
       } = loan;
 
       return {
@@ -55,7 +56,9 @@ export default class AllLoansTable extends Component {
           name,
           {
             raw: user && user.name,
-            label: (
+            label: anonymous ? (
+              'Anonyme'
+            ) : (
               <CollectionIconLink
                 relatedDoc={{ ...user, collection: USERS_COLLECTION }}
                 key="user"
@@ -73,16 +76,16 @@ export default class AllLoansTable extends Component {
             ),
           },
           {
-            label: moment(createdAt).format('D.M.YY à H:mm'),
             raw: createdAt && createdAt.getTime(),
+            label: moment(createdAt).fromNow(),
           },
           {
             raw: updatedAt && updatedAt.getTime(),
-            label: moment(updatedAt).fromNow(),
+            label: updatedAt ? moment(updatedAt).fromNow() : '-',
           },
           {
-            label: <T id={`Forms.step.${step}`} key="step" />,
             raw: step,
+            label: <T id={`Forms.step.${step}`} key="step" />,
           },
           Calculator.selectPropertyValue({ loan }),
           Calculator.selectLoanValue({ loan }),

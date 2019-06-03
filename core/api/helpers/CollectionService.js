@@ -90,7 +90,7 @@ class CollectionService {
 
   count(...args) {
     this.checkQuery(args[0]);
-    return this.createQuery(...args).count();
+    return this.createQuery(...args).getCount();
   }
 
   countAll() {
@@ -99,6 +99,18 @@ class CollectionService {
 
   getAll() {
     return this.find({}).fetch();
+  }
+
+  get rawCollection() {
+    return this.collection.rawCollection();
+  }
+
+  exists(_id) {
+    return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
+  }
+
+  aggregate(...args) {
+    return this.rawCollection.aggregate(...args);
   }
 
   // Don't return the results from linker
@@ -180,7 +192,7 @@ class CollectionService {
     return undefined;
   }
 
-  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
+  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
     const { additionalDocuments } = this.get(id);
 
     const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
@@ -192,6 +204,7 @@ class CollectionService {
           id: additionalDocId,
           requiredByAdmin,
           label: this.getAdditionalDocLabel({ label, additionalDoc }),
+          category,
         },
       ];
       return this._update({
@@ -205,8 +218,18 @@ class CollectionService {
       object: {
         additionalDocuments: [
           ...additionalDocuments,
-          { id: additionalDocId, requiredByAdmin, label },
+          { id: additionalDocId, requiredByAdmin, label, category },
         ],
+      },
+    });
+  }
+
+  removeAdditionalDoc({ id: docId, additionalDocId }) {
+    const { additionalDocuments = [] } = this.get(docId);
+    return this._update({
+      id: docId,
+      object: {
+        additionalDocuments: additionalDocuments.filter(({ id }) => id !== additionalDocId),
       },
     });
   }

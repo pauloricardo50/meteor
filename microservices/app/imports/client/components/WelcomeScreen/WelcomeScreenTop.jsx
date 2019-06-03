@@ -11,6 +11,10 @@ const WelcomeScreenTop = ({
   handleClick,
   setDontShowAgain,
   dontShowAgain,
+  displayCheckbox = true,
+  buttonProps,
+  cta,
+  img,
 }: WelcomeScreenTopProps) => (
   <div className="card1 welcome-screen-top">
     <div className="welcome-screen-top-text">
@@ -22,26 +26,39 @@ const WelcomeScreenTop = ({
         <T id="WelcomeScreen.description" />
       </p>
 
-      <Checkbox
-        value={dontShowAgain}
-        onChange={() => setDontShowAgain(!dontShowAgain)}
-        label={<T id="WelcomeScreen.dontShowAgain" />}
-        className="checkbox"
+      {displayCheckbox && (
+        <Checkbox
+          value={dontShowAgain}
+          onChange={() => setDontShowAgain(!dontShowAgain)}
+          label={<T id="WelcomeScreen.dontShowAgain" />}
+          className="checkbox"
+        />
+      )}
+
+      {cta || (
+        <Button
+          raised
+          secondary
+          onClick={handleClick}
+          className="welcome-screen-cta"
+          {...buttonProps}
+        >
+          <T id="general.begin" />
+        </Button>
+      )}
+    </div>
+
+    {!img && (
+      <div className="welcome-screen-top-img">
+        <img src="/img/homepage-closing-big.svg" alt="e-Potek" />
+      </div>
+    )}
+    {img && (
+      <div
+        className="welcome-screen-top-img-override"
+        style={{ backgroundImage: `url("${img}")` }}
       />
-
-      <Button
-        raised
-        secondary
-        onClick={handleClick}
-        className="welcome-screen-cta"
-      >
-        <T id="general.begin" />
-      </Button>
-    </div>
-
-    <div className="welcome-screen-top-img">
-      <img src="/img/homepage-closing-big.svg" alt="e-Potek" />
-    </div>
+    )}
   </div>
 );
 

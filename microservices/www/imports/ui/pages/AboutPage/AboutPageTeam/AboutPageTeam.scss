@@ -35,7 +35,7 @@
 
   transition: background-color 200ms $bezier, transform 200ms $bezier;
 
-  border-radius: 16px;
+  border-radius: $border-radius;
 
   .about-page-team-member-image {
     align-self: center;

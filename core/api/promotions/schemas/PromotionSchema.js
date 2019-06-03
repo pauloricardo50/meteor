@@ -12,6 +12,8 @@ import {
   createdAt,
   updatedAt,
   documentsField,
+  percentageField,
+  dateField,
 } from '../../helpers/sharedSchemas';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
@@ -98,6 +100,12 @@ const PromotionSchema = new SimpleSchema({
   documents: documentsField,
   lenderOrganisationLink: { type: Object, optional: true },
   'lenderOrganisationLink._id': { type: String, optional: true },
+  constructionTimeline: { type: Array, defaultValue: [] },
+  'constructionTimeline.$': Object,
+  'constructionTimeline.$.description': String,
+  'constructionTimeline.$.duration': Number,
+  'constructionTimeline.$.percent': { ...percentageField, optional: false },
+  signingDate: dateField,
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
