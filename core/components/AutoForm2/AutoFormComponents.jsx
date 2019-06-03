@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
 import { compose, getContext } from 'recompose';
@@ -76,18 +76,14 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
-
-    let {
-      Component,
-      type,
-      props: additionalProps = {},
-    } = determineComponentFromProps({
-      ...props,
+    const { allowedValues, field, fieldType } = props;
+    let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
+      allowedValues,
       customAllowedValues,
-      model,
-      submitting,
-      condition,
-    });
+      field,
+      fieldType,
+    }));
+
     Component = Component || AutoField;
 
     let autoValue;
@@ -96,12 +92,13 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       autoValue = customAutoValue(model);
     }
 
-    const label = getLabel({
+    // Don't recalculate these
+    const [label] = useState(getLabel({
       ...props,
       intlPrefix,
       label: labels[props.name],
-    });
-    const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+    }));
+    const [placeholder] = useState(getPlaceholder({ ...props, intlPrefix, type }));
 
     if (
       typeof condition === 'function'
