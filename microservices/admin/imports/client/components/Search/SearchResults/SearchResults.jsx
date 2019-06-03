@@ -14,7 +14,7 @@ import ResultsPerCollection from './ResultsPerCollection';
 let index = 0;
 
 export const goDown = () => {
-  const nodes = document.querySelectorAll('.focusable-result');
+  const nodes = document.getElementsByClassName('focusable-result');
   const nodeCount = nodes.length;
   const shouldInitiateFocus = !document.activeElement.classList.contains('focusable-result');
 
@@ -26,7 +26,7 @@ export const goDown = () => {
 };
 
 const goUp = () => {
-  const nodes = document.querySelectorAll('.focusable-result');
+  const nodes = document.getElementsByClassName('focusable-result');
 
   if (index > 0) {
     index -= 1;
