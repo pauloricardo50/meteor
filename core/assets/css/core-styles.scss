@@ -41,7 +41,11 @@ a:not([role='button']) {
   }
 }
 
+// Don't mix these 2 together, or they cancel each other on firefox
 a:-webkit-any-link {
+  text-decoration: none;
+}
+a {
   text-decoration: none;
 }
 
