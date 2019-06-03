@@ -18,6 +18,8 @@ export const ignoreProps = propNames =>
           update = true;
           return true;
         }
+
+        return false;
       });
 
     return update;

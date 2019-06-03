@@ -22,9 +22,6 @@ export default (Component) => {
       if (model !== nextModel) {
         this.getAllowedValues(nextProps);
       }
-      // if (JSON.stringify(model) !== JSON.stringify(nextModel)) {
-      //   this.getAllowedValues(nextProps);
-      // }
     }
 
     getAllowedValues = (props) => {

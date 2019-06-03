@@ -22,7 +22,6 @@ import MoneyInput from '../MoneyInput';
 import HtmlPreview from '../HtmlPreview';
 import { ignoreProps } from '../../containers/updateForProps';
 
-// const container = x => x;
 const container = ignoreProps(FIELDS_TO_IGNORE);
 
 const OptimizedMoneyInput = container(MoneyInput);
