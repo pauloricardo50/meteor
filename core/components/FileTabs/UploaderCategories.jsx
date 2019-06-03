@@ -25,7 +25,7 @@ const UploaderCategories = (props: UploaderCategoriesProps) => {
     .filter(filterDocumentsForMicroservice(categories))
     .map(category => (
       <div className="uploader-category" key={category}>
-        <h3>
+        <h3 className={`v-align-${category}`}>
           <T id={`files.category.${category}`} />
         </h3>
         <UploaderArray

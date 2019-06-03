@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import MortgageNoteSchema from '../../api/mortgageNotes/schemas/MortgageNoteSchema';
 import { mortgageNoteUpdate, mortgageNoteRemove } from '../../api';
@@ -49,13 +50,14 @@ const MortgageNotesForm = ({
   insertMortgageNote,
   id,
   withCanton,
+  className,
 }: MortgageNotesFormProps) => {
   const ommittedFields = withCanton
     ? ['createdAt', 'updatedAt']
     : ['createdAt', 'updatedAt', 'canton'];
 
   return (
-    <div className="space-children">
+    <div className={cx('space-children', className)}>
       <h3>Cédules hypothécaires</h3>
       {mortgageNotes.map(note => (
         <AutoForm

@@ -23,9 +23,10 @@ const MortgageNotesForm = ({
   mortgageNoteInsert,
   mortgageNoteRemove,
   mortgageNotes = [],
+  className = '',
 }: MortgageNotesFormProps) => (
-  <div style={{ maxWidth: 400, width: '100%' }}>
-    <h3 className="text-center">
+  <div className={className} style={{ maxWidth: 400, width: '100%' }}>
+    <h3 className="text-center v-align-mortgageNotes">
       <T id="general.mortgageNotes" />
     </h3>
     <p className="description">

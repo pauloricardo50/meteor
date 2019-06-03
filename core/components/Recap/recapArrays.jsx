@@ -251,7 +251,7 @@ export const getBorrowerArray = ({
     {
       title: true,
       label: (
-        <span>
+        <span className="v-align-recap">
           <T id="Recap.fortune" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
