@@ -44,6 +44,8 @@ export default class PopoverStickOnHover extends React.Component {
         onMouseEnter: this.handleMouseEnter,
         onMouseLeave: this.handleMouseLeave,
         ref: this.ref,
+        onFocus: this.handleMouseEnter,
+        onBlur: this.handleMouseLeave,
       }))[0];
 
     return (
@@ -54,6 +56,7 @@ export default class PopoverStickOnHover extends React.Component {
           placement={placement}
           target={this.ref.current}
           shouldUpdatePosition
+          // trigger={['hover', 'focus', 'click']}
         >
           <Popover
             onMouseEnter={() => this.setState({ showPopover: true })}
