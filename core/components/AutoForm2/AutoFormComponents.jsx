@@ -1,20 +1,33 @@
 // @flow
-import React, { useEffect, useState } from 'react';
-import AutoField from 'uniforms-material/AutoField';
-import connectField from 'uniforms/connectField';
-import { compose, getContext } from 'recompose';
+import React, { useState } from 'react';
 import { intlShape } from 'react-intl';
+import { compose, getContext } from 'recompose';
+import connectField from 'uniforms/connectField';
 import nothing from 'uniforms/nothing';
+import AutoField from 'uniforms-material/AutoField';
+import BoolField from 'uniforms-material/BoolField';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
-import { CUSTOM_AUTOFIELD_TYPES, COMPONENT_TYPES } from './constants';
+import {
+  CUSTOM_AUTOFIELD_TYPES,
+  COMPONENT_TYPES,
+  FIELDS_TO_IGNORE,
+} from './constants';
 import CustomSelectField from './CustomSelectField';
-import CustomListField from './CustomListField';
+import { OptimizedListField } from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import MoneyInput from '../MoneyInput';
 import HtmlPreview from '../HtmlPreview';
+import { ignoreProps } from '../../containers/updateForProps';
+
+const container = ignoreProps(FIELDS_TO_IGNORE);
+
+const OptimizedMoneyInput = container(MoneyInput);
+const OptimizedDateField = container(DateField);
+const OptimizedPercentField = container(PercentField);
+const OptimizedBoolField = container(BoolField);
 
 const determineComponentFromProps = ({
   allowedValues,
@@ -27,16 +40,16 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
-    return { Component: DateField, type: COMPONENT_TYPES.DATE };
+    return { Component: OptimizedDateField, type: COMPONENT_TYPES.DATE };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
-    return { Component: PercentField, type: COMPONENT_TYPES.PERCENT };
+    return { Component: OptimizedPercentField, type: COMPONENT_TYPES.PERCENT };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
     return {
-      Component: MoneyInput,
+      Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
       props: { margin: 'normal' },
     };
@@ -50,11 +63,15 @@ const determineComponentFromProps = ({
   }
 
   if (fieldType === Array) {
-    return { Component: CustomListField, type: COMPONENT_TYPES.ARRAY };
+    return { Component: OptimizedListField, type: COMPONENT_TYPES.ARRAY };
   }
 
   if (fieldType === Object) {
     return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
+  }
+
+  if (fieldType === Boolean) {
+    return { Component: OptimizedBoolField };
   }
 
   if (uniforms && uniforms.render) {

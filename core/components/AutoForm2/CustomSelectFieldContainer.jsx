@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
 
 export default (Component) => {
-  class CustomSelectFieldContainer extends React.Component {
+  class CustomSelectFieldContainer extends PureComponent {
     constructor(props) {
       super(props);
       this.state = { values: props.allowedValues, data: null, error: null };
@@ -19,7 +19,7 @@ export default (Component) => {
       const { model: nextModel } = nextProps;
       const { model } = this.props;
 
-      if (JSON.stringify(model) !== JSON.stringify(nextModel)) {
+      if (model !== nextModel) {
         this.getAllowedValues(nextProps);
       }
     }
@@ -113,7 +113,15 @@ export default (Component) => {
 
     render() {
       const { values, error, loading } = this.state;
-      const { placeholder, displayEmpty } = this.props;
+      const {
+        placeholder,
+        displayEmpty,
+        model,
+        uniforms,
+        field,
+        fields,
+        ...rest
+      } = this.props;
 
       if (error) {
         return <span className="error">{error.message || error.reason}</span>;
@@ -125,7 +133,7 @@ export default (Component) => {
 
       return (
         <Component
-          {...this.props}
+          {...rest}
           placeholder={displayEmpty ? placeholder : ''}
           values={values}
           formatOption={this.formatOption}
