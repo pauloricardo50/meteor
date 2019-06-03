@@ -5,7 +5,7 @@ type VerticalAlignerProps = {};
 
 const getOffset = (el) => {
   let _y = 0;
-  while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+  while (el && !Number.isNaN(el.offsetLeft) && !Number.isNaN(el.offsetTop)) {
     _y += el.offsetTop - el.scrollTop;
     el = el.offsetParent;
   }
@@ -20,12 +20,33 @@ const resetMargins = (nodes) => {
   });
 };
 
+const skipUpdate = (updateList) => {
+  if (updateList.length > 1) {
+    return false;
+  }
+
+  // Do this extra check to avoid updating for one span change
+  // This specifically targets material-ui's touch ripple on buttons
+  // which causes issues when clicking on a button at the bottom of the screen
+  const { addedNodes, removedNodes } = updateList[0];
+  if (addedNodes.length === 1 && addedNodes[0].tagName === 'SPAN') {
+    return true;
+  }
+  if (removedNodes.length === 1 && removedNodes[0].tagName === 'SPAN') {
+    return true;
+  }
+
+  return false;
+};
+
 const setMargin = (node, margin) => {
   node.style.setProperty('margin-top', `${margin}px`);
 };
 
-const makeUpdateMargins = (target, defaultMargin = 0) => () => {
-  console.log('updateing!!');
+const makeUpdateMargins = (target, defaultMargin = 0) => (updatelist) => {
+  if (updatelist && skipUpdate(updatelist)) {
+    return;
+  }
 
   const nodes = document.querySelectorAll(`${target} [class*='v-align']`);
 
