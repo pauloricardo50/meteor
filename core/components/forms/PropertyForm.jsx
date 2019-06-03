@@ -7,7 +7,7 @@ import { propertyUpdate, mortgageNoteInsert } from 'core/api';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
 
-type BorrowerFormProps = {};
+type PropertyFormProps = {};
 
 const baseFields = [
   'status',
@@ -96,7 +96,7 @@ const insertMortgageNote = (propertyId) => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const BorrowerForm = ({ property }: BorrowerFormProps) => {
+const PropertyForm = ({ property }: PropertyFormProps) => {
   const { _id: propertyId, mortgageNotes } = property;
   return (
     <div className="property-admin-form">
@@ -137,4 +137,4 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => {
     </div>
   );
 };
-export default BorrowerForm;
+export default PropertyForm;

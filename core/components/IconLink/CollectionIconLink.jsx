@@ -21,6 +21,7 @@ import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLin
 type CollectionIconLinkProps = {
   relatedDoc: Object,
   stopPropagation?: Boolean,
+  iconClassName?: string,
 };
 
 const showPopups = Meteor.microservice === 'admin';
@@ -121,6 +122,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
 const CollectionIconLink = ({
   relatedDoc,
   stopPropagation,
+  iconClassName,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
@@ -144,6 +146,7 @@ const CollectionIconLink = ({
           text={text}
           className="collection-icon"
           stopPropagation={stopPropagation}
+          iconClassName={iconClassName}
         />
       </CollectionIconLinkPopup>
     );
@@ -156,6 +159,7 @@ const CollectionIconLink = ({
       text={text}
       stopPropagation={stopPropagation}
       className="collection-icon"
+      iconClassName={iconClassName}
     />
   );
 };

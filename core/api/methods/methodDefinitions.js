@@ -86,6 +86,15 @@ export const setAdditionalDoc = new Method({
   },
 });
 
+export const removeAdditionalDoc = new Method({
+  name: 'removeAdditionalDoc',
+  params: {
+    collection: String,
+    id: String,
+    additionalDocId: String,
+  },
+});
+
 export const migrateToLatest = new Method({
   name: 'migrateToLatest',
 });

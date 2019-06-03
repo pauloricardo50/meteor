@@ -1,10 +1,10 @@
 // @flow
-import React from 'react';
-import AutoField from 'uniforms-material/AutoField';
-import connectField from 'uniforms/connectField';
-import { compose, getContext } from 'recompose';
+import React, { useState } from 'react';
 import { intlShape } from 'react-intl';
+import { compose, getContext } from 'recompose';
+import connectField from 'uniforms/connectField';
 import nothing from 'uniforms/nothing';
+import AutoField from 'uniforms-material/AutoField';
 import BoolField from 'uniforms-material/BoolField';
 
 import DateField from '../DateField';
@@ -93,18 +93,13 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
-
-    let {
-      Component,
-      type,
-      props: additionalProps = {},
-    } = determineComponentFromProps({
-      ...props,
+    const { allowedValues, field, fieldType } = props;
+    let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
+      allowedValues,
       customAllowedValues,
-      model,
-      submitting,
-      condition,
-    });
+      field,
+      fieldType,
+    }));
 
     Component = Component || AutoField;
 
@@ -114,12 +109,13 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       autoValue = customAutoValue(model);
     }
 
-    const label = getLabel({
+    // Don't recalculate these
+    const [label] = useState(getLabel({
       ...props,
       intlPrefix,
       label: labels[props.name],
-    });
-    const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+    }));
+    const [placeholder] = useState(getPlaceholder({ ...props, intlPrefix, type }));
 
     if (
       typeof condition === 'function'

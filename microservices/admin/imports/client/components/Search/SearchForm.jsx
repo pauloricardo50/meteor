@@ -5,11 +5,15 @@ import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
 import T from 'core/components/Translation';
+import { goDown } from './SearchResults/SearchResults';
+
+const DOWN_ARROW = 40;
 
 class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = { searchText: '' };
+    this.ref = React.createRef();
   }
 
   handleSubmit = (event) => {
@@ -28,6 +32,14 @@ class SearchForm extends Component {
     });
   };
 
+  handleKeyDown = (event) => {
+    // Blur input to start going into manual focus mode
+    if (event.keyCode === DOWN_ARROW) {
+      event.target.blur();
+      goDown();
+    }
+  };
+
   render() {
     const { searchText } = this.state;
     return (
@@ -37,6 +49,8 @@ class SearchForm extends Component {
           autoFocus
           value={searchText}
           onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
+          ref={this.ref}
         />
 
         <Button raised className="search-button" type="submit">

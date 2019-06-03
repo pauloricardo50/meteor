@@ -1,18 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import Icon from '../Icon';
 import Link from '../Link';
 
 const IconLink = React.forwardRef((
-  { link, icon, text, children, className, stopPropagation = true, ...rest },
+  {
+    link,
+    icon,
+    text,
+    children,
+    className,
+    stopPropagation = true,
+    iconClassName,
+    ...rest
+  },
   ref,
 ) => (
   <Link
     to={link}
-    className="icon-link"
+    className={cx('icon-link', iconClassName)}
     onClick={(e) => {
-      console.log('stopPropagation:', stopPropagation);
       if (stopPropagation) {
         e.stopPropagation();
       }

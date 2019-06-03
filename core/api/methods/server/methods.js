@@ -18,6 +18,7 @@ import {
   addUserToDoc,
   throwDevError,
   setAdditionalDoc,
+  removeAdditionalDoc,
   migrateToLatest,
   updateDocument,
   updateDocumentUnset,
@@ -131,6 +132,11 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
 setAdditionalDoc.setHandler((context, { collection, ...rest }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return Services[collection].setAdditionalDoc(rest);
+});
+
+removeAdditionalDoc.setHandler((context, { collection, ...rest }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return Services[collection].removeAdditionalDoc(rest);
 });
 
 migrateToLatest.setHandler(({ userId }) => {

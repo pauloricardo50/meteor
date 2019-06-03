@@ -2,9 +2,10 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { setAdditionalDoc } from '../../../api';
+import { setAdditionalDoc, removeAdditionalDoc } from '../../../api/methods';
 import { AutoFormDialog } from '../../AutoForm2';
 import T from '../../Translation';
+import Button from '../../Button';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
@@ -72,9 +73,24 @@ const AdditionalDocModifier = ({
           ...object,
         })
       }
-      autoFieldProps={{
-        labels: { label: 'Nom du document' },
-      }}
+      autoFieldProps={{ labels: { label: 'Nom du document' } }}
+      renderAdditionalActions={({ closeDialog, setDisableActions }) => (
+        <Button
+          onClick={() => {
+            setDisableActions(true);
+            return removeAdditionalDoc.run({
+              collection,
+              id: docId,
+              additionalDocId: additionalDoc.id,
+            })
+              .then(closeDialog)
+              .finally(() => setDisableActions(false));
+          }}
+          error
+        >
+          <T id="general.delete" />
+        </Button>
+      )}
     />
   ) : null);
 

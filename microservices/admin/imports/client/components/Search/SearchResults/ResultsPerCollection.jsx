@@ -50,7 +50,13 @@ const getPropertyInfo = ({
   ),
 });
 
-const getUserInfo = ({ roles, createdAt, assignedEmployee, name, loans = [] }) => {
+const getUserInfo = ({
+  roles,
+  createdAt,
+  assignedEmployee,
+  name,
+  loans = [],
+}) => {
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.name
     : 'unassigned';
@@ -117,14 +123,19 @@ const ResultsPerCollection = ({ results, collection, closeSearch }) => (
       );
 
       return (
-        <ListItem button divider key={_id}>
-          <Link to={`/${collection}/${_id}`} className="link">
-            <ListItemText
-              onClick={closeSearch}
-              primary={primary}
-              secondary={secondary}
-            />
-          </Link>
+        <ListItem
+          button
+          divider
+          key={_id}
+          component={Link}
+          className="focusable-result"
+          to={`/${collection}/${_id}`}
+        >
+          <ListItemText
+            onClick={closeSearch}
+            primary={primary}
+            secondary={secondary}
+          />
         </ListItem>
       );
     })}
