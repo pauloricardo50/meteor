@@ -1,4 +1,3 @@
-import { Mongo } from 'meteor/mongo';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
