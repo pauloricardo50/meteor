@@ -223,6 +223,16 @@ class CollectionService {
       },
     });
   }
+
+  removeAdditionalDoc({ id: docId, additionalDocId }) {
+    const { additionalDocuments = [] } = this.get(docId);
+    return this._update({
+      id: docId,
+      object: {
+        additionalDocuments: additionalDocuments.filter(({ id }) => id !== additionalDocId),
+      },
+    });
+  }
 }
 
 export default CollectionService;
