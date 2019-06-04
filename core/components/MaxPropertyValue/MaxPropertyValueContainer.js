@@ -10,12 +10,12 @@ export const STATE = {
   DONE: 'DONE',
 };
 
-const getState = ({ borrowers, maxPropertyValue }) => {
+const getState = ({ borrowers, maxPropertyValue, maxPropertyValueExists }) => {
   if (!Calculator.canCalculateSolvency({ borrowers })) {
     return STATE.MISSING_INFOS;
   }
 
-  if (!maxPropertyValue) {
+  if (!maxPropertyValue && !maxPropertyValueExists) {
     return STATE.EMPTY;
   }
 
@@ -35,12 +35,17 @@ export default compose(
   withState('canton', 'setCanton', getInitialCanton),
   withState('loading', 'setLoading', null),
   withProps(({
-    loan: { _id: loanId, borrowers = [], maxPropertyValue },
+    loan: {
+      _id: loanId,
+      borrowers = [],
+      maxPropertyValue,
+      maxPropertyValueExists,
+    },
     setLoading,
     setCanton,
     canton,
   }) => ({
-    state: getState({ borrowers, maxPropertyValue }),
+    state: getState({ borrowers, maxPropertyValue, maxPropertyValueExists }),
     recalculate: () => {
       setLoading(true);
       return setMaxPropertyValueWithoutBorrowRatio

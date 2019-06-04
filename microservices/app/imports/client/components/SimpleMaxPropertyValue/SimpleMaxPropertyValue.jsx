@@ -12,11 +12,19 @@ import MaxPropertyValueContainer, {
   STATE,
 } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import { CANTONS } from 'core/api/constants';
+import SimpleMaxPropertyValueSignup from './SimpleMaxPropertyValueSignup';
 
 type SimpleMaxPropertyValueProps = {};
 
 export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
-  const { blue, state, onChangeCanton, canton: cantonValue, loading } = props;
+  const {
+    blue,
+    state,
+    onChangeCanton,
+    canton: cantonValue,
+    loading,
+    loan,
+  } = props;
 
   if (loading) {
     return (
@@ -66,10 +74,15 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
     );
   }
 
+  if (loan.maxPropertyValueExists) {
+    return <SimpleMaxPropertyValueSignup />;
+  }
+
   return (
     <div className={cx('simple-max-property-value', { blue })}>
       <MaxPropertyValueResults {...props} />
     </div>
   );
 };
+
 export default MaxPropertyValueContainer(SimpleMaxPropertyValue);

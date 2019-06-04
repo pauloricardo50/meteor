@@ -11,11 +11,18 @@ userLoan.expose({
       SecurityService.loans.checkAnonymousLoan(params.loanId);
     }
   },
-  embody: {
-    $filter({ filters, params }) {
+  embody(body, embodyParams) {
+    body.$filter = ({ filters, params }) => {
       filters.userId = params.userId;
       filters._id = params.loanId;
-    },
+    };
+
+    // FIXME: https://github.com/cult-of-coders/grapher/pull/363
+    if (!embodyParams.userId) {
+      body.maxPropertyValue = 0;
+    } else {
+      body.maxPropertyValueExists = 0;
+    }
   },
   validateParams: { loanId: Match.Maybe(String), userId: Match.Maybe(String) },
 });

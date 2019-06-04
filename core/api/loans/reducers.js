@@ -40,4 +40,9 @@ Loans.addReducers({
     reduce: ({ properties = [] }) =>
       properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
   },
+  maxPropertyValueExists: {
+    body: { maxPropertyValue: { date: 1 } },
+    reduce: ({ maxPropertyValue }) =>
+      !!(maxPropertyValue && maxPropertyValue.date),
+  },
 });
