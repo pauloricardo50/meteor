@@ -9,10 +9,17 @@ const getValue = (displayZero, value, currency) => {
   }
 
   if (value !== 0 && !value) {
-    return currency ? 0 : 'CHF 0';
+    return currency ? 0 : <>CHF&nbsp;0</>;
   }
 
-  return currency ? `CHF ${toMoney(value)}` : toMoney(value);
+  return currency ? (
+    <>
+      CHF&nbsp;
+      {toMoney(value)}
+    </>
+  ) : (
+    toMoney(value)
+  );
 };
 
 // The Intl standard for CHF is messed up, and display the currency after the
