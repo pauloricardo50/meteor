@@ -91,8 +91,10 @@ const mergeBody = (body, embody) => {
   mergeDeep(body, embody);
 
   body.$filter = (...args) => {
-    if (bodyFilter && overrideFilter) {
+    if (bodyFilter) {
       bodyFilter(...args);
+    }
+    if(overrideFilter){
       overrideFilter(...args);
     }
     defaultFilter(...args);
