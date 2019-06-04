@@ -59,14 +59,22 @@ const getQuery = (collectionName) => {
   }
 };
 
+const applyFilters = (filterOptions) => {
+  if (Object.keys(filterOptions).length === 0) {
+    return {};
+  }
+
+  return filterOptions;
+};
+
 const setTotalCount = (props) => {
-  const { collectionName, updateTotalCount } = props;
-  getQuery(collectionName).query.getCount((err, result) => {
+  const { collectionName, updateTotalCount, filterOptions } = props;
+  getQuery(collectionName).query.clone({...applyFilters(filterOptions)}).getCount((err, result) => {
     updateTotalCount(result);
   });
 };
 
-const getQueryLimit = showMoreCount =>  PAGINATION_AMOUNT * (showMoreCount + 1);
+const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
 
 export const withTotalCountState = withState(
   'totalCount',
@@ -91,13 +99,6 @@ export const withSetTotalCountLifecycle = lifecycle({
   },
 });
 
-const applyFilters = (filterOptions) => {
-  if (Object.keys(filterOptions).length === 0) {
-    return {};
-  }
-
-  return filterOptions;
-};
 
 export const withSideNavQuery = withSmartQuery({
   query: ({ collectionName }) => getQuery(collectionName).query,
