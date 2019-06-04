@@ -11,6 +11,8 @@ const defaultParams = {
   $sort: Match.Maybe(Object),
   $skip: Match.Maybe(Number),
   $limit: Match.Maybe(Number),
+  _id: Match.Maybe(String),
+  _userId: Match.Maybe(String),
 };
 
 const defaultFilter = ({ filters, params: { _id } }) => {
@@ -19,20 +21,11 @@ const defaultFilter = ({ filters, params: { _id } }) => {
   }
 };
 
-export const defaultQueryBody = {
-  firewall(userId, params) {
-    Security.checkUserIsAdmin(userId);
-  },
-  validateParams: {
-    _id: Match.Maybe(String),
-    ...defaultParams,
-  },
-};
 
 const getValidateParams = overrides =>
   (overrides.validateParams
-    ? { ...defaultQueryBody.validateParams, ...overrides.validateParams }
-    : defaultQueryBody.validateParams);
+    ? { ...defaultParams, ...overrides.validateParams }
+    : defaultParams);
 
 const addSort = (body, params) => {
   const { $sort } = params;
@@ -56,7 +49,7 @@ const addLimit = (body, params) => {
     const { $options: { limit } = {} } = body;
     body.$options = {
       ...body.$options,
-      limit: limit ? Math.min($limit, limit) : limit,
+      limit: limit ? Math.min($limit, limit) : $limit,
     };
   }
 };
@@ -94,7 +87,7 @@ const mergeBody = (body, embody) => {
     if (bodyFilter) {
       bodyFilter(...args);
     }
-    if(overrideFilter){
+    if (overrideFilter) {
       overrideFilter(...args);
     }
     defaultFilter(...args);
@@ -114,10 +107,23 @@ const getEmbody = overrides =>
     addOptions(body, params);
   };
 
+const getFirewall = overrides => [
+  (userId, params) => {
+    params._userId = userId;
+  },
+  (userId, params) => {
+    if (!overrides.firewall) {
+      Security.checkUserIsAdmin(userId);
+    } else {
+      overrides.firewall(userId, params);
+    }
+  },
+];
+
 export const exposeQuery = (query, overrides = {}) => {
   query.expose({
-    ...defaultQueryBody,
     ...overrides,
+    firewall: getFirewall(overrides),
     embody: getEmbody(overrides),
     validateParams: getValidateParams(overrides),
   });

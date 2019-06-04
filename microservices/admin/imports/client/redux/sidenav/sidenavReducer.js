@@ -1,3 +1,4 @@
+import { defaultFilterOptions } from 'imports/client/layouts/AdminLayout/AdminSideNav/DetailSideNavFilters/filterOptions';
 import * as sidenavTypes from './sidenavTypes';
 import { defaultSortOption } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavSort/sortOptions';
 
@@ -5,7 +6,7 @@ export const initialState = {
   showDetail: false,
   collectionName: undefined,
   showMoreCount: 0,
-  filters: {},
+  filters: defaultFilterOptions,
   sortOption: defaultSortOption,
 };
 

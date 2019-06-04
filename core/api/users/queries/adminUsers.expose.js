@@ -8,7 +8,10 @@ import { ROLES } from '../../constants';
 
 exposeQuery(query, {
   embody: {
-    $filter({ filters, params: { assignedTo, roles, _id, admins } }) {
+    $filter({
+      filters,
+      params: { assignedTo, roles, _id, admins, assignedToMe, _userId },
+    }) {
       if (_id) {
         filters._id = _id;
       }
@@ -30,6 +33,10 @@ exposeQuery(query, {
           filters.roles = { $in: [ROLES.ADMIN] };
         }
       }
+
+      if (assignedToMe) {
+        filters.assignedEmployeeId = _userId;
+      }
     },
   },
   validateParams: {
@@ -37,5 +44,6 @@ exposeQuery(query, {
     assignedTo: Match.Maybe(String),
     roles: Match.Maybe([String]),
     admins: Match.Maybe(Boolean),
+    assignedToMe: Match.Maybe(Boolean),
   },
 });

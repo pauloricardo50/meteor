@@ -66,7 +66,7 @@ const setTotalCount = (props) => {
   });
 };
 
-const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
+const getQueryLimit = showMoreCount =>  PAGINATION_AMOUNT * (showMoreCount + 1);
 
 export const withTotalCountState = withState(
   'totalCount',
@@ -91,12 +91,22 @@ export const withSetTotalCountLifecycle = lifecycle({
   },
 });
 
+const applyFilters = (filterOptions) => {
+  if (Object.keys(filterOptions).length === 0) {
+    return {};
+  }
+
+  return filterOptions;
+};
+
 export const withSideNavQuery = withSmartQuery({
   query: ({ collectionName }) => getQuery(collectionName).query,
-  params: ({ showMoreCount, collectionName }) => ({
-    limit: getQueryLimit(showMoreCount),
-    skip: 0,
+  params: ({ showMoreCount, collectionName, sortOption, filterOptions }) => ({
+    $limit: getQueryLimit(showMoreCount),
+    $skip: 0,
     $body: getQuery(collectionName).body,
+    $sort: { [sortOption.field]: sortOption.order },
+    ...applyFilters(filterOptions),
   }),
   queryOptions: { reactive: false },
 });
@@ -110,6 +120,5 @@ export default compose(
   withSetTotalCountLifecycle,
   withSideNavQuery,
   withIsEndProp,
-  withDataFilterAndSort,
   withRouter,
 );

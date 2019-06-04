@@ -8,14 +8,13 @@ import {
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
-import { ORDER } from 'core/utils/sortArrayOfObjects';
 import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 
 const createdAtSortOption = {
   label: <T id="TasksTable.createdAt" />,
   value: {
     field: 'createdAt',
-    order: ORDER.DESC,
+    order: -1,
   },
 };
 
@@ -23,7 +22,7 @@ const updateAtSortOption = {
   label: <T id="TasksTable.updatedAt" />,
   value: {
     field: 'updatedAt',
-    order: ORDER.DESC,
+    order: -1,
   },
 };
 
