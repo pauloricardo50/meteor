@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 
-import { BasePromotionSchema } from '../../../api/promotions/schemas/PromotionSchema';
-import { promotionUpdate } from '../../../api';
-import { AutoFormDialog } from '../../AutoForm2';
-import T from '../../Translation';
+import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
+import { promotionUpdate } from '../../../../api';
+import { AutoFormDialog } from '../../../AutoForm2';
+import T from '../../../Translation';
 
 type PromotionModifierProps = {};
 

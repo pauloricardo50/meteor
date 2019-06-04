@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import cx from 'classnames';
 
 import T from '../Translation';
 
@@ -13,12 +13,7 @@ const renderLabel = ({ label, noIntl, intlValues }) => {
 };
 
 const RecapSimple = ({ array, noScale, className }) => (
-  <div
-    className={classnames(
-      'result animated fadeIn no-responsive-typo-m',
-      className,
-    )}
-  >
+  <div className={cx('result animated fadeIn no-responsive-typo-m', className)}>
     {array.map((
       {
         hide,
@@ -33,6 +28,7 @@ const RecapSimple = ({ array, noScale, className }) => (
         spacingTop,
         value,
         intlValues,
+        className: itemClassName,
       },
       index,
     ) => {
@@ -46,7 +42,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       if (title) {
         return (
           <h4
-            className="text-center"
+            className={cx('text-center', itemClassName)}
             {...props}
             key={index}
             style={labelStyle}
@@ -57,7 +53,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       }
       return (
         <div
-          className={classnames('fixed-size recap-item', {
+          className={cx('fixed-size recap-item', {
             'no-scale': noScale,
             bold,
           })}

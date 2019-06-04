@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import ZipAutoComplete from 'core/components/ZipAutoComplete';
@@ -42,6 +42,7 @@ const inputSwitch = (childProps, index, parentProps) => {
     component,
     componentProps,
     height,
+    className = '',
   } = childProps.inputProps;
 
   switch (type) {
@@ -65,13 +66,13 @@ const inputSwitch = (childProps, index, parentProps) => {
     );
   case 'h3':
     return (
-      <h3 style={styles.subtitle} key={index}>
+      <h3 className={className} style={styles.subtitle} key={index}>
         {label}
       </h3>
     );
   case 'h2':
     return (
-      <h2 style={styles.subtitle} key={index}>
+      <h2 className={className} style={styles.subtitle} key={index}>
         {label}
       </h2>
     );
@@ -163,8 +164,17 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   return inputSwitch(childProps, index, parentProps);
 };
 
-const AutoForm = ({ formClasses, showDisclaimer, children, ...props }) => (
-  <form className={formClasses} onSubmit={e => e.preventDefault()}>
+const AutoForm = ({
+  formClasses,
+  className,
+  showDisclaimer,
+  children,
+  ...props
+}) => (
+  <form
+    className={cx(formClasses, className)}
+    onSubmit={e => e.preventDefault()}
+  >
     {props.inputs.map(makeMapInputs(props))}
     {children}
     {showDisclaimer && (

@@ -2,7 +2,7 @@
 import React from 'react';
 
 import Button from 'core/components/Button';
-import T from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
 import ClickToEditField from 'core/components/ClickToEditField';
@@ -12,7 +12,6 @@ import {
   PROMOTION_STATUS,
 } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
-import { toMoney } from 'core/utils/conversionFunctions';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
@@ -58,12 +57,12 @@ export const AppPromotionLotPage = ({
         <T id="general.back" />
       </Button>
 
-      <div className="card1 app-promotion-option-page">
+      <div className="card1 app-promotion-lot-page">
         <h1 style={{ marginBottom: '4px' }}>
           {name}
-          {' '}
-- CHF
-          {toMoney(promotionLot.value)}
+          {' -'}
+          &nbsp;
+          <Money value={promotionLot.value} />
           &nbsp;
           <StatusLabel
             status={reducedStatus}

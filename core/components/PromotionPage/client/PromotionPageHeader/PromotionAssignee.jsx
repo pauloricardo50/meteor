@@ -3,9 +3,9 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import query from 'core/api/users/queries/adminUsers';
-import { withSmartQuery, promotionUpdate } from '../../../api';
-import AutoForm, { CustomAutoField } from '../../AutoForm2';
+import query from '../../../../api/users/queries/adminUsers';
+import { withSmartQuery, promotionUpdate } from '../../../../api';
+import AutoForm, { CustomAutoField } from '../../../AutoForm2';
 
 type PromotionAssigneeProps = {};
 

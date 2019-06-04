@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import cx from 'classnames';
 
 import AdditionalDocAdder from './AdditionalDocAdder';
 import {
@@ -48,9 +49,9 @@ const documentsToHide = ({ doc, collection, loan, id }) => {
 };
 
 const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
-  const { collection, loan, doc } = props;
+  const { collection, loan, doc, className } = props;
   return (
-    <div className="single-file-tab">
+    <div className={cx('single-file-tab', className)}>
       {Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}

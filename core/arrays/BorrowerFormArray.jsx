@@ -152,6 +152,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       id: 'incomeAndExpenses',
       ignore: true,
       required: false,
+      className: 'v-align-incomeAndExpenses',
     },
     { id: 'salary', type: 'textInput', money: true },
     { id: 'netSalary', type: 'textInput', money: true },
@@ -228,6 +229,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       id: 'fortune',
       ignore: true,
       required: false,
+      className: 'v-align-fortune',
     },
     { id: 'bankFortune', type: 'textInput', money: true },
     {
@@ -261,6 +263,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       id: 'insurance',
       required: false,
       ignore: true,
+      className: 'v-align-insurance',
     },
     makeArrayOfObjectsInput('insurance2'),
     makeArrayOfObjectsInput('bank3A'),

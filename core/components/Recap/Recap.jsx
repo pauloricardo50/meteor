@@ -1,6 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import RecapSimple from './RecapSimple';
 import {
@@ -33,10 +35,10 @@ const arraySwitch = (props) => {
   }
 };
 
-const Recap = (props) => {
+const Recap = ({ className, ...props }) => {
   const array = props.array || arraySwitch(props);
   return (
-    <div className="validator recap">
+    <div className={cx('validator recap', className)}>
       <RecapSimple {...props} array={array} />
     </div>
   );

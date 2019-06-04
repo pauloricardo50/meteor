@@ -51,7 +51,7 @@ class FileService {
 
   formatFile = (file) => {
     let fileName = file.name;
-    if (fileName) {
+    if (!fileName) {
       const keyParts = file.Key.split('/');
       fileName = keyParts[keyParts.length - 1];
     }
