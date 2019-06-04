@@ -16,6 +16,7 @@ export default function areInputsEqual(
   if (
     newInputs.length === 1
     && typeof newInputs[0] === 'object'
+    && typeof lastInputs[0] === 'object'
     && newInputs[0] !== null
     && lastInputs[0] !== null
   ) {
