@@ -4,36 +4,38 @@ import mergeDeep from 'meteor/cultofcoders:grapher/lib/namedQuery/expose/lib/mer
 import { Meteor } from 'meteor/meteor';
 import Security from '../security';
 
-const defaultParams = {
-  $body: Match.Maybe(Object),
-  limit: Match.Maybe(Number),
-  skip: Match.Maybe(Number),
-  $sort: Match.Maybe(Object),
-  $skip: Match.Maybe(Number),
-  $limit: Match.Maybe(Number),
-  _id: Match.Maybe(String),
-  _userId: Match.Maybe(String),
+const defaultParams = (options) => {
+  const { allowFilterById = false } = options;
+  return {
+    $body: Match.Maybe(Object),
+    limit: Match.Maybe(Number),
+    skip: Match.Maybe(Number),
+    $sort: Match.Maybe(Object),
+    $skip: Match.Maybe(Number),
+    $limit: Match.Maybe(Number),
+    _userId: Match.Maybe(Match.OneOf(String, null)),
+    ...(allowFilterById ? { _id: Match.Maybe(String) } : {}),
+  };
 };
 
-const defaultFilter = ({ filters, params: { _id } }) => {
-  if (_id) {
+const defaultFilter = options => ({ filters, params: { _id } }) => {
+  const { allowFilterById = false } = options;
+  if (allowFilterById && _id) {
     filters._id = _id;
   }
 };
 
-
-const getValidateParams = overrides =>
-  (overrides.validateParams
-    ? { ...defaultParams, ...overrides.validateParams }
-    : defaultParams);
+const getValidateParams = ({ validateParams = {} } = {}, options) => ({
+  ...defaultParams(options),
+  ...validateParams,
+});
 
 const addSort = (body, params) => {
   const { $sort } = params;
-  if ($sort) {
-    body.$options = { ...body.$options, sort: $sort };
-  } else if ($sort === null) {
-    body.$options = { ...body.$options, sort: null };
-  }
+  body.$options = {
+    ...body.$options,
+    ...($sort !== undefined ? { sort: $sort } : {}),
+  };
 };
 
 const addSkip = (body, params) => {
@@ -65,7 +67,7 @@ const addOptions = (body, params) => {
   addPaginate(body);
 };
 
-const mergeBody = (body, embody) => {
+const mergeBody = (body, embody, options) => {
   if (typeof embody === 'function') {
     return;
   }
@@ -84,20 +86,23 @@ const mergeBody = (body, embody) => {
   mergeDeep(body, embody);
 
   body.$filter = (...args) => {
+    const { allowFilterById = false } = options;
+
     if (bodyFilter) {
       bodyFilter(...args);
     }
     if (overrideFilter) {
       overrideFilter(...args);
     }
-    defaultFilter(...args);
+
+    defaultFilter(options)(...args);
   };
 };
 
-const getEmbody = overrides =>
+const getEmbody = (overrides, options) =>
   function customEmbody(body, params) {
     if (overrides.embody) {
-      mergeBody(body, overrides.embody);
+      mergeBody(body, overrides.embody, options);
 
       if (typeof overrides.embody === 'function') {
         overrides.embody(body, params);
@@ -107,24 +112,20 @@ const getEmbody = overrides =>
     addOptions(body, params);
   };
 
-const getFirewall = overrides => [
-  (userId, params) => {
-    params._userId = userId;
-  },
-  (userId, params) => {
-    if (!overrides.firewall) {
-      Security.checkUserIsAdmin(userId);
-    } else {
-      overrides.firewall(userId, params);
-    }
-  },
-];
+const getFirewall = (overrides, options) => (userId, params) => {
+  params._userId = userId;
+  if (!overrides.firewall) {
+    Security.checkUserIsAdmin(userId);
+  } else {
+    overrides.firewall(userId, params);
+  }
+};
 
-export const exposeQuery = (query, overrides = {}) => {
+export const exposeQuery = (query, overrides = {}, options = {}) => {
   query.expose({
     ...overrides,
-    firewall: getFirewall(overrides),
-    embody: getEmbody(overrides),
-    validateParams: getValidateParams(overrides),
+    firewall: getFirewall(overrides, options),
+    embody: getEmbody(overrides, options),
+    validateParams: getValidateParams(overrides, options),
   });
 };

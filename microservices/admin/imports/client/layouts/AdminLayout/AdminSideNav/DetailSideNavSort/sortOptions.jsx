@@ -12,18 +12,12 @@ import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 
 const createdAtSortOption = {
   label: <T id="TasksTable.createdAt" />,
-  value: {
-    field: 'createdAt',
-    order: -1,
-  },
+  value: { field: 'createdAt', order: -1 },
 };
 
 const updateAtSortOption = {
   label: <T id="TasksTable.updatedAt" />,
-  value: {
-    field: 'updatedAt',
-    order: -1,
-  },
+  value: { field: 'updatedAt', order: -1 },
 };
 
 const loanSortOptions = [createdAtSortOption, updateAtSortOption];

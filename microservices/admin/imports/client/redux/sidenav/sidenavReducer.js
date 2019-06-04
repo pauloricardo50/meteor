@@ -1,4 +1,4 @@
-import { defaultFilterOptions } from 'imports/client/layouts/AdminLayout/AdminSideNav/DetailSideNavFilters/filterOptions';
+import { defaultFilterOptions } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavFilters/filterOptions';
 import * as sidenavTypes from './sidenavTypes';
 import { defaultSortOption } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavSort/sortOptions';
 

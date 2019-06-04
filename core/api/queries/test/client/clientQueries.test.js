@@ -1,9 +1,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import query1 from '../query1.test';
-import query2 from '../query2.test';
-import { testCollectionInsert } from '../metehodDefinitions.test';
+import { Meteor } from 'meteor/meteor';
+import { userLogin } from 'core/utils/testHelpers/index';
+import { query1, query2, query3, query4 } from '../collection.test';
+import { testCollectionInsert } from '../methodDefinitions.test';
 
 const insertTestData = (n) => {
   const promises = [...Array(n)].map((_, index) =>
@@ -12,29 +13,47 @@ const insertTestData = (n) => {
       name: `test${index % 4}`,
       value: index,
     }));
-  return Promise.all(promises);
+  return Promise.all(promises).then(() => ({}));
 };
 
-const insertAndFetchTestData = (n, params = {}) =>
-  insertTestData(n)
-    .then(() =>
+const fetchQueries = ({ queries = [], params, promise }) => {
+  queries.forEach((query) => {
+    promise = promise.then((items = {}) =>
       new Promise((resolve, reject) => {
-        query1.clone(params).fetch((err, query1Items) => {
+        query.clone(params).fetch((err, queryItems) => {
           if (err) {
             reject(err);
           }
-          resolve(query1Items);
-        });
-      }))
-    .then(query1Items =>
-      new Promise((resolve, reject) => {
-        query2.clone(params).fetch((err, query2Items) => {
-          if (err) {
-            reject(err);
-          }
-          resolve({ query1: query1Items, query2: query2Items });
+          resolve({ ...items, [query.name]: queryItems });
         });
       }));
+  });
+
+  return promise;
+};
+
+const insertAndFetchTestData = (
+  n,
+  params = {},
+  {
+    fetchQuery1 = true,
+    fetchQuery2 = true,
+    fetchQuery3 = false,
+    fetchQuery4 = false,
+  } = {},
+) => {
+  const promise = insertTestData(n);
+  return fetchQueries({
+    queries: [
+      fetchQuery1 && query1,
+      fetchQuery2 && query2,
+      fetchQuery3 && query3,
+      fetchQuery4 && query4,
+    ].filter(x => x),
+    params,
+    promise,
+  });
+};
 
 describe('exposeQuery', () => {
   beforeEach(() => {
@@ -43,10 +62,10 @@ describe('exposeQuery', () => {
 
   it('returns expected data without using overrides', () =>
     insertAndFetchTestData(100, {}).then((items) => {
-      expect(items.query1.length).to.equal(10);
-      expect(items.query1[0].value).to.equal(21);
-      expect(items.query2.length).to.equal(10);
-      expect(items.query2[0].value).to.equal(21);
+      expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+      expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+      expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+      expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
     }));
 
   context('returns expected data when overriding', () => {
@@ -54,89 +73,144 @@ describe('exposeQuery', () => {
       insertAndFetchTestData(100, {
         $body: { value: 1 },
       }).then((items) => {
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(21);
-        expect(items.query1[0].name).to.equal(undefined);
-        expect(items.query2.length).to.equal(10);
-        expect(items.query2[0].value).to.equal(21);
-        expect(items.query2[0].name).to.equal(undefined);
+        expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_1[0].name).to.equal(undefined);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_2[0].name).to.equal(undefined);
       }));
 
     it('the limit option', () =>
       insertAndFetchTestData(100, {
         $limit: 5,
       }).then((items) => {
-        expect(items.query1.length).to.equal(5);
-        expect(items.query1[0].value).to.equal(21);
-        expect(items.query2.length).to.equal(5);
-        expect(items.query2[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_1.length).to.equal(5);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(5);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
       }));
 
     it('the limit option greather than the server value', () =>
       insertAndFetchTestData(100, {
         $limit: 20,
       }).then((items) => {
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(21);
-        expect(items.query2.length).to.equal(10);
-        expect(items.query2[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
       }));
 
     it('the skip option', () =>
       insertAndFetchTestData(100, {
         $skip: 7,
       }).then((items) => {
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(28);
-        expect(items.query2.length).to.equal(10);
-        expect(items.query2[0].value).to.equal(28);
+        expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(28);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(28);
       }));
 
     it('the sort option', () =>
       insertAndFetchTestData(100, {
         $sort: { value: -1 },
       }).then((items) => {
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(99);
-        expect(items.query2.length).to.equal(10);
-        expect(items.query2[0].value).to.equal(99);
+        expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(99);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(99);
       }));
+
+    it('the sort option on multiple fields ', () =>
+      insertAndFetchTestData(50, {
+        $sort: { name: -1, value: -1 },
+      })
+        .then((items) => {
+          expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+          expect(items.named_query_TEST_QUERY_1[0].value).to.equal(47);
+          expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+          expect(items.named_query_TEST_QUERY_2[0].value).to.equal(47);
+        })
+        .then(() => {
+          resetDatabase();
+          return insertAndFetchTestData(50, {
+            $sort: { name: -1, value: 1 },
+          });
+        })
+        .then((items) => {
+          expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+          expect(items.named_query_TEST_QUERY_1[0].value).to.equal(23);
+          expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+          expect(items.named_query_TEST_QUERY_2[0].value).to.equal(23);
+        }));
   });
+
+  it('throws when client tries to filter by _id when it is not allowed', () =>
+    insertAndFetchTestData(100, { _id: 'test50' }, { fetchQuery2: false })
+      .then(() => {
+        throw new Meteor.Error('Test should throw');
+      })
+      .catch(error => expect(error.message).to.contain('Match failed')));
 
   describe('returns expected data when using filters', () => {
     it('on client only', () =>
       insertAndFetchTestData(100, {
         name: 'test3',
       }).then((items) => {
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(23);
-        expect(items.query2.length).to.equal(10);
-        expect(items.query2[0].value).to.equal(23);
+        expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(23);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(23);
       }));
 
     it('on server only', () =>
-      insertAndFetchTestData(100, {
-        _id: 'test50',
-      }).then((items) => {
-        // _id filter does not apply because embody is a function in query1
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(21);
-
-        // It does apply here since embody is an object in query2
-        expect(items.query2.length).to.equal(1);
-        expect(items.query2[0].value).to.equal(50);
+      insertAndFetchTestData(
+        100,
+        {
+          _id: 'test50',
+        },
+        { fetchQuery1: false },
+      ).then((items) => {
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(1);
+        expect(items.named_query_TEST_QUERY_2[0].value).to.equal(50);
       }));
 
     it('on client and server', () =>
-      insertAndFetchTestData(100, {
-        name: 'test3',
-        _id: 'test50',
-      }).then((items) => {
-        expect(items.query1.length).to.equal(10);
-        expect(items.query1[0].value).to.equal(23);
-
+      insertAndFetchTestData(
+        30,
+        {
+          name: 'test3',
+          _id: 'test50',
+        },
+        { fetchQuery1: false },
+      ).then((items) => {
         // Name and _id filters apply in query2, resulting in an empty array of results
-        expect(items.query2.length).to.equal(0);
+        expect(items.named_query_TEST_QUERY_2.length).to.equal(0);
       }));
   });
+
+  it('uses default firewall if not overriden', () =>
+    insertAndFetchTestData(
+      30,
+      {},
+      { fetchQuery1: false, fetchQuery2: false, fetchQuery3: true },
+    )
+      .then(() => {
+        throw new Meteor.Error('Test should throw');
+      })
+      .catch(error => expect(error.message).to.contain('NOT_AUTHORIZED')));
+
+  it('injects _userId in params', () =>
+    userLogin({})
+      .then(() =>
+        insertAndFetchTestData(
+          30,
+          {},
+          { fetchQuery1: false, fetchQuery2: false, fetchQuery4: true },
+        ))
+      .then((items) => {
+        const userId = Meteor.userId();
+        items.named_query_TEST_QUERY_4.forEach(({ _userId }) =>
+          expect(_userId).to.equal(userId));
+      }));
 });

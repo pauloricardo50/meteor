@@ -21,10 +21,8 @@ const relevantLoansOnlyFilter = {
   value: { relevantOnly: true },
 };
 
-export const appendFilters = filterArray =>
-  (filterArray
-    ? filterArray.reduce((filters, filter) => ({ ...filters, ...filter }), {})
-    : {});
+export const appendFilters = (filterArray = []) =>
+  filterArray.reduce((filters, filter) => ({ ...filters, ...filter }), {});
 
 const filterIncludedInFilters = (filter, filterArray) =>
   filterArray.find(filterValue => isEqual(filterValue, filter));

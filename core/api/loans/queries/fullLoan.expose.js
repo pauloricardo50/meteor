@@ -1,4 +1,4 @@
 import { exposeQuery } from '../../queries/queryHelpers';
 import query from './fullLoan';
 
-exposeQuery(query);
+exposeQuery(query, {}, { allowFilterById: true });
