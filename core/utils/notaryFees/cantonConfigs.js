@@ -32,10 +32,9 @@ export const GE = {
   landRegistryMortgageNoteTax: ({ mortgageNoteIncrease }) =>
     mortgageNoteIncrease * cantons.GE.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
   additionalFees: () => cantons.GE.ADDITIONAL_FEES * (1 + VAT),
-  buyersContractDeductions: ({ residenceType, propertyValue, transferTax }) =>
-    (isCasatax({ residenceType, propertyValue })
-      ? Math.min(cantons.GE.CASATAX_PROPERTY_DEDUCTION, transferTax)
-      : 0),
+  buyersContractDeductions: ({ residenceType, propertyValue, transferTax }) => (isCasatax({ residenceType, propertyValue })
+    ? Math.min(cantons.GE.CASATAX_PROPERTY_DEDUCTION, transferTax)
+    : 0),
   mortgageNoteDeductions: ({
     residenceType,
     propertyValue,

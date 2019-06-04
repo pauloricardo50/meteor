@@ -125,6 +125,20 @@ describe('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
       expect(fees.buyersContractFees.total).to.equal(28346.5);
     });
+
+    it('does not go into negatives for constructions', () => {
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
+      loan.structure.property.value = 0;
+      loan.structure.property.landValue = 231000;
+      loan.structure.property.constructionValue = 263810;
+      loan.structure.property.additionalMargin = 123190;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+      expect(fees.buyersContractFees.total).to.equal(17730.45);
+      expect(Math.round(fees.deductions.buyersContractDeductions)).to.equal(Math.round(fees.buyersContractFees.propertyRegistrationTax
+            + fees.buyersContractFees.propertyConstructionTax));
+    });
   });
 
   describe('VD', () => {
@@ -167,9 +181,21 @@ describe('NotaryFeesCalculator', () => {
         propertyValue: 1000000,
         mortgageNoteIncrease: 800000,
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      }).total;
+      });
 
-      expect(notaryFees).to.equal(32258.1);
+      expect(notaryFees.total).to.equal(32258.1);
+    });
+
+    it('should work for unknown cantons', () => {
+      calc = new NotaryFeesCalculator({ canton: 'XX' });
+
+      const notaryFees = calc.getNotaryFeesWithoutLoan({
+        propertyValue: 1000000,
+        mortgageNoteIncrease: 800000,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      });
+
+      expect(notaryFees.total).to.equal(50000);
     });
   });
 });
