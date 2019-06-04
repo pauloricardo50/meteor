@@ -111,7 +111,7 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
     )
     .then(credentials => ({
       ...cleanCredentials(credentials),
-      mongoPort: Number(cleanCredentials(credentials).ports.split(',')[1]),
+      mongoPort: Number(cleanCredentials(credentials).ports.split(',')[0]),
       sshId: SSH_ID,
       environment,
     }));
