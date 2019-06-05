@@ -7,7 +7,7 @@ import { PROPERTY_SOLVENCY } from 'core/api/constants';
 import LoanProgress from '../../LoanProgress/LoanProgress';
 import LoanProgressHeader from '../../LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
-import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
+import { proPropertyLoans } from '../../../api/loans/queries';
 import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';

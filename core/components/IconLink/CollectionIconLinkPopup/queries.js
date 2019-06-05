@@ -1,4 +1,4 @@
-import adminLoans from 'core/api/loans/queries/adminLoans';
+import { adminLoans } from 'core/api/loans/queries';
 import adminUsers from 'core/api/users/queries/adminUsers';
 import { adminBorrowers } from 'core/api/borrowers/queries';
 import adminProperties from 'core/api/properties/queries/adminProperties';

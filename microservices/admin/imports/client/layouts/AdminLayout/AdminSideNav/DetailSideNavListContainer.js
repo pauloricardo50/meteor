@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router-dom';
 import { withState, withProps, lifecycle, compose } from 'recompose';
 
-import adminLoans from 'core/api/loans/queries/adminLoans';
+import { adminLoans } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api';
 import {
   BORROWERS_COLLECTION,

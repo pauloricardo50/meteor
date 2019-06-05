@@ -7,7 +7,7 @@ import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 import { STEPS } from 'core/api/loans/loanConstants';
-import userLoansE2E from 'core/api/loans/queries/userLoansE2E';
+import { userLoansE2E } from 'core/api/loans/queries';
 import {
   createLoginToken,
   createEmailVerificationToken,

@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import organisationLoans from 'core/api/loans/queries/organisationLoans';
+import { organisationLoans } from 'core/api/loans/queries';
 import proOrganisation from 'core/api/organisations/queries/proOrganisation';
 
 export default compose(

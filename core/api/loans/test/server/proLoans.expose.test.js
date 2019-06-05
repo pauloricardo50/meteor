@@ -5,7 +5,7 @@ import SecurityService from 'core/api/security';
 import UserService from 'core/api/users/server/UserService';
 import QueryCacher from 'core/api/helpers/server/QueryCacher';
 import query from '../proLoans.test';
-import { getLoanIds } from '../../resolvers';
+import { getLoanIds } from '../../server/resolvers';
 
 query.expose({
   firewall(userId, params) {

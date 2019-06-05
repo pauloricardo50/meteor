@@ -7,7 +7,7 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
 import { loanDelete, loanUpdate, assignLoanToUser } from 'core/api';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import adminLoans from 'core/api/loans/queries/adminLoans';
+import { adminLoans } from 'core/api/loans/queries';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">

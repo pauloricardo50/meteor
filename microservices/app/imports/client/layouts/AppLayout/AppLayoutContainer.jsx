@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import userLoan from 'core/api/loans/queries/userLoan';
+import { userLoans } from 'core/api/loans/queries';
 import appUser from 'core/api/users/queries/appUser';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
@@ -57,7 +57,7 @@ const withAppUser = withSmartQuery({
 });
 
 const withUserLoan = withSmartQuery({
-  query: userLoan,
+  query: userLoans,
   params: ({ loanId }) => ({ loanId }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',

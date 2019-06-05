@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import loansAssignedToAdmin from 'core/api/loans/queries/loansAssignedToAdmin';
+import { loansAssignedToAdmin } from 'core/api/loans/queries';
 import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
