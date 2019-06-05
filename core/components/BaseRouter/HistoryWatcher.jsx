@@ -16,7 +16,7 @@ export default class HistoryWatcher extends Component {
     this.loadPage(history.location.pathname);
     this.unlisten = history.listen(({ pathname }) => this.loadPage(pathname));
 
-    if (Meteor.isDevelopment) {
+    if (Meteor.isDevelopment && !(Meteor.isTest || Meteor.isAppTest)) {
       const userId = sessionStorage.getItem('dev_impersonate_userId');
       const authToken = sessionStorage.getItem('dev_impersonate_authToken');
       if (userId && authToken) {

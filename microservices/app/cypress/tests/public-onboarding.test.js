@@ -155,7 +155,7 @@ describe('Public onboarding', () => {
     });
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
-    cy.contains('CHF 1 500 000').should('exist');
+    cy.contains('1 500 000').should('exist');
     cy.contains('Je veux acquérir').click();
     cy.url().should('include', '/loans/');
 
@@ -164,7 +164,7 @@ describe('Public onboarding', () => {
 
     cy.setSelect('residenceType', 0);
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
-    cy.contains('CHF 1 500 000').should('exist');
+    cy.contains('1 500 000').should('exist');
   });
 
   it('should not display non-PRO properties', () => {
