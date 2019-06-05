@@ -1,14 +1,11 @@
 import { Mongo } from 'meteor/mongo';
+
 import SimpleSchema from 'simpl-schema';
-import GoogleMapsAutocompleteResults from 'core/components/GoogleMapsAutocomplete/GoogleMapsAutocompleteResults';
+
+import { Method } from '../../methods/methods';
 
 const TestCollection = new Mongo.Collection('collectionTest');
-
-const testCollectionSchema = new SimpleSchema({
-  value: Number,
-  name: String,
-});
-
+const testCollectionSchema = new SimpleSchema({ value: Number, name: String });
 TestCollection.attachSchema(testCollectionSchema);
 
 export default TestCollection;
@@ -54,4 +51,9 @@ export const query4 = TestCollection.createQuery('TEST_QUERY_4', {
   },
   value: 1,
   name: 1,
+});
+
+export const testCollectionInsert = new Method({
+  name: 'testCollectionInsert',
+  params: { value: Number, name: String, _id: String },
 });
