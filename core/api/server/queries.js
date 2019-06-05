@@ -1,4 +1,4 @@
-import '../borrowers/queries/exposures';
+import '../borrowers/server/exposures';
 import '../contacts/queries/exposures';
 import '../interestRates/queries/exposures';
 import '../irs10y/queries/exposures';

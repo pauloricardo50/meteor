@@ -1,6 +1,6 @@
 import { Match } from 'meteor/check';
 
-import borrowerSearch from '../borrowers/queries/borrowerSearch';
+import { borrowerSearch } from '../borrowers/queries';
 import loanSearch from '../loans/queries/loanSearch';
 import propertySearch from '../properties/queries/propertySearch';
 import userSearch from '../users/queries/userSearch';

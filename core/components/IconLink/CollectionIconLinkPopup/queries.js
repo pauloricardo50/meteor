@@ -1,6 +1,6 @@
 import adminLoans from 'core/api/loans/queries/adminLoans';
 import adminUsers from 'core/api/users/queries/adminUsers';
-import adminBorrowers from 'core/api/borrowers/queries/adminBorrowers';
+import {adminBorrowers} from 'core/api/borrowers/queries';
 import adminProperties from 'core/api/properties/queries/adminProperties';
 import adminOffers from 'core/api/offers/queries/adminOffers';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
