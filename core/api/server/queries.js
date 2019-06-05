@@ -1,5 +1,5 @@
 import '../borrowers/server/exposures';
-import '../contacts/queries/exposures';
+import '../contacts/server/exposures';
 import '../interestRates/queries/exposures';
 import '../irs10y/queries/exposures';
 import '../lenders/queries/exposures';

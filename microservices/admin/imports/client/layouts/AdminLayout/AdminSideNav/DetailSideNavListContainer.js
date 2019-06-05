@@ -3,7 +3,6 @@ import { withState, withProps, lifecycle, compose } from 'recompose';
 
 import adminLoans from 'core/api/loans/queries/adminLoans';
 import { withSmartQuery } from 'core/api';
-import withDataFilterAndSort from 'core/api/containerToolkit/withDataFilterAndSort';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -12,11 +11,11 @@ import {
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import adminPromotions from 'core/api/promotions/queries/adminPromotions';
-import adminContacts from 'core/api/contacts/queries/adminContacts';
+import { adminContacts } from 'core/api/contacts/queries';
 import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 import adminUsers from 'core/api/users/queries/adminUsers';
 import adminProperties from 'core/api/properties/queries/adminProperties';
-import {adminBorrowers} from 'core/api/borrowers/queries';
+import { adminBorrowers } from 'core/api/borrowers/queries';
 
 const PAGINATION_AMOUNT = 10;
 
