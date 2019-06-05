@@ -8,7 +8,7 @@ exposeQuery(
     firewall() {
       SecurityService.checkLoggedIn();
     },
-    embody: (query, params) => {
+    embody: (body, params) => {
       body.$filter = ({ filters, params: { organisationId } }) => {
         filters['organisationLink._id'] = organisationId;
       };
