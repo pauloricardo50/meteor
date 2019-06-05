@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import { Component } from 'react';
 import { matchPath } from 'react-router-dom';
 
@@ -5,6 +7,7 @@ import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { analyticsPage } from 'core/api/methods';
 
 import { getCookie, setCookie, parseCookies } from 'core/utils/cookiesHelpers';
+import { impersonate } from '../Impersonate/ImpersonatePage/ImpersonatePage';
 
 export default class HistoryWatcher extends Component {
   componentDidMount() {
@@ -12,6 +15,14 @@ export default class HistoryWatcher extends Component {
     this.generateTrackingId();
     this.loadPage(history.location.pathname);
     this.unlisten = history.listen(({ pathname }) => this.loadPage(pathname));
+
+    if (Meteor.isDevelopment) {
+      const userId = sessionStorage.getItem('dev_impersonate_userId');
+      const authToken = sessionStorage.getItem('dev_impersonate_authToken');
+      if (userId && authToken) {
+        impersonate({ userId, authToken });
+      }
+    }
   }
 
   componentWillUnmount() {
