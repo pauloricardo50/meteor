@@ -37,5 +37,5 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
   name: 1,
   organisations: { name: 1 },
   roles: 1,
-  $options: { limit: 5 },
+  $options: { limit: 5, sort: { createdAt: -1 } },
 });

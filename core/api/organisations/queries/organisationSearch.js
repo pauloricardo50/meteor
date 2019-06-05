@@ -12,6 +12,6 @@ export default Organisations.createQuery(
       );
     },
     name: 1,
-    $options: { sort: { name: 1 }, limit: 5 },
+    $options: { sort: { createdAt: -1 }, limit: 5 },
   },
 );
