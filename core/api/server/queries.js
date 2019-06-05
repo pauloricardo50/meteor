@@ -1,6 +1,6 @@
 import '../borrowers/server/exposures';
 import '../contacts/server/exposures';
-import '../interestRates/queries/exposures';
+import '../interestRates/server/exposures';
 import '../irs10y/queries/exposures';
 import '../lenders/queries/exposures';
 import '../lenderRules/queries/exposures';

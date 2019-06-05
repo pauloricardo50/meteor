@@ -1,9 +1,12 @@
-import { currentInterestRates } from '../../fragments';
-import InterestRates from '../interestRates';
+import {
+  currentInterestRates as currentInterestRatesFragment,
+  interestRates as interestRatesFragment,
+} from '../fragments';
+import InterestRates from '.';
 import {
   INTEREST_RATES_QUERIES,
   INTEREST_RATES,
-} from '../interestRatesConstants';
+} from './interestRatesConstants';
 
 const makeCheckIsRate = rates => type =>
   rates[type].rateLow && rates[type].rateHigh && rates[type].trend;
@@ -28,7 +31,7 @@ const getAverageRates = rates =>
     {},
   );
 
-export default InterestRates.createQuery(
+export const currentInterestRates = InterestRates.createQuery(
   INTEREST_RATES_QUERIES.CURRENT_INTEREST_RATES,
   {
     $postFilter(results) {
@@ -41,6 +44,14 @@ export default InterestRates.createQuery(
 
       return { rates: cleanedRates, averageRates, date: interestRates.date };
     },
-    ...currentInterestRates(),
+    ...currentInterestRatesFragment(),
+  },
+);
+
+export const interestRates = InterestRates.createQuery(
+  INTEREST_RATES_QUERIES.INTEREST_RATES,
+  {
+    ...interestRatesFragment(),
+    $options: { sort: { date: -1 } },
   },
 );

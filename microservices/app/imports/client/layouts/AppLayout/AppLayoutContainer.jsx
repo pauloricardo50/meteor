@@ -6,7 +6,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import userLoan from 'core/api/loans/queries/userLoan';
 import appUser from 'core/api/users/queries/appUser';
-import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
