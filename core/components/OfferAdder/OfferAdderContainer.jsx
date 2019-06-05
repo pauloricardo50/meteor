@@ -2,7 +2,7 @@ import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import loanLenders from '../../api/lenders/queries/loanLenders';
+import { loanLenders } from '../../api/lenders/queries';
 import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';

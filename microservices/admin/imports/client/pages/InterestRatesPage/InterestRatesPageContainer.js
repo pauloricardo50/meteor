@@ -5,7 +5,7 @@ import {
   interestRates,
   currentInterestRates,
 } from 'core/api/interestRates/queries';
-import irs10y from 'core/api/irs10y/queries/irs10y';
+import { irs10y } from 'core/api/irs10y/queries';
 
 export default compose(
   withSmartQuery({

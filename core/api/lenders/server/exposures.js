@@ -1,16 +1,17 @@
+import { exposeQuery } from 'core/api/queries/queryHelpers';
 import SecurityService from '../../security';
-import query from './loanLenders';
+import { loanLenders } from '../queries';
 
-query.expose({
+exposeQuery(loanLenders, {
   firewall(userId, { loanId }) {
     if (!SecurityService.isUserAdmin(userId)) {
       SecurityService.loans.isAllowedToUpdate(loanId);
     }
   },
-  embody: {
-    $filter({ filters, params }) {
+  embody: (body) => {
+    body.$filter = ({ filters, params }) => {
       filters['loanLink._id'] = params.loanId;
-    },
+    };
   },
   validateParams: { loanId: String },
 });

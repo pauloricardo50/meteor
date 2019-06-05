@@ -1,8 +1,8 @@
 import '../borrowers/server/exposures';
 import '../contacts/server/exposures';
 import '../interestRates/server/exposures';
-import '../irs10y/queries/exposures';
-import '../lenders/queries/exposures';
+import '../irs10y/server/exposures';
+import '../lenders/server/exposures';
 import '../lenderRules/queries/exposures';
 import '../loans/queries/exposures';
 import '../offers/queries/exposures';
