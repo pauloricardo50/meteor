@@ -405,7 +405,7 @@ class PromotionSecurity {
       user: { _id: 1 },
     });
     const anonymizer = makeLoanAnonymizer({ userId, promotionId });
-    if (anonymizer(loan).anonymous) {
+    if (anonymizer(loan).isAnonymized) {
       Security.handleUnauthorized("Vous n'avez pas accès à ce client");
     }
   }
