@@ -19,8 +19,11 @@ exposeQuery(
       // _id: Match.Maybe(String),
       hasRules: Match.Maybe(Boolean),
     },
-    embody: {
-      $filter({ filters, params: { features, tags, type, _id, hasRules } }) {
+    embody: (body, params) => {
+      body.$filter = ({
+        filters,
+        params: { features, tags, type, _id, hasRules },
+      }) => {
         if (_id) {
           filters._id = _id;
         }
@@ -32,8 +35,8 @@ exposeQuery(
         makeFilter({ param: features, field: 'features', filters });
         makeFilter({ param: tags, field: 'tags', filters });
         makeFilter({ param: type, field: 'type', filters });
-      },
-      $options: { sort: { name: 1 } },
+      };
+      body.$options = { sort: { name: 1 } };
     },
   },
   { allowFilterById: true },

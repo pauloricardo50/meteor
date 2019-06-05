@@ -5,10 +5,10 @@ exposeQuery(
   query,
   {
     validateParams: { adminId: String },
-    embody: {
-      $filter({ filters, params: { adminId } }) {
+    embody: (body, params) => {
+      body.$filter = ({ filters, params: { adminId } }) => {
         filters.assignedEmployeeId = adminId;
-      },
+      };
     },
   },
   { allowFilterById: true },

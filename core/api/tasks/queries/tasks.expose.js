@@ -6,8 +6,8 @@ import query from './tasks';
 exposeQuery(
   query,
   {
-    embody: {
-      $filter({
+    embody: (body, params) => {
+      body.$filter = ({
         filters,
         params: {
           assignedTo,
@@ -19,7 +19,7 @@ exposeQuery(
           user,
           docIds,
         },
-      }) {
+      }) => {
         if (assignedTo) {
           filters.assignedEmployeeId = assignedTo;
         }
@@ -55,7 +55,7 @@ exposeQuery(
         if (docIds) {
           filters.docId = { $in: docIds };
         }
-      },
+      };
     },
     validateParams: {
       assignedTo: Match.Maybe(String),

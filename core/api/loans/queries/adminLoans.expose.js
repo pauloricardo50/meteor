@@ -7,11 +7,11 @@ import { LOAN_STATUS } from '../loanConstants';
 exposeQuery(
   query,
   {
-    embody: {
-      $filter({
+    embody: (body, params) => {
+      body.$filter = ({
         filters,
         params: { _id, owned, name, _userId, assignedToMe, relevantOnly },
-      }) {
+      }) => {
         if (_id) {
           filters._id = _id;
         }
@@ -34,7 +34,7 @@ exposeQuery(
           };
           filters.anonymous = { $ne: true };
         }
-      },
+      };
     },
     validateParams: {
       // _id: Match.Maybe(String),

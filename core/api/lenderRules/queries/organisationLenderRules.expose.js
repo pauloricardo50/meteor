@@ -8,10 +8,10 @@ exposeQuery(
     firewall() {
       SecurityService.checkLoggedIn();
     },
-    embody: {
-      $filter({ filters, params: { organisationId } }) {
+    embody: (query, params) => {
+      body.$filter = ({ filters, params: { organisationId } }) => {
         filters['organisationLink._id'] = organisationId;
-      },
+      };
     },
     validateParams: { organisationId: String },
   },
