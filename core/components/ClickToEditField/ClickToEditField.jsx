@@ -63,6 +63,9 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           onKeyDown={this.handleKeyDown}
           {...inputProps}
         />
+        {typeof children === 'function'
+          ? children({ value: value || placeholder, isEditing })
+          : value || placeholder}
       </form>
     ) : (
       <div
@@ -78,7 +81,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
         }
       >
         {typeof children === 'function'
-          ? children(value || placeholder)
+          ? children({ value: value || placeholder, isEditing })
           : value || placeholder}
       </div>
     );
