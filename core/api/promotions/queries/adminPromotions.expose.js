@@ -1,4 +1,4 @@
 import { exposeQuery } from '../../queries/queryHelpers';
 import query from './adminPromotions';
 
-exposeQuery(query);
+exposeQuery(query, {}, { allowFilterById: true });

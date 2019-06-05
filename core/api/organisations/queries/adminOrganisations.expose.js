@@ -9,28 +9,35 @@ const makeFilter = ({ param, field, filters }) => {
   }
 };
 
-exposeQuery(query, {
-  validateParams: {
-    features: Match.Maybe(Match.OneOf(String, [String])),
-    tags: Match.Maybe(Match.OneOf(String, [String])),
-    type: Match.Maybe(Match.OneOf(String, [String])),
-    _id: Match.Maybe(String),
-    hasRules: Match.Maybe(Boolean),
-  },
-  embody: {
-    $filter({ filters, params: { features, tags, type, _id, hasRules } }) {
-      if (_id) {
-        filters._id = _id;
-      }
-
-      if (hasRules) {
-        filters.lenderRulesCount = { $gte: 1 };
-      }
-
-      makeFilter({ param: features, field: 'features', filters });
-      makeFilter({ param: tags, field: 'tags', filters });
-      makeFilter({ param: type, field: 'type', filters });
+exposeQuery(
+  query,
+  {
+    validateParams: {
+      features: Match.Maybe(Match.OneOf(String, [String])),
+      tags: Match.Maybe(Match.OneOf(String, [String])),
+      type: Match.Maybe(Match.OneOf(String, [String])),
+      // _id: Match.Maybe(String),
+      hasRules: Match.Maybe(Boolean),
     },
-    $options: { sort: { name: 1 } },
+    embody: (body, params) => {
+      body.$filter = ({
+        filters,
+        params: { features, tags, type, _id, hasRules },
+      }) => {
+        if (_id) {
+          filters._id = _id;
+        }
+
+        if (hasRules) {
+          filters.lenderRulesCount = { $gte: 1 };
+        }
+
+        makeFilter({ param: features, field: 'features', filters });
+        makeFilter({ param: tags, field: 'tags', filters });
+        makeFilter({ param: type, field: 'type', filters });
+      };
+      body.$options = { sort: { name: 1 } };
+    },
   },
-});
+  { allowFilterById: true },
+);

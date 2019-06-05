@@ -1,4 +1,4 @@
-import BorrowerService from 'core/api/borrowers/server/BorrowerService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import Security from '../Security';
 import { LoanSecurity } from './index';
 
