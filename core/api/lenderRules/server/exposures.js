@@ -1,9 +1,9 @@
 import SecurityService from '../../security';
 import { exposeQuery } from '../../queries/queryHelpers';
-import query from './organisationLenderRules';
+import { organisationLenderRules } from '../queries';
 
 exposeQuery(
-  query,
+  organisationLenderRules,
   {
     firewall() {
       SecurityService.checkLoggedIn();

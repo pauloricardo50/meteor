@@ -7,7 +7,7 @@ import memoizeOne from 'core/utils/memoizeOne';
 import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
 import { withSmartQuery } from '../api/containerToolkit';
 import Calculator, { Calculator as CalculatorClass } from '../utils/Calculator';
-import query from '../api/lenderRules/queries/organisationLenderRules';
+import { organisationLenderRules as query } from '../api/lenderRules/queries';
 
 const Context = React.createContext();
 const { Provider } = Context;

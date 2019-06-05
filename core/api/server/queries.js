@@ -3,7 +3,7 @@ import '../contacts/server/exposures';
 import '../interestRates/server/exposures';
 import '../irs10y/server/exposures';
 import '../lenders/server/exposures';
-import '../lenderRules/queries/exposures';
+import '../lenderRules/server/exposures';
 import '../loans/queries/exposures';
 import '../offers/queries/exposures';
 import '../organisations/queries/exposures';
