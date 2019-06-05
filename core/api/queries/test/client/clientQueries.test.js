@@ -63,7 +63,7 @@ describe('exposeQuery', () => {
   it('returns expected data without using overrides', () =>
     insertAndFetchTestData(100, {}).then((items) => {
       expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
-      expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+      expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
       expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
       expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
     }));
@@ -74,7 +74,7 @@ describe('exposeQuery', () => {
         $body: { value: 1 },
       }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
-        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         expect(items.named_query_TEST_QUERY_1[0].name).to.equal(undefined);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
@@ -86,7 +86,7 @@ describe('exposeQuery', () => {
         $limit: 5,
       }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(5);
-        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(5);
         expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
       }));
@@ -96,7 +96,7 @@ describe('exposeQuery', () => {
         $limit: 20,
       }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
-        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(21);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_2[0].value).to.equal(21);
       }));
@@ -106,7 +106,7 @@ describe('exposeQuery', () => {
         $skip: 7,
       }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
-        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(28);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(38);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_2[0].value).to.equal(28);
       }));
@@ -139,7 +139,7 @@ describe('exposeQuery', () => {
         })
         .then((items) => {
           expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
-          expect(items.named_query_TEST_QUERY_1[0].value).to.equal(23);
+          expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
           expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
           expect(items.named_query_TEST_QUERY_2[0].value).to.equal(23);
         }));
@@ -158,17 +158,19 @@ describe('exposeQuery', () => {
         name: 'test3',
       }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
-        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(23);
+        expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
+        items.named_query_TEST_QUERY_1.forEach(({ name }) =>
+          expect(name).to.equal('test3'));
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_2[0].value).to.equal(23);
+        items.named_query_TEST_QUERY_2.forEach(({ name }) =>
+          expect(name).to.equal('test3'));
       }));
 
     it('on server only', () =>
       insertAndFetchTestData(
         100,
-        {
-          _id: 'test50',
-        },
+        { _id: 'test50' },
         { fetchQuery1: false },
       ).then((items) => {
         expect(items.named_query_TEST_QUERY_2.length).to.equal(1);
@@ -205,12 +207,14 @@ describe('exposeQuery', () => {
       .then(() =>
         insertAndFetchTestData(
           30,
-          {},
+          { name: 'test3' },
           { fetchQuery1: false, fetchQuery2: false, fetchQuery4: true },
         ))
       .then((items) => {
         const userId = Meteor.userId();
-        items.named_query_TEST_QUERY_4.forEach(({ _userId }) =>
-          expect(_userId).to.equal(userId));
+        items.named_query_TEST_QUERY_4.forEach(({ _userId, name }) => {
+          expect(_userId).to.equal(userId);
+          expect(name).to.equal('test3');
+        });
       }));
 });

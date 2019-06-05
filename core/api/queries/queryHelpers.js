@@ -76,18 +76,18 @@ const mergeBody = (body, embody, options) => {
     throw new Meteor.Error('Embody cannot be null');
   }
 
-  const { $filter: bodyFilter } = body;
-  const { $filter: overrideFilter, $filters } = embody;
+  mergeDeep(body, embody);
+};
 
-  if ($filters) {
-    throw new Meteor.Error('Do not use $filters in a embody object. Use $filter instead, or use a embody function.');
+const addFilters = (body, embody, options) => {
+  const { $filter: bodyFilter } = body;
+  const { $filter: overrideFilter } = embody || {};
+
+  if (typeof embody === 'object' && overrideFilter) {
+    throw new Meteor.Error('Do not use $filter in a embody object. Use $filters instead, or use a embody function.');
   }
 
-  mergeDeep(body, embody);
-
   body.$filter = (...args) => {
-    const { allowFilterById = false } = options;
-
     if (bodyFilter) {
       bodyFilter(...args);
     }
@@ -108,6 +108,8 @@ const getEmbody = (overrides, options) =>
         overrides.embody(body, params);
       }
     }
+
+    addFilters(body, overrides.embody, options);
 
     addOptions(body, params);
   };

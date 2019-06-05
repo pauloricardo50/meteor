@@ -19,7 +19,7 @@ exposeQuery(query1, {
   // Embody function
   embody: (body, params) => {
     body.$options = { sort: { value: 1 }, limit: 10 };
-    body.$filters = { value: { $gt: 20 } };
+    body.$filters = { value: { $gt: 30 } };
   },
   validateParams: {
     name: Match.Maybe(String),
@@ -38,10 +38,7 @@ exposeQuery(
         sort: { value: 1 },
         limit: 10,
       },
-      // Must use a function, to not be overriden by defaultFilter
-      $filter: ({ filters, params }) => {
-        filters.value = { $gt: 20 };
-      },
+      $filters: { value: { $gt: 20 } },
     },
     validateParams: {
       name: Match.Maybe(String),
@@ -64,10 +61,7 @@ exposeQuery(
         sort: { value: 1 },
         limit: 10,
       },
-      // Must use a function, to not be overriden by defaultFilter
-      $filter: ({ filters, params }) => {
-        filters.value = { $gt: 20 };
-      },
+      $filters: { value: { $gt: 20 } },
     },
     validateParams: {
       name: Match.Maybe(String),
