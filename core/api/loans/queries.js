@@ -51,14 +51,6 @@ export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
   $options: { sort: { createdAt: -1 }, limit: 5 },
 });
 
-export const organisationLoans = Loans.createQuery(
-  LOAN_QUERIES.ORGANISATION_LOANS,
-  {
-    ...proLoansFragment(),
-    revenues: fullRevenues(),
-  },
-);
-
 // Sort this query properly so that the merge on the client succeeds
 export const proLoans = Loans.createQuery(LOAN_QUERIES.PRO_LOANS, () => {});
 

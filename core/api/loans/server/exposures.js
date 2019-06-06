@@ -12,7 +12,6 @@ import {
   fullLoan,
   loanSearch,
   proLoans,
-  organisationLoans,
   proPromotionLoans,
   proPropertyLoans,
   proReferredByLoans,
@@ -93,10 +92,18 @@ exposeQuery(
   {},
 );
 
-exposeQuery(
-  organisationLoans,
-  {
-    firewall(userId, params) {
+exposeQuery(proLoans, {
+  firewall(userId, params) {
+    const { userId: providedUserId, fetchOrganisationLoans } = params;
+    params.calledByUserId = userId;
+
+    if (SecurityService.isUserAdmin(userId) && providedUserId) {
+      params.userId = providedUserId;
+    } else {
+      params.userId = userId;
+    }
+
+    if (fetchOrganisationLoans) {
       if (params.organisationId) {
         SecurityService.checkUserIsAdmin(userId);
       } else {
@@ -111,27 +118,6 @@ exposeQuery(
 
         params.organisationId = organisations[0]._id;
       }
-    },
-    validateParams: { organisationId: Match.Maybe(String) },
-    embody: (body) => {
-      body.$filter = ({ filters, params: { organisationId } }) => {
-        filters['userCache.referredByOrganisationLink'] = organisationId;
-      };
-      body.user = { organistationLink: 1 };
-    },
-  },
-  {},
-);
-
-exposeQuery(proLoans, {
-  firewall(userId, params) {
-    const { userId: providedUserId } = params;
-    params.calledByUserId = userId;
-
-    if (SecurityService.isUserAdmin(userId) && providedUserId) {
-      params.userId = providedUserId;
-    } else {
-      params.userId = userId;
     }
 
     SecurityService.checkUserIsPro(userId);
@@ -141,6 +127,8 @@ exposeQuery(proLoans, {
     propertyId: Match.Maybe(Match.OneOf(String, Object)),
     userId: String,
     calledByUserId: String,
+    organisationId: Match.Maybe(String),
+    fetchOrganisationLoans: Match.Maybe(Boolean),
   },
 });
 

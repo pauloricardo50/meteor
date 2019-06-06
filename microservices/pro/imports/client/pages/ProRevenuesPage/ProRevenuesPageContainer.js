@@ -1,12 +1,13 @@
 import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { organisationLoans } from 'core/api/loans/queries';
+import { proLoans } from 'core/api/loans/queries';
 import proOrganisation from 'core/api/organisations/queries/proOrganisation';
 
 export default compose(
   withSmartQuery({
-    query: organisationLoans,
+    query: proLoans,
+    params: { fetchOrganisationLoans: true },
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),

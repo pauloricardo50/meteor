@@ -10,9 +10,9 @@ import {
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
-import { proLoans } from '../../fragments';
+import { proLoans, fullRevenues } from '../../fragments';
 import SecurityService from '../../security';
-import LoanService from '../server/LoanService';
+import LoanService from './LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 import OrganisationService from '../../organisations/server/OrganisationService';
 
@@ -236,14 +236,28 @@ const getRelatedPromotionsOfUser = ({ loan, userId }) => {
     }));
 };
 
+const organisationLoans = organisationId =>
+  LoanService.fetch({
+    $filters: { 'userCache.referredByOrganisationLink': organisationId },
+    ...proLoans(),
+    revenues: fullRevenues(),
+    user: { organisationLink: 1 },
+  });
+
 export const proLoansResolver = ({
   userId,
   calledByUserId,
   promotionId,
   propertyId,
   showAnonymizedPromotionLoans = false,
+  fetchOrganisationLoans,
+  organisationId,
 }) => {
   let loans = [];
+
+  if (fetchOrganisationLoans) {
+    return organisationLoans(organisationId);
+  }
 
   if (promotionId) {
     const promotionLoans = proPromotionLoansResolver({
