@@ -2241,7 +2241,7 @@
   "StrategyChoices.recommended": "Recommandé pour vous",
   "Table.empty": "Rien à afficher",
   "Table.sort": "Trier",
-  "TableFilters.filterLabels.assignedEmployee.emails.0.address": "Assigné à",
+  "TableFilters.filterLabels.assignedEmployee.email": "Conseiller",
   "TableFilters.filterLabels.roles": "Type",
   "TableFilters.filterLabels.status": "Statut",
   "TableFilters.filterLabels.type": "Type",
