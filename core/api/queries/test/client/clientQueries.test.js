@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Meteor } from 'meteor/meteor';
 import { userLogin } from 'core/utils/testHelpers/index';
 import {
@@ -10,6 +9,16 @@ import {
   query4,
   testCollectionInsert,
 } from '../collection.test';
+
+const resetDatabase = () =>
+  new Promise((resolve, reject) => {
+    Meteor.call('resetDb', (err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
 
 const insertTestData = (n) => {
   const promises = [...Array(n)].map((_, index) =>
@@ -60,10 +69,8 @@ const insertAndFetchTestData = (
   });
 };
 
-describe('exposeQuery', () => {
-  beforeEach(() => {
-    resetDatabase();
-  });
+describe.only('exposeQuery', () => {
+  beforeEach(() => resetDatabase());
 
   it('returns expected data without using overrides', () =>
     insertAndFetchTestData(100, {}).then((items) => {
@@ -124,10 +131,9 @@ describe('exposeQuery', () => {
           expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
           expect(items.named_query_TEST_QUERY_2[0].value).to.equal(47);
         })
-        .then(() => {
-          resetDatabase();
-          return insertAndFetchTestData(50, { $sort: { name: -1, value: 1 } });
-        })
+        .then(() => resetDatabase())
+        .then(() =>
+          insertAndFetchTestData(50, { $sort: { name: -1, value: 1 } }))
         .then((items) => {
           expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
           expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
