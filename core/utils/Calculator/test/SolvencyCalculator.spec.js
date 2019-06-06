@@ -41,7 +41,7 @@ describe('SolvencyCalculator', () => {
       })).to.deep.equal([
         {
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-          value: 255316,
+          value: 255162,
           borrowerId: 'borrowerId',
         },
       ]);
@@ -116,7 +116,7 @@ describe('SolvencyCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         loanValue,
         canton: 'GE',
-        notaryFees: 32258.1,
+        notaryFees: 32104.1,
       });
       const total = ownFunds.reduce((t, { value }) => t + value, 0);
 
