@@ -8,7 +8,7 @@ import '../loans/server/exposures';
 import '../offers/server/exposures';
 import '../organisations/server/exposures';
 import '../promotionLots/server/exposures';
-import '../promotionOptions/queries/exposures';
+import '../promotionOptions/server/exposures';
 import '../promotions/queries/exposures';
 import '../properties/queries/exposures';
 import '../resolvers/exposures';
