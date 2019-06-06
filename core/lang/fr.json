@@ -2245,7 +2245,7 @@
   "TableFilters.filterLabels.roles": "Type",
   "TableFilters.filterLabels.status": "Statut",
   "TableFilters.filterLabels.type": "Type",
-  "TableFilters.noneLabels.assignedEmployee.emails.0.address": "Non assigné",
+  "TableFilters.noneLabels.assignedEmployee.email": "Personne",
   "TaskStatusSetter.ACTIVE": "Actif",
   "Forms.status.ACTIVE": "Actif",
   "TaskStatusSetter.ADD_ASSIGNED_TO": "Ajouter un conseiller",
