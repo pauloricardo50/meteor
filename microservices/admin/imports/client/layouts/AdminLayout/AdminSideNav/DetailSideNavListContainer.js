@@ -10,7 +10,7 @@ import {
   USERS_COLLECTION,
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
-import adminPromotions from 'core/api/promotions/queries/adminPromotions';
+import { adminPromotions } from 'core/api/promotions/queries';
 import { adminContacts } from 'core/api/contacts/queries';
 import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 import adminUsers from 'core/api/users/queries/adminUsers';
@@ -68,9 +68,11 @@ const applyFilters = (filterOptions) => {
 
 const setTotalCount = (props) => {
   const { collectionName, updateTotalCount, filterOptions } = props;
-  getQuery(collectionName).query.clone({...applyFilters(filterOptions)}).getCount((err, result) => {
-    updateTotalCount(result);
-  });
+  getQuery(collectionName)
+    .query.clone({ ...applyFilters(filterOptions) })
+    .getCount((err, result) => {
+      updateTotalCount(result);
+    });
 };
 
 const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
@@ -97,7 +99,6 @@ export const withSetTotalCountLifecycle = lifecycle({
     }
   },
 });
-
 
 export const withSideNavQuery = withSmartQuery({
   query: ({ collectionName }) => getQuery(collectionName).query,

@@ -5,7 +5,7 @@ import { loanSearch } from '../loans/queries';
 import propertySearch from '../properties/queries/propertySearch';
 import userSearch from '../users/queries/userSearch';
 import searchDatabase from './searchDatabase';
-import promotionSearch from '../promotions/queries/promotionSearch';
+import { promotionSearch } from '../promotions/queries';
 import { contactSearch } from '../contacts/queries';
 import { organisationSearch } from '../organisations/queries';
 import QueryCacher from '../helpers/server/QueryCacher';
