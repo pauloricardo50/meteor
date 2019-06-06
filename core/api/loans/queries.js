@@ -36,15 +36,6 @@ export const fullLoan = Loans.createQuery(LOAN_QUERIES.FULL_LOAN, {
   },
 });
 
-// FIXME: Should be done with denormalization!
-export const loansAssignedToAdmin = Users.createQuery(
-  LOAN_QUERIES.LOANS_ASSIGNED_TO_ADMIN,
-  {
-    $postFilter: (users = []) =>
-      users.reduce((allLoans, { loans = [] }) => [...allLoans, ...loans], []),
-    loans: adminLoan({ withSort: true }),
-  },
-);
 
 export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
   $filter({ filters, params: { searchQuery } }) {

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { loansAssignedToAdmin } from 'core/api/loans/queries';
+import { adminLoans } from 'core/api/loans/queries';
 import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
@@ -63,8 +63,8 @@ const mapLoan = history => (loan) => {
 
 const MyLoansTableContainer = compose(
   withSmartQuery({
-    query: loansAssignedToAdmin,
-    params: ({ currentUser: { _id: adminId } }) => ({ adminId }),
+    query: adminLoans,
+    params: ({ currentUser: { _id: assignedEmployeeId } }) => ({ assignedEmployeeId }),
     queryOptions: { reactive: false },
     dataName: 'loans',
     renderMissingDoc: false,

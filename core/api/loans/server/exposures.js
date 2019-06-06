@@ -10,7 +10,6 @@ import {
   adminLoans,
   anonymousLoan,
   fullLoan,
-  loansAssignedToAdmin,
   loanSearch,
   proLoans,
   organisationLoans,
@@ -34,7 +33,7 @@ exposeQuery(
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { _id, owned, name, _userId, assignedToMe, relevantOnly },
+        params: { _id, owned, name, _userId, assignedEmployeeId, relevantOnly },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -48,8 +47,8 @@ exposeQuery(
           filters.userId = { $exists: true };
         }
 
-        if (assignedToMe) {
-          filters['userCache.assignedEmployeeId'] = _userId;
+        if (assignedEmployeeId) {
+          filters['userCache.assignedEmployeeId'] = assignedEmployeeId;
         }
 
         if (relevantOnly) {
@@ -63,7 +62,7 @@ exposeQuery(
     validateParams: {
       name: Match.Maybe(String),
       owned: Match.Maybe(Boolean),
-      assignedToMe: Match.Maybe(Boolean),
+      assignedEmployeeId: Match.Maybe(String),
       relevantOnly: Match.Maybe(Boolean),
     },
   },
@@ -82,19 +81,6 @@ exposeQuery(
 );
 
 exposeQuery(fullLoan, {}, { allowFilterById: true });
-
-exposeQuery(
-  loansAssignedToAdmin,
-  {
-    validateParams: { adminId: String },
-    embody: (body, params) => {
-      body.$filter = ({ filters, params: { adminId } }) => {
-        filters.assignedEmployeeId = adminId;
-      };
-    },
-  },
-  { allowFilterById: true },
-);
 
 exposeQuery(
   loanSearch,
