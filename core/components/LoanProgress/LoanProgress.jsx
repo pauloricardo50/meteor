@@ -25,7 +25,11 @@ const getVerificationData = (status) => {
       text: 'Vérification échouée',
     };
   case LOAN_VERIFICATION_STATUS.NONE:
-    return { icon: 'help', text: 'Vérification pas demandée' };
+    return {
+      icon: 'help',
+      className: 'secondary',
+      text: 'Vérification pas demandée',
+    };
   case LOAN_VERIFICATION_STATUS.REQUESTED:
     return {
       icon: 'waiting',
