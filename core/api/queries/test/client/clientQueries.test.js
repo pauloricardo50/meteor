@@ -69,7 +69,7 @@ const insertAndFetchTestData = (
   });
 };
 
-describe.only('exposeQuery', () => {
+describe('exposeQuery', () => {
   beforeEach(() => resetDatabase());
 
   it('returns expected data without using overrides', () =>
