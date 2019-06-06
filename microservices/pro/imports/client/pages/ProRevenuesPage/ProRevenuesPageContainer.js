@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proLoans } from 'core/api/loans/queries';
-import proOrganisation from 'core/api/organisations/queries/proOrganisation';
+import { proOrganisation } from 'core/api/organisations/queries';
 
 export default compose(
   withSmartQuery({

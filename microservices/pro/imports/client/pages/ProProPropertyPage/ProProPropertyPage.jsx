@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 
 import proProperty from 'core/api/properties/queries/proProperty';
-import proOrganisation from 'core/api/organisations/queries/proOrganisation';
+import { proOrganisation } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import withMatchParam from 'core/containers/withMatchParam';
 

@@ -4,7 +4,7 @@ import { adminBorrowers } from 'core/api/borrowers/queries';
 import adminProperties from 'core/api/properties/queries/adminProperties';
 import { adminOffers } from 'core/api/offers/queries';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import { adminContacts } from 'core/api/contacts/queries';
 import {
   LOANS_COLLECTION,

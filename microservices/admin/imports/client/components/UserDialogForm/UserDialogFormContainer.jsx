@@ -3,7 +3,7 @@ import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import {
   adminCreateUser,
   updateUser,

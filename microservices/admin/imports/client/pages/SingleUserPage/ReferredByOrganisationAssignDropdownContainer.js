@@ -2,7 +2,7 @@ import { withProps, compose } from 'recompose';
 
 import { setUserReferredByOrganisation } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 
 const getMenuItems = ({
   organisations,

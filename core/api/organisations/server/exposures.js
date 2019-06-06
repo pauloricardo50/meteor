@@ -1,7 +1,13 @@
 import { Match } from 'meteor/check';
 
-import { exposeQuery } from 'core/api/queries/queryHelpers';
-import query from './adminOrganisations';
+import SecurityService from '../../security';
+import { exposeQuery } from '../../queries/queryHelpers';
+import {
+  adminOrganisations,
+  organisationSearch,
+  proOrganisation,
+  userOrganisations,
+} from '../queries';
 
 const makeFilter = ({ param, field, filters }) => {
   if (param && !(Array.isArray(param) && !param.length)) {
@@ -10,13 +16,12 @@ const makeFilter = ({ param, field, filters }) => {
 };
 
 exposeQuery(
-  query,
+  adminOrganisations,
   {
     validateParams: {
       features: Match.Maybe(Match.OneOf(String, [String])),
       tags: Match.Maybe(Match.OneOf(String, [String])),
       type: Match.Maybe(Match.OneOf(String, [String])),
-      // _id: Match.Maybe(String),
       hasRules: Match.Maybe(Boolean),
     },
     embody: (body, params) => {
@@ -40,4 +45,42 @@ exposeQuery(
     },
   },
   { allowFilterById: true },
+);
+
+exposeQuery(
+  organisationSearch,
+  {
+    firewall: () => {
+      SecurityService.checkCurrentUserIsAdmin();
+    },
+    validateParams: { searchQuery: Match.Maybe(String) },
+  },
+  {},
+);
+
+exposeQuery(
+  proOrganisation,
+  {
+    firewall: (userId) => {
+      SecurityService.checkUserIsPro(userId);
+    },
+    validateParams: { organisationId: String, $body: Match.Maybe(Object) },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { organisationId } }) => {
+        filters._id = organisationId;
+      };
+    },
+  },
+  {},
+);
+
+exposeQuery(
+  userOrganisations,
+  {
+    firewall: (userId) => {
+      SecurityService.checkUserLoggedIn(userId);
+    },
+    validateParams: {},
+  },
+  {},
 );

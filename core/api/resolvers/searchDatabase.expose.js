@@ -7,7 +7,7 @@ import userSearch from '../users/queries/userSearch';
 import searchDatabase from './searchDatabase';
 import promotionSearch from '../promotions/queries/promotionSearch';
 import { contactSearch } from '../contacts/queries';
-import organisationSearch from '../organisations/queries/organisationSearch';
+import { organisationSearch } from '../organisations/queries';
 import QueryCacher from '../helpers/server/QueryCacher';
 
 searchDatabase.expose({

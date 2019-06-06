@@ -6,7 +6,7 @@ import '../lenders/server/exposures';
 import '../lenderRules/server/exposures';
 import '../loans/server/exposures';
 import '../offers/server/exposures';
-import '../organisations/queries/exposures';
+import '../organisations/server/exposures';
 import '../promotionLots/queries/exposures';
 import '../promotionOptions/queries/exposures';
 import '../promotions/queries/exposures';
