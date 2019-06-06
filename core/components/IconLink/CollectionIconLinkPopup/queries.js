@@ -2,7 +2,7 @@ import { adminLoans } from 'core/api/loans/queries';
 import adminUsers from 'core/api/users/queries/adminUsers';
 import { adminBorrowers } from 'core/api/borrowers/queries';
 import adminProperties from 'core/api/properties/queries/adminProperties';
-import adminOffers from 'core/api/offers/queries/adminOffers';
+import { adminOffers } from 'core/api/offers/queries';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import { adminContacts } from 'core/api/contacts/queries';

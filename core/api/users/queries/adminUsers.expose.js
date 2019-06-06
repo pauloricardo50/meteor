@@ -12,7 +12,7 @@ exposeQuery(
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { assignedTo, roles, _id, admins, assignedToMe, _userId },
+        params: { assignedTo, roles, _id, admins, assignedEmployeeId, _userId },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -36,8 +36,8 @@ exposeQuery(
           }
         }
 
-        if (assignedToMe) {
-          filters.assignedEmployeeId = _userId;
+        if (assignedEmployeeId) {
+          filters.assignedEmployeeId = assignedEmployeeId;
         }
       };
     },
@@ -46,7 +46,7 @@ exposeQuery(
       assignedTo: Match.Maybe(String),
       roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
-      assignedToMe: Match.Maybe(Boolean),
+      assignedEmployeeId: Match.Maybe(String),
     },
   },
   { allowFilterById: true },

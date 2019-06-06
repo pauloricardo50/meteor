@@ -5,7 +5,7 @@ import '../irs10y/server/exposures';
 import '../lenders/server/exposures';
 import '../lenderRules/server/exposures';
 import '../loans/server/exposures';
-import '../offers/queries/exposures';
+import '../offers/server/exposures';
 import '../organisations/queries/exposures';
 import '../promotionLots/queries/exposures';
 import '../promotionOptions/queries/exposures';
