@@ -14,7 +14,7 @@ import { adminPromotions } from 'core/api/promotions/queries';
 import { adminContacts } from 'core/api/contacts/queries';
 import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 import adminUsers from 'core/api/users/queries/adminUsers';
-import adminProperties from 'core/api/properties/queries/adminProperties';
+import { adminProperties } from 'core/api/properties/queries';
 import { adminBorrowers } from 'core/api/borrowers/queries';
 
 const PAGINATION_AMOUNT = 10;

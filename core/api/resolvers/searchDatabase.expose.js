@@ -2,7 +2,7 @@ import { Match } from 'meteor/check';
 
 import { borrowerSearch } from '../borrowers/queries';
 import { loanSearch } from '../loans/queries';
-import propertySearch from '../properties/queries/propertySearch';
+import { propertySearch } from '../properties/queries';
 import userSearch from '../users/queries/userSearch';
 import searchDatabase from './searchDatabase';
 import { promotionSearch } from '../promotions/queries';

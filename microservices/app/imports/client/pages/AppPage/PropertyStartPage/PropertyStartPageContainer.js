@@ -1,7 +1,7 @@
 import { compose, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import anonymousProperty from 'core/api/properties/queries/anonymousProperty';
+import { anonymousProperty } from 'core/api/properties/queries';
 import { createRoute } from 'core/utils/routerUtils';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
@@ -33,15 +33,16 @@ export default compose(
     refetchOnMethodCall: false,
   }),
   withProps(({ propertyId, referralId, history }) => ({
-    insertAnonymousLoan: () => anonymousLoanInsert
-      .run({
-        proPropertyId: propertyId,
-        referralId,
-        trackingId: parseCookies()[TRACKING_COOKIE],
-      })
-      .then((loanId) => {
-        localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-        history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
-      }),
+    insertAnonymousLoan: () =>
+      anonymousLoanInsert
+        .run({
+          proPropertyId: propertyId,
+          referralId,
+          trackingId: parseCookies()[TRACKING_COOKIE],
+        })
+        .then((loanId) => {
+          localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
+          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+        }),
   })),
 );

@@ -10,7 +10,7 @@ import '../organisations/server/exposures';
 import '../promotionLots/server/exposures';
 import '../promotionOptions/server/exposures';
 import '../promotions/server/exposures';
-import '../properties/queries/exposures';
+import '../properties/server/exposures';
 import '../resolvers/exposures';
 import '../tasks/queries/exposures';
 import '../users/queries/exposures';

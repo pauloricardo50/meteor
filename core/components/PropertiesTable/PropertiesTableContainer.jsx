@@ -4,10 +4,11 @@ import { compose, mapProps } from 'recompose';
 
 import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
-import proProperties from '../../api/properties/queries/proProperties';
+import { proProperties } from '../../api/properties/queries';
 import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
+import { proPropertySummary } from '../../api/fragments';
 
 const columnOptions = [
   { id: 'address' },
@@ -41,6 +42,7 @@ const makeMapProperty = history => ({
 export default compose(
   withSmartQuery({
     query: proProperties,
+    params: { $body: proPropertySummary() },
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',

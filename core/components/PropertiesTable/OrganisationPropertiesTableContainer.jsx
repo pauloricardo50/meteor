@@ -4,7 +4,7 @@ import { compose, mapProps } from 'recompose';
 
 import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
-import proOrganisationProperties from '../../api/properties/queries/proOrganisationProperties';
+import { proProperties } from '../../api/properties/queries';
 import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
@@ -38,7 +38,8 @@ const makeMapProperty = history => ({
 
 export default compose(
   withSmartQuery({
-    query: proOrganisationProperties,
+    query: proProperties,
+    params: { fetchOrganisationProperties: true },
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',
