@@ -15,7 +15,7 @@ export const ACTIONS = {
 
 export const SORT_BY = {
   CREATED_AT: 'createdAt',
-  ASSIGNED_EMPLOYEE: 'assignedEmployee.name',
+  ASSIGNED_EMPLOYEE: 'userCache.assignedEmployeeCache.firstName',
   STATUS: 'status',
 };
 
@@ -107,8 +107,21 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
-const sortColumnData = (data, sortBy, sortOrder) =>
-  _orderBy(data, [item => get(item, sortBy)], [sortOrder]);
+const sortColumnData = (data, sortBy, sortOrder) => _orderBy(
+  data,
+  [
+    (item) => {
+      const value = get(item, sortBy);
+
+      if (sortBy === SORT_BY.STATUS) {
+        return LOAN_STATUS_ORDER.indexOf(value);
+      }
+
+      return value;
+    },
+  ],
+  [sortOrder],
+);
 
 export const groupLoans = (loans, options) => {
   const { groupBy, sortBy, sortOrder } = options;
