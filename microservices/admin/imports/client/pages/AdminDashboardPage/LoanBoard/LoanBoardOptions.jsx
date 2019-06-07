@@ -3,6 +3,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
+import CheckboxList from 'core/components/Checkbox/CheckboxList';
 import { STEP_ORDER } from 'core/api/constants';
 import { injectIntl } from 'react-intl';
 import { ACTIONS } from './loanBoardHelpers';
@@ -18,35 +19,34 @@ const LoanBoardOptions = ({
   const { assignedEmployeeId, step } = options;
   return (
     <div className="loan-board-options">
-      <Select
-        label="Conseiller"
+      <CheckboxList
         value={assignedEmployeeId.$in}
-        multiple
+        label="Conseiller"
         options={[
           { id: null, label: 'Personne' },
-          ...admins.map(admin => ({ id: admin._id, label: admin.name })),
+          ...admins.map(admin => ({
+            id: admin._id,
+            label: admin.firstName,
+          })),
         ]}
-        onChange={(_, values) => {
+        onChange={(values) => {
           dispatch({
             type: ACTIONS.SET_FILTER,
             payload: { name: 'assignedEmployeeId', value: { $in: values } },
           });
         }}
-        renderValue={selected =>
-          selected
-            .map((id) => {
-              const admin = admins.find(({ _id }) => _id === id);
-              return admin ? admin.name.split(' ')[0] : 'Personne';
-            })
-            .join(', ')
+        className="checkbox-list"
+        renderValue={(value, opts) =>
+          value.map(id => opts.find(({ _id }) => _id === id).label).join(', ')
         }
-        displayEmpty
       />
 
-      <Select
+      <CheckboxList
+        renderValue={(value, opts) =>
+          value.map(id => opts.find(({ _id }) => _id === id).label).join(', ')
+        }
+        value={step ? step.$in : [null]}
         label="Étape du dossier"
-        value={step ? step.$in : []}
-        multiple
         options={[
           { id: null, label: 'Tous' },
           ...STEP_ORDER.map(s => ({
@@ -54,7 +54,7 @@ const LoanBoardOptions = ({
             label: <T id={`Forms.step.${s}`} />,
           })),
         ]}
-        onChange={(_, values) => {
+        onChange={(values) => {
           if (values.includes(null)) {
             dispatch({
               type: ACTIONS.SET_FILTER,
@@ -67,13 +67,7 @@ const LoanBoardOptions = ({
             });
           }
         }}
-        renderValue={(selected) => {
-          if (selected.length === 0 || selected.length === STEP_ORDER.length) {
-            return 'Toutes';
-          }
-          return selected.map(s => f({ id: `Forms.step.${s}` }));
-        }}
-        displayEmpty
+        className="checkbox-list"
       />
     </div>
   );

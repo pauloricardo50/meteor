@@ -6,7 +6,14 @@ import MuiCheckbox from '@material-ui/core/Checkbox';
 
 const Checkbox = ({ value, onChange, id, ...props }) => (
   <FormControlLabel
-    control={<MuiCheckbox checked={value} onChange={onChange} value={id} />}
+    control={(
+      <MuiCheckbox
+        className="checkbox"
+        checked={value}
+        onChange={onChange}
+        value={id}
+      />
+    )}
     {...props}
   />
 );

@@ -29,7 +29,7 @@ export default compose(
   }),
   withSmartQuery({
     query: adminUsers,
-    params: { $body: { name: 1 }, admins: true },
+    params: { $body: { firstName: 1 }, admins: true },
     dataName: 'admins',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,

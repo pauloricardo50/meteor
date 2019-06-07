@@ -2,7 +2,7 @@ import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
 
-import { LOAN_STATUS_ORDER, LOAN_STATUS, STEP_ORDER } from 'core/api/constants';
+import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
 
 export const ACTIONS = {
   SET_FILTER: 'SET_FILTER',
@@ -19,7 +19,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   assignedEmployeeId: { $in: [currentUser._id] },
   sortBy: 'createdAt',
   sortOrder: SORT_ORDER.ASC,
-  step: { $in: STEP_ORDER },
+  step: undefined,
 });
 
 export const filterReducer = (state, { type, payload }) => {
