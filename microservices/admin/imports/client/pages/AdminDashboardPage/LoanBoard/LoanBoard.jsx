@@ -10,6 +10,7 @@ import LoanBoardCard from './LoanBoardCard';
 type LoanBoardProps = {};
 
 const LoanBoard = ({ options, dispatch, data }: LoanBoardProps) => {
+  console.log('options:', options);
   console.log('data:', data);
   return (
     <div className="loan-board">
@@ -17,6 +18,7 @@ const LoanBoard = ({ options, dispatch, data }: LoanBoardProps) => {
       <Board
         data={data}
         columnHeader={LoanBoardColumnHeader}
+        columnHeaderProps={{ options, dispatch }}
         columnItem={LoanBoardCard}
       />
     </div>

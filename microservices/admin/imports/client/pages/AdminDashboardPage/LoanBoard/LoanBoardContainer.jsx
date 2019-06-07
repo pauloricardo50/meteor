@@ -2,14 +2,23 @@ import { compose, withReducer, mapProps } from 'recompose';
 
 import adminLoans from 'core/api/loans/queries/adminLoans';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { groupLoans, filterReducer, getInitialOptions } from './loanBoardHelpers';
+import {
+  groupLoans,
+  filterReducer,
+  getInitialOptions,
+} from './loanBoardHelpers';
 
 export default compose(
   withReducer('options', 'dispatch', filterReducer, getInitialOptions),
   withSmartQuery({
     query: adminLoans,
     params: ({ options: { assignedEmployeeId } }) => ({
-      $body: { name: 1, status: 1 },
+      $body: {
+        name: 1,
+        status: 1,
+        createdAt: 1,
+        assignedEmployee: { name: 1 },
+      },
       assignedEmployeeId,
     }),
     dataName: 'loans',
@@ -17,6 +26,7 @@ export default compose(
   }),
   mapProps(({ loans, options, ...rest }) => ({
     data: groupLoans(loans, options),
+    options,
     ...rest,
   })),
 );

@@ -1,20 +1,45 @@
 import _groupBy from 'lodash/groupBy';
+import _orderBy from 'lodash/orderBy';
+import get from 'lodash/get';
 
 import { LOAN_STATUS_ORDER } from 'core/api/constants';
 
 export const ACTIONS = {
   ADD_FILTER: 'ADD_FILTER',
+  SET_COLUMN_SORT: 'SET_COLUMN_SORT',
+};
+
+export const SORT_ORDER = {
+  ASC: 'asc',
+  DESC: 'desc',
 };
 
 export const getInitialOptions = ({ currentUser }) => ({
   groupBy: 'status',
   assignedEmployeeId: { $in: [currentUser._id] },
+  sortBy: 'createdAt',
+  sortOrder: SORT_ORDER.ASC,
 });
 
-export const filterReducer = (state, action) => {
-  switch (action.type) {
+export const filterReducer = (state, { type, payload }) => {
+  switch (type) {
   case ACTIONS.ADD_FILTER:
     return state;
+  case ACTIONS.SET_COLUMN_SORT: {
+    const { sortOrder } = state;
+    if (state.sortBy === payload) {
+      return {
+        ...state,
+        sortOrder:
+            sortOrder === SORT_ORDER.ASC ? SORT_ORDER.DESC : SORT_ORDER.ASC,
+      };
+    }
+    return {
+      ...state,
+      sortBy: payload,
+      sortOrder: SORT_ORDER.ASC,
+    };
+  }
 
   default:
     throw new Error('Unknown action type');
@@ -45,14 +70,21 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
+const sortColumnData = (data, sortBy, sortOrder) =>
+  _orderBy(data, [item => get(item, sortBy)], [sortOrder]);
+
 export const groupLoans = (loans, options) => {
-  const { groupBy } = options;
+  const { groupBy, sortBy, sortOrder } = options;
   const groupedLoans = _groupBy(loans, groupBy);
   const groups = Object.keys(groupedLoans);
 
-  const formattedColumns = [...groups, ...getMissingColumns(groupBy, groups)].map((group) => {
+  const formattedColumns = [
+    ...groups,
+    ...getMissingColumns(groupBy, groups),
+  ].map((group) => {
     const data = groupedLoans[group];
-    return { id: group, data };
+    const sortedData = sortColumnData(data, sortBy, sortOrder);
+    return { id: group, data: sortedData };
   });
 
   return formattedColumns.sort(makeSortColumns(options));
