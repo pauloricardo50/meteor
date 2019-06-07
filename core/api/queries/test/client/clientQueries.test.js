@@ -73,7 +73,7 @@ describe('exposeQuery', () => {
   beforeEach(() => resetDatabase());
 
   it('returns expected data without using overrides', () =>
-    insertAndFetchTestData(100, {}).then((items) => {
+    insertAndFetchTestData(100).then((items) => {
       expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
       expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
       expect(items.named_query_TEST_QUERY_2.length).to.equal(10);

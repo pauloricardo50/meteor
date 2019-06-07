@@ -3,7 +3,7 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import query from '../../../../api/users/queries/adminUsers';
+import { adminUsers as query } from '../../../../api/users/queries';
 import { withSmartQuery, promotionUpdate } from '../../../../api';
 import AutoForm, { CustomAutoField } from '../../../AutoForm2';
 

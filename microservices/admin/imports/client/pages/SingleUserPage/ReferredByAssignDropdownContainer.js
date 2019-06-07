@@ -6,7 +6,7 @@ import {
   getUserOrganisationName,
 } from 'core/api/helpers';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 
 const getMenuItems = ({

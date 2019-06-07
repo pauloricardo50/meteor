@@ -1,7 +1,7 @@
 import { withProps, compose, withState, lifecycle } from 'recompose';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import anonymousLoan from 'core/api/loans/queries/anonymousLoan';
+import { anonymousLoan } from 'core/api/loans/queries';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';

@@ -1,9 +1,11 @@
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import interestRates from 'core/api/interestRates/queries/interestRates';
-import irs10y from 'core/api/irs10y/queries/irs10y';
-import currentRates from 'core/api/interestRates/queries/currentInterestRates';
+import {
+  interestRates,
+  currentInterestRates,
+} from 'core/api/interestRates/queries';
+import { irs10y } from 'core/api/irs10y/queries';
 
 export default compose(
   withSmartQuery({
@@ -17,7 +19,7 @@ export default compose(
     smallLoader: true,
   }),
   withSmartQuery({
-    query: currentRates,
+    query: currentInterestRates,
     dataName: 'currentInterestRates',
     smallLoader: true,
   }),

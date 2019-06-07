@@ -1,8 +1,8 @@
 import { Match } from 'meteor/check';
-import mergeDeep from 'meteor/cultofcoders:grapher/lib/namedQuery/expose/lib/mergeDeep';
 
 import { Meteor } from 'meteor/meteor';
 import Security from '../security';
+import QueryCacher from '../helpers/server/QueryCacher';
 
 const defaultParams = (options) => {
   const { allowFilterById = false } = options;
@@ -67,25 +67,9 @@ const addOptions = (body, params) => {
   addPaginate(body);
 };
 
-const mergeBody = (body, embody, options) => {
-  if (typeof embody === 'function') {
-    return;
-  }
-
-  if (embody === null) {
-    throw new Meteor.Error('Embody cannot be null');
-  }
-
-  mergeDeep(body, embody);
-};
-
 const addFilters = (body, embody, options) => {
   const { $filter: bodyFilter } = body;
   const { $filter: overrideFilter } = embody || {};
-
-  if (typeof embody === 'object' && overrideFilter) {
-    throw new Meteor.Error('Do not use $filter in a embody object. Use $filters instead, or use a embody function.');
-  }
 
   body.$filter = (...args) => {
     if (bodyFilter) {
@@ -102,15 +86,13 @@ const addFilters = (body, embody, options) => {
 const getEmbody = (overrides, options) =>
   function customEmbody(body, params) {
     if (overrides.embody) {
-      mergeBody(body, overrides.embody, options);
-
-      if (typeof overrides.embody === 'function') {
-        overrides.embody(body, params);
+      if (typeof overrides.embody !== 'function') {
+        throw new Meteor.Error('Embody must be a function!');
       }
+      overrides.embody(body, params);
     }
 
     addFilters(body, overrides.embody, options);
-
     addOptions(body, params);
   };
 
@@ -123,11 +105,27 @@ const getFirewall = (overrides, options) => (userId, params) => {
   }
 };
 
-export const exposeQuery = (query, overrides = {}, options = {}) => {
+export const exposeQuery = ({
+  query,
+  overrides = {},
+  options = {},
+  resolver,
+  caching,
+}) => {
   query.expose({
     ...overrides,
     firewall: getFirewall(overrides, options),
     embody: getEmbody(overrides, options),
     validateParams: getValidateParams(overrides, options),
   });
+
+  if (resolver) {
+    query.resolve(resolver);
+  }
+
+  if (caching) {
+    const { ttl, getDataToHash } = caching;
+    const cacher = new QueryCacher({ ttl, getDataToHash });
+    query.cacheResults(cacher);
+  }
 };

@@ -4,9 +4,9 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import moment from 'moment';
 
-import proPromotionSimple from '../../api/promotions/queries/proPromotionSimple';
+import { proPromotions, proPromotionUsers } from '../../api/promotions/queries';
 import { withSmartQuery } from '../../api';
-import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
+
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 import { getUserNameAndOrganisation } from '../../api/helpers';
 import { LOANS_COLLECTION } from '../../api/constants';
@@ -155,15 +155,16 @@ const makeMapLoan = ({
 export default compose(
   withSmartQuery({
     query: proPromotionUsers,
-    params: ({ promotionId }) => ({ promotionId }),
+    params: ({ promotionId }) => ({ _id: promotionId }),
     queryOptions: { reactive: false },
     dataName: 'promotionUsers',
     smallLoader: true,
   }),
   withSmartQuery({
-    query: proPromotionSimple,
+    query: proPromotions,
     params: ({ promotionId }) => ({
-      promotionId,
+      _id: promotionId,
+      simple: true,
       $body: { promotionLots: { name: 1 } },
     }),
     queryOptions: { single: true, shouldRefetch: () => false },

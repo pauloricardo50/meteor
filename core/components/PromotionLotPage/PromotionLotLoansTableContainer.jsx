@@ -5,7 +5,7 @@ import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import proPromotionOptions from '../../api/promotionOptions/queries/proPromotionOptions';
+import { proPromotionOptions } from '../../api/promotionOptions/queries';
 import T from '../Translation';
 import { CollectionIconLink } from '../IconLink';
 import LoanProgress from '../LoanProgress/LoanProgress';

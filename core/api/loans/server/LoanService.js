@@ -39,7 +39,7 @@ import OrganisationService from '../../organisations/server/OrganisationService'
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
 import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
-import fullLoan from '../queries/fullLoan';
+import { fullLoan } from '../queries';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {

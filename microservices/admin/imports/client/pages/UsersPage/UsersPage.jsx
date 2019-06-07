@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import { ROLES, USERS_COLLECTION } from 'core/api/constants';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminUsers } from 'core/api/users/queries';
 import collectionIcons from 'core/arrays/collectionIcons';
 import Icon from 'core/components/Icon';
 import UsersTable from './UsersTable';

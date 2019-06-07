@@ -2,7 +2,7 @@ import React from 'react';
 import { withState, compose, withProps } from 'recompose';
 
 import { addProUserToProperty, getUserByEmail } from 'core/api';
-import userSearch from 'core/api/users/queries/userSearch';
+import { userSearch } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
 import { ProPropertyPageContext } from '../../ProPropertyPageContext';
