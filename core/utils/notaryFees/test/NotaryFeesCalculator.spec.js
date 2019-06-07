@@ -63,7 +63,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(32104.1);
+      expect(fees.total).to.equal(31944.1);
     });
 
     it('ignores propertyWork', () => {
@@ -72,7 +72,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(32104.1);
+      expect(fees.total).to.equal(31944.1);
     });
 
     it('caps casatax deductions for very small properties', () => {
