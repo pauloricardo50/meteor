@@ -13,5 +13,5 @@ import '../promotions/server/exposures';
 import '../properties/server/exposures';
 import '../queries/server/exposures';
 import '../tasks/server/exposures';
-import '../users/queries/exposures';
+import '../users/server/exposures';
 import '../stats/server/exposures';

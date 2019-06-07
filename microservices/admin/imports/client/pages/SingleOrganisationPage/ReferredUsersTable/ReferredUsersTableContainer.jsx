@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import T from 'core/components/Translation';
-import referredUsers from 'core/api/users/queries/referredUsers';
+import { proReferredByUsers } from 'core/api/users/queries';
 import { withSmartQuery } from 'core/api';
 
 const columnOptions = [
@@ -46,7 +46,7 @@ const makeMapUser = history => (user) => {
 export default compose(
   mapProps(({ _id }) => ({ organisationId: _id })),
   withSmartQuery({
-    query: referredUsers,
+    query: proReferredByUsers,
     params: ({ organisationId }) => ({ organisationId }),
     queryOptions: { reactive: false },
     dataName: 'users',

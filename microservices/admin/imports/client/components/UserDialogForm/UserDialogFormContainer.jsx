@@ -10,7 +10,7 @@ import {
   userUpdateOrganisations,
 } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({

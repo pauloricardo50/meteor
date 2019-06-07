@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { userLoans } from 'core/api/loans/queries';
-import appUser from 'core/api/users/queries/appUser';
+import { appUser } from 'core/api/users/queries';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
   isOnAllowedRoute,
