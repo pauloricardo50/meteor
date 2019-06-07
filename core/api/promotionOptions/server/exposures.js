@@ -12,6 +12,11 @@ exposeQuery({
         userId,
       });
     },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { promotionOptionId } }) => {
+        filters._id = promotionOptionId;
+      };
+    },
     validateParams: { promotionOptionId: String },
   },
 });
