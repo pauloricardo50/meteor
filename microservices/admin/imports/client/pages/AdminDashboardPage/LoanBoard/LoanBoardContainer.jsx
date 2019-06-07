@@ -53,6 +53,7 @@ export default compose(
       promotionId,
       lenderId,
       category,
+      noPromotion: promotionId && promotionId.$in.includes(true),
     }),
     dataName: 'loans',
     queryOptions: {},

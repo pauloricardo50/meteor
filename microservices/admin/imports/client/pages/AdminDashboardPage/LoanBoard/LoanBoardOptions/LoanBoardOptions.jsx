@@ -91,6 +91,7 @@ const LoanBoardOptions = ({
   ];
   const promotionIdOptions = [
     { id: null, label: 'Tous' },
+    { id: true, label: "N'a pas de promotion" },
     ...promotions.map(({ _id, name }) => ({ id: _id, label: name })),
   ];
   const lenderOptions = [

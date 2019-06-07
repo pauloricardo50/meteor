@@ -38,6 +38,7 @@ exposeQuery({
           assignedEmployeeId,
           category,
           hasPromotion,
+          noPromotion,
           lenderId,
           name,
           owned,
@@ -86,6 +87,10 @@ exposeQuery({
           filters['promotionLinks.0._id'] = promotionId || { $exists: true };
         }
 
+        if (noPromotion) {
+          filters['promotionLinks.0._id'] = { $exists: false };
+        }
+
         if (lenderId) {
           filters.lendersCache = {
             $elemMatch: { 'organisationLink._id': lenderId },
@@ -104,6 +109,7 @@ exposeQuery({
       lenderId: Match.Maybe(Match.OneOf(Object, String)),
       relevantOnly: Match.Maybe(Boolean),
       hasPromotion: Match.Maybe(Boolean),
+      noPromotion: Match.Maybe(Boolean),
       _id: Match.Maybe(String),
     },
   },
