@@ -31,7 +31,7 @@ export const FIELDS = {
 const makeInitialState = borrowers => ({
   [FIELDS.TYPE]: undefined,
   [FIELDS.USAGE_TYPE]: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-  [FIELDS.BORROWER_ID]: borrowers[0]._id,
+  [FIELDS.BORROWER_ID]: borrowers.length ? borrowers[0]._id : undefined,
   [FIELDS.VALUE]: undefined,
 });
 

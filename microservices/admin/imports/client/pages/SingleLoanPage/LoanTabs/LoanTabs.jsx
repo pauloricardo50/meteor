@@ -102,19 +102,22 @@ const formatTabs = (tabs, props) =>
           )}
         </span>
       ),
-      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
-        loanId: props.loan._id,
-        tabId: id,
-      }),
+      to:
+        props.enableTabRouting
+        && createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
+          loanId: props.loan._id,
+          tabId: id,
+        }),
     }));
 
 const LoanTabs = ({ tabs, ...props }) => {
+  const { enableTabRouting } = props;
   const formattedTabs = formatTabs(tabs || getTabs(props), props);
 
   return (
     <Tabs
       tabs={formattedTabs}
-      routerParamName="tabId"
+      routerParamName={enableTabRouting ? 'tabId' : undefined}
       variant="scrollable"
       scrollButtons="auto"
       disableTouchRipple

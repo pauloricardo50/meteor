@@ -1,4 +1,4 @@
-import { compose, withReducer, mapProps } from 'recompose';
+import { compose, withReducer, mapProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminLoans } from 'core/api/loans/queries';
@@ -83,4 +83,5 @@ export default compose(
     data: groupLoans({ loans, ...rest }),
     ...rest,
   })),
+  withState('loanId', 'setLoanId', ''),
 );

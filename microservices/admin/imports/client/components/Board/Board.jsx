@@ -10,6 +10,7 @@ const Board = ({
   columnHeader,
   columnHeaderProps,
   columnItem,
+  columnItemProps,
 }: BoardProps) => (
   <div className="board">
     {data.map(columnData => (
@@ -17,6 +18,7 @@ const Board = ({
         columnHeader={columnHeader}
         columnHeaderProps={columnHeaderProps}
         columnItem={columnItem}
+        columnItemProps={columnItemProps}
         columnData={columnData}
         key={columnData.id}
       />

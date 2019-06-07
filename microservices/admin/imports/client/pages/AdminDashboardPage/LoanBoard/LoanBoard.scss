@@ -28,6 +28,7 @@
   &-column-header {
     display: flex;
     position: relative;
+    padding: 8px;
     padding-right: 24px;
 
     .title {
@@ -36,14 +37,15 @@
 
     .sort {
       position: absolute;
-      right: -16px;
-      top: -16px;
+      right: 0px;
+      top: 0px;
     }
   }
 
   &-card {
     margin-bottom: 8px;
     padding: 8px;
+    cursor: pointer;
 
     .top {
       display: flex;
@@ -55,14 +57,13 @@
       margin-right: 8px;
     }
 
-
     p {
       margin: 0;
     }
   }
 
   .board-column {
-    max-width: 400px;
+    width: 300px;
   }
 }
 

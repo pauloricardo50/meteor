@@ -6,6 +6,7 @@ import LoanBoardOptions from './LoanBoardOptions';
 import LoanBoardContainer from './LoanBoardContainer';
 import LoanBoardColumnHeader from './LoanBoardColumnHeader';
 import LoanBoardCard from './LoanBoardCard';
+import LoanModal from './LoanModal';
 
 type LoanBoardProps = {};
 
@@ -17,6 +18,9 @@ const LoanBoard = ({
   promotions,
   lenders,
   refetchLoans,
+  setLoanId,
+  loanId,
+  currentUser,
   ...props
 }: LoanBoardProps) => (
   <div className="loan-board">
@@ -33,6 +37,12 @@ const LoanBoard = ({
       columnHeader={LoanBoardColumnHeader}
       columnHeaderProps={{ options, dispatch, admins, promotions }}
       columnItem={LoanBoardCard}
+      columnItemProps={{ setLoanId }}
+    />
+    <LoanModal
+      loanId={loanId}
+      closeModal={() => setLoanId('')}
+      currentUser={currentUser}
     />
   </div>
 );

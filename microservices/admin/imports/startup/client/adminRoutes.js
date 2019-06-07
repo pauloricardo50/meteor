@@ -65,6 +65,7 @@ const ADMIN_ROUTES = {
   SINGLE_LOAN_PAGE: {
     component: SingleLoanPage,
     path: '/loans/:loanId/:tabId?',
+    enableTabRouting: true,
   },
   SINGLE_ORGANISATION_PAGE: {
     component: SingleOrganisationPage,

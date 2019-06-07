@@ -6,13 +6,23 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 
 type LoanBoardCardProps = {};
 
-const LoanBoardCard = ({ data: loan }: LoanBoardCardProps) => {
-  const { name, status, userCache = {} } = loan;
-  const assigneeName = userCache
-    && userCache.assignedEmployeeCache
-    && userCache.assignedEmployeeCache.firstName;
+const LoanBoardCard = ({
+  data: loan,
+  setLoanId,
+  style,
+}: LoanBoardCardProps) => {
+  const { _id: loanId, name, status, userCache = {} } = loan;
+  const assigneeName = (userCache
+      && userCache.assignedEmployeeCache
+      && userCache.assignedEmployeeCache.firstName)
+    || 'Personne';
+
   return (
-    <div className="loan-board-card card1 card-top card-hover">
+    <div
+      className="loan-board-card card1 card-top card-hover"
+      onClick={() => setLoanId(loanId)}
+      style={style}
+    >
       <div className="top">
         <h4 className="title">{name}</h4>
         <StatusLabel status={status} collection={LOANS_COLLECTION} />
@@ -33,4 +43,4 @@ const LoanBoardCard = ({ data: loan }: LoanBoardCardProps) => {
   );
 };
 
-export default LoanBoardCard;
+export default React.memo(LoanBoardCard);

@@ -1,6 +1,6 @@
 import { compose, mapProps, branch, renderComponent } from 'recompose';
 
-import { adminLoans as query } from 'core/api/loans/queries';
+import { adminLoans } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
@@ -23,8 +23,8 @@ const withInterestRates = withSmartQuery({
 export default compose(
   updateForProps(['match.params.loanId']),
   withSmartQuery({
-    query,
-    params: ({ match }) => ({ _id: match.params.loanId }),
+    query: adminLoans,
+    params: ({ match, loanId }) => ({ _id: loanId || match.params.loanId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'loan',
   }),
