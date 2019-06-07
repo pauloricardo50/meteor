@@ -1,21 +1,23 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
+
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { userLogin } from 'core/utils/testHelpers/testHelpers';
-import { ROLES } from 'core/api/constants';
-
-import { generateScenario } from 'core/api/methods/index';
+import { userLogin } from '../../../../utils/testHelpers/testHelpers';
+import { ROLES } from '../../../constants';
+import { generateScenario } from '../../../methods/index';
 import proLoans from '../proLoans.test';
+
+const resetDatabase = () =>
+  new Promise((resolve, reject) => {
+    Meteor.call('resetDb', (err, res) => (err ? reject(err) : resolve(res)));
+  });
 
 const fetchLoans = userId =>
   new Promise((resolve, reject) => {
-    proLoans.clone({ userId }).fetch((err, data) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    });
+    proLoans
+      .clone({ userId })
+      .fetch((err, data) => (err ? reject(err) : resolve(data)));
   });
 
 const createUserWithLoan = referredByUserLink =>
@@ -25,15 +27,12 @@ const createUserWithLoan = referredByUserLink =>
 
 const createProUser = userId =>
   generateScenario.run({
-    scenario: {
-      users: { _factory: 'pro', _id: userId },
-    },
+    scenario: { users: { _factory: 'pro', _id: userId } },
   });
 
-describe('loanQueries', () => {
-  beforeEach(() => {
-    resetDatabase();
-  });
+describe('loanQueries', function () {
+  this.timeout(10000);
+  beforeEach(() => resetDatabase());
 
   describe('proLoans', () => {
     it('uses the cache when necessary', () => {

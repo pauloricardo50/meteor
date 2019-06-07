@@ -168,6 +168,9 @@ updateDocumentUnset.setHandler(({ userId }, { collection, docId, object }) => {
 });
 
 generateScenario.setHandler(({ userId }, { scenario }) => {
-  SecurityService.checkUserIsAdmin(userId);
+  if (!Meteor.isTest) {
+    SecurityService.checkUserIsAdmin(userId);
+  }
+
   return generator(scenario);
 });
