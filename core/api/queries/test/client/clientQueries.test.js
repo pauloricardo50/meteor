@@ -1,10 +1,24 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Meteor } from 'meteor/meteor';
 import { userLogin } from 'core/utils/testHelpers/index';
-import { query1, query2, query3, query4 } from '../collection.test';
-import { testCollectionInsert } from '../methodDefinitions.test';
+import {
+  query1,
+  query2,
+  query3,
+  query4,
+  testCollectionInsert,
+} from '../collection.test';
+
+const resetDatabase = () =>
+  new Promise((resolve, reject) => {
+    Meteor.call('resetDb', (err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
 
 const insertTestData = (n) => {
   const promises = [...Array(n)].map((_, index) =>
@@ -56,9 +70,7 @@ const insertAndFetchTestData = (
 };
 
 describe('exposeQuery', () => {
-  beforeEach(() => {
-    resetDatabase();
-  });
+  beforeEach(() => resetDatabase());
 
   it('returns expected data without using overrides', () =>
     insertAndFetchTestData(100, {}).then((items) => {
@@ -70,9 +82,7 @@ describe('exposeQuery', () => {
 
   context('returns expected data when overriding', () => {
     it('the body', () =>
-      insertAndFetchTestData(100, {
-        $body: { value: 1 },
-      }).then((items) => {
+      insertAndFetchTestData(100, { $body: { value: 1 } }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         expect(items.named_query_TEST_QUERY_1[0].name).to.equal(undefined);
@@ -82,9 +92,7 @@ describe('exposeQuery', () => {
       }));
 
     it('the limit option', () =>
-      insertAndFetchTestData(100, {
-        $limit: 5,
-      }).then((items) => {
+      insertAndFetchTestData(100, { $limit: 5 }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(5);
         expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(5);
@@ -92,9 +100,7 @@ describe('exposeQuery', () => {
       }));
 
     it('the limit option greather than the server value', () =>
-      insertAndFetchTestData(100, {
-        $limit: 20,
-      }).then((items) => {
+      insertAndFetchTestData(100, { $limit: 20 }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
@@ -102,9 +108,7 @@ describe('exposeQuery', () => {
       }));
 
     it('the skip option', () =>
-      insertAndFetchTestData(100, {
-        $skip: 7,
-      }).then((items) => {
+      insertAndFetchTestData(100, { $skip: 7 }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_1[0].value).to.equal(38);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
@@ -112,9 +116,7 @@ describe('exposeQuery', () => {
       }));
 
     it('the sort option', () =>
-      insertAndFetchTestData(100, {
-        $sort: { value: -1 },
-      }).then((items) => {
+      insertAndFetchTestData(100, { $sort: { value: -1 } }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_1[0].value).to.equal(99);
         expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
@@ -122,21 +124,16 @@ describe('exposeQuery', () => {
       }));
 
     it('the sort option on multiple fields ', () =>
-      insertAndFetchTestData(50, {
-        $sort: { name: -1, value: -1 },
-      })
+      insertAndFetchTestData(50, { $sort: { name: -1, value: -1 } })
         .then((items) => {
           expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
           expect(items.named_query_TEST_QUERY_1[0].value).to.equal(47);
           expect(items.named_query_TEST_QUERY_2.length).to.equal(10);
           expect(items.named_query_TEST_QUERY_2[0].value).to.equal(47);
         })
-        .then(() => {
-          resetDatabase();
-          return insertAndFetchTestData(50, {
-            $sort: { name: -1, value: 1 },
-          });
-        })
+        .then(() => resetDatabase())
+        .then(() =>
+          insertAndFetchTestData(50, { $sort: { name: -1, value: 1 } }))
         .then((items) => {
           expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
           expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
@@ -154,9 +151,7 @@ describe('exposeQuery', () => {
 
   describe('returns expected data when using filters', () => {
     it('on client only', () =>
-      insertAndFetchTestData(100, {
-        name: 'test3',
-      }).then((items) => {
+      insertAndFetchTestData(100, { name: 'test3' }).then((items) => {
         expect(items.named_query_TEST_QUERY_1.length).to.equal(10);
         expect(items.named_query_TEST_QUERY_1[0].value).to.equal(31);
         items.named_query_TEST_QUERY_1.forEach(({ name }) =>
@@ -180,10 +175,7 @@ describe('exposeQuery', () => {
     it('on client and server', () =>
       insertAndFetchTestData(
         30,
-        {
-          name: 'test3',
-          _id: 'test50',
-        },
+        { name: 'test3', _id: 'test50' },
         { fetchQuery1: false },
       ).then((items) => {
         // Name and _id filters apply in query2, resulting in an empty array of results

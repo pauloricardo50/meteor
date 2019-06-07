@@ -1081,11 +1081,11 @@ describe('LoanService', function () {
       expect(main.min.borrowRatio).to.equal(0.65);
       expect(main.min.propertyValue).to.equal(1496000);
       expect(main.max.borrowRatio).to.equal(0.835);
-      expect(main.max.propertyValue).to.equal(2760000);
+      expect(main.max.propertyValue).to.equal(2761000);
       expect(second.min.borrowRatio).to.equal(0.5);
-      expect(second.min.propertyValue).to.equal(908000);
+      expect(second.min.propertyValue).to.equal(909000);
       expect(second.max.borrowRatio).to.equal(0.65);
-      expect(second.max.propertyValue).to.equal(1244000);
+      expect(second.max.propertyValue).to.equal(1245000);
     });
 
     it('Only uses the promotion lender', () => {
@@ -1123,7 +1123,7 @@ describe('LoanService', function () {
       expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
       expect(main.min).to.equal(undefined);
       expect(main.max.borrowRatio).to.equal(0.75);
-      expect(main.max.propertyValue).to.equal(1987000);
+      expect(main.max.propertyValue).to.equal(1988000);
       expect(second.min).to.equal(undefined);
       expect(second.max.borrowRatio).to.equal(0.7);
       expect(second.max.propertyValue).to.equal(1420000);

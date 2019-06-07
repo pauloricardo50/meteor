@@ -1,5 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-
+// @flow
 import Calculator from '../../../utils/Calculator';
 import {
   PROPERTIES_COLLECTION,

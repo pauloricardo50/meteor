@@ -8,7 +8,7 @@ import { getReferredBy } from 'core/api/helpers';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
-import LoanProgress from 'core/components/LoanProgress/LoanProgress';
+import LoanProgress from 'core/components/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import {
   LOANS_COLLECTION,

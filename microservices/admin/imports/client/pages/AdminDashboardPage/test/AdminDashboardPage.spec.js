@@ -6,7 +6,6 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import AdminDashboardPage from '../AdminDashboardPage';
-import TasksTable from '../../../components/TasksTable/TasksTable';
 
 describe('AdminDashboardPage', () => {
   let props = {};
@@ -28,11 +27,11 @@ describe('AdminDashboardPage', () => {
 
     expect(tableFiltersProp).to.deep.equal({
       filters: {
-        assignedEmployee: { emails: [{ address: true }] },
+        assignedEmployee: { email: true },
         status: [TASK_STATUS.ACTIVE],
       },
       options: {
-        address: [adminEmail, undefined],
+        email: [adminEmail, undefined],
         status: Object.values(TASK_STATUS),
       },
     });

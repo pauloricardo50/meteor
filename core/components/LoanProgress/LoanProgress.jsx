@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
 
-import { Percent } from '../Translation';
+import { LOAN_VERIFICATION_STATUS } from '../../api/constants';
 import Icon from '../Icon';
 import Tooltip from '../Material/Tooltip';
-import { LOAN_VERIFICATION_STATUS } from '../../api/constants';
-import ProgressCircle from '../ProgressCircle/ProgressCircle';
+import ProgressCircle from '../ProgressCircle';
 
 type LoanProgressProps = {
   loanProgress: Object,
@@ -26,7 +25,11 @@ const getVerificationData = (status) => {
       text: 'Vérification échouée',
     };
   case LOAN_VERIFICATION_STATUS.NONE:
-    return { icon: 'close', text: 'Vérification pas demandée' };
+    return {
+      icon: 'help',
+      className: 'secondary',
+      text: 'Vérification pas demandée',
+    };
   case LOAN_VERIFICATION_STATUS.REQUESTED:
     return {
       icon: 'waiting',

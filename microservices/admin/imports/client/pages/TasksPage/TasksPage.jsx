@@ -24,12 +24,12 @@ const tasksTableFilters = {
   filters: {
     type: true,
     status: [TASK_STATUS.ACTIVE],
-    assignedEmployee: { emails: [{ address: true }] },
+    assignedEmployee: { email: true },
   },
   options: {
     type: Object.values(TASK_TYPE),
     status: Object.values(TASK_STATUS),
-    address: getAdminsEmails(),
+    email: getAdminsEmails(),
   },
 };
 
