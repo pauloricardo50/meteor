@@ -1,8 +1,8 @@
 import { compose, withReducer, mapProps } from 'recompose';
 
-import adminLoans from 'core/api/loans/queries/adminLoans';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminLoans } from 'core/api/loans/queries';
+import { adminUsers } from 'core/api/users/queries';
 import {
   groupLoans,
   filterReducer,
@@ -13,7 +13,7 @@ export default compose(
   withReducer('options', 'dispatch', filterReducer, getInitialOptions),
   withSmartQuery({
     query: adminLoans,
-    params: ({ options: { assignedEmployeeId } }) => ({
+    params: ({ options: { assignedEmployeeId, step } }) => ({
       $body: {
         name: 1,
         status: 1,
@@ -21,6 +21,8 @@ export default compose(
         userCache: 1,
       },
       assignedEmployeeId,
+      step,
+      relevantOnly: true,
     }),
     dataName: 'loans',
     queryOptions: {},

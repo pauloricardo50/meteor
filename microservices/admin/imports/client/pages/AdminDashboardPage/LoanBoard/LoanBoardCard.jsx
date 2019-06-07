@@ -10,8 +10,10 @@ const LoanBoardCard = ({ data: loan }: LoanBoardCardProps) => {
   const { name, status, userCache = {} } = loan;
   return (
     <div className="loan-board-card card1 card-top card-hover">
-      <h4 className="title">{name}</h4>
-      <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      <div className="top">
+        <h4 className="title">{name}</h4>
+        <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      </div>
       <p>
         {userCache
           && userCache.assignedEmployeeCache

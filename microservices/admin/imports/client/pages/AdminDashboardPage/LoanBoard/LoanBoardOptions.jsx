@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
 
+import T from 'core/components/Translation';
 import Select from 'core/components/Select';
+import { STEP_ORDER } from 'core/api/constants';
+import { injectIntl } from 'react-intl';
 import { ACTIONS } from './loanBoardHelpers';
 
 type LoanBoardOptionsProps = {};
@@ -10,8 +13,9 @@ const LoanBoardOptions = ({
   options,
   dispatch,
   admins,
+  intl: { formatMessage: f },
 }: LoanBoardOptionsProps) => {
-  const { assignedEmployeeId } = options;
+  const { assignedEmployeeId, step } = options;
   return (
     <div className="loan-board-options">
       <Select
@@ -38,8 +42,41 @@ const LoanBoardOptions = ({
         }
         displayEmpty
       />
+
+      <Select
+        label="Étape du dossier"
+        value={step ? step.$in : []}
+        multiple
+        options={[
+          { id: null, label: 'Tous' },
+          ...STEP_ORDER.map(s => ({
+            id: s,
+            label: <T id={`Forms.step.${s}`} />,
+          })),
+        ]}
+        onChange={(_, values) => {
+          if (values.includes(null)) {
+            dispatch({
+              type: ACTIONS.SET_FILTER,
+              payload: { name: 'step', value: undefined },
+            });
+          } else {
+            dispatch({
+              type: ACTIONS.SET_FILTER,
+              payload: { name: 'step', value: { $in: values } },
+            });
+          }
+        }}
+        renderValue={(selected) => {
+          if (selected.length === 0 || selected.length === STEP_ORDER.length) {
+            return 'Toutes';
+          }
+          return selected.map(s => f({ id: `Forms.step.${s}` }));
+        }}
+        displayEmpty
+      />
     </div>
   );
 };
 
-export default LoanBoardOptions;
+export default injectIntl(LoanBoardOptions);

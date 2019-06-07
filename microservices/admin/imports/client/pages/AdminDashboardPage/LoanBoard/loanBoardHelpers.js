@@ -2,7 +2,7 @@ import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
 
-import { LOAN_STATUS_ORDER } from 'core/api/constants';
+import { LOAN_STATUS_ORDER, LOAN_STATUS, STEP_ORDER } from 'core/api/constants';
 
 export const ACTIONS = {
   SET_FILTER: 'SET_FILTER',
@@ -19,6 +19,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   assignedEmployeeId: { $in: [currentUser._id] },
   sortBy: 'createdAt',
   sortOrder: SORT_ORDER.ASC,
+  step: { $in: STEP_ORDER },
 });
 
 export const filterReducer = (state, { type, payload }) => {
@@ -36,11 +37,7 @@ export const filterReducer = (state, { type, payload }) => {
             sortOrder === SORT_ORDER.ASC ? SORT_ORDER.DESC : SORT_ORDER.ASC,
       };
     }
-    return {
-      ...state,
-      sortBy: payload,
-      sortOrder: SORT_ORDER.ASC,
-    };
+    return { ...state, sortBy: payload, sortOrder: SORT_ORDER.ASC };
   }
 
   default:
@@ -64,7 +61,10 @@ export const makeSortColumns = ({ groupBy }) => {
 const getMissingColumns = (groupBy, groups) => {
   switch (groupBy) {
   case 'status': {
-    return LOAN_STATUS_ORDER.filter(status => !groups.includes(status));
+    return LOAN_STATUS_ORDER.filter(status =>
+      status !== LOAN_STATUS.UNSUCCESSFUL
+          && status !== LOAN_STATUS.TEST
+          && !groups.includes(status));
   }
 
   default:

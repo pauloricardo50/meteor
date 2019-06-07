@@ -50,12 +50,17 @@ const LoanBoardColumnHeader = ({
   id,
   options,
   dispatch,
+  count,
 }: LoanBoardColumnHeaderProps) => {
   const { groupBy } = options;
 
   return (
     <div className="loan-board-column-header">
-      <h4 className="title">{getTitle(id, groupBy)}</h4>
+      <h4 className="title">
+        <span>{getTitle(id, groupBy)}</span>
+        &nbsp;
+        <span className="secondary">({count})</span>
+      </h4>
       <DropdownMenu
         iconType="sort"
         buttonProps={{ className: 'sort' }}
