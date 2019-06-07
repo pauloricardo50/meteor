@@ -1,6 +1,6 @@
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { appPromotionLot, proPromotionLot } from '../queries';
-import { exposeQuery } from '../../queries/queryHelpers';
 import { proPromotionLotResolver } from './resolvers';
 
 exposeQuery({

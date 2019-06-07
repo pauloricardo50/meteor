@@ -1,4 +1,4 @@
-import { exposeQuery } from 'core/api/queries/queryHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { loanLenders } from '../queries';
 

@@ -1,5 +1,5 @@
-import UserService from './UserService';
 import { proUser as proUserFragment } from '../../fragments';
+import UserService from './UserService';
 
 export const proReferredByUsersResolver = ({
   userId,

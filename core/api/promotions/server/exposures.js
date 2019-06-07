@@ -1,6 +1,8 @@
 import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
+import SecurityService from '../../security';
 import {
   adminPromotions,
   appPromotion,
@@ -8,9 +10,7 @@ import {
   proPromotions,
   proPromotionUsers,
 } from '../queries';
-import SecurityService from '../../security';
 import { PROMOTION_STATUS } from '../promotionConstants';
-import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 import { proPromotionsResolver } from './resolvers';
 

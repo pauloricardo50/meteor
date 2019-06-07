@@ -1,7 +1,7 @@
-import PromotionLotService from './PromotionLotService';
+import { makePromotionLotAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proPromotionLot as proPromotionLotFragment } from '../../fragments';
 import SecurityService from '../../security';
-import { makePromotionLotAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import PromotionLotService from './PromotionLotService';
 
 export const proPromotionLotResolver = ({ userId, promotionLotId }) => {
   const promotionLot = PromotionLotService.fetchOne({

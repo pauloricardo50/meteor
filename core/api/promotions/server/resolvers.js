@@ -1,10 +1,11 @@
 import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
+
 import {
   proPromotion,
   proPromotions as proPromotionsFragment,
 } from '../../fragments';
-import PromotionService from './PromotionService';
 import SecurityService from '../../security';
+import PromotionService from './PromotionService';
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
 export const proPromotionsResolver = ({ userId, _id, simple, $body }) => {

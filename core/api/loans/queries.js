@@ -53,19 +53,3 @@ export const userLoans = Loans.createQuery(
   userLoan({ withSort: true, withFilteredPromotions: true }),
   { scoped: true },
 );
-
-export const userLoansE2E = Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
-  $filter({ filters, params: { userId, unowned, step } }) {
-    filters.userId = userId;
-
-    if (unowned) {
-      filters.userId = { $exists: false };
-    }
-
-    if (step) {
-      filters.step = step;
-    }
-  },
-  ...loanBase(),
-  $options: { sort: { createdAt: -1 } },
-});

@@ -1,10 +1,10 @@
-import Organisations from '.';
+import { createSearchFilters } from '../helpers';
+import { fullOrganisation, userOrganisation } from '../fragments';
 import {
   ORGANISATION_QUERIES,
   ORGANISATION_FEATURES,
 } from './organisationConstants';
-import { fullOrganisation, userOrganisation } from '../fragments';
-import { createSearchFilters } from '../helpers';
+import Organisations from '.';
 
 export const adminOrganisations = Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,

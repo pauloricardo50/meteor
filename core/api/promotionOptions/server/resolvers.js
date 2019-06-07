@@ -1,7 +1,7 @@
-import PromotionOptionService from './PromotionOptionService';
+import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proPromotionOption } from '../../fragments';
 import SecurityService from '../../security';
-import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import PromotionOptionService from './PromotionOptionService';
 
 export const proPromotionOptionsResolver = ({ userId, promotionOptionIds }) => {
   const promotionOptions = PromotionOptionService.fetch({

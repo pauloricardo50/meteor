@@ -1,6 +1,8 @@
 import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
+import Security from '../../security';
 import {
   adminProperties,
   anonymousProperty,
@@ -9,9 +11,7 @@ import {
   proPropertyUsers,
   propertySearch,
 } from '../queries';
-import Security from '../../security';
 import { proPropertiesResolver, proPropertyUsersResolver } from './resolvers';
-import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({

@@ -1,9 +1,11 @@
 import { Match } from 'meteor/check';
-
-import SecurityService from 'core/api/security';
 import { Meteor } from 'meteor/meteor';
+
+import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import UserService from '../../users/server/UserService';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
+import SecurityService from '../../security';
 
 import {
   adminLoans,
@@ -24,8 +26,6 @@ import {
   proPropertyLoansResolver,
   proReferredByLoansResolver,
 } from './resolvers';
-import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
-import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 exposeQuery({
   query: adminLoans,

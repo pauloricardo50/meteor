@@ -11,9 +11,9 @@ import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans, fullRevenues } from '../../fragments';
 import SecurityService from '../../security';
-import LoanService from './LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 import OrganisationService from '../../organisations/server/OrganisationService';
+import LoanService from './LoanService';
 
 const isSolventForProProperty = ({
   isAdmin,

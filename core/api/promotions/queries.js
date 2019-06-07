@@ -1,10 +1,10 @@
-import Promotions from '.';
-import { PROMOTION_QUERIES } from './promotionConstants';
 import {
   adminPromotions as adminPromotionsFragment,
   proPromotion,
   searchPromotions,
 } from '../fragments';
+import { PROMOTION_QUERIES } from './promotionConstants';
+import Promotions from '.';
 
 export const adminPromotions = Promotions.createQuery(
   PROMOTION_QUERIES.ADMIN_PROMOTIONS,

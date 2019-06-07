@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-import { currentInterestRates, interestRates } from '../queries';
 import { exposeQuery } from '../../queries/queryHelpers';
+import { currentInterestRates, interestRates } from '../queries';
 
 exposeQuery({
   query: currentInterestRates,

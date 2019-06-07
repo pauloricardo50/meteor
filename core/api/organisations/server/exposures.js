@@ -1,7 +1,7 @@
 import { Match } from 'meteor/check';
 
-import SecurityService from '../../security';
 import { exposeQuery } from '../../queries/queryHelpers';
+import SecurityService from '../../security';
 import {
   adminOrganisations,
   organisationSearch,

@@ -1,10 +1,10 @@
-import { contact } from '../fragments';
 import {
   generateMatchAnyWordRegexp,
   createRegexQuery,
 } from '../helpers/mongoHelpers';
-import Contacts from '.';
+import { contact } from '../fragments';
 import { CONTACTS_QUERIES } from './contactsConstants';
+import Contacts from '.';
 
 export const adminContacts = Contacts.createQuery(
   CONTACTS_QUERIES.ADMIN_CONTACTS,

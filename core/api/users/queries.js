@@ -1,5 +1,7 @@
-import Users from '.';
-import { USER_QUERIES } from './userConstants';
+import {
+  createRegexQuery,
+  generateMatchAnyWordRegexp,
+} from '../helpers/mongoHelpers';
 import {
   adminUser,
   appUser as appUserFragment,
@@ -7,10 +9,8 @@ import {
   proUser as proUserFragment,
 } from '../fragments';
 
-import {
-  createRegexQuery,
-  generateMatchAnyWordRegexp,
-} from '../helpers/mongoHelpers';
+import { USER_QUERIES } from './userConstants';
+import Users from '.';
 
 export const adminUsers = Users.createQuery(
   USER_QUERIES.ADMIN_USERS,
@@ -46,8 +46,6 @@ export const userEmails = Users.createQuery(USER_QUERIES.USER_EMAILS, {
   sentEmails: 1,
 });
 
-const queryHasSpace = query => query.indexOf(' ') > -1;
-
 export const userSearch = Users.createQuery(USER_QUERIES.USER_SEARCH, {
   $filter({ filters, params: { searchQuery, roles } }) {
     const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
@@ -66,10 +64,6 @@ export const userSearch = Users.createQuery(USER_QUERIES.USER_SEARCH, {
         ],
       },
     ];
-
-    if (queryHasSpace(searchQuery)) {
-      filters.$or.push();
-    }
   },
   assignedEmployee: { name: 1 },
   createdAt: 1,

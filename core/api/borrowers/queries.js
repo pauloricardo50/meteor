@@ -1,10 +1,10 @@
-import Borrowers from '.';
-import { adminBorrower } from '../fragments';
 import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../helpers/mongoHelpers';
+import { adminBorrower } from '../fragments';
 import { BORROWER_QUERIES } from './borrowerConstants';
+import Borrowers from '.';
 
 export const adminBorrowers = Borrowers.createQuery(
   BORROWER_QUERIES.ADMIN_BORROWERS,

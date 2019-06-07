@@ -3,6 +3,8 @@ import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 
 import { exposeQuery } from '../../queries/queryHelpers';
+import { ROLES } from '../../constants';
+import SecurityService from '../../security';
 import {
   adminUsers,
   appUser,
@@ -12,8 +14,6 @@ import {
   userSearch,
   proUser,
 } from '../queries';
-import { ROLES } from '../../constants';
-import SecurityService from '../../security';
 import { proReferredByUsersResolver } from './resolvers';
 
 exposeQuery({

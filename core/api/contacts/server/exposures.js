@@ -1,6 +1,6 @@
 import { Match } from 'meteor/check';
-import { adminContacts, contactSearch } from '../queries';
 import { exposeQuery } from '../../queries/queryHelpers';
+import { adminContacts, contactSearch } from '../queries';
 
 exposeQuery({ query: adminContacts, options: { allowFilterById: true } });
 

@@ -1,5 +1,5 @@
-import { proPropertySummary, proProperty, proUser } from '../../fragments';
 import UserService from '../../users/server/UserService';
+import { proPropertySummary, proProperty, proUser } from '../../fragments';
 import PropertyService from './PropertyService';
 
 export const proPropertiesResolver = ({
