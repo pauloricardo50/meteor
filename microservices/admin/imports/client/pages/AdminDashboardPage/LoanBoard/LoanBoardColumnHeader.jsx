@@ -5,7 +5,7 @@ import cx from 'classnames';
 import T from 'core/components/Translation';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
-import { ACTIONS, SORT_ORDER, GROUP_BY, SORT_BY } from './loanBoardHelpers';
+import { ACTIONS, SORT_ORDER, GROUP_BY, SORT_BY } from './loanBoardConstants';
 
 type LoanBoardColumnHeaderProps = {};
 

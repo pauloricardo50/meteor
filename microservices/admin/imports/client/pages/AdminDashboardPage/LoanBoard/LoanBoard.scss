@@ -1,35 +1,27 @@
 .loan-board {
   &-options {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-options > * {
     background-color: white;
     padding: 16px;
     display: flex;
     align-items: flex-start;
+  }
+
+  &-options .right {
+    > * {
+      margin-left: 8px;
+    }
+  }
+
+  &-options .left {
+    flex-grow: 1;
 
     > * {
       margin-right: 32px;
-    }
-
-    .checkbox-list {
-      display: flex;
-      flex-direction: column;
-      max-height: 200px;
-      overflow: scroll;
-
-      > * {
-        margin-left: 0;
-      }
-
-      .checkbox {
-        padding: 4px;
-      }
-    }
-
-    .radio-group > * {
-      margin-left: 0;
-
-      .radio {
-        padding: 4px;
-      }
     }
   }
 
@@ -81,3 +73,38 @@
     }
   }
 }
+
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  // overflow: scroll;
+  // flex-wrap: wrap;
+  // max-height: 200px;
+  // min-height: 50px;
+
+  > * {
+    margin-left: 0;
+  }
+
+  .checkbox {
+    padding: 4px;
+  }
+}
+
+.radio-group > * {
+  margin-left: 0;
+
+  .radio {
+    padding: 4px;
+  }
+}
+
+// .popover,
+// .popover.popover-content,
+// .popover.popover-content.checkbox-list {
+//   min-height: 50px;
+//   max-height: 200px;
+
+//   max-width: 100% !important;
+//   min-width: 0px;
+// }

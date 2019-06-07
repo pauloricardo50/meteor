@@ -15,6 +15,8 @@ const LoanBoard = ({
   data,
   admins,
   promotions,
+  refetchLoans,
+  ...props
 }: LoanBoardProps) => (
   <div className="loan-board">
     <LoanBoardOptions
@@ -22,6 +24,7 @@ const LoanBoard = ({
       dispatch={dispatch}
       admins={admins}
       promotions={promotions}
+      refetchLoans={refetchLoans}
     />
     <Board
       data={data}

@@ -8,8 +8,8 @@ import {
   groupLoans,
   filterReducer,
   getInitialOptions,
-  GROUP_BY,
 } from './loanBoardHelpers';
+import { GROUP_BY } from './loanBoardConstants';
 
 const getBody = (groupBy) => {
   switch (groupBy) {
@@ -19,16 +19,11 @@ const getBody = (groupBy) => {
       status: 1,
       createdAt: 1,
       userCache: 1,
-      promotions: { name: 1, status: 1 },
+      promotions: { name: 1 },
     };
 
   default:
-    return {
-      name: 1,
-      status: 1,
-      createdAt: 1,
-      userCache: 1,
-    };
+    return { name: 1, status: 1, createdAt: 1, userCache: 1 };
   }
 };
 
@@ -59,7 +54,7 @@ export default compose(
   }),
   withSmartQuery({
     query: adminPromotions,
-    params: { $body: { name: 1, status: 1 } },
+    params: { $body: { name: 1 } },
     dataName: 'promotions',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,

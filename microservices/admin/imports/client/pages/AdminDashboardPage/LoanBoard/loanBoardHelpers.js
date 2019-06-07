@@ -5,30 +5,7 @@ import _orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
 
 import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
-
-export const ACTIONS = {
-  SET_FILTER: 'SET_FILTER',
-  SET_COLUMN_SORT: 'SET_COLUMN_SORT',
-  SET_GROUP_BY: 'SET_GROUP_BY',
-  RESET: 'RESET',
-};
-
-export const SORT_BY = {
-  CREATED_AT: 'createdAt',
-  ASSIGNED_EMPLOYEE: 'userCache.assignedEmployeeCache.firstName',
-  STATUS: 'status',
-};
-
-export const SORT_ORDER = {
-  ASC: 'asc',
-  DESC: 'desc',
-};
-
-export const GROUP_BY = {
-  STATUS: 'status',
-  PROMOTION: 'promotions[0]._id',
-  ADMIN: 'userCache.assignedEmployeeCache._id',
-};
+import { SORT_ORDER, GROUP_BY, ACTIONS, SORT_BY } from './loanBoardConstants';
 
 export const getInitialOptions = ({ currentUser }) => ({
   groupBy: GROUP_BY.STATUS,
@@ -107,21 +84,22 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
-const sortColumnData = (data, sortBy, sortOrder) => _orderBy(
-  data,
-  [
-    (item) => {
-      const value = get(item, sortBy);
+const sortColumnData = (data, sortBy, sortOrder) =>
+  _orderBy(
+    data,
+    [
+      (item) => {
+        const value = get(item, sortBy);
 
-      if (sortBy === SORT_BY.STATUS) {
-        return LOAN_STATUS_ORDER.indexOf(value);
-      }
+        if (sortBy === SORT_BY.STATUS) {
+          return LOAN_STATUS_ORDER.indexOf(value);
+        }
 
-      return value;
-    },
-  ],
-  [sortOrder],
-);
+        return value;
+      },
+    ],
+    [sortOrder],
+  );
 
 export const groupLoans = (loans, options) => {
   const { groupBy, sortBy, sortOrder } = options;
