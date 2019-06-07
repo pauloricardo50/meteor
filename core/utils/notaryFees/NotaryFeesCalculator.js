@@ -66,9 +66,7 @@ class NotaryFeesCalculator {
       mortgageNoteFees,
       residenceType,
       mortgageNoteIncrease,
-      propertyTransferTax:
-        buyersContractFees.propertyRegistrationTax
-        + (buyersContractFees.propertyConstructionTax || 0),
+      propertyTransferTax: buyersContractFees.propertyRegistrationTax,
     });
 
     const roundedResult = roundObjectKeys({
@@ -167,8 +165,8 @@ class NotaryFeesCalculator {
         + landRegistryPropertyTax
         + additionalFees,
       propertyRegistrationTax,
-      notaryIncomeFromProperty,
       landRegistryPropertyTax,
+      notaryIncomeFromProperty,
       additionalFees,
     };
   }
@@ -209,9 +207,9 @@ class NotaryFeesCalculator {
         + propertyConstructionTax
         + additionalFees,
       propertyRegistrationTax,
-      notaryIncomeFromProperty,
-      landRegistryPropertyTax,
       propertyConstructionTax,
+      landRegistryPropertyTax,
+      notaryIncomeFromProperty,
       additionalFees,
     };
   }

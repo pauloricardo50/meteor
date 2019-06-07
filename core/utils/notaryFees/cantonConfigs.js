@@ -42,7 +42,7 @@ export const GE = {
     mortgageNoteRegistrationTax,
   }) =>
     (isCasatax({ residenceType, propertyValue })
-      ? mortgageNoteRegistrationTax * 0.5
+      ? mortgageNoteRegistrationTax * cantons.GE.MORTGAGE_NOTE_CASATAX_DEDUCTION
       : 0),
 };
 

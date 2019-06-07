@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import NotaryFeesCalculator from '../NotaryFeesCalculator';
 import { PURCHASE_TYPE } from '../../../api/constants';
+import { GE } from '../cantonConstants';
 
 describe('NotaryFeesCalculator', () => {
   let calc;
@@ -126,18 +127,19 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.buyersContractFees.total).to.equal(28269.5);
     });
 
-    it('does not go into negatives for constructions', () => {
+    it('calculates casatax properly for a construction', () => {
       loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
       loan.structure.property.value = 0;
-      loan.structure.property.landValue = 231000;
-      loan.structure.property.constructionValue = 263810;
-      loan.structure.property.additionalMargin = 123190;
+      loan.structure.property.landValue = 400000;
+      loan.structure.property.constructionValue = 650000;
+      loan.structure.property.additionalMargin = 100000;
 
       const fees = calc.getNotaryFeesForLoan({ loan });
-      expect(fees.buyersContractFees.total).to.equal(17730.45);
-      expect(Math.round(fees.deductions.buyersContractDeductions)).to.equal(Math.round(fees.buyersContractFees.propertyRegistrationTax
-            + fees.buyersContractFees.propertyConstructionTax));
+      expect(fees.buyersContractFees.propertyRegistrationTax).to.equal(fees.deductions.buyersContractDeductions);
+      expect(fees.mortgageNoteFees.mortgageNoteRegistrationTax
+          * GE.MORTGAGE_NOTE_CASATAX_DEDUCTION).to.equal(fees.deductions.mortgageNoteDeductions);
+      expect(fees.buyersContractFees.total).to.equal(27034.85);
     });
   });
 
@@ -183,7 +185,7 @@ describe('NotaryFeesCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       });
 
-      expect(notaryFees.total).to.equal(32258.1);
+      expect(notaryFees.total).to.equal(31944.1);
     });
 
     it('should work for unknown cantons', () => {
