@@ -12,6 +12,6 @@ import '../promotionOptions/server/exposures';
 import '../promotions/server/exposures';
 import '../properties/server/exposures';
 import '../resolvers/exposures';
-import '../tasks/queries/exposures';
+import '../tasks/server/exposures';
 import '../users/queries/exposures';
 import '../stats/exposures';

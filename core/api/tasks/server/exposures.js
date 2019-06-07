@@ -1,10 +1,10 @@
 import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
-import query from './tasks';
+import { tasks } from '../queries';
 
 exposeQuery(
-  query,
+  tasks,
   {
     embody: (body, params) => {
       body.$filter = ({
