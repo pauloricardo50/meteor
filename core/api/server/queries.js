@@ -14,4 +14,4 @@ import '../properties/server/exposures';
 import '../resolvers/exposures';
 import '../tasks/server/exposures';
 import '../users/queries/exposures';
-import '../stats/exposures';
+import '../stats/server/exposures';
