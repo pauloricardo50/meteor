@@ -14,6 +14,14 @@ Users.addLinks({
     collection: Users,
     field: 'assignedEmployeeId',
     type: 'one',
+    denormalize: {
+      field: 'assignedEmployeeCache',
+      body: {
+        _id: 1,
+        firstName: 1,
+        lastName: 1,
+      },
+    },
   },
   assignedEndUsers: {
     collection: Users,

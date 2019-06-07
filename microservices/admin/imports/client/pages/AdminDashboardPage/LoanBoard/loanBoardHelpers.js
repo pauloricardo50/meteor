@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { LOAN_STATUS_ORDER } from 'core/api/constants';
 
 export const ACTIONS = {
-  ADD_FILTER: 'ADD_FILTER',
+  SET_FILTER: 'SET_FILTER',
   SET_COLUMN_SORT: 'SET_COLUMN_SORT',
 };
 
@@ -23,8 +23,10 @@ export const getInitialOptions = ({ currentUser }) => ({
 
 export const filterReducer = (state, { type, payload }) => {
   switch (type) {
-  case ACTIONS.ADD_FILTER:
-    return state;
+  case ACTIONS.SET_FILTER: {
+    const { name, value } = payload;
+    return { ...state, [name]: value };
+  }
   case ACTIONS.SET_COLUMN_SORT: {
     const { sortOrder } = state;
     if (state.sortBy === payload) {

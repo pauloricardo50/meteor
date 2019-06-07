@@ -251,6 +251,7 @@ export const loan = () => ({
   },
   updatedAt: 1,
   userId: 1,
+  userCache: 1,
   verificationStatus: 1,
   shareSolvency: 1,
 });
@@ -813,6 +814,7 @@ export const baseTask = () => ({
 
 export const task = () => ({
   ...baseTask(),
+  assignedEmployeeCache: 1,
   assignedEmployeeId: 1,
   assignedEmployee: simpleUser(),
   borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },

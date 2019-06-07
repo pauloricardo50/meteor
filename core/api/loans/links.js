@@ -13,7 +13,6 @@ import {
   PromotionLots,
 } from '..';
 
-
 Loans.addLinks({
   properties: {
     field: 'propertyIds',
@@ -33,7 +32,7 @@ Loans.addLinks({
       field: 'userCache',
       body: {
         referredByOrganisationLink: 1,
-        assignedEmployeeId: 1,
+        assignedEmployeeCache: 1,
       },
     },
   },

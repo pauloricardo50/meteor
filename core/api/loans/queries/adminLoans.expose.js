@@ -33,7 +33,7 @@ exposeQuery(
         }
 
         if (assignedToMe || assignedEmployeeId) {
-          filters['userCache.assignedEmployeeId'] = assignedEmployeeId;
+          filters['userCache.assignedEmployeeCache._id'] = assignedEmployeeId;
         }
 
         if (relevantOnly) {
@@ -50,7 +50,7 @@ exposeQuery(
       owned: Match.Maybe(Boolean),
       assignedToMe: Match.Maybe(Boolean),
       relevantOnly: Match.Maybe(Boolean),
-      assignedEmployeeId: Match.OneOf(Object, String),
+      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
   { allowFilterById: true },

@@ -8,8 +8,14 @@ Organisations.cacheCount({
   cacheField: 'lenderRulesCount',
 });
 
+migrate('users', 'assignedEmployeeCache', {
+  $or: [
+    { 'assignedEmployeeCache.lastName': { $exists: false } },
+    { 'assignedEmployeeCache.firstName': { $exists: false } },
+  ],
+});
 migrate('loans', 'userCache', {
-  'userCache.assignedEmployeeId': { $exists: false },
+  'userCache.assignedEmployeeCache.firstName': { $exists: false },
 });
 // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
 // migrate('lenderRules', 'organisationCache', {

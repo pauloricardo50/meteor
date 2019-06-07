@@ -9,12 +9,11 @@ import LoanBoardCard from './LoanBoardCard';
 
 type LoanBoardProps = {};
 
-const LoanBoard = ({ options, dispatch, data }: LoanBoardProps) => {
-  console.log('options:', options);
+const LoanBoard = ({ options, dispatch, data, admins }: LoanBoardProps) => {
   console.log('data:', data);
   return (
     <div className="loan-board">
-      <LoanBoardOptions options={options} dispatch={dispatch} />
+      <LoanBoardOptions options={options} dispatch={dispatch} admins={admins} />
       <Board
         data={data}
         columnHeader={LoanBoardColumnHeader}

@@ -47,6 +47,7 @@ exposeQuery(
       roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
       assignedToMe: Match.Maybe(Boolean),
+      $body: Match.Maybe(Object),
     },
   },
   { allowFilterById: true },
