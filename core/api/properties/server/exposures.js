@@ -7,6 +7,7 @@ import {
   proProperties,
   userProperty,
   proPropertyUsers,
+  propertySearch,
 } from '../queries';
 import Security from '../../security';
 import { proPropertySummary, proProperty, proUser } from '../../fragments';
@@ -132,3 +133,11 @@ proPropertyUsers.resolve(({ propertyId }) => {
 
   return users;
 });
+
+exposeQuery(
+  propertySearch,
+  {
+    validateParams: { searchQuery: Match.Maybe(String) },
+  },
+  {},
+);

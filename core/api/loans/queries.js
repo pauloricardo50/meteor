@@ -1,13 +1,6 @@
 import Loans from '.';
-import { Users } from '..';
 import { LOAN_QUERIES } from './loanConstants';
-import {
-  adminLoan,
-  userLoan,
-  proLoans as proLoansFragment,
-  fullRevenues,
-  loanBase,
-} from '../fragments';
+import { adminLoan, userLoan, loanBase } from '../fragments';
 import { formatLoanWithDocuments } from '../../utils/loanFunctions';
 import { createSearchFilters } from '../helpers/mongoHelpers';
 
@@ -35,7 +28,6 @@ export const fullLoan = Loans.createQuery(LOAN_QUERIES.FULL_LOAN, {
     return loans.map(formatLoanWithDocuments);
   },
 });
-
 
 export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
   $filter({ filters, params: { searchQuery } }) {
