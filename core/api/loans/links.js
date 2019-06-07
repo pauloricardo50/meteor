@@ -31,6 +31,8 @@ Loans.addLinks({
     denormalize: {
       field: 'userCache',
       body: {
+        firstName: 1,
+        lastName: 1,
         referredByOrganisationLink: 1,
         assignedEmployeeCache: 1,
       },

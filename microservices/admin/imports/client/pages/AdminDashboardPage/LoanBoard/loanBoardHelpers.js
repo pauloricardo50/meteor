@@ -42,7 +42,7 @@ export const filterReducer = (state, { type, payload }) => {
     if (payload === GROUP_BY.STATUS) {
       return { ...newStatus, sortBy: SORT_BY.CREATED_AT };
     }
-    return { ...newStatus, sortBy: SORT_BY.STATUS };
+    return { ...newStatus, sortBy: SORT_BY.STATUS, sortOrder: SORT_ORDER.DESC };
   }
 
   case ACTIONS.RESET: {
@@ -98,23 +98,22 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
-const sortColumnData = (data, sortBy, sortOrder) =>
-  _orderBy(
-    data,
-    [
-      (item) => {
-        const value = get(item, sortBy);
+const sortColumnData = (data, sortBy, sortOrder) => {
+  const sorters = [
+    (item) => {
+      const value = get(item, sortBy);
 
-        if (sortBy === SORT_BY.STATUS) {
-          return LOAN_STATUS_ORDER.indexOf(value);
-        }
+      if (sortBy === SORT_BY.STATUS) {
+        return LOAN_STATUS_ORDER.indexOf(value);
+      }
 
-        return value;
-      },
-    ],
-    [sortOrder],
-  );
+      return value;
+    },
+    item => get(item, 'userCache.lastName'),
+  ];
 
+  return _orderBy(data, sorters, [sortOrder]);
+};
 export const groupLoans = ({ loans, options, ...props }) => {
   const { groupBy, sortBy, sortOrder } = options;
   const groupedLoans = _groupBy(loans, groupBy);

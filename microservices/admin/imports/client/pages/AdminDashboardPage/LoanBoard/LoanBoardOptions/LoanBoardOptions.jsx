@@ -51,6 +51,7 @@ const LoanBoardOptions = ({
     lenderId,
     category,
   } = options;
+  const assignedEmployeeValue = assignedEmployeeId ? assignedEmployeeId.$in : [null];
   const statusValue = status ? status.$in : [null];
   const categoryValue = category ? category.$in : [null];
   const stepValue = step ? step.$in : [null];
@@ -62,7 +63,8 @@ const LoanBoardOptions = ({
     { id: GROUP_BY.ADMIN, label: 'Par conseiller' },
   ];
   const assignedEmployeeOptions = [
-    { id: null, label: 'Personne' },
+    { id: null, label: 'Tous' },
+    { id: undefined, label: 'Personne' },
     ...admins.map(admin => ({
       id: admin._id,
       label: admin.firstName,
@@ -104,14 +106,9 @@ const LoanBoardOptions = ({
       <div className="left">
         <LoanBoardOptionsCheckboxes
           label="Conseiller"
-          value={assignedEmployeeId.$in}
+          value={assignedEmployeeValue}
           options={assignedEmployeeOptions}
-          onChange={(values) => {
-            dispatch({
-              type: ACTIONS.SET_FILTER,
-              payload: { name: 'assignedEmployeeId', value: { $in: values } },
-            });
-          }}
+          onChange={next => makeOnChange('assignedEmployeeId', dispatch)(assignedEmployeeValue, next)}
         />
 
         <LoanBoardOptionsCheckboxes

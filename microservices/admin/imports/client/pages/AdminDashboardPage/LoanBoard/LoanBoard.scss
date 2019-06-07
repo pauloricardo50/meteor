@@ -27,8 +27,8 @@
 
   &-column-header {
     display: flex;
-    justify-content: center;
     position: relative;
+    padding-right: 24px;
 
     .title {
       margin-top: 0;
@@ -53,6 +53,11 @@
     .title {
       margin: 0;
       margin-right: 8px;
+    }
+
+
+    p {
+      margin: 0;
     }
   }
 
