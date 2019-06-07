@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import NotaryFeesCalculator from '../NotaryFeesCalculator';
 import { PURCHASE_TYPE } from '../../../api/constants';
+import { GE } from '../cantonConstants';
 
 describe('NotaryFeesCalculator', () => {
   let calc;
@@ -62,7 +63,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(32104.1);
+      expect(fees.total).to.equal(31944.1);
     });
 
     it('ignores propertyWork', () => {
@@ -71,7 +72,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(32104.1);
+      expect(fees.total).to.equal(31944.1);
     });
 
     it('caps casatax deductions for very small properties', () => {
@@ -125,6 +126,21 @@ describe('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
       expect(fees.buyersContractFees.total).to.equal(28269.5);
     });
+
+    it('calculates casatax properly for a construction', () => {
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
+      loan.structure.property.value = 0;
+      loan.structure.property.landValue = 400000;
+      loan.structure.property.constructionValue = 650000;
+      loan.structure.property.additionalMargin = 100000;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+      expect(fees.buyersContractFees.propertyRegistrationTax).to.equal(fees.deductions.buyersContractDeductions);
+      expect(fees.mortgageNoteFees.mortgageNoteRegistrationTax
+          * GE.MORTGAGE_NOTE_CASATAX_DEDUCTION).to.equal(fees.deductions.mortgageNoteDeductions);
+      expect(fees.buyersContractFees.total).to.equal(27034.85);
+    });
   });
 
   describe('VD', () => {
@@ -167,9 +183,21 @@ describe('NotaryFeesCalculator', () => {
         propertyValue: 1000000,
         mortgageNoteIncrease: 800000,
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      }).total;
+      });
 
-      expect(notaryFees).to.equal(32104.1);
+      expect(notaryFees.total).to.equal(31944.1);
+    });
+
+    it('should work for unknown cantons', () => {
+      calc = new NotaryFeesCalculator({ canton: 'XX' });
+
+      const notaryFees = calc.getNotaryFeesWithoutLoan({
+        propertyValue: 1000000,
+        mortgageNoteIncrease: 800000,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      });
+
+      expect(notaryFees.total).to.equal(50000);
     });
   });
 });
