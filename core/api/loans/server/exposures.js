@@ -43,6 +43,7 @@ exposeQuery({
           hasPromotion,
           promotionId,
           status,
+          lenderId,
         },
       }) => {
         if (_id) {
@@ -79,6 +80,12 @@ exposeQuery({
         if (hasPromotion || promotionId) {
           filters['promotionLinks.0._id'] = promotionId || { $exists: true };
         }
+
+        if (lenderId) {
+          filters.lendersCache = {
+            $elemMatch: { 'organisationLink._id': lenderId },
+          };
+        }
       };
     },
     validateParams: {
@@ -88,6 +95,7 @@ exposeQuery({
       step: Match.Maybe(Match.OneOf(Object, String)),
       status: Match.Maybe(Match.OneOf(Object, String)),
       promotionId: Match.Maybe(Match.OneOf(Object, String)),
+      lenderId: Match.Maybe(Match.OneOf(Object, String)),
       relevantOnly: Match.Maybe(Boolean),
       hasPromotion: Match.Maybe(Boolean),
       _id: Match.Maybe(String),

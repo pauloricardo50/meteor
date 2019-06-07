@@ -7,7 +7,6 @@ import StickyPopover from 'core/components/StickyPopover';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import RadioButtons from 'core/components/RadioButtons';
-import CheckboxList from 'core/components/Checkbox/CheckboxList';
 import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
 import { ACTIONS, GROUP_BY } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
@@ -33,25 +32,27 @@ const makeOnChange = (filterName, dispatch) => (prev, next) => {
   }
 };
 
-const renderCheckboxValue = (values, options) =>
-  values.map((i) => {
-    const value = options.find(({ id }) => id === i);
-
-    return <div>{value.label}</div>;
-  });
-
 const LoanBoardOptions = ({
   options,
   dispatch,
   admins,
   intl: { formatMessage: f },
   promotions,
+  lenders,
   refetchLoans,
 }: LoanBoardOptionsProps) => {
-  const { assignedEmployeeId, step, groupBy, status, promotionId } = options;
+  const {
+    assignedEmployeeId,
+    step,
+    groupBy,
+    status,
+    promotionId,
+    lenderId,
+  } = options;
   const statusValue = status ? status.$in : [null];
   const stepValue = step ? step.$in : [null];
   const promotionIdValue = promotionId ? promotionId.$in : [null];
+  const lenderIdValue = lenderId ? lenderId.$in : [null];
   const groupByOptions = [
     { id: GROUP_BY.STATUS, label: 'Par statut' },
     { id: GROUP_BY.PROMOTION, label: 'Par promo' },
@@ -81,6 +82,10 @@ const LoanBoardOptions = ({
   const promotionIdOptions = [
     { id: null, label: 'Tous' },
     ...promotions.map(({ _id, name }) => ({ id: _id, label: name })),
+  ];
+  const lenderOptions = [
+    { id: null, label: 'Tous' },
+    ...lenders.map(({ _id, name }) => ({ id: _id, label: name })),
   ];
 
   return (
@@ -118,6 +123,15 @@ const LoanBoardOptions = ({
           options={promotionIdOptions}
           onChange={next =>
             makeOnChange('promotionId', dispatch)(promotionIdValue, next)
+          }
+        />
+
+        <LoanBoardOptionsCheckboxes
+          label="Prêteurs"
+          value={lenderIdValue}
+          options={lenderOptions}
+          onChange={next =>
+            makeOnChange('lenderId', dispatch)(lenderIdValue, next)
           }
         />
 

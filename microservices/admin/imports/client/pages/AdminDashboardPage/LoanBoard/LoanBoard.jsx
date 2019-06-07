@@ -15,6 +15,7 @@ const LoanBoard = ({
   data,
   admins,
   promotions,
+  lenders,
   refetchLoans,
   ...props
 }: LoanBoardProps) => (
@@ -24,6 +25,7 @@ const LoanBoard = ({
       dispatch={dispatch}
       admins={admins}
       promotions={promotions}
+      lenders={lenders}
       refetchLoans={refetchLoans}
     />
     <Board

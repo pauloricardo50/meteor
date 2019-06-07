@@ -35,6 +35,11 @@ export default class PopoverStickOnHover extends React.Component {
     }, delay);
   };
 
+  handleMousePopoverEnter = () => {
+    clearTimeout(this.exitTimeout);
+    this.setState({ showPopover: true });
+  };
+
   handleMouseLeave = () => {
     const { exitDelay } = this.props;
 
@@ -47,7 +52,6 @@ export default class PopoverStickOnHover extends React.Component {
   render() {
     const { component, children, placement, title } = this.props;
     const { showPopover } = this.state;
-    // const showPopover=true
 
     const enhancedChildren = React.Children.map(children, child =>
       React.cloneElement(child, {
@@ -71,7 +75,7 @@ export default class PopoverStickOnHover extends React.Component {
           // trigger={['hover', 'focus', 'click']}
         >
           <Popover
-            onMouseEnter={() => this.setState({ showPopover: true })}
+            onMouseEnter={this.handleMousePopoverEnter}
             onMouseLeave={this.handleMouseLeave}
             title={title}
             onClick={e => e.stopPropagation()}

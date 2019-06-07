@@ -59,6 +59,14 @@ Loans.addLinks({
     inversedBy: 'loan',
     unique: true,
     autoremove: true,
+    denormalize: {
+      field: 'lendersCache',
+      body: {
+        status: 1,
+        contactLink: 1,
+        organisationLink: 1,
+      },
+    },
   },
   revenues: {
     field: 'revenueLinks',

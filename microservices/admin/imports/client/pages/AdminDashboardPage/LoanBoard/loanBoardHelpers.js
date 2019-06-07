@@ -15,6 +15,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   step: undefined,
   status: undefined,
   promotionId: undefined,
+  lenderId: undefined,
 });
 
 export const filterReducer = (state, { type, payload }) => {
@@ -52,7 +53,7 @@ export const filterReducer = (state, { type, payload }) => {
   }
 };
 
-export const makeSortColumns = ({ groupBy }) => {
+export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   switch (groupBy) {
   case GROUP_BY.STATUS: {
     const statuses = LOAN_STATUS_ORDER;
@@ -60,9 +61,21 @@ export const makeSortColumns = ({ groupBy }) => {
       statuses.indexOf(statusA) - statuses.indexOf(statusB);
   }
   case GROUP_BY.PROMOTION: {
-    const statuses = LOAN_STATUS_ORDER;
-    return ({ id: statusA }, { id: statusB }) =>
-      statuses.indexOf(statusA) - statuses.indexOf(statusB);
+    return ({ id: idA }, { id: idB }) => {
+      const nameA = promotions.find(({ _id }) => idA === _id).name;
+      const nameB = promotions.find(({ _id }) => idB === _id).name;
+      return nameA.localeCompare(nameB);
+    };
+  }
+  case GROUP_BY.ADMIN: {
+    return ({ id: idA }, { id: idB }) => {
+      const nameA = idA !== 'undefined'
+          && admins.find(({ _id }) => idA === _id).firstName;
+      const nameB = idB !== 'undefined'
+          && admins.find(({ _id }) => idB === _id).firstName;
+
+      return nameA.localeCompare(nameB);
+    };
   }
 
   default:
@@ -101,7 +114,7 @@ const sortColumnData = (data, sortBy, sortOrder) =>
     [sortOrder],
   );
 
-export const groupLoans = (loans, options) => {
+export const groupLoans = ({ loans, options, ...props }) => {
   const { groupBy, sortBy, sortOrder } = options;
   const groupedLoans = _groupBy(loans, groupBy);
   const groups = Object.keys(groupedLoans);
@@ -115,5 +128,5 @@ export const groupLoans = (loans, options) => {
     return { id: group, data: sortedData };
   });
 
-  return formattedColumns.sort(makeSortColumns(options));
+  return formattedColumns.sort(makeSortColumns(options, props));
 };

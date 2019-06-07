@@ -77,10 +77,8 @@
 .checkbox-list {
   display: flex;
   flex-direction: column;
-  // overflow: scroll;
-  // flex-wrap: wrap;
-  // max-height: 200px;
-  // min-height: 50px;
+  max-height: 400px;
+  overflow: scroll;
 
   > * {
     margin-left: 0;
@@ -98,13 +96,3 @@
     padding: 4px;
   }
 }
-
-// .popover,
-// .popover.popover-content,
-// .popover.popover-content.checkbox-list {
-//   min-height: 50px;
-//   max-height: 200px;
-
-//   max-width: 100% !important;
-//   min-width: 0px;
-// }

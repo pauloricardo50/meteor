@@ -4,6 +4,8 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminLoans } from 'core/api/loans/queries';
 import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
+import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATION_FEATURES } from 'core/api/constants';
 import {
   groupLoans,
   filterReducer,
@@ -32,7 +34,14 @@ export default compose(
   withSmartQuery({
     query: adminLoans,
     params: ({
-      options: { assignedEmployeeId, step, groupBy, status, promotionId },
+      options: {
+        assignedEmployeeId,
+        step,
+        groupBy,
+        status,
+        promotionId,
+        lenderId,
+      },
     }) => ({
       $body: getBody(groupBy),
       assignedEmployeeId,
@@ -41,6 +50,7 @@ export default compose(
       hasPromotion: groupBy === GROUP_BY.PROMOTION,
       status,
       promotionId,
+      lenderId,
     }),
     dataName: 'loans',
     queryOptions: {},
@@ -59,9 +69,15 @@ export default compose(
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
-  mapProps(({ loans, options, ...rest }) => ({
-    data: groupLoans(loans, options),
-    options,
+  withSmartQuery({
+    query: adminOrganisations,
+    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.LENDER },
+    dataName: 'lenders',
+    queryOptions: { shouldRefetch: () => false },
+    refetchOnMethodCall: false,
+  }),
+  mapProps(({ loans, ...rest }) => ({
+    data: groupLoans({ loans, ...rest }),
     ...rest,
   })),
 );
