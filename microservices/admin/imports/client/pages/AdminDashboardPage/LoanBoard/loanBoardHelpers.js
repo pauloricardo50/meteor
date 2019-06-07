@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
@@ -7,6 +9,14 @@ import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
 export const ACTIONS = {
   SET_FILTER: 'SET_FILTER',
   SET_COLUMN_SORT: 'SET_COLUMN_SORT',
+  SET_GROUP_BY: 'SET_GROUP_BY',
+  RESET: 'RESET',
+};
+
+export const SORT_BY = {
+  CREATED_AT: 'createdAt',
+  ASSIGNED_EMPLOYEE: 'assignedEmployee.name',
+  STATUS: 'status',
 };
 
 export const SORT_ORDER = {
@@ -14,12 +24,20 @@ export const SORT_ORDER = {
   DESC: 'desc',
 };
 
+export const GROUP_BY = {
+  STATUS: 'status',
+  PROMOTION: 'promotions[0]._id',
+  ADMIN: 'userCache.assignedEmployeeCache._id',
+};
+
 export const getInitialOptions = ({ currentUser }) => ({
-  groupBy: 'status',
+  groupBy: GROUP_BY.STATUS,
   assignedEmployeeId: { $in: [currentUser._id] },
   sortBy: 'createdAt',
   sortOrder: SORT_ORDER.ASC,
   step: undefined,
+  status: undefined,
+  promotionId: undefined,
 });
 
 export const filterReducer = (state, { type, payload }) => {
@@ -39,6 +57,18 @@ export const filterReducer = (state, { type, payload }) => {
     }
     return { ...state, sortBy: payload, sortOrder: SORT_ORDER.ASC };
   }
+  case ACTIONS.SET_GROUP_BY: {
+    const newStatus = { ...state, groupBy: payload };
+
+    if (payload === GROUP_BY.STATUS) {
+      return { ...newStatus, sortBy: SORT_BY.CREATED_AT };
+    }
+    return { ...newStatus, sortBy: SORT_BY.STATUS };
+  }
+
+  case ACTIONS.RESET: {
+    return getInitialOptions({ currentUser: Meteor.user() });
+  }
 
   default:
     throw new Error('Unknown action type');
@@ -47,7 +77,12 @@ export const filterReducer = (state, { type, payload }) => {
 
 export const makeSortColumns = ({ groupBy }) => {
   switch (groupBy) {
-  case 'status': {
+  case GROUP_BY.STATUS: {
+    const statuses = LOAN_STATUS_ORDER;
+    return ({ id: statusA }, { id: statusB }) =>
+      statuses.indexOf(statusA) - statuses.indexOf(statusB);
+  }
+  case GROUP_BY.PROMOTION: {
     const statuses = LOAN_STATUS_ORDER;
     return ({ id: statusA }, { id: statusB }) =>
       statuses.indexOf(statusA) - statuses.indexOf(statusB);
@@ -60,7 +95,7 @@ export const makeSortColumns = ({ groupBy }) => {
 
 const getMissingColumns = (groupBy, groups) => {
   switch (groupBy) {
-  case 'status': {
+  case GROUP_BY.STATUS: {
     return LOAN_STATUS_ORDER.filter(status =>
       status !== LOAN_STATUS.UNSUCCESSFUL
           && status !== LOAN_STATUS.TEST

@@ -3,21 +3,31 @@
     background-color: white;
     padding: 16px;
     display: flex;
+    align-items: flex-start;
 
     > * {
       margin-right: 32px;
-      min-width: 150px;
     }
 
     .checkbox-list {
       display: flex;
       flex-direction: column;
+      max-height: 200px;
+      overflow: scroll;
 
       > * {
         margin-left: 0;
       }
 
       .checkbox {
+        padding: 4px;
+      }
+    }
+
+    .radio-group > * {
+      margin-left: 0;
+
+      .radio {
         padding: 4px;
       }
     }
@@ -52,6 +62,10 @@
       margin: 0;
       margin-right: 8px;
     }
+  }
+
+  .board-column {
+    max-width: 400px;
   }
 }
 

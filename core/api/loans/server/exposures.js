@@ -40,6 +40,9 @@ exposeQuery({
           assignedEmployeeId,
           relevantOnly,
           step,
+          hasPromotion,
+          promotionId,
+          status,
         },
       }) => {
         if (_id) {
@@ -68,6 +71,14 @@ exposeQuery({
         if (step) {
           filters.step = step;
         }
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (hasPromotion || promotionId) {
+          filters['promotionLinks.0._id'] = promotionId || { $exists: true };
+        }
       };
     },
     validateParams: {
@@ -75,7 +86,10 @@ exposeQuery({
       owned: Match.Maybe(Boolean),
       assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
       step: Match.Maybe(Match.OneOf(Object, String)),
+      status: Match.Maybe(Match.OneOf(Object, String)),
+      promotionId: Match.Maybe(Match.OneOf(Object, String)),
       relevantOnly: Match.Maybe(Boolean),
+      hasPromotion: Match.Maybe(Boolean),
       _id: Match.Maybe(String),
     },
   },

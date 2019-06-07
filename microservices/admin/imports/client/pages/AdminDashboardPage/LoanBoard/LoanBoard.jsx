@@ -9,19 +9,27 @@ import LoanBoardCard from './LoanBoardCard';
 
 type LoanBoardProps = {};
 
-const LoanBoard = ({ options, dispatch, data, admins }: LoanBoardProps) => {
-  console.log('data:', data);
-  return (
-    <div className="loan-board">
-      <LoanBoardOptions options={options} dispatch={dispatch} admins={admins} />
-      <Board
-        data={data}
-        columnHeader={LoanBoardColumnHeader}
-        columnHeaderProps={{ options, dispatch }}
-        columnItem={LoanBoardCard}
-      />
-    </div>
-  );
-};
+const LoanBoard = ({
+  options,
+  dispatch,
+  data,
+  admins,
+  promotions,
+}: LoanBoardProps) => (
+  <div className="loan-board">
+    <LoanBoardOptions
+      options={options}
+      dispatch={dispatch}
+      admins={admins}
+      promotions={promotions}
+    />
+    <Board
+      data={data}
+      columnHeader={LoanBoardColumnHeader}
+      columnHeaderProps={{ options, dispatch, admins, promotions }}
+      columnItem={LoanBoardCard}
+    />
+  </div>
+);
 
 export default LoanBoardContainer(LoanBoard);
