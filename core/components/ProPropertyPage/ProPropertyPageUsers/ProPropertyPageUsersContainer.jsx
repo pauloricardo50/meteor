@@ -4,7 +4,7 @@ import { compose, withProps } from 'recompose';
 
 import { createRoute } from '../../../utils/routerUtils';
 import { getUserNameAndOrganisation } from '../../../api/helpers';
-import proPropertyUsers from '../../../api/properties/queries/proPropertyUsers';
+import { proPropertyUsers } from '../../../api/properties/queries';
 import { withSmartQuery } from '../../../api/containerToolkit';
 import { removeProFromProperty } from '../../../api';
 import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';

@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 import colors from 'core/config/colors';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
-import fullLoan from '../../loans/queries/fullLoan';
+import { fullLoan } from '../../loans/queries';
 import Calculator from '../../../utils/Calculator';
 import { percentFormatters } from '../../../utils/formHelpers';
 

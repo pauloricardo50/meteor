@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminUsers } from 'core/api/users/queries';
 import withTableFilters from 'core/containers/withTableFilters';
 
 import { getColumnOptions, getRows } from './userTableHelpers';

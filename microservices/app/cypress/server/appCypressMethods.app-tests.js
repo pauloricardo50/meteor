@@ -6,8 +6,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
-import { STEPS } from 'core/api/loans/loanConstants';
-import userLoansE2E from 'core/api/loans/queries/userLoansE2E';
+import { STEPS, LOAN_QUERIES } from 'core/api/loans/loanConstants';
 import {
   createLoginToken,
   createEmailVerificationToken,
@@ -17,10 +16,28 @@ import { E2E_USER_EMAIL } from 'core/cypress/utils';
 import LoanService from 'core/api/loans/server/LoanService';
 import UserService from 'core/api/users/server/UserService';
 import PropertyService from 'core/api/properties/server/PropertyService';
+import Loans from 'core/api/loans';
+import { loanBase } from 'core/api/fragments';
 import { USER_EMAIL, USER_PASSWORD } from '../appE2eConstants';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
+
+const userLoansE2E = Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
+  $filter({ filters, params: { userId, unowned, step } }) {
+    filters.userId = userId;
+
+    if (unowned) {
+      filters.userId = { $exists: false };
+    }
+
+    if (step) {
+      filters.step = step;
+    }
+  },
+  ...loanBase(),
+  $options: { sort: { createdAt: -1 } },
+});
 
 Meteor.methods({
   getAppEndToEndTestData() {

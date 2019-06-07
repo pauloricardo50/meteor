@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 
-import query from 'core/api/tasks/queries/tasks';
+import { tasks as query } from 'core/api/tasks/queries';
 import { withSmartQuery } from 'core/api';
 import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
 import TasksTable from './TasksTable';

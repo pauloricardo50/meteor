@@ -4,7 +4,7 @@ import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 import { ROLES } from 'core/api/constants';
 
-import 'core/api/api-server';
+import 'core/api/server';
 import 'core/api/api';
 import 'core/fixtures';
 

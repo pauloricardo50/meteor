@@ -3,14 +3,14 @@ import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import {
   adminCreateUser,
   updateUser,
   userUpdateOrganisations,
 } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({

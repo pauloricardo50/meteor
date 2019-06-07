@@ -1,9 +1,9 @@
 import { compose, mapProps, branch, renderComponent } from 'recompose';
 
-import query from 'core/api/loans/queries/adminLoans';
+import { adminLoans as query } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import interestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
 import {
   injectCalculator,
   withCalculator,

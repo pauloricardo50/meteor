@@ -3,7 +3,7 @@ import '../shared-startup';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 
-import 'core/api/api-server';
+import 'core/api/server';
 import 'core/api/api';
 import 'core/fixtures';
 

@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 
-import adminLoans from '../../loans/queries/adminLoans';
+import { adminLoans } from '../../loans/queries';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
 import { lenderRules } from '../../fragments';
 import OrganisationService from '../../organisations/server/OrganisationService';

@@ -10,10 +10,11 @@ import {
   PROMOTIONS_COLLECTION,
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
+import { Meteor } from 'meteor/meteor';
 
 const assignedToMeFilter = {
   label: <T id="DetailSideNavFilters.showAssignedToMe" />,
-  value: { assignedToMe: true },
+  value: { assignedEmployeeId: Meteor.userId() },
 };
 
 const relevantLoansOnlyFilter = {

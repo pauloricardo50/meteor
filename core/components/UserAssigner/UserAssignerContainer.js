@@ -1,5 +1,5 @@
 import { withState, compose, withProps } from 'recompose';
-import userSearch from 'core/api/users/queries/userSearch';
+import { userSearch } from 'core/api/users/queries';
 
 export default compose(
   withState('searchQuery', 'setSearchQuery', ''),

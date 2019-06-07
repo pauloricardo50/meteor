@@ -12,45 +12,45 @@ import { exposeQuery } from '../../queryHelpers';
 testCollectionInsert.setHandler((context, params) =>
   TestCollection.insert(params));
 
-exposeQuery(query1, {
-  firewall: (userId, params) => null,
-  // Embody function
-  embody: (body, params) => {
-    body.$options = { sort: { value: 1 }, limit: 10 };
-    body.$filters = { value: { $gt: 30 } };
+exposeQuery({
+  query: query1,
+  overrides: {
+    firewall: (userId, params) => null,
+    embody: (body, params) => {
+      body.$options = { sort: { value: 1 }, limit: 10 };
+      body.$filters = { value: { $gt: 30 } };
+    },
+    validateParams: { name: Match.Maybe(String) },
   },
-  validateParams: { name: Match.Maybe(String) },
 });
 
-exposeQuery(
-  query2,
-  {
+exposeQuery({
+  query: query2,
+  overrides: {
     firewall: (userId, params) => null,
-    // Embody object
-    embody: {
-      $options: { sort: { value: 1 }, limit: 10 },
-      $filters: { value: { $gt: 20 } },
+    embody: (body) => {
+      body.$options = { sort: { value: 1 }, limit: 10 };
+      body.$filters = { value: { $gt: 20 } };
     },
     validateParams: { name: Match.Maybe(String) },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(query3);
+exposeQuery({ query: query3 });
 
-exposeQuery(
-  query4,
-  {
+exposeQuery({
+  query: query4,
+  overrides: {
     firewall: (userId, params) => null,
-    // Embody object
-    embody: {
-      $options: { sort: { value: 1 }, limit: 10 },
-      $filters: { value: { $gt: 20 } },
+    embody: (body) => {
+      body.$options = { sort: { value: 1 }, limit: 10 };
+      body.$filters = { value: { $gt: 20 } };
     },
     validateParams: { name: Match.Maybe(String) },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
 // describe.only('test', () => {
 //   it('test', () => {});

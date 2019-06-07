@@ -1,5 +1,5 @@
 import { compose, withProps } from 'recompose';
-import query from 'core/api/users/queries/adminUsers';
+import { adminUsers as query } from 'core/api/users/queries';
 import { withSmartQuery } from 'core/api';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {

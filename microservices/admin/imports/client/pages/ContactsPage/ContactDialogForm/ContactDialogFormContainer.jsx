@@ -11,7 +11,7 @@ import {
   contactRemove,
   contactChangeOrganisations,
 } from 'core/api/methods';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import T from 'core/components/Translation';
 
 const schema = existingOrganisations =>

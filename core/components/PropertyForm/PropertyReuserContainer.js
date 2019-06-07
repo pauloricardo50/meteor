@@ -1,7 +1,7 @@
 import { compose, mapProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import userLoans from '../../api/loans/queries/userLoans';
+import { userLoans } from '../../api/loans/queries';
 import { reuseProperty } from '../../api/loans/methodDefinitions';
 
 export default compose(

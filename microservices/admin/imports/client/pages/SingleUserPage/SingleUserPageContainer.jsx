@@ -1,4 +1,4 @@
-import adminUsers from 'core/api/users/queries/adminUsers';
+import { adminUsers } from 'core/api/users/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 
 export default withSmartQuery({
