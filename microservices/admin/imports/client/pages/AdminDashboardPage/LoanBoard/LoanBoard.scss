@@ -1,0 +1,23 @@
+.loan-board {
+  &-options {
+    background-color: white;
+    padding: 16px;
+  }
+
+  &-column-header {
+    display: flex;
+    justify-content: center;
+
+    .title {
+      margin-top: 0;
+    }
+  }
+
+  &-card {
+    margin-bottom: 8px;
+
+    .title {
+      margin-top: 0;
+    }
+  }
+}

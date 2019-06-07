@@ -10,7 +10,15 @@ exposeQuery(
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { _id, owned, name, _userId, assignedToMe, relevantOnly },
+        params: {
+          _id,
+          owned,
+          name,
+          _userId,
+          assignedToMe,
+          assignedEmployeeId,
+          relevantOnly,
+        },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -24,8 +32,8 @@ exposeQuery(
           filters.userId = { $exists: true };
         }
 
-        if (assignedToMe) {
-          filters['userCache.assignedEmployeeId'] = _userId;
+        if (assignedToMe || assignedEmployeeId) {
+          filters['userCache.assignedEmployeeId'] = assignedEmployeeId;
         }
 
         if (relevantOnly) {
@@ -42,6 +50,7 @@ exposeQuery(
       owned: Match.Maybe(Boolean),
       assignedToMe: Match.Maybe(Boolean),
       relevantOnly: Match.Maybe(Boolean),
+      assignedEmployeeId: Match.OneOf(Object, String),
     },
   },
   { allowFilterById: true },

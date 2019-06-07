@@ -10,6 +10,7 @@ import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
 import MyLoansTable from './MyLoansTable';
 import AdminDashboardStats from './AdminDashboardStats';
+import LoanBoard from './LoanBoard';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
   <>
@@ -38,7 +39,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
         </Button>
       </div>
 
-      <h2 className="text-center">
+      {/* <h2 className="text-center">
         <T id="AdminDashboardPage.tasks" />
       </h2>
       <AllTasksTable
@@ -55,8 +56,9 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       />
 
       <h2 className="text-center">Mes dossiers</h2>
-      <MyLoansTable currentUser={currentUser} />
+      <MyLoansTable currentUser={currentUser} /> */}
     </section>
+    <LoanBoard currentUser={currentUser} />
   </>
 );
 
