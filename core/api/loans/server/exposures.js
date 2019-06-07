@@ -35,15 +35,16 @@ exposeQuery({
         filters,
         params: {
           _id,
-          owned,
-          name,
           assignedEmployeeId,
-          relevantOnly,
-          step,
+          category,
           hasPromotion,
-          promotionId,
-          status,
           lenderId,
+          name,
+          owned,
+          promotionId,
+          relevantOnly,
+          status,
+          step,
         },
       }) => {
         if (_id) {
@@ -73,6 +74,10 @@ exposeQuery({
           filters.step = step;
         }
 
+        if (category) {
+          filters.category = category;
+        }
+
         if (status) {
           filters.status = status;
         }
@@ -93,6 +98,7 @@ exposeQuery({
       owned: Match.Maybe(Boolean),
       assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
       step: Match.Maybe(Match.OneOf(Object, String)),
+      category: Match.Maybe(Match.OneOf(Object, String)),
       status: Match.Maybe(Match.OneOf(Object, String)),
       promotionId: Match.Maybe(Match.OneOf(Object, String)),
       lenderId: Match.Maybe(Match.OneOf(Object, String)),

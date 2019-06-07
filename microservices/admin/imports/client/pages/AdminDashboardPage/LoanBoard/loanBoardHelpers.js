@@ -13,6 +13,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   sortBy: 'createdAt',
   sortOrder: SORT_ORDER.ASC,
   step: undefined,
+  category: undefined,
   status: undefined,
   promotionId: undefined,
   lenderId: undefined,

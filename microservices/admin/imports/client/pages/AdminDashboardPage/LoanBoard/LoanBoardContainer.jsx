@@ -41,6 +41,7 @@ export default compose(
         status,
         promotionId,
         lenderId,
+        category,
       },
     }) => ({
       $body: getBody(groupBy),
@@ -51,6 +52,7 @@ export default compose(
       status,
       promotionId,
       lenderId,
+      category,
     }),
     dataName: 'loans',
     queryOptions: {},

@@ -10,6 +10,7 @@ import RadioButtons from 'core/components/RadioButtons';
 import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
 import { ACTIONS, GROUP_BY } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
+import { LOAN_CATEGORIES } from 'imports/core/api/constants';
 
 type LoanBoardOptionsProps = {};
 
@@ -48,8 +49,10 @@ const LoanBoardOptions = ({
     status,
     promotionId,
     lenderId,
+    category,
   } = options;
   const statusValue = status ? status.$in : [null];
+  const categoryValue = category ? category.$in : [null];
   const stepValue = step ? step.$in : [null];
   const promotionIdValue = promotionId ? promotionId.$in : [null];
   const lenderIdValue = lenderId ? lenderId.$in : [null];
@@ -70,6 +73,13 @@ const LoanBoardOptions = ({
     ...LOAN_STATUS_ORDER.map(s => ({
       id: s,
       label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
+  const categoryOptions = [
+    { id: null, label: 'Toutes' },
+    ...Object.keys(LOAN_CATEGORIES).map(c => ({
+      id: c,
+      label: <T id={`Forms.category.${c}`} />,
     })),
   ];
   const stepOptions = [
@@ -115,6 +125,15 @@ const LoanBoardOptions = ({
           value={stepValue}
           options={stepOptions}
           onChange={next => makeOnChange('step', dispatch)(stepValue, next)}
+        />
+
+        <LoanBoardOptionsCheckboxes
+          label="Catégorie"
+          value={categoryValue}
+          options={categoryOptions}
+          onChange={next =>
+            makeOnChange('category', dispatch)(categoryValue, next)
+          }
         />
 
         <LoanBoardOptionsCheckboxes
