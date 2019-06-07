@@ -3,7 +3,7 @@ import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-import query from 'core/api/resolvers/searchDatabase';
+import { searchDatabase as query } from 'core/api/queries/queries';
 
 export default compose(
   withQuery(({ searchQuery }) => query.clone({ searchQuery })),

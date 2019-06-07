@@ -1,18 +1,23 @@
 import { Match } from 'meteor/check';
 
-import { borrowerSearch } from '../borrowers/queries';
-import { loanSearch } from '../loans/queries';
-import { propertySearch } from '../properties/queries';
-import userSearch from '../users/queries/userSearch';
-import searchDatabase from './searchDatabase';
-import { promotionSearch } from '../promotions/queries';
-import { contactSearch } from '../contacts/queries';
-import { organisationSearch } from '../organisations/queries';
-import QueryCacher from '../helpers/server/QueryCacher';
+import { borrowerSearch } from '../../borrowers/queries';
+import { loanSearch } from '../../loans/queries';
+import { propertySearch } from '../../properties/queries';
+import userSearch from '../../users/queries/userSearch';
+import { searchDatabase } from '../queries';
+import { promotionSearch } from '../../promotions/queries';
+import { contactSearch } from '../../contacts/queries';
+import { organisationSearch } from '../../organisations/queries';
+import QueryCacher from '../../helpers/server/QueryCacher';
+import { exposeQuery } from '../queryHelpers';
 
-searchDatabase.expose({
-  validateParams: { searchQuery: Match.Maybe(String) },
-});
+exposeQuery(
+  searchDatabase,
+  {
+    validateParams: { searchQuery: Match.Maybe(String) },
+  },
+  {},
+);
 
 searchDatabase.resolve(({ searchQuery }) => {
   const loans = loanSearch.clone({ searchQuery }).fetch();
