@@ -10,6 +10,7 @@ import { contactSearch } from '../../contacts/queries';
 import { organisationSearch } from '../../organisations/queries';
 import QueryCacher from '../../helpers/server/QueryCacher';
 import { exposeQuery } from '../queryHelpers';
+import { COLLECTIONS } from '../../constants';
 
 exposeQuery(
   searchDatabase,
