@@ -39,27 +39,30 @@ const TableFilters = ({
   handleOptionsSelect,
   pickOptionsForFilter,
   renderFilters,
-}) => (
-  <React.Fragment>
-    {renderFilters && (
-      <div className="table-filters">
-        {flattenObjectTreeToArrays(filters).map(filter => (
-          <TableFilter
-            key={getFilterKeyFromPath(filter.path)}
-            data={data}
-            filter={filter}
-            options={pickOptionsForFilter(options, filter.path)}
-            onChange={selectedValues =>
-              handleOptionsSelect(filter.path, selectedValues)
-            }
-          />
-        ))}
-      </div>
-    )}
+}) => {
+  const filteredData = filterArrayOfObjects(filters, data);
+  return (
+    <React.Fragment>
+      {renderFilters && (
+        <div className="table-filters">
+          {flattenObjectTreeToArrays(filters).map(filter => (
+            <TableFilter
+              key={getFilterKeyFromPath(filter.path)}
+              data={data}
+              filter={filter}
+              options={pickOptionsForFilter(options, filter.path)}
+              onChange={selectedValues =>
+                handleOptionsSelect(filter.path, selectedValues)
+              }
+            />
+          ))}
+        </div>
+      )}
 
-    {children(filterArrayOfObjects(filters, data))}
-  </React.Fragment>
-);
+      {children(filteredData)}
+    </React.Fragment>
+  );
+};
 
 TableFilters.propTypes = {
   children: PropTypes.func.isRequired,

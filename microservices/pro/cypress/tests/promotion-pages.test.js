@@ -112,6 +112,8 @@ describe('Promotion pages', () => {
     cy.get(':nth-child(1) > .col-LEAD').should('have.text', '0');
     cy.get(':nth-child(1) > .col-ONGOING').should('have.text', '1');
     cy.get(':nth-child(2) > .col-LEAD').should('have.text', '-');
-    cy.get(':nth-child(2) > .col-ONGOING').should('have.text', '~CHF 2 500');
+    cy.get(':nth-child(2) > .col-ONGOING').should((cell) => {
+      expect(cell.text()).to.contains('2 500');
+    });
   });
 });

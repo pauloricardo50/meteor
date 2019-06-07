@@ -10,8 +10,9 @@ import {
   PromotionOptions,
   Lenders,
   Revenues,
+  PromotionLots,
 } from '..';
-import { PromotionLots } from '../index';
+
 
 Loans.addLinks({
   properties: {
@@ -32,6 +33,7 @@ Loans.addLinks({
       field: 'userCache',
       body: {
         referredByOrganisationLink: 1,
+        assignedEmployeeId: 1,
       },
     },
   },

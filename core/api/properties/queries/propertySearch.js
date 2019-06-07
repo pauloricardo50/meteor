@@ -17,5 +17,5 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTY_SEARCH, {
   status: 1,
   style: 1,
   insideArea: 1,
-  $options: { limit: 5 },
+  $options: { limit: 5, sort: { createdAt: -1 } },
 });

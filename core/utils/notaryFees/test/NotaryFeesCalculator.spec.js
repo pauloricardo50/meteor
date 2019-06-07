@@ -42,19 +42,19 @@ describe('NotaryFeesCalculator', () => {
     it('returns the correct amount for a buyers contract', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.buyersContractFees.total).to.equal(39177.4);
+      expect(fees.buyersContractFees.total).to.equal(39100.4);
     });
 
     it('returns the correct amount for a new mortgage note', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.mortgageNoteFees.total).to.equal(16135.7);
+      expect(fees.mortgageNoteFees.total).to.equal(16058.7);
     });
 
     it('returns the correct amount as a whole', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(55313.1);
+      expect(fees.total).to.equal(55159.1);
     });
 
     it('returns the correct amount for a main residence with casatax', () => {
@@ -62,7 +62,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(32258.1);
+      expect(fees.total).to.equal(32104.1);
     });
 
     it('ignores propertyWork', () => {
@@ -71,7 +71,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(32258.1);
+      expect(fees.total).to.equal(32104.1);
     });
 
     it('caps casatax deductions for very small properties', () => {
@@ -81,7 +81,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(10052.16);
+      expect(fees.total).to.equal(9898.16);
     });
 
     it('works for large properties', () => {
@@ -89,7 +89,7 @@ describe('NotaryFeesCalculator', () => {
       loan.structure.wantedLoan = 2400000;
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(154684.65);
+      expect(fees.total).to.equal(154530.65);
     });
 
     it('adds tax on propertyWork', () => {
@@ -111,7 +111,7 @@ describe('NotaryFeesCalculator', () => {
       };
 
       const fees = calc.getNotaryFeesForLoan({ loan, structureId: 'struct2' });
-      expect(fees.total).to.equal(55313.1);
+      expect(fees.total).to.equal(55159.1);
     });
 
     it('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
@@ -123,7 +123,7 @@ describe('NotaryFeesCalculator', () => {
       loan.structure.property.additionalMargin = 200000;
 
       const fees = calc.getNotaryFeesForLoan({ loan });
-      expect(fees.buyersContractFees.total).to.equal(28346.5);
+      expect(fees.buyersContractFees.total).to.equal(28269.5);
     });
 
     it('does not go into negatives for constructions', () => {
@@ -150,13 +150,13 @@ describe('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
       expect(fees).to.deep.include({
-        total: 41354.25,
+        total: 44954.25,
       });
       expect(fees.buyersContractFees).to.deep.include({
-        total: 37596.38,
+        total: 38596.38,
       });
       expect(fees.mortgageNoteFees).to.deep.include({
-        total: 3757.88,
+        total: 6357.88,
       });
     });
   });

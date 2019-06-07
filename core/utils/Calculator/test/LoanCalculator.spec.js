@@ -71,7 +71,7 @@ describe('LoanCalculator', () => {
             property: { _id: 'prop', value: 1000000, canton: 'GE' },
           },
         },
-      })).to.deep.include({ total: 55313.1 });
+      })).to.deep.include({ total: 55159.1 });
     });
 
     it('calculates accurate fees for a promotionOption', () => {
@@ -97,7 +97,7 @@ describe('LoanCalculator', () => {
           ],
         },
         structureId: 'struct1',
-      })).to.deep.include({ total: 55313.1 });
+      })).to.deep.include({ total: 55159.1 });
     });
   });
 
@@ -807,7 +807,7 @@ describe('LoanCalculator', () => {
           borrowers: [{}],
         },
         structureId: 'struct1',
-      })).to.be.within(720847, 720848);
+      })).to.be.within(720693, 720694);
     });
   });
 });

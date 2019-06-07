@@ -6,15 +6,18 @@ import T from 'core/components/Translation';
 
 import DetailSideNavFiltersContainer from './DetailSideNavFiltersContainer';
 
-const DetailSideNavFilters = ({ options, selected, handleChange }) => (
-  <DropdownSelect
-    selected={selected}
-    options={options}
-    onChange={handleChange}
-    iconType="filter"
-    tooltip={<T id="general.filterBy" />}
-  />
-);
+const DetailSideNavFilters = ({ options = [], selected, handleChange }) =>
+  (options.length ? (
+    <DropdownSelect
+      selected={selected}
+      options={options}
+      onChange={handleChange}
+      iconType="filter"
+      tooltip={<T id="general.filterBy" />}
+    />
+  ) : (
+    <span style={{ width: 48, height: 48 }} />
+  ));
 
 DetailSideNavFilters.propTypes = {
   handleChange: PropTypes.func.isRequired,

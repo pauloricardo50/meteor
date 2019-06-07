@@ -59,9 +59,17 @@ const getQuery = (collectionName) => {
   }
 };
 
+const applyFilters = (filterOptions) => {
+  if (Object.keys(filterOptions).length === 0) {
+    return {};
+  }
+
+  return filterOptions;
+};
+
 const setTotalCount = (props) => {
-  const { collectionName, updateTotalCount } = props;
-  getQuery(collectionName).query.getCount((err, result) => {
+  const { collectionName, updateTotalCount, filterOptions } = props;
+  getQuery(collectionName).query.clone({...applyFilters(filterOptions)}).getCount((err, result) => {
     updateTotalCount(result);
   });
 };
@@ -91,12 +99,15 @@ export const withSetTotalCountLifecycle = lifecycle({
   },
 });
 
+
 export const withSideNavQuery = withSmartQuery({
   query: ({ collectionName }) => getQuery(collectionName).query,
-  params: ({ showMoreCount, collectionName }) => ({
-    limit: getQueryLimit(showMoreCount),
-    skip: 0,
+  params: ({ showMoreCount, collectionName, sortOption, filterOptions }) => ({
+    $limit: getQueryLimit(showMoreCount),
+    $skip: 0,
     $body: getQuery(collectionName).body,
+    $sort: { [sortOption.field]: sortOption.order },
+    ...applyFilters(filterOptions),
   }),
   queryOptions: { reactive: false },
 });
@@ -110,6 +121,5 @@ export default compose(
   withSetTotalCountLifecycle,
   withSideNavQuery,
   withIsEndProp,
-  withDataFilterAndSort,
   withRouter,
 );

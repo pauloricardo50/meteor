@@ -1,4 +1,3 @@
-import { contact } from '../../fragments';
 import Contacts from '../contacts';
 import { CONTACTS_QUERIES } from '../contactsConstants';
 import {

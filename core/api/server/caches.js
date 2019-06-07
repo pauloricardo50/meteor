@@ -8,7 +8,9 @@ Organisations.cacheCount({
   cacheField: 'lenderRulesCount',
 });
 
-// migrate('loans', 'userCache', { userCache: { $exists: false } });
+migrate('loans', 'userCache', {
+  'userCache.assignedEmployeeId': { $exists: false },
+});
 // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
 // migrate('lenderRules', 'organisationCache', {
 //   organisationCache: { $exists: false },

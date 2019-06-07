@@ -11,15 +11,16 @@ const passTableFiltersProp = ({ tableFilters }) => tableFilters;
 export const makeTableFiltersContainer = (
   generateFiltersFromProps = passTableFiltersProp,
   dataName = 'data',
-) => WrappedComponent => props => (
-  <TableFilters
-    filters={generateFiltersFromProps(props)}
-    data={props[dataName]}
-  >
-    {filteredData => (
-      <WrappedComponent {...props} {...{ [dataName]: filteredData }} />
-    )}
-  </TableFilters>
-);
+) => WrappedComponent => (props) => {
+  const filters = generateFiltersFromProps(props);
+  const unfilteredData = props[dataName];
+  return (
+    <TableFilters filters={filters} data={unfilteredData}>
+      {filteredData => (
+        <WrappedComponent {...props} {...{ [dataName]: filteredData }} />
+      )}
+    </TableFilters>
+  );
+};
 
 export default makeTableFiltersContainer(passTableFiltersProp);

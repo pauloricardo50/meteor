@@ -23,11 +23,11 @@ const getAdminsEmails = async () => {
 const usersTableFilters = {
   filters: {
     roles: true,
-    assignedEmployee: { emails: [{ address: true }] },
+    assignedEmployee: { email: true },
   },
   options: {
     roles: Object.values(ROLES),
-    address: getAdminsEmails(),
+    email: getAdminsEmails(),
   },
 };
 
