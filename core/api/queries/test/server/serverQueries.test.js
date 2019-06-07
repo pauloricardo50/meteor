@@ -16,7 +16,6 @@ exposeQuery({
   query: query1,
   overrides: {
     firewall: (userId, params) => null,
-    // Embody function
     embody: (body, params) => {
       body.$options = { sort: { value: 1 }, limit: 10 };
       body.$filters = { value: { $gt: 30 } };
@@ -29,10 +28,9 @@ exposeQuery({
   query: query2,
   overrides: {
     firewall: (userId, params) => null,
-    // Embody object
-    embody: {
-      $options: { sort: { value: 1 }, limit: 10 },
-      $filters: { value: { $gt: 20 } },
+    embody: (body) => {
+      body.$options = { sort: { value: 1 }, limit: 10 };
+      body.$filters = { value: { $gt: 20 } };
     },
     validateParams: { name: Match.Maybe(String) },
   },
@@ -45,10 +43,9 @@ exposeQuery({
   query: query4,
   overrides: {
     firewall: (userId, params) => null,
-    // Embody object
-    embody: {
-      $options: { sort: { value: 1 }, limit: 10 },
-      $filters: { value: { $gt: 20 } },
+    embody: (body) => {
+      body.$options = { sort: { value: 1 }, limit: 10 };
+      body.$filters = { value: { $gt: 20 } };
     },
     validateParams: { name: Match.Maybe(String) },
   },

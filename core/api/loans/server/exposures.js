@@ -24,6 +24,8 @@ import {
   proPropertyLoansResolver,
   proReferredByLoansResolver,
 } from './resolvers';
+import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 exposeQuery({
   query: adminLoans,
@@ -62,9 +64,9 @@ exposeQuery({
       owned: Match.Maybe(Boolean),
       assignedEmployeeId: Match.Maybe(String),
       relevantOnly: Match.Maybe(Boolean),
+      _id: Match.Maybe(String),
     },
   },
-  options: { allowFilterById: true },
 });
 
 exposeQuery({
@@ -73,18 +75,34 @@ exposeQuery({
     firewall(userId, params) {
       SecurityService.loans.checkAnonymousLoan(params._id);
     },
-    validateParams: { _id: String, $body: Match.Maybe(Object) },
+    validateParams: { _id: String },
   },
   options: { allowFilterById: true },
 });
 
-exposeQuery({ query: fullLoan, options: { allowFilterById: true } });
+exposeQuery({
+  query: fullLoan,
+  overrides: {
+    embody: (body) => {
+      body.$postFilter = (loans = []) => loans.map(formatLoanWithDocuments);
+    },
+  },
+  options: { allowFilterById: true },
+});
 
 exposeQuery({
   query: loanSearch,
   overrides: {
     firewall(userId) {
       SecurityService.checkUserIsAdmin(userId);
+    },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { searchQuery } }) => {
+        Object.assign(
+          filters,
+          createSearchFilters(['name', '_id', 'customName'], searchQuery),
+        );
+      };
     },
     validateParams: { searchQuery: Match.Maybe(String) },
   },
@@ -94,7 +112,11 @@ exposeQuery({
   query: proLoans,
   overrides: {
     firewall(userId, params) {
-      const { userId: providedUserId, fetchOrganisationLoans } = params;
+      const {
+        userId: providedUserId,
+        fetchOrganisationLoans,
+        organisationId,
+      } = params;
       params.calledByUserId = userId;
 
       if (SecurityService.isUserAdmin(userId) && providedUserId) {
@@ -104,7 +126,7 @@ exposeQuery({
       }
 
       if (fetchOrganisationLoans) {
-        if (params.organisationId) {
+        if (organisationId) {
           SecurityService.checkUserIsAdmin(userId);
         } else {
           const { organisations } = UserService.fetchOne({
@@ -145,10 +167,7 @@ exposeQuery({
       const { promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
-      SecurityService.promotions.isAllowedToView({
-        userId,
-        promotionId,
-      });
+      SecurityService.promotions.isAllowedToView({ userId, promotionId });
     },
     validateParams: {
       promotionId: String,

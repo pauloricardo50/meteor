@@ -144,7 +144,6 @@ exposeQuery({
   overrides: {
     firewall(userId, params) {},
     embody: (body) => {
-      // This will deepExtend your body
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };

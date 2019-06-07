@@ -14,6 +14,13 @@ exposeQuery({
         SecurityService.loans.isAllowedToUpdate(loanId);
       }
     },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { loanId } }) => {
+        if (loanId) {
+          filters['lenderCache.loanLink._id'] = loanId;
+        }
+      };
+    },
     validateParams: { loanId: String },
   },
 });

@@ -15,9 +15,6 @@ export const borrowerSearch = Borrowers.createQuery(
   BORROWER_QUERIES.BORROWER_SEARCH,
   {
     $filter({ filters, params: { searchQuery } }) {
-      // TODO: refine borrower's search, detailes on github
-      // https://github.com/e-Potek/epotek/pull/119
-
       // the following method forces one word to be found in lastname field
       // and one word in firstName field.
       const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);

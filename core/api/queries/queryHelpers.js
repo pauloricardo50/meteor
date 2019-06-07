@@ -1,5 +1,4 @@
 import { Match } from 'meteor/check';
-import mergeDeep from 'meteor/cultofcoders:grapher/lib/namedQuery/expose/lib/mergeDeep';
 
 import { Meteor } from 'meteor/meteor';
 import Security from '../security';
@@ -68,25 +67,9 @@ const addOptions = (body, params) => {
   addPaginate(body);
 };
 
-const mergeBody = (body, embody, options) => {
-  if (typeof embody === 'function') {
-    return;
-  }
-
-  if (embody === null) {
-    throw new Meteor.Error('Embody cannot be null');
-  }
-
-  mergeDeep(body, embody);
-};
-
 const addFilters = (body, embody, options) => {
   const { $filter: bodyFilter } = body;
   const { $filter: overrideFilter } = embody || {};
-
-  if (typeof embody === 'object' && overrideFilter) {
-    throw new Meteor.Error('Do not use $filter in a embody object. Use $filters instead, or use a embody function.');
-  }
 
   body.$filter = (...args) => {
     if (bodyFilter) {
@@ -103,15 +86,13 @@ const addFilters = (body, embody, options) => {
 const getEmbody = (overrides, options) =>
   function customEmbody(body, params) {
     if (overrides.embody) {
-      mergeBody(body, overrides.embody, options);
-
-      if (typeof overrides.embody === 'function') {
-        overrides.embody(body, params);
+      if (typeof overrides.embody !== 'function') {
+        throw new Meteor.Error('Embody must be a function!');
       }
+      overrides.embody(body, params);
     }
 
     addFilters(body, overrides.embody, options);
-
     addOptions(body, params);
   };
 

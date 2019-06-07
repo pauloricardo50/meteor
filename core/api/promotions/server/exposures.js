@@ -10,6 +10,7 @@ import {
 } from '../queries';
 import SecurityService from '../../security';
 import { PROMOTION_STATUS } from '../promotionConstants';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 import { proPromotionsResolver } from './resolvers';
 
@@ -34,6 +35,14 @@ exposeQuery({
 exposeQuery({
   query: promotionSearch,
   overrides: {
+    embody: (body) => {
+      body.$filter = ({ filters, params: { searchQuery } }) => {
+        Object.assign(
+          filters,
+          createSearchFilters(['name', '_id'], searchQuery),
+        );
+      };
+    },
     validateParams: { searchQuery: Match.Maybe(String) },
   },
 });
@@ -64,6 +73,15 @@ exposeQuery({
   overrides: {
     firewall(userId, { _id: promotionId }) {
       SecurityService.promotions.hasAccessToPromotion({ promotionId, userId });
+    },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { promotionId } }) => {
+        filters._id = promotionId;
+      };
+      body.$postFilter = (promotion = []) => {
+        const { users = [] } = (!!promotion.length && promotion[0]) || {};
+        return users;
+      };
     },
   },
   options: { allowFilterById: true },

@@ -1,8 +1,6 @@
 import Loans from '.';
 import { LOAN_QUERIES } from './loanConstants';
 import { adminLoan, userLoan, loanBase } from '../fragments';
-import { formatLoanWithDocuments } from '../../utils/loanFunctions';
-import { createSearchFilters } from '../helpers/mongoHelpers';
 
 export const adminLoans = Loans.createQuery(
   LOAN_QUERIES.ADMIN_LOANS,
@@ -16,26 +14,15 @@ export const adminLoans = Loans.createQuery(
 export const anonymousLoan = Loans.createQuery(
   LOAN_QUERIES.ANONYMOUS_LOAN,
   userLoan(),
-  {
-    scoped: true,
-  },
+  { scoped: true },
 );
 
 // This query can be used on the server to get a complete loan, just like on the client
 export const fullLoan = Loans.createQuery(LOAN_QUERIES.FULL_LOAN, {
   ...adminLoan({ withSort: true }),
-  $postFilter(loans = []) {
-    return loans.map(formatLoanWithDocuments);
-  },
 });
 
 export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
-  $filter({ filters, params: { searchQuery } }) {
-    Object.assign(
-      filters,
-      createSearchFilters(['name', '_id', 'customName'], searchQuery),
-    );
-  },
   name: 1,
   createdAt: 1,
   updatedAt: 1,

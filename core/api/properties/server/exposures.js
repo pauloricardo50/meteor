@@ -11,6 +11,7 @@ import {
 } from '../queries';
 import Security from '../../security';
 import { proPropertiesResolver, proPropertyUsersResolver } from './resolvers';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({
@@ -82,5 +83,13 @@ exposeQuery({
   query: propertySearch,
   overrides: {
     validateParams: { searchQuery: Match.Maybe(String) },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { searchQuery } }) => {
+        Object.assign(
+          filters,
+          createSearchFilters(['address1', 'city', '_id'], searchQuery),
+        );
+      };
+    },
   },
 });

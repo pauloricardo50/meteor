@@ -6,7 +6,5 @@ exposeQuery({ query: adminContacts, options: { allowFilterById: true } });
 
 exposeQuery({
   query: contactSearch,
-  overrides: {
-    validateParams: { searchQuery: Match.Maybe(String) },
-  },
+  overrides: { validateParams: { searchQuery: Match.Maybe(String) } },
 });

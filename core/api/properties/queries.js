@@ -3,9 +3,7 @@ import { PROPERTY_QUERIES } from './propertyConstants';
 import {
   adminProperty,
   userProperty as userPropertyFragment,
-  proProperty,
 } from '../fragments';
-import { createSearchFilters } from '../helpers/mongoHelpers';
 
 export const adminProperties = Properties.createQuery(
   PROPERTY_QUERIES.ADMIN_PROPERTIES,
@@ -25,12 +23,6 @@ export const anonymousProperty = Properties.createQuery(
 export const propertySearch = Properties.createQuery(
   PROPERTY_QUERIES.PROPERTY_SEARCH,
   {
-    $filter({ filters, params: { searchQuery } }) {
-      Object.assign(
-        filters,
-        createSearchFilters(['address1', 'city', '_id'], searchQuery),
-      );
-    },
     address1: 1,
     address2: 1,
     city: 1,

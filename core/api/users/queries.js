@@ -20,17 +20,13 @@ export const adminUsers = Users.createQuery(
 export const appUser = Users.createQuery(
   USER_QUERIES.APP_USER,
   appUserFragment(),
-  {
-    scoped: true,
-  },
+  { scoped: true },
 );
 
 export const currentUser = Users.createQuery(
   USER_QUERIES.CURRENT_USER,
   fullUser(),
-  {
-    scoped: true,
-  },
+  { scoped: true },
 );
 
 export const proReferredByUsers = Users.createQuery(
