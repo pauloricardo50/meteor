@@ -3,10 +3,9 @@ import { Match } from 'meteor/check';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { adminBorrowers, borrowerSearch } from '../queries';
 
-exposeQuery(adminBorrowers, {}, { allowFilterById: true });
+exposeQuery({ query: adminBorrowers, options: { allowFilterById: true } });
 
-exposeQuery(
-  borrowerSearch,
-  { validateParams: { searchQuery: Match.Maybe(String) } },
-  {},
-);
+exposeQuery({
+  query: borrowerSearch,
+  overrides: { validateParams: { searchQuery: Match.Maybe(String) } },
+});

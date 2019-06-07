@@ -2,11 +2,11 @@ import { exposeQuery } from '../../queries/queryHelpers';
 import { adminOffers, loanOffers } from '../queries';
 import SecurityService from '../../security';
 
-exposeQuery(adminOffers, {}, { allowFilterById: true });
+exposeQuery({ query: adminOffers, options: { allowFilterById: true } });
 
-exposeQuery(
-  loanOffers,
-  {
+exposeQuery({
+  query: loanOffers,
+  overrides: {
     firewall(userId, { loanId }) {
       SecurityService.checkLoggedIn();
 
@@ -16,5 +16,4 @@ exposeQuery(
     },
     validateParams: { loanId: String },
   },
-  {},
-);
+});

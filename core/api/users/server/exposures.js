@@ -14,12 +14,11 @@ import {
 } from '../queries';
 import { ROLES } from '../../constants';
 import SecurityService from '../../security';
-import UserService from './UserService';
-import { proUser as proUserFragment } from '../../fragments';
+import { proReferredByUsersResolver } from './resolvers';
 
-exposeQuery(
-  adminUsers,
-  {
+exposeQuery({
+  query: adminUsers,
+  overrides: {
     embody: (body, params) => {
       body.$filter = ({
         filters,
@@ -59,12 +58,12 @@ exposeQuery(
       assignedEmployeeId: Match.Maybe(String),
     },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(
-  appUser,
-  {
+exposeQuery({
+  query: appUser,
+  overrides: {
     firewall(userId, params) {
       if (!userId) {
         // Don't throw unauthorized error here, it causes race-conditions in E2E tests
@@ -79,12 +78,11 @@ exposeQuery(
       };
     },
   },
-  {},
-);
+});
 
-exposeQuery(
-  currentUser,
-  {
+exposeQuery({
+  query: currentUser,
+  overrides: {
     firewall(userId, params) {
       if (!userId) {
         // Don't throw unauthorized error here, it causes race-conditions in E2E tests
@@ -100,12 +98,11 @@ exposeQuery(
       };
     },
   },
-  {},
-);
+});
 
-exposeQuery(
-  proReferredByUsers,
-  {
+exposeQuery({
+  query: proReferredByUsers,
+  overrides: {
     firewall(userId, params) {
       const { userId: providedUserId, organisationId } = params;
 
@@ -127,53 +124,30 @@ exposeQuery(
       organisationId: Match.Maybe(String),
     },
   },
-  {},
-);
-
-proReferredByUsers.resolve(({ userId, organisationId: providedOrganisationId }) => {
-  let organisationId;
-  if (!providedOrganisationId) {
-    const { organisations = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
-      organisations: { _id: 1 },
-    });
-    organisationId = !!organisations.length && organisations[0]._id;
-  } else {
-    organisationId = providedOrganisationId;
-  }
-
-  const users = UserService.fetch({
-    $filters: {
-      $or: [
-        { referredByUserLink: userId },
-        organisationId && { referredByOrganisationLink: organisationId },
-      ].filter(x => x),
-    },
-    ...proUserFragment(),
-  });
-
-  return users;
+  resolver: proReferredByUsersResolver,
 });
 
-exposeQuery(userEmails);
+exposeQuery({ query: userEmails });
 
-exposeQuery(
-  userSearch,
-  {
+exposeQuery({
+  query: userSearch,
+  overrides: {
     validateParams: {
       searchQuery: Match.Maybe(String),
       roles: Match.Maybe([String]),
     },
   },
-  {},
-);
+});
 
-exposeQuery(proUser, {
-  firewall(userId, params) {},
-  embody: (body) => {
-    // This will deepExtend your body
-    body.$filter = ({ filters, params }) => {
-      filters._id = params._userId;
-    };
+exposeQuery({
+  query: proUser,
+  overrides: {
+    firewall(userId, params) {},
+    embody: (body) => {
+      // This will deepExtend your body
+      body.$filter = ({ filters, params }) => {
+        filters._id = params._userId;
+      };
+    },
   },
 });

@@ -10,24 +10,22 @@ import {
   propertySearch,
 } from '../queries';
 import Security from '../../security';
-import { proPropertySummary, proProperty, proUser } from '../../fragments';
-import UserService from '../../users/server/UserService';
-import PropertyService from './PropertyService';
+import { proPropertiesResolver, proPropertyUsersResolver } from './resolvers';
 
-exposeQuery(adminProperties, {}, { allowFilterById: true });
-exposeQuery(
-  anonymousProperty,
-  {
+exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
+exposeQuery({
+  query: anonymousProperty,
+  overrides: {
     firewall(userId, { _id }) {
       Security.properties.checkPropertyIsPublic({ propertyId: _id });
     },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(
-  proProperties,
-  {
+exposeQuery({
+  query: proProperties,
+  overrides: {
     firewall(userId, params) {
       if (params.userId) {
         // When visiting a pro user's page from admin
@@ -49,62 +47,23 @@ exposeQuery(
       fetchOrganisationProperties: Match.Maybe(Boolean),
     },
   },
-  { allowFilterById: true },
-);
-
-proProperties.resolve(({ userId, _id: propertyId, fetchOrganisationProperties }) => {
-  const fragment = propertyId ? proProperty() : proPropertySummary();
-  let $filters;
-
-  if (propertyId) {
-    $filters = { _id: propertyId };
-  }
-
-  if (userId) {
-    $filters = { ...$filters, 'userLinks._id': userId };
-  }
-
-  if (fetchOrganisationProperties) {
-    const { organisations = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
-      organisations: { users: { _id: 1 } },
-    });
-
-    const otherOrganisationUsers = organisations.length
-      ? organisations[0].users
-        .map(({ _id }) => _id)
-        .filter(id => id !== userId)
-      : [];
-
-    $filters = {
-      $and: [
-        { 'userLinks._id': { $in: otherOrganisationUsers } },
-        { 'userLinks._id': { $nin: [userId] } },
-      ],
-    };
-  }
-
-  const properties = PropertyService.fetch({
-    $filters,
-    ...fragment,
-  });
-
-  return properties;
+  options: { allowFilterById: true },
+  resolver: proPropertiesResolver,
 });
 
-exposeQuery(
-  userProperty,
-  {
+exposeQuery({
+  query: userProperty,
+  overrides: {
     firewall(userId, { _id: propertyId }) {
       Security.properties.hasAccessToProperty({ propertyId, userId });
     },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(
-  proPropertyUsers,
-  {
+exposeQuery({
+  query: proPropertyUsers,
+  overrides: {
     firewall(userId, params) {
       const { propertyId } = params;
       params.userId = userId;
@@ -116,28 +75,12 @@ exposeQuery(
       userId: String,
     },
   },
-  {},
-);
-
-proPropertyUsers.resolve(({ propertyId }) => {
-  const property = PropertyService.fetchOne({
-    $filters: { _id: propertyId },
-    users: proUser(),
-  });
-
-  if (!property) {
-    return [];
-  }
-
-  const { users = [] } = property;
-
-  return users;
+  resolver: proPropertyUsersResolver,
 });
 
-exposeQuery(
-  propertySearch,
-  {
+exposeQuery({
+  query: propertySearch,
+  overrides: {
     validateParams: { searchQuery: Match.Maybe(String) },
   },
-  {},
-);
+});

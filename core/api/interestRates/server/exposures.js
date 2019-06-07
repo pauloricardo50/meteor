@@ -3,9 +3,9 @@ import moment from 'moment';
 import { currentInterestRates, interestRates } from '../queries';
 import { exposeQuery } from '../../queries/queryHelpers';
 
-exposeQuery(
-  currentInterestRates,
-  {
+exposeQuery({
+  query: currentInterestRates,
+  overrides: {
     firewall(userId) {},
     embody(body) {
       body.$filter = ({ filters }) => {
@@ -14,7 +14,6 @@ exposeQuery(
       body.$options = { sort: { date: -1 }, limit: 1 };
     },
   },
-  {},
-);
+});
 
-exposeQuery(interestRates, {}, { allowFilterById: true });
+exposeQuery({ query: interestRates, options: { allowFilterById: true } });

@@ -2,16 +2,16 @@ import { exposeQuery } from '../../queries/queryHelpers';
 import { newLoans, loanHistogram } from '../queries';
 import { newLoansResolver, loanHistogramResolver } from '../stats';
 
-exposeQuery(
-  newLoans,
-  { validateParams: { period: Number } },
-  { allowFilterById: true },
-);
-newLoans.resolve(newLoansResolver);
+exposeQuery({
+  query: newLoans,
+  overrides: { validateParams: { period: Number } },
+  options: { allowFilterById: true },
+  resolver: newLoansResolver,
+});
 
-exposeQuery(
-  loanHistogram,
-  { validateParams: { period: Number } },
-  { allowFilterById: true },
-);
-loanHistogram.resolve(loanHistogramResolver);
+exposeQuery({
+  query: loanHistogram,
+  overrides: { validateParams: { period: Number } },
+  options: { allowFilterById: true },
+  resolver: loanHistogramResolver,
+});

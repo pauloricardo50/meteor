@@ -2,9 +2,9 @@ import SecurityService from '../../security';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { organisationLenderRules } from '../queries';
 
-exposeQuery(
-  organisationLenderRules,
-  {
+exposeQuery({
+  query: organisationLenderRules,
+  overrides: {
     firewall() {
       SecurityService.checkLoggedIn();
     },
@@ -15,5 +15,5 @@ exposeQuery(
     },
     validateParams: { organisationId: String },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});

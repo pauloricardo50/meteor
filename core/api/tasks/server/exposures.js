@@ -3,9 +3,9 @@ import { Match } from 'meteor/check';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { tasks } from '../queries';
 
-exposeQuery(
-  tasks,
-  {
+exposeQuery({
+  query: tasks,
+  overrides: {
     embody: (body, params) => {
       body.$filter = ({
         filters,
@@ -68,5 +68,5 @@ exposeQuery(
       docIds: Match.Maybe([String]),
     },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});

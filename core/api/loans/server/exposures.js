@@ -4,7 +4,6 @@ import SecurityService from 'core/api/security';
 import { Meteor } from 'meteor/meteor';
 import UserService from '../../users/server/UserService';
 import { exposeQuery } from '../../queries/queryHelpers';
-import QueryCacher from '../../helpers/server/QueryCacher';
 
 import {
   adminLoans,
@@ -26,9 +25,9 @@ import {
   proReferredByLoansResolver,
 } from './resolvers';
 
-exposeQuery(
-  adminLoans,
-  {
+exposeQuery({
+  query: adminLoans,
+  overrides: {
     embody: (body, params) => {
       body.$filter = ({
         filters,
@@ -65,84 +64,83 @@ exposeQuery(
       relevantOnly: Match.Maybe(Boolean),
     },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(
-  anonymousLoan,
-  {
+exposeQuery({
+  query: anonymousLoan,
+  overrides: {
     firewall(userId, params) {
       SecurityService.loans.checkAnonymousLoan(params._id);
     },
     validateParams: { _id: String, $body: Match.Maybe(Object) },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(fullLoan, {}, { allowFilterById: true });
+exposeQuery({ query: fullLoan, options: { allowFilterById: true } });
 
-exposeQuery(
-  loanSearch,
-  {
+exposeQuery({
+  query: loanSearch,
+  overrides: {
     firewall(userId) {
       SecurityService.checkUserIsAdmin(userId);
     },
     validateParams: { searchQuery: Match.Maybe(String) },
   },
-  {},
-);
+});
 
-exposeQuery(proLoans, {
-  firewall(userId, params) {
-    const { userId: providedUserId, fetchOrganisationLoans } = params;
-    params.calledByUserId = userId;
+exposeQuery({
+  query: proLoans,
+  overrides: {
+    firewall(userId, params) {
+      const { userId: providedUserId, fetchOrganisationLoans } = params;
+      params.calledByUserId = userId;
 
-    if (SecurityService.isUserAdmin(userId) && providedUserId) {
-      params.userId = providedUserId;
-    } else {
-      params.userId = userId;
-    }
-
-    if (fetchOrganisationLoans) {
-      if (params.organisationId) {
-        SecurityService.checkUserIsAdmin(userId);
+      if (SecurityService.isUserAdmin(userId) && providedUserId) {
+        params.userId = providedUserId;
       } else {
-        const { organisations } = UserService.fetchOne({
-          $filters: { _id: userId },
-          organisations: { _id: 1 },
-        });
-
-        if (!organisations || organisations.length === 0) {
-          throw new Meteor.Error("Pas d'organisation!");
-        }
-
-        params.organisationId = organisations[0]._id;
+        params.userId = userId;
       }
-    }
 
-    SecurityService.checkUserIsPro(userId);
+      if (fetchOrganisationLoans) {
+        if (params.organisationId) {
+          SecurityService.checkUserIsAdmin(userId);
+        } else {
+          const { organisations } = UserService.fetchOne({
+            $filters: { _id: userId },
+            organisations: { _id: 1 },
+          });
+
+          if (!organisations || organisations.length === 0) {
+            throw new Meteor.Error("Pas d'organisation!");
+          }
+
+          params.organisationId = organisations[0]._id;
+        }
+      }
+
+      SecurityService.checkUserIsPro(userId);
+    },
+    validateParams: {
+      promotionId: Match.Maybe(Match.OneOf(String, Object)),
+      propertyId: Match.Maybe(Match.OneOf(String, Object)),
+      userId: String,
+      calledByUserId: String,
+      organisationId: Match.Maybe(String),
+      fetchOrganisationLoans: Match.Maybe(Boolean),
+    },
   },
-  validateParams: {
-    promotionId: Match.Maybe(Match.OneOf(String, Object)),
-    propertyId: Match.Maybe(Match.OneOf(String, Object)),
-    userId: String,
-    calledByUserId: String,
-    organisationId: Match.Maybe(String),
-    fetchOrganisationLoans: Match.Maybe(Boolean),
+  cacher: {
+    getDataToHash: getLoanIds({ withReferredBy: true }),
+    ttl: 60 * 1000,
   },
+  resolver: proLoansResolver,
 });
 
-proLoans.resolve(proLoansResolver);
-const proLoansCacher = new QueryCacher({
-  getDataToHash: getLoanIds({ withReferredBy: true }),
-  ttl: 60 * 1000,
-});
-
-proLoans.cacheResults(proLoansCacher);
-
-exposeQuery(
-  proPromotionLoans,
-  {
+exposeQuery({
+  query: proPromotionLoans,
+  overrides: {
     firewall(userId, params) {
       const { promotionId } = params;
       params.userId = userId;
@@ -157,15 +155,13 @@ exposeQuery(
       userId: String,
     },
   },
-  {},
-);
+  resolver: ({ userId, promotionId }) =>
+    proPromotionLoansResolver({ calledByUserId: userId, promotionId }),
+});
 
-proPromotionLoans.resolve(({ userId, promotionId }) =>
-  proPromotionLoansResolver({ calledByUserId: userId, promotionId }));
-
-exposeQuery(
-  proPropertyLoans,
-  {
+exposeQuery({
+  query: proPropertyLoans,
+  overrides: {
     firewall(userId, params) {
       const { propertyId } = params;
       params.userId = userId;
@@ -177,15 +173,13 @@ exposeQuery(
       userId: String,
     },
   },
-  {},
-);
+  resolver: ({ userId, propertyId }) =>
+    proPropertyLoansResolver({ calledByUserId: userId, propertyId }),
+});
 
-proPropertyLoans.resolve(({ userId, propertyId }) =>
-  proPropertyLoansResolver({ calledByUserId: userId, propertyId }));
-
-exposeQuery(
-  proReferredByLoans,
-  {
+exposeQuery({
+  query: proReferredByLoans,
+  overrides: {
     firewall(userId, params) {
       const { userId: providedUserId } = params;
       SecurityService.checkUserIsPro(userId);
@@ -201,14 +195,12 @@ exposeQuery(
       calledByUserId: String,
     },
   },
-  {},
-);
+  resolver: proReferredByLoansResolver,
+});
 
-proReferredByLoans.resolve(proReferredByLoansResolver);
-
-exposeQuery(
-  userLoans,
-  {
+exposeQuery({
+  query: userLoans,
+  overrides: {
     firewall(userId, params) {
       if (params.userId) {
         SecurityService.checkUserIsAdmin(userId);
@@ -233,5 +225,4 @@ exposeQuery(
       userId: Match.Maybe(String),
     },
   },
-  {},
-);
+});

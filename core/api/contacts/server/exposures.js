@@ -2,12 +2,11 @@ import { Match } from 'meteor/check';
 import { adminContacts, contactSearch } from '../queries';
 import { exposeQuery } from '../../queries/queryHelpers';
 
-exposeQuery(adminContacts, {}, { allowFilterById: true });
+exposeQuery({ query: adminContacts, options: { allowFilterById: true } });
 
-exposeQuery(
-  contactSearch,
-  {
+exposeQuery({
+  query: contactSearch,
+  overrides: {
     validateParams: { searchQuery: Match.Maybe(String) },
   },
-  {},
-);
+});

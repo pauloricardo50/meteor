@@ -15,9 +15,9 @@ const makeFilter = ({ param, field, filters }) => {
   }
 };
 
-exposeQuery(
-  adminOrganisations,
-  {
+exposeQuery({
+  query: adminOrganisations,
+  overrides: {
     validateParams: {
       features: Match.Maybe(Match.OneOf(String, [String])),
       tags: Match.Maybe(Match.OneOf(String, [String])),
@@ -44,23 +44,22 @@ exposeQuery(
       body.$options = { sort: { name: 1 } };
     },
   },
-  { allowFilterById: true },
-);
+  options: { allowFilterById: true },
+});
 
-exposeQuery(
-  organisationSearch,
-  {
+exposeQuery({
+  query: organisationSearch,
+  overrides: {
     firewall: () => {
       SecurityService.checkCurrentUserIsAdmin();
     },
     validateParams: { searchQuery: Match.Maybe(String) },
   },
-  {},
-);
+});
 
-exposeQuery(
-  proOrganisation,
-  {
+exposeQuery({
+  query: proOrganisation,
+  overrides: {
     firewall: (userId) => {
       SecurityService.checkUserIsPro(userId);
     },
@@ -71,16 +70,14 @@ exposeQuery(
       };
     },
   },
-  {},
-);
+});
 
-exposeQuery(
-  userOrganisations,
-  {
+exposeQuery({
+  query: userOrganisations,
+  overrides: {
     firewall: (userId) => {
       SecurityService.checkUserLoggedIn(userId);
     },
     validateParams: {},
   },
-  {},
-);
+});

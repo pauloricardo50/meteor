@@ -3,6 +3,7 @@ import mergeDeep from 'meteor/cultofcoders:grapher/lib/namedQuery/expose/lib/mer
 
 import { Meteor } from 'meteor/meteor';
 import Security from '../security';
+import QueryCacher from '../helpers/server/QueryCacher';
 
 const defaultParams = (options) => {
   const { allowFilterById = false } = options;
@@ -123,11 +124,27 @@ const getFirewall = (overrides, options) => (userId, params) => {
   }
 };
 
-export const exposeQuery = (query, overrides = {}, options = {}) => {
+export const exposeQuery = ({
+  query,
+  overrides = {},
+  options = {},
+  resolver,
+  caching,
+}) => {
   query.expose({
     ...overrides,
     firewall: getFirewall(overrides, options),
     embody: getEmbody(overrides, options),
     validateParams: getValidateParams(overrides, options),
   });
+
+  if (resolver) {
+    query.resolve(resolver);
+  }
+
+  if (caching) {
+    const { ttl, getDataToHash } = caching;
+    const cacher = new QueryCacher({ ttl, getDataToHash });
+    query.cacheResults(cacher);
+  }
 };

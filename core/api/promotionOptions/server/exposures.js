@@ -1,13 +1,11 @@
 import SecurityService from '../../security';
 import { appPromotionOption, proPromotionOptions } from '../queries';
 import { exposeQuery } from '../../queries/queryHelpers';
-import { proPromotionOption } from '../../fragments';
-import PromotionOptionService from './PromotionOptionService';
-import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import { proPromotionOptionsResolver } from './resolvers';
 
-exposeQuery(
-  appPromotionOption,
-  {
+exposeQuery({
+  query: appPromotionOption,
+  overrides: {
     firewall(userId, { promotionOptionId }) {
       SecurityService.promotions.hasAccessToPromotionOption({
         promotionOptionId,
@@ -16,12 +14,11 @@ exposeQuery(
     },
     validateParams: { promotionOptionId: String },
   },
-  {},
-);
+});
 
-exposeQuery(
-  proPromotionOptions,
-  {
+exposeQuery({
+  query: proPromotionOptions,
+  overrides: {
     firewall(userId, params) {
       const { promotionOptionIds } = params;
       params.userId = userId;
@@ -35,19 +32,5 @@ exposeQuery(
     },
     validateParams: { promotionOptionIds: [String], userId: String },
   },
-  {},
-);
-
-proPromotionOptions.resolve(({ userId, promotionOptionIds }) => {
-  const promotionOptions = PromotionOptionService.fetch({
-    $filters: { _id: { $in: promotionOptionIds } },
-    ...proPromotionOption(),
-  }) || [];
-
-  try {
-    SecurityService.checkCurrentUserIsAdmin();
-    return promotionOptions;
-  } catch (error) {
-    return promotionOptions.map(makePromotionOptionAnonymizer({ userId }));
-  }
+  resolver: proPromotionOptionsResolver,
 });
