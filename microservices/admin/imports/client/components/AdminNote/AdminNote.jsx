@@ -32,7 +32,9 @@ const AdminNote = ({
       (isEditing ? (
         <Icon type="help" tooltip={tutorial} />
       ) : (
-        <ReactMarkdown source={value} />
+        <div>
+          <ReactMarkdown source={value} />
+        </div>
       ))
     }
   </ClickToEditField>
