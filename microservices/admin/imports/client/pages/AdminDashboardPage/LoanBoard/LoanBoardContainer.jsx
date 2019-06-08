@@ -12,6 +12,8 @@ import {
   getInitialOptions,
 } from './loanBoardHelpers';
 import { GROUP_BY } from './loanBoardConstants';
+import { withLiveSync, addLiveSync } from './liveSync';
+
 
 const getBody = (groupBy) => {
   switch (groupBy) {
@@ -30,7 +32,10 @@ const getBody = (groupBy) => {
 };
 
 export default compose(
+  withState('activateSync', 'setActivateSync', false),
   withReducer('options', 'dispatch', filterReducer, getInitialOptions),
+  addLiveSync,
+  withLiveSync,
   withSmartQuery({
     query: adminLoans,
     params: ({
@@ -83,5 +88,4 @@ export default compose(
     data: groupLoans({ loans, ...rest }),
     ...rest,
   })),
-  withState('loanId', 'setLoanId', ''),
 );

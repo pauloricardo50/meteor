@@ -8,9 +8,10 @@ import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import RadioButtons from 'core/components/RadioButtons';
 import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
+import { LOAN_CATEGORIES } from 'imports/core/api/constants';
 import { ACTIONS, GROUP_BY } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
-import { LOAN_CATEGORIES } from 'imports/core/api/constants';
+import { LiveQueryMonitor } from '../liveSync';
 
 type LoanBoardOptionsProps = {};
 
@@ -41,6 +42,8 @@ const LoanBoardOptions = ({
   promotions,
   lenders,
   refetchLoans,
+  activateSync,
+  setActivateSync,
 }: LoanBoardOptionsProps) => {
   const {
     assignedEmployeeId,
@@ -51,7 +54,9 @@ const LoanBoardOptions = ({
     lenderId,
     category,
   } = options;
-  const assignedEmployeeValue = assignedEmployeeId ? assignedEmployeeId.$in : [null];
+  const assignedEmployeeValue = assignedEmployeeId
+    ? assignedEmployeeId.$in
+    : [null];
   const statusValue = status ? status.$in : [null];
   const categoryValue = category ? category.$in : [null];
   const stepValue = step ? step.$in : [null];
@@ -108,7 +113,12 @@ const LoanBoardOptions = ({
           label="Conseiller"
           value={assignedEmployeeValue}
           options={assignedEmployeeOptions}
-          onChange={next => makeOnChange('assignedEmployeeId', dispatch)(assignedEmployeeValue, next)}
+          onChange={next =>
+            makeOnChange('assignedEmployeeId', dispatch)(
+              assignedEmployeeValue,
+              next,
+            )
+          }
         />
 
         <LoanBoardOptionsCheckboxes
@@ -170,6 +180,12 @@ const LoanBoardOptions = ({
             <div>{groupByOptions.find(({ id }) => id === groupBy).label}</div>
           </div>
         </StickyPopover>
+
+        <LiveQueryMonitor
+          admins={admins}
+          setActivateSync={setActivateSync}
+          activateSync={activateSync}
+        />
       </div>
 
       <div className="right">

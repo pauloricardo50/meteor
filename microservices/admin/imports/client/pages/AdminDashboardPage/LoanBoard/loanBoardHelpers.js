@@ -17,6 +17,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   status: undefined,
   promotionId: undefined,
   lenderId: undefined,
+  loanId: '',
 });
 
 export const filterReducer = (state, { type, payload }) => {
@@ -25,6 +26,7 @@ export const filterReducer = (state, { type, payload }) => {
     const { name, value } = payload;
     return { ...state, [name]: value };
   }
+
   case ACTIONS.SET_COLUMN_SORT: {
     const { sortOrder } = state;
     if (state.sortBy === payload) {
@@ -36,16 +38,27 @@ export const filterReducer = (state, { type, payload }) => {
     }
     return { ...state, sortBy: payload, sortOrder: SORT_ORDER.ASC };
   }
+
   case ACTIONS.SET_GROUP_BY: {
     const newStatus = { ...state, groupBy: payload };
 
     if (payload === GROUP_BY.STATUS) {
       return { ...newStatus, sortBy: SORT_BY.CREATED_AT };
     }
-    return { ...newStatus, sortBy: SORT_BY.STATUS, sortOrder: SORT_ORDER.DESC };
+    return {
+      ...newStatus,
+      sortBy: SORT_BY.STATUS,
+      sortOrder: SORT_ORDER.DESC,
+    };
   }
 
+  case ACTIONS.SET_LOAN_ID:
+    return { ...state, loanId: payload };
+
   case ACTIONS.RESET: {
+    if (payload) {
+      return payload;
+    }
     return getInitialOptions({ currentUser: Meteor.user() });
   }
 

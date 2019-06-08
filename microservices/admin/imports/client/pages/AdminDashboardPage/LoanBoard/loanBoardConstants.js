@@ -3,6 +3,7 @@ export const ACTIONS = {
   SET_COLUMN_SORT: 'SET_COLUMN_SORT',
   SET_GROUP_BY: 'SET_GROUP_BY',
   RESET: 'RESET',
+  SET_LOAN_ID: 'SET_LOAN_ID',
 };
 
 export const SORT_BY = {
