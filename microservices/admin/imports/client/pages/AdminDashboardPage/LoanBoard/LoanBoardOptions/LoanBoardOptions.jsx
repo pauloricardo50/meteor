@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 import T from 'core/components/Translation';
 import StickyPopover from 'core/components/StickyPopover';
 import Button from 'core/components/Button';
-import Icon from 'core/components/Icon';
+import IconButton from 'core/components/IconButton';
 import RadioButtons from 'core/components/RadioButtons';
 import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
 import { LOAN_CATEGORIES } from 'imports/core/api/constants';
@@ -196,14 +196,10 @@ const LoanBoardOptions = ({
         >
           Reset
         </Button>
-        <Button
-          raised
-          primary
+        <IconButton
           onClick={refetchLoans}
-          icon={<Icon type="loop" />}
-        >
-          Syncroniser
-        </Button>
+          type="loop"
+        />
       </div>
     </div>
   );

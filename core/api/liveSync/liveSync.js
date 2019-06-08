@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
 const LiveSync = new Mongo.Collection('liveSync');
+const STALE_LIVE_SYNC_MS = 2 * 60 * 1000;
 
 Meteor.methods({
   liveSyncStart() {
@@ -13,7 +14,16 @@ Meteor.methods({
   },
   liveSyncUpdate(options) {
     check(options, String);
-    LiveSync.update({ userId: this.userId }, { $set: { options } });
+    LiveSync.update(
+      { userId: this.userId },
+      { $set: { options, updatedAt: new Date() } },
+    );
+  },
+  liveSyncClear() {
+    const now = new Date();
+    LiveSync.remove({
+      updatedAt: { $lt: new Date(now.getTime() - STALE_LIVE_SYNC_MS) },
+    });
   },
 });
 
