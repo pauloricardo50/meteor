@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+// Usage: node ./run-with-backend <microservice> <command>
+// command defaults to "start"
 
 const {
   spawn,
@@ -10,6 +12,7 @@ const BACKEND_PORT = 5500;
 
 const [
   microservice,
+  script = 'start',
 ] = process.argv.slice(2);
 
 if (!microservice) {
@@ -19,7 +22,7 @@ if (!microservice) {
 function startMeteor(_microservice) {
   spawn(
     'npm',
-    ['run', 'start'],
+    ['run', script],
     {
       cwd: path.resolve(__dirname, `../microservices/${_microservice}`),
       stdio: 'inherit',
