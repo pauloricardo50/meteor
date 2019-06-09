@@ -19,11 +19,14 @@
   width: 100%;
 }
 
-.date-input .SingleDatePicker {
+.date-input .SingleDatePicker,
+.mui-text-input .SingleDatePicker {
   width: 100%;
+  margin-bottom: 1px;
 }
 
-.date-input .SingleDatePicker .SingleDatePickerInput {
+.date-input .SingleDatePicker .SingleDatePickerInput,
+.mui-text-input .SingleDatePicker .SingleDatePickerInput {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,12 +38,17 @@
   font-family: 'Eina04-Regular', 'Helvetica' !important;
 }
 
-.date-input .SingleDatePicker .SingleDatePickerInput .DateInput {
+.date-input .SingleDatePicker .SingleDatePickerInput .DateInput,
+.mui-text-input .SingleDatePicker .SingleDatePickerInput .DateInput {
   flex-grow: 1;
 
   padding: 0;
 
   text-align: center;
+
+  input {
+    border-bottom-width: 0;
+  }
 }
 
 .date-input

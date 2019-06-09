@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon/Icon';
@@ -10,6 +11,9 @@ import LoansPageContainer from './LoansPageContainer';
 
 const LoansPage = props => (
   <section className="card1 card-top loans-page">
+    <Helmet>
+      <title>Hypothèques</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[LOANS_COLLECTION]}

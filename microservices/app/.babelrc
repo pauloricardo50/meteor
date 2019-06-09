@@ -7,7 +7,8 @@
       {
         "root": ["."],
         "alias": {
-          "core": "./imports/core"
+          "core": "./imports/core",
+          "@ant-design/icons/lib/dist$": "./imports/core/utils/antIcons"
         }
       }
     ]

@@ -1,0 +1,15 @@
+.progress-circle {
+  &-background {
+    stroke: #c4c4c4;
+    fill: none;
+  }
+
+  &-progress {
+    stroke: $primary;
+    fill: none;
+  }
+
+  &-progress.complete {
+    stroke: $success;
+  }
+}

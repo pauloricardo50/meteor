@@ -1,0 +1,153 @@
+$footer-height: 64px;
+
+.simple-borrowers-page {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 16px;
+
+  @include screen(large, min) {
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+
+    .card1 {
+      box-sizing: border-box;
+      padding: 32px;
+    }
+  }
+  @include screen(large) {
+    padding-bottom: calc(#{$footer-height});
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      margin: 0;
+      margin-bottom: 8px;
+    }
+
+    h4 {
+      display: flex;
+      align-items: center;
+
+      margin-top: 0;
+      margin-bottom: 40px;
+    }
+  }
+
+  &-container {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    flex-direction: column;
+
+    &.grow {
+      flex-grow: 1;
+    }
+
+    .max-property-value-cta {
+      margin-top: 16px;
+    }
+  }
+
+  &-forms {
+    align-self: center;
+
+    width: 100%;
+    max-width: 600px;
+
+    .borrower-forms-tabs {
+      width: 100%;
+    }
+
+    .forms {
+      &.two-borrowers {
+        max-width: unset;
+      }
+    }
+
+    .borrower-form {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .borrower-remover {
+      align-self: flex-end;
+
+      margin-bottom: 16px;
+    }
+
+    .borrower-tab-labels {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &-max-property-value-placeholder {
+    @include screen(large, min) {
+      min-width: 400px;
+      min-height: 200px;
+    }
+  }
+
+  &-max-property-value {
+    color: white;
+    background-color: $primary;
+
+    @include screen(large, min) {
+      min-width: 400px;
+      min-height: 200px;
+    }
+
+    &.fixed {
+      position: fixed;
+      top: 132px;
+      left: calc(50% + 100px);
+    }
+
+    h2,
+    h3,
+    h4 {
+      color: white;
+    }
+
+    &-sticky {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      width: 100%;
+      height: $footer-height;
+
+      color: white;
+      background-color: $primary;
+
+      h2,
+      h3,
+      h4 {
+        color: white;
+
+        @include screen(small) {
+          font-size: 1.3rem;
+        }
+      }
+
+      h2,
+      h3 {
+        margin: 0;
+      }
+    }
+  }
+}

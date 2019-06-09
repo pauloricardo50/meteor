@@ -6,7 +6,6 @@ import { compose, withState, withProps } from 'recompose';
 
 import { sendPromotionInvitationEmail } from '../../../api';
 import Button from '../../Button';
-import message from '../../../utils/message';
 
 type EmailTesterProps = {};
 
@@ -32,7 +31,9 @@ export default compose(
           firstName: user.firstName,
         })
         .then(() => {
-          message.success(`Email test envoyé à ${email}`, 5);
+          import('../../../utils/message').then(({ default: message }) => {
+            message.success(`Email test envoyé à ${email}`, 5);
+          });
         })
         .finally(() => setSending(false));
     },

@@ -22,8 +22,8 @@ type OrganisationUserAdderProps = {
   addUser: Function,
   userId: String,
   setUserId: Function,
-  setRole: Function,
-  role: String,
+  setTitle: Function,
+  title: String,
   resetState: Function,
 };
 
@@ -69,11 +69,11 @@ const renderUserSearcher = ({
   </>
 );
 
-const renderRoleSetter = ({
+const renderTitleSetter = ({
   addUser,
   userId,
-  role,
-  setRole,
+  title,
+  setTitle,
   handleClose,
   resetState,
 }) => (
@@ -81,17 +81,17 @@ const renderRoleSetter = ({
     onSubmit={(event) => {
       event.preventDefault();
       event.stopPropagation();
-      return addUser({ userId, role })
+      return addUser({ userId, title })
         .then(resetState)
         .then(handleClose);
     }}
   >
     <TextField
       label="Titre"
-      key="role"
+      key="title"
       type="text"
-      value={role}
-      onChange={event => setRole(event.target.value)}
+      value={title}
+      onChange={event => setTitle(event.target.value)}
       placeholder="Courtier"
       style={{ width: '100%', marginBottom: '16px' }}
     />
@@ -104,7 +104,7 @@ const renderRoleSetter = ({
 const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
   const {
     setSearchQuery,
-    setRole,
+    setTitle,
     setSearchResults,
     setUserId,
     userId,
@@ -115,8 +115,8 @@ const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
     <DialogSimple
       primary
       raised
-      label="Ajouter un utilisateur"
-      title="Nouvel utilisateur"
+      label="Ajouter un utilisateur existant"
+      title="Ajouter utilisateur"
       style={{ width: '100%' }}
       renderProps
       actions={handleClose => [
@@ -134,7 +134,7 @@ const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
         <div className="flex-col">
           {!userId
             ? renderUserSearcher(props)
-            : renderRoleSetter({
+            : renderTitleSetter({
               ...props,
               handleClose,
             })}

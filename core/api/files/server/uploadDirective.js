@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Match, check } from 'meteor/check';
 import { Slingshot } from 'meteor/edgee:slingshot';
+import { _ } from 'meteor/underscore';
+
 import crypto from 'crypto';
 
 import {
@@ -9,12 +11,13 @@ import {
   OBJECT_STORAGE_REGION,
   FILE_STATUS,
   S3_ACLS,
+  MAX_FILE_SIZE,
+  ONE_KB,
 } from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
 const FIVE_MINUTES = 5 * 60 * 1000;
-const ONE_KB = 1024;
 
 const hmac256 = (key, data, encoding) =>
   crypto
@@ -90,6 +93,15 @@ const exoscaleStorageService = {
     return getContentDisposition.call(method, file, meta);
   },
 
+  getMaxSize(directive, meta) {
+    // Only allow client maxSizes that are smaller than server defined maxSize
+    if (meta.maxSize && meta.maxSize <= directive.maxSize) {
+      return meta.maxSize;
+    }
+
+    return directive.maxSize || MAX_FILE_SIZE;
+  },
+
   /**
    *
    * @param {{userId: String}} method
@@ -101,9 +113,15 @@ const exoscaleStorageService = {
    */
 
   upload(method, directive, file, meta) {
+    const maxSize = this.getMaxSize(directive, meta);
     const policy = new Slingshot.StoragePolicy()
       .expireIn(directive.expire)
-      .contentLength(0, Math.min(file.size, directive.maxSize || Infinity));
+      .contentLength(0, Math.min(file.size, maxSize));
+
+    if (file.size > maxSize) {
+      throw new Meteor.Error(`Votre fichier ne peut pas dépasser ${maxSize
+          / ONE_KB}kb, essayez de réduire la résolution du fichier, ou de le compresser à l'aide de tinyjpg.com`);
+    }
 
     const payload = {
       key: _.isFunction(directive.key)

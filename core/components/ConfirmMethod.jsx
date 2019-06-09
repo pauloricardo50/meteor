@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import message from '../utils/message';
 import Dialog from './Material/Dialog';
 import Button from './Button';
 import TextField from './Material/TextField';
@@ -35,7 +34,9 @@ export default class ConfirmMethod extends Component {
         .finally(() => this.setState({ loading: false }))
         .then(() => {
           this.setState({ open: false });
-          return message.success('Succès !', 2);
+          return import('../utils/message').then(({ default: message }) => {
+            message.success('Succès !', 2);
+          });
         });
     }
   };
@@ -50,7 +51,8 @@ export default class ConfirmMethod extends Component {
       keyword,
       buttonProps,
       children,
-      dialogTitle,
+      title,
+      description,
     } = this.props;
     const { open, text, loading } = this.state;
     const actions = [
@@ -81,10 +83,11 @@ export default class ConfirmMethod extends Component {
           {...buttonProps}
         />
         <Dialog
-          title={dialogTitle || <T id="ConfirmMethod.dialogTitle" />}
+          title={title}
           actions={actions}
           important
           open={open}
+          text={description}
         >
           {children}
           {keyword && (
@@ -111,9 +114,11 @@ ConfirmMethod.propTypes = {
   label: PropTypes.node.isRequired,
   method: PropTypes.func.isRequired,
   style: PropTypes.object,
+  title: PropTypes.node,
 };
 
 ConfirmMethod.defaultProps = {
+  title: <T id="ConfirmMethod.dialogTitle" />,
   disabled: false,
   keyword: undefined,
   style: {},

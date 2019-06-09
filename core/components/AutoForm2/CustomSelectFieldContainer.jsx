@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
 
 export default (Component) => {
-  class CustomSelectFieldContainer extends React.Component {
+  class CustomSelectFieldContainer extends PureComponent {
     constructor(props) {
       super(props);
       this.state = { values: props.allowedValues, data: null, error: null };
@@ -19,7 +19,7 @@ export default (Component) => {
       const { model: nextModel } = nextProps;
       const { model } = this.props;
 
-      if (JSON.stringify(model) !== JSON.stringify(nextModel)) {
+      if (model !== nextModel) {
         this.getAllowedValues(nextProps);
       }
     }
@@ -42,16 +42,18 @@ export default (Component) => {
         customAllowedValues
         && typeof customAllowedValues === 'object'
       ) {
-        const { query, params = () => ({}) } = customAllowedValues;
+        const { query, params = () => ({}), allowNull } = customAllowedValues;
 
         query.clone(params(model)).fetch((error, data) => {
           if (error) {
             return this.setState({ error });
           }
 
+          const ids = data.map(({ _id }) => _id);
+
           this.setState({
-            values: data.map(({ _id }) => _id),
-            data,
+            values: allowNull ? [null, ...ids] : ids,
+            data: allowNull ? [null, ...data] : data,
             error: null,
             loading: false,
           });
@@ -74,10 +76,6 @@ export default (Component) => {
         return placeholder;
       }
 
-      if (transform) {
-        return transform(value);
-      }
-
       if (Array.isArray(value)) {
         if (value.length === 0) {
           return placeholder;
@@ -85,10 +83,14 @@ export default (Component) => {
         return value.map(val => (
           <Chip
             key={val}
-            label={this.formatOption(val)}
+            label={transform ? transform(val) : this.formatOption(val)}
             style={{ marginRight: 4 }}
           />
         ));
+      }
+
+      if (transform) {
+        return transform(value);
       }
 
       return this.formatOption(value);
@@ -98,14 +100,28 @@ export default (Component) => {
       const { transform } = this.props;
       const { data } = this.state;
       if (data) {
-        return value => transform(data.find(({ _id }) => _id === value));
+        return (value) => {
+          if (!value) {
+            // If the value is falsy, just transform it
+            return transform(value);
+          }
+          return transform(data.find(item => (item && item._id) === value));
+        };
       }
       return transform;
     };
 
     render() {
       const { values, error, loading } = this.state;
-      const { placeholder, displayEmpty } = this.props;
+      const {
+        placeholder,
+        displayEmpty,
+        model,
+        uniforms,
+        field,
+        fields,
+        ...rest
+      } = this.props;
 
       if (error) {
         return <span className="error">{error.message || error.reason}</span>;
@@ -117,7 +133,7 @@ export default (Component) => {
 
       return (
         <Component
-          {...this.props}
+          {...rest}
           placeholder={displayEmpty ? placeholder : ''}
           values={values}
           formatOption={this.formatOption}

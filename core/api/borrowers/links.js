@@ -17,5 +17,6 @@ Borrowers.addLinks({
     type: 'many',
     metadata: true,
     autoremove: true,
+    unique: true,
   },
 });

@@ -8,7 +8,7 @@ import PropertyService from '../api/properties/server/PropertyService';
 import { ROLES, GENDER } from '../api/constants';
 
 export const createYannisData = (userId) => {
-  const loanId = LoanService.adminLoanInsert({ userId });
+  const loanId = LoanService.fullLoanInsert({ userId });
   LoanService.update({
     loanId,
     object: { name: '18-0000' },
@@ -28,15 +28,15 @@ export const createYannisData = (userId) => {
       insurance2: [{ value: 250000, description: 'Allianz' }],
     },
   });
-  const property = PropertyService.get(loan.propertyIds[0]);
-  PropertyService.update({
-    propertyId: property._id,
-    object: {
+  const propertyId = PropertyService.insert({
+    property: {
       address1: 'Avenue de Champel 29',
       zipCode: 1206,
       city: 'Genève',
       value: 2000000,
     },
+    userId,
+    loanId,
   });
 };
 

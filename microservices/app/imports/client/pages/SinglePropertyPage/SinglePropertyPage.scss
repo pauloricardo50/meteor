@@ -16,6 +16,12 @@
     position: absolute;
     top: 16px;
     right: 16px;
+
+    @include screen(med) {
+      position: initial;
+
+      align-self: flex-start;
+    }
   }
 
   .user-form {
@@ -34,5 +40,35 @@
   .return-to-dashboard {
     margin: 0;
     margin-right: 16px;
+  }
+}
+
+.residence-type-setter {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  flex-direction: row;
+  justify-content: space-between;
+
+  margin: 16px;
+  padding: 16px;
+
+  .icon {
+    flex-basis: 50%;
+    flex-grow: 1;
+
+    width: 60px;
+    height: 60px;
+    margin-right: 24px;
+
+    color: $primary;
+  }
+
+  p {
+    max-width: 400px;
+  }
+
+  &-dropdown {
+    min-width: 200px;
   }
 }

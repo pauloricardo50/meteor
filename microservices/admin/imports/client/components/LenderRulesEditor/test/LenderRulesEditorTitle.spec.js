@@ -20,15 +20,15 @@ describe('LenderRulesEditorTitle', () => {
     };
     expect(component()
       .children()
-      .at(0)
+      .at(1)
       .prop('id')).to.equal('Forms.variable.stuff');
     expect(component()
       .children()
-      .at(2)
+      .at(3)
       .text()).to.equal('=');
     expect(component()
       .children()
-      .at(4)
+      .at(5)
       .prop('id')).to.equal('Forms.stuff.OPTION1');
   });
 
@@ -42,35 +42,35 @@ describe('LenderRulesEditorTitle', () => {
 
     expect(component()
       .children()
-      .at(0)
+      .at(1)
       .prop('id')).to.equal('Forms.variable.stuff');
     expect(component()
       .children()
-      .at(2)
+      .at(3)
       .text()).to.equal('<');
     expect(component()
       .children()
-      .at(4)
+      .at(5)
       .prop('id')).to.equal('Forms.stuff.OPTION1');
 
     expect(component()
       .children()
-      .at(5)
+      .at(6)
       .children()
       .at(1)
       .prop('id')).to.equal('general.and');
 
     expect(component()
       .children()
-      .at(6)
+      .at(7)
       .prop('id')).to.equal('Forms.variable.other');
     expect(component()
       .children()
-      .at(8)
+      .at(9)
       .text()).to.equal('>');
     expect(component()
       .children()
-      .at(10)
+      .at(11)
       .prop('id')).to.equal('Forms.other.OPTION2');
   });
 
@@ -78,7 +78,7 @@ describe('LenderRulesEditorTitle', () => {
     props.filter = { and: [true] };
     expect(component()
       .children()
-      .at(0)
+      .at(1)
       .prop('id')).to.equal('LenderRulesEditorTitle.all');
   });
 });

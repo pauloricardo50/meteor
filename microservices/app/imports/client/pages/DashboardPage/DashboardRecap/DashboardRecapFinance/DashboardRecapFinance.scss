@@ -1,7 +1,12 @@
 .dashboard-recap-finance {
   display: flex;
+  flex-basis: 30%;
   flex-direction: column;
   flex-grow: 2;
+
+  h3 {
+    margin-top: 0;
+  }
 
   .accounting {
     display: flex;
@@ -27,7 +32,7 @@
     }
 
     .validator {
-      min-height: 100px;
+      min-height: 80px;
     }
   }
 
@@ -59,6 +64,10 @@
 .dashboard-recap-chart {
   display: flex;
   flex-direction: column;
+
+  h3 {
+    margin: 0;
+  }
 
   .chart {
     display: flex;
@@ -118,6 +127,8 @@
   flex-direction: column;
   justify-content: center;
 
+  box-sizing: border-box;
+  min-height: 400px;
   padding: 32px;
 
   .icon {

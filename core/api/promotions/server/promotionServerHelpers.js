@@ -3,7 +3,9 @@ import PromotionLotService from '../../promotionLots/server/PromotionLotService'
 import {
   shouldAnonymize as clientShouldAnonymize,
   getPromotionCustomerOwnerType as getCustomerOwnerType,
+  clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
+import LoanService from '../../loans/server/LoanService';
 
 const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
@@ -18,9 +20,15 @@ const getUserPromotionPermissions = ({ userId, promotionId }) => {
     promotions: { _id: 1 },
   });
 
+  const promotion = promotions.find(({ _id }) => _id === promotionId);
+
+  if (!promotion) {
+    return {};
+  }
+
   const {
     $metadata: { permissions = {} },
-  } = promotions.find(({ _id }) => _id === promotionId);
+  } = promotion;
 
   return permissions;
 };
@@ -42,12 +50,36 @@ const getCustomerInvitedBy = ({ customerId, promotionId }) => {
 };
 
 const getPromotionLotStatus = ({ promotionLotId }) => {
-  const { status } = PromotionLotService.fetchOne({
+  if (!promotionLotId) {
+    return {};
+  }
+
+  const { status, attributedToLink = {} } = PromotionLotService.fetchOne({
     $filters: { _id: promotionLotId },
     status: 1,
+    attributedToLink: 1,
   }) || {};
 
-  return status;
+  return { status, attributedTo: attributedToLink._id };
+};
+
+/**
+ * Out of all promotionLots attributed to this user, which one has
+ * the most permissive status?
+ *
+ * @param {String} { loanId }
+ * @returns {String} PROMOTION_LOT_STATUS
+ */
+export const getBestPromotionLotStatus = ({ loanId }) => {
+  const { promotionOptions = [] } = LoanService.fetchOne({
+    $filters: { _id: loanId },
+    userId: 1,
+    promotionOptions: {
+      promotionLots: { status: 1, attributedToLink: 1 },
+    },
+  });
+
+  return clientGetBestPromotionLotStatus(promotionOptions, loanId);
 };
 
 export const getPromotionCustomerOwnerType = ({
@@ -72,6 +104,7 @@ const shouldAnonymize = ({
   userId,
   promotionId,
   promotionLotId,
+  loanId,
 }) => {
   const customerOwnerType = getPromotionCustomerOwnerType({
     customerId,
@@ -80,12 +113,15 @@ const shouldAnonymize = ({
   });
   const permissions = getUserPromotionPermissions({ userId, promotionId });
 
-  const promotionLotStatus = getPromotionLotStatus({ promotionLotId });
+  const { status: promotionLotStatus, attributedTo } = getPromotionLotStatus({
+    promotionLotId,
+  });
 
   return clientShouldAnonymize({
     customerOwnerType,
     permissions,
     promotionLotStatus,
+    isAttributed: attributedTo === loanId,
   });
 };
 
@@ -97,15 +133,31 @@ export const makeLoanAnonymizer = ({
 }) => {
   let permissions;
   let promotionLotStatus;
+  let attributedTo;
 
   if (anonymize === undefined) {
     permissions = getUserPromotionPermissions({ userId, promotionId });
-    promotionLotStatus = promotionLotId && getPromotionLotStatus({ promotionLotId });
+    const { status, attributedTo: attr } = getPromotionLotStatus({
+      promotionLotId,
+      promotionId,
+    });
+    promotionLotStatus = status;
+    attributedTo = attr;
   }
 
   return (loan) => {
-    const { user = {}, ...rest } = loan;
+    const { _id: loanId, user = {}, ...rest } = loan;
     const { _id: customerId } = user;
+
+    let isAttributed = loanId === attributedTo;
+
+    if (!promotionLotId) {
+      // If no promotionLot is passed here, we get the best one from the loan
+      // For statuses BOOKED and SOLD, we check that it is attributed to
+      // this loan
+      promotionLotStatus = getBestPromotionLotStatus({ loanId });
+      isAttributed = true;
+    }
 
     const customerOwnerType = getPromotionCustomerOwnerType({
       customerId,
@@ -118,11 +170,14 @@ export const makeLoanAnonymizer = ({
         customerOwnerType,
         permissions,
         promotionLotStatus,
+        isAttributed,
       })
       : anonymize;
 
     return {
-      user: anonymizeUser ? ANONYMIZED_USER : user,
+      user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
+      _id: loanId,
+      isAnonymized: !!anonymizeUser,
       ...rest,
     };
   };
@@ -134,9 +189,11 @@ export const makePromotionLotAnonymizer = ({ userId }) => (promotionLot) => {
     _id: promotionLotId,
     promotion: { _id: promotionId },
   } = promotionLot;
+
   const [loan] = [attributedTo]
     .filter(x => x)
     .map(makeLoanAnonymizer({ userId, promotionId, promotionLotId }));
+
   return { attributedTo: loan, ...rest };
 };
 
@@ -155,6 +212,7 @@ export const makePromotionOptionAnonymizer = ({
     userId,
     promotionId,
     promotionLotId,
+    loanId: loan._id,
   });
 
   return {
@@ -165,6 +223,7 @@ export const makePromotionOptionAnonymizer = ({
       anonymize,
     })(loan),
     custom: anonymize ? ANONYMIZED_STRING : custom,
+    isAnonymized: !!anonymize,
     ...rest,
   };
 };

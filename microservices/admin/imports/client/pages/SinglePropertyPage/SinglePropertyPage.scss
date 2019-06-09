@@ -51,26 +51,21 @@
     }
   }
 
-  .secondary {
-    margin: 4px;
-
-    text-align: left;
-
-    font-size: 16px;
-  }
-
   .bottom {
     display: flex;
-  }
 
-  .created-at {
-    margin-bottom: 32px;
+    .created-at {
+      display: flex;
+      flex-direction: column;
 
-    a:hover {
-      transform: scale(1.03);
+      margin-bottom: 32px;
 
-      opacity: 1;
-      color: #000;
+       > * {
+        display: inline-flex;
+        align-items: center;
+
+        margin-bottom: 4px;
+      }
     }
   }
 }

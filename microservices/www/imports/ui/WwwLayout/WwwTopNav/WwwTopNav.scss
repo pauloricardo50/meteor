@@ -58,7 +58,7 @@
   height: 80px;
   margin-left: 32px;
 
-  @include screen(med) {
+  @include screen(large) {
     display: none;
   }
 
@@ -70,6 +70,7 @@
 
     padding: 16px;
 
+    cursor: pointer;
     transition: opacity 200ms $bezier;
     text-decoration: none;
 
@@ -94,7 +95,7 @@
 .www-top-nav-links-small {
   display: none;
 
-  @include screen(med) {
+  @include screen(large) {
     display: flex;
   }
 }

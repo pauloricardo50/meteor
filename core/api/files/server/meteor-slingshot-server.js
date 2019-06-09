@@ -1,14 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
-import { Roles } from 'meteor/alanning:roles';
 
-import {
-  LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  COLLECTIONS,
-} from '../../constants';
+import { ROLES } from 'core/api/constants';
+import { COLLECTIONS } from '../../constants';
 import SecurityService from '../../security';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
@@ -25,8 +19,7 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     // Check for devs and admins
     if (
-      Roles.userIsInRole(this.userId, 'admin')
-      || Roles.userIsInRole(this.userId, 'dev')
+      SecurityService.hasMinimumRole({ userId: this.userId, role: ROLES.ADMIN })
     ) {
       return true;
     }
@@ -52,5 +45,8 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     return true;
   },
-  key: (file, { docId, id }) => `${docId}/${id}/${file.name}`,
+  key: (file, { docId, id }) =>
+    `${docId}/${id}/${file.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')}`,
 });

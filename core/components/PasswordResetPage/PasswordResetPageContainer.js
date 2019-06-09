@@ -27,7 +27,7 @@ const props = withProps(({ newPassword, token, history, setError, changeSubmitti
         setError(err);
       } else {
         history.push('/');
-        notifyAssignee.run({ message: 'A choisi/changé son mot de passe!' });
+        notifyAssignee.run({ title: 'A choisi/changé son mot de passe!' });
       }
       changeSubmitting(false);
     });

@@ -42,6 +42,10 @@ describe('Conversion functions', () => {
     it('returns an empty string for an empty string', () => {
       expect(toMoney('')).to.equal('');
     });
+
+    it('shouldnt add a negative sign if the value is close to 0', () => {
+      expect(toMoney(-0.1)).to.equal('0');
+    });
   });
 
   describe('To number', () => {

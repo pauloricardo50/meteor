@@ -33,14 +33,19 @@ describe('Loans', () => {
 
   it('should add a task to the loan', () => {
     cy.contains('Nouvelle hypothèque').click();
+
+    cy.get('.tasks-table').should('not.exist');
+
     cy.contains('Ajouter tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
-    cy.get('.tasks-table').contains('Cypress Task');
+    cy.get('.tasks-table tr').should('have.length', 2);
   });
 
   it('should add lenders', () => {
     cy.contains('Nouvelle hypothèque').click();
+    cy.contains('Prospect').click();
+    cy.contains('En cours').click();
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
 
@@ -55,11 +60,6 @@ describe('Loans', () => {
       .click();
     cy.contains('Fermer').click();
 
-    // Wait for reactive query to come back
-    cy.wait(2000);
-
-    cy.get('.lender.card1').then((lenders) => {
-      expect(lenders.length).to.equal(2);
-    });
+    cy.get('.lender.card1').should('have.length', 2);
   });
 });

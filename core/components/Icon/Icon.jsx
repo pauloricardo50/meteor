@@ -51,7 +51,7 @@ import StarEmpty from '@material-ui/icons/StarBorder';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import OfflinePin from '@material-ui/icons/OfflinePin';
 import Save from '@material-ui/icons/Save';
-import SupervisorAccount from '@material-ui/icons/SupervisorAccount';
+import SupervisorAccount from '@material-ui/icons/SupervisedUserCircle';
 import FlashOn from '@material-ui/icons/FlashOn';
 import Report from '@material-ui/icons/Report';
 import DeleteForever from '@material-ui/icons/DeleteForever';
@@ -73,11 +73,15 @@ import InsertChart from '@material-ui/icons/InsertChart';
 import Image from '@material-ui/icons/Image';
 import Delete from '@material-ui/icons/Delete';
 import Phonelink from '@material-ui/icons/Phonelink';
+import OpenInNew from '@material-ui/icons/OpenInNew';
+import Add from '@material-ui/icons/Add';
+import Settings from '@material-ui/icons/Settings';
 
 export const iconMap = {
   close: CloseIcon,
   check: CheckIcon,
   add: AddIcon,
+  addBasic: Add,
   remove: RemoveIcon,
   warning: WarningIcon,
   menu: MenuIcon,
@@ -147,6 +151,8 @@ export const iconMap = {
   image: Image,
   delete: Delete,
   phoneLink: Phonelink,
+  openInNew: OpenInNew,
+  settings: Settings,
 };
 
 const Icon = ({
@@ -178,7 +184,7 @@ const Icon = ({
 
   if (tooltip) {
     return (
-      <Tooltip placement={tooltipPlacement} title={tooltip}>
+      <Tooltip placement={tooltipPlacement} title={tooltip} enterTouchDelay={0}>
         {icon}
       </Tooltip>
     );

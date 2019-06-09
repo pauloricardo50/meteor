@@ -1,10 +1,11 @@
 .blog-post-page {
   main {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 16px;
+    flex-direction: column;
+
     box-sizing: border-box;
+    padding: 16px;
   }
 
   .back {
@@ -13,44 +14,58 @@
 }
 
 .blog-post-page-content {
-  width: 100%;
-  max-width: 700px;
-  margin-top: 40px;
   box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 40px;
+
+  @include screen(med, min) {
+    padding: 40px;
+  }
 
   h1 {
-    color: $primary;
     margin-bottom: 0;
+
+    color: $primary;
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin-top: 40px;
   }
 
   .date {
     margin-top: 0;
   }
 
-  @include screen(med, min) {
-    padding: 32px;
-  }
-
   .thumbnail {
     display: block;
-    margin: auto;
-    max-height: 300px;
+
     max-width: 300px;
+    max-height: 300px;
+    margin: auto;
   }
 
   p {
     margin: 0;
     margin-top: 32px;
+
+    line-height: 1.5em;
   }
 
   blockquote {
-    padding-left: 48px;
     margin-top: 48px;
     margin-bottom: 24px;
-    font-size: 1.5rem;
+    margin-left: 0;
+    padding-left: 16px;
+
+    border-left: 2px solid $primary;
+
+    font-size: 1.1rem;
 
     @include screen(med) {
-      padding-left: 24px;
+      padding-left: 16px;
     }
 
     p {
@@ -58,46 +73,70 @@
     }
 
     cite {
-      font-size: 1.2rem;
       display: block;
+
       width: 100%;
-      text-align: right;
+
+      text-align: left;
+
+      opacity: 0.6;
+
+      font-size: 1rem;
     }
   }
 
   figure {
     margin-top: 2em;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   figcaption {
     text-align: center;
+
     font-size: 0.9rem;
   }
 
   img {
     max-width: 100%;
   }
+
+  .youtube-player {
+    width: 100%;
+  }
+
+  a {
+    color: $primary;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 }
 
 .blog-author {
-  margin-top: 24px;
   display: flex;
   align-items: center;
+
+  margin-top: 24px;
 
   img {
     width: 64px;
     height: 64px;
     margin-right: 16px;
+
     border-radius: 50%;
   }
 }
 
 .blog-post-page-share {
-  margin-top: 16px;
   display: flex;
+
+  margin-top: 16px;
 
   .share-button {
     margin-right: 8px;
+
     cursor: pointer;
 
     &:hover {

@@ -1,15 +1,22 @@
 import bodyParser from 'body-parser';
+import moment from 'moment';
 
+import SlackService from '../../slack/server/SlackService';
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
-import { Services } from '../../api-server';
+import { Services } from '../../server';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import {
   getRequestPath,
-  getToken,
   getHeader,
   getRequestMethod,
   getErrorObject,
+  getPublicKey,
+  verifySignature,
+  getSignature,
+  logRequest,
+  trackRequest,
 } from './helpers';
+import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
 const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
@@ -17,6 +24,30 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
   extended: false,
   limit: BODY_SIZE_LIMIT,
 });
+
+// Handles replay attacks
+const replayHandlerMiddleware = (req, res, next) => {
+  const timestamp = getHeader(req, 'x-epotek-timestamp');
+  const nonce = getHeader(req, 'x-epotek-nonce');
+
+  if (!timestamp || !nonce) {
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
+  }
+
+  const now = moment().unix();
+
+  // This is an old request
+  if (timestamp < now - NONCE_TTL) {
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
+  }
+  if (nonceExists(nonce)) {
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
+  }
+
+  addNonce(nonce);
+
+  next();
+};
 
 // Filters out badly formatted requests, or ones missing basic headers
 const filterMiddleware = (req, res, next) => {
@@ -29,17 +60,27 @@ const filterMiddleware = (req, res, next) => {
   next();
 };
 
-// Gets the token from the request, fetches the user and adds it to the request
+// Gets the public key from the request, fetches the user and adds it to the request
 const authMiddleware = (req, res, next) => {
-  const token = getToken(req);
+  const publicKey = getPublicKey(req);
+  const signature = getSignature(req);
 
-  if (!token) {
+  if (!publicKey || !signature) {
     return next(REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE);
   }
 
-  const user = Services[USERS_COLLECTION].findOne({ apiToken: token });
+  const user = Services[USERS_COLLECTION].findOne({
+    'apiPublicKey.publicKey': publicKey,
+  });
 
   if (!user) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  }
+
+  req.publicKey = publicKey;
+  req.signature = signature;
+
+  if (!verifySignature(req)) {
     return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
   }
 
@@ -51,6 +92,27 @@ const authMiddleware = (req, res, next) => {
 // Handles all errors, should be added as the very last middleware
 const errorMiddleware = (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
+  const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
+
+  SlackService.sendError({
+    error,
+    additionalData: [
+      Object.keys(body).length > 0 && { body },
+      Object.keys(params).length > 0 && { params },
+      Object.keys(query).length > 0 && { query },
+      Object.keys(headers).length > 0 && { headers },
+    ].filter(x => x),
+    userId: user._id,
+    url: getRequestPath(req),
+  });
+
+  logRequest({ req, result: JSON.stringify({ status, errorName, message }) });
+  if (Object.keys(user) > 0) {
+    trackRequest({
+      req,
+      result: JSON.stringify({ status, errorName, message }),
+    });
+  }
 
   res.writeHead(status);
   res.write(JSON.stringify({ status, errorName, message }));
@@ -70,5 +132,6 @@ export const preMiddlewares = [
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
+  replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

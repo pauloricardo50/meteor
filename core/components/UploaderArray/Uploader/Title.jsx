@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,7 +8,15 @@ import FileStatusIcon from './FileStatusIcon';
 import AdditionalDocModifier from './AdditionalDocModifier';
 
 const Title = ({
-  fileMeta: { id, label, noTooltips, tooltipSuffix, required, requiredByAdmin },
+  fileMeta: {
+    id,
+    label,
+    noTooltips,
+    tooltipSuffix,
+    required,
+    requiredByAdmin,
+    category,
+  },
   doubleTooltip,
   currentValue,
   displayFull,
@@ -51,7 +58,7 @@ const Title = ({
         <AdditionalDocModifier
           collection={collection}
           docId={docId}
-          additionalDoc={{ id, label, requiredByAdmin }}
+          additionalDoc={{ id, label, requiredByAdmin, category }}
         />
       )}
 

@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Meteor } from 'meteor/meteor';
 
+import { checkEmails } from 'core/utils/testHelpers/index';
 import methods from '../../registerMethodDefinitions';
 import { getRateLimitedMethods } from '../../../../utils/rate-limit';
 import { submitContactForm } from '../../methodDefinitions';
@@ -42,10 +42,7 @@ describe('methods', function () {
           email: address,
           phoneNumber: '+41 22 566 01 10',
         })
-        .then(() =>
-          new Promise(resolve =>
-            Meteor.call('getAllTestEmails', { expected: 2 }, (_, res) =>
-              resolve(res))))
+        .then(() => checkEmails(2))
         .then((emails) => {
           expect(emails.length).to.equal(2);
           const ids = emails.map(({ emailId }) => emailId);

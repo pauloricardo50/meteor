@@ -3,11 +3,10 @@ import React from 'react';
 import Link from 'core/components/Link';
 
 import { createRoute } from 'core/utils/routerUtils';
-import T from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
-import { toMoney } from 'core/utils/conversionFunctions';
 import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
-import { APP_PROMOTION_OPTION_PAGE } from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 type PromotionOptionDetailProps = {};
 
@@ -26,7 +25,7 @@ const PromotionOptionDetail = ({
 
   return (
     <Link
-      to={createRoute(APP_PROMOTION_OPTION_PAGE, {
+      to={createRoute(APP_ROUTES.APP_PROMOTION_OPTION_PAGE.path, {
         loanId,
         promotionId: promotion._id,
         promotionOptionId,
@@ -40,7 +39,9 @@ const PromotionOptionDetail = ({
           collection={PROMOTION_LOTS_COLLECTION}
         />
       </h2>
-      <h3 className="secondary">CHF {toMoney(value)}</h3>
+      <h3 className="secondary">
+        <Money value={value} />
+      </h3>
 
       <h1>
         <T

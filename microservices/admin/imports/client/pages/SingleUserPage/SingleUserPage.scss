@@ -7,7 +7,8 @@
     float: right;
   }
 
-  .promotion-list {
+  .promotion-list,
+  .pro-properties-list {
     display: flex;
     flex-direction: column;
 
@@ -65,7 +66,7 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-      > * {
+       > * {
         padding: 8px;
       }
     }

@@ -22,25 +22,18 @@ const makeMapUser = ({ history }) => (user) => {
     lastName,
     email,
     phoneNumber,
-    organisations,
+    organisations = [],
   } = user;
 
   return {
     id: userId,
     columns: [
+      firstName,
+      lastName,
       {
-        raw: firstName,
-        label: firstName,
-      },
-      {
-        raw: lastName,
-        label: lastName,
-      },
-      {
-        raw: organisations && organisations.length > 0 && organisations[0].name,
+        raw: !!organisations.length && organisations[0].name,
         label:
-          organisations
-          && !!organisations.length
+          !!organisations.length
           && organisations.map(organisation => (
             <CollectionIconLink
               key={organisation._id}
@@ -51,20 +44,12 @@ const makeMapUser = ({ history }) => (user) => {
             />
           )),
       },
-      {
-        raw: email,
-        label: email,
-      },
-      {
-        raw: phoneNumber,
-        label: phoneNumber,
-      },
+      email,
+      phoneNumber,
     ],
     handleClick: (event) => {
       event.stopPropagation();
-      history.push(createRoute('/users/:userId', {
-        userId,
-      }));
+      history.push(createRoute('/users/:userId', { userId }));
     },
   };
 };

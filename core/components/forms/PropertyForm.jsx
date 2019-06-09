@@ -4,11 +4,10 @@ import omit from 'lodash/omit';
 
 import { PropertySchemaAdmin } from 'core/api/properties/schemas/PropertySchema';
 import { propertyUpdate, mortgageNoteInsert } from 'core/api';
-import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
 
-type BorrowerFormProps = {};
+type PropertyFormProps = {};
 
 const baseFields = [
   'status',
@@ -44,7 +43,7 @@ const detailFields = [
   'copropertyPercentage',
   'qualityProfileCondition',
   'qualityProfileStandard',
-  'monthlyExpenses',
+  'yearlyExpenses',
 ];
 
 const omittedFields = [
@@ -63,22 +62,41 @@ const otherSchema = PropertySchemaAdmin.omit(
 );
 
 const handleSubmit = propertyId => (doc) => {
-  const hideLoader = message.loading('...', 0);
-  return propertyUpdate
-    .run({ propertyId, object: omit(doc, omittedFields) })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return propertyUpdate.run({
+        propertyId,
+        object: omit(doc, omittedFields),
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
 const insertMortgageNote = (propertyId) => {
-  const hideLoader = message.loading('...', 0);
-  return mortgageNoteInsert
-    .run({ propertyId })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return mortgageNoteInsert.run({ propertyId });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
-const BorrowerForm = ({ property }: BorrowerFormProps) => {
+const PropertyForm = ({ property }: PropertyFormProps) => {
   const { _id: propertyId, mortgageNotes } = property;
   return (
     <div className="property-admin-form">
@@ -119,4 +137,4 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => {
     </div>
   );
 };
-export default BorrowerForm;
+export default PropertyForm;

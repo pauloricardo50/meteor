@@ -2,7 +2,7 @@
 import React from 'react';
 
 import SimpleSchema from 'simpl-schema';
-import { inviteUserToPromotion } from '../../../../api/promotions/methodDefinitions';
+import { proInviteUser } from 'core/api/users/';
 import { PROMOTION_STATUS } from '../../../../api/constants';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
@@ -12,7 +12,9 @@ type CustomerAdderProps = {
   promotionStatus: String,
 };
 
-const CustomerAdderUserSchema = ({ promotion: { users = [] } }) =>
+export const CustomerAdderUserSchema = ({
+  promotion: { users = [], promotionLots = [] },
+}) =>
   new SimpleSchema({
     email: String,
     firstName: String,
@@ -34,6 +36,30 @@ const CustomerAdderUserSchema = ({ promotion: { users = [] } }) =>
         placeholder: '',
       },
     },
+    promotionLotIds: {
+      type: Array,
+      defaultValue: [],
+      uniforms: {
+        placeholder: null,
+      },
+      optional: true,
+    },
+    'promotionLotIds.$': {
+      type: String,
+      allowedValues: promotionLots.map(({ _id }) => _id),
+      uniforms: {
+        transform: (promotionLotId) => {
+          const { name } = promotionLots.find(({ _id }) => _id === promotionLotId);
+          return name;
+        },
+      },
+    },
+    showAllLots: {
+      type: Boolean,
+      defaultValue: true,
+      condition: ({ promotionLotIds = [] }) => promotionLotIds.length > 0,
+      optional: true,
+    },
   });
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;
@@ -53,9 +79,11 @@ const CustomerAdder = ({ promotion, promotionStatus }: CustomerAdderProps) => {
           : undefined,
       }}
       schema={CustomerAdderUserSchema({ promotion })}
-      onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}
+      onSubmit={user =>
+        proInviteUser.run({ user, promotionIds: [promotionId] })
+      }
       title="Inviter un client"
-      description="Invitez un utilisateur à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
+      description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
       onSuccessMessage={onSuccessMessage}
     />
   );

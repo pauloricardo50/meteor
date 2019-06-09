@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, branch, renderNothing } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { createRoute } from '../../../../utils/routerUtils';
@@ -55,8 +55,7 @@ const makeMapPromotionLot = ({
         </div>
       ),
     },
-    !isALotAttributedToMe
-      && promotionStatus === PROMOTION_STATUS.OPEN && (
+    !isALotAttributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
       <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
         <PromotionLotSelector
           promotionLotId={promotionLotId}
@@ -64,7 +63,7 @@ const makeMapPromotionLot = ({
           loanId={loanId}
           disabled={
             isLotAttributedToMe({ promotionOptions, promotionLotId })
-              || status !== PROMOTION_LOT_STATUS.AVAILABLE
+            || status !== PROMOTION_LOT_STATUS.AVAILABLE
           }
         />
       </div>
@@ -86,15 +85,25 @@ const columnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
   [
     { id: 'name' },
     { id: 'status' },
-    { id: 'totalValue' },
+    { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
     { id: 'lots' },
     !isALotAttributedToMe
-      && promotionStatus === PROMOTION_STATUS.OPEN && { id: 'interested' },
+      && promotionStatus === PROMOTION_STATUS.OPEN && {
+      id: 'interested',
+      padding: 'checkbox',
+    },
   ]
     .filter(x => x)
-    .map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
+    .map(column => ({
+      ...column,
+      label: <T id={`PromotionPage.lots.${column.id}`} />,
+    }));
 
 export default compose(
+  branch(({ promotion }) => {
+    const { $metadata } = promotion.loans[0];
+    return !($metadata && $metadata.showAllLots);
+  }, renderNothing),
   withRouter,
   mapProps(({
     promotion: { promotionLots, _id: promotionId, status: promotionStatus },

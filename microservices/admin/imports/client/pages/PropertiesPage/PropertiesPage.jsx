@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon/Icon';
@@ -9,6 +10,9 @@ import PropertiesTable from './PropertiesTable';
 
 const Propertiespage = () => (
   <section className="card1 card-top properties-page">
+    <Helmet>
+      <title>Biens immobiliers</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[PROPERTIES_COLLECTION]}

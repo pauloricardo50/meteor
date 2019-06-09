@@ -2,6 +2,19 @@
   margin-top: 40px;
 }
 
+.lenders-tab-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .collection-icon {
+    width: 100px;
+    height: 100px;
+    padding: 40px;
+  }
+}
+
 .lenders-list {
   margin-top: 32px;
 
@@ -9,6 +22,7 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    min-width: 350px;
 
     margin-right: 16px;
     margin-bottom: 16px;
@@ -35,6 +49,15 @@
       &:hover {
         border-color: $primary;
       }
+    }
+
+    .click-to-edit-field {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 8px;
+      margin: 16px 0;
+
+      border: 2px solid #dee2e6;
     }
   }
 }
@@ -65,7 +88,8 @@
   &-separator {
     width: 2px;
     height: 30px;
-    background-color: $border-grey;
     margin: 0 4px;
+
+    background-color: $border-grey;
   }
 }

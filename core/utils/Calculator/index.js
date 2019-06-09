@@ -9,6 +9,7 @@ import { withPromotionCalculator } from './PromotionCalculator';
 import { withCombinedCalculator } from './CombinedCalculator';
 import { withSelector } from './Selector';
 import { withLenderRulesInitializator } from './LenderRulesInitializator';
+import { withSolvencyCalculator } from './SolvencyCalculator';
 import { withConfig } from './classUtils';
 import { financeCalculatorArgumentMapper } from './middleware';
 
@@ -20,6 +21,7 @@ const MappedFinanceCalculator = withConfig({
 // with middleware
 export const Calculator = compose(
   withLenderRulesInitializator,
+  withSolvencyCalculator,
   withCombinedCalculator,
   withPromotionCalculator,
   withLoanCalculator,

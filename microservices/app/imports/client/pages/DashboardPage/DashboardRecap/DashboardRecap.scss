@@ -18,8 +18,13 @@
 
 .dashboard-recap .cards {
   display: flex;
+  align-items: stretch;
 
   white-space: nowrap;
+
+  @include screen(med) {
+    flex-wrap: wrap;
+  }
 
   & > * {
     margin: 8px;

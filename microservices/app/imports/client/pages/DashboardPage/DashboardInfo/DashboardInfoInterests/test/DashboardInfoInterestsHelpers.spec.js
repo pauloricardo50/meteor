@@ -7,7 +7,7 @@ describe('dashboardInfoInterestsHelpers', () => {
   describe('getBestRate', () => {
     let offers;
     it('returns the min and max of a rate', () => {
-      offers = [{ standardOffer: { a: 1 } }, { counterpartOffer: { a: 2 } }];
+      offers = [{ a: 1 }, { a: 2 }];
 
       expect(getBestRate(offers, 'a')).to.deep.equal({
         rateHigh: 2,
@@ -16,14 +16,7 @@ describe('dashboardInfoInterestsHelpers', () => {
     });
 
     it('returns the min and max of a rate', () => {
-      offers = [
-        { standardOffer: { a: 1 } },
-        { counterpartOffer: { a: 2 } },
-        { standardOffer: { a: 3 } },
-        { counterpartOffer: { a: 4 } },
-        { standardOffer: { a: 5 } },
-        { counterpartOffer: { a: 6 } },
-      ];
+      offers = [{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }, { a: 5 }, { a: 6 }];
 
       expect(getBestRate(offers, 'a')).to.deep.equal({
         rateHigh: 6,

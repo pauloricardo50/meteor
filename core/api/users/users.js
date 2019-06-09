@@ -56,6 +56,7 @@ export const UserSchema = new SimpleSchema({
   roles: {
     type: Array,
     optional: true,
+    defaultValue: [ROLES.USER],
   },
   'roles.$': {
     type: String,
@@ -85,10 +86,17 @@ export const UserSchema = new SimpleSchema({
   'phoneNumbers.$': {
     type: String,
   },
-  apiToken: {
+  apiPublicKey: {
+    type: Object,
+    optional: true,
+  },
+  'apiPublicKey.publicKey': {
     type: String,
     optional: true,
   },
+  'apiPublicKey.createdAt': { type: Date, optional: true },
+  referredByUserLink: { type: String, optional: true },
+  referredByOrganisationLink: { type: String, optional: true },
 });
 
 Meteor.users.attachSchema(UserSchema);

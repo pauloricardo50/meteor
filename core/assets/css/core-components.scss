@@ -1,5 +1,7 @@
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
+@import '{}/imports/core/components/AccountPage/AccountPage.scss';
+@import '{}/imports/core/components/AccountPage/AccountPage.scss';
 @import '{}/imports/core/components/AccountPage/DeveloperSection/DeveloperSection.scss';
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
 @import '{}/imports/core/components/AutoForm2/AutoForm.scss';
@@ -7,6 +9,8 @@
 @import '{}/imports/core/components/ClickToEditField/ClickToEditField.scss';
 @import '{}/imports/core/components/ContactButton/ContactButton.scss';
 @import '{}/imports/core/components/DateInput/DateInput.scss';
+@import '{}/imports/core/components/DateModifier/DateModifier.scss';
+@import '{}/imports/core/components/DateModifier/DateModifier.scss';
 @import '{}/imports/core/components/DateModifier/DateModifier.scss';
 @import '{}/imports/core/components/DevPage/DevPage.scss';
 @import '{}/imports/core/components/DisconnectModal/DisconnectModal.scss';
@@ -17,36 +21,44 @@
 @import '{}/imports/core/components/forms/forms.scss';
 @import '{}/imports/core/components/GoogleMapsAutocomplete/GoogleMapsAutocomplete.scss';
 @import '{}/imports/core/components/IconLink/IconLink.scss';
+@import '{}/imports/core/components/ImageCarrousel/ImageCarrousel.scss';
 @import '{}/imports/core/components/Loading/Loading.scss';
 @import '{}/imports/core/components/LoanChecklist/LoanChecklist.scss';
+@import '{}/imports/core/components/LoanProgress/LoanProgress.scss';
 @import '{}/imports/core/components/LoginPage/LoginPage.scss';
+@import '{}/imports/core/components/MaxPropertyValue/MaxPropertyValue.scss';
 @import '{}/imports/core/components/maps/GoogleMap.scss';
 @import '{}/imports/core/components/MissingDoc/MissingDoc.scss';
 @import '{}/imports/core/components/OfferList/OfferList.scss';
+@import '{}/imports/core/components/OfferRecapDialog/OfferRecapDialog.scss';
+@import '{}/imports/core/components/OfferRecapDialog/OfferRecapDialog.scss';
+@import '{}/imports/core/components/OfferRecapDialog/OfferRecapDialog.scss';
 @import '{}/imports/core/components/Page/Page.scss';
 @import '{}/imports/core/components/PasswordResetPage/PasswordResetPage.scss';
+@import '{}/imports/core/components/ProgressCircle/ProgressCircle.scss';
 @import '{}/imports/core/components/PromotionLotPage/PromotionLotPage.scss';
 @import '{}/imports/core/components/PromotionPage/client/PromotionPage.scss';
 @import '{}/imports/core/components/PromotionUsersPage/PromotionUsersPage.scss';
 @import '{}/imports/core/components/PropertyForm/PropertyForm.scss';
+@import '{}/imports/core/components/ProProperty/ProProperty.scss';
+@import '{}/imports/core/components/ProPropertyPage/ProPropertyPage.scss';
 @import '{}/imports/core/components/Recap/Recap.scss';
+@import '{}/imports/core/components/RevenuesByStatus/RevenuesByStatus.scss';
 @import '{}/imports/core/components/SearchModal/SearchModal.scss';
 @import '{}/imports/core/components/Select/Select.scss';
 @import '{}/imports/core/components/StarRating/StarRating.scss';
 @import '{}/imports/core/components/StatusLabel/StatusLabel.scss';
 @import '{}/imports/core/components/Table/Table.scss';
 @import '{}/imports/core/components/Tabs/Tabs.scss';
+@import '{}/imports/core/components/Timeline/Timeline.scss';
+@import '{}/imports/core/components/Toggle/Toggle.scss';
 @import '{}/imports/core/components/tooltips/Tooltip.scss';
 @import '{}/imports/core/components/TopNav/TopNav.scss';
 @import '{}/imports/core/components/TranchePicker/TranchePicker.scss';
 @import '{}/imports/core/components/UploaderArray/Uploader/Uploader.scss';
 @import '{}/imports/core/components/Valuation/Valuation.scss';
 @import '{}/imports/core/components/widget1/widget1.scss';
-@import '{}/imports/core/components/DateModifier/DateModifier.scss';
-@import '{}/imports/core/components/OfferRecapDialog/OfferRecapDialog.scss';
-
-// core components that extend Material UI components
-@import '{}/imports/core/components/Material/Toggle/Toggle.scss';
+@import '{}/imports/core/components/Waves/Waves.scss';
 
 // External components SCSS
 @import './external-styles/antd.scss';

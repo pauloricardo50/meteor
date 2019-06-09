@@ -2,26 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Recap from 'core/components/Recap';
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import DateModifier from 'core/components/DateModifier';
 import Calculator from 'core/utils/Calculator';
-import { LOANS_COLLECTION } from 'imports/core/api/constants';
-import { COLLECTIONS } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/constants';
+import AdminNote from '../../../../components/AdminNote/AdminNote';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
 import LoanStepSetter from './LoanStepSetter';
+import Solvency from './Solvency';
 
 const OverviewTab = (props) => {
   const {
     loan,
-    borrowers,
     currentUser: { roles },
   } = props;
-  const { user } = loan;
+  const { borrowers } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -29,15 +29,29 @@ const OverviewTab = (props) => {
   return (
     <div className="overview-tab">
       <div className="admin-section card1">
-        <ImpersonateLink user={user} />
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
         <UpdateField
           doc={loan}
-          fields={['residenceType']}
-          collection={COLLECTIONS.LOANS_COLLECTION}
+          fields={['category']}
+          collection={LOANS_COLLECTION}
         />
-        <UpdateField doc={loan} fields={['purchaseType']} collection={COLLECTIONS.LOANS_COLLECTION} disabled />
+        <UpdateField
+          doc={loan}
+          fields={['residenceType']}
+          collection={LOANS_COLLECTION}
+        />
+        <UpdateField
+          doc={loan}
+          fields={['purchaseType']}
+          collection={LOANS_COLLECTION}
+          disabled
+        />
+        <UpdateField
+          doc={loan}
+          fields={['applicationType']}
+          collection={LOANS_COLLECTION}
+        />
         <LoanStepSetter loan={loan} />
         {['signingDate', 'closingDate'].map(dateType => (
           <DateModifier
@@ -48,7 +62,18 @@ const OverviewTab = (props) => {
           />
         ))}
       </div>
+      <div className="admin-note">
+        <AdminNote
+          docId={loan._id}
+          adminNote={loan.adminNote}
+          collection={LOANS_COLLECTION}
+        />
+      </div>
       <LoanStatusCheck loan={loan} />
+      <div className="max-property-value-tools">
+        <MaxPropertyValue loan={loan} />
+        <Solvency loan={loan} />
+      </div>
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">

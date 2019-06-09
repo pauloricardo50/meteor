@@ -28,9 +28,10 @@ a:not([role='button']) {
 
   color: inherit;
   &.color {
-    transition: color 300ms $bezier;
+    transition: color 200ms $bezier;
 
     color: $primary;
+
     &:hover {
       color: $success;
     }
@@ -40,7 +41,11 @@ a:not([role='button']) {
   }
 }
 
+// Don't mix these 2 together, or they cancel each other on firefox
 a:-webkit-any-link {
+  text-decoration: none;
+}
+a {
   text-decoration: none;
 }
 
@@ -53,7 +58,7 @@ hr {
 
 // White backgrounds with shadows to put things on
 .card1 {
-  border-radius: 16px;
+  border-radius: $border-radius;
   background: #fff;
   box-shadow: $shadow-level-1;
 }
@@ -82,13 +87,14 @@ hr {
   padding: 16px;
 
   &:hover {
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: $shadow-level-2;
   }
 }
 
 .card1.shadow-2,
 .card1.card-hover:hover {
+  border-radius: 4px;
   box-shadow: $shadow-level-2;
 }
 
@@ -217,6 +223,10 @@ p.description,
 
 .secondary {
   opacity: 0.5;
+
+  &.not-secondary {
+    opacity: 1;
+  }
 }
 
 // This also adds the right cursor on disabled elements
@@ -340,4 +350,9 @@ p.description,
   &:hover {
     color: $primary !important;
   }
+}
+
+// Allow popovers to show above material-ui modals
+.popover {
+  z-index: 1301 !important;
 }

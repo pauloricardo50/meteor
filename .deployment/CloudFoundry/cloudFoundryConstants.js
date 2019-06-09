@@ -21,6 +21,7 @@ export const cloudFoundryCommands = {
   deleteApp: name => `cf delete ${name} -f`,
   restartApp: name => `cf restart ${name}`,
   deleteOprhanedRoutes: () => 'cf delete-orphaned-routes -f',
+  getOauthToken: () => 'cf oauth-token',
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {

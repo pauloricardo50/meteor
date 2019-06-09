@@ -17,7 +17,7 @@ describe('documents', () => {
 
     beforeEach(() => {
       loan = {
-        logic: { step: STEPS.PREPARATION },
+        step: STEPS.SOLVENCY,
         properties: [
           {
             _id: 'propertyId',
@@ -53,7 +53,7 @@ describe('documents', () => {
     beforeEach(() => {
       loan = {
         borrowers: [{ _id: 'borrowerId' }],
-        logic: { step: STEPS.PREPARATION },
+        step: STEPS.SOLVENCY,
       };
     });
 

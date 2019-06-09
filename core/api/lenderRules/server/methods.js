@@ -6,6 +6,7 @@ import {
   lenderRulesRemove,
   lenderRulesUpdate,
   lenderRulesUpdateFilter,
+  setLenderRulesOrder,
 } from '../methodDefinitions';
 
 lenderRulesInitialize.setHandler((context, params) => {
@@ -31,4 +32,9 @@ lenderRulesUpdate.setHandler((context, params) => {
 lenderRulesUpdateFilter.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LenderRulesService.updateFilter(params);
+});
+
+setLenderRulesOrder.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.setOrder(params);
 });

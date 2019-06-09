@@ -6,6 +6,8 @@ import Recap from 'core/components/Recap';
 import Valuation from 'core/components/Valuation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import { PropertyForm } from 'core/components/forms';
+import { PROPERTY_CATEGORY } from 'core/api/constants';
+import AdminProPropertyPage from './AdminProPropertyPage';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
@@ -14,7 +16,18 @@ export const getPropertyAddress = ({ address1, zipCode, city }) =>
   (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = (props) => {
-  const { property, displayLoans, className, loanResidenceType } = props;
+  const {
+    property,
+    displayLoans,
+    className,
+    loanResidenceType,
+    loanId,
+  } = props;
+
+  if (property.category === PROPERTY_CATEGORY.PRO) {
+    return <AdminProPropertyPage property={property} />;
+  }
+
   const { loans } = property;
   const address = getPropertyAddress(property);
   let residenceType = loanResidenceType;
@@ -24,17 +37,16 @@ const SinglePropertyPage = (props) => {
     // is not specifically defined, so use the residenceType of the first
     // loan instead
     // Warning: this might be false if multiple loans point to this property
-    residenceType = loans
-      && loans.length > 0
-      && loans[0].residenceType;
+    residenceType = loans && loans.length > 0 && loans[0].residenceType;
   }
 
   return (
     <section className={cx('single-property-page', className)}>
-      <SinglePropertyPageHeader property={property} />
-      {residenceType && (
+
+      <SinglePropertyPageHeader property={property} loanId={loanId} />
+      {/* {residenceType && (
         <Valuation property={property} loanResidenceType={residenceType} />
-      )}
+      )} */}
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>

@@ -1,6 +1,6 @@
 import { compose, withProps, withStateHandlers } from 'recompose';
 import { addUserToOrganisation } from 'core/api';
-import userSearch from 'core/api/users/queries/userSearch';
+import { userSearch } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 
 export default compose(
@@ -9,13 +9,13 @@ export default compose(
       searchQuery: '',
       searchResults: [],
       userId: null,
-      role: null,
+      title: null,
     }),
     {
       setSearchQuery: () => searchQuery => ({ searchQuery }),
       setSearchResults: () => searchResults => ({ searchResults }),
       setUserId: () => userId => ({ userId }),
-      setRole: () => role => ({ role }),
+      setTitle: () => title => ({ title }),
     },
   ),
   withProps(({
@@ -23,14 +23,14 @@ export default compose(
     setSearchResults,
     setSearchQuery,
     setUserId,
-    setRole,
+    setTitle,
     organisation,
   }) => ({
     onSearch: (event) => {
       event.preventDefault();
       event.stopPropagation();
       userSearch
-        .clone({ searchQuery, roles: [ROLES.PRO] })
+        .clone({ searchQuery, roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV] })
         .fetch((err, users) => {
           if (err) {
             throw err;
@@ -43,16 +43,16 @@ export default compose(
             : users);
         });
     },
-    addUser: ({ userId, role }) =>
+    addUser: ({ userId, title }) =>
       addUserToOrganisation.run({
         organisationId: organisation._id,
         userId,
-        metadata: { role },
+        metadata: { title },
       }),
     resetState: () => {
       setSearchQuery('');
       setUserId(null);
-      setRole(null);
+      setTitle(null);
       setSearchResults([]);
     },
   })),

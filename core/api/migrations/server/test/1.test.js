@@ -33,8 +33,9 @@ describe('Migration 1', () => {
         });
     });
   });
+
   describe('down', () => {
-    it('adds a category on all properties', () => {
+    it('removes category from all properties', () => {
       Properties.insert({});
       Properties.insert({});
       Properties.insert({});

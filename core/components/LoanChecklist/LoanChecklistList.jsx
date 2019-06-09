@@ -23,7 +23,11 @@ const LoanChecklistList = ({
     )}
     {ids.map((id) => {
       const label = labelOverrider && labelOverrider(id);
-      return label || <T id={`${intlPrefix}.${id}`} key={id} />;
+      return label ? (
+        <span>{label}</span>
+      ) : (
+        <T id={`${intlPrefix}.${id}`} key={id} />
+      );
     })}
   </span>
 );

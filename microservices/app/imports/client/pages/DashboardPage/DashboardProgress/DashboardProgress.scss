@@ -66,11 +66,12 @@ $step-circle-size: 25px;
   }
 }
 
-.dashboard-progress .dashboard-progress-bar {
+.dashboard-progress-bar {
   position: relative;
+  z-index: 0;
 }
 
-.dashboard-progress .dashboard-progress-bar .steps {
+.dashboard-progress-bar .steps {
   display: flex;
   align-items: flex-start;
   flex-direction: row;
@@ -83,6 +84,22 @@ $step-circle-size: 25px;
   flex-direction: column;
   flex-grow: 1;
 
+  padding: 8px;
+
+  border-radius: $border-radius;
+
+  &:hover {
+    background-color: white;
+
+    .step-name {
+      color: $primary !important;
+    }
+
+    .step {
+      color: white;
+    }
+  }
+
   .step-name {
     opacity: 0.9;
 
@@ -90,7 +107,7 @@ $step-circle-size: 25px;
   }
 }
 
-.dashboard-progress .dashboard-progress-bar .step {
+.dashboard-progress-bar .step {
   z-index: 1;
 
   display: flex;
@@ -111,7 +128,7 @@ $step-circle-size: 25px;
   }
 }
 
-.dashboard-progress .dashboard-progress-bar .dashboard-progress-bar-step {
+.dashboard-progress-bar .dashboard-progress-bar-step {
   .fa {
     transform: scale(0.7);
 
@@ -119,9 +136,10 @@ $step-circle-size: 25px;
   }
 }
 
-.dashboard-progress .dashboard-progress-bar .absolute-lines {
+.dashboard-progress-bar .absolute-lines {
   position: absolute;
-  top: 11px; // Circle height, and space for 3px height
+  z-index: -1;
+  top: 19px; // Circle height, and space for 3px height, and padding
   left: 12.5%;
 
   display: flex;
@@ -139,5 +157,41 @@ $step-circle-size: 25px;
 
   &.done {
     background-color: $success;
+  }
+}
+
+.dashboard-progress-bar.light {
+  .step {
+    color: #aaa;
+    background-color: $border-grey;
+
+    &.done {
+      color: white;
+      background-color: $success;
+    }
+  }
+
+  .step-name {
+    padding: 0 4px;
+
+    color: #888;
+  }
+
+  .absolute-lines .line {
+    background-color: $border-grey;
+
+    &.done {
+      background-color: $success;
+    }
+  }
+}
+
+.dashboard-progress-bar.light .dashboard-progress-bar-step {
+  &:hover {
+    background-color: $primary;
+
+    .step-name {
+      color: white !important;
+    }
   }
 }

@@ -1,18 +1,7 @@
 import { RESIDENCE_TYPE, STEPS } from '../constants';
 
-export const logic1 = {
-  step: STEPS.PREPARATION,
-};
-
-export const logic2 = {
-  step: STEPS.FIND_LENDER,
-};
-export const logic3 = {
-  step: STEPS.GET_CONTRACT,
-};
-
 export const emptyLoan = {
-  logic: logic1,
+  step: STEPS.SOLVENCY,
   documents: {},
   contacts: [],
 };
@@ -20,7 +9,7 @@ export const emptyLoan = {
 export const loanStep1 = {
   residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
   purchaseType: 'ACQUISITION',
-  logic: logic1,
+  step: STEPS.SOLVENCY,
   structures: [
     {
       id: 'randomStructureId',
@@ -33,7 +22,8 @@ export const loanStep1 = {
 export const loanStep2 = {
   residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
   purchaseType: 'ACQUISITION',
-  logic: logic2,
+  step: STEPS.OFFERS,
+  displayWelcomeScreen: false,
   structures: [
     {
       id: 'randomStructureId',

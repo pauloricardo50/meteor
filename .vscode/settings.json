@@ -1,3 +1,20 @@
 {
-  "prettier.tabWidth": 4
+  "prettier.tabWidth": 4,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/imports/core/**": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "microservices/**/imports/core": true
+  },
+  "editor.suggest.filteredTypes": {
+    "keyword": true
+  }
 }

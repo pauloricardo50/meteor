@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import formatMessage from '../intl';
+import Intl from '../intl';
 
 const translate = ({ key }) => {
   // Turns a key called "expenses.0.value" into "expenses.value"
@@ -7,7 +7,7 @@ const translate = ({ key }) => {
     .split('.')
     .filter(subKey => subKey.length !== 1)
     .join('.');
-  return formatMessage(`Forms.${keyWithoutNumbers}`);
+  return Intl.formatMessage({ id: `Forms.${keyWithoutNumbers}` });
 };
 
 const translateSimpleSchema = () => {
@@ -46,4 +46,4 @@ const translateSimpleSchema = () => {
   });
 };
 
-translateSimpleSchema();
+export default translateSimpleSchema;

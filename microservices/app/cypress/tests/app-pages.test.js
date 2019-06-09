@@ -5,22 +5,15 @@ const pages = {
   public: {
     Login: route('/login', { shouldRender: 'section.login-page' }),
 
-    'Reset Password': route('/reset-password/fakeToken', {
-      shouldRender: '#password-reset-page',
-    }),
-
-    'Enroll Account': route('/enroll-account/fakeToken', {
-      shouldRender: '#password-reset-page',
-    }),
+    'Reset Password': ({ passwordResetToken }) =>
+      route(`/reset-password/${passwordResetToken}`, {
+        shouldRender: '#password-reset-page',
+      }),
 
     'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
       route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
         shouldRender: '#impersonation-success-message',
       }),
-
-    'Verify Email (Invalid Token)': route('/verify-email/invalidToken', {
-      shouldRender: '#email-verification-page',
-    }),
 
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
       route(`/verify-email/${emailVerificationToken}`, {
@@ -33,28 +26,28 @@ const pages = {
 
     Account: route('/account', { shouldRender: '#AccountPage' }),
 
-    Dashboard: ({ preparationLoan: { _id } }) =>
+    Dashboard: ({ requestLoan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
 
-    'Loan Files': ({ preparationLoan: { _id } }) =>
+    'Loan Files': ({ requestLoan: { _id } }) =>
       route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
 
-    'Loan Properties': ({ preparationLoan: { _id } }) =>
+    'Loan Properties': ({ requestLoan: { _id } }) =>
       route(`/loans/${_id}/properties`, {
         shouldRender: '#PropertiesPage',
       }),
 
-    'Loan Single Property': ({ preparationLoan: { _id, properties } }) =>
+    'Loan Single Property': ({ requestLoan: { _id, properties } }) =>
       route(`/loans/${_id}/properties/${properties[0]._id}`, {
         shouldRender: '#SinglePropertyPage',
       }),
 
-    'Borrower Personal': ({ preparationLoan: { _id } }) =>
+    'Borrower Personal': ({ requestLoan: { _id } }) =>
       route(`/loans/${_id}/borrowers/personal`, {
         shouldRender: '.borrower-page-info',
       }),
 
-    'Borrower Finance': ({ preparationLoan: { _id } }) =>
+    'Borrower Finance': ({ requestLoan: { _id } }) =>
       route(`/loans/${_id}/borrowers/finance`, {
         shouldRender: '.borrower-finance-page',
       }),

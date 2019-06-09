@@ -54,4 +54,23 @@ Users.addLinks({
     collection: Organisations,
     inversedBy: 'users',
   },
+  proProperties: {
+    collection: Properties,
+    inversedBy: 'users',
+  },
+  referredByUser: {
+    collection: Users,
+    field: 'referredByUserLink',
+    type: 'one',
+  },
+  referredCustomers: {
+    collection: Users,
+    inversedBy: 'referredByUser',
+    type: 'many',
+  },
+  referredByOrganisation: {
+    collection: Organisations,
+    field: 'referredByOrganisationLink',
+    type: 'one',
+  },
 });

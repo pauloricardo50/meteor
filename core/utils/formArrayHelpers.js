@@ -1,6 +1,8 @@
 // @flow
 import get from 'lodash/get';
 
+import { arrayify, simpleHash } from './general';
+
 // Returns the current value of an autoForm input
 const getCurrentValue = (input, doc) => get(doc, input.id);
 
@@ -24,13 +26,19 @@ const conditionalInputIsTriggered = (rootField, doc) =>
 
 // getCountedArray - Returns an array of values that are mandatory and should
 // be counted to determine a completion percentage of a form
-export const getCountedArray = (formArray, doc, arr = []) => {
+export const getCountedArray = (formArray, doc, shouldCountAllFields) => {
+  const arr = [];
+
   formArray.forEach((i) => {
-    if (shouldCountField(i)) {
+    if (shouldCountAllFields || shouldCountField(i)) {
       if (i.type === 'conditionalInput') {
         if (conditionalInputIsTriggered(i, doc)) {
           // If the conditional input is triggering the next input, add all values
-          i.inputs.forEach(input => arr.push(getCurrentValue(input, doc)));
+          i.inputs.forEach((input) => {
+            if (shouldCountField(input)) {
+              arr.push(getCurrentValue(input, doc));
+            }
+          });
         } else {
           // If conditional value is not triggering
           arr.push(getCurrentValue(i.inputs[0], doc));
@@ -46,6 +54,11 @@ export const getCountedArray = (formArray, doc, arr = []) => {
 
 const fieldIsValid = (field, doc) => {
   const currentValue = getCurrentValue(field, doc);
+
+  if (Array.isArray(currentValue)) {
+    return currentValue.length > 0;
+  }
+
   return currentValue !== undefined;
 };
 
@@ -64,10 +77,16 @@ export const getMissingFieldIds = (formArray, doc) =>
         return [
           ...missingFieldIds,
           ...additionalFields.reduce(
-            (missingConditionalFields, additionalField) =>
-              (fieldIsValid(additionalField, doc)
-                ? missingConditionalFields
-                : [...missingConditionalFields, additionalField.id]),
+            (missingConditionalFields, additionalField) => {
+              if (
+                fieldIsValid(additionalField, doc)
+                || !shouldCountField(additionalField)
+              ) {
+                return missingConditionalFields;
+              }
+
+              return [...missingConditionalFields, additionalField.id];
+            },
             [],
           ),
         ];
@@ -86,3 +105,23 @@ export const getMissingFieldIds = (formArray, doc) =>
 
     return missingFieldIds;
   }, []);
+
+/**
+ * Returns the hash of a form's values
+ *
+ * @param {Array} formArray
+ * @param {Object} doc
+ * @returns {Number} 32-bit integer hash
+ */
+export const getFormValuesHash = (formArray, doc) => {
+  const values = getCountedArray(formArray, doc, true);
+
+  return simpleHash(values);
+};
+
+// Sums multiple hashes together from multiple forms
+export const getFormValuesHashMultiple = combos =>
+  combos.reduce(
+    (tot, { formArray, doc }) => tot + getFormValuesHash(formArray, doc),
+    0,
+  );

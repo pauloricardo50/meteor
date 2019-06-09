@@ -9,7 +9,7 @@ import { getProperty } from '../../FinancingCalculator';
 type OfferPickerDialogContentProps = {};
 
 const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
-  const { offer, structure } = props;
+  const { offer } = props;
   const property = getProperty(props);
   const {
     maxAmount,
@@ -21,11 +21,8 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
     rates,
     fees,
     epotekFees,
-    organisation: { name },
   } = offer;
 
-  console.log('interests', interests);
-  console.log('org name', name);
   return (
     <div className="offer-picker-dialog animated fadeIn">
       <img src={organisation.logo} alt={organisation.name} />
@@ -75,9 +72,9 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
             },
             { label: 'FinancingOffers.interests', value: toMoney(interests) },
             {
-              label: 'Forms.monthlyExpenses.short',
-              value: toMoney(property.monthlyExpenses),
-              hide: !(property && property.monthlyExpenses),
+              label: 'Forms.yearlyExpenses.short',
+              value: toMoney(property.yearlyExpenses),
+              hide: !(property && property.yearlyExpenses),
             },
             {
               label: 'general.total',

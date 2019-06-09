@@ -3,22 +3,22 @@ import { Meteor } from 'meteor/meteor';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 import EmailService from './EmailService';
 
-sendEmail.setHandler((context, { emailId, userId, params }) => {
+sendEmail.setHandler((context, params) => {
   context.unblock();
   try {
-    EmailService.sendEmailToUser({ emailId, userId, params });
+    return EmailService.sendEmailToUser(params);
   } catch (error) {
-    console.log(`EmailService error for ${emailId}`, error);
+    console.log(`EmailService error for ${params.emailId}`, error);
     throw new Meteor.Error(error);
   }
 });
 
-sendEmailToAddress.setHandler((context, { emailId, address, params }) => {
+sendEmailToAddress.setHandler((context, params) => {
   context.unblock();
   try {
-    EmailService.sendEmail({ emailId, address, params });
+    return EmailService.sendEmail(params);
   } catch (error) {
-    console.log(`EmailService error for ${emailId}`, error);
+    console.log(`EmailService error for ${params.emailId}`, error);
     throw new Meteor.Error(error);
   }
 });

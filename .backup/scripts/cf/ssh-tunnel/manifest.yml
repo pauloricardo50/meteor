@@ -6,4 +6,5 @@ applications:
       - 'https://github.com/cloudfoundry/staticfile-buildpack.git'
     services:
       - mongo-production
+      - logs-production
     random-route: true

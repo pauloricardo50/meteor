@@ -1,7 +1,10 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { Redirect } from 'react-router-dom';
 
 import TextField from '../Material/TextField';
 import Loading from '../Loading/Loading';
@@ -22,11 +25,7 @@ export const PasswordResetPage = ({
   const isValid = !!newPassword && newPassword === newPassword2;
 
   if (error) {
-    return (
-      <h3 className="error" id="password-reset-page">
-        {error.message}
-      </h3>
-    );
+    return <Redirect to="/login" />;
   }
 
   if (!user) {
@@ -45,9 +44,9 @@ export const PasswordResetPage = ({
             <FontAwesomeIcon icon={faUserCircle} className="icon" />
             <h1>{getUserDisplayName(user)}</h1>
           </div>
-          <h3 className="secondary">
+          <h4 className="secondary">
             <T id="PasswordResetPage.description" />
-          </h3>
+          </h4>
         </div>
         <TextField
           label={<T id="PasswordResetPage.password" />}
@@ -75,6 +74,27 @@ export const PasswordResetPage = ({
             primary
             loading={submitting}
           />
+        </div>
+
+        <div className="secondary disclaimer">
+          <small>
+            <T
+              id="PasswordResetPage.disclaimer"
+              values={{
+                link: (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`${
+                      Meteor.settings.public.subdomains.app
+                    }/files/Privacy Policy - e-Potek.pdf`}
+                  >
+                    <T id="PasswordResetPage.disclaimer.privacyPolicy" />
+                  </a>
+                ),
+              }}
+            />
+          </small>
         </div>
       </div>
     </form>

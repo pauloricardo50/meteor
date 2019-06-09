@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 
 import AutoForm from 'core/components/AutoForm2';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import message from 'core/utils/message';
 import { loanUpdate } from 'core/api/loans/index';
 
 type RefinancingTabProps = {};
@@ -20,10 +19,18 @@ const grapherLinks = [
 ];
 
 const handleSubmit = loanId => (doc) => {
-  const hideLoader = message.loading('...', 0);
-  return loanUpdate
-    .run({ loanId, object: omit(doc, grapherLinks) })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../../../../core/utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return loanUpdate.run({ loanId, object: omit(doc, grapherLinks) });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 

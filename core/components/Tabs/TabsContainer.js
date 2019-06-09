@@ -14,6 +14,7 @@ const styles = theme => ({
     textTransform: 'initial',
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
+    maxWidth: 'unset',
   },
   labelContainer: {
     paddingRight: 12,

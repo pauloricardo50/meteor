@@ -12,7 +12,7 @@ notifyAssignee.setHandler((context, { message, title }) => {
   SlackService.notifyAssignee({
     currentUser: user,
     message,
-    title: title || `Utilisateur ${user.name}`,
+    title,
     link: `${Meteor.settings.public.subdomains.admin}/users/${context.userId}`,
   });
 });
@@ -26,5 +26,5 @@ notifyOfUpload.setHandler((context, params) => {
 
 logError.setHandler((context, params) => {
   context.unblock();
-  SlackService.sendError(params);
+  SlackService.sendError({ ...params, connection: context.connection });
 });

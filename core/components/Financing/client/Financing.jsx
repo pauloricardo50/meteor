@@ -16,41 +16,43 @@ import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
 import FinancingRefinancing from './FinancingRefinancing';
 import FinancingLenders from './FinancingLenders';
+import FinancingCollapser from './FinancingCollapser';
 
 type FinancingProps = {
   loan: userLoan,
 };
 
-const Financing = ({ loan }: FinancingProps) =>
-  (loan.structures.length > 0 ? (
+const Financing = ({ loan }: FinancingProps) => {
+  if (!loan.structures.length) {
+    return <Loading />;
+  }
+
+  return (
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
         <FinancingHeader selectedStructure={loan.selectedStructure} />
+
+        <FinancingCollapser />
+
         <FinancingProject />
+
         {loan.purchaseType === PURCHASE_TYPE.REFINANCING && (
           <FinancingRefinancing />
         )}
+
         <FinancingFinancing />
+
         <FinancingOwnFunds />
-        {Meteor.microservice === 'admin' && (
-          <span>
-            Offres{' '}
-            {loan.enableOffers ? (
-              <span className="success">Activées</span>
-            ) : (
-              <span className="error">Désactivées</span>
-            )}
-          </span>
-        )}
+
         {(Meteor.microservice === 'admin' || loan.enableOffers) && (
-          <FinancingOffers />
+          <FinancingOffers loan={loan} />
         )}
+
         <FinancingResult />
-        {Meteor.microservice === 'admin' && <FinancingLenders />}
+
+        {Meteor.microservice === 'admin' && <FinancingLenders loan={loan} />}
       </div>
     </ScrollSync>
-  ) : (
-    <Loading />
-  ));
-
+  );
+};
 export default FinancingContainer(Financing);

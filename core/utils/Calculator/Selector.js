@@ -1,6 +1,8 @@
 // @flow
 import { createSelector } from 'reselect';
 
+import { EMPTY_STRUCTURE } from '../../api/loans/loanConstants';
+
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
     selectProperty({ loan, structureId } = {}) {
@@ -9,13 +11,21 @@ export const withSelector = (SuperClass = class {}) =>
       const structure = this.selectStructure({ loan, structureId });
 
       if (!structureId) {
-        return (
-          structure.property
-          || (structure.propertyId
-            && loan.properties.find(({ _id }) => _id === structure.propertyId))
-          || this.formatPromotionOptionIntoProperty(structure.promotionOption)
-          || {}
-        );
+        if (structure.property) {
+          return structure.property;
+        }
+        if (structure.propertyId) {
+          return loan.properties.find(({ _id }) => _id === structure.propertyId);
+        }
+        if (structure.promotionOption) {
+          return this.formatPromotionOptionIntoProperty(structure.promotionOption);
+        }
+        if (structure.promotionOptionId) {
+          const promotionOption = loan.promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
+          return this.formatPromotionOptionIntoProperty(promotionOption);
+        }
+
+        return {};
       }
 
       if (structureId) {
@@ -56,6 +66,7 @@ export const withSelector = (SuperClass = class {}) =>
       return (
         loan.structure
         || loan.structures.find(({ id }) => id === loan.selectedStructure)
+        || EMPTY_STRUCTURE
       );
     }
 
@@ -107,7 +118,3 @@ export const withSelector = (SuperClass = class {}) =>
 
     getCashUsed = this.makeSelectStructureKey('fortuneUsed');
   };
-
-export const Selector = withSelector();
-
-export default new Selector();

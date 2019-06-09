@@ -6,6 +6,10 @@ import Calculator, { Calculator as CalculatorClass } from '..';
 import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
+import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../../config/financeConstants';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
@@ -57,7 +61,7 @@ describe('BorrowerCalculator', () => {
     it('returns half of average 2 bonuses', () => {
       expect(Calculator.getBonusIncome({
         borrowers: { bonusExists: true, bonus2018: 100, bonus2015: 0 },
-      })).to.equal(25);
+      })).to.equal(50);
     });
 
     it('returns half of average 3 bonuses', () => {
@@ -68,7 +72,7 @@ describe('BorrowerCalculator', () => {
           bonus2017: 0,
           bonus2016: 200,
         },
-      })).to.equal(50);
+      })).to.equal(75);
     });
 
     it('returns 0 if bonusExists is false', () => {
@@ -112,6 +116,95 @@ describe('BorrowerCalculator', () => {
           bonus2019: 200,
         },
       })).to.equal(200);
+    });
+
+    it('works with 2 borrowers', () => {
+      expect(Calculator.getBonusIncome({
+        borrowers: [
+          {
+            bonusExists: true,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+          {
+            bonusExists: false,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+        ],
+      })).to.equal(75);
+    });
+
+    it('uses the AVERAGE algorithm', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 2,
+        bonusAlgorithm: BONUS_ALGORITHMS.AVERAGE,
+      });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2019: 200,
+        },
+      })).to.equal(100);
+    });
+
+    it('uses the WEAK_AVERAGE algorithm', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 3,
+        bonusAlgorithm: BONUS_ALGORITHMS.WEAK_AVERAGE,
+      });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2019: 200,
+          bonus2018: 200,
+          bonus2017: 0,
+        },
+      })).to.equal(200);
+    });
+  });
+
+  describe('getBonuses', () => {
+    it('returns the sum of bonuses for a given year', () => {
+      expect(Calculator.getBonuses({
+        borrowers: [
+          {
+            bonusExists: 10,
+            bonus2018: null,
+            bonus2016: 200,
+          },
+          {
+            bonusExists: true,
+            bonus2017: 5,
+            bonus2016: 200,
+            bonus2019: 5,
+          },
+        ],
+      })).to.deep.equal({ bonus2016: 400, bonus2017: 5, bonus2019: 5 });
+    });
+
+    it('omits borrowers with bonusExists false', () => {
+      expect(Calculator.getBonuses({
+        borrowers: [
+          {
+            bonusExists: 10,
+            bonus2018: null,
+            bonus2016: 200,
+          },
+          {
+            bonusExists: false,
+            bonus2017: 5,
+            bonus2016: 200,
+            bonus2019: 5,
+          },
+        ],
+      })).to.deep.equal({ bonus2016: 200 });
     });
   });
 
@@ -176,7 +269,7 @@ describe('BorrowerCalculator', () => {
             },
           ],
         },
-      })).to.be.within(0.14, 0.15);
+      })).to.be.within(0.13, 0.14);
     });
   });
 
@@ -284,7 +377,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [
             { _id: 'borrowerId', additionalDocuments: initialDocuments },
           ],
-          logic: { step: STEPS.PREPARATION },
+          step: STEPS.SOLVENCY,
         },
       })).to.deep.equal(initialDocuments.map(({ id }) => id));
     });
@@ -299,13 +392,30 @@ describe('BorrowerCalculator', () => {
         'address1',
         'city',
         'zipCode',
+        'canton',
         'isSwiss',
         'birthDate',
         'citizenship',
         'isUSPerson',
         'civilStatus',
         'childrenCount',
+        'salary',
+        'netSalary',
+        'bonusExists',
+        'hasOwnCompany',
+        'bankFortune',
       ]);
+    });
+
+    it('returns all missing ids for an empty borrower', () => {
+      const result = Calculator.getMissingBorrowerFields({
+        borrowers: { hasOwnCompany: true, ownCompanies: [] },
+      });
+      expect(result).to.include('ownCompanies');
+      const result2 = Calculator.getMissingBorrowerFields({
+        borrowers: { hasOwnCompany: false, ownCompanies: [] },
+      });
+      expect(result2).to.not.include('ownCompanies');
     });
   });
 
@@ -327,9 +437,7 @@ describe('BorrowerCalculator', () => {
   describe('getRealEstateFortune', () => {
     it('returns the difference between property values and loans', () => {
       expect(Calculator.getRealEstateFortune({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
+        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
       })).to.equal(1);
     });
   });
@@ -337,9 +445,7 @@ describe('BorrowerCalculator', () => {
   describe('getRealEstateValue', () => {
     it('returns value of all realEstate', () => {
       expect(Calculator.getRealEstateValue({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
+        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
       })).to.equal(2);
     });
   });
@@ -347,10 +453,25 @@ describe('BorrowerCalculator', () => {
   describe('getRealEstateValue', () => {
     it('returns loans of all realEstate', () => {
       expect(Calculator.getRealEstateDebt({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
+        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
       })).to.equal(1);
+    });
+  });
+
+  describe('getRealEstateIncome', () => {
+    it('returns realEstate income', () => {
+      expect(Calculator.getRealEstateIncome({
+        borrowers: { realEstate: [{ income: 10 }] },
+      })).to.equal(10);
+    });
+
+    it('changes with realEstateIncomeConsideration', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeConsideration: 0.5,
+      });
+      expect(calc.getRealEstateIncome({
+        borrowers: { realEstate: [{ income: 10 }, { income: 20 }] },
+      })).to.equal(15);
     });
   });
 
@@ -581,6 +702,112 @@ describe('BorrowerCalculator', () => {
       expect(calc.getFormattedExpenses({ borrowers })).to.deep.equal({
         add: 2,
         subtract: 15,
+      });
+    });
+  });
+
+  describe('getBorrowerFormHash', () => {
+    it('returns a value for a borrower', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 10 },
+            { description: EXPENSES.PENSIONS, value: 1 },
+          ],
+        },
+      ];
+
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-559003621);
+    });
+
+    it('changes for non required form values as well', () => {
+      const borrower1 = { company: 'a' };
+      const borrower2 = { company: 'b' };
+
+      expect(Calculator.getBorrowerFormHash({ borrowers: borrower1 })).to.not.equal(Calculator.getBorrowerFormHash({ borrowers: borrower2 }));
+    });
+
+    it('returns a different value for multiple borrowers', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 10 },
+            { description: EXPENSES.PENSIONS, value: 1 },
+          ],
+        },
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 5 },
+            { description: EXPENSES.OTHER, value: 1 },
+          ],
+        },
+      ];
+
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1188420103);
+    });
+  });
+
+  describe('real estate income algorithm', () => {
+    it('adds income to - and subtract theoretical cost from - totalIncome for DEFAULT', () => {
+      const borrowers = [
+        { realEstate: [{ income: 72000, value: 1200000, loan: 960000 }] },
+        { realEstate: [{ income: 72000, value: 1200000, loan: 960000 }] },
+      ];
+
+      expect(Calculator.getRealEstateIncome({ borrowers })).to.equal(144000);
+      expect(Calculator.getTotalIncome({ borrowers })).to.equal(0);
+    });
+
+    context('with algoritm POSITIVE_NEGATIVE_SPLIT', () => {
+      let calc;
+
+      beforeEach(() => {
+        calc = new CalculatorClass({
+          realEstateIncomeAlgorithm:
+            REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+        });
+      });
+
+      it('adds to income if delta is positive', () => {
+        const borrowers = [
+          { realEstate: [{ income: 50000, value: 1200000, loan: 960000 }] },
+          { realEstate: [{ income: 73000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getTotalIncome({ borrowers })).to.equal(1000);
+      });
+
+      it('adds to income if delta is positive', () => {
+        const borrowers = [
+          { realEstate: [{ income: 100000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getTotalIncome({ borrowers })).to.equal(28000);
+      });
+
+      it('adds to expenses if delta is negative', () => {
+        const borrowers = [
+          { realEstate: [{ income: 50000, value: 1200000, loan: 960000 }] },
+          { realEstate: [{ income: 100000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getFormattedExpenses({ borrowers })).to.deep.equal({
+          subtract: -28000,
+          add: 22000,
+        });
+      });
+
+      it('considers income based on realEstateIncomeConsideration', () => {
+        calc = new CalculatorClass({
+          realEstateIncomeAlgorithm:
+            REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+          realEstateIncomeConsideration: 0.8,
+        });
+        const borrowers = [
+          { realEstate: [{ income: 100000, value: 1200000, loan: 960000 }] },
+        ];
+
+        expect(calc.getTotalIncome({ borrowers })).to.equal(8000);
       });
     });
   });

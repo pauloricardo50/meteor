@@ -11,7 +11,7 @@ import colors from '../../../../../config/colors';
 type LenderListItemRulesProps = {};
 
 const LenderListItemRules = ({
-  organisation: { name, lenderRules, logo },
+  organisation: { lenderRules, name },
   loan,
   structureId,
 }: LenderListItemRulesProps) => {
@@ -23,6 +23,23 @@ const LenderListItemRules = ({
 
   return (
     <>
+      {calc.adminComments && calc.adminComments.length > 0 && (
+        <Icon
+          type="warning"
+          style={{ color: colors.warning }}
+          tooltip={(
+            <ul style={{ padding: 0 }}>
+              {calc.adminComments.map(comment => (
+                <li key="comment">
+                  &bull;
+                  {comment}
+                </li>
+              ))}
+            </ul>
+          )}
+        />
+      )}
+
       <Icon
         type="info"
         className="icon"
@@ -31,7 +48,7 @@ const LenderListItemRules = ({
           <div>
             <div>
               <span>
-                <T id="FinancingLenders.consideredIncome" /> Revenus
+                <T id="FinancingLenders.consideredIncome" />
               </span>
               :&nbsp;
               <Money value={totalIncome} />
@@ -43,15 +60,21 @@ const LenderListItemRules = ({
               :&nbsp;
               <Money value={expenses} />
             </div>
+            <ul>
+              {calc.matchedRules.map(name => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
           </div>
         )}
       />
+
       <StatusIcon
         status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
         tooltip={(
           <span>
             <T id="Financing.incomeRatio" />
-            <br />
+            :&nbsp;
             <Percent value={incomeRatio} />
             <br />
             <T
@@ -61,12 +84,13 @@ const LenderListItemRules = ({
           </span>
         )}
       />
+
       <StatusIcon
         status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
         tooltip={(
           <span>
             <T id="Financing.borrowRatio" />
-            <br />
+            :&nbsp;
             <Percent value={borrowRatio} />
             <br />
             <T
@@ -76,21 +100,8 @@ const LenderListItemRules = ({
           </span>
         )}
       />
-      {calc.adminComments && calc.adminComments.length > 0 && (
-        <Icon
-          type="warning"
-          style={{ color: colors.warning }}
-          tooltip={(
-            <ul style={{ padding: 0 }}>
-              {calc.adminComments.map(comment => (
-                <li key="comment">&bull; {comment}</li>
-              ))}
-            </ul>
-          )}
-        />
-      )}
     </>
   );
 };
 
-export default LenderListItemRules;
+export default React.memo(LenderListItemRules);

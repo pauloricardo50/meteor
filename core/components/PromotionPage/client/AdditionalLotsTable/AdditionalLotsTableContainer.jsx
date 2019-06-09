@@ -52,7 +52,7 @@ const columnOptions = [
   { id: 'name' },
   { id: 'status' },
   { id: 'type' },
-  { id: 'value' },
+  { id: 'value', style: { whiteSpace: 'nowrap' } },
   { id: 'description' },
   { id: 'allocatedToLot' },
 ].map(({ id }) => ({

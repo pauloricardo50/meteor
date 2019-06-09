@@ -1,20 +1,23 @@
 // @flow
-import React from 'react';
 import { compose, withProps, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import userLoan from 'core/api/loans/queries/userLoan';
-import loanFiles from 'core/api/loans/queries/loanFiles';
-import appUser from 'core/api/users/queries/appUser';
-import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
-import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
+import { userLoans } from 'core/api/loans/queries';
+import { appUser } from 'core/api/users/queries';
+import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
 } from 'core/utils/redirection';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
+import { injectCalculator } from 'core/containers/withCalculator';
+import {
+  withSideNavContextProvider,
+  withSideNavContext,
+} from './SideNavContext';
 
 const WITHOUT_LOAN = [
   '/profile',
@@ -23,13 +26,15 @@ const WITHOUT_LOAN = [
   '/reset-password',
 ];
 
+const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
+
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
   (!loans || loans.length < 1)
   && path !== '/'
   && !isOnAllowedRoute(path, WITHOUT_LOAN);
 
 export const getRedirect = (currentUser, pathname) => {
-  const baseRedirect = getBaseRedirect(currentUser, pathname);
+  const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
   if (baseRedirect !== undefined) {
     return baseRedirect;
   }
@@ -52,7 +57,7 @@ const withAppUser = withSmartQuery({
 });
 
 const withUserLoan = withSmartQuery({
-  query: userLoan,
+  query: userLoans,
   params: ({ loanId }) => ({ loanId }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
@@ -61,9 +66,8 @@ const withUserLoan = withSmartQuery({
 
 const withInterestRates = withSmartQuery({
   query: currentInterestRates,
-  queryOptions: { reactive: false, shouldRefetch: () => false },
+  queryOptions: { shouldRefetch: () => false },
   dataName: 'currentInterestRates',
-  smallLoader: true,
   refetchOnMethodCall: false,
 });
 
@@ -75,17 +79,16 @@ const withRedirect = withProps(({ currentUser, history }) => {
 export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
-  // Reset the layout on loanId change, this avoids weird desync issues
-  // because of mergeFilesIntoLoanStructure
-  Component => props => (
-    <React.Fragment key={props.loanId}>
-      <Component {...props} />
-    </React.Fragment>
-  ),
   withUserLoan,
-  mergeFilesIntoLoanStructure(loanFiles, ({ loanId }) => ({ loanId }), 'loan'),
+  injectCalculator(),
   withInterestRates,
-  mapProps(({ loan, currentInterestRates: { averageRates }, ...props }) => ({
+  mapProps(({
+    loan,
+    query,
+    refetch,
+    currentInterestRates: { averageRates },
+    ...props
+  }) => ({
     ...props,
     loan: { ...loan, currentInterestRates: averageRates },
   })),
@@ -94,4 +97,7 @@ export default compose(
   withTranslationContext(({ loan = {} }) => ({
     purchaseType: loan.purchaseType,
   })),
+  withSideNavContextProvider,
+  withSideNavContext,
+  withContactButtonProvider,
 );

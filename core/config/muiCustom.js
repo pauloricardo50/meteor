@@ -36,7 +36,7 @@ const createTheme = () =>
       },
       MuiButton: {
         root: {
-          borderRadius: 8,
+          borderRadius: 4,
         },
         containedPrimary: {},
         contained: {
@@ -62,11 +62,16 @@ const createTheme = () =>
           },
         },
         rounded: {
-          borderRadius: 16,
+          borderRadius: 8,
           '&:last-child': {
-            borderBottomLeftRadius: 16,
-            borderBottomRightRadius: 16,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
           },
+        },
+      },
+      MuiChip: {
+        colorSecondary: {
+          backgroundColor: 'red',
         },
       },
     },

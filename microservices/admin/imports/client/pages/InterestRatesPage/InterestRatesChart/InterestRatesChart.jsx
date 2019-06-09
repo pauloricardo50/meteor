@@ -2,9 +2,10 @@
 import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
+import HighchartsExportData from 'highcharts-export-data';
 
 import LineChart from 'core/components/charts/LineChart';
-import Toggle from 'core/components/Material/Toggle/Toggle';
+import Toggle from 'core/components/Toggle';
 import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 type InterestRatesChartProps = {
@@ -34,6 +35,7 @@ const InterestRatesChart = ({
       config={config}
       HighchartsExporting={HighchartsExporting}
       HighchartsMore={HighchartsMore}
+      HighchartsExportData={HighchartsExportData}
     />
   </>
 );

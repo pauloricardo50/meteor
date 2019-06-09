@@ -1,9 +1,7 @@
 import { compose, withProps } from 'recompose';
-import proPromotion from 'core/api/promotions/queries/proPromotion';
-import promotionFiles from 'core/api/promotions/queries/promotionFiles';
+import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api';
 import withMatchParam from 'core/containers/withMatchParam';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 import {
   isAllowedToModifyPromotion,
   isAllowedToInviteCustomersToPromotion,
@@ -27,15 +25,10 @@ const makePermissions = props => ({
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
-    query: proPromotion,
-    params: ({ promotionId }) => ({ promotionId }),
-    queryOptions: { reactive: false, single: true },
+    query: proPromotions,
+    params: ({ promotionId }) => ({ _id: promotionId }),
+    queryOptions: { single: true },
     dataName: 'promotion',
   }),
-  mergeFilesWithQuery(
-    promotionFiles,
-    ({ promotion: { _id: promotionId } }) => ({ promotionId }),
-    'promotion',
-  ),
   withProps(makePermissions),
 );

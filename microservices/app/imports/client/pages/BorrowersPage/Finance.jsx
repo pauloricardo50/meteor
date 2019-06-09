@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { compose } from 'recompose';
 
+import VerticalAligner from 'core/components/VerticalAligner';
 import AutoForm from 'core/components/AutoForm';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
@@ -9,16 +11,18 @@ import * as financeConstants from 'core/config/financeConstants';
 import T from 'core/components/Translation';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
+import { withCalculator } from 'core/containers/withCalculator';
 
 const BorrowerFinancePage = (props) => {
   const {
     loan: { userFormsEnabled, borrowers },
+    Calculator,
   } = props;
 
   return (
     <section className="borrower-finance-page animated fadeIn flex-justify--center">
       <div className="borrower-finance__wrapper flex--helper flex-justify--center">
-        {borrowers.map((borrower) => {
+        {borrowers.map((borrower, index) => {
           const { _id: borrowerId, mortgageNotes } = borrower;
           return (
             <div className="borrower-finance__item col--50" key={borrowerId}>
@@ -31,23 +35,33 @@ const BorrowerFinancePage = (props) => {
                 </h3>
               </div>
 
-              <Recap arrayName="borrower" borrower={borrower} />
+              <VerticalAligner
+                id="borrower-finance"
+                defaultMargin={16}
+                nb={index}
+              >
+                <Recap
+                  arrayName="borrower"
+                  borrower={borrower}
+                  Calculator={Calculator}
+                />
 
-              <AutoForm
-                formClasses="user-form user-form__info user-form__finance"
-                inputs={getBorrowerFinanceArray({ borrowers, borrowerId })}
-                borrowers={borrowers}
-                docId={borrowerId}
-                collection={BORROWERS_COLLECTION}
-                doc={borrower}
-                disabled={!userFormsEnabled}
-              />
+                <AutoForm
+                  formClasses="user-form user-form__info user-form__finance"
+                  inputs={getBorrowerFinanceArray({ borrowers, borrowerId })}
+                  borrowers={borrowers}
+                  docId={borrowerId}
+                  collection={BORROWERS_COLLECTION}
+                  doc={borrower}
+                  disabled={!userFormsEnabled}
+                />
 
-              <MortgageNotesForm
-                borrowerId={borrowerId}
-                mortgageNotes={mortgageNotes}
-                disabled={!userFormsEnabled}
-              />
+                <MortgageNotesForm
+                  borrowerId={borrowerId}
+                  mortgageNotes={mortgageNotes}
+                  disabled={!userFormsEnabled}
+                />
+              </VerticalAligner>
             </div>
           );
         })}
@@ -61,4 +75,7 @@ BorrowerFinancePage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withMatchParam('borrowerId')(BorrowerFinancePage);
+export default compose(
+  withMatchParam('borrowerId'),
+  withCalculator,
+)(BorrowerFinancePage);

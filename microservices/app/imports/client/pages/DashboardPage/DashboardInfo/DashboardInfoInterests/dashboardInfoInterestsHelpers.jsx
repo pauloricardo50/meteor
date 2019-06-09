@@ -17,7 +17,7 @@ export const formatRate = rate => (
   </span>
 );
 
-const formatInterestRates = interestRatesArray =>
+export const formatInterestRates = interestRatesArray =>
   interestRatesArray
     .filter(({ rateLow }) => Number.isFinite(rateLow))
     .map(({ type, rateLow, rateHigh }) => ({
@@ -31,17 +31,11 @@ const formatInterestRates = interestRatesArray =>
     }));
 
 const getSameRatesFromOffers = (offers, interestKey) =>
-  offers.reduce((rates, { standardOffer, counterpartOffer }) => {
-    const array = [];
-    if (standardOffer && standardOffer[interestKey]) {
-      array.push(standardOffer[interestKey]);
-    }
-    if (counterpartOffer && counterpartOffer[interestKey]) {
-      array.push(counterpartOffer[interestKey]);
-    }
-
-    return [...rates, ...array];
-  }, []);
+  offers.reduce(
+    (rates, offer) =>
+      (offer[interestKey] ? [...rates, offer[interestKey]] : rates),
+    [],
+  );
 
 export const getBestRate = (offers, interestKey) => {
   const rates = getSameRatesFromOffers(offers, interestKey);
@@ -61,5 +55,3 @@ export const getInterestRatesFromOffers = offers =>
       return null;
     })
     .filter(interestRatesTableOption => interestRatesTableOption);
-
-export const rows = ({ interestRates }) => formatInterestRates(interestRates);

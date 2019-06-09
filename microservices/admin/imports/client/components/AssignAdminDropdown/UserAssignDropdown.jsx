@@ -5,28 +5,16 @@ import AssignAdminDropdown from './AssignAdminDropdown';
 const changeAssignedUser = ({ newAdmin, user, oldAdminId }) => {
   if (oldAdminId) {
     // change of a previously assigned employee
-    assignAdminToUser.run({
-      userId: user._id,
-      adminId: newAdmin._id,
-    });
+    assignAdminToUser.run({ userId: user._id, adminId: newAdmin._id });
   } else {
     // first assignment for that user
-    assignAdminToNewUser.run({
-      userId: user._id,
-      adminId: newAdmin._id,
-    });
+    assignAdminToNewUser.run({ userId: user._id, adminId: newAdmin._id });
   }
 };
 
 const onAdminSelectHandler = ({ newAdmin, relatedDoc, oldAdmin }) =>
-  changeAssignedUser({
-    newAdmin,
-    user: relatedDoc,
-    oldAdminId: oldAdmin,
-  });
+  changeAssignedUser({ newAdmin, user: relatedDoc, oldAdminId: oldAdmin });
 
-const UserAssignDropdownContainer = withProps(() => ({
-  onAdminSelectHandler,
-}));
+const UserAssignDropdownContainer = withProps(() => ({ onAdminSelectHandler }));
 
 export default UserAssignDropdownContainer(AssignAdminDropdown);

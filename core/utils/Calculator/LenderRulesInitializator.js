@@ -1,6 +1,6 @@
 import { parseFilter } from 'core/api/lenderRules/helpers';
 import { getMatchingRules } from '../../api/lenderRules/helpers';
-import { LENDER_RULES_VARIABLES } from '../../api/constants';
+import { LENDER_RULES_VARIABLES, OWN_FUNDS_TYPES } from '../../api/constants';
 
 // @flow
 
@@ -11,32 +11,61 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.initialize(settings);
     }
 
-    initialize({ loan, structureId, lenderRules }) {
-      if (!(loan && lenderRules)) {
+    initialize({ loan, structureId, lenderRules = [] }) {
+      if (!(loan && lenderRules && lenderRules.length > 0)) {
         return;
       }
 
+      const sortedlenderRules = lenderRules.sort(({ order: orderA }, { order: orderB }) => orderA - orderB);
+
+      // Store the rules for retrieval later
+      this.lenderRules = sortedlenderRules;
+      this.organisationName = sortedlenderRules.length
+        ? sortedlenderRules[0].organisationCache
+          && sortedlenderRules[0].organisationCache.name
+        : null;
+      this.ruleOrigin = {};
+      this.matchedRules = [];
+
+      // Primary rules depend only on raw data
       const primaryRules = this.getPrimaryLenderRules({
         loan,
         structureId,
-        lenderRules,
+        lenderRules: sortedlenderRules,
       });
       this.applyRules(primaryRules);
 
+      // Secondary rules depend on what is calculated with the rules applied from the primary rules
       const secondaryRules = this.getSecondaryLenderRules({
         loan,
         structureId,
-        lenderRules,
+        lenderRules: sortedlenderRules,
       });
       this.applyRules(secondaryRules);
 
       this.cleanUpUnusedRules();
     }
 
+    storeRuleOrigin(rules, lenderRulesId) {
+      Object.keys(rules).forEach((ruleName) => {
+        this.ruleOrigin[ruleName] = lenderRulesId;
+      });
+    }
+
+    getOriginOfRule(ruleName) {
+      const lenderRulesId = this.ruleOrigin[ruleName];
+      const lenderRules = this.lenderRules.find(({ _id }) => _id === lenderRulesId);
+      return lenderRules;
+    }
+
     getLenderRulesVariables({ loan, structureId }) {
       return {
         [LENDER_RULES_VARIABLES.RESIDENCE_TYPE]: loan.residenceType,
-        [LENDER_RULES_VARIABLES.CANTON]: this.makeSelectPropertyKey(LENDER_RULES_VARIABLES.CANTON)({ loan, structureId }),
+        [LENDER_RULES_VARIABLES.CANTON]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.CANTON,
+        }),
         [LENDER_RULES_VARIABLES.WANTED_LOAN]: this.selectStructureKey({
           loan,
           structureId,
@@ -46,13 +75,32 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           loan,
           structureId,
         }),
-        [LENDER_RULES_VARIABLES.INSIDE_AREA]: this.makeSelectPropertyKey(LENDER_RULES_VARIABLES.INSIDE_AREA)({ loan, structureId }),
+        [LENDER_RULES_VARIABLES.INSIDE_AREA]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.INSIDE_AREA,
+        }),
         [LENDER_RULES_VARIABLES.BANK_FORTUNE]: this.getFortune({ loan }),
         [LENDER_RULES_VARIABLES.BORROW_RATIO]: this.getBorrowRatio({
           loan,
           structureId,
         }),
         [LENDER_RULES_VARIABLES.INCOME]: this.getTotalIncome({ loan }),
+        [LENDER_RULES_VARIABLES.PROPERTY_TYPE]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.PROPERTY_TYPE,
+        }),
+        [LENDER_RULES_VARIABLES.ZIP_CODE]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.ZIP_CODE,
+        }),
+        [LENDER_RULES_VARIABLES.REMAINING_BANK_FORTUNE]: this.getRemainingFundsOfType({
+          loan,
+          structureId,
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+        }),
       };
     }
 
@@ -61,6 +109,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       const matchingRules = getMatchingRules(
         primaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
+        this.storeRuleOrigin,
       );
       return matchingRules;
     }
@@ -72,6 +121,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       const matchingRules = getMatchingRules(
         secondaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
+        this.storeRuleOrigin,
       );
       return matchingRules;
     }
@@ -87,13 +137,22 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     }
 
     applyRules(rules) {
+      if (rules.names) {
+        this.matchedRules = [
+          ...this.matchedRules,
+          ...rules.names.filter(x => x),
+        ];
+      }
+
       const rulesToApply = [
         'adminComments',
         'allowPledge',
         'amortizationGoal',
         'amortizationYears',
+        'bonusAlgorithm',
         'bonusConsideration',
         'bonusHistoryToConsider',
+        'companyIncomeConsideration',
         'companyIncomeHistoryToConsider',
         'dividendsConsideration',
         'dividendsHistoryToConsider',
@@ -105,6 +164,8 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'maxIncomeRatio',
         'pdfComments',
         'pensionIncomeConsideration',
+        'realEstateIncomeAlgorithm',
+        'realEstateIncomeConsideration',
         'realEstateIncomeConsiderationType',
         'theoreticalInterestRate',
         'theoreticalInterestRate2ndRank',
@@ -112,7 +173,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       ];
 
       rulesToApply.forEach((rule) => {
-        if (rules[rule]) {
+        if (rules[rule] !== undefined && rules[rule] !== null) {
           this[rule] = rules[rule];
         }
       });

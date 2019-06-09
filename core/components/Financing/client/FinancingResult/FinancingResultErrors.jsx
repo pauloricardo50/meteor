@@ -6,16 +6,9 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import { calculateMissingOwnFunds } from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
-import FinanceCalculator, { getOffer } from '../FinancingCalculator';
-
-import { ROUNDING_AMOUNT } from '../FinancingOwnFunds/RequiredOwnFunds';
-import {
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../api/constants';
+import FinanceCalculator from '../FinancingCalculator';
 
 type FinancingResultErrorsProps = {};
 
@@ -24,15 +17,6 @@ export const ERROR_TYPES = {
   WARNING: 'WARNING',
 };
 
-const getCashUsed = ({ loan, structureId }) => {
-  const { ownFunds } = Calculator.selectStructure({ loan, structureId });
-
-  return ownFunds
-    .filter(({ type, usageType }) =>
-      type !== OWN_FUNDS_TYPES.INSURANCE_2
-        && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
-    .reduce((sum, { value }) => sum + value, 0);
-};
 const errors = [
   {
     id: 'noMortgageLoan',
@@ -48,18 +32,14 @@ const errors = [
   },
   {
     id: 'missingOwnFunds',
-    func: (data) => {
-      const missingFunds = calculateMissingOwnFunds(data);
-      return Number.isNaN(missingFunds) || missingFunds >= ROUNDING_AMOUNT;
-    },
+    func: ({ loan, structureId }) =>
+      Calculator.isMissingOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
   },
   {
     id: 'tooMuchOwnFunds',
-    func: (data) => {
-      const missingFunds = calculateMissingOwnFunds(data);
-      return Number.isNaN(missingFunds) || missingFunds <= -ROUNDING_AMOUNT;
-    },
+    func: ({ loan, structureId }) =>
+      Calculator.hasTooMuchOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
   },
   {
@@ -90,18 +70,7 @@ const errors = [
     id: 'missingCash',
     func: (data) => {
       const { loan, structureId } = data;
-      const { propertyWork, notaryFees } = Calculator.selectStructure({
-        loan,
-        structureId,
-      });
-      const propertyValue = Calculator.selectPropertyValue(data);
-      return (
-        Calculator.getMinCash({
-          fees: notaryFees,
-          propertyValue,
-          propertyWork,
-        }) > getCashUsed(data)
-      );
+      return !Calculator.hasEnoughCash({ loan, structureId });
     },
     type: ERROR_TYPES.WARNING,
   },

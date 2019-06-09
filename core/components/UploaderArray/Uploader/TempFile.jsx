@@ -5,6 +5,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import { updateDocumentsCache, logError } from 'core/api/methods/index';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
   EXOSCALE_PATH,
@@ -25,6 +26,7 @@ export default class TempFile extends Component {
       file,
       handleUploadComplete,
       acl,
+      maxSize,
     } = this.props;
 
     this.uploader = new Slingshot.Upload(SLINGSHOT_DIRECTIVE_NAME, {
@@ -32,6 +34,7 @@ export default class TempFile extends Component {
       docId,
       id,
       acl,
+      maxSize,
     });
 
     const progressSetter = Tracker.autorun(() => {
@@ -42,7 +45,11 @@ export default class TempFile extends Component {
     this.uploader.send(file, (error, downloadUrl) => {
       progressSetter.stop();
       if (error) {
-        this.setState({ error: error.reason });
+        logError.run({
+          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          additionalData: [file],
+        });
+        this.setState({ error: error.reason || error.message });
       } else {
         const fileObject = {
           name: file.name,
@@ -53,6 +60,7 @@ export default class TempFile extends Component {
           status: FILE_STATUS.VALID,
         };
         handleUploadComplete(fileObject, downloadUrl);
+        updateDocumentsCache.run({ docId, collection });
       }
     });
   }
@@ -97,4 +105,5 @@ TempFile.propTypes = {
   file: PropTypes.objectOf(PropTypes.any).isRequired,
   handleUploadComplete: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  maxSize: PropTypes.number,
 };

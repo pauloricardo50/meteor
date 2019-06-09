@@ -1,21 +1,18 @@
+import { STEPS } from '../api/constants';
 import Calculator from './Calculator';
-
-export const loanIsVerified = ({
-  loan: {
-    logic: {
-      verification: { validated },
-    },
-  },
-}) => validated !== undefined;
 
 export const formatLoanWithStructure = ({
   selectedStructure,
-  structures,
+  structures = [],
   properties,
   offers,
   promotionOptions,
-  borrowers,
+  borrowers = [],
 }) => {
+  if (structures.length === 0) {
+    return undefined;
+  }
+
   let structure = {};
 
   if (selectedStructure) {
@@ -61,7 +58,7 @@ export const formatLoanWithStructure = ({
 
 export const formatLoanWithDocuments = (loan) => {
   if (!loan || !loan.structure) {
-    return undefined;
+    return loan;
   }
 
   const { structure, properties = [] } = loan;
@@ -73,7 +70,7 @@ export const formatLoanWithDocuments = (loan) => {
     ...loan,
     structure: {
       ...structure,
-      property: {
+      property: property && {
         ...property,
         documents: propertyDocuments,
       },
@@ -94,3 +91,7 @@ export const formatLoanWithPromotion = (loan) => {
 
   return loan;
 };
+
+export const shouldSendStepNotification = (prevStep, nextStep) =>
+  (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
+  && nextStep === STEPS.OFFERS;

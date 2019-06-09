@@ -4,17 +4,16 @@ import omit from 'lodash/omit';
 
 import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { borrowerUpdate, mortgageNoteInsert } from 'core/api';
-import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
 
 type BorrowerFormProps = {};
 
-const personalFields = [
+export const personalFields = [
   'firstName',
   'lastName',
   'gender',
-  'age',
+  'birthDate',
   'sameAddress',
   'address1',
   'address2',
@@ -28,7 +27,7 @@ const personalFields = [
   'childrenCount',
   'company',
 ];
-const financeFields = [
+export const financeFields = [
   'salary',
   'netSalary',
   'bonusExists',
@@ -36,6 +35,7 @@ const financeFields = [
   'bonus2016',
   'bonus2017',
   'bonus2018',
+  'bonus2019',
   'otherIncome',
   'otherFortune',
   'expenses',
@@ -46,6 +46,8 @@ const financeFields = [
   'insurance3B',
   'bank3A',
   'thirdPartyFortune',
+  'hasOwnCompany',
+  'ownCompanies',
 ];
 
 const omittedFields = [
@@ -65,18 +67,37 @@ const otherSchema = BorrowerSchemaAdmin.omit(
 );
 
 const handleSubmit = borrowerId => (doc) => {
-  const hideLoader = message.loading('...', 0);
-  return borrowerUpdate
-    .run({ borrowerId, object: omit(doc, omittedFields) })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return borrowerUpdate.run({
+        borrowerId,
+        object: omit(doc, omittedFields),
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
 const insertMortgageNote = (borrowerId) => {
-  const hideLoader = message.loading('...', 0);
-  return mortgageNoteInsert
-    .run({ borrowerId })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return mortgageNoteInsert.run({ borrowerId });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 

@@ -37,7 +37,7 @@ describe('FinancingResult', () => {
   const component = () =>
     mount(
       <ScrollSync>
-        <Provider value={loan}>
+        <Provider value={{ loan, Calculator }}>
           <FinancingResult {...props} />
         </Provider>
       </ScrollSync>,
@@ -83,7 +83,7 @@ describe('FinancingResult', () => {
           {
             _id: 'house',
             value: 1000000,
-            monthlyExpenses: 100,
+            yearlyExpenses: 1200,
           },
         ],
         currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
@@ -185,7 +185,7 @@ describe('FinancingResult', () => {
           {
             _id: 'house',
             value: 1000000,
-            monthlyExpenses: 100,
+            yearlyExpenses: 1200,
           },
         ],
         offers: [

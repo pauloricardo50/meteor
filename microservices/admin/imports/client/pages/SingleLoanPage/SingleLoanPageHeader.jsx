@@ -2,7 +2,6 @@
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 
-import Link from 'core/components/Link';
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -11,8 +10,11 @@ import {
   PROMOTIONS_COLLECTION,
   LOANS_COLLECTION,
   LOAN_STATUS,
+  USERS_COLLECTION,
+  LOAN_CATEGORIES,
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 
 type SingleLoanPageHeaderProps = {};
@@ -46,67 +48,109 @@ const sendFeedbackToAllLenders = (loan) => {
   return Promise.resolve();
 };
 
-const additionalActions = loan => (status) => {
+const requiresRevenueStatus = status =>
+  [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(status);
+
+const additionalActions = loan => (status, prevStatus) => {
   switch (status) {
   case LOAN_STATUS.UNSUCCESSFUL:
     return sendFeedbackToAllLenders(loan);
   default:
-    return Promise.resolve();
+    break;
   }
+
+  if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
+    const confirm = window.confirm('Attention, ce dossier requiert maintenant des revenus précis, veuillez les saisir dans l\'onglet "Revenus",');
+  }
+
+  return Promise.resolve();
 };
 
-const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
-  <div className="single-loan-page-header">
-    <div className="left">
-      <h1>
-        <T
-          id="SingleLoanPageHeader.title"
-          values={{
-            name: loan.name || <T id="general.mortgageLoan" />,
-            value: (
-              <IntlNumber
-                value={Calculator.selectLoanValue({ loan })}
-                format="money"
-              />
-            ),
-          }}
-        />
-        {loan.user ? (
-          <Link to={`/users/${loan.user._id}`}>
-            <small className="secondary">
-              {' - '}
-              {loan.user.name}
-              {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
-            </small>
-          </Link>
-        ) : (
-          <small className="secondary">
-            {' - '}
-            Pas d'utilisateur
-          </small>
-        )}
+const getUserName = ({ anonymous, user, category }) => {
+  if (anonymous) {
+    return (
+      <small className="secondary">
+        {' - '}
+        Anonyme
+      </small>
+    );
+  }
 
-        <StatusLabel
-          collection={LOANS_COLLECTION}
-          status={loan.status}
-          allowModify
-          docId={loan._id}
-          additionalActions={additionalActions(loan)}
-        />
-      </h1>
-      {loan.hasPromotion && (
-        <CollectionIconLink
-          relatedDoc={{
-            ...loan.promotions[0],
-            collection: PROMOTIONS_COLLECTION,
-          }}
-        />
+  if (user) {
+    return (
+      <CollectionIconLink
+        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+      />
+    );
+  }
+
+  if (category === LOAN_CATEGORIES.PREMIUM) {
+    return null;
+  }
+
+  return (
+    <small className="secondary">
+      {' - '}
+      Pas d'utilisateur
+    </small>
+  );
+};
+
+const SingleLoanPageHeader = ({
+  loan,
+  withPdf = true,
+  withCustomName = true,
+}: SingleLoanPageHeaderProps) => {
+  const { user } = loan;
+  const userName = getUserName(loan);
+  return (
+    <div className="single-loan-page-header">
+      <div className="left">
+        <h1>
+          <ImpersonateLink user={user} className="impersonate-link" />
+          <T
+            id="SingleLoanPageHeader.title"
+            values={{
+              name: loan.name || <T id="general.mortgageLoan" />,
+              value: (
+                <IntlNumber
+                  value={Calculator.selectLoanValue({ loan })}
+                  format="money"
+                />
+              ),
+            }}
+          />
+          {userName}
+
+          <StatusLabel
+            collection={LOANS_COLLECTION}
+            status={loan.status}
+            allowModify
+            docId={loan._id}
+            additionalActions={additionalActions(loan)}
+          />
+        </h1>
+        {withCustomName && loan.customName && !loan.hasPromotion && (
+          <h3 className="secondary" style={{ marginTop: 0 }}>
+            {loan.customName}
+          </h3>
+        )}
+        {loan.hasPromotion && (
+          <CollectionIconLink
+            relatedDoc={{
+              ...loan.promotions[0],
+              collection: PROMOTIONS_COLLECTION,
+            }}
+          />
+        )}
+      </div>
+      {withPdf && (
+        <div className="right">
+          <GetLoanPDF loan={loan} />
+        </div>
       )}
     </div>
-    <div className="right">
-      <GetLoanPDF loan={loan} />
-    </div>
-  </div>
-);
+  );
+};
 
 export default SingleLoanPageHeader;

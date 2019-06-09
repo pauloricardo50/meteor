@@ -37,7 +37,7 @@ then
 fi
 
 # Prepare every microservice
-for i in 'www' 'app' 'admin' 'pro' 'backend'
+for i in 'admin' 'app' 'pro' 'www'
   do
     echo "Preparing $i microservice"
 
@@ -47,8 +47,6 @@ for i in 'www' 'app' 'admin' 'pro' 'backend'
     ./link.sh ../core/assets/public ../microservices/$i/public
     ln -s ../../core/assets/private ../microservices/$i/private
 
-    echo "Storing current commit message to public assets"
-    git rev-parse --short HEAD > "../core/assets/public/commit.txt"
 
 
     if [[ $DO_CLEAN == true ]];

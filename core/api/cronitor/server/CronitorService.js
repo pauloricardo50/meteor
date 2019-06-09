@@ -51,7 +51,11 @@ export default class CronitorService {
         urlObj.qs = {};
       }
 
-      urlObj.qs.msg = JSON.stringify(msg);
+      if (msg.sanitizedError) {
+        urlObj.qs.msg = JSON.stringify(msg.sanitizedError.message);
+      } else {
+        urlObj.qs.msg = JSON.stringify(msg);
+      }
     }
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
@@ -87,8 +91,8 @@ export default class CronitorService {
     });
 
     const timeout = new Promise((resolve, reject) => {
-      const wait = setTimeout(() => {
-        clearTimeout(wait);
+      const wait = Meteor.setTimeout(() => {
+        Meteor.clearTimeout(wait);
         reject(new Meteor.Error('Timed out'));
       }, REQ_TIMEOUT);
     });

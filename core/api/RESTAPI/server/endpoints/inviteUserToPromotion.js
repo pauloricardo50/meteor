@@ -1,26 +1,49 @@
-import { inviteUserToPromotion } from '../../../methods';
-import { withMeteorUserId } from '../helpers';
+import { Meteor } from 'meteor/meteor';
 
-const inviteUserToPromotionAPI = ({ user: { _id: userId }, body }) => {
-  const { promotionId, user, testing } = body;
+import { proInviteUser } from '../../../methods';
+import {
+  withMeteorUserId,
+  literalToString,
+  stringToLiteral,
+  updateCustomerReferral,
+} from '../helpers';
+import { checkQuery, impersonateSchema } from './helpers';
 
-  if (testing) {
-    return {
-      message: `Test mode: user "${
-        user.email
-      }" would've been successfully invited to promotion id "${promotionId}"! Yay :)`,
-    };
+const inviteUserToPromotionAPI = ({
+  user: { _id: userId },
+  body,
+  params,
+  query,
+}) => {
+  const { user, shareSolvency } = body;
+  const { promotionId } = params;
+  const { 'impersonate-user': impersonateUser } = checkQuery({
+    query,
+    schema: impersonateSchema,
+  });
+
+  const promotionIds = [promotionId]
+    .map(stringToLiteral)
+    .filter(x => x)
+    .map(literalToString);
+
+  if (!promotionIds.length) {
+    throw new Meteor.Error('No promotionId provided');
   }
 
-  return withMeteorUserId(userId, () =>
-    inviteUserToPromotion.run({
-      promotionId,
+  return withMeteorUserId({ userId, impersonateUser }, () =>
+    proInviteUser.run({
+      promotionIds,
       user: { ...user, invitedBy: userId },
-    })).then(() => ({
-    message: `Successfully invited user "${
-      user.email
-    }" to promotion id "${promotionId}"`,
-  }));
+      shareSolvency,
+    }))
+    .then(() =>
+      updateCustomerReferral({ customer: user, userId, impersonateUser }))
+    .then(() => ({
+      message: `Successfully invited user "${
+        user.email
+      }" to promotion id "${promotionId}"`,
+    }));
 };
 
 export default inviteUserToPromotionAPI;

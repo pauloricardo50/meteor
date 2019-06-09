@@ -1,4 +1,4 @@
-import { addressReducer } from '../reducers';
+import addressReducer from '../reducers/addressReducer';
 import Borrowers from './borrowers';
 
 Borrowers.addReducers({

@@ -5,7 +5,7 @@ import { LENDER_RULES_OPERATORS } from 'core/api/constants';
 import T, { Percent, Money } from 'core/components/Translation';
 import { parseFilter } from 'core/api/lenderRules/helpers';
 import Chip from 'core/components/Material/Chip';
-
+import { LENDER_RULES_VARIABLES } from 'imports/core/api/constants';
 
 type LenderRulesEditorTitleProps = {};
 
@@ -43,6 +43,10 @@ const renderValue = (name, value) => {
       .map((tag, i) => [i !== 0 && ', ', tag]);
   }
 
+  if (name === LENDER_RULES_VARIABLES.ZIP_CODE) {
+    return value;
+  }
+
   return <T id={`Forms.${name}.${value}`} />;
 };
 
@@ -56,7 +60,8 @@ const renderSingleVariable = (ruleObject) => {
   return (
     <>
       <T id={`Forms.variable.${variable}`} />
-      &nbsp;<span className="rule-operator">{operatorText[operator]}</span>&nbsp;
+      &nbsp;<span className="rule-operator">{operatorText[operator]}</span>
+      &nbsp;
       {renderValue(variable, value)}
     </>
   );
@@ -65,6 +70,7 @@ const renderSingleVariable = (ruleObject) => {
 const LenderRulesEditorTitle = ({
   filter,
   name,
+  order,
 }: LenderRulesEditorTitleProps) => {
   const [operator] = Object.keys(filter);
   const variables = filter[operator];
@@ -89,12 +95,18 @@ const LenderRulesEditorTitle = ({
   if (name) {
     return (
       <div className="lender-rules-title-with-name">
-        <h3>{name}</h3>
+        <h3>
+          {order + 1}. {name}
+        </h3>
         <h4 className="secondary">{formattedRules}</h4>
       </div>
     );
   }
-  return <h3>{formattedRules}</h3>;
+  return (
+    <h3>
+      {order + 1}. {formattedRules}
+    </h3>
+  );
 };
 
 export default LenderRulesEditorTitle;

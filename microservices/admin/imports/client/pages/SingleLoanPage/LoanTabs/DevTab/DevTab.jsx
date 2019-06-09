@@ -3,13 +3,18 @@ import React from 'react';
 import omit from 'lodash/omit';
 
 import Tabs from 'core/components/Tabs';
-import message from 'core/utils/message';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { loanUpdate } from 'core/api/loans/index';
 import BorrowerSchema from 'core/api/borrowers/schemas/BorrowerSchema';
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
 import { OfferSchema } from 'core/api/offers/offers';
 import { propertyUpdate, borrowerUpdate, offerUpdate } from 'core/api';
+import {
+  LOANS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  BORROWERS_COLLECTION,
+  OFFERS_COLLECTION,
+} from 'core/api/constants';
 import SingleDevTab from './SingleDevTab';
 
 type DevTabProps = {};
@@ -40,8 +45,13 @@ const DevTab = ({ loan }: DevTabProps) => {
                       'documents',
                     ]),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
+              collection={LOANS_COLLECTION}
             />
           ),
         },
@@ -58,8 +68,13 @@ const DevTab = ({ loan }: DevTabProps) => {
                     propertyId: property._id,
                     object: omit(doc, ['loans', 'user', 'documents']),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
+              collection={PROPERTIES_COLLECTION}
             />
           ),
         })),
@@ -76,8 +91,13 @@ const DevTab = ({ loan }: DevTabProps) => {
                     borrowerId: borrower._id,
                     object: omit(doc, ['loans', 'user', 'documents']),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
+              collection={BORROWERS_COLLECTION}
             />
           ),
         })),
@@ -94,8 +114,13 @@ const DevTab = ({ loan }: DevTabProps) => {
                     offerId: offer._id,
                     object: omit(doc, ['loan', 'user', 'documents']),
                   })
-                  .then(() => message('Done', 2))
+                  .then(() => {
+                    import('../../../../../core/utils/message').then(({ default: message }) => {
+                      message('Done', 2);
+                    });
+                  })
               }
+              collection={OFFERS_COLLECTION}
             />
           ),
         })),

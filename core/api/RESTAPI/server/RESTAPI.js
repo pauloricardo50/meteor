@@ -1,6 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import connectRoute from 'connect-route';
+import Fiber from 'fibers';
+import { compose } from 'recompose';
+
 import * as defaultMiddlewares from './middlewares';
-import { getRequestMethod, getRequestPath } from './helpers';
+import { logRequest, trackRequest } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -41,40 +46,52 @@ export default class RESTAPI {
 
       methods.forEach((method) => {
         const finalEndpoint = this.makeEndpoint(endpoint);
-        const func = this.endpoints[endpoint][method];
+        const handler = this.endpoints[endpoint][method];
 
-        this.registerEndpoint(finalEndpoint, func, method);
+        this.registerEndpoint(finalEndpoint, handler, method);
       });
     });
   }
 
-  registerEndpoint(endpoint, func, method) {
-    WebApp.connectHandlers.use(endpoint, (req, res, next) => {
-      if (getRequestMethod(req) !== method) {
-        // Not the right method, pass to the following middlewares
-        next();
-        return;
-      }
+  wrapHandler(handler) {
+    return (req, res, next) => {
+      Fiber(() => {
+        try {
+          Promise.resolve()
+            .then(() =>
+              handler({
+                user: req.user,
+                body: req.body,
+                query: req.query,
+                params: req.params,
+              }))
+            .then(result => this.handleSuccess(result, req, res))
+            .catch(next);
+        } catch (error) {
+          next(error);
+        }
+      }).run();
+    };
+  }
 
-      if (getRequestPath(req) !== endpoint) {
-        // Not an exact route match
-        next();
-        return;
-      }
-
-      try {
-        Promise.resolve()
-          .then(() => func({ user: req.user, body: req.body }))
-          .then(result => this.handleSuccess(result, res))
-          .catch(next);
-      } catch (error) {
-        next(error);
-      }
+  registerEndpoint(endpoint, handler, method) {
+    compose(
+      WebApp.connectHandlers.use.bind(WebApp.connectHandlers),
+      Meteor.bindEnvironment,
+      connectRoute,
+    )((router) => {
+      router[method.toLowerCase()](endpoint, this.wrapHandler(handler));
     });
   }
 
-  handleSuccess(result = '', res) {
+  handleSuccess(result = '', req, res) {
     const stringified = JSON.stringify(result);
+
+    // LOGS
+    logRequest({ req, result: stringified });
+
+    trackRequest({ req, result: stringified });
+
     res.setHeader('Content-Type', 'application/json');
     res.write(stringified);
 

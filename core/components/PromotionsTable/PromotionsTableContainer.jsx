@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { createRoute } from '../../utils/routerUtils';
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import proPromotions from '../../api/promotions/queries/proPromotions';
+import { proPromotions } from '../../api/promotions/queries';
 import { PROMOTIONS_COLLECTION } from '../../api/constants';
 import T from '../Translation';
 import StatusLabel from '../StatusLabel';
@@ -24,11 +24,10 @@ const makeMapPromotion = history => ({
   id: _id,
   columns: [
     name,
-    <StatusLabel
-      status={status}
-      collection={PROMOTIONS_COLLECTION}
-      key="status"
-    />,
+    {
+      raw: status,
+      label: <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />,
+    },
     {
       raw: createdAt && createdAt.getTime(),
       label: moment(createdAt).fromNow(),
@@ -44,7 +43,7 @@ const makeMapPromotion = history => ({
 });
 
 const columnOptions = [
-  { id: 'name', label: 'dude' },
+  { id: 'name' },
   { id: 'status' },
   { id: 'createdAt' },
   { id: 'lots' },

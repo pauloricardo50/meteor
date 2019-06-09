@@ -4,9 +4,12 @@
 
   padding: 4px;
 
+  white-space: nowrap;
+
   border-radius: 4px;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: white !important;
     background-color: $primary;
   }

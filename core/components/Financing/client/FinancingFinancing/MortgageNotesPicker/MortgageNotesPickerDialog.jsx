@@ -5,7 +5,6 @@ import { createRoute } from '../../../../../utils/routerUtils';
 import { PROPERTIES_COLLECTION } from '../../../../../api/constants';
 import T from '../../../../Translation';
 import UpdateField from '../../../../UpdateField';
-import DropdownMenu from '../../../../DropdownMenu';
 import { getProperty } from '../../FinancingCalculator';
 import Link from '../../../../Link';
 import MortgageNotesPickerList from './MortgageNotesPickerList';
@@ -67,20 +66,9 @@ const MortgageNotesPickerDialog = (props: MortgageNotesPickerDialogProps) => {
       <MortgageNotesPickerList
         mortgageNotes={borrowerMortgageNotes}
         removeMortgageNote={removeMortgageNote}
+        canton={canton}
       />
-      {availableMortgageNotes.length > 0 ? (
-        <span className="text-center">
-          <DropdownMenu
-            button
-            buttonProps={{
-              label: <T id="FinancingMortgageNotesPicker.addMortgageNote" />,
-              raised: true,
-              primary: true,
-            }}
-            options={availableMortgageNotes}
-          />
-        </span>
-      ) : (
+      {!borrowerMortgageNotes.filter(({ available }) => available).length && (
         <Link to={createRoute(`/loans/${loanId}/borrowers`)} className="a">
           <T
             id="FinancingMortgageNotesPicker.noAvailableMortgageNotes"

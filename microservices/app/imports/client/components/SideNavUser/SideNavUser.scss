@@ -73,11 +73,12 @@
 
   list-style: none;
 
-  .loan-side-nav-link {
+  &-link {
     display: flex;
     align-items: center;
 
     padding: 16px 0;
+    padding-right: 16px;
 
     text-decoration: none;
 
@@ -85,6 +86,10 @@
       width: 20px;
       height: 20px;
       padding: 0 16px;
+    }
+
+    &:hover {
+      font-family: 'Eina04-Bold';
     }
 
     &.active {
@@ -121,7 +126,7 @@
   margin: 16px 0;
   padding: 0 16px;
 
-   > * {
+  > * {
     width: 100%;
   }
 }
@@ -136,4 +141,10 @@
   padding: 0 8px;
 
   border-bottom: 1px solid $border-grey;
+
+  .drawer-toggle {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
 }

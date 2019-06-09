@@ -1,0 +1,170 @@
+.max-property-value {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+
+  padding: 24px;
+
+  &-empty-state {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    .icon {
+      flex-basis: 50%;
+      flex-grow: 1;
+
+      width: 80px;
+      height: 80px;
+
+      color: $primary;
+    }
+
+    h4,
+    p {
+      margin: 8px 0 8px 0;
+
+      text-align: center !important;
+    }
+  }
+
+  .mui-select {
+    width: calc(50% - 4px);
+    min-width: 160px;
+    max-width: 200px;
+  }
+
+  &-results {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    hr {
+      width: 100%;
+      margin: 0;
+      margin-top: 16px;
+    }
+
+    .top {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+
+      h2 {
+        margin: 0;
+      }
+
+      h3 {
+        margin: 0 0 8px 0;
+      }
+    }
+
+    .show-best-toggle {
+      align-self: center;
+
+      > * {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        > * {
+          font-size: initial;
+        }
+      }
+    }
+
+    &-selects {
+      display: flex;
+      align-self: stretch;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    &-table {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+
+      margin: 32px 0;
+
+      .balance-sheet,
+      .sums {
+        display: flex;
+
+        .left,
+        .right {
+          display: flex;
+          flex-basis: 50%;
+          flex-direction: column;
+        }
+
+        .right {
+          text-align: right;
+        }
+
+        .money {
+          @include screen(med, min) {
+            font-size: 1.3em;
+          }
+        }
+      }
+
+      .label {
+        margin-top: 16px;
+        margin-bottom: 4px;
+
+        text-transform: uppercase;
+
+        opacity: 0.8;
+
+        @include screen(small) {
+          font-size: 0.85em;
+        }
+        @include screen(xsmall) {
+          font-size: 0.75em;
+        }
+      }
+    }
+
+    h3,
+    h4 {
+      margin: 0;
+
+      white-space: nowrap;
+    }
+
+    button {
+      margin-top: 16px;
+    }
+  }
+
+  &.blue .max-property-sharing-label {
+    color: white;
+  }
+}
+
+.max-property-sharing {
+  @include screen(xsmall) {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  &-label {
+    display: inline-flex;
+    align-items: center;
+
+    > * {
+      display: inline-flex;
+      align-items: center;
+
+      &.error {
+        padding: 0 2px 0 4px;
+
+        color: white;
+        border-radius: 6px;
+        background-color: $error;
+      }
+    }
+  }
+}

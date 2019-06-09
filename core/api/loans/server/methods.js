@@ -1,3 +1,5 @@
+import Analytics from 'core/api/analytics/server/Analytics';
+import EVENTS from 'core/api/analytics/events';
 import SecurityService from '../../security';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import {
@@ -18,9 +20,17 @@ import {
   switchBorrower,
   sendNegativeFeedbackToAllLenders,
   loanUpdatePromotionInvitedBy,
+  reuseProperty,
+  setMaxPropertyValueWithoutBorrowRatio,
+  addNewMaxStructure,
+  setLoanStep,
+  loanShareSolvency,
+  anonymousLoanInsert,
+  userLoanInsert,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
+import { STEPS, LOAN_STATUS } from '../loanConstants';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -59,24 +69,35 @@ popLoanValue.setHandler((context, { loanId, object }) => {
 
 export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  return LoanService.adminLoanInsert({ userId });
+  return LoanService.fullLoanInsert({ userId });
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 
-export const addStructureHandler = ({ userId }, { loanId }) => {
+userLoanInsert.setHandler(({ userId }, { test }) => {
+  SecurityService.checkLoggedIn();
+  return LoanService.fullLoanInsert({
+    userId,
+    loan: {
+      displayWelcomeScreen: false,
+      status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
+    },
+  });
+});
+
+export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.addNewStructure({ loanId });
 };
 addNewStructure.setHandler(addStructureHandler);
 
-export const removeStructureHandler = ({ userId }, { loanId, structureId }) => {
+export const removeStructureHandler = (context, { loanId, structureId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.removeStructure({ loanId, structureId });
 };
 removeStructure.setHandler(removeStructureHandler);
 
 export const updateStructureHandler = (
-  { userId },
+  context,
   { loanId, structureId, structure },
 ) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -84,33 +105,40 @@ export const updateStructureHandler = (
 };
 updateStructure.setHandler(updateStructureHandler);
 
-export const selectStructureHandler = ({ userId }, { loanId, structureId }) => {
+export const selectStructureHandler = (context, { loanId, structureId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.selectStructure({ loanId, structureId });
 };
 selectStructure.setHandler(selectStructureHandler);
 
-export const duplicateStructureHandler = (
-  { userId },
-  { loanId, structureId },
-) => {
+export const duplicateStructureHandler = (context, { loanId, structureId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.duplicateStructure({ loanId, structureId });
 };
 duplicateStructure.setHandler(duplicateStructureHandler);
 
 assignLoanToUser.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
+  const { anonymous } = LoanService.fetchOne({
+    $filters: { _id: params.loanId },
+    anonymous: 1,
+  });
+
+  if (anonymous) {
+    SecurityService.loans.checkAnonymousLoan(params.loanId);
+  } else {
+    SecurityService.checkUserIsAdmin(userId);
+  }
+
   LoanService.assignLoanToUser(params);
 });
 
-switchBorrower.setHandler(({ userId }, params) => {
+switchBorrower.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.switchBorrower(params);
 });
 
-sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+sendNegativeFeedbackToAllLenders.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
   context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
@@ -118,4 +146,63 @@ sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
 loanUpdatePromotionInvitedBy.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   LoanService.updatePromotionInvitedBy(params);
+});
+
+reuseProperty.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  LoanService.reuseProperty(params);
+});
+
+setMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return LoanService.setMaxPropertyValueWithoutBorrowRatio(params);
+});
+
+addNewMaxStructure.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return LoanService.addNewMaxStructure(params);
+});
+
+setLoanStep.setHandler((context, params) => {
+  const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
+
+  if (userAllowedSteps.includes(params.nextStep)) {
+    SecurityService.loans.isAllowedToUpdate(params.loanId);
+  } else {
+    Security.checkUserIsAdmin(context.userId);
+  }
+
+  context.unblock();
+  return LoanService.setStep(params);
+});
+
+loanShareSolvency.setHandler((context, params) => {
+  const { loanId, shareSolvency } = params;
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.update({
+    loanId: params.loanId,
+    object: { shareSolvency },
+  });
+});
+
+anonymousLoanInsert.setHandler((context, params) => {
+  if (params.proPropertyId) {
+    SecurityService.properties.isAllowedToAddAnonymousLoan({
+      propertyId: params.proPropertyId,
+    });
+  }
+
+  const loanId = LoanService.insertAnonymousLoan(params);
+  const analytics = new Analytics(context);
+  analytics.track(
+    EVENTS.LOAN_CREATED,
+    {
+      loanId,
+      propertyId: params.proPropertyId,
+      referralId: params.referralId,
+      anonymous: true,
+    },
+    params.trackingId,
+  );
+  return loanId;
 });

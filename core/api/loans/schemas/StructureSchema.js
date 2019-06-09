@@ -5,7 +5,7 @@ import { OWN_FUNDS_TYPES } from '../../constants';
 import { loanTranchesSchema } from './otherSchemas';
 import { moneyField } from '../../helpers/sharedSchemas';
 
-const StructureSchema = new SimpleSchema({
+export const structureSchema = {
   amortization: { ...moneyField, defaultValue: 0 },
   amortizationType: {
     type: String,
@@ -31,6 +31,7 @@ const StructureSchema = new SimpleSchema({
   'ownFunds.$.type': {
     type: String,
     allowedValues: Object.values(OWN_FUNDS_TYPES),
+    optional: true,
   },
   'ownFunds.$.value': { ...moneyField, optional: false },
   'ownFunds.$.usageType': {
@@ -38,9 +39,13 @@ const StructureSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(OWN_FUNDS_USAGE_TYPES),
   },
+  'ownFunds.$.description': {
+    type: String,
+    optional: true,
+  },
   wantedLoan: { ...moneyField, defaultValue: 0 },
   ...loanTranchesSchema,
-});
+};
 
 export type structureType = {
   id: string,
@@ -56,4 +61,4 @@ export type structureType = {
   ownFunds: Array<Object>,
 };
 
-export default StructureSchema;
+export default new SimpleSchema(structureSchema);

@@ -31,6 +31,12 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     }
   };
 
+  handleKeyDown = (e) => {
+    if (e.keyCode === 13 && e.metaKey) {
+      this.handleSubmit(e);
+    }
+  };
+
   render() {
     const {
       isEditing,
@@ -41,6 +47,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       className,
       allowEditing = true,
       disabled,
+      children,
     } = this.props;
 
     return isEditing ? (
@@ -53,8 +60,12 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           inputRef={this.input}
           onBlur={this.handleSubmit}
           disabled={disabled}
+          onKeyDown={this.handleKeyDown}
           {...inputProps}
         />
+        {typeof children === 'function'
+          ? children({ value: value || placeholder, isEditing })
+          : value || placeholder}
       </form>
     ) : (
       <div
@@ -69,7 +80,9 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
             : null
         }
       >
-        {value || placeholder}
+        {typeof children === 'function'
+          ? children({ value: value || placeholder, isEditing })
+          : value || placeholder}
       </div>
     );
   }

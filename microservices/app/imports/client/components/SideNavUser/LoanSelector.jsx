@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import T from 'core/components/Translation';
-import track from 'core/utils/analytics';
 import Select from 'core/components/Select';
 
-const handleChange = (value, toggleDrawer, history) => {
+const handleChange = (value, closeDrawer, history) => {
   if (value === 0) {
-    track('LoanSelector - clicked on new loan', {});
     window.location.replace(`${Meteor.settings.public.subdomains.www}/start/1`);
   } else {
-    track('LoanSelector - switched to loan', { loanId: value });
-    toggleDrawer();
+    closeDrawer();
     history.push(`/loans/${value}`);
   }
 };
@@ -34,7 +31,7 @@ const getOptions = (loans) => {
 
 const LoanSelector = ({
   value,
-  toggleDrawer,
+  closeDrawer,
   history,
   currentUser: { loans },
 }) => {
@@ -45,7 +42,7 @@ const LoanSelector = ({
         id="loan-selector"
         value={value}
         onChange={(id, newValue) =>
-          handleChange(newValue, toggleDrawer, history)
+          handleChange(newValue, closeDrawer, history)
         }
         options={options}
         displayEmpty
@@ -55,9 +52,9 @@ const LoanSelector = ({
 };
 
 LoanSelector.propTypes = {
+  closeDrawer: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  toggleDrawer: PropTypes.func.isRequired,
   value: PropTypes.string,
 };
 

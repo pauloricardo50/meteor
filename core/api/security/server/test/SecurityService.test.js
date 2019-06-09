@@ -114,7 +114,7 @@ describe('Security service', () => {
 
   describe('minimumRole', () => {
     it('throws if an unknown role is used', () => {
-      expect(() => SecurityService.minimumRole('wut')).to.throw('Invalid');
+      expect(() => SecurityService.minimumRole('wut')(userId)).to.throw('Invalid');
     });
 
     it('does not let admins do dev-only stuff', () => {

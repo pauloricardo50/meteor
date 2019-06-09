@@ -27,7 +27,7 @@ const getInitialFormKeys = ({ lenderRules }) =>
 type LenderRulesEditorSingleProps = {};
 
 const LenderRulesEditorSingle = ({
-  lenderRules: { _id: lenderRulesId, filter, name, ...rules },
+  lenderRules: { _id: lenderRulesId, filter, name, order, ...rules },
   updateLenderRules,
   formKeys,
   setFormKeys,
@@ -35,7 +35,7 @@ const LenderRulesEditorSingle = ({
   <ExpansionPanel className="card1 card-top lender-rules-editor-filter">
     <ExpansionPanelSummary>
       <div className="filter-title">
-        <LenderRulesEditorTitle filter={filter} name={name} />
+        <LenderRulesEditorTitle filter={filter} name={name} order={order} />
         <LenderRulesModifier
           name={name}
           filter={filter}

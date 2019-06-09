@@ -2,7 +2,7 @@
 import React from 'react';
 
 import Button from 'core/components/Button';
-import T from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
 import ClickToEditField from 'core/components/ClickToEditField';
@@ -12,17 +12,22 @@ import {
   PROMOTION_STATUS,
 } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
-import { toMoney } from 'core/utils/conversionFunctions';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
-import { APP_PROMOTION_PAGE } from '../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
-type AppPromotionLotPageProps = {};
+type AppPromotionLotPageProps = {
+  promotionOption: Object,
+  promotionLot: Object,
+  loan: Object,
+  promotionId: String,
+  setCustom: Function,
+};
 
 export const AppPromotionLotPage = ({
   promotionOption,
   promotionLot,
-  loan: { _id: loanId, promotions: loanPromotions },
+  loan: { _id: loanId },
   promotionId,
   setCustom,
 }: AppPromotionLotPageProps) => {
@@ -30,12 +35,10 @@ export const AppPromotionLotPage = ({
     name,
     reducedStatus,
     promotion,
-    value,
     lots,
     documents,
     properties,
   } = promotionLot;
-  const { name: promotionName } = promotion;
   const { custom, attributedToMe } = promotionOption || {};
   const property = properties.length > 0 && properties[0];
   const { description } = property;
@@ -46,7 +49,7 @@ export const AppPromotionLotPage = ({
         raised
         primary
         link
-        to={createRoute(APP_PROMOTION_PAGE, {
+        to={createRoute(APP_ROUTES.APP_PROMOTION_PAGE.path, {
           loanId,
           promotionId,
         })}
@@ -54,9 +57,12 @@ export const AppPromotionLotPage = ({
         <T id="general.back" />
       </Button>
 
-      <div className="card1 app-promotion-option-page">
+      <div className="card1 app-promotion-lot-page">
         <h1 style={{ marginBottom: '4px' }}>
-          {name} - CHF {toMoney(promotionLot.value)}
+          {name}
+          {' -'}
+          &nbsp;
+          <Money value={promotionLot.value} />
           &nbsp;
           <StatusLabel
             status={reducedStatus}

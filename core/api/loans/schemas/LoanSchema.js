@@ -6,6 +6,7 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -13,15 +14,18 @@ import {
   PURCHASE_TYPE,
   OWNER,
   CANTONS,
+  STEPS,
+  APPLICATION_TYPES,
+  LOAN_CATEGORIES,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
-import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
 import {
   borrowerIdsSchema,
   propertyIdsSchema,
   previousLoanTranchesSchema,
+  maxPropertyValueSchema,
 } from './otherSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
@@ -49,7 +53,6 @@ const LoanSchema = new SimpleSchema({
   },
   general: { type: Object, optional: true, blackbox: true, defaultValue: {} }, // To be removed once migrations are done
   name: { type: String, unique: true, regEx: /^\d{2}-\d{4}$/ },
-  logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
@@ -96,12 +99,51 @@ const LoanSchema = new SimpleSchema({
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
   previousLender: { type: String, optional: true },
   customName: { type: String, optional: true },
+  applicationType: {
+    type: String,
+    allowedValues: Object.values(APPLICATION_TYPES),
+    defaultValue: APPLICATION_TYPES.SIMPLE,
+    uniforms: { placeholder: null },
+  },
   ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
+  revenueLinks: { type: Array, defaultValue: [] },
+  'revenueLinks.$': String,
+  userCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
+  step: {
+    type: String,
+    defaultValue: STEPS.SOLVENCY,
+    allowedValues: Object.values(STEPS),
+    uniforms: { placeholder: '' },
+  },
+  displayWelcomeScreen: {
+    type: Boolean,
+    defaultValue: true,
+    optional: true,
+  },
+  ...maxPropertyValueSchema,
+  shareSolvency: { type: Boolean, optional: true },
+  documents: documentsField,
+  anonymous: { type: Boolean, optional: true, defaultValue: false },
+  referralId: { type: String, optional: true },
+  category: {
+    type: String,
+    defaultValue: LOAN_CATEGORIES.STANDARD,
+    allowedValues: Object.values(LOAN_CATEGORIES),
+    uniforms: { placeholder: null },
+  },
+  adminNote: {
+    type: String,
+    optional: true,
+  },
 });
 
 export default LoanSchema;

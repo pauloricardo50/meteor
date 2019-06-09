@@ -1,0 +1,97 @@
+$borrowers-item-width: 500px;
+
+.property-card {
+  display: flex;
+  align-items: stretch;
+  align-self: center;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(#{$borrowers-item-width} * 2);
+  margin-top: 16px;
+  padding: 32px;
+
+  @include screen(small) {
+    padding: 16px;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
+    @include screen(med) {
+      flex-wrap: wrap;
+    }
+  }
+
+  &-infos {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    img,
+    .icon {
+      width: 100px;
+      height: 100px;
+      margin-right: 32px;
+
+      @include screen(med) {
+        margin-right: 16px;
+      }
+    }
+
+    img {
+      object-fit: cover;
+    }
+
+    .icon {
+      color: $primary;
+    }
+
+    &-description {
+      h3,
+      p {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .button {
+    width: 300px;
+    padding: 8px 48px 8px 48px;
+
+    @include screen(med) {
+      width: 100%;
+      margin-top: 16px;
+    }
+  }
+
+  &-actions {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+
+    @include screen(med) {
+      width: 100%;
+    }
+
+    .toggle {
+      display: flex;
+      justify-content: center;
+    }
+
+    .toggle-label-left {
+      font-size: 1em;
+    }
+  }
+
+  &-subtitle {
+     > span {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

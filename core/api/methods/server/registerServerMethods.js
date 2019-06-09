@@ -20,5 +20,7 @@ import '../../mortgageNotes/server/methods';
 import '../../contacts/server/methods';
 import '../../lenders/server/methods';
 import '../../lenderRules/server/methods';
+import '../../revenues/server/methods';
+import '../../analytics/server/methods';
 
 import './methods';

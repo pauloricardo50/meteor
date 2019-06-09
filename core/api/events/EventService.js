@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-const IS_LOGGING = true;
+const IS_LOGGING = !Meteor.isProduction;
 
 export default class EventService {
   constructor({ emmitter }) {
@@ -10,19 +10,19 @@ export default class EventService {
     this.addErrorListener();
   }
 
-  emit(eventName, params) {
-    this.logEmittedEvent(eventName, params);
-    this.emmitter.emit(eventName, params);
+  emit(eventName, ...args) {
+    this.logEmittedEvent(eventName, ...args);
+    this.emmitter.emit(eventName, ...args);
   }
 
-  emitMethod({ name }, params) {
-    this.emit(name, params);
+  emitMethod({ name }, ...args) {
+    this.emit(name, ...args);
   }
 
   addListener(eventName, listenerFunction) {
-    this.emmitter.addListener(eventName, (params) => {
-      this.logListener(eventName, params);
-      listenerFunction(params);
+    this.emmitter.addListener(eventName, (...args) => {
+      this.logListener(eventName, ...args);
+      listenerFunction(...args);
     });
 
     const listenersForEvent = this.listenerFunctions[eventName] || [];
@@ -33,13 +33,17 @@ export default class EventService {
     ];
   }
 
-  addMethodListener(
-    {
-      config: { name },
-    },
-    listenerFunction,
-  ) {
-    this.addListener(name, listenerFunction);
+  addMethodListener(methods, listenerFunction) {
+    if (Array.isArray(methods)) {
+      methods.forEach(({ config: { name } }) => {
+        this.addListener(name, listenerFunction);
+      });
+    } else {
+      const {
+        config: { name },
+      } = methods;
+      this.addListener(name, listenerFunction);
+    }
   }
 
   addErrorListener() {
@@ -50,17 +54,17 @@ export default class EventService {
     });
   }
 
-  logEmittedEvent(eventName, params) {
+  logEmittedEvent(eventName, ...args) {
     if (IS_LOGGING && !Meteor.isTest) {
       // console.log(`Event "${eventName}" triggered with params:`);
       // console.log(params);
     }
   }
 
-  logListener(eventName, params) {
+  logListener(eventName, ...args) {
     if (IS_LOGGING && !Meteor.isTest) {
-      console.log(`Event "${eventName}" listened to with params:`);
-      console.log(params);
+      console.log(`Event "${eventName}" listened to with args:`);
+      args.forEach(arg => console.log(arg));
     }
   }
 

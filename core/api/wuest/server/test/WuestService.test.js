@@ -9,7 +9,7 @@ import * as wuestConstants from '../../wuestConstants';
 import { QUALITY } from '../../../constants';
 import { PROPERTY_TYPE } from '../../../properties/propertyConstants';
 
-describe('WuestService', function () {
+describe.skip('WuestService', function () {
   this.timeout(10000);
 
   beforeEach(() => {

@@ -4,6 +4,7 @@ import {
   updatedAt,
   additionalDocuments,
   mortgageNoteLinks,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 import { initialDocuments } from '../borrowersAdditionalDocuments';
 import {
@@ -30,6 +31,7 @@ const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
+  documents: documentsField,
   ...personalInfoSchema,
   ...financeInfoSchema,
   ...additionalDocuments(initialDocuments),
@@ -44,8 +46,10 @@ const protectedKeys = [
   'adminValidation',
   'createdAt',
   'logic',
+  'mortgageNoteLinks',
   'updatedAt',
   'userId',
+  'documents',
 ];
 
 export const BorrowerSchemaAdmin = BorrowerSchema.omit(...protectedKeys);

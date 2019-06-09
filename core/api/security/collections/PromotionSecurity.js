@@ -20,8 +20,10 @@ import {
   isAllowedToSellPromotionLotToCustomer,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
-import { getPromotionCustomerOwnerType } from '../../promotions/server/promotionServerHelpers';
-import { proPromotion, proUser, proLoans } from '../../fragments';
+import {
+  getPromotionCustomerOwnerType,
+  makeLoanAnonymizer,
+} from '../../promotions/server/promotionServerHelpers';
 import LotService from '../../lots/server/LotService';
 
 class PromotionSecurity {
@@ -31,16 +33,24 @@ class PromotionSecurity {
     checkingFunction,
     errorMessage,
   }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
     const promotion = PromotionService.safeFetchOne({
       $filters: { _id: promotionId },
-      ...proPromotion(),
+      status: 1,
+      users: { _id: 1 },
+      userLinks: { _id: 1 },
     });
+
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     if (!checkingFunction({ promotion, currentUser })) {
@@ -78,7 +88,7 @@ class PromotionSecurity {
   }
 
   static hasAccessToPromotionOption({ promotionOptionId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -159,22 +169,29 @@ class PromotionSecurity {
   }
 
   static isAllowedToRemoveCustomer({ promotionId, loanId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
     const promotion = PromotionService.safeFetchOne({
       $filters: { _id: promotionId },
-      ...proPromotion(),
+      status: 1,
+      users: { _id: 1 },
+      userLinks: { _id: 1 },
     });
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
-      ...proLoans(),
+      user: { _id: 1 },
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -204,7 +221,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToViewPromotionLot({ promotionLotId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -215,7 +232,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToViewPromotionOption({ promotionOptionId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -253,7 +270,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.isUserAdmin(userId)) {
       return;
     }
 
@@ -264,7 +281,7 @@ class PromotionSecurity {
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
-      ...proLoans(),
+      user: {_id: 1},
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -275,7 +292,12 @@ class PromotionSecurity {
 
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     if (
@@ -324,7 +346,7 @@ class PromotionSecurity {
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: attributedTo._id },
-      ...proLoans(),
+      user: {_id: 1},
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -335,7 +357,12 @@ class PromotionSecurity {
 
     const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
-      ...proUser(),
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
     });
 
     if (
@@ -365,6 +392,22 @@ class PromotionSecurity {
     });
 
     this.isAllowedToRemoveLots({ promotionId: promotions._id, userId });
+  }
+
+  static isAllowedToSeePromotionCustomer({ userId, promotionId, loanId }) {
+    if (Security.isUserAdmin(userId)) {
+      return;
+    }
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      _id: 1,
+      user: { _id: 1 },
+    });
+    const anonymizer = makeLoanAnonymizer({ userId, promotionId });
+    if (anonymizer(loan).isAnonymized) {
+      Security.handleUnauthorized("Vous n'avez pas accès à ce client");
+    }
   }
 }
 

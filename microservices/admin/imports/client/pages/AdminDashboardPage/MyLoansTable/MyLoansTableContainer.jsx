@@ -4,10 +4,9 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import loansAssignedToAdmin from 'core/api/loans/queries/loansAssignedToAdmin';
+import { adminLoans } from 'core/api/loans/queries';
 import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
-import withLoansDocuments from 'core/api/files/withLoansDocuments';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -35,7 +34,7 @@ const columnOptions = [
 
 const mapLoan = history => (loan) => {
   const { _id: loanId, status, name, updatedAt, user } = loan;
-  
+
   return {
     id: loanId,
     columns: [
@@ -51,7 +50,7 @@ const mapLoan = history => (loan) => {
       />,
       {
         raw: updatedAt && updatedAt.getTime(),
-        label: moment(updatedAt).fromNow(),
+        label: updatedAt ? moment(updatedAt).fromNow() : '-',
       },
       Calculator.selectPropertyValue({ loan }),
       Calculator.selectLoanValue({ loan }),
@@ -64,13 +63,12 @@ const mapLoan = history => (loan) => {
 
 const MyLoansTableContainer = compose(
   withSmartQuery({
-    query: loansAssignedToAdmin,
-    params: ({ currentUser: { _id: adminId } }) => ({ adminId }),
+    query: adminLoans,
+    params: ({ currentUser: { _id: assignedEmployeeId } }) => ({ assignedEmployeeId }),
     queryOptions: { reactive: false },
     dataName: 'loans',
     renderMissingDoc: false,
   }),
-  withLoansDocuments,
   withRouter,
   withProps(({ loans, history }) => ({
     columnOptions,

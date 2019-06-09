@@ -1,6 +1,6 @@
 {
   "folders": [
-    { "path": "./" },
+    { "path": "." },
     { "path": "./core" },
     { "path": "microservices/admin" },
     { "path": "microservices/app" },
@@ -16,6 +16,7 @@
       "**/CVS": true,
       "**/.DS_Store": true
     },
-    "debug.node.autoAttach": "on"
+    "debug.node.autoAttach": "on",
+    "search.followSymlinks": false
   }
 }

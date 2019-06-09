@@ -1,11 +1,12 @@
 // @flow
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { Accounts } from 'meteor/accounts-base';
 
+import generator from 'core/api/factories';
+import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
+import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_STATUS } from '../../../constants';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import UserService from '../../../users/server/UserService';
@@ -19,15 +20,6 @@ import PropertyService from '../../../properties/server/PropertyService';
 
 describe('PromotionService', function () {
   this.timeout(10000);
-  const checkEmails = () =>
-    new Promise((resolve, reject) => {
-      Meteor.call('getAllTestEmails', (err, emails) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(emails);
-      });
-    });
 
   beforeEach(() => {
     resetDatabase();
@@ -78,22 +70,23 @@ describe('PromotionService', function () {
     let lotId;
 
     beforeEach(() => {
-      lotId = Factory.create('lot')._id;
-      promotionLotId = Factory.create('promotionLot')._id;
-      promotionId = Factory.create('promotion', {
-        _id: 'promotion',
-        lotLinks: [{ _id: lotId }],
-        promotionLotLinks: [{ _id: promotionLotId }],
-      })._id;
-      promotionOptionId = Factory.create('promotionOption', {
-        promotionLotLinks: [{ _id: promotionLotId }],
-      })._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: [promotionOptionId] },
-        ],
-      })._id;
+      promotionId = 'promoId';
+      promotionLotId = 'pLotId';
+      promotionOptionId = 'pOptId';
+      loanId = 'loanId';
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: promotionId,
+          promotionLots: {
+            _id: promotionLotId,
+            propertyLinks: [{ _id: 'propId' }],
+            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+          },
+          loans: { _id: loanId },
+          lots: {},
+        },
+      });
     });
 
     it('deletes the promotion', () => {
@@ -126,12 +119,29 @@ describe('PromotionService', function () {
     let adminId;
 
     beforeEach(() => {
-      adminId = Factory.create('admin')._id;
-      promotionId = Factory.create('promotion', {
-        _id: 'promotion',
-        status: PROMOTION_STATUS.OPEN,
-        assignedEmployeeId: adminId,
-      })._id;
+      adminId = 'adminId';
+      promotionId = 'promotionId';
+      generator({
+        users: [
+          {
+            _id: adminId,
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: 'User',
+          },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            firstName: 'Pro',
+            lastName: 'User',
+          },
+        ],
+        promotions: {
+          _id: promotionId,
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: adminId,
+        },
+      });
     });
 
     it('creates user and sends the invitation email if user does not exist', () => {
@@ -144,11 +154,19 @@ describe('PromotionService', function () {
 
       let resetToken;
 
-      return PromotionService.inviteUser({ promotionId, user: newUser })
+      const { userId, isNewUser } = UserService.proCreateUser({
+        user: newUser,
+      });
+
+      return PromotionService.inviteUser({
+        promotionId,
+        userId,
+        isNewUser,
+        pro: { _id: 'proId' },
+      })
         .then((loanId) => {
-          const user = Accounts.findUserByEmail(newUser.email);
+          const user = UserService.getByEmail(newUser.email);
           const {
-            _id: userId,
             services: {
               password: {
                 reset: { token },
@@ -162,24 +180,29 @@ describe('PromotionService', function () {
           expect(!!userId).to.equal(true);
           expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
-          return checkEmails();
+          return checkEmails(2);
         })
         .then((emails) => {
-          expect(emails.length).to.equal(1);
+          expect(emails.length).to.equal(2);
           const {
             emailId,
             response: { status },
             template: {
-              message: { merge_vars },
+              message: { global_merge_vars },
             },
-          } = emails[0];
+          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION);
 
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-          expect(merge_vars[0].vars
-            .find(({ name }) => name === 'CTA_URL')
-            .content.split('/')
-            .slice(-1)[0]).to.equal(resetToken);
+          expect(global_merge_vars.find(({ name }) => name === 'CTA_URL').content).to.include(resetToken);
+          expect(global_merge_vars
+            .find(({ name }) => name === 'BODY')
+            .content.startsWith('Pro User')).to.equal(true);
+          expect(global_merge_vars
+            .find(({ name }) => name === 'BODY')
+            .content.endsWith('Admin User')).to.equal(true);
+
+          expect(emails.filter(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION).length).to.equal(1);
         });
     });
 
@@ -204,13 +227,13 @@ describe('PromotionService', function () {
 
       return PromotionService.inviteUser({
         promotionId,
-        user: newUser,
+        userId,
       })
         .then((loanId) => {
           expect(!!loanId).to.equal(true);
           expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
-          return checkEmails();
+          return checkEmails(1);
         })
         .then((emails) => {
           expect(emails.length).to.equal(1);
@@ -284,13 +307,20 @@ describe('PromotionService', function () {
         phoneNumber: '1234',
       };
 
+      const { userId, isNewUser } = UserService.proCreateUser({
+        user: newUser,
+      });
+
       return PromotionService.inviteUser({
         promotionId,
-        user: newUser,
+        userId,
+        isNewUser,
       }).then(() => {
-        const user = Accounts.findUserByEmail(newUser.email);
+        const user = UserService.getByEmail(newUser.email);
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
+
+        return checkEmails(1);
       });
     });
   });
@@ -313,35 +343,66 @@ describe('PromotionService', function () {
 
       loan = LoanService.get(loanId);
       expect(loan.promotionLinks).to.deep.equal([
-        { _id: 'someOtherPromotion', priorityOrder: [] },
+        { _id: 'someOtherPromotion', priorityOrder: [], showAllLots: true },
       ]);
     });
 
     it('removes all promotionOptions from the loan', () => {
-      const promotionLotId1 = Factory.create('promotionLot')._id;
-      const promotionLotId2 = Factory.create('promotionLot')._id;
-      promotionId = Factory.create('promotion', {
-        promotionLotLinks: [{ _id: promotionLotId1 }, { _id: promotionLotId2 }],
-      })._id;
+      generator({
+        properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
+        promotions: {
+          _id: 'promotionId',
+          promotionLots: [
+            {
+              promotionOptions: { loan: { _id: 'loanId' } },
+              propertyLinks: [{ _id: 'prop1' }],
+            },
+            {
+              promotionOptions: { loan: { _id: 'loanId' } },
+              propertyLinks: [{ _id: 'prop2' }],
+            },
+          ],
+          loans: { _id: 'loanId' },
+        },
+      });
 
-      const promotionOptionId1 = Factory.create('promotionOption', {
-        promotionLotLinks: [{ _id: promotionLotId1 }],
-      })._id;
-      const promotionOptionId2 = Factory.create('promotionOption', {
-        promotionLotLinks: [{ _id: promotionLotId2 }],
-      })._id;
-
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [
-          { _id: promotionOptionId1 },
-          { _id: promotionOptionId2 },
-        ],
-      })._id;
-
-      PromotionService.removeUser({ promotionId, loanId });
+      PromotionService.removeUser({
+        promotionId: 'promotionId',
+        loanId: 'loanId',
+      });
+      loan = LoanService.fetchOne({
+        $filters: { _id: 'loanId' },
+        promotionOptionLinks: 1,
+      });
 
       expect(loan.promotionOptionLinks).to.deep.equal([]);
       expect(PromotionOptionService.find({}).count()).to.equal(0);
+    });
+
+    it('removes any status from the promotionLot as well as the attributedTo', () => {
+      generator({
+        properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
+        promotions: {
+          _id: 'promotionId',
+          promotionLots: {
+            _id: 'lot1',
+            status: 'SOLD',
+            promotionOptions: { loan: { _id: 'loanId' } },
+            propertyLinks: [{ _id: 'prop1' }],
+            attributedTo: { _id: 'loanId' },
+          },
+          loans: { _id: 'loanId' },
+        },
+      });
+
+      PromotionService.removeUser({
+        promotionId: 'promotionId',
+        loanId: 'loanId',
+      });
+      const promotionLot = PromotionLotService.get('lot1');
+
+      expect(promotionLot.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
+      expect(promotionLot.attributedToLink).to.deep.equal({});
     });
   });
 
@@ -380,6 +441,234 @@ describe('PromotionService', function () {
         zipCode: 1400,
         canton: 'VD',
       });
+    });
+  });
+
+  describe('removeProUser', () => {
+    it('removes the pro from the promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotionId',
+          users: { _id: 'proId', _factory: 'pro' },
+        },
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+
+      PromotionService.removeProUser({
+        promotionId: 'promotionId',
+        userId: 'proId',
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+    });
+
+    it('does not fail if no loans are attributed to the pro', () => {
+      generator({
+        promotions: {
+          _id: 'promotionId',
+          users: { _id: 'proId', _factory: 'pro' },
+          loans: [{}, {}],
+        },
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+
+      PromotionService.removeProUser({
+        promotionId: 'promotionId',
+        userId: 'proId',
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+    });
+
+    it('only removes him from the current promotion', () => {
+      generator({
+        promotions: [
+          {
+            _id: 'promotionId',
+            users: { _id: 'proId', _factory: 'pro' },
+            loans: { _id: 'loanId', $metadata: { invitedBy: 'proId' } },
+          },
+          {
+            _id: 'promotionId2',
+            users: { _id: 'proId' },
+            loans: { _id: 'loanId2', $metadata: { invitedBy: 'proId' } },
+          },
+        ],
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+
+      PromotionService.removeProUser({
+        promotionId: 'promotionId',
+        userId: 'proId',
+      });
+
+      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+      expect(LoanService.findOne('loanId').promotionLinks[0].invitedBy).to.equal(undefined);
+      expect(LoanService.findOne('loanId2').promotionLinks[0].invitedBy).to.equal('proId');
+    });
+  });
+
+  describe('editPromotionLoan', () => {
+    it('updates showAllLots without overwriting other metadata', () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: {
+            _id: 'pLot1',
+            propertyLinks: [{ _id: 'prop' }],
+            promotionOptions: { _id: 'pOpt1' },
+          },
+          loans: {
+            _id: 'loanId',
+            $metadata: { showAllLots: true, priorityOrder: ['pOpt1'] },
+          },
+        },
+      });
+
+      const { loans: loans1 } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { _id: 1 },
+      });
+
+      expect(loans1[0].$metadata.showAllLots).to.equal(true);
+
+      expect(loans1[0].$metadata.priorityOrder).to.deep.equal(['pOpt1']);
+
+      PromotionService.editPromotionLoan({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: [],
+        showAllLots: false,
+      });
+
+      const { loans } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { _id: 1 },
+      });
+
+      expect(loans[0].$metadata.showAllLots).to.equal(false);
+      expect(loans[0].$metadata.priorityOrder).to.deep.equal(['pOpt1']);
+    });
+
+    it('adds new promotionOptions', () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [
+            {
+              _id: 'pLot1',
+              propertyLinks: [{ _id: 'prop' }],
+            },
+            {
+              _id: 'pLot2',
+              propertyLinks: [{ _id: 'prop' }],
+            },
+          ],
+          loans: { _id: 'loanId' },
+        },
+      });
+
+      const { loans: loans1 } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptionLinks: 1 },
+      });
+
+      expect(loans1[0].promotionOptionLinks.length).to.equal(0);
+
+      PromotionService.editPromotionLoan({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: ['pLot2'],
+      });
+
+      const { loans } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptions: { promotionLots: { _id: 1 } } },
+      });
+
+      expect(loans[0].promotionOptions.length).to.equal(1);
+      expect(loans[0].promotionOptions[0].promotionLots[0]._id).to.equal('pLot2');
+    });
+
+    it('removes any old promotionOptions', () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [
+            {
+              _id: 'pLot1',
+              propertyLinks: [{ _id: 'prop' }],
+              promotionOptions: { _id: 'pOpt1' },
+            },
+            {
+              _id: 'pLot2',
+              propertyLinks: [{ _id: 'prop' }],
+              promotionOptions: { _id: 'pOpt2' },
+            },
+          ],
+          loans: {
+            _id: 'loanId',
+            promotionOptions: [{ _id: 'pOpt1' }, { _id: 'pOpt2' }],
+          },
+        },
+      });
+
+      const { loans: loans1 } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptionLinks: 1 },
+      });
+
+      expect(loans1[0].promotionOptionLinks.length).to.equal(2);
+
+      PromotionService.editPromotionLoan({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: ['pLot2'],
+      });
+
+      const { loans } = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        loans: { promotionOptions: { promotionLots: { _id: 1 } } },
+      });
+
+      expect(loans[0].promotionOptions.length).to.equal(1);
+      expect(loans[0].promotionOptions[0].promotionLots[0]._id).to.equal('pLot2');
+    });
+
+    it('throws if one of the promotionOptions is attributed to this loan', () => {
+      generator({
+        properties: { _id: 'prop', name: 'lot 1' },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [
+            {
+              _id: 'pLot1',
+              propertyLinks: [{ _id: 'prop' }],
+              promotionOptions: { _id: 'pOpt1' },
+              attributedTo: {
+                _id: 'loanId',
+                promotionOptions: [{ _id: 'pOpt1' }],
+              },
+            },
+          ],
+          loans: { _id: 'loanId' },
+        },
+      });
+
+      expect(() =>
+        PromotionService.editPromotionLoan({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+          promotionLotIds: [],
+        })).to.throw('"lot 1"');
     });
   });
 });

@@ -11,7 +11,7 @@ const SideNavUser = ({
   currentUser,
   style,
   fixed,
-  toggleDrawer,
+  closeDrawer,
   history,
   loan,
 }) => {
@@ -41,34 +41,35 @@ const SideNavUser = ({
 
   return (
     <nav className={classnames({ 'side-nav-user': true, fixed })} style={style}>
-      <SideNavHeader />
+      <SideNavHeader closeDrawer={closeDrawer} />
       <div className="scrollable">
         {!!(loans && loans.length > 0) && (
           <LoanSelector
             history={history}
             currentUser={currentUser}
             value={loanId}
-            toggleDrawer={toggleDrawer}
+            closeDrawer={closeDrawer}
           />
         )}
-        {loanId && currentLoan && <LoanSideNav loan={loan} />}
+        {loanId && currentLoan && (
+          <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
+        )}
       </div>
     </nav>
   );
 };
 
 SideNavUser.propTypes = {
+  closeDrawer: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
   fixed: PropTypes.bool,
   history: PropTypes.object.isRequired,
   style: PropTypes.object,
-  toggleDrawer: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
   fixed: false,
   style: {},
-  toggleDrawer: () => {},
 };
 
 export default withRouter(SideNavUser);

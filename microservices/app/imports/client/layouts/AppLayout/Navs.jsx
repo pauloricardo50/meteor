@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
 
-import TopNav from 'core/components/TopNav';
+import AppTopNav from './AppTopNav';
 // import SearchModal from 'core/components/SearchModal';
 import PermanentSideNav from './PermanentSideNav';
 
@@ -17,23 +16,25 @@ export default class Navs extends Component {
       ? this.setState({ open: nextState })
       : this.setState(prev => ({ open: !prev.open })));
 
-  handleClickLink = () => Meteor.defer(() => this.setState({ open: false }));
-
   render() {
     const { open } = this.state;
-    const { showSideNav, currentUser } = this.props;
+    const { shouldShowSideNav, currentUser } = this.props;
 
     return (
       <div className="navs">
-        <TopNav
+        <AppTopNav
+          shouldShowSideNav={shouldShowSideNav}
           currentUser={currentUser}
-          public={false}
-          drawerState={open}
           toggleDrawer={this.handleToggle}
-          handleClickLink={this.handleClickLink}
         />
         <div className="permanent-side-nav">
-          {showSideNav && <PermanentSideNav {...this.props} />}
+          {shouldShowSideNav && (
+            <PermanentSideNav
+              open={open}
+              closeDrawer={() => this.handleToggle(false)}
+              {...this.props}
+            />
+          )}
         </div>
       </div>
     );
@@ -41,5 +42,5 @@ export default class Navs extends Component {
 }
 
 Navs.propTypes = {
-  showSideNav: PropTypes.bool.isRequired,
+  shouldShowSideNav: PropTypes.bool.isRequired,
 };

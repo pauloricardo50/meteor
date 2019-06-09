@@ -16,7 +16,8 @@ import {
   PRO_EMAIL_2,
   PRO_EMAIL_3,
   PRO_PASSWORD,
-} from '../constants';
+  ORG_NAME,
+} from '../proE2eConstants';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
@@ -39,7 +40,7 @@ Meteor.methods({
     });
     UserService.update({ userId: userId3, object: { roles: [ROLES.PRO] } });
     OrganisationService.insert({
-      name: 'Organisation 1',
+      name: ORG_NAME,
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
@@ -70,8 +71,11 @@ Meteor.methods({
       },
     });
   },
-  insertFullPromotion() {
-    createPromotionDemo(this.userId, false, false, 10);
+  async insertFullPromotion() {
+    await createPromotionDemo(this.userId, false, false, 10);
+  },
+  removeAllPromotions() {
+    PromotionService.remove({ promotionId: {} });
   },
   addProUsersToPromotion() {
     const { _id: userId } = UserService.findOne({
@@ -97,9 +101,10 @@ Meteor.methods({
       'emails.address': PRO_EMAIL,
     });
     const { _id: invitedBy } = UserService.findOne({ 'emails.address': email });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }) || [];
+    const promotions = PromotionService.find(
+      { 'userLinks._id': userId },
+      { fields: { _id: 1 } },
+    ).fetch() || [];
 
     promotions.forEach(({ _id: promotionId }) => {
       const loans = LoanService.find({}).fetch() || [];
@@ -116,9 +121,10 @@ Meteor.methods({
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }) || [];
+    const promotions = PromotionService.find(
+      { 'userLinks._id': userId },
+      { fields: { _id: 1 } },
+    ).fetch() || [];
 
     promotions.forEach(({ _id: promotionId }) =>
       PromotionService.setUserPermissions({ promotionId, userId, permissions }));
@@ -156,5 +162,11 @@ Meteor.methods({
 
     promotions.forEach(({ _id: promotionId }) =>
       PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+  },
+  editOrganisation({ ...organisation }) {
+    OrganisationService.baseUpdate({ name: ORG_NAME }, { $set: organisation });
+  },
+  updateAllLoans(loan) {
+    LoanService.baseUpdate({}, { $set: loan });
   },
 });

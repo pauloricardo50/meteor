@@ -7,8 +7,7 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
 import { loanDelete, loanUpdate, assignLoanToUser } from 'core/api';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import loanWithName from 'core/api/loans/queries/loanWithName';
-import message from 'core/utils/message';
+import { adminLoans } from 'core/api/loans/queries';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">
@@ -17,16 +16,21 @@ const ActionsTab = ({ loan }) => (
       schema={LoanSchema.pick('name')}
       model={loan}
       onSubmit={doc =>
-        loanWithName
-          .clone({ name: doc.name })
+        adminLoans
+          .clone({ name: doc.name, $body: { _id: 1 } })
           .fetchOneSync()
-          .then(result =>
-            (result
-              ? message.error('Ce numéro de dossier existe déjà')
-              : loanUpdate.run({
+          .then((result) => {
+            if (result) {
+              import('../../../../../core/utils/message').then(({ default: message }) => {
+                message.error('Ce numéro de dossier existe déjà');
+              });
+            } else {
+              loanUpdate.run({
                 loanId: loan._id,
                 object: pick(doc, ['name']),
-              })))
+              });
+            }
+          })
       }
     />
     <ConfirmMethod

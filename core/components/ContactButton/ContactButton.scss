@@ -3,6 +3,15 @@
   z-index: 20;
   right: 24px;
   bottom: 24px;
+
+  @include screen(med) {
+    right: 16px;
+    bottom: 16px;
+  }
+  @include screen(small) {
+    right: 8px;
+    bottom: 8px;
+  }
 }
 
 .contact-button-overlay {
@@ -12,6 +21,7 @@
   bottom: 72px;
 
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   justify-content: space-between;
 

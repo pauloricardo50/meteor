@@ -4,8 +4,9 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import PromotionOptionService from '../PromotionOptionService';
+import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
+import PromotionOptionService from '../PromotionOptionService';
 
 describe('PromotionOptionService', () => {
   beforeEach(() => {
@@ -19,15 +20,22 @@ describe('PromotionOptionService', () => {
     let promotionLotId;
 
     beforeEach(() => {
-      promotionLotId = Factory.create('promotionLot', { _id: 'lotId' })._id;
-      promotionId = Factory.create('promotion', { _id: 'promotion' })._id;
-      promotionOptionId = Factory.create('promotionOption')._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: [promotionOptionId] },
-        ],
-      })._id;
+      promotionId = 'promoId';
+      promotionLotId = 'pLotId';
+      promotionOptionId = 'pOptId';
+      loanId = 'loanId';
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: promotionId,
+          promotionLots: {
+            _id: promotionLotId,
+            propertyLinks: [{ _id: 'propId' }],
+            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+          },
+          loans: { _id: loanId },
+        },
+      });
     });
 
     it('Removes the promotionOption', () => {
@@ -46,23 +54,31 @@ describe('PromotionOptionService', () => {
       PromotionOptionService.remove({ promotionOptionId });
       const loan = LoanService.get(loanId);
       expect(loan.promotionLinks).to.deep.equal([
-        { _id: 'promotion', priorityOrder: [] },
+        { _id: promotionId, priorityOrder: [], showAllLots: true },
       ]);
     });
   });
 
   describe('insert', () => {
-    let promotionOptionId;
     let loanId;
     let promotionId;
     let promotionLotId;
 
     beforeEach(() => {
-      promotionLotId = Factory.create('promotionLot', { _id: 'lotId' })._id;
-      promotionId = Factory.create('promotion', { _id: 'promotion' })._id;
-      loanId = Factory.create('loan', {
-        promotionLinks: [{ _id: 'promotion', priorityOrder: [] }],
-      })._id;
+      promotionId = 'promoId';
+      promotionLotId = 'pLotId';
+      loanId = 'loanId';
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: promotionId,
+          promotionLots: {
+            _id: promotionLotId,
+            propertyLinks: [{ _id: 'propId' }],
+          },
+          loans: { _id: loanId, $metadata: { priorityOrder: [] } },
+        },
+      });
     });
 
     it('inserts a new promotionOption', () => {
@@ -93,13 +109,14 @@ describe('PromotionOptionService', () => {
     it('inserts the promotionOptionId at the end of the priorityOrder', () => {
       LoanService.remove(loanId);
       loanId = Factory.create('loan', {
-        promotionLinks: [{ _id: 'promotion', priorityOrder: ['test'] }],
+        promotionLinks: [{ _id: promotionId, priorityOrder: ['test'] }],
       })._id;
       let loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(1);
 
       const id = PromotionOptionService.insert({ promotionLotId, loanId });
       loan = LoanService.get(loanId);
+
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
       expect(loan.promotionLinks[0].priorityOrder[1]).to.equal(id);
     });
@@ -112,15 +129,26 @@ describe('PromotionOptionService', () => {
     let promotionLotId;
 
     beforeEach(() => {
-      promotionLotId = Factory.create('promotionLot', { _id: 'lotId' })._id;
-      promotionId = Factory.create('promotion', { _id: 'promotion' })._id;
-      promotionOptionId = Factory.create('promotionOption')._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: [promotionOptionId] },
-        ],
-      })._id;
+      promotionId = 'promoId';
+      promotionLotId = 'pLotId';
+      promotionOptionId = 'pOptId';
+      loanId = 'loanId';
+
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: promotionId,
+          loans: {
+            _id: loanId,
+            $metadata: { priorityOrder: [promotionOptionId] },
+          },
+          promotionLots: {
+            _id: promotionLotId,
+            propertyLinks: [{ _id: 'propId' }],
+            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+          },
+        },
+      });
     });
 
     it('does nothing if priority is already max', () => {
@@ -132,17 +160,24 @@ describe('PromotionOptionService', () => {
     });
 
     it('moves the promotionOption up by one', () => {
-      promotionOptionId = Factory.create('promotionOption')._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: ['test', promotionOptionId] },
-        ],
-      })._id;
-      PromotionOptionService.increasePriorityOrder({ promotionOptionId });
-      const loan = LoanService.get(loanId);
+      generator({
+        promotionOptions: {
+          _id: 'pOptId2',
+          promotionLots: { _id: promotionLotId },
+          loan: {
+            _id: 'loanId2',
+            promotionLinks: [
+              { _id: promotionId, priorityOrder: ['test', 'pOptId2'] },
+            ],
+          },
+        },
+      });
+      PromotionOptionService.increasePriorityOrder({
+        promotionOptionId: 'pOptId2',
+      });
+      const loan = LoanService.get('loanId2');
       expect(loan.promotionLinks[0].priorityOrder).to.deep.equal([
-        promotionOptionId,
+        'pOptId2',
         'test',
       ]);
     });
@@ -155,15 +190,26 @@ describe('PromotionOptionService', () => {
     let promotionLotId;
 
     beforeEach(() => {
-      promotionLotId = Factory.create('promotionLot', { _id: 'lotId' })._id;
-      promotionId = Factory.create('promotion', { _id: 'promotion' })._id;
-      promotionOptionId = Factory.create('promotionOption')._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: [promotionOptionId] },
-        ],
-      })._id;
+      promotionId = 'promoId';
+      promotionLotId = 'pLotId';
+      promotionOptionId = 'pOptId';
+      loanId = 'loanId';
+
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: promotionId,
+          loans: {
+            _id: loanId,
+            $metadata: { priorityOrder: [promotionOptionId] },
+          },
+          promotionLots: {
+            _id: promotionLotId,
+            propertyLinks: [{ _id: 'propId' }],
+            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+          },
+        },
+      });
     });
 
     it('does nothing if priority is already max', () => {
@@ -175,18 +221,25 @@ describe('PromotionOptionService', () => {
     });
 
     it('moves the promotionOption down by one', () => {
-      promotionOptionId = Factory.create('promotionOption')._id;
-      loanId = Factory.create('loan', {
-        promotionOptionLinks: [{ _id: promotionOptionId }],
-        promotionLinks: [
-          { _id: 'promotion', priorityOrder: [promotionOptionId, 'test'] },
-        ],
-      })._id;
-      PromotionOptionService.reducePriorityOrder({ promotionOptionId });
-      const loan = LoanService.get(loanId);
+      generator({
+        promotionOptions: {
+          _id: 'pOptId2',
+          promotionLots: { _id: promotionLotId },
+          loan: {
+            _id: 'loanId2',
+            promotionLinks: [
+              { _id: promotionId, priorityOrder: ['pOptId2', 'test'] },
+            ],
+          },
+        },
+      });
+      PromotionOptionService.reducePriorityOrder({
+        promotionOptionId: 'pOptId2',
+      });
+      const loan = LoanService.get('loanId2');
       expect(loan.promotionLinks[0].priorityOrder).to.deep.equal([
         'test',
-        promotionOptionId,
+        'pOptId2',
       ]);
     });
   });

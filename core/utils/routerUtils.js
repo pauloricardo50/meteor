@@ -20,7 +20,10 @@ export const createRoute = (
   const formattedReplacers = formatReplacerObject(replacers);
 
   return Object.keys(formattedReplacers).reduce(
-    (path, replacer) => path.replace(replacer, formattedReplacers[replacer]),
+    (path, replacer) =>
+      path
+        .replace(`${replacer}?`, formattedReplacers[replacer])
+        .replace(replacer, formattedReplacers[replacer]),
     wildcardPath,
   );
 };

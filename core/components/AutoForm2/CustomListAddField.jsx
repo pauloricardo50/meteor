@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import ListAddField from 'uniforms-material/ListAddField';
+
 import { iconMap as IconMap } from '../Icon/Icon';
 
 type CustomListAddFieldProps = {};

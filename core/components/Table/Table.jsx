@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import classnames from 'classnames';
-import MuiTable from '@material-ui/core/Table';
 
-import T from 'core/components/Translation';
-
+import T from '../Translation';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
 import { ORDER, sortData } from './tableHelpers';
+import TableCustom from './TableCustom';
 
 export default class Table extends Component {
   constructor(props) {
@@ -139,7 +137,7 @@ export default class Table extends Component {
 
     return (
       <div className={classnames('mui-table', className)} style={style}>
-        <MuiTable>
+        <TableCustom>
           <TableHeader
             columnOptions={columnOptions}
             sortable={sortable}
@@ -169,11 +167,11 @@ export default class Table extends Component {
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
           )}
-        </MuiTable>
+        </TableCustom>
         {data.length === 0 && (
           <h3
             className="secondary flex center"
-            style={{ width: '100%', padding: 32, boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: 16, boxSizing: 'border-box' }}
           >
             <T id="Table.empty" />
           </h3>

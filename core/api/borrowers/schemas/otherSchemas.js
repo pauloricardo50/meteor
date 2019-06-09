@@ -33,54 +33,30 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
 });
 
 export const personalInfoSchema = {
-  firstName: {
-    type: String,
-    optional: true,
-  },
-  lastName: {
-    type: String,
-    optional: true,
-  },
+  firstName: { type: String, optional: true },
+  lastName: { type: String, optional: true },
   gender: {
     type: String,
     optional: true,
     allowedValues: Object.values(GENDER),
     uniforms: { displayEmpty: false },
   },
-  // age: {
-  //   type: SimpleSchema.Integer,
-  //   optional: true,
-  //   min: 1,
-  //   max: 120,
-  // },
   birthDate: {
     type: Date,
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
   },
   ...address,
-  sameAddress: {
-    type: Boolean,
-    optional: true,
-  },
-  isSwiss: {
-    type: Boolean,
-    optional: true,
-  },
+  sameAddress: { type: Boolean, optional: true },
+  isSwiss: { type: Boolean, optional: true },
   residencyPermit: {
     type: String,
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
     uniforms: { displayEmpty: false },
   },
-  citizenship: {
-    type: String,
-    optional: true,
-  },
-  isUSPerson: {
-    type: Boolean,
-    optional: true,
-  },
+  citizenship: { type: String, optional: true },
+  isUSPerson: { type: Boolean, optional: true },
   civilStatus: {
     type: String,
     allowedValues: Object.values(CIVIL_STATUS),
@@ -93,23 +69,18 @@ export const personalInfoSchema = {
     min: 0,
     max: 20,
   },
-  company: {
-    type: String,
-    optional: true,
-  },
+  company: { type: String, optional: true },
 };
 
 export const financeInfoSchema = {
   salary: moneyField,
   netSalary: moneyField,
-  bonusExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
+  bonusExists: { type: Boolean, optional: true },
   bonus2015: moneyField,
   bonus2016: moneyField,
   bonus2017: moneyField,
   bonus2018: moneyField,
+  bonus2019: moneyField,
   [OWN_FUNDS_TYPES.BANK_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
@@ -117,22 +88,14 @@ export const financeInfoSchema = {
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
   [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
+  'otherIncome.$.comment': { type: String, optional: true },
   ...makeArrayOfObjectsSchema('otherFortune'),
   ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
+  'expenses.$.comment': { type: String, optional: true },
   ...makeArrayOfObjectsSchema('realEstate', Object.values(RESIDENCE_TYPE)),
-  'realEstate.$.loan': {
-    ...moneyField,
-    optional: false,
-  },
-  'realEstate.$.name': {
-    type: String,
-    optional: true,
-  },
-  'realEstate.$.income': {
-    ...moneyField,
-    optional: true,
-    defaultValue: 0,
-  },
+  'realEstate.$.loan': { ...moneyField, optional: false },
+  'realEstate.$.name': { type: String, optional: true },
+  'realEstate.$.income': { ...moneyField, optional: true, defaultValue: 0 },
 };
 
 export const ownCompaniesSchema = {

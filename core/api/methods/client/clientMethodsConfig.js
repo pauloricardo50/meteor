@@ -3,7 +3,6 @@ import { Method } from '../methods';
 import ClientEventService, {
   CALLED_METHOD,
 } from '../../events/ClientEventService';
-import message from '../../../utils/message';
 import { logError } from '../../slack/methodDefinitions';
 import { refetchQueries } from '../clientQueryManager';
 
@@ -22,7 +21,9 @@ const handleError = ({ config, params, result, error }) => {
         : '',
   });
 
-  message.error(error.reason || error.message, 8);
+  import('../../../utils/message').then(({ default: message }) => {
+    message.error(error.reason || error.message, 8);
+  });
 };
 
 const handleSuccess = (config, params) => {
@@ -45,4 +46,6 @@ Method.addAfterCall(({ config, params, result, error }) => {
 
 if (Meteor.isTest) {
   Method.isDebugEnabled = false;
+} else {
+  Method.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
 }

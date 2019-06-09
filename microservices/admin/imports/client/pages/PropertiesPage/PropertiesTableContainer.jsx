@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { IntlNumber } from 'core/components/Translation';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { withSmartQuery } from 'core/api';
-import adminProperties from 'core/api/properties/queries/adminProperties';
+import { adminProperties } from 'core/api/properties/queries';
 import { USERS_COLLECTION, PROPERTY_CATEGORY } from 'core/api/constants';
 import PropertyRelatedDoc from './PropertyRelatedDoc';
 
@@ -41,11 +41,11 @@ const mapProperty = history => ({
     ),
     {
       raw: createdAt && createdAt.getTime(),
-      label: moment(createdAt).format('D.M.YY à H:mm'),
+      label: moment(createdAt).fromNow(),
     },
     {
       raw: updatedAt && updatedAt.getTime(),
-      label: moment(updatedAt).fromNow(),
+      label: updatedAt ? moment(updatedAt).fromNow() : '-',
     },
     value,
     expertiseValue,

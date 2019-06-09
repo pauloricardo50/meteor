@@ -1,6 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import RecapSimple from './RecapSimple';
 import {
@@ -9,6 +11,7 @@ import {
   getStructureArray,
   getPropertyArray,
   getNotaryFeesArray,
+  getPremiumArray,
 } from './recapArrays';
 
 const arraySwitch = (props) => {
@@ -25,15 +28,17 @@ const arraySwitch = (props) => {
     return getPropertyArray(props);
   case 'notaryFees':
     return getNotaryFeesArray(props);
+  case 'premium':
+    return getPremiumArray(props);
   default:
     throw new Meteor.Error('Not a valid recap array');
   }
 };
 
-const Recap = (props) => {
+const Recap = ({ className, ...props }) => {
   const array = props.array || arraySwitch(props);
   return (
-    <div className="validator recap">
+    <div className={cx('validator recap', className)}>
       <RecapSimple {...props} array={array} />
     </div>
   );

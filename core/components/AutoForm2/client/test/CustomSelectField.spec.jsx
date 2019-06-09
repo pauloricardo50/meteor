@@ -72,6 +72,7 @@ describe('CustomSelectField', () => {
       });
     });
   });
+  
   context('with custom allowed values', () => {
     it('renders the select field', () => {
       const transform = value => `${value}-mec`;

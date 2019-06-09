@@ -1,11 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { localizationStartup } from 'core/utils/localization';
+import messagesFR from '../../../lang/fr.json';
 
-const setup = () => {
-  localizationStartup({ setupAccounts: false });
-};
+localizationStartup({ setupAccounts: false, messages: messagesFR });
 
-Meteor.startup(() => {
-  Meteor.microservice = 'www';
-  setup();
-});
+Meteor.microservice = 'www';

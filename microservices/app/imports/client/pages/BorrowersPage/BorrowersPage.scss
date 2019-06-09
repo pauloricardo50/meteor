@@ -10,6 +10,14 @@
   .tab-content {
     padding-top: 32px;
   }
+
+  .borrower-tab-labels {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    white-space: nowrap;
+  }
 }
 
 .borrower-finance-page {
@@ -304,6 +312,7 @@
     flex-direction: column;
 
     box-sizing: border-box;
+    padding: 0 8px;
 
     border-left: 1px $border-grey solid;
 

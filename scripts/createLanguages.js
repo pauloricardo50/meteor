@@ -23,9 +23,11 @@ const config = {
         'BorrowerRemover',
         'BorrowerReuser',
         'collections',
+        'CommissionRatesViewer',
         'ConditionsButton',
         'ConfirmMethod',
         'Contacts',
+        'EmailVerification',
         'Feedback',
         'FileAdder',
         'files',
@@ -33,18 +35,23 @@ const config = {
         'Forms',
         'Impersonation',
         'InterestRates',
+        'InterestsChart',
         'InterestsTable',
         'Irs10y',
         'Lenders',
         'LoginPage',
+        'MaxPropertyValue',
         'Microlocation',
         'offer',
         'OfferAdder',
         'PasswordChange',
         'PDF',
+        'ProCustomersTable',
         'Promotion',
         'PromotionLotPage',
+        'ProOrganisationUserAdder',
         'PropertyForm',
+        'RevenuesByStatus',
         'StatusIconTooltip',
         'steps',
         'Table',
@@ -56,6 +63,7 @@ const config = {
       id: 'app',
       path: __dirname + '/../microservices/app',
       exceptions: [
+        'AutoForm',
         'AccountPage',
         'AdminFilesTab',
         'AmortizationChart',
@@ -67,12 +75,14 @@ const config = {
         'ConditionsButton',
         'ConfirmMethod',
         'ContactButton',
+        'EmailVerification',
         'FileAdder',
         'files',
         'Financing',
         'Forms',
         'Impersonation',
         'LoginPage',
+        'MaxPropertyValue',
         'Microlocation',
         'MortgageNotesForm',
         'offer',
@@ -80,6 +90,7 @@ const config = {
         'PasswordResetPage',
         'Promotion',
         'PropertyForm',
+        'SimpleDashboardPage',
         'StatusIconTooltip',
         'steps',
         'Uploader',
@@ -93,16 +104,23 @@ const config = {
       exceptions: [
         'AccountPage',
         'collections',
+        'CommissionRatesViewer',
         'ConfirmMethod',
         'ContactButton',
+        'EmailVerification',
         'files',
         'Forms',
         'Impersonation',
         'LoginPage',
         'PasswordChange',
         'PasswordResetPage',
+        'ProCustomerAdder',
+        'ProCustomersTable',
+        'PropertiesTable',
         'Promotion',
         'PromotionLotPage',
+        'ProOrganisationUserAdder',
+        'RevenuesByStatus',
         'Uploader',
       ],
     },
@@ -145,6 +163,8 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
+    'PropertyCustomerAdder',
+    'ProPropertyPage',
   ],
 };
 
@@ -158,6 +178,11 @@ const findFilesWithExtension = (startPath, extension) => {
 
   const files = fs.readdirSync(startPath);
   for (let i = 0; i < files.length; i++) {
+    if (files[i] === 'core') {
+      // don't scan core directory, add those to exceptions
+      continue;
+    }
+
     const filename = path.join(startPath, files[i]);
     const stat = fs.lstatSync(filename);
 

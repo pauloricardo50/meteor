@@ -3,11 +3,11 @@
 // `loadOptions` prop & Select.Async and remove `options` and Select component
 // However, many tests are based on the `options` prop, so they should be refactored
 import React from 'react';
-import { withProps } from 'recompose';
+import { withProps, compose } from 'recompose';
 import uniq from 'lodash/uniq';
 import Select from 'react-select';
+import { injectIntl } from 'react-intl';
 
-import formatMessage from '../../../utils/intl';
 import T from '../../Translation';
 import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
 
@@ -24,8 +24,7 @@ const getValueTranslationIdForPath = (value, filterPath) => {
     return `TableFilters.noneLabels.${filterKey}`;
   }
 
-  const translationId = (['type', 'status'].includes(filterKey)
-      && `TaskStatusSetter.${value}`)
+  const translationId = (['type', 'status'].includes(filterKey) && `TaskStatusSetter.${value}`)
     || (filterKey === 'roles' && `roles.${value}`);
 
   if (!translationId) {
@@ -40,20 +39,21 @@ const getOptionLabelTranslation = (value, filterPath) => {
   return translationId ? <T id={translationId} /> : convertValueToString(value);
 };
 
-export const getOptionValueTranslation = (value, filterPath) => {
+const getOptionValueTranslation = (value, filterPath, formatMessage) => {
   const translationId = getValueTranslationIdForPath(value, filterPath);
-  return translationId ? formatMessage(translationId) : value;
+  return translationId ? formatMessage({ id: translationId }) : value;
 };
 
-const getSelectOption = (value, filterPath) => ({
+const getSelectOption = (value, filterPath, formatMessage) => ({
   label: getOptionLabelTranslation(value, filterPath),
-  value: getOptionValueTranslation(value, filterPath),
+  value: getOptionValueTranslation(value, filterPath, formatMessage),
 });
 
-const getSelectOptions = (filterValue, filterPath) =>
+const getSelectOptions = (filterValue, filterPath, formatMessage) =>
   (isEmptyFilterValue(filterValue)
     ? []
-    : filterValue.map(value => getSelectOption(value, filterPath)));
+    : filterValue.map(value =>
+      getSelectOption(value, filterPath, formatMessage)));
 
 const undefinedValuesExist = values => values.some(isUndefinedValue);
 
@@ -62,7 +62,7 @@ const removeUndefinedValues = values =>
 
 const isPromise = value => value && value.constructor === Promise;
 
-const createSelectOptionsForColumn = (value, filterPath) => {
+const createSelectOptionsForColumn = (value, filterPath, formatMessage) => {
   if (isPromise(value)) {
     return undefined;
   }
@@ -80,52 +80,82 @@ const createSelectOptionsForColumn = (value, filterPath) => {
   }
 
   return uniqueOptionValues.map(optionValue =>
-    getSelectOption(optionValue, filterPath));
+    getSelectOption(optionValue, filterPath, formatMessage));
 };
 
-const makeAsyncOptionsLoader = (promisedValue, filterPath) => () =>
+const makeAsyncOptionsLoader = (
+  promisedValue,
+  filterPath,
+  formatMessage,
+) => () =>
   promisedValue.then(value => ({
-    options: createSelectOptionsForColumn(value, filterPath),
+    options: createSelectOptionsForColumn(value, filterPath, formatMessage),
     complete: true,
   }));
 
 // get the untranslated value by finding the original value of which
 // translation is the same
-const getUntranslatedValue = (translation, filterOptions, filterPath) =>
-  filterOptions.find(value => translation === getOptionValueTranslation(value, filterPath));
+const getUntranslatedValue = (
+  translation,
+  filterOptions,
+  filterPath,
+  formatMessage,
+) =>
+  filterOptions.find(value =>
+    translation
+      === getOptionValueTranslation(value, filterPath, formatMessage));
 
 // Returns the untranslated values of the given dropdown options.
 // The dropdown options are an array of label/value pair objects,
 // and their value is translated, so we find & return
 //  their untranslated corresponding values
-const getUntranslatedValues = (translatedValues, filterOptions, filterPath) =>
+const getUntranslatedValues = (
+  translatedValues,
+  filterOptions,
+  filterPath,
+  formatMessage,
+) =>
   // promisify `filterOptions` because it can be either an array of a Promise
   Promise.resolve(filterOptions).then(resolvedFilterOptions =>
     translatedValues.map(translation =>
-      getUntranslatedValue(translation, resolvedFilterOptions, filterPath)));
+      getUntranslatedValue(
+        translation,
+        resolvedFilterOptions,
+        filterPath,
+        formatMessage,
+      )));
 
-export default withProps((props) => {
-  const {
-    onChange,
-    filter: { path: filterPath, value: filterValue },
-    options: filterOptions,
-  } = props;
+export default compose(
+  injectIntl,
+  withProps((props) => {
+    const {
+      onChange,
+      filter: { path: filterPath, value: filterValue },
+      options: filterOptions,
+      intl: { formatMessage },
+    } = props;
 
-  return {
-    filterKey: getFilterKeyFromPath(filterPath),
-    value: getSelectOptions(filterValue, filterPath),
-    options: createSelectOptionsForColumn(filterOptions, filterPath),
-    loadOptions: isPromise(filterOptions)
-      ? makeAsyncOptionsLoader(filterOptions, filterPath)
-      : undefined,
-    SelectComponent: isPromise(filterOptions) ? Select.Async : Select,
-    onChange: (selectedOptions) => {
-      const selectedOptionValues = selectedOptions.map(({ value }) => value);
-      getUntranslatedValues(
-        selectedOptionValues,
+    return {
+      filterKey: getFilterKeyFromPath(filterPath),
+      value: getSelectOptions(filterValue, filterPath, formatMessage),
+      options: createSelectOptionsForColumn(
         filterOptions,
         filterPath,
-      ).then(onChange);
-    },
-  };
-});
+        formatMessage,
+      ),
+      loadOptions: isPromise(filterOptions)
+        ? makeAsyncOptionsLoader(filterOptions, filterPath, formatMessage)
+        : undefined,
+      SelectComponent: isPromise(filterOptions) ? Select.Async : Select,
+      onChange: (selectedOptions) => {
+        const selectedOptionValues = selectedOptions.map(({ value }) => value);
+        getUntranslatedValues(
+          selectedOptionValues,
+          filterOptions,
+          filterPath,
+          formatMessage,
+        ).then(onChange);
+      },
+    };
+  }),
+);

@@ -1,14 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { Loans } from '..';
-import { loanIsVerified } from '../../utils/loanFunctions';
 import { getCollectionNameFromIdField } from '../helpers';
 import { TASK_TYPE, FILE_STATUS } from '../constants';
-
-const verifyTaskValidation = ({ loanId }) => {
-  const loan = Loans.findOne(loanId);
-  return loanIsVerified({ loan });
-};
 
 // check if the file related to the input task has been validated or invalidated
 const userAddedFileTaskValidation = ({
@@ -47,7 +40,8 @@ export const validateTask = (task) => {
 
   switch (task.type) {
   case TASK_TYPE.VERIFY: {
-    return verifyTaskValidation(task);
+    // TODO
+    return false;
   }
   case TASK_TYPE.LENDER_CHOSEN: {
     return lenderChosenTaskValidation(task);

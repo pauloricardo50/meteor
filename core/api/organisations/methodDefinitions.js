@@ -48,3 +48,11 @@ export const removeUserFromOrganisation = new Method({
     userId: String,
   },
 });
+
+export const setCommissionRates = new Method({
+  name: 'setCommissionRates',
+  params: {
+    organisationId: String,
+    commissionRates: Array,
+  },
+});

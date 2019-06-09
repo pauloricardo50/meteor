@@ -1,53 +1,72 @@
 export const testErrors = {
   missingKey: (key, parentKey) => `Missing key ${key} from object ${parentKey}`,
-  shouldBeArray: key => `Object key ${key} must be an array.`,
-  shouldBeObject: key => `Object key ${key} must be an object.`,
+  shouldBeArray: key => `Object key ${key} must be an array`,
+  shouldBeObject: key => `Object key ${key} must be an object`,
   emptyArray: (key, parentKey) =>
     `Array at object key ${key} in ${parentKey} should not be empty`,
 };
 
-export const makeCheckObjectStructure = (errors) => {
-  const checkObjectStructure = ({ obj, template, parentKey }) =>
-    Object.keys(template).forEach((key) => {
-      if (obj[key] === undefined) {
-        if (typeof template[key] === 'object' && template[key].$or) {
-          if (!obj[template[key].$or]) {
-            throw errors.missingKey(key, parentKey || '');
+export const makeCheckObjectStructure = (errorMessages = testErrors) => {
+  const {
+    missingKey,
+    shouldBeArray,
+    shouldBeObject,
+    emptyArray,
+  } = errorMessages;
+  let errors = [];
+
+  const checkObjectStructure = ({ obj, template, parentKey }) => {
+    const checkTemplate = (subObj, subTemplate, subParentKey) =>
+      Object.keys(subTemplate).forEach((key) => {
+        if (subObj[key] === undefined) {
+          if (typeof subTemplate[key] === 'object' && subTemplate[key].$or) {
+            if (!subObj[subTemplate[key].$or]) {
+              errors.push(missingKey(key, subParentKey || ''));
+              return;
+            }
+          } else {
+            errors.push(missingKey(key, subParentKey || ''));
+            return;
           }
-        } else {
-          throw errors.missingKey(key, parentKey || '');
-        }
-      }
-
-      if (Array.isArray(template[key])) {
-        if (!Array.isArray(obj[key])) {
-          throw errors.shouldBeArray(key);
-        }
-        if (template[key].length > 0 && obj[key].length === 0) {
-          throw errors.emptyArray(key, parentKey);
         }
 
-        if (
-          template[key].length > 0
-          && typeof template[key][0] === 'object'
-          && !Array.isArray(template[key][0])
+        if (Array.isArray(subTemplate[key])) {
+          if (!Array.isArray(subObj[key])) {
+            errors.push(shouldBeArray(key));
+          }
+          if (subTemplate[key].length > 0 && subObj[key].length === 0) {
+            errors.push(emptyArray(key, subParentKey));
+          }
+
+          if (
+            subTemplate[key].length > 0
+            && typeof subTemplate[key][0] === 'object'
+            && !Array.isArray(subTemplate[key][0])
+          ) {
+            subObj[key].forEach(object =>
+              checkTemplate(object, subTemplate[key][0]));
+          }
+        } else if (
+          typeof subTemplate[key] === 'object'
+          && !Object.keys(subTemplate[key]).includes('$or')
         ) {
-          obj[key].forEach(object =>
-            checkObjectStructure({ obj: object, template: template[key][0] }));
+          if (typeof subObj[key] !== 'object' || Array.isArray(subObj[key])) {
+            errors.push(shouldBeObject(key));
+          } else {
+            checkTemplate(subObj[key], subTemplate[key], key);
+          }
         }
-      } else if (
-        typeof template[key] === 'object'
-        && !Object.keys(template[key]).includes('$or')
-      ) {
-        if (typeof obj[key] !== 'object' || Array.isArray(obj[key])) {
-          throw errors.shouldBeObject(key);
-        }
-        checkObjectStructure({
-          obj: obj[key],
-          template: template[key],
-          parentKey: key,
-        });
-      }
-    });
+      });
+
+    checkTemplate(obj, template, parentKey);
+
+    if (errors.length) {
+      const errorMessage = errors.join(', ');
+      errors = [];
+      throw errorMessage;
+    }
+
+    errors = [];
+  };
   return checkObjectStructure;
 };

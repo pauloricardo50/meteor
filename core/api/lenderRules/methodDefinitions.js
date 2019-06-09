@@ -40,3 +40,10 @@ export const lenderRulesUpdateFilter = new Method({
     name: Match.Optional(String),
   },
 });
+
+export const setLenderRulesOrder = new Method({
+  name: 'setLenderRulesOrder',
+  params: {
+    orders: Object,
+  },
+});

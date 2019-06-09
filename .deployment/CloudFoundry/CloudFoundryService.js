@@ -37,6 +37,12 @@ class CloudFoundryService {
         logError(`Deployment failed ! Reason: ${error}`);
         throw new Error(error);
       });
+
+  checkUserIsLoggedIn = () =>
+    executeCommand(cloudFoundryCommands.getOauthToken()).catch(error => {
+      logError('Please login using "cf login --sso"');
+      throw new Error(error);
+    });
 }
 
 export default new CloudFoundryService();

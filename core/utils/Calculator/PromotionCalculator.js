@@ -1,6 +1,5 @@
 import pick from 'lodash/pick';
 
-import { FinanceCalculator } from '../FinanceCalculator';
 import { PROMOTION_TYPES, PURCHASE_TYPE } from '../../api/constants';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
@@ -71,6 +70,8 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return;
       }
 
+      const property = promotionOption.promotionLots[0].properties[0];
+
       return {
         // Get the address from the promotion
         ...pick(promotionOption.promotion, [
@@ -80,7 +81,8 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
           'city',
         ]),
         ...promotionOption,
-        ...promotionOption.promotionLots[0].properties[0],
+        ...property,
+        totalValue: promotionOption.value,
       };
     }
 
@@ -104,7 +106,3 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       return promotion.type === PROMOTION_TYPES.SHARE;
     }
   };
-
-export const PromotionCalculator = withPromotionCalculator(FinanceCalculator);
-
-export default new PromotionCalculator({});

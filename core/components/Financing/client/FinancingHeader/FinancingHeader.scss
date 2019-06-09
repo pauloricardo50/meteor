@@ -38,7 +38,7 @@
     padding: 0;
   }
 
-  > * {
+   > * {
     padding: 0;
   }
 
@@ -77,5 +77,13 @@
     height: 100%;
 
     border: unset;
+
+     > * {
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-around;
+
+      width: 100%;
+    }
   }
 }

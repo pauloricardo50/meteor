@@ -1,13 +1,21 @@
 import { Mongo } from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
-import { address } from '../helpers/sharedSchemas';
 
+import SimpleSchema from 'simpl-schema';
+
+import {
+  address,
+  percentageField,
+  moneyField,
+  documentsField,
+} from '../helpers/sharedSchemas';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
   ORGANISATION_TAGS,
 } from './organisationConstants';
+
+// console.trace();
 
 const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
 
@@ -24,7 +32,11 @@ Organisations.allow({
 });
 
 export const OrganisationSchema = new SimpleSchema({
-  name: { type: String, uniforms: { placeholder: 'Crédit Suisse' } },
+  name: {
+    type: String,
+    uniforms: { placeholder: 'Crédit Suisse' },
+    unique: true,
+  },
   type: {
     type: String,
     allowedValues: Object.values(ORGANISATION_TYPES),
@@ -48,7 +60,7 @@ export const OrganisationSchema = new SimpleSchema({
   contactIds: { type: Array, defaultValue: [] },
   'contactIds.$': Object,
   'contactIds.$._id': { type: String, optional: true },
-  'contactIds.$.role': { type: String, optional: true },
+  'contactIds.$.title': { type: String, optional: true },
   'contactIds.$.useSameAddress': { type: Boolean, optional: true },
   tags: {
     type: Array,
@@ -60,7 +72,15 @@ export const OrganisationSchema = new SimpleSchema({
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
   'userLinks.$._id': { type: String, optional: true },
-  'userLinks.$.role': { type: String, optional: true },
+  'userLinks.$.title': { type: String, optional: true },
+  'userLinks.$.isMain': { type: Boolean, optional: true },
+  'userLinks.$.shareCustomers': { type: Boolean, optional: true },
+  commissionRates: { type: Array, defaultValue: [] },
+  'commissionRates.$': Object,
+  'commissionRates.$.rate': percentageField,
+  'commissionRates.$.threshold': moneyField,
+  documents: documentsField,
+  lenderRulesCount: { type: Number, optional: true },
 });
 
 Organisations.attachSchema(OrganisationSchema);

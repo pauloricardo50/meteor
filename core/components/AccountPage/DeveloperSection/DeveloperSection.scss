@@ -1,22 +1,85 @@
 .developper-section {
-  padding: 16px;
   margin-top: 16px;
+  padding: 16px;
 
-  .api-token-generator {
+  .api-keyPair-generator {
     display: flex;
-    align-items: center;
-    flex-direction: row;
+    align-items: flex-start;
+    flex-direction: column;
+
+    width: 100%;
     margin-top: 8px;
 
-    #apiToken {
-      padding: 4px;
-      border-radius: 4px;
-      background-color: rgba(241, 241, 241, 0.5);
+    .key {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      padding: 8px;
+
+      > * {
+        margin-right: 16px;
+      }
+
+      .icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .public-key-icon {
+        color: $success;
+      }
+
+      .private-key-icon {
+        color: $error;
+      }
+
+      .key-infos {
+        display: flex;
+        flex-direction: column;
+
+        > * {
+          margin: 0;
+        }
+      }
+    }
+
+    .empty-state {
+      align-self: center;
+    }
+
+    .generate-key-pair {
+      margin: 8px;
     }
 
     > * {
-      margin: 0;
-      margin-right: 16px;
+      padding: 20px;
+    }
+
+    .rsa-key {
+      overflow-y: hidden;
+
+      width: 400px;
+      height: auto;
+      min-height: 250px;
+      margin-top: 16px;
+      padding: 8px;
+
+      resize: none;
+
+      border-radius: 4px;
+      background-color: rgba(241, 241, 241, 0.5);
+
+      line-height: 1.5em;
+    }
+
+    .rsa-key-warning {
+      width: 400px;
+      padding: 8px;
+
+      color: $error;
+      border: 1px solid $error;
+      border-radius: 4px;
     }
   }
 }

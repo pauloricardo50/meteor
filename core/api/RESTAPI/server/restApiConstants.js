@@ -17,16 +17,21 @@ export const REST_API_ERRORS = {
   WRONG_AUTHORIZATION_TYPE: {
     status: HTTP_STATUS_CODES.BAD_REQUEST,
     errorName: 'WRONG_AUTHORIZATION_TYPE',
-    message: 'Authorization must be of type Bearer Token',
+    message: "Authorization must be of type 'EPOTEK PublicKey:Signature'",
   },
   AUTHORIZATION_FAILED: {
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
-    message: 'Wrong token',
+    message: 'Wrong public key or signature.',
   },
   UNKNOWN_ENDPOINT: ({ path, method }) => ({
     status: HTTP_STATUS_CODES.NOT_FOUND,
     errorName: 'UNKNOWN_ENDPOINT',
     message: `The endpoint ${method} ${path} is not valid`,
   }),
+  REPLAY_ATTACK_ATTEMPT: {
+    status: HTTP_STATUS_CODES.FORBIDDEN,
+    errorName: 'REPLAY_ATTACK_ATTEMPT',
+    message: 'A replay attack has been detected. Please use a correct timestamp and a different nonce.',
+  },
 };

@@ -1,10 +1,16 @@
-import { compose, mapProps } from 'recompose';
-import query from 'core/api/loans/queries/adminLoan';
-import loanFiles from 'core/api/loans/queries/loanFiles';
+import { compose, mapProps, branch, renderComponent } from 'recompose';
+
+import { adminLoans as query } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api';
-import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import interestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
+import {
+  injectCalculator,
+  withCalculator,
+} from 'core/containers/withCalculator';
+import updateForProps from 'core/containers/updateForProps';
+import { LOAN_CATEGORIES } from 'core/api/constants';
+import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
 const withInterestRates = withSmartQuery({
   query: interestRates,
@@ -15,17 +21,14 @@ const withInterestRates = withSmartQuery({
 });
 
 export default compose(
+  updateForProps(['match.params.loanId']),
   withSmartQuery({
     query,
-    params: ({ match }) => ({ loanId: match.params.loanId }),
+    params: ({ match }) => ({ _id: match.params.loanId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'loan',
   }),
-  mergeFilesIntoLoanStructure(
-    loanFiles,
-    ({ loan: { _id: loanId } }) => ({ loanId }),
-    'loan',
-  ),
+  injectCalculator(),
   withTranslationContext(({ loan = {} }) => ({
     purchaseType: loan.purchaseType,
   })),
@@ -34,4 +37,9 @@ export default compose(
     ...props,
     loan: { ...loan, currentInterestRates: currentInterestRates.averageRates },
   })),
+  withCalculator,
+  branch(
+    ({ loan: { category } }) => category === LOAN_CATEGORIES.PREMIUM,
+    renderComponent(PremiumSingleLoanPage),
+  ),
 );

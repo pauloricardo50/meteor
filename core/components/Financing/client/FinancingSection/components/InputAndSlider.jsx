@@ -33,7 +33,7 @@ export const InputAndSlider = ({
       model={{ [id]: value }}
       autosave
       autosaveDelay={500}
-        disabled={props.structure.disableForms}
+      disabled={props.structure.disableForms}
     >
       <InputAndSliderField name={id} {...props} />
     </AutoForm>

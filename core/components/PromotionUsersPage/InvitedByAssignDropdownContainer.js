@@ -1,6 +1,6 @@
 import { withProps } from 'recompose';
 import { loanUpdatePromotionInvitedBy } from '../../api';
-import { getUserNameAndOrganisation } from '../../api/promotions/promotionClientHelpers';
+import { getUserNameAndOrganisation } from '../../api/helpers';
 
 const getMenuItems = ({
   promotionUsers = [],

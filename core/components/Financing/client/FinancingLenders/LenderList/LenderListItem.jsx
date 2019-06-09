@@ -14,11 +14,13 @@ const LenderListItem = ({
   return (
     <div className="lender-list-item">
       <h4>{name}</h4>
-      <LenderListItemRules
-        organisation={organisation}
-        loan={loan}
-        structureId={structureId}
-      />
+      <div>
+        <LenderListItemRules
+          organisation={organisation}
+          loan={loan}
+          structureId={structureId}
+        />
+      </div>
     </div>
   );
 };

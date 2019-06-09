@@ -1,0 +1,65 @@
+.pro-property-page {
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    h1,
+    h3 {
+      margin: 0 8px;
+    }
+
+     > * {
+      margin-right: 8px !important;
+    }
+
+    &-buttons > * {
+      margin-right: 8px !important;
+    }
+  }
+
+   > * {
+    margin-bottom: 16px;
+  }
+
+  .customers-table {
+    .customers-table-header {
+      align-items: center;
+      justify-content: space-between;
+
+       > * {
+        margin: 0;
+        margin-left: 8px;
+      }
+    }
+
+    &-solvency {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+
+  .users-table {
+    .users-table-header {
+      align-items: center;
+      justify-content: space-between;
+
+       > * {
+        margin: 0;
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+.user-list {
+  width: 500px;
+  .user {
+    width: 100%;
+  }
+}

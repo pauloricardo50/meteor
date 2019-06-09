@@ -10,7 +10,7 @@ import List, {
 import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button/Button';
 import T from 'core/components/Translation';
-import { getUserNameAndOrganisation } from 'imports/core/api/promotions/promotionClientHelpers';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 
 type PromotionProUserAdderProps = {

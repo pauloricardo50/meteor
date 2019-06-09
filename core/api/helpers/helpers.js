@@ -74,3 +74,59 @@ export const flattenObject = (object, delimiter) => {
 
   return flattened;
 };
+
+export const getUserOrganisationName = ({ user }) => {
+  const { organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName;
+};
+
+export const getUserNameAndOrganisation = ({ user }) => {
+  const { name, organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName ? `${name} (${organisationName})` : name;
+};
+
+const isReferredByOrganisation = ({ organisations, referredByOrganisation }) =>
+  organisations.some(({ _id }) => referredByOrganisation._id === _id);
+const isReferredByOrganisationUser = ({ organisationUsers, referredByUser }) =>
+  organisationUsers.some(({ _id }) => referredByUser._id === _id);
+
+export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
+  if (!user) {
+    return { raw: null, label: '' };
+  }
+
+  const { organisations = [] } = proUser;
+  const organisationUsers = organisations.length ? organisations[0].users : [];
+  const { referredByUser = {}, referredByOrganisation = {} } = user;
+
+  let label = 'Déjà référé';
+
+  if (
+    isAdmin
+    || isReferredByOrganisation({ organisations, referredByOrganisation })
+    || isReferredByOrganisationUser({ organisationUsers, referredByUser })
+  ) {
+    label = getUserNameAndOrganisation({ user: referredByUser });
+  }
+
+  return { raw: referredByUser.name, label };
+};
+
+export const sortObject = (object) => {
+  if (!object || typeof object !== 'object' || object instanceof Array) {
+    return object;
+  }
+
+  const sortedObject = {};
+  const keys = Object.keys(object);
+
+  keys.sort();
+
+  keys.forEach((key) => {
+    sortedObject[key] = sortObject(object[key]);
+  });
+
+  return sortedObject;
+};

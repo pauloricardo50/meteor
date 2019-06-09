@@ -19,7 +19,7 @@ const emailConfigs = {};
 const emailDefaults = {
   allowUnsubscribe: false,
   footerType: FOOTER_TYPES.USER,
-  createIntlValues: () => ({ variables: [] }),
+  createIntlValues: params => ({ variables: [], ...params }),
 };
 
 /**
@@ -190,6 +190,7 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       (params.promotion.assignedEmployee
         && params.promotion.assignedEmployee.phoneNumbers[0])
       || EPOTEK_PHONE,
+    invitedBy: params.invitedBy || 'e-Potek',
   }),
 });
 
@@ -212,8 +213,70 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
+      bccAddress: assigneeAddress,
     };
   },
-  createIntlValues: params => params,
 });
+
+// Required params:
+// proName
+// address
+// ctaUrl
+addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROPERTY, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ ctaUrl }, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: ctaUrl },
+      ],
+    };
+  },
+});
+
+// Required params
+// proName
+addEmailConfig(EMAIL_IDS.REFER_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ ctaUrl, ...rest }, { title, body, cta, ...rest2 }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: ctaUrl },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.FIND_LENDER_NOTIFICATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ loanId }, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        {
+          name: variables.CTA_URL,
+          content: `${CTA_URL_DEFAULT}/loans/${loanId}/financing`,
+        },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
 export default emailConfigs;

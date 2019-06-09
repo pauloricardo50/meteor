@@ -30,3 +30,17 @@ export const PENSION_INCOME_CONSIDERATION = 1;
 export const REAL_ESTATE_INCOME_CONSIDERATION = 1;
 export const INVESTMENT_INCOME_CONSIDERATION = 1;
 export const FORTUNE_RETURNS_RATIO = 0;
+export const ESTIMATED_COMMISSION = 0.01;
+export const REFERRAL_COMMISSION = 0.25;
+export const REFERRAL_COMMISSION_SPLIT = 0.5;
+// Add extra 1 so that rounding errors don't break the comparison
+// f.ex: ???
+export const OWN_FUNDS_ROUNDING_AMOUNT = 1001;
+export const BONUS_ALGORITHMS = {
+  AVERAGE: 'AVERAGE',
+  WEAK_AVERAGE: 'WEAK_AVERAGE',
+};
+export const REAL_ESTATE_INCOME_ALGORITHMS = {
+  DEFAULT: 'DEFAULT',
+  POSITIVE_NEGATIVE_SPLIT: 'POSITIVE_NEGATIVE_SPLIT',
+};

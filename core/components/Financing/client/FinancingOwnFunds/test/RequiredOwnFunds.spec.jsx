@@ -5,9 +5,9 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import StatusIcon from '../../../../StatusIcon';
-import { RequiredOwnFundsBody } from '../RequiredOwnFunds';
-import { ROUNDING_AMOUNT } from '../RequiredOwnFunds';
+import RequiredOwnFundsBody from '../RequiredOwnFundsBody';
 import { SUCCESS, ERROR } from '../../../../../api/constants';
+import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../../../../config/financeConstants';
 
 describe('RequiredOwnFunds', () => {
   let props;
@@ -26,7 +26,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows valid when value is rounding amount', () => {
-    props.value = ROUNDING_AMOUNT;
+    props.value = OWN_FUNDS_ROUNDING_AMOUNT;
     expect(component()
       .find('.text')
       .children()
@@ -35,7 +35,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows valid when value is negative rounding amount', () => {
-    props.value = -ROUNDING_AMOUNT;
+    props.value = -OWN_FUNDS_ROUNDING_AMOUNT;
     expect(component()
       .find('.text')
       .children()
@@ -44,7 +44,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows too low allocated own funds if value is high', () => {
-    props.value = ROUNDING_AMOUNT + 1000;
+    props.value = OWN_FUNDS_ROUNDING_AMOUNT + 1000;
     expect(component()
       .find('.text')
       .children()
@@ -53,7 +53,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows too much allocated own funds if value is high', () => {
-    props.value = -ROUNDING_AMOUNT - 1000;
+    props.value = -OWN_FUNDS_ROUNDING_AMOUNT - 1000;
     expect(component()
       .find('.text')
       .children()
@@ -69,7 +69,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows success icon when value is invalid', () => {
-    props.value = ROUNDING_AMOUNT + 1000;
+    props.value = OWN_FUNDS_ROUNDING_AMOUNT + 1000;
     expect(component()
       .find(StatusIcon)
       .first()
@@ -77,7 +77,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows valid when value is -rounding plus a sub-1 amount', () => {
-    props.value = -ROUNDING_AMOUNT + 0.5;
+    props.value = -OWN_FUNDS_ROUNDING_AMOUNT + 0.5;
     expect(component()
       .find('.text')
       .children()
@@ -86,7 +86,7 @@ describe('RequiredOwnFunds', () => {
   });
 
   it('shows valid when value is rounding minus a sub-1 amount', () => {
-    props.value = ROUNDING_AMOUNT - 0.5;
+    props.value = OWN_FUNDS_ROUNDING_AMOUNT - 0.5;
     expect(component()
       .find('.text')
       .children()

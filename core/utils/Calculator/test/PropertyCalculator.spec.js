@@ -17,7 +17,7 @@ describe('PropertyCalculator', () => {
         structure: { property },
         borrowers: [{}],
         properties: [property],
-        logic: { step: STEPS.PREPARATION },
+        step: STEPS.SOLVENCY,
       },
     };
   });
@@ -34,7 +34,9 @@ describe('PropertyCalculator', () => {
         address1: 'yo',
         city: 'Genève',
         zipCode: 1000,
+        canton: 'GE',
         constructionYear: 2000,
+        numberOfFloors: 3,
         roomCount: 2,
         minergie: '',
         qualityProfileCondition: 1,
@@ -66,9 +68,7 @@ describe('PropertyCalculator', () => {
 
     it('returns 1/6 if one document is provided', () => {
       params.loan.structure.property = {
-        documents: {
-          [PROPERTY_DOCUMENTS.PROPERTY_PLANS]: [{}],
-        },
+        documents: { [PROPERTY_DOCUMENTS.PROPERTY_PLANS]: [{}] },
         _id: 'propertyId',
       };
       expect(Calculator.getPropertyFilesProgress(params)).to.deep.equal({
@@ -86,8 +86,10 @@ describe('PropertyCalculator', () => {
         'isCoproperty',
         'copropertyPercentage',
         'address1',
-        'city',
         'zipCode',
+        'city',
+        'canton',
+        'numberOfFloors',
         'constructionYear',
         'roomCount',
         'minergie',

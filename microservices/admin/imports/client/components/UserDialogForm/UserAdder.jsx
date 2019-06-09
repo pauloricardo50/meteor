@@ -20,6 +20,7 @@ const UserAdder = ({
   labels,
 }: UserAdderProps) => (
   <AutoFormDialog
+    title={<T id="UserAdder.buttonLabel" />}
     schema={schema.extend(new SimpleSchema({
       sendEnrollmentEmail: {
         type: Boolean,

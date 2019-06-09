@@ -3,6 +3,8 @@
 import { addLocaleData } from 'react-intl';
 import moment from 'moment';
 import fr from 'react-intl/locale-data/fr';
+import translateSimpleSchema from './simpleSchemaLocalization';
+import Intl from '../intl';
 
 export const getUserLocale = () => 'fr-CH';
 
@@ -96,11 +98,16 @@ const setupMoment = () => {
   });
 };
 
-export const localizationStartup = ({ setupAccounts = true } = {}) => {
+export const localizationStartup = ({
+  setupAccounts = true,
+  messages,
+} = {}) => {
   // Add locales used in app here
+  Intl.init(messages);
   addLocaleData(fr);
   setupMoment();
   moment.locale('fr');
+  translateSimpleSchema();
 
   if (setupAccounts) {
     const { T9n } = require('meteor-accounts-t9n');

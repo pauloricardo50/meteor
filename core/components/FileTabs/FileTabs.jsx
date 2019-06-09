@@ -4,22 +4,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 
 import Tabs from 'core/components/Tabs';
+import VerticalAligner from 'core/components/VerticalAligner';
 import Calculator from 'core/utils/Calculator';
-
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
 import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
-import Loading from '../Loading';
 import T from '../Translation';
 
-const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
-  if (!loan.documentsLoaded) {
-    return <Loading />;
-  }
-
+const FileTabs = ({ loan, disabled, currentUser }) => {
+  const { borrowers, properties } = loan;
   return (
     <div className="files-tab">
       <Tabs
@@ -54,13 +50,19 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                         </h1>
                       </div>
                     )}
-                    <SingleFileTab
-                      doc={borrower}
-                      collection="borrowers"
-                      disabled={disabled}
-                      currentUser={currentUser}
-                      loan={loan}
-                    />
+                    <VerticalAligner
+                      id="borrower-files"
+                      nb={index}
+                      defaultMargin={16}
+                    >
+                      <SingleFileTab
+                        doc={borrower}
+                        collection="borrowers"
+                        disabled={disabled}
+                        currentUser={currentUser}
+                        loan={loan}
+                      />
+                    </VerticalAligner>
                   </div>
                 ))}
               </div>
@@ -113,7 +115,6 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
     </div>
   );
 };
-
 FileTabs.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   disabled: PropTypes.bool,

@@ -11,24 +11,31 @@
 @import '../imports/client/pages/AdminDashboardPage/AdminDashboardPage.scss';
 @import '../imports/client/pages/AdminPromotionPage/AdminPromotionPage.scss';
 @import '../imports/client/pages/OrganisationsPage/OrganisationsPage.scss';
-@import '../imports/client/pages/SearchPage/SearchPage.scss';
 @import '../imports/client/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
 @import '../imports/client/pages/SingleLoanPage/SingleLoanPage.scss';
 @import '../imports/client/pages/SinglePropertyPage/SinglePropertyPage.scss';
 @import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
 @import '../imports/client/pages/SingleContactPage/SingleContactPage.scss';
 @import '../imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.scss';
+@import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
+@import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
 
 // Components
 @import '../imports/client/components/FileViewer/FileViewer.scss';
 @import '../imports/client/components/LenderRulesEditor/LenderRulesEditor.scss';
 @import '../imports/client/components/LoanSummaryList/LoanSummaryList.scss';
 @import '../imports/client/components/MixpanelAnalytics/MixpanelAnalytics.scss';
-@import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
-@import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
+@import '../imports/client/components/PremiumBadge/PremiumBadge.scss';
+@import '../imports/client/components/Search/Search.scss';
 
 body,
 html,
 #react-root {
-  overflow: hidden; // Prevent double-scrollbars due to admin-layout
+  // Prevent double-scrollbars due to admin-layout
+  overflow: hidden;
+}
+
+.login-page.login-page {
+  // Due to the "overflow: hidden" above, the login page does not display well on mobile
+  min-height: unset;
 }

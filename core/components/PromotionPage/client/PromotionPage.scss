@@ -9,6 +9,10 @@
     align-items: stretch;
     flex-wrap: wrap-reverse;
 
+    @include screen(small) {
+      flex-direction: column-reverse;
+    }
+
     &-right,
     &-left {
       flex-basis: 50%;
@@ -100,19 +104,16 @@
       }
     }
 
-    &-right {
-      display: flex;
+    &-right > * {
+      flex-basis: 50%;
+      flex-grow: 1;
 
       min-width: 300px;
       min-height: 500px;
 
-      .promotion-image {
-        flex-grow: 1;
-
-        border-radius: 32px;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
+      @include screen(small) {
+        min-width: unset;
+        min-height: 300px;
       }
     }
   }
@@ -169,11 +170,17 @@
     flex-direction: column;
 
     width: 50%;
-    margin: 16px;
+    // On very small screens
+    min-width: 224px;
+    margin: 16px 0;
     padding: 16px;
 
      > * {
       width: 80%;
+
+      @include screen(small) {
+        width: 100%;
+      }
     }
   }
 }

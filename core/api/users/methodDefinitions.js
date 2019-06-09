@@ -1,4 +1,6 @@
-import { Match } from 'meteor/check';
+import { check, Match } from 'meteor/check';
+import { Meteor } from 'meteor/meteor';
+
 import { Method } from '../methods/methods';
 
 export const doesUserExist = new Method({
@@ -91,13 +93,6 @@ export const changeEmail = new Method({
   },
 });
 
-export const generateApiToken = new Method({
-  name: 'generateApiToken',
-  params: {
-    userId: String,
-  },
-});
-
 export const userUpdateOrganisations = new Method({
   name: 'userUpdateOrganisations',
   params: {
@@ -108,9 +103,71 @@ export const userUpdateOrganisations = new Method({
 
 export const testUserAccount = new Method({
   name: 'testUserAccount',
-  parmas: {
+  params: {
     email: String,
     password: String,
     role: String,
-  }
+  },
+});
+
+export const generateApiKeyPair = new Method({
+  name: 'generateApiKeyPair',
+  params: {
+    userId: String,
+  },
+});
+
+export const proInviteUser = new Method({
+  name: 'proInviteUser',
+  params: {
+    user: Object,
+    propertyIds: Match.Maybe([String]),
+    promotionIds: Match.Maybe([String]),
+    properties: Match.Maybe(Array),
+    shareSolvency: Match.Maybe(Match.OneOf(Boolean, undefined)),
+  },
+});
+
+export const getUserByEmail = new Method({
+  name: 'getUserByEmail',
+  params: {
+    email: String,
+  },
+});
+
+export const setUserReferredBy = new Method({
+  name: 'setUserReferredBy',
+  params: {
+    userId: String,
+    proId: String,
+  },
+});
+
+export const setUserReferredByOrganisation = new Method({
+  name: 'setUserReferredByOrganisation',
+  params: { userId: String, organisationId: String },
+});
+
+export const proInviteUserToOrganisation = new Method({
+  name: 'proInviteUserToOrganisation',
+  params: { user: Object, organisationId: String, title: String },
+});
+
+export const proSetShareCustomers = new Method({
+  name: 'proSetShareCustomers',
+  params: { userId: String, organisationId: String, shareCustomers: Boolean },
+});
+
+export const anonymousCreateUser = new Method({
+  name: 'anonymousCreateUser',
+  params: {
+    loanId: Match.Maybe(String),
+    user: {
+      firstName: String,
+      lastName: String,
+      email: String,
+      phoneNumbers: [String],
+    },
+    trackingId: String,
+  },
 });

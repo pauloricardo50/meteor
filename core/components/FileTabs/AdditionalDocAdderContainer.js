@@ -12,9 +12,14 @@ import {
 } from '../../api/constants';
 
 export default withProps(({ docId, collection }) => ({
-  onSubmit: ({ label }) => {
+  onSubmit: ({ label, category }) => {
     const object = {
-      additionalDocuments: { id: Random.id(), label, requiredByAdmin: true },
+      additionalDocuments: {
+        id: Random.id(),
+        label,
+        category,
+        requiredByAdmin: true,
+      },
     };
     if (collection === PROPERTIES_COLLECTION) {
       return pushPropertyValue.run({ propertyId: docId, object });

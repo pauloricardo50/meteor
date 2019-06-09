@@ -4,12 +4,10 @@ import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
 import uniqBy from 'lodash/uniqBy';
 
-import notification from '../../../utils/notification';
 import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
   MAX_FILE_SIZE,
-  DOCUMENTS,
 } from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
@@ -84,6 +82,8 @@ const props = withProps(({
   fileMeta: { id, label },
   loanId,
   setTempSuccessFiles,
+  docId,
+  collection,
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
@@ -103,11 +103,13 @@ const props = withProps(({
     });
 
     if (showError) {
-      notification.error({
-        message: f({ id: `errors.${showError}.title` }),
-        description: f({ id: `errors.${showError}.description` }),
-      });
-      return;
+        import('../../../utils/notification').then(({ default: notification }) => {
+          notification.error({
+            message: f({ id: `errors.${showError}.title` }),
+            description: f({ id: `errors.${showError}.description` }),
+          });
+        });
+        return;
     }
 
     addTempFiles(files);

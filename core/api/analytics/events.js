@@ -1,24 +1,26 @@
-import { addEvent } from './eventsHelpers';
+export const EVENTS = {
+  USER_CREATED: 'USER_CREATED',
+  USER_LOGGED_IN: 'USER_LOGGED_IN',
+  USER_VERIFIED_EMAIL: 'USER_VERIFIED_EMAIL',
 
-const EVENTS = {
-  WITH_FUNC_EXAMPLE: 'WITH_FUNC_EXAMPLE',
-  WITH_LIFECYCLE_EXAMPLE: 'WITH_LIFECYCLE_EXAMPLE',
+  PROMOTION_CREATED: 'PROMOTION_CREATED',
+  PROMOTION_LOT_STATUS_UPDATED: 'PROMOTION_LOT_STATUS_UPDATED',
+  PROMOTION_CUSTOMER_INVITED: 'PROMOTION_CUSTOMER_INVITED',
+
+  PROPERTY_CUSTOMER_INVITED: 'PROPERTY_CUSTOMER_INVITED',
+
+  LOAN_CREATED: 'LOAN_CREATED',
+  LOAN_SET_STEP: 'LOAN_SET_STEP',
+  LOAN_SET_STATUS: 'LOAN_SET_STATUS',
+  LOAN_COMPLETED_A_STRUCTURE: 'LOAN_COMPLETED_A_STRUCTURE',
+  LOAN_MADE_PROGRESS: 'LOAN_MADE_PROGRESS',
+  LOAN_TASK_ADDED: 'LOAN_TASK_ADDED',
+  LOAN_TASK_UPDATED: 'LOAN_TASK_UPDATED',
+  LOAN_ANONYMOUS_LOAN_CLAIMED: 'LOAN_ANONYMOUS_LOAN_CLAIMED',
+
+  CTA_CLICKED: 'CTA_CLICKED',
+
+  API_CALLED: 'API_CALLED',
 };
-
-addEvent(EVENTS.WITH_FUNC_EXAMPLE, {
-  func: 'handleSubmit',
-  config: (handleSubmitArgument1, handleSubmitArgument2) => ({
-    eventName: 'Submitted something',
-    metadata: { hello: 'world' },
-  }),
-});
-
-addEvent(EVENTS.WITH_LIFECYCLE_EXAMPLE, {
-  lifecycleMethod: 'componentDidMount',
-  config: {
-    eventName: 'Loaded this awesome component',
-    metadata: { hello: 'world' },
-  },
-});
 
 export default EVENTS;

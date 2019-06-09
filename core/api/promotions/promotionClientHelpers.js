@@ -1,4 +1,5 @@
 import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
+import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export const getCurrentUserPermissionsForPromotion = ({
   currentUser: { promotions = [] } = {},
@@ -22,7 +23,7 @@ export const getPromotionCustomerOwnerType = ({ invitedBy, currentUser }) => {
   }
 
   const organisationUserIds = organisations.reduce(
-    (userIds, org) => [...userIds, ...org.users.map(({ _id }) => _id)],
+    (userIds, { users = [] }) => [...userIds, ...users.map(({ _id }) => _id)],
     [],
   );
 
@@ -35,10 +36,50 @@ export const getPromotionCustomerOwnerType = ({ invitedBy, currentUser }) => {
   return PROMOTION_INVITED_BY_TYPE.ANY;
 };
 
+export const clientGetBestPromotionLotStatus = (promotionOptions, loanId) => {
+  const myPromotionLotStatuses = promotionOptions
+    .reduce((arr, { promotionLots }) => [...arr, ...promotionLots], [])
+    .filter(({ attributedToLink = {} }) => attributedToLink._id === loanId)
+    .map(({ status }) => status);
+
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.SOLD) >= 0) {
+    return PROMOTION_LOT_STATUS.SOLD;
+  }
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.BOOKED) >= 0) {
+    return PROMOTION_LOT_STATUS.BOOKED;
+  }
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.AVAILABLE) >= 0) {
+    return PROMOTION_LOT_STATUS.AVAILABLE;
+  }
+
+  // return undefined if no promotion lots are attributed to this user
+};
+
+const shouldHideForLotStatus = (
+  { forLotStatus = [] },
+  promotionLotStatus,
+  isAttributed,
+) => {
+  if (
+    promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE
+    && forLotStatus.includes(promotionLotStatus)
+  ) {
+    return false;
+  }
+
+  // For status BOOKED and SOLD, we check that it is attributed
+  if (forLotStatus.includes(promotionLotStatus) && isAttributed) {
+    return false;
+  }
+
+  return true;
+};
+
 export const shouldAnonymize = ({
   customerOwnerType,
   permissions,
-  promotionLotStatus,
+  promotionLotStatus = PROMOTION_LOT_STATUS.AVAILABLE,
+  isAttributed,
 }) => {
   const { displayCustomerNames } = permissions;
 
@@ -46,36 +87,32 @@ export const shouldAnonymize = ({
     return true;
   }
 
-  const shouldHideForLotStatus =
-    !!promotionLotStatus &&
-    !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
+  const shouldHide = shouldHideForLotStatus(
+    displayCustomerNames,
+    promotionLotStatus,
+    isAttributed,
+  );
 
   if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY_TYPE.ANY) {
-    return shouldHideForLotStatus;
+    return shouldHide;
   }
 
   switch (customerOwnerType) {
   case PROMOTION_INVITED_BY_TYPE.USER:
     return (
-      shouldHideForLotStatus ||
-        ![
+      shouldHide
+        || ![
           PROMOTION_INVITED_BY_TYPE.USER,
           PROMOTION_INVITED_BY_TYPE.ORGANISATION,
         ].includes(displayCustomerNames.invitedBy)
     );
   case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
     return (
-      shouldHideForLotStatus ||
-        displayCustomerNames.invitedBy !==
-          PROMOTION_INVITED_BY_TYPE.ORGANISATION
+      shouldHide
+        || displayCustomerNames.invitedBy
+          !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
     );
   default:
     return true;
   }
-};
-
-export const getUserNameAndOrganisation = ({ user }) => {
-  const { name, organisations = [] } = user;
-  const organisationName = !!organisations.length && organisations[0].name;
-  return organisationName ? `${name} (${organisationName})` : name;
 };

@@ -6,31 +6,18 @@ import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import { getProperty } from '../../FinancingCalculator';
-import { toMoney } from '../../../../../utils/conversionFunctions';
 
-const sortMortgageNotes = (mortgageNoteIds, borrowers) =>
-  borrowers.reduce(
-    (obj, { mortgageNotes: notes = [], name }, index) => {
-      const notesWithName = notes.map(note => ({
-        ...note,
-        borrowerName: name || (
-          <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
-        ),
-        isBorrower: true,
-      }));
-      return {
-        current: [
-          ...obj.current,
-          ...notesWithName.filter(({ _id }) => mortgageNoteIds.includes(_id)),
-        ],
-        available: [
-          ...obj.available,
-          ...notesWithName.filter(({ _id }) => !mortgageNoteIds.includes(_id)),
-        ],
-      };
-    },
-    { current: [], available: [] },
-  );
+const formatMortgageNotes = (mortgageNoteIds, borrowers) =>
+  borrowers.reduce((arr, { mortgageNotes: notes = [], name }, index) => {
+    const notesWithName = notes.map(note => ({
+      ...note,
+      borrowerName: name || (
+        <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+      ),
+      isBorrower: true,
+    }));
+    return [...arr, ...notesWithName];
+  }, []);
 
 const formatBorrowerMortgageNote = (
   notes,
@@ -38,19 +25,23 @@ const formatBorrowerMortgageNote = (
   updateStructure,
   mortgageNoteIds,
 ) =>
-  notes
-    .filter(({ canton: mortgageNoteCanton }) => mortgageNoteCanton === canton)
-    .map(note => ({
+  notes.map((note) => {
+    const selected = mortgageNoteIds.includes(note._id);
+    const available = note.canton === canton;
+
+    return {
       ...note,
-      label: (
-        <span className="flex-col">
-          {`CHF ${toMoney(note.value)}`}
-          <span className="secondary">{note.borrowerName}</span>
-        </span>
-      ),
-      onClick: () =>
-        updateStructure({ mortgageNoteIds: [...mortgageNoteIds, note._id] }),
-    }));
+      selected,
+      available,
+      onClick: () => {
+        if (available) {
+          return updateStructure({
+            mortgageNoteIds: [...mortgageNoteIds, note._id],
+          });
+        }
+      },
+    };
+  });
 
 export default compose(
   FinancingDataContainer,
@@ -63,17 +54,12 @@ export default compose(
       updateStructure,
     } = props;
     const { mortgageNotes = [], canton } = getProperty(props);
-    const { current, available } = sortMortgageNotes(
-      mortgageNoteIds,
-      borrowers,
-      canton,
-    );
+    const notes = formatMortgageNotes(mortgageNoteIds, borrowers);
 
     return {
       currentMortgageNotes: mortgageNotes,
-      borrowerMortgageNotes: current,
-      availableMortgageNotes: formatBorrowerMortgageNote(
-        available,
+      borrowerMortgageNotes: formatBorrowerMortgageNote(
+        notes,
         canton,
         updateStructure,
         mortgageNoteIds,

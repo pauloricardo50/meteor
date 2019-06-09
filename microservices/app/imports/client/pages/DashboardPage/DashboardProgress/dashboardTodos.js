@@ -1,31 +1,22 @@
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
 import {
-  VALUATION_STATUS,
+  LOAN_VERIFICATION_STATUS,
   PURCHASE_TYPE,
-} from '../../../../core/api/constants';
-import {
-  FINANCING_PAGE,
-  PROPERTY_PAGE,
-  BORROWERS_PAGE,
-  FILES_PAGE,
-  PROPERTIES_PAGE,
-  REFINANCING_PAGE,
-} from '../../../../startup/client/appRoutes';
-import VerificationRequester from './VerificationRequester/VerificationRequester';
+  PROPERTY_CATEGORY,
+} from 'core/api/constants';
+import APP_ROUTES from '../../../../startup/client/appRoutes';
+import VerificationRequester from './VerificationRequester';
 
 const createFinancingLink = ({ _id: loanId }) =>
-  createRoute(FINANCING_PAGE, { ':loanId': loanId });
+  createRoute(APP_ROUTES.FINANCING_PAGE.path, { ':loanId': loanId });
 
 const createPropertiesLink = ({ _id: loanId }) =>
-  createRoute(PROPERTIES_PAGE, { loanId });
+  createRoute(APP_ROUTES.PROPERTIES_PAGE.path, { loanId });
 
 const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
   (propertyId
-    ? createRoute(PROPERTY_PAGE, { loanId, propertyId })
+    ? createRoute(APP_ROUTES.PROPERTY_PAGE.path, { loanId, propertyId })
     : createPropertiesLink({ _id: loanId }));
 
 export const checkArrayIsDone = (array = [], params) =>
@@ -34,9 +25,12 @@ export const checkArrayIsDone = (array = [], params) =>
     .every(({ isDone, hide }) =>
       (hide ? hide(params) || isDone(params) : isDone(params)));
 
+export const disablePropertyTodos = ({ structure: { property } }) =>
+  !property || property.category === PROPERTY_CATEGORY.PRO;
+
 export const promotionTodoList = {
   completeBorrowers: true,
-  completeBorrowersFinance: true,
+  solvency: true,
   uploadDocuments: true,
   chooseLots: true,
   verification: true,
@@ -44,8 +38,9 @@ export const promotionTodoList = {
 };
 
 export const defaultTodoList = {
+  addProperty: true,
   completeBorrowers: true,
-  completeBorrowersFinance: true,
+  solvency: true,
   completeProperty: true,
   completeRefinancing: true,
   doAnExpertise: true,
@@ -62,7 +57,7 @@ export const getDashboardTodosArray = list =>
       id: 'completeBorrowers',
       isDone: ({ borrowers }) => {
         const percentages = borrowers.map(borrower =>
-          BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
+          Calculator.personalInfoPercent({ borrowers: borrower }));
 
         if (percentages.some(percent => percent >= 1)) {
           return true;
@@ -71,7 +66,30 @@ export const getDashboardTodosArray = list =>
         return false;
       },
       link: ({ _id: loanId }) =>
-        createRoute(BORROWERS_PAGE, { loanId, tabId: 'personal' }),
+        createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+          loanId,
+          tabId: 'personal',
+        }),
+    },
+    {
+      id: 'solvency',
+      isDone: ({ maxPropertyValue }) =>
+        maxPropertyValue && maxPropertyValue.date,
+      link: ({ _id: loanId }) =>
+        createRoute(APP_ROUTES.SOLVENCY_PAGE.path, {
+          loanId,
+          tabId: 'personal',
+        }),
+    },
+    {
+      id: 'addProperty',
+      isDone: (loan) => {
+        const { properties } = loan;
+        return properties && properties.length > 0;
+      },
+      hide: ({ properties = [] }) =>
+        properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
+      link: createSinglePropertyLink,
     },
     {
       id: 'completeProperty',
@@ -84,7 +102,7 @@ export const getDashboardTodosArray = list =>
           return false;
         }
 
-        const percent = PropertyCalculator.propertyPercent({ loan, property });
+        const percent = Calculator.propertyPercent({ loan, property });
 
         if (percent >= 1) {
           return true;
@@ -92,7 +110,7 @@ export const getDashboardTodosArray = list =>
 
         return false;
       },
-      hide: ({ structure: { property } }) => !property,
+      hide: disablePropertyTodos,
       link: createSinglePropertyLink,
     },
     {
@@ -107,17 +125,18 @@ export const getDashboardTodosArray = list =>
         return false;
       },
       hide: ({ purchaseType }) => purchaseType !== PURCHASE_TYPE.REFINANCING,
-      link: ({ _id: loanId }) => createRoute(REFINANCING_PAGE, { loanId }),
+      link: ({ _id: loanId }) =>
+        createRoute(APP_ROUTES.REFINANCING_PAGE.path, { loanId }),
     },
-    {
-      id: 'doAnExpertise',
-      isDone: ({ structure: { property } }) =>
-        property
-        && property.valuation
-        && property.valuation.status !== VALUATION_STATUS.NONE,
-      hide: ({ structure: { property } }) => !property,
-      link: createSinglePropertyLink,
-    },
+    // {
+    //   id: 'doAnExpertise',
+    //   isDone: ({ structure: { property } }) =>
+    //     property
+    //     && property.valuation
+    //     && property.valuation.status !== VALUATION_STATUS.NONE,
+    //   hide: disablePropertyTodos,
+    //   link: createSinglePropertyLink,
+    // },
     {
       id: 'createStructure',
       isDone: ({ structures }) => structures && structures.length > 0,
@@ -137,8 +156,8 @@ export const getDashboardTodosArray = list =>
     {
       id: 'uploadDocuments',
       isDone: loan => Calculator.filesProgress({ loan }).percent >= 1,
-      hide: loan => !loan.documents,
-      link: ({ _id: loanId }) => createRoute(FILES_PAGE, { ':loanId': loanId }),
+      link: ({ _id: loanId }) =>
+        createRoute(APP_ROUTES.FILES_PAGE.path, { ':loanId': loanId }),
     },
     {
       id: 'verification',

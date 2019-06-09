@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import UserService from '../../users/server/UserService';
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
 import {
@@ -15,31 +16,31 @@ export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmail
 // export const skipEmails = false;
 
 class EmailService {
-  sendEmail = ({ emailId, address, params }) => {
+  sendEmail = ({ emailId, address, name, params }) => {
     const templateOptions = this.createTemplateOptions({
       emailId,
       address,
+      name,
       params,
     });
-    const template = this.getTemplate(templateOptions);
+    const template = getMandrillTemplate(templateOptions);
     return sendMandrillTemplate(template).then((response) => {
       this.emailLogger({ emailId, address, template, response });
     });
   };
 
   sendEmailToUser = ({ emailId, userId, params }) => {
-    const user = Meteor.users.findOne(userId);
-    const emailAddress = user && user.emails[0].address;
-    this.sendEmail({ emailId, address: emailAddress, params });
-  };
-
-  sendEmailToLoggedInUser = (emailId, params) => {
-    this.sendEmailToUser({ emailId, userId: Meteor.userId(), params });
+    const { email, name } = UserService.fetchOne({
+      $filters: { _id: userId },
+      email: 1,
+      name: 1,
+    });
+    this.sendEmail({ emailId, address: email, name, params });
   };
 
   getEmailConfig = emailId => emailConfigs[emailId];
 
-  createTemplateOptions = ({ emailId, address, params }) => {
+  createTemplateOptions = ({ emailId, address, name, params }) => {
     const emailConfig = this.getEmailConfig(emailId);
     const {
       template: { mandrillId: templateName },
@@ -57,6 +58,7 @@ class EmailService {
     return {
       templateName,
       recipientAddress: address,
+      recipientName: name,
       senderAddress: FROM_EMAIL,
       senderName: FROM_NAME,
       subject: emailContent.subject,
@@ -70,8 +72,6 @@ class EmailService {
     const templateOptions = this.createTemplateOptions({ emailId, params });
     return getSimpleMandrillTemplate(templateOptions);
   };
-
-  getTemplate = templateOptions => getMandrillTemplate(templateOptions);
 
   getEmailPart = (emailId, part) => getEmailPart({ emailId, part });
 
@@ -96,8 +96,13 @@ class EmailService {
   emailLogger = ({ emailId, address, template, response }) => {
     if (isEmailTestEnv) {
       // Store all sent emails in the DB, to be asserted in tests
-      Meteor.call('storeTestEmail', { emailId, address, template, response });
-      return;
+      return Meteor.call('storeTestEmail', {
+        date: Date.now(),
+        emailId,
+        address,
+        template,
+        response,
+      });
     }
     if (skipEmails) {
       if (address) {

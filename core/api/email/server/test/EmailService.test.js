@@ -1,23 +1,13 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Meteor } from 'meteor/meteor';
 
+import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../emailConstants';
 import EmailService, { isEmailTestEnv } from '../EmailService';
 import { setupMandrill } from '../mandrill';
 
 setupMandrill();
-
-const checkEmails = () =>
-  new Promise((resolve, reject) => {
-    Meteor.call('getAllTestEmails', (err, emails) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(emails);
-    });
-  });
 
 describe('EmailService', function () {
   this.timeout(10000);

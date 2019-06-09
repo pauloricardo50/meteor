@@ -8,20 +8,20 @@ import ContactButtonContainer from './ContactButtonContainer';
 import ContactButtonOverlay from './ContactButtonOverlay';
 
 type ContactButtonProps = {
-  open: boolean,
-  toggleOpen: Function,
+  openContact: boolean,
+  toggleOpenContact: Function,
 };
 
 export const ContactButton = ({
-  open,
-  toggleOpen,
+  openContact,
+  toggleOpenContact,
   ...props
 }: ContactButtonProps) => (
   <div className="contact-button">
-    <Fab onClick={() => toggleOpen(!open)} color="primary">
-      {open ? <Icon type="close" /> : <Icon type="forum" />}
+    <Fab onClick={() => toggleOpenContact(!openContact)} color="primary">
+      {openContact ? <Icon type="close" /> : <Icon type="forum" />}
     </Fab>
-    <ContactButtonOverlay {...props} open={open} />
+    <ContactButtonOverlay {...props} openContact={openContact} />
   </div>
 );
 

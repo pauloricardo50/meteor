@@ -18,11 +18,10 @@ export const createdAt = {
 export const updatedAt = {
   type: Date,
   autoValue() {
-    if (this.isUpdate) {
+    if (this.isUpdate || this.isInsert || this.isUpsert) {
       return new Date();
     }
   },
-  denyInsert: true,
   optional: true,
 };
 
@@ -32,6 +31,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.id': String,
   'additionalDocuments.$.label': { type: String, optional: true },
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
+  'additionalDocuments.$.category': { type: String, optional: true },
 });
 
 export const address = {
@@ -76,6 +76,7 @@ export const makePermissions = ({
   permissionsSchema,
   prefix,
   autoFormDisplayCondition = () => true,
+  autoFormLabel,
 }) =>
   Object.keys(permissionsSchema).reduce(
     (permissions, key) => ({
@@ -87,6 +88,7 @@ export const makePermissions = ({
         type: Object,
         optional: true,
         condition: autoFormDisplayCondition,
+        uniforms: { label: autoFormLabel || prefix },
       },
     },
   );
@@ -123,7 +125,7 @@ export const roundedInteger = (digits) => {
 
 export const percentageField = {
   type: Number,
-  min: 0,
+  min: -1,
   max: 1,
   optional: true,
   autoValue() {
@@ -140,4 +142,17 @@ export const moneyField = {
   max: 1000000000,
   optional: true,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
+};
+
+export const documentsField = {
+  type: Object,
+  defaultValue: {},
+  optional: true,
+  blackbox: true,
+};
+
+export const dateField = {
+  type: Date,
+  optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
 };

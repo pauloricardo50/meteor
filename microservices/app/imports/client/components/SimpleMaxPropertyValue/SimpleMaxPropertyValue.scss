@@ -1,0 +1,44 @@
+.simple-max-property-value {
+  display: flex;
+  flex-direction: column;
+
+  &.loading {
+    align-items: center;
+    justify-content: center;
+
+     > * {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      text-align: center;
+    }
+  }
+
+  .empty {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    max-width: 500px;
+
+    text-align: center;
+
+    .icon {
+      width: 64px;
+      height: 64px;
+    }
+  }
+
+  .mui-select {
+    width: calc(50% - 4px);
+    min-width: 160px;
+    max-width: 200px;
+  }
+
+  &.blue .max-property-sharing-label {
+    color: white;
+  }
+}

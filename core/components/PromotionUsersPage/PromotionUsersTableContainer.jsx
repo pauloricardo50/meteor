@@ -1,31 +1,33 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { compose, withProps } from 'recompose';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
 
-import { removeUserFromPromotion, withSmartQuery } from '../../api';
-import ConfirmMethod from '../ConfirmMethod';
-import T from '../Translation';
-import PromotionProgress from '../PromotionLotPage/PromotionProgress';
-import PriorityOrder from '../PromotionLotPage/PriorityOrder';
-import PromotionProgressHeader from './PromotionProgressHeader';
-import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
+import { proPromotions, proPromotionUsers } from '../../api/promotions/queries';
+import { withSmartQuery } from '../../api';
+
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
-import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
-import InvitedByAssignDropdown from './InvitedByAssignDropdown';
-import { CollectionIconLink } from '../IconLink';
+import { getUserNameAndOrganisation } from '../../api/helpers';
 import { LOANS_COLLECTION } from '../../api/constants';
-import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientHelpers';
+import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
+import LoanProgress from '../LoanProgress/LoanProgress';
+import PriorityOrder from '../PromotionLotPage/PriorityOrder';
+import T from '../Translation';
+import { CollectionIconLink } from '../IconLink';
+import InvitedByAssignDropdown from './InvitedByAssignDropdown';
+import PromotionUsersTableActions from './PromotionUsersTableActions';
+import StatusLabel from '../StatusLabel/StatusLabel';
 
 const columnOptions = [
   { id: 'loanName' },
+  { id: 'status', label: <T id="Forms.status" /> },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
   { id: 'invitedBy' },
-  { id: 'promotionProgress', label: <PromotionProgressHeader /> },
+  { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'priorityOrder' },
   { id: 'actions' },
 ].map(({ id, label }) => ({
@@ -33,12 +35,19 @@ const columnOptions = [
   label: label || <T id={`PromotionLotLoansTable.${id}`} />,
 }));
 
-const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
+const getColumns = ({
+  promotionId,
+  promotionUsers,
+  loan,
+  currentUser,
+  promotionLots,
+}) => {
   const {
     _id: loanId,
     name: loanName,
+    status,
     user,
-    promotionProgress,
+    loanProgress,
     promotionOptions = [],
     promotions,
     createdAt,
@@ -55,11 +64,10 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     currentUser,
   });
 
-  const invitedByUser =
-    invitedBy &&
-    promotionUsers &&
-    (!!promotionUsers.length &&
-      promotionUsers.find(({ _id }) => _id === invitedBy));
+  const invitedByUser = invitedBy
+    && promotionUsers
+    && (!!promotionUsers.length
+      && promotionUsers.find(({ _id }) => _id === invitedBy));
 
   const userName = invitedByUser
     ? getUserNameAndOrganisation({ user: invitedByUser })
@@ -76,6 +84,10 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         ) : (
           loanName
         ),
+    },
+    {
+      raw: status,
+      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
     },
     user && user.name,
     user && user.phoneNumbers && user.phoneNumbers[0],
@@ -97,8 +109,8 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         ),
     },
     {
-      raw: promotionProgress.verificationStatus,
-      label: <PromotionProgress promotionProgress={promotionProgress} />,
+      raw: loanProgress.verificationStatus,
+      label: <LoanProgress loanProgress={loanProgress} />,
     },
     {
       raw: promotionOptions.length,
@@ -110,51 +122,67 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         />
       ),
     },
-    isAllowedToRemoveCustomerFromPromotion({
-      promotion,
-      currentUser,
-      customerOwnerType,
-    }) ? (
-      <ConfirmMethod
-          method={() => removeUserFromPromotion.run({ promotionId, loanId })}
-          label={<T id="general.remove" />}
-          key="remove"
-        />
-      ) : (
-        <span key="actions">-</span>
-      ),
+    <PromotionUsersTableActions
+      key="actions"
+      promotion={{ ...promotion, promotionLots }}
+      currentUser={currentUser}
+      customerOwnerType={customerOwnerType}
+      loan={loan}
+    />,
   ];
 };
 
 const makeMapLoan = ({
   promotionId,
-  history,
   promotionUsers,
   currentUser = {},
+  promotionLots,
 }) => (loan) => {
   const { _id: loanId } = loan;
 
   return {
     id: loanId,
-    columns: getColumns({ promotionId, promotionUsers, loan, currentUser }),
+    columns: getColumns({
+      promotionId,
+      promotionUsers,
+      loan,
+      currentUser,
+      promotionLots,
+    }),
   };
 };
 
 export default compose(
-  withRouter,
   withSmartQuery({
     query: proPromotionUsers,
-    params: ({ promotionId }) => ({ promotionId }),
+    params: ({ promotionId }) => ({ _id: promotionId }),
     queryOptions: { reactive: false },
     dataName: 'promotionUsers',
     smallLoader: true,
   }),
-  withProps(({ loans, promotionId, history, promotionUsers, currentUser }) => ({
+  withSmartQuery({
+    query: proPromotions,
+    params: ({ promotionId }) => ({
+      _id: promotionId,
+      simple: true,
+      $body: { promotionLots: { name: 1 } },
+    }),
+    queryOptions: { single: true, shouldRefetch: () => false },
+    dataName: 'simplePromotion',
+    refetchOnMethodCall: false,
+  }),
+  withProps(({
+    loans,
+    promotionId,
+    promotionUsers,
+    currentUser,
+    simplePromotion: { promotionLots },
+  }) => ({
     rows: loans.map(makeMapLoan({
       promotionId,
-      history,
       promotionUsers,
       currentUser,
+      promotionLots,
     })),
     columnOptions,
   })),

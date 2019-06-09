@@ -11,7 +11,7 @@ import {
   contactRemove,
   contactChangeOrganisations,
 } from 'core/api/methods';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import T from 'core/components/Translation';
 
 const schema = existingOrganisations =>
@@ -22,7 +22,10 @@ const schema = existingOrganisations =>
     'organisations.$': Object,
     'organisations.$._id': {
       type: String,
-      customAllowedValues: { query: adminOrganisations },
+      customAllowedValues: {
+        query: adminOrganisations,
+        params: () => ({ $body: { name: 1 } }),
+      },
       uniforms: {
         transform: ({ name }) => name,
         labelProps: { shrink: true },
@@ -56,11 +59,11 @@ const schema = existingOrganisations =>
       uniforms: { label: null },
       optional: true,
     },
-    'organisations.$.$metadata.role': {
+    'organisations.$.$metadata.title': {
       type: String,
       optional: true,
       uniforms: {
-        label: <T id="Forms.contact.role" />,
+        label: <T id="Forms.contact.title" />,
         placeholder: 'Responsable Hypothèques',
         displayEmpty: true,
       },
@@ -102,6 +105,7 @@ export default compose(
   withSmartQuery({
     query: adminOrganisations,
     queryOptions: { reactive: false },
+    params: { $body: { _id: 1 } },
     dataName: 'existingOrganisations',
     smallLoader: true,
   }),

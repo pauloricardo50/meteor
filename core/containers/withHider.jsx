@@ -11,12 +11,12 @@ export default buttonProps => Component =>
 
     render() {
       const { hide } = this.state;
+
+      const props = typeof buttonProps === 'function' ? buttonProps(hide) : buttonProps;
+
       return (
         <>
-          <Button
-            {...buttonProps}
-            onClick={() => this.setState({ hide: !hide })}
-          />
+          <Button {...props} onClick={() => this.setState({ hide: !hide })} />
           {!hide && <Component {...this.props} />}
         </>
       );

@@ -5,7 +5,6 @@ import {
 } from '../../arrays/PropertyFormArray';
 import { getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
-import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -27,8 +26,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       }
     }
 
-    propertyPercent({ loan, property }) {
-      const { borrowers, structure } = loan;
+    propertyPercent({ loan, structureId, property }) {
+      const { borrowers } = loan;
+      const structure = this.selectStructure({ loan, structureId });
       const propertyToCalculateWith = property || structure.property;
 
       if (!propertyToCalculateWith) {
@@ -54,10 +54,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     getPropAndWork({ loan, structureId }) {
       const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.makeSelectStructureKey('propertyWork')({
+      const propertyWork = this.selectStructureKey({
         loan,
         structureId,
-      });
+        key: 'propertyWork',
+      }) || 0;
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
@@ -65,8 +66,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return this.selectPropertyWork({ loan, structureId });
     }
 
-    getPropertyFilesProgress({ loan, property }) {
-      const { structure } = loan;
+    getPropertyFilesProgress({ loan, structureId, property }) {
+      const structure = this.selectStructure({ loan, structureId });
       const propertyToCalculateWith = property || structure.property;
 
       if (!propertyToCalculateWith) {
@@ -158,7 +159,3 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return !!structure.promotionOptionId;
     }
   };
-
-export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);
-
-export default new PropertyCalculator();

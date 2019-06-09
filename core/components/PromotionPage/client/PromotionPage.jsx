@@ -1,18 +1,18 @@
 // @flow
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
+import { Helmet } from 'react-helmet';
+
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
-import Button from '../../Button';
-import T from '../../Translation';
+
 import PromotionPageHeader from './PromotionPageHeader';
 import ProPromotionLotsTable from './ProPromotionLotsTable';
-import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
 import AdditionalLotsTable from './AdditionalLotsTable';
-import CustomerAdder from './CustomerAdder';
-import EmailTester from './EmailTester';
+
 import UserPromotionTables from './UserPromotionTables';
+import PromotionPageButtons from './PromotionPageButtons';
 
 type PromotionPageProps = {
   promotion: Object,
@@ -24,40 +24,18 @@ type PromotionPageProps = {
 };
 
 const PromotionPage = (props: PromotionPageProps) => {
-  const {
-    promotion,
-    currentUser,
-    loan = {},
-    canInviteCustomers,
-    canManageDocuments,
-    canSeeCustomers,
-  } = props;
+  const { promotion, loan = {} } = props;
 
   const isApp = Meteor.microservice === 'app';
 
   return (
     <div className="card1 promotion-page">
+      <Helmet>
+        <title>{promotion.name}</title>
+      </Helmet>
       <PromotionPageHeader {...props} />
-      <div className="buttons flex center animated fadeIn delay-600">
-        {canInviteCustomers && (
-          <CustomerAdder
-            promotion={promotion}
-            promotionStatus={promotion.status}
-          />
-        )}
-        {canManageDocuments && (
-          <PromotionDocumentsManager
-            promotion={promotion}
-            currentUser={currentUser}
-          />
-        )}
-        {canInviteCustomers && <EmailTester promotionId={promotion._id} />}
-        {canSeeCustomers && (
-          <Button link to={`/promotions/${promotion._id}/users`} raised primary>
-            <T id="PromotionPage.users" />
-          </Button>
-        )}
-      </div>
+
+      {Meteor.microservice !== 'app' && <PromotionPageButtons {...props} />}
 
       <MapWithMarkerWrapper
         address1={promotion.address1}

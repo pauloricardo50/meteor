@@ -5,17 +5,17 @@ import { connect } from 'react-redux';
 
 import Widget1Part2 from 'core/components/widget1/Widget1Part2';
 import { widget1Actions } from 'core/redux/widget1';
-import Page from 'core/components/Page';
+import PageApp from '../../components/PageApp';
 import AppWidget1PageContainer from './AppWidget1PageContainer';
 
 type AppWidget1PageProps = {};
 
 const AppWidget1Page = (props: AppWidget1PageProps) => (
-  <Page id="AppWidget1Page" fullWidth>
+  <PageApp id="AppWidget1Page" fullWidth>
     <div className="app-widget1-page widget1-page">
       <Widget1Part2 {...props} />
     </div>
-  </Page>
+  </PageApp>
 );
 
 export default compose(

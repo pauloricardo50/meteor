@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
@@ -9,13 +9,19 @@ import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { sendEnrollmentEmail } from 'core/api';
-import { ROLES, USERS_COLLECTION, ORGANISATIONS_COLLECTION } from 'imports/core/api/constants';
-import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
+import {
+  ROLES,
+  USERS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+} from 'core/api/constants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import EmailModifier from 'core/components/EmailModifier';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import { UserModifier } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
-import EmailModifier from './EmailModifier';
+import ReferredByAssignDropdown from './ReferredByAssignDropdown';
+import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
@@ -33,6 +39,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
   return (
     <div className="single-user-page-header">
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
       <div className="top">
         <h1>
           {name}
@@ -68,12 +77,16 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             ))}
         </div>
         <div className="email">
-          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>{' '}
+          <Icon type="mail" />
+          {' '}
+          <a href={`mailto:${email}`}>{email}</a>
+          {' '}
           <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
-            <Icon type="phone" />{' '}
+            <Icon type="phone" />
+            {' '}
             {phoneNumbers.map(number => (
               <a key={number} href={`tel:${number}`}>
                 {number}
@@ -83,24 +96,33 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         )}
 
         <p className="secondary created-at">
-          <T id="UsersTable.createdAt" />{' '}
+          <T id="UsersTable.createdAt" />
+          {' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
 
         {allowAssign && (
-          <div className="assigned-employee space-children">
-            {assignedEmployee && (
-              <>
-                <T id="UsersTable.assignedTo" />
-                <CollectionIconLink
-                  relatedDoc={{
-                    ...assignedEmployee,
-                    collection: USERS_COLLECTION,
-                  }}
-                />
-              </>
-            )}
-            <UserAssignDropdown doc={user} />
+          <div className="flex-col">
+            <div className="assigned-employee space-children">
+              {assignedEmployee && (
+                <>
+                  <T id="UsersTable.assignedTo" />
+                  <CollectionIconLink
+                    relatedDoc={{
+                      ...assignedEmployee,
+                      collection: USERS_COLLECTION,
+                    }}
+                  />
+                </>
+              )}
+              <UserAssignDropdown doc={user} />
+            </div>
+            <div className="assigned-employee space-children">
+              <ReferredByAssignDropdown user={user} />
+            </div>
+            <div className="assigned-employee space-children">
+              <ReferredByOrganisationAssignDropdown user={user} />
+            </div>
           </div>
         )}
       </div>

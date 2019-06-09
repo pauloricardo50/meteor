@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { loanUpdate } from 'core/api/methods';
 import { T } from 'core/components/Translation';
-import Toggle from 'core/components/Material/Toggle';
+import Toggle from 'core/components/Toggle';
 
 const makeHandleForDisablingUserForms = ({ _id: loanId }) => (
   event,

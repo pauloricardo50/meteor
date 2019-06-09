@@ -3,11 +3,11 @@ import { compose, withProps } from 'recompose';
 import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
-import { calculateRequiredOwnFunds } from '../ownFundsHelpers';
 import {
   getCurrentPledgedFunds,
   getMaxPledge,
 } from './FinancingOwnFundsPickerHelpers';
+import Calculator from '../../../../../utils/Calculator';
 
 const removePreviousValueEffect = ({ props, ownFundsIndex, ownFunds }) => {
   let requiredChange = 0;
@@ -46,7 +46,7 @@ export const getRequiredAndCurrentFunds = (props) => {
     ownFundsIndex,
     usageType,
   } = props;
-  let required = calculateRequiredOwnFunds(props);
+  let required = Calculator.getRequiredOwnFunds(props);
   const previousNonPledgedFunds = ownFunds
     .filter(({ usageType: uT }) => uT !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value: v }) => sum + v, 0);

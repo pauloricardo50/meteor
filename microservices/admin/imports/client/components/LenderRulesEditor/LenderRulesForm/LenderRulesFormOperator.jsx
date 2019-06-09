@@ -21,6 +21,8 @@ const LenderRulesFormOperator = (props: LenderRulesFormOperatorProps) => {
     [
       LENDER_RULES_VARIABLES.RESIDENCE_TYPE,
       LENDER_RULES_VARIABLES.CANTON,
+      LENDER_RULES_VARIABLES.PROPERTY_TYPE,
+      LENDER_RULES_VARIABLES.ZIP_CODE,
     ].includes(variable)
   ) {
     allowedValues = [LENDER_RULES_OPERATORS.IN];

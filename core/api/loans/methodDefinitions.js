@@ -63,6 +63,13 @@ export const adminLoanInsert = new Method({
   },
 });
 
+export const userLoanInsert = new Method({
+  name: 'userLoanInsert',
+  params: {
+    test: Match.Optional(Boolean),
+  },
+});
+
 export const addNewStructure = new Method({
   name: 'addNewStructure',
   params: {
@@ -128,4 +135,42 @@ export const sendNegativeFeedbackToAllLenders = new Method({
 export const loanUpdatePromotionInvitedBy = new Method({
   name: 'loanUpdatePromotionInvitedBy',
   params: { loanId: String, promotionId: String, invitedBy: String },
+});
+
+export const reuseProperty = new Method({
+  name: 'reuseProperty',
+  params: { loanId: String, propertyId: String },
+});
+
+export const setMaxPropertyValueWithoutBorrowRatio = new Method({
+  name: 'setMaxPropertyValueWithoutBorrowRatio',
+  params: { loanId: String, canton: String },
+});
+
+export const addNewMaxStructure = new Method({
+  name: 'addNewMaxStructure',
+  params: {
+    loanId: String,
+    residenceType: Match.Maybe(String),
+    canton: String,
+  },
+});
+
+export const setLoanStep = new Method({
+  name: 'setLoanStep',
+  params: { loanId: String, nextStep: String },
+});
+
+export const loanShareSolvency = new Method({
+  name: 'loanShareSolvency',
+  params: { loanId: String, shareSolvency: Boolean },
+});
+
+export const anonymousLoanInsert = new Method({
+  name: 'anonymousLoanInsert',
+  params: {
+    trackingId: String,
+    proPropertyId: Match.Maybe(String),
+    referralId: Match.Maybe(String),
+  },
 });

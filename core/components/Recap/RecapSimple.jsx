@@ -1,24 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import cx from 'classnames';
 
 import T from '../Translation';
 
-const renderLabel = ({ label, noIntl }) => {
+const renderLabel = ({ label, noIntl, intlValues }) => {
   if (typeof label !== 'string' || noIntl) {
     return label;
   }
 
-  return <T id={label} tooltipPlacement="bottom" />;
+  return <T id={label} values={intlValues} tooltipPlacement="bottom" />;
 };
 
 const RecapSimple = ({ array, noScale, className }) => (
-  <div
-    className={classnames(
-      'result animated fadeIn no-responsive-typo-m',
-      className,
-    )}
-  >
+  <div className={cx('result animated fadeIn no-responsive-typo-m', className)}>
     {array.map((
       {
         hide,
@@ -32,11 +27,12 @@ const RecapSimple = ({ array, noScale, className }) => (
         spacing,
         spacingTop,
         value,
-        key,
+        intlValues,
+        className: itemClassName,
       },
       index,
     ) => {
-      const finalLabel = renderLabel({ label, noIntl });
+      const finalLabel = renderLabel({ label, noIntl, intlValues });
       if (hide) {
         return null;
       }
@@ -46,7 +42,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       if (title) {
         return (
           <h4
-            className="text-center"
+            className={cx('text-center', itemClassName)}
             {...props}
             key={index}
             style={labelStyle}
@@ -57,7 +53,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       }
       return (
         <div
-          className={classnames('fixed-size recap-item', {
+          className={cx('fixed-size recap-item', {
             'no-scale': noScale,
             bold,
           })}

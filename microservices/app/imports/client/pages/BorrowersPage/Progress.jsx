@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import T from 'core/components/Translation';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
+import Calculator from 'core/utils/Calculator';
 
 const Progress = ({ tabId = 'personal', borrower }) => {
   if (tabId !== 'personal') {
     return null;
   }
 
-  const percent = BorrowerCalculator.personalInfoPercent({
+  const percent = Calculator.personalInfoPercent({
     borrowers: borrower,
   });
   const progressClasses = cx('progress-block', { success: percent >= 1 });

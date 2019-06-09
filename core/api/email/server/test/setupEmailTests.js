@@ -5,16 +5,22 @@ import { isEmailTestEnv } from '../EmailService';
 let emailTestCollection;
 
 const POLLING_INTERVAL = 50;
-const TIMEOUT = 10000;
+// Most tests have a 10'000 timeout, so let them have an extra
+// 2000ms to wrap up
+const TIMEOUT = 8000;
 
 if (isEmailTestEnv) {
   emailTestCollection = new Mongo.Collection('emailTestCollection');
 
   Meteor.methods({
     storeTestEmail(email) {
-      emailTestCollection.insert({ ...email });
+      return emailTestCollection.insert({ ...email });
     },
-    getAllTestEmails({ expected = 1 } = {}) {
+    getAllTestEmails({
+      expected = 1,
+      timeout = TIMEOUT,
+      pollingInterval = POLLING_INTERVAL,
+    } = {}) {
       // Because emails are sent asynchronously after the actions that trigger
       // them, poll the DB for 10 seconds until something is found
       let counter = 0;
@@ -23,17 +29,19 @@ if (isEmailTestEnv) {
         const interval = Meteor.setInterval(() => {
           counter += 1;
 
-          const emails = emailTestCollection.find().fetch();
+          const emails = emailTestCollection
+            .find({}, { sort: { date: 1 } })
+            .fetch();
 
           if (emails && emails.length >= expected) {
             Meteor.clearInterval(interval);
             resolve(emails);
           }
 
-          if (counter > TIMEOUT / POLLING_INTERVAL) {
+          if (counter > timeout / pollingInterval) {
             resolve(emails);
           }
-        }, POLLING_INTERVAL);
+        }, pollingInterval);
       });
     },
   });

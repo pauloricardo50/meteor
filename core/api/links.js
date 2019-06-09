@@ -13,3 +13,4 @@ import './promotions/links';
 import './properties/links';
 import './tasks/links';
 import './users/links';
+import './revenues/links';
