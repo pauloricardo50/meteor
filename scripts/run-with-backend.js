@@ -35,6 +35,7 @@ const listener = net.createServer()
   .once('error', (err) => {
     if (err.code === 'EADDRINUSE') {
       console.log('=> Backend already running');
+      return;
     }
 
     console.error('=> Unable to check if Backend is running', err.code);
