@@ -39,13 +39,14 @@ const autoupdateVersions =
   };
 
 export const Autoupdate = {};
+const connection = DDP.connect(__meteor_runtime_config__.ROOT_URL);
 
 // Stores acceptable client versions.
 const clientVersions =
   Autoupdate._clientVersions = // Used by a self-test.
   new ClientVersions();
 
-Meteor.connection.registerStore(
+connection.registerStore(
   "meteor_autoupdate_clientVersions",
   clientVersions.createStore()
 );
@@ -77,7 +78,7 @@ const retry = new Retry({
 let failures = 0;
 
 Autoupdate._retrySubscription = () => {
-  Meteor.subscribe("meteor_autoupdate_clientVersions", {
+  connection.subscribe("meteor_autoupdate_clientVersions", {
     onError(error) {
       Meteor._debug("autoupdate subscription failed", error);
       failures++;
