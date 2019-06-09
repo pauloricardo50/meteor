@@ -9,7 +9,7 @@
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 3000",
     "prestart": "cd ../.. && npm run lang -- www",
     "start-e2e": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 3015",
-    "start": "QUALIA_ONE_BUNDLE_TYPE=modern METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" cross-env METEOR_PACKAGE_DIRS=../../packages DDP_DEFAULT_CONNECTION_URL=http://localhost:5500 DISABLE_WEBSOCKETS=1 meteor --settings settings-dev.json --port 3000",
+    "start": "QUALIA_ONE_BUNDLE_TYPE=modern METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" DDP_DEFAULT_CONNECTION_URL=http://localhost:5500 DISABLE_WEBSOCKETS=1 meteor --settings settings-dev.json --port 3000",
     "test-CI": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" SERVER_TEST_REPORTER=xunit SERVER_MOCHA_OUTPUT=~/app/results/unit-server.xml CLIENT_MOCHA_OUTPUT=~/app/results/unit-client.xml TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "test-console-once": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json  --port 3006",
     "test-console": "QUALIA_ONE_BUNDLE_TYPE=modern METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json  --port 3006",

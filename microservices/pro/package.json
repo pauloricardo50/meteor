@@ -7,7 +7,7 @@
     "cypress-run": "../../node_modules/cypress/bin/cypress run",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 4100",
     "prestart": "cd ../.. && npm run lang -- pro",
-    "start": "QUALIA_ONE_BUNDLE_TYPE=modern METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" METEOR_PACKAGE_DIRS=../../packages DDP_DEFAULT_CONNECTION_URL=http://localhost:5500 meteor --settings settings-dev.json --port 4100",
+    "start": "QUALIA_ONE_BUNDLE_TYPE=modern METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" DDP_DEFAULT_CONNECTION_URL=http://localhost:5500 meteor --settings settings-dev.json --port 4100",
     "start-e2e": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 4115",
     "test-CI": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" SERVER_TEST_REPORTER=xunit SERVER_MOCHA_OUTPUT=~/app/results/unit-server.xml CLIENT_MOCHA_OUTPUT=~/app/results/unit-client.xml TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "test-console-once": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json  --port 4106",

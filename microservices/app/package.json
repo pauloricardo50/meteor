@@ -15,7 +15,7 @@
     "production": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --production --settings settings-dev.json",
     "start-e2e": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 4015",
     "start-local-db": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
-    "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" METEOR_PACKAGE_DIRS=../../packages QUALIA_ONE_BUNDLE_TYPE=modern DDP_DEFAULT_CONNECTION_URL=http://localhost:5500 meteor --settings settings-dev.json --port 4000",
+    "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern DDP_DEFAULT_CONNECTION_URL=http://localhost:5500 meteor --settings settings-dev.json --port 4000",
     "test-CI": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" SERVER_TEST_REPORTER=xunit SERVER_MOCHA_OUTPUT=~/app/results/unit-server.xml CLIENT_MOCHA_OUTPUT=~/app/results/unit-client.xml TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "test-console-once": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json  --port 4006",
     "test-console": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json  --port 4006",

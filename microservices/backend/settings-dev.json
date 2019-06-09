@@ -1,15 +1,14 @@
 {
   "public": {
-    "microservice": "www",
+    "microservice": "backend",
     "environment": "dev",
-    "features": {
-      "LITE_VERSION": true,
-      "NOT_PRODUCTION_READY": false
-    },
     "analyticsSettings": {
       "Mixpanel": {
         "token": "2798b48714b4d78fda1c63d822e54064",
         "people": true
+      },
+      "Segment": {
+        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
       }
     },
     "google_maps_key": "AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8",
