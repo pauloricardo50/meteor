@@ -25,10 +25,12 @@
 // The client version of the client code currently running in the
 // browser.
 
+import { ClientVersions } from "./client_versions.js";
+
 const clientArch = Meteor.isCordova ? "web.cordova" :
   Meteor.isModern ? "web.browser" : "web.browser.legacy";
 
-const autoupdateVersions = 
+const autoupdateVersions =
   ((__meteor_runtime_config__.autoupdate || {}).versions || {})[clientArch] || {
     version: "unknown",
     versionRefreshable: "unknown",
@@ -37,27 +39,22 @@ const autoupdateVersions =
   };
 
 export const Autoupdate = {};
-const connection = DDP.connect(__meteor_runtime_config__.ROOT_URL);
 
-// The collection of acceptable client versions.
-const ClientVersions =
-  Autoupdate._ClientVersions = // Used by a self-test.
-  new Mongo.Collection("meteor_autoupdate_clientVersions", { connection });
+// Stores acceptable client versions.
+const clientVersions =
+  Autoupdate._clientVersions = // Used by a self-test.
+  new ClientVersions();
+
+Meteor.connection.registerStore(
+  "meteor_autoupdate_clientVersions",
+  clientVersions.createStore()
+);
 
 Autoupdate.newClientAvailable = function () {
-  return !! (
-    ClientVersions.findOne({
-      _id: clientArch,
-      versionNonRefreshable: {
-        $ne: autoupdateVersions.versionNonRefreshable,
-      }
-    }) ||
-    ClientVersions.findOne({
-      _id: clientArch,
-      versionRefreshable: {
-        $ne: autoupdateVersions.versionRefreshable,
-      }
-    })
+  return clientVersions.newClientAvailable(
+    clientArch,
+    ["versionRefreshable", "versionNonRefreshable"],
+    autoupdateVersions
   );
 };
 
@@ -80,7 +77,7 @@ const retry = new Retry({
 let failures = 0;
 
 Autoupdate._retrySubscription = () => {
-  connection.subscribe("meteor_autoupdate_clientVersions", {
+  Meteor.subscribe("meteor_autoupdate_clientVersions", {
     onError(error) {
       Meteor._debug("autoupdate subscription failed", error);
       failures++;
@@ -105,10 +102,7 @@ Autoupdate._retrySubscription = () => {
         resolved.then(() => checkNewVersionDocument(doc));
       }
 
-      const handle = ClientVersions.find().observe({
-        added: check,
-        changed: check
-      });
+      const stop = clientVersions.watch(check);
 
       function checkNewVersionDocument(doc) {
         if (doc._id !== clientArch) {
@@ -119,7 +113,7 @@ Autoupdate._retrySubscription = () => {
             autoupdateVersions.versionNonRefreshable) {
           // Non-refreshable assets have changed, so we have to reload the
           // whole page rather than just replacing <link> tags.
-          if (handle) handle.stop();
+          if (stop) stop();
           if (Package.reload) {
             // The reload package should be provided by ddp-client, which
             // is provided by the ddp package that autoupdate depends on.
