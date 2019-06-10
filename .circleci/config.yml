@@ -104,7 +104,7 @@ jobs:
           command: npm run lang www
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/www run test-CI
+          command: meteor node ./scripts/run-with-backend.js www test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -175,7 +175,7 @@ jobs:
           command: npm run lang app
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/app run test-CI
+          command: meteor node ./scripts/run-with-backend.js app test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -246,7 +246,7 @@ jobs:
           command: npm run lang admin
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/admin run test-CI
+          command: meteor node ./scripts/run-with-backend.js admin test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -317,7 +317,7 @@ jobs:
           command: npm run lang pro
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/pro run test-CI
+          command: meteor node ./scripts/run-with-backend.js pro test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -390,9 +390,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor npm --prefix microservices/backend start &
-                    meteor npm --prefix microservices/www run test-e2e-CI
-                    
+                    meteor node ./scripts/run-with-backend.js www test-e2e-CI
                     
       - save_cache:
           name: Cache meteor system
@@ -466,9 +464,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor npm --prefix microservices/backend start &
-                    meteor npm --prefix microservices/app run test-e2e-CI
-                    
+                    meteor node ./scripts/run-with-backend.js app test-e2e-CI
                     
       - save_cache:
           name: Cache meteor system
@@ -542,9 +538,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor npm --prefix microservices/backend start &
-                    meteor npm --prefix microservices/admin run test-e2e-CI
-                    
+                    meteor node ./scripts/run-with-backend.js admin test-e2e-CI
                     
       - save_cache:
           name: Cache meteor system
@@ -618,9 +612,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor npm --prefix microservices/backend start &
-                    meteor npm --prefix microservices/pro run test-e2e-CI
-                    
+                    meteor node ./scripts/run-with-backend.js pro test-e2e-CI
                     
       - save_cache:
           name: Cache meteor system
