@@ -113,15 +113,22 @@ const getLabel = ({
       </span>
     );
   case 'dot':
-    return props => (
-      <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
+    return ({ showTooltip, ...props }) =>
+      (showTooltip ? (
+        <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
+          <span
+            className={cx({ allowModify, 'status-label-dot': true })}
+            style={{ backgroundColor: color || statuses[status] }}
+            {...props}
+          />
+        </Tooltip>
+      ) : (
         <span
           className={cx({ allowModify, 'status-label-dot': true })}
           style={{ backgroundColor: color || statuses[status] }}
           {...props}
         />
-      </Tooltip>
-    );
+      ));
 
   default:
     break;
@@ -138,6 +145,7 @@ const StatusLabel = ({
   docId,
   additionalActions = () => Promise.resolve(),
   variant = 'full',
+  showTooltip = true,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -155,7 +163,9 @@ const StatusLabel = ({
     return (
       <DropdownMenu
         className="status-label-dropdown"
-        renderTrigger={({ handleOpen }) => statusLabel({ onClick: handleOpen })}
+        renderTrigger={({ handleOpen }) =>
+          statusLabel({ onClick: handleOpen, showTooltip })
+        }
         options={Object.keys(statuses).map(stat => ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
@@ -171,7 +181,7 @@ const StatusLabel = ({
     );
   }
 
-  return statusLabel();
+  return statusLabel({ showTooltip });
 };
 
 export default StatusLabel;

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
 
@@ -14,6 +14,8 @@ const LoanBoardCard = ({
   style,
   admins,
 }: LoanBoardCardProps) => {
+  const [renderComplex, setRenderComplex] = useState(false);
+
   const {
     _id: loanId,
     name,
@@ -35,12 +37,9 @@ const LoanBoardCard = ({
   return (
     <div
       className="loan-board-card card1 card-hover"
-      onClick={(event) => {
-        console.log('event:', event);
-        console.log('event wut:', event.wut);
-        setLoanId(loanId);
-      }}
       style={style}
+      onClick={() => setLoanId(loanId)}
+      onMouseEnter={() => setRenderComplex(true)}
     >
       <div className="card-top">
         <LoanBoardCardTop
@@ -50,6 +49,7 @@ const LoanBoardCard = ({
           assignee={assignee}
           admins={admins}
           userCache={userCache}
+          renderComplex={renderComplex}
         />
         {nextDueDate.dueAt && (
           <h5>

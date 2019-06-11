@@ -82,6 +82,10 @@
         font-family: 'Eina04-Regular';
       }
 
+      .title-placeholder {
+        padding: 4px;
+      }
+
       p {
         margin: 0;
       }
@@ -93,7 +97,7 @@
     }
 
     &-tasks {
-      position: absolute;
+      position: absolute !important;
       top: -8px;
       right: -8px;
     }

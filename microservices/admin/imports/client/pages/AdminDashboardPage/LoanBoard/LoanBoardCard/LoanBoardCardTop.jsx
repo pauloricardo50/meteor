@@ -20,6 +20,7 @@ const LoanBoardCardTop = ({
   name,
   status,
   userCache,
+  renderComplex,
 }: LoanBoardCardTopProps) => {
   const img = assignee && employeesById[assignee._id];
   const userId = userCache && userCache._id;
@@ -35,11 +36,12 @@ const LoanBoardCardTop = ({
           variant="dot"
           status={status}
           collection={LOANS_COLLECTION}
-          allowModify
+          allowModify={renderComplex}
           docId={loanId}
+          showTooltip={renderComplex}
         />
 
-        {userId ? (
+        {renderComplex && userId ? (
           <DropdownMenu
             className="status-label-dropdown"
             renderTrigger={({ handleOpen }) => (
@@ -58,39 +60,47 @@ const LoanBoardCardTop = ({
             }))}
             noWrapper
           />
-        ) : (
+        ) : renderComplex ? (
           <Tooltip title={assignee && assignee.firstName}>
             <img src={img ? img.src : '/img/placeholder.png'} alt="" />
           </Tooltip>
+        ) : (
+          <img src={img ? img.src : '/img/placeholder.png'} alt="" />
         )}
 
-        <Tooltip title={name}>
-          <h4 className="title">
-            {hasUser ? (
-              <CollectionIconLink
-                relatedDoc={{
-                  ...userCache,
-                  name: title,
-                  collection: USERS_COLLECTION,
-                }}
-                showIcon={false}
-              />
-            ) : (
-              title
-            )}
-          </h4>
-        </Tooltip>
+        {renderComplex ? (
+          <Tooltip title={name}>
+            <h4 className="title">
+              {hasUser ? (
+                <CollectionIconLink
+                  relatedDoc={{
+                    ...userCache,
+                    name: title,
+                    collection: USERS_COLLECTION,
+                  }}
+                  showIcon={false}
+                />
+              ) : (
+                title
+              )}
+            </h4>
+          </Tooltip>
+        ) : (
+          <h4 className="title title-placeholder">{title}</h4>
+        )}
       </div>
 
       <div className="right">
-        <IconButton
-          type="check"
-          className="loan-board-card-tasks"
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
+        {renderComplex && (
+          <IconButton
+            type="check"
+            className="loan-board-card-tasks"
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        )}
       </div>
     </div>
   );
