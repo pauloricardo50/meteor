@@ -1,4 +1,6 @@
 #!/bin/bash
- echo "Running smoke tests..."
+echo "Running smoke tests..." 
 
- npx babel-node -- test.js
+npm install --save nightmare
+npm install --save cfenv
+npx babel-node -- test.js
