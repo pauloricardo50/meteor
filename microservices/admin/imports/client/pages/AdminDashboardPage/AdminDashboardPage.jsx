@@ -1,21 +1,24 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { withState } from 'recompose';
 
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
+import Icon from 'core/components/Icon/Icon';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { adminLoanInsert } from 'core/api/loans/index';
-import Icon from 'core/components/Icon/Icon';
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
-import MyLoansTable from './MyLoansTable';
 import AdminDashboardStats from './AdminDashboardStats';
 import LoanBoard from './LoanBoard';
 
-const AdminDashboardPage = ({ currentUser, history, view, setView }) => {
+const AdminDashboardPage = ({ currentUser, history }) => {
+  const { pathname } = history.location;
+  const isDashboard = pathname === ADMIN_ROUTES.DASHBOARD_PAGE.path;
+  const isLoanBoard = pathname === ADMIN_ROUTES.LOAN_BOARD_PAGE.path;
   let content = null;
-  if (view === 'dashboard') {
+
+  if (isDashboard) {
     content = (
       <>
         <AdminDashboardStats />
@@ -63,7 +66,7 @@ const AdminDashboardPage = ({ currentUser, history, view, setView }) => {
     );
   }
 
-  if (view === 'loans') {
+  if (isLoanBoard) {
     content = <LoanBoard currentUser={currentUser} />;
   }
 
@@ -71,16 +74,18 @@ const AdminDashboardPage = ({ currentUser, history, view, setView }) => {
     <>
       <div className="flex center" style={{ marginBottom: 16 }}>
         <Button
-          raised={view === 'dashboard'}
-          primary={view === 'dashboard'}
-          onClick={() => setView('dashboard')}
+          raised={isDashboard}
+          primary={isDashboard}
+          to={ADMIN_ROUTES.DASHBOARD_PAGE.path}
+          link
         >
           Dashboard
         </Button>
         <Button
-          raised={view === 'loans'}
-          primary={view === 'loans'}
-          onClick={() => setView('loans')}
+          raised={isLoanBoard}
+          primary={isLoanBoard}
+          to={ADMIN_ROUTES.LOAN_BOARD_PAGE.path}
+          link
         >
           Dossiers
         </Button>
@@ -90,4 +95,4 @@ const AdminDashboardPage = ({ currentUser, history, view, setView }) => {
   );
 };
 
-export default withState('view', 'setView', 'dashboard')(AdminDashboardPage);
+export default AdminDashboardPage;

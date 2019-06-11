@@ -25,6 +25,11 @@ import UsersPage from '../../client/pages/UsersPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
+  LOAN_BOARD_PAGE: {
+    component: AdminDashboardPage,
+    path: '/loan-board',
+    exact: true,
+  },
 
   //   "All" pages
   USERS_PAGE: { component: UsersPage, path: '/users', exact: true },
