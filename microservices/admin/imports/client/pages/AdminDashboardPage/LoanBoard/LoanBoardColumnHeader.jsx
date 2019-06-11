@@ -5,6 +5,8 @@ import cx from 'classnames';
 import T from 'core/components/Translation';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
+import { CollectionIconLink } from 'core/components/IconLink';
+import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import { ACTIONS, SORT_ORDER, GROUP_BY, SORT_BY } from './loanBoardConstants';
 
 type LoanBoardColumnHeaderProps = {};
@@ -15,7 +17,13 @@ const getTitle = ({ id, groupBy, admins, promotions }) => {
     return <T id={`Forms.status.${id}`} />;
   case GROUP_BY.PROMOTION: {
     const promotion = promotions.find(({ _id }) => id === _id);
-    return promotion ? promotion.name : 'Sans promo';
+    return promotion ? (
+      <CollectionIconLink
+        relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
+      />
+    ) : (
+      'Sans promo'
+    );
   }
   case GROUP_BY.ADMIN: {
     const admin = admins.find(({ _id }) => id === _id);
