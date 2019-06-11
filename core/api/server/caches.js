@@ -24,6 +24,7 @@ Meteor.startup(() => {
     ],
   });
   migrate('loans', 'lendersCache', { lendersCache: { $exists: false } });
+  migrate('loans', 'tasksCache', { tasksCache: { $exists: false } });
 
   // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
   // migrate('lenderRules', 'organisationCache', {

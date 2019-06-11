@@ -143,6 +143,8 @@ const LoanSchema = new SimpleSchema({
   },
   lendersCache: { type: Array, optional: true },
   'lendersCache.$': cacheField,
+  tasksCache: { type: Array, optional: true },
+  'tasksCache.$': cacheField,
 });
 
 export default LoanSchema;
