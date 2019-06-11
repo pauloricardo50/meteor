@@ -9,32 +9,32 @@ import {
   setAssigneeOfTask,
 } from '../methodDefinitions';
 
-taskInsert.setHandler((context, params) => {
-  SecurityService.tasks.isAllowedToInsert();
+taskInsert.setHandler(({ userId }, params) => {
+  SecurityService.tasks.isAllowedToInsert(userId);
   return TaskService.insert(params);
 });
 
-taskUpdate.setHandler((context, params) => {
-  SecurityService.tasks.isAllowedToUpdate();
+taskUpdate.setHandler(({ userId }, params) => {
+  SecurityService.tasks.isAllowedToUpdate(userId);
   return TaskService.update(params);
 });
 
-taskComplete.setHandler((context, params) => {
-  SecurityService.tasks.isAllowedToUpdate();
+taskComplete.setHandler(({ userId }, params) => {
+  SecurityService.tasks.isAllowedToUpdate(userId);
   return TaskService.complete(params);
 });
 
-taskCompleteByType.setHandler((context, params) => {
-  SecurityService.tasks.isAllowedToUpdate();
+taskCompleteByType.setHandler(({ userId }, params) => {
+  SecurityService.tasks.isAllowedToUpdate(userId);
   return TaskService.completeTaskByType(params);
 });
 
-taskChangeStatus.setHandler((context, params) => {
-  SecurityService.tasks.isAllowedToUpdate();
+taskChangeStatus.setHandler(({ userId }, params) => {
+  SecurityService.tasks.isAllowedToUpdate(userId);
   return TaskService.changeStatus(params);
 });
 
-setAssigneeOfTask.setHandler((context, params) => {
-  SecurityService.tasks.isAllowedToUpdate();
+setAssigneeOfTask.setHandler(({ userId }, params) => {
+  SecurityService.tasks.isAllowedToUpdate(userId);
   return TaskService.changeAssignedTo(params);
 });

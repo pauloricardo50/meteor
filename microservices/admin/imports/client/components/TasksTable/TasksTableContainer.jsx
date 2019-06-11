@@ -31,7 +31,7 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
     createdAt,
     dueAt,
     completedAt,
-    assignedEmployee,
+    assignee,
   } = task;
   const { collection } = relatedDoc;
 
@@ -61,12 +61,12 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
       },
       {
         label:
-          assignedEmployee && assignedEmployee._id ? (
+          assignee && assignee._id ? (
             <CollectionIconLink
-              relatedDoc={{ ...assignedEmployee, collection: USERS_COLLECTION }}
+              relatedDoc={{ ...assignee, collection: USERS_COLLECTION }}
             />
           ) : null,
-        raw: assignedEmployee && assignedEmployee.name,
+        raw: assignee && assignee.name,
       },
     ],
     handleClick: () => {

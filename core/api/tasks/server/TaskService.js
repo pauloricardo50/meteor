@@ -13,19 +13,20 @@ class TaskService extends CollectionService {
   }
 
   insert = ({
-    type = TASK_TYPE.CUSTOM,
-    fileKey,
-    userId,
-    assignedTo,
-    assignedEmployeeId,
-    createdBy,
-    title,
-    docId,
-    collection,
-    status,
-    dueAt,
+    object: {
+      type = TASK_TYPE.CUSTOM,
+      assignedTo,
+      assigneeId,
+      createdBy,
+      title,
+      docId,
+      collection,
+      status,
+      dueAt,
+      ...rest
+    },
   }) => {
-    let assignee = assignedTo || assignedEmployeeId;
+    let assignee = assignedTo || assigneeId;
     if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
     }
@@ -33,11 +34,10 @@ class TaskService extends CollectionService {
     const taskId = Tasks.insert({
       type,
       createdBy,
-      fileKey,
-      userId,
       title,
       status,
       dueAt,
+      ...rest,
     });
 
     if (collection === LOANS_COLLECTION) {
@@ -47,11 +47,7 @@ class TaskService extends CollectionService {
     }
 
     if (assignee) {
-      this.addLink({
-        id: taskId,
-        linkName: 'assignee',
-        linkId: assignee,
-      });
+      this.addLink({ id: taskId, linkName: 'assignee', linkId: assignee });
     }
 
     return taskId;
@@ -73,10 +69,7 @@ class TaskService extends CollectionService {
 
     return this.update({
       taskId,
-      object: {
-        status: TASK_STATUS.COMPLETED,
-        completedAt: new Date(),
-      },
+      object: { status: TASK_STATUS.COMPLETED, completedAt: new Date() },
     });
   };
 
@@ -97,10 +90,7 @@ class TaskService extends CollectionService {
 
     return this.update({
       taskId: taskToComplete._id,
-      object: {
-        status: newStatus,
-        completedAt: new Date(),
-      },
+      object: { status: newStatus, completedAt: new Date() },
     });
   };
 
@@ -115,11 +105,7 @@ class TaskService extends CollectionService {
     });
 
   changeAssignedTo = ({ taskId, newAssigneeId }) => {
-    this.addLink({
-      id: taskId,
-      linkName: 'assignee',
-      linkId: newAssigneeId,
-    });
+    this.addLink({ id: taskId, linkName: 'assignee', linkId: newAssigneeId });
   };
 
   getAssigneeForDoc = (docId, collection) => {

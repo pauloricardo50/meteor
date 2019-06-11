@@ -7,7 +7,7 @@ import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
-import { adminUsers as query } from 'core/api/users/queries';
+import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation/Translation';
 
 type TaskModifierProps = {
@@ -31,15 +31,24 @@ export const schema = new SimpleSchema({
     defaultValue: TASK_STATUS.ACTIVE,
     uniforms: { displayEmpty: false, placeholder: '' },
   },
-  assignedEmployeeId: {
+  assigneeLink: {
+    type: Object,
+    optional: true,
+    uniforms: { label: null },
+  },
+  'assigneeLink._id': {
     type: String,
+    optional: true,
     customAllowedValues: {
-      query,
+      query: adminUsers,
       params: () => ({ $body: { name: 1 }, admins: true }),
     },
-    optional: true,
-    defaultValue: null,
-    uniforms: { transform: ({ name }) => name, labelProps: { shrink: true } },
+    uniforms: {
+      transform: ({ name }) => name,
+      labelProps: { shrink: true },
+      label: 'Assigner utilisateur',
+      placeholder: null,
+    },
   },
 });
 

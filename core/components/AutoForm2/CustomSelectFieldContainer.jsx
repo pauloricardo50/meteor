@@ -45,6 +45,7 @@ export default (Component) => {
         const { query, params = () => ({}), allowNull } = customAllowedValues;
 
         query.clone(params(model)).fetch((error, data) => {
+          console.log('data:', data);
           if (error) {
             return this.setState({ error });
           }

@@ -10,11 +10,7 @@ export default compose(
   shouldUpdate(() => false),
   withSmartQuery({
     query: tasks,
-    params: ({
-      loan: { _id: loanId, propertyIds = [], borrowerIds = [] },
-    }) => ({
-      docIds: [loanId, ...borrowerIds, ...propertyIds],
-    }),
+    params: ({ loan: { _id: loanId } }) => ({ loanId }),
     queryOptions: { reactive: false, shouldRefetch: () => false },
     dataName: 'tasks',
     refetchOnMethodCall: [taskInsert, taskUpdate],
