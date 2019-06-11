@@ -12,9 +12,11 @@ const LoanBoardCard = ({
   data: loan,
   setLoanId,
   style,
+  admins,
 }: LoanBoardCardProps) => {
   const {
     _id: loanId,
+    userId,
     name,
     status,
     userCache = {},
@@ -27,7 +29,7 @@ const LoanBoardCard = ({
     && userCache.assignedEmployeeCache;
   const dueAtMoment = nextDueDate.dueAt && moment(nextDueDate.dueAt);
   const isLate = dueAtMoment && dueAtMoment < moment();
-  const title = (userCache && userCache.firstName)
+  const title = userCache && userCache.firstName
     ? [userCache.firstName, userCache.lastName].filter(x => x).join(' ')
     : name;
   const structure = structures.find(({ id }) => id === selectedStructure);
@@ -44,6 +46,8 @@ const LoanBoardCard = ({
         name={name}
         title={title}
         assignee={assignee}
+        admins={admins}
+        userId={userCache && userCache._id}
       />
       {nextDueDate.dueAt && (
         <h5>

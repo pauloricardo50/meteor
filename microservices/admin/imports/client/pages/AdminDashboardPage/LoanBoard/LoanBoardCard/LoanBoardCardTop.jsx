@@ -2,19 +2,23 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import StatusLabel from 'core/components/StatusLabel';
 import { LOANS_COLLECTION } from 'core/api/constants';
+import { assignAdminToUser } from 'core/api/methods';
+import StatusLabel from 'core/components/StatusLabel';
 import IconButton from 'core/components/IconButton';
+import DropdownMenu from 'core/components/DropdownMenu';
 import { employeesById } from 'core/arrays/epotekEmployees';
 
 type LoanBoardCardTopProps = {};
 
 const LoanBoardCardTop = ({
-  status,
+  admins,
+  assignee,
   loanId,
   name,
+  status,
   title,
-  assignee,
+  userId,
 }: LoanBoardCardTopProps) => {
   const img = assignee && employeesById[assignee._id];
   return (
@@ -29,7 +33,26 @@ const LoanBoardCardTop = ({
         />
 
         <Tooltip title={assignee && assignee.firstName}>
-          <img src={img ? img.src : '/img/placeholder.png'} alt="" />
+          {userId ? (
+            <DropdownMenu
+              className="status-label-dropdown"
+              renderTrigger={({ handleOpen }) => (
+                <img
+                  src={img ? img.src : '/img/placeholder.png'}
+                  alt=""
+                  onClick={handleOpen}
+                />
+              )}
+              options={admins.map(({ firstName, _id }) => ({
+                id: _id,
+                label: firstName,
+                onClick: () => assignAdminToUser.run({ adminId: _id, userId }),
+              }))}
+              noWrapper
+            />
+          ) : (
+            <img src={img ? img.src : '/img/placeholder.png'} alt="" />
+          )}
         </Tooltip>
 
         <Tooltip title={name}>
@@ -50,4 +73,4 @@ const LoanBoardCardTop = ({
   );
 };
 
-export default LoanBoardCardTop;
+export default React.memo(LoanBoardCardTop);
