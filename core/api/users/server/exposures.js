@@ -134,7 +134,7 @@ exposeQuery({
   resolver: proReferredByUsersResolver,
 });
 
-exposeQuery({ query: userEmails });
+exposeQuery({ query: userEmails, options: { allowFilterById: true } });
 
 exposeQuery({
   query: userSearch,
