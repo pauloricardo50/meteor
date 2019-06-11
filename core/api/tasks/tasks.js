@@ -39,7 +39,11 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  assignedEmployeeId: {
+  assignedEmployeeLink: {
+    type: Object,
+    optional: true,
+  },
+  'assignedEmployeeLink._id': {
     type: String,
     optional: true,
   },
@@ -60,6 +64,14 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
     index: true,
+  },
+  loanLink: {
+    type: Object,
+    optional: true,
+  },
+  'loanLink._id': {
+    type: String,
+    optional: true,
   },
 });
 

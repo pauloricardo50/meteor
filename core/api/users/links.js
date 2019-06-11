@@ -8,6 +8,7 @@ import {
   Contacts,
   Organisations,
 } from '..';
+import { Tasks } from '../index';
 
 Users.addLinks({
   assignedEmployee: {
@@ -81,4 +82,8 @@ Users.addLinks({
     field: 'referredByOrganisationLink',
     type: 'one',
   },
+  tasks: {
+    collection: Tasks,
+    inversedBy: 'assignedEmployee',
+  }
 });

@@ -1,25 +1,17 @@
 import Tasks from './tasks';
-import { Users, Loans, Borrowers, Properties } from '..';
+import { Users, Loans } from '..';
 
 Tasks.addLinks({
   assignedEmployee: {
-    field: 'assignedEmployeeId',
+    field: 'assignedEmployeeLink',
     collection: Users,
     type: 'one',
+    metadata: true,
   },
   loan: {
-    field: 'loanId',
+    field: 'loanLink',
     collection: Loans,
     type: 'one',
-  },
-  property: {
-    field: 'propertyId',
-    collection: Properties,
-    type: 'one',
-  },
-  borrower: {
-    field: 'borrowerId',
-    collection: Borrowers,
-    type: 'one',
+    metadata: true,
   },
 });

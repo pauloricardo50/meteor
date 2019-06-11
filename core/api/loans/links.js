@@ -2,59 +2,26 @@
 
 import Loans from './loans';
 import {
-  Properties,
   Borrowers,
-  Users,
-  Tasks,
-  Promotions,
-  PromotionOptions,
   Lenders,
-  Revenues,
   PromotionLots,
+  PromotionOptions,
+  Promotions,
+  Properties,
+  Revenues,
+  Tasks,
+  Users,
 } from '..';
 
 Loans.addLinks({
-  properties: {
-    field: 'propertyIds',
-    collection: Properties,
-    type: 'many',
+  attributedPromotionLots: {
+    collection: PromotionLots,
+    inversedBy: 'attributedTo',
   },
   borrowers: {
     field: 'borrowerIds',
     collection: Borrowers,
     type: 'many',
-  },
-  user: {
-    field: 'userId',
-    collection: Users,
-    type: 'one',
-    denormalize: {
-      field: 'userCache',
-      body: {
-        firstName: 1,
-        lastName: 1,
-        referredByOrganisationLink: 1,
-        assignedEmployeeCache: 1,
-      },
-    },
-  },
-  tasks: {
-    collection: Tasks,
-    inversedBy: 'loan',
-  },
-  promotions: {
-    field: 'promotionLinks',
-    collection: Promotions,
-    type: 'many',
-    metadata: true,
-  },
-  promotionOptions: {
-    field: 'promotionOptionLinks',
-    collection: PromotionOptions,
-    type: 'many',
-    unique: true,
-    metadata: true,
-    autoremove: true,
   },
   lenders: {
     collection: Lenders,
@@ -70,13 +37,48 @@ Loans.addLinks({
       },
     },
   },
+  promotions: {
+    field: 'promotionLinks',
+    collection: Promotions,
+    type: 'many',
+    metadata: true,
+  },
+  promotionOptions: {
+    field: 'promotionOptionLinks',
+    collection: PromotionOptions,
+    type: 'many',
+    unique: true,
+    metadata: true,
+    autoremove: true,
+  },
+  properties: {
+    field: 'propertyIds',
+    collection: Properties,
+    type: 'many',
+  },
   revenues: {
     field: 'revenueLinks',
     collection: Revenues,
     type: 'many',
   },
-  attributedPromotionLots: {
-    collection: PromotionLots,
-    inversedBy: 'attributedTo',
+  tasks: {
+    collection: Tasks,
+    inversedBy: 'loan',
+    type: 'many',
+    autoremove: true,
+  },
+  user: {
+    field: 'userId',
+    collection: Users,
+    type: 'one',
+    denormalize: {
+      field: 'userCache',
+      body: {
+        firstName: 1,
+        lastName: 1,
+        referredByOrganisationLink: 1,
+        assignedEmployeeCache: 1,
+      },
+    },
   },
 });
