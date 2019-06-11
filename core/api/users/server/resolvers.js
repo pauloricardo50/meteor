@@ -19,7 +19,7 @@ export const proReferredByUsersResolver = ({
   const users = UserService.fetch({
     $filters: {
       $or: [
-        { referredByUserLink: userId },
+        userId && { referredByUserLink: userId },
         organisationId && { referredByOrganisationLink: organisationId },
       ].filter(x => x),
     },
