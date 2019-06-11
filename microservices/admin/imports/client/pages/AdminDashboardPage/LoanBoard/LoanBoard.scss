@@ -12,6 +12,8 @@
   }
 
   &-options .right {
+    align-items: center;
+
     > * {
       margin-left: 8px;
     }
@@ -45,7 +47,7 @@
   }
 
   &-card {
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     padding: 8px;
     cursor: pointer;
 
@@ -58,12 +60,15 @@
         position: relative;
         display: flex;
         align-items: center;
+
+        :first-child {
+          margin-right: 4px;
+        }
       }
     }
 
     .title {
       margin: 0;
-      margin-right: 8px;
     }
 
     p {

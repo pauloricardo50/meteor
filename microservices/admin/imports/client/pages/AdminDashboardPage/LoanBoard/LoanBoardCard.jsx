@@ -2,6 +2,7 @@
 import React from 'react';
 import moment from 'moment';
 import cx from 'classnames';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import IconButton from 'core/components/IconButton';
 import StatusLabel from 'core/components/StatusLabel';
@@ -22,6 +23,9 @@ const LoanBoardCard = ({
 
   const dueAtMoment = nextDueDate.dueAt && moment(nextDueDate.dueAt);
   const isLate = dueAtMoment && dueAtMoment < moment();
+  const title = userCache
+    ? [userCache.firstName, userCache.lastName].filter(x => x).join(' ')
+    : name;
 
   return (
     <div
@@ -31,23 +35,22 @@ const LoanBoardCard = ({
     >
       <div className="top">
         <div>
-          <h4 className="title">{name}</h4>
           <StatusLabel
             variant="dot"
             status={status}
             collection={LOANS_COLLECTION}
+            allowModify
+            docId={loanId}
           />
+
+          <Tooltip title={name}>
+            <h4 className="title">{title}</h4>
+          </Tooltip>
         </div>
         <div>
           <IconButton type="check" className="loan-board-card-tasks" />
         </div>
       </div>
-      <h4>
-        <small>
-          {userCache
-            && [userCache.firstName, userCache.lastName].filter(x => x).join(' ')}
-        </small>
-      </h4>
       {nextDueDate.dueAt && (
         <h5>
           <span className={cx({ 'error-box': isLate, secondary: !isLate })}>
