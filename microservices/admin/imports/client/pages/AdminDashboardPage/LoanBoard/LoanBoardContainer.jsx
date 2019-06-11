@@ -20,6 +20,8 @@ const defaultBody = {
   nextDueDate: 1,
   status: 1,
   userCache: 1,
+  structures: { wantedLoan: 1, id: 1 },
+  selectedStructure: 1,
 };
 
 const getBody = (groupBy) => {

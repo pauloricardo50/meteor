@@ -16,13 +16,7 @@ Meteor.startup(() => {
       { 'assignedEmployeeCache.firstName': { $exists: false } },
     ],
   });
-  migrate('loans', 'userCache', {
-    $or: [
-      { 'userCache.firstName': { $exists: false } },
-      { 'userCache.lastName': { $exists: false } },
-      { 'userCache.assignedEmployeeCache.firstName': { $exists: false } },
-    ],
-  });
+  migrate('loans', 'userCache', { 'userCache._id': { $exists: false } });
   migrate('loans', 'lendersCache', { lendersCache: { $exists: false } });
   migrate('loans', 'tasksCache', { tasksCache: { $exists: false } });
 
