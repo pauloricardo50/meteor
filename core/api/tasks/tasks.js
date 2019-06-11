@@ -39,11 +39,11 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  assignedEmployeeLink: {
+  assigneeLink: {
     type: Object,
     optional: true,
   },
-  'assignedEmployeeLink._id': {
+  'assigneeLink._id': {
     type: String,
     optional: true,
   },

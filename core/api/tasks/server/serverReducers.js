@@ -2,10 +2,8 @@ import { Mongo } from 'meteor/mongo';
 
 import Tasks from '../tasks';
 import { COLLECTIONS } from '../../constants';
-import assigneeReducer from '../../reducers/assigneeReducer';
 
 Tasks.addReducers({
-  ...assigneeReducer(),
   relatedDoc: {
     body: { docId: 1 },
     reduce: ({ docId }) => {

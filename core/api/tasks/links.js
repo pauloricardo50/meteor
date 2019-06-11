@@ -2,8 +2,8 @@ import Tasks from './tasks';
 import { Users, Loans } from '..';
 
 Tasks.addLinks({
-  assignedEmployee: {
-    field: 'assignedEmployeeLink',
+  assignee: {
+    field: 'assigneeLink',
     collection: Users,
     type: 'one',
     metadata: true,

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
+import { LOANS_COLLECTION } from '../../constants';
 import CollectionService from '../../helpers/CollectionService';
 import { TASK_STATUS, TASK_TYPE } from '../taskConstants';
 import { validateTask } from '../taskValidation';
@@ -31,15 +32,27 @@ class TaskService extends CollectionService {
 
     const taskId = Tasks.insert({
       type,
-      assignedEmployeeId: assignee,
       createdBy,
       fileKey,
       userId,
       title,
-      docId,
       status,
       dueAt,
     });
+
+    if (collection === LOANS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'loan', linkId: docId });
+    } else {
+      this.update({ taskId, object: { docId } });
+    }
+
+    if (assignee) {
+      this.addLink({
+        id: taskId,
+        linkName: 'assignee',
+        linkId: assignee,
+      });
+    }
 
     return taskId;
   };
@@ -101,8 +114,13 @@ class TaskService extends CollectionService {
       },
     });
 
-  changeAssignedTo = ({ taskId, newAssigneeId }) =>
-    this.update({ taskId, object: { assignedEmployeeId: newAssigneeId } });
+  changeAssignedTo = ({ taskId, newAssigneeId }) => {
+    this.addLink({
+      id: taskId,
+      linkName: 'assignee',
+      linkId: newAssigneeId,
+    });
+  };
 
   getAssigneeForDoc = (docId, collection) => {
     const doc = Mongo.Collection.get(collection)

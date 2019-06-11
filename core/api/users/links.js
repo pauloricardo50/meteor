@@ -7,8 +7,9 @@ import {
   Promotions,
   Contacts,
   Organisations,
+  Tasks,
 } from '..';
-import { Tasks } from '../index';
+
 
 Users.addLinks({
   assignedEmployee: {
@@ -84,6 +85,6 @@ Users.addLinks({
   },
   tasks: {
     collection: Tasks,
-    inversedBy: 'assignedEmployee',
-  }
+    inversedBy: 'assignee',
+  },
 });

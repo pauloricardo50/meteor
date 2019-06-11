@@ -803,23 +803,18 @@ export const baseTask = () => ({
   completedAt: 1,
   createdAt: 1,
   dueAt: 1,
-  fileKey: 1,
   relatedDoc: 1,
   status: 1,
   title: 1,
   type: 1,
   updatedAt: 1,
-  userId: 1,
 });
 
 export const task = () => ({
   ...baseTask(),
-  assignedEmployeeCache: 1,
-  assignedEmployeeId: 1,
-  assignedEmployee: simpleUser(),
-  borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },
+  assigneeLink: 1,
+  assignee: simpleUser(),
   loan: { name: 1, user: { assignedEmployeeId: 1 } },
-  property: { address1: 1, user: { assignedEmployeeId: 1 } },
 });
 
 // //
