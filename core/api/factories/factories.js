@@ -9,7 +9,6 @@ import {
   ROLES,
   STEPS,
   TASK_STATUS,
-  TASK_TYPE,
   DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
@@ -84,10 +83,8 @@ Factory.define('pro', Users, {
 Factory.define('borrower', Borrowers);
 
 Factory.define('task', Tasks, {
-  type: TASK_TYPE.USER_ADDED_FILE,
   createdAt: () => new Date(),
   status: TASK_STATUS.ACTIVE,
-  documentId: 'aDocumentId',
 });
 
 Factory.define('loan', Loans, {

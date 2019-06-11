@@ -23,15 +23,6 @@ export const taskComplete = new Method({
   },
 });
 
-export const taskCompleteByType = new Method({
-  name: 'taskCompleteByType',
-  params: {
-    type: String,
-    loanId: String,
-    newStatus: Match.Optional(String),
-  },
-});
-
 export const taskChangeStatus = new Method({
   name: 'taskChangeStatus',
   params: {

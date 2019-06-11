@@ -1,10 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
-import { LOANS_COLLECTION } from '../../constants';
+import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import CollectionService from '../../helpers/CollectionService';
-import { TASK_STATUS, TASK_TYPE } from '../taskConstants';
-import { validateTask } from '../taskValidation';
+import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
 
 class TaskService extends CollectionService {
@@ -14,15 +12,14 @@ class TaskService extends CollectionService {
 
   insert = ({
     object: {
-      type = TASK_TYPE.CUSTOM,
       assignedTo,
       assigneeId,
       createdBy,
       title,
-      docId,
       collection,
       status,
       dueAt,
+      docId,
       ...rest
     },
   }) => {
@@ -32,7 +29,6 @@ class TaskService extends CollectionService {
     }
 
     const taskId = Tasks.insert({
-      type,
       createdBy,
       title,
       status,
@@ -42,8 +38,9 @@ class TaskService extends CollectionService {
 
     if (collection === LOANS_COLLECTION) {
       this.addLink({ id: taskId, linkName: 'loan', linkId: docId });
-    } else {
-      this.update({ taskId, object: { docId } });
+    }
+    if (collection === USERS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'user', linkId: docId });
     }
 
     if (assignee) {
@@ -61,38 +58,11 @@ class TaskService extends CollectionService {
 
   getTasksForDoc = docId => Tasks.find({ docId }).fetch();
 
-  complete = ({ taskId }) => {
-    const task = this.getTaskById(taskId);
-    if (!validateTask(task)) {
-      throw new Meteor.Error('incomplete-task');
-    }
-
-    return this.update({
+  complete = ({ taskId }) =>
+    this.update({
       taskId,
       object: { status: TASK_STATUS.COMPLETED, completedAt: new Date() },
     });
-  };
-
-  completeTaskByType = ({
-    type,
-    loanId,
-    newStatus = TASK_STATUS.COMPLETED,
-  }) => {
-    const taskToComplete = Tasks.findOne({
-      loanId,
-      type,
-      status: TASK_STATUS.ACTIVE,
-    });
-
-    if (!taskToComplete) {
-      throw new Meteor.Error("task couldn't be found");
-    }
-
-    return this.update({
-      taskId: taskToComplete._id,
-      object: { status: newStatus, completedAt: new Date() },
-    });
-  };
 
   changeStatus = ({ taskId, newStatus }) =>
     this.update({

@@ -14,4 +14,10 @@ Tasks.addLinks({
     type: 'one',
     metadata: true,
   },
+  user: {
+    field: 'userLink',
+    collection: Users,
+    type: 'one',
+    metadata: true,
+  },
 });

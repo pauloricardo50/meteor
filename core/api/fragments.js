@@ -803,10 +803,8 @@ export const baseTask = () => ({
   completedAt: 1,
   createdAt: 1,
   dueAt: 1,
-  relatedDoc: 1,
   status: 1,
   title: 1,
-  type: 1,
   updatedAt: 1,
 });
 
@@ -814,7 +812,8 @@ export const task = () => ({
   ...baseTask(),
   assigneeLink: 1,
   assignee: simpleUser(),
-  loan: { name: 1, user: { assignedEmployeeId: 1 } },
+  loan: { name: 1 },
+  user: { name: 1 },
 });
 
 // //

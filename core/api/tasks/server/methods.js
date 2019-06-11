@@ -4,7 +4,6 @@ import {
   taskInsert,
   taskUpdate,
   taskComplete,
-  taskCompleteByType,
   taskChangeStatus,
   setAssigneeOfTask,
 } from '../methodDefinitions';
@@ -22,11 +21,6 @@ taskUpdate.setHandler(({ userId }, params) => {
 taskComplete.setHandler(({ userId }, params) => {
   SecurityService.tasks.isAllowedToUpdate(userId);
   return TaskService.complete(params);
-});
-
-taskCompleteByType.setHandler(({ userId }, params) => {
-  SecurityService.tasks.isAllowedToUpdate(userId);
-  return TaskService.completeTaskByType(params);
 });
 
 taskChangeStatus.setHandler(({ userId }, params) => {

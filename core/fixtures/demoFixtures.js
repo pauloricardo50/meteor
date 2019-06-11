@@ -39,22 +39,3 @@ export const createYannisData = (userId) => {
     loanId,
   });
 };
-
-export const createYannisUser = () => {
-  console.log('creating yannis...');
-  const userId = Accounts.createUser({
-    email: 'y@nnis.ch',
-    password: 'Yannis1977',
-  });
-
-  Roles.setUserRoles(userId, ROLES.DEV);
-
-  UserService.update({
-    userId,
-    object: { firstName: 'Yannis', lastName: 'Demo' },
-  });
-
-  createYannisData(userId);
-
-  console.log('Yannis created !');
-};

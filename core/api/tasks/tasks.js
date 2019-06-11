@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
-import { TASK_STATUS, TASK_TYPE, TASKS_COLLECTION } from './taskConstants';
+import { TASK_STATUS, TASKS_COLLECTION } from './taskConstants';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
@@ -47,29 +47,23 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  type: {
-    type: String,
-    allowedValues: Object.values(TASK_TYPE),
-    optional: true,
-  },
   title: {
     type: String,
     optional: true,
-  },
-  description: {
-    type: String,
-    optional: true,
-  },
-  docId: {
-    type: String,
-    optional: true,
-    index: true,
   },
   loanLink: {
     type: Object,
     optional: true,
   },
   'loanLink._id': {
+    type: String,
+    optional: true,
+  },
+  userLink: {
+    type: Object,
+    optional: true,
+  },
+  'userLink._id': {
     type: String,
     optional: true,
   },

@@ -27,6 +27,7 @@ import {
   Users,
 } from '../../api';
 import SecurityService from '../../api/security';
+import LoanService from 'core/api/loans/server/LoanService';
 import TaskService from '../../api/tasks/server/TaskService';
 import {
   USER_COUNT,
@@ -43,7 +44,6 @@ import {
 } from '../userFixtures';
 import { createFakeOffer } from '../offerFixtures';
 import { E2E_USER_EMAIL } from '../fixtureConstants';
-import { createYannisData } from '../demoFixtures';
 import { createOrganisations } from '../organisationFixtures';
 import { createFakeInterestRates } from '../interestRatesFixtures';
 import {
@@ -186,27 +186,13 @@ Meteor.methods({
     return deleteUsersRelatedData([currentUserId]);
   },
 
-  insertBorrowerRelatedTask() {
-    const borrower = Borrowers.aggregate({ $sample: { size: 1 } })[0];
-    const type = TASK_TYPE.VERIFY;
-    if (borrower._id) {
-      return TaskService.insert({ type, borrowerId: borrower._id });
-    }
-  },
-
   insertLoanRelatedTask() {
-    const loanId = Loans.aggregate({ $sample: { size: 1 } })[0]._id;
+    const loanId = LoanService.find({}).fetch()[0]._id;
     const type = TASK_TYPE.VERIFY;
     if (loanId) {
-      return TaskService.insert({ type, loanId });
-    }
-  },
-
-  insertPropertyRelatedTask() {
-    const propertyId = Properties.aggregate({ $sample: { size: 1 } })[0]._id;
-    const type = TASK_TYPE.CUSTOM;
-    if (propertyId) {
-      return TaskService.insert({ type, propertyId });
+      return TaskService.insert({
+        object: { title: 'Random dev task', type, loanLink: { _id: loanId } },
+      });
     }
   },
 

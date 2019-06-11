@@ -10,7 +10,6 @@ import {
   Tasks,
 } from '..';
 
-
 Users.addLinks({
   assignedEmployee: {
     collection: Users,
@@ -32,6 +31,10 @@ Users.addLinks({
   assignedPromotions: {
     collection: Promotions,
     inversedBy: 'assignedEmployee',
+  },
+  assignedTasks: {
+    collection: Tasks,
+    inversedBy: 'assignee',
   },
   borrowers: {
     collection: Borrowers,
@@ -85,6 +88,7 @@ Users.addLinks({
   },
   tasks: {
     collection: Tasks,
-    inversedBy: 'assignee',
+    inversedBy: 'user',
+    autoremove: true,
   },
 });
