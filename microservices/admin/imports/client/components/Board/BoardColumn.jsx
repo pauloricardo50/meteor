@@ -14,7 +14,11 @@ const BoardColumn = ({
   <div className="board-column card1 card-top">
     <ColumnHeader id={id} count={data.length} {...columnHeaderProps} />
 
-    <List height={1000} itemCount={data.length} itemSize={120} width={300}>
+    {data.map(item => (
+      <ColumnItem {...columnItemProps} data={item} key={item._id} />
+    ))}
+
+    {/* <List height={1000} itemCount={data.length} itemSize={120} width={300}>
       {({ index, style }) => (
         <div
           style={{
@@ -26,7 +30,7 @@ const BoardColumn = ({
           <ColumnItem {...columnItemProps} data={data[index]} />
         </div>
       )}
-    </List>
+    </List> */}
   </div>
 );
 

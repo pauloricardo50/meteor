@@ -1,6 +1,9 @@
 // @flow
 import React from 'react';
+import moment from 'moment';
+import cx from 'classnames';
 
+import IconButton from 'core/components/IconButton';
 import StatusLabel from 'core/components/StatusLabel';
 import { LOANS_COLLECTION } from 'core/api/constants';
 
@@ -11,11 +14,14 @@ const LoanBoardCard = ({
   setLoanId,
   style,
 }: LoanBoardCardProps) => {
-  const { _id: loanId, name, status, userCache = {} } = loan;
+  const { _id: loanId, name, status, userCache = {}, nextDueDate = {} } = loan;
   const assigneeName = (userCache
       && userCache.assignedEmployeeCache
       && userCache.assignedEmployeeCache.firstName)
     || 'Personne';
+
+  const dueAtMoment = nextDueDate.dueAt && moment(nextDueDate.dueAt);
+  const isLate = dueAtMoment && dueAtMoment < moment();
 
   return (
     <div
@@ -24,8 +30,17 @@ const LoanBoardCard = ({
       style={style}
     >
       <div className="top">
-        <h4 className="title">{name}</h4>
-        <StatusLabel status={status} collection={LOANS_COLLECTION} />
+        <div>
+          <h4 className="title">{name}</h4>
+          <StatusLabel
+            variant="dot"
+            status={status}
+            collection={LOANS_COLLECTION}
+          />
+        </div>
+        <div>
+          <IconButton type="check" className="loan-board-card-tasks" />
+        </div>
       </div>
       <h4>
         <small>
@@ -33,6 +48,15 @@ const LoanBoardCard = ({
             && [userCache.firstName, userCache.lastName].filter(x => x).join(' ')}
         </small>
       </h4>
+      {nextDueDate.dueAt && (
+        <h5>
+          <span className={cx({ 'error-box': isLate, secondary: !isLate })}>
+            {dueAtMoment.fromNow()}
+          </span>
+          :&nbsp;
+          <span>{nextDueDate.title}</span>
+        </h5>
+      )}
       {assigneeName && (
         <>
           <hr />

@@ -135,6 +135,12 @@ hr {
   color: $error;
 }
 
+.error-box {
+  background-color: $error;
+  color: white;
+  padding: 2px;
+}
+
 .warning {
   color: $warning;
 }

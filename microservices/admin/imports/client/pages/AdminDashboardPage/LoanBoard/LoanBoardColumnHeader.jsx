@@ -2,11 +2,11 @@
 import React from 'react';
 import cx from 'classnames';
 
-import T from 'core/components/Translation';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
+import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 import { ACTIONS, SORT_ORDER, GROUP_BY, SORT_BY } from './loanBoardConstants';
 
 type LoanBoardColumnHeaderProps = {};
@@ -14,7 +14,7 @@ type LoanBoardColumnHeaderProps = {};
 const getTitle = ({ id, groupBy, admins, promotions }) => {
   switch (groupBy) {
   case GROUP_BY.STATUS:
-    return <T id={`Forms.status.${id}`} />;
+    return <StatusLabel status={id} collection={LOANS_COLLECTION} />;
   case GROUP_BY.PROMOTION: {
     const promotion = promotions.find(({ _id }) => id === _id);
     return promotion ? (
@@ -37,6 +37,7 @@ const getTitle = ({ id, groupBy, admins, promotions }) => {
 
 const getOptions = ({ sortBy, sortOrder }, dispatch) =>
   [
+    { id: SORT_BY.DUE_AT, label: 'Prochain événement' },
     { id: SORT_BY.CREATED_AT, label: "Date d'ajout" },
     { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
     { id: SORT_BY.STATUS, label: 'Statut' },

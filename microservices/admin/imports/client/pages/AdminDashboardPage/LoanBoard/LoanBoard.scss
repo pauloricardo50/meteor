@@ -51,7 +51,14 @@
 
     .top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      > * {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
     }
 
     .title {
@@ -61,6 +68,12 @@
 
     p {
       margin: 0;
+    }
+
+    &-tasks {
+      position: absolute;
+      top: -8px;
+      right: -8px;
     }
   }
 

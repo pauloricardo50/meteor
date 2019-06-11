@@ -14,20 +14,21 @@ import {
 import { GROUP_BY } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
+const defaultBody = {
+  createdAt: 1,
+  name: 1,
+  nextDueDate: 1,
+  status: 1,
+  userCache: 1,
+};
 
 const getBody = (groupBy) => {
   switch (groupBy) {
   case GROUP_BY.PROMOTION:
-    return {
-      name: 1,
-      status: 1,
-      createdAt: 1,
-      userCache: 1,
-      promotions: { name: 1 },
-    };
+    return { ...defaultBody, promotions: { name: 1 } };
 
   default:
-    return { name: 1, status: 1, createdAt: 1, userCache: 1 };
+    return defaultBody;
   }
 };
 

@@ -10,7 +10,7 @@ import { SORT_ORDER, GROUP_BY, ACTIONS, SORT_BY } from './loanBoardConstants';
 export const getInitialOptions = ({ currentUser }) => ({
   groupBy: GROUP_BY.STATUS,
   assignedEmployeeId: { $in: [currentUser._id] },
-  sortBy: 'createdAt',
+  sortBy: SORT_BY.DUE_AT,
   sortOrder: SORT_ORDER.ASC,
   step: undefined,
   category: undefined,
@@ -120,6 +120,9 @@ const sortColumnData = (data, sortBy, sortOrder) => {
 
       if (sortBy === SORT_BY.STATUS) {
         return LOAN_STATUS_ORDER.indexOf(value);
+      }
+      if (sortBy === SORT_BY.DUE_AT) {
+        return item.nextDueDate && new Date(item.nextDueDate.dueAt);
       }
 
       return value;

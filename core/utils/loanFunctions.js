@@ -1,4 +1,9 @@
-import { STEPS } from '../api/constants';
+import {
+  STEPS,
+  LOAN_STATUS_ORDER,
+  LOAN_STATUS,
+  TASK_STATUS,
+} from '../api/constants';
 import Calculator from './Calculator';
 
 export const formatLoanWithStructure = ({
@@ -95,3 +100,25 @@ export const formatLoanWithPromotion = (loan) => {
 export const shouldSendStepNotification = (prevStep, nextStep) =>
   (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
   && nextStep === STEPS.OFFERS;
+
+export const nextDueDateReducer = ({
+  tasksCache = [],
+  signingDate,
+  closingDate,
+  status,
+}) => {
+  const dates = [
+    ...tasksCache.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE),
+    LOAN_STATUS_ORDER.indexOf(status)
+      < LOAN_STATUS_ORDER.indexOf(LOAN_STATUS.CLOSING)
+      && signingDate && { dueAt: signingDate, title: 'Date de signature' },
+    LOAN_STATUS_ORDER.indexOf(status)
+      >= LOAN_STATUS_ORDER.indexOf(LOAN_STATUS.CLOSING)
+      && closingDate && { dueAt: closingDate, title: 'Date de closing' },
+  ].filter(x => x);
+  const sortedDates = dates.sort(({ dueAt: A }, { dueAt: B }) => A - B);
+
+  if (sortedDates.length > 0) {
+    return sortedDates[0];
+  }
+};
