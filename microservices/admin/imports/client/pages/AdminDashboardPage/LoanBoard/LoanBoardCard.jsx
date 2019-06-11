@@ -34,7 +34,7 @@ const LoanBoardCard = ({
       style={style}
     >
       <div className="top">
-        <div>
+        <div className="left">
           <StatusLabel
             variant="dot"
             status={status}
@@ -47,8 +47,15 @@ const LoanBoardCard = ({
             <h4 className="title">{title}</h4>
           </Tooltip>
         </div>
-        <div>
-          <IconButton type="check" className="loan-board-card-tasks" />
+        <div className="right">
+          <IconButton
+            type="check"
+            className="loan-board-card-tasks"
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
         </div>
       </div>
       {nextDueDate.dueAt && (

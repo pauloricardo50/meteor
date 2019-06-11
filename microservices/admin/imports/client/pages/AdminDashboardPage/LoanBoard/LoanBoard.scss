@@ -56,14 +56,14 @@
       align-items: flex-start;
       justify-content: space-between;
 
+      .left :first-child {
+        margin-right: 4px;
+      }
+
       > * {
         position: relative;
         display: flex;
         align-items: center;
-
-        :first-child {
-          margin-right: 4px;
-        }
       }
     }
 
