@@ -45,7 +45,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       <AllTasksTable
         tableFilters={{
           filters: {
-            assignedEmployee: { email: true },
+            assignee: { email: true },
             status: [TASK_STATUS.ACTIVE],
           },
           options: {
