@@ -16,57 +16,62 @@ const LoanBoardCard = ({
 }: LoanBoardCardProps) => {
   const {
     _id: loanId,
-    userId,
     name,
     status,
     userCache = {},
     nextDueDate = {},
     selectedStructure,
     structures = [],
+    promotions = [],
   } = loan;
   const assignee = userCache
     && userCache.assignedEmployeeCache
     && userCache.assignedEmployeeCache;
   const dueAtMoment = nextDueDate.dueAt && moment(nextDueDate.dueAt);
   const isLate = dueAtMoment && dueAtMoment < moment();
-  const title = userCache && userCache.firstName
-    ? [userCache.firstName, userCache.lastName].filter(x => x).join(' ')
-    : name;
   const structure = structures.find(({ id }) => id === selectedStructure);
+  const promotion = promotions[0] && promotions[0].name;
 
   return (
     <div
-      className="loan-board-card card1 card-top card-hover"
-      onClick={() => setLoanId(loanId)}
+      className="loan-board-card card1 card-hover"
+      onClick={(event) => {
+        console.log('event:', event);
+        console.log('event wut:', event.wut);
+        setLoanId(loanId);
+      }}
       style={style}
     >
-      <LoanBoardCardTop
-        status={status}
-        loanId={loanId}
-        name={name}
-        title={title}
-        assignee={assignee}
-        admins={admins}
-        userId={userCache && userCache._id}
-      />
-      {nextDueDate.dueAt && (
-        <h5>
-          <span className={cx({ 'error-box': isLate, secondary: !isLate })}>
-            {dueAtMoment.fromNow()}
-          </span>
-          :&nbsp;
-          <span>{nextDueDate.title}</span>
-        </h5>
-      )}
-      {structure && (
-        <h4 className="wanted-loan">
-          {structure.wantedLoan ? (
-            <Money value={structure.wantedLoan} />
-          ) : (
-            <span className="secondary">Pas encore structuré</span>
-          )}
-        </h4>
-      )}
+      <div className="card-top">
+        <LoanBoardCardTop
+          status={status}
+          loanId={loanId}
+          name={name}
+          assignee={assignee}
+          admins={admins}
+          userCache={userCache}
+        />
+        {nextDueDate.dueAt && (
+          <h5>
+            <span className={cx({ 'error-box': isLate, secondary: !isLate })}>
+              {dueAtMoment.fromNow()}
+            </span>
+            :&nbsp;
+            <span>{nextDueDate.title}</span>
+          </h5>
+        )}
+        {structure && (
+          <h4 className="wanted-loan">
+            {structure.wantedLoan ? (
+              <Money value={structure.wantedLoan} />
+            ) : (
+              <span className="secondary">Pas encore structuré</span>
+            )}
+          </h4>
+        )}
+      </div>
+
+      {promotion && <div className="card-bottom">{promotion}</div>}
     </div>
   );
 };

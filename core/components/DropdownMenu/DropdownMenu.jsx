@@ -79,7 +79,11 @@ const DropdownMenu = ({
       <Menu
         anchorEl={anchorEl}
         open={isOpen}
-        onClose={handleClose}
+        onClose={(event) => {
+          // Stop propagation here to avoid parents' onClick from firing
+          event.stopPropagation();
+          handleClose();
+        }}
         classes={{ paper: paperClassName }}
         PaperProps={{
           style: {

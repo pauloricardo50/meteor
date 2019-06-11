@@ -22,17 +22,10 @@ const defaultBody = {
   userCache: 1,
   structures: { wantedLoan: 1, id: 1 },
   selectedStructure: 1,
+  promotions: { name: 1 },
 };
 
-const getBody = (groupBy) => {
-  switch (groupBy) {
-  case GROUP_BY.PROMOTION:
-    return { ...defaultBody, promotions: { name: 1 } };
-
-  default:
-    return defaultBody;
-  }
-};
+const getBody = () => defaultBody;
 
 export default compose(
   withState('activateSync', 'setActivateSync', false),
@@ -52,7 +45,7 @@ export default compose(
         category,
       },
     }) => ({
-      $body: getBody(groupBy),
+      $body: getBody(),
       assignedEmployeeId,
       step,
       relevantOnly: true,

@@ -7,7 +7,9 @@ import { assignAdminToUser } from 'core/api/methods';
 import StatusLabel from 'core/components/StatusLabel';
 import IconButton from 'core/components/IconButton';
 import DropdownMenu from 'core/components/DropdownMenu';
+import { CollectionIconLink } from 'core/components/IconLink';
 import { employeesById } from 'core/arrays/epotekEmployees';
+import { USERS_COLLECTION } from 'imports/core/api/constants';
 
 type LoanBoardCardTopProps = {};
 
@@ -17,10 +19,15 @@ const LoanBoardCardTop = ({
   loanId,
   name,
   status,
-  title,
-  userId,
+  userCache,
 }: LoanBoardCardTopProps) => {
   const img = assignee && employeesById[assignee._id];
+  const userId = userCache && userCache._id;
+  const hasUser = !!userId;
+  const title = userCache && userCache.firstName
+    ? [userCache.firstName, userCache.lastName].filter(x => x).join(' ')
+    : name;
+
   return (
     <div className="top">
       <div className="left">
@@ -32,33 +39,49 @@ const LoanBoardCardTop = ({
           docId={loanId}
         />
 
-        <Tooltip title={assignee && assignee.firstName}>
-          {userId ? (
-            <DropdownMenu
-              className="status-label-dropdown"
-              renderTrigger={({ handleOpen }) => (
+        {userId ? (
+          <DropdownMenu
+            className="status-label-dropdown"
+            renderTrigger={({ handleOpen }) => (
+              <Tooltip title={assignee && assignee.firstName}>
                 <img
                   src={img ? img.src : '/img/placeholder.png'}
                   alt=""
                   onClick={handleOpen}
                 />
-              )}
-              options={admins.map(({ firstName, _id }) => ({
-                id: _id,
-                label: firstName,
-                onClick: () => assignAdminToUser.run({ adminId: _id, userId }),
-              }))}
-              noWrapper
-            />
-          ) : (
+              </Tooltip>
+            )}
+            options={admins.map(({ firstName, _id }) => ({
+              id: _id,
+              label: firstName,
+              onClick: () => assignAdminToUser.run({ adminId: _id, userId }),
+            }))}
+            noWrapper
+          />
+        ) : (
+          <Tooltip title={assignee && assignee.firstName}>
             <img src={img ? img.src : '/img/placeholder.png'} alt="" />
-          )}
-        </Tooltip>
+          </Tooltip>
+        )}
 
         <Tooltip title={name}>
-          <h4 className="title">{title}</h4>
+          <h4 className="title">
+            {hasUser ? (
+              <CollectionIconLink
+                relatedDoc={{
+                  ...userCache,
+                  name: title,
+                  collection: USERS_COLLECTION,
+                }}
+                showIcon={false}
+              />
+            ) : (
+              title
+            )}
+          </h4>
         </Tooltip>
       </div>
+
       <div className="right">
         <IconButton
           type="check"

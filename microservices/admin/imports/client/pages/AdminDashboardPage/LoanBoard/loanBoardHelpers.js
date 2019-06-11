@@ -76,8 +76,10 @@ export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   }
   case GROUP_BY.PROMOTION: {
     return ({ id: idA }, { id: idB }) => {
-      const nameA = promotions.find(({ _id }) => idA === _id).name;
-      const nameB = promotions.find(({ _id }) => idB === _id).name;
+      const promotionA = promotions.find(({ _id }) => idA === _id);
+      const nameA = promotionA ? promotionA.name : '';
+      const promotionB = promotions.find(({ _id }) => idB === _id);
+      const nameB = promotionB ? promotionB.name : '';
       return nameA.localeCompare(nameB);
     };
   }
