@@ -162,24 +162,24 @@ const LoanBoardOptions = ({
           }
         />
 
-        <StickyPopover
-          component={(
-            <RadioButtons
-              options={groupByOptions}
-              onChange={(_, newValue) =>
-                dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
-              }
-              value={groupBy}
-              radioGroupStyle={{ flexDirection: 'column' }}
-            />
-          )}
-          placement="top"
-        >
-          <div className="">
+        <div>
+          <StickyPopover
+            component={(
+              <RadioButtons
+                options={groupByOptions}
+                onChange={(_, newValue) =>
+                  dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
+                }
+                value={groupBy}
+                radioGroupStyle={{ flexDirection: 'column' }}
+              />
+            )}
+            placement="bottom"
+          >
             <b>Mode d'affichage</b>
-            <div>{groupByOptions.find(({ id }) => id === groupBy).label}</div>
-          </div>
-        </StickyPopover>
+          </StickyPopover>
+          <div>{groupByOptions.find(({ id }) => id === groupBy).label}</div>
+        </div>
 
         <LiveQueryMonitor
           admins={admins}
@@ -196,10 +196,7 @@ const LoanBoardOptions = ({
         >
           Reset
         </Button>
-        <IconButton
-          onClick={refetchLoans}
-          type="loop"
-        />
+        <IconButton onClick={refetchLoans} type="loop" />
       </div>
     </div>
   );

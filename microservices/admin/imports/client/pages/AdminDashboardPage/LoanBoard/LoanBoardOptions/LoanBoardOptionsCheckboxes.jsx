@@ -18,22 +18,22 @@ const LoanBoardOptionsCheckboxes = ({
   value,
   onChange,
 }: LoanBoardOptionsCheckboxesProps) => (
-  <StickyPopover
-    component={(
-      <CheckboxList
-        value={value}
-        options={options}
-        onChange={onChange}
-        className="checkbox-list"
-      />
-    )}
-    placement="top"
-  >
-    <div className="">
+  <div>
+    <StickyPopover
+      component={(
+        <CheckboxList
+          value={value}
+          options={options}
+          onChange={onChange}
+          className="checkbox-list"
+        />
+      )}
+      placement="bottom"
+    >
       <b>{label}</b>
-      {renderCheckboxValue(value, options)}
-    </div>
-  </StickyPopover>
+    </StickyPopover>
+    {renderCheckboxValue(value, options)}
+  </div>
 );
 
 export default LoanBoardOptionsCheckboxes;
