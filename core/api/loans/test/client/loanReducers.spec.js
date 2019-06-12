@@ -2,10 +2,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { nextDueDateReducer } from '../../reducers';
+import { nextDueTaskReducer } from '../../reducers';
 
 describe('loans reducers', () => {
-  describe('nextDueDateReducer', () => {
+  describe('nextDueTaskReducer', () => {
     it('returns nothing if no dates exist', () => {
         // Test code
     });

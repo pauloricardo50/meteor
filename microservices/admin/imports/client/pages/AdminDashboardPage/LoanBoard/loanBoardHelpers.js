@@ -124,7 +124,7 @@ const sortColumnData = (data, sortBy, sortOrder) => {
         return LOAN_STATUS_ORDER.indexOf(value);
       }
       if (sortBy === SORT_BY.DUE_AT) {
-        return item.nextDueDate && new Date(item.nextDueDate.dueAt);
+        return item.nextDueTask && new Date(item.nextDueTask.dueAt);
       }
 
       return value;

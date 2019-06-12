@@ -5,11 +5,15 @@ import cx from 'classnames';
 
 type LoanBoardCardTasksProps = {};
 
-const LoanBoardCardTasks = ({ nextDueDate }: LoanBoardCardTasksProps) => {
-  if (!nextDueDate.dueAt) {
+const LoanBoardCardTasks = ({
+  nextDueTask,
+  tasks,
+}: LoanBoardCardTasksProps) => {
+  if (!nextDueTask.dueAt) {
     return null;
   }
-  const dueAtMoment = nextDueDate.dueAt && moment(nextDueDate.dueAt);
+
+  const dueAtMoment = nextDueTask.dueAt && moment(nextDueTask.dueAt);
   const isLate = dueAtMoment && dueAtMoment < moment();
 
   return (
@@ -20,7 +24,7 @@ const LoanBoardCardTasks = ({ nextDueDate }: LoanBoardCardTasksProps) => {
           {dueAtMoment.fromNow()}
         </span>
         :&nbsp;
-        <span>{nextDueDate.title}</span>
+        <span>{nextDueTask.title}</span>
       </h5>
     </>
   );

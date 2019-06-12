@@ -103,6 +103,15 @@ export const shouldSendStepNotification = (prevStep, nextStep) =>
 
 export const nextDueTaskReducer = ({ tasksCache = [] }) => {
   const activeTasks = tasksCache.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE);
+  const tasksWithoutDate = activeTasks
+    .filter(({ dueAt }) => !dueAt)
+    .sort(({ createdAt: A }, { createdAt: B }) => A - B);
+
+  if (tasksWithoutDate.length > 0) {
+    const task = tasksWithoutDate[0];
+    return { ...task, dueAt: task.createdAt };
+  }
+
   const sortedTasks = activeTasks.sort(({ dueAt: A }, { dueAt: B }) => A - B);
 
   if (sortedTasks.length > 0) {

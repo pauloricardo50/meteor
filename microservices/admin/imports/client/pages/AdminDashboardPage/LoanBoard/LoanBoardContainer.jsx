@@ -15,15 +15,16 @@ import { GROUP_BY } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
+  adminNote: 1,
   createdAt: 1,
   name: 1,
-  nextDueDate: 1,
-  status: 1,
-  userCache: 1,
-  structures: { wantedLoan: 1, id: 1 },
-  selectedStructure: 1,
+  nextDueTask: 1,
   promotions: { name: 1 },
-  adminNote: 1,
+  selectedStructure: 1,
+  status: 1,
+  structures: { wantedLoan: 1, id: 1 },
+  tasksCache: 1,
+  userCache: 1,
 };
 
 const getBody = () => defaultBody;

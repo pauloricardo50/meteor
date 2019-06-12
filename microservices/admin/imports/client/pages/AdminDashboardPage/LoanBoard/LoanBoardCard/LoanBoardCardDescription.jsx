@@ -21,17 +21,11 @@ const LoanBoardCardDescription = ({
     );
   }
 
-  if (structure) {
+  if (structure && structure.wantedLoan) {
     return (
       <h4 className="wanted-loan">
-        {structure.wantedLoan ? (
-          <>
-            <small className="secondary">Prêt hypothécaire</small>
-            <Money value={structure.wantedLoan} tag="div" />
-          </>
-        ) : (
-          <span className="secondary">Pas encore structuré</span>
-        )}
+        <small className="secondary">Prêt hypothécaire</small>
+        <Money value={structure.wantedLoan} tag="div" />
       </h4>
     );
   }

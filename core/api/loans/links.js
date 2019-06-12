@@ -91,9 +91,10 @@ LinkInitializer.inversedInit(() => {
       denormalize: {
         field: 'tasksCache',
         body: {
+          createdAt: 1,
           dueAt: 1,
-          title: 1,
           status: 1,
+          title: 1,
         },
       },
     },

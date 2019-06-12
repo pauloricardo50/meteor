@@ -14,22 +14,21 @@ const LoanBoardCard = ({
   admins,
 }: LoanBoardCardProps) => {
   const [renderComplex, setRenderComplex] = useState(false);
-
   const {
     _id: loanId,
     name,
     status,
     userCache = {},
-    nextDueDate = {},
+    nextDueTask = {},
     selectedStructure,
     structures = [],
     promotions = [],
     adminNote,
+    tasksCache,
   } = loan;
   const assignee = userCache
     && userCache.assignedEmployeeCache
     && userCache.assignedEmployeeCache;
-  const structure = structures.find(({ id }) => id === selectedStructure);
   const promotion = promotions[0] && promotions[0].name;
 
   return (
@@ -38,6 +37,7 @@ const LoanBoardCard = ({
       style={style}
       onClick={() => setLoanId(loanId)}
       onMouseEnter={() => setRenderComplex(true)}
+      onMouseLeave={() => setRenderComplex(false)}
     >
       <div className="card-header">
         <LoanBoardCardTop
@@ -58,8 +58,9 @@ const LoanBoardCard = ({
           adminNote={adminNote}
         />
         <LoanBoardCardTasks
-          nextDueDate={nextDueDate}
+          nextDueTask={nextDueTask}
           renderComplex={renderComplex}
+          tasks={tasksCache}
         />
       </div>
 

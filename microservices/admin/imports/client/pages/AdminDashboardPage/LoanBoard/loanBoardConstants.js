@@ -7,7 +7,7 @@ export const ACTIONS = {
 };
 
 export const SORT_BY = {
-  DUE_AT: 'item.nextDueDate.dueAt',
+  DUE_AT: 'item.nextDueTask.dueAt',
   CREATED_AT: 'createdAt',
   ASSIGNED_EMPLOYEE: 'userCache.assignedEmployeeCache.firstName',
   STATUS: 'status',

@@ -18,12 +18,19 @@ type TaskModifierProps = {
   submitting: boolean,
 };
 
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+tomorrow.setHours(0);
+tomorrow.setMinutes(0);
+tomorrow.setSeconds(0);
+tomorrow.setMilliseconds(0);
 export const schema = new SimpleSchema({
   title: { type: String, uniforms: { placeholder: 'Faire la vaisselle' } },
   dueAt: {
     type: Date,
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    // defaultValue: tomorrow,
   },
   status: {
     type: String,

@@ -123,7 +123,7 @@ const LoanBoardOptions = ({
           }
         />
 
-        {/* <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsCheckboxes
           label="Statut"
           value={statusValue}
           options={statusOptions}
@@ -162,7 +162,7 @@ const LoanBoardOptions = ({
           onChange={next =>
             makeOnChange('lenderId', dispatch)(lenderIdValue, next)
           }
-        /> */}
+        />
 
         <div>
           <StickyPopover

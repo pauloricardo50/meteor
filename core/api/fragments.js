@@ -326,7 +326,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   closingDate: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
-  nextDueDate: 1,
+  nextDueTask: 1,
   properties: adminProperty({ withSort }),
   revenues: fullRevenues(),
   signingDate: 1,

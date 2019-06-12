@@ -43,7 +43,7 @@ Loans.addReducers({
     reduce: ({ properties = [] }) =>
       properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
   },
-  nextDueDate: {
+  nextDueTask: {
     body: { tasksCache: 1 },
     reduce: nextDueTaskReducer,
   },
