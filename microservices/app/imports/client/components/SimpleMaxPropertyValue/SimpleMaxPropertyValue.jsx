@@ -25,6 +25,7 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
     loading,
     loan,
   } = props;
+  console.log('loan:', loan)
 
   if (loading) {
     return (

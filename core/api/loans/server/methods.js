@@ -1,5 +1,7 @@
 import Analytics from 'core/api/analytics/server/Analytics';
 import EVENTS from 'core/api/analytics/events';
+import { Meteor } from 'meteor/meteor';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import SecurityService from '../../security';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import {
@@ -27,6 +29,7 @@ import {
   loanShareSolvency,
   anonymousLoanInsert,
   userLoanInsert,
+  loanInsertBorrowers,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -205,4 +208,43 @@ anonymousLoanInsert.setHandler((context, params) => {
     params.trackingId,
   );
   return loanId;
+});
+
+loanInsertBorrowers.setHandler((context, params) => {
+  const { loanId, number } = params;
+  SecurityService.loans.isAllowedToUpdate(loanId);
+
+  const { borrowerIds: existingBorrowers = [] } = LoanService.get(loanId);
+
+  if (existingBorrowers.length === 2) {
+    throw new Meteor.Error('Cannot insert more borrowers');
+  }
+
+  if (existingBorrowers.length === 1 && number === 2) {
+    throw new Meteor.Error('Can insert only one more borrower');
+  }
+
+  if (number === 1) {
+    const borrowerId = BorrowerService.insert({});
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'borrowers',
+      linkId: borrowerId,
+    });
+  } else if (number === 2) {
+    const borrowerId1 = BorrowerService.insert({});
+    const borrowerId2 = BorrowerService.insert({});
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'borrowers',
+      linkId: borrowerId1,
+    });
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'borrowers',
+      linkId: borrowerId2,
+    });
+  } else {
+    throw new Meteor.Error('Invalid borrowers number');
+  }
 });

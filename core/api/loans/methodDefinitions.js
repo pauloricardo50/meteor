@@ -174,3 +174,11 @@ export const anonymousLoanInsert = new Method({
     referralId: Match.Maybe(String),
   },
 });
+
+export const loanInsertBorrowers = new Method({
+  name: 'loanInsertBorrowers',
+  params: {
+    loanId: String,
+    number: Number,
+  },
+});

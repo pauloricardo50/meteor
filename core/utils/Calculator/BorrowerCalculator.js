@@ -375,6 +375,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     // personalInfoPercent - Determines the completion rate of the borrower's
     // personal information forms
     personalInfoPercent({ borrowers }) {
+      if (!borrowers || !borrowers.length === 0) {
+        return 0;
+      }
+
       const array = arrayify(borrowers).reduce((arr, b) => {
         const personalFormArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
@@ -395,6 +399,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     personalInfoPercentSimple({ borrowers, loan }) {
+      if (!borrowers || !borrowers.length === 0 || !loan.borrowers || !loan.borrowers.length) {
+        return 0;
+      }
       const array = arrayify(borrowers).reduce((arr, b) => {
         const simpleFormArray = getBorrowerSimpleArray({
           borrowers: arrayify(borrowers),
@@ -408,6 +415,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     borrowerInfoPercent({ borrowers }) {
+      if (!borrowers || !borrowers.length === 0){
+        return 0;
+      }
       const array = arrayify(borrowers).reduce((arr, b) => {
         const personalFormArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),

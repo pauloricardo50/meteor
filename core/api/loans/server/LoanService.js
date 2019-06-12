@@ -62,8 +62,10 @@ export class LoanService extends CollectionService {
     if (proPropertyId) {
       loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
     } else {
-      const borrowerId = BorrowerService.insert({});
-      loanId = this.insert({ loan: { borrowerIds: [borrowerId] } });
+      // const borrowerId = BorrowerService.insert({});
+      loanId = this.insert({ loan: { 
+        // borrowerIds: [borrowerId] 
+      } });
     }
 
     this.update({
@@ -100,9 +102,11 @@ export class LoanService extends CollectionService {
   remove = ({ loanId }) => Loans.remove(loanId);
 
   fullLoanInsert = ({ userId, loan = {} }) => {
-    const borrowerId = BorrowerService.insert({ userId });
+    // const borrowerId = BorrowerService.insert({ userId });
     const loanId = this.insert({
-      loan: { borrowerIds: [borrowerId], ...loan },
+      loan: { 
+        // borrowerIds: [borrowerId],
+         ...loan },
       userId,
     });
     this.addNewStructure({ loanId });
@@ -160,14 +164,14 @@ export class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const borrowerId = BorrowerService.insert({ userId });
+    // const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
       $filters: { _id: promotionId },
       name: 1,
     }).name;
     const loanId = this.insert({
       loan: {
-        borrowerIds: [borrowerId],
+        // borrowerIds: [borrowerId],
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
         shareSolvency,
@@ -185,14 +189,14 @@ export class LoanService extends CollectionService {
   };
 
   insertPropertyLoan = ({ userId, propertyIds, shareSolvency }) => {
-    const borrowerId = BorrowerService.insert({ userId });
+    // const borrowerId = BorrowerService.insert({ userId });
     const customName = PropertyService.fetchOne({
       $filters: { _id: propertyIds[0] },
       address1: 1,
     }).address1;
     const loanId = this.insert({
       loan: {
-        borrowerIds: [borrowerId],
+        // borrowerIds: [borrowerId],
         propertyIds,
         customName,
         shareSolvency,

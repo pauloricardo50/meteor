@@ -13,24 +13,32 @@ const FinancingOwnFundsPicker = ({
   structureId,
   structure,
   ...data
-}: FinancingOwnFundsPickerProps) => (
-  <div className="ownFundsPicker">
-    {structure.ownFunds.map((ownFunds, index) => (
-      <CurrentOwnFunds
-        key={index}
-        ownFundsIndex={index}
-        ownFunds={ownFunds}
+}: FinancingOwnFundsPickerProps) => {
+  const { borrowers = [] } = data;
+
+  if (!borrowers.length) {
+    return <p>Pas d'emprunteurs</p>;
+  }
+
+  return (
+    <div className="ownFundsPicker">
+      {structure.ownFunds.map((ownFunds, index) => (
+        <CurrentOwnFunds
+          key={index}
+          ownFundsIndex={index}
+          ownFunds={ownFunds}
+          structureId={structureId}
+          structure={structure}
+          {...data}
+        />
+      ))}
+      <OwnFundsAdder
         structureId={structureId}
-        structure={structure}
-        {...data}
+        disabled={structure.disableForms}
       />
-    ))}
-    <OwnFundsAdder
-      structureId={structureId}
-      disabled={structure.disableForms}
-    />
-  </div>
-);
+    </div>
+  );
+};
 
 export default compose(
   FinancingDataContainer,
