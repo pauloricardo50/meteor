@@ -284,7 +284,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   contacts: 1,
   displayWelcomeScreen: 1,
   documents: 1,
-  offers: fullOffer(),
+  offers: 1,
   properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
@@ -776,10 +776,14 @@ export const promotionProperty = () => ({
   yearlyExpenses: 1,
 });
 
-export const userProperty = ({ withSort } = {}) => ({
-  ...fullProperty({ withSort }),
-  valuation: userValuation(),
-});
+export const userProperty = ({ withSort } = {}) => {
+  const obj = {
+    ...fullProperty({ withSort }),
+    valuation: userValuation(),
+  };
+  delete obj.users;
+  return obj;
+};
 
 export const proPropertySummary = () => ({
   address1: 1,
