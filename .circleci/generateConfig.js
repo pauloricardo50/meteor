@@ -63,7 +63,7 @@ const runTestsCommand = (name, testsType) => {
       return runCommand(
         'Run e2e tests',
         `
-        meteor node ./scripts/run-with-backend.js ${name} test-e2e-CI
+        meteor node ./scripts/run-with-backend.js ${name} test-e2e-CI --full-app-tests
         `,
       );
     case 'unit':

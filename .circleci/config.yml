@@ -390,7 +390,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js www test-e2e-CI
+                    meteor node ./scripts/run-with-backend.js www test-e2e-CI --full-app-tests
                     
       - save_cache:
           name: Cache meteor system
@@ -464,7 +464,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js app test-e2e-CI
+                    meteor node ./scripts/run-with-backend.js app test-e2e-CI --full-app-tests
                     
       - save_cache:
           name: Cache meteor system
@@ -538,7 +538,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js admin test-e2e-CI
+                    meteor node ./scripts/run-with-backend.js admin test-e2e-CI --full-app-tests
                     
       - save_cache:
           name: Cache meteor system
@@ -612,7 +612,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js pro test-e2e-CI
+                    meteor node ./scripts/run-with-backend.js pro test-e2e-CI --full-app-tests
                     
       - save_cache:
           name: Cache meteor system
