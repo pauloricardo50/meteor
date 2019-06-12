@@ -54,107 +54,111 @@
     }
   }
 
-  &-card {
-    margin-bottom: 16px;
-    cursor: pointer;
-
-    .card-header {
-      padding-top: 4px;
-      padding-bottom: 4px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-
-      .left :first-child {
-        margin-right: 4px;
-      }
-
-      > * {
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-
-      img {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        margin-right: 4px;
-      }
-
-      .title {
-        margin: 0;
-      }
-
-      .title-placeholder {
-        padding: 4px;
-      }
-    }
-
-    .card-top {
-      padding: 12px;
-
-      .wanted-loan {
-        text-align: center;
-        margin: 0;
-        font-family: 'Eina04-Regular';
-      }
-    }
-
-    .card-bottom {
-      padding: 8px;
-    }
-
-    &-actions {
-      position: absolute !important;
-      top: -8px;
-      right: -8px;
-    }
-
-    &-tasks {
-      margin-bottom: 0;
-    }
-
-    .admin-note {
-      font-size: 12px;
-      max-height: 80px;
-      overflow: hidden;
-      white-space: pre-wrap;
-
-      h1,
-      h2,
-      h3,
-      h4,
-      h5 {
-        margin: 0.2em 0;
-      }
-
-      p,
-      ul {
-        margin: 0;
-      }
-
-      h1 {
-        font-size: 1.4em;
-      }
-
-      h2 {
-        font-size: 1.3em;
-      }
-
-      h3 {
-        font-size: 1.2em;
-      }
-
-      h4 {
-        font-size: 1.125em;
-      }
-    }
-  }
-
   .board-column {
     width: 300px;
   }
+}
+
+.loan-board-card {
+  margin-bottom: 16px;
+  cursor: pointer;
+
+  .card-header {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .left :first-child {
+      margin-right: 4px;
+    }
+
+    > * {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .title {
+      margin: 0;
+    }
+
+    .title-placeholder {
+      padding: 4px;
+    }
+  }
+
+  .card-top {
+    padding: 12px;
+
+    .wanted-loan {
+      text-align: center;
+      margin: 0;
+      font-family: 'Eina04-Regular';
+    }
+  }
+
+  .card-bottom {
+    padding: 8px;
+  }
+
+  &-actions {
+    position: absolute !important;
+    top: -8px;
+    right: -8px;
+  }
+
+  &-tasks {
+    margin-bottom: 0;
+  }
+
+  .admin-note {
+    font-size: 12px;
+    max-height: 80px;
+    overflow: hidden;
+    white-space: pre-wrap;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin: 0.2em 0;
+    }
+
+    p,
+    ul {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 1.4em;
+    }
+
+    h2 {
+      font-size: 1.3em;
+    }
+
+    h3 {
+      font-size: 1.2em;
+    }
+
+    h4 {
+      font-size: 1.125em;
+    }
+  }
+}
+
+.timeline.vertical.tasks {
+  width: unset;
 }
 
 .sort-label {

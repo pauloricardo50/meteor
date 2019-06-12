@@ -94,7 +94,7 @@ describe('Loan functions', () => {
         { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.ACTIVE },
       ];
       const loan = { signingDate, tasksCache };
-      expect(nextDueTaskReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
+      expect(nextDueTaskReducer(loan)).to.deep.include({
         dueAt: taskDate2,
         title: 'task B',
       });
@@ -110,7 +110,7 @@ describe('Loan functions', () => {
         { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.CANCELLED },
       ];
       const loan = { tasksCache };
-      expect(nextDueTaskReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
+      expect(nextDueTaskReducer(loan)).to.deep.include({
         dueAt: taskDate1,
         title: 'task A',
         status: TASK_STATUS.ACTIVE,
@@ -125,7 +125,7 @@ describe('Loan functions', () => {
         { title: 'task B', status: TASK_STATUS.ACTIVE },
       ];
       const loan = { tasksCache };
-      expect(nextDueTaskReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
+      expect(nextDueTaskReducer(loan)).to.deep.include({
         title: 'task B',
         status: TASK_STATUS.ACTIVE,
       });
@@ -144,8 +144,27 @@ describe('Loan functions', () => {
         { createdAt: taskDate3, title: 'task C', status: TASK_STATUS.ACTIVE },
       ];
       const loan = { tasksCache };
-      expect(nextDueTaskReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
+      expect(nextDueTaskReducer(loan)).to.deep.include({
         title: 'task C',
+        status: TASK_STATUS.ACTIVE,
+      });
+    });
+
+    it('puts older tasks first', () => {
+      const taskDate1 = new Date();
+      taskDate1.setDate(taskDate1.getDate() - 1);
+      const taskDate2 = new Date();
+      taskDate2.setDate(taskDate2.getDate() - 2);
+      const taskDate3 = new Date();
+      taskDate3.setDate(taskDate3.getDate() - 3);
+      const tasksCache = [
+        { createdAt: taskDate2, title: 'task B', status: TASK_STATUS.ACTIVE },
+        { dueAt: taskDate1, title: 'task A', status: TASK_STATUS.ACTIVE },
+        { dueAt: taskDate3, title: 'task C', status: TASK_STATUS.ACTIVE },
+      ];
+      const loan = { tasksCache };
+      expect(nextDueTaskReducer(loan)).to.deep.include({
+        title: 'task B',
         status: TASK_STATUS.ACTIVE,
       });
     });

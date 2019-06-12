@@ -109,7 +109,7 @@ export const nextDueTaskReducer = ({ tasksCache = [] }) => {
 
   if (tasksWithoutDate.length > 0) {
     const task = tasksWithoutDate[0];
-    return { ...task, dueAt: task.createdAt };
+    return { ...task, dueAt: task.createdAt, noDueDate: true };
   }
 
   const sortedTasks = activeTasks.sort(({ dueAt: A }, { dueAt: B }) => A - B);

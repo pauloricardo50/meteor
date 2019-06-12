@@ -50,8 +50,9 @@ export default class PopoverStickOnHover extends React.Component {
   };
 
   render() {
-    const { component, children, placement, title } = this.props;
+    const { component, children, placement, title, forceOpen } = this.props;
     const { showPopover } = this.state;
+    const show = forceOpen || showPopover;
 
     const enhancedChildren = React.Children.map(children, child =>
       React.cloneElement(child, {
@@ -66,7 +67,7 @@ export default class PopoverStickOnHover extends React.Component {
       <React.Fragment>
         {enhancedChildren}
         <Overlay
-          show={showPopover}
+          show={show}
           placement={placement}
           target={this.ref.current}
           shouldUpdatePosition
