@@ -115,6 +115,42 @@
     &-tasks {
       margin-bottom: 0;
     }
+
+    .admin-note {
+      font-size: 12px;
+      max-height: 80px;
+      overflow: hidden;
+      white-space: pre-wrap;
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        margin: 0.2em 0;
+      }
+
+      p,
+      ul {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 1.4em;
+      }
+
+      h2 {
+        font-size: 1.3em;
+      }
+
+      h3 {
+        font-size: 1.2em;
+      }
+
+      h4 {
+        font-size: 1.125em;
+      }
+    }
   }
 
   .board-column {

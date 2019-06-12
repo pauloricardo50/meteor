@@ -23,6 +23,7 @@ const defaultBody = {
   structures: { wantedLoan: 1, id: 1 },
   selectedStructure: 1,
   promotions: { name: 1 },
+  adminNote: 1,
 };
 
 const getBody = () => defaultBody;

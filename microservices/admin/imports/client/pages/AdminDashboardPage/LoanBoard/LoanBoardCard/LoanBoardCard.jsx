@@ -24,6 +24,7 @@ const LoanBoardCard = ({
     selectedStructure,
     structures = [],
     promotions = [],
+    adminNote,
   } = loan;
   const assignee = userCache
     && userCache.assignedEmployeeCache
@@ -54,6 +55,7 @@ const LoanBoardCard = ({
         <LoanBoardCardDescription
           structures={structures}
           selectedStructure={selectedStructure}
+          adminNote={adminNote}
         />
         <LoanBoardCardTasks
           nextDueDate={nextDueDate}
