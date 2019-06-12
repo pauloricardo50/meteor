@@ -86,7 +86,7 @@ export const LiveQueryMonitor = withSmartQuery({
   query: liveSyncs,
   queryOptions: { reactive: true },
   dataName: 'currentLiveSyncs',
-})(({ currentLiveSyncs, admins, activateSync, setActivateSync }) => {
+})(({ currentLiveSyncs, devAndAdmins, activateSync, setActivateSync }) => {
   const currentUserId = Meteor.userId();
   return (
     <div>
@@ -99,7 +99,7 @@ export const LiveQueryMonitor = withSmartQuery({
       {currentLiveSyncs
         .filter(({ userId }) => userId !== currentUserId)
         .map(({ userId }) => {
-          const admin = admins.find(({ _id }) => _id === userId);
+          const admin = devAndAdmins.find(({ _id }) => _id === userId);
           const isSynced = userId === activateSync;
           return (
             <div

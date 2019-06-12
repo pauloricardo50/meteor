@@ -16,6 +16,7 @@ const LoanBoard = ({
   dispatch,
   data,
   admins,
+  devAndAdmins,
   promotions,
   lenders,
   refetchLoans,
@@ -28,6 +29,7 @@ const LoanBoard = ({
       options={options}
       dispatch={dispatch}
       admins={admins}
+      devAndAdmins={devAndAdmins}
       promotions={promotions}
       lenders={lenders}
       refetchLoans={refetchLoans}

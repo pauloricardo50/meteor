@@ -8,7 +8,7 @@ import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import RadioButtons from 'core/components/RadioButtons';
 import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
-import { LOAN_CATEGORIES } from 'imports/core/api/constants';
+import { LOAN_CATEGORIES, ROLES } from 'imports/core/api/constants';
 import { ACTIONS, GROUP_BY } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
 import { LiveQueryMonitor } from '../liveSync';
@@ -38,6 +38,7 @@ const LoanBoardOptions = ({
   options,
   dispatch,
   admins,
+  devAndAdmins,
   intl: { formatMessage: f },
   promotions,
   lenders,
@@ -70,9 +71,10 @@ const LoanBoardOptions = ({
   const assignedEmployeeOptions = [
     { id: null, label: 'Tous' },
     { id: undefined, label: 'Personne' },
-    ...admins.map(admin => ({
+    ...devAndAdmins.map(admin => ({
       id: admin._id,
       label: admin.firstName,
+      hide: admin.roles.includes(ROLES.DEV),
     })),
   ];
   const statusOptions = [
@@ -121,7 +123,7 @@ const LoanBoardOptions = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        {/* <LoanBoardOptionsCheckboxes
           label="Statut"
           value={statusValue}
           options={statusOptions}
@@ -160,7 +162,7 @@ const LoanBoardOptions = ({
           onChange={next =>
             makeOnChange('lenderId', dispatch)(lenderIdValue, next)
           }
-        />
+        /> */}
 
         <div>
           <StickyPopover
@@ -182,7 +184,7 @@ const LoanBoardOptions = ({
         </div>
 
         <LiveQueryMonitor
-          admins={admins}
+          devAndAdmins={devAndAdmins}
           setActivateSync={setActivateSync}
           activateSync={activateSync}
         />
