@@ -98,7 +98,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/www ci
+          command: |2-
+
+                  meteor npm --prefix microservices/www ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang www
@@ -169,7 +173,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/app ci
+          command: |2-
+
+                  meteor npm --prefix microservices/app ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang app
@@ -240,7 +248,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/admin ci
+          command: |2-
+
+                  meteor npm --prefix microservices/admin ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang admin
@@ -311,7 +323,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/pro ci
+          command: |2-
+
+                  meteor npm --prefix microservices/pro ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang pro
@@ -382,7 +398,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/www ci
+          command: |2-
+
+                  meteor npm --prefix microservices/www ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang www
@@ -456,7 +476,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/app ci
+          command: |2-
+
+                  meteor npm --prefix microservices/app ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang app
@@ -530,7 +554,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/admin ci
+          command: |2-
+
+                  meteor npm --prefix microservices/admin ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang admin
@@ -604,7 +632,11 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/pro ci
+          command: |2-
+
+                  meteor npm --prefix microservices/pro ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang pro
