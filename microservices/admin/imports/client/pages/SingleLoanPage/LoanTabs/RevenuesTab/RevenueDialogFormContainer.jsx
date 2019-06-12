@@ -10,7 +10,7 @@ import {
 } from 'core/api/revenues/index';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { COMMISSION_STATUS } from 'core/api/constants';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import {adminOrganisations} from 'core/api/organisations/queries';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import T from 'core/components/Translation';
 

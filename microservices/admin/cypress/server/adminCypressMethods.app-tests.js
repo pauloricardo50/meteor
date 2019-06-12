@@ -3,7 +3,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
-import adminLoansQuery from 'core/api/loans/queries/adminLoans';
+import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
 import 'core/cypress/server/methods';
 
 // remove login rate limits in E2E tests

@@ -11,7 +11,7 @@ import {
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
-import adminLoans from '../api/loans/queries/adminLoans';
+import { adminLoans } from '../api/loans/queries';
 import BorrowerService from '../api/borrowers/server/BorrowerService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createFakeOffer } from './offerFixtures';

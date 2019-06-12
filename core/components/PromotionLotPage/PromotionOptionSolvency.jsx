@@ -28,7 +28,7 @@ const PromotionOptionSolvency = ({
   }
 
   return (
-    <Tooltip title={tooltip} className="icon" enterTouchDelay={0}>
+    <Tooltip placement="left" title={tooltip} className="icon" enterTouchDelay={0}>
       <Icon type={icon} />
     </Tooltip>
   );

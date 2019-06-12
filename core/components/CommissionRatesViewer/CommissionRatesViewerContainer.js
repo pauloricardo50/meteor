@@ -1,7 +1,7 @@
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from '../../api';
-import proOrganisation from '../../api/organisations/queries/proOrganisation';
+import { proOrganisation } from '../../api/organisations/queries';
 
 export default compose(
   withSmartQuery({

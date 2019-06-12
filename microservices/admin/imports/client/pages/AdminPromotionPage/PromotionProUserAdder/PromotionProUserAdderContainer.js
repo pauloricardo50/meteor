@@ -1,6 +1,6 @@
 import { withState, compose, withProps } from 'recompose';
 import { addProUserToPromotion } from 'core/api';
-import userSearch from 'core/api/users/queries/userSearch';
+import { userSearch } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 
 export default compose(

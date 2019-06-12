@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withProps, compose } from 'recompose';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
 
 export default compose(
-  Component =>
-    class extends React.Component {
+  WrappedComponent =>
+    class extends Component {
       constructor(props) {
         super(props);
         const { filters = {} } = this.props;
@@ -28,7 +28,7 @@ export default compose(
 
       render() {
         return (
-          <Component
+          <WrappedComponent
             {...this.props}
             {...this.state}
             handleOptionsSelect={this.handleOptionsSelect}

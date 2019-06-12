@@ -7,6 +7,7 @@ import {
   FORMATTED_APPLICATIONS,
 } from './settings/settings';
 import { SPACES } from './settings/config';
+import { slackNotifyStartDeployment } from './utils/slackNotification';
 
 const main = () => {
   const { environment, applications } = argv
@@ -28,7 +29,9 @@ const main = () => {
   return prepareDeployment({
     environment,
     applicationFilter: applications,
-  }).then(() => CloudFoundryService.selectSpace(SPACES[environment]));
+  })
+    .then(() => CloudFoundryService.selectSpace(SPACES[environment]))
+    .then(() => slackNotifyStartDeployment({ applications, environment }));
 };
 
 main();

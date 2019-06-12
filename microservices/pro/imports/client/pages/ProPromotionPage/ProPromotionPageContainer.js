@@ -1,5 +1,5 @@
 import { compose, withProps } from 'recompose';
-import proPromotion from 'core/api/promotions/queries/proPromotion';
+import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api';
 import withMatchParam from 'core/containers/withMatchParam';
 import {
@@ -25,7 +25,7 @@ const makePermissions = props => ({
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
-    query: proPromotion,
+    query: proPromotions,
     params: ({ promotionId }) => ({ _id: promotionId }),
     queryOptions: { single: true },
     dataName: 'promotion',

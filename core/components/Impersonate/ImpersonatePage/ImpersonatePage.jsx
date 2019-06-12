@@ -2,42 +2,46 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
 
 import { impersonateUser } from '../../../api/methods';
 
-class ImpersonatePage extends Component {
-  static propTypes = {
-    history: PropTypes.object.isRequired,
-    intl: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-  };
-
-  componentDidMount = () => {
-    const {
-      location,
-      history,
-      intl: { formatMessage },
-    } = this.props;
-    const paramsQuery = new URLSearchParams(location.search);
-    const userId = paramsQuery.get('userId');
-    const authToken = paramsQuery.get('authToken');
-
-    impersonateUser.run({ userId, authToken }).then(({ emails }) => {
+export const impersonate = ({ userId, authToken, history }) => {
+  impersonateUser
+    .run({ userId, authToken })
+    .then(({ emails }) => {
       Meteor.connection.setUserId(userId);
       import('../../../utils/notification').then(({ default: notification }) => {
         notification.success({
           message: <span id="impersonation-success-message">Yay</span>,
-          description: formatMessage(
-            { id: 'Impersonation.impersonationSuccess' },
-            { email: emails[0].address },
-          ),
+          description: `Actuellement connecté comme ${emails[0].address}`,
           duration: 5,
         });
       });
-
-      history.push('/');
+      if (history) {
+        history.push('/');
+      }
+    })
+    .then(() => {
+      if (Meteor.isDevelopment) {
+        sessionStorage.setItem('dev_impersonate_userId', userId);
+        sessionStorage.setItem('dev_impersonate_authToken', authToken);
+      }
     });
+};
+
+class ImpersonatePage extends Component {
+  static propTypes = {
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+  };
+
+  componentDidMount = () => {
+    const { location, history } = this.props;
+    const paramsQuery = new URLSearchParams(location.search);
+    const userId = paramsQuery.get('userId');
+    const authToken = paramsQuery.get('authToken');
+
+    impersonate({ userId, authToken, history });
   };
 
   render() {
@@ -45,4 +49,4 @@ class ImpersonatePage extends Component {
   }
 }
 
-export default injectIntl(ImpersonatePage);
+export default ImpersonatePage;

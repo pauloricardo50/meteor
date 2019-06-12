@@ -3,12 +3,12 @@ import { compose, mapProps, withProps } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import proLoans from 'core/api/loans/queries/proLoans';
+import { proLoans } from 'core/api/loans/queries';
 import { getReferredBy } from 'core/api/helpers';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
-import LoanProgress from 'core/components/LoanProgress/LoanProgress';
+import LoanProgress from 'core/components/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import {
   LOANS_COLLECTION,

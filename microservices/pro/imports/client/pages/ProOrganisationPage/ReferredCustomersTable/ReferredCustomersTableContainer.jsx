@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import T from 'core/components/Translation';
 import { withSmartQuery } from 'core/api';
-import referredUsers from 'core/api/users/queries/referredUsers';
+import { proReferredByUsers } from 'core/api/users/queries';
 
 const columnOptions = [
   { id: 'name' },
@@ -28,8 +28,8 @@ const mapUser = ({ _id, name, email, phoneNumber, createdAt }) => ({
 
 export default compose(
   withSmartQuery({
-    query: referredUsers,
-    params: ({ _id: organisationId }) => ({ organisationId }),
+    query: proReferredByUsers,
+    params: { ownReferredUsers: true },
     queryOptions: { reactive: false },
     dataName: 'customers',
   }),

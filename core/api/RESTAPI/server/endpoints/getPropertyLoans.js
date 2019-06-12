@@ -2,7 +2,7 @@ import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
-import proPropertyLoans from '../../../loans/queries/proPropertyLoans';
+import { proPropertyLoans } from '../../../loans/queries';
 import { getImpersonateUserId, checkQuery } from './helpers';
 
 const querySchema = new SimpleSchema({

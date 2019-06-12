@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
@@ -136,9 +135,9 @@ describe('REST: mortgageEstimate', function () {
       notaryFees: {
         canton: 'GE',
         estimate: false,
-        total: 65427.96,
+        total: 65273.96,
       },
-      ownFunds: 305427.96,
+      ownFunds: 305273.96,
       monthlyTotals: {
         interests10: 1960,
         interests5: 1800,
@@ -146,7 +145,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      totalValue: 1265427.96,
+      totalValue: 1265273.96,
     };
 
     const query = { 'property-value': '1200000', canton: 'GE' };
@@ -202,9 +201,9 @@ describe('REST: mortgageEstimate', function () {
       notaryFees: {
         canton: 'GE',
         estimate: false,
-        total: 65427.96,
+        total: 65273.96,
       },
-      ownFunds: 305427.96,
+      ownFunds: 305273.96,
       monthlyTotals: {
         interests10: 1960,
         interests5: 1800,
@@ -212,7 +211,7 @@ describe('REST: mortgageEstimate', function () {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      totalValue: 1265427.96,
+      totalValue: 1265273.96,
     };
 
     const query = {

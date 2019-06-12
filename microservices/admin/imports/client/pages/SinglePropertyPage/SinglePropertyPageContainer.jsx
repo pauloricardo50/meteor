@@ -1,4 +1,4 @@
-import adminProperties from 'core/api/properties/queries/adminProperties';
+import { adminProperties } from 'core/api/properties/queries';
 import { withSmartQuery } from 'core/api';
 
 export default withSmartQuery({

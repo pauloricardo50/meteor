@@ -1,9 +1,8 @@
 import { withRouter } from 'react-router-dom';
 import { withState, withProps, lifecycle, compose } from 'recompose';
 
-import adminLoans from 'core/api/loans/queries/adminLoans';
+import { adminLoans } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api';
-import withDataFilterAndSort from 'core/api/containerToolkit/withDataFilterAndSort';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -11,12 +10,12 @@ import {
   USERS_COLLECTION,
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
-import adminPromotions from 'core/api/promotions/queries/adminPromotions';
-import adminContacts from 'core/api/contacts/queries/adminContacts';
+import { adminPromotions } from 'core/api/promotions/queries';
+import { adminContacts } from 'core/api/contacts/queries';
 import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
-import adminUsers from 'core/api/users/queries/adminUsers';
-import adminProperties from 'core/api/properties/queries/adminProperties';
-import adminBorrowers from 'core/api/borrowers/queries/adminBorrowers';
+import { adminUsers } from 'core/api/users/queries';
+import { adminProperties } from 'core/api/properties/queries';
+import { adminBorrowers } from 'core/api/borrowers/queries';
 
 const PAGINATION_AMOUNT = 10;
 
@@ -59,11 +58,21 @@ const getQuery = (collectionName) => {
   }
 };
 
+const applyFilters = (filterOptions) => {
+  if (Object.keys(filterOptions).length === 0) {
+    return {};
+  }
+
+  return filterOptions;
+};
+
 const setTotalCount = (props) => {
-  const { collectionName, updateTotalCount } = props;
-  getQuery(collectionName).query.getCount((err, result) => {
-    updateTotalCount(result);
-  });
+  const { collectionName, updateTotalCount, filterOptions } = props;
+  getQuery(collectionName)
+    .query.clone({ ...applyFilters(filterOptions) })
+    .getCount((err, result) => {
+      updateTotalCount(result);
+    });
 };
 
 const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
@@ -93,10 +102,12 @@ export const withSetTotalCountLifecycle = lifecycle({
 
 export const withSideNavQuery = withSmartQuery({
   query: ({ collectionName }) => getQuery(collectionName).query,
-  params: ({ showMoreCount, collectionName }) => ({
-    limit: getQueryLimit(showMoreCount),
-    skip: 0,
+  params: ({ showMoreCount, collectionName, sortOption, filterOptions }) => ({
+    $limit: getQueryLimit(showMoreCount),
+    $skip: 0,
     $body: getQuery(collectionName).body,
+    $sort: { [sortOption.field]: sortOption.order },
+    ...applyFilters(filterOptions),
   }),
   queryOptions: { reactive: false },
 });
@@ -110,6 +121,5 @@ export default compose(
   withSetTotalCountLifecycle,
   withSideNavQuery,
   withIsEndProp,
-  withDataFilterAndSort,
   withRouter,
 );

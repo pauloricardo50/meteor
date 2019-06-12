@@ -44,11 +44,11 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       <AllTasksTable
         tableFilters={{
           filters: {
-            assignedEmployee: { emails: [{ address: true }] },
+            assignedEmployee: { email: true },
             status: [TASK_STATUS.ACTIVE],
           },
           options: {
-            address: [currentUser.email, undefined],
+            email: [currentUser.email, undefined],
             status: Object.values(TASK_STATUS),
           },
         }}

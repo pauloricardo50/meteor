@@ -2,7 +2,6 @@
 import React from 'react';
 
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
-import { shouldAnonymize } from '../../api/promotions/promotionClientHelpers';
 import DropdownMenu from '../DropdownMenu';
 import T from '../Translation';
 import PromotionUsersTableActionsContainer from './PromotionUsersTableActionsContainer';
@@ -23,14 +22,14 @@ const PromotionUsersTableActions = ({
   loan,
   loading,
 }: PromotionUsersTableActionsProps) => {
-  const { user = {}, promotionOptions = [], anonymous } = loan;
+  const { user = {}, promotionOptions = [], isAnonymized } = loan;
   const options = [];
   const isAllowedToRemove = isAllowedToRemoveCustomerFromPromotion({
     promotion,
     currentUser,
     customerOwnerType,
   });
-  const isAllowedToSee = !anonymous;
+  const isAllowedToSee = !isAnonymized;
 
   if (isAllowedToSee) {
     options.push({

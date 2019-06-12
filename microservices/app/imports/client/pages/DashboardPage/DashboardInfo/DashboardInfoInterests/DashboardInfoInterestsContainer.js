@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 import { withSmartQuery } from 'core/api';
-import loanOffers from 'core/api/offers/queries/loanOffers';
-import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { loanOffers } from 'core/api/offers/queries';
+import { currentInterestRates } from 'core/api/interestRates/queries';
 
 export default compose(
   withSmartQuery({

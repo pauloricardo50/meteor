@@ -11,7 +11,7 @@ import {
   INTEREST_RATES,
   PURCHASE_TYPE,
 } from '../../../constants';
-import currentInterestRates from '../../../interestRates/queries/currentInterestRates';
+import { currentInterestRates } from '../../../interestRates/queries';
 import { checkQuery } from './helpers';
 
 const LUXURY_VALUE_THRESHOLD = 2500000;

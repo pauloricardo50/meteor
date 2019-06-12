@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(

@@ -4,7 +4,7 @@ import {
 } from 'core/components/PromotionsTable';
 import { compose } from 'recompose';
 import { withSmartQuery } from 'imports/core/api/containerToolkit/index';
-import adminPromotions from 'core/api/promotions/queries/adminPromotions';
+import { adminPromotions } from 'core/api/promotions/queries';
 
 export default compose(
   withSmartQuery({

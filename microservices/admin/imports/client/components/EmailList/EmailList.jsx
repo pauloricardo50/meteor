@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { compose } from 'recompose';
 
-import userEmails from 'core/api/users/queries/userEmails';
+import { userEmails } from 'core/api/users/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import withHider from 'core/containers/withHider';
 import Table from 'core/components/Table';

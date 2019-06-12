@@ -10,11 +10,18 @@ const PromotionUsersTable = ({
   rows,
   columnOptions,
 }: PromotionUsersTableProps) => (
-  <Table
-    rows={rows}
-    columnOptions={columnOptions}
-    className="promotion-users-table"
-  />
+  <>
+    <h3 className="secondary" style={{ marginTop: 0 }}>
+      {rows.length}
+      {' '}
+clients
+    </h3>
+    <Table
+      rows={rows}
+      columnOptions={columnOptions}
+      className="promotion-users-table"
+    />
+  </>
 );
 
 export default PromotionUsersTableContainer(PromotionUsersTable);

@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 import { LOANS_COLLECTION } from '../../constants';
 import SecurityService from '../../security';
-import { Services } from '../../api-server';
+import { Services } from '../../server';
 import LoanService from '../../loans/server/LoanService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';

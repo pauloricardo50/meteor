@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { createRoute } from '../../utils/routerUtils';
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import proPromotions from '../../api/promotions/queries/proPromotions';
+import { proPromotions } from '../../api/promotions/queries';
 import { PROMOTIONS_COLLECTION } from '../../api/constants';
 import T from '../Translation';
 import StatusLabel from '../StatusLabel';

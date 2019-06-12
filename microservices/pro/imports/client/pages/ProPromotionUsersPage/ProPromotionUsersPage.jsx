@@ -2,7 +2,7 @@
 import React from 'react';
 import { compose, withProps } from 'recompose';
 
-import proPromotionLoans from 'core/api/loans/queries/proPromotionLoans';
+import { proPromotionLoans } from 'core/api/loans/queries';
 import { isAllowedToModifyPromotion } from 'core/api/security/clientSecurityHelpers';
 import { withSmartQuery } from 'core/api';
 import PromotionUsersPage from 'core/components/PromotionUsersPage';

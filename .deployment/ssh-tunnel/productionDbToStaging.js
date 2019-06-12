@@ -59,9 +59,9 @@ const writeProdToStagingTmuxinator = () =>
                     staging.username
                   } -p ${staging.password} /tmp/${prod.database}`,
 
-                  `rm -rf /tmp/${prod.database}`,
+                  // `rm -rf /tmp/${prod.database}`,
 
-                  `tmux kill-session -t restore-db-${prod.sshId}`,
+                  // `tmux kill-session -t restore-db-${prod.sshId}`,
                 ],
               },
             ],
@@ -74,14 +74,25 @@ const writeProdToStagingTmuxinator = () =>
 const main = () =>
   executeCommand(`cf target -s Production`)
     .then(() =>
-      openSSHTunnel({ sshIdNumber: 0, environmentOverride: 'production' }),
+      openSSHTunnel({
+        sshIdNumber: 0,
+        // If you get "Authentication failed" "Unreachable servers", try changing
+        // mongoPort between 0 and 2 to iterate between the replica sets
+        // same for staging below
+        mongoPort: 0,
+        environmentOverride: 'production',
+      }),
     )
     .then(credentials => {
       prod = credentials;
     })
     .then(() => executeCommand(`cf target -s Staging`))
     .then(() =>
-      openSSHTunnel({ sshIdNumber: 1, environmentOverride: 'staging' }),
+      openSSHTunnel({
+        sshIdNumber: 1,
+        mongoPort: 2,
+        environmentOverride: 'staging',
+      }),
     )
     .then(credentials => {
       staging = credentials;

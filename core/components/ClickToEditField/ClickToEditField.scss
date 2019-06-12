@@ -1,5 +1,6 @@
 .click-to-edit-field {
   padding: 4px;
+  display: flex;
 
   transition: color 200ms $bezier, background-color 200ms $bezier;
 
