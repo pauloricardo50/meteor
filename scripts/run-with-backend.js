@@ -14,15 +14,16 @@ const [
   microservice,
   script = 'start',
 ] = process.argv.slice(2);
+const fullAppTests = process.argv.includes('--full-app-tests');
 
 if (!microservice) {
   throw new Error('Microservice argument not provided. Usage: "node run-with-backend.js <microservice>" ');
 }
 
-function startMeteor(_microservice) {
+function startMeteor(_microservice, _script = script) {
   spawn(
     'npm',
-    ['run', script],
+    ['run', _script],
     {
       cwd: path.resolve(__dirname, `../microservices/${_microservice}`),
       stdio: 'inherit',
@@ -42,7 +43,7 @@ const listener = net.createServer()
   })
   .once('listening', () => {
     listener.once('close', () => {
-      startMeteor('backend');
+      startMeteor('backend', fullAppTests ? 'start-e2e' : 'start');
     });
 
     listener.close();
