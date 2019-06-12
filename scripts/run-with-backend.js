@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-// Usage: node ./run-with-backend <microservice> <command>
+// Usage: node ./run-with-backend <microservice> <command> --full-app-tests
 // command defaults to "start"
 
 const {
@@ -20,8 +20,10 @@ if (!microservice) {
   throw new Error('Microservice argument not provided. Usage: "node run-with-backend.js <microservice>" ');
 }
 
+let backendProcess;
+
 function startMeteor(_microservice, _script = script) {
-  spawn(
+  const process = spawn(
     'npm',
     ['run', _script],
     {
@@ -29,6 +31,13 @@ function startMeteor(_microservice, _script = script) {
       stdio: 'inherit',
     },
   );
+  process.once('exit', () => {
+    if (backendProcess && backendProcess !== process) {
+      backendProcess.kill();
+    }
+  });
+
+  return process;
 }
 
 // Check if microservice is running by checking its port is in use
@@ -43,7 +52,7 @@ const listener = net.createServer()
   })
   .once('listening', () => {
     listener.once('close', () => {
-      startMeteor('backend', fullAppTests ? 'start-e2e' : 'start');
+      backendProcess = startMeteor('backend', fullAppTests ? 'start-e2e' : 'start');
     });
 
     listener.close();
