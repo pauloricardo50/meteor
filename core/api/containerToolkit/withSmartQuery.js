@@ -1,4 +1,6 @@
 // @flow
+import React from 'react';
+
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import {
   mapProps,
@@ -105,16 +107,25 @@ const withSmartQuery = ({
   renderMissingDoc = true,
   smallLoader = false,
   refetchOnMethodCall = 'all',
+  skip,
 }: withSmartQueryArgs) => {
   let completeQuery;
 
   if (typeof query === 'function') {
-    completeQuery = props => query(props).clone(calculateParams(params, props));
+    completeQuery = (props) => {
+      const q = query(props).clone(calculateParams(params, props));
+      console.log('query', q.queryName);
+      return q;
+    };
   } else {
-    completeQuery = props => query.clone(calculateParams(params, props));
+    completeQuery = (props) => {
+      const q = query.clone(calculateParams(params, props));
+      console.log('query', q.queryName);
+      return q;
+    };
   }
 
-  return compose(
+  const container = compose(
     withGlobalQueryManager(query, queryOptions, refetchOnMethodCall),
     withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
     withLoading(smallLoader),
@@ -122,6 +133,15 @@ const withSmartQuery = ({
     makeMapProps(dataName),
     withQueryRefetcher(query),
   );
+
+  if (skip) {
+    return Component => (props) => {
+      const WrappedComponent = skip(props) ? Component : container(Component);
+      return React.createElement(WrappedComponent, props);
+    };
+  }
+
+  return container;
 };
 
 export default withSmartQuery;
