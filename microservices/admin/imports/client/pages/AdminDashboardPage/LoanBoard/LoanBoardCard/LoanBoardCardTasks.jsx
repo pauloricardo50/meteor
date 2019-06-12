@@ -6,6 +6,7 @@ import cx from 'classnames';
 import StickyPopover from 'core/components/StickyPopover';
 import Timeline from 'core/components/Timeline';
 import { TASK_STATUS } from 'imports/core/api/constants';
+import LoanBoardCardTask from './LoanBoardCardTask';
 
 type LoanBoardCardTasksProps = {};
 
@@ -27,7 +28,7 @@ const LoanBoardCardTasks = ({
         {nextDueTask.noDueDate ? 'Maintenant' : dueAtMoment.fromNow()}
       </span>
       :&nbsp;
-      <span>{nextDueTask.title}</span>
+      <LoanBoardCardTask title={nextDueTask.title} _id={nextDueTask._id} />
     </h5>
   );
   const activeTasks = tasks.filter(({ status }) => status === TASK_STATUS.ACTIVE);
@@ -52,13 +53,13 @@ const LoanBoardCardTasks = ({
             <Timeline
               id={tasks[0]._id}
               className="tasks"
-              events={sortedTasks.map(({ title, dueAt }) => ({
+              events={sortedTasks.map(({ title, dueAt, _id }) => ({
                 leftLabel: !dueAt ? (
                   <span className="error-box">Maintenant</span>
                 ) : (
                   <span className="secondary">{moment(dueAt).fromNow()}</span>
                 ),
-                rightLabel: title,
+                rightLabel: <LoanBoardCardTask title={title} _id={_id} />,
               }))}
             />
           )}

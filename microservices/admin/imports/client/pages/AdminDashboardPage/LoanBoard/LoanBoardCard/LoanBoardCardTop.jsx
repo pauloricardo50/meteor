@@ -93,9 +93,9 @@ const LoanBoardCardTop = ({
       <div className="right">
         {renderComplex && (
           <IconButton
-            type="check"
-            className="loan-board-card-actions"
+            type="more"
             size="small"
+            className="more-button"
             onClick={(e) => {
               e.stopPropagation();
             }}

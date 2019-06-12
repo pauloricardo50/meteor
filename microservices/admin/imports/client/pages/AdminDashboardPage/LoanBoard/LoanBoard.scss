@@ -94,6 +94,12 @@
     .title-placeholder {
       padding: 4px;
     }
+
+    .more-button {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
   }
 
   .card-top {
@@ -108,12 +114,6 @@
 
   .card-bottom {
     padding: 8px;
-  }
-
-  &-actions {
-    position: absolute !important;
-    top: -8px;
-    right: -8px;
   }
 
   &-tasks {
@@ -154,6 +154,22 @@
     h4 {
       font-size: 1.125em;
     }
+  }
+}
+
+.loan-board-card-task {
+  position: relative;
+
+  .buttons {
+    position: absolute;
+    left: 0;
+    top: -50%;
+    display: flex;
+  }
+
+  .task-complete-button {
+    color: white;
+    background-color: $success;
   }
 }
 

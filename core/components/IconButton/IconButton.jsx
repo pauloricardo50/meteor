@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core';
+import cx from 'classnames';
+import { capitalize } from '@material-ui/core/utils/helpers';
 
 import MuiIconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '../Icon';
 
+const styles = theme => ({
+  sizeSmall: {
+    padding: 3,
+    fontSize: theme.typography.pxToRem(18),
+  },
+});
+
 // Keep this a class to avoid warnings from IconMenu which adds a ref to this
 // component
-export default class IconButton extends Component {
+class IconButton extends Component {
   constructor(props) {
     super(props);
     // To avoid linter warnings
@@ -24,6 +34,9 @@ export default class IconButton extends Component {
       iconStyle,
       iconProps,
       disabled,
+      classes,
+      size = 'medium',
+      className,
       ...rest
     } = this.props;
 
@@ -31,7 +44,13 @@ export default class IconButton extends Component {
       <MuiIconButton
         onClick={onClick}
         style={style}
-        className="icon-button"
+        className={cx(
+          'icon-button',
+          {
+            [classes[`size${capitalize(size)}`]]: size !== 'medium',
+          },
+          className,
+        )}
         aria-label={tooltip || undefined}
         disabled={disabled}
         {...rest}
@@ -71,3 +90,5 @@ IconButton.defaultProps = {
   iconProps: {},
   disabled: false,
 };
+
+export default withStyles(styles)(IconButton);
