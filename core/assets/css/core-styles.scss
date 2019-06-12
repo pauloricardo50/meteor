@@ -67,6 +67,17 @@ hr {
   padding: 16px;
 }
 
+.card-header {
+  flex-grow: 1;
+
+  padding: 16px;
+
+  border-bottom: 1px solid $border-grey;
+  border-top-right-radius: $border-radius;
+  border-top-left-radius: $border-radius;
+  background-color: #fafafa;
+}
+
 .card-bottom {
   flex-grow: 1;
 

@@ -1,10 +1,9 @@
 // @flow
 import React, { useState } from 'react';
-import moment from 'moment';
-import cx from 'classnames';
 
-import { Money } from 'core/components/Translation';
 import LoanBoardCardTop from './LoanBoardCardTop';
+import LoanBoardCardTasks from './LoanBoardCardTasks';
+import LoanBoardCardDescription from './LoanBoardCardDescription';
 
 type LoanBoardCardProps = {};
 
@@ -29,19 +28,17 @@ const LoanBoardCard = ({
   const assignee = userCache
     && userCache.assignedEmployeeCache
     && userCache.assignedEmployeeCache;
-  const dueAtMoment = nextDueDate.dueAt && moment(nextDueDate.dueAt);
-  const isLate = dueAtMoment && dueAtMoment < moment();
   const structure = structures.find(({ id }) => id === selectedStructure);
   const promotion = promotions[0] && promotions[0].name;
 
   return (
     <div
-      className="loan-board-card card1 card-hover"
+      className="loan-board-card card1 card-hover animated bounceIn"
       style={style}
       onClick={() => setLoanId(loanId)}
       onMouseEnter={() => setRenderComplex(true)}
     >
-      <div className="card-top">
+      <div className="card-header">
         <LoanBoardCardTop
           status={status}
           loanId={loanId}
@@ -51,24 +48,17 @@ const LoanBoardCard = ({
           userCache={userCache}
           renderComplex={renderComplex}
         />
-        {nextDueDate.dueAt && (
-          <h5>
-            <span className={cx({ 'error-box': isLate, secondary: !isLate })}>
-              {dueAtMoment.fromNow()}
-            </span>
-            :&nbsp;
-            <span>{nextDueDate.title}</span>
-          </h5>
-        )}
-        {structure && (
-          <h4 className="wanted-loan">
-            {structure.wantedLoan ? (
-              <Money value={structure.wantedLoan} />
-            ) : (
-              <span className="secondary">Pas encore structuré</span>
-            )}
-          </h4>
-        )}
+      </div>
+
+      <div className="card-top">
+        <LoanBoardCardDescription
+          structures={structures}
+          selectedStructure={selectedStructure}
+        />
+        <LoanBoardCardTasks
+          nextDueDate={nextDueDate}
+          renderComplex={renderComplex}
+        />
       </div>
 
       {promotion && <div className="card-bottom">{promotion}</div>}

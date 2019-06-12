@@ -30,7 +30,7 @@ const LoanBoardCardTop = ({
     : name;
 
   return (
-    <div className="top">
+    <>
       <div className="left">
         <StatusLabel
           variant="dot"
@@ -94,7 +94,7 @@ const LoanBoardCardTop = ({
         {renderComplex && (
           <IconButton
             type="check"
-            className="loan-board-card-tasks"
+            className="loan-board-card-actions"
             size="small"
             onClick={(e) => {
               e.stopPropagation();
@@ -102,7 +102,7 @@ const LoanBoardCardTop = ({
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
 
