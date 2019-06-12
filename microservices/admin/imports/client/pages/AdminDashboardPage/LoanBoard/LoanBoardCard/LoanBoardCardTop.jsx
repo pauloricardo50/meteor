@@ -5,11 +5,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import { assignAdminToUser } from 'core/api/methods';
 import StatusLabel from 'core/components/StatusLabel';
-import IconButton from 'core/components/IconButton';
 import DropdownMenu from 'core/components/DropdownMenu';
-import { CollectionIconLink } from 'core/components/IconLink';
 import { employeesById } from 'core/arrays/epotekEmployees';
-import { USERS_COLLECTION } from 'imports/core/api/constants';
+import LoanBoardCardActions from './LoanBoardCardActions';
+import LoanBoardCardTitle from './LoanBoardCardTitle';
 
 type LoanBoardCardTopProps = {};
 
@@ -69,38 +68,19 @@ const LoanBoardCardTop = ({
         )}
 
         {renderComplex ? (
-          <Tooltip title={name}>
-            <h4 className="title">
-              {hasUser ? (
-                <CollectionIconLink
-                  relatedDoc={{
-                    ...userCache,
-                    name: title,
-                    collection: USERS_COLLECTION,
-                  }}
-                  showIcon={false}
-                />
-              ) : (
-                title
-              )}
-            </h4>
-          </Tooltip>
+          <LoanBoardCardTitle
+            hasUser={hasUser}
+            name={name}
+            title={title}
+            userCache={userCache}
+          />
         ) : (
           <h4 className="title title-placeholder">{title}</h4>
         )}
       </div>
 
       <div className="right">
-        {renderComplex && (
-          <IconButton
-            type="more"
-            size="small"
-            className="more-button"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        )}
+        {renderComplex && <LoanBoardCardActions loanId={loanId} />}
       </div>
     </>
   );

@@ -13,6 +13,10 @@ const styles = theme => ({
     padding: 3,
     fontSize: theme.typography.pxToRem(18),
   },
+  sizeTiny: {
+    padding: 2,
+    fontSize: theme.typography.pxToRem(12),
+  },
 });
 
 // Keep this a class to avoid warnings from IconMenu which adds a ref to this
@@ -55,7 +59,7 @@ class IconButton extends Component {
         disabled={disabled}
         {...rest}
       >
-        <Icon type={type} style={iconStyle} {...iconProps} />
+        <Icon type={type} style={iconStyle} fontSize="inherit" {...iconProps} />
       </MuiIconButton>
     );
 
