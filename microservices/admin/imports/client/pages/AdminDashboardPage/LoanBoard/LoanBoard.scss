@@ -1,4 +1,12 @@
 .loan-board {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .board {
+    flex-grow: 1;
+  }
+
   &-options {
     display: flex;
     justify-content: space-between;
