@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 
 import { Signer } from 'aws-sdk/clients/cloudfront';
-import { formatLoanWithStructure, nextDueDateReducer } from '../loanFunctions';
+import { formatLoanWithStructure, nextDueTaskReducer } from '../loanFunctions';
 import { LOAN_STATUS, TASK_STATUS } from '../../api/constants';
 
 describe('Loan functions', () => {
@@ -76,45 +76,10 @@ describe('Loan functions', () => {
     });
   });
 
-  describe('nextDueDateReducer', () => {
+  describe('nextDueTaskReducer', () => {
     it('returns undefined if no dates exist', () => {
       const loan = {};
-      expect(nextDueDateReducer(loan)).to.equal(undefined);
-    });
-
-    it('returns signing date if it is the closest', () => {
-      const signingDate = new Date();
-      const loan = { signingDate };
-      expect(nextDueDateReducer(loan)).to.deep.equal({
-        dueAt: signingDate,
-        title: 'Date de signature',
-      });
-    });
-
-    it('returns the oldest date', () => {
-      const signingDate = new Date();
-      const closingDate = new Date();
-      closingDate.setDate(closingDate.getDate() + 1);
-      const loan = { signingDate, closingDate, status: LOAN_STATUS.FINALIZED };
-      expect(nextDueDateReducer(loan)).to.deep.equal({
-        dueAt: closingDate,
-        title: 'Date de closing',
-      });
-    });
-
-    it('ignores closingDate as long as status is not CLOSING', () => {
-      const signingDate = new Date();
-      const closingDate = new Date();
-      closingDate.setDate(closingDate.getDate() + 1);
-      const loan = { signingDate, closingDate, status: LOAN_STATUS.ONGOING };
-      expect(nextDueDateReducer(loan)).to.deep.equal({
-        dueAt: signingDate,
-        title: 'Date de signature',
-      });
-      expect(nextDueDateReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.equal({
-        dueAt: closingDate,
-        title: 'Date de closing',
-      });
+      expect(nextDueTaskReducer(loan)).to.equal(undefined);
     });
 
     it('gets the next task date', () => {
@@ -129,7 +94,7 @@ describe('Loan functions', () => {
         { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.ACTIVE },
       ];
       const loan = { signingDate, tasksCache };
-      expect(nextDueDateReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
+      expect(nextDueTaskReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
         dueAt: taskDate2,
         title: 'task B',
       });
@@ -145,7 +110,7 @@ describe('Loan functions', () => {
         { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.CANCELLED },
       ];
       const loan = { tasksCache };
-      expect(nextDueDateReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
+      expect(nextDueTaskReducer({ ...loan, status: LOAN_STATUS.CLOSING })).to.deep.include({
         dueAt: taskDate1,
         title: 'task A',
         status: TASK_STATUS.ACTIVE,

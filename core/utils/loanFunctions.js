@@ -101,24 +101,11 @@ export const shouldSendStepNotification = (prevStep, nextStep) =>
   (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
   && nextStep === STEPS.OFFERS;
 
-export const nextDueDateReducer = ({
-  tasksCache = [],
-  signingDate,
-  closingDate,
-  status,
-}) => {
-  const dates = [
-    ...tasksCache.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE),
-    LOAN_STATUS_ORDER.indexOf(status)
-      < LOAN_STATUS_ORDER.indexOf(LOAN_STATUS.CLOSING)
-      && signingDate && { dueAt: signingDate, title: 'Date de signature' },
-    LOAN_STATUS_ORDER.indexOf(status)
-      >= LOAN_STATUS_ORDER.indexOf(LOAN_STATUS.CLOSING)
-      && closingDate && { dueAt: closingDate, title: 'Date de closing' },
-  ].filter(x => x);
-  const sortedDates = dates.sort(({ dueAt: A }, { dueAt: B }) => A - B);
+export const nextDueTaskReducer = ({ tasksCache = [] }) => {
+  const activeTasks = tasksCache.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE);
+  const sortedTasks = activeTasks.sort(({ dueAt: A }, { dueAt: B }) => A - B);
 
-  if (sortedDates.length > 0) {
-    return sortedDates[0];
+  if (sortedTasks.length > 0) {
+    return sortedTasks[0];
   }
 };

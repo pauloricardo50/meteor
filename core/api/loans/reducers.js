@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 import Loans from '.';
 import {
   formatLoanWithStructure,
-  nextDueDateReducer,
+  nextDueTaskReducer,
 } from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
 import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
@@ -44,12 +44,7 @@ Loans.addReducers({
       properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
   },
   nextDueDate: {
-    body: {
-      tasksCache: 1,
-      signingDate: 1,
-      closingDate: 1,
-      status: 1,
-    },
-    reduce: nextDueDateReducer,
+    body: { tasksCache: 1 },
+    reduce: nextDueTaskReducer,
   },
 });
