@@ -3,11 +3,11 @@ import { check } from 'meteor/check';
 
 import range from 'lodash/range';
 
+import LoanService from 'core/api/loans/server/LoanService';
 import {
   STEPS,
   STEP_ORDER,
   ROLES,
-  TASK_TYPE,
   PURCHASE_TYPE,
   APPLICATION_TYPES,
   ORGANISATION_TYPES,
@@ -27,7 +27,6 @@ import {
   Users,
 } from '../../api';
 import SecurityService from '../../api/security';
-import LoanService from 'core/api/loans/server/LoanService';
 import TaskService from '../../api/tasks/server/TaskService';
 import {
   USER_COUNT,
@@ -183,15 +182,16 @@ Meteor.methods({
   },
 
   purgePersonalData(currentUserId) {
+    SecurityService.checkCurrentUserIsDev();
     return deleteUsersRelatedData([currentUserId]);
   },
 
   insertLoanRelatedTask() {
+    SecurityService.checkCurrentUserIsDev();
     const loanId = LoanService.find({}).fetch()[0]._id;
-    const type = TASK_TYPE.VERIFY;
     if (loanId) {
       return TaskService.insert({
-        object: { title: 'Random dev task', type, loanLink: { _id: loanId } },
+        object: { title: 'Random dev task', loanLink: { _id: loanId } },
       });
     }
   },
