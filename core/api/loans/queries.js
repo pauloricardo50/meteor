@@ -56,5 +56,5 @@ export const userLoans = Loans.createQuery(
     ...userLoan({ withSort: true, withFilteredPromotions: true }),
     maxPropertyValueExists: 1,
   },
-  { scoped: true },
+  // { scoped: true },
 );

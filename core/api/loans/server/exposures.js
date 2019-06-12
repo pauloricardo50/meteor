@@ -239,11 +239,16 @@ exposeQuery({
         }
       };
 
-      if (!embodyParams.userId) {
-        body.maxPropertyValue = 0;
-      } else {
-        body.maxPropertyValueExists = 0;
-      }
+      // if (!embodyParams.userId) {
+      //   console.log('not logged in');
+      //   body.maxPropertyValue = 0;
+      //   body.maxPropertyValueExists = 1;
+      // } else {
+      //   console.log('logged in');
+      //   body.maxPropertyValue = 1;
+      //   body.maxPropertyValueExists = 0;
+      // }
+      // // console.log('body:', body);
     },
     validateParams: {
       loanId: Match.Maybe(String),
