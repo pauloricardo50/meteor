@@ -77,7 +77,7 @@ const withUserLoan = withSmartQuery({
   params: ({ loanId }) => ({ loanId, $body: fragment }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
-  renderMissingDoc: ({ loanId }) => !!loanId,
+  skip: ({ loanId }) => !loanId,
 });
 
 const withInterestRates = withSmartQuery({
