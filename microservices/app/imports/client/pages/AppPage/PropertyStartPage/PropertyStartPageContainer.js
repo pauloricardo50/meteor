@@ -1,9 +1,11 @@
-import { compose, withProps } from 'recompose';
+import { Meteor } from 'meteor/meteor';
+
+import { compose, withProps, lifecycle } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { anonymousProperty } from 'core/api/properties/queries';
 import { createRoute } from 'core/utils/routerUtils';
-import { anonymousLoanInsert } from 'core/api/methods';
+import { anonymousLoanInsert, userLoanInsert } from 'core/api/methods';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
@@ -32,9 +34,39 @@ export default compose(
     renderMissingDoc: false,
     refetchOnMethodCall: false,
   }),
+  lifecycle({
+    componentDidMount() {
+      // If a logged in user already has a loan with this property,
+      // route him to it
+      const { currentUser, history, propertyId } = this.props;
+      if (currentUser) {
+        const { loans = [] } = currentUser;
+        const loanWithProperty = loans.find(({ properties }) =>
+          properties.some(({ _id }) => _id === propertyId));
+
+        if (loanWithProperty) {
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+            loanId: loanWithProperty._id,
+          }));
+        }
+      }
+    },
+  }),
   withProps(({ propertyId, referralId, history }) => ({
-    insertAnonymousLoan: () =>
-      anonymousLoanInsert
+    insertLoan: () => {
+      if (Meteor.userId()) {
+        return userLoanInsert
+          .run({
+            proPropertyId: propertyId,
+          })
+          .then(loanId =>
+            history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+              loanId,
+              tabId: '',
+            })));
+      }
+
+      return anonymousLoanInsert
         .run({
           proPropertyId: propertyId,
           referralId,
@@ -43,6 +75,7 @@ export default compose(
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
           history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
-        }),
+        });
+    },
   })),
 );

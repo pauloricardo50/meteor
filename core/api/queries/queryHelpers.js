@@ -101,13 +101,7 @@ const getFirewall = (overrides, options) => (userId, params) => {
   if (!overrides.firewall) {
     Security.checkUserIsAdmin(userId);
   } else {
-    try {
-      
-      overrides.firewall(userId, params);
-    } catch (error) {
-      console.log('error:', error);
-      
-    }
+    overrides.firewall(userId, params);
   }
 };
 

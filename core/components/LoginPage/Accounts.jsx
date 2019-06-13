@@ -1,5 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-
+// @flow
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
 import { TextField, Snackbar } from '@material-ui/core';
@@ -165,9 +164,13 @@ class FormMessage extends Accounts.ui.FormMessage {
   handleLoanClose = () => this.setState({ open: false });
 
   render() {
-    const { message, type } = this.props;
+    const { message } = this.props;
 
-    return message ? (
+    if (!message) {
+      return null;
+    }
+
+    return (
       <Snackbar
         open={this.state.open}
         message={message}
@@ -176,7 +179,7 @@ class FormMessage extends Accounts.ui.FormMessage {
         onActionTouchTap={this.handleLoanClose}
         onClose={this.handleLoanClose}
       />
-    ) : null;
+    );
   }
 }
 
