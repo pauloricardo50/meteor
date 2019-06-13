@@ -43,7 +43,6 @@ import {
 } from '../userFixtures';
 import { createFakeOffer } from '../offerFixtures';
 import { E2E_USER_EMAIL } from '../fixtureConstants';
-import { createYannisData } from '../demoFixtures';
 import { createOrganisations } from '../organisationFixtures';
 import { createFakeInterestRates } from '../interestRatesFixtures';
 import {
