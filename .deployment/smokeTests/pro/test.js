@@ -1,5 +1,6 @@
 const Nightmare = require('nightmare');
 const cfenv = require('cfenv');
+const assert = require('assert');
 
 const appEnv = cfenv.getAppEnv();
 
