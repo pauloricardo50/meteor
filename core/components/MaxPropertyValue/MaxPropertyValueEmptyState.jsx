@@ -16,6 +16,38 @@ type MaxPropertyValueEmptyStateProps = {
   calculateSolvency: Function,
 };
 
+const getReadyToCalculateTitle = (props) => {
+  const { loan, lockCanton, canton } = props;
+  const {
+    hasPromotion,
+    hasProProperty,
+    properties = [],
+    promotions = [],
+  } = loan;
+
+  if (!lockCanton) {
+    return <T id="MaxPropertyValue.empty" />;
+  }
+
+  if (hasPromotion) {
+    const promotionName = promotions[0].name;
+    return (
+      <span>
+        Dans le cadre de la promotion "{promotionName}", calculez votre capacité d'achat pour le canton de <T id={`Forms.canton.${canton}`} />
+      </span>
+    );
+  }
+
+  if(hasProProperty){
+    const propertyName = properties[0].address1;
+    return (
+      <span>
+        Pour le bien immobilier "{propertyName}", calculez votre capacité d'achat pour le canton de <T id={`Forms.canton.${canton}`} />
+      </span>
+    );
+  }
+};
+
 const MaxPropertyValueEmptyState = ({
   loan,
   state,
@@ -23,6 +55,10 @@ const MaxPropertyValueEmptyState = ({
   cantonValue,
   onChangeCanton,
   loading,
+  lockCanton,
+  recalculate,
+  cantonOptions,
+  canton
 }: MaxPropertyValueEmptyStateProps) => (
   <div className="max-property-value-empty-state">
     <FontAwesomeIcon className="icon" icon={faUsers} />
@@ -45,10 +81,26 @@ const MaxPropertyValueEmptyState = ({
         </>
       ) : (
         <>
-          <h4>
-            <T id="MaxPropertyValue.empty" />
-          </h4>
-          <Select
+          <h4>{getReadyToCalculateTitle({loan, canton, lockCanton})}</h4>
+          <div className="flex-row center space-children">
+            {!lockCanton && (
+              <Select
+                value={cantonValue}
+                onChange={onChangeCanton}
+                options={cantonOptions}
+                disabled={loading}
+              />
+            )}
+            <Button
+              raised
+              onClick={recalculate}
+              secondary
+              style={{ marginLeft: 16 }}
+            >
+              {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
+            </Button>
+          </div>
+          {/* <Select
             value={cantonValue}
             onChange={onChangeCanton}
             options={Object.keys(CANTONS).map((shortCanton) => {
@@ -56,7 +108,7 @@ const MaxPropertyValueEmptyState = ({
               return { id: shortCanton, label: cant };
             })}
             disabled={loading}
-          />
+          /> */}
         </>
       )}
     </div>

@@ -299,6 +299,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         name: 1,
         status: 1,
         type: 1,
+        canton: 1,
         users: {
           _id: 1,
           name: 1,

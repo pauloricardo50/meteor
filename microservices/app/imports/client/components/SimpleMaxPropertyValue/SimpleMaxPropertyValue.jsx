@@ -7,6 +7,7 @@ import cx from 'classnames';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Loading from 'core/components/Loading';
+import Button from 'core/components/Button';
 import MaxPropertyValueResults from 'core/components/MaxPropertyValue/MaxPropertyValueResults';
 import MaxPropertyValueContainer, {
   STATE,
@@ -16,6 +17,38 @@ import SimpleMaxPropertyValueSignup from './SimpleMaxPropertyValueSignup';
 
 type SimpleMaxPropertyValueProps = {};
 
+const getReadyToCalculateTitle = (props) => {
+  const { loan, lockCanton, canton } = props;
+  const {
+    hasPromotion,
+    hasProProperty,
+    properties = [],
+    promotions = [],
+  } = loan;
+
+  if (!lockCanton) {
+    return <T id="MaxPropertyValue.empty" />;
+  }
+
+  if (hasPromotion) {
+    const promotionName = promotions[0].name;
+    return (
+      <span>
+        Dans le cadre de la promotion "{promotionName}", calculez votre capacité d'achat pour le canton de <T id={`Forms.canton.${canton}`} />
+      </span>
+    );
+  }
+
+  if(hasProProperty){
+    const propertyName = properties[0].address1;
+    return (
+      <span>
+        Pour le bien immobilier "{propertyName}", calculez votre capacité d'achat pour le canton de <T id={`Forms.canton.${canton}`} />
+      </span>
+    );
+  }
+};
+
 export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
   const {
     blue,
@@ -24,8 +57,10 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
     canton: cantonValue,
     loading,
     loan,
+    lockCanton,
+    recalculate,
+    cantonOptions
   } = props;
-  console.log('loan:', loan)
 
   if (loading) {
     return (
@@ -56,18 +91,25 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
             </>
           ) : (
             <>
-              <h4>
-                <T id="MaxPropertyValue.empty" />
-              </h4>
-              <Select
-                value={cantonValue}
-                onChange={onChangeCanton}
-                options={Object.keys(CANTONS).map((shortCanton) => {
-                  const canton = CANTONS[shortCanton];
-                  return { id: shortCanton, label: canton };
-                })}
-                disabled={loading}
-              />
+              <h4>{getReadyToCalculateTitle(props)}</h4>
+              <div className="flex-row center space-children">
+                {!lockCanton && (
+                  <Select
+                    value={cantonValue}
+                    onChange={onChangeCanton}
+                    options={cantonOptions}
+                    disabled={loading}
+                  />
+                )}
+                <Button
+                  raised
+                  onClick={recalculate}
+                  secondary
+                  style={{ marginLeft: 16 }}
+                >
+                  {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
+                </Button>
+              </div>
             </>
           )}
         </div>

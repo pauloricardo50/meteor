@@ -214,7 +214,7 @@ loanInsertBorrowers.setHandler((context, params) => {
   const { loanId, number } = params;
   SecurityService.loans.isAllowedToUpdate(loanId);
 
-  const { borrowerIds: existingBorrowers = [] } = LoanService.get(loanId);
+  const { borrowerIds: existingBorrowers = [], userId } = LoanService.get(loanId);
 
   if (existingBorrowers.length === 2) {
     throw new Meteor.Error('Cannot insert more borrowers');
@@ -225,15 +225,15 @@ loanInsertBorrowers.setHandler((context, params) => {
   }
 
   if (number === 1) {
-    const borrowerId = BorrowerService.insert({});
+    const borrowerId = BorrowerService.insert({ userId });
     LoanService.addLink({
       id: loanId,
       linkName: 'borrowers',
       linkId: borrowerId,
     });
   } else if (number === 2) {
-    const borrowerId1 = BorrowerService.insert({});
-    const borrowerId2 = BorrowerService.insert({});
+    const borrowerId1 = BorrowerService.insert({ userId });
+    const borrowerId2 = BorrowerService.insert({ userId });
     LoanService.addLink({
       id: loanId,
       linkName: 'borrowers',
