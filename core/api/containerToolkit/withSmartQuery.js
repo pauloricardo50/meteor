@@ -1,6 +1,4 @@
 // @flow
-import React from 'react';
-
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import {
   mapProps,
@@ -16,6 +14,7 @@ import {
   addQueryToRefetch,
   removeQueryToRefetch,
 } from '../methods/clientQueryManager';
+import makeSkipContainer from './skipContainer';
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
@@ -127,10 +126,7 @@ const withSmartQuery = ({
   );
 
   if (skip) {
-    return Component => (props) => {
-      const WrappedComponent = skip(props) ? Component : container(Component);
-      return React.createElement(WrappedComponent, props);
-    };
+    return makeSkipContainer(container, skip);
   }
 
   return container;
