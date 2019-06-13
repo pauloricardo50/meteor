@@ -3,7 +3,6 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import BorrowersAdder from 'imports/client/components/BorrowersAdder/BorrowersAdder';
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
 import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueLightTheme';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
@@ -15,11 +14,6 @@ type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   const { loan, currentUser } = props;
-  const { borrowers = [] } = loan;
-
-  if (!borrowers.length) {
-    return <BorrowersAdder loanId={loan._id} />;
-  }
 
   const progress = Calculator.personalInfoPercentSimple({ loan });
 

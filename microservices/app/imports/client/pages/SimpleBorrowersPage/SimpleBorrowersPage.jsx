@@ -8,6 +8,7 @@ import SimpleBorrowerPageForms from './SimpleBorrowerPageForms';
 import SimpleBorrowersPageMaxPropertyValue from './SimpleBorrowersPageMaxPropertyValue';
 import SimpleBorrowersPageHeader from './SimpleBorrowersPageHeader';
 import MaxPropertyValueCTA from './MaxPropertyValueCTA';
+import BorrowersAdder from '../../components/BorrowersAdder/BorrowersAdder';
 
 type SimpleBorrowersPageProps = {};
 
@@ -19,6 +20,11 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => {
   const hasEnoughHeight = useMedia({
     minHeight: maxPropertyValueHeight + topSpaceHeight,
   });
+  const { borrowers = [] } = loan;
+
+  if (!borrowers.length) {
+    return <BorrowersAdder loanId={loan._id} />;
+  }
 
   return (
     <div className="simple-borrowers-page animated fadeIn">

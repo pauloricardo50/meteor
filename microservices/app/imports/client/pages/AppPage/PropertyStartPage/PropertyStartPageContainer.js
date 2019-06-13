@@ -42,7 +42,7 @@ export default compose(
         })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
+          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
         }),
   })),
 );

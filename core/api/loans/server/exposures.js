@@ -238,6 +238,11 @@ exposeQuery({
           filters._id = params.loanId;
         }
       };
+
+      if (!embodyParams.userId) {
+        console.log('no user');
+        body.maxPropertyValue = 0;
+      }
     },
     validateParams: {
       loanId: Match.Maybe(String),

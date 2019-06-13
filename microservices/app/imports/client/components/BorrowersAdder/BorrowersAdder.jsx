@@ -23,7 +23,7 @@ const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
         >
           <div className="flex-row center space-children">
             <Icon type="person" />
-1 emprunteur
+            <p style={{ margin: 'unset' }}>1 emprunteur</p>
           </div>
         </Button>
         <Button
@@ -33,7 +33,7 @@ const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
         >
           <div className="flex-row center space-children">
             <Icon type="people" />
-2 emprunteurs
+            <p style={{ margin: 'unset' }}>2 emprunteurs</p>
           </div>
         </Button>
       </div>

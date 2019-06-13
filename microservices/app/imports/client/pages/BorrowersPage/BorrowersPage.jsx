@@ -13,6 +13,7 @@ import BorrowerHeader from './BorrowerHeader';
 import BorrowersPageTitle from './BorrowersPageTitle';
 import BorrowersPageNextTab from './BorrowersPageNextTab';
 import BorrowersPageContainer from './BorrowersPageContainer';
+import BorrowersAdder from 'imports/client/components/BorrowersAdder/BorrowersAdder';
 
 const getTabs = (props) => {
   const { loan } = props;
@@ -53,8 +54,13 @@ const getTabs = (props) => {
 const BorrowersPage = (props) => {
   const {
     tabId,
-    loan: { borrowers },
+    loan: { borrowers, _id: loanId },
   } = props;
+
+  if(borrowers.length === 0){
+    return <BorrowersAdder loanId={loanId} />
+  }
+
   const tabs = getTabs(props);
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
