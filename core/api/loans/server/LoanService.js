@@ -200,6 +200,7 @@ export class LoanService extends CollectionService {
       },
       userId,
     });
+
     this.addNewStructure({ loanId });
     return loanId;
   };

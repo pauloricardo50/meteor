@@ -55,15 +55,11 @@ export default compose(
   withProps(({ propertyId, referralId, history }) => ({
     insertLoan: () => {
       if (Meteor.userId()) {
-        return userLoanInsert
-          .run({
-            proPropertyId: propertyId,
-          })
-          .then(loanId =>
-            history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
-              loanId,
-              tabId: '',
-            })));
+        return userLoanInsert.run({ proPropertyId: propertyId }).then(loanId =>
+          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+            loanId,
+            tabId: '',
+          })));
       }
 
       return anonymousLoanInsert

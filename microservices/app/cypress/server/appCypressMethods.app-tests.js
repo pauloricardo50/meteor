@@ -18,7 +18,7 @@ import UserService from 'core/api/users/server/UserService';
 import PropertyService from 'core/api/properties/server/PropertyService';
 import Loans from 'core/api/loans';
 import { loanBase } from 'core/api/fragments';
-import { USER_EMAIL, USER_PASSWORD } from '../appE2eConstants';
+import { USER_EMAIL, USER_PASSWORD, PRO_EMAIL } from '../appE2eConstants';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
@@ -120,7 +120,7 @@ Meteor.methods({
   addProProperty() {
     const userId = UserService.adminCreateUser({
       options: {
-        email: USER_EMAIL,
+        email: PRO_EMAIL,
         firstName: 'Pro',
         lastName: 'Test User',
       },

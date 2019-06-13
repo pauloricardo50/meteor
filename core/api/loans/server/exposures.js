@@ -221,22 +221,15 @@ exposeQuery({
   query: userLoans,
   overrides: {
     firewall(userId, params) {
-      try {
-        if (params.userId) {
-          SecurityService.checkUserIsAdmin(userId);
-        } else {
-          params.userId = userId;
-  
-          if (!userId) {
-            SecurityService.loans.checkAnonymousLoan(params.loanId);
-          }
-        }
-      } catch (error) {
-        console.log('firewall bug!', error);
-        
-        throw error;
-      }
+      if (params.userId) {
+        SecurityService.checkUserIsAdmin(userId);
+      } else {
+        params.userId = userId;
 
+        if (!userId) {
+          SecurityService.loans.checkAnonymousLoan(params.loanId);
+        }
+      }
     },
     embody: (body) => {
       body.$filter = ({ filters, params }) => {
