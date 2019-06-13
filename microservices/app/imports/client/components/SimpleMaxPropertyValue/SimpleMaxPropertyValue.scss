@@ -2,11 +2,15 @@
   display: flex;
   flex-direction: column;
 
+  h2 {
+    margin: 0;
+  }
+
   &.loading {
     align-items: center;
     justify-content: center;
 
-     > * {
+    > * {
       display: flex;
       align-items: center;
       flex-direction: column;
@@ -23,8 +27,13 @@
     flex-grow: 1;
     justify-content: center;
     max-width: 500px;
+    padding: 32px;
 
     text-align: center;
+
+    h4 {
+      margin-bottom: 32px;
+    }
 
     .icon {
       width: 64px;
@@ -40,5 +49,16 @@
 
   &.blue .max-property-sharing-label {
     color: white;
+  }
+
+  &-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h4 {
+      max-width: 500px;
+      margin-bottom: 32px;
+    }
   }
 }

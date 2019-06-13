@@ -99,6 +99,7 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
                     onChange={onChangeCanton}
                     options={cantonOptions}
                     disabled={loading}
+                    placeholder={<i>Choisissez...</i>}
                   />
                 )}
                 <Button
@@ -106,6 +107,7 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
                   onClick={recalculate}
                   secondary
                   style={{ marginLeft: 16 }}
+                  disabled={!cantonValue}
                 >
                   {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
                 </Button>

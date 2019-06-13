@@ -33,16 +33,24 @@ const getReadyToCalculateTitle = (props) => {
     const promotionName = promotions[0].name;
     return (
       <span>
-        Dans le cadre de la promotion "{promotionName}", calculez votre capacité d'achat pour le canton de <T id={`Forms.canton.${canton}`} />
+        Dans le cadre de la promotion "
+        {promotionName}
+        ", calculez votre capacité d'achat pour le canton de
+        {' '}
+        <T id={`Forms.canton.${canton}`} />
       </span>
     );
   }
 
-  if(hasProProperty){
+  if (hasProProperty) {
     const propertyName = properties[0].address1;
     return (
       <span>
-        Pour le bien immobilier "{propertyName}", calculez votre capacité d'achat pour le canton de <T id={`Forms.canton.${canton}`} />
+        Pour le bien immobilier "
+        {propertyName}
+        ", calculez votre capacité d'achat pour le canton de
+        {' '}
+        <T id={`Forms.canton.${canton}`} />
       </span>
     );
   }
@@ -58,7 +66,7 @@ const MaxPropertyValueEmptyState = ({
   lockCanton,
   recalculate,
   cantonOptions,
-  canton
+  canton,
 }: MaxPropertyValueEmptyStateProps) => (
   <div className="max-property-value-empty-state">
     <FontAwesomeIcon className="icon" icon={faUsers} />
@@ -81,7 +89,7 @@ const MaxPropertyValueEmptyState = ({
         </>
       ) : (
         <>
-          <h4>{getReadyToCalculateTitle({loan, canton, lockCanton})}</h4>
+          <h4>{getReadyToCalculateTitle({ loan, canton, lockCanton })}</h4>
           <div className="flex-row center space-children">
             {!lockCanton && (
               <Select
@@ -89,6 +97,7 @@ const MaxPropertyValueEmptyState = ({
                 onChange={onChangeCanton}
                 options={cantonOptions}
                 disabled={loading}
+                placeholder={<i>Choisissez...</i>}
               />
             )}
             <Button

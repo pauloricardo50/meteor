@@ -14,13 +14,19 @@ const SimpleMaxPropertyValueSignup = (props: SimpleMaxPropertyValueSignupProps) 
       <T id="MaxPropertyValue.title" />
     </h2>
     <MuiThemeProvider theme={createTheme()}>
-      <UserCreator
-        buttonProps={{
-          raised: true,
-          secondary: true,
-          label: 'Créez votre compte',
-        }}
-      />
+      <div className="simple-max-property-value-signup">
+        <h4 className="text-center secondary">
+          Votre capacité d'achat a été calculée avec succès. Pour poursuivre,
+          créez-vous un compte.
+        </h4>
+        <UserCreator
+          buttonProps={{
+            raised: true,
+            secondary: true,
+            label: 'Créez votre compte',
+          }}
+        />
+      </div>
     </MuiThemeProvider>
   </div>
 );

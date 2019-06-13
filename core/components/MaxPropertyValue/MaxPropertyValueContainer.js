@@ -36,46 +36,64 @@ const getInitialCanton = ({ loan = {} }) => {
   }
 
   if (hasProProperty) {
-    return !!properties.length && properties[0].canton;
+    return properties.length === 1 ? properties[0].canton : '';
   }
 
   return canton;
 };
 
-const shouldFilterCantonOptions = ({hasPromotion, hasProProperty, properties = [], promotions = []}) => {
-  if(!hasPromotion && !hasProProperty){
+const shouldFilterCantonOptions = ({
+  hasPromotion,
+  hasProProperty,
+  properties = [],
+}) => {
+  if (!hasPromotion && !hasProProperty) {
     return false;
   }
 
-  if(hasPromotion){
+  if (hasPromotion) {
     return true;
   }
 
-  if(hasProProperty){
-    const proProperties = properties.filter(({category}) => category === PROPERTY_CATEGORY.PRO);
-    // const proPropertiesHaveSameCanton = proProperties.every(({canton}) => canton === proProperties[0]);
+  if (hasProProperty) {
+    const proProperties = properties.filter(({ category }) => category === PROPERTY_CATEGORY.PRO);
     return proProperties.length === properties.length;
   }
-}
+};
 
-const getCantonOptions = ({hasPromotion, hasProProperty, properties = [], promotions = []}) => {
+const getCantonOptions = ({
+  hasPromotion,
+  hasProProperty,
+  properties = [],
+  promotions = [],
+}) => {
   let cantons = Object.keys(CANTONS);
 
-  if(shouldFilterCantonOptions({hasPromotion, hasProProperty, properties, promotions})){
-    if(hasPromotion){
+  if (
+    shouldFilterCantonOptions({
+      hasPromotion,
+      hasProProperty,
+      properties,
+      promotions,
+    })
+  ) {
+    if (hasPromotion) {
       cantons = cantons.filter(canton => canton === promotions[0].canton);
-    } 
+    }
 
-    if(hasProProperty){
-      cantons = cantons.filter(canton => properties.map(({canton: proPropertyCanton}) => proPropertyCanton).includes(canton))
+    if (hasProProperty) {
+      cantons = cantons.filter(canton =>
+        properties
+          .map(({ canton: proPropertyCanton }) => proPropertyCanton)
+          .includes(canton));
     }
   }
 
-  return cantons.map(shortCanton => {
+  return cantons.map((shortCanton) => {
     const canton = CANTONS[shortCanton];
-    return {id: shortCanton, label: canton}
-  })
-}
+    return { id: shortCanton, label: canton };
+  });
+};
 
 export default compose(
   withState(
@@ -110,16 +128,27 @@ export default compose(
     },
     onChangeCanton: (_, newCanton) => {
       setCanton(newCanton);
-      const {canton: existingCanton} = maxPropertyValue || {};
-      
-      if(existingCanton && newCanton !== existingCanton){
+      const { canton: existingCanton } = maxPropertyValue || {};
+
+      if (existingCanton && newCanton !== existingCanton) {
         setLoading(true);
         return setMaxPropertyValueWithoutBorrowRatio
-        .run({ canton: newCanton, loanId })
-        .finally(() => setLoading(false));
+          .run({ canton: newCanton, loanId })
+          .finally(() => setLoading(false));
       }
     },
-    cantonOptions: getCantonOptions({hasPromotion, hasProProperty, properties, promotions}),
-    lockCanton: getCantonOptions({hasPromotion, hasProProperty, properties, promotions}).length === 1,
+    cantonOptions: getCantonOptions({
+      hasPromotion,
+      hasProProperty,
+      properties,
+      promotions,
+    }),
+    lockCanton:
+        getCantonOptions({
+          hasPromotion,
+          hasProProperty,
+          properties,
+          promotions,
+        }).length === 1,
   })),
 );
