@@ -112,17 +112,9 @@ const withSmartQuery = ({
   let completeQuery;
 
   if (typeof query === 'function') {
-    completeQuery = (props) => {
-      const q = query(props).clone(calculateParams(params, props));
-      console.log('query', q.queryName);
-      return q;
-    };
+    completeQuery = props => query(props).clone(calculateParams(params, props));
   } else {
-    completeQuery = (props) => {
-      const q = query.clone(calculateParams(params, props));
-      console.log('query', q.queryName);
-      return q;
-    };
+    completeQuery = props => query.clone(calculateParams(params, props));
   }
 
   const container = compose(
