@@ -57,6 +57,7 @@ const shouldFilterCantonOptions = ({
 
   if (hasProProperty) {
     const proProperties = properties.filter(({ category }) => category === PROPERTY_CATEGORY.PRO);
+    // Don't filter canton options if there exists at least one user property
     return proProperties.length === properties.length;
   }
 };
@@ -127,6 +128,7 @@ export default compose(
         .finally(() => setLoading(false));
     },
     onChangeCanton: (_, newCanton) => {
+      console.log('newCanton:', newCanton);
       setCanton(newCanton);
       const { canton: existingCanton } = maxPropertyValue || {};
 

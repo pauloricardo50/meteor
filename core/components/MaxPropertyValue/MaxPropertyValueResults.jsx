@@ -25,14 +25,13 @@ const MaxPropertyValueResults = ({
   residenceType,
   setResidenceType,
   onChangeCanton,
-  canton,
   loading,
   lockCanton,
   recalculate,
   cantonOptions,
 }: MaxPropertyValueResultsProps) => {
   const {
-    maxPropertyValue: { main, second, borrowerHash },
+    maxPropertyValue: { main, second, borrowerHash, canton },
     hasProProperty,
     hasPromotion,
     shareSolvency,

@@ -53,7 +53,6 @@ const MaxPropertyValueEmptyState = ({
   loan,
   state,
   calculateSolvency,
-  cantonValue,
   onChangeCanton,
   loading,
   lockCanton,
@@ -86,7 +85,7 @@ const MaxPropertyValueEmptyState = ({
           <div className="flex-row center space-children">
             {!lockCanton && (
               <Select
-                value={cantonValue}
+                value={canton}
                 onChange={onChangeCanton}
                 options={cantonOptions}
                 disabled={loading}
@@ -102,7 +101,7 @@ const MaxPropertyValueEmptyState = ({
               onClick={recalculate}
               secondary
               style={{ marginLeft: 16 }}
-              disabled={!cantonValue}
+              disabled={!canton}
             >
               {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
             </Button>
