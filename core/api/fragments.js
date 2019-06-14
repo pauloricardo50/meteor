@@ -176,6 +176,7 @@ export const lenderRules = () => ({
   incomeConsiderationType: 1,
   investmentIncomeConsideration: 1,
   maxBorrowRatio: 1,
+  maxBorrowRatioWithPledge: 1,
   maxIncomeRatio: 1,
   maxIncomeRatioTight: 1,
   minCash: 1,

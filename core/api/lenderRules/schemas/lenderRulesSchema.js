@@ -94,6 +94,7 @@ export const theoreticalExpenses = {
 
 export const cutOffCriteria = {
   maxBorrowRatio: percentageField,
+  maxBorrowRatioWithPledge: percentageField,
   maxIncomeRatio: percentageField,
 };
 
