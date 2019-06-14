@@ -7,11 +7,13 @@ import './promotionDemo/promotionFixturesMethods';
 import { createFakeInterestRates } from './interestRatesFixtures';
 
 Meteor.startup(() => {
-  if (Meteor.users.find({ roles: { $in: [ROLES.DEV] } }).count() === 0) {
-    createDevs();
-    createAdmins();
-  }
-  if (InterestRatesService.countAll() === 0) {
-    createFakeInterestRates({ number: 10 });
+  if (!Meteor.isAppTest) {
+    if (Meteor.users.find({ roles: { $in: [ROLES.DEV] } }).count() === 0) {
+      createDevs();
+      createAdmins();
+    }
+    if (InterestRatesService.countAll() === 0) {
+      createFakeInterestRates({ number: 10 });
+    }
   }
 });

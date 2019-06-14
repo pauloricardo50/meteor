@@ -127,9 +127,9 @@ class NotaryFeesCalculator {
 
     if (this.shouldUseConstructionMath({ loan, structureId })) {
       const {
-        landValue,
-        constructionValue,
-        additionalMargin,
+        landValue = 0,
+        constructionValue = 0,
+        additionalMargin = 0,
       } = Calculator.selectProperty({ loan, structureId });
       return this.buyersContractFeesConstruction({
         landValue,

@@ -73,8 +73,17 @@ export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 
-userLoanInsert.setHandler(({ userId }, { test }) => {
+userLoanInsert.setHandler(({ userId }, { test, proPropertyId }) => {
   SecurityService.checkLoggedIn();
+
+  if (proPropertyId) {
+    return LoanService.insertPropertyLoan({
+      userId,
+      propertyIds: [proPropertyId],
+      loan: { displayWelcomeScreen: false },
+    });
+  }
+
   return LoanService.fullLoanInsert({
     userId,
     loan: {

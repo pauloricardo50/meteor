@@ -1,4 +1,10 @@
-import { compose, withProps, withStateHandlers, withState } from 'recompose';
+import {
+  compose,
+  withProps,
+  withStateHandlers,
+  withState,
+  lifecycle,
+} from 'recompose';
 
 import {
   borrowerUpdate,
@@ -28,34 +34,31 @@ export const FIELDS = {
   VALUE: 'value',
 };
 
-const makeInitialState = borrowers => ({
-  [FIELDS.TYPE]: undefined,
-  [FIELDS.USAGE_TYPE]: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-  [FIELDS.BORROWER_ID]: borrowers.length ? borrowers[0]._id : undefined,
-  [FIELDS.VALUE]: undefined,
+const getInitialState = ({ structure, borrowers, ownFundsIndex }) => {
+  // On load, the redux store has not loaded yet, causing this to crash
+  // if we don't add this simple check
+  if (!structure) {
+    return {};
+  }
+
+  // New ownFunds object
+  if (ownFundsIndex < 0) {
+    return {
+      [FIELDS.TYPE]: undefined,
+      [FIELDS.USAGE_TYPE]: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+      [FIELDS.BORROWER_ID]: borrowers[0]._id,
+      [FIELDS.VALUE]: undefined,
+    };
+  }
+
+  // When editing existing ownFunds object
+  return structure.ownFunds[ownFundsIndex];
+};
+
+const addState = withStateHandlers(getInitialState, {
+  handleChange: () => (value, id) => ({ [id]: value }),
+  reset: (_, props) => () => getInitialState(props),
 });
-
-const addState = withStateHandlers(
-  ({ structure, borrowers, ownFundsIndex }) => {
-    // On load, the redux store has not loaded yet, causing this to crash
-    // if we don't add this simple check
-    if (!structure) {
-      return {};
-    }
-
-    // New ownFunds object
-    if (ownFundsIndex < 0) {
-      return makeInitialState(borrowers);
-    }
-
-    // Editing existing ownFunds object
-    return structure.ownFunds[ownFundsIndex];
-  },
-  {
-    handleChange: () => (value, id) => ({ [id]: value }),
-    reset: (_, { borrowers }) => () => makeInitialState(borrowers),
-  },
-);
 
 const withDisableSubmit = withProps(({ type, borrowerId, value, usageType }) => ({
   disableSubmit: !(
@@ -160,8 +163,24 @@ const FinancingOwnFundsPickerContainer = compose(
   SingleStructureContainer,
   FinancingDataContainer,
   addState,
+  lifecycle({
+    componentWillReceiveProps({
+      structure: { ownFunds: nextFunds },
+      ownFundsIndex: nextIndex,
+    }) {
+      const {
+        structure: { ownFunds },
+        ownFundsIndex,
+      } = this.props;
+      if (
+        JSON.stringify(ownFunds[ownFundsIndex])
+        !== JSON.stringify(nextFunds[nextIndex])
+      ) {
+        this.props.reset();
+      }
+    },
+  }),
   withDisableSubmit,
-  // StructureUpdateContainer,
   withStructureUpdate,
   withState('loading', 'setLoading', false),
   withAdditionalProps,

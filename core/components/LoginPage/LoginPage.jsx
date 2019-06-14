@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { Redirect } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
 
 import PageHead from '../PageHead';
 import LoginPageLeft from './LoginPageLeft';

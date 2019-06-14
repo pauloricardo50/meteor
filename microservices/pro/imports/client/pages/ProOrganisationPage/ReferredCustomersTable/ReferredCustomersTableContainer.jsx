@@ -29,6 +29,7 @@ const mapUser = ({ _id, name, email, phoneNumber, createdAt }) => ({
 export default compose(
   withSmartQuery({
     query: proReferredByUsers,
+    params: { ownReferredUsers: true },
     queryOptions: { reactive: false },
     dataName: 'customers',
   }),
