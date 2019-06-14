@@ -21,6 +21,11 @@ describe('Public onboarding', () => {
       .find('button')
       .click();
     cy.url().should('include', '/borrowers');
+    cy.get('.borrowers-adder')
+      .find('button')
+      .first()
+      .click();
+
     cy.get('.simple-borrowers-page').should('exist');
     cy.get('input#firstName').should('not.exist');
     cy.get('input#salary').should('exist');
@@ -34,6 +39,10 @@ describe('Public onboarding', () => {
       .find('button')
       .click();
     cy.url().should('include', '/borrowers');
+    cy.get('.borrowers-adder')
+      .find('button')
+      .first()
+      .click();
     cy.get('input#salary').type('300');
     // Wait for form save
     cy.wait(500);
@@ -76,6 +85,11 @@ describe('Public onboarding', () => {
 
     cy.get('.welcome-screen-top')
       .find('button')
+      .click();
+
+    cy.get('.borrowers-adder')
+      .find('button')
+      .first()
       .click();
 
     cy.get('input#salary').type('300');
@@ -126,6 +140,10 @@ describe('Public onboarding', () => {
     cy.visit('/');
     cy.get('.welcome-screen-top')
       .find('button')
+      .click();
+    cy.get('.borrowers-adder')
+      .find('button')
+      .first()
       .click();
     cy.get('input#salary').type('300');
     cy.wait(500);

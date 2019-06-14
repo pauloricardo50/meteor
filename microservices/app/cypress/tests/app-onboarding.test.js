@@ -58,6 +58,11 @@ describe('App onboarding', () => {
         cy.get('.borrowers-progress a').click();
         cy.url().should('include', '/borrowers');
 
+        cy.get('.borrowers-adder')
+          .find('button')
+          .first()
+          .click();
+
         cy.get('input#firstName').type('Test');
         cy.get('input#lastName').type('User');
         cy.get('input#birthDate').type('01/03/2018');
