@@ -70,15 +70,23 @@ exposeQuery({
 
           const otherOrganisationUsers = organisations.length
             ? organisations[0].users
-              .map(({ _id }) => _id)
+              .map(({ _id: orgUserId }) => orgUserId)
               .filter(id => id !== userId)
             : [];
 
-          filters.$and = [
-            { 'userLinks._id': { $in: otherOrganisationUsers } },
-            { 'userLinks._id': { $nin: [userId] } },
-          ];
+          filters['userLinks._id'] = { $in: otherOrganisationUsers };
         }
+      };
+
+      body.$postFilter = (properties, params) => {
+        const { fetchOrganisationProperties, userId } = params;
+
+        if (fetchOrganisationProperties) {
+          return properties.filter(({ userLinks }) =>
+            !userLinks.some(({ _id: userLinkId }) => userLinkId === userId));
+        }
+
+        return properties;
       };
     },
     validateParams: {
