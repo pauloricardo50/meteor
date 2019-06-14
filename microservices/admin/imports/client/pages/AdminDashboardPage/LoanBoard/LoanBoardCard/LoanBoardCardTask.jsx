@@ -2,11 +2,15 @@
 import React, { useState } from 'react';
 
 import IconButton from 'core/components/IconButton';
-import { taskComplete } from 'core/api/tasks/index';
+import { taskComplete, taskChangeStatus } from 'core/api/tasks/index';
+import { TASK_STATUS } from 'core/api/constants';
 
 type LoanBoardCardTaskProps = {};
 
-const LoanBoardCardTask = ({ title, _id }: LoanBoardCardTaskProps) => {
+const LoanBoardCardTask = ({
+  title = 'Tâche sans titre',
+  _id,
+}: LoanBoardCardTaskProps) => {
   const [showButtons, setShowButtons] = useState(false);
   return (
     <span
@@ -22,10 +26,23 @@ const LoanBoardCardTask = ({ title, _id }: LoanBoardCardTaskProps) => {
               e.stopPropagation();
               taskComplete.run({ taskId: _id });
             }}
-            size="small"
+            size="tiny"
             type="check"
             tooltip="Compléter tâche"
             className="task-complete-button"
+          />
+          <IconButton
+            onClick={(e) => {
+              e.stopPropagation();
+              taskChangeStatus.run({
+                taskId: _id,
+                newStatus: TASK_STATUS.CANCELLED,
+              });
+            }}
+            size="tiny"
+            type="close"
+            tooltip="Annuler tâche"
+            className="task-cancel-button"
           />
         </span>
       )}

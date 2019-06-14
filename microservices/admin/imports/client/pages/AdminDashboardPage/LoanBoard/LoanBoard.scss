@@ -118,6 +118,8 @@
 
   &-tasks {
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
   }
 
   .admin-note {
@@ -159,17 +161,29 @@
 
 .loan-board-card-task {
   position: relative;
+  flex-grow: 1;
+  padding: 8px 0;
 
   .buttons {
     position: absolute;
-    left: 0;
+    right: 0;
     top: 0;
     display: flex;
+    border: 2px solid $border-grey;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px;
+    border-radius: 4px;
   }
 
   .task-complete-button {
     color: white;
     background-color: $success;
+    margin-right: 4px;
+  }
+
+  .task-cancel-button {
+    color: white;
+    background-color: $error;
   }
 }
 
