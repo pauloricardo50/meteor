@@ -1,5 +1,6 @@
 import { Match } from 'meteor/check';
 
+import UserService from '../../users/server/UserService';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import Security from '../../security';
@@ -11,7 +12,8 @@ import {
   proPropertyUsers,
   propertySearch,
 } from '../queries';
-import { proPropertiesResolver, proPropertyUsersResolver } from './resolvers';
+import { proPropertyUsersResolver } from './resolvers';
+import { proProperty } from '../../fragments';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({
@@ -43,13 +45,48 @@ exposeQuery({
         });
       }
     },
+    embody: (body, embodyParams) => {
+      const { _id } = embodyParams;
+
+      if (_id) {
+        body = proProperty();
+      }
+
+      body.$filter = ({ filters, params }) => {
+        const { _id: propertyId, userId, fetchOrganisationProperties } = params;
+        if (propertyId) {
+          filters._id = propertyId;
+        }
+
+        if (userId) {
+          filters['userLinks._id'] = userId;
+        }
+
+        if (fetchOrganisationProperties) {
+          const { organisations = [] } = UserService.fetchOne({
+            $filters: { _id: userId },
+            organisations: { users: { _id: 1 } },
+          });
+
+          const otherOrganisationUsers = organisations.length
+            ? organisations[0].users
+              .map(({ _id }) => _id)
+              .filter(id => id !== userId)
+            : [];
+
+          filters.$and = [
+            { 'userLinks._id': { $in: otherOrganisationUsers } },
+            { 'userLinks._id': { $nin: [userId] } },
+          ];
+        }
+      };
+    },
     validateParams: {
       userId: Match.Maybe(String),
       fetchOrganisationProperties: Match.Maybe(Boolean),
     },
   },
   options: { allowFilterById: true },
-  resolver: proPropertiesResolver,
 });
 
 exposeQuery({
