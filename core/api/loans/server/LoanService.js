@@ -737,7 +737,7 @@ export class LoanService extends CollectionService {
 
   expireAnonymousLoans() {
     const lastWeek = moment()
-      .subtract(7, 'days')
+      .subtract(5, 'days')
       .toDate();
 
     return this.baseUpdate(
