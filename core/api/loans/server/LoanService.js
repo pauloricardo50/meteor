@@ -184,7 +184,7 @@ export class LoanService extends CollectionService {
     return loanId;
   };
 
-  insertPropertyLoan = ({ userId, propertyIds, shareSolvency }) => {
+  insertPropertyLoan = ({ userId, propertyIds, shareSolvency, loan }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const customName = PropertyService.fetchOne({
       $filters: { _id: propertyIds[0] },
@@ -196,9 +196,11 @@ export class LoanService extends CollectionService {
         propertyIds,
         customName,
         shareSolvency,
+        ...loan,
       },
       userId,
     });
+
     this.addNewStructure({ loanId });
     return loanId;
   };
@@ -735,7 +737,7 @@ export class LoanService extends CollectionService {
 
   expireAnonymousLoans() {
     const lastWeek = moment()
-      .subtract(7, 'days')
+      .subtract(5, 'days')
       .toDate();
 
     return this.baseUpdate(

@@ -14,6 +14,7 @@ import getBaseRedirect, {
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import { injectCalculator } from 'core/containers/withCalculator';
+import { userLoan } from 'core/api/fragments';
 import {
   withSideNavContextProvider,
   withSideNavContext,
@@ -56,12 +57,27 @@ const withAppUser = withSmartQuery({
   renderMissingDoc: false,
 });
 
+const fullFragment = userLoan({ withSort: true, withFilteredPromotions: true });
+const fragment = {
+  ...fullFragment,
+  user: { _id: 1 },
+  properties: {
+    ...fullFragment.properties,
+    loans: undefined,
+    user: undefined,
+  },
+  promotions: {
+    ...fullFragment.promotions,
+    users: undefined,
+  },
+};
+
 const withUserLoan = withSmartQuery({
   query: userLoans,
-  params: ({ loanId }) => ({ loanId }),
+  params: ({ loanId }) => ({ loanId, $body: fragment }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
-  renderMissingDoc: ({ loanId }) => !!loanId,
+  skip: ({ loanId }) => !loanId,
 });
 
 const withInterestRates = withSmartQuery({

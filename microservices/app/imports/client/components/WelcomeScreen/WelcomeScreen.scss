@@ -104,6 +104,21 @@
     }
   }
 
+  &-ctas {
+    display: flex;
+    align-items: flex-end;
+
+    @include screen(med) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+
+    @include screen(small) {
+      align-self: stretch;
+    }
+  }
+
   &-cta {
     padding: 12px 40px;
 

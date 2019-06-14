@@ -104,14 +104,20 @@ exposeQuery({
   query: proReferredByUsers,
   overrides: {
     firewall(userId, params) {
-      const { userId: providedUserId, organisationId } = params;
+      const {
+        userId: providedUserId,
+        organisationId,
+        ownReferredUsers,
+      } = params;
 
       SecurityService.checkUserIsPro(userId);
 
       if (providedUserId) {
         SecurityService.checkUserIsAdmin(userId);
         params.userId = providedUserId;
-      } else {
+      }
+
+      if (ownReferredUsers) {
         params.userId = userId;
       }
 
@@ -120,14 +126,15 @@ exposeQuery({
       }
     },
     validateParams: {
-      userId: String,
+      userId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
+      ownReferredUsers: Match.Maybe(Boolean),
     },
   },
   resolver: proReferredByUsersResolver,
 });
 
-exposeQuery({ query: userEmails });
+exposeQuery({ query: userEmails, options: { allowFilterById: true } });
 
 exposeQuery({
   query: userSearch,

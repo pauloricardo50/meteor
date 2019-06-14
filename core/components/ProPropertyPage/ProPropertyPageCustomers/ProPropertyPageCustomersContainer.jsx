@@ -3,7 +3,8 @@ import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
-import { PROPERTY_SOLVENCY } from 'core/api/constants';
+import { PROPERTY_SOLVENCY, LOANS_COLLECTION } from 'core/api/constants';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import LoanProgress from '../../LoanProgress/LoanProgress';
 import LoanProgressHeader from '../../LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
@@ -18,6 +19,7 @@ import Icon from '../../Icon';
 
 const columnOptions = [
   { id: 'loanName' },
+  { id: 'status' },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -82,7 +84,8 @@ const getSolvencyLabel = (solvent) => {
   return (
     <span className="customers-table-solvency">
       <Icon {...props} />
-      &nbsp;{title}
+      &nbsp;
+      {title}
     </span>
   );
 };
@@ -101,6 +104,7 @@ const makeMapLoan = ({
     loanProgress,
     properties,
     anonymous,
+    status,
   } = loan;
   const { isAdmin } = permissions;
 
@@ -117,6 +121,10 @@ const makeMapLoan = ({
     id: loanId,
     columns: [
       loanName,
+      {
+        raw: status,
+        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      },
       anonymous ? 'Anonyme' : user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,

@@ -1157,7 +1157,7 @@ describe('LoanService', function () {
 
       await Promise.all(promises);
 
-      expect(LoanService.expireAnonymousLoans()).to.equal(3);
+      expect(LoanService.expireAnonymousLoans()).to.equal(5);
     });
 
     it('does not update loans already at UNSUCCESSFUL status', async () => {

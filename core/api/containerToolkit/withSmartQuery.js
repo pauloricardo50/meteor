@@ -14,6 +14,7 @@ import {
   addQueryToRefetch,
   removeQueryToRefetch,
 } from '../methods/clientQueryManager';
+import makeSkipContainer from './skipContainer';
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
@@ -105,6 +106,7 @@ const withSmartQuery = ({
   renderMissingDoc = true,
   smallLoader = false,
   refetchOnMethodCall = 'all',
+  skip,
 }: withSmartQueryArgs) => {
   let completeQuery;
 
@@ -114,7 +116,7 @@ const withSmartQuery = ({
     completeQuery = props => query.clone(calculateParams(params, props));
   }
 
-  return compose(
+  const container = compose(
     withGlobalQueryManager(query, queryOptions, refetchOnMethodCall),
     withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
     withLoading(smallLoader),
@@ -122,6 +124,12 @@ const withSmartQuery = ({
     makeMapProps(dataName),
     withQueryRefetcher(query),
   );
+
+  if (skip) {
+    return makeSkipContainer(container, skip);
+  }
+
+  return container;
 };
 
 export default withSmartQuery;

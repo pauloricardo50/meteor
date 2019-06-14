@@ -176,6 +176,7 @@ export const lenderRules = () => ({
   incomeConsiderationType: 1,
   investmentIncomeConsideration: 1,
   maxBorrowRatio: 1,
+  maxBorrowRatioWithPledge: 1,
   maxIncomeRatio: 1,
   maxIncomeRatioTight: 1,
   minCash: 1,
@@ -284,7 +285,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   contacts: 1,
   displayWelcomeScreen: 1,
   documents: 1,
-  offers: fullOffer(),
+  offers: 1,
   properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
@@ -528,7 +529,7 @@ export const proPromotionOption = () => ({
     solvency: 1,
     status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
-    promotions: { users: { _id: 1 } },
+    promotions: { users: { _id: 1, name: 1, organisations: { name: 1 } } },
     promotionOptions: {
       name: 1,
       promotionLots: { attributedTo: { user: { _id: 1 } } },
@@ -776,10 +777,14 @@ export const promotionProperty = () => ({
   yearlyExpenses: 1,
 });
 
-export const userProperty = ({ withSort } = {}) => ({
-  ...fullProperty({ withSort }),
-  valuation: userValuation(),
-});
+export const userProperty = ({ withSort } = {}) => {
+  const obj = {
+    ...fullProperty({ withSort }),
+    valuation: userValuation(),
+  };
+  delete obj.users;
+  return obj;
+};
 
 export const proPropertySummary = () => ({
   address1: 1,

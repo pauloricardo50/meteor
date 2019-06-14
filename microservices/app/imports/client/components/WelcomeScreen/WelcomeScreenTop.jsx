@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -35,17 +37,31 @@ const WelcomeScreenTop = ({
         />
       )}
 
-      {cta || (
-        <Button
-          raised
-          secondary
-          onClick={handleClick}
-          className="welcome-screen-cta"
-          {...buttonProps}
-        >
-          <T id="general.begin" />
-        </Button>
-      )}
+      <div className="welcome-screen-ctas">
+        {cta || (
+          <Button
+            raised
+            secondary
+            onClick={handleClick}
+            className="welcome-screen-cta"
+            {...buttonProps}
+          >
+            <T id="general.begin" />
+          </Button>
+        )}
+        {!Meteor.userId() && (
+          <Button
+            primary
+            className="welcome-screen-cta"
+            link
+            to={`/login?path=${
+              window.location.href.split(window.location.origin)[1]
+            }`}
+          >
+            <T id="general.login" />
+          </Button>
+        )}
+      </div>
     </div>
 
     {!img && (

@@ -113,7 +113,9 @@ class Analytics {
   }
 
   alias(trackingId) {
-    this.analytics.alias({ userId: this.userId, previousId: trackingId });
+    if (trackingId) {
+      this.analytics.alias({ userId: this.userId, previousId: trackingId });
+    }
   }
 
   // Returns the route string in a more readable format

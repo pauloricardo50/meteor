@@ -14,6 +14,7 @@ export const withAnonymousLoan = compose(
     localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN)),
   withSmartQuery({
     query: anonymousLoan,
+    skip: ({ anonymousLoanId }) => !anonymousLoanId,
     params: ({ anonymousLoanId }) => ({
       _id: anonymousLoanId,
       $body: {
@@ -46,7 +47,10 @@ export default compose(
         .run({ trackingId: parseCookies()[TRACKING_COOKIE] })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+            loanId,
+            tabId: '',
+          }));
         }),
   })),
 );
