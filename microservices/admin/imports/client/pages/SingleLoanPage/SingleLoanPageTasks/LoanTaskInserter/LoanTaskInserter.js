@@ -11,7 +11,7 @@ const LoanTaskInserter = withProps(({ loan: { _id: loanId, user } }) => ({
     taskInsert.run({
       object: { docId: loanId, collection: LOANS_COLLECTION, ...values },
     }),
-  schema,
+  schema: schema.omit('status'),
   model: {
     assigneeLink: {
       _id:
