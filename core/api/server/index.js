@@ -55,6 +55,7 @@ process.on('uncaughtException', (error) => {
     error,
     additionalData: ['Server uncaughtException'],
   });
+  process.exit(1);
 });
 
 process.on('unhandledRejection', (error) => {
