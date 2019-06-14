@@ -30,7 +30,7 @@ const LoanBoardCardDescription = ({
     );
   }
 
-  return null;
+  return <h4 className="secondary">Pas d'infos</h4>;
 };
 
 export default LoanBoardCardDescription;

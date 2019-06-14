@@ -1,4 +1,5 @@
 {
+  "Forms.dueAtTime": "Heure d'échéance",
   "Forms.maxBorrowRatioWithPledge": "Taux d'avance avec nantissement",
   "DetailSideNavFilters.relevantOnly": "Pertinents uniquement",
   "FinancingCollapser.expand": "Afficher les détails",

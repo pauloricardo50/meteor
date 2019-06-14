@@ -1,5 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 
+import moment from 'moment';
+
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import CollectionService from '../../helpers/CollectionService';
 import { TASK_STATUS } from '../taskConstants';
@@ -19,6 +21,7 @@ class TaskService extends CollectionService {
       collection,
       status,
       dueAt,
+      dueAtTime,
       docId,
       ...rest
     },
@@ -32,7 +35,7 @@ class TaskService extends CollectionService {
       createdBy,
       title,
       status,
-      dueAt,
+      dueAt: this.getDueDate({ dueAt, dueAtTime }),
       ...rest,
     });
 
@@ -57,6 +60,22 @@ class TaskService extends CollectionService {
   getTaskById = taskId => Tasks.findOne(taskId);
 
   getTasksForDoc = docId => Tasks.find({ docId }).fetch();
+
+  getDueDate = ({ dueAt, dueAtTime }) => {
+    if (dueAt) {
+      return dueAt;
+    }
+
+    if (dueAtTime) {
+      const date = moment(dueAtTime, 'HH:mm');
+      if (moment().isAfter(date)) {
+        // If it is 14:00, and you choose 10:00 as the time, you don't want it
+        // in the past, but tomorrow
+        date.add(1, 'd');
+      }
+      return date.toDate();
+    }
+  };
 
   complete = ({ taskId }) =>
     this.update({

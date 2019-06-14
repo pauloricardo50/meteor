@@ -18,19 +18,35 @@ type TaskModifierProps = {
   submitting: boolean,
 };
 
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-tomorrow.setHours(0);
-tomorrow.setMinutes(0);
-tomorrow.setSeconds(0);
-tomorrow.setMilliseconds(0);
+const taskPlaceholders = [
+  'Faire la vaisselle',
+  'Sortir les poubelles',
+  'Manger un kebab',
+  'Remercier les ingénieurs pour tous leurs efforts',
+  'Coller un 3e pillier au client',
+  'Oublier son parapluie',
+  'Jouer à Mario Kart',
+  'Mettre tous ses post-its dans Admin',
+  'Se tenir droit',
+  'Boire un energy drink',
+  'Se moquer de DL',
+  'Se plaindre des banquiers',
+  'Aller au sport',
+];
+
 export const schema = new SimpleSchema({
-  title: { type: String, uniforms: { placeholder: 'Faire la vaisselle' } },
+  title: {
+    type: String,
+    uniforms: {
+      placeholder:
+        taskPlaceholders[Math.floor(Math.random() * taskPlaceholders.length)],
+      autoFocus: true,
+    },
+  },
   dueAt: {
     type: Date,
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-    // defaultValue: tomorrow,
   },
   status: {
     type: String,

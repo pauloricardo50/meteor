@@ -20,9 +20,7 @@ Loans.addReducers({
     reduce: formatLoanWithStructure,
   },
   offers: {
-    body: {
-      lenders: { offers: omit(fullOffer(), ['user']) },
-    },
+    body: { lenders: { offers: omit(fullOffer(), ['user']) } },
     reduce: ({ lenders = [] }) =>
       lenders.reduce(
         (allOffers, { offers = [] }) => [...allOffers, ...offers],
