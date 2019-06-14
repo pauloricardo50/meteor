@@ -557,7 +557,7 @@ describe('BorrowerCalculator', () => {
   describe('personalInfoPercent', () => {
     it('works', () => {
       expect(Calculator.personalInfoPercent({
-        borrowers: {
+        borrowers: [{
           _id: 'aBcNvYnq34rnb29nh',
           adminValidation: {},
           birthDate: '1992-04-14',
@@ -584,7 +584,7 @@ describe('BorrowerCalculator', () => {
           bankFortune: 1000,
           hasOwnCompany: false,
           ownCompanies: [],
-        },
+        }],
       })).to.equal(1);
     });
   });

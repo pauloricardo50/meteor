@@ -27,7 +27,7 @@ const RequiredOwnFundsBody = ({
   value,
   suggestStructure,
   disableForms,
-  loan
+  loan = {}
 }: RequiredOwnFundsBodyProps) => {
   const label = getLabel(value);
   const {borrowers= []} = loan;
