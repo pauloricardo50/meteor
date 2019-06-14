@@ -5,6 +5,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import Calculator from 'core/utils/Calculator';
+import BorrowersAdder from '../../components/BorrowersAdder/BorrowersAdder';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import PageApp from '../../components/PageApp';
 import Info from './Info';
@@ -13,7 +14,6 @@ import BorrowerHeader from './BorrowerHeader';
 import BorrowersPageTitle from './BorrowersPageTitle';
 import BorrowersPageNextTab from './BorrowersPageNextTab';
 import BorrowersPageContainer from './BorrowersPageContainer';
-import BorrowersAdder from 'imports/client/components/BorrowersAdder/BorrowersAdder';
 
 const getTabs = (props) => {
   const { loan } = props;
@@ -57,8 +57,8 @@ const BorrowersPage = (props) => {
     loan: { borrowers, _id: loanId },
   } = props;
 
-  if(borrowers.length === 0){
-    return <BorrowersAdder loanId={loanId} />
+  if (borrowers.length === 0) {
+    return <BorrowersAdder loanId={loanId} />;
   }
 
   const tabs = getTabs(props);

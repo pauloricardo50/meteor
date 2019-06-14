@@ -1,9 +1,11 @@
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
 import { Meteor } from 'meteor/meteor';
+import Analytics from '../../analytics/server/Analytics';
 import BorrowerService from '../../borrowers/server/BorrowerService';
-import SecurityService from '../../security';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import EVENTS from '../../analytics/events';
+
+import Security from '../../security/Security';
+import SecurityService from '../../security';
 import {
   loanInsert,
   loanUpdate,
@@ -31,9 +33,8 @@ import {
   userLoanInsert,
   loanInsertBorrowers,
 } from '../methodDefinitions';
-import LoanService from './LoanService';
-import Security from '../../security/Security';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
+import LoanService from './LoanService';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -220,40 +221,7 @@ anonymousLoanInsert.setHandler((context, params) => {
 });
 
 loanInsertBorrowers.setHandler((context, params) => {
-  const { loanId, number } = params;
+  const { loanId } = params;
   SecurityService.loans.isAllowedToUpdate(loanId);
-
-  const { borrowerIds: existingBorrowers = [], userId } = LoanService.get(loanId);
-
-  if (existingBorrowers.length === 2) {
-    throw new Meteor.Error('Cannot insert more borrowers');
-  }
-
-  if (existingBorrowers.length === 1 && number === 2) {
-    throw new Meteor.Error('Can insert only one more borrower');
-  }
-
-  if (number === 1) {
-    const borrowerId = BorrowerService.insert({ userId });
-    LoanService.addLink({
-      id: loanId,
-      linkName: 'borrowers',
-      linkId: borrowerId,
-    });
-  } else if (number === 2) {
-    const borrowerId1 = BorrowerService.insert({ userId });
-    const borrowerId2 = BorrowerService.insert({ userId });
-    LoanService.addLink({
-      id: loanId,
-      linkName: 'borrowers',
-      linkId: borrowerId1,
-    });
-    LoanService.addLink({
-      id: loanId,
-      linkName: 'borrowers',
-      linkId: borrowerId2,
-    });
-  } else {
-    throw new Meteor.Error('Invalid borrowers number');
-  }
+  LoanService.insertBorrowers(params);
 });

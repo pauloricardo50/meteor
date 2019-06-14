@@ -50,12 +50,18 @@ const MaxPropertyValueResults = ({
           </h2>
         </div>
         <div className="max-property-value-results-selects">
-          {lockCanton ? <p className="secondary" style={{fontSize: '1.3rem', marginTop: 8, textTransform: 'uppercase'}}><T id={`Forms.canton.${canton}`}/></p> : <Select
-            value={canton}
-            onChange={onChangeCanton}
-            options={cantonOptions}
-            disabled={loading}
-          />}
+          {lockCanton ? (
+            <p className="secondary locked-canton">
+              <T id={`Forms.canton.${canton}`} />
+            </p>
+          ) : (
+            <Select
+              value={canton}
+              onChange={onChangeCanton}
+              options={cantonOptions}
+              disabled={loading}
+            />
+          )}
 
           <Select
             value={residenceType}

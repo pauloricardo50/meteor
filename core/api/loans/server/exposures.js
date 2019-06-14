@@ -240,7 +240,6 @@ exposeQuery({
       };
 
       if (!embodyParams.userId) {
-        console.log('no user');
         body.maxPropertyValue = 0;
       }
     },

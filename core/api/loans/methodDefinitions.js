@@ -180,6 +180,6 @@ export const loanInsertBorrowers = new Method({
   name: 'loanInsertBorrowers',
   params: {
     loanId: String,
-    number: Number,
+    amount: Number,
   },
 });

@@ -24,12 +24,16 @@ const displayPropertyValueRange = (values) => {
   return toMoney(max.propertyValue);
 };
 
-const getFooter = ({ maxPropertyValue, residenceType, borrowers = [], maxPropertyValueExists }) => {
-  console.log('maxPropertyValueExists:', maxPropertyValueExists)
+const getFooter = ({
+  maxPropertyValue,
+  residenceType,
+  borrowers = [],
+  maxPropertyValueExists,
+}) => {
   const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
 
-  if(maxPropertyValueExists){
-    return <h2 style={{fontSize: '1.1rem'}}>Votre capacité d'achat</h2>
+  if (maxPropertyValueExists) {
+    return <h2>Votre capacité d'achat</h2>;
   }
 
   if (!maxPropertyValue && !canCalculateSolvency) {
@@ -48,7 +52,12 @@ const getFooter = ({ maxPropertyValue, residenceType, borrowers = [], maxPropert
   return (
     <div>
       <label>
-        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
+        Capacité d'achat -
+        {' '}
+        <T id={`Forms.canton.${canton}`} />
+        {' '}
+-
+        {' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
       <h3>{displayPropertyValueRange(values)}</h3>
@@ -70,7 +79,12 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
           className="simple-borrowers-page-max-property-value-sticky animated slideInUp"
           onClick={handleOpen}
         >
-          {getFooter({ maxPropertyValue, residenceType, borrowers, maxPropertyValueExists })}
+          {getFooter({
+            maxPropertyValue,
+            residenceType,
+            borrowers,
+            maxPropertyValueExists,
+          })}
         </ButtonBase>
       )}
       closeOnly

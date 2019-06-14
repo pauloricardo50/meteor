@@ -62,10 +62,7 @@ export class LoanService extends CollectionService {
     if (proPropertyId) {
       loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
     } else {
-      // const borrowerId = BorrowerService.insert({});
-      loanId = this.insert({ loan: { 
-        // borrowerIds: [borrowerId] 
-      } });
+      loanId = this.insert({ loan: {} });
     }
 
     this.update({
@@ -102,11 +99,8 @@ export class LoanService extends CollectionService {
   remove = ({ loanId }) => Loans.remove(loanId);
 
   fullLoanInsert = ({ userId, loan = {} }) => {
-    // const borrowerId = BorrowerService.insert({ userId });
     const loanId = this.insert({
-      loan: { 
-        // borrowerIds: [borrowerId],
-         ...loan },
+      loan,
       userId,
     });
     this.addNewStructure({ loanId });
@@ -164,14 +158,12 @@ export class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    // const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
       $filters: { _id: promotionId },
       name: 1,
     }).name;
     const loanId = this.insert({
       loan: {
-        // borrowerIds: [borrowerId],
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
         shareSolvency,
@@ -195,7 +187,6 @@ export class LoanService extends CollectionService {
     }).address1;
     const loanId = this.insert({
       loan: {
-        // borrowerIds: [borrowerId],
         propertyIds,
         customName,
         shareSolvency,
@@ -752,6 +743,42 @@ export class LoanService extends CollectionService {
       { $set: { status: LOAN_STATUS.UNSUCCESSFUL } },
       { multi: true },
     );
+  }
+
+  insertBorrowers({ loanId, amount }) {
+    const { borrowerIds: existingBorrowers = [], userId } = this.get(loanId);
+
+    if (existingBorrowers.length === 2) {
+      throw new Meteor.Error('Cannot insert more borrowers');
+    }
+
+    if (existingBorrowers.length === 1 && amount === 2) {
+      throw new Meteor.Error('Can insert only one more borrower');
+    }
+
+    if (amount === 1) {
+      const borrowerId = BorrowerService.insert({ userId });
+      this.addLink({
+        id: loanId,
+        linkName: 'borrowers',
+        linkId: borrowerId,
+      });
+    } else if (amount === 2) {
+      const borrowerId1 = BorrowerService.insert({ userId });
+      const borrowerId2 = BorrowerService.insert({ userId });
+      this.addLink({
+        id: loanId,
+        linkName: 'borrowers',
+        linkId: borrowerId1,
+      });
+      this.addLink({
+        id: loanId,
+        linkName: 'borrowers',
+        linkId: borrowerId2,
+      });
+    } else {
+      throw new Meteor.Error('Invalid borrowers number');
+    }
   }
 }
 
