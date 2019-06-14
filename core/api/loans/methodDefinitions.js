@@ -66,6 +66,7 @@ export const adminLoanInsert = new Method({
 export const userLoanInsert = new Method({
   name: 'userLoanInsert',
   params: {
+    proPropertyId: Match.Maybe(String),
     test: Match.Optional(Boolean),
   },
 });

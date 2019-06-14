@@ -51,7 +51,7 @@ const FinancingOwnFundsPicker = ({
     <div className="ownFundsPicker">
       {structure.ownFunds.map((ownFunds, index) => (
         <CurrentOwnFunds
-          key={index}
+          key={`${ownFunds.borrowerId}${ownFunds.type}${ownFunds.usageType}`}
           ownFundsIndex={index}
           ownFunds={ownFunds}
           structureId={structureId}

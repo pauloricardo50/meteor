@@ -40,7 +40,11 @@ export const addUser = ({ email, role, password = USER_PASSWORD, ...data }) => {
   const newUserId = createUser(email, role, password);
   UserService.update({
     userId: newUserId,
-    object: { ...data, phoneNumbers: [faker.phone.phoneNumber()] },
+    object: {
+      ...data,
+      phoneNumbers: [faker.phone.phoneNumber()],
+      'emails.0.verified': true,
+    },
   });
   return newUserId;
 };

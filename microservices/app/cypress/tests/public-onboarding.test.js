@@ -198,4 +198,37 @@ describe('Public onboarding', () => {
     cy.get('.welcome-screen').should('exist');
     cy.contains('Chemin Auguste-Vilbert 14').should('not.exist');
   });
+
+  it('should only create one loan based on a PRO property if logged in', () => {
+    cy.visit('/');
+    cy.callMethod('addProProperty').then((propertyId) => {
+      cy.wrap(propertyId).as('propertyId');
+    });
+    cy.callMethod('inviteTestUser', { withPassword: true });
+
+    cy.get('@propertyId').then((propertyId) => {
+      cy.visit(`/?propertyId=${propertyId}`);
+    });
+
+    cy.contains('Chemin Auguste-Vilbert 14').should('exist');
+    cy.contains('1 500 000').should('exist');
+    cy.get('.welcome-screen')
+      .contains('Login')
+      .click();
+    cy.get('input[name="email"]').type(USER_EMAIL);
+    cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);
+    cy.get('@propertyId').then((propertyId) => {
+      cy.url().should('include', propertyId);
+    });
+    cy.contains('Je veux acquérir').click();
+    cy.url().should('include', '/loans/');
+    cy.contains('Tableau de bord').click();
+    cy.contains('Chemin Auguste-Vilbert 14').should('exist');
+
+    cy.get('@propertyId').then((propertyId) => {
+      cy.visit(`/?propertyId=${propertyId}`);
+    });
+
+    cy.url().should('include', '/loans/');
+  });
 });
