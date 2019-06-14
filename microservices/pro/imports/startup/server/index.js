@@ -3,7 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { ROLES } from 'core/api/constants';
 
 import 'core/api/initialization';
-import './kadira.js';
+import 'core/startup/server/kadira';
 import './restAPI';
 
 // Inject a loader before client is ready,

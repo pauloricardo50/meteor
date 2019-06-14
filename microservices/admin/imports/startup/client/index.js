@@ -7,7 +7,7 @@ import { render } from 'react-dom';
 import 'core/api/api';
 import 'core/api/client/api';
 
-import '../accounts-config';
+import 'core/startup/accounts-config';
 import './css';
 import 'react-dates/initialize'; // Fix issue #750
 import AdminRouter from './AdminRouter';

@@ -1,7 +1,7 @@
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 
-import './kadira.js';
+import 'core/startup/server/kadira';
 
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client
