@@ -158,7 +158,7 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(({ promotionOptions, promotionLot, currentUser }) => ({
+  withProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
     rows: promotionOptions.map(makeMapOption({ promotionLot, currentUser })),
     columnOptions,
   })),
