@@ -2,6 +2,7 @@
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
+import moment from 'moment';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
@@ -9,6 +10,7 @@ import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation/Translation';
+import TaskModifierDateSetter from './TaskModifierDateSetter';
 
 type TaskModifierProps = {
   task: Object,
@@ -41,6 +43,27 @@ export const schema = new SimpleSchema({
       placeholder:
         taskPlaceholders[Math.floor(Math.random() * taskPlaceholders.length)],
       autoFocus: true,
+    },
+  },
+  dueAtHelpers: {
+    type: String,
+    optional: true,
+    uniforms: {
+      render: TaskModifierDateSetter,
+      funcs: [
+        {
+          label: 'Demain',
+          func: () => ['dueAt', moment().add(1, 'd').toDate()],
+        },
+        {
+          label: 'Dans 3 jours',
+          func: () => ['dueAt', moment().add(3, 'd').toDate()],
+        },
+        {
+          label: 'Semaine prochaine',
+          func: () => ['dueAt', moment().add(7, 'd').toDate()],
+        },
+      ],
     },
   },
   dueAt: {
