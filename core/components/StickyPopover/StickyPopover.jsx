@@ -73,7 +73,6 @@ export default class PopoverStickOnHover extends React.Component {
           shouldUpdatePosition
           transition={null}
           animation={null}
-          // trigger={['hover', 'focus', 'click']}
         >
           <Popover
             onMouseEnter={this.handleMousePopoverEnter}
