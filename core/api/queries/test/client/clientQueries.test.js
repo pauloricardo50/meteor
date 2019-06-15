@@ -14,7 +14,7 @@ import {
 
 const resetDatabase = () =>
   new Promise((resolve, reject) => {
-    Meteor.call('resetDb', (err, res) => (err ? reject(err) : resolve(res)));
+    Meteor.call('resetDatabase', (err, res) => (err ? reject(err) : resolve(res)));
   });
 
 const insertTestData = (n) => {

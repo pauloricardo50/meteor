@@ -1,7 +1,7 @@
 // @flow
 /* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Random } from 'meteor/random';
+import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import { expect } from 'chai';
@@ -18,7 +18,7 @@ import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
 } from '../../PasswordResetPage';
 
-describe('PasswordResetPage', () => {
+describe.only('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
@@ -28,10 +28,12 @@ describe('PasswordResetPage', () => {
     });
   const shallowComponent = () => shallow(<PasswordResetPageDumb {...props} />);
 
-  beforeEach(() => {
-    resetDatabase();
+  beforeEach((done) => {
     getMountedComponent.reset();
     props = { token: Random.id(), email: 'john.doe@test.com' };
+    Meteor.call('resetDatabase', () => {
+      done();
+    });
   });
 
   it('renders the name', () => {
