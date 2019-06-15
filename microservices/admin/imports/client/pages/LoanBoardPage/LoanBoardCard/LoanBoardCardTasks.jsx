@@ -10,11 +10,22 @@ import LoanBoardCardTask from './LoanBoardCardTask';
 
 type LoanBoardCardTasksProps = {};
 
+const sortTasks = ({ dueAt: dueA }, { dueAt: dueB }) => {
+  if (!dueA) {
+    return -1;
+  }
+  if (!dueB) {
+    return 1;
+  }
+
+  return dueA - dueB;
+};
+
 const LoanBoardCardTasks = ({
   nextDueTask,
   tasks,
+  renderComplex,
 }: LoanBoardCardTasksProps) => {
-  const renderComplex = true;
   if (!nextDueTask._id) {
     return null;
   }
@@ -32,16 +43,7 @@ const LoanBoardCardTasks = ({
     </h5>
   );
   const activeTasks = tasks.filter(({ status }) => status === TASK_STATUS.ACTIVE);
-  const sortedTasks = activeTasks.sort(({ dueAt: dueA }, { dueAt: dueB }) => {
-    if (!dueA) {
-      return -1;
-    }
-    if (!dueB) {
-      return 1;
-    }
-
-    return dueA - dueB;
-  });
+  const sortedTasks = activeTasks.sort(sortTasks);
 
   return (
     <>

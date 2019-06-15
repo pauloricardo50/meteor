@@ -26,9 +26,7 @@ const LoanBoardCard = ({
     adminNote,
     tasksCache,
   } = loan;
-  const assignee = userCache
-    && userCache.assignedEmployeeCache
-    && userCache.assignedEmployeeCache;
+  const assignee = userCache && userCache.assignedEmployeeCache;
   const promotion = promotions[0] && promotions[0].name;
 
   return (
