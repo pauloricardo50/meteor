@@ -98,7 +98,7 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
       <div className="result">
         <FinancingResultChart {...props} className="" />
 
-        <p className="error">
+        <p className="error error-box">
           <T id={`FinancingResultErrors.${error.id}`} />
         </p>
       </div>
