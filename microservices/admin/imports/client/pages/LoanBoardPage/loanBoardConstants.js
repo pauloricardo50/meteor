@@ -23,3 +23,5 @@ export const GROUP_BY = {
   PROMOTION: 'promotions[0]._id',
   ADMIN: 'userCache.assignedEmployeeCache._id',
 };
+
+export const NO_PROMOTION = 'NO_PROMOTION';

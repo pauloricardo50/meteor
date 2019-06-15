@@ -9,7 +9,7 @@ import IconButton from 'core/components/IconButton';
 import RadioButtons from 'core/components/RadioButtons';
 import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
 import { LOAN_CATEGORIES, ROLES } from 'imports/core/api/constants';
-import { ACTIONS, GROUP_BY } from '../loanBoardConstants';
+import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
 import { LiveQueryMonitor } from '../liveSync';
 
@@ -17,16 +17,21 @@ type LoanBoardOptionsProps = {};
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {
+    // If previously a specific id was checked, and now you check "all" (i.e. null)
+    // uncheck all checkboxes
     dispatch({
       type: ACTIONS.SET_FILTER,
       payload: { name: filterName, value: undefined },
     });
   } else if (prev.includes(null) && next.length > 1) {
+    // If you previously had "all" checked, and check a specific checkbox,
+    // uncheck "all" (i.e. null)
     dispatch({
       type: ACTIONS.SET_FILTER,
       payload: { name: filterName, value: { $in: next.filter(x => x) } },
     });
   } else {
+    // Simple check
     dispatch({
       type: ACTIONS.SET_FILTER,
       payload: { name: filterName, value: { $in: next } },
@@ -100,7 +105,7 @@ const LoanBoardOptions = ({
   ];
   const promotionIdOptions = [
     { id: null, label: 'Tous' },
-    { id: true, label: "N'a pas de promotion" },
+    { id: NO_PROMOTION, label: "N'a pas de promotion" },
     ...promotions.map(({ _id, name }) => ({ id: _id, label: name })),
   ];
   const lenderOptions = [

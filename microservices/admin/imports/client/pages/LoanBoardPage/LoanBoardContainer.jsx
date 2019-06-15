@@ -11,7 +11,7 @@ import {
   filterReducer,
   getInitialOptions,
 } from './loanBoardHelpers';
-import { GROUP_BY } from './loanBoardConstants';
+import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
@@ -27,7 +27,8 @@ const defaultBody = {
   userCache: 1,
 };
 
-const getBody = () => defaultBody;
+const noPromotionIsChecked = promotionId =>
+  promotionId && promotionId.$in.includes(NO_PROMOTION);
 
 export default compose(
   withState('activateSync', 'setActivateSync', false),
@@ -47,7 +48,7 @@ export default compose(
         category,
       },
     }) => ({
-      $body: getBody(),
+      $body: defaultBody,
       assignedEmployeeId,
       step,
       relevantOnly: true,
@@ -56,7 +57,7 @@ export default compose(
       promotionId,
       lenderId,
       category,
-      noPromotion: promotionId && promotionId.$in.includes(true),
+      noPromotion: noPromotionIsChecked(promotionId),
     }),
     dataName: 'loans',
     queryOptions: {},
