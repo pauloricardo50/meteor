@@ -6,6 +6,9 @@ import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import CollectionService from '../../helpers/CollectionService';
 import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -41,6 +44,15 @@ class TaskService extends CollectionService {
     }
     if (collection === USERS_COLLECTION) {
       this.addLink({ id: taskId, linkName: 'user', linkId: docId });
+    }
+    if (collection === PROMOTIONS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'promotion', linkId: docId });
+    }
+    if (collection === ORGANISATIONS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'organisation', linkId: docId });
+    }
+    if (collection === LENDERS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'lender', linkId: docId });
     }
 
     if (assigneeId || assignee) {

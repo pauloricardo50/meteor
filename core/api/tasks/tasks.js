@@ -73,6 +73,30 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  promotionLink: {
+    type: Object,
+    optional: true,
+  },
+  'promotionLink._id': {
+    type: String,
+    optional: true,
+  },
+  organisationLink: {
+    type: Object,
+    optional: true,
+  },
+  'organisationLink._id': {
+    type: String,
+    optional: true,
+  },
+  lenderLink: {
+    type: Object,
+    optional: true,
+  },
+  'lenderLink._id': {
+    type: String,
+    optional: true,
+  },
 });
 
 Tasks.attachSchema(TasksSchema);

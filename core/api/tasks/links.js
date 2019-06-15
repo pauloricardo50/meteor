@@ -20,4 +20,22 @@ Tasks.addLinks({
     type: 'one',
     metadata: true,
   },
+  promotion: {
+    field: 'promotionLink',
+    collection: Users,
+    type: 'one',
+    metadata: true,
+  },
+  organisation: {
+    field: 'organisationLink',
+    collection: Users,
+    type: 'one',
+    metadata: true,
+  },
+  lender: {
+    field: 'lenderLink',
+    collection: Users,
+    type: 'one',
+    metadata: true,
+  },
 });
