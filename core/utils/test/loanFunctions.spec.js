@@ -1,9 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { Signer } from 'aws-sdk/clients/cloudfront';
 import { formatLoanWithStructure, nextDueTaskReducer } from '../loanFunctions';
-import { LOAN_STATUS, TASK_STATUS } from '../../api/constants';
+import { TASK_STATUS } from '../../api/constants';
 
 describe('Loan functions', () => {
   describe('formatLoanWithStructure', () => {
