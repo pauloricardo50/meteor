@@ -11,6 +11,8 @@ import TaskService from './TaskService';
 ServerEventService.addMethodListener(
   requestLoanVerification,
   ({ params: { loanId } }) => {
+    console.log('listening!');
+    
     TaskService.insert({
       object: {
         title: 'Vérifier dossier',
