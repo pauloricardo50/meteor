@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Radio, { RadioGroup } from 'core/components/Material/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import T from 'core/components/Translation';
-import { withState } from 'recompose';
 
 const safeChange = (value, id, onChange, options) => {
   // If all options are booleans, transform the onChange handler's value
@@ -30,42 +28,35 @@ const RadioButtons = ({
   style,
   radioGroupStyle,
   disabled,
-  isHovering,
-  setHover,
-  hoverHide,
 }) => (
-  <FormControl
-    onMouseEnter={() => setHover(true)}
-    onMouseLeave={() => setHover(false)}
-    style={style}
-    className="mui-radio-group"
-  >
+  <FormControl style={style} className="mui-radio-group">
     {React.isValidElement(label) && <FormLabel htmlFor={id}>{label}</FormLabel>}
-    {hoverHide && !isHovering && (
-      <div>{options.find(({ id }) => id === value).label}</div>
-    )}
-    {(!hoverHide || isHovering) && (
-      <RadioGroup
-        onChange={(event, newValue) =>
-          safeChange(newValue, id, onChange, options)
+
+    <RadioGroup
+      onChange={(event, newValue) =>
+        safeChange(newValue, id, onChange, options)
+      }
+      value={`${value}`}
+      name={id}
+      id={id}
+      className="radio-group flex"
+      style={
+        radioGroupStyle || {
+          justifyContent: 'flex-start',
+          flexDirection: 'row',
         }
-        value={`${value}`}
-        name={id}
-        id={id}
-        className="radio-group flex"
-        style={radioGroupStyle || { justifyContent: 'flex-start', flexDirection: 'row' }}
-      >
-        {options.map(option => (
-          <FormControlLabel
-            control={<Radio className="radio" />}
-            key={option.id || option}
-            value={`${option.id !== undefined ? option.id : option}`}
-            label={option.label || <T id={`${intlPrefix}.${option}`} />}
-            disabled={disabled}
-          />
-        ))}
-      </RadioGroup>
-    )}
+      }
+    >
+      {options.map(option => (
+        <FormControlLabel
+          control={<Radio className="radio" />}
+          key={option.id || option}
+          value={`${option.id !== undefined ? option.id : option}`}
+          label={option.label || <T id={`${intlPrefix}.${option}`} />}
+          disabled={disabled}
+        />
+      ))}
+    </RadioGroup>
   </FormControl>
 );
 
@@ -88,4 +79,4 @@ RadioButtons.defaultProps = {
   disabled: false,
 };
 
-export default withState('isHovering', 'setHover', false)(RadioButtons);
+export default RadioButtons;
