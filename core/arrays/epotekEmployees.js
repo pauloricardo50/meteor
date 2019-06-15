@@ -62,6 +62,7 @@ const employees = [
     src: '/img/team/yann.jpg',
     name: 'Yann Roy',
     title: 'UX/UI Designer',
+    phoneNumber: '+41 22 566 01 10',
     _id: 'nySgkgGNoRAaAoZvE',
   },
 ];
