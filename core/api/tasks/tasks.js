@@ -38,6 +38,12 @@ export const TasksSchema = new SimpleSchema({
   createdBy: {
     type: String,
     optional: true,
+    autoValue() {
+      if (this.isInsert) {
+        return this.userId;
+      }
+      this.unset();
+    },
   },
   assigneeLink: {
     type: Object,
