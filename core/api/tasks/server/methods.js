@@ -9,26 +9,26 @@ import {
 } from '../methodDefinitions';
 
 taskInsert.setHandler(({ userId }, params) => {
-  SecurityService.tasks.isAllowedToInsert(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return TaskService.insert(params);
 });
 
 taskUpdate.setHandler(({ userId }, params) => {
-  SecurityService.tasks.isAllowedToUpdate(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return TaskService.update(params);
 });
 
 taskComplete.setHandler(({ userId }, params) => {
-  SecurityService.tasks.isAllowedToUpdate(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return TaskService.complete(params);
 });
 
 taskChangeStatus.setHandler(({ userId }, params) => {
-  SecurityService.tasks.isAllowedToUpdate(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return TaskService.changeStatus(params);
 });
 
 setAssigneeOfTask.setHandler(({ userId }, params) => {
-  SecurityService.tasks.isAllowedToUpdate(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return TaskService.changeAssignedTo(params);
 });
