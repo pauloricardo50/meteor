@@ -14,4 +14,5 @@ import '../../properties/server/exposures';
 import '../../stats/server/exposures';
 import '../../tasks/server/exposures';
 import '../../users/server/exposures';
+import '../../liveSync/server/exposures';
 import './exposures';
