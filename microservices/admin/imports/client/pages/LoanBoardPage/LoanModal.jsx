@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import SingleLoanPage from '../../SingleLoanPage';
+import SingleLoanPage from '../SingleLoanPage';
 
 type LoanModalProps = {};
 

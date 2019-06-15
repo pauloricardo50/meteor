@@ -3,8 +3,8 @@ import moment from 'moment';
 
 import { taskInsert } from 'core/api/methods';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import TaskModifierDateSetter from 'imports/client/components/TasksTable/TaskModifierDateSetter';
-import { schema } from '../../../../components/TasksTable/TaskModifier';
+import TaskModifierDateSetter from '../../../components/TasksTable/TaskModifierDateSetter';
+import { schema } from '../../../components/TasksTable/TaskModifier';
 
 const taskSchema = schema.omit('assigneeLink', 'status');
 const reminderSchema = schema.pick('title').extend({
