@@ -337,6 +337,7 @@ export const adminLoan = ({ withSort } = {}) => ({
     status: 1,
     title: 1,
   },
+  user: adminUser(),
 });
 
 export const adminLoans = () => ({
@@ -860,10 +861,12 @@ export const fullUser = () => ({
 export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  assignedEmployeeCache: 1,
   promotions: { name: 1, status: 1 },
   proProperties: { address1: 1, status: 1 },
   referredByUser: { name: 1, organisations: { name: 1 } },
   referredByOrganisation: { name: 1 },
+  referredByOrganisationLink: 1,
 });
 
 export const appUser = () => ({

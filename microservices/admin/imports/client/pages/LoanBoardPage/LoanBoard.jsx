@@ -52,11 +52,12 @@ const LoanBoard = ({
       />
       <LoanModal
         loanId={options.loanId}
-        closeModal={() => dispatch({ type: ACTIONS.SET_LOAN_ID, payload: '' })}
+        closeModal={() =>
+          dispatch({ type: ACTIONS.SET_LOAN_ID, payload: '' })
+        }
         currentUser={currentUser}
       />
     </div>
   </>
 );
-
 export default LoanBoardContainer(LoanBoard);

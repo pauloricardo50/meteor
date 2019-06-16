@@ -6,6 +6,7 @@ import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
+import { userCache, tasksCache } from 'core/api/loans/links';
 import {
   groupLoans,
   filterReducer,
@@ -23,8 +24,8 @@ const defaultBody = {
   selectedStructure: 1,
   status: 1,
   structures: { wantedLoan: 1, id: 1 },
-  tasksCache: 1,
-  userCache: 1,
+  tasks: tasksCache,
+  user: userCache,
 };
 
 const noPromotionIsChecked = promotionId =>

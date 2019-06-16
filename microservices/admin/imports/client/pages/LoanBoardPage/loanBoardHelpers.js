@@ -129,7 +129,7 @@ const sortColumnData = (data, sortBy, sortOrder) => {
 
       return value;
     },
-    item => get(item, 'userCache.lastName'),
+    item => get(item, 'user.lastName'),
   ];
 
   return _orderBy(data, sorters, [sortOrder]);

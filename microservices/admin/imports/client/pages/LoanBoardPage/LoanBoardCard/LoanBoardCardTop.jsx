@@ -15,13 +15,13 @@ const LoanBoardCardTop = ({
   loanId,
   name,
   status,
-  userCache,
+  user,
   renderComplex,
 }: LoanBoardCardTopProps) => {
-  const userId = userCache && userCache._id;
+  const userId = user && user._id;
   const hasUser = !!userId;
-  const title = userCache && userCache.firstName
-    ? [userCache.firstName, userCache.lastName].filter(x => x).join(' ')
+  const title = user && user.firstName
+    ? [user.firstName, user.lastName].filter(x => x).join(' ')
     : name;
 
   return (
@@ -39,7 +39,7 @@ const LoanBoardCardTop = ({
         <LoanBoardCardAssignee
           renderComplex={renderComplex}
           assignee={assignee}
-          userCache={userCache}
+          user={user}
           admins={admins}
         />
 
@@ -48,7 +48,7 @@ const LoanBoardCardTop = ({
             hasUser={hasUser}
             name={name}
             title={title}
-            userCache={userCache}
+            user={user}
           />
         ) : (
           <h4 className="title title-placeholder">{title}</h4>

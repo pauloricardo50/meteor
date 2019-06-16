@@ -18,15 +18,15 @@ const LoanBoardCard = ({
     _id: loanId,
     name,
     status,
-    userCache = {},
+    user = {},
     nextDueTask = {},
     selectedStructure,
     structures = [],
     promotions = [],
     adminNote,
-    tasksCache,
+    tasks,
   } = loan;
-  const assignee = userCache && userCache.assignedEmployeeCache;
+  const assignee = user && user.assignedEmployeeCache;
   const promotion = promotions[0] && promotions[0].name;
 
   return (
@@ -44,7 +44,7 @@ const LoanBoardCard = ({
           name={name}
           assignee={assignee}
           admins={admins}
-          userCache={userCache}
+          user={user}
           renderComplex={renderComplex}
         />
       </div>
@@ -58,7 +58,7 @@ const LoanBoardCard = ({
         <LoanBoardCardTasks
           nextDueTask={nextDueTask}
           renderComplex={renderComplex}
-          tasks={tasksCache}
+          tasks={tasks}
         />
       </div>
 

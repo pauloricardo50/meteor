@@ -11,11 +11,11 @@ type LoanBoardCardAssigneeProps = {};
 const LoanBoardCardAssignee = ({
   renderComplex,
   assignee,
-  userCache,
+  user,
   admins,
 }: LoanBoardCardAssigneeProps) => {
   const img = (assignee && employeesById[assignee._id].src) || '/img/placeholder.png';
-  const userId = userCache && userCache._id;
+  const userId = user && user._id;
 
   if (renderComplex) {
     if (userId) {

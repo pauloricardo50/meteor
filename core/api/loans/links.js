@@ -15,6 +15,27 @@ import {
 
 import LinkInitializer from '../links/LinkInitializer';
 
+export const userCache = {
+  _id: 1,
+  firstName: 1,
+  lastName: 1,
+  referredByOrganisationLink: 1,
+  assignedEmployeeCache: 1,
+};
+
+export const lendersCache = {
+  status: 1,
+  contactLink: 1,
+  organisationLink: 1,
+};
+
+export const tasksCache = {
+  createdAt: 1,
+  dueAt: 1,
+  status: 1,
+  title: 1,
+};
+
 LinkInitializer.directInit(() => {
   Loans.addLinks({
     borrowers: {
@@ -52,13 +73,7 @@ LinkInitializer.directInit(() => {
       type: 'one',
       denormalize: {
         field: 'userCache',
-        body: {
-          _id: 1,
-          firstName: 1,
-          lastName: 1,
-          referredByOrganisationLink: 1,
-          assignedEmployeeCache: 1,
-        },
+        body: userCache,
       },
     },
   });
@@ -77,11 +92,7 @@ LinkInitializer.inversedInit(() => {
       autoremove: true,
       denormalize: {
         field: 'lendersCache',
-        body: {
-          status: 1,
-          contactLink: 1,
-          organisationLink: 1,
-        },
+        body: lendersCache,
       },
     },
     tasks: {
@@ -90,12 +101,7 @@ LinkInitializer.inversedInit(() => {
       autoremove: true,
       denormalize: {
         field: 'tasksCache',
-        body: {
-          createdAt: 1,
-          dueAt: 1,
-          status: 1,
-          title: 1,
-        },
+        body: tasksCache,
       },
     },
   });

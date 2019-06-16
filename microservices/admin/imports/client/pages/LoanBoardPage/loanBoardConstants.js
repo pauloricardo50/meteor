@@ -9,7 +9,7 @@ export const ACTIONS = {
 export const SORT_BY = {
   DUE_AT: 'item.nextDueTask.dueAt',
   CREATED_AT: 'createdAt',
-  ASSIGNED_EMPLOYEE: 'userCache.assignedEmployeeCache.firstName',
+  ASSIGNED_EMPLOYEE: 'user.assignedEmployeeCache.firstName',
   STATUS: 'status',
 };
 
@@ -21,7 +21,7 @@ export const SORT_ORDER = {
 export const GROUP_BY = {
   STATUS: 'status',
   PROMOTION: 'promotions[0]._id',
-  ADMIN: 'userCache.assignedEmployeeCache._id',
+  ADMIN: 'user.assignedEmployeeCache._id',
 };
 
 export const NO_PROMOTION = 'NO_PROMOTION';

@@ -10,7 +10,7 @@ type LoanBoardCardTitleProps = {};
 const LoanBoardCardTitle = ({
   hasUser,
   name,
-  userCache,
+  user,
   title,
 }: LoanBoardCardTitleProps) => (
   <Tooltip title={name}>
@@ -18,7 +18,7 @@ const LoanBoardCardTitle = ({
       {hasUser ? (
         <CollectionIconLink
           relatedDoc={{
-            ...userCache,
+            ...user,
             name: title,
             collection: USERS_COLLECTION,
           }}
