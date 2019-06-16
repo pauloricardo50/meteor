@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 
 import Analytics from 'core/api/analytics/server/Analytics';
 import EVENTS from 'core/api/analytics/events';
@@ -93,9 +92,10 @@ getUserByPasswordResetToken.setHandler((context, params) =>
   UserService.getUserByPasswordResetToken(params));
 
 testCreateUser.setHandler((context, params) => {
-  if (Meteor.isTest) {
-    return UserService.testCreateUser(params);
+  if (!Meteor.isTest) {
+    throw new Meteor.Error('Test only');
   }
+  return UserService.testCreateUser(params);
 });
 
 removeUser.setHandler((context, params) => {

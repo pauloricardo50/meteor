@@ -5,8 +5,11 @@ import moment from 'moment';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { USERS_COLLECTION } from 'core/api/constants';
-import { TASKS_COLLECTION } from 'imports/core/api/constants';
+import {
+  USERS_COLLECTION,
+  TASKS_COLLECTION,
+  LOANS_COLLECTION,
+} from 'core/api/constants';
 
 const formatDateTime = (date, toNow) =>
   (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
@@ -25,27 +28,31 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
   const {
     _id: taskId,
     title,
-    type,
-    relatedDoc,
     status,
     createdAt,
     dueAt,
     completedAt,
-    assignedEmployee,
+    assignee,
+    loan = {},
+    user = {},
   } = task;
-  const { collection } = relatedDoc;
 
   return {
     id: taskId,
     columns: [
       {
-        raw: collection,
-        label: collection && <CollectionIconLink relatedDoc={relatedDoc} />,
+        raw: loan.name || user.name,
+        label: (loan.name || user.name) && (
+          <CollectionIconLink
+            relatedDoc={
+              loan.name
+                ? { ...loan, collection: LOANS_COLLECTION }
+                : { ...user, collection: USERS_COLLECTION }
+            }
+          />
+        ),
       },
-      title || {
-        raw: type,
-        label: <T id={`TaskStatusSetter.${type}`} />,
-      },
+      title,
       {
         raw: status,
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
@@ -61,12 +68,12 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
       },
       {
         label:
-          assignedEmployee && assignedEmployee._id ? (
+          assignee && assignee._id ? (
             <CollectionIconLink
-              relatedDoc={{ ...assignedEmployee, collection: USERS_COLLECTION }}
+              relatedDoc={{ ...assignee, collection: USERS_COLLECTION }}
             />
           ) : null,
-        raw: assignedEmployee && assignedEmployee.name,
+        raw: assignee && assignee.name,
       },
     ],
     handleClick: () => {

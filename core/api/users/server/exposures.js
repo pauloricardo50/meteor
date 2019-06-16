@@ -22,14 +22,10 @@ exposeQuery({
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { assignedTo, roles, _id, admins, assignedEmployeeId, _userId },
+        params: { roles, _id, admins, assignedEmployeeId, _userId },
       }) => {
         if (_id) {
           filters._id = _id;
-        }
-
-        if (assignedTo) {
-          filters.assignedEmployeeId = assignedTo;
         }
 
         if (roles) {
@@ -52,10 +48,9 @@ exposeQuery({
       };
     },
     validateParams: {
-      assignedTo: Match.Maybe(String),
       roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
-      assignedEmployeeId: Match.Maybe(String),
+      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
   options: { allowFilterById: true },

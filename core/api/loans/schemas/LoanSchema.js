@@ -7,6 +7,7 @@ import {
   contactsSchema,
   additionalDocuments,
   documentsField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -113,11 +114,7 @@ const LoanSchema = new SimpleSchema({
   ...additionalDocuments([]),
   revenueLinks: { type: Array, defaultValue: [] },
   'revenueLinks.$': String,
-  userCache: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
+  userCache: cacheField,
   step: {
     type: String,
     defaultValue: STEPS.SOLVENCY,
@@ -144,6 +141,10 @@ const LoanSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  lendersCache: { type: Array, optional: true },
+  'lendersCache.$': cacheField,
+  tasksCache: { type: Array, optional: true },
+  'tasksCache.$': cacheField,
 });
 
 export default LoanSchema;

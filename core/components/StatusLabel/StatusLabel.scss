@@ -11,7 +11,22 @@
 
   font-size: 12px;
   line-height: initial;
+}
 
+.status-label-dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-label-dropdown {
+  width: 12px;
+  height: 12px;
+}
+
+.status-label,
+.status-label-dot {
   &.allowModify {
     cursor: pointer;
   }

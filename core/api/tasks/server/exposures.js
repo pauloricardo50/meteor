@@ -18,6 +18,7 @@ exposeQuery({
           type,
           user,
           docIds,
+          loanId,
         },
       }) => {
         if (assignedTo) {
@@ -55,17 +56,22 @@ exposeQuery({
         if (docIds) {
           filters.docId = { $in: docIds };
         }
+
+        if (loanId) {
+          filters['loanLink._id'] = loanId;
+        }
       };
     },
     validateParams: {
       assignedTo: Match.Maybe(String),
-      unassigned: Match.Maybe(Boolean),
       dashboardTasks: Match.Maybe(Boolean),
+      docIds: Match.Maybe([String]),
       file: Match.Maybe(String),
+      loanId: Match.Maybe(String),
       status: Match.Maybe(String),
       type: Match.Maybe(String),
+      unassigned: Match.Maybe(Boolean),
       user: Match.Maybe(String),
-      docIds: Match.Maybe([String]),
     },
   },
   options: { allowFilterById: true },

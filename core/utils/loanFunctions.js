@@ -1,4 +1,9 @@
-import { STEPS } from '../api/constants';
+import {
+  STEPS,
+  LOAN_STATUS_ORDER,
+  LOAN_STATUS,
+  TASK_STATUS,
+} from '../api/constants';
 import Calculator from './Calculator';
 
 export const formatLoanWithStructure = ({
@@ -95,3 +100,21 @@ export const formatLoanWithPromotion = (loan) => {
 export const shouldSendStepNotification = (prevStep, nextStep) =>
   (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
   && nextStep === STEPS.OFFERS;
+
+export const nextDueTaskReducer = ({ tasksCache = [] }) => {
+  const activeTasks = tasksCache.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE);
+  const tasksWithoutDate = activeTasks
+    .filter(({ dueAt }) => !dueAt)
+    .sort(({ createdAt: A }, { createdAt: B }) => A - B);
+
+  if (tasksWithoutDate.length > 0) {
+    const task = tasksWithoutDate[0];
+    return { ...task, dueAt: task.createdAt, noDueDate: true };
+  }
+
+  const sortedTasks = activeTasks.sort(({ dueAt: A }, { dueAt: B }) => A - B);
+
+  if (sortedTasks.length > 0) {
+    return sortedTasks[0];
+  }
+};

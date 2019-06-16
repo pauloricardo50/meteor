@@ -189,6 +189,11 @@ class UserService extends CollectionService {
   };
 
   testUserAccount = ({ email, password, role }) => {
+    if (this.doesUserExist({ email })) {
+      // Sometimes this methods is called twice from a test.....???????
+      // Apparently due to a duplicate websocket connection
+      return this.getByEmail(email);
+    }
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
     return this.get(userId);

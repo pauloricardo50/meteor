@@ -1,9 +1,11 @@
 // @flow
 /* eslint-env mocha */
+import { Random } from 'meteor/random';
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { testCreateUser } from '../../../../api';
 import {
@@ -16,7 +18,7 @@ import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
 } from '../../PasswordResetPage';
 
-describe('PasswordResetPage', () => {
+describe.only('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
@@ -26,10 +28,12 @@ describe('PasswordResetPage', () => {
     });
   const shallowComponent = () => shallow(<PasswordResetPageDumb {...props} />);
 
-  beforeEach(() => {
-    resetDatabase();
+  beforeEach((done) => {
     getMountedComponent.reset();
-    props = { token: 'token12345', email: 'john.doe@test.com' };
+    props = { token: Random.id(), email: 'john.doe@test.com' };
+    Meteor.call('resetDatabase', () => {
+      done();
+    });
   });
 
   it('renders the name', () => {
@@ -56,7 +60,7 @@ describe('PasswordResetPage', () => {
 
   it('Redirects to the login page if there is an error', () => {
     props.error = { message: 'Test error' };
-    
+
     expect(shallowComponent().find(Redirect).length).to.equal(1);
   });
 

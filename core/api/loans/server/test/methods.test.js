@@ -47,8 +47,8 @@ describe('Loan methods', () => {
       expect(loan.userFormsEnabled).to.equal(true);
 
       return requestLoanVerification.run({ loanId: loan._id }).then(() => {
-        const task = TaskService.findOne({ docId: loan.id });
-        expect(task.assignedEmployeeId).to.equal(admin._id);
+        const task = TaskService.findOne({ 'loanLink._id': loan._id });
+        expect(task.assigneeLink._id).to.equal(admin._id);
         expect(LoanService.get(loanId).userFormsEnabled).to.equal(false);
       });
     });

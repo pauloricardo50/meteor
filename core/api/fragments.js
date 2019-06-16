@@ -252,6 +252,7 @@ export const loan = () => ({
   },
   updatedAt: 1,
   userId: 1,
+  userCache: 1,
   verificationStatus: 1,
   shareSolvency: 1,
 });
@@ -326,10 +327,12 @@ export const adminLoan = ({ withSort } = {}) => ({
   closingDate: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
+  nextDueTask: 1,
   properties: adminProperty({ withSort }),
   revenues: fullRevenues(),
   signingDate: 1,
   status: 1,
+  tasksCache: 1,
 });
 
 export const adminLoans = () => ({
@@ -807,22 +810,17 @@ export const baseTask = () => ({
   completedAt: 1,
   createdAt: 1,
   dueAt: 1,
-  fileKey: 1,
-  relatedDoc: 1,
   status: 1,
   title: 1,
-  type: 1,
   updatedAt: 1,
-  userId: 1,
 });
 
 export const task = () => ({
   ...baseTask(),
-  assignedEmployeeId: 1,
-  assignedEmployee: simpleUser(),
-  borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },
-  loan: { name: 1, user: { assignedEmployeeId: 1 } },
-  property: { address1: 1, user: { assignedEmployeeId: 1 } },
+  assigneeLink: 1,
+  assignee: simpleUser(),
+  loan: { name: 1 },
+  user: { name: 1 },
 });
 
 // //

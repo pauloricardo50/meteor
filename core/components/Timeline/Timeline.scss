@@ -1,11 +1,19 @@
+$dot-size: 8px;
+$dot-size-total: 10px;
+$dot-offset: 4px;
+
 .timeline.vertical {
   list-style: none;
-  padding: 16px;
+  margin: 0;
   width: 250px;
+
+  li:last-of-type {
+    padding-bottom: 0;
+  }
 
   li {
     max-width: 250px;
-    padding-bottom: 20px;
+    padding-bottom: 16px;
     padding-left: 2em;
     position: relative;
     color: $icon;
@@ -14,16 +22,18 @@
       position: absolute;
       transform: translate(-100%, 0);
       left: 0;
-      padding: 0 16px;
+      padding-right: 16px;
       text-align: right;
+      white-space: nowrap;
     }
 
     &:before {
       position: absolute;
       left: 0;
+      top: $dot-offset;
       content: '';
-      width: 16px;
-      height: 16px;
+      width: $dot-size;
+      height: $dot-size;
       border-radius: 50%;
       border: 2px solid $icon;
       z-index: 2;
@@ -31,11 +41,11 @@
 
     &:not(:last-of-type):after {
       position: absolute;
-      left: 9px;
-      top: 18px;
+      left: 5px;
+      top: calc(#{$dot-size-total} + #{$dot-offset});
       content: '';
       width: 2px;
-      height: calc(100% - 18px);
+      height: calc(100% - #{$dot-size-total});
       background-color: $icon;
       z-index: 1;
     }

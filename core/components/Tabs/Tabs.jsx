@@ -27,7 +27,7 @@ class Tabs extends Component {
     this.setState({ value });
 
     if (typeof onChange === 'function') {
-      onChangeCallback();
+      onChangeCallback(event);
     }
   };
 
