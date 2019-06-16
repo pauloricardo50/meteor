@@ -162,7 +162,7 @@ const StatusLabel = ({
   if (allowModify) {
     return (
       <DropdownMenu
-        className="status-label-dropdown"
+        noWrapper
         renderTrigger={({ handleOpen }) =>
           statusLabel({ onClick: handleOpen, showTooltip })
         }
