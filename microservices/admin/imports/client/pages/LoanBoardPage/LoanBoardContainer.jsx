@@ -25,7 +25,11 @@ const defaultBody = {
   status: 1,
   structures: { wantedLoan: 1, id: 1 },
   tasks: tasksCache,
-  user: userCache,
+  user: {
+    ...userCache,
+    // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here
+    assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
+  },
 };
 
 const noPromotionIsChecked = promotionId =>

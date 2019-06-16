@@ -26,7 +26,6 @@ const LoanBoardCard = ({
     adminNote,
     tasks,
   } = loan;
-  const assignee = user && user.assignedEmployeeCache;
   const promotion = promotions[0] && promotions[0].name;
 
   return (
@@ -42,7 +41,6 @@ const LoanBoardCard = ({
           status={status}
           loanId={loanId}
           name={name}
-          assignee={assignee}
           admins={admins}
           user={user}
           renderComplex={renderComplex}

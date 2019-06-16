@@ -11,7 +11,6 @@ type LoanBoardCardTopProps = {};
 
 const LoanBoardCardTop = ({
   admins,
-  assignee,
   loanId,
   name,
   status,
@@ -38,7 +37,6 @@ const LoanBoardCardTop = ({
 
         <LoanBoardCardAssignee
           renderComplex={renderComplex}
-          assignee={assignee}
           user={user}
           admins={admins}
         />
