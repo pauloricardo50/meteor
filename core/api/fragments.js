@@ -182,7 +182,7 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   order: 1,
-  organisationCache: 1,
+  organisation: { _id: 1, name: 1 },
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeAlgorithm: 1,
@@ -252,7 +252,6 @@ export const loan = () => ({
   },
   updatedAt: 1,
   userId: 1,
-  userCache: 1,
   verificationStatus: 1,
   shareSolvency: 1,
 });
@@ -332,7 +331,12 @@ export const adminLoan = ({ withSort } = {}) => ({
   revenues: fullRevenues(),
   signingDate: 1,
   status: 1,
-  tasksCache: 1,
+  tasks: {
+    createdAt: 1,
+    dueAt: 1,
+    status: 1,
+    title: 1,
+  },
 });
 
 export const adminLoans = () => ({
