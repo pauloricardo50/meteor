@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { compose, lifecycle } from 'recompose';
 
 import { LOANS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
@@ -16,6 +17,7 @@ const LoanBoardCardTop = ({
   status,
   user,
   renderComplex,
+  hasRenderedComplexOnce,
 }: LoanBoardCardTopProps) => {
   const userId = user && user._id;
   const hasUser = !!userId;
@@ -54,10 +56,22 @@ const LoanBoardCardTop = ({
       </div>
 
       <div className="right">
-        {renderComplex && <LoanBoardCardActions loanId={loanId} />}
+        {(renderComplex || hasRenderedComplexOnce) && (
+          <LoanBoardCardActions loanId={loanId} />
+        )}
       </div>
     </>
   );
 };
 
-export default React.memo(LoanBoardCardTop);
+export default compose(
+  React.memo,
+  lifecycle({
+    componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
+      const { renderComplex } = this.props;
+      if (!renderComplex && nextRenderComplex) {
+        this.setState({ hasRenderedComplexOnce: true });
+      }
+    },
+  }),
+)(LoanBoardCardTop);
