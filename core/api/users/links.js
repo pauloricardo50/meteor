@@ -7,6 +7,7 @@ import {
   Promotions,
   Contacts,
   Organisations,
+  Tasks,
 } from '..';
 
 Users.addLinks({
@@ -14,6 +15,14 @@ Users.addLinks({
     collection: Users,
     field: 'assignedEmployeeId',
     type: 'one',
+    denormalize: {
+      field: 'assignedEmployeeCache',
+      body: {
+        _id: 1,
+        firstName: 1,
+        lastName: 1,
+      },
+    },
   },
   assignedEndUsers: {
     collection: Users,
@@ -22,6 +31,10 @@ Users.addLinks({
   assignedPromotions: {
     collection: Promotions,
     inversedBy: 'assignedEmployee',
+  },
+  assignedTasks: {
+    collection: Tasks,
+    inversedBy: 'assignee',
   },
   borrowers: {
     collection: Borrowers,
@@ -72,5 +85,10 @@ Users.addLinks({
     collection: Organisations,
     field: 'referredByOrganisationLink',
     type: 'one',
+  },
+  tasks: {
+    collection: Tasks,
+    inversedBy: 'user',
+    autoremove: true,
   },
 });

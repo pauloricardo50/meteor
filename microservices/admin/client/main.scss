@@ -19,8 +19,10 @@
 @import '../imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
+@import '../imports/client/pages/LoanBoardPage/LoanBoardPage.scss';
 
 // Components
+@import '../imports/client/components/Board/Board.scss';
 @import '../imports/client/components/FileViewer/FileViewer.scss';
 @import '../imports/client/components/LenderRulesEditor/LenderRulesEditor.scss';
 @import '../imports/client/components/LoanSummaryList/LoanSummaryList.scss';

@@ -156,3 +156,9 @@ export const dateField = {
   optional: true,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
 };
+
+export const cacheField = {
+  type: Object,
+  optional: true,
+  blackbox: true,
+};

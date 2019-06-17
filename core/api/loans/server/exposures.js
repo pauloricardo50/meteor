@@ -33,7 +33,20 @@ exposeQuery({
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { _id, owned, name, _userId, assignedEmployeeId, relevantOnly },
+        params: {
+          _id,
+          assignedEmployeeId,
+          category,
+          hasPromotion,
+          noPromotion,
+          lenderId,
+          name,
+          owned,
+          promotionId,
+          relevantOnly,
+          status,
+          step,
+        },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -48,7 +61,7 @@ exposeQuery({
         }
 
         if (assignedEmployeeId) {
-          filters['userCache.assignedEmployeeId'] = assignedEmployeeId;
+          filters['userCache.assignedEmployeeCache._id'] = assignedEmployeeId;
         }
 
         if (relevantOnly) {
@@ -57,13 +70,46 @@ exposeQuery({
           };
           filters.anonymous = { $ne: true };
         }
+
+        if (step) {
+          filters.step = step;
+        }
+
+        if (category) {
+          filters.category = category;
+        }
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (hasPromotion || promotionId) {
+          filters['promotionLinks.0._id'] = promotionId || { $exists: true };
+        }
+
+        if (noPromotion) {
+          filters['promotionLinks.0._id'] = { $exists: false };
+        }
+
+        if (lenderId) {
+          filters.lendersCache = {
+            $elemMatch: { 'organisationLink._id': lenderId },
+          };
+        }
       };
     },
     validateParams: {
       name: Match.Maybe(String),
       owned: Match.Maybe(Boolean),
-      assignedEmployeeId: Match.Maybe(String),
+      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
+      step: Match.Maybe(Match.OneOf(Object, String)),
+      category: Match.Maybe(Match.OneOf(Object, String)),
+      status: Match.Maybe(Match.OneOf(Object, String)),
+      promotionId: Match.Maybe(Match.OneOf(Object, String)),
+      lenderId: Match.Maybe(Match.OneOf(Object, String)),
       relevantOnly: Match.Maybe(Boolean),
+      hasPromotion: Match.Maybe(Boolean),
+      noPromotion: Match.Maybe(Boolean),
       _id: Match.Maybe(String),
     },
   },

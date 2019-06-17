@@ -3,16 +3,17 @@ import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
+import Icon from 'core/components/Icon/Icon';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { adminLoanInsert } from 'core/api/loans/index';
-import Icon from 'core/components/Icon/Icon';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
-import MyLoansTable from './MyLoansTable';
 import AdminDashboardStats from './AdminDashboardStats';
+import AdminDashboardTabs from './AdminDashboardTabs';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
   <>
+    <AdminDashboardTabs />
     <AdminDashboardStats />
     <section className="card1 card-top admin-dashboard-page">
       <Helmet>
@@ -44,7 +45,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       <AllTasksTable
         tableFilters={{
           filters: {
-            assignedEmployee: { email: true },
+            assignee: { email: true },
             status: [TASK_STATUS.ACTIVE],
           },
           options: {
@@ -53,9 +54,6 @@ const AdminDashboardPage = ({ currentUser, history }) => (
           },
         }}
       />
-
-      <h2 className="text-center">Mes dossiers</h2>
-      <MyLoansTable currentUser={currentUser} />
     </section>
   </>
 );

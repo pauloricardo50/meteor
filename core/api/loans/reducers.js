@@ -1,6 +1,9 @@
 import omit from 'lodash/omit';
 import Loans from '.';
-import { formatLoanWithStructure } from '../../utils/loanFunctions';
+import {
+  formatLoanWithStructure,
+  nextDueTaskReducer,
+} from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
 import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
@@ -17,9 +20,7 @@ Loans.addReducers({
     reduce: formatLoanWithStructure,
   },
   offers: {
-    body: {
-      lenders: { offers: omit(fullOffer(), ['user']) },
-    },
+    body: { lenders: { offers: omit(fullOffer(), ['user']) } },
     reduce: ({ lenders = [] }) =>
       lenders.reduce(
         (allOffers, { offers = [] }) => [...allOffers, ...offers],
@@ -44,5 +45,9 @@ Loans.addReducers({
     body: { maxPropertyValue: { date: 1 }, user: { _id: 1 } },
     reduce: ({ maxPropertyValue, user }) =>
       !!(!user && maxPropertyValue && maxPropertyValue.date),
+  },
+  nextDueTask: {
+    body: { tasksCache: 1 },
+    reduce: nextDueTaskReducer,
   },
 });

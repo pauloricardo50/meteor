@@ -1,6 +1,8 @@
 /* eslint-env mocha */
-import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
+
+import { expect } from 'chai';
+
 import { userLogin } from 'core/utils/testHelpers/index';
 import {
   query1,
@@ -12,12 +14,7 @@ import {
 
 const resetDatabase = () =>
   new Promise((resolve, reject) => {
-    Meteor.call('resetDb', (err, res) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(res);
-    });
+    Meteor.call('resetDatabase', (err, res) => (err ? reject(err) : resolve(res)));
   });
 
 const insertTestData = (n) => {
@@ -34,12 +31,12 @@ const fetchQueries = ({ queries = [], params, promise }) => {
   queries.forEach((query) => {
     promise = promise.then((items = {}) =>
       new Promise((resolve, reject) => {
-        query.clone(params).fetch((err, queryItems) => {
-          if (err) {
-            reject(err);
-          }
-          resolve({ ...items, [query.name]: queryItems });
-        });
+        query
+          .clone(params)
+          .fetch((err, queryItems) =>
+            (err
+              ? reject(err)
+              : resolve({ ...items, [query.name]: queryItems })));
       }));
   });
 

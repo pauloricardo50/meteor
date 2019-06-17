@@ -182,7 +182,7 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   order: 1,
-  organisationCache: 1,
+  organisation: { _id: 1, name: 1 },
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeAlgorithm: 1,
@@ -327,10 +327,18 @@ export const adminLoan = ({ withSort } = {}) => ({
   closingDate: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
+  nextDueTask: 1,
   properties: adminProperty({ withSort }),
   revenues: fullRevenues(),
   signingDate: 1,
   status: 1,
+  tasks: {
+    createdAt: 1,
+    dueAt: 1,
+    status: 1,
+    title: 1,
+  },
+  user: adminUser(),
 });
 
 export const adminLoans = () => ({
@@ -808,22 +816,17 @@ export const baseTask = () => ({
   completedAt: 1,
   createdAt: 1,
   dueAt: 1,
-  fileKey: 1,
-  relatedDoc: 1,
   status: 1,
   title: 1,
-  type: 1,
   updatedAt: 1,
-  userId: 1,
 });
 
 export const task = () => ({
   ...baseTask(),
-  assignedEmployeeId: 1,
-  assignedEmployee: simpleUser(),
-  borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },
-  loan: { name: 1, user: { assignedEmployeeId: 1 } },
-  property: { address1: 1, user: { assignedEmployeeId: 1 } },
+  assigneeLink: 1,
+  assignee: simpleUser(),
+  loan: { name: 1 },
+  user: { name: 1 },
 });
 
 // //
@@ -859,10 +862,12 @@ export const fullUser = () => ({
 export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  assignedEmployeeCache: 1,
   promotions: { name: 1, status: 1 },
   proProperties: { address1: 1, status: 1 },
   referredByUser: { name: 1, organisations: { name: 1 } },
   referredByOrganisation: { name: 1 },
+  referredByOrganisationLink: 1,
 });
 
 export const appUser = () => ({

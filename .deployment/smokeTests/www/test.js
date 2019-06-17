@@ -1,3 +1,3 @@
-import { assertTitle } from '../smokeTestHelpers';
+// import { assertTitle } from '../smokeTestHelpers';
 
-assertTitle('Obtenez la meilleure hypothèque du marché');
+// assertTitle('Obtenez la meilleure hypothèque du marché');

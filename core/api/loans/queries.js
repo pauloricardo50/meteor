@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 
 import Loans from '.';
 import { LOAN_QUERIES } from './loanConstants';
-import { adminLoan, userLoan, loanBase } from '../fragments';
+import { adminLoan, userLoan } from '../fragments';
 
 export const adminLoans = Loans.createQuery(
   LOAN_QUERIES.ADMIN_LOANS,

@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
-import { TASK_STATUS, TASK_TYPE, TASKS_COLLECTION } from './taskConstants';
+import { TASK_STATUS, TASKS_COLLECTION } from './taskConstants';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
@@ -38,28 +38,64 @@ export const TasksSchema = new SimpleSchema({
   createdBy: {
     type: String,
     optional: true,
+    autoValue() {
+      if (this.isInsert) {
+        return this.userId;
+      }
+      this.unset();
+    },
   },
-  assignedEmployeeId: {
-    type: String,
+  assigneeLink: {
+    type: Object,
     optional: true,
   },
-  type: {
+  'assigneeLink._id': {
     type: String,
-    allowedValues: Object.values(TASK_TYPE),
     optional: true,
   },
   title: {
     type: String,
     optional: true,
   },
-  description: {
+  loanLink: {
+    type: Object,
+    optional: true,
+  },
+  'loanLink._id': {
     type: String,
     optional: true,
   },
-  docId: {
+  userLink: {
+    type: Object,
+    optional: true,
+  },
+  'userLink._id': {
     type: String,
     optional: true,
-    index: true,
+  },
+  promotionLink: {
+    type: Object,
+    optional: true,
+  },
+  'promotionLink._id': {
+    type: String,
+    optional: true,
+  },
+  organisationLink: {
+    type: Object,
+    optional: true,
+  },
+  'organisationLink._id': {
+    type: String,
+    optional: true,
+  },
+  lenderLink: {
+    type: Object,
+    optional: true,
+  },
+  'lenderLink._id': {
+    type: String,
+    optional: true,
   },
 });
 
