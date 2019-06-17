@@ -3,7 +3,7 @@ import { PROPERTY_QUERIES } from './propertyConstants';
 import {
   adminProperty,
   userProperty as userPropertyFragment,
-  proPropertySummary,
+  proProperty,
 } from '../fragments';
 
 export const adminProperties = Properties.createQuery(
@@ -38,7 +38,7 @@ export const propertySearch = Properties.createQuery(
 
 export const proProperties = Properties.createQuery(
   PROPERTY_QUERIES.PRO_PROPERTIES,
-  proPropertySummary(),
+  proProperty(),
 );
 
 export const proPropertyUsers = Properties.createQuery(

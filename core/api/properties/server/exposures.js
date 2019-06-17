@@ -13,7 +13,6 @@ import {
   propertySearch,
 } from '../queries';
 import { proPropertyUsersResolver } from './resolvers';
-import { proProperty } from '../../fragments';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({
@@ -46,12 +45,6 @@ exposeQuery({
       }
     },
     embody: (body, embodyParams) => {
-      const { _id } = embodyParams;
-
-      if (_id) {
-        body = proProperty();
-      }
-
       body.$filter = ({ filters, params }) => {
         const { _id: propertyId, userId, fetchOrganisationProperties } = params;
         if (propertyId) {
