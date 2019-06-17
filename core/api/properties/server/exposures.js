@@ -12,7 +12,6 @@ import {
   proPropertyUsers,
   propertySearch,
 } from '../queries';
-import { proPropertyUsersResolver } from './resolvers';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({
@@ -109,12 +108,28 @@ exposeQuery({
 
       Security.properties.isAllowedToView({ propertyId, userId });
     },
+    embody: (body, embodyParams) => {
+      body.$filter = ({ filters, params }) => {
+        const { propertyId } = params;
+        filters._id = propertyId;
+      };
+
+      body.$postFilter = (properties = [], params) => {
+        const property = !!properties.length && properties[0];
+
+        if (!property) {
+          return [];
+        }
+
+        const { users = [] } = property;
+        return users;
+      };
+    },
     validateParams: {
       propertyId: String,
       userId: String,
     },
   },
-  resolver: proPropertyUsersResolver,
 });
 
 exposeQuery({

@@ -4,6 +4,7 @@ import {
   adminProperty,
   userProperty as userPropertyFragment,
   proProperty,
+  proUser,
 } from '../fragments';
 
 export const adminProperties = Properties.createQuery(
@@ -43,7 +44,7 @@ export const proProperties = Properties.createQuery(
 
 export const proPropertyUsers = Properties.createQuery(
   PROPERTY_QUERIES.PRO_PROPERTY_USERS,
-  () => {},
+  { users: proUser() },
 );
 
 export const userProperty = Properties.createQuery(
