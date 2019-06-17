@@ -6,7 +6,7 @@ import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
-import { userCache, tasksCache } from 'core/api/loans/links';
+import { userCache } from 'core/api/loans/links';
 import {
   groupLoans,
   filterReducer,
@@ -24,7 +24,7 @@ const defaultBody = {
   selectedStructure: 1,
   status: 1,
   structures: { wantedLoan: 1, id: 1 },
-  tasks: tasksCache,
+  tasksCache: 1,
   user: {
     ...userCache,
     // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here

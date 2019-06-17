@@ -331,7 +331,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   revenues: fullRevenues(),
   signingDate: 1,
   status: 1,
-  tasks: {
+  tasksCache: {
     createdAt: 1,
     dueAt: 1,
     status: 1,

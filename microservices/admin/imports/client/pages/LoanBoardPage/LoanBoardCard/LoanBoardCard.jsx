@@ -24,7 +24,7 @@ const LoanBoardCard = ({
     structures = [],
     promotions = [],
     adminNote,
-    tasks,
+    tasksCache: tasks,
   } = loan;
   const promotion = promotions[0] && promotions[0].name;
 
