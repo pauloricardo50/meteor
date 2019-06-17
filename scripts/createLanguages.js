@@ -69,6 +69,7 @@ const config = {
         'AmortizationChart',
         'ArrayInput',
         'BorrowerAddPartner',
+        'BorrowersPage',
         'BorrowerRemover',
         'BorrowerReuser',
         'collections',

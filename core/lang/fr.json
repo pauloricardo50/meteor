@@ -1,8 +1,8 @@
 {
-  "BorrowersPage.BorrowersAdder.title": "Combien êtes-vous à emprunter ?",
-  "BorrowersPage.BorrowersAdder.description": "Vous pourrez changer ce réglage par la suite",
-  "BorrowersPAge.BorrowerAdder.buttonLabel.singleBorrower": "1 emprunteur",
-  "BorrowersPAge.BorrowerAdder.buttonLabel.twoBorrowers": "2 emprunteurs",
+  "BorrowersPage.BorrowerAdder.title": "Combien êtes-vous à emprunter ?",
+  "BorrowersPage.BorrowerAdder.description": "Vous pourrez changer ce réglage par la suite",
+  "BorrowersPage.BorrowerAdder.buttonLabel.singleBorrower": "1 emprunteur",
+  "BorrowersPage.BorrowerAdder.buttonLabel.twoBorrowers": "2 emprunteurs",
   "general.pick": "Choisissez...",
   "MaxPropertyValue.empty.promotion": "Dans le cadre de la promotion \"{promotionName}\", calculez votre capacité d'achat pour le canton de ",
   "MaxPropertyValue.empty.proProperty": "Pour le bien immobilier \"{propertyName}\", calculez votre capacité d'achat pour le canton de ",
