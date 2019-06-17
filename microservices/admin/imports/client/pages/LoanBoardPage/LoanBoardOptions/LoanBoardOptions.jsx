@@ -152,20 +152,20 @@ const LoanBoardOptions = ({
         />
 
         <LoanBoardOptionsCheckboxes
-          label="Promotions"
-          value={promotionIdValue}
-          options={promotionIdOptions}
-          onChange={next =>
-            makeOnChange('promotionId', dispatch)(promotionIdValue, next)
-          }
-        />
-
-        <LoanBoardOptionsCheckboxes
           label="Prêteurs"
           value={lenderIdValue}
           options={lenderOptions}
           onChange={next =>
             makeOnChange('lenderId', dispatch)(lenderIdValue, next)
+          }
+        />
+
+        <LoanBoardOptionsCheckboxes
+          label="Promotions"
+          value={promotionIdValue}
+          options={promotionIdOptions}
+          onChange={next =>
+            makeOnChange('promotionId', dispatch)(promotionIdValue, next)
           }
         />
 
