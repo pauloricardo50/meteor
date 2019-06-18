@@ -75,12 +75,18 @@ class TaskService extends CollectionService {
   getTasksForDoc = docId => Tasks.find({ docId }).fetch();
 
   getDueDate = ({ dueAt, dueAtTime }) => {
-    if (dueAt) {
+    if (dueAt && !dueAtTime) {
       return dueAt;
     }
 
     if (dueAtTime) {
-      const date = moment(dueAtTime, 'HH:mm');
+      const [hours, minutes] = dueAtTime.split(':');
+      const date = moment(dueAt)
+        .hour(hours)
+        .minute(minutes)
+        .seconds(0)
+        .milliseconds(0);
+
       if (moment().isAfter(date)) {
         // If it is 14:00, and you choose 10:00 as the time, you don't want it
         // in the past, but tomorrow
