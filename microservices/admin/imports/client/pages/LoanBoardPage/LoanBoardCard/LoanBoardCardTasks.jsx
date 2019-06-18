@@ -42,11 +42,8 @@ const LoanBoardCardTasks = ({
       <LoanBoardCardTask title={nextDueTask.title} _id={nextDueTask._id} />
     </h5>
   );
-  console.log('tasks:', tasks);
   const activeTasks = tasks.filter(({ status }) => status === TASK_STATUS.ACTIVE);
-  console.log('activeTasks:', activeTasks);
   const sortedTasks = activeTasks.sort(sortTasks);
-  console.log('sortedTasks:', sortedTasks);
 
   return (
     <>
