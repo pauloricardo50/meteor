@@ -20,10 +20,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
-      this.organisationName = sortedlenderRules.length
-        ? sortedlenderRules[0].organisationCache
-          && sortedlenderRules[0].organisationCache.name
-        : null;
+      this.setOrganisationName(sortedlenderRules);
       this.ruleOrigin = {};
       this.matchedRules = [];
 
@@ -45,6 +42,12 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       this.cleanUpUnusedRules();
     }
+
+    setOrganisationName = (lenderRules) => {
+      this.organisationName = lenderRules.length
+        ? lenderRules[0].organisation && lenderRules[0].organisation.name
+        : null;
+    };
 
     storeRuleOrigin(rules, lenderRulesId) {
       Object.keys(rules).forEach((ruleName) => {
