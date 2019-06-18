@@ -101,12 +101,6 @@ $button-height: 30px;
       padding: 4px;
     }
 
-    .more-button {
-      // position: absolute;
-      // right: 0;
-      // top: 0;
-    }
-
     .icon-link {
       white-space: pre-wrap;
     }
@@ -124,6 +118,14 @@ $button-height: 30px;
 
   .card-bottom {
     padding: 8px;
+    display: flex;
+    align-items: center;
+
+    .premium-badge {
+      margin-right: 4px;
+      padding: 2px;
+      height: 16px;
+    }
   }
 
   &-tasks {

@@ -19,6 +19,7 @@ const LoanBoardCard = ({
     _id: loanId,
     adminNote,
     borrowers,
+    category,
     customName,
     name,
     nextDueTask = {},
@@ -62,10 +63,12 @@ const LoanBoardCard = ({
       </div>
 
       <LoanBoardCardBottom
+        category={category}
         promotions={promotions}
         properties={properties}
         customName={customName}
         structure={structure}
+        renderComplex={renderComplex}
       />
     </div>
   );
