@@ -4,15 +4,16 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 
 type TimelineProps = {
-  variant: String,
+  variant?: String,
   events: Array<Object>,
   className?: string,
   id: string,
 };
 
-const makeFormatEvent = variant => (event, index) => {
-  const { complete = false, mainLabel = '', secondaryLabel } = event;
-
+const makeFormatEvent = variant => (
+  { complete = false, mainLabel = '', secondaryLabel },
+  index,
+) => {
   if (variant === 'vertical') {
     return (
       <li className={cx({ complete })} key={index}>
@@ -38,7 +39,9 @@ const hasSecondaryLabel = events =>
   events.some(({ secondaryLabel }) => !!secondaryLabel);
 
 const getLongestSecondaryLabelLength = (id) => {
-  const leftLabels = document.getElementById(id).getElementsByClassName('left');
+  const leftLabels = document
+    .getElementById(id)
+    .getElementsByClassName('secondary-label');
   const widths = Array.from(leftLabels).map(({ clientWidth }) => clientWidth);
   return Math.max(...widths);
 };
@@ -53,8 +56,9 @@ class Timeline extends Component<TimelineProps> {
   }
 
   setPadding = () => {
-    const { id, events } = this.props;
-    if (id && hasSecondaryLabel(events)) {
+    const { id, events, variant } = this.props;
+
+    if (variant === 'vertical' && id && hasSecondaryLabel(events)) {
       const padding = getLongestSecondaryLabelLength(id);
       const node = document.getElementById(id);
       node.style.setProperty('padding-left', `${padding}px`);
@@ -62,7 +66,7 @@ class Timeline extends Component<TimelineProps> {
   };
 
   render() {
-    const { variant = 'vertical', events = [], className, id } = this.props;
+    const { variant, events = [], className, id } = this.props;
 
     return (
       <ul
@@ -75,5 +79,10 @@ class Timeline extends Component<TimelineProps> {
     );
   }
 }
+
+Timeline.defaultProps = {
+  className: '',
+  variant: 'vertical',
+};
 
 export default Timeline;
