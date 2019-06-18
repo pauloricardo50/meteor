@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 
 const Activities = new Mongo.Collection('activities');
 

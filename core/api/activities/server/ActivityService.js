@@ -1,5 +1,5 @@
 import CollectionService from '../../helpers/CollectionService';
-import Activities from '../activity';
+import Activities from '../activities';
 
 class ActivityService extends CollectionService {
   constructor() {

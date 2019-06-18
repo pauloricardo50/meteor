@@ -1,3 +1,4 @@
+import '../../activities/server/methods';
 import '../../borrowers/server/methods';
 import '../../email/server/methods';
 import '../../files/server/methods';
