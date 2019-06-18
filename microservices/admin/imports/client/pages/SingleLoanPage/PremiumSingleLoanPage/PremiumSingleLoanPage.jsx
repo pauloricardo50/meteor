@@ -6,6 +6,7 @@ import { loanUpdate } from 'core/api/loans/index';
 import PremiumBadge from '../../../components/PremiumBadge/PremiumBadge';
 import SingleLoanPageHeader from '../SingleLoanPageHeader';
 import PremiumLoanTabs from './PremiumLoanTabs';
+import SingleLoanPageTasks from '../SingleLoanPageTasks';
 
 type PremiumSingleLoanPageProps = {};
 
@@ -28,6 +29,7 @@ const PremiumSingleLoanPage = (props: PremiumSingleLoanPageProps) => {
           placeholder="Ajouter un nom..."
         />
       </h3>
+      <SingleLoanPageTasks loan={loan} />
       <PremiumLoanTabs {...props} />
     </div>
   );
