@@ -64,6 +64,7 @@ const OverviewTab = (props) => {
         <VerificationSetter loan={loan} />
       </div>
       <div className="admin-note">
+        <h2>Notes</h2>
         <AdminNote
           docId={loan._id}
           adminNote={loan.adminNote}
