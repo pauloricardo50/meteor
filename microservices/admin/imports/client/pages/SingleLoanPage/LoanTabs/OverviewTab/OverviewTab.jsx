@@ -30,7 +30,6 @@ const OverviewTab = (props) => {
     <div className="overview-tab">
       <div className="admin-section card1">
         <DisableUserFormsToggle loan={loan} />
-        <VerificationSetter loan={loan} />
         <UpdateField
           doc={loan}
           fields={['category']}
@@ -61,6 +60,7 @@ const OverviewTab = (props) => {
             key={`${loan._id}${dateType}`}
           />
         ))}
+        <VerificationSetter loan={loan} />
       </div>
       <div className="admin-note">
         <AdminNote
