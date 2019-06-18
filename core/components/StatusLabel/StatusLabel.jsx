@@ -18,6 +18,8 @@ import {
   LENDER_STATUS,
   PROPERTIES_COLLECTION,
   PROPERTY_STATUS,
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -83,6 +85,12 @@ const getStatuses = (collection) => {
       [PROPERTY_STATUS.FOR_SALE]: colors.success,
       [PROPERTY_STATUS.BOOKED]: colors.primary,
       [PROPERTY_STATUS.SOLD]: colors.error,
+    };
+
+  case REVENUES_COLLECTION:
+    return {
+      [REVENUE_STATUS.EXPECTED]: colors.primary,
+      [REVENUE_STATUS.CLOSED]: colors.success,
     };
 
   default:

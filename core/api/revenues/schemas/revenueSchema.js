@@ -14,7 +14,6 @@ import {
 const RevenueSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-
   approximation: { type: Boolean, defaultValue: true },
   amount: moneyField,
   type: {
@@ -32,6 +31,8 @@ const RevenueSchema = new SimpleSchema({
     uniforms: { displayEmpty: false, placeholder: '' },
     defaultValue: REVENUE_STATUS.EXPECTED,
   },
+  expectedAt: { type: Date, optional: true },
+  paidAt: { type: Date, optional: true },
   organisationLinks: {
     type: Array,
     defaultValue: [],

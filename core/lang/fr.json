@@ -1,4 +1,6 @@
 {
+  "Forms.expectedAt": "Paiement attendu le",
+  "Forms.paidAt": "Paiement reçu le",
   "Forms.dueAtTime": "Heure d'échéance",
   "Forms.maxBorrowRatioWithPledge": "Taux d'avance avec nantissement",
   "DetailSideNavFilters.relevantOnly": "Pertinents uniquement",
