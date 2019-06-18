@@ -4,6 +4,18 @@ import { Meteor } from 'meteor/meteor';
 import { INTEREST_RATES } from './constants';
 
 // //
+// // activity fragments
+// //
+export const activity = () => ({
+  createdAt: 1,
+  createdBy: 1,
+  date: 1,
+  description: 1,
+  title: 1,
+  updatedAt: 1,
+});
+
+// //
 // // borrower fragments
 // //
 export const baseBorrower = () => ({
