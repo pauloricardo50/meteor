@@ -42,6 +42,7 @@ export const schema = new SimpleSchema({
     uniforms: {
       placeholder:
         taskPlaceholders[Math.floor(Math.random() * taskPlaceholders.length)],
+      autoFocus: true,
     },
     optional: true,
   },
