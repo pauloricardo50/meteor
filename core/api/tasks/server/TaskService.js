@@ -16,16 +16,7 @@ class TaskService extends CollectionService {
   }
 
   insert = ({
-    object: {
-      title,
-      collection,
-      status,
-      dueAt,
-      dueAtTime,
-      docId,
-      assigneeLink = {},
-      ...rest
-    },
+    object: { collection, dueAt, dueAtTime, docId, assigneeLink = {}, ...rest },
   }) => {
     let assignee = assigneeLink._id;
     if (!assignee && docId && collection) {
@@ -33,8 +24,6 @@ class TaskService extends CollectionService {
     }
 
     const taskId = Tasks.insert({
-      title,
-      status,
       dueAt: this.getDueDate({ dueAt, dueAtTime }),
       ...rest,
     });

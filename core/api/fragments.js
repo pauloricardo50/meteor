@@ -817,6 +817,7 @@ export const baseTask = () => ({
   dueAt: 1,
   status: 1,
   title: 1,
+  description: 1,
   updatedAt: 1,
 });
 
