@@ -8,27 +8,43 @@ import { USERS_COLLECTION } from 'core/api/constants';
 type LoanBoardCardTitleProps = {};
 
 const LoanBoardCardTitle = ({
+  borrowers = [],
   hasUser,
   name,
-  user,
   title,
-}: LoanBoardCardTitleProps) => (
-  <Tooltip title={name}>
-    <h4 className="title">
-      {hasUser ? (
-        <CollectionIconLink
-          relatedDoc={{
-            ...user,
-            name: title,
-            collection: USERS_COLLECTION,
-          }}
-          showIcon={false}
-        />
-      ) : (
-        title
-      )}
-    </h4>
-  </Tooltip>
-);
+  user,
+}: LoanBoardCardTitleProps) => {
+  const borrowersToDisplay = borrowers.filter(({ name: borrowerName }) => borrowerName);
+  const borrowerContent = borrowersToDisplay.length > 0 && (
+    <div>
+      <h5 style={{ margin: 0 }}>Emprunteurs</h5>
+      <ul>
+        {borrowersToDisplay.map(({ name: borrowerName, _id }) => (
+          <li key={_id}>{borrowerName}</li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  return (
+    <Tooltip title={name}>
+      <h4 className="title">
+        {hasUser ? (
+          <CollectionIconLink
+            relatedDoc={{
+              ...user,
+              name: title,
+              collection: USERS_COLLECTION,
+              additionalPopoverContent: borrowerContent,
+            }}
+            showIcon={false}
+          />
+        ) : (
+          title
+        )}
+      </h4>
+    </Tooltip>
+  );
+};
 
 export default LoanBoardCardTitle;

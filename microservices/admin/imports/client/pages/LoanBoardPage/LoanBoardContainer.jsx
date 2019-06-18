@@ -17,6 +17,7 @@ import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
   adminNote: 1,
+  borrowers: { name: 1 },
   createdAt: 1,
   customName: 1,
   name: 1,

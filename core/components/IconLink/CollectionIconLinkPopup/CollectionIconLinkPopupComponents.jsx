@@ -17,18 +17,23 @@ import T, { Money, IntlDate } from '../../Translation';
 export const titles = {
   [LOANS_COLLECTION]: ({ name, status }) => (
     <span>
-      {name} <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      {name}
+      {' '}
+      <StatusLabel status={status} collection={LOANS_COLLECTION} />
     </span>
   ),
   [USERS_COLLECTION]: ({ name, roles }) => (
     <span>
-      {name} <Roles className="secondary" roles={roles} />
+      {name}
+      {' '}
+      <Roles className="secondary" roles={roles} />
     </span>
   ),
   [BORROWERS_COLLECTION]: ({ name }) => <span>{name}</span>,
   [PROPERTIES_COLLECTION]: ({ address1, name, status }) => (
     <span>
-      {name || address1}{' '}
+      {name || address1}
+      {' '}
       {status && (
         <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
       )}
@@ -41,17 +46,23 @@ export const titles = {
     },
   }) => (
     <span>
-      {orgName} pour {name}
+      {orgName}
+      {' '}
+pour
+      {name}
     </span>
   ),
   [PROMOTIONS_COLLECTION]: ({ name, status }) => (
     <span>
-      {name} <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+      {name}
+      {' '}
+      <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
     </span>
   ),
   [ORGANISATIONS_COLLECTION]: ({ name, type }) => (
     <span>
-      {name}{' '}
+      {name}
+      {' '}
       <span className="secondary">
         <T id={`Forms.type.${type}`} />
       </span>
@@ -59,7 +70,8 @@ export const titles = {
   ),
   [CONTACTS_COLLECTION]: ({ name, organisations = [] }) => (
     <span>
-      {name}{' '}
+      {name}
+      {' '}
       <span className="secondary">
         {organisations.length > 0 && organisations[0].name}
       </span>
@@ -73,13 +85,16 @@ export const components = {
     structures = [],
     selectedStructure,
     anonymous,
+    children,
   }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
 
     return (
       <span>
+        {children}
         <span>
-          Hypothèque:{' '}
+          Hypothèque:
+          {' '}
           {structure ? (
             <b>
               <Money value={structure.wantedLoan} />
@@ -92,13 +107,15 @@ export const components = {
         {anonymous && 'Anonyme'}
         {user && user.name}
         <br />
-        Conseiller:{' '}
+        Conseiller:
+        {' '}
         {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
       </span>
     );
   },
-  [USERS_COLLECTION]: ({ email, phoneNumber, assignedEmployee }) => (
+  [USERS_COLLECTION]: ({ email, phoneNumber, assignedEmployee, children }) => (
     <span>
+      {children}
       <a
         className="color"
         href={`mailto:${email}`}
@@ -112,32 +129,43 @@ export const components = {
         {phoneNumber}
       </a>
       <br />
-      Conseiller: {assignedEmployee ? assignedEmployee.name : '-'}
+      Conseiller:
+      {' '}
+      {assignedEmployee ? assignedEmployee.name : '-'}
     </span>
   ),
-  [BORROWERS_COLLECTION]: ({ user, loans = [] }) => (
+  [BORROWERS_COLLECTION]: ({ user, loans = [], children }) => (
     <span>
+      {children}
       {user && user.name}
       <br />
-      Conseiller:{' '}
+      Conseiller:
+      {' '}
       {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
       <br />
-      Dossiers: {loans.map(({ name }) => name).join(', ')}
+      Dossiers:
+      {' '}
+      {loans.map(({ name }) => name).join(', ')}
     </span>
   ),
-  [PROPERTIES_COLLECTION]: ({ totalValue }) => (
+  [PROPERTIES_COLLECTION]: ({ totalValue, children }) => (
     <span>
+      {children}
       <Money value={totalValue} />
     </span>
   ),
-  [OFFERS_COLLECTION]: ({ maxAmount, feedback }) => (
+  [OFFERS_COLLECTION]: ({ maxAmount, feedback, children }) => (
     <span>
+      {children}
       <Money value={maxAmount} />
       <br />
-      Feedback:{' '}
+      Feedback:
+      {' '}
       {feedback && feedback.date ? (
         <span className="success">
-          Donné <IntlDate type="relative" value={feedback.date} />
+          Donné
+          {' '}
+          <IntlDate type="relative" value={feedback.date} />
         </span>
       ) : (
         <span>Non</span>
@@ -149,25 +177,36 @@ export const components = {
     bookedPromotionLots,
     soldPromotionLots,
     lenderOrganisation,
+    children,
   }) => (
     <span>
+      {children}
       {lenderOrganisation && (
         <>
           <span>
-            Prêteur: <b>{lenderOrganisation.name}</b>
+            Prêteur:
+            {' '}
+            <b>{lenderOrganisation.name}</b>
           </span>
           <br />
         </>
       )}
-      Lots dispo: {availablePromotionLots.length}
+      Lots dispo:
+      {' '}
+      {availablePromotionLots.length}
       <br />
-      Réservés: {bookedPromotionLots.length}
+      Réservés:
+      {' '}
+      {bookedPromotionLots.length}
       <br />
-      Vendus: {soldPromotionLots.length}
+      Vendus:
+      {' '}
+      {soldPromotionLots.length}
     </span>
   ),
-  [ORGANISATIONS_COLLECTION]: ({ logo, offerCount }) => (
+  [ORGANISATIONS_COLLECTION]: ({ logo, offerCount, children }) => (
     <span>
+      {children}
       {logo && (
         <div style={{ width: 100, height: 50 }}>
           <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
@@ -176,8 +215,14 @@ export const components = {
       {offerCount > 0 && `Offres: ${offerCount}`}
     </span>
   ),
-  [CONTACTS_COLLECTION]: ({ organisations = [], email, phoneNumber }) => (
+  [CONTACTS_COLLECTION]: ({
+    organisations = [],
+    email,
+    phoneNumber,
+    children,
+  }) => (
     <span>
+      {children}
       {organisations.length > 0 && organisations[0].$metadata.title}
       <br />
       <a

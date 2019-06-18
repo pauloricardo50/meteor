@@ -18,6 +18,7 @@ const LoanBoardCard = ({
   const {
     _id: loanId,
     adminNote,
+    borrowers,
     customName,
     name,
     nextDueTask = {},
@@ -41,12 +42,13 @@ const LoanBoardCard = ({
     >
       <div className="card-header">
         <LoanBoardCardTop
-          status={status}
+          admins={admins}
+          borrowers={borrowers}
           loanId={loanId}
           name={name}
-          admins={admins}
-          user={user}
           renderComplex={renderComplex}
+          status={status}
+          user={user}
         />
       </div>
 
