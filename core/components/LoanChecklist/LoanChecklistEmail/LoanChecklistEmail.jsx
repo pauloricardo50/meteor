@@ -15,39 +15,22 @@ const LoanChecklistEmail = (props: LoanChecklistEmailProps) => {
 
   return (
     <>
-      <head>
-        <style>{styles}</style>
-      </head>
-      <body>
-        <LoanChecklistEmailTable
-          columns={[
-            <>
-              <LoanChecklistEmailTable
-                columns={[
-                  <LoanChecklistEmailSection
-                    key="fields"
-                    missingInformations={fields}
-                    label={formatMessage({ id: 'LoanChecklist.missingFields' })}
-                    formatMessage={formatMessage}
-                  />,
-                ]}
-              />
-              <LoanChecklistEmailTable
-                columns={[
-                  <LoanChecklistEmailSection
-                    key="documents"
-                    missingInformations={documents}
-                    label={formatMessage({
-                      id: 'LoanChecklist.missingDocuments',
-                    })}
-                    formatMessage={formatMessage}
-                  />,
-                ]}
-              />
-            </>,
-          ]}
-        />
-      </body>
+      <LoanChecklistEmailSection
+        key="fields"
+        missingInformations={fields}
+        label={formatMessage({ id: 'LoanChecklist.missingFields' })}
+        formatMessage={formatMessage}
+      />
+      <LoanChecklistEmailTable columns={[<span>&nbsp;</span>]} />
+      <div className="separator" />
+      <LoanChecklistEmailSection
+        key="documents"
+        missingInformations={documents}
+        label={formatMessage({
+          id: 'LoanChecklist.missingDocuments',
+        })}
+        formatMessage={formatMessage}
+      />
     </>
   );
 };

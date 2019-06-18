@@ -4,6 +4,9 @@ import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 import { ROLES } from 'core/api/constants';
 
+import { localizationStartup } from 'core/utils/localization';
+import messagesFR from '../../../lang/fr.json';
+
 import 'core/api/server';
 import 'core/api/api';
 import 'core/fixtures';
@@ -27,3 +30,5 @@ Accounts.validateLoginAttempt(({ allowed, user }) => {
 });
 
 Accounts.config({ forbidClientAccountCreation: true });
+
+localizationStartup({ messages: messagesFR });

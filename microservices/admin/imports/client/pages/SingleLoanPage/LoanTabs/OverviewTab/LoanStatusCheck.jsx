@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
 import Calculator from 'core/utils/Calculator';
 import T, { Percent } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
+import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
 import { PURCHASE_TYPE } from 'core/api/constants';
-import LoanChecklistEmail from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmail';
-import { injectIntl } from 'react-intl';
 
 type LoanStatusCheckProps = {};
 
@@ -71,7 +71,7 @@ const LoanStatusCheck = ({ loan, intl }: LoanStatusCheckProps) => (
     </div>
     <div className="card-bottom">
       <LoanChecklistDialog loan={loan} />
-      <LoanChecklistEmail loan={loan} intl={intl} />
+      <LoanChecklistEmailSender loan={loan} />
     </div>
   </div>
 );

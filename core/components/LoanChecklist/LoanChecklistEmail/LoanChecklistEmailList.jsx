@@ -10,7 +10,13 @@ const LoanChecklistEmailList = ({
   formatMessage,
 }: LoanChecklistEmailListProps) => (
   <>
-    <LoanChecklistEmailTable columns={[<h4 key={title}>{title}</h4>]} />
+    <LoanChecklistEmailTable
+      columns={[
+        <h4 className="list-title" key={title}>
+          {title}
+        </h4>,
+      ]}
+    />
     {labels.length === 0 && (
       <LoanChecklistEmailTable
         columns={[

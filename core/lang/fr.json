@@ -1,4 +1,7 @@
 {
+  "emails.LOAN_CHECKLIST.CTA": "Compléter mon dossier",
+  "emails.LOAN_CHECKLIST.SUBJECT": "Invitation à compléter votre checklist",
+  "emails.LOAN_CHECKLIST.TITLE": "Rapport du {today} sur la progression de votre dossier",
   "Forms.dueAtTime": "Heure d'échéance",
   "Forms.maxBorrowRatioWithPledge": "Taux d'avance avec nantissement",
   "DetailSideNavFilters.relevantOnly": "Pertinents uniquement",

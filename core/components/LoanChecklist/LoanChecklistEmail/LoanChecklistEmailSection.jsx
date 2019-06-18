@@ -17,7 +17,13 @@ const LoanChecklistEmailSection = (props: LoanChecklistEmailSectionProps) => {
 
   return (
     <>
-      <LoanChecklistEmailTable columns={[<h3 key={label}>{label}</h3>]} />
+      <LoanChecklistEmailTable
+        columns={[
+          <h3 className="section-title" key={label}>
+            {label}
+          </h3>,
+        ]}
+      />
       {!!Object.keys(property).length && (
         <LoanChecklistEmailList
           title={property.title}
