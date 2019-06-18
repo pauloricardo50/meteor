@@ -5,6 +5,8 @@ import Calculator from 'core/utils/Calculator';
 import T, { Percent } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import { PURCHASE_TYPE } from 'core/api/constants';
+import LoanChecklistEmail from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmail';
+import { injectIntl } from 'react-intl';
 
 type LoanStatusCheckProps = {};
 
@@ -18,7 +20,8 @@ const statusChecks = [
             {borrower.firstName || (
               <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
             )}
-            :{' '}
+            :
+            {' '}
             <Percent
               value={Calculator.personalInfoPercent({ borrowers: borrower })}
               rounded
@@ -53,7 +56,7 @@ const statusChecks = [
   },
 ];
 
-const LoanStatusCheck = ({ loan }: LoanStatusCheckProps) => (
+const LoanStatusCheck = ({ loan, intl }: LoanStatusCheckProps) => (
   <div className="loan-status-check card1">
     <div className="card-top">
       {statusChecks
@@ -68,8 +71,9 @@ const LoanStatusCheck = ({ loan }: LoanStatusCheckProps) => (
     </div>
     <div className="card-bottom">
       <LoanChecklistDialog loan={loan} />
+      <LoanChecklistEmail loan={loan} intl={intl} />
     </div>
   </div>
 );
 
-export default LoanStatusCheck;
+export default injectIntl(LoanStatusCheck);
