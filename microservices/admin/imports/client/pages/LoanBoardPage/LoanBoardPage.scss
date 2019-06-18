@@ -59,23 +59,29 @@
   }
 }
 
+$button-height: 30px;
+
 .loan-board-card {
   margin-bottom: 16px;
   cursor: pointer;
 
   .card-header {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 4px 8px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    min-height: $button-height;
+
+    .status-label-dot,
+    img {
+      flex-shrink: 0;
+    }
 
     .left :first-child {
       margin-right: 4px;
     }
 
     > * {
-      position: relative;
       display: flex;
       align-items: center;
     }
@@ -96,9 +102,13 @@
     }
 
     .more-button {
-      position: absolute;
-      right: 0;
-      top: 0;
+      // position: absolute;
+      // right: 0;
+      // top: 0;
+    }
+
+    .icon-link {
+      white-space: pre-wrap;
     }
   }
 
