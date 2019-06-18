@@ -57,6 +57,10 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  description: {
+    type: String,
+    optional: true,
+  },
   loanLink: {
     type: Object,
     optional: true,

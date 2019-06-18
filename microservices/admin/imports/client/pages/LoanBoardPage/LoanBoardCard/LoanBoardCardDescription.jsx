@@ -10,13 +10,13 @@ const LoanBoardCardDescription = ({
   structure,
   adminNote,
 }: LoanBoardCardDescriptionProps) => {
-  if (adminNote) {
-    return (
-      <div className="admin-note">
-        <ReactMarkdown source={adminNote} />
-      </div>
-    );
-  }
+  // if (adminNote) {
+  //   return (
+  //     <div className="admin-note">
+  //       <ReactMarkdown source={adminNote} />
+  //     </div>
+  //   );
+  // }
 
   if (structure && structure.wantedLoan) {
     return (

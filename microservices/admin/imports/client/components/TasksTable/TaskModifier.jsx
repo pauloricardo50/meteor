@@ -42,26 +42,86 @@ export const schema = new SimpleSchema({
     uniforms: {
       placeholder:
         taskPlaceholders[Math.floor(Math.random() * taskPlaceholders.length)],
-      autoFocus: true,
     },
+    optional: true,
   },
-  dueAtHelpers: {
+  description: {
+    type: String,
+    optional: true,
+  },
+  dueAtTimeHelpers: {
     type: String,
     optional: true,
     uniforms: {
       render: TaskModifierDateSetter,
+      buttonProps: { raised: true, primary: true },
+      funcs: [
+        {
+          label: 'dans 1h',
+          func: () => [
+            'dueAtTime',
+            moment()
+              .add(1, 'h')
+              .minute(0)
+              .format('HH:mm'),
+          ],
+        },
+        {
+          label: 'dans 3h',
+          func: () => [
+            'dueAtTime',
+            moment()
+              .add(3, 'h')
+              .minute(0)
+              .format('HH:mm'),
+          ],
+        },
+        {
+          label: 'À 8h',
+          func: () => [
+            'dueAtTime',
+            moment()
+              .hours(8)
+              .minute(0)
+              .format('HH:mm'),
+          ],
+        },
+      ],
+    },
+  },
+  dueAtDateHelpers: {
+    type: String,
+    optional: true,
+    uniforms: {
+      render: TaskModifierDateSetter,
+      buttonProps: { outlined: true, primary: true },
       funcs: [
         {
           label: 'Demain',
-          func: () => ['dueAt', moment().add(1, 'd').toDate()],
+          func: () => [
+            'dueAt',
+            moment()
+              .add(1, 'd')
+              .toDate(),
+          ],
         },
         {
           label: 'Dans 3 jours',
-          func: () => ['dueAt', moment().add(3, 'd').toDate()],
+          func: () => [
+            'dueAt',
+            moment()
+              .add(3, 'd')
+              .toDate(),
+          ],
         },
         {
           label: 'Semaine prochaine',
-          func: () => ['dueAt', moment().add(7, 'd').toDate()],
+          func: () => [
+            'dueAt',
+            moment()
+              .add(7, 'd')
+              .toDate(),
+          ],
         },
       ],
     },
@@ -70,6 +130,11 @@ export const schema = new SimpleSchema({
     type: Date,
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  dueAtTime: {
+    type: String,
+    optional: true,
+    uniforms: { type: 'time' },
   },
   status: {
     type: String,
