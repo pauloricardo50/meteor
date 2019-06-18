@@ -80,6 +80,10 @@ $dot-offset: 4px;
       position: relative;
     }
 
+    &:last-of-type .main-label {
+      border-bottom: none;
+    }
+
     .main-label:before {
       content: '';
       position: absolute;
