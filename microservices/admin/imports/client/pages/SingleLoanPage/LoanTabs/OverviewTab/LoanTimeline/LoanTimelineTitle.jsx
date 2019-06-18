@@ -11,13 +11,8 @@ const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
 
   return (
     <div className="loan-timeline-title">
-      <div className="top">
-        <h4>{title}</h4>
-        <LoanActivityModifier
-          className="activity-modifier"
-          model={activity}
-        />
-      </div>
+      <LoanActivityModifier className="activity-modifier" model={activity} />
+      <h4>{title}</h4>
       <h4 className="secondary">
         <small>{moment(date).format("D MMM 'YY")}</small>
       </h4>
