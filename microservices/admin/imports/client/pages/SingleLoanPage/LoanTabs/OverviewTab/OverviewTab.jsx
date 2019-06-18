@@ -15,13 +15,14 @@ import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
+import LoanTimeline from './LoanTimeline';
 
 const OverviewTab = (props) => {
   const {
     loan,
     currentUser: { roles },
   } = props;
-  const { borrowers } = loan;
+  const { borrowers, _id: loanId } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -69,6 +70,7 @@ const OverviewTab = (props) => {
           collection={LOANS_COLLECTION}
         />
       </div>
+      <LoanTimeline loanId={loanId} />
       <LoanStatusCheck loan={loan} />
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />

@@ -4,26 +4,40 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 
 type TimelineProps = {
-  vertical: Boolean,
-  horizontal: Boolean, // Not yet implemented
+  variant: String,
   events: Array<Object>,
   className?: string,
   id: string,
 };
 
-const formatEvent = (event, index) => {
-  const { complete = false, rightLabel = '', leftLabel } = event;
+const makeFormatEvent = variant => (event, index) => {
+  const { complete = false, mainLabel = '', secondaryLabel } = event;
+
+  if (variant === 'vertical') {
+    return (
+      <li className={cx({ complete })} key={index}>
+        {secondaryLabel && (
+          <div className="secondary-label">{secondaryLabel}</div>
+        )}
+        <div className="main-label">{mainLabel}</div>
+      </li>
+    );
+  }
+
   return (
     <li className={cx({ complete })} key={index}>
-      {leftLabel && <div className="left">{leftLabel}</div>}
-      {rightLabel}
+      <div className="main-label">{mainLabel}</div>
+      {secondaryLabel && (
+        <div className="secondary-label">{secondaryLabel}</div>
+      )}
     </li>
   );
 };
 
-const hasLeftLabel = events => events.some(({ leftLabel }) => !!leftLabel);
+const hasSecondaryLabel = events =>
+  events.some(({ secondaryLabel }) => !!secondaryLabel);
 
-const getLongestLeftLabelLength = (id) => {
+const getLongestSecondaryLabelLength = (id) => {
   const leftLabels = document.getElementById(id).getElementsByClassName('left');
   const widths = Array.from(leftLabels).map(({ clientWidth }) => clientWidth);
   return Math.max(...widths);
@@ -40,29 +54,23 @@ class Timeline extends Component<TimelineProps> {
 
   setPadding = () => {
     const { id, events } = this.props;
-    if (id && hasLeftLabel(events)) {
-      const padding = getLongestLeftLabelLength(id);
+    if (id && hasSecondaryLabel(events)) {
+      const padding = getLongestSecondaryLabelLength(id);
       const node = document.getElementById(id);
       node.style.setProperty('padding-left', `${padding}px`);
     }
   };
 
   render() {
-    const {
-      vertical = true,
-      horizontal = false,
-      events = [],
-      className,
-      id,
-    } = this.props;
+    const { variant = 'vertical', events = [], className, id } = this.props;
 
     return (
       <ul
         id={id}
-        className={cx('timeline', { vertical, horizontal }, className)}
+        className={cx('timeline', variant, className)}
         style={{ paddingLeft: 8 }}
       >
-        {events.map(formatEvent)}
+        {events.map(makeFormatEvent(variant))}
       </ul>
     );
   }
