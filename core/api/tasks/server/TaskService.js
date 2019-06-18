@@ -17,18 +17,18 @@ class TaskService extends CollectionService {
 
   insert = ({
     object: {
-      assigneeId,
       title,
       collection,
       status,
       dueAt,
       dueAtTime,
       docId,
+      assigneeLink = {},
       ...rest
     },
   }) => {
-    let assignee;
-    if (!assigneeId && docId && collection) {
+    let assignee = assigneeLink._id;
+    if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
     }
 
@@ -55,11 +55,11 @@ class TaskService extends CollectionService {
       this.addLink({ id: taskId, linkName: 'lender', linkId: docId });
     }
 
-    if (assigneeId || assignee) {
+    if (assignee) {
       this.addLink({
         id: taskId,
         linkName: 'assignee',
-        linkId: assigneeId || assignee,
+        linkId: assignee,
       });
     }
 
