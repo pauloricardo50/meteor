@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { injectIntl } from 'react-intl';
 
 import Calculator from 'core/utils/Calculator';
 import T, { Percent } from 'core/components/Translation';
@@ -56,7 +55,7 @@ const statusChecks = [
   },
 ];
 
-const LoanStatusCheck = ({ loan, intl }: LoanStatusCheckProps) => (
+const LoanStatusCheck = ({ loan }: LoanStatusCheckProps) => (
   <div className="loan-status-check card1">
     <div className="card-top">
       {statusChecks
@@ -76,4 +75,4 @@ const LoanStatusCheck = ({ loan, intl }: LoanStatusCheckProps) => (
   </div>
 );
 
-export default injectIntl(LoanStatusCheck);
+export default LoanStatusCheck;
