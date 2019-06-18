@@ -1,4 +1,10 @@
-import { compose, withReducer, mapProps, withState } from 'recompose';
+import {
+  compose,
+  withReducer,
+  mapProps,
+  withState,
+  withProps,
+} from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminLoans } from 'core/api/loans/queries';
@@ -68,8 +74,9 @@ export default compose(
       noPromotion: noPromotionIsChecked(promotionId),
     }),
     dataName: 'loans',
-    queryOptions: {},
+    queryOptions: { pollingMs: 5000 },
   }),
+  withProps(({ refetch }) => ({ refetchLoans: refetch })),
   withSmartQuery({
     query: adminUsers,
     params: { $body: { firstName: 1 }, roles: [ROLES.ADMIN, ROLES.DEV] },
