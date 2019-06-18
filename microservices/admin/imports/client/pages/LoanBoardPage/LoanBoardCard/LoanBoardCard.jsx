@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import LoanBoardCardTop from './LoanBoardCardTop';
 import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
+import LoanBoardCardBottom from './LoanBoardCardBottom';
 
 type LoanBoardCardProps = {};
 
@@ -16,17 +17,19 @@ const LoanBoardCard = ({
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,
-    name,
-    status,
-    user = {},
-    nextDueTask = {},
-    selectedStructure,
-    structures = [],
-    promotions = [],
     adminNote,
+    customName,
+    name,
+    nextDueTask = {},
+    promotions = [],
+    properties = [],
+    selectedStructure,
+    status,
+    structures = [],
     tasksCache: tasks,
+    user = {},
   } = loan;
-  const promotion = promotions[0] && promotions[0].name;
+  const structure = structures.find(({ id }) => id === selectedStructure);
 
   return (
     <div
@@ -48,11 +51,7 @@ const LoanBoardCard = ({
       </div>
 
       <div className="card-top">
-        <LoanBoardCardDescription
-          structures={structures}
-          selectedStructure={selectedStructure}
-          adminNote={adminNote}
-        />
+        <LoanBoardCardDescription structure={structure} adminNote={adminNote} />
         <LoanBoardCardTasks
           nextDueTask={nextDueTask}
           renderComplex={renderComplex}
@@ -60,7 +59,12 @@ const LoanBoardCard = ({
         />
       </div>
 
-      {promotion && <div className="card-bottom">{promotion}</div>}
+      <LoanBoardCardBottom
+        promotions={promotions}
+        properties={properties}
+        customName={customName}
+        structure={structure}
+      />
     </div>
   );
 };

@@ -7,12 +7,9 @@ import { Money } from 'core/components/Translation';
 type LoanBoardCardDescriptionProps = {};
 
 const LoanBoardCardDescription = ({
-  structures,
-  selectedStructure,
+  structure,
   adminNote,
 }: LoanBoardCardDescriptionProps) => {
-  const structure = structures.find(({ id }) => id === selectedStructure);
-
   if (adminNote) {
     return (
       <div className="admin-note">

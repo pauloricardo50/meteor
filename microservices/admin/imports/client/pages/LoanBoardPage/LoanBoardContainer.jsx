@@ -18,12 +18,14 @@ import { withLiveSync, addLiveSync } from './liveSync';
 const defaultBody = {
   adminNote: 1,
   createdAt: 1,
+  customName: 1,
   name: 1,
   nextDueTask: 1,
   promotions: { name: 1 },
   selectedStructure: 1,
   status: 1,
-  structures: { wantedLoan: 1, id: 1 },
+  structures: { wantedLoan: 1, id: 1, propertyId: 1 },
+  properties: { address1: 1 },
   tasksCache: 1,
   user: {
     ...userCache,
