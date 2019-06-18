@@ -10,20 +10,31 @@ import LoanBoardCardAssignee from './LoanBoardCardAssignee';
 
 type LoanBoardCardTopProps = {};
 
+const getCardTitle = (user, name, borrowers = []) => {
+  if (borrowers.length && borrowers[0].firstName) {
+    return borrowers[0].name;
+  }
+
+  if (user && user.firstName) {
+    return [user.firstName, user.lastName].filter(x => x).join(' ');
+  }
+
+  return name;
+};
+
 const LoanBoardCardTop = ({
   admins,
+  borrowers,
+  hasRenderedComplexOnce,
   loanId,
   name,
+  renderComplex,
   status,
   user,
-  renderComplex,
-  hasRenderedComplexOnce,
 }: LoanBoardCardTopProps) => {
   const userId = user && user._id;
   const hasUser = !!userId;
-  const title = user && user.firstName
-    ? [user.firstName, user.lastName].filter(x => x).join(' ')
-    : name;
+  const title = getCardTitle(user, name, borrowers);
 
   return (
     <>
@@ -38,13 +49,14 @@ const LoanBoardCardTop = ({
         />
 
         <LoanBoardCardAssignee
+          admins={admins}
           renderComplex={renderComplex}
           user={user}
-          admins={admins}
         />
 
         {renderComplex ? (
           <LoanBoardCardTitle
+            borrowers={borrowers}
             hasUser={hasUser}
             name={name}
             title={title}

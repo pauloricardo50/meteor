@@ -3,12 +3,16 @@ import { withProps, compose, withState } from 'recompose';
 import moment from 'moment';
 
 import T, { Money } from 'core/components/Translation';
+import StatusLabel from 'core/components/StatusLabel';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import {
+  ORGANISATIONS_COLLECTION,
+  REVENUES_COLLECTION,
+} from 'core/api/constants';
 
 const columnOptions = [
   { id: 'status' },
-  { id: 'createdAt' },
+  { id: 'date' },
   { id: 'type' },
   { id: 'description' },
   { id: 'organisations' },
@@ -18,7 +22,8 @@ const columnOptions = [
 const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) => {
   const {
     _id: revenueId,
-    createdAt,
+    expectedAt,
+    paidAt,
     approximation,
     amount,
     type,
@@ -26,17 +31,18 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
     status,
     organisations = [],
   } = revenue;
+  const date = paidAt || expectedAt;
 
   return {
     id: revenueId,
     columns: [
       {
         raw: status,
-        label: <T id={`Forms.status.${status}`} />,
+        label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
       },
       {
-        raw: createdAt.getTime(),
-        label: moment(createdAt).format('DD MMM YYYY'),
+        raw: date && date.getTime(),
+        label: date && moment(date).format('DD MMM YYYY'),
       },
       {
         raw: type,
@@ -53,7 +59,9 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
         raw: amount,
         label: (
           <span>
-            <Money value={amount} /> {approximation ? '(Approximé)' : ''}
+            <Money value={amount} />
+            {' '}
+            {approximation ? '(Approximé)' : ''}
           </span>
         ),
       },

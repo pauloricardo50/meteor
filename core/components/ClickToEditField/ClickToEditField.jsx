@@ -64,8 +64,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           {...inputProps}
         />
         {typeof children === 'function'
-          ? children({ value: value || placeholder, isEditing })
-          : value || placeholder}
+          && children({ value: value || placeholder, isEditing })}
       </form>
     ) : (
       <div

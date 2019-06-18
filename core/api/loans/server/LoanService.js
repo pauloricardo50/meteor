@@ -710,7 +710,6 @@ export class LoanService extends CollectionService {
 
   getLoanCalculator({ loanId, structureId }) {
     const loan = fullLoan.clone({ _id: loanId }).fetchOne();
-
     let lenderRules;
 
     if (loan && loan.structure && loan.structure.offerId) {
@@ -718,9 +717,10 @@ export class LoanService extends CollectionService {
     } else if (loan.hasPromotion) {
       const { lenderOrganisationLink } = loan.promotions[0];
       if (lenderOrganisationLink) {
-        lenderRules = LenderRulesService.find({
-          'organisationLink._id': lenderOrganisationLink._id,
-        }).fetch();
+        lenderRules = LenderRulesService.fetch({
+          $filters: { 'organisationLink._id': lenderOrganisationLink._id },
+          ...lenderRulesFragment(),
+        });
       }
     }
 

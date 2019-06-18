@@ -16,25 +16,14 @@ class TaskService extends CollectionService {
   }
 
   insert = ({
-    object: {
-      assigneeId,
-      title,
-      collection,
-      status,
-      dueAt,
-      dueAtTime,
-      docId,
-      ...rest
-    },
+    object: { collection, dueAt, dueAtTime, docId, assigneeLink = {}, ...rest },
   }) => {
-    let assignee;
-    if (!assigneeId && docId && collection) {
+    let assignee = assigneeLink._id;
+    if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
     }
 
     const taskId = Tasks.insert({
-      title,
-      status,
       dueAt: this.getDueDate({ dueAt, dueAtTime }),
       ...rest,
     });
@@ -55,11 +44,11 @@ class TaskService extends CollectionService {
       this.addLink({ id: taskId, linkName: 'lender', linkId: docId });
     }
 
-    if (assigneeId || assignee) {
+    if (assignee) {
       this.addLink({
         id: taskId,
         linkName: 'assignee',
-        linkId: assigneeId || assignee,
+        linkId: assignee,
       });
     }
 
@@ -75,12 +64,18 @@ class TaskService extends CollectionService {
   getTasksForDoc = docId => Tasks.find({ docId }).fetch();
 
   getDueDate = ({ dueAt, dueAtTime }) => {
-    if (dueAt) {
+    if (dueAt && !dueAtTime) {
       return dueAt;
     }
 
     if (dueAtTime) {
-      const date = moment(dueAtTime, 'HH:mm');
+      const [hours, minutes] = dueAtTime.split(':');
+      const date = moment(dueAt)
+        .hour(hours)
+        .minute(minutes)
+        .seconds(0)
+        .milliseconds(0);
+
       if (moment().isAfter(date)) {
         // If it is 14:00, and you choose 10:00 as the time, you don't want it
         // in the past, but tomorrow

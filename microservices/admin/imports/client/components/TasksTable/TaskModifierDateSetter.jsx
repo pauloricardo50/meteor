@@ -9,12 +9,13 @@ type TaskModifierDateSetterProps = {};
 const TaskModifierDateSetter = ({
   funcs,
   uniforms: { onChange },
+  buttonProps,
 }: TaskModifierDateSetterProps) => (
   <div>
     <label htmlFor="">Échéance rapide</label>
     <div className="space-children">
       {funcs.map(({ func, label }) => (
-        <Button primary raised key={label} onClick={() => onChange(...func())}>
+        <Button {...buttonProps} key={label} onClick={() => onChange(...func())}>
           {label}
         </Button>
       ))}
