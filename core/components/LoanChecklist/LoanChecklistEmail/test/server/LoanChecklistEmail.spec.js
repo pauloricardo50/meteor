@@ -4,7 +4,7 @@ import Intl from 'core/utils/server/intl';
 
 import { getChecklistMissingInformations } from '../../../helpers';
 
-describe.only('LoanChecklist', () => {
+describe('LoanChecklist', () => {
   context('getChecklistMissingInformations', () => {
     describe('returns the right missing informations', () => {
       it('with one borrower without name', () => {
