@@ -14,22 +14,26 @@ import {
 const formatDateTime = (date, toNow) =>
   (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
 
-const getColumnOptions = () => [
-  { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
-  { id: 'title', label: <T id="TasksTable.title" /> },
-  { id: 'status', label: <T id="TasksTable.status" /> },
-  { id: 'createdAt', label: <T id="TasksTable.createdAt" /> },
-  { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
-  { id: 'completedAt', label: <T id="TasksTable.completedAt" /> },
-  { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
-];
+const getColumnOptions = (relatedTo = true) =>
+  [
+    relatedTo && { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
+    { id: 'title', label: <T id="TasksTable.title" /> },
+    { id: 'description', label: <T id="TasksTable.description" /> },
+    { id: 'status', label: <T id="TasksTable.status" /> },
+    { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
+    { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
+  ].filter(x => x);
 
-const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
+const makeMapTask = ({
+  setTaskToModify,
+  setShowDialog,
+  relatedTo = true,
+}) => (task) => {
   const {
     _id: taskId,
     title,
+    description,
     status,
-    createdAt,
     dueAt,
     completedAt,
     assignee,
@@ -40,7 +44,7 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
   return {
     id: taskId,
     columns: [
-      {
+      relatedTo && {
         raw: loan.name || user.name,
         label: (loan.name || user.name) && (
           <CollectionIconLink
@@ -52,20 +56,13 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
           />
         ),
       },
-      title,
+      title || '-',
+      description || '-',
       {
         raw: status,
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
       },
-      {
-        raw: createdAt && createdAt.getTime(),
-        label: formatDateTime(createdAt),
-      },
       { raw: dueAt && dueAt.getTime(), label: formatDateTime(dueAt) },
-      {
-        raw: completedAt && completedAt.getTime(),
-        label: formatDateTime(completedAt),
-      },
       {
         label:
           assignee && assignee._id ? (
@@ -75,7 +72,7 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
           ) : null,
         raw: assignee && assignee.name,
       },
-    ],
+    ].filter(x => x),
     handleClick: () => {
       setTaskToModify(task);
       setShowDialog(true);
@@ -86,8 +83,8 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
 export default compose(
   withState('taskToModify', 'setTaskToModify', null),
   withState('showDialog', 'setShowDialog', false),
-  withProps(({ tasks = [], setTaskToModify, setShowDialog }) => ({
-    rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog })),
-    columnOptions: getColumnOptions(),
+  withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => ({
+    rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog, relatedTo })),
+    columnOptions: getColumnOptions(relatedTo),
   })),
 );
