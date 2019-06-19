@@ -1,4 +1,6 @@
 import SimpleSchema from 'simpl-schema';
+
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import {
   createdAt,
   updatedAt,
@@ -31,8 +33,16 @@ const RevenueSchema = new SimpleSchema({
     uniforms: { displayEmpty: false, placeholder: '' },
     defaultValue: REVENUE_STATUS.EXPECTED,
   },
-  expectedAt: { type: Date, optional: true },
-  paidAt: { type: Date, optional: true },
+  expectedAt: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  paidAt: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
   organisationLinks: {
     type: Array,
     defaultValue: [],
@@ -40,7 +50,11 @@ const RevenueSchema = new SimpleSchema({
   'organisationLinks.$': Object,
   'organisationLinks.$._id': String,
   'organisationLinks.$.commissionRate': percentageField,
-  'organisationLinks.$.paidDate': { type: Date, optional: true },
+  'organisationLinks.$.paidDate': {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
   'organisationLinks.$.status': {
     type: String,
     allowedValues: Object.values(COMMISSION_STATUS),
