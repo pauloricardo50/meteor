@@ -49,6 +49,8 @@ export default {
           name: 1,
           phoneNumber: 1,
           roles: 1,
+          referredByUser: { name: 1 },
+          referredByOrganisation: { name: 1 },
         },
       },
       cb,
