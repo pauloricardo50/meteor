@@ -19,6 +19,7 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { loanUpdate } from 'core/api/methods/index';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
+import ResetLoanButton from 'imports/client/components/ResetLoanButton/ResetLoanButton';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -153,6 +154,7 @@ const SingleLoanPageHeader = ({
           <GetLoanPDF loan={loan} />
         </div>
       )}
+      <div className="right"><ResetLoanButton loan={loan}/></div>
     </div>
   );
 };

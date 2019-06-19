@@ -38,7 +38,11 @@ import UserService from '../../users/server/UserService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
-import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
+import {
+  ORGANISATION_NAME_SEPARATOR,
+  STEPS,
+  APPLICATION_TYPES,
+} from '../loanConstants';
 import { fullLoan } from '../queries';
 
 // Pads a number with zeros: 4 --> 0004
@@ -749,6 +753,63 @@ export class LoanService extends CollectionService {
       { $set: { status: LOAN_STATUS.UNSUCCESSFUL } },
       { multi: true },
     );
+  }
+
+  // Useful for demos
+  resetLoan({ loanId }) {
+    const loan = this.findOne({ _id: loanId });
+    const { structures = [], borrowerIds = [] } = loan;
+
+    // Set status to test
+    this.update({ loanId, object: { status: LOAN_STATUS.TEST } });
+
+    // Set step to solvency
+    this.setStep({ loanId, nextStep: STEPS.SOLVENCY });
+
+    // Set application type to simple
+    this.update({
+      loanId,
+      object: { applicationType: APPLICATION_TYPES.SIMPLE },
+    });
+
+    // Remove structures and an empty one
+    structures.forEach(({ _id: structureId }) => {
+      this.removeStructure({ loanId, structureId });
+    });
+    this.addNewStructure({ loanId });
+
+    // Remove MaxPropertyValue
+    this.update({
+      loanId,
+      object: { maxPropertyValue: true },
+      operator: '$unset',
+    });
+
+    // Reset borrowers financing info
+    borrowerIds.forEach((borrowerId) => {
+      BorrowerService.update({
+        borrowerId,
+        object: {
+          netSalary: null,
+          salary: null,
+          bankFortune: null,
+          insurance2: [],
+          insurance3A: [],
+          bank3A: [],
+          insurance3B: [],
+          otherIncome: [],
+          otherFortune: [],
+          expenses: [],
+          realEstate: [],
+          bonusExists: false,
+          bonus2015: null,
+          bonus2016: null,
+          bonus2017: null,
+          bonus2018: null,
+          bonus2019: null,
+        },
+      });
+    });
   }
 }
 
