@@ -758,10 +758,11 @@ export class LoanService extends CollectionService {
   // Useful for demos
   resetLoan({ loanId }) {
     const loan = this.findOne({ _id: loanId });
-    const { structures = [], borrowerIds = [] } = loan;
+    const { structures = [], borrowerIds = [], status } = loan;
 
-    // Set status to test
-    this.update({ loanId, object: { status: LOAN_STATUS.TEST } });
+    if(status !== LOAN_STATUS.TEST){
+      throw new Meteor.Error('Seuls les dossiers avec le statut TEST peuvent être réinitialisés !')
+    }
 
     // Set step to solvency
     this.setStep({ loanId, nextStep: STEPS.SOLVENCY });
