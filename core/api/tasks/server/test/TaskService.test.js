@@ -4,6 +4,8 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
+import moment from 'moment';
+
 import { TASK_STATUS } from '../../taskConstants';
 import TaskService from '../TaskService';
 
@@ -79,6 +81,15 @@ describe('TaskService', () => {
       expect(newDate.getMinutes()).to.equal(30);
       expect(newDate.getSeconds()).to.equal(0);
       expect(newDate.getDate()).to.equal(date.getDate());
+    });
+
+    it('does not return an invalid date if dueAt is an empty string', () => {
+      const newDate = TaskService.getDueDate({
+        dueAtTime: '5:30',
+        dueAt: '',
+      });
+
+      expect(moment(newDate).isValid()).to.equal(true);
     });
   });
 });

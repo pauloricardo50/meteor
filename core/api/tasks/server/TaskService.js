@@ -69,8 +69,8 @@ class TaskService extends CollectionService {
     }
 
     if (dueAtTime) {
-      const [hours, minutes] = dueAtTime.split(':');
-      const date = moment(dueAt)
+      const [hours = 0, minutes = 0] = dueAtTime.split(':');
+      const date = moment(dueAt || undefined)
         .hour(hours)
         .minute(minutes)
         .seconds(0)
