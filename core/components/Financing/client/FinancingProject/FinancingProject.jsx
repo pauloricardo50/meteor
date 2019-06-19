@@ -51,7 +51,12 @@ const FinancingProject = (props: FinancingProjectProps) => (
         max: calculateMaxNotaryFees,
         allowUndefined: true,
       },
-      { Component: InputAndSlider, id: 'propertyWork' },
+      {
+        Component: InputAndSlider,
+        id: 'propertyWork',
+        max: 10000000,
+        maxSlider: 1000000,
+      },
     ]}
   />
 );
