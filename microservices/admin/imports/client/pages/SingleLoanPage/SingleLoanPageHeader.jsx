@@ -4,6 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
+import ClickToEditField from 'core/components/ClickToEditField';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
 import {
@@ -15,7 +16,9 @@ import {
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { loanUpdate } from 'core/api/methods/index';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
+import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -130,10 +133,11 @@ const SingleLoanPageHeader = ({
             additionalActions={additionalActions(loan)}
           />
         </h1>
-        {withCustomName && loan.customName && !loan.hasPromotion && (
-          <h3 className="secondary" style={{ marginTop: 0 }}>
-            {loan.customName}
-          </h3>
+        {withCustomName && !loan.hasPromotion && (
+          <SingleLoanPageCustomName
+            customName={loan.customName}
+            loanId={loan._id}
+          />
         )}
         {loan.hasPromotion && (
           <CollectionIconLink
