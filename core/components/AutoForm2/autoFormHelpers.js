@@ -79,6 +79,8 @@ export const getPlaceholder = ({
   type,
   parent,
 }) => {
+  console.log('name=', name, placeholder);
+  
   let placeholderPrefix = 'p.ex: ';
 
   // Doesn't make sense to add example prefix on select field

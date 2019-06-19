@@ -135,7 +135,7 @@ export const schema = new SimpleSchema({
   dueAtTime: {
     type: String,
     optional: true,
-    uniforms: { type: 'time' },
+    uniforms: { type: 'time', placeholder: null },
   },
   status: {
     type: String,
