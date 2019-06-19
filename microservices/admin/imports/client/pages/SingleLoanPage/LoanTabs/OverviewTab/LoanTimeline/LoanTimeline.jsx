@@ -26,7 +26,7 @@ const LoanTimeline = ({
   return (
     <div className="loan-timeline">
       <div className="flex">
-        <h2>Événements</h2>
+        <h2>Activité</h2>
         <LoanActivityAdder loanId={loanId} />
         <Select
           value={type.$in}
