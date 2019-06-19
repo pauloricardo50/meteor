@@ -59,7 +59,7 @@ const LoanBoardCardActions = ({
       }}
       id="task-form"
       onSubmit={insertTask}
-      onClose={() => setOpenTask(false)}
+      setOpen={setOpenTask}
       title="Ajouter tâche"
       description="CMD + Enter pour enregistrer"
     />
@@ -74,7 +74,7 @@ const LoanBoardCardActions = ({
       }}
       id="activity-form"
       onSubmit={insertActivity}
-      onClose={() => setOpenActivity(false)}
+      setOpen={setOpenActivity}
       title="Ajouter événement"
       description="CMD + Enter pour enregistrer"
     />
