@@ -16,7 +16,7 @@ import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 
 type LoanActivityAdderProps = {};
 
-const schema = new SimpleSchema({
+export const ActivitySchema = new SimpleSchema({
   title: { type: String, optional: true },
   description: { type: String, optional: true },
   date: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
@@ -30,7 +30,7 @@ export const LoanActivityForm = ({
   ...rest
 }: LoanActivityAdderProps) => (
   <AutoFormDialog
-    schema={schema}
+    schema={ActivitySchema}
     model={model}
     triggerComponent={handleOpen => (
       <IconButton className={className} onClick={handleOpen} type={iconType} />

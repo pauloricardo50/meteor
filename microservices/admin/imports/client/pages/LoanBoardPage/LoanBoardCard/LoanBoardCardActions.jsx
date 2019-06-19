@@ -17,10 +17,14 @@ const handleKeyDown = (e) => {
 };
 
 const LoanBoardCardActions = ({
+  activitySchema,
+  insertActivity,
   insertTask,
-  schema,
-  setOpenTask,
+  openActivity,
   openTask,
+  setOpenActivity,
+  setOpenTask,
+  taskSchema,
 }: LoanBoardCardActionsProps) => (
   <>
     <DropdownMenu
@@ -36,12 +40,17 @@ const LoanBoardCardActions = ({
           label: 'Ajouter tâche',
           onClick: () => setOpenTask(true),
         },
+        {
+          id: 'event',
+          label: 'Ajouter événement',
+          onClick: () => setOpenActivity(true),
+        },
       ]}
       noWrapper
     />
     <AutoFormDialog
       noButton
-      schema={schema}
+      schema={taskSchema}
       open={openTask}
       onKeyDown={handleKeyDown}
       onClick={(event) => {
@@ -51,6 +60,23 @@ const LoanBoardCardActions = ({
       id="task-form"
       onSubmit={insertTask}
       onClose={() => setOpenTask(false)}
+      title="Ajouter tâche"
+      description="CMD + Enter pour enregistrer"
+    />
+    <AutoFormDialog
+      noButton
+      schema={activitySchema}
+      open={openActivity}
+      onKeyDown={handleKeyDown}
+      onClick={(event) => {
+        // Prevent the loan from opening when clicking on the autoform
+        event.stopPropagation();
+      }}
+      id="activity-form"
+      onSubmit={insertActivity}
+      onClose={() => setOpenActivity(false)}
+      title="Ajouter événement"
+      description="CMD + Enter pour enregistrer"
     />
   </>
 );
