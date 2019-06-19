@@ -9,7 +9,7 @@ import Loans from '../../../loans';
 import Users from '../../../users';
 import { up } from '../17';
 
-describe.only('Migration 17', () => {
+describe('Migration 17', () => {
   beforeEach(() => {
     resetDatabase();
   });

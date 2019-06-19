@@ -76,6 +76,8 @@ import Phonelink from '@material-ui/icons/Phonelink';
 import OpenInNew from '@material-ui/icons/OpenInNew';
 import Add from '@material-ui/icons/Add';
 import Settings from '@material-ui/icons/Settings';
+import Event from '@material-ui/icons/Event';
+import Computer from '@material-ui/icons/Computer';
 
 export const iconMap = {
   close: CloseIcon,
@@ -153,6 +155,8 @@ export const iconMap = {
   phoneLink: Phonelink,
   openInNew: OpenInNew,
   settings: Settings,
+  event: Event,
+  computer: Computer,
 };
 
 const Icon = ({

@@ -20,7 +20,7 @@ const ActivitySchema = new SimpleSchema({
       this.unset();
     },
   },
-  title: { type: String, optional: true },
+  title: String,
   description: { type: String, optional: true },
   type: { type: String, allowedValues: Object.values(ACTIVITY_TYPES) },
   secondaryType: {
