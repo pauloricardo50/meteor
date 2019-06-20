@@ -10,7 +10,7 @@ type LoanBoardCardActionsProps = {};
 const handleKeyDown = (e) => {
   if (e.keyCode === 13 && e.metaKey) {
     document
-      .getElementById('task-form')
+      .getElementById('loan-card-form')
       .querySelector('[type="submit"]')
       .click();
   }
@@ -57,7 +57,7 @@ const LoanBoardCardActions = ({
         // Prevent the loan from opening when clicking on the autoform
         event.stopPropagation();
       }}
-      id="task-form"
+      id="loan-card-form"
       onSubmit={insertTask}
       setOpen={setOpenTask}
       title="Ajouter tâche"
@@ -72,7 +72,7 @@ const LoanBoardCardActions = ({
         // Prevent the loan from opening when clicking on the autoform
         event.stopPropagation();
       }}
-      id="activity-form"
+      id="loan-card-form"
       onSubmit={insertActivity}
       setOpen={setOpenActivity}
       title="Ajouter événement"

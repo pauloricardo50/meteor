@@ -20,7 +20,11 @@ type LoanActivityAdderProps = {};
 export const ActivitySchema = new SimpleSchema({
   title: String,
   description: { type: String, optional: true },
-  date: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
+  date: {
+    type: Date,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    defaultValue: new Date(),
+  },
   type: {
     type: String,
     allowedValues: Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.SERVER),
@@ -39,7 +43,11 @@ export const LoanActivityForm = ({
     schema={ActivitySchema}
     model={model}
     triggerComponent={handleOpen => (
-      <IconButton className={className} onClick={handleOpen} type={iconType} />
+      <IconButton
+        className={className}
+        onClick={handleOpen}
+        type={iconType}
+      />
     )}
     onSubmit={onSubmit}
     {...rest}
