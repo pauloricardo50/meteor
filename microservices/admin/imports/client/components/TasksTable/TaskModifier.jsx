@@ -171,6 +171,15 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
+const getTime = (date) => {
+  if (!date) {
+    return undefined;
+  }
+  const hours = date.getHours() || '00';
+  const minutes = date.getMinutes() || '00';
+  return `${hours}:${minutes}`;
+};
+
 const TaskModifier = ({
   task,
   updateTask,
@@ -178,7 +187,7 @@ const TaskModifier = ({
   setOpen,
   submitting,
 }: TaskModifierProps) => {
-  const model = task;
+  const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog
       schema={schema}
@@ -188,6 +197,7 @@ const TaskModifier = ({
       open={open}
       setOpen={setOpen}
       submitting={submitting}
+      title="Modifier tâche"
     />
   );
 };
