@@ -669,8 +669,6 @@
   "PDF.borrowersInfos.name": "Prénom, Nom",
   "PDF.borrowersInfos.address": "Adresse",
   "Forms.title": "Titre",
-  "Forms.signingDate": "Date de signature",
-  "Forms.closingDate": "{purchaseType, select, REFINANCING {Date du refinancement} other {Date de décaissement}}",
   "files.PROPERTY_FUTURE_WORKS": "Travaux envisagés",
   "files.PROPERTY_FUTURE_WORKS.tooltip": "Devis et descriptifs des travaux",
   "files.PROPERTY_MINERGIE_CERTIFICATE": "Certificat énergétique",
