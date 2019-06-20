@@ -24,6 +24,14 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.ruleOrigin = {};
       this.matchedRules = [];
 
+      // Global rules
+      const globalRules = this.getGlobalLenderRules({
+        loan,
+        structureId,
+        lenderRules: sortedlenderRules,
+      });
+      this.applyRules(globalRules);
+
       // Primary rules depend only on raw data
       const primaryRules = this.getPrimaryLenderRules({
         loan,
@@ -105,6 +113,17 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,
         }),
       };
+    }
+
+    getGlobalLenderRules({ lenderRules }) {
+      const globalRules = lenderRules.filter(({ filter }) =>
+        filter.and && filter.and.length === 1 && filter.and[0] === true);
+      const matchingRules = getMatchingRules(
+        globalRules,
+        {},
+        this.storeRuleOrigin,
+      );
+      return matchingRules;
     }
 
     getPrimaryLenderRules({ loan, structureId, lenderRules }) {

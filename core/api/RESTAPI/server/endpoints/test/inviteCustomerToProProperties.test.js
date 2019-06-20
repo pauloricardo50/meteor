@@ -405,7 +405,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       }));
   });
 
-  it.only('cleans invalid fields in insert', () => {
+  it('cleans invalid fields in insert', () => {
     const newProperty = {
       externalId: 'myId',
       status: PROPERTY_STATUS.SOLD,

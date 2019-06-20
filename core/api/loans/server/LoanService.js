@@ -575,10 +575,7 @@ export class LoanService extends CollectionService {
 
     return {
       min,
-      max: {
-        ...secondMax,
-        organisationName: maxOrganisationLabel,
-      },
+      max: { ...secondMax, organisationName: maxOrganisationLabel },
     };
   }
 
