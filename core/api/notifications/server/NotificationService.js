@@ -11,6 +11,55 @@ class NotificationService extends CollectionService {
     super(Notifications);
   }
 
+  readNotification({ userId, notificationId }) {
+    this.updateLinkMetadata({
+      id: notificationId,
+      linkName: 'recipients',
+      linkId: userId,
+      metadata: { read: true },
+    });
+  }
+
+  snoozeNotification({ userId, notificationId }) {
+    const inOneHour = new Date();
+    inOneHour.setHours(inOneHour.getHours() + 1);
+    this.updateLinkMetadata({
+      id: notificationId,
+      linkName: 'recipients',
+      linkId: userId,
+      metadata: { snoozeDate: true },
+    });
+  }
+
+  unreadNotification({ userId, notificationId }) {
+    this.updateLinkMetadata({
+      id: notificationId,
+      linkName: 'recipients',
+      linkId: userId,
+      metadata: { read: false },
+    });
+  }
+
+  readTaskNotification({ taskId }) {
+    const notification = this.fetchOne({
+      $filters: { 'taskLink._id': taskId },
+      recipientLinks: 1,
+    });
+
+    if (notification) {
+      const { _id: notificationId, recipientLinks } = notification;
+      this._update({
+        id: notificationId,
+        object: {
+          recipientLinks: recipientLinks.map(recipientLink => ({
+            ...recipientLink,
+            read: true,
+          })),
+        },
+      });
+    }
+  }
+
   addTaskNotifications() {
     const tasks = TaskService.fetch({
       $filters: {

@@ -14,3 +14,8 @@ export const unreadNotification = new Method({
   name: 'unreadNotification',
   params: { notificationId: String },
 });
+
+export const generateAllNotifications = new Method({
+  name: 'generateAllNotifications',
+  params: {  },
+});

@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
@@ -11,6 +12,10 @@ exposeQuery({
         filters,
         params: { _userId, userId, read, unread },
       }) => {
+        if (!read && !unread) {
+          throw new Meteor.Error('You ave to provide either read or unread');
+        }
+
         if (unread) {
           filters.recipientLinks = {
             $elemMatch: {

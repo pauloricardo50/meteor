@@ -2,6 +2,7 @@ import React from 'react';
 
 import updateForProps from 'core/containers/updateForProps';
 import TopNav from 'core/components/TopNav';
+import NotificationsManager from '../../components/NotificationsManager';
 import Search from '../../components/Search';
 import TaskAdder from '../../components/TasksTable/TaskAdder';
 
@@ -9,6 +10,7 @@ const AdminTopNav = ({ setOpenSearch, openSearch, ...props }) => (
   <div className="admin-top-nav">
     <TopNav {...props}>
       <TaskAdder />
+      <NotificationsManager />
       <Search openSearch={openSearch} setOpenSearch={setOpenSearch} />
     </TopNav>
   </div>

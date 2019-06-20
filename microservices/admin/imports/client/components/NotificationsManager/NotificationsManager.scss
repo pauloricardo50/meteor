@@ -1,0 +1,16 @@
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div.buttons {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+}
