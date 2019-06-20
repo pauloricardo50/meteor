@@ -1,5 +1,6 @@
 // @flow
 import React, { useEffect } from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Timeline from 'core/components/Timeline';
 import Select from 'core/components/Select';
@@ -13,6 +14,8 @@ import LoanTimelineDescription from './LoanTimelineDescription';
 
 type LoanTimelineProps = {};
 
+const now = new Date();
+
 const LoanTimeline = ({
   loanId,
   activities = [],
@@ -23,6 +26,9 @@ const LoanTimeline = ({
     const el = document.getElementsByClassName('loan-timeline-timeline')[0];
     el.scrollLeft = el.scrollWidth;
   }, []);
+  const elementAfterToday = activities.find(({ date }) => date.getTime() > now.getTime())
+    || activities[activities.length - 1];
+
   return (
     <div className="loan-timeline">
       <div className="flex">
@@ -46,6 +52,14 @@ const LoanTimeline = ({
         variant="horizontal"
         className="loan-timeline-timeline"
         events={activities.map(activity => ({
+          children: activities.length >= 2
+            && activity._id === elementAfterToday._id && (
+            <div className="today">
+              <Tooltip title="Aujourd'hui">
+                <div className="today-dot" />
+              </Tooltip>
+            </div>
+          ),
           mainLabel: <LoanTimelineTitle activity={activity} />,
           secondaryLabel: <LoanTimelineDescription activity={activity} />,
         }))}
