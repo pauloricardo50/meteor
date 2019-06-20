@@ -27,7 +27,7 @@ class NotificationService extends CollectionService {
       id: notificationId,
       linkName: 'recipients',
       linkId: userId,
-      metadata: { snoozeDate: true },
+      metadata: { snoozeDate: inOneHour },
     });
   }
 
@@ -91,11 +91,11 @@ class NotificationService extends CollectionService {
   addActivityNotifications() {
     const now = new Date();
     const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setDate(yesterday.getDate() - 2);
     const activities = ActivityService.fetch({
       $filters: {
         shouldNotify: true,
-        $and: [{ date: { $lte: now } }, { date: { $gte: yesterday } }],
+        date: { $gte: yesterday, $lte: now },
       },
       _id: 1,
       createdBy: 1,
@@ -105,6 +105,7 @@ class NotificationService extends CollectionService {
       const existingNotification = this.fetchOne({
         $filters: { 'activityLink._id': activityId },
       });
+
       if (!existingNotification) {
         this.insert({
           recipientLinks: [{ _id: createdBy }],

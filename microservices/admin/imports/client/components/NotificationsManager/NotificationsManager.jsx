@@ -22,7 +22,8 @@ class NotificationsManager extends Component {
         $body: {
           recipientLinks: 1,
           task: { title: 1, dueAt: 1 },
-          activity: { title: 1, date: 1, loan: { _id: 1 } },
+          activity: { title: 1, date: 1 },
+          relatedDoc: 1,
         },
       })
       .fetch((err, data) => {

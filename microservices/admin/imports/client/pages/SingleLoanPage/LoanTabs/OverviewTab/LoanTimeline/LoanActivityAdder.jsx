@@ -30,6 +30,7 @@ export const ActivitySchema = new SimpleSchema({
     allowedValues: Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.SERVER),
     uniforms: { checkboxes: true },
   },
+  shouldNotify: { type: Boolean, defaultValue: false },
 });
 
 export const LoanActivityForm = ({
@@ -43,11 +44,7 @@ export const LoanActivityForm = ({
     schema={ActivitySchema}
     model={model}
     triggerComponent={handleOpen => (
-      <IconButton
-        className={className}
-        onClick={handleOpen}
-        type={iconType}
-      />
+      <IconButton className={className} onClick={handleOpen} type={iconType} />
     )}
     onSubmit={onSubmit}
     {...rest}

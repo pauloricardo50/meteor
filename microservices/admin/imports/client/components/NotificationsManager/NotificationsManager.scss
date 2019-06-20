@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   min-width: 200px;
+  align-items: stretch;
+
+  hr {
+    width: 100%;
+  }
 
   &-item {
     display: flex;

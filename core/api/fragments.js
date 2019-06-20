@@ -11,7 +11,9 @@ export const activity = () => ({
   createdBy: 1,
   date: 1,
   description: 1,
+  loan: { name: 1 },
   secondaryType: 1,
+  shouldNotify: 1,
   title: 1,
   type: 1,
   updatedAt: 1,
@@ -412,12 +414,13 @@ export const mortgageNote = () => ({
 // // Notification fragments
 // //
 export const notification = () => ({
-  createdAt: 1,
-  updatedAt: 1,
-  recipients: { firstName: 1, lastName: 1, name: 1 },
-  readAt: 1,
-  task: task(),
   activity: activity(),
+  createdAt: 1,
+  readAt: 1,
+  recipients: { firstName: 1, lastName: 1, name: 1 },
+  relatedDoc: 1,
+  task: task(),
+  updatedAt: 1,
 });
 
 // //
