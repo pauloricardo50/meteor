@@ -2,7 +2,12 @@ import { Meteor } from 'meteor/meteor';
 
 import { withSmartQuery } from 'core/api';
 import { compose, shouldUpdate, withState } from 'recompose';
-import { taskInsert, taskUpdate } from 'core/api/tasks/index';
+import {
+  taskInsert,
+  taskUpdate,
+  taskChangeStatus,
+  taskComplete,
+} from 'core/api/tasks/index';
 import { tasks } from 'core/api/tasks/queries';
 import { TASK_STATUS } from 'core/api/constants';
 
@@ -21,6 +26,11 @@ export default compose(
     }),
     queryOptions: { reactive: false },
     dataName: 'tasks',
-    refetchOnMethodCall: [taskInsert, taskUpdate],
+    refetchOnMethodCall: [
+      taskInsert,
+      taskUpdate,
+      taskChangeStatus,
+      taskComplete,
+    ],
   }),
 );

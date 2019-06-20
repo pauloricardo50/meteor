@@ -11,6 +11,7 @@ import {
   LOANS_COLLECTION,
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
+import TasksTableActions from './TasksTableActions';
 
 const now = moment();
 const formatDateTime = (date, toNow) => {
@@ -32,6 +33,7 @@ const getColumnOptions = (relatedTo = true) =>
     { id: 'status', label: <T id="TasksTable.status" /> },
     { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
     { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
+    { id: 'actions', label: 'Actions' },
   ].filter(x => x);
 
 const makeMapTask = ({
@@ -82,6 +84,7 @@ const makeMapTask = ({
           ) : null,
         raw: assignee && assignee.name,
       },
+      { raw: '', label: <TasksTableActions taskId={taskId} /> },
     ].filter(x => x),
     handleClick: () => {
       setTaskToModify(task);
