@@ -18,7 +18,7 @@ const SingleLoanPageTasks = ({
       <h3>Tâches</h3>
       <LoanTaskInserter loan={loan} refetch={refetch} />
     </div>
-    {tasks && !!tasks.length && <TasksTable tasks={tasks} relatedTo={false} />}
+    <TasksTable tasks={tasks} relatedTo={false} {...rest} />
   </div>
 );
 

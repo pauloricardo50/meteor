@@ -19,7 +19,7 @@ export default compose(
       assignee,
       status,
     }),
-    queryOptions: { reactive: false, shouldRefetch: () => false },
+    queryOptions: { reactive: false },
     dataName: 'tasks',
     refetchOnMethodCall: [taskInsert, taskUpdate],
   }),
