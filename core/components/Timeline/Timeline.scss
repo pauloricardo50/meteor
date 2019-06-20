@@ -18,7 +18,7 @@ $dot-offset: 4px;
     position: relative;
     color: $icon;
 
-    .left {
+    .secondary-label {
       position: absolute;
       transform: translate(-100%, 0);
       left: 0;
@@ -61,6 +61,45 @@ $dot-offset: 4px;
 
     &.complete:before {
       border: 2px solid $grey4;
+    }
+  }
+}
+
+.timeline.horizontal {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    flex-direction: column;
+
+    .main-label {
+      border-bottom: 2px solid $icon;
+      position: relative;
+    }
+
+    &:last-of-type .main-label {
+      border-bottom: none;
+    }
+
+    .main-label:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: $dot-size;
+      height: $dot-size;
+      border-radius: 50%;
+      border: 2px solid $icon;
+      z-index: 2;
+      background-color: white;
+    }
+
+    .main-label,
+    .secondary-label {
+      padding: 8px 16px 8px 0;
     }
   }
 }

@@ -4,6 +4,18 @@ import { Meteor } from 'meteor/meteor';
 import { INTEREST_RATES } from './constants';
 
 // //
+// // activity fragments
+// //
+export const activity = () => ({
+  createdAt: 1,
+  createdBy: 1,
+  date: 1,
+  description: 1,
+  title: 1,
+  updatedAt: 1,
+});
+
+// //
 // // borrower fragments
 // //
 export const baseBorrower = () => ({
@@ -182,7 +194,7 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   order: 1,
-  organisation: { _id: 1, name: 1 },
+  organisation: { name: 1 },
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeAlgorithm: 1,
@@ -332,7 +344,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   revenues: fullRevenues(),
   signingDate: 1,
   status: 1,
-  tasks: {
+  tasksCache: {
     createdAt: 1,
     dueAt: 1,
     status: 1,
@@ -818,6 +830,7 @@ export const baseTask = () => ({
   dueAt: 1,
   status: 1,
   title: 1,
+  description: 1,
   updatedAt: 1,
 });
 
@@ -906,12 +919,14 @@ export const proUser = () => ({
 // // Revenues fragments
 // //
 export const fullRevenues = () => ({
-  status: 1,
-  createdAt: 1,
-  type: 1,
-  description: 1,
   amount: 1,
   approximation: 1,
+  createdAt: 1,
+  description: 1,
+  expectedAt: 1,
   organisationLinks: 1,
   organisations: { name: 1 },
+  paidAt: 1,
+  status: 1,
+  type: 1,
 });

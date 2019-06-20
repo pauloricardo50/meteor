@@ -33,7 +33,7 @@ export default class CollectionIconLinkPopup extends Component<
 
   getPopoverContent = () => {
     const { data } = this.state;
-    const { collection } = this.props;
+    const { collection, additionalPopoverContent } = this.props;
 
     if (!data) {
       return <Loading small />;
@@ -41,7 +41,11 @@ export default class CollectionIconLinkPopup extends Component<
 
     const CollectionComponent = components[collection];
 
-    return <CollectionComponent {...data} />;
+    return (
+      <CollectionComponent {...data}>
+        {additionalPopoverContent}
+      </CollectionComponent>
+    );
   };
 
   getPopoverTitle = () => {

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import LoanBoardCardTop from './LoanBoardCardTop';
 import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
+import LoanBoardCardBottom from './LoanBoardCardBottom';
 
 type LoanBoardCardProps = {};
 
@@ -16,17 +17,21 @@ const LoanBoardCard = ({
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,
-    name,
-    status,
-    user = {},
-    nextDueTask = {},
-    selectedStructure,
-    structures = [],
-    promotions = [],
     adminNote,
-    tasks,
+    borrowers,
+    category,
+    customName,
+    name,
+    nextDueTask = {},
+    promotions = [],
+    properties = [],
+    selectedStructure,
+    status,
+    structures = [],
+    tasksCache: tasks,
+    user = {},
   } = loan;
-  const promotion = promotions[0] && promotions[0].name;
+  const structure = structures.find(({ id }) => id === selectedStructure);
 
   return (
     <div
@@ -38,21 +43,18 @@ const LoanBoardCard = ({
     >
       <div className="card-header">
         <LoanBoardCardTop
-          status={status}
+          admins={admins}
+          borrowers={borrowers}
           loanId={loanId}
           name={name}
-          admins={admins}
-          user={user}
           renderComplex={renderComplex}
+          status={status}
+          user={user}
         />
       </div>
 
       <div className="card-top">
-        <LoanBoardCardDescription
-          structures={structures}
-          selectedStructure={selectedStructure}
-          adminNote={adminNote}
-        />
+        <LoanBoardCardDescription structure={structure} adminNote={adminNote} />
         <LoanBoardCardTasks
           nextDueTask={nextDueTask}
           renderComplex={renderComplex}
@@ -60,7 +62,14 @@ const LoanBoardCard = ({
         />
       </div>
 
-      {promotion && <div className="card-bottom">{promotion}</div>}
+      <LoanBoardCardBottom
+        category={category}
+        promotions={promotions}
+        properties={properties}
+        customName={customName}
+        structure={structure}
+        renderComplex={renderComplex}
+      />
     </div>
   );
 };

@@ -101,8 +101,8 @@ export const shouldSendStepNotification = (prevStep, nextStep) =>
   (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
   && nextStep === STEPS.OFFERS;
 
-export const nextDueTaskReducer = ({ tasksCache = [] }) => {
-  const activeTasks = tasksCache.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE);
+export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
+  const activeTasks = tasks.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE);
   const tasksWithoutDate = activeTasks
     .filter(({ dueAt }) => !dueAt)
     .sort(({ createdAt: A }, { createdAt: B }) => A - B);

@@ -1,6 +1,5 @@
 import { withSmartQuery } from 'core/api';
 import { compose, shouldUpdate } from 'recompose';
-import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
 import { taskInsert, taskUpdate } from 'core/api/tasks/index';
 import { tasks } from 'core/api/tasks/queries';
 
@@ -15,5 +14,4 @@ export default compose(
     dataName: 'tasks',
     refetchOnMethodCall: [taskInsert, taskUpdate],
   }),
-  makeTableFiltersContainer(undefined, 'tasks'),
 );

@@ -7,6 +7,7 @@ import {
 import { STEPS, STEP_ORDER } from './loanConstants';
 import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import { tasksCache } from './links';
 
 Loans.addReducers({
   structure: {

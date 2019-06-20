@@ -1,4 +1,10 @@
-import { compose, withReducer, mapProps, withState } from 'recompose';
+import {
+  compose,
+  withReducer,
+  mapProps,
+  withState,
+  withProps,
+} from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminLoans } from 'core/api/loans/queries';
@@ -6,7 +12,7 @@ import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
-import { userCache, tasksCache } from 'core/api/loans/links';
+import { userCache } from 'core/api/loans/links';
 import {
   groupLoans,
   filterReducer,
@@ -17,14 +23,18 @@ import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
   adminNote: 1,
+  borrowers: { name: 1 },
+  category: 1,
   createdAt: 1,
+  customName: 1,
   name: 1,
   nextDueTask: 1,
   promotions: { name: 1 },
   selectedStructure: 1,
   status: 1,
-  structures: { wantedLoan: 1, id: 1 },
-  tasks: tasksCache,
+  structures: { wantedLoan: 1, id: 1, propertyId: 1 },
+  properties: { address1: 1 },
+  tasksCache: 1,
   user: {
     ...userCache,
     // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here
@@ -65,8 +75,9 @@ export default compose(
       noPromotion: noPromotionIsChecked(promotionId),
     }),
     dataName: 'loans',
-    queryOptions: {},
+    queryOptions: { pollingMs: 5000 },
   }),
+  withProps(({ refetch }) => ({ refetchLoans: refetch })),
   withSmartQuery({
     query: adminUsers,
     params: { $body: { firstName: 1 }, roles: [ROLES.ADMIN, ROLES.DEV] },

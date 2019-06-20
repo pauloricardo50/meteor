@@ -85,12 +85,10 @@ export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   }
   case GROUP_BY.ADMIN: {
     return ({ id: idA }, { id: idB }) => {
-      const nameA = idA !== 'undefined'
-        ? admins.find(({ _id }) => idA === _id).firstName
-        : '';
-      const nameB = idB !== 'undefined'
-        ? admins.find(({ _id }) => idB === _id).firstName
-        : '';
+      const adminA = admins.find(({ _id }) => idA === _id);
+      const nameA = adminA ? adminA.firstName : '';
+      const adminB = admins.find(({ _id }) => idB === _id);
+      const nameB = adminB ? adminB.firstName : '';
 
       return nameA.localeCompare(nameB);
     };

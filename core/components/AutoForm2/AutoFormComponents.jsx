@@ -40,7 +40,11 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
-    return { Component: OptimizedDateField, type: COMPONENT_TYPES.DATE };
+    return {
+      Component: OptimizedDateField,
+      type: COMPONENT_TYPES.DATE,
+      props: { placeholder: null },
+    };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
@@ -59,6 +63,7 @@ const determineComponentFromProps = ({
     return {
       Component: HtmlPreview,
       type: COMPONENT_TYPES.HTML_PREVIEW,
+      props: { placeholder: null },
     };
   }
 
@@ -75,7 +80,11 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.render) {
-    return { Component: uniforms.render, type: COMPONENT_TYPES.RENDER };
+    return {
+      Component: uniforms.render,
+      type: COMPONENT_TYPES.RENDER,
+      props: { placeholder: null },
+    };
   }
 
   return { Component: false, type: null };
@@ -112,10 +121,11 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     // Don't recalculate these
     const [label] = useState(getLabel({
       ...props,
+      ...additionalProps,
       intlPrefix,
       label: labels[props.name],
     }));
-    const [placeholder] = useState(getPlaceholder({ ...props, intlPrefix, type }));
+    const [placeholder] = useState(getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }));
 
     if (
       typeof condition === 'function'

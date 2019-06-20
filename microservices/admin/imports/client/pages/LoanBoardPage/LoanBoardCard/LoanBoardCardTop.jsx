@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { compose, lifecycle } from 'recompose';
 
 import { LOANS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
@@ -9,19 +10,31 @@ import LoanBoardCardAssignee from './LoanBoardCardAssignee';
 
 type LoanBoardCardTopProps = {};
 
+const getCardTitle = (user, name, borrowers = []) => {
+  if (borrowers.length && borrowers[0].firstName) {
+    return borrowers[0].name;
+  }
+
+  if (user && user.firstName) {
+    return [user.firstName, user.lastName].filter(x => x).join(' ');
+  }
+
+  return name;
+};
+
 const LoanBoardCardTop = ({
   admins,
+  borrowers,
+  hasRenderedComplexOnce,
   loanId,
   name,
+  renderComplex,
   status,
   user,
-  renderComplex,
 }: LoanBoardCardTopProps) => {
   const userId = user && user._id;
   const hasUser = !!userId;
-  const title = user && user.firstName
-    ? [user.firstName, user.lastName].filter(x => x).join(' ')
-    : name;
+  const title = getCardTitle(user, name, borrowers);
 
   return (
     <>
@@ -36,13 +49,14 @@ const LoanBoardCardTop = ({
         />
 
         <LoanBoardCardAssignee
+          admins={admins}
           renderComplex={renderComplex}
           user={user}
-          admins={admins}
         />
 
         {renderComplex ? (
           <LoanBoardCardTitle
+            borrowers={borrowers}
             hasUser={hasUser}
             name={name}
             title={title}
@@ -54,10 +68,22 @@ const LoanBoardCardTop = ({
       </div>
 
       <div className="right">
-        {renderComplex && <LoanBoardCardActions loanId={loanId} />}
+        {(renderComplex || hasRenderedComplexOnce) && (
+          <LoanBoardCardActions loanId={loanId} />
+        )}
       </div>
     </>
   );
 };
 
-export default React.memo(LoanBoardCardTop);
+export default compose(
+  React.memo,
+  lifecycle({
+    componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
+      const { renderComplex } = this.props;
+      if (!renderComplex && nextRenderComplex) {
+        this.setState({ hasRenderedComplexOnce: true });
+      }
+    },
+  }),
+)(LoanBoardCardTop);
