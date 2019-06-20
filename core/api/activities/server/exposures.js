@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import { exposeQuery } from '../../queries/queryHelpers';
 import { adminActivities } from '../queries';
 
