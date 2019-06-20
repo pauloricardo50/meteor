@@ -1,5 +1,6 @@
 import Tasks from './tasks';
 import { Users, Loans } from '..';
+import Notifications from '../notifications';
 
 Tasks.addLinks({
   assignee: {
@@ -37,5 +38,10 @@ Tasks.addLinks({
     collection: Users,
     type: 'one',
     metadata: true,
+  },
+  notifications: {
+    collection: Notifications,
+    inversedBy: 'task',
+    autoremove: true,
   },
 });

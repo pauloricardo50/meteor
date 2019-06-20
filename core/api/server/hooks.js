@@ -1,3 +1,4 @@
+import '../activities/server/hooks';
 import '../borrowers/server/hooks';
 import '../contacts/server/hooks';
 import '../loans/server/hooks';

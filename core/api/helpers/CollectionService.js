@@ -24,8 +24,8 @@ class CollectionService {
     return this.collection.update(...args);
   }
 
-  remove(id) {
-    return this.collection.remove(id);
+  remove(...args) {
+    return this.collection.remove(...args);
   }
 
   get(id) {

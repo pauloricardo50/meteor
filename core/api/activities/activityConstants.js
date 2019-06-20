@@ -1,3 +1,5 @@
+export const ACTIVITIES_COLLECTION = 'activities';
+
 export const ACTIVITY_QUERIES = {
   ADMIN_ACTIVITIES: 'ADMIN_ACTIVITIES',
 };

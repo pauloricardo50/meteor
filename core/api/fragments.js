@@ -409,6 +409,18 @@ export const mortgageNote = () => ({
 });
 
 // //
+// // Notification fragments
+// //
+export const notification = () => ({
+  createdAt: 1,
+  updatedAt: 1,
+  recipients: { firstName: 1, lastName: 1, name: 1 },
+  readAt: 1,
+  task: task(),
+  activity: activity(),
+});
+
+// //
 // // Offer fragments
 // //
 export const fullOffer = () => ({
