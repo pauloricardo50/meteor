@@ -20,7 +20,7 @@ const UserModifier = ({
 }: UserModifierProps) => (
   <AutoFormDialog
     // Emails should not be modified like this, but with EmailModifier
-    schema={schema.omit('email', 'sendEnrollmentEmail')}
+    schema={schema.omit('email', 'assignedEmployeeId', 'sendEnrollmentEmail')}
     model={user}
     onSubmit={editUser}
     buttonProps={{
