@@ -4,7 +4,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import T from 'core/components/Translation';
 import createTheme from 'core/config/muiCustom';
-import UserCreator from '../UserCreator';
+import UserCreatorForm from '../UserCreator/UserCreatorForm';
 
 type SimpleMaxPropertyValueSignupProps = {};
 
@@ -19,7 +19,7 @@ const SimpleMaxPropertyValueSignup = (props: SimpleMaxPropertyValueSignupProps) 
           Votre capacité d'achat a été calculée avec succès. Pour poursuivre,
           créez-vous un compte.
         </h4>
-        <UserCreator
+        <UserCreatorForm
           buttonProps={{
             raised: true,
             secondary: true,

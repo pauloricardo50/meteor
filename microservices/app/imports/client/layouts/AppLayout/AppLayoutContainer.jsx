@@ -70,6 +70,7 @@ const fragment = {
     ...fullFragment.promotions,
     users: undefined,
   },
+  maxPropertyValueExists: 1,
 };
 
 const withUserLoan = withSmartQuery({
