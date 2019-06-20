@@ -285,7 +285,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
   });
 
-  it('returns an error when the user has not the right permissions with impersonateUser', () => {
+  it('returns an error when the user does not have the right permissions with impersonateUser', () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property4',
       userId: 'pro2',
@@ -405,7 +405,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       }));
   });
 
-  it('cleans invalid fields in insert', () => {
+  it.only('cleans invalid fields in insert', () => {
     const newProperty = {
       externalId: 'myId',
       status: PROPERTY_STATUS.SOLD,
