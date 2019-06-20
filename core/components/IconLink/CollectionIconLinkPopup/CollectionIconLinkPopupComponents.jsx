@@ -86,19 +86,36 @@ export const components = {
     selectedStructure,
     anonymous,
     children,
+    borrowers = [],
   }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
 
     return (
       <div>
         {children}
+        {borrowers.length > 0 && (
+          <div>
+            <b>Emprunteurs</b>
+            <ul style={{ margin: 0 }}>
+              {borrowers.map(({ _id, name }) => (
+                <li key={_id}>{name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div>
           <b>Hypothèque:</b>
           {' '}
           {structure ? <Money value={structure.wantedLoan} /> : '-'}
         </div>
         {anonymous && <div>Anonyme</div>}
-        {user && <div>{user.name}</div>}
+        {user && (
+          <div>
+            <b>Utilisateur:</b>
+            {' '}
+            {user.name}
+          </div>
+        )}
         <div>
           <b>Conseiller:</b>
           {' '}
