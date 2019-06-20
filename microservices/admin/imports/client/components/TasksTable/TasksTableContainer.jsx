@@ -10,9 +10,19 @@ import {
   TASKS_COLLECTION,
   LOANS_COLLECTION,
 } from 'core/api/constants';
+import { ORDER } from 'core/utils/sortArrayOfObjects';
 
-const formatDateTime = (date, toNow) =>
-  (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
+const now = moment();
+const formatDateTime = (date, toNow) => {
+  const momentDate = moment(date);
+  const text = date ? momentDate[toNow ? 'toNow' : 'fromNow']() : '-';
+
+  if (momentDate.isBefore(now)) {
+    return <span className="error-box">{text}</span>;
+  }
+
+  return text;
+};
 
 const getColumnOptions = (relatedTo = true) =>
   [
@@ -83,8 +93,13 @@ const makeMapTask = ({
 export default compose(
   withState('taskToModify', 'setTaskToModify', null),
   withState('showDialog', 'setShowDialog', false),
-  withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => ({
-    rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog, relatedTo })),
-    columnOptions: getColumnOptions(relatedTo),
-  })),
+  withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => {
+    const columnOptions = getColumnOptions(relatedTo);
+    return {
+      rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog, relatedTo })),
+      columnOptions,
+      initialOrderBy: columnOptions.findIndex(({ id }) => id === 'dueAt'),
+      initialOrder: ORDER.ASC,
+    };
+  }),
 );

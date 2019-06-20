@@ -7,54 +7,13 @@ exposeQuery({
   query: tasks,
   overrides: {
     embody: (body, params) => {
-      body.$filter = ({
-        filters,
-        params: {
-          assignedTo,
-          unassigned,
-          dashboardTasks,
-          file,
-          status,
-          type,
-          user,
-          docIds,
-          loanId,
-        },
-      }) => {
-        if (assignedTo) {
-          filters.assignedEmployeeId = assignedTo;
-        }
-
-        if (unassigned) {
-          filters.assignedEmployeeId = { $exists: false };
-        }
-
-        if (dashboardTasks) {
-          delete filters.assignedEmployeeId;
-          filters.$or = [
-            { assignedEmployeeId: { $in: [assignedTo] } },
-            { assignedEmployeeId: { $exists: false } },
-          ];
-        }
-
-        if (file) {
-          filters.fileKey = file;
+      body.$filter = ({ filters, params: { assignee, loanId, status } }) => {
+        if (assignee) {
+          filters['assigneeLink._id'] = assignee;
         }
 
         if (status) {
           filters.status = status;
-        }
-
-        if (type) {
-          filters.type = type;
-        }
-
-        if (user) {
-          filters.userId = user;
-        }
-
-        if (docIds) {
-          filters.docId = { $in: docIds };
         }
 
         if (loanId) {
@@ -63,15 +22,9 @@ exposeQuery({
       };
     },
     validateParams: {
-      assignedTo: Match.Maybe(String),
-      dashboardTasks: Match.Maybe(Boolean),
-      docIds: Match.Maybe([String]),
-      file: Match.Maybe(String),
+      assignee: Match.Maybe(Match.OneOf(Object, String)),
       loanId: Match.Maybe(String),
-      status: Match.Maybe(String),
-      type: Match.Maybe(String),
-      unassigned: Match.Maybe(Boolean),
-      user: Match.Maybe(String),
+      status: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
   options: { allowFilterById: true },
