@@ -97,8 +97,8 @@ export const components = {
           <div>
             <b>Emprunteurs</b>
             <ul style={{ margin: 0 }}>
-              {borrowers.map(({ _id, name }) => (
-                <li key={_id}>{name}</li>
+              {borrowers.map(({ _id, name }, index) => (
+                <li key={_id}>{name || `Emprunteur ${index + 1}`}</li>
               ))}
             </ul>
           </div>
