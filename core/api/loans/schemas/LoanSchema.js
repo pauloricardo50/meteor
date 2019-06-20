@@ -28,7 +28,6 @@ import {
   previousLoanTranchesSchema,
   maxPropertyValueSchema,
 } from './otherSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -37,16 +36,6 @@ const LoanSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  closingDate: {
-    type: Date,
-    optional: true,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
-  signingDate: {
-    type: Date,
-    optional: true,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
   status: {
     type: String,
     defaultValue: LOAN_STATUS.LEAD,

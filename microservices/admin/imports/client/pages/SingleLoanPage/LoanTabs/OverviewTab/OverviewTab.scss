@@ -168,6 +168,7 @@
   .flex {
     display: flex;
     align-items: center;
+    margin-bottom: 16px;
   }
 
   &-title {
@@ -177,6 +178,16 @@
       margin: 0;
       text-overflow: ellipsis;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+
+      &.title {
+        margin-left: -4px;
+      }
+
+      .icon {
+        margin-right: 4px;
+      }
     }
 
     .activity-modifier {

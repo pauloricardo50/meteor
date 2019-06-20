@@ -1,4 +1,9 @@
 {
+  "Forms.type.COMMUNICATION": "Email, téléphone",
+  "Forms.type.EMAIL": "Email",
+  "Forms.type.PHONE": "Téléphone",
+  "Forms.type.EVENT": "Événement",
+  "Forms.type.SERVER": "Automatique",
   "Forms.expectedAt": "Paiement attendu le",
   "Forms.paidAt": "Paiement reçu le",
   "Forms.dueAtTime": "Heure d'échéance",
