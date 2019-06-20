@@ -13,7 +13,7 @@ exposeQuery({
         params: { _userId, userId, read, unread },
       }) => {
         if (!read && !unread) {
-          throw new Meteor.Error('You ave to provide either read or unread');
+          throw new Meteor.Error('You have to provide either read or unread');
         }
 
         if (unread) {

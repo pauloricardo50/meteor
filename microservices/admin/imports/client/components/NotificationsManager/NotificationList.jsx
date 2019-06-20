@@ -19,7 +19,7 @@ const getNotificationTitle = (task, activity) => {
     return activity.title;
   }
 
-  return "L'orgine de la notification a été supprimé";
+  return "L'orgine de la notification a été supprimée";
 };
 
 const Notification = ({

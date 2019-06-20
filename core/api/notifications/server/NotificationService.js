@@ -99,12 +99,19 @@ class NotificationService extends CollectionService {
       },
       _id: 1,
       createdBy: 1,
+      loan: { userCache: 1 },
     });
 
-    activities.forEach(({ _id: activityId, createdBy = {} }) => {
+    activities.forEach(({ _id: activityId, createdBy = {}, loan }) => {
       const existingNotification = this.fetchOne({
         $filters: { 'activityLink._id': activityId },
       });
+
+      const recipients = [{ _id: createdBy }];
+
+      if (loan && loan.userCache && loan.userCache.assignedEmployeeCache) {
+        recipients.push({ _id: loan.userCache.assignedEmployeeCache._id });
+      }
 
       if (!existingNotification) {
         this.insert({
