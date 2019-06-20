@@ -7,6 +7,7 @@ import '../../lenderRules/server/exposures';
 import '../../lenders/server/exposures';
 import '../../liveSync/server/exposures';
 import '../../loans/server/exposures';
+import '../../notifications/server/exposures';
 import '../../offers/server/exposures';
 import '../../organisations/server/exposures';
 import '../../promotionLots/server/exposures';

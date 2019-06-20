@@ -17,8 +17,8 @@ const LoanBoardCardTitle = ({
   const borrowersToDisplay = borrowers.filter(({ name: borrowerName }) => borrowerName);
   const borrowerContent = borrowersToDisplay.length > 0 && (
     <div>
-      <h5 style={{ margin: 0 }}>Emprunteurs</h5>
-      <ul>
+      <b>Emprunteurs</b>
+      <ul style={{ margin: 0 }}>
         {borrowersToDisplay.map(({ name: borrowerName, _id }) => (
           <li key={_id}>{borrowerName}</li>
         ))}

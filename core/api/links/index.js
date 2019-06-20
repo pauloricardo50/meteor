@@ -1,3 +1,4 @@
+import '../activities/links';
 import '../borrowers/links';
 import '../contacts/links';
 import '../lenderRules/links';
@@ -5,6 +6,7 @@ import '../lenders/links';
 import '../loans/links';
 import '../lots/links';
 import '../mortgageNotes/links';
+import '../notifications/links';
 import '../offers/links';
 import '../organisations/links';
 import '../promotionLots/links';

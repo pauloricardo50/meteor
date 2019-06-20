@@ -289,6 +289,14 @@ class DevPage extends Component {
           />
           <hr className="mbt20" />
           <ErrorThrower />
+          <hr className="mbt20" />
+          <Button
+            raised
+            primary
+            onClick={() => Meteor.call('generateAllNotifications')}
+          >
+            Générer notifications
+          </Button>
         </section>
       );
     }

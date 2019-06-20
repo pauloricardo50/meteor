@@ -1,11 +1,12 @@
 import '../borrowers/reducers';
+import '../contacts/reducers';
 import '../loans/reducers';
 import '../lots/reducers';
+import '../notifications/reducers';
+import '../offers/reducers';
+import '../organisations/reducers';
 import '../promotionLots/reducers';
 import '../promotionOptions/reducers';
 import '../promotions/reducers';
 import '../properties/reducers';
 import '../users/reducers';
-import '../contacts/reducers';
-import '../organisations/reducers';
-import '../offers/reducers';

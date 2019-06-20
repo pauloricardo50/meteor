@@ -3,9 +3,13 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
-import { ACTIVITY_TYPES, ACTIVITY_SECONDARY_TYPES } from './activityConstants';
+import {
+  ACTIVITY_TYPES,
+  ACTIVITY_SECONDARY_TYPES,
+  ACTIVITIES_COLLECTION,
+} from './activityConstants';
 
-const Activities = new Mongo.Collection('activities');
+const Activities = new Mongo.Collection(ACTIVITIES_COLLECTION);
 
 const ActivitySchema = new SimpleSchema({
   createdAt,
@@ -31,6 +35,7 @@ const ActivitySchema = new SimpleSchema({
   date: { type: Date },
   loanLink: { type: Object, optional: true },
   'loanLink._id': { type: String, optional: true },
+  shouldNotify: { type: Boolean, optional: true },
 });
 
 Activities.attachSchema(ActivitySchema);

@@ -3,3 +3,4 @@ import '../../email/server/emailListeners';
 import '../../loans/server/loanListeners';
 import '../../slack/server/slackListeners';
 import '../../tasks/server/taskListeners';
+import '../../notifications/server/notificationListeners';
