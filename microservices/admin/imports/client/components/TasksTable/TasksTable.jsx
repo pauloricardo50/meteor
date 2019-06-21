@@ -21,6 +21,8 @@ const TasksTable = ({
   status,
   setStatus,
   setAssignee,
+  uptoDate,
+  setUptoDate,
 }) => {
   const renderTable = !(hideIfNoData && !rows.length);
   return (
@@ -32,6 +34,8 @@ const TasksTable = ({
           status={status}
           setStatus={setStatus}
           setAssignee={setAssignee}
+          uptoDate={uptoDate}
+          setUptoDate={setUptoDate}
         />
       )}
       {renderTable ? (

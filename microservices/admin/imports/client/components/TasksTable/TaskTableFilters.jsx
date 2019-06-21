@@ -10,12 +10,20 @@ import { ROLES } from 'imports/core/api/constants';
 
 type TaskTableFiltersProps = {};
 
+const uptoDateOptions = [
+  { id: 'TODAY', label: "Aujourd'hui" },
+  { id: 'TOMORROW', label: 'Demain' },
+  { id: 'ALL', label: 'Tout' },
+];
+
 const TaskTableFilters = ({
   admins,
   assignee,
   status,
   setStatus,
   setAssignee,
+  uptoDate,
+  setUptoDate,
 }: TaskTableFiltersProps) => {
   const assigneeOptions = [
     ...admins.map(({ _id, firstName }) => ({ id: _id, label: firstName })),
@@ -58,6 +66,13 @@ const TaskTableFilters = ({
             <T key={value} id={`Forms.status.${v}`} />,
           ])
         }
+      />
+
+      <Select
+        value={uptoDate}
+        label="Date"
+        options={uptoDateOptions}
+        onChange={(_, value) => setUptoDate(value)}
       />
     </div>
   );

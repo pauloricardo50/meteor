@@ -10,9 +10,14 @@ import TasksTable from './TasksTable';
 export const withTasksQuery = compose(
   withState('assignee', 'setAssignee', { $in: [Meteor.userId(), undefined] }),
   withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
+  withState('uptoDate', 'setUptoDate', 'TOMORROW'),
   withSmartQuery({
     query,
-    params: ({ assignee, status }) => ({ assignee, status }),
+    params: ({ assignee, status, uptoDate }) => ({
+      assignee,
+      status,
+      uptoDate,
+    }),
     queryOptions: { reactive: false },
     dataName: 'tasks',
   }),
