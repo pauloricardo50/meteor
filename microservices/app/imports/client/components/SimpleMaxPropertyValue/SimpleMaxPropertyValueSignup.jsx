@@ -9,7 +9,7 @@ import UserCreatorForm from '../UserCreator/UserCreatorForm';
 type SimpleMaxPropertyValueSignupProps = {};
 
 const SimpleMaxPropertyValueSignup = (props: SimpleMaxPropertyValueSignupProps) => (
-  <div>
+  <div className="simple-max-property-value">
     <h2>
       <T id="MaxPropertyValue.title" />
     </h2>

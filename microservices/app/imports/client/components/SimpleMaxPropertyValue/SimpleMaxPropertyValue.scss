@@ -1,6 +1,7 @@
 .simple-max-property-value {
   display: flex;
   flex-direction: column;
+  padding: 16px;
 
   h2 {
     margin: 0;
@@ -65,49 +66,83 @@
       label {
         color: white;
 
-        @include screen(wide) {
-          color: #666666;
-        }
+        // @include screen(wide) {
+        //   color: #666666;
+        // }
       }
 
       span[class^='MuiFormLabel-asterisk'] {
         color: white;
 
-        @include screen(wide) {
-          color: red;
-        }
+        // @include screen(wide) {
+        //   color: red;
+        // }
       }
 
       li {
         color: white;
 
-        @include screen(wide) {
-          color: #666666;
-        }
+        // @include screen(wide) {
+        //   color: #666666;
+        // }
       }
 
       div[class^='MuiInputBase-root']::before {
         border-bottom: 1px solid white;
 
-        @include screen(wide) {
-          border-bottom: 1px solid rgba(0, 0, 0, 0.42);
-        }
+        // @include screen(wide) {
+        //   border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+        // }
       }
 
       div:not([value='']) {
         color: white;
 
-        @include screen(wide) {
-          color: #444;
-        }
+        // @include screen(wide) {
+        //   color: #444;
+        // }
       }
 
       button svg {
         color: white;
 
-        @include screen(wide) {
-          color: $primary;
-        }
+        // @include screen(wide) {
+        //   color: $primary;
+        // }
+      }
+
+      button[disabled] svg {
+        color: rgba(0, 0, 0, 0.25) !important;
+      }
+    }
+  }
+}
+
+div[class^='MuiDialogContent-root'] .simple-max-property-value {
+  &-signup {
+    .autoform {
+      label {
+        color: #666666;
+      }
+
+      span[class^='MuiFormLabel-asterisk'] {
+        color: red;
+      }
+
+      li {
+        color: #666666;
+      }
+
+      div[class^='MuiInputBase-root']::before {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+      }
+
+      div:not([value='']) {
+        color: #444;
+      }
+
+      button svg {
+        color: $primary;
       }
 
       button[disabled] svg {
