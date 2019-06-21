@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import { withSmartQuery } from 'core/api';
 import { compose, shouldUpdate, withState } from 'recompose';
 import {
@@ -15,7 +13,6 @@ export default compose(
   // This component is self-contained, shouldn't need to update
   // If tasks are added to new borrowers or properties, a refresh will do
   shouldUpdate(() => false),
-  withState('assignee', 'setAssignee', { $in: [Meteor.userId(), undefined] }),
   withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
   withSmartQuery({
     query: tasks,
