@@ -42,9 +42,6 @@ export default withProps(({ loan }) => ({
     sendEmailToAddress.run({
       address: email,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
-      params: {
-        loan,
-        ctaUrl: `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`,
-      },
+      params: { loan },
     }),
 }))(LoanChecklistEmailSender);

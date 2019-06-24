@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import LoanChecklistEmailList from './LoanChecklistEmailList';
+import EmailLoanChecklist from './EmailLoanChecklist';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
 type LoanChecklistEmailSectionProps = {
@@ -25,14 +25,14 @@ const LoanChecklistEmailSection = (props: LoanChecklistEmailSectionProps) => {
         ]}
       />
       {!!Object.keys(property).length && (
-        <LoanChecklistEmailList
+        <EmailLoanChecklist
           title={property.title}
           labels={property.labels}
           formatMessage={formatMessage}
         />
       )}
       {borrowers.map(borrower => (
-        <LoanChecklistEmailList
+        <EmailLoanChecklist
           key={borrower.title}
           title={borrower.title}
           labels={borrower.labels}

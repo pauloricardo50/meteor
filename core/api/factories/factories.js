@@ -33,6 +33,8 @@ import {
   Users,
 } from '..';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import Notifications from '../notifications/index';
+import Activities from '../activities/index';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -192,3 +194,7 @@ Factory.define('lenderRulesSecondary', LenderRules, {
   order: 0,
   filter: { and: DEFAULT_SECONDARY_RESIDENCE_RULES },
 });
+
+Factory.define('notification', Notifications, {});
+
+Factory.define('activity', Activities, {});

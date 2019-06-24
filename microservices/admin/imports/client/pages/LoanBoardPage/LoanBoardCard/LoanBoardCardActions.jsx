@@ -10,17 +10,21 @@ type LoanBoardCardActionsProps = {};
 const handleKeyDown = (e) => {
   if (e.keyCode === 13 && e.metaKey) {
     document
-      .getElementById('task-form')
+      .getElementById('loan-card-form')
       .querySelector('[type="submit"]')
       .click();
   }
 };
 
 const LoanBoardCardActions = ({
+  activitySchema,
+  insertActivity,
   insertTask,
-  schema,
-  setOpenTask,
+  openActivity,
   openTask,
+  setOpenActivity,
+  setOpenTask,
+  taskSchema,
 }: LoanBoardCardActionsProps) => (
   <>
     <DropdownMenu
@@ -36,21 +40,43 @@ const LoanBoardCardActions = ({
           label: 'Ajouter tâche',
           onClick: () => setOpenTask(true),
         },
+        {
+          id: 'event',
+          label: 'Ajouter événement',
+          onClick: () => setOpenActivity(true),
+        },
       ]}
       noWrapper
     />
     <AutoFormDialog
       noButton
-      schema={schema}
+      schema={taskSchema}
       open={openTask}
       onKeyDown={handleKeyDown}
       onClick={(event) => {
         // Prevent the loan from opening when clicking on the autoform
         event.stopPropagation();
       }}
-      id="task-form"
+      id="loan-card-form"
       onSubmit={insertTask}
-      onClose={() => setOpenTask(false)}
+      setOpen={setOpenTask}
+      title="Ajouter tâche"
+      description="CMD + Enter pour enregistrer"
+    />
+    <AutoFormDialog
+      noButton
+      schema={activitySchema}
+      open={openActivity}
+      onKeyDown={handleKeyDown}
+      onClick={(event) => {
+        // Prevent the loan from opening when clicking on the autoform
+        event.stopPropagation();
+      }}
+      id="loan-card-form"
+      onSubmit={insertActivity}
+      setOpen={setOpenActivity}
+      title="Ajouter événement"
+      description="CMD + Enter pour enregistrer"
     />
   </>
 );

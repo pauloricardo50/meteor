@@ -35,6 +35,13 @@ const taskPlaceholders = [
   'Se plaindre des banquiers',
   'Aller au sport',
 ];
+const toNearest15Minutes = (momentObj) => {
+  const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
+  return momentObj
+    .clone()
+    .minute(roundedMinutes)
+    .second(0);
+};
 
 export const schema = new SimpleSchema({
   title: {
@@ -61,20 +68,14 @@ export const schema = new SimpleSchema({
           label: 'dans 1h',
           func: () => [
             'dueAtTime',
-            moment()
-              .add(1, 'h')
-              .minute(0)
-              .format('HH:mm'),
+            toNearest15Minutes(moment().add(1, 'h')).format('HH:mm'),
           ],
         },
         {
           label: 'dans 3h',
           func: () => [
             'dueAtTime',
-            moment()
-              .add(3, 'h')
-              .minute(0)
-              .format('HH:mm'),
+            toNearest15Minutes(moment().add(3, 'h')).format('HH:mm'),
           ],
         },
         {
@@ -135,7 +136,7 @@ export const schema = new SimpleSchema({
   dueAtTime: {
     type: String,
     optional: true,
-    uniforms: { type: 'time' },
+    uniforms: { type: 'time', placeholder: null },
   },
   status: {
     type: String,
@@ -171,6 +172,15 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
+const getTime = (date) => {
+  if (!date) {
+    return undefined;
+  }
+  const hours = date.getHours() || '00';
+  const minutes = date.getMinutes() || '00';
+  return `${hours}:${minutes}`;
+};
+
 const TaskModifier = ({
   task,
   updateTask,
@@ -178,7 +188,7 @@ const TaskModifier = ({
   setOpen,
   submitting,
 }: TaskModifierProps) => {
-  const model = task;
+  const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog
       schema={schema}
@@ -188,6 +198,7 @@ const TaskModifier = ({
       open={open}
       setOpen={setOpen}
       submitting={submitting}
+      title="Modifier tâche"
     />
   );
 };

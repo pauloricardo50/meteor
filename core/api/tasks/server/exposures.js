@@ -1,7 +1,27 @@
 import { Match } from 'meteor/check';
 
+import moment from 'moment';
+
 import { exposeQuery } from '../../queries/queryHelpers';
 import { tasks } from '../queries';
+
+const getUptoDate = (uptoDate) => {
+  switch (uptoDate) {
+  case 'TODAY':
+    return moment()
+      .endOf('day')
+      .toDate();
+  case 'TOMORROW':
+    return moment()
+      .endOf('day')
+      .add(1, 'days')
+      .endOf('day')
+      .toDate();
+
+  default:
+    return null;
+  }
+};
 
 exposeQuery({
   query: tasks,
@@ -9,52 +29,21 @@ exposeQuery({
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: {
-          assignedTo,
-          unassigned,
-          dashboardTasks,
-          file,
-          status,
-          type,
-          user,
-          docIds,
-          loanId,
-        },
+        params: { assignee, loanId, status, uptoDate },
       }) => {
-        if (assignedTo) {
-          filters.assignedEmployeeId = assignedTo;
-        }
-
-        if (unassigned) {
-          filters.assignedEmployeeId = { $exists: false };
-        }
-
-        if (dashboardTasks) {
-          delete filters.assignedEmployeeId;
-          filters.$or = [
-            { assignedEmployeeId: { $in: [assignedTo] } },
-            { assignedEmployeeId: { $exists: false } },
-          ];
-        }
-
-        if (file) {
-          filters.fileKey = file;
+        if (assignee) {
+          filters['assigneeLink._id'] = assignee;
         }
 
         if (status) {
           filters.status = status;
         }
 
-        if (type) {
-          filters.type = type;
-        }
-
-        if (user) {
-          filters.userId = user;
-        }
-
-        if (docIds) {
-          filters.docId = { $in: docIds };
+        if (getUptoDate(uptoDate)) {
+          filters.$or = [
+            { dueAt: { $lt: getUptoDate(uptoDate) } },
+            { dueAt: { $exists: false } },
+          ];
         }
 
         if (loanId) {
@@ -63,15 +52,10 @@ exposeQuery({
       };
     },
     validateParams: {
-      assignedTo: Match.Maybe(String),
-      dashboardTasks: Match.Maybe(Boolean),
-      docIds: Match.Maybe([String]),
-      file: Match.Maybe(String),
+      assignee: Match.Maybe(Match.OneOf(Object, String)),
       loanId: Match.Maybe(String),
-      status: Match.Maybe(String),
-      type: Match.Maybe(String),
-      unassigned: Match.Maybe(Boolean),
-      user: Match.Maybe(String),
+      status: Match.Maybe(Match.OneOf(Object, String)),
+      uptoDate: Match.Maybe(String),
     },
   },
   options: { allowFilterById: true },

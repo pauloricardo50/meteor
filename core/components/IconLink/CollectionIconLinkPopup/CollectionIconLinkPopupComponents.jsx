@@ -86,91 +86,128 @@ export const components = {
     selectedStructure,
     anonymous,
     children,
+    borrowers = [],
   }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
 
     return (
-      <span>
+      <div>
         {children}
-        <span>
-          Hypothèque:
+        {borrowers.length > 0 && (
+          <div>
+            <b>Emprunteurs</b>
+            <ul style={{ margin: 0 }}>
+              {borrowers.map(({ _id, name }, index) => (
+                <li key={_id}>{name || `Emprunteur ${index + 1}`}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div>
+          <b>Hypothèque:</b>
           {' '}
-          {structure ? (
-            <b>
-              <Money value={structure.wantedLoan} />
-            </b>
-          ) : (
-            '-'
-          )}
-        </span>
-        <br />
-        {anonymous && 'Anonyme'}
-        {user && user.name}
-        <br />
-        Conseiller:
-        {' '}
-        {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
-      </span>
+          {structure ? <Money value={structure.wantedLoan} /> : '-'}
+        </div>
+        {anonymous && <div>Anonyme</div>}
+        {user && (
+          <div>
+            <b>Utilisateur:</b>
+            {' '}
+            {user.name}
+          </div>
+        )}
+        <div>
+          <b>Conseiller:</b>
+          {' '}
+          <span>
+            {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+          </span>
+        </div>
+      </div>
     );
   },
-  [USERS_COLLECTION]: ({ email, phoneNumber, assignedEmployee, children }) => (
-    <span>
+  [USERS_COLLECTION]: ({
+    email,
+    phoneNumber,
+    assignedEmployee,
+    children,
+    referredByUser = {},
+    referredByOrganisation = {},
+  }) => (
+    <div>
       {children}
-      <a
-        className="color"
-        href={`mailto:${email}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {email}
-      </a>
-      <br />
-      <a className="color" href={`tel:${phoneNumber}`}>
-        {phoneNumber}
-      </a>
-      <br />
-      Conseiller:
-      {' '}
-      {assignedEmployee ? assignedEmployee.name : '-'}
-    </span>
+      <div>
+        <a
+          className="color"
+          href={`mailto:${email}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {email}
+        </a>
+      </div>
+      <div>
+        <a className="color" href={`tel:${phoneNumber}`}>
+          {phoneNumber}
+        </a>
+      </div>
+      <div>
+        <b>Conseiller:</b>
+        {' '}
+        <span>{assignedEmployee ? assignedEmployee.name : '-'}</span>
+      </div>
+      {(referredByUser.name || referredByOrganisation.name) && (
+        <div>
+          <b>Référé par:</b>
+          {' '}
+          <span>
+            {[referredByUser.name, referredByOrganisation.name]
+              .filter(x => x)
+              .join(' - ')}
+          </span>
+        </div>
+      )}
+    </div>
   ),
   [BORROWERS_COLLECTION]: ({ user, loans = [], children }) => (
-    <span>
+    <div>
       {children}
-      {user && user.name}
-      <br />
-      Conseiller:
-      {' '}
-      {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
-      <br />
-      Dossiers:
-      {' '}
-      {loans.map(({ name }) => name).join(', ')}
-    </span>
+      {user && <div>{user.name}</div>}
+      <div>
+        <b>Conseiller:</b>
+        {' '}
+        {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+      </div>
+      <div>
+        <b>Dossiers:</b>
+        {loans.map(({ name }) => name).join(', ')}
+      </div>
+    </div>
   ),
   [PROPERTIES_COLLECTION]: ({ totalValue, children }) => (
-    <span>
+    <div>
       {children}
       <Money value={totalValue} />
-    </span>
+    </div>
   ),
   [OFFERS_COLLECTION]: ({ maxAmount, feedback, children }) => (
-    <span>
+    <div>
       {children}
       <Money value={maxAmount} />
-      <br />
-      Feedback:
-      {' '}
-      {feedback && feedback.date ? (
-        <span className="success">
-          Donné
-          {' '}
-          <IntlDate type="relative" value={feedback.date} />
-        </span>
-      ) : (
-        <span>Non</span>
-      )}
-    </span>
+      <div>
+        <b>Feedback:</b>
+        {' '}
+        {feedback && feedback.date ? (
+          <span className="success">
+            Donné
+            {' '}
+            <IntlDate type="relative" value={feedback.date} />
+          </span>
+        ) : (
+          <span>Non</span>
+        )}
+      </div>
+    </div>
   ),
   [PROMOTIONS_COLLECTION]: ({
     availablePromotionLots,
@@ -179,41 +216,45 @@ export const components = {
     lenderOrganisation,
     children,
   }) => (
-    <span>
+    <div>
       {children}
       {lenderOrganisation && (
-        <>
-          <span>
-            Prêteur:
-            {' '}
-            <b>{lenderOrganisation.name}</b>
-          </span>
-          <br />
-        </>
+        <div>
+          <b>Prêteur:</b>
+          {' '}
+          <b>{lenderOrganisation.name}</b>
+        </div>
       )}
-      Lots dispo:
-      {' '}
-      {availablePromotionLots.length}
-      <br />
-      Réservés:
-      {' '}
-      {bookedPromotionLots.length}
-      <br />
-      Vendus:
-      {' '}
-      {soldPromotionLots.length}
-    </span>
+      <div>
+        <b>Lots dispo:</b>
+        {availablePromotionLots.length}
+      </div>
+      <div>
+        <b>Réservés:</b>
+        {bookedPromotionLots.length}
+      </div>
+      <div>
+        <b>Vendus:</b>
+        {soldPromotionLots.length}
+      </div>
+    </div>
   ),
   [ORGANISATIONS_COLLECTION]: ({ logo, offerCount, children }) => (
-    <span>
+    <div>
       {children}
       {logo && (
         <div style={{ width: 100, height: 50 }}>
           <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
         </div>
       )}
-      {offerCount > 0 && `Offres: ${offerCount}`}
-    </span>
+      {offerCount > 0 && (
+        <div>
+          <b>Offres:</b>
+          {' '}
+          {offerCount}
+        </div>
+      )}
+    </div>
   ),
   [CONTACTS_COLLECTION]: ({
     organisations = [],
@@ -221,22 +262,24 @@ export const components = {
     phoneNumber,
     children,
   }) => (
-    <span>
+    <div>
       {children}
-      {organisations.length > 0 && organisations[0].$metadata.title}
-      <br />
-      <a
-        className="color"
-        href={`mailto:${email}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {email}
-      </a>
-      <br />
-      <a className="color" href={`tel:${phoneNumber}`}>
-        {phoneNumber}
-      </a>
-    </span>
+      <div>{organisations.length > 0 && organisations[0].$metadata.title}</div>
+      <div>
+        <a
+          className="color"
+          href={`mailto:${email}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {email}
+        </a>
+      </div>
+      <div>
+        <a className="color" href={`tel:${phoneNumber}`}>
+          {phoneNumber}
+        </a>
+      </div>
+    </div>
   ),
 };

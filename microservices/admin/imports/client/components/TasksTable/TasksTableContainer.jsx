@@ -10,9 +10,20 @@ import {
   TASKS_COLLECTION,
   LOANS_COLLECTION,
 } from 'core/api/constants';
+import { ORDER } from 'core/utils/sortArrayOfObjects';
+import TasksTableActions from './TasksTableActions';
 
-const formatDateTime = (date, toNow) =>
-  (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
+const now = moment();
+const formatDateTime = (date, toNow) => {
+  const momentDate = moment(date);
+  const text = date ? momentDate[toNow ? 'toNow' : 'fromNow']() : '-';
+
+  if (momentDate.isBefore(now)) {
+    return <span className="error-box">{text}</span>;
+  }
+
+  return text;
+};
 
 const getColumnOptions = (relatedTo = true) =>
   [
@@ -22,6 +33,7 @@ const getColumnOptions = (relatedTo = true) =>
     { id: 'status', label: <T id="TasksTable.status" /> },
     { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
     { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
+    { id: 'actions', label: 'Actions' },
   ].filter(x => x);
 
 const makeMapTask = ({
@@ -72,6 +84,7 @@ const makeMapTask = ({
           ) : null,
         raw: assignee && assignee.name,
       },
+      { raw: '', label: <TasksTableActions taskId={taskId} /> },
     ].filter(x => x),
     handleClick: () => {
       setTaskToModify(task);
@@ -83,8 +96,13 @@ const makeMapTask = ({
 export default compose(
   withState('taskToModify', 'setTaskToModify', null),
   withState('showDialog', 'setShowDialog', false),
-  withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => ({
-    rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog, relatedTo })),
-    columnOptions: getColumnOptions(relatedTo),
-  })),
+  withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => {
+    const columnOptions = getColumnOptions(relatedTo);
+    return {
+      rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog, relatedTo })),
+      columnOptions,
+      initialOrderBy: columnOptions.findIndex(({ id }) => id === 'dueAt'),
+      initialOrder: ORDER.ASC,
+    };
+  }),
 );

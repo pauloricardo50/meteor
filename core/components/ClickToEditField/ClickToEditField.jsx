@@ -50,23 +50,27 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       children,
     } = this.props;
 
-    return isEditing ? (
-      <form
-        className={cx('click-to-edit-field editing', className)}
-        onSubmit={this.handleSubmit}
-      >
-        <Input
-          defaultValue={value}
-          inputRef={this.input}
-          onBlur={this.handleSubmit}
-          disabled={disabled}
-          onKeyDown={this.handleKeyDown}
-          {...inputProps}
-        />
-        {typeof children === 'function'
-          && children({ value: value || placeholder, isEditing })}
-      </form>
-    ) : (
+    if (isEditing) {
+      return (
+        <form
+          className={cx('click-to-edit-field editing', className)}
+          onSubmit={this.handleSubmit}
+        >
+          <Input
+            defaultValue={value}
+            inputRef={this.input}
+            onBlur={this.handleSubmit}
+            disabled={disabled}
+            onKeyDown={this.handleKeyDown}
+            {...inputProps}
+          />
+          {typeof children === 'function'
+            && children({ value: value || placeholder, isEditing })}
+        </form>
+      );
+    }
+
+    return (
       <div
         className={cx('click-to-edit-field', className, {
           'is-placeholder': placeholder && !value,

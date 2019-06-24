@@ -56,12 +56,12 @@ const LoanBoardCardTasks = ({
               id={tasks[0]._id}
               className="tasks"
               events={sortedTasks.map(({ title, dueAt, _id }) => ({
-                leftLabel: !dueAt ? (
+                secondaryLabel: !dueAt ? (
                   <span className="error-box">Maintenant</span>
                 ) : (
                   <span className="secondary">{moment(dueAt).fromNow()}</span>
                 ),
-                rightLabel: <LoanBoardCardTask title={title} _id={_id} />,
+                mainLabel: <LoanBoardCardTask title={title} _id={_id} />,
               }))}
             />
           )}

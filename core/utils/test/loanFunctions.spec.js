@@ -82,8 +82,6 @@ describe('Loan functions', () => {
     });
 
     it('gets the next task date', () => {
-      const signingDate = new Date();
-      signingDate.setDate(signingDate.getDate() + 2);
       const taskDate1 = new Date();
       taskDate1.setDate(taskDate1.getDate() - 1);
       const taskDate2 = new Date();
@@ -92,7 +90,7 @@ describe('Loan functions', () => {
         { dueAt: taskDate1, title: 'task A', status: TASK_STATUS.ACTIVE },
         { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.ACTIVE },
       ];
-      const loan = { signingDate, tasksCache };
+      const loan = { tasksCache };
       expect(nextDueTaskReducer(loan)).to.deep.include({
         dueAt: taskDate2,
         title: 'task B',

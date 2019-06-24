@@ -2,13 +2,13 @@
 import React from 'react';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
-type LoanChecklistEmailListProps = {};
+type EmailLoanChecklistProps = {};
 
-const LoanChecklistEmailList = ({
+const EmailLoanChecklist = ({
   labels,
   title,
   formatMessage,
-}: LoanChecklistEmailListProps) => (
+}: EmailLoanChecklistProps) => (
   <>
     <LoanChecklistEmailTable
       columns={[
@@ -50,4 +50,4 @@ const LoanChecklistEmailList = ({
   </>
 );
 
-export default LoanChecklistEmailList;
+export default EmailLoanChecklist;

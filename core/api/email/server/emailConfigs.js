@@ -1,5 +1,6 @@
 import ReactDOMServer from 'react-dom/server';
 import moment from 'moment';
+import { Meteor } from 'meteor/meteor';
 
 import Intl from 'core/utils/server/intl';
 import {
@@ -285,8 +286,9 @@ addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
 
 addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V2,
-  createOverrides({ ctaUrl, loan, ...rest }, { title, cta, ...rest2 }) {
+  createOverrides({ loan, ...rest }, { title, cta, ...rest2 }) {
     const { variables } = this.template;
+    const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
 
     return {
       variables: [
