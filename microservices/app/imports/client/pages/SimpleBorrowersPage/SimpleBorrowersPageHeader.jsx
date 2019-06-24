@@ -10,9 +10,13 @@ type SimpleBorrowersPageHeaderProps = {};
 
 const SimpleBorrowersPageHeader = ({
   loan,
+  simpleForm,
 }: SimpleBorrowersPageHeaderProps) => {
   const { borrowers, _id: loanId } = loan;
-  const progress = Calculator.personalInfoPercentSimple({ loan });
+  const progress = Calculator.personalInfoPercentSimple({
+    loan,
+    simple: simpleForm,
+  });
 
   return (
     <div className="simple-borrowers-page-header">

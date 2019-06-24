@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { withState, compose } from 'recompose';
 
 import useMedia from 'core/hooks/useMedia';
 import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
@@ -9,13 +10,18 @@ import SimpleBorrowersPageMaxPropertyValue from './SimpleBorrowersPageMaxPropert
 import SimpleBorrowersPageHeader from './SimpleBorrowersPageHeader';
 import MaxPropertyValueCTA from './MaxPropertyValueCTA';
 import BorrowersAdder from '../../components/BorrowersAdder/BorrowersAdder';
+import SimpleFormSwitch from './SimpleFormSwitch';
 
 type SimpleBorrowersPageProps = {};
 
 const maxPropertyValueHeight = 600;
 const topSpaceHeight = 132;
 
-const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => {
+const SimpleBorrowersPage = ({
+  loan,
+  simpleForm,
+  setSimpleForm,
+}: SimpleBorrowersPageProps) => {
   const isMobile = useMedia({ maxWidth: 1200 });
   const hasEnoughHeight = useMedia({
     minHeight: maxPropertyValueHeight + topSpaceHeight,
@@ -34,9 +40,12 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => {
         })}
       >
         <div className="card1 card-top simple-borrowers-page-forms">
-          <SimpleBorrowersPageHeader loan={loan} />
-
-          <SimpleBorrowerPageForms loan={loan} />
+          <SimpleBorrowersPageHeader loan={loan} simpleForm={simpleForm} />
+          <SimpleFormSwitch
+            simpleForm={simpleForm}
+            setSimpleForm={setSimpleForm}
+          />
+          <SimpleBorrowerPageForms loan={loan} simpleForm={simpleForm} />
         </div>
         <MaxPropertyValueCTA
           loan={loan}
@@ -53,4 +62,7 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => {
     </div>
   );
 };
-export default withSimpleAppPage(SimpleBorrowersPage);
+export default compose(
+  withSimpleAppPage,
+  withState('simpleForm', 'setSimpleForm', true),
+)(SimpleBorrowersPage);

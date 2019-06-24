@@ -20,6 +20,31 @@ $footer-height: 64px;
     padding-bottom: calc(#{$footer-height});
   }
 
+  .simple-form-switch {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    button:first-of-type {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    button:last-of-type {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .switch {
+      border: 1px solid $primary;
+      color: $primary;
+    }
+
+    .active {
+      color: white;
+      background-color: $primary;
+    }
+  }
+
   &-header {
     display: flex;
     justify-content: space-between;
@@ -66,6 +91,7 @@ $footer-height: 64px;
     .forms {
       &.two-borrowers {
         max-width: unset;
+        margin-top: 16px;
       }
     }
 
@@ -101,6 +127,7 @@ $footer-height: 64px;
   &-max-property-value {
     color: white;
     background-color: $primary;
+    margin-left: 30px;
 
     @include screen(large, min) {
       min-width: 400px;

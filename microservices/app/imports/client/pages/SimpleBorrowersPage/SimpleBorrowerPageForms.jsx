@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { Meteor } from 'meteor/meteor';
 
 import Calculator from 'core/utils/Calculator';
 import Tabs from 'core/components/Tabs';
@@ -10,7 +11,52 @@ import BorrowerForm from './BorrowerForm';
 
 type SimpleBorrowerPageFormsProps = {};
 
-const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
+const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
+
+const overrides = {
+  updateFunc: idKey => (rawParams) => {
+    const { object = {}, id } = rawParams;
+
+    if (Object.keys(object).includes('insurance2Simple')) {
+      return new Promise((resolve, reject) => {
+        const insurance2 = object.insurance2Simple
+          ? [{ value: object.insurance2Simple }]
+          : [];
+        Meteor.call(
+          'borrowerUpdate',
+          {
+            borrowerId: id,
+            object: { insurance2 },
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            }
+
+            resolve(result);
+          },
+        );
+      });
+    }
+
+    return new Promise((resolve, reject) => {
+      const params = createParams(rawParams, idKey);
+
+      Meteor.call('borrowerUpdate', params, (error, result) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(result);
+      });
+    });
+  },
+};
+
+const SimpleBorrowerPageForms = ({
+  loan,
+  simpleForm,
+}: SimpleBorrowerPageFormsProps) => {
   const { borrowers, userFormsEnabled } = loan;
   const twoBorrowers = borrowers.length === 2;
 
@@ -21,6 +67,8 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
           borrowerId={borrowers[0]._id}
           userFormsEnabled={userFormsEnabled}
           loan={loan}
+          overrides={simpleForm && overrides}
+          simple={simpleForm}
         />
       )}
       {twoBorrowers && (
@@ -29,6 +77,7 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
             const progress = Calculator.personalInfoPercentSimple({
               borrowers: borrower,
               loan,
+              simple: simpleForm,
             });
 
             return {
@@ -39,6 +88,8 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
                   userFormsEnabled={userFormsEnabled}
                   loan={loan}
                   key={borrowers[index]._id}
+                  overrides={simpleForm && overrides}
+                  simple={simpleForm}
                 />
               ),
               label: (

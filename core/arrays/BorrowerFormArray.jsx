@@ -274,10 +274,56 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
 };
 
+export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
+  const b = borrowers.find(({ _id }) => _id === borrowerId);
+
+  if (!b) {
+    throw new Error("couldn't find borrower");
+  }
+
+  const incomeArray = [
+    {
+      type: 'h3',
+      id: 'financeInformations',
+      ignore: true,
+      required: false,
+      className: 'v-align-financeInformations',
+    },
+    { id: 'salary', type: 'textInput', money: true },
+    { id: 'netSalary', type: 'textInput', money: true },
+    {
+      type: 'conditionalInput',
+      conditionalTrueValue: true,
+      inputs: [
+        {
+          id: 'bonusExists',
+          type: 'radioInput',
+          options: [true, false],
+        },
+        ...[2019, 2018, 2017, 2016, 2015].map(year => ({
+          id: `bonus${year}`,
+          type: 'textInput',
+          money: true,
+          condition: year === 2015 ? !!b.bonus2015 : true,
+        })),
+      ],
+    },
+  ];
+
+  const fortuneArray = [{ id: 'bankFortune', type: 'textInput', money: true }];
+
+  const insuranceArray = [
+    { id: 'insurance2Simple', type: 'textInput', money: true, required: false },
+  ];
+
+  return incomeArray.concat([...fortuneArray, ...insuranceArray]);
+};
+
 export const getBorrowerSimpleArray = ({
   borrowers,
   borrowerId,
   loan = {},
+  simple = false,
 }) => {
   const b = borrowers.find(borrower => borrower._id === borrowerId);
 
@@ -289,6 +335,8 @@ export const getBorrowerSimpleArray = ({
     { id: 'firstName', type: 'textInput', condition: !loan.anonymous },
     { id: 'lastName', type: 'textInput', condition: !loan.anonymous },
     { id: 'birthDate', type: 'dateInput', condition: !loan.anonymous },
-    ...getBorrowerFinanceArray({ borrowers, borrowerId }),
+    ...(simple
+      ? getSimpleBorrowerFinanceArray({ borrowers, borrowerId })
+      : getBorrowerFinanceArray({ borrowers, borrowerId })),
   ];
 };

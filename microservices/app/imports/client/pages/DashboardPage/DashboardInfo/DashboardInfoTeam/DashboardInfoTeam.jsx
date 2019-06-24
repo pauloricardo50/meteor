@@ -16,6 +16,7 @@ const DashboardInfoTeam = ({
   loan,
   contacts,
 }) => {
+  console.log('loan', loan);
   const {
     user: { assignedEmployee },
     hasPromotion,

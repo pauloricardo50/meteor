@@ -16,6 +16,8 @@ const BorrowerForm = ({
   borrowerId,
   userFormsEnabled,
   loan,
+  overrides = {},
+  simple = false,
 }: BorrowerFormProps) => {
   const borrower = loan.borrowers.find(({ _id }) => _id === borrowerId);
 
@@ -29,12 +31,24 @@ const BorrowerForm = ({
           borrowers: loan.borrowers,
           borrowerId,
           loan,
+          simple,
         })}
         formClasses="user-form user-form__info"
         docId={borrowerId}
         collection="borrowers"
-        doc={borrower}
+        doc={
+          simple
+            ? {
+              ...borrower,
+              insurance2Simple:
+                  borrower.insurance2
+                  && borrower.insurance2.length
+                  && borrower.insurance2[0].value,
+            }
+            : borrower
+        }
         disabled={!userFormsEnabled}
+        overrides={overrides}
       />
     </div>
   );

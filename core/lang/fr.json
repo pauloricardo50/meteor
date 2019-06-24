@@ -1,4 +1,7 @@
 {
+  "Forms.financeInformations": "Informations financières",
+  "Forms.insurance2Simple.placeholder": "CHF 100 000",
+  "Forms.insurance2Simple": "LPP, 2ème Pilier",
   "MaxPropertyValue.signup.title": "Parfait !",
   "MaxPropertyValue.signup.description": "Renseignez vos informations pour accéder aux résultats de votre capacité d'achat",
   "BorrowersPage.BorrowerAdder.title": "Combien êtes-vous à emprunter ?",
