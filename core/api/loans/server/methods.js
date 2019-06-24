@@ -32,6 +32,7 @@ import {
   anonymousLoanInsert,
   userLoanInsert,
   loanInsertBorrowers,
+  adminLoanReset,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -224,4 +225,9 @@ loanInsertBorrowers.setHandler((context, params) => {
   const { loanId } = params;
   SecurityService.loans.isAllowedToUpdate(loanId);
   LoanService.insertBorrowers(params);
+});
+
+adminLoanReset.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.resetLoan(params);
 });

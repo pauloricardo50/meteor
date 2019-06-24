@@ -11,12 +11,13 @@ type TimelineProps = {
 };
 
 const makeFormatEvent = variant => (
-  { complete = false, mainLabel = '', secondaryLabel },
+  { complete = false, mainLabel = '', secondaryLabel, children },
   index,
 ) => {
   if (variant === 'vertical') {
     return (
-      <li className={cx({ complete })} key={index}>
+      <li className={cx('timeline-item', { complete })} key={index}>
+        {children}
         {secondaryLabel && (
           <div className="secondary-label">{secondaryLabel}</div>
         )}
@@ -26,7 +27,8 @@ const makeFormatEvent = variant => (
   }
 
   return (
-    <li className={cx({ complete })} key={index}>
+    <li className={cx('timeline-item', { complete })} key={index}>
+      {children}
       <div className="main-label">{mainLabel}</div>
       {secondaryLabel && (
         <div className="secondary-label">{secondaryLabel}</div>
@@ -67,6 +69,7 @@ class Timeline extends Component<TimelineProps> {
 
   render() {
     const { variant, events = [], className, id } = this.props;
+    console.log('events:', events);
 
     return (
       <ul

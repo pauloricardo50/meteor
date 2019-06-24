@@ -183,3 +183,10 @@ export const loanInsertBorrowers = new Method({
     amount: Number,
   },
 });
+
+export const adminLoanReset = new Method({
+  name: 'adminLoanReset',
+  params: {
+    loanId: String,
+  },
+});

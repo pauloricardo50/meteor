@@ -13,13 +13,24 @@ import {
   activityRemove,
 } from 'core/api/activities/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 
 type LoanActivityAdderProps = {};
 
 export const ActivitySchema = new SimpleSchema({
-  title: { type: String, optional: true },
+  title: String,
   description: { type: String, optional: true },
-  date: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
+  date: {
+    type: Date,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    defaultValue: new Date(),
+  },
+  type: {
+    type: String,
+    allowedValues: Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.SERVER),
+    uniforms: { checkboxes: true },
+  },
+  shouldNotify: { type: Boolean, defaultValue: false },
 });
 
 export const LoanActivityForm = ({

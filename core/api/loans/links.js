@@ -14,6 +14,7 @@ import {
 } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
+import Activities from '../activities/activities';
 
 export const userCache = {
   _id: 1,
@@ -38,6 +39,11 @@ export const tasksCache = {
 
 LinkInitializer.directInit(() => {
   Loans.addLinks({
+    activities: {
+      inversedBy: 'loan',
+      collection: Activities,
+      autoremove: true,
+    },
     borrowers: {
       field: 'borrowerIds',
       collection: Borrowers,

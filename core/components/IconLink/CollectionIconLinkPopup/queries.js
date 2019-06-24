@@ -27,6 +27,7 @@ export default {
         _id,
         $body: {
           anonymous: true,
+          borrowers: { name: 1 },
           name: 1,
           selectedStructure: 1,
           status: 1,

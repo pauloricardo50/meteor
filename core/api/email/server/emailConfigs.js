@@ -1,5 +1,8 @@
 import ReactDOMServer from 'react-dom/server';
+import moment from 'moment';
+import { Meteor } from 'meteor/meteor';
 
+import Intl from 'core/utils/server/intl';
 import {
   EMAIL_TEMPLATES,
   EMAIL_IDS,
@@ -13,6 +16,8 @@ import {
   notificationAndCtaTemplateDefaultOverride,
 } from './emailHelpers';
 import PromotionLogos from './components/PromotionLogos';
+import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmail';
+import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
 
 const emailConfigs = {};
 
@@ -277,6 +282,37 @@ addEmailConfig(EMAIL_IDS.FIND_LENDER_NOTIFICATION, {
 
 addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V2,
+  createOverrides({ loan, ...rest }, { title, cta, ...rest2 }) {
+    const { variables } = this.template;
+    const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: '' },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: ctaUrl },
+        { name: variables.CSS, content: styles },
+      ],
+      templateContent: [
+        {
+          name: 'body-content-1',
+          content: ReactDOMServer.renderToStaticMarkup(LoanChecklistEmail({
+            loan,
+            intl: { formatMessage: Intl.formatMessage.bind(Intl) },
+          })),
+        },
+      ],
+    };
+  },
+  createIntlValues: params => ({
+    ...params,
+    today: moment().format('DD MMM YYYY'),
+  }),
 });
 
 export default emailConfigs;

@@ -27,14 +27,6 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
           fields={['residenceType']}
           collection={LOANS_COLLECTION}
         />
-        {['signingDate', 'closingDate'].map(dateType => (
-          <DateModifier
-            collection={LOANS_COLLECTION}
-            doc={loan}
-            field={dateType}
-            key={`${loan._id}${dateType}`}
-          />
-        ))}
       </div>
 
       <div className="admin-note">

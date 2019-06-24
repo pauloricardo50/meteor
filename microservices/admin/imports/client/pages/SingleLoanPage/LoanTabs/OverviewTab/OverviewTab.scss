@@ -168,6 +168,7 @@
   .flex {
     display: flex;
     align-items: center;
+    margin-bottom: 16px;
   }
 
   &-title {
@@ -177,6 +178,16 @@
       margin: 0;
       text-overflow: ellipsis;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+
+      &.title {
+        margin-left: -4px;
+      }
+
+      .icon {
+        margin-right: 4px;
+      }
     }
 
     .activity-modifier {
@@ -189,6 +200,7 @@
   }
 
   li {
+    position: relative;
     flex-basis: 250px;
     flex-grow: 0;
     flex-shrink: 0;
@@ -196,6 +208,26 @@
     &:hover {
       .activity-modifier {
         display: block;
+      }
+    }
+
+    .today {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background-color: red;
+      top: 0;
+      left: -8px;
+
+      .today-dot {
+        // content: '';
+        top: 0px;
+        left: -3px;
+        border-radius: 50%;
+        width: 8px;
+        height: 8px;
+        background-color: red;
+        position: absolute;
       }
     }
   }

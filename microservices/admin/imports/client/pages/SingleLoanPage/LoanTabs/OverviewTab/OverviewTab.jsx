@@ -53,14 +53,6 @@ const OverviewTab = (props) => {
           collection={LOANS_COLLECTION}
         />
         <LoanStepSetter loan={loan} />
-        {['signingDate', 'closingDate'].map(dateType => (
-          <DateModifier
-            collection={LOANS_COLLECTION}
-            doc={loan}
-            field={dateType}
-            key={`${loan._id}${dateType}`}
-          />
-        ))}
         <VerificationSetter loan={loan} />
       </div>
       <div className="admin-note">

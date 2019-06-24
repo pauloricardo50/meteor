@@ -11,7 +11,11 @@ export const activity = () => ({
   createdBy: 1,
   date: 1,
   description: 1,
+  loan: { name: 1 },
+  secondaryType: 1,
+  shouldNotify: 1,
   title: 1,
+  type: 1,
   updatedAt: 1,
 });
 
@@ -336,13 +340,11 @@ export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   adminNote: 1,
   category: 1,
-  closingDate: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
   revenues: fullRevenues(),
-  signingDate: 1,
   status: 1,
   tasksCache: {
     createdAt: 1,
@@ -357,9 +359,7 @@ export const adminLoans = () => ({
   ...loanBase(),
   borrowers: { name: 1 },
   category: 1,
-  closingDate: 1,
   properties: { totalValue: 1, address1: 1 },
-  signingDate: 1,
   status: 1,
   user: { assignedEmployee: { email: 1 }, name: 1 },
 });
@@ -409,6 +409,19 @@ export const mortgageNote = () => ({
   rank: 1,
   type: 1,
   value: 1,
+});
+
+// //
+// // Notification fragments
+// //
+export const notification = () => ({
+  activity: activity(),
+  createdAt: 1,
+  readAt: 1,
+  recipients: { firstName: 1, lastName: 1, name: 1 },
+  relatedDoc: 1,
+  task: task(),
+  updatedAt: 1,
 });
 
 // //
@@ -629,7 +642,6 @@ export const basePromotion = () => ({
     name: 1,
   },
   properties: promotionProperty(),
-  signingDate: 1,
   soldPromotionLots: 1,
   status: 1,
   type: 1,

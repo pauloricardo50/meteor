@@ -4,6 +4,7 @@ import React from 'react';
 import Calculator from 'core/utils/Calculator';
 import T, { Percent } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
+import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
 import { PURCHASE_TYPE } from 'core/api/constants';
 
 type LoanStatusCheckProps = {};
@@ -18,7 +19,8 @@ const statusChecks = [
             {borrower.firstName || (
               <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
             )}
-            :{' '}
+            :
+            {' '}
             <Percent
               value={Calculator.personalInfoPercent({ borrowers: borrower })}
               rounded
@@ -68,6 +70,7 @@ const LoanStatusCheck = ({ loan }: LoanStatusCheckProps) => (
     </div>
     <div className="card-bottom">
       <LoanChecklistDialog loan={loan} />
+      <LoanChecklistEmailSender loan={loan} />
     </div>
   </div>
 );
