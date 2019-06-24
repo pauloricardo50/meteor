@@ -1,4 +1,7 @@
 {
+  "emails.LOAN_CHECKLIST.CTA": "Compléter mon dossier",
+  "emails.LOAN_CHECKLIST.SUBJECT": "Invitation à compléter votre checklist",
+  "emails.LOAN_CHECKLIST.TITLE": "Rapport du {today} sur la progression de votre dossier",
   "Forms.type.COMMUNICATION": "Email, téléphone",
   "Forms.type.EMAIL": "Email",
   "Forms.type.PHONE": "Téléphone",
