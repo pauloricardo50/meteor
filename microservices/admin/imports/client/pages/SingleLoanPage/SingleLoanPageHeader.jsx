@@ -4,7 +4,6 @@ import uniqBy from 'lodash/uniqBy';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
-import ClickToEditField from 'core/components/ClickToEditField';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
 import {
@@ -16,9 +15,9 @@ import {
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import { loanUpdate } from 'core/api/methods/index';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
+import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -104,7 +103,7 @@ const SingleLoanPageHeader = ({
   withPdf = true,
   withCustomName = true,
 }: SingleLoanPageHeaderProps) => {
-  const { user } = loan;
+  const { user, status } = loan;
   const userName = getUserName(loan);
   return (
     <div className="single-loan-page-header">
@@ -153,6 +152,7 @@ const SingleLoanPageHeader = ({
           <GetLoanPDF loan={loan} />
         </div>
       )}
+      {status === LOAN_STATUS.TEST && <div className="right"><ResetLoanButton loan={loan} /></div>}
     </div>
   );
 };
