@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 
 import T from 'core/components/Translation';
 import createTheme from 'core/config/muiCustom';
@@ -11,13 +13,13 @@ type SimpleMaxPropertyValueSignupProps = {};
 const SimpleMaxPropertyValueSignup = (props: SimpleMaxPropertyValueSignupProps) => (
   <div className="simple-max-property-value">
     <h2>
-      <T id="MaxPropertyValue.title" />
+      <T id="MaxPropertyValue.signup.title" />
     </h2>
     <MuiThemeProvider theme={createTheme()}>
       <div className="simple-max-property-value-signup">
-        <h4 className="text-center secondary">
-          Votre capacité d'achat a été calculée avec succès. Pour poursuivre,
-          créez-vous un compte.
+        <FontAwesomeIcon icon={faCheckCircle} className="icon success" />
+        <h4 className="text-center">
+          <T id="MaxPropertyValue.signup.description" />
         </h4>
         <UserCreatorForm
           buttonProps={{
