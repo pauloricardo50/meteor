@@ -774,10 +774,10 @@ export class LoanService extends CollectionService {
     });
 
     // Remove structures and an empty one
-    structures.forEach(({ _id: structureId }) => {
-      this.removeStructure({ loanId, structureId });
-    });
-    this.addNewStructure({ loanId });
+    // structures.forEach(({ _id: structureId }) => {
+    //   this.removeStructure({ loanId, structureId });
+    // });
+    // this.addNewStructure({ loanId });
 
     // Remove MaxPropertyValue
     this.update({
