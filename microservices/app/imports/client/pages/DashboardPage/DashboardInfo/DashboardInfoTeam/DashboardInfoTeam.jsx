@@ -16,11 +16,7 @@ const DashboardInfoTeam = ({
   loan,
   contacts,
 }) => {
-  console.log('loan', loan);
-  const {
-    user: { assignedEmployee },
-    hasPromotion,
-  } = loan;
+  const { user: { assignedEmployee } = {}, hasPromotion } = loan;
   return (
     <div className="dashboard-info-team card1">
       <div className="card-top">
