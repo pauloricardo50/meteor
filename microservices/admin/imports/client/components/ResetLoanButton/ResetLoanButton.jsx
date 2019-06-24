@@ -3,7 +3,7 @@ import React from 'react';
 import { withProps, withState, compose } from 'recompose';
 
 import Button from 'core/components/Button';
-import { adminLoanReset } from 'imports/core/api/methods/index';
+import { adminLoanReset } from 'core/api/methods/index';
 import { LOAN_STATUS } from 'core/api/constants';
 
 type ResetLoanButtonProps = {};
@@ -35,9 +35,7 @@ export default compose(
       const confirm = window.confirm(`Réinitialiser le dossier ? Les informations suivantes seront modifées:\n
       - Etape du dossier -> "Attestation de financement"
       - Interface -> "Simplifiée"
-      - Suppression des plans financiers
       - Suppression de la capacité d'achat
-      - Suppression des informations financières des emprunteurs
       `);
       if (confirm) {
         setLoading(true);

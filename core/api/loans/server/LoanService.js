@@ -760,8 +760,8 @@ export class LoanService extends CollectionService {
     const loan = this.findOne({ _id: loanId });
     const { structures = [], borrowerIds = [], status } = loan;
 
-    if(status !== LOAN_STATUS.TEST){
-      throw new Meteor.Error('Seuls les dossiers avec le statut TEST peuvent être réinitialisés !')
+    if (status !== LOAN_STATUS.TEST) {
+      throw new Meteor.Error('Seuls les dossiers avec le statut TEST peuvent être réinitialisés !');
     }
 
     // Set step to solvency
@@ -787,30 +787,30 @@ export class LoanService extends CollectionService {
     });
 
     // Reset borrowers financing info
-    borrowerIds.forEach((borrowerId) => {
-      BorrowerService.update({
-        borrowerId,
-        object: {
-          netSalary: null,
-          salary: null,
-          bankFortune: null,
-          insurance2: [],
-          insurance3A: [],
-          bank3A: [],
-          insurance3B: [],
-          otherIncome: [],
-          otherFortune: [],
-          expenses: [],
-          realEstate: [],
-          bonusExists: false,
-          bonus2015: null,
-          bonus2016: null,
-          bonus2017: null,
-          bonus2018: null,
-          bonus2019: null,
-        },
-      });
-    });
+    // borrowerIds.forEach((borrowerId) => {
+    //   BorrowerService.update({
+    //     borrowerId,
+    //     object: {
+    //       netSalary: null,
+    //       salary: null,
+    //       bankFortune: null,
+    //       insurance2: [],
+    //       insurance3A: [],
+    //       bank3A: [],
+    //       insurance3B: [],
+    //       otherIncome: [],
+    //       otherFortune: [],
+    //       expenses: [],
+    //       realEstate: [],
+    //       bonusExists: false,
+    //       bonus2015: null,
+    //       bonus2016: null,
+    //       bonus2017: null,
+    //       bonus2018: null,
+    //       bonus2019: null,
+    //     },
+    //   });
+    // });
   }
 }
 
