@@ -14,6 +14,7 @@ import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { removePropertyFromLoan } from './propertyServerHelpers';
 import { getUserNameAndOrganisation } from '../../helpers';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -120,7 +121,10 @@ export class PropertyService extends CollectionService {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
 
     if (this.hasOneOfProperties({ userId, propertyIds })) {
-      throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        'Cet utilisateur est déjà invité à ce bien immobilier',
+      );
     }
 
     LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });
