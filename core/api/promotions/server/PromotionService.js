@@ -15,6 +15,7 @@ import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Promotions from '../promotions';
+import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 
 export class PromotionService extends CollectionService {
   constructor() {
@@ -110,7 +111,7 @@ export class PromotionService extends CollectionService {
     }
 
     if (UserService.hasPromotion({ userId, promotionId })) {
-      throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
+      throw new Meteor.Error(HTTP_STATUS_CODES.CONFLICT, 'Cet utilisateur est déjà invité à cette promotion');
     }
 
     const loanId = LoanService.insertPromotionLoan({
