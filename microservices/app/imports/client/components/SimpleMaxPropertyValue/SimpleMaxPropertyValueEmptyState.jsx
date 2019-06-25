@@ -65,6 +65,9 @@ const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStat
             <h4 className="secondary">
               <T id="MaxPropertyValue.missingInfos" />
             </h4>
+            <p className="secondary">
+              <i><T id="MaxPropertyValue.informations" /></i>
+            </p>
           </>
         ) : (
           <>

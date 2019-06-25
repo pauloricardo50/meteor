@@ -314,6 +314,9 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
 
   const insuranceArray = [
     { id: 'insurance2Simple', type: 'textInput', money: true, required: false },
+    { id: 'bank3ASimple', type: 'textInput', money: true, required: false },
+    { id: 'insurance3ASimple', type: 'textInput', money: true, required: false },
+    { id: 'insurance3BSimple', type: 'textInput', money: true, required: false },
   ];
 
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
