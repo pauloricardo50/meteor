@@ -482,6 +482,8 @@ export const proPromotionLot = () => ({
       description: 1,
       promotionLots: { _id: 1 },
     },
+    constructionTimeline: 1,
+    signingDate: 1,
   },
   promotionOptions: { _id: 1 },
   properties: promotionProperty(),

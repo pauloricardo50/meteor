@@ -14,6 +14,7 @@ import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
 import DocumentDownloadList from '../DocumentDownloadList';
 import PromotionLotRecapTable from './PromotionLotRecapTable';
+import PromotionTimeline from '../PromotionTimeline/PromotionTimeline';
 
 type PromotionLotPageProps = {};
 
@@ -47,6 +48,7 @@ const PromotionLotPage = ({
   const { lots: allLots } = promotion;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
+  console.log('promotionLot:', promotionLot)
 
   return (
     <div>
