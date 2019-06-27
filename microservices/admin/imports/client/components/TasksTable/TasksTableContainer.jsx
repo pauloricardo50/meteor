@@ -65,6 +65,7 @@ const makeMapTask = ({
                 ? { ...loan, collection: LOANS_COLLECTION }
                 : { ...user, collection: USERS_COLLECTION }
             }
+            variant="TASKS_TABLE"
           />
         ),
       },

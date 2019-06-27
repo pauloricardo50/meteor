@@ -849,7 +849,7 @@ export const task = () => ({
   ...baseTask(),
   assigneeLink: 1,
   assignee: simpleUser(),
-  loan: { name: 1 },
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   user: { name: 1 },
 });
 
