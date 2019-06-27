@@ -19,7 +19,7 @@
       align-items: center;
 
       padding: 16px;
-       > :first-child {
+      > :first-child {
         margin-right: 8px;
       }
     }
@@ -71,7 +71,7 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-       > * {
+      > * {
         padding: 8px;
       }
     }
@@ -93,5 +93,9 @@
   .assigned-employee {
     display: flex;
     align-items: center;
+  }
+
+  .email-verified {
+    color: $success;
   }
 }

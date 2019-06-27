@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
@@ -33,9 +36,13 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     name,
     email,
     organisations = [],
+    emails = [],
   } = user;
 
-  const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
+  const allowAssign =
+    !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
+
+  const emailVerified = !!emails.length && emails[0].verified;
 
   return (
     <div className="single-user-page-header">
@@ -65,8 +72,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
       <div className="bottom">
         <div className="organisations">
-          {!!organisations.length
-            && organisations.map(organisation => (
+          {!!organisations.length &&
+            organisations.map(organisation => (
               <CollectionIconLink
                 key={organisation._id}
                 relatedDoc={{
@@ -77,16 +84,20 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             ))}
         </div>
         <div className="email">
-          <Icon type="mail" />
-          {' '}
-          <a href={`mailto:${email}`}>{email}</a>
-          {' '}
+          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
+          {emailVerified && (
+            <Tooltip title="Cette adresse email a été vérifiée, le client s'est connecté avec.">
+              <FontAwesomeIcon
+                icon={faCheckCircle}
+                className="email-verified"
+              />
+            </Tooltip>
+          )}{' '}
           <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
-            <Icon type="phone" />
-            {' '}
+            <Icon type="phone" />{' '}
             {phoneNumbers.map(number => (
               <a key={number} href={`tel:${number}`}>
                 {number}
@@ -96,8 +107,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         )}
 
         <p className="secondary created-at">
-          <T id="UsersTable.createdAt" />
-          {' '}
+          <T id="UsersTable.createdAt" />{' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
 
