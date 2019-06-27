@@ -165,7 +165,6 @@ export default compose(
     params: ({ promotionId }) => ({
       _id: promotionId,
       simple: true,
-      $body: { promotionLots: { name: 1 } },
     }),
     queryOptions: { single: true, shouldRefetch: () => false },
     dataName: 'simplePromotion',

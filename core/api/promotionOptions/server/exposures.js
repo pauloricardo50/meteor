@@ -1,8 +1,9 @@
 import { Match } from 'meteor/check';
-import { makePromotionOptionAnonymizer } from 'core/api/promotions/server/promotionServerHelpers';
+
+import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { appPromotionOption, proPromotionOptions } from '../queries';
-import { exposeQuery } from '../../queries/queryHelpers';
 
 exposeQuery({
   query: appPromotionOption,

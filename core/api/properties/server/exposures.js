@@ -109,8 +109,7 @@ exposeQuery({
       Security.properties.isAllowedToView({ propertyId, userId });
     },
     embody: (body, embodyParams) => {
-      body.$filter = ({ filters, params }) => {
-        const { propertyId } = params;
+      body.$filter = ({ filters, params: { propertyId } }) => {
         filters._id = propertyId;
       };
 

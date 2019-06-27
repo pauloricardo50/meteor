@@ -66,12 +66,6 @@ exposeQuery({
         params.anonymize = true;
       }
     },
-    validateParams: {
-      userId: String,
-      simple: Match.Maybe(Boolean),
-      anonymize: Match.Maybe(Boolean),
-      _id: Match.Maybe(String),
-    },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
         const { _id: promotionId, userId } = params;
@@ -92,13 +86,19 @@ exposeQuery({
         return promotions.map((promotion) => {
           const { promotionLots = [], ...rest } = promotion;
           return simple
-            ? promotion
+            ? { promotionLots: promotionLots.map(({ name }) => name) }
             : {
               promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
               ...rest,
             };
         });
       };
+    },
+    validateParams: {
+      userId: String,
+      simple: Match.Maybe(Boolean),
+      anonymize: Match.Maybe(Boolean),
+      _id: Match.Maybe(String),
     },
   },
 });
