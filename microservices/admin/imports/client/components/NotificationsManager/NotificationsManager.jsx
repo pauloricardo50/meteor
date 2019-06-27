@@ -24,6 +24,7 @@ class NotificationsManager extends Component {
           task: { title: 1, dueAt: 1 },
           activity: { title: 1, date: 1 },
           relatedDoc: 1,
+          createdAt: 1,
         },
       })
       .fetch((err, data) => {
