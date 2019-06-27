@@ -101,6 +101,10 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  isPrivate: {
+    type: Boolean,
+    defaultValue: false,
+  },
 });
 
 Tasks.attachSchema(TasksSchema);

@@ -350,6 +350,8 @@ export const adminLoan = ({ withSort } = {}) => ({
     dueAt: 1,
     status: 1,
     title: 1,
+    isPrivate: 1,
+    assigneeLink: 1,
   },
   user: adminUser(),
 });
@@ -843,6 +845,7 @@ export const baseTask = () => ({
   title: 1,
   description: 1,
   updatedAt: 1,
+  isPrivate: 1,
 });
 
 export const task = () => ({

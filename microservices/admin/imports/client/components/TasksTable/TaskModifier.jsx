@@ -163,6 +163,10 @@ export const schema = new SimpleSchema({
       placeholder: null,
     },
   },
+  isPrivate: {
+    type: Boolean,
+    defaultValue: false,
+  },
 });
 
 const labels = {
