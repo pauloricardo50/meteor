@@ -1,7 +1,9 @@
+import { Match } from 'meteor/check';
+
+import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { appPromotionOption, proPromotionOptions } from '../queries';
-import { exposeQuery } from '../../queries/queryHelpers';
-import { proPromotionOptionsResolver } from './resolvers';
 
 exposeQuery({
   query: appPromotionOption,
@@ -34,8 +36,27 @@ exposeQuery({
           userId,
         });
       });
+      if (!SecurityService.isUserAdmin(userId)) {
+        params.anonymize = true;
+      }
     },
-    validateParams: { promotionOptionIds: [String], userId: String },
+    embody: (body, embodyParams) => {
+      body.$filter = ({ filters, params }) => {
+        const { promotionOptionIds = [] } = params;
+        filters._id = { $in: promotionOptionIds };
+      };
+
+      body.$postFilter = (promotionOptions = [], params) => {
+        const { anonymize = false, userId } = params;
+        return anonymize
+          ? promotionOptions.map(makePromotionOptionAnonymizer({ userId }))
+          : promotionOptions;
+      };
+    },
+    validateParams: {
+      promotionOptionIds: [String],
+      userId: String,
+      anonymize: Match.Maybe(Boolean),
+    },
   },
-  resolver: proPromotionOptionsResolver,
 });

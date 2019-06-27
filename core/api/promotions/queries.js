@@ -26,7 +26,7 @@ export const promotionSearch = Promotions.createQuery(
 
 export const proPromotions = Promotions.createQuery(
   PROMOTION_QUERIES.PRO_PROMOTIONS,
-  () => {},
+  proPromotion(),
 );
 
 export const proPromotionUsers = Promotions.createQuery(
