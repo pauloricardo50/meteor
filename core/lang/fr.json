@@ -1,4 +1,5 @@
 {
+  "Forms.isPrivate": "Privé",
   "emails.LOAN_CHECKLIST.CTA": "Compléter mon dossier",
   "emails.LOAN_CHECKLIST.SUBJECT": "Invitation à compléter votre checklist",
   "emails.LOAN_CHECKLIST.TITLE": "Rapport du {today} sur la progression de votre dossier",
