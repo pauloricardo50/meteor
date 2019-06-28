@@ -1,12 +1,18 @@
 import { withState, compose, withProps } from 'recompose';
+import { withRouter } from 'react-router-dom';
+
 import { loanSearch } from 'core/api/loans/queries';
-import { promotionLinkLoan } from 'core/api/methods';
-import { promotionRemoveLinkLoan } from 'core/api/methods/index';
+import {
+  promotionLinkLoan,
+  promotionRemoveLinkLoan,
+  adminLoanInsert,
+} from 'core/api/methods';
 
 export default compose(
+  withRouter,
   withState('searchQuery', 'setSearchQuery', ''),
   withState('searchResults', 'setSearchResults', []),
-  withProps(({ searchQuery, setSearchResults, promotion }) => ({
+  withProps(({ searchQuery, setSearchResults, promotion, history }) => ({
     onSearch: (event) => {
       event.preventDefault();
       loanSearch.clone({ searchQuery }).fetch((err, loans) => {
@@ -22,5 +28,11 @@ export default compose(
       promotionLinkLoan.run({ loanId, promotionId: promotion._id }),
     unlinkPromotionLoan: ({ loanId }) =>
       promotionRemoveLinkLoan.run({ loanId, promotionId: promotion._id }),
+    insertPromotionLoan: () =>
+      adminLoanInsert
+        .run({})
+        .then(loanId =>
+          promotionLinkLoan.run({ loanId, promotionId: promotion._id }))
+        .then(loanId => history.push(`/loans/${loanId}`)),
   })),
 );

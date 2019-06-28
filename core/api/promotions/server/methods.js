@@ -85,11 +85,12 @@ editPromotionLoan.setHandler(({ userId }, params) => {
 promotionLinkLoan.setHandler(({ userId }, params) => {
   const { promotionId, loanId } = params;
   SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.addLink({
+  PromotionService.addLink({
     id: promotionId,
     linkName: 'promotionLoan',
     linkId: loanId,
   });
+  return loanId;
 });
 
 promotionRemoveLinkLoan.setHandler(({ userId }, params) => {

@@ -21,6 +21,7 @@ type PromotionLoanLinkerProps = {
   searchResults: Array<Object>,
   linkPromotionLoan: Function,
   unlinkPromotionLoan: Function,
+  insertPromotionLoan: Function,
 };
 
 const PromotionLoanLinker = ({
@@ -31,6 +32,7 @@ const PromotionLoanLinker = ({
   linkPromotionLoan,
   promotion,
   unlinkPromotionLoan,
+  insertPromotionLoan,
 }: PromotionLoanLinkerProps) => (
   <DialogSimple
     primary
@@ -40,10 +42,11 @@ const PromotionLoanLinker = ({
   >
     <div className="flex-col">
       <div className="flex-row center space-children">
-        Dossier lié:
-        {' '}
         {promotion.promotionLoan ? (
-          <>
+          <div className="flex-row center space-children">
+            <p className="secondary center" style={{marginTop: 0}}>
+              Dossier lié:&nbsp;
+            </p>
             <CollectionIconLink
               relatedDoc={{
                 ...promotion.promotionLoan,
@@ -59,12 +62,21 @@ const PromotionLoanLinker = ({
             >
               Délier
             </Button>
-          </>
+          </div>
         ) : (
-          'Aucun'
+          <div className="flex-row center space-children">
+            <p className="secondary center">
+              Aucun dossier lié. Vous pouvez lier un dossier existant en le
+              recherchant ou en créer un nouveau.
+            </p>
+            <Button primary raised onClick={() => insertPromotionLoan()}>
+              Lier un nouveau dossier
+            </Button>
+          </div>
         )}
       </div>
       <form onSubmit={onSearch}>
+        <h4>Rechercher un dossier existant</h4>
         <Input
           type="text"
           value={searchQuery}
