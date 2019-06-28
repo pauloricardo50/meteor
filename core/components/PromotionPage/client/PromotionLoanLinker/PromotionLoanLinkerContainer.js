@@ -20,6 +20,7 @@ export default compose(
     },
     linkPromotionLoan: ({ loanId }) =>
       promotionLinkLoan.run({ loanId, promotionId: promotion._id }),
-      unlinkPromotionLoan: ({loanId}) => promotionRemoveLinkLoan.run({loanId, promotionId: promotion._id})
+    unlinkPromotionLoan: ({ loanId }) =>
+      promotionRemoveLinkLoan.run({ loanId, promotionId: promotion._id }),
   })),
 );
