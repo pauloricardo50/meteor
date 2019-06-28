@@ -1,11 +1,13 @@
 // @flow
 import React from 'react';
 
+import { Meteor } from 'meteor/meteor';
 import Button from '../../Button';
 import T from '../../Translation';
 import CustomerAdder from './CustomerAdder';
 import EmailTester from './EmailTester';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
+import PromotionLoanLinker from './PromotionLoanLinker/PromotionLoanLinker';
 
 type PromotionPageButtonsProps = {};
 
@@ -31,6 +33,9 @@ const PromotionPageButtons = ({
       <Button link to={`/promotions/${promotion._id}/users`} raised primary>
         <T id="PromotionPage.users" />
       </Button>
+    )}
+    {Meteor.microservice === 'admin' && (
+      <PromotionLoanLinker promotion={promotion} />
     )}
   </div>
 );

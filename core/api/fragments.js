@@ -670,6 +670,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     value: 1,
     promotion: { _id: 1 },
   },
+  promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
       loans: {
