@@ -12,6 +12,7 @@ import {
   removeUserFromPromotion,
   editPromotionLoan,
   promotionLinkLoan,
+  promotionRemoveLinkLoan,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -85,6 +86,16 @@ promotionLinkLoan.setHandler(({ userId }, params) => {
   const { promotionId, loanId } = params;
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.addLink({
+    id: promotionId,
+    linkName: 'promotionLoan',
+    linkId: loanId,
+  });
+});
+
+promotionRemoveLinkLoan.setHandler(({ userId }, params) => {
+  const { promotionId, loanId } = params;
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.removeLink({
     id: promotionId,
     linkName: 'promotionLoan',
     linkId: loanId,

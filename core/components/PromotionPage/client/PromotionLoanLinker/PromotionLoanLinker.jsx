@@ -20,6 +20,7 @@ type PromotionLoanLinkerProps = {
   setSearchQuery: Function,
   searchResults: Array<Object>,
   linkPromotionLoan: Function,
+  unlinkPromotionLoan: Function,
 };
 
 const PromotionLoanLinker = ({
@@ -29,6 +30,7 @@ const PromotionLoanLinker = ({
   searchResults,
   linkPromotionLoan,
   promotion,
+  unlinkPromotionLoan,
 }: PromotionLoanLinkerProps) => (
   <DialogSimple
     primary
@@ -37,17 +39,30 @@ const PromotionLoanLinker = ({
     title="Lier un dossier à la promotion"
   >
     <div className="flex-col">
-      <div>
+      <div className="flex-row center space-children">
         Dossier lié:
         {' '}
         {promotion.promotionLoan ? (
-          <CollectionIconLink
-            relatedDoc={{
-              ...promotion.promotionLoan,
-              collection: LOANS_COLLECTION,
-            }}
-          />
-        ) : 'Aucun'}
+          <>
+            <CollectionIconLink
+              relatedDoc={{
+                ...promotion.promotionLoan,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+            <Button
+              onClick={() =>
+                unlinkPromotionLoan({ loanId: promotion.promotionLoan._id })
+              }
+              error
+              outlined
+            >
+              Délier
+            </Button>
+          </>
+        ) : (
+          'Aucun'
+        )}
       </div>
       <form onSubmit={onSearch}>
         <Input
@@ -62,7 +77,13 @@ const PromotionLoanLinker = ({
         {searchResults
           && searchResults.map(loan => (
             <ListItem key={loan._id} className="loan">
-              <ListItemText primary={loan.name} />
+              <ListItemText
+                primary={(
+                  <CollectionIconLink
+                    relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+                  />
+                )}
+              />
               <ListItemSecondaryAction>
                 <Button
                   onClick={() => linkPromotionLoan({ loanId: loan._id })}

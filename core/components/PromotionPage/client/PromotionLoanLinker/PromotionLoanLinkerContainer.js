@@ -1,6 +1,7 @@
 import { withState, compose, withProps } from 'recompose';
 import { loanSearch } from 'core/api/loans/queries';
 import { promotionLinkLoan } from 'core/api/methods';
+import { promotionRemoveLinkLoan } from 'core/api/methods/index';
 
 export default compose(
   withState('searchQuery', 'setSearchQuery', ''),
@@ -19,5 +20,6 @@ export default compose(
     },
     linkPromotionLoan: ({ loanId }) =>
       promotionLinkLoan.run({ loanId, promotionId: promotion._id }),
+      unlinkPromotionLoan: ({loanId}) => promotionRemoveLinkLoan.run({loanId, promotionId: promotion._id})
   })),
 );

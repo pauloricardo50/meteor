@@ -93,3 +93,11 @@ export const promotionLinkLoan = new Method({
     loanId: String,
   },
 });
+
+export const promotionRemoveLinkLoan = new Method({
+  name: 'promotionRemoveLinkLoan',
+  params: {
+    promotionId: String,
+    loanId: String,
+  },
+});
