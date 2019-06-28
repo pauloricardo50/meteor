@@ -106,6 +106,8 @@ const PromotionSchema = new SimpleSchema({
   'constructionTimeline.$.duration': Number,
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
   signingDate: dateField,
+  promotionLoanLink: { type: Object, optional: true },
+  'promotionLoanLink._id': { type: String, optional: true },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

@@ -82,6 +82,10 @@ LinkInitializer.directInit(() => {
         body: userCache,
       },
     },
+    promotionLoan: {
+      inversedBy: 'promotionLoan',
+      collection: Promotions,
+    },
   });
 });
 

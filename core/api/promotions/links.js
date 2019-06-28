@@ -61,4 +61,10 @@ Promotions.addLinks({
     collection: Tasks,
     autoremove: true,
   },
+  promotionLoan: {
+    field: 'promotionLoanLink',
+    type: 'one',
+    metadata: true,
+    collection: Loans,
+  },
 });
