@@ -98,4 +98,8 @@
   .email-verified {
     color: $success;
   }
+
+  .email-unverified {
+    color: $warning;
+  }
 }

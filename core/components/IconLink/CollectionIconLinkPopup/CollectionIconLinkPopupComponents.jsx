@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
+import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import colors from 'core/config/colors';
@@ -139,7 +140,7 @@ export const components = {
     referredByOrganisation = {},
     emails = [],
   }) => {
-    const verifiedEmail = !!emails.length && emails[0].verified;
+    const emailVerified = !!emails.length && emails[0].verified;
 
     return (
       <div>
@@ -153,14 +154,18 @@ export const components = {
           >
             {email}
           </a>
-          {verifiedEmail && (
-            <Tooltip title="Cette adresse email a été vérifiée, le client s'est connecté avec.">
-              <FontAwesomeIcon
-                icon={faCheckCircle}
-                style={{ marginLeft: '4px', color: colors.success }}
-              />
-            </Tooltip>
-          )}
+          <Tooltip
+            title={
+              emailVerified
+                ? "Cette adresse email a été vérifiée, le client s'est connecté avec."
+                : "Cette adresse email n'a pas été vérifiée, le client ne s'est pas connecté avec."
+            }
+          >
+            <FontAwesomeIcon
+              icon={emailVerified ? faCheckCircle : faExclamationCircle}
+              style={{ marginLeft: '4px', color: emailVerified ? colors.success : colors.warning }}
+            />
+          </Tooltip>
         </div>
         <div>
           <a className="color" href={`tel:${phoneNumber}`}>
