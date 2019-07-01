@@ -50,6 +50,22 @@ exposeQuery({
           filters['loanLink._id'] = loanId;
         }
       };
+      body.$postFilter = (results, postFilterParams) => {
+        const { _userId } = postFilterParams;
+
+        return results.filter((task) => {
+          const {
+            assigneeLink: { _id: assigneeId } = {},
+            isPrivate = false,
+          } = task;
+
+          if (isPrivate && assigneeId) {
+            return assigneeId === _userId;
+          }
+
+          return true;
+        });
+      };
     },
     validateParams: {
       assignee: Match.Maybe(Match.OneOf(Object, String)),
