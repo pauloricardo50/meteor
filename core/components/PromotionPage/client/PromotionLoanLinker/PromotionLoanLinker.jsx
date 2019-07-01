@@ -42,20 +42,20 @@ const PromotionLoanLinker = ({
   >
     <div className="flex-col">
       <div className="flex-row center space-children">
-        {promotion.promotionLoan && !!promotion.promotionLoan.length ? (
+        {promotion.promotionLoan ? (
           <div className="flex-row center space-children">
             <p className="secondary center" style={{marginTop: 0}}>
               Dossier lié:&nbsp;
             </p>
             <CollectionIconLink
               relatedDoc={{
-                ...promotion.promotionLoan[0],
+                ...promotion.promotionLoan,
                 collection: LOANS_COLLECTION,
               }}
             />
             <Button
               onClick={() =>
-                unlinkPromotionLoan({ loanId: promotion.promotionLoan[0]._id })
+                unlinkPromotionLoan({ loanId: promotion.promotionLoan._id })
               }
               error
               outlined
@@ -101,8 +101,8 @@ const PromotionLoanLinker = ({
                   onClick={() => linkPromotionLoan({ loanId: loan._id })}
                   primary
                   disabled={
-                    promotion.promotionLoan && !!promotion.promotionLoan.length
-                    && promotion.promotionLoan[0]._id === loan._id
+                    promotion.promotionLoan
+                    && promotion.promotionLoan._id === loan._id
                   }
                 >
                   Lier

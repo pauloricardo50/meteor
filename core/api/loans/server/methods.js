@@ -227,6 +227,10 @@ adminLoanReset.setHandler((context, params) => {
 loanLinkPromotion.setHandler(({ userId }, params) => {
   const { promotionId, loanId, promotionName } = params;
   SecurityService.checkUserIsAdmin(userId);
+  LoanService.rawCollection.update(
+    { 'promotionLoanLink._id': promotionId },
+    { $unset: { promotionLoanLink: true } },
+  );
   LoanService.addLink({
     id: loanId,
     linkName: 'promotionLoan',

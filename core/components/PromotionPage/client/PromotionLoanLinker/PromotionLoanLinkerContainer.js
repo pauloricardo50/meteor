@@ -19,28 +19,43 @@ export default compose(
         if (err) {
           throw err;
         }
-        setSearchResults(promotion.promotionLoan && !!promotion.promotionLoan.length
-          ? loans.filter(loan => promotion.promotionLoan[0]._id !== loan._id)
+        setSearchResults(promotion.promotionLoan
+          ? loans.filter(loan => promotion.promotionLoan._id !== loan._id)
           : loans);
       });
     },
-    linkPromotionLoan: ({ loanId }) =>
-      loanLinkPromotion.run({
-        loanId,
-        promotionId: promotion._id,
-        promotionName: promotion.name,
-      }),
-    unlinkPromotionLoan: ({ loanId }) =>
-      loanUnlinkPromotion.run({ loanId, promotionId: promotion._id }),
-    insertPromotionLoan: () =>
-      adminLoanInsert
-        .run({})
-        .then(loanId =>
-          loanLinkPromotion.run({
-            loanId,
-            promotionId: promotion._id,
-            promotionName: promotion.name,
-          }))
-        .then(loanId => history.push(`/loans/${loanId}`)),
+    linkPromotionLoan: ({ loanId }) => {
+      const confirm = window.confirm('Êtes-vous sûr de vouloir lier ce dossier à cette promotion ?');
+
+      return confirm
+        ? loanLinkPromotion.run({
+          loanId,
+          promotionId: promotion._id,
+          promotionName: promotion.name,
+        })
+        : Promise.resolve();
+    },
+    unlinkPromotionLoan: ({ loanId }) => {
+      const confirm = window.confirm('Êtes-vous sûr de vouloir délier ce dossier de cette promotion ?');
+
+      return confirm
+        ? loanUnlinkPromotion.run({ loanId, promotionId: promotion._id })
+        : Promise.resolve();
+    },
+    insertPromotionLoan: () => {
+      const confirm = window.confirm('Êtes-vous sûr de vouloir créer un nouveau dossier pour le lier à cette promotion ?');
+
+      return confirm
+        ? adminLoanInsert
+          .run({})
+          .then(loanId =>
+            loanLinkPromotion.run({
+              loanId,
+              promotionId: promotion._id,
+              promotionName: promotion.name,
+            }))
+          .then(loanId => history.push(`/loans/${loanId}`))
+        : Promise.resolve();
+    },
   })),
 );

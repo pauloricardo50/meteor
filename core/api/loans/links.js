@@ -86,6 +86,7 @@ LinkInitializer.directInit(() => {
       field: 'promotionLoanLink',
       type: 'one',
       metadata: true,
+      unique: true,
       collection: Promotions,
     },
   });
