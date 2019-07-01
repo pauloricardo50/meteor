@@ -14,8 +14,8 @@ import { sendEmail } from '../../email/methodDefinitions';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import Promotions from '../promotions';
-import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 
 export class PromotionService extends CollectionService {
   constructor() {
@@ -233,7 +233,7 @@ export class PromotionService extends CollectionService {
     );
   }
 
-  removeUser({ promotionId, loanId }) {
+  removeLoan({ promotionId, loanId }) {
     const {
       promotionOptionLinks = [],
       attributedPromotionLots = [],
