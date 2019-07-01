@@ -85,19 +85,3 @@ export const editPromotionLoan = new Method({
     showAllLots: Match.Optional(Boolean),
   },
 });
-
-export const promotionLinkLoan = new Method({
-  name: 'promotionLinkLoan',
-  params: {
-    promotionId: String,
-    loanId: String,
-  },
-});
-
-export const promotionRemoveLinkLoan = new Method({
-  name: 'promotionRemoveLinkLoan',
-  params: {
-    promotionId: String,
-    loanId: String,
-  },
-});

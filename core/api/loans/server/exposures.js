@@ -85,6 +85,7 @@ exposeQuery({
 
         if (hasPromotion || promotionId) {
           filters['promotionLinks.0._id'] = promotionId || { $exists: true };
+          filters['promotionLinks.0._id'] = promotionId || { $exists: true };
         }
 
         if (noPromotion) {

@@ -83,7 +83,9 @@ LinkInitializer.directInit(() => {
       },
     },
     promotionLoan: {
-      inversedBy: 'promotionLoan',
+      field: 'promotionLoanLink',
+      type: 'one',
+      metadata: true,
       collection: Promotions,
     },
   });

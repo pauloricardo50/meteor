@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom';
 
 import { loanSearch } from 'core/api/loans/queries';
 import {
-  promotionLinkLoan,
-  promotionRemoveLinkLoan,
+  loanLinkPromotion,
+  loanUnlinkPromotion,
   adminLoanInsert,
 } from 'core/api/methods';
 
@@ -19,20 +19,28 @@ export default compose(
         if (err) {
           throw err;
         }
-        setSearchResults(promotion.promotionLoan
-          ? loans.filter(loan => promotion.promotionLoan._id !== loan._id)
+        setSearchResults(promotion.promotionLoan && !!promotion.promotionLoan.length
+          ? loans.filter(loan => promotion.promotionLoan[0]._id !== loan._id)
           : loans);
       });
     },
     linkPromotionLoan: ({ loanId }) =>
-      promotionLinkLoan.run({ loanId, promotionId: promotion._id }),
+      loanLinkPromotion.run({
+        loanId,
+        promotionId: promotion._id,
+        promotionName: promotion.name,
+      }),
     unlinkPromotionLoan: ({ loanId }) =>
-      promotionRemoveLinkLoan.run({ loanId, promotionId: promotion._id }),
+      loanUnlinkPromotion.run({ loanId, promotionId: promotion._id }),
     insertPromotionLoan: () =>
       adminLoanInsert
         .run({})
         .then(loanId =>
-          promotionLinkLoan.run({ loanId, promotionId: promotion._id }))
+          loanLinkPromotion.run({
+            loanId,
+            promotionId: promotion._id,
+            promotionName: promotion.name,
+          }))
         .then(loanId => history.push(`/loans/${loanId}`)),
   })),
 );

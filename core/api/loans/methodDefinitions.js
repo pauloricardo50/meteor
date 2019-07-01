@@ -182,3 +182,20 @@ export const adminLoanReset = new Method({
     loanId: String,
   },
 });
+
+export const loanLinkPromotion = new Method({
+  name: 'loanLinkPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
+    promotionName: String,
+  },
+});
+
+export const loanUnlinkPromotion = new Method({
+  name: 'loanUnlinkPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
+  },
+});

@@ -146,13 +146,25 @@ const SingleLoanPageHeader = ({
             }}
           />
         )}
+        {loan.promotionLoan && (
+          <CollectionIconLink
+            relatedDoc={{
+              ...loan.promotionLoan,
+              collection: PROMOTIONS_COLLECTION,
+            }}
+          />
+        )}
       </div>
       {withPdf && (
         <div className="right">
           <GetLoanPDF loan={loan} />
         </div>
       )}
-      {status === LOAN_STATUS.TEST && <div className="right"><ResetLoanButton loan={loan} /></div>}
+      {status === LOAN_STATUS.TEST && (
+        <div className="right">
+          <ResetLoanButton loan={loan} />
+        </div>
+      )}
     </div>
   );
 };

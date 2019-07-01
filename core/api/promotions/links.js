@@ -62,9 +62,8 @@ Promotions.addLinks({
     autoremove: true,
   },
   promotionLoan: {
-    field: 'promotionLoanLink',
+    inversedBy: 'promotionLoan',
     type: 'one',
-    metadata: true,
     collection: Loans,
   },
 });

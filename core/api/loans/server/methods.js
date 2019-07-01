@@ -28,6 +28,8 @@ import {
   anonymousLoanInsert,
   userLoanInsert,
   adminLoanReset,
+  loanLinkPromotion,
+  loanUnlinkPromotion,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -220,4 +222,35 @@ anonymousLoanInsert.setHandler((context, params) => {
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.resetLoan(params);
-})
+});
+
+loanLinkPromotion.setHandler(({ userId }, params) => {
+  const { promotionId, loanId, promotionName } = params;
+  SecurityService.checkUserIsAdmin(userId);
+  LoanService.addLink({
+    id: loanId,
+    linkName: 'promotionLoan',
+    linkId: promotionId,
+  });
+  LoanService.update({
+    loanId,
+    object: { customName: `Financement de ${promotionName}` },
+  });
+  return loanId;
+});
+
+loanUnlinkPromotion.setHandler(({ userId }, params) => {
+  const { promotionId, loanId } = params;
+  SecurityService.checkUserIsAdmin(userId);
+  LoanService.removeLink({
+    id: loanId,
+    linkName: 'promotionLoan',
+    linkId: promotionId,
+  });
+
+  return LoanService.update({
+    loanId,
+    object: { customName: true },
+    operator: '$unset',
+  });
+});

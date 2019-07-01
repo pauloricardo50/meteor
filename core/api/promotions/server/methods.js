@@ -11,8 +11,6 @@ import {
   sendPromotionInvitationEmail,
   removeUserFromPromotion,
   editPromotionLoan,
-  promotionLinkLoan,
-  promotionRemoveLinkLoan,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -80,25 +78,4 @@ editPromotionLoan.setHandler(({ userId }, params) => {
     userId,
   });
   return PromotionService.editPromotionLoan(params);
-});
-
-promotionLinkLoan.setHandler(({ userId }, params) => {
-  const { promotionId, loanId } = params;
-  SecurityService.checkUserIsAdmin(userId);
-  PromotionService.addLink({
-    id: promotionId,
-    linkName: 'promotionLoan',
-    linkId: loanId,
-  });
-  return loanId;
-});
-
-promotionRemoveLinkLoan.setHandler(({ userId }, params) => {
-  const { promotionId, loanId } = params;
-  SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.removeLink({
-    id: promotionId,
-    linkName: 'promotionLoan',
-    linkId: loanId,
-  });
 });
