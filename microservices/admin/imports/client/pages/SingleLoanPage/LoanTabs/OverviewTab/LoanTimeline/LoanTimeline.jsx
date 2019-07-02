@@ -26,8 +26,7 @@ const LoanTimeline = ({
     const el = document.getElementsByClassName('loan-timeline-timeline')[0];
     el.scrollLeft = el.scrollWidth;
   }, []);
-  const elementAfterToday = activities.find(({ date }) => date.getTime() > now.getTime())
-    || activities[activities.length - 1];
+  const elementAfterToday = activities.find(({ date }) => date.getTime() > now.getTime());
 
   return (
     <div className="loan-timeline">
@@ -52,7 +51,8 @@ const LoanTimeline = ({
         variant="horizontal"
         className="loan-timeline-timeline"
         events={activities.map(activity => ({
-          children: activities.length >= 2
+          children: elementAfterToday
+            && activities.length >= 2
             && activity._id === elementAfterToday._id && (
             <div className="today">
               <Tooltip title="Aujourd'hui">
