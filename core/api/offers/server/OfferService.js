@@ -72,16 +72,18 @@ export class OfferService extends CollectionService {
       },
     });
 
-    LoanService.update({
-      loanId: loan._id,
-      object: {
-        structures: loan.structures.map(structure => ({
-          ...structure,
-          offerId:
-            structure.offerId === offerId ? undefined : structure.offerId,
-        })),
-      },
-    });
+    if (loan) {
+      LoanService.update({
+        loanId: loan._id,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            offerId:
+              structure.offerId === offerId ? undefined : structure.offerId,
+          })),
+        },
+      });
+    }
   };
 }
 
