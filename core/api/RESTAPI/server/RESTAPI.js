@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
 import { logRequest, trackRequest } from './helpers';
+import { HTTP_STATUS_CODES } from './restApiConstants';
 
 export default class RESTAPI {
   constructor({
@@ -85,6 +86,8 @@ export default class RESTAPI {
   }
 
   handleSuccess(result = '', req, res) {
+    console.log('result:', result);
+    const { status } = result;
     const stringified = JSON.stringify(result);
 
     // LOGS
@@ -92,7 +95,9 @@ export default class RESTAPI {
 
     trackRequest({ req, result: stringified });
 
-    res.setHeader('Content-Type', 'application/json');
+    res.writeHead(status || HTTP_STATUS_CODES.OK, {
+      'Content-Type': 'application/json',
+    });
     res.write(stringified);
 
     res.end();
