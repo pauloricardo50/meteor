@@ -52,6 +52,14 @@ const employees = [
     title: 'Marketing & Communications',
   },
   {
+    email: 'max@e-potek.ch',
+    src: '/img/team/max.jpg',
+    name: 'Max Martinez',
+    title: 'Conseiller en financement',
+    phoneNumber: '+41 22 566 82 95',
+    _id: 'NumFEubdw2nra6Su8',
+  },
+  {
     email: '',
     src: '/img/team/harrison.jpg',
     name: 'Harrison Mean',

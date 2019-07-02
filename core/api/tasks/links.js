@@ -1,6 +1,9 @@
 import Tasks from './tasks';
 import { Users, Loans } from '..';
 import Notifications from '../notifications';
+import Promotions from '../promotions';
+import Organisations from '../organisations';
+import Lenders from '../lenders';
 
 Tasks.addLinks({
   assignee: {
@@ -23,19 +26,19 @@ Tasks.addLinks({
   },
   promotion: {
     field: 'promotionLink',
-    collection: Users,
+    collection: Promotions,
     type: 'one',
     metadata: true,
   },
   organisation: {
     field: 'organisationLink',
-    collection: Users,
+    collection: Organisations,
     type: 'one',
     metadata: true,
   },
   lender: {
     field: 'lenderLink',
-    collection: Users,
+    collection: Lenders,
     type: 'one',
     metadata: true,
   },

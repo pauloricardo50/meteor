@@ -1,4 +1,6 @@
 {
+  "FinancingResultInterests.withOffer": "Offre de {name}",
+  "FinancingResultInterests.noOffer": "Basé sur nos taux actuels",
   "Forms.isPrivate": "Privé",
   "emails.LOAN_CHECKLIST.CTA": "Compléter mon dossier",
   "emails.LOAN_CHECKLIST.SUBJECT": "Invitation à compléter votre checklist",

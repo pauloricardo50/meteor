@@ -17,6 +17,7 @@ import {
 } from '../../api/constants';
 import collectionIcons from '../../arrays/collectionIcons';
 import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
+import { getLoanLinkTitle } from './collectionIconLinkHelpers';
 
 type CollectionIconLinkProps = {
   relatedDoc: Object,
@@ -41,11 +42,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     let text;
 
     if (variant === 'TASKS_TABLE') {
-      const { borrowers = [], user = {}, name } = data;
-      const borrowerName = !!borrowers.length && borrowers[0].name;
-      const userName = user.name;
-
-      text = borrowerName || userName || name;
+      text = getLoanLinkTitle(data);
     } else {
       text = data.name;
     }

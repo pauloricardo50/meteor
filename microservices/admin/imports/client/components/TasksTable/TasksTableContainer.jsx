@@ -47,7 +47,6 @@ const makeMapTask = ({
     description,
     status,
     dueAt,
-    completedAt,
     assignee,
     loan = {},
     user = {},

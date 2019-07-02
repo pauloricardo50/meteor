@@ -53,7 +53,8 @@ export default compose(
       borrowers = [],
       updateStructure,
     } = props;
-    const { mortgageNotes = [], canton } = getProperty(props);
+    const property = getProperty(props);
+    const { mortgageNotes = [], canton } = property;
     const notes = formatMortgageNotes(mortgageNoteIds, borrowers);
 
     return {

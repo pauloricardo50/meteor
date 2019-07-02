@@ -15,13 +15,16 @@ import {
 
 type FinancingResultChartProps = {};
 
-const FinancingResultChart = (props: FinancingResultChartProps) => {
+const FinancingResultChart = ({
+  className,
+  ...props
+}: FinancingResultChartProps) => {
   const interests = getInterests(props);
   const amortization = getAmortization(props);
   const propertyExpenses = getPropertyExpenses(props);
 
   return (
-    <div className={cx('financing-structures-result-chart', props.classname)}>
+    <div className={cx('financing-structures-result-chart', className)}>
       <DonutChart
         data={[
           { value: interests, id: 'interests' },
