@@ -65,7 +65,7 @@ describe('LenderService', () => {
     });
   });
 
-  describe.only('remove', () => {
+  describe('remove', () => {
     it('removes the lender, the offer, the tasks and the offerId', () => {
       generator({
         loans: {
