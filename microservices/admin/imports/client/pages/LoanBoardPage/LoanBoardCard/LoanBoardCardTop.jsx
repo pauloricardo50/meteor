@@ -3,24 +3,13 @@ import React from 'react';
 import { compose, lifecycle } from 'recompose';
 
 import { LOANS_COLLECTION } from 'core/api/constants';
+import { getLoanLinkTitle } from 'core/components/IconLink/collectionIconLinkHelpers';
 import StatusLabel from 'core/components/StatusLabel';
 import LoanBoardCardActions from './LoanBoardCardActions';
 import LoanBoardCardTitle from './LoanBoardCardTitle';
 import LoanBoardCardAssignee from './LoanBoardCardAssignee';
 
 type LoanBoardCardTopProps = {};
-
-const getCardTitle = (user, name, borrowers = []) => {
-  if (borrowers.length && borrowers[0].firstName) {
-    return borrowers[0].name;
-  }
-
-  if (user && user.firstName) {
-    return [user.firstName, user.lastName].filter(x => x).join(' ');
-  }
-
-  return name;
-};
 
 const LoanBoardCardTop = ({
   admins,
@@ -34,7 +23,7 @@ const LoanBoardCardTop = ({
 }: LoanBoardCardTopProps) => {
   const userId = user && user._id;
   const hasUser = !!userId;
-  const title = getCardTitle(user, name, borrowers);
+  const title = getLoanLinkTitle({ user, name, borrowers });
 
   return (
     <>
