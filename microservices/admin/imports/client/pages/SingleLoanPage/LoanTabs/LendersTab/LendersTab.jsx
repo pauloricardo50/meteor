@@ -37,7 +37,10 @@ const LendersTab = (props: LendersTabProps) => {
         <>
           <LendersActivation loan={props.loan} />
           <LenderPicker {...props} />
-          <OfferAdder loanId={loanId} />
+          <OfferAdder
+            loanId={loanId}
+            disabled={!lenders || lenders.length === 0}
+          />
           <h1 className="text-center">Prêteurs</h1>
           <LenderList {...props} />
           <h1 className="text-center">Offres</h1>

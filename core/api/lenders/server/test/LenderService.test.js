@@ -4,9 +4,12 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import LenderService from '../LenderService';
+import generator from '../../../factories';
+import LoanService from '../../../loans/server/LoanService';
+import TaskService from '../../../tasks/server/TaskService';
 import OfferService from '../../../offers/server/OfferService';
 import OrganisationService from '../../../organisations/server/OrganisationService';
+import LenderService from '../LenderService';
 
 describe('LenderService', () => {
   beforeEach(() => {
@@ -59,6 +62,44 @@ describe('LenderService', () => {
       });
 
       expect(lender.contact.firstName).to.equal('john');
+    });
+  });
+
+  describe.only('remove', () => {
+    it('removes the lender, the offer, the tasks and the offerId', () => {
+      generator({
+        loans: {
+          _factory: null,
+          name: '18-0001',
+          lenders: {
+            _factory: null,
+            _id: 'lenderId',
+            offers: { _id: 'offer1' },
+            tasks: [{}, {}],
+            organisation: {},
+          },
+          structures: [
+            { id: 'a', offerId: 'offer1' },
+            { id: 'b', offerId: 'offer2' },
+          ],
+        },
+      });
+
+      expect(LenderService.find({}).fetch().length).to.equal(1, 'a');
+      expect(OfferService.find({}).fetch().length).to.equal(1, 'b');
+      expect(TaskService.find({}).fetch().length).to.equal(2, 'c');
+
+      LenderService.remove({ lenderId: 'lenderId' });
+
+      expect(LenderService.find({}).fetch().length).to.equal(0);
+      expect(OfferService.find({}).fetch().length).to.equal(0);
+      expect(TaskService.find({}).fetch().length).to.equal(0);
+
+      const loan = LoanService.get({});
+
+      loan.structures.map(({ offerId }) => {
+        expect(offerId).to.not.equal('offer1');
+      });
     });
   });
 });

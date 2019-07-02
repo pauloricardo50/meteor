@@ -20,7 +20,7 @@ const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
   {},
 );
 
-const OfferAdder = ({ schema, insertOffer }: OfferAdderProps) => (
+const OfferAdder = ({ schema, insertOffer, disabled }: OfferAdderProps) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={insertOffer}
@@ -28,6 +28,7 @@ const OfferAdder = ({ schema, insertOffer }: OfferAdderProps) => (
       label: <T id="OfferAdder.buttonLabel" />,
       raised: true,
       primary: true,
+      disabled,
     }}
     title={<T id="OfferAdder.buttonLabel" />}
     autoFieldProps={{ labels: interestRatesLabels }}
