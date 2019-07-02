@@ -83,9 +83,18 @@ exposeQuery({
           filters.status = status;
         }
 
-        if (hasPromotion || promotionId) {
-          filters['promotionLinks.0._id'] = promotionId || { $exists: true };
-          filters['promotionLinks.0._id'] = promotionId || { $exists: true };
+        if (hasPromotion) {
+          filters.$or = [
+            { 'promotionLinks.0._id': { $exists: true } },
+            { 'promotionLoanLink._id': { $exists: true } },
+          ];
+        }
+
+        if (promotionId) {
+          filters.$or = [
+            { 'promotionLinks.0._id': promotionId },
+            { 'promotionLoanLink._id': promotionId },
+          ];
         }
 
         if (noPromotion) {
