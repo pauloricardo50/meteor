@@ -44,14 +44,17 @@ export class PropertyService extends CollectionService {
       if (loanId) {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
-      } else {
-        // Can't delete a property that has multiple loans without specifying
-        // from where you want to remove it
-        return false;
+        return removePropertyFromLoan({
+          loan: LoanService.get(loanId),
+          propertyId,
+        });
       }
-    } else {
-      Properties.remove(propertyId);
+      // Can't delete a property that has multiple loans without specifying
+      // from where you want to remove it
+      return false;
     }
+
+    return Properties.remove(propertyId);
   };
 
   pushValue = ({ propertyId, object }) =>
