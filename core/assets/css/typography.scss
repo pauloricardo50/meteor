@@ -28,6 +28,10 @@ h6 {
   font-family: 'Eina04-Bold', 'Helvetica';
   font-weight: bold;
   line-height: 1.3em;
+
+  &.inherit-color {
+    color: inherit;
+  }
 }
 
 h1 {
