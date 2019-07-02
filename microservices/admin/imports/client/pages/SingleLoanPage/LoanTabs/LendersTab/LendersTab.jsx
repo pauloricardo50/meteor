@@ -31,6 +31,8 @@ const LendersTab = (props: LendersTabProps) => {
       lenders,
     },
   } = props;
+  const disableOfferAdder = !lenders || lenders.length === 0;
+
   return (
     <div className="lenders-tab">
       {shouldRenderTab({ status, lenders }) ? (
@@ -39,7 +41,10 @@ const LendersTab = (props: LendersTabProps) => {
           <LenderPicker {...props} />
           <OfferAdder
             loanId={loanId}
-            disabled={!lenders || lenders.length === 0}
+            buttonProps={{
+              disabled: disableOfferAdder,
+              tooltip: disableOfferAdder ? 'Ajoutez un prêteur pour ajouter des offres' : undefined,
+            }}
           />
           <h1 className="text-center">Prêteurs</h1>
           <LenderList {...props} />
