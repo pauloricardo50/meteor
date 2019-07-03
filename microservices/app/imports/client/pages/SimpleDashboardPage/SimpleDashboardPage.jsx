@@ -1,19 +1,20 @@
 // @flow
 import React from 'react';
+import { withState } from 'recompose';
 
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
 import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueLightTheme';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
-import BorrowersProgress from './BorrowersProgress';
 import Properties from './Properties';
 import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
+import BorrowersCard from './BorrowersCard/BorrowersCard';
 
 type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
-  const { loan, currentUser } = props;
+  const { loan, currentUser, openBorrowersForm } = props;
 
   const progress = Calculator.personalInfoPercentSimple({ loan });
 
@@ -21,8 +22,8 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
     <div className="simple-dashboard-page animated fadeIn">
       <div className="simple-dashboard-page-content">
         <DashboardProgressBar currentStep={loan.step} variant="light" />
-        <div className="simple-dashboard-page-borrowers card1">
-          <BorrowersProgress {...props} progress={progress} />
+        <div className="simple-dashboard-page-borrowers">
+          <BorrowersCard {...props} />
           <SimpleMaxPropertyValueLightTheme>
             <SimpleMaxPropertyValue blue {...props} />
           </SimpleMaxPropertyValueLightTheme>
@@ -44,4 +45,4 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   );
 };
 
-export default SimpleDashboardPage;
+export default withState('openBorrowersForm', 'setOpenBorrowersForm', false)(SimpleDashboardPage);

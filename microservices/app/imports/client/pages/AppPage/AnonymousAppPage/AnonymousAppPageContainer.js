@@ -47,9 +47,8 @@ export default compose(
         .run({ trackingId: parseCookies()[TRACKING_COOKIE] })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
             loanId,
-            tabId: '',
           }));
         }),
   })),

@@ -119,16 +119,21 @@ export default compose(
     setLoading,
     setCanton,
     canton,
+    setOpenBorrowersForm,
   }) => ({
     state: getState({ borrowers, maxPropertyValue, maxPropertyValueExists }),
     recalculate: () => {
       setLoading(true);
+      if (setOpenBorrowersForm) {
+        setOpenBorrowersForm(false);
+      }
       return setMaxPropertyValueWithoutBorrowRatio
         .run({ canton, loanId })
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+        });
     },
     onChangeCanton: (_, newCanton) => {
-      console.log('newCanton:', newCanton);
       setCanton(newCanton);
       const { canton: existingCanton } = maxPropertyValue || {};
 

@@ -13,11 +13,11 @@ import SimpleMaxPropertyValueEmptyState from './SimpleMaxPropertyValueEmptyState
 type SimpleMaxPropertyValueProps = {};
 
 export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
-  const { blue, state, loading, loan } = props;
+  const { blue, state, loading, loan, fixed = false } = props;
 
   if (loading) {
     return (
-      <div className="simple-max-property-value loading">
+      <div className={cx('simple-max-property-value loading', { fixed })}>
         <div className="animated fadeIn">
           <Loading />
           <h4>Algorithmes au travail...</h4>
@@ -32,11 +32,11 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
   }
 
   if (loan.maxPropertyValueExists) {
-    return <SimpleMaxPropertyValueSignup />;
+    return <SimpleMaxPropertyValueSignup {...props} />;
   }
 
   return (
-    <div className={cx('simple-max-property-value', { blue })}>
+    <div className={cx('simple-max-property-value', { blue, fixed })}>
       <MaxPropertyValueResults {...props} />
     </div>
   );

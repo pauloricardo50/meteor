@@ -2,6 +2,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
+import cx from 'classnames';
+
 import { STATE } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
@@ -51,9 +53,10 @@ const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStat
     cantonOptions,
     loading,
     recalculate,
+    fixed,
   } = props;
   return (
-    <div className="simple-max-property-value">
+    <div className={cx('simple-max-property-value', { fixed })}>
       <h2>
         <T id="MaxPropertyValue.title" />
       </h2>
@@ -66,7 +69,9 @@ const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStat
               <T id="MaxPropertyValue.missingInfos" />
             </h4>
             <p className="secondary">
-              <i><T id="MaxPropertyValue.informations" /></i>
+              <i>
+                <T id="MaxPropertyValue.informations" />
+              </i>
             </p>
           </>
         ) : (

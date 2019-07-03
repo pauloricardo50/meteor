@@ -24,6 +24,7 @@
     display: flex;
     overflow: hidden;
     align-self: center;
+    border-radius: 8px;
 
     width: 100%;
     max-width: calc(#{$borrowers-item-width} * 2);
@@ -33,12 +34,14 @@
       flex-direction: column;
     }
 
-    .borrowers-progress,
+    .borrowers-card,
     .simple-max-property-value {
+      border-radius: 8px;
       display: flex;
+      width: 50%;
       flex-basis: 50%;
       flex-direction: column;
-      flex-grow: 1;
+      // flex-grow: 1;
       flex-shrink: 1;
 
       box-sizing: content-box;
@@ -57,7 +60,10 @@
       }
     }
 
-    .borrowers-progress {
+    .borrowers-card {
+      height: 50%;
+      max-width: 50%;
+      background: white;
       &-recap {
         margin: 16px 0;
       }
@@ -70,6 +76,30 @@
         margin: 40px 0;
 
         text-align: center;
+      }
+
+      &-header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 24px;
+
+        .title {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        h2 {
+          margin: 0;
+          margin-bottom: 8px;
+        }
+
+        h4 {
+          display: flex;
+          align-items: center;
+
+          margin-top: 0;
+          margin-bottom: 40px;
+        }
       }
 
       &-cta {
@@ -118,9 +148,63 @@
           color: #666;
         }
       }
+
+      .simple-form-switch {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        button:first-of-type {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        button:last-of-type {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+        .switch {
+          border: 1px solid $primary;
+          color: $primary;
+        }
+
+        .active {
+          color: white;
+          background-color: $primary;
+        }
+      }
+
+      .borrowers-form {
+        .card1 {
+          padding: 0;
+          border-radius: 0;
+          background: unset;
+          box-shadow: unset;
+        }
+
+        .borrower-form {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+
+          label[for='bonusExists'] {
+            font-size: 0.9rem;
+          }
+
+          h3:first-of-type {
+            margin-top: 16px !important;
+          }
+
+          .borrower-remover {
+            align-self: flex-end;
+          }
+        }
+      }
     }
 
     .simple-max-property-value {
+      height: 50%;
+      margin-left: 24px;
       color: white;
       background-color: $primary;
 
@@ -146,7 +230,7 @@
       align-items: stretch;
       flex-direction: column-reverse;
 
-       > * {
+      > * {
         margin-bottom: 16px;
       }
     }

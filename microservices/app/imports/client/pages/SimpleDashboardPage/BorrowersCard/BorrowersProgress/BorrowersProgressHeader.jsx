@@ -5,13 +5,14 @@ import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import { createRoute } from 'core/utils/routerUtils';
 import Button from 'core/components/Button';
-import APP_ROUTES from '../../../../startup/client/appRoutes';
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
 type BorrowersProgressHeaderProps = {};
 
 const BorrowersProgressHeader = ({
   loanId,
   progress,
+  setOpenBorrowersForm,
 }: BorrowersProgressHeaderProps) => (
   <div className="borrowers-progress-cta">
     <span className="secondary">
@@ -36,8 +37,9 @@ const BorrowersProgressHeader = ({
       raised={progress < 1}
       secondary={progress < 1}
       primary={progress >= 1}
-      link
-      to={createRoute(APP_ROUTES.BORROWERS_PAGE_NO_TAB.path, { loanId })}
+      // link
+      // to={createRoute(APP_ROUTES.BORROWERS_PAGE_NO_TAB.path, { loanId })}
+      onClick={() => setOpenBorrowersForm(true)}
     >
       <T
         id={
