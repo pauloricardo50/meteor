@@ -640,13 +640,13 @@ workflows:
             - Prepare
       - Www - e2e tests:
           requires:
-            - Www - unit tests
+            - Prepare
       - App - e2e tests:
           requires:
-            - App - unit tests
+            - Prepare
       - Admin - e2e tests:
           requires:
-            - Admin - unit tests
+            - Prepare
       - Pro - e2e tests:
           requires:
-            - Pro - unit tests
+            - Prepare
