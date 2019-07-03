@@ -133,7 +133,7 @@ class PDFService {
         document_content: html,
         name: pdfName,
         type: 'pdf',
-        test: !Meteor.isProduction || Meteor.isStaging,
+        test: !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment,
         // help: true,
         prince_options: { media: 'screen', baseurl: 'https://www.e-potek.ch' },
       },

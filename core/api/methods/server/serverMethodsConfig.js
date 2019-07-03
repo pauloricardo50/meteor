@@ -5,7 +5,7 @@ import SlackService from '../../slack/server/SlackService';
 import ServerEventService from '../../events/server/ServerEventService';
 
 const logMethod = ({ context, config, params, result, error }) => {
-  if (Meteor.isProduction || Meteor.isStaging) {
+  if (Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment) {
     console.log('---------------------- METHOD CALL ----------------------');
     console.log(`METHOD Method ${config.name} called`);
     console.log('METHOD Params:', params);

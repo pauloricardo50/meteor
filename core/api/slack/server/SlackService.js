@@ -169,7 +169,7 @@ export class SlackService {
       username: currentUser ? currentUser.name : undefined,
     };
 
-    if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
+    if ((Meteor.isStaging || Meteor.isDevEnvironment || Meteor.isDevelopment) && !Meteor.isTest) {
       console.log('Slack dev/staging notification');
       console.log('Payload:', slackPayload);
       return slackPayload;

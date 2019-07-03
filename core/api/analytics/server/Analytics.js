@@ -137,6 +137,7 @@ class Analytics {
   formatHost(host) {
     const isProduction = host.includes('production');
     const isStaging = host.includes('staging');
+    const isDev = host.includes('dev');
 
     let subdomain;
 
@@ -146,11 +147,16 @@ class Analytics {
       }
     });
 
-    if (!subdomain || (!isProduction && !isStaging)) {
+    if (
+      !subdomain
+      || (!isProduction && !isStaging && !Meteor.isDevEnvironment)
+    ) {
       return host;
     }
 
-    return `${subdomain}${isStaging ? '.staging' : ''}.e-potek.ch`;
+    return `${subdomain}${
+      isStaging ? '.staging' : isDev ? '.dev' : ''
+    }.e-potek.ch`;
   }
 
   page(params) {
