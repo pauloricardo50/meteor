@@ -14,6 +14,13 @@ const MAINTENANCE_ENV_VARIABLES = {
     [APPLICATIONS.WWW]: 'MAINTENANCE_PRODUCTION_WWW',
     [APPLICATIONS.PRO]: 'MAINTENANCE_PRODUCTION_PRO',
   },
+  [ENVIRONMENT.DEV]: {
+    [APPLICATIONS.APP]: 'MAINTENANCE_DEV_APP',
+    [APPLICATIONS.ADMIN]: 'MAINTENANCE_DEV_ADMIN',
+    [APPLICATIONS.WWW]: 'MAINTENANCE_DEV_WWW',
+    [APPLICATIONS.PRO]: 'MAINTENANCE_DEV_PRO',
+    [APPLICATIONS.BACKEND]: 'MAINTENANCE_DEV_PRO',
+  },
 };
 
 const getMaintenanceEnvVariables = ({
@@ -49,17 +56,28 @@ const generateNginxManifestData = ({
       instances: 1,
       buildpack: 'https://github.com/cloudfoundry/staticfile-buildpack.git',
       routes: [
-        { route: 'app.staging.e-potek.ch' },
-        { route: 'admin.staging.e-potek.ch' },
-        { route: 'www.staging.e-potek.ch' },
-        { route: 'pro.staging.e-potek.ch' },
+        // Production
+        { route: '*.e-potek.ch' },
         { route: 'app.e-potek.ch' },
         { route: 'admin.e-potek.ch' },
         { route: 'www.e-potek.ch' },
         { route: 'pro.e-potek.ch' },
         { route: 'kadira.e-potek.ch' },
-        { route: '*.e-potek.ch' },
+
+        // Staging
         { route: '*.staging.e-potek.ch' },
+        { route: 'app.staging.e-potek.ch' },
+        { route: 'admin.staging.e-potek.ch' },
+        { route: 'www.staging.e-potek.ch' },
+        { route: 'pro.staging.e-potek.ch' },
+
+        // Dev
+        { route: '*.dev.e-potek.ch' },
+        { route: 'app.dev.e-potek.ch' },
+        { route: 'admin.dev.e-potek.ch' },
+        { route: 'www.dev.e-potek.ch' },
+        { route: 'pro.dev.e-potek.ch' },
+        { route: 'backend.dev.e-potek.ch' },
       ],
       env: {
         FORCE_HTTPS: true,

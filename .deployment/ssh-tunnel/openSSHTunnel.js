@@ -19,6 +19,10 @@ export const MONGO_SERVICES = {
     environment: ENVIRONMENT.PRODUCTION,
     service: SERVICES.MONGODB,
   }),
+  [ENVIRONMENT.DEV]: generateServiceName({
+    environment: ENVIRONMENT.DEV,
+    service: SERVICES.MONGODB,
+  }),
 };
 
 export const REDIS_SERVICES = {
@@ -28,6 +32,10 @@ export const REDIS_SERVICES = {
   }),
   [ENVIRONMENT.PRODUCTION]: generateServiceName({
     environment: ENVIRONMENT.PRODUCTION,
+    service: SERVICES.REDIS,
+  }),
+  [ENVIRONMENT.DEV]: generateServiceName({
+    environment: ENVIRONMENT.DEV,
     service: SERVICES.REDIS,
   }),
 };
