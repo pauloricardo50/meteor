@@ -2,6 +2,7 @@
   "folders": [
     { "path": "." },
     { "path": "./core" },
+    { "path": "microservices/backend" },
     { "path": "microservices/admin" },
     { "path": "microservices/app" },
     { "path": "microservices/www" },
