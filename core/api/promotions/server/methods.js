@@ -9,7 +9,7 @@ import {
   addProUserToPromotion,
   removeProFromPromotion,
   sendPromotionInvitationEmail,
-  removeUserFromPromotion,
+  removeLoanFromPromotion,
   editPromotionLoan,
 } from '../methodDefinitions';
 
@@ -60,14 +60,14 @@ sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
   return PromotionService.sendPromotionInvitationEmail(params);
 });
 
-removeUserFromPromotion.setHandler(({ userId }, params) => {
+removeLoanFromPromotion.setHandler(({ userId }, params) => {
   const { promotionId, loanId } = params;
   SecurityService.promotions.isAllowedToRemoveCustomer({
     promotionId,
     loanId,
     userId,
   });
-  return PromotionService.removeUser(params);
+  return PromotionService.removeLoan(params);
 });
 
 editPromotionLoan.setHandler(({ userId }, params) => {

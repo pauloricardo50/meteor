@@ -68,8 +68,8 @@ export const sendPromotionInvitationEmail = new Method({
   },
 });
 
-export const removeUserFromPromotion = new Method({
-  name: 'removeUserFromPromotion',
+export const removeLoanFromPromotion = new Method({
+  name: 'removeLoanFromPromotion',
   params: {
     promotionId: String,
     loanId: String,
