@@ -24,15 +24,22 @@
   box-sizing: border-box;
   height: 100%;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 // Do this to counter TopNav.scss
-.admin-top-nav .top-nav {
-  @include screen(med) {
-    position: fixed;
+.admin-top-nav {
+  .top-nav {
+    @include screen(med) {
+      position: fixed;
+    }
+  }
+
+  .notifications-manager {
+    margin: 0 8px;
   }
 }
-
 .admin-dashboard-page {
   box-sizing: border-box;
   width: 100%;

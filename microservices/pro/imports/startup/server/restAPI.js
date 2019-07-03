@@ -11,6 +11,7 @@ import {
   referCustomerAPI,
   testEndpointAPI,
   updatePropertyAPI,
+  insertPropertyAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 
 const api = new RESTAPI();
@@ -38,6 +39,7 @@ api.addEndpoint('/test/:id', 'PUT', testEndpointAPI);
 api.addEndpoint('/test/:id', 'DELETE', testEndpointAPI);
 api.addEndpoint('/interest-rates/latest', 'GET', interestRatesAPI);
 api.addEndpoint('/calculator/mortgage-estimate', 'GET', mortgageEstimateAPI);
+api.addEndpoint('/properties', 'POST', insertPropertyAPI);
 
 Meteor.startup(() => {
   api.start();

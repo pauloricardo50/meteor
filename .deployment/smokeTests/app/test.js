@@ -1,3 +1,3 @@
-import { assertTitle } from '../smokeTestHelpers';
+// import { assertTitle } from '../smokeTestHelpers';
 
-assertTitle('Bienvenue sur e-Potek');
+// assertTitle('Bienvenue sur e-Potek');

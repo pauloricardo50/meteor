@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
-import { createdAt, updatedAt } from '../helpers/sharedSchemas';
+import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
 
 export const UserSchema = new SimpleSchema({
@@ -97,6 +97,7 @@ export const UserSchema = new SimpleSchema({
   'apiPublicKey.createdAt': { type: Date, optional: true },
   referredByUserLink: { type: String, optional: true },
   referredByOrganisationLink: { type: String, optional: true },
+  assignedEmployeeCache: cacheField,
 });
 
 Meteor.users.attachSchema(UserSchema);

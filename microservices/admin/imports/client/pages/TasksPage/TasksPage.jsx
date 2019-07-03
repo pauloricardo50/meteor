@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
-import { TASK_TYPE, TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
+import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
 import Icon from 'core/components/Icon/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
@@ -22,12 +22,10 @@ const getAdminsEmails = async () => {
 
 const tasksTableFilters = {
   filters: {
-    type: true,
     status: [TASK_STATUS.ACTIVE],
     assignedEmployee: { email: true },
   },
   options: {
-    type: Object.values(TASK_TYPE),
     status: Object.values(TASK_STATUS),
     email: getAdminsEmails(),
   },

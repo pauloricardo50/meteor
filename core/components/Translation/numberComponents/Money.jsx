@@ -25,14 +25,15 @@ const getValue = (displayZero, value, currency) => {
 // The Intl standard for CHF is messed up, and display the currency after the
 // monetary value, which is not what we want. We can use IntlNumber later on
 // if needed
-const Money = ({ value, currency, displayZero, className }) => (
-  <span className={className}>{getValue(displayZero, value, currency)}</span>
+const Money = ({ value, currency, displayZero, className, tag: Tag }) => (
+  <Tag className={className}>{getValue(displayZero, value, currency)}</Tag>
 );
 
 Money.propTypes = {
   className: PropTypes.string,
   currency: PropTypes.bool,
   displayZero: PropTypes.bool,
+  tag: PropTypes.string,
   value: PropTypes.number,
 };
 
@@ -40,6 +41,7 @@ Money.defaultProps = {
   className: '',
   currency: true,
   displayZero: true,
+  tag: 'span',
   value: 0,
 };
 

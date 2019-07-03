@@ -1,5 +1,6 @@
 import { Match } from 'meteor/check';
 
+import UserService from '../../users/server/UserService';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import Security from '../../security';
@@ -11,7 +12,6 @@ import {
   proPropertyUsers,
   propertySearch,
 } from '../queries';
-import { proPropertiesResolver, proPropertyUsersResolver } from './resolvers';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({
@@ -43,13 +43,50 @@ exposeQuery({
         });
       }
     },
+    embody: (body, embodyParams) => {
+      body.$filter = ({ filters, params }) => {
+        const { _id: propertyId, userId, fetchOrganisationProperties } = params;
+        if (propertyId) {
+          filters._id = propertyId;
+        }
+
+        if (userId) {
+          filters['userLinks._id'] = userId;
+        }
+
+        if (fetchOrganisationProperties) {
+          const { organisations = [] } = UserService.fetchOne({
+            $filters: { _id: userId },
+            organisations: { users: { _id: 1 } },
+          });
+
+          const otherOrganisationUsers = organisations.length
+            ? organisations[0].users
+              .map(({ _id: orgUserId }) => orgUserId)
+              .filter(id => id !== userId)
+            : [];
+
+          filters['userLinks._id'] = { $in: otherOrganisationUsers };
+        }
+      };
+
+      body.$postFilter = (properties, params) => {
+        const { fetchOrganisationProperties, userId } = params;
+
+        if (fetchOrganisationProperties) {
+          return properties.filter(({ userLinks }) =>
+            !userLinks.some(({ _id: userLinkId }) => userLinkId === userId));
+        }
+
+        return properties;
+      };
+    },
     validateParams: {
       userId: Match.Maybe(String),
       fetchOrganisationProperties: Match.Maybe(Boolean),
     },
   },
   options: { allowFilterById: true },
-  resolver: proPropertiesResolver,
 });
 
 exposeQuery({
@@ -71,12 +108,27 @@ exposeQuery({
 
       Security.properties.isAllowedToView({ propertyId, userId });
     },
+    embody: (body, embodyParams) => {
+      body.$filter = ({ filters, params: { propertyId } }) => {
+        filters._id = propertyId;
+      };
+
+      body.$postFilter = (properties = [], params) => {
+        const property = !!properties.length && properties[0];
+
+        if (!property) {
+          return [];
+        }
+
+        const { users = [] } = property;
+        return users;
+      };
+    },
     validateParams: {
       propertyId: String,
       userId: String,
     },
   },
-  resolver: proPropertyUsersResolver,
 });
 
 exposeQuery({

@@ -1,10 +1,13 @@
+import '../../activities/server/exposures';
 import '../../borrowers/server/exposures';
 import '../../contacts/server/exposures';
 import '../../interestRates/server/exposures';
 import '../../irs10y/server/exposures';
 import '../../lenderRules/server/exposures';
 import '../../lenders/server/exposures';
+import '../../liveSync/server/exposures';
 import '../../loans/server/exposures';
+import '../../notifications/server/exposures';
 import '../../offers/server/exposures';
 import '../../organisations/server/exposures';
 import '../../promotionLots/server/exposures';

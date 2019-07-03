@@ -14,6 +14,7 @@ const IconLink = React.forwardRef((
     className,
     stopPropagation = true,
     iconClassName,
+    showIcon,
     ...rest
   },
   ref,
@@ -29,7 +30,9 @@ const IconLink = React.forwardRef((
     innerRef={ref}
     {...rest}
   >
-    <Icon type={icon} className={className || 'icon-link-icon'} />
+    {showIcon && (
+      <Icon type={icon} className={className || 'icon-link-icon'} />
+    )}
     {children || text}
   </Link>
 ));
@@ -37,7 +40,12 @@ const IconLink = React.forwardRef((
 IconLink.propTypes = {
   icon: PropTypes.node.isRequired,
   link: PropTypes.string.isRequired,
+  showIcon: PropTypes.bool,
   text: PropTypes.node.isRequired,
+};
+
+IconLink.defaultProps = {
+  showIcon: true,
 };
 
 export default IconLink;

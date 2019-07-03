@@ -1,5 +1,10 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
+import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import Tooltip from '@material-ui/core/Tooltip';
 
+import colors from 'core/config/colors';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
@@ -17,18 +22,23 @@ import T, { Money, IntlDate } from '../../Translation';
 export const titles = {
   [LOANS_COLLECTION]: ({ name, status }) => (
     <span>
-      {name} <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      {name}
+      {' '}
+      <StatusLabel status={status} collection={LOANS_COLLECTION} />
     </span>
   ),
   [USERS_COLLECTION]: ({ name, roles }) => (
     <span>
-      {name} <Roles className="secondary" roles={roles} />
+      {name}
+      {' '}
+      <Roles className="secondary" roles={roles} />
     </span>
   ),
   [BORROWERS_COLLECTION]: ({ name }) => <span>{name}</span>,
   [PROPERTIES_COLLECTION]: ({ address1, name, status }) => (
     <span>
-      {name || address1}{' '}
+      {name || address1}
+      {' '}
       {status && (
         <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
       )}
@@ -41,17 +51,23 @@ export const titles = {
     },
   }) => (
     <span>
-      {orgName} pour {name}
+      {orgName}
+      {' '}
+pour
+      {name}
     </span>
   ),
   [PROMOTIONS_COLLECTION]: ({ name, status }) => (
     <span>
-      {name} <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+      {name}
+      {' '}
+      <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
     </span>
   ),
   [ORGANISATIONS_COLLECTION]: ({ name, type }) => (
     <span>
-      {name}{' '}
+      {name}
+      {' '}
       <span className="secondary">
         <T id={`Forms.type.${type}`} />
       </span>
@@ -59,7 +75,8 @@ export const titles = {
   ),
   [CONTACTS_COLLECTION]: ({ name, organisations = [] }) => (
     <span>
-      {name}{' '}
+      {name}
+      {' '}
       <span className="secondary">
         {organisations.length > 0 && organisations[0].name}
       </span>
@@ -73,125 +90,218 @@ export const components = {
     structures = [],
     selectedStructure,
     anonymous,
+    children,
+    borrowers = [],
   }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
 
     return (
-      <span>
-        <span>
-          Hypothèque:{' '}
-          {structure ? (
-            <b>
-              <Money value={structure.wantedLoan} />
-            </b>
-          ) : (
-            '-'
-          )}
-        </span>
-        <br />
-        {anonymous && 'Anonyme'}
-        {user && user.name}
-        <br />
-        Conseiller:{' '}
-        {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
-      </span>
+      <div>
+        {children}
+        {borrowers.length > 0 && (
+          <div>
+            <b>Emprunteurs</b>
+            <ul style={{ margin: 0 }}>
+              {borrowers.map(({ _id, name }, index) => (
+                <li key={_id}>{name || `Emprunteur ${index + 1}`}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div>
+          <b>Hypothèque:</b>
+          {' '}
+          {structure ? <Money value={structure.wantedLoan} /> : '-'}
+        </div>
+        {anonymous && <div>Anonyme</div>}
+        {user && (
+          <div>
+            <b>Utilisateur:</b>
+            {' '}
+            {user.name}
+          </div>
+        )}
+        <div>
+          <b>Conseiller:</b>
+          {' '}
+          <span>
+            {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+          </span>
+        </div>
+      </div>
     );
   },
-  [USERS_COLLECTION]: ({ email, phoneNumber, assignedEmployee }) => (
-    <span>
-      <a
-        className="color"
-        href={`mailto:${email}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {email}
-      </a>
-      <br />
-      <a className="color" href={`tel:${phoneNumber}`}>
-        {phoneNumber}
-      </a>
-      <br />
-      Conseiller: {assignedEmployee ? assignedEmployee.name : '-'}
-    </span>
+  [USERS_COLLECTION]: ({
+    email,
+    phoneNumber,
+    assignedEmployee,
+    children,
+    referredByUser = {},
+    referredByOrganisation = {},
+    emails = [],
+  }) => {
+    const emailVerified = !!emails.length && emails[0].verified;
+
+    return (
+      <div>
+        {children}
+        <div>
+          <a
+            className="color"
+            href={`mailto:${email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {email}
+          </a>
+          <Tooltip
+            title={
+              emailVerified
+                ? "Cette adresse email a été vérifiée, le client s'est connecté avec."
+                : "Cette adresse email n'a pas été vérifiée, le client ne s'est pas connecté avec."
+            }
+          >
+            <FontAwesomeIcon
+              icon={emailVerified ? faCheckCircle : faExclamationCircle}
+              style={{ marginLeft: '4px', color: emailVerified ? colors.success : colors.warning }}
+            />
+          </Tooltip>
+        </div>
+        <div>
+          <a className="color" href={`tel:${phoneNumber}`}>
+            {phoneNumber}
+          </a>
+        </div>
+        <div>
+          <b>Conseiller:</b>
+          {' '}
+          <span>{assignedEmployee ? assignedEmployee.name : '-'}</span>
+        </div>
+        {(referredByUser.name || referredByOrganisation.name) && (
+          <div>
+            <b>Référé par:</b>
+            {' '}
+            <span>
+              {[referredByUser.name, referredByOrganisation.name]
+                .filter(x => x)
+                .join(' - ')}
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  },
+  [BORROWERS_COLLECTION]: ({ user, loans = [], children }) => (
+    <div>
+      {children}
+      {user && <div>{user.name}</div>}
+      <div>
+        <b>Conseiller:</b>
+        {' '}
+        {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+      </div>
+      <div>
+        <b>Dossiers:</b>
+        {loans.map(({ name }) => name).join(', ')}
+      </div>
+    </div>
   ),
-  [BORROWERS_COLLECTION]: ({ user, loans = [] }) => (
-    <span>
-      {user && user.name}
-      <br />
-      Conseiller:{' '}
-      {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
-      <br />
-      Dossiers: {loans.map(({ name }) => name).join(', ')}
-    </span>
-  ),
-  [PROPERTIES_COLLECTION]: ({ totalValue }) => (
-    <span>
+  [PROPERTIES_COLLECTION]: ({ totalValue, children }) => (
+    <div>
+      {children}
       <Money value={totalValue} />
-    </span>
+    </div>
   ),
-  [OFFERS_COLLECTION]: ({ maxAmount, feedback }) => (
-    <span>
+  [OFFERS_COLLECTION]: ({ maxAmount, feedback, children }) => (
+    <div>
+      {children}
       <Money value={maxAmount} />
-      <br />
-      Feedback:{' '}
-      {feedback && feedback.date ? (
-        <span className="success">
-          Donné <IntlDate type="relative" value={feedback.date} />
-        </span>
-      ) : (
-        <span>Non</span>
-      )}
-    </span>
+      <div>
+        <b>Feedback:</b>
+        {' '}
+        {feedback && feedback.date ? (
+          <span className="success">
+            Donné
+            {' '}
+            <IntlDate type="relative" value={feedback.date} />
+          </span>
+        ) : (
+          <span>Non</span>
+        )}
+      </div>
+    </div>
   ),
   [PROMOTIONS_COLLECTION]: ({
     availablePromotionLots,
     bookedPromotionLots,
     soldPromotionLots,
     lenderOrganisation,
+    children,
   }) => (
-    <span>
+    <div>
+      {children}
       {lenderOrganisation && (
-        <>
-          <span>
-            Prêteur: <b>{lenderOrganisation.name}</b>
-          </span>
-          <br />
-        </>
+        <div>
+          <b>Prêteur:</b>
+          {' '}
+          <b>{lenderOrganisation.name}</b>
+        </div>
       )}
-      Lots dispo: {availablePromotionLots.length}
-      <br />
-      Réservés: {bookedPromotionLots.length}
-      <br />
-      Vendus: {soldPromotionLots.length}
-    </span>
+      <div>
+        <b>Lots dispo:</b>
+        {availablePromotionLots.length}
+      </div>
+      <div>
+        <b>Réservés:</b>
+        {bookedPromotionLots.length}
+      </div>
+      <div>
+        <b>Vendus:</b>
+        {soldPromotionLots.length}
+      </div>
+    </div>
   ),
-  [ORGANISATIONS_COLLECTION]: ({ logo, offerCount }) => (
-    <span>
+  [ORGANISATIONS_COLLECTION]: ({ logo, offerCount, children }) => (
+    <div>
+      {children}
       {logo && (
         <div style={{ width: 100, height: 50 }}>
           <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
         </div>
       )}
-      {offerCount > 0 && `Offres: ${offerCount}`}
-    </span>
+      {offerCount > 0 && (
+        <div>
+          <b>Offres:</b>
+          {' '}
+          {offerCount}
+        </div>
+      )}
+    </div>
   ),
-  [CONTACTS_COLLECTION]: ({ organisations = [], email, phoneNumber }) => (
-    <span>
-      {organisations.length > 0 && organisations[0].$metadata.title}
-      <br />
-      <a
-        className="color"
-        href={`mailto:${email}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {email}
-      </a>
-      <br />
-      <a className="color" href={`tel:${phoneNumber}`}>
-        {phoneNumber}
-      </a>
-    </span>
+  [CONTACTS_COLLECTION]: ({
+    organisations = [],
+    email,
+    phoneNumber,
+    children,
+  }) => (
+    <div>
+      {children}
+      <div>{organisations.length > 0 && organisations[0].$metadata.title}</div>
+      <div>
+        <a
+          className="color"
+          href={`mailto:${email}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {email}
+        </a>
+      </div>
+      <div>
+        <a className="color" href={`tel:${phoneNumber}`}>
+          {phoneNumber}
+        </a>
+      </div>
+    </div>
   ),
 };

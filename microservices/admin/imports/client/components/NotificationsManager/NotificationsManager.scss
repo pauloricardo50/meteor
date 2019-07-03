@@ -1,0 +1,21 @@
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  align-items: stretch;
+
+  hr {
+    width: 100%;
+  }
+
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div.buttons {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+}

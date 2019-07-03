@@ -22,9 +22,15 @@ import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import TasksPage from '../../client/pages/TasksPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
+import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
+  LOAN_BOARD_PAGE: {
+    component: LoanBoardPage,
+    path: '/loan-board',
+    exact: true,
+  },
 
   //   "All" pages
   USERS_PAGE: { component: UsersPage, path: '/users', exact: true },
@@ -65,6 +71,7 @@ const ADMIN_ROUTES = {
   SINGLE_LOAN_PAGE: {
     component: SingleLoanPage,
     path: '/loans/:loanId/:tabId?',
+    enableTabRouting: true,
   },
   SINGLE_ORGANISATION_PAGE: {
     component: SingleOrganisationPage,

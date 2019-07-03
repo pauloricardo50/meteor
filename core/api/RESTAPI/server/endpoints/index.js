@@ -9,3 +9,4 @@ export { default as getUserAPI } from './getUser';
 export { default as interestRatesAPI } from './interestRates';
 export { default as mortgageEstimateAPI } from './mortgageEstimate';
 export { default as updatePropertyAPI } from './updateProperty';
+export { default as insertPropertyAPI } from './insertProperty';

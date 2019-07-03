@@ -106,8 +106,8 @@
   margin-left: -32px;
   padding: 32px;
 
-  border-bottom-right-radius: 16px;
-  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
 
   @include screen(xwide) {
     margin-bottom: -16px;

@@ -27,6 +27,7 @@ export default {
         _id,
         $body: {
           anonymous: true,
+          borrowers: { name: 1 },
           name: 1,
           selectedStructure: 1,
           status: 1,
@@ -49,6 +50,9 @@ export default {
           name: 1,
           phoneNumber: 1,
           roles: 1,
+          referredByUser: { name: 1 },
+          referredByOrganisation: { name: 1 },
+          emails: 1,
         },
       },
       cb,

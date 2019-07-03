@@ -2,13 +2,15 @@
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
+import moment from 'moment';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
-import { adminUsers as query } from 'core/api/users/queries';
+import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation/Translation';
+import TaskModifierDateSetter from './TaskModifierDateSetter';
 
 type TaskModifierProps = {
   task: Object,
@@ -18,12 +20,123 @@ type TaskModifierProps = {
   submitting: boolean,
 };
 
+const taskPlaceholders = [
+  'Faire la vaisselle',
+  'Sortir les poubelles',
+  'Manger un kebab',
+  'Remercier les ingénieurs pour tous leurs efforts',
+  'Coller un 3e pillier au client',
+  'Oublier son parapluie',
+  'Jouer à Mario Kart',
+  'Mettre tous ses post-its dans Admin',
+  'Se tenir droit',
+  'Boire un energy drink',
+  'Se moquer de DL',
+  'Se plaindre des banquiers',
+  'Aller au sport',
+];
+const toNearest15Minutes = (momentObj) => {
+  const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
+  return momentObj
+    .clone()
+    .minute(roundedMinutes)
+    .second(0);
+};
+
 export const schema = new SimpleSchema({
-  title: { type: String, uniforms: { placeholder: 'Faire la vaisselle' } },
+  title: {
+    type: String,
+    uniforms: {
+      placeholder:
+        taskPlaceholders[Math.floor(Math.random() * taskPlaceholders.length)],
+      autoFocus: true,
+    },
+    optional: true,
+  },
+  description: {
+    type: String,
+    optional: true,
+  },
+  dueAtTimeHelpers: {
+    type: String,
+    optional: true,
+    uniforms: {
+      render: TaskModifierDateSetter,
+      buttonProps: { raised: true, primary: true },
+      funcs: [
+        {
+          label: 'dans 1h',
+          func: () => [
+            'dueAtTime',
+            toNearest15Minutes(moment().add(1, 'h')).format('HH:mm'),
+          ],
+        },
+        {
+          label: 'dans 3h',
+          func: () => [
+            'dueAtTime',
+            toNearest15Minutes(moment().add(3, 'h')).format('HH:mm'),
+          ],
+        },
+        {
+          label: 'À 8h',
+          func: () => [
+            'dueAtTime',
+            moment()
+              .hours(8)
+              .minute(0)
+              .format('HH:mm'),
+          ],
+        },
+      ],
+    },
+  },
+  dueAtDateHelpers: {
+    type: String,
+    optional: true,
+    uniforms: {
+      render: TaskModifierDateSetter,
+      buttonProps: { outlined: true, primary: true },
+      funcs: [
+        {
+          label: 'Demain',
+          func: () => [
+            'dueAt',
+            moment()
+              .add(1, 'd')
+              .toDate(),
+          ],
+        },
+        {
+          label: 'Dans 3 jours',
+          func: () => [
+            'dueAt',
+            moment()
+              .add(3, 'd')
+              .toDate(),
+          ],
+        },
+        {
+          label: 'Semaine prochaine',
+          func: () => [
+            'dueAt',
+            moment()
+              .add(7, 'd')
+              .toDate(),
+          ],
+        },
+      ],
+    },
+  },
   dueAt: {
     type: Date,
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  dueAtTime: {
+    type: String,
+    optional: true,
+    uniforms: { type: 'time', placeholder: null },
   },
   status: {
     type: String,
@@ -31,15 +144,28 @@ export const schema = new SimpleSchema({
     defaultValue: TASK_STATUS.ACTIVE,
     uniforms: { displayEmpty: false, placeholder: '' },
   },
-  assignedEmployeeId: {
+  assigneeLink: {
+    type: Object,
+    optional: true,
+    uniforms: { label: null },
+  },
+  'assigneeLink._id': {
     type: String,
+    optional: true,
     customAllowedValues: {
-      query,
+      query: adminUsers,
       params: () => ({ $body: { name: 1 }, admins: true }),
     },
-    optional: true,
-    defaultValue: null,
-    uniforms: { transform: ({ name }) => name, labelProps: { shrink: true } },
+    uniforms: {
+      transform: ({ name }) => name,
+      labelProps: { shrink: true },
+      label: 'Assigner utilisateur',
+      placeholder: null,
+    },
+  },
+  isPrivate: {
+    type: Boolean,
+    defaultValue: false,
   },
 });
 
@@ -50,6 +176,15 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
+const getTime = (date) => {
+  if (!date) {
+    return undefined;
+  }
+  const hours = date.getHours() || '00';
+  const minutes = date.getMinutes() || '00';
+  return `${hours}:${minutes}`;
+};
+
 const TaskModifier = ({
   task,
   updateTask,
@@ -57,7 +192,7 @@ const TaskModifier = ({
   setOpen,
   submitting,
 }: TaskModifierProps) => {
-  const model = task;
+  const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog
       schema={schema}
@@ -67,6 +202,7 @@ const TaskModifier = ({
       open={open}
       setOpen={setOpen}
       submitting={submitting}
+      title="Modifier tâche"
     />
   );
 };

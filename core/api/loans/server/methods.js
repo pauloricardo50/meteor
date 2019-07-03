@@ -27,6 +27,7 @@ import {
   loanShareSolvency,
   anonymousLoanInsert,
   userLoanInsert,
+  adminLoanReset,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -215,3 +216,8 @@ anonymousLoanInsert.setHandler((context, params) => {
   );
   return loanId;
 });
+
+adminLoanReset.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.resetLoan(params);
+})

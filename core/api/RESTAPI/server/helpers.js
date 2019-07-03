@@ -107,7 +107,7 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
-    status = HTTP_STATUS_CODES.BAD_REQUEST;
+    status = error.error && typeof error.error === 'number' ? error.error : HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }

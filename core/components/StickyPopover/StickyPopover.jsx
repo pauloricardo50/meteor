@@ -8,20 +8,25 @@ export default class PopoverStickOnHover extends React.Component {
     super(props);
 
     this.state = { showPopover: false };
-    this.timeout = null;
+    this.enterTimeout = null;
+    this.exitTimeout = null;
     this.ref = React.createRef();
   }
 
   componentWillUnmount() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
+    if (this.enterTimeout) {
+      clearTimeout(this.enterTimeout);
+    }
+    if (this.exitTimeout) {
+      clearTimeout(this.exitTimeout);
     }
   }
 
   handleMouseEnter = () => {
     const { delay, onMouseEnter } = this.props;
 
-    this.timeout = setTimeout(() => {
+    clearTimeout(this.exitTimeout);
+    this.enterTimeout = setTimeout(() => {
       this.setState({ showPopover: true }, () => {
         if (onMouseEnter) {
           onMouseEnter();
@@ -30,14 +35,24 @@ export default class PopoverStickOnHover extends React.Component {
     }, delay);
   };
 
+  handleMousePopoverEnter = () => {
+    clearTimeout(this.exitTimeout);
+    this.setState({ showPopover: true });
+  };
+
   handleMouseLeave = () => {
-    clearTimeout(this.timeout);
-    this.setState({ showPopover: false });
+    const { exitDelay } = this.props;
+
+    clearTimeout(this.enterTimeout);
+    this.exitTimeout = setTimeout(() => {
+      this.setState({ showPopover: false });
+    }, exitDelay);
   };
 
   render() {
-    const { component, children, placement, title } = this.props;
+    const { component, children, placement, title, forceOpen } = this.props;
     const { showPopover } = this.state;
+    const show = forceOpen || showPopover;
 
     const enhancedChildren = React.Children.map(children, child =>
       React.cloneElement(child, {
@@ -52,14 +67,15 @@ export default class PopoverStickOnHover extends React.Component {
       <React.Fragment>
         {enhancedChildren}
         <Overlay
-          show={showPopover}
+          show={show}
           placement={placement}
           target={this.ref.current}
           shouldUpdatePosition
-          // trigger={['hover', 'focus', 'click']}
+          transition={null}
+          animation={null}
         >
           <Popover
-            onMouseEnter={() => this.setState({ showPopover: true })}
+            onMouseEnter={this.handleMousePopoverEnter}
             onMouseLeave={this.handleMouseLeave}
             title={title}
             onClick={e => e.stopPropagation()}
@@ -74,6 +90,7 @@ export default class PopoverStickOnHover extends React.Component {
 
 PopoverStickOnHover.defaultProps = {
   delay: 0,
+  exitDelay: 100,
   onMouseEnter: undefined,
   placement: 'right',
   title: null,
@@ -83,6 +100,7 @@ PopoverStickOnHover.propTypes = {
   children: PropTypes.element.isRequired,
   component: PropTypes.node.isRequired,
   delay: PropTypes.number,
+  exitDelay: PropTypes.number,
   onMouseEnter: PropTypes.func,
   placement: PropTypes.string,
   title: PropTypes.node,

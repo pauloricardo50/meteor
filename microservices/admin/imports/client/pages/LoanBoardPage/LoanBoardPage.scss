@@ -1,0 +1,244 @@
+.loan-board {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .board {
+    flex-grow: 1;
+  }
+
+  &-options {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-options > * {
+    background-color: white;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &-options .right {
+    align-items: center;
+
+    > * {
+      margin-left: 8px;
+    }
+  }
+
+  &-options .left {
+    flex-grow: 1;
+
+    > * {
+      margin-right: 32px;
+    }
+  }
+
+  &-column-header {
+    display: flex;
+    position: relative;
+    padding: 8px;
+    padding-right: 24px;
+
+    .title {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .sort {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+    }
+  }
+
+  .board-column {
+    width: 300px;
+  }
+}
+
+$button-height: 30px;
+
+.loan-board-card {
+  margin-bottom: 16px;
+  cursor: pointer;
+
+  .card-header {
+    padding: 4px 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: $button-height;
+
+    .status-label-dot,
+    img {
+      flex-shrink: 0;
+    }
+
+    .left :first-child {
+      margin-right: 4px;
+    }
+
+    > * {
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .title {
+      margin: 0;
+    }
+
+    .title-placeholder {
+      padding: 4px;
+    }
+
+    .icon-link {
+      white-space: pre-wrap;
+    }
+  }
+
+  .card-top {
+    padding: 12px;
+
+    .wanted-loan {
+      text-align: center;
+      margin: 0;
+      font-family: 'Eina04-Regular';
+    }
+  }
+
+  .card-bottom {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+
+    .premium-badge {
+      margin-right: 4px;
+      padding: 2px;
+      height: 16px;
+    }
+  }
+
+  &-tasks {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+
+    .date {
+      white-space: nowrap;
+    }
+  }
+
+  .admin-note {
+    font-size: 12px;
+    max-height: 80px;
+    overflow: hidden;
+    white-space: pre-wrap;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin: 0.2em 0;
+    }
+
+    p,
+    ul {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 1.4em;
+    }
+
+    h2 {
+      font-size: 1.3em;
+    }
+
+    h3 {
+      font-size: 1.2em;
+    }
+
+    h4 {
+      font-size: 1.125em;
+    }
+  }
+}
+
+.loan-board-card-task {
+  position: relative;
+  flex-grow: 1;
+  padding: 8px 0;
+
+  .buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    border: 2px solid $border-grey;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px;
+    border-radius: 4px;
+  }
+
+  .task-complete-button {
+    color: white;
+    background-color: $success;
+    margin-right: 4px;
+  }
+
+  .task-cancel-button {
+    color: white;
+    background-color: $error;
+  }
+}
+
+.timeline.vertical.tasks {
+  width: unset;
+}
+
+.sort-label {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+
+  .icon {
+    margin-left: 8px;
+    &.rotate {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  overflow: scroll;
+
+  > * {
+    margin-left: 0;
+  }
+
+  .checkbox {
+    padding: 4px;
+  }
+}
+
+.radio-group > * {
+  margin-left: 0;
+
+  .radio {
+    padding: 4px;
+  }
+}

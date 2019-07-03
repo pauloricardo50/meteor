@@ -1,5 +1,6 @@
 import Lenders from '.';
 import { Contacts, Organisations, Loans, Offers } from '..';
+import Tasks from '../tasks';
 
 Lenders.addLinks({
   contact: {
@@ -23,6 +24,11 @@ Lenders.addLinks({
   offers: {
     collection: Offers,
     inversedBy: 'lender',
+    autoremove: true,
+  },
+  tasks: {
+    inversedBy: 'lender',
+    collection: Tasks,
     autoremove: true,
   },
 });

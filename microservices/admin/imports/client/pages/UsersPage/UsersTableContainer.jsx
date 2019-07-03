@@ -8,7 +8,7 @@ import { getColumnOptions, getRows } from './userTableHelpers';
 export const withUsersQuery = withSmartQuery({
   query: adminUsers,
   params: ({ assignedTo }) => ({
-    assignedTo,
+    assignedEmployeeId: assignedTo,
     $body: {
       email: 1,
       name: 1,

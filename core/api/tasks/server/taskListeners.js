@@ -5,16 +5,20 @@ import {
   adminCreateUser,
   anonymousCreateUser,
 } from '../../methods';
-import { LOANS_COLLECTION, USERS_COLLECTION, TASK_TYPE } from '../../constants';
+import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
 
 ServerEventService.addMethodListener(
   requestLoanVerification,
   ({ params: { loanId } }) => {
+    console.log('listening!');
+    
     TaskService.insert({
-      type: TASK_TYPE.VERIFY,
-      docId: loanId,
-      collection: LOANS_COLLECTION,
+      object: {
+        title: 'Vérifier dossier',
+        docId: loanId,
+        collection: LOANS_COLLECTION,
+      },
     });
   },
 );
@@ -30,9 +34,11 @@ ServerEventService.addMethodListener(
 
       if (user && !user.assignedEmployeeId) {
         TaskService.insert({
-          type: TASK_TYPE.ADD_ASSIGNED_TO,
-          docId: userId,
-          collection: USERS_COLLECTION,
+          object: {
+            title: 'Assigner un conseiller',
+            docId: userId,
+            collection: USERS_COLLECTION,
+          },
         });
       }
     }

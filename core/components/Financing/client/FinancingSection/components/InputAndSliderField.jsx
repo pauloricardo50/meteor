@@ -42,8 +42,10 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
     forceUndefined,
     allowUndefined,
     max = 1000000,
+    maxSlider,
     disabled,
   } = props;
+  const maxSliderValue = maxSlider || max;
   return (
     <>
       <MoneyInput
@@ -55,7 +57,7 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
       />
       <Slider
         min={0}
-        max={max}
+        max={Math.max(maxSliderValue, value)}
         step={1000}
         value={setValue(value, allowUndefined, forceUndefined)}
         onChange={onChange}

@@ -1,47 +1,90 @@
 // @flow
-import React from 'react';
+
+import React, { Component } from 'react';
 import cx from 'classnames';
 
 type TimelineProps = {
-  vertical: Boolean,
-  horizontal: Boolean, // Not yet implemented
+  variant?: String,
   events: Array<Object>,
+  className?: string,
+  id: string,
 };
 
-const formatEvent = (event, index) => {
-  const { complete = false, rightLabel = '', leftLabel } = event;
+const makeFormatEvent = variant => (
+  { complete = false, mainLabel = '', secondaryLabel, children },
+  index,
+) => {
+  if (variant === 'vertical') {
+    return (
+      <li className={cx('timeline-item', { complete })} key={index}>
+        {children}
+        {secondaryLabel && (
+          <div className="secondary-label">{secondaryLabel}</div>
+        )}
+        <div className="main-label">{mainLabel}</div>
+      </li>
+    );
+  }
+
   return (
-    <li className={cx({ complete })} key={index}>
-      {leftLabel && <div className="left">{leftLabel}</div>}
-      {rightLabel}
+    <li className={cx('timeline-item', { complete })} key={index}>
+      {children}
+      <div className="main-label">{mainLabel}</div>
+      {secondaryLabel && (
+        <div className="secondary-label">{secondaryLabel}</div>
+      )}
     </li>
   );
 };
 
-const hasLeftLabel = events => events.some(({ leftLabel }) => !!leftLabel);
+const hasSecondaryLabel = events =>
+  events.some(({ secondaryLabel }) => !!secondaryLabel);
 
-const getLongestLeftLabelLength = events =>
-  events.reduce(
-    (max, { leftLabel = '' }) =>
-      (leftLabel.length > max ? leftLabel.length : max),
-    0,
-  );
+const getLongestSecondaryLabelLength = (id) => {
+  const leftLabels = document
+    .getElementById(id)
+    .getElementsByClassName('secondary-label');
+  const widths = Array.from(leftLabels).map(({ clientWidth }) => clientWidth);
+  return Math.max(...widths);
+};
 
-const Timeline = ({
-  vertical = true,
-  horizontal = false,
-  events = [],
-}: TimelineProps) => (
-  <ul
-    className={cx('timeline', { vertical, horizontal })}
-    style={{
-      paddingLeft: hasLeftLabel(events)
-        ? `calc(${getLongestLeftLabelLength(events)} * 12px)`
-        : '16px',
-    }}
-  >
-    {events.map(formatEvent)}
-  </ul>
-);
+class Timeline extends Component<TimelineProps> {
+  componentDidMount() {
+    this.setPadding();
+  }
+
+  componentDidUpdate() {
+    this.setPadding();
+  }
+
+  setPadding = () => {
+    const { id, events, variant } = this.props;
+
+    if (variant === 'vertical' && id && hasSecondaryLabel(events)) {
+      const padding = getLongestSecondaryLabelLength(id);
+      const node = document.getElementById(id);
+      node.style.setProperty('padding-left', `${padding}px`);
+    }
+  };
+
+  render() {
+    const { variant, events = [], className, id } = this.props;
+
+    return (
+      <ul
+        id={id}
+        className={cx('timeline', variant, className)}
+        style={{ paddingLeft: 8 }}
+      >
+        {events.map(makeFormatEvent(variant))}
+      </ul>
+    );
+  }
+}
+
+Timeline.defaultProps = {
+  className: '',
+  variant: 'vertical',
+};
 
 export default Timeline;

@@ -16,6 +16,8 @@ import {
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
+import SingleLoanPageCustomName from './SingleLoanPageCustomName';
+import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -101,7 +103,7 @@ const SingleLoanPageHeader = ({
   withPdf = true,
   withCustomName = true,
 }: SingleLoanPageHeaderProps) => {
-  const { user } = loan;
+  const { user, status } = loan;
   const userName = getUserName(loan);
   return (
     <div className="single-loan-page-header">
@@ -130,10 +132,11 @@ const SingleLoanPageHeader = ({
             additionalActions={additionalActions(loan)}
           />
         </h1>
-        {withCustomName && loan.customName && !loan.hasPromotion && (
-          <h3 className="secondary" style={{ marginTop: 0 }}>
-            {loan.customName}
-          </h3>
+        {withCustomName && !loan.hasPromotion && (
+          <SingleLoanPageCustomName
+            customName={loan.customName}
+            loanId={loan._id}
+          />
         )}
         {loan.hasPromotion && (
           <CollectionIconLink
@@ -149,6 +152,7 @@ const SingleLoanPageHeader = ({
           <GetLoanPDF loan={loan} />
         </div>
       )}
+      {status === LOAN_STATUS.TEST && <div className="right"><ResetLoanButton loan={loan} /></div>}
     </div>
   );
 };

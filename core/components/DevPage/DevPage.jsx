@@ -183,16 +183,6 @@ class DevPage extends Component {
             Loan - anonymous
           </Button>
           <hr className="mbt20" />
-          <Tooltip title="Insert task related to a random borrower">
-            <Button
-              raised
-              secondary
-              className="mr20"
-              onClick={() => Meteor.call('insertBorrowerRelatedTask')}
-            >
-              Borrower Task
-            </Button>
-          </Tooltip>
           <Tooltip title="Insert task related to a random loan">
             <Button
               raised
@@ -201,16 +191,6 @@ class DevPage extends Component {
               onClick={() => Meteor.call('insertLoanRelatedTask')}
             >
               Loan Task
-            </Button>
-          </Tooltip>
-          <Tooltip title="Insert task related to a random property">
-            <Button
-              raised
-              secondary
-              className="mr20"
-              onClick={() => Meteor.call('insertPropertyRelatedTask')}
-            >
-              Property Task
             </Button>
           </Tooltip>
           <hr className="mbt20" />
@@ -309,6 +289,14 @@ class DevPage extends Component {
           />
           <hr className="mbt20" />
           <ErrorThrower />
+          <hr className="mbt20" />
+          <Button
+            raised
+            primary
+            onClick={() => Meteor.call('generateAllNotifications')}
+          >
+            Générer notifications
+          </Button>
         </section>
       );
     }

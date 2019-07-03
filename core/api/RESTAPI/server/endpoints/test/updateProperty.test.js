@@ -90,10 +90,13 @@ describe('REST: updateProperty', function () {
       userId: 'pro',
       propertyId: 'prop',
       body: update,
-      expectedResponse: 1,
-    }).then(() => {
+    }).then((response) => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
+      const { status, message, property: returnedProperty } = response;
+      expect(status).to.equal(200);
+      expect(message).to.equal('Property with id "prop" updated !');
+      expect(returnedProperty).to.not.equal(undefined);
     });
   });
 
@@ -103,10 +106,13 @@ describe('REST: updateProperty', function () {
       userId: 'pro',
       propertyId: 'extId',
       body: update,
-      expectedResponse: 1,
-    }).then(() => {
+    }).then((response) => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
+      const { status, message, property: returnedProperty } = response;
+      expect(status).to.equal(200);
+      expect(message).to.equal('Property with id "extId" updated !');
+      expect(returnedProperty).to.not.equal(undefined);
     });
   });
 
@@ -124,11 +130,14 @@ describe('REST: updateProperty', function () {
       userId: 'pro2',
       propertyId: 'prop',
       body: update,
-      expectedResponse: 1,
       impersonateUser: 'pro@org.com',
-    }).then(() => {
+    }).then((response) => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
+      const { status, message, property: returnedProperty } = response;
+      expect(status).to.equal(200);
+      expect(message).to.equal('Property with id "prop" updated !');
+      expect(returnedProperty).to.not.equal(undefined);
     });
   });
 
@@ -138,7 +147,10 @@ describe('REST: updateProperty', function () {
       userId: 'pro',
       propertyId: 'some-id',
       body: update,
-      expectedResponse: { status: 400, message: '[No property found for id "some-id"]' },
+      expectedResponse: {
+        status: 400,
+        message: '[No property found for id "some-id"]',
+      },
     });
   });
 });

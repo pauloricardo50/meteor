@@ -229,8 +229,8 @@ describe('REST: inviteUserToPromotion', function () {
         inviteUser({
           userData: userToInvite,
           expectedResponse: {
-            status: 400,
-            message: '[Cet utilisateur est déjà invité à cette promotion]',
+            status: HTTP_STATUS_CODES.CONFLICT,
+            message: 'Cet utilisateur est déjà invité à cette promotion [409]',
           },
         }));
     });

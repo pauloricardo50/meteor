@@ -4,6 +4,22 @@ import { Meteor } from 'meteor/meteor';
 import { INTEREST_RATES } from './constants';
 
 // //
+// // activity fragments
+// //
+export const activity = () => ({
+  createdAt: 1,
+  createdBy: 1,
+  date: 1,
+  description: 1,
+  loan: { name: 1 },
+  secondaryType: 1,
+  shouldNotify: 1,
+  title: 1,
+  type: 1,
+  updatedAt: 1,
+});
+
+// //
 // // borrower fragments
 // //
 export const baseBorrower = () => ({
@@ -182,7 +198,7 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   order: 1,
-  organisationCache: 1,
+  organisation: { name: 1 },
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeAlgorithm: 1,
@@ -323,22 +339,28 @@ export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   adminNote: 1,
   category: 1,
-  closingDate: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
+  nextDueTask: 1,
   properties: adminProperty({ withSort }),
   revenues: fullRevenues(),
-  signingDate: 1,
   status: 1,
+  tasksCache: {
+    createdAt: 1,
+    dueAt: 1,
+    status: 1,
+    title: 1,
+    isPrivate: 1,
+    assigneeLink: 1,
+  },
+  user: adminUser(),
 });
 
 export const adminLoans = () => ({
   ...loanBase(),
   borrowers: { name: 1 },
   category: 1,
-  closingDate: 1,
   properties: { totalValue: 1, address1: 1 },
-  signingDate: 1,
   status: 1,
   user: { assignedEmployee: { email: 1 }, name: 1 },
 });
@@ -388,6 +410,19 @@ export const mortgageNote = () => ({
   rank: 1,
   type: 1,
   value: 1,
+});
+
+// //
+// // Notification fragments
+// //
+export const notification = () => ({
+  activity: activity(),
+  createdAt: 1,
+  readAt: 1,
+  recipients: { firstName: 1, lastName: 1, name: 1 },
+  relatedDoc: 1,
+  task: task(),
+  updatedAt: 1,
 });
 
 // //
@@ -608,7 +643,6 @@ export const basePromotion = () => ({
     name: 1,
   },
   properties: promotionProperty(),
-  signingDate: 1,
   soldPromotionLots: 1,
   status: 1,
   type: 1,
@@ -800,6 +834,27 @@ export const proProperty = ({ withSort } = {}) => ({
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
+export const apiProperty = () => ({
+  externalId: 1,
+  address1: 1,
+  address2: 1,
+  city: 1,
+  zipCode: 1,
+  value: 1,
+  description: 1,
+  propertyType: 1,
+  houseType: 1,
+  flatType: 1,
+  roomCount: 1,
+  insideArea: 1,
+  landArea: 1,
+  terraceArea: 1,
+  constructionYear: 1,
+  externalUrl: 1,
+  useOpenGraph: 1,
+  imageUrls: 1,
+});
+
 // //
 // // Task fragments
 // //
@@ -807,22 +862,19 @@ export const baseTask = () => ({
   completedAt: 1,
   createdAt: 1,
   dueAt: 1,
-  fileKey: 1,
-  relatedDoc: 1,
   status: 1,
   title: 1,
-  type: 1,
+  description: 1,
   updatedAt: 1,
-  userId: 1,
+  isPrivate: 1,
 });
 
 export const task = () => ({
   ...baseTask(),
-  assignedEmployeeId: 1,
-  assignedEmployee: simpleUser(),
-  borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },
-  loan: { name: 1, user: { assignedEmployeeId: 1 } },
-  property: { address1: 1, user: { assignedEmployeeId: 1 } },
+  assigneeLink: 1,
+  assignee: simpleUser(),
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
+  user: { name: 1 },
 });
 
 // //
@@ -858,10 +910,12 @@ export const fullUser = () => ({
 export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  assignedEmployeeCache: 1,
   promotions: { name: 1, status: 1 },
   proProperties: { address1: 1, status: 1 },
   referredByUser: { name: 1, organisations: { name: 1 } },
   referredByOrganisation: { name: 1 },
+  referredByOrganisationLink: 1,
 });
 
 export const appUser = () => ({
@@ -900,12 +954,14 @@ export const proUser = () => ({
 // // Revenues fragments
 // //
 export const fullRevenues = () => ({
-  status: 1,
-  createdAt: 1,
-  type: 1,
-  description: 1,
   amount: 1,
   approximation: 1,
+  createdAt: 1,
+  description: 1,
+  expectedAt: 1,
   organisationLinks: 1,
   organisations: { name: 1 },
+  paidAt: 1,
+  status: 1,
+  type: 1,
 });

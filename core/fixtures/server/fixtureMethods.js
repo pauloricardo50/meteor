@@ -3,11 +3,11 @@ import { check } from 'meteor/check';
 
 import range from 'lodash/range';
 
+import LoanService from 'core/api/loans/server/LoanService';
 import {
   STEPS,
   STEP_ORDER,
   ROLES,
-  TASK_TYPE,
   PURCHASE_TYPE,
   APPLICATION_TYPES,
   ORGANISATION_TYPES,
@@ -182,30 +182,17 @@ Meteor.methods({
   },
 
   purgePersonalData(currentUserId) {
+    SecurityService.checkCurrentUserIsDev();
     return deleteUsersRelatedData([currentUserId]);
   },
 
-  insertBorrowerRelatedTask() {
-    const borrower = Borrowers.aggregate({ $sample: { size: 1 } })[0];
-    const type = TASK_TYPE.VERIFY;
-    if (borrower._id) {
-      return TaskService.insert({ type, borrowerId: borrower._id });
-    }
-  },
-
   insertLoanRelatedTask() {
-    const loanId = Loans.aggregate({ $sample: { size: 1 } })[0]._id;
-    const type = TASK_TYPE.VERIFY;
+    SecurityService.checkCurrentUserIsDev();
+    const loanId = LoanService.find({}).fetch()[0]._id;
     if (loanId) {
-      return TaskService.insert({ type, loanId });
-    }
-  },
-
-  insertPropertyRelatedTask() {
-    const propertyId = Properties.aggregate({ $sample: { size: 1 } })[0]._id;
-    const type = TASK_TYPE.CUSTOM;
-    if (propertyId) {
-      return TaskService.insert({ type, propertyId });
+      return TaskService.insert({
+        object: { title: 'Random dev task', loanLink: { _id: loanId } },
+      });
     }
   },
 
