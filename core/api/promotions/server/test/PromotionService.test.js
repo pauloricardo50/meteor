@@ -325,7 +325,7 @@ describe('PromotionService', function () {
     });
   });
 
-  describe('removeUser', () => {
+  describe('removeLoan', () => {
     let promotionId;
     let loanId;
     let loan;
@@ -339,7 +339,7 @@ describe('PromotionService', function () {
         ],
       })._id;
 
-      PromotionService.removeUser({ promotionId, loanId });
+      PromotionService.removeLoan({ promotionId, loanId });
 
       loan = LoanService.get(loanId);
       expect(loan.promotionLinks).to.deep.equal([
@@ -366,7 +366,7 @@ describe('PromotionService', function () {
         },
       });
 
-      PromotionService.removeUser({
+      PromotionService.removeLoan({
         promotionId: 'promotionId',
         loanId: 'loanId',
       });
@@ -395,7 +395,7 @@ describe('PromotionService', function () {
         },
       });
 
-      PromotionService.removeUser({
+      PromotionService.removeLoan({
         promotionId: 'promotionId',
         loanId: 'loanId',
       });

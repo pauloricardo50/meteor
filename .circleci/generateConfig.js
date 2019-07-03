@@ -83,8 +83,8 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-')
-            + (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-') +
+            (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -99,6 +99,7 @@ const storeArtifacts = path => ({ store_artifacts: { path } });
 // Create preparation job with shared work
 const makePrepareJob = () => ({
   ...defaultJobValues,
+  resource_class: 'large',
   steps: [
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
@@ -122,8 +123,9 @@ const makePrepareJob = () => ({
 });
 
 // Create test job for a given microservice
-const testMicroserviceJob = (name, testsType) => ({
+const testMicroserviceJob = ({ name, testsType, job }) => ({
   ...defaultJobValues,
+  ...job,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
@@ -166,14 +168,20 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    'Www - unit tests': testMicroserviceJob('www', 'unit'),
-    'App - unit tests': testMicroserviceJob('app', 'unit'),
-    'Admin - unit tests': testMicroserviceJob('admin', 'unit'),
-    'Pro - unit tests': testMicroserviceJob('pro', 'unit'),
-    'Www - e2e tests': testMicroserviceJob('www', 'e2e'),
-    'App - e2e tests': testMicroserviceJob('app', 'e2e'),
-    'Admin - e2e tests': testMicroserviceJob('admin', 'e2e'),
-    'Pro - e2e tests': testMicroserviceJob('pro', 'e2e'),
+    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    'Admin - unit tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'unit',
+    }),
+    'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
+    'Admin - e2e tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'e2e',
+    }),
+    'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
   },
   workflows: {
     version: 2,
@@ -184,10 +192,10 @@ const makeConfig = () => ({
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
         { 'Pro - unit tests': { requires: ['Prepare'] } },
-        { 'Www - e2e tests': { requires: ['Www - unit tests'] } },
-        { 'App - e2e tests': { requires: ['App - unit tests'] } },
-        { 'Admin - e2e tests': { requires: ['Admin - unit tests'] } },
-        { 'Pro - e2e tests': { requires: ['Pro - unit tests'] } },
+        { 'Www - e2e tests': { requires: ['Prepare'] } },
+        { 'App - e2e tests': { requires: ['Prepare'] } },
+        { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        { 'Pro - e2e tests': { requires: ['Prepare'] } },
       ],
     },
   },
