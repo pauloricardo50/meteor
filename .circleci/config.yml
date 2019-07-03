@@ -18,6 +18,7 @@ jobs:
           CIRCLE_CI: 1
           DEBUG: true
           METEOR_ALLOW_SUPERUSER: true
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -56,6 +57,7 @@ jobs:
   Www - unit tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -127,6 +129,7 @@ jobs:
   App - unit tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -198,6 +201,7 @@ jobs:
   Admin - unit tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -269,6 +273,7 @@ jobs:
   Pro - unit tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -340,6 +345,7 @@ jobs:
   Www - e2e tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -411,6 +417,7 @@ jobs:
   App - e2e tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -482,6 +489,7 @@ jobs:
   Admin - e2e tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source
@@ -553,6 +561,7 @@ jobs:
   Pro - e2e tests:
     working_directory: ~/app
     docker: *ref_0
+    resource_class: large
     steps:
       - restore_cache:
           name: Restore source

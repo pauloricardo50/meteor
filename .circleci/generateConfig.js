@@ -26,6 +26,7 @@ const defaultJobValues = {
       },
     },
   ],
+  resource_class: 'large',
 };
 
 // Cache keys should have an identifier string at the start, using only _ to separate words
