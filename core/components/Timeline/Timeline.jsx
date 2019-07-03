@@ -69,7 +69,6 @@ class Timeline extends Component<TimelineProps> {
 
   render() {
     const { variant, events = [], className, id } = this.props;
-    console.log('events:', events);
 
     return (
       <ul
