@@ -31,7 +31,9 @@ describe('App onboarding', () => {
           .type(USER_PASSWORD);
         cy.get('input')
           .eq(1)
-          .type(`${USER_PASSWORD}{enter}`);
+          .type(`${USER_PASSWORD}`);
+        cy.get('[type="checkbox"]').check();
+        cy.get('.password-reset-page').contains('Login').click();
 
         cy.url().should('include', '/loans/');
       });

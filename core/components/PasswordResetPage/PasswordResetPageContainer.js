@@ -14,8 +14,8 @@ import withMatchParam from '../../containers/withMatchParam';
 import { getUserByPasswordResetToken, notifyAssignee } from '../../api';
 
 const stateHandlers = withStateHandlers(
-  { newPassword: '', newPassword2: '' },
-  { handleChange: () => (event, key) => ({ [key]: event.target.value }) },
+  { newPassword: '', newPassword2: '', hasReadConditions: false },
+  { handleChange: () => (value, key) => ({ [key]: value }) },
 );
 
 const props = withProps(({ newPassword, token, history, setError, changeSubmitting }) => ({
