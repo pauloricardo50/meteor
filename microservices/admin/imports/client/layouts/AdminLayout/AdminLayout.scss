@@ -17,15 +17,15 @@
 }
 
 .admin-layout .main-row div.main {
+  display: flex;
   overflow-y: scroll;
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
 
   box-sizing: border-box;
   height: 100%;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
 }
 
 // Do this to counter TopNav.scss

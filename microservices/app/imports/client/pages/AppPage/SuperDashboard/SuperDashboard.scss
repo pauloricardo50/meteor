@@ -1,24 +1,29 @@
 .super-dashboard {
-  margin: -16px;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
+  margin: -16px;
 
   &-title {
-    width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 32px;
-    background-color: $primary;
+    flex-direction: column;
+
+    width: 100%;
     margin-bottom: 32px;
+    padding: 32px;
+
+    background-color: $primary;
 
     h1,
     p {
-      color: white;
       margin: 0;
       margin-bottom: 16px;
+
       text-align: center;
+
+      color: white;
     }
     p {
       font-size: 1.3rem;
@@ -31,70 +36,67 @@
 }
 
 .loan-cards {
-  width: 80%;
   display: flex;
+  align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
   justify-content: flex-start;
 
+  width: 80%;
+
   @include screen(large) {
-    width: 100%;
     flex-direction: column;
     flex-wrap: unset;
+
+    width: 100%;
   }
 
   .loan-card {
-    box-sizing: border-box;
-    height: 450px;
     display: flex;
     flex-direction: column;
-    padding: 32px;
-    margin: 16px;
+
+    box-sizing: border-box;
     width: calc(50% - 2 * 16px);
+    height: 450px;
+    margin: 16px;
+    padding: 32px;
+
     background-color: #f9fbfc;
 
     @include screen(large) {
       width: 100%;
       margin: 0;
       margin-bottom: 40px;
+
       border-radius: 0;
     }
-
     @include screen(small) {
       padding: 16px;
     }
 
     &-header {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
+      position: relative;
+
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
+      width: 100%;
+      height: 50%;
+      margin: -32px;
+      margin-bottom: 32px;
       padding: 32px;
       padding-bottom: 0;
-      position: relative;
+
+      border-top-left-radius: $border-radius;
+      border-top-right-radius: $border-radius;
       background-color: $primary;
-      margin: -32px;
-      width: 100%;
-      margin-bottom: 32px;
-      height: 50%;
 
       @include screen(small) {
         margin: -16px;
-        padding: 16px;
         margin-bottom: 16px;
+        padding: 16px;
       }
-
-      &-cover,
-      img,
-      .gradient {
-        border-top-left-radius: $border-radius;
-        border-top-right-radius: $border-radius;
-        height: 100%;
-        width: 100%;
-      }
-
       @include screen(large) {
         border-radius: 0;
 
@@ -105,31 +107,44 @@
         }
       }
 
+      &-cover,
+      img,
+      .gradient {
+        width: 100%;
+        height: 100%;
+
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+      }
+
       &-cover {
         position: absolute;
         top: 0;
         left: 0;
 
         img {
-          object-fit: cover;
           overflow: hidden;
+
+          object-fit: cover;
         }
 
         .gradient {
           position: absolute;
+          z-index: 2;
           top: 0;
           left: 0;
-          z-index: 2;
+
           background: linear-gradient(
-            to right,
-            rgba(0, 0, 0, 0.65) 0%,
-            rgba(0, 0, 0, 0) 100%
+          to right,
+          rgba(0, 0, 0, 0.65) 0%,
+          rgba(0, 0, 0, 0) 100%
           );
         }
       }
 
       &-title {
         z-index: 3;
+
         display: flex;
         flex-direction: column;
 
@@ -141,9 +156,10 @@
       h2,
       h4,
       p {
-        color: white;
         margin: 0;
         margin-bottom: 8px;
+
+        color: white;
       }
 
       h4 {
@@ -152,8 +168,10 @@
 
       .icon-button {
         z-index: 3;
-        background-color: white;
+
         height: 50px;
+
+        background-color: white;
       }
 
       .icon-button:hover {
@@ -163,10 +181,12 @@
 
     &-body {
       position: relative;
+
       display: flex;
-      flex-direction: row;
       align-items: flex-start;
+      flex-direction: row;
       justify-content: space-between;
+
       height: 50%;
 
       .borrowers {
@@ -179,72 +199,76 @@
 
         .borrowers-list {
           display: flex;
-          flex-direction: column;
           align-items: flex-start;
-
-          > * {
-            margin: 0 !important;
-            margin-bottom: 16px !important;
-          }
+          flex-direction: column;
 
           @include screen(custom, max, 1440) {
             span {
               display: block;
-              text-overflow: ellipsis;
-              max-width: 200px;
               overflow: hidden;
+
+              max-width: 200px;
+
+              text-overflow: ellipsis;
             }
           }
-
           @include screen(custom, max, 1280) {
             span {
               max-width: 100px;
             }
           }
-
           @include screen(large) {
             span {
               max-width: unset;
             }
           }
-
           @include screen(custom, max, 500) {
             span {
               max-width: 100px;
             }
+          }
+
+           > * {
+            margin: 0 !important;
+            margin-bottom: 16px !important;
           }
         }
       }
 
       .loan-progress {
         display: flex;
-        flex-direction: column;
         align-items: flex-end;
+        flex-direction: column;
 
         h4 {
           text-align: right;
         }
         .step {
           position: relative;
+          z-index: 5;
+
           width: 12px;
           height: 12px;
+          margin-right: 16px;
+
           border-radius: 50%;
           background-color: #c4c4c4;
-          margin-right: 16px;
-          z-index: 5;
         }
         .step:last-of-type {
           margin: 0;
         }
         .step:not(:last-of-type):after {
           position: absolute;
+          z-index: 1;
           top: 50%;
           left: 50%;
+
           width: 32px;
           height: 1px;
-          background-color: #c4c4c4;
-          z-index: 1;
+
           content: '';
+
+          background-color: #c4c4c4;
         }
         .step.done,
         .step.done:after {
@@ -254,8 +278,8 @@
 
       .button-link {
         position: absolute;
-        bottom: 0px;
-        right: 0px;
+        right: 0;
+        bottom: 0;
       }
     }
   }

@@ -63,12 +63,12 @@
     .show-best-toggle {
       align-self: center;
 
-      > * {
+       > * {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        > * {
+         > * {
           font-size: initial;
         }
       }
@@ -154,7 +154,7 @@
     display: inline-flex;
     align-items: center;
 
-    > * {
+     > * {
       display: inline-flex;
       align-items: center;
 
