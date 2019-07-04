@@ -7,6 +7,10 @@ import { compose } from 'recompose';
 import * as defaultMiddlewares from './middlewares';
 import { logRequest, trackRequest } from './helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
+import {
+  setClientMicroservice,
+  setClientUrl,
+} from '../../../utils/server/getClientUrl';
 
 export default class RESTAPI {
   constructor({
@@ -57,6 +61,12 @@ export default class RESTAPI {
   wrapHandler(handler) {
     return (req, res, next) => {
       Fiber(() => {
+        const { headers = {} } = req;
+        const { host, location } = headers;
+
+        setClientMicroservice('api');
+        setClientUrl({ host, href: location });
+        
         try {
           Promise.resolve()
             .then(() =>
@@ -86,7 +96,6 @@ export default class RESTAPI {
   }
 
   handleSuccess(result = '', req, res) {
-    console.log('result:', result);
     const { status } = result;
     const stringified = JSON.stringify(result);
 

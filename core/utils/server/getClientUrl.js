@@ -23,13 +23,32 @@ const getMicroserviceFromHost = (host) => {
   return result;
 };
 
-export const setClientUrl = ({ host, href }) => {
-  const microservice = getMicroserviceFromHost(host);
-  storeOnFiber(HOST, host);
-  storeOnFiber(MICROSERVICE, microservice);
-  storeOnFiber(CLIENT_URL, href);
-};
-
 export const getClientHost = () => getFromFiber(HOST);
 export const getClientMicroservice = () => getFromFiber(MICROSERVICE);
 export const getClientUrl = () => getFromFiber(CLIENT_URL);
+
+export const setClientUrl = ({ host, href }) => {
+  const currentHost = getClientHost();
+  const currentUrl = getClientUrl();
+  const currentMicroservice = getClientMicroservice();
+
+  if (!currentHost) {
+    storeOnFiber(HOST, host);
+  }
+
+  if (!currentUrl) {
+    storeOnFiber(CLIENT_URL, href);
+  }
+
+  if (!currentMicroservice) {
+    const microservice = getMicroserviceFromHost(host);
+    storeOnFiber(MICROSERVICE, microservice);
+  }
+};
+
+export const setClientMicroservice = (microservice) => {
+  const currentMicroservice = getClientMicroservice();
+  if (!currentMicroservice) {
+    storeOnFiber(MICROSERVICE, microservice);
+  }
+};

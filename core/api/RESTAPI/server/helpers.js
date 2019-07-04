@@ -14,6 +14,7 @@ import UserService from 'core/api/users/server/UserService';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
+import { getClientHost } from 'core/utils/server/getClientUrl';
 
 export const AUTH_ITEMS = {
   RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',
@@ -107,7 +108,9 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
-    status = error.error && typeof error.error === 'number' ? error.error : HTTP_STATUS_CODES.BAD_REQUEST;
+    status = error.error && typeof error.error === 'number'
+      ? error.error
+      : HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }
@@ -296,11 +299,11 @@ export const verifySignature = (req) => {
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
-  const { 'x-forwarded-for': clientAddress, host, 'x-real-ip': realIp } = headers;
+  const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
 
   const analytics = new Analytics({
     userId,
-    connection: { clientAddress, httpHeaders: { host, 'x-real-ip': realIp } },
+    connection: { clientAddress, httpHeaders: { 'x-real-ip': realIp, host: getClientHost() } },
   });
 
   if (userId) {

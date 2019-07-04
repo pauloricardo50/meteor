@@ -13,7 +13,5 @@ if (!appEnv.name.includes('backend')) {
   process.env.DDP_DEFAULT_CONNECTION_URL = 'https://backend.staging.e-potek.ch';
 }
 
-// PORT is set correctly by cloud foundry
-
 // launch the bundle's main.js
 require('./bundle/main.js');
