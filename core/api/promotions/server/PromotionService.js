@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import FileService from '../../files/server/FileService';
@@ -14,8 +15,8 @@ import { sendEmail } from '../../email/methodDefinitions';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import SecurityService from '../../security';
 import Promotions from '../promotions';
-import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 
 export class PromotionService extends CollectionService {
   constructor() {
@@ -23,19 +24,13 @@ export class PromotionService extends CollectionService {
   }
 
   insert({ promotion = {}, userId }) {
-    if (Meteor.microservice === 'admin') {
-      // Don't add any users on a promotion created in admin
-      return super.insert(promotion);
-    }
+    const isAdmin = SecurityService.isUserAdmin(userId);
 
     return super.insert({
       ...promotion,
-      userLinks: [
-        {
-          _id: userId,
-          permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
-        },
-      ],
+      userLinks: isAdmin
+        ? undefined
+        : [{ _id: userId, permissions: PROMOTION_PERMISSIONS_FULL_ACCESS() }],
     });
   }
 
@@ -111,7 +106,10 @@ export class PromotionService extends CollectionService {
     }
 
     if (UserService.hasPromotion({ userId, promotionId })) {
-      throw new Meteor.Error(HTTP_STATUS_CODES.CONFLICT, 'Cet utilisateur est déjà invité à cette promotion');
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        'Cet utilisateur est déjà invité à cette promotion',
+      );
     }
 
     const loanId = LoanService.insertPromotionLoan({
@@ -153,7 +151,6 @@ export class PromotionService extends CollectionService {
     promotionId,
     firstName,
     proId,
-    adminId,
   }) {
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
       const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
