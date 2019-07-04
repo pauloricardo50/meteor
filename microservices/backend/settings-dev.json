@@ -1,0 +1,35 @@
+{
+  "public": {
+    "microservice": "backend",
+    "environment": "dev",
+    "analyticsSettings": {
+      "Mixpanel": {
+        "token": "2798b48714b4d78fda1c63d822e54064",
+        "people": true
+      },
+      "Segment": {
+        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
+      }
+    },
+    "google_maps_key": "AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8",
+    "subdomains": {
+      "admin": "http://localhost:5000",
+      "app": "http://localhost:4000",
+      "pdf": "http://localhost:5500",
+      "pro": "http://localhost:4100",
+      "www": "http://localhost:3000"
+    }
+  },
+  "mandrill": {
+    "MANDRILL_LOGIN": "florian@e-potek.ch",
+    "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
+    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  },
+  "storage": {
+    "bucketName": "e-potek-dev-files"
+  },
+  "exoscale": {
+    "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
+    "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
+  }
+}

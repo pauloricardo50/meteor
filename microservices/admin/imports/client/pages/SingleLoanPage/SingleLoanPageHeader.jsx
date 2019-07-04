@@ -40,7 +40,7 @@ const sendFeedbackToAllLenders = (loan) => {
   }) => `${name} (${organisationName})`);
 
   if (offers.length) {
-    const confirm = window.confirm(`Attention: modifier le statut du dossier à sans suite enverra automatiquememt un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
+    const confirm = window.confirm(`Attention: passer à sans suite enverra un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
 
     if (confirm) {
       return sendNegativeFeedbackToAllLenders.run({ loanId });
@@ -62,7 +62,7 @@ const additionalActions = loan => (status, prevStatus) => {
   }
 
   if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
-    const confirm = window.confirm('Attention, ce dossier requiert maintenant des revenus précis, veuillez les saisir dans l\'onglet "Revenus",');
+    const confirm = window.confirm('Attention, il faut maintenant saisir des revenus précis!');
   }
 
   return Promise.resolve();

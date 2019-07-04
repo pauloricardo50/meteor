@@ -3,51 +3,62 @@ $dot-size-total: 10px;
 $dot-offset: 4px;
 
 .timeline.vertical {
-  list-style: none;
-  margin: 0;
   width: 250px;
+  margin: 0;
+
+  list-style: none;
 
   li:last-of-type {
     padding-bottom: 0;
   }
 
   li {
+    position: relative;
+
     max-width: 250px;
     padding-bottom: 16px;
     padding-left: 2em;
-    position: relative;
+
     color: $icon;
 
     .secondary-label {
       position: absolute;
-      transform: translate(-100%, 0);
       left: 0;
+
       padding-right: 16px;
+
+      transform: translate(-100%, 0);
       text-align: right;
       white-space: nowrap;
     }
 
     &:before {
       position: absolute;
-      left: 0;
+      z-index: 2;
       top: $dot-offset;
-      content: '';
+      left: 0;
+
       width: $dot-size;
       height: $dot-size;
-      border-radius: 50%;
+
+      content: '';
+
       border: 2px solid $icon;
-      z-index: 2;
+      border-radius: 50%;
     }
 
     &:not(:last-of-type):after {
       position: absolute;
-      left: 5px;
+      z-index: 1;
       top: calc(#{$dot-size-total} + #{$dot-offset});
-      content: '';
+      left: 5px;
+
       width: 2px;
       height: calc(100% - #{$dot-size-total});
+
+      content: '';
+
       background-color: $icon;
-      z-index: 1;
     }
 
     &.complete {
@@ -67,17 +78,20 @@ $dot-offset: 4px;
 
 .timeline.horizontal {
   display: flex;
-  list-style: none;
+
   margin: 0;
   padding: 0;
+
+  list-style: none;
 
   li {
     display: flex;
     flex-direction: column;
 
     .main-label {
-      border-bottom: 2px solid $icon;
       position: relative;
+
+      border-bottom: 2px solid $icon;
     }
 
     &:last-of-type .main-label {
@@ -85,15 +99,18 @@ $dot-offset: 4px;
     }
 
     .main-label:before {
-      content: '';
       position: absolute;
-      left: 0;
+      z-index: 2;
       bottom: -7px;
+      left: 0;
+
       width: $dot-size;
       height: $dot-size;
-      border-radius: 50%;
+
+      content: '';
+
       border: 2px solid $icon;
-      z-index: 2;
+      border-radius: 50%;
       background-color: white;
     }
 

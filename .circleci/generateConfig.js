@@ -62,12 +62,14 @@ const runTestsCommand = (name, testsType) => {
     case 'e2e':
       return runCommand(
         'Run e2e tests',
-        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+        `
+        meteor node ./scripts/run-with-backend.js ${name} test-e2e-CI --full-app-tests
+        `,
       );
     case 'unit':
       return runCommand(
         'Run unit tests',
-        `meteor npm --prefix microservices/${name} run test-CI`,
+        `meteor node ./scripts/run-with-backend.js ${name} test-CI`,
       );
     default:
       throw new Error(`Unknown tests type: ${testsType}`);
@@ -143,7 +145,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     // ),
     runCommand(
       'Install node_modules',
-      `meteor npm --prefix microservices/${name} ci`,
+      `
+      meteor npm --prefix microservices/${name} ci
+      meteor npm --prefix microservices/backend ci
+      `,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),

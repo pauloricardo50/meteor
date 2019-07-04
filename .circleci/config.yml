@@ -99,13 +99,17 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/www ci
+          command: |2-
+
+                  meteor npm --prefix microservices/www ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang www
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/www run test-CI
+          command: meteor node ./scripts/run-with-backend.js www test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -170,13 +174,17 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/app ci
+          command: |2-
+
+                  meteor npm --prefix microservices/app ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang app
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/app run test-CI
+          command: meteor node ./scripts/run-with-backend.js app test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -241,13 +249,17 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/admin ci
+          command: |2-
+
+                  meteor npm --prefix microservices/admin ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang admin
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/admin run test-CI
+          command: meteor node ./scripts/run-with-backend.js admin test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -312,13 +324,17 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/pro ci
+          command: |2-
+
+                  meteor npm --prefix microservices/pro ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang pro
       - run:
           name: Run unit tests
-          command: meteor npm --prefix microservices/pro run test-CI
+          command: meteor node ./scripts/run-with-backend.js pro test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -383,13 +399,20 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/www ci
+          command: |2-
+
+                  meteor npm --prefix microservices/www ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang www
       - run:
           name: Run e2e tests
-          command: meteor npm --prefix microservices/www run test-e2e-CI
+          command: |2-
+
+                    meteor node ./scripts/run-with-backend.js www test-e2e-CI --full-app-tests
+                    
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -454,13 +477,20 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/app ci
+          command: |2-
+
+                  meteor npm --prefix microservices/app ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang app
       - run:
           name: Run e2e tests
-          command: meteor npm --prefix microservices/app run test-e2e-CI
+          command: |2-
+
+                    meteor node ./scripts/run-with-backend.js app test-e2e-CI --full-app-tests
+                    
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -525,13 +555,20 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/admin ci
+          command: |2-
+
+                  meteor npm --prefix microservices/admin ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang admin
       - run:
           name: Run e2e tests
-          command: meteor npm --prefix microservices/admin run test-e2e-CI
+          command: |2-
+
+                    meteor node ./scripts/run-with-backend.js admin test-e2e-CI --full-app-tests
+                    
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -596,13 +633,20 @@ jobs:
           command: mkdir ./results
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/pro ci
+          command: |2-
+
+                  meteor npm --prefix microservices/pro ci
+                  meteor npm --prefix microservices/backend ci
+                  
       - run:
           name: Generate language files
           command: npm run lang pro
       - run:
           name: Run e2e tests
-          command: meteor npm --prefix microservices/pro run test-e2e-CI
+          command: |2-
+
+                    meteor node ./scripts/run-with-backend.js pro test-e2e-CI --full-app-tests
+                    
       - save_cache:
           name: Cache meteor system
           key: >-

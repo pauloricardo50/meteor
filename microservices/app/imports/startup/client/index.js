@@ -8,7 +8,7 @@ import 'url-search-params-polyfill';
 import 'core/api/api';
 import 'core/api/client/api';
 
-import '../accounts-config';
+import 'core/startup/accounts-config';
 import './css';
 import initHotjar from 'core/utils/hotjar';
 import AppRouter from './AppRouter';
