@@ -4,6 +4,7 @@ import { getFromFiber, storeOnFiber } from './fiberStorage';
 
 const MICROSERVICE = '__MICROSERVICE_NAME';
 const CLIENT_URL = '__CLIENT_URL';
+const HOST = '__CLIENT_HOST';
 
 const getMicroserviceFromHost = (host) => {
   const { subdomains } = Meteor.settings.public;
@@ -24,9 +25,11 @@ const getMicroserviceFromHost = (host) => {
 
 export const setClientUrl = ({ host, href }) => {
   const microservice = getMicroserviceFromHost(host);
+  storeOnFiber(HOST, host);
   storeOnFiber(MICROSERVICE, microservice);
   storeOnFiber(CLIENT_URL, href);
 };
 
+export const getClientHost = () => getFromFiber(HOST);
 export const getClientMicroservice = () => getFromFiber(MICROSERVICE);
 export const getClientUrl = () => getFromFiber(CLIENT_URL);

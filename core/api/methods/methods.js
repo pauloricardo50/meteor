@@ -2,8 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
 
-// import { setMethodLimiter } from '../../utils/rate-limit';
-
 if (Meteor.isTest) {
   Mutation.isDebugEnabled = false;
 } else {

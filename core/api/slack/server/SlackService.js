@@ -183,7 +183,6 @@ export class SlackService {
   };
 
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
-    console.log('loanId:', loanId);
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 
     if (!isUser) {
