@@ -1,3 +1,4 @@
+import '../shared-startup';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 
