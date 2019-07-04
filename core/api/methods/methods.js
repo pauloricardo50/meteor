@@ -60,14 +60,13 @@ export class Method extends Mutation {
 
     Meteor.methods({
       [name](params = {}, additionalData) {
+        check(additionalData, Object);
         check(
-          additionalData,
+          additionalData.location,
           Match.Maybe({
-            location: Match.Maybe({
-              href: Match.Maybe(String),
-              host: Match.Maybe(String),
-              pathname: Match.Maybe(String),
-            }),
+            href: Match.Maybe(String),
+            host: Match.Maybe(String),
+            pathname: Match.Maybe(String),
           }),
         );
 
