@@ -82,8 +82,8 @@ LinkInitializer.directInit(() => {
         body: userCache,
       },
     },
-    promotionLoan: {
-      field: 'promotionLoanLink',
+    financedPromotion: {
+      field: 'financedPromotionLink',
       type: 'one',
       metadata: true,
       unique: true,

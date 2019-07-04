@@ -40,7 +40,7 @@ const defaultBody = {
     // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here
     assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
   },
-  promotionLoanLink: 1,
+  financedPromotionLink: 1,
 };
 
 const noPromotionIsChecked = promotionId =>

@@ -136,7 +136,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
     // Keep the promotionLoan at the top of the column
     sorters = [
       (item) => {
-        if (item.promotionLoanLink && item.promotionLoanLink._id) {
+        if (item.financedPromotionLink && item.financedPromotionLink._id) {
           return 1;
         }
 
@@ -155,7 +155,7 @@ export const groupByFunc = (groupBy) => {
     // When grouping by promotion, also group promotionLoan
     return loan =>
       get(loan, groupBy)
-      || (loan.promotionLoanLink && loan.promotionLoanLink._id);
+      || (loan.financedPromotionLink && loan.financedPromotionLink._id);
   }
 
   return groupBy;
@@ -164,7 +164,7 @@ export const groupByFunc = (groupBy) => {
 export const makeFormatData = ({ groupBy }) => (data) => {
   if (groupBy === GROUP_BY.PROMOTION) {
     return data.map((item) => {
-      if (item.promotionLoanLink && item.promotionLoanLink._id) {
+      if (item.financedPromotionLink && item.financedPromotionLink._id) {
         return {
           ...item,
           boardItemOptions: {

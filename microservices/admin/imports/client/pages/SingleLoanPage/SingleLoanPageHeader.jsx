@@ -146,10 +146,10 @@ const SingleLoanPageHeader = ({
             }}
           />
         )}
-        {loan.promotionLoan && (
+        {loan.financedPromotion && (
           <CollectionIconLink
             relatedDoc={{
-              ...loan.promotionLoan,
+              ...loan.financedPromotion,
               collection: PROMOTIONS_COLLECTION,
             }}
           />

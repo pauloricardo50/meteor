@@ -86,14 +86,14 @@ exposeQuery({
         if (hasPromotion) {
           filters.$or = [
             { 'promotionLinks.0._id': { $exists: true } },
-            { 'promotionLoanLink._id': { $exists: true } },
+            { 'financedPromotionLink._id': { $exists: true } },
           ];
         }
 
         if (promotionId) {
           filters.$or = [
             { 'promotionLinks.0._id': promotionId },
-            { 'promotionLoanLink._id': promotionId },
+            { 'financedPromotionLink._id': promotionId },
           ];
         }
 

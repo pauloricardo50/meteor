@@ -228,12 +228,12 @@ loanLinkPromotion.setHandler(({ userId }, params) => {
   const { promotionId, loanId, promotionName } = params;
   SecurityService.checkUserIsAdmin(userId);
   LoanService.rawCollection.update(
-    { 'promotionLoanLink._id': promotionId },
-    { $unset: { promotionLoanLink: true } },
+    { 'financedPromotionLink._id': promotionId },
+    { $unset: { financedPromotionLink: true } },
   );
   LoanService.addLink({
     id: loanId,
-    linkName: 'promotionLoan',
+    linkName: 'financedPromotion',
     linkId: promotionId,
   });
   LoanService.update({
@@ -248,7 +248,7 @@ loanUnlinkPromotion.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   LoanService.removeLink({
     id: loanId,
-    linkName: 'promotionLoan',
+    linkName: 'financedPromotion',
     linkId: promotionId,
   });
 

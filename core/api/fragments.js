@@ -352,8 +352,8 @@ export const adminLoan = ({ withSort } = {}) => ({
     title: 1,
   },
   user: adminUser(),
-  promotionLoan: { name: 1 },
-  promotionLoanLink: 1,
+  financedPromotion: { name: 1 },
+  financedPromotionLink: 1,
 });
 
 export const adminLoans = () => ({
