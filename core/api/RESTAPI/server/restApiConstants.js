@@ -20,11 +20,12 @@ export const REST_API_ERRORS = {
     errorName: 'WRONG_AUTHORIZATION_TYPE',
     message: "Authorization must be of type 'EPOTEK PublicKey:Signature'",
   },
-  AUTHORIZATION_FAILED: {
+  AUTHORIZATION_FAILED: info => ({
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
     message: 'Wrong public key or signature.',
-  },
+    info,
+  }),
   UNKNOWN_ENDPOINT: ({ path, method }) => ({
     status: HTTP_STATUS_CODES.NOT_FOUND,
     errorName: 'UNKNOWN_ENDPOINT',

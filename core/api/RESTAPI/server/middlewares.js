@@ -74,14 +74,18 @@ const authMiddleware = (req, res, next) => {
   });
 
   if (!user) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED('No user found with this public key, or maybe it has a typo ?'));
   }
 
   req.publicKey = publicKey;
   req.signature = signature;
 
-  if (!verifySignature(req)) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  const verifiedSignature = verifySignature(req);
+
+  if (!verifiedSignature.verified) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED({
+      'expectedObjectToSign': verifiedSignature.toVerify,
+    }));
   }
 
   req.user = user;
@@ -91,6 +95,7 @@ const authMiddleware = (req, res, next) => {
 
 // Handles all errors, should be added as the very last middleware
 const errorMiddleware = (error, req, res, next) => {
+  const {status: rawStatus, errorName: rawErrorName, message: rawMessage, info} = error;
   const { status, errorName, message } = getErrorObject(error, res);
   const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
 
@@ -115,7 +120,7 @@ const errorMiddleware = (error, req, res, next) => {
   }
 
   res.writeHead(status);
-  res.write(JSON.stringify({ status, errorName, message }));
+  res.write(JSON.stringify({ status, errorName, message, info }));
   res.end();
 };
 

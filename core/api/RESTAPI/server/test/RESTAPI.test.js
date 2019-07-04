@@ -1,9 +1,10 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
+import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { REST_API_ERRORS } from '../restApiConstants';
+import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../restApiConstants';
 import RESTAPI from '../RESTAPI';
 import { withMeteorUserId, OBJECT_FORMATS } from '../helpers';
 import {
@@ -152,7 +153,13 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: makeHeaders({ publicKey: '12345' }),
         },
-        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+        // expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+      }).then((response) => {
+        const { status, errorName, message, info } = response;
+        expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
+        expect(errorName).to.equal('AUTHORIZATION_FAILED');
+        expect(message).to.equal('Wrong public key or signature.');
+        expect(info).to.equal('No user found with this public key, or maybe it has a typo ?');
       }));
 
     it('signature is wrong', () =>
@@ -162,7 +169,12 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: makeHeaders({ publicKey }),
         },
-        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+      }).then((response) => {
+        const { status, errorName, message, info } = response;
+        expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
+        expect(errorName).to.equal('AUTHORIZATION_FAILED');
+        expect(message).to.equal('Wrong public key or signature.');
+        expect(info).to.not.equal(undefined);
       }));
 
     it('attempts a replay attack with same nonce', () => {

@@ -11,10 +11,10 @@ import Analytics from 'core/api/analytics/server/Analytics';
 import { Random } from 'meteor/random';
 import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
+import { getClientHost } from 'core/utils/server/getClientUrl';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
-import { getClientHost } from 'core/utils/server/getClientUrl';
 
 export const AUTH_ITEMS = {
   RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',
@@ -294,7 +294,14 @@ export const verifySignature = (req) => {
     return isValid;
   });
 
-  return verified;
+  return {
+    verified,
+    toVerify: {
+      object: objectToVerify,
+      acceptedStringifiedVersions: Object.keys(OBJECT_FORMATS).map(format =>
+        JSON.stringify(formatObject(objectToVerify, format))),
+    },
+  };
 };
 
 export const trackRequest = ({ req, result }) => {
@@ -303,7 +310,10 @@ export const trackRequest = ({ req, result }) => {
 
   const analytics = new Analytics({
     userId,
-    connection: { clientAddress, httpHeaders: { 'x-real-ip': realIp, host: getClientHost() } },
+    connection: {
+      clientAddress,
+      httpHeaders: { 'x-real-ip': realIp, host: getClientHost() },
+    },
   });
 
   if (userId) {
