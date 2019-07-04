@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
-import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../proE2eConstants';
+import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Pro promotion', () => {
   before(() => {

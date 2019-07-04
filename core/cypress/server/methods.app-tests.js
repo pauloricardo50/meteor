@@ -3,24 +3,59 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import UserService from 'core/api/users/server/UserService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
-import { ROLES, PROMOTION_TYPES } from 'core/api/constants';
+import {
+  ROLES,
+  PROMOTION_TYPES,
+  LOAN_QUERIES,
+  STEPS,
+} from 'core/api/constants';
 import 'core/cypress/server/methods';
 import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
 import OrganisationService from 'imports/core/api/organisations/server/OrganisationService';
 import LoanService from 'imports/core/api/loans/server/LoanService';
+import PropertyService from 'core/api/properties/server/PropertyService';
+import { check } from 'meteor/check';
+import Loans from 'core/api/loans/loans';
+import { loanBase } from 'core/api/fragments';
+import Users from 'core/api/users/users';
+import {
+  createLoginToken,
+  createEmailVerificationToken,
+} from 'core/utils/testHelpers/index';
+import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
   PRO_EMAIL_2,
   PRO_EMAIL_3,
   PRO_PASSWORD,
   ORG_NAME,
-} from '../proE2eConstants';
+  USER_EMAIL,
+  USER_PASSWORD,
+} from './e2eConstants';
+import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
+
+const userLoansE2E = Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
+  $filter({ filters, params: { userId, unowned, step } }) {
+    filters.userId = userId;
+
+    if (unowned) {
+      filters.userId = { $exists: false };
+    }
+
+    if (step) {
+      filters.step = step;
+    }
+  },
+  ...loanBase(),
+  $options: { sort: { createdAt: -1 } },
+});
 
 Meteor.methods({
   generateProFixtures() {
@@ -168,5 +203,127 @@ Meteor.methods({
   },
   updateAllLoans(loan) {
     LoanService.baseUpdate({}, { $set: loan });
+  },
+
+  getAppEndToEndTestData() {
+    const { _id: userId } = UserService.getByEmail(E2E_USER_EMAIL);
+
+    const admin = Users.findOne(
+      { roles: { $in: [ROLES.ADMIN] } },
+      { fields: { _id: 1 } },
+    );
+
+    const solvencyLoan = userLoansE2E
+      .clone({ userId, step: STEPS.SOLVENCY })
+      .fetchOne();
+
+    const requestLoan = userLoansE2E
+      .clone({ userId, step: STEPS.REQUEST })
+      .fetchOne();
+
+    const unownedLoan = userLoansE2E.clone({ owned: false }).fetchOne();
+
+    const adminLoginToken = createLoginToken(admin._id);
+    const emailVerificationToken = createEmailVerificationToken(
+      userId,
+      E2E_USER_EMAIL,
+    );
+
+    const userId2 = UserService.createUser({
+      options: { email: USER_EMAIL, password: USER_PASSWORD },
+    });
+
+    try {
+      // Wrap due to meteor toys issue
+      // https://github.com/MeteorToys/meteor-devtools/issues/111
+      Accounts.sendResetPasswordEmail(userId2);
+    } catch (error) {}
+
+    const user = UserService.findOne(userId2, { fields: { services: 1 } });
+
+    const passwordResetToken = user.services.password.reset.token;
+
+    return {
+      solvencyLoan,
+      requestLoan,
+      unownedLoan,
+      adminLoginToken,
+      emailVerificationToken,
+      userId,
+      passwordResetToken,
+    };
+  },
+  inviteTestUser({ withPassword } = {}) {
+    const userId = UserService.adminCreateUser({
+      options: {
+        email: USER_EMAIL,
+        firstName: 'Test',
+        lastName: 'User',
+        sendEnrollmentEmail: true,
+        password: withPassword && USER_PASSWORD,
+      },
+    });
+    LoanService.fullLoanInsert({ userId });
+
+    const loginToken = UserService.getLoginToken({ userId });
+    return loginToken;
+  },
+  removeTestUser(email) {
+    const user = UserService.getByEmail(email);
+    if (user) {
+      UserService.remove({ userId: user._id });
+    }
+  },
+  updateLoan({ loanId, object }) {
+    LoanService.update({ loanId, object });
+  },
+  getLoginToken() {
+    const user = UserService.findOne({});
+    const loginToken = UserService.getLoginToken({ userId: user._id });
+    return loginToken;
+  },
+  addProProperty() {
+    const userId = UserService.adminCreateUser({
+      options: {
+        email: PRO_EMAIL,
+        firstName: 'Pro',
+        lastName: 'Test User',
+      },
+      role: ROLES.PRO,
+    });
+    const propertyId = PropertyService.proPropertyInsert({
+      property: {
+        address1: 'Chemin Auguste-Vilbert 14',
+        zipCode: 1218,
+        city: 'Le Grand-Saconnex',
+        value: 1500000,
+      },
+      userId,
+    });
+
+    return propertyId;
+  },
+  addUserProperty() {
+    return PropertyService.insert({
+      property: {
+        address1: 'Chemin Auguste-Vilbert 14',
+        zipCode: 1218,
+        city: 'Le Grand-Saconnex',
+        value: 1500000,
+      },
+    });
+  },
+  serverLog: (log) => {
+    check(log, String);
+    if (Meteor.isServer) {
+      console.log('Cypress logging from server: ', log);
+    }
+  },
+  isLoggedIn() {
+    return this.userId;
+  },
+  resetDatabase,
+  generateFixtures() {
+    createFakeInterestRates({ number: 10 });
   },
 });
