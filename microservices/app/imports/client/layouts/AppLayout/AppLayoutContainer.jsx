@@ -21,7 +21,7 @@ import {
 } from './SideNavContext';
 
 const WITHOUT_LOAN = [
-  '/profile',
+  '/account',
   '/add-loan',
   '/enroll-account',
   '/reset-password',

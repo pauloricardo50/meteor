@@ -166,7 +166,7 @@ export const anonymousCreateUser = new Method({
       firstName: String,
       lastName: String,
       email: String,
-      phoneNumbers: [String],
+      phoneNumber: String,
     },
     trackingId: String,
   },
