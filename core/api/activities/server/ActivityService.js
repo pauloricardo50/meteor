@@ -7,9 +7,12 @@ class ActivityService extends CollectionService {
     super(Activities);
   }
 
+  addServerActivity(activity) {
+    return this.insert({ ...activity, type: ACTIVITY_TYPES.SERVER });
+  }
+
   addCreatedAtActivity({ createdAt, ...rest }) {
-    return this.insert({
-      type: ACTIVITY_TYPES.SERVER,
+    return this.addServerActivity({
       secondaryType: ACTIVITY_SECONDARY_TYPES.CREATED,
       date: createdAt,
       ...rest,

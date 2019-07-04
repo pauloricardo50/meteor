@@ -32,7 +32,14 @@ const ActivitySchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(ACTIVITY_SECONDARY_TYPES),
   },
-  date: { type: Date },
+  date: {
+    type: Date,
+    autoValue() {
+      if (this.isInsert) {
+        return this.value || new Date();
+      }
+    },
+  },
   loanLink: { type: Object, optional: true },
   'loanLink._id': { type: String, optional: true },
   shouldNotify: { type: Boolean, optional: true },

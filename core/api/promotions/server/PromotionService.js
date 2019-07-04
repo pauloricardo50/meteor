@@ -230,7 +230,7 @@ export class PromotionService extends CollectionService {
     );
   }
 
-  removeUser({ promotionId, loanId }) {
+  removeLoan({ promotionId, loanId }) {
     const {
       promotionOptionLinks = [],
       attributedPromotionLots = [],
