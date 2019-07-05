@@ -12,40 +12,26 @@ import {
 
 type NotificationListProps = {};
 
-const getNotificationTitle = (task, activity, createdAt) => {
-  let title;
-
-  if (task) {
-    title = task.title;
-  } else if (activity) {
-    title = activity.title;
-  } else {
-    title = "L'orgine de la notification a été supprimée";
-  }
-
-  return (
-    <>
-      <p className="secondary" style={{ margin: 0 }}>
-        {moment(createdAt).fromNow()}:&nbsp;
-      </p>
-      <p style={{ margin: 0 }}>{title}</p>
-    </>
-  );
-};
+const getNotificationTitle = (title, createdAt) => (
+  <>
+    <p className="secondary" style={{ margin: 0 }}>
+      {moment(createdAt).fromNow()}
+      :&nbsp;
+    </p>
+    <p style={{ margin: 0 }}>{title}</p>
+  </>
+);
 
 const Notification = ({
   _id: notificationId,
-  task,
-  activity,
+  title,
   refetch,
   relatedDoc,
   createdAt,
 }) => (
   <div className="notification-list-item">
     <div>
-      <div className="flex-row">
-        {getNotificationTitle(task, activity, createdAt)}
-      </div>
+      <div className="flex-row">{getNotificationTitle(title, createdAt)}</div>
       {relatedDoc && <CollectionIconLink relatedDoc={relatedDoc} />}
     </div>
     <div className="buttons">

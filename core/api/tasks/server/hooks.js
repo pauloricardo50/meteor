@@ -1,6 +1,6 @@
-import Tasks from '..';
+import NotificationService from '../../notifications/server/NotificationService';
 import { TASK_STATUS } from '../taskConstants';
-import NotificationService from 'core/api/notifications/server/NotificationService';
+import Tasks from '..';
 
 Tasks.before.update((userId, { _id: taskId, status: oldStatus }, fieldNames, modifier) => {
   if (fieldNames.includes('status')) {
@@ -23,7 +23,7 @@ Tasks.before.update((userId, { _id: taskId, status: oldStatus }, fieldNames, mod
       newStatus === TASK_STATUS.COMPLETED
         || newStatus === TASK_STATUS.CANCELLED
     ) {
-      NotificationService.readTaskNotification({ taskId });
+      NotificationService.readNotificationAll({ filters: { 'taskLink._id': taskId } });
     }
   }
 });
