@@ -23,17 +23,19 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 const getListItemDetails = (
   collectionName,
   {
-    roles,
-    name,
-    structure,
-    loans,
     address1,
-    value,
-    user,
-    status,
-    promotion,
-    organisations = [],
     anonymous,
+    canton,
+    city,
+    loans,
+    name,
+    organisations = [],
+    promotion,
+    roles,
+    status,
+    structure,
+    user,
+    value,
   },
 ) => {
   switch (collectionName) {
@@ -52,7 +54,10 @@ const getListItemDetails = (
       }`,
       secondary: (
         <span>
-          <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
+          <StatusLabel status={status} collection={LOANS_COLLECTION} />
+          {' '}
+-
+          {' '}
           {loanValueText}
         </span>
       ),
@@ -69,7 +74,15 @@ const getListItemDetails = (
     return {
       primary: name || 'Promotion sans nom',
       secondary: (
-        <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+        <div>
+          <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+            &nbsp;
+          <span>
+            {city}
+              &nbsp;
+            {canton}
+          </span>
+        </div>
       ),
     };
 
