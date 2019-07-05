@@ -81,6 +81,7 @@ import Event from '@material-ui/icons/Event';
 import Computer from '@material-ui/icons/Computer';
 import Notifications from '@material-ui/icons/Notifications';
 import Snooze from '@material-ui/icons/Snooze';
+import DragHandle from '@material-ui/icons/DragHandle';
 
 export const iconMap = {
   close: CloseIcon,
@@ -162,6 +163,7 @@ export const iconMap = {
   computer: Computer,
   notifications: Notifications,
   snooze: Snooze,
+  dragHandle: DragHandle,
 };
 
 const Icon = ({
