@@ -18,7 +18,7 @@ type CollectionSearchProps = {
 };
 
 const renderResult = renderItem => (result, index) => (
-  <MenuItem key={index}>{renderItem(result)}</MenuItem>
+  <MenuItem key={index} className="collection-search-results-item">{renderItem(result)}</MenuItem>
 );
 
 const CollectionSearch = ({

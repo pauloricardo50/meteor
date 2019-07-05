@@ -9,6 +9,7 @@ export default compose(
     setSearchQuery,
     setSearchResults,
     query,
+    queryParams,
     resultsFilter,
     setShowResults,
     searchResults,
@@ -18,7 +19,7 @@ export default compose(
       event.preventDefault();
       setSearchQuery(event.target.value);
       query
-        .clone({ searchQuery: event.target.value })
+        .clone({ searchQuery: event.target.value, ...queryParams })
         .fetch((err, results) => {
           if (err) {
             throw err;
