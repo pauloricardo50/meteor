@@ -50,6 +50,7 @@ const makeMapTask = ({
     assignee,
     loan = {},
     user = {},
+    priority,
   } = task;
 
   return {
@@ -84,7 +85,10 @@ const makeMapTask = ({
           ) : null,
         raw: assignee && assignee.name,
       },
-      { raw: '', label: <TasksTableActions taskId={taskId} /> },
+      {
+        raw: '',
+        label: <TasksTableActions taskId={taskId} priority={priority} />,
+      },
     ].filter(x => x),
     handleClick: () => {
       setTaskToModify(task);

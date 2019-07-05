@@ -2,7 +2,11 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
-import { TASK_STATUS, TASKS_COLLECTION } from './taskConstants';
+import {
+  TASK_STATUS,
+  TASKS_COLLECTION,
+  TASK_PRIORITIES,
+} from './taskConstants';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
@@ -104,6 +108,11 @@ export const TasksSchema = new SimpleSchema({
   isPrivate: {
     type: Boolean,
     defaultValue: false,
+  },
+  priority: {
+    type: String,
+    defaultValue: TASK_PRIORITIES.DEFAULT,
+    allowedValues: Object.values(TASK_PRIORITIES),
   },
 });
 

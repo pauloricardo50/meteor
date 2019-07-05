@@ -867,6 +867,7 @@ export const baseTask = () => ({
   description: 1,
   updatedAt: 1,
   isPrivate: 1,
+  priority: 1,
 });
 
 export const task = () => ({

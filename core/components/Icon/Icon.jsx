@@ -82,6 +82,7 @@ import Computer from '@material-ui/icons/Computer';
 import Notifications from '@material-ui/icons/Notifications';
 import Snooze from '@material-ui/icons/Snooze';
 import DragHandle from '@material-ui/icons/DragHandle';
+import PriorityHigh from '@material-ui/icons/PriorityHigh';
 
 export const iconMap = {
   close: CloseIcon,
@@ -164,6 +165,7 @@ export const iconMap = {
   notifications: Notifications,
   snooze: Snooze,
   dragHandle: DragHandle,
+  priorityHigh: PriorityHigh,
 };
 
 const Icon = ({
