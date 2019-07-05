@@ -18,7 +18,7 @@ const TasksTablePriority = ({
 
   return (
     <>
-      {showPriorityTable && <h3>Prioritaire</h3>}
+      {showPriorityTable && <h4>Prioritaire</h4>}
       {showPriorityTable && (
         <Table
           columnOptions={columnOptions}
@@ -31,7 +31,7 @@ const TasksTablePriority = ({
         />
       )}
 
-      {showPriorityTable && <h3>Défaut</h3>}
+      {showPriorityTable && <h4>Défaut</h4>}
       <Table
         columnOptions={columnOptions}
         rows={defaultPriority}
