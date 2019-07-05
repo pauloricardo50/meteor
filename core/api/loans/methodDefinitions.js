@@ -188,7 +188,6 @@ export const loanLinkPromotion = new Method({
   params: {
     promotionId: String,
     loanId: String,
-    promotionName: String,
   },
 });
 

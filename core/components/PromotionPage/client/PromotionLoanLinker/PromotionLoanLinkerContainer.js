@@ -17,7 +17,6 @@ export default compose(
         ? loanLinkPromotion.run({
           loanId,
           promotionId: promotion._id,
-          promotionName: promotion.name,
         })
         : Promise.resolve();
     },
@@ -38,7 +37,6 @@ export default compose(
             loanLinkPromotion.run({
               loanId,
               promotionId: promotion._id,
-              promotionName: promotion.name,
             }))
           .then(loanId => history.push(`/loans/${loanId}`))
         : Promise.resolve();

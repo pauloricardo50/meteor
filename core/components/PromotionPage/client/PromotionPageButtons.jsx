@@ -1,11 +1,7 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
-import { Meteor } from 'meteor/meteor';
-import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
-import { loanSearch } from 'core/api/loans/queries';
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { LOANS_COLLECTION } from 'core/api/constants';
 import Button from '../../Button';
 import T from '../../Translation';
 import CustomerAdder from './CustomerAdder';

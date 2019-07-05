@@ -225,36 +225,11 @@ adminLoanReset.setHandler((context, params) => {
 });
 
 loanLinkPromotion.setHandler(({ userId }, params) => {
-  const { promotionId, loanId, promotionName } = params;
   SecurityService.checkUserIsAdmin(userId);
-  LoanService.rawCollection.update(
-    { 'financedPromotionLink._id': promotionId },
-    { $unset: { financedPromotionLink: true } },
-  );
-  LoanService.addLink({
-    id: loanId,
-    linkName: 'financedPromotion',
-    linkId: promotionId,
-  });
-  LoanService.update({
-    loanId,
-    object: { customName: `Financement de ${promotionName}` },
-  });
-  return loanId;
+  return LoanService.linkPromotion(params);
 });
 
 loanUnlinkPromotion.setHandler(({ userId }, params) => {
-  const { promotionId, loanId } = params;
   SecurityService.checkUserIsAdmin(userId);
-  LoanService.removeLink({
-    id: loanId,
-    linkName: 'financedPromotion',
-    linkId: promotionId,
-  });
-
-  return LoanService.update({
-    loanId,
-    object: { customName: true },
-    operator: '$unset',
-  });
+  return LoanService.unlinkPromotion(params);
 });
