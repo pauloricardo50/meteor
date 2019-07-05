@@ -822,9 +822,9 @@ export class LoanService extends CollectionService {
       linkId: promotionId,
     });
 
-    const { promotionName } = PromotionService.fetchOne({
+    const { name: promotionName } = PromotionService.fetchOne({
       $filters: { _id: promotionId },
-      promotionName: 1,
+      name: 1,
     });
 
     this.update({
