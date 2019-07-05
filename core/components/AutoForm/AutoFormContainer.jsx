@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { withProps } from 'recompose';
 
 import {
@@ -7,8 +6,18 @@ import {
   PROPERTIES_COLLECTION,
   MORTGAGE_NOTES_COLLECTION,
 } from '../../api/constants';
+import * as methods from '../../api/methods';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
+
+const makeFunc = ({ idKey, beforeUpdate, func }) => (rawParams) => {
+  const params = createParams(rawParams, idKey);
+  if (beforeUpdate) {
+    beforeUpdate(params);
+  }
+
+  return methods[func].run(params);
+};
 
 const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
   let popFunc;
@@ -46,49 +55,9 @@ const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
   }
 
   return {
-    updateFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        if (beforeUpdate) {
-          beforeUpdate(params);
-        }
-
-        Meteor.call(updateFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
-          }
-
-          resolve(result);
-        });
-      }),
-    popFunc: rawParams => new Promise((resolve, reject) => {
-      const params = createParams(rawParams, idKey);
-      if (beforeUpdate) {
-        beforeUpdate(params);
-      }
-
-      Meteor.call(popFunc, params, (error, result) => {
-        if (error) {
-          reject(error);
-        }
-
-        resolve(result);
-      });
-    }),
-    pushFunc: rawParams => new Promise((resolve, reject) => {
-      const params = createParams(rawParams, idKey);
-      if (beforeUpdate) {
-        beforeUpdate(params);
-      }
-
-      Meteor.call(pushFunc, params, (error, result) => {
-        if (error) {
-          reject(error);
-        }
-
-        resolve(result);
-      });
-    }),
+    updateFunc: makeFunc({ idKey, beforeUpdate, func: updateFunc }),
+    popFunc: makeFunc({ idKey, beforeUpdate, func: popFunc }),
+    pushFunc: makeFunc({ idKey, beforeUpdate, func: pushFunc }),
   };
 });
 
