@@ -1,7 +1,6 @@
-import { withState, compose, withProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import { loanSearch } from 'core/api/loans/queries';
 import {
   loanLinkPromotion,
   loanUnlinkPromotion,
@@ -10,20 +9,7 @@ import {
 
 export default compose(
   withRouter,
-  withState('searchQuery', 'setSearchQuery', ''),
-  withState('searchResults', 'setSearchResults', []),
-  withProps(({ searchQuery, setSearchResults, promotion, history }) => ({
-    onSearch: (event) => {
-      event.preventDefault();
-      loanSearch.clone({ searchQuery }).fetch((err, loans) => {
-        if (err) {
-          throw err;
-        }
-        setSearchResults(promotion.promotionLoan
-          ? loans.filter(loan => promotion.promotionLoan._id !== loan._id)
-          : loans);
-      });
-    },
+  withProps(({ promotion, history }) => ({
     linkPromotionLoan: ({ loanId }) => {
       const confirm = window.confirm('Êtes-vous sûr de vouloir lier ce dossier à cette promotion ?');
 
