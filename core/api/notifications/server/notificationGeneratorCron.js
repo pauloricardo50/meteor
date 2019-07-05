@@ -12,6 +12,7 @@ SyncedCron.add({
     try {
       NotificationService.addTaskNotifications();
       NotificationService.addActivityNotifications();
+      NotificationService.addRevenueNotifications();
     } catch (error) {
       SlackService.sendError({
         error,
