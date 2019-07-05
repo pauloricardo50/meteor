@@ -5,6 +5,7 @@ import Table from 'core/components/Table';
 import TasksTableContainer from './TasksTableContainer';
 import TaskModifier from './TaskModifier';
 import TaskTableFilters from './TaskTableFilters';
+import TasksTablePriority from './TasksTablePriority';
 
 const TasksTable = ({
   children,
@@ -23,8 +24,11 @@ const TasksTable = ({
   setAssignee,
   uptoDate,
   setUptoDate,
+  withPriority,
 }) => {
   const renderTable = !(hideIfNoData && !rows.length);
+  const TableComponent = withPriority ? TasksTablePriority : Table;
+
   return (
     <React.Fragment>
       {children}
@@ -39,7 +43,7 @@ const TasksTable = ({
         />
       )}
       {renderTable ? (
-        <Table
+        <TableComponent
           columnOptions={columnOptions}
           rows={rows}
           noIntl

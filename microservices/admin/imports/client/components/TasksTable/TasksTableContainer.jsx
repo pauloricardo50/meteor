@@ -55,6 +55,7 @@ const makeMapTask = ({
 
   return {
     id: taskId,
+    priority,
     columns: [
       relatedTo && {
         raw: loan.name || user.name,
