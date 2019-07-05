@@ -22,7 +22,7 @@ const LoanBoardCardBottom = ({
     content = promotion;
   } else if (customName) {
     content = customName;
-  } else if (structure.propertyId) {
+  } else if (structure && structure.propertyId) {
     const property = properties.find(({ _id }) => _id === structure.propertyId);
     if (property.address1) {
       content = property.address1;
