@@ -21,8 +21,7 @@ class NotificationsManager extends Component {
         unread: true,
         $body: {
           recipientLinks: 1,
-          task: { title: 1, dueAt: 1 },
-          activity: { title: 1, date: 1 },
+          title: 1,
           relatedDoc: 1,
           createdAt: 1,
         },

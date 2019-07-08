@@ -343,7 +343,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
-  revenues: fullRevenues(),
+  revenues: revenue(),
   status: 1,
   tasksCache: {
     createdAt: 1,
@@ -424,6 +424,8 @@ export const notification = () => ({
   recipients: { firstName: 1, lastName: 1, name: 1 },
   relatedDoc: 1,
   task: task(),
+  title: 1,
+  revenue: revenue(),
   updatedAt: 1,
 });
 
@@ -957,7 +959,7 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const fullRevenues = () => ({
+export const revenue = () => ({
   amount: 1,
   approximation: 1,
   createdAt: 1,
