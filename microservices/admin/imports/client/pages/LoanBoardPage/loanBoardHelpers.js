@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
 import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
@@ -113,8 +114,9 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
-const sortColumnData = (data, sortBy, sortOrder) => {
-  const sorters = [
+const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
+  let sortOrders = [sortOrder];
+  let sorters = [
     (item) => {
       const value = get(item, sortBy);
 
@@ -130,21 +132,85 @@ const sortColumnData = (data, sortBy, sortOrder) => {
     item => get(item, 'user.lastName'),
   ];
 
-  return _orderBy(data, sorters, [sortOrder]);
+  if (groupBy === GROUP_BY.PROMOTION) {
+    // Keep the promotionLoan at the top of the column
+    sorters = [
+      (item) => {
+        if (item.financedPromotionLink && item.financedPromotionLink._id) {
+          return 1;
+        }
+
+        return 0;
+      },
+      ...sorters,
+    ];
+    sortOrders = ['desc', ...sortOrders];
+  }
+
+  return data => _orderBy(data, sorters, sortOrders);
 };
+
+export const groupByFunc = (groupBy) => {
+  if (groupBy === GROUP_BY.PROMOTION) {
+    // When grouping by promotion, also group promotionLoan
+    return loan =>
+      get(loan, groupBy)
+      || (loan.financedPromotionLink && loan.financedPromotionLink._id);
+  }
+
+  return groupBy;
+};
+
+export const makeFormatData = ({ groupBy }) => (data) => {
+  if (groupBy === GROUP_BY.PROMOTION) {
+    return data.map((item) => {
+      if (item.financedPromotionLink && item.financedPromotionLink._id) {
+        return {
+          ...item,
+          boardItemOptions: {
+            titleTop: (
+              <h4 className="board-column-subtitle">
+                Financement de la promotion
+              </h4>
+            ),
+            titleBottom: <h4 className="board-column-subtitle">Clients</h4>,
+          },
+        };
+      }
+
+      return item;
+    });
+  }
+
+  return data;
+};
+
+export const makeFormatColumn = ({
+  groupedLoans,
+  sortBy,
+  sortOrder,
+  groupBy,
+}) => {
+  const formatData = makeFormatData({ groupBy });
+  const sortColumnData = makeSortColumnData({ sortBy, sortOrder, groupBy });
+
+  return (group) => {
+    const data = groupedLoans[group];
+    const sortedData = sortColumnData(data);
+    const formattedData = formatData(sortedData);
+    return { id: group, data: formattedData };
+  };
+};
+
 export const groupLoans = ({ loans, options, ...props }) => {
   const { groupBy, sortBy, sortOrder } = options;
-  const groupedLoans = _groupBy(loans, groupBy);
+  const groupedLoans = _groupBy(loans, groupByFunc(groupBy));
   const groups = Object.keys(groupedLoans);
 
   const formattedColumns = [
     ...groups,
     ...getMissingColumns(groupBy, groups),
-  ].map((group) => {
-    const data = groupedLoans[group];
-    const sortedData = sortColumnData(data, sortBy, sortOrder);
-    return { id: group, data: sortedData };
-  });
+  ].map(makeFormatColumn({ groupedLoans, sortBy, sortOrder, groupBy }));
 
   return formattedColumns.sort(makeSortColumns(options, props));
 };

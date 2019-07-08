@@ -84,6 +84,13 @@ LinkInitializer.directInit(() => {
         body: userCache,
       },
     },
+    financedPromotion: {
+      field: 'financedPromotionLink',
+      type: 'one',
+      metadata: true,
+      unique: true,
+      collection: Promotions,
+    },
   });
 });
 

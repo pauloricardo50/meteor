@@ -28,6 +28,8 @@ import {
   anonymousLoanInsert,
   userLoanInsert,
   adminLoanReset,
+  loanLinkPromotion,
+  loanUnlinkPromotion,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -220,4 +222,14 @@ anonymousLoanInsert.setHandler((context, params) => {
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.resetLoan(params);
-})
+});
+
+loanLinkPromotion.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.linkPromotion(params);
+});
+
+loanUnlinkPromotion.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.unlinkPromotion(params);
+});

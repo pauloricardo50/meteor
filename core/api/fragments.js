@@ -354,6 +354,8 @@ export const adminLoan = ({ withSort } = {}) => ({
     assigneeLink: 1,
   },
   user: adminUser(),
+  financedPromotion: { name: 1 },
+  financedPromotionLink: 1,
 });
 
 export const adminLoans = () => ({
@@ -672,6 +674,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     value: 1,
     promotion: { _id: 1 },
   },
+  promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
       loans: {
