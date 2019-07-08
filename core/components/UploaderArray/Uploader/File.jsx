@@ -40,7 +40,13 @@ const File = ({
           if (Meteor.microservice === 'admin') {
             event.preventDefault();
             getSignedUrl.run({ key: Key }).then((signedUrl) => {
-              displayFile(signedUrl, url.split('.').slice(-1)[0]);
+              displayFile(
+                signedUrl,
+                url
+                  .split('.')
+                  .slice(-1)[0]
+                  .toLowerCase(),
+              );
             });
           }
         }}
