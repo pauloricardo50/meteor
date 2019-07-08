@@ -1,41 +1,47 @@
-import { withState, compose, withProps } from 'recompose';
+import { compose, withProps, withStateHandlers } from 'recompose';
 
 export default compose(
-  withState('searchQuery', 'setSearchQuery', ''),
-  withState('searchResults', 'setSearchResults', []),
-  withState('showResults', 'setShowResults', false),
-  withState('enableBlur', 'setEnableBlur', true),
+  withStateHandlers(
+    {
+      searchQuery: '',
+      searchResults: {},
+      showResults: false,
+    },
+    { setState: () => newState => newState },
+  ),
   withProps(({
-    setSearchQuery,
-    setSearchResults,
     query,
     queryParams,
     resultsFilter,
-    setShowResults,
     searchResults,
-    enableBlur,
+    searchQuery,
+    setState,
   }) => ({
     onSearch: (event) => {
       event.preventDefault();
-      setSearchQuery(event.target.value);
+      const newSearchQuery = event.target.value;
+      setState({ searchQuery: newSearchQuery });
+      setState({ showResults: true });
       query
-        .clone({ searchQuery: event.target.value, ...queryParams })
+        .clone({ searchQuery: newSearchQuery, ...queryParams })
         .fetch((err, results) => {
           if (err) {
             throw err;
           }
 
-          setSearchResults(resultsFilter ? resultsFilter(results) : results);
-          setShowResults(!!searchResults.length);
+          setState({
+            searchResults: {
+              ...searchResults,
+              [newSearchQuery]: resultsFilter
+                ? resultsFilter(results)
+                : results,
+            },
+          });
         });
     },
     onBlur: () => {
-      if (enableBlur) {
-        setShowResults(false);
-        setSearchQuery('');
-        setSearchResults([]);
-      }
+      setState({ showResults: false });
     },
-    onFocus: () => setShowResults(!!searchResults.length),
+    onFocus: () => setState({ showResults: !!searchQuery }),
   })),
 );

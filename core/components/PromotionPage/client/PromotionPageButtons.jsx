@@ -7,7 +7,7 @@ import T from '../../Translation';
 import CustomerAdder from './CustomerAdder';
 import EmailTester from './EmailTester';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
-import PromotionLoanLinker from './PromotionLoanLinker/PromotionLoanLinker';
+import PromotionLoanLinker from './PromotionLoanLinker';
 
 type PromotionPageButtonsProps = {};
 

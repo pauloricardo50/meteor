@@ -811,10 +811,15 @@ export class LoanService extends CollectionService {
   }
 
   linkPromotion({ promotionId, loanId }) {
-    this.rawCollection.update(
-      { 'financedPromotionLink._id': promotionId },
-      { $unset: { financedPromotionLink: true } },
-    );
+    const { name: promotionName, promotionLoan } = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      name: 1,
+      promotionLoan: { _id: 1 },
+    });
+
+    if (promotionLoan && promotionLoan._id) {
+      this.unlinkPromotion({ promotionId, loanId: promotionLoan._id });
+    }
 
     this.addLink({
       id: loanId,
@@ -822,15 +827,11 @@ export class LoanService extends CollectionService {
       linkId: promotionId,
     });
 
-    const { name: promotionName } = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-    });
-
     this.update({
       loanId,
       object: { customName: `Financement de ${promotionName}` },
     });
+    
     return loanId;
   }
 
