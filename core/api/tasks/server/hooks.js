@@ -2,7 +2,12 @@ import NotificationService from '../../notifications/server/NotificationService'
 import { TASK_STATUS } from '../taskConstants';
 import Tasks from '..';
 
-Tasks.before.update((userId, { _id: taskId, status: oldStatus }, fieldNames, modifier) => {
+Tasks.before.update((
+  userId,
+  { _id: taskId, status: oldStatus, dueAt: oldDate },
+  fieldNames,
+  modifier,
+) => {
   if (fieldNames.includes('status')) {
     const newStatus = modifier.$set && modifier.$set.status;
     if (
@@ -23,12 +28,12 @@ Tasks.before.update((userId, { _id: taskId, status: oldStatus }, fieldNames, mod
       newStatus === TASK_STATUS.COMPLETED
         || newStatus === TASK_STATUS.CANCELLED
     ) {
-      NotificationService.readNotificationAll({ filters: { 'taskLink._id': taskId } });
+      NotificationService.readNotificationAll({
+        filters: { 'taskLink._id': taskId },
+      });
     }
   }
-});
 
-Tasks.before.update((userId, { _id: taskId, dueAt: oldDate }, fieldNames, modifier) => {
   if (fieldNames.includes('dueAt')) {
     const newDate = modifier.$set && modifier.$set.dueAt;
 
