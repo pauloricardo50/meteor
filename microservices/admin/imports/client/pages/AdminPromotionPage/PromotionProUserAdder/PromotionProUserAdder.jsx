@@ -33,12 +33,6 @@ const PromotionProUserAdder = ({
         query={userSearch}
         queryParams={{ roles: [ROLES.PRO] }}
         title="Rechercher un utilisateur PRO"
-        resultsFilter={users =>
-          (promotion.users
-            ? users.filter(user =>
-              !promotion.users.map(({ _id }) => _id).includes(user._id))
-            : users)
-        }
         renderItem={user => (
           <div className="user-search-item">
             <CollectionIconLink
