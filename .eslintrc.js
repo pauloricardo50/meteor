@@ -118,6 +118,10 @@ module.exports = {
     'react/jsx-one-expression-per-line': [2, { allow: 'single-child' }],
     'react/display-name': 'off',
     'react/no-multi-comp': 'off',
+    'react/sort-comp': [
+      2,
+      { order: ['lifecycle', 'static-methods', 'everything-else', 'render'] },
+    ],
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',
