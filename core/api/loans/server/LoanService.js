@@ -839,6 +839,45 @@ export class LoanService extends CollectionService {
     //   });
     // });
   }
+
+  linkPromotion({ promotionId, loanId }) {
+    const { name: promotionName, promotionLoan } = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      name: 1,
+      promotionLoan: { _id: 1 },
+    });
+
+    if (promotionLoan && promotionLoan._id) {
+      this.unlinkPromotion({ promotionId, loanId: promotionLoan._id });
+    }
+
+    this.addLink({
+      id: loanId,
+      linkName: 'financedPromotion',
+      linkId: promotionId,
+    });
+
+    this.update({
+      loanId,
+      object: { customName: `Financement de ${promotionName}` },
+    });
+    
+    return loanId;
+  }
+
+  unlinkPromotion({ promotionId, loanId }) {
+    this.removeLink({
+      id: loanId,
+      linkName: 'financedPromotion',
+      linkId: promotionId,
+    });
+
+    return this.update({
+      loanId,
+      object: { customName: true },
+      operator: '$unset',
+    });
+  }
 }
 
 export default new LoanService({});

@@ -35,6 +35,8 @@ export const tasksCache = {
   dueAt: 1,
   status: 1,
   title: 1,
+  isPrivate: 1,
+  assigneeLink: 1,
 };
 
 LinkInitializer.directInit(() => {
@@ -81,6 +83,13 @@ LinkInitializer.directInit(() => {
         field: 'userCache',
         body: userCache,
       },
+    },
+    financedPromotion: {
+      field: 'financedPromotionLink',
+      type: 'one',
+      metadata: true,
+      unique: true,
+      collection: Promotions,
     },
   });
 });

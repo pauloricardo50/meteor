@@ -3,6 +3,7 @@ import '../borrowers/server/hooks';
 import '../contacts/server/hooks';
 import '../loans/server/hooks';
 import '../mortgageNotes/server/hooks';
+import '../offers/server/hooks';
 import '../organisations/server/hooks';
 import '../promotionOptions/server/hooks';
 import '../promotions/server/hooks';

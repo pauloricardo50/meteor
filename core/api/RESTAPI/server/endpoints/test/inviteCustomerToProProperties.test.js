@@ -17,6 +17,7 @@ import {
   makeHeaders,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const customerToInvite = {
   email: 'test@example.com',
@@ -399,8 +400,8 @@ describe('REST: inviteCustomerToProProperties', function () {
           { _id: 'property3' },
         ],
         expectedResponse: {
-          status: 400,
-          message: '[Cet utilisateur est déjà invité à ce bien immobilier]',
+          status: HTTP_STATUS_CODES.CONFLICT,
+          message: 'Cet utilisateur est déjà invité à ce bien immobilier [409]',
         },
       }));
   });

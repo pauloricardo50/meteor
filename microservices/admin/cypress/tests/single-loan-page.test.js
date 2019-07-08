@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { ADMIN_EMAIL, USER_PASSWORD } from '../../imports/core/cypress/utils';
 
 describe('Loans', () => {
@@ -36,7 +35,7 @@ describe('Loans', () => {
 
     cy.get('.tasks-table').should('not.exist');
 
-    cy.contains('Ajouter tâche').click();
+    cy.get('.single-loan-page-tasks').contains('Ajouter tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
     cy.get('.tasks-table tr').should('have.length', 2);

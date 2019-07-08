@@ -12,7 +12,7 @@ import {
 } from '../queries';
 import { PROMOTION_STATUS } from '../promotionConstants';
 
-import { proPromotionsResolver } from './resolvers';
+import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
 exposeQuery({ query: adminPromotions, options: { allowFilterById: true } });
 
@@ -61,11 +61,46 @@ exposeQuery({
           userId,
         });
       }
+
+      if (!SecurityService.isUserAdmin(userId)) {
+        params.anonymize = true;
+      }
     },
-    validateParams: { userId: String, simple: Match.Maybe(Boolean) },
+    embody: (body, embodyParams) => {
+      body.$filter = ({ filters, params }) => {
+        const { _id: promotionId, userId } = params;
+        if (promotionId) {
+          filters._id = promotionId;
+        } else {
+          filters['userLinks._id'] = userId;
+        }
+      };
+
+      body.$postFilter = (promotions = [], params) => {
+        const { anonymize = false, simple, userId } = params;
+
+        if (!anonymize) {
+          return promotions;
+        }
+
+        return promotions.map((promotion) => {
+          const { promotionLots = [], ...rest } = promotion;
+          return simple
+            ? { promotionLots: promotionLots.map(({ name }) => name) }
+            : {
+              promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
+              ...rest,
+            };
+        });
+      };
+    },
+    validateParams: {
+      userId: String,
+      simple: Match.Maybe(Boolean),
+      anonymize: Match.Maybe(Boolean),
+      _id: Match.Maybe(String),
+    },
   },
-  options: { allowFilterById: true },
-  resolver: proPromotionsResolver,
 });
 
 exposeQuery({

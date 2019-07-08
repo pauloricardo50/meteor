@@ -62,7 +62,7 @@ const setupMoment = () => {
     },
     relativeTime: {
       future: 'dans %s',
-      past: 'ya %s',
+      past: 'il y a %s',
       s: 'qq secs',
       m: '1min',
       mm: '%dmins',

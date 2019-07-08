@@ -47,7 +47,10 @@ const getQuery = (collectionName) => {
   case USERS_COLLECTION:
     return { query: adminUsers, body: { name: 1, roles: 1 } };
   case PROMOTIONS_COLLECTION:
-    return { query: adminPromotions, body: { name: 1, status: 1 } };
+    return {
+      query: adminPromotions,
+      body: { name: 1, status: 1, city: 1, canton: 1 },
+    };
   case CONTACTS_COLLECTION:
     return {
       query: adminContacts,

@@ -33,6 +33,8 @@ import {
   userLoanInsert,
   loanInsertBorrowers,
   adminLoanReset,
+  loanLinkPromotion,
+  loanUnlinkPromotion,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -230,4 +232,14 @@ loanInsertBorrowers.setHandler((context, params) => {
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.resetLoan(params);
+});
+
+loanLinkPromotion.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.linkPromotion(params);
+});
+
+loanUnlinkPromotion.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.unlinkPromotion(params);
 });

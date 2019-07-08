@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import {
   STEPS,
   LOAN_STATUS_ORDER,
@@ -102,7 +103,21 @@ export const shouldSendStepNotification = (prevStep, nextStep) =>
   && nextStep === STEPS.OFFERS;
 
 export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
-  const activeTasks = tasks.filter(({ status: taskStatus }) => taskStatus === TASK_STATUS.ACTIVE);
+  const activeTasks = tasks.filter(({
+    status: taskStatus,
+    isPrivate = false,
+    assigneeLink: { _id: assigneeId } = {},
+  }) => {
+    if (taskStatus !== TASK_STATUS.ACTIVE) {
+      return false;
+    }
+
+    if (isPrivate && assigneeId) {
+      return assigneeId === Meteor.userId();
+    }
+
+    return true;
+  });
   const tasksWithoutDate = activeTasks
     .filter(({ dueAt }) => !dueAt)
     .sort(({ createdAt: A }, { createdAt: B }) => A - B);

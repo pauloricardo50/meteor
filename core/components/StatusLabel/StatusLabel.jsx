@@ -126,16 +126,18 @@ const getLabel = ({
         <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
           <span
             className={cx({ allowModify, 'status-label-dot': true })}
-            style={{ backgroundColor: color || statuses[status] }}
             {...props}
-          />
+          >
+            <span style={{ backgroundColor: color || statuses[status] }} />
+          </span>
         </Tooltip>
       ) : (
         <span
           className={cx({ allowModify, 'status-label-dot': true })}
-          style={{ backgroundColor: color || statuses[status] }}
           {...props}
-        />
+        >
+          <span style={{ backgroundColor: color || statuses[status] }} />
+        </span>
       ));
 
   default:

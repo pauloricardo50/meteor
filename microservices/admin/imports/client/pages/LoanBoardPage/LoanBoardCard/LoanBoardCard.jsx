@@ -1,6 +1,7 @@
 // @flow
 import React, { useState } from 'react';
 
+import { Meteor } from 'meteor/meteor';
 import LoanBoardCardTop from './LoanBoardCardTop';
 import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
@@ -58,7 +59,8 @@ const LoanBoardCard = ({
         <LoanBoardCardTasks
           nextDueTask={nextDueTask}
           renderComplex={renderComplex}
-          tasks={tasks}
+          tasks={tasks.filter(({ isPrivate = false, assigneeLink: { _id: assigneeId } = {} }) =>
+            (isPrivate && assigneeId ? assigneeId === Meteor.userId() : true))}
         />
       </div>
 

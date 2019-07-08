@@ -10,11 +10,12 @@ import {
   WUEST_ERRORS,
   QUALITY,
 } from '../../../constants';
+import LoanService from '../../../loans/server/LoanService';
 import WuestService from '../../../wuest/server/WuestService';
 import PropertyService from '../PropertyService';
+import UserService from '../../../users/server/UserService';
 import generator from '../../../factories';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
-import UserService from '../../../users/server/UserService';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 
@@ -39,6 +40,43 @@ describe('PropertyService', function () {
       expect(PropertyService.find().fetch()[0]).to.deep.include({
         value: 100,
       });
+    });
+  });
+
+  describe('remove', () => {
+    it('removes a property', () => {
+      generator({ properties: { _id: 'prop', loans: {} } });
+
+      expect(PropertyService.remove({ propertyId: 'prop' })).to.equal(1);
+
+      expect(PropertyService.find({}).fetch().length).to.equal(0);
+    });
+
+    it('does not remove a property if it has multiple loans, without specifiying from which to remove it', () => {
+      generator({ properties: { _id: 'prop', loans: [{}, {}] } });
+
+      expect(PropertyService.remove({ propertyId: 'prop' })).to.equal(false);
+
+      expect(PropertyService.find({}).fetch().length).to.equal(1);
+    });
+
+    it('unlinks a property if it has multiple loans', () => {
+      generator({
+        properties: {
+          _id: 'prop',
+          loans: [
+            { _id: 'loan', structures: [{ id: 'a', propertyId: 'prop' }] },
+            { _id: 'loan2' },
+          ],
+        },
+      });
+
+      expect(PropertyService.remove({ propertyId: 'prop', loanId: 'loan' })).to.equal(1);
+
+      expect(PropertyService.find({}).fetch().length).to.equal(1);
+      expect(LoanService.get('loan').propertyIds).to.deep.equal([]);
+      expect(LoanService.get('loan').structures[0].propertyId).to.equal(null);
+      expect(LoanService.get('loan2').propertyIds).to.deep.equal(['prop']);
     });
   });
 

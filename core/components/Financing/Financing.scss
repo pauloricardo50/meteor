@@ -66,6 +66,7 @@ $result-section-negative-offset: -32px;
 
     font-size: calc((16 / 14) * 1rem);
   }
+
   .chf {
     margin-right: 4px;
 
@@ -75,6 +76,16 @@ $result-section-negative-offset: -32px;
 
   .offerId {
     justify-content: flex-start !important;
+  }
+
+  .interestsCost {
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    svg {
+      margin-left: 8px;
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import { compose, withState, withProps } from 'recompose';
 
-import { removeUserFromPromotion, editPromotionLoan } from '../../api';
+import { removeLoanFromPromotion, editPromotionLoan } from '../../api';
 
 export default compose(
   withState('openDialog', 'setOpenDialog', false),
@@ -13,7 +13,7 @@ export default compose(
       const confirmed = window.confirm('Êtes vous sûr de vouloir enlever cet utilisateur de la promotion?');
 
       if (confirmed) {
-        removeUserFromPromotion.run({ loanId, promotionId });
+        removeLoanFromPromotion.run({ loanId, promotionId });
       }
     },
     handleOpenForm: () => setOpenDialog(true),

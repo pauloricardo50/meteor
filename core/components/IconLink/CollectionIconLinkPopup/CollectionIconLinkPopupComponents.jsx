@@ -1,5 +1,10 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
+import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import Tooltip from '@material-ui/core/Tooltip';
 
+import colors from 'core/config/colors';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
@@ -133,42 +138,59 @@ export const components = {
     children,
     referredByUser = {},
     referredByOrganisation = {},
-  }) => (
-    <div>
-      {children}
+    emails = [],
+  }) => {
+    const emailVerified = !!emails.length && emails[0].verified;
+
+    return (
       <div>
-        <a
-          className="color"
-          href={`mailto:${email}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {email}
-        </a>
-      </div>
-      <div>
-        <a className="color" href={`tel:${phoneNumber}`}>
-          {phoneNumber}
-        </a>
-      </div>
-      <div>
-        <b>Conseiller:</b>
-        {' '}
-        <span>{assignedEmployee ? assignedEmployee.name : '-'}</span>
-      </div>
-      {(referredByUser.name || referredByOrganisation.name) && (
+        {children}
         <div>
-          <b>Référé par:</b>
-          {' '}
-          <span>
-            {[referredByUser.name, referredByOrganisation.name]
-              .filter(x => x)
-              .join(' - ')}
-          </span>
+          <a
+            className="color"
+            href={`mailto:${email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {email}
+          </a>
+          <Tooltip
+            title={
+              emailVerified
+                ? "Cette adresse email a été vérifiée, le client s'est connecté avec."
+                : "Cette adresse email n'a pas été vérifiée, le client ne s'est pas connecté avec."
+            }
+          >
+            <FontAwesomeIcon
+              icon={emailVerified ? faCheckCircle : faExclamationCircle}
+              style={{ marginLeft: '4px', color: emailVerified ? colors.success : colors.warning }}
+            />
+          </Tooltip>
         </div>
-      )}
-    </div>
-  ),
+        <div>
+          <a className="color" href={`tel:${phoneNumber}`}>
+            {phoneNumber}
+          </a>
+        </div>
+        <div>
+          <b>Conseiller:</b>
+          {' '}
+          <span>{assignedEmployee ? assignedEmployee.name : '-'}</span>
+        </div>
+        {(referredByUser.name || referredByOrganisation.name) && (
+          <div>
+            <b>Référé par:</b>
+            {' '}
+            <span>
+              {[referredByUser.name, referredByOrganisation.name]
+                .filter(x => x)
+                .join(' - ')}
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  },
   [BORROWERS_COLLECTION]: ({ user, loans = [], children }) => (
     <div>
       {children}

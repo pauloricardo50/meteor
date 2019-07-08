@@ -98,7 +98,7 @@ describe('Public onboarding', () => {
     cy.get('input[name="firstName"]').type('Jean');
     cy.get('input[name="lastName"]').type('Dujardin');
     cy.get('input[name="email"]').type('dev@e-potek.ch');
-    cy.get('input[name="phoneNumbers.0"]').type('+41 22 566 01 10');
+    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
     cy.contains('Ok').click();
 
     cy.url().should('include', '/signup/dev@e-potek.ch');
@@ -113,7 +113,11 @@ describe('Public onboarding', () => {
       .type(USER_PASSWORD);
     cy.get('input')
       .eq(1)
-      .type(`${USER_PASSWORD}{enter}`);
+      .type(`${USER_PASSWORD}`);
+    cy.get('[type="checkbox"]').check();
+    cy.get('.password-reset-page')
+      .contains('Login')
+      .click();
 
     cy.url().should('include', '/loans/');
     cy.contains('Continuer').click();

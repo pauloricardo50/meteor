@@ -116,15 +116,38 @@ describe('REST: insertProperty', function () {
   });
 
   it('throws if a property with same externalId already exists', () => {
-    generator({ properties: { externalId: '1234' } });
+    generator({
+      properties: { externalId: '1234', userLinks: [{ _id: 'pro' }] },
+    });
+    const property = { externalId: '1234', value: 300000 };
+    return insertProperty({
+      userId: 'pro',
+      body: property,
+    }).then((response) => {
+      const { status, message, property: returnedProperty } = response;
+      expect(status).to.equal(409);
+      expect(message).to.equal('A property with externalId "1234" already exists !');
+      expect(returnedProperty).to.not.equal(undefined);
+    });
+  });
+
+  it('throws if a property with same externalId already exists without returning the existing property', () => {
+    generator({
+      properties: { externalId: '1234' },
+    });
     const property = { externalId: '1234', value: 300000 };
     return insertProperty({
       userId: 'pro',
       body: property,
       expectedResponse: {
-        status: 400,
-        message: '[A property with externalId "1234" already exists !]',
+        status: 409,
+        message: 'A property with externalId "1234" already exists !',
       },
+    }).then((response) => {
+      const { status, message, property: returnedProperty } = response;
+      expect(status).to.equal(409);
+      expect(message).to.equal('A property with externalId "1234" already exists !');
+      expect(returnedProperty).to.equal(undefined);
     });
   });
 });

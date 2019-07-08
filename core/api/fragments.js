@@ -351,8 +351,12 @@ export const adminLoan = ({ withSort } = {}) => ({
     dueAt: 1,
     status: 1,
     title: 1,
+    isPrivate: 1,
+    assigneeLink: 1,
   },
   user: adminUser(),
+  financedPromotion: { name: 1 },
+  financedPromotionLink: 1,
 });
 
 export const adminLoans = () => ({
@@ -671,6 +675,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     value: 1,
     promotion: { _id: 1 },
   },
+  promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
       loans: {
@@ -833,6 +838,27 @@ export const proProperty = ({ withSort } = {}) => ({
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
+export const apiProperty = () => ({
+  externalId: 1,
+  address1: 1,
+  address2: 1,
+  city: 1,
+  zipCode: 1,
+  value: 1,
+  description: 1,
+  propertyType: 1,
+  houseType: 1,
+  flatType: 1,
+  roomCount: 1,
+  insideArea: 1,
+  landArea: 1,
+  terraceArea: 1,
+  constructionYear: 1,
+  externalUrl: 1,
+  useOpenGraph: 1,
+  imageUrls: 1,
+});
+
 // //
 // // Task fragments
 // //
@@ -844,13 +870,15 @@ export const baseTask = () => ({
   title: 1,
   description: 1,
   updatedAt: 1,
+  isPrivate: 1,
+  priority: 1,
 });
 
 export const task = () => ({
   ...baseTask(),
   assigneeLink: 1,
   assignee: simpleUser(),
-  loan: { name: 1 },
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   user: { name: 1 },
 });
 

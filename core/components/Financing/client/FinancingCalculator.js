@@ -19,6 +19,26 @@ export const getAmortizationRateMapper = (data) => {
   };
 };
 
+export const getInterestRates = ({ structureId, loan, offer }) => {
+  const { offerId } = Calculator.selectStructure({
+    loan,
+    structureId,
+  });
+  let interestRates;
+  if (offer) {
+    interestRates = offer;
+  } else if (offerId) {
+    interestRates = Calculator.selectOffer({
+      loan,
+      structureId,
+    });
+  } else {
+    interestRates = loan.currentInterestRates;
+  }
+
+  return interestRates;
+};
+
 const argumentMappings = {
   getIncomeRatio: data => ({
     monthlyIncome: Calculator.getTotalIncome(data) / 12,
@@ -43,24 +63,14 @@ const argumentMappings = {
 
   getAmortizationRateBase: getAmortizationRateMapper,
 
-  getInterestsWithTranches: ({ structureId, loan, offer }) => {
-    const { loanTranches, offerId } = Calculator.selectStructure({
+  getInterestsWithTranches: (data) => {
+    const { loan, structureId } = data;
+    const { loanTranches } = Calculator.selectStructure({
       loan,
       structureId,
     });
-    let interestRates;
-    if (offer) {
-      interestRates = offer;
-    } else if (offerId) {
-      interestRates = Calculator.selectOffer({
-        loan,
-        structureId,
-      });
-    } else {
-      interestRates = loan.currentInterestRates;
-    }
 
-    return { tranches: loanTranches, interestRates };
+    return { tranches: loanTranches, interestRates: getInterestRates(data) };
   },
 
   getMinCash: data => ({
