@@ -1315,7 +1315,7 @@
   "emails.VERIFY_EMAIL.TITLE": "Vérifiez votre adresse email",
   "errors.fileSize.description": "On ne peut prendre que des fichiers en dessous de 50MB",
   "errors.fileSize.title": "Fichier trop gros",
-  "errors.fileType.description": "On ne peut prendre que les .pdf, .jpg, .jpeg et .png",
+  "errors.fileType.description": "On ne peut prendre que les .pdf, .jpg, .jpeg, .xlsx et .png",
   "errors.fileType.title": "Fichier incompatible",
   "errors.general": "Woops, il y a eu un petit souci!",
   "ExpensesChart.perMonth": "par mois",
