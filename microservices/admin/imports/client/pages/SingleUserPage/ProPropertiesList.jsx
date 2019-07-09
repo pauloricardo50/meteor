@@ -9,7 +9,7 @@ type ProPropertiesListProps = {};
 
 const ProPropertiesList = ({ properties }: ProPropertiesListProps) => (
   <div className="pro-properties-list">
-    <h3>Biens immobliers</h3>
+    <h3>Biens immobiliers</h3>
     {properties.map(({ address1, status, _id }) => (
       <div key={_id}>
         <CollectionIconLink
