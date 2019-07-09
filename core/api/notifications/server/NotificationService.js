@@ -144,7 +144,7 @@ class NotificationService extends CollectionService {
               && loan.userCache.assignedEmployeeCache._id,
             admins,
           ),
-          revenue: { _id: revenueId },
+          revenueLink: { _id: revenueId },
         });
       }
     });
