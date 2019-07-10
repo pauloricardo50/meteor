@@ -7,3 +7,10 @@ export const impersonateUser = new Method({
     userId: String,
   },
 });
+
+export const impersonateAdmin = new Method({
+  name: 'impersonateAdmin',
+  params: {
+    userId: String,
+  },
+});
