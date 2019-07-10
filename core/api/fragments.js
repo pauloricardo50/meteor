@@ -751,7 +751,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   constructionYear: 1,
   copropertyPercentage: 1,
   createdAt: 1,
-  customFields: 1,
   description: 1,
   documents: 1,
   flatType: 1,
