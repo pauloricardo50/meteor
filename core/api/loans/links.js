@@ -74,6 +74,8 @@ LinkInitializer.directInit(() => {
       field: 'revenueLinks',
       collection: Revenues,
       type: 'many',
+      unique: true,
+      sparse: true,
     },
     user: {
       field: 'userId',
