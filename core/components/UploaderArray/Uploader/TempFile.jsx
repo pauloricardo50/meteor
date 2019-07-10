@@ -57,7 +57,7 @@ export default class TempFile extends Component {
           url: downloadUrl,
           size: file.size,
           type: file.type,
-          status: FILE_STATUS.VALID,
+          status: FILE_STATUS.UNVERIFIED,
         };
         handleUploadComplete(fileObject, downloadUrl);
         updateDocumentsCache.run({ docId, collection });

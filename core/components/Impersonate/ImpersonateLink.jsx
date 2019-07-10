@@ -29,6 +29,10 @@ const isAdminAndDev = ({ roles }) =>
   && Meteor.user().roles.includes(ROLES.DEV);
 
 const ImpersonateLink = ({ user, className, classes }) => {
+  if (!user) {
+    return null;
+  }
+
   if (isAdminAndDev(user)) {
     return (
       <Button

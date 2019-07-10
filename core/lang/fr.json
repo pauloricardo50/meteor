@@ -1357,7 +1357,7 @@
   "FaqPageFaqs.who.answer": "Depuis 2016 : un conseiller hypothécaire (actif depuis plus de 18 ans en Suisse), un conseiller en prévoyance (actif depuis plus de 20 ans en Suisse), ainsi qu’un spécialiste du domaine digital (EPFL & Stanford University) ont unis leurs visions et compétences pour créer e-Potek qui repose sur le savoir faire de plusieurs domaines ainsi qu’un système informatique conçu sur-mesure.",
   "FaqPageFaqs.who.question": "Qui a créé e-Potek ?",
   "File.status.ERROR": "Non valide",
-  "File.status.UNVERIFIED": "En attente de vérification",
+  "File.status.UNVERIFIED": "En vérification",
   "File.status.VALID": "Validé",
   "FileAdder.title": "+ Uploader un fichier",
   "files.BONUSES.tooltip": "Justificatif de tous les bonus et revenus variables",

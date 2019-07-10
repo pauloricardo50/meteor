@@ -16,13 +16,15 @@ const UploaderBottom = ({
   handleAddFiles,
   fileMeta,
 }) => (
-  <React.Fragment>
+  <>
     {currentValue.map((f, i) => (
       <File
         key={f.Key + i}
         file={f}
         disabled={disabled}
         handleRemove={handleRemove}
+        docId={docId}
+        collection={collection}
       />
     ))}
 
@@ -37,8 +39,12 @@ const UploaderBottom = ({
       />
     ))}
 
-    <FileAdder id={fileMeta.id} handleAddFiles={handleAddFiles} docId={docId} />
-  </React.Fragment>
+    <FileAdder
+      id={fileMeta.id}
+      handleAddFiles={handleAddFiles}
+      docId={docId}
+    />
+  </>
 );
 
 UploaderBottom.propTypes = {

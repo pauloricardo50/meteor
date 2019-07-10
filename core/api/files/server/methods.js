@@ -27,14 +27,14 @@ setFileStatus.setHandler((context, { fileKey, newStatus }) => {
   context.unblock();
   SecurityService.checkCurrentUserIsAdmin();
   // Should update documents cache when we start using this
-  FileService.setFileStatus(fileKey, newStatus);
+  return FileService.setFileStatus(fileKey, newStatus);
 });
 
 setFileError.setHandler((context, { fileKey, error }) => {
   context.unblock();
   SecurityService.checkCurrentUserIsAdmin();
   // Should update documents cache when we start using this
-  FileService.setFileError(fileKey, error);
+  return FileService.setFileError(fileKey, error);
 });
 
 downloadFile.setHandler((context, { key }) => {

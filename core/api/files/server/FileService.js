@@ -13,11 +13,13 @@ class FileService {
   listFilesForDocByCategory = (docId, subdocument) =>
     this.listFilesForDoc(docId, subdocument).then(this.groupFilesByCategory);
 
-  setFileStatus = (key, nextStatus) =>
-    S3Service.updateMetadata(key, {
-      status: nextStatus,
-      message: nextStatus === FILE_STATUS.VALID ? '' : undefined,
-    });
+  setFileStatus = (key, status) => {
+    if (status === FILE_STATUS.VALID) {
+      return S3Service.updateMetadata(key, { status, message: '' });
+    }
+
+    return S3Service.updateMetadata(key, { status });
+  };
 
   setFileError = (key, errorMessage) =>
     S3Service.updateMetadata(key, {
