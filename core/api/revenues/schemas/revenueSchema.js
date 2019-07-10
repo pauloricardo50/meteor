@@ -6,6 +6,7 @@ import {
   updatedAt,
   moneyField,
   percentageField,
+  decimalMoneyField,
 } from '../../helpers/sharedSchemas';
 import {
   REVENUE_TYPES,
@@ -17,7 +18,7 @@ const RevenueSchema = new SimpleSchema({
   createdAt,
   updatedAt,
   approximation: { type: Boolean, defaultValue: true },
-  amount: moneyField,
+  amount: decimalMoneyField,
   type: {
     type: String,
     allowedValues: Object.values(REVENUE_TYPES),
