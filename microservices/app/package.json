@@ -2,11 +2,11 @@
   "name": "epotek-app",
   "private": true,
   "scripts": {
-    "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
-    "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
-    "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
-    "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
-    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
+    "bundle-size": "meteor node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
+    "start": "meteor node -r esm ../../scripts/npm-scripts/run-script.js start",
+    "script": "meteor node -r esm ../../scripts/npm-scripts/run-script.js custom",
+    "test": "meteor node -r esm ../../scripts/npm-scripts/run-script.js test",
+    "test-e2e": "meteor node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
   },
   "dependencies": {
     "@babel/runtime": "7.4.3",
