@@ -114,7 +114,14 @@ const makePrepareJob = () => ({
 
     // Prepare node_modules cache
     restoreCache('Restore global cache', cacheKeys.global()),
-    runCommand('Install project node_modules', 'npm ci'),
+    // runCommand('Install project node_modules', 'npm ci'),
+    runCommand(
+      'Install project node_modules',
+      `
+     npm ci
+     npm i --prefix ./scripts/npm-scripts
+     `,
+    ),
     saveCache('Cache globals', cacheKeys.global(), cachePaths.global()),
     saveCache(
       'Cache node_modules',
