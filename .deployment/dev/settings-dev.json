@@ -1,6 +1,6 @@
 {
   "public": {
-    "environment": "dev",
+    "environment": "dev-production",
     "features": {
       "LITE_VERSION": true,
       "NOT_PRODUCTION_READY": false 

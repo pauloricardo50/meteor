@@ -25,37 +25,38 @@
 // The client version of the client code currently running in the
 // browser.
 
-import { ClientVersions } from "./client_versions.js";
+import { ClientVersions } from './client_versions.js';
 
-const clientArch = Meteor.isCordova ? "web.cordova" :
-  Meteor.isModern ? "web.browser" : "web.browser.legacy";
+const clientArch = Meteor.isCordova
+  ? 'web.cordova'
+  : Meteor.isModern
+    ? 'web.browser'
+    : 'web.browser.legacy';
 
-const autoupdateVersions =
-  ((__meteor_runtime_config__.autoupdate || {}).versions || {})[clientArch] || {
-    version: "unknown",
-    versionRefreshable: "unknown",
-    versionNonRefreshable: "unknown",
-    assets: [],
-  };
+const autoupdateVersions = ((__meteor_runtime_config__.autoupdate || {})
+  .versions || {})[clientArch] || {
+  version: 'unknown',
+  versionRefreshable: 'unknown',
+  versionNonRefreshable: 'unknown',
+  assets: [],
+};
 
 export const Autoupdate = {};
 const connection = DDP.connect(__meteor_runtime_config__.ROOT_URL);
 
 // Stores acceptable client versions.
-const clientVersions =
-  Autoupdate._clientVersions = // Used by a self-test.
-  new ClientVersions();
+const clientVersions = (Autoupdate._clientVersions = new ClientVersions()); // Used by a self-test.
 
 connection.registerStore(
-  "meteor_autoupdate_clientVersions",
-  clientVersions.createStore()
+  'meteor_autoupdate_clientVersions',
+  clientVersions.createStore(),
 );
 
 Autoupdate.newClientAvailable = function () {
   return clientVersions.newClientAvailable(
     clientArch,
-    ["versionRefreshable", "versionNonRefreshable"],
-    autoupdateVersions
+    ['versionRefreshable', 'versionNonRefreshable'],
+    autoupdateVersions,
   );
 };
 
@@ -72,17 +73,17 @@ const retry = new Retry({
   // server fixing code will result in a restart and reconnect, but
   // potentially the subscription could have a transient error.
   minCount: 0, // don't do any immediate retries
-  baseTimeout: 30*1000 // start with 30s
+  baseTimeout: 30 * 1000, // start with 30s
 });
 
 let failures = 0;
 
 Autoupdate._retrySubscription = () => {
-  connection.subscribe("meteor_autoupdate_clientVersions", {
+  connection.subscribe('meteor_autoupdate_clientVersions', {
     onError(error) {
-      Meteor._debug("autoupdate subscription failed", error);
+      Meteor._debug('autoupdate subscription failed', error);
       failures++;
-      retry.retryLater(failures, function () {
+      retry.retryLater(failures, () => {
         // Just retry making the subscription, don't reload the whole
         // page. While reloading would catch more cases (for example,
         // the server went back a version and is now doing old-style hot
@@ -110,8 +111,9 @@ Autoupdate._retrySubscription = () => {
           return;
         }
 
-        if (doc.versionNonRefreshable !==
-            autoupdateVersions.versionNonRefreshable) {
+        if (
+          doc.versionNonRefreshable !== autoupdateVersions.versionNonRefreshable
+        ) {
           // Non-refreshable assets have changed, so we have to reload the
           // whole page rather than just replacing <link> tags.
           if (stop) stop();
@@ -128,33 +130,33 @@ Autoupdate._retrySubscription = () => {
 
           // Switch out old css links for the new css links. Inspired by:
           // https://github.com/guard/guard-livereload/blob/master/js/livereload.js#L710
-          var newCss = doc.assets || [];
-          var oldLinks = [];
+          const newCss = doc.assets || [];
+          const oldLinks = [];
 
           Array.prototype.forEach.call(
             document.getElementsByTagName('link'),
-            function (link) {
+            (link) => {
               if (link.className === '__meteor-css__') {
                 oldLinks.push(link);
               }
-            }
+            },
           );
 
           function waitUntilCssLoads(link, callback) {
-            var called;
+            let called;
 
             link.onload = function () {
               knownToSupportCssOnLoad = true;
-              if (! called) {
+              if (!called) {
                 called = true;
                 callback();
               }
             };
 
-            if (! knownToSupportCssOnLoad) {
-              var id = Meteor.setInterval(function () {
+            if (!knownToSupportCssOnLoad) {
+              var id = Meteor.setInterval(() => {
                 if (link.sheet) {
-                  if (! called) {
+                  if (!called) {
                     called = true;
                     callback();
                   }
@@ -166,27 +168,26 @@ Autoupdate._retrySubscription = () => {
 
           let newLinksLeftToLoad = newCss.length;
           function removeOldLinks() {
-            if (oldLinks.length > 0 &&
-                --newLinksLeftToLoad < 1) {
-              oldLinks.splice(0).forEach(link => {
+            if (oldLinks.length > 0 && --newLinksLeftToLoad < 1) {
+              oldLinks.splice(0).forEach((link) => {
                 link.parentNode.removeChild(link);
               });
             }
           }
 
           if (newCss.length > 0) {
-            newCss.forEach(css => {
-              const newLink = document.createElement("link");
-              newLink.setAttribute("rel", "stylesheet");
-              newLink.setAttribute("type", "text/css");
-              newLink.setAttribute("class", "__meteor-css__");
-              newLink.setAttribute("href", css.url);
+            newCss.forEach((css) => {
+              const newLink = document.createElement('link');
+              newLink.setAttribute('rel', 'stylesheet');
+              newLink.setAttribute('type', 'text/css');
+              newLink.setAttribute('class', '__meteor-css__');
+              newLink.setAttribute('href', css.url);
 
-              waitUntilCssLoads(newLink, function () {
+              waitUntilCssLoads(newLink, () => {
                 Meteor.setTimeout(removeOldLinks, 200);
               });
 
-              const head = document.getElementsByTagName("head").item(0);
+              const head = document.getElementsByTagName('head').item(0);
               head.appendChild(newLink);
             });
           } else {
@@ -194,7 +195,7 @@ Autoupdate._retrySubscription = () => {
           }
         }
       }
-    }
+    },
   });
 };
 

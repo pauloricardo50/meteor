@@ -13,7 +13,6 @@ import {
   LOAN_QUERIES,
   STEPS,
 } from 'core/api/constants';
-import 'core/cypress/server/methods';
 import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
 import OrganisationService from 'imports/core/api/organisations/server/OrganisationService';
 import LoanService from 'imports/core/api/loans/server/LoanService';

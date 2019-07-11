@@ -63,13 +63,13 @@ const runTestsCommand = (name, testsType) => {
       return runCommand(
         'Run e2e tests',
         `
-        meteor node ./scripts/run-with-backend.js ${name} test-e2e-CI --full-app-tests
+        cd ./microservices/${name} && meteor npm run test-e2e -- --ci
         `,
       );
     case 'unit':
       return runCommand(
         'Run unit tests',
-        `meteor node ./scripts/run-with-backend.js ${name} test-CI`,
+        `cd ./microservices/${name} && meteor npm run test -- --ci`,
       );
     default:
       throw new Error(`Unknown tests type: ${testsType}`);

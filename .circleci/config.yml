@@ -109,7 +109,7 @@ jobs:
           command: npm run lang www
       - run:
           name: Run unit tests
-          command: meteor node ./scripts/run-with-backend.js www test-CI
+          command: cd ./microservices/www && meteor npm run test --ci
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -184,7 +184,7 @@ jobs:
           command: npm run lang app
       - run:
           name: Run unit tests
-          command: meteor node ./scripts/run-with-backend.js app test-CI
+          command: cd ./microservices/app && meteor npm run test --ci
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -259,7 +259,7 @@ jobs:
           command: npm run lang admin
       - run:
           name: Run unit tests
-          command: meteor node ./scripts/run-with-backend.js admin test-CI
+          command: cd ./microservices/admin && meteor npm run test --ci
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -334,7 +334,7 @@ jobs:
           command: npm run lang pro
       - run:
           name: Run unit tests
-          command: meteor node ./scripts/run-with-backend.js pro test-CI
+          command: cd ./microservices/pro && meteor npm run test --ci
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -411,7 +411,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js www test-e2e-CI --full-app-tests
+                    cd ./microservices/www && meteor npm run test-e2e --ci
                     
       - save_cache:
           name: Cache meteor system
@@ -489,7 +489,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js app test-e2e-CI --full-app-tests
+                    cd ./microservices/app && meteor npm run test-e2e --ci
                     
       - save_cache:
           name: Cache meteor system
@@ -567,7 +567,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js admin test-e2e-CI --full-app-tests
+                    cd ./microservices/admin && meteor npm run test-e2e --ci
                     
       - save_cache:
           name: Cache meteor system
@@ -645,7 +645,7 @@ jobs:
           name: Run e2e tests
           command: |2-
 
-                    meteor node ./scripts/run-with-backend.js pro test-e2e-CI --full-app-tests
+                    cd ./microservices/pro && meteor npm run test-e2e --ci
                     
       - save_cache:
           name: Cache meteor system
