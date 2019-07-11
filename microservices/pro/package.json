@@ -2,11 +2,11 @@
   "name": "pro",
   "private": true,
   "scripts": {
-    "ngrok": "cd ../../scripts/ && ./ngrok.sh 4100",
+    "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
     "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
-    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",
+    "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
     "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
-    "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size"
+    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
   },
   "dependencies": {
     "@babel/runtime": "7.4.3",

@@ -2,14 +2,11 @@
   "name": "epotek-app",
   "private": true,
   "scripts": {
-    "debug": "meteor npm run start -- --inspect",
-    "ngrok": "cd ../../scripts/ && ./ngrok.sh 4000",
-    "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
-    "test-debug": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
-    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",
-    "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
     "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
-    "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom"
+    "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
+    "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
+    "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
+    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
   },
   "dependencies": {
     "@babel/runtime": "7.4.3",

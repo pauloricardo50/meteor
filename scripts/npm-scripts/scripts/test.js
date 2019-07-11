@@ -56,7 +56,7 @@ const tasks = new Listr([
 
         const spawnArgs = isCI
           ? [...commonArgs, '--once']
-          : [...commonArgs, '--port', port];
+          : [...commonArgs, '--port', port, ...args];
 
         test.spawn({
           command: 'meteor',

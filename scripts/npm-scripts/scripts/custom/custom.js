@@ -4,6 +4,9 @@ const path = require('path');
 
 const CUSTOM_SCRIPTS = {
   clean: 'clean.js',
+  debug: 'debug.js',
+  ngrok: 'ngrok.js',
+  'test-debug': 'test-debug.js',
   inline: null,
 };
 
