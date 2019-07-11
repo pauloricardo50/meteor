@@ -2,11 +2,11 @@
   "name": "epotek-www",
   "private": true,
   "scripts": {
-    "bundle-size": "meteor node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
-    "start": "meteor node -r esm ../../scripts/npm-scripts/run-script.js start",
-    "script": "meteor node -r esm ../../scripts/npm-scripts/run-script.js custom",
-    "test": "meteor node -r esm ../../scripts/npm-scripts/run-script.js test",
-    "test-e2e": "meteor node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
+    "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
+    "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
+    "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
+    "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
+    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
   },
   "dependencies": {
     "@babel/runtime": "7.4.3",
@@ -27,7 +27,6 @@
     "btoa": "^1.2.1",
     "connect-route": "^0.1.5",
     "core-js": "^3.0.0",
-    "esm": "^3.2.25",
     "faker": "^4.1.0",
     "highcharts-export-data": "^0.1.7",
     "html-parse-stringify": "^1.0.3",
