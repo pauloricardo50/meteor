@@ -2,15 +2,43 @@
 .property-admin-form {
   display: flex;
   align-self: stretch;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: column;
 
-   > * {
+  > * {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
 
-    max-width: 400px;
-    margin: 0 16px;
+    margin-top: 32px;
+  }
+
+  .autofields {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    > * {
+      flex-basis: 250px;
+      margin-right: 16px;
+      flex-grow: 1;
+    }
+  }
+}
+
+.admin-mortgage-note-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  &-single {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    align-items: stretch;
+    margin-right: 16px;
+
+    .autofields > * {
+      flex-basis: unset;
+      margin-right: 0;
+    }
   }
 }

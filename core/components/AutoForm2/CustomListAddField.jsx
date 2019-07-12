@@ -10,6 +10,7 @@ const CustomListAddField = (props: CustomListAddFieldProps) => (
   <ListAddField
     color="primary"
     className="list-add-field"
+    size="small"
     {...props}
     icon={<IconMap.add />}
   />

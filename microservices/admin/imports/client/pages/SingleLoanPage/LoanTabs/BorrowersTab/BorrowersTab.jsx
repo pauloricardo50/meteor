@@ -26,10 +26,10 @@ const BorrowersTab = (props) => {
   const { loan } = props;
   const { borrowers } = loan;
 
-  return borrowers && borrowers.length > 0 ? (
+  return (
     <div>
       <ConfirmMethod
-        disabled={borrowers.length !== 1}
+        disabled={borrowers.length >= 2}
         method={() => addBorrower.run({ loanId: loan._id })}
         label="Ajouter emprunteur"
         buttonProps={{
@@ -38,22 +38,24 @@ const BorrowersTab = (props) => {
           style: { marginBottom: 16 },
         }}
       />
-      <Tabs
-        tabs={borrowers.map((borrower, i) => ({
-          id: borrower._id,
-          label: borrowersTabLabel(borrower, i),
-          content: (
-            <SingleBorrowerTab
-              {...props}
-              borrower={borrower}
-              key={borrower._id}
-            />
-          ),
-        }))}
-      />
+      {borrowers && borrowers.length ? (
+        <Tabs
+          tabs={borrowers.map((borrower, i) => ({
+            id: borrower._id,
+            label: borrowersTabLabel(borrower, i),
+            content: (
+              <SingleBorrowerTab
+                {...props}
+                borrower={borrower}
+                key={borrower._id}
+              />
+            ),
+          }))}
+        />
+      ) : (
+        <h2 className="secondary">Pas d'emprunteurs</h2>
+      )}
     </div>
-  ) : (
-    <h2 className="secondary">Pas d'emprunteurs</h2>
   );
 };
 

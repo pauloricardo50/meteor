@@ -9,6 +9,7 @@ import { CustomAutoField } from '../AutoForm2/AutoFormComponents';
 import CustomAutoFields from '../AutoForm2/CustomAutoFields';
 import Button from '../Button';
 import T from '../Translation';
+import Box from '../Box';
 import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 
 type MortgageNotesFormProps = {};
@@ -57,14 +58,16 @@ const MortgageNotesForm = ({
     : ['createdAt', 'updatedAt', 'canton'];
 
   return (
-    <div className={cx('space-children', className)}>
-      <h3>Cédules hypothécaires</h3>
+    <Box
+      className={cx('admin-mortgage-note-form', className)}
+      title={<h3>Cédules hypothécaires</h3>}
+    >
       {mortgageNotes.map(note => (
         <AutoForm
           schema={MortgageNoteSchema.omit(...ommittedFields)}
           model={note}
           onSubmit={handleSubmitMortgageNote(note._id)}
-          className="form"
+          className="admin-mortgage-note-form-single"
           key={note._id}
         >
           <CustomAutoFields autoField={CustomAutoField} />
@@ -84,7 +87,7 @@ const MortgageNotesForm = ({
       <Button raised primary onClick={() => insertMortgageNote(id)}>
         <T id="general.add" />
       </Button>
-    </div>
+    </Box>
   );
 };
 
