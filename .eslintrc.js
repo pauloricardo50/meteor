@@ -56,7 +56,7 @@ module.exports = {
     //   { nestedBinaryExpressions: false },
     // ],
     'no-mixed-operators': ['error', { allowSamePrecedence: false }],
-    'function-paren-newline': ['error', 'multiline'],
+    'function-paren-newline': ['error', 'multiline-arguments'],
     'implicit-arrow-linebreak': 'off',
     'func-names': 'off',
     curly: 'error',
