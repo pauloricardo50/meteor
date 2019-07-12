@@ -5,10 +5,14 @@ import { logError } from '../api/methods/index';
 import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
 
+const ENABLE_LOADABLE = false;
+
 const LoadableLoading = ({ error, retry, pastDelay }) => {
   if (error) {
     logError.run({
-      error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+      error: JSON.parse(
+        JSON.stringify(error, Object.getOwnPropertyNames(error)),
+      ),
       additionalData: ['Loadable error'],
       url:
         window && window.location && window.location.href
@@ -23,9 +27,15 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
   return null;
 };
 
-export default options =>
-  Loadable({
+export default ({ req, loader, ...options }) => {
+  if (!ENABLE_LOADABLE && req) {
+    return req();
+  }
+
+  return Loadable({
     loading: LoadableLoading,
     delay: 200, // Hides the loading component for 200ms, to avoid flickering
+    loader,
     ...options,
   });
+};
