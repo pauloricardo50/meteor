@@ -1,5 +1,6 @@
 import sift from 'sift';
 import { withProps } from 'recompose';
+
 import sortArray from '../../utils/sortArrayOfObjects';
 
 export const makeDataFilterAndSort = ({
@@ -12,16 +13,14 @@ export const makeDataFilterAndSort = ({
     [sortOptionName]: sortOption = {},
     [dataName]: data = [],
   }) => {
-    const filteredData = sift(filterOptions, data);
+    const filteredData = data.filter(sift(filterOptions));
     const sortedData = sortArray(
       filteredData,
       sortOption.field,
       sortOption.order,
     );
 
-    return {
-      [dataName]: sortedData,
-    };
+    return { [dataName]: sortedData };
   });
 
 export default makeDataFilterAndSort({});
