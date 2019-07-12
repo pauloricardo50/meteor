@@ -17,7 +17,7 @@ const server = new Process();
 const tasks = new Listr([
   {
     title: 'Backend',
-    task: () => runBackend(backend, '--test', ...args),
+    task: () => runBackend(backend, '--test'),
   },
   {
     title: 'e2e',

@@ -16,7 +16,7 @@ const test = new Process();
 const tasks = new Listr([
   {
     title: 'Backend',
-    task: () => runBackend(backend, '--test', ...args),
+    task: () => runBackend(backend, '--test'),
   },
   {
     title: 'test',
@@ -94,6 +94,7 @@ tasks
   .run()
   .then(() => {
     test.startLogging();
+    backend.startLogging();
   })
   .catch((err) => {
     const { errors = [] } = err;

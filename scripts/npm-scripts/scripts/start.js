@@ -18,7 +18,7 @@ const tasks = new Listr(
   [
     {
       title: 'Backend',
-      task: () => runBackend(backend, ...args),
+      task: () => runBackend(backend),
     },
     {
       title: 'start',
