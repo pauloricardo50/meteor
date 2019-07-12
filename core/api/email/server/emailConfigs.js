@@ -286,14 +286,23 @@ addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
 
 addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V2,
-  createOverrides({ loan, ...rest }, { title, cta, ...rest2 }) {
+  createOverrides(
+    {
+      loan,
+      customMessage = '',
+      assigneeName = 'e-Potek',
+      assigneeAddress = 'info@e-potek.ch',
+      ...rest
+    },
+    { title, cta, ...rest2 },
+  ) {
     const { variables } = this.template;
     const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
 
     return {
       variables: [
         { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: '' },
+        { name: variables.BODY, content: customMessage },
         { name: variables.CTA, content: cta },
         { name: variables.CTA_URL, content: ctaUrl },
         { name: variables.CSS, content: styles },
@@ -307,6 +316,9 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
           })),
         },
       ],
+      senderName: assigneeName,
+      senderAddress: assigneeAddress,
+      bccAddress: assigneeAddress,
     };
   },
   createIntlValues: params => ({
