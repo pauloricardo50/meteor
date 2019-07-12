@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StaticRouter } from 'react-router';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
+import createTheme from 'core/config/muiCustom';
 import App from '../shared/App';
 
 const ServerApp = ({ context, location, ...otherProps }) => (
-  <App
-    Router={routerProps => (
-      <StaticRouter context={context} location={location} {...routerProps} />
-    )}
-    {...otherProps}
-  />
+  <MuiThemeProvider theme={createTheme()} sheetsManager={new Map()}>
+    <App
+      Router={routerProps => (
+        <StaticRouter context={context} location={location} {...routerProps} />
+      )}
+      {...otherProps}
+    />
+  </MuiThemeProvider>
 );
 
 ServerApp.propTypes = {
