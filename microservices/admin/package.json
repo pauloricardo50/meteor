@@ -121,7 +121,7 @@
     "nightmare": "^3.0.2",
     "react-test-renderer": "^16.8.6",
     "sinon": "^7.3.2",
-    "start-server-and-test": "^1.9.1"
+    "start-server-and-test": "1.8.0"
   },
   "meteor": {
     "mainModule": {

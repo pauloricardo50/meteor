@@ -117,7 +117,7 @@
     "nightmare": "3.0.2",
     "redux-mock-store": "^1.5.3",
     "sinon": "^7.3.2",
-    "start-server-and-test": "^1.9.1"
+    "start-server-and-test": "1.8.0"
   },
   "meteor": {
     "mainModule": {
