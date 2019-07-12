@@ -10,12 +10,7 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 import LoanProgress from 'core/components/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
-import {
-  LOANS_COLLECTION,
-  LOAN_STATUS,
-  PROPERTIES_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
@@ -85,24 +80,6 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   };
 };
 
-const customersTableFilters = {
-  filters: {
-    status: true,
-    relatedTo: [{ collection: true }],
-  },
-  options: {
-    status: Object.values(LOAN_STATUS).map(id => ({ id, label: id })),
-    collection: [PROPERTIES_COLLECTION, PROMOTIONS_COLLECTION].map(id => ({
-      id,
-      label: id,
-    })),
-  },
-  labels: {
-    status: 'Statut',
-    relatedTo: 'Lien',
-  },
-};
-
 export default compose(
   mapProps(({ proUser, ...props }) => {
     const { promotions = [], proProperties = [] } = proUser;
@@ -111,7 +88,6 @@ export default compose(
       proUser,
       propertyIds: proProperties.map(({ _id }) => _id),
       promotionIds: promotions.map(({ _id }) => _id),
-      tableFilters: customersTableFilters,
     };
   }),
   withSmartQuery({
