@@ -2,11 +2,7 @@ import { compose, withProps, withStateHandlers } from 'recompose';
 
 export default compose(
   withStateHandlers(
-    {
-      searchQuery: '',
-      searchResults: {},
-      showResults: false,
-    },
+    { searchQuery: '', searchResults: {}, showResults: false },
     { setState: () => newState => newState },
   ),
   withProps(({
@@ -39,9 +35,11 @@ export default compose(
           });
         });
     },
-    onBlur: () => {
+    hideResults: () => {
       setState({ showResults: false });
     },
-    onFocus: () => setState({ showResults: !!searchQuery }),
+    onFocus: () => {
+      setState({ showResults: !!searchQuery });
+    },
   })),
 );
