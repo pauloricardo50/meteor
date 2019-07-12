@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import Loadable from 'react-loadable';
 
@@ -5,7 +7,11 @@ import { logError } from '../api/methods/index';
 import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
 
-const ENABLE_LOADABLE = false;
+const ENABLE_LOADABLE = true;
+
+if (!ENABLE_LOADABLE && Meteor.isProduction) {
+  throw new Error('ENABLE_LOADABLE should be true in production');
+}
 
 const LoadableLoading = ({ error, retry, pastDelay }) => {
   if (error) {
