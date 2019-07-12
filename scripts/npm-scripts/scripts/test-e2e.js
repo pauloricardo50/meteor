@@ -128,6 +128,7 @@ const tasks = new Listr(
     },
   ],
   {
+    concurrent: true,
     ...(isCI ? { renderer: VerboseRenderer } : {}),
   },
 );
