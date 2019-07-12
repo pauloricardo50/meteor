@@ -11,7 +11,6 @@ import {
   makeHeaders,
   getTimestampAndNonce,
   signRequest,
-  SIGNATURE_FORMATTINGS,
 } from './apiTestHelpers.test';
 
 const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
