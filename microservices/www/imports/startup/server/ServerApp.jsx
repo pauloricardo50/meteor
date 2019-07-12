@@ -7,7 +7,7 @@ import createTheme from 'core/config/muiCustom';
 import App from '../shared/App';
 
 const ServerApp = ({ context, location, ...otherProps }) => (
-  <MuiThemeProvider theme={createTheme()} sheetsManager={new Map()}>
+  <MuiThemeProvider theme={createTheme()}>
     <App
       Router={routerProps => (
         <StaticRouter context={context} location={location} {...routerProps} />
