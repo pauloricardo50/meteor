@@ -20,7 +20,7 @@
     "visualize": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {
-    "@babel/runtime": "7.5.4",
+    "@babel/runtime": "^7.5.4",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
@@ -33,7 +33,7 @@
     "antd": "^3.20.1",
     "aws-sdk": "^2.493.0",
     "base64topdf": "^1.1.8",
-    "bcrypt": "3.0.6",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "btoa": "^1.2.1",
     "connect-route": "^0.1.5",
@@ -91,9 +91,9 @@
     "uniforms-material": "^2.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.5.4",
-    "@babel/plugin-proposal-class-properties": "7.5.0",
-    "@babel/preset-flow": "7.0.0",
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/preset-flow": "^7.0.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-preset-meteor": "^7.5.2",
     "chai": "^4.2.0",
@@ -105,7 +105,7 @@
     "mocha": "5.2.0",
     "mocha-junit-reporter": "^1.23.0",
     "mocha-multi-reporters": "^1.1.7",
-    "nightmare": "3.0.2",
+    "nightmare": "^3.0.2",
     "redux-mock-store": "^1.5.3",
     "sinon": "^7.3.2",
     "start-server-and-test": "^1.9.1"
