@@ -4,7 +4,6 @@ import cx from 'classnames';
 
 import Link from 'core/components/Link';
 import { createRoute } from 'core/utils/routerUtils';
-import { VALUATION_STATUS } from 'core/api/properties/propertyConstants';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
@@ -17,44 +16,27 @@ import DashboardRecapPropertyEmpty from './DashboardRecapPropertyEmpty';
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
 
-export const getRecapArray = (property) => {
-  const {
-    landArea,
-    insideArea,
-    value,
-    // valuation: { status, min, max },
-  } = property;
-  return [
-    {
-      label: 'Forms.value',
-      value: toMoney(value),
-      hide: !value,
-    },
-    {
-      label: 'Forms.insideArea',
-      value: (
-        <MetricArea
-          value={insideArea}
-          placeholder={<T id="Forms.insideArea.recapPlaceholder" />}
-        />
-      ),
-    },
-    {
-      label: 'Forms.landArea',
-      value: <MetricArea value={landArea} />,
-      hide: !landArea,
-    },
-    // {
-    //   label: 'property.expertise',
-    //   value:
-    //     status === VALUATION_STATUS.DONE ? (
-    //       <p>{`CHF ${toMoney(min)} - ${toMoney(max)}`}</p>
-    //     ) : (
-    //       <T id={`property.expertiseStatus.${status}`} />
-    //     ),
-    // },
-  ];
-};
+export const getRecapArray = ({ landArea, insideArea, value }) => [
+  {
+    label: 'Forms.value',
+    value: toMoney(value),
+    hide: !value,
+  },
+  {
+    label: 'Forms.insideArea',
+    value: (
+      <MetricArea
+        value={insideArea}
+        placeholder={<T id="Forms.insideArea.recapPlaceholder" />}
+      />
+    ),
+  },
+  {
+    label: 'Forms.landArea',
+    value: <MetricArea value={landArea} />,
+    hide: !landArea,
+  },
+];
 
 const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;

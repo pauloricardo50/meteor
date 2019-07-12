@@ -56,7 +56,6 @@ const config = {
         'steps',
         'Table',
         'Uploader',
-        'Valuation',
       ],
     },
     {
@@ -94,7 +93,6 @@ const config = {
         'StatusIconTooltip',
         'steps',
         'Uploader',
-        'Valuation',
         'Widget1',
       ],
     },

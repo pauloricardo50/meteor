@@ -702,23 +702,6 @@ export const searchPromotions = () => ({
   updatedAt: 1,
 });
 
-// //
-// // Property fragments
-// //
-export const userValuation = () => ({
-  date: 1,
-  error: 1,
-  max: 1,
-  microlocation: 1,
-  min: 1,
-  status: 1,
-});
-
-export const adminValuation = () => ({
-  ...userValuation(),
-  value: 1,
-});
-
 export const propertySummary = () => ({
   address: 1,
   address1: 1,
@@ -792,7 +775,6 @@ export const fullProperty = ({ withSort } = {}) => ({
 export const adminProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
   useOpenGraph: 1,
-  valuation: adminValuation(),
 });
 
 export const promotionProperty = () => ({
@@ -818,7 +800,6 @@ export const promotionProperty = () => ({
 export const userProperty = ({ withSort } = {}) => {
   const obj = {
     ...fullProperty({ withSort }),
-    valuation: userValuation(),
   };
   delete obj.users;
   return obj;

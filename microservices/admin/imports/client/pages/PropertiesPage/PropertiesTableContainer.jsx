@@ -21,7 +21,6 @@ const mapProperty = history => ({
   promotion,
   updatedAt,
   user,
-  valuation: { value: expertiseValue },
   value,
 }) => ({
   id: _id,
@@ -48,7 +47,6 @@ const mapProperty = history => ({
       label: updatedAt ? moment(updatedAt).fromNow() : '-',
     },
     value,
-    expertiseValue,
   ],
   handleClick: () => history.push(`/properties/${_id}`),
 });
