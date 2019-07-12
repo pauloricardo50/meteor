@@ -20,7 +20,7 @@ const tasks = new Listr(
   [
     {
       title: 'Backend',
-      task: () => runBackend(backend, '--test'),
+      task: () => runBackend(backend),
     },
     {
       title: 'test',
