@@ -88,7 +88,7 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
 
   if (error.type === ERROR_TYPES.BREAKING) {
     return (
-      <p className="error result">
+      <p className="error error-box result">
         <T id={`FinancingResultErrors.${error.id}`} />
       </p>
     );
