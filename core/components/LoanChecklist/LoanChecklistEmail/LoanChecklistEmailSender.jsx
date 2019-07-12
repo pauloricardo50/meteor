@@ -4,7 +4,6 @@ import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import Button from '../../Button';
 import { sendEmailToAddress } from '../../../api';
 import { EMAIL_IDS } from '../../../api/constants';
 import { AutoFormDialog } from '../../AutoForm2';
@@ -15,6 +14,11 @@ type LoanChecklistEmailSenderProps = {
 
 const schema = new SimpleSchema({
   email: String,
+  customMessage: {
+    type: String,
+    optional: true,
+    uniforms: { multiline: true, rows: 15, rowsMax: 15 },
+  },
 });
 
 const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
@@ -37,11 +41,19 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
   );
 };
 
-export default withProps(({ loan }) => ({
-  onSubmit: ({ email }) =>
+export default withProps(({
+  loan,
+  currentUser: { name: assigneeName, email: assigneeAddress } = {},
+}) => ({
+  onSubmit: ({ email, customMessage }) =>
     sendEmailToAddress.run({
       address: email,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
-      params: { loan },
+      params: {
+        loan,
+        assigneeName,
+        assigneeAddress,
+        customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+      },
     }),
 }))(LoanChecklistEmailSender);
