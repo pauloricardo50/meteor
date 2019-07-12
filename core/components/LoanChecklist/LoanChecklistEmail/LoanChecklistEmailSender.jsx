@@ -22,12 +22,17 @@ const schema = new SimpleSchema({
 });
 
 const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
-  const { loan, onSubmit } = props;
+  const {
+    loan,
+    onSubmit,
+    currentUser: { email: assigneeAddress } = {},
+  } = props;
   const { _id: loanId, user: { email } = {} } = loan;
 
   return (
     <AutoFormDialog
       title="Envoyer la checklist au client"
+      description={`Cet email partira depuis "${assigneeAddress}"`}
       schema={schema}
       onSubmit={onSubmit}
       buttonProps={{
