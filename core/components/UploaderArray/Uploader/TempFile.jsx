@@ -76,7 +76,7 @@ export default class TempFile extends Component {
     return (
       <div className="temp-file flex-col">
         <div className="file">
-          <h5 className="secondary bold">{name}</h5>
+          <h5 className="secondary bold file-name">{name}</h5>
           {!error
             && (fileIsUploading ? (
               <div className="uploading-progress">

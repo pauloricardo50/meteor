@@ -43,6 +43,14 @@
 
     border-top: 1px solid $light-grey;
 
+    &-name {
+      max-width: 300px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
     .actions {
       flex-wrap: nowrap;
     }
