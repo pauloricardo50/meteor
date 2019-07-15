@@ -48,6 +48,16 @@ const SimpleMaxPropertyValueLightTheme = ({
             color: 'unset',
           },
         },
+        MuiFormLabel: {
+          root: {
+            color: 'white',
+          },
+          asterisk: {
+            '&$error': {
+              color: 'white',
+            },
+          },
+        },
       },
     }}
   >
