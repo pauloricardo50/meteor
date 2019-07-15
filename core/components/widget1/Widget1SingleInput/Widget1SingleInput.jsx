@@ -23,11 +23,11 @@ const Widget1SingleInput = ({
   tabIndex,
 }) => (
   <div className="widget1-single-input">
-    <div className="box">
+    <div className="widget1-single-input-box">
       <label htmlFor={name}>
         <T id={`Widget1SingleInput.${labelName}`} />
       </label>
-      <div className="box-content">
+      <div className="widget1-single-input-box-content">
         <Widget1SingleInputInput
           value={value}
           setInputValue={setInputValue}

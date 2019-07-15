@@ -113,7 +113,8 @@ class S3Service {
     this.listObjects(Prefix).then(results =>
       Promise.all(results.map(object =>
         this.headObject(object.Key).then(({ Metadata, ContentDisposition }) => {
-          const name = ContentDisposition && decodeURIComponent(ContentDisposition.match(/filename="(.*)"/)[1]);
+          const name = ContentDisposition
+                && decodeURIComponent(ContentDisposition.match(/filename="(.*)"/)[1]);
           return {
             ...object,
             ...Metadata,

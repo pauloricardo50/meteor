@@ -59,7 +59,7 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
         raw: amount,
         label: (
           <span>
-            <Money value={amount} />
+            <Money value={amount} rounded={false} />
             {' '}
             {approximation ? '(Approximé)' : ''}
           </span>

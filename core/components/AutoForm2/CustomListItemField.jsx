@@ -26,6 +26,7 @@ const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
       className="list-del-field"
       name={props.name}
       icon={<IconMap.remove />}
+      size="small"
     />
   </ListItemMaterial>
 );

@@ -344,7 +344,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
-  revenues: fullRevenues(),
+  revenues: revenue(),
   status: 1,
   tasksCache: {
     createdAt: 1,
@@ -425,6 +425,8 @@ export const notification = () => ({
   recipients: { firstName: 1, lastName: 1, name: 1 },
   relatedDoc: 1,
   task: task(),
+  title: 1,
+  revenue: revenue(),
   updatedAt: 1,
 });
 
@@ -750,7 +752,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   constructionYear: 1,
   copropertyPercentage: 1,
   createdAt: 1,
-  customFields: 1,
   description: 1,
   documents: 1,
   flatType: 1,
@@ -929,14 +930,14 @@ export const appUser = () => ({
   borrowers: { name: 1 },
   loans: {
     borrowers: { _id: 1, name: 1 },
-    step: 1,
-    name: 1,
-    purchaseType: 1,
     customName: 1,
-    hasProProperty: 1,
     hasPromotion: 1,
-    properties: { address: 1, documents: { propertyImages: 1 } },
-    promotions: { address: 1, name: 1, documents: { promotionImage: 1 } },
+    hasProProperty: 1,
+    name: 1,
+    promotions: { address: 1, name: 1, documents: 1 },
+    properties: { address: 1, documents: 1 },
+    purchaseType: 1,
+    step: 1,
   },
   properties: { _id: 1 },
 });
@@ -958,7 +959,7 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const fullRevenues = () => ({
+export const revenue = () => ({
   amount: 1,
   approximation: 1,
   createdAt: 1,

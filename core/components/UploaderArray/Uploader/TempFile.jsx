@@ -57,7 +57,7 @@ export default class TempFile extends Component {
           url: downloadUrl,
           size: file.size,
           type: file.type,
-          status: FILE_STATUS.VALID,
+          status: FILE_STATUS.UNVERIFIED,
         };
         handleUploadComplete(fileObject, downloadUrl);
         updateDocumentsCache.run({ docId, collection });
@@ -76,7 +76,7 @@ export default class TempFile extends Component {
     return (
       <div className="temp-file flex-col">
         <div className="file">
-          <h5 className="secondary bold">{name}</h5>
+          <h5 className="secondary bold file-name">{name}</h5>
           {!error
             && (fileIsUploading ? (
               <div className="uploading-progress">

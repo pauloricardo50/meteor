@@ -86,7 +86,6 @@ export default class RESTAPI {
   }
 
   handleSuccess(result = '', req, res) {
-    console.log('result:', result);
     const { status } = result;
     const stringified = JSON.stringify(result);
 

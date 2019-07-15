@@ -7,8 +7,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import MaskedInput from 'react-text-mask';
 
-import { swissFrancMask } from '../../utils/textMasks';
-import { toNumber } from '../../utils/conversionFunctions';
+import { swissFrancMask, swissFrancMaskDecimal } from '../../utils/textMasks';
+import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 
 type MoneyInputProps = {
   fullWidth?: boolean,
@@ -27,25 +27,30 @@ const MoneyInput = ({
   onChange,
   required,
   margin,
+  decimal = false,
   ...props
-}: MoneyInputProps) => (
-  <FormControl
-    className="money-input"
-    required={required}
-    fullWidth={fullWidth}
-    margin={margin}
-  >
-    {label && <InputLabel>{label}</InputLabel>}
-    <Input
-      startAdornment={<InputAdornment position="start">CHF</InputAdornment>}
-      onChange={event => onChange(toNumber(event.target.value))}
-      type="tel"
-      inputComponent={MaskedInput}
-      inputProps={{ mask: swissFrancMask }}
-      {...props}
-    />
-    {helperText && <FormHelperText>{helperText}</FormHelperText>}
-  </FormControl>
-);
+}: MoneyInputProps) => {
+  const parse = decimal ? toDecimalNumber : toNumber;
+  const mask = decimal ? swissFrancMaskDecimal : swissFrancMask;
 
+  return (
+    <FormControl
+      className="money-input"
+      required={required}
+      fullWidth={fullWidth}
+      margin={margin}
+    >
+      {label && <InputLabel>{label}</InputLabel>}
+      <Input
+        startAdornment={<InputAdornment position="start">CHF</InputAdornment>}
+        onChange={event => onChange(parse(event.target.value))}
+        type="tel"
+        inputComponent={MaskedInput}
+        inputProps={{ mask }}
+        {...props}
+      />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
+  );
+};
 export default MoneyInput;

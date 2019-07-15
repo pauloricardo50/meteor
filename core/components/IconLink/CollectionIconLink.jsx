@@ -131,10 +131,11 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
 };
 
 const CollectionIconLink = ({
-  relatedDoc,
-  stopPropagation,
+  forceOpen,
   iconClassName,
+  relatedDoc,
   showIcon,
+  stopPropagation,
   variant,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
@@ -152,7 +153,11 @@ const CollectionIconLink = ({
 
   if (showPopups && hasPopup) {
     return (
-      <CollectionIconLinkPopup {...relatedDoc} key={relatedDoc._id}>
+      <CollectionIconLinkPopup
+        {...relatedDoc}
+        key={relatedDoc._id}
+        forceOpen={forceOpen}
+      >
         <IconLink
           link={link}
           icon={icon}

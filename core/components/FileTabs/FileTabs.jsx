@@ -16,6 +16,7 @@ import T from '../Translation';
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
+
   return (
     <div className="files-tab">
       <Tabs

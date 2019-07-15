@@ -11,6 +11,7 @@ import { withFileViewerContext } from '../../../containers/FileViewerContext';
 import T from '../../Translation';
 import IconButton from '../../IconButton';
 import Downloader from '../../Downloader';
+import FileStatusSetter from './FileStatusSetter';
 
 const isAllowedToDelete = (disabled) => {
   const currentUser = Meteor.user();
@@ -25,22 +26,30 @@ const isAllowedToDelete = (disabled) => {
 };
 
 const File = ({
-  file: { name, Key, status = FILE_STATUS.VALID, message, url },
+  file: { name, Key, status, message, url },
   disabled,
   handleRemove,
   deleting,
   setDeleting,
   displayFile,
+  docId,
+  collection,
 }) => (
   <div className="flex-col">
     <div className="file">
       <h5
-        className="secondary bold"
+        className="secondary bold file-name"
         onClick={(event) => {
           if (Meteor.microservice === 'admin') {
             event.preventDefault();
             getSignedUrl.run({ key: Key }).then((signedUrl) => {
-              displayFile(signedUrl, url.split('.').slice(-1)[0]);
+              displayFile(
+                signedUrl,
+                url
+                  .split('.')
+                  .slice(-1)[0]
+                  .toLowerCase(),
+              );
             });
           }
         }}
@@ -48,9 +57,12 @@ const File = ({
         {Meteor.microservice === 'admin' ? <a>{name}</a> : name}
       </h5>
       <div className="actions flex center">
-        <span className={`${status} bold`}>
-          <T id={`File.status.${status}`} />
-        </span>
+        <FileStatusSetter
+          status={status}
+          fileKey={Key}
+          docId={docId}
+          collection={collection}
+        />
         {isAllowedToDelete(disabled) && (
           <IconButton
             disabled={deleting}

@@ -40,7 +40,7 @@ const LoanRenamer = ({ loan, error, setError }: LoanRenamerProps) => (
                 import('../../../../../core/utils/message').then(({ default: message }) => {
                   message.success("C'est dans la boîte!");
                 }))
-              .then(() => setError('Numéro acuel'));
+              .then(() => setError('Numéro actuel'));
           }
         })
     }
@@ -52,7 +52,6 @@ const LoanRenamer = ({ loan, error, setError }: LoanRenamerProps) => (
       }
     }}
     error={error}
-    showInlineError={false}
   />
 );
 

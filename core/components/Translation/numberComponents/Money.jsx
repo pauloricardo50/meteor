@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { toMoney } from '../../../utils/conversionFunctions';
 
-const getValue = (displayZero, value, currency) => {
+const getValue = ({ displayZero, value, currency, rounded }) => {
   if (!displayZero && (!value || value === 0)) {
     return '-';
   }
@@ -15,18 +15,27 @@ const getValue = (displayZero, value, currency) => {
   return currency ? (
     <>
       CHF&nbsp;
-      {toMoney(value)}
+      {toMoney(value, { rounded })}
     </>
   ) : (
-    toMoney(value)
+    toMoney(value, { rounded })
   );
 };
 
 // The Intl standard for CHF is messed up, and display the currency after the
 // monetary value, which is not what we want. We can use IntlNumber later on
 // if needed
-const Money = ({ value, currency, displayZero, className, tag: Tag }) => (
-  <Tag className={className}>{getValue(displayZero, value, currency)}</Tag>
+const Money = ({
+  value,
+  currency,
+  displayZero,
+  className,
+  tag: Tag,
+  rounded,
+}) => (
+  <Tag className={className}>
+    {getValue({ displayZero, value, currency, rounded })}
+  </Tag>
 );
 
 Money.propTypes = {

@@ -64,7 +64,7 @@ const PromotionLoanLinkerContent = ({
           ? loans.filter(loan => promotion.promotionLoan._id !== loan._id)
           : loans)
       }
-      renderItem={(loan, onBlur) => (
+      renderItem={(loan, hideResults) => (
         <div
           className="flex-row"
           style={{ width: '100%', justifyContent: 'space-between' }}
@@ -73,7 +73,9 @@ const PromotionLoanLinkerContent = ({
             relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
           />
           <Button
-            onClick={() => linkPromotionLoan({ loanId: loan._id }).then(onBlur)}
+            onClick={() =>
+              linkPromotionLoan({ loanId: loan._id }).then(hideResults)
+            }
             primary
             disabled={
               promotion.promotionLoan
@@ -94,7 +96,6 @@ const PromotionLoanLinker = props => (
     raised
     label="Lier un dossier"
     title="Lier un dossier à la promotion"
-    className="dialog-overflow"
   >
     <PromotionLoanLinkerContent {...props} />
   </DialogSimple>

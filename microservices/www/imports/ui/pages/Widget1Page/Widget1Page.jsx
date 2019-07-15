@@ -46,9 +46,9 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
           {showPart2 && (
             <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
               <Button
-                color="secondary"
+                secondary
                 className="cta"
-                variant="raised"
+                raised
                 link
                 to={getUrl(rest)}
               >

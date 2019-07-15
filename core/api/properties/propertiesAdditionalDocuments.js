@@ -1,7 +1,7 @@
 import { DOCUMENTS } from '../files/fileConstants';
 import * as propertyConstants from './propertyConstants';
 import { RESIDENCE_TYPE } from '../constants';
-import Loans from '../loans/loans';
+import Loans from '../loans';
 
 export const initialDocuments = [
   { id: DOCUMENTS.PURCHASE_CONTRACT },
@@ -12,8 +12,13 @@ export const initialDocuments = [
   { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE },
 ];
 
-const getLoanResidenceType = ({ propertyId, userId }) => {
-  const loan = Loans.findOne({ userId, propertyIds: { $in: [propertyId] } });
+const getLoanResidenceType = (propertyId) => {
+  // If a property is shared among multiple loans, this may work in unexpected ways,
+  // since each of those properties could have a different residenceType
+  const loan = Loans.findOne(
+    { propertyIds: propertyId },
+    { fields: { residenceType: 1 }, sort: { createdAt: 1 } },
+  );
   return loan && loan.residenceType;
 };
 
@@ -38,14 +43,12 @@ export const conditionalDocuments = [
   },
   {
     id: DOCUMENTS.INVESTEMENT_PROPERTY_RENTAL_STATEMENT,
-    condition: ({ doc: { _id: propertyId, userId } }) =>
-      getLoanResidenceType({ propertyId, userId })
-      === RESIDENCE_TYPE.INVESTMENT,
+    condition: ({ doc: { _id: propertyId } }) =>
+      getLoanResidenceType(propertyId) === RESIDENCE_TYPE.INVESTMENT,
   },
   {
     id: DOCUMENTS.INVESTEMENT_PROPERTY_SERVICE_CHARGE_SETTLEMENT,
-    condition: ({ doc: { _id: propertyId, userId } }) =>
-      getLoanResidenceType({ propertyId, userId })
-      === RESIDENCE_TYPE.INVESTMENT,
+    condition: ({ doc: { _id: propertyId } }) =>
+      getLoanResidenceType(propertyId) === RESIDENCE_TYPE.INVESTMENT,
   },
 ];

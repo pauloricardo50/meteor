@@ -59,7 +59,10 @@ const OverviewTab = (props) => {
 
         <div className="card-bottom">
           <LoanChecklistDialog loan={loan} />
-          <LoanChecklistEmailSender loan={loan} />
+          <LoanChecklistEmailSender
+            loan={loan}
+            currentUser={props.currentUser}
+          />
         </div>
       </div>
       <div className="admin-note">

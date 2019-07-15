@@ -56,7 +56,7 @@ module.exports = {
     //   { nestedBinaryExpressions: false },
     // ],
     'no-mixed-operators': ['error', { allowSamePrecedence: false }],
-    'function-paren-newline': ['error', 'multiline'],
+    'function-paren-newline': ['error', 'multiline-arguments'],
     'implicit-arrow-linebreak': 'off',
     'func-names': 'off',
     curly: 'error',
@@ -118,6 +118,10 @@ module.exports = {
     'react/jsx-one-expression-per-line': [2, { allow: 'single-child' }],
     'react/display-name': 'off',
     'react/no-multi-comp': 'off',
+    'react/sort-comp': [
+      2,
+      { order: ['lifecycle', 'static-methods', 'everything-else', 'render'] },
+    ],
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',

@@ -8,5 +8,6 @@ import '../organisations/server/hooks';
 import '../promotionOptions/server/hooks';
 import '../promotions/server/hooks';
 import '../properties/server/hooks';
+import '../revenues/server/hooks';
 import '../tasks/server/hooks';
 import '../users/server/hooks';

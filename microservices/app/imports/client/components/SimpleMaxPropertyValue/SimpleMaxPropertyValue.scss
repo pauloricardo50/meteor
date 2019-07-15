@@ -69,33 +69,33 @@
     }
 
     .autoform {
-      label {
-        color: white;
-      }
+      // label {
+      //   color: white;
+      // }
 
-      span[class^='MuiFormLabel-asterisk'] {
-        color: white;
-      }
+      // span[class^='MuiFormLabel-asterisk'] {
+      //   // color: white;
+      // }
 
-      li {
-        color: white;
-      }
+      // li {
+      //   color: white;
+      // }
 
-      div[class^='MuiInputBase-root']::before {
-        border-bottom: 1px solid white;
-      }
+      // div[class^='MuiInputBase-root']::before {
+      //   border-bottom: 1px solid white;
+      // }
 
-      div:not([value='']) {
-        color: white;
-      }
+      // div:not([value='']) {
+      //   color: white;
+      // }
 
-      button svg {
-        color: white;
-      }
+      // button svg {
+      //   color: white;
+      // }
 
-      button[disabled] svg {
-        color: rgba(0, 0, 0, 0.25) !important;
-      }
+      // button[disabled] svg {
+      //   color: rgba(0, 0, 0, 0.25) !important;
+      // }
     }
   }
 }

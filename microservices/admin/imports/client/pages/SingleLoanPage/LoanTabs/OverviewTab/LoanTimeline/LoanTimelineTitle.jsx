@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import Icon from 'core/components/Icon';
@@ -26,7 +27,9 @@ const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
       )}
       <h4 className="title">
         <Icon className="icon secondary" fontSize="small" type={icons[type]} />
-        {title}
+        <Tooltip title={title} placement="top-start">
+          <span className="text">{title}</span>
+        </Tooltip>
       </h4>
       <h4 className="secondary">
         <small>{moment(date).format("D MMM 'YY")}</small>
