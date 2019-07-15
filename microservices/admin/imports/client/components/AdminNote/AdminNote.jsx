@@ -15,6 +15,7 @@ const AdminNote = ({
   docId,
   collection,
   placeholder,
+  style,
 }: AdminNoteProps) => (
   <ClickToEditField
     value={adminNote}
@@ -27,6 +28,7 @@ const AdminNote = ({
       multiline: true,
       placeholder: tutorial,
     }}
+    style={style}
   >
     {({ value, isEditing }) =>
       (isEditing ? (
