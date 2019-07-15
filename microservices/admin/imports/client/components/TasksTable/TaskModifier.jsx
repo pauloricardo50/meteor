@@ -2,7 +2,6 @@
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import moment from 'moment';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
@@ -11,6 +10,7 @@ import { TASK_STATUS } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation/Translation';
 import TaskModifierDateSetter from './TaskModifierDateSetter';
+import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
 
 type TaskModifierProps = {
   task: Object,
@@ -35,13 +35,6 @@ const taskPlaceholders = [
   'Se plaindre des banquiers',
   'Aller au sport',
 ];
-const toNearest15Minutes = (momentObj) => {
-  const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
-  return momentObj
-    .clone()
-    .minute(roundedMinutes)
-    .second(0);
-};
 
 export const schema = new SimpleSchema({
   title: {
@@ -63,32 +56,7 @@ export const schema = new SimpleSchema({
     uniforms: {
       render: TaskModifierDateSetter,
       buttonProps: { raised: true, primary: true },
-      funcs: [
-        {
-          label: 'dans 1h',
-          func: () => [
-            'dueAtTime',
-            toNearest15Minutes(moment().add(1, 'h')).format('HH:mm'),
-          ],
-        },
-        {
-          label: 'dans 3h',
-          func: () => [
-            'dueAtTime',
-            toNearest15Minutes(moment().add(3, 'h')).format('HH:mm'),
-          ],
-        },
-        {
-          label: 'À 8h',
-          func: () => [
-            'dueAtTime',
-            moment()
-              .hours(8)
-              .minute(0)
-              .format('HH:mm'),
-          ],
-        },
-      ],
+      funcs: dueAtTimeFuncs,
     },
   },
   dueAtDateHelpers: {
@@ -97,35 +65,7 @@ export const schema = new SimpleSchema({
     uniforms: {
       render: TaskModifierDateSetter,
       buttonProps: { outlined: true, primary: true },
-      funcs: [
-        {
-          label: 'Demain',
-          func: () => [
-            'dueAt',
-            moment()
-              .add(1, 'd')
-              .toDate(),
-          ],
-        },
-        {
-          label: 'Dans 3 jours',
-          func: () => [
-            'dueAt',
-            moment()
-              .add(3, 'd')
-              .toDate(),
-          ],
-        },
-        {
-          label: 'Semaine prochaine',
-          func: () => [
-            'dueAt',
-            moment()
-              .add(7, 'd')
-              .toDate(),
-          ],
-        },
-      ],
+      funcs: dueAtFuncs,
     },
   },
   dueAt: {
@@ -176,7 +116,7 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
-const getTime = (date) => {
+const getTime = date => {
   if (!date) {
     return undefined;
   }
@@ -210,7 +150,7 @@ const TaskModifier = ({
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
-    updateTask: (values) => {
+    updateTask: values => {
       setSubmitting(true);
       return taskUpdate
         .run({ taskId, object: values })
