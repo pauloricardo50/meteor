@@ -13,8 +13,7 @@ export const userSchema = new SimpleSchema({
   firstName: String,
   lastName: String,
   email: { type: String, regEx: SimpleSchema.RegEx.Email },
-  phoneNumbers: { type: Array, minCount: 1 },
-  'phoneNumbers.$': String,
+  phoneNumber: String,
 });
 
 export default compose(

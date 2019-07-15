@@ -14,6 +14,7 @@ import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { removePropertyFromLoan } from './propertyServerHelpers';
 import { getUserNameAndOrganisation } from '../../helpers';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -43,14 +44,17 @@ export class PropertyService extends CollectionService {
       if (loanId) {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
-      } else {
-        // Can't delete a property that has multiple loans without specifying
-        // from where you want to remove it
-        return false;
+        return removePropertyFromLoan({
+          loan: LoanService.get(loanId),
+          propertyId,
+        });
       }
-    } else {
-      Properties.remove(propertyId);
+      // Can't delete a property that has multiple loans without specifying
+      // from where you want to remove it
+      return false;
     }
+
+    return Properties.remove(propertyId);
   };
 
   pushValue = ({ propertyId, object }) =>
@@ -120,7 +124,10 @@ export class PropertyService extends CollectionService {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
 
     if (this.hasOneOfProperties({ userId, propertyIds })) {
-      throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        'Cet utilisateur est déjà invité à ce bien immobilier',
+      );
     }
 
     LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });

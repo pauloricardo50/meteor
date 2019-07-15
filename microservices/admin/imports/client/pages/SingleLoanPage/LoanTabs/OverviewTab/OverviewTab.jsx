@@ -5,13 +5,13 @@ import Recap from 'core/components/Recap';
 import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
-import DateModifier from 'core/components/DateModifier';
+import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
+import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import AdminNote from '../../../../components/AdminNote/AdminNote';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
-import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
@@ -30,30 +30,40 @@ const OverviewTab = (props) => {
   return (
     <div className="overview-tab">
       <div className="admin-section card1">
-        <DisableUserFormsToggle loan={loan} />
-        <UpdateField
-          doc={loan}
-          fields={['category']}
-          collection={LOANS_COLLECTION}
-        />
-        <UpdateField
-          doc={loan}
-          fields={['residenceType']}
-          collection={LOANS_COLLECTION}
-        />
-        <UpdateField
-          doc={loan}
-          fields={['purchaseType']}
-          collection={LOANS_COLLECTION}
-          disabled
-        />
-        <UpdateField
-          doc={loan}
-          fields={['applicationType']}
-          collection={LOANS_COLLECTION}
-        />
-        <LoanStepSetter loan={loan} />
-        <VerificationSetter loan={loan} />
+        <div className="card-top">
+          <DisableUserFormsToggle loan={loan} />
+          <UpdateField
+            doc={loan}
+            fields={['category']}
+            collection={LOANS_COLLECTION}
+          />
+          <UpdateField
+            doc={loan}
+            fields={['residenceType']}
+            collection={LOANS_COLLECTION}
+          />
+          <UpdateField
+            doc={loan}
+            fields={['purchaseType']}
+            collection={LOANS_COLLECTION}
+            disabled
+          />
+          <UpdateField
+            doc={loan}
+            fields={['applicationType']}
+            collection={LOANS_COLLECTION}
+          />
+          <LoanStepSetter loan={loan} />
+          <VerificationSetter loan={loan} />
+        </div>
+
+        <div className="card-bottom">
+          <LoanChecklistDialog loan={loan} />
+          <LoanChecklistEmailSender
+            loan={loan}
+            currentUser={props.currentUser}
+          />
+        </div>
       </div>
       <div className="admin-note">
         <h2>Notes</h2>
@@ -64,7 +74,6 @@ const OverviewTab = (props) => {
         />
       </div>
       <LoanTimeline loanId={loanId} />
-      <LoanStatusCheck loan={loan} />
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />
         <Solvency loan={loan} />

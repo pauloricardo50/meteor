@@ -52,6 +52,10 @@ class UserService extends CollectionService {
   }) => {
     const newUserId = this.createUser({ options: { email, password }, role });
 
+    if (additionalData.phoneNumber && additionalData.phoneNumber.length) {
+      additionalData.phoneNumbers = [additionalData.phoneNumber];
+    }
+
     this.update({ userId: newUserId, object: additionalData });
 
     if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {

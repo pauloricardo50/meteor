@@ -1,13 +1,18 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
-import { TASK_STATUS } from 'core/api/constants';
+import { TASK_STATUS, TASK_PRIORITIES } from 'core/api/constants';
 import IconButton from 'core/components/IconButton';
-import { taskComplete, taskChangeStatus } from 'core/api/tasks/index';
+import {
+  taskComplete,
+  taskChangeStatus,
+  taskUpdate,
+} from 'core/api/tasks/index';
 
 type TasksTableActionsProps = {};
 
-const TasksTableActions = ({ taskId }: TasksTableActionsProps) => (
+const TasksTableActions = ({ taskId, priority }: TasksTableActionsProps) => (
   <div className="flex space-children">
     <IconButton
       onClick={(e) => {
@@ -31,6 +36,24 @@ const TasksTableActions = ({ taskId }: TasksTableActionsProps) => (
       type="close"
       tooltip="Annuler tâche"
       className="error"
+    />
+    <IconButton
+      onClick={(e) => {
+        e.stopPropagation();
+        taskUpdate.run({
+          taskId,
+          object: {
+            priority:
+              priority === TASK_PRIORITIES.HIGH
+                ? TASK_PRIORITIES.DEFAULT
+                : TASK_PRIORITIES.HIGH,
+          },
+        });
+      }}
+      size="small"
+      type="priorityHigh"
+      tooltip="Rendre tâche prioritaire"
+      className={cx({ warning: priority === TASK_PRIORITIES.HIGH })}
     />
   </div>
 );

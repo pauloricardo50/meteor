@@ -1,9 +1,10 @@
-import TaskService from 'core/api/tasks/server/TaskService';
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import ActivityService from 'core/api/activities/server/ActivityService';
-import UserService from 'core/api/users/server/UserService';
-import { ROLES } from 'core/api/users/userConstants';
+import TaskService from '../../tasks/server/TaskService';
+import { TASK_STATUS } from '../../tasks/taskConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 import CollectionService from '../../helpers/CollectionService';
+import RevenueService from '../../revenues/server/RevenueService';
 import Notifications from '../notifications';
 
 class NotificationService extends CollectionService {
@@ -40,9 +41,9 @@ class NotificationService extends CollectionService {
     });
   }
 
-  readTaskNotification({ taskId }) {
+  readNotificationAll({ filters }) {
     const notification = this.fetchOne({
-      $filters: { 'taskLink._id': taskId },
+      $filters: filters,
       recipientLinks: 1,
     });
 
@@ -117,6 +118,33 @@ class NotificationService extends CollectionService {
         this.insert({
           recipientLinks: [{ _id: createdBy }],
           activityLink: { _id: activityId },
+        });
+      }
+    });
+  }
+
+  addRevenueNotifications() {
+    const now = new Date();
+    const revenues = RevenueService.fetch({
+      $filters: { expectedAt: { $lte: now }, paidAt: { $exists: false } },
+      loan: { userCache: 1 },
+    });
+
+    const admins = UserService.fetch({ $filters: { roles: ROLES.ADMIN } });
+    revenues.forEach(({ _id: revenueId, loan }) => {
+      const existingNotification = this.fetchOne({
+        $filters: { 'revenueLink._id': revenueId },
+      });
+
+      if (!existingNotification) {
+        this.insert({
+          recipientLinks: this.getNotificationRecipient(
+            loan.userCache
+              && loan.userCache.assignedEmployeeCache
+              && loan.userCache.assignedEmployeeCache._id,
+            admins,
+          ),
+          revenueLink: { _id: revenueId },
         });
       }
     });

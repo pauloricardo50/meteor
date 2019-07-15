@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import moment from 'moment';
 
 import Loading from 'core/components/Loading';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -11,27 +12,26 @@ import {
 
 type NotificationListProps = {};
 
-const getNotificationTitle = (task, activity) => {
-  if (task) {
-    return task.title;
-  }
-  if (activity) {
-    return activity.title;
-  }
-
-  return "L'orgine de la notification a été supprimée";
-};
+const getNotificationTitle = (title, createdAt) => (
+  <>
+    <p className="secondary" style={{ margin: 0 }}>
+      {moment(createdAt).fromNow()}
+      :&nbsp;
+    </p>
+    <p style={{ margin: 0 }}>{title}</p>
+  </>
+);
 
 const Notification = ({
   _id: notificationId,
-  task,
-  activity,
+  title,
   refetch,
   relatedDoc,
+  createdAt,
 }) => (
   <div className="notification-list-item">
     <div>
-      <div>{getNotificationTitle(task, activity)}</div>
+      <div className="flex-row">{getNotificationTitle(title, createdAt)}</div>
       {relatedDoc && <CollectionIconLink relatedDoc={relatedDoc} />}
     </div>
     <div className="buttons">

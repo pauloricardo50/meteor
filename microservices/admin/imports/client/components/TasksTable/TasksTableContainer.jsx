@@ -47,14 +47,15 @@ const makeMapTask = ({
     description,
     status,
     dueAt,
-    completedAt,
     assignee,
     loan = {},
     user = {},
+    priority,
   } = task;
 
   return {
     id: taskId,
+    priority,
     columns: [
       relatedTo && {
         raw: loan.name || user.name,
@@ -65,6 +66,7 @@ const makeMapTask = ({
                 ? { ...loan, collection: LOANS_COLLECTION }
                 : { ...user, collection: USERS_COLLECTION }
             }
+            variant="TASKS_TABLE"
           />
         ),
       },
@@ -84,7 +86,10 @@ const makeMapTask = ({
           ) : null,
         raw: assignee && assignee.name,
       },
-      { raw: '', label: <TasksTableActions taskId={taskId} /> },
+      {
+        raw: '',
+        label: <TasksTableActions taskId={taskId} priority={priority} />,
+      },
     ].filter(x => x),
     handleClick: () => {
       setTaskToModify(task);

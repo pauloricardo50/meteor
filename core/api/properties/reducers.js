@@ -22,13 +22,7 @@ Properties.addReducers({
       landValue = 0,
       constructionValue = 0,
       additionalMargin = 0,
-    }) => {
-      if (value) {
-        return value;
-      }
-
-      return landValue + constructionValue + additionalMargin;
-    },
+    }) => value || landValue + constructionValue + additionalMargin,
   },
   valuePerSquareMeterInside: {
     body: { totalValue: 1, insideArea: 1 },

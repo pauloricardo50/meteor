@@ -10,6 +10,8 @@ export const ALLOWED_FILE_TYPES = [
   'image/png',
   'image/jpeg',
   'application/pdf',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
 export const ONE_KB = 1024;

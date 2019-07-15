@@ -29,7 +29,7 @@ const BorrowersTab = (props) => {
   return (
     <div>
       <ConfirmMethod
-        disabled={borrowers.length === 2}
+        disabled={borrowers.length >= 2}
         method={() => addBorrower.run({ loanId: loan._id })}
         label="Ajouter emprunteur"
         buttonProps={{
@@ -38,7 +38,7 @@ const BorrowersTab = (props) => {
           style: { marginBottom: 16 },
         }}
       />
-      {borrowers.length ? (
+      {borrowers && borrowers.length ? (
         <Tabs
           tabs={borrowers.map((borrower, i) => ({
             id: borrower._id,

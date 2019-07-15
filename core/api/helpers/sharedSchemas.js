@@ -144,6 +144,12 @@ export const moneyField = {
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
 };
 
+export const decimalMoneyField = {
+  ...moneyField,
+  type: Number,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_DECIMAL },
+};
+
 export const documentsField = {
   type: Object,
   defaultValue: {},

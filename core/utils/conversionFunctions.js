@@ -1,6 +1,6 @@
 // Rounds the value, adds thousands markers every 3 digits
 // (and removes non-digit characters)
-export function toMoney(value, { noPrefix } = {}) {
+export function toMoney(value, { noPrefix, rounded = true } = {}) {
   if (value === 0) {
     return 0;
   }
@@ -12,14 +12,38 @@ export function toMoney(value, { noPrefix } = {}) {
     // Don't format the value if it is undefined or an empty string
     return value;
   }
-  const roundedValue = Math.round(Number(Math.round(value)));
-  const negativePrefix = !noPrefix && value < 0 && roundedValue !== 0 ? '-' : '';
-  return (
-    negativePrefix
-    + String(roundedValue)
-      .replace(/\D/g, '')
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-  );
+  const parsedValue = rounded
+    ? Math.round(Number(Math.round(value)))
+    : Number(value);
+  const negativePrefix = !noPrefix && value < 0 && parsedValue !== 0 ? '-' : '';
+
+  if (rounded) {
+    return (
+      negativePrefix
+      + String(parsedValue)
+        .replace(/\D/g, '')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+    );
+  }
+
+  const roundedDecimals = Math.round(parsedValue * 100) / 100;
+
+  const [integer, decimals] = String(roundedDecimals).split('.');
+
+  const integerPart = negativePrefix
+    + integer.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  let decimalPart = decimals;
+
+  if (!decimals) {
+    return [integerPart, '00'].join('.');
+  }
+
+  if (decimals && decimals.length > 2) {
+    const rounding = 10 ** (decimals.length - 2);
+    decimalPart = Math.round(Number(decimals) / rounding) * rounding;
+  }
+
+  return [integerPart, String(decimalPart).slice(0, 2)].join('.');
 }
 
 // Replaces any nondigit character by an empty character,
@@ -32,9 +56,7 @@ export function toNumber(value) {
   return value ? Number(String(value).replace(/\D/g, '')) : value;
 }
 
-// Replaces any nondigit character by an empty character,
-// to prevent the use of non-digits
-// Only do this if the value actually exists
+// Like toNumber, but allows decimals
 export function toDecimalNumber(value) {
   if (typeof value === 'number') {
     return value;

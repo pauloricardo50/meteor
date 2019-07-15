@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
 
-import T from 'core/components/Translation';
+import T from '../../../Translation';
+import { OWN_FUNDS_TYPES } from '../../../../api/constants';
 import FinancingSection, {
   CalculatedValue,
   FinmaRatio,
@@ -22,7 +23,7 @@ import {
   getIncomeRatioStatus,
   makeHasOwnFundsOfType,
 } from './financingResultHelpers';
-import { OWN_FUNDS_TYPES } from '../../../../api/constants';
+import FinancingResultInterests from './FinancingResultInterests';
 
 type FinancingResultProps = {};
 
@@ -54,7 +55,7 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
         {
           id: 'interestsCost',
-          Component: CalculatedValue,
+          Component: FinancingResultInterests,
           value: getInterests,
         },
         {

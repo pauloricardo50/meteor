@@ -344,15 +344,19 @@ export const adminLoan = ({ withSort } = {}) => ({
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
-  revenues: fullRevenues(),
+  revenues: revenue(),
   status: 1,
   tasksCache: {
     createdAt: 1,
     dueAt: 1,
     status: 1,
     title: 1,
+    isPrivate: 1,
+    assigneeLink: 1,
   },
   user: adminUser(),
+  financedPromotion: { name: 1 },
+  financedPromotionLink: 1,
 });
 
 export const adminLoans = () => ({
@@ -421,6 +425,8 @@ export const notification = () => ({
   recipients: { firstName: 1, lastName: 1, name: 1 },
   relatedDoc: 1,
   task: task(),
+  title: 1,
+  revenue: revenue(),
   updatedAt: 1,
 });
 
@@ -671,6 +677,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     value: 1,
     promotion: { _id: 1 },
   },
+  promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
       loans: {
@@ -745,7 +752,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   constructionYear: 1,
   copropertyPercentage: 1,
   createdAt: 1,
-  customFields: 1,
   description: 1,
   documents: 1,
   flatType: 1,
@@ -833,6 +839,27 @@ export const proProperty = ({ withSort } = {}) => ({
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
+export const apiProperty = () => ({
+  externalId: 1,
+  address1: 1,
+  address2: 1,
+  city: 1,
+  zipCode: 1,
+  value: 1,
+  description: 1,
+  propertyType: 1,
+  houseType: 1,
+  flatType: 1,
+  roomCount: 1,
+  insideArea: 1,
+  landArea: 1,
+  terraceArea: 1,
+  constructionYear: 1,
+  externalUrl: 1,
+  useOpenGraph: 1,
+  imageUrls: 1,
+});
+
 // //
 // // Task fragments
 // //
@@ -844,13 +871,15 @@ export const baseTask = () => ({
   title: 1,
   description: 1,
   updatedAt: 1,
+  isPrivate: 1,
+  priority: 1,
 });
 
 export const task = () => ({
   ...baseTask(),
   assigneeLink: 1,
   assignee: simpleUser(),
-  loan: { name: 1 },
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   user: { name: 1 },
 });
 
@@ -901,14 +930,14 @@ export const appUser = () => ({
   borrowers: { name: 1 },
   loans: {
     borrowers: { _id: 1, name: 1 },
-    step: 1,
-    name: 1,
-    purchaseType: 1,
     customName: 1,
-    hasProProperty: 1,
     hasPromotion: 1,
-    properties: { address: 1, documents: { propertyImages: 1 } },
-    promotions: { address: 1, name: 1, documents: { promotionImage: 1 } },
+    hasProProperty: 1,
+    name: 1,
+    promotions: { address: 1, name: 1, documents: 1 },
+    properties: { address: 1, documents: 1 },
+    purchaseType: 1,
+    step: 1,
   },
   properties: { _id: 1 },
 });
@@ -930,7 +959,7 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const fullRevenues = () => ({
+export const revenue = () => ({
   amount: 1,
   approximation: 1,
   createdAt: 1,

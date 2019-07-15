@@ -35,10 +35,10 @@ const LoanBoardCardTasks = ({
 
   const task = (
     <h5 className="loan-board-card-tasks">
-      <span className={cx({ 'error-box': isLate, secondary: !isLate })}>
+      <span className={cx('date', { 'error-box': isLate, secondary: !isLate })}>
         {nextDueTask.noDueDate ? 'Maintenant' : dueAtMoment.fromNow()}
       </span>
-      :&nbsp;
+      &nbsp;
       <LoanBoardCardTask title={nextDueTask.title} _id={nextDueTask._id} />
     </h5>
   );

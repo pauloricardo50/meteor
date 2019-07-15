@@ -1,11 +1,9 @@
-.overview-tab .admin-section {
+.overview-tab .admin-section .card-top {
   display: flex;
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-
-  padding: 16px;
 
   .update-field {
     min-width: 200px;
@@ -14,6 +12,11 @@
   > * {
     margin-right: 8px;
   }
+}
+
+.overview-tab .admin-section .card-bottom {
+  display: flex;
+  justify-content: center;
 }
 
 .overview-tab {
@@ -26,6 +29,7 @@
     justify-content: space-around;
 
     width: 100%;
+    margin-top: 40px;
 
     .borrower-recaps {
       display: flex;
@@ -48,39 +52,6 @@
     }
 
     margin-top: 40px;
-  }
-}
-
-.loan-status-check {
-  align-self: center;
-
-  max-width: 1000px;
-  margin: 40px;
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    align-self: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  .card-bottom {
-    display: flex;
-    justify-content: center;
-  }
-
-  .status-check {
-    display: flex;
-    flex-wrap: nowrap;
-
-    padding: 8px;
-  }
-
-  .borrowers {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
   }
 }
 
@@ -147,7 +118,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
 
-  margin-bottom: 40px;
+  margin-top: 40px;
 
   > * {
     margin-top: 16px;
@@ -176,13 +147,20 @@
 
     h4 {
       margin: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+
       display: flex;
       align-items: center;
 
       &.title {
         margin-left: -4px;
+
+        .text {
+          vertical-align: middle;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 250px;
+        }
       }
 
       .icon {
@@ -204,6 +182,7 @@
     flex-basis: 250px;
     flex-grow: 0;
     flex-shrink: 0;
+    padding-bottom: 16px; // To avoid the scroll-bar from overlapping with text
 
     &:hover {
       .activity-modifier {

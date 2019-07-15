@@ -2,12 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps } from 'recompose';
 
-import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
 import { proProperties } from '../../api/properties/queries';
 import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
+import { proPropertySummary } from '../../api/fragments';
 
 const columnOptions = [
   { id: 'address' },
@@ -39,7 +39,7 @@ const makeMapProperty = history => ({
 export default compose(
   withSmartQuery({
     query: proProperties,
-    params: { fetchOrganisationProperties: true },
+    params: { fetchOrganisationProperties: true, $body: proPropertySummary() },
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',

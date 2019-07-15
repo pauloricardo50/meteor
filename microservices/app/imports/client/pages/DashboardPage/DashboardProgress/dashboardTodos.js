@@ -14,7 +14,7 @@ const createFinancingLink = ({ _id: loanId }) =>
 const createPropertiesLink = ({ _id: loanId }) =>
   createRoute(APP_ROUTES.PROPERTIES_PAGE.path, { loanId });
 
-const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
+const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } = {} }) =>
   (propertyId
     ? createRoute(APP_ROUTES.PROPERTY_PAGE.path, { loanId, propertyId })
     : createPropertiesLink({ _id: loanId }));
@@ -25,7 +25,7 @@ export const checkArrayIsDone = (array = [], params) =>
     .every(({ isDone, hide }) =>
       (hide ? hide(params) || isDone(params) : isDone(params)));
 
-export const disablePropertyTodos = ({ structure: { property } }) =>
+export const disablePropertyTodos = ({ structure: { property } = {} }) =>
   !property || property.category === PROPERTY_CATEGORY.PRO;
 
 export const promotionTodoList = {

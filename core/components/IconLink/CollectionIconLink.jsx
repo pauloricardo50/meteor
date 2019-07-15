@@ -17,6 +17,7 @@ import {
 } from '../../api/constants';
 import collectionIcons from '../../arrays/collectionIcons';
 import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
+import { getLoanLinkTitle } from './collectionIconLinkHelpers';
 
 type CollectionIconLinkProps = {
   relatedDoc: Object,
@@ -27,7 +28,7 @@ type CollectionIconLinkProps = {
 
 const showPopups = Meteor.microservice === 'admin';
 
-const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
+const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
   if (!docId) {
     return {
       link: '/',
@@ -37,12 +38,21 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   }
 
   switch (collection) {
-  case LOANS_COLLECTION:
+  case LOANS_COLLECTION: {
+    let text;
+
+    if (variant === 'TASKS_TABLE') {
+      text = getLoanLinkTitle(data);
+    } else {
+      text = data.name;
+    }
+
     return {
       link: `/loans/${docId}`,
-      text: data.name,
+      text,
       hasPopup: true,
     };
+  }
   case USERS_COLLECTION: {
     let text;
     const { organisations = [] } = data;
@@ -121,10 +131,12 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
 };
 
 const CollectionIconLink = ({
-  relatedDoc,
-  stopPropagation,
+  forceOpen,
   iconClassName,
+  relatedDoc,
   showIcon,
+  stopPropagation,
+  variant,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
@@ -137,11 +149,15 @@ const CollectionIconLink = ({
     icon = collectionIcons[collection],
     text,
     hasPopup,
-  } = getIconConfig(relatedDoc);
+  } = getIconConfig(relatedDoc, variant);
 
   if (showPopups && hasPopup) {
     return (
-      <CollectionIconLinkPopup {...relatedDoc} key={relatedDoc._id}>
+      <CollectionIconLinkPopup
+        {...relatedDoc}
+        key={relatedDoc._id}
+        forceOpen={forceOpen}
+      >
         <IconLink
           link={link}
           icon={icon}

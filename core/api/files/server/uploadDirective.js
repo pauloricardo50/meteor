@@ -140,7 +140,7 @@ const exoscaleStorageService = {
         file,
         meta,
       ),
-      'x-amz-meta-status': FILE_STATUS.VALID,
+      'x-amz-meta-status': FILE_STATUS.UNVERIFIED,
     };
 
     const bucketUrl = _.isFunction(directive.bucketUrl)

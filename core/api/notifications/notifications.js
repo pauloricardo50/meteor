@@ -19,6 +19,8 @@ const NotificationSchema = new SimpleSchema({
   'taskLink._id': String,
   activityLink: { type: Object, optional: true },
   'activityLink._id': String,
+  revenueLink: { type: Object, optional: true },
+  'revenueLink._id': String,
 });
 
 Notifications.attachSchema(NotificationSchema);

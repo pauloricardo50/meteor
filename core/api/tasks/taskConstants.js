@@ -12,3 +12,8 @@ export const TASK_QUERIES = {
   TASKS_FOR_DOC: 'TASKS_FOR_DOC',
   SIDENAV_TASKS: 'SIDENAV_TASKS',
 };
+
+export const TASK_PRIORITIES = {
+  DEFAULT: 'DEFAULT',
+  HIGH: 'HIGH',
+};

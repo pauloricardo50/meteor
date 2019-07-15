@@ -4,16 +4,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
-import { HotKeys } from 'react-hotkeys';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import PageHead from 'core/components/PageHead';
 import getBaseRedirect from 'core/utils/redirection';
+import FileViewer from '../../components/FileViewer';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
-import FileViewer from '../../components/FileViewer';
+import AdminKeyboardShortcuts from './AdminKeyboardShortcuts';
 
 const getRedirect = ({ currentUser, history }) => {
   const baseRedirect = getBaseRedirect(currentUser, history.location.pathname);
@@ -63,17 +63,7 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
 
   return (
     <div className="admin-layout">
-      <HotKeys
-        handlers={{
-          space: (e) => {
-            // Prevent the space key to be sent to the search input
-            e.preventDefault();
-            setOpenSearch(true);
-          },
-        }}
-        focused
-        attach={window}
-      />
+      <AdminKeyboardShortcuts setOpenSearch={setOpenSearch} />
       <PageHead titleId="AdminLayout" />
       <AdminTopNav
         {...props}

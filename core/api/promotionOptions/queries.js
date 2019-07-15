@@ -1,4 +1,7 @@
-import { appPromotionOption as appPromotionOptionFragment } from '../fragments';
+import {
+  appPromotionOption as appPromotionOptionFragment,
+  proPromotionOption,
+} from '../fragments';
 import { PROMOTION_OPTION_QUERIES } from './promotionOptionConstants';
 import PromotionOptions from '.';
 
@@ -9,5 +12,5 @@ export const appPromotionOption = PromotionOptions.createQuery(
 
 export const proPromotionOptions = PromotionOptions.createQuery(
   PROMOTION_OPTION_QUERIES.PRO_PROMOTION_OPTIONS,
-  () => {},
+  proPromotionOption(),
 );

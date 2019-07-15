@@ -64,7 +64,7 @@ export default class PopoverStickOnHover extends React.Component {
       }))[0];
 
     return (
-      <React.Fragment>
+      <>
         {enhancedChildren}
         <Overlay
           show={show}
@@ -83,7 +83,7 @@ export default class PopoverStickOnHover extends React.Component {
             {component}
           </Popover>
         </Overlay>
-      </React.Fragment>
+      </>
     );
   }
 }

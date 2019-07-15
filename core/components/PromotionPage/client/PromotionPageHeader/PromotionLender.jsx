@@ -32,26 +32,20 @@ const schema = new SimpleSchema({
   },
 });
 
-const PromotionLender = ({ promotion }: PromotionLenderProps) => {
-  console.log('model', promotion.lenderOrganisation);
-
-  return (
-    <AutoForm
-      autosave
-      schema={schema}
-      model={{ lenderOrganisationLink: promotion.lenderOrganisation }}
-      onSubmit={(values) => {
-        console.log('submit form!');
-
-        return promotionUpdate.run({
-          promotionId: promotion._id,
-          object: values,
-        });
-      }}
-    >
-      <CustomAutoField name="lenderOrganisationLink._id" />
-    </AutoForm>
-  );
-};
+const PromotionLender = ({ promotion }: PromotionLenderProps) => (
+  <AutoForm
+    autosave
+    schema={schema}
+    model={{ lenderOrganisationLink: promotion.lenderOrganisation }}
+    onSubmit={values =>
+      promotionUpdate.run({
+        promotionId: promotion._id,
+        object: values,
+      })
+    }
+  >
+    <CustomAutoField name="lenderOrganisationLink._id" />
+  </AutoForm>
+);
 
 export default PromotionLender;
