@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 
-import PromotionResidenceType from './PromotionResidenceType';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import UserPromotionLotsTable from './UserPromotionLotsTable';
+import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter/ResidenceTypeSetter';
 
 type UserPromotionTablesProps = {
   loan: Object,
@@ -14,7 +14,7 @@ const UserPromotionTables = ({ loan, promotion }: UserPromotionTablesProps) => {
   const { residenceType } = loan;
   return (
     <>
-      <PromotionResidenceType loan={loan} />
+      <ResidenceTypeSetter loan={loan} />
       {residenceType && (
         <>
           <UserPromotionOptionsTable promotion={promotion} loan={loan} />

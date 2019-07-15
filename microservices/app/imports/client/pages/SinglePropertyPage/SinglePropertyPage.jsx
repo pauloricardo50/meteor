@@ -19,14 +19,14 @@ import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 // import LaunchValuationButton from './LaunchValuationButton';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
-import ResidenceTypeSetter from './ResidenceTypeSetter';
+import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import PageApp from '../../components/PageApp/PageApp';
 
 const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
 
-const SinglePropertyPage = (props) => {
+const SinglePropertyPage = props => {
   const { loan, propertyId, history, currentUser: { loans } = {} } = props;
   const {
     borrowers,
@@ -40,8 +40,14 @@ const SinglePropertyPage = (props) => {
   if (property.category === PROPERTY_CATEGORY.PRO) {
     return (
       <>
-        <ResidenceTypeSetter loan={loan} />
-        {residenceType && <ProProperty property={property} />}
+        {/* <ResidenceTypeSetter loan={loan} /> */}
+        {residenceType && (
+          <ProProperty
+            property={property}
+            simple={applicationType === APPLICATION_TYPES.SIMPLE}
+            loan={loan}
+          />
+        )}
       </>
     );
   }
@@ -73,9 +79,12 @@ const SinglePropertyPage = (props) => {
           }}
           method={() =>
             propertyDelete.run({ propertyId, loanId }).then(() =>
-              history.push(createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
-                ':loanId': loan._id,
-              })))
+              history.push(
+                createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
+                  ':loanId': loan._id,
+                }),
+              ),
+            )
           }
           label={<T id="general.delete" />}
         >

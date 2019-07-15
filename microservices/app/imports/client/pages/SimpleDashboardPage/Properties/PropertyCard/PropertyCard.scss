@@ -1,4 +1,4 @@
-$borrowers-item-width: 500px;
+$borrowers-item-width: 600px;
 
 .property-card {
   display: flex;
@@ -89,9 +89,30 @@ $borrowers-item-width: 500px;
   }
 
   &-subtitle {
-     > span {
+    > span {
       display: flex;
       align-items: center;
     }
+  }
+}
+.residence-type-setter-dialog {
+  img {
+    height: 150px;
+    margin-right: 16px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .icon {
+    width: 100px !important;
+    margin-right: 16px !important;
+    flex-basis: unset !important;
+  }
+
+  .card1 {
+    padding: 24px 8px;
+    margin: 0;
+    box-shadow: unset;
   }
 }

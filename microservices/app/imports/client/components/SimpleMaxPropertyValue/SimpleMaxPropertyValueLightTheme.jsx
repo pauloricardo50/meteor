@@ -51,11 +51,24 @@ const SimpleMaxPropertyValueLightTheme = ({
         MuiFormLabel: {
           root: {
             color: 'white',
+            '&$focused': {
+              color: 'white',
+            },
           },
           asterisk: {
             '&$error': {
               color: 'white',
             },
+          },
+        },
+        MuiInputBase: {
+          input: {
+            color: 'white',
+          },
+        },
+        MuiButtonBase: {
+          root: {
+            marginTop: '16px',
           },
         },
       },

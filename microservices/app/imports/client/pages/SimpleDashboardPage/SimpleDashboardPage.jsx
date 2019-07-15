@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { withState } from 'recompose';
 
 import T from 'core/components/Translation';
@@ -9,7 +10,10 @@ import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxProperty
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
 import Properties from './Properties';
 import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
+import useMedia from 'core/hooks/useMedia';
 import BorrowersCard from './BorrowersCard/BorrowersCard';
+import createTheme from 'core/config/muiCustom';
+import SimpleMaxPropertyValueSticky from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueSticky';
 
 type SimpleDashboardPageProps = {};
 
@@ -17,23 +21,30 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   const { loan, currentUser, openBorrowersForm } = props;
 
   const progress = Calculator.personalInfoPercentSimple({ loan });
+  const isMobile = useMedia({ maxWidth: 1200 });
 
   return (
     <div className="simple-dashboard-page animated fadeIn">
       <div className="simple-dashboard-page-content">
         <DashboardProgressBar currentStep={loan.step} variant="light" />
-        <div className="simple-dashboard-page-borrowers">
-          <BorrowersCard {...props} />
-          <SimpleMaxPropertyValueLightTheme>
-            <SimpleMaxPropertyValue blue {...props} />
-          </SimpleMaxPropertyValueLightTheme>
-        </div>
-        <Properties loan={loan} />
         <SimpleDashboardPageCTAs
           loanId={loan._id}
           progress={progress}
           currentUser={currentUser}
         />
+        <div className="simple-dashboard-page-borrowers">
+          <BorrowersCard {...props} />
+          {isMobile ? (
+            <MuiThemeProvider theme={createTheme()}>
+              <SimpleMaxPropertyValueSticky {...props} />
+            </MuiThemeProvider>
+          ) : (
+            <SimpleMaxPropertyValueLightTheme>
+              <SimpleMaxPropertyValue blue {...props} />
+            </SimpleMaxPropertyValueLightTheme>
+          )}
+        </div>
+        <Properties loan={loan} />
       </div>
       <div className="simple-dashboard-page-footer">
         <span>
@@ -45,4 +56,6 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   );
 };
 
-export default withState('openBorrowersForm', 'setOpenBorrowersForm', false)(SimpleDashboardPage);
+export default withState('openBorrowersForm', 'setOpenBorrowersForm', false)(
+  SimpleDashboardPage,
+);

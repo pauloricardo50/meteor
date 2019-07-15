@@ -1,3 +1,5 @@
+$footer-height: 64px;
+
 .simple-max-property-value {
   display: flex;
   flex-direction: column;
@@ -67,69 +69,36 @@
       max-width: 500px;
       margin-bottom: 32px;
     }
-
-    .autoform {
-      // label {
-      //   color: white;
-      // }
-
-      // span[class^='MuiFormLabel-asterisk'] {
-      //   // color: white;
-      // }
-
-      // li {
-      //   color: white;
-      // }
-
-      // div[class^='MuiInputBase-root']::before {
-      //   border-bottom: 1px solid white;
-      // }
-
-      // div:not([value='']) {
-      //   color: white;
-      // }
-
-      // button svg {
-      //   color: white;
-      // }
-
-      // button[disabled] svg {
-      //   color: rgba(0, 0, 0, 0.25) !important;
-      // }
-    }
   }
-}
 
-div[class^='MuiDialogContent-root'] .simple-max-property-value {
-  &-signup {
-    .autoform {
-      label {
-        color: #666666;
-      }
+  &-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
 
-      span[class^='MuiFormLabel-asterisk'] {
-        color: red;
-      }
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-      li {
-        color: #666666;
-      }
+    width: 100%;
+    height: $footer-height;
 
-      div[class^='MuiInputBase-root']::before {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.42);
-      }
+    color: white;
+    background-color: $primary;
 
-      div:not([value='']) {
-        color: #444;
-      }
+    h2,
+    h3,
+    h4 {
+      color: white;
 
-      button svg {
-        color: $primary;
+      @include screen(small) {
+        font-size: 1.3rem;
       }
+    }
 
-      button[disabled] svg {
-        color: rgba(0, 0, 0, 0.25) !important;
-      }
+    h2,
+    h3 {
+      margin: 0;
     }
   }
 }

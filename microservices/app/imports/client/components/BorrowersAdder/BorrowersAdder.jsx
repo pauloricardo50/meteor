@@ -11,10 +11,9 @@ type BorrowersAdderProps = {
 
 const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
   <div className="borrowers-adder">
-    {/* <div className="card1"> */}
-    <h3>
+    <h4>
       <T id="BorrowersPage.BorrowerAdder.title" />
-    </h3>
+    </h4>
     <p className="description">
       <T id="BorrowersPage.BorrowerAdder.description" />
     </p>
@@ -44,7 +43,6 @@ const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
         </div>
       </Button>
     </div>
-    {/* </div> */}
   </div>
 );
 

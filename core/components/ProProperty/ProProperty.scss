@@ -23,7 +23,7 @@
       margin-top: 0;
     }
 
-     > * {
+    > * {
       flex-basis: 50%;
       flex-grow: 1;
 
@@ -72,5 +72,25 @@
     h4 {
       margin-bottom: 0;
     }
+  }
+
+  .residence-type-setter {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: unset;
+    align-self: flex-start;
+  }
+}
+
+.pro-property.simple {
+  width: 80%;
+  max-width: 1200px;
+  margin-top: 16px;
+  align-self: center;
+  box-sizing: border-box;
+
+  @include screen(wide) {
+    width: 100%;
   }
 }

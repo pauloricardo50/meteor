@@ -16,24 +16,22 @@ const SimpleMaxPropertyValueSignup = ({
   fixed,
 }: SimpleMaxPropertyValueSignupProps) => (
   <div className="simple-max-property-value">
-    <SimpleMaxPropertyValueLightTheme>
-      <h2>
-        <T id="MaxPropertyValue.signup.title" />
-      </h2>
-      <div className="simple-max-property-value-signup">
-        <FontAwesomeIcon icon={faCheckCircle} className="icon success" />
-        <h4 className="text-center">
-          <T id="MaxPropertyValue.signup.description" />
-        </h4>
-        <UserCreatorForm
-          buttonProps={{
-            raised: true,
-            secondary: true,
-            label: 'Créez votre compte',
-          }}
-        />
-      </div>
-    </SimpleMaxPropertyValueLightTheme>
+    <h2>
+      <T id="MaxPropertyValue.signup.title" />
+    </h2>
+    <div className="simple-max-property-value-signup">
+      <FontAwesomeIcon icon={faCheckCircle} className="icon success" />
+      <h4 className="text-center">
+        <T id="MaxPropertyValue.signup.description" />
+      </h4>
+      <UserCreatorForm
+        buttonProps={{
+          raised: true,
+          secondary: true,
+          label: 'Créez votre compte',
+        }}
+      />
+    </div>
   </div>
 );
 

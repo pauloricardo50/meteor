@@ -10,11 +10,11 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import MaxPropertyValueContainer from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
-import { SimpleMaxPropertyValue } from '../../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValue';
+import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
-type SimpleBorrowersPageMaxPropertyValueStickyProps = {};
+type SimpleMaxPropertyValueStickyProps = {};
 
-const displayPropertyValueRange = (values) => {
+const displayPropertyValueRange = values => {
   const { min, max } = values;
 
   if (min) {
@@ -45,19 +45,15 @@ const getFooter = ({
   }
 
   const { canton } = maxPropertyValue;
-  const values = residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-    ? maxPropertyValue.main
-    : maxPropertyValue.second;
+  const values =
+    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
+      ? maxPropertyValue.main
+      : maxPropertyValue.second;
 
   return (
     <div>
       <label>
-        Capacité d'achat -
-        {' '}
-        <T id={`Forms.canton.${canton}`} />
-        {' '}
--
-        {' '}
+        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
       <h3>{displayPropertyValueRange(values)}</h3>
@@ -65,7 +61,9 @@ const getFooter = ({
   );
 };
 
-const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMaxPropertyValueStickyProps) => {
+const SimpleMaxPropertyValueSticky = (
+  props: SimpleMaxPropertyValueStickyProps,
+) => {
   const {
     loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,
@@ -76,7 +74,7 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
       renderTrigger={({ handleOpen }) => (
         <ButtonBase
           focusRipple
-          className="simple-borrowers-page-max-property-value-sticky animated slideInUp"
+          className="simple-max-property-value-sticky animated slideInUp"
           onClick={handleOpen}
         >
           {getFooter({
@@ -95,4 +93,4 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
   );
 };
 
-export default compose(MaxPropertyValueContainer)(SimpleBorrowersPageMaxPropertyValueSticky);
+export default compose(MaxPropertyValueContainer)(SimpleMaxPropertyValueSticky);
