@@ -37,8 +37,6 @@ const BorrowersProgressHeader = ({
       raised={progress < 1}
       secondary={progress < 1}
       primary={progress >= 1}
-      // link
-      // to={createRoute(APP_ROUTES.BORROWERS_PAGE_NO_TAB.path, { loanId })}
       onClick={() => setOpenBorrowersForm(true)}
     >
       <T

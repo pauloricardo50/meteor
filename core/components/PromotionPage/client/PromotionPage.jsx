@@ -28,7 +28,6 @@ type PromotionPageProps = {
 const PromotionPage = (props: PromotionPageProps) => {
   const { promotion, loan = {} } = props;
   const { applicationType } = loan;
-  console.log('applicationType:', applicationType);
 
   const isApp = Meteor.microservice === 'app';
 
