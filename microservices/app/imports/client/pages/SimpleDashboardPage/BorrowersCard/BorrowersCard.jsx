@@ -3,16 +3,17 @@ import React from 'react';
 import { withState, compose, withProps } from 'recompose';
 
 import Calculator from 'core/utils/Calculator';
+import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 import BorrowersProgress from './BorrowersProgress/BorrowersProgress';
 import BorrowersForm from './BorrowersForm/BorrowersForm';
 import BorrowersCardHeader from './BorrowersCardHeader';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
 
 type BorrowersCardProps = {};
 
 const BorrowersCard = (props: BorrowersCardProps) => {
   const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;
+  const { borrowers = [] } = loan;
 
   return (
     <div className="borrowers-card">
@@ -21,9 +22,15 @@ const BorrowersCard = (props: BorrowersCardProps) => {
         {openBorrowersForm ? (
           <div className="flex-col animated fadeIn">
             <BorrowersForm {...props} />
-            <Button raised primary onClick={() => setOpenBorrowersForm(false)}>
-              <T id="general.close" />
-            </Button>
+            {!!borrowers.length && (
+              <Button
+                raised
+                primary
+                onClick={() => setOpenBorrowersForm(false)}
+              >
+                <T id="general.close" />
+              </Button>
+            )}
           </div>
         ) : (
           <div className="flex-col animated fadeIn">
@@ -33,7 +40,6 @@ const BorrowersCard = (props: BorrowersCardProps) => {
               secondary={progress < 1}
               primary={progress >= 1}
               onClick={() => setOpenBorrowersForm(true)}
-              // style={{ width: '100%' }}
             >
               <T
                 id={

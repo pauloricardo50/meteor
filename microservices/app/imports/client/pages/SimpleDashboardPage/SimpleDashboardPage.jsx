@@ -1,26 +1,25 @@
 // @flow
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { withState } from 'recompose';
+import { withState, withProps, compose } from 'recompose';
 
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
+import useMedia from 'core/hooks/useMedia';
+import createTheme from 'core/config/muiCustom';
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
 import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueLightTheme';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
 import Properties from './Properties';
 import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
-import useMedia from 'core/hooks/useMedia';
 import BorrowersCard from './BorrowersCard/BorrowersCard';
-import createTheme from 'core/config/muiCustom';
 import SimpleMaxPropertyValueSticky from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueSticky';
 
 type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
-  const { loan, currentUser, openBorrowersForm } = props;
+  const { loan, currentUser, openBorrowersForm, progress } = props;
 
-  const progress = Calculator.personalInfoPercentSimple({ loan });
   const isMobile = useMedia({ maxWidth: 1200 });
 
   return (
@@ -59,6 +58,13 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   );
 };
 
-export default withState('openBorrowersForm', 'setOpenBorrowersForm', false)(
-  SimpleDashboardPage,
-);
+export default compose(
+  withProps(({ loan }) => ({
+    progress: Calculator.personalInfoPercentSimple({ loan }),
+  })),
+  withState(
+    'openBorrowersForm',
+    'setOpenBorrowersForm',
+    ({ progress = 0 }) => progress === 0,
+  ),
+)(SimpleDashboardPage);
