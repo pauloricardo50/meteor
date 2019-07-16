@@ -17,7 +17,14 @@
     }
 
     h1 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 0;
+      padding-right: 16px;
+      margin-top: 0;
+      flex-wrap: wrap;
     }
     h2 {
       margin-top: 0;
@@ -84,7 +91,7 @@
 }
 
 .pro-property.simple {
-  width: 80%;
+  width: 100%;
   max-width: 1200px;
   margin-top: 16px;
   align-self: center;

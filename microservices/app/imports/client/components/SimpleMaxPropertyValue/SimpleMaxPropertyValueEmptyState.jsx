@@ -3,14 +3,16 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
 import cx from 'classnames';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 import { STATE } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Button from 'core/components/Button';
+import createTheme from 'core/config/muiCustom';
 
 type SimpleMaxPropertyValueEmptyStateProps = {};
-const getReadyToCalculateTitle = (props) => {
+const getReadyToCalculateTitle = props => {
   const { loan, lockCanton, canton } = props;
   const {
     hasPromotion,
@@ -44,7 +46,9 @@ const getReadyToCalculateTitle = (props) => {
   }
 };
 
-const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStateProps) => {
+const SimpleMaxPropertyValueEmptyState = (
+  props: SimpleMaxPropertyValueEmptyStateProps,
+) => {
   const {
     state,
     lockCanton,
@@ -55,6 +59,8 @@ const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStat
     recalculate,
     fixed,
   } = props;
+
+  const defaultTheme = createTheme();
   return (
     <div className={cx('simple-max-property-value', { fixed })}>
       <h2>
@@ -79,24 +85,59 @@ const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStat
             <h4>{getReadyToCalculateTitle(props)}</h4>
             <div className="flex-row center space-children">
               {!lockCanton && (
-                <Select
-                  value={cantonValue}
-                  onChange={onChangeCanton}
-                  options={cantonOptions}
-                  disabled={loading}
-                  placeholder={(
-                    <i>
-                      <T id="general.pick" />
-                    </i>
-                  )}
-                />
+                <MuiThemeProvider
+                  theme={{
+                    ...defaultTheme,
+                    overrides: {
+                      ...defaultTheme.overrides,
+                      MuiListItemText: {
+                        root: {
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          textAlign: 'left',
+                        },
+                      },
+                      MuiInputBase: {
+                        root: {
+                          color: 'white',
+                        },
+                      },
+                      MuiInput: {
+                        underline: {
+                          '&:before': {
+                            borderBottom: '1px solid rgba(255,255,255,0.6)',
+                          },
+                          '&&&&:hover:before': {
+                            borderBottom: '1px solid white',
+                          },
+                        },
+                      },
+                      MuiSelect: {
+                        icon: {
+                          color: 'white',
+                        },
+                      },
+                    },
+                  }}
+                >
+                  <Select
+                    value={cantonValue}
+                    onChange={onChangeCanton}
+                    options={cantonOptions}
+                    disabled={loading}
+                    placeholder={
+                      <i>
+                        <T id="general.pick" />
+                      </i>
+                    }
+                  />
+                </MuiThemeProvider>
               )}
               <Button
                 raised
                 onClick={recalculate}
                 secondary
-                style={{ marginLeft: 16 }}
-                disabled={!cantonValue}
+                style={{ marginLeft: 16, marginTop: 0 }}
               >
                 {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
               </Button>

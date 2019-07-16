@@ -6,19 +6,50 @@ import Calculator from 'core/utils/Calculator';
 import BorrowersProgress from './BorrowersProgress/BorrowersProgress';
 import BorrowersForm from './BorrowersForm/BorrowersForm';
 import BorrowersCardHeader from './BorrowersCardHeader';
+import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 
 type BorrowersCardProps = {};
 
 const BorrowersCard = (props: BorrowersCardProps) => {
-  const { loan, openBorrowersForm } = props;
+  const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;
 
   return (
     <div className="borrowers-card">
       <BorrowersCardHeader {...props} />
       {openBorrowersForm ? (
-        <BorrowersForm {...props} />
+        <div className="animated slideInDown">
+          <BorrowersForm {...props} />
+          <Button
+            raised
+            primary
+            onClick={() => setOpenBorrowersForm(false)}
+            style={{ width: '100%' }}
+          >
+            <T id="general.close" />
+          </Button>
+        </div>
       ) : (
-        <BorrowersProgress {...props} />
+        <div className="animated slideInUp">
+          <BorrowersProgress {...props} />
+          <Button
+            raised
+            secondary={progress < 1}
+            primary={progress >= 1}
+            onClick={() => setOpenBorrowersForm(true)}
+            style={{ width: '100%' }}
+          >
+            <T
+              id={
+                progress < 1
+                  ? progress === 0
+                    ? 'general.start'
+                    : 'general.continue'
+                  : 'general.modify'
+              }
+            />
+          </Button>
+        </div>
       )}
     </div>
   );

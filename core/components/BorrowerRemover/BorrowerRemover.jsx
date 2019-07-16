@@ -28,7 +28,11 @@ const BorrowerRemover = ({
   </div>
 );
 
-export default withProps(({ borrower: { _id: borrowerId }, loanId }) => ({
-  handleClick: () =>
-    borrowerDelete.run({ borrowerId, loanId }).then(() => location.reload()),
-}))(BorrowerRemover);
+export default withProps(
+  ({ borrower: { _id: borrowerId }, loanId, noReload = false }) => ({
+    handleClick: () =>
+      borrowerDelete
+        .run({ borrowerId, loanId })
+        .then(() => (noReload ? Promise.resolve() : location.reload())),
+  }),
+)(BorrowerRemover);

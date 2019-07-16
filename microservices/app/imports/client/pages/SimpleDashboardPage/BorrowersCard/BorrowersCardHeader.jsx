@@ -11,65 +11,31 @@ import SimpleFormSwitch from './SimpleFormSwitch';
 type BorrowersCardHeaderProps = {};
 
 const BorrowersCardHeader = (props: BorrowersCardHeaderProps) => {
+  const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;
   const {
-    loan,
-    openBorrowersForm,
-    setOpenBorrowersForm,
-    simpleForm,
-    setSimpleForm,
-    progress,
-  } = props;
-  const { borrowers = [] } = loan;
+    borrowers = [],
+    simpleBorrowersForm: simpleForm = true,
+    _id: loanId,
+  } = loan;
 
   return (
     <div className="borrowers-card-header">
       <div style={{ width: '100%' }}>
         <div className="flex-row title">
-          <h3>Emprunteurs</h3>
-          {openBorrowersForm ? (
-            !!borrowers.length && (
-              <SimpleFormSwitch
-                simpleForm={simpleForm}
-                setSimpleForm={setSimpleForm}
-              />
-            )
-          ) : (
-            <Button
-              raised={progress < 1}
-              secondary={progress < 1}
-              primary={progress >= 1}
-              onClick={() => setOpenBorrowersForm(true)}
-            >
-              <T
-                id={
-                  progress < 1
-                    ? progress === 0
-                      ? 'general.start'
-                      : 'general.continue'
-                    : 'general.modify'
-                }
-              />
-            </Button>
-          )}
+          <h3 className="flex-row">
+            Emprunteurs&nbsp;-&nbsp;
+            <PercentWithStatus
+              value={progress}
+              status={progress < 1 ? null : undefined}
+              rounded
+            />
+          </h3>
+          {openBorrowersForm &&
+            (!!borrowers.length && (
+              <SimpleFormSwitch simpleForm={simpleForm} loanId={loanId} />
+            ))}
         </div>
       </div>
-      <span className="secondary">
-        <T
-          id="BorrowersProgress.progress"
-          values={{
-            percent: (
-              <>
-                &nbsp;
-                <PercentWithStatus
-                  value={progress}
-                  status={progress < 1 ? null : undefined}
-                  rounded
-                />
-              </>
-            ),
-          }}
-        />
-      </span>
     </div>
   );
 };

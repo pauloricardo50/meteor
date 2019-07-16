@@ -11,7 +11,8 @@ import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export const withAnonymousLoan = compose(
   withState('anonymousLoanId', 'setAnonymousLoanId', () =>
-    localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN)),
+    localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
+  ),
   withSmartQuery({
     query: anonymousLoan,
     skip: ({ anonymousLoanId }) => !anonymousLoanId,
@@ -22,6 +23,7 @@ export const withAnonymousLoan = compose(
         name: 1,
         borrowers: { updatedAt: 1 },
         properties: { name: 1, address1: 1, totalValue: 1 },
+        simpleBorrowersForm: 1,
       },
     }),
     queryOptions: { reactive: false, single: true },
@@ -45,11 +47,13 @@ export default compose(
     insertAnonymousLoan: () =>
       anonymousLoanInsert
         .run({ trackingId: parseCookies()[TRACKING_COOKIE] })
-        .then((loanId) => {
+        .then(loanId => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
-            loanId,
-          }));
+          history.push(
+            createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+              loanId,
+            }),
+          );
         }),
   })),
 );

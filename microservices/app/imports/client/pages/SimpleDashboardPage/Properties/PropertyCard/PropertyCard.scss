@@ -18,9 +18,40 @@ $borrowers-item-width: 600px;
 
   .top {
     display: flex;
-    align-items: center;
-    flex-direction: row;
+    // align-items: center;
+    flex-direction: column;
     justify-content: space-between;
+
+    @include screen(wide) {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .property-card-actions {
+      margin-top: 16px;
+      width: 100%;
+
+      .button {
+        width: 100%;
+      }
+
+      @include screen(wide) {
+        width: auto;
+        align-self: flex-end;
+
+        .button {
+          width: auto;
+        }
+      }
+
+      @include screen(med) {
+        width: 100%;
+
+        .button {
+          width: 100%;
+        }
+      }
+    }
 
     @include screen(med) {
       flex-wrap: wrap;

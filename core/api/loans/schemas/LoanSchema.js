@@ -136,6 +136,7 @@ const LoanSchema = new SimpleSchema({
   'tasksCache.$': cacheField,
   financedPromotionLink: { type: Object, optional: true },
   'financedPromotionLink._id': { type: String, optional: true },
+  simpleBorrowersForm: { type: Boolean, defaultValue: true },
 });
 
 export default LoanSchema;

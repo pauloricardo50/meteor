@@ -45,7 +45,26 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
   return (
     <div className="header">
       <div className="header-left">
-        <h1>{ogTitle || address1}</h1>
+        <h1>
+          {ogTitle || address1}
+          {loan && (
+            <MuiThemeProvider
+              theme={{
+                ...defaultTheme,
+                overrides: {
+                  ...defaultTheme.overrides,
+                  MuiFormControl: {
+                    root: {
+                      marginTop: '8px',
+                    },
+                  },
+                },
+              }}
+            >
+              <ResidenceTypeSetter loan={loan} noIcon />
+            </MuiThemeProvider>
+          )}
+        </h1>
         <h2 className="secondary">
           <Money value={totalValue} />
         </h2>

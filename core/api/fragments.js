@@ -270,6 +270,7 @@ export const loan = () => ({
   userId: 1,
   verificationStatus: 1,
   shareSolvency: 1,
+  simpleBorrowersForm: 1,
 });
 
 export const loanBase = () => ({
@@ -308,31 +309,31 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
-      promotions: {
-        address: 1,
-        contacts: 1,
-        documents: { promotionImage: 1 },
-        lenderOrganisationLink: 1,
-        name: 1,
-        status: 1,
-        type: 1,
-        canton: 1,
-        users: {
-          _id: 1,
+        promotions: {
+          address: 1,
+          contacts: 1,
+          documents: { promotionImage: 1 },
+          lenderOrganisationLink: 1,
           name: 1,
-          email: 1,
-          phoneNumber: 1,
-          organisations: { users: { title: 1 } },
-        },
-        loans: {
-          _id: 1,
-          $filter({ filters, params: { loanId } }) {
-            filters.userId = Meteor.userId();
-            filters._id = loanId;
+          status: 1,
+          type: 1,
+          canton: 1,
+          users: {
+            _id: 1,
+            name: 1,
+            email: 1,
+            phoneNumber: 1,
+            organisations: { users: { title: 1 } },
+          },
+          loans: {
+            _id: 1,
+            $filter({ filters, params: { loanId } }) {
+              filters.userId = Meteor.userId();
+              filters._id = loanId;
+            },
           },
         },
-      },
-    }
+      }
     : {}),
 });
 
@@ -680,12 +681,12 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
-      loans: {
-        $filter({ filters, params: { loanId } }) {
-          filters._id = loanId;
+        loans: {
+          $filter({ filters, params: { loanId } }) {
+            filters._id = loanId;
+          },
         },
-      },
-    }
+      }
     : {}),
 });
 

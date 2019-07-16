@@ -31,20 +31,23 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
           loanId={loan._id}
           progress={progress}
           currentUser={currentUser}
+          withReturnToDashboard={false}
         />
         <div className="simple-dashboard-page-borrowers">
           <BorrowersCard {...props} />
-          {isMobile ? (
-            <MuiThemeProvider theme={createTheme()}>
-              <SimpleMaxPropertyValueSticky {...props} />
-            </MuiThemeProvider>
-          ) : (
-            <SimpleMaxPropertyValueLightTheme>
-              <SimpleMaxPropertyValue blue {...props} />
-            </SimpleMaxPropertyValueLightTheme>
-          )}
+          <div className="simple-dashboard-page-borrowers-right">
+            {isMobile ? (
+              <MuiThemeProvider theme={createTheme()}>
+                <SimpleMaxPropertyValueSticky {...props} />
+              </MuiThemeProvider>
+            ) : (
+              <SimpleMaxPropertyValueLightTheme>
+                <SimpleMaxPropertyValue blue {...props} />
+              </SimpleMaxPropertyValueLightTheme>
+            )}
+            <Properties loan={loan} />
+          </div>
         </div>
-        <Properties loan={loan} />
       </div>
       <div className="simple-dashboard-page-footer">
         <span>

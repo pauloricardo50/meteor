@@ -41,6 +41,9 @@ const SimpleMaxPropertyValueLightTheme = ({
                 borderBottom: '1px solid white',
               },
             },
+            '&$focused:after': {
+              borderBottom: '2px solid white',
+            },
           },
         },
         MuiTypography: {

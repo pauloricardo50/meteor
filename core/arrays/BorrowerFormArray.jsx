@@ -315,8 +315,18 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
   const insuranceArray = [
     { id: 'insurance2Simple', type: 'textInput', money: true, required: false },
     { id: 'bank3ASimple', type: 'textInput', money: true, required: false },
-    { id: 'insurance3ASimple', type: 'textInput', money: true, required: false },
-    { id: 'insurance3BSimple', type: 'textInput', money: true, required: false },
+    {
+      id: 'insurance3ASimple',
+      type: 'textInput',
+      money: true,
+      required: false,
+    },
+    {
+      id: 'insurance3BSimple',
+      type: 'textInput',
+      money: true,
+      required: false,
+    },
   ];
 
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
@@ -326,9 +336,10 @@ export const getBorrowerSimpleArray = ({
   borrowers,
   borrowerId,
   loan = {},
-  simple = false,
 }) => {
   const b = borrowers.find(borrower => borrower._id === borrowerId);
+  const { simpleBorrowersForm: simple = true } = loan;
+  console.log('simple:', simple);
 
   if (!b) {
     throw new Error("couldn't find borrower");
