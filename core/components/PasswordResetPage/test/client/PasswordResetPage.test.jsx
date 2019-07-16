@@ -36,12 +36,14 @@ describe('PasswordResetPage', () => {
     });
   });
 
-  it('renders the name', () => {
+  it('renders the name', async () => {
     const { email, token } = props;
     const firstName = 'John';
     const lastName = 'Doe';
-    return testCreateUser
-      .run({
+    
+    // FIXME: testCreateUser is called twice
+    try {
+      await testCreateUser.run({
         user: {
           email,
           firstName,
@@ -49,13 +51,15 @@ describe('PasswordResetPage', () => {
           services: { password: { reset: { token } } },
           roles: ['user'],
         },
-      })
-      .then(() =>
-        pollUntilReady(() => {
-          component().update();
-          return !component().find(Loading).length;
-        }, 10))
-      .then(() => expect(component().contains('John Doe')).to.equal(true));
+      });
+    } catch (error) {
+      console.log('error:', error);
+    }
+
+    return pollUntilReady(() => {
+      component().update();
+      return !component().find(Loading).length;
+    }, 10).then(() => expect(component().contains('John Doe')).to.equal(true));
   });
 
   it('Redirects to the login page if there is an error', () => {

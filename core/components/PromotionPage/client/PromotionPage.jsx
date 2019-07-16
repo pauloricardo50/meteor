@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import cx from 'classnames';
 
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
 
@@ -13,6 +14,7 @@ import AdditionalLotsTable from './AdditionalLotsTable';
 
 import UserPromotionTables from './UserPromotionTables';
 import PromotionPageButtons from './PromotionPageButtons';
+import { APPLICATION_TYPES } from '../../../api/constants';
 
 type PromotionPageProps = {
   promotion: Object,
@@ -25,11 +27,16 @@ type PromotionPageProps = {
 
 const PromotionPage = (props: PromotionPageProps) => {
   const { promotion, loan = {} } = props;
+  const { applicationType } = loan;
 
   const isApp = Meteor.microservice === 'app';
 
   return (
-    <div className="card1 promotion-page">
+    <div
+      className={cx('card1 promotion-page', {
+        simple: applicationType === APPLICATION_TYPES.SIMPLE,
+      })}
+    >
       <Helmet>
         <title>{promotion.name}</title>
       </Helmet>

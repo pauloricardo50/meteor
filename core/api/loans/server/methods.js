@@ -1,7 +1,11 @@
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
-import SecurityService from '../../security';
+import { Meteor } from 'meteor/meteor';
+import Analytics from '../../analytics/server/Analytics';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import EVENTS from '../../analytics/events';
+
+import Security from '../../security/Security';
+import SecurityService from '../../security';
 import {
   loanInsert,
   loanUpdate,
@@ -27,13 +31,13 @@ import {
   loanShareSolvency,
   anonymousLoanInsert,
   userLoanInsert,
+  loanInsertBorrowers,
   adminLoanReset,
   loanLinkPromotion,
   loanUnlinkPromotion,
 } from '../methodDefinitions';
-import LoanService from './LoanService';
-import Security from '../../security/Security';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
+import LoanService from './LoanService';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -217,6 +221,12 @@ anonymousLoanInsert.setHandler((context, params) => {
     params.trackingId,
   );
   return loanId;
+});
+
+loanInsertBorrowers.setHandler((context, params) => {
+  const { loanId } = params;
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  LoanService.insertBorrowers(params);
 });
 
 adminLoanReset.setHandler((context, params) => {

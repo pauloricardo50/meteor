@@ -10,11 +10,11 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import MaxPropertyValueContainer from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
-import { SimpleMaxPropertyValue } from '../../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValue';
+import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
-type SimpleBorrowersPageMaxPropertyValueStickyProps = {};
+type SimpleMaxPropertyValueStickyProps = {};
 
-const displayPropertyValueRange = (values) => {
+const displayPropertyValueRange = values => {
   const { min, max } = values;
 
   if (min) {
@@ -24,8 +24,17 @@ const displayPropertyValueRange = (values) => {
   return toMoney(max.propertyValue);
 };
 
-const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
+const getFooter = ({
+  maxPropertyValue,
+  residenceType,
+  borrowers = [],
+  maxPropertyValueExists,
+}) => {
   const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+
+  if (maxPropertyValueExists) {
+    return <h2>Votre capacité d'achat</h2>;
+  }
 
   if (!maxPropertyValue && !canCalculateSolvency) {
     return <h2>Renseignez vos revenus et fortune</h2>;
@@ -36,9 +45,10 @@ const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
   }
 
   const { canton } = maxPropertyValue;
-  const values = residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-    ? maxPropertyValue.main
-    : maxPropertyValue.second;
+  const values =
+    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
+      ? maxPropertyValue.main
+      : maxPropertyValue.second;
 
   return (
     <div>
@@ -51,9 +61,11 @@ const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
   );
 };
 
-const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMaxPropertyValueStickyProps) => {
+const SimpleMaxPropertyValueSticky = (
+  props: SimpleMaxPropertyValueStickyProps,
+) => {
   const {
-    loan: { maxPropertyValue, borrowers },
+    loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,
   } = props;
 
@@ -62,10 +74,15 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
       renderTrigger={({ handleOpen }) => (
         <ButtonBase
           focusRipple
-          className="simple-borrowers-page-max-property-value-sticky animated slideInUp"
+          className="simple-max-property-value-sticky animated slideInUp"
           onClick={handleOpen}
         >
-          {getFooter({ maxPropertyValue, residenceType, borrowers })}
+          {getFooter({
+            maxPropertyValue,
+            residenceType,
+            borrowers,
+            maxPropertyValueExists,
+          })}
         </ButtonBase>
       )}
       closeOnly
@@ -76,4 +93,4 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
   );
 };
 
-export default compose(MaxPropertyValueContainer)(SimpleBorrowersPageMaxPropertyValueSticky);
+export default compose(MaxPropertyValueContainer)(SimpleMaxPropertyValueSticky);

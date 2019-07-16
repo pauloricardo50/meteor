@@ -10,7 +10,7 @@ import Loading from '../Loading';
 type MaxPropertyValueProps = {};
 
 const renderState = (props) => {
-  const { state, loading } = props;
+  const { state, loading, loan } = props;
 
   if (loading) {
     return (
