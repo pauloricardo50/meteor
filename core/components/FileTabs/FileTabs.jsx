@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 
 import Tabs from 'core/components/Tabs';
+import VerticalAligner from 'core/components/VerticalAligner';
 import Calculator from 'core/utils/Calculator';
-
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
@@ -16,6 +16,7 @@ import T from '../Translation';
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
+
   return (
     <div className="files-tab">
       <Tabs
@@ -50,13 +51,19 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                         </h1>
                       </div>
                     )}
-                    <SingleFileTab
-                      doc={borrower}
-                      collection="borrowers"
-                      disabled={disabled}
-                      currentUser={currentUser}
-                      loan={loan}
-                    />
+                    <VerticalAligner
+                      id="borrower-files"
+                      nb={index}
+                      defaultMargin={16}
+                    >
+                      <SingleFileTab
+                        doc={borrower}
+                        collection="borrowers"
+                        disabled={disabled}
+                        currentUser={currentUser}
+                        loan={loan}
+                      />
+                    </VerticalAligner>
                   </div>
                 ))}
               </div>

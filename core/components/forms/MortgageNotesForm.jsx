@@ -1,13 +1,15 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import MortgageNoteSchema from '../../api/mortgageNotes/schemas/MortgageNoteSchema';
 import { mortgageNoteUpdate, mortgageNoteRemove } from '../../api';
 import AutoForm from '../AutoForm2';
-import { makeCustomAutoField } from '../AutoForm2/AutoFormComponents';
+import { CustomAutoField } from '../AutoForm2/AutoFormComponents';
 import CustomAutoFields from '../AutoForm2/CustomAutoFields';
 import Button from '../Button';
 import T from '../Translation';
+import Box from '../Box';
 import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 
 type MortgageNotesFormProps = {};
@@ -44,30 +46,31 @@ const removeMortgageNote = (mortgageNoteId) => {
     .then(() => message.success('Supprimé', 2));
 };
 
-const AutoField = makeCustomAutoField();
-
 const MortgageNotesForm = ({
   mortgageNotes = [],
   insertMortgageNote,
   id,
   withCanton,
+  className,
 }: MortgageNotesFormProps) => {
   const ommittedFields = withCanton
     ? ['createdAt', 'updatedAt']
     : ['createdAt', 'updatedAt', 'canton'];
 
   return (
-    <div className="space-children">
-      <h3>Cédules hypothécaires</h3>
+    <Box
+      className={cx('admin-mortgage-note-form', className)}
+      title={<h3>Cédules hypothécaires</h3>}
+    >
       {mortgageNotes.map(note => (
         <AutoForm
           schema={MortgageNoteSchema.omit(...ommittedFields)}
           model={note}
           onSubmit={handleSubmitMortgageNote(note._id)}
-          className="form"
+          className="admin-mortgage-note-form-single"
           key={note._id}
         >
-          <CustomAutoFields autoField={AutoField} />
+          <CustomAutoFields autoField={CustomAutoField} />
           <div className="flex">
             <CustomSubmitField
               raised
@@ -84,7 +87,7 @@ const MortgageNotesForm = ({
       <Button raised primary onClick={() => insertMortgageNote(id)}>
         <T id="general.add" />
       </Button>
-    </div>
+    </Box>
   );
 };
 

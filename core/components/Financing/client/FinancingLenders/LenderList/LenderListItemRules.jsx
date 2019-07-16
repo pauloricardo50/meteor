@@ -30,7 +30,10 @@ const LenderListItemRules = ({
           tooltip={(
             <ul style={{ padding: 0 }}>
               {calc.adminComments.map(comment => (
-                <li key="comment">&bull; {comment}</li>
+                <li key="comment">
+                  &bull;
+                  {comment}
+                </li>
               ))}
             </ul>
           )}
@@ -101,4 +104,4 @@ const LenderListItemRules = ({
   );
 };
 
-export default LenderListItemRules;
+export default React.memo(LenderListItemRules);

@@ -5,7 +5,8 @@ import moment from 'moment';
 
 import { createRoute } from '../../utils/routerUtils';
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import proPromotions from '../../api/promotions/queries/proPromotions';
+import { proPromotions } from '../../api/promotions/queries';
+import { proPromotions as promotionsFragment } from '../../api/fragments';
 import { PROMOTIONS_COLLECTION } from '../../api/constants';
 import T from '../Translation';
 import StatusLabel from '../StatusLabel';
@@ -65,6 +66,7 @@ export default compose(
   withSmartQuery({
     query: proPromotions,
     queryOptions: { reactive: false },
+    params: { $body: promotionsFragment() },
     dataName: 'promotions',
     renderMissingDoc: false,
   }),

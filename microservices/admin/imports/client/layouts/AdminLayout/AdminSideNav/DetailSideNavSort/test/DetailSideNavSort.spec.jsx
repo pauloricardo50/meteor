@@ -59,7 +59,7 @@ describe('DetailSideNavSort', () => {
     });
   });
 
-  it(`should call setSortOption redux action with the correct sort field & order
+  it.skip(`should call setSortOption redux action with the correct sort field & order
       when clicking a new sort option in the DropdownMenu`, () => {
     const handleClickSortByUpdatedAt = menuOptions[1].onClick;
     handleClickSortByUpdatedAt();
@@ -74,7 +74,7 @@ describe('DetailSideNavSort', () => {
     expect(setSortOption.lastCall.args).to.deep.equal(expectedActionParams);
   });
 
-  it(`should call setSortOption redux action with the DESC sort order when 
+  it.skip(`should call setSortOption redux action with the DESC sort order when 
       previous sort order was ASC on that field`, () => {
     const dropdownMenu = component({
       collectionName: LOANS_COLLECTION,

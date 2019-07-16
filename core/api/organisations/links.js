@@ -1,5 +1,6 @@
 import Organisations from './organisations';
 import { Contacts, Lenders, Users, LenderRules, Revenues } from '..';
+import Tasks from '../tasks';
 
 Organisations.addLinks({
   contacts: {
@@ -32,5 +33,10 @@ Organisations.addLinks({
     collection: Revenues,
     inversedBy: 'organisations',
     type: 'many',
+  },
+  tasks: {
+    inversedBy: 'organisation',
+    collection: Tasks,
+    autoremove: true,
   },
 });

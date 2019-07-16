@@ -22,7 +22,7 @@ const userToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
-  phoneNumber: '1234',
+  phoneNumber: '+41 22 566 01 10',
 };
 
 const api = new RESTAPI();
@@ -229,8 +229,8 @@ describe('REST: inviteUserToPromotion', function () {
         inviteUser({
           userData: userToInvite,
           expectedResponse: {
-            status: 400,
-            message: '[Cet utilisateur est déjà invité à cette promotion]',
+            status: HTTP_STATUS_CODES.CONFLICT,
+            message: 'Cet utilisateur est déjà invité à cette promotion [409]',
           },
         }));
     });

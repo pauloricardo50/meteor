@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -14,6 +16,7 @@ const WelcomeScreenTop = ({
   displayCheckbox = true,
   buttonProps,
   cta,
+  img,
 }: WelcomeScreenTopProps) => (
   <div className="card1 welcome-screen-top">
     <div className="welcome-screen-top-text">
@@ -34,22 +37,44 @@ const WelcomeScreenTop = ({
         />
       )}
 
-      {cta || (
-        <Button
-          raised
-          secondary
-          onClick={handleClick}
-          className="welcome-screen-cta"
-          {...buttonProps}
-        >
-          <T id="general.begin" />
-        </Button>
-      )}
+      <div className="welcome-screen-ctas">
+        {cta || (
+          <Button
+            raised
+            secondary
+            onClick={handleClick}
+            className="welcome-screen-cta"
+            {...buttonProps}
+          >
+            <T id="general.begin" />
+          </Button>
+        )}
+        {!Meteor.userId() && (
+          <Button
+            primary
+            className="welcome-screen-cta"
+            link
+            to={`/login?path=${
+              window.location.href.split(window.location.origin)[1]
+            }`}
+          >
+            <T id="general.login" />
+          </Button>
+        )}
+      </div>
     </div>
 
-    <div className="welcome-screen-top-img">
-      <img src="/img/homepage-closing-big.svg" alt="e-Potek" />
-    </div>
+    {!img && (
+      <div className="welcome-screen-top-img">
+        <img src="/img/homepage-closing-big.svg" alt="e-Potek" />
+      </div>
+    )}
+    {img && (
+      <div
+        className="welcome-screen-top-img-override"
+        style={{ backgroundImage: `url("${img}")` }}
+      />
+    )}
   </div>
 );
 

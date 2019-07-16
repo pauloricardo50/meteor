@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import colors from '../../config/colors';
 import {
@@ -17,6 +18,8 @@ import {
   LENDER_STATUS,
   PROPERTIES_COLLECTION,
   PROPERTY_STATUS,
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -84,8 +87,61 @@ const getStatuses = (collection) => {
       [PROPERTY_STATUS.SOLD]: colors.error,
     };
 
+  case REVENUES_COLLECTION:
+    return {
+      [REVENUE_STATUS.EXPECTED]: colors.primary,
+      [REVENUE_STATUS.CLOSED]: colors.success,
+    };
+
   default:
     throw new Error(`Unknown collection "${collection}" in StatusLabel`);
+  }
+};
+const getLabel = ({
+  allowModify,
+  color,
+  label,
+  status,
+  statuses,
+  suffix,
+  variant,
+}) => {
+  switch (variant) {
+  case 'full':
+    return props => (
+      <span
+        className={cx({ allowModify, 'status-label': true })}
+        style={{ backgroundColor: color || statuses[status] }}
+        {...props}
+      >
+        <span>
+          {label || <T id={`Forms.status.${status}`} />}
+          {suffix}
+        </span>
+      </span>
+    );
+  case 'dot':
+    return ({ showTooltip, ...props }) =>
+      (showTooltip ? (
+        <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
+          <span
+            className={cx({ allowModify, 'status-label-dot': true })}
+            {...props}
+          >
+            <span style={{ backgroundColor: color || statuses[status] }} />
+          </span>
+        </Tooltip>
+      ) : (
+        <span
+          className={cx({ allowModify, 'status-label-dot': true })}
+          {...props}
+        >
+          <span style={{ backgroundColor: color || statuses[status] }} />
+        </span>
+      ));
+
+  default:
+    break;
   }
 };
 
@@ -98,28 +154,28 @@ const StatusLabel = ({
   allowModify,
   docId,
   additionalActions = () => Promise.resolve(),
+  variant = 'full',
+  showTooltip = true,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
-  const statusLabel = (props = {}) => (
-    <span
-      className={cx({ allowModify, 'status-label': true })}
-      style={{
-        backgroundColor: color || statuses[status],
-      }}
-      {...props}
-    >
-      <span>
-        {label || <T id={`Forms.status.${status}`} />}
-        {suffix}
-      </span>
-    </span>
-  );
+  const statusLabel = getLabel({
+    allowModify,
+    color,
+    docId,
+    label,
+    status,
+    statuses,
+    suffix,
+    variant,
+  });
 
   if (allowModify) {
     return (
       <DropdownMenu
-        className="status-label-dropdown"
-        renderTrigger={({ handleOpen }) => statusLabel({ onClick: handleOpen })}
+        noWrapper
+        renderTrigger={({ handleOpen }) =>
+          statusLabel({ onClick: handleOpen, showTooltip })
+        }
         options={Object.keys(statuses).map(stat => ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
@@ -135,7 +191,7 @@ const StatusLabel = ({
     );
   }
 
-  return statusLabel();
+  return statusLabel({ showTooltip });
 };
 
 export default StatusLabel;

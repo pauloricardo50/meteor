@@ -10,7 +10,6 @@ import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator from '../FinancingCalculator';
 
-
 type FinancingResultErrorsProps = {};
 
 export const ERROR_TYPES = {
@@ -89,7 +88,7 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
 
   if (error.type === ERROR_TYPES.BREAKING) {
     return (
-      <p className="error result">
+      <p className="error error-box result">
         <T id={`FinancingResultErrors.${error.id}`} />
       </p>
     );
@@ -99,7 +98,7 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
       <div className="result">
         <FinancingResultChart {...props} className="" />
 
-        <p className="error">
+        <p className="error error-box">
           <T id={`FinancingResultErrors.${error.id}`} />
         </p>
       </div>

@@ -9,6 +9,12 @@ import BorrowerSchema from 'core/api/borrowers/schemas/BorrowerSchema';
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
 import { OfferSchema } from 'core/api/offers/offers';
 import { propertyUpdate, borrowerUpdate, offerUpdate } from 'core/api';
+import {
+  LOANS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  BORROWERS_COLLECTION,
+  OFFERS_COLLECTION,
+} from 'core/api/constants';
 import SingleDevTab from './SingleDevTab';
 
 type DevTabProps = {};
@@ -45,6 +51,7 @@ const DevTab = ({ loan }: DevTabProps) => {
                     });
                   })
               }
+              collection={LOANS_COLLECTION}
             />
           ),
         },
@@ -67,6 +74,7 @@ const DevTab = ({ loan }: DevTabProps) => {
                     });
                   })
               }
+              collection={PROPERTIES_COLLECTION}
             />
           ),
         })),
@@ -89,6 +97,7 @@ const DevTab = ({ loan }: DevTabProps) => {
                     });
                   })
               }
+              collection={BORROWERS_COLLECTION}
             />
           ),
         })),
@@ -111,6 +120,7 @@ const DevTab = ({ loan }: DevTabProps) => {
                     });
                   })
               }
+              collection={OFFERS_COLLECTION}
             />
           ),
         })),

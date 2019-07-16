@@ -3,6 +3,7 @@
 // Map loan onto FinanceCalculator
 
 import { makeArgumentMapper } from '../MiddlewareManager';
+import memoizeOne from '../memoizeOne';
 
 const argumentMappings = {};
 
@@ -13,4 +14,9 @@ export const borrowerExtractorMiddleware = () => next => (params, ...args) => {
     return next({ ...params, borrowers: params.loan.borrowers }, ...args);
   }
   return next(params, ...args);
+};
+
+export const memoizeMiddleware = () => (next) => {
+  const memoFunc = memoizeOne(next);
+  return memoFunc;
 };

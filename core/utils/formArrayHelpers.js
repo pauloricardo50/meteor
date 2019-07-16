@@ -34,7 +34,11 @@ export const getCountedArray = (formArray, doc, shouldCountAllFields) => {
       if (i.type === 'conditionalInput') {
         if (conditionalInputIsTriggered(i, doc)) {
           // If the conditional input is triggering the next input, add all values
-          i.inputs.forEach(input => arr.push(getCurrentValue(input, doc)));
+          i.inputs.forEach((input) => {
+            if (shouldCountField(input)) {
+              arr.push(getCurrentValue(input, doc));
+            }
+          });
         } else {
           // If conditional value is not triggering
           arr.push(getCurrentValue(i.inputs[0], doc));
@@ -73,10 +77,16 @@ export const getMissingFieldIds = (formArray, doc) =>
         return [
           ...missingFieldIds,
           ...additionalFields.reduce(
-            (missingConditionalFields, additionalField) =>
-              (fieldIsValid(additionalField, doc)
-                ? missingConditionalFields
-                : [...missingConditionalFields, additionalField.id]),
+            (missingConditionalFields, additionalField) => {
+              if (
+                fieldIsValid(additionalField, doc)
+                || !shouldCountField(additionalField)
+              ) {
+                return missingConditionalFields;
+              }
+
+              return [...missingConditionalFields, additionalField.id];
+            },
             [],
           ),
         ];

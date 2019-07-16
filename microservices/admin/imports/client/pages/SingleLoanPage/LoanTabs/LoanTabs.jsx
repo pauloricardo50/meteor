@@ -7,6 +7,7 @@ import { ROLES, PURCHASE_TYPE } from 'core/api/constants';
 import FileTabs from 'core/components/FileTabs/loadable';
 import { createRoute } from 'core/utils/routerUtils';
 import Calculator from 'core/utils/Calculator';
+import { lifecycle } from 'recompose';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import OverviewTab from './OverviewTab/loadable';
 import BorrowersTab from './BorrowersTab/loadable';
@@ -102,19 +103,22 @@ const formatTabs = (tabs, props) =>
           )}
         </span>
       ),
-      to: createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
-        loanId: props.loan._id,
-        tabId: id,
-      }),
+      to:
+        props.enableTabRouting
+        && createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
+          loanId: props.loan._id,
+          tabId: id,
+        }),
     }));
 
 const LoanTabs = ({ tabs, ...props }) => {
+  const { enableTabRouting } = props;
   const formattedTabs = formatTabs(tabs || getTabs(props), props);
 
   return (
     <Tabs
       tabs={formattedTabs}
-      routerParamName="tabId"
+      routerParamName={enableTabRouting ? 'tabId' : undefined}
       variant="scrollable"
       scrollButtons="auto"
       disableTouchRipple
@@ -122,4 +126,17 @@ const LoanTabs = ({ tabs, ...props }) => {
   );
 };
 
-export default LoanTabs;
+export default lifecycle({
+  componentDidMount() {
+    OverviewTab.preload();
+    FinancingTab.preload();
+    PromotionsTab.preload();
+    RefinancingTab.preload();
+    BorrowersTab.preload();
+    PropertiesTab.preload();
+    LendersTab.preload();
+    FileTabs.preload();
+    RevenuesTab.preload();
+    ActionsTab.preload();
+  },
+})(LoanTabs);

@@ -1,7 +1,7 @@
 import { withProps, compose, withState, lifecycle } from 'recompose';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import anonymousLoan from 'core/api/loans/queries/anonymousLoan';
+import { anonymousLoan } from 'core/api/loans/queries';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
@@ -11,9 +11,11 @@ import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export const withAnonymousLoan = compose(
   withState('anonymousLoanId', 'setAnonymousLoanId', () =>
-    localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN)),
+    localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
+  ),
   withSmartQuery({
     query: anonymousLoan,
+    skip: ({ anonymousLoanId }) => !anonymousLoanId,
     params: ({ anonymousLoanId }) => ({
       _id: anonymousLoanId,
       $body: {
@@ -21,6 +23,7 @@ export const withAnonymousLoan = compose(
         name: 1,
         borrowers: { updatedAt: 1 },
         properties: { name: 1, address1: 1, totalValue: 1 },
+        simpleBorrowersForm: 1,
       },
     }),
     queryOptions: { reactive: false, single: true },
@@ -44,9 +47,13 @@ export default compose(
     insertAnonymousLoan: () =>
       anonymousLoanInsert
         .run({ trackingId: parseCookies()[TRACKING_COOKIE] })
-        .then((loanId) => {
+        .then(loanId => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+          history.push(
+            createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+              loanId,
+            }),
+          );
         }),
   })),
 );

@@ -17,7 +17,13 @@ const PropertyCardSubtitle = ({
 }: PropertyCardSubtitleProps) => {
   let isSolvent;
 
-  if (maxPropertyValue && maxPropertyValue.date && residenceType) {
+  if (
+    maxPropertyValue &&
+    maxPropertyValue.date &&
+    maxPropertyValue.main &&
+    maxPropertyValue.second &&
+    residenceType
+  ) {
     let max;
     if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
       max = maxPropertyValue.main.max.propertyValue;
@@ -40,13 +46,13 @@ const PropertyCardSubtitle = ({
       <Money value={property.totalValue} />
       {isSolvent !== undefined ? (
         <Tooltip
-          title={(
+          title={
             <T
               id={`PropertyCardSubtitle.${
                 isSolvent ? 'solvent' : 'nonSolvent'
               }.tooltip`}
             />
-          )}
+          }
         >
           <span className={cx({ error: !isSolvent, success: isSolvent })}>
             <T

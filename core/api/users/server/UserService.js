@@ -52,6 +52,10 @@ class UserService extends CollectionService {
   }) => {
     const newUserId = this.createUser({ options: { email, password }, role });
 
+    if (additionalData.phoneNumber && additionalData.phoneNumber.length) {
+      additionalData.phoneNumbers = [additionalData.phoneNumber];
+    }
+
     this.update({ userId: newUserId, object: additionalData });
 
     if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
@@ -189,6 +193,11 @@ class UserService extends CollectionService {
   };
 
   testUserAccount = ({ email, password, role }) => {
+    if (this.doesUserExist({ email })) {
+      // Sometimes this methods is called twice from a test.....???????
+      // Apparently due to a duplicate websocket connection
+      return this.getByEmail(email);
+    }
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
     return this.get(userId);

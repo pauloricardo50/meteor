@@ -1,9 +1,11 @@
 // @flow
 /* eslint-env mocha */
+import { Random } from 'meteor/random';
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { testCreateUser } from '../../../../api';
 import {
@@ -26,18 +28,22 @@ describe('PasswordResetPage', () => {
     });
   const shallowComponent = () => shallow(<PasswordResetPageDumb {...props} />);
 
-  beforeEach(() => {
-    resetDatabase();
+  beforeEach((done) => {
     getMountedComponent.reset();
-    props = { token: 'token12345', email: 'john.doe@test.com' };
+    props = { token: Random.id(), email: 'john.doe@test.com' };
+    Meteor.call('resetDatabase', () => {
+      done();
+    });
   });
 
-  it('renders the name', () => {
+  it('renders the name', async () => {
     const { email, token } = props;
     const firstName = 'John';
     const lastName = 'Doe';
-    return testCreateUser
-      .run({
+    
+    // FIXME: testCreateUser is called twice
+    try {
+      await testCreateUser.run({
         user: {
           email,
           firstName,
@@ -45,18 +51,20 @@ describe('PasswordResetPage', () => {
           services: { password: { reset: { token } } },
           roles: ['user'],
         },
-      })
-      .then(() =>
-        pollUntilReady(() => {
-          component().update();
-          return !component().find(Loading).length;
-        }, 10))
-      .then(() => expect(component().contains('John Doe')).to.equal(true));
+      });
+    } catch (error) {
+      console.log('error:', error);
+    }
+
+    return pollUntilReady(() => {
+      component().update();
+      return !component().find(Loading).length;
+    }, 10).then(() => expect(component().contains('John Doe')).to.equal(true));
   });
 
   it('Redirects to the login page if there is an error', () => {
     props.error = { message: 'Test error' };
-    
+
     expect(shallowComponent().find(Redirect).length).to.equal(1);
   });
 

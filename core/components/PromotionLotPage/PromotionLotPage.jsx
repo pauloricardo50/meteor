@@ -2,12 +2,11 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import T from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 import Button from 'core/components/Button';
 import StatusLabel from 'core/components/StatusLabel';
 import { createRoute } from 'core/utils/routerUtils';
 import { PROMOTION_LOTS_COLLECTION } from 'imports/core/api/constants';
-import { toMoney } from 'imports/core/utils/conversionFunctions';
 import PromotionLotModifier from './PromotionLotModifier';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotsManager from './PromotionLotsManager';
@@ -62,7 +61,9 @@ const PromotionLotPage = ({
       </Button>
       <div className="promotion-lot-page card1">
         <h1 style={{ marginBottom: '4px' }}>
-          {name} - CHF {toMoney(promotionLot.value)}
+          {name}
+          {' - '}
+          <Money value={promotionLot.value} />
           &nbsp;
           <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>

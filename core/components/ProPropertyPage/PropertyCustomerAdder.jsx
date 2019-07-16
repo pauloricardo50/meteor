@@ -5,7 +5,7 @@ import { compose, withState } from 'recompose';
 
 import { proInviteUser } from 'core/api/methods';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import proReferredByUsers from 'core/api/users/queries/proReferredByUsers';
+import { proReferredByUsers } from 'core/api/users/queries';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { AutoFormDialog } from '../AutoForm2';
 import T from '../Translation';
@@ -20,7 +20,6 @@ const customerSchema = new SimpleSchema({
 });
 
 const inviteReferredUser = ({ referredUsers, setModel, loans }) => {
-  console.log('loans:', loans);
   const invitedUserIds = loans.map(({ user: { _id } = {} }) => _id);
   const options = referredUsers
     .filter(({ _id }) => !invitedUserIds.some(userId => userId === _id))
@@ -86,6 +85,7 @@ const PropertyCustomerAdder = ({
 export default compose(
   withSmartQuery({
     query: proReferredByUsers,
+    params: { ownReferredUsers: true },
     queryOptions: { reactive: false },
     dataName: 'referredUsers',
   }),

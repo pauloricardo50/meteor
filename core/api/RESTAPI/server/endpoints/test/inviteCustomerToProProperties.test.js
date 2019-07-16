@@ -17,12 +17,13 @@ import {
   makeHeaders,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const customerToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
-  phoneNumber: '1234',
+  phoneNumber: '+41 22 566 01 10',
 };
 
 const api = new RESTAPI();
@@ -285,7 +286,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
   });
 
-  it('returns an error when the user has not the right permissions with impersonateUser', () => {
+  it('returns an error when the user does not have the right permissions with impersonateUser', () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property4',
       userId: 'pro2',
@@ -399,8 +400,8 @@ describe('REST: inviteCustomerToProProperties', function () {
           { _id: 'property3' },
         ],
         expectedResponse: {
-          status: 400,
-          message: '[Cet utilisateur est déjà invité à ce bien immobilier]',
+          status: HTTP_STATUS_CODES.CONFLICT,
+          message: 'Cet utilisateur est déjà invité à ce bien immobilier [409]',
         },
       }));
   });

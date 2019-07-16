@@ -3,6 +3,11 @@ import {
   CLOUDFOUNDRY_MARKETPLACE,
   cloudFoundryCommands,
 } from './cloudFoundryConstants';
+import {
+  slackLogError,
+  slackNotifyAppRestart,
+  slackNotifyAppDeployed,
+} from '../utils/slackNotification';
 
 class CloudFoundryService {
   selectSpace = space => {
@@ -26,15 +31,20 @@ class CloudFoundryService {
   deleteFailedApp = name =>
     executeCommand(cloudFoundryCommands.deleteApp(`${name}-failed`));
 
-  restartApp = name => executeCommand(cloudFoundryCommands.restartApp(name));
+  restartApp = name => {
+    slackNotifyAppRestart(name);
+    return executeCommand(cloudFoundryCommands.restartApp(name));
+  };
 
   blueGreenDeploy = ({ buildDirectory, name, manifest }) =>
     executeCommand(
       cloudFoundryCommands.blueGreenDeploy({ buildDirectory, name, manifest }),
     )
       .then(() => this.restartApp(name))
+      .then(() => slackNotifyAppDeployed(name))
       .catch(error => {
         logError(`Deployment failed ! Reason: ${error}`);
+        slackLogError({ error, application: name });
         throw new Error(error);
       });
 

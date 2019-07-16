@@ -2,12 +2,11 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import Icon from 'core/components/Icon';
-import { ORDER } from 'core/utils/sortArrayOfObjects';
 
 import sortOptions, { getSortOptionFromField } from './sortOptions';
 
 const renderOrderIcon = order => (
-  <Icon type={order === ORDER.ASC ? 'arrowUp' : 'arrowDown'} />
+  <Icon type={order === 1 ? 'arrowUp' : 'arrowDown'} />
 );
 
 const mapOptions = (options, currentSortOption) =>
@@ -23,8 +22,7 @@ const mapOptions = (options, currentSortOption) =>
     ),
   }));
 
-const getReversedSortOrder = order =>
-  (order === ORDER.ASC ? ORDER.DESC : ORDER.ASC);
+const getReversedSortOrder = order => order * -1;
 
 export default withProps(({ collectionName, sortOption, setSortOption }) => ({
   handleSort: (newOption) => {
@@ -34,7 +32,7 @@ export default withProps(({ collectionName, sortOption, setSortOption }) => ({
     );
     const order = selectedOption.value.field === sortOption.field
       ? getReversedSortOrder(sortOption.order)
-      : ORDER.ASC;
+      : -1;
 
     setSortOption(collectionName, {
       ...selectedOption.value,

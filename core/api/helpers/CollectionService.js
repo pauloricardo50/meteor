@@ -24,8 +24,8 @@ class CollectionService {
     return this.collection.update(...args);
   }
 
-  remove(id) {
-    return this.collection.remove(id);
+  remove(...args) {
+    return this.collection.remove(...args);
   }
 
   get(id) {
@@ -192,7 +192,7 @@ class CollectionService {
     return undefined;
   }
 
-  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
+  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
     const { additionalDocuments } = this.get(id);
 
     const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
@@ -204,6 +204,7 @@ class CollectionService {
           id: additionalDocId,
           requiredByAdmin,
           label: this.getAdditionalDocLabel({ label, additionalDoc }),
+          category,
         },
       ];
       return this._update({
@@ -217,8 +218,18 @@ class CollectionService {
       object: {
         additionalDocuments: [
           ...additionalDocuments,
-          { id: additionalDocId, requiredByAdmin, label },
+          { id: additionalDocId, requiredByAdmin, label, category },
         ],
+      },
+    });
+  }
+
+  removeAdditionalDoc({ id: docId, additionalDocId }) {
+    const { additionalDocuments = [] } = this.get(docId);
+    return this._update({
+      id: docId,
+      object: {
+        additionalDocuments: additionalDocuments.filter(({ id }) => id !== additionalDocId),
       },
     });
   }

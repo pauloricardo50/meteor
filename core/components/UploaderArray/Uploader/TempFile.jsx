@@ -5,7 +5,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { updateDocumentsCache } from 'core/api/methods/index';
+import { updateDocumentsCache, logError } from 'core/api/methods/index';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
   EXOSCALE_PATH,
@@ -45,6 +45,10 @@ export default class TempFile extends Component {
     this.uploader.send(file, (error, downloadUrl) => {
       progressSetter.stop();
       if (error) {
+        logError.run({
+          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          additionalData: [file],
+        });
         this.setState({ error: error.reason || error.message });
       } else {
         const fileObject = {
@@ -53,7 +57,7 @@ export default class TempFile extends Component {
           url: downloadUrl,
           size: file.size,
           type: file.type,
-          status: FILE_STATUS.VALID,
+          status: FILE_STATUS.UNVERIFIED,
         };
         handleUploadComplete(fileObject, downloadUrl);
         updateDocumentsCache.run({ docId, collection });
@@ -72,7 +76,7 @@ export default class TempFile extends Component {
     return (
       <div className="temp-file flex-col">
         <div className="file">
-          <h5 className="secondary bold">{name}</h5>
+          <h5 className="secondary bold file-name">{name}</h5>
           {!error
             && (fileIsUploading ? (
               <div className="uploading-progress">

@@ -38,9 +38,12 @@ import UserService from '../../users/server/UserService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
 import { sendEmail } from '../../methods';
-import { ORGANISATION_NAME_SEPARATOR } from '../loanConstants';
-import fullLoan from '../queries/fullLoan';
-
+import {
+  ORGANISATION_NAME_SEPARATOR,
+  STEPS,
+  APPLICATION_TYPES,
+} from '../loanConstants';
+import { fullLoan } from '../queries';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -63,8 +66,7 @@ export class LoanService extends CollectionService {
     if (proPropertyId) {
       loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
     } else {
-      const borrowerId = BorrowerService.insert({});
-      loanId = this.insert({ loan: { borrowerIds: [borrowerId] } });
+      loanId = this.insert({ loan: {} });
     }
 
     this.update({
@@ -101,9 +103,8 @@ export class LoanService extends CollectionService {
   remove = ({ loanId }) => Loans.remove(loanId);
 
   fullLoanInsert = ({ userId, loan = {} }) => {
-    const borrowerId = BorrowerService.insert({ userId });
     const loanId = this.insert({
-      loan: { borrowerIds: [borrowerId], ...loan },
+      loan,
       userId,
     });
     this.addNewStructure({ loanId });
@@ -161,14 +162,12 @@ export class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const borrowerId = BorrowerService.insert({ userId });
     const customName = PromotionService.fetchOne({
       $filters: { _id: promotionId },
       name: 1,
     }).name;
     const loanId = this.insert({
       loan: {
-        borrowerIds: [borrowerId],
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
         shareSolvency,
@@ -185,30 +184,27 @@ export class LoanService extends CollectionService {
     return loanId;
   };
 
-  insertPropertyLoan = ({ userId, propertyIds, shareSolvency }) => {
-    const borrowerId = BorrowerService.insert({ userId });
+  insertPropertyLoan = ({ userId, propertyIds, shareSolvency, loan }) => {
     const customName = PropertyService.fetchOne({
       $filters: { _id: propertyIds[0] },
       address1: 1,
     }).address1;
     const loanId = this.insert({
       loan: {
-        borrowerIds: [borrowerId],
         propertyIds,
         customName,
         shareSolvency,
+        ...loan,
       },
       userId,
     });
+
     this.addNewStructure({ loanId });
     return loanId;
   };
 
   confirmClosing = ({ loanId, object }) =>
-    this.update({
-      loanId,
-      object: { status: LOAN_STATUS.BILLING, ...object },
-    });
+    this.update({ loanId, object: { status: LOAN_STATUS.BILLING, ...object } });
 
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
@@ -577,10 +573,7 @@ export class LoanService extends CollectionService {
 
     return {
       min,
-      max: {
-        ...secondMax,
-        organisationName: maxOrganisationLabel,
-      },
+      max: { ...secondMax, organisationName: maxOrganisationLabel },
     };
   }
 
@@ -712,7 +705,6 @@ export class LoanService extends CollectionService {
 
   getLoanCalculator({ loanId, structureId }) {
     const loan = fullLoan.clone({ _id: loanId }).fetchOne();
-
     let lenderRules;
 
     if (loan && loan.structure && loan.structure.offerId) {
@@ -720,9 +712,10 @@ export class LoanService extends CollectionService {
     } else if (loan.hasPromotion) {
       const { lenderOrganisationLink } = loan.promotions[0];
       if (lenderOrganisationLink) {
-        lenderRules = LenderRulesService.find({
-          'organisationLink._id': lenderOrganisationLink._id,
-        }).fetch();
+        lenderRules = LenderRulesService.fetch({
+          $filters: { 'organisationLink._id': lenderOrganisationLink._id },
+          ...lenderRulesFragment(),
+        });
       }
     }
 
@@ -739,7 +732,7 @@ export class LoanService extends CollectionService {
 
   expireAnonymousLoans() {
     const lastWeek = moment()
-      .subtract(7, 'days')
+      .subtract(5, 'days')
       .toDate();
 
     return this.baseUpdate(
@@ -751,6 +744,139 @@ export class LoanService extends CollectionService {
       { $set: { status: LOAN_STATUS.UNSUCCESSFUL } },
       { multi: true },
     );
+  }
+
+  insertBorrowers({ loanId, amount }) {
+    const { borrowerIds: existingBorrowers = [], userId } = this.get(loanId);
+
+    if (existingBorrowers.length === 2) {
+      throw new Meteor.Error('Cannot insert more borrowers');
+    }
+
+    if (existingBorrowers.length === 1 && amount === 2) {
+      throw new Meteor.Error('Can insert only one more borrower');
+    }
+
+    if (amount === 1) {
+      const borrowerId = BorrowerService.insert({ userId });
+      this.addLink({
+        id: loanId,
+        linkName: 'borrowers',
+        linkId: borrowerId,
+      });
+    } else if (amount === 2) {
+      const borrowerId1 = BorrowerService.insert({ userId });
+      const borrowerId2 = BorrowerService.insert({ userId });
+      this.addLink({
+        id: loanId,
+        linkName: 'borrowers',
+        linkId: borrowerId1,
+      });
+      this.addLink({
+        id: loanId,
+        linkName: 'borrowers',
+        linkId: borrowerId2,
+      });
+    } else {
+      throw new Meteor.Error('Invalid borrowers number');
+    }
+  }
+
+  // Useful for demos
+  resetLoan({ loanId }) {
+    const loan = this.findOne({ _id: loanId });
+    const { structures = [], borrowerIds = [], status } = loan;
+
+    if (status !== LOAN_STATUS.TEST) {
+      throw new Meteor.Error('Seuls les dossiers avec le statut TEST peuvent être réinitialisés !');
+    }
+
+    // Set step to solvency
+    this.setStep({ loanId, nextStep: STEPS.SOLVENCY });
+
+    // Set application type to simple
+    this.update({
+      loanId,
+      object: { applicationType: APPLICATION_TYPES.SIMPLE },
+    });
+
+    // Remove structures and an empty one
+    // structures.forEach(({ _id: structureId }) => {
+    //   this.removeStructure({ loanId, structureId });
+    // });
+    // this.addNewStructure({ loanId });
+
+    // Remove MaxPropertyValue
+    this.update({
+      loanId,
+      object: { maxPropertyValue: true },
+      operator: '$unset',
+    });
+
+    // Reset borrowers financing info
+    // borrowerIds.forEach((borrowerId) => {
+    //   BorrowerService.update({
+    //     borrowerId,
+    //     object: {
+    //       netSalary: null,
+    //       salary: null,
+    //       bankFortune: null,
+    //       insurance2: [],
+    //       insurance3A: [],
+    //       bank3A: [],
+    //       insurance3B: [],
+    //       otherIncome: [],
+    //       otherFortune: [],
+    //       expenses: [],
+    //       realEstate: [],
+    //       bonusExists: false,
+    //       bonus2015: null,
+    //       bonus2016: null,
+    //       bonus2017: null,
+    //       bonus2018: null,
+    //       bonus2019: null,
+    //     },
+    //   });
+    // });
+  }
+
+  linkPromotion({ promotionId, loanId }) {
+    const { name: promotionName, promotionLoan } = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      name: 1,
+      promotionLoan: { _id: 1 },
+    });
+
+    if (promotionLoan && promotionLoan._id) {
+      this.unlinkPromotion({ promotionId, loanId: promotionLoan._id });
+    }
+
+    this.addLink({
+      id: loanId,
+      linkName: 'financedPromotion',
+      linkId: promotionId,
+    });
+
+    this.update({
+      loanId,
+      object: { customName: `Financement de ${promotionName}` },
+    });
+    
+    return loanId;
+  }
+
+  unlinkPromotion({ promotionId, loanId }) {
+    this.removeLink({
+      id: loanId,
+      linkName: 'financedPromotion',
+      linkId: promotionId,
+    });
+
+    return this.update({
+      loanId,
+      object: { customName: true },
+      operator: '$unset',
+    });
   }
 }
 

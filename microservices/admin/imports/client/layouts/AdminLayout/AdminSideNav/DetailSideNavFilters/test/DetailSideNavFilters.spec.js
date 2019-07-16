@@ -48,7 +48,7 @@ const assignedToMeFilter = {
 describe('DetailSideNavFilters', () => {
   [LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
     describe(`for ${collectionName} collection`, () => {
-      it(`should pass the 'Show assigned to me' filter
+      it.skip(`should pass the 'Show assigned to me' filter
           option to DropdownMenu component`, () => {
         const menuOptions = renderDropdownSelect(collectionName).prop('options');
 
@@ -76,7 +76,7 @@ describe('DetailSideNavFilters', () => {
     ]);
   });
 
-  it('should pass the selected filters as selected dropdown options', () => {
+  it.skip('should pass the selected filters as selected dropdown options', () => {
     const additionalProps = {
       filters: { [LOANS_COLLECTION]: [assignedToMeFilter] },
     };

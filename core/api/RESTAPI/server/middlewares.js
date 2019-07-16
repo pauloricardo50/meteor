@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import SlackService from '../../slack/server/SlackService';
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
-import { Services } from '../../api-server';
+import { Services } from '../../server';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import {
   getRequestPath,

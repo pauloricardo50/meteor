@@ -3,6 +3,7 @@ export const HTTP_STATUS_CODES = {
   BAD_REQUEST: 400,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  CONFLICT: 409,
   SERVER_ERROR: 500,
 };
 
@@ -32,6 +33,7 @@ export const REST_API_ERRORS = {
   REPLAY_ATTACK_ATTEMPT: {
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'REPLAY_ATTACK_ATTEMPT',
-    message: 'A replay attack has been detected. Please use a correct timestamp and a different nonce.',
+    message:
+      'A replay attack has been detected. Please use a correct timestamp and a different nonce.',
   },
 };

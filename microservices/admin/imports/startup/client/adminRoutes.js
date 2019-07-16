@@ -22,9 +22,15 @@ import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import TasksPage from '../../client/pages/TasksPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
+import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
+  LOAN_BOARD_PAGE: {
+    component: LoanBoardPage,
+    path: '/loan-board',
+    exact: true,
+  },
 
   //   "All" pages
   USERS_PAGE: { component: UsersPage, path: '/users', exact: true },
@@ -65,6 +71,7 @@ const ADMIN_ROUTES = {
   SINGLE_LOAN_PAGE: {
     component: SingleLoanPage,
     path: '/loans/:loanId/:tabId?',
+    enableTabRouting: true,
   },
   SINGLE_ORGANISATION_PAGE: {
     component: SingleOrganisationPage,
@@ -76,14 +83,14 @@ const ADMIN_ROUTES = {
     className: 'card1 card-top',
   },
   SINGLE_USER_PAGE: { component: SingleUserPage, path: '/users/:userId' },
-  ADMIN_PROMOTION_LOT_PAGE: {
-    component: AdminPromotionLotPage,
-    path: '/promotions/:promotionId/promotionLots/:promotionLotId',
-  },
-  ADMIN_PROMOTION_USERS_PAGE: {
-    component: AdminPromotionUsersPage,
-    path: '/promotions/:promotionId/users',
-  },
+  // ADMIN_PROMOTION_LOT_PAGE: {
+  //   component: AdminPromotionLotPage,
+  //   path: '/promotions/:promotionId/promotionLots/:promotionLotId',
+  // },
+  // ADMIN_PROMOTION_USERS_PAGE: {
+  //   component: AdminPromotionUsersPage,
+  //   path: '/promotions/:promotionId/users',
+  // },
   ADMIN_PROMOTION_PAGE: {
     component: AdminPromotionPage,
     path: '/promotions/:promotionId',

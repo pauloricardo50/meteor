@@ -103,7 +103,7 @@ const props = withProps(({
     });
 
     if (showError) {
-        import('../../../utils/notification').then((notification) => {
+        import('../../../utils/notification').then(({ default: notification }) => {
           notification.error({
             message: f({ id: `errors.${showError}.title` }),
             description: f({ id: `errors.${showError}.description` }),

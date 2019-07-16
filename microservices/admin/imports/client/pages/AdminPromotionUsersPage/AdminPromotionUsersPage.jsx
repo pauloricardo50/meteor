@@ -5,7 +5,7 @@ import PromotionUsersPage from 'core/components/PromotionUsersPage';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { withSmartQuery } from 'core/api';
-import proPromotionLoans from 'core/api/loans/queries/proPromotionLoans';
+import { proPromotionLoans } from 'core/api/loans/queries';
 import { compose } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'imports/core/utils/routerUtils';
@@ -21,7 +21,9 @@ const AdminPromotionUsersPage = (props: AdminPromotionUsersPageProps) => {
         raised
         primary
         link
-        to={createRoute(ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path, { promotionId })}
+        to={createRoute(ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path, {
+          promotionId,
+        })}
       >
         <T id="general.back" />
       </Button>

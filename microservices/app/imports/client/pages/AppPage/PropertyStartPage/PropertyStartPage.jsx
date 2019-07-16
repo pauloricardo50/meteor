@@ -11,7 +11,7 @@ type PropertyStartPageProps = {};
 
 const PropertyStartPage = ({
   anonymousProperty,
-  insertAnonymousLoan,
+  insertLoan,
 }: PropertyStartPageProps) => {
   if (!anonymousProperty) {
     return <Redirect to="/" />;
@@ -28,11 +28,17 @@ const PropertyStartPage = ({
             <Money value={totalValue} />
           </h4>
 
-          <Button raised secondary onClick={insertAnonymousLoan}>
+          <Button
+            className="welcome-screen-cta"
+            raised
+            secondary
+            onClick={insertLoan}
+          >
             <T id="PropertyStartPage.buttonLabel" />
           </Button>
         </div>
       )}
+      img={anonymousProperty.thumbnail}
     />
   );
 };

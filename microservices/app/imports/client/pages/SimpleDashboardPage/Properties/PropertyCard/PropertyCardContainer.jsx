@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation';
@@ -29,33 +29,49 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
 
 export default compose(
   withRouter,
-  withProps(({
-    additionalInfos,
-    collection,
-    document,
-    history,
-    loan: { _id: loanId },
-    shareSolvency,
-  }) => ({
-    name: <span>{document.name || document.address1}</span>,
-    address: document.address,
-    category: document.category,
-    buttonLabel: (
-      <T
-        id={`SimpleDashboardPage.propertyCardButton.${
-          collection === PROPERTIES_COLLECTION ? 'property' : 'promotion'
-        }`}
-      />
-    ),
-    onClick: () =>
-      history.push(createRoute('/loans/:loanId/:collection/:docId', {
+  withState('showResidenceTypeSetter', 'setShowResidenceTypeSetter', false),
+  withProps(
+    ({
+      additionalInfos,
+      collection,
+      document,
+      history,
+      loan: { _id: loanId, residenceType },
+      shareSolvency,
+      setShowResidenceTypeSetter,
+    }) => ({
+      name: <span>{document.name || document.address1}</span>,
+      address: document.address,
+      category: document.category,
+      buttonLabel: (
+        <T
+          id={`SimpleDashboardPage.propertyCardButton.${
+            collection === PROPERTIES_COLLECTION ? 'property' : 'promotion'
+          }`}
+        />
+      ),
+      onClick: () => {
+        if (!residenceType) {
+          setShowResidenceTypeSetter(true);
+        } else {
+          history.push(
+            createRoute('/loans/:loanId/:collection/:docId', {
+              loanId,
+              collection,
+              docId: document._id,
+            }),
+          );
+        }
+      },
+      image: getImage(document),
+      additionalInfos,
+      loanId,
+      shareSolvency,
+      route: createRoute('/loans/:loanId/:collection/:docId', {
         loanId,
         collection,
         docId: document._id,
-      })),
-    image: getImage(document),
-    additionalInfos,
-    loanId,
-    shareSolvency,
-  })),
+      }),
+    }),
+  ),
 );

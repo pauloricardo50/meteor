@@ -18,7 +18,9 @@ export const FEEDBACK_OPTIONS_SETTINGS = {
     enableOutro: true,
   },
   [FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP]: {
+    enableComments: true,
     enableCustomIntro: true,
+    enableOutro: true,
   },
   [FEEDBACK_OPTIONS.CUSTOM]: {
     enableCustomIntro: false,
@@ -72,13 +74,17 @@ const outro = ({ borrowers, singleBorrower, option, formatMessage }) => {
   if (singleBorrower) {
     return formatMessage(
       { id: `Feedback.${option}.outro.singleBorrower` },
-      { borrower: borrowers[0].name },
+      { borrower: borrowers[0].name, singleBorrower: true },
     );
   }
 
   return formatMessage(
     { id: `Feedback.${option}.outro.twoBorrowers` },
-    { borrower1: borrowers[0].name, borrower2: borrowers[1].name },
+    {
+      borrower1: borrowers[0].name,
+      borrower2: borrowers[1].name,
+      singleBorrower: false,
+    },
   );
 };
 
@@ -99,7 +105,7 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
     createdAt,
   } = offer;
 
-  const { name: assignee = 'e-Potek' } = assignedEmployee || {};
+  const { firstName: assignee = 'e-Potek' } = assignedEmployee || {};
   const { address1, zipCode, city } = property || {};
 
   if (!property || !address1 || !zipCode || !city) {

@@ -1,32 +1,28 @@
 // @flow
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
-import { PROPERTY_CATEGORY } from '../../api/constants';
-import Calculator from '../../utils/Calculator';
-import LoanChecklistFields from './LoanChecklistFields';
-import LoanChecklistDocuments from './LoanChecklistDocuments';
+import T from '../Translation';
+import { getChecklistMissingInformations } from './helpers';
+import LoanChecklistSection from './LoanChecklistSection';
 
 type LoanChecklistProps = {};
 
-const LoanChecklist = ({ loan }: LoanChecklistProps) => {
-  const property = Calculator.selectProperty({ loan });
-  const displayPropertyChecklist = !loan.hasPromotion
-    && property
-    && property._id // Perform extra check in case property is an empty object
-    && property.category !== PROPERTY_CATEGORY.PRO;
+const LoanChecklist = (props: LoanChecklistProps) => {
+  const { fields, documents } = getChecklistMissingInformations(props);
 
   return (
     <div className="loan-checklist">
-      <LoanChecklistFields
-        loan={loan}
-        displayPropertyChecklist={displayPropertyChecklist}
+      <LoanChecklistSection
+        missingInformations={fields}
+        label={<T id="LoanChecklist.missingFields" />}
       />
-      <LoanChecklistDocuments
-        loan={loan}
-        displayPropertyChecklist={displayPropertyChecklist}
+      <LoanChecklistSection
+        missingInformations={documents}
+        label={<T id="LoanChecklist.missingDocuments" />}
       />
     </div>
   );
 };
 
-export default LoanChecklist;
+export default injectIntl(LoanChecklist);

@@ -5,6 +5,7 @@ const employees = [
     name: 'Lydia Abraha',
     title: 'Conseillère en financement',
     phoneNumber: '+41 22 566 82 92',
+    _id: 'LGGMr68iXXtW6bQEx',
   },
   {
     email: 'florian@e-potek.ch',
@@ -12,6 +13,7 @@ const employees = [
     name: 'Florian Bienefelt',
     title: 'CTO',
     phoneNumber: '+41 22 566 82 91',
+    _id: 'CHPzFxTDDekwi4JJP',
   },
   {
     email: 'quentin@e-potek.ch',
@@ -19,6 +21,7 @@ const employees = [
     name: 'Quentin Herzig',
     title: 'Software Engineer',
     phoneNumber: '+41 22 566 01 10',
+    _id: 'NJskZ6E38JHfqSyNg',
   },
   {
     email: '',
@@ -32,6 +35,7 @@ const employees = [
     name: 'Yannis Eggert',
     title: 'Conseiller en financement',
     phoneNumber: '+41 22 566 82 90',
+    _id: 'dcXkoTWLZPemu9x9a',
   },
   {
     email: 'jeanluc@e-potek.ch',
@@ -39,12 +43,21 @@ const employees = [
     name: 'Jean-Luc Kringel',
     title: 'Responsable Assurances',
     phoneNumber: '+41 22 566 82 94',
+    _id: 'efe2jpwvRh8J4z4p8',
   },
   {
     email: '',
     src: '/img/team/tarik.jpg',
     name: 'Tarik Lamkarfed',
     title: 'Marketing & Communications',
+  },
+  {
+    email: 'max@e-potek.ch',
+    src: '/img/team/max.jpg',
+    name: 'Max Martinez',
+    title: 'Conseiller en financement',
+    phoneNumber: '+41 22 566 82 95',
+    _id: 'NumFEubdw2nra6Su8',
   },
   {
     email: '',
@@ -57,24 +70,20 @@ const employees = [
     src: '/img/team/yann.jpg',
     name: 'Yann Roy',
     title: 'UX/UI Designer',
+    phoneNumber: '+41 22 566 01 10',
+    _id: 'nySgkgGNoRAaAoZvE',
   },
 ];
 
 export const employeesByEmail = employees.reduce(
-  (acc, employee) => ({ ...acc, [employee.email]: employee }),
+  (acc, employee) =>
+    (employee.email ? { ...acc, [employee.email]: employee } : acc),
   {},
 );
-
-// If an assignee isn't currently in the list above
-export const placeholderEmployee = email => ({
-  email,
-  src: '/img/placeholder.png',
-  name: (() => {
-    const emailPrefix = email.split('@')[0];
-    return emailPrefix[0].toUpperCase() + emailPrefix.slice(1);
-  })(),
-  title: undefined,
-  phoneNumber: undefined,
-});
+export const employeesById = employees.reduce(
+  (acc, employee) =>
+    (employee._id ? { ...acc, [employee._id]: employee } : acc),
+  {},
+);
 
 export default employees;

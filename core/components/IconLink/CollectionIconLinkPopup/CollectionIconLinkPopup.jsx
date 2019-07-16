@@ -33,7 +33,7 @@ export default class CollectionIconLinkPopup extends Component<
 
   getPopoverContent = () => {
     const { data } = this.state;
-    const { collection } = this.props;
+    const { collection, additionalPopoverContent } = this.props;
 
     if (!data) {
       return <Loading small />;
@@ -41,7 +41,11 @@ export default class CollectionIconLinkPopup extends Component<
 
     const CollectionComponent = components[collection];
 
-    return <CollectionComponent {...data} />;
+    return (
+      <CollectionComponent {...data}>
+        {additionalPopoverContent}
+      </CollectionComponent>
+    );
   };
 
   getPopoverTitle = () => {
@@ -58,7 +62,7 @@ export default class CollectionIconLinkPopup extends Component<
   };
 
   render() {
-    const { children } = this.props;
+    const { children, forceOpen } = this.props;
     const { data } = this.state;
 
     return (
@@ -67,6 +71,7 @@ export default class CollectionIconLinkPopup extends Component<
         title={this.getPopoverTitle()}
         onMouseEnter={!data ? this.loadData : null}
         delay={data ? 0 : 200}
+        forceOpen={forceOpen}
       >
         {children}
       </StickyPopover>

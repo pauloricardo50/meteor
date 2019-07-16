@@ -8,6 +8,7 @@ import {
   Loans,
   Organisations,
 } from '..';
+import Tasks from '../tasks';
 
 Promotions.addLinks({
   properties: {
@@ -54,5 +55,15 @@ Promotions.addLinks({
     type: 'one',
     metadata: true,
     collection: Organisations,
+  },
+  tasks: {
+    inversedBy: 'promotion',
+    collection: Tasks,
+    autoremove: true,
+  },
+  promotionLoan: {
+    inversedBy: 'financedPromotion',
+    type: 'one',
+    collection: Loans,
   },
 });

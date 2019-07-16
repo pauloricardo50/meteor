@@ -48,23 +48,30 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       allowEditing = true,
       disabled,
       children,
+      style,
     } = this.props;
 
-    return isEditing ? (
-      <form
-        className={cx('click-to-edit-field editing', className)}
-        onSubmit={this.handleSubmit}
-      >
-        <Input
-          defaultValue={value}
-          inputRef={this.input}
-          onBlur={this.handleSubmit}
-          disabled={disabled}
-          onKeyDown={this.handleKeyDown}
-          {...inputProps}
-        />
-      </form>
-    ) : (
+    if (isEditing) {
+      return (
+        <form
+          className={cx('click-to-edit-field editing', className)}
+          onSubmit={this.handleSubmit}
+        >
+          <Input
+            defaultValue={value}
+            inputRef={this.input}
+            onBlur={this.handleSubmit}
+            disabled={disabled}
+            onKeyDown={this.handleKeyDown}
+            {...inputProps}
+          />
+          {typeof children === 'function'
+            && children({ value: value || placeholder, isEditing })}
+        </form>
+      );
+    }
+
+    return (
       <div
         className={cx('click-to-edit-field', className, {
           'is-placeholder': placeholder && !value,
@@ -76,9 +83,10 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
             ? () => toggleEdit(true, () => this.input.current.focus())
             : null
         }
+        style={style}
       >
         {typeof children === 'function'
-          ? children(value || placeholder)
+          ? children({ value: value || placeholder, isEditing })
           : value || placeholder}
       </div>
     );

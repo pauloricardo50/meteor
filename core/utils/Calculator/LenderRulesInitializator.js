@@ -20,12 +20,17 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
-      this.organisationName = sortedlenderRules.length
-        ? sortedlenderRules[0].organisationCache
-          && sortedlenderRules[0].organisationCache.name
-        : null;
+      this.setOrganisationName(sortedlenderRules);
       this.ruleOrigin = {};
       this.matchedRules = [];
+
+      // Global rules
+      const globalRules = this.getGlobalLenderRules({
+        loan,
+        structureId,
+        lenderRules: sortedlenderRules,
+      });
+      this.applyRules(globalRules);
 
       // Primary rules depend only on raw data
       const primaryRules = this.getPrimaryLenderRules({
@@ -45,6 +50,12 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       this.cleanUpUnusedRules();
     }
+
+    setOrganisationName = (lenderRules) => {
+      this.organisationName = lenderRules.length
+        ? lenderRules[0].organisation && lenderRules[0].organisation.name
+        : null;
+    };
 
     storeRuleOrigin(rules, lenderRulesId) {
       Object.keys(rules).forEach((ruleName) => {
@@ -102,6 +113,17 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,
         }),
       };
+    }
+
+    getGlobalLenderRules({ lenderRules }) {
+      const globalRules = lenderRules.filter(({ filter }) =>
+        filter.and && filter.and.length === 1 && filter.and[0] === true);
+      const matchingRules = getMatchingRules(
+        globalRules,
+        {},
+        this.storeRuleOrigin,
+      );
+      return matchingRules;
     }
 
     getPrimaryLenderRules({ loan, structureId, lenderRules }) {

@@ -9,7 +9,6 @@ import {
   ROLES,
   STEPS,
   TASK_STATUS,
-  TASK_TYPE,
   DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
@@ -34,6 +33,8 @@ import {
   Users,
 } from '..';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import Notifications from '../notifications/index';
+import Activities from '../activities/index';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -84,10 +85,8 @@ Factory.define('pro', Users, {
 Factory.define('borrower', Borrowers);
 
 Factory.define('task', Tasks, {
-  type: TASK_TYPE.USER_ADDED_FILE,
   createdAt: () => new Date(),
   status: TASK_STATUS.ACTIVE,
-  documentId: 'aDocumentId',
 });
 
 Factory.define('loan', Loans, {
@@ -195,3 +194,7 @@ Factory.define('lenderRulesSecondary', LenderRules, {
   order: 0,
   filter: { and: DEFAULT_SECONDARY_RESIDENCE_RULES },
 });
+
+Factory.define('notification', Notifications, {});
+
+Factory.define('activity', Activities, {});

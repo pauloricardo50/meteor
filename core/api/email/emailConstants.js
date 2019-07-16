@@ -66,6 +66,17 @@ export const EMAIL_TEMPLATES = {
       BODY: 'BODY',
     },
   },
+  NOTIFICATION_AND_CTA_V2: {
+    name: 'NOTIFICATION_AND_CTA_V2',
+    mandrillId: 'notification-cta-v2',
+    variables: {
+      TITLE: 'TITLE',
+      BODY: 'BODY',
+      CTA: 'CTA',
+      CTA_URL: 'CTA_URL',
+      CSS: 'CSS',
+    },
+  },
 };
 
 export const EMAIL_IDS = {
@@ -83,4 +94,5 @@ export const EMAIL_IDS = {
   REFER_USER: 'REFER_USER',
   FIND_LENDER_NOTIFICATION: 'FIND_LENDER_NOTIFICATION',
   CONFIRM_USER_INVITATION: 'CONFIRM_USER_INVITATION',
+  LOAN_CHECKLIST: 'LOAN_CHECKLIST',
 };

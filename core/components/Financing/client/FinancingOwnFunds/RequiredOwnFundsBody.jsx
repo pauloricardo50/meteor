@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagic } from '@fortawesome/pro-light-svg-icons/faMagic';
 
 import StatusIcon from '../../../StatusIcon';
-import T from '../../../Translation';
+import T, { Money } from '../../../Translation';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../../../config/financeConstants';
 import { SUCCESS, ERROR } from '../../../../api/constants';
@@ -27,29 +27,40 @@ const RequiredOwnFundsBody = ({
   value,
   suggestStructure,
   disableForms,
-}: RequiredOwnFundsBodyProps) => (
-  <div className="requiredOwnFunds-component-body">
-    <div className="text-and-value">
-      <span className="text">
-        <T id={getLabel(value)} />
-      </span>
-      <div className="value">
-        <span className="chf">CHF</span>
-        {toMoney(value)}
-        <StatusIcon
-          status={getLabel(value).endsWith('valid') ? SUCCESS : ERROR}
-          style={{ marginLeft: 8 }}
-        />
+  loan = {}
+}: RequiredOwnFundsBodyProps) => {
+  const label = getLabel(value);
+  const {borrowers= []} = loan;
+  return (
+    <div className="requiredOwnFunds-component-body">
+      <div className="text-and-value">
+        <span className="text">
+          <T id={label} />
+        </span>
+        <div className="value">
+          <span className="chf">CHF</span>
+          {toMoney(Math.abs(value))}
+          <StatusIcon
+            status={label.endsWith('valid') ? SUCCESS : ERROR}
+            style={{ marginLeft: 8 }}
+            tooltip={(
+              <T
+                id={`${label}.tooltip`}
+                values={{ value: <Money value={Math.abs(value)} /> }}
+              />
+            )}
+          />
+        </div>
       </div>
+      {!disableForms && !!borrowers.length && (
+        <IconButton
+          type={<FontAwesomeIcon icon={faMagic} />}
+          onClick={suggestStructure}
+          tooltip="Suggérer"
+        />
+      )}
     </div>
-    {!disableForms && (
-      <IconButton
-        type={<FontAwesomeIcon icon={faMagic} />}
-        onClick={suggestStructure}
-        tooltip="Suggérer"
-      />
-    )}
-  </div>
-);
+  );
+};
 
 export default RequiredOwnFundsBody;

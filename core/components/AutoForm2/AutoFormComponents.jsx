@@ -1,20 +1,33 @@
 // @flow
-import React from 'react';
-import AutoField from 'uniforms-material/AutoField';
-import connectField from 'uniforms/connectField';
-import { compose, getContext } from 'recompose';
+import React, { useState } from 'react';
 import { intlShape } from 'react-intl';
+import { compose, getContext } from 'recompose';
+import connectField from 'uniforms/connectField';
 import nothing from 'uniforms/nothing';
+import AutoField from 'uniforms-material/AutoField';
+import BoolField from 'uniforms-material/BoolField';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
-import { CUSTOM_AUTOFIELD_TYPES, COMPONENT_TYPES } from './constants';
+import {
+  CUSTOM_AUTOFIELD_TYPES,
+  COMPONENT_TYPES,
+  FIELDS_TO_IGNORE,
+} from './constants';
 import CustomSelectField from './CustomSelectField';
-import CustomListField from './CustomListField';
+import { OptimizedListField } from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import MoneyInput from '../MoneyInput';
 import HtmlPreview from '../HtmlPreview';
+import { ignoreProps } from '../../containers/updateForProps';
+
+const container = ignoreProps(FIELDS_TO_IGNORE);
+
+const OptimizedMoneyInput = container(MoneyInput);
+const OptimizedDateField = container(DateField);
+const OptimizedPercentField = container(PercentField);
+const OptimizedBoolField = container(BoolField);
 
 const determineComponentFromProps = ({
   allowedValues,
@@ -27,18 +40,30 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
-    return { Component: DateField, type: COMPONENT_TYPES.DATE };
+    return {
+      Component: OptimizedDateField,
+      type: COMPONENT_TYPES.DATE,
+      props: { placeholder: null },
+    };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
-    return { Component: PercentField, type: COMPONENT_TYPES.PERCENT };
+    return { Component: OptimizedPercentField, type: COMPONENT_TYPES.PERCENT };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
     return {
-      Component: MoneyInput,
+      Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
       props: { margin: 'normal' },
+    };
+  }
+
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_DECIMAL) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { margin: 'normal', decimal: true },
     };
   }
 
@@ -46,19 +71,28 @@ const determineComponentFromProps = ({
     return {
       Component: HtmlPreview,
       type: COMPONENT_TYPES.HTML_PREVIEW,
+      props: { placeholder: null },
     };
   }
 
   if (fieldType === Array) {
-    return { Component: CustomListField, type: COMPONENT_TYPES.ARRAY };
+    return { Component: OptimizedListField, type: COMPONENT_TYPES.ARRAY };
   }
 
   if (fieldType === Object) {
     return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
   }
 
+  if (fieldType === Boolean) {
+    return { Component: OptimizedBoolField };
+  }
+
   if (uniforms && uniforms.render) {
-    return { Component: uniforms.render, type: COMPONENT_TYPES.RENDER };
+    return {
+      Component: uniforms.render,
+      type: COMPONENT_TYPES.RENDER,
+      props: { placeholder: null },
+    };
   }
 
   return { Component: false, type: null };
@@ -76,18 +110,14 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
-
-    let {
-      Component,
-      type,
-      props: additionalProps = {},
-    } = determineComponentFromProps({
-      ...props,
+    const { allowedValues, field, fieldType } = props;
+    let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
+      allowedValues,
       customAllowedValues,
-      model,
-      submitting,
-      condition,
-    });
+      field,
+      fieldType,
+    }));
+
     Component = Component || AutoField;
 
     let autoValue;
@@ -96,12 +126,14 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       autoValue = customAutoValue(model);
     }
 
-    const label = getLabel({
+    // Don't recalculate these
+    const [label] = useState(getLabel({
       ...props,
+      ...additionalProps,
       intlPrefix,
       label: labels[props.name],
-    });
-    const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+    }));
+    const [placeholder] = useState(getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }));
 
     if (
       typeof condition === 'function'

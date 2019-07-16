@@ -251,7 +251,7 @@ export const getBorrowerArray = ({
     {
       title: true,
       label: (
-        <span>
+        <span className="v-align-recap">
           <T id="Recap.fortune" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
@@ -317,7 +317,6 @@ export const getBorrowerArray = ({
       label: 'Recap.netFortune',
       value: <span className="sum">{toMoney(netFortune)}</span>,
       spacingTop: true,
-      spacing: true,
       bold: true,
       hide: !realEstateFortune && !otherFortune,
     },
@@ -325,6 +324,7 @@ export const getBorrowerArray = ({
       title: true,
       label: 'general.income',
       spacingTop: true,
+      className: 'v-align-recap-income',
     },
     {
       label: 'general.salary',

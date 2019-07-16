@@ -412,6 +412,10 @@ describe('BorrowerCalculator', () => {
         borrowers: { hasOwnCompany: true, ownCompanies: [] },
       });
       expect(result).to.include('ownCompanies');
+      const result2 = Calculator.getMissingBorrowerFields({
+        borrowers: { hasOwnCompany: false, ownCompanies: [] },
+      });
+      expect(result2).to.not.include('ownCompanies');
     });
   });
 
@@ -553,7 +557,7 @@ describe('BorrowerCalculator', () => {
   describe('personalInfoPercent', () => {
     it('works', () => {
       expect(Calculator.personalInfoPercent({
-        borrowers: {
+        borrowers: [{
           _id: 'aBcNvYnq34rnb29nh',
           adminValidation: {},
           birthDate: '1992-04-14',
@@ -580,7 +584,7 @@ describe('BorrowerCalculator', () => {
           bankFortune: 1000,
           hasOwnCompany: false,
           ownCompanies: [],
-        },
+        }],
       })).to.equal(1);
     });
   });
@@ -805,6 +809,27 @@ describe('BorrowerCalculator', () => {
 
         expect(calc.getTotalIncome({ borrowers })).to.equal(8000);
       });
+    });
+  });
+
+  describe('shouldUseNetSalary', () => {
+    it('works when applying global rules', () => {
+      const loan = {
+        structures: [],
+        borrowers: [{ salary: 120000, netSalary: 10000 }],
+      };
+      const calc = new CalculatorClass({
+        loan,
+        lenderRules: [
+          { filter: { and: [true] }, incomeConsiderationType: 'NET' },
+          { filter: { and: [{ '>': [{ var: 'INCOME' }, 100000] }] },  },
+        ],
+      });
+      const result = calc.shouldUseNetSalary();
+      expect(result).to.equal(true);
+
+      const salary = calc.getSalary({ loan });
+      expect(salary).to.equal(10000);
     });
   });
 });

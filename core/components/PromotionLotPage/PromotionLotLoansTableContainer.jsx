@@ -5,7 +5,7 @@ import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import proPromotionOptions from '../../api/promotionOptions/queries/proPromotionOptions';
+import { proPromotionOptions } from '../../api/promotionOptions/queries';
 import T from '../Translation';
 import { CollectionIconLink } from '../IconLink';
 import LoanProgress from '../LoanProgress/LoanProgress';
@@ -15,6 +15,7 @@ import PriorityOrder from './PriorityOrder';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../api/constants';
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 import StatusLabel from '../StatusLabel/StatusLabel';
+import { getUserNameAndOrganisation } from '../../api/helpers';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
@@ -39,7 +40,17 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
 
   const {
     $metadata: { invitedBy },
+    users: promotionUsers = [],
   } = promotion;
+
+  const invitedByUser = invitedBy
+    && promotionUsers
+    && (!!promotionUsers.length
+      && promotionUsers.find(({ _id }) => _id === invitedBy));
+
+  const userName = invitedByUser
+    ? getUserNameAndOrganisation({ user: invitedByUser })
+    : 'Personne';
 
   const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
@@ -72,9 +83,10 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
           )
           : user && user.name,
     },
-    { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
+    { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+    { raw: userName, label: userName },
     {
       raw: loanProgress.verificationStatus,
       label: <LoanProgress loanProgress={loanProgress} />,
@@ -120,9 +132,10 @@ const columnOptions = [
   { id: 'loanName', style: { whiteSpace: 'nowrap' } },
   { id: 'status', label: <T id="Forms.status" /> },
   { id: 'name' },
-  { id: 'date' },
   { id: 'phone' },
   { id: 'email' },
+  { id: 'date' },
+  { id: 'invitedBy' },
   { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'custom' },
   { id: 'priorityOrder' },
@@ -145,7 +158,7 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(({ promotionOptions, promotionLot, currentUser }) => ({
+  withProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
     rows: promotionOptions.map(makeMapOption({ promotionLot, currentUser })),
     columnOptions,
   })),

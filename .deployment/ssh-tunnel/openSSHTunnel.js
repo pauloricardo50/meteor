@@ -69,7 +69,11 @@ const cleanCredentials = creds => {
   return res;
 };
 
-const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
+const openSSHTunnel = ({
+  sshIdNumber = 0,
+  environmentOverride,
+  mongoPort = 0,
+} = {}) => {
   let environment;
   const args = argv
     .usage('Usage: $0 [options]]')
@@ -111,7 +115,9 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
     )
     .then(credentials => ({
       ...cleanCredentials(credentials),
-      mongoPort: Number(cleanCredentials(credentials).ports.split(',')[1]),
+      mongoPort: Number(
+        cleanCredentials(credentials).ports.split(',')[mongoPort],
+      ),
       sshId: SSH_ID,
       environment,
     }));

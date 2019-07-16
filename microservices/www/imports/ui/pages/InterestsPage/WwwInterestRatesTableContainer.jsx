@@ -1,7 +1,7 @@
 import { withProps, compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { currentInterestRates } from 'core/api/interestRates/queries';
 import { columnOptions, rows } from './wwwInterestsTableHelpers';
 
 export const WwwInterestsTableContainer = compose(

@@ -1,0 +1,29 @@
+.board {
+  display: flex;
+  align-items: stretch;
+  padding: 8px;
+  overflow-x: scroll;
+
+  //   Make sure the edge padding appears properly
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    flex-shrink: 0;
+  }
+
+  &-column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 8px;
+    flex-basis: 300px;
+    flex-shrink: 0;
+    padding: 0;
+    background-color: $grey3;
+
+    &-subtitle {
+      padding: 8px;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import query from 'core/api/contacts/queries/adminContacts';
+import { adminContacts as query } from 'core/api/contacts/queries';
 
 export default compose(
   withMatchParam('contactId'),

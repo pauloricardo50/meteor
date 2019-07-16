@@ -6,6 +6,7 @@ import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { borrowerUpdate, mortgageNoteInsert } from 'core/api';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
+import Box from '../Box';
 
 type BorrowerFormProps = {};
 
@@ -105,34 +106,31 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
   const { mortgageNotes, _id: borrowerId } = borrower;
   return (
     <div className="borrower-admin-form">
-      <div>
-        <h3>Informations personelles</h3>
+      <Box title={<h3>Informations personelles</h3>}>
         <AutoForm
           schema={BorrowerSchemaAdmin.pick(...personalFields)}
           model={borrower}
           onSubmit={handleSubmit(borrowerId)}
           className="form"
         />
-      </div>
-      <div>
-        <h3>Informations financières</h3>
+      </Box>
+      <Box title={<h3>Informations financières</h3>}>
         <AutoForm
           schema={BorrowerSchemaAdmin.pick(...financeFields)}
           model={borrower}
           onSubmit={handleSubmit(borrowerId)}
           className="form"
         />
-      </div>
+      </Box>
       {otherSchema._schemaKeys.length > 0 && (
-        <div>
-          <h3>Autres</h3>
+        <Box title={<h3>Autres</h3>}>
           <AutoForm
             schema={otherSchema}
             model={borrower}
             onSubmit={handleSubmit(borrowerId)}
             className="form"
           />
-        </div>
+        </Box>
       )}
       <MortgageNotesForm
         mortgageNotes={mortgageNotes}

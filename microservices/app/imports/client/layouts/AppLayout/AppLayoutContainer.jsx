@@ -4,9 +4,9 @@ import { withRouter } from 'react-router-dom';
 
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import userLoan from 'core/api/loans/queries/userLoan';
-import appUser from 'core/api/users/queries/appUser';
-import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { userLoans } from 'core/api/loans/queries';
+import { appUser } from 'core/api/users/queries';
+import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
@@ -14,13 +14,14 @@ import getBaseRedirect, {
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import { injectCalculator } from 'core/containers/withCalculator';
+import { userLoan } from 'core/api/fragments';
 import {
   withSideNavContextProvider,
   withSideNavContext,
 } from './SideNavContext';
 
 const WITHOUT_LOAN = [
-  '/profile',
+  '/account',
   '/add-loan',
   '/enroll-account',
   '/reset-password',
@@ -29,9 +30,9 @@ const WITHOUT_LOAN = [
 const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
 
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
-  (!loans || loans.length < 1)
-  && path !== '/'
-  && !isOnAllowedRoute(path, WITHOUT_LOAN);
+  (!loans || loans.length < 1) &&
+  path !== '/' &&
+  !isOnAllowedRoute(path, WITHOUT_LOAN);
 
 export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
@@ -56,12 +57,28 @@ const withAppUser = withSmartQuery({
   renderMissingDoc: false,
 });
 
+const fullFragment = userLoan({ withSort: true, withFilteredPromotions: true });
+const fragment = {
+  ...fullFragment,
+  user: { _id: 1 },
+  properties: {
+    ...fullFragment.properties,
+    loans: undefined,
+    user: undefined,
+  },
+  promotions: {
+    ...fullFragment.promotions,
+    users: undefined,
+  },
+  maxPropertyValueExists: 1,
+};
+
 const withUserLoan = withSmartQuery({
-  query: userLoan,
-  params: ({ loanId }) => ({ loanId }),
+  query: userLoans,
+  params: ({ loanId }) => ({ loanId, $body: fragment }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
-  renderMissingDoc: ({ loanId }) => !!loanId,
+  skip: ({ loanId }) => !loanId,
 });
 
 const withInterestRates = withSmartQuery({
@@ -82,16 +99,18 @@ export default compose(
   withUserLoan,
   injectCalculator(),
   withInterestRates,
-  mapProps(({
-    loan,
-    query,
-    refetch,
-    currentInterestRates: { averageRates },
-    ...props
-  }) => ({
-    ...props,
-    loan: { ...loan, currentInterestRates: averageRates },
-  })),
+  mapProps(
+    ({
+      loan,
+      query,
+      refetch,
+      currentInterestRates: { averageRates },
+      ...props
+    }) => ({
+      ...props,
+      loan: { ...loan, currentInterestRates: averageRates },
+    }),
+  ),
   withRouter,
   withRedirect,
   withTranslationContext(({ loan = {} }) => ({

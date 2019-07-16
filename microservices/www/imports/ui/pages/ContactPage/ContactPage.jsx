@@ -6,9 +6,8 @@ import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Button from 'core/components/Button';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
-import { ADDRESS, MAPS_ADDRESS } from './contactConstants';
-
 import ContactUsForm from '../../components/ContactUsForm';
+import { ADDRESS, MAPS_ADDRESS } from './contactConstants';
 import ContactPageInformation from './ContactPageInformation';
 
 const ContactPage = () => (

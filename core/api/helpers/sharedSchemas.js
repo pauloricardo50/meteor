@@ -31,6 +31,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.id': String,
   'additionalDocuments.$.label': { type: String, optional: true },
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
+  'additionalDocuments.$.category': { type: String, optional: true },
 });
 
 export const address = {
@@ -143,6 +144,12 @@ export const moneyField = {
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
 };
 
+export const decimalMoneyField = {
+  ...moneyField,
+  type: Number,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_DECIMAL },
+};
+
 export const documentsField = {
   type: Object,
   defaultValue: {},
@@ -154,4 +161,10 @@ export const dateField = {
   type: Date,
   optional: true,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-}
+};
+
+export const cacheField = {
+  type: Object,
+  optional: true,
+  blackbox: true,
+};

@@ -4,7 +4,7 @@ import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
 import { withSmartQuery } from 'core/api';
-import query from 'core/api/borrowers/queries/adminBorrowers';
+import { adminBorrowers as query } from 'core/api/borrowers/queries';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { baseBorrower } from 'core/api/fragments';
@@ -38,7 +38,7 @@ const mapBorrower = ({ history }) => (
     )),
     {
       raw: createdAt && createdAt.getTime(),
-      label: moment(createdAt).format('D MMM YY à HH:mm'),
+      label: moment(createdAt).fromNow(),
     },
     {
       raw: updatedAt && updatedAt.getTime(),

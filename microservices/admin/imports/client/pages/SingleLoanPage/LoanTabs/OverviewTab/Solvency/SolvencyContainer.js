@@ -6,7 +6,7 @@ import {
   RESIDENCE_TYPE,
   CANTONS,
 } from 'core/api/constants';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import { lenderRules } from 'core/api/fragments';
 
 export default compose(

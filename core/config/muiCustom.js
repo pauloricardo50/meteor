@@ -69,6 +69,16 @@ const createTheme = () =>
           },
         },
       },
+      MuiChip: {
+        colorSecondary: {
+          backgroundColor: 'red',
+        },
+      },
+      MuiListItemIcon: {
+        root: {
+          minWidth: 40,
+        },
+      },
     },
     palette: {
       primary: {
@@ -97,7 +107,6 @@ const createTheme = () =>
       },
     },
     typography: {
-      useNextVariants: true,
       fontFamily: 'Eina04-Regular, Helvetica',
       htmlFontSize: fontSize(),
       letterSpacing: '0.048em',
@@ -109,4 +118,5 @@ const createTheme = () =>
       },
     },
   });
+
 export default createTheme;

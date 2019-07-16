@@ -177,7 +177,7 @@ export const makeLoanAnonymizer = ({
     return {
       user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
       _id: loanId,
-      anonymous: !!anonymizeUser,
+      isAnonymized: !!anonymizeUser,
       ...rest,
     };
   };
@@ -223,7 +223,7 @@ export const makePromotionOptionAnonymizer = ({
       anonymize,
     })(loan),
     custom: anonymize ? ANONYMIZED_STRING : custom,
-    anonymous: !!anonymize,
+    isAnonymized: !!anonymize,
     ...rest,
   };
 };

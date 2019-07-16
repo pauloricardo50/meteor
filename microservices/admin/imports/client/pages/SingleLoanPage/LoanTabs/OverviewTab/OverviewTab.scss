@@ -1,11 +1,9 @@
-.overview-tab .admin-section {
+.overview-tab .admin-section .card-top {
   display: flex;
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-
-  padding: 16px;
 
   .update-field {
     min-width: 200px;
@@ -14,6 +12,11 @@
   > * {
     margin-right: 8px;
   }
+}
+
+.overview-tab .admin-section .card-bottom {
+  display: flex;
+  justify-content: center;
 }
 
 .overview-tab {
@@ -26,6 +29,7 @@
     justify-content: space-around;
 
     width: 100%;
+    margin-top: 40px;
 
     .borrower-recaps {
       display: flex;
@@ -43,40 +47,11 @@
   }
 
   .admin-note {
+    h2 {
+      margin: 0;
+    }
+
     margin-top: 40px;
-  }
-}
-
-.loan-status-check {
-  align-self: center;
-
-  max-width: 1000px;
-  margin: 40px;
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    align-self: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  .card-bottom {
-    display: flex;
-    justify-content: center;
-  }
-
-  .status-check {
-    display: flex;
-    flex-wrap: nowrap;
-
-    padding: 8px;
-  }
-
-  .borrowers {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
   }
 }
 
@@ -143,9 +118,96 @@
   flex-wrap: wrap;
   justify-content: space-around;
 
-  margin-bottom: 40px;
+  margin-top: 40px;
 
   > * {
     margin-top: 16px;
+  }
+}
+
+.loan-timeline {
+  margin-top: 40px;
+
+  .timeline {
+    overflow-x: scroll;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  &-title {
+    position: relative;
+
+    h4 {
+      margin: 0;
+
+      display: flex;
+      align-items: center;
+
+      &.title {
+        margin-left: -4px;
+
+        .text {
+          vertical-align: middle;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 250px;
+        }
+      }
+
+      .icon {
+        margin-right: 4px;
+      }
+    }
+
+    .activity-modifier {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+    }
+  }
+
+  li {
+    position: relative;
+    flex-basis: 250px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding-bottom: 16px; // To avoid the scroll-bar from overlapping with text
+
+    &:hover {
+      .activity-modifier {
+        display: block;
+      }
+    }
+
+    .today {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background-color: red;
+      top: 0;
+      left: -8px;
+
+      .today-dot {
+        // content: '';
+        top: 0px;
+        left: -3px;
+        border-radius: 50%;
+        width: 8px;
+        height: 8px;
+        background-color: red;
+        position: absolute;
+      }
+    }
   }
 }

@@ -16,6 +16,8 @@ import {
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
+import SingleLoanPageCustomName from './SingleLoanPageCustomName';
+import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -38,7 +40,7 @@ const sendFeedbackToAllLenders = (loan) => {
   }) => `${name} (${organisationName})`);
 
   if (offers.length) {
-    const confirm = window.confirm(`Attention: modifier le statut du dossier à sans suite enverra automatiquememt un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
+    const confirm = window.confirm(`Attention: passer à sans suite enverra un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
 
     if (confirm) {
       return sendNegativeFeedbackToAllLenders.run({ loanId });
@@ -60,7 +62,7 @@ const additionalActions = loan => (status, prevStatus) => {
   }
 
   if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
-    const confirm = window.confirm('Attention, ce dossier requiert maintenant des revenus précis, veuillez les saisir dans l\'onglet "Revenus",');
+    const confirm = window.confirm('Attention, il faut maintenant saisir des revenus précis!');
   }
 
   return Promise.resolve();
@@ -101,7 +103,7 @@ const SingleLoanPageHeader = ({
   withPdf = true,
   withCustomName = true,
 }: SingleLoanPageHeaderProps) => {
-  const { user } = loan;
+  const { user, status } = loan;
   const userName = getUserName(loan);
   return (
     <div className="single-loan-page-header">
@@ -130,10 +132,11 @@ const SingleLoanPageHeader = ({
             additionalActions={additionalActions(loan)}
           />
         </h1>
-        {withCustomName && loan.customName && !loan.hasPromotion && (
-          <h3 className="secondary" style={{ marginTop: 0 }}>
-            {loan.customName}
-          </h3>
+        {withCustomName && !loan.hasPromotion && (
+          <SingleLoanPageCustomName
+            customName={loan.customName}
+            loanId={loan._id}
+          />
         )}
         {loan.hasPromotion && (
           <CollectionIconLink
@@ -143,10 +146,23 @@ const SingleLoanPageHeader = ({
             }}
           />
         )}
+        {loan.financedPromotion && (
+          <CollectionIconLink
+            relatedDoc={{
+              ...loan.financedPromotion,
+              collection: PROMOTIONS_COLLECTION,
+            }}
+          />
+        )}
       </div>
       {withPdf && (
         <div className="right">
           <GetLoanPDF loan={loan} />
+        </div>
+      )}
+      {status === LOAN_STATUS.TEST && (
+        <div className="right">
+          <ResetLoanButton loan={loan} />
         </div>
       )}
     </div>

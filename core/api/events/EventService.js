@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-const IS_LOGGING = true;
+const IS_LOGGING = !Meteor.isProduction;
 
 export default class EventService {
   constructor({ emmitter }) {

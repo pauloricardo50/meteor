@@ -30,6 +30,16 @@ class NotaryFeesCalculator {
     return cantonConfigs[this.canton];
   }
 
+  shouldUseConstructionMath({ loan, structureId }) {
+    const hasDetailedValue = Calculator.hasDetailedPropertyValue({
+      loan,
+      structureId,
+    });
+    const shouldUseConstructionNotaryFees = Calculator.shouldUseConstructionNotaryFees({ loan, structureId });
+
+    return hasDetailedValue && shouldUseConstructionNotaryFees;
+  }
+
   getNotaryFeesForLoan({ loan, structureId }) {
     const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
 
@@ -46,14 +56,17 @@ class NotaryFeesCalculator {
 
     // Acte d'achat
     const buyersContractFees = this.buyersContractFees({ loan, structureId });
+
     // Cédule hypothécaire
     const mortgageNoteFees = this.mortgageNoteFees({ mortgageNoteIncrease });
+
     // Déductions
     const deductions = this.getDeductions({
       propertyValue,
       mortgageNoteFees,
       residenceType,
       mortgageNoteIncrease,
+      propertyTransferTax: buyersContractFees.propertyRegistrationTax,
     });
 
     const roundedResult = roundObjectKeys({
@@ -82,13 +95,16 @@ class NotaryFeesCalculator {
     const buyersContractFees = this.buyersContractFeesAcquisition({
       propertyValue,
     });
+
     // Cédule hypothécaire
     const mortgageNoteFees = this.mortgageNoteFees({ mortgageNoteIncrease });
+
     // Déductions
     const deductions = this.getDeductions({
       propertyValue,
       mortgageNoteIncrease,
       residenceType,
+      propertyTransferTax: this.propertyRegistrationTax({ propertyValue }),
     });
 
     const roundedResult = roundObjectKeys({
@@ -109,17 +125,11 @@ class NotaryFeesCalculator {
       return { total: 0 };
     }
 
-    const hasDetailedValue = Calculator.hasDetailedPropertyValue({
-      loan,
-      structureId,
-    });
-    const shouldUseConstructionNotaryFees = Calculator.shouldUseConstructionNotaryFees({ loan, structureId });
-
-    if (shouldUseConstructionNotaryFees && hasDetailedValue) {
+    if (this.shouldUseConstructionMath({ loan, structureId })) {
       const {
-        landValue,
-        constructionValue,
-        additionalMargin,
+        landValue = 0,
+        constructionValue = 0,
+        additionalMargin = 0,
       } = Calculator.selectProperty({ loan, structureId });
       return this.buyersContractFeesConstruction({
         landValue,
@@ -155,8 +165,8 @@ class NotaryFeesCalculator {
         + landRegistryPropertyTax
         + additionalFees,
       propertyRegistrationTax,
-      notaryIncomeFromProperty,
       landRegistryPropertyTax,
+      notaryIncomeFromProperty,
       additionalFees,
     };
   }
@@ -197,9 +207,9 @@ class NotaryFeesCalculator {
         + propertyConstructionTax
         + additionalFees,
       propertyRegistrationTax,
-      notaryIncomeFromProperty,
-      landRegistryPropertyTax,
       propertyConstructionTax,
+      landRegistryPropertyTax,
+      notaryIncomeFromProperty,
       additionalFees,
     };
   }
@@ -234,14 +244,20 @@ class NotaryFeesCalculator {
     };
   }
 
-  getDeductions({ propertyValue, mortgageNoteIncrease, residenceType }) {
+  getDeductions({
+    propertyValue,
+    mortgageNoteIncrease,
+    residenceType,
+    propertyTransferTax,
+  }) {
     const buyersContractDeductions = this.buyersContractDeductions
       ? this.buyersContractDeductions({
         residenceType,
         propertyValue,
-        transferTax: this.propertyRegistrationTax({ propertyValue }),
+        transferTax: propertyTransferTax,
       })
       : 0;
+
     const mortgageNoteDeductions = this.mortgageNoteDeductions
       ? this.mortgageNoteDeductions({
         residenceType,

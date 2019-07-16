@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import cx from 'classnames';
 
 import AdditionalDocAdder from './AdditionalDocAdder';
 import {
@@ -43,16 +44,14 @@ const documentsToDisplay = ({ collection, loan, id }) => {
 
 const documentsToHide = ({ doc, collection, loan, id }) => {
   const allDocs = allDocuments({ doc, collection });
-  return allDocs.filter((document) => {
-    const docsToDisplay = documentsToDisplay({ collection, loan, id });
-    return !docsToDisplay.some(({ id: docId }) => docId === document.id);
-  });
+  const docsToDisplay = documentsToDisplay({ collection, loan, id });
+  return allDocs.filter(document => !docsToDisplay.some(({ id: docId }) => docId === document.id));
 };
 
 const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
-  const { collection, loan, doc } = props;
+  const { collection, loan, doc, className } = props;
   return (
-    <div className="single-file-tab">
+    <div className={cx('single-file-tab', className)}>
       {Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}

@@ -10,16 +10,8 @@ export default Component => (props) => {
     <Consumer>
       {({ loan }) => {
         const structure = loan.structures.find(({ id }) => id === structureId);
-        return (
-          <Component
-            {...props}
-            structure={{
-              ...structure,
-              disableForms:
-                Meteor.microservice === 'admin' ? false : structure.disabled,
-            }}
-          />
-        );
+        structure.disableForms = Meteor.microservice === 'admin' ? false : structure.disabled;
+        return <Component {...props} structure={structure} />;
       }}
     </Consumer>
   );

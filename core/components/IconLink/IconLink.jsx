@@ -1,18 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import Icon from '../Icon';
 import Link from '../Link';
 
-const IconLink = React.forwardRef(({ link, icon, text, children, className, ...rest }, ref) => (
+const IconLink = React.forwardRef((
+  {
+    link,
+    icon,
+    text,
+    children,
+    className,
+    stopPropagation = true,
+    iconClassName,
+    showIcon,
+    ...rest
+  },
+  ref,
+) => (
   <Link
     to={link}
-    className="icon-link"
-    onClick={e => e.stopPropagation()}
+    className={cx('icon-link', iconClassName)}
+    onClick={(e) => {
+      if (stopPropagation) {
+        e.stopPropagation();
+      }
+    }}
     innerRef={ref}
     {...rest}
   >
-    <Icon type={icon} className={className || 'icon-link-icon'} />
+    {showIcon && (
+      <Icon type={icon} className={className || 'icon-link-icon'} />
+    )}
     {children || text}
   </Link>
 ));
@@ -20,7 +40,12 @@ const IconLink = React.forwardRef(({ link, icon, text, children, className, ...r
 IconLink.propTypes = {
   icon: PropTypes.node.isRequired,
   link: PropTypes.string.isRequired,
+  showIcon: PropTypes.bool,
   text: PropTypes.node.isRequired,
+};
+
+IconLink.defaultProps = {
+  showIcon: true,
 };
 
 export default IconLink;

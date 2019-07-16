@@ -2,6 +2,7 @@ import FileService from '../../files/server/FileService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
+import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
 import { ROLES, PROPERTY_CATEGORY } from '../../constants';
 import Loans from '../loans';
@@ -51,3 +52,10 @@ UpdateWatcherService.addUpdateWatching({
 });
 
 Loans.after.remove((userId, { _id }) => FileService.deleteAllFilesForDoc(_id));
+
+Loans.after.insert((userId, doc) =>
+  ActivityService.addCreatedAtActivity({
+    createdAt: doc.createdAt,
+    loanLink: { _id: doc._id },
+    title: 'Dossier créé',
+  }));

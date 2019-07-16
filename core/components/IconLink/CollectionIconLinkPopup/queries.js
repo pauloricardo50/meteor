@@ -1,11 +1,11 @@
-import adminLoans from 'core/api/loans/queries/adminLoans';
-import adminUsers from 'core/api/users/queries/adminUsers';
-import adminBorrowers from 'core/api/borrowers/queries/adminBorrowers';
-import adminProperties from 'core/api/properties/queries/adminProperties';
-import adminOffers from 'core/api/offers/queries/adminOffers';
-import proPromotion from 'core/api/promotions/queries/proPromotion';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
-import adminContacts from 'core/api/contacts/queries/adminContacts';
+import { adminLoans } from 'core/api/loans/queries';
+import { adminUsers } from 'core/api/users/queries';
+import { adminBorrowers } from 'core/api/borrowers/queries';
+import { adminProperties } from 'core/api/properties/queries';
+import { adminOffers } from 'core/api/offers/queries';
+import { proPromotions } from 'core/api/promotions/queries';
+import { adminOrganisations } from 'core/api/organisations/queries';
+import { adminContacts } from 'core/api/contacts/queries';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
@@ -27,6 +27,7 @@ export default {
         _id,
         $body: {
           anonymous: true,
+          borrowers: { name: 1 },
           name: 1,
           selectedStructure: 1,
           status: 1,
@@ -49,6 +50,9 @@ export default {
           name: 1,
           phoneNumber: 1,
           roles: 1,
+          referredByUser: { name: 1 },
+          referredByOrganisation: { name: 1 },
+          emails: 1,
         },
       },
       cb,
@@ -97,7 +101,7 @@ export default {
     ),
   [PROMOTIONS_COLLECTION]: (_id, cb) =>
     makeQuery(
-      proPromotion,
+      proPromotions,
       {
         _id,
         $body: {

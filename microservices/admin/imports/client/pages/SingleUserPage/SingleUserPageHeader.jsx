@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
+import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import Tooltip from '@material-ui/core/Tooltip';
+import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
@@ -33,9 +38,12 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     name,
     email,
     organisations = [],
+    emails = [],
   } = user;
 
   const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
+
+  const emailVerified = !!emails.length && emails[0].verified;
 
   return (
     <div className="single-user-page-header">
@@ -80,6 +88,18 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           <Icon type="mail" />
           {' '}
           <a href={`mailto:${email}`}>{email}</a>
+          <Tooltip
+            title={
+              emailVerified
+                ? "Cette adresse email a été vérifiée, le client s'est connecté avec."
+                : "Cette adresse email n'a pas été vérifiée, le client ne s'est pas connecté avec."
+            }
+          >
+            <FontAwesomeIcon
+              icon={emailVerified ? faCheckCircle : faExclamationCircle}
+              className={cx(emailVerified ? 'email-verified' : 'email-unverified')}
+            />
+          </Tooltip>
           {' '}
           <EmailModifier userId={userId} email={email} />
         </div>

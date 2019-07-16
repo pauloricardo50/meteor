@@ -76,10 +76,11 @@ export const userLogin = ({ email, password, role }) => {
         password: userPassword,
         role: role || ROLES.USER,
       })
-      .then((user) => {
-        Meteor.loginWithPassword({ id: user._id }, userPassword);
-        return user;
-      });
+      .then(user =>
+        new Promise((resolve, reject) => {
+          Meteor.loginWithPassword({ id: user._id }, userPassword, err =>
+            (err ? reject(err) : resolve(user)));
+        }));
   }
 };
 

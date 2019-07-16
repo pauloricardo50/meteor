@@ -15,9 +15,7 @@ const getMenuItems = (taskId, taskStatus) => {
     id: status,
     show: status !== taskStatus,
     link: false,
-    onClick: () => {
-      changeStatus(status, taskId);
-    },
+    onClick: () => changeStatus(status, taskId),
     label: <T id={`TaskStatusSetter.${status}`} />,
   }));
 

@@ -1,12 +1,16 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 
+import { ROLES } from 'core/api/constants';
 import T from '../Translation';
 import Icon from '../Icon';
 import Button from '../Button';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
+import { impersonateAdmin } from '../../api/impersonation/methodDefinitions';
 import { isUser } from '../../utils/userFunctions';
 
 const styles = {
@@ -19,7 +23,32 @@ const styles = {
   },
 };
 
+const isAdminAndDev = ({ roles }) =>
+  roles.includes(ROLES.ADMIN)
+  && Meteor.user()
+  && Meteor.user().roles.includes(ROLES.DEV);
+
 const ImpersonateLink = ({ user, className, classes }) => {
+  if (!user) {
+    return null;
+  }
+
+  if (isAdminAndDev(user)) {
+    return (
+      <Button
+        onClick={() =>
+          impersonateAdmin
+            .run({ userId: user._id })
+            .then(() => Meteor.connection.setUserId(user._id))
+        }
+        fab
+        style={{ backgroundColor: '#0F0', color: 'white' }}
+      >
+        <Icon type="supervisorAccount" size={32} />
+      </Button>
+    );
+  }
+
   if (!isUser(user)) {
     return null;
   }

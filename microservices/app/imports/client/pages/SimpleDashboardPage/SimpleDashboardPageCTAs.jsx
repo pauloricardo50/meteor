@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import { loanUpdate } from 'core/api/methods';
 import { APPLICATION_TYPES, STEPS } from 'core/api/constants';
@@ -17,6 +18,7 @@ const SimpleDashboardPageCTAs = ({
   loanId,
   progress,
   currentUser,
+  withReturnToDashboard = true,
 }: SimpleDashboardPageCTAsProps) => {
   const buttonProps = {
     primary: progress < 1,
@@ -28,15 +30,21 @@ const SimpleDashboardPageCTAs = ({
   };
 
   return (
-    <div className="simple-dashboard-page-ctas">
-      <Button
-        raised
-        primary
-        link
-        to={createRoute(APP_ROUTES.WELCOME_PAGE.path, { loanId })}
-      >
-        <T id="BorrowersProgress.welcomePage" />
-      </Button>
+    <div
+      className={cx('simple-dashboard-page-ctas', {
+        'one-button': !withReturnToDashboard,
+      })}
+    >
+      {withReturnToDashboard && (
+        <Button
+          raised
+          primary
+          link
+          to={createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId })}
+        >
+          Tableau de bord
+        </Button>
+      )}
 
       {!currentUser && <UserCreator buttonProps={buttonProps} />}
 

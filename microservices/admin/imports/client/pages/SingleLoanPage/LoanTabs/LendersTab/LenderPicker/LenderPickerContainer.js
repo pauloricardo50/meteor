@@ -2,7 +2,7 @@ import { withProps, compose, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { withSmartQuery } from 'core/api';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
 import { lenderInsert, lenderRemove } from 'core/api/methods';
 import { lenderRules } from 'core/api/fragments';

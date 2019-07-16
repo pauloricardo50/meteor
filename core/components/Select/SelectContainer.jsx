@@ -57,7 +57,7 @@ const mapOptions = (
       classes={{ root: menuItemRoot }}
       {...otherProps}
     >
-      <React.Fragment>
+      <>
         {icon && (
           <ListItemIcon className={colorClass}>
             <Icon type={icon} />
@@ -69,11 +69,11 @@ const mapOptions = (
             secondary: colorClass,
             root: icon ? listItemTextWithIcon : listItemtext,
           }}
-          inset={!!icon}
+          // inset={!!icon}
           primary={label}
           secondary={secondary}
         />
-      </React.Fragment>
+      </>
     </MenuItem>);
 
     if (dividerBottom) {

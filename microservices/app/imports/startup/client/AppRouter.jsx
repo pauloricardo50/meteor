@@ -3,7 +3,7 @@ import React from 'react';
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
-import AppLayout from '../../client/layouts/AppLayout/loadable';
+import AppLayout from '../../client/layouts/AppLayout';
 import AppStore from '../../client/components/AppStore';
 
 import APP_ROUTES from './appRoutes';

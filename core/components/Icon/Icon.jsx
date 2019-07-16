@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
+import Badge from '@material-ui/core/Badge';
 
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -76,6 +77,12 @@ import Phonelink from '@material-ui/icons/Phonelink';
 import OpenInNew from '@material-ui/icons/OpenInNew';
 import Add from '@material-ui/icons/Add';
 import Settings from '@material-ui/icons/Settings';
+import Event from '@material-ui/icons/Event';
+import Computer from '@material-ui/icons/Computer';
+import Notifications from '@material-ui/icons/Notifications';
+import Snooze from '@material-ui/icons/Snooze';
+import DragHandle from '@material-ui/icons/DragHandle';
+import PriorityHigh from '@material-ui/icons/PriorityHigh';
 
 export const iconMap = {
   close: CloseIcon,
@@ -153,6 +160,12 @@ export const iconMap = {
   phoneLink: Phonelink,
   openInNew: OpenInNew,
   settings: Settings,
+  event: Event,
+  computer: Computer,
+  notifications: Notifications,
+  snooze: Snooze,
+  dragHandle: DragHandle,
+  priorityHigh: PriorityHigh,
 };
 
 const Icon = ({
@@ -161,6 +174,7 @@ const Icon = ({
   tooltip,
   tooltipPlacement,
   style = {},
+  badgeContent,
   ...props
 }) => {
   const iconStyle = {
@@ -180,13 +194,21 @@ const Icon = ({
     return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
   }
 
-  const icon = <MyIcon style={iconStyle} {...props} />;
+  let icon = <MyIcon style={iconStyle} {...props} />;
 
   if (tooltip) {
-    return (
+    icon = (
       <Tooltip placement={tooltipPlacement} title={tooltip} enterTouchDelay={0}>
         {icon}
       </Tooltip>
+    );
+  }
+
+  if (badgeContent) {
+    icon = (
+      <Badge badgeContent={badgeContent} color="error">
+        {icon}
+      </Badge>
     );
   }
 

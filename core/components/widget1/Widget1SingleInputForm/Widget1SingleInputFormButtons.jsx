@@ -8,12 +8,12 @@ const Widget1SingleInputFormButtons = ({ disableSubmit, onDoNotKnow }) => (
     <Button
       color="primary"
       type="submit"
-      variant="raised"
+      raised
       disabled={disableSubmit}
     >
       Entrer
     </Button>
-    <Button onClick={onDoNotKnow} variant="raised" className="button">
+    <Button onClick={onDoNotKnow} raised className="button">
       Je ne sais pas
     </Button>
   </div>

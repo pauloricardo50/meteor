@@ -66,6 +66,7 @@ export const adminLoanInsert = new Method({
 export const userLoanInsert = new Method({
   name: 'userLoanInsert',
   params: {
+    proPropertyId: Match.Maybe(String),
     test: Match.Optional(Boolean),
   },
 });
@@ -172,5 +173,36 @@ export const anonymousLoanInsert = new Method({
     trackingId: String,
     proPropertyId: Match.Maybe(String),
     referralId: Match.Maybe(String),
+  },
+});
+
+export const loanInsertBorrowers = new Method({
+  name: 'loanInsertBorrowers',
+  params: {
+    loanId: String,
+    amount: Number,
+  },
+});
+
+export const adminLoanReset = new Method({
+  name: 'adminLoanReset',
+  params: {
+    loanId: String,
+  },
+});
+
+export const loanLinkPromotion = new Method({
+  name: 'loanLinkPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
+  },
+});
+
+export const loanUnlinkPromotion = new Method({
+  name: 'loanUnlinkPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
   },
 });

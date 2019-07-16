@@ -7,6 +7,7 @@ import {
   contactsSchema,
   additionalDocuments,
   documentsField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -27,7 +28,6 @@ import {
   previousLoanTranchesSchema,
   maxPropertyValueSchema,
 } from './otherSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -36,16 +36,6 @@ const LoanSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  closingDate: {
-    type: Date,
-    optional: true,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
-  signingDate: {
-    type: Date,
-    optional: true,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
   status: {
     type: String,
     defaultValue: LOAN_STATUS.LEAD,
@@ -111,13 +101,9 @@ const LoanSchema = new SimpleSchema({
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
-  revenueLinks: { type: Array, defaultValue: [] },
+  revenueLinks: { type: Array, optional: true },
   'revenueLinks.$': String,
-  userCache: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
+  userCache: cacheField,
   step: {
     type: String,
     defaultValue: STEPS.SOLVENCY,
@@ -144,6 +130,13 @@ const LoanSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  lendersCache: { type: Array, optional: true },
+  'lendersCache.$': cacheField,
+  tasksCache: { type: Array, optional: true },
+  'tasksCache.$': cacheField,
+  financedPromotionLink: { type: Object, optional: true },
+  'financedPromotionLink._id': { type: String, optional: true },
+  simpleBorrowersForm: { type: Boolean, defaultValue: true },
 });
 
 export default LoanSchema;

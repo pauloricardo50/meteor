@@ -54,6 +54,7 @@ const DropdownMenu = ({
   maxHeight,
   paperClassName,
   disabled,
+  noWrapper,
 }) => {
   const onClickHandler = (event) => {
     // Prevent background from receiving clicks
@@ -65,8 +66,8 @@ const DropdownMenu = ({
     handleOpen(event.currentTarget);
   };
 
-  return (
-    <div className={className} style={{ ...style }}>
+  const toRender = (
+    <>
       {getTrigger({
         button,
         buttonProps,
@@ -80,7 +81,11 @@ const DropdownMenu = ({
       <Menu
         anchorEl={anchorEl}
         open={isOpen}
-        onClose={handleClose}
+        onClose={(event) => {
+          // Stop propagation here to avoid parents' onClick from firing
+          event.stopPropagation();
+          handleClose();
+        }}
         classes={{ paper: paperClassName }}
         PaperProps={{
           style: {
@@ -95,6 +100,16 @@ const DropdownMenu = ({
       >
         {options}
       </Menu>
+    </>
+  );
+
+  if (noWrapper) {
+    return toRender;
+  }
+
+  return (
+    <div className={className} style={{ ...style }}>
+      {toRender}
     </div>
   );
 };

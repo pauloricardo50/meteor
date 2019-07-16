@@ -9,9 +9,31 @@ type ErrorThrowerProps = {};
 
 const ErrorThrower = ({ fuckedUp, fuckShitUp }: ErrorThrowerProps) => (
   <div className="error-thrower">
+    <span>Client</span>
     <Button raised error onClick={() => fuckShitUp(true)}>
       Throw render error
     </Button>
+    <Button
+      raised
+      error
+      onClick={() => {
+        throw new Error('DevPage onClick error thrown');
+      }}
+    >
+      Throw onClick error
+    </Button>
+    <Button
+      raised
+      error
+      onClick={() =>
+        new Promise(() => {
+          throw new Error('Promise error!');
+        })
+      }
+    >
+      Throw error in promise
+    </Button>
+    <span>Server</span>
     <Button raised error onClick={() => throwDevError.run({})}>
       Throw server error
     </Button>
@@ -24,15 +46,6 @@ const ErrorThrower = ({ fuckedUp, fuckShitUp }: ErrorThrowerProps) => (
       onClick={() => throwDevError.run({ promiseNoReturn: true })}
     >
       Throw server error in promise and don't return
-    </Button>
-    <Button
-      raised
-      error
-      onClick={() => {
-        throw new Error('DevPage onClick error thrown');
-      }}
-    >
-      Throw onClick error
     </Button>
     {fuckedUp
       && (() => {

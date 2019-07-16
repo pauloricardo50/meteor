@@ -31,18 +31,18 @@ export const GE = {
     mortgageNoteIncrease * cantons.GE.MORTGAGE_NOTE_REGISTRATION_TAX,
   landRegistryMortgageNoteTax: ({ mortgageNoteIncrease }) =>
     mortgageNoteIncrease * cantons.GE.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
-  additionalFees: () => cantons.GE.ADDITIONAL_FEES * (1 + VAT),
   buyersContractDeductions: ({ residenceType, propertyValue, transferTax }) =>
     (isCasatax({ residenceType, propertyValue })
       ? Math.min(cantons.GE.CASATAX_PROPERTY_DEDUCTION, transferTax)
       : 0),
+  additionalFees: () => cantons.GE.ADDITIONAL_FEES,
   mortgageNoteDeductions: ({
     residenceType,
     propertyValue,
     mortgageNoteRegistrationTax,
   }) =>
     (isCasatax({ residenceType, propertyValue })
-      ? mortgageNoteRegistrationTax * 0.5
+      ? mortgageNoteRegistrationTax * cantons.GE.MORTGAGE_NOTE_CASATAX_DEDUCTION
       : 0),
 };
 
@@ -68,5 +68,5 @@ export const VD = {
   mortgageNoteRegistrationTax: ({ mortgageNoteIncrease }) => 0,
   landRegistryMortgageNoteTax: ({ mortgageNoteIncrease }) =>
     mortgageNoteIncrease * cantons.VD.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
-  additionalFees: () => cantons.VD.ADDITIONAL_FEES * (1 + VAT),
+  additionalFees: () => cantons.VD.ADDITIONAL_FEES,
 };
