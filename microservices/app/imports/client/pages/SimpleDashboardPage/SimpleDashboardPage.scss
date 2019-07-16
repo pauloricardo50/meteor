@@ -174,31 +174,6 @@
         }
       }
 
-      .simple-form-switch {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-
-        button:first-of-type {
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-        button:last-of-type {
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-        }
-
-        .switch {
-          border: 1px solid $primary;
-          color: $primary;
-        }
-
-        .active {
-          color: white;
-          background-color: $primary;
-        }
-      }
-
       .borrowers-form {
         .card1 {
           padding: 0;
@@ -233,6 +208,20 @@
             align-self: flex-end;
           }
         }
+      }
+
+      button {
+        align-self: center;
+        width: auto;
+        // margin-top: 16px;
+
+        @include screen(small) {
+          width: 100%;
+        }
+      }
+
+      .borrowers-progress {
+        margin-bottom: 32px;
       }
     }
 

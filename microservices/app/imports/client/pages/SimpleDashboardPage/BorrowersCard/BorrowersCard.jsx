@@ -16,41 +16,38 @@ const BorrowersCard = (props: BorrowersCardProps) => {
 
   return (
     <div className="borrowers-card">
-      <BorrowersCardHeader {...props} />
-      {openBorrowersForm ? (
-        <div className="animated slideInDown">
-          <BorrowersForm {...props} />
-          <Button
-            raised
-            primary
-            onClick={() => setOpenBorrowersForm(false)}
-            style={{ width: '100%' }}
-          >
-            <T id="general.close" />
-          </Button>
-        </div>
-      ) : (
-        <div className="animated slideInUp">
-          <BorrowersProgress {...props} />
-          <Button
-            raised
-            secondary={progress < 1}
-            primary={progress >= 1}
-            onClick={() => setOpenBorrowersForm(true)}
-            style={{ width: '100%' }}
-          >
-            <T
-              id={
-                progress < 1
-                  ? progress === 0
-                    ? 'general.start'
-                    : 'general.continue'
-                  : 'general.modify'
-              }
-            />
-          </Button>
-        </div>
-      )}
+      <div>
+        <BorrowersCardHeader {...props} />
+        {openBorrowersForm ? (
+          <div className="flex-col animated fadeIn">
+            <BorrowersForm {...props} />
+            <Button raised primary onClick={() => setOpenBorrowersForm(false)}>
+              <T id="general.close" />
+            </Button>
+          </div>
+        ) : (
+          <div className="flex-col animated fadeIn">
+            <BorrowersProgress {...props} />
+            <Button
+              raised
+              secondary={progress < 1}
+              primary={progress >= 1}
+              onClick={() => setOpenBorrowersForm(true)}
+              // style={{ width: '100%' }}
+            >
+              <T
+                id={
+                  progress < 1
+                    ? progress === 0
+                      ? 'general.start'
+                      : 'general.continue'
+                    : 'general.modify'
+                }
+              />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

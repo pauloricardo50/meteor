@@ -4,6 +4,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 
+import Button from 'core/components/Button';
+
 type PropertyCardInfosProps = {
   image: String,
   name: String,
@@ -16,6 +18,9 @@ const PropertyCardInfos = ({
   name,
   title,
   subtitle,
+  isMobile,
+  onClick,
+  buttonLabel,
 }: PropertyCardInfosProps) => (
   <div className="property-card-infos">
     {image ? (
@@ -26,6 +31,13 @@ const PropertyCardInfos = ({
     <div className="property-card-infos-description">
       <h3>{title}</h3>
       <p>{subtitle}</p>
+      {!isMobile && (
+        <div className="property-card-actions">
+          <Button className="button" onClick={onClick} secondary raised>
+            {buttonLabel}
+          </Button>
+        </div>
+      )}
     </div>
   </div>
 );

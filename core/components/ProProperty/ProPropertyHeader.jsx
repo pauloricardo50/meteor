@@ -45,8 +45,16 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
   return (
     <div className="header">
       <div className="header-left">
-        <h1>
-          {ogTitle || address1}
+        <div
+          className="flex-row"
+          style={{ width: '100%', justifyContent: 'space-between' }}
+        >
+          <div className="flex-col">
+            <h1>{ogTitle || address1}</h1>
+            <h2 className="secondary">
+              <Money value={totalValue} />
+            </h2>
+          </div>
           {loan && (
             <MuiThemeProvider
               theme={{
@@ -55,7 +63,7 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
                   ...defaultTheme.overrides,
                   MuiFormControl: {
                     root: {
-                      marginTop: '8px',
+                      marginTop: '8px !important',
                     },
                   },
                 },
@@ -64,29 +72,9 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
               <ResidenceTypeSetter loan={loan} noIcon />
             </MuiThemeProvider>
           )}
-        </h1>
-        <h2 className="secondary">
-          <Money value={totalValue} />
-        </h2>
+        </div>
         {(ogDescription || description) && (
           <p className="description">{ogDescription || description}</p>
-        )}
-        {loan && (
-          <MuiThemeProvider
-            theme={{
-              ...defaultTheme,
-              overrides: {
-                ...defaultTheme.overrides,
-                MuiFormControl: {
-                  root: {
-                    marginTop: '8px',
-                  },
-                },
-              },
-            }}
-          >
-            <ResidenceTypeSetter loan={loan} noIcon />
-          </MuiThemeProvider>
         )}
         <ProPropertyRecap property={property} />
         {externalUrl && (

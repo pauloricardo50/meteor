@@ -83,7 +83,12 @@ const SimpleMaxPropertyValueEmptyState = (
         ) : (
           <>
             <h4>{getReadyToCalculateTitle(props)}</h4>
-            <div className="flex-row center space-children">
+            <div
+              className={cx('flex-row center space-children', {
+                animated: !cantonValue,
+                bounceIn: !cantonValue,
+              })}
+            >
               {!lockCanton && (
                 <MuiThemeProvider
                   theme={{
@@ -108,6 +113,9 @@ const SimpleMaxPropertyValueEmptyState = (
                             borderBottom: '1px solid rgba(255,255,255,0.6)',
                           },
                           '&&&&:hover:before': {
+                            borderBottom: '1px solid white',
+                          },
+                          '&$focused:after': {
                             borderBottom: '1px solid white',
                           },
                         },
@@ -138,6 +146,7 @@ const SimpleMaxPropertyValueEmptyState = (
                 onClick={recalculate}
                 secondary
                 style={{ marginLeft: 16, marginTop: 0 }}
+                disabled={!cantonValue}
               >
                 {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
               </Button>

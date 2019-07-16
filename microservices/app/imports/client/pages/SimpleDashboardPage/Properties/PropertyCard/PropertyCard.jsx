@@ -8,6 +8,7 @@ import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 import Dialog from 'core/components/Material/Dialog';
 import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter';
 import T from 'core/components/Translation';
+import useMedia from 'core/hooks/useMedia';
 
 type PropertyCardProps = {
   buttonLabel: Object,
@@ -30,15 +31,19 @@ const PropertyCard = (props: PropertyCardProps) => {
     history,
   } = props;
 
+  const isMobile = useMedia({ maxWidth: 1200 });
+
   return (
     <div className="card1 property-card">
       <div className="top">
-        <PropertyCardInfos {...props} />
-        <div className="property-card-actions">
-          <Button className="button" onClick={onClick} secondary raised>
-            {buttonLabel}
-          </Button>
-        </div>
+        <PropertyCardInfos isMobile={isMobile} {...props} />
+        {isMobile && (
+          <div className="property-card-actions">
+            <Button className="button" onClick={onClick} secondary raised>
+              {buttonLabel}
+            </Button>
+          </div>
+        )}
       </div>
       {loan.promotionOptions && loan.promotionOptions.length > 0 && (
         <div className="bottom">

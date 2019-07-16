@@ -81,12 +81,16 @@ const getBorrowersTabs = ({ loan, simpleForm }) => {
             {borrower.name || (
               <T id="BorrowerHeader.title" values={{ index: index + 1 }} />
             )}
-            &nbsp;&bull;&nbsp;
-            <PercentWithStatus
-              value={progress}
-              status={progress < 1 ? null : undefined}
-              rounded
-            />
+            {borrowers.length > 1 && (
+              <>
+                &nbsp;&bull;&nbsp;
+                <PercentWithStatus
+                  value={progress}
+                  status={progress < 1 ? null : undefined}
+                  rounded
+                />
+              </>
+            )}
           </span>
         ),
       };
