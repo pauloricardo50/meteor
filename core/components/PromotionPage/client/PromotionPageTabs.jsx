@@ -35,17 +35,17 @@ const getTabs = ({ canSeeCustomers, canSeeUsers, users = [], loans = [] }) =>
       label: <T id="PromotionPageTabs.files" />,
     },
     {
-      id: 'users',
-      shouldDisplay: canSeeUsers,
-      label: (
-        <T id="PromotionPageTabs.users" values={{ count: users.length }} />
-      ),
-    },
-    {
       id: 'customers',
       shouldDisplay: canSeeCustomers,
       label: (
         <T id="PromotionPageTabs.customers" values={{ count: loans.length }} />
+      ),
+    },
+    {
+      id: 'users',
+      shouldDisplay: canSeeUsers,
+      label: (
+        <T id="PromotionPageTabs.users" values={{ count: users.length }} />
       ),
     },
   ].filter(({ shouldDisplay }) => shouldDisplay);
@@ -64,10 +64,10 @@ const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
     <Tabs
       value={value}
       onChange={handleChange}
-      centered
       className={classes.root}
       indicatorColor="primary"
       textColor="primary"
+      variant="fullWidth"
     >
       {getTabs({ canSeeCustomers, canSeeUsers, users, loans }).map(({ id, label }) => (
         <Tab
