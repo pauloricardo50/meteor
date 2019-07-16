@@ -13,17 +13,7 @@ const AdminPromotionPage = ({
 }: AdminPromotionPageProps) => (
   <>
     <PromotionUsersTable promotion={promotion} />
-    <PromotionPage
-      promotion={promotion}
-      currentUser={currentUser}
-      canModifyPromotion
-      canInviteCustomers
-      canManageDocuments
-      canSeeCustomers
-      canAddLots
-      canModifyLots
-      canRemoveLots
-    />
+    <PromotionPage promotion={promotion} currentUser={currentUser} />
   </>
 );
 

@@ -1,4 +1,9 @@
 {
+  "PromotionPageTabs.overview": "Vue d'ensemble",
+  "PromotionPageTabs.partners": "Partenaires",
+  "PromotionPageTabs.files": "Documents",
+  "PromotionPageTabs.users": "Pros ({count})",
+  "PromotionPageTabs.customers": "Clients ({count})",
   "Forms.customMessage": "Message personnalisé",
   "Forms.customMessage.placeholder": "Bonjour Marie,\n\nVous trouverez ci-dessus la liste des informations et des documents manquants à votre dossier. J'attire plus particulièrement votre attention sur le document XYZ...",
   "FinancingResultInterests.withOffer": "Offre de {name}",
