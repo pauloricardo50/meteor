@@ -1,16 +1,16 @@
 // @flow
 import React from 'react';
 
-import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
-import DropdownMenu from '../DropdownMenu';
-import T from '../Translation';
-import PromotionUsersTableActionsContainer from './PromotionUsersTableActionsContainer';
-import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
-import { CustomerAdderUserSchema } from '../PromotionPage/client/CustomerAdder/CustomerAdder';
+import { isAllowedToRemoveCustomerFromPromotion } from '../../../../api/security/clientSecurityHelpers';
+import DropdownMenu from '../../../DropdownMenu';
+import T from '../../../Translation';
+import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
+import PromotionCustomersTableActionsContainer from './PromotionCustomersTableActionsContainer';
+import { CustomerAdderUserSchema } from '../CustomerAdder/CustomerAdder';
 
-type PromotionUsersTableActionsProps = {};
+type PromotionCustomersTableActionsProps = {};
 
-const PromotionUsersTableActions = ({
+const PromotionCustomersTableActions = ({
   promotion,
   currentUser,
   customerOwnerType,
@@ -21,7 +21,7 @@ const PromotionUsersTableActions = ({
   editLots,
   loan,
   loading,
-}: PromotionUsersTableActionsProps) => {
+}: PromotionCustomersTableActionsProps) => {
   const { user = {}, promotionOptions = [], isAnonymized } = loan;
   const options = [];
   const isAllowedToRemove = isAllowedToRemoveCustomerFromPromotion({
@@ -76,4 +76,4 @@ const PromotionUsersTableActions = ({
   );
 };
 
-export default PromotionUsersTableActionsContainer(PromotionUsersTableActions);
+export default PromotionCustomersTableActionsContainer(PromotionCustomersTableActions);

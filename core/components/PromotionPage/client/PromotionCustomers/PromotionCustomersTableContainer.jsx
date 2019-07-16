@@ -4,20 +4,17 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import moment from 'moment';
 
-import { proPromotions, proPromotionUsers } from '../../api/promotions/queries';
-import { withSmartQuery } from '../../api';
-
-import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
-import { getUserNameAndOrganisation } from '../../api/helpers';
-import { LOANS_COLLECTION } from '../../api/constants';
-import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
-import LoanProgress from '../LoanProgress/LoanProgress';
-import PriorityOrder from '../PromotionLotPage/PriorityOrder';
-import T from '../Translation';
-import { CollectionIconLink } from '../IconLink';
+import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
+import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { LOANS_COLLECTION } from '../../../../api/constants';
+import LoanProgressHeader from '../../../LoanProgress/LoanProgressHeader';
+import LoanProgress from '../../../LoanProgress';
+import PriorityOrder from '../../../PromotionLotPage/PriorityOrder';
+import T from '../../../Translation';
+import { CollectionIconLink } from '../../../IconLink';
+import StatusLabel from '../../../StatusLabel';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
-import PromotionUsersTableActions from './PromotionUsersTableActions';
-import StatusLabel from '../StatusLabel/StatusLabel';
+import PromotionCustomersTableActions from './PromotionCustomersTableActions';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -122,7 +119,7 @@ const getColumns = ({
         />
       ),
     },
-    <PromotionUsersTableActions
+    <PromotionCustomersTableActions
       key="actions"
       promotion={{ ...promotion, promotionLots }}
       currentUser={currentUser}
@@ -152,37 +149,16 @@ const makeMapLoan = ({
   };
 };
 
-export default compose(
-  withSmartQuery({
-    query: proPromotionUsers,
-    params: ({ promotionId }) => ({ _id: promotionId }),
-    queryOptions: { reactive: false },
-    dataName: 'promotionUsers',
-    smallLoader: true,
-  }),
-  withSmartQuery({
-    query: proPromotions,
-    params: ({ promotionId }) => ({
-      _id: promotionId,
-      simple: true,
-    }),
-    queryOptions: { single: true, shouldRefetch: () => false },
-    dataName: 'simplePromotion',
-    refetchOnMethodCall: false,
-  }),
-  withProps(({
-    loans,
+export default compose(withProps(({
+  loans,
+  currentUser,
+  promotion: { _id: promotionId, promotionLots, users: promotionUsers },
+}) => ({
+  rows: loans.map(makeMapLoan({
     promotionId,
     promotionUsers,
     currentUser,
-    simplePromotion: { promotionLots },
-  }) => ({
-    rows: loans.map(makeMapLoan({
-      promotionId,
-      promotionUsers,
-      currentUser,
-      promotionLots,
-    })),
-    columnOptions,
+    promotionLots,
   })),
-);
+  columnOptions,
+})));

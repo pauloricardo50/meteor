@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
 
-import Table from 'core/components/Table';
-import PromotionUsersTableContainer from './PromotionUsersTableContainer';
+import Table from '../../../Table';
+import PromotionCustomersTableContainer from './PromotionCustomersTableContainer';
 
 type PromotionUsersTableProps = {};
 
-const PromotionUsersTable = ({
+const PromotionCustomersTable = ({
   rows,
   columnOptions,
 }: PromotionUsersTableProps) => (
@@ -24,4 +24,4 @@ clients
   </>
 );
 
-export default PromotionUsersTableContainer(PromotionUsersTable);
+export default PromotionCustomersTableContainer(PromotionCustomersTable);

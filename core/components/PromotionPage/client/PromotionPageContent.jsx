@@ -6,8 +6,8 @@ import Route from 'core/components/BaseRouter/Route';
 import PromotionTimeline from './PromotionTimeline/PromotionTimeline';
 import PromotionPartners from './PromotionPartners';
 import PromotionFiles from './PromotionFiles';
-import PromotionUsers from './PromotionUsers';
-import PromotionCustomers from './PromotionCustomers';
+import PromotionUsers from './PromotionUsers/loadable';
+import PromotionCustomers from './PromotionCustomers/loadable';
 
 type PromotionPageContentProps = {};
 

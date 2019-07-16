@@ -77,7 +77,7 @@ exposeQuery({
       };
 
       body.$postFilter = (promotions = [], params) => {
-        const { anonymize = false, simple, userId } = params;
+        const { anonymize = false, userId } = params;
 
         if (!anonymize) {
           return promotions;
@@ -85,18 +85,15 @@ exposeQuery({
 
         return promotions.map((promotion) => {
           const { promotionLots = [], ...rest } = promotion;
-          return simple
-            ? { promotionLots: promotionLots.map(({ name }) => name) }
-            : {
-              promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
-              ...rest,
-            };
+          return {
+            promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
+            ...rest,
+          };
         });
       };
     },
     validateParams: {
       userId: String,
-      simple: Match.Maybe(Boolean),
       anonymize: Match.Maybe(Boolean),
       _id: Match.Maybe(String),
     },

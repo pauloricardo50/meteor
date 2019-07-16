@@ -1,6 +1,6 @@
 import { compose, withState, withProps } from 'recompose';
 
-import { removeLoanFromPromotion, editPromotionLoan } from '../../api';
+import { removeLoanFromPromotion, editPromotionLoan } from '../../../../api';
 
 export default compose(
   withState('openDialog', 'setOpenDialog', false),
