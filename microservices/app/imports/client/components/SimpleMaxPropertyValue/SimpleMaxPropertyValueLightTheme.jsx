@@ -74,6 +74,12 @@ const SimpleMaxPropertyValueLightTheme = ({
             marginTop: '16px',
           },
         },
+
+        MuiIconButton: {
+          root: {
+            marginTop: '-3px',
+          },
+        },
       },
     }}
   >
