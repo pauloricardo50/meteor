@@ -305,6 +305,18 @@ export class PromotionService extends CollectionService {
       PromotionOptionService.remove({ promotionOptionId });
     });
   }
+
+  reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
+    const { constructionTimeline } = this.fetchOne({
+      $filters: { _id: fromPromotionId },
+      constructionTimeline: 1,
+    });
+
+    return this.update({
+      promotionId: toPromotionId,
+      object: { constructionTimeline },
+    });
+  }
 }
 
 export default new PromotionService();

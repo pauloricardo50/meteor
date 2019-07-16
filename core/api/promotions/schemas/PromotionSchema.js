@@ -69,6 +69,12 @@ export const promotionPermissionsSchema = {
   canSellLots: SCHEMA_BOOLEAN,
 };
 
+SimpleSchema.setDefaultMessages({
+  messages: {
+    fr: { incompleteTimeline: "Les pourcentages doivent s'additionner à 100%" },
+  },
+});
+
 const PromotionSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -100,12 +106,27 @@ const PromotionSchema = new SimpleSchema({
   documents: documentsField,
   lenderOrganisationLink: { type: Object, optional: true },
   'lenderOrganisationLink._id': { type: String, optional: true },
-  constructionTimeline: { type: Array, defaultValue: [] },
+  signingDate: dateField,
+  constructionTimeline: {
+    type: Array,
+    defaultValue: [],
+    custom() {
+      if (this.value.length === 0) {
+        return;
+      }
+
+      if (this.value.reduce((tot, { percent }) => tot + percent, 0) !== 1) {
+        return 'incompleteTimeline';
+      }
+    },
+  },
   'constructionTimeline.$': Object,
   'constructionTimeline.$.description': String,
-  'constructionTimeline.$.duration': Number,
+  'constructionTimeline.$.duration': {
+    type: Number,
+    uniforms: { placeholder: null },
+  },
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
-  signingDate: dateField,
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
