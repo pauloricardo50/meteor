@@ -20,7 +20,7 @@ describe('App onboarding', () => {
       });
 
       it('should login with the login token', () => {
-        cy.callMethod('inviteTestUser').then((loginToken) => {
+        cy.callMethod('inviteTestUser').then(loginToken => {
           cy.visit(`/enroll-account/${loginToken}`);
         });
 
@@ -33,7 +33,9 @@ describe('App onboarding', () => {
           .eq(1)
           .type(`${USER_PASSWORD}`);
         cy.get('[type="checkbox"]').check();
-        cy.get('.password-reset-page').contains('Login').click();
+        cy.get('.password-reset-page')
+          .contains('Login')
+          .click();
 
         cy.url().should('include', '/loans/');
       });
@@ -55,10 +57,9 @@ describe('App onboarding', () => {
           .click();
 
         cy.get('.simple-dashboard-page').should('exist');
-        cy.get('.borrowers-progress').contains('0%');
+        cy.get('.borrowers-card').contains('0%');
 
-        cy.get('.borrowers-progress a').click();
-        cy.url().should('include', '/borrowers');
+        cy.get('.borrowers-card button').click();
 
         cy.get('.borrowers-adder')
           .find('button')
@@ -75,7 +76,7 @@ describe('App onboarding', () => {
           .check();
         cy.get('input#bankFortune').type('250000');
 
-        cy.get('.simple-borrowers-page-header').contains('100%');
+        cy.get('.borrowers-card').contains('100%');
       });
     });
   });
