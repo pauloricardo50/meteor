@@ -19,7 +19,7 @@ import WelcomePage from '../../client/pages/WelcomePage/loadable';
 import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
 import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
-import AppPage from '../../client/pages/AppPage/loadable';
+import AppPage from '../../client/pages/AppPage';
 
 export default {
   REFINANCING_PAGE: {

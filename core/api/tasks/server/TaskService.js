@@ -67,18 +67,19 @@ class TaskService extends CollectionService {
     if (dueAt && !dueAtTime) {
       return dueAt;
     }
-    const [hours = 0, minutes = 0] = dueAtTime.split(':');
-    const date = moment(dueAt || undefined)
-      .hour(hours)
-      .minute(minutes)
-      .seconds(0)
-      .milliseconds(0);
-
-    if (dueAt && dueAtTime) {
-      return date.toDate();
-    }
 
     if (dueAtTime) {
+      const [hours = 0, minutes = 0] = dueAtTime.split(':');
+      const date = moment(dueAt || undefined)
+        .hour(hours)
+        .minute(minutes)
+        .seconds(0)
+        .milliseconds(0);
+
+      if (dueAt) {
+        return date.toDate();
+      }
+
       if (moment().isAfter(date)) {
         // If it is 14:00, and you choose 10:00 as the time, you don't want it
         // in the past, but tomorrow
