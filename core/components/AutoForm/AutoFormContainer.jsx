@@ -10,11 +10,17 @@ import {
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
-const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
+const AutoFormContainer = withProps(({ collection, beforeUpdate, overrides = {} }) => {
   let popFunc;
   let pushFunc;
   let updateFunc;
   let idKey;
+
+  const {
+    popFunc: popFuncOverride,
+    pushFunc: pushFuncOverride,
+    updateFunc: updateFuncOverride,
+  } = overrides;
 
   switch (collection) {
   case LOANS_COLLECTION:
@@ -46,49 +52,57 @@ const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
   }
 
   return {
-    updateFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        if (beforeUpdate) {
-          beforeUpdate(params);
-        }
-
-        Meteor.call(updateFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
+    updateFunc: updateFuncOverride
+      ? updateFuncOverride(idKey)
+      : rawParams =>
+        new Promise((resolve, reject) => {
+          const params = createParams(rawParams, idKey);
+          if (beforeUpdate) {
+            beforeUpdate(params);
           }
 
-          resolve(result);
-        });
-      }),
-    popFunc: rawParams => new Promise((resolve, reject) => {
-      const params = createParams(rawParams, idKey);
-      if (beforeUpdate) {
-        beforeUpdate(params);
-      }
+          Meteor.call(updateFunc, params, (error, result) => {
+            if (error) {
+              reject(error);
+            }
 
-      Meteor.call(popFunc, params, (error, result) => {
-        if (error) {
-          reject(error);
-        }
+            resolve(result);
+          });
+        }),
+    popFunc: popFuncOverride
+      ? popFuncOverride(idKey)
+      : rawParams =>
+        new Promise((resolve, reject) => {
+          const params = createParams(rawParams, idKey);
+          if (beforeUpdate) {
+            beforeUpdate(params);
+          }
 
-        resolve(result);
-      });
-    }),
-    pushFunc: rawParams => new Promise((resolve, reject) => {
-      const params = createParams(rawParams, idKey);
-      if (beforeUpdate) {
-        beforeUpdate(params);
-      }
+          Meteor.call(popFunc, params, (error, result) => {
+            if (error) {
+              reject(error);
+            }
 
-      Meteor.call(pushFunc, params, (error, result) => {
-        if (error) {
-          reject(error);
-        }
+            resolve(result);
+          });
+        }),
+    pushFunc: pushFuncOverride
+      ? pushFuncOverride(idKey)
+      : rawParams =>
+        new Promise((resolve, reject) => {
+          const params = createParams(rawParams, idKey);
+          if (beforeUpdate) {
+            beforeUpdate(params);
+          }
 
-        resolve(result);
-      });
-    }),
+          Meteor.call(pushFunc, params, (error, result) => {
+            if (error) {
+              reject(error);
+            }
+
+            resolve(result);
+          });
+        }),
   };
 });
 

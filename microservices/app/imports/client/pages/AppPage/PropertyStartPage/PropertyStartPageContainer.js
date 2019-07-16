@@ -56,9 +56,8 @@ export default compose(
     insertLoan: () => {
       if (Meteor.userId()) {
         return userLoanInsert.run({ proPropertyId: propertyId }).then(loanId =>
-          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, {
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
             loanId,
-            tabId: '',
           })));
       }
 
@@ -70,7 +69,7 @@ export default compose(
         })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(createRoute(APP_ROUTES.BORROWERS_PAGE.path, { loanId, tabId: '' }));
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
         });
     },
   })),

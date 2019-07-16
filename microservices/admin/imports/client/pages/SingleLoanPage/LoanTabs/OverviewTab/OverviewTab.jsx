@@ -9,7 +9,7 @@ import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklis
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import AdminNote from '../../../../components/AdminNote/AdminNote';
+import AdminNoteExpand from '../../../../components/AdminNote/AdminNoteExpand';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import VerificationSetter from './VerificationSetter';
@@ -67,7 +67,7 @@ const OverviewTab = (props) => {
       </div>
       <div className="admin-note">
         <h2>Notes</h2>
-        <AdminNote
+        <AdminNoteExpand
           docId={loan._id}
           adminNote={loan.adminNote}
           collection={LOANS_COLLECTION}

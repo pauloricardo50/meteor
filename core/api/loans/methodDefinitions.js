@@ -176,6 +176,14 @@ export const anonymousLoanInsert = new Method({
   },
 });
 
+export const loanInsertBorrowers = new Method({
+  name: 'loanInsertBorrowers',
+  params: {
+    loanId: String,
+    amount: Number,
+  },
+});
+
 export const adminLoanReset = new Method({
   name: 'adminLoanReset',
   params: {

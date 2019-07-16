@@ -27,8 +27,10 @@ const RequiredOwnFundsBody = ({
   value,
   suggestStructure,
   disableForms,
+  loan = {}
 }: RequiredOwnFundsBodyProps) => {
   const label = getLabel(value);
+  const {borrowers= []} = loan;
   return (
     <div className="requiredOwnFunds-component-body">
       <div className="text-and-value">
@@ -50,7 +52,7 @@ const RequiredOwnFundsBody = ({
           />
         </div>
       </div>
-      {!disableForms && (
+      {!disableForms && !!borrowers.length && (
         <IconButton
           type={<FontAwesomeIcon icon={faMagic} />}
           onClick={suggestStructure}

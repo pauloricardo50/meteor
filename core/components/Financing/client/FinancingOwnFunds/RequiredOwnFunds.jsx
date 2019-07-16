@@ -33,6 +33,7 @@ const RequiredOwnFunds = (props: RequiredOwnFundsProps) => {
             updateStructure({ ownFunds });
           }}
           disableForms={disableForms}
+          loan={loan}
         />
       )}
     </CalculatedValue>

@@ -79,6 +79,12 @@
       align-self: stretch;
       flex-wrap: wrap;
       justify-content: space-between;
+
+      p.locked-canton {
+        font-size: 1.3rem;
+        margin-top: 8px;
+        text-transform: uppercase;
+      }
     }
 
     &-table {

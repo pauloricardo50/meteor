@@ -6,6 +6,7 @@ import MuiSelect from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem'
 
 import SelectContainer from './SelectContainer';
 
@@ -18,6 +19,7 @@ const Select = ({
   style,
   required,
   error,
+  placeholder,
   ...otherProps
 }) => (
   <FormControl className="mui-select" style={style}>
@@ -38,8 +40,9 @@ const Select = ({
       onChange={onChange}
       id={id}
       input={<Input />}
+      displayEmpty={!!placeholder}
     >
-      {options}
+      {[placeholder && <MenuItem value="" disabled>{placeholder}</MenuItem>, ...options].filter(x=>x)}
     </MuiSelect>
     {error && <FormHelperText>{error}</FormHelperText>}
   </FormControl>

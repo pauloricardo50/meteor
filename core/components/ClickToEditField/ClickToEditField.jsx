@@ -48,6 +48,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       allowEditing = true,
       disabled,
       children,
+      style,
     } = this.props;
 
     if (isEditing) {
@@ -82,6 +83,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
             ? () => toggleEdit(true, () => this.input.current.focus())
             : null
         }
+        style={style}
       >
         {typeof children === 'function'
           ? children({ value: value || placeholder, isEditing })

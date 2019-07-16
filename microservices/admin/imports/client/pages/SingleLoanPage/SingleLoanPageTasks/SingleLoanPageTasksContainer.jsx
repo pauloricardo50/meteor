@@ -5,7 +5,7 @@ import {
   taskUpdate,
   taskChangeStatus,
   taskComplete,
-} from 'core/api/tasks/index';
+} from 'core/api/methods';
 import { tasks } from 'core/api/tasks/queries';
 import { TASK_STATUS } from 'core/api/constants';
 

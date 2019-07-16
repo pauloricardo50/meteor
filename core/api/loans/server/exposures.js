@@ -287,13 +287,17 @@ exposeQuery({
         }
       }
     },
-    embody: (body) => {
+    embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
         filters.userId = params.userId;
         if (params.loanId) {
           filters._id = params.loanId;
         }
       };
+
+      if (!embodyParams.userId) {
+        body.maxPropertyValue = 0;
+      }
     },
     validateParams: {
       loanId: Match.Maybe(String),

@@ -25,12 +25,13 @@ const MaxPropertyValueResults = ({
   residenceType,
   setResidenceType,
   onChangeCanton,
-  canton,
   loading,
+  lockCanton,
   recalculate,
+  cantonOptions,
 }: MaxPropertyValueResultsProps) => {
   const {
-    maxPropertyValue: { main, second, borrowerHash },
+    maxPropertyValue: { main, second, borrowerHash, canton },
     hasProProperty,
     hasPromotion,
     shareSolvency,
@@ -48,15 +49,18 @@ const MaxPropertyValueResults = ({
           </h2>
         </div>
         <div className="max-property-value-results-selects">
-          <Select
-            value={canton}
-            onChange={onChangeCanton}
-            options={Object.keys(CANTONS).map((shortCanton) => {
-              const cant = CANTONS[shortCanton];
-              return { id: shortCanton, label: cant };
-            })}
-            disabled={loading}
-          />
+          {lockCanton ? (
+            <p className="secondary locked-canton">
+              <T id={`Forms.canton.${canton}`} />
+            </p>
+          ) : (
+            <Select
+              value={canton}
+              onChange={onChangeCanton}
+              options={cantonOptions}
+              disabled={loading}
+            />
+          )}
 
           <Select
             value={residenceType}
