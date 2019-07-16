@@ -18,8 +18,8 @@ const PromotionPage = ({ promotion }: PromotionPageProps) => {
       <Helmet>
         <title>{name}</title>
       </Helmet>
-      <PromotionPageTabs promotion={promotion} />
       <PromotionPageHeader promotion={promotion} />
+      <PromotionPageTabs promotion={promotion} />
       <PromotionPageContent promotion={promotion} />
       <PromotionLotsTable promotion={promotion} />
       <LotsTable promotion={promotion} />
