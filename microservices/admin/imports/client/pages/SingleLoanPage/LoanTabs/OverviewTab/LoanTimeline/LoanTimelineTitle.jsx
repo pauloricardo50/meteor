@@ -15,14 +15,17 @@ const icons = {
   [ACTIVITY_TYPES.OTHER]: 'radioButtonChecked',
   [ACTIVITY_TYPES.PHONE]: 'phone',
   [ACTIVITY_TYPES.SERVER]: 'computer',
+  task: 'check',
 };
+
+const allowModify = type => type !== ACTIVITY_TYPES.SERVER && type !== 'task';
 
 const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
   const { date, title, type } = activity;
 
   return (
     <div className="loan-timeline-title">
-      {type !== ACTIVITY_TYPES.SERVER && (
+      {allowModify(type) && (
         <LoanActivityModifier className="activity-modifier" model={activity} />
       )}
       <h4 className="title">

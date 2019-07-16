@@ -1,4 +1,4 @@
-$borrowers-item-width: 500px;
+$borrowers-item-width: 600px;
 
 .property-card {
   display: flex;
@@ -18,11 +18,20 @@ $borrowers-item-width: 500px;
 
   .top {
     display: flex;
-    align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
 
-    @include screen(med) {
+    @include screen(wide) {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .property-card-actions {
+      margin-top: 16px;
+      align-self: center;
+    }
+
+    @include screen(custom, max, 700) {
       flex-wrap: wrap;
     }
   }
@@ -34,12 +43,14 @@ $borrowers-item-width: 500px;
 
     img,
     .icon {
-      width: 100px;
-      height: 100px;
+      width: 150px;
+      height: 150px;
       margin-right: 32px;
 
       @include screen(med) {
         margin-right: 16px;
+        width: 100px;
+        height: 100px;
       }
     }
 
@@ -60,12 +71,10 @@ $borrowers-item-width: 500px;
   }
 
   .button {
-    width: 300px;
     padding: 8px 48px 8px 48px;
-
-    @include screen(med) {
+    align-self: center;
+    @include screen(small) {
       width: 100%;
-      margin-top: 16px;
     }
   }
 
@@ -74,7 +83,11 @@ $borrowers-item-width: 500px;
     align-items: stretch;
     flex-direction: column;
 
-    @include screen(med) {
+    @include screen(wide) {
+      align-self: center !important;
+    }
+
+    @include screen(custom, max, 700) {
       width: 100%;
     }
 
@@ -89,9 +102,36 @@ $borrowers-item-width: 500px;
   }
 
   &-subtitle {
-     > span {
+    > span {
       display: flex;
       align-items: center;
+    }
+  }
+}
+.residence-type-setter-dialog {
+  img {
+    height: 150px;
+    margin-right: 16px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .icon {
+    width: 100px !important;
+    margin-right: 16px !important;
+    flex-basis: unset !important;
+  }
+
+  .card1 {
+    padding: 24px 8px;
+    margin: 0;
+    box-shadow: unset;
+  }
+
+  .residence-type-setter {
+    @include screen(med) {
+      flex-direction: column;
     }
   }
 }

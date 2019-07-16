@@ -18,13 +18,14 @@ const UpdateField = ({
   fields,
   onSuccess,
   onSubmit = makeOnSubmit({ collection, doc, fields, onSuccess }),
+  onSubmitCallback = () => ({}),
   ...props
 }: UpdateFieldProps) => (
   <AutoForm
     autosave
     schema={schemas[collection].pick(...fields)}
     model={doc}
-    onSubmit={onSubmit}
+    onSubmit={values => onSubmit(values).then(onSubmitCallback)}
     className="update-field"
     {...props}
   >

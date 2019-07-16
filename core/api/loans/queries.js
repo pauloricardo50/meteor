@@ -1,3 +1,5 @@
+import omit from 'lodash/omit';
+
 import Loans from '.';
 import { LOAN_QUERIES } from './loanConstants';
 import { adminLoan, userLoan } from '../fragments';
@@ -13,7 +15,7 @@ export const adminLoans = Loans.createQuery(
 
 export const anonymousLoan = Loans.createQuery(
   LOAN_QUERIES.ANONYMOUS_LOAN,
-  userLoan(),
+  { ...omit(userLoan(), ['maxPropertyValue']), maxPropertyValueExists: 1 },
   { scoped: true },
 );
 
@@ -50,6 +52,9 @@ export const proReferredByLoans = Loans.createQuery(
 
 export const userLoans = Loans.createQuery(
   LOAN_QUERIES.USER_LOANS,
-  userLoan({ withSort: true, withFilteredPromotions: true }),
+  {
+    ...userLoan({ withSort: true, withFilteredPromotions: true }),
+    maxPropertyValueExists: 1,
+  },
   { scoped: true },
 );

@@ -41,11 +41,37 @@ const SimpleMaxPropertyValueLightTheme = ({
                 borderBottom: '1px solid white',
               },
             },
+            '&$focused:after': {
+              borderBottom: '2px solid white',
+            },
           },
         },
         MuiTypography: {
           body1: {
             color: 'unset',
+          },
+        },
+        MuiFormLabel: {
+          root: {
+            color: 'white',
+            '&$focused': {
+              color: 'white',
+            },
+          },
+          asterisk: {
+            '&$error': {
+              color: 'white',
+            },
+          },
+        },
+        MuiInputBase: {
+          input: {
+            color: 'white',
+          },
+        },
+        MuiButtonBase: {
+          root: {
+            marginTop: '16px',
           },
         },
       },

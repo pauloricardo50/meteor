@@ -2,6 +2,7 @@ import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 
 import UserService from 'core/api/users/server/UserService';
+import { Random } from 'meteor/random';
 import { EVENTS_CONFIG } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
@@ -160,7 +161,7 @@ class Analytics {
 
     this.analytics.page({
       name: formattedRoute,
-      anonymousId: trackingId,
+      anonymousId: trackingId || Random.id(),
       ...(this.userId ? { userId: this.userId } : {}),
       context: {
         ip: this.clientAddress,

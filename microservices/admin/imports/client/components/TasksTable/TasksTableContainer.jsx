@@ -25,12 +25,12 @@ const formatDateTime = (date, toNow) => {
   return text;
 };
 
-const getColumnOptions = (relatedTo = true) =>
+const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
   [
     relatedTo && { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
     { id: 'title', label: <T id="TasksTable.title" /> },
     { id: 'description', label: <T id="TasksTable.description" /> },
-    { id: 'status', label: <T id="TasksTable.status" /> },
+    showStatusColumn && { id: 'status', label: <T id="TasksTable.status" /> },
     { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
     { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
     { id: 'actions', label: 'Actions' },
@@ -40,7 +40,8 @@ const makeMapTask = ({
   setTaskToModify,
   setShowDialog,
   relatedTo = true,
-}) => (task) => {
+  showStatusColumn,
+}) => task => {
   const {
     _id: taskId,
     title,
@@ -72,7 +73,7 @@ const makeMapTask = ({
       },
       title || '-',
       description || '-',
-      {
+      showStatusColumn && {
         raw: status,
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
       },
@@ -102,9 +103,28 @@ export default compose(
   withState('taskToModify', 'setTaskToModify', null),
   withState('showDialog', 'setShowDialog', false),
   withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => {
-    const columnOptions = getColumnOptions(relatedTo);
+    let stat;
+    // Only show the status column if necessary
+    const showStatusColumn =
+      tasks.length > 1 &&
+      !tasks.every(({ status }) => {
+        if (!stat) {
+          stat = status;
+        }
+
+        return status === stat;
+      });
+
+    const columnOptions = getColumnOptions({ relatedTo, showStatusColumn });
     return {
-      rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog, relatedTo })),
+      rows: tasks.map(
+        makeMapTask({
+          setTaskToModify,
+          setShowDialog,
+          relatedTo,
+          showStatusColumn,
+        }),
+      ),
       columnOptions,
       initialOrderBy: columnOptions.findIndex(({ id }) => id === 'dueAt'),
       initialOrder: ORDER.ASC,
