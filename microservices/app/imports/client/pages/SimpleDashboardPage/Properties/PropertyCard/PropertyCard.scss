@@ -146,4 +146,10 @@ $borrowers-item-width: 600px;
     margin: 0;
     box-shadow: unset;
   }
+
+  .residence-type-setter {
+    @include screen(med) {
+      flex-direction: column;
+    }
+  }
 }

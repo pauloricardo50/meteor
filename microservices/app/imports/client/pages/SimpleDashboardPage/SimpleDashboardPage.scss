@@ -6,6 +6,10 @@
   flex-direction: column;
   flex-grow: 1;
 
+  @include screen(wide) {
+    padding-bottom: 64px;
+  }
+
   &-content {
     display: flex;
     flex-direction: column;
