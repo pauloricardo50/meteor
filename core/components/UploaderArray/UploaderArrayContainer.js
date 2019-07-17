@@ -3,11 +3,30 @@ import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
 import { DOCUMENTS, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
 
-const getFileMeta = ({ doc: { additionalDocuments = [] }, id }) =>
-  additionalDocuments.find(document => document.id === id) && {
-    noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    ...additionalDocuments.find(document => document.id === id),
-  };
+const getFileMetadata = (documentArray = [], id) => {
+  const file = documentArray.find(({ id: docId }) => id === docId);
+
+  if (file) {
+    const { metadata = {} } = file;
+    return metadata;
+  }
+
+  return {};
+};
+
+const makeGetFileMeta = documentArray => ({
+  doc: { additionalDocuments = [] },
+  id,
+}) => {
+  const metadata = getFileMetadata(documentArray, id);
+  return (
+    additionalDocuments.find(document => document.id === id) && {
+      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
+      ...additionalDocuments.find(document => document.id === id),
+      ...metadata,
+    }
+  );
+};
 
 const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
   if (a.id === DOCUMENTS.OTHER) {
@@ -24,7 +43,7 @@ export default compose(
   injectIntl,
   withProps(({ documentArray, intl, canModify }) => ({
     documentArray: documentArray.sort(makeSortDocuments(intl)),
-    getFileMeta,
+    getFileMeta: makeGetFileMeta(documentArray),
     canModify: canModify && Meteor.microservice === 'admin',
   })),
 );
