@@ -84,7 +84,7 @@ class PropertySecurity {
 
     if (!property) {
       throw new Meteor.Error(
-        HTTP_STATUS_CODES.CONFLICT,
+        HTTP_STATUS_CODES.NOT_FOUND,
         `Property with id "${propertyId}" not found`,
       );
     }

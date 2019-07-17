@@ -161,7 +161,7 @@ describe('REST: getPropertyLoans', function () {
       userId: 'pro',
       impersonateUser: 'pro2@org.com',
     }).then((response) => {
-      expect(response.status).to.equal(HTTP_STATUS_CODES.CONFLICT);
+      expect(response.status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
       expect(response.message).to.include('not found');
     });
   });
