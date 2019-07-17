@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import SimpleSchema from 'simpl-schema';
 
+import { SLINGSHOT_DIRECTIVE_NAME } from 'core/api/files/fileConstants';
 import UserService from '../../../users/server/UserService';
 
 const anyOrganisationMatches = ({
@@ -66,12 +67,23 @@ export const checkAccessToUser = ({ user, proId }) => {
     && !organisations.some(({ users = [] }) =>
       users.some(({ _id }) => _id === user.referredByUserLink))
   ) {
-    throw new Meteor.Error(`User with email "${
-      user.emails[0].address
-    }" not found, or you don't have access to it.`);
+    throw new Meteor.Error(`User with email "${user.emails[0].address}" not found, or you don't have access to it.`);
   }
 };
 
 export const impersonateSchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },
 });
+
+export const getFileUploadInstructions = ({ file, metadata }) =>
+  new Promise((resolve, reject) => {
+    Meteor.call(
+      'slingshot/uploadRequest',
+      SLINGSHOT_DIRECTIVE_NAME,
+      file,
+      metadata,
+      (error, instructions) => {
+        error ? reject(error) : resolve(instructions);
+      },
+    );
+  });
