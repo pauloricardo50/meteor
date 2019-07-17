@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import Security from '../Security';
 import { Properties, Promotions } from '../..';
 import UserService from '../../users/server/UserService';
@@ -79,6 +81,13 @@ class PropertySecurity {
     }
 
     const { property, currentUser } = this.getObjects({ propertyId, userId });
+
+    if (!property) {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        `Property with id "${propertyId}" not found`,
+      );
+    }
 
     if (!checkingFunction({ property, currentUser })) {
       Security.handleUnauthorized(errorMessage || 'Checking permissions');
