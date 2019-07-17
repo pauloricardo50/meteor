@@ -62,12 +62,16 @@ const formatAdditionalDoc = additionalDoc => ({
 });
 
 const makeGetDocuments = collection => ({ loan, id }, ...args) => {
+  const [{ givenDoc }] = args.length ? args : [{}];
+
   const isLoans = collection === LOANS_COLLECTION;
   if (!id && !isLoans) {
     return [];
   }
 
-  const doc = (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
+  const doc = givenDoc
+    || (!isLoans && loan[collection].find(({ _id }) => _id === id))
+    || loan;
   const additionalDocumentsExist = doc && doc.additionalDocuments && doc.additionalDocuments.length > 0;
 
   return [
