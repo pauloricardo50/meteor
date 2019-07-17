@@ -255,18 +255,6 @@ export const PropertySchema = new SimpleSchema({
     min: -180,
     max: 180,
   },
-  qualityProfileCondition: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
-    uniforms: { placeholder: null },
-  },
-  qualityProfileStandard: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
-    uniforms: { placeholder: null },
-  },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   yearlyExpenses: moneyField,
   landValue: moneyField,

@@ -756,8 +756,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   parkingOutside: 1,
   pictures: 1,
   promotion: { name: 1 },
-  qualityProfileCondition: 1,
-  qualityProfileStandard: 1,
   renovationYear: 1,
   residenceType: 1,
   roomCount: 1,

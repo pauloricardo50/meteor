@@ -28,7 +28,5 @@ export const fakeProperty = {
   minergie: MINERGIE_CERTIFICATE.MINERGIE_ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
-  qualityProfileCondition: 'INTACT',
-  qualityProfileStandard: 'AVERAGE',
   terraceArea: 20,
 };

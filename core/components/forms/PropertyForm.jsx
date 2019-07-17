@@ -42,8 +42,6 @@ const detailFields = [
   'isCoproperty',
   'isNew',
   'copropertyPercentage',
-  'qualityProfileCondition',
-  'qualityProfileStandard',
   'yearlyExpenses',
 ];
 
