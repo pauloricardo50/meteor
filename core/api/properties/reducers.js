@@ -1,17 +1,27 @@
 import addressReducer from '../reducers/addressReducer';
 import Properties from '.';
+import { PROPERTY_DOCUMENTS } from '../files/fileConstants';
 
 Properties.addReducers({
   ...addressReducer,
   thumbnail: {
-    body: { documents: { propertyImages: { url: 1 } }, imageUrls: 1 },
+    body: {
+      documents: {
+        [PROPERTY_DOCUMENTS.PROPERTY_PICTURES]: { url: 1 },
+      },
+      imageUrls: 1,
+    },
     reduce: ({ documents = {}, imageUrls = [] }) => {
       if (imageUrls.length > 0) {
         return imageUrls[0];
       }
 
-      if (documents && documents.propertyImages) {
-        return documents.propertyImages[0].url;
+      if (
+        documents
+        && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
+        && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+      ) {
+        return documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES][0].url;
       }
     },
   },

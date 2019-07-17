@@ -2,6 +2,7 @@
 import React from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
+import { PROPERTY_DOCUMENTS } from 'core/api/constants';
 import { Money } from '../Translation';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
@@ -17,8 +18,14 @@ const getImages = (documents = {}, imageUrls = []) => {
     images = imageUrls;
   }
 
-  if (documents.propertyImages && documents.propertyImages.length) {
-    images = [...images, documents.propertyImages.map(({ url }) => url)];
+  if (
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
+    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+  ) {
+    images = [
+      ...images,
+      documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].map(({ url }) => url),
+    ];
   }
 
   if (images.length === 0) {

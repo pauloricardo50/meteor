@@ -9,8 +9,14 @@ import ProPropertyContainer from './ProPropertyContainer';
 
 type ProPropertyProps = {};
 
-const ProProperty = ({ property, simple, loan }: ProPropertyProps) => {
-  const { documents, address1, city, zipCode } = property;
+const ProProperty = ({
+  property,
+  simple,
+  loan,
+  documents,
+}: ProPropertyProps) => {
+  console.log('documents:', documents);
+  const { address1, city, zipCode } = property;
 
   return (
     <div className={cx('pro-property card1 card-top', { simple })}>
@@ -22,7 +28,7 @@ const ProProperty = ({ property, simple, loan }: ProPropertyProps) => {
         options={{ zoom: 15 }}
         showIncompleteAddress={false}
       />
-      <DocumentDownloadList files={documents && documents.propertyDocuments} />
+      <DocumentDownloadList files={documents} />
     </div>
   );
 };
