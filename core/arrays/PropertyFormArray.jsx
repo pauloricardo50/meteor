@@ -11,7 +11,6 @@ import {
   VOLUME_NORM,
 } from 'core/api/constants';
 import CantonField from 'core/components/CantonField/CantonField';
-import { QUALITY } from '../api/constants';
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -277,22 +276,6 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       money: true,
       required: false,
       info: true,
-    },
-    {
-      type: 'h3',
-      id: 'propertyQuality',
-      ignore: true,
-      required: false,
-    },
-    {
-      id: 'qualityProfileCondition',
-      type: 'radioInput',
-      options: Object.values(QUALITY.CONDITION),
-    },
-    {
-      id: 'qualityProfileStandard',
-      type: 'radioInput',
-      options: Object.values(QUALITY.STANDARD),
     },
   ];
 

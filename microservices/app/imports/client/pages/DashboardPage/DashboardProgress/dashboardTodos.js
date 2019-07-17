@@ -128,15 +128,6 @@ export const getDashboardTodosArray = list =>
       link: ({ _id: loanId }) =>
         createRoute(APP_ROUTES.REFINANCING_PAGE.path, { loanId }),
     },
-    // {
-    //   id: 'doAnExpertise',
-    //   isDone: ({ structure: { property } }) =>
-    //     property
-    //     && property.valuation
-    //     && property.valuation.status !== VALUATION_STATUS.NONE,
-    //   hide: disablePropertyTodos,
-    //   link: createSinglePropertyLink,
-    // },
     {
       id: 'createStructure',
       isDone: ({ structures }) => structures && structures.length > 0,

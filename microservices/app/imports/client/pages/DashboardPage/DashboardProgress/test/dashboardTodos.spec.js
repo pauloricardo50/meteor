@@ -10,7 +10,6 @@ import {
   getDashboardTodosArray,
   defaultTodoList,
 } from '../dashboardTodos';
-import { VALUATION_STATUS } from '../../../../../core/api/constants';
 
 describe('dashboardTodos', () => {
   beforeEach(() => {
@@ -59,24 +58,6 @@ describe('dashboardTodos', () => {
       expect(dashboardTodosObject.completeProperty.isDone({
         structure: { property: { documents: {} } },
         borrowers: [{}],
-      })).to.equal(true);
-    });
-  });
-
-  describe.skip('doAnExpertise', () => {
-    it('shows when expertise status is NONE', () => {
-      expect(dashboardTodosObject.doAnExpertise.isDone({
-        structure: {
-          property: { valuation: { status: VALUATION_STATUS.NONE } },
-        },
-      })).to.equal(false);
-    });
-
-    it('hides when expertise is something else', () => {
-      expect(dashboardTodosObject.doAnExpertise.isDone({
-        structure: {
-          property: { valuation: { status: 'literally anything else' } },
-        },
       })).to.equal(true);
     });
   });
@@ -140,7 +121,7 @@ describe('dashboardTodos', () => {
 
       expect(callEpotek.hide({
         maxPropertyValue: { date: new Date() },
-        structure: { property: { valuation: {} }, offer: {} },
+        structure: { property: {}, offer: {} },
         structures: [{}, {}],
         borrowers: [{ salary: 2000, bankFortune: 3000 }],
         properties: [{}],
@@ -154,7 +135,7 @@ describe('dashboardTodos', () => {
       Calculator.filesProgress.restore();
       sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
       expect(callEpotek.hide({
-        structure: { property: { valuation: {} }, offer: {} },
+        structure: { property: {}, offer: {} },
         structures: [{}, {}],
         borrowers: [{}],
         offers: [{}],

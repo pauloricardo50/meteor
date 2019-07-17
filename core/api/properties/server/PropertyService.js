@@ -3,10 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { sendEmail } from 'core/api/methods/index';
 import LoanService from '../../loans/server/LoanService';
-import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
 import {
-  VALUATION_STATUS,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
   PROPERTY_CATEGORY,
 } from '../propertyConstants';
@@ -65,49 +63,6 @@ export class PropertyService extends CollectionService {
 
   pullValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $pull: object });
-
-  evaluateProperty = ({ propertyId, loanResidenceType }) =>
-    WuestService.evaluateById({ propertyId, loanResidenceType })
-      .then((valuation) => {
-        this.update({
-          propertyId,
-          object: {
-            valuation: {
-              status: VALUATION_STATUS.DONE,
-              date: new Date(),
-              error: '',
-              ...valuation,
-            },
-          },
-        });
-      })
-      .catch((error) => {
-        this.update({
-          propertyId,
-          object: {
-            valuation: {
-              status: VALUATION_STATUS.ERROR,
-              min: null,
-              max: null,
-              value: null,
-              date: new Date(),
-              error: error.reason || error.message,
-            },
-          },
-        });
-      });
-
-  propertyDataIsInvalid = ({ propertyId, loanResidenceType }) => {
-    try {
-      WuestService.createPropertyFromCollection({
-        propertyId,
-        loanResidenceType,
-      });
-    } catch (error) {
-      return error.reason;
-    }
-    return false;
-  };
 
   hasOneOfProperties = ({ userId, propertyIds }) =>
     propertyIds.some(propertyId =>
