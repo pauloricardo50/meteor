@@ -4,23 +4,26 @@ import React from 'react';
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
 import UploaderArray from 'core/components/UploaderArray';
-import { PROPERTIES_COLLECTION, S3_ACLS, ONE_KB } from 'core/api/constants';
+import {
+  PROPERTIES_COLLECTION,
+  S3_ACLS,
+  ONE_KB,
+  PROPERTY_DOCUMENTS,
+} from 'core/api/constants';
+import { getPropertyDocuments } from 'core/api/files/documents';
 
 type PropertyDocumentsManagerProps = {};
 
-const propertyDocuments = [
-  {
-    id: 'propertyImages',
-    acl: S3_ACLS.PUBLIC_READ,
-    noTooltips: true,
-    maxSize: 500 * ONE_KB,
-  },
-  {
-    id: 'propertyDocuments',
-    acl: S3_ACLS.PUBLIC_READ,
-    noTooltips: true,
-  },
-];
+const propertyDocuments = property =>
+  getPropertyDocuments({ id: property._id }, { givenDoc: property }).map(doc => ({
+    ...doc,
+    metadata: {
+      acl: S3_ACLS.PUBLIC_READ,
+      ...(doc.id === PROPERTY_DOCUMENTS.PROPERTY_PICTURES
+        ? { maxSize: 500 * ONE_KB }
+        : {}),
+    },
+  }));
 
 const PropertyDocumentsManager = ({
   property,
@@ -34,7 +37,7 @@ const PropertyDocumentsManager = ({
     <UploaderArray
       doc={property}
       collection={PROPERTIES_COLLECTION}
-      documentArray={propertyDocuments}
+      documentArray={propertyDocuments(property)}
       allowRequireByAdmin={false}
     />
   </DialogSimple>
