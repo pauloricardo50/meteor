@@ -19,7 +19,7 @@ export default compose(
     const paramsQuery = new URLSearchParams(location.search);
     const propertyId = paramsQuery.get('propertyId');
     // Don't allow referralId to be null
-    const referralId = paramsQuery.get('refId') || undefined;
+    const referralId = paramsQuery.get('ref') || undefined;
 
     return { propertyId, referralId };
   }),
