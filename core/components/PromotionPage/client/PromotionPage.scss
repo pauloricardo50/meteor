@@ -6,12 +6,54 @@
   width: 100%;
 
   &-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
     height: 50vw;
     max-height: 500px;
     min-height: 200px;
+    padding: 32px;
 
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+
+    @include screen(med) {
+      padding: 16px;
+    }
+
+    &-top {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    &-text {
+      border-radius: 4px;
+      padding: 8px;
+      background-color: rgba($color: #000000, $alpha: 0.4);
+    }
+
+    &-title {
+      margin: 12px 0;
+    }
+
+    &-actions {
+      > * {
+        margin-left: 8px;
+      }
+    }
+
+    h1,
+    h3,
+    h4 {
+      color: white;
+      margin: 0;
+    }
+
+    h1 {
+      margin-right: 8px;
+    }
   }
 }

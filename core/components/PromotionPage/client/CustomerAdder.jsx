@@ -2,14 +2,14 @@
 import React from 'react';
 
 import SimpleSchema from 'simpl-schema';
-import { proInviteUser } from 'core/api/users/';
-import { PROMOTION_STATUS } from '../../../../api/constants';
-import T from '../../../Translation';
-import { AutoFormDialog } from '../../../AutoForm2';
+import { proInviteUser } from '../../../api/methods';
+import { PROMOTION_STATUS } from '../../../api/constants';
+import T from '../../Translation';
+import Icon from '../../Icon';
+import { AutoFormDialog } from '../../AutoForm2';
 
 type CustomerAdderProps = {
   promotion: Object,
-  promotionStatus: String,
 };
 
 export const CustomerAdderUserSchema = ({
@@ -64,16 +64,18 @@ export const CustomerAdderUserSchema = ({
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;
 
-const CustomerAdder = ({ promotion, promotionStatus }: CustomerAdderProps) => {
-  const { _id: promotionId } = promotion;
-  const disabled = promotionStatus !== PROMOTION_STATUS.OPEN;
+const CustomerAdder = ({ promotion }: CustomerAdderProps) => {
+  const { _id: promotionId, status } = promotion;
+  const disabled = status !== PROMOTION_STATUS.OPEN;
+
   return (
     <AutoFormDialog
       buttonProps={{
         raised: true,
-        primary: true,
+        secondary: true,
         label: <T id="PromotionPage.addCustomer" />,
         disabled,
+        icon: <Icon type="personAdd"> </Icon>,
         tooltip: disabled
           ? 'Vous ne pouvez ajouter des clients que lorsque la promotion est en cours, contactez e-Potek pour changer le statut de la promotion'
           : undefined,

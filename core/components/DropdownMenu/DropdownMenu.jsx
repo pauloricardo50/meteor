@@ -55,6 +55,7 @@ const DropdownMenu = ({
   paperClassName,
   disabled,
   noWrapper,
+  menuProps
 }) => {
   const onClickHandler = (event) => {
     // Prevent background from receiving clicks
@@ -97,6 +98,7 @@ const DropdownMenu = ({
                 : 48 * 4.5,
           },
         }}
+        {...menuProps}
       >
         {options}
       </Menu>

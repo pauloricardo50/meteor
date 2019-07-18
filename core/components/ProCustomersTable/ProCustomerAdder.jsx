@@ -4,6 +4,7 @@ import React from 'react';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import ProCustomerAdderContainer from './ProCustomerAdderContainer';
 import T from '../Translation';
+import Icon from '../Icon';
 
 type ProCustomerAdderProps = {};
 
@@ -21,6 +22,7 @@ const ProCustomerAdder = ({ schema, onSubmit }: ProCustomerAdderProps) => (
       raised: true,
       secondary: true,
       label: <T id="ProCustomerAdder.title" />,
+      icon: <Icon type="personAdd" />,
     }}
   />
 );

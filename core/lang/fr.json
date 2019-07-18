@@ -1,4 +1,11 @@
 {
+  "PromotionAdministration.buttonLabel": "Administration",
+  "PromotionAdministration.updatePromotion": "Modifier la promotion",
+  "PromotionAdministration.manageDocuments": "Gérer les documents",
+  "PromotionAdministration.addUser": "Ajouter un Pro",
+  "PromotionAdministration.addPromotionLot": "Ajouter un lot",
+  "PromotionAdministration.addLot": "Ajouter un lot annexe",
+  "PromotionAdministration.remove": "Supprimer",
   "Forms.constructionTimeline": "Échéancier",
   "Forms.constructionTimeline.description": "Déscription",
   "Forms.constructionTimeline.description.placeholder": "Terrassement",

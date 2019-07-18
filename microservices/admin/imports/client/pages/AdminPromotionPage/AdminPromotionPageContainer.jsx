@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { compose } from 'recompose';
 
@@ -5,6 +7,7 @@ import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api';
 import withMatchParam from 'core/containers/withMatchParam';
 import { injectPromotionPermissions } from 'core/components/PromotionPage/client/PromotionPermissions';
+import { ROLES } from 'core/api/constants';
 
 export default compose(
   withMatchParam('promotionId'),
@@ -24,5 +27,7 @@ export default compose(
     canAddLots: true,
     canModifyLots: true,
     canRemoveLots: true,
+    canAddPros: true,
+    canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
   }),
 );
