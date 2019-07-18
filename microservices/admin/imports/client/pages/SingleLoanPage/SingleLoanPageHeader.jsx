@@ -18,6 +18,7 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
+import LoanStatusModifier from './LoanStatusModifier/LoanStatusModifier';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -124,13 +125,14 @@ const SingleLoanPageHeader = ({
           />
           {userName}
 
-          <StatusLabel
+          <LoanStatusModifier loan={loan} />
+          {/* <StatusLabel
             collection={LOANS_COLLECTION}
             status={loan.status}
             allowModify
             docId={loan._id}
             additionalActions={additionalActions(loan)}
-          />
+          /> */}
         </h1>
         {withCustomName && !loan.hasPromotion && (
           <SingleLoanPageCustomName
