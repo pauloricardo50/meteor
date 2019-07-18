@@ -6,9 +6,7 @@ Properties.addReducers({
   ...addressReducer,
   thumbnail: {
     body: {
-      documents: {
-        [PROPERTY_DOCUMENTS.PROPERTY_PICTURES]: { url: 1 },
-      },
+      documents: { [PROPERTY_DOCUMENTS.PROPERTY_PICTURES]: { url: 1 } },
       imageUrls: 1,
     },
     reduce: ({ documents = {}, imageUrls = [] }) => {

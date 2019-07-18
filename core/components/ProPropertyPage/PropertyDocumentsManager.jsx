@@ -15,13 +15,14 @@ import { getPropertyDocuments } from 'core/api/files/documents';
 type PropertyDocumentsManagerProps = {};
 
 const propertyDocuments = property =>
-  getPropertyDocuments({ id: property._id }, { givenDoc: property }).map(doc => ({
+  getPropertyDocuments({ id: property._id }, { doc: property }).map(doc => ({
     ...doc,
     metadata: {
       acl: S3_ACLS.PUBLIC_READ,
-      ...(doc.id === PROPERTY_DOCUMENTS.PROPERTY_PICTURES
-        ? { maxSize: 500 * ONE_KB }
-        : {}),
+      maxSize:
+        doc.id === PROPERTY_DOCUMENTS.PROPERTY_PICTURES
+          ? 500 * ONE_KB
+          : undefined,
     },
   }));
 

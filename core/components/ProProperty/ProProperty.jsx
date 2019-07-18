@@ -15,7 +15,6 @@ const ProProperty = ({
   loan,
   documents,
 }: ProPropertyProps) => {
-  console.log('documents:', documents);
   const { address1, city, zipCode } = property;
 
   return (
