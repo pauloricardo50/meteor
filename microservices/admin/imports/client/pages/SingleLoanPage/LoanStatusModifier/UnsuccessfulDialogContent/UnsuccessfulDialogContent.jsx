@@ -9,6 +9,7 @@ import { faEnvelope } from '@fortawesome/pro-light-svg-icons/faEnvelope';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import UnsuccessfulDialogContentSection from './UnsucessfulDialogContentSection';
+import UnsuccessfulDialogContentContainer from './UnsuccessfulDialogContentContainer';
 
 type UnsuccessfulDialogContentProps = {
   loan: Object,
@@ -20,6 +21,10 @@ const UnsuccessfulDialogContent = ({
   loan,
   setOpenDialog,
   promise,
+  sendFeedbackToAllLenders,
+  setUnsuccessfulOnly,
+  insertLeadLoan,
+  insertPendingLoan,
 }: UnsuccessfulDialogContentProps) => (
   <div className="unsuccessful-dialog-content">
     <UnsuccessfulDialogContentSection
@@ -33,6 +38,7 @@ const UnsuccessfulDialogContent = ({
           outlined
           icon={<FontAwesomeIcon icon={faEnvelope} />}
           label="Envoyer un feedback"
+          onClick={sendFeedbackToAllLenders}
         />
       )}
     />
@@ -48,6 +54,7 @@ const UnsuccessfulDialogContent = ({
           icon={<FontAwesomeIcon icon={faSearchDollar} />}
           label={<T id="Forms.status.LEAD" />}
           key="lead"
+          onClick={insertLeadLoan}
         />,
         <Button
           secondary
@@ -55,6 +62,7 @@ const UnsuccessfulDialogContent = ({
           icon={<FontAwesomeIcon icon={faHourglassHalf} />}
           label={<T id="Forms.status.PENDING" />}
           key="pending"
+          onClick={insertPendingLoan}
         />,
       ]}
     />
@@ -68,10 +76,11 @@ const UnsuccessfulDialogContent = ({
           outlined
           icon={<FontAwesomeIcon icon={faBan} />}
           label="Ce client est en sans suite"
+          onClick={setUnsuccessfulOnly}
         />
       )}
     />
   </div>
 );
 
-export default UnsuccessfulDialogContent;
+export default UnsuccessfulDialogContentContainer(UnsuccessfulDialogContent);
