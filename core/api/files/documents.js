@@ -61,18 +61,22 @@ const formatAdditionalDoc = additionalDoc => ({
   noTooltips: documentHasTooltip(additionalDoc.id),
 });
 
-const makeGetDocuments = collection => ({ loan, id }, ...args) => {
+const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
+  const { doc } = options;
+
   const isLoans = collection === LOANS_COLLECTION;
   if (!id && !isLoans) {
     return [];
   }
 
-  const doc = (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
-  const additionalDocumentsExist = doc && doc.additionalDocuments && doc.additionalDocuments.length > 0;
+  const document = doc || (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
+  const additionalDocumentsExist = doc
+    && document.additionalDocuments
+    && document.additionalDocuments.length > 0;
 
   return [
     ...(additionalDocumentsExist
-      ? doc.additionalDocuments
+      ? document.additionalDocuments
         .filter(requiredByAdminOnly)
         .map(formatAdditionalDoc)
       : []),

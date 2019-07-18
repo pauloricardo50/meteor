@@ -3,15 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import {
-  VALUATION_STATUS,
-  PROPERTY_TYPE,
-  RESIDENCE_TYPE,
-  WUEST_ERRORS,
-  QUALITY,
-} from '../../../constants';
 import LoanService from '../../../loans/server/LoanService';
-import WuestService from '../../../wuest/server/WuestService';
 import PropertyService from '../PropertyService';
 import UserService from '../../../users/server/UserService';
 import generator from '../../../factories';
@@ -19,7 +11,7 @@ import { PROPERTY_CATEGORY } from '../../propertyConstants';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 
-describe('PropertyService', function () {
+describe('PropertyService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -71,120 +63,15 @@ describe('PropertyService', function () {
         },
       });
 
-      expect(PropertyService.remove({ propertyId: 'prop', loanId: 'loan' })).to.equal(1);
+      expect(
+        PropertyService.remove({ propertyId: 'prop', loanId: 'loan' }),
+      ).to.equal(1);
 
       expect(PropertyService.find({}).fetch().length).to.equal(1);
       expect(LoanService.get('loan').propertyIds).to.deep.equal([]);
       expect(LoanService.get('loan').structures[0].propertyId).to.equal(null);
       expect(LoanService.get('loan2').propertyIds).to.deep.equal(['prop']);
     });
-  });
-
-  describe.skip('evaluateProperty', () => {
-    const getValueRange = value => ({
-      min: value * 0.9,
-      max: value * 1.1,
-    });
-
-    it('adds an error on the property', () => {
-      const propertyId = Factory.create('property', {
-        propertyType: PROPERTY_TYPE.FLAT,
-        address1: 'rue du four 2',
-        zipCode: '1400',
-        city: 'Yverdon-les-Bains',
-        roomCount: 4,
-        insideArea: 100,
-        terraceArea: 20,
-        constructionYear: 1,
-        numberOfFloors: 10,
-        floorNumber: 3,
-        qualityProfileCondition: QUALITY.CONDITION.INTACT,
-        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
-      })._id;
-
-      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
-
-      return PropertyService.evaluateProperty({
-        propertyId,
-        loanResidenceType,
-      }).then(() => {
-        const property = PropertyService.get(propertyId);
-        expect(property.valuation.status).to.equal(VALUATION_STATUS.ERROR);
-        expect(property.valuation.error).contains('entre 1000 et 3000');
-      });
-    }).timeout(10000);
-
-    it('throws if it cannot find the property', () => {
-      expect(() => PropertyService.evaluateProperty('test')).to.throw(WUEST_ERRORS.NO_PROPERTY_FOUND);
-    }).timeout(10000);
-
-    it('adds min, max and value on the property', () => {
-      const propertyId = Factory.create('property', {
-        address1: 'rue du four 2',
-        zipCode: '1400',
-        city: 'Yverdon-les-Bains',
-        roomCount: 4,
-        constructionYear: 2000,
-        insideArea: 100,
-        terraceArea: 20,
-        numberOfFloors: 10,
-        floorNumber: 3,
-        qualityProfileCondition: QUALITY.CONDITION.INTACT,
-        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
-      })._id;
-
-      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
-
-      return PropertyService.evaluateProperty({
-        propertyId,
-        loanResidenceType,
-      }).then(() => {
-        const property = PropertyService.get(propertyId);
-        const marketValueBeforeCorrection = 709000;
-        const statisticalPriceRangeMin = 640000;
-        const statisticalPriceRangeMax = 770000;
-        const priceRange = WuestService.getPriceRange({
-          marketValueBeforeCorrection,
-          statisticalPriceRangeMin,
-          statisticalPriceRangeMax,
-        });
-        const valueRange = getValueRange(marketValueBeforeCorrection);
-        const minRange = getValueRange(priceRange.min);
-        const maxRange = getValueRange(priceRange.max);
-        expect(property.valuation.value).to.be.within(
-          valueRange.min,
-          valueRange.max,
-        );
-        expect(property.valuation.min).to.be.within(minRange.min, minRange.max);
-        expect(property.valuation.max).to.be.within(maxRange.min, maxRange.max);
-      });
-    }).timeout(10000);
-
-    it('adds microlocation on the property', () => {
-      const propertyId = Factory.create('property', {
-        address1: 'rue du four 2',
-        zipCode: '1400',
-        city: 'Yverdon-les-Bains',
-        roomCount: 4,
-        constructionYear: 2000,
-        insideArea: 100,
-        terraceArea: 20,
-        numberOfFloors: 10,
-        floorNumber: 3,
-        qualityProfileCondition: QUALITY.CONDITION.INTACT,
-        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
-      })._id;
-
-      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
-
-      return PropertyService.evaluateProperty({
-        propertyId,
-        loanResidenceType,
-      }).then(() => {
-        const property = PropertyService.get(propertyId);
-        expect(property.valuation).to.have.property('microlocation');
-      });
-    }).timeout(10000);
   });
 
   describe('canton autovalue', () => {
@@ -261,7 +148,7 @@ describe('PropertyService', function () {
         expect(referredByUser._id).to.equal('proUser');
         expect(referredByOrganisation._id).to.equal('organisation');
 
-        return checkEmails(2).then((emails) => {
+        return checkEmails(2).then(emails => {
           expect(emails.length).to.equal(2);
           const {
             emailId,
@@ -271,7 +158,9 @@ describe('PropertyService', function () {
               template_name,
               message: { from_email, subject, from_name },
             },
-          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+          } = emails.find(
+            ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+          );
 
           expect(subject).to.equal('e-Potek - "Rue du parc 3"');
 
@@ -284,7 +173,9 @@ describe('PropertyService', function () {
                 template_name,
                 message: { from_email, subject, from_name },
               },
-            } = emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION);
+            } = emails.find(
+              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+            );
             expect(subject).to.equal('Invitation réussie');
           }
         });
@@ -320,7 +211,7 @@ describe('PropertyService', function () {
         propertyIds: ['proProperty'],
       });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         expect(emails.length).to.equal(2);
       });
     });
@@ -367,7 +258,7 @@ describe('PropertyService', function () {
         isNewUser,
       });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         expect(emails.length).to.equal(1);
         const {
           emailId,
@@ -380,12 +271,16 @@ describe('PropertyService', function () {
         } = emails[0];
         expect(status).to.equal('sent');
         expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
-        expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+        expect(template_name).to.equal(
+          EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+        );
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('e-Potek - "Rue du parc 4"');
-        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include('Lydia Abraha');
       });
     });
   });
@@ -425,7 +320,8 @@ describe('PropertyService', function () {
             imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
             externalLink: 'www.e-potek.ch',
           },
-        })).to.throw('externalId');
+        }),
+      ).to.throw('externalId');
     });
   });
 });

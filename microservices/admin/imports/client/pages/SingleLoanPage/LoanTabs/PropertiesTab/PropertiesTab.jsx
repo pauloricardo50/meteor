@@ -27,12 +27,7 @@ const propertiesTabLabel = (loan, property, index) => {
 };
 
 const PropertiesTab = ({ loan }: PropertiesTabProps) => {
-  const {
-    properties,
-    userId,
-    _id: loanId,
-    residenceType: loanResidenceType,
-  } = loan;
+  const { properties, userId, _id: loanId } = loan;
   return (
     <div className="properties-tab">
       <div className="buttons">
@@ -49,7 +44,6 @@ const PropertiesTab = ({ loan }: PropertiesTabProps) => {
                 key={property._id}
                 propertyId={property._id}
                 displayLoans={false}
-                loanResidenceType={loanResidenceType}
                 loanId={loanId}
               />
             ),

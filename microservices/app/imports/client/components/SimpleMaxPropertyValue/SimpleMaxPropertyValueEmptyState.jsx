@@ -12,7 +12,7 @@ import Button from 'core/components/Button';
 import createTheme from 'core/config/muiCustom';
 
 type SimpleMaxPropertyValueEmptyStateProps = {};
-const getReadyToCalculateTitle = props => {
+const getReadyToCalculateTitle = (props) => {
   const { loan, lockCanton, canton } = props;
   const {
     hasPromotion,
@@ -46,9 +46,7 @@ const getReadyToCalculateTitle = props => {
   }
 };
 
-const SimpleMaxPropertyValueEmptyState = (
-  props: SimpleMaxPropertyValueEmptyStateProps,
-) => {
+const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStateProps) => {
   const {
     state,
     lockCanton,
@@ -58,6 +56,7 @@ const SimpleMaxPropertyValueEmptyState = (
     loading,
     recalculate,
     fixed,
+    error,
   } = props;
 
   const defaultTheme = createTheme();
@@ -133,11 +132,12 @@ const SimpleMaxPropertyValueEmptyState = (
                     onChange={onChangeCanton}
                     options={cantonOptions}
                     disabled={loading}
-                    placeholder={
+                    placeholder={(
                       <i>
                         <T id="general.pick" />
                       </i>
-                    }
+                    )}
+                    error={error && <span className="error-box">{error}</span>}
                   />
                 </MuiThemeProvider>
               )}
@@ -146,7 +146,7 @@ const SimpleMaxPropertyValueEmptyState = (
                 onClick={recalculate}
                 secondary
                 style={{ marginLeft: 16, marginTop: 0 }}
-                disabled={!cantonValue}
+                // disabled={!cantonValue}
               >
                 {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
               </Button>

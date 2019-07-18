@@ -20,7 +20,6 @@ describe('Public onboarding', () => {
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
-    cy.get('.borrowers-card button').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -38,7 +37,6 @@ describe('Public onboarding', () => {
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
-    cy.get('.borrowers-card button').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -50,7 +48,7 @@ describe('Public onboarding', () => {
 
     cy.visit('/');
 
-    cy.get('.with-loan-start').should('exist');
+    // cy.get('.with-loan-start').should('exist');
     cy.contains('Continuer').click();
     cy.contains('Continuer').click();
     cy.get('input#salary').should('have.value', '300');
@@ -64,7 +62,7 @@ describe('Public onboarding', () => {
       .find('button')
       .click();
 
-    cy.window().then(window => {
+    cy.window().then((window) => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
       return cy.callMethod('updateLoan', {
         loanId,
@@ -74,7 +72,7 @@ describe('Public onboarding', () => {
 
     cy.visit('/');
     cy.get('.welcome-screen').should('exist');
-    cy.window().then(window => {
+    cy.window().then((window) => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
       expect(loanId).to.equal(null);
     });
@@ -86,7 +84,6 @@ describe('Public onboarding', () => {
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
-    cy.get('.borrowers-card button').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -105,7 +102,7 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getLoginToken').then(loginToken => {
+    cy.callMethod('getLoginToken').then((loginToken) => {
       cy.visit(`/enroll-account/${loginToken}`);
     });
 
@@ -145,7 +142,6 @@ describe('Public onboarding', () => {
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
-    cy.get('.borrowers-card button').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -170,11 +166,11 @@ describe('Public onboarding', () => {
 
   it('should create a loan based on a PRO property', () => {
     cy.visit('/');
-    cy.callMethod('addProProperty').then(propertyId => {
+    cy.callMethod('addProProperty').then((propertyId) => {
       cy.wrap(propertyId).as('propertyId');
     });
 
-    cy.get('@propertyId').then(propertyId => {
+    cy.get('@propertyId').then((propertyId) => {
       cy.visit(`/?propertyId=${propertyId}`);
     });
 
@@ -192,11 +188,11 @@ describe('Public onboarding', () => {
 
   it('should not display non-PRO properties', () => {
     cy.visit('/');
-    cy.callMethod('addUserProperty').then(propertyId => {
+    cy.callMethod('addUserProperty').then((propertyId) => {
       cy.wrap(propertyId).as('propertyId');
     });
 
-    cy.get('@propertyId').then(propertyId => {
+    cy.get('@propertyId').then((propertyId) => {
       cy.visit(`/?propertyId=${propertyId}`);
     });
 
@@ -206,12 +202,12 @@ describe('Public onboarding', () => {
 
   it('should only create one loan based on a PRO property if logged in', () => {
     cy.visit('/');
-    cy.callMethod('addProProperty').then(propertyId => {
+    cy.callMethod('addProProperty').then((propertyId) => {
       cy.wrap(propertyId).as('propertyId');
     });
     cy.callMethod('inviteTestUser', { withPassword: true });
 
-    cy.get('@propertyId').then(propertyId => {
+    cy.get('@propertyId').then((propertyId) => {
       cy.visit(`/?propertyId=${propertyId}`);
     });
 
@@ -222,17 +218,32 @@ describe('Public onboarding', () => {
       .click();
     cy.get('input[name="email"]').type(USER_EMAIL);
     cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);
-    cy.get('@propertyId').then(propertyId => {
+    cy.get('@propertyId').then((propertyId) => {
       cy.url().should('include', propertyId);
     });
     cy.contains('Je veux acquérir').click();
     cy.url().should('include', '/loans/');
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
 
-    cy.get('@propertyId').then(propertyId => {
+    cy.get('@propertyId').then((propertyId) => {
       cy.visit(`/?propertyId=${propertyId}`);
     });
 
     cy.url().should('include', '/loans/');
+  });
+
+  it('should create a loan with a referralId', () => {
+    cy.visit('/?ref=123456');
+
+    cy.contains('Démarrer').click();
+    cy.url().should('include', '/loans/');
+
+    cy.window().then((window) => {
+      const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+      cy.callMethod('getLoan', loanId).then((loan) => {
+        const { referralId } = loan;
+        expect(referralId).to.equal('123456');
+      });
+    });
   });
 });

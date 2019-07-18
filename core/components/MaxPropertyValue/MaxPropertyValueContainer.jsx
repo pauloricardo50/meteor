@@ -1,8 +1,11 @@
+import React from 'react';
+
 import { withProps, compose, withState } from 'recompose';
 
 import { setMaxPropertyValueWithoutBorrowRatio } from 'core/api/methods';
 import Calculator from 'core/utils/Calculator';
 import { RESIDENCE_TYPE, PROPERTY_CATEGORY, CANTONS } from 'core/api/constants';
+import T from '../Translation';
 
 export const STATE = {
   MISSING_INFOS: 'MISSING_INFOS',
@@ -105,6 +108,7 @@ export default compose(
   ),
   withState('canton', 'setCanton', getInitialCanton),
   withState('loading', 'setLoading', null),
+  withState('error', 'setError', null),
   withProps(({
     loan: {
       _id: loanId,
@@ -120,9 +124,14 @@ export default compose(
     setCanton,
     canton,
     setOpenBorrowersForm,
+    setError,
   }) => ({
     state: getState({ borrowers, maxPropertyValue, maxPropertyValueExists }),
     recalculate: () => {
+      if (!canton) {
+        setError(<T id="MaxPropertyValue.noCantonError" />);
+        return;
+      }
       setLoading(true);
       if (setOpenBorrowersForm) {
         setOpenBorrowersForm(false);
@@ -135,6 +144,7 @@ export default compose(
     },
     onChangeCanton: (_, newCanton) => {
       setCanton(newCanton);
+      setError(undefined);
       const { canton: existingCanton } = maxPropertyValue || {};
 
       if (existingCanton && newCanton !== existingCanton) {

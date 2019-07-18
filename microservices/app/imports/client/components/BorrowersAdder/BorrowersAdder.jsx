@@ -10,7 +10,7 @@ type BorrowersAdderProps = {
 };
 
 const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
-  <div className="borrowers-adder">
+  <div className="borrowers-adder animated fadeIn">
     <h4>
       <T id="BorrowersPage.BorrowerAdder.title" />
     </h4>

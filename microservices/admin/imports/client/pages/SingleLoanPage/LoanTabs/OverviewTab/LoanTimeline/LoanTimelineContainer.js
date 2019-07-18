@@ -54,7 +54,7 @@ export default compose(
           type: 'task',
           description: title,
         })),
-    ],
+    ].sort((a, b) => a.date - b.date),
     ...rest,
   })),
 );

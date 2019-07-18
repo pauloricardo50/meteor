@@ -20,7 +20,7 @@ describe('App onboarding', () => {
       });
 
       it('should login with the login token', () => {
-        cy.callMethod('inviteTestUser').then(loginToken => {
+        cy.callMethod('inviteTestUser').then((loginToken) => {
           cy.visit(`/enroll-account/${loginToken}`);
         });
 
@@ -58,8 +58,6 @@ describe('App onboarding', () => {
 
         cy.get('.simple-dashboard-page').should('exist');
         cy.get('.borrowers-card').contains('0%');
-
-        cy.get('.borrowers-card button').click();
 
         cy.get('.borrowers-adder')
           .find('button')

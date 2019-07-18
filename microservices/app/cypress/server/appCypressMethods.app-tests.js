@@ -148,4 +148,7 @@ Meteor.methods({
       },
     });
   },
+  getLoan(loanId) {
+    return LoanService.get(loanId);
+  },
 });
