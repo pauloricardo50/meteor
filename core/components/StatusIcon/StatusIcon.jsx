@@ -15,7 +15,7 @@ const styles = {
   [ERROR]: { color: colors.error, fill: colors.error },
 };
 
-const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
+const StatusIcon = React.forwardRef(({ id, status, style = {}, tooltip, ...rest }, ref) => {
   if (!status) {
     return null;
   }
@@ -24,6 +24,7 @@ const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
     <Icon
       type={status === SUCCESS ? 'checkCircle' : 'error'}
       style={{ ...styles[status], ...style }}
+      ref={ref}
       {...rest}
     />
   );
@@ -47,7 +48,7 @@ const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
   }
 
   return icon;
-};
+});
 
 StatusIcon.propTypes = {
   status: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
