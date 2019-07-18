@@ -1,0 +1,19 @@
+.unsuccessful-dialog-content {
+  display: flex;
+  flex-direction: column;
+
+  &-section {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    &-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 50%;
+      align-self: center;
+      padding: 8px;
+    }
+  }
+}

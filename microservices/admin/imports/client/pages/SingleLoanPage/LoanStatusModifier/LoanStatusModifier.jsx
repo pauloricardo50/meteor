@@ -4,6 +4,8 @@ import React from 'react';
 import StatusLabel from 'core/components/StatusLabel';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import Dialog from 'core/components/Material/Dialog';
+import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 import LoanStatusModifierContainer from './LoanStatusModifierContainer';
 
 type LoanStatusModifierProps = {
@@ -12,6 +14,7 @@ type LoanStatusModifierProps = {
   openDialog: Boolean,
   setOpenDialog: Boolean,
   dialogContent: React.Component,
+  title: String,
 };
 
 const LoanStatusModifier = ({
@@ -30,7 +33,19 @@ const LoanStatusModifier = ({
       docId={loan._id}
       additionalActions={additionalActions}
     />
-    <Dialog open={openDialog} title={title}>
+    <Dialog
+      open={openDialog}
+      title={title}
+      actions={[
+        <Button
+          primary
+          label={<T id="general.close" />}
+          onClick={() => setOpenDialog(false)}
+          key="close"
+        />,
+      ]}
+      important
+    >
       {dialogContent}
     </Dialog>
   </>
