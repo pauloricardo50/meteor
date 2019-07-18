@@ -2,6 +2,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+import { PROPERTY_DOCUMENTS } from 'core/api/constants';
 import LoanRenamer from '../LoanRenamer';
 
 type LoanCardHeaderProps = {
@@ -32,7 +33,11 @@ const getImage = ({ promotions, properties, hasPromotion, hasProProperty }) => {
   }
   if (hasProProperty) {
     const property = properties[0];
-    const { documents: { propertyImages = [] } = {} } = property;
+    const {
+      documents: {
+        [PROPERTY_DOCUMENTS.PROPERTY_PICTURES]: propertyImages = [],
+      } = {},
+    } = property;
     return propertyImages.length ? propertyImages[0].url : null;
   }
 
