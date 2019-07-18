@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 
-import Switch from 'core/components/BaseRouter/Switch';
-import Route from 'core/components/BaseRouter/Route';
-import PromotionTimeline from './PromotionTimeline/PromotionTimeline';
+import Switch from '../../BaseRouter/Switch';
+import Route from '../../BaseRouter/Route';
+import PromotionPageOverview from './PromotionPageOverview';
 import PromotionPartners from './PromotionPartners';
 import PromotionFiles from './PromotionFiles';
 import PromotionUsers from './PromotionUsers/loadable';
@@ -16,7 +16,7 @@ const PromotionPageContent = ({ promotion }: PromotionPageContentProps) => (
     <Route
       exact
       path={['/promotions/:promotionId', '/promotions/:promotionId/overview']}
-      component={PromotionTimeline}
+      component={PromotionPageOverview}
       promotion={promotion}
     />
     <Route

@@ -6,7 +6,7 @@ import DropdownMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import PromotionCustomersTableActionsContainer from './PromotionCustomersTableActionsContainer';
-import { CustomerAdderUserSchema } from '../CustomerAdder/CustomerAdder';
+import { CustomerAdderUserSchema } from '../CustomerAdder';
 
 type PromotionCustomersTableActionsProps = {};
 

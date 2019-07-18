@@ -27,6 +27,11 @@ const PromotionTimeline = (props: PromotionTimelineProps) => {
   } = props;
 
   const constructionTimeline = promotionConstructionTimeline || promotionLotConstructionTimeline;
+
+  if (!constructionTimeline || constructionTimeline.length === 0) {
+    return null;
+  }
+
   const signingDate = promotionSigningDate || promotionLotSigningDate;
 
   const property = properties.length ? properties[0] : {};
@@ -66,7 +71,7 @@ const PromotionTimeline = (props: PromotionTimelineProps) => {
         />
       )}
       <PromotionTimeLineSection
-        title={isPromotionLot && "Construction"}
+        title={isPromotionLot && 'Construction'}
         value={isPromotionLot && constructionValue}
         icon={
           isPromotionLot && (

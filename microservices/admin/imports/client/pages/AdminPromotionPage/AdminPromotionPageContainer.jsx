@@ -29,5 +29,6 @@ export default compose(
     canRemoveLots: true,
     canAddPros: true,
     canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
+    canChangeTimeline: true,
   }),
 );

@@ -5,8 +5,6 @@ import { Helmet } from 'react-helmet';
 import PromotionPageTabs from './PromotionPageTabs';
 import PromotionPageHeader from './PromotionPageHeader';
 import PromotionPageContent from './PromotionPageContent';
-import PromotionLotsTable from './PromotionLotsTable';
-import LotsTable from './LotsTable';
 
 type PromotionPageProps = {};
 
@@ -21,8 +19,6 @@ const PromotionPage = ({ promotion }: PromotionPageProps) => {
       <PromotionPageHeader promotion={promotion} />
       <PromotionPageTabs promotion={promotion} />
       <PromotionPageContent promotion={promotion} />
-      <PromotionLotsTable promotion={promotion} />
-      <LotsTable promotion={promotion} />
     </div>
   );
 };
