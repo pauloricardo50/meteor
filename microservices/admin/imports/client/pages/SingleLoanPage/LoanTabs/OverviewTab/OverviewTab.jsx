@@ -65,6 +65,9 @@ const OverviewTab = (props) => {
           />
         </div>
       </div>
+
+      <LoanTimeline loanId={loanId} />
+
       <div className="admin-note">
         <h2>Notes</h2>
         <AdminNoteExpand
@@ -73,11 +76,12 @@ const OverviewTab = (props) => {
           collection={LOANS_COLLECTION}
         />
       </div>
-      <LoanTimeline loanId={loanId} />
+
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />
         <Solvency loan={loan} />
       </div>
+      
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">
