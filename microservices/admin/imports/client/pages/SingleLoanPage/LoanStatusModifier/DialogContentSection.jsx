@@ -15,9 +15,7 @@ const DialogContentSection = ({
   <div className="loan-status-modifier-dialog-content-section">
     <h4>{title}</h4>
     <p className="description">{description}</p>
-    <div className="loan-status-modifier-dialog-content-section-buttons">
-      {buttons}
-    </div>
+    <div className="loan-status-modifier-dialog-content-buttons">{buttons}</div>
   </div>
 );
 

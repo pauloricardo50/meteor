@@ -34,9 +34,9 @@ const RealRevenuesDialogContent = ({
 
 export default compose(
   withRouter,
-  withProps(({ loan, history, promise, setOpenDialog }) => ({
+  withProps(({ loan, history, cancelNewStatus, confirmNewStatus, setOpenDialog }) => ({
     onClick: () => {
-      promise.resolve();
+      confirmNewStatus();
       setOpenDialog(false);
       history.push(`/loans/${loan._id}/revenues`);
     },

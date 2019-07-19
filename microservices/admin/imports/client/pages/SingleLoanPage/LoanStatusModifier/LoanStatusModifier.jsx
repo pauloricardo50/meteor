@@ -16,7 +16,8 @@ type LoanStatusModifierProps = {
   dialogContent: React.Component,
   title: String,
   withConfirmButton: Boolean,
-  promise: Object,
+  confirmNewStatus: Function,
+  cancelNewStatus: Function,
 };
 
 const LoanStatusModifier = ({
@@ -27,7 +28,8 @@ const LoanStatusModifier = ({
   dialogContent,
   title,
   withConfirmButton,
-  promise,
+  cancelNewStatus,
+  confirmNewStatus,
 }: LoanStatusModifierProps) => (
   <>
     <StatusLabel
@@ -52,7 +54,7 @@ const LoanStatusModifier = ({
             primary
             label={<T id="general.ok" />}
             onClick={() => {
-              promise.resolve();
+              confirmNewStatus();
               setOpenDialog(false);
             }}
             key="ok"

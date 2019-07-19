@@ -22,11 +22,14 @@ const makeAdditionalActions = ({ loan, setState }) => (status, prevStatus) => {
   case LOAN_STATUS.UNSUCCESSFUL: {
     return new Promise((resolve, reject) => {
       setState({
+        cancelNewStatus: reject,
+        confirmNewStatus: () => resolve(),
         dialogContent: (
           <UnsuccessfulDialogContent
             loan={loan}
             setOpenDialog={open => setState({ openDialog: open })}
-            promise={{ resolve, reject }}
+            cancelNewStatus={reject}
+            confirmNewStatus={() => resolve()}
           />
         ),
         openDialog: true,
@@ -37,19 +40,21 @@ const makeAdditionalActions = ({ loan, setState }) => (status, prevStatus) => {
     break;
   }
 
-  if (requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
+  if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
     return new Promise((resolve, reject) => {
       setState({
+        cancelNewStatus: reject,
+        confirmNewStatus: () => resolve(),
         dialogContent: (
           <RealRevenuesDialogContent
             loan={loan}
-            promise={{ resolve, reject }}
             setOpenDialog={open => setState({ openDialog: open })}
+            cancelNewStatus={reject}
+            confirmNewStatus={() => resolve()}
           />
         ),
         openDialog: true,
         withConfirmButton: true,
-        promise: { resolve, reject },
       });
     });
   }
@@ -64,7 +69,8 @@ export default compose(
       dialogContent: null,
       title: '',
       withConfirmButton: false,
-      promise: {},
+      cancelNewStatus: () => ({}),
+      confirmNewStatus: () => ({}),
     },
     { setState: () => newState => newState },
   ),

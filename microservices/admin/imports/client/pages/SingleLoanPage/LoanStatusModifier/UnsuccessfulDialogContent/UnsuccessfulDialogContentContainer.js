@@ -1,4 +1,4 @@
-import { withProps, compose } from 'recompose';
+import { withProps, compose, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import uniqBy from 'lodash/uniqBy';
 
@@ -7,11 +7,19 @@ import {
   adminLoanInsert,
   reuseProperty,
   loanUpdate,
+  loanSetCreatedAtActivityDescription,
 } from 'core/api';
 import { LOAN_STATUS } from 'imports/core/api/constants';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
+import { activityInsert } from 'core/api/activities/methodDefinitions';
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 
-const makeSendFeedbackToAllLenders = (loan, promise) => () => {
+const makeSendFeedbackToAllLenders = (
+  loan,
+  cancelNewStatus,
+  confirmNewStatus,
+  setEnableFeedbackButton,
+) => () => {
   const { _id: loanId, offers = [] } = loan;
 
   // Don't show duplicate lenders
@@ -35,15 +43,26 @@ const makeSendFeedbackToAllLenders = (loan, promise) => () => {
     if (confirm) {
       return sendNegativeFeedbackToAllLenders
         .run({ loanId })
-        .then(() => promise.resolve)
-        .catch(promise.reject);
+        .then(() => {
+          setEnableFeedbackButton(false);
+          import('core/utils/message').then(({ default: message }) => {
+            message.success("C'est dans la boite !", 2);
+          });
+        })
+        .then(() => confirmNewStatus())
+        .catch(cancelNewStatus);
     }
   }
 
-  return promise.resolve();
+  return confirmNewStatus();
 };
 
-const insertNewLoan = ({ loan, status = LOAN_STATUS.LEAD, promise }) => {
+const insertNewLoan = ({
+  loan,
+  status = LOAN_STATUS.LEAD,
+  cancelNewStatus,
+  confirmNewStatus,
+}) => {
   const { properties = [], borrowers = [], userId } = loan;
 
   const userProperties = properties.filter(({ category }) => category === PROPERTY_CATEGORY.USER);
@@ -72,33 +91,76 @@ const insertNewLoan = ({ loan, status = LOAN_STATUS.LEAD, promise }) => {
 
       return loanId;
     })
+    .then(loanId =>
+      loanSetCreatedAtActivityDescription.run({
+        loanId,
+        description: `Après avoir passé dossier ${loan.name} en sans suite`,
+      }))
     .then((loanId) => {
-      promise.resolve();
+      confirmNewStatus();
       return loanId;
     });
 };
 
+const addUnsuccesfulActivity = ({ loanId, reason }) =>
+  activityInsert.run({
+    object: {
+      title: 'Sans suite',
+      description: reason,
+      type: ACTIVITY_TYPES.SERVER,
+      loanLink: { _id: loanId },
+    },
+  });
+
 export default compose(
   withRouter,
-  withProps(({ loan, promise, setOpenDialog, history }) => ({
-    sendFeedbackToAllLenders: makeSendFeedbackToAllLenders(loan, promise),
+  withState('enableFeedbackButton', 'setEnableFeedbackButton', true),
+  withState('reason', 'setReason', ''),
+  withProps(({
+    loan,
+    cancelNewStatus,
+    confirmNewStatus,
+    setOpenDialog,
+    history,
+    setEnableFeedbackButton,
+    reason,
+  }) => ({
+    sendFeedbackToAllLenders: makeSendFeedbackToAllLenders(
+      loan,
+      cancelNewStatus,
+      confirmNewStatus,
+      setEnableFeedbackButton,
+    ),
     setUnsuccessfulOnly: () => {
-      promise.resolve();
-      setOpenDialog(false);
+      addUnsuccesfulActivity({ loanId: loan._id, reason })
+        .then(() => {
+          confirmNewStatus();
+          setOpenDialog(false);
+        })
+        .catch(cancelNewStatus);
     },
     insertLeadLoan: () => {
-      insertNewLoan({ loan, promise })
+      addUnsuccesfulActivity({ loanId: loan._id, reason })
+        .then(() =>
+          insertNewLoan({ loan, cancelNewStatus, confirmNewStatus }))
         .then((loanId) => {
           history.push(`/loans/${loanId}`);
         })
-        .catch(promise.reject);
+        .catch(cancelNewStatus);
     },
     insertPendingLoan: () => {
-      insertNewLoan({ loan, status: LOAN_STATUS.PENDING, promise })
+      addUnsuccesfulActivity({ loanId: loan._id, reason })
+        .then(() =>
+          insertNewLoan({
+            loan,
+            status: LOAN_STATUS.PENDING,
+            cancelNewStatus,
+            confirmNewStatus,
+          }))
         .then((loanId) => {
           history.push(`/loans/${loanId}`);
         })
-        .catch(promise.reject);
+        .catch(cancelNewStatus);
     },
     shouldDisplayFeedbackButton: loan.offers && !!loan.offers.length,
   })),
