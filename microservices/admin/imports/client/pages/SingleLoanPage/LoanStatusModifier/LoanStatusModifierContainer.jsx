@@ -3,6 +3,7 @@ import { compose, withStateHandlers, withProps } from 'recompose';
 import { LOAN_STATUS } from 'core/api/constants';
 import T from 'core/components/Translation';
 import UnsuccessfulDialogContent from './UnsuccessfulDialogContent';
+import RealRevenuesDialogContent from './RealRevenuesDialogContent';
 
 const requiresRevenueStatus = status =>
   [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(status);
@@ -37,7 +38,20 @@ const makeAdditionalActions = ({ loan, setState }) => (status, prevStatus) => {
   }
 
   if (requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
-    const confirm = window.confirm('Attention, il faut maintenant saisir des revenus précis!');
+    return new Promise((resolve, reject) => {
+      setState({
+        dialogContent: (
+          <RealRevenuesDialogContent
+            loan={loan}
+            promise={{ resolve, reject }}
+            setOpenDialog={open => setState({ openDialog: open })}
+          />
+        ),
+        openDialog: true,
+        withConfirmButton: true,
+        promise: { resolve, reject },
+      });
+    });
   }
 
   return Promise.resolve();
@@ -49,6 +63,8 @@ export default compose(
       openDialog: false,
       dialogContent: null,
       title: '',
+      withConfirmButton: false,
+      promise: {},
     },
     { setState: () => newState => newState },
   ),

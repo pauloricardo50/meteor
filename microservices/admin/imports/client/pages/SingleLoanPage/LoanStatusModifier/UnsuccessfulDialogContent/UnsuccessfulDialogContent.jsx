@@ -8,7 +8,7 @@ import { faEnvelope } from '@fortawesome/pro-light-svg-icons/faEnvelope';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import UnsuccessfulDialogContentSection from './UnsucessfulDialogContentSection';
+import DialogContentSection from '../DialogContentSection';
 import UnsuccessfulDialogContentContainer from './UnsuccessfulDialogContentContainer';
 
 type UnsuccessfulDialogContentProps = {
@@ -27,9 +27,9 @@ const UnsuccessfulDialogContent = ({
   insertPendingLoan,
   shouldDisplayFeedbackButton,
 }: UnsuccessfulDialogContentProps) => (
-  <div className="unsuccessful-dialog-content">
+  <div className="loan-status-modifier-dialog-content">
     {shouldDisplayFeedbackButton && (
-      <UnsuccessfulDialogContentSection
+      <DialogContentSection
         title="Envoyer un feedback à tous les prêteurs"
         description='Envoie un feedback "négatif sans suite" à tous les prêteurs
         sur le dossier. Vous pourrez ensuite ouvrir ou non un nouveau dossier
@@ -46,7 +46,7 @@ const UnsuccessfulDialogContent = ({
       />
     )}
 
-    <UnsuccessfulDialogContentSection
+    <DialogContentSection
       title="Ouvrir un nouveau dossier"
       description="Ouvre un nouveau dossier pour le client. Copie ses emprunteurs et biens
         immobiliers."
@@ -70,7 +70,7 @@ const UnsuccessfulDialogContent = ({
       ]}
     />
 
-    <UnsuccessfulDialogContentSection
+    <DialogContentSection
       title="Ne pas ouvrir de nouveau dossier"
       description='Modifie uniquement le statut du dossier en "Sans suite".'
       buttons={(
