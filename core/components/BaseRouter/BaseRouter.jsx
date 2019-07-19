@@ -17,6 +17,7 @@ import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
 import HistoryWatcher from './HistoryWatcher';
+import ModalManager from '../ModalManager';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -109,4 +110,4 @@ BaseRouter.defaultProps = {
   hasLogin: true,
 };
 
-export default BaseRouter;
+export default ModalManager(BaseRouter);

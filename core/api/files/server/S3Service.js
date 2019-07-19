@@ -136,8 +136,13 @@ class S3Service {
         (err ? reject(err) : resolve(data))));
 
   updateMetadata = (key, newMetadata) =>
-    this.getObject(key).then(({ Metadata: oldMetaData }) =>
-      this.putObject(undefined, key, { ...oldMetaData, ...newMetadata }));
+    this.headObject(key).then(({ Metadata: oldMetaData }) =>
+      this.copyObject({
+        Key: key,
+        Metadata: { ...oldMetaData, ...newMetadata },
+        CopySource: `/${this.params.Bucket}/${key}`,
+        MetadataDirective: 'REPLACE',
+      }));
 
   buildFileUrl = file => `${OBJECT_STORAGE_PATH}/${file.Key}`;
 
