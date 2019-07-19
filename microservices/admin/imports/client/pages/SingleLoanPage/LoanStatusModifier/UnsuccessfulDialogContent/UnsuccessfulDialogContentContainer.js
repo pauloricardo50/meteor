@@ -100,5 +100,6 @@ export default compose(
         })
         .catch(promise.reject);
     },
+    shouldDisplayFeedbackButton: loan.offers && !!loan.offers.length,
   })),
 );

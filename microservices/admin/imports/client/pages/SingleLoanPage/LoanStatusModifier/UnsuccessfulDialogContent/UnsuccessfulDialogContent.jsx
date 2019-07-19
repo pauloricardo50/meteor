@@ -25,23 +25,26 @@ const UnsuccessfulDialogContent = ({
   setUnsuccessfulOnly,
   insertLeadLoan,
   insertPendingLoan,
+  shouldDisplayFeedbackButton,
 }: UnsuccessfulDialogContentProps) => (
   <div className="unsuccessful-dialog-content">
-    <UnsuccessfulDialogContentSection
-      title="Envoyer un feedback à tous les prêteurs"
-      description='Envoie un feedback "négatif sans suite" à tous les prêteurs
+    {shouldDisplayFeedbackButton && (
+      <UnsuccessfulDialogContentSection
+        title="Envoyer un feedback à tous les prêteurs"
+        description='Envoie un feedback "négatif sans suite" à tous les prêteurs
         sur le dossier. Vous pourrez ensuite ouvrir ou non un nouveau dossier
         pour le client à l&apos;aide des boutons ce-dessous.'
-      buttons={(
-        <Button
-          primary
-          outlined
-          icon={<FontAwesomeIcon icon={faEnvelope} />}
-          label="Envoyer un feedback"
-          onClick={sendFeedbackToAllLenders}
-        />
-      )}
-    />
+        buttons={(
+          <Button
+            primary
+            outlined
+            icon={<FontAwesomeIcon icon={faEnvelope} />}
+            label="Envoyer un feedback"
+            onClick={sendFeedbackToAllLenders}
+          />
+        )}
+      />
+    )}
 
     <UnsuccessfulDialogContentSection
       title="Ouvrir un nouveau dossier"
