@@ -70,7 +70,7 @@ const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
   }
 
   const document = doc || (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
-  const additionalDocumentsExist = doc
+  const additionalDocumentsExist = document
     && document.additionalDocuments
     && document.additionalDocuments.length > 0;
 
