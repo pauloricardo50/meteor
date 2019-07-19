@@ -26,6 +26,7 @@ describe('Loans', () => {
     cy.get('.status-label').should('contain', 'Prospect');
     cy.contains('Prospect').click();
     cy.contains('Closing').click();
+    cy.contains('Ok').click();
     cy.get('.status-label').should('not.contain', 'Prospect');
     cy.get('.status-label').should('contain', 'Closing');
   });
@@ -35,7 +36,9 @@ describe('Loans', () => {
 
     cy.get('.tasks-table').should('not.exist');
 
-    cy.get('.single-loan-page-tasks').contains('Ajouter tâche').click();
+    cy.get('.single-loan-page-tasks')
+      .contains('Ajouter tâche')
+      .click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
     cy.get('.tasks-table tr').should('have.length', 2);
