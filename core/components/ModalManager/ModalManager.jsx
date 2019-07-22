@@ -66,13 +66,16 @@ const reducer = (state, action) => {
     }
     return { ...newState, activeModal: null };
   }
+  case 'CLOSE_ALL': {
+    return initialState;
+  }
 
   default:
     return state;
   }
 };
 
-const ModalManager = Component => (props: ModalManagerProps) => {
+const ModalManager = ({ children }: ModalManagerProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { activeModal } = state;
   const { title, actions, description, content, ...dialogProps } = state[activeModal] || {};
@@ -84,11 +87,18 @@ const ModalManager = Component => (props: ModalManagerProps) => {
   const closeModal = returnValue =>
     dispatch({ type: 'CLOSE_MODAL', payload: { activeModal, returnValue } });
 
+  const closeAll = () => dispatch({ type: 'CLOSE_ALL' });
+
   return (
     <ModalManagerContext.Provider value={{ openModal }}>
-      <Component {...props} />
+      {children}
       <Dialog {...dialogProps} open={activeModal !== null} onClose={closeModal}>
-        <DialogComponents {...state[activeModal]} closeModal={closeModal} />
+        <DialogComponents
+          returnValue={state[activeModal] && state[activeModal].returnValue}
+          dialogContent={state[activeModal]}
+          closeModal={closeModal}
+          closeAll={closeAll}
+        />
       </Dialog>
     </ModalManagerContext.Provider>
   );
