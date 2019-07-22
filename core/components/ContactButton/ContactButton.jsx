@@ -12,6 +12,7 @@ type ContactButtonProps = {};
 
 export const ContactButton = ({ ...props }: ContactButtonProps) => {
   const { openContact, toggleOpenContact } = useContext(ContactButtonContext);
+
   return (
     <div className="contact-button">
       <Fab onClick={() => toggleOpenContact(!openContact)} color="primary">
