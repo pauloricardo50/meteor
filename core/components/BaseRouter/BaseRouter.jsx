@@ -58,38 +58,40 @@ const BaseRouter = ({
         <DisconnectModal />
 
         <Router history={history}>
-          <HistoryWatcher
-            history={history}
-            routes={{
-              ...routes,
-              LOGIN_PAGE: { path: '/login' },
-              GRAPHER_PAGE: { path: '/grapher' },
-              LOGIN_WITH_TOKEN_PAGE: { path: '/login-token/:token' },
-            }}
-          >
-            <ScrollToTop>
-              <Switch>
-                <Route
-                  exact
-                  path="/login-token/:token"
-                  render={loginWithToken}
-                />
-                {/* LoginPage has to be above / path */}
-                {hasLogin && (
-                  <Route exact path="/login" component={LoginPage} />
-                )}
-                {isDev && (
-                  <Route exact path="/grapher" component={GrapherPage} />
-                )}
-                <Route
-                  path="/"
-                  render={childProps =>
-                    React.cloneElement(children, childProps)
-                  }
-                />
-              </Switch>
-            </ScrollToTop>
-          </HistoryWatcher>
+          <ModalManager>
+            <HistoryWatcher
+              history={history}
+              routes={{
+                ...routes,
+                LOGIN_PAGE: { path: '/login' },
+                GRAPHER_PAGE: { path: '/grapher' },
+                LOGIN_WITH_TOKEN_PAGE: { path: '/login-token/:token' },
+              }}
+            >
+              <ScrollToTop>
+                <Switch>
+                  <Route
+                    exact
+                    path="/login-token/:token"
+                    render={loginWithToken}
+                  />
+                  {/* LoginPage has to be above / path */}
+                  {hasLogin && (
+                    <Route exact path="/login" component={LoginPage} />
+                  )}
+                  {isDev && (
+                    <Route exact path="/grapher" component={GrapherPage} />
+                  )}
+                  <Route
+                    path="/"
+                    render={childProps =>
+                      React.cloneElement(children, childProps)
+                    }
+                  />
+                </Switch>
+              </ScrollToTop>
+            </HistoryWatcher>
+          </ModalManager>
         </Router>
       </ErrorBoundary>
     </LibraryWrappers>
@@ -110,4 +112,4 @@ BaseRouter.defaultProps = {
   hasLogin: true,
 };
 
-export default ModalManager(BaseRouter);
+export default BaseRouter;
