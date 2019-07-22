@@ -1139,7 +1139,7 @@
   "ConfirmMethod.buttonConfirm": "Confirmer",
   "ContactButton.byEmail": "Par email",
   "ContactButton.byPhone": "Par téléphone",
-  "ContactButton.yourAdvisor": "Votre conseiller",
+  "ContactButton.yourAdvisor": "{gender, select, F {Votre conseillère} other {Votre conseiller}}",
   "ContactPage.address": "Adresse",
   "ContactPage.description": "Un de nos spécialistes hypothécaires va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes.{verticalSpace}Il/elle vous donnera accès à votre interface e-Potek où vous pourrez avancer sur votre demande de prêt ensemble.",
   "ContactPage.email": "Adresse email",

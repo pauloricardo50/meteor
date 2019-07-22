@@ -1,3 +1,4 @@
+export const EPOTEK_NUMBER = '+41 22 566 01 10';
 const employees = [
   {
     email: 'lydia@e-potek.ch',
@@ -7,6 +8,7 @@ const employees = [
     appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 92',
     _id: 'LGGMr68iXXtW6bQEx',
+    gender: 'F',
   },
   {
     email: 'florian@e-potek.ch',
@@ -15,14 +17,16 @@ const employees = [
     title: 'CTO',
     phoneNumber: '+41 22 566 82 91',
     _id: 'CHPzFxTDDekwi4JJP',
+    gender: 'M',
   },
   {
     email: 'quentin@e-potek.ch',
     src: '/img/team/quentin.jpg',
     name: 'Quentin Herzig',
     title: 'Software Engineer',
-    phoneNumber: '+41 22 566 01 10',
+    phoneNumber: EPOTEK_NUMBER,
     _id: 'NJskZ6E38JHfqSyNg',
+    gender: 'M',
   },
   {
     email: 'yannis@e-potek.ch',
@@ -32,6 +36,7 @@ const employees = [
     appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 90',
     _id: 'dcXkoTWLZPemu9x9a',
+    gender: 'M',
   },
   {
     email: 'jeanluc@e-potek.ch',
@@ -41,12 +46,14 @@ const employees = [
     appTitle: 'Planification et prévoyance',
     phoneNumber: '+41 22 566 82 94',
     _id: 'efe2jpwvRh8J4z4p8',
+    gender: 'M',
   },
   {
     email: '',
     src: '/img/team/tarik.jpg',
     name: 'Tarik Lamkarfed',
     title: 'Marketing & Communications',
+    gender: 'M',
   },
   {
     email: 'max@e-potek.ch',
@@ -56,6 +63,7 @@ const employees = [
     appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 95',
     _id: 'NumFEubdw2nra6Su8',
+    gender: 'M',
   },
 ];
 
