@@ -4,6 +4,7 @@ const employees = [
     src: '/img/team/lydia.jpg',
     name: 'Lydia Abraha',
     title: 'Conseillère en financement',
+    appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 92',
     _id: 'LGGMr68iXXtW6bQEx',
   },
@@ -24,16 +25,11 @@ const employees = [
     _id: 'NJskZ6E38JHfqSyNg',
   },
   {
-    email: '',
-    src: '/img/team/david.jpg',
-    name: 'David Dejean',
-    title: 'Designer',
-  },
-  {
     email: 'yannis@e-potek.ch',
     src: '/img/team/yannis.jpg',
     name: 'Yannis Eggert',
-    title: 'Conseiller en financement',
+    title: 'Directeur',
+    appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 90',
     _id: 'dcXkoTWLZPemu9x9a',
   },
@@ -42,6 +38,7 @@ const employees = [
     src: '/img/team/jeanluc.jpg',
     name: 'Jean-Luc Kringel',
     title: 'Responsable Assurances',
+    appTitle: 'Planification et prévoyance',
     phoneNumber: '+41 22 566 82 94',
     _id: 'efe2jpwvRh8J4z4p8',
   },
@@ -56,22 +53,9 @@ const employees = [
     src: '/img/team/max.jpg',
     name: 'Max Martinez',
     title: 'Conseiller en financement',
+    appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 95',
     _id: 'NumFEubdw2nra6Su8',
-  },
-  {
-    email: '',
-    src: '/img/team/harrison.jpg',
-    name: 'Harrison Mean',
-    title: 'Operations',
-  },
-  {
-    email: 'yann@e-potek.ch',
-    src: '/img/team/yann.jpg',
-    name: 'Yann Roy',
-    title: 'UX/UI Designer',
-    phoneNumber: '+41 22 566 01 10',
-    _id: 'nySgkgGNoRAaAoZvE',
   },
 ];
 
@@ -80,6 +64,7 @@ export const employeesByEmail = employees.reduce(
     (employee.email ? { ...acc, [employee.email]: employee } : acc),
   {},
 );
+
 export const employeesById = employees.reduce(
   (acc, employee) =>
     (employee._id ? { ...acc, [employee._id]: employee } : acc),
