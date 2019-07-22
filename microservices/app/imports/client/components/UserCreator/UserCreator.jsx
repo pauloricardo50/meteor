@@ -10,7 +10,19 @@ type UserCreatorProps = {};
 const UserCreator = ({ schema, buttonProps, onSubmit }: UserCreatorProps) => (
   <AutoFormDialog
     title={<T id="UserCreator.title" />}
-    description={<T id="UserCreator.description" />}
+    description={(
+      <ul>
+        <li>
+          <T id="UserCreator.description1" />
+        </li>
+        <li>
+          <T id="UserCreator.description2" />
+        </li>
+        <li>
+          <T id="UserCreator.description3" />
+        </li>
+      </ul>
+    )}
     schema={schema}
     onSubmit={onSubmit}
     buttonProps={buttonProps}
