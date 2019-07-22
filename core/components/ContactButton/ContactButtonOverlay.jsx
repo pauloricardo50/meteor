@@ -17,7 +17,7 @@ type ContactButtonOverlayProps = {
 };
 
 const ContactButtonOverlay = ({
-  staff: { src, name, phoneNumber, email } = {},
+  staff: { src, name, phoneNumber, email, gender } = {},
   openContact,
 }: ContactButtonOverlayProps) => (
   <div
@@ -30,7 +30,7 @@ const ContactButtonOverlay = ({
       <div className="text">
         <h4 className="fixed-size no-margin staff-name">{name}</h4>
         <p className="secondary">
-          <T id="ContactButton.yourAdvisor" />
+          <T id="ContactButton.yourAdvisor" values={{ gender }} />
         </p>
       </div>
     </div>
