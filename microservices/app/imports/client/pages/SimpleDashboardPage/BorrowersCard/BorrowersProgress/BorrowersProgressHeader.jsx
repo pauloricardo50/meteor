@@ -3,9 +3,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import { createRoute } from 'core/utils/routerUtils';
 import Button from 'core/components/Button';
-import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
 type BorrowersProgressHeaderProps = {};
 

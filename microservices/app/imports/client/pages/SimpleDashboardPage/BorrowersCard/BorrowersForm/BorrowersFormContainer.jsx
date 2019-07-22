@@ -34,7 +34,7 @@ const getSimpleParams = (rawParams, key) => {
 };
 
 const overrides = {
-  updateFunc: idKey => rawParams => {
+  updateFunc: idKey => (rawParams) => {
     const simpleParams = [
       'insurance2Simple',
       'bank3ASimple',
@@ -52,8 +52,8 @@ const overrides = {
   },
 };
 
-const getBorrowersTabs = ({ loan, simpleForm }) => {
-  const { borrowers, userFormsEnabled } = loan;
+const getBorrowersTabs = ({ loan }) => {
+  const { borrowers, userFormsEnabled, simpleBorrowersForm } = loan;
   const twoBorrowers = borrowers.length === 2;
 
   return [
@@ -61,7 +61,7 @@ const getBorrowersTabs = ({ loan, simpleForm }) => {
       const progress = Calculator.personalInfoPercentSimple({
         borrowers: borrower,
         loan,
-        simple: simpleForm,
+        simple: simpleBorrowersForm,
       });
 
       return {
@@ -72,8 +72,8 @@ const getBorrowersTabs = ({ loan, simpleForm }) => {
             userFormsEnabled={userFormsEnabled}
             loan={loan}
             key={borrowers[index]._id}
-            overrides={simpleForm && overrides}
-            simple={simpleForm}
+            overrides={simpleBorrowersForm && overrides}
+            simple={simpleBorrowersForm}
           />
         ),
         label: (
@@ -98,10 +98,10 @@ const getBorrowersTabs = ({ loan, simpleForm }) => {
     twoBorrowers
       ? null
       : {
-          id: 'borrower2',
-          content: null,
-          label: <BorrowerAdder loanId={loan._id} />,
-        },
+        id: 'borrower2',
+        content: null,
+        label: <BorrowerAdder loanId={loan._id} />,
+      },
   ].filter(x => x);
 };
 

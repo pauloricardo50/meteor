@@ -108,11 +108,6 @@
         flex-direction: column;
         margin-bottom: 24px;
 
-        .title {
-          width: 100%;
-          justify-content: space-between;
-        }
-
         h2 {
           margin: 0;
           margin-bottom: 8px;
@@ -175,6 +170,9 @@
       }
 
       .borrowers-form {
+        display: flex;
+        flex-direction: column;
+
         .card1 {
           padding: 0;
           border-radius: 0;
@@ -222,6 +220,11 @@
 
       .borrowers-progress {
         margin-bottom: 32px;
+      }
+
+      .button-switch {
+        align-self: center;
+        margin-bottom: 24px;
       }
     }
 
