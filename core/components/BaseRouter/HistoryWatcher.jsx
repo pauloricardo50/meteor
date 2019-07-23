@@ -33,17 +33,29 @@ export default class HistoryWatcher extends Component {
   }
 
   getMatchingPath(pathname) {
-    const { routes = {} } = this.props;
+    const { routes = {}, history } = this.props;
     let matchingPath = null;
+
+
 
     Object.keys(routes).forEach((route) => {
       if (matchingPath === null && route !== 'NOT_FOUND') {
         const match = matchPath(pathname, routes[route]);
-        matchingPath = match && { path: pathname, route, params: match.params };
+        let queryString = {};
+
+        if(history.location.search){
+          const search = history.location.search.substring(1);
+          search.split('&').forEach(part => {
+            const item = part.split('=');
+            queryString[item[0]] = decodeURIComponent(item[1]);
+          })
+        }
+
+        matchingPath = match && { path: pathname, route, params: match.params, queryString };
       }
     });
 
-    return matchingPath || { path: pathname, route: 'NOT_FOUND', params: {} };
+    return matchingPath || { path: pathname, route: 'NOT_FOUND', params: {}, queryString: {} };
   }
 
   generateTrackingId() {
@@ -60,7 +72,7 @@ export default class HistoryWatcher extends Component {
   }
 
   loadPage(pathname) {
-    const { path, route, params } = this.getMatchingPath(pathname);
+    const { path, route, params, searchParams, queryString } = this.getMatchingPath(pathname);
     const cookies = parseCookies();
     const { sessionStorage } = window;
     analyticsPage.run({
@@ -69,6 +81,7 @@ export default class HistoryWatcher extends Component {
       path,
       route,
       queryParams: params,
+      queryString,
     });
   }
 
