@@ -26,6 +26,7 @@ import {
   proInviteUserToOrganisation,
   proSetShareCustomers,
   anonymousCreateUser,
+  referralExists,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -228,7 +229,11 @@ anonymousCreateUser.setHandler((context, params) => {
 
   const analytics = new Analytics({ ...context, userId });
   analytics.alias(params.trackingId);
-  analytics.track(EVENTS.USER_CREATED, { userId, origin: 'anonymous' });
+  analytics.track(EVENTS.USER_CREATED, {
+    userId,
+    origin: params.referralId ? 'referral' : 'anonymous',
+    referralId: params.referralId,
+  });
   if (params.loanId) {
     analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
       loanId: params.loanId,
@@ -236,4 +241,14 @@ anonymousCreateUser.setHandler((context, params) => {
   }
 
   return userId;
+});
+
+referralExists.setHandler((context, params) => {
+  const { ref } = params;
+  const referral = UserService.fetchOne({
+    $filters: { _id: ref, roles: { $in: [ROLES.PRO] } },
+    _id: 1,
+  });
+
+  return !!referral;
 });

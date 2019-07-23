@@ -69,13 +69,17 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
-  anonymousCreateUser = ({ user, loanId }) => {
+  anonymousCreateUser = ({ user, loanId, referralId }) => {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
 
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
+    }
+
+    if (referralId) {
+      this.setReferredBy({ userId, proId: referralId });
     }
 
     return userId;
