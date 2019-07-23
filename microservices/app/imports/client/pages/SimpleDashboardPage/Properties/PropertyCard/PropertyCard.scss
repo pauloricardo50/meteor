@@ -77,30 +77,3 @@ $borrowers-item-width: 600px;
     }
   }
 }
-.residence-type-setter-dialog {
-  img {
-    height: 150px;
-    margin-right: 16px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-  }
-
-  .icon {
-    width: 100px !important;
-    margin-right: 16px !important;
-    flex-basis: unset !important;
-  }
-
-  .card1 {
-    padding: 24px 8px;
-    margin: 0;
-    box-shadow: unset;
-  }
-
-  .residence-type-setter {
-    @include screen(med) {
-      flex-direction: column;
-    }
-  }
-}
