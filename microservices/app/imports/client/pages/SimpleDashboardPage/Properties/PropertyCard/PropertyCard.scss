@@ -43,8 +43,8 @@ $borrowers-item-width: 600px;
 
     img,
     .icon {
-      width: 150px;
-      height: 150px;
+      width: 120px;
+      height: 120px;
       margin-right: 32px;
 
       @include screen(med) {
@@ -67,37 +67,6 @@ $borrowers-item-width: 600px;
       p {
         margin-right: 8px;
       }
-    }
-  }
-
-  .button {
-    padding: 8px 48px 8px 48px;
-    align-self: center;
-    @include screen(small) {
-      width: 100%;
-    }
-  }
-
-  &-actions {
-    display: flex;
-    align-items: stretch;
-    flex-direction: column;
-
-    @include screen(wide) {
-      align-self: center !important;
-    }
-
-    @include screen(custom, max, 700) {
-      width: 100%;
-    }
-
-    .toggle {
-      display: flex;
-      justify-content: center;
-    }
-
-    .toggle-label-left {
-      font-size: 1em;
     }
   }
 
