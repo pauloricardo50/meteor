@@ -39,7 +39,6 @@ const DialogForm = ({
         <CustomAutoFields autoField={CustomAutoField} />
       </DialogContent>
       <DialogActions>
-        <CustomSubmitField />
         <Button
           primary
           label={<T id="general.close" />}
@@ -48,6 +47,7 @@ const DialogForm = ({
           }}
           key="close"
         />
+        <CustomSubmitField />
       </DialogActions>
     </AutoForm>
   </>

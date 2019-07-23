@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withStateHandlers, withProps } from 'recompose';
+import { withProps } from 'recompose';
 import { LOAN_STATUS } from 'core/api/constants';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
@@ -20,10 +20,19 @@ const getTitle = status => (
   </span>
 );
 
-const makeAdditionalActions = ({ loan, setState }) => openModal => (
-  status,
-  prevStatus,
-) => {
+const closeButton = (reject, closeAll) => (
+  <Button
+    primary
+    label={<T id="general.close" />}
+    onClick={() => {
+      reject();
+      closeAll();
+    }}
+    key="close"
+  />
+);
+
+const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
   switch (status) {
   case LOAN_STATUS.UNSUCCESSFUL: {
     return new Promise((resolve, reject) => {
@@ -56,17 +65,7 @@ const makeAdditionalActions = ({ loan, setState }) => openModal => (
               returnValue={returnValue}
             />
           ),
-          actions: ({ closeAll }) => (
-            <Button
-              primary
-              label={<T id="general.close" />}
-              onClick={() => {
-                reject();
-                closeAll();
-              }}
-              key="close"
-            />
-          ),
+          actions: ({ closeAll }) => closeButton(reject, closeAll),
           important: true,
         },
         {
@@ -80,17 +79,7 @@ const makeAdditionalActions = ({ loan, setState }) => openModal => (
               cancelNewStatus={reject}
             />
           ),
-          actions: ({ closeAll }) => (
-            <Button
-              primary
-              label={<T id="general.close" />}
-              onClick={() => {
-                reject();
-                closeAll();
-              }}
-              key="close"
-            />
-          ),
+          actions: ({ closeAll }) => closeButton(reject, closeAll),
           important: true,
         },
       ]);
@@ -102,19 +91,27 @@ const makeAdditionalActions = ({ loan, setState }) => openModal => (
 
   if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
     return new Promise((resolve, reject) => {
-      setState({
-        cancelNewStatus: reject,
-        confirmNewStatus: () => resolve(),
-        dialogContent: (
+      openModal({
+        title: getTitle(status),
+        content: ({ closeModal }) => (
           <RealRevenuesDialogContent
             loan={loan}
-            setOpenDialog={open => setState({ openDialog: open })}
-            cancelNewStatus={reject}
+            closeModal={closeModal}
             confirmNewStatus={() => resolve()}
           />
         ),
-        openDialog: true,
-        withConfirmButton: true,
+        actions: ({ closeAll }) => [
+          closeButton(reject, closeAll),
+          <Button
+            primary
+            label={<T id="general.ok" />}
+            onClick={() => {
+              resolve();
+              closeAll();
+            }}
+            key="ok"
+          />,
+        ],
       });
     });
   }
@@ -122,24 +119,6 @@ const makeAdditionalActions = ({ loan, setState }) => openModal => (
   return Promise.resolve();
 };
 
-export default compose(
-  withStateHandlers(
-    {
-      openDialog: false,
-      dialogContent: null,
-      title: '',
-      withConfirmButton: false,
-      cancelNewStatus: () => ({}),
-      confirmNewStatus: () => ({}),
-    },
-    { setState: () => newState => newState },
-  ),
-
-  withProps(({ loan, setState }) => ({
-    additionalActions: makeAdditionalActions({
-      loan,
-      setState,
-    }),
-    setOpenDialog: open => setState({ openDialog: open }),
-  })),
-);
+export default withProps(({ loan }) => ({
+  additionalActions: makeAdditionalActions(loan),
+}));

@@ -40,8 +40,6 @@ const makeSendNegativeFeedbackToAllLenders = (
         .then(() => closeModal({ ...returnValue }));
     }
   }
-
-  return closeModal({ ...returnValue });
 };
 
 type UnsucessfulFeedbackProps = {

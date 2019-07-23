@@ -34,10 +34,10 @@ const RealRevenuesDialogContent = ({
 
 export default compose(
   withRouter,
-  withProps(({ loan, history, cancelNewStatus, confirmNewStatus, setOpenDialog }) => ({
+  withProps(({ loan, history, confirmNewStatus, closeModal }) => ({
     onClick: () => {
       confirmNewStatus();
-      setOpenDialog(false);
+      closeModal();
       history.push(`/loans/${loan._id}/revenues`);
     },
   })),
