@@ -7,7 +7,10 @@ import {
 } from 'recompose';
 
 import { userLoanInsert, referralExists } from 'core/api/methods/index';
-import { LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
+import {
+  LOCAL_STORAGE_REFERRAL,
+  LOCAL_STORAGE_OLD_REFERRAL,
+} from 'core/api/constants';
 import AnonymousAppPage from './AnonymousAppPage';
 import PropertyStartPage from './PropertyStartPage';
 
@@ -21,20 +24,33 @@ export default compose(
     const propertyId = paramsQuery.get('propertyId');
     // Don't allow referralId to be null
     const referralId = paramsQuery.get('ref') || undefined;
+    const oldReferralId = localStorage.getItem(LOCAL_STORAGE_OLD_REFERRAL) || undefined;
 
     if (referralId) {
-      return referralExists.run({ ref: referralId }).then((exists) => {
+      localStorage.setItem(LOCAL_STORAGE_REFERRAL, referralId);
+    }
+
+    if (oldReferralId) {
+      localStorage.setItem(LOCAL_STORAGE_OLD_REFERRAL, oldReferralId);
+    }
+
+    if (referralId === oldReferralId) {
+      return { propertyId };
+    }
+
+    if (referralId) {
+      referralExists.run({ ref: referralId }).then((exists) => {
         if (exists) {
-          localStorage.setItem(LOCAL_STORAGE_REFERRAL, referralId);
+          localStorage.removeItem(LOCAL_STORAGE_OLD_REFERRAL);
+        } else if (oldReferralId) {
+          localStorage.setItem(LOCAL_STORAGE_REFERRAL, oldReferralId);
+        } else {
+          localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
         }
-        return {
-          propertyId,
-          referralId: exists ? referralId : undefined,
-        };
       });
     }
 
-    return { propertyId, referralId };
+    return { propertyId };
   }),
   branch(({ propertyId }) => !!propertyId, renderComponent(PropertyStartPage)),
   branch(({ currentUser }) => !currentUser, renderComponent(AnonymousAppPage)),
