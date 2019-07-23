@@ -1,11 +1,12 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 
 import StatusLabel from 'core/components/StatusLabel';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import { ModalManagerContext } from 'core/components/ModalManager';
 import LoanStatusModifierContainer from './LoanStatusModifierContainer';
 
 type LoanStatusModifierProps = {
@@ -30,16 +31,19 @@ const LoanStatusModifier = ({
   withConfirmButton,
   cancelNewStatus,
   confirmNewStatus,
-}: LoanStatusModifierProps) => (
-  <>
-    <StatusLabel
-      collection={LOANS_COLLECTION}
-      status={loan.status}
-      allowModify
-      docId={loan._id}
-      additionalActions={additionalActions}
-    />
-    <Dialog
+}: LoanStatusModifierProps) => {
+  const { openModal } = useContext(ModalManagerContext);
+
+  return (
+    <>
+      <StatusLabel
+        collection={LOANS_COLLECTION}
+        status={loan.status}
+        allowModify
+        docId={loan._id}
+        additionalActions={additionalActions(openModal)}
+      />
+      {/* <Dialog
       open={openDialog}
       title={title}
       actions={[
@@ -64,8 +68,9 @@ const LoanStatusModifier = ({
       important
     >
       {dialogContent}
-    </Dialog>
-  </>
-);
+    </Dialog> */}
+    </>
+  );
+};
 
 export default LoanStatusModifierContainer(LoanStatusModifier);

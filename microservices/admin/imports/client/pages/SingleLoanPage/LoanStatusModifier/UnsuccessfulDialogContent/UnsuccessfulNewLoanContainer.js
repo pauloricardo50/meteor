@@ -1,9 +1,7 @@
-import { withProps, compose, withState } from 'recompose';
+import { withProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
-import uniqBy from 'lodash/uniqBy';
 
 import {
-  sendNegativeFeedbackToAllLenders,
   adminLoanInsert,
   reuseProperty,
   loanUpdate,
@@ -14,53 +12,9 @@ import { PROPERTY_CATEGORY } from 'core/api/constants';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 
-const makeSendFeedbackToAllLenders = (
-  loan,
-  cancelNewStatus,
-  confirmNewStatus,
-  setEnableFeedbackButton,
-) => () => {
-  const { _id: loanId, offers = [] } = loan;
-
-  // Don't show duplicate lenders
-  const contacts = uniqBy(
-    offers,
-    ({
-      lender: {
-        contact: { name },
-      },
-    }) => name,
-  ).map(({
-    lender: {
-      contact: { name },
-      organisation: { name: organisationName },
-    },
-  }) => `${name} (${organisationName})`);
-
-  if (offers.length) {
-    const confirm = window.confirm(`Attention: enverra un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
-
-    if (confirm) {
-      return sendNegativeFeedbackToAllLenders
-        .run({ loanId })
-        .then(() => {
-          setEnableFeedbackButton(false);
-          import('core/utils/message').then(({ default: message }) => {
-            message.success("C'est dans la boite !", 2);
-          });
-        })
-        .then(() => confirmNewStatus())
-        .catch(cancelNewStatus);
-    }
-  }
-
-  return confirmNewStatus();
-};
-
 const insertNewLoan = ({
   loan,
   status = LOAN_STATUS.LEAD,
-  cancelNewStatus,
   confirmNewStatus,
 }) => {
   const { properties = [], borrowers = [], userId } = loan;
@@ -114,28 +68,19 @@ const addUnsuccesfulActivity = ({ loanId, reason }) =>
 
 export default compose(
   withRouter,
-  withState('enableFeedbackButton', 'setEnableFeedbackButton', true),
-  withState('reason', 'setReason', ''),
   withProps(({
     loan,
     cancelNewStatus,
     confirmNewStatus,
-    setOpenDialog,
+    closeModal,
     history,
-    setEnableFeedbackButton,
-    reason,
+    returnValue: { reason },
   }) => ({
-    sendFeedbackToAllLenders: makeSendFeedbackToAllLenders(
-      loan,
-      cancelNewStatus,
-      confirmNewStatus,
-      setEnableFeedbackButton,
-    ),
     setUnsuccessfulOnly: () => {
       addUnsuccesfulActivity({ loanId: loan._id, reason })
         .then(() => {
           confirmNewStatus();
-          setOpenDialog(false);
+          closeModal();
         })
         .catch(cancelNewStatus);
     },
@@ -146,6 +91,7 @@ export default compose(
         .then((loanId) => {
           history.push(`/loans/${loanId}`);
         })
+        .then(() => closeModal())
         .catch(cancelNewStatus);
     },
     insertPendingLoan: () => {
@@ -160,8 +106,8 @@ export default compose(
         .then((loanId) => {
           history.push(`/loans/${loanId}`);
         })
+        .then(() => closeModal())
         .catch(cancelNewStatus);
     },
-    shouldDisplayFeedbackButton: loan.offers && !!loan.offers.length,
   })),
 );

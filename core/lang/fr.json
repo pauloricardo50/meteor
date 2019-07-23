@@ -1,4 +1,5 @@
 {
+  "Forms.reason": "Raison",
   "Forms.shouldNotify": "Recevoir une notification le jour de l'événement",
   "MaxPropertyValue.noCantonError": "Champ obligatoire",
   "Forms.bank3ASimple": "Banque 3A",
