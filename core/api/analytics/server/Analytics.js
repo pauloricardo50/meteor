@@ -39,7 +39,7 @@ class Analytics {
 
   init(context) {
     this.events = EVENTS_CONFIG;
-    if (Meteor.isTest || Meteor.isAppTest) {
+    if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
       this.analytics = new TestAnalytics();
     } else {
       this.analytics = nodeAnalytics;
