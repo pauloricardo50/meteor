@@ -11,10 +11,10 @@ describe('Public onboarding', () => {
 
   beforeEach(() => {
     cy.callMethod('resetDatabase');
+    cy.visit('/');
   });
 
   it('should create a new loan when clicking on a cta', () => {
-    cy.visit('/');
     cy.get('.welcome-screen').should('exist');
 
     cy.get('.welcome-screen-top')
@@ -31,7 +31,6 @@ describe('Public onboarding', () => {
   });
 
   it('should keep the loan in localstorage', () => {
-    cy.visit('/');
     cy.get('.welcome-screen').should('exist');
 
     cy.get('.welcome-screen-top')
@@ -55,17 +54,14 @@ describe('Public onboarding', () => {
   });
 
   it('localStorage is cleared if the loan is no more available', () => {
-    cy.visit('/');
-    cy.get('.welcome-screen').should('exist');
-
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
+    cy.url().should('include', '/loans/');
 
     cy.window().then((window) => {
-      const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      return cy.callMethod('updateLoan', {
-        loanId,
+      cy.callMethod('updateLoan', {
+        loanId: window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
         object: { status: LOAN_STATUS.UNSUCCESSFUL },
       });
     });
@@ -79,8 +75,6 @@ describe('Public onboarding', () => {
   });
 
   it('Should attach an anonymous loan to a new user account', () => {
-    cy.visit('/');
-
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
@@ -124,8 +118,6 @@ describe('Public onboarding', () => {
   });
 
   it('should ask to create an account if the user wants to go further', () => {
-    cy.visit('/');
-
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
@@ -138,7 +130,6 @@ describe('Public onboarding', () => {
 
   it('should attach an anonymous loan to an existing account', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
-    cy.visit('/');
     cy.get('.welcome-screen-top')
       .find('button')
       .click();
@@ -165,7 +156,6 @@ describe('Public onboarding', () => {
   });
 
   it('should create a loan based on a PRO property', () => {
-    cy.visit('/');
     cy.callMethod('addProProperty').then((propertyId) => {
       cy.wrap(propertyId).as('propertyId');
     });
@@ -179,7 +169,7 @@ describe('Public onboarding', () => {
     cy.contains('Démarrer').click();
     cy.url().should('include', '/loans/');
 
-    cy.contains('Voir le bien immobilier').click();
+    cy.get('.property-card').click();
 
     cy.setSelect('residenceType', 0);
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
@@ -187,7 +177,6 @@ describe('Public onboarding', () => {
   });
 
   it('should not display non-PRO properties', () => {
-    cy.visit('/');
     cy.callMethod('addUserProperty').then((propertyId) => {
       cy.wrap(propertyId).as('propertyId');
     });
@@ -201,7 +190,6 @@ describe('Public onboarding', () => {
   });
 
   it('should only create one loan based on a PRO property if logged in', () => {
-    cy.visit('/');
     cy.callMethod('addProProperty').then((propertyId) => {
       cy.wrap(propertyId).as('propertyId');
     });
@@ -314,5 +302,32 @@ describe('Public onboarding', () => {
         expect(referredByUserLink).to.equal(userId);
       });
     });
+  });
+
+  it('should not route to an existing loan if a new property is expected', () => {
+    cy.callMethod('inviteTestUser', { withPassword: true });
+    cy.callMethod('addProProperty').then((propertyId) => {
+      cy.wrap(propertyId).as('propertyId');
+    });
+    cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
+    cy.visit('/');
+    cy.url().should('include', '/loans/');
+    cy.get('[type="checkbox"]').check();
+    cy.contains('Démarrer').click();
+    cy.contains('Seul').click();
+    cy.get('input#salary').type('300');
+    // Wait for form save
+    cy.wait(500);
+
+    cy.get('@propertyId').then((propertyId) => {
+      cy.visit(`/?propertyId=${propertyId}`);
+    });
+    cy.contains('Chemin Auguste-Vilbert 14').should('exist');
+    cy.contains('Démarrer').click();
+    cy.url().should('include', '/loans/');
+
+    cy.get('.logo-home').click();
+
+    cy.get('.loan-card').should('have.length', 2);
   });
 });

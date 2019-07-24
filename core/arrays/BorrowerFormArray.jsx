@@ -339,7 +339,6 @@ export const getBorrowerSimpleArray = ({
 }) => {
   const b = borrowers.find(borrower => borrower._id === borrowerId);
   const { simpleBorrowersForm: simple = true } = loan;
-  console.log('simple:', simple);
 
   if (!b) {
     throw new Error("couldn't find borrower");
