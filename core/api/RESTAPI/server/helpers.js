@@ -11,6 +11,7 @@ import Analytics from 'core/api/analytics/server/Analytics';
 import { Random } from 'meteor/random';
 import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
+import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
@@ -107,7 +108,9 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
-    status = error.error && typeof error.error === 'number' ? error.error : HTTP_STATUS_CODES.BAD_REQUEST;
+    status = error.error && typeof error.error === 'number'
+      ? error.error
+      : HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }
@@ -296,7 +299,11 @@ export const verifySignature = (req) => {
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
-  const { 'x-forwarded-for': clientAddress, host, 'x-real-ip': realIp } = headers;
+  const {
+    'x-forwarded-for': clientAddress,
+    host,
+    'x-real-ip': realIp,
+  } = headers;
 
   const analytics = new Analytics({
     userId,
@@ -309,3 +316,16 @@ export const trackRequest = ({ req, result }) => {
 
   analytics.track(EVENTS.API_CALLED, { endpoint: getRequestPath(req), result });
 };
+
+export const setIsAPI = () => {
+  storeOnFiber('isAPI', true);
+};
+
+// Can be used to determine if server-side code is being run from an API call
+export const isAPI = () => !!getFromFiber('isAPI');
+
+export const setAPIUser = (user) => {
+  storeOnFiber('APIUser', user);
+};
+
+export const getAPIUser = () => getFromFiber('APIUser');

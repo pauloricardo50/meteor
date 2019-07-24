@@ -9,10 +9,14 @@ import { OBJECT_FORMATS, formatObject } from '../helpers';
 
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
-const checkResponse = ({ res, expectedResponse }) =>
+const checkResponse = ({ res, expectedResponse, include }) =>
   res.json().then((body) => {
     if (expectedResponse) {
-      expect(body).to.deep.equal(expectedResponse);
+      if (include) {
+        expect(body).to.deep.include(expectedResponse);
+      } else {
+        expect(body).to.deep.equal(expectedResponse);
+      }
     }
     return Promise.resolve(body);
   });
@@ -31,6 +35,7 @@ export const fetchAndCheckResponse = ({
   query,
   data,
   expectedResponse,
+  include,
 }) => {
   const path = query
     ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
@@ -38,7 +43,7 @@ export const fetchAndCheckResponse = ({
     })}`
     : `http://localhost:${API_PORT}/api${url}`;
   return fetch(path, data).then(res =>
-    checkResponse({ res, expectedResponse }));
+    checkResponse({ res, expectedResponse, include }));
 };
 
 const signBody = ({ body, privateKey }) => {
