@@ -6,6 +6,7 @@ import { Match } from 'meteor/check';
 import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import omit from 'lodash/omit';
 
 import Analytics from 'core/api/analytics/server/Analytics';
 import { Random } from 'meteor/random';
@@ -266,7 +267,7 @@ export const verifySignature = (req) => {
   const key = new NodeRSA();
   key.importKey(publicKey, 'pkcs1-public-pem');
 
-  let objectToVerify = { };
+  let objectToVerify = {};
 
   if (!isMultipart) {
     objectToVerify = { security: sortObject({ timestamp, nonce }) };
@@ -279,8 +280,24 @@ export const verifySignature = (req) => {
     };
   }
 
-  if (!['GET', 'HEAD'].includes(method) && Object.keys(body).length > 0) {
+  if (
+    !isMultipart
+    && !['GET', 'HEAD'].includes(method)
+    && Object.keys(body).length > 0
+  ) {
     objectToVerify = { ...objectToVerify, body: sortObject(body) };
+  }
+
+  if (isMultipart) {
+    const { files: { file = {} } = {} } = req;
+    const { originalFilename, size, type } = file;
+    const bodyToVerify = {
+      ...omit(body, ['filename', 'size', 'type']),
+      filename: originalFilename,
+      size,
+      type,
+    };
+    objectToVerify = { ...objectToVerify, body: sortObject(bodyToVerify) };
   }
 
   const verified = Object.keys(OBJECT_FORMATS).some((format) => {
