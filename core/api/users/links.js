@@ -10,6 +10,16 @@ import {
   Tasks,
 } from '..';
 
+const assignedEmployeeCache = {
+  _id: 1,
+  firstName: 1,
+  lastName: 1,
+};
+
+const organisationsCache = {
+  name: 1,
+};
+
 Users.addLinks({
   assignedEmployee: {
     collection: Users,
@@ -17,11 +27,7 @@ Users.addLinks({
     type: 'one',
     denormalize: {
       field: 'assignedEmployeeCache',
-      body: {
-        _id: 1,
-        firstName: 1,
-        lastName: 1,
-      },
+      body: assignedEmployeeCache,
     },
   },
   assignedEndUsers: {
@@ -66,6 +72,10 @@ Users.addLinks({
   organisations: {
     collection: Organisations,
     inversedBy: 'users',
+    denormalize: {
+      field: 'organisationsCache',
+      body: organisationsCache,
+    },
   },
   proProperties: {
     collection: Properties,

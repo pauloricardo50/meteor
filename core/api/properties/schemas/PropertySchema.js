@@ -10,6 +10,7 @@ import {
   moneyField,
   userLinksSchema,
   documentsField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
@@ -287,6 +288,8 @@ export const PropertySchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Url,
   },
   documents: documentsField,
+  usersCache: { type: Array, optional: true },
+  'usersCache.$': cacheField,
 });
 
 const protectedKeys = [

@@ -714,6 +714,7 @@ export const propertySummary = () => ({
   externalUrl: 1,
   imageUrls: 1,
   insideArea: 1,
+  organisation: 1,
   promotion: { name: 1 },
   propertyType: 1,
   status: 1,
