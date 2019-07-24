@@ -288,8 +288,6 @@ export const PropertySchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Url,
   },
   documents: documentsField,
-  usersCache: { type: Array, optional: true },
-  'usersCache.$': cacheField,
 });
 
 const protectedKeys = [

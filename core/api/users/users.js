@@ -98,8 +98,6 @@ export const UserSchema = new SimpleSchema({
   referredByUserLink: { type: String, optional: true },
   referredByOrganisationLink: { type: String, optional: true },
   assignedEmployeeCache: cacheField,
-  organisationsCache: { type: Array, optional: true },
-  'organisationsCache.$': cacheField,
 });
 
 Meteor.users.attachSchema(UserSchema);

@@ -340,7 +340,11 @@ describe('PropertyService', function () {
         organisation: 1,
       });
 
-      expect(prop.organisation).to.deep.equal({ _id: 'org', name: 'Org1' });
+      expect(prop.organisation).to.deep.equal({
+        _id: 'org',
+        name: 'Org1',
+        userLinks: [{ _id: 'proId' }],
+      });
     });
   });
 });

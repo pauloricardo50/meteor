@@ -10,13 +10,6 @@ Organisations.cacheCount({
 });
 
 Meteor.startup(() => {
-  migrate('users', 'organisationsCache', {
-    organisationsCache: { $exists: false },
-  });
-  migrate('properties', 'usersCache', {
-    usersCache: { $exists: false },
-  });
-
   //
   // Old migrations
   //

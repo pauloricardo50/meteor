@@ -1,12 +1,6 @@
 import Properties from './properties';
 import { Users, Loans, Promotions, PromotionLots, MortgageNotes } from '..';
 
-const usersCache = {
-  firstName: 1,
-  lastName: 1,
-  organisations: { name: 1 },
-};
-
 Properties.addLinks({
   user: {
     field: 'userId',
@@ -39,9 +33,5 @@ Properties.addLinks({
     collection: Users,
     type: 'many',
     metadata: true,
-    denormalize: {
-      field: 'usersCache',
-      body: usersCache,
-    },
   },
 });

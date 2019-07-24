@@ -16,10 +16,6 @@ const assignedEmployeeCache = {
   lastName: 1,
 };
 
-const organisationsCache = {
-  name: 1,
-};
-
 Users.addLinks({
   assignedEmployee: {
     collection: Users,
@@ -72,10 +68,6 @@ Users.addLinks({
   organisations: {
     collection: Organisations,
     inversedBy: 'users',
-    denormalize: {
-      field: 'organisationsCache',
-      body: organisationsCache,
-    },
   },
   proProperties: {
     collection: Properties,
