@@ -61,7 +61,27 @@ const SimpleDashboardPageCTAs = ({
             })
           }
           title={<T id="BorrowersProgress.fullApplication" />}
-          description={<T id="BorrowersProgress.fullApplicationDescription" />}
+          description={(
+            <div className="full-application-description">
+              <img src="/img/homepage-application.svg" alt="Demande de prêt" />
+              <T id="BorrowersProgress.fullApplicationDescription" />
+              <ul>
+                <li>
+                  <T id="BorrowersProgress.fullApplicationDescription1" />
+                </li>
+                <li>
+                  <T id="BorrowersProgress.fullApplicationDescription2" />
+                </li>
+                <li>
+                  <T id="BorrowersProgress.fullApplicationDescription3" />
+                </li>
+              </ul>
+
+              <small>
+                <T id="BorrowersProgress.fullApplicationDescription4" />
+              </small>
+            </div>
+          )}
         />
       )}
     </div>

@@ -265,3 +265,15 @@
     justify-content: flex-end;
   }
 }
+
+.full-application-description {
+  display: block;
+
+  img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 24px;
+    width: 175px;
+    height: 175px;
+  }
+}
