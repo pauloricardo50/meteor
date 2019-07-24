@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import Calculator from 'core/utils/Calculator';
-import { RESIDENCE_TYPE, CANTONS } from '../../api/constants';
+import { RESIDENCE_TYPE } from '../../api/constants';
 import T from '../Translation';
 import Select from '../Select';
 import Button from '../Button';
@@ -18,6 +18,12 @@ type MaxPropertyValueResultsProps = {
   state: String,
   residenceType: String,
   setResidenceType: Function,
+};
+
+const getPropertyOrganisation = (loan) => {
+  if (loan.hasProProperty && loan.properties.length === 1) {
+    return loan.properties[0].organisation;
+  }
 };
 
 const MaxPropertyValueResults = ({
@@ -100,6 +106,7 @@ const MaxPropertyValueResults = ({
         hasPromotion={hasPromotion}
         shareSolvency={shareSolvency}
         loanId={loanId}
+        propertyOrganisation={getPropertyOrganisation(loan)}
       />
     </div>
   );

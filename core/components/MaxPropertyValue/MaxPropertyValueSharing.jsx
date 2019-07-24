@@ -10,13 +10,25 @@ import Dialog from '../Material/Dialog';
 
 type MaxPropertyValueSharingProps = {};
 
-const getTrigger = ({ shareSolvency, setOpenDialog, handleDisable }) => {
+const getTrigger = ({
+  shareSolvency,
+  setOpenDialog,
+  handleDisable,
+  propertyOrganisation,
+}) => {
   switch (shareSolvency) {
   case null:
   case undefined:
     return (
       <Button secondary raised onClick={() => setOpenDialog(true)}>
-        <T id="MaxPropertyValueSharing.buttonLabel" />
+        {propertyOrganisation ? (
+          <T
+            id="MaxPropertyValueSharing.buttonLabelOrg"
+            values={{ orgName: propertyOrganisation.name }}
+          />
+        ) : (
+          <T id="MaxPropertyValueSharing.buttonLabel" />
+        )}
       </Button>
     );
 
@@ -25,7 +37,14 @@ const getTrigger = ({ shareSolvency, setOpenDialog, handleDisable }) => {
     return (
       <div className="max-property-sharing-toggle">
         <span>
-          <T id="MaxPropertyValueSharing.toggleLabel" />
+          {propertyOrganisation ? (
+            <T
+              id="MaxPropertyValueSharing.buttonLabelOrg"
+              values={{ orgName: propertyOrganisation.name }}
+            />
+          ) : (
+            <T id="MaxPropertyValueSharing.toggleLabel" />
+          )}
         </span>
         <Toggle
           toggled={shareSolvency}
@@ -47,6 +66,7 @@ const MaxPropertyValueSharing = ({
   loading,
   handleSubmit,
   handleDisable,
+  propertyOrganisation,
 }: MaxPropertyValueSharingProps) => {
   if (!hasProProperty && !hasPromotion) {
     return null;
@@ -54,11 +74,25 @@ const MaxPropertyValueSharing = ({
 
   return (
     <>
-      {getTrigger({ shareSolvency, setOpenDialog, handleDisable })}
+      {getTrigger({
+        shareSolvency,
+        setOpenDialog,
+        handleDisable,
+        propertyOrganisation,
+      })}
       <Dialog
         open={openDialog}
         title={<T id="SimpleDashboardPage.shareSolvency.title" />}
-        text={<T id="SimpleDashboardPage.shareSolvency.disclaimer" />}
+        text={(
+          <T
+            id="SimpleDashboardPage.shareSolvency.disclaimer"
+            values={{
+              orgName: propertyOrganisation
+                ? propertyOrganisation.name
+                : 'votre courtier',
+            }}
+          />
+        )}
         actions={[
           <Button
             label={<T id="ConfirmMethod.buttonCancel" />}
