@@ -1,6 +1,10 @@
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
-import fs from 'fs';
 import { Meteor } from 'meteor/meteor';
+import fs from 'fs';
+import SimpleSchema from 'simpl-schema';
+
+import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
+import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
+import { withMeteorUserId } from '../helpers';
 import {
   checkQuery,
   impersonateSchema,
@@ -8,24 +12,45 @@ import {
   uploadFileToS3,
 } from './helpers';
 
-import { withMeteorUserId } from '../helpers';
+const bodySchema = new SimpleSchema({
+  propertyId: String,
+  category: {
+    type: String,
+    custom() {
+      if (this.field('propertyId')) {
+        return Object.values(PROPERTY_DOCUMENTS).includes(this.value)
+          ? undefined
+          : 'invalidCategory';
+      }
+    },
+  },
+});
 
 const uploadFileAPI = (req) => {
   const {
     files: { file } = {},
     user: { _id: userId },
     query,
-    body: { propertyId, category },
+    body,
   } = req;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: impersonateSchema,
   });
 
+  const cleanBody = bodySchema.clean(body);
+  try {
+    bodySchema.validate(cleanBody);
+  } catch (error) {
+    throw new Meteor.Error(error);
+  }
+
+  const { propertyId, category } = cleanBody;
+
   if (!file) {
     throw new Meteor.Error('No file uploaded');
   }
-  const { name, size, type, path, originalFilename } = file;
+  const { path } = file;
 
   return withMeteorUserId({ userId, impersonateUser }, () =>
     uploadFileToS3({
