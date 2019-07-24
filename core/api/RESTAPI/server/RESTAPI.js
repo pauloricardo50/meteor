@@ -65,6 +65,7 @@ export default class RESTAPI {
                 body: req.body,
                 query: req.query,
                 params: req.params,
+                files: req.files,
               }))
             .then(result => this.handleSuccess(result, req, res))
             .catch(next);

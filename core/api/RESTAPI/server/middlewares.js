@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import moment from 'moment';
+import multipart from 'connect-multiparty';
 
 import SlackService from '../../slack/server/SlackService';
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
@@ -27,6 +28,9 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
 
 // Handles replay attacks
 const replayHandlerMiddleware = (req, res, next) => {
+  if (req.isMultipart) {
+    return next();
+  }
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -52,9 +56,14 @@ const replayHandlerMiddleware = (req, res, next) => {
 // Filters out badly formatted requests, or ones missing basic headers
 const filterMiddleware = (req, res, next) => {
   const contentType = getHeader(req, 'content-type');
+  const isMultipart = contentType.includes('multipart/form-data');
 
-  if (!contentType || contentType !== 'application/json') {
+  if (!contentType || (contentType !== 'application/json' && !isMultipart)) {
     return next(REST_API_ERRORS.WRONG_CONTENT_TYPE(contentType));
+  }
+
+  if (isMultipart) {
+    req.isMultipart = true;
   }
 
   next();
@@ -127,11 +136,22 @@ const unknownEndpointMiddleware = (req, res, next) => {
   }));
 };
 
+const multipartMiddleware = (req, res, next) => {
+  const middleware = multipart();
+  const { isMultipart } = req;
+
+  return isMultipart ? middleware(req, res, next) : next();
+};
+
 export const preMiddlewares = [
   filterMiddleware,
+  multipartMiddleware,
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
   replayHandlerMiddleware,
 ];
-export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];
+export const postMiddlewares = [
+  unknownEndpointMiddleware,
+  errorMiddleware,
+];

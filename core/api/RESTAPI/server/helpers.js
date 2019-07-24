@@ -107,7 +107,9 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
-    status = error.error && typeof error.error === 'number' ? error.error : HTTP_STATUS_CODES.BAD_REQUEST;
+    status = error.error && typeof error.error === 'number'
+      ? error.error
+      : HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }
@@ -254,7 +256,7 @@ export const logRequest = ({ req, result }) => {
 };
 
 export const verifySignature = (req) => {
-  const { publicKey, signature, body, query } = req;
+  const { publicKey, signature, body, query, isMultipart } = req;
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -264,9 +266,13 @@ export const verifySignature = (req) => {
   const key = new NodeRSA();
   key.importKey(publicKey, 'pkcs1-public-pem');
 
-  let objectToVerify = { security: sortObject({ timestamp, nonce }) };
+  let objectToVerify = { };
 
-  if (Object.keys(query).length > 0) {
+  if (!isMultipart) {
+    objectToVerify = { security: sortObject({ timestamp, nonce }) };
+  }
+
+  if (!isMultipart && Object.keys(query).length > 0) {
     objectToVerify = {
       ...objectToVerify,
       queryParams: sortObject(query),
@@ -291,12 +297,16 @@ export const verifySignature = (req) => {
     return isValid;
   });
 
-  return verified;
+  return isMultipart || verified;
 };
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
-  const { 'x-forwarded-for': clientAddress, host, 'x-real-ip': realIp } = headers;
+  const {
+    'x-forwarded-for': clientAddress,
+    host,
+    'x-real-ip': realIp,
+  } = headers;
 
   const analytics = new Analytics({
     userId,
