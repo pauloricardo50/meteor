@@ -3,6 +3,7 @@ import fs from 'fs';
 import SimpleSchema from 'simpl-schema';
 
 import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
+import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
 import { withMeteorUserId } from '../helpers';
 import {
@@ -46,6 +47,13 @@ const uploadFileAPI = (req) => {
   }
 
   const { propertyId, category } = cleanBody;
+
+  if (propertyId) {
+    const property = PropertyService.get(propertyId);
+    if (!property) {
+      throw new Meteor.Error(`Property with id "${propertyId}" not found`);
+    }
+  }
 
   if (!file) {
     throw new Meteor.Error('No file uploaded');
