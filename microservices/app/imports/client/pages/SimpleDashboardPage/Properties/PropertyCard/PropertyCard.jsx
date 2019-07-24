@@ -1,14 +1,11 @@
 // @flow
 import React from 'react';
-import Button from 'core/components/Button';
 
-import PropertyCardContainer from './PropertyCardContainer';
-import PropertyCardInfos from './PropertyCardInfos';
-import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
-import Dialog from 'core/components/Material/Dialog';
-import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter';
-import T from 'core/components/Translation';
+import Link from 'core/components/Link';
 import useMedia from 'core/hooks/useMedia';
+import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
+import PropertyCardInfos from './PropertyCardInfos';
+import PropertyCardContainer from './PropertyCardContainer';
 
 type PropertyCardProps = {
   buttonLabel: Object,
@@ -20,54 +17,21 @@ type PropertyCardProps = {
 };
 
 const PropertyCard = (props: PropertyCardProps) => {
-  const {
-    buttonLabel,
-    onClick,
-    loan,
-    route,
-    showResidenceTypeSetter,
-    setShowResidenceTypeSetter,
-    image,
-    history,
-  } = props;
+  const { loan, route } = props;
 
   const isMobile = useMedia({ maxWidth: 1200 });
 
   return (
-    <div className="card1 property-card">
+    <Link className="card1 card-hover property-card" to={route}>
       <div className="top">
         <PropertyCardInfos isMobile={isMobile} {...props} />
-        {isMobile && (
-          <div className="property-card-actions">
-            <Button className="button" onClick={onClick} secondary raised>
-              {buttonLabel}
-            </Button>
-          </div>
-        )}
       </div>
       {loan.promotionOptions && loan.promotionOptions.length > 0 && (
         <div className="bottom">
           <PropertyCardPromotionOptions {...props} />
         </div>
       )}
-      <Dialog
-        open={showResidenceTypeSetter}
-        className="residence-type-setter-dialog"
-        actions={[
-          <Button
-            primary
-            label={<T id="general.close" />}
-            onClick={() => setShowResidenceTypeSetter(false)}
-          />,
-        ]}
-      >
-        <ResidenceTypeSetter
-          loan={loan}
-          image={image}
-          onSubmitCallback={() => history.push(route)}
-        />
-      </Dialog>
-    </div>
+    </Link>
   );
 };
 

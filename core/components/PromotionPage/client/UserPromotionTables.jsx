@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 
+import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import UserPromotionLotsTable from './UserPromotionLotsTable';
-import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter/ResidenceTypeSetter';
 
 type UserPromotionTablesProps = {
   loan: Object,

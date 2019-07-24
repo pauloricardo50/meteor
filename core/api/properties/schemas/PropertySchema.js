@@ -10,6 +10,7 @@ import {
   moneyField,
   userLinksSchema,
   documentsField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';

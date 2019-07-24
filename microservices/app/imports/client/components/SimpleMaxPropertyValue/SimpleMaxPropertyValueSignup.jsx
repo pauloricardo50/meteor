@@ -1,14 +1,10 @@
 // @flow
 import React from 'react';
-import cx from 'classnames';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 
 import T from 'core/components/Translation';
-import createTheme from 'core/config/muiCustom';
 import UserCreatorForm from '../UserCreator/UserCreatorForm';
-import SimpleMaxPropertyValueLightTheme from './SimpleMaxPropertyValueLightTheme';
 
 type SimpleMaxPropertyValueSignupProps = {};
 
@@ -28,7 +24,7 @@ const SimpleMaxPropertyValueSignup = ({
         buttonProps={{
           raised: true,
           secondary: true,
-          label: 'Créez votre compte',
+          label: <T id="MaxPropertyValue.signup.cta" />,
         }}
       />
     </div>

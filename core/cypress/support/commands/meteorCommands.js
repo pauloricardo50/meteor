@@ -1,4 +1,4 @@
-import pollUntilReady from '../../../utils/testHelpers/pollUntilReady';
+import pollUntilReady from '../../../utils/pollUntilReady';
 import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
 // You have to have visited the app before this can work

@@ -6,45 +6,14 @@ import cx from 'classnames';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 import { STATE } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
+import { getReadyToCalculateTitle } from 'core/components/MaxPropertyValue/MaxPropertyValueEmptyState';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Button from 'core/components/Button';
 import createTheme from 'core/config/muiCustom';
 
 type SimpleMaxPropertyValueEmptyStateProps = {};
-const getReadyToCalculateTitle = (props) => {
-  const { loan, lockCanton, canton } = props;
-  const {
-    hasPromotion,
-    hasProProperty,
-    properties = [],
-    promotions = [],
-  } = loan;
 
-  if (!lockCanton) {
-    return <T id="MaxPropertyValue.empty" />;
-  }
-
-  if (hasPromotion) {
-    const promotionName = promotions[0].name;
-    return (
-      <span>
-        <T id="MaxPropertyValue.empty.promotion" values={{ promotionName }} />
-        <T id={`Forms.canton.${canton}`} />
-      </span>
-    );
-  }
-
-  if (hasProProperty) {
-    const propertyName = properties[0].address1;
-    return (
-      <span>
-        <T id="MaxPropertyValue.empty.proProperty" values={{ propertyName }} />
-        <T id={`Forms.canton.${canton}`} />
-      </span>
-    );
-  }
-};
 
 const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStateProps) => {
   const {
@@ -148,7 +117,11 @@ const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStat
                 style={{ marginLeft: 16, marginTop: 0 }}
                 // disabled={!cantonValue}
               >
-                {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
+                {lockCanton ? (
+                  <T id="general.calculate" />
+                ) : (
+                  <T id="general.validate" />
+                )}
               </Button>
             </div>
           </>

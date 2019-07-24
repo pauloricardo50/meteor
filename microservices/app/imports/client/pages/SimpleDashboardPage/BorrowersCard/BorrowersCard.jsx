@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { withState, compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 
 import Calculator from 'core/utils/Calculator';
 import Button from 'core/components/Button';
@@ -58,9 +58,6 @@ const BorrowersCard = (props: BorrowersCardProps) => {
   );
 };
 
-export default compose(
-  withState('simpleForm', 'setSimpleForm', true),
-  withProps(({ loan }) => ({
-    progress: Calculator.personalInfoPercentSimple({ loan }),
-  })),
-)(BorrowersCard);
+export default withProps(({ loan }) => ({
+  progress: Calculator.personalInfoPercentSimple({ loan }),
+}))(BorrowersCard);

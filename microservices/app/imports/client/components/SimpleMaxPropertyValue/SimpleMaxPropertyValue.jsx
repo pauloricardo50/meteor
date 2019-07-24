@@ -2,6 +2,7 @@
 import React from 'react';
 import cx from 'classnames';
 
+import T from 'core/components/Translation';
 import Loading from 'core/components/Loading';
 import MaxPropertyValueResults from 'core/components/MaxPropertyValue/MaxPropertyValueResults';
 import MaxPropertyValueContainer, {
@@ -20,8 +21,12 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
       <div className={cx('simple-max-property-value loading', { fixed })}>
         <div className="animated fadeIn">
           <Loading />
-          <h4>Algorithmes au travail...</h4>
-          <p>Détendez-vous un instant</p>
+          <h4>
+            <T id="MaxPropertyValue.loading1" />
+          </h4>
+          <p>
+            <T id="MaxPropertyValue.loading1" />
+          </p>
         </div>
       </div>
     );

@@ -42,4 +42,29 @@ Properties.addReducers({
     reduce: ({ totalValue = 0, landArea = 0 }) =>
       (landArea === 0 ? 0 : totalValue / landArea),
   },
+  organisation: {
+    body: { users: { organisations: { name: 1 } } },
+    reduce: ({ users = [] }) => {
+      if (users.length === 0) {
+        return undefined;
+      }
+
+      let org;
+
+      const hasOrg = users.every(({ organisations = [] }) => {
+        if (organisations.length !== 1) {
+          return false;
+        }
+
+        if (!org) {
+          org = organisations[0];
+          return true;
+        }
+
+        return organisations[0]._id === org._id;
+      });
+
+      return hasOrg ? org : null;
+    },
+  },
 });

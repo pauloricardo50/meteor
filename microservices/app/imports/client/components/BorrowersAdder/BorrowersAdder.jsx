@@ -26,7 +26,7 @@ const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
         <div className="flex-row center space-children">
           <Icon type="person" />
           <p style={{ margin: 'unset' }}>
-            <T id="BorrowersPage.BorrowerAdder.buttonLabel.singleBorrower" />
+            <T id="BorrowersPage.BorrowerAdder.singleBorrower" />
           </p>
         </div>
       </Button>
@@ -38,7 +38,7 @@ const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
         <div className="flex-row center space-children">
           <Icon type="people" />
           <p style={{ margin: 'unset' }}>
-            <T id="BorrowersPage.BorrowerAdder.buttonLabel.twoBorrowers" />
+            <T id="BorrowersPage.BorrowerAdder.twoBorrowers" />
           </p>
         </div>
       </Button>
