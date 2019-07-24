@@ -42,7 +42,6 @@ export * from './security/constants';
 export * from './tasks/taskConstants';
 export * from './updateWatchers/updateWatcherConstants';
 export * from './users/userConstants';
-export * from './wuest/wuestConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';

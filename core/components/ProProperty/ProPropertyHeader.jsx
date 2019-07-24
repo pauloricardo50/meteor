@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
+import { PROPERTY_DOCUMENTS, COLLECTIONS } from 'core/api/constants';
 import { Money } from '../Translation';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
 import ProPropertyRecap from './ProPropertyRecap';
-import ResidenceTypeSetter from '../ResidenceTypeSetter/ResidenceTypeSetter';
-import createTheme from '../../config/muiCustom';
+import UpdateField from '../UpdateField';
 
 type ProPropertyheaderProps = {};
 
@@ -17,8 +16,14 @@ const getImages = (documents = {}, imageUrls = []) => {
     images = imageUrls;
   }
 
-  if (documents.propertyImages && documents.propertyImages.length) {
-    images = [...images, documents.propertyImages.map(({ url }) => url)];
+  if (
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
+    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+  ) {
+    images = [
+      ...images,
+      documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].map(({ url }) => url),
+    ];
   }
 
   if (images.length === 0) {
@@ -40,7 +45,6 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
   } = property;
 
   const { ogTitle, ogDescription, ogSiteName } = openGraphData;
-  const defaultTheme = createTheme();
 
   return (
     <div className="header">
@@ -56,21 +60,12 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
             </h2>
           </div>
           {loan && (
-            <MuiThemeProvider
-              theme={{
-                ...defaultTheme,
-                overrides: {
-                  ...defaultTheme.overrides,
-                  MuiFormControl: {
-                    root: {
-                      marginTop: '8px !important',
-                    },
-                  },
-                },
-              }}
-            >
-              <ResidenceTypeSetter loan={loan} noIcon />
-            </MuiThemeProvider>
+            <UpdateField
+              doc={loan}
+              fields={['residenceType']}
+              collection={COLLECTIONS.LOANS_COLLECTION}
+              className="residence-type-setter"
+            />
           )}
         </div>
         {(ogDescription || description) && (

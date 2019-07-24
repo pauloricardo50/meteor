@@ -22,12 +22,17 @@ const deleteAllCookies = () => {
 };
 
 describe('HistoryWatcher', () => {
-  const watcher = new HistoryWatcher({ routes });
+  const watcher = new HistoryWatcher({ routes, history: { location: {} } });
 
   context('getMatchingPath', () => {
     it('returns the matching path', () => {
       const path = watcher.getMatchingPath('/foo');
-      expect(path).to.deep.equal({ path: '/foo', route: 'foo', params: {} });
+      expect(path).to.deep.equal({
+        path: '/foo',
+        route: 'foo',
+        params: {},
+        queryString: {},
+      });
     });
 
     it('returns the matching path with params', () => {
@@ -36,6 +41,7 @@ describe('HistoryWatcher', () => {
         path: '/foo/abc',
         route: 'bar',
         params: { id: 'abc' },
+        queryString: {},
       });
     });
 
@@ -45,6 +51,7 @@ describe('HistoryWatcher', () => {
         path: '/test',
         route: 'NOT_FOUND',
         params: {},
+        queryString: {},
       });
     });
   });

@@ -3,7 +3,6 @@ import {
   PROPERTY_TYPE,
   MINERGIE_CERTIFICATE,
   VOLUME_NORM,
-  VALUATION_STATUS,
 } from './propertyConstants';
 
 export const emptyProperty = {};
@@ -29,10 +28,5 @@ export const fakeProperty = {
   minergie: MINERGIE_CERTIFICATE.MINERGIE_ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
-  valuation: {
-    status: VALUATION_STATUS.NONE,
-  },
-  qualityProfileCondition: 'INTACT',
-  qualityProfileStandard: 'AVERAGE',
   terraceArea: 20,
 };

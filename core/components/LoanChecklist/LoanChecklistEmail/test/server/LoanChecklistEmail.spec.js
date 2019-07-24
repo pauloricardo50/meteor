@@ -24,6 +24,7 @@ describe('LoanChecklist', () => {
         expect(documents.borrowers[0].title).to.equal('Emprunteur 1');
         expect(documents.borrowers[0].labels.length).to.equal(1);
       });
+
       it('with two borrowers with name', () => {
         const { fields, documents } = getChecklistMissingInformations({
           loan: {
@@ -73,7 +74,7 @@ describe('LoanChecklist', () => {
         });
         expect(fields.property).to.not.equal(undefined);
         expect(fields.property.title).to.equal('Bien immobilier');
-        expect(fields.property.labels.length).to.equal(16);
+        expect(fields.property.labels.length).to.equal(14);
         expect(documents.property).to.not.equal(undefined);
         expect(documents.property.labels.length).to.equal(1);
         expect(fields.borrowers.length).to.equal(2);

@@ -20,11 +20,7 @@ const ResidenceTypeSetter = ({
   const { residenceType } = loan;
   return (
     <div className="card1 residence-type-setter">
-      {image ? (
-        <img src={image} />
-      ) : noIcon ? null : (
-        <FontAwesomeIcon className="icon" icon={faHome} />
-      )}
+      <FontAwesomeIcon className="icon" icon={faHome} />
       <div className="flex-col">
         {!residenceType && (
           <p>

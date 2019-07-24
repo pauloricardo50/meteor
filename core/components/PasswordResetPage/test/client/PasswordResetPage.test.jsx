@@ -8,11 +8,8 @@ import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
 
 import { testCreateUser } from '../../../../api';
-import {
-  shallow,
-  getMountedComponent,
-  pollUntilReady,
-} from '../../../../utils/testHelpers';
+import { shallow, getMountedComponent } from '../../../../utils/testHelpers';
+import pollUntilReady from '../../../../utils/pollUntilReady';
 import Loading from '../../../Loading/Loading';
 import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
@@ -40,7 +37,7 @@ describe('PasswordResetPage', () => {
     const { email, token } = props;
     const firstName = 'John';
     const lastName = 'Doe';
-    
+
     // FIXME: testCreateUser is called twice
     try {
       await testCreateUser.run({

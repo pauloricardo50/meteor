@@ -15,6 +15,7 @@ export const analyticsPage = new Method({
     path: String,
     route: String,
     queryParams: Object,
+    queryString: Object,
   },
 });
 

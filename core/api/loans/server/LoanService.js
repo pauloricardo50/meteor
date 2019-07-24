@@ -5,6 +5,8 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+import { ACTIVITY_SECONDARY_TYPES } from 'core/api/activities/activityConstants';
+import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
@@ -861,7 +863,7 @@ export class LoanService extends CollectionService {
       loanId,
       object: { customName: `Financement de ${promotionName}` },
     });
-    
+
     return loanId;
   }
 
@@ -877,6 +879,24 @@ export class LoanService extends CollectionService {
       object: { customName: true },
       operator: '$unset',
     });
+  }
+
+  setCreatedAtActivityDescription({ loanId, description }) {
+    const { activities = [] } = this.fetchOne({
+      $filters: { _id: loanId },
+      activities: { secondaryType: 1 },
+    });
+    const { _id: createdAtActivityId } = activities.find(({ secondaryType }) =>
+    secondaryType === ACTIVITY_SECONDARY_TYPES.CREATED) || {};
+
+    if (createdAtActivityId) {
+      ActivityService._update({
+        id: createdAtActivityId,
+        object: { description },
+      });
+    }
+
+    return loanId;
   }
 }
 

@@ -10,10 +10,10 @@ import {
   moneyField,
   userLinksSchema,
   documentsField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
-import { ValuationSchema } from './wuestSchemas';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -256,22 +256,6 @@ export const PropertySchema = new SimpleSchema({
     min: -180,
     max: 180,
   },
-  qualityProfileCondition: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
-    uniforms: { placeholder: null },
-  },
-  qualityProfileStandard: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
-    uniforms: { placeholder: null },
-  },
-  valuation: {
-    type: ValuationSchema,
-    defaultValue: {},
-  },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   yearlyExpenses: moneyField,
   landValue: moneyField,
@@ -317,7 +301,6 @@ const protectedKeys = [
   'mortgageNoteLinks',
   'updatedAt',
   'userId',
-  'valuation',
   'documents',
   'userLinks',
 ];

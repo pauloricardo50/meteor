@@ -18,17 +18,18 @@ const BorrowerForm = ({
   loan,
   overrides = {},
 }: BorrowerFormProps) => {
-  const borrower = loan.borrowers.find(({ _id }) => _id === borrowerId);
-  const { simpleBorrowersform: simple = true } = loan;
+  const { _id: loanId, borrowers } = loan;
+  const borrower = borrowers.find(({ _id }) => _id === borrowerId);
+  const { simpleBorrowersForm: simple = true } = loan;
 
   return (
     <div className="borrower-form animated fadeIn">
-      {loan.borrowers.length === 2 && (
-        <BorrowerRemover borrower={borrower} loanId={loan._id} />
+      {borrowers.length === 2 && (
+        <BorrowerRemover borrower={borrower} loanId={loanId} />
       )}
       <TranslatedAutoForm
         inputs={getBorrowerSimpleArray({
-          borrowers: loan.borrowers,
+          borrowers,
           borrowerId,
           loan,
         })}
@@ -38,28 +39,28 @@ const BorrowerForm = ({
         doc={
           simple
             ? {
-                ...borrower,
-                insurance2Simple:
-                  (borrower.insurance2 &&
-                    !!borrower.insurance2.length &&
-                    borrower.insurance2[0].value) ||
-                  undefined,
-                bank3ASimple:
-                  (borrower.bank3A &&
-                    !!borrower.bank3A.length &&
-                    borrower.bank3A[0].value) ||
-                  undefined,
-                insurance3ASimple:
-                  (borrower.insurance3A &&
-                    !!borrower.insurance3A.length &&
-                    borrower.insurance3A[0].value) ||
-                  undefined,
-                insurance3BSimple:
-                  (borrower.insurance3B &&
-                    !!borrower.insurance3B.length &&
-                    borrower.insurance3B[0].value) ||
-                  undefined,
-              }
+              ...borrower,
+              insurance2Simple:
+                  (borrower.insurance2
+                    && !!borrower.insurance2.length
+                    && borrower.insurance2[0].value)
+                  || undefined,
+              bank3ASimple:
+                  (borrower.bank3A
+                    && !!borrower.bank3A.length
+                    && borrower.bank3A[0].value)
+                  || undefined,
+              insurance3ASimple:
+                  (borrower.insurance3A
+                    && !!borrower.insurance3A.length
+                    && borrower.insurance3A[0].value)
+                  || undefined,
+              insurance3BSimple:
+                  (borrower.insurance3B
+                    && !!borrower.insurance3B.length
+                    && borrower.insurance3B[0].value)
+                  || undefined,
+            }
             : borrower
         }
         disabled={!userFormsEnabled}
@@ -68,4 +69,5 @@ const BorrowerForm = ({
     </div>
   );
 };
+
 export default BorrowerForm;

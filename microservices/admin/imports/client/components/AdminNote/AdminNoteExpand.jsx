@@ -10,22 +10,33 @@ type AdminNoteExpandProps = {};
 const AdminNoteExpand = ({
   showAll,
   setShowAll,
+  adminNote,
   ...props
 }: AdminNoteExpandProps) => (
   <>
     <AdminNote
       {...props}
-      style={{ height: showAll ? 'unset' : 120, overflow: 'hidden' }}
+      adminNote={adminNote}
+      style={{
+        height: showAll || !adminNote ? 'unset' : 120,
+        overflow: 'hidden',
+      }}
     />
-    <Button
-      style={{ marginTop: 16 }}
-      primary
-      outlined
-      onClick={() => setShowAll(!showAll)}
-    >
-      {showAll ? 'Masquer' : 'Afficher tout'}
-    </Button>
+    {adminNote && (
+      <Button
+        style={{ marginTop: 16 }}
+        primary
+        outlined
+        onClick={() => setShowAll(!showAll)}
+      >
+        {showAll ? 'Masquer' : 'Afficher tout'}
+      </Button>
+    )}
   </>
 );
 
-export default withState('showAll', 'setShowAll', false)(AdminNoteExpand);
+export default withState(
+  'showAll',
+  'setShowAll',
+  ({ adminNote }) => !adminNote,
+)(AdminNoteExpand);

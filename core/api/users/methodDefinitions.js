@@ -169,5 +169,13 @@ export const anonymousCreateUser = new Method({
       phoneNumber: String,
     },
     trackingId: String,
+    referralId: Match.Maybe(String),
+  },
+});
+
+export const referralExists = new Method({
+  name: 'referralExists',
+  params: {
+    ref: String,
   },
 });

@@ -9,11 +9,16 @@ import ProPropertyContainer from './ProPropertyContainer';
 
 type ProPropertyProps = {};
 
-const ProProperty = ({ property, simple, loan }: ProPropertyProps) => {
-  const { documents, address1, city, zipCode } = property;
+const ProProperty = ({
+  property,
+  simple,
+  loan,
+  documents,
+}: ProPropertyProps) => {
+  const { address1, city, zipCode } = property;
 
   return (
-    <div className={cx('pro-property card1 card-top', { simple })}>
+    <div className={cx('pro-property card1 card-top animated fadeIn', { simple })}>
       <ProPropertyheader property={property} loan={loan} />
       <MapWithMarkerWrapper
         address1={address1}
@@ -22,7 +27,7 @@ const ProProperty = ({ property, simple, loan }: ProPropertyProps) => {
         options={{ zoom: 15 }}
         showIncompleteAddress={false}
       />
-      <DocumentDownloadList files={documents && documents.propertyDocuments} />
+      <DocumentDownloadList files={documents} />
     </div>
   );
 };

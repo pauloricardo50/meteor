@@ -1,14 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-// import { Element } from 'react-scroll';
 
 import T from 'core/components/Translation';
-import {
-  VALUATION_STATUS,
-  PROPERTY_CATEGORY,
-  APPLICATION_TYPES,
-} from 'core/api/constants';
-// import Valuation from 'core/components/Valuation';
+import { PROPERTY_CATEGORY, APPLICATION_TYPES } from 'core/api/constants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import { propertyDelete } from 'core/api/methods/index';
@@ -16,17 +10,12 @@ import { createRoute } from 'core/utils/routerUtils';
 import ProProperty from 'core/components/ProProperty';
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
+import PageApp from '../../components/PageApp';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
-// import LaunchValuationButton from './LaunchValuationButton';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
-import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
-import PageApp from '../../components/PageApp/PageApp';
 
-const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
-  progress >= 1 && status !== VALUATION_STATUS.DONE;
-
-const SinglePropertyPage = props => {
+const SinglePropertyPage = (props) => {
   const { loan, propertyId, history, currentUser: { loans } = {} } = props;
   const {
     borrowers,
@@ -39,16 +28,11 @@ const SinglePropertyPage = props => {
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
     return (
-      <>
-        {/* <ResidenceTypeSetter loan={loan} /> */}
-        {residenceType && (
-          <ProProperty
-            property={property}
-            simple={applicationType === APPLICATION_TYPES.SIMPLE}
-            loan={loan}
-          />
-        )}
-      </>
+      <ProProperty
+        property={property}
+        simple={applicationType === APPLICATION_TYPES.SIMPLE}
+        loan={loan}
+      />
     );
   }
 
@@ -79,12 +63,9 @@ const SinglePropertyPage = props => {
           }}
           method={() =>
             propertyDelete.run({ propertyId, loanId }).then(() =>
-              history.push(
-                createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
-                  ':loanId': loan._id,
-                }),
-              ),
-            )
+              history.push(createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
+                ':loanId': loan._id,
+              })))
           }
           label={<T id="general.delete" />}
         >
@@ -102,9 +83,6 @@ const SinglePropertyPage = props => {
           zipCode={zipCode}
           options={{ zoom: 15 }}
         />
-        {/* <Element name="valuation" className="valuation">
-          <Valuation property={property} loanResidenceType={residenceType} />
-        </Element> */}
 
         <SinglePropertyPageForms
           loan={loan}
@@ -114,12 +92,6 @@ const SinglePropertyPage = props => {
       </section>
       <div className="single-property-page-buttons">
         <ReturnToDashboard />
-        {/* <LaunchValuationButton
-          enabled={shouldDisplayLaunchValuationButton({
-            progress,
-            status: property.valuation.status,
-          })}
-        /> */}
       </div>
     </PageApp>
   );

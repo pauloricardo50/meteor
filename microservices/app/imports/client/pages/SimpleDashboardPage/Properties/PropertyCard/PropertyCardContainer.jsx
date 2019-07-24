@@ -1,10 +1,8 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { withProps } from 'recompose';
 
-import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import { PROPERTIES_COLLECTION } from 'core/api/constants';
+import { PROPERTY_DOCUMENTS } from 'core/api/constants';
 
 const getImage = ({ documents = {}, imageUrls = [] }) => {
   let images = [];
@@ -12,8 +10,14 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
     images = imageUrls;
   }
 
-  if (documents.propertyImages && documents.propertyImages.length) {
-    images = [...images, ...documents.propertyImages.map(({ url }) => url)];
+  if (
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
+    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+  ) {
+    images = [
+      ...images,
+      ...documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].map(({ url }) => url),
+    ];
   }
 
   if (documents.promotionImage && documents.promotionImage.length) {
@@ -27,51 +31,23 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
   return images[0];
 };
 
-export default compose(
-  withRouter,
-  withState('showResidenceTypeSetter', 'setShowResidenceTypeSetter', false),
-  withProps(
-    ({
-      additionalInfos,
-      collection,
-      document,
-      history,
-      loan: { _id: loanId, residenceType },
-      shareSolvency,
-      setShowResidenceTypeSetter,
-    }) => ({
-      name: <span>{document.name || document.address1}</span>,
-      address: document.address,
-      category: document.category,
-      buttonLabel: (
-        <T
-          id={`SimpleDashboardPage.propertyCardButton.${
-            collection === PROPERTIES_COLLECTION ? 'property' : 'promotion'
-          }`}
-        />
-      ),
-      onClick: () => {
-        if (!residenceType) {
-          setShowResidenceTypeSetter(true);
-        } else {
-          history.push(
-            createRoute('/loans/:loanId/:collection/:docId', {
-              loanId,
-              collection,
-              docId: document._id,
-            }),
-          );
-        }
-      },
-      image: getImage(document),
-      additionalInfos,
-      loanId,
-      shareSolvency,
-      route: createRoute('/loans/:loanId/:collection/:docId', {
-        loanId,
-        collection,
-        docId: document._id,
-      }),
-    }),
-  ),
-);
+export default withProps(({
+  additionalInfos,
+  collection,
+  document,
+  loan: { _id: loanId },
+  shareSolvency,
+}) => ({
+  name: <span>{document.name || document.address1}</span>,
+  address: document.address,
+  category: document.category,
+  image: getImage(document),
+  additionalInfos,
+  loanId,
+  shareSolvency,
+  route: createRoute('/loans/:loanId/:collection/:docId', {
+    loanId,
+    collection,
+    docId: document._id,
+  }),
+}));

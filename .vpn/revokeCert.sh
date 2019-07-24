@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# How to use: 
+# Run "./revokeCert.sh test@e-potek.ch"
+
 # Revoke cert and generate new CRL
 ssh exoscale-ca "bash -s" < ./revokeCertAndGenCRL.sh "$1"
 

@@ -22,10 +22,4 @@ Factory.define('testLoan', Loans, {
 
 Factory.define('testProperty', Properties, {
   value: 1000000,
-  valuation: {
-    min: 857000,
-    max: 1085000,
-    value: 998000,
-    microlocation: { grade: 4.2 },
-  },
 });

@@ -39,7 +39,7 @@ class Analytics {
 
   init(context) {
     this.events = EVENTS_CONFIG;
-    if (Meteor.isTest || Meteor.isAppTest) {
+    if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
       this.analytics = new TestAnalytics();
     } else {
       this.analytics = nodeAnalytics;
@@ -155,7 +155,14 @@ class Analytics {
   }
 
   page(params) {
-    const { cookies, sessionStorage, path, route, queryParams } = params;
+    const {
+      cookies,
+      sessionStorage,
+      path,
+      route,
+      queryParams,
+      queryString,
+    } = params;
     const trackingId = cookies[TRACKING_COOKIE];
     const formattedRoute = this.formatRouteName(route);
 
@@ -171,6 +178,7 @@ class Analytics {
         path,
         url: `${this.host}${path === '/' ? '' : path}`,
         referrer: this.referrer,
+        ...queryString,
         ...queryParams,
       },
     });
