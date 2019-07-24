@@ -14,6 +14,35 @@ import {
 import AnonymousAppPage from './AnonymousAppPage';
 import PropertyStartPage from './PropertyStartPage';
 
+const setReferralId = (paramsQuery) => {
+  const referralId = paramsQuery.get('ref') || undefined;
+  const oldReferralId = localStorage.getItem(LOCAL_STORAGE_OLD_REFERRAL) || undefined;
+
+  if (referralId) {
+    localStorage.setItem(LOCAL_STORAGE_REFERRAL, referralId);
+  }
+
+  if (oldReferralId) {
+    localStorage.setItem(LOCAL_STORAGE_OLD_REFERRAL, oldReferralId);
+  }
+
+  if (referralId === oldReferralId) {
+    return;
+  }
+
+  if (referralId) {
+    referralExists.run({ ref: referralId }).then((exists) => {
+      if (exists) {
+        localStorage.setItem(LOCAL_STORAGE_OLD_REFERRAL, referralId);
+      } else if (oldReferralId) {
+        localStorage.setItem(LOCAL_STORAGE_REFERRAL, oldReferralId);
+      } else {
+        localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
+      }
+    });
+  }
+};
+
 export default compose(
   withProps(({ location }) => {
     if (!location.search) {
@@ -22,33 +51,7 @@ export default compose(
 
     const paramsQuery = new URLSearchParams(location.search);
     const propertyId = paramsQuery.get('propertyId');
-    // Don't allow referralId to be null
-    const referralId = paramsQuery.get('ref') || undefined;
-    const oldReferralId = localStorage.getItem(LOCAL_STORAGE_OLD_REFERRAL) || undefined;
-
-    if (referralId) {
-      localStorage.setItem(LOCAL_STORAGE_REFERRAL, referralId);
-    }
-
-    if (oldReferralId) {
-      localStorage.setItem(LOCAL_STORAGE_OLD_REFERRAL, oldReferralId);
-    }
-
-    if (referralId === oldReferralId) {
-      return { propertyId };
-    }
-
-    if (referralId) {
-      referralExists.run({ ref: referralId }).then((exists) => {
-        if (exists) {
-          localStorage.removeItem(LOCAL_STORAGE_OLD_REFERRAL);
-        } else if (oldReferralId) {
-          localStorage.setItem(LOCAL_STORAGE_REFERRAL, oldReferralId);
-        } else {
-          localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
-        }
-      });
-    }
+    setReferralId(paramsQuery);
 
     return { propertyId };
   }),

@@ -231,7 +231,7 @@ anonymousCreateUser.setHandler((context, params) => {
   analytics.alias(params.trackingId);
   analytics.track(EVENTS.USER_CREATED, {
     userId,
-    origin: params.referralId ? 'referral' : 'anonymous',
+    origin: params.referralId ? 'referral' : 'organic',
     referralId: params.referralId,
   });
   if (params.loanId) {
@@ -247,7 +247,6 @@ referralExists.setHandler((context, params) => {
   const { ref } = params;
   const referral = UserService.fetchOne({
     $filters: { _id: ref, roles: { $in: [ROLES.PRO] } },
-    _id: 1,
   });
 
   return !!referral;
