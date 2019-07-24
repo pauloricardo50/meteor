@@ -7,7 +7,7 @@ import TextField from 'uniforms-material/TextField';
 import Button from '@material-ui/core/Button';
 
 import Loading from 'imports/core/components/Loading/Loading';
-import { pollUntilReady } from 'imports/core/utils/testHelpers/index';
+import pollUntilReady from '../../../../utils/pollUntilReady';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 
 import AutoForm from '../../AutoForm';
