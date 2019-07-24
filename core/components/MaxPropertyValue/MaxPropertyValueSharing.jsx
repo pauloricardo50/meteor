@@ -2,12 +2,41 @@
 import React from 'react';
 
 import Button from '../Button';
+import Toggle from '../Toggle';
 import Icon from '../Icon';
 import T from '../Translation';
 import MaxPropertyValueSharingContainer from './MaxPropertyValueSharingContainer';
 import Dialog from '../Material/Dialog';
 
 type MaxPropertyValueSharingProps = {};
+
+const getTrigger = ({ shareSolvency, setOpenDialog, handleDisable }) => {
+  switch (shareSolvency) {
+  case null:
+  case undefined:
+    return (
+      <Button secondary raised onClick={() => setOpenDialog(true)}>
+        <T id="MaxPropertyValueSharing.buttonLabel" />
+      </Button>
+    );
+
+  case true:
+  case false:
+    return (
+      <div className="max-property-sharing-toggle">
+        <span>
+          <T id="MaxPropertyValueSharing.toggleLabel" />
+        </span>
+        <Toggle
+          toggled={shareSolvency}
+          onToggle={shareSolvency ? handleDisable : () => setOpenDialog(true)}
+        />
+      </div>
+    );
+
+  default:
+  }
+};
 
 const MaxPropertyValueSharing = ({
   hasProProperty,
@@ -23,64 +52,9 @@ const MaxPropertyValueSharing = ({
     return null;
   }
 
-  let label;
-  let secondary;
-  let onClick;
-  let raised;
-  let outlined;
-
-  switch (shareSolvency) {
-  case null:
-  case undefined: {
-    label = <T id="MaxPropertyValueSharing.buttonLabel" />;
-    secondary = true;
-    raised = true;
-    onClick = () => setOpenDialog(true);
-    break;
-  }
-  case true: {
-    outlined = true;
-    label = (
-      <span className="max-property-sharing-label">
-          Partage de solvabilité: &nbsp;
-        <span className="success">
-            Activé&nbsp;
-          <Icon type="check" />
-        </span>
-      </span>
-    );
-    onClick = handleDisable;
-    break;
-  }
-  case false: {
-    outlined = true;
-    label = (
-      <span className="max-property-sharing-label">
-          Partage de solvabilité: &nbsp;
-        <span className="error">
-            Désactivé&nbsp;
-          <Icon type="close" />
-        </span>
-      </span>
-    );
-    onClick = () => setOpenDialog(true);
-    break;
-  }
-  default:
-    break;
-  }
-
   return (
     <>
-      <Button
-        raised={raised}
-        secondary={secondary}
-        onClick={onClick}
-        outlined={outlined}
-        className="max-property-sharing"
-      >
-        {label}
-      </Button>
+      {getTrigger({ shareSolvency, setOpenDialog, handleDisable })}
       <Dialog
         open={openDialog}
         title={<T id="SimpleDashboardPage.shareSolvency.title" />}

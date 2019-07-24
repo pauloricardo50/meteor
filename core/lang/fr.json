@@ -1,4 +1,5 @@
 {
+  "MaxPropertyValueSharing.toggleLabel": "Partage de solvabilité",
   "MaxPropertyValue.signup.cta": "Envoyer",
   "MaxPropertyValue.completeInfo": "Complétez vos informations",
   "MaxPropertyValue.loading1": "Algorithmes au travail...",
