@@ -26,13 +26,20 @@ const defaultActions = ({ closeModal }) => (
 
 const DialogComponents = ({
   closeModal,
-  title,
-  description,
-  content,
-  actions = defaultActions,
   returnValue,
+  closeAll,
+  dialogContent: Content = {},
 }: DialogComponentsProps) => {
-  const renderDialogPart = makeRenderDialogPart({ closeModal, returnValue });
+  if (React.isValidElement(Content)) {
+    return React.cloneElement(Content, { closeModal, returnValue, closeAll });
+  }
+  const renderDialogPart = makeRenderDialogPart({
+    closeModal,
+    returnValue,
+    closeAll,
+  });
+
+  const { title, description, content, actions = defaultActions } = Content;
 
   return (
     <>

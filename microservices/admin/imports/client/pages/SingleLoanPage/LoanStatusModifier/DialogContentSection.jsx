@@ -5,17 +5,28 @@ type DialogContentSectionProps = {
   title: String,
   description: String,
   buttons: Array,
+  children: React.Node,
 };
 
 const DialogContentSection = ({
   title,
   description,
   buttons,
+  children,
+  styles: { buttons: buttonsStyle = {} } = {},
 }: DialogContentSectionProps) => (
   <div className="loan-status-modifier-dialog-content-section">
-    <h4>{title}</h4>
-    <p className="description">{description}</p>
-    <div className="loan-status-modifier-dialog-content-buttons">{buttons}</div>
+    {title && <h4>{title}</h4>}
+    {description && <p className="description">{description}</p>}
+    {children}
+    {buttons && (
+      <div
+        className="loan-status-modifier-dialog-content-buttons"
+        style={buttonsStyle}
+      >
+        {buttons}
+      </div>
+    )}
   </div>
 );
 

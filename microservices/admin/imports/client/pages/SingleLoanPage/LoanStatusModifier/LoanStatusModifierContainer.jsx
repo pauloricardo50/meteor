@@ -1,39 +1,88 @@
 import React from 'react';
-import { compose, withStateHandlers, withProps } from 'recompose';
+import { withProps } from 'recompose';
 import { LOAN_STATUS } from 'core/api/constants';
 import T from 'core/components/Translation';
-import UnsuccessfulDialogContent from './UnsuccessfulDialogContent';
+import Button from 'core/components/Button';
+import DialogForm from 'core/components/ModalManager/DialogForm';
+import SimpleSchema from 'simpl-schema';
 import RealRevenuesDialogContent from './RealRevenuesDialogContent';
+import UnsucessfulFeedback from './UnsuccessfulDialogContent/UnsucessfulFeedback';
+import UnsuccessfulNewLoan from './UnsuccessfulDialogContent/UnsuccessfulNewLoan';
 
 const requiresRevenueStatus = status =>
   [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(status);
 
-const makeAdditionalActions = ({ loan, setState }) => (status, prevStatus) => {
-  setState({
-    title: (
-      <span>
-        Passage du dossier à&nbsp;&quot;
-        <T id={`Forms.status.${status}`} />
-        &quot;
-      </span>
-    ),
-  });
+const getTitle = status => (
+  <span>
+    Passage du dossier à&nbsp;&quot;
+    <T id={`Forms.status.${status}`} />
+    &quot;
+  </span>
+);
+
+const closeButton = (reject, closeAll) => (
+  <Button
+    primary
+    label={<T id="general.close" />}
+    onClick={() => {
+      reject();
+      closeAll();
+    }}
+    key="close"
+  />
+);
+
+const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
   switch (status) {
   case LOAN_STATUS.UNSUCCESSFUL: {
     return new Promise((resolve, reject) => {
-      setState({
-        cancelNewStatus: reject,
-        confirmNewStatus: () => resolve(),
-        dialogContent: (
-          <UnsuccessfulDialogContent
-            loan={loan}
-            setOpenDialog={open => setState({ openDialog: open })}
-            cancelNewStatus={reject}
-            confirmNewStatus={() => resolve()}
-          />
-        ),
-        openDialog: true,
-      });
+      openModal([
+        <DialogForm
+          key="reason"
+          schema={
+            new SimpleSchema({
+              reason: {
+                type: String,
+                optional: false,
+                uniforms: {
+                  placeholder:
+                      "Le client n'est pas solvable pour ce bien immobilier",
+                },
+              },
+            })
+          }
+          title={getTitle(status)}
+          description="Entrez la raison du passage du dossier en sans suite"
+          className="animated fadeIn"
+        />,
+
+        {
+          title: getTitle(status),
+          content: ({ closeModal, returnValue, closeAll }) => (
+            <UnsucessfulFeedback
+              loan={loan}
+              closeModal={closeModal}
+              returnValue={returnValue}
+            />
+          ),
+          actions: ({ closeAll }) => closeButton(reject, closeAll),
+          important: true,
+        },
+        {
+          title: getTitle(status),
+          content: ({ closeModal, returnValue, closeAll }) => (
+            <UnsuccessfulNewLoan
+              loan={loan}
+              closeModal={closeModal}
+              returnValue={returnValue}
+              confirmNewStatus={() => resolve()}
+              cancelNewStatus={reject}
+            />
+          ),
+          actions: ({ closeAll }) => closeButton(reject, closeAll),
+          important: true,
+        },
+      ]);
     });
   }
   default:
@@ -42,19 +91,27 @@ const makeAdditionalActions = ({ loan, setState }) => (status, prevStatus) => {
 
   if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
     return new Promise((resolve, reject) => {
-      setState({
-        cancelNewStatus: reject,
-        confirmNewStatus: () => resolve(),
-        dialogContent: (
+      openModal({
+        title: getTitle(status),
+        content: ({ closeModal }) => (
           <RealRevenuesDialogContent
             loan={loan}
-            setOpenDialog={open => setState({ openDialog: open })}
-            cancelNewStatus={reject}
+            closeModal={closeModal}
             confirmNewStatus={() => resolve()}
           />
         ),
-        openDialog: true,
-        withConfirmButton: true,
+        actions: ({ closeAll }) => [
+          closeButton(reject, closeAll),
+          <Button
+            primary
+            label={<T id="general.ok" />}
+            onClick={() => {
+              resolve();
+              closeAll();
+            }}
+            key="ok"
+          />,
+        ],
       });
     });
   }
@@ -62,24 +119,6 @@ const makeAdditionalActions = ({ loan, setState }) => (status, prevStatus) => {
   return Promise.resolve();
 };
 
-export default compose(
-  withStateHandlers(
-    {
-      openDialog: false,
-      dialogContent: null,
-      title: '',
-      withConfirmButton: false,
-      cancelNewStatus: () => ({}),
-      confirmNewStatus: () => ({}),
-    },
-    { setState: () => newState => newState },
-  ),
-
-  withProps(({ loan, setState }) => ({
-    additionalActions: makeAdditionalActions({
-      loan,
-      setState,
-    }),
-    setOpenDialog: open => setState({ openDialog: open }),
-  })),
-);
+export default withProps(({ loan }) => ({
+  additionalActions: makeAdditionalActions(loan),
+}));
