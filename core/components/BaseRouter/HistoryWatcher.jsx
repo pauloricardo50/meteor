@@ -19,7 +19,6 @@ export default class HistoryWatcher extends Component {
     if (Meteor.isDevelopment && !(Meteor.isTest || Meteor.isAppTest)) {
       const userId = sessionStorage.getItem('dev_impersonate_userId');
       const authToken = sessionStorage.getItem('dev_impersonate_authToken');
-      $;
       if (userId && authToken) {
         impersonate({ userId, authToken });
       }
