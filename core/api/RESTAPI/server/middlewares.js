@@ -1,9 +1,14 @@
 import bodyParser from 'body-parser';
 import moment from 'moment';
 import multipart from 'connect-multiparty';
+import os from 'os';
 
 import SlackService from '../../slack/server/SlackService';
-import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
+import {
+  REST_API_ERRORS,
+  BODY_SIZE_LIMIT,
+  FILE_UPLOAD_DIR,
+} from './restApiConstants';
 import { Services } from '../../server';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import {
@@ -137,7 +142,7 @@ const unknownEndpointMiddleware = (req, res, next) => {
 };
 
 const multipartMiddleware = (req, res, next) => {
-  const middleware = multipart();
+  const middleware = multipart({ uploadDir: FILE_UPLOAD_DIR });
   const { isMultipart } = req;
 
   return isMultipart ? middleware(req, res, next) : next();
@@ -151,7 +156,4 @@ export const preMiddlewares = [
   authMiddleware,
   replayHandlerMiddleware,
 ];
-export const postMiddlewares = [
-  unknownEndpointMiddleware,
-  errorMiddleware,
-];
+export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

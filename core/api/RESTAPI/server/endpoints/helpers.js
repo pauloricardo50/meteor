@@ -1,9 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 import SimpleSchema from 'simpl-schema';
+import s3 from 's3';
 
-import { SLINGSHOT_DIRECTIVE_NAME } from 'core/api/files/fileConstants';
+import { getS3FileKey } from '../../../files/server/meteor-slingshot-server';
 import UserService from '../../../users/server/UserService';
+import {
+  EXOSCALE_PATH,
+  OBJECT_STORAGE_REGION,
+  S3_ACLS,
+  OBJECT_STORAGE_PATH,
+} from '../../../files/fileConstants';
+import FileService from '../../../files/server/FileService';
 
 const anyOrganisationMatches = ({
   userOrganisations = [],
@@ -75,15 +83,38 @@ export const impersonateSchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },
 });
 
-export const getFileUploadInstructions = ({ file, metadata }) =>
+export const uploadFileToS3 = ({ file, docId, id, collection }) =>
   new Promise((resolve, reject) => {
-    Meteor.call(
-      'slingshot/uploadRequest',
-      SLINGSHOT_DIRECTIVE_NAME,
-      file,
-      metadata,
-      (error, instructions) => {
-        error ? reject(error) : resolve(instructions);
+    const { originalFilename, path } = file;
+    const client = s3.createClient({
+      s3Options: {
+        accessKeyId: Meteor.settings.exoscale.API_KEY,
+        secretAccessKey: Meteor.settings.exoscale.SECRET_KEY,
+        endpoint: EXOSCALE_PATH,
+        region: OBJECT_STORAGE_REGION,
       },
-    );
+    });
+
+    const key = getS3FileKey({ name: originalFilename }, { docId, id });
+
+    const params = {
+      localFile: path,
+      s3Params: {
+        Bucket: Meteor.settings.storage.bucketName,
+        Key: key,
+        ACL: S3_ACLS.PUBLIC_READ,
+        ContentDisposition: `inline; filename="${encodeURIComponent(originalFilename)}"; filename*=utf-8''${encodeURIComponent(originalFilename)}`,
+      },
+    };
+
+    const uploader = client.uploadFile(params);
+    uploader.on('error', (err) => {
+      reject(err.stack);
+    });
+
+    uploader.on('end', () => {
+      FileService.updateDocumentsCache({ docId, collection }).then(() => {
+        resolve(`${OBJECT_STORAGE_PATH}/${key}`);
+      });
+    });
   });
