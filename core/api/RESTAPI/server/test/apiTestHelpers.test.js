@@ -7,7 +7,7 @@ import { sortObject } from 'core/api/helpers/index';
 import UserService from 'core/api/users/server/UserService';
 import { OBJECT_FORMATS, formatObject } from '../helpers';
 
-const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
+export const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
 const checkResponse = ({ res, expectedResponse }) =>
   res.json().then((body) => {
@@ -58,6 +58,8 @@ export const signRequest = ({
   nonce,
   privateKey,
   format,
+  isMultipart,
+  file,
 }) => {
   if (!privateKey) {
     return '12345';
@@ -66,7 +68,11 @@ export const signRequest = ({
   const key = new NodeRSA();
   key.importKey(privateKey.replace(/\r?\n|\r/g, ''), 'pkcs1-private-pem');
 
-  let objectToSign = { security: sortObject({ timestamp, nonce }) };
+  let objectToSign = {};
+
+  if (!isMultipart) {
+    objectToSign = { security: sortObject({ timestamp, nonce }) };
+  }
 
   if (query) {
     objectToSign = { ...objectToSign, queryParams: sortObject(query) };
@@ -74,6 +80,10 @@ export const signRequest = ({
 
   if (body) {
     objectToSign = { ...objectToSign, body: sortObject(body) };
+  }
+
+  if (isMultipart) {
+    objectToSign = { ...objectToSign, file: sortObject(file) };
   }
 
   if (Object.values(OBJECT_FORMATS).includes(format)) {
@@ -122,6 +132,8 @@ export const makeHeaders = ({
   nonce,
   query,
   signature,
+  isMultipart,
+  file
 }) => {
   let keyPair = { publicKey, privateKey };
 
@@ -141,6 +153,8 @@ export const makeHeaders = ({
         privateKey: keyPair.privateKey,
         timestamp,
         nonce,
+        isMultipart,
+        file
       })}`,
     'X-EPOTEK-Nonce': nonce,
     'X-EPOTEK-Timestamp': timestamp,
