@@ -3,6 +3,7 @@ import fs from 'fs';
 import SimpleSchema from 'simpl-schema';
 
 import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
+import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
 import { withMeteorUserId } from '../helpers';
@@ -60,8 +61,18 @@ const uploadFileAPI = (req) => {
   }
   const { path } = file;
 
-  return withMeteorUserId({ userId, impersonateUser }, () =>
-    uploadFileToS3({
+  return withMeteorUserId({ userId, impersonateUser }, () => {
+    let impersonateUserId;
+    if (impersonateUser) {
+      impersonateUserId = getImpersonateUserId({ userId, impersonateUser });
+    }
+
+    Security.properties.isAllowedToManageDocuments({
+      userId: impersonateUserId || userId,
+      propertyId,
+    });
+
+    return uploadFileToS3({
       file,
       docId: propertyId,
       id: category,
@@ -73,7 +84,8 @@ const uploadFileAPI = (req) => {
         }
       });
       return downloadUrl;
-    }));
+    });
+  });
 };
 
 export default uploadFileAPI;

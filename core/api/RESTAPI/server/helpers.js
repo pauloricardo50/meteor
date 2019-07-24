@@ -272,7 +272,7 @@ export const verifySignature = (req) => {
     objectToVerify = { security: sortObject({ timestamp, nonce }) };
   }
 
-  if (!isMultipart && Object.keys(query).length > 0) {
+  if (Object.keys(query).length > 0) {
     objectToVerify = {
       ...objectToVerify,
       queryParams: sortObject(query),
