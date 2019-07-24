@@ -176,7 +176,7 @@ describe('Public onboarding', () => {
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
-    cy.contains('Je veux acquérir').click();
+    cy.contains('Démarrer').click();
     cy.url().should('include', '/loans/');
 
     cy.contains('Voir le bien immobilier').click();
@@ -221,7 +221,7 @@ describe('Public onboarding', () => {
     cy.get('@propertyId').then((propertyId) => {
       cy.url().should('include', propertyId);
     });
-    cy.contains('Je veux acquérir').click();
+    cy.contains('Démarrer').click();
     cy.url().should('include', '/loans/');
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
 
@@ -233,16 +233,85 @@ describe('Public onboarding', () => {
   });
 
   it('should create a loan with a referralId', () => {
-    cy.visit('/?ref=123456');
+    cy.callMethod('addProUser').then((userId) => {
+      cy.wrap(userId).as('userId');
+      cy.visit(`/?ref=${userId}`);
+    });
 
     cy.contains('Démarrer').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then((window) => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      cy.callMethod('getLoan', loanId).then((loan) => {
-        const { referralId } = loan;
-        expect(referralId).to.equal('123456');
+      cy.callMethod('getLoan', loanId).then(({ referralId }) => {
+        cy.get('@userId').then((userId) => {
+          expect(referralId).to.equal(userId);
+        });
+      });
+    });
+  });
+
+  it('should create a loan without a wrong referralId', () => {
+    cy.visit('/?ref=abcdef');
+    cy.wait(500);
+
+    cy.contains('Démarrer').click();
+    cy.url().should('include', '/loans/');
+
+    cy.window().then((window) => {
+      const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+      cy.callMethod('getLoan', loanId).then(({ referralId }) => {
+        expect(referralId).to.equal(undefined);
+      });
+    });
+  });
+
+  it('should create an account with referralId', () => {
+    cy.callMethod('addProUser').then((userId) => {
+      cy.wrap(userId).as('userId');
+      cy.visit(`/?ref=${userId}`);
+    });
+
+    cy.contains('Créez').click();
+    cy.get('input[name="firstName"]').type('Jean');
+    cy.get('input[name="lastName"]').type('Dujardin');
+    cy.get('input[name="email"]').type('dev@e-potek.ch');
+    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
+    cy.contains('Ok').click();
+
+    cy.url().should('include', '/signup/dev@e-potek.ch');
+    cy.get('.signup-success').should('exist');
+
+    cy.callMethod('getUser', 'dev@e-potek.ch').then(({ referredByUserLink }) => {
+      cy.get('@userId').then((userId) => {
+        expect(referredByUserLink).to.equal(userId);
+      });
+    });
+  });
+
+  it('should not let override the referralId with an invalid one', () => {
+    cy.callMethod('addProUser').then((userId) => {
+      cy.wrap(userId).as('userId');
+      cy.visit(`/?ref=${userId}`);
+      cy.wait(500);
+    });
+
+    cy.visit('/?ref=abcdef');
+    cy.wait(500);
+
+    cy.contains('Créez').click();
+    cy.get('input[name="firstName"]').type('Jean');
+    cy.get('input[name="lastName"]').type('Dujardin');
+    cy.get('input[name="email"]').type('dev@e-potek.ch');
+    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
+    cy.contains('Ok').click();
+
+    cy.url().should('include', '/signup/dev@e-potek.ch');
+    cy.get('.signup-success').should('exist');
+
+    cy.callMethod('getUser', 'dev@e-potek.ch').then(({ referredByUserLink }) => {
+      cy.get('@userId').then((userId) => {
+        expect(referredByUserLink).to.equal(userId);
       });
     });
   });

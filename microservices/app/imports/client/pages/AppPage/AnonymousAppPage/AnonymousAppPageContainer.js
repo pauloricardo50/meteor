@@ -3,6 +3,7 @@ import { withProps, compose, withState, lifecycle } from 'recompose';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { anonymousLoan } from 'core/api/loans/queries';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
+import { LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
 import { anonymousLoanInsert } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
 import { parseCookies } from 'core/utils/cookiesHelpers';
@@ -42,10 +43,10 @@ export const withAnonymousLoan = compose(
 
 export default compose(
   withAnonymousLoan,
-  withProps(({ history, referralId }) => ({
+  withProps(({ history }) => ({
     insertAnonymousLoan: () =>
       anonymousLoanInsert
-        .run({ trackingId: parseCookies()[TRACKING_COOKIE], referralId })
+        .run({ trackingId: parseCookies()[TRACKING_COOKIE], referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
           history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
