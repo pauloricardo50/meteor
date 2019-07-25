@@ -14,7 +14,24 @@ import { PROMOTION_STATUS } from '../promotionConstants';
 
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
-exposeQuery({ query: adminPromotions, options: { allowFilterById: true } });
+exposeQuery({
+  query: adminPromotions,
+  options: { allowFilterById: true },
+  overrides: {
+    embody: (body) => {
+      body.$filter = ({ filters, params: { _id, hasTimeline } }) => {
+        if (_id) {
+          filters._id = _id;
+        }
+
+        if (hasTimeline) {
+          filters['constructionTimeline.0'] = { $exists: true };
+        }
+      };
+    },
+    validateParams: { _id: Match.Maybe(String), hasTimeline: Match.Maybe(Boolean) },
+  },
+});
 
 exposeQuery({
   query: appPromotion,
