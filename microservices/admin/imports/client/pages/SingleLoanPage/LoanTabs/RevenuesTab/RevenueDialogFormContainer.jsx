@@ -23,6 +23,7 @@ const schema = RevenueSchema.omit(
 ).extend({
   sourceOrganisationLink: Object,
   'sourceOrganisationLink._id': {
+    optional: true,
     type: String,
     customAllowedValues: {
       query: adminOrganisations,
@@ -80,7 +81,8 @@ export default compose(
   withProps(({ loan, revenue, setSubmitting, setOpen }) => ({
     schema,
     model: revenue,
-    insertRevenue: model => revenueInsert.run({ revenue: model, loanId: loan._id }),
+    insertRevenue: model =>
+      revenueInsert.run({ revenue: model, loanId: loan._id }),
     modifyRevenue: ({ _id: revenueId, ...object }) => {
       setSubmitting(true);
       return revenueUpdate

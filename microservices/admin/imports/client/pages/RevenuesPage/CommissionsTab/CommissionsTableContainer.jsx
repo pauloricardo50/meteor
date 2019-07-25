@@ -68,7 +68,7 @@ export default compose(
   RevenuesTableContainer,
   withProps(({ columnOptions, rows }) => ({
     columnOptions: [
-      { id: 'commissionOrganisation', label: 'Statut de la commission' },
+      { id: 'commissionOrganisation', label: 'À payer' },
       { id: 'commissionStatus', label: 'Statut de la commission' },
       ...columnOptions,
       { id: 'commissionRate', label: 'Commission' },
