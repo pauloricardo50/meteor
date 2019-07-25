@@ -12,12 +12,12 @@ type PromotionPageOverviewProps = {};
 const PromotionPageOverview = ({ promotion }: PromotionPageOverviewProps) => {
   const { canChangeTimeline } = useContext(PromotionPermissionsContext);
   return (
-    <>
+    <div className="promotion-page-overview">
       {canChangeTimeline && <PromotionTimelineForm promotion={promotion} />}
       <PromotionTimeline promotion={promotion} />
       <PromotionLotsTable promotion={promotion} />
       <LotsTable promotion={promotion} />
-    </>
+    </div>
   );
 };
 
