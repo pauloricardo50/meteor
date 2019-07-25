@@ -71,9 +71,10 @@ export const updateCustomerReferral = ({
 }) => {
   if (impersonateUser) {
     const customerId = UserService.getByEmail(customer.email)._id;
+    const mainOrg = UserService.getUserMainOrganisation(userId);
     return UserService.setReferredByOrganisation({
       userId: customerId,
-      organisationId: UserService.getUserMainOrganisationId(userId),
+      organisationId: mainOrg && mainOrg._id,
     });
   }
   return Promise.resolve();

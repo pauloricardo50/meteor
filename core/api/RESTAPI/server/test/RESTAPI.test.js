@@ -465,7 +465,7 @@ describe('RESTAPI', () => {
   describe('APIUser', () => {
     it('returns the logged in API user', () => {
       const { timestamp, nonce } = getTimestampAndNonce();
-      const expectedResponse = omit(user, ['createdAt', 'updatedAt']);
+      const expectedResponse = omit(user, ['createdAt', 'updatedAt', 'roles']);
 
       return fetchAndCheckResponse({
         url: '/fiberAPIUser',

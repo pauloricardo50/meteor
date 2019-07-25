@@ -19,7 +19,7 @@ export const propertyInviteNotification = ({ currentUser, property, user }) => {
   SlackService.notifyAssignee({
     currentUser,
     link: `${Meteor.settings.public.subdomains.admin}/users/${userId}`,
-    title: `${firstName} ${lastName} a été invité au bien immo: "${address1}"`,
+    title: `${firstName} ${lastName} a été invité au bien immo "${address1}"`,
   });
 };
 

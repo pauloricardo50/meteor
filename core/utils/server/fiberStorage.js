@@ -4,7 +4,7 @@ export const storeOnFiber = (key, value) => {
   Fibers.current[key] = value;
 };
 
-export const getFromFiber = key => Fibers.current[key];
+export const getFromFiber = key => Fibers.current && Fibers.current[key];
 
 export const removeFromFiber = (key) => {
   delete Fibers.current[key];
