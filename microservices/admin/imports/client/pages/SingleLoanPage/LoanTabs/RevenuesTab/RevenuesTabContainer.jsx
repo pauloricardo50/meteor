@@ -9,11 +9,14 @@ import {
   ORGANISATIONS_COLLECTION,
   REVENUES_COLLECTION,
 } from 'core/api/constants';
+import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { adminRevenues } from 'core/api/revenues/queries';
 
 const columnOptions = [
   { id: 'status' },
   { id: 'date' },
   { id: 'type' },
+  { id: 'sourceOrganisation' },
   { id: 'description' },
   { id: 'organisations' },
   { id: 'amount' },
@@ -30,6 +33,7 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
     description,
     status,
     organisations = [],
+    sourceOrganisation,
   } = revenue;
   const date = paidAt || expectedAt;
 
@@ -48,6 +52,7 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
         raw: type,
         label: <T id={`Forms.type.${type}`} />,
       },
+      sourceOrganisation && sourceOrganisation.name,
       description,
       organisations.map(organisation => (
         <CollectionIconLink
@@ -76,7 +81,12 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
 export default compose(
   withState('openModifier', 'setOpenModifier', false),
   withState('revenueToModify', 'setRevenueToModify', null),
-  withProps(({ loan: { revenues = [] }, setOpenModifier, setRevenueToModify }) => ({
+  withSmartQuery({
+    query: adminRevenues,
+    params: ({ loan: { _id: loanId } }) => ({ loanId }),
+    dataName: 'revenues',
+  }),
+  withProps(({ revenues = [], setOpenModifier, setRevenueToModify }) => ({
     rows: revenues.map(makeMapRevenue({ setOpenModifier, setRevenueToModify })),
     columnOptions,
   })),

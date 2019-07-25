@@ -18,7 +18,23 @@ const schema = RevenueSchema.omit(
   'createdAt',
   'updatedAt',
   'organisationLinks',
+  'sourceOrganisation',
 ).extend({
+  sourceOrganisation: Object,
+  'sourceOrganisation._id': {
+    type: String,
+    customAllowedValues: {
+      query: adminOrganisations,
+      params: () => ({ $body: { name: 1 } }),
+    },
+    uniforms: {
+      transform: ({ name }) => name,
+      labelProps: { shrink: true },
+      label: <T id="Forms.organisationName" />,
+      displayEmtpy: false,
+      placeholder: '',
+    },
+  },
   organisationLinks: {
     type: Array,
     defaultValue: [],

@@ -10,6 +10,7 @@ Organisations.cacheCount({
 });
 
 Meteor.startup(() => {
+  migrate('revenues', 'loanCache', { loanCache: { $exists: false } });
   //
   // Old migrations
   //

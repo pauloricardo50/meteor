@@ -1,9 +1,7 @@
 export const REVENUES_COLLECTION = 'revenues';
 
-export const REVENUES_QUERIES = {
-  // Insert your queries name here
-  // Example:
-  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+export const REVENUE_QUERIES = {
+  ADMIN_REVENUES: 'ADMIN_REVENUES',
 };
 
 export const REVENUE_TYPES = {

@@ -112,4 +112,32 @@ describe('RevenueService', () => {
       expect(result).to.equal(150);
     });
   });
+
+  describe('links and caches', () => {
+    it('adds a loanCache on revenues', () => {
+      generator({
+        revenues: {
+          _id: 'rev',
+          amount: 1000,
+          loan: {
+            _id: 'loanId',
+            name: '18-0001',
+            user: { _id: 'user' },
+          },
+        },
+      });
+
+      const revenue = RevenueService.findOne(
+        { _id: 'rev' },
+        { fields: { loanCache: 1 } },
+      );
+
+      expect(revenue.loanCache).to.deep.equal([
+        {
+          _id: 'loanId',
+          name: '18-0001',
+        },
+      ]);
+    });
+  });
 });

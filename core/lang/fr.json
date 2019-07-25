@@ -1,4 +1,5 @@
 {
+  "Forms.sourceOrganisation": "Payé par",
   "MaxPropertyValueSharing.buttonLabelOrg": "Certifier avec {orgName}",
   "MaxPropertyValueSharing.toggleLabel": "Partage de solvabilité",
   "MaxPropertyValue.signup.cta": "Envoyer",

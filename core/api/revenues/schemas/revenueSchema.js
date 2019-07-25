@@ -7,6 +7,7 @@ import {
   moneyField,
   percentageField,
   decimalMoneyField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import {
   REVENUE_TYPES,
@@ -61,6 +62,12 @@ const RevenueSchema = new SimpleSchema({
     allowedValues: Object.values(COMMISSION_STATUS),
     defaultValue: COMMISSION_STATUS.TO_BE_PAID,
   },
+  sourceOrganisation: { type: Object, defaultValue: {} },
+  'sourceOrganisation._id': { type: String, optional: true },
+  // This should be an object, since there's only one loan
+  // https://github.com/Herteby/denormalize/issues/17
+  loanCache: { type: Array, optional: true },
+  'loanCache.$': cacheField,
 });
 
 export default RevenueSchema;
