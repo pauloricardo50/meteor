@@ -54,13 +54,10 @@ export const makeMapRevenue = ({
     columns: [
       displayLoan
         ? {
-          raw: loan.name,
-          label: (
+          raw: loan && loan.name,
+          label: loan && (
             <CollectionIconLink
-              relatedDoc={{
-                ...loan,
-                collection: LOANS_COLLECTION,
-              }}
+              relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
             />
           ),
         }

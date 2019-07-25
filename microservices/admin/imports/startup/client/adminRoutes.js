@@ -23,6 +23,7 @@ import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import TasksPage from '../../client/pages/TasksPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
 import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
+import RevenuesPage from '../../client/pages/RevenuesPage/RevenuesPage';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
@@ -56,6 +57,11 @@ const ADMIN_ROUTES = {
   INTEREST_RATES_PAGE: {
     component: InterestRatesPage,
     path: '/interestRates',
+    exact: true,
+  },
+  REVENUES_PAGE: {
+    component: RevenuesPage,
+    path: '/revenues',
     exact: true,
   },
 

@@ -952,5 +952,6 @@ export const revenue = () => ({
   paidAt: 1,
   status: 1,
   type: 1,
+  sourceOrganisationLink: 1,
   sourceOrganisation: { name: 1 },
 });

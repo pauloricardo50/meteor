@@ -2,11 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
-import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
-import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
-import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 
 import {
   BORROWERS_COLLECTION,
@@ -17,6 +12,7 @@ import {
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
+  REVENUES_COLLECTION,
 } from 'core/api/constants';
 import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
@@ -69,6 +65,11 @@ const items = [
     label: 'Taux',
     to: ADMIN_ROUTES.INTEREST_RATES_PAGE.path,
     collection: INTEREST_RATES_COLLECTION,
+  },
+  {
+    label: 'Revenus',
+    to: ADMIN_ROUTES.REVENUES_PAGE.path,
+    collection: REVENUES_COLLECTION,
   },
   { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },
 ].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
