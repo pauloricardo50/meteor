@@ -61,8 +61,7 @@ const ADMIN_ROUTES = {
   },
   REVENUES_PAGE: {
     component: RevenuesPage,
-    path: '/revenues',
-    exact: true,
+    path: '/revenues/:tabId?',
   },
 
   //   "Single" pages

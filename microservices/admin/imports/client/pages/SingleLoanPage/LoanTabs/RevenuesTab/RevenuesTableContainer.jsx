@@ -19,8 +19,8 @@ const getColumnOptions = displayLoan =>
     { id: 'status' },
     { id: 'date' },
     { id: 'type' },
-    { id: 'sourceOrganisationLink' },
     { id: 'description' },
+    { id: 'sourceOrganisationLink' },
     { id: 'organisationsToPay' },
     { id: 'amount' },
   ]
@@ -74,6 +74,7 @@ export const makeMapRevenue = ({
         raw: type,
         label: <T id={`Forms.type.${type}`} />,
       },
+      description,
       {
         raw: sourceOrganisation && sourceOrganisation.name,
         label: (
@@ -85,7 +86,6 @@ export const makeMapRevenue = ({
           />
         ),
       },
-      description,
       organisations.map(organisation => (
         <CollectionIconLink
           relatedDoc={{ ...organisation, collection: ORGANISATIONS_COLLECTION }}

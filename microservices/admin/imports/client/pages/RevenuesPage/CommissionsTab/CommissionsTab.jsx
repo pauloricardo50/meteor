@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import Icon from 'core/components/Icon/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
 import { REVENUES_COLLECTION } from 'core/api/constants';
+import CommissionsTable from './CommissionsTable';
 
 type CommissionsTabProps = {};
 
@@ -22,6 +23,8 @@ const CommissionsTab = (props: CommissionsTabProps) => (
       />
       <span>Commissions</span>
     </h1>
+
+    <CommissionsTable />
   </div>
 );
 

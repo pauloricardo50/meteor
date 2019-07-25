@@ -16,6 +16,7 @@ import {
 } from 'core/api/constants';
 import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import { createRoute } from 'imports/core/utils/routerUtils';
 import MainSideNavListItem from './MainSideNavListItem';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
@@ -68,7 +69,7 @@ const items = [
   },
   {
     label: 'Revenus',
-    to: ADMIN_ROUTES.REVENUES_PAGE.path,
+    to: createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, { tabId: 'revenues' }),
     collection: REVENUES_COLLECTION,
   },
   { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },
