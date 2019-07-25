@@ -48,6 +48,7 @@ const makeAddCommissionStatus = organisationId => ({
 };
 
 export default compose(
+  withProps(() => ({ displayLoan: true })),
   RevenuesTableContainer,
   withProps(({ columnOptions, rows, _id: organisationId }) => ({
     columnOptions: [

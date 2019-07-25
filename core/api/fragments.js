@@ -946,6 +946,7 @@ export const revenue = () => ({
   createdAt: 1,
   description: 1,
   expectedAt: 1,
+  loan: { name: 1 },
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,

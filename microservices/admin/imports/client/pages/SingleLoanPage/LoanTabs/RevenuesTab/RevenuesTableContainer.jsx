@@ -8,23 +8,29 @@ import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import {
   ORGANISATIONS_COLLECTION,
   REVENUES_COLLECTION,
+  LOANS_COLLECTION,
 } from 'core/api/constants';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminRevenues } from 'core/api/revenues/queries';
 
-const columnOptions = [
-  { id: 'status' },
-  { id: 'date' },
-  { id: 'type' },
-  { id: 'sourceOrganisationLink' },
-  { id: 'description' },
-  { id: 'organisationsToPay' },
-  { id: 'amount' },
-].map(({ id }) => ({ id, label: <T id={`Forms.${id}`} /> }));
+const getColumnOptions = displayLoan =>
+  [
+    displayLoan && { id: 'loan' },
+    { id: 'status' },
+    { id: 'date' },
+    { id: 'type' },
+    { id: 'sourceOrganisationLink' },
+    { id: 'description' },
+    { id: 'organisationsToPay' },
+    { id: 'amount' },
+  ]
+    .filter(x => x)
+    .map(({ id }) => ({ id, label: <T id={`Forms.${id}`} /> }));
 
 export const makeMapRevenue = ({
   setOpenModifier,
   setRevenueToModify,
+  displayLoan,
 }) => (revenue) => {
   const {
     _id: revenueId,
@@ -37,6 +43,7 @@ export const makeMapRevenue = ({
     status,
     organisations = [],
     sourceOrganisation,
+    loan,
   } = revenue;
   const date = paidAt || expectedAt;
 
@@ -45,6 +52,19 @@ export const makeMapRevenue = ({
     organisations,
     amount,
     columns: [
+      displayLoan
+        ? {
+          raw: loan.name,
+          label: (
+            <CollectionIconLink
+              relatedDoc={{
+                ...loan,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+          ),
+        }
+        : null,
       {
         raw: status,
         label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
@@ -85,7 +105,7 @@ export const makeMapRevenue = ({
           </span>
         ),
       },
-    ],
+    ].filter(cell => cell !== null),
     handleClick: () => {
       setRevenueToModify(revenue);
       setOpenModifier(true);
@@ -101,8 +121,8 @@ export default compose(
     params: ({ filterRevenues, ...props }) => filterRevenues(props),
     dataName: 'revenues',
   }),
-  withProps(({ revenues = [], setOpenModifier, setRevenueToModify }) => ({
-    rows: revenues.map(makeMapRevenue({ setOpenModifier, setRevenueToModify })),
-    columnOptions,
+  withProps(({ revenues = [], setOpenModifier, setRevenueToModify, displayLoan }) => ({
+    rows: revenues.map(makeMapRevenue({ setOpenModifier, setRevenueToModify, displayLoan })),
+    columnOptions: getColumnOptions(displayLoan),
   })),
 );
