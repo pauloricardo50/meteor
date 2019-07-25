@@ -18,10 +18,11 @@ const schema = RevenueSchema.omit(
   'createdAt',
   'updatedAt',
   'organisationLinks',
-  'sourceOrganisation',
+  'sourceOrganisationLink',
+  'loanCache',
 ).extend({
-  sourceOrganisation: Object,
-  'sourceOrganisation._id': {
+  sourceOrganisationLink: Object,
+  'sourceOrganisationLink._id': {
     type: String,
     customAllowedValues: {
       query: adminOrganisations,

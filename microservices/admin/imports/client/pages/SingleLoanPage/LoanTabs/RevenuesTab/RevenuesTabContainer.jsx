@@ -16,7 +16,7 @@ const columnOptions = [
   { id: 'status' },
   { id: 'date' },
   { id: 'type' },
-  { id: 'sourceOrganisation' },
+  { id: 'sourceOrganisationLink' },
   { id: 'description' },
   { id: 'organisations' },
   { id: 'amount' },

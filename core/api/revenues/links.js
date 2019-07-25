@@ -12,6 +12,7 @@ Revenues.addLinks({
   sourceOrganisation: {
     collection: Organisations,
     field: 'sourceOrganisationLink',
+    type: 'one',
     metadata: true,
   },
 });
