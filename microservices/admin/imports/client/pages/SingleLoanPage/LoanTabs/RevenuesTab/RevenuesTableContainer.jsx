@@ -18,11 +18,14 @@ const columnOptions = [
   { id: 'type' },
   { id: 'sourceOrganisationLink' },
   { id: 'description' },
-  { id: 'organisations' },
+  { id: 'organisationsToPay' },
   { id: 'amount' },
 ].map(({ id }) => ({ id, label: <T id={`Forms.${id}`} /> }));
 
-const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) => {
+export const makeMapRevenue = ({
+  setOpenModifier,
+  setRevenueToModify,
+}) => (revenue) => {
   const {
     _id: revenueId,
     expectedAt,
@@ -39,6 +42,8 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
 
   return {
     id: revenueId,
+    organisations,
+    amount,
     columns: [
       {
         raw: status,
@@ -52,7 +57,17 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
         raw: type,
         label: <T id={`Forms.type.${type}`} />,
       },
-      sourceOrganisation && sourceOrganisation.name,
+      {
+        raw: sourceOrganisation && sourceOrganisation.name,
+        label: (
+          <CollectionIconLink
+            relatedDoc={{
+              ...sourceOrganisation,
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+          />
+        ),
+      },
       description,
       organisations.map(organisation => (
         <CollectionIconLink
@@ -83,7 +98,7 @@ export default compose(
   withState('revenueToModify', 'setRevenueToModify', null),
   withSmartQuery({
     query: adminRevenues,
-    params: ({ loan: { _id: loanId } }) => ({ loanId }),
+    params: ({ filterRevenues, ...props }) => filterRevenues(props),
     dataName: 'revenues',
   }),
   withProps(({ revenues = [], setOpenModifier, setRevenueToModify }) => ({

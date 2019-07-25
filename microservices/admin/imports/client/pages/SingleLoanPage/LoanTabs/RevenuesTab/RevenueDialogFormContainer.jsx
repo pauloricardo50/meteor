@@ -77,10 +77,10 @@ const schema = RevenueSchema.omit(
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ loan: { _id: loanId }, revenue, setSubmitting, setOpen }) => ({
+  withProps(({ loan, revenue, setSubmitting, setOpen }) => ({
     schema,
     model: revenue,
-    insertRevenue: model => revenueInsert.run({ revenue: model, loanId }),
+    insertRevenue: model => revenueInsert.run({ revenue: model, loanId: loan._id }),
     modifyRevenue: ({ _id: revenueId, ...object }) => {
       setSubmitting(true);
       return revenueUpdate

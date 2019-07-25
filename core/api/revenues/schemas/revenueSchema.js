@@ -51,7 +51,7 @@ const RevenueSchema = new SimpleSchema({
   },
   'organisationLinks.$': Object,
   'organisationLinks.$._id': String,
-  'organisationLinks.$.commissionRate': percentageField,
+  'organisationLinks.$.commissionRate': { ...percentageField, optional: false },
   'organisationLinks.$.paidDate': {
     type: Date,
     optional: true,

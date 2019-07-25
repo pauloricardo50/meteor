@@ -9,7 +9,14 @@ exposeQuery({
     embody: (body) => {
       body.$filter = ({
         filters,
-        params: { _id, status, loanId, sourceOrganisationId, organisationId },
+        params: {
+          _id,
+          status,
+          loanId,
+          sourceOrganisationId,
+          organisationId,
+          commissionStatus,
+        },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -28,9 +35,15 @@ exposeQuery({
         }
 
         if (organisationId) {
-          filters.organisationLinks = {
-            $elemMatch: { _id: organisationId },
-          };
+          if (commissionStatus) {
+            filters.organisationLinks = {
+              $elemMatch: { _id: organisationId, status: commissionStatus },
+            };
+          } else {
+            filters.organisationLinks = {
+              $elemMatch: { _id: organisationId },
+            };
+          }
         }
       };
     },
@@ -40,6 +53,7 @@ exposeQuery({
       sourceOrganisationId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(Object, String)),
+      commissionStatus: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
 });

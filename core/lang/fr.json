@@ -1,4 +1,6 @@
 {
+  "OrganisationTabs.revenues": "Revenus",
+  "Forms.organisationsToPay": "Retrocessions pour",
   "Forms.sourceOrganisationLink": "Payé par",
   "MaxPropertyValueSharing.buttonLabelOrg": "Certifier avec {orgName}",
   "MaxPropertyValueSharing.toggleLabel": "Partage de solvabilité",
