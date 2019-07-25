@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import Dialog from '@material-ui/core/Dialog';
 
 import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
+
 import ModalManager from '../ModalManager';
 import ModalManagerContext from '../ModalManagerContext';
 
@@ -85,7 +86,11 @@ const TestComp = () => {
 describe('ModalManager', () => {
   const component = () =>
     getMountedComponent({
-      Component: ModalManager(TestComp),
+      Component: props => (
+        <ModalManager>
+          <TestComp {...props} />
+        </ModalManager>
+      ),
     });
 
   const closeDialog = () =>
@@ -103,6 +108,7 @@ describe('ModalManager', () => {
       .find('button')
       .first()
       .simulate('click');
+
 
     expect(component().find('.dialog-1-content').length).to.equal(1);
     expect(component()

@@ -12,7 +12,6 @@ export const WelcomeScreen = ({
   handleClick,
   setDontShowAgain,
   dontShowAgain,
-  handleContact,
   displayCheckbox,
   buttonProps,
   cta,
@@ -31,7 +30,7 @@ export const WelcomeScreen = ({
         img={img}
       />
 
-      <WelcomeScreenLinks handleContact={handleContact} />
+      <WelcomeScreenLinks />
     </div>
   </div>
 );

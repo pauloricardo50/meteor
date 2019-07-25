@@ -18,6 +18,7 @@ import UserService from 'core/api/users/server/UserService';
 import PropertyService from 'core/api/properties/server/PropertyService';
 import Loans from 'core/api/loans';
 import { loanBase } from 'core/api/fragments';
+import { addProUserToPromotion } from 'core/api/methods/index';
 import { USER_EMAIL, USER_PASSWORD, PRO_EMAIL } from '../appE2eConstants';
 
 // remove login rate limits in E2E tests
@@ -150,5 +151,22 @@ Meteor.methods({
   },
   getLoan(loanId) {
     return LoanService.get(loanId);
+  },
+  getUser(email) {
+    return UserService.getByEmail(email);
+  },
+  addProUser() {
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL) || {};
+    return (
+      userId
+      || UserService.adminCreateUser({
+        options: {
+          email: PRO_EMAIL,
+          firstName: 'Pro',
+          lastName: 'Test User',
+        },
+        role: ROLES.PRO,
+      })
+    );
   },
 });

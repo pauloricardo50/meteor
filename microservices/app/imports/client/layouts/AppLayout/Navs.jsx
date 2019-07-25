@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AppTopNav from './AppTopNav';
-// import SearchModal from 'core/components/SearchModal';
 import PermanentSideNav from './PermanentSideNav';
 
 export default class Navs extends Component {
@@ -27,6 +26,7 @@ export default class Navs extends Component {
           currentUser={currentUser}
           toggleDrawer={this.handleToggle}
         />
+
         <div className="permanent-side-nav">
           {shouldShowSideNav && (
             <PermanentSideNav

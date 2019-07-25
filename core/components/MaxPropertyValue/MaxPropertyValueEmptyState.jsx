@@ -15,7 +15,7 @@ type MaxPropertyValueEmptyStateProps = {
   calculateSolvency: Function,
 };
 
-const getReadyToCalculateTitle = (props) => {
+export const getReadyToCalculateTitle = (props) => {
   const { loan, lockCanton, canton } = props;
   const {
     hasPromotion,
@@ -32,8 +32,13 @@ const getReadyToCalculateTitle = (props) => {
     const promotionName = promotions[0].name;
     return (
       <span>
-        <T id="MaxPropertyValue.empty.promotion" values={{ promotionName }} />
-        <T id={`Forms.canton.${canton}`} />
+        <T
+          id="MaxPropertyValue.empty.promotion"
+          values={{
+            promotionName,
+            canton: <T id={`Forms.canton.${canton}`} />,
+          }}
+        />
       </span>
     );
   }
@@ -43,7 +48,6 @@ const getReadyToCalculateTitle = (props) => {
     return (
       <span>
         <T id="MaxPropertyValue.empty.proProperty" values={{ propertyName }} />
-        <T id={`Forms.canton.${canton}`} />
       </span>
     );
   }
@@ -65,7 +69,9 @@ const MaxPropertyValueEmptyState = ({
     <div className="flex-col center">
       {state === STATE.MISSING_INFOS ? (
         <>
-          <h2>Complétez vos informations</h2>
+          <h2>
+            <T id="MaxPropertyValue.completeInfo" />
+          </h2>
           <p className="description">
             <T id="MaxPropertyValue.missingInfos" />
           </p>
@@ -76,7 +82,7 @@ const MaxPropertyValueEmptyState = ({
               loanId: loan._id,
             })}
           >
-            Emprunteurs
+            <T id="collections.borrowers" />
           </Button>
         </>
       ) : (
@@ -103,7 +109,11 @@ const MaxPropertyValueEmptyState = ({
               style={{ marginLeft: 16 }}
               disabled={!canton}
             >
-              {lockCanton ? "Calculer ma capacité d'achat" : 'Valider'}
+              {lockCanton ? (
+                <T id="general.calculate" />
+              ) : (
+                <T id="general.validate" />
+              )}
             </Button>
           </div>
         </>

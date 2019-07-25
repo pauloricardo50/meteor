@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import cx from 'classnames';
 
 import ButtonSwitch from 'core/components/ButtonSwitch';
 import { loanUpdate } from 'core/api/methods/index';

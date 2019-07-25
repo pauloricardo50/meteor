@@ -35,6 +35,7 @@ import {
   adminLoanReset,
   loanLinkPromotion,
   loanUnlinkPromotion,
+  loanSetCreatedAtActivityDescription,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -153,7 +154,8 @@ switchBorrower.setHandler((context, params) => {
   return LoanService.switchBorrower(params);
 });
 
-sendNegativeFeedbackToAllLenders.setHandler(({ userId }, params) => {
+sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
+  const { userId } = context;
   Security.checkUserIsAdmin(userId);
   context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
@@ -242,4 +244,9 @@ loanLinkPromotion.setHandler(({ userId }, params) => {
 loanUnlinkPromotion.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.unlinkPromotion(params);
+});
+
+loanSetCreatedAtActivityDescription.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.setCreatedAtActivityDescription(params);
 });

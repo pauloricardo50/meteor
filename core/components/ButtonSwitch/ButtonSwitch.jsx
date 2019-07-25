@@ -14,9 +14,9 @@ const ButtonSwitch = ({
   inactiveLabel,
   activeOnClick = () => {},
   inactiveOnClick = () => {},
-  reverse=false
+  reverse = false,
 }: ButtonSwitchProps) => (
-  <div className={cx("button-switch", {reverse})}>
+  <div className={cx('button-switch', { reverse })}>
     <Button
       onClick={inactiveOnClick}
       className={cx('switch', { active: !active })}

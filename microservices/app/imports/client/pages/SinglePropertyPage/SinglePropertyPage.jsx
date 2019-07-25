@@ -13,10 +13,9 @@ import ReturnToDashboard from '../../components/ReturnToDashboard';
 import PageApp from '../../components/PageApp';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
-import ResidenceTypeSetter from 'core/components/ResidenceTypeSetter';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 
-const SinglePropertyPage = props => {
+const SinglePropertyPage = (props) => {
   const { loan, propertyId, history, currentUser: { loans } = {} } = props;
   const {
     borrowers,
@@ -29,16 +28,11 @@ const SinglePropertyPage = props => {
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
     return (
-      <>
-        {/* <ResidenceTypeSetter loan={loan} /> */}
-        {residenceType && (
-          <ProProperty
-            property={property}
-            simple={applicationType === APPLICATION_TYPES.SIMPLE}
-            loan={loan}
-          />
-        )}
-      </>
+      <ProProperty
+        property={property}
+        simple={applicationType === APPLICATION_TYPES.SIMPLE}
+        loan={loan}
+      />
     );
   }
 
@@ -69,12 +63,9 @@ const SinglePropertyPage = props => {
           }}
           method={() =>
             propertyDelete.run({ propertyId, loanId }).then(() =>
-              history.push(
-                createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
-                  ':loanId': loan._id,
-                }),
-              ),
-            )
+              history.push(createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
+                ':loanId': loan._id,
+              })))
           }
           label={<T id="general.delete" />}
         >

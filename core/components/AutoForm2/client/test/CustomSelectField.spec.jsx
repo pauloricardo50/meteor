@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import AutoForm from '../../AutoForm';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 import CustomSelectField from '../../CustomSelectField';
-import pollUntilReady from '../../../../utils/testHelpers/pollUntilReady';
+import pollUntilReady from '../../../../utils/pollUntilReady';
 
 let props;
 const component = () =>

@@ -2,7 +2,6 @@ import { compose, withProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { loanUpdate } from 'core/api/methods';
-import { withContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import { createRoute } from 'core/utils/routerUtils';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 
@@ -12,15 +11,12 @@ export default compose(
     'setDontShowAgain',
     ({ loan: { displayWelcomeScreen } }) => !displayWelcomeScreen,
   ),
-  withContactButtonContext,
   withRouter,
   withProps(({
     dontShowAgain,
     rerender,
     rerenderState,
     loan: { _id: loanId },
-    toggleOpenContact,
-    openContact,
     page,
     history,
   }) => ({
@@ -41,6 +37,5 @@ export default compose(
         loanUpdate.run({ loanId, object: { displayWelcomeScreen: false } });
       }
     },
-    handleContact: () => toggleOpenContact(!openContact),
   })),
 );

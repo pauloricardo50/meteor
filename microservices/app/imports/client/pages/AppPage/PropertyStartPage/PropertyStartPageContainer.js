@@ -6,6 +6,7 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { anonymousProperty } from 'core/api/properties/queries';
 import { createRoute } from 'core/utils/routerUtils';
 import { anonymousLoanInsert, userLoanInsert } from 'core/api/methods';
+import { LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
@@ -52,7 +53,7 @@ export default compose(
       }
     },
   }),
-  withProps(({ propertyId, referralId, history }) => ({
+  withProps(({ propertyId, history }) => ({
     insertLoan: () => {
       if (Meteor.userId()) {
         return userLoanInsert.run({ proPropertyId: propertyId }).then(loanId =>
@@ -64,7 +65,7 @@ export default compose(
       return anonymousLoanInsert
         .run({
           proPropertyId: propertyId,
-          referralId,
+          referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
           trackingId: parseCookies()[TRACKING_COOKIE],
         })
         .then((loanId) => {
