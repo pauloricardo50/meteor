@@ -87,7 +87,7 @@ export const schema = new SimpleSchema({
   assigneeLink: {
     type: Object,
     optional: true,
-    uniforms: { label: null },
+    uniforms: { label: null, style: { margin: 0 }, margin: 'none' },
   },
   'assigneeLink._id': {
     type: String,
@@ -116,7 +116,7 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
-const getTime = date => {
+const getTime = (date) => {
   if (!date) {
     return undefined;
   }
@@ -150,7 +150,7 @@ const TaskModifier = ({
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
-    updateTask: values => {
+    updateTask: (values) => {
       setSubmitting(true);
       return taskUpdate
         .run({ taskId, object: values })

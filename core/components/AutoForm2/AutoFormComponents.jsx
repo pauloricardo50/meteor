@@ -114,7 +114,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
-    const { allowedValues, field, fieldType } = props;
+    const { allowedValues, field, fieldType, margin = 'normal' } = props;
     let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
       allowedValues,
       customAllowedValues,
@@ -157,7 +157,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         label={label}
         placeholder={placeholder}
         InputLabelProps={{ shrink: true }}
-        margin="normal"
+        margin={margin}
       />
     );
   };

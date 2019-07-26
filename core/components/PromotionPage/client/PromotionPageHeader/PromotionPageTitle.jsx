@@ -38,6 +38,7 @@ const PromotionPageTitle = ({
           method={() => promotionRemove.run({ promotionId })}
           label={<T id="general.remove" />}
           buttonProps={{ error: true, outlined: true }}
+          keyword="SUPPRIMER PROMO"
         />
       )}
     </h1>
