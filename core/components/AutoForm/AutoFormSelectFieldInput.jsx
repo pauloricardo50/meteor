@@ -68,6 +68,7 @@ export default class AutoFormSelectFieldInput extends Component {
           onChange={this.handleChange}
           disabled={disabled}
           options={renderedOptions}
+          fullWidth
         />
         <ValidIcon
           saving={saving}

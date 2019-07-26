@@ -135,9 +135,10 @@ const TextInput = (props) => {
       error={error}
       className={classnames({ 'mui-text-input': true, [className]: true })}
       style={style}
+      fullWidth={fullWidth}
     >
       {label && (
-        <InputLabel ref={inputLabelRef} htmlFor={id} style={labelStyle} shrink>
+        <InputLabel ref={inputLabelRef} htmlFor={id} style={labelStyle}>
           {label}
         </InputLabel>
       )}

@@ -37,12 +37,18 @@ const Select = ({
   placeholder,
   multiple,
   rawOptions,
+  fullWidth,
   ...otherProps
 }) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
 
   return (
-    <FormControl variant="outlined" className="mui-select" style={style}>
+    <FormControl
+      fullWidth={fullWidth}
+      variant="outlined"
+      className="mui-select"
+      style={style}
+    >
       {label && (
         <InputLabel ref={inputLabelRef} htmlFor={id}>
           {label}
