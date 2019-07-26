@@ -41,10 +41,12 @@
       align-items: flex-start;
       flex-direction: column;
       flex-grow: 1;
-    }
 
-    .left > * {
-      display: inline;
+      &-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
     }
 
     .status-label-dropdown {
@@ -58,11 +60,6 @@
 
     form > * {
       margin-top: 0;
-    }
-
-    .icon-link {
-      font-size: 24px;
-      margin-bottom: 8px;
     }
 
     .single-loan-date-modifiers {
