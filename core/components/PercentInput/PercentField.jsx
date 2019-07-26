@@ -18,12 +18,13 @@ const PercentField = ({
   helperText,
   label,
   required,
+  margin,
   ...props
 }: PercentFieldProps) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
 
   return (
-    <FormControl required={required} fullWidth={fullWidth}>
+    <FormControl required={required} fullWidth={fullWidth} margin={margin}>
       <InputLabel ref={inputLabelRef}>{label}</InputLabel>
       <PercentInput labelWidth={labelWidth} {...props} />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
