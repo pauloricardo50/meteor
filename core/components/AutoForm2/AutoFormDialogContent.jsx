@@ -30,7 +30,7 @@ const AutoFormDialogContent = ({
         {description}
       </DialogContentText>
     )}
-    {!emptyDialog && <CustomAutoFields autoField={autoField} />}
+    {!emptyDialog && <CustomAutoFields autoField={autoField} automaticFocus />}
     <ErrorsField />
     {children && (
       <AutoFormDialogChildren
