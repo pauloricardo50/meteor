@@ -10,7 +10,6 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import { baseBorrower } from 'core/api/fragments';
 
 const columnOptions = [
-  { id: '#', style: { width: 32, textAlign: 'left' } },
   { id: 'Nom' },
   { id: 'Utilisateur' },
   { id: 'Dossiers' },
@@ -24,7 +23,6 @@ const mapBorrower = ({ history }) => (
 ) => ({
   id: borrowerId,
   columns: [
-    index + 1,
     name || 'Emprunteur sans nom',
     <CollectionIconLink
       relatedDoc={{ ...user, collection: USERS_COLLECTION }}
