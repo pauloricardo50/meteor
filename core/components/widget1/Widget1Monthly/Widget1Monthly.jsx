@@ -18,34 +18,37 @@ const Widget1Monthly = ({
   currentInterestRates,
 }) => (
   <div className="card1 widget1-monthly">
-    <h3>
-      <T id="Widget1Monthly.title" />
-    </h3>
-    <span className="widget1-monthly-chart">
-      <DonutChart
-        data={data}
-        intlPrefix="Widget1Monthly"
-        config={{
-          chart: {
-            width: 300,
-            height: 'initial',
-            spacingBottom: 0,
-            spacingTop: 0,
-            marginTop: 0,
-            marginBottom: 32,
-          },
-          plotOptions: {
-            pie: {
-              tooltip: {
-                headerFormat: '<b>{point.key}</b><br />',
-                pointFormat: 'CHF {point.y:,.0f}',
+    <div className="card-top">
+      <h3>
+        <T id="Widget1Monthly.title" />
+      </h3>
+      <span className="widget1-monthly-chart">
+        <DonutChart
+          data={data}
+          intlPrefix="Widget1Monthly"
+          config={{
+            chart: {
+              width: 300,
+              height: 'initial',
+              spacingBottom: 0,
+              spacingTop: 0,
+              marginTop: 0,
+              marginBottom: 32,
+            },
+            plotOptions: {
+              pie: {
+                tooltip: {
+                  headerFormat: '<b>{point.key}</b><br />',
+                  pointFormat: 'CHF {point.y:,.0f}',
+                },
               },
             },
-          },
-        }}
-        title={`${toMoney(total)} /mois`}
-      />
-    </span>
+          }}
+          title={`${toMoney(total)} /mois`}
+        />
+      </span>
+    </div>
+
     <div className="card-bottom">
       <Widget1MonthlyInterests
         value={interestRate}

@@ -3,10 +3,22 @@
 
   display: flex;
   flex-direction: column;
-}
 
-.widget1-inputs .widget1-single-input {
-  padding: 8px 0;
+  &-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .widget1-single-input {
+    padding: 8px 0;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
 }
 
 .widget1-inputs .widget1-single-inputs-overdrive {
