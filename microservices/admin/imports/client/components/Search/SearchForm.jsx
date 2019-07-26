@@ -51,12 +51,8 @@ class SearchForm extends Component {
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
           ref={this.ref}
+          placeholder="Chercher..."
         />
-
-        <Button raised className="search-button" type="submit">
-          <Icon type="search" />
-          <T id="general.search" />
-        </Button>
       </form>
     );
   }
