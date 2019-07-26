@@ -62,16 +62,25 @@ const columnOptions = [
     format: value => <IntlNumber value={value} format="money" />,
     align: 'right',
   },
-  {
-    id: 'Valeur expertisée',
-    format: value => <IntlNumber value={value} format="money" />,
-    align: 'right',
-  },
 ];
 
 const PropertiesTableContainer = compose(
   withSmartQuery({
     query: adminProperties,
+    params: {
+      $body: {
+        address1: 1,
+        category: 1,
+        city: 1,
+        createdAt: 1,
+        loans: { name: 1 },
+        name: 1,
+        promotion: { name: 1 },
+        updatedAt: 1,
+        user: { name: 1 },
+        value: 1,
+      },
+    },
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',
