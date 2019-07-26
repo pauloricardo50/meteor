@@ -14,7 +14,7 @@ const makeRenderValue = ({ multiple, rawOptions }) => {
   if (!multiple) {
     return (value) => {
       const option = rawOptions.find(({ id }) => id === value);
-      return option.label;
+      return option && option.label;
     };
   }
 
