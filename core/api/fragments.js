@@ -942,7 +942,6 @@ export const proUser = () => ({
 // //
 export const revenue = () => ({
   amount: 1,
-  approximation: 1,
   createdAt: 1,
   description: 1,
   expectedAt: 1,
@@ -950,8 +949,9 @@ export const revenue = () => ({
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
-  status: 1,
-  type: 1,
+  secondaryType: 1,
   sourceOrganisationLink: 1,
   sourceOrganisation: { name: 1 },
+  status: 1,
+  type: 1,
 });

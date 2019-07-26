@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import { REVENUE_STATUS } from 'core/api/constants';
-import { RevenuesTable } from '../../SingleLoanPage/LoanTabs/RevenuesTab/RevenuesTable';
+import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
 import CommissionsToReceiveContainer from './CommissionsToReceiveContainer';
 
 type CommissionsToReceiveProps = {};

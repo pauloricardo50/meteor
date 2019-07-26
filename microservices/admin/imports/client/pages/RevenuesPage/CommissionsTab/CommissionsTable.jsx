@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import { REVENUE_STATUS } from 'core/api/constants';
 import CommissionsTableContainer from './CommissionsTableContainer';
-import { RevenuesTable } from '../../SingleLoanPage/LoanTabs/RevenuesTab/RevenuesTable';
+import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
 
 type CommissionsTableProps = {};
 

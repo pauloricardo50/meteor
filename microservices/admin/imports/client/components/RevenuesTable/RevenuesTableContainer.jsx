@@ -9,11 +9,13 @@ import {
   ORGANISATIONS_COLLECTION,
   REVENUES_COLLECTION,
   LOANS_COLLECTION,
+  REVENUE_STATUS,
 } from 'core/api/constants';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminRevenues } from 'core/api/revenues/queries';
+import RevenueConsolidator from './RevenueConsolidator';
 
-const getColumnOptions = displayLoan =>
+const getColumnOptions = ({ displayLoan, displayActions }) =>
   [
     displayLoan && { id: 'loan' },
     { id: 'status' },
@@ -22,21 +24,22 @@ const getColumnOptions = displayLoan =>
     { id: 'description' },
     { id: 'sourceOrganisationLink' },
     { id: 'organisationsToPay' },
-    { id: 'amount' },
+    { id: 'amount', align: 'right' },
+    displayActions && { id: 'actions' },
   ]
     .filter(x => x)
-    .map(({ id }) => ({ id, label: <T id={`Forms.${id}`} /> }));
+    .map(i => ({ ...i, label: <T id={`Forms.${i.id}`} /> }));
 
 export const makeMapRevenue = ({
   setOpenModifier,
   setRevenueToModify,
   displayLoan,
+  displayActions,
 }) => (revenue) => {
   const {
     _id: revenueId,
     expectedAt,
     paidAt,
-    approximation,
     amount,
     type,
     description,
@@ -45,7 +48,7 @@ export const makeMapRevenue = ({
     sourceOrganisation,
     loan,
   } = revenue;
-  const date = paidAt || expectedAt;
+  const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   return {
     id: revenueId,
@@ -95,13 +98,14 @@ export const makeMapRevenue = ({
       {
         raw: amount,
         label: (
-          <span>
+          <b>
             <Money value={amount} rounded={false} />
-            {' '}
-            {approximation ? '(Approximé)' : ''}
-          </span>
+          </b>
         ),
       },
+      displayActions ? (
+        <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />
+      ) : null,
     ].filter(cell => cell !== null),
     handleClick: () => {
       setRevenueToModify(revenue);
@@ -118,8 +122,19 @@ export default compose(
     params: ({ filterRevenues, ...props }) => filterRevenues(props),
     dataName: 'revenues',
   }),
-  withProps(({ revenues = [], setOpenModifier, setRevenueToModify, displayLoan }) => ({
-    rows: revenues.map(makeMapRevenue({ setOpenModifier, setRevenueToModify, displayLoan })),
-    columnOptions: getColumnOptions(displayLoan),
+  withProps(({
+    revenues = [],
+    setOpenModifier,
+    setRevenueToModify,
+    displayLoan,
+    displayActions,
+  }) => ({
+    rows: revenues.map(makeMapRevenue({
+      setOpenModifier,
+      setRevenueToModify,
+      displayLoan,
+      displayActions,
+    })),
+    columnOptions: getColumnOptions({ displayLoan, displayActions }),
   })),
 );

@@ -8,7 +8,7 @@ import {
   REVENUES_COLLECTION,
   ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
-import RevenuesTableContainer from '../../SingleLoanPage/LoanTabs/RevenuesTab/RevenuesTableContainer';
+import RevenuesTableContainer from '../../../components/RevenuesTable/RevenuesTableContainer';
 
 const makeCommissionRows = () => (
   rows,
@@ -48,12 +48,12 @@ const makeCommissionRows = () => (
           {
             raw: commissionAmount,
             label: (
-              <>
-                <Money value={commissionAmount} />
-                  &nbsp; (
+              <b>
+                  (
                 <Percent value={commissionRate} />
-)
-              </>
+                  )&nbsp;
+                <Money value={commissionAmount} />
+              </b>
             ),
           },
         ],
@@ -71,7 +71,12 @@ export default compose(
       { id: 'commissionOrganisation', label: 'À payer' },
       { id: 'commissionStatus', label: 'Statut de la commission' },
       ...columnOptions,
-      { id: 'commissionRate', label: 'Commission' },
+      {
+        id: 'commissionRate',
+        label: 'Commission',
+        align: 'right',
+      },
+      // { id: 'actions' },
     ],
     rows: rows.reduce(makeCommissionRows(), []),
     initialOrderBy: 2,

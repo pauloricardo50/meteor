@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { REVENUE_STATUS } from 'core/api/constants';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
-import RevenuesTable from '../../SingleLoanPage/LoanTabs/RevenuesTab/RevenuesTable';
+import RevenuesTable from '../../../components/RevenuesTable';
 
 type RevenuesToPayProps = {};
 
@@ -27,6 +27,7 @@ const RevenuesToPay = ({ _id: organisationId }: RevenuesToPayProps) => {
       />
       <RevenuesTable
         displayLoan
+        displayActions
         filterRevenues={() => ({
           sourceOrganisationId: organisationId,
           status,

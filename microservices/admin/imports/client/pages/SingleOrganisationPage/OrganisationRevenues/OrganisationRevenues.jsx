@@ -14,14 +14,14 @@ const OrganisationRevenues = (props: OrganisationRevenuesProps) => {
       <Tabs
         tabs={[
           {
-            id: 'commissions',
-            label: `e-Potek -> ${name}`,
-            content: <CommissionsToReceive {...props} />,
-          },
-          {
             id: 'revenuesToPay',
             label: `${name} -> e-Potek`,
             content: <RevenuesToPay {...props} />,
+          },
+          {
+            id: 'commissions',
+            label: `e-Potek -> ${name}`,
+            content: <CommissionsToReceive {...props} />,
           },
         ]}
       />

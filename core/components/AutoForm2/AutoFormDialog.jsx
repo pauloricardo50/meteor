@@ -73,7 +73,11 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
       event.preventDefault();
       setOpen(true);
     };
-    const handleClose = () => setOpen(false);
+    const handleClose = (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      setOpen(false);
+    };
 
     return (
       <>
@@ -83,10 +87,14 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
         <MuiDialog
           disableBackdropClick={important}
           disableEscapeKeyDown={important}
-          onClose={() => setOpen(false)}
+          onClose={handleClose}
           className="autoform-dialog"
           maxWidth="sm"
           fullWidth
+          onClick={(e) => {
+            // Clicking on the dialog should not trigger a table row below it..
+            e.stopPropagation();
+          }}
           {...otherProps}
         >
           {title && <DialogTitle>{title}</DialogTitle>}

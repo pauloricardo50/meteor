@@ -24,3 +24,21 @@ export const revenueUpdate = new Method({
     object: Object,
   },
 });
+
+export const consolidateRevenue = new Method({
+  name: 'consolidateRevenue',
+  params: {
+    revenueId: String,
+    amount: Number,
+    paidAt: String,
+  },
+});
+
+export const consolidateCommission = new Method({
+  name: 'consolidateCommission',
+  params: {
+    revenueId: String,
+    organisationId: String,
+    paidAt: Date,
+  },
+});

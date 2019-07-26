@@ -20,8 +20,10 @@ const schema = RevenueSchema.omit(
   'organisationLinks',
   'sourceOrganisationLink',
   'loanCache',
+  'status',
+  'paidAt',
 ).extend({
-  sourceOrganisationLink: Object,
+  sourceOrganisationLink: { type: Object, optional: true },
   'sourceOrganisationLink._id': {
     optional: true,
     type: String,
@@ -58,6 +60,7 @@ const schema = RevenueSchema.omit(
   },
   'organisationLinks.$.commissionRate': merge({}, percentageField, {
     uniforms: { labelProps: { shrink: true } },
+    optional: false,
   }),
   'organisationLinks.$.paidDate': {
     type: Date,

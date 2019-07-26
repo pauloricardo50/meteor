@@ -1,3 +1,4 @@
+import { COMMISSION_STATUS } from 'imports/core/api/constants';
 import Revenues from '../revenues';
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
@@ -44,6 +45,26 @@ class RevenueService extends CollectionService {
 
       return total + sharedAmount;
     }, 0);
+  }
+
+  consolidateRevenue({ revenueId, amount, paidAt }) {
+    return this._update({
+      id: revenueId,
+      object: {
+        amount,
+        paidAt,
+        status: REVENUE_STATUS.CLOSED,
+      },
+    });
+  }
+
+  consolidateCommission({ revenueId, organisationId, paidAt }) {
+    return this.updateLinkMetadata({
+      id: revenueId,
+      linkName: 'organisations',
+      linkId: organisationId,
+      metadata: { paidAt, status: COMMISSION_STATUS.PAID },
+    });
   }
 }
 

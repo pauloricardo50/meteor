@@ -4,7 +4,7 @@ import { compose, withProps } from 'recompose';
 import StatusLabel from 'core/components/StatusLabel';
 import { Money, Percent } from 'core/components/Translation';
 import { REVENUES_COLLECTION } from 'core/api/constants';
-import RevenuesTableContainer from '../../SingleLoanPage/LoanTabs/RevenuesTab/RevenuesTableContainer';
+import RevenuesTableContainer from '../../../components/RevenuesTable/RevenuesTableContainer';
 
 const makeAddCommissionStatus = organisationId => ({
   organisations,
@@ -48,7 +48,7 @@ const makeAddCommissionStatus = organisationId => ({
 };
 
 export default compose(
-  withProps(() => ({ displayLoan: true })),
+  withProps(() => ({ displayLoan: true, displayActions: true })),
   RevenuesTableContainer,
   withProps(({ columnOptions, rows, _id: organisationId }) => ({
     columnOptions: [
