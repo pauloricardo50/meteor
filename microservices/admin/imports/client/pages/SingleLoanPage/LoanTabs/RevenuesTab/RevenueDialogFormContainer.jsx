@@ -40,6 +40,7 @@ const schema = RevenueSchema.omit(
   organisationLinks: {
     type: Array,
     defaultValue: [],
+    uniforms: { label: 'Commissions à payer' },
   },
   'organisationLinks.$': Object,
   'organisationLinks.$._id': {
