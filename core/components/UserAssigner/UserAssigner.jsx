@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
 
+import Input from '../Material/Input';
 import DialogSimple from '../DialogSimple';
 import T from '../Translation';
 import List, { ListItem, ListItemText } from '../List';

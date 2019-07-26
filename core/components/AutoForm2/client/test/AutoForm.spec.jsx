@@ -3,10 +3,10 @@
 import React from 'react';
 import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
-import TextField from 'uniforms-material/TextField';
 import Button from '@material-ui/core/Button';
 
-import Loading from 'imports/core/components/Loading/Loading';
+import Loading from '../../../Loading';
+import TextField from '../../CustomTextField';
 import pollUntilReady from '../../../../utils/pollUntilReady';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 

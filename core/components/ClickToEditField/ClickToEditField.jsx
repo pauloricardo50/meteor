@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 
-import Input from '@material-ui/core/Input';
+import Input from '../Material/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 
 type ClickToEditFieldProps = {

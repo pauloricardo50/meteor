@@ -38,18 +38,6 @@ const TaskTableFilters = ({
           label="Assigné"
           options={assigneeOptions}
           onChange={(_, selected) => setAssignee({ $in: selected })}
-          renderValue={value =>
-            value
-              .map((v) => {
-                const admin = assigneeOptions.find(({ id }) => id === v);
-                if (admin) {
-                  return admin.label;
-                }
-
-                return '???';
-              })
-              .map((v, i) => [i !== 0 && ', ', v])
-          }
         />
       )}
 
@@ -63,12 +51,6 @@ const TaskTableFilters = ({
             label: <T id={`Forms.status.${t}`} />,
           }))}
           onChange={(_, selected) => setStatus({ $in: selected })}
-          renderValue={value =>
-            value.map((v, i) => [
-              i !== 0 && ', ',
-              <T key={value} id={`Forms.status.${v}`} />,
-            ])
-          }
         />
       )}
 

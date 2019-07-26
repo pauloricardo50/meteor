@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-
-import T from 'core/components/Translation';
-import IconButton from 'core/components/IconButton';
-import { toMoney } from 'core/utils/conversionFunctions';
+import { toMoney } from '../../../utils/conversionFunctions';
+import InputAdornment from '../../Material/InputAdornment';
+import Input from '../../Material/Input';
+import T from '../../Translation';
+import IconButton from '../../IconButton';
 
 const Widget1SingleInputInput = ({
   name,

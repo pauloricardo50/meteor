@@ -26,11 +26,6 @@ const CommissionsTable = (props: CommissionsTableProps) => {
         label="Statut"
         onChange={(_, selected) => setStatus({ $in: selected })}
         multiple
-        renderValue={values =>
-          values
-            .map(value => options.find(({ id }) => id === value).label)
-            .map((v, i) => [i !== 0 && ', ', v])
-        }
         style={{ display: 'inline-block' }}
       />
 

@@ -32,6 +32,7 @@ const AdminDashboardStats = ({
       top={(
         <>
           <Select
+            label="Période"
             options={[
               { id: 7, label: '7 derniers jours' },
               { id: 30, label: '30 derniers jours' },

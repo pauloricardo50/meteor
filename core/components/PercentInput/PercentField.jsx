@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
+import FormHelperText from '../Material/FormHelperText';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import FormControl from '../Material/FormControl';
 import PercentInput from './PercentInput';
 
 type PercentFieldProps = {
@@ -19,12 +19,16 @@ const PercentField = ({
   label,
   required,
   ...props
-}: PercentFieldProps) => (
-  <FormControl required={required} fullWidth={fullWidth}>
-    <InputLabel>{label}</InputLabel>
-    <PercentInput {...props} />
-    {helperText && <FormHelperText>{helperText}</FormHelperText>}
-  </FormControl>
-);
+}: PercentFieldProps) => {
+  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
+
+  return (
+    <FormControl required={required} fullWidth={fullWidth}>
+      <InputLabel ref={inputLabelRef}>{label}</InputLabel>
+      <PercentInput labelWidth={labelWidth} {...props} />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
+  );
+};
 
 export default PercentField;
