@@ -36,14 +36,18 @@ const determineComponentFromProps = ({
   fieldType,
 }) => {
   if (allowedValues || customAllowedValues) {
-    return { Component: CustomSelectField, type: COMPONENT_TYPES.SELECT };
+    return {
+      Component: CustomSelectField,
+      type: COMPONENT_TYPES.SELECT,
+      props: { variant: 'outlined' },
+    };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
     return {
       Component: OptimizedDateField,
       type: COMPONENT_TYPES.DATE,
-      props: { placeholder: null },
+      props: { placeholder: null, variant: 'outlined' },
     };
   }
 
@@ -55,7 +59,7 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal' },
+      props: { margin: 'normal', variant: 'outlined' },
     };
   }
 
@@ -63,7 +67,7 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal', decimal: true },
+      props: { margin: 'normal', decimal: true, variant: 'outlined' },
     };
   }
 
@@ -95,7 +99,7 @@ const determineComponentFromProps = ({
     };
   }
 
-  return { Component: false, type: null };
+  return { Component: false, type: null, props: { variant: 'outlined' } };
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
