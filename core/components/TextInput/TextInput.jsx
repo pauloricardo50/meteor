@@ -117,6 +117,7 @@ const TextInput = (props) => {
     style,
     type,
     inputType,
+    inputLabelProps,
     ...otherProps
   } = props;
 
@@ -133,12 +134,17 @@ const TextInput = (props) => {
   return (
     <FormControl
       error={error}
-      className={classnames({ 'mui-text-input': true, [className]: true })}
+      className={classnames('mui-text-input', className)}
       style={style}
       fullWidth={fullWidth}
     >
       {label && (
-        <InputLabel ref={inputLabelRef} htmlFor={id} style={labelStyle}>
+        <InputLabel
+          ref={inputLabelRef}
+          htmlFor={id}
+          style={labelStyle}
+          {...inputLabelProps}
+        >
           {label}
         </InputLabel>
       )}
