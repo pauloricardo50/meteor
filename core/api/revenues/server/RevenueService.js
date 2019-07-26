@@ -58,12 +58,12 @@ class RevenueService extends CollectionService {
     });
   }
 
-  consolidateCommission({ revenueId, organisationId, paidAt }) {
+  consolidateCommission({ revenueId, organisationId, paidAt, commissionRate }) {
     return this.updateLinkMetadata({
       id: revenueId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { paidAt, status: COMMISSION_STATUS.PAID },
+      metadata: { paidAt, status: COMMISSION_STATUS.PAID, commissionRate },
     });
   }
 }

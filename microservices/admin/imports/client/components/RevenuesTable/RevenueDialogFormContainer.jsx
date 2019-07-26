@@ -62,7 +62,7 @@ const schema = RevenueSchema.omit(
     uniforms: { labelProps: { shrink: true } },
     optional: false,
   }),
-  'organisationLinks.$.paidDate': {
+  'organisationLinks.$.paidAt': {
     type: Date,
     optional: true,
     defaultValue: null,

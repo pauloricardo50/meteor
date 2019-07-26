@@ -39,6 +39,7 @@ export const consolidateCommission = new Method({
   params: {
     revenueId: String,
     organisationId: String,
-    paidAt: Date,
+    paidAt: String,
+    commissionRate: Number,
   },
 });

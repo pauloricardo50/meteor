@@ -60,7 +60,7 @@ const RevenueConsolidator = ({
         onClick={handleOpen}
         size="small"
         type="check"
-        tooltip="Confirmer paiememt"
+        tooltip="Confirmer réception du paiememt"
         className="success"
       />
     )}
