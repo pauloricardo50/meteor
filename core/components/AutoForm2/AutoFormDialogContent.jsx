@@ -6,14 +6,17 @@ import ErrorsField from 'uniforms-material/ErrorsField';
 
 import CustomAutoFields from './CustomAutoFields';
 import AutoFormDialogChildren from './AutoFormDialogChildren';
+import AutoFormLayout from './AutoFormLayout';
 
 type AutoFormDialogContentProps = {
-  description?: React.Node,
-  emptyDialog?: Boolean,
   autoField?: React.Node,
   children?: React.Node,
+  description?: React.Node,
+  emptyDialog?: Boolean,
   handleClose: Function,
+  layout?: any,
   onSubmit: Function,
+  schemaKeys: Array,
 };
 
 const AutoFormDialogContent = ({
@@ -23,6 +26,8 @@ const AutoFormDialogContent = ({
   children,
   handleClose,
   onSubmit,
+  layout,
+  schemaKeys,
 }: AutoFormDialogContentProps) => (
   <DialogContent>
     {description && (
@@ -30,8 +35,21 @@ const AutoFormDialogContent = ({
         {description}
       </DialogContentText>
     )}
-    {!emptyDialog && <CustomAutoFields autoField={autoField} automaticFocus />}
+
+    {!emptyDialog && !layout && (
+      <CustomAutoFields autoField={autoField} automaticFocus />
+    )}
+
+    {!emptyDialog && layout && (
+      <AutoFormLayout
+        AutoField={autoField}
+        layout={layout}
+        schemaKeys={schemaKeys}
+      />
+    )}
+
     <ErrorsField />
+
     {children && (
       <AutoFormDialogChildren
         renderFunc={children}
