@@ -27,13 +27,25 @@ const formatDateTime = (date, toNow) => {
 
 const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
   [
-    relatedTo && { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
-    { id: 'title', label: <T id="TasksTable.title" /> },
+    relatedTo && {
+      id: 'relatedTo',
+      label: <T id="TasksTable.relatedTo" />,
+      style: { width: 200 },
+    },
+    { id: 'title', label: <T id="TasksTable.title" />, style: { width: 400 } },
     { id: 'description', label: <T id="TasksTable.description" /> },
-    showStatusColumn && { id: 'status', label: <T id="TasksTable.status" /> },
-    { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
-    { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
-    { id: 'actions', label: 'Actions' },
+    showStatusColumn && {
+      id: 'status',
+      label: <T id="TasksTable.status" />,
+      style: { width: 70 },
+    },
+    { id: 'dueAt', label: <T id="TasksTable.dueAt" />, style: { width: 100 } },
+    {
+      id: 'assignedTo',
+      label: <T id="TasksTable.assignedTo" />,
+      style: { width: 60 },
+    },
+    { id: 'actions', label: 'Actions', style: { width: 96 } },
   ].filter(x => x);
 
 const makeMapTask = ({
@@ -41,7 +53,7 @@ const makeMapTask = ({
   setShowDialog,
   relatedTo = true,
   showStatusColumn,
-}) => task => {
+}) => (task) => {
   const {
     _id: taskId,
     title,
@@ -71,7 +83,7 @@ const makeMapTask = ({
           />
         ),
       },
-      title || '-',
+      { raw: title || '-', label: <b>{title}</b> },
       description || '-',
       showStatusColumn && {
         raw: status,
@@ -105,9 +117,8 @@ export default compose(
   withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => {
     let stat;
     // Only show the status column if necessary
-    const showStatusColumn =
-      tasks.length > 1 &&
-      !tasks.every(({ status }) => {
+    const showStatusColumn = tasks.length > 1
+      && !tasks.every(({ status }) => {
         if (!stat) {
           stat = status;
         }
@@ -117,14 +128,12 @@ export default compose(
 
     const columnOptions = getColumnOptions({ relatedTo, showStatusColumn });
     return {
-      rows: tasks.map(
-        makeMapTask({
-          setTaskToModify,
-          setShowDialog,
-          relatedTo,
-          showStatusColumn,
-        }),
-      ),
+      rows: tasks.map(makeMapTask({
+        setTaskToModify,
+        setShowDialog,
+        relatedTo,
+        showStatusColumn,
+      })),
       columnOptions,
       initialOrderBy: columnOptions.findIndex(({ id }) => id === 'dueAt'),
       initialOrder: ORDER.ASC,

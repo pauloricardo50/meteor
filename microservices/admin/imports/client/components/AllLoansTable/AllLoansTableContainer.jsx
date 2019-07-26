@@ -22,7 +22,11 @@ const columnOptions = [
   },
   {
     id: 'Hypothèque',
-    format: value => <IntlNumber value={value} format="money" />,
+    format: value => (
+      <b>
+        <IntlNumber value={value} format="money" />
+      </b>
+    ),
     align: 'right',
   },
 ];

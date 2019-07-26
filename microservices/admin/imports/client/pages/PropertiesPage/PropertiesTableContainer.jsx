@@ -53,13 +53,17 @@ const mapProperty = history => ({
 
 const columnOptions = [
   { id: 'Lié à' },
-  { id: 'Nom/Addresse' },
+  { id: 'Nom/Addresse', format: v => <b>{v}</b> },
   { id: 'Utilisateur' },
   { id: 'Créé le' },
   { id: 'Modifié' },
   {
     id: 'Valeur du bien',
-    format: value => <IntlNumber value={value} format="money" />,
+    format: value => (
+      <b>
+        <IntlNumber value={value} format="money" />
+      </b>
+    ),
     align: 'right',
   },
 ];

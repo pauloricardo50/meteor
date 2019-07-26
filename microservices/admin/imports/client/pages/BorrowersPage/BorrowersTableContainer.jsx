@@ -10,7 +10,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import { baseBorrower } from 'core/api/fragments';
 
 const columnOptions = [
-  { id: 'Nom' },
+  { id: 'Nom', format: v => <b>{v}</b> },
   { id: 'Utilisateur' },
   { id: 'Dossiers' },
   { id: 'Créé le' },
