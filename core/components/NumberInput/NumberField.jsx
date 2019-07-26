@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
+import FormHelperText from '../Material/FormHelperText';
+import FormControl from '../Material/FormControl';
+import InputLabel, { useInputLabelWidth } from '../Material/Input';
 import NumberInput from './NumberInput';
 
 type NumberFieldProps = {
@@ -19,12 +19,16 @@ const NumberField = ({
   label,
   required,
   ...props
-}: NumberFieldProps) => (
-  <FormControl required={required} fullWidth={fullWidth}>
-    <InputLabel>{label}</InputLabel>
-    <NumberInput {...props} />
-    {helperText && <FormHelperText>{helperText}</FormHelperText>}
-  </FormControl>
-);
+}: NumberFieldProps) => {
+  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
+
+  return (
+    <FormControl required={required} fullWidth={fullWidth}>
+      <InputLabel ref={inputLabelRef}>{label}</InputLabel>
+      <NumberInput labelWidth={labelWidth} {...props} />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
+  );
+};
 
 export default NumberField;

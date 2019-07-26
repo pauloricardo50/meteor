@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
 import moment from 'moment';
-
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import classnames from 'classnames';
 
+import InputAdornment from '../Material/InputAdornment';
+import FormHelperText from '../Material/FormHelperText';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import FormControl from '../Material/FormControl';
+import Input from '../Material/Input';
 import { swissFrancMask, percentMask } from '../../utils/textMasks';
 import { toNumber } from '../../utils/conversionFunctions';
 
@@ -129,20 +128,23 @@ const TextInput = (props) => {
     placeholder: defaultPlaceholder,
     value,
   } = getDefaults(props);
+  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
 
   return (
     <FormControl
       error={error}
       className={classnames({ 'mui-text-input': true, [className]: true })}
       style={style}
+      fullWidth={fullWidth}
     >
       {label && (
-        <InputLabel htmlFor={id} style={labelStyle} shrink>
+        <InputLabel ref={inputLabelRef} htmlFor={id} style={labelStyle}>
           {label}
         </InputLabel>
       )}
       <Input
         {...otherProps}
+        labelWidth={labelWidth}
         className={classes ? Object.values(classes).join(' ') : ''}
         id={id}
         onChange={onChangeHandler}

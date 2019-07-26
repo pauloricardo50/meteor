@@ -42,9 +42,6 @@ const LoanTimeline = ({
             label: <T id={`Forms.type.${t}`} />,
           }))}
           onChange={(_, selected) => setType({ $in: selected })}
-          renderValue={value =>
-            (value.length > 1 ? 'Plusieurs' : <T id={`Forms.type.${value[0]}`} />)
-          }
         />
       </div>
       <Timeline

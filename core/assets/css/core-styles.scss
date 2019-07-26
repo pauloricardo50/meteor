@@ -256,9 +256,12 @@ p.description,
 
 // Change it from the material-ui default inline-flex, which makes them take full width
 .mui-text-input,
-.mui-select,
 .mui-radio-group {
   display: flex;
+}
+
+.mui-select {
+  min-width: 120px;
 }
 
 // To display choices with proper hover effects

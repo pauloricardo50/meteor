@@ -5,6 +5,7 @@ import AccountPage from 'core/components/AccountPage/loadable';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage/loadable';
 import NotFound from 'core/components/NotFound/loadable';
+import DevPage from 'core/components/DevPage/loadable';
 import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
 import ProOrganisationPage from '../../client/pages/ProOrganisationPage/loadable';
 import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
@@ -54,7 +55,7 @@ const PRO_ROUTES = {
 
   // Other
   ACCOUNT_PAGE: { component: AccountPage, path: '/account' },
-  DEV_PAGE: { component: null, path: '/dev' },
+  DEV_PAGE: { component: DevPage, path: '/dev' },
   IMPERSONATE_PAGE: { component: ImpersonatePage, path: IMPERSONATE_ROUTE },
 
   // Not found

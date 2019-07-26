@@ -7,28 +7,9 @@ const fontSize = () => (Meteor.microservice === 'www' ? 16 : 14);
 const createTheme = () =>
   createMuiTheme({
     overrides: {
-      MuiInput: {
-        underline: {
-          '&:before': {
-            transition: 'background-color 200ms ease, height 200ms ease',
-          },
-        },
-        input: {
-          // This logic shows the placeholder when the label is fixed
-          'label + $formControl &': {
-            '&::-webkit-input-placeholder': { opacity: 0.5 },
-            '&::-moz-placeholder': { opacity: 0.5 }, // Firefox 19+
-            '&:-ms-input-placeholder': { opacity: 0.5 }, // IE 11
-            '&::-ms-input-placeholder': { opacity: 0.5 }, // Edge
-          },
-        },
-      },
-      MuiSelect: {
-        select: {
-          display: 'flex',
-          alignItems: 'center',
-        },
-      },
+      MuiInput: {},
+      MuiSelect: {},
+      MuiListItemText: {},
       MuiToolbar: {
         root: {
           position: '',

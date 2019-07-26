@@ -1,4 +1,5 @@
 {
+  "PromotionModifier.title": "Modifier promotion",
   "OrganisationTabs.revenues": "Revenus",
   "Forms.organisationsToPay": "Retrocessions pour",
   "Forms.sourceOrganisationLink": "Payé par",
@@ -1150,7 +1151,7 @@
   "ConditionsButton.title": "Conditions",
   "ConditionsPage.title": "Conditions générales d'utilisation",
   "ConfirmMethod.dialogTitle": "Êtes-vous sûr ?",
-  "ConfirmMethod.dialogMessage": "Tapez le mot '{keyword}' pour valider cette action.",
+  "ConfirmMethod.dialogMessage": "Tapez {keyword} pour valider.",
   "ConfirmMethod.buttonCancel": "Annuler",
   "ConfirmMethod.buttonConfirm": "Confirmer",
   "ContactButton.byEmail": "Par email",

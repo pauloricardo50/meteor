@@ -17,4 +17,5 @@ export default mapProps(({ organisationId }) => ({
     secondary: true,
     primary: false,
   },
+  title: 'Ajouter filtre',
 }))(LenderRulesForm);
