@@ -9,14 +9,14 @@ import AutoFormLayout from '../../AutoFormLayout';
 const AutoField = props => <span {...props} />;
 const DemoComponent = props => <span {...props} />;
 
-describe.only('AutoFormLayout', () => {
+describe('AutoFormLayout', () => {
   let props;
   const component = () =>
     getMountedComponent({ Component: AutoFormLayout, props });
 
   beforeEach(() => {
     getMountedComponent.reset();
-    props = { AutoField };
+    props = { AutoField, schemaKeys: ['field1', 'field2', 'field3'] };
   });
 
   it('renders fields in a different layout', () => {
