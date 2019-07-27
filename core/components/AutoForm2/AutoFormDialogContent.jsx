@@ -45,6 +45,7 @@ const AutoFormDialogContent = ({
         AutoField={autoField}
         layout={layout}
         schemaKeys={schemaKeys}
+        automaticFocus
       />
     )}
 

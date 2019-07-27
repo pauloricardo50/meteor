@@ -23,7 +23,9 @@ const AutoFormLayout = ({
   AutoField,
   layout,
   schemaKeys,
+  automaticFocus,
 }: AutoFormLayoutProps) => {
+  let fieldCount = 0;
   const renderField = (field) => {
     if (field[field.length - 1] === '*') {
       return schemaKeys
@@ -31,7 +33,13 @@ const AutoFormLayout = ({
         .map(matchedField => renderField(matchedField, AutoField));
     }
 
-    return <AutoField name={field} key={field} />;
+    return (
+      <AutoField
+        name={field}
+        key={field}
+        autoFocus={automaticFocus && fieldCount++ === 0}
+      />
+    );
   };
 
   const renderLayoutItem = (item) => {
@@ -59,4 +67,4 @@ const AutoFormLayout = ({
   return renderLayout({ layout, renderLayoutItem, renderField, AutoField });
 };
 
-export default (AutoFormLayout);
+export default AutoFormLayout;
