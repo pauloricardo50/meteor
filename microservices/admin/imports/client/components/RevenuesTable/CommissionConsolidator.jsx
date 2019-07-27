@@ -78,6 +78,7 @@ const CommissionsConsolidator = ({
         className="success"
       />
     )}
+    layout={[{ className: 'grid-col', fields: ['commissionRate', 'paidAt'] }]}
   />
 );
 

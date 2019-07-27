@@ -22,6 +22,7 @@ const InsertIrs10yDialogForm = ({
       raised: true,
       primary: true,
     }}
+    title={<T id="Irs10y.insert" />}
   />
 );
 

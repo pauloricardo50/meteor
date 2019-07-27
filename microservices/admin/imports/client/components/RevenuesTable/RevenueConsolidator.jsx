@@ -64,6 +64,7 @@ const RevenueConsolidator = ({
         className="success"
       />
     )}
+    layout={[{ className: 'grid-col', fields: ['amount', 'paidAt'] }]}
   />
 );
 
