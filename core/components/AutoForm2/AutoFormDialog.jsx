@@ -66,8 +66,12 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
       title,
       triggerComponent,
       disableActions = false,
+      layout,
+      maxWidth = 'sm',
       ...otherProps
     } = this.props;
+    const schemaKeys = this.props.schema._schemaKeys;
+
     const handleOpen = (event) => {
       event.stopPropagation();
       event.preventDefault();
@@ -89,7 +93,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
           disableEscapeKeyDown={important}
           onClose={handleClose}
           className="autoform-dialog"
-          maxWidth="sm"
+          maxWidth={maxWidth}
           fullWidth
           onClick={(e) => {
             // Clicking on the dialog should not trigger a table row below it..
@@ -105,6 +109,8 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
               emptyDialog={emptyDialog}
               handleClose={handleClose}
               onSubmit={onSubmit}
+              layout={layout}
+              schemaKeys={schemaKeys}
             >
               {children}
             </AutoFormDialogContent>

@@ -24,7 +24,7 @@ const OrganisationsPage = ({
   setFilters,
 }: OrganisationsPageProps) => (
   <div className="card1 card-top organisations-page">
-      <Helmet>
+    <Helmet>
       <title>Organisations</title>
     </Helmet>
     <h1 className="flex center-align">
