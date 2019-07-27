@@ -6,7 +6,8 @@ import React from 'react';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { withProps } from 'recompose';
 import { taskInsert } from 'core/api/tasks/index';
-import { schema } from './TaskModifier';
+import { schema, taskFormLayout } from './TaskModifier';
+
 
 type TaskAdderProps = {};
 
@@ -17,6 +18,7 @@ const TaskAdder = ({ insertTask }: TaskAdderProps) => (
     buttonProps={{ label: 'Ajouter tâche', raised: true, primary: true }}
     onSubmit={insertTask}
     title="Ajouter tâche"
+    layout={taskFormLayout}
   />
 );
 

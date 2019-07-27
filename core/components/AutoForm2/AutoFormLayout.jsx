@@ -33,6 +33,10 @@ const AutoFormLayout = ({
         .map(matchedField => renderField(matchedField, AutoField));
     }
 
+    if (!schemaKeys.includes(field)) {
+      return null;
+    }
+
     return (
       <AutoField
         name={field}
@@ -47,7 +51,12 @@ const AutoFormLayout = ({
       return renderField(item, AutoField);
     }
 
-    const { fields = [], subLayout, Component = 'div', ...props } = item;
+    const {
+      fields = [],
+      layout: subLayout,
+      Component = 'div',
+      ...props
+    } = item;
 
     return (
       <Component {...props}>

@@ -84,11 +84,11 @@ export const dueAtFuncs = [
     ],
   },
   {
-    label: 'Lundi prochain',
+    label: 'Lundi pro',
     func: () => [['dueAt', getNextMonday().toDate()]],
   },
   {
-    label: 'Semaine prochaine',
+    label: 'Semaine pro',
     func: () => [
       [
         'dueAt',

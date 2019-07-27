@@ -46,7 +46,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }: OfferAdderProps) => (
         Component: Box,
         title: <h4>Offre</h4>,
         className: 'mb-32',
-        subLayout: [
+        layout: [
           'maxAmount',
           {
             className: 'grid-2',
@@ -71,7 +71,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }: OfferAdderProps) => (
         Component: Box,
         className: 'mb-32',
         title: <h4>Contreparties</h4>,
-        subLayout: [
+        layout: [
           'hasCounterparts',
           'counterparts',
           {
