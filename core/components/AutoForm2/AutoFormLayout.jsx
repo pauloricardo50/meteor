@@ -59,4 +59,4 @@ const AutoFormLayout = ({
   return renderLayout({ layout, renderLayoutItem, renderField, AutoField });
 };
 
-export default React.memo(AutoFormLayout);
+export default (AutoFormLayout);

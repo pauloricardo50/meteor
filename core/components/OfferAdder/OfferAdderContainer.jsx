@@ -1,3 +1,4 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
 
@@ -11,7 +12,7 @@ const interestRatesSchema = ({ isDiscount }) =>
   Object.values(INTEREST_RATES).reduce(
     (types, type) => ({
       ...types,
-      [`${type}${isDiscount ? 'Discount' : ''}`]: {
+      [`${isDiscount ? 'discount_' : ''}${type}`]: {
         type: Number,
         min: 0,
         max: 1,
@@ -145,7 +146,7 @@ const schema = lenders =>
     enableOffer: { type: Boolean, defaultValue: true, optional: true },
   });
 
-const getStandardRatesKeys = key => !key.includes('Discount');
+const getStandardRatesKeys = key => !key.includes('discount_');
 const getDiscountRatesKeys = key => !getStandardRatesKeys(key);
 
 const filterRates = ({ isCounterPartOffer, hasFlatDiscount }) => (key) => {
@@ -168,8 +169,8 @@ const reformatInterestRatesObject = ({
     .reduce(
       (rates, key) => ({
         ...rates,
-        [key.split('Discount')[0]]: hasFlatDiscount
-          ? interestRates[key.split('Discount')[0]] - flatDiscount
+        [key.split('discount_')[1]]: hasFlatDiscount
+          ? interestRates[key.split('discount_')[1]] - flatDiscount
           : interestRates[key],
       }),
       {},
