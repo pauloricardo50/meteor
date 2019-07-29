@@ -13,6 +13,7 @@ import {
   getImpersonateUserId,
   uploadFileToS3,
 } from './helpers';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const bodySchema = new SimpleSchema({
   propertyId: String,
@@ -68,23 +69,27 @@ const uploadFileAPI = (req) => {
       impersonateUserId = getImpersonateUserId({ userId, impersonateUser });
     }
 
-    Security.properties.isAllowedToManageDocuments({
-      userId: impersonateUserId || userId,
-      propertyId,
-    });
+    try {
+      Security.properties.isAllowedToManageDocuments({
+        userId: impersonateUserId || userId,
+        propertyId,
+      });
+    } catch (error) {
+      throw new Meteor.Error(HTTP_STATUS_CODES.FORBIDDEN, error);
+    }
 
     return uploadFileToS3({
       file,
       docId: propertyId,
       id: category,
       collection: PROPERTIES_COLLECTION,
-    }).then((downloadUrl) => {
+    }).then((list) => {
       fs.unlink(path, (err) => {
         if (err) {
           throw new Meteor.Error(err);
         }
       });
-      return { url: downloadUrl };
+      return { files: list };
     });
   });
 };

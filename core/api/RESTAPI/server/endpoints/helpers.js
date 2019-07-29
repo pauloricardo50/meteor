@@ -114,7 +114,33 @@ export const uploadFileToS3 = ({ file, docId, id, collection }) =>
 
     uploader.on('end', () => {
       FileService.updateDocumentsCache({ docId, collection }).then(() => {
-        resolve(`${OBJECT_STORAGE_PATH}/${key}`);
+        const listParams = {
+          s3Params: {
+            Bucket: Meteor.settings.storage.bucketName,
+            Prefix: docId,
+          },
+          recursive: true,
+        };
+        const filesList = client.listObjects(listParams);
+        filesList.on('error', (err) => {
+          reject(err.stack);
+        });
+
+        let list = [];
+
+        filesList.on('data', (data) => {
+          const { Contents = [] } = data;
+          list = [...list, ...Contents].map(({ Key, LastModified, Size }) => ({
+            Key,
+            LastModified,
+            Size,
+            Url: `${OBJECT_STORAGE_PATH}/${Key}`,
+          }));
+        });
+
+        filesList.on('end', () => {
+          resolve(list);
+        });
       });
     });
   });
