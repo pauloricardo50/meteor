@@ -18,6 +18,7 @@ const bodySchema = new SimpleSchema({
   propertyId: String,
   category: {
     type: String,
+    allowedValues: [...Object.values(PROPERTY_DOCUMENTS)],
     custom() {
       if (this.field('propertyId')) {
         return Object.values(PROPERTY_DOCUMENTS).includes(this.value)
@@ -83,7 +84,7 @@ const uploadFileAPI = (req) => {
           throw new Meteor.Error(err);
         }
       });
-      return downloadUrl;
+      return { url: downloadUrl };
     });
   });
 };
