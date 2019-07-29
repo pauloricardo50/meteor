@@ -37,12 +37,12 @@ export const fetchAndCheckResponse = ({
   data,
   expectedResponse,
 }) => {
-  const path = query
+  const urlPath = query
     ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
       encode: true,
     })}`
     : `http://localhost:${API_PORT}/api${url}`;
-  return fetch(path, data).then(res =>
+  return fetch(urlPath, data).then(res =>
     checkResponse({ res, expectedResponse }));
 };
 
@@ -166,7 +166,7 @@ export const makeHeaders = ({
   };
 };
 
-export const uploadFile = ({ filePath, userId, url, ...params }) => {
+export const uploadFile = ({ filePath, userId, url, query, ...params }) => {
   const readStream = createReadStream(filePath);
   const form = new FormData();
   form.append('file', readStream);
@@ -186,6 +186,7 @@ export const uploadFile = ({ filePath, userId, url, ...params }) => {
         userId,
         ...(Object.keys(params).length ? { body: params } : {}),
         isMultipart: true,
+        query,
         file: {
           name: path.basename(filePath),
           size: statSync(filePath).size,
@@ -196,6 +197,11 @@ export const uploadFile = ({ filePath, userId, url, ...params }) => {
     },
   };
 
-  return fetch(`http://localhost:${API_PORT}/api${url}`, options).then(res =>
-    res.json());
+  const urlPath = query
+    ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
+      encode: true,
+    })}`
+    : `http://localhost:${API_PORT}/api${url}`;
+
+  return fetch(urlPath, options).then(res => res.json());
 };
