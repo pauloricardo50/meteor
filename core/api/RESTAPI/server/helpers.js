@@ -306,8 +306,7 @@ export const verifySignature = (req) => {
     return isValid;
   });
 
-  // TODO: return verified
-  return isMultipart || verified;
+  return verified;
 };
 
 export const trackRequest = ({ req, result }) => {
@@ -328,4 +327,37 @@ export const trackRequest = ({ req, result }) => {
   }
 
   analytics.track(EVENTS.API_CALLED, { endpoint: getRequestPath(req), result });
+};
+
+export const getMatchingPathOptions = (req, options) => {
+  const endpoints = Object.keys(options);
+  const path = getRequestPath(req);
+  const method = getRequestMethod(req);
+  const parts = decodeURI(path)
+    .split('?', 1)[0]
+    .replace(/^[\s\/]+|[\s\/]+$/g, '')
+    .split('/');
+
+  let matchingPathOptions = {};
+
+  endpoints.forEach((endpoint) => {
+    const endpointParts = endpoint
+      .split('/')
+      .filter(x => x)
+      .map(part => (part.slice(0, 1) === ':' ? '*' : part));
+    const match = endpointParts.length === parts.length
+      && endpointParts.every((part, i) => {
+        if (part === '*') {
+          return true;
+        }
+        return part === parts[i];
+      })
+      && !!options[endpoint][method];
+
+    if (match) {
+      matchingPathOptions = options[endpoint][method].options;
+    }
+  });
+
+  return matchingPathOptions;
 };

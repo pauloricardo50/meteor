@@ -2,10 +2,15 @@ import { expect } from 'chai';
 import fetch from 'node-fetch';
 import NodeRSA from 'node-rsa';
 import queryString from 'query-string';
+import { createReadStream, statSync } from 'fs';
+import path from 'path';
+import mime from 'mime-types';
 
 import { sortObject } from 'core/api/helpers/index';
 import UserService from 'core/api/users/server/UserService';
 import { OBJECT_FORMATS, formatObject } from '../helpers';
+
+const FormData = require('form-data');
 
 export const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
@@ -133,7 +138,7 @@ export const makeHeaders = ({
   query,
   signature,
   isMultipart,
-  file
+  file,
 }) => {
   let keyPair = { publicKey, privateKey };
 
@@ -154,9 +159,43 @@ export const makeHeaders = ({
         timestamp,
         nonce,
         isMultipart,
-        file
+        file,
       })}`,
     'X-EPOTEK-Nonce': nonce,
     'X-EPOTEK-Timestamp': timestamp,
   };
+};
+
+export const uploadFile = ({ filePath, userId, url, ...params }) => {
+  const readStream = createReadStream(filePath);
+  const form = new FormData();
+  form.append('file', readStream);
+  Object.keys(params).forEach((param) => {
+    form.append(param, params[param]);
+  });
+
+  const { timestamp, nonce } = getTimestampAndNonce();
+
+  const options = {
+    method: 'POST',
+    body: form,
+    headers: {
+      ...makeHeaders({
+        timestamp,
+        nonce,
+        userId,
+        ...(Object.keys(params).length ? { body: params } : {}),
+        isMultipart: true,
+        file: {
+          name: path.basename(filePath),
+          size: statSync(filePath).size,
+          type: mime.lookup(filePath),
+        },
+      }),
+      ...form.getHeaders(),
+    },
+  };
+
+  return fetch(`http://localhost:${API_PORT}/api${url}`, options).then(res =>
+    res.json());
 };

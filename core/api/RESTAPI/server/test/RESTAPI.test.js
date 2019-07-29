@@ -2,8 +2,11 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { appendFileSync } from 'fs';
+import { expect } from 'chai';
 
-import { REST_API_ERRORS } from '../restApiConstants';
+import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
+import { REST_API_ERRORS, FILE_UPLOAD_DIR } from '../restApiConstants';
 import RESTAPI from '../RESTAPI';
 import { withMeteorUserId, OBJECT_FORMATS } from '../helpers';
 import {
@@ -11,6 +14,7 @@ import {
   makeHeaders,
   getTimestampAndNonce,
   signRequest,
+  uploadFile,
 } from './apiTestHelpers.test';
 
 const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
@@ -72,12 +76,17 @@ describe('RESTAPI', () => {
                 : resolve(`${res} ${testBody} ${testQuery} ${id}`)))),
       ),
   );
+  api.addEndpoint('/multipart', 'POST', makeTestRoute('POST'), {
+    multipart: true,
+  });
 
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
     } else {
+      makeFileUploadDir();
+      flushFileUploadDir();
       api.start();
     }
   });
@@ -131,7 +140,10 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: { 'Content-Type': 'plain/text' },
         },
-        expectedResponse: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text'),
+        expectedResponse: REST_API_ERRORS.WRONG_CONTENT_TYPE(
+          'plain/text',
+          'application/json',
+        ),
       }));
 
     it('authorization type is wrong', () =>
@@ -422,6 +434,34 @@ describe('RESTAPI', () => {
         },
         expectedResponse: makeTestRoute('POST')({ user }),
       });
+    });
+  });
+
+  it('allows multipart/form-data requests on multipart endpoints', () => {
+    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
+    appendFileSync(filePath, 'Hello');
+    return uploadFile({
+      filePath,
+      userId: user._id,
+      url: '/multipart',
+    }).then((res) => {
+      const { userId } = res;
+      expect(userId).to.equal(user._id);
+    });
+  });
+
+  it('does not allow multipart/form-data requests on non multipart endpoints', () => {
+    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
+    appendFileSync(filePath, 'Hello');
+    return uploadFile({
+      filePath,
+      userId: user._id,
+      url: '/test',
+    }).then((res) => {
+      const { status, errorName, message } = res;
+      expect(status).to.equal(400);
+      expect(errorName).to.equal('WRONG_CONTENT_TYPE');
+      expect(message).to.include('multipart');
     });
   });
 });

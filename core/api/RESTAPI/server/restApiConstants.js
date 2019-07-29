@@ -12,9 +12,9 @@ export const HTTP_STATUS_CODES = {
 export const BODY_SIZE_LIMIT = '50mb';
 
 export const REST_API_ERRORS = {
-  WRONG_CONTENT_TYPE: contentType => ({
+  WRONG_CONTENT_TYPE: (contentType, supportedContentType) => ({
     status: HTTP_STATUS_CODES.BAD_REQUEST,
-    message: `Request content type must be application/json. Provided: ${contentType}`,
+    message: `Request content type must be ${supportedContentType}. Provided: ${contentType}`,
     errorName: 'WRONG_CONTENT_TYPE',
   }),
   WRONG_AUTHORIZATION_TYPE: {

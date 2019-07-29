@@ -1,6 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import fs from 'fs';
-import path from 'path';
 
 import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
 import {
@@ -16,7 +14,7 @@ import {
   insertPropertyAPI,
   uploadFileAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
-import { FILE_UPLOAD_DIR } from 'core/api/RESTAPI/server/restApiConstants';
+import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
 const api = new RESTAPI();
 api.addEndpoint(
@@ -46,30 +44,8 @@ api.addEndpoint('/calculator/mortgage-estimate', 'GET', mortgageEstimateAPI);
 api.addEndpoint('/properties', 'POST', insertPropertyAPI);
 api.addEndpoint('/upload', 'POST', uploadFileAPI);
 
-const makeFileUploadDir = () => {
-  if (!fs.existsSync(FILE_UPLOAD_DIR)) {
-    fs.mkdirSync(FILE_UPLOAD_DIR);
-  }
-};
-
-const flushUploadDir = () => {
-  fs.readdir(FILE_UPLOAD_DIR, (error, files) => {
-    if (error) {
-      throw error;
-    }
-
-    [...files].forEach((file) => {
-      fs.unlink(path.join(FILE_UPLOAD_DIR, file), (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    });
-  });
-};
-
 Meteor.startup(() => {
   makeFileUploadDir();
-  flushUploadDir();
+  flushFileUploadDir();
   api.start();
 });
