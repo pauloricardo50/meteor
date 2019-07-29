@@ -49,12 +49,22 @@ const uploadFileAPI = (req) => {
     throw new Meteor.Error(error);
   }
 
-  const { propertyId, category } = cleanBody;
+  const { category } = cleanBody;
+  let { propertyId } = cleanBody;
 
-  if (propertyId) {
-    const property = PropertyService.get(propertyId);
-    if (!property) {
-      throw new Meteor.Error(`Property with id "${propertyId}" not found`);
+  const exists = PropertyService.exists(propertyId);
+
+  if (!exists) {
+    const propertyByExternalId = PropertyService.fetchOne({
+      $filters: { externalId: propertyId },
+    });
+    if (propertyByExternalId) {
+      propertyId = propertyByExternalId._id;
+    } else {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.NOT_FOUND,
+        `No property found for id "${propertyId}"`,
+      );
     }
   }
 
