@@ -110,7 +110,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/www && meteor npm run test -- --ci
-          no_output_timeout: 60m
+          no_output_timeout: 15m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -186,7 +186,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/app && meteor npm run test -- --ci
-          no_output_timeout: 60m
+          no_output_timeout: 15m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -262,7 +262,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/admin && meteor npm run test -- --ci
-          no_output_timeout: 60m
+          no_output_timeout: 15m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -338,7 +338,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/pro && meteor npm run test -- --ci
-          no_output_timeout: 60m
+          no_output_timeout: 15m
       - save_cache:
           name: Cache meteor system
           key: >-

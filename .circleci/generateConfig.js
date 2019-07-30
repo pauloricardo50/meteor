@@ -72,7 +72,7 @@ const runTestsCommand = (name, testsType) => {
       return runCommand(
         'Run unit tests',
         `cd ./microservices/${name} && meteor npm run test -- --ci`,
-        '60m',
+        '15m',
       );
     default:
       throw new Error(`Unknown tests type: ${testsType}`);
