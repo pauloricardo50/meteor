@@ -85,6 +85,7 @@ export default compose(
         id: 'commissionRate',
         label: 'Commission',
         align: 'right',
+        style: { whiteSpace: 'nowrap' },
       },
       { id: 'actions' },
     ],

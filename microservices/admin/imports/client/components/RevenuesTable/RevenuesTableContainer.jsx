@@ -24,7 +24,7 @@ const getColumnOptions = ({ displayLoan, displayActions }) =>
     { id: 'description' },
     { id: 'sourceOrganisationLink' },
     { id: 'organisationsToPay' },
-    { id: 'amount', align: 'right' },
+    { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
     displayActions && { id: 'actions' },
   ]
     .filter(x => x)
