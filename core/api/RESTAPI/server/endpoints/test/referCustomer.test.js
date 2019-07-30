@@ -79,7 +79,11 @@ describe('REST: referCustomer', function () {
           _factory: 'pro',
           _id: 'pro',
           organisations: [
-            { _id: 'org', $metadata: { isMain: true }, name: 'Main Org' },
+            {
+              _id: 'org',
+              $metadata: { isMain: true, title: 'CTO' },
+              name: 'Main Org',
+            },
             { _id: 'org3' },
           ],
         },
@@ -99,7 +103,9 @@ describe('REST: referCustomer', function () {
           _factory: 'pro',
           _id: 'pro4',
           emails: [{ address: 'pro4@org3.com', verified: true }],
-          organisations: [{ _id: 'org3', $metadata: { isMain: true } }],
+          organisations: [
+            { _id: 'org3', $metadata: { isMain: true, title: 'CEO' } },
+          ],
         },
       ],
     });
@@ -187,20 +193,23 @@ describe('REST: referCustomer', function () {
     });
   });
 
-  it('sends a properly formatted slack notification', async () => {
-    const spy = sinon.spy();
-    sinon.stub(SlackService, 'send').callsFake(spy);
+  describe('Slack notifications', () => {
+    it('sends a properly formatted slack notification', async () => {
+      const spy = sinon.spy();
+      sinon.stub(SlackService, 'send').callsFake(spy);
 
-    await referCustomer({
-      impersonateUser: 'pro4@org3.com',
-      expectedResponse: {
-        message: `Successfully referred user "${customerToRefer.email}"`,
-      },
+      await referCustomer({
+        impersonateUser: 'pro4@org3.com',
+        expectedResponse: {
+          message: `Successfully referred user "${customerToRefer.email}"`,
+        },
+      });
+
+      expect(spy.calledOnce).to.equal(true);
+      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+      expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité sur e-Potek en referral uniquement');
+
+      SlackService.send.restore();
     });
-
-    expect(spy.calledOnce).to.equal(true);
-    expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
-
-    SlackService.send.restore();
   });
 });
