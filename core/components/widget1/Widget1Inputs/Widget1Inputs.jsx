@@ -10,13 +10,18 @@ import Widget1InputsContainer from './Widget1InputsContainer';
 
 export const Widget1Inputs = ({ finma, fields }) => (
   <div className="widget1-inputs card1">
-    <h3>
-      <T id="Widget1Inputs.title" />
-    </h3>
-    <Widget1InputsReset />
-    {fields.map((field, index) => (
-      <Widget1SingleInput key={field} name={field} tabIndex={index} />
-    ))}
+    <div className="card-top">
+      <h3>
+        <T id="Widget1Inputs.title" />
+      </h3>
+      <Widget1InputsReset />
+      <div className="widget1-inputs-list">
+        {fields.map((field, index) => (
+          <Widget1SingleInput key={field} name={field} tabIndex={index} />
+        ))}
+      </div>
+    </div>
+
     <Widget1InputsError {...finma} />
   </div>
 );

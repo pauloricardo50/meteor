@@ -11,6 +11,7 @@ import Analytics from 'core/api/analytics/server/Analytics';
 import { Random } from 'meteor/random';
 import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
+import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
@@ -70,9 +71,10 @@ export const updateCustomerReferral = ({
 }) => {
   if (impersonateUser) {
     const customerId = UserService.getByEmail(customer.email)._id;
+    const mainOrg = UserService.getUserMainOrganisation(userId);
     return UserService.setReferredByOrganisation({
       userId: customerId,
-      organisationId: UserService.getUserMainOrganisationId(userId),
+      organisationId: mainOrg && mainOrg._id,
     });
   }
   return Promise.resolve();
@@ -334,9 +336,9 @@ export const getMatchingPathOptions = (req, options) => {
   const path = getRequestPath(req);
   const method = getRequestMethod(req);
   const parts = decodeURI(path)
-  .split('?', 1)[0]
-  .replace(/^[\s\/]+|[\s\/]+$/g, '')
-  .split('/');
+    .split('?', 1)[0]
+    .replace(/^[\s\/]+|[\s\/]+$/g, '')
+    .split('/');
 
   let matchingPathOptions = {};
 
@@ -361,3 +363,16 @@ export const getMatchingPathOptions = (req, options) => {
 
   return matchingPathOptions;
 };
+
+export const setIsAPI = () => {
+  storeOnFiber('isAPI', true);
+};
+
+// Can be used to determine if server-side code is being run from an API call
+export const isAPI = () => !!getFromFiber('isAPI');
+
+export const setAPIUser = (user) => {
+  storeOnFiber('APIUser', user);
+};
+
+export const getAPIUser = () => getFromFiber('APIUser');

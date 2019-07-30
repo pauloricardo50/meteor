@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from './node_modules/core/components/Icon';
-import Button from './node_modules/core/components/Button';
-import TextField from './node_modules/core/components/Material/TextField';
-import T from './node_modules/core/components/Translation';
+import Icon from 'core/components/Icon';
+import Button from 'core/components/Button';
+import TextField from 'core/components/Material/TextField';
+import T from 'core/components/Translation';
 
 class SearchForm extends Component {
   constructor(props) {

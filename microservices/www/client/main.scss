@@ -8,21 +8,20 @@
 @import '{}/imports/ui/WwwLayout/WwwLayout.scss';
 
 // Pages
-@import '{}/imports/ui/pages/HomePage/HomePage.scss';
-@import '{}/imports/ui/pages/Widget1Page/Widget1Page.scss';
-@import '{}/imports/ui/pages/CheckMailboxPage/CheckMailboxPage.scss';
-@import '{}/imports/ui/pages/ContactPage/ContactPage.scss';
-@import '{}/imports/ui/pages/ConditionsPage/ConditionsPage.scss';
 @import '{}/imports/ui/pages/AboutPage/AboutPage.scss';
-@import '{}/imports/ui/pages/InterestsPage/InterestsPage.scss';
-@import '{}/imports/ui/pages/CareersPage/CareersPage.scss';
-@import '{}/imports/ui/pages/FaqPage/FaqPage.scss';
 @import '{}/imports/ui/pages/BlogPage/BlogPage.scss';
 @import '{}/imports/ui/pages/BlogPostPage/BlogPostPage.scss';
+@import '{}/imports/ui/pages/CareersPage/CareersPage.scss';
+@import '{}/imports/ui/pages/CheckMailboxPage/CheckMailboxPage.scss';
+@import '{}/imports/ui/pages/ConditionsPage/ConditionsPage.scss';
+@import '{}/imports/ui/pages/ContactPage/ContactPage.scss';
+@import '{}/imports/ui/pages/FaqPage/FaqPage.scss';
+@import '{}/imports/ui/pages/HomePage/HomePage.scss';
+@import '{}/imports/ui/pages/InterestsPage/InterestsPage.scss';
 
 // Components
-@import '{}/imports/ui/components/Widget1/Widget1.scss';
 @import '{}/imports/ui/components/ContactUsForm/ContactUsForm.scss';
+@import '{}/imports/ui/components/Widget1/Widget1.scss';
 
 html {
   @include screen(med, min) {

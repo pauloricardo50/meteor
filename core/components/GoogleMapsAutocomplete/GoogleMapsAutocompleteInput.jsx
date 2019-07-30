@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
 
+import FormControl from '../Material/FormControl';
+import Input from '../Material/Input';
 import GoogleMapsAutocompleteResults from './GoogleMapsAutocompleteResults';
 
 type GoogleMapsAutocompleteInputProps = {};

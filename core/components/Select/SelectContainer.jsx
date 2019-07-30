@@ -9,16 +9,16 @@ import Divider from '../Material/Divider';
 import Icon from '../Icon';
 
 const styles = theme => ({
-  menuItem: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      '& $colorClass': { color: theme.palette.common.white },
-    },
-  },
-  menuItemRoot: { height: 'unset' },
-  listItemTextWithIcon: { paddingLeft: 0 },
-  listItemtext: { paddingLeft: 0, paddingRight: 0 },
-  colorClass: {},
+  // menuItem: {
+  //   '&:hover': {
+  //     backgroundColor: theme.palette.primary.main,
+  //     '& $colorClass': { color: theme.palette.common.white },
+  //   },
+  // },
+  // menuItemRoot: { height: 'unset' },
+  // listItemTextWithIcon: { paddingLeft: 0 },
+  // listItemtext: { paddingLeft: 0, paddingRight: 0 },
+  // colorClass: {},
 });
 
 const mapOptions = (
@@ -87,6 +87,7 @@ const mapOptions = (
 const SelectContainer = compose(
   withStyles(styles),
   mapProps(({ options, classes, onChange, id, ...otherProps }) => ({
+    rawOptions: options,
     options: mapOptions(options, classes),
     onChange: e => onChange(id, e.target.value),
     id,

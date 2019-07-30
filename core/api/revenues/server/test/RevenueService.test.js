@@ -31,7 +31,7 @@ describe('RevenueService', () => {
         organisations: { _id: 'org', name: 'org1' },
         revenues: [
           {
-            organisations: { _id: 'org2' },
+            organisations: { _id: 'org2', $metadata: { commissionRate: 0.2 } },
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
@@ -50,7 +50,7 @@ describe('RevenueService', () => {
         organisations: { _id: 'org' },
         revenues: [
           {
-            organisations: { _id: 'org' },
+            organisations: { _id: 'org', $metadata: { commissionRate: 0.2 } },
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
@@ -69,12 +69,12 @@ describe('RevenueService', () => {
         organisations: { _id: 'org' },
         revenues: [
           {
-            organisations: { _id: 'org' },
+            organisations: { _id: 'org', $metadata: { commissionRate: 0.2 } },
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
           {
-            organisations: { _id: 'org' },
+            organisations: { _id: 'org', $metadata: { commissionRate: 0.2 } },
             amount: 100,
             status: REVENUE_STATUS.EXPECTED,
           },
@@ -93,12 +93,15 @@ describe('RevenueService', () => {
         organisations: { _id: 'org', name: 'org1' },
         revenues: [
           {
-            organisations: [{ _id: 'org' }, { _id: 'org2' }],
+            organisations: [
+              { _id: 'org', $metadata: { commissionRate: 0.2 } },
+              { _id: 'org2', $metadata: { commissionRate: 0.2 } },
+            ],
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
           {
-            organisations: [{ _id: 'org' }],
+            organisations: [{ _id: 'org', $metadata: { commissionRate: 0.2 } }],
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
@@ -110,6 +113,34 @@ describe('RevenueService', () => {
       });
 
       expect(result).to.equal(150);
+    });
+  });
+
+  describe('links and caches', () => {
+    it('adds a loanCache on revenues', () => {
+      generator({
+        revenues: {
+          _id: 'rev',
+          amount: 1000,
+          loan: {
+            _id: 'loanId',
+            name: '18-0001',
+            user: { _id: 'user' },
+          },
+        },
+      });
+
+      const revenue = RevenueService.findOne(
+        { _id: 'rev' },
+        { fields: { loanCache: 1 } },
+      );
+
+      expect(revenue.loanCache).to.deep.equal([
+        {
+          _id: 'loanId',
+          name: '18-0001',
+        },
+      ]);
     });
   });
 });

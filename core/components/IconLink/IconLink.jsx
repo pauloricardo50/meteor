@@ -33,7 +33,7 @@ const IconLink = React.forwardRef((
     {showIcon && (
       <Icon type={icon} className={className || 'icon-link-icon'} />
     )}
-    {children || text}
+    {children || (typeof text === 'string' ? <span>{text}</span> : text)}
   </Link>
 ));
 

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
 
+import Input from 'core/components/Material/Input';
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
 import ProPropertyProUserAdderContainer from './ProPropertyProUserAdderContainer';

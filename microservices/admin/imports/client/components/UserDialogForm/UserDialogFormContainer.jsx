@@ -20,6 +20,21 @@ const userSchema = new SimpleSchema({
     type: Array,
     condition: ({ roles = [] }) => roles.includes(ROLES.PRO),
   },
+  email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
+  phoneNumbers: { type: Array, optional: true },
+  'phoneNumbers.$': String,
+  assignedEmployeeId: {
+    type: String,
+    customAllowedValues: {
+      query: adminUsers,
+      params: () => ({ $body: { name: 1 }, admins: true }),
+    },
+    optional: true,
+    uniforms: {
+      transform: ({ name }) => name,
+      labelProps: { shrink: true },
+    },
+  },
   'organisations.$': Object,
   'organisations.$._id': {
     type: String,
@@ -49,21 +64,6 @@ const userSchema = new SimpleSchema({
       label: <T id="Forms.contact.title" />,
       placeholder: 'Responsable Hypothèques',
       displayEmpty: true,
-    },
-  },
-  email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
-  phoneNumbers: { type: Array, optional: true },
-  'phoneNumbers.$': String,
-  assignedEmployeeId: {
-    type: String,
-    customAllowedValues: {
-      query: adminUsers,
-      params: () => ({ $body: { name: 1 }, admins: true }),
-    },
-    optional: true,
-    uniforms: {
-      transform: ({ name }) => name,
-      labelProps: { shrink: true },
     },
   },
 });

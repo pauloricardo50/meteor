@@ -1,12 +1,19 @@
 .icon-link {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   padding: 2px 4px;
 
   white-space: nowrap;
 
   border-radius: 4px;
+
+  > * {
+    white-space: nowrap;
+    vertical-align: middle;
+  }
 
   &:hover,
   &:focus {

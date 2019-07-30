@@ -251,8 +251,9 @@
     .mui-select {
       position: relative;
 
-      margin-bottom: 10px;
+      margin-bottom: 16px;
       padding-right: 50px;
+      box-sizing: border-box;
     }
   }
 

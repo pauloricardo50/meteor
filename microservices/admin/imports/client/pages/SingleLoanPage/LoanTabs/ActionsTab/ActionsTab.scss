@@ -10,10 +10,8 @@
 
     margin-bottom: 24px;
 
-    *:nth-of-type(2) {
-      position: absolute;
-      top: 50px;
-      left: 0;
+    > * {
+      margin-right: 8px;
     }
   }
 

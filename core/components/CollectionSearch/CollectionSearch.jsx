@@ -1,12 +1,12 @@
 // @flow
 import React, { useRef } from 'react';
-import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
+import Input from '../Material/Input';
 import CollectionSearchContainer from './CollectionSearchContainer';
 import Loading from '../Loading/Loading';
 
@@ -70,7 +70,10 @@ const CollectionSearch = ({
           mouseEvent="onMouseUp"
           onClickAway={() => {
             // When clicking back in the input, don't hide the results
-            if (document.activeElement.getAttribute('name') !== 'collection-search') {
+            if (
+              document.activeElement.getAttribute('name')
+              !== 'collection-search'
+            ) {
               hideResults();
             }
           }}

@@ -1,14 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FormControl from '@material-ui/core/FormControl';
-import MuiSelect from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem'
+import MenuItem from '@material-ui/core/MenuItem';
 
+import MuiSelect from '../Material/Select';
+import FormHelperText from '../Material/FormHelperText';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import FormControl from '../Material/FormControl';
+import Input from '../Material/Input';
 import SelectContainer from './SelectContainer';
+
+const makeRenderValue = ({ multiple, rawOptions }) => {
+  if (!multiple) {
+    return (value) => {
+      const option = rawOptions.find(({ id }) => id === value);
+      return option && option.label;
+    };
+  }
+
+  return values =>
+    values.map((value, i) => {
+      const option = rawOptions.find(({ id }) => id === value);
+      return [i !== 0 && ', ', option && option.label];
+    });
+};
 
 const Select = ({
   value,
@@ -20,33 +35,45 @@ const Select = ({
   required,
   error,
   placeholder,
+  multiple,
+  rawOptions,
+  fullWidth,
   ...otherProps
-}) => (
-  <FormControl className="mui-select" style={style}>
-    {label && (
-      <InputLabel htmlFor={id} shrink>
-        {required ? (
-          <span>
-            {label} <span className="error">*</span>
-          </span>
-        ) : (
-          label
-        )}
-      </InputLabel>
-    )}
-    <MuiSelect
-      {...otherProps}
-      value={value}
-      onChange={onChange}
-      id={id}
-      input={<Input />}
-      displayEmpty={!!placeholder}
+}) => {
+  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
+
+  return (
+    <FormControl
+      fullWidth={fullWidth}
+      variant="outlined"
+      className="mui-select"
+      style={style}
     >
-      {[placeholder && <MenuItem value="" disabled>{placeholder}</MenuItem>, ...options].filter(x=>x)}
-    </MuiSelect>
-    {error && <FormHelperText>{error}</FormHelperText>}
-  </FormControl>
-);
+      {label && (
+        <InputLabel ref={inputLabelRef} htmlFor={id}>
+          {label}
+          {required && ' '}
+          {required && <span className="error">*</span>}
+        </InputLabel>
+      )}
+      <MuiSelect
+        renderValue={makeRenderValue({ multiple, rawOptions })}
+        {...otherProps}
+        value={value}
+        onChange={onChange}
+        input={<Input labelWidth={labelWidth} id={id} />}
+        multiple={multiple}
+        displayEmpty={!!placeholder}
+      >
+        {[
+          placeholder && <MenuItem value="">{placeholder}</MenuItem>,
+          ...options,
+        ].filter(x => x)}
+      </MuiSelect>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
 
 Select.propTypes = {
   id: PropTypes.string,

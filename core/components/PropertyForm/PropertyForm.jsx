@@ -43,6 +43,11 @@ const PropertyForm = ({
         icon: <Icon type="home" />,
         label: <T id={buttonLabelId} />,
       }}
+      layout={[
+        'value',
+        'address1',
+        { className: 'grid-col', fields: ['zipCode', 'city'] },
+      ]}
       {...props}
     />
   </div>

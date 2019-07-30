@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
 
+import Input from '../Material/Input';
 import { numberFormatters } from '../../utils/formHelpers';
 
 type NumberInputProps = {};

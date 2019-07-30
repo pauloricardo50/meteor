@@ -1,8 +1,12 @@
-.relatedTo-cell-noLink {
-  display: flex;
-  align-items: center;
+.tasks-table table {
+  table-layout: fixed;
+  min-width: 1200px;
+}
 
-  .icon-link-icon {
-    margin-right: 8px;
-  }
+.task-modifier-date-setter {
+  display: grid;
+  grid-gap: 8px;
+  justify-items: stretch;
+  grid-auto-flow: column;
+  margin-bottom: 8px;
 }

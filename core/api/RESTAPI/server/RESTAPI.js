@@ -5,7 +5,7 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { logRequest, trackRequest } from './helpers';
+import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 
 export default class RESTAPI {
@@ -57,6 +57,8 @@ export default class RESTAPI {
   wrapHandler(handler) {
     return (req, res, next) => {
       Fiber(() => {
+        setIsAPI();
+        setAPIUser(req.user);
         try {
           Promise.resolve()
             .then(() =>

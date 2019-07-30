@@ -18,10 +18,31 @@ const schema = RevenueSchema.omit(
   'createdAt',
   'updatedAt',
   'organisationLinks',
+  'sourceOrganisationLink',
+  'loanCache',
+  'status',
+  'paidAt',
 ).extend({
+  sourceOrganisationLink: { type: Object, optional: true },
+  'sourceOrganisationLink._id': {
+    optional: true,
+    type: String,
+    customAllowedValues: {
+      query: adminOrganisations,
+      params: () => ({ $body: { name: 1 } }),
+    },
+    uniforms: {
+      transform: ({ name }) => name,
+      labelProps: { shrink: true },
+      label: <T id="Forms.organisationName" />,
+      displayEmtpy: false,
+      placeholder: '',
+    },
+  },
   organisationLinks: {
     type: Array,
     defaultValue: [],
+    uniforms: { label: null },
   },
   'organisationLinks.$': Object,
   'organisationLinks.$._id': {
@@ -39,8 +60,9 @@ const schema = RevenueSchema.omit(
   },
   'organisationLinks.$.commissionRate': merge({}, percentageField, {
     uniforms: { labelProps: { shrink: true } },
+    optional: false,
   }),
-  'organisationLinks.$.paidDate': {
+  'organisationLinks.$.paidAt': {
     type: Date,
     optional: true,
     defaultValue: null,
@@ -60,10 +82,11 @@ const schema = RevenueSchema.omit(
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ loan: { _id: loanId }, revenue, setSubmitting, setOpen }) => ({
+  withProps(({ loan, revenue, setSubmitting, setOpen }) => ({
     schema,
     model: revenue,
-    insertRevenue: model => revenueInsert.run({ revenue: model, loanId }),
+    insertRevenue: model =>
+      revenueInsert.run({ revenue: model, loanId: loan._id }),
     modifyRevenue: ({ _id: revenueId, ...object }) => {
       setSubmitting(true);
       return revenueUpdate

@@ -40,105 +40,105 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
   }
 
   switch (collection) {
-    case LOANS_COLLECTION: {
-      let text;
+  case LOANS_COLLECTION: {
+    let text;
 
-      if (variant === 'TASKS_TABLE') {
-        text = getLoanLinkTitle(data);
-      } else {
-        text = data.name;
-      }
-
-      return {
-        link: `/loans/${docId}`,
-        text,
-        hasPopup: true,
-      };
+    if (variant === 'TASKS_TABLE') {
+      text = getLoanLinkTitle(data);
+    } else {
+      text = data.name;
     }
-    case USERS_COLLECTION: {
-      let text;
-      const { organisations = [], roles = [] } = data;
-      if (
-        (roles.includes(ROLES.ADMIN) || roles.includes(ROLES.DEV)) &&
-        employeesById[docId]
-      ) {
-        text = (
-          <img
-            src={employeesById[docId].src}
-            alt={data.name}
-            style={{ borderRadius: '50%', width: 20, height: 20 }}
-          />
-        );
-      } else if (organisations.length) {
-        text = getUserNameAndOrganisation({ user: data });
-      } else {
-        text = data.name;
-      }
 
-      return {
-        link: `/users/${docId}`,
-        text,
-        hasPopup: true,
-      };
+    return {
+      link: `/loans/${docId}`,
+      text,
+      hasPopup: true,
+    };
+  }
+  case USERS_COLLECTION: {
+    let text;
+    const { organisations = [], roles = [] } = data;
+    if (
+      (roles.includes(ROLES.ADMIN) || roles.includes(ROLES.DEV))
+        && employeesById[docId]
+    ) {
+      text = (
+        <img
+          src={employeesById[docId].src}
+          alt={data.name}
+          style={{ borderRadius: '50%', width: 20, height: 20 }}
+        />
+      );
+    } else if (organisations.length) {
+      text = getUserNameAndOrganisation({ user: data });
+    } else {
+      text = data.name;
     }
-    case BORROWERS_COLLECTION:
-      return {
-        link: `/borrowers/${docId}`,
-        text: data.name,
-        hasPopup: true,
-      };
-    case PROPERTIES_COLLECTION:
-      return {
-        link: `/properties/${docId}`,
-        text: data.address1,
-        hasPopup: true,
-      };
-    case OFFERS_COLLECTION:
-      return {
-        link: `/offers/${docId}`,
-        text: data.organisation.name,
-        hasPopup: true,
-      };
-    case PROMOTIONS_COLLECTION:
-      return {
-        link: `/promotions/${docId}`,
-        text: data.name,
-        hasPopup: true,
-      };
-    case ORGANISATIONS_COLLECTION: {
-      let text;
-      const isDev = Roles.userIsInRole(Meteor.userId(), 'dev');
-      const isMain = data.$metadata && data.$metadata.isMain;
 
-      if (data.$metadata && data.$metadata.title) {
-        text = `${data.$metadata.title} @ ${data.name}${
-          isDev && isMain ? ' (main)' : ''
-        }`;
-      } else {
-        text = `${data.name}${isDev && isMain ? ' (main)' : ''}`;
-      }
+    return {
+      link: `/users/${docId}`,
+      text,
+      hasPopup: true,
+    };
+  }
+  case BORROWERS_COLLECTION:
+    return {
+      link: `/borrowers/${docId}`,
+      text: data.name,
+      hasPopup: true,
+    };
+  case PROPERTIES_COLLECTION:
+    return {
+      link: `/properties/${docId}`,
+      text: data.address1,
+      hasPopup: true,
+    };
+  case OFFERS_COLLECTION:
+    return {
+      link: `/offers/${docId}`,
+      text: data.organisation.name,
+      hasPopup: true,
+    };
+  case PROMOTIONS_COLLECTION:
+    return {
+      link: `/promotions/${docId}`,
+      text: data.name,
+      hasPopup: true,
+    };
+  case ORGANISATIONS_COLLECTION: {
+    let text;
+    const isDev = Roles.userIsInRole(Meteor.userId(), 'dev');
+    const isMain = data.$metadata && data.$metadata.isMain;
 
-      return {
-        link: `/organisations/${docId}`,
-        text,
-        hasPopup: true,
-      };
+    if (data.$metadata && data.$metadata.title) {
+      text = `${data.$metadata.title} @ ${data.name}${
+        isDev && isMain ? ' (main)' : ''
+      }`;
+    } else {
+      text = `${data.name}${isDev && isMain ? ' (main)' : ''}`;
     }
-    case CONTACTS_COLLECTION:
-      return {
-        link: `/contacts/${docId}`,
-        text: data.name,
-        hasPopup: true,
-      };
-    case 'NOT_FOUND':
-      return {
-        link: '/',
-        icon: 'help',
-        text: "N'existe plus",
-      };
 
-    default:
-      return { text: 'Unknown collection' };
+    return {
+      link: `/organisations/${docId}`,
+      text,
+      hasPopup: true,
+    };
+  }
+  case CONTACTS_COLLECTION:
+    return {
+      link: `/contacts/${docId}`,
+      text: data.name,
+      hasPopup: true,
+    };
+  case 'NOT_FOUND':
+    return {
+      link: '/',
+      icon: 'help',
+      text: "N'existe plus",
+    };
+
+  default:
+    return { text: 'Unknown collection' };
   }
 };
 

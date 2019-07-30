@@ -47,12 +47,12 @@ const columnOptions = [
   { id: 'name' },
   { id: 'status' },
   { id: 'createdAt' },
-  { id: 'lots' },
+  { id: 'lots', format: v => <b>{v}</b> },
   { id: 'available' },
   { id: 'booked' },
   { id: 'sold' },
-  { id: 'loans' },
-].map(({ id }) => ({ id, label: <T id={`PromotionsTable.${id}`} /> }));
+  { id: 'loans', format: v => <b>{v}</b> },
+].map(i => ({ ...i, label: <T id={`PromotionsTable.${i.id}`} /> }));
 
 export const BasePromotionsTableContainer = compose(
   withRouter,

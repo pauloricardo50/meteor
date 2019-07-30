@@ -3,7 +3,9 @@ import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import DropdownMenu from 'core/components/DropdownMenu';
+import { taskFormLayout } from '../../../components/TasksTable/TaskModifier';
 import LoanBoardCardActionsContainer from './LoanBoardCardActionsContainer';
+import { activityFormLayout } from '../../SingleLoanPage/LoanTabs/OverviewTab/LoanTimeline/LoanActivityAdder';
 
 type LoanBoardCardActionsProps = {};
 
@@ -62,6 +64,7 @@ const LoanBoardCardActions = ({
       setOpen={setOpenTask}
       title="Ajouter tâche"
       description="CMD + Enter pour enregistrer"
+      layout={taskFormLayout}
     />
     <AutoFormDialog
       noButton
@@ -77,6 +80,7 @@ const LoanBoardCardActions = ({
       setOpen={setOpenActivity}
       title="Ajouter événement"
       description="CMD + Enter pour enregistrer"
+      layout={activityFormLayout}
     />
   </>
 );

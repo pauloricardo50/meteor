@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser';
 import moment from 'moment';
 import multipart from 'connect-multiparty';
-import os from 'os';
 
 import SlackService from '../../slack/server/SlackService';
 import {
@@ -9,8 +8,7 @@ import {
   BODY_SIZE_LIMIT,
   FILE_UPLOAD_DIR,
 } from './restApiConstants';
-import { Services } from '../../server';
-import { USERS_COLLECTION } from '../../users/userConstants';
+import UserService from '../../users/server/UserService';
 import {
   getRequestPath,
   getHeader,
@@ -94,8 +92,14 @@ const authMiddleware = options => (req, res, next) => {
     return next(REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE);
   }
 
-  const user = Services[USERS_COLLECTION].findOne({
-    'apiPublicKey.publicKey': publicKey,
+  const user = UserService.fetchOne({
+    $filters: {
+      'apiPublicKey.publicKey': publicKey,
+    },
+    emails: 1,
+    firstName: 1,
+    lastName: 1,
+    phoneNumbers: 1,
   });
 
   if (!user) {

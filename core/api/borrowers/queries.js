@@ -9,6 +9,7 @@ import Borrowers from '.';
 export const adminBorrowers = Borrowers.createQuery(
   BORROWER_QUERIES.ADMIN_BORROWERS,
   adminBorrower(),
+  { scoped: true },
 );
 
 export const borrowerSearch = Borrowers.createQuery(

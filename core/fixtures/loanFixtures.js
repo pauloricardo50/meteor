@@ -21,8 +21,11 @@ const purchaseTypes = Object.values(PURCHASE_TYPE);
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
-const getRandomStructure = (propertyValue, borrowerId) =>
-  getRandomValueInArray([
+const getRandomStructure = (propertyValue, borrowerId) => {
+  if (!borrowerId) {
+    return {};
+  }
+  return getRandomValueInArray([
     {
       ownFunds: [
         {
@@ -120,6 +123,7 @@ const getRandomStructure = (propertyValue, borrowerId) =>
       ],
     },
   ]);
+};
 
 export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
@@ -166,7 +170,7 @@ export const getRelatedLoansIds = usersIds =>
   LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(item => item._id);
 
 export const addLoanWithData = ({
-  borrowers,
+  borrowers = [],
   properties = [],
   loan: loanData,
   userId,
@@ -185,6 +189,7 @@ export const addLoanWithData = ({
 
   const structureId = loan.structures[0].id;
   const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
+
   LoanService.updateStructure({
     loanId,
     structureId,
@@ -197,7 +202,10 @@ export const addLoanWithData = ({
       ...getRandomStructure(1000000, borrowerId1),
     },
   });
-  BorrowerService.update({ borrowerId: borrowerId1, object: borrowers[0] });
+
+  if (borrowerId1) {
+    BorrowerService.update({ borrowerId: borrowerId1, object: borrowers[0] });
+  }
 
   if (borrowers.length > 1) {
     const borrowerId2 = BorrowerService.insert({ borrower: borrowers[1] });

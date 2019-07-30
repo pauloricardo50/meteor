@@ -2,7 +2,9 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
+import SlackService from 'core/api/slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';
 import generator from '../../../../factories/index';
 import RESTAPI from '../../RESTAPI';
@@ -77,7 +79,11 @@ describe('REST: referCustomer', function () {
           _factory: 'pro',
           _id: 'pro',
           organisations: [
-            { _id: 'org', $metadata: { isMain: true } },
+            {
+              _id: 'org',
+              $metadata: { isMain: true, title: 'CTO' },
+              name: 'Main Org',
+            },
             { _id: 'org3' },
           ],
         },
@@ -97,7 +103,9 @@ describe('REST: referCustomer', function () {
           _factory: 'pro',
           _id: 'pro4',
           emails: [{ address: 'pro4@org3.com', verified: true }],
-          organisations: [{ _id: 'org3', $metadata: { isMain: true } }],
+          organisations: [
+            { _id: 'org3', $metadata: { isMain: true, title: 'CEO' } },
+          ],
         },
       ],
     });
@@ -182,6 +190,26 @@ describe('REST: referCustomer', function () {
         message:
           "[Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.]",
       },
+    });
+  });
+
+  describe('Slack notifications', () => {
+    it('sends a properly formatted slack notification', async () => {
+      const spy = sinon.spy();
+      sinon.stub(SlackService, 'send').callsFake(spy);
+
+      await referCustomer({
+        impersonateUser: 'pro4@org3.com',
+        expectedResponse: {
+          message: `Successfully referred user "${customerToRefer.email}"`,
+        },
+      });
+
+      expect(spy.calledOnce).to.equal(true);
+      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+      expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité sur e-Potek en referral uniquement');
+
+      SlackService.send.restore();
     });
   });
 });

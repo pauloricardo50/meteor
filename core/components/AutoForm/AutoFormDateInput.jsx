@@ -29,7 +29,9 @@ class AutoFormDateInput extends Component {
             this.setState({ focused: nextFocused }),
           focused,
           placeholder: null,
+          notched: true,
         }}
+        inputLabelProps={{ shrink: true }}
       />
     );
   }

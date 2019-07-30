@@ -309,31 +309,31 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
-        promotions: {
-          address: 1,
-          contacts: 1,
-          documents: { promotionImage: 1 },
-          lenderOrganisationLink: 1,
+      promotions: {
+        address: 1,
+        contacts: 1,
+        documents: { promotionImage: 1 },
+        lenderOrganisationLink: 1,
+        name: 1,
+        status: 1,
+        type: 1,
+        canton: 1,
+        users: {
+          _id: 1,
           name: 1,
-          status: 1,
-          type: 1,
-          canton: 1,
-          users: {
-            _id: 1,
-            name: 1,
-            email: 1,
-            phoneNumber: 1,
-            organisations: { users: { title: 1 } },
-          },
-          loans: {
-            _id: 1,
-            $filter({ filters, params: { loanId } }) {
-              filters.userId = Meteor.userId();
-              filters._id = loanId;
-            },
+          email: 1,
+          phoneNumber: 1,
+          organisations: { users: { title: 1 } },
+        },
+        loans: {
+          _id: 1,
+          $filter({ filters, params: { loanId } }) {
+            filters.userId = Meteor.userId();
+            filters._id = loanId;
           },
         },
-      }
+      },
+    }
     : {}),
 });
 
@@ -681,12 +681,12 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
-        loans: {
-          $filter({ filters, params: { loanId } }) {
-            filters._id = loanId;
-          },
+      loans: {
+        $filter({ filters, params: { loanId } }) {
+          filters._id = loanId;
         },
-      }
+      },
+    }
     : {}),
 });
 
@@ -942,13 +942,16 @@ export const proUser = () => ({
 // //
 export const revenue = () => ({
   amount: 1,
-  approximation: 1,
   createdAt: 1,
   description: 1,
   expectedAt: 1,
+  loan: { name: 1 },
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
+  secondaryType: 1,
+  sourceOrganisationLink: 1,
+  sourceOrganisation: { name: 1 },
   status: 1,
   type: 1,
 });
