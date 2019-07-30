@@ -270,7 +270,7 @@ export const verifySignature = (req) => {
 
   let objectToVerify = {};
 
-  if (!isMultipart) {
+  if (isMultipart) {
     objectToVerify = { security: sortObject({ timestamp, nonce }) };
   }
 

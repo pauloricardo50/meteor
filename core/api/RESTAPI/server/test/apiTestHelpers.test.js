@@ -80,7 +80,7 @@ export const signRequest = ({
 
   let objectToSign = {};
 
-  if (!isMultipart) {
+  if (isMultipart) {
     objectToSign = { security: sortObject({ timestamp, nonce }) };
   }
 
