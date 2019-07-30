@@ -33,7 +33,7 @@ export default class RESTAPI {
 
   registerMiddlewares(middlewares) {
     middlewares.forEach((middleware) => {
-      WebApp.connectHandlers.use(this.rootPath, middleware);
+      WebApp.connectHandlers.use(this.rootPath, middleware(this.getEndpointsOptions()));
     });
   }
 
@@ -47,7 +47,7 @@ export default class RESTAPI {
 
       methods.forEach((method) => {
         const finalEndpoint = this.makeEndpoint(endpoint);
-        const handler = this.endpoints[endpoint][method];
+        const { handler } = this.endpoints[endpoint][method];
 
         this.registerEndpoint(finalEndpoint, handler, method);
       });
@@ -67,6 +67,7 @@ export default class RESTAPI {
                 body: req.body,
                 query: req.query,
                 params: req.params,
+                files: req.files,
               }))
             .then(result => this.handleSuccess(result, req, res))
             .catch(next);
@@ -104,14 +105,30 @@ export default class RESTAPI {
     res.end();
   }
 
-  addEndpoint(path, method, handler) {
+  addEndpoint(path, method, handler, options = {}) {
     if (this.endpoints[path] && this.endpoints[path][method]) {
       throw new Error(`Endpoint "${path}" for method "${method}" already exists in REST API`);
     }
 
     this.endpoints[path] = {
       ...(this.endpoints[path] || {}),
-      [method]: handler,
+      [method]: { handler, options },
     };
+  }
+
+  getEndpointsOptions() {
+    return Object.keys(this.endpoints).reduce(
+      (options, path) => ({
+        ...options,
+        [this.makeEndpoint(path)]: Object.keys(this.endpoints[path]).reduce(
+          (methods, method) => ({
+            ...methods,
+            [method]: { options: this.endpoints[path][method].options },
+          }),
+          {},
+        ),
+      }),
+      {},
+    );
   }
 }

@@ -1,7 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 
-import { FILE_STATUS } from '../fileConstants';
+import { readFileBuffer, removeFile } from 'core/utils/filesUtils';
+import { Meteor } from 'meteor/meteor';
+import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
+import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
+import { getS3FileKey } from './meteor-slingshot-server';
 
 class FileService {
   listFilesForDoc = (docId, subdocument) => {
@@ -59,6 +63,41 @@ class FileService {
     }
     return { ...file, name: fileName };
   };
+
+  uploadFileAPI = ({ file, docId, id, collection }) => {
+    const { originalFilename, path } = file;
+    const key = getS3FileKey({ name: originalFilename }, { docId, id });
+
+    return S3Service.putObject(
+      readFileBuffer(path),
+      key,
+      {},
+      S3_ACLS.PUBLIC_READ_WRITE,
+    )
+      .then(() => this.updateDocumentsCache({ docId, collection }))
+      .then(() => this.listFilesForDoc(docId))
+      .then((files) => {
+        removeFile(path);
+        return { files };
+      });
+  };
+
+  deleteFileAPI = ({ docId, collection, key }) =>
+    this.listFilesForDoc(docId)
+      .then((files) => {
+        const keyExists = files.map(({ Key }) => Key).some(Key => Key === key);
+        if (!keyExists) {
+          throw new Meteor.Error(
+            HTTP_STATUS_CODES.NOT_FOUND,
+            `Key ${key} not found`,
+          );
+        }
+
+        return S3Service.deleteObject(key);
+      })
+      .then(() => this.updateDocumentsCache({ docId, collection }))
+      .then(() => this.listFilesForDoc(docId))
+      .then(files => ({ deletedFiles: [{ Key: key }], remainingFiles: files }));
 }
 
 export default new FileService();

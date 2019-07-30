@@ -1,8 +1,13 @@
 import bodyParser from 'body-parser';
 import moment from 'moment';
+import multipart from 'connect-multiparty';
 
 import SlackService from '../../slack/server/SlackService';
-import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
+import {
+  REST_API_ERRORS,
+  BODY_SIZE_LIMIT,
+  FILE_UPLOAD_DIR,
+} from './restApiConstants';
 import UserService from '../../users/server/UserService';
 import {
   getRequestPath,
@@ -14,18 +19,24 @@ import {
   getSignature,
   logRequest,
   trackRequest,
+  getMatchingPathOptions,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
-const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
+const bodyParserJsonMiddleware = () =>
+  bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
-const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
-  extended: false,
-  limit: BODY_SIZE_LIMIT,
-});
+const bodyParserUrlEncodedMiddleware = () =>
+  bodyParser.urlencoded({
+    extended: false,
+    limit: BODY_SIZE_LIMIT,
+  });
 
 // Handles replay attacks
-const replayHandlerMiddleware = (req, res, next) => {
+const replayHandlerMiddleware = options => (req, res, next) => {
+  if (req.isMultipart) {
+    return next();
+  }
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -49,18 +60,31 @@ const replayHandlerMiddleware = (req, res, next) => {
 };
 
 // Filters out badly formatted requests, or ones missing basic headers
-const filterMiddleware = (req, res, next) => {
-  const contentType = getHeader(req, 'content-type');
+const filterMiddleware = options => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
 
-  if (!contentType || contentType !== 'application/json') {
-    return next(REST_API_ERRORS.WRONG_CONTENT_TYPE(contentType));
+  const supportedContentType = endpointOptions.multipart
+    ? 'multipart/form-data'
+    : 'application/json';
+  const contentType = getHeader(req, 'content-type');
+  const isMultipart = contentType.includes('multipart/form-data');
+
+  if (!contentType || !contentType.includes(supportedContentType)) {
+    return next(REST_API_ERRORS.WRONG_CONTENT_TYPE(
+      contentType.split(';')[0],
+      supportedContentType,
+    ));
+  }
+
+  if (isMultipart) {
+    req.isMultipart = true;
   }
 
   next();
 };
 
 // Gets the public key from the request, fetches the user and adds it to the request
-const authMiddleware = (req, res, next) => {
+const authMiddleware = options => (req, res, next) => {
   const publicKey = getPublicKey(req);
   const signature = getSignature(req);
 
@@ -95,7 +119,7 @@ const authMiddleware = (req, res, next) => {
 };
 
 // Handles all errors, should be added as the very last middleware
-const errorMiddleware = (error, req, res, next) => {
+const errorMiddleware = options => (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
   const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
 
@@ -125,15 +149,23 @@ const errorMiddleware = (error, req, res, next) => {
 };
 
 // If no endpoint has sent a response, this should send back a 404
-const unknownEndpointMiddleware = (req, res, next) => {
+const unknownEndpointMiddleware = options => (req, res, next) => {
   next(REST_API_ERRORS.UNKNOWN_ENDPOINT({
     path: getRequestPath(req),
     method: getRequestMethod(req),
   }));
 };
 
+const multipartMiddleware = options => (req, res, next) => {
+  const middleware = multipart({ uploadDir: FILE_UPLOAD_DIR });
+  const { isMultipart } = req;
+
+  return isMultipart ? middleware(req, res, next) : next();
+};
+
 export const preMiddlewares = [
   filterMiddleware,
+  multipartMiddleware,
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,

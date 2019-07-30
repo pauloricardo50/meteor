@@ -11,6 +11,11 @@ import {
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
 
+export const getS3FileKey = (file, { docId, id }) =>
+  `${docId}/${id}/${file.name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')}`;
+
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   maxSize: MAX_FILE_SIZE,
   allowedFileTypes: ALLOWED_FILE_TYPES,
@@ -45,8 +50,5 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     return true;
   },
-  key: (file, { docId, id }) =>
-    `${docId}/${id}/${file.name
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')}`,
+  key: getS3FileKey,
 });

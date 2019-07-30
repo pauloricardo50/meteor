@@ -10,3 +10,5 @@ export { default as interestRatesAPI } from './interestRates';
 export { default as mortgageEstimateAPI } from './mortgageEstimate';
 export { default as updatePropertyAPI } from './updateProperty';
 export { default as insertPropertyAPI } from './insertProperty';
+export { default as uploadFileAPI } from './uploadFile';
+export { default as deleteFileAPI } from './deleteFile';
