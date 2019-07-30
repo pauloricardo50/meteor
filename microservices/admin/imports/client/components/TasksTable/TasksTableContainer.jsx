@@ -32,8 +32,8 @@ const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
       label: <T id="TasksTable.relatedTo" />,
       style: { width: 200 },
     },
-    { id: 'title', label: <T id="TasksTable.title" />, style: { width: 400 } },
-    { id: 'description', label: <T id="TasksTable.description" /> },
+    { id: 'title', label: <T id="TasksTable.title" />, style: { width: '100%' } },
+    { id: 'description', label: <T id="TasksTable.description" />, style: { width: '200%' } },
     showStatusColumn && {
       id: 'status',
       label: <T id="TasksTable.status" />,
