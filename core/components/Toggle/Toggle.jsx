@@ -22,7 +22,7 @@ const Toggle = ({
         <span className="toggle-label toggle-label-left">{labelLeft}</span>
       )}
 
-      <Switch style={{ height: 26 }} checked={toggled} onChange={onToggle} />
+      <Switch checked={toggled} onChange={onToggle} />
 
       {labelRight && (
         <span className="toggle-label toggle-label-right">{labelRight}</span>

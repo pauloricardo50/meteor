@@ -2,16 +2,17 @@ import { DDPCommon } from 'meteor/ddp-common';
 import { DDP } from 'meteor/ddp-client';
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
+import { Random } from 'meteor/random';
 
 import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
 
 import Analytics from 'core/api/analytics/server/Analytics';
-import { Random } from 'meteor/random';
 import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
+import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
@@ -71,9 +72,10 @@ export const updateCustomerReferral = ({
 }) => {
   if (impersonateUser) {
     const customerId = UserService.getByEmail(customer.email)._id;
+    const mainOrg = UserService.getUserMainOrganisation(userId);
     return UserService.setReferredByOrganisation({
       userId: customerId,
-      organisationId: UserService.getUserMainOrganisationId(userId),
+      organisationId: mainOrg && mainOrg._id,
     });
   }
   return Promise.resolve();
@@ -306,7 +308,15 @@ export const verifySignature = (req) => {
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
+<<<<<<< HEAD
   const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
+=======
+  const {
+    'x-forwarded-for': clientAddress,
+    host,
+    'x-real-ip': realIp,
+  } = headers;
+>>>>>>> 2afebd7e351c723241fce82952da7e07bec1c3ba
 
   const analytics = new Analytics({
     userId,
@@ -322,3 +332,16 @@ export const trackRequest = ({ req, result }) => {
 
   analytics.track(EVENTS.API_CALLED, { endpoint: getRequestPath(req), result });
 };
+
+export const setIsAPI = () => {
+  storeOnFiber('isAPI', true);
+};
+
+// Can be used to determine if server-side code is being run from an API call
+export const isAPI = () => !!getFromFiber('isAPI');
+
+export const setAPIUser = (user) => {
+  storeOnFiber('APIUser', user);
+};
+
+export const getAPIUser = () => getFromFiber('APIUser');

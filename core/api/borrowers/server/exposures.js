@@ -3,7 +3,10 @@ import { Match } from 'meteor/check';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { adminBorrowers, borrowerSearch } from '../queries';
 
-exposeQuery({ query: adminBorrowers, options: { allowFilterById: true } });
+exposeQuery({
+  query: adminBorrowers,
+  options: { allowFilterById: true },
+});
 
 exposeQuery({
   query: borrowerSearch,

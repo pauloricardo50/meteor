@@ -36,14 +36,18 @@ const determineComponentFromProps = ({
   fieldType,
 }) => {
   if (allowedValues || customAllowedValues) {
-    return { Component: CustomSelectField, type: COMPONENT_TYPES.SELECT };
+    return {
+      Component: CustomSelectField,
+      type: COMPONENT_TYPES.SELECT,
+      props: { variant: 'outlined' },
+    };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
     return {
       Component: OptimizedDateField,
       type: COMPONENT_TYPES.DATE,
-      props: { placeholder: null },
+      props: { placeholder: null, variant: 'outlined' },
     };
   }
 
@@ -55,7 +59,15 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal' },
+      props: { margin: 'normal', variant: 'outlined' },
+    };
+  }
+
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_DECIMAL) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { margin: 'normal', decimal: true, variant: 'outlined' },
     };
   }
 
@@ -87,7 +99,7 @@ const determineComponentFromProps = ({
     };
   }
 
-  return { Component: false, type: null };
+  return { Component: false, type: null, props: { variant: 'outlined' } };
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
@@ -102,7 +114,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
-    const { allowedValues, field, fieldType } = props;
+    const { allowedValues, field, fieldType, margin = 'normal' } = props;
     let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
       allowedValues,
       customAllowedValues,
@@ -145,7 +157,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         label={label}
         placeholder={placeholder}
         InputLabelProps={{ shrink: true }}
-        margin="normal"
+        margin={margin}
       />
     );
   };

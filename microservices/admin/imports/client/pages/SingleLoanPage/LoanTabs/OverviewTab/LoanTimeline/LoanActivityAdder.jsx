@@ -28,10 +28,16 @@ export const ActivitySchema = new SimpleSchema({
   type: {
     type: String,
     allowedValues: Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.SERVER),
-    uniforms: { checkboxes: true },
+    uniforms: { placeholder: null },
   },
   shouldNotify: { type: Boolean, defaultValue: false },
 });
+
+export const activityFormLayout = [
+  { className: 'grid-col', fields: ['title', 'type'] },
+  { className: 'grid-col', fields: ['date', 'shouldNotify'] },
+  'description',
+];
 
 export const LoanActivityForm = ({
   model = {},
@@ -47,6 +53,7 @@ export const LoanActivityForm = ({
       <IconButton className={className} onClick={handleOpen} type={iconType} />
     )}
     onSubmit={onSubmit}
+    layout={activityFormLayout}
     {...rest}
   />
 );

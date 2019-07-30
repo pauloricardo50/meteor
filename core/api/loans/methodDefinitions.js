@@ -176,9 +176,38 @@ export const anonymousLoanInsert = new Method({
   },
 });
 
+export const loanInsertBorrowers = new Method({
+  name: 'loanInsertBorrowers',
+  params: {
+    loanId: String,
+    amount: Number,
+  },
+});
+
 export const adminLoanReset = new Method({
   name: 'adminLoanReset',
   params: {
     loanId: String,
   },
+});
+
+export const loanLinkPromotion = new Method({
+  name: 'loanLinkPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
+  },
+});
+
+export const loanUnlinkPromotion = new Method({
+  name: 'loanUnlinkPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
+  },
+});
+
+export const loanSetCreatedAtActivityDescription = new Method({
+  name: 'loanSetCreatedAtActivityDescription',
+  params: { loanId: String, description: String },
 });

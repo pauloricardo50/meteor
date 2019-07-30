@@ -13,9 +13,13 @@ const TaskModifierDateSetter = ({
 }: TaskModifierDateSetterProps) => (
   <div>
     <label htmlFor="">Échéance rapide</label>
-    <div className="space-children">
+    <div className="task-modifier-date-setter">
       {funcs.map(({ func, label }) => (
-        <Button {...buttonProps} key={label} onClick={() => onChange(...func())}>
+        <Button
+          {...buttonProps}
+          key={label}
+          onClick={() => func().map(args => onChange(...args))}
+        >
           {label}
         </Button>
       ))}

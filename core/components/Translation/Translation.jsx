@@ -38,11 +38,7 @@ export const T = (props) => {
       values={{ ...defaultIntlValues, ...values }}
       {...rest}
     >
-      {(...formattedMessage) => (
-        <React.Fragment>
-          {formattedMessage.map((msg, i) => Auto(msg, i))}
-        </React.Fragment>
-      )}
+      {(...formattedMessage) => formattedMessage.map((msg, i) => Auto(msg, i))}
     </FormattedMessage>
   );
 };

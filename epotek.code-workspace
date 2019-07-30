@@ -10,6 +10,7 @@
   ],
   "settings": {
     "editor.snippetSuggestions": "top",
+    "prettier.eslintIntegration": true,
     "files.exclude": {
       "**/.git": false,
       "**/.svn": true,

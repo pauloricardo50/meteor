@@ -4,6 +4,7 @@ import pick from 'lodash/pick';
 import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
+import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
 import { fullLoan } from '../../loans/queries';
@@ -137,7 +138,7 @@ export class SlackService {
 
     return this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
-      username: user ? user.name : undefined,
+      username: this.getNotificationOrigin(user),
       attachments,
     });
   };
@@ -167,7 +168,7 @@ export class SlackService {
     const slackPayload = {
       channel,
       attachments: [{ title, title_link: link, text: message }],
-      username: currentUser ? currentUser.name : undefined,
+      username: this.getNotificationOrigin(currentUser),
     };
 
     if (
@@ -182,6 +183,18 @@ export class SlackService {
     return this.sendAttachments(slackPayload);
   };
 
+  getNotificationOrigin = (currentUser) => {
+    const APIUser = getAPIUser();
+    const username = currentUser ? currentUser.name : undefined;
+
+    if (APIUser) {
+      const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
+      return [username, `(API ${mainOrg && mainOrg.name})`].join(' ');
+    }
+
+    return username;
+  };
+
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 
@@ -192,9 +205,7 @@ export class SlackService {
     const loan = loanId && fullLoan.clone({ _id: loanId }).fetchOne();
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
     const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
-    let link = `${Meteor.settings.public.subdomains.admin}/users/${
-      currentUser._id
-    }`;
+    let link = `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`;
     let message = '';
 
     if (loan) {

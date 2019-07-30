@@ -2,15 +2,16 @@
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import moment from 'moment';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
-import T from 'core/components/Translation/Translation';
+import Box from 'core/components/Box';
+import T from 'core/components/Translation';
 import TaskModifierDateSetter from './TaskModifierDateSetter';
+import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
 
 type TaskModifierProps = {
   task: Object,
@@ -35,13 +36,6 @@ const taskPlaceholders = [
   'Se plaindre des banquiers',
   'Aller au sport',
 ];
-const toNearest15Minutes = (momentObj) => {
-  const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
-  return momentObj
-    .clone()
-    .minute(roundedMinutes)
-    .second(0);
-};
 
 export const schema = new SimpleSchema({
   title: {
@@ -63,32 +57,7 @@ export const schema = new SimpleSchema({
     uniforms: {
       render: TaskModifierDateSetter,
       buttonProps: { raised: true, primary: true },
-      funcs: [
-        {
-          label: 'dans 1h',
-          func: () => [
-            'dueAtTime',
-            toNearest15Minutes(moment().add(1, 'h')).format('HH:mm'),
-          ],
-        },
-        {
-          label: 'dans 3h',
-          func: () => [
-            'dueAtTime',
-            toNearest15Minutes(moment().add(3, 'h')).format('HH:mm'),
-          ],
-        },
-        {
-          label: 'À 8h',
-          func: () => [
-            'dueAtTime',
-            moment()
-              .hours(8)
-              .minute(0)
-              .format('HH:mm'),
-          ],
-        },
-      ],
+      funcs: dueAtTimeFuncs,
     },
   },
   dueAtDateHelpers: {
@@ -97,35 +66,7 @@ export const schema = new SimpleSchema({
     uniforms: {
       render: TaskModifierDateSetter,
       buttonProps: { outlined: true, primary: true },
-      funcs: [
-        {
-          label: 'Demain',
-          func: () => [
-            'dueAt',
-            moment()
-              .add(1, 'd')
-              .toDate(),
-          ],
-        },
-        {
-          label: 'Dans 3 jours',
-          func: () => [
-            'dueAt',
-            moment()
-              .add(3, 'd')
-              .toDate(),
-          ],
-        },
-        {
-          label: 'Semaine prochaine',
-          func: () => [
-            'dueAt',
-            moment()
-              .add(7, 'd')
-              .toDate(),
-          ],
-        },
-      ],
+      funcs: dueAtFuncs,
     },
   },
   dueAt: {
@@ -147,7 +88,7 @@ export const schema = new SimpleSchema({
   assigneeLink: {
     type: Object,
     optional: true,
-    uniforms: { label: null },
+    uniforms: { label: null, style: { margin: 0 }, margin: 'none' },
   },
   'assigneeLink._id': {
     type: String,
@@ -168,6 +109,25 @@ export const schema = new SimpleSchema({
     defaultValue: false,
   },
 });
+
+export const taskFormLayout = [
+  {
+    Component: Box,
+    className: 'mb-32',
+    title: <h4>Général</h4>,
+    fields: ['title', 'description'],
+    layout: { className: 'grid-2', fields: ['assigneeLink._id', 'isPrivate'] },
+  },
+  {
+    Component: Box,
+    title: <h4>Échéance</h4>,
+    layout: [
+      'dueAtTimeHelpers',
+      'dueAtDateHelpers',
+      { className: 'grid-2', fields: ['dueAt', 'dueAtTime'] },
+    ],
+  },
+];
 
 const labels = {
   title: <T id="TasksTable.title" />,
@@ -203,6 +163,7 @@ const TaskModifier = ({
       setOpen={setOpen}
       submitting={submitting}
       title="Modifier tâche"
+      layout={taskFormLayout}
     />
   );
 };

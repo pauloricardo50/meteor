@@ -6,13 +6,6 @@
       "NOT_PRODUCTION_READY": true
     },
     "analyticsSettings": {
-      "Google Analytics": {
-        "trackingId": "UA-84358947-1"
-      },
-      "Mixpanel": {
-        "token": "8116491227515ad527768eecaef5d5ce",
-        "people": true
-      },
       "Hotjar": {
         "app": {
           "hjid": "1310709"
@@ -25,7 +18,7 @@
         }
       },
       "Segment": {
-        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
+        "key": "G93hv64QSld1gnjzSlBWhQDFl44oyDmE"
       }
     },
     "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
@@ -41,10 +34,6 @@
     "MANDRILL_LOGIN": "florian@e-potek.ch",
     "MANDRILL_API_KEY": "Bn4sTZ-Q9JqK-PyXACgJ_w",
     "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
-  },
-  "mixpanel": {
-    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
-    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
   },
   "Kadira": {
     "endpoint": "https://kadira-engine.e-potek.ch:22022",

@@ -4,7 +4,10 @@ import { withProps } from 'recompose';
 import { taskInsert } from 'core/api';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import LoanTaskInsertForm from './LoanTaskInsertForm';
-import { schema } from '../../../../components/TasksTable/TaskModifier';
+import {
+  schema,
+  taskFormLayout,
+} from '../../../../components/TasksTable/TaskModifier';
 
 const LoanTaskInserter = withProps(({ loan: { _id: loanId, user } }) => ({
   onSubmit: values =>
@@ -22,6 +25,7 @@ const LoanTaskInserter = withProps(({ loan: { _id: loanId, user } }) => ({
   buttonLabelId: 'LoanTaskInsertForm.label',
   formTitleId: 'LoanTaskInsertForm.dialogTitle',
   formDescriptionId: 'LoanTaskInsertForm.dialogDescription',
+  layout: taskFormLayout,
 }));
 
 export default LoanTaskInserter(LoanTaskInsertForm);

@@ -83,8 +83,18 @@ exposeQuery({
           filters.status = status;
         }
 
-        if (hasPromotion || promotionId) {
-          filters['promotionLinks.0._id'] = promotionId || { $exists: true };
+        if (hasPromotion) {
+          filters.$or = [
+            { 'promotionLinks.0._id': { $exists: true } },
+            { 'financedPromotionLink._id': { $exists: true } },
+          ];
+        }
+
+        if (promotionId) {
+          filters.$or = [
+            { 'promotionLinks.0._id': promotionId },
+            { 'financedPromotionLink._id': promotionId },
+          ];
         }
 
         if (noPromotion) {
@@ -277,13 +287,17 @@ exposeQuery({
         }
       }
     },
-    embody: (body) => {
+    embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
         filters.userId = params.userId;
         if (params.loanId) {
           filters._id = params.loanId;
         }
       };
+
+      if (!embodyParams.userId) {
+        body.maxPropertyValue = 0;
+      }
     },
     validateParams: {
       loanId: Match.Maybe(String),

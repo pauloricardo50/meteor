@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon/Icon';
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { adminLoanInsert } from 'core/api/loans/index';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
@@ -42,18 +41,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       <h2 className="text-center">
         <T id="AdminDashboardPage.tasks" />
       </h2>
-      <AllTasksTable
-        tableFilters={{
-          filters: {
-            assignee: { email: true },
-            status: [TASK_STATUS.ACTIVE],
-          },
-          options: {
-            email: [currentUser.email, undefined],
-            status: Object.values(TASK_STATUS),
-          },
-        }}
-      />
+      <AllTasksTable withPriority />
     </section>
   </>
 );

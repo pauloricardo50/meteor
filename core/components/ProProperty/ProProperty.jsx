@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import ProPropertyheader from './ProPropertyHeader';
@@ -8,12 +9,17 @@ import ProPropertyContainer from './ProPropertyContainer';
 
 type ProPropertyProps = {};
 
-const ProProperty = ({ property }: ProPropertyProps) => {
-  const { documents, address1, city, zipCode } = property;
+const ProProperty = ({
+  property,
+  simple,
+  loan,
+  documents,
+}: ProPropertyProps) => {
+  const { address1, city, zipCode } = property;
 
   return (
-    <div className="pro-property card1 card-top">
-      <ProPropertyheader property={property} />
+    <div className={cx('pro-property card1 card-top animated fadeIn', { simple })}>
+      <ProPropertyheader property={property} loan={loan} />
       <MapWithMarkerWrapper
         address1={address1}
         city={city}
@@ -21,7 +27,7 @@ const ProProperty = ({ property }: ProPropertyProps) => {
         options={{ zoom: 15 }}
         showIncompleteAddress={false}
       />
-      <DocumentDownloadList files={documents && documents.propertyDocuments} />
+      <DocumentDownloadList files={documents} />
     </div>
   );
 };

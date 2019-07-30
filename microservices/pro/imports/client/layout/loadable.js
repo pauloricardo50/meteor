@@ -1,3 +1,6 @@
-import Loadable from 'core/utils/loadable';
+import loadable from 'core/utils/loadable';
 
-export default Loadable({ loader: () => import('./index') });
+export default loadable({
+  req: () => require('./index'),
+  loader: () => import('./index'),
+});

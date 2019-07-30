@@ -1,10 +1,12 @@
 // @flow
 import React from 'react';
 
+import { PROPERTY_DOCUMENTS, COLLECTIONS } from 'core/api/constants';
 import { Money } from '../Translation';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
 import ProPropertyRecap from './ProPropertyRecap';
+import UpdateField from '../UpdateField';
 
 type ProPropertyheaderProps = {};
 
@@ -14,8 +16,14 @@ const getImages = (documents = {}, imageUrls = []) => {
     images = imageUrls;
   }
 
-  if (documents.propertyImages && documents.propertyImages.length) {
-    images = [...images, documents.propertyImages.map(({ url }) => url)];
+  if (
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
+    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+  ) {
+    images = [
+      ...images,
+      documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].map(({ url }) => url),
+    ];
   }
 
   if (images.length === 0) {
@@ -25,7 +33,7 @@ const getImages = (documents = {}, imageUrls = []) => {
   return images;
 };
 
-const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
+const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
   const {
     address1,
     totalValue,
@@ -41,11 +49,28 @@ const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
   return (
     <div className="header">
       <div className="header-left">
-        <h1>{ogTitle || address1}</h1>
-        <h2 className="secondary">
-          <Money value={totalValue} />
-        </h2>
-        <p className="description">{ogDescription || description}</p>
+        <div
+          className="flex-row"
+          style={{ width: '100%', justifyContent: 'space-between' }}
+        >
+          <div className="flex-col">
+            <h1>{ogTitle || address1}</h1>
+            <h2 className="secondary">
+              <Money value={totalValue} />
+            </h2>
+          </div>
+          {loan && (
+            <UpdateField
+              doc={loan}
+              fields={['residenceType']}
+              collection={COLLECTIONS.LOANS_COLLECTION}
+              className="residence-type-setter"
+            />
+          )}
+        </div>
+        {(ogDescription || description) && (
+          <p className="description">{ogDescription || description}</p>
+        )}
         <ProPropertyRecap property={property} />
         {externalUrl && (
           <a

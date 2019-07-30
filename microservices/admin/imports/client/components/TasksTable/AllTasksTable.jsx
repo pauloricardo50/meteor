@@ -8,7 +8,9 @@ import { TASK_STATUS } from 'core/api/constants';
 import TasksTable from './TasksTable';
 
 export const withTasksQuery = compose(
-  withState('assignee', 'setAssignee', { $in: [Meteor.userId(), undefined] }),
+  withState('assignee', 'setAssignee', () => ({
+    $in: [Meteor.userId(), undefined],
+  })),
   withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
   withState('uptoDate', 'setUptoDate', 'TOMORROW'),
   withSmartQuery({

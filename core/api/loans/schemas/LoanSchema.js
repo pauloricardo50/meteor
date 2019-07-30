@@ -101,7 +101,7 @@ const LoanSchema = new SimpleSchema({
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
-  revenueLinks: { type: Array, defaultValue: [] },
+  revenueLinks: { type: Array, optional: true },
   'revenueLinks.$': String,
   userCache: cacheField,
   step: {
@@ -134,6 +134,9 @@ const LoanSchema = new SimpleSchema({
   'lendersCache.$': cacheField,
   tasksCache: { type: Array, optional: true },
   'tasksCache.$': cacheField,
+  financedPromotionLink: { type: Object, optional: true },
+  'financedPromotionLink._id': { type: String, optional: true },
+  simpleBorrowersForm: { type: Boolean, defaultValue: true },
 });
 
 export default LoanSchema;

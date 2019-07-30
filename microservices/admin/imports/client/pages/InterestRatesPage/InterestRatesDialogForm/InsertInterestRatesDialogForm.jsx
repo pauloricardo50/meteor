@@ -25,6 +25,7 @@ const InsertInterestRatesDialogForm = ({
       raised: true,
       primary: true,
     }}
+    title={<T id="InterestRates.insert" />}
   >
     {() => fields}
   </AutoFormDialog>

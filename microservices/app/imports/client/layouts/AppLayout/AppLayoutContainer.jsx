@@ -21,7 +21,7 @@ import {
 } from './SideNavContext';
 
 const WITHOUT_LOAN = [
-  '/profile',
+  '/account',
   '/add-loan',
   '/enroll-account',
   '/reset-password',
@@ -30,9 +30,9 @@ const WITHOUT_LOAN = [
 const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
 
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
-  (!loans || loans.length < 1)
-  && path !== '/'
-  && !isOnAllowedRoute(path, WITHOUT_LOAN);
+  (!loans || loans.length < 1) &&
+  path !== '/' &&
+  !isOnAllowedRoute(path, WITHOUT_LOAN);
 
 export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
@@ -70,6 +70,7 @@ const fragment = {
     ...fullFragment.promotions,
     users: undefined,
   },
+  maxPropertyValueExists: 1,
 };
 
 const withUserLoan = withSmartQuery({
@@ -98,16 +99,18 @@ export default compose(
   withUserLoan,
   injectCalculator(),
   withInterestRates,
-  mapProps(({
-    loan,
-    query,
-    refetch,
-    currentInterestRates: { averageRates },
-    ...props
-  }) => ({
-    ...props,
-    loan: { ...loan, currentInterestRates: averageRates },
-  })),
+  mapProps(
+    ({
+      loan,
+      query,
+      refetch,
+      currentInterestRates: { averageRates },
+      ...props
+    }) => ({
+      ...props,
+      loan: { ...loan, currentInterestRates: averageRates },
+    }),
+  ),
   withRouter,
   withRedirect,
   withTranslationContext(({ loan = {} }) => ({

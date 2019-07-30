@@ -14,7 +14,9 @@ import {
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
+  ROLES,
 } from '../../api/constants';
+import { employeesById } from '../../arrays/epotekEmployees';
 import collectionIcons from '../../arrays/collectionIcons';
 import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
 import { getLoanLinkTitle } from './collectionIconLinkHelpers';
@@ -55,9 +57,19 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
   }
   case USERS_COLLECTION: {
     let text;
-    const { organisations = [] } = data;
-
-    if (organisations.length) {
+    const { organisations = [], roles = [] } = data;
+    if (
+      (roles.includes(ROLES.ADMIN) || roles.includes(ROLES.DEV))
+        && employeesById[docId]
+    ) {
+      text = (
+        <img
+          src={employeesById[docId].src}
+          alt={data.name}
+          style={{ borderRadius: '50%', width: 20, height: 20 }}
+        />
+      );
+    } else if (organisations.length) {
       text = getUserNameAndOrganisation({ user: data });
     } else {
       text = data.name;
@@ -131,10 +143,11 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
 };
 
 const CollectionIconLink = ({
-  relatedDoc,
-  stopPropagation,
+  forceOpen,
   iconClassName,
+  relatedDoc,
   showIcon,
+  stopPropagation,
   variant,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
@@ -152,7 +165,11 @@ const CollectionIconLink = ({
 
   if (showPopups && hasPopup) {
     return (
-      <CollectionIconLinkPopup {...relatedDoc} key={relatedDoc._id}>
+      <CollectionIconLinkPopup
+        {...relatedDoc}
+        key={relatedDoc._id}
+        forceOpen={forceOpen}
+      >
         <IconLink
           link={link}
           icon={icon}

@@ -20,6 +20,7 @@ import {
   PROPERTY_STATUS,
   REVENUES_COLLECTION,
   REVENUE_STATUS,
+  COMMISSION_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -91,6 +92,8 @@ const getStatuses = (collection) => {
     return {
       [REVENUE_STATUS.EXPECTED]: colors.primary,
       [REVENUE_STATUS.CLOSED]: colors.success,
+      [COMMISSION_STATUS.TO_BE_PAID]: colors.primary,
+      [COMMISSION_STATUS.PAID]: colors.success,
     };
 
   default:
@@ -126,16 +129,18 @@ const getLabel = ({
         <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
           <span
             className={cx({ allowModify, 'status-label-dot': true })}
-            style={{ backgroundColor: color || statuses[status] }}
             {...props}
-          />
+          >
+            <span style={{ backgroundColor: color || statuses[status] }} />
+          </span>
         </Tooltip>
       ) : (
         <span
           className={cx({ allowModify, 'status-label-dot': true })}
-          style={{ backgroundColor: color || statuses[status] }}
           {...props}
-        />
+        >
+          <span style={{ backgroundColor: color || statuses[status] }} />
+        </span>
       ));
 
   default:

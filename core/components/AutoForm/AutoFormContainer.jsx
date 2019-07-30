@@ -19,11 +19,17 @@ const makeFunc = ({ idKey, beforeUpdate, func }) => (rawParams) => {
   return methods[func].run(params);
 };
 
-const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
+const AutoFormContainer = withProps(({ collection, beforeUpdate, overrides = {} }) => {
   let popFunc;
   let pushFunc;
   let updateFunc;
   let idKey;
+
+  const {
+    popFunc: popFuncOverride,
+    pushFunc: pushFuncOverride,
+    updateFunc: updateFuncOverride,
+  } = overrides;
 
   switch (collection) {
   case LOANS_COLLECTION:
@@ -55,9 +61,21 @@ const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
   }
 
   return {
-    updateFunc: makeFunc({ idKey, beforeUpdate, func: updateFunc }),
-    popFunc: makeFunc({ idKey, beforeUpdate, func: popFunc }),
-    pushFunc: makeFunc({ idKey, beforeUpdate, func: pushFunc }),
+    updateFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: updateFuncOverride || updateFunc,
+    }),
+    popFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: popFuncOverride || popFunc,
+    }),
+    pushFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: pushFuncOverride || pushFunc,
+    }),
   };
 });
 

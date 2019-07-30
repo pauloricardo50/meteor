@@ -120,7 +120,7 @@
 
   .buttons {
     margin: 40px 0;
-     > * {
+    > * {
       margin-right: 16px;
       margin-bottom: 8px;
     }
@@ -137,7 +137,7 @@
     display: flex;
     align-self: flex-start;
 
-     > * {
+    > * {
       margin-right: 8px;
     }
   }
@@ -158,7 +158,7 @@
     display: flex;
     align-items: center;
 
-     > * {
+    > * {
       margin-left: 4px;
     }
   }
@@ -167,7 +167,6 @@
     display: flex;
     align-items: center;
     align-self: center;
-    flex-direction: column;
 
     width: 50%;
     // On very small screens
@@ -175,13 +174,27 @@
     margin: 16px 0;
     padding: 16px;
 
-     > * {
-      width: 80%;
-
-      @include screen(small) {
-        width: 100%;
-      }
+    .icon {
+      width: 80x;
+      height: 80px;
+      color: $primary;
     }
+
+    > * {
+      flex-grow: 1;
+    }
+  }
+}
+
+.promotion-page.simple {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 16px;
+  align-self: center;
+  box-sizing: border-box;
+
+  @include screen(wide) {
+    width: 100%;
   }
 }
 

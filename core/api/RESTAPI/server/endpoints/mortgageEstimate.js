@@ -1,11 +1,11 @@
 import SimpleSchema from 'simpl-schema';
 
-import { address } from 'core/api/helpers/sharedSchemas';
 import { MAX_BORROW_RATIO_PRIMARY_PROPERTY } from '../../../../config/financeConstants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../utils/Calculator';
 import zipcodes from '../../../../utils/zipcodes';
+import { address } from '../../../helpers/sharedSchemas';
 import {
   RESIDENCE_TYPE,
   INTEREST_RATES,
@@ -92,27 +92,22 @@ const mortgageEstimateAPI = ({ query }) => {
     : undefined;
 
   const calc = new CalculatorClass({ loan: loanObject, amortizationGoal });
+  const getInterestsForType = type =>
+    calc.getInterests({
+      loan: Calculator.createLoanObject({
+        residenceType,
+        wantedLoan: loanValue,
+        propertyValue,
+        canton: finalCanton,
+        currentInterestRates: interestRates,
+        loanTranches: [{ value: 1, type }],
+      }),
+    });
+
   const interests10 = calc.getInterests({ loan: loanObject });
-  const interests5 = calc.getInterests({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: loanValue,
-      propertyValue,
-      canton: finalCanton,
-      currentInterestRates: interestRates,
-      loanTranches: [{ value: 1, type: INTEREST_RATES.YEARS_5 }],
-    }),
-  });
-  const interestsLibor = calc.getInterests({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: loanValue,
-      propertyValue,
-      canton: finalCanton,
-      currentInterestRates: interestRates,
-      loanTranches: [{ value: 1, type: INTEREST_RATES.LIBOR }],
-    }),
-  });
+  const interests15 = getInterestsForType(INTEREST_RATES.YEARS_15);
+  const interests5 = getInterestsForType(INTEREST_RATES.YEARS_5);
+  const interestsLibor = getInterestsForType(INTEREST_RATES.LIBOR);
   const amortization = roundToCents(calc.getAmortization({ loan: loanObject }));
   const notaryFees = includeNotaryFees
     ? calc.getFees({ loan: loanObject })
@@ -125,15 +120,17 @@ const mortgageEstimateAPI = ({ query }) => {
     loanValue,
     monthlyAmortization: amortization,
     monthlyInterests: {
-      interests10,
-      interests5,
       interestsLibor,
+      interests5,
+      interests10,
+      interests15,
     },
     monthlyMaintenance: maintenance,
     monthlyTotals: {
-      interests10: amortization + maintenance + interests10,
-      interests5: amortization + maintenance + interests5,
       interestsLibor: amortization + maintenance + interestsLibor,
+      interests5: amortization + maintenance + interests5,
+      interests10: amortization + maintenance + interests10,
+      interests15: amortization + maintenance + interests15,
     },
     notaryFees: notaryFees
       ? {

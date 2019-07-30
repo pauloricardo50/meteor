@@ -3,21 +3,15 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import {
-  VALUATION_STATUS,
-  PROPERTY_TYPE,
-  RESIDENCE_TYPE,
-  WUEST_ERRORS,
-  QUALITY,
-} from '../../../constants';
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import LoanService from '../../../loans/server/LoanService';
-import WuestService from '../../../wuest/server/WuestService';
 import PropertyService from '../PropertyService';
 import UserService from '../../../users/server/UserService';
 import generator from '../../../factories';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
+import Properties from '../../properties';
 
 describe('PropertyService', function () {
   this.timeout(10000);
@@ -78,113 +72,6 @@ describe('PropertyService', function () {
       expect(LoanService.get('loan').structures[0].propertyId).to.equal(null);
       expect(LoanService.get('loan2').propertyIds).to.deep.equal(['prop']);
     });
-  });
-
-  describe.skip('evaluateProperty', () => {
-    const getValueRange = value => ({
-      min: value * 0.9,
-      max: value * 1.1,
-    });
-
-    it('adds an error on the property', () => {
-      const propertyId = Factory.create('property', {
-        propertyType: PROPERTY_TYPE.FLAT,
-        address1: 'rue du four 2',
-        zipCode: '1400',
-        city: 'Yverdon-les-Bains',
-        roomCount: 4,
-        insideArea: 100,
-        terraceArea: 20,
-        constructionYear: 1,
-        numberOfFloors: 10,
-        floorNumber: 3,
-        qualityProfileCondition: QUALITY.CONDITION.INTACT,
-        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
-      })._id;
-
-      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
-
-      return PropertyService.evaluateProperty({
-        propertyId,
-        loanResidenceType,
-      }).then(() => {
-        const property = PropertyService.get(propertyId);
-        expect(property.valuation.status).to.equal(VALUATION_STATUS.ERROR);
-        expect(property.valuation.error).contains('entre 1000 et 3000');
-      });
-    }).timeout(10000);
-
-    it('throws if it cannot find the property', () => {
-      expect(() => PropertyService.evaluateProperty('test')).to.throw(WUEST_ERRORS.NO_PROPERTY_FOUND);
-    }).timeout(10000);
-
-    it('adds min, max and value on the property', () => {
-      const propertyId = Factory.create('property', {
-        address1: 'rue du four 2',
-        zipCode: '1400',
-        city: 'Yverdon-les-Bains',
-        roomCount: 4,
-        constructionYear: 2000,
-        insideArea: 100,
-        terraceArea: 20,
-        numberOfFloors: 10,
-        floorNumber: 3,
-        qualityProfileCondition: QUALITY.CONDITION.INTACT,
-        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
-      })._id;
-
-      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
-
-      return PropertyService.evaluateProperty({
-        propertyId,
-        loanResidenceType,
-      }).then(() => {
-        const property = PropertyService.get(propertyId);
-        const marketValueBeforeCorrection = 709000;
-        const statisticalPriceRangeMin = 640000;
-        const statisticalPriceRangeMax = 770000;
-        const priceRange = WuestService.getPriceRange({
-          marketValueBeforeCorrection,
-          statisticalPriceRangeMin,
-          statisticalPriceRangeMax,
-        });
-        const valueRange = getValueRange(marketValueBeforeCorrection);
-        const minRange = getValueRange(priceRange.min);
-        const maxRange = getValueRange(priceRange.max);
-        expect(property.valuation.value).to.be.within(
-          valueRange.min,
-          valueRange.max,
-        );
-        expect(property.valuation.min).to.be.within(minRange.min, minRange.max);
-        expect(property.valuation.max).to.be.within(maxRange.min, maxRange.max);
-      });
-    }).timeout(10000);
-
-    it('adds microlocation on the property', () => {
-      const propertyId = Factory.create('property', {
-        address1: 'rue du four 2',
-        zipCode: '1400',
-        city: 'Yverdon-les-Bains',
-        roomCount: 4,
-        constructionYear: 2000,
-        insideArea: 100,
-        terraceArea: 20,
-        numberOfFloors: 10,
-        floorNumber: 3,
-        qualityProfileCondition: QUALITY.CONDITION.INTACT,
-        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
-      })._id;
-
-      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
-
-      return PropertyService.evaluateProperty({
-        propertyId,
-        loanResidenceType,
-      }).then(() => {
-        const property = PropertyService.get(propertyId);
-        expect(property.valuation).to.have.property('microlocation');
-      });
-    }).timeout(10000);
   });
 
   describe('canton autovalue', () => {
@@ -426,6 +313,38 @@ describe('PropertyService', function () {
             externalLink: 'www.e-potek.ch',
           },
         })).to.throw('externalId');
+    });
+  });
+
+  describe('reducers', () => {
+    it('organisation', () => {
+      generator({
+        properties: {
+          _id: 'propertyId',
+          users: {
+            _id: 'proId',
+            firstName: 'Joe',
+            lastName: 'Jackson',
+            organisations: {
+              _id: 'org',
+              name: 'Org1',
+              address1: 'Rue du parc 7',
+            },
+          },
+          loans: { _id: 'loan', name: '18-0101' },
+        },
+      });
+
+      const prop = PropertyService.fetchOne({
+        $filters: { _id: 'propertyId' },
+        organisation: 1,
+      });
+
+      expect(prop.organisation).to.deep.equal({
+        _id: 'org',
+        name: 'Org1',
+        userLinks: [{ _id: 'proId' }],
+      });
     });
   });
 });

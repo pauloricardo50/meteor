@@ -74,6 +74,7 @@ LinkInitializer.directInit(() => {
       field: 'revenueLinks',
       collection: Revenues,
       type: 'many',
+      unique: true,
     },
     user: {
       field: 'userId',
@@ -83,6 +84,13 @@ LinkInitializer.directInit(() => {
         field: 'userCache',
         body: userCache,
       },
+    },
+    financedPromotion: {
+      field: 'financedPromotionLink',
+      type: 'one',
+      metadata: true,
+      unique: true,
+      collection: Promotions,
     },
   });
 });

@@ -81,6 +81,8 @@ import Event from '@material-ui/icons/Event';
 import Computer from '@material-ui/icons/Computer';
 import Notifications from '@material-ui/icons/Notifications';
 import Snooze from '@material-ui/icons/Snooze';
+import DragHandle from '@material-ui/icons/DragHandle';
+import PriorityHigh from '@material-ui/icons/PriorityHigh';
 
 export const iconMap = {
   close: CloseIcon,
@@ -162,17 +164,22 @@ export const iconMap = {
   computer: Computer,
   notifications: Notifications,
   snooze: Snooze,
+  dragHandle: DragHandle,
+  priorityHigh: PriorityHigh,
 };
 
-const Icon = ({
-  type,
-  size,
-  tooltip,
-  tooltipPlacement,
-  style = {},
-  badgeContent,
-  ...props
-}) => {
+const Icon = React.forwardRef((
+  {
+    type,
+    size,
+    tooltip,
+    tooltipPlacement,
+    style = {},
+    badgeContent,
+    ...props
+  },
+  ref,
+) => {
   const iconStyle = {
     ...style,
     ...(size ? { width: size, height: size } : {}),
@@ -190,11 +197,15 @@ const Icon = ({
     return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
   }
 
-  let icon = <MyIcon style={iconStyle} {...props} />;
+  let icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
 
   if (tooltip) {
     icon = (
-      <Tooltip placement={tooltipPlacement} title={tooltip} enterTouchDelay={0}>
+      <Tooltip
+        placement={tooltipPlacement}
+        title={tooltip}
+        enterTouchDelay={0}
+      >
         {icon}
       </Tooltip>
     );
@@ -209,7 +220,7 @@ const Icon = ({
   }
 
   return icon;
-};
+});
 
 Icon.propTypes = {
   size: PropTypes.number,

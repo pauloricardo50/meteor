@@ -16,6 +16,9 @@ const PropertyCardInfos = ({
   name,
   title,
   subtitle,
+  isMobile,
+  onClick,
+  buttonLabel,
 }: PropertyCardInfosProps) => (
   <div className="property-card-infos">
     {image ? (

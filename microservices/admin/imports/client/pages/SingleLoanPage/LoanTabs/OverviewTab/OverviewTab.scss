@@ -9,13 +9,12 @@
     min-width: 200px;
   }
 
-   > * {
+  > * {
     margin-right: 8px;
   }
 }
 
-
-.overview-tab .admin-section  .card-bottom {
+.overview-tab .admin-section .card-bottom {
   display: flex;
   justify-content: center;
 }
@@ -104,7 +103,7 @@
 
   padding: 32px;
 
-   > * {
+  > * {
     display: flex;
     flex-direction: column;
 
@@ -120,7 +119,7 @@
 
   margin-top: 40px;
 
-   > * {
+  > * {
     margin-top: 16px;
   }
 }
@@ -147,6 +146,8 @@
     position: relative;
 
     h4 {
+      margin: 0;
+
       display: flex;
       align-items: center;
 
@@ -157,6 +158,14 @@
 
       &.title {
         margin-left: -4px;
+
+        .text {
+          vertical-align: middle;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 250px;
+        }
       }
 
       .icon {
@@ -180,6 +189,7 @@
     flex-basis: 250px;
     flex-grow: 0;
     flex-shrink: 0;
+    padding-bottom: 16px; // To avoid the scroll-bar from overlapping with text
 
     &:hover {
       .activity-modifier {

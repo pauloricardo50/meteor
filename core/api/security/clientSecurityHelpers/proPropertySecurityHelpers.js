@@ -32,7 +32,7 @@ const checkProPropertyPermissions = ({
   }
 };
 
-const isUserLinkedToProperty = ({ userId, property }) => {
+const isUserLinkedToProperty = ({ userId, property = {} }) => {
   const { userLinks = [], users = [], loans = [] } = property;
   const userLoans = loans
     .reduce((usersLoans, { user }) => [...usersLoans, user], [])

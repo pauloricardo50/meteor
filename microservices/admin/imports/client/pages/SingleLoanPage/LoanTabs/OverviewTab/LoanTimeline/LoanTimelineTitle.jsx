@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import Icon from 'core/components/Icon';
@@ -14,19 +15,24 @@ const icons = {
   [ACTIVITY_TYPES.OTHER]: 'radioButtonChecked',
   [ACTIVITY_TYPES.PHONE]: 'phone',
   [ACTIVITY_TYPES.SERVER]: 'computer',
+  task: 'check',
 };
+
+const allowModify = type => type !== ACTIVITY_TYPES.SERVER && type !== 'task';
 
 const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
   const { date, title, type } = activity;
 
   return (
     <div className="loan-timeline-title">
-      {type !== ACTIVITY_TYPES.SERVER && (
+      {allowModify(type) && (
         <LoanActivityModifier className="activity-modifier" model={activity} />
       )}
       <h4 className="title">
         <Icon className="icon secondary" fontSize="small" type={icons[type]} />
-        {title}
+        <Tooltip title={title} placement="top-start">
+          <span className="text">{title}</span>
+        </Tooltip>
       </h4>
       <h4 className="secondary">
         <small>{moment(date).format("D MMM 'YY")}</small>

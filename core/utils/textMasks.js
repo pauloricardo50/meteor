@@ -7,6 +7,15 @@ export const swissFrancMask = createNumberMask({
   thousandsSeparatorSymbol: ' ',
 });
 
+export const swissFrancMaskDecimal = createNumberMask({
+  prefix: '',
+  suffix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ' ',
+  allowDecimal: true,
+  requireDecimal: true,
+});
+
 export const percentMask = createNumberMask({
   prefix: '',
   suffix: '%',

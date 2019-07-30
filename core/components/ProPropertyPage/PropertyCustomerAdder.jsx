@@ -20,7 +20,6 @@ const customerSchema = new SimpleSchema({
 });
 
 const inviteReferredUser = ({ referredUsers, setModel, loans }) => {
-  console.log('loans:', loans);
   const invitedUserIds = loans.map(({ user: { _id } = {} }) => _id);
   const options = referredUsers
     .filter(({ _id }) => !invitedUserIds.some(userId => userId === _id))

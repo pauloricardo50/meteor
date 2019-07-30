@@ -4,6 +4,7 @@ import React from 'react';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 import UserDialogFormContainer from './UserDialogFormContainer';
+import { userFormLayout } from './UserAdder';
 
 type UserModifierProps = {
   schema: Object,
@@ -29,6 +30,8 @@ const UserModifier = ({
       primary: true,
     }}
     autoFieldProps={{ labels }}
+    layout={userFormLayout[0].layout}
+    title={"Modifier l'utilisateur"}
   />
 );
 

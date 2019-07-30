@@ -6,7 +6,7 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import Icon from 'core/components/Icon/Icon';
+import Icon from 'core/components/Icon';
 import PromotionsPageContainer from './PromotionsPageContainer';
 import AllPromotionsTable from './AllPromotionsTable';
 
@@ -29,6 +29,17 @@ const PromotionsPage = ({ addPromotion }: PromotionsPageProps) => (
       schema={BasePromotionSchema}
       buttonProps={{ label: 'Ajouter promotion', raised: true, primary: true }}
       onSubmit={addPromotion}
+      title="Ajouter promotion"
+      layout={[
+        { className: 'mb-32 grid-col', fields: ['name', 'type'] },
+        {
+          layout: [
+            { className: 'grid-col', fields: ['address1', 'address2'] },
+            { className: 'grid-col', fields: ['zipCode', 'city'] },
+          ],
+        },
+        'contacts',
+      ]}
     />
     <AllPromotionsTable />
   </section>

@@ -11,7 +11,7 @@ import APP_ROUTES from 'imports/startup/client/appRoutes';
 type WithLoanStartProps = {};
 
 const WithLoanStart = ({
-  anonymousLoan: { _id: loanId, name, updatedAt, borrowers, properties },
+  anonymousLoan: { _id: loanId, name, updatedAt, borrowers = [], properties },
 }: WithLoanStartProps) => {
   const mostRecentDate = Math.max.apply(null, [
     updatedAt,

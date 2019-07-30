@@ -16,6 +16,7 @@ import {
   PROPERTY_CATEGORY,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
 } from '../../../../constants';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
@@ -150,6 +151,18 @@ describe('REST: getPropertyLoans', function () {
     }).then((loans) => {
       expect(loans.length).to.equal(5);
       expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
+    });
+  });
+
+  it('fails when property does not exist', () => {
+    generator({ users: makeCustomers(5) });
+    return getPropertyLoans({
+      propertyId: '12345',
+      userId: 'pro',
+      impersonateUser: 'pro2@org.com',
+    }).then((response) => {
+      expect(response.status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
+      expect(response.message).to.include('not found');
     });
   });
 });

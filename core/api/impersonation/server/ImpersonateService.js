@@ -3,14 +3,14 @@ import { Accounts } from 'meteor/accounts-base';
 import Users from '../../users';
 import Security from '../../security';
 
-export default class ImpersonateService {
+class ImpersonateService {
   /**
    * Impersonates the user
    * @param {*} context The context of a given meteor method
    * @param {*} authToken The token received from client
    * @param {*} userIdToImpersonate
    */
-  static impersonate({ context, authToken, userIdToImpersonate }) {
+  impersonate({ context, authToken, userIdToImpersonate }) {
     const user = this._findUserByToken(authToken);
 
     if (user) {
@@ -23,11 +23,11 @@ export default class ImpersonateService {
     return Users.findOne(userIdToImpersonate);
   }
 
-  static _throwNotAuthorized() {
+  _throwNotAuthorized() {
     throw new Meteor.Error(401, 'Unauthorized');
   }
 
-  static _checkRolesForImpersonation(userId) {
+  _checkRolesForImpersonation(userId) {
     if (!Security.isUserAdmin(userId)) {
       this._throwNotAuthorized();
     }
@@ -37,7 +37,7 @@ export default class ImpersonateService {
    * @param {string} authToken
    * @returns {object|null}
    */
-  static _findUserByToken(authToken) {
+  _findUserByToken(authToken) {
     // eslint-disable-next-line
     const hashedToken = Accounts._hashLoginToken(authToken);
 
@@ -47,4 +47,10 @@ export default class ImpersonateService {
       { fields: { _id: 1 } },
     );
   }
+
+  impersonateAdmin({ context, userIdToImpersonate }) {
+    context.setUserId(userIdToImpersonate);
+  }
 }
+
+export default new ImpersonateService();

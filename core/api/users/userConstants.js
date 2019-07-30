@@ -23,3 +23,6 @@ export const USER_QUERIES = {
 export const USER_EVENTS = {
   USER_CREATED: 'USER_CREATED',
 };
+
+export const LOCAL_STORAGE_REFERRAL = 'REFERRAL_ID';
+export const LOCAL_STORAGE_OLD_REFERRAL = 'OLD_REFERRAL_ID';

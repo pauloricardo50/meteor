@@ -1,7 +1,9 @@
 import React from 'react';
 import { compose, withState } from 'recompose';
 
-const { Consumer, Provider } = React.createContext();
+export const ContactButtonContext = React.createContext();
+
+export const { Consumer, Provider } = ContactButtonContext;
 
 export const withContactButtonProvider = compose(
   withState('openContact', 'toggleOpenContact', false),
@@ -10,8 +12,4 @@ export const withContactButtonProvider = compose(
       <Component {...props} />
     </Provider>
   ),
-);
-
-export const withContactButtonContext = Component => props => (
-  <Consumer>{context => <Component {...props} {...context} />}</Consumer>
 );

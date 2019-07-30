@@ -270,6 +270,7 @@ export const loan = () => ({
   userId: 1,
   verificationStatus: 1,
   shareSolvency: 1,
+  simpleBorrowersForm: 1,
 });
 
 export const loanBase = () => ({
@@ -316,6 +317,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         name: 1,
         status: 1,
         type: 1,
+        canton: 1,
         users: {
           _id: 1,
           name: 1,
@@ -343,7 +345,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
-  revenues: fullRevenues(),
+  revenues: revenue(),
   status: 1,
   tasksCache: {
     createdAt: 1,
@@ -354,6 +356,8 @@ export const adminLoan = ({ withSort } = {}) => ({
     assigneeLink: 1,
   },
   user: adminUser(),
+  financedPromotion: { name: 1 },
+  financedPromotionLink: 1,
 });
 
 export const adminLoans = () => ({
@@ -422,6 +426,8 @@ export const notification = () => ({
   recipients: { firstName: 1, lastName: 1, name: 1 },
   relatedDoc: 1,
   task: task(),
+  title: 1,
+  revenue: revenue(),
   updatedAt: 1,
 });
 
@@ -672,6 +678,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     value: 1,
     promotion: { _id: 1 },
   },
+  promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
       loans: {
@@ -697,23 +704,6 @@ export const searchPromotions = () => ({
   updatedAt: 1,
 });
 
-// //
-// // Property fragments
-// //
-export const userValuation = () => ({
-  date: 1,
-  error: 1,
-  max: 1,
-  microlocation: 1,
-  min: 1,
-  status: 1,
-});
-
-export const adminValuation = () => ({
-  ...userValuation(),
-  value: 1,
-});
-
 export const propertySummary = () => ({
   address: 1,
   address1: 1,
@@ -724,6 +714,7 @@ export const propertySummary = () => ({
   externalUrl: 1,
   imageUrls: 1,
   insideArea: 1,
+  organisation: 1,
   promotion: { name: 1 },
   propertyType: 1,
   status: 1,
@@ -746,7 +737,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   constructionYear: 1,
   copropertyPercentage: 1,
   createdAt: 1,
-  customFields: 1,
   description: 1,
   documents: 1,
   flatType: 1,
@@ -769,8 +759,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   parkingOutside: 1,
   pictures: 1,
   promotion: { name: 1 },
-  qualityProfileCondition: 1,
-  qualityProfileStandard: 1,
   renovationYear: 1,
   residenceType: 1,
   roomCount: 1,
@@ -788,7 +776,6 @@ export const fullProperty = ({ withSort } = {}) => ({
 export const adminProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
   useOpenGraph: 1,
-  valuation: adminValuation(),
 });
 
 export const promotionProperty = () => ({
@@ -814,7 +801,6 @@ export const promotionProperty = () => ({
 export const userProperty = ({ withSort } = {}) => {
   const obj = {
     ...fullProperty({ withSort }),
-    valuation: userValuation(),
   };
   delete obj.users;
   return obj;
@@ -867,6 +853,7 @@ export const baseTask = () => ({
   description: 1,
   updatedAt: 1,
   isPrivate: 1,
+  priority: 1,
 });
 
 export const task = () => ({
@@ -924,14 +911,14 @@ export const appUser = () => ({
   borrowers: { name: 1 },
   loans: {
     borrowers: { _id: 1, name: 1 },
-    step: 1,
-    name: 1,
-    purchaseType: 1,
     customName: 1,
-    hasProProperty: 1,
     hasPromotion: 1,
-    properties: { address: 1, documents: { propertyImages: 1 } },
-    promotions: { address: 1, name: 1, documents: { promotionImage: 1 } },
+    hasProProperty: 1,
+    name: 1,
+    promotions: { address: 1, name: 1, documents: 1 },
+    properties: { address: 1, documents: 1 },
+    purchaseType: 1,
+    step: 1,
   },
   properties: { _id: 1 },
 });
@@ -953,15 +940,18 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const fullRevenues = () => ({
+export const revenue = () => ({
   amount: 1,
-  approximation: 1,
   createdAt: 1,
   description: 1,
   expectedAt: 1,
+  loan: { name: 1 },
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
+  secondaryType: 1,
+  sourceOrganisationLink: 1,
+  sourceOrganisation: { name: 1 },
   status: 1,
   type: 1,
 });

@@ -41,7 +41,7 @@ describe('AppLayout', () => {
       });
 
       it('does not redirect if user is on allowed route without loans', () => {
-        expect(getRedirect({ loans: [] }, '/profile')).to.equal(false);
+        expect(getRedirect({ loans: [] }, '/account')).to.equal(false);
         expect(getRedirect({ loans: [] }, '/enroll-account')).to.equal(false);
       });
 

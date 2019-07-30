@@ -63,12 +63,12 @@
     .show-best-toggle {
       align-self: center;
 
-       > * {
+      > * {
         display: flex;
         align-items: center;
         justify-content: center;
 
-         > * {
+        > * {
           font-size: initial;
         }
       }
@@ -79,6 +79,12 @@
       align-self: stretch;
       flex-wrap: wrap;
       justify-content: space-between;
+
+      p.locked-canton {
+        font-size: 1.3rem;
+        margin-top: 8px;
+        text-transform: uppercase;
+      }
     }
 
     &-table {
@@ -144,27 +150,9 @@
   }
 }
 
-.max-property-sharing {
-  @include screen(xsmall) {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  &-label {
-    display: inline-flex;
-    align-items: center;
-
-     > * {
-      display: inline-flex;
-      align-items: center;
-
-      &.error {
-        padding: 0 2px 0 4px;
-
-        color: white;
-        border-radius: 6px;
-        background-color: $error;
-      }
-    }
-  }
+.max-property-sharing-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
 }

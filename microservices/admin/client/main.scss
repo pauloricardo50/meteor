@@ -10,6 +10,7 @@
 // Pages
 @import '../imports/client/pages/AdminDashboardPage/AdminDashboardPage.scss';
 @import '../imports/client/pages/AdminPromotionPage/AdminPromotionPage.scss';
+@import '../imports/client/pages/LoanBoardPage/LoanBoardPage.scss';
 @import '../imports/client/pages/OrganisationsPage/OrganisationsPage.scss';
 @import '../imports/client/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
 @import '../imports/client/pages/SingleLoanPage/SingleLoanPage.scss';
@@ -19,7 +20,7 @@
 @import '../imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
-@import '../imports/client/pages/LoanBoardPage/LoanBoardPage.scss';
+@import '../imports/client/pages/SingleLoanPage/LoanStatusModifier/LoanStatusModifier.scss';
 
 // Components
 @import '../imports/client/components/Board/Board.scss';
@@ -27,9 +28,10 @@
 @import '../imports/client/components/LenderRulesEditor/LenderRulesEditor.scss';
 @import '../imports/client/components/LoanSummaryList/LoanSummaryList.scss';
 @import '../imports/client/components/MixpanelAnalytics/MixpanelAnalytics.scss';
+@import '../imports/client/components/NotificationsManager/NotificationsManager.scss';
 @import '../imports/client/components/PremiumBadge/PremiumBadge.scss';
 @import '../imports/client/components/Search/Search.scss';
-@import '../imports/client/components/NotificationsManager/NotificationsManager.scss';
+@import '../imports/client/components/TasksTable/TasksTable.scss';
 
 body,
 html,

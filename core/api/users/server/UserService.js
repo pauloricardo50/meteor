@@ -6,11 +6,12 @@ import omit from 'lodash/omit';
 
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
-import LoanService from '../../loans/server/LoanService';
-import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
+import CollectionService from '../../helpers/CollectionService';
+import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
@@ -52,6 +53,10 @@ class UserService extends CollectionService {
   }) => {
     const newUserId = this.createUser({ options: { email, password }, role });
 
+    if (additionalData.phoneNumber && additionalData.phoneNumber.length) {
+      additionalData.phoneNumbers = [additionalData.phoneNumber];
+    }
+
     this.update({ userId: newUserId, object: additionalData });
 
     if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
@@ -65,13 +70,17 @@ class UserService extends CollectionService {
     return newUserId;
   };
 
-  anonymousCreateUser = ({ user, loanId }) => {
+  anonymousCreateUser = ({ user, loanId, referralId }) => {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
 
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
+    }
+
+    if (referralId) {
+      this.setReferredBy({ userId, proId: referralId });
     }
 
     return userId;
@@ -408,7 +417,10 @@ class UserService extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
-    organisationId = organisationId || this.getUserMainOrganisationId(proId);
+    if (!organisationId) {
+      const mainOrg = this.getUserMainOrganisation(proId);
+      organisationId = mainOrg && mainOrg._id;
+    }
 
     return this.update({
       userId,
@@ -474,22 +486,24 @@ class UserService extends CollectionService {
     });
   }
 
-  getUserMainOrganisationId(userId) {
-    const { organisations = [] } = this.fetchOne({
-      $filters: { _id: userId },
-      organisations: { _id: 1 },
+  getUserMainOrganisation(userId) {
+    const organisations = OrganisationService.fetch({
+      $filters: { userLinks: { $elemMatch: { _id: userId } } },
+      userLinks: 1,
+      name: 1,
     });
-    let mainOrganisationId = null;
+
+    let mainOrganisation = null;
     if (organisations.length === 1) {
-      mainOrganisationId = organisations[0]._id;
+      mainOrganisation = organisations[0];
     } else if (organisations.length > 1) {
-      mainOrganisationId = (
-        organisations.find(({ $metadata: { isMain } }) => isMain)
-        || organisations[0]
-      )._id;
+      mainOrganisation = organisations.find(({ userLinks }) => {
+        const userLink = userLinks.find(({ _id }) => _id === userId);
+        return userLink.isMain;
+      }) || organisations[0];
     }
 
-    return mainOrganisationId;
+    return mainOrganisation;
   }
 
   proSetShareCustomers({ userId, organisationId, shareCustomers }) {

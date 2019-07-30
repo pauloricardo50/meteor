@@ -133,6 +133,19 @@ describe('S3Service', function () {
           .then(({ Metadata: { camelcase } }) =>
             expect(camelcase).to.deep.equal(metadata.camelCase));
       });
+
+      it('does not fail if you set the same metadata', () => {
+        const metadata1 = { status: 'initial', hello: 'world' };
+        const metadata2 = metadata1;
+
+        return S3Service.putObject(binaryData, key, metadata1)
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata1))
+          .then(() => S3Service.updateMetadata(key, metadata2))
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) =>
+            expect(Metadata).to.deep.equal(metadata1));
+      });
     });
 
     describe('headObject', () => {

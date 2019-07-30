@@ -7,7 +7,6 @@ import {
   PROPERTY_TYPE,
   VOLUME_NORM,
   MINERGIE_CERTIFICATE,
-  QUALITY,
 } from '../api/properties/propertyConstants';
 import { Properties } from '../api';
 
@@ -16,14 +15,12 @@ const residenceTypes = Object.values(RESIDENCE_TYPE);
 const types = Object.values(PROPERTY_TYPE);
 const volumeNorms = Object.values(VOLUME_NORM);
 const minergies = Object.values(MINERGIE_CERTIFICATE);
-const conditions = Object.values(QUALITY.CONDITION);
-const standards = Object.values(QUALITY.STANDARD);
 
 const getRandomValueInRange = (min, max) => Math.random() * (max - min) + min;
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
-export const createFakeProperty = (userId) => {
+export const createFakeProperty = userId => {
   const property = {
     status: getRandomValueInArray(statuses),
     value: Math.round(getRandomValueInRange(500000, 3000000)),
@@ -41,15 +38,9 @@ export const createFakeProperty = (userId) => {
     roomCount: 5,
     parkingInside: 1,
     parkingOutside: 2,
-    qualityProfileCondition: getRandomValueInArray(conditions),
-    qualityProfileStandard: getRandomValueInArray(standards),
     minergie: getRandomValueInArray(minergies),
     isCoproperty: true,
     copropertyPercentage: 400,
-    adminValidation: {
-      buildingPlacementQuality: 'No option selected',
-      propertyInfo: 'Not completed',
-    },
   };
 
   return { ...property, _id: PropertyService.insert({ property, userId }) };

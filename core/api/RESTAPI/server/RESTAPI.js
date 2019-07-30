@@ -5,7 +5,7 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { logRequest, trackRequest } from './helpers';
+import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 import {
   setClientMicroservice,
@@ -66,7 +66,9 @@ export default class RESTAPI {
 
         setClientMicroservice('api');
         setClientUrl({ host, href: location });
-        
+        setIsAPI();
+        setAPIUser(req.user);
+
         try {
           Promise.resolve()
             .then(() =>

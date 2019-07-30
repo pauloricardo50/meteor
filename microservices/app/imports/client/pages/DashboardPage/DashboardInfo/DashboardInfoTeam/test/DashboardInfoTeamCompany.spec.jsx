@@ -15,12 +15,8 @@ describe('DashboardInfoTeamCompany', () => {
     props = {};
   });
 
-  it('renders a default team of lydia, yannis and jeanluc', () => {
-    const expectedEmails = [
-      'lydia@e-potek.ch',
-      'yannis@e-potek.ch',
-      'jeanluc@e-potek.ch',
-    ];
+  it('renders a default team of lydia and jeanluc', () => {
+    const expectedEmails = ['lydia@e-potek.ch', 'jeanluc@e-potek.ch'];
     const emails = component()
       .find(DashboardInfoTeamMember)
       .map(node => node.key());

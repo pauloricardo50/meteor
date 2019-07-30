@@ -6,8 +6,13 @@
   .name-form {
     display: flex;
     align-items: center;
+    position: relative;
 
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+
+    > * {
+      margin-right: 8px;
+    }
   }
 
   .delete-button {

@@ -56,7 +56,6 @@ const config = {
         'steps',
         'Table',
         'Uploader',
-        'Valuation',
       ],
     },
     {
@@ -69,6 +68,7 @@ const config = {
         'AmortizationChart',
         'ArrayInput',
         'BorrowerAddPartner',
+        'BorrowersPage',
         'BorrowerRemover',
         'BorrowerReuser',
         'collections',
@@ -94,7 +94,6 @@ const config = {
         'StatusIconTooltip',
         'steps',
         'Uploader',
-        'Valuation',
         'Widget1',
       ],
     },

@@ -1,12 +1,14 @@
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
 @import '{}/imports/core/components/AccountPage/AccountPage.scss';
-@import '{}/imports/core/components/AccountPage/AccountPage.scss';
+@import '{}/imports/core/components/Box/Box.scss';
 @import '{}/imports/core/components/AccountPage/DeveloperSection/DeveloperSection.scss';
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
 @import '{}/imports/core/components/AutoForm2/AutoForm.scss';
 @import '{}/imports/core/components/BorrowerAddPartner/BorrowerAddPartner.scss';
+@import '{}/imports/core/components/ButtonSwitch/ButtonSwitch.scss';
 @import '{}/imports/core/components/ClickToEditField/ClickToEditField.scss';
+@import '{}/imports/core/components/CollectionSearch/CollectionSearch.scss';
 @import '{}/imports/core/components/ContactButton/ContactButton.scss';
 @import '{}/imports/core/components/DateInput/DateInput.scss';
 @import '{}/imports/core/components/DateModifier/DateModifier.scss';
@@ -46,7 +48,6 @@
 @import '{}/imports/core/components/RevenuesByStatus/RevenuesByStatus.scss';
 @import '{}/imports/core/components/SearchModal/SearchModal.scss';
 @import '{}/imports/core/components/Select/Select.scss';
-@import '{}/imports/core/components/StarRating/StarRating.scss';
 @import '{}/imports/core/components/StatusLabel/StatusLabel.scss';
 @import '{}/imports/core/components/Table/Table.scss';
 @import '{}/imports/core/components/Tabs/Tabs.scss';
@@ -56,7 +57,6 @@
 @import '{}/imports/core/components/TopNav/TopNav.scss';
 @import '{}/imports/core/components/TranchePicker/TranchePicker.scss';
 @import '{}/imports/core/components/UploaderArray/Uploader/Uploader.scss';
-@import '{}/imports/core/components/Valuation/Valuation.scss';
 @import '{}/imports/core/components/widget1/widget1.scss';
 @import '{}/imports/core/components/Waves/Waves.scss';
 

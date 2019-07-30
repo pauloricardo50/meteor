@@ -2,9 +2,10 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { PropertySchemaAdmin } from 'core/api/properties/schemas/PropertySchema';
-import { propertyUpdate, mortgageNoteInsert } from 'core/api';
+import { PropertySchemaAdmin } from '../../api/properties/schemas/PropertySchema';
+import { propertyUpdate, mortgageNoteInsert } from '../../api/methods';
 import AutoForm from '../AutoForm2';
+import Box from '../Box';
 import MortgageNotesForm from './MortgageNotesForm';
 
 type PropertyFormProps = {};
@@ -41,8 +42,6 @@ const detailFields = [
   'isCoproperty',
   'isNew',
   'copropertyPercentage',
-  'qualityProfileCondition',
-  'qualityProfileStandard',
   'yearlyExpenses',
 ];
 
@@ -100,34 +99,31 @@ const PropertyForm = ({ property }: PropertyFormProps) => {
   const { _id: propertyId, mortgageNotes } = property;
   return (
     <div className="property-admin-form">
-      <div>
-        <h3>Informations de base</h3>
+      <Box title={<h3>Informations de base</h3>}>
         <AutoForm
           schema={PropertySchemaAdmin.pick(...baseFields)}
           model={property}
           onSubmit={handleSubmit(property._id)}
           className="form"
         />
-      </div>
-      <div>
-        <h3>État du bien</h3>
+      </Box>
+      <Box title={<h3>État du bien</h3>}>
         <AutoForm
           schema={PropertySchemaAdmin.pick(...detailFields)}
           model={property}
           onSubmit={handleSubmit(property._id)}
           className="form"
         />
-      </div>
+      </Box>
       {otherSchema._schemaKeys.length > 0 && (
-        <div>
-          <h3>Autres</h3>
+        <Box title={<h3>Autres</h3>}>
           <AutoForm
             schema={otherSchema}
             model={property}
             onSubmit={handleSubmit(property._id)}
             className="form"
           />
-        </div>
+        </Box>
       )}
       <MortgageNotesForm
         mortgageNotes={mortgageNotes}
@@ -137,4 +133,5 @@ const PropertyForm = ({ property }: PropertyFormProps) => {
     </div>
   );
 };
+
 export default PropertyForm;

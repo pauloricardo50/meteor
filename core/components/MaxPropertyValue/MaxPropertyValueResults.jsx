@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import Calculator from 'core/utils/Calculator';
-import { RESIDENCE_TYPE, CANTONS } from '../../api/constants';
+import { RESIDENCE_TYPE } from '../../api/constants';
 import T from '../Translation';
 import Select from '../Select';
 import Button from '../Button';
@@ -20,17 +20,24 @@ type MaxPropertyValueResultsProps = {
   setResidenceType: Function,
 };
 
+const getPropertyOrganisation = (loan) => {
+  if (loan.hasProProperty && loan.properties.length === 1) {
+    return loan.properties[0].organisation;
+  }
+};
+
 const MaxPropertyValueResults = ({
   loan,
   residenceType,
   setResidenceType,
   onChangeCanton,
-  canton,
   loading,
+  lockCanton,
   recalculate,
+  cantonOptions,
 }: MaxPropertyValueResultsProps) => {
   const {
-    maxPropertyValue: { main, second, borrowerHash },
+    maxPropertyValue: { main, second, borrowerHash, canton },
     hasProProperty,
     hasPromotion,
     shareSolvency,
@@ -48,15 +55,18 @@ const MaxPropertyValueResults = ({
           </h2>
         </div>
         <div className="max-property-value-results-selects">
-          <Select
-            value={canton}
-            onChange={onChangeCanton}
-            options={Object.keys(CANTONS).map((shortCanton) => {
-              const cant = CANTONS[shortCanton];
-              return { id: shortCanton, label: cant };
-            })}
-            disabled={loading}
-          />
+          {lockCanton ? (
+            <p className="secondary locked-canton">
+              <T id={`Forms.canton.${canton}`} />
+            </p>
+          ) : (
+            <Select
+              value={canton}
+              onChange={onChangeCanton}
+              options={cantonOptions}
+              disabled={loading}
+            />
+          )}
 
           <Select
             value={residenceType}
@@ -96,6 +106,7 @@ const MaxPropertyValueResults = ({
         hasPromotion={hasPromotion}
         shareSolvency={shareSolvency}
         loanId={loanId}
+        propertyOrganisation={getPropertyOrganisation(loan)}
       />
     </div>
   );

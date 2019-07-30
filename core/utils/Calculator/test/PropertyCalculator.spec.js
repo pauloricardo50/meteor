@@ -39,8 +39,6 @@ describe('PropertyCalculator', () => {
         numberOfFloors: 3,
         roomCount: 2,
         minergie: '',
-        qualityProfileCondition: 1,
-        qualityProfileStandard: 2,
         copropertyPercentage: 100,
         isCoproperty: false,
       };
@@ -93,8 +91,6 @@ describe('PropertyCalculator', () => {
         'constructionYear',
         'roomCount',
         'minergie',
-        'qualityProfileCondition',
-        'qualityProfileStandard',
         'residenceType',
       ]);
     });

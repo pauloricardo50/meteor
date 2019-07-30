@@ -10,10 +10,10 @@ import {
   moneyField,
   userLinksSchema,
   documentsField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
-import { ValuationSchema } from './wuestSchemas';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -256,28 +256,6 @@ export const PropertySchema = new SimpleSchema({
     min: -180,
     max: 180,
   },
-  customFields: {
-    // Allows storing custom fields that aren't allowed by the default schema
-    type: Object,
-    blackbox: true,
-    defaultValue: {},
-  },
-  qualityProfileCondition: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
-    uniforms: { placeholder: null },
-  },
-  qualityProfileStandard: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
-    uniforms: { placeholder: null },
-  },
-  valuation: {
-    type: ValuationSchema,
-    defaultValue: {},
-  },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   yearlyExpenses: moneyField,
   landValue: moneyField,
@@ -318,13 +296,11 @@ const protectedKeys = [
   'address',
   'adminValidation',
   'createdAt',
-  'customFields',
   'latitude',
   'longitude',
   'mortgageNoteLinks',
   'updatedAt',
   'userId',
-  'valuation',
   'documents',
   'userLinks',
 ];
