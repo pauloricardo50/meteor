@@ -124,7 +124,7 @@ const doesUserShareCustomers = (user) => {
 };
 
 export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
-  const mainOrganisationId = UserService.getUserMainOrganisationId(userId);
+  const { _id: mainOrganisationId } = UserService.getUserMainOrganisation(userId);
   const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
     $filters: { _id: mainOrganisationId },
     users: { _id: 1 },

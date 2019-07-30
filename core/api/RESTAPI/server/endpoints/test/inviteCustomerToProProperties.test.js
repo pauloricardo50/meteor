@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 import UserService from '../../../../users/server/UserService';
 import PropertyService from '../../../../properties/server/PropertyService';
@@ -9,6 +10,7 @@ import {
   PROPERTY_CATEGORY,
   PROPERTY_STATUS,
 } from '../../../../properties/propertyConstants';
+import SlackService from '../../../../slack/server/SlackService';
 import generator from '../../../../factories';
 import RESTAPI from '../../RESTAPI';
 import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
@@ -91,7 +93,7 @@ describe('REST: inviteCustomerToProProperties', function () {
           _factory: 'pro',
           _id: 'pro',
           emails: [{ address: 'pro@org.com', verified: true }],
-          organisations: [{ _id: 'org' }],
+          organisations: [{ _id: 'org', name: 'Main Org' }],
           proProperties: [
             { _id: 'property1', category: PROPERTY_CATEGORY.PRO },
             { _id: 'property2', category: PROPERTY_CATEGORY.PRO },
@@ -159,9 +161,7 @@ describe('REST: inviteCustomerToProProperties', function () {
         { externalId: 'ext3', category: PROPERTY_CATEGORY.PRO },
       ],
       expectedResponse: {
-        message: `Successfully invited user \"${
-          customerToInvite.email
-        }\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
     }).then(() => {
       const customer = UserService.fetchOne({
@@ -206,9 +206,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       ],
       shareSolvency: true,
       expectedResponse: {
-        message: `Successfully invited user \"${
-          customerToInvite.email
-        }\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
     }).then(() => {
       const customer = UserService.fetchOne({
@@ -253,9 +251,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       ],
       impersonateUser: 'pro2@org.com',
       expectedResponse: {
-        message: `Successfully invited user \"${
-          customerToInvite.email
-        }\" to property ids \"ext2\", \"ext3\", \"property4\", \"property5\" and \"property6\"`,
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext2\", \"ext3\", \"property4\", \"property5\" and \"property6\"`,
       },
     });
   });
@@ -347,8 +343,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       properties: [{ _id: 'property4', externalId: 'test' }],
       expectedResponse: {
         status: 400,
-        message:
-          '[Each property must have either a "_id" or "externalId" key]',
+        message: '[Each property must have either a "_id" or "externalId" key]',
       },
     }));
 
@@ -388,9 +383,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     return inviteCustomerToProProperties({
       properties: [{ _id: 'property2' }],
       expectedResponse: {
-        message: `Successfully invited user \"${
-          customerToInvite.email
-        }\" to property ids \"property2\"`,
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"property2\"`,
       },
     }).then(() =>
       inviteCustomerToProProperties({
@@ -415,9 +408,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     return inviteCustomerToProProperties({
       properties: [newProperty],
       expectedResponse: {
-        message: `Successfully invited user \"${
-          customerToInvite.email
-        }\" to property ids \"myId\"`,
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"myId\"`,
       },
     }).then(() => {
       const property = PropertyService.findOne({ externalId: 'myId' });
@@ -438,5 +429,25 @@ describe('REST: inviteCustomerToProProperties', function () {
         message: '[ClientError: FALSE_TYPE is not an allowed value]',
       },
     });
+  });
+
+  it('sends a properly formatted slack notification', async () => {
+    const spy = sinon.spy();
+    sinon.stub(SlackService, 'send').callsFake(spy);
+
+    const newProperty = { externalId: 'myId', address1: 'Rue du parc 3' };
+
+    await inviteCustomerToProProperties({
+      properties: [newProperty],
+      expectedResponse: {
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"myId\"`,
+      },
+    });
+
+    expect(spy.calledOnce).to.equal(true);
+    expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+    expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité au bien immo "Rue du parc 3"');
+
+    SlackService.send.restore();
   });
 });

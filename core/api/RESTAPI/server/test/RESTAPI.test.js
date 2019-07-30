@@ -2,10 +2,17 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { expect } from 'chai';
+import omit from 'lodash/omit';
 
 import { REST_API_ERRORS } from '../restApiConstants';
 import RESTAPI from '../RESTAPI';
-import { withMeteorUserId, OBJECT_FORMATS } from '../helpers';
+import {
+  withMeteorUserId,
+  OBJECT_FORMATS,
+  isAPI,
+  getAPIUser,
+} from '../helpers';
 import {
   fetchAndCheckResponse,
   makeHeaders,
@@ -38,6 +45,7 @@ Meteor.methods({
   apiTestMethod() {
     return new Promise(resolve => setTimeout(() => resolve(this.userId), 1500));
   },
+  isAPI,
 });
 
 describe('RESTAPI', () => {
@@ -72,6 +80,9 @@ describe('RESTAPI', () => {
                 : resolve(`${res} ${testBody} ${testQuery} ${id}`)))),
       ),
   );
+
+  api.addEndpoint('/isAPI', 'GET', () => ({ isAPI: isAPI() }));
+  api.addEndpoint('/fiberAPIUser', 'GET', getAPIUser);
 
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
@@ -421,6 +432,49 @@ describe('RESTAPI', () => {
           body: JSON.stringify(body),
         },
         expectedResponse: makeTestRoute('POST')({ user }),
+      });
+    });
+  });
+
+  describe('isAPI', () => {
+    it('returns true for a function ran inside an API', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+      const expectedResponse = { isAPI: true };
+      return fetchAndCheckResponse({
+        url: '/isAPI',
+        data: {
+          method: 'GET',
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
+        },
+        expectedResponse,
+      });
+    });
+
+    it('returns false when calling a method', (done) => {
+      Meteor.call('isAPI', (err, result) => {
+        if (err) {
+          done(err);
+        }
+
+        expect(result).to.equal(false);
+        done();
+      });
+    });
+  });
+
+  describe('APIUser', () => {
+    it('returns the logged in API user', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+      const expectedResponse = omit(user, ['createdAt', 'updatedAt', 'roles']);
+
+      return fetchAndCheckResponse({
+        url: '/fiberAPIUser',
+        data: {
+          method: 'GET',
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
+        },
+        expectedResponse,
+        include: true,
       });
     });
   });
