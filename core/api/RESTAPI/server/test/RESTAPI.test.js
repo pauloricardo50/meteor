@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { expect } from 'chai';
 import omit from 'lodash/omit';
 
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../restApiConstants';

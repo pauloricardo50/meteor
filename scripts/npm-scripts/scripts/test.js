@@ -15,6 +15,7 @@ const backend = new Process();
 const test = new Process();
 
 const isCI = args.includes('--ci');
+const isVerbose = args.includes('--verbose');
 
 const tasks = new Listr(
   [
@@ -93,7 +94,7 @@ const tasks = new Listr(
   ],
   {
     concurrent: true,
-    ...(isCI ? { renderer: VerboseRenderer } : {}),
+    ...(isCI || isVerbose ? { renderer: VerboseRenderer } : {}),
   },
 );
 
