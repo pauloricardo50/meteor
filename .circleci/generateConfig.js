@@ -56,7 +56,9 @@ const cachePaths = {
 };
 
 // Circle CI Commands
-const runCommand = (name, command) => ({ run: { name, command } });
+const runCommand = (name, command, timeout) => ({
+  run: { name, command, ...(timeout ? { no_output_timeout: timeout } : {}) },
+});
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
     case 'e2e':
@@ -70,6 +72,7 @@ const runTestsCommand = (name, testsType) => {
       return runCommand(
         'Run unit tests',
         `cd ./microservices/${name} && meteor npm run test -- --ci`,
+        '60m',
       );
     default:
       throw new Error(`Unknown tests type: ${testsType}`);
