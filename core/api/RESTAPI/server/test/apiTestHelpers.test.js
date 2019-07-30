@@ -78,9 +78,8 @@ export const signRequest = ({
   const key = new NodeRSA();
   key.importKey(privateKey.replace(/\r?\n|\r/g, ''), 'pkcs1-private-pem');
 
-  let objectToSign = {};
 
-  objectToSign = { security: sortObject({ timestamp, nonce }) };
+  let objectToSign = { security: sortObject({ timestamp, nonce }) };
 
   if (query) {
     objectToSign = { ...objectToSign, queryParams: sortObject(query) };
