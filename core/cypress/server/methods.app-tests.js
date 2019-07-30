@@ -25,6 +25,7 @@ import {
   createLoginToken,
   createEmailVerificationToken,
 } from 'core/utils/testHelpers/index';
+import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -35,7 +36,6 @@ import {
   USER_EMAIL,
   USER_PASSWORD,
 } from './e2eConstants';
-import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
