@@ -12,6 +12,7 @@ import {
   OBJECT_STORAGE_PATH,
 } from '../../../files/fileConstants';
 import FileService from '../../../files/server/FileService';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const anyOrganisationMatches = ({
   userOrganisations = [],
@@ -83,6 +84,46 @@ export const impersonateSchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },
 });
 
+export const getS3FilesList = docId =>
+  new Promise((resolve, reject) => {
+    const client = s3.createClient({
+      s3Options: {
+        accessKeyId: Meteor.settings.exoscale.API_KEY,
+        secretAccessKey: Meteor.settings.exoscale.SECRET_KEY,
+        endpoint: EXOSCALE_PATH,
+        region: OBJECT_STORAGE_REGION,
+      },
+    });
+
+    const listParams = {
+      s3Params: {
+        Bucket: Meteor.settings.storage.bucketName,
+        Prefix: docId,
+      },
+      recursive: true,
+    };
+    const filesList = client.listObjects(listParams);
+    filesList.on('error', (err) => {
+      reject(err.stack);
+    });
+
+    let list = [];
+
+    filesList.on('data', (data) => {
+      const { Contents = [] } = data;
+      list = [...list, ...Contents].map(({ Key, LastModified, Size }) => ({
+        Key,
+        LastModified,
+        Size,
+        Url: `${OBJECT_STORAGE_PATH}/${Key}`,
+      }));
+    });
+
+    filesList.on('end', () => {
+      resolve(list);
+    });
+  });
+
 export const uploadFileToS3 = ({ file, docId, id, collection }) =>
   new Promise((resolve, reject) => {
     const { originalFilename, path } = file;
@@ -113,34 +154,55 @@ export const uploadFileToS3 = ({ file, docId, id, collection }) =>
     });
 
     uploader.on('end', () => {
-      FileService.updateDocumentsCache({ docId, collection }).then(() => {
-        const listParams = {
-          s3Params: {
-            Bucket: Meteor.settings.storage.bucketName,
-            Prefix: docId,
-          },
-          recursive: true,
-        };
-        const filesList = client.listObjects(listParams);
-        filesList.on('error', (err) => {
-          reject(err.stack);
-        });
-
-        let list = [];
-
-        filesList.on('data', (data) => {
-          const { Contents = [] } = data;
-          list = [...list, ...Contents].map(({ Key, LastModified, Size }) => ({
-            Key,
-            LastModified,
-            Size,
-            Url: `${OBJECT_STORAGE_PATH}/${Key}`,
-          }));
-        });
-
-        filesList.on('end', () => {
-          resolve(list);
-        });
-      });
+      FileService.updateDocumentsCache({ docId, collection })
+        .then(() => getS3FilesList(docId))
+        .then(resolve)
+        .catch(reject);
     });
   });
+
+export const deleteFileFromS3 = ({ docId, collection, key }) =>
+  getS3FilesList(docId).then(list =>
+    new Promise((resolve, reject) => {
+      const keyExists = list.map(({ Key }) => Key).some(Key => Key === key);
+      if (!keyExists) {
+        reject(new Meteor.Error(
+          HTTP_STATUS_CODES.NOT_FOUND,
+          `Key ${key} not found`,
+        ));
+      }
+      const client = s3.createClient({
+        s3Options: {
+          accessKeyId: Meteor.settings.exoscale.API_KEY,
+          secretAccessKey: Meteor.settings.exoscale.SECRET_KEY,
+          endpoint: EXOSCALE_PATH,
+          region: OBJECT_STORAGE_REGION,
+        },
+      });
+
+      const s3Params = {
+        Bucket: Meteor.settings.storage.bucketName,
+        Delete: {
+          Objects: [{ Key: key }],
+        },
+      };
+
+      const deleteFile = client.deleteObjects(s3Params);
+
+      deleteFile.on('error', (err) => {
+        reject(err.stack);
+      });
+
+      let deleted = [];
+
+      deleteFile.on('data', (data) => {
+        const { Deleted = [] } = data;
+        deleted = [...deleted, ...Deleted];
+      });
+
+      deleteFile.on('end', () => {
+        FileService.updateDocumentsCache({ docId, collection }).then(() => {
+          resolve(deleted);
+        });
+      });
+    }));

@@ -13,6 +13,7 @@ import {
   updatePropertyAPI,
   insertPropertyAPI,
   uploadFileAPI,
+  deleteFileAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -42,7 +43,8 @@ api.addEndpoint('/test/:id', 'DELETE', testEndpointAPI);
 api.addEndpoint('/interest-rates/latest', 'GET', interestRatesAPI);
 api.addEndpoint('/calculator/mortgage-estimate', 'GET', mortgageEstimateAPI);
 api.addEndpoint('/properties', 'POST', insertPropertyAPI);
-api.addEndpoint('/upload', 'POST', uploadFileAPI);
+api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
+api.addEndpoint('/deleteFile', 'POST', deleteFileAPI);
 
 Meteor.startup(() => {
   makeFileUploadDir();

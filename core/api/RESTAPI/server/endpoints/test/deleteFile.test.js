@@ -7,7 +7,6 @@ import { Random } from 'meteor/random';
 
 import {
   PROPERTY_DOCUMENTS,
-  OBJECT_STORAGE_PATH,
 } from 'core/api/files/fileConstants';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -17,16 +16,47 @@ import {
   PROPERTY_CATEGORY,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
 } from '../../../../properties/propertyConstants';
-import { uploadFile } from '../../test/apiTestHelpers.test';
+import {
+  uploadFile,
+  fetchAndCheckResponse,
+  makeHeaders,
+  getTimestampAndNonce,
+} from '../../test/apiTestHelpers.test';
 import RESTAPI from '../../RESTAPI';
-import { uploadFileAPI } from '..';
+import { uploadFileAPI, deleteFileAPI } from '..';
 import { FILE_UPLOAD_DIR, HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 let propertyId = '';
 api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
+api.addEndpoint('/deleteFile', 'POST', deleteFileAPI);
 
-describe('REST: uploadFile', function () {
+const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
+  const { timestamp, nonce } = getTimestampAndNonce();
+
+  const body = { key, propertyId: propId };
+  const query = impersonateUser
+    ? { 'impersonate-user': impersonateUser }
+    : undefined;
+
+  return fetchAndCheckResponse({
+    url: '/deleteFile',
+    query,
+    data: {
+      method: 'POST',
+      headers: makeHeaders({
+        userId,
+        timestamp,
+        nonce,
+        body,
+        query,
+      }),
+      body: JSON.stringify(body),
+    },
+  });
+};
+
+describe('REST: deleteFile', function () {
   this.timeout(10000);
 
   before(function () {
@@ -70,7 +100,7 @@ describe('REST: uploadFile', function () {
     });
   });
 
-  it('uploads a file', () => {
+  it('deletes a file', () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro',
@@ -80,64 +110,57 @@ describe('REST: uploadFile', function () {
     appendFileSync(filePath, 'Hello');
     return uploadFile({
       filePath,
-      userId: 'pro',
-      url: '/upload',
-      propertyId,
-      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
-      const { files } = res;
-      expect(files.length).to.equal(1);
-      expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
-    });
-  });
-
-  it('uploads two files', () => {
-    PropertyService.setProUserPermissions({
-      propertyId,
-      userId: 'pro',
-      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
-    });
-    const filePath1 = `${FILE_UPLOAD_DIR}/myFile1.txt`;
-    const filePath2 = `${FILE_UPLOAD_DIR}/myFile2.txt`;
-    appendFileSync(filePath1, 'Hello');
-    appendFileSync(filePath2, 'Hello');
-    return uploadFile({
-      filePath: filePath1,
       userId: 'pro',
       url: '/upload',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
-      .then(() =>
-        uploadFile({
-          filePath: filePath2,
-          userId: 'pro',
-          url: '/upload',
-          propertyId,
-          category: PROPERTY_DOCUMENTS.PROPERTY_PLANS,
-        }))
       .then((res) => {
         const { files } = res;
-        expect(files.length).to.equal(2);
-        expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`);
-        expect(files[1].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`);
-      });
+        expect(files.length).to.equal(1);
+        return files[0].Key;
+      })
+      .then(key =>
+        deleteFile({ key, propertyId, userId: 'pro' }).then((res) => {
+          const { deletedFiles = [] } = res;
+          expect(deletedFiles.length).to.equal(1);
+          expect(deletedFiles[0].Key).to.equal(key);
+        }));
   });
 
-  it('does not allow to upload file when user does not have permissions', () => {
+  it('does not allow to delete file when user does not have permissions', () => {
+    PropertyService.setProUserPermissions({
+      propertyId,
+      userId: 'pro',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
     return uploadFile({
       filePath,
-      userId: 'pro2',
+      userId: 'pro',
       url: '/upload',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
-      const { status, message } = res;
-      expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
-      expect(message).to.include('[NOT_AUTHORIZED]');
-    });
+    })
+      .then((res) => {
+        const { files } = res;
+        expect(files.length).to.equal(1);
+        return files[0].Key;
+      })
+      .then((key) => {
+        PropertyService.setProUserPermissions({
+          propertyId,
+          userId: 'pro',
+          permissions: { canModifyProperty: false },
+        });
+
+        return deleteFile({ key, propertyId, userId: 'pro' }).then((res) => {
+          const { status, message } = res;
+          expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
+          expect(message).to.include('[NOT_AUTHORIZED]');
+        });
+      });
   });
 
   it('works when impersonating', () => {
@@ -150,64 +173,67 @@ describe('REST: uploadFile', function () {
     appendFileSync(filePath, 'Hello');
     return uploadFile({
       filePath,
-      userId: 'pro2',
+      userId: 'pro',
       url: '/upload',
-      query: { 'impersonate-user': 'pro@org.com' },
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
-      const { files } = res;
-      expect(files.length).to.equal(1);
-      expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
-    });
+    })
+      .then((res) => {
+        const { files } = res;
+        expect(files.length).to.equal(1);
+        return files[0].Key;
+      })
+      .then(key =>
+        deleteFile({
+          key,
+          propertyId,
+          userId: 'pro2',
+          impersonateUser: 'pro@org.com',
+        }).then((res) => {
+          const { deletedFiles = [] } = res;
+          expect(deletedFiles.length).to.equal(1);
+          expect(deletedFiles[0].Key).to.equal(key);
+        }));
   });
 
-  it('fails with a wrong propertyId', () => {
-    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
-    appendFileSync(filePath, 'Hello');
-    return uploadFile({
-      filePath,
-      userId: 'pro2',
-      url: '/upload',
-      propertyId: 'property',
-      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
+  it('fails with a wrong propertyId', () =>
+    deleteFile({
+      key: 'wathever',
+      propertyId: '12345',
+      userId: 'pro',
     }).then((res) => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
       expect(message).to.include('No property found');
+    }));
+
+  it('fails with a wrong key', () => {
+    PropertyService.setProUserPermissions({
+      propertyId,
+      userId: 'pro',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
+
+    return deleteFile({
+      key: 'wathever',
+      propertyId,
+      userId: 'pro',
+    }).then((res) => {
+      const { status, message } = res;
+      expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
+      expect(message).to.include('not found');
     });
   });
 
-  it('fails when no propertyId is given', () => {
-    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
-    appendFileSync(filePath, 'Hello');
-    return uploadFile({
-      filePath,
-      userId: 'pro2',
-      url: '/upload',
-      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
+  it('fails when no propertyId is given', () =>
+    deleteFile({
+      key: 'wathever',
+      userId: 'pro',
     }).then((res) => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
       expect(message).to.include('Property ID is required');
-    });
-  });
-
-  it('fails when category is wrong', () => {
-    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
-    appendFileSync(filePath, 'Hello');
-    return uploadFile({
-      filePath,
-      userId: 'pro2',
-      url: '/upload',
-      propertyId,
-      category: 'wrong',
-    }).then((res) => {
-      const { status, message } = res;
-      expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
-      expect(message).to.include('wrong is not an allowed value');
-    });
-  });
+    }));
 
   it('works with an external id', () => {
     PropertyService.setProUserPermissions({
@@ -221,12 +247,21 @@ describe('REST: uploadFile', function () {
       filePath,
       userId: 'pro',
       url: '/upload',
-      propertyId: 'extId',
+      propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
-      const { files } = res;
-      expect(files.length).to.equal(1);
-      expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
-    });
+    })
+      .then((res) => {
+        const { files } = res;
+        expect(files.length).to.equal(1);
+        return files[0].Key;
+      })
+      .then(key =>
+        deleteFile({ key, propertyId: 'extId', userId: 'pro' }).then((res) => {
+          const { deletedFiles = [] } = res;
+          expect(deletedFiles.length).to.equal(1);
+          expect(deletedFiles[0].Key).to.equal(key);
+        }));
   });
+
+  
 });
