@@ -308,15 +308,10 @@ export const verifySignature = (req) => {
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
-<<<<<<< HEAD
-  const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
-=======
   const {
     'x-forwarded-for': clientAddress,
-    host,
     'x-real-ip': realIp,
   } = headers;
->>>>>>> 2afebd7e351c723241fce82952da7e07bec1c3ba
 
   const analytics = new Analytics({
     userId,
