@@ -334,9 +334,9 @@ export const getMatchingPathOptions = (req, options) => {
   const path = getRequestPath(req);
   const method = getRequestMethod(req);
   const parts = decodeURI(path)
-    .split('?', 1)[0]
-    .replace(/^[\s\/]+|[\s\/]+$/g, '')
-    .split('/');
+  .split('?', 1)[0]
+  .replace(/^[\s\/]+|[\s\/]+$/g, '')
+  .split('/');
 
   let matchingPathOptions = {};
 

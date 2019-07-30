@@ -47,9 +47,9 @@ export default class RESTAPI {
 
       methods.forEach((method) => {
         const finalEndpoint = this.makeEndpoint(endpoint);
-        const { handler, options } = this.endpoints[endpoint][method];
+        const { handler } = this.endpoints[endpoint][method];
 
-        this.registerEndpoint(finalEndpoint, handler, method, options);
+        this.registerEndpoint(finalEndpoint, handler, method);
       });
     });
   }
@@ -118,7 +118,7 @@ export default class RESTAPI {
     return Object.keys(this.endpoints).reduce(
       (options, path) => ({
         ...options,
-        [`${this.rootPath}${path}`]: Object.keys(this.endpoints[path]).reduce(
+        [this.makeEndpoint(path)]: Object.keys(this.endpoints[path]).reduce(
           (methods, method) => ({
             ...methods,
             [method]: { options: this.endpoints[path][method].options },

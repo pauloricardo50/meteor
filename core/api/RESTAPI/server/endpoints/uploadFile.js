@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import fs from 'fs';
 import SimpleSchema from 'simpl-schema';
 
-import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
+import { PROPERTY_DOCUMENTS } from '../../../files/fileConstants';
+import FileService from '../../../files/server/FileService';
 import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
@@ -11,7 +11,6 @@ import {
   checkQuery,
   impersonateSchema,
   getImpersonateUserId,
-  uploadFileToS3,
 } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
 
@@ -71,8 +70,6 @@ const uploadFileAPI = (req) => {
   if (!file) {
     throw new Meteor.Error('No file uploaded');
   }
-  const { path } = file;
-
   return withMeteorUserId({ userId, impersonateUser }, () => {
     let impersonateUserId;
     if (impersonateUser) {
@@ -88,18 +85,11 @@ const uploadFileAPI = (req) => {
       throw new Meteor.Error(HTTP_STATUS_CODES.FORBIDDEN, error);
     }
 
-    return uploadFileToS3({
+    return FileService.uploadFileAPI({
       file,
       docId: propertyId,
       id: category,
       collection: PROPERTIES_COLLECTION,
-    }).then((list) => {
-      fs.unlink(path, (err) => {
-        if (err) {
-          throw new Meteor.Error(err);
-        }
-      });
-      return { files: list };
     });
   });
 };

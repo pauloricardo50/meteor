@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
+import FileService from '../../../files/server/FileService';
 import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
@@ -9,7 +10,6 @@ import {
   checkQuery,
   impersonateSchema,
   getImpersonateUserId,
-  deleteFileFromS3,
 } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
 
@@ -55,7 +55,6 @@ const deleteFileAPI = (req) => {
     }
   }
 
-
   return withMeteorUserId({ userId, impersonateUser }, () => {
     let impersonateUserId;
     if (impersonateUser) {
@@ -71,11 +70,16 @@ const deleteFileAPI = (req) => {
       throw new Meteor.Error(HTTP_STATUS_CODES.FORBIDDEN, error);
     }
 
-    return deleteFileFromS3({
+    return FileService.deleteFileAPI({
       docId: propertyId,
       key,
       collection: PROPERTIES_COLLECTION,
-    }).then(deleted => ({ deletedFiles: deleted }));
+    });
+    // return deleteFileFromS3({
+    //   docId: propertyId,
+    //   key,
+    //   collection: PROPERTIES_COLLECTION,
+    // }).then(deleted => ({ deletedFiles: deleted }));
   });
 };
 

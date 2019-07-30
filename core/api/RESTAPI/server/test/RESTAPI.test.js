@@ -8,7 +8,11 @@ import { expect } from 'chai';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 import { REST_API_ERRORS, FILE_UPLOAD_DIR } from '../restApiConstants';
 import RESTAPI from '../RESTAPI';
-import { withMeteorUserId, OBJECT_FORMATS } from '../helpers';
+import {
+  withMeteorUserId,
+  OBJECT_FORMATS,
+  getMatchingPathOptions,
+} from '../helpers';
 import {
   fetchAndCheckResponse,
   makeHeaders,
@@ -462,6 +466,115 @@ describe('RESTAPI', () => {
       expect(status).to.equal(400);
       expect(errorName).to.equal('WRONG_CONTENT_TYPE');
       expect(message).to.include('multipart');
+    });
+  });
+
+  context('getMatchingPathOptions', () => {
+    it('returns the correct options for endpoint with no wildcard', () => {
+      const options = {
+        '/api/test': {
+          POST: { options: { a: 1 } },
+        },
+      };
+
+      const req = {
+        _parsedUrl: { pathname: '/api/test' },
+        method: 'POST',
+      };
+
+      const pathOptions = getMatchingPathOptions(req, options);
+      expect(pathOptions).to.deep.equal({ a: 1 });
+    });
+
+    it('returns the correct options for endpoint with wildcards', () => {
+      const options = {
+        '/api/test/:wildcard1/:wildcard2': {
+          POST: { options: { a: 1 } },
+        },
+      };
+
+      const req = {
+        _parsedUrl: { pathname: '/api/test/12345/abcdef' },
+        method: 'POST',
+      };
+
+      const pathOptions = getMatchingPathOptions(req, options);
+      expect(pathOptions).to.deep.equal({ a: 1 });
+    });
+
+    it('returns the correct options for request with queryString', () => {
+      const options = {
+        '/api/test': {
+          POST: { options: { a: 1 } },
+        },
+      };
+
+      const req = {
+        _parsedUrl: { pathname: '/api/test/?test=1' },
+        method: 'POST',
+      };
+
+      const pathOptions = getMatchingPathOptions(req, options);
+      expect(pathOptions).to.deep.equal({ a: 1 });
+    });
+
+    it('returns no options for wrong request method ', () => {
+      const options = {
+        '/api/test': {
+          POST: { options: { a: 1 } },
+        },
+      };
+
+      const req = {
+        _parsedUrl: { pathname: '/api/test' },
+        method: 'GET',
+      };
+
+      const pathOptions = getMatchingPathOptions(req, options);
+      expect(pathOptions).to.deep.equal({});
+    });
+
+    it('returns no options for wrong request endpoint ', () => {
+      const options = {
+        '/api/test': {
+          POST: { options: { a: 1 } },
+        },
+      };
+
+      const req = {
+        _parsedUrl: { pathname: '/api' },
+        method: 'POST',
+      };
+
+      const pathOptions = getMatchingPathOptions(req, options);
+      expect(pathOptions).to.deep.equal({});
+    });
+
+    it('returns correct options for endpoints with and without wildcard ', () => {
+      const options = {
+        '/api/test': {
+          POST: { options: { a: 1 } },
+        },
+        '/api/test/:wildcard1/:wildcard2': {
+          POST: { options: { b: 1 } },
+        },
+      };
+
+      const req1 = {
+        _parsedUrl: { pathname: '/api/test' },
+        method: 'POST',
+      };
+
+      const pathOptions1 = getMatchingPathOptions(req1, options);
+      expect(pathOptions1).to.deep.equal({ a: 1 });
+
+      const req2 = {
+        _parsedUrl: { pathname: '/api/test/12345/abcdef' },
+        method: 'POST',
+      };
+
+      const pathOptions2 = getMatchingPathOptions(req2, options);
+      expect(pathOptions2).to.deep.equal({ b: 1 });
     });
   });
 });

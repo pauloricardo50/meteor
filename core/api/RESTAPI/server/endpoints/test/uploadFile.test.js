@@ -87,7 +87,7 @@ describe('REST: uploadFile', function () {
     }).then((res) => {
       const { files } = res;
       expect(files.length).to.equal(1);
-      expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+      expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
     });
   });
 
@@ -119,8 +119,8 @@ describe('REST: uploadFile', function () {
       .then((res) => {
         const { files } = res;
         expect(files.length).to.equal(2);
-        expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`);
-        expect(files[1].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`);
+        expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`);
+        expect(files[1].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`);
       });
   });
 
@@ -158,7 +158,7 @@ describe('REST: uploadFile', function () {
     }).then((res) => {
       const { files } = res;
       expect(files.length).to.equal(1);
-      expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+      expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
     });
   });
 
@@ -226,7 +226,7 @@ describe('REST: uploadFile', function () {
     }).then((res) => {
       const { files } = res;
       expect(files.length).to.equal(1);
-      expect(files[0].Url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+      expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
     });
   });
 });

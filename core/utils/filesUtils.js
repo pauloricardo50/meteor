@@ -3,24 +3,26 @@ import path from 'path';
 
 import { FILE_UPLOAD_DIR } from 'core/api/RESTAPI/server/restApiConstants';
 
-export const makeFileUploadDir = () => {
-  if (!fs.existsSync(FILE_UPLOAD_DIR)) {
-    fs.mkdirSync(FILE_UPLOAD_DIR);
+export const readFileBuffer = filePath => fs.readFileSync(filePath);
+export const removeFile = filePath => fs.unlinkSync(filePath);
+
+export const makeDir = (dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
   }
 };
 
-export const flushFileUploadDir = () => {
-  fs.readdir(FILE_UPLOAD_DIR, (error, files) => {
+export const flushDir = (dir) => {
+  fs.readdir(dir, (error, files) => {
     if (error) {
       throw error;
     }
 
     [...files].forEach((file) => {
-      fs.unlink(path.join(FILE_UPLOAD_DIR, file), (err) => {
-        if (err) {
-          throw err;
-        }
-      });
+      removeFile(path.join(dir, file));
     });
   });
 };
+
+export const makeFileUploadDir = () => makeDir(FILE_UPLOAD_DIR);
+export const flushFileUploadDir = () => flushDir(FILE_UPLOAD_DIR);
