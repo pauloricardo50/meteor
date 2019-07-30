@@ -268,11 +268,7 @@ export const verifySignature = (req) => {
   const key = new NodeRSA();
   key.importKey(publicKey, 'pkcs1-public-pem');
 
-  let objectToVerify = {};
-
-  if (isMultipart) {
-    objectToVerify = { security: sortObject({ timestamp, nonce }) };
-  }
+  let objectToVerify = { security: sortObject({ timestamp, nonce }) };
 
   if (Object.keys(query).length > 0) {
     objectToVerify = {
