@@ -75,12 +75,15 @@ const serverSubscribtion = new Observable((observer) => {
       },
     });
 
-    cypress.process.once('exit', () => {
+    cypress.process.once('exit', (code) => {
       if (backend.process) {
         backend.kill();
       }
       if (server.process) {
         server.kill();
+      }
+      if (code > 0) {
+        throw new Error('tests failed');
       }
     });
   },

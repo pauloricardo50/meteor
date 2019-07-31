@@ -54,11 +54,23 @@ test.spawn({
   options: {
     cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),
     env,
+    stdio: 'pipe',
   },
 });
 
-test.process.once('exit', () => {
+test.stdout.on('data', (data) => {
+  console.log(data.toString());
+});
+
+test.stderr.on('data', (error) => {
+  console.log(error.toString());
+});
+
+test.process.once('exit', (code) => {
   if (backend.process) {
     backend.kill();
+  }
+  if (code > 0) {
+    throw new Error('tests failed');
   }
 });
