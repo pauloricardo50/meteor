@@ -27,6 +27,5 @@ bundleSize.spawn({
       ...process.env,
       METEOR_PACKAGE_DIRS: 'packages:../../meteorPackages',
     },
-    stdio: 'inherit',
   },
 });

@@ -74,7 +74,6 @@
     "global": "^4.4.0",
     "husky": "^3.0.0",
     "lint-staged": "^9.2.0",
-    "listr": "^0.14.3",
     "node-cmd": "^3.0.0",
     "plop": "^2.4.0",
     "prettier": "^1.18.2",

@@ -140,6 +140,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
     ),
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -164,6 +168,11 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Cache meteor microservice',
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
+    ),
+    saveCache(
+      'Cache meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+      cachePaths.meteorMicroservice('backend'),
     ),
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),

@@ -1,8 +1,17 @@
 const { spawn } = require('child_process');
 
 class Process {
+  constructor({ throwOnError = false, processName = '' } = {}) {
+    this.throwOnError = throwOnError;
+    this.processName = processName ? `[${processName.toUpperCase()}]` : '';
+    this.error = '';
+  }
+
   spawn({ command, args = [], options = {} }) {
-    this.process = spawn(command, args, options);
+    this.process = spawn(command, args, {
+      stdio: ['inherit', 'inherit', 'pipe'],
+      ...options,
+    });
   }
 
   kill() {
@@ -17,14 +26,17 @@ class Process {
     return this.process.stderr;
   }
 
-  startLogging() {
-    this.process.stdout.on('data', (data) => {
-      console.log(data.toString());
-    });
+  log(data) {
+    console.log(`${this.processName} ${data}`);
+  }
 
-    this.process.stderr.on('data', (error) => {
-      console.log(error.toString());
-    });
+  logError(error) {
+    console.log('\x1b[31m%s\x1b[0m', `${this.processName} ${error}`);
+  }
+
+  throw(error) {
+    this.logError(error);
+    throw error;
   }
 }
 

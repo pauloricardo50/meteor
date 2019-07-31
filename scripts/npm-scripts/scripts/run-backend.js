@@ -1,47 +1,52 @@
 import { MICROSERVICE_PORTS } from '../constants';
 
-const { Observable } = require('rxjs');
-
 const net = require('net');
 const path = require('path');
 
-const runBackend = (process, ...args) =>
-  new Observable((observer) => {
-    const listener = net
-      .createServer()
-      .once('error', (err) => {
-        if (err.code === 'EADDRINUSE') {
-          observer.next('Backend already running');
-          observer.complete();
-        }
-        observer.error(new Error(err));
-      })
-      .once('listening', () => {
-        listener
-          .once('close', () => {
-            const testMode = args.includes('--test');
+const runBackend = (process, ...args) => {
+  const listener = net
+    .createServer()
+    .once('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        process.logError('Backend already running');
+      } else {
+        process.throw(err);
+      }
+    })
+    .once('listening', () => {
+      listener
+        .once('close', () => {
+          const testMode = args.includes('--test');
+          const isCI = args.includes('--ci');
+          if (isCI) {
             process.spawn({
               command: 'npm',
-              args: ['run', testMode ? 'start-test' : 'start'],
+              args: ['npm', 'run', testMode ? 'start-test' : 'start'],
               options: {
                 cwd: path.resolve(__dirname, '../../../microservices/backend'),
               },
             });
-
-            process.stdout.on('data', (data) => {
-              observer.next(data.toString());
-              if (data.toString().includes('App running at')) {
-                observer.complete();
-              }
+          } else {
+            process.spawn({
+              command: 'screen',
+              args: [
+                '-S',
+                'backend',
+                '-d',
+                '-m',
+                'npm',
+                'run',
+                testMode ? 'start-test' : 'start',
+              ],
+              options: {
+                cwd: path.resolve(__dirname, '../../../microservices/backend'),
+              },
             });
-
-            process.stderr.on('data', (error) => {
-              console.error(error.toString());
-            });
-          })
-          .close();
-      })
-      .listen(MICROSERVICE_PORTS.backend, '0.0.0.0');
-  });
+          }
+        })
+        .close();
+    })
+    .listen(MICROSERVICE_PORTS.backend, '0.0.0.0');
+};
 
 export default runBackend;
