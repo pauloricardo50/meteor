@@ -82,9 +82,7 @@ const serverSubscribtion = new Observable((observer) => {
       if (server.process) {
         server.kill();
       }
-      if (code > 0) {
-        throw new Error('tests failed');
-      }
+      process.exit(code);
     });
   },
 );

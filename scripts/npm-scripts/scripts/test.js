@@ -70,7 +70,5 @@ test.process.once('exit', (code) => {
   if (backend.process) {
     backend.kill();
   }
-  if (code > 0) {
-    throw new Error('tests failed');
-  }
+  process.exit(code);
 });

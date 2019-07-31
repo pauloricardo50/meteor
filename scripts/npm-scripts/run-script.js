@@ -24,7 +24,15 @@ if (!Object.keys(SCRIPTS).includes(script)) {
     .join(', ')}`);
 }
 
-spawn('node', ['-r', 'esm', SCRIPTS[script], microservice, ...args], {
-  cwd: `${__dirname}/scripts`,
-  stdio: 'inherit',
+const scriptProcess = spawn(
+  'node',
+  ['-r', 'esm', SCRIPTS[script], microservice, ...args],
+  {
+    cwd: `${__dirname}/scripts`,
+    stdio: 'inherit',
+  },
+);
+
+scriptProcess.once('exit', (code) => {
+  process.exit(code);
 });
