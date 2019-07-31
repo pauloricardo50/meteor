@@ -161,7 +161,7 @@ describe('Public onboarding', () => {
     });
 
     cy.get('@propertyId').then((propertyId) => {
-      cy.visit(`/?propertyId=${propertyId}`);
+      cy.visit(`/?property-id=${propertyId}`);
     });
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
@@ -196,7 +196,7 @@ describe('Public onboarding', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
 
     cy.get('@propertyId').then((propertyId) => {
-      cy.visit(`/?propertyId=${propertyId}`);
+      cy.visit(`/?property-id=${propertyId}`);
     });
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
@@ -214,7 +214,7 @@ describe('Public onboarding', () => {
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
 
     cy.get('@propertyId').then((propertyId) => {
-      cy.visit(`/?propertyId=${propertyId}`);
+      cy.visit(`/?property-id=${propertyId}`);
     });
 
     cy.url().should('include', '/loans/');
@@ -320,7 +320,7 @@ describe('Public onboarding', () => {
     cy.wait(500);
 
     cy.get('@propertyId').then((propertyId) => {
-      cy.visit(`/?propertyId=${propertyId}`);
+      cy.visit(`/?property-id=${propertyId}`);
     });
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('Démarrer').click();
