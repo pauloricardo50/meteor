@@ -1,18 +1,13 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
-
 import { expect } from 'chai';
 
-import { userLogin } from '../../../../utils/testHelpers/testHelpers';
+import {
+  userLogin,
+  resetDatabase,
+} from '../../../../utils/testHelpers/testHelpers';
 import { ROLES } from '../../../constants';
 import { generateScenario } from '../../../methods/index';
 import proLoans from '../proLoans.test';
-
-const resetDatabase = () =>
-  new Promise((resolve, reject) => {
-    Meteor.call('resetDatabase', (err, res) =>
-      (err ? reject(err) : resolve(res)));
-  });
 
 const fetchLoans = userId =>
   new Promise((resolve, reject) => {

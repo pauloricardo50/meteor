@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { expect } from 'chai';
 
-import { userLogin } from 'core/utils/testHelpers/index';
+import { userLogin, resetDatabase } from 'core/utils/testHelpers/index';
 import {
   query1,
   query2,
@@ -11,11 +11,6 @@ import {
   query4,
   testCollectionInsert,
 } from '../collection.test';
-
-const resetDatabase = () =>
-  new Promise((resolve, reject) => {
-    Meteor.call('resetDatabase', (err, res) => (err ? reject(err) : resolve(res)));
-  });
 
 const insertTestData = (n) => {
   const promises = [...Array(n)].map((_, index) =>

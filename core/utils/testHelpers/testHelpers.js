@@ -89,3 +89,9 @@ export const checkEmails = (expected, options = {}) =>
     Meteor.call('getAllTestEmails', { expected, ...options }, (err, emails) =>
       (err ? reject(err) : resolve(emails)));
   });
+
+export const resetDatabase = () =>
+  new Promise((resolve, reject) => {
+    Meteor.call('resetDatabase', (err, res) =>
+      (err ? reject(err) : resolve(res)));
+  });
