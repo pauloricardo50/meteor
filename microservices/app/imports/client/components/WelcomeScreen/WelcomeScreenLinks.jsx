@@ -24,7 +24,7 @@ const getLinks = ({ handleContact }) => [
         label: 'WelcomeScreen.companyDescription',
       },
       {
-        href: `${Meteor.settings.public.subdomains.app}/blog`,
+        href: `${Meteor.settings.public.subdomains.www}/blog`,
         label: 'WelcomeScreen.readBlog',
       },
       {
