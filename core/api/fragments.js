@@ -768,6 +768,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
   yearlyExpenses: 1,

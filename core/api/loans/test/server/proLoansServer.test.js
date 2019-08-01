@@ -5,7 +5,7 @@ import generator from '../../../factories';
 import { proLoans } from '../../queries';
 import { LOAN_STATUS } from '../../loanConstants';
 
-describe.only('proLoans', () => {
+describe('proLoans', () => {
   beforeEach(() => resetDatabase());
 
   describe('referredByUser loans', () => {
