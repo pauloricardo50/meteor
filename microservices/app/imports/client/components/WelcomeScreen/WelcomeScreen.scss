@@ -106,13 +106,17 @@
 
   &-ctas {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: flex-start;
+
+    button, a {
+      min-width: 200px;
+    }
 
     @include screen(med) {
       flex-direction: column;
       align-items: stretch;
     }
-
 
     @include screen(small) {
       align-self: stretch;
