@@ -2,7 +2,7 @@
 port="$1"
 script="${@:2}"
 
-until lsof -Pi :$port -sTCP:LISTEN -t >/dev/null
+while ! nc -z localhost $port
     do
         sleep 1
     done
