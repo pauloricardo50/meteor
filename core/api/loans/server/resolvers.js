@@ -315,7 +315,7 @@ export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => 
           organisationId && { referredByOrganisationLink: organisationId },
         ].filter(x => x),
       },
-      loans: { _id: 1, $filters: { status } },
+      loans: { _id: 1, $filters: status ? { status } : {} },
     });
 
     loanIds = users.reduce(
