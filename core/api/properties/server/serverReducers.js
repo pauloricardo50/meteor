@@ -6,11 +6,11 @@ import { getOpenGraphMeta } from '../../../utils/openGraph';
 Properties.addReducers({
   ...assigneeReducer(),
   openGraphData: {
-    body: { useOpenGraph: 1, externalUrl: 1 },
-    reduce: ({ useOpenGraph, externalUrl }) => {
+    body: { externalUrl: 1 },
+    reduce: ({ externalUrl }) => {
       const asyncFunc = createMeteorAsyncFunction(getOpenGraphMeta);
 
-      if (useOpenGraph) {
+      if (externalUrl) {
         return asyncFunc(externalUrl);
       }
 

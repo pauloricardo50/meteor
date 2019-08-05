@@ -29,7 +29,7 @@ Loans.addReducers({
   },
   hasPromotion: {
     body: { promotions: { _id: 1 } },
-    reduce: ({ promotions }) => promotions && promotions.length > 0,
+    reduce: ({ promotions }) => !!(promotions && promotions.length > 0),
   },
   enableOffers: {
     body: { step: 1 },

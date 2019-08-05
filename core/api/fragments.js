@@ -398,11 +398,12 @@ export const proLoans = () => ({
   },
   hasPromotion: 1,
   hasProProperty: 1,
-  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
-  structure: 1,
   maxPropertyValue: userMaxPropertyValue,
+  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
+  referralId: 1,
   residenceType: 1,
   shareSolvency: 1,
+  structure: 1,
 });
 
 // //
@@ -767,6 +768,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
   yearlyExpenses: 1,

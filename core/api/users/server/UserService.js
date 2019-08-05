@@ -15,11 +15,13 @@ import OrganisationService from '../../organisations/server/OrganisationService'
 import SecurityService from '../../security';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
+import { roundRobinAdvisors } from './userServerContants';
 import Users from '../users';
 
-class UserService extends CollectionService {
-  constructor() {
+export class UserServiceClass extends CollectionService {
+  constructor({ employees }) {
     super(Users);
+    this.setupRoundRobin(employees);
   }
 
   get(userId) {
@@ -61,6 +63,8 @@ class UserService extends CollectionService {
 
     if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
       this.assignAdminToUser({ userId: newUserId, adminId });
+    } else if (!additionalData.assignedEmployeeId) {
+      this.setAssigneeForNewUser(newUserId);
     }
 
     if (sendEnrollmentEmail) {
@@ -514,6 +518,56 @@ class UserService extends CollectionService {
       metadata: { shareCustomers },
     });
   }
+
+  setupRoundRobin(employees = []) {
+    this.employees = employees
+      .map((email) => {
+        const employee = this.getByEmail(email);
+        if (employee) {
+          return employee._id;
+        }
+      })
+      .filter(x => x);
+  }
+
+  setAssigneeForNewUser(userId) {
+    const { roles, assignedEmployeeId } = this.fetchOne({
+      $filters: { _id: userId },
+      assignedEmployeeId: 1,
+      roles: 1,
+    });
+
+    if (assignedEmployeeId) {
+      return;
+    }
+    let newAssignee;
+
+    if (roles.includes(ROLES.USER)) {
+      const lastCreatedUser = this.fetchOne({
+        $filters: {
+          roles: ROLES.USER,
+          assignedEmployeeId: { $in: this.employees },
+        },
+        $options: { sort: { createdAt: -1 } },
+        assignedEmployeeId: 1,
+        createdAt: 1,
+      });
+
+      if (lastCreatedUser && lastCreatedUser.assignedEmployeeId) {
+        const index = this.employees.indexOf(lastCreatedUser.assignedEmployeeId);
+        if (index >= this.employees.length - 1) {
+          newAssignee = this.employees[0];
+        } else {
+          newAssignee = this.employees[index + 1];
+        }
+      } else {
+        // Assign the very first user
+        newAssignee = this.employees[0];
+      }
+    }
+
+    return this.update({ userId, object: { assignedEmployeeId: newAssignee } });
+  }
 }
 
-export default new UserService();
+export default new UserServiceClass({ employees: roundRobinAdvisors });

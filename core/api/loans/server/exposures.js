@@ -172,10 +172,12 @@ exposeQuery({
         userId: providedUserId,
         fetchOrganisationLoans,
         organisationId,
+        promotionId,
+        propertyId,
       } = params;
       params.calledByUserId = userId;
 
-      if (SecurityService.isUserAdmin(userId) && providedUserId) {
+      if (providedUserId && SecurityService.isUserAdmin(userId)) {
         params.userId = providedUserId;
       } else {
         params.userId = userId;
@@ -207,6 +209,7 @@ exposeQuery({
       calledByUserId: String,
       organisationId: Match.Maybe(String),
       fetchOrganisationLoans: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
   cacher: {

@@ -1,5 +1,6 @@
 // @flow
-import Calculator from '../../../utils/Calculator';
+import uniqBy from 'lodash/uniqBy';
+
 import {
   PROPERTIES_COLLECTION,
   PROPERTY_CATEGORY,
@@ -14,6 +15,8 @@ import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanService from './LoanService';
+
+const proLoansFragment = proLoans();
 
 const isSolventForProProperty = ({
   isAdmin,
@@ -116,31 +119,35 @@ const anonymizeReferredByLoans = ({ loans = [], userId }) => [
   // ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
 ];
 
-const doesUserShareCustomers = (user) => {
-  const {
-    $metadata: { shareCustomers },
-  } = user;
-  return shareCustomers;
-};
+const doesUserShareCustomers = ({ $metadata: { shareCustomers } }) =>
+  shareCustomers;
 
-export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
-  const { _id: mainOrganisationId } = UserService.getUserMainOrganisation(userId);
-  const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
-    $filters: { _id: mainOrganisationId },
-    users: { _id: 1 },
-  });
-  const mainOrganisationsUserIds = mainOrganisationUsers
-    .filter(({ _id }) => _id !== userId)
-    .filter(doesUserShareCustomers)
-    .map(({ _id }) => _id);
+export const proReferredByLoansResolver = ({
+  userId,
+  calledByUserId,
+  status,
+}) => {
+  const mainOrganisation = UserService.getUserMainOrganisation(userId);
+  let mainOrganisationsUserIds = [];
+
+  if (mainOrganisation) {
+    const { _id: mainOrganisationId } = mainOrganisation;
+
+    const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
+      $filters: { _id: mainOrganisationId },
+      users: { _id: 1 },
+    });
+    mainOrganisationsUserIds = mainOrganisationUsers
+      .filter(({ _id }) => _id !== userId)
+      .filter(doesUserShareCustomers)
+      .map(({ _id }) => _id);
+  }
 
   const users = UserService.fetch({
     $filters: {
-      referredByUserLink: {
-        $in: [userId, ...mainOrganisationsUserIds],
-      },
+      referredByUserLink: { $in: [userId, ...mainOrganisationsUserIds] },
     },
-    loans: proLoans(),
+    loans: { ...proLoansFragment, $filters: status ? { status } : {} },
   });
 
   const loans = users.reduce(
@@ -156,10 +163,14 @@ export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
   }
 };
 
-export const proPromotionLoansResolver = ({ calledByUserId, promotionId }) => {
+export const proPromotionLoansResolver = ({
+  calledByUserId,
+  promotionId,
+  status,
+}) => {
   const loans = LoanService.fetch({
-    $filters: { 'promotionLinks._id': promotionId },
-    ...proLoans(),
+    $filters: { 'promotionLinks._id': promotionId, status },
+    ...proLoansFragment,
   });
 
   try {
@@ -170,10 +181,14 @@ export const proPromotionLoansResolver = ({ calledByUserId, promotionId }) => {
   }
 };
 
-export const proPropertyLoansResolver = ({ calledByUserId, propertyId }) => {
+export const proPropertyLoansResolver = ({
+  calledByUserId,
+  propertyId,
+  status,
+}) => {
   const loans = LoanService.fetch({
-    $filters: { propertyIds: propertyId },
-    ...proLoans(),
+    $filters: { propertyIds: propertyId, status },
+    ...proLoansFragment,
   });
 
   try {
@@ -187,34 +202,12 @@ export const proPropertyLoansResolver = ({ calledByUserId, propertyId }) => {
   }
 };
 
-const filterLoans = (loans = []) =>
-  loans.reduce((filteredLoans, currentLoan) => {
-    if (filteredLoans.some(loan => loan._id === currentLoan._id)) {
-      return filteredLoans;
-    }
-
-    return [...filteredLoans, currentLoan];
-  }, []);
-
-const getLoanEstimatedRevenues = (loan) => {
-  if (loan.structure) {
-    return {
-      ...loan,
-      estimatedRevenues: Calculator.getEstimatedReferralRevenues({ loan }),
-    };
-  }
-  return loan;
-};
-
-const shouldShowPromotionLoan = ({
-  showAnonymizedPromotionLoans,
-  userId,
-}) => (loan) => {
+const shouldShowPromotionLoan = ({ userId }) => (loan) => {
   const { promotions = [] } = loan;
   const {
     $metadata: { invitedBy },
   } = promotions[0];
-  return showAnonymizedPromotionLoans || invitedBy === userId;
+  return invitedBy === userId;
 };
 
 const getRelatedProPropertiesOfUser = ({ loan, userId }) => {
@@ -225,20 +218,23 @@ const getRelatedProPropertiesOfUser = ({ loan, userId }) => {
     .map(property => ({ ...property, collection: PROPERTIES_COLLECTION }));
 };
 
+const promotionHasUser = userId => ({ users = [] }) =>
+  users.some(({ _id }) => _id === userId);
+
 const getRelatedPromotionsOfUser = ({ loan, userId }) => {
   const { promotions = [] } = loan;
   return promotions
-    .filter(({ users = [] }) => users.some(({ _id }) => _id === userId))
-    .map(promotion => ({
-      ...promotion,
-      collection: PROMOTIONS_COLLECTION,
-    }));
+    .filter(promotionHasUser(userId))
+    .map(promotion => ({ ...promotion, collection: PROMOTIONS_COLLECTION }));
 };
 
-const organisationLoans = organisationId =>
+const organisationLoans = ({ organisationId, status }) =>
   LoanService.fetch({
-    $filters: { 'userCache.referredByOrganisationLink': organisationId },
-    ...proLoans(),
+    $filters: {
+      'userCache.referredByOrganisationLink': organisationId,
+      status,
+    },
+    ...proLoansFragment,
     revenues: revenue(),
     user: { organisationLink: 1 },
   });
@@ -248,22 +244,23 @@ export const proLoansResolver = ({
   calledByUserId,
   promotionId,
   propertyId,
-  showAnonymizedPromotionLoans = false,
   fetchOrganisationLoans,
   organisationId,
+  status,
 }) => {
   let loans = [];
 
   if (fetchOrganisationLoans) {
-    return organisationLoans(organisationId);
+    return organisationLoans({ organisationId, status });
   }
 
   if (promotionId) {
     const promotionLoans = proPromotionLoansResolver({
       calledByUserId,
       promotionId,
+      status,
     })
-      .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
+      .filter(shouldShowPromotionLoan({ userId }))
       .map(loan => ({
         ...loan,
         relatedTo: getRelatedPromotionsOfUser({ loan, userId }),
@@ -275,6 +272,7 @@ export const proLoansResolver = ({
     const propertyLoans = proPropertyLoansResolver({
       calledByUserId,
       propertyId,
+      status,
     }).map(loan => ({
       ...loan,
       relatedTo: getRelatedProPropertiesOfUser({ loan, userId }),
@@ -285,6 +283,7 @@ export const proLoansResolver = ({
   const referredByLoans = proReferredByLoansResolver({
     userId,
     calledByUserId,
+    status,
   }).map(loan => ({
     ...loan,
     relatedTo: [
@@ -294,11 +293,11 @@ export const proLoansResolver = ({
   }));
   loans = [...loans, ...referredByLoans];
 
-  return filterLoans(loans);
+  return uniqBy(loans, '_id');
 };
 
 export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => {
-  const { promotionId, propertyId, userId } = params;
+  const { promotionId, propertyId, userId, status } = params;
   let loanIds = [];
 
   if (withReferredBy) {
@@ -316,7 +315,7 @@ export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => 
           organisationId && { referredByOrganisationLink: organisationId },
         ].filter(x => x),
       },
-      loans: { _id: 1 },
+      loans: { _id: 1, $filters: status ? { status } : {} },
     });
 
     loanIds = users.reduce(
@@ -330,7 +329,7 @@ export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => 
 
   if (promotionId) {
     const promotionLoanIds = LoanService.fetch({
-      $filters: { 'promotionLinks._id': promotionId },
+      $filters: { 'promotionLinks._id': promotionId, status },
       _id: 1,
     });
     loanIds = [...loanIds, ...promotionLoanIds.map(({ _id }) => _id)];
@@ -338,7 +337,7 @@ export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => 
 
   if (propertyId) {
     const propertyLoanIds = LoanService.fetch({
-      $filters: { propertyIds: propertyId },
+      $filters: { propertyIds: propertyId, status },
       _id: 1,
     });
     loanIds = [...loanIds, ...propertyLoanIds.map(({ _id }) => _id)];

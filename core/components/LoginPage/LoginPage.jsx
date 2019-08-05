@@ -17,7 +17,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
   }
 
   return (
-    <section className="login-page">
+    <section className="login-page animated fadeIn">
       <PageHead titleId="LoginPage" />
       <LoginPageLeft />
       <LoginPageRight path={path} push={push} />

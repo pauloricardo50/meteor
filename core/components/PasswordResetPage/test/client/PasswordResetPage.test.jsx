@@ -1,12 +1,12 @@
 // @flow
 /* eslint-env mocha */
 import { Random } from 'meteor/random';
-import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
 
+import { resetDatabase } from 'core/utils/testHelpers/testHelpers';
 import { testCreateUser } from '../../../../api';
 import { shallow, getMountedComponent } from '../../../../utils/testHelpers';
 import pollUntilReady from '../../../../utils/pollUntilReady';
@@ -25,12 +25,10 @@ describe('PasswordResetPage', () => {
     });
   const shallowComponent = () => shallow(<PasswordResetPageDumb {...props} />);
 
-  beforeEach((done) => {
+  beforeEach(() => {
     getMountedComponent.reset();
     props = { token: Random.id(), email: 'john.doe@test.com' };
-    Meteor.call('resetDatabase', () => {
-      done();
-    });
+    return resetDatabase();
   });
 
   it('renders the name', async () => {
