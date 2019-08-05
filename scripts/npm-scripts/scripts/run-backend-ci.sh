@@ -10,7 +10,7 @@ else
     backendCommand="start"
 fi
 
-if lsof -Pi :5500 -sTCP:LISTEN -t >/dev/null ; then
+if nc -z localhost 5500 ; then
         echo "Backend already running !"
     else 
         echo "Running backend"
