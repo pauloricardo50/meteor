@@ -10,20 +10,20 @@ import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
 import { proPropertySummary } from '../../api/fragments';
 
-const columnOptions = [
+export const columnOptions = [
   { id: 'address' },
   { id: 'status' },
   { id: 'value', style: { whiteSpace: 'nowrap' } },
   { id: 'customers' },
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 
-const makeMapProperty = history => ({
+export const makeMapProperty = history => ({
   _id,
   address1,
   city,
   status,
   totalValue,
-  loans = [],
+  loanCount,
 }) => ({
   id: _id,
   columns: [
@@ -33,7 +33,7 @@ const makeMapProperty = history => ({
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
     },
     { raw: totalValue, label: <Money value={totalValue} /> },
-    loans.length,
+    loanCount,
   ],
   handleClick: () =>
     history.push(createRoute('/properties/:propertyId', { propertyId: _id })),

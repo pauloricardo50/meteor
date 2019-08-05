@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { migrate } from 'meteor/herteby:denormalize';
 
-import { Organisations, LenderRules } from '..';
+import { Organisations, LenderRules, Properties, Loans } from '..';
 
 Organisations.cacheCount({
   collection: LenderRules,
@@ -9,8 +9,15 @@ Organisations.cacheCount({
   cacheField: 'lenderRulesCount',
 });
 
+Properties.cacheCount({
+  collection: Loans,
+  referenceField: 'propertyIds',
+  cacheField: 'loanCount',
+});
+
 Meteor.startup(() => {
-  migrate('revenues', 'loanCache', { loanCache: { $exists: false } });
+  migrate('properties', 'loanCount', { loanCount: { $exists: false } });
+  // migrate('revenues', 'loanCache', { loanCache: { $exists: false } });
   //
   // Old migrations
   //
