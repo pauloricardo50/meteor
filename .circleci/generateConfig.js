@@ -65,13 +65,13 @@ const runTestsCommand = (name, testsType) => {
       return runCommand(
         'Run e2e tests',
         `
-        cd ./microservices/${name} && meteor npm run test-e2e -- --ci
+        cd ./microservices/${name} && meteor npm run test-e2e-ci
         `,
       );
     case 'unit':
       return runCommand(
         'Run unit tests',
-        `cd ./microservices/${name} && meteor npm run test -- --ci`,
+        `cd ./microservices/${name} && meteor npm run test-ci`,
         '15m',
       );
     default:

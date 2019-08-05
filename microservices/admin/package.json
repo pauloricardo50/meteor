@@ -6,7 +6,9 @@
     "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
     "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
-    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e"
+    "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",
+    "test-ci": "../../scripts/npm-scripts/run-script-ci.sh test-ci",
+    "test-e2e-ci": "../../scripts/npm-scripts/run-script-ci.sh test-e2e-ci"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.4",
