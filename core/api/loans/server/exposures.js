@@ -200,14 +200,6 @@ exposeQuery({
         }
       }
 
-      if (propertyId) {
-        SecurityService.properties.isAllowedToView({ userId, propertyId });
-      }
-
-      if (promotionId) {
-        SecurityService.promotions.isAllowedToView({ userId, promotionId });
-      }
-
       SecurityService.checkUserIsPro(userId);
     },
     validateParams: {
