@@ -21,7 +21,7 @@ const runBackend = (process, ...args) => {
           if (isCI) {
             process.spawn({
               command: 'npm',
-              args: ['npm', 'run', testMode ? 'start-test' : 'start'],
+              args: ['run', testMode ? 'start-test' : 'start'],
               options: {
                 cwd: path.resolve(__dirname, '../../../microservices/backend'),
               },
