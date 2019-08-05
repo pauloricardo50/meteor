@@ -26,8 +26,8 @@ const env = isCI
   ? {
     ...commonEnv,
     SERVER_TEST_REPORTER: 'xunit',
-    SERVER_MOCHA_OUTPUT: '~/app/results/unit-server.xml',
-    CLIENT_MOCHA_OUTPUT: '~/app/results/unit-client.xml',
+    // SERVER_MOCHA_OUTPUT: '~/app/results/unit-server.xml',
+    // CLIENT_MOCHA_OUTPUT: '~/app/results/unit-client.xml',
     TEST_BROWSER_DRIVER: 'nightmare',
   }
   : {
