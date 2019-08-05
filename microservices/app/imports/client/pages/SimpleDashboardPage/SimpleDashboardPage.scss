@@ -44,7 +44,6 @@
       width: 50%;
       flex-basis: 50%;
       flex-direction: column;
-      // flex-grow: 1;
       flex-shrink: 1;
 
       box-sizing: content-box;
@@ -211,7 +210,6 @@
       button {
         align-self: center;
         width: auto;
-        // margin-top: 16px;
 
         @include screen(small) {
           width: 100%;
@@ -228,12 +226,11 @@
       }
     }
 
-    .simple-max-property-value {
+    .max-property-value {
       height: 50%;
       border-radius: 8px;
       color: white;
       background-color: $primary;
-      padding: 32px;
 
       h2,
       h3,

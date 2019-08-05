@@ -12,15 +12,11 @@ import SimpleMaxPropertyValueEmptyState from './SimpleMaxPropertyValueEmptyState
 
 type SimpleMaxPropertyValueProps = {};
 
-export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
-  const { blue, state, loading, loan, fixed = false } = props;
+const getContent = (props) => {
+  const { state, loading, loan } = props;
 
   if (loading) {
-    return (
-      <div className={cx('simple-max-property-value loading', { fixed })}>
-        <MaxPropertyValueLoading />
-      </div>
-    );
+    return <MaxPropertyValueLoading />;
   }
 
   if (state !== STATE.DONE) {
@@ -31,9 +27,15 @@ export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
     return <SimpleMaxPropertyValueSignup {...props} />;
   }
 
+  return <MaxPropertyValueResults {...props} />;
+};
+
+export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
+  const { blue } = props;
+
   return (
-    <div className={cx('simple-max-property-value', { blue, fixed })}>
-      <MaxPropertyValueResults {...props} />
+    <div className={cx('max-property-value simple', { blue })}>
+      {getContent(props)}
     </div>
   );
 };

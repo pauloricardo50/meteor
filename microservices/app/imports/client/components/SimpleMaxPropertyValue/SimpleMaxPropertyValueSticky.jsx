@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
 import { compose } from 'recompose';
 
 import T from 'core/components/Translation';
@@ -14,7 +13,7 @@ import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
 type SimpleMaxPropertyValueStickyProps = {};
 
-const displayPropertyValueRange = values => {
+const displayPropertyValueRange = (values) => {
   const { min, max } = values;
 
   if (min) {
@@ -45,15 +44,19 @@ const getFooter = ({
   }
 
   const { canton } = maxPropertyValue;
-  const values =
-    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-      ? maxPropertyValue.main
-      : maxPropertyValue.second;
+  const values = residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
+    ? maxPropertyValue.main
+    : maxPropertyValue.second;
 
   return (
     <div>
       <label>
-        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
+        Capacité d'achat -
+        {' '}
+        <T id={`Forms.canton.${canton}`} />
+        {' '}
+-
+        {' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
       <h3>{displayPropertyValueRange(values)}</h3>
@@ -61,9 +64,7 @@ const getFooter = ({
   );
 };
 
-const SimpleMaxPropertyValueSticky = (
-  props: SimpleMaxPropertyValueStickyProps,
-) => {
+const SimpleMaxPropertyValueSticky = (props: SimpleMaxPropertyValueStickyProps) => {
   const {
     loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,
@@ -74,7 +75,7 @@ const SimpleMaxPropertyValueSticky = (
       renderTrigger={({ handleOpen }) => (
         <ButtonBase
           focusRipple
-          className="simple-max-property-value-sticky animated slideInUp"
+          className="max-property-value-sticky animated slideInUp"
           onClick={handleOpen}
         >
           {getFooter({
