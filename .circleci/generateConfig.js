@@ -131,6 +131,7 @@ const makePrepareJob = () => ({
 const testMicroserviceJob = ({ name, testsType, job }) => ({
   ...defaultJobValues,
   ...job,
+  resource_class: 'medium+',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
