@@ -62,7 +62,7 @@ const pages = {
   },
 };
 
-describe('App Pages', () => {
+describe.skip('App Pages', () => {
   let testData;
 
   before(() => {
