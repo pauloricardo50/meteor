@@ -567,8 +567,8 @@ describe('UserService', function () {
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       })
-        .then(() => checkEmails(1))
-        .then(() => {
+        .then(() => checkEmails(2))
+        .then((emails) => {
           expect(() =>
             UserService.proInviteUser({
               user: userToInvite,
@@ -603,7 +603,10 @@ describe('UserService', function () {
         expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
         expect(loan.propertyIds[0]).to.equal('propertyId');
 
-        return checkEmails(2);
+        return checkEmails(2).then((emails) => {
+          expect(!!emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY)).to.equal(true);
+          expect(!!emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION)).to.equal(true);
+        });
       });
     });
 
@@ -778,14 +781,16 @@ describe('UserService', function () {
         user: userToInvite,
         propertyIds: ['propertyId'],
         proUserId: 'proId',
-      }).then(() => {
-        expect(() =>
-          UserService.proInviteUser({
-            user: userToInvite,
-            propertyIds: ['propertyId'],
-            proUserId: 'proId',
-          })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
-      });
+      })
+        .then(() => checkEmails(2))
+        .then(() => {
+          expect(() =>
+            UserService.proInviteUser({
+              user: userToInvite,
+              propertyIds: ['propertyId'],
+              proUserId: 'proId',
+            })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
+        });
     });
 
     it('invites existing users to a new promotion', () => {

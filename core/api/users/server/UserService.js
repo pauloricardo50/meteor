@@ -324,6 +324,7 @@ export class UserServiceClass extends CollectionService {
     const referOnly = propertyIds.length === 0
       && promotionIds.length === 0
       && properties.length === 0;
+
     if (referOnly) {
       return this.proReferUser({ user, proUserId, shareSolvency });
     }
@@ -333,6 +334,9 @@ export class UserServiceClass extends CollectionService {
       user,
       proUserId: proUserId || invitedBy,
       adminId,
+      // Invitation will be sent by the propertyInvitationEmail or
+      // promotionInvitationEmail
+      sendInvitation: false,
     });
 
     let promises = [];
