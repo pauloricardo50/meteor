@@ -26,4 +26,4 @@ if [[ ! " ${SCRIPTS[@]} " =~ " ${script} " ]]; then
     exit 1
 fi
 
-eval "${SCRIPTPATH}/scripts/${script}.sh ${microservice} $@"
+eval "${SCRIPTPATH}/${script}.sh ${microservice} $@"

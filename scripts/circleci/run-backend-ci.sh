@@ -14,6 +14,6 @@ if nc -z localhost 5500 ; then
         echo "Backend already running !"
     else 
         echo "Running backend"
-        cd $SCRIPTPATH/../../../microservices/backend
+        cd $SCRIPTPATH/../../microservices/backend
         meteor npm run $backendCommand
 fi
