@@ -124,6 +124,18 @@ const makePrepareJob = () => ({
       cacheKeys.nodeModules(),
       cachePaths.nodeModules(),
     ),
+
+    // Build and cache backend
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
+    runCommand('Build backend', './scripts/circleci/build_backend.sh'),
+    saveCache(
+      'Cache meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+      cachePaths.meteorMicroservice('backend'),
+    ),
   ],
 });
 
@@ -170,11 +182,11 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
     ),
-    saveCache(
-      'Cache meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
-      cachePaths.meteorMicroservice('backend'),
-    ),
+    // saveCache(
+    //   'Cache meteor backend',
+    //   cacheKeys.meteorMicroservice('backend'),
+    //   cachePaths.meteorMicroservice('backend'),
+    // ),
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
