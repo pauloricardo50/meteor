@@ -14,7 +14,10 @@ const createFinancingLink = ({ _id: loanId }) =>
 const createPropertiesLink = ({ _id: loanId }) =>
   createRoute(APP_ROUTES.PROPERTIES_PAGE.path, { loanId });
 
-const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } = {} }) =>
+const createSinglePropertyLink = ({
+  _id: loanId,
+  structure: { propertyId } = {},
+}) =>
   (propertyId
     ? createRoute(APP_ROUTES.PROPERTY_PAGE.path, { loanId, propertyId })
     : createPropertiesLink({ _id: loanId }));
@@ -44,7 +47,7 @@ export const defaultTodoList = {
   completeProperty: true,
   completeRefinancing: true,
   doAnExpertise: true,
-  createStructure: true,
+  completeFirstStructure: true,
   createSecondStructure: true,
   uploadDocuments: true,
   chooseOffer: true,
@@ -129,8 +132,8 @@ export const getDashboardTodosArray = list =>
         createRoute(APP_ROUTES.REFINANCING_PAGE.path, { loanId }),
     },
     {
-      id: 'createStructure',
-      isDone: ({ structures }) => structures && structures.length > 0,
+      id: 'completeFirstStructure',
+      isDone: loan => Calculator.hasCompleteStructure({ loan }),
       link: createFinancingLink,
     },
     {

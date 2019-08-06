@@ -204,10 +204,41 @@ loanShareSolvency.setHandler((context, params) => {
 });
 
 anonymousLoanInsert.setHandler((context, params) => {
-  if (params.proPropertyId) {
+  const {
+    proPropertyId,
+    existingAnonymousLoanId,
+    referralId,
+    trackingId,
+  } = params;
+  if (proPropertyId) {
     SecurityService.properties.isAllowedToAddAnonymousLoan({
-      propertyId: params.proPropertyId,
+      propertyId: proPropertyId,
     });
+  }
+
+  if (existingAnonymousLoanId) {
+    // If an anonymous loan exists on the client, don't add another one
+    // If a new property is requested on it, add it to the existing loan
+    if (proPropertyId) {
+      const existingLoan = LoanService.fetchOne({
+        $filters: { _id: existingAnonymousLoanId },
+        propertyIds: 1,
+      });
+
+      if (
+        existingLoan
+        && existingLoan.propertyIds
+        && !existingLoan.propertyIds.includes(proPropertyId)
+      ) {
+        // TODO: Quentin, track this
+        LoanService.addPropertyToLoan({
+          loanId: existingAnonymousLoanId,
+          propertyId: proPropertyId,
+        });
+      }
+    }
+
+    return existingAnonymousLoanId;
   }
 
   const loanId = LoanService.insertAnonymousLoan(params);
@@ -216,11 +247,11 @@ anonymousLoanInsert.setHandler((context, params) => {
     EVENTS.LOAN_CREATED,
     {
       loanId,
-      propertyId: params.proPropertyId,
-      referralId: params.referralId,
+      propertyId: proPropertyId,
+      referralId,
       anonymous: true,
     },
-    params.trackingId,
+    trackingId,
   );
   return loanId;
 });

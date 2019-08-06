@@ -96,6 +96,7 @@
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-preset-meteor": "^7.5.2",
     "chai": "^4.2.0",
+    "connect-multiparty": "^2.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "flow-typed": "^2.5.2",

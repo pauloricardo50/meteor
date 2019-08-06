@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 
-import T from 'core/components/Translation';
 import { PropertiesTable } from 'core/components/PropertiesTable/PropertiesTable';
 import PropertiesTableContainer from 'core/components/PropertiesTable/PropertiesTableContainer';
 

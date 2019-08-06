@@ -7,7 +7,7 @@ import {
 import { TRENDS, INTEREST_RATES } from '../interestRatesConstants';
 
 const singleInterestRate = type => ({
-  [type]: { type: Object, optional: true },
+  [type]: { type: Object, optional: true, defaultValue: {} },
   [`${type}.rateLow`]: percentageField,
   [`${type}.rateHigh`]: percentageField,
   [`${type}.trend`]: {

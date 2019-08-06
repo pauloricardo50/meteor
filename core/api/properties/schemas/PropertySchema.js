@@ -288,6 +288,7 @@ export const PropertySchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Url,
   },
   documents: documentsField,
+  loanCount: { type: Number, optional: true },
 });
 
 const protectedKeys = [

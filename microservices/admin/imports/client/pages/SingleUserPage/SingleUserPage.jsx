@@ -4,14 +4,24 @@ import classnames from 'classnames';
 
 import { ROLES } from 'core/api/constants';
 import ProCustomersTable from 'core/components/ProCustomersTable/ProCustomersTable';
+import {
+  columnOptions,
+  makeMapProperty,
+} from 'core/components/PropertiesTable/PropertiesTableContainer';
+import Table from 'core/components/Table';
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
-import ProPropertiesList from './ProPropertiesList';
 
-const SingleUserPage = ({ user, className, currentUser, children }) => {
+const SingleUserPage = ({
+  user,
+  className,
+  currentUser,
+  children,
+  history,
+}) => {
   const {
     loans,
     _id: userId,
@@ -42,7 +52,13 @@ const SingleUserPage = ({ user, className, currentUser, children }) => {
       )}
 
       {proProperties && proProperties.length > 0 && (
-        <ProPropertiesList properties={proProperties} />
+        <>
+          <h3>Biens immobiliers</h3>
+          <Table
+            rows={proProperties.map(makeMapProperty(history))}
+            columnOptions={columnOptions}
+          />
+        </>
       )}
 
       {isPro && (

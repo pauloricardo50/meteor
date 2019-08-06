@@ -259,7 +259,7 @@ export const logRequest = ({ req, result }) => {
 };
 
 export const verifySignature = (req) => {
-  const { publicKey, signature, body, query } = req;
+  const { publicKey, signature, body, query, isMultipart } = req;
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -280,6 +280,15 @@ export const verifySignature = (req) => {
 
   if (!['GET', 'HEAD'].includes(method) && Object.keys(body).length > 0) {
     objectToVerify = { ...objectToVerify, body: sortObject(body) };
+  }
+
+  if (isMultipart) {
+    const { files: { file = {} } = {} } = req;
+    const { originalFilename, size, type } = file;
+    objectToVerify = {
+      ...objectToVerify,
+      file: sortObject({ name: originalFilename, size, type }),
+    };
   }
 
   const verified = Object.keys(OBJECT_FORMATS).some((format) => {
@@ -326,6 +335,39 @@ export const trackRequest = ({ req, result }) => {
   }
 
   analytics.track(EVENTS.API_CALLED, { endpoint: getRequestPath(req), result });
+};
+
+export const getMatchingPathOptions = (req, options) => {
+  const endpoints = Object.keys(options);
+  const path = getRequestPath(req);
+  const method = getRequestMethod(req);
+  const parts = decodeURI(path)
+    .split('?', 1)[0]
+    .replace(/^[\s\/]+|[\s\/]+$/g, '')
+    .split('/');
+
+  let matchingPathOptions = {};
+
+  endpoints.forEach((endpoint) => {
+    const endpointParts = endpoint
+      .split('/')
+      .filter(x => x)
+      .map(part => (part.slice(0, 1) === ':' ? '*' : part));
+    const match = endpointParts.length === parts.length
+      && endpointParts.every((part, i) => {
+        if (part === '*') {
+          return true;
+        }
+        return part === parts[i];
+      })
+      && !!options[endpoint][method];
+
+    if (match) {
+      matchingPathOptions = options[endpoint][method].options;
+    }
+  });
+
+  return matchingPathOptions;
 };
 
 export const setIsAPI = () => {

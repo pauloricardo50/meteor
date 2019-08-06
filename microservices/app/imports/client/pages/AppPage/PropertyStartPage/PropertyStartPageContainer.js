@@ -67,6 +67,7 @@ export default compose(
           proPropertyId: propertyId,
           referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
           trackingId: parseCookies()[TRACKING_COOKIE],
+          existingAnonymousLoanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
         })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);

@@ -26,7 +26,7 @@
       flex-direction: column;
     }
 
-     > * {
+    > * {
       flex-basis: 50%;
     }
 
@@ -42,7 +42,7 @@
 
         padding: 32px;
 
-         > * {
+        > * {
           text-align: center !important;
         }
       }
@@ -107,7 +107,13 @@
 
   &-ctas {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: flex-start;
+
+    button,
+    a {
+      min-width: 200px;
+    }
 
     @include screen(med) {
       align-items: stretch;

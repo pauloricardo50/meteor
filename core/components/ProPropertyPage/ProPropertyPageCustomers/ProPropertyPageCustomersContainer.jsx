@@ -149,7 +149,9 @@ const makeMapLoan = ({
           <p>
             <T
               id="ProPropertyPage.removeCustomer.alert"
-              values={{ customerName: anonymous ? 'Anonyme' : user.name }}
+              values={{
+                customerName: anonymous ? 'Anonyme' : user && user.name,
+              }}
             />
           </p>
         </ConfirmMethod>

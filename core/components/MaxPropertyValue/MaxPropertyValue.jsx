@@ -5,8 +5,7 @@ import cx from 'classnames';
 import MaxPropertyValueContainer, { STATE } from './MaxPropertyValueContainer';
 import MaxPropertyValueEmptyState from './MaxPropertyValueEmptyState';
 import MaxPropertyValueResults from './MaxPropertyValueResults';
-import Loading from '../Loading';
-import T from '../Translation';
+import MaxPropertyValueLoading from './MaxPropertyValueLoading';
 
 type MaxPropertyValueProps = {};
 
@@ -14,17 +13,7 @@ const renderState = (props) => {
   const { state, loading, loan } = props;
 
   if (loading) {
-    return (
-      <div className="animated fadeIn">
-        <Loading />
-        <h5>
-          <T id="MaxPropertyValue.loading1" />
-        </h5>
-        <p>
-          <T id="MaxPropertyValue.loading1" />
-        </p>
-      </div>
-    );
+    return <MaxPropertyValueLoading />;
   }
 
   if (state !== STATE.DONE) {

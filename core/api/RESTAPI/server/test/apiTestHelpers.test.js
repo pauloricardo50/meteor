@@ -2,12 +2,17 @@ import { expect } from 'chai';
 import fetch from 'node-fetch';
 import NodeRSA from 'node-rsa';
 import queryString from 'query-string';
+import { createReadStream, statSync } from 'fs';
+import path from 'path';
+import mime from 'mime-types';
 
 import { sortObject } from 'core/api/helpers/index';
 import UserService from 'core/api/users/server/UserService';
 import { OBJECT_FORMATS, formatObject } from '../helpers';
 
-const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
+const FormData = require('form-data');
+
+export const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
 const checkResponse = ({ res, expectedResponse, include }) =>
   res.json().then((body) => {
@@ -37,12 +42,12 @@ export const fetchAndCheckResponse = ({
   expectedResponse,
   include,
 }) => {
-  const path = query
+  const urlPath = query
     ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
       encode: true,
     })}`
     : `http://localhost:${API_PORT}/api${url}`;
-  return fetch(path, data).then(res =>
+  return fetch(urlPath, data).then(res =>
     checkResponse({ res, expectedResponse, include }));
 };
 
@@ -63,6 +68,8 @@ export const signRequest = ({
   nonce,
   privateKey,
   format,
+  isMultipart,
+  file,
 }) => {
   if (!privateKey) {
     return '12345';
@@ -70,6 +77,7 @@ export const signRequest = ({
 
   const key = new NodeRSA();
   key.importKey(privateKey.replace(/\r?\n|\r/g, ''), 'pkcs1-private-pem');
+
 
   let objectToSign = { security: sortObject({ timestamp, nonce }) };
 
@@ -79,6 +87,10 @@ export const signRequest = ({
 
   if (body) {
     objectToSign = { ...objectToSign, body: sortObject(body) };
+  }
+
+  if (isMultipart) {
+    objectToSign = { ...objectToSign, file: sortObject(file) };
   }
 
   if (Object.values(OBJECT_FORMATS).includes(format)) {
@@ -127,6 +139,8 @@ export const makeHeaders = ({
   nonce,
   query,
   signature,
+  isMultipart,
+  file,
 }) => {
   let keyPair = { publicKey, privateKey };
 
@@ -146,8 +160,50 @@ export const makeHeaders = ({
         privateKey: keyPair.privateKey,
         timestamp,
         nonce,
+        isMultipart,
+        file,
       })}`,
     'X-EPOTEK-Nonce': nonce,
     'X-EPOTEK-Timestamp': timestamp,
   };
+};
+
+export const uploadFile = ({ filePath, userId, url, query, ...params }) => {
+  const readStream = createReadStream(filePath);
+  const form = new FormData();
+  form.append('file', readStream);
+  Object.keys(params).forEach((param) => {
+    form.append(param, params[param]);
+  });
+
+  const { timestamp, nonce } = getTimestampAndNonce();
+
+  const options = {
+    method: 'POST',
+    body: form,
+    headers: {
+      ...makeHeaders({
+        timestamp,
+        nonce,
+        userId,
+        ...(Object.keys(params).length ? { body: params } : {}),
+        isMultipart: true,
+        query,
+        file: {
+          name: path.basename(filePath),
+          size: statSync(filePath).size,
+          type: mime.lookup(filePath),
+        },
+      }),
+      ...form.getHeaders(),
+    },
+  };
+
+  const urlPath = query
+    ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
+      encode: true,
+    })}`
+    : `http://localhost:${API_PORT}/api${url}`;
+
+  return fetch(urlPath, options).then(res => res.json());
 };

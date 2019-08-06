@@ -398,11 +398,12 @@ export const proLoans = () => ({
   },
   hasPromotion: 1,
   hasProProperty: 1,
-  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
-  structure: 1,
   maxPropertyValue: userMaxPropertyValue,
+  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
+  referralId: 1,
   residenceType: 1,
   shareSolvency: 1,
+  structure: 1,
 });
 
 // //
@@ -767,6 +768,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
   yearlyExpenses: 1,
@@ -775,6 +777,7 @@ export const fullProperty = ({ withSort } = {}) => ({
 
 export const adminProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  loanCount: 1,
   useOpenGraph: 1,
 });
 
@@ -799,9 +802,7 @@ export const promotionProperty = () => ({
 });
 
 export const userProperty = ({ withSort } = {}) => {
-  const obj = {
-    ...fullProperty({ withSort }),
-  };
+  const obj = { ...fullProperty({ withSort }) };
   delete obj.users;
   return obj;
 };
@@ -811,11 +812,12 @@ export const proPropertySummary = () => ({
   city: 1,
   status: 1,
   totalValue: 1,
-  loans: { _id: 1 },
+  loanCount: 1,
 });
 
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  loanCount: 1,
   useOpenGraph: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
@@ -899,7 +901,7 @@ export const adminUser = () => ({
   assignedEmployee: simpleUser(),
   assignedEmployeeCache: 1,
   promotions: { name: 1, status: 1 },
-  proProperties: { address1: 1, status: 1 },
+  proProperties: { address1: 1, status: 1, loanCount: 1, totalValue: 1 },
   referredByUser: { name: 1, organisations: { name: 1 } },
   referredByOrganisation: { name: 1 },
   referredByOrganisationLink: 1,
