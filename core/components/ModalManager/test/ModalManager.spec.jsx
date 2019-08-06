@@ -103,12 +103,16 @@ describe('ModalManager', () => {
     getMountedComponent.reset();
   });
 
+  after(() => {
+    // Avoid polluting test reporting UI with an open Modal
+    closeDialog();
+  });
+
   it('opens a modal', () => {
     component()
       .find('button')
       .first()
       .simulate('click');
-
 
     expect(component().find('.dialog-1-content').length).to.equal(1);
     expect(component()
@@ -199,6 +203,7 @@ describe('ModalManager', () => {
       expect(component()
         .find(Dialog)
         .prop('open')).to.equal(false);
+
       done();
     }, 0);
   });
