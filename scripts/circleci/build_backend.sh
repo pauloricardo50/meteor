@@ -1,8 +1,7 @@
 #!/bin/bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-
-if [ ! -d ./.meteor/local ]; then
+if [ ! -d $SCRIPTPATH/../../microservices/backend/.meteor/local ]; then
 
     cd $SCRIPTPATH/../../microservices/backend && meteor npm run start &
 
