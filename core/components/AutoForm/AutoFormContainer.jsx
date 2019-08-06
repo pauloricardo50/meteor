@@ -10,7 +10,10 @@ import * as methods from '../../api/methods';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
-const makeFunc = ({ idKey, beforeUpdate, func }) => (rawParams) => {
+const makeFunc = ({ idKey, beforeUpdate, func, override }) => (rawParams) => {
+  if (override) {
+    return override(idKey)(rawParams);
+  }
   const params = createParams(rawParams, idKey);
   if (beforeUpdate) {
     beforeUpdate(params);
@@ -64,17 +67,20 @@ const AutoFormContainer = withProps(({ collection, beforeUpdate, overrides = {} 
     updateFunc: makeFunc({
       idKey,
       beforeUpdate,
-      func: updateFuncOverride || updateFunc,
+      func: updateFunc,
+      override: updateFuncOverride,
     }),
     popFunc: makeFunc({
       idKey,
       beforeUpdate,
-      func: popFuncOverride || popFunc,
+      func: popFunc,
+      override: popFuncOverride,
     }),
     pushFunc: makeFunc({
       idKey,
       beforeUpdate,
-      func: pushFuncOverride || pushFunc,
+      func: pushFunc,
+      override: pushFuncOverride,
     }),
   };
 });
