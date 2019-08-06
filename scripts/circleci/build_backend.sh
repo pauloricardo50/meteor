@@ -1,6 +1,7 @@
 #!/bin/bash
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-cd ../../microservices/backend
+cd $SCRIPTPATH/../../microservices/backend
 
 if [ ! -d ./.meteor/local ]; then
 
