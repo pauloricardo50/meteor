@@ -55,6 +55,16 @@ jobs:
           paths:
             - ./node_modules
       - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_17_backend_{{ checksum
+              "./microservices/backend/.meteor/release" }}-{{ checksum
+              "./microservices/backend/.meteor/versions" }}
+            - >-
+              meteor_system_17_backend_{{ checksum
+              "./microservices/backend/.meteor/release" }}-
+      - restore_cache:
           name: Restore meteor backend
           keys:
             - 'meteor_microservice_17_backend-{{ .Branch }}-{{ .Revision }}'

@@ -126,6 +126,7 @@ const makePrepareJob = () => ({
     ),
 
     // Build and cache backend
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem('backend')),
     restoreCache(
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
