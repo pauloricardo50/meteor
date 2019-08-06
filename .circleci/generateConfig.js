@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 17;
+const CACHE_VERSION = 18;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -132,6 +132,10 @@ const makePrepareJob = () => ({
       cacheKeys.meteorMicroservice('backend'),
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    runCommand(
+      'Install node_modules',
+      'meteor npm --prefix microservices/backend ci',
+    ),
     runCommand('Build backend', './scripts/circleci/build_backend.sh'),
     saveCache(
       'Cache meteor backend',
