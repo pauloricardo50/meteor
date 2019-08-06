@@ -17,10 +17,6 @@ describe('Public onboarding', () => {
     cy.visit('/');
   });
 
-  it.only('test', () => {
-    cy.get('.welcome-screen').should('exist');
-  });
-
   it('should create a new loan when clicking on a cta', () => {
     cy.get('.welcome-screen').should('exist');
 

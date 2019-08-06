@@ -11,42 +11,27 @@ const port = MICROSERVICE_PORTS[microservice] + PORT_OFFSETS.test;
 const backend = new Process();
 const test = new Process();
 
-const isCI = args.includes('--ci');
-
 runBackend(backend, ...args);
 
 process.env.DDP_DEFAULT_CONNECTION_URL = 'http://localhost:5500';
 
-const commonEnv = {
+const env = {
   ...process.env,
   METEOR_PACKAGE_DIRS: 'packages:../../meteorPackages',
+  QUALIA_ONE_BUNDLE_TYPE: 'modern',
+  TEST_WATCH: 1,
 };
 
-const env = isCI
-  ? {
-    ...commonEnv,
-    SERVER_TEST_REPORTER: 'xunit',
-    // SERVER_MOCHA_OUTPUT: '~/app/results/unit-server.xml',
-    // CLIENT_MOCHA_OUTPUT: '~/app/results/unit-client.xml',
-    TEST_BROWSER_DRIVER: 'nightmare',
-  }
-  : {
-    ...commonEnv,
-    QUALIA_ONE_BUNDLE_TYPE: 'modern',
-    TEST_WATCH: 1,
-  };
-
-const commonArgs = [
+const spawnArgs = [
   'test',
   '--driver-package',
   'meteortesting:mocha',
   '--settings',
   'settings-dev.json',
+  '--port',
+  port,
+  ...args,
 ];
-
-const spawnArgs = isCI
-  ? [...commonArgs, '--once']
-  : [...commonArgs, '--port', port, ...args];
 
 test.spawn({
   command: 'meteor',

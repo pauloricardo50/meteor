@@ -35,6 +35,7 @@ if (CUSTOM_SCRIPTS[script]) {
   });
 } else {
   const [inlineCommand, ...inlineArgs] = args;
+  console.log('inlineCommand:', inlineCommand);
   custom.spawn({
     command: inlineCommand,
     args: inlineArgs,

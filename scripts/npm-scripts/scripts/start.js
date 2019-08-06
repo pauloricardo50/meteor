@@ -9,13 +9,13 @@ const [microservice, ...args] = process.argv.slice(2);
 
 const port = MICROSERVICE_PORTS[microservice];
 
-const backend = new Process({ processName: 'backend' });
-const prestart = new Process({ processName: 'prestart', throwOnError: true });
-const start = new Process({ processName: microservice });
+const backend = new Process();
+const prestart = new Process();
+const start = new Process();
 
 runBackend(backend);
 
-const prestartSubscription = new Observable((observer) => {
+const prestartObservable = new Observable((observer) => {
   prestart.spawn({
     command: 'npm',
     args: ['run', 'lang', '--', microservice],

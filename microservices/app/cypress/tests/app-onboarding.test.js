@@ -4,7 +4,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe.skip('App onboarding', () => {
+describe('App onboarding', () => {
   [
     { name: 'desktop', someString: 'yo' },
     { width: 320, height: 568, name: 'iPhone 5' },

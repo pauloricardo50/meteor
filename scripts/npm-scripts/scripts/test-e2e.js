@@ -13,11 +13,9 @@ const backend = new Process();
 const cypress = new Process();
 const server = new Process();
 
-const isCI = args.includes('--ci');
-
 runBackend(backend, '--test', ...args);
 
-const serverSubscribtion = new Observable((observer) => {
+const serverObservable = new Observable((observer) => {
   process.env.DDP_DEFAULT_CONNECTION_URL = 'http://localhost:5500';
   server.spawn({
     command: 'meteor',
@@ -57,19 +55,9 @@ const serverSubscribtion = new Observable((observer) => {
   () => null,
   () => null,
   () => {
-    const spawnArgs = isCI
-      ? [
-        'run',
-        '--reporter',
-        'mocha-multi-reporters',
-        '--reporter-options',
-        'configFile=cypress/mocha-multi-reporters-config.json',
-      ]
-      : ['open'];
-
     cypress.spawn({
       command: '../../node_modules/cypress/bin/cypress',
-      args: spawnArgs,
+      args: ['open'],
       options: {
         cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),
       },

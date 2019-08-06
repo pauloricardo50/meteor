@@ -17,32 +17,22 @@ const runBackend = (process, ...args) => {
       listener
         .once('close', () => {
           const testMode = args.includes('--test');
-          const isCI = args.includes('--ci');
-          if (isCI) {
-            process.spawn({
-              command: 'npm',
-              args: ['run', testMode ? 'start-test' : 'start'],
-              options: {
-                cwd: path.resolve(__dirname, '../../../microservices/backend'),
-              },
-            });
-          } else {
-            process.spawn({
-              command: 'screen',
-              args: [
-                '-S',
-                'backend',
-                '-d',
-                '-m',
-                'npm',
-                'run',
-                testMode ? 'start-test' : 'start',
-              ],
-              options: {
-                cwd: path.resolve(__dirname, '../../../microservices/backend'),
-              },
-            });
-          }
+
+          process.spawn({
+            command: 'screen',
+            args: [
+              '-S',
+              'backend',
+              '-d',
+              '-m',
+              'npm',
+              'run',
+              testMode ? 'start-test' : 'start',
+            ],
+            options: {
+              cwd: path.resolve(__dirname, '../../../microservices/backend'),
+            },
+          });
         })
         .close();
     })
