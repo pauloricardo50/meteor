@@ -13,14 +13,13 @@
 @import '../imports/client/pages/LoanBoardPage/LoanBoardPage.scss';
 @import '../imports/client/pages/OrganisationsPage/OrganisationsPage.scss';
 @import '../imports/client/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
+@import '../imports/client/pages/SingleContactPage/SingleContactPage.scss';
 @import '../imports/client/pages/SingleLoanPage/SingleLoanPage.scss';
+@import '../imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.scss';
 @import '../imports/client/pages/SinglePropertyPage/SinglePropertyPage.scss';
 @import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
-@import '../imports/client/pages/SingleContactPage/SingleContactPage.scss';
-@import '../imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.scss';
-@import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
-@import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
-@import '../imports/client/pages/SingleLoanPage/LoanStatusModifier/LoanStatusModifier.scss';
+@import '../imports/client/pages/PropertiesPage/PropertiesPage.scss';
+
 
 // Components
 @import '../imports/client/components/Board/Board.scss';
@@ -32,6 +31,9 @@
 @import '../imports/client/components/PremiumBadge/PremiumBadge.scss';
 @import '../imports/client/components/Search/Search.scss';
 @import '../imports/client/components/TasksTable/TasksTable.scss';
+@import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
+@import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
+@import '../imports/client/pages/SingleLoanPage/LoanStatusModifier/LoanStatusModifier.scss';
 
 body,
 html,
