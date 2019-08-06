@@ -1,10 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import {
-  STEPS,
-  LOAN_STATUS_ORDER,
-  LOAN_STATUS,
-  TASK_STATUS,
-} from '../api/constants';
+import { STEPS, TASK_STATUS } from '../api/constants';
 import Calculator from './Calculator';
 
 export const formatLoanWithStructure = ({
@@ -33,8 +28,11 @@ export const formatLoanWithStructure = ({
       }
 
       if (structure.promotionOptionId) {
-        const property = promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
-        structure = { ...structure, property };
+        const promotionOption = promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
+        structure = {
+          ...structure,
+          property: Calculator.formatPromotionOptionIntoProperty(promotionOption),
+        };
       }
 
       if (structure.offerId) {

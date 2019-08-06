@@ -138,15 +138,18 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     hasDetailedPropertyValue({ loan, structureId }) {
-      const propertyExactValue = this.makeSelectPropertyKey('value')({
+      const propertyExactValue = this.selectPropertyKey({
+        key: 'value',
         loan,
         structureId,
       });
-      const landValue = this.makeSelectPropertyKey('landValue')({
+      const landValue = this.selectPropertyKey({
+        key: 'landValue',
         loan,
         structureId,
       });
-      const constructionValue = this.makeSelectPropertyKey('constructionValue')({
+      const constructionValue = this.selectPropertyKey({
+        key: 'constructionValue',
         loan,
         structureId,
       });
