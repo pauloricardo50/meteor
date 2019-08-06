@@ -131,6 +131,7 @@ const makePrepareJob = () => ({
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Build backend', './scripts/circleci/build_backend.sh'),
     saveCache(
       'Cache meteor backend',

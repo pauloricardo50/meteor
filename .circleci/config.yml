@@ -71,6 +71,9 @@ jobs:
             - 'meteor_microservice_17_backend-{{ .Branch }}-'
             - meteor_microservice_17_backend-
       - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
       - save_cache:
