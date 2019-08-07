@@ -325,4 +325,24 @@ Meteor.methods({
   generateFixtures() {
     createFakeInterestRates({ number: 10 });
   },
+  addProUser() {
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL) || {};
+    return (
+      userId
+      || UserService.adminCreateUser({
+        options: {
+          email: PRO_EMAIL,
+          firstName: 'Pro',
+          lastName: 'Test User',
+        },
+        role: ROLES.PRO,
+      })
+    );
+  },
+  getLoan(loanId) {
+    return LoanService.get(loanId);
+  },
+  getUser(email) {
+    return UserService.getByEmail(email);
+  },
 });
