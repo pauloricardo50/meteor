@@ -1,4 +1,7 @@
-import { ADMIN_EMAIL, USER_PASSWORD } from '../../imports/core/cypress/utils';
+import {
+  ADMIN_EMAIL,
+  USER_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Loans', () => {
   before(() => {
