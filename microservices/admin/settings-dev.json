@@ -32,5 +32,9 @@
     "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
     "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
   },
-  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I"
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I",
+  "mixpanel": {
+    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
+    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  }
 }
