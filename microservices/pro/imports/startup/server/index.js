@@ -5,7 +5,7 @@ import { ROLES } from 'core/api/constants';
 
 import 'core/api/initialization';
 import 'core/startup/server/kadira';
-import './restAPI';
+// import './restAPI';
 
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client

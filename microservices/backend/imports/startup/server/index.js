@@ -4,6 +4,7 @@ import 'core/api/api';
 import 'core/fixtures';
 import 'core/startup/server/kadira';
 import 'core/startup/accounts-config';
+import './restAPI';
 
 // CRONs
 import 'core/api/loans/server/expireLoansCron';
