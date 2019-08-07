@@ -11,7 +11,7 @@ import generator from '../../../factories/factoriesHelpers';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
 import { loanMonitoring } from '../resolvers';
 
-describe.only('monitoring', () => {
+describe('monitoring', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -124,12 +124,12 @@ describe.only('monitoring', () => {
       });
 
       expect(result).to.deep.equal([
-        { _id: { month: 3, year: 2018 }, count: 1 },
         { _id: { month: 1, year: 2018 }, count: 2 },
+        { _id: { month: 3, year: 2018 }, count: 1 },
       ]);
     });
 
-    it.only('groups revenues by date', async () => {
+    it('groups revenues by date', async () => {
       generator({
         loans: [
           {

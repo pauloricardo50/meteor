@@ -3,7 +3,7 @@ import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
 
-import LineChart from 'core/components/charts/LineChart';
+import Chart from 'core/components/charts/Chart';
 import Irs10yChartContainer from './Irs10yChartContainer';
 
 type Irs10yChartProps = {
@@ -13,9 +13,9 @@ type Irs10yChartProps = {
 };
 
 const Irs10yChart = ({ title, lines, config }: Irs10yChartProps) => (
-  <LineChart
+  <Chart
     title={title}
-    lines={lines}
+    series={lines}
     config={config}
     HighchartsExporting={HighchartsExporting}
     HighchartsMore={HighchartsMore}
