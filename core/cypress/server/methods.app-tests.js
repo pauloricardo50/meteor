@@ -26,6 +26,7 @@ import {
   createEmailVerificationToken,
 } from 'core/utils/testHelpers/index';
 import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
+import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -344,5 +345,17 @@ Meteor.methods({
   },
   getUser(email) {
     return UserService.getByEmail(email);
+  },
+  getAdminEndToEndTestData() {
+    const loan = adminLoansQuery.clone({ owned: true }).fetchOne();
+
+    const {
+      properties,
+      borrowers: [borrower],
+    } = loan;
+
+    const user = Users.findOne(loan.userId);
+
+    return { loan, user, property: properties[0], borrower };
   },
 });
