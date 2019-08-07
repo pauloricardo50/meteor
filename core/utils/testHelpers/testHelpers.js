@@ -3,6 +3,7 @@ import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
 
 import faker from 'faker';
+import { expect } from 'chai';
 
 import { Users, testUserAccount } from '../../api';
 import { ROLES } from '../../api/constants';
@@ -86,8 +87,23 @@ export const userLogin = ({ email, password, role }) => {
 
 export const checkEmails = (expected, options = {}) =>
   new Promise((resolve, reject) => {
-    Meteor.call('getAllTestEmails', { expected, ...options }, (err, emails) =>
-      (err ? reject(err) : resolve(emails)));
+    Meteor.call('getAllTestEmails', { expected, ...options }, (err, emails) => {
+      if (err) {
+        reject(err);
+      }
+
+      try {
+        // getAllTestEmails returns when at least `expected` emails are found
+        // So it could be more. Make sure we always get exactly what we expect
+        if (expected && !options.noExpect) {
+          expect(emails.length).to.equal(expected);
+        }
+      } catch (error) {
+        reject(error);
+      }
+
+      resolve(emails);
+    });
   });
 
 export const resetDatabase = () =>

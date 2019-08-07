@@ -74,6 +74,7 @@ describe('OfferService', () => {
 
   describe('send feedback', function () {
     this.timeout(10000);
+
     it('sends the feedback to the lender', () => {
       const adminId = Factory.create('admin', {
         firstName: 'Dev',
@@ -107,7 +108,7 @@ describe('OfferService', () => {
       const feedback = 'This is my feedback';
       OfferService.sendFeedback({ offerId, feedback });
 
-      return checkEmails().then((emails) => {
+      return checkEmails(1).then((emails) => {
         expect(emails.length).to.equal(1);
         const {
           emailId,

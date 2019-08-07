@@ -38,7 +38,7 @@ export class PropertyService extends CollectionService {
       category: 1,
     });
 
-    if (property && property.loans.length > 1) {
+    if (property && property.loans && property.loans.length > 1) {
       if (loanId) {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
