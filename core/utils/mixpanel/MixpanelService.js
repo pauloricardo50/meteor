@@ -60,7 +60,7 @@ class MixpanelService {
       project_id: 1269868,
       sort_key: 'properties["$last_seen"]',
       sort_order: 'descending',
-      distinct_id: userId,
+      search: userId,
       output_properties: [
         '$email',
         'first_name',
