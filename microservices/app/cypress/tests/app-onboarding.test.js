@@ -1,5 +1,8 @@
 /* eslint-env mocha */
-import { USER_EMAIL, USER_PASSWORD } from '../appE2eConstants';
+import {
+  USER_EMAIL,
+  USER_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 describe('App onboarding', () => {
   [

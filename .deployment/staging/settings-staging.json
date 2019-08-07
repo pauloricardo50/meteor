@@ -15,7 +15,8 @@
       "admin": "https://admin.staging.e-potek.ch",
       "app": "https://app.staging.e-potek.ch",
       "pro": "https://pro.staging.e-potek.ch",
-      "www": "https://www.staging.e-potek.ch"
+      "www": "https://www.staging.e-potek.ch",
+      "backend": "https://backend.staging.e-potek.ch"
     }
   },
   "mandrill": {
@@ -40,6 +41,10 @@
     "pro": {
       "appId": "PqGxnwRWTbfsLufGw",
       "appSecret": "e08c8e98-d23f-43ff-8b22-021ed4aafabe"
+    },
+    "backend": {
+      "appId": "Ta9aik2yB8PrgXd53",
+      "appSecret": "348114db-4ace-4472-bd78-b274917e255d"
     }
   },
   "storage": {

@@ -1,23 +1,11 @@
 import '../shared-startup';
-
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
-import { ROLES } from 'core/api/constants';
 
+import 'core/startup/server/kadira';
+import { ROLES } from 'core/api/constants';
 import { localizationStartup } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
-
-import 'core/api/server';
-import 'core/api/api';
-import 'core/fixtures';
-
-import '../accounts-config';
-import './kadira';
-
-import 'core/api/updateWatchers/server/updateWatcherCron';
-import 'core/api/loans/server/expireLoansCron';
-import 'core/api/notifications/server/notificationGeneratorCron';
-import './fetchIrs10yCron';
 
 // Inject a loader before client is ready, is removed in the on startup function on the client
 Inject.rawHead('loader', Assets.getText('loader.html'));

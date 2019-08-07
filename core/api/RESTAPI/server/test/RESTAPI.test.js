@@ -1,13 +1,17 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
+import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { appendFileSync } from 'fs';
-import { expect } from 'chai';
 import omit from 'lodash/omit';
+import { appendFileSync } from 'fs';
 
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
-import { REST_API_ERRORS, FILE_UPLOAD_DIR } from '../restApiConstants';
+import {
+  REST_API_ERRORS,
+  HTTP_STATUS_CODES,
+  FILE_UPLOAD_DIR,
+} from '../restApiConstants';
 import RESTAPI from '../RESTAPI';
 import {
   withMeteorUserId,
@@ -174,7 +178,13 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: makeHeaders({ publicKey: '12345' }),
         },
-        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+        // expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+      }).then((response) => {
+        const { status, errorName, message, info } = response;
+        expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
+        expect(errorName).to.equal('AUTHORIZATION_FAILED');
+        expect(message).to.equal('Wrong public key or signature.');
+        expect(info).to.equal('No user found with this public key, or maybe it has a typo ?');
       }));
 
     it('signature is wrong', () =>
@@ -184,7 +194,12 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: makeHeaders({ publicKey }),
         },
-        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+      }).then((response) => {
+        const { status, errorName, message, info } = response;
+        expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
+        expect(errorName).to.equal('AUTHORIZATION_FAILED');
+        expect(message).to.equal('Wrong public key or signature.');
+        expect(info).to.not.equal(undefined);
       }));
 
     it('attempts a replay attack with same nonce', () => {
@@ -582,7 +597,7 @@ describe('RESTAPI', () => {
 
       const pathOptions2 = getMatchingPathOptions(req2, options);
       expect(pathOptions2).to.deep.equal({ b: 1 });
-    })
+    });
   });
 
   describe('isAPI', () => {

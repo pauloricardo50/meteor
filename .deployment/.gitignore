@@ -13,3 +13,4 @@ ssh-tunnel/*
 !ssh-tunnel/connectToDB.js
 !ssh-tunnel/pullDbLocally.js
 !ssh-tunnel/productionDbToStaging.js
+!ssh-tunnel/productionDbToDev.js

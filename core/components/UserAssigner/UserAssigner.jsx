@@ -62,9 +62,7 @@ const UserAssigner = ({
           ))}
       </List>
       {searchResults && searchResults.length === 0 && (
-        <p>
-          <T id="UserAssigner.noUserFound" />
-        </p>
+        <p>Pas d'utilisateur trouvé</p>
       )}
     </div>
   </DialogSimple>

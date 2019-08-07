@@ -15,7 +15,7 @@
     "subdomains": {
       "admin": "http://localhost:5000",
       "app": "http://localhost:4000",
-      "pdf": "http://localhost:5500",
+      "backend": "http://localhost:5500",
       "pro": "http://localhost:4100",
       "www": "http://localhost:3000"
     }
