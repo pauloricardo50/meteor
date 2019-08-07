@@ -42,7 +42,7 @@ class DevPage extends Component {
       addCompleteLoan,
       addAnonymousLoan,
     } = this.props;
-    const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
+    const showDevStuff = !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
     if (showDevStuff) {
       return (

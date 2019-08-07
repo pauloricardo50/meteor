@@ -2,15 +2,16 @@ import { DDPCommon } from 'meteor/ddp-common';
 import { DDP } from 'meteor/ddp-client';
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
+import { Random } from 'meteor/random';
 
 import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
 
 import Analytics from 'core/api/analytics/server/Analytics';
-import { Random } from 'meteor/random';
 import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
+import { getClientHost } from 'core/utils/server/getClientUrl';
 import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
@@ -304,20 +305,29 @@ export const verifySignature = (req) => {
     return isValid;
   });
 
-  return verified;
+  return {
+    verified,
+    toVerify: {
+      object: objectToVerify,
+      acceptedStringifiedVersions: Object.keys(OBJECT_FORMATS).map(format =>
+        JSON.stringify(formatObject(objectToVerify, format))),
+    },
+  };
 };
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
   const {
     'x-forwarded-for': clientAddress,
-    host,
     'x-real-ip': realIp,
   } = headers;
 
   const analytics = new Analytics({
     userId,
-    connection: { clientAddress, httpHeaders: { host, 'x-real-ip': realIp } },
+    connection: {
+      clientAddress,
+      httpHeaders: { 'x-real-ip': realIp, host: getClientHost() },
+    },
   });
 
   if (userId) {

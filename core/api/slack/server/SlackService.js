@@ -9,6 +9,7 @@ import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
 import { fullLoan } from '../../loans/queries';
 import Calculator from '../../../utils/Calculator';
+import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
@@ -94,7 +95,7 @@ export class SlackService {
     const attachments = [
       {
         title: error && error.name,
-        pretext: `Une erreur est arrivée sur *e-Potek ${Meteor.microservice}*`,
+        pretext: `Une erreur est arrivée sur *e-Potek ${getClientMicroservice()}*`,
         text: error && (error.message || error.reason),
         color: colors.error,
         footer: 'c la merde',
@@ -170,7 +171,10 @@ export class SlackService {
       username: this.getNotificationOrigin(currentUser),
     };
 
-    if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
+    if (
+      (Meteor.isStaging || Meteor.isDevEnvironment || Meteor.isDevelopment)
+      && !Meteor.isTest
+    ) {
       console.log('Slack dev/staging notification');
       console.log('Payload:', slackPayload);
       return slackPayload;

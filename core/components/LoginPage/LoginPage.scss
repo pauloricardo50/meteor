@@ -11,6 +11,11 @@
   @include screen(med) {
     flex-direction: column;
   }
+  @include screen(med) {
+    .right .content {
+      margin-top: 0;
+    }
+  }
 
   .right,
   .left {
@@ -67,12 +72,6 @@
 
   .right .content {
     margin-top: 100px;
-  }
-
-  @include screen(med) {
-    .right .content {
-      margin-top: 0;
-    }
   }
 
   .divider {

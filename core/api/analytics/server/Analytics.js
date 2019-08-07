@@ -1,8 +1,9 @@
 import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 
 import UserService from 'core/api/users/server/UserService';
-import { Random } from 'meteor/random';
+import { getClientHost } from 'core/utils/server/getClientUrl';
 import { EVENTS_CONFIG } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
@@ -54,7 +55,6 @@ class Analytics {
       connection: {
         clientAddress,
         httpHeaders: {
-          host,
           'user-agent': userAgent,
           'x-real-ip': realIp,
           referer: referrer,
@@ -70,7 +70,7 @@ class Analytics {
       roles: 1,
     });
     this.clientAddress = realIp || clientAddress;
-    this.host = this.formatHost(host);
+    this.host = getClientHost();
     this.userAgent = userAgent;
     this.referrer = referrer;
 
@@ -133,25 +133,6 @@ class Analytics {
         return w;
       })
       .join(' ');
-  }
-
-  formatHost(host) {
-    const isProduction = host.includes('production');
-    const isStaging = host.includes('staging');
-
-    let subdomain;
-
-    ['www-', 'app-', 'admin-', 'pro-'].forEach((sub) => {
-      if (host.includes(sub)) {
-        subdomain = sub.split('-')[0];
-      }
-    });
-
-    if (!subdomain || (!isProduction && !isStaging)) {
-      return host;
-    }
-
-    return `${subdomain}${isStaging ? '.staging' : ''}.e-potek.ch`;
   }
 
   page(params) {

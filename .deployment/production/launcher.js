@@ -9,7 +9,9 @@ process.env.ROOT_URL = appEnv.url;
 process.env.MONGO_URL = appEnv.getService(mongoServiceName).credentials.uri;
 process.env.METEOR_SETTINGS = JSON.stringify(settings);
 
-// PORT is set correctly by cloud foundry
+if (!appEnv.name.includes('backend')) {
+  process.env.DDP_DEFAULT_CONNECTION_URL = 'https://backend.e-potek.ch';
+}
 
 // launch the bundle's main.js
 require('./bundle/main.js');

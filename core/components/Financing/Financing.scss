@@ -38,8 +38,8 @@ $result-section-negative-offset: -32px;
   border-right: solid 1px $light-grey;
   border-left: solid 1px $light-grey;
 
-  > .card1 > *,
-  > * {
+   > .card1 > *,
+   > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -193,7 +193,7 @@ $result-section-negative-offset: -32px;
       box-sizing: border-box;
       padding: 16px;
 
-      > .card1 {
+       > .card1 {
         display: flex;
         flex-direction: column;
 
@@ -256,11 +256,11 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-  > *:first-child {
+   > *:first-child {
     margin-bottom: 8px;
   }
 
-  > *:last-child {
+   > *:last-child {
     align-self: center;
   }
 }
@@ -349,5 +349,6 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
 .financing-collapser {
   align-self: center;
+
   margin-bottom: 16px;
 }

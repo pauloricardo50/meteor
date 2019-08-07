@@ -2,7 +2,10 @@ import {
   LOCAL_STORAGE_ANONYMOUS_LOAN,
   LOAN_STATUS,
 } from '../../imports/core/api/loans/loanConstants';
-import { USER_PASSWORD, USER_EMAIL } from '../appE2eConstants';
+import {
+  USER_PASSWORD,
+  USER_EMAIL,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Public onboarding', () => {
   before(() => {

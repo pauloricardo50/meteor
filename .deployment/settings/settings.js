@@ -100,9 +100,7 @@ export const appManifestYAMLData = ({
           ? service
           : service({ name, applicationName, environment }),
       ),
-      ...(APP_ENV_VARIABLES[environment][applicationName] !== {}
-        ? { env: APP_ENV_VARIABLES[environment][applicationName] }
-        : null),
+      env: APP_ENV_VARIABLES[environment][applicationName] || {},
     },
   ],
 });

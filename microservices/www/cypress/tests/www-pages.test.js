@@ -14,12 +14,6 @@ const pages = {
 
   Careers: route('/careers', { shouldRender: '.careers-page' }),
 
-  Conditions: route('/conditions', { shouldRender: '.conditions-page' }),
-
-  'Check Mailbox': route('/checkYourMailbox/test@e-potek.ch', {
-    shouldRender: '.check-mailbox-page',
-  }),
-
   Interests: route('/interests', { shouldRender: '.interests-page' }),
 
   Blog: route('/blog', { shouldRender: '.blog-page' }),
