@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
-
 import SecurityService from 'core/api/security';
 import UserService from 'core/api/users/server/UserService';
 import QueryCacher from 'core/api/helpers/server/QueryCacher';
-import query from '../proLoans.test';
+import query from '../proLoans.app-test';
 import { getLoanIds } from '../../server/resolvers';
 
 query.expose({

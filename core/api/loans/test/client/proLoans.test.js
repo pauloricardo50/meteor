@@ -7,7 +7,7 @@ import {
 } from '../../../../utils/testHelpers/testHelpers';
 import { ROLES } from '../../../constants';
 import { generateScenario } from '../../../methods/index';
-import proLoans from '../proLoans.test';
+import proLoans from '../proLoans.app-test';
 
 const fetchLoans = userId =>
   new Promise((resolve, reject) => {

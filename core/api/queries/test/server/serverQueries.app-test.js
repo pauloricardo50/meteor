@@ -1,13 +1,15 @@
 /* eslint-env mocha */
 import { Match } from 'meteor/check';
-import TestCollection, {
+import {
   query1,
   query2,
   query3,
   query4,
   testCollectionInsert,
-} from '../collection.test';
+} from '../collection.app-test';
 import { exposeQuery } from '../../queryHelpers';
+
+const TestCollection = require('../collection.app-test').default;
 
 testCollectionInsert.setHandler((context, params) =>
   TestCollection.insert(params));
