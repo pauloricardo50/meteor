@@ -4,11 +4,17 @@ import React from 'react';
 import Tabs from 'core/components/Tabs';
 import { createRoute } from 'core/utils/routerUtils';
 import RevenuesPageTab from './RevenuesPageTab';
-import CommissionsTab from './CommissionsTab/CommissionsTab';
+import CommissionsTab from './CommissionsTab';
+import MonitoringTab from './MonitoringTab';
 
 type RevenuesPageProps = {};
 
 const tabs = [
+  {
+    id: 'monitoring',
+    label: 'Monitoring',
+    content: <MonitoringTab />,
+  },
   {
     id: 'revenues',
     label: 'Revenus',

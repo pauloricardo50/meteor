@@ -2,7 +2,7 @@
 import React from 'react';
 import merge from 'lodash/merge';
 
-import Chart from './Chart';
+import BaseChart from './BaseChart';
 import { defaultConfig } from './chartSettings';
 
 const getConfig = ({ data, name, title, subtitle, config }) =>
@@ -25,7 +25,7 @@ const Histogram = ({
   name,
   ...config
 }: HistogramProps) => (
-  <Chart
+  <BaseChart
     config={getConfig({ data, title, subtitle, name, config })}
     data={data}
   />

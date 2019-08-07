@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import MixpanelService from 'core/utils/mixpanel';
 import MixpanelEventList from './MixpanelEventList';
-import getMixpanelData from './getMixpanelData';
 import groupDataByDay from './groupDataByDay';
 
 export default class MixpanelAnalytics extends Component {
@@ -17,12 +17,10 @@ export default class MixpanelAnalytics extends Component {
   }
 
   getData = () => {
-    console.log('mixpanel props :', this.props);
-
     const {
       loan: { userId },
     } = this.props;
-    return getMixpanelData(userId)
+    return MixpanelService.getEventsByUserId(userId)
       .then((data) => {
         if (data.status === 'ok') {
           this.setState({
@@ -44,7 +42,12 @@ export default class MixpanelAnalytics extends Component {
 
     if (error) {
       return (
-        <h3 className="error">Il y eu une erreur Mixpanel (status: {error})</h3>
+        <h3 className="error">
+          Il y a eu une erreur Mixpanel (status:
+          {' '}
+          {error}
+)
+        </h3>
       );
     }
     if (!events) {
