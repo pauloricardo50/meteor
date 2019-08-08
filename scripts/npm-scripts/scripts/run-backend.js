@@ -19,18 +19,19 @@ const runBackend = (process, ...args) => {
           const testMode = args.includes('--test');
 
           process.spawn({
-            command: 'screen',
+            command: 'tmux',
             args: [
-              '-S',
-              'backend',
+              'new',
               '-d',
-              '-m',
-              'npm',
+              '-s',
+              'backend',
+              '"npm',
               'run',
-              testMode ? 'start-test' : 'start',
+              testMode ? 'start-test"' : 'start"',
             ],
             options: {
               cwd: path.resolve(__dirname, '../../../microservices/backend'),
+              shell: true,
             },
           });
         })
