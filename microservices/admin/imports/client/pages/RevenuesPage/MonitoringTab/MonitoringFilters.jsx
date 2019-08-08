@@ -14,6 +14,7 @@ const MonitoringFilters = ({
   status,
   groupBy,
   value,
+  withAnonymous,
   makeSetState,
 }: MonitoringFiltersProps) => (
   <div>
@@ -55,6 +56,13 @@ const MonitoringFilters = ({
       options={LOAN_STATUS}
       id="status"
       label="Statut"
+      className="mr-8"
+    />
+    <Select
+      label="Anonymes"
+      value={withAnonymous}
+      onChange={(_, v) => makeSetState('withAnonymous')(v)}
+      options={[{ id: true, label: 'Avec' }, { id: false, label: 'Sans' }]}
     />
   </div>
 );
