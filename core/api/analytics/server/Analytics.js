@@ -58,8 +58,8 @@ class Analytics {
           'user-agent': userAgent,
           'x-real-ip': realIp,
           referer: referrer,
-        },
-      },
+        } = {},
+      } = {},
     } = context;
     this.userId = userId;
     this.user = UserService.fetchOne({
@@ -81,7 +81,6 @@ class Analytics {
     this.alias(trackingId);
 
     this.analytics.identify({
-      anonymousId: trackingId,
       userId: this.userId,
       traits: {
         firstName: this.user.firstName,
@@ -116,6 +115,7 @@ class Analytics {
   alias(trackingId) {
     if (trackingId) {
       this.analytics.alias({ userId: this.userId, previousId: trackingId });
+      this.analytics.flush();
     }
   }
 
@@ -149,8 +149,9 @@ class Analytics {
 
     this.analytics.page({
       name: formattedRoute,
-      anonymousId: trackingId || Random.id(),
-      ...(this.userId ? { userId: this.userId } : {}),
+      ...(this.userId
+        ? { userId: this.userId }
+        : { anonymousId: trackingId || Random.id() }),
       context: {
         ip: this.clientAddress,
         userAgent: this.userAgent,
