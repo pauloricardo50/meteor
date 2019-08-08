@@ -24,7 +24,7 @@ import {
   sendPromotionInvitations,
 } from './slackNotificationHelpers';
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   bookPromotionLot,
   ({ context: { userId }, params: { promotionLotId, loanId } }) => {
     const currentUser = UserService.get(userId);
@@ -42,7 +42,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   sellPromotionLot,
   ({ context: { userId }, params: { promotionLotId } }) => {
     const currentUser = UserService.get(userId);
@@ -61,7 +61,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   proInviteUser,
   ({
     context: { userId },
@@ -93,7 +93,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   anonymousLoanInsert,
   ({ params: { proPropertyId, referralId }, result: loanId }) => {
     const property = proPropertyId
@@ -116,7 +116,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   userLoanInsert,
   ({ context: { userId }, result: loanId }) => {
     const currentUser = UserService.get(userId);
@@ -129,7 +129,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
   ({ result: userId }) => {
     const currentUser = UserService.get(userId);

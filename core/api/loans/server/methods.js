@@ -1,6 +1,4 @@
-import { Meteor } from 'meteor/meteor';
 import Analytics from '../../analytics/server/Analytics';
-import BorrowerService from '../../borrowers/server/BorrowerService';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import EVENTS from '../../analytics/events';
 
@@ -36,6 +34,7 @@ import {
   loanLinkPromotion,
   loanUnlinkPromotion,
   loanSetCreatedAtActivityDescription,
+  loanSetStatus,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -280,4 +279,9 @@ loanUnlinkPromotion.setHandler(({ userId }, params) => {
 loanSetCreatedAtActivityDescription.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.setCreatedAtActivityDescription(params);
+});
+
+loanSetStatus.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.update(params);
 });

@@ -988,6 +988,24 @@ describe('LoanService', function () {
     });
   });
 
+  describe('setStatus', () => {
+    it('returns the old and new status for analytics', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.CLOSING },
+      });
+
+      const result = LoanService.setStatus({
+        loanId: 'myLoan',
+        status: LOAN_STATUS.FINALIZED,
+      });
+
+      expect(result).to.deep.equal({
+        oldStatus: LOAN_STATUS.CLOSING,
+        nextStatus: LOAN_STATUS.FINALIZED,
+      });
+    });
+  });
+
   describe('getLoanCalculator', () => {
     it('returns an uninitialized calculator by default', () => {
       generator({ loans: { _id: 'myLoan' } });

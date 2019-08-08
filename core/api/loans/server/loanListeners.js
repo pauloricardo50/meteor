@@ -6,7 +6,7 @@ export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });
 };
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   requestLoanVerification,
   disableUserFormsListener,
 );

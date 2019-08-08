@@ -33,4 +33,7 @@ export const EVENTS_CONFIG = {
       'anonymous',
     ]),
   },
+  [EVENTS.LOAN_STATUS_CHANGED]: {
+    name: 'Loan Status changed',
+  },
 };

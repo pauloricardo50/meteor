@@ -8,7 +8,7 @@ import {
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   requestLoanVerification,
   ({ params: { loanId } }) => {
     TaskService.insert({
@@ -21,7 +21,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   [adminCreateUser, anonymousCreateUser],
   ({ result: userId }) => {
     if (userId) {

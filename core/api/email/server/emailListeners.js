@@ -5,7 +5,7 @@ import { Loans } from '../..';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   requestLoanVerification,
   ({ context, params }) => {
     context.unblock();
@@ -20,7 +20,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   submitContactForm,
   ({ context, params }) => {
     context.unblock();
@@ -32,7 +32,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   submitContactForm,
   ({ context, params }) => {
     context.unblock();
@@ -44,7 +44,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   sendEmail,
   ({ context, params: { emailId, params, userId } }) => {
     context.unblock();

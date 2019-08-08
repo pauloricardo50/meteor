@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 
 import StatusLabel from 'core/components/StatusLabel';
-import { LOANS_COLLECTION } from 'core/api/constants'; 
+import { LOANS_COLLECTION } from 'core/api/constants';
 import { ModalManagerContext } from 'core/components/ModalManager';
 import LoanStatusModifierContainer from './LoanStatusModifierContainer';
 
@@ -14,7 +14,6 @@ type LoanStatusModifierProps = {
 const LoanStatusModifier = ({
   loan,
   additionalActions,
-  
 }: LoanStatusModifierProps) => {
   const { openModal } = useContext(ModalManagerContext);
 

@@ -136,6 +136,16 @@ export class LoanService extends CollectionService {
     }
   }
 
+  setStatus({ loanId, status }) {
+    const { status: oldStatus } = this.fetchOne({
+      $filters: { _id: loanId },
+      status: 1,
+    });
+
+    this.update({ loanId, object: { status } });
+    return { oldStatus, nextStatus: status };
+  }
+
   askVerification = ({ loanId }) => {
     const loan = this.get(loanId);
 
@@ -887,7 +897,7 @@ export class LoanService extends CollectionService {
       activities: { secondaryType: 1 },
     });
     const { _id: createdAtActivityId } = activities.find(({ secondaryType }) =>
-    secondaryType === ACTIVITY_SECONDARY_TYPES.CREATED) || {};
+      secondaryType === ACTIVITY_SECONDARY_TYPES.CREATED) || {};
 
     if (createdAtActivityId) {
       ActivityService._update({
