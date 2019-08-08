@@ -4,7 +4,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker/locale/fr';
 import moment from 'moment';
+import sinon from 'sinon';
 
+import { loanSetStatus } from 'core/api/methods/index';
+import { withMeteorUserId } from 'core/api/RESTAPI/server/helpers';
+import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
 import LoanService from '../LoanService';
@@ -23,6 +27,9 @@ import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
 import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
+import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import { LOAN_CATEGORIES } from '../../loanConstants';
 
 describe('LoanService', function () {
   this.timeout(10000);
@@ -985,6 +992,90 @@ describe('LoanService', function () {
       return checkEmails(1, { timeout: 2000, noExpect: true }).then((emails) => {
         expect(emails.length).to.equal(0);
       });
+    });
+  });
+
+  describe('setStatus', () => {
+    it('returns the old and new status for analytics', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.CLOSING },
+      });
+
+      const result = LoanService.setStatus({
+        loanId: 'myLoan',
+        status: LOAN_STATUS.FINALIZED,
+      });
+
+      expect(result).to.deep.equal({
+        prevStatus: LOAN_STATUS.CLOSING,
+        nextStatus: LOAN_STATUS.FINALIZED,
+      });
+    });
+
+    it('the method calls analytics', () => {
+      const spy = sinon.spy();
+      sinon.stub(Analytics.prototype, 'track').callsFake(spy);
+      generator({
+        loans: {
+          _id: 'myLoan',
+          status: LOAN_STATUS.LEAD,
+          name: '20-0001',
+          user: {
+            _id: 'customerId',
+            firstName: 'Customer',
+            lastName: '1',
+            assignedEmployee: {
+              _id: 'adminId1',
+              _factory: 'admin',
+              firstName: 'Admin',
+              lastName: '1',
+            },
+            referredByOrganisation: { name: 'Org 1' },
+            referredByUser: { firstName: 'Pro', lastName: '1' },
+          },
+        },
+        users: [
+          {
+            _id: 'adminId2',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: '2',
+          },
+        ],
+      });
+
+      return withMeteorUserId({ userId: 'adminId2' }, () =>
+        loanSetStatus.run({ loanId: 'myLoan', status: LOAN_STATUS.ONGOING }))
+        .then((result) => {
+          expect(result).to.deep.equal({
+            prevStatus: LOAN_STATUS.LEAD,
+            nextStatus: LOAN_STATUS.ONGOING,
+          });
+
+          expect(spy.calledOnce).to.equal(true);
+          expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
+          expect(spy.args[0][1]).to.deep.equal({
+            adminId: 'adminId2',
+            adminName: 'Admin 2',
+            assigneeId: 'adminId1',
+            assigneeName: 'Admin 1',
+            customerId: 'customerId',
+            customerName: 'Customer 1',
+            loanCategory: LOAN_CATEGORIES.STANDARD,
+            loanId: 'myLoan',
+            loanName: '20-0001',
+            loanPurchaseType: PURCHASE_TYPE.ACQUISITION,
+            loanResidenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            loanStep: STEPS.SOLVENCY,
+            nextStatus: LOAN_STATUS.ONGOING,
+            prevStatus: LOAN_STATUS.LEAD,
+            referredByOrganisation: 'Org 1',
+            referredByUser: 'Pro 1',
+          });
+        })
+        .finally(() => {
+          Analytics.prototype.track.restore();
+        });
     });
   });
 

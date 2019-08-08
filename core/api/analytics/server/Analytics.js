@@ -98,7 +98,7 @@ class Analytics {
     const eventConfig = this.events[event];
     const { name, transform } = eventConfig;
 
-    const eventProperties = transform ? transform(data) : {};
+    const eventProperties = transform ? transform(data) : data;
 
     this.analytics.track({
       ...(trackingId ? { anonymousId: trackingId } : {}),

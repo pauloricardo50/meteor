@@ -32,9 +32,13 @@ import {
   Tasks,
   Users,
 } from '..';
-import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../properties/propertyConstants';
 import Notifications from '../notifications/index';
 import Activities from '../activities/index';
+import { LOAN_CATEGORIES } from '../loans/loanConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -107,6 +111,8 @@ Factory.define('loan', Loans, {
   },
   emails: () => [],
   propertyIds: [],
+  category: LOAN_CATEGORIES.RETAIL,
+  residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
 });
 
 Factory.define('property', Properties, {

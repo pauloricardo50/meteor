@@ -159,6 +159,7 @@ const StatusLabel = ({
   additionalActions = () => Promise.resolve(),
   variant = 'full',
   showTooltip = true,
+  method,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -183,12 +184,17 @@ const StatusLabel = ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
-            additionalActions(stat, status).then(() =>
-              updateDocument.run({
+            additionalActions(stat, status).then(() => {
+              if (method) {
+                return method(stat);
+              }
+
+              return updateDocument.run({
                 collection,
                 object: { status: stat },
                 docId,
-              })),
+              });
+            }),
         }))}
       />
     );

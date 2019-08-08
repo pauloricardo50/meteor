@@ -15,6 +15,14 @@ const logMethod = ({ context, config, params, result, error }) => {
   }
 };
 
+Method.addBeforeExecution(({ context, config, params }) => {
+  ServerEventService.emitBeforeMethod(config, {
+    context,
+    config,
+    params,
+  });
+});
+
 Method.addAfterExecution(({ context, config, params, result, error }) => {
   logMethod({ context, config, params, result, error });
 
@@ -31,7 +39,7 @@ Method.addAfterExecution(({ context, config, params, result, error }) => {
   }
 
   if (!error) {
-    ServerEventService.emitMethod(config, {
+    ServerEventService.emitAfterMethod(config, {
       context,
       config,
       params,
