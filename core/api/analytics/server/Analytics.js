@@ -58,8 +58,8 @@ class Analytics {
           'user-agent': userAgent,
           'x-real-ip': realIp,
           referer: referrer,
-        },
-      },
+        } = {},
+      } = {},
     } = context;
     this.userId = userId;
     this.user = UserService.fetchOne({

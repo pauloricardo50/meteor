@@ -9,7 +9,7 @@ ServerEventService.addAfterMethodListener(
   loanSetStatus,
   ({ context, result: { prevStatus, nextStatus }, params: { loanId } }) => {
     const { userId: adminId } = context;
-    let referredByOrganization;
+    let referredByOrganisation;
     let referredByUser;
     let assigneeId;
     let assigneeName;
@@ -44,7 +44,7 @@ ServerEventService.addAfterMethodListener(
       });
       assigneeId = user.assignedEmployee && user.assignedEmployee._id;
       assigneeName = user.assignedEmployee && user.assignedEmployee.name;
-      referredByOrganization = user.referredByOrganisation && user.referredByOrganisation.name;
+      referredByOrganisation = user.referredByOrganisation && user.referredByOrganisation.name;
       referredByUser = user.referredByUser && user.referredByUser.name;
       customerName = user.name;
     }
@@ -65,7 +65,7 @@ ServerEventService.addAfterMethodListener(
       loanStep,
       nextStatus,
       prevStatus,
-      referredByOrganization,
+      referredByOrganisation,
       referredByUser,
     });
   },
