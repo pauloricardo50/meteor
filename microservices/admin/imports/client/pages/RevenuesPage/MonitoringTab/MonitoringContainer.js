@@ -4,9 +4,12 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { loanMonitoring } from 'core/api/monitoring/queries';
 import { LOAN_STATUS_ORDER } from 'core/api/constants';
 
+const getAnonymous = withAnonymous =>
+  (withAnonymous ? undefined : { $in: [null, false] });
+
 export default compose(
   withStateHandlers(
-    { groupBy: 'status', value: 'count' },
+    { groupBy: 'status', value: 'count', withAnonymous: false },
     { setState: () => newState => newState },
   ),
   withProps(({ setState }) => ({
@@ -14,10 +17,10 @@ export default compose(
   })),
   withSmartQuery({
     query: loanMonitoring,
-    params: ({ groupBy, value, category, status }) => ({
+    params: ({ groupBy, value, category, status, withAnonymous }) => ({
       groupBy,
       value,
-      filters: { category, status },
+      filters: { category, status, anonymous: getAnonymous(withAnonymous) },
     }),
     dataName: 'data',
   }),

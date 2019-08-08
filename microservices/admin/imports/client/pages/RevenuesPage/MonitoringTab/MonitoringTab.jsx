@@ -11,24 +11,22 @@ const MonitoringTab = ({
   status,
   groupBy,
   value,
+  withAnonymous,
   makeSetState,
   data,
-}: MonitoringTabProps) => {
-  console.log('data', data);
-
-  return (
-    <div>
-      <h1>Monitoring</h1>
-      <MonitoringFilters
-        category={category}
-        makeSetState={makeSetState}
-        status={status}
-        groupBy={groupBy}
-        value={value}
-      />
-      <MonitoringChart data={data} groupBy={groupBy} value={value} />
-    </div>
-  );
-};
+}: MonitoringTabProps) => (
+  <div>
+    <h1>Monitoring</h1>
+    <MonitoringFilters
+      category={category}
+      makeSetState={makeSetState}
+      status={status}
+      groupBy={groupBy}
+      value={value}
+      withAnonymous={withAnonymous}
+    />
+    <MonitoringChart data={data} groupBy={groupBy} value={value} />
+  </div>
+);
 
 export default MonitoringContainer(MonitoringTab);
