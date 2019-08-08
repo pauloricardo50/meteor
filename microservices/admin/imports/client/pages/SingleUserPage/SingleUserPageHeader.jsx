@@ -27,6 +27,7 @@ import { UserModifier } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
 import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
+import LastSeen from './LastSeen';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
@@ -72,6 +73,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       </div>
 
       <div className="bottom">
+        <div>
+          <LastSeen userId={userId} />
+        </div>
         <div className="organisations">
           {!!organisations.length
             && organisations.map(organisation => (

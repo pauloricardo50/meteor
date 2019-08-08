@@ -69,7 +69,7 @@ const items = [
   },
   {
     label: 'Revenus',
-    to: createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, { tabId: 'revenues' }),
+    to: createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, { tabId: 'monitoring' }),
     collection: REVENUES_COLLECTION,
   },
   { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },

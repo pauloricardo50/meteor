@@ -18,6 +18,7 @@ const ProRevenuesPageExplained = () => (
       iconAfter: true,
     }}
     title={<T id="ProRevenuesPage.explained" />}
+    closeOnly
   >
     <T
       id="ProRevenuesPage.explained1"

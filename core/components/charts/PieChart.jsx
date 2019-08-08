@@ -5,7 +5,7 @@ import merge from 'lodash/merge';
 
 import { defaultConfig } from './chartSettings';
 import chartContainer from './chartContainer';
-import Chart from './Chart';
+import BaseChart from './BaseChart';
 
 const getConfig = ({ data, title, subtitle, config }) =>
   merge(
@@ -36,7 +36,9 @@ const getConfig = ({ data, title, subtitle, config }) =>
     config,
   );
 
-const PieChart = props => <Chart config={getConfig(props)} data={props.data} />;
+const PieChart = props => (
+  <BaseChart config={getConfig(props)} data={props.data} />
+);
 
 PieChart.propTypes = {
   config: PropTypes.object,
