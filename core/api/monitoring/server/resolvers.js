@@ -1,9 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
-import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import merge from 'lodash/merge';
+
+import { REVENUE_STATUS, LOAN_STATUS } from 'core/api/constants';
 import LoanService from '../../loans/server/LoanService';
 
-const getPredicate = (filters = {}) => ({ $match: filters });
+const defaultFilters = {
+  status: { $nin: [LOAN_STATUS.TEST] },
+};
+
+const getPredicate = (filters = {}) => ({
+  $match: merge({}, defaultFilters, filters),
+});
 
 const getProjection = () => ({
   $project: {
