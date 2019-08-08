@@ -4,7 +4,7 @@
   "scripts": {
     "start": "meteor run --settings settings-dev.json --port 5500",
     "test": "meteor test --once --driver-package meteortesting:mocha",
-    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5500"
+    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505"
   },
   "dependencies": {
     "@babel/runtime": "7.5.5",

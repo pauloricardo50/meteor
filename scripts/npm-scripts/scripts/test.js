@@ -7,13 +7,14 @@ const path = require('path');
 const [microservice, ...args] = process.argv.slice(2);
 
 const port = MICROSERVICE_PORTS[microservice] + PORT_OFFSETS.test;
+const backendPort = MICROSERVICE_PORTS.backend + PORT_OFFSETS.test;
 
 const backend = new Process();
 const test = new Process();
 
 runBackend(backend, '--test', ...args);
 
-process.env.DDP_DEFAULT_CONNECTION_URL = 'http://localhost:5500';
+process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;
 
 const env = {
   ...process.env,
@@ -39,16 +40,8 @@ test.spawn({
   options: {
     cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),
     env,
-    stdio: 'pipe',
+    stdio: 'inherit',
   },
-});
-
-test.stdout.on('data', (data) => {
-  console.log(data.toString());
-});
-
-test.stderr.on('data', (error) => {
-  console.log(error.toString());
 });
 
 test.process.once('exit', (code) => {

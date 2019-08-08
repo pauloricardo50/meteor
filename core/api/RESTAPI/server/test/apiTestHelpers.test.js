@@ -12,7 +12,7 @@ import { OBJECT_FORMATS, formatObject } from '../helpers';
 
 const FormData = require('form-data');
 
-export const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
+export const API_PORT = process.env.CIRCLE_CI ? 3000 : 4105; // API in on pro
 
 const checkResponse = ({ res, expectedResponse, include }) =>
   res.json().then((body) => {

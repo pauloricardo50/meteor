@@ -14,7 +14,7 @@ export const MICROSERVICE_PORTS = {
 };
 
 export const PORT_OFFSETS = {
-  test: 6,
+  test: 5,
   'bundle-size': 10,
   'test-e2e': 15,
 };

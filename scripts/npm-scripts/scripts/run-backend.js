@@ -24,7 +24,7 @@ const runBackend = (process, ...args) => {
               'new',
               '-d',
               '-s',
-              'backend',
+              testMode ? 'backend-test' : 'backend',
               '"npm',
               'run',
               testMode ? 'start-test"' : 'start"',
