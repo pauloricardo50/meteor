@@ -40,7 +40,7 @@ class Analytics {
 
   init(context) {
     this.events = EVENTS_CONFIG;
-    if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
+    if (Meteor.isTest || Meteor.isAppTest){// || Meteor.isDevelopment) {
       this.analytics = new TestAnalytics();
     } else {
       this.analytics = nodeAnalytics;
@@ -99,7 +99,7 @@ class Analytics {
     const eventConfig = this.events[event];
     const { name, transform } = eventConfig;
 
-    const eventProperties = transform ? transform(data) : {};
+    const eventProperties = transform ? transform(data) : data;
 
     this.analytics.track({
       ...(trackingId ? { anonymousId: trackingId } : {}),

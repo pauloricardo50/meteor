@@ -137,13 +137,13 @@ export class LoanService extends CollectionService {
   }
 
   setStatus({ loanId, status }) {
-    const { status: oldStatus } = this.fetchOne({
+    const { status: prevStatus } = this.fetchOne({
       $filters: { _id: loanId },
       status: 1,
     });
 
     this.update({ loanId, object: { status } });
-    return { oldStatus, nextStatus: status };
+    return { prevStatus, nextStatus: status };
   }
 
   askVerification = ({ loanId }) => {

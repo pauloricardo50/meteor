@@ -283,5 +283,5 @@ loanSetCreatedAtActivityDescription.setHandler(({ userId }, params) => {
 
 loanSetStatus.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
-  return LoanService.update(params);
+  return LoanService.setStatus(params);
 });

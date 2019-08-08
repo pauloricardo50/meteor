@@ -1,13 +1,16 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import { compose, lifecycle } from 'recompose';
 
 import { LOANS_COLLECTION } from 'core/api/constants';
 import { getLoanLinkTitle } from 'core/components/IconLink/collectionIconLinkHelpers';
 import StatusLabel from 'core/components/StatusLabel';
+import { loanSetStatus } from 'core/api/loans/index';
+import { ModalManagerContext } from 'core/components/ModalManager';
 import LoanBoardCardActions from './LoanBoardCardActions';
 import LoanBoardCardTitle from './LoanBoardCardTitle';
 import LoanBoardCardAssignee from './LoanBoardCardAssignee';
+import LoanStatusModifierContainer from '../../SingleLoanPage/LoanStatusModifier/LoanStatusModifierContainer';
 
 type LoanBoardCardTopProps = {};
 
@@ -20,10 +23,12 @@ const LoanBoardCardTop = ({
   renderComplex,
   status,
   user,
+  additionalActions,
 }: LoanBoardCardTopProps) => {
   const userId = user && user._id;
   const hasUser = !!userId;
   const title = getLoanLinkTitle({ user, name, borrowers });
+  const { openModal } = useContext(ModalManagerContext);
 
   return (
     <>
@@ -35,6 +40,10 @@ const LoanBoardCardTop = ({
           allowModify={renderComplex}
           docId={loanId}
           showTooltip={renderComplex}
+          method={nextStatus =>
+            loanSetStatus.run({ loanId, status: nextStatus })
+          }
+          additionalActions={additionalActions(openModal)}
         />
 
         <LoanBoardCardAssignee
@@ -75,4 +84,5 @@ export default compose(
       }
     },
   }),
+  LoanStatusModifierContainer,
 )(LoanBoardCardTop);

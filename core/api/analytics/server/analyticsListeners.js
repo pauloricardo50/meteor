@@ -11,12 +11,15 @@ ServerEventService.addAfterMethodListener(
     const { userId: adminId } = context;
     let referredByOrganization;
     let referredByUser;
+    let assigneeId;
+    let assigneeName;
+    let customerName;
     const {
-      userId,
-      category,
+      userId: customerId,
+      category: loanCategory,
       name: loanName,
-      purchaseType,
-      residenceType,
+      purchaseType: loanPurchaseType,
+      residenceType: loanResidenceType,
       step: loanStep,
     } = LoanService.fetchOne({
       $filters: { _id: loanId },
@@ -27,34 +30,43 @@ ServerEventService.addAfterMethodListener(
       residenceType: 1,
       step: 1,
     });
-    const { name } = UserService.fetchOne({
+    const { name: adminName } = UserService.fetchOne({
       $filters: { _id: adminId },
       name: 1,
     });
-    if (userId) {
+    if (customerId) {
       const user = UserService.fetchOne({
-        $filters: { _id: userId },
+        $filters: { _id: customerId },
         referredByUser: { name: 1 },
         referredByOrganisation: { name: 1 },
+        assignedEmployee: { name: 1 },
+        name: 1,
       });
-      referredByOrganization = user.referredByOrganization && user.referredByOrganization.name;
+      assigneeId = user.assignedEmployee && user.assignedEmployee._id;
+      assigneeName = user.assignedEmployee && user.assignedEmployee.name;
+      referredByOrganization = user.referredByOrganisation && user.referredByOrganisation.name;
       referredByUser = user.referredByUser && user.referredByUser.name;
+      customerName = user.name;
     }
 
     const analytics = new Analytics(context);
     analytics.track(EVENTS.LOAN_STATUS_CHANGED, {
-      category,
+      adminId,
+      adminName,
+      assigneeId,
+      assigneeName,
+      customerId,
+      customerName,
+      loanCategory,
       loanId,
       loanName,
+      loanPurchaseType,
+      loanResidenceType,
       loanStep,
-      name,
       nextStatus,
       prevStatus,
-      purchaseType,
       referredByOrganization,
       referredByUser,
-      residenceType,
-      adminId,
     });
   },
 );
