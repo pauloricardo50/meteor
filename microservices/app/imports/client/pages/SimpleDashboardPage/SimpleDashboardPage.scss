@@ -232,10 +232,16 @@
       color: white;
       background-color: $primary;
 
+      h1,
       h2,
       h3,
       h4 {
         color: white;
+      }
+
+      .show-recap-button {
+        color: white;
+        border-color: white;
       }
     }
   }

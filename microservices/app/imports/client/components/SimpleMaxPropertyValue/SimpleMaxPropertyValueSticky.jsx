@@ -2,6 +2,7 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { compose } from 'recompose';
+import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import DialogSimple from 'core/components/DialogSimple';
@@ -26,11 +27,9 @@ const displayPropertyValueRange = (values) => {
 const getFooter = ({
   maxPropertyValue,
   residenceType,
-  borrowers = [],
   maxPropertyValueExists,
+  canCalculateSolvency,
 }) => {
-  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
-
   if (maxPropertyValueExists) {
     return <h2>Votre capacité d'achat</h2>;
   }
@@ -69,20 +68,24 @@ const SimpleMaxPropertyValueSticky = (props: SimpleMaxPropertyValueStickyProps) 
     loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,
   } = props;
+  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+  const shouldCalculate = !maxPropertyValue && canCalculateSolvency;
 
   return (
     <DialogSimple
       renderTrigger={({ handleOpen }) => (
         <ButtonBase
           focusRipple
-          className="max-property-value-sticky animated slideInUp"
+          className={cx('max-property-value-sticky animated slideInUp', {
+            success: shouldCalculate,
+          })}
           onClick={handleOpen}
         >
           {getFooter({
             maxPropertyValue,
             residenceType,
-            borrowers,
             maxPropertyValueExists,
+            canCalculateSolvency,
           })}
         </ButtonBase>
       )}

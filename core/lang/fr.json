@@ -1,4 +1,6 @@
 {
+  "MaxPropertyValue.showDetail": "Afficher détails",
+  "MaxPropertyValue.showRecap": "Masquer détails",
   "ProRevenuesPage.explained": "Calcul des revenus",
   "ProRevenuesPage.explained1": "Tous les revenus que vous voyez sont les votres.{verticalSpace}Pour les statuts {lead} et {ongoing} , les revenus sont estimés en prenant en compte le commissionnement contractualisé, sur une base des revenus moyens de 1% du montant de l'hypothèque.{verticalSpace}Dès le que le dossier passe en {closing} , e-Potek a la capacité de vous renseigner sur les revenus effectifs à percevoir.",
   "PropertiesPage.addProProperty": "Ajouter bien immo Pro",

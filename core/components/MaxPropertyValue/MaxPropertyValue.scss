@@ -7,6 +7,14 @@ $footer-height: 64px;
 
   padding: 32px;
 
+  @include screen(small) {
+    padding: 16px;
+  }
+
+  @include screen(xsmall) {
+    padding: 8px;
+  }
+
   &.simple {
     align-self: unset;
   }
@@ -155,6 +163,25 @@ $footer-height: 64px;
     button {
       margin-top: 16px;
     }
+
+    .recap-value {
+      font-size: 4em;
+      font-weight: bold;
+      margin: 64px 0 16px 0;
+
+      @include screen(small) {
+        font-size: 2em;
+      }
+
+      @include screen(med) {
+        margin: 32px 0 16px 0;
+        font-size: 3em;
+      }
+    }
+
+    .show-recap-button {
+      align-self: center;
+    }
   }
 
   &.blue {
@@ -196,6 +223,11 @@ $footer-height: 64px;
     h2,
     h3 {
       margin: 0;
+    }
+
+    &.success {
+      color: white;
+      background-color: $success;
     }
   }
 
