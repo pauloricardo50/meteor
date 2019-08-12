@@ -84,9 +84,13 @@ export const shouldAnonymize = ({
   }
 
   const shouldHideForPropertyStatus = !!propertyStatus
+    && displayCustomerNames
     && !displayCustomerNames.forPropertyStatus.includes(propertyStatus);
 
-  if (displayCustomerNames.referredBy === PROPERTY_REFERRED_BY_TYPE.ANY) {
+  if (
+    displayCustomerNames
+    && displayCustomerNames.referredBy === PROPERTY_REFERRED_BY_TYPE.ANY
+  ) {
     return shouldHideForPropertyStatus;
   }
 
