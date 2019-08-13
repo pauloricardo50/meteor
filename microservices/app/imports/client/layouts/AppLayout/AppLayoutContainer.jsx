@@ -15,6 +15,7 @@ import withTranslationContext from 'core/components/Translation/withTranslationC
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import { userLoan } from 'core/api/fragments';
+import { injectCurrentUser } from 'core/containers/CurrentUserContext';
 import {
   withSideNavContextProvider,
   withSideNavContext,
@@ -30,9 +31,9 @@ const WITHOUT_LOAN = [
 const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
 
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
-  (!loans || loans.length < 1) &&
-  path !== '/' &&
-  !isOnAllowedRoute(path, WITHOUT_LOAN);
+  (!loans || loans.length < 1)
+  && path !== '/'
+  && !isOnAllowedRoute(path, WITHOUT_LOAN);
 
 export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
@@ -95,22 +96,21 @@ const withRedirect = withProps(({ currentUser, history }) => {
 
 export default compose(
   withAppUser,
+  injectCurrentUser,
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
   injectCalculator(),
   withInterestRates,
-  mapProps(
-    ({
-      loan,
-      query,
-      refetch,
-      currentInterestRates: { averageRates },
-      ...props
-    }) => ({
-      ...props,
-      loan: { ...loan, currentInterestRates: averageRates },
-    }),
-  ),
+  mapProps(({
+    loan,
+    query,
+    refetch,
+    currentInterestRates: { averageRates },
+    ...props
+  }) => ({
+    ...props,
+    loan: { ...loan, currentInterestRates: averageRates },
+  })),
   withRouter,
   withRedirect,
   withTranslationContext(({ loan = {} }) => ({

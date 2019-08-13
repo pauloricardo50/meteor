@@ -1,9 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
-import {
-  createdAt,
-  updatedAt,
-} from '../../helpers/sharedSchemas';
+import { createdAt, updatedAt, cacheField } from '../../helpers/sharedSchemas';
 
 const PromotionLotSchema = new SimpleSchema({
   createdAt,
@@ -21,6 +18,10 @@ const PromotionLotSchema = new SimpleSchema({
   'lotLinks.$._id': { type: String, optional: true },
   attributedToLink: { type: Object, optional: true },
   'attributedToLink._id': { type: String, optional: true },
+  // This should be a single object, instead of an array
+  // https://github.com/Herteby/denormalize/issues/17
+  promotionCache: { type: Array, optional: true },
+  'promotionCache.$': cacheField,
 });
 
 export default PromotionLotSchema;

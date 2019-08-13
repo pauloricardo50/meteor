@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { proPromotionLot } from 'core/api/promotionLots/queries';
+import { proPromotionLots } from 'core/api/promotionLots/queries';
 import withMatchParam from 'core/containers/withMatchParam';
 import {
   isAllowedToManagePromotionDocuments,
@@ -23,8 +23,8 @@ export default compose(
   // The whole page is pretty heavy to load, so refresh the page on URL change
   Component => props => <Component {...props} key={props.promotionLotId} />,
   withSmartQuery({
-    query: proPromotionLot,
-    params: ({ promotionLotId }) => ({ promotionLotId }),
+    query: proPromotionLots,
+    params: ({ promotionLotId }) => ({ _id: promotionLotId }),
     queryOptions: { reactive: false, single: true },
     dataName: 'promotionLot',
   }),

@@ -1,1 +1,1 @@
-export { default } from './PromotionLotsTable';
+export * from './PromotionLotsTable';

@@ -1,12 +1,14 @@
 import PromotionLots from '.';
 
 import { Promotions, Properties, Lots, PromotionOptions, Loans } from '..';
+import LinkInitializer from '../links/LinkInitializer';
+
+const promotionCache = {
+  _id: 1,
+  name: 1,
+};
 
 PromotionLots.addLinks({
-  promotion: {
-    collection: Promotions,
-    inversedBy: 'promotionLots',
-  },
   properties: {
     collection: Properties,
     field: 'propertyLinks',
@@ -19,15 +21,28 @@ PromotionLots.addLinks({
     type: 'many',
     metadata: true,
   },
-  promotionOptions: {
-    collection: PromotionOptions,
-    inversedBy: 'promotionLots',
-    autoremove: true,
-  },
   attributedTo: {
     collection: Loans,
     field: 'attributedToLink',
     type: 'one',
     metadata: true,
   },
+});
+
+LinkInitializer.inversedInit(() => {
+  PromotionLots.addLinks({
+    promotion: {
+      collection: Promotions,
+      inversedBy: 'promotionLots',
+      denormalize: {
+        field: 'promotionCache',
+        body: promotionCache,
+      },
+    },
+    promotionOptions: {
+      collection: PromotionOptions,
+      inversedBy: 'promotionLots',
+      autoremove: true,
+    },
+  });
 });
