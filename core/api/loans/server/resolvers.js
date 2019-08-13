@@ -147,7 +147,7 @@ export const proReferredByLoansResolver = ({
     $filters: {
       referredByUserLink: { $in: [userId, ...mainOrganisationsUserIds] },
     },
-    loans: { ...proLoansFragment, $filters: status ? { status } : {} },
+    loans: { ...proLoansFragment, $filters: { status } },
   });
 
   const loans = users.reduce(
@@ -315,7 +315,7 @@ export const getLoanIds = ({ withReferredBy = false } = {}) => (params = {}) => 
           organisationId && { referredByOrganisationLink: organisationId },
         ].filter(x => x),
       },
-      loans: { _id: 1, $filters: status ? { status } : {} },
+      loans: { _id: 1, $filters: { status } },
     });
 
     loanIds = users.reduce(
