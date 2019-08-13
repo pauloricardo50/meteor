@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 
 import Loans from '.';
 import { LOAN_QUERIES } from './loanConstants';
-import { adminLoan, userLoan } from '../fragments';
+import { adminLoan, userLoan, proLoanWithRevenues } from '../fragments';
 
 export const adminLoans = Loans.createQuery(
   LOAN_QUERIES.ADMIN_LOANS,
@@ -34,6 +34,11 @@ export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
 
 // Sort this query properly so that the merge on the client succeeds
 export const proLoans = Loans.createQuery(LOAN_QUERIES.PRO_LOANS, () => {});
+
+export const proLoansAggregate = Loans.createQuery(
+  LOAN_QUERIES.PRO_LOANS_AGGREGATE,
+  proLoanWithRevenues(),
+);
 
 export const proPromotionLoans = Loans.createQuery(
   LOAN_QUERIES.PRO_PROMOTION_LOANS,

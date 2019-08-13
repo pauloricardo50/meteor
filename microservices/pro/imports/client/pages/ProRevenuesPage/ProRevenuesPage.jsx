@@ -11,19 +11,30 @@ type ProRevenuesPageProps = {};
 const ProRevenuesPage = ({
   loans = [],
   organisation: { commissionRate = 0 },
-}: ProRevenuesPageProps) => (
-  <div className="pro-revenues-page card1 card-top">
-    <h1>
-      <T id="ProRevenuesPage.title" />
-    </h1>
-    <h3 className="secondary">
-      <T id="ProRevenuesPage.loanCount" values={{ value: loans.length }} />
-    </h3>
+}: ProRevenuesPageProps) => {
+  const anonymousLoans = loans.filter(({ anonymous }) => anonymous);
+  const claimedLoans = loans.filter(({ anonymous }) => !anonymous);
 
-    <ProRevenuesPageExplained />
+  return (
+    <div className="pro-revenues-page card1 card-top">
+      <h1>
+        <T id="ProRevenuesPage.title" />
+      </h1>
+      <h3 className="secondary">
+        <T id="ProRevenuesPage.loanCount" values={{ value: loans.length }} />
+        {anonymousLoans.length > 0 && (
+          <T
+            id="ProRevenuesPage.loanCountAnonymous"
+            values={{ value: anonymousLoans.length }}
+          />
+        )}
+      </h3>
 
-    <RevenuesByStatus loans={loans} multiplier={commissionRate} />
-  </div>
-);
+      <ProRevenuesPageExplained />
+
+      <RevenuesByStatus loans={claimedLoans} multiplier={commissionRate} />
+    </div>
+  );
+};
 
 export default ProRevenuesPageContainer(ProRevenuesPage);
