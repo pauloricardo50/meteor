@@ -1,0 +1,1 @@
+{"code":"var require=meteorInstall({client:{\"main.js\":function(){}}},{extensions:[\".js\",\".json\",\".html\",\".css\",\".jsx\"]}),exports=require(\"/client/main.js\");","sourcemap":"{\"version\":3,\"sources\":[],\"names\":[],\"mappings\":\"\",\"sourcesContent\":[]}","minifier":"terser"}

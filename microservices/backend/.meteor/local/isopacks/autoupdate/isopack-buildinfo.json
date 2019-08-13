@@ -1,0 +1,211 @@
+{
+  "builtBy": "meteor/32",
+  "unibuildDependencies": {
+    "os.json": {
+      "files": {
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/package.js": "c601fd17a70e3a4742cc429d6b647afdebcfc16c",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_server.js": "1e0e67aa461ba366a1edd0069dcf09760d105daf",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_client.js": "584caf9802ae7f0f22d3ffb4fef08a20e7194f87",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_cordova.js": "fa1f79610172398267280a52ff90d43484d70c7f",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/client_versions.js": "15b6bed0ca6c2c6730b1133ab4554f3975967415"
+      },
+      "directories": [
+        {
+          "absPath": "/Users/Florian/dev/epotek/meteorPackages/autoupdate",
+          "include": [
+            "\\.js$",
+            "\\.jsx$"
+          ],
+          "exclude": [
+            "^\\."
+          ],
+          "names": [
+            ".meteorignore"
+          ],
+          "contents": [
+            "autoupdate_client.js",
+            "autoupdate_cordova.js",
+            "autoupdate_server.js",
+            "client_versions.js",
+            "package.js"
+          ]
+        },
+        {
+          "absPath": "/Users/Florian/dev/epotek/meteorPackages/autoupdate",
+          "include": [
+            "\\/$"
+          ],
+          "exclude": [
+            "^\\."
+          ],
+          "contents": []
+        }
+      ]
+    },
+    "web.browser.json": {
+      "files": {
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/package.js": "c601fd17a70e3a4742cc429d6b647afdebcfc16c",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_client.js": "584caf9802ae7f0f22d3ffb4fef08a20e7194f87",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_cordova.js": "fa1f79610172398267280a52ff90d43484d70c7f",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_server.js": "1e0e67aa461ba366a1edd0069dcf09760d105daf",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/client_versions.js": "15b6bed0ca6c2c6730b1133ab4554f3975967415"
+      },
+      "directories": [
+        {
+          "absPath": "/Users/Florian/dev/epotek/meteorPackages/autoupdate",
+          "include": [
+            "\\.css$",
+            "\\.js$",
+            "\\.jsx$"
+          ],
+          "exclude": [
+            "^\\."
+          ],
+          "names": [
+            ".meteorignore"
+          ],
+          "contents": [
+            "autoupdate_client.js",
+            "autoupdate_cordova.js",
+            "autoupdate_server.js",
+            "client_versions.js",
+            "package.js"
+          ]
+        },
+        {
+          "absPath": "/Users/Florian/dev/epotek/meteorPackages/autoupdate",
+          "include": [
+            "\\/$"
+          ],
+          "exclude": [
+            "^\\."
+          ],
+          "contents": []
+        }
+      ]
+    },
+    "web.browser.legacy.json": {
+      "files": {
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/package.js": "c601fd17a70e3a4742cc429d6b647afdebcfc16c",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_client.js": "584caf9802ae7f0f22d3ffb4fef08a20e7194f87",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_cordova.js": "fa1f79610172398267280a52ff90d43484d70c7f",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/autoupdate_server.js": "1e0e67aa461ba366a1edd0069dcf09760d105daf",
+        "/Users/Florian/dev/epotek/meteorPackages/autoupdate/client_versions.js": "15b6bed0ca6c2c6730b1133ab4554f3975967415"
+      },
+      "directories": [
+        {
+          "absPath": "/Users/Florian/dev/epotek/meteorPackages/autoupdate",
+          "include": [
+            "\\.css$",
+            "\\.js$",
+            "\\.jsx$"
+          ],
+          "exclude": [
+            "^\\."
+          ],
+          "names": [
+            ".meteorignore"
+          ],
+          "contents": [
+            "autoupdate_client.js",
+            "autoupdate_cordova.js",
+            "autoupdate_server.js",
+            "client_versions.js",
+            "package.js"
+          ]
+        },
+        {
+          "absPath": "/Users/Florian/dev/epotek/meteorPackages/autoupdate",
+          "include": [
+            "\\/$"
+          ],
+          "exclude": [
+            "^\\."
+          ],
+          "contents": []
+        }
+      ]
+    }
+  },
+  "pluginDependencies": {
+    "files": {
+      "/Users/Florian/dev/epotek/meteorPackages/autoupdate/package.js": "c601fd17a70e3a4742cc429d6b647afdebcfc16c"
+    },
+    "directories": []
+  },
+  "pluginProviderPackageMap": {
+    "autoupdate": {
+      "kind": "local",
+      "sourceRoot": "/Users/Florian/dev/epotek/meteorPackages/autoupdate"
+    },
+    "meteor": {
+      "kind": "versioned",
+      "version": "1.9.3"
+    },
+    "webapp": {
+      "kind": "versioned",
+      "version": "1.7.4"
+    },
+    "check": {
+      "kind": "versioned",
+      "version": "1.3.1"
+    },
+    "inter-process-messaging": {
+      "kind": "versioned",
+      "version": "0.1.0"
+    },
+    "ecmascript": {
+      "kind": "versioned",
+      "version": "0.12.7"
+    },
+    "ddp": {
+      "kind": "versioned",
+      "version": "1.4.0"
+    },
+    "modules": {
+      "kind": "versioned",
+      "version": "0.13.0"
+    },
+    "ecmascript-runtime": {
+      "kind": "versioned",
+      "version": "0.7.0"
+    },
+    "babel-runtime": {
+      "kind": "versioned",
+      "version": "1.3.0"
+    },
+    "promise": {
+      "kind": "versioned",
+      "version": "0.11.2"
+    },
+    "dynamic-import": {
+      "kind": "versioned",
+      "version": "0.5.1"
+    },
+    "ddp-client": {
+      "kind": "versioned",
+      "version": "2.3.3"
+    },
+    "ddp-server": {
+      "kind": "versioned",
+      "version": "2.3.0"
+    },
+    "ecmascript-runtime-client": {
+      "kind": "versioned",
+      "version": "0.8.0"
+    },
+    "ecmascript-runtime-server": {
+      "kind": "versioned",
+      "version": "0.7.1"
+    },
+    "tracker": {
+      "kind": "versioned",
+      "version": "1.2.0"
+    },
+    "retry": {
+      "kind": "versioned",
+      "version": "1.1.0"
+    }
+  },
+  "includeCordovaUnibuild": false
+}

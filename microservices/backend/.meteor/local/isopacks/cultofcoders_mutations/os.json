@@ -1,0 +1,152 @@
+{
+  "format": "isopack-2-unibuild",
+  "declaredExports": [],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "ecmascript",
+      "constraint": "0.4.1"
+    },
+    {
+      "package": "check",
+      "constraint": "1.1.2"
+    }
+  ],
+  "resources": [
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/main.js",
+      "length": 126,
+      "offset": 0,
+      "path": "main.js",
+      "hash": "b82f0cf2f8c86024467178ec99972ac408b98403",
+      "fileOptions": {
+        "mainModule": true,
+        "lazy": false
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/__tests__/aop.test.js",
+      "length": 867,
+      "offset": 0,
+      "path": "__tests__/aop.test.js",
+      "hash": "8c75d80f2630799a50d9ac1f4a687cbdb606f3ff",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/__tests__/boot.js",
+      "length": 667,
+      "offset": 0,
+      "path": "__tests__/boot.js",
+      "hash": "79e485c1cfdee36f8fdd3b56d0f7eaf9832f186b",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/__tests__/main.client.test.js",
+      "length": 45,
+      "offset": 0,
+      "path": "__tests__/main.client.test.js",
+      "hash": "efd5b70fbe3ca029ef34803f3827c8bc5a92e61a",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/__tests__/main.server.test.js",
+      "length": 88,
+      "offset": 0,
+      "path": "__tests__/main.server.test.js",
+      "hash": "89b5333932c33b580c9545c9348c42f2c0df56f2",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/__tests__/mutate.test.js",
+      "length": 889,
+      "offset": 0,
+      "path": "__tests__/mutate.test.js",
+      "hash": "b5954c03e90ca22260322170a74f4d91dfa3aef9",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/__tests__/mutation.test.js",
+      "length": 0,
+      "offset": 0,
+      "path": "__tests__/mutation.test.js",
+      "hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/lib/aop.js",
+      "length": 436,
+      "offset": 0,
+      "path": "lib/aop.js",
+      "hash": "a38c24451e07af9c2b8b0dcbd91804d8b3ebe801",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/lib/debug.js",
+      "length": 1110,
+      "offset": 0,
+      "path": "lib/debug.js",
+      "hash": "f38882b0bd81a00d4c8f5a7ccbb7fa6741561e22",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/lib/mutation.class.js",
+      "length": 4079,
+      "offset": 0,
+      "path": "lib/mutation.class.js",
+      "hash": "aa3a1dec65a47cffc2d386195e2f62670328d0c8",
+      "fileOptions": {
+        "lazy": true
+      }
+    },
+    {
+      "type": "source",
+      "extension": "js",
+      "file": "os/lib/wrap.js",
+      "length": 116,
+      "offset": 0,
+      "path": "lib/wrap.js",
+      "hash": "8815b4e8239925569423a7e6d583268108e906d6",
+      "fileOptions": {
+        "lazy": true
+      }
+    }
+  ]
+}

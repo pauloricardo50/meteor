@@ -1,0 +1,1 @@
+{"code":"!function(){var a=Package[\"ddp-client\"].DDP;Package._define(\"ddp\",{DDP:a})}();","sourcemap":"{\"version\":3,\"sources\":[\"packages/ddp.js\"],\"names\":[\"DDP\",\"Package\",\"_define\"],\"mappings\":\"CAUA,WAGA,IAAIA,EAAMC,QAAQ,cAAcD,IAKhCC,QAAQC,QAAQ,OACdF,IAAKA,IATP\"}","minifier":"terser"}

@@ -1,0 +1,1 @@
+{"code":"!function(){var e=Package[\"templating-runtime\"].Template;Package._define(\"templating\",{Template:e})}();","sourcemap":"{\"version\":3,\"sources\":[\"packages/templating.js\"],\"names\":[\"Template\",\"Package\",\"_define\"],\"mappings\":\"CAUA,WAGA,IAAIA,EAAWC,QAAQ,sBAAsBD,SAK7CC,QAAQC,QAAQ,cACdF,SAAUA,IATZ\"}","minifier":"terser"}
