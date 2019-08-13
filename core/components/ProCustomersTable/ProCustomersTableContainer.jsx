@@ -37,6 +37,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
     name: loanName,
     relatedTo: relatedDocs = [],
     loanProgress,
+    anonymous,
   } = loan;
 
   return {
@@ -64,7 +65,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      getReferredBy({ user, proUser, isAdmin }),
+      getReferredBy({ user, proUser, isAdmin, anonymous }),
       {
         raw: relatedDocs.length ? relatedDocs[0]._id : '-',
         label: relatedDocs.length
