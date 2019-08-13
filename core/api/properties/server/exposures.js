@@ -74,6 +74,7 @@ exposeQuery({
         const { fetchOrganisationProperties, userId } = params;
 
         if (fetchOrganisationProperties) {
+          // Filter out properties this user is on, to avoid duplicates
           return properties.filter(({ userLinks }) =>
             !userLinks.some(({ _id: userLinkId }) => userLinkId === userId));
         }
