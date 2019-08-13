@@ -4,6 +4,8 @@ import {
   revenueInsert,
   revenueRemove,
   revenueUpdate,
+  consolidateRevenue,
+  consolidateCommission,
 } from '../methodDefinitions';
 
 revenueInsert.setHandler((context, params) => {
@@ -19,4 +21,14 @@ revenueRemove.setHandler((context, params) => {
 revenueUpdate.setHandler((context, { revenueId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return RevenueService._update({ id: revenueId, object });
+});
+
+consolidateRevenue.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return RevenueService.consolidateRevenue(params);
+});
+
+consolidateCommission.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return RevenueService.consolidateCommission(params);
 });

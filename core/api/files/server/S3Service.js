@@ -84,12 +84,12 @@ class S3Service {
     throw new Meteor.Error('Unauthorized download');
   };
 
-  putObject = (binaryData, Key, Metadata) =>
+  putObject = (binaryData, Key, Metadata, ACL = 'bucket-owner-full-control') =>
     this.callS3Method('putObject', {
       Body: binaryData,
       Key,
       Metadata,
-      ACL: 'bucket-owner-full-control',
+      ACL,
     });
 
   deleteObject = Key => this.callS3Method('deleteObject', { Key });

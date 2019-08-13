@@ -37,7 +37,7 @@ then
 fi
 
 # Prepare every microservice
-for i in 'admin' 'app' 'pro' 'www'
+for i in 'admin' 'app' 'pro' 'www' 'backend'
   do
     echo "Preparing $i microservice"
 

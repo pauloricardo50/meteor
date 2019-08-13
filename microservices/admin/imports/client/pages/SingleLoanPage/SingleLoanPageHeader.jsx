@@ -58,24 +58,26 @@ const SingleLoanPageHeader = ({
   return (
     <div className="single-loan-page-header">
       <div className="left">
-        <h1>
+        <div className="left-top">
           <ImpersonateLink user={user} className="impersonate-link" />
-          <T
-            id="SingleLoanPageHeader.title"
-            values={{
-              name: loan.name || <T id="general.mortgageLoan" />,
-              value: (
-                <IntlNumber
-                  value={Calculator.selectLoanValue({ loan })}
-                  format="money"
-                />
-              ),
-            }}
-          />
-          {userName}
-
+          <h1>
+            <T
+              id="SingleLoanPageHeader.title"
+              values={{
+                name: loan.name || <T id="general.mortgageLoan" />,
+                value: (
+                  <IntlNumber
+                    value={Calculator.selectLoanValue({ loan })}
+                    format="money"
+                  />
+                ),
+              }}
+            />
+          </h1>
+          <h2>{userName}</h2>
           <LoanStatusModifier loan={loan} />
-        </h1>
+        </div>
+
         {withCustomName && !loan.hasPromotion && (
           <SingleLoanPageCustomName
             customName={loan.customName}

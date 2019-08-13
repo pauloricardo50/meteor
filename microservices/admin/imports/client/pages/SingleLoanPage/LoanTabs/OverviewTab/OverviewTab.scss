@@ -47,11 +47,10 @@
   }
 
   .admin-note {
+    margin-top: 40px;
     h2 {
       margin: 0;
     }
-
-    margin-top: 40px;
   }
 }
 
@@ -139,6 +138,7 @@
   .flex {
     display: flex;
     align-items: center;
+
     margin-bottom: 16px;
   }
 
@@ -150,6 +150,11 @@
 
       display: flex;
       align-items: center;
+
+      margin: 0;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       &.title {
         margin-left: -4px;
@@ -169,16 +174,18 @@
     }
 
     .activity-modifier {
-      display: none;
       position: absolute;
+      z-index: 1;
       top: 0;
       right: 0;
-      z-index: 1;
+
+      display: none;
     }
   }
 
   li {
     position: relative;
+
     flex-basis: 250px;
     flex-grow: 0;
     flex-shrink: 0;
@@ -192,21 +199,25 @@
 
     .today {
       position: absolute;
-      width: 2px;
-      height: 100%;
-      background-color: red;
       top: 0;
       left: -8px;
 
+      width: 2px;
+      height: 100%;
+
+      background-color: red;
+
       .today-dot {
+        position: absolute;
         // content: '';
-        top: 0px;
+        top: 0;
         left: -3px;
-        border-radius: 50%;
+
         width: 8px;
         height: 8px;
+
+        border-radius: 50%;
         background-color: red;
-        position: absolute;
       }
     }
   }

@@ -12,7 +12,8 @@ const ANONYMIZED_USER = {
   phoneNumbers: [ANONYMIZED_STRING],
   email: ANONYMIZED_STRING,
 };
-const anonymizeUser = ({ user }) => ({ ...user, ...ANONYMIZED_USER });
+const anonymizeUser = ({ user, anonymous }) =>
+  (anonymous ? { name: 'Anonyme' } : { ...user, ...ANONYMIZED_USER });
 
 const getUserProPropertyPermissions = ({ userId, propertyId }) => {
   const user = UserService.fetchOne({
@@ -125,7 +126,9 @@ export const makeProPropertyLoanAnonymizer = ({
       : anonymize;
 
     return {
-      user: shouldAnonymizeUser ? anonymizeUser({ user }) : user,
+      user: shouldAnonymizeUser
+        ? anonymizeUser({ user, anonymous: loan.anonymous })
+        : user,
       properties: shouldAnonymizeUser
         ? properties.map(({ solvent, ...property }) => property)
         : properties,

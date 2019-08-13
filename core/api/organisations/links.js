@@ -1,6 +1,6 @@
+import LinkInitializer from '../links/LinkInitializer';
+import { Contacts, Lenders, Users, LenderRules, Revenues, Tasks } from '..';
 import Organisations from './organisations';
-import { Contacts, Lenders, Users, LenderRules, Revenues } from '..';
-import Tasks from '../tasks';
 
 Organisations.addLinks({
   contacts: {
@@ -39,4 +39,13 @@ Organisations.addLinks({
     collection: Tasks,
     autoremove: true,
   },
+});
+
+LinkInitializer.inversedInit(() => {
+  Organisations.addLinks({
+    sourceOfRevenues: {
+      collection: Revenues,
+      inversedBy: 'organisations',
+    },
+  });
 });

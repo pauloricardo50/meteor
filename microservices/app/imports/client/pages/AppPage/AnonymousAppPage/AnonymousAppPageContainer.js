@@ -46,7 +46,11 @@ export default compose(
   withProps(({ history }) => ({
     insertAnonymousLoan: () =>
       anonymousLoanInsert
-        .run({ trackingId: parseCookies()[TRACKING_COOKIE], referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined })
+        .run({
+          trackingId: parseCookies()[TRACKING_COOKIE],
+          referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
+          existingAnonymousLoanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
+        })
         .then((loanId) => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
           history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {

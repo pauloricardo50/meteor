@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 14;
+const CACHE_VERSION = 18;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -56,18 +56,23 @@ const cachePaths = {
 };
 
 // Circle CI Commands
-const runCommand = (name, command) => ({ run: { name, command } });
+const runCommand = (name, command, timeout) => ({
+  run: { name, command, ...(timeout ? { no_output_timeout: timeout } : {}) },
+});
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
     case 'e2e':
       return runCommand(
         'Run e2e tests',
-        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+        `
+        cd ./microservices/${name} && meteor npm run test-e2e-ci
+        `,
       );
     case 'unit':
       return runCommand(
         'Run unit tests',
-        `meteor npm --prefix microservices/${name} run test-CI`,
+        `cd ./microservices/${name} && meteor npm run test-ci`,
+        '15m',
       );
     default:
       throw new Error(`Unknown tests type: ${testsType}`);
@@ -119,6 +124,24 @@ const makePrepareJob = () => ({
       cacheKeys.nodeModules(),
       cachePaths.nodeModules(),
     ),
+
+    // Build and cache backend
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem('backend')),
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    runCommand(
+      'Install node_modules',
+      'meteor npm --prefix microservices/backend ci',
+    ),
+    runCommand('Build backend', './scripts/circleci/build_backend.sh'),
+    saveCache(
+      'Cache meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+      cachePaths.meteorMicroservice('backend'),
+    ),
   ],
 });
 
@@ -126,6 +149,7 @@ const makePrepareJob = () => ({
 const testMicroserviceJob = ({ name, testsType, job }) => ({
   ...defaultJobValues,
   ...job,
+  resource_class: 'medium+',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
@@ -135,6 +159,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
     ),
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -143,7 +171,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     // ),
     runCommand(
       'Install node_modules',
-      `meteor npm --prefix microservices/${name} ci`,
+      `
+      meteor npm --prefix microservices/${name} ci
+      meteor npm --prefix microservices/backend ci
+      `,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),
@@ -157,6 +188,11 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
     ),
+    // saveCache(
+    //   'Cache meteor backend',
+    //   cacheKeys.meteorMicroservice('backend'),
+    //   cachePaths.meteorMicroservice('backend'),
+    // ),
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),

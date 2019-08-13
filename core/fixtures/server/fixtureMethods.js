@@ -52,7 +52,7 @@ import {
 import { fakeProperty } from '../../api/properties/fakes';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 
-const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
+const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
 const getAdmins = () => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();

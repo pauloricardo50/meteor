@@ -20,6 +20,7 @@ import {
   PROPERTY_STATUS,
   REVENUES_COLLECTION,
   REVENUE_STATUS,
+  COMMISSION_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -91,6 +92,8 @@ const getStatuses = (collection) => {
     return {
       [REVENUE_STATUS.EXPECTED]: colors.primary,
       [REVENUE_STATUS.CLOSED]: colors.success,
+      [COMMISSION_STATUS.TO_BE_PAID]: colors.primary,
+      [COMMISSION_STATUS.PAID]: colors.success,
     };
 
   default:
@@ -156,6 +159,7 @@ const StatusLabel = ({
   additionalActions = () => Promise.resolve(),
   variant = 'full',
   showTooltip = true,
+  method,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -180,12 +184,17 @@ const StatusLabel = ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
-            additionalActions(stat, status).then(() =>
-              updateDocument.run({
+            additionalActions(stat, status).then(() => {
+              if (method) {
+                return method(stat);
+              }
+
+              return updateDocument.run({
                 collection,
                 object: { status: stat },
                 docId,
-              })),
+              });
+            }),
         }))}
       />
     );

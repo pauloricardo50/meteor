@@ -33,6 +33,7 @@ const keysToOmit = [
   'user.loans',
   'user.organisations',
   'user.properties',
+  'revenues',
 ];
 const fullLoanFragment = omit(adminLoan({ withSort: true }), keysToOmit);
 

@@ -9,7 +9,7 @@ const keyMap = {
 };
 
 const makeHandlers = ({ setOpenSearch }) => ({
-  SEARCH: e => {
+  SEARCH: (e) => {
     // Prevent the space key to be sent to the search input
     e.preventDefault();
     setOpenSearch(true);
@@ -18,10 +18,8 @@ const makeHandlers = ({ setOpenSearch }) => ({
 
 const AdminKeyboardShortcuts = ({
   setOpenSearch,
-}: AdminKeyboardShortcutsProps) => {
-  return (
-    <GlobalHotKeys keyMap={keyMap} handlers={makeHandlers({ setOpenSearch })} />
-  );
-};
+}: AdminKeyboardShortcutsProps) => (
+  <GlobalHotKeys keyMap={keyMap} handlers={makeHandlers({ setOpenSearch })} />
+);
 
 export default AdminKeyboardShortcuts;

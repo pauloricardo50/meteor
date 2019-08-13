@@ -173,6 +173,7 @@ export const anonymousLoanInsert = new Method({
     trackingId: String,
     proPropertyId: Match.Maybe(String),
     referralId: Match.Maybe(String),
+    existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
   },
 });
 
@@ -210,4 +211,9 @@ export const loanUnlinkPromotion = new Method({
 export const loanSetCreatedAtActivityDescription = new Method({
   name: 'loanSetCreatedAtActivityDescription',
   params: { loanId: String, description: String },
+});
+
+export const loanSetStatus = new Method({
+  name: 'loanSetStatus',
+  params: { loanId: String, status: String },
 });

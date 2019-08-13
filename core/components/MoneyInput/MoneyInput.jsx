@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import MaskedInput from 'react-text-mask';
 
+import InputAdornment from '../Material/InputAdornment';
+import FormHelperText from '../Material/FormHelperText';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import FormControl from '../Material/FormControl';
+import Input from '../Material/Input';
 import { swissFrancMask, swissFrancMaskDecimal } from '../../utils/textMasks';
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 
@@ -30,6 +30,7 @@ const MoneyInput = ({
   decimal = false,
   ...props
 }: MoneyInputProps) => {
+  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
   const parse = decimal ? toDecimalNumber : toNumber;
   const mask = decimal ? swissFrancMaskDecimal : swissFrancMask;
 
@@ -40,8 +41,9 @@ const MoneyInput = ({
       fullWidth={fullWidth}
       margin={margin}
     >
-      {label && <InputLabel>{label}</InputLabel>}
+      {label && <InputLabel ref={inputLabelRef}>{label}</InputLabel>}
       <Input
+        labelWidth={labelWidth}
         startAdornment={<InputAdornment position="start">CHF</InputAdornment>}
         onChange={event => onChange(parse(event.target.value))}
         type="tel"

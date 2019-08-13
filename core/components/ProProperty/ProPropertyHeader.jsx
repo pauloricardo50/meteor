@@ -42,9 +42,14 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
     imageUrls,
     openGraphData = {},
     externalUrl,
+    useOpenGraph,
   } = property;
 
-  const { ogTitle, ogDescription, ogSiteName } = openGraphData;
+  const {
+    ogTitle = address1,
+    ogDescription = description,
+    ogSiteName,
+  } = openGraphData;
 
   return (
     <div className="header">
@@ -54,7 +59,7 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
           style={{ width: '100%', justifyContent: 'space-between' }}
         >
           <div className="flex-col">
-            <h1>{ogTitle || address1}</h1>
+            <h1>{useOpenGraph ? ogTitle : address1}</h1>
             <h2 className="secondary">
               <Money value={totalValue} />
             </h2>
@@ -69,7 +74,9 @@ const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
           )}
         </div>
         {(ogDescription || description) && (
-          <p className="description">{ogDescription || description}</p>
+          <p className="description">
+            {useOpenGraph ? ogDescription : description}
+          </p>
         )}
         <ProPropertyRecap property={property} />
         {externalUrl && (

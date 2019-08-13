@@ -8,4 +8,6 @@ export default class {
   alias() {}
 
   initAnalytics() {}
+
+  flush() {}
 }

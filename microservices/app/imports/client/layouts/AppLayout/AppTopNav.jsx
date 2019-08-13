@@ -14,8 +14,21 @@ type AppTopNavProps = {};
 
 const blacklist = ['/signup/', '/enroll-account/'];
 
-const renderButtons = ({ location: { pathname } }) =>
-  blacklist.every(route => !pathname.startsWith(route));
+const renderButtons = ({ location: { pathname, search } }) => {
+  if (search && search.includes('property-id')) {
+    // Don't render login/signup buttons if a proProperty is being
+    // seen, as creating an account will make the user lose the
+    // reference to that property
+    const searchParams = new URLSearchParams(search);
+    const propertyId = searchParams.get('property-id');
+
+    if (propertyId) {
+      return false;
+    }
+  }
+
+  return blacklist.every(route => !pathname.startsWith(route));
+};
 
 const AppTopNav = ({
   toggleDrawer,

@@ -1,5 +1,6 @@
 import pollUntilReady from '../../../utils/pollUntilReady';
-import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
+import { USER_PASSWORD, USER_EMAIL } from '../../server/e2eConstants';
+// import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
 // You have to have visited the app before this can work
 // Like: cy.visit('/')
@@ -70,7 +71,7 @@ const waitForLoggedIn = Meteor =>
 
 Cypress.Commands.add(
   'meteorLogin',
-  (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
+  (email = USER_EMAIL, password = USER_PASSWORD) => {
     Cypress.log({
       name: 'Logging in',
       consoleProps: () => ({ email, password }),

@@ -24,7 +24,7 @@ import {
   sendPromotionInvitations,
 } from './slackNotificationHelpers';
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   bookPromotionLot,
   ({ context: { userId }, params: { promotionLotId, loanId } }) => {
     const currentUser = UserService.get(userId);
@@ -42,7 +42,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   sellPromotionLot,
   ({ context: { userId }, params: { promotionLotId } }) => {
     const currentUser = UserService.get(userId);
@@ -61,16 +61,20 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   proInviteUser,
   ({
     context: { userId },
-    params: { propertyIds = [], promotionIds = [], user },
+    params: { propertyIds = [], properties = [], promotionIds = [], user },
   }) => {
+    const notificationPropertyIds = [
+      ...propertyIds,
+      ...properties.map(({ _id, externalId }) => _id || externalId),
+    ];
     const currentUser = UserService.get(userId);
     const invitedUser = UserService.getByEmail(user.email);
 
-    sendPropertyInvitations(propertyIds, currentUser, {
+    sendPropertyInvitations(notificationPropertyIds, currentUser, {
       ...invitedUser,
       email: user.email,
     });
@@ -80,7 +84,7 @@ ServerEventService.addMethodListener(
       email: user.email,
     });
 
-    if (propertyIds.length === 0 && promotionIds.length === 0) {
+    if (notificationPropertyIds.length === 0 && promotionIds.length === 0) {
       referralOnlyNotification({
         currentUser,
         user: { ...invitedUser, email: user.email },
@@ -89,7 +93,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   anonymousLoanInsert,
   ({ params: { proPropertyId, referralId }, result: loanId }) => {
     const property = proPropertyId
@@ -112,7 +116,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   userLoanInsert,
   ({ context: { userId }, result: loanId }) => {
     const currentUser = UserService.get(userId);
@@ -125,7 +129,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
   ({ result: userId }) => {
     const currentUser = UserService.get(userId);

@@ -8,7 +8,7 @@ export default compose(
   withSmartQuery({
     query,
     params: ({ match }) => ({ _id: match.params.borrowerId }),
-    queryOptions: { reactive: true, single: true },
+    queryOptions: { reactive: false, single: true },
     dataName: 'borrower',
   }),
   withTranslationContext(({ borrower }) => ({ gender: borrower.gender })),

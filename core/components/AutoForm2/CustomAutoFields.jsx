@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import AutoField from 'uniforms-material/AutoField';
 
 const CustomAutoFields = (
-  { autoField, element, fields, omitFields, ...props },
+  { autoField, element, fields, omitFields, automaticFocus, ...props },
   { uniforms: { schema } },
 ) =>
   createElement(
@@ -12,7 +12,12 @@ const CustomAutoFields = (
     { key: 'custom-autofields', className: 'autofields', ...props },
     (fields || schema.getSubfields())
       .filter(field => omitFields.indexOf(field) === -1)
-      .map(field => createElement(autoField, { key: field, name: field })),
+      .map((field, index) =>
+        createElement(autoField, {
+          key: field,
+          name: field,
+          autoFocus: automaticFocus && index === 0,
+        })),
   );
 
 CustomAutoFields.contextTypes = AutoField.contextTypes;

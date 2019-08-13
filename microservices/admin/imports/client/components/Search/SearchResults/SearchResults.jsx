@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import { HotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
 
 import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
@@ -67,7 +67,10 @@ const SearchResults = ({ isLoading, error, results, closeSearch }) => {
 
   return (
     <>
-      <HotKeys handlers={{ down: goDown, up: goUp }} focused attach={window} />
+      <GlobalHotKeys
+        keyMap={{ down: 'down', up: 'up' }}
+        handlers={{ down: goDown, up: goUp }}
+      />
       <List className="search-results">
         {Object.keys(results).map((collectionName) => {
           const resultsFromThisCollection = results[collectionName];

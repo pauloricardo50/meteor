@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
-import { TextField, Snackbar } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 import cx from 'classnames';
 
+import TextField from '../Material/TextField';
 import MuiButton from '../Button';
 
 // Do this to pass the ref
@@ -129,6 +130,7 @@ class Field extends Accounts.ui.Field {
     return mount ? (
       <span className="login-field">
         <TextField
+          variant="outlined"
           label={label}
           placeholder={hint}
           onChange={onChange}

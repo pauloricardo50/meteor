@@ -2,9 +2,6 @@ import { Method } from '../methods/methods';
 
 export const analyticsLogin = new Method({
   name: 'analyticsLogin',
-  params: {
-    trackingId: String,
-  },
 });
 
 export const analyticsPage = new Method({
@@ -21,4 +18,7 @@ export const analyticsPage = new Method({
 
 export const analyticsVerifyEmail = new Method({
   name: 'analyticsVerifyEmail',
+  params: {
+    trackingId: String,
+  },
 });

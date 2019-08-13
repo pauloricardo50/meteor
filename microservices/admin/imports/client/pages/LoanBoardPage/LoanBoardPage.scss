@@ -13,16 +13,18 @@
   }
 
   &-options > * {
-    background-color: white;
-    padding: 16px;
     display: flex;
     align-items: flex-start;
+
+    padding: 16px;
+
+    background-color: white;
   }
 
   &-options .right {
     align-items: center;
 
-    > * {
+     > * {
       margin-left: 8px;
     }
   }
@@ -30,27 +32,30 @@
   &-options .left {
     flex-grow: 1;
 
-    > * {
+     > * {
       margin-right: 32px;
     }
   }
 
   &-column-header {
-    display: flex;
     position: relative;
+
+    display: flex;
+
     padding: 8px;
     padding-right: 24px;
 
     .title {
-      margin-top: 0;
       display: flex;
       align-items: center;
+
+      margin-top: 0;
     }
 
     .sort {
       position: absolute;
-      right: 0px;
-      top: 0px;
+      top: 0;
+      right: 0;
     }
   }
 
@@ -63,14 +68,16 @@ $button-height: 30px;
 
 .loan-board-card {
   margin-bottom: 16px;
+
   cursor: pointer;
 
   .card-header {
-    padding: 4px 8px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+
     min-height: $button-height;
+    padding: 4px 8px;
 
     .status-label-dot,
     img {
@@ -85,12 +92,17 @@ $button-height: 30px;
     img {
       width: 24px;
       height: 24px;
-      border-radius: 50%;
       margin-right: 4px;
+
+      border-radius: 50%;
     }
 
     .title {
       margin: 0;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .title-placeholder {
@@ -106,28 +118,32 @@ $button-height: 30px;
     padding: 12px;
 
     .wanted-loan {
-      text-align: center;
       margin: 0;
+
+      text-align: center;
+
       font-family: 'Eina04-Regular';
     }
   }
 
   .card-bottom {
-    padding: 8px;
     display: flex;
     align-items: center;
 
+    padding: 8px;
+
     .premium-badge {
+      height: 16px;
       margin-right: 4px;
       padding: 2px;
-      height: 16px;
     }
   }
 
   &-tasks {
-    margin-bottom: 0;
     display: flex;
     align-items: center;
+
+    margin-bottom: 0;
 
     .date {
       white-space: nowrap;
@@ -135,10 +151,13 @@ $button-height: 30px;
   }
 
   .admin-note {
-    font-size: 12px;
-    max-height: 80px;
     overflow: hidden;
+
+    max-height: 80px;
+
     white-space: pre-wrap;
+
+    font-size: 12px;
 
     h1,
     h2,
@@ -173,24 +192,30 @@ $button-height: 30px;
 
 .loan-board-card-task {
   position: relative;
+
   flex-grow: 1;
+
   padding: 8px 0;
 
   .buttons {
     position: absolute;
-    right: 0;
     top: 0;
+    right: 0;
+
     display: flex;
-    border: 2px solid $border-grey;
-    background-color: rgba(255, 255, 255, 0.8);
+
     padding: 2px;
+
+    border: 2px solid $border-grey;
     border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
   }
 
   .task-complete-button {
+    margin-right: 4px;
+
     color: white;
     background-color: $success;
-    margin-right: 4px;
   }
 
   .task-cancel-button {
@@ -204,9 +229,10 @@ $button-height: 30px;
 }
 
 .sort-label {
-  margin: 0;
   display: flex;
   justify-content: space-between;
+
+  margin: 0;
 
   .icon {
     margin-left: 8px;
@@ -218,11 +244,12 @@ $button-height: 30px;
 
 .checkbox-list {
   display: flex;
-  flex-direction: column;
-  max-height: 400px;
   overflow: scroll;
+  flex-direction: column;
 
-  > * {
+  max-height: 400px;
+
+   > * {
     margin-left: 0;
   }
 

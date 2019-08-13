@@ -92,12 +92,19 @@ export default class ConfirmMethod extends Component {
           {children}
           {keyword && (
             <div>
-              <T id="ConfirmMethod.dialogMessage" values={{ keyword }} />
-              <form onSubmit={this.handleSubmit}>
+              <T
+                id="ConfirmMethod.dialogMessage"
+                values={{ keyword: <b>{keyword}</b> }}
+              />
+              <form
+                onSubmit={this.handleSubmit}
+                style={{ textAlign: 'center' }}
+              >
                 <TextField
                   value={text}
                   autoFocus
                   onChange={this.handleChange}
+                  style={{ marginTop: 16 }}
                 />
               </form>
             </div>

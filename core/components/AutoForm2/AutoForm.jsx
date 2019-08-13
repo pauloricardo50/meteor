@@ -12,6 +12,7 @@ import CustomSubmitField from './CustomSubmitField';
 type CustomAutoFormProps = {
   autoFieldProps?: Object,
   children?: React.Node,
+  layout?: any,
   model: Object,
   omitFields?: Array<String>,
   placeholder?: Boolean,
@@ -38,6 +39,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
       omitFields,
       placeholder = true,
       submitFieldProps,
+      layout,
       ...props
     } = this.props;
 
@@ -62,6 +64,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
     );
   }
 }
+
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;
   return { onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])) };

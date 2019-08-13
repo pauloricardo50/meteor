@@ -8,7 +8,8 @@ import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
-import T from 'core/components/Translation/Translation';
+import Box from 'core/components/Box';
+import T from 'core/components/Translation';
 import TaskModifierDateSetter from './TaskModifierDateSetter';
 import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
 
@@ -87,7 +88,7 @@ export const schema = new SimpleSchema({
   assigneeLink: {
     type: Object,
     optional: true,
-    uniforms: { label: null },
+    uniforms: { label: null, style: { margin: 0 }, margin: 'none' },
   },
   'assigneeLink._id': {
     type: String,
@@ -109,6 +110,25 @@ export const schema = new SimpleSchema({
   },
 });
 
+export const taskFormLayout = [
+  {
+    Component: Box,
+    className: 'mb-32',
+    title: <h4>Général</h4>,
+    fields: ['title', 'description'],
+    layout: { className: 'grid-2', fields: ['assigneeLink._id', 'isPrivate'] },
+  },
+  {
+    Component: Box,
+    title: <h4>Échéance</h4>,
+    layout: [
+      'dueAtTimeHelpers',
+      'dueAtDateHelpers',
+      { className: 'grid-2', fields: ['dueAt', 'dueAtTime'] },
+    ],
+  },
+];
+
 const labels = {
   title: <T id="TasksTable.title" />,
   dueAt: <T id="TasksTable.dueAt" />,
@@ -116,7 +136,7 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
-const getTime = date => {
+const getTime = (date) => {
   if (!date) {
     return undefined;
   }
@@ -143,6 +163,7 @@ const TaskModifier = ({
       setOpen={setOpen}
       submitting={submitting}
       title="Modifier tâche"
+      layout={taskFormLayout}
     />
   );
 };
@@ -150,7 +171,7 @@ const TaskModifier = ({
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
-    updateTask: values => {
+    updateTask: (values) => {
       setSubmitting(true);
       return taskUpdate
         .run({ taskId, object: values })

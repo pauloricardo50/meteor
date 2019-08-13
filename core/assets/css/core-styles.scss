@@ -73,8 +73,8 @@ hr {
   padding: 16px;
 
   border-bottom: 1px solid $border-grey;
-  border-top-right-radius: $border-radius;
   border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
   background-color: #fafafa;
 }
 
@@ -147,10 +147,11 @@ hr {
 }
 
 .error-box {
-  background-color: $error;
-  color: white;
   padding: 2px;
+
+  color: white;
   border-radius: 2px;
+  background-color: $error;
 }
 
 .warning {
@@ -256,9 +257,12 @@ p.description,
 
 // Change it from the material-ui default inline-flex, which makes them take full width
 .mui-text-input,
-.mui-select,
 .mui-radio-group {
   display: flex;
+}
+
+.mui-select {
+  min-width: 120px;
 }
 
 // To display choices with proper hover effects
@@ -373,4 +377,57 @@ p.description,
 // Allow popovers to show above material-ui modals
 .popover {
   z-index: 1401 !important;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mr-16 {
+  margin-right: 16px;
+}
+
+.ml-8 {
+  margin-left: 8px;
+}
+
+.ml-16 {
+  margin-left: 16px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+
+.fb-50 > * {
+  flex-basis: 50%;
+}
+
+.flex--sb {
+  justify-content: space-between;
+}
+
+.grid {
+  &-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 8px;
+  }
+
+  &-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 8px;
+  }
+}
+
+.grid-col {
+  display: grid;
+  grid-gap: 8px;
+  grid-auto-flow: column;
+  justify-items: stretch;
 }

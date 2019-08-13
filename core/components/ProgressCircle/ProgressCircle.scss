@@ -1,12 +1,12 @@
 .progress-circle {
   &-background {
-    stroke: #c4c4c4;
     fill: none;
+    stroke: #c4c4c4;
   }
 
   &-progress {
-    stroke: $primary;
     fill: none;
+    stroke: $primary;
   }
 
   &-progress.complete {

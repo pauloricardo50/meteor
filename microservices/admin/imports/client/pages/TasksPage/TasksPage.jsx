@@ -15,6 +15,7 @@ const TasksPage = () => (
     <Helmet>
       <title>Tâches</title>
     </Helmet>
+    
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[TASKS_COLLECTION]}

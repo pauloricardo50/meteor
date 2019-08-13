@@ -22,7 +22,7 @@ const makeMapProperty = history => ({
   city,
   status,
   totalValue,
-  loans = [],
+  loanCount,
 }) => ({
   id: _id,
   columns: [
@@ -32,7 +32,7 @@ const makeMapProperty = history => ({
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
     },
     { raw: totalValue, label: <Money value={totalValue} /> },
-    loans.length,
+    loanCount,
   ],
 });
 

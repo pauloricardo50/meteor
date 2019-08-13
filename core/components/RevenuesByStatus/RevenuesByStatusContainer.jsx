@@ -2,11 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import Calculator from '../../utils/Calculator/index';
-import {
-  LOAN_STATUS,
-  REVENUE_STATUS,
-  LOANS_COLLECTION,
-} from '../../api/constants';
+import { LOAN_STATUS, LOANS_COLLECTION } from '../../api/constants';
 import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 
@@ -24,54 +20,6 @@ const columnOptions = [
     id: status,
     label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
   })),
-];
-
-const getRevenuesByStatus = (revenueStatus, loans) =>
-  loans
-    .reduce((arr, { revenues = [] }) => [...arr, ...revenues], [])
-    .filter(({ status }) => status === revenueStatus)
-    .reduce((sum, { amount = 0 }) => sum + amount, 0);
-
-const rows = multiplier => [
-  { id: 'loanCount', func: loans => loans.length },
-  {
-    id: 'estimatedRevenues',
-    func: (loans) => {
-      const loansWithoutExplicitRevenues = loans.filter(({ revenues = [] }) => revenues.length === 0);
-      const total = loansWithoutExplicitRevenues.reduce(
-        (sum, loan) => sum + Calculator.getEstimatedRevenues({ loan }),
-        0,
-      );
-      return (
-        <span>
-          {total > 0 && '~'}
-          <Money value={total * multiplier} displayZero={false} />
-        </span>
-      );
-    },
-  },
-  {
-    id: 'expectedRevenues',
-    func: (loans) => {
-      const expectedRevenues = getRevenuesByStatus(
-        REVENUE_STATUS.EXPECTED,
-        loans,
-      );
-      return (
-        <span>
-          {expectedRevenues > 0 && '~'}
-          <Money value={expectedRevenues * multiplier} displayZero={false} />
-        </span>
-      );
-    },
-  },
-  {
-    id: 'cashedRevenues',
-    func: (loans) => {
-      const cashedRevenues = getRevenuesByStatus(REVENUE_STATUS.CASHED, loans);
-      return <Money value={cashedRevenues * multiplier} displayZero={false} />;
-    },
-  },
 ];
 
 const calculateRevenuesByStatus = (loans = [], status, multiplier = 1) =>
@@ -107,7 +55,8 @@ const makeRow = (loansByStatus, multiplier) => ({
 
           return (
             <span key={status}>
-              ~<Money value={amount} displayZero={false} />
+              ~
+              <Money value={amount} displayZero={false} />
             </span>
           );
         }

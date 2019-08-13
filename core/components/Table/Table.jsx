@@ -17,7 +17,7 @@ export default class Table extends Component {
       selected: [],
       order: props.initialOrder,
       orderBy: props.initialOrderBy,
-      rowsPerPage: 40,
+      rowsPerPage: 25,
       page: 0,
     };
   }

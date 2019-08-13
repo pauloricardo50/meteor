@@ -4,7 +4,7 @@
 
   padding: 12px;
 
-   > * {
+  > * {
     margin-bottom: 0;
     padding-right: 8px;
   }
@@ -23,8 +23,13 @@
     flex-direction: row;
     flex-wrap: nowrap;
 
-     > * {
+    > * {
       margin: 0;
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 
@@ -33,11 +38,11 @@
     align-items: center;
     flex-direction: row;
 
-     > table {
+    > table {
       padding: 4px;
     }
 
-     > * {
+    > * {
       margin-right: 4px;
     }
   }

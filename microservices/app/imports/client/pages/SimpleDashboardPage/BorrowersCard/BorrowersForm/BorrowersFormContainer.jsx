@@ -1,26 +1,15 @@
 import React from 'react';
 
-import { Meteor } from 'meteor/meteor';
 import { withProps } from 'recompose';
 
 import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
+import { borrowerUpdate } from 'core/api/methods/index';
 import BorrowerAdder from '../../../../components/BorrowerAdder';
 import BorrowerForm from './BorrowerForm';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
-
-const borrowerUpdate = params =>
-  new Promise((resolve, reject) => {
-    Meteor.call('borrowerUpdate', params, (error, result) => {
-      if (error) {
-        reject(error);
-      }
-
-      resolve(result);
-    });
-  });
 
 const getSimpleParams = (rawParams, key) => {
   const { object = {}, id } = rawParams;
@@ -48,7 +37,7 @@ const overrides = {
       ? simpleParams[0]
       : createParams(rawParams, idKey);
 
-    return borrowerUpdate(params);
+    return borrowerUpdate.run(params);
   },
 };
 

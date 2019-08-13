@@ -32,9 +32,10 @@ const checkPromotionPermissions = ({
   }
 };
 
-export const isAllowedToViewPromotion = ({ promotion, currentUser }) => {
-  const { _id: userId } = currentUser;
-
+export const isAllowedToViewPromotion = ({
+  promotion,
+  currentUser: { _id: userId },
+}) => {
   if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
     return true;
   }

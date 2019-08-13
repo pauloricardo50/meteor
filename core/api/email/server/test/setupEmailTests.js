@@ -4,7 +4,8 @@ import { isEmailTestEnv } from '../EmailService';
 
 let emailTestCollection;
 
-const POLLING_INTERVAL = 50;
+// Use high polling interval to catch errors when too many emails are sent
+const POLLING_INTERVAL = 500;
 // Most tests have a 10'000 timeout, so let them have an extra
 // 2000ms to wrap up
 const TIMEOUT = 8000;

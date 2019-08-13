@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
 import { compose } from 'recompose';
+import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import DialogSimple from 'core/components/DialogSimple';
@@ -14,7 +14,7 @@ import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
 type SimpleMaxPropertyValueStickyProps = {};
 
-const displayPropertyValueRange = values => {
+const displayPropertyValueRange = (values) => {
   const { min, max } = values;
 
   if (min) {
@@ -27,11 +27,9 @@ const displayPropertyValueRange = values => {
 const getFooter = ({
   maxPropertyValue,
   residenceType,
-  borrowers = [],
   maxPropertyValueExists,
+  canCalculateSolvency,
 }) => {
-  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
-
   if (maxPropertyValueExists) {
     return <h2>Votre capacité d'achat</h2>;
   }
@@ -45,15 +43,19 @@ const getFooter = ({
   }
 
   const { canton } = maxPropertyValue;
-  const values =
-    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-      ? maxPropertyValue.main
-      : maxPropertyValue.second;
+  const values = residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
+    ? maxPropertyValue.main
+    : maxPropertyValue.second;
 
   return (
     <div>
       <label>
-        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
+        Capacité d'achat -
+        {' '}
+        <T id={`Forms.canton.${canton}`} />
+        {' '}
+-
+        {' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
       <h3>{displayPropertyValueRange(values)}</h3>
@@ -61,27 +63,29 @@ const getFooter = ({
   );
 };
 
-const SimpleMaxPropertyValueSticky = (
-  props: SimpleMaxPropertyValueStickyProps,
-) => {
+const SimpleMaxPropertyValueSticky = (props: SimpleMaxPropertyValueStickyProps) => {
   const {
     loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,
   } = props;
+  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+  const shouldCalculate = !maxPropertyValue && canCalculateSolvency;
 
   return (
     <DialogSimple
       renderTrigger={({ handleOpen }) => (
         <ButtonBase
           focusRipple
-          className="simple-max-property-value-sticky animated slideInUp"
+          className={cx('max-property-value-sticky animated slideInUp', {
+            success: shouldCalculate,
+          })}
           onClick={handleOpen}
         >
           {getFooter({
             maxPropertyValue,
             residenceType,
-            borrowers,
             maxPropertyValueExists,
+            canCalculateSolvency,
           })}
         </ButtonBase>
       )}

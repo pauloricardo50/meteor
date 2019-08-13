@@ -11,7 +11,7 @@ import MoneyInput from 'core/components/MoneyInput';
 import { NumberField } from 'core/components/NumberInput';
 import { PercentField } from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
-import TextField from 'uniforms-material/TextField';
+import TextField from 'core/components/AutoForm2/CustomTextField';
 
 type LenderRulesFormValueProps = {};
 

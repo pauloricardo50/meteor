@@ -92,8 +92,8 @@ const isReferredByOrganisation = ({ organisations, referredByOrganisation }) =>
 const isReferredByOrganisationUser = ({ organisationUsers, referredByUser }) =>
   organisationUsers.some(({ _id }) => referredByUser._id === _id);
 
-export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
-  if (!user) {
+export const getReferredBy = ({ user, proUser = {}, isAdmin, anonymous }) => {
+  if (anonymous || !user) {
     return { raw: null, label: '' };
   }
 

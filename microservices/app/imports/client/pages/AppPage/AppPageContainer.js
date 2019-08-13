@@ -50,7 +50,7 @@ export default compose(
     }
 
     const paramsQuery = new URLSearchParams(location.search);
-    const propertyId = paramsQuery.get('propertyId');
+    const propertyId = paramsQuery.get('property-id');
     setReferralId(paramsQuery);
 
     return { propertyId };

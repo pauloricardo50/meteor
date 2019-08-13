@@ -31,7 +31,7 @@
     h1 {
       vertical-align: middle;
 
-      > * {
+       > * {
         margin-right: 4px;
       }
     }
@@ -41,10 +41,12 @@
       align-items: flex-start;
       flex-direction: column;
       flex-grow: 1;
-    }
 
-    .left > * {
-      display: inline;
+      &-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
     }
 
     .status-label-dropdown {
@@ -60,11 +62,6 @@
       margin-top: 0;
     }
 
-    .icon-link {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-
     .single-loan-date-modifiers {
       display: flex;
       flex-direction: row;
@@ -72,7 +69,7 @@
 
       width: 100%;
 
-      > * {
+       > * {
         margin-right: 8px;
         padding: 8px;
       }
@@ -98,7 +95,7 @@
 
   margin: 32px;
 
-  > * {
+   > * {
     flex-grow: 0;
 
     margin-left: 8px;
@@ -135,34 +132,35 @@
 
   .top {
     display: flex;
-    margin-bottom: 40px;
     flex-wrap: wrap;
     justify-content: space-around;
+
+    margin-bottom: 40px;
     padding: 16px;
 
     .update-field {
       min-width: 200px;
     }
 
-    > * {
+     > * {
       margin-right: 8px;
     }
   }
 
   .structure-form {
-    margin-top: 40px;
-    width: 100%;
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
     align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    width: 100%;
+    margin-top: 40px;
   }
 
   .admin-note {
+    margin-top: 40px;
     h2 {
       margin: 0;
     }
-
-    margin-top: 40px;
   }
 }

@@ -20,9 +20,9 @@
 }
 
 .search-field {
-  width: 100%;
-
   font-size: inherit;
+
+  margin: 16px;
 }
 
 .search-input {
@@ -37,8 +37,4 @@
 
 .link {
   text-decoration: none;
-}
-
-.search-input {
-  padding-right: 20px;
 }

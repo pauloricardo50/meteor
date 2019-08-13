@@ -4,6 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
+import Box from 'core/components/Box';
 import UserDialogFormContainer from './UserDialogFormContainer';
 
 type UserAdderProps = {
@@ -12,6 +13,25 @@ type UserAdderProps = {
   createUser: Function,
   labels: Array<Object>,
 };
+
+export const userFormLayout = [
+  {
+    Component: Box,
+    title: <h4>Détails</h4>,
+    className: 'mb-32',
+    layout: [
+      { className: 'grid-2', fields: ['firstName', 'lastName'] },
+      'email',
+      'phoneNumbers',
+      'organisations',
+    ],
+  },
+  {
+    Component: Box,
+    title: <h4>Options</h4>,
+    fields: ['assignedEmployeeId', 'sendEnrollmentEmail'],
+  },
+];
 
 const UserAdder = ({
   schema,
@@ -41,6 +61,7 @@ const UserAdder = ({
         sendEnrollmentEmail: <T id="UserAdder.sendEnrollmentEmail" />,
       },
     }}
+    layout={userFormLayout}
   />
 );
 

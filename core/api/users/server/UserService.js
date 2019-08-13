@@ -6,19 +6,22 @@ import omit from 'lodash/omit';
 
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
-import LoanService from '../../loans/server/LoanService';
-import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
+import CollectionService from '../../helpers/CollectionService';
+import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
+import { roundRobinAdvisors } from './userServerContants';
 import Users from '../users';
 
-class UserService extends CollectionService {
-  constructor() {
+export class UserServiceClass extends CollectionService {
+  constructor({ employees }) {
     super(Users);
+    this.setupRoundRobin(employees);
   }
 
   get(userId) {
@@ -60,6 +63,8 @@ class UserService extends CollectionService {
 
     if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
       this.assignAdminToUser({ userId: newUserId, adminId });
+    } else if (!additionalData.assignedEmployeeId) {
+      this.setAssigneeForNewUser(newUserId);
     }
 
     if (sendEnrollmentEmail) {
@@ -319,6 +324,7 @@ class UserService extends CollectionService {
     const referOnly = propertyIds.length === 0
       && promotionIds.length === 0
       && properties.length === 0;
+
     if (referOnly) {
       return this.proReferUser({ user, proUserId, shareSolvency });
     }
@@ -328,6 +334,9 @@ class UserService extends CollectionService {
       user,
       proUserId: proUserId || invitedBy,
       adminId,
+      // Invitation will be sent by the propertyInvitationEmail or
+      // promotionInvitationEmail
+      sendInvitation: false,
     });
 
     let promises = [];
@@ -416,7 +425,10 @@ class UserService extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
-    organisationId = organisationId || this.getUserMainOrganisationId(proId);
+    if (!organisationId) {
+      const mainOrg = this.getUserMainOrganisation(proId);
+      organisationId = mainOrg && mainOrg._id;
+    }
 
     return this.update({
       userId,
@@ -482,22 +494,24 @@ class UserService extends CollectionService {
     });
   }
 
-  getUserMainOrganisationId(userId) {
-    const { organisations = [] } = this.fetchOne({
-      $filters: { _id: userId },
-      organisations: { _id: 1 },
+  getUserMainOrganisation(userId) {
+    const organisations = OrganisationService.fetch({
+      $filters: { userLinks: { $elemMatch: { _id: userId } } },
+      userLinks: 1,
+      name: 1,
     });
-    let mainOrganisationId = null;
+
+    let mainOrganisation = null;
     if (organisations.length === 1) {
-      mainOrganisationId = organisations[0]._id;
+      mainOrganisation = organisations[0];
     } else if (organisations.length > 1) {
-      mainOrganisationId = (
-        organisations.find(({ $metadata: { isMain } }) => isMain)
-        || organisations[0]
-      )._id;
+      mainOrganisation = organisations.find(({ userLinks }) => {
+        const userLink = userLinks.find(({ _id }) => _id === userId);
+        return userLink.isMain;
+      }) || organisations[0];
     }
 
-    return mainOrganisationId;
+    return mainOrganisation;
   }
 
   proSetShareCustomers({ userId, organisationId, shareCustomers }) {
@@ -508,6 +522,56 @@ class UserService extends CollectionService {
       metadata: { shareCustomers },
     });
   }
+
+  setupRoundRobin(employees = []) {
+    this.employees = employees
+      .map((email) => {
+        const employee = this.getByEmail(email);
+        if (employee) {
+          return employee._id;
+        }
+      })
+      .filter(x => x);
+  }
+
+  setAssigneeForNewUser(userId) {
+    const { roles, assignedEmployeeId } = this.fetchOne({
+      $filters: { _id: userId },
+      assignedEmployeeId: 1,
+      roles: 1,
+    });
+
+    if (assignedEmployeeId) {
+      return;
+    }
+    let newAssignee;
+
+    if (roles.includes(ROLES.USER)) {
+      const lastCreatedUser = this.fetchOne({
+        $filters: {
+          roles: ROLES.USER,
+          assignedEmployeeId: { $in: this.employees },
+        },
+        $options: { sort: { createdAt: -1 } },
+        assignedEmployeeId: 1,
+        createdAt: 1,
+      });
+
+      if (lastCreatedUser && lastCreatedUser.assignedEmployeeId) {
+        const index = this.employees.indexOf(lastCreatedUser.assignedEmployeeId);
+        if (index >= this.employees.length - 1) {
+          newAssignee = this.employees[0];
+        } else {
+          newAssignee = this.employees[index + 1];
+        }
+      } else {
+        // Assign the very first user
+        newAssignee = this.employees[0];
+      }
+    }
+
+    return this.update({ userId, object: { assignedEmployeeId: newAssignee } });
+  }
 }
 
-export default new UserService();
+export default new UserServiceClass({ employees: roundRobinAdvisors });

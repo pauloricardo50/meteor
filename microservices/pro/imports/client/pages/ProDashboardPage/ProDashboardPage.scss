@@ -10,8 +10,13 @@
 
   .buttons {
     display: flex;
-     > * {
+
+    > * {
       margin-right: 8px;
     }
+  }
+
+  .table-filter {
+    align-self: flex-start;
   }
 }

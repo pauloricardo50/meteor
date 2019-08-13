@@ -13,7 +13,7 @@ import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import { ROLES } from '../../userConstants';
-import UserService from '../UserService';
+import UserService, { UserServiceClass } from '../UserService';
 
 describe('UserService', function () {
   this.timeout(10000);
@@ -567,8 +567,8 @@ describe('UserService', function () {
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       })
-        .then(() => checkEmails(1))
-        .then(() => {
+        .then(() => checkEmails(2))
+        .then((emails) => {
           expect(() =>
             UserService.proInviteUser({
               user: userToInvite,
@@ -603,7 +603,10 @@ describe('UserService', function () {
         expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
         expect(loan.propertyIds[0]).to.equal('propertyId');
 
-        return checkEmails(2);
+        return checkEmails(2).then((emails) => {
+          expect(!!emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY)).to.equal(true);
+          expect(!!emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION)).to.equal(true);
+        });
       });
     });
 
@@ -778,14 +781,16 @@ describe('UserService', function () {
         user: userToInvite,
         propertyIds: ['propertyId'],
         proUserId: 'proId',
-      }).then(() => {
-        expect(() =>
-          UserService.proInviteUser({
-            user: userToInvite,
-            propertyIds: ['propertyId'],
-            proUserId: 'proId',
-          })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
-      });
+      })
+        .then(() => checkEmails(2))
+        .then(() => {
+          expect(() =>
+            UserService.proInviteUser({
+              user: userToInvite,
+              propertyIds: ['propertyId'],
+              proUserId: 'proId',
+            })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
+        });
     });
 
     it('invites existing users to a new promotion', () => {
@@ -827,6 +832,102 @@ describe('UserService', function () {
 
         return checkEmails(2);
       });
+    });
+  });
+
+  describe('round robin', () => {
+    const employees = ['a@e-potek.ch', 'b@e-potek.ch', 'c@e-potek.ch'];
+    let employeeIds = [];
+
+    beforeEach(() => {
+      employeeIds = employees.map(email =>
+        UserService.adminCreateUser({ options: { email }, role: ROLES.ADMIN }));
+    });
+
+    it('sets the first user to the first in the array', () => {
+      const service = new UserServiceClass({
+        employees,
+      });
+
+      const newUserId = service.adminCreateUser({
+        options: { email: '1@e-potek.ch' },
+      });
+
+      const { assignedEmployee } = service.fetchOne({
+        $filters: { _id: newUserId },
+        assignedEmployee: { email: 1 },
+      });
+
+      expect(assignedEmployee.email).to.equal(employees[0]);
+    });
+
+    it('sets the second user to the second in the array', () => {
+      const service = new UserServiceClass({
+        employees,
+      });
+
+      service.adminCreateUser({
+        options: { email: '1@e-potek.ch' },
+      });
+
+      const newUserId2 = service.adminCreateUser({
+        options: { email: '2@e-potek.ch' },
+      });
+
+      const { assignedEmployee } = service.fetchOne({
+        $filters: { _id: newUserId2 },
+        assignedEmployee: { email: 1 },
+      });
+
+      expect(assignedEmployee.email).to.equal(employees[1]);
+    });
+
+    it('loops back to first in array', () => {
+      const service = new UserServiceClass({
+        employees,
+      });
+
+      generator({
+        users: { assignedEmployeeId: employeeIds[2], _factory: 'user' },
+      });
+
+      const newUserId = service.adminCreateUser({
+        options: { email: '1@e-potek.ch' },
+      });
+
+      const { assignedEmployee } = service.fetchOne({
+        $filters: { _id: newUserId },
+        assignedEmployee: { email: 1 },
+      });
+
+      expect(assignedEmployee.email).to.equal(employees[0]);
+    });
+
+    it('ignores users assigned to people outside of employees list, and check latest one', () => {
+      const service = new UserServiceClass({
+        employees,
+      });
+
+      generator({
+        users: [
+          { _id: 'a', assignedEmployeeId: employeeIds[2], _factory: 'user' },
+          { _id: 'b', assignedEmployeeId: employeeIds[2], _factory: 'user' },
+          { _id: 'c', assignedEmployeeId: employeeIds[2], _factory: 'user' },
+          { _id: 'd', assignedEmployeeId: employeeIds[1], _factory: 'user' },
+          { _id: 'e', assignedEmployee: { _id: 'adminId', _factory: 'admin' } },
+        ],
+      });
+
+      const newUserId = service.adminCreateUser({
+        options: { email: '1@e-potek.ch' },
+      });
+
+      const { assignedEmployee } = service.fetchOne({
+        $filters: { _id: newUserId },
+        assignedEmployee: { email: 1 },
+      });
+
+      expect(assignedEmployee.email).to.equal(employees[2]);
     });
   });
 });

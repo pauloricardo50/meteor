@@ -15,7 +15,15 @@ export default class EventService {
     this.emmitter.emit(eventName, ...args);
   }
 
-  emitMethod({ name }, ...args) {
+  getBeforeMethodEventName(name) {
+    return `__before_${name}`;
+  }
+
+  emitBeforeMethod({ name }, ...args) {
+    this.emit(this.getBeforeMethodEventName(name), ...args);
+  }
+
+  emitAfterMethod({ name }, ...args) {
     this.emit(name, ...args);
   }
 
@@ -33,16 +41,45 @@ export default class EventService {
     ];
   }
 
-  addMethodListener(methods, listenerFunction) {
+  addBeforeMethodListener(methods, listenerFunction) {
     if (Array.isArray(methods)) {
-      methods.forEach(({ config: { name } }) => {
+      methods.forEach((method) => {
+        this.checkMethod(method);
+        const {
+          config: { name },
+        } = method;
+        this.addListener(this.getBeforeMethodEventName(name), listenerFunction);
+      });
+    } else {
+      this.checkMethod(methods);
+      const {
+        config: { name },
+      } = methods;
+      this.addListener(this.getBeforeMethodEventName(name), listenerFunction);
+    }
+  }
+
+  addAfterMethodListener(methods, listenerFunction) {
+    if (Array.isArray(methods)) {
+      methods.forEach((method) => {
+        this.checkMethod(method);
+        const {
+          config: { name },
+        } = method;
         this.addListener(name, listenerFunction);
       });
     } else {
+      this.checkMethod(methods);
       const {
         config: { name },
       } = methods;
       this.addListener(name, listenerFunction);
+    }
+  }
+
+  checkMethod(method) {
+    if (!method || !method.config) {
+      throw new Error('Method does not exist in EventService');
     }
   }
 

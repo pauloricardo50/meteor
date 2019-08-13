@@ -8,14 +8,12 @@ import {
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   requestLoanVerification,
   ({ params: { loanId } }) => {
-    console.log('listening!');
-    
     TaskService.insert({
       object: {
-        title: 'Vérifier dossier',
+        title: 'Vérification du dossier demandée',
         docId: loanId,
         collection: LOANS_COLLECTION,
       },
@@ -23,7 +21,7 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   [adminCreateUser, anonymousCreateUser],
   ({ result: userId }) => {
     if (userId) {
@@ -36,6 +34,14 @@ ServerEventService.addMethodListener(
         TaskService.insert({
           object: {
             title: 'Assigner un conseiller',
+            docId: userId,
+            collection: USERS_COLLECTION,
+          },
+        });
+      } else {
+        TaskService.insert({
+          object: {
+            title: 'Nouvel utilisateur: prendre contact',
             docId: userId,
             collection: USERS_COLLECTION,
           },

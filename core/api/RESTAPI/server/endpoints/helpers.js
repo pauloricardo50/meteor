@@ -66,9 +66,7 @@ export const checkAccessToUser = ({ user, proId }) => {
     && !organisations.some(({ users = [] }) =>
       users.some(({ _id }) => _id === user.referredByUserLink))
   ) {
-    throw new Meteor.Error(`User with email "${
-      user.emails[0].address
-    }" not found, or you don't have access to it.`);
+    throw new Meteor.Error(`User with email "${user.emails[0].address}" not found, or you don't have access to it.`);
   }
 };
 

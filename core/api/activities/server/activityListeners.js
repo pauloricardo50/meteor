@@ -5,7 +5,7 @@ import UserService from '../../users/server/UserService';
 import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
 
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
   ({ params: { loanId, promotionId }, context: { userId } }) => {
     const { name } = PromotionService.fetchOne({

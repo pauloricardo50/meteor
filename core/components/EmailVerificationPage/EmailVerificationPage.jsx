@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 import { injectIntl } from 'react-intl';
 import { analyticsVerifyEmail } from 'core/api/methods/index';
+import { getCookie } from 'core/utils/cookiesHelpers';
+import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 
 class EmailVerificationPage extends Component {
   componentDidMount() {
@@ -34,7 +36,7 @@ class EmailVerificationPage extends Component {
           message.success(msg, 2);
         });
 
-        analyticsVerifyEmail.run({});
+        analyticsVerifyEmail.run({ trackingId: getCookie(TRACKING_COOKIE) });
 
         history.push('/');
       }

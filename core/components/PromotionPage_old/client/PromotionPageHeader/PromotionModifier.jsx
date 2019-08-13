@@ -10,6 +10,7 @@ type PromotionModifierProps = {};
 
 const PromotionModifier = ({ promotion }: PromotionModifierProps) => (
   <AutoFormDialog
+    title={<T id="PromotionModifier.title" />}
     buttonProps={{ primary: true, label: <T id="general.modify" /> }}
     model={promotion}
     schema={BasePromotionSchema}

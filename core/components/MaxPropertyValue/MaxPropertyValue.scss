@@ -1,9 +1,27 @@
+$footer-height: 64px;
+
 .max-property-value {
   display: flex;
   align-self: center;
   flex-direction: column;
 
-  padding: 24px;
+  padding: 32px;
+
+  @include screen(small) {
+    padding: 16px;
+  }
+
+  @include screen(xsmall) {
+    padding: 8px;
+  }
+
+  &.simple {
+    align-self: unset;
+  }
+
+  h2 {
+    margin: 0;
+  }
 
   &-empty-state {
     display: flex;
@@ -27,12 +45,6 @@
 
       text-align: center !important;
     }
-  }
-
-  .mui-select {
-    width: calc(50% - 4px);
-    min-width: 160px;
-    max-width: 200px;
   }
 
   &-results {
@@ -79,6 +91,14 @@
       align-self: stretch;
       flex-wrap: wrap;
       justify-content: space-between;
+      margin-top: 16px;
+      align-items: center;
+
+      .mui-select {
+        width: calc(50% - 4px);
+        min-width: 160px;
+        max-width: 300px;
+      }
 
       p.locked-canton {
         font-size: 1.3rem;
@@ -92,7 +112,7 @@
       align-items: stretch;
       flex-direction: column;
 
-      margin: 32px 0;
+      margin: 16px 0 32px 0;
 
       .balance-sheet,
       .sums {
@@ -143,13 +163,98 @@
     button {
       margin-top: 16px;
     }
+
+    .recap-value {
+      font-size: 4em;
+      font-weight: bold;
+      margin: 64px 0 16px 0;
+
+      @include screen(small) {
+        font-size: 2em;
+      }
+
+      @include screen(med) {
+        margin: 32px 0 16px 0;
+        font-size: 3em;
+      }
+    }
+
+    .show-recap-button {
+      align-self: center;
+    }
+  }
+
+  &.blue {
+    .max-property-sharing-label {
+      color: white;
+    }
+
+    .icon {
+      color: white;
+    }
+  }
+
+  &-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+    height: $footer-height;
+
+    color: white;
+    background-color: $primary;
+
+    h2,
+    h3,
+    h4 {
+      color: white;
+
+      @include screen(small) {
+        font-size: 1.3rem;
+      }
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+    }
+
+    &.success {
+      color: white;
+      background-color: $success;
+    }
   }
 
   &.blue .max-property-sharing-label {
     color: white;
   }
 
+  &-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
+    .icon {
+      width: 100px;
+      height: 100px;
+      margin: 30px 0;
+    }
+
+    h4 {
+      max-width: 500px;
+      margin-bottom: 32px;
+    }
+  }
+
+  &-ready-title {
+    padding: 32px;
+  }
 }
 
 .max-property-sharing-toggle {

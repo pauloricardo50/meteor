@@ -228,7 +228,7 @@ anonymousCreateUser.setHandler((context, params) => {
   const userId = UserService.anonymousCreateUser(params);
 
   const analytics = new Analytics({ ...context, userId });
-  analytics.alias(params.trackingId);
+  analytics.identify(params.trackingId);
   analytics.track(EVENTS.USER_CREATED, {
     userId,
     origin: params.referralId ? 'referral' : 'organic',

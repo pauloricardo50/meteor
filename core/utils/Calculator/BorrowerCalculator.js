@@ -32,8 +32,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     initBorrowerCalculator(config) {
-      const middleware =
-        (config && config.borrowerMiddleware) || borrowerExtractorMiddleware;
+      const middleware = (config && config.borrowerMiddleware) || borrowerExtractorMiddleware;
       const middlewareManager = new MiddlewareManager(this);
       middlewareManager.applyToAllMethods([middleware]);
     }
@@ -41,7 +40,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getArrayValues({ borrowers, key, mapFunc }) {
       let sum = 0;
 
-      arrayify(borrowers).forEach(borrower => {
+      arrayify(borrowers).forEach((borrower) => {
         if (!borrower[key]) {
           return 0;
         }
@@ -61,15 +60,13 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           return obj;
         }
 
-        const bonusKeys = Object.keys(borrower).filter(
-          key =>
-            key.includes('bonus') &&
-            key !== 'bonusExists' &&
-            borrower[key] >= 0 &&
-            borrower[key] !== null,
-        );
+        const bonusKeys = Object.keys(borrower).filter(key =>
+          key.includes('bonus')
+            && key !== 'bonusExists'
+            && borrower[key] >= 0
+            && borrower[key] !== null);
 
-        bonusKeys.forEach(key => {
+        bonusKeys.forEach((key) => {
           const value = borrower[key];
 
           if (obj[key]) {
@@ -99,14 +96,13 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         const arr = bonusKeys
           .map(key => borrower[key])
           .filter(val =>
-            this.bonusAlgorithm === BONUS_ALGORITHMS.WEAK_AVERAGE
+            (this.bonusAlgorithm === BONUS_ALGORITHMS.WEAK_AVERAGE
               ? val > 0
-              : true,
-          );
+              : true));
 
         return (
-          acc +
-          this.getConsideredValue({
+          acc
+          + this.getConsideredValue({
             values: arr,
             history: this.bonusHistoryToConsider,
             weighting: this.bonusConsideration,
@@ -117,18 +113,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getConsideredValue({ values, history, weighting }) {
-      const valuesToConsider = values.slice(
-        Math.max(0, values.length - history),
-      );
+      const valuesToConsider = values.slice(Math.max(0, values.length - history));
       const sum = valuesToConsider.reduce((tot, val = 0) => tot + val, 0);
       return (weighting * sum) / valuesToConsider.length || 0;
     }
 
     getBorrowerCompletion({ loan, borrowers }) {
       return (
-        (this.getBorrowerFilesProgress({ loan, borrowers }).percent +
-          this.personalInfoPercent({ borrowers })) /
-        2
+        (this.getBorrowerFilesProgress({ loan, borrowers }).percent
+          + this.personalInfoPercent({ borrowers }))
+        / 2
       );
     }
 
@@ -274,9 +268,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getTotalFunds({ borrowers }) {
       return (
-        this.getFortune({ borrowers }) +
-        this.getThirdPartyFortune({ borrowers }) +
-        this.getInsuranceFortune({ borrowers })
+        this.getFortune({ borrowers })
+        + this.getThirdPartyFortune({ borrowers })
+        + this.getInsuranceFortune({ borrowers })
       );
     }
 
@@ -301,20 +295,19 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getRealEstateIncome({ borrowers }) {
-      const realEstateIncome =
-        this.getArrayValues({
-          borrowers,
-          key: 'realEstate',
-          mapFunc: ({ income = 0 }) => income,
-        }) * this.realEstateIncomeConsideration;
+      const realEstateIncome = this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: ({ income = 0 }) => income,
+      }) * this.realEstateIncomeConsideration;
 
       return realEstateIncome;
     }
 
     getRealEstateIncomeTotal({ borrowers }) {
       if (
-        this.realEstateIncomeAlgorithm ===
-        REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+        this.realEstateIncomeAlgorithm
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
       ) {
         return 0;
       }
@@ -352,8 +345,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
-        borrowerIncome +=
-          this.getRealEstateIncomeTotal({ borrowers: borrower }) || 0;
+        borrowerIncome
+          += this.getRealEstateIncomeTotal({ borrowers: borrower }) || 0;
         return total + borrowerIncome;
       }, 0);
 
@@ -382,7 +375,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     // personalInfoPercent - Determines the completion rate of the borrower's
     // personal information forms
     personalInfoPercent({ borrowers }) {
-      if (!borrowers || !borrowers.length) {
+      if (!borrowers || (Array.isArray(borrowers) && !borrowers.length)) {
         return 0;
       }
 
@@ -449,28 +442,26 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getBorrowerFormHash({ borrowers }) {
-      return getFormValuesHashMultiple(
-        arrayify(borrowers).reduce(
-          (arr, borrower) => [
-            ...arr,
-            {
-              formArray: getBorrowerFinanceArray({
-                borrowers: arrayify(borrowers),
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-            {
-              formArray: getBorrowerInfoArray({
-                borrowers: arrayify(borrowers),
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-          ],
-          [],
-        ),
-      );
+      return getFormValuesHashMultiple(arrayify(borrowers).reduce(
+        (arr, borrower) => [
+          ...arr,
+          {
+            formArray: getBorrowerFinanceArray({
+              borrowers: arrayify(borrowers),
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+          {
+            formArray: getBorrowerInfoArray({
+              borrowers: arrayify(borrowers),
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+        ],
+        [],
+      ));
     }
 
     sumValues({ borrowers, keys }) {
@@ -483,9 +474,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getNetFortune({ borrowers }) {
       return (
-        this.getTotalFunds({ borrowers }) +
-        this.getRealEstateFortune({ borrowers }) +
-        this.getOtherFortune({ borrowers })
+        this.getTotalFunds({ borrowers })
+        + this.getRealEstateFortune({ borrowers })
+        + this.getOtherFortune({ borrowers })
       );
     }
 
@@ -514,7 +505,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         .map(({ realEstate }) => realEstate)
         .reduce((arr, realEstate) => [...arr, ...realEstate], []);
 
-      return allRealEstate.map(realEstate => {
+      return allRealEstate.map((realEstate) => {
         const { income } = realEstate;
         const expenses = this.getRealEstateCost(realEstate) * 12;
 
@@ -550,22 +541,18 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     // }
     getAllExpenses({ borrowers }) {
       if (
-        this.realEstateIncomeAlgorithm ===
-        REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+        this.realEstateIncomeAlgorithm
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
       ) {
         const deltas = this.getRealEstateDeltas({
           borrowers,
         });
         return {
           // Negative deltas should be made positive so they can be added to expenses
-          [EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE]: -this.sumArray(
-            deltas.filter(delta => delta < 0),
-          ),
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE]: -this.sumArray(deltas.filter(delta => delta < 0)),
           // Positive deltas should be made negative so they can be subtracted from income,
           // and therefore increase income
-          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: -this.sumArray(
-            deltas.filter(delta => delta > 0),
-          ),
+          [EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE]: -this.sumArray(deltas.filter(delta => delta > 0)),
           ...this.getGroupedExpenses({ borrowers }),
         };
       }
@@ -624,10 +611,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       const expensesBySide = Object.keys(expenses)
         .filter(expenseType => !this.expenseTypeIsDelta(expenseType))
-        .filter(expenseType => {
-          const subtractExpenseTypeFromIncome = this.expensesSubtractFromIncome.includes(
-            expenseType,
-          );
+        .filter((expenseType) => {
+          const subtractExpenseTypeFromIncome = this.expensesSubtractFromIncome.includes(expenseType);
           return toSubtractFromIncome
             ? subtractExpenseTypeFromIncome
             : !subtractExpenseTypeFromIncome;
@@ -642,8 +627,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       );
 
       if (
-        this.realEstateIncomeAlgorithm ===
-        REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+        this.realEstateIncomeAlgorithm
+        === REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
       ) {
         return this.groupRealEstateDeltas({
           groupedExpenses,
@@ -694,9 +679,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getCommentsForExpenseType({ borrowers, type }) {
       return arrayify(borrowers).reduce((comments, { expenses = [] }) => {
-        const expensesOfType = expenses.filter(
-          ({ description }) => description === type,
-        );
+        const expensesOfType = expenses.filter(({ description }) => description === type);
         return [
           ...comments,
           ...expensesOfType.map(({ comment }) => comment),
@@ -706,9 +689,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getCommentsForOtherIncomeType({ borrowers, type }) {
       return arrayify(borrowers).reduce((comments, { otherIncome = [] }) => {
-        const otherIncomeOfType = otherIncome.filter(
-          ({ description }) => description === type,
-        );
+        const otherIncomeOfType = otherIncome.filter(({ description }) => description === type);
         return [
           ...comments,
           ...otherIncomeOfType.map(({ comment }) => comment),

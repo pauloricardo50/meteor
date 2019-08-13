@@ -309,31 +309,31 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
-        promotions: {
-          address: 1,
-          contacts: 1,
-          documents: { promotionImage: 1 },
-          lenderOrganisationLink: 1,
+      promotions: {
+        address: 1,
+        contacts: 1,
+        documents: { promotionImage: 1 },
+        lenderOrganisationLink: 1,
+        name: 1,
+        status: 1,
+        type: 1,
+        canton: 1,
+        users: {
+          _id: 1,
           name: 1,
-          status: 1,
-          type: 1,
-          canton: 1,
-          users: {
-            _id: 1,
-            name: 1,
-            email: 1,
-            phoneNumber: 1,
-            organisations: { users: { title: 1 } },
-          },
-          loans: {
-            _id: 1,
-            $filter({ filters, params: { loanId } }) {
-              filters.userId = Meteor.userId();
-              filters._id = loanId;
-            },
+          email: 1,
+          phoneNumber: 1,
+          organisations: { users: { title: 1 } },
+        },
+        loans: {
+          _id: 1,
+          $filter({ filters, params: { loanId } }) {
+            filters.userId = Meteor.userId();
+            filters._id = loanId;
           },
         },
-      }
+      },
+    }
     : {}),
 });
 
@@ -398,11 +398,27 @@ export const proLoans = () => ({
   },
   hasPromotion: 1,
   hasProProperty: 1,
-  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
-  structure: 1,
   maxPropertyValue: userMaxPropertyValue,
+  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
+  referralId: 1,
   residenceType: 1,
   shareSolvency: 1,
+  structure: 1,
+});
+
+export const proLoanWithRevenues = () => ({
+  anonymous: 1,
+  promotionOptions: { value: 1 },
+  properties: { totalValue: 1, value: 1 },
+  revenues: { amount: 1 },
+  selectedStructure: 1,
+  status: 1,
+  structures: {
+    id: 1,
+    propertyValue: 1,
+    propertyId: 1,
+    promotionOptionId: 1,
+  },
 });
 
 // //
@@ -683,12 +699,12 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   promotionLoan: { _id: 1, name: 1 },
   ...(withFilteredLoan
     ? {
-        loans: {
-          $filter({ filters, params: { loanId } }) {
-            filters._id = loanId;
-          },
+      loans: {
+        $filter({ filters, params: { loanId } }) {
+          filters._id = loanId;
         },
-      }
+      },
+    }
     : {}),
 });
 
@@ -769,6 +785,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
   yearlyExpenses: 1,
@@ -777,6 +794,7 @@ export const fullProperty = ({ withSort } = {}) => ({
 
 export const adminProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  loanCount: 1,
   useOpenGraph: 1,
 });
 
@@ -801,9 +819,7 @@ export const promotionProperty = () => ({
 });
 
 export const userProperty = ({ withSort } = {}) => {
-  const obj = {
-    ...fullProperty({ withSort }),
-  };
+  const obj = { ...fullProperty({ withSort }) };
   delete obj.users;
   return obj;
 };
@@ -813,11 +829,12 @@ export const proPropertySummary = () => ({
   city: 1,
   status: 1,
   totalValue: 1,
-  loans: { _id: 1 },
+  loanCount: 1,
 });
 
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  loanCount: 1,
   useOpenGraph: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
@@ -901,7 +918,7 @@ export const adminUser = () => ({
   assignedEmployee: simpleUser(),
   assignedEmployeeCache: 1,
   promotions: { name: 1, status: 1 },
-  proProperties: { address1: 1, status: 1 },
+  proProperties: { address1: 1, status: 1, loanCount: 1, totalValue: 1 },
   referredByUser: { name: 1, organisations: { name: 1 } },
   referredByOrganisation: { name: 1 },
   referredByOrganisationLink: 1,
@@ -944,13 +961,16 @@ export const proUser = () => ({
 // //
 export const revenue = () => ({
   amount: 1,
-  approximation: 1,
   createdAt: 1,
   description: 1,
   expectedAt: 1,
+  loan: { name: 1 },
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
+  secondaryType: 1,
+  sourceOrganisationLink: 1,
+  sourceOrganisation: { name: 1 },
   status: 1,
   type: 1,
 });

@@ -89,6 +89,18 @@
     margin-top: 2em;
     margin-right: 0;
     margin-left: 0;
+
+    img {
+      height: auto;
+    }
+
+    &.aligncenter {
+      text-align: center;
+    }
+
+    &.alignright {
+      text-align: right;
+    }
   }
 
   figcaption {

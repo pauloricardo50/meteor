@@ -8,7 +8,7 @@ const writePullDBTmuxinator = ({
   mongoPort,
   environment,
   sshId,
-  toLocalPort = '5001',
+  toLocalPort = '5501',
 }) => {
   return writeYAML({
     file: `${__dirname}/ssh-tunnel-${sshId}.yml`,

@@ -22,15 +22,13 @@ const options = interestRates =>
         type,
         id: averageRate,
         label: (
-          <span>
-            <T
-              id="Widget1MonthlyInterests.optionLabel"
-              values={{
-                type: <T id={`InterestsTable.${type}`} />,
-                rate: <Percent value={averageRate} />,
-              }}
-            />
-          </span>
+          <T
+            id="Widget1MonthlyInterests.optionLabel"
+            values={{
+              type: <T id={`InterestsTable.${type}`} />,
+              rate: <Percent value={averageRate} />,
+            }}
+          />
         ),
       };
     });

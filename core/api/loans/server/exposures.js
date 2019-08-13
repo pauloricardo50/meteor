@@ -1,6 +1,7 @@
 import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import UserService from '../../users/server/UserService';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
@@ -17,6 +18,7 @@ import {
   proPropertyLoans,
   proReferredByLoans,
   userLoans,
+  proLoansAggregate,
 } from '../queries';
 import { LOAN_STATUS } from '../loanConstants';
 import {
@@ -172,10 +174,12 @@ exposeQuery({
         userId: providedUserId,
         fetchOrganisationLoans,
         organisationId,
+        promotionId,
+        propertyId,
       } = params;
       params.calledByUserId = userId;
 
-      if (SecurityService.isUserAdmin(userId) && providedUserId) {
+      if (providedUserId && SecurityService.isUserAdmin(userId)) {
         params.userId = providedUserId;
       } else {
         params.userId = userId;
@@ -207,6 +211,7 @@ exposeQuery({
       calledByUserId: String,
       organisationId: Match.Maybe(String),
       fetchOrganisationLoans: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
   cacher: {
@@ -225,10 +230,7 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
       SecurityService.promotions.isAllowedToView({ userId, promotionId });
     },
-    validateParams: {
-      promotionId: String,
-      userId: String,
-    },
+    validateParams: { promotionId: String, userId: String },
   },
   resolver: ({ userId, promotionId }) =>
     proPromotionLoansResolver({ calledByUserId: userId, promotionId }),
@@ -243,10 +245,7 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
       SecurityService.properties.isAllowedToView({ propertyId, userId });
     },
-    validateParams: {
-      propertyId: String,
-      userId: String,
-    },
+    validateParams: { propertyId: String, userId: String },
   },
   resolver: ({ userId, propertyId }) =>
     proPropertyLoansResolver({ calledByUserId: userId, propertyId }),
@@ -265,12 +264,44 @@ exposeQuery({
       }
       params.calledByUserId = userId;
     },
-    validateParams: {
-      userId: String,
-      calledByUserId: String,
-    },
+    validateParams: { userId: String, calledByUserId: String },
   },
   resolver: proReferredByLoansResolver,
+});
+
+exposeQuery({
+  query: proLoansAggregate,
+  overrides: {
+    firewall(userId, params) {
+      let organisation;
+      if (!SecurityService.isUserAdmin(userId)) {
+        SecurityService.checkUserIsPro(userId);
+
+        const { organisationId } = params;
+        organisation = OrganisationService.fetchOne({
+          $filters: { _id: organisationId, 'userLinks._id': userId },
+          userLinks: 1,
+        });
+
+        if (!organisation) {
+          SecurityService.handleUnauthorized('Not allowed to access this organisation');
+        }
+      }
+
+      params.userIds = organisation.userLinks
+        .filter(({ isMain }) => isMain)
+        .map(({ _id }) => _id);
+    },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { organisationId, userIds } }) => {
+        filters.$or = [
+          { 'userCache.referredByOrganisationLink': organisationId },
+          { referralId: { $in: userIds } },
+        ];
+      };
+    },
+    validateParams: { organisationId: String, userIds: Match.Maybe([String]) },
+  },
 });
 
 exposeQuery({

@@ -26,7 +26,8 @@
       "admin": "https://admin.e-potek.ch",
       "app": "https://app.e-potek.ch",
       "pro": "https://pro.e-potek.ch",
-      "www": "https://www.e-potek.ch"
+      "www": "https://www.e-potek.ch",
+      "backend": "https://backend.e-potek.ch"
     }
   },
   "mandrill": {
@@ -51,6 +52,10 @@
     "pro": {
       "appId": "LahXKo9AFBp8pnQ2f",
       "appSecret": "404c2df5-178c-4404-b43f-724ce97abf3f"
+    },
+    "backend": {
+      "appId": "YJx7afbGERaZjdJ5c",
+      "appSecret": "77ef8de4-18f8-452b-acfc-066f5c9d2312"
     }
   },
   "storage": {
@@ -74,5 +79,9 @@
     "debug": false,
     "overridePublishFunction": true
   },
-  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I"
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I",
+  "mixpanel": {
+    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
+    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  }
 }

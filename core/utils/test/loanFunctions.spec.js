@@ -73,6 +73,35 @@ describe('Loan functions', () => {
         structures: [],
       })).to.deep.equal(undefined);
     });
+
+    it('formats the promotionOption properly', () => {
+      expect(formatLoanWithStructure({
+        promotionOptions: [
+          {
+            _id: 'id',
+            value: 100,
+            promotionLots: [
+              { properties: [{ landValue: 50, constructionValue: 80 }] },
+            ],
+          },
+        ],
+        selectedStructure: 'test',
+        structures: [{ id: 'test', promotionOptionId: 'id' }],
+      })).to.deep.include({
+        id: 'test',
+        promotionOptionId: 'id',
+        property: {
+          _id: 'id',
+          value: 100,
+          totalValue: 100,
+          landValue: 50,
+          constructionValue: 80,
+          promotionLots: [
+            { properties: [{ landValue: 50, constructionValue: 80 }] },
+          ],
+        },
+      });
+    });
   });
 
   describe('nextDueTaskReducer', () => {
