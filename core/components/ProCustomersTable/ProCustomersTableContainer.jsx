@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps, withProps } from 'recompose';
+import { compose, mapProps, withProps, withState } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -10,7 +10,7 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 import LoanProgress from 'core/components/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
@@ -90,6 +90,9 @@ export default compose(
       promotionIds: promotions.map(({ _id }) => _id),
     };
   }),
+  withState('status', 'setStatus', {
+    $in: Object.values(LOAN_STATUS).filter(s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST),
+  }),
   withSmartQuery({
     query: proLoans,
     params: ({
@@ -97,10 +100,12 @@ export default compose(
       promotionIds,
       proUser: { _id: userId },
       isAdmin = false,
+      status,
     }) => ({
       ...(isAdmin ? { userId } : {}),
       promotionId: { $in: promotionIds },
       propertyId: { $in: propertyIds },
+      status,
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',
