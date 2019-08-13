@@ -1,1 +1,0 @@
-{"code":"!function(){var a=Package[\"ddp-client\"].DDP,e;Package._define(\"livedata\",{DDP:a,LivedataTest:void 0})}();","sourcemap":"{\"version\":3,\"sources\":[\"packages/livedata.js\"],\"names\":[\"DDP\",\"Package\",\"LivedataTest\",\"_define\"],\"mappings\":\"CAUA,WAGA,IAAIA,EAAMC,QAAQ,cAAcD,IAG5BE,EAKJD,QAAQE,QAAQ,YACdH,IAAKA,EACLE,kBAPEA,IANJ\"}","minifier":"terser"}
