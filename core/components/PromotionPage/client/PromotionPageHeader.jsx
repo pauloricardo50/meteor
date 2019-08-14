@@ -34,7 +34,7 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
         <div className="promotion-page-header-text">
           <h4>
             {address1}
-,
+            {', '}
             {zipCode}
             {' '}
             {city}

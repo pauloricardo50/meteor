@@ -1,0 +1,63 @@
+.construction-timeline {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-radius: 8px;
+
+  &-item {
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    background-color: $primary;
+    color: white;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @include screen(med) {
+        padding: 8px;
+      }
+    }
+
+    .line {
+      flex-grow: 1;
+      height: 1px;
+      background-color: white;
+    }
+
+    h4,
+    h5 {
+      color: white;
+      margin: 0;
+    }
+
+    h5 {
+      margin-bottom: 8px;
+    }
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: white;
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+  }
+
+  tr:last-of-type {
+    th:first-of-type .construction-timeline-item {
+      border-bottom-left-radius: $border-radius;
+    }
+
+    th:last-of-type .construction-timeline-item {
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+}

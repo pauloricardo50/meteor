@@ -100,6 +100,7 @@
 
     .promotion-timeline {
       align-self: stretch;
+      overflow-x: scroll;
     }
 
     .mui-table {
@@ -111,6 +112,14 @@
 .promotion-lot-detail {
   display: flex;
   flex-direction: column;
+
+  section {
+    margin-bottom: 24px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 
   .top {
     display: flex;
@@ -149,6 +158,37 @@
         width: 32px;
         height: 32px;
         margin-right: 8px;
+      }
+    }
+  }
+
+  .promotion-lot-timeline {
+    border: 1px solid $border-grey;
+    border-radius: $border-radius;
+
+    .construction-timeline-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border-right: 1px solid $border-grey;
+      border-top-right-radius: 0;
+
+      h4 {
+        margin: 0;
+      }
+
+      &.end {
+        align-items: flex-end;
+      }
+    }
+
+    th:last-of-type .construction-timeline-header {
+      border-width: 0;
+    }
+
+    .construction-timeline-item {
+      h4 {
+        margin-bottom: 8px;
       }
     }
   }

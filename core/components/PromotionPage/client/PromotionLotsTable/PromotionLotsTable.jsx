@@ -47,6 +47,7 @@ const PromotionLotsTable = ({
             <T id="general.close" />
           </Button>
         )}
+        fullWidth
         maxWidth={false}
         onClose={() => setPromotionLotModal()}
       >
