@@ -1,15 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { compose, withProps, withStateHandlers } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import {
   proPromotionLots,
   appPromotionLots,
 } from 'core/api/promotionLots/queries';
-import { createRoute } from '../../../../utils/routerUtils';
 import T, { Money } from '../../../Translation';
 import LotChip from './LotChip';
 import PromotionLotSelector from './PromotionLotSelector';
@@ -77,101 +75,112 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       label: <T id={`PromotionPage.lots.${column.id}`} />,
     }));
 
-const makeMapProPromotionLot = ({ history, promotionId }) => ({
-  _id: promotionLotId,
-  name,
-  status,
-  lots,
-  promotionOptions,
-  value,
-  attributedTo,
-}) => ({
-  id: promotionLotId,
-  columns: [
+const makeMapProPromotionLot = ({ setPromotionLotModal }) => (promotionLot) => {
+  const {
+    _id: promotionLotId,
     name,
-    {
-      raw: status,
-      label: (
-        <StatusLabel
-          status={status}
-          collection={PROMOTION_LOTS_COLLECTION}
-          key="status"
-        />
-      ),
-    },
+    status,
+    lots,
+    promotionOptions,
     value,
-    {
-      raw: lots && lots.length,
-      label: (
-        <div className="lot-chips">
-          {lots && lots.map(lot => <LotChip lot={lot} key={lot._id} />)}
-        </div>
-      ),
-    },
-    promotionOptions.length,
-    attributedTo && attributedTo.user.name,
-  ],
-});
+    attributedTo,
+  } = promotionLot;
 
-const makeMapPromotionLot = ({
-  history,
-  promotionId,
+  return {
+    id: promotionLotId,
+    columns: [
+      name,
+      {
+        raw: status,
+        label: (
+          <StatusLabel
+            status={status}
+            collection={PROMOTION_LOTS_COLLECTION}
+            key="status"
+          />
+        ),
+      },
+      value,
+      {
+        raw: lots && lots.length,
+        label: (
+          <div className="lot-chips">
+            {lots && lots.map(lot => <LotChip lot={lot} key={lot._id} />)}
+          </div>
+        ),
+      },
+      promotionOptions.length,
+      attributedTo && attributedTo.user.name,
+    ],
+    handleClick: () => setPromotionLotModal(promotionLotId),
+  };
+};
+
+const makeMapAppPromotionLot = ({
+  setPromotionLotModal,
   loan: { _id: loanId, promotionOptions },
   isALotAttributedToMe,
   promotionStatus,
-}) => ({ _id: promotionLotId, name, status, reducedStatus, lots, value }) => ({
-  id: promotionLotId,
-  columns: [
+}) => (promotionLot) => {
+  const {
+    _id: promotionLotId,
     name,
-    {
-      raw: status,
-      label: (
-        <StatusLabel
-          status={reducedStatus}
-          collection={PROMOTION_LOTS_COLLECTION}
-        />
-      ),
-    },
-    reducedStatus === PROMOTION_LOT_STATUS.SOLD ? 0 : value,
-    {
-      raw: lots && lots.length,
-      label: (
-        <div className="lot-chips">
-          {lots && lots.map(lot => <LotChip lot={lot} key={lot._id} />)}
+    status,
+    reducedStatus,
+    lots,
+    value,
+  } = promotionLot;
+
+  return {
+    id: promotionLotId,
+    columns: [
+      name,
+      {
+        raw: status,
+        label: (
+          <StatusLabel
+            status={reducedStatus}
+            collection={PROMOTION_LOTS_COLLECTION}
+          />
+        ),
+      },
+      reducedStatus === PROMOTION_LOT_STATUS.SOLD ? 0 : value,
+      {
+        raw: lots && lots.length,
+        label: (
+          <div className="lot-chips">
+            {lots && lots.map(lot => <LotChip lot={lot} key={lot._id} />)}
+          </div>
+        ),
+      },
+      !isALotAttributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
+        <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
+          <PromotionLotSelector
+            promotionLotId={promotionLotId}
+            promotionOptions={promotionOptions}
+            loanId={loanId}
+            disabled={
+              isLotAttributedToMe({ promotionOptions, promotionLotId })
+              || status !== PROMOTION_LOT_STATUS.AVAILABLE
+            }
+          />
         </div>
       ),
-    },
-    !isALotAttributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
-      <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
-        <PromotionLotSelector
-          promotionLotId={promotionLotId}
-          promotionOptions={promotionOptions}
-          loanId={loanId}
-          disabled={
-            isLotAttributedToMe({ promotionOptions, promotionLotId })
-            || status !== PROMOTION_LOT_STATUS.AVAILABLE
-          }
-        />
-      </div>
-    ),
-  ].filter(x => x !== false),
+    ].filter(x => x !== false),
+    handleClick: () => setPromotionLotModal(promotionLotId),
+  };
+};
 
-  handleClick: () =>
-    history.push(createRoute(
-      '/loans/:loanId/promotions/:promotionId/promotionLots/:promotionLotId',
-      {
-        loanId,
-        promotionId,
-        promotionLotId,
-      },
-    )),
-});
-
-const addState = withState('status', 'setStatus', undefined);
+const addState = withStateHandlers(
+  {},
+  {
+    setStatus: () => status => ({ status }),
+    setPromotionLotModal: () => promotionLotModal => ({ promotionLotModal }),
+  },
+);
 
 export const ProPromotionLotsTableContainer = compose(
   addState,
-  withRouter,
   withSmartQuery({
     query: proPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
@@ -180,15 +189,14 @@ export const ProPromotionLotsTableContainer = compose(
     }),
     dataName: 'promotionLots',
   }),
-  withProps(({ promotionLots, promotion: { _id: promotionId }, history }) => ({
-    rows: promotionLots.map(makeMapProPromotionLot({ history, promotionId })),
+  withProps(({ promotionLots, setPromotionLotModal }) => ({
+    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal })),
     columnOptions: proColumnOptions,
   })),
 );
 
 export const AppPromotionLotsTableContainer = compose(
   addState,
-  withRouter,
   withSmartQuery({
     query: appPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
@@ -199,16 +207,15 @@ export const AppPromotionLotsTableContainer = compose(
   }),
   withProps(({
     promotionLots,
-    promotion: { _id: promotionId, status: promotionStatus },
-    history,
+    promotion: { status: promotionStatus },
+    setPromotionLotModal,
     loan,
   }) => {
     const isALotAttributedToMe = isAnyLotAttributedToMe(promotionLots);
 
     return {
-      rows: promotionLots.map(makeMapPromotionLot({
-        history,
-        promotionId,
+      rows: promotionLots.map(makeMapAppPromotionLot({
+        setPromotionLotModal,
         loan,
         isALotAttributedToMe,
         promotionStatus,

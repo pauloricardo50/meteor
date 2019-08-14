@@ -93,7 +93,8 @@
     flex-direction: column;
     align-items: flex-start;
 
-    button, .mui-table {
+    button,
+    .mui-table {
       margin-top: 24px;
     }
 
@@ -103,6 +104,52 @@
 
     .mui-table {
       align-self: stretch;
+    }
+  }
+}
+
+.promotion-lot-detail {
+  display: flex;
+  flex-direction: column;
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+
+    .recap {
+      min-width: 400px;
+
+      @include screen(med) {
+        min-width: 300px;
+      }
+    }
+  }
+
+  .promotion-lots-manager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .document-download-list {
+    justify-content: flex-start;
+    margin: 0;
+
+    .document {
+      padding: 16px;
+      width: unset;
+      flex-direction: row;
+      align-items: center;
+
+      p {
+        margin: 0;
+      }
+
+      svg {
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+      }
     }
   }
 }
