@@ -47,7 +47,6 @@ const PromotionLotPage = ({
   const { lots: allLots } = promotion;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
-  console.log('promotionLot:', promotionLot)
 
   return (
     <div>

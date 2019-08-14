@@ -1,22 +1,41 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React, { useContext } from 'react';
 
+import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import T from '../../../Translation';
 import DocumentDownloadList from '../../../DocumentDownloadList';
 import PromotionPermissionsContext from '../PromotionPermissions';
 import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
+import PromotionLotLoansTable from './PromotionLotLoansTable';
 
 type PromotionLotDetailProps = {};
+
+const displayPromotionLotLoansTable = ({ canSeeCustomers }) => {
+  if (Meteor.microservice === 'pro') {
+    return canSeeCustomers;
+  }
+
+  return Meteor.microservice === 'admin';
+};
 
 const PromotionLotDetail = ({
   promotionLot,
   promotion,
 }: PromotionLotDetailProps) => {
-  const { lots, _id: promotionLotId, status, documents } = promotionLot;
+  const {
+    lots,
+    _id: promotionLotId,
+    status,
+    documents,
+    promotionOptions,
+  } = promotionLot;
   const { lots: allLots, constructionTimeline, signingDate } = promotion;
-  const { canModifyLots } = useContext(PromotionPermissionsContext);
+  const { canModifyLots, canSeeCustomers } = useContext(PromotionPermissionsContext);
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <div className="promotion-lot-detail">
@@ -49,12 +68,24 @@ const PromotionLotDetail = ({
       {constructionTimeline && constructionTimeline.length > 0 && (
         <section>
           <h4>
-            <T id="PromotionLotPage.manageLot" />
+            <T id="PromotionPage.timeline" />
           </h4>
           <PromotionLotTimeline
             constructionTimeline={constructionTimeline}
             signingDate={signingDate}
             promotionLot={promotionLot}
+          />
+        </section>
+      )}
+      {displayPromotionLotLoansTable({ canSeeCustomers }) && (
+        <section>
+          <h4>
+            <T id="PromotionLotPage.loans" />
+          </h4>
+          <PromotionLotLoansTable
+            promotionOptions={promotionOptions}
+            promotionLot={promotionLot}
+            currentUser={currentUser}
           />
         </section>
       )}

@@ -4,6 +4,7 @@
   "PromotionPage.timeline": "Avancement des travaux",
   "PromotionTimelineHeader.start": "Début des travaux: {date}",
   "PromotionTimelineHeader.end": "Fin des travaux: {date}",
+  "PromotionLotPage.loans": "Acquéreurs intéressés",
   "PromotionLotPage.downloads": "Téléchargements",
   "Forms.signingDate": "Date de signature",
   "PromotionAdministration.buttonLabel": "Administration",

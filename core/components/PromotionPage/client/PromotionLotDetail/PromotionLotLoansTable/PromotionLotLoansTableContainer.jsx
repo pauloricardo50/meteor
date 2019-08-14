@@ -4,16 +4,19 @@ import { compose, withProps, mapProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
-import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import { proPromotionOptions } from '../../api/promotionOptions/queries';
-import { getUserNameAndOrganisation } from '../../api/helpers';
-import { LOANS_COLLECTION, USERS_COLLECTION } from '../../api/constants';
-import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
-import T from '../Translation';
-import { CollectionIconLink } from '../IconLink';
-import LoanProgress from '../LoanProgress';
-import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
-import StatusLabel from '../StatusLabel';
+import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
+import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
+import { getUserNameAndOrganisation } from '../../../../../api/helpers';
+import {
+  LOANS_COLLECTION,
+  USERS_COLLECTION,
+} from '../../../../../api/constants';
+import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
+import T from '../../../../Translation';
+import { CollectionIconLink } from '../../../../IconLink';
+import LoanProgress from '../../../../LoanProgress';
+import LoanProgressHeader from '../../../../LoanProgress/LoanProgressHeader';
+import StatusLabel from '../../../../StatusLabel';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 
