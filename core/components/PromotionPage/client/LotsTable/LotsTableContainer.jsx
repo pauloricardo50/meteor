@@ -1,5 +1,6 @@
 import React from 'react';
 import { compose, withProps } from 'recompose';
+import { scroller } from 'react-scroll';
 
 import withHider from 'core/containers/withHider';
 import T, { Money } from '../../../Translation';
@@ -63,11 +64,23 @@ const makeMapAdditionalLot = ({ canModifyLots }) => (lot) => {
   };
 };
 
+const scrollToAdditionalLotsTable = () => {
+  scroller.scrollTo('additional-lots-table', {
+    smooth: true,
+    delay: 200,
+    duration: 500,
+    offset: -50,
+  });
+};
+
 export default compose(
   withHider(hide => ({
     style: { alignSelf: 'center' },
     label: hide ? 'Afficher lots annexes' : 'Masquer lots annexes',
     primary: true,
+    callback: (nextHide) => {
+      if (!nextHide) scrollToAdditionalLotsTable();
+    },
   })),
   withProps(({ promotion: { lots }, canModifyLots }) => ({
     rows: lots.map(makeMapAdditionalLot({ canModifyLots })),

@@ -28,7 +28,7 @@ const AdditionalLotsTable = ({
   columnOptions,
   rows,
   handleClick,
-  canRemoveLots
+  canRemoveLots,
 }: AdditionalLotsTableProps) =>
   (promotion.lots && promotion.lots.length > 0 ? (
     <div className="additional-lots">

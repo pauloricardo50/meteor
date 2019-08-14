@@ -1,5 +1,6 @@
 // @flow
 import React, { useContext } from 'react';
+import { Element } from 'react-scroll';
 
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import T from '../../Translation';
@@ -25,6 +26,7 @@ const PromotionPageOverview = ({
   return (
     <div className="promotion-page-overview animated fadeIn">
       {canChangeTimeline && <PromotionTimelineForm promotion={promotion} />}
+
       {constructionTimeline && constructionTimeline.length > 0 && (
         <>
           <h3>
@@ -38,6 +40,7 @@ const PromotionPageOverview = ({
           </div>
         </>
       )}
+
       {isUser ? (
         <AppPromotionLotsTable
           promotion={promotion}
@@ -47,7 +50,10 @@ const PromotionPageOverview = ({
       ) : (
         <ProPromotionLotsTable promotion={promotion} className="card1" />
       )}
-      <LotsTable promotion={promotion} className="card1" />
+
+      <Element name="additional-lots-table" className="additional-lots-table">
+        <LotsTable promotion={promotion} className="card1" />
+      </Element>
     </div>
   );
 };

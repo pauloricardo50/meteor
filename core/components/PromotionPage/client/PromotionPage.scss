@@ -103,8 +103,14 @@
       overflow-x: scroll;
     }
 
-    .mui-table {
+    .mui-table,
+    .additional-lots-table {
       align-self: stretch;
+    }
+
+    .additional-lots-table {
+      display: flex;
+      flex-direction: column;
     }
   }
 
@@ -119,6 +125,7 @@
       flex-direction: column;
       align-items: center;
       margin-bottom: 16px;
+      padding: 32px;
 
       &-wrapper {
         width: 200px;
