@@ -44,6 +44,7 @@ const Dropdown = ({ handleOpen, promotionId, promotions }) => (
       primary: true,
       raised: true,
     }}
+    noWrapper
   />
 );
 

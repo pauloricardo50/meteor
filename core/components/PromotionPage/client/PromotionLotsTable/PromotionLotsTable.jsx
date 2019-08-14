@@ -17,6 +17,7 @@ const PromotionLotsTable = ({
   columnOptions,
   status,
   setStatus,
+  ...props
 }: PromotionLotsTableProps) => (
   <>
     <h3 className="text-center">
@@ -29,7 +30,7 @@ const PromotionLotsTable = ({
       id="status"
       label="Statut"
     />
-    <Table rows={rows} columnOptions={columnOptions} />
+    <Table rows={rows} columnOptions={columnOptions} {...props} />
   </>
 );
 

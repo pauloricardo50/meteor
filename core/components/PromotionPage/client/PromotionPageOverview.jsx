@@ -24,9 +24,9 @@ const PromotionPageOverview = ({
       {canChangeTimeline && <PromotionTimelineForm promotion={promotion} />}
       <PromotionTimeline promotion={promotion} />
       {isUser ? (
-        <AppPromotionLotsTable promotion={promotion} loan={loan} />
+        <AppPromotionLotsTable promotion={promotion} loan={loan} className="card1" />
       ) : (
-        <ProPromotionLotsTable promotion={promotion} />
+        <ProPromotionLotsTable promotion={promotion} className="card1" />
       )}
       <LotsTable promotion={promotion} />
     </div>

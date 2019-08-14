@@ -93,11 +93,15 @@
     flex-direction: column;
     align-items: flex-start;
 
-    > * {
+    button, .mui-table {
       margin-top: 24px;
     }
 
     .promotion-timeline {
+      align-self: stretch;
+    }
+
+    .mui-table {
       align-self: stretch;
     }
   }
