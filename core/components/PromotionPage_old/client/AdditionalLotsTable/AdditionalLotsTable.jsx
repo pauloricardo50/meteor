@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Element } from 'react-scroll';
+
 import T from '../../../Translation';
 import Table from '../../../Table';
 import Button from '../../../Button';

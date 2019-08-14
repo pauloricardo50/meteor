@@ -10,8 +10,7 @@ import {
   appPromotionLots,
 } from 'core/api/promotionLots/queries';
 import { createRoute } from '../../../../utils/routerUtils';
-import T from '../../../Translation';
-import { toMoney } from '../../../../utils/conversionFunctions';
+import T, { Money } from '../../../Translation';
 import LotChip from './LotChip';
 import PromotionLotSelector from './PromotionLotSelector';
 import StatusLabel from '../../../StatusLabel';
@@ -33,17 +32,38 @@ const isAnyLotAttributedToMe = promotionLots =>
 const proColumnOptions = [
   { id: 'name' },
   { id: 'status' },
-  { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
+  {
+    id: 'totalValue',
+    style: { whiteSpace: 'nowrap' },
+    align: 'right',
+    format: value => (
+      <b>
+        <Money value={value} />
+      </b>
+    ),
+  },
   { id: 'lots' },
   { id: 'loans' },
   { id: 'attributedTo' },
-].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
+].map(column => ({
+  ...column,
+  label: <T id={`PromotionPage.lots.${column.id}`} />,
+}));
 
 const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
   [
     { id: 'name' },
     { id: 'status' },
-    { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
+    {
+      id: 'totalValue',
+      style: { whiteSpace: 'nowrap' },
+      align: 'right',
+      format: value => (
+        <b>
+          <Money value={value} />
+        </b>
+      ),
+    },
     { id: 'lots' },
     !isALotAttributedToMe
       && promotionStatus === PROMOTION_STATUS.OPEN && {
@@ -79,7 +99,7 @@ const makeMapProPromotionLot = ({ history, promotionId }) => ({
         />
       ),
     },
-    { raw: value, label: toMoney(value) },
+    value,
     {
       raw: lots && lots.length,
       label: (
@@ -112,11 +132,7 @@ const makeMapPromotionLot = ({
         />
       ),
     },
-    {
-      raw: reducedStatus === PROMOTION_LOT_STATUS.SOLD ? 0 : value,
-      label:
-        reducedStatus === PROMOTION_LOT_STATUS.SOLD ? null : toMoney(value),
-    },
+    reducedStatus === PROMOTION_LOT_STATUS.SOLD ? 0 : value,
     {
       raw: lots && lots.length,
       label: (
@@ -138,7 +154,7 @@ const makeMapPromotionLot = ({
         />
       </div>
     ),
-  ].filter(x => x),
+  ].filter(x => x !== false),
 
   handleClick: () =>
     history.push(createRoute(

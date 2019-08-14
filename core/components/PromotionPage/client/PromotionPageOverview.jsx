@@ -17,18 +17,22 @@ const PromotionPageOverview = ({
   promotion,
   loan,
 }: PromotionPageOverviewProps) => {
-  const { canChangeTimeline } = useContext(PromotionPermissionsContext);
+  const { canChangeTimeline, canModifyLots } = useContext(PromotionPermissionsContext);
   const { isUser } = useContext(CurrentUserContext);
   return (
     <div className="promotion-page-overview">
       {canChangeTimeline && <PromotionTimelineForm promotion={promotion} />}
       <PromotionTimeline promotion={promotion} />
       {isUser ? (
-        <AppPromotionLotsTable promotion={promotion} loan={loan} className="card1" />
+        <AppPromotionLotsTable
+          promotion={promotion}
+          loan={loan}
+          className="card1"
+        />
       ) : (
         <ProPromotionLotsTable promotion={promotion} className="card1" />
       )}
-      <LotsTable promotion={promotion} />
+      <LotsTable promotion={promotion} canModifyLots={canModifyLots} className="card1" />
     </div>
   );
 };
