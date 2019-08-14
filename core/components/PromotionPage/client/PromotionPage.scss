@@ -107,6 +107,28 @@
       align-self: stretch;
     }
   }
+
+  .promotion-partners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+
+      &-wrapper {
+        width: 200px;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
 }
 
 .promotion-lot-detail {

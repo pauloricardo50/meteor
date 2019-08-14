@@ -17,7 +17,7 @@ const PromotionUsers = ({
   rows,
   columnOptions,
 }: PromotionUsersProps) => (
-  <>
+  <div className="animated fadeIn">
     <div className="flex center-align">
       <h2 style={{ marginRight: 16 }}>
         <T id="AdminPromotionPage.PromotionUsers" />
@@ -27,7 +27,7 @@ const PromotionUsers = ({
     <div className="card1 card-top promotion-users-table">
       <Table rows={rows} columnOptions={columnOptions} />
     </div>
-  </>
+  </div>
 );
 
 export default PromotionUsersContainer(PromotionUsers);

@@ -23,7 +23,7 @@ const PromotionPageOverview = ({
   const { constructionTimeline, signingDate } = promotion;
 
   return (
-    <div className="promotion-page-overview">
+    <div className="promotion-page-overview animated fadeIn">
       {canChangeTimeline && <PromotionTimelineForm promotion={promotion} />}
       {constructionTimeline && constructionTimeline.length > 0 && (
         <>
