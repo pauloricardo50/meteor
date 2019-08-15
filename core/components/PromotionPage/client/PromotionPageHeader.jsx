@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import ImageCarrousel from 'core/components/ImageCarrousel/ImageCarrousel';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionMetadataContext from './PromotionMetadata';
@@ -28,9 +29,9 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
   } = useContext(PromotionMetadataContext);
 
   return (
-    <div
+    <ImageCarrousel
       className="promotion-page-header"
-      style={{ backgroundImage: `url("${promotionImage[0].url}")` }}
+      images={promotionImage.map(({ url }) => url)}
     >
       <div className="promotion-page-header-top">
         <div className="promotion-page-header-text">
@@ -64,7 +65,7 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
           </div>
         )}
       </div>
-    </div>
+    </ImageCarrousel>
   );
 };
 

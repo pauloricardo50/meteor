@@ -8,6 +8,7 @@ import PromotionPartners from './PromotionPartners';
 import PromotionFiles from './PromotionFiles';
 import PromotionUsers from './PromotionUsers/loadable';
 import PromotionCustomers from './PromotionCustomers/loadable';
+import PromotionMap from './PromotionMap/loadable';
 
 type PromotionPageContentProps = {};
 
@@ -17,6 +18,11 @@ const PromotionPageContent = ({ promotion }: PromotionPageContentProps) => (
       exact
       path={['/promotions/:promotionId', '/promotions/:promotionId/overview']}
       component={PromotionPageOverview}
+      promotion={promotion}
+    />
+    <Route
+      path="/promotions/:promotionId/map"
+      component={PromotionMap}
       promotion={promotion}
     />
     <Route

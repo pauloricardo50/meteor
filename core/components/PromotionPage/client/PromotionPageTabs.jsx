@@ -11,11 +11,7 @@ import PromotionMetadataContext from './PromotionMetadata';
 
 type PromotionPageTabsProps = {};
 
-const useStyles = makeStyles({
-  root: {
-    backgroundColor: 'white',
-  },
-});
+const useStyles = makeStyles({ root: { backgroundColor: 'white' } });
 
 const getTabs = ({
   canSeeCustomers,
@@ -23,19 +19,14 @@ const getTabs = ({
   promotion: { users = [], loans = [], documents },
 }) =>
   [
-    {
-      id: 'overview',
-      shouldDisplay: true,
-      label: <T id="PromotionPageTabs.overview" />,
-    },
+    { id: 'overview', shouldDisplay: true },
+    { id: 'map', shouldDisplay: true },
     {
       id: 'partners',
-      label: <T id="PromotionPageTabs.partners" />,
       shouldDisplay: documents && documents.logos && documents.logos.length > 0,
     },
     {
       id: 'files',
-      label: <T id="PromotionPageTabs.files" />,
       shouldDisplay:
         documents
         && documents.promotionDocuments
@@ -43,19 +34,24 @@ const getTabs = ({
     },
     {
       id: 'customers',
-      shouldDisplay: canSeeCustomers,
       label: (
         <T id="PromotionPageTabs.customers" values={{ count: loans.length }} />
       ),
+      shouldDisplay: canSeeCustomers,
     },
     {
       id: 'users',
-      shouldDisplay: canSeeUsers,
       label: (
         <T id="PromotionPageTabs.users" values={{ count: users.length }} />
       ),
+      shouldDisplay: canSeeUsers,
     },
-  ].filter(({ shouldDisplay }) => shouldDisplay);
+  ]
+    .filter(({ shouldDisplay }) => shouldDisplay)
+    .map(tab => ({
+      ...tab,
+      label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
+    }));
 
 const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
   const { _id: promotionId, users, loans } = promotion;
@@ -65,9 +61,9 @@ const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
     permissions: { canSeeCustomers, canSeeUsers },
   } = useContext(PromotionMetadataContext);
 
-  function handleChange(event, newValue) {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
-  }
+  };
 
   return (
     <Tabs
