@@ -28,6 +28,8 @@ const PromotionLotAttributerContent = ({
       {' '}
 à
     </p>
+    <br />
+    <p>Notifiera tous les Pros qui ont activé leurs notifications</p>
     <table className="book-client-infos-table">
       <tr>
         <td>Nom</td>

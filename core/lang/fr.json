@@ -900,6 +900,7 @@
   "PromotionLotAttributer.sold": "Vendu",
   "PromotionLotAttributer.book": "Réserver",
   "PromotionLotAttributer.sell": "Confirmer vente",
+  "PromotionLotAttributer.notificationDisclaimer": "Notifiera tous les Pros qui ont leur notifications activées",
   "PromotionLotAttributer.cancelBooking": "Annuler réservation",
   "PromotionLotLoansTable.attribute": "Attribution",
   "PromotionPage.lots.attributedTo": "Attribué à",
