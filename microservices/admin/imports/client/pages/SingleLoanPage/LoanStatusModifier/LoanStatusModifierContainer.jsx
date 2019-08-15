@@ -1,10 +1,11 @@
 import React from 'react';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
+
 import { LOAN_STATUS } from 'core/api/constants';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import DialogForm from 'core/components/ModalManager/DialogForm';
-import SimpleSchema from 'simpl-schema';
 import RealRevenuesDialogContent from './RealRevenuesDialogContent';
 import UnsucessfulFeedback from './UnsuccessfulDialogContent/UnsucessfulFeedback';
 import UnsuccessfulNewLoan from './UnsuccessfulDialogContent/UnsuccessfulNewLoan';

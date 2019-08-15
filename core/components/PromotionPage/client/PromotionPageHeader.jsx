@@ -15,7 +15,7 @@ type PromotionPageHeaderProps = {};
 const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
   const {
     _id: promotionId,
-    documents: { promotionImage = [] } = {},
+    documents: { promotionImage = [{ url: '/img/placeholder.png' }] } = {},
     name,
     address1,
     zipCode,

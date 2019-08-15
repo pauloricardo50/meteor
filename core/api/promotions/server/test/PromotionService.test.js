@@ -686,7 +686,7 @@ describe('PromotionService', function () {
         },
       });
 
-      PromotionService.toggleNotifications({
+      const result = PromotionService.toggleNotifications({
         promotionId: 'promoId',
         userId: 'userId',
       });
@@ -696,12 +696,13 @@ describe('PromotionService', function () {
         userLinks: 1,
       });
 
+      expect(result).to.equal(false);
       expect(promotion.userLinks[0]).to.deep.include({
         _id: 'userId',
         enableNotifications: false,
       });
 
-      PromotionService.toggleNotifications({
+      const result2 = PromotionService.toggleNotifications({
         promotionId: 'promoId',
         userId: 'userId',
       });
@@ -711,6 +712,7 @@ describe('PromotionService', function () {
         userLinks: 1,
       });
 
+      expect(result2).to.equal(true);
       expect(promotion2.userLinks[0]).to.deep.include({
         _id: 'userId',
         enableNotifications: true,

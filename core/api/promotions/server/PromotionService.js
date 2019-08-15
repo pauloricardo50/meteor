@@ -236,12 +236,14 @@ export class PromotionService extends CollectionService {
       userLinks: 1,
     });
     const userLink = promotion.userLinks.find(({ _id }) => _id === userId);
-    return this.updateLinkMetadata({
+    const nextValue = !userLink.enableNotifications;
+    this.updateLinkMetadata({
       id: promotionId,
       linkName: 'users',
       linkId: 'userId',
-      metadata: { enableNotifications: !userLink.enableNotifications },
+      metadata: { enableNotifications: nextValue },
     });
+    return nextValue;
   }
 
   removeLoan({ promotionId, loanId }) {

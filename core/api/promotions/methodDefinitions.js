@@ -93,3 +93,10 @@ export const reuseConstructionTimeline = new Method({
     toPromotionId: String,
   },
 });
+
+export const toggleNotifications = new Method({
+  name: 'toggleNotifications',
+  params: {
+    promotionId: String,
+  },
+});

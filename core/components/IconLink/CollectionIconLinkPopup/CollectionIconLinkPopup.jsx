@@ -62,7 +62,7 @@ export default class CollectionIconLinkPopup extends Component<
   };
 
   render() {
-    const { children, forceOpen } = this.props;
+    const { children, forceOpen, placement } = this.props;
     const { data } = this.state;
 
     return (
@@ -72,6 +72,7 @@ export default class CollectionIconLinkPopup extends Component<
         onMouseEnter={!data ? this.loadData : null}
         delay={data ? 0 : 200}
         forceOpen={forceOpen}
+        placement={placement}
       >
         {children}
       </StickyPopover>

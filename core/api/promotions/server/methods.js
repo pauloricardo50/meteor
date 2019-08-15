@@ -12,6 +12,7 @@ import {
   removeLoanFromPromotion,
   editPromotionLoan,
   reuseConstructionTimeline,
+  toggleNotifications,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -84,4 +85,10 @@ editPromotionLoan.setHandler(({ userId }, params) => {
 reuseConstructionTimeline.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.reuseConstructionTimeline(params);
+});
+
+toggleNotifications.setHandler(({ userId }, { promotionId }) => {
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToView({ userId, promotionId });
+  return PromotionService.toggleNotifications({ userId, promotionId });
 });

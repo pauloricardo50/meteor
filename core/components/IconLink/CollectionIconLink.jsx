@@ -149,6 +149,7 @@ const CollectionIconLink = ({
   showIcon,
   stopPropagation,
   variant,
+  placement,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
@@ -169,6 +170,7 @@ const CollectionIconLink = ({
         {...relatedDoc}
         key={relatedDoc._id}
         forceOpen={forceOpen}
+        placement={placement}
       >
         <IconLink
           link={link}
