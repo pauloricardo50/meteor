@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from 'core/components/Link/Link';
 import { createRoute } from 'core/utils/routerUtils';
 import T from '../../Translation';
-import PromotionPermissionsContext from './PromotionPermissions';
+import PromotionMetadataContext from './PromotionMetadata';
 
 type PromotionPageTabsProps = {};
 
@@ -54,7 +54,9 @@ const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
   const { _id: promotionId, users, loans } = promotion;
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const { canSeeCustomers, canSeeUsers } = useContext(PromotionPermissionsContext);
+  const {
+    permissions: { canSeeCustomers, canSeeUsers },
+  } = useContext(PromotionMetadataContext);
 
   function handleChange(event, newValue) {
     setValue(newValue);

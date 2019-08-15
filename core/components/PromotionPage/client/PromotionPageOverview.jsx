@@ -10,7 +10,7 @@ import {
 } from './PromotionLotsTable';
 import LotsTable from './LotsTable';
 import PromotionTimelineForm from './PromotionTimelineForm';
-import PromotionPermissionsContext from './PromotionPermissions';
+import PromotionMetadataContext from './PromotionMetadata';
 import PromotionTimeline from './PromotionTimeline';
 
 type PromotionPageOverviewProps = {};
@@ -19,7 +19,9 @@ const PromotionPageOverview = ({
   promotion,
   loan,
 }: PromotionPageOverviewProps) => {
-  const { canChangeTimeline } = useContext(PromotionPermissionsContext);
+  const {
+    permissions: { canChangeTimeline },
+  } = useContext(PromotionMetadataContext);
   const { isUser } = useContext(CurrentUserContext);
   const { constructionTimeline, signingDate } = promotion;
 

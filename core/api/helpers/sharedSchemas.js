@@ -93,13 +93,20 @@ export const makePermissions = ({
     },
   );
 
-export const userLinksSchema = permissionsSchema => ({
+const prefixSchemaKeys = (schema, prefix) =>
+  Object.keys(schema).reduce(
+    (keys, key) => ({ ...keys, [`${prefix}.${key}`]: schema[key] }),
+    {},
+  );
+
+export const userLinksSchema = ({ metadataSchema, permissionsSchema }) => ({
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
   'userLinks.$._id': { type: String, optional: true },
   ...(permissionsSchema
     ? makePermissions({ permissionsSchema, prefix: 'userLinks.$.permissions' })
     : {}),
+  ...(metadataSchema ? prefixSchemaKeys(metadataSchema, 'userLinks.$') : {}),
 });
 
 export const mortgageNoteLinks = {

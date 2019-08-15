@@ -102,7 +102,12 @@ const PromotionSchema = new SimpleSchema({
   'promotionLotLinks.$': Object,
   'promotionLotLinks.$._id': { type: String, optional: true },
   assignedEmployeeId: { type: String, optional: true },
-  ...userLinksSchema(promotionPermissionsSchema),
+  ...userLinksSchema({
+    permissionsSchema: promotionPermissionsSchema,
+    metadataSchema: {
+      enableNotifications: { type: Boolean, defaultValue: true, optional: true },
+    },
+  }),
   documents: documentsField,
   lenderOrganisationLink: { type: Object, optional: true },
   'lenderOrganisationLink._id': { type: String, optional: true },

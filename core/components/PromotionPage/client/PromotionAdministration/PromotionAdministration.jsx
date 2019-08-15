@@ -1,10 +1,11 @@
 // @flow
 import React, { useContext } from 'react';
 
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import DropdownMenu from '../../../DropdownMenu';
 import Icon from '../../../Icon';
 import T from '../../../Translation';
-import PromotionPermissionsContext from '../PromotionPermissions';
+import PromotionMetadataContext from '../PromotionMetadata';
 
 type PromotionAdministrationProps = {};
 
@@ -16,8 +17,13 @@ const getOptions = (permissions) => {
     canAddPros,
     canRemovePromotion,
   } = permissions;
+  const { isPro } = useContext(CurrentUserContext);
 
   return [
+    {
+      id: 'toggleNotifications',
+      condition: isPro,
+    },
     {
       id: 'updatePromotion',
       condition: canModifyPromotion,
@@ -52,7 +58,7 @@ const getOptions = (permissions) => {
 };
 
 const PromotionAdministration = (props: PromotionAdministrationProps) => {
-  const permissions = useContext(PromotionPermissionsContext);
+  const { permissions } = useContext(PromotionMetadataContext);
   const options = getOptions(permissions);
 
   if (options.length === 0) {

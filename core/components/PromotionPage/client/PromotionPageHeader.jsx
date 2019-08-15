@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
-import PromotionPermissionsContext from './PromotionPermissions';
+import PromotionMetadataContext from './PromotionMetadata';
 import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 
@@ -23,7 +23,9 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
     status,
     promotionLots = [],
   } = promotion;
-  const { canInviteCustomers } = useContext(PromotionPermissionsContext);
+  const {
+    permissions: { canInviteCustomers },
+  } = useContext(PromotionMetadataContext);
 
   return (
     <div

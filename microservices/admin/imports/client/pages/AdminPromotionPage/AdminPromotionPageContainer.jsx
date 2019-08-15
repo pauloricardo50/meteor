@@ -8,7 +8,7 @@ import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api';
 import { proPromotion } from 'core/api/fragments';
 import withMatchParam from 'core/containers/withMatchParam';
-import { injectPromotionPermissions } from 'core/components/PromotionPage/client/PromotionPermissions';
+import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 import { ROLES } from 'core/api/constants';
 
 const promotionFragment = {
@@ -28,17 +28,19 @@ export default compose(
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
   }),
-  injectPromotionPermissions({
-    canModifyPromotion: true,
-    canInviteCustomers: true,
-    canManageDocuments: true,
-    canSeeCustomers: true,
-    canSeeUsers: true,
-    canAddLots: true,
-    canModifyLots: true,
-    canRemoveLots: true,
-    canAddPros: true,
-    canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
-    canChangeTimeline: true,
+  injectPromotionMetadata({
+    permissions: {
+      canModifyPromotion: true,
+      canInviteCustomers: true,
+      canManageDocuments: true,
+      canSeeCustomers: true,
+      canSeeUsers: true,
+      canAddLots: true,
+      canModifyLots: true,
+      canRemoveLots: true,
+      canAddPros: true,
+      canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
+      canChangeTimeline: true,
+    },
   }),
 );

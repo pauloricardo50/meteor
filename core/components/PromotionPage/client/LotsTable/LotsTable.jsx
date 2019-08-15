@@ -9,7 +9,7 @@ type LotsTableProps = {};
 
 const LotsTable = ({ rows, columnOptions, ...props }: LotsTableProps) => (
   <>
-    <h3 className="text-center">
+    <h3>
       <T id="PromotionPage.AdditionalLotsTable" />
     </h3>
     <Table rows={rows} columnOptions={columnOptions} {...props} />
