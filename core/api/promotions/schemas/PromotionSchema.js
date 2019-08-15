@@ -105,7 +105,11 @@ const PromotionSchema = new SimpleSchema({
   ...userLinksSchema({
     permissionsSchema: promotionPermissionsSchema,
     metadataSchema: {
-      enableNotifications: { type: Boolean, defaultValue: true, optional: true },
+      enableNotifications: {
+        type: Boolean,
+        defaultValue: true,
+        optional: true,
+      },
     },
   }),
   documents: documentsField,
@@ -120,7 +124,10 @@ const PromotionSchema = new SimpleSchema({
         return;
       }
 
-      if (this.value.reduce((tot, { percent }) => tot + percent, 0) !== 1) {
+      // Round up to 100 to avoid JS math rounding issues
+      if (
+        Math.round(this.value.reduce((tot, { percent }) => tot + percent, 0) * 100) !== 100
+      ) {
         return 'incompleteTimeline';
       }
     },
