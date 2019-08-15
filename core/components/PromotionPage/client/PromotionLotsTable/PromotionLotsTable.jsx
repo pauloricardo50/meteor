@@ -4,14 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
 import T from '../../../Translation';
 import Table from '../../../Table';
-import Button from '../../../Button';
 import MongoSelect from '../../../Select/MongoSelect';
-import Dialog from '../../../Material/Dialog';
-import PromotionLotDetail from '../PromotionLotDetail';
+
 import {
   AppPromotionLotsTableContainer,
   ProPromotionLotsTableContainer,
 } from './PromotionLotsTableContainer';
+import PromotionLotsTableDialog from './PromotionLotsTableDialog';
 
 type PromotionLotsTableProps = {};
 
@@ -39,25 +38,12 @@ const PromotionLotsTable = ({
         <T id="collections.lots" />
       </h3>
 
-      <Dialog
+      <PromotionLotsTableDialog
         open={!!promotionLotModal}
-        title={modalPromotionLot && modalPromotionLot.name}
-        actions={(
-          <Button primary onClick={() => setPromotionLotModal()}>
-            <T id="general.close" />
-          </Button>
-        )}
-        fullWidth
-        maxWidth={false}
-        onClose={() => setPromotionLotModal()}
-      >
-        {modalPromotionLot && (
-          <PromotionLotDetail
-            promotionLot={modalPromotionLot}
-            promotion={promotion}
-          />
-        )}
-      </Dialog>
+        promotionLot={modalPromotionLot}
+        promotion={promotion}
+        handleClose={() => setPromotionLotModal()}
+      />
 
       <MongoSelect
         value={status}

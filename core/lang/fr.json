@@ -892,7 +892,7 @@
   "PromotionLotLoansTable.solvency": "Solvabilité",
   "PromotionLotLoansTable.title": "Acheteurs intéressés",
   "PromotionLotPage.manageLot": "Lots annexes",
-  "PromotionLotPage.modifyPromotionLot": "Modifier le lot",
+  "PromotionLotPage.modifyPromotionLot": "Modifier",
   "general.back": "Retour",
   "PromotionPage.managePropertyDocuments.description": "Donnez des noms clairs à vos documents avant de les uploader",
   "PromotionPage.managePropertyDocuments": "Gérer documents du lot {name}",
