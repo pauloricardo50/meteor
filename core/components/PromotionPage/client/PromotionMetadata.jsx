@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const PromotionMetadataContext = React.createContext();
 
 export const injectPromotionMetadata = metadata => Component => (props) => {
+  let meta = metadata;
+  if (typeof metadata === 'function') {
+    meta = metadata(props);
+  }
   // Metadata shouldn't change often, so don't rerender all affected
   // consumers if this is rerendered. Because Consumer uses shallow
   // equality to determine if it should rerender
-  const [metadataMemo] = useState(metadata);
   return (
-    <PromotionMetadataContext.Provider value={metadataMemo}>
+    <PromotionMetadataContext.Provider value={meta}>
       <Component {...props} />
     </PromotionMetadataContext.Provider>
   );

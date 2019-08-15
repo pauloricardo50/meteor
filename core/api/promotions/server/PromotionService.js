@@ -240,7 +240,7 @@ export class PromotionService extends CollectionService {
     this.updateLinkMetadata({
       id: promotionId,
       linkName: 'users',
-      linkId: 'userId',
+      linkId: userId,
       metadata: { enableNotifications: nextValue },
     });
     return nextValue;

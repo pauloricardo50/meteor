@@ -12,7 +12,6 @@ type PromotionCustomersTableActionsProps = {};
 
 const PromotionCustomersTableActions = ({
   promotion,
-  currentUser,
   customerOwnerType,
   handleRemove,
   handleOpenForm,
@@ -21,6 +20,7 @@ const PromotionCustomersTableActions = ({
   editLots,
   loan,
   loading,
+  currentUser,
 }: PromotionCustomersTableActionsProps) => {
   const { user = {}, promotionOptions = [], isAnonymized } = loan;
   const options = [];

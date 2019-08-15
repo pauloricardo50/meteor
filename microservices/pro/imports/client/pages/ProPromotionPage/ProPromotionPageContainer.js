@@ -11,6 +11,7 @@ import {
   isAllowedToModifyPromotionLots,
   isAllowedToRemovePromotionLots,
 } from 'core/api/security/clientSecurityHelpers';
+import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 
 const makePermissions = props => ({
   canModifyPromotion: isAllowedToModifyPromotion(props),
@@ -22,6 +23,17 @@ const makePermissions = props => ({
   canRemoveLots: isAllowedToRemovePromotionLots(props),
 });
 
+const getEnableNotifications = ({
+  promotion,
+  currentUser: { _id: userId },
+}) => {
+  const { userLinks = [], users = [] } = promotion;
+  const user = userLinks.find(({ _id }) => _id === userId)
+    || users.find(({ _id }) => _id === userId);
+
+  return user.enableNotifications || user.$metadata.enableNotifications;
+};
+
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
@@ -31,4 +43,8 @@ export default compose(
     dataName: 'promotion',
   }),
   withProps(makePermissions),
+  injectPromotionMetadata(props => ({
+    enableNotifications: getEnableNotifications(props),
+    permissions: makePermissions(props),
+  })),
 );

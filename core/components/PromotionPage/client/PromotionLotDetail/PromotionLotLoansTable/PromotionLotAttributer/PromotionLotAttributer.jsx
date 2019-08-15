@@ -55,15 +55,8 @@ const lotSelling = ({
         buttonProps={{ outlined: true, secondary: true }}
         key="sell"
         method={sellPromotionLot}
-        label={(
-          <div>
-            <b>
-              <T id="PromotionLotAttributer.sell" />
-            </b>
-            <br />
-            <T id="PromotionLotAttributer.notificationDisclaimer" />
-          </div>
-        )}
+        label={<T id="PromotionLotAttributer.sell" />}
+        description={<T id="PromotionLotAttributer.notificationDisclaimer" />}
         disabled={!isAdmin && !canSellLot}
       />
     );
@@ -87,7 +80,8 @@ const cancelLotBooking = ({
         buttonProps={{ outlined: true, error: true }}
         key="cancel"
         method={cancelPromotionLotBooking}
-        label={(
+        label={<T id="PromotionLotAttributer.cancelBooking" />}
+        description={(
           <div>
             <b>
               <T id="PromotionLotAttributer.cancelBooking" />
