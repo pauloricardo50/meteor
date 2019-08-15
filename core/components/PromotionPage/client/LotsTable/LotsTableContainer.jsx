@@ -69,20 +69,21 @@ const scrollToAdditionalLotsTable = () => {
     delay: 200,
     duration: 500,
     offset: -50,
+    containerId: 'scroll-layout',
   });
 };
 
 export default compose(
-  // withHider(hide => ({
-  //   style: { alignSelf: 'center' },
-  //   label: hide ? 'Afficher lots annexes' : 'Masquer lots annexes',
-  //   primary: true,
-  //   callback: (nextHide) => {
-  //     if (!nextHide) {
-  //       scrollToAdditionalLotsTable();
-  //     }
-  //   },
-  // })),
+  withHider(hide => ({
+    style: { alignSelf: 'center' },
+    label: hide ? 'Afficher lots annexes' : 'Masquer lots annexes',
+    primary: true,
+    callback: (nextHide) => {
+      if (!nextHide) {
+        scrollToAdditionalLotsTable();
+      }
+    },
+  })),
   withProps(({ promotion: { lots }, canModifyLots }) => ({
     rows: lots.map(makeMapAdditionalLot({ canModifyLots })),
     columnOptions,

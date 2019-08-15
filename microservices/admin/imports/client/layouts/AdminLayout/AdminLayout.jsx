@@ -74,7 +74,7 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
       <div className="main-row">
         <AdminSideNav {...props} />
 
-        <div className="main">
+        <div className="main" id="scroll-layout">
           <ErrorBoundary helper="layout" pathname={history.location.pathname}>
             {React.cloneElement(children, { ...props })}
           </ErrorBoundary>
