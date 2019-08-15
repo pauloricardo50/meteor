@@ -36,6 +36,11 @@ const makeMapAdditionalLot = ({ canModifyLots }) => (lot) => {
   const { _id, name, type, value, description, promotionLots, status } = lot;
   return {
     id: _id,
+    doc: {
+      ...lot,
+      promotionLot:
+        lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
+    },
     columns: [
       name,
       {
@@ -55,12 +60,6 @@ const makeMapAdditionalLot = ({ canModifyLots }) => (lot) => {
       { raw: type, label: <T id={`Forms.type.${type}`} /> },
       description,
     ],
-    handleClick: () => {
-      const isAllowedToModifyLots = canModifyLots && (!status || status === PROMOTION_LOT_STATUS.AVAILABLE);
-      if (isAllowedToModifyLots) {
-        console.log('modify!');
-      }
-    },
   };
 };
 
@@ -74,14 +73,16 @@ const scrollToAdditionalLotsTable = () => {
 };
 
 export default compose(
-  withHider(hide => ({
-    style: { alignSelf: 'center' },
-    label: hide ? 'Afficher lots annexes' : 'Masquer lots annexes',
-    primary: true,
-    callback: (nextHide) => {
-      if (!nextHide) scrollToAdditionalLotsTable();
-    },
-  })),
+  // withHider(hide => ({
+  //   style: { alignSelf: 'center' },
+  //   label: hide ? 'Afficher lots annexes' : 'Masquer lots annexes',
+  //   primary: true,
+  //   callback: (nextHide) => {
+  //     if (!nextHide) {
+  //       scrollToAdditionalLotsTable();
+  //     }
+  //   },
+  // })),
   withProps(({ promotion: { lots }, canModifyLots }) => ({
     rows: lots.map(makeMapAdditionalLot({ canModifyLots })),
     columnOptions,

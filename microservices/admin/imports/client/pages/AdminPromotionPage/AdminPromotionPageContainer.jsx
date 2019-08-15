@@ -13,7 +13,7 @@ import { ROLES } from 'core/api/constants';
 
 const promotionFragment = {
   ...omit(proPromotion(), ['promotionLots']),
-  promotionLots: { _id: 1, status: 1 },
+  promotionLots: { _id: 1, status: 1, name: 1 },
 };
 
 export default compose(
