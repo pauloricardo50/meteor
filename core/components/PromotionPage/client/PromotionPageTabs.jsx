@@ -17,7 +17,11 @@ const useStyles = makeStyles({
   },
 });
 
-const getTabs = ({ canSeeCustomers, canSeeUsers, users = [], loans = [] }) =>
+const getTabs = ({
+  canSeeCustomers,
+  canSeeUsers,
+  promotion: { users = [], loans = [], documents },
+}) =>
   [
     {
       id: 'overview',
@@ -26,13 +30,16 @@ const getTabs = ({ canSeeCustomers, canSeeUsers, users = [], loans = [] }) =>
     },
     {
       id: 'partners',
-      shouldDisplay: true,
       label: <T id="PromotionPageTabs.partners" />,
+      shouldDisplay: documents && documents.logos && documents.logos.length > 0,
     },
     {
       id: 'files',
-      shouldDisplay: true,
       label: <T id="PromotionPageTabs.files" />,
+      shouldDisplay:
+        documents
+        && documents.promotionDocuments
+        && documents.promotionDocuments.length > 0,
     },
     {
       id: 'customers',
@@ -71,7 +78,7 @@ const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
       textColor="primary"
       variant="fullWidth"
     >
-      {getTabs({ canSeeCustomers, canSeeUsers, users, loans }).map(({ id, label }) => (
+      {getTabs({ canSeeCustomers, canSeeUsers, promotion }).map(({ id, label }) => (
         <Tab
           key={id}
           label={label}
