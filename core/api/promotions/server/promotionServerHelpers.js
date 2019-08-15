@@ -125,6 +125,8 @@ const shouldAnonymize = ({
   });
 };
 
+export const promotionShouldAnonymize = shouldAnonymize;
+
 export const makeLoanAnonymizer = ({
   userId,
   promotionId,

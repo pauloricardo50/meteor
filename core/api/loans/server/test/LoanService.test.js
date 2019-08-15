@@ -6,8 +6,8 @@ import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { loanSetStatus } from 'core/api/methods/index';
-import { withMeteorUserId } from 'core/api/RESTAPI/server/helpers';
+import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { loanSetStatus } from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
@@ -27,9 +27,9 @@ import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
 import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
+import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
 describe('LoanService', function () {
   this.timeout(10000);
@@ -1044,7 +1044,7 @@ describe('LoanService', function () {
         ],
       });
 
-      return withMeteorUserId({ userId: 'adminId2' }, () =>
+      return ddpWithUserId('adminId2', () =>
         loanSetStatus.run({ loanId: 'myLoan', status: LOAN_STATUS.ONGOING }))
         .then((result) => {
           expect(result).to.deep.equal({

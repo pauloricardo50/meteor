@@ -719,4 +719,5 @@ describe('PromotionService', function () {
       });
     });
   });
+
 });

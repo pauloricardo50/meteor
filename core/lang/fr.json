@@ -869,6 +869,25 @@
   "emails.INVITE_USER_TO_PROPERTY.from": "e-Potek",
   "emails.INVITE_USER_TO_PROPERTY.SUBJECT": "e-Potek - {address}",
   "emails.INVITE_USER_TO_PROPERTY.TITLE": "{address}",
+
+  "emails.BOOK_PROMOTION_LOT.BODY": "Le lot \"{promotionLotName}\" a été réservé pour {customerName}, par {userName}.",
+  "emails.BOOK_PROMOTION_LOT.CTA": "Voir la promotion",
+  "emails.BOOK_PROMOTION_LOT.from": "e-Potek",
+  "emails.BOOK_PROMOTION_LOT.SUBJECT": "Promotion \"{promotionName}\", lot réservé",
+  "emails.BOOK_PROMOTION_LOT.TITLE": "Promotion \"{promotionName}\", lot réservé",
+
+  "emails.SELL_PROMOTION_LOT.BODY": "Le lot \"{promotionLotName}\" a été vendu à {customerName}, par {userName}.",
+  "emails.SELL_PROMOTION_LOT.CTA": "Voir la promotion",
+  "emails.SELL_PROMOTION_LOT.from": "e-Potek",
+  "emails.SELL_PROMOTION_LOT.SUBJECT": "Promotion \"{promotionName}\", lot vendu",
+  "emails.SELL_PROMOTION_LOT.TITLE": "Promotion \"{promotionName}\", lot vendu",
+
+  "emails.CANCEL_PROMOTION_LOT_BOOKING.BODY": "La réservation pour le lot \"{promotionLotName}\" a été annulée par {userName}.",
+  "emails.CANCEL_PROMOTION_LOT_BOOKING.CTA": "Voir la promotion",
+  "emails.CANCEL_PROMOTION_LOT_BOOKING.from": "e-Potek",
+  "emails.CANCEL_PROMOTION_LOT_BOOKING.SUBJECT": "Promotion \"{promotionName}\", réservation annulée",
+  "emails.CANCEL_PROMOTION_LOT_BOOKING.TITLE": "Promotion \"{promotionName}\", réservation annulée",
+
   "Forms.promotionOptions.custom": "Souhaits particuliers",
   "Forms.promotionOptions.custom.placeholder": "Parkings supplémentaires, lots adjacents, etc.",
   "AppPromotionLotPage.subtitle": "Promotion {promotionName} - {value}",
