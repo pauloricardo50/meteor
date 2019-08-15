@@ -24,7 +24,11 @@ const makeReducer = maxLength => (state, action) => {
   }
 };
 
-const ImageCarrousel = ({ images, className }: ImageCarrouselProps) => {
+const ImageCarrousel = ({
+  images,
+  className,
+  children,
+}: ImageCarrouselProps) => {
   const hasMultipleImages = images.length > 1;
   const [state, dispatch] = useReducer(
     makeReducer(images.length),
@@ -36,18 +40,19 @@ const ImageCarrousel = ({ images, className }: ImageCarrouselProps) => {
       style={{ backgroundImage: `url("${images[state.index]}")` }}
       className={cx('image-carrousel', className)}
     >
+      {children}
       {hasMultipleImages && (
         <>
           <Fab
-            className="increment"
-            onClick={() => dispatch({ type: 'increment' })}
+            className="decrement"
+            onClick={() => dispatch({ type: 'decrement' })}
             color="primary"
           >
             <Icon type="left" />
           </Fab>
           <Fab
-            className="decrement"
-            onClick={() => dispatch({ type: 'decrement' })}
+            className="increment"
+            onClick={() => dispatch({ type: 'increment' })}
             color="primary"
           >
             <Icon type="right" />
