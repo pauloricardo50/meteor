@@ -19,12 +19,6 @@ const PromotionPageContent = ({
 }: PromotionPageContentProps) => (
   <Switch>
     <Route
-      exact
-      path={[route, createRoute(route, { tabId: 'overview' })]}
-      component={PromotionPageOverview}
-      promotion={promotion}
-    />
-    <Route
       path={createRoute(route, { tabId: 'map' })}
       component={PromotionMap}
       promotion={promotion}
@@ -47,6 +41,11 @@ const PromotionPageContent = ({
     <Route
       path={createRoute(route, { tabId: 'customers' })}
       component={PromotionCustomers}
+      promotion={promotion}
+    />
+    <Route
+      path={[createRoute(route, { tabId: '' })]}
+      component={PromotionPageOverview}
       promotion={promotion}
     />
   </Switch>
