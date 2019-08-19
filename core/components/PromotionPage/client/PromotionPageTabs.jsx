@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Link from 'core/components/Link/Link';
 import { createRoute } from 'core/utils/routerUtils';
+import withMatchParam from 'core/containers/withMatchParam';
 import T from '../../Translation';
 import PromotionMetadataContext from './PromotionMetadata';
 
@@ -53,13 +54,18 @@ const getTabs = ({
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));
 
-const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
+const PromotionPageTabs = ({
+  promotion,
+  route,
+  tabId,
+}: PromotionPageTabsProps) => {
   const { _id: promotionId, users, loans } = promotion;
   const classes = useStyles();
-  const [value, setValue] = useState(0);
   const {
     permissions: { canSeeCustomers, canSeeUsers },
   } = useContext(PromotionMetadataContext);
+  const tabs = getTabs({ canSeeCustomers, canSeeUsers, promotion });
+  const [value, setValue] = useState(tabs.findIndex(({ id }) => id === tabId));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -74,19 +80,16 @@ const PromotionPageTabs = ({ promotion }: PromotionPageTabsProps) => {
       textColor="primary"
       variant="fullWidth"
     >
-      {getTabs({ canSeeCustomers, canSeeUsers, promotion }).map(({ id, label }) => (
+      {tabs.map(({ id, label }) => (
         <Tab
           key={id}
           label={label}
           component={Link}
-          to={createRoute('/promotions/:promotionId/:tabId', {
-            promotionId,
-            tabId: id,
-          })}
+          to={createRoute(route, { promotionId, tabId: id })}
         />
       ))}
     </Tabs>
   );
 };
 
-export default PromotionPageTabs;
+export default withMatchParam('tabId')(PromotionPageTabs);

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import { createRoute } from '../../../utils/routerUtils';
 import Switch from '../../BaseRouter/Switch';
 import Route from '../../BaseRouter/Route';
 import PromotionPageOverview from './PromotionPageOverview';
@@ -12,36 +13,39 @@ import PromotionMap from './PromotionMap/loadable';
 
 type PromotionPageContentProps = {};
 
-const PromotionPageContent = ({ promotion }: PromotionPageContentProps) => (
+const PromotionPageContent = ({
+  promotion,
+  route,
+}: PromotionPageContentProps) => (
   <Switch>
     <Route
       exact
-      path={['/promotions/:promotionId', '/promotions/:promotionId/overview']}
+      path={[route, createRoute(route, { tabId: 'overview' })]}
       component={PromotionPageOverview}
       promotion={promotion}
     />
     <Route
-      path="/promotions/:promotionId/map"
+      path={createRoute(route, { tabId: 'map' })}
       component={PromotionMap}
       promotion={promotion}
     />
     <Route
-      path="/promotions/:promotionId/partners"
+      path={createRoute(route, { tabId: 'partners' })}
       component={PromotionPartners}
       promotion={promotion}
     />
     <Route
-      path="/promotions/:promotionId/files"
+      path={createRoute(route, { tabId: 'files' })}
       component={PromotionFiles}
       promotion={promotion}
     />
     <Route
-      path="/promotions/:promotionId/users"
+      path={createRoute(route, { tabId: 'users' })}
       component={PromotionUsers}
       promotion={promotion}
     />
     <Route
-      path="/promotions/:promotionId/customers"
+      path={createRoute(route, { tabId: 'customers' })}
       component={PromotionCustomers}
       promotion={promotion}
     />

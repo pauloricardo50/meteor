@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import omit from 'lodash/omit';
 
 import { proPromotions } from 'core/api/promotions/queries';
@@ -10,6 +10,7 @@ import { proPromotion } from 'core/api/fragments';
 import withMatchParam from 'core/containers/withMatchParam';
 import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 import { ROLES } from 'core/api/constants';
+import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 
 const promotionFragment = {
   ...omit(proPromotion(), ['promotionLots']),
@@ -43,4 +44,5 @@ export default compose(
       canChangeTimeline: true,
     },
   }),
+  withProps({ route: ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path }),
 );

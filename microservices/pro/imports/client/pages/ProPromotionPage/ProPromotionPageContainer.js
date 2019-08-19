@@ -1,4 +1,5 @@
 import { compose, withProps } from 'recompose';
+
 import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -12,6 +13,7 @@ import {
   isAllowedToRemovePromotionLots,
 } from 'core/api/security/clientSecurityHelpers';
 import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const makePermissions = props => ({
   canModifyPromotion: isAllowedToModifyPromotion(props),
@@ -43,6 +45,7 @@ export default compose(
     dataName: 'promotion',
   }),
   withProps(makePermissions),
+  withProps({ route: PRO_ROUTES.PRO_PROMOTION_PAGE.path }),
   injectPromotionMetadata(props => ({
     enableNotifications: getEnableNotifications(props),
     permissions: makePermissions(props),

@@ -98,7 +98,7 @@ const ADMIN_ROUTES = {
   // },
   ADMIN_PROMOTION_PAGE: {
     component: AdminPromotionPage,
-    path: '/promotions/:promotionId',
+    path: '/promotions/:promotionId/:tabId?',
   },
 
   //   Other

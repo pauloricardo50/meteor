@@ -27,7 +27,7 @@ const PRO_ROUTES = {
   },
   PRO_PROMOTION_PAGE: {
     component: ProPromotionPage,
-    path: '/promotions/:promotionId',
+    path: '/promotions/:promotionId/:tabId?',
   },
   PRO_PROPERTY_PAGE: {
     component: ProProPropertyPage,

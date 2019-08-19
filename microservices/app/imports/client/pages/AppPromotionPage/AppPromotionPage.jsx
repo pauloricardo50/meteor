@@ -6,18 +6,8 @@ import AppPromotionPageContainer from './AppPromotionPageContainer';
 
 type AppPromotionPageProps = {};
 
-const AppPromotionPage = ({
-  promotion,
-  currentUser,
-  loan,
-  invitedByUser,
-}: AppPromotionPageProps) => (
-  <PromotionPage
-    promotion={promotion}
-    currentUser={currentUser}
-    loan={loan}
-    invitedByUser={invitedByUser}
-  />
+const AppPromotionPage = (props: AppPromotionPageProps) => (
+  <PromotionPage {...props} />
 );
 
 export default AppPromotionPageContainer(AppPromotionPage);

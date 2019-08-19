@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { createRoute } from 'core/utils/routerUtils';
-import { PROPERTY_DOCUMENTS } from 'core/api/constants';
+import { PROPERTY_DOCUMENTS, PROMOTIONS_COLLECTION } from 'core/api/constants';
 
 const getImage = ({ documents = {}, imageUrls = [] }) => {
   let images = [];
@@ -45,9 +45,10 @@ export default withProps(({
   additionalInfos,
   loanId,
   shareSolvency,
-  route: createRoute('/loans/:loanId/:collection/:docId', {
+  route: createRoute('/loans/:loanId/:collection/:docId/:tabId', {
     loanId,
     collection,
     docId: document._id,
+    tabId: collection === PROMOTIONS_COLLECTION ? 'overview' : '',
   }),
 }));

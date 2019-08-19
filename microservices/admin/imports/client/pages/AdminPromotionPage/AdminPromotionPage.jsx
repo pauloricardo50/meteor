@@ -6,11 +6,8 @@ import AdminPromotionPageContainer from './AdminPromotionPageContainer';
 
 type AdminPromotionPageProps = {};
 
-const AdminPromotionPage = ({
-  promotion,
-  currentUser,
-}: AdminPromotionPageProps) => (
-  <PromotionPage promotion={promotion} currentUser={currentUser} />
+const AdminPromotionPage = (props: AdminPromotionPageProps) => (
+  <PromotionPage {...props} />
 );
 
 export default AdminPromotionPageContainer(AdminPromotionPage);

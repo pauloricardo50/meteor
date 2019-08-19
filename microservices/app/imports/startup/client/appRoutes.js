@@ -56,18 +56,8 @@ export default {
     path: '/loans/:loanId/properties',
     component: PropertiesPage,
   },
-  APP_PROMOTION_LOT_PAGE: {
-    path:
-      '/loans/:loanId/promotions/:promotionId/promotionLots/:promotionLotId',
-    component: AppPromotionLotPage,
-  },
-  APP_PROMOTION_OPTION_PAGE: {
-    path:
-      '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId',
-    component: AppPromotionOptionPage,
-  },
   APP_PROMOTION_PAGE: {
-    path: '/loans/:loanId/promotions/:promotionId',
+    path: '/loans/:loanId/promotions/:promotionId/:tabId?',
     component: AppPromotionPage,
   },
   WELCOME_PAGE: {
