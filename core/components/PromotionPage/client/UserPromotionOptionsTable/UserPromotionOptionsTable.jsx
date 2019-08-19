@@ -11,6 +11,7 @@ const UserPromotionOptionsTable = ({
   rows,
   columnOptions,
   isDashboardTable,
+  props,
 }: UserPromotionOptionsTableProps) => (
   <>
     <h3 className="text-center">
@@ -20,9 +21,10 @@ const UserPromotionOptionsTable = ({
       rows={rows}
       columnOptions={columnOptions}
       sortable={false}
-      {...isDashboardTable && {
+      {...(isDashboardTable && {
         style: { overflowY: 'scroll', maxHeight: '220px' },
-      }}
+      })}
+      {...props}
     />
   </>
 );

@@ -4,6 +4,7 @@ import { Element } from 'react-scroll';
 
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import T from '../../Translation';
+import ResidenceTypeSetter from '../../ResidenceTypeSetter';
 import {
   ProPromotionLotsTable,
   AppPromotionLotsTable,
@@ -12,6 +13,7 @@ import LotsTable from './LotsTable';
 import PromotionTimelineForm from './PromotionTimelineForm';
 import PromotionMetadataContext from './PromotionMetadata';
 import PromotionTimeline from './PromotionTimeline';
+import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 
 type PromotionPageOverviewProps = {};
 
@@ -44,11 +46,19 @@ const PromotionPageOverview = ({
       )}
 
       {isUser ? (
-        <AppPromotionLotsTable
-          promotion={promotion}
-          loan={loan}
-          className="card1"
-        />
+        <>
+          <ResidenceTypeSetter loan={loan} />
+          <UserPromotionOptionsTable
+            promotion={promotion}
+            loan={loan}
+            className="card1"
+          />
+          <AppPromotionLotsTable
+            promotion={promotion}
+            loan={loan}
+            className="card1"
+          />
+        </>
       ) : (
         <ProPromotionLotsTable promotion={promotion} className="card1" />
       )}
