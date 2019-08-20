@@ -23,10 +23,16 @@ export const formatInterestRates = interestRatesArray =>
     .map(({ type, rateLow, rateHigh }) => ({
       id: type,
       columns: [
-        <T id={`InterestsTable.${type}`} />,
-        <span>
-          {formatRate(rateLow)} - {formatRate(rateHigh)}
-        </span>,
+        <T key="label" id={`InterestsTable.${type}`} />,
+        rateLow === rateHigh ? (
+          <span>{formatRate(rateLow)}</span>
+        ) : (
+          <span>
+            {formatRate(rateLow)}
+            {' - '}
+            {formatRate(rateHigh)}
+          </span>
+        ),
       ],
     }));
 
