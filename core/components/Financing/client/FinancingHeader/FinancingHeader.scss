@@ -38,7 +38,7 @@
     padding: 0;
   }
 
-   > * {
+  > * {
     padding: 0;
   }
 
@@ -57,6 +57,11 @@
     .click-to-edit-field:hover {
       color: $primary;
       background-color: white;
+    }
+
+    .click-to-edit-field.not-allowed-to-edit:hover {
+      color: white;
+      background-color: $primary;
     }
 
     h3 {
@@ -78,7 +83,7 @@
 
     border: unset;
 
-     > * {
+    > * {
       align-items: center;
       flex-direction: row;
       justify-content: space-around;
