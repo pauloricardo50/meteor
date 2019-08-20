@@ -32,12 +32,25 @@ const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
       label: <T id="TasksTable.relatedTo" />,
       style: { width: 200 },
     },
-    { id: 'title', label: <T id="TasksTable.title" />, style: { width: '100%' } },
-    { id: 'description', label: <T id="TasksTable.description" />, style: { width: '200%' } },
+    {
+      id: 'title',
+      label: <T id="TasksTable.title" />,
+      style: { width: '100%' },
+    },
+    {
+      id: 'description',
+      label: <T id="TasksTable.description" />,
+      style: { width: '200%' },
+    },
     showStatusColumn && {
       id: 'status',
       label: <T id="TasksTable.status" />,
       style: { width: 70 },
+    },
+    {
+      id: 'createdAt',
+      label: <T id="TasksTable.createdAt" />,
+      style: { width: 100 },
     },
     { id: 'dueAt', label: <T id="TasksTable.dueAt" />, style: { width: 100 } },
     {
@@ -64,6 +77,7 @@ const makeMapTask = ({
     loan = {},
     user = {},
     priority,
+    createdAt,
   } = task;
 
   return {
@@ -88,6 +102,10 @@ const makeMapTask = ({
       showStatusColumn && {
         raw: status,
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
+      },
+      {
+        raw: createdAt && createdAt.getTime(),
+        label: moment(createdAt).fromNow(),
       },
       { raw: dueAt && dueAt.getTime(), label: formatDateTime(dueAt) },
       {
