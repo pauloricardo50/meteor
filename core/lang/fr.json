@@ -1,4 +1,8 @@
 {
+  "general.month": "mois",
+  "general.day": "jour",
+  "general.year": "an",
+  "Forms.realEstate.theoreticalExpenses": "Charges théoriques",
   "Forms.type.PENSION_FUND": "Caisse de pension",
   "Forms.volumeNorm.ECA": "Selon l'assureur",
   "MaxPropertyValue.showDetail": "Afficher détails",

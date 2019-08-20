@@ -96,6 +96,7 @@ export const financeInfoSchema = {
   'realEstate.$.loan': { ...moneyField, optional: false },
   'realEstate.$.name': { type: String, optional: true },
   'realEstate.$.income': { ...moneyField, optional: true, defaultValue: 0 },
+  'realEstate.$.theoreticalExpenses': { ...moneyField, optional: true, defaultValue: 0 },
 };
 
 export const ownCompaniesSchema = {
