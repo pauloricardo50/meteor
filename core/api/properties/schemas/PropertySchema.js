@@ -304,6 +304,7 @@ const protectedKeys = [
   'userId',
   'documents',
   'userLinks',
+  'loanCount',
 ];
 
 export const userAllowedKeys = [
