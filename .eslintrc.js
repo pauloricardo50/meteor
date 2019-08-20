@@ -98,6 +98,14 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/label-has-for': [
+      2,
+      {
+        components: ['Label'],
+        required: { every: ['id'] },
+        allowChildren: false,
+      },
+    ],
 
     // eslint-plugin-react rules
 
