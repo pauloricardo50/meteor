@@ -22,3 +22,16 @@ export const analyticsVerifyEmail = new Method({
     trackingId: String,
   },
 });
+
+export const analyticsCTA = new Method({
+  name: 'analyticsCTA',
+  params: {
+    name: String,
+    cookies: Object,
+    sessionStorage: Object,
+    path: String,
+    route: String,
+    queryParams: Object,
+    queryString: Object,
+  },
+});

@@ -100,10 +100,14 @@ const Button = (props) => {
       variant={variant}
       component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
-      className={cx(props.className, {
-        [props.classes.root]: color === 'error',
-        [props.classes.raised]: !!(color === 'error' && variant === 'raised'),
-      })}
+      className={cx(
+        {
+          [props.classes.root]: color === 'error',
+          [props.classes.raised]: !!(color === 'error' && variant === 'raised'),
+        },
+        props.className,
+      )}
+      role="button"
     >
       {getContent(props)}
     </Comp>

@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import { Component } from 'react';
-import { matchPath } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { analyticsPage } from 'core/api/methods';
 
 import { getCookie, setCookie, parseCookies } from 'core/utils/cookiesHelpers';
+import { getMatchingPath } from 'core/api/analytics/helpers';
 import { impersonate } from '../Impersonate/ImpersonatePage/ImpersonatePage';
 
 export default class HistoryWatcher extends Component {
@@ -32,43 +32,6 @@ export default class HistoryWatcher extends Component {
     }
   }
 
-  getMatchingPath(pathname) {
-    const { routes = {}, history } = this.props;
-    let matchingPath = null;
-
-    const searchParams = history.location.search;
-    const queryString = {};
-
-    Object.keys(routes).forEach((route) => {
-      if (matchingPath === null && route !== 'NOT_FOUND') {
-        const match = matchPath(pathname, routes[route]);
-
-        if (searchParams) {
-          const params = new URLSearchParams(searchParams);
-          [...params.entries()].forEach(([key, value]) => {
-            queryString[key] = value;
-          });
-        }
-
-        matchingPath = match && {
-          path: pathname,
-          route,
-          params: match.params,
-          queryString,
-        };
-      }
-    });
-
-    return (
-      matchingPath || {
-        path: pathname,
-        route: 'NOT_FOUND',
-        params: {},
-        queryString,
-      }
-    );
-  }
-
   generateTrackingId() {
     const trackingId = getCookie(TRACKING_COOKIE);
     if (!trackingId) {
@@ -83,13 +46,11 @@ export default class HistoryWatcher extends Component {
   }
 
   loadPage(pathname) {
-    const {
-      path,
-      route,
-      params,
-      searchParams,
-      queryString,
-    } = this.getMatchingPath(pathname);
+    const { path, route, params, searchParams, queryString } = getMatchingPath({
+      pathname,
+      routes: this.props.routes,
+      history: this.props.history,
+    });
     const cookies = parseCookies();
     const { sessionStorage } = window;
     analyticsPage.run({
