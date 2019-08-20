@@ -138,6 +138,12 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: false,
       autoComplete: 'organisation',
     },
+    {
+      id: 'worksInSwitzerlandSince',
+      type: 'textInput',
+      required: false,
+      number: true,
+    },
   ];
 };
 

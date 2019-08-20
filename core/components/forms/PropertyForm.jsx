@@ -18,17 +18,22 @@ const baseFields = [
   'zipCode',
   'city',
   'propertyType',
+  'constructionYear',
+  'renovationYear',
+  'landValue',
+  'additionalMargin',
+  'constructionValue',
 ];
+
 const detailFields = [
   'houseType',
   'flatType',
   'investmentRent',
-  'constructionYear',
-  'renovationYear',
-  'insideArea',
   'areaNorm',
+  'insideArea',
   'landArea',
   'terraceArea',
+  'gardenArea',
   'numberOfFloors',
   'floorNumber',
   'roomCount',
@@ -36,11 +41,10 @@ const detailFields = [
   'volumeNorm',
   'parkingInside',
   'parkingOutside',
-  'gardenArea',
   'bathroomCount',
   'minergie',
-  'isCoproperty',
   'isNew',
+  'isCoproperty',
   'copropertyPercentage',
   'yearlyExpenses',
 ];
@@ -52,6 +56,10 @@ const omittedFields = [
   'mortgageNotes',
   'mortgageNoteLinks',
   'canton',
+  'externalId',
+  'externalUrl',
+  'imageUrls',
+  'category',
 ];
 
 const otherSchema = PropertySchemaAdmin.omit(
@@ -99,31 +107,123 @@ const PropertyForm = ({ property }: PropertyFormProps) => {
   const { _id: propertyId, mortgageNotes } = property;
   return (
     <div className="property-admin-form">
-      <Box title={<h3>Informations de base</h3>}>
-        <AutoForm
-          schema={PropertySchemaAdmin.pick(...baseFields)}
-          model={property}
-          onSubmit={handleSubmit(property._id)}
-          className="form"
-        />
-      </Box>
-      <Box title={<h3>État du bien</h3>}>
-        <AutoForm
-          schema={PropertySchemaAdmin.pick(...detailFields)}
-          model={property}
-          onSubmit={handleSubmit(property._id)}
-          className="form"
-        />
-      </Box>
+      <h3>Informations de base</h3>
+      <AutoForm
+        schema={PropertySchemaAdmin.pick(...baseFields)}
+        model={property}
+        onSubmit={handleSubmit(property._id)}
+        className="form"
+        layout={[
+          {
+            Component: Box,
+            layout: [
+              'value',
+              {
+                Component: () => (
+                  <div className="text-center" style={{ margin: '16 0' }}>
+                    <h4>--- ou ---</h4>
+                  </div>
+                ),
+              },
+              {
+                fields: ['landValue', 'additionalMargin', 'constructionValue'],
+                className: 'grid-3',
+              },
+            ],
+            className: 'mb-32',
+          },
+          {
+            fields: [
+              'status',
+              'propertyType',
+              'constructionYear',
+              'renovationYear',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: ['address1', 'address2', 'zipCode', 'city'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: '__REST',
+            className: 'grid-col',
+          },
+        ]}
+      />
+      <h3>État du bien</h3>
+      <AutoForm
+        schema={PropertySchemaAdmin.pick(...detailFields)}
+        model={property}
+        onSubmit={handleSubmit(property._id)}
+        className="form"
+        layout={[
+          {
+            fields: [
+              'houseType',
+              'flatType',
+              'investmentRent',
+              'yearlyExpenses',
+              'isNew',
+              'isCoproperty',
+              'copropertyPercentage',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: [
+              'areaNorm',
+              'insideArea',
+              'landArea',
+              'terraceArea',
+
+              'gardenArea',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: [
+              'numberOfFloors',
+              'floorNumber',
+              'roomCount',
+              'bathroomCount',
+              'parkingInside',
+              'parkingOutside',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: ['volume', 'volumeNorm'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: '__REST',
+            className: 'grid-col',
+          },
+        ]}
+      />
       {otherSchema._schemaKeys.length > 0 && (
-        <Box title={<h3>Autres</h3>}>
+        <>
+          <h3>Autres</h3>
           <AutoForm
             schema={otherSchema}
             model={property}
             onSubmit={handleSubmit(property._id)}
             className="form"
+            layout={[
+              {
+                fields: '__REST',
+                className: 'grid-col',
+              },
+            ]}
           />
-        </Box>
+        </>
       )}
       <MortgageNotesForm
         mortgageNotes={mortgageNotes}
