@@ -208,7 +208,7 @@ export const PropertySchema = new SimpleSchema({
   },
   volumeNorm: {
     type: String,
-    defaultValue: propertyConstants.VOLUME_NORM.SIA_416,
+    defaultValue: propertyConstants.VOLUME_NORM.ECA,
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
     uniforms: { placeholder: null },
   },
