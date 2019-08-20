@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -6,7 +8,6 @@ import { compose } from 'recompose';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import PageHead from 'core/components/PageHead';
-import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import {
   TooltipProviderContainer,
   TOOLTIP_LISTS,
@@ -44,17 +45,14 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
           {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
           {showPart2 && <Widget1Part2 finma={finma} />}
           {showPart2 && (
-            <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
-              <Button
-                secondary
-                className="cta"
-                raised
-                link
-                to={getUrl(rest)}
-              >
-                <T id="general.continue" />
-              </Button>
-            </TogglePoint>
+            <Button
+              secondary
+              className="cta"
+              raised
+              href={Meteor.settings.public.subdomains.app}
+            >
+              <T id="general.continue" />
+            </Button>
           )}
         </div>
         {showPart2 && <Widget1PageDisclaimer />}
