@@ -169,6 +169,7 @@ export default compose(
     history,
     isDashboardTable,
     isAdmin,
+    className,
   }) => {
     const { promotionOptions } = loan;
     const options = isAnyLotAttributedToMe(promotionOptions)
@@ -203,6 +204,7 @@ export default compose(
         isAdmin,
       }),
       isDashboardTable,
+      className,
     };
   }),
 );

@@ -11,7 +11,7 @@ const UserPromotionOptionsTable = ({
   rows,
   columnOptions,
   isDashboardTable,
-  props,
+  ...props,
 }: UserPromotionOptionsTableProps) => (
   <>
     <h3 className="text-center">

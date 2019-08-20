@@ -1,8 +1,9 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React, { useContext } from 'react';
 import { Element } from 'react-scroll';
 
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import T from '../../Translation';
 import ResidenceTypeSetter from '../../ResidenceTypeSetter';
 import {
@@ -24,7 +25,7 @@ const PromotionPageOverview = ({
   const {
     permissions: { canChangeTimeline },
   } = useContext(PromotionMetadataContext);
-  const { isUser } = useContext(CurrentUserContext);
+  const isApp = Meteor.microservice === 'app';
   const { constructionTimeline, signingDate } = promotion;
 
   return (
@@ -45,27 +46,35 @@ const PromotionPageOverview = ({
         </>
       )}
 
-      {isUser ? (
+      {isApp ? (
         <>
           <ResidenceTypeSetter loan={loan} />
-          <UserPromotionOptionsTable
-            promotion={promotion}
-            loan={loan}
-            className="card1"
-          />
-          <AppPromotionLotsTable
-            promotion={promotion}
-            loan={loan}
-            className="card1"
-          />
+          {loan.residenceType
+            && loan.promotionOptions
+            && loan.promotionOptions.length > 0 && (
+            <UserPromotionOptionsTable
+              promotion={promotion}
+              loan={loan}
+              className="card1"
+            />
+          )}
+          {loan.residenceType && (
+            <AppPromotionLotsTable
+              promotion={promotion}
+              loan={loan}
+              className="card1"
+            />
+          )}
         </>
       ) : (
         <ProPromotionLotsTable promotion={promotion} className="card1" />
       )}
 
-      <Element name="additional-lots-table" className="additional-lots-table">
-        <LotsTable promotion={promotion} className="card1" />
-      </Element>
+      {(!isApp || loan.residenceType) && (
+        <Element name="additional-lots-table" className="additional-lots-table">
+          <LotsTable promotion={promotion} className="card1" />
+        </Element>
+      )}
     </div>
   );
 };

@@ -14,39 +14,39 @@ import PromotionMap from './PromotionMap/loadable';
 type PromotionPageContentProps = {};
 
 const PromotionPageContent = ({
-  promotion,
   route,
+  ...props
 }: PromotionPageContentProps) => (
   <Switch>
     <Route
       path={createRoute(route, { tabId: 'map' })}
       component={PromotionMap}
-      promotion={promotion}
+      {...props}
     />
     <Route
       path={createRoute(route, { tabId: 'partners' })}
       component={PromotionPartners}
-      promotion={promotion}
+      {...props}
     />
     <Route
       path={createRoute(route, { tabId: 'files' })}
       component={PromotionFiles}
-      promotion={promotion}
+      {...props}
     />
     <Route
       path={createRoute(route, { tabId: 'users' })}
       component={PromotionUsers}
-      promotion={promotion}
+      {...props}
     />
     <Route
       path={createRoute(route, { tabId: 'customers' })}
       component={PromotionCustomers}
-      promotion={promotion}
+      {...props}
     />
     <Route
       path={[createRoute(route, { tabId: '' })]}
       component={PromotionPageOverview}
-      promotion={promotion}
+      {...props}
     />
   </Switch>
 );
