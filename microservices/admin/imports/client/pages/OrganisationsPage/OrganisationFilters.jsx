@@ -3,11 +3,7 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
-import {
-  ORGANISATION_FEATURES,
-  ORGANISATION_TAGS,
-  ORGANISATION_TYPES,
-} from 'core/api/constants';
+import { ORGANISATION_TAGS, ORGANISATION_TYPES } from 'core/api/constants';
 
 type OrganisationFiltersProps = {
   filters: Object,
@@ -21,15 +17,6 @@ const filtersSchema = new SimpleSchema({
     uniforms: { placeholder: 'Tous' },
   },
   'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
-  features: {
-    type: Array,
-    defaultValue: [],
-    uniforms: { placeholder: 'Tous' },
-  },
-  'features.$': {
-    type: String,
-    allowedValues: Object.values(ORGANISATION_FEATURES),
-  },
   type: {
     type: Array,
     defaultValue: [],
@@ -54,7 +41,6 @@ const OrganisationFilters = ({
   >
     <div className="filters center">
       <CustomAutoField name="type" />
-      <CustomAutoField name="features" />
       <CustomAutoField name="tags" />
     </div>
   </AutoForm>

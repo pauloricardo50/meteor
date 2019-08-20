@@ -28,6 +28,13 @@
       }
     }
   }
+
+  &.not-allowed-to-edit:hover {
+    opacity: 1;
+    color: $primary;
+    background-color: white;
+  }
+
   &.not-allowed-to-edit.is-placeholder {
     opacity: 0.5;
   }

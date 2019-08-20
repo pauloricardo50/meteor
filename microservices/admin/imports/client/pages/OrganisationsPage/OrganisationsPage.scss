@@ -3,6 +3,16 @@
   align-items: flex-start;
   flex-direction: column;
 
+  .organisations-by-feature {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    width: 100%;
+    h3 {
+      align-self: center;
+    }
+  }
+
   .organisations {
     display: flex;
     flex-wrap: wrap;

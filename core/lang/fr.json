@@ -1,6 +1,8 @@
 {
   "HomePageHeader.acquisition": "Faire une acquisition",
   "HomePageHeader.calculator": "Calculateur",
+  "Forms.type.PENSION_FUND": "Caisse de pension",
+  "Forms.volumeNorm.ECA": "Selon l'assureur",
   "MaxPropertyValue.showDetail": "Afficher détails",
   "MaxPropertyValue.showRecap": "Masquer détails",
   "ProRevenuesPage.explained": "Calcul des revenus",

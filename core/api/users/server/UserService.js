@@ -188,6 +188,14 @@ export class UserServiceClass extends CollectionService {
   };
 
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
+    const duplicateOrganisations = newOrganisations
+      .map(({ _id }) => _id)
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .length !== newOrganisations.length;
+
+    if (duplicateOrganisations) {
+      throw new Meteor.Error('Vous ne pouvez pas lier un utilisateur deux fois à la même organisation.');
+    }
     const { organisations: oldOrganisations = [] } = this.get(userId);
 
     oldOrganisations.forEach(({ _id: organisationId }) =>

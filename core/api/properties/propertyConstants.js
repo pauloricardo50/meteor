@@ -26,6 +26,7 @@ export const VOLUME_NORM = {
   SIA_416: 'SIA_416',
   SIA_116: 'SIA_116',
   BIC: 'BIC',
+  ECA: 'ECA',
 };
 
 export const AREA_NORM = {

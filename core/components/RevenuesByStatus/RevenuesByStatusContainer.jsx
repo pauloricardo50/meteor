@@ -19,6 +19,7 @@ const columnOptions = [
   ...statuses.map(status => ({
     id: status,
     label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+    style: { whiteSpace: 'nowrap' },
   })),
 ];
 
@@ -32,6 +33,7 @@ const calculateRevenuesByStatus = (loans = [], status, multiplier = 1) =>
 
     if (isEstimationStatus(status)) {
       const estimatedRevenues = Calculator.getEstimatedRevenues({ loan });
+      console.log('estimatedRevenues:', estimatedRevenues);
       return tot + estimatedRevenues;
     }
 

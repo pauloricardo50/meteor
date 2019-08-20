@@ -12,6 +12,7 @@ analyticsLogin.setHandler((context, params) => {
   SecurityService.checkLoggedIn();
 
   const analytics = new Analytics(context);
+  analytics.identify();
   analytics.track(EVENTS.USER_LOGGED_IN);
 });
 
