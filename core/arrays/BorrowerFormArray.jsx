@@ -2,6 +2,8 @@ import * as constants from 'core/api/constants';
 import React from 'react';
 
 import CantonField from 'core/components/CantonField/CantonField';
+import T, { Money } from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -252,6 +254,29 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
         { id: 'value', type: 'textInput', money: true },
         { id: 'loan', type: 'textInput', money: true },
         { id: 'income', type: 'textInput', money: true, required: false },
+        {
+          id: 'theoreticalExpenses',
+          type: 'custom',
+          Component: ({ inputProps: { currentValue, label, itemValue } }) => (
+            <div className="flex-col" style={{ paddingLeft: 12 }}>
+              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                {label}
+              </label>
+              <b>
+                <Money
+                  id="theoreticalExpenses"
+                  value={
+                    currentValue || Calculator.getRealEstateCost(itemValue)
+                  }
+                />
+                <span>
+                  &nbsp;/
+                  <T id="general.month" />
+                </span>
+              </b>
+            </div>
+          ),
+        },
       ],
     },
     makeArrayOfObjectsInput('otherFortune'),

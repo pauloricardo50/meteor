@@ -515,7 +515,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getRealEstateCost({ loan, value }) {
+    getRealEstateCost({ loan, value, theoreticalExpenses }) {
+      if (theoreticalExpenses > 0) {
+        // This function returns a monthly cost
+        return theoreticalExpenses / 12;
+      }
+
       const amortizationRate = this.getAmortizationRateBase({
         borrowRatio: super.getBorrowRatio({ loan, propertyValue: value }),
       });

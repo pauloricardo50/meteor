@@ -37,14 +37,21 @@ class ArrayInput extends Component {
     } = this.props;
 
     const mapInput = (input, i) => {
-      const { id: inputId, type, options, intlId } = input;
+      const {
+        id: inputId,
+        type,
+        options,
+        intlId,
+        Component: CustomComponent,
+      } = input;
+      const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,
         inputProps: {
           ...input,
           id: `${id}.${i}.${inputId}`,
-          currentValue:
-            currentValue && currentValue[i] && currentValue[i][inputId],
+          currentValue: finalCurrentValue,
+          itemValue: currentValue && currentValue[i],
           key: inputId,
           label: <T id={`Forms.${intlId || id}.${inputId}`} />,
           placeholder: `Forms.${intlId || id}.${inputId}.placeholder`,
@@ -54,7 +61,13 @@ class ArrayInput extends Component {
       };
 
       if (type === 'textInput') {
-        return <AutoFormTextInput {...childProps} noValidator key={id + inputId + i} />;
+        return (
+          <AutoFormTextInput
+            {...childProps}
+            noValidator
+            key={id + inputId + i}
+          />
+        );
       }
       if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
@@ -72,7 +85,17 @@ class ArrayInput extends Component {
         );
       }
       if (type === 'dateInput') {
-        return <AutoFormDateInput {...childProps} noValidator key={id + inputId + i} />;
+        return (
+          <AutoFormDateInput
+            {...childProps}
+            noValidator
+            key={id + inputId + i}
+          />
+        );
+      }
+
+      if (type === 'custom') {
+        return <CustomComponent {...childProps} />;
       }
     };
 
