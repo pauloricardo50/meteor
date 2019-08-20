@@ -105,6 +105,7 @@ export const withSelector = (SuperClass = class {}) =>
         structurePropertyValue
         || this.selectPropertyKey({ loan, structureId, key: 'totalValue' })
         || this.selectPropertyKey({ loan, structureId, key: 'value' })
+        || 0
       );
     }
 
