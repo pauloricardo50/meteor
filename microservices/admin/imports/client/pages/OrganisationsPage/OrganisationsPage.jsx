@@ -3,12 +3,16 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import Icon from 'core/components/Icon';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import OrganisationsPageContainer from './OrganisationsPageContainer';
 import Organisation from './Organisation';
 import OrganisationAdder from './OrganisationAdder';
 import OrganisationFilters from './OrganisationFilters';
+import OrganisationsByFeature from './OrganisationsByFeature';
 
 type OrganisationsPageProps = {
   insertOrganisation: Function,
@@ -40,13 +44,21 @@ const OrganisationsPage = ({
 
     <OrganisationFilters filters={filters} setFilters={setFilters} />
 
-    <div className="organisations">
+    {[...Object.keys(ORGANISATION_FEATURES), null].map(feature => (
+      <OrganisationsByFeature
+        organisations={organisations}
+        feature={feature}
+        key={feature || 'other'}
+      />
+    ))}
+
+    {/* <div className="organisations">
       {organisations
         .sort(({ name: nameA }, { name: nameB }) => nameA.localeCompare(nameB))
         .map(org => (
           <Organisation organisation={org} key={org._id} />
         ))}
-    </div>
+    </div> */}
   </div>
 );
 
