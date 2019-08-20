@@ -15,6 +15,9 @@ import {
 import Widget1Part1 from 'core/components/widget1/Widget1Part1';
 import Widget1Part2 from 'core/components/widget1/Widget1Part2';
 import Widget1Options from 'core/components/widget1/Widget1Options';
+import { ctaClicked } from 'core/api/analytics/helpers';
+import CTAS from 'core/api/analytics/ctas';
+import { WWW_ROUTES } from 'imports/startup/shared/Routes';
 import Widget1PageDisclaimer from './Widget1PageDisclaimer';
 import Widget1PageContainer from './Widget1PageContainer';
 import WwwLayout from '../../WwwLayout';
@@ -30,7 +33,14 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
   return `/start/2?${queryString.stringify(queryparams)}`;
 };
 
-const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
+const Widget1Page = ({
+  step,
+  finishedTutorial,
+  finma,
+  fields,
+  history,
+  ...rest
+}) => {
   const showPart2 = finishedTutorial;
   return (
     <WwwLayout className="widget1-page">
@@ -50,6 +60,9 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
               className="cta"
               raised
               href={Meteor.settings.public.subdomains.app}
+              onClick={() => {
+                ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
+              }}
             >
               <T id="general.continue" />
             </Button>

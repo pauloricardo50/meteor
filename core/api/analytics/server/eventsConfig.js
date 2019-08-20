@@ -36,4 +36,8 @@ export const EVENTS_CONFIG = {
   [EVENTS.LOAN_STATUS_CHANGED]: {
     name: 'Loan Status changed',
   },
+  [EVENTS.CTA_CLICKED]: {
+    name: 'CTA clicked',
+    transform: curryPick(['name', 'url', 'route', 'path', 'referrer']),
+  },
 };

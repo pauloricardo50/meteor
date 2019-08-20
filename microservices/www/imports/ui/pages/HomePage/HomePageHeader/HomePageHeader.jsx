@@ -9,6 +9,8 @@ import Button from 'core/components/Button';
 import Waves from 'core/components/Waves';
 import { WWW_ROUTES } from 'imports/startup/shared/Routes';
 import useMedia from 'core/hooks/useMedia';
+import { ctaClicked } from 'core/api/analytics/helpers';
+import CTAS from 'core/api/analytics/ctas';
 
 const HomePageHeader = ({ history }) => {
   const isLarge = useMedia({ minWidth: 768 });
@@ -31,6 +33,9 @@ const HomePageHeader = ({ history }) => {
             secondary
             raised
             href={Meteor.settings.public.subdomains.app}
+            onClick={() => {
+              ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
+            }}
           >
             <T id="HomePageHeader.acquisition" />
           </Button>
