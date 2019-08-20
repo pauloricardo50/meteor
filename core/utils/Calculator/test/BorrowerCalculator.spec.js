@@ -658,11 +658,11 @@ describe('BorrowerCalculator', () => {
         borrowers: [
           {
             realEstate: [
-              { value: 1200000, loan: 780000, theoreticalExpenses: 100 },
+              { value: 1200000, loan: 780000, theoreticalExpenses: 120 },
             ],
           },
         ],
-      })).to.equal(100);
+      })).to.equal(10);
     });
   });
 
