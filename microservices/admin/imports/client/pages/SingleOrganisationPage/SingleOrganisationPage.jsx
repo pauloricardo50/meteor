@@ -22,7 +22,7 @@ type SingleOrganisationPageProps = {
   organisation: Object,
 };
 
-const tabs = organisation =>
+const tabs = ({ organisation, currentUser }) =>
   [
     { id: 'info', Component: OrganisationInfo },
     { id: 'users', Component: OrganisationUsersTable },
@@ -51,7 +51,13 @@ const tabs = organisation =>
     },
   ].map(({ id, Component, condition, style = {} }) => ({
     id,
-    content: <Component {...organisation} organisationId={organisation._id} />,
+    content: (
+      <Component
+        {...organisation}
+        currentUser={currentUser}
+        organisationId={organisation._id}
+      />
+    ),
     label: (
       <span style={style}>
         <T id={`OrganisationTabs.${id}`} noTooltips />
@@ -76,7 +82,7 @@ const SingleOrganisationPage = ({
       organisation={organisation}
       currentUser={currentUser}
     />
-    <Tabs tabs={tabs(organisation)} routerParamName="tabId" />
+    <Tabs tabs={tabs({ organisation, currentUser })} routerParamName="tabId" />
   </div>
 );
 

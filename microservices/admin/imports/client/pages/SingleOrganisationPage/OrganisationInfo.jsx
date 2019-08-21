@@ -2,16 +2,31 @@
 import React from 'react';
 
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import UploaderArray from 'core/components/UploaderArray';
 import AdminNote from '../../components/AdminNote';
 
 type OrganisationInfoProps = {};
 
-const OrganisationInfo = ({ adminNote, _id }: OrganisationInfoProps) => (
+const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];
+
+const OrganisationInfo = ({
+  currentUser,
+  adminNote,
+  _id,
+  documents,
+}: OrganisationInfoProps) => (
   <div>
     <AdminNote
       adminNote={adminNote}
       docId={_id}
       collection={ORGANISATIONS_COLLECTION}
+    />
+    <UploaderArray
+      doc={{ _id, documents }}
+      collection={ORGANISATIONS_COLLECTION}
+      documentArray={organisationDocuments}
+      currentUser={currentUser}
+      allowRequireByAdmin={false}
     />
   </div>
 );
