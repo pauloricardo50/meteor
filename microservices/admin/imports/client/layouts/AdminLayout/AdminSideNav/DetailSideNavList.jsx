@@ -10,10 +10,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import {
   USERS_COLLECTION,
   LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
-  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import StatusLabel from 'imports/core/components/StatusLabel/StatusLabel';
@@ -22,21 +19,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  {
-    address1,
-    anonymous,
-    canton,
-    city,
-    loans,
-    name,
-    organisations = [],
-    promotion,
-    roles,
-    status,
-    structure,
-    user,
-    value,
-  },
+  { anonymous, canton, city, name, roles, status, structure, user },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -63,13 +46,6 @@ const getListItemDetails = (
       ),
     };
   }
-  case BORROWERS_COLLECTION:
-    return {
-      primary: name || 'Emprunteur sans nom',
-      secondary:
-          loans && loans.map(({ name: loanName }) => loanName).join(', '),
-    };
-
   case PROMOTIONS_COLLECTION:
     return {
       primary: name || 'Promotion sans nom',
@@ -84,26 +60,6 @@ const getListItemDetails = (
           </span>
         </div>
       ),
-    };
-
-  case PROPERTIES_COLLECTION:
-    return {
-      primary: name || address1 || 'Bien sans adresse',
-      secondary: (
-        <span className="flex-col">
-          <span>{value && `CHF ${toMoney(value)}`}</span>
-          <span>
-            {loans && loans.map(({ name: loanName }) => loanName).join(', ')}
-            {promotion && promotion.name}
-          </span>
-        </span>
-      ),
-    };
-
-  case CONTACTS_COLLECTION:
-    return {
-      primary: name || 'Contact sans nom',
-      secondary: organisations.map(({ name: orgName }) => orgName).join(', '),
     };
   default:
     throw new Error('invalid collection name');

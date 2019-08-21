@@ -13,7 +13,7 @@ import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import PropertiesTable from './PropertiesTable';
 
 const Propertiespage = ({ history }) => (
-  <section className="card1 card-top properties-page">
+  <section className="properties-page">
     <Helmet>
       <title>Biens immobiliers</title>
     </Helmet>
