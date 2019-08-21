@@ -1,4 +1,7 @@
 {
+  "Forms.variable.isNewProperty": "Bien immo est neuf",
+  "Forms.isNewProperty.true": "Vrai",
+  "Forms.isNewProperty.false": "Faux",
   "collections.interestRates": "Taux d'intérêts",
   "BorrowersProgress.signup": "Ne perdez pas vos informations !",
   "Forms.signingDate": "Date de closing",
