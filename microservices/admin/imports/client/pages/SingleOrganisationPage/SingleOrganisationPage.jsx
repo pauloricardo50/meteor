@@ -16,6 +16,7 @@ import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTa
 import CommissionEditor from './CommissionEditor';
 import ReferredUsersTable from './ReferredUsersTable';
 import OrganisationRevenues from './OrganisationRevenues';
+import OrganisationInfo from './OrganisationInfo';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
@@ -23,6 +24,7 @@ type SingleOrganisationPageProps = {
 
 const tabs = organisation =>
   [
+    { id: 'info', Component: OrganisationInfo },
     { id: 'users', Component: OrganisationUsersTable },
     { id: 'contacts', Component: ContactsTable },
     {
@@ -64,12 +66,16 @@ const tabs = organisation =>
 
 const SingleOrganisationPage = ({
   organisation,
+  currentUser,
 }: SingleOrganisationPageProps) => (
   <div className="card1 card-top single-organisation-page">
     <Helmet>
       <title>{organisation.name}</title>
     </Helmet>
-    <SingleOrganisationPageHeader organisation={organisation} />
+    <SingleOrganisationPageHeader
+      organisation={organisation}
+      currentUser={currentUser}
+    />
     <Tabs tabs={tabs(organisation)} routerParamName="tabId" />
   </div>
 );
