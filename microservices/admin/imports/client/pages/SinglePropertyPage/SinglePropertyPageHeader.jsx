@@ -39,7 +39,7 @@ const SinglePropertyHeader = ({
           <ConfirmMethod
             label="Supprimer"
             method={() => propertyDelete.run({ propertyId, loanId })}
-            buttonProps={{ error: true }}
+            buttonProps={{ error: true, outlined: true }}
           >
             <p>
               Si ce bien immobilier est partagé entre plusieurs dossiers, il ne

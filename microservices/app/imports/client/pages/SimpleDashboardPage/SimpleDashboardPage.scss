@@ -209,10 +209,9 @@
 
       button {
         align-self: center;
-        width: auto;
 
         @include screen(small) {
-          width: 100%;
+          align-self: stretch;
         }
       }
 

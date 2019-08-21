@@ -54,14 +54,31 @@ export const personalInfoSchema = {
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
     uniforms: { displayEmpty: false },
+    condition: ({ isSwiss }) => !isSwiss,
   },
-  citizenship: { type: String, optional: true },
+  citizenship: {
+    type: String,
+    optional: true,
+    condition: ({ isSwiss }) => !isSwiss,
+  },
   isUSPerson: { type: Boolean, optional: true },
   civilStatus: {
     type: String,
     allowedValues: Object.values(CIVIL_STATUS),
     optional: true,
     uniforms: { displayEmpty: false },
+  },
+  marriedDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    condition: ({ civilStatus }) => civilStatus === CIVIL_STATUS.MARRIED,
+  },
+  divorcedDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    condition: ({ civilStatus }) => civilStatus === CIVIL_STATUS.DIVORCED,
   },
   childrenCount: {
     type: SimpleSchema.Integer,
@@ -70,17 +87,28 @@ export const personalInfoSchema = {
     max: 20,
   },
   company: { type: String, optional: true },
+  worksInSwitzerlandSince: {
+    type: SimpleSchema.Integer,
+    optional: true,
+    min: 1900,
+    max: 2050,
+  },
+};
+
+const bonusField = {
+  ...moneyField,
+  condition: ({ bonusExists }) => !!bonusExists,
 };
 
 export const financeInfoSchema = {
   salary: moneyField,
   netSalary: moneyField,
   bonusExists: { type: Boolean, optional: true },
-  bonus2015: moneyField,
-  bonus2016: moneyField,
-  bonus2017: moneyField,
-  bonus2018: moneyField,
-  bonus2019: moneyField,
+  bonus2015: bonusField,
+  bonus2016: bonusField,
+  bonus2017: bonusField,
+  bonus2018: bonusField,
+  bonus2019: bonusField,
   [OWN_FUNDS_TYPES.BANK_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
@@ -96,12 +124,21 @@ export const financeInfoSchema = {
   'realEstate.$.loan': { ...moneyField, optional: false },
   'realEstate.$.name': { type: String, optional: true },
   'realEstate.$.income': { ...moneyField, optional: true, defaultValue: 0 },
-  'realEstate.$.theoreticalExpenses': { ...moneyField, optional: true, defaultValue: 0 },
+  'realEstate.$.theoreticalExpenses': {
+    ...moneyField,
+    optional: true,
+    defaultValue: 0,
+  },
 };
 
 export const ownCompaniesSchema = {
   hasOwnCompany: { type: Boolean, optional: true },
-  ownCompanies: { type: Array, defaultValue: [], optional: true },
+  ownCompanies: {
+    type: Array,
+    defaultValue: [],
+    optional: true,
+    condition: ({ hasOwnCompany }) => !!hasOwnCompany,
+  },
   'ownCompanies.$': Object,
   'ownCompanies.$.description': { type: String, optional: false },
   'ownCompanies.$.ownership': percentageField,

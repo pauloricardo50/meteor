@@ -1,5 +1,9 @@
 {
   "Forms.signingDate": "Date de closing",
+  "Forms.worksInSwitzerlandSince": "Travaille en suisse depuis",
+  "Forms.worksInSwitzerlandSince.placeholder": "1990",
+  "Forms.marriedDate": "Date du mariage",
+  "Forms.divorcedDate": "Date du divorce",
   "general.month": "mois",
   "general.day": "jour",
   "general.year": "an",
