@@ -3,12 +3,9 @@ import isEqual from 'lodash/isEqual';
 
 import T from 'core/components/Translation';
 import {
-  BORROWERS_COLLECTION,
   LOANS_COLLECTION,
   USERS_COLLECTION,
-  PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
-  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import { Meteor } from 'meteor/meteor';
 
@@ -43,21 +40,15 @@ const getFilterOptions = (props) => {
 
   return {
     [LOANS_COLLECTION]: loanFilters,
-    [BORROWERS_COLLECTION]: [],
     [USERS_COLLECTION]: userFilters,
-    [PROPERTIES_COLLECTION]: [],
     [PROMOTIONS_COLLECTION]: [],
-    [CONTACTS_COLLECTION]: [],
   }[collectionName];
 };
 
 export const defaultFilterOptions = {
   [LOANS_COLLECTION]: loanFilters.map(({ value }) => value),
-  [BORROWERS_COLLECTION]: [],
   [USERS_COLLECTION]: userFilters.map(({ value }) => value),
-  [PROPERTIES_COLLECTION]: [],
   [PROMOTIONS_COLLECTION]: [],
-  [CONTACTS_COLLECTION]: [],
 };
 
 export default getFilterOptions;

@@ -24,7 +24,7 @@ const InterestRatesPage = ({
   irs10y,
   currentInterestRates: { rates: currentRates },
 }: InterestRatesPageProps) => (
-  <div className="card1 card-top interest-rates-page">
+  <div className="interest-rates-page">
     <Helmet>
       <title>Taux d'intérêt</title>
     </Helmet>
