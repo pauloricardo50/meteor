@@ -12,6 +12,7 @@ import {
   PROMOTION_TYPES,
   LOAN_QUERIES,
   STEPS,
+  ORGANISATION_FEATURES,
 } from 'core/api/constants';
 import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
 import OrganisationService from 'imports/core/api/organisations/server/OrganisationService';
@@ -327,9 +328,9 @@ Meteor.methods({
     createFakeInterestRates({ number: 10 });
   },
   addProUser() {
-    const { _id: userId } = UserService.getByEmail(PRO_EMAIL) || {};
-    return (
-      userId
+    const { _id } = UserService.getByEmail(PRO_EMAIL) || {};
+
+    const userId = _id
       || UserService.adminCreateUser({
         options: {
           email: PRO_EMAIL,
@@ -337,8 +338,9 @@ Meteor.methods({
           lastName: 'Test User',
         },
         role: ROLES.PRO,
-      })
-    );
+      });
+
+    return userId;
   },
   getLoan(loanId) {
     return LoanService.get(loanId);
@@ -357,5 +359,15 @@ Meteor.methods({
     const user = Users.findOne(loan.userId);
 
     return { loan, user, property: properties[0], borrower };
+  },
+  addOrganisation() {
+    return OrganisationService.insert({
+      name: 'Org',
+      type: 'DEVELOPER',
+      address1: 'Rue du pré 1',
+      zipCode: 1201,
+      city: 'Genève',
+      features: [ORGANISATION_FEATURES.PRO],
+    });
   },
 });

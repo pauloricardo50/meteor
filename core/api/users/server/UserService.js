@@ -84,7 +84,22 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (referralId) {
-      this.setReferredBy({ userId, proId: referralId });
+      const referralUser = this.fetchOne({
+        $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
+      });
+      const referralOrg = OrganisationService.fetchOne({
+        $filters: {
+          _id: referralId,
+        },
+      });
+      if (referralUser) {
+        this.setReferredBy({ userId, proId: referralId });
+      } else if (referralOrg) {
+        this.setReferredByOrganisation({
+          userId,
+          organisationId: referralId,
+        });
+      }
     }
 
     return userId;
