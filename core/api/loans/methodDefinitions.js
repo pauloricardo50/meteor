@@ -217,3 +217,8 @@ export const loanSetStatus = new Method({
   name: 'loanSetStatus',
   params: { loanId: String, status: String },
 });
+
+export const loanUpdateCreatedAt = new Method({
+  name: 'loanUpdateCreatedAt',
+  params: { loanId: String, createdAt: Date },
+});

@@ -18,6 +18,19 @@ class ActivityService extends CollectionService {
       ...rest,
     });
   }
+
+  updateCreatedAtActivity({ createdAt, loanId }) {
+    const createdAtActivity = this.fetchOne({
+      $filters: {
+        'loanLink._id': loanId,
+        secondaryType: ACTIVITY_SECONDARY_TYPES.CREATED,
+      },
+    });
+    return this._update({
+      id: createdAtActivity._id,
+      object: { date: createdAt },
+    });
+  }
 }
 
 export default new ActivityService();

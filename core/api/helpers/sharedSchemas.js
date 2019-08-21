@@ -10,9 +10,13 @@ export const createdAt = {
     if (this.isInsert) {
       return new Date();
     }
+    if (this.isUpdate) {
+      return this.value;
+    }
     this.unset();
   },
   optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
 };
 
 export const updatedAt = {
