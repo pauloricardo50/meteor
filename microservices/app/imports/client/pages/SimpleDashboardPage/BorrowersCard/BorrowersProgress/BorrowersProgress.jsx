@@ -3,6 +3,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import BorrowersProgressRecap from './BorrowersProgressRecap';
+import BorrowersProgressSignup from './BorrowersProgressSignup';
 
 type BorrowersProgressProps = {};
 
@@ -21,6 +22,7 @@ const BorrowersProgress = ({
         </h4>
       ) : (
         <div className="borrowers-progress-borrowers">
+          <BorrowersProgressSignup />
           {borrowers.map((borrower, index) => [
             index !== 0 && <hr />,
             <BorrowersProgressRecap
