@@ -65,6 +65,13 @@ const employees = [
     _id: 'NumFEubdw2nra6Su8',
     gender: 'M',
   },
+  {
+    email: '',
+    src: '/img/team/seila.jpg',
+    name: 'Seila Rada',
+    title: 'Comptable',
+    gender: 'F',
+  },
 ];
 
 export const employeesByEmail = employees.reduce(
