@@ -244,14 +244,17 @@ anonymousCreateUser.setHandler((context, params) => {
     });
   }
   analytics.identify(params.trackingId);
+  const referralUserMainOrg = params.referralId
+    && !referralOrg
+    && UserService.getUserMainOrganisation(params.referralId);
+
   analytics.track(EVENTS.USER_CREATED, {
     userId,
     origin: params.referralId ? 'referral' : 'organic',
     referralId: referralUser ? params.referralId : undefined,
     orgReferralId: referralOrg
       ? params.referralId
-      : params.referralId
-        && UserService.getUserMainOrganisation(params.referralId)._id,
+      : referralUserMainOrg && referralUserMainOrg._id,
   });
   if (params.loanId) {
     analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
