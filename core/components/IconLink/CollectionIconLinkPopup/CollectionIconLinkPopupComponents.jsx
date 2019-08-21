@@ -35,10 +35,12 @@ export const titles = {
       <Roles className="secondary" roles={roles} />
     </span>
   ),
-  [BORROWERS_COLLECTION]: ({ name }) => <span>{name}</span>,
+  [BORROWERS_COLLECTION]: ({ name }) => (
+    <span>{name || 'Emprunteur sans nom'}</span>
+  ),
   [PROPERTIES_COLLECTION]: ({ address1, name, status }) => (
     <span>
-      {name || address1}
+      {name || address1 || 'Bien immobilier sans nom'}
       {' '}
       {status && (
         <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
