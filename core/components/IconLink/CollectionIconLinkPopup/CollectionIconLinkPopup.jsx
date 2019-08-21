@@ -35,6 +35,10 @@ export default class CollectionIconLinkPopup extends Component<
     const { data } = this.state;
     const { collection, additionalPopoverContent } = this.props;
 
+    if (data === undefined) {
+      return <i>Cette chose a du être supprimée !</i>;
+    }
+
     if (!data) {
       return <Loading small />;
     }
