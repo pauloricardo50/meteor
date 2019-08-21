@@ -46,6 +46,7 @@ import UserService from '../users/server/UserService';
 import SlackService from '../slack/server/SlackService';
 import LenderRulesService from '../lenderRules/server/LenderRulesService';
 import RevenueService from '../revenues/server/RevenueService';
+import OrganisationService from '../organisations/server/OrganisationService';
 import '../liveSync';
 
 process.on('uncaughtException', (error) => {
@@ -75,6 +76,7 @@ export const Services = {
   [COLLECTIONS.BORROWERS_COLLECTION]: BorrowerService,
   [COLLECTIONS.LOTS_COLLECTION]: LotService,
   [COLLECTIONS.OFFERS_COLLECTION]: OfferService,
+  [COLLECTIONS.ORGANISATIONS_COLLECTION]: OrganisationService,
   [COLLECTIONS.PROMOTION_LOTS_COLLECTION]: PromotionLotService,
   [COLLECTIONS.PROMOTIONS_COLLECTION]: PromotionService,
   [COLLECTIONS.PROMOTION_OPTIONS_COLLECTION]: PromotionOptionService,

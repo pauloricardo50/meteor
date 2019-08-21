@@ -1,5 +1,9 @@
 import { createSearchFilters } from '../helpers';
-import { fullOrganisation, userOrganisation } from '../fragments';
+import {
+  fullOrganisation,
+  userOrganisation,
+  adminOrganisation,
+} from '../fragments';
 import {
   ORGANISATION_QUERIES,
   ORGANISATION_FEATURES,
@@ -8,7 +12,7 @@ import Organisations from '.';
 
 export const adminOrganisations = Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,
-  fullOrganisation(),
+  adminOrganisation(),
   { scoped: true },
 );
 

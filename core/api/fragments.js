@@ -519,6 +519,12 @@ export const userOrganisation = () => ({
   lenderRules: lenderRules(),
 });
 
+export const adminOrganisation = () => ({
+  ...fullOrganisation(),
+  adminNote: 1,
+  documents: 1,
+});
+
 // //
 // // PromotionLot fragments
 // //
