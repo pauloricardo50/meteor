@@ -5,8 +5,11 @@ import queryString from 'query-string';
 import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
+import { ROLES } from 'core/api/constants';
+import { organisationRemove } from 'core/api/methods';
 import T from 'core/components/Translation/Translation';
-import Chip from 'core/components//Material/Chip';
+import Chip from 'core/components/Material/Chip';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import OrganisationModifier from './OrganisationModifier';
 
 type SingleOrganisationPageHeaderProps = {
@@ -18,8 +21,17 @@ const SingleOrganisationPage = ({
   organisation,
   history,
   intl: { formatMessage },
+  currentUser,
 }: SingleOrganisationPageHeaderProps) => {
-  const { logo, name, type, features = [], address, tags = [] } = organisation;
+  const {
+    _id: organisationId,
+    logo,
+    name,
+    type,
+    features = [],
+    address,
+    tags = [],
+  } = organisation;
   return (
     <>
       <div className="single-organisation-page-header">
@@ -51,7 +63,21 @@ const SingleOrganisationPage = ({
             </h3>
           </div>
         </span>
-        <OrganisationModifier organisation={organisation} />
+        <div>
+          {currentUser.roles.includes(ROLES.DEV) && (
+            <ConfirmMethod
+              keyword={name}
+              buttonProps={{
+                outlined: true,
+                error: true,
+                label: 'Supprimer',
+                className: 'mr-8',
+              }}
+              method={() => organisationRemove.run({ organisationId })}
+            />
+          )}
+          <OrganisationModifier organisation={organisation} />
+        </div>
       </div>
       <p>{address}</p>
     </>
