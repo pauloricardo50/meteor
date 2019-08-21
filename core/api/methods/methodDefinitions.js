@@ -123,3 +123,10 @@ export const generateScenario = new Method({
     scenario: Object,
   },
 });
+
+export const referralExists = new Method({
+  name: 'referralExists',
+  params: {
+    refId: String,
+  },
+});

@@ -23,9 +23,14 @@ import {
   updateDocument,
   updateDocumentUnset,
   generateScenario,
+  referralExists,
 } from '../methodDefinitions';
 import generator from '../../factories';
 import { migrate } from '../../migrations/server';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
+import { OrganisationService } from '../../organisations/server/OrganisationService';
+import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -173,4 +178,16 @@ generateScenario.setHandler(({ userId }, { scenario }) => {
   }
 
   return generator(scenario);
+});
+
+referralExists.setHandler((context, params) => {
+  const { refId } = params;
+  const referralUser = UserService.fetchOne({
+    $filters: { _id: refId, roles: { $in: [ROLES.PRO] } },
+  });
+  const referralOrg = OrganisationService.fetchOne({
+    $filters: { _id: refId, features: { $in: [ORGANISATION_FEATURES.PRO] } },
+  });
+
+  return !!referralUser || !!referralOrg;
 });

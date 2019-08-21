@@ -172,10 +172,3 @@ export const anonymousCreateUser = new Method({
     referralId: Match.Maybe(String),
   },
 });
-
-export const referralExists = new Method({
-  name: 'referralExists',
-  params: {
-    ref: String,
-  },
-});
