@@ -59,6 +59,7 @@ const CollectionSearch = ({
         onChange={onSearch}
         placeholder="Rechercher..."
         onFocus={onFocus}
+        autoComplete="off"
       />
       <Popper
         open={showResults}

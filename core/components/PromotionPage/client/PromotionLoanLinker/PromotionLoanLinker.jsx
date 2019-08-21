@@ -94,8 +94,8 @@ const PromotionLoanLinker = props => (
   <DialogSimple
     primary
     raised
-    label="Lier un dossier"
-    title="Lier un dossier à la promotion"
+    label="Lier un dossier de financement"
+    title="Lier un dossier de financement à la promotion"
   >
     <PromotionLoanLinkerContent {...props} />
   </DialogSimple>
