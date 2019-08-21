@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
 import Tooltip from '@material-ui/core/Tooltip';
+import moment from 'moment';
 
 import colors from 'core/config/colors';
 import {
@@ -163,7 +164,10 @@ export const components = {
           >
             <FontAwesomeIcon
               icon={emailVerified ? faCheckCircle : faExclamationCircle}
-              style={{ marginLeft: '4px', color: emailVerified ? colors.success : colors.warning }}
+              style={{
+                marginLeft: '4px',
+                color: emailVerified ? colors.success : colors.warning,
+              }}
             />
           </Tooltip>
         </div>
@@ -237,6 +241,7 @@ export const components = {
     soldPromotionLots,
     lenderOrganisation,
     children,
+    signingDate,
   }) => (
     <div>
       {children}
@@ -249,16 +254,29 @@ export const components = {
       )}
       <div>
         <b>Lots dispo:</b>
+        {' '}
         {availablePromotionLots.length}
       </div>
       <div>
         <b>Réservés:</b>
+        {' '}
         {bookedPromotionLots.length}
       </div>
       <div>
         <b>Vendus:</b>
+        {' '}
         {soldPromotionLots.length}
       </div>
+      {signingDate && (
+        <div>
+          <b>
+            <T id="Forms.signingDate" />
+            {':'}
+          </b>
+          {' '}
+          {moment(signingDate).format('DD.MM.YYYY')}
+        </div>
+      )}
     </div>
   ),
   [ORGANISATIONS_COLLECTION]: ({ logo, offerCount, children }) => (

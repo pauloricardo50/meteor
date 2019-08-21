@@ -115,6 +115,7 @@ export const BasePromotionSchema = PromotionSchema.pick(
   'address2',
   'zipCode',
   'city',
+  'signingDate',
   'contacts',
 );
 
