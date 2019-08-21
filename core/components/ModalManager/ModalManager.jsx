@@ -78,7 +78,14 @@ const reducer = (state, action) => {
 const ModalManager = ({ children }: ModalManagerProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { activeModal } = state;
-  const { title, actions, description, content, ...dialogProps } = state[activeModal] || {};
+  const {
+    title,
+    actions,
+    description,
+    content,
+    important = false,
+    ...dialogProps
+  } = state[activeModal] || {};
 
   const openModal = (payload) => {
     dispatch({ type: 'OPEN_MODAL', payload });
@@ -92,7 +99,13 @@ const ModalManager = ({ children }: ModalManagerProps) => {
   return (
     <ModalManagerContext.Provider value={{ openModal }}>
       {children}
-      <Dialog {...dialogProps} open={activeModal !== null} onClose={closeModal}>
+      <Dialog
+        disableBackdropClick={important}
+        disableEscapeKeyDown={important}
+        {...dialogProps}
+        open={activeModal !== null}
+        onClose={closeModal}
+      >
         <DialogComponents
           returnValue={state[activeModal] && state[activeModal].returnValue}
           dialogContent={state[activeModal]}

@@ -3,6 +3,8 @@
   "general.day": "jour",
   "general.year": "an",
   "Forms.realEstate.theoreticalExpenses": "Charges théoriques",
+  "Files.removeFile": "Suppression d'un fichier",
+  "Files.removeFile.confirm": "Voulez-vous vraiment supprimer \"{name}\" ?",
   "HomePageHeader.acquisition": "Faire une acquisition",
   "HomePageHeader.calculator": "Calculateur",
   "Forms.type.PENSION_FUND": "Caisse de pension",
