@@ -3,6 +3,10 @@
   align-items: center;
   flex-direction: column;
 
+  > * {
+    margin-bottom: 8px;
+  }
+
   .name-form {
     display: flex;
     align-items: center;
@@ -13,9 +17,5 @@
     > * {
       margin-right: 8px;
     }
-  }
-
-  .delete-button {
-    margin: 8px;
   }
 }
