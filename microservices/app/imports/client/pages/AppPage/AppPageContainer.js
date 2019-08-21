@@ -31,7 +31,7 @@ const setReferralId = (paramsQuery) => {
   }
 
   if (referralId) {
-    referralExists.run({ ref: referralId }).then((exists) => {
+    referralExists.run({ refId: referralId }).then((exists) => {
       if (exists) {
         localStorage.setItem(LOCAL_STORAGE_OLD_REFERRAL, referralId);
       } else if (oldReferralId) {

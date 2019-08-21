@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Analytics from 'core/api/analytics/server/Analytics';
 import EVENTS from 'core/api/analytics/events';
-import { OrganisationService } from 'core/api/organisations/server/OrganisationService';
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import SecurityService from '../../security';
 import {
@@ -247,8 +247,8 @@ anonymousCreateUser.setHandler((context, params) => {
   analytics.track(EVENTS.USER_CREATED, {
     userId,
     origin: params.referralId ? 'referral' : 'organic',
-    referralId: !!referralUser && params.referralId,
-    orgReferralId: !!referralOrg
+    referralId: referralUser ? params.referralId : undefined,
+    orgReferralId: referralOrg
       ? params.referralId
       : params.referralId
         && UserService.getUserMainOrganisation(params.referralId)._id,
