@@ -8,6 +8,7 @@ import { withProps } from 'recompose';
 import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
+import AutoFormLayout from './AutoFormLayout';
 
 type CustomAutoFormProps = {
   autoFieldProps?: Object,
@@ -16,6 +17,7 @@ type CustomAutoFormProps = {
   model: Object,
   omitFields?: Array<String>,
   placeholder?: Boolean,
+  schemaKeys: Array<String>,
   submitFieldProps?: Object,
   submitting?: Boolean,
 };
@@ -40,6 +42,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
       placeholder = true,
       submitFieldProps,
       layout,
+      schemaKeys,
       ...props
     } = this.props;
 
@@ -53,10 +56,18 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
       >
         {children || (
           <>
-            <CustomAutoFields
-              omitFields={omitFields}
-              autoField={this.autoField}
-            />
+            {layout ? (
+              <AutoFormLayout
+                AutoField={this.autoField}
+                layout={layout}
+                schemaKeys={schemaKeys}
+              />
+            ) : (
+              <CustomAutoFields
+                omitFields={omitFields}
+                autoField={this.autoField}
+              />
+            )}
             <CustomSubmitField {...submitFieldProps} />
           </>
         )}
@@ -67,5 +78,8 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
 
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;
-  return { onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])) };
+  return {
+    onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])),
+    schemaKeys,
+  };
 })(CustomAutoForm);
