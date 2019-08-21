@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import Analytics from 'core/api/analytics/server/Analytics';
 import EVENTS from 'core/api/analytics/events';
 import OrganisationService from 'core/api/organisations/server/OrganisationService';
-import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -239,7 +238,6 @@ anonymousCreateUser.setHandler((context, params) => {
     referralOrg = OrganisationService.fetchOne({
       $filters: {
         _id: params.referralId,
-        features: { $in: [ORGANISATION_FEATURES.PRO] },
       },
     });
   }

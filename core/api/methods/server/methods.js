@@ -29,8 +29,7 @@ import generator from '../../factories';
 import { migrate } from '../../migrations/server';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
-import OrganisationService  from '../../organisations/server/OrganisationService';
-import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
+import OrganisationService from '../../organisations/server/OrganisationService';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -186,7 +185,7 @@ referralExists.setHandler((context, params) => {
     $filters: { _id: refId, roles: { $in: [ROLES.PRO] } },
   });
   const referralOrg = OrganisationService.fetchOne({
-    $filters: { _id: refId, features: { $in: [ORGANISATION_FEATURES.PRO] } },
+    $filters: { _id: refId },
   });
 
   return !!referralUser || !!referralOrg;

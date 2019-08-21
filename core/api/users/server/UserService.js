@@ -4,7 +4,6 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
 import { fullUser } from '../../fragments';
@@ -84,7 +83,6 @@ export class UserServiceClass extends CollectionService {
       LoanService.assignLoanToUser({ userId, loanId });
     }
 
-
     if (referralId) {
       const referralUser = this.fetchOne({
         $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
@@ -92,12 +90,11 @@ export class UserServiceClass extends CollectionService {
       const referralOrg = OrganisationService.fetchOne({
         $filters: {
           _id: referralId,
-          features: { $in: [ORGANISATION_FEATURES.PRO] },
         },
       });
-      if (!!referralUser) {
+      if (referralUser) {
         this.setReferredBy({ userId, proId: referralId });
-      } else if (!!referralOrg) {
+      } else if (referralOrg) {
         this.setReferredByOrganisation({
           userId,
           organisationId: referralId,
