@@ -85,6 +85,7 @@ const PromotionSchema = new SimpleSchema({
     uniforms: { displayEmpty: false },
   },
   ...address,
+  zipCode: { ...address.zipCode, optional: false },
   ...contactsSchema,
   propertyLinks: { type: Array, defaultValue: [] },
   'propertyLinks.$': Object,
