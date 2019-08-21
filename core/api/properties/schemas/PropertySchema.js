@@ -50,7 +50,9 @@ export const propertyPermissionsSchema = {
   'displayCustomerNames.referredBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
+    allowedValues: Object.values(
+      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY,
+    ),
     uniforms: {
       displayEmpty: true,
       placeholder: 'Ne pas afficher le nom des clients',
@@ -68,8 +70,10 @@ export const propertyPermissionsSchema = {
   },
   'displayCustomerNames.forPropertyStatus.$': {
     type: String,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-      .FOR_PROPERTY_STATUS),
+    allowedValues: Object.values(
+      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+        .FOR_PROPERTY_STATUS,
+    ),
   },
 };
 
@@ -205,12 +209,16 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 100000,
+    condition: ({ propertyType }) =>
+      propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   volumeNorm: {
     type: String,
     defaultValue: propertyConstants.VOLUME_NORM.ECA,
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
     uniforms: { placeholder: null },
+    condition: ({ propertyType }) =>
+      propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   parkingInside: {
     type: SimpleSchema.Integer,
@@ -239,6 +247,7 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 1000,
     optional: true,
+    condition: ({ isCoproperty }) => !!isCoproperty,
   },
   isNew: {
     type: Boolean,
