@@ -19,7 +19,8 @@ const RevenueModifier = ({
   setOpen,
   submitting,
   deleteRevenue,
-}: RevenueAdderProps) => (
+  layout,
+}: RevenueModifierProps) => (
   <AutoFormDialog
     noButton
     schema={schema}
@@ -44,6 +45,7 @@ const RevenueModifier = ({
       </Button>
     )}
     title="Modifier un revenu"
+    layout={layout}
   />
 );
 
