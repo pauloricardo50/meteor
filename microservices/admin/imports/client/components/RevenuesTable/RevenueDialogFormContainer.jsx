@@ -110,7 +110,7 @@ export default compose(
     schema,
     model: revenue,
     insertRevenue: model =>
-      revenueInsert.run({ revenue: model, loanId: loan._id }),
+      revenueInsert.run({ revenue: model, loanId: loan && loan._id }),
     modifyRevenue: ({ _id: revenueId, ...object }) => {
       setSubmitting(true);
       return revenueUpdate

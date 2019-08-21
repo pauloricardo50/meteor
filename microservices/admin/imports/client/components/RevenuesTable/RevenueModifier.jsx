@@ -20,6 +20,7 @@ const RevenueModifier = ({
   submitting,
   deleteRevenue,
   layout,
+  description,
 }: RevenueModifierProps) => (
   <AutoFormDialog
     noButton
@@ -36,7 +37,7 @@ const RevenueModifier = ({
             revenueId: model._id,
             closeDialog,
             setDisableActions,
-          })
+          }).then(closeDialog)
         }
         error
         disabled={submitting || disabled}
@@ -46,6 +47,7 @@ const RevenueModifier = ({
     )}
     title="Modifier un revenu"
     layout={layout}
+    description={description}
   />
 );
 

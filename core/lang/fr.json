@@ -334,7 +334,7 @@
   "Forms.status.EXPECTED": "Attendu",
   "Forms.status.CLOSED": "Reçu",
   "LoanTabs.revenues": "Revenus",
-  "Forms.amount.placeholder": "2000",
+  "Forms.amount.placeholder": "2 000",
   "Forms.amount": "Montant",
   "Forms.permissions.displayCustomerNames.forPropertyStatus.FOR_SALE": "En vente",
   "Forms.permissions.displayCustomerNames.forPropertyStatus.BOOKED": "Réservé",
