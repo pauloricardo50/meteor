@@ -87,6 +87,8 @@ const ModalManager = ({ children }: ModalManagerProps) => {
     ...dialogProps
   } = state[activeModal] || {};
 
+  const { props: { important: importantComponent = false } = {} } = dialogProps;
+
   const openModal = (payload) => {
     dispatch({ type: 'OPEN_MODAL', payload });
   };
@@ -100,8 +102,8 @@ const ModalManager = ({ children }: ModalManagerProps) => {
     <ModalManagerContext.Provider value={{ openModal }}>
       {children}
       <Dialog
-        disableBackdropClick={important}
-        disableEscapeKeyDown={important}
+        disableBackdropClick={important || importantComponent}
+        disableEscapeKeyDown={important || importantComponent}
         {...dialogProps}
         open={activeModal !== null}
         onClose={closeModal}

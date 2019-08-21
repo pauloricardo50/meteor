@@ -30,11 +30,13 @@ const DialogForm = ({
   schema,
   description,
   onSubmit,
+  children,
 }: DialogFormProps) => (
   <>
     {title && <DialogTitle>{title}</DialogTitle>}
     <AutoForm model={model} schema={schema} onSubmit={onSubmit || closeModal}>
       <DialogContent>
+        {children}
         {description && <DialogContentText>{description}</DialogContentText>}
         <CustomAutoFields autoField={CustomAutoField} />
       </DialogContent>
