@@ -14,6 +14,8 @@ import {
   MAX_FILE_SIZE,
   ONE_KB,
 } from '../fileConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -102,6 +104,14 @@ const exoscaleStorageService = {
     return directive.maxSize || MAX_FILE_SIZE;
   },
 
+  getDefaultStatus(meta) {
+    if ([ORGANISATIONS_COLLECTION,PROMOTIONS_COLLECTION].includes(meta.collection)) {
+      return FILE_STATUS.VALID
+    }
+
+    return FILE_STATUS.UNVERIFIED
+  },
+
   /**
    *
    * @param {{userId: String}} method
@@ -111,7 +121,6 @@ const exoscaleStorageService = {
    *
    * @returns {UploadInstructions}
    */
-
   upload(method, directive, file, meta) {
     const maxSize = this.getMaxSize(directive, meta);
     const policy = new Slingshot.StoragePolicy()
@@ -140,7 +149,7 @@ const exoscaleStorageService = {
         file,
         meta,
       ),
-      'x-amz-meta-status': FILE_STATUS.UNVERIFIED,
+      'x-amz-meta-status': this.getDefaultStatus(meta),
     };
 
     const bucketUrl = _.isFunction(directive.bucketUrl)
