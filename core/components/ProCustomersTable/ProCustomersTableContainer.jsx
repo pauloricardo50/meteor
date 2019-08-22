@@ -81,6 +81,9 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   };
 };
 
+const getAnonymous = withAnonymous =>
+  (withAnonymous ? undefined : { $in: [null, false] });
+
 export default compose(
   mapProps(({ proUser, ...props }) => {
     const { promotions = [], proProperties = [] } = proUser;
@@ -94,6 +97,7 @@ export default compose(
   withState('status', 'setStatus', {
     $in: Object.values(LOAN_STATUS).filter(s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST),
   }),
+  withState('withAnonymous', 'setWithAnonymous', false),
   withSmartQuery({
     query: proLoans,
     params: ({
@@ -102,11 +106,13 @@ export default compose(
       proUser: { _id: userId },
       isAdmin = false,
       status,
+      withAnonymous,
     }) => ({
       ...(isAdmin ? { userId } : {}),
       promotionId: { $in: promotionIds },
       propertyId: { $in: propertyIds },
       status,
+      anonymous: getAnonymous(withAnonymous),
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',
