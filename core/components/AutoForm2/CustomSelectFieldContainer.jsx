@@ -114,12 +114,13 @@ export default (Component) => {
     render() {
       const { values, error, loading } = this.state;
       const {
-        placeholder,
+        customAllowedValues,
         displayEmpty,
-        model,
-        uniforms,
         field,
         fields,
+        model,
+        placeholder,
+        uniforms,
         ...rest
       } = this.props;
 
