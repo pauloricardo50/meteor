@@ -1,15 +1,25 @@
 // @flow
-import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
-import { getBorrowerDocuments } from 'imports/core/api/files/documents';
+import moment from 'moment';
+
+import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import {
+  INCOME_CONSIDERATION_TYPES,
+  EXPENSE_TYPES,
+  OWN_FUNDS_TYPES,
+} from '../../api/constants';
+import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
   getBorrowerSimpleArray,
 } from '../../arrays/BorrowerFormArray';
+import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../config/financeConstants';
 import { arrayify, getPercent } from '../general';
 import {
   getCountedArray,
@@ -17,12 +27,7 @@ import {
   getFormValuesHashMultiple,
 } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
-import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
 import { borrowerExtractorMiddleware } from './middleware';
-import {
-  BONUS_ALGORITHMS,
-  REAL_ESTATE_INCOME_ALGORITHMS,
-} from '../../config/financeConstants';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -357,9 +362,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getRetirement({ borrowers }) {
       const argMap = borrowers.reduce(
-        (obj, { age, gender }, index) => ({
+        (obj, { birthDate, gender }, index) => ({
           ...obj,
-          [`${`age${index + 1}`}`]: age,
+          [`${`age${index + 1}`}`]: moment().diff(birthDate, 'years'),
           [`${`gender${index + 1}`}`]: gender,
         }),
         {},
@@ -367,9 +372,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getYearsToRetirement(argMap);
     }
 
-    getAmortizationDuration({ borrowers }) {
+    getAmortizationDuration({ loan, structureId, offerOverride, borrowers }) {
+      const offer = this.selectOffer({ loan, structureId });
+      const offerToUse = offerOverride || offer;
+
+      if (offerToUse) {
+        return offerToUse.amortizationYears;
+      }
+
       const retirement = this.getRetirement({ borrowers });
-      return Math.min(15, retirement);
+      return Math.min(this.amortizationYears, retirement);
     }
 
     // personalInfoPercent - Determines the completion rate of the borrower's

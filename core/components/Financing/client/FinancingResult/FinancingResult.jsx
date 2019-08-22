@@ -24,6 +24,7 @@ import {
   makeHasOwnFundsOfType,
 } from './financingResultHelpers';
 import FinancingResultInterests from './FinancingResultInterests';
+import FinancingResultAmortization from './FinancingResultAmortization';
 
 type FinancingResultProps = {};
 
@@ -60,7 +61,7 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
         {
           id: 'amortizationCost',
-          Component: CalculatedValue,
+          Component: FinancingResultAmortization,
           value: getAmortization,
         },
         {

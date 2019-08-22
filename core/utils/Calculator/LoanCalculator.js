@@ -129,6 +129,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getAmorti;
+
     getAmortization({ loan, structureId, offerOverride }) {
       const offer = this.selectOffer({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
@@ -162,7 +164,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return (this.getAmortizationRate({ loan, structureId }) * loanValue) / 12;
     }
 
-    getAmortizationRate({ loan, amortizationYears, structureId }) {
+    getAmortizationRate({
+      loan,
+      structureId,
+      amortizationYears = this.getAmortizationDuration({ loan, structureId }),
+    }) {
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
       return this.getAmortizationRateBase({
         borrowRatio,
@@ -170,6 +176,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         // Prevent caching of this function if amortizationGoal has changed
         cacheFix: this.amortizationGoal,
       });
+    }
+
+    getTotalAmortization({ loan, structureId }) {
+      const amortization = this.getAmortization({ loan, structureId });
+      const amortizationYears = this.getAmortizationDuration({
+        loan,
+        structureId,
+      });
+      return amortization * amortizationYears * 12;
     }
 
     getMonthly({ loan, interestRates, structureId }) {
