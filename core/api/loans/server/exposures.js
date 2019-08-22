@@ -205,6 +205,7 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
     },
     validateParams: {
+      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
       promotionId: Match.Maybe(Match.OneOf(String, Object)),
       propertyId: Match.Maybe(Match.OneOf(String, Object)),
       userId: String,
@@ -214,10 +215,10 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
-  cacher: {
-    getDataToHash: getLoanIds({ withReferredBy: true }),
-    ttl: 60 * 1000,
-  },
+  // cacher: {
+  //   getDataToHash: getLoanIds({ withReferredBy: true }),
+  //   ttl: 60 * 1000,
+  // },
   resolver: proLoansResolver,
 });
 

@@ -54,6 +54,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   city: 1,
   civilStatus: 1,
   company: 1,
+  divorcedDate: 1,
   documents: 1,
   expenses: 1,
   gender: 1,
@@ -64,6 +65,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   isSwiss: 1,
   isUSPerson: 1,
   loans: { name: 1 },
+  marriedDate: 1,
   mortgageNotes: mortgageNote(),
   netSalary: 1,
   otherFortune: 1,
@@ -77,6 +79,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   step: 1,
   thirdPartyFortune: 1,
   worksForOwnCompany: 1,
+  worksInSwitzerlandSince: 1,
   zipCode: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });

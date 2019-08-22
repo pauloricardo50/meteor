@@ -1,5 +1,8 @@
 {
   "Forms.ref": "Referral",
+  "Forms.variable.isNewProperty": "Bien immo est neuf",
+  "Forms.isNewProperty.true": "Vrai",
+  "Forms.isNewProperty.false": "Faux",
   "collections.interestRates": "Taux d'intérêts",
   "BorrowersProgress.signup": "Ne perdez pas vos informations !",
   "Forms.signingDate": "Date de closing",
@@ -1757,7 +1760,7 @@
   "Forms.roomCount.placeholder": "3.5",
   "Forms.roomCount": "Nb. de pièces",
   "Forms.salary.placeholder": "CHF 100 000",
-  "Forms.salary": "Revenus bruts annuels",
+  "Forms.salary": "Revenus bruts annuels (hors bonus)",
   "Forms.sameAddress": "Utiliser la même adresse que {name} ?",
   "Forms.secondary": "Résidence secondaire",
   "Forms.terraceArea.placeholder": "40",

@@ -112,6 +112,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           structureId,
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,
         }),
+        [LENDER_RULES_VARIABLES.IS_NEW_PROPERTY]: this.isNewProperty({
+          loan,
+          structureId,
+        }),
       };
     }
 

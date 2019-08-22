@@ -8,6 +8,7 @@ import {
   PROPERTY_TYPE,
 } from 'core/api/constants';
 import MoneyInput from 'core/components/MoneyInput';
+import RadioButtons from 'core/components/RadioButtons';
 import { NumberField } from 'core/components/NumberInput';
 import { PercentField } from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
@@ -78,6 +79,16 @@ const LenderRulesFormValue = (props: LenderRulesFormValueProps) => {
       <TextField
         helperText="Indiquer plusieurs codes postaux séparés par un espace ou une virgule"
         {...props}
+      />
+    );
+  }
+
+  if ([LENDER_RULES_VARIABLES.IS_NEW_PROPERTY].includes(variable)) {
+    return (
+      <RadioButtons
+        {...props}
+        onChange={(_, v) => props.onChange(v)}
+        options={[{ id: false, label: 'Faux' }, { id: true, label: 'Vrai' }]}
       />
     );
   }
