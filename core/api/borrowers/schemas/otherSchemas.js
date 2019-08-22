@@ -47,8 +47,20 @@ export const personalInfoSchema = {
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
   },
   ...address,
-  sameAddress: { type: Boolean, optional: true },
-  isSwiss: { type: Boolean, optional: true },
+  sameAddress: {
+    type: Boolean,
+    optional: true,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
+  },
+  isSwiss: {
+    type: Boolean,
+    optional: true,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
+  },
   residencyPermit: {
     type: String,
     optional: true,
@@ -61,7 +73,13 @@ export const personalInfoSchema = {
     optional: true,
     condition: ({ isSwiss }) => !isSwiss,
   },
-  isUSPerson: { type: Boolean, optional: true },
+  isUSPerson: {
+    type: Boolean,
+    optional: true,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
+  },
   civilStatus: {
     type: String,
     allowedValues: Object.values(CIVIL_STATUS),
@@ -104,7 +122,13 @@ const bonusField = {
 export const financeInfoSchema = {
   salary: moneyField,
   netSalary: moneyField,
-  bonusExists: { type: Boolean, optional: true },
+  bonusExists: {
+    type: Boolean,
+    optional: true,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
+  },
   bonus2015: bonusField,
   bonus2016: bonusField,
   bonus2017: bonusField,
@@ -133,7 +157,13 @@ export const financeInfoSchema = {
 };
 
 export const ownCompaniesSchema = {
-  hasOwnCompany: { type: Boolean, optional: true },
+  hasOwnCompany: {
+    type: Boolean,
+    optional: true,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
+  },
   ownCompanies: {
     type: Array,
     defaultValue: [],
