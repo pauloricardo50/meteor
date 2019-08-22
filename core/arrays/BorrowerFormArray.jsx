@@ -323,7 +323,6 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       id: 'financeInformations',
       ignore: true,
       required: false,
-      className: 'v-align-financeInformations',
     },
     { id: 'salary', type: 'textInput', money: true },
     { id: 'netSalary', type: 'textInput', money: true },
@@ -383,7 +382,13 @@ export const getBorrowerSimpleArray = ({
   return [
     { id: 'firstName', type: 'textInput', condition: !loan.anonymous },
     { id: 'lastName', type: 'textInput', condition: !loan.anonymous },
-    { id: 'birthDate', type: 'dateInput', condition: !loan.anonymous },
+    {
+      type: 'h3',
+      id: 'personalInformations',
+      ignore: true,
+      required: false,
+    },
+    { id: 'birthDate', type: 'dateInput' },
     ...(simple
       ? getSimpleBorrowerFinanceArray({ borrowers, borrowerId })
       : getBorrowerFinanceArray({ borrowers, borrowerId })),
