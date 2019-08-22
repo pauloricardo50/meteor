@@ -1,4 +1,3 @@
-import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
@@ -7,7 +6,6 @@ import {
   isAllowedToInviteCustomersToPromotion,
 } from 'core/api/security/clientSecurityHelpers/index';
 import { proInviteUser } from 'core/api/methods/index';
-import T from '../Translation';
 
 const schema = ({ proProperties, promotions }) =>
   new SimpleSchema({
@@ -60,10 +58,14 @@ const schema = ({ proProperties, promotions }) =>
 
 export default withProps(({ currentUser }) => {
   const { proProperties = [], promotions = [] } = currentUser;
-  const filteredProProperties = proProperties.filter(property =>
-    isAllowedToInviteCustomersToProProperty({ property, currentUser }));
-  const filteredPromotions = promotions.filter(promotion =>
-    isAllowedToInviteCustomersToPromotion({ promotion, currentUser }));
+  const filteredProProperties = proProperties
+    .filter(property =>
+      isAllowedToInviteCustomersToProProperty({ property, currentUser }))
+    .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
+  const filteredPromotions = promotions
+    .filter(promotion =>
+      isAllowedToInviteCustomersToPromotion({ promotion, currentUser }))
+    .sort(({ name: A }, { name: B }) => A.localeCompare(B));
   return {
     schema: schema({
       proProperties: filteredProProperties,
