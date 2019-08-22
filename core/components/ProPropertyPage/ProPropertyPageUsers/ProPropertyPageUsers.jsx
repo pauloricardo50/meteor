@@ -27,7 +27,9 @@ const ProPropertyPageUsers = ({
         <T id="ProPropertyPage.usersTable.title" />
       </h2>
       {permissions.canInviteProUsers && (
-        <ProPropertyProUserAdder property={property} />
+        <>
+          <ProPropertyProUserAdder property={property} />
+        </>
       )}
     </span>
     <HiddenUsers rows={rows} columnOptions={columnOptions} />

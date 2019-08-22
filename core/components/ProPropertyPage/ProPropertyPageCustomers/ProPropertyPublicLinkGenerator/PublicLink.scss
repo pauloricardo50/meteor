@@ -1,0 +1,12 @@
+.public-link {
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  align-items: center;
+  padding: 16px;
+
+  &-value {
+    min-width: 500px;
+    margin-bottom: 16px;
+  }
+}
