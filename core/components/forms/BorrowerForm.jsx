@@ -29,6 +29,7 @@ export const personalFields = [
   'divorcedDate',
   'childrenCount',
   'company',
+  'job',
   'worksInSwitzerlandSince',
 ];
 export const financeFields = [
@@ -127,6 +128,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
               'divorcedDate',
               'childrenCount',
               'company',
+              'job',
               'worksInSwitzerlandSince',
             ],
             Component: Box,

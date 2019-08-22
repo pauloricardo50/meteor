@@ -64,6 +64,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   insurance3B: 1,
   isSwiss: 1,
   isUSPerson: 1,
+  job: 1,
   loans: { name: 1 },
   marriedDate: 1,
   mortgageNotes: mortgageNote(),

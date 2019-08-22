@@ -1,4 +1,6 @@
 {
+  "Forms.job": "Emploi",
+  "Forms.job.placeholder": "Conseiller en financement",
   "Forms.ref": "Referral",
   "Forms.variable.isNewProperty": "Bien immo est neuf",
   "Forms.isNewProperty.true": "Vrai",

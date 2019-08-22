@@ -93,6 +93,7 @@ export const personalInfoSchema = {
     min: 1900,
     max: 2050,
   },
+  job: { type: String, optional: true },
 };
 
 const bonusField = {
