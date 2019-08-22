@@ -14,6 +14,7 @@ import {
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -50,9 +51,7 @@ export const propertyPermissionsSchema = {
   'displayCustomerNames.referredBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(
-      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY,
-    ),
+    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
     uniforms: {
       displayEmpty: true,
       placeholder: 'Ne pas afficher le nom des clients',
@@ -70,10 +69,8 @@ export const propertyPermissionsSchema = {
   },
   'displayCustomerNames.forPropertyStatus.$': {
     type: String,
-    allowedValues: Object.values(
-      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-        .FOR_PROPERTY_STATUS,
-    ),
+    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+      .FOR_PROPERTY_STATUS),
   },
 };
 
@@ -241,6 +238,9 @@ export const PropertySchema = new SimpleSchema({
   isCoproperty: {
     type: Boolean,
     defaultValue: false,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
   },
   copropertyPercentage: {
     type: SimpleSchema.Integer,
@@ -252,6 +252,9 @@ export const PropertySchema = new SimpleSchema({
   isNew: {
     type: Boolean,
     defaultValue: false,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
   },
   latitude: {
     type: Number,
@@ -281,6 +284,9 @@ export const PropertySchema = new SimpleSchema({
     type: Boolean,
     optional: true,
     condition: ({ externalUrl }) => externalUrl,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
   },
   externalUrl: {
     type: String,
