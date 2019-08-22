@@ -1,3 +1,4 @@
+import { getAgeFromBirthDate } from '../../utils/borrowerUtils';
 import addressReducer from '../reducers/addressReducer';
 import Borrowers from './borrowers';
 
@@ -12,10 +13,7 @@ Borrowers.addReducers({
   },
   age: {
     body: { birthDate: 1 },
-    reduce: ({ birthDate }) => {
-      const age = Math.floor((new Date() - new Date(birthDate)) / 1000 / 60 / 60 / 24 / 365.25);
-      return age;
-    },
+    reduce: ({ birthDate }) => getAgeFromBirthDate(birthDate),
   },
   ...addressReducer,
 });

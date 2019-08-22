@@ -2,9 +2,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  INTEREST_RATES,
+  EXPENSES,
+} from '../../../api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
-import { INTEREST_RATES, EXPENSES } from 'core/api/constants';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../api/constants';
 
 describe('LoanCalculator', () => {
   describe('getProjectValue', () => {
@@ -173,6 +176,7 @@ describe('LoanCalculator', () => {
     it('figures out what amortization should be', () => {
       expect(Calculator.getAmortization({
         loan: {
+          borrowers: [],
           structure: {
             wantedLoan: 960000,
             propertyWork: 0,

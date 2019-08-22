@@ -17,6 +17,7 @@ const expectResult = (component, name, value) => {
   const val = component()
     .find(name)
     .last();
+  console.log('val:', val.debug());
 
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
@@ -235,7 +236,7 @@ describe('FinancingResult', () => {
     it('incomeRatio', () => {
       // 400k income
       // 12k maintenance, 54k interests, 20k amortization
-      expectResult(component, '.incomeRatio', 0.215);
+      expectResult(component, '.incomeRatio', 0.315);
     });
 
     it('remainingCash', () => {

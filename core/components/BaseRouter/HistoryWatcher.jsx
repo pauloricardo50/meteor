@@ -45,12 +45,21 @@ export default class HistoryWatcher extends Component {
     }
   }
 
-  loadPage(pathname) {
-    const { path, route, params, searchParams, queryString } = getMatchingPath({
+  getMatchingPath = pathname =>
+    getMatchingPath({
       pathname,
       routes: this.props.routes,
       history: this.props.history,
     });
+
+  loadPage(pathname) {
+    const {
+      path,
+      route,
+      params,
+      searchParams,
+      queryString,
+    } = this.getMatchingPath(pathname);
     const cookies = parseCookies();
     const { sessionStorage } = window;
     analyticsPage.run({

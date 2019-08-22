@@ -3,7 +3,11 @@ import { matchPath } from 'react-router-dom';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 import { analyticsCTA } from '../methods';
 
-export const getMatchingPath = ({ pathname, routes = {}, history }) => {
+export const getMatchingPath = ({
+  pathname,
+  routes = {},
+  history = { location: {} },
+}) => {
   let matchingPath = null;
 
   const searchParams = history.location.search;

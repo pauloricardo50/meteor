@@ -24,7 +24,7 @@ const deleteAllCookies = () => {
 describe('HistoryWatcher', () => {
   const watcher = new HistoryWatcher({ routes, history: { location: {} } });
 
-  context('getMatchingPath', () => {
+  describe('getMatchingPath', () => {
     it('returns the matching path', () => {
       const path = watcher.getMatchingPath('/foo');
       expect(path).to.deep.equal({
@@ -56,7 +56,7 @@ describe('HistoryWatcher', () => {
     });
   });
 
-  context('generateTrackingId', () => {
+  describe('generateTrackingId', () => {
     beforeEach(() => {
       deleteAllCookies();
     });

@@ -1,6 +1,4 @@
 // @flow
-import moment from 'moment';
-
 import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
@@ -28,6 +26,7 @@ import {
 } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
 import { borrowerExtractorMiddleware } from './middleware';
+import { getAgeFromBirthDate } from '../borrowerUtils';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -362,13 +361,17 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getRetirement({ borrowers }) {
       const argMap = borrowers.reduce(
-        (obj, { birthDate, gender }, index) => ({
-          ...obj,
-          [`${`age${index + 1}`}`]: moment().diff(birthDate, 'years'),
-          [`${`gender${index + 1}`}`]: gender,
-        }),
+        (obj, { birthDate, age, gender }, index) => {
+          const finalAge = age || getAgeFromBirthDate(birthDate);
+          return {
+            ...obj,
+            [`${`age${index + 1}`}`]: finalAge,
+            [`${`gender${index + 1}`}`]: gender,
+          };
+        },
         {},
       );
+
       return this.getYearsToRetirement(argMap);
     }
 
@@ -381,7 +384,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }
 
       const retirement = this.getRetirement({ borrowers });
-      return Math.min(this.amortizationYears, retirement);
+      return retirement
+        ? Math.min(this.amortizationYears, retirement)
+        : this.amortizationYears;
     }
 
     // personalInfoPercent - Determines the completion rate of the borrower's

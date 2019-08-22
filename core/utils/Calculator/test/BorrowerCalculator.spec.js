@@ -613,8 +613,11 @@ describe('BorrowerCalculator', () => {
 
   describe('getYearsToRetirement', () => {
     it('returns the proper difference for a male', () => {
+      const yearsAgo25 = new Date();
+      yearsAgo25.setFullYear(yearsAgo25.getFullYear() - 25);
+      yearsAgo25.setDate(yearsAgo25.getDate() - 1);
       expect(Calculator.getRetirement({
-        borrowers: [{ age: 25, gender: GENDER.M }],
+        borrowers: [{ birthDate: yearsAgo25, gender: GENDER.M }],
       })).to.equal(40);
     });
 
@@ -727,7 +730,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-559003621);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-2574291269);
     });
 
     it('changes for non required form values as well', () => {
@@ -753,7 +756,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1188420103);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-2842155193);
     });
   });
 
