@@ -28,7 +28,7 @@ const assertFinmaValue = (label, value) => () =>
     });
 
 describe('Widget1', () => {
-  describe('On homepage', () => {
+  describe.skip('On homepage', () => {
     before(() => {
       cy.initiateTest();
 
@@ -74,7 +74,7 @@ describe('Widget1', () => {
     });
   });
 
-  describe('On homepage with keyboard', () => {
+  describe.skip('On homepage with keyboard', () => {
     before(() => {
       cy.visit('/');
     });
