@@ -17,18 +17,28 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const AdminSideNav = ({ showDetail, ...otherProps }) => {
+export const AdminSideNav = ({
+  showDetail,
+  toggleDrawer,
+  openDrawer,
+  isMobile,
+  ...otherProps
+}) => {
   const classes = useStyles(showDetail);
 
   return (
     <Drawer
       className={classes.drawer}
-      variant="permanent"
+      variant={isMobile ? 'temporary' : 'permanent'}
       classes={{ paper: classes.drawerPaper }}
+      open={openDrawer}
+      onClose={toggleDrawer}
     >
       <nav className="admin-side-nav">
-        <MainSideNav {...otherProps} />
-        {showDetail && <DetailSideNav {...otherProps} />}
+        <MainSideNav {...otherProps} toggleDrawer={toggleDrawer} />
+        {showDetail && (
+          <DetailSideNav {...otherProps} toggleDrawer={toggleDrawer} />
+        )}
       </nav>
     </Drawer>
   );

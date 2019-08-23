@@ -58,7 +58,7 @@ const items = [
 
 const createOnClickHandler = (
   { detail, collection },
-  { hideDetailNav, showDetailNav, collectionName },
+  { hideDetailNav, showDetailNav, collectionName, toggleDrawer },
 ) => {
   if (detail) {
     if (collection === collectionName) {
@@ -66,7 +66,10 @@ const createOnClickHandler = (
     }
     return () => showDetailNav(collection);
   }
-  return hideDetailNav;
+  return () => {
+    hideDetailNav();
+    toggleDrawer();
+  };
 };
 
 const MainSideNav = props => (

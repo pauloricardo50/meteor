@@ -74,6 +74,7 @@ const DetailSideNavList = ({
   collectionName,
   isEnd,
   history: { push },
+  toggleDrawer,
 }) => {
   if (isLoading) {
     return <Loading />;
@@ -88,6 +89,7 @@ const DetailSideNavList = ({
           onClick={() => {
             hideDetailNav();
             push(`/${collectionName}/${doc._id}`);
+            toggleDrawer();
           }}
         >
           <ListItemText {...getListItemDetails(collectionName, doc)} />
