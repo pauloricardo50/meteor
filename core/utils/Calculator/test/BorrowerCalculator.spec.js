@@ -391,6 +391,7 @@ describe('BorrowerCalculator', () => {
         'gender',
         'address1',
         'city',
+        'country',
         'zipCode',
         'canton',
         'isSwiss',
@@ -730,7 +731,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-2574291269);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1452524844);
     });
 
     it('changes for non required form values as well', () => {
@@ -756,7 +757,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-2842155193);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(5211477033);
     });
   });
 

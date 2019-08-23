@@ -41,6 +41,7 @@ describe('PropertyCalculator', () => {
         minergie: '',
         copropertyPercentage: 100,
         isCoproperty: false,
+        country: 'CH',
       };
       params.loan.residenceType = ' ';
       expect(Calculator.propertyPercent(params)).to.deep.equal(1);
@@ -86,6 +87,7 @@ describe('PropertyCalculator', () => {
         'address1',
         'zipCode',
         'city',
+        'country',
         'canton',
         'numberOfFloors',
         'constructionYear',
