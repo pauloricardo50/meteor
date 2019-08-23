@@ -69,6 +69,7 @@
     "react-scroll-sync": "^0.7.0",
     "react-string-replace": "^0.4.4",
     "react-text-mask": "^5.4.3",
+    "react-use": "^11.0.2",
     "recompose": "^0.30.0",
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
