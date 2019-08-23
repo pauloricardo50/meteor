@@ -84,7 +84,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
       const finalLoanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
 
-      if (forcedNotaryFees) {
+      if (forcedNotaryFees >= 0) {
         notaryFees = forcedNotaryFees;
       } else {
         const notaryCalc = new NotaryFeesCalculator({ canton });
