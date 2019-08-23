@@ -5,7 +5,7 @@ import DefaultLinkify from 'react-linkify';
 type LinkifyProps = {};
 
 const makeComponentDecorator = props => (href, text, key) => {
-  const { newTab, textTransform, style = {} } = props;
+  const { newTab = true, textTransform, style = {} } = props;
   return (
     <b>
       <a

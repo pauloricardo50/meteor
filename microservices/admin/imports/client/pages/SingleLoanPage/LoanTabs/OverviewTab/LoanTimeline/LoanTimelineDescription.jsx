@@ -9,7 +9,7 @@ const LoanTimelineDescription = ({
   activity: { description },
 }: LoanTimelineDescriptionProps) => (
   <div className="loan-timeline-description">
-    <Linkify newTab>{description}</Linkify>
+    <Linkify>{description}</Linkify>
   </div>
 );
 

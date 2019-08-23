@@ -101,7 +101,7 @@ const makeMapTask = ({
       { raw: title || '-', label: <b>{title}</b> },
       {
         raw: description || '-',
-        label: <Linkify newTab>{description || '-'}</Linkify>,
+        label: <Linkify>{description || '-'}</Linkify>,
       },
       showStatusColumn && {
         raw: status,
