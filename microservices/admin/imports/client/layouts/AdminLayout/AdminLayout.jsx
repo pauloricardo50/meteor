@@ -71,17 +71,15 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
         setOpenSearch={setOpenSearch}
       />
 
-      <div className="main-row">
-        <AdminSideNav {...props} />
+      <AdminSideNav {...props} />
 
-        <div className="main">
-          <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-            {React.cloneElement(children, { ...props })}
-          </ErrorBoundary>
-        </div>
-
-        <FileViewer />
+      <div className="main">
+        <ErrorBoundary helper="layout" pathname={history.location.pathname}>
+          {React.cloneElement(children, { ...props })}
+        </ErrorBoundary>
       </div>
+
+      <FileViewer />
     </div>
   );
 };
