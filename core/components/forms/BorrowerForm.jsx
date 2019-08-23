@@ -20,6 +20,7 @@ export const personalFields = [
   'address2',
   'zipCode',
   'city',
+  'country',
   'isSwiss',
   'residencyPermit',
   'citizenship',
@@ -135,7 +136,14 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
             className: 'grid-col mb-32',
           },
           {
-            fields: ['sameAddress', 'address1', 'address2', 'zipCode', 'city'],
+            fields: [
+              'sameAddress',
+              'address1',
+              'address2',
+              'zipCode',
+              'city',
+              'country',
+            ],
             Component: Box,
             className: 'grid-col mb-32',
           },

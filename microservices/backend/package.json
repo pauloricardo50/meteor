@@ -24,6 +24,7 @@
     "core-js": "^3.1.4",
     "faker": "^4.1.0",
     "file-saver": "^2.0.2",
+    "i18n-iso-countries": "^4.3.1",
     "indexof": "0.0.1",
     "intl-messageformat": "^5.4.3",
     "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",

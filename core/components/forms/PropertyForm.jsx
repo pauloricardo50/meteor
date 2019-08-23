@@ -17,6 +17,7 @@ const baseFields = [
   'address2',
   'zipCode',
   'city',
+  'country',
   'propertyType',
   'constructionYear',
   'renovationYear',
@@ -143,7 +144,7 @@ const PropertyForm = ({ property }: PropertyFormProps) => {
             className: 'grid-col mb-32',
           },
           {
-            fields: ['address1', 'address2', 'zipCode', 'city'],
+            fields: ['address1', 'address2', 'zipCode', 'city', 'country'],
             Component: Box,
             className: 'grid-col mb-32',
           },

@@ -1,6 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import countries from 'i18n-iso-countries';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
@@ -48,6 +50,17 @@ export const address = {
     max: 99999,
   },
   city: { type: String, optional: true },
+  country: {
+    type: String,
+    optional: true,
+    allowedValues: getSortedCountriesCodes(),
+    defaultValue: 'CH',
+    uniforms: {
+      transform: code => countries.getName(code, 'fr'),
+      displayEmtpy: false,
+      placeholder: '',
+    },
+  },
   canton: {
     type: String,
     allowedValues: Object.keys(CANTONS),
