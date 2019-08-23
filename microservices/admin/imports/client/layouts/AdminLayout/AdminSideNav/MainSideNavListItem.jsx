@@ -58,10 +58,10 @@ const MainSideNavListItem = ({
     }}
     component={!detail ? NavLink : undefined}
     to={!detail ? to : undefined}
+    className="main-side-nav-list-item"
   >
     <div
       className={classnames({
-        'main-side-nav-list-item': true,
         primary: shouldRenderInPrimaryColor({
           collection,
           collectionName,

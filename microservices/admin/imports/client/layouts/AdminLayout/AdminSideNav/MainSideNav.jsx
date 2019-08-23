@@ -70,7 +70,7 @@ const createOnClickHandler = (
 };
 
 const MainSideNav = props => (
-  <List>
+  <List className="main-side-nav">
     {items.map((item, index) => (
       <MainSideNavListItem
         onClick={createOnClickHandler(item, props)}
