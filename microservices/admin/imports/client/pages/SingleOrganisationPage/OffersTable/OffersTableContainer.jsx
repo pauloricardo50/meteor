@@ -8,6 +8,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import DialogSimple from 'core/components/DialogSimple';
 import HtmlPreview from 'core/components/HtmlPreview';
 import StatusLabel from 'core/components/StatusLabel';
+import OfferDocuments from 'core/components/OfferList/OfferDocuments';
 
 const columnOptions = [
   { id: 'createdAt', label: <T id="offer.createdAt" /> },
@@ -15,6 +16,7 @@ const columnOptions = [
   { id: 'status', label: <T id="Forms.status" /> },
   { id: 'contact', label: <T id="Forms.contact" /> },
   { id: 'feedback', label: <T id="Forms.feedback" /> },
+  { id: 'documents', label: <T id="Forms.documents" /> },
 ];
 
 const makeMapOffer = ({ setOfferDialog }) => (offer) => {
@@ -57,12 +59,19 @@ const makeMapOffer = ({ setOfferDialog }) => (offer) => {
         raw: feedback,
         label: feedback ? (
           <DialogSimple closeOnly label="Feedback">
-            <h4>Envoyé le {moment(feedback.date).format('D MMM YYYY')}</h4>
+            <h4>
+              Envoyé le
+              {moment(feedback.date).format('D MMM YYYY')}
+            </h4>
             <HtmlPreview value={feedback.message} />
           </DialogSimple>
         ) : (
           'Pas encore de feedback'
         ),
+      },
+      {
+        raw: '',
+        label: <OfferDocuments offer={offer} />,
       },
     ],
     handleClick: () => setOfferDialog(offer),

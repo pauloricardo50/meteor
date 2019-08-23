@@ -172,6 +172,7 @@ export const adminLender = () => ({
   ...lender(),
   status: 1,
   adminNote: 1,
+  offers: adminOffer(),
 });
 
 // //
@@ -484,6 +485,11 @@ export const fullOffer = () => ({
   enableOffer: 1,
 });
 
+export const adminOffer = () => ({
+  ...fullOffer(),
+  documents: 1,
+});
+
 // //
 // // Organisation fragments
 // //
@@ -525,6 +531,7 @@ export const userOrganisation = () => ({
 
 export const adminOrganisation = () => ({
   ...fullOrganisation(),
+  lenders: adminLender(),
   adminNote: 1,
   documents: 1,
 });
