@@ -82,6 +82,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   worksForOwnCompany: 1,
   worksInSwitzerlandSince: 1,
   zipCode: 1,
+  country: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
@@ -110,6 +111,7 @@ export const contact = () => ({
   phoneNumbers: 1,
   zipCode: 1,
   offers: { _id: 1 },
+  country: 1,
 });
 
 // //
@@ -165,6 +167,7 @@ export const lender = () => ({
     name: 1,
     type: 1,
     zipCode: 1,
+    country: 1,
   },
 });
 
@@ -501,6 +504,7 @@ export const baseOrganisation = () => ({
   zipCode: 1,
   tags: 1,
   users: { _id: 1 },
+  country: 1,
 });
 
 export const fullOrganisation = () => ({
@@ -688,6 +692,7 @@ export const basePromotion = () => ({
   },
   zipCode: 1,
   signingDate: 1,
+  country: 1,
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
@@ -750,6 +755,7 @@ export const propertySummary = () => ({
   userId: 1,
   value: 1,
   zipCode: 1,
+  country: 1,
 });
 
 export const fullProperty = ({ withSort } = {}) => ({
@@ -840,6 +846,7 @@ export const proPropertySummary = () => ({
   status: 1,
   totalValue: 1,
   loanCount: 1,
+  country: 1,
 });
 
 export const proProperty = ({ withSort } = {}) => ({
@@ -868,6 +875,7 @@ export const apiProperty = () => ({
   externalUrl: 1,
   useOpenGraph: 1,
   imageUrls: 1,
+  country: 1,
 });
 
 // //

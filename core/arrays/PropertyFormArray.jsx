@@ -1,4 +1,5 @@
 import React from 'react';
+import countries from 'i18n-iso-countries';
 
 import {
   PROPERTY_TYPE,
@@ -11,6 +12,8 @@ import {
   VOLUME_NORM,
 } from 'core/api/constants';
 import CantonField from 'core/components/CantonField/CantonField';
+
+countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -183,6 +186,13 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     {
       id: 'city',
       type: 'textInput',
+    },
+    {
+      id: 'country',
+      type: 'selectFieldInput',
+      options: Object.keys(countries.getNames('fr')),
+      defaultValue: 'CH',
+      transform: code => countries.getName(code, 'fr'),
     },
     {
       type: 'custom',

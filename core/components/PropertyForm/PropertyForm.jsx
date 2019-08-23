@@ -7,7 +7,13 @@ import Icon from '../Icon';
 import PropertySchema from '../../api/properties/schemas/PropertySchema';
 import { AutoFormDialog } from '../AutoForm2';
 
-const schema = PropertySchema.pick('address1', 'zipCode', 'city', 'value');
+const schema = PropertySchema.pick(
+  'address1',
+  'zipCode',
+  'city',
+  'country',
+  'value',
+);
 
 type PropertyFormProps = {
   formTitleId: String,
@@ -46,7 +52,7 @@ const PropertyForm = ({
       layout={[
         'value',
         'address1',
-        { className: 'grid-col', fields: ['zipCode', 'city'] },
+        { className: 'grid-col', fields: ['zipCode', 'city', 'country'] },
       ]}
       {...props}
     />
