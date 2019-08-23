@@ -1,9 +1,11 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
+
 import { OWN_FUNDS_TYPES } from '../../constants';
+import { moneyField, roundedInteger } from '../../helpers/sharedSchemas';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
-import { moneyField } from '../../helpers/sharedSchemas';
 
 export const structureSchema = {
   amortization: { ...moneyField, defaultValue: 0 },
@@ -43,7 +45,11 @@ export const structureSchema = {
     type: String,
     optional: true,
   },
-  wantedLoan: { ...moneyField, defaultValue: 0 },
+  wantedLoan: {
+    ...roundedInteger(3, 'floor'),
+    defaultValue: 0,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
+  },
   ...loanTranchesSchema,
 };
 

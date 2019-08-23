@@ -41,13 +41,15 @@ export const calculateMaxLoan = (data, pledgeOverride) => {
   const structure = Calculator.selectStructure({ loan, structureId });
   const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
 
-  return Calc.getMaxLoanBase({
+  const maxLoan = Calc.getMaxLoanBase({
     propertyWork: structure.propertyWork,
     propertyValue,
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
     residenceType: loan.residenceType,
   });
+  const rounding = 10 ** 3;
+  return Math.floor(maxLoan / rounding) * rounding;
 };
 
 const enableOffers = ({ loan }) => loan.enableOffers;
