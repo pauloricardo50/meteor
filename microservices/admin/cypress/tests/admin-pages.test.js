@@ -58,21 +58,37 @@ const pages = {
         shouldRender: '.actions-tab',
       }),
 
-    Property: ({ property: { _id } }) =>
-      route(`/properties/${_id}`, {
-        shouldRender: '.single-property-page .google-map',
-      }),
+    Other: route('/other', { shouldRender: '.other-page' }),
 
-    Tasks: route('/tasks', { shouldRender: '.tasks-page .tasks-table' }),
+    'Other Interest Rates Tab': route('/other/interestRates', {
+      shouldRender: '.interest-rates-page',
+    }),
 
-    Borrowers: route('/borrowers', {
-      shouldRender: '.borrowers-page .borrowers-table',
+    'Other Tasks Tab': route('/other/tasks', {
+      shouldRender: '.tasks-page',
+    }),
+
+    'Other Borrowers Tab': route('/other/borrowers', {
+      shouldRender: '.borrowers-page',
     }),
 
     Borrower: ({ borrower: { _id } }) =>
       route(`/borrowers/${_id}`, {
         shouldRender: '.single-borrower-page',
       }),
+
+    'Other Properties Tab': route('/other/properties', {
+      shouldRender: '.properties-page',
+    }),
+
+    Property: ({ property: { _id } }) =>
+      route(`/properties/${_id}`, {
+        shouldRender: '.single-property-page .google-map',
+      }),
+
+    'Other Contacts Tab': route('/other/contacts', {
+      shouldRender: '.contacts-page',
+    }),
 
     'Not Found': route('/a-page-that-does-not-exist', {
       shouldRender: '#not-found-page',
