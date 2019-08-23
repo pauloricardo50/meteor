@@ -11,6 +11,7 @@ import {
   LOANS_COLLECTION,
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
+import Linkify from 'core/components/Linkify';
 import TasksTableActions from './TasksTableActions';
 
 const now = moment();
@@ -98,7 +99,10 @@ const makeMapTask = ({
         ),
       },
       { raw: title || '-', label: <b>{title}</b> },
-      description || '-',
+      {
+        raw: description || '-',
+        label: <Linkify>{description || '-'}</Linkify>,
+      },
       showStatusColumn && {
         raw: status,
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,

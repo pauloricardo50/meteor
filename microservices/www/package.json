@@ -54,6 +54,7 @@
     "react-highcharts": "^16.0.2",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
     "react-jss": "^8.6.1",
+    "react-linkify": "^1.0.0-alpha",
     "react-loadable": "^5.5.0",
     "react-motion": "^0.5.2",
     "react-overdrive": "0.0.10",
