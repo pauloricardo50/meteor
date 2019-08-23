@@ -10,8 +10,11 @@ export default class AutoFormSelectFieldInput extends Component {
   constructor(props) {
     super(props);
 
+    const {
+      inputProps: { defaultValue },
+    } = this.props;
     this.state = {
-      value: this.props.inputProps.currentValue || '',
+      value: this.props.inputProps.currentValue || defaultValue || '',
       errorText: '',
       saving: false,
     };
@@ -37,9 +40,9 @@ export default class AutoFormSelectFieldInput extends Component {
       .finally(() => this.setState({ saving: false }));
   };
 
-  mapOptions = () =>
+  mapOptions = (transform = () => null) =>
     this.props.inputProps.options.map(({ id, intlId, intlValues, label, ref, ...otherProps }) => ({
-      label: label || (
+      label: label || transform(id) || (
         <T
           id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
           values={intlValues}
@@ -51,13 +54,22 @@ export default class AutoFormSelectFieldInput extends Component {
 
   render() {
     const {
-      inputProps: { style, label, disabled, options, id, required },
+      inputProps: {
+        style,
+        label,
+        disabled,
+        options,
+        transform,
+        defaultValue,
+        id,
+        required,
+      },
       noValidator,
       admin,
     } = this.props;
     const { value, saving, errorText } = this.state;
 
-    const renderedOptions = this.mapOptions();
+    const renderedOptions = this.mapOptions(transform);
 
     return (
       <div className="form-input__row form-select__row">

@@ -1,9 +1,11 @@
 import * as constants from 'core/api/constants';
 import React from 'react';
+import countries from 'i18n-iso-countries';
 
 import CantonField from 'core/components/CantonField/CantonField';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -77,6 +79,17 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
       required: addressFieldsAreNecessary,
+    },
+    {
+      id: 'country',
+      type: 'selectFieldInput',
+      condition: !disableAddress,
+      placeholder: disableAddress && borrowers[0].address1,
+      noIntl: disableAddress,
+      required: addressFieldsAreNecessary,
+      options: getSortedCountriesCodes(),
+      defaultValue: 'CH',
+      transform: code => countries.getName(code, 'fr'),
     },
     {
       id: 'zipCode',
@@ -268,7 +281,9 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
         {
           id: 'theoreticalExpenses',
           type: 'custom',
-          Component: ({ inputProps: { currentValue, label, itemValue } }) => (
+          Component: ({
+            inputProps: { currentValue, label, itemValue = {} },
+          }) => (
             <div className="flex-col" style={{ paddingLeft: 12 }}>
               <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
                 {label}

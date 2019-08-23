@@ -41,6 +41,7 @@ class ArrayInput extends Component {
         id: inputId,
         type,
         options,
+        transform,
         intlId,
         Component: CustomComponent,
       } = input;
@@ -74,8 +75,8 @@ class ArrayInput extends Component {
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
           (opt.id === undefined
-            ? { id: opt, label: <T id={`Forms.${intlId || id}.${opt}`} /> }
-            : { ...opt, label: <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
+            ? { id: opt, label: transform ? transform(opt) : <T id={`Forms.${intlId || id}.${opt}`} /> }
+            : { ...opt, label: transform ? transform(opt) : <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
         return (
           <AutoFormSelectFieldInput
             {...childProps}
