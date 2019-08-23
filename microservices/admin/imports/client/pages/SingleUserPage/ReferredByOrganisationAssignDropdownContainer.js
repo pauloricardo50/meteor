@@ -9,12 +9,16 @@ const getMenuItems = ({
   referredByOrganisation: { referredByOrganisationId } = {},
   userId,
 }) =>
-  organisations.map((organisation) => {
-    const { _id: organisationId, name } = organisation;
+  [null, ...organisations].map((organisation) => {
+    const { _id: organisationId, name } = organisation || {};
+    let organisationName = 'Aucune';
+    if (organisationId) {
+      organisationName = name;
+    }
     return {
       id: organisationId,
       show: organisationId !== referredByOrganisationId,
-      label: name,
+      label: organisationName,
       link: false,
       onClick: () =>
         setUserReferredByOrganisation.run({ userId, organisationId }),
@@ -32,7 +36,19 @@ export default compose(
     organisations = [],
     user: { _id: userId, referredByOrganisation },
   }) => ({
-    options: getMenuItems({ organisations, referredByOrganisation, userId }),
+    options: getMenuItems({
+      organisations: organisations.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }),
+      referredByOrganisation,
+      userId,
+    }),
     referredByOrganisation,
   })),
 );

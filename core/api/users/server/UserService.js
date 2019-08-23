@@ -448,6 +448,13 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
+    if (!proId) {
+      return this._update({
+        id: userId,
+        object: { referredByUserLink: true },
+        operator: '$unset',
+      });
+    }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
       organisationId = mainOrg && mainOrg._id;
@@ -463,6 +470,13 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
+    if (!organisationId) {
+      return this._update({
+        id: userId,
+        object: { referredByOrganisationLink: true },
+        operator: '$unset',
+      });
+    }
     return this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },

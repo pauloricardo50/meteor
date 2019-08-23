@@ -13,7 +13,7 @@ const ReferredByOrganisationAssignDropdown = ({
   referredByOrganisation,
 }: ReferredByOrganisationAssignDropdownProps) => (
   <div className="flex-row center space-children">
-    {referredByOrganisation && (
+    {referredByOrganisation ? (
       <span className="flex-row center space-children">
         Référé par l'organisation&nbsp;
         <CollectionIconLink
@@ -22,6 +22,10 @@ const ReferredByOrganisationAssignDropdown = ({
             collection: ORGANISATIONS_COLLECTION,
           }}
         />
+      </span>
+    ) : (
+      <span className="flex-row center space-children">
+        Référé par aucune organisation
       </span>
     )}
     <DropdownMenu

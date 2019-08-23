@@ -139,13 +139,13 @@ export const setUserReferredBy = new Method({
   name: 'setUserReferredBy',
   params: {
     userId: String,
-    proId: String,
+    proId: Match.Maybe(String),
   },
 });
 
 export const setUserReferredByOrganisation = new Method({
   name: 'setUserReferredByOrganisation',
-  params: { userId: String, organisationId: String },
+  params: { userId: String, organisationId: Match.Maybe(String) },
 });
 
 export const proInviteUserToOrganisation = new Method({
