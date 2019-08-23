@@ -12,12 +12,9 @@ const LoanBoardOptions = (props: LoanBoardOptionsProps) => {
   const { y } = useWindowScroll();
 
   return (
-    <>
-      <div className="scroll-ref" />
-      <div className={cx('loan-board-options', { fixed: y > 68 })}>
-        <LoanBoardOptionsContent {...props} />
-      </div>
-    </>
+    <div className={cx('loan-board-options', { fixed: y > 68 })}>
+      <LoanBoardOptionsContent {...props} />
+    </div>
   );
 };
 

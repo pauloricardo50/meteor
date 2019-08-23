@@ -7,6 +7,10 @@
     flex-grow: 1;
   }
 
+  .loan-board-options.fixed + .board {
+    padding-top: 120px;
+  }
+
   &-options {
     display: flex;
     justify-content: space-between;
