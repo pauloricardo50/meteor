@@ -21,16 +21,14 @@ process.on('exit', () => {
   }
 });
 
-export default function startNightmare({
-  stdout,
-  stderr,
-  done,
-}) {
+export default function startNightmare({ stdout, stderr, done }) {
   let Nightmare;
   try {
     Nightmare = require('nightmare');
   } catch (error) {
-    throw new Error('When running tests with TEST_BROWSER_DRIVER=nightmare, you must first "npm i --save-dev nightmare"');
+    throw new Error(
+      'When running tests with TEST_BROWSER_DRIVER=nightmare, you must first "npm i --save-dev nightmare"',
+    );
   }
 
   nightmare = Nightmare({ show });
@@ -44,13 +42,13 @@ export default function startNightmare({
         stdout(`[${type}] ${message}`);
       }
     })
-    .on('console', (type, message) => {
+    .on('console', (type, message = '') => {
       if (type === 'error') {
         stderr(`[ERROR] ${message}`);
       } else {
         // Message may have escaped newlines
         const messageLines = message.split('\\n');
-        messageLines.forEach(messageLine => {
+        messageLines.forEach((messageLine) => {
           stdout(messageLine);
         });
       }
@@ -63,13 +61,9 @@ export default function startNightmare({
     // After the page loads, the tests are running. Eventually they
     // finish and the driver package is supposed to set window.testsDone
     // and window.testFailures at that time.
-    .wait(function () {
-      return window.testsDone;
-    })
-    .evaluate(function () {
-      return window.testFailures;
-    })
-    .then(failures => {
+    .wait(() => window.testsDone)
+    .evaluate(() => window.testFailures)
+    .then((failures) => {
       testFailures = failures;
       return nightmare.end();
     })
@@ -77,7 +71,7 @@ export default function startNightmare({
       nightmare = null;
       done(testFailures);
     })
-    .catch(error => {
+    .catch((error) => {
       stderr(error && error.message);
     });
 }
