@@ -12,8 +12,7 @@ import {
   VOLUME_NORM,
 } from 'core/api/constants';
 import CantonField from 'core/components/CantonField/CantonField';
-
-countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -190,7 +189,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     {
       id: 'country',
       type: 'selectFieldInput',
-      options: Object.keys(countries.getNames('fr')),
+      options: getSortedCountriesCodes(),
       defaultValue: 'CH',
       transform: code => countries.getName(code, 'fr'),
     },

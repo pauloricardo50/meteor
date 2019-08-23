@@ -11,6 +11,7 @@ const proPropertySchema = PropertySchema.pick(
   'address2',
   'city',
   'zipCode',
+  'country',
   'value',
   'description',
   'propertyType',

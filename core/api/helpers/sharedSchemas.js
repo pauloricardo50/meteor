@@ -2,11 +2,9 @@ import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import countries from 'i18n-iso-countries';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
-
-countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
-
 
 export const createdAt = {
   type: Date,
@@ -55,7 +53,7 @@ export const address = {
   country: {
     type: String,
     optional: true,
-    allowedValues: Object.keys(countries.getNames('fr')),
+    allowedValues: getSortedCountriesCodes(),
     defaultValue: 'CH',
     uniforms: {
       transform: code => countries.getName(code, 'fr'),

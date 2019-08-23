@@ -5,9 +5,8 @@ import countries from 'i18n-iso-countries';
 import CantonField from 'core/components/CantonField/CantonField';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
-
-countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
   civilStatus === constants.CIVIL_STATUS.MARRIED && !multiple && isFirst;
@@ -88,7 +87,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
       required: addressFieldsAreNecessary,
-      options: Object.keys(countries.getNames('fr')),
+      options: getSortedCountriesCodes(),
       defaultValue: 'CH',
       transform: code => countries.getName(code, 'fr'),
     },

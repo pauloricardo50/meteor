@@ -45,7 +45,6 @@ class ArrayInput extends Component {
         intlId,
         Component: CustomComponent,
       } = input;
-      console.log('transform:', transform)
       const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,

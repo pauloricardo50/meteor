@@ -32,6 +32,7 @@
     "faker": "^4.1.0",
     "highcharts-export-data": "^0.1.7",
     "html-parse-stringify": "^1.0.3",
+    "i18n-iso-countries": "^4.3.1",
     "indexof": "0.0.1",
     "js-search": "^1.4.3",
     "json-logic-js": "^1.2.2",
