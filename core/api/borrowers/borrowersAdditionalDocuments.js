@@ -56,4 +56,13 @@ export const conditionalDocuments = [
     condition: ({ doc: { otherIncome } }) =>
       otherIncome && otherIncome.length > 0,
   },
+  {
+    id: DOCUMENTS.DONATION_JUSTIFICATION,
+    condition: ({ doc: { donation } }) => donation && donation.length > 0,
+  },
+  {
+    id: DOCUMENTS.THIRD_PARTY_LOAN_JUSTIFICATION,
+    condition: ({ doc: { thirdPartyLoan } }) =>
+      thirdPartyLoan && thirdPartyLoan.length > 0,
+  },
 ];
