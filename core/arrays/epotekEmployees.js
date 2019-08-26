@@ -69,7 +69,7 @@ const employees = [
     email: '',
     src: '/img/team/seila.jpg',
     name: 'Seila Rada',
-    title: 'Comptable',
+    title: 'Comptabilité & Finance',
     gender: 'F',
   },
 ];
