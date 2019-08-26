@@ -55,6 +55,7 @@ export const OWN_FUNDS_TYPES = {
   BANK_3A: 'bank3A',
   INSURANCE_3B: 'insurance3B',
   THIRD_PARTY_FORTUNE: 'thirdPartyFortune',
+  DONATION: 'donation',
 };
 
 export const RETIREMENT_AGE = {

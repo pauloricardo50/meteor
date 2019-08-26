@@ -52,6 +52,7 @@ export const financeFields = [
   'insurance3B',
   'bank3A',
   'thirdPartyFortune',
+  'donation',
   'hasOwnCompany',
   'ownCompanies',
 ];
@@ -186,6 +187,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
             fields: [
               'bankFortune',
               'thirdPartyFortune',
+              'donation',
               'otherFortune',
               'realEstate',
             ],

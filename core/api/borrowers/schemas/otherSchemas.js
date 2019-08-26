@@ -147,7 +147,7 @@ export const financeInfoSchema = {
     optional: true,
   },
   'thirdPartyFortune.$.yearlyInterest': percentageField,
-  // [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: moneyField,
+  ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.DONATION),
   ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
   'otherIncome.$.comment': { type: String, optional: true },
   ...makeArrayOfObjectsSchema('otherFortune'),

@@ -159,6 +159,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'civilStatus',
     'bankFortune',
     'thirdPartyFortune',
+    'donation',
   ]),
   realEstateIncome: borrowers.map(borrower =>
     calculator.getRealEstateIncomeTotal({ borrowers: borrower })),

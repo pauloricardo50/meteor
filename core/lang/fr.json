@@ -1,4 +1,8 @@
 {
+  "Forms.donation": "Donation",
+  "Forms.donation.description": "Description",
+  "Forms.donation.value": "Montant",
+  "Forms.donation.description.placeholder": "Donation de Jean Dupont",
   "Forms.thirdPartyFortune.amortizationYears": "Durée de l'amortissement en années",
   "Forms.thirdPartyFortune.amortizationYears.placeholder": "5",
   "Forms.thirdPartyFortune.yearlyInterest": "Intérêts annuels",
