@@ -18,8 +18,8 @@ export const FAKE_INSURANCE_2 = { insurance2: [{ value: 200000 }] };
 export const FAKE_INSURANCE_3A = { insurance3A: [{ value: 150000 }] };
 export const FAKE_BANK_3A = { bank3A: [{ value: 250000 }] };
 export const FAKE_INSURANCE_3B = { insurance3B: [{ value: 50000 }] };
-export const FAKE_THIRD_PARTY_FORTUNE = {
-  thirdPartyFortune: [{ vaue: 5000 }],
+export const FAKE_DONATION = {
+  donation: [{ vaue: 5000 }],
 };
 export const FAKE_OTHER_INCOME = {
   otherIncome: [
@@ -144,10 +144,10 @@ export const fakeBank3BPledge = borrowerId =>
     value: 18000,
     usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
   });
-export const fakeThirdPartyFortuneWithdraw = borrowerId =>
+export const fakeDonationWithdraw = borrowerId =>
   fakeOwnFunds({
     borrowerId,
-    type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+    type: OWN_FUNDS_TYPES.DONATION,
     value: 3000,
     usageType: OWN_FUNDS_TYPES.WITHDRAW,
   });
@@ -170,7 +170,7 @@ export const fakeStructure = ({
   withInsurance3AWithdraw,
   withInsurance3BPledge,
   withInsurance3BWithdraw,
-  withThirdPartyFortuneWithdraw,
+  withDonationWithdraw,
 }) => ({
   id: Random.id(),
   propertyId,
@@ -192,9 +192,7 @@ export const fakeStructure = ({
     withInsurance3BPledge ? fakeInsurance3BPledge(sample(borrowerIds)) : null,
     withBank3BWithdraw ? fakeBank3BWithdraw(sample(borrowerIds)) : null,
     withBank3BPledge ? fakeBank3BPledge(sample(borrowerIds)) : null,
-    withThirdPartyFortuneWithdraw
-      ? fakeThirdPartyFortuneWithdraw(sample(borrowerIds))
-      : null,
+    withDonationWithdraw ? fakeDonationWithdraw(sample(borrowerIds)) : null,
   ].filter(x => x),
 });
 
@@ -211,7 +209,7 @@ export const fakeBorrower = ({
   withOtherIncome,
   withRealEstate,
   withSalary,
-  withThirdPartyFortune,
+  withDonation,
 }) => ({
   bankFortune: withBankFortune ? FAKE_BANK_FORTUNE : 0,
   salary: withSalary ? FAKE_SALARY : 0,
@@ -224,7 +222,7 @@ export const fakeBorrower = ({
   ...(withOtherFortune ? FAKE_OTHER_FORTUNE : {}),
   ...(withOtherIncome ? FAKE_OTHER_INCOME : {}),
   ...(withRealEstate ? FAKE_REAL_ESTATE : {}),
-  ...(withThirdPartyFortune ? FAKE_THIRD_PARTY_FORTUNE : {}),
+  ...(withDonation ? FAKE_DONATION : {}),
   ...borrowerInfos,
 });
 

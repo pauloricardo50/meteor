@@ -259,7 +259,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
     },
     { id: 'bankFortune', type: 'textInput', money: true },
     {
-      id: 'thirdPartyFortune',
+      id: 'thirdPartyLoan',
       type: 'arrayInput',
       required: false,
       inputs: [

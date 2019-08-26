@@ -231,7 +231,7 @@ describe('OwnFundsCompleter', () => {
           },
           {
             value: 30000,
-            type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+            type: OWN_FUNDS_TYPES.DONATION,
             borrowerId: 'bId',
           },
         ];

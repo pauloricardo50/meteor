@@ -78,7 +78,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   salary: 1,
   sameAddress: 1,
   step: 1,
-  thirdPartyFortune: 1,
+  thirdPartyLoan: 1,
   worksForOwnCompany: 1,
   worksInSwitzerlandSince: 1,
   zipCode: 1,

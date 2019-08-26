@@ -158,7 +158,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         OWN_FUNDS_TYPES.INSURANCE_3A,
         OWN_FUNDS_TYPES.BANK_3A,
         OWN_FUNDS_TYPES.INSURANCE_3B,
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        OWN_FUNDS_TYPES.THIRD_PARTY_LOAN,
         OWN_FUNDS_TYPES.DONATION,
       ].includes(type);
 
@@ -174,10 +174,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
     }
 
-    getThirdPartyFortune({ borrowers }) {
+    getThirdPartyLoan({ borrowers }) {
       const val = this.getArrayValues({
         borrowers,
-        key: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        key: OWN_FUNDS_TYPES.THIRD_PARTY_LOAN,
       });
       return val;
     }
@@ -231,7 +231,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getCashFortune({ borrowers }) {
       return [
         this.getFortune,
-        this.getThirdPartyFortune,
+        this.getThirdPartyLoan,
         this.getInsurance3A,
         this.getInsurance3B,
         this.getBank3A,
@@ -284,7 +284,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getTotalFunds({ borrowers }) {
       return (
         this.getFortune({ borrowers })
-        + this.getThirdPartyFortune({ borrowers })
+        + this.getThirdPartyLoan({ borrowers })
         + this.getInsuranceFortune({ borrowers })
         + this.getDonationFortune({ borrowers })
       );

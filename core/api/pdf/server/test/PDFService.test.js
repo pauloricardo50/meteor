@@ -46,7 +46,7 @@ describe('PDFService', () => {
           withInsurance3A: true,
           withBank3A: true,
           withInsurance3B: true,
-          withThirdPartyFortune: true,
+          withDonation: true,
           withOtherIncome: true,
           withOtherFortune: true,
           withExpenses: true,
@@ -71,7 +71,7 @@ describe('PDFService', () => {
         {
           withBankWithdraw: true,
           withInsurance3APledge: true,
-          withThirdPartyFortuneWithdraw: true,
+          withDonationWithdraw: true,
         },
         {
           withCustomNotaryFees: true,

@@ -240,7 +240,7 @@ export const getBorrowerArray = ({
   const realEstateIncome = calc.getRealEstateIncomeTotal({ borrowers });
   const realEstateValue = calc.getRealEstateValue({ borrowers });
   const salary = calc.getSalary({ borrowers });
-  const thirdPartyFortune = calc.getThirdPartyFortune({ borrowers });
+  const thirdPartyLoan = calc.getThirdPartyLoan({ borrowers });
   const totalFunds = calc.getTotalFunds({ borrowers });
   const totalIncome = calc.getTotalIncome({ borrowers });
   const expenses = calc.getFormattedExpenses({ borrowers }).subtract;
@@ -278,9 +278,9 @@ export const getBorrowerArray = ({
       hide: !insuranceFortune,
     },
     {
-      label: 'Recap.thirdPartyFortune',
-      value: toMoney(thirdPartyFortune),
-      hide: !thirdPartyFortune,
+      label: 'Recap.thirdPartyLoan',
+      value: toMoney(thirdPartyLoan),
+      hide: !thirdPartyLoan,
     },
     {
       label: 'Recap.donation',

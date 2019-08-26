@@ -21,7 +21,8 @@ describe('FinancingOwnFundsPickerHelpers', () => {
       expect(chooseOwnFundsTypes({
         loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
       })).to.deep.equal([
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        OWN_FUNDS_TYPES.DONATION,
+        OWN_FUNDS_TYPES.THIRD_PARTY_LOAN,
         OWN_FUNDS_TYPES.BANK_FORTUNE,
         OWN_FUNDS_TYPES.INSURANCE_3A,
         OWN_FUNDS_TYPES.BANK_3A,
@@ -32,7 +33,8 @@ describe('FinancingOwnFundsPickerHelpers', () => {
 
     it('returns the right values for secondary and investment', () => {
       const expected = [
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        OWN_FUNDS_TYPES.DONATION,
+        OWN_FUNDS_TYPES.THIRD_PARTY_LOAN,
         OWN_FUNDS_TYPES.BANK_FORTUNE,
         OWN_FUNDS_TYPES.INSURANCE_3B,
       ];
@@ -117,16 +119,16 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 5, borrowerId: 'id' },
           { type: OWN_FUNDS_TYPES.BANK_3A, value: 5, borrowerId: 'id' },
           {
-            type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+            type: OWN_FUNDS_TYPES.DONATION,
             value: 5,
             borrowerId: 'id',
           },
           { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
         ],
       };
-      const borrowers = [{ thirdPartyFortune: [{ value: 10 }], _id: 'id' }];
+      const borrowers = [{ donation: [{ value: 10 }], _id: 'id' }];
       expect(calculateRemainingFunds({
-        type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        type: OWN_FUNDS_TYPES.DONATION,
         structure,
         ownFundsIndex: 1,
         borrowers,

@@ -159,7 +159,7 @@ describe('FinancingResult', () => {
             value: 120000,
             borrowerId: 'John',
           },
-          { type: 'thirdPartyFortune', value: 20000, borrowerId: 'Mary' },
+          { type: 'donation', value: 20000, borrowerId: 'Mary' },
         ],
       };
       loan = {
@@ -177,7 +177,7 @@ describe('FinancingResult', () => {
           {
             _id: 'Mary',
             salary: 200000,
-            thirdPartyFortune: [{ value: 200000 }],
+            donation: [{ value: 200000 }],
             insurance2: [{ value: 2000 }],
             insurance3A: [{ value: 0 }],
           },
