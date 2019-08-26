@@ -19,7 +19,7 @@ export const FAKE_INSURANCE_3A = { insurance3A: [{ value: 150000 }] };
 export const FAKE_BANK_3A = { bank3A: [{ value: 250000 }] };
 export const FAKE_INSURANCE_3B = { insurance3B: [{ value: 50000 }] };
 export const FAKE_THIRD_PARTY_FORTUNE = {
-  thirdPartyFortune: 5000,
+  thirdPartyFortune: [{ vaue: 5000 }],
 };
 export const FAKE_OTHER_INCOME = {
   otherIncome: [

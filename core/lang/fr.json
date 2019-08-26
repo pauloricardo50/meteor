@@ -1,4 +1,10 @@
 {
+  "Forms.thirdPartyFortune.amortizationYears": "Durée de l'amortissement en années",
+  "Forms.thirdPartyFortune.amortizationYears.placeholder": "5",
+  "Forms.thirdPartyFortune.yearlyInterest": "Intérêts annuels",
+  "Forms.thirdPartyFortune.description": "Description",
+  "Forms.thirdPartyFortune.description.placeholder": "Prêt de Jean Dupont",
+  "Forms.thirdPartyFortune.value": "Montant du prêt",
   "Forms.country": "Pays",
   "Forms.personalInformations": "Informations personelles",
   "FinancingResultAmortization.total": "Montant à amortir",

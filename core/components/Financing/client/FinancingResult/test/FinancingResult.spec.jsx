@@ -177,7 +177,7 @@ describe('FinancingResult', () => {
           {
             _id: 'Mary',
             salary: 200000,
-            thirdPartyFortune: 200000,
+            thirdPartyFortune: [{ value: 200000 }],
             insurance2: [{ value: 2000 }],
             insurance3A: [{ value: 0 }],
           },

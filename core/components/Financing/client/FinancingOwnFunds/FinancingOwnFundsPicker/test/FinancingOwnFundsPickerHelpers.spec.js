@@ -124,7 +124,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
         ],
       };
-      const borrowers = [{ thirdPartyFortune: 10, _id: 'id' }];
+      const borrowers = [{ thirdPartyFortune: [{ value: 10 }], _id: 'id' }];
       expect(calculateRemainingFunds({
         type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
         structure,
