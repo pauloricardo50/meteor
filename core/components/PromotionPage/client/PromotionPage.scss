@@ -130,7 +130,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 16px;
+
+    .contacts,
+    .logos {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 32px;
+    }
+
+    .contacts {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .contact {
+      display: flex;
+      flex-direction: column;
+      margin-right: 16px;
+    }
 
     .logo {
       display: flex;

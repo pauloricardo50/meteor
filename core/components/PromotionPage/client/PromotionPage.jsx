@@ -8,7 +8,7 @@ import PromotionPageContent from './PromotionPageContent';
 
 type PromotionPageProps = {};
 
-const PromotionPage = ({ promotion, route, loan }: PromotionPageProps) => {
+const PromotionPage = ({ promotion, route, ...props }: PromotionPageProps) => {
   const { name } = promotion;
 
   return (
@@ -18,7 +18,7 @@ const PromotionPage = ({ promotion, route, loan }: PromotionPageProps) => {
       </Helmet>
       <PromotionPageHeader promotion={promotion} />
       <PromotionPageTabs promotion={promotion} route={route} />
-      <PromotionPageContent promotion={promotion} route={route} loan={loan} />
+      <PromotionPageContent promotion={promotion} route={route} {...props} />
     </div>
   );
 };

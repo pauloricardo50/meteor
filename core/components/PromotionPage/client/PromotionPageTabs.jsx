@@ -22,10 +22,7 @@ const getTabs = ({
   [
     { id: 'overview', shouldDisplay: true },
     { id: 'map', shouldDisplay: true },
-    {
-      id: 'partners',
-      shouldDisplay: documents && documents.logos && documents.logos.length > 0,
-    },
+    { id: 'partners', shouldDisplay: true },
     {
       id: 'files',
       shouldDisplay:
