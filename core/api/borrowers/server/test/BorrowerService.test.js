@@ -147,7 +147,7 @@ describe('BorrowerService ', () => {
             { description: borrowerConstants.OTHER_INCOME.WELFARE, value: 123 },
           ],
           donation: [{ value: 123, description: 'donation' }],
-          thirdPartyLoan: [{ value: 456, description: 'thirdPartyLoan' }],
+          thirdPartyLoan: [{ value: 456, description: 'thirdPartyLoan', amortizationYears: 5, yearlyInterest: 0.1 }],
         },
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);

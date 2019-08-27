@@ -1,4 +1,5 @@
 {
+  "Forms.expenses.THIRD_PARTY_LOAN_REIMBURSEMENT": "Remboursement de prêt de tiers",
   "Forms.donation.value.placeholder": "5000",
   "Forms.thirdPartyLoan.value.placeholder": "5000",
   "PDF.ownFund.donation": "Donation",
