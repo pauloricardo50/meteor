@@ -76,27 +76,27 @@
         margin-left: 4px;
       }
     }
+  }
 
-    .residence-type-setter {
-      display: flex;
-      align-items: center;
-      align-self: center;
+  .residence-type-setter {
+    display: flex;
+    align-items: center;
+    align-self: center;
 
-      width: 50%;
-      // On very small screens
-      min-width: 224px;
-      margin: 16px 0;
-      padding: 16px;
+    // On very small screens
+    min-width: 224px;
+    margin: 16px 0;
+    padding: 16px;
 
-      .icon {
-        width: 80px;
-        height: 80px;
-        color: $primary;
-      }
+    .icon {
+      width: 80px;
+      height: 80px;
+      color: $primary;
+      padding: 8px 24px 8px 16px;
+    }
 
-      > * {
-        flex-grow: 1;
-      }
+    > * {
+      flex-grow: 1;
     }
   }
 
@@ -167,27 +167,6 @@
 
     > * {
       margin-left: 4px;
-    }
-  }
-
-  .residence-type-setter {
-    display: flex;
-    align-items: center;
-    align-self: center;
-    flex-direction: column;
-
-    width: 50%;
-    // On very small screens
-    min-width: 224px;
-    margin: 16px 0;
-    padding: 16px;
-
-    > * {
-      width: 80%;
-
-      @include screen(small) {
-        width: 100%;
-      }
     }
   }
 }
