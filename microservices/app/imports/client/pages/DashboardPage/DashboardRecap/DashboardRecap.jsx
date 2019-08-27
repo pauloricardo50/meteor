@@ -7,7 +7,8 @@ import DashboardRecapProperty from './DashboardRecapProperty';
 import DashboardRecapPromotion from './DashboardRecapPromotion';
 
 const DashboardRecap = (props) => {
-  const propertyToDisplay = props.loan.structure.property || props.loan.properties[0];
+  const propertyToDisplay = (props.loan.structure && props.loan.structure.property)
+    || (props.loan.properties && props.loan.properties[0]);
   const {
     loan: { hasPromotion, promotions, _id: loanId },
   } = props;
@@ -31,6 +32,7 @@ const DashboardRecap = (props) => {
           <DashboardRecapProperty
             property={propertyToDisplay}
             loanId={loanId}
+            growRecap
           />
         )}
       </div>

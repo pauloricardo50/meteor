@@ -20,12 +20,11 @@ export class PromotionOptionService extends CollectionService {
   }
 
   getPromotion(promotionOptionId) {
-    const promotionOption = this.collection
-      .createQuery({
-        $filters: { _id: promotionOptionId },
-        promotionLots: { promotion: { _id: 1 } },
-      })
-      .fetchOne();
+    const promotionOption = this.fetchOne({
+      $filters: { _id: promotionOptionId },
+      promotionLots: { promotion: { _id: 1 } },
+    });
+
     return (
       promotionOption.promotionLots
       && promotionOption.promotionLots[0].promotion
@@ -35,7 +34,11 @@ export class PromotionOptionService extends CollectionService {
   remove({ promotionOptionId }) {
     const {
       loan: { _id: loanId },
-    } = this.get(promotionOptionId);
+    } = this.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+    });
+
     const promotionId = this.getPromotion(promotionOptionId)._id;
 
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({

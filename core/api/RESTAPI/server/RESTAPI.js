@@ -1,6 +1,16 @@
+import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import connectRoute from 'connect-route';
+import Fiber from 'fibers';
+import { compose } from 'recompose';
+
 import * as defaultMiddlewares from './middlewares';
-import { getRequestMethod, getRequestPath } from './helpers';
+import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
+import { HTTP_STATUS_CODES } from './restApiConstants';
+import {
+  setClientMicroservice,
+  setClientUrl,
+} from '../../../utils/server/getClientUrl';
 
 export default class RESTAPI {
   constructor({
@@ -27,7 +37,7 @@ export default class RESTAPI {
 
   registerMiddlewares(middlewares) {
     middlewares.forEach((middleware) => {
-      WebApp.connectHandlers.use(this.rootPath, middleware);
+      WebApp.connectHandlers.use(this.rootPath, middleware(this.getEndpointsOptions()));
     });
   }
 
@@ -41,55 +51,94 @@ export default class RESTAPI {
 
       methods.forEach((method) => {
         const finalEndpoint = this.makeEndpoint(endpoint);
-        const func = this.endpoints[endpoint][method];
+        const { handler } = this.endpoints[endpoint][method];
 
-        this.registerEndpoint(finalEndpoint, func, method);
+        this.registerEndpoint(finalEndpoint, handler, method);
       });
     });
   }
 
-  registerEndpoint(endpoint, func, method) {
-    WebApp.connectHandlers.use(endpoint, (req, res, next) => {
-      if (getRequestMethod(req) !== method) {
-        // Not the right method, pass to the following middlewares
-        next();
-        return;
-      }
+  wrapHandler(handler) {
+    return (req, res, next) => {
+      Fiber(() => {
+        const { headers = {} } = req;
+        const { host, location } = headers;
 
-      if (getRequestPath(req) !== endpoint) {
-        // Not an exact route match
-        next();
-        return;
-      }
+        setClientMicroservice('api');
+        setClientUrl({ host, href: location });
+        setIsAPI();
+        setAPIUser(req.user);
 
-      try {
-        Promise.resolve()
-          .then(() =>
-            func({ user: req.user, body: req.body }, { req, res, next }))
-          .then(result => this.handleSuccess(result, res))
-          .catch(next);
-      } catch (error) {
-        next(error);
-      }
+        try {
+          Promise.resolve()
+            .then(() =>
+              handler({
+                user: req.user,
+                body: req.body,
+                query: req.query,
+                params: req.params,
+                files: req.files,
+              }))
+            .then(result => this.handleSuccess(result, req, res))
+            .catch(next);
+        } catch (error) {
+          next(error);
+        }
+      }).run();
+    };
+  }
+
+  registerEndpoint(endpoint, handler, method) {
+    compose(
+      WebApp.connectHandlers.use.bind(WebApp.connectHandlers),
+      Meteor.bindEnvironment,
+      connectRoute,
+    )((router) => {
+      router[method.toLowerCase()](endpoint, this.wrapHandler(handler));
     });
   }
 
-  handleSuccess(result = '', res) {
+  handleSuccess(result = '', req, res) {
+    const { status } = result;
     const stringified = JSON.stringify(result);
-    res.setHeader('Content-Type', 'application/json');
+
+    // LOGS
+    logRequest({ req, result: stringified });
+
+    trackRequest({ req, result: stringified });
+
+    res.writeHead(status || HTTP_STATUS_CODES.OK, {
+      'Content-Type': 'application/json',
+    });
     res.write(stringified);
 
     res.end();
   }
 
-  addEndpoint(path, method, handler) {
+  addEndpoint(path, method, handler, options = {}) {
     if (this.endpoints[path] && this.endpoints[path][method]) {
       throw new Error(`Endpoint "${path}" for method "${method}" already exists in REST API`);
     }
 
     this.endpoints[path] = {
       ...(this.endpoints[path] || {}),
-      [method]: handler,
+      [method]: { handler, options },
     };
+  }
+
+  getEndpointsOptions() {
+    return Object.keys(this.endpoints).reduce(
+      (options, path) => ({
+        ...options,
+        [this.makeEndpoint(path)]: Object.keys(this.endpoints[path]).reduce(
+          (methods, method) => ({
+            ...methods,
+            [method]: { options: this.endpoints[path][method].options },
+          }),
+          {},
+        ),
+      }),
+      {},
+    );
   }
 }

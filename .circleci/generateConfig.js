@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 9;
+const CACHE_VERSION = 18;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -14,7 +14,7 @@ const defaultJobValues = {
         LANGUAGE: 'C.UTF-8',
         LC_ALL: 'C.UTF-8',
         LC_NUMERIC: 'en_US.UTF-8',
-        METEOR_VERSION: '1.8',
+        METEOR_VERSION: '1.8.1',
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
@@ -31,13 +31,13 @@ const defaultJobValues = {
 // Cache keys should have an identifier string at the start, using only _ to separate words
 // and it should include the CACHE_VERSION, so all cache can be flushed at once by incrementing CACHE_VERSION
 // like: "my_cache_name_${CACHE_VERSION}"
-// Then follow with the variable identifiers
+// Then follow with the variable identifiers, each separated by a hyphen "-"
 const cacheKeys = {
   global: () => `global_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
-    `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}-{{ checksum "./package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
@@ -46,27 +46,36 @@ const cacheKeys = {
 const cachePaths = {
   global: () => '~/.cache',
   meteorSystem: () => '~/.meteor',
-  meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
+  meteorMicroservice: name => [
+    `./microservices/${name}/.meteor/local/bundler-cache`,
+    `./microservices/${name}/.meteor/local/isopacks`,
+    `./microservices/${name}/.meteor/local/plugin-cache`,
+  ],
   nodeModules: () => './node_modules',
   source: () => '.',
 };
 
 // Circle CI Commands
-const runCommand = (name, command) => ({ run: { name, command } });
+const runCommand = (name, command, timeout) => ({
+  run: { name, command, ...(timeout ? { no_output_timeout: timeout } : {}) },
+});
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-  case 'e2e':
-    return runCommand(
-      'Run e2e tests',
-      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
-    );
-  case 'unit':
-    return runCommand(
-      'Run unit tests',
-      `meteor npm --prefix microservices/${name} run test-CI`,
-    );
-  default:
-    throw new Error(`Unknown tests type: ${testsType}`);
+    case 'e2e':
+      return runCommand(
+        'Run e2e tests',
+        `
+        cd ./microservices/${name} && meteor npm run test-e2e-ci
+        `,
+      );
+    case 'unit':
+      return runCommand(
+        'Run unit tests',
+        `cd ./microservices/${name} && meteor npm run test-ci`,
+        '15m',
+      );
+    default:
+      throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
@@ -79,15 +88,15 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-')
-            + (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-') +
+            (index === 0 ? '' : '-'),
         ],
         [],
       ),
   },
 });
 const saveCache = (name, key, path) => ({
-  save_cache: { name, key, paths: [path] },
+  save_cache: { name, key, paths: Array.isArray(path) ? path : [path] },
 });
 const storeTestResults = path => ({ store_test_results: { path } });
 const storeArtifacts = path => ({ store_artifacts: { path } });
@@ -95,6 +104,7 @@ const storeArtifacts = path => ({ store_artifacts: { path } });
 // Create preparation job with shared work
 const makePrepareJob = () => ({
   ...defaultJobValues,
+  resource_class: 'large',
   steps: [
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
@@ -114,12 +124,32 @@ const makePrepareJob = () => ({
       cacheKeys.nodeModules(),
       cachePaths.nodeModules(),
     ),
+
+    // Build and cache backend
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem('backend')),
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    runCommand(
+      'Install node_modules',
+      'meteor npm --prefix microservices/backend ci',
+    ),
+    runCommand('Build backend', './scripts/circleci/build_backend.sh'),
+    saveCache(
+      'Cache meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+      cachePaths.meteorMicroservice('backend'),
+    ),
   ],
 });
 
 // Create test job for a given microservice
-const testMicroserviceJob = (name, testsType) => ({
+const testMicroserviceJob = ({ name, testsType, job }) => ({
   ...defaultJobValues,
+  ...job,
+  resource_class: 'medium+',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
@@ -129,6 +159,10 @@ const testMicroserviceJob = (name, testsType) => ({
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
     ),
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -137,7 +171,10 @@ const testMicroserviceJob = (name, testsType) => ({
     // ),
     runCommand(
       'Install node_modules',
-      `meteor npm --prefix microservices/${name} ci`,
+      `
+      meteor npm --prefix microservices/${name} ci
+      meteor npm --prefix microservices/backend ci
+      `,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),
@@ -151,7 +188,12 @@ const testMicroserviceJob = (name, testsType) => ({
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
     ),
-    storeTestResults('./results'),
+    // saveCache(
+    //   'Cache meteor backend',
+    //   cacheKeys.meteorMicroservice('backend'),
+    //   cachePaths.meteorMicroservice('backend'),
+    // ),
+    storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
   ],
@@ -162,14 +204,20 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    'Www - unit tests': testMicroserviceJob('www', 'unit'),
-    'App - unit tests': testMicroserviceJob('app', 'unit'),
-    'Admin - unit tests': testMicroserviceJob('admin', 'unit'),
-    'Pro - unit tests': testMicroserviceJob('pro', 'unit'),
-    'Www - e2e tests': testMicroserviceJob('www', 'e2e'),
-    'App - e2e tests': testMicroserviceJob('app', 'e2e'),
-    'Admin - e2e tests': testMicroserviceJob('admin', 'e2e'),
-    'Pro - e2e tests': testMicroserviceJob('pro', 'e2e'),
+    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    'Admin - unit tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'unit',
+    }),
+    'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
+    'Admin - e2e tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'e2e',
+    }),
+    'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
   },
   workflows: {
     version: 2,
@@ -180,10 +228,10 @@ const makeConfig = () => ({
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
         { 'Pro - unit tests': { requires: ['Prepare'] } },
-        { 'Www - e2e tests': { requires: ['Www - unit tests'] } },
-        { 'App - e2e tests': { requires: ['App - unit tests'] } },
-        { 'Admin - e2e tests': { requires: ['Admin - unit tests'] } },
-        { 'Pro - e2e tests': { requires: ['Pro - unit tests'] } },
+        { 'Www - e2e tests': { requires: ['Prepare'] } },
+        { 'App - e2e tests': { requires: ['Prepare'] } },
+        { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        { 'Pro - e2e tests': { requires: ['Prepare'] } },
       ],
     },
   },

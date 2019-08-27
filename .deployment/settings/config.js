@@ -3,6 +3,7 @@ import { CLOUDFOUNDRY_MEMORY_LIMIT } from '../CloudFoundry/cloudFoundryConstants
 export const ENVIRONMENT = {
   STAGING: 'staging',
   PRODUCTION: 'production',
+  DEV: 'dev',
 };
 
 export const APPLICATIONS = {
@@ -10,6 +11,7 @@ export const APPLICATIONS = {
   APP: 'app',
   PRO: 'pro',
   WWW: 'www',
+  BACKEND: 'backend',
 };
 
 export const SERVICES = {
@@ -25,6 +27,9 @@ export const APP_CONFIGS = {
   MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
   MB1024_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 1 },
   MB1024_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 2 },
+  MB1536_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1536, instances: 2 },
+  MB2048_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048, instances: 1 },
+  MB2048_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048, instances: 2 },
 };
 
 export const ENVIRONMENT_CONFIG = {
@@ -34,19 +39,30 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.BACKEND]: { appConfig: APP_CONFIGS.MB1024_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
     services: [SERVICES.MONGODB, SERVICES.REDIS, SERVICES.LOGS],
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
-    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
+    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.BACKEND]: { appConfig: APP_CONFIGS.MB2048_2i },
+  },
+  [ENVIRONMENT.DEV]: {
+    services: [SERVICES.MONGODB],
+    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.BACKEND]: { appConfig: APP_CONFIGS.MB512_1i },
   },
 };
 
 export const SPACES = {
   [ENVIRONMENT.STAGING]: 'Staging',
   [ENVIRONMENT.PRODUCTION]: 'Production',
+  [ENVIRONMENT.DEV]: 'Dev',
 };
 
 export const APP_BUILDPACK = 'https://github.com/cloudfoundry/nodejs-buildpack';
@@ -56,7 +72,7 @@ export const APP_DEPENDENCIES = {
   '@babel/node': '7.0.0',
   '@babel/preset-env': '7.1.0',
 };
-export const APP_ENGINES = { node: '8.14.1' };
+export const APP_ENGINES = { node: '8.16.0' };
 export const APP_LAUNCHER = 'launcher.js';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
 export const APP_PACKAGE_JSON_FILE = 'package.json';
@@ -76,19 +92,17 @@ export const APP_SMOKE_TEST_FILES = {
   [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.PRO]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
+  [APPLICATIONS.BACKEND]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
 };
 
 export const APP_ENV_VARIABLES = {
   [ENVIRONMENT.STAGING]: {
-    [APPLICATIONS.APP]: {},
-    [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
-    [APPLICATIONS.PRO]: {},
   },
   [ENVIRONMENT.PRODUCTION]: {
-    [APPLICATIONS.APP]: {},
-    [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
-    [APPLICATIONS.PRO]: {},
+  },
+  [ENVIRONMENT.DEV]: {
+    [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
   },
 };

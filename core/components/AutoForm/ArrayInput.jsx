@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
-import TextInput from './TextInput';
-import DateInput from './DateInput';
-import SelectFieldInput from './SelectFieldInput';
+import AutoFormTextInput from './AutoFormTextInput';
+import AutoFormDateInput from './AutoFormDateInput';
+import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
 
 import FormValidator from './FormValidator';
 
@@ -37,14 +37,22 @@ class ArrayInput extends Component {
     } = this.props;
 
     const mapInput = (input, i) => {
-      const { id: inputId, type, options, intlId } = input;
+      const {
+        id: inputId,
+        type,
+        options,
+        transform,
+        intlId,
+        Component: CustomComponent,
+      } = input;
+      const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,
         inputProps: {
           ...input,
           id: `${id}.${i}.${inputId}`,
-          currentValue:
-            currentValue && currentValue[i] && currentValue[i][inputId],
+          currentValue: finalCurrentValue,
+          itemValue: currentValue && currentValue[i],
           key: inputId,
           label: <T id={`Forms.${intlId || id}.${inputId}`} />,
           placeholder: `Forms.${intlId || id}.${inputId}.placeholder`,
@@ -54,17 +62,23 @@ class ArrayInput extends Component {
       };
 
       if (type === 'textInput') {
-        return <TextInput {...childProps} noValidator key={id + inputId + i} />;
+        return (
+          <AutoFormTextInput
+            {...childProps}
+            noValidator
+            key={id + inputId + i}
+          />
+        );
       }
       if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
           (opt.id === undefined
-            ? { id: opt, label: <T id={`Forms.${intlId || id}.${opt}`} /> }
-            : { ...opt, label: <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
+            ? { id: opt, label: transform ? transform(opt) : <T id={`Forms.${intlId || id}.${opt}`} /> }
+            : { ...opt, label: transform ? transform(opt) : <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
         return (
-          <SelectFieldInput
+          <AutoFormSelectFieldInput
             {...childProps}
             noValidator
             key={id + inputId + i}
@@ -72,7 +86,17 @@ class ArrayInput extends Component {
         );
       }
       if (type === 'dateInput') {
-        return <DateInput {...childProps} noValidator key={id + inputId + i} />;
+        return (
+          <AutoFormDateInput
+            {...childProps}
+            noValidator
+            key={id + inputId + i}
+          />
+        );
+      }
+
+      if (type === 'custom') {
+        return <CustomComponent {...childProps} />;
       }
     };
 

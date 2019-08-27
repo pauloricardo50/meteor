@@ -1,13 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
-import { Roles } from 'meteor/alanning:roles';
 
-import {
-  LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from '../../constants';
+import { ROLES } from 'core/api/constants';
+import { COLLECTIONS } from '../../constants';
 import SecurityService from '../../security';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
@@ -15,6 +10,11 @@ import {
   ALLOWED_FILE_TYPES,
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
+
+export const getS3FileKey = (file, { docId, id }) =>
+  `${docId}/${id}/${file.name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')}`;
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   maxSize: MAX_FILE_SIZE,
@@ -24,8 +24,7 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     // Check for devs and admins
     if (
-      Roles.userIsInRole(this.userId, 'admin')
-      || Roles.userIsInRole(this.userId, 'dev')
+      SecurityService.hasMinimumRole({ userId: this.userId, role: ROLES.ADMIN })
     ) {
       return true;
     }
@@ -38,20 +37,18 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
       );
     }
 
-    // Make sure this user is the owner of the document
-    if (collection === BORROWERS_COLLECTION) {
-      SecurityService.borrowers.isAllowedToUpdate(docId);
-    } else if (collection === LOANS_COLLECTION) {
-      SecurityService.loans.isAllowedToUpdate(docId);
-    } else if (collection === PROPERTIES_COLLECTION) {
-      SecurityService.properties.isAllowedToUpdate(docId);
-    } else if (collection === PROMOTIONS_COLLECTION) {
-      SecurityService.promotions.isAllowedToUpdate(docId);
-    } else {
+    if (!Object.values(COLLECTIONS).includes(collection)) {
       throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }
 
+    SecurityService.isAllowedToModifyFiles({
+      collection,
+      docId,
+      userId: this.userId,
+      fileKey: docId,
+    });
+
     return true;
   },
-  key: (file, { docId, id }) => `${docId}/${id}/${file.name}`,
+  key: getS3FileKey,
 });

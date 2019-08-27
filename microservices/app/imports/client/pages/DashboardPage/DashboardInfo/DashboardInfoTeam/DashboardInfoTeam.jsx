@@ -15,11 +15,10 @@ const DashboardInfoTeam = ({
   editContact,
   loan,
   contacts,
+  currentUser,
 }) => {
-  const {
-    user: { assignedEmployee },
-    hasPromotion,
-  } = loan;
+  const { assignedEmployee } = currentUser;
+  const { hasPromotion } = loan;
   return (
     <div className="dashboard-info-team card1">
       <div className="card-top">

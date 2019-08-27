@@ -10,9 +10,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import T from 'core/components/Translation';
 
-const styles = {
-  cell: { textAlign: 'left' },
-};
 
 const TableHeader = ({
   columnOptions,
@@ -37,10 +34,10 @@ const TableHeader = ({
           />
         </TableCell>
       )}
-      {columnOptions.map(({ id, style, intlValues, label, align, padding = 'dense' }, index) => (
+      {columnOptions.map(({ id, style, intlValues, label, align, padding }, index) => (
         <TableCell
           key={id}
-          style={style || styles.cell}
+          style={style}
           align={align}
           padding={padding}
         >

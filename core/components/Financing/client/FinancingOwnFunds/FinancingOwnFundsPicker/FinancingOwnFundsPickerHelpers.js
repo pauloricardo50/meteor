@@ -1,20 +1,12 @@
 import {
-  RESIDENCE_TYPE,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
 } from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
 import { calculateMaxLoan } from '../../FinancingFinancing/FinancingFinancing';
-import { getProperty } from '../../FinancingCalculator';
 
 export const chooseOwnFundsTypes = ({ loan: { residenceType } }) =>
-  (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-    ? Object.values(OWN_FUNDS_TYPES)
-    : [
-      OWN_FUNDS_TYPES.BANK_FORTUNE,
-      OWN_FUNDS_TYPES.INSURANCE_3B,
-      OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
-    ]);
+  Calculator.getAllowedOwnFundsTypes({ residenceType });
 
 export const shouldAskForUsageType = type =>
   [
@@ -113,12 +105,11 @@ export const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
     .reduce((sum, { value }) => sum + value, 0);
 
 export const getNewWantedLoanAfterPledge = (props) => {
-  const {
-    structure: { wantedLoan, ownFunds },
-    usageType,
-    value,
-    ownFundsIndex,
-  } = props;
+  const { loan, structureId, usageType, value, ownFundsIndex } = props;
+  const { wantedLoan, ownFunds } = Calculator.selectStructure({
+    loan,
+    structureId,
+  });
   if (usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE) {
     return wantedLoan;
   }
@@ -135,10 +126,15 @@ export const getNewWantedLoanAfterPledge = (props) => {
 };
 
 export const getMaxPledge = (props) => {
-  const {
-    structure: { propertyWork },
-  } = props;
-  const propertyValue = getProperty(props).value;
+  const { loan, structureId } = props;
+  const { propertyWork } = Calculator.selectStructure({
+    loan,
+    structureId,
+  });
+  const propertyValue = Calculator.selectPropertyValue({
+    loan,
+    structureId,
+  });
 
   return Math.round((Calculator.maxBorrowRatioWithPledge - Calculator.maxBorrowRatio)
       * (propertyValue + propertyWork));

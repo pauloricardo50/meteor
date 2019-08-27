@@ -5,11 +5,14 @@ import {
   LENDER_RULES_VARIABLES,
   RESIDENCE_TYPE,
   CANTONS,
+  PROPERTY_TYPE,
 } from 'core/api/constants';
 import MoneyInput from 'core/components/MoneyInput';
-import T from 'core/components/Translation';
+import RadioButtons from 'core/components/RadioButtons';
+import { NumberField } from 'core/components/NumberInput';
 import { PercentField } from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
+import TextField from 'core/components/AutoForm2/CustomTextField';
 
 type LenderRulesFormValueProps = {};
 
@@ -17,7 +20,8 @@ const getSelectProps = (variable) => {
   if (variable === LENDER_RULES_VARIABLES.RESIDENCE_TYPE) {
     return {
       allowedValues: Object.values(RESIDENCE_TYPE),
-      transform: type => <T id={`Forms.residenceType.${type}`} />,
+      multiple: true,
+      intlId: 'residenceType',
     };
   }
 
@@ -26,6 +30,14 @@ const getSelectProps = (variable) => {
       allowedValues: Object.keys(CANTONS),
       multiple: true,
       intlId: 'canton',
+    };
+  }
+
+  if (variable === LENDER_RULES_VARIABLES.PROPERTY_TYPE) {
+    return {
+      allowedValues: Object.keys(PROPERTY_TYPE),
+      multiple: true,
+      intlId: 'propertyType',
     };
   }
 
@@ -46,13 +58,39 @@ const LenderRulesFormValue = (props: LenderRulesFormValueProps) => {
     [
       LENDER_RULES_VARIABLES.INCOME,
       LENDER_RULES_VARIABLES.WANTED_LOAN,
+      LENDER_RULES_VARIABLES.PROPERTY_VALUE,
+      LENDER_RULES_VARIABLES.BANK_FORTUNE,
+      LENDER_RULES_VARIABLES.REMAINING_BANK_FORTUNE,
     ].includes(variable)
   ) {
     return <MoneyInput {...props} />;
   }
 
+  if ([LENDER_RULES_VARIABLES.INSIDE_AREA].includes(variable)) {
+    return <NumberField {...props} />;
+  }
+
   if ([LENDER_RULES_VARIABLES.BORROW_RATIO].includes(variable)) {
     return <PercentField {...props} />;
+  }
+
+  if ([LENDER_RULES_VARIABLES.ZIP_CODE].includes(variable)) {
+    return (
+      <TextField
+        helperText="Indiquer plusieurs codes postaux séparés par un espace ou une virgule"
+        {...props}
+      />
+    );
+  }
+
+  if ([LENDER_RULES_VARIABLES.IS_NEW_PROPERTY].includes(variable)) {
+    return (
+      <RadioButtons
+        {...props}
+        onChange={(_, v) => props.onChange(v)}
+        options={[{ id: false, label: 'Faux' }, { id: true, label: 'Vrai' }]}
+      />
+    );
   }
 
   const selectProps = getSelectProps(variable);
@@ -73,4 +111,5 @@ const LenderRulesFormValue = (props: LenderRulesFormValueProps) => {
     />
   );
 };
+
 export default LenderRulesFormValue;

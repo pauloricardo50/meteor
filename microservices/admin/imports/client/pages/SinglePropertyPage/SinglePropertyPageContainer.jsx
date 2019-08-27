@@ -1,11 +1,11 @@
-import adminProperty from 'core/api/properties/queries/adminProperty';
+import { adminProperties } from 'core/api/properties/queries';
 import { withSmartQuery } from 'core/api';
 
 export default withSmartQuery({
-  query: adminProperty,
+  query: adminProperties,
   params: ({ match, propertyId }) => ({
-    propertyId: propertyId || match.params.propertyId,
+    _id: propertyId || match.params.propertyId,
   }),
-  queryOptions: { reactive: true, single: true },
+  queryOptions: { reactive: false, single: true },
   dataName: 'property',
 });

@@ -5,6 +5,7 @@ import MuiButton from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
 import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
 
@@ -53,8 +54,29 @@ const getVariant = ({ raised, outlined }) => {
   return undefined;
 };
 
+const getContent = ({ icon, fab, label, children, iconAfter }) => {
+  if (iconAfter) {
+    return (
+      <>
+        {label || children}
+        {icon && !fab && <span style={{ height: '100%', width: 8 }} />}
+        {icon}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {icon}
+      {icon && !fab && <span style={{ height: '100%', width: 8 }} />}
+      {label || children}
+    </>
+  );
+};
+
 const Button = (props) => {
   const childProps = omit(props, [
+    'iconAfter',
     'primary',
     'secondary',
     'label',
@@ -69,22 +91,26 @@ const Button = (props) => {
   const variant = props.variant || getVariant(props);
   const color = props.color || getColor(props);
 
+  const Comp = props.fab ? Fab : MuiButton;
+
   const button = (
-    <MuiButton
+    <Comp
       {...childProps}
       color={color}
       variant={variant}
       component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
-      className={cx(props.className, {
-        [props.classes.root]: color === 'error',
-        [props.classes.raised]: !!(color === 'error' && variant === 'raised'),
-      })}
+      className={cx(
+        {
+          [props.classes.root]: color === 'error',
+          [props.classes.raised]: !!(color === 'error' && variant === 'raised'),
+        },
+        props.className,
+      )}
+      role="button"
     >
-      {props.icon}
-      {props.icon && <span style={{ height: '100%', width: 8 }} />}
-      {props.label || props.children}
-    </MuiButton>
+      {getContent(props)}
+    </Comp>
   );
 
   if (props.tooltip) {
@@ -120,7 +146,12 @@ Button.defaultProps = {
 
 const withLoadingProp = mapProps(({ loading, ...props }) =>
   (loading
-    ? { ...props, disabled: true, icon: <Icon type="loop-spin" /> }
+    ? {
+      ...props,
+      disabled: true,
+      icon: <Icon type="loop-spin" />,
+      children: props.fab ? null : props.children,
+    }
     : props));
 
 export default compose(

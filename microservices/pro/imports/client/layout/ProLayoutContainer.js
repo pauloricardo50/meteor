@@ -2,8 +2,9 @@ import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import proUser from 'core/api/users/queries/proUser';
+import { proUser } from 'core/api/users/queries';
 import getBaseRedirect, { isLogin } from 'core/utils/redirection';
+import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 
 const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname);
@@ -30,4 +31,5 @@ export default compose(
   withProUser,
   withRouter,
   withRedirect,
+  withContactButtonProvider,
 );

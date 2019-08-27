@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { ROLES } from 'imports/core/api/constants';
+
+import { ROLES } from 'core/api/constants';
 
 const APP_URL = Meteor.settings.public.subdomains.app;
 const PRO_URL = Meteor.settings.public.subdomains.pro;
@@ -8,7 +9,6 @@ const PRO_URL = Meteor.settings.public.subdomains.pro;
 export const IMPERSONATE_ROUTE = '/impersonate';
 export const IMPERSONATE_USER_ID = 'userId';
 export const IMPERSONATE_TOKEN = 'authToken';
-export const IMPERSONATE_SESSION_KEY = 'impersonate';
 
 export function generateImpersonateLink({ _id: userId, roles }) {
   // eslint-disable-next-line no-underscore-dangle

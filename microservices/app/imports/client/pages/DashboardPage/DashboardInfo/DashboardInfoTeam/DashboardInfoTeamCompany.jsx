@@ -13,6 +13,7 @@ const removeDuplicates = (array, keyToFilter) => uniqBy(array, keyToFilter);
 
 const getTeam = (assignedEmployee, hasPromotion) => {
   let assignee = employeesByEmail['lydia@e-potek.ch'];
+
   if (assignedEmployee) {
     const { email } = assignedEmployee;
     const employee = employeesByEmail[email];
@@ -27,17 +28,7 @@ const getTeam = (assignedEmployee, hasPromotion) => {
     return [assignee];
   }
 
-  return [
-    assignee,
-    {
-      ...employeesByEmail['yannis@e-potek.ch'],
-      title: 'Spécialiste hypothécaire',
-    },
-    {
-      ...employeesByEmail['jeanluc@e-potek.ch'],
-      title: 'Spécialiste assurance',
-    },
-  ];
+  return [assignee, employeesByEmail['jeanluc@e-potek.ch']];
 };
 
 const DashboardInfoTeamCompany = ({ assignedEmployee, hasPromotion }) => {
@@ -48,7 +39,7 @@ const DashboardInfoTeamCompany = ({ assignedEmployee, hasPromotion }) => {
       {removeDuplicates(team, 'email').map(teamMember => (
         <DashboardInfoTeamMember
           {...teamMember}
-          renderTitle={teamMember.title}
+          renderTitle={teamMember.appTitle || teamMember.title}
           key={teamMember.email}
           src={teamMember.src || '/img/placeholder.png'}
         />

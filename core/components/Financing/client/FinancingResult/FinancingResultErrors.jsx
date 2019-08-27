@@ -6,19 +6,9 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import {
-  calculateMissingOwnFunds,
-  getPropertyValue,
-} from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
-import FinanceCalculator, { getOffer } from '../FinancingCalculator';
-
-import { ROUNDING_AMOUNT } from '../FinancingOwnFunds/RequiredOwnFunds';
-import {
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../api/constants';
+import FinanceCalculator from '../FinancingCalculator';
 
 type FinancingResultErrorsProps = {};
 
@@ -27,33 +17,29 @@ export const ERROR_TYPES = {
   WARNING: 'WARNING',
 };
 
-const getCashUsed = ({ structure: { ownFunds } }) =>
-  ownFunds
-    .filter(({ type, usageType }) =>
-      type !== OWN_FUNDS_TYPES.INSURANCE_2
-        && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
-    .reduce((sum, { value }) => sum + value, 0);
-
 const errors = [
   {
     id: 'noMortgageLoan',
-    func: ({ structure: { wantedLoan } }) => !wantedLoan || wantedLoan === 0,
+    func: ({ loan, structureId }) => {
+      const wantedLoan = Calculator.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedLoan',
+      });
+      return !wantedLoan || wantedLoan === 0;
+    },
     type: ERROR_TYPES.BREAKING,
   },
   {
     id: 'missingOwnFunds',
-    func: (data) => {
-      const missingFunds = calculateMissingOwnFunds(data);
-      return Number.isNaN(missingFunds) || missingFunds >= ROUNDING_AMOUNT;
-    },
+    func: ({ loan, structureId }) =>
+      Calculator.isMissingOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
   },
   {
     id: 'tooMuchOwnFunds',
-    func: (data) => {
-      const missingFunds = calculateMissingOwnFunds(data);
-      return Number.isNaN(missingFunds) || missingFunds <= -ROUNDING_AMOUNT;
-    },
+    func: ({ loan, structureId }) =>
+      Calculator.hasTooMuchOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
   },
   {
@@ -63,27 +49,28 @@ const errors = [
   },
   {
     id: 'invalidInterestRates',
-    func: data =>
+    func: ({ loan, structureId }) =>
       FinanceCalculator.checkInterestsAndTranches({
-        tranches: data.structure.loanTranches,
-        interestRates: data.structure.offerId
-          ? getOffer(data)
-          : data.loan.currentInterestRates,
+        tranches: Calculator.selectStructureKey({
+          loan,
+          structureId,
+          key: 'loanTranches',
+        }),
+        interestRates: Calculator.selectStructureKey({
+          loan,
+          structureId,
+          key: 'offerId',
+        })
+          ? Calculator.selectOffer({ loan, structureId })
+          : loan.currentInterestRates,
       }),
     type: ERROR_TYPES.BREAKING,
   },
   {
     id: 'missingCash',
     func: (data) => {
-      const { propertyWork, notaryFees } = data.structure;
-      const propertyValue = getPropertyValue(data);
-      return (
-        Calculator.getMinCash({
-          fees: notaryFees,
-          propertyValue,
-          propertyWork,
-        }) > getCashUsed(data)
-      );
+      const { loan, structureId } = data;
+      return !Calculator.hasEnoughCash({ loan, structureId });
     },
     type: ERROR_TYPES.WARNING,
   },
@@ -101,7 +88,7 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
 
   if (error.type === ERROR_TYPES.BREAKING) {
     return (
-      <p className="error result">
+      <p className="error error-box result">
         <T id={`FinancingResultErrors.${error.id}`} />
       </p>
     );
@@ -111,7 +98,7 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
       <div className="result">
         <FinancingResultChart {...props} className="" />
 
-        <p className="error">
+        <p className="error error-box">
           <T id={`FinancingResultErrors.${error.id}`} />
         </p>
       </div>

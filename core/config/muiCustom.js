@@ -7,28 +7,9 @@ const fontSize = () => (Meteor.microservice === 'www' ? 16 : 14);
 const createTheme = () =>
   createMuiTheme({
     overrides: {
-      MuiInput: {
-        underline: {
-          '&:before': {
-            transition: 'background-color 200ms ease, height 200ms ease',
-          },
-        },
-        input: {
-          // This logic shows the placeholder when the label is fixed
-          'label + $formControl &': {
-            '&::-webkit-input-placeholder': { opacity: 0.5 },
-            '&::-moz-placeholder': { opacity: 0.5 }, // Firefox 19+
-            '&:-ms-input-placeholder': { opacity: 0.5 }, // IE 11
-            '&::-ms-input-placeholder': { opacity: 0.5 }, // Edge
-          },
-        },
-      },
-      MuiSelect: {
-        select: {
-          display: 'flex',
-          alignItems: 'center',
-        },
-      },
+      MuiInput: {},
+      MuiSelect: {},
+      MuiListItemText: {},
       MuiToolbar: {
         root: {
           position: '',
@@ -36,7 +17,7 @@ const createTheme = () =>
       },
       MuiButton: {
         root: {
-          borderRadius: 8,
+          borderRadius: 4,
         },
         containedPrimary: {},
         contained: {
@@ -57,14 +38,26 @@ const createTheme = () =>
           border: 'none',
           marginBottom: 8,
           boxShadow: '0 2px 60px 5px rgba(0, 0, 0, 0.05)',
-          borderRadius: 16,
           '&:before': {
             backgroundColor: 'transparent',
           },
+        },
+        rounded: {
+          borderRadius: 8,
           '&:last-child': {
-            borderBottomLeftRadius: 16,
-            borderBottomRightRadius: 16,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
           },
+        },
+      },
+      MuiChip: {
+        colorSecondary: {
+          backgroundColor: 'red',
+        },
+      },
+      MuiListItemIcon: {
+        root: {
+          minWidth: 40,
         },
       },
     },
@@ -95,7 +88,6 @@ const createTheme = () =>
       },
     },
     typography: {
-      useNextVariants: true,
       fontFamily: 'Eina04-Regular, Helvetica',
       htmlFontSize: fontSize(),
       letterSpacing: '0.048em',
@@ -107,4 +99,5 @@ const createTheme = () =>
       },
     },
   });
+
 export default createTheme;

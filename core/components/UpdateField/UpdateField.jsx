@@ -7,22 +7,25 @@ import { updateDocument, schemas } from '../../api';
 
 type UpdateFieldProps = {};
 
+const makeOnSubmit = ({ collection, doc, fields, onSuccess }) => values =>
+  updateDocument
+    .run({ collection, docId: doc._id, object: pick(values, fields) })
+    .then(() => (onSuccess ? onSuccess(values) : null));
+
 const UpdateField = ({
-  fields,
-  doc,
-  onSuccess,
   collection,
+  doc,
+  fields,
+  onSuccess,
+  onSubmit = makeOnSubmit({ collection, doc, fields, onSuccess }),
+  onSubmitCallback = () => ({}),
   ...props
 }: UpdateFieldProps) => (
   <AutoForm
     autosave
     schema={schemas[collection].pick(...fields)}
     model={doc}
-    onSubmit={values =>
-      updateDocument
-        .run({ collection, docId: doc._id, object: pick(values, fields) })
-        .then(() => (onSuccess ? onSuccess(values) : null))
-    }
+    onSubmit={values => onSubmit(values).then(onSubmitCallback)}
     className="update-field"
     {...props}
   >

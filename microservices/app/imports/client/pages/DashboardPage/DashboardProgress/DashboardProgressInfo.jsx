@@ -5,7 +5,6 @@ import cx from 'classnames';
 
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import Loading from 'core/components/Loading';
 import {
   getDashboardTodosArray,
   promotionTodoList,
@@ -23,18 +22,22 @@ const getTodos = (loan) => {
     list = promotionTodoList;
   }
 
-  return getDashboardTodosArray(list)
+  const sortedTodos = getDashboardTodosArray(list)
     .filter(({ hide }) => !hide || !hide(loan))
     .map(todo => ({ ...todo, isDone: !!todo.isDone(loan) }))
     .sort((a, b) => b.isDone - a.isDone);
+
+  // Only display the 4 next todos that aren't done, to avoid overwhelming the user
+  const max4Todos = sortedTodos.slice(
+    0,
+    sortedTodos.findIndex(({ isDone }) => !isDone) + 4,
+  );
+
+  return max4Todos;
 };
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
   const todos = getTodos(loan);
-
-  if (!loan.documentsLoaded) {
-    return <Loading />;
-  }
 
   return (
     <div className="dashboard-progress-info">

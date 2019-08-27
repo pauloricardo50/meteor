@@ -11,11 +11,13 @@ import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
+import Calculator from '../../../../../utils/Calculator';
 
 const expectResult = (component, name, value) => {
   const val = component()
     .find(name)
     .last();
+  console.log('val:', val.debug());
 
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
@@ -36,7 +38,7 @@ describe('FinancingResult', () => {
   const component = () =>
     mount(
       <ScrollSync>
-        <Provider value={loan}>
+        <Provider value={{ loan, Calculator }}>
           <FinancingResult {...props} />
         </Provider>
       </ScrollSync>,
@@ -82,7 +84,7 @@ describe('FinancingResult', () => {
           {
             _id: 'house',
             value: 1000000,
-            monthlyExpenses: 100,
+            yearlyExpenses: 1200,
           },
         ],
         currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
@@ -184,7 +186,7 @@ describe('FinancingResult', () => {
           {
             _id: 'house',
             value: 1000000,
-            monthlyExpenses: 100,
+            yearlyExpenses: 1200,
           },
         ],
         offers: [
@@ -232,7 +234,9 @@ describe('FinancingResult', () => {
     });
 
     it('incomeRatio', () => {
-      expectResult(component, '.incomeRatio', 0.215);
+      // 400k income
+      // 12k maintenance, 54k interests, 20k amortization
+      expectResult(component, '.incomeRatio', 0.315);
     });
 
     it('remainingCash', () => {

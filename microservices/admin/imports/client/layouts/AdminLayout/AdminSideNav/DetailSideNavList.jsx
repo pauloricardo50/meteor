@@ -10,10 +10,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import {
   USERS_COLLECTION,
   LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
-  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import StatusLabel from 'imports/core/components/StatusLabel/StatusLabel';
@@ -22,18 +19,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  {
-    roles,
-    name,
-    structure,
-    loans,
-    address1,
-    value,
-    user,
-    status,
-    promotion,
-    organisations = [],
-  },
+  { anonymous, canton, city, name, roles, status, structure, user },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -46,48 +32,34 @@ const getListItemDetails = (
     const loanValueText = loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
 
     return {
-      primary: `${name} - ${user ? user.name : "Pas d'utilisateur"}`,
+      primary: `${name} - ${
+        anonymous ? 'Anonyme' : user ? user.name : "Pas d'utilisateur"
+      }`,
       secondary: (
         <span>
-          <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
+          <StatusLabel status={status} collection={LOANS_COLLECTION} />
+          {' '}
+-
+          {' '}
           {loanValueText}
         </span>
       ),
     };
   }
-  case BORROWERS_COLLECTION:
-    return {
-      primary: name || 'Emprunteur sans nom',
-      secondary:
-          loans && loans.map(({ name: loanName }) => loanName).join(', '),
-    };
-
   case PROMOTIONS_COLLECTION:
     return {
       primary: name || 'Promotion sans nom',
       secondary: (
-        <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
-      ),
-    };
-
-  case PROPERTIES_COLLECTION:
-    return {
-      primary: name || address1 || 'Bien sans adresse',
-      secondary: (
-        <span className="flex-col">
-          <span>{value && `CHF ${toMoney(value)}`}</span>
+        <div>
+          <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+            &nbsp;
           <span>
-            {loans && loans.map(({ name: loanName }) => loanName).join(', ')}
-            {promotion && promotion.name}
+            {city}
+              &nbsp;
+            {canton}
           </span>
-        </span>
+        </div>
       ),
-    };
-
-  case CONTACTS_COLLECTION:
-    return {
-      primary: name || 'Contact sans nom',
-      secondary: organisations.map(({ name: orgName }) => orgName).join(', '),
     };
   default:
     throw new Error('invalid collection name');
@@ -102,6 +74,7 @@ const DetailSideNavList = ({
   collectionName,
   isEnd,
   history: { push },
+  toggleDrawer,
 }) => {
   if (isLoading) {
     return <Loading />;
@@ -116,6 +89,7 @@ const DetailSideNavList = ({
           onClick={() => {
             hideDetailNav();
             push(`/${collectionName}/${doc._id}`);
+            toggleDrawer();
           }}
         >
           <ListItemText {...getListItemDetails(collectionName, doc)} />

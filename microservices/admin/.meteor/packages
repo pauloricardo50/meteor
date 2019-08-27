@@ -5,17 +5,16 @@ cultofcoders:redis-oplog
 disable-oplog@1.0.7
 
 meteor-base@1.4.0              # Packages every Meteor app needs to have
-mongo@1.6.0                   # The database Meteor supports right now
+mongo@1.6.2                   # The database Meteor supports right now
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.2.0                  # Meteor's client-side reactive programming library
 static-html                     # Allows rendering HTML for initial files (main.html)
 
-standard-minifier-css@1.5.2     # CSS minifier run for production mode
-standard-minifier-js@2.4.0    # JS minifier run for production mode
+standard-minifier-css@1.5.3     # CSS minifier run for production mode
 
 
 es5-shim@4.8.0              # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.12.3             # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.12.4             # Enable ECMAScript2015+ syntax in app code
 shell-server@0.4.0           # Server-side component of the `meteor shell` command
 
 
@@ -25,7 +24,7 @@ fourseven:scss
 msavin:mongol
 
 # Put this before factory
-aldeed:collection2-core
+aldeed:collection2@3.0.2
 
 # Testing
 dburles:factory
@@ -58,10 +57,9 @@ meteorhacks:inject-initial
 
 # Production
 force-ssl@1.1.0                     # Automatically route users to https
-dynamic-import@0.5.0
-dburles:google-maps
+dynamic-import@0.5.1
+epotek:google-maps
 # lmachens:kadira
-okgrow:analytics
 
 
 # Other
@@ -71,3 +69,4 @@ matb33:collection-hooks
 littledata:synced-cron
 cultofcoders:grapher-react
 lmachens:kadira
+zodern:standard-minifier-js@4.0.0-beta.2

@@ -1,20 +1,21 @@
 import unset from 'lodash/unset';
 import isObject from 'lodash/isObject';
 
-const deepOmit = (value, keys) => {
-  if (typeof value === 'undefined') {
+// Omit keys from an object recursively
+const deepOmit = (object, keys) => {
+  if (typeof object === 'undefined') {
     return {};
   }
 
-  if (Array.isArray(value)) {
-    for (let i = 0; i < value.length; i++) {
-      value[i] = deepOmit(value[i], keys);
+  if (Array.isArray(object)) {
+    for (let i = 0; i < object.length; i++) {
+      object[i] = deepOmit(object[i], keys);
     }
-    return value;
+    return object;
   }
 
-  if (!isObject(value)) {
-    return value;
+  if (!isObject(object)) {
+    return object;
   }
 
   if (typeof keys === 'string') {
@@ -22,20 +23,20 @@ const deepOmit = (value, keys) => {
   }
 
   if (!Array.isArray(keys)) {
-    return value;
+    return object;
   }
 
   for (let j = 0; j < keys.length; j++) {
-    unset(value, keys[j]);
+    unset(object, keys[j]);
   }
 
-  for (const key in value) {
-    if (value.hasOwnProperty(key)) {
-      value[key] = deepOmit(value[key], keys);
+  for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+      object[key] = deepOmit(object[key], keys);
     }
   }
 
-  return value;
+  return object;
 };
 
 export default deepOmit;

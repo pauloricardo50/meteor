@@ -4,60 +4,68 @@ import { expect } from 'chai';
 
 import sinon from 'sinon';
 import Calculator from 'core/utils/Calculator';
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
+import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
 import {
   dashboardTodosObject,
   checkArrayIsDone,
   getDashboardTodosArray,
   defaultTodoList,
 } from '../dashboardTodos';
-import { VALUATION_STATUS } from '../../../../../core/api/constants';
 
 describe('dashboardTodos', () => {
   beforeEach(() => {
-    sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
-    sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
+    sinon.stub(Calculator, 'personalInfoPercent').callsFake(() => 1);
+    sinon.stub(Calculator, 'propertyPercent').callsFake(() => 1);
     sinon.stub(Calculator, 'filesProgress').callsFake(() => ({ percent: 1 }));
   });
 
   afterEach(() => {
-    BorrowerCalculator.personalInfoPercent.restore();
-    PropertyCalculator.propertyPercent.restore();
+    Calculator.personalInfoPercent.restore();
+    Calculator.propertyPercent.restore();
     Calculator.filesProgress.restore();
   });
 
-  describe('createStructure', () => {
+  describe('completeFirstStructure', () => {
     it('shows when no structure exists', () => {
-      expect(dashboardTodosObject.createStructure.isDone({
+      expect(dashboardTodosObject.completeFirstStructure.isDone({
         structures: [],
       })).to.equal(false);
     });
 
-    it('hides when something is in structures array', () => {
-      expect(dashboardTodosObject.createStructure.isDone({
-        structures: [undefined],
+    it('is done when a complete structure exists', () => {
+      expect(dashboardTodosObject.completeFirstStructure.isDone({
+        structures: [
+          {
+            propertyValue: 1000000,
+            wantedLoan: 800000,
+            ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 250000 }],
+          },
+        ],
       })).to.equal(true);
-      expect(dashboardTodosObject.createStructure.isDone({
-        structures: [{}],
-      })).to.equal(true);
-      expect(dashboardTodosObject.createStructure.isDone({
-        structures: ['hello world'],
+      expect(dashboardTodosObject.completeFirstStructure.isDone({
+        structures: [
+          {},
+          {
+            propertyValue: 1000000,
+            wantedLoan: 800000,
+            ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 250000 }],
+          },
+        ],
       })).to.equal(true);
     });
   });
 
   describe('completeProperty', () => {
     it('shows when property is missing things', () => {
-      PropertyCalculator.propertyPercent.restore();
-      sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 0.9);
+      Calculator.propertyPercent.restore();
+      sinon.stub(Calculator, 'propertyPercent').callsFake(() => 0.9);
       expect(dashboardTodosObject.completeProperty.isDone({
         structure: { property: {} },
         borrowers: [{}],
       })).to.equal(false);
     });
 
-    it('hides when property is complete', () => {
+    it('is done when property is complete', () => {
       expect(dashboardTodosObject.completeProperty.isDone({
         structure: { property: { documents: {} } },
         borrowers: [{}],
@@ -65,36 +73,16 @@ describe('dashboardTodos', () => {
     });
   });
 
-  describe('doAnExpertise', () => {
-    it('shows when expertise status is NONE', () => {
-      expect(dashboardTodosObject.doAnExpertise.isDone({
-        structure: {
-          property: { valuation: { status: VALUATION_STATUS.NONE } },
-        },
-      })).to.equal(false);
-    });
-
-    it('hides when expertise is something else', () => {
-      expect(dashboardTodosObject.doAnExpertise.isDone({
-        structure: {
-          property: { valuation: { status: 'literally anything else' } },
-        },
-      })).to.equal(true);
-    });
-  });
-
   describe('completeBorrowers', () => {
     it('shows when borrowers are missing things', () => {
-      BorrowerCalculator.personalInfoPercent.restore();
-      sinon
-        .stub(BorrowerCalculator, 'personalInfoPercent')
-        .callsFake(() => 0.5);
+      Calculator.personalInfoPercent.restore();
+      sinon.stub(Calculator, 'personalInfoPercent').callsFake(() => 0.5);
       expect(dashboardTodosObject.completeBorrowers.isDone({
         borrowers: [{}],
       })).to.equal(false);
     });
 
-    it('hides when property is complete', () => {
+    it('is done when property is complete', () => {
       expect(dashboardTodosObject.completeBorrowers.isDone({
         borrowers: [{}],
       })).to.equal(true);
@@ -102,19 +90,6 @@ describe('dashboardTodos', () => {
   });
 
   describe('uploadDocuments', () => {
-    it('hides when documents are not there yet', () => {
-      expect(dashboardTodosObject.uploadDocuments.hide({})).to.equal(true);
-      expect(dashboardTodosObject.uploadDocuments.hide({
-        documents: undefined,
-      })).to.equal(true);
-    });
-
-    it('does not hide when documents is an empty object', () => {
-      expect(dashboardTodosObject.uploadDocuments.hide({
-        documents: {},
-      })).to.equal(false);
-    });
-
     it('should be done when all files are uploaded', () => {
       expect(dashboardTodosObject.uploadDocuments.isDone({})).to.equal(true);
     });
@@ -134,7 +109,7 @@ describe('dashboardTodos', () => {
       })).to.equal(false);
     });
 
-    it('hides when an offer is chosen', () => {
+    it('is done when an offer is chosen', () => {
       expect(dashboardTodosObject.chooseOffer.isDone({
         offers: [{}],
         structure: { offer: {} },
@@ -156,7 +131,8 @@ describe('dashboardTodos', () => {
       const callEpotek = defaultTodos.find(({ id }) => id === 'callEpotek');
 
       expect(callEpotek.hide({
-        structure: { property: { valuation: {} }, offer: {} },
+        maxPropertyValue: { date: new Date() },
+        structure: { property: {}, offer: {} },
         structures: [{}, {}],
         borrowers: [{ salary: 2000, bankFortune: 3000 }],
         properties: [{}],
@@ -170,7 +146,7 @@ describe('dashboardTodos', () => {
       Calculator.filesProgress.restore();
       sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
       expect(callEpotek.hide({
-        structure: { property: { valuation: {} }, offer: {} },
+        structure: { property: {}, offer: {} },
         structures: [{}, {}],
         borrowers: [{}],
         offers: [{}],

@@ -1,5 +1,5 @@
 import { compose, withState, withProps } from 'recompose';
-import { submitContactForm } from 'core/api/methods';
+import { submitContactForm } from 'core/api/methods/methodDefinitions';
 
 export default compose(
   withState('submitSucceeded', 'setSubmitSucceeded', false),

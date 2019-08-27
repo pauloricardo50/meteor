@@ -11,7 +11,7 @@ import LoanService from '../../../loans/server/LoanService';
 
 const TEST_CHANNEL = 'test';
 
-describe('SlackService - server', function () {
+describe('SlackService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -42,8 +42,8 @@ describe('SlackService - server', function () {
         lastName: 'Doe',
         assignedEmployeeId: yannis._id,
       })._id;
-      const loanId1 = Factory.create('loan', { userId })._id;
-      const loanId2 = LoanService.adminLoanInsert({ userId });
+      const loanId1 = Factory.create('loan', { userId, name: '19-0001' })._id;
+      const loanId2 = LoanService.fullLoanInsert({ userId });
       const user = UserService.get(userId);
 
       return SlackService.notifyOfUpload({
@@ -52,8 +52,8 @@ describe('SlackService - server', function () {
         docLabel: 'Taxes',
         loanId: loanId2,
       }).then(({ attachments, channel }) => {
-        expect(attachments[0].title).to.equal('John Doe a uploadé `file.pdf` dans Taxes pour 19-0001.');
-        expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `6.67%`, Bien immo: `27.78%`, Documents: `0.00%`');
+        expect(attachments[0].title).to.equal('Upload: file.pdf dans Taxes pour 19-0002.');
+        expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `0.00%`, Documents: `0.00%`, Bien immo: `0.00%`');
         expect(channel).to.equal('#clients_yannis');
       });
     });
@@ -70,7 +70,32 @@ describe('SlackService - server', function () {
         fileName: 'file.pdf',
         docLabel: 'Taxes',
       }).then(({ attachments }) => {
-        expect(attachments[0].title).to.equal('John Doe a uploadé `file.pdf` dans Taxes.');
+        expect(attachments[0].title).to.equal('Upload: file.pdf dans Taxes.');
+      });
+    });
+
+    it('should send a promotion specific notification', () => {
+      const userId = Factory.create('user', {
+        firstName: 'John',
+        lastName: 'Doe',
+      })._id;
+      const promotionId = Factory.create('promotion', { name: 'A Promotion' })
+        ._id;
+      const loanId = LoanService.fullLoanInsert({ userId });
+      LoanService.addLink({
+        id: loanId,
+        linkName: 'promotions',
+        linkId: promotionId,
+      });
+      const user = UserService.get(userId);
+
+      return SlackService.notifyOfUpload({
+        currentUser: user,
+        fileName: 'file.pdf',
+        docLabel: 'Taxes',
+        loanId,
+      }).then(({ attachments }) => {
+        expect(attachments[0].text).to.equal('_Promotion: `A Promotion`_ *Progrès:* Emprunteurs `0.00%`, Documents: `0.00%`');
       });
     });
   });

@@ -3,39 +3,24 @@ import isEqual from 'lodash/isEqual';
 
 import T from 'core/components/Translation';
 import {
-  BORROWERS_COLLECTION,
   LOANS_COLLECTION,
   USERS_COLLECTION,
-  PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
-  CONTACTS_COLLECTION,
 } from 'core/api/constants';
+import { Meteor } from 'meteor/meteor';
 
-const getAssignedToMeFilter = ({
-  currentUser: {
-    emails: [{ address: currentUserEmail }],
-  },
-}) => ({
+const assignedToMeFilter = {
   label: <T id="DetailSideNavFilters.showAssignedToMe" />,
-  value: {
-    $or: [
-      {
-        'user.assignedEmployee.emails': {
-          $elemMatch: { address: currentUserEmail },
-        },
-      },
+  value: { assignedEmployeeId: Meteor.userId() },
+};
 
-      {
-        'assignedEmployee.emails': {
-          $elemMatch: { address: currentUserEmail },
-        },
-      },
-    ],
-  },
-});
+const relevantLoansOnlyFilter = {
+  label: <T id="DetailSideNavFilters.relevantOnly" />,
+  value: { relevantOnly: true },
+};
 
-export const appendFilters = filterArray =>
-  (filterArray ? { $and: filterArray } : {});
+export const appendFilters = (filterArray = []) =>
+  filterArray.reduce((filters, filter) => ({ ...filters, ...filter }), {});
 
 const filterIncludedInFilters = (filter, filterArray) =>
   filterArray.find(filterValue => isEqual(filterValue, filter));
@@ -47,25 +32,23 @@ export const filterFilterOptionsByValues = (filterOptions, filterArray = []) =>
 export const getFilterOptionFromValue = (options, filterValue) =>
   options.find(({ value }) => isEqual(value, filterValue));
 
+const loanFilters = [assignedToMeFilter, relevantLoansOnlyFilter];
+const userFilters = [assignedToMeFilter];
+
 const getFilterOptions = (props) => {
   const { collectionName } = props;
 
-  const loanFilters = [getAssignedToMeFilter(props)];
-
-  const borrowerFilters = [getAssignedToMeFilter(props)];
-
-  const userFilters = [getAssignedToMeFilter(props)];
-
-  const propertyFilters = [getAssignedToMeFilter(props)];
-
   return {
     [LOANS_COLLECTION]: loanFilters,
-    [BORROWERS_COLLECTION]: borrowerFilters,
     [USERS_COLLECTION]: userFilters,
-    [PROPERTIES_COLLECTION]: propertyFilters,
     [PROMOTIONS_COLLECTION]: [],
-    [CONTACTS_COLLECTION]: [],
   }[collectionName];
+};
+
+export const defaultFilterOptions = {
+  [LOANS_COLLECTION]: loanFilters.map(({ value }) => value),
+  [USERS_COLLECTION]: userFilters.map(({ value }) => value),
+  [PROMOTIONS_COLLECTION]: [],
 };
 
 export default getFilterOptions;

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
+import { currentInterestRates } from 'core/api/interestRates/queries';
 import {
   getLoanValue,
   getSimpleYearlyInterests,
@@ -55,7 +55,6 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   withSmartQuery({
     query: currentInterestRates,
-    queryOptions: { reactive: true },
     dataName: 'currentInterestRates',
     smallLoader: true,
   }),

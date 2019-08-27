@@ -1,0 +1,36 @@
+.file-viewer {
+  position: relative;
+  flex-shrink: 0;
+
+  height: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+
+  &-wrapper {
+    position: fixed;
+    right: 0;
+    top: 64px;
+    height: calc(100% - 64px);
+  }
+
+  canvas {
+    width: 100%;
+  }
+
+  &-closer {
+    position: absolute;
+    z-index: 1;
+    top: 16px;
+    right: 16px;
+  }
+
+  &-resizer {
+    position: absolute;
+    left: -24px;
+    top: 50%;
+    z-index: 1;
+    background-color: $primary;
+    color: white;
+    transform: rotate(90deg);
+  }
+}

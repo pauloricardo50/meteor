@@ -38,7 +38,9 @@ const getPromotionLotValueRecapArray = ({
     {
       label: (
         <span>
-          {promotionLot.name} - <T id="Forms.landValue" />
+          {promotionLot.name}
+          {' - '}
+          <T id="Forms.landValue" />
         </span>
       ),
       value: toMoney(landValue),
@@ -47,7 +49,9 @@ const getPromotionLotValueRecapArray = ({
     {
       label: (
         <span>
-          {promotionLot.name} - <T id="Forms.constructionValue" />
+          {promotionLot.name}
+          {' - '}
+          <T id="Forms.constructionValue" />
         </span>
       ),
       value: toMoney(constructionValue),
@@ -56,7 +60,9 @@ const getPromotionLotValueRecapArray = ({
     {
       label: (
         <span>
-          {promotionLot.name} - <T id="Forms.additionalMargin" />
+          {promotionLot.name}
+          {' - '}
+          <T id="Forms.additionalMargin" />
         </span>
       ),
       value: toMoney(additionalMargin),
@@ -65,7 +71,9 @@ const getPromotionLotValueRecapArray = ({
     ...lots.map(({ _id, name, type, value }) => ({
       label: (
         <span>
-          <T id={`Forms.type.${type}`} /> {name}
+          <T id={`Forms.type.${type}`} />
+          {' '}
+          {name}
         </span>
       ),
       key: _id,
@@ -87,7 +95,7 @@ const getPromotionLotRecapArray = (promotionLot) => {
     bathroomCount,
     gardenArea,
     insideArea,
-    monthlyExpenses,
+    yearlyExpenses,
     roomCount,
     terraceArea,
   } = property;
@@ -124,13 +132,15 @@ const getPromotionLotRecapArray = (promotionLot) => {
       hide: !bathroomCount,
     },
     {
-      label: 'Forms.monthlyExpenses',
+      label: 'Forms.yearlyExpenses',
       value: (
         <span>
-          {toMoney(monthlyExpenses)} <small>/mois</small>
+          {toMoney(yearlyExpenses)}
+          {' '}
+          <small>/année</small>
         </span>
       ),
-      hide: !monthlyExpenses,
+      hide: !yearlyExpenses,
     },
     ...getPromotionLotValueRecapArray({ lots, property, promotionLot }),
   ];

@@ -2,7 +2,6 @@ import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
 
-import formatMessage from 'core/utils/intl';
 import colors from 'core/config/colors';
 
 const getConfig = () => ({
@@ -84,13 +83,13 @@ const getFormattedRates = ({ rates, allMonths }) =>
     return { date, min, max, average };
   });
 
-const getLines = ({ rates }) => {
+const getLines = ({ rates, formatMessage }) => {
   const allMonths = getAllMonths({ rates });
   const formattedRates = getFormattedRates({ rates, allMonths });
   return (
     rates.length && [
       {
-        name: formatMessage('Irs10y.name.average'),
+        name: formatMessage({ id: 'Irs10y.name.average' }),
         data: getData({ formattedRates, type: 'average' }),
         zIndex: 1,
         color: colors.mui.darkPrimary,
@@ -101,7 +100,7 @@ const getLines = ({ rates }) => {
         },
       },
       {
-        name: formatMessage('Irs10y.name.range'),
+        name: formatMessage({ id: 'Irs10y.name.range' }),
         data: getData({ formattedRates, type: 'range' }),
         type: 'arearange',
         zIndex: 0,
@@ -116,8 +115,8 @@ const getLines = ({ rates }) => {
 
 export default compose(
   injectIntl,
-  withProps(({ irs10y = [] }) => {
-    const lines = getLines({ rates: irs10y });
+  withProps(({ irs10y = [], intl: { formatMessage } }) => {
+    const lines = getLines({ rates: irs10y, formatMessage });
     return {
       title: "Moyenne mensuelle de l'IRS 10 ans",
       lines,

@@ -31,6 +31,7 @@ class DevPage extends Component {
       addOffers,
       isRefinancing,
       numberOfRates,
+      withInvitedBy,
     } = this.state;
     const {
       currentUser,
@@ -38,8 +39,10 @@ class DevPage extends Component {
       addLoanWithSomeData,
       purgeAndGenerateDatabase,
       migrateToLatest,
+      addCompleteLoan,
+      addAnonymousLoan,
     } = this.props;
-    const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
+    const showDevStuff = !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
     if (showDevStuff) {
       return (
@@ -145,7 +148,9 @@ class DevPage extends Component {
             raised
             secondary
             className="mr20"
-            onClick={() => addEmptyLoan(twoBorrowers, addOffers, isRefinancing)}
+            onClick={() =>
+              addEmptyLoan({ twoBorrowers, addOffers, isRefinancing })
+            }
           >
             Empty loan
           </Button>
@@ -154,22 +159,30 @@ class DevPage extends Component {
             secondary
             className="mr20"
             onClick={() =>
-              addLoanWithSomeData(twoBorrowers, addOffers, isRefinancing)
+              addLoanWithSomeData({ twoBorrowers, addOffers, isRefinancing })
             }
           >
             Loan with some data
           </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              addCompleteLoan({ twoBorrowers, addOffers, isRefinancing })
+            }
+          >
+            Loan - complete
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() => addAnonymousLoan()}
+          >
+            Loan - anonymous
+          </Button>
           <hr className="mbt20" />
-          <Tooltip title="Insert task related to a random borrower">
-            <Button
-              raised
-              secondary
-              className="mr20"
-              onClick={() => Meteor.call('insertBorrowerRelatedTask')}
-            >
-              Borrower Task
-            </Button>
-          </Tooltip>
           <Tooltip title="Insert task related to a random loan">
             <Button
               raised
@@ -180,23 +193,22 @@ class DevPage extends Component {
               Loan Task
             </Button>
           </Tooltip>
-          <Tooltip title="Insert task related to a random property">
-            <Button
-              raised
-              secondary
-              className="mr20"
-              onClick={() => Meteor.call('insertPropertyRelatedTask')}
-            >
-              Property Task
-            </Button>
-          </Tooltip>
           <hr className="mbt20" />
-          Nb. d'utilisateurs
+          Nb. of users
           <input
             type="number"
             value={users}
             onChange={e => this.makeHandleChange('users')(e.target.value)}
           />
+          <input
+            type="checkbox"
+            name="withInvitedBy"
+            value={withInvitedBy}
+            onChange={() =>
+              this.makeHandleChange('withInvitedBy')(!withInvitedBy)
+            }
+          />
+          With invitedBy
           <Button
             raised
             secondary
@@ -204,6 +216,7 @@ class DevPage extends Component {
             onClick={() =>
               Meteor.call('createDemoPromotion', {
                 users,
+                withInvitedBy,
               })
             }
           >
@@ -218,6 +231,7 @@ class DevPage extends Component {
                 users,
                 addCurrentUser: true,
                 withPromotionOptions: true,
+                withInvitedBy,
               })
             }
           >
@@ -258,6 +272,15 @@ class DevPage extends Component {
             Créer des taux d'intérêt
           </Button>
           <hr className="mbt20" />
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() => Meteor.call('addUserToOrg')}
+          >
+            Add me in org
+          </Button>
+          <hr className="mbt20" />
           <ConfirmMethod
             method={cb => migrateToLatest().then(cb)}
             keyword="MIGRATE"
@@ -266,6 +289,14 @@ class DevPage extends Component {
           />
           <hr className="mbt20" />
           <ErrorThrower />
+          <hr className="mbt20" />
+          <Button
+            raised
+            primary
+            onClick={() => Meteor.call('generateAllNotifications')}
+          >
+            Générer notifications
+          </Button>
         </section>
       );
     }

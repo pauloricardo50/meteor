@@ -14,13 +14,17 @@ const pages = {
 
   Careers: route('/careers', { shouldRender: '.careers-page' }),
 
-  Conditions: route('/conditions', { shouldRender: '.conditions-page' }),
+  Interests: route('/interests', { shouldRender: '.interests-page' }),
 
-  'Check Mailbox': route('/checkYourMailbox/test@e-potek.ch', {
-    shouldRender: '.check-mailbox-page',
+  Blog: route('/blog', { shouldRender: '.blog-page' }),
+
+  BlogPost: route('/blog/notre-vision-de-le-potek', {
+    shouldRender: '.blog-post-page-content',
   }),
 
-  Interests: route('/interests', { shouldRender: '.interests-page' }),
+  'Not Found BlogPost': route('/blog/unknown', {
+    shouldRender: '#not-found-page',
+  }),
 
   'Not Found': route('/an-inexistent-page', {
     shouldRender: '#not-found-page',

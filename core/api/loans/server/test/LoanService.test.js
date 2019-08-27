@@ -1,19 +1,38 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker/locale/fr';
+import moment from 'moment';
+import sinon from 'sinon';
 
-import '../../../factories';
+import { loanSetStatus } from 'core/api/methods/index';
+import { withMeteorUserId } from 'core/api/RESTAPI/server/helpers';
+import Analytics from '../../../analytics/server/Analytics';
+import { checkEmails } from '../../../../utils/testHelpers';
+import generator from '../../../factories';
 import LoanService from '../LoanService';
-import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
+import {
+  OWN_FUNDS_TYPES,
+  STEPS,
+  EMAIL_IDS,
+  ORGANISATION_TYPES,
+  ORGANISATION_FEATURES,
+  LOAN_STATUS,
+  PROPERTY_CATEGORY,
+} from '../../../constants';
+import UserService from '../../../users/server/UserService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
+import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
+import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import { LOAN_CATEGORIES } from '../../loanConstants';
 
-describe('LoanService', () => {
+describe('LoanService', function () {
+  this.timeout(10000);
   let loanId;
   let loan;
 
@@ -63,12 +82,8 @@ describe('LoanService', () => {
     });
 
     it('does not remove if a borrower is linked to multiple loans', () => {
-      const borrowerId = Factory.create('borrower')._id;
-      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
-      Factory.create('loan', { borrowerIds: [borrowerId] });
-
-      expect(LoanService.find({}).count()).to.equal(2);
-      expect(BorrowerService.find({}).count()).to.equal(1);
+      const { ids } = generator({ borrowers: { loans: [{}, {}] } });
+      loanId = ids.loans[0];
 
       LoanService.remove({ loanId });
 
@@ -77,17 +92,8 @@ describe('LoanService', () => {
     });
 
     it('autoremoves lenders', () => {
-      loanId = Factory.create('loan')._id;
-      const lender1 = Factory.create('lender', { loanLink: { _id: 'asdf' } })
-        ._id;
-      const lender2 = Factory.create('lender', { loanLink: { _id: loanId } })
-        ._id;
-      const lender3 = Factory.create('lender', { loanLink: { _id: loanId } })
-        ._id;
-
-      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender1 });
-      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender2 });
-      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender3 });
+      const { ids } = generator({ loans: { lenders: [{}, {}, {}] } });
+      loanId = ids.loans[0];
 
       expect(LenderService.countAll()).to.equal(3);
 
@@ -97,37 +103,74 @@ describe('LoanService', () => {
     });
   });
 
-  describe('adminLoanInsert', () => {
+  describe('fullLoanInsert', () => {
     let userId;
 
     beforeEach(() => {
       userId = 'testId';
     });
 
-    it('inserts a property, borrower and loan', () => {
+    it('inserts a loan', () => {
       expect(LoanService.countAll()).to.equal(0, 'loans 0');
-      expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
-      expect(PropertyService.countAll()).to.equal(0, 'properties 0');
 
-      LoanService.adminLoanInsert({ userId });
+      LoanService.fullLoanInsert({ userId });
 
       expect(LoanService.countAll()).to.equal(1, 'loans 1');
-      expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
-      expect(PropertyService.countAll()).to.equal(1, 'properties 1');
     });
 
-    it('adds the same userId on all 3 documents', () => {
-      LoanService.adminLoanInsert({ userId });
+    it('adds userId', () => {
+      LoanService.fullLoanInsert({ userId });
 
       expect(LoanService.findOne({}).userId).to.equal(userId, 'loans userId');
-      expect(BorrowerService.findOne({}).userId).to.equal(
-        userId,
-        'borrowers userId',
-      );
-      expect(PropertyService.findOne({}).userId).to.equal(
-        userId,
-        'properties userId',
-      );
+    });
+  });
+
+  describe('addPropertyToLoan', () => {
+    it('adds the propertyId on all structures', () => {
+      generator({
+        loans: { _id: 'loanId', structures: [{ id: '1' }, { id: '2' }] },
+        properties: { _id: 'propertyId' },
+      });
+
+      LoanService.addPropertyToLoan({
+        loanId: 'loanId',
+        propertyId: 'propertyId',
+      });
+
+      loan = LoanService.get('loanId');
+
+      loan.structures.forEach(({ propertyId }) => {
+        expect(propertyId).to.equal('propertyId');
+      });
+    });
+
+    it('only adds the property if it is not defined', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          structures: [
+            { id: '1', propertyId: 'a' },
+            { id: '2', promotionOptionId: 'b' },
+            { id: '3' },
+          ],
+        },
+        properties: { _id: 'propertyId' },
+      });
+
+      LoanService.addPropertyToLoan({
+        loanId: 'loanId',
+        propertyId: 'propertyId',
+      });
+
+      loan = LoanService.get('loanId');
+
+      loan.structures.forEach(({ propertyId, promotionOptionId }, i) => {
+        if (i === 2) {
+          expect(propertyId).to.equal('propertyId');
+        } else {
+          expect(!!(propertyId || promotionOptionId)).to.equal(true);
+        }
+      });
     });
   });
 
@@ -619,33 +662,98 @@ describe('LoanService', () => {
     });
 
     it('throws if a borrower is assigned to multiple loans', () => {
-      const borrowerId1 = Factory.create('borrower')._id;
-      const borrowerId2 = Factory.create('borrower')._id;
-
-      loanId = Factory.create('loan', {
-        borrowerIds: [borrowerId1],
-      })._id;
-      Factory.create('loan', {
-        borrowerIds: [borrowerId1, borrowerId2],
+      generator({
+        loans: [
+          { _id: 'loanId', borrowers: { _id: 'borr1' } },
+          { borrowers: [{ _id: 'borr1' }, {}] },
+        ],
       });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('emprunteur');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('emprunteur');
     });
 
     it('throws if a property is assigned to multiple loans', () => {
-      const propertyId1 = Factory.create('property')._id;
-      const propertyId2 = Factory.create('property')._id;
-
-      loanId = Factory.create('loan', {
-        propertyIds: [propertyId1],
-      })._id;
-      Factory.create('loan', {
-        propertyIds: [propertyId2, propertyId1],
+      generator({
+        loans: [
+          { _id: 'loanId', properties: { _id: 'propId1' } },
+          { properties: [{ _id: 'propId1' }, {}] },
+        ],
       });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('bien immobilier');
+    });
+
+    it('does not throw for a PRO property, and assigns only USER properties', () => {
+      generator({
+        loans: [
+          { properties: { _id: 'propId1', category: PROPERTY_CATEGORY.PRO } },
+          {
+            _id: 'loanId',
+            properties: [{ _id: 'propId2' }, { _id: 'propId1' }],
+          },
+        ],
+      });
+
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.not.throw();
+      expect(PropertyService.get('propId1').userId).to.equal(undefined);
+      expect(PropertyService.get('propId2').userId).to.equal('dude');
+    });
+
+    it('refers a user if this is his first loan', () => {
+      generator({
+        users: [
+          { _id: 'userId' },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'proId' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.include({
+        referredByUserLink: 'proId',
+        referredByOrganisationLink: 'orgId',
+      });
+    });
+
+    it('does not change referredBy if it is already set', () => {
+      generator({
+        users: [
+          { _id: 'userId', referredByUser: { _id: 'proId1' } },
+          {
+            _id: 'proId2',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'proId2' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.equal({
+        _id: 'userId',
+        referredByUserLink: 'proId1',
+      });
     });
   });
 
@@ -657,17 +765,17 @@ describe('LoanService', () => {
     }) => {
       let offerIds = [];
 
-      [...Array(numberOfLenders)].forEach(() => {
+      [...Array(numberOfLenders)].forEach((_, index) => {
         // Create contact
         const address = faker.internet.email();
         addresses = [...addresses, address];
-        const contactId = Factory.create('contact', {
-          emails: [{ address }],
-        })._id;
+        const contactId = Factory.create('contact', { emails: [{ address }] })
+          ._id;
 
         // Create org
         const organisationId = Factory.create('organisation', {
           contactIds: [{ _id: contactId }],
+          name: `org ${index}`,
         })._id;
 
         // Create lender
@@ -691,22 +799,31 @@ describe('LoanService', () => {
       return offerIds;
     };
 
-    const checkEmails = expected =>
-      new Promise((resolve, reject) => {
-        Meteor.call('getAllTestEmails', { expected }, (err, emails) =>
-          (err ? reject(err) : resolve(emails)));
-      });
-
     beforeEach(() => {
       resetDatabase();
-      const adminId = Factory.create('adminEpotek')._id;
-      const userId = Factory.create('user', { assignedEmployeeId: adminId })
-        ._id;
-      loanId = LoanService.adminLoanInsert({ userId });
-      PropertyService.collection.update(
-        {},
-        { $set: { address1: 'rue du lac 31', zipCode: 1400, city: 'Yverdon' } },
-      );
+      loanId = 'someLoan';
+      generator({
+        users: [
+          { _id: 'adminId', _factory: 'adminEpotek' },
+          {
+            _id: 'userId',
+            assignedEmployee: { _id: 'adminId' },
+            loans: {
+              _id: loanId,
+              borrowers: {},
+              properties: {
+                _id: 'propertyId',
+                address1: 'rue du lac 31',
+                zipCode: 1400,
+                city: 'Yverdon',
+              },
+              structures: [{ id: 'struct', propertyId: 'propertyId' }],
+              selectedStructure: 'struct',
+            },
+          },
+        ],
+      });
+
       addresses = [];
     });
 
@@ -759,7 +876,7 @@ describe('LoanService', () => {
           expect(emails.length).to.equal(0);
         }));
 
-    it('does no send any feedback if there is no offer', () => {
+    it('does not send any feedback if there is no offer', () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 0;
 
@@ -776,6 +893,391 @@ describe('LoanService', () => {
         .then((emails) => {
           expect(emails.length).to.equal(0);
         });
+    });
+  });
+
+  describe('setStep', () => {
+    it('sets the step', () => {
+      generator({
+        loans: { _id: 'id', step: STEPS.SOLVENCY },
+      });
+
+      LoanService.setStep({ loanId: 'id', nextStep: STEPS.REQUEST });
+
+      loan = LoanService.get('id');
+
+      expect(loan.step).to.equal(STEPS.REQUEST);
+    });
+
+    it('sends a notification email if the step goes from SOLVENCY to OFFERS', () => {
+      generator({
+        users: {
+          _id: 'admin',
+          _factory: 'admin',
+          firstName: 'Admin',
+          lastName: 'User',
+        },
+        loans: {
+          _id: 'myLoan',
+          step: STEPS.SOLVENCY,
+          user: {
+            emails: [{ address: 'john@doe.com', verified: false }],
+            assignedEmployeeId: 'admin',
+          },
+        },
+      });
+
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+
+      loan = LoanService.get('myLoan');
+
+      expect(loan.step).to.equal(STEPS.OFFERS);
+
+      return checkEmails(1).then((emails) => {
+        const {
+          emailId,
+          address,
+          response: { status },
+          template: {
+            message: { from_email, subject, global_merge_vars, from_name },
+          },
+        } = emails[0];
+
+        expect(status).to.equal('sent');
+        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+        expect(address).to.equal('john@doe.com');
+        expect(from_email).to.equal('info@e-potek.ch');
+        expect(from_name).to.equal('e-Potek');
+        expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
+        expect(global_merge_vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
+        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Admin User');
+      });
+    });
+
+    it('sends a notification email if the step goes from REQUEST to OFFERS', () => {
+      generator({
+        users: { _id: 'admin' },
+        loans: {
+          _id: 'myLoan',
+          step: STEPS.REQUEST,
+          user: {
+            emails: [{ address: 'john@doe.com', verified: false }],
+            assignedEmployeeId: 'admin',
+          },
+        },
+      });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+
+      return checkEmails(1).then((emails) => {
+        const {
+          emailId,
+          response: { status },
+        } = emails[0];
+
+        expect(status).to.equal('sent');
+        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+      });
+    });
+
+    it('does not send a notification email if the step goes from REQUEST to OFFERS', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          step: STEPS.CLOSING,
+          user: { emails: [{ address: 'john@doe.com', verified: false }] },
+        },
+      });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+
+      return checkEmails(1, { timeout: 2000, noExpect: true }).then((emails) => {
+        expect(emails.length).to.equal(0);
+      });
+    });
+  });
+
+  describe('setStatus', () => {
+    it('returns the old and new status for analytics', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.CLOSING },
+      });
+
+      const result = LoanService.setStatus({
+        loanId: 'myLoan',
+        status: LOAN_STATUS.FINALIZED,
+      });
+
+      expect(result).to.deep.equal({
+        prevStatus: LOAN_STATUS.CLOSING,
+        nextStatus: LOAN_STATUS.FINALIZED,
+      });
+    });
+
+    it('the method calls analytics', () => {
+      const spy = sinon.spy();
+      sinon.stub(Analytics.prototype, 'track').callsFake(spy);
+      generator({
+        loans: {
+          _id: 'myLoan',
+          status: LOAN_STATUS.LEAD,
+          name: '20-0001',
+          user: {
+            _id: 'customerId',
+            firstName: 'Customer',
+            lastName: '1',
+            assignedEmployee: {
+              _id: 'adminId1',
+              _factory: 'admin',
+              firstName: 'Admin',
+              lastName: '1',
+            },
+            referredByOrganisation: { name: 'Org 1' },
+            referredByUser: { firstName: 'Pro', lastName: '1' },
+          },
+        },
+        users: [
+          {
+            _id: 'adminId2',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: '2',
+          },
+        ],
+      });
+
+      return withMeteorUserId({ userId: 'adminId2' }, () =>
+        loanSetStatus.run({ loanId: 'myLoan', status: LOAN_STATUS.ONGOING }))
+        .then((result) => {
+          expect(result).to.deep.equal({
+            prevStatus: LOAN_STATUS.LEAD,
+            nextStatus: LOAN_STATUS.ONGOING,
+          });
+
+          expect(spy.calledOnce).to.equal(true);
+          expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
+          expect(spy.args[0][1]).to.deep.equal({
+            adminId: 'adminId2',
+            adminName: 'Admin 2',
+            assigneeId: 'adminId1',
+            assigneeName: 'Admin 1',
+            customerId: 'customerId',
+            customerName: 'Customer 1',
+            loanCategory: LOAN_CATEGORIES.STANDARD,
+            loanId: 'myLoan',
+            loanName: '20-0001',
+            loanPurchaseType: PURCHASE_TYPE.ACQUISITION,
+            loanResidenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            loanStep: STEPS.SOLVENCY,
+            nextStatus: LOAN_STATUS.ONGOING,
+            prevStatus: LOAN_STATUS.LEAD,
+            referredByOrganisation: 'Org 1',
+            referredByUser: 'Pro 1',
+          });
+        })
+        .finally(() => {
+          Analytics.prototype.track.restore();
+        });
+    });
+  });
+
+  describe('getLoanCalculator', () => {
+    it('returns an uninitialized calculator by default', () => {
+      generator({ loans: { _id: 'myLoan' } });
+
+      const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
+
+      expect(calc.organisationName).to.equal(undefined);
+    });
+
+    it('initializes a calculator if an offer has been chosen', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          lenders: {
+            organisation: { name: 'Org1', lenderRules: {} },
+            offers: { _id: 'offerId' },
+          },
+          structures: [{ offerId: 'offerId', id: 'struct' }],
+          selectedStructure: 'struct',
+        },
+      });
+
+      const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
+
+      expect(calc.organisationName).to.equal('Org1');
+    });
+
+    it('initializes a calculator if a promotion has a lenderOrganisation on it', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          promotions: {
+            lenderOrganisation: { name: 'Org2', lenderRules: {} },
+          },
+        },
+      });
+
+      const calc = LoanService.getLoanCalculator({ loanId: 'myLoan' });
+
+      expect(calc.organisationName).to.equal('Org2');
+    });
+  });
+
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+    this.timeout(10000);
+
+    it('finds the ideal borrowRatio', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+        },
+        organisations: [
+          ...generateOrganisationsWithLenderRules({
+            number: 5,
+            mainBorrowRatio: { min: 0.65, max: 0.9 },
+            secondaryBorrowRatio: { min: 0.5, max: 0.7 },
+          }),
+          {
+            name: 'no lender rules',
+            type: ORGANISATION_TYPES.BANK,
+            features: [ORGANISATION_FEATURES.LENDER],
+          },
+        ],
+      });
+
+      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+        loanId: 'loanId',
+        canton: 'GE',
+      });
+
+      const {
+        maxPropertyValue: { canton, date, main, second },
+      } = LoanService.fetchOne({
+        $filters: { _id: 'loanId' },
+        maxPropertyValue: 1,
+      });
+
+      expect(canton).to.equal('GE');
+      expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+      expect(main.min.borrowRatio).to.equal(0.65);
+      expect(main.min.propertyValue).to.equal(1496000);
+      expect(main.max.borrowRatio).to.equal(0.835);
+      expect(main.max.propertyValue).to.equal(2761000);
+      expect(second.min.borrowRatio).to.equal(0.5);
+      expect(second.min.propertyValue).to.equal(909000);
+      expect(second.max.borrowRatio).to.equal(0.65);
+      expect(second.max.propertyValue).to.equal(1245000);
+    });
+
+    it('Only uses the promotion lender', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+          promotions: {
+            lenderOrganisation: generateOrganisationsWithLenderRules({
+              number: 1,
+              mainBorrowRatio: { min: 0.75, max: 0.75 },
+              secondaryBorrowRatio: { min: 0.7, max: 0.7 },
+            }),
+          },
+        },
+      });
+
+      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+        loanId: 'loanId',
+        canton: 'GE',
+      });
+
+      const {
+        maxPropertyValue: { canton, date, main, second },
+      } = LoanService.fetchOne({
+        $filters: { _id: 'loanId' },
+        maxPropertyValue: 1,
+      });
+
+      expect(canton).to.equal('GE');
+      expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+      expect(main.min).to.equal(undefined);
+      expect(main.max.borrowRatio).to.equal(0.75);
+      expect(main.max.propertyValue).to.equal(1988000);
+      expect(second.min).to.equal(undefined);
+      expect(second.max.borrowRatio).to.equal(0.7);
+      expect(second.max.propertyValue).to.equal(1420000);
+    });
+  });
+
+  describe('expireAnonymousLoans', () => {
+    it('does not update any unmatched loans', () => {
+      generator({
+        loans: [
+          { anonymous: true },
+          { anonymous: true, status: LOAN_STATUS.UNSUCCESSFUL },
+        ],
+      });
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(0);
+    });
+
+    it('only updates loans from more than a week ago', async () => {
+      const promises = [];
+      for (let index = 0; index < 10; index++) {
+        promises.push(LoanService.rawCollection.insert({
+          anonymous: true,
+          updatedAt: moment()
+            .subtract(index, 'days')
+            .toDate(),
+          _id: index,
+          name: index,
+        }));
+      }
+
+      await Promise.all(promises);
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(5);
+    });
+
+    it('does not update loans already at UNSUCCESSFUL status', async () => {
+      await LoanService.rawCollection.insert({
+        anonymous: true,
+        updatedAt: moment()
+          .subtract(10, 'days')
+          .toDate(),
+        _id: 'a',
+        name: 'b',
+        status: LOAN_STATUS.UNSUCCESSFUL,
+      });
+
+      expect(LoanService.expireAnonymousLoans()).to.equal(0);
+    });
+  });
+
+  describe('insertAnonymousLoan', () => {
+    it('inserts an anonymous loan', () => {
+      LoanService.insertAnonymousLoan({ referralId: 'someId' });
+
+      expect(LoanService.findOne({})).to.deep.include({
+        anonymous: true,
+        displayWelcomeScreen: false,
+        referralId: 'someId',
+      });
+    });
+
+    it('creates a link with a property if provided', () => {
+      generator({ properties: { _id: 'propertyId' } });
+      LoanService.insertAnonymousLoan({ proPropertyId: 'propertyId' });
+
+      expect(LoanService.findOne({})).to.deep.include({
+        propertyIds: ['propertyId'],
+      });
     });
   });
 });

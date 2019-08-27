@@ -1,11 +1,30 @@
 import Users from './users';
-import { Loans, Offers, Borrowers, Properties, Promotions, Contacts } from '..';
+import {
+  Loans,
+  Offers,
+  Borrowers,
+  Properties,
+  Promotions,
+  Contacts,
+  Organisations,
+  Tasks,
+} from '..';
+
+const assignedEmployeeCache = {
+  _id: 1,
+  firstName: 1,
+  lastName: 1,
+};
 
 Users.addLinks({
   assignedEmployee: {
     collection: Users,
     field: 'assignedEmployeeId',
     type: 'one',
+    denormalize: {
+      field: 'assignedEmployeeCache',
+      body: assignedEmployeeCache,
+    },
   },
   assignedEndUsers: {
     collection: Users,
@@ -14,6 +33,10 @@ Users.addLinks({
   assignedPromotions: {
     collection: Promotions,
     inversedBy: 'assignedEmployee',
+  },
+  assignedTasks: {
+    collection: Tasks,
+    inversedBy: 'assignee',
   },
   borrowers: {
     collection: Borrowers,
@@ -41,5 +64,33 @@ Users.addLinks({
   offers: {
     collection: Offers,
     inversedBy: 'user',
+  },
+  organisations: {
+    collection: Organisations,
+    inversedBy: 'users',
+  },
+  proProperties: {
+    collection: Properties,
+    inversedBy: 'users',
+  },
+  referredByUser: {
+    collection: Users,
+    field: 'referredByUserLink',
+    type: 'one',
+  },
+  referredCustomers: {
+    collection: Users,
+    inversedBy: 'referredByUser',
+    type: 'many',
+  },
+  referredByOrganisation: {
+    collection: Organisations,
+    field: 'referredByOrganisationLink',
+    type: 'one',
+  },
+  tasks: {
+    collection: Tasks,
+    inversedBy: 'user',
+    autoremove: true,
   },
 });

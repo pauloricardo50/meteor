@@ -1,8 +1,9 @@
-@import './client/FinancingHeader/FinancingHeader.scss';
-@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
-@import './client/FinancingOffers/FinancingOffers.scss';
-@import './client/FinancingProject/FinancingProject.scss';
 @import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
+@import './client/FinancingHeader/FinancingHeader.scss';
+@import './client/FinancingLenders/FinancingLenders.scss';
+@import './client/FinancingOffers/FinancingOffers.scss';
+@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
+@import './client/FinancingProject/FinancingProject.scss';
 $labels-width: 180px;
 $structure-width: 320px;
 $item-height: 24px;
@@ -37,8 +38,8 @@ $result-section-negative-offset: -32px;
   border-right: solid 1px $light-grey;
   border-left: solid 1px $light-grey;
 
-   > .card1 > *,
-   > * {
+  > .card1 > *,
+  > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -65,11 +66,27 @@ $result-section-negative-offset: -32px;
 
     font-size: calc((16 / 14) * 1rem);
   }
+
   .chf {
     margin-right: 4px;
 
     opacity: 0.5;
     color: initial;
+  }
+
+  .offerId {
+    justify-content: flex-start !important;
+  }
+
+  .interestsCost,
+  .amortizationCost {
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    svg {
+      margin-left: 8px;
+    }
   }
 }
 
@@ -139,10 +156,6 @@ $result-section-negative-offset: -32px;
     .error {
       margin: 8px;
       padding: 8px;
-
-      color: white;
-      border-radius: 4px;
-      background-color: $error;
     }
   }
 
@@ -164,6 +177,8 @@ $result-section-negative-offset: -32px;
     }
 
     .section-title {
+      text-transform: uppercase;
+
       font-size: 16px;
     }
   }
@@ -179,7 +194,7 @@ $result-section-negative-offset: -32px;
       box-sizing: border-box;
       padding: 16px;
 
-       > .card1 {
+      > .card1 {
         display: flex;
         flex-direction: column;
 
@@ -242,11 +257,11 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-   > *:first-child {
+  > *:first-child {
     margin-bottom: 8px;
   }
 
-   > *:last-child {
+  > *:last-child {
     align-self: center;
   }
 }
@@ -301,18 +316,6 @@ $result-section-negative-offset: -32px;
 
 $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
-.financing-structures-refresher {
-  position: fixed;
-  z-index: 500;
-  top: 136px;
-  right: 16px;
-
-  padding: 40px;
-
-  border-radius: 4px;
-  box-shadow: $shadow-level-2;
-}
-
 .own-funds-completer {
   position: relative;
 
@@ -333,41 +336,20 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   }
 }
 
-.top-off-icon {
-  position: relative;
-
+.requiredOwnFunds-component-body {
   display: flex;
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 0;
+  align-self: stretch;
+  justify-content: space-around;
 
-  width: 16px;
-  height: 16px;
-  margin: 8px;
-  margin-left: 0;
-
-  cursor: not-allowed;
-
-  border-radius: 4px;
-  background-color: $light-grey;
-
-  &.active {
-    cursor: pointer;
-
-    background-color: $grey1;
+  .text-and-value {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
+}
 
-  .appear {
-    position: absolute;
-    top: 0;
-    left: 0;
+.financing-collapser {
+  align-self: center;
 
-    width: 16px;
-    height: 16px;
-
-    animation-duration: 300ms;
-
-    border-radius: 4px;
-    background-color: $primary;
-  }
+  margin-bottom: 16px;
 }

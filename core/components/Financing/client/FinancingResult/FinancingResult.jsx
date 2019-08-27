@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 
-import T from 'core/components/Translation';
-import { lifecycle } from 'recompose';
+import T from '../../../Translation';
+import { OWN_FUNDS_TYPES } from '../../../../api/constants';
 import FinancingSection, {
   CalculatedValue,
   FinmaRatio,
@@ -23,7 +23,8 @@ import {
   getIncomeRatioStatus,
   makeHasOwnFundsOfType,
 } from './financingResultHelpers';
-import { OWN_FUNDS_TYPES } from '../../../../api/constants';
+import FinancingResultInterests from './FinancingResultInterests';
+import FinancingResultAmortization from './FinancingResultAmortization';
 
 type FinancingResultProps = {};
 
@@ -55,12 +56,12 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
         {
           id: 'interestsCost',
-          Component: CalculatedValue,
+          Component: FinancingResultInterests,
           value: getInterests,
         },
         {
           id: 'amortizationCost',
-          Component: CalculatedValue,
+          Component: FinancingResultAmortization,
           value: getAmortization,
         },
         {
@@ -132,11 +133,4 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
     />
   ));
 
-export default lifecycle({
-  componentDidCatch(error) {
-    this.setState({ error });
-  },
-  componentWillReceiveProps() {
-    this.setState({ error: null });
-  },
-})(FinancingResult);
+export default React.memo(FinancingResult);

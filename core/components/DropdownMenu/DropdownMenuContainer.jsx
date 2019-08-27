@@ -62,7 +62,6 @@ const mapOption = (
       )}
       <ListItemText
         classes={{ primary: colorClass, secondary: colorClass }}
-        inset={!!icon}
         primary={label}
         secondary={secondary}
       />

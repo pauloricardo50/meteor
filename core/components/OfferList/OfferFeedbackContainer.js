@@ -70,7 +70,7 @@ export default compose(
         }
 
         const { name } = contact || {};
-        const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
+        const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`);
         if (confirm) {
           return offerSendFeedback.run({
             offerId,

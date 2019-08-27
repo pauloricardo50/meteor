@@ -132,7 +132,7 @@ const columnOptions = ({
     },
     { id: 'name' },
     { id: 'status' },
-    { id: 'totalValue' },
+    { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
     !isDashboardTable && { id: 'custom', style: { maxWidth: '400px' } },
     !!isAdmin && { id: 'solvency' },
   ]

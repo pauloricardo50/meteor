@@ -1,25 +1,50 @@
 import Tasks from './tasks';
-import { Users, Loans, Borrowers, Properties } from '..';
+import { Users, Loans } from '..';
+import Notifications from '../notifications';
+import Promotions from '../promotions';
+import Organisations from '../organisations';
+import Lenders from '../lenders';
 
 Tasks.addLinks({
-  assignedEmployee: {
-    field: 'assignedEmployeeId',
+  assignee: {
+    field: 'assigneeLink',
     collection: Users,
     type: 'one',
+    metadata: true,
   },
   loan: {
-    field: 'loanId',
+    field: 'loanLink',
     collection: Loans,
     type: 'one',
+    metadata: true,
   },
-  property: {
-    field: 'propertyId',
-    collection: Properties,
+  user: {
+    field: 'userLink',
+    collection: Users,
     type: 'one',
+    metadata: true,
   },
-  borrower: {
-    field: 'borrowerId',
-    collection: Borrowers,
+  promotion: {
+    field: 'promotionLink',
+    collection: Promotions,
     type: 'one',
+    metadata: true,
+  },
+  organisation: {
+    field: 'organisationLink',
+    collection: Organisations,
+    type: 'one',
+    metadata: true,
+  },
+  lender: {
+    field: 'lenderLink',
+    collection: Lenders,
+    type: 'one',
+    metadata: true,
+  },
+  notifications: {
+    collection: Notifications,
+    inversedBy: 'task',
+    autoremove: true,
   },
 });

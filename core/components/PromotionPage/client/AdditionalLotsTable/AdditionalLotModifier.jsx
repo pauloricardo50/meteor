@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-
 import { compose, withState, withProps } from 'recompose';
-import T from '../../../Translation';
-import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
-import message from '../../../../utils/message';
-import Button from '../../../Button';
+
 import { lotRemove, lotUpdate } from '../../../../api';
+import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
+import T from '../../../Translation';
+import Button from '../../../Button';
 import { lotSchema } from '../ProPromotionLotsTable/ProPromotionLotsTable';
 
 type AdditionalLotModifierProps = {
@@ -49,6 +48,7 @@ const AdditionalLotModifier = ({
   currentPromotionLotId,
   updateAdditionalLot,
   deleteAdditionalLot,
+  canRemoveLots,
 }: AdditionalLotModifierProps) => {
   const schema = AdditionalLotModifierSchema(promotionLots);
   const model = {
@@ -63,25 +63,23 @@ const AdditionalLotModifier = ({
       open={open}
       setOpen={setOpen}
       submitting={submitting}
-      renderAdditionalActions={({
-        closeDialog,
-        setDisableActions,
-        disabled,
-      }) => (
-        <Button
-          onClick={() =>
-            deleteAdditionalLot({
-              lotId: lot._id,
-              closeDialog,
-              setDisableActions,
-            })
-          }
-          error
-          disabled={submitting || disabled}
-        >
-          <T id="general.delete" />
-        </Button>
-      )}
+      renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) =>
+        canRemoveLots && (
+          <Button
+            onClick={() =>
+              deleteAdditionalLot({
+                lotId: lot._id,
+                closeDialog,
+                setDisableActions,
+              })
+            }
+            error
+            disabled={submitting || disabled}
+          >
+            <T id="general.delete" />
+          </Button>
+        )
+      }
     />
   );
 };
@@ -108,7 +106,9 @@ export default compose(
         })
         .then(() => {
           setOpen(false);
-          message.success("C'est dans la boite !", 2);
+          import('../../../../utils/message').then(({ default: message }) => {
+            message.success("C'est dans la boite !", 2);
+          });
         })
         .finally(() => setSubmitting(false));
     },

@@ -30,7 +30,10 @@ export const CurrentOwnFunds = ({
   ownFundsIndex,
 }: CurrentOwnFundsProps) => (
   <React.Fragment>
-    <div className="current-own-funds" onClick={handleOpen}>
+    <div
+      className="current-own-funds"
+      onClick={structure.disableForms ? null : handleOpen}
+    >
       <h5>
         <T id={`Forms.${type}`} />
         {usageType && ' - '}

@@ -6,12 +6,19 @@
       "NOT_PRODUCTION_READY": true
     },
     "analyticsSettings": {
-      "Google Analytics": {
-        "trackingId": "UA-84358947-1"
+      "Hotjar": {
+        "app": {
+          "hjid": "1310709"
+        },
+        "pro": {
+          "hjid": "1310711"
+        },
+        "www": {
+          "hjid": "1310643"
+        }
       },
-      "Mixpanel": {
-        "token": "8116491227515ad527768eecaef5d5ce",
-        "people": true
+      "Segment": {
+        "key": "G93hv64QSld1gnjzSlBWhQDFl44oyDmE"
       }
     },
     "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
@@ -19,17 +26,14 @@
       "admin": "https://admin.e-potek.ch",
       "app": "https://app.e-potek.ch",
       "pro": "https://pro.e-potek.ch",
-      "www": "https://www.e-potek.ch"
+      "www": "https://www.e-potek.ch",
+      "backend": "https://backend.e-potek.ch"
     }
   },
   "mandrill": {
     "MANDRILL_LOGIN": "florian@e-potek.ch",
     "MANDRILL_API_KEY": "Bn4sTZ-Q9JqK-PyXACgJ_w",
     "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
-  },
-  "mixpanel": {
-    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
-    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
   },
   "Kadira": {
     "endpoint": "https://kadira-engine.e-potek.ch:22022",
@@ -48,6 +52,10 @@
     "pro": {
       "appId": "LahXKo9AFBp8pnQ2f",
       "appSecret": "404c2df5-178c-4404-b43f-724ce97abf3f"
+    },
+    "backend": {
+      "appId": "YJx7afbGERaZjdJ5c",
+      "appSecret": "77ef8de4-18f8-452b-acfc-066f5c9d2312"
     }
   },
   "storage": {
@@ -71,5 +79,9 @@
     "debug": false,
     "overridePublishFunction": true
   },
-  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I"
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I",
+  "mixpanel": {
+    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
+    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  }
 }

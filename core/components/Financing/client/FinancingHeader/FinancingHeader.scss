@@ -24,6 +24,12 @@
   animation-duration: 200ms;
   text-align: center;
 
+  .disabled-icon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+
   .financing-structures-header-actions {
     position: absolute;
     top: 0;
@@ -32,7 +38,7 @@
     padding: 0;
   }
 
-   > * {
+  > * {
     padding: 0;
   }
 
@@ -53,6 +59,11 @@
       background-color: white;
     }
 
+    .click-to-edit-field.not-allowed-to-edit:hover {
+      color: white;
+      background-color: $primary;
+    }
+
     h3 {
       color: white;
 
@@ -71,5 +82,13 @@
     height: 100%;
 
     border: unset;
+
+    > * {
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-around;
+
+      width: 100%;
+    }
   }
 }

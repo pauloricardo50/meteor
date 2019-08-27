@@ -8,10 +8,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Loans, Borrowers, Properties, Promotions } from '../../..';
 import S3Service from '../S3Service';
-import {
-  DOCUMENT_USER_PERMISSIONS,
-  PROPERTY_CATEGORY,
-} from '../../../constants';
+import { PROPERTY_CATEGORY } from '../../../constants';
 
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
@@ -136,6 +133,19 @@ describe('S3Service', function () {
           .then(({ Metadata: { camelcase } }) =>
             expect(camelcase).to.deep.equal(metadata.camelCase));
       });
+
+      it('does not fail if you set the same metadata', () => {
+        const metadata1 = { status: 'initial', hello: 'world' };
+        const metadata2 = metadata1;
+
+        return S3Service.putObject(binaryData, key, metadata1)
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata1))
+          .then(() => S3Service.updateMetadata(key, metadata2))
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) =>
+            expect(Metadata).to.deep.equal(metadata1));
+      });
     });
 
     describe('headObject', () => {
@@ -236,13 +246,17 @@ describe('S3Service', function () {
 
     it('should return true for a promotion and the user exists', () => {
       const promotion = Factory.create('promotion', {
-        userLinks: [
-          { _id: userId, permissions: DOCUMENT_USER_PERMISSIONS.MODIFY },
-        ],
+        userLinks: [{ _id: userId, permissions: { canManageDocuments: true } }],
       });
 
       expect(S3Service.isAllowedToAccess(`${promotion._id}/`)).to.equal(true);
       Promotions.remove(promotion._id);
+    });
+  });
+
+  describe('makeSignedUrl', () => {
+    it('should return a signed url', () => {
+      expect(S3Service.makeSignedUrl('dude/file.pdf')).to.include('dude/file.pdf');
     });
   });
 });

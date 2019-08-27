@@ -19,6 +19,25 @@ export const MONGO_SERVICES = {
     environment: ENVIRONMENT.PRODUCTION,
     service: SERVICES.MONGODB,
   }),
+  [ENVIRONMENT.DEV]: generateServiceName({
+    environment: ENVIRONMENT.DEV,
+    service: SERVICES.MONGODB,
+  }),
+};
+
+export const REDIS_SERVICES = {
+  [ENVIRONMENT.STAGING]: generateServiceName({
+    environment: ENVIRONMENT.STAGING,
+    service: SERVICES.REDIS,
+  }),
+  [ENVIRONMENT.PRODUCTION]: generateServiceName({
+    environment: ENVIRONMENT.PRODUCTION,
+    service: SERVICES.REDIS,
+  }),
+  [ENVIRONMENT.DEV]: generateServiceName({
+    environment: ENVIRONMENT.DEV,
+    service: SERVICES.REDIS,
+  }),
 };
 
 export const HOST = 'kubernetes-service-node.service.consul';
@@ -42,7 +61,27 @@ const writeApplicationManifest = environment =>
     data: applicationManifestData(environment),
   });
 
-const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
+// Parse and remove any trailing comma from the credentials
+const cleanCredentials = creds => {
+  const res = JSON.parse(
+    '{' +
+      creds
+        .split('\n')
+        .map(line => line.replace(/,\s*$/, ''))
+        // Filter out some empty character lines, if this causes
+        // valid lines to be filtered, find a better solution
+        .filter(str => str && str.length >= 5)
+        .join(',') +
+      '}',
+  );
+  return res;
+};
+
+const openSSHTunnel = ({
+  sshIdNumber = 0,
+  environmentOverride,
+  mongoPort = 0,
+} = {}) => {
   let environment;
   const args = argv
     .usage('Usage: $0 [options]]')
@@ -82,15 +121,14 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
         `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\" -e \\"ports\\"`,
       ),
     )
-    .then(credentials => {
-      const parsedCredentials = JSON.parse(`{${credentials}}`);
-      return {
-        ...parsedCredentials,
-        mongoPort: Number(parsedCredentials.ports.split(',')[2]),
-        sshId: SSH_ID,
-        environment,
-      };
-    });
+    .then(credentials => ({
+      ...cleanCredentials(credentials),
+      mongoPort: Number(
+        cleanCredentials(credentials).ports.split(',')[mongoPort],
+      ),
+      sshId: SSH_ID,
+      environment,
+    }));
 };
 
 export default openSSHTunnel;

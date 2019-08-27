@@ -12,7 +12,11 @@
 //   }
 // }
 @mixin screen($size, $type: max, $pixels: $small) {
-  @if $size == 'small' {
+  @if $size == 'xsmall' {
+    @media screen and ($type + -width: $xsmall) {
+      @content;
+    }
+  } @else if $size == 'small' {
     @media screen and ($type + -width: $small) {
       @content;
     }

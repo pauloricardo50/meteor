@@ -1,0 +1,49 @@
+// @flow
+import React from 'react';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+import { loanInsertBorrowers } from 'core/api/methods';
+
+type BorrowersAdderProps = {
+  loanId: String,
+};
+
+const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
+  <div className="borrowers-adder animated fadeIn">
+    <h4>
+      <T id="BorrowersPage.BorrowerAdder.title" />
+    </h4>
+    <p className="description">
+      <T id="BorrowersPage.BorrowerAdder.description" />
+    </p>
+    <div className="flex-row center space-children">
+      <Button
+        onClick={() => loanInsertBorrowers.run({ loanId, amount: 1 })}
+        raised
+        primary
+      >
+        <div className="flex-row center space-children">
+          <Icon type="person" />
+          <p style={{ margin: 'unset' }}>
+            <T id="BorrowersPage.BorrowerAdder.singleBorrower" />
+          </p>
+        </div>
+      </Button>
+      <Button
+        onClick={() => loanInsertBorrowers.run({ loanId, amount: 2 })}
+        raised
+        primary
+      >
+        <div className="flex-row center space-children">
+          <Icon type="people" />
+          <p style={{ margin: 'unset' }}>
+            <T id="BorrowersPage.BorrowerAdder.twoBorrowers" />
+          </p>
+        </div>
+      </Button>
+    </div>
+  </div>
+);
+
+export default BorrowersAdder;

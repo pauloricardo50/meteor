@@ -14,4 +14,11 @@ Organisations.addReducers({
         [],
       ),
   },
+  offerCount: {
+    body: {
+      lenders: { offers: { _id: 1 } },
+    },
+    reduce: ({ lenders = [] }) =>
+      lenders.reduce((tot, { offers = [] }) => tot + offers.length, 0),
+  },
 });

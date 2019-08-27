@@ -13,9 +13,10 @@ const OwnFundsAdder = ({
   handleClose,
   open,
   structureId,
+  disabled,
 }: OwnFundsAdderProps) => (
   <React.Fragment>
-    <Button raised primary onClick={handleOpen}>
+    <Button raised primary onClick={handleOpen} disabled={disabled}>
       <T id="Financing.ownFundsAdder" />
     </Button>
     <FinancingOwnFundsDialog

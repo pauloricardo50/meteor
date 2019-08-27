@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 import {
   LOANS_COLLECTION,
@@ -53,3 +54,79 @@ export const createMeteorAsyncFunction = promiseFunc =>
     promiseFunc(params)
       .then(result => callback(null, result))
       .catch(callback));
+
+export const flattenObject = (object, delimiter) => {
+  const delim = delimiter || '.';
+  let flattened = {};
+
+  Object.keys(object).forEach((key) => {
+    const val = object[key];
+    if (val instanceof Object && !(val instanceof Array)) {
+      const strip = flattenObject(val);
+      Object.keys(strip).forEach((k) => {
+        const v = strip[k];
+        flattened = { ...flattened, [`${key}${delim}${k}`]: v };
+      });
+    } else {
+      flattened = { ...flattened, [key]: val };
+    }
+  });
+
+  return flattened;
+};
+
+export const getUserOrganisationName = ({ user }) => {
+  const { organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName;
+};
+
+export const getUserNameAndOrganisation = ({ user }) => {
+  const { name, organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName ? `${name} (${organisationName})` : name;
+};
+
+const isReferredByOrganisation = ({ organisations, referredByOrganisation }) =>
+  organisations.some(({ _id }) => referredByOrganisation._id === _id);
+const isReferredByOrganisationUser = ({ organisationUsers, referredByUser }) =>
+  organisationUsers.some(({ _id }) => referredByUser._id === _id);
+
+export const getReferredBy = ({ user, proUser = {}, isAdmin, anonymous }) => {
+  if (anonymous || !user) {
+    return { raw: null, label: '' };
+  }
+
+  const { organisations = [] } = proUser;
+  const organisationUsers = organisations.length ? organisations[0].users : [];
+  const { referredByUser = {}, referredByOrganisation = {} } = user;
+
+  let label = 'Déjà référé';
+
+  if (
+    isAdmin
+    || isReferredByOrganisation({ organisations, referredByOrganisation })
+    || isReferredByOrganisationUser({ organisationUsers, referredByUser })
+  ) {
+    label = getUserNameAndOrganisation({ user: referredByUser });
+  }
+
+  return { raw: referredByUser.name, label };
+};
+
+export const sortObject = (object) => {
+  if (!object || typeof object !== 'object' || object instanceof Array) {
+    return object;
+  }
+
+  const sortedObject = {};
+  const keys = Object.keys(object);
+
+  keys.sort();
+
+  keys.forEach((key) => {
+    sortedObject[key] = sortObject(object[key]);
+  });
+
+  return sortedObject;
+};

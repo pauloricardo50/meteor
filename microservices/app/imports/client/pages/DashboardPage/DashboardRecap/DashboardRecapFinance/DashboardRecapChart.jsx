@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import DonutChart from 'core/components/charts/DonutChart';
 import T from 'core/components/Translation';
-import Calculator from 'core/utils/Calculator';
+import { withCalculator } from 'core/containers/withCalculator';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
-const getChartData = ({ loan }) => {
+const getChartData = ({ loan, Calculator }) => {
   const interests = Calculator.getInterests({ loan });
 
   let data = [
@@ -21,12 +21,13 @@ const getChartData = ({ loan }) => {
     },
   ];
 
-  const expenses = Calculator.makeSelectPropertyKey('monthlyExpenses')({
+  const expenses = Calculator.selectPropertyKey({
     loan,
+    key: 'yearlyExpenses',
   });
 
   if (expenses) {
-    data = [...data, { id: 'Forms.monthlyExpenses.short', value: expenses }];
+    data = [...data, { id: 'Forms.yearlyExpenses.short', value: expenses }];
   }
 
   return data.map(dataPoint => ({
@@ -79,4 +80,4 @@ DashboardRecapChart.defaultProps = {
   offer: undefined,
 };
 
-export default DashboardRecapChart;
+export default withCalculator(DashboardRecapChart);

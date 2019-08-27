@@ -1,0 +1,15 @@
+{
+  "presets": ["meteor", "@babel/preset-flow"],
+  "plugins": [
+    ["@babel/plugin-proposal-class-properties"],
+    [
+      "module-resolver",
+      {
+        "root": ["."],
+        "alias": {
+          "core": "./imports/core"
+        }
+      }
+    ]
+  ]
+}

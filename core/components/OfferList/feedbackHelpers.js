@@ -18,7 +18,14 @@ export const FEEDBACK_OPTIONS_SETTINGS = {
     enableOutro: true,
   },
   [FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP]: {
+    enableComments: true,
     enableCustomIntro: true,
+    enableOutro: true,
+  },
+  [FEEDBACK_OPTIONS.CUSTOM]: {
+    enableCustomIntro: false,
+    enableComments: false,
+    enableOutro: false,
   },
 };
 
@@ -67,13 +74,17 @@ const outro = ({ borrowers, singleBorrower, option, formatMessage }) => {
   if (singleBorrower) {
     return formatMessage(
       { id: `Feedback.${option}.outro.singleBorrower` },
-      { borrower: borrowers[0].name },
+      { borrower: borrowers[0].name, singleBorrower: true },
     );
   }
 
   return formatMessage(
     { id: `Feedback.${option}.outro.twoBorrowers` },
-    { borrower1: borrowers[0].name, borrower2: borrowers[1].name },
+    {
+      borrower1: borrowers[0].name,
+      borrower2: borrowers[1].name,
+      singleBorrower: false,
+    },
   );
 };
 
@@ -81,7 +92,7 @@ const closing = ({ assignee, formatMessage }) =>
   formatMessage({ id: 'Feedback.closing' }, { assignee });
 
 export const makeFeedback = ({ model, offer, formatMessage }) => {
-  const { option, comments = [], customFeedback } = model;
+  const { option, comments = [], customFeedback = '' } = model;
   const {
     lender: {
       contact: { firstName: contactName },
@@ -94,7 +105,7 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
     createdAt,
   } = offer;
 
-  const { name: assignee = 'e-Potek' } = assignedEmployee || {};
+  const { firstName: assignee = 'e-Potek' } = assignedEmployee || {};
   const { address1, zipCode, city } = property || {};
 
   if (!property || !address1 || !zipCode || !city) {
@@ -103,7 +114,7 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
 
   const address = `${address1}, ${zipCode} ${city}`;
 
-  if (customFeedback && option === FEEDBACK_OPTIONS.CUSTOM) {
+  if (option === FEEDBACK_OPTIONS.CUSTOM) {
     // Replace all returns into HTML
     return customFeedback.replace(/(?:\r\n|\r|\n)/g, '<br>');
   }

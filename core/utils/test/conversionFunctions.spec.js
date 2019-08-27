@@ -42,6 +42,37 @@ describe('Conversion functions', () => {
     it('returns an empty string for an empty string', () => {
       expect(toMoney('')).to.equal('');
     });
+
+    it('shouldnt add a negative sign if the value is close to 0', () => {
+      expect(toMoney(-0.1)).to.equal('0');
+    });
+
+    describe('rounded = false', () => {
+      it('should allow decimals', () => {
+        expect(toMoney(123456.78, { rounded: false })).to.equal('123 456.78');
+      });
+
+      it('works below 1', () => {
+        expect(toMoney(0.45, { rounded: false })).to.equal('0.45');
+      });
+
+      it('should only show the last 2 decimals', () => {
+        expect(toMoney(0.129, { rounded: false })).to.equal('0.13');
+
+        expect(toMoney(0.1234, { rounded: false })).to.equal('0.12');
+
+        expect(toMoney(0.12345, { rounded: false })).to.equal('0.12');
+      });
+
+      it('should round to 2 decimals', () => {
+        expect(toMoney(0.9999999, { rounded: false })).to.equal('1.00');
+      });
+
+      it('should handle negative values', () => {
+        expect(toMoney(-0.9999999, { rounded: false })).to.equal('-1.00');
+        expect(toMoney(-123456.789, { rounded: false })).to.equal('-123 456.79');
+      });
+    });
   });
 
   describe('To number', () => {

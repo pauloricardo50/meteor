@@ -16,6 +16,7 @@ const LenderSchema = new SimpleSchema({
   'organisationLink._id': { type: String, optional: true },
   loanLink: { type: Object, optional: true },
   'loanLink._id': { type: String, optional: true },
+  adminNote: { type: String, optional: true },
 });
 
 export default LenderSchema;

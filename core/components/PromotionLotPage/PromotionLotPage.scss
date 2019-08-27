@@ -78,11 +78,19 @@
   .success {
     color: white;
     background-color: $success;
+
+    &:hover {
+      background-color: $success-dark;
+    }
   }
 
   .error {
     color: white;
     background-color: $error;
+
+    &:hover {
+      background-color: $error-dark;
+    }
   }
 
   .icon {
@@ -104,7 +112,7 @@
   align-items: center;
 
    > * {
-    margin-right: 4px;
+    margin-right: 8px;
   }
 }
 

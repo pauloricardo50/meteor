@@ -22,6 +22,7 @@ export const propertyDelete = new Method({
   name: 'propertyDelete',
   params: {
     propertyId: String,
+    loanId: Match.Maybe(String),
   },
 });
 
@@ -63,4 +64,34 @@ export const propertyDataIsInvalid = new Method({
     propertyId: String,
     loanResidenceType: Match.Optional(String),
   },
+});
+
+export const addProUserToProperty = new Method({
+  name: 'addProUserToProperty',
+  params: { propertyId: String, userId: String },
+});
+
+export const proPropertyInsert = new Method({
+  name: 'proPropertyInsert',
+  params: { userId: String, property: Object },
+});
+
+export const setProPropertyPermissions = new Method({
+  name: 'setProPropertyPermissions',
+  params: { propertyId: String, userId: String, permissions: Object },
+});
+
+export const removeProFromProperty = new Method({
+  name: 'removeProFromProperty',
+  params: { propertyId: String, proUserId: String },
+});
+
+export const removeCustomerFromProperty = new Method({
+  name: 'removeCustomerFromProperty',
+  params: { propertyId: String, loanId: String },
+});
+
+export const insertExternalProperty = new Method({
+  name: 'insertExternalProperty',
+  params: { property: Object },
 });

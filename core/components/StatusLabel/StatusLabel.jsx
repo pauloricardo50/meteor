@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import colors from '../../config/colors';
 import {
@@ -15,6 +16,11 @@ import {
   LOAN_STATUS,
   LENDERS_COLLECTION,
   LENDER_STATUS,
+  PROPERTIES_COLLECTION,
+  PROPERTY_STATUS,
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+  COMMISSION_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -32,7 +38,6 @@ const getStatuses = (collection) => {
   switch (collection) {
   case LOANS_COLLECTION:
     return {
-      [LOAN_STATUS.TEST]: colors.warning,
       [LOAN_STATUS.LEAD]: colors.secondary,
       [LOAN_STATUS.ONGOING]: colors.primary,
       [LOAN_STATUS.PENDING]: colors.warning,
@@ -40,6 +45,7 @@ const getStatuses = (collection) => {
       [LOAN_STATUS.BILLING]: colors.success,
       [LOAN_STATUS.FINALIZED]: colors.success,
       [LOAN_STATUS.UNSUCCESSFUL]: colors.error,
+      [LOAN_STATUS.TEST]: colors.warning,
     };
 
   case PROMOTIONS_COLLECTION:
@@ -75,6 +81,68 @@ const getStatuses = (collection) => {
       [LENDER_STATUS.TO_EXCLUDE]: colors.error,
     };
 
+  case PROPERTIES_COLLECTION:
+    return {
+      [PROPERTY_STATUS.FOR_SALE]: colors.success,
+      [PROPERTY_STATUS.BOOKED]: colors.primary,
+      [PROPERTY_STATUS.SOLD]: colors.error,
+    };
+
+  case REVENUES_COLLECTION:
+    return {
+      [REVENUE_STATUS.EXPECTED]: colors.primary,
+      [REVENUE_STATUS.CLOSED]: colors.success,
+      [COMMISSION_STATUS.TO_BE_PAID]: colors.primary,
+      [COMMISSION_STATUS.PAID]: colors.success,
+    };
+
+  default:
+    throw new Error(`Unknown collection "${collection}" in StatusLabel`);
+  }
+};
+const getLabel = ({
+  allowModify,
+  color,
+  label,
+  status,
+  statuses,
+  suffix,
+  variant,
+}) => {
+  switch (variant) {
+  case 'full':
+    return props => (
+      <span
+        className={cx({ allowModify, 'status-label': true })}
+        style={{ backgroundColor: color || statuses[status] }}
+        {...props}
+      >
+        <span>
+          {label || <T id={`Forms.status.${status}`} />}
+          {suffix}
+        </span>
+      </span>
+    );
+  case 'dot':
+    return ({ showTooltip, ...props }) =>
+      (showTooltip ? (
+        <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
+          <span
+            className={cx({ allowModify, 'status-label-dot': true })}
+            {...props}
+          >
+            <span style={{ backgroundColor: color || statuses[status] }} />
+          </span>
+        </Tooltip>
+      ) : (
+        <span
+          className={cx({ allowModify, 'status-label-dot': true })}
+          {...props}
+        >
+          <span style={{ backgroundColor: color || statuses[status] }} />
+        </span>
+      ));
+
   default:
     break;
   }
@@ -89,44 +157,50 @@ const StatusLabel = ({
   allowModify,
   docId,
   additionalActions = () => Promise.resolve(),
+  variant = 'full',
+  showTooltip = true,
+  method,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
-  const statusLabel = (props = {}) => (
-    <span
-      className={cx({ allowModify, 'status-label': true })}
-      style={{
-        backgroundColor: color || statuses[status],
-      }}
-      {...props}
-    >
-      <span>
-        {label || <T id={`Forms.status.${status}`} />}
-        {suffix}
-      </span>
-    </span>
-  );
+  const statusLabel = getLabel({
+    allowModify,
+    color,
+    docId,
+    label,
+    status,
+    statuses,
+    suffix,
+    variant,
+  });
 
   if (allowModify) {
     return (
       <DropdownMenu
-        className="status-label-dropdown"
-        renderTrigger={({ handleOpen }) => statusLabel({ onClick: handleOpen })}
+        noWrapper
+        renderTrigger={({ handleOpen }) =>
+          statusLabel({ onClick: handleOpen, showTooltip })
+        }
         options={Object.keys(statuses).map(stat => ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
-            additionalActions(stat).then(() =>
-              updateDocument.run({
+            additionalActions(stat, status).then(() => {
+              if (method) {
+                return method(stat);
+              }
+
+              return updateDocument.run({
                 collection,
                 object: { status: stat },
                 docId,
-              })),
+              });
+            }),
         }))}
       />
     );
   }
 
-  return statusLabel();
+  return statusLabel({ showTooltip });
 };
 
 export default StatusLabel;

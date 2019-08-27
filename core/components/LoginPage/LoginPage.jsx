@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { Redirect } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
 
 import PageHead from '../PageHead';
 import LoginPageLeft from './LoginPageLeft';
@@ -16,7 +17,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
   }
 
   return (
-    <section className="login-page">
+    <section className="login-page animated fadeIn">
       <PageHead titleId="LoginPage" />
       <LoginPageLeft />
       <LoginPageRight path={path} push={push} />

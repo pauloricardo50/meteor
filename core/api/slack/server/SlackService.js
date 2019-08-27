@@ -1,12 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
+import pick from 'lodash/pick';
 import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
+import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
-import fullLoan from '../../loans/queries/fullLoan';
+import { fullLoan } from '../../loans/queries';
 import Calculator from '../../../utils/Calculator';
+import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
@@ -60,7 +63,7 @@ export class SlackService {
     ...rest,
   });
 
-  sendError = ({ error, additionalData = [], userId, url }) => {
+  sendError = ({ error, additionalData = [], userId, url, connection }) => {
     if (Meteor.isDevelopment && !Meteor.isTest) {
       console.log('error', error);
       console.log('additionalData', additionalData);
@@ -85,45 +88,58 @@ export class SlackService {
       user = null;
     }
 
-    if (!user && userId && Meteor.isServer) {
-      user = UserService.findOne(userId);
+    if (!user && userId) {
+      user = UserService.get(userId);
+    }
+
+    const attachments = [
+      {
+        title: error && error.name,
+        pretext: `Une erreur est arrivée sur *e-Potek ${getClientMicroservice()}*`,
+        text: error && (error.message || error.reason),
+        color: colors.error,
+        footer: 'c la merde',
+        ts: new Date() / 1000,
+      },
+      {
+        title: 'Stack',
+        text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
+        color: colors.error,
+      },
+      {
+        title: 'User',
+        text: `\`\`\`${JSON.stringify(user, null, 2)}\`\`\``,
+        color: colors.primary,
+      },
+      {
+        title: 'URL',
+        text: url,
+        color: colors.primary,
+      },
+    ];
+
+    if (additionalData.length > 0) {
+      attachments.push(...additionalData.map((data, index) => ({
+        title: `Additional data ${index + 1}`,
+        text: JSON.stringify(data),
+      })));
+    }
+
+    if (connection) {
+      attachments.push({
+        title: 'Connection',
+        text: `\`\`\`${JSON.stringify(
+          pick(connection, ['clientAdress', 'httpHeaders']),
+          null,
+          2,
+        )}\`\`\``,
+      });
     }
 
     return this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
-      attachments: [
-        {
-          title: error && error.name,
-          pretext: `Une erreur est arrivée sur *e-Potek ${
-            Meteor.microservice
-          }*`,
-          text: error && (error.message || error.reason),
-          color: colors.error,
-          footer: 'c la merde',
-          ts: new Date() / 1000,
-        },
-        {
-          title: 'Stack',
-          text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
-          color: colors.error,
-        },
-        {
-          title: 'User',
-          text: `\`\`\`${JSON.stringify(user, null, 2)}\`\`\``,
-          color: colors.primary,
-        },
-        {
-          title: 'URL',
-          text: url,
-          color: colors.primary,
-        },
-        ...(additionalData && additionalData.length > 0
-          ? additionalData.map((data, index) => ({
-            title: `Additional data ${index + 1}`,
-            text: JSON.stringify(data),
-          }))
-          : []),
-      ],
+      username: this.getNotificationOrigin(user),
+      attachments,
     });
   };
 
@@ -152,9 +168,13 @@ export class SlackService {
     const slackPayload = {
       channel,
       attachments: [{ title, title_link: link, text: message }],
+      username: this.getNotificationOrigin(currentUser),
     };
 
-    if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
+    if (
+      (Meteor.isStaging || Meteor.isDevEnvironment || Meteor.isDevelopment)
+      && !Meteor.isTest
+    ) {
       console.log('Slack dev/staging notification');
       console.log('Payload:', slackPayload);
       return slackPayload;
@@ -163,12 +183,17 @@ export class SlackService {
     return this.sendAttachments(slackPayload);
   };
 
-  notifyOfTask = currentUser =>
-    this.notifyAssignee({
-      currentUser,
-      title: `Nouvelle tâche créée par ${currentUser && currentUser.name}`,
-      link: Meteor.settings.public.subdomains.admin,
-    });
+  getNotificationOrigin = (currentUser) => {
+    const APIUser = getAPIUser();
+    const username = currentUser ? currentUser.name : undefined;
+
+    if (APIUser) {
+      const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
+      return [username, `(API ${mainOrg && mainOrg.name})`].join(' ');
+    }
+
+    return username;
+  };
 
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
@@ -177,14 +202,11 @@ export class SlackService {
       return false;
     }
 
-    const { name } = currentUser;
-    const loan = loanId && fullLoan.clone({ loanId }).fetchOne();
+    const loan = loanId && fullLoan.clone({ _id: loanId }).fetchOne();
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
-    const title = `${name} a uploadé \`${fileName}\` dans ${docLabel}${loanNameEnd}`;
-    const link = `${Meteor.settings.public.subdomains.admin}/users/${
-      currentUser._id
-    }`;
-    let message;
+    const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
+    let link = `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`;
+    let message = '';
 
     if (loan) {
       const infoProgress = Calculator.personalInfoPercent({ loan });
@@ -192,7 +214,20 @@ export class SlackService {
       const documentsProgress = Calculator.filesProgress({
         loan,
       }).percent;
-      message = `*Progrès:* Emprunteurs \`${percentFormatters.format(infoProgress)}%\`, Bien immo: \`${percentFormatters.format(propertyProgress)}%\`, Documents: \`${percentFormatters.format(documentsProgress)}%\``;
+
+      const progressParts = [
+        `Emprunteurs \`${percentFormatters.format(infoProgress)}%\``,
+        `Documents: \`${percentFormatters.format(documentsProgress)}%\``,
+        `Bien immo: \`${percentFormatters.format(propertyProgress)}%\``,
+      ];
+
+      if (loan.hasPromotion) {
+        message = `_Promotion: \`${loan.promotions[0].name}\`_ `;
+        progressParts.pop(); // Remove property progress in case of a promotion
+      }
+
+      message += `*Progrès:* ${progressParts.join(', ')}`;
+      link = `${Meteor.settings.public.subdomains.admin}/loans/${loan._id}`;
     }
 
     return this.notifyAssignee({ currentUser, message, title, link });

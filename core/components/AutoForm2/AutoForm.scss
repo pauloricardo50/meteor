@@ -1,20 +1,16 @@
-.autoform {
-  .autofields {
-    > *,
-    ul > * {
-      margin-bottom: 16px;
-    }
+.autofields {
+  display: flex;
+  flex-direction: column;
 
-    ul {
-      margin-bottom: 0;
-    }
+  ul {
+    margin-bottom: 0;
   }
 
-  .list-add-field {
-    // align-self: center;
-    flex: 0 0 auto;
+  ul > li > div {
+    margin: 0;
   }
+}
 
-  .list-del-field {
-  }
+.list-add-field {
+  flex: 0 0 auto;
 }

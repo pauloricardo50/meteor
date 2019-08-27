@@ -1,7 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { DOCUMENT_USER_PERMISSIONS } from '../constants';
+import countries from 'i18n-iso-countries';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
@@ -11,19 +12,22 @@ export const createdAt = {
     if (this.isInsert) {
       return new Date();
     }
+    if (this.isUpdate) {
+      return this.value;
+    }
     this.unset();
   },
   optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
 };
 
 export const updatedAt = {
   type: Date,
   autoValue() {
-    if (this.isUpdate) {
+    if (this.isUpdate || this.isInsert || this.isUpsert) {
       return new Date();
     }
   },
-  denyInsert: true,
   optional: true,
 };
 
@@ -33,6 +37,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.id': String,
   'additionalDocuments.$.label': { type: String, optional: true },
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
+  'additionalDocuments.$.category': { type: String, optional: true },
 });
 
 export const address = {
@@ -45,6 +50,17 @@ export const address = {
     max: 99999,
   },
   city: { type: String, optional: true },
+  country: {
+    type: String,
+    optional: true,
+    allowedValues: getSortedCountriesCodes(),
+    defaultValue: 'CH',
+    uniforms: {
+      transform: code => countries.getName(code, 'fr'),
+      displayEmtpy: false,
+      placeholder: '',
+    },
+  },
   canton: {
     type: String,
     allowedValues: Object.keys(CANTONS),
@@ -73,15 +89,35 @@ export const contactsSchema = {
   },
 };
 
-export const userLinksSchema = {
+export const makePermissions = ({
+  permissionsSchema,
+  prefix,
+  autoFormDisplayCondition = () => true,
+  autoFormLabel,
+}) =>
+  Object.keys(permissionsSchema).reduce(
+    (permissions, key) => ({
+      ...permissions,
+      [`${prefix}.${key}`]: permissionsSchema[key],
+    }),
+    {
+      [prefix]: {
+        type: Object,
+        optional: true,
+        condition: autoFormDisplayCondition,
+        uniforms: { label: autoFormLabel || prefix },
+      },
+    },
+  );
+
+export const userLinksSchema = permissionsSchema => ({
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
   'userLinks.$._id': { type: String, optional: true },
-  'userLinks.$.permissions': {
-    type: String,
-    allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
-  },
-};
+  ...(permissionsSchema
+    ? makePermissions({ permissionsSchema, prefix: 'userLinks.$.permissions' })
+    : {}),
+});
 
 export const mortgageNoteLinks = {
   mortgageNoteLinks: { type: Array, optional: true },
@@ -89,7 +125,7 @@ export const mortgageNoteLinks = {
   'mortgageNoteLinks.$._id': { type: String, optional: true },
 };
 
-export const roundedInteger = (digits) => {
+export const roundedInteger = (digits, func = 'round') => {
   const rounder = 10 ** digits;
   return {
     type: SimpleSchema.Integer,
@@ -97,7 +133,7 @@ export const roundedInteger = (digits) => {
     max: 1000000000,
     autoValue() {
       if (this.isSet) {
-        return Math.round(this.value / rounder) * rounder;
+        return Math[func](this.value / rounder) * rounder;
       }
     },
     optional: true,
@@ -106,12 +142,12 @@ export const roundedInteger = (digits) => {
 
 export const percentageField = {
   type: Number,
-  min: 0,
+  min: -1,
   max: 1,
   optional: true,
   autoValue() {
     if (this.isSet) {
-      return Math.floor(Number(this.value) * 10000) / 10000;
+      return Math.round(Number(this.value) * 10000) / 10000;
     }
   },
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
@@ -123,4 +159,29 @@ export const moneyField = {
   max: 1000000000,
   optional: true,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
+};
+
+export const decimalMoneyField = {
+  ...moneyField,
+  type: Number,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_DECIMAL },
+};
+
+export const documentsField = {
+  type: Object,
+  defaultValue: {},
+  optional: true,
+  blackbox: true,
+};
+
+export const dateField = {
+  type: Date,
+  optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+};
+
+export const cacheField = {
+  type: Object,
+  optional: true,
+  blackbox: true,
 };

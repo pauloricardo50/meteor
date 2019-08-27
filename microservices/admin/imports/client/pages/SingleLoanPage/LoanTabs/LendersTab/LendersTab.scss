@@ -2,6 +2,20 @@
   margin-top: 40px;
 }
 
+.lenders-tab-empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  text-align: center;
+
+  .collection-icon {
+    width: 100px;
+    height: 100px;
+    padding: 40px;
+  }
+}
+
 .lenders-list {
   margin-top: 32px;
 
@@ -10,6 +24,7 @@
     align-items: flex-start;
     flex-direction: column;
 
+    min-width: 350px;
     margin-right: 16px;
     margin-bottom: 16px;
 
@@ -36,6 +51,15 @@
         border-color: $primary;
       }
     }
+
+    .click-to-edit-field {
+      box-sizing: border-box;
+      width: 100%;
+      margin: 16px 0;
+      padding: 8px;
+
+      border: 2px solid #dee2e6;
+    }
   }
 }
 
@@ -55,5 +79,18 @@
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+  }
+}
+
+.lender-picker-structures {
+  display: flex;
+  align-items: center;
+
+  &-separator {
+    width: 2px;
+    height: 30px;
+    margin: 0 4px;
+
+    background-color: $border-grey;
   }
 }

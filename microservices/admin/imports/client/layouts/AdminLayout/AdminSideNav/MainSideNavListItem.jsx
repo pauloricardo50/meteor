@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { compose } from 'recompose';
-import { DASHBOARD_PAGE } from 'imports/startup/client/adminRoutes';
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 const styles = () => ({
   root: { justifyContent: 'center' },
@@ -28,7 +28,10 @@ const shouldRenderInPrimaryColor = ({
     return true;
   }
 
-  if (path === DASHBOARD_PAGE && to === DASHBOARD_PAGE) {
+  if (
+    path === ADMIN_ROUTES.DASHBOARD_PAGE.path
+    && to === ADMIN_ROUTES.DASHBOARD_PAGE.path
+  ) {
     return true;
   }
 };
@@ -55,10 +58,10 @@ const MainSideNavListItem = ({
     }}
     component={!detail ? NavLink : undefined}
     to={!detail ? to : undefined}
+    className="main-side-nav-list-item"
   >
     <div
       className={classnames({
-        'main-side-nav-list-item': true,
         primary: shouldRenderInPrimaryColor({
           collection,
           collectionName,

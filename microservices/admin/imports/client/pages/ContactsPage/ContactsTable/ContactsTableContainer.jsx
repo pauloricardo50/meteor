@@ -62,9 +62,7 @@ const makeMapContact = ({ history }) => (contact) => {
     ],
     handleClick: (event) => {
       event.stopPropagation();
-      history.push(createRoute('/contacts/:contactId', {
-        contactId,
-      }));
+      history.push(createRoute('/contacts/:contactId', { contactId }));
     },
   };
 };

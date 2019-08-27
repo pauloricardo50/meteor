@@ -284,3 +284,18 @@ export default (zipcode) => {
   const canton = Object.keys(CANTONS)[cantonIndex];
   return canton;
 };
+
+/**
+ * Returns the first zipcode that matches the given canton
+ *
+ * @param {String} canton
+ * @returns Number
+ */
+export const getZipcodeForCanton = (canton) => {
+  const cantonIndex = Object.keys(CANTONS).findIndex(c => c === canton);
+
+  return Object.keys(zipcodes).find((zipcode) => {
+    const cantonIndexForZipcode = zipcodes[zipcode];
+    return cantonIndexForZipcode === cantonIndex;
+  });
+};

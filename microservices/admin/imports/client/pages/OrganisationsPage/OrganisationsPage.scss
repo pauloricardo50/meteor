@@ -3,18 +3,28 @@
   align-items: flex-start;
   flex-direction: column;
 
+  .organisations-by-feature {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    width: 100%;
+    h3 {
+      align-self: center;
+    }
+  }
+
   .organisations {
     display: flex;
     flex-wrap: wrap;
 
-    margin-top: 40px;
+    margin-top: 16px;
 
     .organisation {
       display: flex;
       flex-direction: column;
 
-      width: 200px;
-      height: 300px;
+      width: 150px;
+      height: 150px;
       margin: 8px;
 
       .card-top {
@@ -27,22 +37,21 @@
 
       .card-bottom {
         flex-grow: 0;
+        padding: 8px;
       }
     }
   }
+
   .filters-form {
-    width: 100%;
+    margin-top: 40px;
 
     .filters {
       display: flex;
-      align-items: center;
       flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-between;
 
-       > * {
-        width: 30%;
-        margin-right: 50px;
+      > * {
+        margin-right: 8px;
+        min-width: 200px;
       }
     }
   }

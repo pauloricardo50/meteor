@@ -1,61 +1,31 @@
 import { compose, withProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
-import SimpleSchema from 'simpl-schema';
 
 import { organisationInsert } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
-import { SINGLE_ORGANISATION_PAGE } from 'imports/startup/client/adminRoutes';
-import { createRoute } from 'imports/core/utils/routerUtils';
-import {
-  ORGANISATION_FEATURES,
-  ORGANISATION_TAGS,
-  ORGANISATION_TYPES,
-} from 'core/api/constants';
-
-const filtersSchema = new SimpleSchema({
-  tags: {
-    type: Array,
-    defaultValue: [],
-    uniforms: { placeholder: 'Tous' },
-  },
-  'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
-  features: {
-    type: Array,
-    defaultValue: [],
-    uniforms: { placeholder: 'Tous' },
-  },
-  'features.$': {
-    type: String,
-    allowedValues: Object.values(ORGANISATION_FEATURES),
-  },
-  type: {
-    type: Array,
-    defaultValue: [],
-    uniforms: { placeholder: 'Tous' },
-  },
-  'type.$': {
-    type: String,
-    allowedValues: Object.values(ORGANISATION_TYPES),
-  },
-});
+import { adminOrganisations } from 'core/api/organisations/queries';
+import { createRoute } from 'core/utils/routerUtils';
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 export default compose(
   withRouter,
   withState('filters', 'setFilters', ({ location }) =>
-    queryString.parse(location.search, {arrayFormat: 'bracket'})),
+    queryString.parse(location.search, { arrayFormat: 'bracket' })),
   withProps(({ history }) => ({
     insertOrganisation: organisation =>
       organisationInsert.run({ organisation }).then((organisationId) => {
-        history.push(createRoute(SINGLE_ORGANISATION_PAGE, { organisationId }));
+        history.push(createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
+          organisationId,
+        }));
       }),
-    filtersSchema,
   })),
   withSmartQuery({
     query: adminOrganisations,
-    params: ({ filters }) => filters,
+    params: ({ filters }) => ({
+      ...filters,
+      $body: { name: 1, logo: 1, features: 1, $filter: 1 },
+    }),
     dataName: 'organisations',
-    reactive: true,
   }),
 );

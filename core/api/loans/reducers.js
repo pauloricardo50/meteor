@@ -1,8 +1,12 @@
 import omit from 'lodash/omit';
 import Loans from '.';
-import { formatLoanWithStructure } from '../../utils/loanFunctions';
+import {
+  formatLoanWithStructure,
+  nextDueTaskReducer,
+} from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
-import { fullOffer, userProperty } from '../fragments';
+import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
+import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
 
 Loans.addReducers({
   structure: {
@@ -11,13 +15,12 @@ Loans.addReducers({
       structures: 1,
       properties: omit(userProperty(), ['loans', '$options', 'user']),
       offers: 1,
+      promotionOptions: loanPromotionOption(),
     },
     reduce: formatLoanWithStructure,
   },
   offers: {
-    body: {
-      lenders: { offers: omit(fullOffer(), ['user']) },
-    },
+    body: { lenders: { offers: omit(fullOffer(), ['user']) } },
     reduce: ({ lenders = [] }) =>
       lenders.reduce(
         (allOffers, { offers = [] }) => [...allOffers, ...offers],
@@ -26,16 +29,25 @@ Loans.addReducers({
   },
   hasPromotion: {
     body: { promotions: { _id: 1 } },
-    reduce: ({ promotions }) => promotions && promotions.length > 0,
+    reduce: ({ promotions }) => !!(promotions && promotions.length > 0),
   },
   enableOffers: {
-    body: { logic: 1 },
-    reduce: ({ logic }) => {
-      const step = logic && logic.step;
-      return (
-        step
-        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
-      );
-    },
+    body: { step: 1 },
+    reduce: ({ step }) =>
+      step && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.OFFERS),
+  },
+  hasProProperty: {
+    body: { properties: { category: 1 } },
+    reduce: ({ properties = [] }) =>
+      properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
+  },
+  maxPropertyValueExists: {
+    body: { maxPropertyValue: { date: 1 }, user: { _id: 1 } },
+    reduce: ({ maxPropertyValue, user }) =>
+      !!(!user && maxPropertyValue && maxPropertyValue.date),
+  },
+  nextDueTask: {
+    body: { tasksCache: 1 },
+    reduce: nextDueTaskReducer,
   },
 });

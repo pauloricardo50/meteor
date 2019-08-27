@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Table from 'core/components/Table';
-
 import UsersTableContainer from './UsersTableContainer';
 
 const UsersTable = ({ options: { columnOptions, rows } }) => (
@@ -19,4 +19,7 @@ UsersTable.propTypes = {
   options: PropTypes.object.isRequired,
 };
 
-export default withRouter(UsersTableContainer(UsersTable));
+export default compose(
+  withRouter,
+  UsersTableContainer,
+)(UsersTable);

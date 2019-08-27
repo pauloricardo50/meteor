@@ -30,6 +30,10 @@
 
   background-color: #f1f3f5;
 
+  @include screen(med) {
+    width: 100%;
+  }
+
   &.full-width {
     width: 100%;
   }
@@ -62,7 +66,10 @@
   position: relative;
 
   padding: 16px;
-  padding-top: 72px;
+
+  &.padding {
+    padding-top: 72px;
+  }
 }
 
 .top-bar__row {

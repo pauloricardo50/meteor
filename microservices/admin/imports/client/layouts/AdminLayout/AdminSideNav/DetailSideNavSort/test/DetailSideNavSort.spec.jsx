@@ -6,11 +6,7 @@ import sinon from 'sinon';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import T from 'core/components/Translation';
 import DropdownMenu from 'core/components/DropdownMenu';
-import {
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  USERS_COLLECTION,
-} from 'core/api/constants';
+import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
 
 import DetailSideNavSort from '../DetailSideNavSort';
@@ -44,7 +40,7 @@ describe('DetailSideNavSort', () => {
     menuOptions = renderDropdownMenu(LOANS_COLLECTION).prop('options');
   });
 
-  [LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
+  [LOANS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
     describe(`for ${collectionName} collection`, () => {
       it(`should pass the created and updated at
       sort options to DropdownMenu component`, () => {
@@ -59,7 +55,7 @@ describe('DetailSideNavSort', () => {
     });
   });
 
-  it(`should call setSortOption redux action with the correct sort field & order
+  it.skip(`should call setSortOption redux action with the correct sort field & order
       when clicking a new sort option in the DropdownMenu`, () => {
     const handleClickSortByUpdatedAt = menuOptions[1].onClick;
     handleClickSortByUpdatedAt();
@@ -74,7 +70,7 @@ describe('DetailSideNavSort', () => {
     expect(setSortOption.lastCall.args).to.deep.equal(expectedActionParams);
   });
 
-  it(`should call setSortOption redux action with the DESC sort order when 
+  it.skip(`should call setSortOption redux action with the DESC sort order when 
       previous sort order was ASC on that field`, () => {
     const dropdownMenu = component({
       collectionName: LOANS_COLLECTION,

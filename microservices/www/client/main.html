@@ -1,25 +1,28 @@
 <head>
-    <!-- Necessary for the waves -->
-    <script src="https://cdn.rawgit.com/jarek-foksa/path-data-polyfill.js/master/path-data-polyfill.js"></script>
+  <!-- Necessary for the waves -->
+  <script src="https://cdn.jsdelivr.net/gh/jarek-foksa/path-data-polyfill.js@master/path-data-polyfill.js"></script>
 
-    <!-- is executed when the browser doesn't support/or disables JS -->
-    <noscript>
-        <style>
-            body {
-                font-size: 32px;
-                text-align: center;
-            }
+  <!-- is executed when the browser doesn't support/or disables JS -->
+  <noscript>
+    <style>
+      body {
+        font-size: 32px;
+        text-align: center;
+      }
 
+      body:before {
+        content: 'e-Potek ne fonctionne malheureusement pas sans JavaScript! Téléchargez un navigateur plus récent ici: https://updatemybrowser.org/';
+        line-height: 100px;
+        z-index: 1;
+      }
+    </style>
+  </noscript>
 
-            body:before {
-                content: "e-Potek ne fonctionne malheureusement pas sans JavaScript! Téléchargez un navigateur plus récent ici: https://updatemybrowser.org/";
-                line-height: 100px;
-                z-index: 1;
-            }
-        </style>
-    </noscript>
+  <div id="jss-head"></div>
+  
+  <meteor-bundled-css />
 </head>
 
 <body>
-    <div id="react-root"></div>
+  <div id="react-root"></div>
 </body>

@@ -3,12 +3,14 @@
   "scripts": {
     "deploy-production": "./deploy.sh -e production",
     "deploy-staging": "./deploy.sh -e staging",
+    "deploy-dev": "./deploy.sh -e dev",
     "deploy": "./deploy.sh",
     "mongo-ssh-production": "./ssh-tunnel.sh -e production",
     "mongo-ssh-staging": "./ssh-tunnel.sh -e staging",
     "pull-production-db": "./pull-db.sh -e production",
     "pull-staging-db": "./pull-db.sh -e staging",
     "restore-production-to-staging": "./restoreProdToStaging.sh",
+    "restore-production-to-dev": "./restoreProdToDev.sh",
     "scaleApplication": "./scaleApplication.sh",
     "start-maintenance-production": "./start-maintenance.sh -e production",
     "start-maintenance-staging": "./start-maintenance.sh -e staging",
@@ -16,21 +18,21 @@
     "update-nginx": "./update-nginx.sh"
   },
   "devDependencies": {
-    "@babel/core": "7.1.2",
-    "@babel/node": "7.0.0",
-    "@babel/preset-env": "7.1.0",
-    "@babel/plugin-proposal-class-properties": "7.1.0",
-    "babel-eslint": "^9.0.0",
-    "eslint": "^5.6.0",
-    "eslint-config-airbnb": "^17.1.0",
+    "@babel/core": "^7.5.4",
+    "@babel/node": "^7.5.0",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^17.1.1",
     "eslint-import-resolver-meteor": "^0.4.0",
-    "eslint-plugin-flowtype": "^2.50.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-flowtype": "^3.11.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-meteor": "^5.1.0",
-    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-react": "^7.14.2",
     "node-cmd": "^3.0.0",
     "write-yaml": "^1.0.0",
-    "yargs": "^12.0.1"
+    "yargs": "^13.2.4"
   }
 }

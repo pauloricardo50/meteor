@@ -20,7 +20,11 @@ const OfferModifier = ({ onSubmit, offer, schema }: OfferModifierProps) => (
       primary: true,
       style: { alignSelf: 'center' },
     }}
-    renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) => (
+    renderAdditionalActions={({
+      closeDialog,
+      setDisableActions,
+      disabled,
+    }) => (
       <Button
         onClick={() => {
           const confirm = window.confirm("T'es sûr mon pote?");
@@ -42,5 +46,4 @@ const OfferModifier = ({ onSubmit, offer, schema }: OfferModifierProps) => (
     )}
   />
 );
-
 export default OfferModiferContainer(OfferModifier);

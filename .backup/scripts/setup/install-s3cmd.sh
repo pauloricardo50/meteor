@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-sudo apt-get install -y s3cmd
+# sudo apt-get install -y s3cmd
 
 EXO_SOS_KEY="$(cat $SCRIPTPATH/.exoscale-credentials | sed -n "s/^key:\([^\s]*\)/\1/p")" 
 EXO_SOS_SECRET="$(cat $SCRIPTPATH/.exoscale-credentials | sed -n "s/^secret:\([^\s]*\)/\1/p")" 

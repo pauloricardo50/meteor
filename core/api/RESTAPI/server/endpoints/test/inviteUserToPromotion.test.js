@@ -1,69 +1,69 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-
 import { expect } from 'chai';
-import fetch from 'node-fetch';
 
-import {
-  DOCUMENT_USER_PERMISSIONS,
-  PROMOTION_STATUS,
-} from '../../../../constants';
+import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
+import UserService from '../../../../users/server/UserService';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
 import inviteUserToPromotion from '../inviteUserToPromotion';
-
-const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
+import {
+  fetchAndCheckResponse,
+  makeHeaders,
+  getTimestampAndNonce,
+} from '../../test/apiTestHelpers.test';
 
 let user;
-let apiToken;
 let promotionId;
 const userToInvite = {
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
-  phoneNumber: '1234',
+  phoneNumber: '+41 22 566 01 10',
 };
 
-const checkResponse = ({ res, expectedResponse, status = 200 }) =>
-  res.json().then((body) => {
-    expect(body).to.deep.equal(expectedResponse);
-  });
-
-const fetchAndCheckResponse = ({ url, data, expectedResponse, status }) =>
-  fetch(`http://localhost:${API_PORT}/api${url}`, data).then(res =>
-    checkResponse({ res, expectedResponse, status }));
-
 const api = new RESTAPI();
-api.addEndpoint('/inviteUserToPromotion', 'POST', inviteUserToPromotion);
+api.addEndpoint(
+  '/promotions/:promotionId/invite-customer',
+  'POST',
+  inviteUserToPromotion,
+);
 
-const inviteUser = ({ userData, expectedResponse, status, id }) =>
-  fetchAndCheckResponse({
-    url: '/inviteUserToPromotion',
+const inviteUser = ({
+  userData,
+  expectedResponse,
+  status,
+  id,
+  shareSolvency = undefined,
+}) => {
+  const { timestamp, nonce } = getTimestampAndNonce();
+  const body = { user: userData, shareSolvency };
+  return fetchAndCheckResponse({
+    url: `/promotions/${id || promotionId}/invite-customer`,
     data: {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.apiToken}`,
-      },
-      body: JSON.stringify({
-        promotionId: id || promotionId,
-        user: userData,
+      headers: makeHeaders({
+        userId: user._id,
+        timestamp,
+        nonce,
+        body,
       }),
+      body: JSON.stringify(body),
     },
     expectedResponse,
     status,
   });
+};
 
 const setupPromotion = () => {
   PromotionService.addProUser({ promotionId, userId: user._id });
   PromotionService.setUserPermissions({
     promotionId,
     userId: user._id,
-    permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+    permissions: { canInviteCustomers: true },
   });
   PromotionService.update({
     promotionId,
@@ -71,7 +71,9 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', () => {
+describe('REST: inviteUserToPromotion', function () {
+  this.timeout(10000);
+
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
@@ -87,8 +89,7 @@ describe('REST: inviteUserToPromotion', () => {
 
   beforeEach(() => {
     resetDatabase();
-    apiToken = Random.id(24);
-    user = Factory.create('pro', { apiToken });
+    user = Factory.create('pro');
     promotionId = Factory.create('promotion')._id;
   });
 
@@ -103,6 +104,39 @@ describe('REST: inviteUserToPromotion', () => {
         }" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
+    }).then(() => {
+      const invitedUser = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [userToInvite.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+
+      expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
+    });
+  });
+
+  it('invites a user to promotion with solvency sharing', () => {
+    setupPromotion();
+
+    return inviteUser({
+      userData: userToInvite,
+      shareSolvency: true,
+      expectedResponse: {
+        message: `Successfully invited user "${
+          userToInvite.email
+        }" to promotion id "${promotionId}"`,
+      },
+      status: HTTP_STATUS_CODES.OK,
+    }).then(() => {
+      const invitedUser = UserService.fetchOne({
+        $filters: { 'emails.address': { $in: [userToInvite.email] } },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      });
+
+      expect(invitedUser.loans[0].shareSolvency).to.equal(true);
     });
   });
 
@@ -111,9 +145,9 @@ describe('REST: inviteUserToPromotion', () => {
       inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          status: 500,
+          status: 400,
           message:
-            '[Could not find object with id "12345" in collection "promotions"]',
+            '[Could not find object with filters "{"_id":"12345"}" in collection "promotions"]',
         },
         id: '12345',
       }));
@@ -122,24 +156,26 @@ describe('REST: inviteUserToPromotion', () => {
       inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          message: 'Checking ownership [NOT_AUTHORIZED]',
-          status: 500,
+          message:
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
+          status: 400,
         },
       }));
 
-    it('user is not allowed to modify the promotion', () => {
+    it('user is not allowed to invite customers to the promotion', () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       PromotionService.setUserPermissions({
         promotionId,
         userId: user._id,
-        permissions: DOCUMENT_USER_PERMISSIONS.READ,
+        permissions: { canInviteCustomers: false },
       });
 
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          status: 500,
-          message: 'Checking permissions [NOT_AUTHORIZED]',
+          status: 400,
+          message:
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });
@@ -149,16 +185,16 @@ describe('REST: inviteUserToPromotion', () => {
       PromotionService.setUserPermissions({
         promotionId,
         userId: user._id,
-        permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+        permissions: { canInviteCustomers: true },
       });
 
       return inviteUser({
         userData: userToInvite,
         status: HTTP_STATUS_CODES.FORBIDDEN,
         expectedResponse: {
-          status: 500,
+          status: 400,
           message:
-            "[Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.]",
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });
@@ -172,9 +208,8 @@ describe('REST: inviteUserToPromotion', () => {
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          status: 500,
-          message:
-            'Match error: Expected string, got undefined in field promotionId',
+          status: 400,
+          message: '[No promotionId provided]',
         },
       });
     });
@@ -194,8 +229,8 @@ describe('REST: inviteUserToPromotion', () => {
         inviteUser({
           userData: userToInvite,
           expectedResponse: {
-            status: 500,
-            message: '[Cet utilisateur est déjà invité à cette promotion]',
+            status: HTTP_STATUS_CODES.CONFLICT,
+            message: 'Cet utilisateur est déjà invité à cette promotion [409]',
           },
         }));
     });

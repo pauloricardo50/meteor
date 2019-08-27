@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import T from 'core/components/Translation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
@@ -21,12 +22,18 @@ const SingleBorrowerHeader = ({
   },
 }) => (
   <div className="single-borrower-page-header">
+    {name && (
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
+    )}
     <div className="top">
       <div>
         <h1>{name || <T id="general.borrower" />}</h1>
       </div>
       <div>
         <ConfirmMethod
+          buttonProps={{ outlined: true, error: true }}
           label="Supprimer"
           method={() => borrowerDelete.run({ borrowerId })}
         />

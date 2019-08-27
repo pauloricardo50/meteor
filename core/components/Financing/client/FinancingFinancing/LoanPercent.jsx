@@ -13,7 +13,11 @@ type LoanPercentProps = {};
 
 const LoanPercent = ({ handleChange, ...props }: LoanPercentProps) => (
   <span className="wantedLoanPercent">
-    <PercentInput value={getBorrowRatio(props)} onChange={handleChange} />
+    <PercentInput
+      value={getBorrowRatio(props)}
+      onChange={handleChange}
+      disabled={props.structure.disableForms}
+    />
   </span>
 );
 
@@ -21,7 +25,7 @@ export default compose(
   FinancingDataContainer,
   SingleStructureContainer,
   StructureUpdateContainer,
-  withProps(({ structureId, updateStructure, ...data }) => ({
+  withProps(({ updateStructure, ...data }) => ({
     handleChange: (borrowValue) => {
       const wantedLoan = FinancingCalculator.getLoanFromBorrowRatio(
         borrowValue,

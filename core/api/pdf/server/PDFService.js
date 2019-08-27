@@ -1,66 +1,97 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import { check, Match } from 'meteor/check';
 
 import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 
-import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
-import adminLoan from '../../loans/queries/adminLoan';
+import { adminLoans } from '../../loans/queries';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
-import LoanBankPDF from '../generatePDF/components/LoanBankPDF';
-import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
-import { frenchErrors } from './pdfHelpers';
+import { lenderRules } from '../../fragments';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import LoanBankPDF from './pdfComponents/LoanBankPDF';
+import { PDF_TYPES } from '../pdfConstants';
+import { validateLoanPdf } from './pdfValidators';
 
 const PDF_URL = 'https://docraptor.com/docs';
 
 class PDFService {
-  constructor() {
-    this.module = null;
-  }
-
   makePDF = ({ type, params, options, htmlOnly }) => {
+    this.checkParams({ params, type });
     const data = this.getDataForPDF(type, params);
     this.checkData({ data, type });
+
     const { component, props, fileName, pdfName } = this.makeConfigForPDF({
       data,
       type,
       options,
     });
-    const html = this.getComponentAsHTML(component, props);
+    const html = this.getComponentAsHTML(component, props, pdfName);
 
     if (htmlOnly) {
-      return Promise.resolve(html);
+      return Promise.resolve({ html, pdfName });
     }
 
     return this.fetchPDF(html, fileName, pdfName);
   };
 
   checkData = ({ data, type }) => {
-    const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
+    switch (type) {
+    case PDF_TYPES.LOAN: {
+      try {
+        validateLoanPdf(data);
+      } catch (error) {
+        throw new Meteor.Error(error);
+      }
+      break;
+    }
+    default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
+    }
+  };
 
-    try {
-      checkObjectStructure({
-        obj: data,
-        template: TEMPLATES[type],
-      });
-    } catch (error) {
-      throw new Meteor.Error(error);
+  checkParams = ({ params, type }) => {
+    switch (type) {
+    case PDF_TYPES.LOAN: {
+      const { loanId, organisationId, structureIds } = params;
+      check(loanId, String);
+      check(organisationId, Match.Maybe(String));
+      check(structureIds, Match.Maybe([String]));
+      break;
+    }
+
+    default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
   getDataForPDF = (type, params) => {
     switch (type) {
     case PDF_TYPES.LOAN: {
-      const { loanId } = params;
-      const loan = adminLoan.clone({ _id: loanId }).fetchOne();
+      const { loanId, organisationId } = params;
+
+      const organisation = organisationId
+          && OrganisationService.fetchOne({
+            $filters: { _id: organisationId },
+            lenderRules: lenderRules(),
+            name: 1,
+            logo: 1,
+          });
+      const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+
       if (loan.hasPromotion) {
-        return formatLoanWithPromotion(loan);
+        return {
+          ...params,
+          loan: formatLoanWithPromotion(loan),
+          organisation,
+        };
       }
 
-      return loan;
+      return { ...params, loan, organisation };
     }
     default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
@@ -68,14 +99,19 @@ class PDFService {
     const fileName = Random.id();
 
     switch (type) {
-    case PDF_TYPES.LOAN:
+    case PDF_TYPES.LOAN: {
+      const { loan, organisation } = data;
       return {
         component: LoanBankPDF,
-        props: { loan: data, options },
+        props: { ...data, options },
         fileName,
-        pdfName: `${data.name} - ${type}`,
+        pdfName: organisation
+          ? `${loan.name} - ${organisation.name}`
+          : loan.name,
       };
+    }
     default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
@@ -86,8 +122,8 @@ class PDFService {
     return base64;
   };
 
-  getComponentAsHTML = (component, props) =>
-    ReactDOMServer.renderToStaticMarkup(component(props));
+  getComponentAsHTML = (component, props, pdfName) =>
+    ReactDOMServer.renderToStaticMarkup(component({ ...props, pdfName }));
 
   fetchPDF = (html, fileName, pdfName) => {
     const API_KEY = Meteor.settings.DOC_RAPTOR_API_KEY;
@@ -97,9 +133,9 @@ class PDFService {
         document_content: html,
         name: pdfName,
         type: 'pdf',
-        test: !Meteor.isProduction || Meteor.isStaging,
+        test: !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment,
         // help: true,
-        prince_options: { media: 'screen' },
+        prince_options: { media: 'screen', baseurl: 'https://www.e-potek.ch' },
       },
     };
 
@@ -117,7 +153,8 @@ class PDFService {
           stream.on('finish', resolve);
         });
       })
-      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`));
+      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`))
+      .then(base64 => ({ base64, pdfName }));
   };
 }
 

@@ -37,11 +37,7 @@ const DashboardInfoTeamMember = ({
           )}
           onSubmit={values => editContact(name, values)}
           model={{ name, title, email, phoneNumber }}
-          renderAdditionalActions={({
-            handleClose,
-            disabled,
-            setDisableActions,
-          }) => (
+          renderAdditionalActions={({ handleClose, setDisableActions }) => (
             <Button
               error
               onClick={() => {

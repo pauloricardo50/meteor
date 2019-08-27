@@ -82,6 +82,16 @@ export const setAdditionalDoc = new Method({
     additionalDocId: String,
     requiredByAdmin: Boolean,
     label: Match.Optional(String),
+    category: Match.Optional(String),
+  },
+});
+
+export const removeAdditionalDoc = new Method({
+  name: 'removeAdditionalDoc',
+  params: {
+    collection: String,
+    id: String,
+    additionalDocId: String,
   },
 });
 
@@ -95,5 +105,28 @@ export const updateDocument = new Method({
     collection: String,
     docId: String,
     object: Object,
+  },
+});
+
+export const updateDocumentUnset = new Method({
+  name: 'updateDocumentUnset',
+  params: {
+    collection: String,
+    docId: String,
+    object: Object,
+  },
+});
+
+export const generateScenario = new Method({
+  name: 'generateScenario',
+  params: {
+    scenario: Object,
+  },
+});
+
+export const referralExists = new Method({
+  name: 'referralExists',
+  params: {
+    refId: String,
   },
 });

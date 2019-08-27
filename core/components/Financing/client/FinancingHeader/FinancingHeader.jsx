@@ -17,28 +17,35 @@ type FinancingHeaderProps = {
 
 const FinancingHeader = ({
   selectedStructure,
-  loan: { structures, _id: loanId },
+  loan,
   handleEditTitle,
   handleEditDescription,
-}: FinancingHeaderProps) => (
-  <ScrollSyncPane>
-    <div className="card1 financing-structures-section financing-structures-header">
-      <FinancingLabels
-        config={[{ label: () => <FinancingHeaderAdder loanId={loanId} /> }]}
-      />
-      {structures.map((structure, index) => (
-        <FinancingSingleHeader
-          structureId={structure.id}
-          key={structure.id}
-          index={index}
-          handleEditTitle={handleEditTitle}
-          handleEditDescription={handleEditDescription}
-          loanId={loanId}
-          selected={selectedStructure === structure.id}
+}: FinancingHeaderProps) => {
+  const { structures, _id: loanId } = loan;
+  return (
+    <ScrollSyncPane>
+      <div className="card1 financing-structures-section financing-structures-header">
+        <FinancingLabels
+          config={[
+            {
+              label: () => <FinancingHeaderAdder loan={loan} />,
+            },
+          ]}
         />
-      ))}
-    </div>
-  </ScrollSyncPane>
-);
+        {structures.map((structure, index) => (
+          <FinancingSingleHeader
+            structureId={structure.id}
+            key={structure.id}
+            index={index}
+            handleEditTitle={handleEditTitle}
+            handleEditDescription={handleEditDescription}
+            loanId={loanId}
+            selected={selectedStructure === structure.id}
+          />
+        ))}
+      </div>
+    </ScrollSyncPane>
+  );
+};
 
 export default FinancingDataContainer(FinancingHeader);

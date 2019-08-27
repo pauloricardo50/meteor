@@ -1,5 +1,7 @@
-import { expect } from 'chai';
-import { ADMIN_EMAIL, USER_PASSWORD } from '../../imports/core/cypress/utils';
+import {
+  ADMIN_EMAIL,
+  USER_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Loans', () => {
   before(() => {
@@ -27,20 +29,28 @@ describe('Loans', () => {
     cy.get('.status-label').should('contain', 'Prospect');
     cy.contains('Prospect').click();
     cy.contains('Closing').click();
+    cy.contains('Ok').click();
     cy.get('.status-label').should('not.contain', 'Prospect');
     cy.get('.status-label').should('contain', 'Closing');
   });
 
   it('should add a task to the loan', () => {
     cy.contains('Nouvelle hypothèque').click();
-    cy.contains('Ajouter tâche').click();
+
+    cy.get('.tasks-table').should('not.exist');
+
+    cy.get('.single-loan-page-tasks')
+      .contains('Ajouter tâche')
+      .click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
-    cy.get('.tasks-table').contains('Cypress Task');
+    cy.get('.tasks-table tr').should('have.length', 2);
   });
 
   it('should add lenders', () => {
     cy.contains('Nouvelle hypothèque').click();
+    cy.contains('Prospect').click();
+    cy.contains('En cours').click();
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
 
@@ -55,11 +65,6 @@ describe('Loans', () => {
       .click();
     cy.contains('Fermer').click();
 
-    // Wait for reactive query to come back
-    cy.wait(2000);
-
-    cy.get('.lender.card1').then((lenders) => {
-      expect(lenders.length).to.equal(2);
-    });
+    cy.get('.lender.card1').should('have.length', 2);
   });
 });

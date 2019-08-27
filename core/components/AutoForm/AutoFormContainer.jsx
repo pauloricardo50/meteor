@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { withProps } from 'recompose';
 
 import {
@@ -7,14 +6,33 @@ import {
   PROPERTIES_COLLECTION,
   MORTGAGE_NOTES_COLLECTION,
 } from '../../api/constants';
+import * as methods from '../../api/methods';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
-const ArrayInputContainer = withProps(({ collection }) => {
+const makeFunc = ({ idKey, beforeUpdate, func, override }) => (rawParams) => {
+  if (override) {
+    return override(idKey)(rawParams);
+  }
+  const params = createParams(rawParams, idKey);
+  if (beforeUpdate) {
+    beforeUpdate(params);
+  }
+
+  return methods[func].run(params);
+};
+
+const AutoFormContainer = withProps(({ collection, beforeUpdate, overrides = {} }) => {
   let popFunc;
   let pushFunc;
   let updateFunc;
   let idKey;
+
+  const {
+    popFunc: popFuncOverride,
+    pushFunc: pushFuncOverride,
+    updateFunc: updateFuncOverride,
+  } = overrides;
 
   switch (collection) {
   case LOANS_COLLECTION:
@@ -46,40 +64,25 @@ const ArrayInputContainer = withProps(({ collection }) => {
   }
 
   return {
-    updateFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        Meteor.call(updateFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
-          }
-
-          resolve(result);
-        });
-      }),
-    popFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        Meteor.call(popFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
-          }
-
-          resolve(result);
-        });
-      }),
-    pushFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        Meteor.call(pushFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
-          }
-
-          resolve(result);
-        });
-      }),
+    updateFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: updateFunc,
+      override: updateFuncOverride,
+    }),
+    popFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: popFunc,
+      override: popFuncOverride,
+    }),
+    pushFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: pushFunc,
+      override: pushFuncOverride,
+    }),
   };
 });
 
-export default ArrayInputContainer;
+export default AutoFormContainer;

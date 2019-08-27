@@ -1,9 +1,4 @@
 import { withSmartQuery } from 'core/api/containerToolkit';
-import query from 'core/api/contacts/queries/contacts';
+import { adminContacts as query } from 'core/api/contacts/queries';
 
-export default withSmartQuery({
-  query,
-  queryOptions: { reactive: false },
-  dataName: 'contacts',
-  smallLoader: true,
-});
+export default withSmartQuery({ query, dataName: 'contacts' });

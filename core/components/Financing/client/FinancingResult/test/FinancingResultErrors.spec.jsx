@@ -9,6 +9,7 @@ import { OWN_FUNDS_TYPES } from 'core/api/constants';
 import { FinancingResultErrors } from '../FinancingResultErrors';
 import FinancingResultChart from '../FinancingResultChart';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
+import Calculator from '../../../../../utils/Calculator';
 
 describe('FinancingResultErrors', () => {
   let props;
@@ -17,46 +18,49 @@ describe('FinancingResultErrors', () => {
   let structureId;
   let offer;
   let offerId;
+  let structure;
+  let borrower;
   const component = () => shallow(<FinancingResultErrors {...props} />);
 
   beforeEach(() => {
-    propertyId = 'property';
+    propertyId = 'propertyId';
     structureId = 'structureId';
     offerId = 'offerId';
     property = { _id: propertyId, value: 100000 };
     offer = { _id: offerId, interest10: 0.01 };
+    structure = {
+      propertyId,
+      wantedLoan: 80000,
+      id: structureId,
+      ownFunds: [],
+      propertyWork: 0,
+    };
+    borrower = {};
     props = {
-      structure: { propertyId, wantedLoan: 80000, property },
-      properties: [property],
       loan: {
         properties: [property],
-        structures: [
-          { propertyId, wantedLoan: 80000, property, id: structureId },
-        ],
+        structures: [structure],
+        offers: [offer],
+        borrowers: [borrower],
       },
-      offers: [offer],
+      Calculator,
       structureId,
     };
   });
 
   it('warns if no mortgage loan exists', () => {
-    props.structure = { ...props.structure, wantedLoan: 0 };
+    structure.wantedLoan = 0;
     expect(component()
       .find(T)
       .props().id).to.contain('noMortgageLoan');
 
-    props.structure = { ...props.structure, wantedLoan: undefined };
+    structure.wantedLoan = undefined;
     expect(component()
       .find(T)
       .props().id).to.contain('noMortgageLoan');
   });
 
   it('warns of missing own funds', () => {
-    props.structure = {
-      ...props.structure,
-      propertyWork: 0,
-      ownFunds: [],
-    };
     expect(component()
       .find(T)
       .props().id).to.contain('missingOwnFunds');
@@ -69,22 +73,15 @@ describe('FinancingResultErrors', () => {
   });
 
   it('warns of too much own funds', () => {
-    props.structure = {
-      ...props.structure,
-      propertyWork: 0,
-      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 50000 }],
-    };
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 50000 }];
+
     expect(component()
       .find(T)
       .props().id).to.contain('tooMuchOwnFunds');
   });
 
   it('warns of a high income ratio', () => {
-    props.structure = {
-      ...props.structure,
-      propertyWork: 0,
-      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }],
-    };
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
 
     expect(component()
       .find(T)
@@ -92,19 +89,15 @@ describe('FinancingResultErrors', () => {
   });
 
   it('warns of missing cash', () => {
-    props.structure = {
-      ...props.structure,
-      propertyWork: 0,
-      ownFunds: [
-        { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 12000 },
-        {
-          type: OWN_FUNDS_TYPES.INSURANCE_2,
-          value: 12000,
-          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-        },
-      ],
-    };
-    props.borrowers = [{ salary: 100000 }];
+    structure.ownFunds = [
+      { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 12000 },
+      {
+        type: OWN_FUNDS_TYPES.INSURANCE_2,
+        value: 12000,
+        usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+      },
+    ];
+    borrower.salary = 100000;
 
     expect(component()
       .find(T)
@@ -112,14 +105,10 @@ describe('FinancingResultErrors', () => {
   });
 
   it('warns of invalid interest rates', () => {
-    props.structure = {
-      ...props.structure,
-      propertyWork: 0,
-      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }],
-      offerId,
-      loanTranches: [{ type: 'interest5', value: 1 }],
-    };
-    props.borrowers = [{ salary: 100000 }];
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
+    structure.offerId = offerId;
+    structure.loanTranches = [{ type: 'interest5', value: 1 }];
+    borrower.salary = 100000;
 
     expect(component()
       .find(T)
@@ -127,12 +116,8 @@ describe('FinancingResultErrors', () => {
   });
 
   it('returns null if no error exists in the structure', () => {
-    props.structure = {
-      ...props.structure,
-      propertyWork: 0,
-      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }],
-    };
-    props.borrowers = [{ salary: 100000 }];
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
+    borrower.salary = 100000;
     expect(component()
       .find(FinancingResultChart)
       .exists()).to.equal(true);

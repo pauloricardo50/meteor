@@ -1,11 +1,11 @@
+import { BONUS_ALGORITHMS } from 'core/config/financeConstants';
 import { RESIDENCE_TYPE } from '../properties/propertyConstants';
+import { EXPENSES } from '../borrowers/borrowerConstants';
 
 export const LENDER_RULES_COLLECTION = 'lenderRules';
 
 export const LENDER_RULES_QUERIES = {
-  // Insert your queries name here
-  // Example:
-  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+  ORGANISATION_LENDER_RULES: 'ORGANISATION_LENDER_RULES',
 };
 
 export const INCOME_CONSIDERATION_TYPES = {
@@ -18,13 +18,70 @@ export const REAL_ESTATE_CONSIDERATION_TYPES = {
   SUBTRACT_FROM_EXPENSES: 'SUBTRACT_FROM_EXPENSES',
 };
 
-export const OTHER_EXPENSES_CONSIDERATION_TYPES = {
+export const EXPENSES_CONSIDERATION_TYPES = {
   SUBTRACT_FROM_INCOME: 'SUBTRACT_FROM_INCOME',
   ADD_TO_EXPENSES: 'ADD_TO_EXPENSES',
 };
 
+export const LENDER_RULES_VARIABLES = {
+  INCOME: 'income',
+  RESIDENCE_TYPE: 'residenceType',
+  CANTON: 'canton',
+  BORROW_RATIO: 'borrowRatio',
+  WANTED_LOAN: 'wantedLoan',
+  PROPERTY_VALUE: 'propertyValue',
+  INSIDE_AREA: 'insideArea',
+  BANK_FORTUNE: 'bankFortune',
+  PROPERTY_TYPE: 'propertyType',
+  ZIP_CODE: 'zipCode',
+  REMAINING_BANK_FORTUNE: 'remainingBankFortune',
+  IS_NEW_PROPERTY: 'isNewProperty',
+};
+
+export const LENDER_RULES_OPERATORS = {
+  EQUALS: '===',
+  MORE_THAN: '>',
+  MORE_THAN_OR_EQUAL: '>=',
+  LESS_THAN: '<',
+  LESS_THAN_OR_EQUAL: '<=',
+  IN: 'in',
+};
+
+export const DEFAULT_MAIN_RESIDENCE_RULES = [
+  {
+    [LENDER_RULES_OPERATORS.IN]: [
+      { var: 'residenceType' },
+      [RESIDENCE_TYPE.MAIN_RESIDENCE],
+    ],
+  },
+];
+
+export const DEFAULT_SECONDARY_RESIDENCE_RULES = [
+  {
+    [LENDER_RULES_OPERATORS.IN]: [
+      { var: 'residenceType' },
+      [RESIDENCE_TYPE.SECOND_RESIDENCE],
+    ],
+  },
+];
+
+// Keep the deltas above other expenses so they appear in the right order
+export const EXPENSE_TYPES = {
+  REAL_ESTATE_DELTA_POSITIVE: 'REAL_ESTATE_DELTA_POSITIVE',
+  REAL_ESTATE_DELTA_NEGATIVE: 'REAL_ESTATE_DELTA_NEGATIVE',
+  ...EXPENSES,
+  THEORETICAL_REAL_ESTATE: 'THEORETICAL_REAL_ESTATE',
+};
+
+export const EXPENSE_TYPES_WITHOUT_DELTAS = Object.values(EXPENSE_TYPES).filter(value =>
+  ![
+    EXPENSE_TYPES.REAL_ESTATE_DELTA_POSITIVE,
+    EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE,
+  ].includes(value));
+
 export const DEFAULT_VALUE_FOR_ALL = {
   incomeConsiderationType: INCOME_CONSIDERATION_TYPES.GROSS,
+  bonusAlgorithm: BONUS_ALGORITHMS.WEAK_AVERAGE,
   bonusConsideration: 0.5,
   bonusHistoryToConsider: 3,
   companyIncomeConsideration: 1,
@@ -36,8 +93,7 @@ export const DEFAULT_VALUE_FOR_ALL = {
   realEstateIncomeConsiderationType:
     REAL_ESTATE_CONSIDERATION_TYPES.SUBTRACT_FROM_EXPENSES,
   investmentIncomeConsideration: 1,
-  otherExpensesConsiderationType:
-    OTHER_EXPENSES_CONSIDERATION_TYPES.SUBTRACT_FROM_INCOME,
+  expensesSubtractFromIncome: EXPENSE_TYPES_WITHOUT_DELTAS,
   theoreticalInterestRate: 0.05,
   theoreticalMaintenanceRate: 0.01,
   amortizationGoal: 0.65,
@@ -46,37 +102,3 @@ export const DEFAULT_VALUE_FOR_ALL = {
   maxIncomeRatio: 0.3333,
   allowPledge: true,
 };
-
-export const LENDER_RULES_VARIABLES = {
-  INCOME: 'income',
-  RESIDENCE_TYPE: 'residenceType',
-  CANTON: 'canton',
-  BORROW_RATIO: 'borrowRatio',
-  WANTED_LOAN: 'wantedLoan',
-};
-
-export const LENDER_RULES_OPERATORS = {
-  EQUALS: '===',
-  MORE_THAN: '>',
-  MORE_THAN_OR_EQUAL: '>=',
-  LESS_THAN: '<',
-  LESS_THAN_OR_EQUAL: '<=',
-};
-
-export const DEFAULT_MAIN_RESIDENCE_RULES = [
-  {
-    [LENDER_RULES_OPERATORS.EQUALS]: [
-      { var: 'residenceType' },
-      RESIDENCE_TYPE.MAIN_RESIDENCE,
-    ],
-  },
-];
-
-export const DEFAULT_SECONDARY_RESIDENCE_RULES = [
-  {
-    [LENDER_RULES_OPERATORS.EQUALS]: [
-      { var: 'residenceType' },
-      RESIDENCE_TYPE.SECOND_RESIDENCE,
-    ],
-  },
-];

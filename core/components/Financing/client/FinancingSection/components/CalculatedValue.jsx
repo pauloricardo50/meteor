@@ -54,4 +54,5 @@ const CalculatedValue = ({
 export default compose(
   SingleStructureContainer,
   FinancingDataContainer,
+  React.memo,
 )(CalculatedValue);

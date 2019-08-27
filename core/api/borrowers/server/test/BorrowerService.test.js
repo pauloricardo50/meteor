@@ -25,7 +25,7 @@ const checkDocuments = ({
     expectedDocuments.every(({ id }) => id !== doc.id))).to.not.exist;
 };
 
-describe('BorrowerService', () => {
+describe('BorrowerService ', () => {
   let borrower;
   let borrowerId;
   let user;
@@ -75,8 +75,8 @@ describe('BorrowerService', () => {
     });
 
     it('only removes the link if the borrower has multiple loans', () => {
-      const loanId = Factory.create('loan', { borrowerIds: [borrowerId] });
-      const loanId2 = Factory.create('loan', { borrowerIds: [borrowerId] });
+      const loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
+      const loanId2 = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
 
       BorrowerService.remove({ borrowerId, loanId });
 
@@ -211,7 +211,7 @@ describe('BorrowerService', () => {
           insurance3B: [],
           expenses: [
             {
-              description: borrowerConstants.EXPENSES.MORTGAGE_LOAN,
+              description: borrowerConstants.EXPENSES.PERSONAL_LOAN,
               value: 123,
             },
           ],

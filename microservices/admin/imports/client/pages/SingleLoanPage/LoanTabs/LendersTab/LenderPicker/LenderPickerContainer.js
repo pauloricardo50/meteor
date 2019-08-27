@@ -2,9 +2,10 @@ import { withProps, compose, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { withSmartQuery } from 'core/api';
-import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
 import { lenderInsert, lenderRemove } from 'core/api/methods';
+import { lenderRules } from 'core/api/fragments';
 
 const formatOrganisations = orgs =>
   orgs.reduce(
@@ -22,12 +23,13 @@ const tagPickerSchema = new SimpleSchema({
 });
 
 export default compose(
-  withState('tags', 'setTags', undefined),
+  withState('tags', 'setTags', [ORGANISATION_TAGS.CH_RETAIL]),
   withSmartQuery({
     query: adminOrganisations,
     params: ({ tags }) => ({
       features: [ORGANISATION_FEATURES.LENDER],
       tags,
+      $body: { name: 1, logo: 1, type: 1, lenderRules: lenderRules() },
     }),
     dataName: 'organisations',
   }),

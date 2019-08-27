@@ -2,9 +2,10 @@
 import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
+import HighchartsExportData from 'highcharts-export-data';
 
-import LineChart from 'core/components/charts/LineChart';
-import Toggle from 'core/components/Material/Toggle/Toggle';
+import Chart from 'core/components/charts/Chart';
+import Toggle from 'core/components/Toggle';
 import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 type InterestRatesChartProps = {
@@ -28,12 +29,13 @@ const InterestRatesChart = ({
       toggled={showRanges}
       labelRight="Afficher les étendues"
     />
-    <LineChart
+    <Chart
       title={title}
-      lines={lines}
+      series={lines}
       config={config}
       HighchartsExporting={HighchartsExporting}
       HighchartsMore={HighchartsMore}
+      HighchartsExportData={HighchartsExportData}
     />
   </>
 );

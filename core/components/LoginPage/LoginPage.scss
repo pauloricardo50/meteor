@@ -11,6 +11,11 @@
   @include screen(med) {
     flex-direction: column;
   }
+  @include screen(med) {
+    .right .content {
+      margin-top: 0;
+    }
+  }
 
   .right,
   .left {
@@ -35,6 +40,10 @@
   .left {
     color: white;
     background-color: $primary;
+
+    h1 {
+      color: white;
+    }
 
     .content {
       flex-grow: 1;
@@ -61,22 +70,16 @@
     }
   }
 
+  .right .content {
+    margin-top: 100px;
+  }
+
   .divider {
     width: 50px;
     height: 4px;
     margin: 8px 0;
 
     background-color: white;
-  }
-
-  .no-account {
-    align-self: flex-end;
-
-    margin-bottom: 40px;
-
-    opacity: 0.6;
-
-    justify-self: flex-start;
   }
 
   a {
@@ -89,6 +92,10 @@
   }
 
   .login-field {
+    margin-bottom: 16px;
+  }
+
+  .no-account {
     margin-bottom: 16px;
   }
 }

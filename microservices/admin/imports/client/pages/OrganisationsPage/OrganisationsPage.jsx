@@ -1,19 +1,22 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import { OrganisationSchema } from 'core/api/organisations/organisations';
-import Icon from 'core/components/Icon/Icon';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import Icon from 'core/components/Icon';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import OrganisationsPageContainer from './OrganisationsPageContainer';
 import Organisation from './Organisation';
+import OrganisationAdder from './OrganisationAdder';
+import OrganisationFilters from './OrganisationFilters';
+import OrganisationsByFeature from './OrganisationsByFeature';
 
 type OrganisationsPageProps = {
   insertOrganisation: Function,
   organisations: Array<Object>,
-  filtersSchema: Object,
   filters: Object,
   setFilters: Function,
 };
@@ -21,11 +24,13 @@ type OrganisationsPageProps = {
 const OrganisationsPage = ({
   insertOrganisation,
   organisations,
-  filtersSchema,
   filters,
   setFilters,
 }: OrganisationsPageProps) => (
   <div className="card1 card-top organisations-page">
+    <Helmet>
+      <title>Organisations</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[ORGANISATIONS_COLLECTION]}
@@ -34,37 +39,26 @@ const OrganisationsPage = ({
       />
       <span>Organisations</span>
     </h1>
-    <AutoFormDialog
-      schema={OrganisationSchema.omit('logo', 'contactIds', 'canton')}
-      buttonProps={{
-        label: 'Ajouter organisation',
-        raised: true,
-        primary: true,
-      }}
-      title="Ajouter organisation"
-      onSubmit={insertOrganisation}
-    />
-    <AutoForm
-      schema={filtersSchema}
-      model={filters}
-      onSubmit={setFilters}
-      autosave
-      className="filters-form"
-    >
-      <div className="filters center">
-        <CustomAutoField name="type" />
-        <CustomAutoField name="features" />
-        <CustomAutoField name="tags" />
-      </div>
-    </AutoForm>
 
-    <div className="organisations">
+    <OrganisationAdder insertOrganisation={insertOrganisation} />
+
+    <OrganisationFilters filters={filters} setFilters={setFilters} />
+
+    {[...Object.keys(ORGANISATION_FEATURES), null].map(feature => (
+      <OrganisationsByFeature
+        organisations={organisations}
+        feature={feature}
+        key={feature || 'other'}
+      />
+    ))}
+
+    {/* <div className="organisations">
       {organisations
         .sort(({ name: nameA }, { name: nameB }) => nameA.localeCompare(nameB))
         .map(org => (
           <Organisation organisation={org} key={org._id} />
         ))}
-    </div>
+    </div> */}
   </div>
 );
 

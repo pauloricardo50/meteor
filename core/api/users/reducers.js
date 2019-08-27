@@ -12,4 +12,11 @@ Users.addReducers({
     body: { firstName: 1, lastName: 1, emails: 1 },
     reduce: getUserDisplayName,
   },
+  phoneNumber: {
+    body: {
+      phoneNumbers: 1,
+    },
+    reduce: ({ phoneNumbers = [] }) =>
+      (!!phoneNumbers.length && phoneNumbers[0]) || '',
+  },
 });

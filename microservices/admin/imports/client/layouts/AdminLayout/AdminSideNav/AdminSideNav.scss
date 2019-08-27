@@ -1,85 +1,101 @@
-.admin-layout .main-row .admin-side-nav {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 0;
-  flex-shrink: 0;
+$admin-side-nav-width: 120px;
 
-  border-right: 1px solid $border-grey;
-  background-color: white;
+.admin-side-nav {
+  display: flex;
+  height: 100%;
+}
+
+.main-side-nav {
+  padding-top: 64px;
+  width: $admin-side-nav-width;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  // border-right: 1px solid $border-grey;
+  box-sizing: border-box;
 
   .collection-icon {
     width: 32px !important;
     height: 32px;
   }
+
+  &-list-item {
+    width: $admin-side-nav-width;
+    box-sizing: border-box;
+
+    > div {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .label {
+      max-width: 80px;
+      margin: 0;
+
+      text-align: center;
+
+      color: inherit;
+    }
+
+    &.primary {
+      color: $primary;
+    }
+  }
 }
 
-.admin-side-nav .main-side-nav-list-item {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
+.detail-side-nav {
+  padding-top: 64px;
+  height: 100%;
+  box-sizing: border-box;
 
-.admin-side-nav .main-side-nav-list-item .label {
-  max-width: 80px;
-  margin: 0;
-
-  text-align: center;
-
-  color: inherit;
-}
-
-.admin-side-nav .main-side-nav-list-item.primary {
-  color: $primary;
-}
-
-.admin-side-nav .detail-side-nav {
   display: flex;
   flex-direction: column;
 
   width: 300px;
 
   border-left: 1px solid $border-grey;
-}
 
-.detail-side-nav .detail-side-nav-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  &-list {
+    flex-grow: 1;
+    overflow: scroll;
+  }
 
-  padding: 16px 0;
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  text-decoration: underline;
+    padding: 16px 0;
 
-  color: inherit;
-  border-bottom: 1px solid $border-grey;
-}
+    text-decoration: underline;
 
-.detail-side-nav .detail-side-nav-header h3 {
-  margin: 0;
-}
+    color: inherit;
+    border-bottom: 1px solid $border-grey;
 
-.detail-side-nav .detail-side-nav-header:hover h3 {
-  color: $primary;
-}
+    h3 {
+      margin: 0;
+    }
 
-.detail-side-nav .detail-side-nav-header:hover {
-  color: $primary;
-}
+    &:hover {
+      color: $primary;
 
-.detail-side-nav .detail-side-nav-list {
-  overflow: scroll;
-}
+      h3 {
+        color: $primary;
+      }
+    }
+  }
 
-.detail-side-nav .side-nav-pagination {
-  display: flex;
-  justify-content: center;
+  .side-nav-pagination {
+    display: flex;
+    justify-content: center;
 
-  padding: 16px;
-  padding-top: 32px;
-}
+    padding: 16px;
+    padding-top: 32px;
+  }
 
-.detail-side-nav {
   .filter-value {
     display: flex;
     align-items: center;

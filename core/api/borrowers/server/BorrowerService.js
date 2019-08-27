@@ -9,12 +9,7 @@ export class BorrowerService extends CollectionService {
   }
 
   get(borrowerId) {
-    return this.collection
-      .createQuery({
-        $filters: { _id: borrowerId },
-        ...loanBorrower(),
-      })
-      .fetchOne();
+    return this.fetchOne({ $filters: { _id: borrowerId }, ...loanBorrower() });
   }
 
   update = ({ borrowerId, object }) =>
@@ -72,11 +67,11 @@ export class BorrowerService extends CollectionService {
   }
 
   cleanUpMortgageNotes({ borrowerId }) {
-    const { mortgageNotes = [], loans = [] } = this.createQuery({
+    const { mortgageNotes = [], loans = [] } = this.fetchOne({
       $filters: { _id: borrowerId },
       mortgageNotes: { _id: 1 },
       loans: { structures: 1 },
-    }).fetchOne();
+    });
     const borrowerMortgageNoteIds = mortgageNotes.map(({ _id }) => _id);
 
     loans.forEach(({ _id: loanId, structures = [] }) => {

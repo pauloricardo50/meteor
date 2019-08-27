@@ -1,44 +1,31 @@
 import faker from 'faker/locale/fr';
+
 import LoanService from '../api/loans/server/LoanService';
 import {
   PURCHASE_TYPE,
   INTEREST_RATES,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
+  STEPS,
+  APPLICATION_TYPES,
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
+import { adminLoans } from '../api/loans/queries';
+import BorrowerService from '../api/borrowers/server/BorrowerService';
+import PropertyService from '../api/properties/server/PropertyService';
+import { createFakeOffer } from './offerFixtures';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
-
-const logic1 = {};
-
-const logic2 = {
-  step: 2,
-  verification: {
-    requested: false,
-    validated: true,
-    verifiedAt: new Date(),
-    comments: [],
-  },
-};
-
-const logic3 = {
-  step: 3,
-  verification: {
-    requested: false,
-    validated: false,
-    requestedAt: new Date(),
-    verifiedAt: new Date(),
-    comments: [],
-  },
-};
 
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
-const getRandomStructure = (propertyValue, borrowerId) =>
-  getRandomValueInArray([
+const getRandomStructure = (propertyValue, borrowerId) => {
+  if (!borrowerId) {
+    return {};
+  }
+  return getRandomValueInArray([
     {
       ownFunds: [
         {
@@ -136,6 +123,7 @@ const getRandomStructure = (propertyValue, borrowerId) =>
       ],
     },
   ]);
+};
 
 export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
@@ -160,20 +148,19 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   };
 
   switch (step) {
-  case 3:
-    loan.logic = logic3;
-    loan.adminValidation = {
-      bonus2017: 'Does not match with taxes location',
-      bankFortune: 'Not enough',
-    };
-
+  case STEPS.OFFERS:
+    loan.step = STEPS.OFFERS;
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
+    loan.applicationType = APPLICATION_TYPES.FULL;
+    loan.displayWelcomeScreen = false;
     break;
-  case 2:
-    loan.logic = logic2;
+  case STEPS.REQUEST:
+    loan.step = STEPS.REQUEST;
+    loan.applicationType = APPLICATION_TYPES.FULL;
+    loan.displayWelcomeScreen = false;
     break;
   default:
-    loan.logic = logic1;
+    loan.step = STEPS.SOLVENCY;
   }
 
   return LoanService.insert({ loan, userId });
@@ -181,3 +168,70 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
 
 export const getRelatedLoansIds = usersIds =>
   LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(item => item._id);
+
+export const addLoanWithData = ({
+  borrowers = [],
+  properties = [],
+  loan: loanData,
+  userId,
+  addOffers,
+}) => {
+  const loanId = LoanService.fullLoanInsert({ userId });
+  LoanService.update({ loanId, object: loanData });
+  const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+  const propertyId = properties.length
+    ? PropertyService.insert({ property: {}, userId })
+    : undefined;
+
+  if (propertyId) {
+    LoanService.addPropertyToLoan({ propertyId, loanId });
+  }
+
+  const structureId = loan.structures[0].id;
+  const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
+
+  LoanService.updateStructure({
+    loanId,
+    structureId,
+    structure: {
+      propertyId,
+      loanTranches: [
+        { type: INTEREST_RATES.YEARS_10, value: 0.8 },
+        { type: INTEREST_RATES.YEARS_5, value: 0.2 },
+      ],
+      ...getRandomStructure(1000000, borrowerId1),
+    },
+  });
+
+  if (borrowerId1) {
+    BorrowerService.update({ borrowerId: borrowerId1, object: borrowers[0] });
+  }
+
+  if (borrowers.length > 1) {
+    const borrowerId2 = BorrowerService.insert({ borrower: borrowers[1] });
+    BorrowerService.update({ borrowerId: borrowerId2, object: borrowers[1] });
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'borrowers',
+      linkId: borrowerId2,
+    });
+  }
+
+  if (propertyId) {
+    PropertyService.update({
+      propertyId,
+      object: properties[0],
+    });
+  }
+
+  if (addOffers) {
+    const offerIds = [1, 2, 3, 4, 5].map(() => createFakeOffer(loanId));
+    LoanService.updateStructure({
+      loanId,
+      structureId,
+      structure: { offerId: getRandomValueInArray(offerIds) },
+    });
+  }
+
+  return loanId;
+};

@@ -8,6 +8,7 @@ import CounterpartsOfferIcon from '../CounterpartsOfferIcon';
 import OfferField from './OfferField';
 import OfferModifier from './OfferModifier';
 import OfferFeedback from './OfferFeedback';
+import OfferDocuments from './OfferDocuments';
 
 const Offer = ({ offer, offerValues }) => {
   const { enableOffer = true } = offer;
@@ -39,6 +40,7 @@ const Offer = ({ offer, offerValues }) => {
             <div className="offer-list-item-actions">
               <OfferFeedback offer={offer} />
               <OfferModifier offer={offer} />
+              <OfferDocuments offer={offer} />
             </div>
           )}
         </div>

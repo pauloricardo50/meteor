@@ -2,11 +2,16 @@ import { withProps, compose, withState } from 'recompose';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
 
-import formatMessage from 'core/utils/intl';
 import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 import colors from 'core/config/colors';
 
 const roundAndFormat = rate => Math.round(100000 * rate) / 1000;
+
+const DEFAULT_DISABLED_LINES = [
+  INTEREST_RATES.YEARS_1,
+  INTEREST_RATES.YEARS_2,
+  INTEREST_RATES.YEARS_20,
+];
 
 const getAverageRate = (rate) => {
   if (!rate || !rate.rateLow || !rate.rateHigh) {
@@ -22,7 +27,6 @@ const getConfig = ({ showRanges }) => ({
   },
   yAxis: {
     title: { text: 'Taux [%]' },
-    min: 0,
     tickInterval: 0.1,
   },
   chart: { height: 800, zoomType: 'x' },
@@ -80,10 +84,10 @@ const getData = ({ rates, dataType }) => {
   }
 };
 
-const getAllRatesOfTypeLines = ({ rates, type }) =>
+const getAllRatesOfTypeLines = ({ rates, type, formatMessage }) =>
   rates.length && [
     {
-      name: formatMessage(`InterestsChart.${type}.average`),
+      name: formatMessage({ id: `InterestsChart.${type}.average` }),
       data: getData({ rates, dataType: 'average' }),
       zIndex: 1,
       color: colors.interestRates[type],
@@ -93,9 +97,10 @@ const getAllRatesOfTypeLines = ({ rates, type }) =>
         lineColor: colors.interestRates[type],
         symbol: 'circle',
       },
+      visible: !DEFAULT_DISABLED_LINES.includes(type),
     },
     {
-      name: formatMessage(`InterestsChart.${type}.range`),
+      name: formatMessage({ id: `InterestsChart.${type}.range` }),
       data: getData({ rates, dataType: 'range' }),
       type: 'arearange',
       zIndex: 0,
@@ -124,7 +129,7 @@ const getAllRatesOfType = ({ interestRates, type }) =>
 const shouldDisplayInterestRatesOfType = ({ interestRates, type }) =>
   interestRates.some(rate => Object.keys(rate[type]).length > 0);
 
-const getInterestRateLines = interestRates =>
+const getInterestRateLines = (interestRates, formatMessage) =>
   Object.values(INTEREST_RATES)
     .reduce((lines, type) => {
       if (!shouldDisplayInterestRatesOfType({ interestRates, type })) {
@@ -132,13 +137,13 @@ const getInterestRateLines = interestRates =>
       }
 
       const rates = getAllRatesOfType({ interestRates, type });
-      return [...lines, ...getAllRatesOfTypeLines({ rates, type })];
+      return [...lines, ...getAllRatesOfTypeLines({ rates, type, formatMessage })];
     }, [])
     .filter(x => x);
 
-const getIrs10yLine = irs10y =>
+const getIrs10yLine = (irs10y, formatMessage) =>
   irs10y.length > 0 && {
-    name: formatMessage('Irs10y.name'),
+    name: formatMessage({ id: 'Irs10y.name' }),
     data: irs10y.map(({ date, rate }) => [
       formatDate(date),
       roundAndFormat(rate),
@@ -153,14 +158,29 @@ const getIrs10yLine = irs10y =>
     },
   };
 
-const getLines = ({ interestRates, irs10y }) =>
-  [...getInterestRateLines(interestRates), getIrs10yLine(irs10y)].filter(x => x);
+const getLines = ({ interestRates, irs10y, formatMessage }) =>
+  [
+    ...getInterestRateLines(interestRates, formatMessage),
+    getIrs10yLine(irs10y, formatMessage),
+  ].filter(x => x);
 
 export default compose(
   injectIntl,
   withState('showRanges', 'setShowRanges', false),
-  withProps(({ interestRates = [], irs10y = [], showRanges, setShowRanges }) => {
-    const lines = getLines({ interestRates, irs10y, showRanges });
+  withProps(({
+    interestRates = [],
+    irs10y = [],
+    showRanges,
+    setShowRanges,
+    intl: { formatMessage },
+  }) => {
+    const lines = getLines({
+      interestRates,
+      irs10y,
+      showRanges,
+      formatMessage,
+    });
+    
     return {
       title: "Taux d'intérêt",
       lines,

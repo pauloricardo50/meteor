@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 
-import Input from '@material-ui/core/Input';
+import Input from '../Material/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 
 type ClickToEditFieldProps = {
@@ -31,6 +31,12 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     }
   };
 
+  handleKeyDown = (e) => {
+    if (e.keyCode === 13 && e.metaKey) {
+      this.handleSubmit(e);
+    }
+  };
+
   render() {
     const {
       isEditing,
@@ -40,21 +46,32 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       inputProps,
       className,
       allowEditing = true,
+      disabled,
+      children,
+      style,
     } = this.props;
 
-    return isEditing ? (
-      <form
-        className={cx('click-to-edit-field editing', className)}
-        onSubmit={this.handleSubmit}
-      >
-        <Input
-          defaultValue={value}
-          inputRef={this.input}
-          onBlur={this.handleSubmit}
-          {...inputProps}
-        />
-      </form>
-    ) : (
+    if (isEditing) {
+      return (
+        <form
+          className={cx('click-to-edit-field editing', className)}
+          onSubmit={this.handleSubmit}
+        >
+          <Input
+            defaultValue={value}
+            inputRef={this.input}
+            onBlur={this.handleSubmit}
+            disabled={disabled}
+            onKeyDown={this.handleKeyDown}
+            {...inputProps}
+          />
+          {typeof children === 'function'
+            && children({ value: value || placeholder, isEditing })}
+        </form>
+      );
+    }
+
+    return (
       <div
         className={cx('click-to-edit-field', className, {
           'is-placeholder': placeholder && !value,
@@ -62,12 +79,15 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           'not-allowed-to-edit': !allowEditing,
         })}
         onClick={
-          allowEditing
+          allowEditing && !disabled
             ? () => toggleEdit(true, () => this.input.current.focus())
             : null
         }
+        style={style}
       >
-        {value || placeholder}
+        {typeof children === 'function'
+          ? children({ value: value || placeholder, isEditing })
+          : value || placeholder}
       </div>
     );
   }

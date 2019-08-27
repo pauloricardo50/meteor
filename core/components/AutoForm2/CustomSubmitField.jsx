@@ -19,6 +19,9 @@ const CustomSubmitField = (
     label,
     value,
     setDisableActions,
+    primary = true,
+    raised = true,
+    secondary,
     ...props
   },
   { uniforms: { state, error } },
@@ -34,9 +37,15 @@ const CustomSubmitField = (
     type="submit"
     value={value}
     loading={state.submitting}
-    primary
-    raised
+    primary={!secondary && primary}
+    raised={raised}
+    secondary={secondary}
     label={label || <T id="general.ok" />}
+    onClick={(e) => {
+      // Make sure the target type is event, even if the label of the button
+      // was clicked. This is useful in PropertyForm and DashboardRecapProperty
+      e.target.type = 'submit';
+    }}
     {...filterDOMProps(props)}
   >
     {children}

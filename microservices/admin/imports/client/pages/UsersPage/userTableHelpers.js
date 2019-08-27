@@ -7,8 +7,6 @@ import T from 'core/components/Translation/';
 import { isUser } from 'core/utils/userFunctions';
 import Roles from 'core/components/Roles';
 
-import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
-
 export const getColumnOptions = ({ showAssignee }) => {
   const columnOptions = [
     { id: 'name', label: <T id="UsersTable.name" /> },
@@ -37,7 +35,7 @@ const getColumns = ({ showAssignee, user }) => {
     email,
     {
       raw: createdAt.getTime(),
-      label: moment(createdAt).format('D MMM YY à HH:mm'),
+      label: moment(createdAt).fromNow(),
     },
     { label: <Roles roles={roles} />, raw: roles && roles.toString() },
   ];
@@ -58,7 +56,6 @@ const getColumns = ({ showAssignee, user }) => {
   const actionsColumn = isUser(user) ? (
     <div style={actionsColumnStyle}>
       <ImpersonateLink user={user} />
-      <UserAssignDropdown doc={user} />
     </div>
   ) : (
     <div style={actionsColumnStyle} />

@@ -11,18 +11,23 @@ describe('offerPickerHelpers', () => {
   describe('getAmortizationForStructureWithOffer', () => {
     it('returns correct amortization for a structure', () => {
       const props = {
-        loan: {},
-        structure: {
-          wantedLoan: 960000,
-          propertyWork: 0,
-          propertyId: 'prop',
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            propertyId: 'prop',
+            offerId: 'off',
+          },
+          offers: [
+            {
+              _id: 'off',
+              interest10: 0.01,
+              amortizationGoal: 0.5,
+              amortizationYears: 20,
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1200000 }],
         },
-        offer: {
-          interest10: 0.01,
-          amortizationGoal: 0.5,
-          amortizationYears: 20,
-        },
-        properties: [{ _id: 'prop', value: 1200000 }],
       };
       expect(getAmortizationForStructureWithOffer(props)).to.equal(1500);
     });
@@ -31,19 +36,31 @@ describe('offerPickerHelpers', () => {
   describe('getMonthlyForStructureWithOffer', () => {
     it('test name', () => {
       const props = {
-        loan: {},
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            loanTranches: [{ type: 'interest10', value: 1 }],
+            offerId: 'off',
+            propertyId: 'prop',
+          },
+          offers: [
+            {
+              _id: 'off',
+              interest10: 0.01,
+              amortizationGoal: 0.5,
+              amortizationYears: 20,
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1200000, yearlyExpenses: 12000 }],
+        },
         structure: {
           wantedLoan: 960000,
           propertyWork: 0,
           loanTranches: [{ type: 'interest10', value: 1 }],
+          offerId: 'off',
           propertyId: 'prop',
         },
-        offer: {
-          interest10: 0.01,
-          amortizationGoal: 0.5,
-          amortizationYears: 20,
-        },
-        properties: [{ _id: 'prop', value: 1200000, monthlyExpenses: 1000 }],
       };
 
       // 1000 property costs

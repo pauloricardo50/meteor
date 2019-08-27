@@ -11,8 +11,13 @@ const MapWithMarkerWrapper = ({
   city,
   options,
   className,
+  showIncompleteAddress,
 }) => {
   if (isIncompleteAddress({ address1, zipCode, city })) {
+    if (!showIncompleteAddress) {
+      return null;
+    }
+
     return (
       <p className="description incomplete-address">
         <T id="Maps.incompleteAddress" />
@@ -33,12 +38,14 @@ MapWithMarkerWrapper.propTypes = {
   address1: PropTypes.string,
   city: PropTypes.string,
   options: PropTypes.object,
+  showIncompleteAddress: PropTypes.bool,
   zipCode: PropTypes.number,
 };
 
 MapWithMarkerWrapper.defaultProps = {
   address1: '',
   city: '',
+  showIncompleteAddress: true,
   zipCode: undefined,
   options: { zoom: 10 },
 };

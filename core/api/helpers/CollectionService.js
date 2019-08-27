@@ -24,8 +24,8 @@ class CollectionService {
     return this.collection.update(...args);
   }
 
-  remove(id) {
-    return this.collection.remove(id);
+  remove(...args) {
+    return this.collection.remove(...args);
   }
 
   get(id) {
@@ -52,15 +52,35 @@ class CollectionService {
     return this.collection.findOne(...args);
   }
 
+  checkQuery(body) {
+    if (body && body.$filter) {
+      throw new Meteor.Error('$filter found in query body, did you mean $filters?');
+    }
+  }
+
   createQuery(...args) {
+    this.checkQuery(args[0]);
     return this.collection.createQuery(...args);
   }
 
   fetchOne(...args) {
+    this.checkQuery(args[0]);
     return this.createQuery(...args).fetchOne();
   }
 
+  safeFetchOne(...args) {
+    const { $filters = {} } = args.find(arg => arg.$filters);
+    const result = this.fetchOne(...args);
+
+    if (!result) {
+      throw new Meteor.Error(`Could not find object with filters "${JSON.stringify($filters)}" in collection "${this.collection._name}"`);
+    }
+
+    return result;
+  }
+
   fetch(...args) {
+    this.checkQuery(args[0]);
     return this.createQuery(...args).fetch();
   }
 
@@ -69,7 +89,8 @@ class CollectionService {
   }
 
   count(...args) {
-    return this.collection.createQuery(...args).count();
+    this.checkQuery(args[0]);
+    return this.createQuery(...args).getCount();
   }
 
   countAll() {
@@ -78,6 +99,18 @@ class CollectionService {
 
   getAll() {
     return this.find({}).fetch();
+  }
+
+  get rawCollection() {
+    return this.collection.rawCollection();
+  }
+
+  exists(_id) {
+    return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
+  }
+
+  aggregate(...args) {
+    return this.rawCollection.aggregate(...args);
   }
 
   // Don't return the results from linker
@@ -107,7 +140,7 @@ class CollectionService {
 
   // Don't return the results from linker
   removeLink({ id, linkName, linkId }) {
-    const linker = this.collection.getLink(id, linkName);
+    const linker = this.getLink(id, linkName);
     const {
       linker: { strategy },
     } = linker;
@@ -124,10 +157,26 @@ class CollectionService {
     }
   }
 
+  updateLinkMetadata({ id, linkName, linkId, metadata }) {
+    const linker = this.getLink(id, linkName);
+    const {
+      linker: { strategy },
+    } = linker;
+
+    switch (strategy.split('-')[0]) {
+    case 'one':
+      linker.metadata(metadata);
+      return;
+    case 'many':
+      linker.metadata(linkId, metadata);
+      return;
+    default:
+      return null;
+    }
+  }
+
   getAssignedEmployee({ id }) {
-    const { assignee } = this.collection
-      .createQuery({ $filters: { _id: id }, assignee: 1 })
-      .fetchOne();
+    const { assignee } = this.fetchOne({ $filters: { _id: id }, assignee: 1 });
 
     return assignee;
   }
@@ -143,7 +192,7 @@ class CollectionService {
     return undefined;
   }
 
-  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
+  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
     const { additionalDocuments } = this.get(id);
 
     const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
@@ -155,6 +204,7 @@ class CollectionService {
           id: additionalDocId,
           requiredByAdmin,
           label: this.getAdditionalDocLabel({ label, additionalDoc }),
+          category,
         },
       ];
       return this._update({
@@ -168,8 +218,18 @@ class CollectionService {
       object: {
         additionalDocuments: [
           ...additionalDocuments,
-          { id: additionalDocId, requiredByAdmin, label },
+          { id: additionalDocId, requiredByAdmin, label, category },
         ],
+      },
+    });
+  }
+
+  removeAdditionalDoc({ id: docId, additionalDocId }) {
+    const { additionalDocuments = [] } = this.get(docId);
+    return this._update({
+      id: docId,
+      object: {
+        additionalDocuments: additionalDocuments.filter(({ id }) => id !== additionalDocId),
       },
     });
   }

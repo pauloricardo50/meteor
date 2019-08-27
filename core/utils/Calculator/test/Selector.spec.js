@@ -29,10 +29,17 @@ describe('Calculator Selector', () => {
     });
 
     it('returns the promotionOption if it exists, and there is no property', () => {
-      const promotionOption = { promotionLots: [{ properties: [{}] }] };
+      const promotionOption = {
+        promotionLots: [{ properties: [{}] }],
+        value: 100,
+      };
       structure.promotionOption = promotionOption;
       structure.property = undefined;
-      expect(Calculator.selectProperty(params)).to.deep.equal(promotionOption);
+      structure.propertyId = undefined;
+      expect(Calculator.selectProperty(params)).to.deep.equal({
+        ...promotionOption,
+        totalValue: 100,
+      });
     });
 
     context('with a structureId', () => {
@@ -57,11 +64,15 @@ describe('Calculator Selector', () => {
         const promotionOption = {
           _id: 'dawg',
           promotionLots: [{ properties: [{}] }],
+          value: 100,
         };
         structure.promotionOptionId = promotionOption._id;
         structure.propertyId = undefined;
         params.loan.promotionOptions = [promotionOption];
-        expect(Calculator.selectProperty(params)).to.deep.equal(promotionOption);
+        expect(Calculator.selectProperty(params)).to.deep.equal({
+          ...promotionOption,
+          totalValue: 100,
+        });
       });
     });
   });
@@ -70,16 +81,42 @@ describe('Calculator Selector', () => {
     it('returns the propertyValue on the structure, even if propertyValue or totalValue exists', () => {
       structure.propertyValue = 300;
       property.totalValue = 200;
-      expect(Calculator.selectPropertyValue(params)).to.deep.equal(300);
+      expect(Calculator.selectPropertyValue(params)).to.equal(300);
     });
 
     it('returns the totalValue if it exists', () => {
       property.totalValue = 200;
-      expect(Calculator.selectPropertyValue(params)).to.deep.equal(200);
+      expect(Calculator.selectPropertyValue(params)).to.equal(200);
     });
 
     it('returns the property value if it exists', () => {
-      expect(Calculator.selectPropertyValue(params)).to.deep.equal(100);
+      expect(Calculator.selectPropertyValue(params)).to.equal(100);
+    });
+
+    it('returns 0 if there is no property', () => {
+      property = undefined;
+      structure.propertyValue = undefined;
+      structure.propertyId = undefined;
+      structure.property = undefined;
+      expect(Calculator.selectPropertyValue(params)).to.equal(0);
+    });
+
+    it('returns the right value for a promotionOption with additionalLots', () => {
+      const promotionOption = {
+        _id: 'dawg',
+        value: 110,
+        promotionLots: [
+          {
+            properties: [{ value: 100, totalValue: 100 }],
+            lots: [{ value: 10 }, { value: 0 }],
+          },
+        ],
+      };
+      structure.promotionOptionId = promotionOption._id;
+      structure.property = undefined;
+      structure.propertyId = undefined;
+      params.loan.promotionOptions = [promotionOption];
+      expect(Calculator.selectPropertyValue(params)).to.deep.equal(110);
     });
   });
 

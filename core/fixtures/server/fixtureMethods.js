@@ -3,9 +3,18 @@ import { check } from 'meteor/check';
 
 import range from 'lodash/range';
 
-import { STEPS, STEP_ORDER, ROLES, TASK_TYPE } from '../../api/constants';
+import LoanService from 'core/api/loans/server/LoanService';
+import {
+  STEPS,
+  STEP_ORDER,
+  ROLES,
+  PURCHASE_TYPE,
+  APPLICATION_TYPES,
+  ORGANISATION_TYPES,
+} from '../../api/constants';
 import {
   Borrowers,
+  Contacts,
   Loans,
   Lots,
   Offers,
@@ -16,7 +25,6 @@ import {
   Properties,
   Tasks,
   Users,
-  Contacts,
 } from '../../api';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
@@ -25,7 +33,7 @@ import {
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
 } from '../fixtureConfig';
-import { createFakeLoan } from '../loanFixtures';
+import { createFakeLoan, addLoanWithData } from '../loanFixtures';
 import {
   createDevs,
   createAdmins,
@@ -35,11 +43,16 @@ import {
 } from '../userFixtures';
 import { createFakeOffer } from '../offerFixtures';
 import { E2E_USER_EMAIL } from '../fixtureConstants';
-import { createYannisData } from '../demoFixtures';
 import { createOrganisations } from '../organisationFixtures';
 import { createFakeInterestRates } from '../interestRatesFixtures';
+import {
+  emptyFakeBorrower,
+  completeFakeBorrower,
+} from '../../api/borrowers/fakes';
+import { fakeProperty } from '../../api/properties/fakes';
+import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 
-const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
+const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
 const getAdmins = () => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
@@ -82,14 +95,14 @@ const createTestUserWithData = () => {
 
   // Create 2 loans to check AppPage, which requires multiple loans to display
   createFakeLoanFixture({
-    step: STEPS.PREPARATION,
+    step: STEPS.SOLVENCY,
     userId: testUserId,
     adminId: admins[0]._id,
     completeFiles: true,
     twoBorrowers: true,
   });
   createFakeLoanFixture({
-    step: STEPS.PREPARATION,
+    step: STEPS.REQUEST,
     userId: testUserId,
     adminId: admins[0]._id,
     completeFiles: true,
@@ -113,9 +126,10 @@ Meteor.methods({
           // based on index, always generate 0, 1 and 2 numbers
           const loanStep = index % 3;
 
-          range(LOANS_PER_USER).forEach(() => {
+          range(LOANS_PER_USER).forEach((_, loanIndex) => {
+            const step = LOANS_PER_USER < 3 ? loanStep : loanIndex % 3;
             createFakeLoanFixture({
-              step: STEP_ORDER[loanStep],
+              step: STEP_ORDER[step],
               userId,
               adminId,
               twoBorrowers: true,
@@ -138,7 +152,7 @@ Meteor.methods({
 
   async purgeDatabase(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+    if (SecurityService.checkCurrentUserIsDev() && isAuthorizedToRun()) {
       await Promise.all([
         Borrowers.rawCollection().remove({}),
         Contacts.rawCollection().remove({}),
@@ -158,7 +172,7 @@ Meteor.methods({
 
   purgeFakeData(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+    if (SecurityService.checkCurrentUserIsDev() && isAuthorizedToRun()) {
       let fakeUsersIds = getFakeUsersIds();
       deleteUsersRelatedData(fakeUsersIds);
 
@@ -168,46 +182,127 @@ Meteor.methods({
   },
 
   purgePersonalData(currentUserId) {
-    deleteUsersRelatedData([currentUserId]);
-  },
-
-  insertBorrowerRelatedTask() {
-    const borrower = Borrowers.aggregate({ $sample: { size: 1 } })[0];
-    const type = TASK_TYPE.VERIFY;
-    if (borrower._id) {
-      TaskService.insert({ type, borrowerId: borrower._id });
-    }
+    SecurityService.checkCurrentUserIsDev();
+    return deleteUsersRelatedData([currentUserId]);
   },
 
   insertLoanRelatedTask() {
-    const loanId = Loans.aggregate({ $sample: { size: 1 } })[0]._id;
-    const type = TASK_TYPE.VERIFY;
+    SecurityService.checkCurrentUserIsDev();
+    const loanId = LoanService.find({}).fetch()[0]._id;
     if (loanId) {
-      TaskService.insert({ type, loanId });
+      return TaskService.insert({
+        object: { title: 'Random dev task', loanLink: { _id: loanId } },
+      });
     }
-  },
-
-  insertPropertyRelatedTask() {
-    const propertyId = Properties.aggregate({ $sample: { size: 1 } })[0]._id;
-    const type = TASK_TYPE.CUSTOM;
-    if (propertyId) {
-      TaskService.insert({ type, propertyId });
-    }
-  },
-
-  resetYannisAccount({ userId }) {
-    SecurityService.currentUserHasRole(ROLES.DEV);
-    Loans.remove({ userId });
-    Borrowers.remove({ userId });
-    Properties.remove({ userId });
-    createYannisData(userId);
   },
 
   createFakeOffer({ loanId }) {
-    createFakeOffer(loanId);
+    SecurityService.checkCurrentUserIsDev();
+
+    return createFakeOffer(loanId);
   },
 
   createFakeInterestRates({ number }) {
-    createFakeInterestRates({ number });
+    SecurityService.checkCurrentUserIsDev();
+
+    return createFakeInterestRates({ number });
+  },
+
+  addEmptyLoan({ userId, twoBorrowers, addOffers, isRefinancing }) {
+    SecurityService.checkCurrentUserIsDev();
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [emptyFakeBorrower, emptyFakeBorrower]
+        : [emptyFakeBorrower],
+      properties: [],
+      loan: {
+        ...emptyLoan,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+      },
+      userId,
+      addOffers,
+    });
+  },
+
+  addLoanWithSomeData({ userId, twoBorrowers, addOffers, isRefinancing }) {
+    SecurityService.checkCurrentUserIsDev();
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [completeFakeBorrower, completeFakeBorrower]
+        : [completeFakeBorrower],
+      properties: [fakeProperty],
+      loan: {
+        ...loanStep1,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+      },
+      userId,
+      addOffers,
+    });
+  },
+
+  addCompleteLoan({ userId, twoBorrowers, isRefinancing }) {
+    SecurityService.checkCurrentUserIsDev();
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [completeFakeBorrower, completeFakeBorrower]
+        : [completeFakeBorrower],
+      properties: [fakeProperty],
+      loan: {
+        ...loanStep2,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+        applicationType: APPLICATION_TYPES.FULL,
+        customName: 'Ma maison à la plage',
+      },
+      userId,
+      addOffers: true,
+    });
+  },
+
+  addAnonymousLoan({ twoBorrowers, isRefinancing }) {
+    SecurityService.checkCurrentUserIsDev();
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [emptyFakeBorrower, emptyFakeBorrower]
+        : [emptyFakeBorrower],
+      properties: [],
+      loan: {
+        ...emptyLoan,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+        anonymous: true,
+      },
+    });
+  },
+
+  addUserToOrg() {
+    SecurityService.checkCurrentUserIsDev();
+
+    let orgId;
+    const org = Organisations.findOne({ name: 'Dev Org' });
+
+    if (org) {
+      orgId = org._id;
+    } else {
+      orgId = Organisations.insert({
+        name: 'Dev Org',
+        type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+      });
+    }
+
+    Organisations.update(
+      { _id: orgId },
+      { $set: { userLinks: [{ _id: this.userId }] } },
+    );
   },
 });

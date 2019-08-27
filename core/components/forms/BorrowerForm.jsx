@@ -4,37 +4,44 @@ import omit from 'lodash/omit';
 
 import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { borrowerUpdate, mortgageNoteInsert } from 'core/api';
-import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
+import Box from '../Box';
 
 type BorrowerFormProps = {};
 
-const personalFields = [
+export const personalFields = [
   'firstName',
   'lastName',
   'gender',
-  'age',
+  'birthDate',
   'sameAddress',
   'address1',
   'address2',
   'zipCode',
   'city',
+  'country',
   'isSwiss',
   'residencyPermit',
   'citizenship',
   'isUSPerson',
   'civilStatus',
+  'marriedDate',
+  'divorcedDate',
   'childrenCount',
   'company',
+  'job',
+  'worksInSwitzerlandSince',
 ];
-const financeFields = [
+export const financeFields = [
   'salary',
+  'netSalary',
   'bonusExists',
   'bonus2015',
   'bonus2016',
   'bonus2017',
   'bonus2018',
+  'bonus2019',
   'otherIncome',
   'otherFortune',
   'expenses',
@@ -45,6 +52,8 @@ const financeFields = [
   'insurance3B',
   'bank3A',
   'thirdPartyFortune',
+  'hasOwnCompany',
+  'ownCompanies',
 ];
 
 const omittedFields = [
@@ -64,18 +73,37 @@ const otherSchema = BorrowerSchemaAdmin.omit(
 );
 
 const handleSubmit = borrowerId => (doc) => {
-  const hideLoader = message.loading('...', 0);
-  return borrowerUpdate
-    .run({ borrowerId, object: omit(doc, omittedFields) })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return borrowerUpdate.run({
+        borrowerId,
+        object: omit(doc, omittedFields),
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
 const insertMortgageNote = (borrowerId) => {
-  const hideLoader = message.loading('...', 0);
-  return mortgageNoteInsert
-    .run({ borrowerId })
-    .finally(hideLoader)
+  let message;
+  let hideLoader;
+
+  return import('../../utils/message')
+    .then(({ default: m }) => {
+      message = m;
+      hideLoader = message.loading('...', 0);
+      return mortgageNoteInsert.run({ borrowerId });
+    })
+    .finally(() => {
+      hideLoader();
+    })
     .then(() => message.success('Enregistré', 2));
 };
 
@@ -83,26 +111,104 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
   const { mortgageNotes, _id: borrowerId } = borrower;
   return (
     <div className="borrower-admin-form">
-      <div>
-        <h3>Informations personelles</h3>
-        <AutoForm
-          schema={BorrowerSchemaAdmin.pick(...personalFields)}
-          model={borrower}
-          onSubmit={handleSubmit(borrowerId)}
-          className="form"
-        />
-      </div>
-      <div>
-        <h3>Informations financières</h3>
-        <AutoForm
-          schema={BorrowerSchemaAdmin.pick(...financeFields)}
-          model={borrower}
-          onSubmit={handleSubmit(borrowerId)}
-          className="form"
-        />
-      </div>
+      <h3>Informations personelles</h3>
+      <AutoForm
+        schema={BorrowerSchemaAdmin.pick(...personalFields)}
+        model={borrower}
+        onSubmit={handleSubmit(borrowerId)}
+        className="form"
+        layout={[
+          {
+            fields: [
+              'firstName',
+              'lastName',
+              'gender',
+              'birthDate',
+              'civilStatus',
+              'marriedDate',
+              'divorcedDate',
+              'childrenCount',
+              'company',
+              'job',
+              'worksInSwitzerlandSince',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: [
+              'sameAddress',
+              'address1',
+              'address2',
+              'zipCode',
+              'city',
+              'country',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: ['isSwiss', 'residencyPermit', 'citizenship', 'isUSPerson'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: '__REST',
+            className: 'grid-col',
+          },
+        ]}
+      />
+      <h3>Informations financières</h3>
+      <AutoForm
+        schema={BorrowerSchemaAdmin.pick(...financeFields)}
+        model={borrower}
+        onSubmit={handleSubmit(borrowerId)}
+        className="form"
+        layout={[
+          {
+            fields: ['salary', 'netSalary', 'otherIncome'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: ['bonusExists'],
+            layout: [{ fields: ['bonus*'], className: 'grid-col mb-32' }],
+            className: 'mb-32',
+          },
+          {
+            fields: ['expenses'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: [
+              'bankFortune',
+              'thirdPartyFortune',
+              'otherFortune',
+              'realEstate',
+            ],
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: ['insurance2', 'bank3A', 'insurance3A', 'insurance3B'],
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: ['hasOwnCompany', 'ownCompanies'],
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: '__REST',
+            className: 'grid-col',
+          },
+        ]}
+      />
       {otherSchema._schemaKeys.length > 0 && (
-        <div>
+        <>
           <h3>Autres</h3>
           <AutoForm
             schema={otherSchema}
@@ -110,7 +216,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
             onSubmit={handleSubmit(borrowerId)}
             className="form"
           />
-        </div>
+        </>
       )}
       <MortgageNotesForm
         mortgageNotes={mortgageNotes}

@@ -4,13 +4,13 @@ import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
 import { withSmartQuery } from 'core/api';
-import query from 'core/api/borrowers/queries/adminBorrowers';
+import { adminBorrowers as query } from 'core/api/borrowers/queries';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { baseBorrower } from 'core/api/fragments';
 
 const columnOptions = [
-  { id: '#', style: { width: 32, textAlign: 'left' } },
-  { id: 'Nom' },
+  { id: 'Nom', format: v => <b>{v}</b> },
   { id: 'Utilisateur' },
   { id: 'Dossiers' },
   { id: 'Créé le' },
@@ -23,7 +23,6 @@ const mapBorrower = ({ history }) => (
 ) => ({
   id: borrowerId,
   columns: [
-    index + 1,
     name || 'Emprunteur sans nom',
     <CollectionIconLink
       relatedDoc={{ ...user, collection: USERS_COLLECTION }}
@@ -37,11 +36,11 @@ const mapBorrower = ({ history }) => (
     )),
     {
       raw: createdAt && createdAt.getTime(),
-      label: moment(createdAt).format('D MMM YY à HH:mm'),
+      label: moment(createdAt).fromNow(),
     },
     {
       raw: updatedAt && updatedAt.getTime(),
-      label: moment(updatedAt).fromNow(),
+      label: updatedAt ? moment(updatedAt).fromNow() : '-',
     },
   ],
   handleClick: () => history.push(`/borrowers/${borrowerId}`),
@@ -50,6 +49,13 @@ const mapBorrower = ({ history }) => (
 export default compose(
   withSmartQuery({
     query,
+    params: {
+      $body: {
+        ...baseBorrower(),
+        loans: { name: 1 },
+        user: { name: 1 },
+      },
+    },
     queryOptions: { reactive: false },
     dataName: 'borrowers',
     renderMissingDoc: false,

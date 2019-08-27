@@ -25,8 +25,13 @@ PromotionOptions.addReducers({
   },
   value: {
     body: { promotionLots: { value: 1 } },
-    reduce: ({ promotionLots = [] }) =>
-      (promotionLots.length > 0 ? promotionLots[0].value : 0),
+    reduce: ({ promotionLots = [] }) => {
+      if (promotionLots.length === 0) {
+        return 0;
+      }
+      const { value } = promotionLots[0];
+      return value;
+    },
   },
   priority: {
     body: { loan: { promotionLinks: 1 } },

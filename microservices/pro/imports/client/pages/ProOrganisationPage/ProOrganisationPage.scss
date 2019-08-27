@@ -1,0 +1,16 @@
+.pro-organisation-page {
+  display: flex;
+  flex-direction: column;
+
+  .org-logo {
+    align-self: center;
+
+    min-width: 200px;
+    max-width: 300px;
+    margin-bottom: 80px;
+  }
+
+  .share-customers-toggle {
+    padding-bottom: 32px;
+  }
+}

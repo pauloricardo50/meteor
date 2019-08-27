@@ -1,18 +1,33 @@
 import { withSmartQuery } from 'core/api';
-import { compose } from 'recompose';
-import tasksForDoc from 'core/api/tasks/queries/tasksForDoc';
-import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
+import { compose, shouldUpdate, withState } from 'recompose';
+import {
+  taskInsert,
+  taskUpdate,
+  taskChangeStatus,
+  taskComplete,
+} from 'core/api/methods';
+import { tasks } from 'core/api/tasks/queries';
+import { TASK_STATUS } from 'core/api/constants';
 
 export default compose(
+  // This component is self-contained, shouldn't need to update
+  // If tasks are added to new borrowers or properties, a refresh will do
+  shouldUpdate(() => false),
+  withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
   withSmartQuery({
-    query: tasksForDoc,
-    params: ({
-      loan: { _id: loanId, propertyIds = [], borrowerIds = [] },
-    }) => ({
-      docIds: [loanId, ...borrowerIds, ...propertyIds],
+    query: tasks,
+    params: ({ loan: { _id: loanId }, assignee, status }) => ({
+      loanId,
+      assignee,
+      status,
     }),
     queryOptions: { reactive: false },
     dataName: 'tasks',
+    refetchOnMethodCall: [
+      taskInsert,
+      taskUpdate,
+      taskChangeStatus,
+      taskComplete,
+    ],
   }),
-  makeTableFiltersContainer(undefined, 'tasks'),
 );

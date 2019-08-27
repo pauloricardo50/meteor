@@ -12,8 +12,6 @@ export const deleteFile = new Method({
 export const setFileStatus = new Method({
   name: 'setFileStatus',
   params: {
-    collection: String,
-    docId: String,
     fileKey: String,
     newStatus: String,
   },
@@ -22,8 +20,6 @@ export const setFileStatus = new Method({
 export const setFileError = new Method({
   name: 'setFileError',
   params: {
-    collection: String,
-    docId: String,
     error: String,
     fileKey: String,
   },
@@ -33,5 +29,20 @@ export const downloadFile = new Method({
   name: 'downloadFile',
   params: {
     key: String,
+  },
+});
+
+export const getSignedUrl = new Method({
+  name: 'getSignedUrl',
+  params: {
+    key: String,
+  },
+});
+
+export const updateDocumentsCache = new Method({
+  name: 'updateDocumentsCache',
+  params: {
+    docId: String,
+    collection: String,
   },
 });

@@ -6,12 +6,8 @@
       "NOT_PRODUCTION_READY": false 
     },
     "analyticsSettings": {
-      "Google Analytics": {
-        "trackingId": "UA-84358947-2"
-      },
-      "Mixpanel": {
-        "token": "8fd61d69bbe35690f6c3925e3cb5d21b",
-        "people": true
+      "Segment": {
+        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
       }
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
@@ -19,17 +15,14 @@
       "admin": "https://admin.staging.e-potek.ch",
       "app": "https://app.staging.e-potek.ch",
       "pro": "https://pro.staging.e-potek.ch",
-      "www": "https://www.staging.e-potek.ch"
+      "www": "https://www.staging.e-potek.ch",
+      "backend": "https://backend.staging.e-potek.ch"
     }
   },
   "mandrill": {
     "MANDRILL_LOGIN": "florian@e-potek.ch",
     "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
     "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
-  },
-  "mixpanel": {
-    "API_KEY": "904fedcb38c172174737132a4ea6dbe1",
-    "API_SECRET": "e760363faa39456bc5f8d679eb38cb29"
   },
   "Kadira": {
     "endpoint": "https://kadira-engine.e-potek.ch:22022",
@@ -48,6 +41,10 @@
     "pro": {
       "appId": "PqGxnwRWTbfsLufGw",
       "appSecret": "e08c8e98-d23f-43ff-8b22-021ed4aafabe"
+    },
+    "backend": {
+      "appId": "Ta9aik2yB8PrgXd53",
+      "appSecret": "348114db-4ace-4472-bd78-b274917e255d"
     }
   },
   "storage": {
@@ -71,5 +68,9 @@
     "debug": false,
     "overridePublishFunction": true
   },
-  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I"
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I",
+  "mixpanel": {
+    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
+    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  }
 }

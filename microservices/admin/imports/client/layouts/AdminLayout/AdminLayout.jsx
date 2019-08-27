@@ -1,18 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
-import { HotKeys } from 'react-hotkeys';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import PageHead from 'core/components/PageHead';
 import getBaseRedirect from 'core/utils/redirection';
+import useMedia from 'core/hooks/useMedia';
+import FileViewer from '../../components/FileViewer';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
+import AdminKeyboardShortcuts from './AdminKeyboardShortcuts';
 
 const getRedirect = ({ currentUser, history }) => {
   const baseRedirect = getBaseRedirect(currentUser, history.location.pathname);
@@ -30,12 +32,17 @@ const getRedirect = ({ currentUser, history }) => {
     setTimeout(() => {
       window.location.replace(Meteor.settings.public.subdomains.app);
     }, 1000);
+    // Return REDIRECT to make sure nothing is rendered if we're waiting for a redirect
+    return 'REDIRECT';
   }
 
   return false;
 };
 
-const AdminLayout = (props) => {
+const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
+  const isMobile = useMedia({ maxWidth: 768 });
+  const [openDrawer, setDrawer] = useState(false);
+  const toggleDrawer = () => setDrawer(!openDrawer);
   handleLoggedOut();
 
   if (window.isRedirectingLoggedOutUser) {
@@ -44,34 +51,46 @@ const AdminLayout = (props) => {
     return null;
   }
 
-  const { history, children } = props;
+  const { history } = props;
   const redirect = getRedirect(props);
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
 
+  if (redirect === 'REDIRECT') {
+    return null;
+  }
+
   if (redirect && !isLogin) {
+    debugger;
     return <Redirect to={redirect} />;
   }
 
   return (
     <div className="admin-layout">
-      <HotKeys
-        handlers={{ space: () => history.push('/search') }}
-        focused
-        attach={window}
-      />
+      <AdminKeyboardShortcuts setOpenSearch={setOpenSearch} />
       <PageHead titleId="AdminLayout" />
-      <AdminTopNav {...props} />
+      <AdminTopNav
+        {...props}
+        openSearch={openSearch}
+        setOpenSearch={setOpenSearch}
+        isMobile={isMobile}
+        toggleDrawer={toggleDrawer}
+      />
 
-      <div className="main-row">
-        <AdminSideNav {...props} />
+      <AdminSideNav
+        {...props}
+        isMobile={isMobile}
+        openDrawer={openDrawer}
+        toggleDrawer={toggleDrawer}
+      />
 
-        <div className="main">
-          <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-            {React.cloneElement(children, { ...props })}
-          </ErrorBoundary>
-        </div>
+      <div className="main">
+        <ErrorBoundary helper="layout" pathname={history.location.pathname}>
+          {React.cloneElement(children, { ...props })}
+        </ErrorBoundary>
       </div>
+
+      <FileViewer />
     </div>
   );
 };

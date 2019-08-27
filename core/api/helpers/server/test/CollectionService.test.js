@@ -165,7 +165,6 @@ describe('CollectionService', () => {
         });
       });
       it('many with direct link', () => {
-        const metadata = { meta: 'someData' };
         AService.addLink({
           id: ADocId,
           linkName: 'many',
@@ -179,7 +178,6 @@ describe('CollectionService', () => {
         });
       });
       it('many with inverse link', () => {
-        const metadata = { meta: 'someData' };
         BService.addLink({
           id: BDocId,
           linkName: 'manyA',

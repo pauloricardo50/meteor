@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
 
+import Input from '../Material/Input';
 import DialogSimple from '../DialogSimple';
 import T from '../Translation';
 import List, { ListItem, ListItemText } from '../List';
@@ -62,9 +62,7 @@ const UserAssigner = ({
           ))}
       </List>
       {searchResults && searchResults.length === 0 && (
-        <p>
-          <T id="UserAssigner.noUserFound" />
-        </p>
+        <p>Pas d'utilisateur trouvé</p>
       )}
     </div>
   </DialogSimple>

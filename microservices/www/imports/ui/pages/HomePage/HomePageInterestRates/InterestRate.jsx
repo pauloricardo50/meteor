@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { INTEREST_TREND } from 'core/api/constants';
 import { T, IntlNumber } from 'core/components/Translation';
 
 const InterestRate = ({ type, low, high, trend }) => (

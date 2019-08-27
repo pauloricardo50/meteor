@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { makeCheckObjectStructure, testErrors } from '../checkObjectStructure';
+import { makeCheckObjectStructure } from '../checkObjectStructure';
 
-const checkObjectStructure = makeCheckObjectStructure(testErrors);
+const checkObjectStructure = makeCheckObjectStructure();
 
 describe('checkObjectStructure', () => {
   describe('does not throw when object matches the template', () => {
@@ -154,6 +154,20 @@ describe('checkObjectStructure', () => {
       const obj = { abc: {} };
 
       expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key efg from object abc');
+    });
+
+    it('throws multiple errors', () => {
+      const template = { a: { b: 1 }, c: {}, d: [1] };
+      const obj = { a: {}, c: [], d: [] };
+
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key b from object a, Object key c must be an object, Array at object key d in undefined should not be empty');
+    });
+
+    it('skips the rest of the function if it should be an object but it is empty', () => {
+      const template = { a: { b: { c: 1 } } };
+      const obj = {};
+
+      expect(() => checkObjectStructure({ obj, template, parentKey: 'Root' })).to.throw('Missing key a from object Root');
     });
   });
 });

@@ -31,3 +31,28 @@ export const addContactToOrgnaisation = new Method({
     metadata: Object,
   },
 });
+
+export const addUserToOrganisation = new Method({
+  name: 'addUserToOrganisation',
+  params: {
+    organisationId: String,
+    userId: String,
+    metadata: Object,
+  },
+});
+
+export const removeUserFromOrganisation = new Method({
+  name: 'removeUserFromOrganisation',
+  params: {
+    organisationId: String,
+    userId: String,
+  },
+});
+
+export const setCommissionRates = new Method({
+  name: 'setCommissionRates',
+  params: {
+    organisationId: String,
+    commissionRates: Array,
+  },
+});

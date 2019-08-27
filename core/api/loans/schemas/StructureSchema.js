@@ -1,11 +1,13 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
-import { OWN_FUNDS_TYPES } from '../../constants';
-import { loanTranchesSchema } from './otherSchemas';
-import { moneyField } from '../../helpers/sharedSchemas';
 
-const StructureSchema = new SimpleSchema({
+import { OWN_FUNDS_TYPES } from '../../constants';
+import { moneyField, roundedInteger } from '../../helpers/sharedSchemas';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
+import { loanTranchesSchema } from './otherSchemas';
+
+export const structureSchema = {
   amortization: { ...moneyField, defaultValue: 0 },
   amortizationType: {
     type: String,
@@ -13,6 +15,7 @@ const StructureSchema = new SimpleSchema({
     optional: true,
   },
   description: { type: String, optional: true },
+  disabled: { type: Boolean, defaultValue: false },
   id: String,
   mortgageNoteIds: { type: Array, optional: true },
   'mortgageNoteIds.$': String,
@@ -30,6 +33,7 @@ const StructureSchema = new SimpleSchema({
   'ownFunds.$.type': {
     type: String,
     allowedValues: Object.values(OWN_FUNDS_TYPES),
+    optional: true,
   },
   'ownFunds.$.value': { ...moneyField, optional: false },
   'ownFunds.$.usageType': {
@@ -37,9 +41,17 @@ const StructureSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(OWN_FUNDS_USAGE_TYPES),
   },
-  wantedLoan: { ...moneyField, defaultValue: 0 },
+  'ownFunds.$.description': {
+    type: String,
+    optional: true,
+  },
+  wantedLoan: {
+    ...roundedInteger(3, 'floor'),
+    defaultValue: 0,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
+  },
   ...loanTranchesSchema,
-});
+};
 
 export type structureType = {
   id: string,
@@ -55,4 +67,4 @@ export type structureType = {
   ownFunds: Array<Object>,
 };
 
-export default StructureSchema;
+export default new SimpleSchema(structureSchema);

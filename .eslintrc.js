@@ -44,6 +44,7 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 'off',
     'no-nested-ternary': 'off',
+    'newline-per-chained-call': [2, { ignoreChainWithDepth: 3 }],
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
     // and then remove these comments
@@ -96,6 +97,15 @@ module.exports = {
 
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/label-has-for': [
+      2,
+      {
+        components: ['Label'],
+        required: { every: ['id'] },
+        allowChildren: false,
+      },
+    ],
 
     // eslint-plugin-react rules
 
@@ -113,8 +123,13 @@ module.exports = {
     ],
     // Causes bugs: https://github.com/yannickcr/eslint-plugin-react/issues/1775
     // And not always practical
-    'react/jsx-one-expression-per-line': 'off',
+    'react/jsx-one-expression-per-line': [2, { allow: 'single-child' }],
     'react/display-name': 'off',
+    'react/no-multi-comp': 'off',
+    'react/sort-comp': [
+      2,
+      { order: ['lifecycle', 'static-methods', 'everything-else', 'render'] },
+    ],
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',

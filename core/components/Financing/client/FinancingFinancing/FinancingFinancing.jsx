@@ -1,15 +1,11 @@
 // @flow
 import React from 'react';
 
-import {
-  AMORTIZATION_TYPE,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../api/constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
 import T from '../../../Translation';
 import FinancingSection, {
   InputAndSlider,
   CalculatedValue,
-  RadioButtons,
   FinmaRatio,
 } from '../FinancingSection';
 import Calc, { getOffer } from '../FinancingCalculator';
@@ -20,7 +16,7 @@ import {
   getBorrowRatioStatus,
 } from '../FinancingResult/financingResultHelpers';
 import LoanPercent from './LoanPercent';
-import { getPropertyValue } from '../FinancingOwnFunds/ownFundsHelpers';
+import Calculator from '../../../../utils/Calculator';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -35,18 +31,25 @@ export const calculateLoan = (params) => {
 };
 
 export const calculateMaxLoan = (data, pledgeOverride) => {
-  if (data.structure.offerId) {
+  const { loan, structureId } = data;
+  const offer = Calculator.selectOffer({ loan, structureId });
+  if (offer) {
     const { maxAmount } = getOffer(data);
     return maxAmount;
   }
 
-  return Calc.getMaxLoanBase({
-    propertyWork: data.structure.propertyWork,
-    propertyValue: getPropertyValue(data),
+  const structure = Calculator.selectStructure({ loan, structureId });
+  const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
+
+  const maxLoan = Calc.getMaxLoanBase({
+    propertyWork: structure.propertyWork,
+    propertyValue,
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
-    residenceType: data.loan.residenceType,
+    residenceType: loan.residenceType,
   });
+  const rounding = 10 ** 3;
+  return Math.floor(maxLoan / rounding) * rounding;
 };
 
 const enableOffers = ({ loan }) => loan.enableOffers;

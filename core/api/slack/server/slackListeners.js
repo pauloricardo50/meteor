@@ -1,84 +1,140 @@
-import { Meteor } from 'meteor/meteor';
-
+import PropertyService from 'core/api/properties/server/PropertyService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
-  inviteUserToPromotion,
   bookPromotionLot,
   sellPromotionLot,
+  proInviteUser,
+  anonymousLoanInsert,
+  userLoanInsert,
+  anonymousCreateUser,
 } from '../../methods';
-import SlackService from './SlackService';
-import PromotionService from '../../promotions/server/PromotionService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
-import { simpleUser } from '../../fragments';
+import {
+  promotionLotBooked,
+  promotionLotSold,
+  referralOnlyNotification,
+  newAnonymousLoan,
+  newLoan,
+  newUser,
+} from './slackNotifications';
+import {
+  sendPropertyInvitations,
+  sendPromotionInvitations,
+} from './slackNotificationHelpers';
 
-ServerEventService.addMethodListener(
-  inviteUserToPromotion,
-  ({ promotionId, user }) => {
-    const { name, assignedEmployeeId } = PromotionService.get(promotionId);
-    const { firstName, lastName, email } = user;
-    const assignee = UserService.get(assignedEmployeeId);
-
-    SlackService.notifyAssignee({
-      title: `Promotion ${name}`,
-      message: `${firstName} ${lastName} a été invité! ${email}`,
-      link: `${
-        Meteor.settings.public.subdomains.admin
-      }/promotions/${promotionId}`,
-      assignee,
-      notifyAlways: true,
-    });
-  },
-);
-
-ServerEventService.addMethodListener(
+ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ promotionLotId, loanId }) => {
-    const {
-      name: lotName,
-      promotion: { name, assignedEmployee, _id: promotionId },
-    } = PromotionLotService.fetchOne({
+  ({ context: { userId }, params: { promotionLotId, loanId } }) => {
+    const currentUser = UserService.get(userId);
+    const promotionLot = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
       name: 1,
-      promotion: { name: 1, assignedEmployee: simpleUser() },
+      promotion: { name: 1, assignedEmployee: { email: 1 } },
     });
-    const { userId } = LoanService.get(loanId);
-    const { firstName, lastName } = UserService.get(userId);
+    const { user } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      user: { name: 1 },
+    });
 
-    SlackService.notifyAssignee({
-      title: `Promotion ${name}`,
-      message: `Le lot ${lotName} a été réservé pour ${firstName} ${lastName}`,
-      link: `${
-        Meteor.settings.public.subdomains.admin
-      }/promotions/${promotionId}`,
-      assignee: assignedEmployee,
-      notifyAlways: true,
-    });
+    promotionLotBooked({ currentUser, promotionLot, user });
   },
 );
 
-ServerEventService.addMethodListener(sellPromotionLot, ({ promotionLotId }) => {
-  const {
-    name: lotName,
-    promotion: { name, assignedEmployee, _id: promotionId },
-    attributedTo,
-  } = PromotionLotService.fetchOne({
-    $filters: { _id: promotionLotId },
-    name: 1,
-    promotion: { name: 1, assignedEmployee: simpleUser() },
-    attributedTo: { _id: 1 },
-  });
-  const { userId } = LoanService.get(attributedTo._id);
-  const { firstName, lastName } = UserService.get(userId);
+ServerEventService.addAfterMethodListener(
+  sellPromotionLot,
+  ({ context: { userId }, params: { promotionLotId } }) => {
+    const currentUser = UserService.get(userId);
+    const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      name: 1,
+      promotion: { name: 1, assignedEmployee: { email: 1 } },
+      attributedTo: { _id: 1 },
+    });
+    const { user } = LoanService.fetchOne({
+      $filters: { _id: attributedTo._id },
+      user: { name: 1 },
+    });
 
-  SlackService.notifyAssignee({
-    title: `Promotion ${name}`,
-    message: `Le lot ${lotName} a été vendu à ${firstName} ${lastName}`,
-    link: `${
-      Meteor.settings.public.subdomains.admin
-    }/promotions/${promotionId}`,
-    assignee: assignedEmployee,
-    notifyAlways: true,
-  });
-});
+    promotionLotSold({ currentUser, promotionLot, user });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  proInviteUser,
+  ({
+    context: { userId },
+    params: { propertyIds = [], properties = [], promotionIds = [], user },
+  }) => {
+    const notificationPropertyIds = [
+      ...propertyIds,
+      ...properties.map(({ _id, externalId }) => _id || externalId),
+    ];
+    const currentUser = UserService.get(userId);
+    const invitedUser = UserService.getByEmail(user.email);
+
+    sendPropertyInvitations(notificationPropertyIds, currentUser, {
+      ...invitedUser,
+      email: user.email,
+    });
+
+    sendPromotionInvitations(promotionIds, currentUser, {
+      ...invitedUser,
+      email: user.email,
+    });
+
+    if (notificationPropertyIds.length === 0 && promotionIds.length === 0) {
+      referralOnlyNotification({
+        currentUser,
+        user: { ...invitedUser, email: user.email },
+      });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  anonymousLoanInsert,
+  ({ params: { proPropertyId, referralId }, result: loanId }) => {
+    const property = proPropertyId
+      && PropertyService.fetchOne({
+        $filters: { _id: proPropertyId },
+        address1: 1,
+      });
+    const { name: loanName } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      name: 1,
+    });
+    const referral = referralId
+      && UserService.fetchOne({
+        $filters: { _id: referralId },
+        name: 1,
+        organisations: { name: 1 },
+      });
+
+    newAnonymousLoan({ loanName, loanId, property, referral });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  userLoanInsert,
+  ({ context: { userId }, result: loanId }) => {
+    const currentUser = UserService.get(userId);
+    const { name: loanName } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      name: 1,
+    });
+
+    newLoan({ loanId, loanName, currentUser });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  anonymousCreateUser,
+  ({ result: userId }) => {
+    const currentUser = UserService.get(userId);
+    const { loans, name } = UserService.get(userId);
+
+    newUser({ loans, name, currentUser });
+  },
+);

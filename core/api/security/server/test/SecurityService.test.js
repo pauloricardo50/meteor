@@ -14,6 +14,7 @@ import {
   TaskSecurity,
 } from '../../collections';
 import { ROLES } from '../../../users/userConstants';
+import { COLLECTIONS, PROPERTY_CATEGORY } from '../../../constants';
 
 describe('Security service', () => {
   let userId;
@@ -113,7 +114,7 @@ describe('Security service', () => {
 
   describe('minimumRole', () => {
     it('throws if an unknown role is used', () => {
-      expect(() => SecurityService.minimumRole('wut')).to.throw('Invalid');
+      expect(() => SecurityService.minimumRole('wut')(userId)).to.throw('Invalid');
     });
 
     it('does not let admins do dev-only stuff', () => {
@@ -130,6 +131,174 @@ describe('Security service', () => {
       expect(() => adminOnly(adminId)).to.not.throw('Unauthorized role');
       expect(() => adminOnly(userId)).to.throw('Unauthorized role');
       expect(() => adminOnly(proId)).to.throw('Unauthorized role');
+    });
+  });
+
+  describe('isAllowedToModifyFiles', () => {
+    it('does throw if docId is not it fileKey', () => {
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: 'docId1/some/path',
+          docId: 'docId2',
+        })).to.throw('Invalid fileKey or docId');
+    });
+
+    it('does let admins modify files', () => {
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: 'docId/some/path',
+          docId: 'docId',
+          userId: adminId,
+        })).to.not.throw();
+    });
+
+    it('lets a user modify property files', () => {
+      const propertyId = Factory.create('property', { userId })._id;
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${propertyId}/some/path`,
+          docId: propertyId,
+          userId,
+          collection: COLLECTIONS.PROPERTIES_COLLECTION,
+        })).to.not.throw();
+    });
+
+    it('does not let a user modify property files if it does not own them', () => {
+      const propertyId = Factory.create('property')._id;
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${propertyId}/some/path`,
+          docId: propertyId,
+          userId,
+          collection: COLLECTIONS.PROPERTIES_COLLECTION,
+        })).to.throw('Checking ownership');
+    });
+
+    it('lets an admin modify promotion files', () => {
+      const promotionId = Factory.create('promotion')._id;
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${promotionId}/some/path`,
+          docId: promotionId,
+          userId: adminId,
+          collection: COLLECTIONS.PROMOTIONS_COLLECTION,
+        })).to.not.throw();
+    });
+
+    it('lets a pro modify promotion files', () => {
+      const promotionId = Factory.create('promotion', {
+        userLinks: [
+          {
+            _id: proId,
+            permissions: { canManageDocuments: true },
+          },
+        ],
+      })._id;
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${promotionId}/some/path`,
+          docId: promotionId,
+          userId: proId,
+          collection: COLLECTIONS.PROMOTIONS_COLLECTION,
+        })).to.not.throw();
+    });
+
+    it('does not let a pro modify promotion files if he does not have the permissions', () => {
+      const promotionId = Factory.create('promotion', {
+        userLinks: [
+          {
+            _id: proId,
+            permissions: { canManageDocuments: false },
+          },
+        ],
+      })._id;
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${promotionId}/some/path`,
+          docId: promotionId,
+          userId: proId,
+          collection: COLLECTIONS.PROMOTIONS_COLLECTION,
+        })).to.throw('Vous ne pouvez pas');
+    });
+
+    it('lets an admin modify promotion lot files', () => {
+      const propertyId = Factory.create('property', {
+        category: PROPERTY_CATEGORY.PROMOTION,
+      })._id;
+      const promotionLotId = Factory.create('promotionLot', {
+        propertyLinks: [{ _id: propertyId }],
+      })._id;
+      Factory.create('promotion', {
+        promotionLotLinks: [{ _id: promotionLotId }],
+      });
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${propertyId}/some/path`,
+          docId: propertyId,
+          userId: adminId,
+          collection: COLLECTIONS.PROPERTIES_COLLECTION,
+        })).to.not.throw();
+    });
+
+    it('lets a pro modify promotion lot files', () => {
+      const propertyId = Factory.create('property', {
+        category: PROPERTY_CATEGORY.PROMOTION,
+      })._id;
+      const promotionLotId = Factory.create('promotionLot', {
+        propertyLinks: [{ _id: propertyId }],
+      })._id;
+      Factory.create('promotion', {
+        promotionLotLinks: [{ _id: promotionLotId }],
+        userLinks: [
+          {
+            _id: proId,
+            permissions: { canManageDocuments: true },
+          },
+        ],
+      });
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${propertyId}/some/path`,
+          docId: propertyId,
+          userId: proId,
+          collection: COLLECTIONS.PROPERTIES_COLLECTION,
+        })).to.not.throw();
+    });
+
+    it('does not let a pro modify promotion lot files if he does not have permissions', () => {
+      const propertyId = Factory.create('property', {
+        category: PROPERTY_CATEGORY.PROMOTION,
+      })._id;
+      const promotionLotId = Factory.create('promotionLot', {
+        propertyLinks: [{ _id: propertyId }],
+      })._id;
+      Factory.create('promotion', {
+        promotionLotLinks: [{ _id: promotionLotId }],
+        userLinks: [
+          {
+            _id: proId,
+            permissions: { canManageDocuments: false },
+          },
+        ],
+      });
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${propertyId}/some/path`,
+          docId: propertyId,
+          userId: proId,
+          collection: COLLECTIONS.PROPERTIES_COLLECTION,
+        })).to.throw('Vous ne pouvez pas');
+    });
+
+    it('lets a user modify loan files', () => {
+      const loanId = Factory.create('loan', { userId })._id;
+      expect(() =>
+        SecurityService.isAllowedToModifyFiles({
+          fileKey: `${loanId}/some/path`,
+          docId: loanId,
+          userId,
+          collection: COLLECTIONS.LOANS_COLLECTION,
+        })).to.not.throw();
     });
   });
 });

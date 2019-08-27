@@ -1,17 +1,32 @@
-import { compose, withProps, withState } from 'recompose';
+import { withProps } from 'recompose';
 
 import {
   bookPromotionLot,
   cancelPromotionLotBooking,
   sellPromotionLot,
-} from 'core/api';
+} from '../../../api';
+import {
+  isAllowedToBookPromotionLotToCustomer,
+  isAllowedToSellPromotionLotToCustomer,
+} from '../../../api/security/clientSecurityHelpers';
 
-export default compose(
-  withState('isLoading', 'setLoading', false),
-  withProps(({ promotionLotId, loanId }) => ({
-    bookPromotionLot: () => bookPromotionLot.run({ promotionLotId, loanId }),
-    cancelPromotionLotBooking: () =>
-      cancelPromotionLotBooking.run({ promotionLotId }),
-    sellPromotionLot: () => sellPromotionLot.run({ promotionLotId }),
-  })),
-);
+const makePermissions = ({ currentUser, promotion, customerOwnerType }) => ({
+  canBookLot: isAllowedToBookPromotionLotToCustomer({
+    promotion,
+    currentUser,
+    customerOwnerType,
+  }),
+  canSellLot: isAllowedToSellPromotionLotToCustomer({
+    promotion,
+    currentUser,
+    customerOwnerType,
+  }),
+});
+
+export default withProps(({ promotionLotId, loanId, promotion, currentUser, customerOwnerType }) => ({
+  ...makePermissions({ currentUser, promotion, customerOwnerType }),
+  bookPromotionLot: () => bookPromotionLot.run({ promotionLotId, loanId }),
+  cancelPromotionLotBooking: () =>
+    cancelPromotionLotBooking.run({ promotionLotId }),
+  sellPromotionLot: () => sellPromotionLot.run({ promotionLotId }),
+}));

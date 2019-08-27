@@ -27,7 +27,7 @@ export const promotionLotSchema = new SimpleSchema({
   gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   roomCount: { type: Number, optional: true, min: 0, max: 100 },
   bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
-  monthlyExpenses: moneyField,
+  yearlyExpenses: moneyField,
   description: {
     type: String,
     optional: true,
@@ -55,13 +55,13 @@ const ProPromotionLotsTable = ({
   columnOptions,
   addProperty,
   addLot,
-  canModify,
+  canAddLots,
 }: ProPromotionLotsTableProps) => (
   <>
     <h3 className="text-center">
       <T id="collections.lots" />
     </h3>
-    {canModify && (
+    {canAddLots && (
       <div className="promotion-table-actions">
         <AutoFormDialog
           title={<T id="PromotionPage.addProperty" />}

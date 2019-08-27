@@ -16,10 +16,10 @@ class MortgageNoteService extends CollectionService {
     const id = super.insert(mortgageNote);
 
     if (borrowerId) {
-      this.addLink({ id, linkName: 'borrowers', linkId: borrowerId });
+      this.addLink({ id, linkName: 'borrower', linkId: borrowerId });
     }
     if (propertyId) {
-      this.addLink({ id, linkName: 'properties', linkId: propertyId });
+      this.addLink({ id, linkName: 'property', linkId: propertyId });
     }
 
     return id;

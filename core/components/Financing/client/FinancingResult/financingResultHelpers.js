@@ -2,13 +2,33 @@
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';
-import FinanceCalculator, {
-  getOffer,
-  getProperty,
-  getAmortizationRateMapper,
-} from '../FinancingCalculator';
+import FinanceCalculator, { getProperty } from '../FinancingCalculator';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
 
+const initCalc = ({
+  loan,
+  structureId,
+  offer,
+  Calculator: InitializedCalculator,
+}) => {
+  let finalOffer = offer;
+
+  if (!finalOffer) {
+    const { offers = [] } = loan;
+    const { offerId } = Calculator.selectStructure({ loan, structureId });
+    finalOffer = offers.find(({ _id }) => offerId === _id);
+  }
+
+  if (finalOffer && finalOffer.organisation && finalOffer.organisation.lenderRules) {
+    return new CalculatorClass({
+      loan,
+      structureId,
+      lenderRules: finalOffer.organisation.lenderRules,
+    });
+  }
+
+  return InitializedCalculator;
+};
 export const getInterests = (params) => {
   const {
     structure: { wantedLoan },
@@ -17,34 +37,15 @@ export const getInterests = (params) => {
 };
 
 export const getAmortization = (params) => {
-  const {
-    structure: { wantedLoan, offerId },
-    offer,
-  } = params;
+  const calc = initCalc(params);
+  const { loan, structureId } = params;
 
-  if (offerId || offer) {
-    const { amortizationGoal, amortizationYears } = offer || getOffer(params);
-    const calc = new CalculatorClass({ amortizationGoal });
-    return (
-      (calc.getAmortizationRateBase({
-        ...getAmortizationRateMapper(params),
-        amortizationYears,
-      })
-        * wantedLoan)
-      / 12
-    );
-  }
-
-  return (
-    (Calculator.getAmortizationRateBase(getAmortizationRateMapper(params))
-      * wantedLoan)
-    / 12
-  );
+  return calc.getAmortization({ loan, structureId });
 };
 
 export const getPropertyExpenses = (data) => {
   const property = getProperty(data);
-  return (property && property.monthlyExpenses) || 0;
+  return Math.round((property && property.yearlyExpenses) / 12 || 0);
 };
 
 const getNonPledgedFundsOfType = ({ structure: { ownFunds }, type }) =>
@@ -73,15 +74,27 @@ export const getRemainingBank3A = ({ borrowers, structure }) =>
   Calculator.getBank3A({ borrowers })
   - getNonPledgedFundsOfType({ structure, type: 'bank3A' });
 
-export const getBorrowRatio = FinanceCalculator.getBorrowRatio;
+export const getBorrowRatio = (params) => {
+  const calc = initCalc(params);
+  const { loan, structureId } = params;
+  return calc.getBorrowRatio({ loan, structureId });
+};
 
-export const getIncomeRatio = FinanceCalculator.getIncomeRatio;
+export const getIncomeRatio = (params) => {
+  const calc = initCalc(params);
+  const { loan, structureId } = params;
+  return calc.getIncomeRatio({ loan, structureId });
+};
 
-export const getBorrowRatioStatus = ({ value }) =>
-  FinanceCalculator.getBorrowRatioStatus({ borrowRatio: value });
+export const getBorrowRatioStatus = (params) => {
+  const calc = initCalc(params);
+  return calc.getBorrowRatioStatus({ borrowRatio: params.value });
+};
 
-export const getIncomeRatioStatus = ({ value }) =>
-  FinanceCalculator.getIncomeRatioStatus({ incomeRatio: value });
+export const getIncomeRatioStatus = (params) => {
+  const calc = initCalc(params);
+  return calc.getIncomeRatioStatus({ incomeRatio: params.value });
+};
 
 export const makeHasOwnFundsOfType = type => ({ borrowers }) =>
   Calculator.getFunds({ borrowers, type }) > 0;

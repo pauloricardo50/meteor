@@ -9,7 +9,7 @@ import SingleStructureContainer from '../containers/SingleStructureContainer';
 type FinancingTranchePickerProps = {};
 
 const FinancingTranchePicker = ({
-  structure: { loanTranches },
+  structure: { loanTranches, disableForms },
   updateStructure,
   className,
 }: FinancingTranchePickerProps) => (
@@ -17,6 +17,7 @@ const FinancingTranchePicker = ({
     <TranchePickerDialog
       initialTranches={loanTranches}
       handleSave={tranches => updateStructure({ loanTranches: tranches })}
+      disabled={disableForms}
     />
   </span>
 );

@@ -1,5 +1,6 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+
 import faker from 'faker/locale/fr';
 
 import { USER_PASSWORD } from './fixtureConstants';
@@ -39,7 +40,11 @@ export const addUser = ({ email, role, password = USER_PASSWORD, ...data }) => {
   const newUserId = createUser(email, role, password);
   UserService.update({
     userId: newUserId,
-    object: { ...data, phoneNumbers: [faker.phone.phoneNumber()] },
+    object: {
+      ...data,
+      phoneNumbers: [faker.phone.phoneNumber()],
+      'emails.0.verified': true,
+    },
   });
   return newUserId;
 };
@@ -69,11 +74,6 @@ export const createAdmins = () => {
       email: 'lydia@e-potek.ch',
       firstName: 'Lydia',
       lastName: 'Abraha',
-    },
-    {
-      email: 'joel@e-potek.ch',
-      firstName: 'Joel',
-      lastName: 'Santos',
     },
     {
       email: 'yannis@e-potek.ch',

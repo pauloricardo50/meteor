@@ -37,6 +37,15 @@
 
   transform: scale(1.25);
 
+  @include screen(med) {
+    margin: 0;
+    margin-top: 80px;
+    padding: 0 16px;
+    align-self: center;
+    width: 100%;
+    max-width: 80%;
+  }
+
   @include screen(large, min) {
     width: $med;
   }

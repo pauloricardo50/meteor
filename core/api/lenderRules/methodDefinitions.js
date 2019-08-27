@@ -37,5 +37,13 @@ export const lenderRulesUpdateFilter = new Method({
   params: {
     lenderRulesId: String,
     logicRules: Array,
+    name: Match.Optional(String),
+  },
+});
+
+export const setLenderRulesOrder = new Method({
+  name: 'setLenderRulesOrder',
+  params: {
+    orders: Object,
   },
 });

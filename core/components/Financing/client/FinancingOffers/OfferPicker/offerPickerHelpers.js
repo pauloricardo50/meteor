@@ -1,11 +1,17 @@
 import FinancingCalculator from '../../FinancingCalculator';
-import {
-  getAmortization,
-  getPropertyExpenses,
-} from '../../FinancingResult/financingResultHelpers';
+import Calculator from '../../../../../utils/Calculator';
+import { getPropertyExpenses } from '../../FinancingResult/financingResultHelpers';
 
-export const getAmortizationForStructureWithOffer = props =>
-  getAmortization(props);
+export const getAmortizationForStructureWithOffer = ({
+  loan,
+  structureId,
+  offer,
+}) =>
+  Calculator.getAmortization({
+    loan,
+    structureId,
+    offerOverride: offer,
+  });
 
 export const getInterestsForStructureWithOffer = props =>
   (FinancingCalculator.getInterestsWithTranches(props)

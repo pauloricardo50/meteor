@@ -25,7 +25,10 @@ export const irs10yFetch = new Method({
 
 irs10yFetch.setHandler(() =>
   fetchIrs10y()
-    .then(irs10y => Irs10yService.insert({ date: new Date(), rate: irs10y }))
+    .then((irs10y) => {
+      Irs10yService.insert({ date: new Date(), rate: irs10y });
+      return { rate: irs10y };
+    })
     .catch((error) => {
       throw error;
     }));

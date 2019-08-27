@@ -1,0 +1,279 @@
+.loan-board {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .board {
+    flex-grow: 1;
+  }
+
+  .loan-board-options.fixed + .board {
+    padding-top: 120px;
+  }
+
+  &-options {
+    display: flex;
+    justify-content: space-between;
+
+    &.fixed {
+      position: fixed;
+      top: 64px;
+      left: calc(120px + 16px);
+      right: 16px;
+      z-index: 1;
+    }
+  }
+
+  &-options > * {
+    display: flex;
+    align-items: flex-start;
+
+    padding: 16px;
+
+    background-color: white;
+  }
+
+  &-options .right {
+    align-items: center;
+
+    > * {
+      margin-left: 8px;
+    }
+  }
+
+  &-options .left {
+    flex-grow: 1;
+
+    > * {
+      margin-right: 32px;
+    }
+  }
+
+  &-column-header {
+    position: relative;
+
+    display: flex;
+
+    padding: 8px;
+    padding-right: 24px;
+
+    .title {
+      display: flex;
+      align-items: center;
+
+      margin-top: 0;
+    }
+
+    .sort {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .board-column {
+    width: 300px;
+  }
+}
+
+$button-height: 30px;
+
+.loan-board-card {
+  margin-bottom: 16px;
+
+  cursor: pointer;
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    min-height: $button-height;
+    padding: 4px 8px;
+
+    .status-label-dot,
+    img {
+      flex-shrink: 0;
+    }
+
+    > * {
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+      margin-right: 4px;
+
+      border-radius: 50%;
+    }
+
+    .title {
+      margin: 0;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .title-placeholder {
+      padding: 4px;
+    }
+
+    .icon-link {
+      white-space: pre-wrap;
+    }
+  }
+
+  .card-top {
+    padding: 12px;
+
+    .wanted-loan {
+      margin: 0;
+
+      text-align: center;
+
+      font-family: 'Eina04-Regular';
+    }
+  }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+
+    padding: 8px;
+
+    .premium-badge {
+      height: 16px;
+      margin-right: 4px;
+      padding: 2px;
+    }
+  }
+
+  &-tasks {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 0;
+
+    .date {
+      white-space: nowrap;
+    }
+  }
+
+  .admin-note {
+    overflow: hidden;
+
+    max-height: 80px;
+
+    white-space: pre-wrap;
+
+    font-size: 12px;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin: 0.2em 0;
+    }
+
+    p,
+    ul {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 1.4em;
+    }
+
+    h2 {
+      font-size: 1.3em;
+    }
+
+    h3 {
+      font-size: 1.2em;
+    }
+
+    h4 {
+      font-size: 1.125em;
+    }
+  }
+}
+
+.loan-board-card-task {
+  position: relative;
+
+  flex-grow: 1;
+
+  padding: 8px 0;
+
+  .buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    display: flex;
+
+    padding: 2px;
+
+    border: 2px solid $border-grey;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .task-complete-button {
+    margin-right: 4px;
+
+    color: white;
+    background-color: $success;
+  }
+
+  .task-cancel-button {
+    color: white;
+    background-color: $error;
+  }
+}
+
+.timeline.vertical.tasks {
+  width: unset;
+}
+
+.sort-label {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0;
+
+  .icon {
+    margin-left: 8px;
+    &.rotate {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.checkbox-list {
+  display: flex;
+  overflow: scroll;
+  flex-direction: column;
+
+  max-height: 400px;
+
+  > * {
+    margin-left: 0;
+  }
+
+  .checkbox {
+    padding: 4px;
+  }
+}
+
+.radio-group > * {
+  margin-left: 0;
+
+  .radio {
+    padding: 4px;
+  }
+}

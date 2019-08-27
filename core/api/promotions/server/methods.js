@@ -5,12 +5,12 @@ import {
   promotionUpdate,
   promotionRemove,
   insertPromotionProperty,
-  inviteUserToPromotion,
   setPromotionUserPermissions,
   addProUserToPromotion,
   removeProFromPromotion,
   sendPromotionInvitationEmail,
-  removeUserFromPromotion,
+  removeLoanFromPromotion,
+  editPromotionLoan,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -19,23 +19,18 @@ promotionInsert.setHandler(({ userId }, { promotion }) => {
 });
 
 promotionUpdate.setHandler(({ userId }, { promotionId, object }) => {
-  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
+  SecurityService.promotions.isAllowedToModify({ promotionId, userId });
   return PromotionService.update({ promotionId, object });
 });
 
-promotionRemove.setHandler(({ userId }, { promotionId }) => {
+promotionRemove.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.remove(promotionId);
+  return PromotionService.remove(params);
 });
 
 insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
-  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
+  SecurityService.promotions.isAllowedToAddLots({ promotionId, userId });
   return PromotionService.insertPromotionProperty({ promotionId, property });
-});
-
-inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
-  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
-  return PromotionService.inviteUser({ promotionId, user });
 });
 
 setPromotionUserPermissions.setHandler(({ userId: currentUserId }, { promotionId, userId, permissions }) => {
@@ -58,11 +53,29 @@ removeProFromPromotion.setHandler(({ userId: currentUserId }, { promotionId, use
 });
 
 sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
-  SecurityService.promotions.isAllowedToRead(params.promotionId, userId);
+  SecurityService.promotions.isAllowedToInviteCustomers({
+    promotionId: params.promotionId,
+    userId,
+  });
   return PromotionService.sendPromotionInvitationEmail(params);
 });
 
-removeUserFromPromotion.setHandler(({ userId }, params) => {
-  SecurityService.promotions.isAllowedToUpdate(params.promotionId, userId);
-  return PromotionService.removeUser(params);
+removeLoanFromPromotion.setHandler(({ userId }, params) => {
+  const { promotionId, loanId } = params;
+  SecurityService.promotions.isAllowedToRemoveCustomer({
+    promotionId,
+    loanId,
+    userId,
+  });
+  return PromotionService.removeLoan(params);
+});
+
+editPromotionLoan.setHandler(({ userId }, params) => {
+  const { promotionId, loanId } = params;
+  SecurityService.promotions.isAllowedToSeePromotionCustomer({
+    promotionId,
+    loanId,
+    userId,
+  });
+  return PromotionService.editPromotionLoan(params);
 });

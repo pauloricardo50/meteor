@@ -27,7 +27,7 @@ class Tabs extends Component {
     this.setState({ value });
 
     if (typeof onChange === 'function') {
-      onChangeCallback();
+      onChangeCallback(event);
     }
   };
 
@@ -35,7 +35,18 @@ class Tabs extends Component {
     const { value } = this.state;
     const { tabs } = this.props;
 
-    return tabs[value].content;
+    if (tabs.length === 0) {
+      return null;
+    }
+
+    const currentTab = tabs[value];
+
+    if (!currentTab) {
+      // When tabs are added or removed, tabs can break, so readjust current tab value
+      return this.setState({ value: tabs.length - 1 });
+    }
+
+    return currentTab.content;
   };
 
   render() {
@@ -45,6 +56,7 @@ class Tabs extends Component {
       initialIndex,
       className,
       onChangeCallback,
+      disableTouchRipple,
       ...otherProps
     } = this.props;
     const { value } = this.state;
@@ -74,6 +86,7 @@ class Tabs extends Component {
               to={to}
               key={id || i}
               className="core-tabs-tab"
+              disableTouchRipple={disableTouchRipple}
             />
           ))}
         </MuiTabs>

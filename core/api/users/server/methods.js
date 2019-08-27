@@ -1,5 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
+import Analytics from 'core/api/analytics/server/Analytics';
+import EVENTS from 'core/api/analytics/events';
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -8,15 +11,26 @@ import {
   assignAdminToNewUser,
   setRole,
   adminCreateUser,
-  editUser,
+  updateUser,
   getUserByPasswordResetToken,
   testCreateUser,
   removeUser,
   sendEnrollmentEmail,
   changeEmail,
-  generateApiToken,
+  userUpdateOrganisations,
+  testUserAccount,
+  generateApiKeyPair,
+  proInviteUser,
+  getUserByEmail,
+  setUserReferredBy,
+  setUserReferredByOrganisation,
+  proInviteUserToOrganisation,
+  proSetShareCustomers,
+  anonymousCreateUser,
 } from '../methodDefinitions';
 import UserService from './UserService';
+import PropertyService from '../../properties/server/PropertyService';
+import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }));
@@ -65,9 +79,11 @@ adminCreateUser.setHandler((context, { options, role }) => {
   });
 });
 
-editUser.setHandler((context, { userId, object }) => {
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService.checkUserLoggedIn(userId);
+updateUser.setHandler((context, { userId, object }) => {
+  SecurityService.users.isAllowedToUpdate(userId, context.userId);
+
+  if (object.roles) {
+    SecurityService.handleUnauthorized('Vous ne pouvez pas changer le rôle');
   }
 
   return UserService.update({ userId, object });
@@ -77,9 +93,10 @@ getUserByPasswordResetToken.setHandler((context, params) =>
   UserService.getUserByPasswordResetToken(params));
 
 testCreateUser.setHandler((context, params) => {
-  if (Meteor.isTest) {
-    return UserService.testCreateUser(params);
+  if (!Meteor.isTest) {
+    throw new Meteor.Error('Test only');
   }
+  return UserService.testCreateUser(params);
 });
 
 removeUser.setHandler((context, params) => {
@@ -92,14 +109,156 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+changeEmail.setHandler(({ userId }, params) => {
+  SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });
 
-generateApiToken.setHandler((context, { userId }) => {
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService.checkUserLoggedIn(userId);
+userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.updateOrganisations({ userId, newOrganisations });
+});
+
+testUserAccount.setHandler((context, params) => {
+  if (Meteor.isTest) {
+    return UserService.testUserAccount(params);
   }
-  return UserService.generateApiToken({ userId });
+});
+
+generateApiKeyPair.setHandler((context, params) => {
+  SecurityService.checkUserIsPro(context.userId);
+  return UserService.generateKeyPair(params);
+});
+
+proInviteUser.setHandler((context, params) => {
+  const { userId } = context;
+  const { propertyIds, promotionIds, properties } = params;
+  SecurityService.checkUserIsPro(userId);
+
+  if (propertyIds && propertyIds.length) {
+    propertyIds.forEach(propertyId =>
+      SecurityService.properties.isAllowedToInviteCustomers({
+        userId,
+        propertyId,
+      }));
+  }
+
+  if (promotionIds && promotionIds.length) {
+    promotionIds.forEach(promotionId =>
+      SecurityService.promotions.isAllowedToInviteCustomers({
+        promotionId,
+        userId,
+      }));
+  }
+
+  if (properties && properties.length) {
+    properties.forEach(({ externalId }) => {
+      const existingProperty = PropertyService.fetchOne({
+        $filters: { externalId },
+      });
+      if (existingProperty) {
+        SecurityService.properties.isAllowedToInviteCustomers({
+          userId,
+          propertyId: existingProperty._id,
+        });
+      }
+    });
+  }
+
+  // Only pass proUserId if this is a pro user
+  const isProUser = SecurityService.hasRole(userId, ROLES.PRO);
+
+  return UserService.proInviteUser({
+    ...params,
+    proUserId: isProUser ? userId : undefined,
+    adminId: !isProUser ? userId : undefined,
+  });
+});
+
+getUserByEmail.setHandler(({ userId }, { email }) => {
+  SecurityService.checkUserIsPro(userId);
+  const user = UserService.getByEmail(email);
+
+  if (user) {
+    return UserService.fetchOne({
+      $filters: { $and: [{ _id: user._id }, { roles: { $in: [ROLES.PRO] } }] },
+      name: 1,
+      organisations: { name: 1 },
+    });
+  }
+});
+
+setUserReferredBy.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setReferredBy(params);
+});
+
+setUserReferredByOrganisation.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setReferredByOrganisation(params);
+});
+
+proInviteUserToOrganisation.setHandler(({ userId }, params) => {
+  const { organisationId } = params;
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.users.isAllowedToInviteUsersToOrganisation({
+    userId,
+    organisationId,
+  });
+
+  if (SecurityService.currentUserIsAdmin()) {
+    params.adminId = userId;
+  } else {
+    params.proId = userId;
+  }
+
+  return UserService.proInviteUserToOrganisation(params);
+});
+
+proSetShareCustomers.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return UserService.proSetShareCustomers(params);
+});
+
+anonymousCreateUser.setHandler((context, params) => {
+  if (params.loanId) {
+    SecurityService.loans.checkAnonymousLoan(params.loanId);
+  }
+
+  const userId = UserService.anonymousCreateUser(params);
+
+  const analytics = new Analytics({ ...context, userId });
+  let referralUser;
+  let referralOrg;
+
+  if (params.referralId) {
+    referralUser = UserService.fetchOne({
+      $filters: { _id: params.referralId, roles: { $in: [ROLES.PRO] } },
+    });
+    referralOrg = OrganisationService.fetchOne({
+      $filters: {
+        _id: params.referralId,
+      },
+    });
+  }
+  analytics.identify(params.trackingId);
+  const referralUserMainOrg = params.referralId
+    && !referralOrg
+    && UserService.getUserMainOrganisation(params.referralId);
+
+  analytics.track(EVENTS.USER_CREATED, {
+    userId,
+    origin: params.referralId ? 'referral' : 'organic',
+    referralId: referralUser ? params.referralId : undefined,
+    orgReferralId: referralOrg
+      ? params.referralId
+      : referralUserMainOrg && referralUserMainOrg._id,
+  });
+  if (params.loanId) {
+    analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
+      loanId: params.loanId,
+    });
+  }
+
+  return userId;
 });

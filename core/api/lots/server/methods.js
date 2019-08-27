@@ -4,7 +4,7 @@ import { lotInsert, lotUpdate, lotRemove } from '../methodDefinitions';
 import LotService from './LotService';
 
 lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToAddLots({ promotionId, userId });
   const lotId = LotService.insert(lot);
   PromotionService.addLink({
     id: promotionId,
@@ -15,11 +15,12 @@ lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
 });
 
 lotUpdate.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
+  const { lotId } = params;
+  SecurityService.promotions.isAllowedToModifyAdditionalLot({ lotId, userId });
   return LotService.update(params);
 });
 
 lotRemove.setHandler(({ userId }, { lotId }) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToRemoveAdditionalLot({ lotId, userId });
   return LotService.remove(lotId);
 });

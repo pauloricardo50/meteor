@@ -3,20 +3,22 @@ import React from 'react';
 
 import PageHead from 'core/components/PageHead';
 import Financing from 'core/components/Financing';
+import { withCalculator } from 'core/containers/withCalculator';
 import type { userLoan } from 'core/api';
-import Page from 'core/components/Page';
+import PageApp from '../../components/PageApp';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 
 type FinancingPageProps = {
   loan: userLoan,
+  Calculator: Class,
 };
 
-const FinancingPage = ({ loan }: FinancingPageProps) => (
-  <Page id="FinancingPage" fullWidth>
+const FinancingPage = ({ loan, Calculator }: FinancingPageProps) => (
+  <PageApp id="FinancingPage" fullWidth>
     <PageHead titleId="FinancingPage" />
-    <Financing loan={loan} />
+    <Financing loan={loan} Calculator={Calculator} />
     <ReturnToDashboard />
-  </Page>
+  </PageApp>
 );
 
-export default FinancingPage;
+export default withCalculator(FinancingPage);

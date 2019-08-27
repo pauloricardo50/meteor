@@ -7,12 +7,14 @@ import OfferList from '../../../OfferList/OfferList';
 
 type OfferListDialogProps = {
   offers: Array<Object>,
+  disabled?: boolean,
 };
 
-const OfferListDialog = ({ offers }: OfferListDialogProps) => (
+const OfferListDialog = ({ offers, disabled }: OfferListDialogProps) => (
   <DialogSimple
     label={<T id="FinancingOffers.showAll" />}
-    buttonProps={{ style: { margin: 8 } }}
+    buttonProps={{ style: { margin: 8 }, disabled }}
+    rootStyle={{ margin: 'auto' }}
     raised={false}
     primary
     closeOnly

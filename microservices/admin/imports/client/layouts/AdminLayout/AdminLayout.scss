@@ -2,39 +2,33 @@
 
 .admin-layout {
   width: 100%;
-  height: 100%;
-}
-
-.admin-layout .main-row {
-  display: flex;
-  overflow: hidden;
-  flex-direction: row;
-
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  padding-top: 64px;
-}
-
-.admin-layout .main-row div.main {
-  overflow-y: scroll;
   flex-grow: 1;
-  flex-shrink: 1;
+  display: flex;
+  padding-top: 64px;
+  flex-grow: 1;
 
-  box-sizing: border-box;
-  height: 100%;
-  padding: 16px;
-}
 
-// Do this to counter TopNav.scss
-.admin-top-nav .top-nav {
-  @include screen(med) {
-    position: fixed;
+  .main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    // flex-basis: 0;
+    flex-shrink: 1;
+    overflow: auto;
+
+    padding: 16px;
+    box-sizing: border-box;
+    min-height: 100%;
+  }
+
+  .top-nav {
+    z-index: 1201;
   }
 }
 
-.admin-dashboard-page {
-  box-sizing: border-box;
-  width: 100%;
-  margin-bottom: 16px;
+// Do this to counter TopNav.scss
+.admin-top-nav {
+  .notifications-manager {
+    margin: 0 8px;
+  }
 }

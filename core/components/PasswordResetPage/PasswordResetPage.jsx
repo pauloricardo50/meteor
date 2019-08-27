@@ -1,11 +1,16 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { Redirect } from 'react-router-dom';
+import cx from 'classnames';
 
 import TextField from '../Material/TextField';
 import Loading from '../Loading/Loading';
 import Button from '../Button';
+import Checkbox from '../Checkbox';
 import T from '../Translation';
 import { getUserDisplayName } from '../../utils/userFunctions';
 import PasswordResetPageContainer from './PasswordResetPageContainer';
@@ -13,20 +18,20 @@ import PasswordResetPageContainer from './PasswordResetPageContainer';
 export const PasswordResetPage = ({
   newPassword,
   newPassword2,
+  hasReadConditions,
   handleChange,
   handleSubmit,
   user,
   error,
   submitting,
 }) => {
-  const isValid = !!newPassword && newPassword === newPassword2;
+  const isEnrollment = window.location && window.location.pathname.includes('enroll-account');
+  const isValid = !!newPassword
+    && newPassword === newPassword2
+    && (!isEnrollment || hasReadConditions);
 
   if (error) {
-    return (
-      <h3 className="error" id="password-reset-page">
-        {error.message}
-      </h3>
-    );
+    return <Redirect to="/login" />;
   }
 
   if (!user) {
@@ -45,16 +50,16 @@ export const PasswordResetPage = ({
             <FontAwesomeIcon icon={faUserCircle} className="icon" />
             <h1>{getUserDisplayName(user)}</h1>
           </div>
-          <h3 className="secondary">
+          <h4 className="secondary">
             <T id="PasswordResetPage.description" />
-          </h3>
+          </h4>
         </div>
         <TextField
           label={<T id="PasswordResetPage.password" />}
           floatingLabelFixed
           type="password"
           value={newPassword}
-          onChange={e => handleChange(e, 'newPassword')}
+          onChange={e => handleChange(e.target.value, 'newPassword')}
           className="password-reset-page-input"
         />
         <TextField
@@ -62,11 +67,40 @@ export const PasswordResetPage = ({
           floatingLabelFixed
           type="password"
           value={newPassword2}
-          onChange={e => handleChange(e, 'newPassword2')}
+          onChange={e => handleChange(e.target.value, 'newPassword2')}
           className="password-reset-page-input"
         />
 
-        <div className="password-reset-page-button">
+        {isEnrollment && (
+          <Checkbox
+            label={(
+              <span className="disclaimer">
+                <T
+                  id="PasswordResetPage.disclaimer"
+                  values={{
+                    link: (
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`${Meteor.settings.public.subdomains.app}/files/Privacy Policy - e-Potek.pdf`}
+                      >
+                        <T id="PasswordResetPage.disclaimer.privacyPolicy" />
+                      </a>
+                    ),
+                  }}
+                />
+              </span>
+            )}
+            value={hasReadConditions}
+            onChange={(e, c) => handleChange(c, 'hasReadConditions')}
+          />
+        )}
+
+        <div
+          className={cx('password-reset-page-button', {
+            enrollment: isEnrollment,
+          })}
+        >
           <Button
             raised
             label={<T id="PasswordResetPage.CTA" />}

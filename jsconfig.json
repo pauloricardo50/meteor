@@ -2,13 +2,12 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "es6",
-    "baseUrl": ".",
-    "paths": {
-      "core/*": ["./core/*"]
-    }
+    "baseUrl": "."
   },
   "exclude": [
     "node_modules",
-    "microservices/*/node_modules"
+    "microservices",
+    "meteorPackages"
   ]
 }
+

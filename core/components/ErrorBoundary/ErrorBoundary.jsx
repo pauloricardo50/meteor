@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import LayoutError from './LayoutError';
 import RootError from './RootError';
-import withErrorCatcher from '../../utils/withErrorCatcher';
+import withErrorCatcher from '../../containers/withErrorCatcher';
 import { logError } from '../../api/slack/methodDefinitions';
 
 class ErrorBoundary extends Component {

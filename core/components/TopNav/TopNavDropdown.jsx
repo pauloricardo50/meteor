@@ -4,6 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
+import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
+import { withRouter } from 'react-router-dom';
 
 import { ROLES } from '../../api/constants';
 import T from '../Translation';
@@ -40,9 +42,18 @@ const getMenuItems = (currentUser) => {
       id: 'pro',
       link: '/',
       show: Meteor.microservice === 'app' && (isPro || isDev),
-      icon: <FontAwesomeIcon icon={faCity} />,
+      icon: <FontAwesomeIcon icon={faCity} className="font-awesome" />,
       onClick: () => {
         window.location.replace(Meteor.settings.public.subdomains.pro);
+      },
+    },
+    {
+      id: 'app',
+      link: '/',
+      show: Meteor.microservice === 'pro' && (isPro || isDev),
+      icon: <FontAwesomeIcon icon={faUsdCircle} className="font-awesome" />,
+      onClick: () => {
+        window.location.replace(Meteor.settings.public.subdomains.app);
       },
     },
     {
@@ -61,6 +72,7 @@ const getMenuItems = (currentUser) => {
 
 const TopNavDropdown = ({ currentUser, history }) => (
   <DropdownMenu
+    maxHeight={false}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'left',
@@ -81,6 +93,7 @@ const TopNavDropdown = ({ currentUser, history }) => (
         label: label || <T id={`TopNavDropdown.${optionId}`} />,
         history, // required for Link to work
       }))}
+    paperClassName="top-nav-dropdown"
   />
 );
 
@@ -89,4 +102,4 @@ TopNavDropdown.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-export default TopNavDropdown;
+export default withRouter(TopNavDropdown);

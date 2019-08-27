@@ -1,11 +1,14 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
 import {
   createdAt,
   updatedAt,
   percentageField,
   moneyField,
+  cacheField,
+  documentsField,
 } from '../helpers/sharedSchemas';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
@@ -61,6 +64,8 @@ export const OfferSchema = new SimpleSchema({
   'feedback.date': { type: Date, optional: true },
   withCounterparts: { type: Boolean, optional: true },
   enableOffer: { type: Boolean, defaultValue: true, optional: true },
+  lenderCache: cacheField,
+  documents: documentsField,
 });
 
 export const AdminOfferSchema = OfferSchema.omit(
@@ -70,6 +75,7 @@ export const AdminOfferSchema = OfferSchema.omit(
   'createdAt',
   'updatedAt',
   'feedback',
+  'lenderCache',
 );
 
 // Attach schema

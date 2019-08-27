@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
 import MaskedInput from 'react-text-mask';
+
+import Input from '../Material/Input';
 import { percentMask } from '../../utils/textMasks';
 import { percentFormatters } from '../../utils/formHelpers';
 

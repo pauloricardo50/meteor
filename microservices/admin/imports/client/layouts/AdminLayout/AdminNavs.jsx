@@ -6,7 +6,7 @@ import AdminSideNav from './AdminSideNav';
 
 const AdminNavs = props => (
   <React.Fragment>
-    <TopNav {...props} public={false} />
+    <TopNav {...props} />
     <AdminSideNav {...props} />
   </React.Fragment>
 );

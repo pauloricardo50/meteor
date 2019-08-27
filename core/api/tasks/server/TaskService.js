@@ -1,12 +1,14 @@
-import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
-import UserService from '../../users/server/UserService';
-import SlackService from '../../slack/server/SlackService';
+import moment from 'moment';
+
+import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import CollectionService from '../../helpers/CollectionService';
-import { TASK_STATUS, TASK_TYPE } from '../taskConstants';
-import { validateTask } from '../taskValidation';
+import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -14,37 +16,42 @@ class TaskService extends CollectionService {
   }
 
   insert = ({
-    type = TASK_TYPE.CUSTOM,
-    fileKey,
-    userId,
-    assignedTo,
-    assignedEmployeeId,
-    createdBy,
-    title,
-    docId,
-    collection,
-    status,
-    dueAt,
+    object: { collection, dueAt, dueAtTime, docId, assigneeLink = {}, ...rest },
   }) => {
-    let assignee = assignedTo || assignedEmployeeId;
+    let assignee = assigneeLink._id;
     if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
     }
 
     const taskId = Tasks.insert({
-      type,
-      assignedEmployeeId: assignee,
-      createdBy,
-      fileKey,
-      userId,
-      title,
-      docId,
-      status,
-      dueAt,
+      dueAt: this.getDueDate({ dueAt, dueAtTime }),
+      ...rest,
     });
 
-    const user = UserService.get(Meteor.userId());
-    SlackService.notifyOfTask(user);
+    if (collection === LOANS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'loan', linkId: docId });
+    }
+    if (collection === USERS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'user', linkId: docId });
+    }
+    if (collection === PROMOTIONS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'promotion', linkId: docId });
+    }
+    if (collection === ORGANISATIONS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'organisation', linkId: docId });
+    }
+    if (collection === LENDERS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'lender', linkId: docId });
+    }
+
+    if (assignee) {
+      this.addLink({
+        id: taskId,
+        linkName: 'assignee',
+        linkId: assignee,
+      });
+    }
+
     return taskId;
   };
 
@@ -56,44 +63,37 @@ class TaskService extends CollectionService {
 
   getTasksForDoc = docId => Tasks.find({ docId }).fetch();
 
-  complete = ({ taskId }) => {
-    const task = this.getTaskById(taskId);
-    if (!validateTask(task)) {
-      throw new Meteor.Error('incomplete-task');
+  getDueDate = ({ dueAt, dueAtTime }) => {
+    if (dueAt && !dueAtTime) {
+      return dueAt;
     }
 
-    return this.update({
+    if (dueAtTime) {
+      const [hours = 0, minutes = 0] = dueAtTime.split(':');
+      const date = moment(dueAt || undefined)
+        .hour(hours)
+        .minute(minutes)
+        .seconds(0)
+        .milliseconds(0);
+
+      if (dueAt) {
+        return date.toDate();
+      }
+
+      if (moment().isAfter(date)) {
+        // If it is 14:00, and you choose 10:00 as the time, you don't want it
+        // in the past, but tomorrow
+        date.add(1, 'd');
+      }
+      return date.toDate();
+    }
+  };
+
+  complete = ({ taskId }) =>
+    this.update({
       taskId,
-      object: {
-        status: TASK_STATUS.COMPLETED,
-        completedAt: new Date(),
-      },
+      object: { status: TASK_STATUS.COMPLETED, completedAt: new Date() },
     });
-  };
-
-  completeTaskByType = ({
-    type,
-    loanId,
-    newStatus = TASK_STATUS.COMPLETED,
-  }) => {
-    const taskToComplete = Tasks.findOne({
-      loanId,
-      type,
-      status: TASK_STATUS.ACTIVE,
-    });
-
-    if (!taskToComplete) {
-      throw new Meteor.Error("task couldn't be found");
-    }
-
-    return this.update({
-      taskId: taskToComplete._id,
-      object: {
-        status: newStatus,
-        completedAt: new Date(),
-      },
-    });
-  };
 
   changeStatus = ({ taskId, newStatus }) =>
     this.update({
@@ -105,8 +105,9 @@ class TaskService extends CollectionService {
       },
     });
 
-  changeAssignedTo = ({ taskId, newAssigneeId }) =>
-    this.update({ taskId, object: { assignedEmployeeId: newAssigneeId } });
+  changeAssignedTo = ({ taskId, newAssigneeId }) => {
+    this.addLink({ id: taskId, linkName: 'assignee', linkId: newAssigneeId });
+  };
 
   getAssigneeForDoc = (docId, collection) => {
     const doc = Mongo.Collection.get(collection)

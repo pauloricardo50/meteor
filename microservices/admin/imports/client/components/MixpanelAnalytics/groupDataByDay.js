@@ -1,7 +1,7 @@
 import moment from 'moment';
-import _ from 'lodash';
+import groupBy from 'lodash/groupBy';
 
 const groupDataByDay = events =>
-  _.groupBy(events, event => moment.unix(event.properties.time).startOf('day'));
+  groupBy(events, event => moment.unix(event.properties.time).startOf('day'));
 
 export default groupDataByDay;

@@ -1,34 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AutoForm from 'uniforms-material/AutoForm';
-import pick from 'lodash/pick';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
-import { loanDelete, loanUpdate, assignLoanToUser } from 'core/api';
-import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import loanWithName from 'core/api/loans/queries/loanWithName';
-import message from 'core/utils/message';
+import { loanDelete, assignLoanToUser } from 'core/api';
+import LoanRenamer from './LoanRenamer';
+import LoanCreatedAtModifier from './LoanCreatedAtModifier';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">
-    <AutoForm
-      className="name-form"
-      schema={LoanSchema.pick('name')}
-      model={loan}
-      onSubmit={doc =>
-        loanWithName
-          .clone({ name: doc.name })
-          .fetchOneSync()
-          .then(result =>
-            (result
-              ? message.error('Ce numéro de dossier existe déjà')
-              : loanUpdate.run({
-                loanId: loan._id,
-                object: pick(doc, ['name']),
-              })))
-      }
-    />
+    <LoanCreatedAtModifier loan={loan} />
+    <LoanRenamer loan={loan} />
+
     <ConfirmMethod
       label="Supprimer la demande"
       keyword="SUPPRIMER"

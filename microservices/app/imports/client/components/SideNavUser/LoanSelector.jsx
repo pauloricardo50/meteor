@@ -3,29 +3,26 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import T from 'core/components/Translation';
-import track from 'core/utils/analytics';
 import Select from 'core/components/Select';
-import Divider from 'core/components/Material/Divider';
 
-const handleChange = (value, toggleDrawer, history) => {
+const handleChange = (value, closeDrawer, history) => {
   if (value === 0) {
-    track('LoanSelector - clicked on new loan', {});
     window.location.replace(`${Meteor.settings.public.subdomains.www}/start/1`);
   } else {
-    track('LoanSelector - switched to loan', { loanId: value });
-    toggleDrawer();
+    closeDrawer();
     history.push(`/loans/${value}`);
   }
 };
 
 const getOptions = (loans) => {
-  const array = loans.map(({ _id: loanId, name }) => ({
+  const array = loans.map(({ _id: loanId, name, customName }) => ({
     id: loanId,
     label: name ? (
       <T id="LoanSelector.name" values={{ name }} />
     ) : (
       <T id="LoanSelector.empty" />
     ),
+    secondary: customName,
     icon: 'home',
   }));
 
@@ -34,25 +31,30 @@ const getOptions = (loans) => {
 
 const LoanSelector = ({
   value,
-  toggleDrawer,
+  closeDrawer,
   history,
   currentUser: { loans },
-}) => (
-  <div className="loan-selector">
-    <Select
-      id="loan-selector"
-      value={value}
-      onChange={(id, newValue) => handleChange(newValue, toggleDrawer, history)}
-      options={getOptions(loans)}
-      displayEmpty
-    />
-  </div>
-);
+}) => {
+  const options = getOptions(loans);
+  return (
+    <div className="loan-selector">
+      <Select
+        id="loan-selector"
+        value={value}
+        onChange={(id, newValue) =>
+          handleChange(newValue, closeDrawer, history)
+        }
+        options={options}
+        displayEmpty
+      />
+    </div>
+  );
+};
 
 LoanSelector.propTypes = {
+  closeDrawer: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  toggleDrawer: PropTypes.func.isRequired,
   value: PropTypes.string,
 };
 

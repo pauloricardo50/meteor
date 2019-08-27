@@ -5,6 +5,12 @@ set -e
 ../scripts/box_out.sh "Deploying with args:" "$*"
 
 ./installDependencies.sh
+
+cf oauth-token
+if [ "$?" -ne 0 ]; then
+    exit 1;
+fi
+
 meteor npm i
 
 cd ..

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -29,7 +28,7 @@ const SelectableRow = ({ row, columnOptions, isSelected, onSelect }) => (
         key={j}
         style={columnOptions[j].style || styles.cell}
         align={columnOptions[j].align}
-        padding={columnOptions[j].padding || 'dense'}
+        padding={columnOptions[j].padding}
       >
         {/* if the format function is provided, format the column, otherwise
           simply return the data */}

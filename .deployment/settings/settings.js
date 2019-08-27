@@ -56,11 +56,10 @@ export const generateServiceName = ({ service, environment }) =>
   `${service}-${environment}`;
 
 export const createDeploySettingsForEnv = environment => ({
-  services: ENVIRONMENT_CONFIG[environment].services.map(
-    service =>
-      typeof service === 'string'
-        ? generateServiceName({ service, environment })
-        : service,
+  services: ENVIRONMENT_CONFIG[environment].services.map(service =>
+    typeof service === 'string'
+      ? generateServiceName({ service, environment })
+      : service,
   ),
   root: `./${environment}`,
   meteorSettings: `settings-${environment}.json`,
@@ -96,15 +95,12 @@ export const appManifestYAMLData = ({
       memory,
       instances,
       buildpack: APP_BUILDPACK,
-      services: services.map(
-        service =>
-          typeof service === 'string'
-            ? service
-            : service({ name, applicationName, environment }),
+      services: services.map(service =>
+        typeof service === 'string'
+          ? service
+          : service({ name, applicationName, environment }),
       ),
-      ...(APP_ENV_VARIABLES[environment][applicationName] !== {}
-        ? { env: APP_ENV_VARIABLES[environment][applicationName] }
-        : null),
+      env: APP_ENV_VARIABLES[environment][applicationName] || {},
     },
   ],
 });
@@ -119,7 +115,7 @@ export const tmuxinatorPane = ({
 }) => ({
   [applicationName]: [
     `cd ${microservicePath}`,
-    `meteor build ${buildDirectoryPath}/. --server-only --architecture os.linux.x86_64`,
+    `METEOR_PACKAGE_DIRS="packages:../../meteorPackages" meteor build ${buildDirectoryPath}/. --server-only --architecture os.linux.x86_64`,
     `cd ${buildDirectoryPath}`,
     `mv ./*.tar.gz ./${applicationImage}`,
     `cd ../../`,
@@ -133,6 +129,7 @@ export const tmuxinatorPane = ({
 
 export const tmuxinatorScript = ({ panes, applicationsExpectedFilesList }) => ({
   name: TMUXINATOR_SESSION_NAME,
+  pre_window: 'bash',
   root: './',
   on_project_exit: `rm ${applicationsExpectedFilesList} && tmux kill-session -t ${TMUXINATOR_SESSION_NAME}`,
   windows: [{ deploy: { layout: 'tiled', panes } }],

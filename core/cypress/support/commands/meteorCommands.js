@@ -1,10 +1,18 @@
-import pollUntilReady from '../../../utils/testHelpers/pollUntilReady';
-import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
+import pollUntilReady from '../../../utils/pollUntilReady';
+import { USER_PASSWORD, USER_EMAIL } from '../../server/e2eConstants';
+// import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
 // You have to have visited the app before this can work
 // Like: cy.visit('/')
 Cypress.Commands.add('getMeteor', () =>
-  cy.window().then(({ Meteor }) => Meteor));
+  cy.window().then((window) => {
+    if (!window.Meteor) {
+      // https://github.com/cypress-io/cypress/issues/4249
+      return null;
+    }
+
+    return window.Meteor;
+  }));
 
 Cypress.Commands.add('callMethod', (method, ...params) => {
   Cypress.log({
@@ -33,6 +41,10 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
 Cypress.Commands.add('meteorLogout', () => {
   cy.getMeteor().then(Meteor =>
     new Cypress.Promise((resolve, reject) => {
+      if (!Meteor) {
+        return resolve();
+      }
+
       Meteor.logout((err) => {
         if (err) {
           return reject(err);
@@ -59,7 +71,7 @@ const waitForLoggedIn = Meteor =>
 
 Cypress.Commands.add(
   'meteorLogin',
-  (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
+  (email = USER_EMAIL, password = USER_PASSWORD) => {
     Cypress.log({
       name: 'Logging in',
       consoleProps: () => ({ email, password }),
@@ -87,10 +99,8 @@ Cypress.Commands.add(
 
 // Refetches all non-reactive queries, would require a refresh, so this speeds tests up
 Cypress.Commands.add('refetch', () => {
-  cy.window().then(({ activeQueries = [], ClientEventService }) => {
-    activeQueries.forEach((query) => {
-      ClientEventService.emit(query);
-    });
+  cy.window().then(({ refetchQueries }) => {
+    refetchQueries();
   });
 });
 

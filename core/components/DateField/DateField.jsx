@@ -2,7 +2,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import TextField from 'uniforms-material/TextField';
+import TextField from '../AutoForm2/CustomTextField';
 
 type DateFieldProps = {};
 
@@ -14,5 +14,4 @@ const DateField = (props: DateFieldProps) => (
     InputLabelProps={{ shrink: true }}
   />
 );
-
 export default DateField;

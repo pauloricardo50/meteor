@@ -1,15 +1,9 @@
-import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const taskInsert = new Method({
   name: 'taskInsert',
   params: {
-    dueAt: Match.OneOf(Match.Optional(Date), Match.Optional(String)),
-    title: Match.Optional(String),
-    description: Match.Optional(String),
-    docId: Match.Optional(String),
-    status: String,
-    assignedEmployeeId: Match.Optional(String),
+    object: Object,
   },
 });
 
@@ -25,15 +19,6 @@ export const taskComplete = new Method({
   name: 'taskComplete',
   params: {
     taskId: String,
-  },
-});
-
-export const taskCompleteByType = new Method({
-  name: 'taskCompleteByType',
-  params: {
-    type: String,
-    loanId: String,
-    newStatus: Match.Optional(String),
   },
 });
 

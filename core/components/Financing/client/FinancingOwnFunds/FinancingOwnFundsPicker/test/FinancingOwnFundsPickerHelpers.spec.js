@@ -20,14 +20,21 @@ describe('FinancingOwnFundsPickerHelpers', () => {
     it('returns the right values for main', () => {
       expect(chooseOwnFundsTypes({
         loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
-      })).to.deep.equal(Object.values(OWN_FUNDS_TYPES));
+      })).to.deep.equal([
+        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        OWN_FUNDS_TYPES.BANK_FORTUNE,
+        OWN_FUNDS_TYPES.INSURANCE_3A,
+        OWN_FUNDS_TYPES.BANK_3A,
+        OWN_FUNDS_TYPES.INSURANCE_3B,
+        OWN_FUNDS_TYPES.INSURANCE_2,
+      ]);
     });
 
     it('returns the right values for secondary and investment', () => {
       const expected = [
+        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
         OWN_FUNDS_TYPES.BANK_FORTUNE,
         OWN_FUNDS_TYPES.INSURANCE_3B,
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
       ];
 
       expect(chooseOwnFundsTypes({
@@ -234,21 +241,30 @@ describe('FinancingOwnFundsPickerHelpers', () => {
   describe('getNewWantedLoanAfterPledge', () => {
     it('returns the current wantedLoan if this is not a pledged value', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: { wantedLoan: 100 },
+        loan: {
+          structures: [{ wantedLoan: 100, id: 'struct' }],
+        },
+        structureId: 'struct',
         usageType: 'something else',
       })).to.equal(100);
     });
 
     it('returns wantedLoan plus a small pledge', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: {
-          wantedLoan: 800000,
-          propertyId: 'propertyId',
-          ownFunds: [],
-          propertyWork: 0,
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          structures: [
+            {
+              id: 'struct',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              ownFunds: [],
+              propertyWork: 0,
+            },
+          ],
         },
-        properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
+        structureId: 'struct',
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 50000,
       })).to.equal(850000);
@@ -256,14 +272,20 @@ describe('FinancingOwnFundsPickerHelpers', () => {
 
     it('does not exceed maxBorrowRatioWithPledge', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: {
-          wantedLoan: 800000,
-          propertyId: 'propertyId',
-          ownFunds: [],
-          propertyWork: 0,
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          structures: [
+            {
+              id: 'struct',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              ownFunds: [],
+              propertyWork: 0,
+            },
+          ],
         },
-        properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
+        structureId: 'struct',
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 150000,
       })).to.equal(900000);
@@ -271,14 +293,20 @@ describe('FinancingOwnFundsPickerHelpers', () => {
 
     it('does not exceed maxBorrowRatio if not a main residence', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: {
-          wantedLoan: 800000,
-          propertyId: 'propertyId',
-          ownFunds: [],
-          propertyWork: 0,
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          residenceType: RESIDENCE_TYPE.INVESTMENT,
+          structures: [
+            {
+              id: 'struct',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              ownFunds: [],
+              propertyWork: 0,
+            },
+          ],
         },
-        properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { residenceType: RESIDENCE_TYPE.INVESTMENT },
+        structureId: 'struct',
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 150000,
       })).to.equal(800000);
@@ -286,16 +314,22 @@ describe('FinancingOwnFundsPickerHelpers', () => {
 
     it('counts other pledged own funds', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: {
-          wantedLoan: 800000,
-          propertyId: 'propertyId',
-          ownFunds: [
-            { value: 10000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          structures: [
+            {
+              id: 'struct',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              ownFunds: [
+                { value: 10000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+              ],
+              propertyWork: 0,
+            },
           ],
-          propertyWork: 0,
         },
-        properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
+        structureId: 'struct',
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 50000,
         ownFundsIndex: -1,
@@ -304,16 +338,22 @@ describe('FinancingOwnFundsPickerHelpers', () => {
 
     it('reduces loan if pledge is reduced', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: {
-          wantedLoan: 800000,
-          propertyId: 'propertyId',
-          ownFunds: [
-            { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          structures: [
+            {
+              id: 'struct',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              ownFunds: [
+                { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+              ],
+              propertyWork: 0,
+            },
           ],
-          propertyWork: 0,
         },
-        properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
+        structureId: 'struct',
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 40000,
         ownFundsIndex: 0,
@@ -322,16 +362,22 @@ describe('FinancingOwnFundsPickerHelpers', () => {
 
     it('increases loan if usageType is changed to pledge', () => {
       expect(getNewWantedLoanAfterPledge({
-        structure: {
-          wantedLoan: 800000,
-          propertyId: 'propertyId',
-          ownFunds: [
-            { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          structures: [
+            {
+              id: 'struct',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              ownFunds: [
+                { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+              ],
+              propertyWork: 0,
+            },
           ],
-          propertyWork: 0,
         },
-        properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
+        structureId: 'struct',
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 40000,
         ownFundsIndex: 0,

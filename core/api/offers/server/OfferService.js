@@ -1,12 +1,13 @@
 import moment from 'moment';
 
 import CollectionService from '../../helpers/CollectionService';
-import Offers from '../offers';
+import LoanService from '../../loans/server/LoanService';
 import LenderService from '../../lenders/server/LenderService';
 import { LENDER_STATUS } from '../../lenders/lenderConstants';
 import { fullOffer } from '../../fragments';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../methods';
+import Offers from '../offers';
 
 export class OfferService extends CollectionService {
   constructor() {
@@ -27,7 +28,7 @@ export class OfferService extends CollectionService {
       createdAt,
       lender: {
         organisation: { name: organisationName },
-        contact: { email: address },
+        contact: { email: address, name },
         loan: {
           name: loanName,
           user: { assignedEmployee },
@@ -40,6 +41,7 @@ export class OfferService extends CollectionService {
     return sendEmailToAddress.run({
       emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
       address,
+      name,
       params: {
         assigneeAddress,
         assigneeName,
@@ -62,6 +64,27 @@ export class OfferService extends CollectionService {
   };
 
   remove = ({ offerId }) => Offers.remove(offerId);
+
+  cleanUpOffer = ({ offerId }) => {
+    const loan = LoanService.fetchOne({
+      $filters: {
+        structures: { $elemMatch: { offerId } },
+      },
+    });
+
+    if (loan) {
+      LoanService.update({
+        loanId: loan._id,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            offerId:
+              structure.offerId === offerId ? undefined : structure.offerId,
+          })),
+        },
+      });
+    }
+  };
 }
 
 export default new OfferService();

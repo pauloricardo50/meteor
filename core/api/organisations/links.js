@@ -1,5 +1,6 @@
+import LinkInitializer from '../links/LinkInitializer';
+import { Contacts, Lenders, Users, LenderRules, Revenues, Tasks } from '..';
 import Organisations from './organisations';
-import { Contacts, Lenders, LenderRules } from '..';
 
 Organisations.addLinks({
   contacts: {
@@ -12,9 +13,39 @@ Organisations.addLinks({
     collection: Lenders,
     inversedBy: 'organisation',
   },
+  users: {
+    collection: Users,
+    field: 'userLinks',
+    type: 'many',
+    metadata: true,
+  },
   lenderRules: {
     collection: LenderRules,
     inversedBy: 'organisation',
     autoremove: true,
   },
+  referredCustomers: {
+    collection: Users,
+    inversedBy: 'referredByOrganisation',
+    type: 'many',
+  },
+  revenues: {
+    collection: Revenues,
+    inversedBy: 'organisations',
+    type: 'many',
+  },
+  tasks: {
+    inversedBy: 'organisation',
+    collection: Tasks,
+    autoremove: true,
+  },
+});
+
+LinkInitializer.inversedInit(() => {
+  Organisations.addLinks({
+    sourceOfRevenues: {
+      collection: Revenues,
+      inversedBy: 'organisations',
+    },
+  });
 });

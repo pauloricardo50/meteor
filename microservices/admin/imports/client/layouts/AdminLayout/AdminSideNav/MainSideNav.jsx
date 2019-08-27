@@ -1,36 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
 
 import List from '@material-ui/core/List';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
-import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
-import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
-import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 
 import {
-  BORROWERS_COLLECTION,
   LOANS_COLLECTION,
-  TASKS_COLLECTION,
   USERS_COLLECTION,
-  PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
+  REVENUES_COLLECTION,
 } from 'core/api/constants';
-import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import { createRoute } from 'imports/core/utils/routerUtils';
 import MainSideNavListItem from './MainSideNavListItem';
-import {
-  DASHBOARD_PAGE,
-  DEV_PAGE,
-  INTEREST_RATES_PAGE,
-  ORGANISATIONS_PAGE,
-  TASKS_PAGE,
-} from '../../../../startup/client/adminRoutes';
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 const items = [
-  { label: 'Dashboard', icon: 'home', to: DASHBOARD_PAGE, exact: true },
+  {
+    label: 'Dashboard',
+    icon: 'home',
+    to: ADMIN_ROUTES.DASHBOARD_PAGE.path,
+    exact: true,
+  },
   {
     detail: true,
     collection: USERS_COLLECTION,
@@ -44,39 +37,28 @@ const items = [
     detail: true,
   },
   {
-    detail: true,
-    collection: BORROWERS_COLLECTION,
-  },
-  {
-    detail: true,
-    collection: PROPERTIES_COLLECTION,
-  },
-  {
-    label: 'Tâches',
-    to: TASKS_PAGE,
-    collection: TASKS_COLLECTION,
-  },
-  {
     label: 'Organisations',
-    to: ORGANISATIONS_PAGE,
+    to: ADMIN_ROUTES.ORGANISATIONS_PAGE.path,
     collection: ORGANISATIONS_COLLECTION,
   },
   {
-    label: 'Contacts',
-    detail: true,
-    collection: CONTACTS_COLLECTION,
+    label: 'Revenus',
+    to: createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, { tabId: 'monitoring' }),
+    collection: REVENUES_COLLECTION,
   },
   {
-    label: 'Taux',
-    to: INTEREST_RATES_PAGE,
-    collection: INTEREST_RATES_COLLECTION,
+    label: 'Autres',
+    to: '/other/interestRates',
+    icon: (
+      <FontAwesomeIcon icon={faProjectDiagram} className="collection-icon" />
+    ),
   },
-  { label: 'Dev', icon: 'developerMode', to: DEV_PAGE },
+  { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },
 ].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (
   { detail, collection },
-  { hideDetailNav, showDetailNav, collectionName },
+  { hideDetailNav, showDetailNav, collectionName, toggleDrawer },
 ) => {
   if (detail) {
     if (collection === collectionName) {
@@ -84,11 +66,14 @@ const createOnClickHandler = (
     }
     return () => showDetailNav(collection);
   }
-  return hideDetailNav;
+  return () => {
+    hideDetailNav();
+    toggleDrawer();
+  };
 };
 
 const MainSideNav = props => (
-  <List>
+  <List className="main-side-nav">
     {items.map((item, index) => (
       <MainSideNavListItem
         onClick={createOnClickHandler(item, props)}

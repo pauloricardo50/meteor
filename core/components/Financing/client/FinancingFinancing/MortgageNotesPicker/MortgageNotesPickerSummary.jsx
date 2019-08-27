@@ -16,6 +16,7 @@ const MortgageNotesPickerSummary = ({
   currentMortgageNotes,
   handleOpen,
   wantedLoan,
+  disabled,
 }: MortgageNotesPickerSummaryProps) => {
   const allNotes = [...borrowerMortgageNotes, ...currentMortgageNotes];
   const currentMortgageNotesValue = allNotes.reduce(
@@ -25,7 +26,7 @@ const MortgageNotesPickerSummary = ({
   return (
     <div
       className="card-hover pointer mortgage-notes-picker-summary"
-      onClick={handleOpen}
+      onClick={disabled ? null : handleOpen}
     >
       {wantedLoan > currentMortgageNotesValue && (
         <>

@@ -4,6 +4,7 @@ import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
 import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWave';
 
 import {
   BORROWERS_COLLECTION,
@@ -16,6 +17,7 @@ import {
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
   INTEREST_RATES_COLLECTION,
+  REVENUES_COLLECTION,
 } from '../api/constants';
 
 export default {
@@ -36,5 +38,8 @@ export default {
   [OFFERS_COLLECTION]: 'monetizationOn',
   [INTEREST_RATES_COLLECTION]: (
     <FontAwesomeIcon icon={faChartLine} className="collection-icon" />
+  ),
+  [REVENUES_COLLECTION]: (
+    <FontAwesomeIcon icon={faMoneyBillWave} className="collection-icon" />
   ),
 };

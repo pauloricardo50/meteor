@@ -20,13 +20,16 @@ $primary-light: $secondary;
 $tertiary: #001a8f;
 $primary-dark: $tertiary;
 $success: #21d3b5;
+$success-dark: #1aa890;
 $warning: #f3af50;
 $error: #e01076;
+$error-dark: #b30c5e;
 
 // Helper colors
 $grey1: #d8d8d8;
 $grey2: #eee;
 $grey3: #f8f8f8;
+$grey4: #aaa;
 $border-grey: #dee2e6;
 $light-grey: #eee;
 $icon: #444;
@@ -44,3 +47,4 @@ $bezier: cubic-bezier(0.02, 0.01, 0.47, 1);
 $z-nav: 100;
 $shadow-level-1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 $shadow-level-2: 0 2px 30px 5px rgba(0, 0, 0, 0.2);
+$border-radius: 8px;

@@ -1,21 +1,19 @@
+import { Meteor } from 'meteor/meteor';
+import { STEPS, TASK_STATUS } from '../api/constants';
 import Calculator from './Calculator';
-
-export const loanIsVerified = ({
-  loan: {
-    logic: {
-      verification: { validated },
-    },
-  },
-}) => validated !== undefined;
 
 export const formatLoanWithStructure = ({
   selectedStructure,
-  structures,
+  structures = [],
   properties,
   offers,
   promotionOptions,
-  borrowers,
+  borrowers = [],
 }) => {
+  if (structures.length === 0) {
+    return undefined;
+  }
+
   let structure = {};
 
   if (selectedStructure) {
@@ -30,8 +28,11 @@ export const formatLoanWithStructure = ({
       }
 
       if (structure.promotionOptionId) {
-        const property = promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
-        structure = { ...structure, property };
+        const promotionOption = promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
+        structure = {
+          ...structure,
+          property: Calculator.formatPromotionOptionIntoProperty(promotionOption),
+        };
       }
 
       if (structure.offerId) {
@@ -61,7 +62,7 @@ export const formatLoanWithStructure = ({
 
 export const formatLoanWithDocuments = (loan) => {
   if (!loan || !loan.structure) {
-    return undefined;
+    return loan;
   }
 
   const { structure, properties = [] } = loan;
@@ -73,7 +74,7 @@ export const formatLoanWithDocuments = (loan) => {
     ...loan,
     structure: {
       ...structure,
-      property: {
+      property: property && {
         ...property,
         documents: propertyDocuments,
       },
@@ -93,4 +94,40 @@ export const formatLoanWithPromotion = (loan) => {
   }
 
   return loan;
+};
+
+export const shouldSendStepNotification = (prevStep, nextStep) =>
+  (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
+  && nextStep === STEPS.OFFERS;
+
+export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
+  const activeTasks = tasks.filter(({
+    status: taskStatus,
+    isPrivate = false,
+    assigneeLink: { _id: assigneeId } = {},
+  }) => {
+    if (taskStatus !== TASK_STATUS.ACTIVE) {
+      return false;
+    }
+
+    if (isPrivate && assigneeId) {
+      return assigneeId === Meteor.userId();
+    }
+
+    return true;
+  });
+  const tasksWithoutDate = activeTasks
+    .filter(({ dueAt }) => !dueAt)
+    .sort(({ createdAt: A }, { createdAt: B }) => A - B);
+
+  if (tasksWithoutDate.length > 0) {
+    const task = tasksWithoutDate[0];
+    return { ...task, dueAt: task.createdAt, noDueDate: true };
+  }
+
+  const sortedTasks = activeTasks.sort(({ dueAt: A }, { dueAt: B }) => A - B);
+
+  if (sortedTasks.length > 0) {
+    return sortedTasks[0];
+  }
 };

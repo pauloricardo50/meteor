@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Radio, { RadioGroup } from 'core/components/Material/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -27,22 +26,30 @@ const RadioButtons = ({
   value,
   label,
   style,
+  radioGroupStyle,
   disabled,
 }) => (
   <FormControl style={style} className="mui-radio-group">
     {React.isValidElement(label) && <FormLabel htmlFor={id}>{label}</FormLabel>}
+
     <RadioGroup
       onChange={(event, newValue) =>
         safeChange(newValue, id, onChange, options)
       }
       value={`${value}`}
       name={id}
-      className="flex"
-      style={{ justifyContent: 'flex-start', flexDirection: 'row' }}
+      id={id}
+      className="radio-group flex"
+      style={
+        radioGroupStyle || {
+          justifyContent: 'flex-start',
+          flexDirection: 'row',
+        }
+      }
     >
       {options.map(option => (
         <FormControlLabel
-          control={<Radio />}
+          control={<Radio className="radio" />}
           key={option.id || option}
           value={`${option.id !== undefined ? option.id : option}`}
           label={option.label || <T id={`${intlPrefix}.${option}`} />}

@@ -14,12 +14,15 @@ const getTrigger = ({
   iconType,
   tooltip,
   tooltipPlacement,
+  disabled,
 }) => {
   if (button) {
-    return <Button onClick={onClickHandler} {...buttonProps} />;
+    return (
+      <Button onClick={onClickHandler} disabled={disabled} {...buttonProps} />
+    );
   }
   if (renderTrigger) {
-    return renderTrigger({ handleOpen: onClickHandler });
+    return renderTrigger({ handleOpen: onClickHandler, disabled });
   }
 
   return (
@@ -28,6 +31,7 @@ const getTrigger = ({
       type={iconType}
       tooltip={tooltip}
       tooltipPlacement={tooltipPlacement}
+      disabled={disabled}
       {...buttonProps}
     />
   );
@@ -47,6 +51,10 @@ const DropdownMenu = ({
   tooltip,
   tooltipPlacement,
   renderTrigger,
+  maxHeight,
+  paperClassName,
+  disabled,
+  noWrapper,
 }) => {
   const onClickHandler = (event) => {
     // Prevent background from receiving clicks
@@ -56,8 +64,8 @@ const DropdownMenu = ({
     handleOpen(event.currentTarget);
   };
 
-  return (
-    <div className={className} style={{ ...style }}>
+  const toRender = (
+    <>
       {getTrigger({
         button,
         buttonProps,
@@ -66,15 +74,40 @@ const DropdownMenu = ({
         iconType,
         tooltip,
         tooltipPlacement,
+        disabled,
       })}
       <Menu
-        id="long-menu"
         anchorEl={anchorEl}
         open={isOpen}
-        onClose={handleClose}
+        onClose={(event) => {
+          // Stop propagation here to avoid parents' onClick from firing
+          event.stopPropagation();
+          handleClose();
+        }}
+        classes={{ paper: paperClassName }}
+        PaperProps={{
+          style: {
+            maxHeight:
+              maxHeight >= 0
+                ? maxHeight === 0
+                  ? maxHeight
+                  : undefined
+                : 48 * 4.5,
+          },
+        }}
       >
         {options}
       </Menu>
+    </>
+  );
+
+  if (noWrapper) {
+    return toRender;
+  }
+
+  return (
+    <div className={className} style={{ ...style }}>
+      {toRender}
     </div>
   );
 };

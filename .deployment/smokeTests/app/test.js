@@ -1,1 +1,3 @@
-console.log('No test');
+// import { assertTitle } from '../smokeTestHelpers';
+
+// assertTitle('Bienvenue sur e-Potek');

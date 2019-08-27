@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+
+import { LOANS_COLLECTION } from '../../constants';
 import SecurityService from '../../security';
-import { Services } from '../../api-server';
+import { Services } from '../../server';
 import LoanService from '../../loans/server/LoanService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -16,11 +18,18 @@ import {
   addUserToDoc,
   throwDevError,
   setAdditionalDoc,
+  removeAdditionalDoc,
   migrateToLatest,
   updateDocument,
+  updateDocumentUnset,
+  generateScenario,
+  referralExists,
 } from '../methodDefinitions';
-
+import generator from '../../factories';
 import { migrate } from '../../migrations/server';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
+import OrganisationService from '../../organisations/server/OrganisationService';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -124,14 +133,14 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   throw new Meteor.Error(400, 'Dev error!');
 });
 
-setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
+setAdditionalDoc.setHandler((context, { collection, ...rest }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return Services[collection].setAdditionalDoc({
-    id,
-    additionalDocId,
-    requiredByAdmin,
-    label,
-  });
+  return Services[collection].setAdditionalDoc(rest);
+});
+
+removeAdditionalDoc.setHandler((context, { collection, ...rest }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return Services[collection].removeAdditionalDoc(rest);
 });
 
 migrateToLatest.setHandler(({ userId }) => {
@@ -141,12 +150,43 @@ migrateToLatest.setHandler(({ userId }) => {
 
 updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   const service = Services[collection];
-  const doc = service.findOne(docId);
   try {
     SecurityService.checkUserIsAdmin(userId);
   } catch (error) {
-    SecurityService.checkOwnership(doc);
+    if (collection === LOANS_COLLECTION) {
+      SecurityService.loans.isAllowedToUpdate(docId);
+    } else {
+      const doc = service.findOne(docId);
+      SecurityService.checkOwnership(doc);
+    }
   }
 
   return service._update({ id: docId, object });
+});
+
+updateDocumentUnset.setHandler(({ userId }, { collection, docId, object }) => {
+  const service = Services[collection];
+  SecurityService.checkUserIsDev(userId);
+
+  return service._update({ id: docId, object, operator: '$unset' });
+});
+
+generateScenario.setHandler(({ userId }, { scenario }) => {
+  if (!Meteor.isTest) {
+    SecurityService.checkUserIsAdmin(userId);
+  }
+
+  return generator(scenario);
+});
+
+referralExists.setHandler((context, params) => {
+  const { refId } = params;
+  const referralUser = UserService.fetchOne({
+    $filters: { _id: refId, roles: { $in: [ROLES.PRO] } },
+  });
+  const referralOrg = OrganisationService.fetchOne({
+    $filters: { _id: refId },
+  });
+
+  return !!referralUser || !!referralOrg;
 });

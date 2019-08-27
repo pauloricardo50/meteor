@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
-import Tabs from 'core/components/Tabs/Tabs';
-import Icon from 'core/components/Icon/Icon';
+import Tabs from 'core/components/Tabs';
+import Icon from 'core/components/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
 import { INTEREST_RATES_COLLECTION } from 'core/api/constants';
 import InterestRatesChart from './InterestRatesChart/InterestRatesChart';
@@ -23,7 +24,10 @@ const InterestRatesPage = ({
   irs10y,
   currentInterestRates: { rates: currentRates },
 }: InterestRatesPageProps) => (
-  <div className="card1 card-top interest-rates-page">
+  <div className="interest-rates-page">
+    <Helmet>
+      <title>Taux d'intérêt</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[INTEREST_RATES_COLLECTION]}

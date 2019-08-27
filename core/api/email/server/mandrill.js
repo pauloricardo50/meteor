@@ -1,6 +1,7 @@
 import { Mandrill } from 'meteor/wylio:mandrill';
 import { Meteor } from 'meteor/meteor';
 
+import { logError } from 'core/api/methods/index';
 import { getEmailFooter } from './emailHelpers';
 import { isEmailTestEnv, skipEmails } from './EmailService';
 
@@ -42,12 +43,14 @@ export const getMandrillTemplate = ({
   allowUnsubscribe,
   variables,
   recipientAddress,
+  recipientName,
   senderAddress,
   senderName,
   subject,
   sendAt,
   templateContent = [],
   replyTo,
+  bccAddress,
 }) => ({
   template_name: templateName,
   template_content: [
@@ -58,11 +61,10 @@ export const getMandrillTemplate = ({
     from_email: senderAddress,
     from_name: senderName,
     subject,
-    to: [{ email: recipientAddress, type: 'to' }],
-    merge_vars: [{ rcpt: recipientAddress, vars: variables }],
-    headers: {
-      'Reply-To': replyTo || senderAddress,
-    },
+    to: [{ email: recipientAddress, name: recipientName }],
+    global_merge_vars: variables,
+    headers: { 'Reply-To': replyTo || senderAddress },
+    bcc_address: bccAddress,
   },
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });
@@ -78,6 +80,10 @@ export const sendMandrillTemplate = (mandrillTemplate) => {
   return new Promise((resolve, reject) => {
     Mandrill.messages.sendTemplate(mandrillTemplate, (error, result) => {
       if (error) {
+        logError.run({
+          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          additionalData: ['Mandrill error'],
+        });
         reject(error);
       }
       resolve(result.data[0]);
@@ -98,7 +104,10 @@ export const getEmailsForAddress = email =>
       { query: `email:${email}`, date_from: getDate30DaysAgo() },
       (error, result) => {
         if (error) {
-          console.log('error', error);
+          logError.run({
+            error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+            additionalData: ['Mandrill error'],
+          });
           resolve(error);
         } else if (result.statusCode !== 200) {
           resolve(result);

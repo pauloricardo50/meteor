@@ -1,8 +1,10 @@
+// @flow
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
-import { TextField, Snackbar } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 import cx from 'classnames';
 
+import TextField from '../Material/TextField';
 import MuiButton from '../Button';
 
 // Do this to pass the ref
@@ -64,33 +66,36 @@ class Button extends Accounts.ui.Button {
       icon,
     } = this.props;
 
-    if (id !== 'switchToSignUp') {
-      return type === 'link' ? (
-        <MuiButton
-          href={href}
-          label={label}
-          icon={icon ? <span className={`fa ${icon}`} /> : null}
-          className={className}
-          onClick={onClick}
-          disabled={disabled}
-          style={{ marginRight: 5, marginTop: 8 }}
-        />
-      ) : (
-        <MuiButton
-          raised
-          label={label}
-          icon={icon ? <span className={`fa ${icon}`} /> : null}
-          primary
-          type={type}
-          className={className}
-          onClick={onClick}
-          disabled={disabled}
-          style={{ marginRight: 5, marginTop: 8 }}
-        />
-      );
+    const switchToSignUp = id === 'switchToSignUp';
+
+    // Disable signups here
+    if (switchToSignUp) {
+      return null;
     }
 
-    return null;
+    return type === 'link' ? (
+      <MuiButton
+        href={href}
+        label={label}
+        icon={icon ? <span className={`fa ${icon}`} /> : null}
+        className={className}
+        onClick={onClick}
+        disabled={disabled}
+        style={{ marginRight: 5, marginTop: 8 }}
+      />
+    ) : (
+      <MuiButton
+        raised
+        label={label}
+        icon={icon ? <span className={`fa ${icon}`} /> : null}
+        primary
+        type={type}
+        className={className}
+        onClick={onClick}
+        disabled={disabled}
+        style={{ marginRight: 5, marginTop: 8 }}
+      />
+    );
   }
 }
 class Fields extends Accounts.ui.Fields {
@@ -125,6 +130,7 @@ class Field extends Accounts.ui.Field {
     return mount ? (
       <span className="login-field">
         <TextField
+          variant="outlined"
           label={label}
           placeholder={hint}
           onChange={onChange}
@@ -160,9 +166,13 @@ class FormMessage extends Accounts.ui.FormMessage {
   handleLoanClose = () => this.setState({ open: false });
 
   render() {
-    const { message, type } = this.props;
+    const { message } = this.props;
 
-    return message ? (
+    if (!message) {
+      return null;
+    }
+
+    return (
       <Snackbar
         open={this.state.open}
         message={message}
@@ -171,7 +181,7 @@ class FormMessage extends Accounts.ui.FormMessage {
         onActionTouchTap={this.handleLoanClose}
         onClose={this.handleLoanClose}
       />
-    ) : null;
+    );
   }
 }
 

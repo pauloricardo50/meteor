@@ -3,6 +3,8 @@
 import { addLocaleData } from 'react-intl';
 import moment from 'moment';
 import fr from 'react-intl/locale-data/fr';
+import translateSimpleSchema from './simpleSchemaLocalization';
+import Intl from '../intl';
 
 export const getUserLocale = () => 'fr-CH';
 
@@ -61,13 +63,13 @@ const setupMoment = () => {
     relativeTime: {
       future: 'dans %s',
       past: 'il y a %s',
-      s: 'qques secs',
-      m: '1 min',
-      mm: '%d mins',
-      h: '1 h',
-      hh: '%d h',
-      d: '1 j',
-      dd: '%d j',
+      s: 'qq secs',
+      m: '1m',
+      mm: '%dm',
+      h: '1h',
+      hh: '%dh',
+      d: '1j',
+      dd: '%dj',
       M: '1 mois',
       MM: '%d mois',
       y: '1 an',
@@ -96,16 +98,29 @@ const setupMoment = () => {
   });
 };
 
-export const localizationStartup = ({ setupAccounts = true } = {}) => {
+export const localizationStartup = ({
+  setupAccounts = true,
+  messages,
+  setupCountries = true,
+} = {}) => {
   // Add locales used in app here
+  Intl.init(messages);
   addLocaleData(fr);
+
   setupMoment();
   moment.locale('fr');
+
+  translateSimpleSchema();
 
   if (setupAccounts) {
     const { T9n } = require('meteor-accounts-t9n');
     const { fr: accountsFr } = require('meteor-accounts-t9n/build/fr');
     T9n.map('fr', accountsFr);
     T9n.setLanguage('fr');
+  }
+
+  if (setupCountries) {
+    const countries = require('i18n-iso-countries');
+    countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
   }
 };

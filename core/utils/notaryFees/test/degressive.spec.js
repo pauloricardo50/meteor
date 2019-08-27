@@ -3,6 +3,7 @@
 import { expect } from 'chai';
 
 import degressive from '../degressive';
+import { VD } from '../cantonConstants';
 
 describe('degressive', () => {
   it('returns 0 for amount of 0', () => {
@@ -104,5 +105,12 @@ describe('degressive', () => {
       minTax: 400,
       maxTax: 1000,
     })).to.equal(1000);
+  });
+
+  it('works for this VD example confirmed by a notary', () => {
+    expect(degressive({
+      amount: 940000,
+      brackets: VD.NOTARY_NOTE_BRACKETS,
+    })).to.equal(2585);
   });
 });

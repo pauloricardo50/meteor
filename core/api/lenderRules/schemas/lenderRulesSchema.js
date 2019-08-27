@@ -2,20 +2,31 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../../config/financeConstants';
+import {
   createdAt,
   updatedAt,
   percentageField,
 } from '../../helpers/sharedSchemas';
 import {
   INCOME_CONSIDERATION_TYPES,
-  REAL_ESTATE_CONSIDERATION_TYPES,
-  OTHER_EXPENSES_CONSIDERATION_TYPES,
+  EXPENSE_TYPES_WITHOUT_DELTAS,
 } from '../lenderRulesConstants';
+
+// When adding new rules to lenderRules, make sure to edit the
+// applyRules method on LenderRulesInitializator
 
 export const incomeConsideration = {
   incomeConsiderationType: {
     type: String,
     allowedValues: Object.values(INCOME_CONSIDERATION_TYPES),
+    optional: true,
+  },
+  bonusAlgorithm: {
+    type: String,
+    allowedValues: Object.values(BONUS_ALGORITHMS),
     optional: true,
     uniforms: { placeholder: null },
   },
@@ -28,25 +39,49 @@ export const incomeConsideration = {
   },
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
-  pensionIncomeConsideration: percentageField,
+  realEstateIncomeAlgorithm: {
+    type: String,
+    allowedValues: Object.values(REAL_ESTATE_INCOME_ALGORITHMS),
+    optional: true,
+    uniforms: { placeholder: null },
+  },
   realEstateIncomeConsideration: percentageField,
-  realEstateIncomeConsiderationType: {
-    type: String,
-    allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
-    optional: true,
-    uniforms: { placeholder: null },
-  },
+  // realEstateIncomeConsiderationType: {
+  //   type: String,
+  //   allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
+  //   optional: true,
+  // },
   investmentIncomeConsideration: percentageField,
-  otherExpensesConsiderationType: {
-    type: String,
-    allowedValues: Object.values(OTHER_EXPENSES_CONSIDERATION_TYPES),
+  expensesSubtractFromIncome: {
+    type: Array,
     optional: true,
-    uniforms: { placeholder: null },
+    uniforms: {
+      intlId: 'expenses',
+      placeholder: 'Ajouter toutes les charges aux charges théoriques',
+      label: 'Charges à soustraire aux revenus',
+    },
+    autoValue() {
+      if (
+        Meteor.isServer
+        && this.isSet
+        && Array.isArray(this.value)
+        && this.value.length === 0
+      ) {
+        return { $unset: true };
+      }
+    },
   },
+  'expensesSubtractFromIncome.$': {
+    type: String,
+    // REAL_ESTATE_DELTAS are handled internally
+    allowedValues: EXPENSE_TYPES_WITHOUT_DELTAS,
+  },
+  fortuneReturnsRatio: percentageField,
 };
 
 export const theoreticalExpenses = {
   theoreticalInterestRate: percentageField,
+  theoreticalInterestRate2ndRank: percentageField,
   theoreticalMaintenanceRate: percentageField,
   amortizationGoal: percentageField,
   amortizationYears: {
@@ -59,8 +94,8 @@ export const theoreticalExpenses = {
 
 export const cutOffCriteria = {
   maxBorrowRatio: percentageField,
+  maxBorrowRatioWithPledge: percentageField,
   maxIncomeRatio: percentageField,
-  maxIncomeRatioTight: percentageField,
 };
 
 export const otherParams = {
@@ -73,8 +108,10 @@ export const otherParams = {
       }
     },
   },
-  comments: { type: Array, defaultValue: [] },
-  'comments.$': String,
+  adminComments: { type: Array, defaultValue: [] },
+  'adminComments.$': String,
+  pdfComments: { type: Array, defaultValue: [] },
+  'pdfComments.$': String,
 };
 
 const LenderRulesSchema = new SimpleSchema({
@@ -84,6 +121,12 @@ const LenderRulesSchema = new SimpleSchema({
   'organisationLink._id': { type: String, optional: true },
   filter: { type: Object, blackbox: true },
   name: { type: String, optional: true },
+  order: { type: Number, min: 0 },
+  organisationCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
   ...incomeConsideration,
   ...theoreticalExpenses,
   ...cutOffCriteria,

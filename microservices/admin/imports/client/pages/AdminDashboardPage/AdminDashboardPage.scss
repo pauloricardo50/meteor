@@ -3,3 +3,52 @@
     margin-top: 40px;
   }
 }
+
+.admin-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  margin-bottom: 40px;
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    min-width: 300px;
+    max-width: 33%;
+    margin-bottom: 8px;
+
+    .value {
+      padding: 24px;
+      padding-bottom: 8px;
+
+      text-align: center;
+
+      font-size: 64px;
+      line-height: 64px;
+    }
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    justify-content: space-around;
+  }
+
+  .chart {
+    width: 100%;
+  }
+
+  .last-seen-users {
+    .top {
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      margin-right: 8px;
+    }
+  }
+}

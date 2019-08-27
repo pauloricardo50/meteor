@@ -1,35 +1,17 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation/';
-import { ROLES, USERS_COLLECTION } from 'core/api/constants';
-import adminsQuery from 'core/api/users/queries/admins';
+import T from 'core/components/Translation';
+import { USERS_COLLECTION } from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import Icon from 'core/components/Icon';
 import UsersTable from './UsersTable';
 
-const getAdminsEmails = async () => {
-  try {
-    const admins = await adminsQuery.clone().fetchSync();
-    const adminsEmails = admins.map(({ email }) => email);
-    return [...adminsEmails, undefined];
-  } catch (error) {
-    return [undefined];
-  }
-};
-
-const usersTableFilters = {
-  filters: {
-    roles: true,
-    assignedEmployee: { emails: [{ address: true }] },
-  },
-  options: {
-    roles: Object.values(ROLES),
-    address: getAdminsEmails(),
-  },
-};
-
 const UsersPage = () => (
   <section className="card1 card-top users-page">
+    <Helmet>
+      <title>Utilisateurs</title>
+    </Helmet>
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[USERS_COLLECTION]}
@@ -38,7 +20,7 @@ const UsersPage = () => (
       />
       <T id="collections.users" />
     </h1>
-    <UsersTable showAssignee key="allUsers" tableFilters={usersTableFilters} />
+    <UsersTable showAssignee key="allUsers" />
   </section>
 );
 

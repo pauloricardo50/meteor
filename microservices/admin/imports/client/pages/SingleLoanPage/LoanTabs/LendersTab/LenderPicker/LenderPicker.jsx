@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton/IconButton';
 import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
+import { ORGANISATION_TAGS } from 'core/api/constants';
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
 
@@ -52,6 +52,7 @@ const LenderPicker = ({
         schema={tagPickerSchema}
         onSubmit={filterOrganisations}
         autosave
+        model={{ tags: [ORGANISATION_TAGS.CH_RETAIL] }}
       >
         <CustomAutoField name="tags" />
       </AutoForm>
@@ -62,17 +63,16 @@ const LenderPicker = ({
               <T id={`Forms.type.${type}`} />
             </h3>
             {organisations[type].every(org => !isActive({ loan, org })) && (
-              <Tooltip title="Tout choisir">
-                <IconButton
-                  className="success"
-                  type="add"
-                  onClick={addAllLendersOfType({
-                    organisations,
-                    type,
-                    addLender,
-                  })}
-                />
-              </Tooltip>
+              <IconButton
+                tooltip="Tout choisir"
+                className="success"
+                type="add"
+                onClick={addAllLendersOfType({
+                  organisations,
+                  type,
+                  addLender,
+                })}
+              />
             )}
           </div>
           {organisations[type].map(org => (
@@ -82,6 +82,7 @@ const LenderPicker = ({
               addLender={addLender}
               removeLender={removeLender}
               isActive={isActive({ loan, org })}
+              loan={loan}
             />
           ))}
         </div>

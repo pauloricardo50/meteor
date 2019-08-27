@@ -1,50 +1,48 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
+import { Helmet } from 'react-helmet';
+import cx from 'classnames';
 
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
-import Button from '../../Button';
-import T from '../../Translation';
+
 import PromotionPageHeader from './PromotionPageHeader';
 import ProPromotionLotsTable from './ProPromotionLotsTable';
-import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
 import AdditionalLotsTable from './AdditionalLotsTable';
-import UserPromotionLotsTable from './UserPromotionLotsTable';
-import UserPromotionOptionsTable from './UserPromotionOptionsTable';
-import CustomerAdder from './CustomerAdder';
-import EmailTester from './EmailTester';
-import UpdateField from '../../UpdateField';
-import { COLLECTIONS } from '../../../api/constants';
 
-type PromotionPageProps = {};
+import UserPromotionTables from './UserPromotionTables';
+import PromotionPageButtons from './PromotionPageButtons';
+import { APPLICATION_TYPES } from '../../../api/constants';
+
+type PromotionPageProps = {
+  promotion: Object,
+  currentUser: Object,
+  loan: Object,
+  canInviteCustomers: boolean,
+  canManageDocuments: boolean,
+  canSeeCustomers: boolean,
+};
 
 const PromotionPage = (props: PromotionPageProps) => {
-  const { promotion, currentUser, canModify, isPro, loan = {} } = props;
-  const { residenceType } = loan;
+  const { promotion, loan = {} } = props;
+  const { applicationType } = loan;
+
+  const isApp = Meteor.microservice === 'app';
 
   return (
-    <div className="card1 promotion-page">
+    <div
+      className={cx('card1 promotion-page', {
+        simple: applicationType === APPLICATION_TYPES.SIMPLE,
+      })}
+    >
+      <Helmet>
+        <title>{promotion.name}</title>
+      </Helmet>
       <PromotionPageHeader {...props} />
-      <div className="buttons flex center animated fadeIn delay-600">
-        {canModify && (
-          <CustomerAdder
-            promotionId={promotion._id}
-            promotionStatus={promotion.status}
-          />
-        )}
-        {canModify && (
-          <PromotionDocumentsManager
-            promotion={promotion}
-            currentUser={currentUser}
-          />
-        )}
-        {isPro && canModify && <EmailTester promotionId={promotion._id} />}
-        {isPro && (
-          <Button link to={`/promotions/${promotion._id}/users`} raised primary>
-            <T id="PromotionPage.users" />
-          </Button>
-        )}
-      </div>
+
+      {Meteor.microservice !== 'app' && <PromotionPageButtons {...props} />}
 
       <MapWithMarkerWrapper
         address1={promotion.address1}
@@ -55,32 +53,13 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      {isPro && (
+      {!isApp && (
         <>
-          <ProPromotionLotsTable promotion={promotion} canModify={canModify} />
-          <AdditionalLotsTable promotion={promotion} canModify={canModify} />
+          <ProPromotionLotsTable {...props} />
+          <AdditionalLotsTable {...props} />
         </>
       )}
-      {!isPro && (
-        <div className="card1 residence-type-setter">
-          {!residenceType && (
-            <p>
-              <T id="Forms.promotionPage.residenceTypeSetter.text" />
-            </p>
-          )}
-          <UpdateField
-            doc={loan}
-            fields={['residenceType']}
-            collection={COLLECTIONS.LOANS_COLLECTION}
-          />
-        </div>
-      )}
-      {!isPro && residenceType && (
-        <UserPromotionOptionsTable promotion={promotion} loan={loan} />
-      )}
-      {!isPro && residenceType && (
-        <UserPromotionLotsTable promotion={promotion} loan={loan} />
-      )}
+      {isApp && <UserPromotionTables loan={loan} promotion={promotion} />}
     </div>
   );
 };

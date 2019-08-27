@@ -2,9 +2,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  INTEREST_RATES,
+  EXPENSES,
+} from '../../../api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
-import { INTEREST_RATES } from 'core/api/constants';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../api/constants';
 
 describe('LoanCalculator', () => {
   describe('getProjectValue', () => {
@@ -71,7 +74,7 @@ describe('LoanCalculator', () => {
             property: { _id: 'prop', value: 1000000, canton: 'GE' },
           },
         },
-      })).to.deep.include({ total: 55313.1 });
+      })).to.deep.include({ total: 55159.1 });
     });
 
     it('calculates accurate fees for a promotionOption', () => {
@@ -97,7 +100,7 @@ describe('LoanCalculator', () => {
           ],
         },
         structureId: 'struct1',
-      })).to.deep.include({ total: 55313.1 });
+      })).to.deep.include({ total: 55159.1 });
     });
   });
 
@@ -133,15 +136,39 @@ describe('LoanCalculator', () => {
   describe('getTheoretialInterests', () => {
     it('uses the theoretical rate', () => {
       expect(Calculator.getTheoreticalInterests({
-        loan: { structure: { wantedLoan: 1200000 } },
+        loan: {
+          structure: { wantedLoan: 1200000, property: { value: 1000000 } },
+        },
       })).to.equal(5000);
     });
 
     it('uses the overridden theoretial rate', () => {
-      const Calc = new CalculatorClass({ theoreticalInterestRate: 0.04 });
+      const Calc = new CalculatorClass({
+        theoreticalInterestRate: 0.04,
+        theoreticalInterestRate2ndRank: 0.04,
+      });
       expect(Calc.getTheoreticalInterests({
-        loan: { structure: { wantedLoan: 1200000 } },
+        loan: {
+          structure: { wantedLoan: 1200000, property: { value: 1000000 } },
+        },
       })).to.equal(4000);
+    });
+
+    it('uses theoreticalInterestRate2ndRank to calculate the rate', () => {
+      const Calc = new CalculatorClass({
+        theoreticalInterestRate: 0.01,
+        theoreticalInterestRate2ndRank: 0.1,
+      });
+
+      // 650k at 1%
+      // 150k at 10%
+      // -> 1791
+
+      expect(Calc.getTheoreticalInterests({
+        loan: {
+          structure: { wantedLoan: 800000, property: { value: 1000000 } },
+        },
+      })).to.be.within(1791, 1792);
     });
   });
 
@@ -149,6 +176,7 @@ describe('LoanCalculator', () => {
     it('figures out what amortization should be', () => {
       expect(Calculator.getAmortization({
         loan: {
+          borrowers: [],
           structure: {
             wantedLoan: 960000,
             propertyWork: 0,
@@ -242,6 +270,40 @@ describe('LoanCalculator', () => {
         },
       })).to.equal(1000);
     });
+
+    it('calculates amortization with an overrideOffer if provided', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structures: [
+            {
+              id: 'asdf',
+              wantedLoan: 640000,
+              propertyWork: 0,
+              propertyId: 'prop',
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1000000 }],
+        },
+        offerOverride: { amortizationGoal: 0.65 },
+        structureId: 'asdf',
+      })).to.equal(0);
+
+      expect(Calculator.getAmortization({
+        loan: {
+          structures: [
+            {
+              id: 'asdf',
+              wantedLoan: 650000,
+              propertyWork: 0,
+              propertyId: 'prop',
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1000000 }],
+        },
+        offerOverride: { amortizationGoal: 0.5, amortizationYears: 10 },
+        structureId: 'asdf',
+      })).to.equal(1250);
+    });
   });
 
   describe('getMonthly', () => {
@@ -322,6 +384,35 @@ describe('LoanCalculator', () => {
         },
       })).to.equal(2800);
     });
+
+    it('adds any expenses from the borrowers', () => {
+      const Calc = new CalculatorClass({
+        interestRates: { myRate: 0.012 },
+        theoreticalInterestRate: 0.01,
+        expensesSubtractFromIncome: Object.values(EXPENSES).filter(v => v !== EXPENSES.LEASING),
+      });
+
+      // 2800 for the loan
+      // 100 more for the leasing
+      // 2800 for the other property
+
+      expect(Calc.getTheoreticalMonthly({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            property: { value: 1200000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              expenses: { description: EXPENSES.LEASING, value: 1200 },
+              realEstate: [{ value: 1200000, loan: 960000 }],
+            },
+          ],
+        },
+      })).to.equal(5700);
+    });
   });
 
   describe('getIncomeRatio', () => {
@@ -338,6 +429,23 @@ describe('LoanCalculator', () => {
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
       })).to.be.within(0.33, 0.34);
+    });
+
+    it('returns 1 if the incomeRatio is negative', () => {
+      expect(Calculator.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            { expenses: [{ value: 10000, description: EXPENSES.LEASING }] },
+          ],
+        },
+        interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+      })).to.equal(1);
     });
   });
 
@@ -532,6 +640,178 @@ describe('LoanCalculator', () => {
       };
 
       expect(Calculator.getNonPledgedOwnFunds({ loan })).to.equal(100);
+    });
+  });
+
+  describe('calculateMissingOwnFunds', () => {
+    it('returns a standard amount', () => {
+      expect(Calculator.getMissingOwnFunds({
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          structures: [
+            {
+              id: 'struct1',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              propertyWork: 0,
+              ownFunds: [],
+            },
+          ],
+          borrowers: [{}],
+        },
+        structureId: 'struct1',
+        structure: {
+          id: 'struct1',
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          propertyWork: 0,
+          ownFunds: [],
+        },
+      })).to.equal(250000);
+    });
+
+    it('overrides notaryFees if provided', () => {
+      expect(Calculator.getMissingOwnFunds({
+        structure: {
+          id: 'struct1',
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          propertyWork: 0,
+          ownFunds: [],
+          notaryFees: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          structures: [
+            {
+              id: 'struct1',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              propertyWork: 0,
+              ownFunds: [],
+              notaryFees: 0,
+            },
+          ],
+        },
+        borrowers: [{}],
+        structureId: 'struct1',
+      })).to.equal(200000);
+    });
+
+    it('uses property work', () => {
+      expect(Calculator.getMissingOwnFunds({
+        structure: {
+          id: 'struct1',
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          propertyWork: 100000,
+          ownFunds: [],
+        },
+        properties: [{ _id: 'propertyId', value: 900000 }],
+        loan: {
+          properties: [{ _id: 'propertyId', value: 900000 }],
+          structures: [
+            {
+              id: 'struct1',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              propertyWork: 100000,
+              ownFunds: [],
+            },
+          ],
+          borrowers: [{}],
+        },
+        structureId: 'struct1',
+      })).to.equal(245000);
+    });
+
+    it('subtracts used own funds', () => {
+      expect(Calculator.getMissingOwnFunds({
+        structure: {
+          id: 'struct1',
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          propertyWork: 0,
+          ownFunds: [{ value: 100000 }],
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          structures: [
+            {
+              id: 'struct1',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              propertyWork: 0,
+              ownFunds: [{ value: 100000 }],
+            },
+          ],
+        },
+        borrowers: [{}],
+        structureId: 'struct1',
+      })).to.equal(150000);
+    });
+
+    it('does not count pledge as own funds', () => {
+      expect(Calculator.getMissingOwnFunds({
+        structure: {
+          id: 'struct1',
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          propertyWork: 0,
+          ownFunds: [
+            { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+            { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+          ],
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1000000 }],
+          structures: [
+            {
+              id: 'struct1',
+              wantedLoan: 800000,
+              propertyId: 'propertyId',
+              propertyWork: 0,
+              ownFunds: [
+                { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+                { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+              ],
+            },
+          ],
+        },
+        borrowers: [{}],
+        structureId: 'struct1',
+      })).to.equal(150000);
+    });
+
+    it('uses calculated notary fees and rounds them', () => {
+      expect(Calculator.getMissingOwnFunds({
+        structure: {
+          id: 'struct1',
+          wantedLoan: 1179750,
+          propertyId: 'propertyId',
+          propertyWork: 165000,
+          ownFunds: [],
+        },
+        properties: [{ _id: 'propertyId', value: 1650000, canton: 'GE' }],
+        loan: {
+          properties: [{ _id: 'propertyId', value: 1650000, canton: 'GE' }],
+          structures: [
+            {
+              id: 'struct1',
+              wantedLoan: 1179750,
+              propertyId: 'propertyId',
+              propertyWork: 165000,
+              ownFunds: [],
+            },
+          ],
+          borrowers: [{}],
+        },
+        structureId: 'struct1',
+      })).to.be.within(720693, 720694);
     });
   });
 });

@@ -21,6 +21,7 @@ export const cloudFoundryCommands = {
   deleteApp: name => `cf delete ${name} -f`,
   restartApp: name => `cf restart ${name}`,
   deleteOprhanedRoutes: () => 'cf delete-orphaned-routes -f',
+  getOauthToken: () => 'cf oauth-token',
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {
@@ -49,6 +50,7 @@ export const CLOUDFOUNDRY_MEMORY_LIMIT = {
   MB256: '256MB',
   MB512: '512MB',
   MB1024: '1024MB',
+  MB1536: '1536MB',
   MB2048: '2048MB',
 };
 

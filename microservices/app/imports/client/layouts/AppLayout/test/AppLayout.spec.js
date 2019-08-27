@@ -10,12 +10,12 @@ describe('AppLayout', () => {
   describe('getRedirect', () => {
     context('when user is logged out', () => {
       it('should redirect to login', () => {
-        expect(getRedirect(undefined, '/')).to.include('login');
-        expect(getRedirect(undefined, '/loans')).to.include('login');
+        expect(getRedirect(undefined, '/account')).to.include('login');
         expect(getRedirect(undefined, '/whatever')).to.include('login');
       });
-
+      
       it('should not redirect if user is on allowed route', () => {
+      expect(getRedirect(undefined, '/')).to.equal(false);
         expect(getRedirect(undefined, '/login')).to.equal(false);
         expect(getRedirect(undefined, '/reset-password')).to.equal(false);
         expect(getRedirect(undefined, '/enroll-account')).to.equal(false);
@@ -41,7 +41,7 @@ describe('AppLayout', () => {
       });
 
       it('does not redirect if user is on allowed route without loans', () => {
-        expect(getRedirect({ loans: [] }, '/profile')).to.equal(false);
+        expect(getRedirect({ loans: [] }, '/account')).to.equal(false);
         expect(getRedirect({ loans: [] }, '/enroll-account')).to.equal(false);
       });
 

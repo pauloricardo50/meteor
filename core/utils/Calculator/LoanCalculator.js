@@ -1,6 +1,5 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { FinanceCalculator } from '../FinanceCalculator';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -8,30 +7,38 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
+import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
-import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    getProjectValue({ loan }) {
-      const propertyValue = this.getPropertyValue({ loan });
-      if (!propertyValue) {
+    getProjectValue({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      if (!propAndWork) {
         return 0;
       }
 
-      const value = propertyValue
-        + (this.selectStructureKey({ loan, key: 'propertyWork' }) || 0)
-        + this.getFees({ loan }).total;
+      const value = propAndWork + this.getFees({ loan, structureId }).total;
 
       return value;
     }
 
-    getTotalUsed({ loan: { structure: { ownFunds = [] } = {} } }) {
+    getTotalUsed({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'ownFunds',
+      });
       return ownFunds.reduce((sum, { value }) => sum + value, 0);
     }
 
-    getTotalPledged({ loan: { structure: { ownFunds = [] } = {} } }) {
+    getTotalPledged({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'ownFunds',
+      });
       return ownFunds
         .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
@@ -49,11 +56,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return { total: notaryFees };
       }
 
-      const canton = this.makeSelectPropertyKey('canton')({
-        loan,
-        structureId,
-      });
-      const calculator = new NotaryFeesCalculator({ canton });
+      const calculator = this.getFeesCalculator({ loan, structureId });
 
       const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
@@ -64,123 +67,192 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getFeesCalculator({ loan, structureId }) {
-      const canton = this.makeSelectPropertyKey('canton')({
+      const canton = this.selectPropertyKey({
         loan,
         structureId,
+        key: 'canton',
       });
       return new NotaryFeesCalculator({ canton });
     }
 
-    getInterests({ loan, interestRates }) {
+    getInterests({ loan, interestRates, structureId }) {
       let finalInterestRates = interestRates || loan.currentInterestRates;
-      const offer = this.makeSelectStructureKey('offer')({ loan });
+      const offer = this.selectStructureKey({
+        loan,
+        key: 'offer',
+        structureId,
+      });
+      const loanTranches = this.selectStructureKey({
+        loan,
+        key: 'loanTranches',
+        structureId,
+      });
+      const loanValue = this.selectLoanValue({ loan, structureId });
       if (offer) {
         finalInterestRates = offer;
       }
 
+      const interests = this.getInterestsWithTranches({
+        tranches: loanTranches,
+        interestRates: finalInterestRates,
+      });
+
+      return (interests * loanValue) / 12;
+    }
+
+    getTheoreticalInterests({ loan, structureId }) {
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const propertyWork = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'propertyWork',
+      }) || 0;
+      const firstRank = Math.min(
+        loanValue,
+        this.amortizationGoal * (propertyValue + propertyWork),
+      );
+      const secondRank = Math.max(0, loanValue - firstRank);
+
+      const firstRankInterests = firstRank * this.theoreticalInterestRate;
+      const secondRankInterests = secondRank
+        * (this.theoreticalInterestRate2ndRank || this.theoreticalInterestRate);
+
+      return (firstRankInterests + secondRankInterests) / 12;
+    }
+
+    getTheoreticalMaintenance({ loan, structureId }) {
       return (
-        (this.getInterestsWithTranches({
-          tranches: this.makeSelectStructureKey('loanTranches')({ loan }),
-          interestRates: finalInterestRates,
-        })
-          * this.selectLoanValue({ loan }))
+        (this.getPropAndWork({ loan, structureId })
+          * this.theoreticalMaintenanceRate)
         / 12
       );
     }
 
-    getTheoreticalInterests({ loan }) {
-      return (
-        (this.selectLoanValue({ loan }) * this.theoreticalInterestRate) / 12
-      );
-    }
+    getAmorti;
 
-    getTheoreticalMaintenance({ loan }) {
-      return (
-        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRate) / 12
-      );
-    }
+    getAmortization({ loan, structureId, offerOverride }) {
+      const offer = this.selectOffer({ loan, structureId });
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      const offerToUse = offerOverride || offer;
 
-    getAmortization({ loan }) {
-      const {
-        structure: { offer },
-      } = loan;
-
-      if (offer) {
+      if (offerToUse) {
         // Temporarily change amortizationGoal
         const oldAmortizationGoal = this.amortizationGoal;
-        this.amortizationGoal = offer.amortizationGoal;
+        this.amortizationGoal = offerToUse.amortizationGoal;
 
-        const amortization = (this.getAmortizationRate({
+        const amortizationRate = this.getAmortizationRate({
           loan,
-          amortizationYears: offer.amortizationYears,
-        })
-            * this.selectLoanValue({ loan }))
-          / 12;
+          amortizationYears: offerToUse.amortizationYears,
+          structureId,
+        });
+
+        const amortization = (amortizationRate * loanValue) / 12;
 
         this.amortizationGoal = oldAmortizationGoal;
 
         return amortization;
       }
 
-      return (
-        (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
-        / 12
-      );
+      const amortizationRate = this.getAmortizationRate({ loan, structureId });
+      return (amortizationRate * loanValue) / 12;
     }
 
-    getAmortizationRate({ loan, amortizationYears }) {
-      const {
-        structure: { wantedLoan, propertyWork },
-      } = loan;
+    getTheoreticalAmortization({ loan, structureId }) {
+      const loanValue = this.selectLoanValue({ loan, structureId });
+
+      return (this.getAmortizationRate({ loan, structureId }) * loanValue) / 12;
+    }
+
+    getAmortizationRate({
+      loan,
+      structureId,
+      amortizationYears = this.getAmortizationDuration({ loan, structureId }),
+    }) {
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
       return this.getAmortizationRateBase({
-        borrowRatio:
-          wantedLoan / (this.getPropertyValue({ loan }) + propertyWork),
+        borrowRatio,
         amortizationYears,
+        // Prevent caching of this function if amortizationGoal has changed
+        cacheFix: this.amortizationGoal,
       });
     }
 
-    getMonthly({ loan, interestRates }) {
+    getTotalAmortization({ loan, structureId }) {
+      const amortization = this.getAmortization({ loan, structureId });
+      const amortizationYears = this.getAmortizationDuration({
+        loan,
+        structureId,
+      });
+      return amortization * amortizationYears * 12;
+    }
+
+    getMonthly({ loan, interestRates, structureId }) {
       return (
-        this.getInterests({ loan, interestRates })
-        + this.getAmortization({ loan })
+        this.getInterests({ loan, interestRates, structureId })
+        + this.getAmortization({ loan, structureId })
       );
     }
 
-    getTheoreticalMonthly({ loan }) {
-      return (
-        this.getTheoreticalInterests({ loan })
-        + this.getAmortization({ loan })
-        + this.getTheoreticalMaintenance({ loan })
-      );
+    getTheoreticalPropertyCost({ loan, structureId, asObject = false }) {
+      const interests = this.getTheoreticalInterests({ loan, structureId });
+      const amortization = this.getTheoreticalAmortization({
+        loan,
+        structureId,
+      });
+      const maintenance = this.getTheoreticalMaintenance({ loan, structureId });
+      return asObject
+        ? {
+          interests,
+          amortization,
+          maintenance,
+          total: interests + amortization + maintenance,
+        }
+        : interests + amortization + maintenance;
     }
 
-    getIncomeRatio({ loan }) {
-      return (
-        this.getTheoreticalMonthly({ loan })
-        / (this.getTotalIncome({ borrowers: loan.borrowers }) / 12)
-      );
+    getTheoreticalMonthly({ loan, structureId }) {
+      const propertyCost = this.getTheoreticalPropertyCost({
+        loan,
+        structureId,
+      });
+      const expensesToAddToTheoreticalCost = this.getFormattedExpenses({ loan, structureId }).add / 12;
+
+      return propertyCost + expensesToAddToTheoreticalCost;
     }
 
-    getBorrowRatio({ loan }) {
-      return (
-        this.selectStructureKey({ loan, key: 'wantedLoan' })
-        / (this.getPropertyValue({ loan })
-          + this.selectStructureKey({ loan, key: 'propertyWork' }))
-      );
+    getIncomeRatio({ loan, structureId }) {
+      const cost = this.getTheoreticalMonthly({ loan, structureId });
+      const income = this.getTotalIncome({ borrowers: loan.borrowers });
+      const ratio = cost / (income / 12);
+
+      if (ratio > 1 || ratio < 0) {
+        return 1;
+      }
+
+      return ratio;
     }
 
-    getMaxBorrowRatio({ loan: { usageType } }) {
+    getBorrowRatio({ loan, structureId }) {
+      const wantedLoan = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedLoan',
+      });
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      return wantedLoan / propAndWork;
+    }
+
+    getMaxBorrowRatio() {
       return this.maxBorrowRatio;
     }
 
     loanHasMinimalInformation({ loan }) {
-      const {
-        structure: { ownFunds },
-      } = loan;
+      const structure = this.selectStructure({ loan });
 
       return !!(
-        ownFunds
-        && ownFunds.length > 0
+        structure.ownFunds
+        && structure.ownFunds.length > 0
         && this.selectPropertyValue({ loan })
         && this.selectLoanValue({ loan })
       );
@@ -197,22 +269,29 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getTotalFinancing({ loan }) {
+    getTotalFinancing({ loan, structureId }) {
       return (
-        this.selectStructureKey({ loan, key: 'wantedLoan' })
-        + this.getNonPledgedOwnFunds({ loan })
+        this.selectStructureKey({ loan, structureId, key: 'wantedLoan' })
+        + this.getNonPledgedOwnFunds({ loan, structureId })
       );
     }
 
-    getNonPledgedOwnFunds({ loan }) {
-      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+    getNonPledgedOwnFunds({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
     }
 
-    getUsedFundsOfType({ loan, type, usageType }) {
-      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+    getPledgedOwnFunds({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+      return ownFunds
+        .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getUsedFundsOfType({ loan, type, usageType, structureId }) {
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ type: ownFundType }) => (type ? ownFundType === type : true))
         .filter(({ usageType: ownFundUsageType }) =>
@@ -220,13 +299,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         .reduce((sum, { value }) => sum + value, 0);
     }
 
-    getRemainingFundsOfType({ loan, type }) {
-      const ownFunds = this.getFunds({ loan, type });
+    getRemainingFundsOfType({ loan, structureId, type }) {
+      const ownFunds = this.getFunds({ loan, type, structureId });
       return (
         ownFunds
         - this.getUsedFundsOfType({
           loan,
           type,
+          structureId,
           usageType:
             type !== OWN_FUNDS_TYPES.BANK_FORTUNE
               ? OWN_FUNDS_USAGE_TYPES.WITHDRAW
@@ -235,20 +315,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getTotalRemainingFunds({ loan }) {
+    getTotalRemainingFunds({ loan, structureId }) {
       // Don't count extra third party fortune, as it is not a real "loan" from them
       return Object.values(OWN_FUNDS_TYPES)
         .filter(type => type !== OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE)
         .reduce(
-          (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
+          (sum, type) =>
+            sum + this.getRemainingFundsOfType({ loan, structureId, type }),
           0,
         );
     }
 
     refinancingPercent({ loan }) {
-      const a = [];
-      getCountedArray(getRefinancingFormArray({ loan }), loan, a);
-      return getPercent(a);
+      const array = getCountedArray(getRefinancingFormArray({ loan }), loan);
+      return getPercent(array);
     }
 
     getMortgageNoteIncrease({ loan, structureId }) {
@@ -275,8 +355,108 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return Math.max(0, loanValue - mortgageNoteValue);
     }
+
+    getCashUsed({ loan, structureId }) {
+      const { ownFunds } = this.selectStructure({ loan, structureId });
+
+      return ownFunds
+        .filter(({ type, usageType }) =>
+          type !== OWN_FUNDS_TYPES.INSURANCE_2
+            && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getCashRatio({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const fees = this.getFees({ loan, structureId }).total;
+      const cashUsed = this.getCashUsed({ loan, structureId });
+
+      const cashRatio = (cashUsed - fees) / propAndWork;
+      return cashRatio;
+    }
+
+    hasEnoughCash({ loan, structureId }) {
+      return this.getCashRatio({ loan, structureId }) >= this.minCash;
+    }
+
+    structureIsValid({ loan, structureId }) {
+      const incomeRatio = this.getIncomeRatio({ loan, structureId });
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+
+      if (
+        incomeRatio > this.maxIncomeRatio
+        || borrowRatio > this.maxBorrowRatio
+      ) {
+        return false;
+      }
+
+      if (
+        !this.allowPledge
+        && this.getPledgedOwnFunds({ loan, structureId }) > 0
+      ) {
+        return false;
+      }
+
+      return true;
+    }
+
+    getEstimatedRevenues({ loan, structureId }) {
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      return propertyValue * this.estimatedCommission;
+    }
+
+    getEstimatedReferralRevenues({ loan, structureId }) {
+      return (
+        this.getEstimatedRevenues({ loan, structureId })
+        * this.referralCommission
+      );
+    }
+
+    getRequiredOwnFunds({ loan, structureId }) {
+      const projectValue = this.getProjectValue({ loan, structureId });
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      return projectValue - loanValue;
+    }
+
+    getMissingOwnFunds({ loan, structureId }) {
+      const fundsRequired = this.getRequiredOwnFunds({ loan, structureId });
+      const totalCurrentFunds = this.getNonPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+
+      return fundsRequired - totalCurrentFunds;
+    }
+
+    isMissingOwnFunds({ loan, structureId }) {
+      const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
+      return missingOwnFunds >= this.ownFundsRoundingAmount;
+    }
+
+    hasTooMuchOwnFunds({ loan, structureId }) {
+      const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
+      return missingOwnFunds <= -this.ownFundsRoundingAmount;
+    }
+
+    hasCompleteStructure({ loan }) {
+      return loan.structures.some(({ id }) => {
+        const fundsRequired = this.getRequiredOwnFunds({
+          loan,
+          structureId: id,
+        });
+
+        if (fundsRequired === 0) {
+          return false;
+        }
+
+        if (
+          !this.isMissingOwnFunds({ loan, structureId: id })
+          && !this.hasTooMuchOwnFunds({ loan, structureId: id })
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+    }
   };
-
-export const LoanCalculator = withLoanCalculator(FinanceCalculator);
-
-export default new LoanCalculator({});

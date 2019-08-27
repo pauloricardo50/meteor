@@ -8,5 +8,11 @@
 
   .promotion-users-table {
     align-self: stretch;
+
+    .invitedBy-assign-dropdown {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
   }
 }

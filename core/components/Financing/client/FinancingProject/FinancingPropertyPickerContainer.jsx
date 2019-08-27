@@ -16,9 +16,15 @@ const FinancingPropertyPickerContainer = compose(
     properties = [],
     promotionOptions = [],
     loan: { _id: loanId },
-    structure: { id: structureId, propertyId, promotionOptionId },
+    structure: {
+      id: structureId,
+      propertyId,
+      promotionOptionId,
+      disableForms,
+    },
     history: { push },
   }) => ({
+    disabled: disableForms,
     options: [
       ...properties.map(({ _id, address1 }) => ({
         id: _id,

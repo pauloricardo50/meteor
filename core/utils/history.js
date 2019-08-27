@@ -1,8 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
 import { createBrowserHistory } from 'history';
-
-import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 
 const history = createBrowserHistory();
 
@@ -32,9 +29,6 @@ export const handleLoggedOut = (redirectToUrl) => {
     location: { pathname },
   } = history;
   const redirectUrl = redirectToUrl || `/login?path=${pathname}`;
-
-  // eslint-disable-next-line
-  Session.clear(IMPERSONATE_SESSION_KEY);
 
   window.isRedirectingLoggedOutUser = true;
   // hard redirect so that all components are unmounted

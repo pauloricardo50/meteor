@@ -10,12 +10,15 @@ import {
 } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
+import { getCookie } from 'core/utils/cookiesHelpers';
+import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
+import { analyticsVerifyEmail } from 'core/api/methods/index';
 import withMatchParam from '../../containers/withMatchParam';
 import { getUserByPasswordResetToken, notifyAssignee } from '../../api';
 
 const stateHandlers = withStateHandlers(
-  { newPassword: '', newPassword2: '' },
-  { handleChange: () => (event, key) => ({ [key]: event.target.value }) },
+  { newPassword: '', newPassword2: '', hasReadConditions: false },
+  { handleChange: () => (value, key) => ({ [key]: value }) },
 );
 
 const props = withProps(({ newPassword, token, history, setError, changeSubmitting }) => ({
@@ -27,7 +30,8 @@ const props = withProps(({ newPassword, token, history, setError, changeSubmitti
         setError(err);
       } else {
         history.push('/');
-        notifyAssignee.run({ message: 'A choisi/changé son mot de passe!' });
+        notifyAssignee.run({ title: 'A choisi/changé son mot de passe!' });
+        analyticsVerifyEmail.run({ trackingId: getCookie(TRACKING_COOKIE) });
       }
       changeSubmitting(false);
     });

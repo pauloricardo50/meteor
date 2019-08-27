@@ -15,16 +15,19 @@ const MortgageNoteSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(MORTGAGE_NOTE_TYPES),
     optional: true,
+    uniforms: { placeholder: null },
   },
   category: {
     type: String,
     allowedValues: Object.values(MORTGAGE_NOTE_CATEGORIES),
     optional: true,
+    uniforms: { placeholder: null },
   },
   canton: {
     type: String,
     allowedValues: Object.keys(CANTONS),
     optional: true,
+    uniforms: { placeholder: null },
   },
 });
 

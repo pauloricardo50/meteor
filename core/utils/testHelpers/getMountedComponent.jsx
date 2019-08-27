@@ -1,6 +1,9 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
+
 import { mount } from './enzyme';
 import { getUserLocale, getFormats } from '../localization';
 import messages from '../../lang/fr.json';
@@ -79,6 +82,19 @@ const getMountedComponent = ({ Component, props, withRouter, withStore }) => {
  */
 getMountedComponent.reset = () => {
   getMountedComponent.mountedComponent = undefined;
+  if (Meteor.isServer) {
+    global.document = undefined;
+    global.window = undefined;
+    const jsdom = require('jsdom');
+    const { JSDOM } = jsdom;
+    const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
+    global.document = document;
+    global.window = document.defaultView;
+    // Do this to avoid an annoying bug resulting of the mix of jsdom and kadira
+    // https://github.com/kadirahq/node-eventloop-monitor/blob/master/lib/index.js:73
+    // https://github.com/jsdom/jsdom/blob/master/lib/jsdom/living/hr-time/Performance-impl.js:13
+    global.window.performance.now = () => {};
+  }
 };
 
 export default getMountedComponent;

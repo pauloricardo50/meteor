@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import formatMessage from '../intl';
+import Intl from '../intl';
 
 const translate = ({ key }) => {
   // Turns a key called "expenses.0.value" into "expenses.value"
@@ -7,7 +7,7 @@ const translate = ({ key }) => {
     .split('.')
     .filter(subKey => subKey.length !== 1)
     .join('.');
-  return formatMessage(`Forms.${keyWithoutNumbers}`);
+  return Intl.formatMessage({ id: `Forms.${keyWithoutNumbers}` });
 };
 
 const translateSimpleSchema = () => {
@@ -41,9 +41,18 @@ const translateSimpleSchema = () => {
         notAllowed: ({ value }) => `${value} n'est pas valide`,
         expectedType: args =>
           `${translate(args)} doit être un ${args.dataType}`,
+        regEx({ label, regExp }) {
+          switch (regExp) {
+          case SimpleSchema.RegEx.Email:
+          case SimpleSchema.RegEx.WeakEmail:
+            return 'Cette adresse e-mail est incorrecte';
+          default:
+            return "Le format n'est pas valide";
+          }
+        },
       },
     },
   });
 };
 
-translateSimpleSchema();
+export default translateSimpleSchema;

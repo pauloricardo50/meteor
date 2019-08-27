@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
-import { RESIDENCE_TYPE } from '../../constants';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import LenderRules from '../lenderRules';
 import CollectionService from '../../helpers/CollectionService';
 import {
   DEFAULT_VALUE_FOR_ALL,
-  LENDER_RULES_OPERATORS,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
 } from '../lenderRulesConstants';
@@ -40,9 +39,15 @@ class LenderRulesService extends CollectionService {
   }
 
   insert({ organisationId, object = {}, logicRules }) {
+    const { lenderRules = [] } = OrganisationService.fetchOne({
+      $filters: { _id: organisationId },
+      lenderRules: { _id: 1 },
+    });
+
     const lenderRulesId = super.insert({
       ...object,
       filter: { and: logicRules },
+      order: lenderRules.length,
     });
 
     this.addLink({
@@ -62,10 +67,38 @@ class LenderRulesService extends CollectionService {
     return this._update({ id: lenderRulesId, object });
   }
 
-  updateFilter({ lenderRulesId, logicRules }) {
+  updateFilter({ lenderRulesId, logicRules, name }) {
     return this._update({
       id: lenderRulesId,
-      object: { filter: { and: logicRules } },
+      object: { filter: { and: logicRules }, name },
+    });
+  }
+
+  setOrder({ orders }) {
+    const ids = Object.keys(orders);
+    const numbers = Object.values(orders).sort((a, b) => a - b);
+
+    const lenderRules = this.fetch({
+      $filters: { _id: { $in: ids } },
+      organisation: { _id: 1 },
+      organisationLink: 1,
+    });
+
+    lenderRules.forEach(({ organisation: { _id } }) => {
+      if (_id !== lenderRules[0].organisation._id) {
+        throw new Meteor.Error('Tous les filtres doivent appartenir à la même organisation');
+      }
+    });
+
+    numbers.forEach((num, index) => {
+      if (index !== num) {
+        throw new Meteor.Error("L'ordre des filtres doit commencer par 0 et être continu");
+      }
+    });
+
+    Object.keys(orders).forEach((lenderRulesId) => {
+      const nextOrder = orders[lenderRulesId];
+      this.update({ lenderRulesId, object: { order: nextOrder } });
     });
   }
 }
