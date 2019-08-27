@@ -16,6 +16,7 @@ describe('Migration 20', () => {
       await Borrowers.rawCollection().insert({
         _id: 'b1',
         thirdPartyFortune: 1000,
+        additionalDocuments: [{ id: 'doc1' }],
       });
 
       await Borrowers.rawCollection().insert({
@@ -33,6 +34,8 @@ describe('Migration 20', () => {
         value: 1000,
         description: '',
       });
+      expect(borrower1.additionalDocuments.length).to.equal(2);
+      expect(borrower1.additionalDocuments[1].id).to.equal('DONATION_JUSTIFICATION');
       expect(borrower2.donation.length).to.equal(0);
     });
   });

@@ -1,4 +1,10 @@
 {
+  "Forms.donation.value.placeholder": "5000",
+  "Forms.thirdPartyLoan.value.placeholder": "5000",
+  "PDF.ownFund.donation": "Donation",
+  "PDF.borrowersInfos.ownFund.donation": "Donation",
+  "files.THIRD_PARTY_LOAN_JUSTIFICATION": "Justificatif(s) de prêt(s) de tiers",
+  "files.DONATION_JUSTIFICATION": "Justificatif(s) de donation(s)",
   "Forms.donation": "Donation",
   "Forms.donation.description": "Description",
   "Forms.donation.value": "Montant",

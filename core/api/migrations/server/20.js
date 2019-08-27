@@ -1,5 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
+import { BORROWER_DOCUMENTS } from 'core/api/files/fileConstants';
 import Borrowers from '../../borrowers';
 
 export const up = async () => {
@@ -13,10 +14,22 @@ export const up = async () => {
           donation: thirdPartyFortune
             ? [{ value: thirdPartyFortune, description: '' }]
             : [],
+          thirdPartyLoan: [],
         },
+
         $unset: {
           thirdPartyFortune: true,
         },
+
+        ...(thirdPartyFortune
+          ? {
+            $push: {
+              additionalDocuments: {
+                id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION,
+              },
+            },
+          }
+          : {}),
       },
     )));
 };
@@ -26,9 +39,11 @@ export const down = async () => {
 
   return Promise.all(allBorrowers.map(({ _id, donation = [] }) =>
     Borrowers.rawCollection().update(
-      { _id },
       {
-        ...(donation.length
+        _id,
+      },
+      {
+        ...(donation.length > 0
           ? {
             $set: {
               thirdPartyFortune: donation.reduce(
@@ -38,6 +53,7 @@ export const down = async () => {
             },
           }
           : {}),
+
         $unset: { donation: true, thirdPartyLoan: true },
       },
     )));
