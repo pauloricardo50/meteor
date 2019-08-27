@@ -15,16 +15,6 @@ export const borrowerExtractorMiddleware = () => next => (params, ...args) => {
 
   const finalBorrowers = borrowers || loanBorrowers;
 
-  // if (params && loan && !borrowers) {
-  //   const {borrowers}
-  //   const borrowers = Array.isArray(params.oan.borrowers)
-  //     ? params.loan.borrowers
-  //     : params.loan.borrowers
-  //       ? [params.loan.borrowers]
-  //       : [];
-  //   return next({ ...params, borrowers }, ...args);
-  // }
-
   return next(
     typeof params === 'object' && !Array.isArray(params)
       ? { ...params, borrowers: arrayify(finalBorrowers) }
