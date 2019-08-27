@@ -16,6 +16,7 @@
   "Forms.thirdPartyLoan.description": "Description",
   "Forms.thirdPartyLoan.description.placeholder": "Prêt de Jean Dupont",
   "Forms.thirdPartyLoan.value": "Montant du prêt",
+  "Recap.donation": "Donation",
   "Forms.country": "Pays",
   "Forms.personalInformations": "Informations personelles",
   "FinancingResultAmortization.total": "Montant à amortir",
