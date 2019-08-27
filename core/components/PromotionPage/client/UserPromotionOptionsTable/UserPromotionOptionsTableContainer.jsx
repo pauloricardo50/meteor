@@ -1,8 +1,13 @@
 import React from 'react';
-import { compose, mapProps, withState, withProps } from 'recompose';
+import {
+  compose,
+  mapProps,
+  withState,
+  withProps,
+  withStateHandlers,
+} from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import { createRoute } from '../../../../utils/routerUtils';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
@@ -32,12 +37,10 @@ const makeMapPromotionOption = ({
   isLoading,
   setLoading,
   makeChangeCustom,
-  promotionId,
-  loanId,
-  history,
   isDashboardTable = false,
   promotionStatus,
   isAdmin,
+  setPromotionOptionModal,
 }) => (
   { _id: promotionOptionId, promotionLots, custom, attributedToMe, solvency },
   index,
@@ -95,20 +98,7 @@ const makeMapPromotionOption = ({
     ].filter(x => x !== false),
 
     handleClick: (event) => {
-      if (isAdmin) {
-        return;
-      }
-
-      event.stopPropagation();
-      event.preventDefault();
-      history.push(createRoute(
-        '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId',
-        {
-          loanId,
-          promotionId,
-          promotionOptionId,
-        },
-      ));
+      setPromotionOptionModal(promotionOptionId);
     },
   };
 };
@@ -150,6 +140,16 @@ const columnOptions = ({
         && id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
+const addState = withStateHandlers(
+  {},
+  {
+    setStatus: () => status => ({ status }),
+    setPromotionOptionModal: () => promotionOptionModal => ({
+      promotionOptionModal,
+    }),
+  },
+);
+
 export default compose(
   withRouter,
   withState('isLoading', 'setLoading', false),
@@ -160,16 +160,18 @@ export default compose(
         object: { custom: value },
       }),
   }),
+  addState,
   mapProps(({
     promotion,
     loan,
     isLoading,
     setLoading,
     makeChangeCustom,
-    history,
     isDashboardTable,
     isAdmin,
     className,
+    setPromotionOptionModal,
+    ...rest
   }) => {
     const { promotionOptions } = loan;
     const options = isAnyLotAttributedToMe(promotionOptions)
@@ -190,12 +192,10 @@ export default compose(
         isLoading,
         setLoading,
         makeChangeCustom,
-        promotionId: promotion._id,
-        loanId: loan._id,
-        history,
         isDashboardTable,
         promotionStatus: promotion.status,
         isAdmin,
+        setPromotionOptionModal,
       })),
       columnOptions: columnOptions({
         isDashboardTable,
@@ -203,8 +203,17 @@ export default compose(
         promotionStatus: promotion.status,
         isAdmin,
       }),
+      setCustom: (promotionOptionId, value) =>
+        promotionOptionUpdate.run({
+          promotionOptionId,
+          object: { custom: value },
+        }),
       isDashboardTable,
       className,
+      promotionOptions,
+      setPromotionOptionModal,
+      promotion,
+      ...rest,
     };
   }),
 );

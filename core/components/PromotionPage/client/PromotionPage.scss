@@ -184,16 +184,10 @@
   }
 
   .top {
-    display: flex;
-    flex-wrap: wrap;
-
-    .recap {
-      min-width: 400px;
-
-      @include screen(med) {
-        min-width: 300px;
-      }
-    }
+    justify-content: space-evenly;
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: repeat(auto-fit, 400px);
   }
 
   .promotion-lots-manager {
@@ -205,6 +199,8 @@
   .document-download-list {
     justify-content: flex-start;
     margin: 0;
+    display: flex;
+    flex-direction: column;
 
     .document {
       padding: 16px;

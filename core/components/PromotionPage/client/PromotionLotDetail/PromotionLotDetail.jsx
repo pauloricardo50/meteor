@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import T from '../../../Translation';
+import Box from '../../../Box';
 import DocumentDownloadList from '../../../DocumentDownloadList';
 import PromotionMetadataContext from '../PromotionMetadata';
 import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
@@ -25,6 +26,7 @@ const displayPromotionLotLoansTable = ({ canSeeCustomers }) => {
 const PromotionLotDetail = ({
   promotionLot,
   promotion,
+  children
 }: PromotionLotDetailProps) => {
   const {
     lots,
@@ -38,33 +40,35 @@ const PromotionLotDetail = ({
     permissions: { canModifyLots, canSeeCustomers },
   } = useContext(PromotionMetadataContext);
   const currentUser = useContext(CurrentUserContext);
+  const files = documents && documents.promotionPropertyDocuments;
 
   return (
     <div className="promotion-lot-detail">
+      {children}
       <section className="top">
         <PromotionLotDetailRecaps promotionLot={promotionLot} />
-      </section>
-
-      <section>
-        <h4>
-          <T id="PromotionLotPage.manageLot" />
-        </h4>
-        <PromotionLotsManager
-          promotionLotId={promotionLotId}
-          lots={lots}
-          allLots={allLots}
-          status={status}
-          canModifyLots={canModifyLots}
-        />
-      </section>
-
-      <section>
-        <h4>
-          <T id="PromotionLotPage.downloads" />
-        </h4>
-        <DocumentDownloadList
-          files={documents && documents.promotionPropertyDocuments}
-        />
+        {lots && lots.length > 0 && (
+          <Box>
+            <h4>
+              <T id="PromotionLotPage.manageLot" />
+            </h4>
+            <PromotionLotsManager
+              promotionLotId={promotionLotId}
+              lots={lots}
+              allLots={allLots}
+              status={status}
+              canModifyLots={canModifyLots}
+            />
+          </Box>
+        )}
+        {files && files.length > 0 && (
+          <Box>
+            <h4>
+              <T id="PromotionLotPage.downloads" />
+            </h4>
+            <DocumentDownloadList files={files} />
+          </Box>
+        )}
       </section>
 
       {constructionTimeline && constructionTimeline.length > 0 && (

@@ -18,7 +18,7 @@ import {
   PROMOTION_STATUS,
 } from '../../../../api/constants';
 
-const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
+export const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
   const promotionLots = promotionOptions.filter(option => option.promotionLots[0]._id === promotionLotId);
   return !!(promotionLots[0] && promotionLots[0].attributedToMe);
 };
