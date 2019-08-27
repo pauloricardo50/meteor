@@ -210,6 +210,12 @@ $footer-height: 64px;
     color: white;
     background-color: $primary;
 
+    .calculate {
+      border: 1px solid white;
+      padding: 4px 16px;
+      border-radius: $border-radius;
+    }
+
     h2,
     h3,
     h4 {

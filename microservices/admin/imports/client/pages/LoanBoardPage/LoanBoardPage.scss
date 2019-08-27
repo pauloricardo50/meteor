@@ -7,9 +7,21 @@
     flex-grow: 1;
   }
 
+  .loan-board-options.fixed + .board {
+    padding-top: 120px;
+  }
+
   &-options {
     display: flex;
     justify-content: space-between;
+
+    &.fixed {
+      position: fixed;
+      top: 64px;
+      left: calc(120px + 16px);
+      right: 16px;
+      z-index: 1;
+    }
   }
 
   &-options > * {
@@ -24,7 +36,7 @@
   &-options .right {
     align-items: center;
 
-     > * {
+    > * {
       margin-left: 8px;
     }
   }
@@ -32,7 +44,7 @@
   &-options .left {
     flex-grow: 1;
 
-     > * {
+    > * {
       margin-right: 32px;
     }
   }
@@ -249,7 +261,7 @@ $button-height: 30px;
 
   max-height: 400px;
 
-   > * {
+  > * {
     margin-left: 0;
   }
 

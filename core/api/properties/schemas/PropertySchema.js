@@ -14,6 +14,7 @@ import {
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -205,12 +206,16 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 100000,
+    condition: ({ propertyType }) =>
+      propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   volumeNorm: {
     type: String,
-    defaultValue: propertyConstants.VOLUME_NORM.SIA_416,
+    defaultValue: propertyConstants.VOLUME_NORM.ECA,
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
     uniforms: { placeholder: null },
+    condition: ({ propertyType }) =>
+      propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   parkingInside: {
     type: SimpleSchema.Integer,
@@ -233,16 +238,23 @@ export const PropertySchema = new SimpleSchema({
   isCoproperty: {
     type: Boolean,
     defaultValue: false,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
   },
   copropertyPercentage: {
     type: SimpleSchema.Integer,
     min: 0,
     max: 1000,
     optional: true,
+    condition: ({ isCoproperty }) => !!isCoproperty,
   },
   isNew: {
     type: Boolean,
     defaultValue: false,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
   },
   latitude: {
     type: Number,
@@ -272,6 +284,9 @@ export const PropertySchema = new SimpleSchema({
     type: Boolean,
     optional: true,
     condition: ({ externalUrl }) => externalUrl,
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.BOOLEAN_RADIO,
+    },
   },
   externalUrl: {
     type: String,
@@ -304,6 +319,7 @@ const protectedKeys = [
   'userId',
   'documents',
   'userLinks',
+  'loanCount',
 ];
 
 export const userAllowedKeys = [

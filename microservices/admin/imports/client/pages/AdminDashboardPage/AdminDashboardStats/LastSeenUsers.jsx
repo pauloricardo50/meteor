@@ -39,7 +39,7 @@ const LastSeenUsers = (props: LastSeenUsersProps) => {
   }, [role]);
 
   return (
-    <div className="card1 card-top  last-seen-users">
+    <div className="card1 card-top  last-seen-users mb-8">
       <div className="top flex center-align">
         <h3>Derniers vus</h3>
         <Select

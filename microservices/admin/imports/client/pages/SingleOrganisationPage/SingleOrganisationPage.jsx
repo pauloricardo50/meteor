@@ -16,13 +16,15 @@ import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTa
 import CommissionEditor from './CommissionEditor';
 import ReferredUsersTable from './ReferredUsersTable';
 import OrganisationRevenues from './OrganisationRevenues';
+import OrganisationInfo from './OrganisationInfo';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
 };
 
-const tabs = organisation =>
+const tabs = ({ organisation, currentUser }) =>
   [
+    { id: 'info', Component: OrganisationInfo },
     { id: 'users', Component: OrganisationUsersTable },
     { id: 'contacts', Component: ContactsTable },
     {
@@ -49,7 +51,13 @@ const tabs = organisation =>
     },
   ].map(({ id, Component, condition, style = {} }) => ({
     id,
-    content: <Component {...organisation} organisationId={organisation._id} />,
+    content: (
+      <Component
+        {...organisation}
+        currentUser={currentUser}
+        organisationId={organisation._id}
+      />
+    ),
     label: (
       <span style={style}>
         <T id={`OrganisationTabs.${id}`} noTooltips />
@@ -64,13 +72,17 @@ const tabs = organisation =>
 
 const SingleOrganisationPage = ({
   organisation,
+  currentUser,
 }: SingleOrganisationPageProps) => (
   <div className="card1 card-top single-organisation-page">
     <Helmet>
       <title>{organisation.name}</title>
     </Helmet>
-    <SingleOrganisationPageHeader organisation={organisation} />
-    <Tabs tabs={tabs(organisation)} routerParamName="tabId" />
+    <SingleOrganisationPageHeader
+      organisation={organisation}
+      currentUser={currentUser}
+    />
+    <Tabs tabs={tabs({ organisation, currentUser })} routerParamName="tabId" />
   </div>
 );
 

@@ -11,7 +11,7 @@ export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappin
 
 export const borrowerExtractorMiddleware = () => next => (params, ...args) => {
   if (params && params.loan && !params.borrowers) {
-    return next({ ...params, borrowers: params.loan.borrowers }, ...args);
+    return next({ ...params, borrowers: params.loan.borrowers || [] }, ...args);
   }
   return next(params, ...args);
 };

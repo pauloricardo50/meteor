@@ -1,4 +1,5 @@
 // @flow
+import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
 import {
   getPropertyArray,
   getPropertyLoanArray,
@@ -160,5 +161,13 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     isPromotionProperty({ loan, structureId }) {
       const structure = this.selectStructure({ loan, structureId });
       return !!structure.promotionOptionId;
+    }
+
+    isNewProperty({ loan, structureId }) {
+      return !!(
+        this.isPromotionProperty({ loan, structureId })
+        || this.selectPropertyKey({ loan, structureId, key: 'isNew' })
+        || loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
+      );
     }
   };

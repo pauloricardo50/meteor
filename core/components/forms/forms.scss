@@ -4,30 +4,40 @@
   align-self: stretch;
   flex-direction: column;
 
-  > * {
-    display: flex;
-    flex-direction: column;
-
-    margin-top: 32px;
+  h3 {
+    margin-top: 64px;
   }
 
   .autofields {
     flex-direction: row;
     flex-wrap: wrap;
+  }
 
-    > * {
-      flex-basis: 250px;
-      margin-right: 16px;
-      flex-grow: 1;
-    }
+  .grid-col {
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    grid-auto-flow: unset;
   }
 }
 
 .admin-mortgage-note-form {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  margin-top: 64px;
+
+  &-title {
+    display: flex;
+    align-items: center;
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
 
   &-single {
     display: flex;

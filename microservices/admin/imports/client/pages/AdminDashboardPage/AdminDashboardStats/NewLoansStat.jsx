@@ -61,7 +61,7 @@ const NewLoansStat = ({
 );
 
 export default compose(
-  withState('period', 'setPeriod', 7),
+  withState('period', 'setPeriod', 30),
   withState('showChart', 'setShowChart', false),
   withSmartQuery({
     query: newLoans,

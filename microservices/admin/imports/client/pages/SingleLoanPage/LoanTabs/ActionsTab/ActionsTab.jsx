@@ -5,9 +5,11 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
 import { loanDelete, assignLoanToUser } from 'core/api';
 import LoanRenamer from './LoanRenamer';
+import LoanCreatedAtModifier from './LoanCreatedAtModifier';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">
+    <LoanCreatedAtModifier loan={loan} />
     <LoanRenamer loan={loan} />
 
     <ConfirmMethod

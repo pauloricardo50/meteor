@@ -8,6 +8,7 @@ import {
   percentageField,
   moneyField,
   cacheField,
+  documentsField,
 } from '../helpers/sharedSchemas';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
@@ -64,6 +65,7 @@ export const OfferSchema = new SimpleSchema({
   withCounterparts: { type: Boolean, optional: true },
   enableOffer: { type: Boolean, defaultValue: true, optional: true },
   lenderCache: cacheField,
+  documents: documentsField,
 });
 
 export const AdminOfferSchema = OfferSchema.omit(

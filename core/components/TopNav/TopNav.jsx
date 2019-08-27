@@ -6,12 +6,13 @@ import cx from 'classnames';
 import TopNavLogo from './TopNavLogo';
 import TopNavButtons from './TopNavButtons';
 
-const TopNav = ({ className, ...props }) => (
+const TopNav = ({ className, rightChildren, ...props }) => (
   // This overflowX hidden prevents any icon from having tooltips
   // It is required to prevent some weird homepage overflow bugs, where
   // additional white space is added to the right of the page
   <Toolbar className={cx('top-nav', className)} style={{ overflowX: 'hidden' }}>
     <div className="top-nav-content">
+      {rightChildren}
       <TopNavLogo />
       <TopNavButtons {...props} />
     </div>

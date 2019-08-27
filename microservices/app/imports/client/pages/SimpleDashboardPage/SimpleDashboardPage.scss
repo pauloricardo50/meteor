@@ -56,10 +56,6 @@
       @include screen(xsmall) {
         padding: 16px;
       }
-
-      h3 {
-        margin: 0;
-      }
     }
 
     &-right {
@@ -209,15 +205,37 @@
 
       button {
         align-self: center;
-        width: auto;
 
         @include screen(small) {
-          width: 100%;
+          align-self: stretch;
         }
       }
 
       .borrowers-progress {
         margin-bottom: 32px;
+
+        &-signup {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-color: $primary;
+          flex-wrap: wrap;
+
+          @include screen(small) {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          > div {
+            display: flex;
+            align-items: center;
+            .icon {
+              width: 24px;
+              height: 24px;
+              color: $primary;
+            }
+          }
+        }
       }
 
       .button-switch {

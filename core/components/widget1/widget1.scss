@@ -120,9 +120,14 @@
 }
 
 .widget1-page .cta {
-  align-self: flex-end;
+  align-self: center;
 
   margin: 16px;
+  padding: 16px 64px;
+
+  @include screen(med) {
+    align-self: stretch;
+  }
 }
 
 .widget1-page-disclaimer {

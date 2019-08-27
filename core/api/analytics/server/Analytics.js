@@ -9,6 +9,7 @@ import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
 import { impersonateMiddleware } from './analyticsHelpers';
 import TestAnalytics from './TestAnalytics';
+import EVENTS from '../events';
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -133,6 +134,24 @@ class Analytics {
         return w;
       })
       .join(' ');
+  }
+
+  cta(params) {
+    const { cookies, route, path } = params;
+
+    const trackingId = this.userId ? undefined : cookies[TRACKING_COOKIE];
+    const formattedRoute = this.formatRouteName(route);
+
+    this.track(
+      EVENTS.CTA_CLICKED,
+      {
+        ...params,
+        route: formattedRoute,
+        url: `${this.host}${path === '/' ? '' : path}`,
+        referrer: this.referrer,
+      },
+      trackingId,
+    );
   }
 
   page(params) {

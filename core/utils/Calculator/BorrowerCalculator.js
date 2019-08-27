@@ -1,15 +1,23 @@
 // @flow
-import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
-import { getBorrowerDocuments } from 'imports/core/api/files/documents';
+import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import {
+  INCOME_CONSIDERATION_TYPES,
+  EXPENSE_TYPES,
+  OWN_FUNDS_TYPES,
+} from '../../api/constants';
+import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
   getBorrowerSimpleArray,
 } from '../../arrays/BorrowerFormArray';
+import {
+  BONUS_ALGORITHMS,
+  REAL_ESTATE_INCOME_ALGORITHMS,
+} from '../../config/financeConstants';
 import { arrayify, getPercent } from '../general';
 import {
   getCountedArray,
@@ -17,12 +25,8 @@ import {
   getFormValuesHashMultiple,
 } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
-import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
 import { borrowerExtractorMiddleware } from './middleware';
-import {
-  BONUS_ALGORITHMS,
-  REAL_ESTATE_INCOME_ALGORITHMS,
-} from '../../config/financeConstants';
+import { getAgeFromBirthDate } from '../borrowerUtils';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -357,19 +361,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getRetirement({ borrowers }) {
       const argMap = borrowers.reduce(
-        (obj, { age, gender }, index) => ({
-          ...obj,
-          [`${`age${index + 1}`}`]: age,
-          [`${`gender${index + 1}`}`]: gender,
-        }),
+        (obj, { birthDate, age, gender }, index) => {
+          const finalAge = age || getAgeFromBirthDate(birthDate);
+          return {
+            ...obj,
+            [`${`age${index + 1}`}`]: finalAge,
+            [`${`gender${index + 1}`}`]: gender,
+          };
+        },
         {},
       );
+
       return this.getYearsToRetirement(argMap);
     }
 
-    getAmortizationDuration({ borrowers }) {
+    getAmortizationDuration({ loan, structureId, offerOverride, borrowers }) {
+      const offer = this.selectOffer({ loan, structureId });
+      const offerToUse = offerOverride || offer;
+
+      if (offerToUse) {
+        return offerToUse.amortizationYears;
+      }
+
       const retirement = this.getRetirement({ borrowers });
-      return Math.min(15, retirement);
+      return retirement
+        ? Math.min(this.amortizationYears, retirement)
+        : this.amortizationYears;
     }
 
     // personalInfoPercent - Determines the completion rate of the borrower's
@@ -515,7 +532,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getRealEstateCost({ loan, value }) {
+    getRealEstateCost({ loan, value, theoreticalExpenses }) {
+      if (theoreticalExpenses > 0) {
+        // This function returns a monthly cost
+        return theoreticalExpenses / 12;
+      }
+
       const amortizationRate = this.getAmortizationRateBase({
         borrowRatio: super.getBorrowRatio({ loan, propertyValue: value }),
       });

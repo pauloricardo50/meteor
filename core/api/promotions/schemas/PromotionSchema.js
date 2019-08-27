@@ -91,6 +91,7 @@ const PromotionSchema = new SimpleSchema({
     uniforms: { displayEmpty: false },
   },
   ...address,
+  zipCode: { ...address.zipCode, optional: false },
   ...contactsSchema,
   propertyLinks: { type: Array, defaultValue: [] },
   'propertyLinks.$': Object,
@@ -148,6 +149,7 @@ export const BasePromotionSchema = PromotionSchema.pick(
   'address2',
   'zipCode',
   'city',
+  'signingDate',
   'contacts',
 );
 

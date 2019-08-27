@@ -84,7 +84,22 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (referralId) {
-      this.setReferredBy({ userId, proId: referralId });
+      const referralUser = this.fetchOne({
+        $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
+      });
+      const referralOrg = OrganisationService.fetchOne({
+        $filters: {
+          _id: referralId,
+        },
+      });
+      if (referralUser) {
+        this.setReferredBy({ userId, proId: referralId });
+      } else if (referralOrg) {
+        this.setReferredByOrganisation({
+          userId,
+          organisationId: referralId,
+        });
+      }
     }
 
     return userId;
@@ -188,6 +203,14 @@ export class UserServiceClass extends CollectionService {
   };
 
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
+    const duplicateOrganisations = newOrganisations
+      .map(({ _id }) => _id)
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .length !== newOrganisations.length;
+
+    if (duplicateOrganisations) {
+      throw new Meteor.Error('Vous ne pouvez pas lier un utilisateur deux fois à la même organisation.');
+    }
     const { organisations: oldOrganisations = [] } = this.get(userId);
 
     oldOrganisations.forEach(({ _id: organisationId }) =>
@@ -425,6 +448,13 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
+    if (!proId) {
+      return this._update({
+        id: userId,
+        object: { referredByUserLink: true },
+        operator: '$unset',
+      });
+    }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
       organisationId = mainOrg && mainOrg._id;
@@ -440,6 +470,13 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
+    if (!organisationId) {
+      return this._update({
+        id: userId,
+        object: { referredByOrganisationLink: true },
+        operator: '$unset',
+      });
+    }
     return this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },

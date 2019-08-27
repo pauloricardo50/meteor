@@ -54,6 +54,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   city: 1,
   civilStatus: 1,
   company: 1,
+  divorcedDate: 1,
   documents: 1,
   expenses: 1,
   gender: 1,
@@ -63,7 +64,9 @@ export const loanBorrower = ({ withSort } = {}) => ({
   insurance3B: 1,
   isSwiss: 1,
   isUSPerson: 1,
+  job: 1,
   loans: { name: 1 },
+  marriedDate: 1,
   mortgageNotes: mortgageNote(),
   netSalary: 1,
   otherFortune: 1,
@@ -77,7 +80,9 @@ export const loanBorrower = ({ withSort } = {}) => ({
   step: 1,
   thirdPartyFortune: 1,
   worksForOwnCompany: 1,
+  worksInSwitzerlandSince: 1,
   zipCode: 1,
+  country: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
@@ -106,6 +111,7 @@ export const contact = () => ({
   phoneNumbers: 1,
   zipCode: 1,
   offers: { _id: 1 },
+  country: 1,
 });
 
 // //
@@ -161,6 +167,7 @@ export const lender = () => ({
     name: 1,
     type: 1,
     zipCode: 1,
+    country: 1,
   },
 });
 
@@ -168,6 +175,7 @@ export const adminLender = () => ({
   ...lender(),
   status: 1,
   adminNote: 1,
+  offers: adminOffer(),
 });
 
 // //
@@ -480,6 +488,11 @@ export const fullOffer = () => ({
   enableOffer: 1,
 });
 
+export const adminOffer = () => ({
+  ...fullOffer(),
+  documents: 1,
+});
+
 // //
 // // Organisation fragments
 // //
@@ -497,6 +510,7 @@ export const baseOrganisation = () => ({
   zipCode: 1,
   tags: 1,
   users: { _id: 1 },
+  country: 1,
 });
 
 export const fullOrganisation = () => ({
@@ -517,6 +531,13 @@ export const userOrganisation = () => ({
   logo: 1,
   name: 1,
   lenderRules: lenderRules(),
+});
+
+export const adminOrganisation = () => ({
+  ...fullOrganisation(),
+  lenders: adminLender(),
+  adminNote: 1,
+  documents: 1,
 });
 
 // //
@@ -679,6 +700,8 @@ export const basePromotion = () => ({
     organisations: { name: 1 },
   },
   zipCode: 1,
+  signingDate: 1,
+  country: 1,
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
@@ -741,6 +764,7 @@ export const propertySummary = () => ({
   userId: 1,
   value: 1,
   zipCode: 1,
+  country: 1,
 });
 
 export const fullProperty = ({ withSort } = {}) => ({
@@ -794,6 +818,7 @@ export const fullProperty = ({ withSort } = {}) => ({
 
 export const adminProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  users: { name: 1, organisations: { name: 1 } },
   loanCount: 1,
   useOpenGraph: 1,
 });
@@ -830,6 +855,7 @@ export const proPropertySummary = () => ({
   status: 1,
   totalValue: 1,
   loanCount: 1,
+  country: 1,
 });
 
 export const proProperty = ({ withSort } = {}) => ({
@@ -858,6 +884,7 @@ export const apiProperty = () => ({
   externalUrl: 1,
   useOpenGraph: 1,
   imageUrls: 1,
+  country: 1,
 });
 
 // //

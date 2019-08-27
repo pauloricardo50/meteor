@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -6,7 +8,6 @@ import { compose } from 'recompose';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import PageHead from 'core/components/PageHead';
-import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import {
   TooltipProviderContainer,
   TOOLTIP_LISTS,
@@ -14,6 +15,9 @@ import {
 import Widget1Part1 from 'core/components/widget1/Widget1Part1';
 import Widget1Part2 from 'core/components/widget1/Widget1Part2';
 import Widget1Options from 'core/components/widget1/Widget1Options';
+import { ctaClicked } from 'core/api/analytics/helpers';
+import CTAS from 'core/api/analytics/ctas';
+import { WWW_ROUTES } from 'imports/startup/shared/Routes';
 import Widget1PageDisclaimer from './Widget1PageDisclaimer';
 import Widget1PageContainer from './Widget1PageContainer';
 import WwwLayout from '../../WwwLayout';
@@ -29,7 +33,14 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
   return `/start/2?${queryString.stringify(queryparams)}`;
 };
 
-const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
+const Widget1Page = ({
+  step,
+  finishedTutorial,
+  finma,
+  fields,
+  history,
+  ...rest
+}) => {
   const showPart2 = finishedTutorial;
   return (
     <WwwLayout className="widget1-page">
@@ -44,17 +55,17 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
           {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
           {showPart2 && <Widget1Part2 finma={finma} />}
           {showPart2 && (
-            <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
-              <Button
-                secondary
-                className="cta"
-                raised
-                link
-                to={getUrl(rest)}
-              >
-                <T id="general.continue" />
-              </Button>
-            </TogglePoint>
+            <Button
+              secondary
+              className="cta"
+              raised
+              href={Meteor.settings.public.subdomains.app}
+              onClick={() => {
+                ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
+              }}
+            >
+              <T id="general.continue" />
+            </Button>
           )}
         </div>
         {showPart2 && <Widget1PageDisclaimer />}

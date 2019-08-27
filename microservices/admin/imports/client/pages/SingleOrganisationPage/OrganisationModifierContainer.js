@@ -12,5 +12,6 @@ export default withProps(({ organisation: { _id: organisationId } }) => ({
     'canton',
     'documents',
     'lenderRulesCount',
+    'adminNote',
   ),
 }));

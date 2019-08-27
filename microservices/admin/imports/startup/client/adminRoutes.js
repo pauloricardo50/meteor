@@ -7,23 +7,19 @@ import AdminDashboardPage from '../../client/pages/AdminDashboardPage/loadable';
 import AdminPromotionLotPage from '../../client/pages/AdminPromotionLotPage/loadable';
 import AdminPromotionPage from '../../client/pages/AdminPromotionPage/loadable';
 import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage/loadable';
-import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
-import ContactsPage from '../../client/pages/ContactsPage/loadable';
-import InterestRatesPage from '../../client/pages/InterestRatesPage/loadable';
 import LoansPage from '../../client/pages/LoansPage/loadable';
 import OrganisationsPage from '../../client/pages/OrganisationsPage/loadable';
 import PromotionsPage from '../../client/pages/PromotionsPage/loadable';
-import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage/loadable';
 import SingleContactPage from '../../client/pages/SingleContactPage/loadable';
 import SingleLoanPage from '../../client/pages/SingleLoanPage/loadable';
 import SingleOrganisationPage from '../../client/pages/SingleOrganisationPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
-import TasksPage from '../../client/pages/TasksPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
 import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
-import RevenuesPage from '../../client/pages/RevenuesPage/RevenuesPage';
+import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
+import OtherPage from '../../client/pages/OtherPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
@@ -36,8 +32,6 @@ const ADMIN_ROUTES = {
   //   "All" pages
   USERS_PAGE: { component: UsersPage, path: '/users', exact: true },
   LOANS_PAGE: { component: LoansPage, path: '/loans', exact: true },
-  BORROWERS_PAGE: { component: BorrowersPage, path: '/borrowers', exact: true },
-  CONTACTS_PAGE: { component: ContactsPage, path: '/contacts', exact: true },
   ORGANISATIONS_PAGE: {
     component: OrganisationsPage,
     path: '/organisations',
@@ -48,20 +42,13 @@ const ADMIN_ROUTES = {
     path: '/promotions',
     exact: true,
   },
-  PROPERTIES_PAGE: {
-    component: PropertiesPage,
-    path: '/properties',
-    exact: true,
-  },
-  TASKS_PAGE: { component: TasksPage, path: '/tasks', exact: true },
-  INTEREST_RATES_PAGE: {
-    component: InterestRatesPage,
-    path: '/interestRates',
-    exact: true,
-  },
   REVENUES_PAGE: {
     component: RevenuesPage,
     path: '/revenues/:tabId?',
+  },
+  OTHER_PAGE: {
+    component: OtherPage,
+    path: '/other/:tabId?',
   },
 
   //   "Single" pages

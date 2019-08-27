@@ -101,12 +101,15 @@ const setupMoment = () => {
 export const localizationStartup = ({
   setupAccounts = true,
   messages,
+  setupCountries = true,
 } = {}) => {
   // Add locales used in app here
   Intl.init(messages);
   addLocaleData(fr);
+
   setupMoment();
   moment.locale('fr');
+
   translateSimpleSchema();
 
   if (setupAccounts) {
@@ -114,5 +117,10 @@ export const localizationStartup = ({
     const { fr: accountsFr } = require('meteor-accounts-t9n/build/fr');
     T9n.map('fr', accountsFr);
     T9n.setLanguage('fr');
+  }
+
+  if (setupCountries) {
+    const countries = require('i18n-iso-countries');
+    countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
   }
 };

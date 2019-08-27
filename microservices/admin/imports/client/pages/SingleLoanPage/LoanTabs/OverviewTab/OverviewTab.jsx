@@ -16,6 +16,7 @@ import VerificationSetter from './VerificationSetter';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
+import BorrowerAge from '../BorrowerAge';
 
 const OverviewTab = (props) => {
   const {
@@ -81,7 +82,7 @@ const OverviewTab = (props) => {
         <MaxPropertyValue loan={loan} />
         <Solvency loan={loan} />
       </div>
-      
+
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">
@@ -97,9 +98,10 @@ const OverviewTab = (props) => {
         <div className="borrower-recaps">
           {borrowers.map((b, i) => (
             <div className="recap-div" key={b._id}>
-              <h2 className="fixed-size">
+              <h2 className="fixed-size mb-0">
                 {b.firstName || `Emprunteur ${i + 1}`}
               </h2>
+              <BorrowerAge borrower={b} />
               <Recap {...props} arrayName="borrower" borrower={b} />
             </div>
           ))}

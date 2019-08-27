@@ -5,6 +5,7 @@ import Table from '../../Table';
 import ProPropertyPageCustomersContainer from './ProPropertyPageCustomersContainer';
 import PropertyCustomerAdder from '../PropertyCustomerAdder';
 import T from '../../Translation';
+import ProPropertyPublicLinkGenerator from './ProPropertyPublicLinkGenerator';
 
 type ProPropertyPageCustomersProps = {};
 
@@ -21,7 +22,13 @@ const ProPropertyPageCustomers = ({
         <T id="ProPropertyPage.customersTable" />
       </h2>
       {permissions.canInviteCustomers && (
-        <PropertyCustomerAdder propertyId={property._id} loans={loans} />
+        <div className="flex-row center">
+          <PropertyCustomerAdder propertyId={property._id} loans={loans} />
+          <ProPropertyPublicLinkGenerator
+            property={property}
+            className="ml-16"
+          />
+        </div>
       )}
     </span>
     <Table rows={rows} columnOptions={columnOptions} />

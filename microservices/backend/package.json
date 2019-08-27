@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings-dev.json --port 5500",
-    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505",
     "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "core-js": "^3.1.4",
     "faker": "^4.1.0",
     "file-saver": "^2.0.2",
+    "i18n-iso-countries": "^4.3.1",
     "indexof": "0.0.1",
     "intl-messageformat": "^5.4.3",
     "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",

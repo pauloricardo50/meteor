@@ -33,6 +33,7 @@ const SingleBorrowerHeader = ({
       </div>
       <div>
         <ConfirmMethod
+          buttonProps={{ outlined: true, error: true }}
           label="Supprimer"
           method={() => borrowerDelete.run({ borrowerId })}
         />

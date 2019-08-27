@@ -39,7 +39,7 @@ const getFooter = ({
   }
 
   if (!maxPropertyValue && canCalculateSolvency) {
-    return <h2 className="animated bounceIn">Calculer</h2>;
+    return <h2 className="animated bounceIn calculate">Calculer</h2>;
   }
 
   const { canton } = maxPropertyValue;

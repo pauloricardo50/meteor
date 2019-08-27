@@ -8,14 +8,13 @@ import { withProps } from 'recompose';
 import { taskInsert } from 'core/api/tasks/index';
 import { schema, taskFormLayout } from './TaskModifier';
 
-
 type TaskAdderProps = {};
 
-const TaskAdder = ({ insertTask }: TaskAdderProps) => (
+const TaskAdder = ({ insertTask, label = 'Ajouter tâche' }: TaskAdderProps) => (
   <AutoFormDialog
     schema={schema.omit('status')}
     model={{ assigneeLink: { _id: Meteor.userId() } }}
-    buttonProps={{ label: 'Ajouter tâche', raised: true, primary: true }}
+    buttonProps={{ label, raised: true, primary: true }}
     onSubmit={insertTask}
     title="Ajouter tâche"
     layout={taskFormLayout}

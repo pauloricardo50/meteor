@@ -9,7 +9,7 @@ import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 
 const TasksPage = () => (
   <section
-    className="card1 card-top tasks-page"
+    className="tasks-page"
     style={{ overflow: 'initial' }}
   >
     <Helmet>

@@ -8,7 +8,7 @@ import { BORROWERS_COLLECTION } from 'core/api/constants';
 import BorrowersTable from './BorrowersTable';
 
 const BorrowersPage = props => (
-  <section className="card1 card-top borrowers-page">
+  <section className="borrowers-page">
     <Helmet>
       <title>Emprunteurs</title>
     </Helmet>

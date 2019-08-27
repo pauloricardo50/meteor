@@ -78,21 +78,23 @@ class FileViewer extends Component {
 
     return (
       <div className="file-viewer" style={{ width }}>
-        <IconButton
-          onClick={hideFileViewer}
-          type="close"
-          className="file-viewer-closer"
-        />
-        <IconButton
-          type="dragHandle"
-          className="file-viewer-resizer"
-          onMouseDown={this.handleMouseDown}
-        />
-        <ReactFileViewer
-          fileType={fileType}
-          filePath={filePath}
-          key={filePath}
-        />
+        <div className="file-viewer-wrapper" style={{ width }}>
+          <IconButton
+            onClick={hideFileViewer}
+            type="close"
+            className="file-viewer-closer"
+          />
+          <IconButton
+            type="dragHandle"
+            className="file-viewer-resizer"
+            onMouseDown={this.handleMouseDown}
+          />
+          <ReactFileViewer
+            fileType={fileType}
+            filePath={filePath}
+            key={filePath}
+          />
+        </div>
       </div>
     );
   }

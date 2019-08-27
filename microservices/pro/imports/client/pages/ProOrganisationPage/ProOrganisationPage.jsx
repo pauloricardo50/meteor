@@ -42,6 +42,14 @@ const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
         organisation={organisation}
         currentUser={currentUser}
       />
+      <div className="flex-col mb-16">
+        <label htmlFor="" className="mb-8">
+          Code referral de
+          {' '}
+          {organisation.name}
+        </label>
+        <b>{organisation._id}</b>
+      </div>
       <ProOrganisationPageTabs
         organisation={organisation}
         currentUser={currentUser}

@@ -5,7 +5,7 @@ import Loading from '../Loading';
 import T from '../Translation';
 
 const MaxPropertyValueLoading = () => (
-  <div className="animated fadeIn">
+  <div className="animated fadeIn text-center">
     <Loading />
     <h4>
       <T id="MaxPropertyValue.loading1" />

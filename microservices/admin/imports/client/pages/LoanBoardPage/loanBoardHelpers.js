@@ -114,6 +114,17 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
+// A more helpful sorting order when viewing lots of loans
+const loanBoardStatusOrder = [
+  LOAN_STATUS.UNSUCCESSFUL,
+  LOAN_STATUS.PENDING,
+  LOAN_STATUS.LEAD,
+  LOAN_STATUS.ONGOING,
+  LOAN_STATUS.CLOSING,
+  LOAN_STATUS.BILLING,
+  LOAN_STATUS.FINALIZED,
+];
+
 const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
   let sortOrders = [sortOrder];
   let sorters = [
@@ -121,7 +132,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
       const value = get(item, sortBy);
 
       if (sortBy === SORT_BY.STATUS) {
-        return LOAN_STATUS_ORDER.indexOf(value);
+        return loanBoardStatusOrder.indexOf(value);
       }
       if (sortBy === SORT_BY.DUE_AT) {
         return item.nextDueTask && new Date(item.nextDueTask.dueAt);

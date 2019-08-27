@@ -3,6 +3,7 @@ import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import EVENTS from '../../analytics/events';
 
 import Security from '../../security/Security';
+import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
 import {
   loanInsert,
@@ -35,6 +36,7 @@ import {
   loanUnlinkPromotion,
   loanSetCreatedAtActivityDescription,
   loanSetStatus,
+  loanUpdateCreatedAt,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -284,4 +286,11 @@ loanSetCreatedAtActivityDescription.setHandler(({ userId }, params) => {
 loanSetStatus.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.setStatus(params);
+});
+
+loanUpdateCreatedAt.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  const { loanId, createdAt } = params;
+  LoanService.update({ loanId, object: { createdAt } });
+  return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });

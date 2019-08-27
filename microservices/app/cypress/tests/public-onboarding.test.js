@@ -280,6 +280,29 @@ describe('Public onboarding', () => {
     });
   });
 
+  it('should create an account with organisation referralId', () => {
+    cy.callMethod('addOrganisation').then((orgId) => {
+      cy.wrap(orgId).as('orgId');
+      cy.visit(`/?ref=${orgId}`);
+    });
+
+    cy.contains('Créez').click();
+    cy.get('input[name="firstName"]').type('Jean');
+    cy.get('input[name="lastName"]').type('Dujardin');
+    cy.get('input[name="email"]').type('dev@e-potek.ch');
+    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
+    cy.contains('Ok').click();
+
+    cy.url().should('include', '/signup/dev@e-potek.ch');
+    cy.get('.signup-success').should('exist');
+
+    cy.callMethod('getUser', 'dev@e-potek.ch').then(({ referredByOrganisationLink }) => {
+      cy.get('@orgId').then((orgId) => {
+        expect(referredByOrganisationLink).to.equal(orgId);
+      });
+    });
+  });
+
   it('should not let override the referralId with an invalid one', () => {
     cy.callMethod('addProUser').then((userId) => {
       cy.wrap(userId).as('userId');

@@ -13,14 +13,16 @@ const ReferredByAssignDropdown = ({
   referredByUser,
 }: ReferredByAssignDropdownProps) => (
   <div className="flex-row center space-children">
-    {referredByUser && (
-      <span className="flex-row center space-children">
-        Référé par&nbsp;
+    <span className="flex-row center space-children">
+      Référé par&nbsp;
+      {referredByUser ? (
         <CollectionIconLink
           relatedDoc={{ ...referredByUser, collection: USERS_COLLECTION }}
         />
-      </span>
-    )}
+      ) : (
+        'personne'
+      )}
+    </span>
     <DropdownMenu iconType="personAdd" options={options} tooltip="Référé par" />
   </div>
 );

@@ -50,7 +50,7 @@ onPageLoad(async (sink) => {
   // Get the CSS after it's been rendered by the server
   // And inject it to the client
   const css = sheets.toString();
-  sink.appendToBody(`
+  sink.appendToHead(`
     <style id="jss-server-side">
       ${css}
     </style>

@@ -15,20 +15,27 @@ const getMenuItems = ({
   userId,
   name,
 }) =>
-  proUsers.map((pro) => {
-    const { _id: proId } = pro;
-    const userName = getUserNameAndOrganisation({ user: pro });
-    const organisationName = getUserOrganisationName({ user: pro });
+  [null, ...proUsers].map((pro) => {
+    const { _id: proId } = pro || {};
+    let userName = 'Personne';
+    let organisationName;
+    if (proId) {
+      userName = getUserNameAndOrganisation({ user: pro });
+      organisationName = getUserOrganisationName({ user: pro });
+    }
     return {
       id: proId,
       show: proId !== referredByUserId,
       label: userName,
       link: false,
       onClick: () => {
-        let confirmMessage = `Changer le référent de ${name} à ${userName} ?`;
-        confirmMessage = organisationName
-          ? `${confirmMessage} Attention: cela changera également son organisation référente à ${organisationName}.`
-          : `${confirmMessage} Attention: ${name} n'aura plus d'organisation référente.`;
+        let confirmMessage = `Retirer le referral de ${name} ?`;
+        if (proId) {
+          confirmMessage = `Changer le referral de ${name} à ${userName} ?`;
+          confirmMessage = organisationName
+            ? `${confirmMessage} Attention: cela changera également son organisation referral à ${organisationName}.`
+            : `${confirmMessage} Attention: ${name} n'aura plus d'organisation referral.`;
+        }
         const confirm = window.confirm(confirmMessage);
         if (confirm) {
           return setUserReferredBy.run({ userId, proId });
@@ -44,13 +51,30 @@ export default compose(
     query: adminUsers,
     params: {
       roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
-      $body: { name: 1, organisations: { name: 1 } },
+      $body: {
+        name: 1,
+        organisations: { name: 1 },
+        $options: { sort: { name: 1 } },
+      },
     },
     queryOptions: { reactive: false },
     dataName: 'proUsers',
   }),
   withProps(({ proUsers = [], user: { _id: userId, referredByUser, name } }) => ({
-    options: getMenuItems({ proUsers, referredByUser, userId, name }),
+    options: getMenuItems({
+      proUsers: proUsers.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }),
+      referredByUser,
+      userId,
+      name,
+    }),
     referredByUser,
   })),
 );

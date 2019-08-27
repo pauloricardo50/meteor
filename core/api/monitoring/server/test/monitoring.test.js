@@ -80,14 +80,14 @@ describe('monitoring', () => {
           {
             selectedStructure: '2',
             structures: [
-              { id: '1', wantedLoan: 5 },
-              { id: '2', wantedLoan: 3 },
+              { id: '1', wantedLoan: 5000 },
+              { id: '2', wantedLoan: 3000 },
             ],
           },
-          { selectedStructure: '1', structures: [{ id: '1', wantedLoan: 5 }] },
+          { selectedStructure: '1', structures: [{ id: '1', wantedLoan: 5000 }] },
           {
             selectedStructure: '1',
-            structures: [{ id: '1', wantedLoan: 4 }],
+            structures: [{ id: '1', wantedLoan: 4000 }],
             status: LOAN_STATUS.CLOSING,
           },
         ],
@@ -99,8 +99,8 @@ describe('monitoring', () => {
       });
 
       expect(result).to.deep.equal([
-        { _id: LOAN_STATUS.CLOSING, loanValue: 4 },
-        { _id: LOAN_STATUS.LEAD, loanValue: 8 },
+        { _id: LOAN_STATUS.CLOSING, loanValue: 4000 },
+        { _id: LOAN_STATUS.LEAD, loanValue: 8000 },
       ]);
     });
 

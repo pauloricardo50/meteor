@@ -112,6 +112,7 @@ export default {
           name: 1,
           soldPromotionLots: 1,
           status: 1,
+          signingDate: 1,
         },
       },
       cb,

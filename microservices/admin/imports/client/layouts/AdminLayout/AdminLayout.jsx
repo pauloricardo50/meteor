@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import PageHead from 'core/components/PageHead';
 import getBaseRedirect from 'core/utils/redirection';
+import useMedia from 'core/hooks/useMedia';
 import FileViewer from '../../components/FileViewer';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
@@ -39,6 +40,9 @@ const getRedirect = ({ currentUser, history }) => {
 };
 
 const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
+  const isMobile = useMedia({ maxWidth: 768 });
+  const [openDrawer, setDrawer] = useState(false);
+  const toggleDrawer = () => setDrawer(!openDrawer);
   handleLoggedOut();
 
   if (window.isRedirectingLoggedOutUser) {
@@ -69,19 +73,24 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
         {...props}
         openSearch={openSearch}
         setOpenSearch={setOpenSearch}
+        isMobile={isMobile}
+        toggleDrawer={toggleDrawer}
       />
 
-      <div className="main-row">
-        <AdminSideNav {...props} />
+      <AdminSideNav
+        {...props}
+        isMobile={isMobile}
+        openDrawer={openDrawer}
+        toggleDrawer={toggleDrawer}
+      />
 
-        <div className="main" id="scroll-layout">
-          <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-            {React.cloneElement(children, { ...props })}
-          </ErrorBoundary>
-        </div>
-
-        <FileViewer />
+      <div className="main">
+        <ErrorBoundary helper="layout" pathname={history.location.pathname}>
+          {React.cloneElement(children, { ...props })}
+        </ErrorBoundary>
       </div>
+
+      <FileViewer />
     </div>
   );
 };

@@ -2,14 +2,26 @@ import React from 'react';
 
 import updateForProps from 'core/containers/updateForProps';
 import TopNav from 'core/components/TopNav';
+import IconButton from 'core/components/IconButton';
 import NotificationsManager from '../../components/NotificationsManager';
 import Search from '../../components/Search';
 import TaskAdder from '../../components/TasksTable/TaskAdder';
 
-const AdminTopNav = ({ setOpenSearch, openSearch, ...props }) => (
+const AdminTopNav = ({
+  setOpenSearch,
+  openSearch,
+  isMobile,
+  toggleDrawer,
+  ...props
+}) => (
   <div className="admin-top-nav">
-    <TopNav {...props}>
-      <TaskAdder />
+    <TopNav
+      rightChildren={
+        isMobile ? <IconButton onClick={toggleDrawer} type="menu" /> : null
+      }
+      {...props}
+    >
+      <TaskAdder label={isMobile ? '+' : undefined} />
       <NotificationsManager />
       <Search openSearch={openSearch} setOpenSearch={setOpenSearch} />
     </TopNav>
@@ -23,4 +35,5 @@ export default updateForProps([
   'currentUser.organisation._id',
   'currentUser.roles',
   'openSearch',
+  'isMobile',
 ])(AdminTopNav);

@@ -21,7 +21,7 @@ organisationUpdate.setHandler((context, { organisationId, object }) => {
 });
 
 organisationRemove.setHandler((context, { organisationId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkCurrentUserIsDev();
   return OrganisationService.remove(organisationId);
 });
 

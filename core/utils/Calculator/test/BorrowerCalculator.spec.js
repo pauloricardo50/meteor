@@ -2,8 +2,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Calculator, { Calculator as CalculatorClass } from '..';
 import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
+import Calculator, { Calculator as CalculatorClass } from '..';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
 import {
@@ -391,6 +391,7 @@ describe('BorrowerCalculator', () => {
         'gender',
         'address1',
         'city',
+        'country',
         'zipCode',
         'canton',
         'isSwiss',
@@ -557,34 +558,36 @@ describe('BorrowerCalculator', () => {
   describe('personalInfoPercent', () => {
     it('works', () => {
       expect(Calculator.personalInfoPercent({
-        borrowers: [{
-          _id: 'aBcNvYnq34rnb29nh',
-          adminValidation: {},
-          birthDate: '1992-04-14',
-          bonusExists: false,
-          childrenCount: 0,
-          citizenship: 'hello',
-          civilStatus: 'MARRIED',
-          createdAt: '2018-08-23T10:18:18.139Z',
-          expenses: [],
-          firstName: 'dfadf',
-          gender: 'M',
-          isSwiss: false,
-          isUSPerson: false,
-          lastName: 'asdfasd',
-          otherFortune: [],
-          otherIncome: [],
-          realEstate: [],
-          residencyPermit: 'b',
-          sameAddress: true,
-          updatedAt: '2018-08-23T10:20:22.234Z',
-          userId: 'fAksm7pJveZybme5F',
-          salary: 100,
-          netSalary: 80,
-          bankFortune: 1000,
-          hasOwnCompany: false,
-          ownCompanies: [],
-        }],
+        borrowers: [
+          {
+            _id: 'aBcNvYnq34rnb29nh',
+            adminValidation: {},
+            birthDate: '1992-04-14',
+            bonusExists: false,
+            childrenCount: 0,
+            citizenship: 'hello',
+            civilStatus: 'MARRIED',
+            createdAt: '2018-08-23T10:18:18.139Z',
+            expenses: [],
+            firstName: 'dfadf',
+            gender: 'M',
+            isSwiss: false,
+            isUSPerson: false,
+            lastName: 'asdfasd',
+            otherFortune: [],
+            otherIncome: [],
+            realEstate: [],
+            residencyPermit: 'b',
+            sameAddress: true,
+            updatedAt: '2018-08-23T10:20:22.234Z',
+            userId: 'fAksm7pJveZybme5F',
+            salary: 100,
+            netSalary: 80,
+            bankFortune: 1000,
+            hasOwnCompany: false,
+            ownCompanies: [],
+          },
+        ],
       })).to.equal(1);
     });
   });
@@ -611,8 +614,11 @@ describe('BorrowerCalculator', () => {
 
   describe('getYearsToRetirement', () => {
     it('returns the proper difference for a male', () => {
+      const yearsAgo25 = new Date();
+      yearsAgo25.setFullYear(yearsAgo25.getFullYear() - 25);
+      yearsAgo25.setDate(yearsAgo25.getDate() - 1);
       expect(Calculator.getRetirement({
-        borrowers: [{ age: 25, gender: GENDER.M }],
+        borrowers: [{ birthDate: yearsAgo25, gender: GENDER.M }],
       })).to.equal(40);
     });
 
@@ -631,12 +637,8 @@ describe('BorrowerCalculator', () => {
     });
 
     it('returns some revenue if the constant is set', () => {
-      const calc = new CalculatorClass({
-        fortuneReturnsRatio: 0.01,
-      });
-      expect(calc.getFortuneReturns({
-        borrowers: [{ bankFortune: 100 }],
-      })).to.equal(1);
+      const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
+      expect(calc.getFortuneReturns({ borrowers: [{ bankFortune: 100 }] })).to.equal(1);
     });
   });
 
@@ -653,6 +655,18 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getRealEstateExpenses({
         borrowers: [{ realEstate: [{ value: 1200000, loan: 780000 }] }],
       })).to.equal(4250);
+    });
+
+    it('uses theoreticalExpenses if provided', () => {
+      expect(Calculator.getRealEstateExpenses({
+        borrowers: [
+          {
+            realEstate: [
+              { value: 1200000, loan: 780000, theoreticalExpenses: 120 },
+            ],
+          },
+        ],
+      })).to.equal(10);
     });
   });
 
@@ -717,7 +731,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(-559003621);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1452524844);
     });
 
     it('changes for non required form values as well', () => {
@@ -743,7 +757,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1188420103);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(5211477033);
     });
   });
 
@@ -822,7 +836,7 @@ describe('BorrowerCalculator', () => {
         loan,
         lenderRules: [
           { filter: { and: [true] }, incomeConsiderationType: 'NET' },
-          { filter: { and: [{ '>': [{ var: 'INCOME' }, 100000] }] },  },
+          { filter: { and: [{ '>': [{ var: 'INCOME' }, 100000] }] } },
         ],
       });
       const result = calc.shouldUseNetSalary();

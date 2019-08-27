@@ -19,7 +19,7 @@
 @import '../imports/client/pages/SinglePropertyPage/SinglePropertyPage.scss';
 @import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
 @import '../imports/client/pages/PropertiesPage/PropertiesPage.scss';
-
+@import '../imports/client/pages/OtherPage/OtherPage.scss';
 
 // Components
 @import '../imports/client/components/Board/Board.scss';
@@ -34,13 +34,6 @@
 @import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
 @import '../imports/client/pages/SingleLoanPage/LoanStatusModifier/LoanStatusModifier.scss';
-
-body,
-html,
-#react-root {
-  // Prevent double-scrollbars due to admin-layout
-  overflow: hidden;
-}
 
 .login-page.login-page {
   // Due to the "overflow: hidden" above, the login page does not display well on mobile

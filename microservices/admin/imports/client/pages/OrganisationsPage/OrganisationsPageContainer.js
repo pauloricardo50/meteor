@@ -24,7 +24,7 @@ export default compose(
     query: adminOrganisations,
     params: ({ filters }) => ({
       ...filters,
-      $body: { name: 1, logo: 1, $filter: 1 },
+      $body: { name: 1, logo: 1, features: 1, $filter: 1 },
     }),
     dataName: 'organisations',
   }),

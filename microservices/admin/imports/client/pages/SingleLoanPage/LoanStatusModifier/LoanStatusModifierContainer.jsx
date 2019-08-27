@@ -2,10 +2,11 @@ import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { LOAN_STATUS } from 'core/api/constants';
+import { LOAN_STATUS, LOANS_COLLECTION } from 'core/api/constants';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import DialogForm from 'core/components/ModalManager/DialogForm';
+import { CollectionIconLink } from 'core/components/IconLink';
 import RealRevenuesDialogContent from './RealRevenuesDialogContent';
 import UnsucessfulFeedback from './UnsuccessfulDialogContent/UnsucessfulFeedback';
 import UnsuccessfulNewLoan from './UnsuccessfulDialogContent/UnsuccessfulNewLoan';
@@ -55,7 +56,16 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
           title={getTitle(status)}
           description="Entrez la raison du passage du dossier en sans suite"
           className="animated fadeIn"
-        />,
+          important
+        >
+          <div className="flex-row center">
+            <p>Vous vous apprêtez à passer le dossier&nbsp;</p>
+            <CollectionIconLink
+              relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+            />
+            <p>&nbsp;en sans suite.</p>
+          </div>
+        </DialogForm>,
 
         {
           title: getTitle(status),
@@ -80,7 +90,7 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
               cancelNewStatus={reject}
             />
           ),
-          actions: ({ closeAll }) => closeButton(reject, closeAll),
+          actions: () => [],
           important: true,
         },
       ]);

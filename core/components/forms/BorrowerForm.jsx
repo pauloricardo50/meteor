@@ -20,13 +20,18 @@ export const personalFields = [
   'address2',
   'zipCode',
   'city',
+  'country',
   'isSwiss',
   'residencyPermit',
   'citizenship',
   'isUSPerson',
   'civilStatus',
+  'marriedDate',
+  'divorcedDate',
   'childrenCount',
   'company',
+  'job',
+  'worksInSwitzerlandSince',
 ];
 export const financeFields = [
   'salary',
@@ -106,31 +111,112 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
   const { mortgageNotes, _id: borrowerId } = borrower;
   return (
     <div className="borrower-admin-form">
-      <Box title={<h3>Informations personelles</h3>}>
-        <AutoForm
-          schema={BorrowerSchemaAdmin.pick(...personalFields)}
-          model={borrower}
-          onSubmit={handleSubmit(borrowerId)}
-          className="form"
-        />
-      </Box>
-      <Box title={<h3>Informations financières</h3>}>
-        <AutoForm
-          schema={BorrowerSchemaAdmin.pick(...financeFields)}
-          model={borrower}
-          onSubmit={handleSubmit(borrowerId)}
-          className="form"
-        />
-      </Box>
+      <h3>Informations personelles</h3>
+      <AutoForm
+        schema={BorrowerSchemaAdmin.pick(...personalFields)}
+        model={borrower}
+        onSubmit={handleSubmit(borrowerId)}
+        className="form"
+        layout={[
+          {
+            fields: [
+              'firstName',
+              'lastName',
+              'gender',
+              'birthDate',
+              'civilStatus',
+              'marriedDate',
+              'divorcedDate',
+              'childrenCount',
+              'company',
+              'job',
+              'worksInSwitzerlandSince',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: [
+              'sameAddress',
+              'address1',
+              'address2',
+              'zipCode',
+              'city',
+              'country',
+            ],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: ['isSwiss', 'residencyPermit', 'citizenship', 'isUSPerson'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: '__REST',
+            className: 'grid-col',
+          },
+        ]}
+      />
+      <h3>Informations financières</h3>
+      <AutoForm
+        schema={BorrowerSchemaAdmin.pick(...financeFields)}
+        model={borrower}
+        onSubmit={handleSubmit(borrowerId)}
+        className="form"
+        layout={[
+          {
+            fields: ['salary', 'netSalary', 'otherIncome'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: ['bonusExists'],
+            layout: [{ fields: ['bonus*'], className: 'grid-col mb-32' }],
+            className: 'mb-32',
+          },
+          {
+            fields: ['expenses'],
+            Component: Box,
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: [
+              'bankFortune',
+              'thirdPartyFortune',
+              'otherFortune',
+              'realEstate',
+            ],
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: ['insurance2', 'bank3A', 'insurance3A', 'insurance3B'],
+            className: 'grid-col mb-32',
+          },
+          {
+            Component: Box,
+            fields: ['hasOwnCompany', 'ownCompanies'],
+            className: 'grid-col mb-32',
+          },
+          {
+            fields: '__REST',
+            className: 'grid-col',
+          },
+        ]}
+      />
       {otherSchema._schemaKeys.length > 0 && (
-        <Box title={<h3>Autres</h3>}>
+        <>
+          <h3>Autres</h3>
           <AutoForm
             schema={otherSchema}
             model={borrower}
             onSubmit={handleSubmit(borrowerId)}
             className="form"
           />
-        </Box>
+        </>
       )}
       <MortgageNotesForm
         mortgageNotes={mortgageNotes}

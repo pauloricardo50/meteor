@@ -4,25 +4,17 @@ import { withState, withProps, lifecycle, compose } from 'recompose';
 import { adminLoans } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api';
 import {
-  BORROWERS_COLLECTION,
   LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
   USERS_COLLECTION,
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import { adminPromotions } from 'core/api/promotions/queries';
-import { adminContacts } from 'core/api/contacts/queries';
-import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
-import { adminProperties } from 'core/api/properties/queries';
-import { adminBorrowers } from 'core/api/borrowers/queries';
 
 const PAGINATION_AMOUNT = 10;
 
 const getQuery = (collectionName) => {
   switch (collectionName) {
-  case BORROWERS_COLLECTION:
-    return { query: adminBorrowers, body: { name: 1, loans: { name: 1 } } };
   case LOANS_COLLECTION:
     return {
       query: adminLoans,
@@ -34,27 +26,12 @@ const getQuery = (collectionName) => {
         anonymous: 1,
       },
     };
-  case PROPERTIES_COLLECTION:
-    return {
-      query: adminProperties,
-      body: {
-        address1: 1,
-        name: 1,
-        loans: { name: 1 },
-        promotion: { name: 1 },
-      },
-    };
   case USERS_COLLECTION:
     return { query: adminUsers, body: { name: 1, roles: 1 } };
   case PROMOTIONS_COLLECTION:
     return {
       query: adminPromotions,
       body: { name: 1, status: 1, city: 1, canton: 1 },
-    };
-  case CONTACTS_COLLECTION:
-    return {
-      query: adminContacts,
-      body: { name: 1, organisations: { name: 1 } },
     };
   default:
     return null;

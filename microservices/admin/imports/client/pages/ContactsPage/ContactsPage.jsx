@@ -13,7 +13,7 @@ type ContactsPageProps = {
 };
 
 const ContactsPage = ({ contacts }: ContactsPageProps) => (
-  <div className="card1 card-top">
+  <div className="contacts-page">
     <Helmet>
       <title>Contacts</title>
     </Helmet>

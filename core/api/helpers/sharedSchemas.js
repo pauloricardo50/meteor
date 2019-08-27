@@ -1,6 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import countries from 'i18n-iso-countries';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
@@ -10,9 +12,13 @@ export const createdAt = {
     if (this.isInsert) {
       return new Date();
     }
+    if (this.isUpdate) {
+      return this.value;
+    }
     this.unset();
   },
   optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
 };
 
 export const updatedAt = {
@@ -44,6 +50,17 @@ export const address = {
     max: 99999,
   },
   city: { type: String, optional: true },
+  country: {
+    type: String,
+    optional: true,
+    allowedValues: getSortedCountriesCodes(),
+    defaultValue: 'CH',
+    uniforms: {
+      transform: code => countries.getName(code, 'fr'),
+      displayEmtpy: false,
+      placeholder: '',
+    },
+  },
   canton: {
     type: String,
     allowedValues: Object.keys(CANTONS),
@@ -115,7 +132,7 @@ export const mortgageNoteLinks = {
   'mortgageNoteLinks.$._id': { type: String, optional: true },
 };
 
-export const roundedInteger = (digits) => {
+export const roundedInteger = (digits, func = 'round') => {
   const rounder = 10 ** digits;
   return {
     type: SimpleSchema.Integer,
@@ -123,7 +140,7 @@ export const roundedInteger = (digits) => {
     max: 1000000000,
     autoValue() {
       if (this.isSet) {
-        return Math.round(this.value / rounder) * rounder;
+        return Math[func](this.value / rounder) * rounder;
       }
     },
     optional: true,

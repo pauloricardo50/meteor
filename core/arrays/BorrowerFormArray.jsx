@@ -1,7 +1,11 @@
 import * as constants from 'core/api/constants';
 import React from 'react';
+import countries from 'i18n-iso-countries';
 
 import CantonField from 'core/components/CantonField/CantonField';
+import T, { Money } from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
+import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -77,6 +81,17 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: addressFieldsAreNecessary,
     },
     {
+      id: 'country',
+      type: 'selectFieldInput',
+      condition: !disableAddress,
+      placeholder: disableAddress && borrowers[0].address1,
+      noIntl: disableAddress,
+      required: addressFieldsAreNecessary,
+      options: getSortedCountriesCodes(),
+      defaultValue: 'CH',
+      transform: code => countries.getName(code, 'fr'),
+    },
+    {
       id: 'zipCode',
       type: 'textInput',
       condition: !disableAddress,
@@ -131,10 +146,21 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     },
     { id: 'childrenCount', type: 'textInput', number: true },
     {
+      id: 'job',
+      type: 'textInput',
+      required: false,
+    },
+    {
       id: 'company',
       type: 'textInput',
       required: false,
       autoComplete: 'organisation',
+    },
+    {
+      id: 'worksInSwitzerlandSince',
+      type: 'textInput',
+      required: false,
+      number: true,
     },
   ];
 };
@@ -252,6 +278,31 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
         { id: 'value', type: 'textInput', money: true },
         { id: 'loan', type: 'textInput', money: true },
         { id: 'income', type: 'textInput', money: true, required: false },
+        {
+          id: 'theoreticalExpenses',
+          type: 'custom',
+          Component: ({
+            inputProps: { currentValue, label, itemValue = {} },
+          }) => (
+            <div className="flex-col" style={{ paddingLeft: 12 }}>
+              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                {label}
+              </label>
+              <b>
+                <Money
+                  id="theoreticalExpenses"
+                  value={
+                    currentValue || Calculator.getRealEstateCost(itemValue)
+                  }
+                />
+                <span>
+                  &nbsp;/
+                  <T id="general.month" />
+                </span>
+              </b>
+            </div>
+          ),
+        },
       ],
     },
     makeArrayOfObjectsInput('otherFortune'),
@@ -287,7 +338,6 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       id: 'financeInformations',
       ignore: true,
       required: false,
-      className: 'v-align-financeInformations',
     },
     { id: 'salary', type: 'textInput', money: true },
     { id: 'netSalary', type: 'textInput', money: true },
@@ -347,7 +397,13 @@ export const getBorrowerSimpleArray = ({
   return [
     { id: 'firstName', type: 'textInput', condition: !loan.anonymous },
     { id: 'lastName', type: 'textInput', condition: !loan.anonymous },
-    { id: 'birthDate', type: 'dateInput', condition: !loan.anonymous },
+    {
+      type: 'h3',
+      id: 'personalInformations',
+      ignore: true,
+      required: false,
+    },
+    { id: 'birthDate', type: 'dateInput' },
     ...(simple
       ? getSimpleBorrowerFinanceArray({ borrowers, borrowerId })
       : getBorrowerFinanceArray({ borrowers, borrowerId })),

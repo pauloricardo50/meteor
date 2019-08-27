@@ -13,6 +13,7 @@ import { COMMISSION_STATUS } from 'core/api/constants';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import T from 'core/components/Translation';
+import Box from 'core/components/Box';
 
 const schema = RevenueSchema.omit(
   'createdAt',
@@ -80,13 +81,36 @@ const schema = RevenueSchema.omit(
   },
 });
 
+const revenueFormLayout = [
+  {
+    Component: Box,
+    title: <h4>Général</h4>,
+    className: 'mb-32',
+    layout: [
+      { className: 'grid-col', fields: ['amount', 'type', 'secondaryType'] },
+      'description',
+    ],
+  },
+  {
+    Component: Box,
+    title: <h4>Payé par</h4>,
+    className: 'mb-32 grid-2',
+    fields: ['expectedAt', 'sourceOrganisationLink._id'],
+  },
+  {
+    Component: Box,
+    title: <h4>Commissions à payer</h4>,
+    fields: ['organisationLinks'],
+  },
+];
+
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ loan, revenue, setSubmitting, setOpen }) => ({
     schema,
     model: revenue,
     insertRevenue: model =>
-      revenueInsert.run({ revenue: model, loanId: loan._id }),
+      revenueInsert.run({ revenue: model, loanId: loan && loan._id }),
     modifyRevenue: ({ _id: revenueId, ...object }) => {
       setSubmitting(true);
       return revenueUpdate
@@ -117,5 +141,6 @@ export default compose(
       setSubmitting(false);
       return Promise.resolve();
     },
+    layout: revenueFormLayout,
   })),
 );
