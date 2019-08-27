@@ -350,9 +350,9 @@ export const getMatchingPathOptions = (req, options) => {
 
   endpoints.forEach((endpoint) => {
     const endpointParts = endpoint
-      .split('/')
-      .filter(x => x)
-      .map(part => (part.slice(0, 1) === ':' ? '*' : part));
+    .split('/')
+    .filter(x => x)
+    .map(part => (part.slice(0, 1) === ':' ? '*' : part));
     const match = endpointParts.length === parts.length
       && endpointParts.every((part, i) => {
         if (part === '*') {

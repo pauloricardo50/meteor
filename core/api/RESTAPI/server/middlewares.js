@@ -33,7 +33,13 @@ const bodyParserUrlEncodedMiddleware = () =>
   });
 
 // Handles replay attacks
-const replayHandlerMiddleware = options => (req, res, next) => {
+const replayHandlerMiddleware = (options = {}) => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.simpleAuth) {
+    return next();
+  }
+
   if (req.isMultipart) {
     return next();
   }
@@ -60,8 +66,13 @@ const replayHandlerMiddleware = options => (req, res, next) => {
 };
 
 // Filters out badly formatted requests, or ones missing basic headers
-const filterMiddleware = options => (req, res, next) => {
+const filterMiddleware = (options = {}) => (req, res, next) => {
   const endpointOptions = getMatchingPathOptions(req, options);
+  console.log('endpointOptions:', endpointOptions);
+
+  if (endpointOptions.simpleAuth) {
+    return next();
+  }
 
   const supportedContentType = endpointOptions.multipart
     ? 'multipart/form-data'
@@ -83,8 +94,25 @@ const filterMiddleware = options => (req, res, next) => {
   next();
 };
 
+const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.simpleAuth) {
+    const {
+      query: { userId, timestamp, token, ...params },
+    } = req;
+    next();
+  }
+};
+
 // Gets the public key from the request, fetches the user and adds it to the request
-const authMiddleware = options => (req, res, next) => {
+const authMiddleware = (options = {}) => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.simpleAuth) {
+    return next();
+  }
+
   const publicKey = getPublicKey(req);
   const signature = getSignature(req);
 
@@ -174,6 +202,7 @@ export const preMiddlewares = [
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
+  simpleAuthMiddleware,
   replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

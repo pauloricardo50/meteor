@@ -1,10 +1,12 @@
 import S3Service from '../../../../files/server/S3Service';
 
-export const zipDocuments = ({ zip, documents, formatFileName }) => {
-  const promises = documents.map(document =>
-    S3Service.getObject(document.Key).then((data) => {
-      zip.append(data.Body, { name: formatFileName(document) });
-    }));
-
-  return Promise.all(promises);
+export const zipDocuments = ({ zip, documents = {}, formatFileName }) => {
+  Object.keys(documents).forEach((category) => {
+    const files = documents[category];
+    files.forEach((file) => {
+      zip.append(S3Service.getObjectReadStream(file.Key), {
+        name: formatFileName(file),
+      });
+    });
+  });
 };

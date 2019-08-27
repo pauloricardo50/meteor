@@ -37,7 +37,10 @@ export default class RESTAPI {
 
   registerMiddlewares(middlewares) {
     middlewares.forEach((middleware) => {
-      WebApp.connectHandlers.use(this.rootPath, middleware(this.getEndpointsOptions()));
+      WebApp.connectHandlers.use(
+        this.rootPath,
+        middleware(this.getEndpointsOptions()),
+      );
     });
   }
 
@@ -78,8 +81,13 @@ export default class RESTAPI {
                 query: req.query,
                 params: req.params,
                 files: req.files,
+                res,
               }))
-            .then(result => this.handleSuccess(result, req, res))
+            .then((result) => {
+              if (result) {
+                this.handleSuccess(result, req, res);
+              }
+            })
             .catch(next);
         } catch (error) {
           next(error);

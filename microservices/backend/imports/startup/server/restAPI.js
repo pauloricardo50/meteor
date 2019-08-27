@@ -15,6 +15,7 @@ import {
   uploadFileAPI,
   deleteFileAPI,
   getPropertyAPI,
+  zipLoanAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -47,6 +48,7 @@ api.addEndpoint('/properties', 'POST', insertPropertyAPI);
 api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
 api.addEndpoint('/deleteFile', 'POST', deleteFileAPI);
 api.addEndpoint('/properties/:propertyId', 'GET', getPropertyAPI);
+api.addEndpoint('/zip-loan', 'GET', zipLoanAPI, { simpleAuth: true });
 
 Meteor.startup(() => {
   makeFileUploadDir();
