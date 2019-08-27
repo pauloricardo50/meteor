@@ -605,7 +605,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         const deltas = this.getRealEstateDeltas({
           borrowers,
         });
-        console.log('deltas:', deltas)
         return {
           // Negative deltas should be made positive so they can be added to expenses
           [EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE]: -this.sumArray(deltas.filter(delta => delta < 0)),

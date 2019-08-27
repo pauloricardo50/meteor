@@ -61,7 +61,6 @@ class ArrayInput extends Component {
         },
       };
       
-      console.log('childProps:', inputId, childProps)
       if (type === 'textInput') {
         return (
           <AutoFormTextInput

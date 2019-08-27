@@ -190,8 +190,6 @@ class AutoFormTextInput extends Component {
       admin,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
-    console.log('id:', id);
-    console.log('inputLabelProps:', inputLabelProps);
 
     let type;
     if (money) {
