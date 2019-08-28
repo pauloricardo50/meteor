@@ -8,10 +8,13 @@ import {
   DOCUMENTS_CATEGORIES,
 } from '../../../../files/fileConstants';
 
-const getFileName = ({ Key, name, index, total }) => {
+const getFileName = ({ Key, name, index, total, adminName }) => {
   const category = Key.split('/').slice(-2, -1)[0];
   const fileExtension = Key.split('.').slice(-1)[0];
   const suffix = total > 1 ? ` (${index + 1} sur ${total})` : '';
+  if (adminName) {
+    return `${adminName}.${fileExtension}`;
+  }
   return category === DOCUMENTS.OTHER
     || !Object.keys(DOCUMENTS_CATEGORIES)
       .reduce(
@@ -32,12 +35,17 @@ const zipLoanFiles = (zip, { documents, name }) => {
   zipDocuments({
     zip,
     documents,
-    formatFileName: ({ name: originalName, Key }, index, total) => {
+    formatFileName: (
+      { name: originalName, Key, adminname: adminName },
+      index,
+      total,
+    ) => {
       const filename = getFileName({
         Key,
         name: originalName,
         index,
         total,
+        adminName,
       });
 
       return `${name}/${filename}`;
@@ -50,11 +58,21 @@ const zipBorrowerFiles = (zip, borrowers) => {
     zipDocuments({
       zip,
       documents,
-      formatFileName: ({ Key, name: originalName }, index, total) => {
+      formatFileName: (
+        { Key, name: originalName, adminname: adminName },
+        index,
+        total,
+      ) => {
         const initials = `${firstName.toUpperCase()[0]}${
           lastName.toUpperCase()[0]
         }`;
-        const fileName = getFileName({ Key, name: originalName, index, total });
+        const fileName = getFileName({
+          Key,
+          name: originalName,
+          adminName,
+          index,
+          total,
+        });
         return `${name}/${initials} ${fileName}`;
       },
     });
@@ -65,8 +83,14 @@ const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
   zipDocuments({
     zip,
     documents,
-    formatFileName: ({ Key, name }, index, total) =>
-      `${address1}/${address1} ${getFileName({ Key, name, index, total })}`,
+    formatFileName: ({ Key, name, adminname: adminName }, index, total) =>
+      `${address1}/${address1} ${getFileName({
+        Key,
+        name,
+        adminName,
+        index,
+        total,
+      })}`,
   });
 
 const zipLoan = ({ res, query: { 'loan-id': loanId } }) => {
