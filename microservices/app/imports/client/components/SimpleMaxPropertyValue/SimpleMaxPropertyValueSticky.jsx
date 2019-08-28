@@ -48,7 +48,7 @@ const getFooter = ({
     : maxPropertyValue.second;
 
   return (
-    <div>
+    <div className="sticky-result">
       <label>
         Capacité d'achat -
         {' '}
@@ -92,7 +92,7 @@ const SimpleMaxPropertyValueSticky = (props: SimpleMaxPropertyValueStickyProps) 
       closeOnly
       PaperProps={{ style: { margin: 0 } }}
     >
-      <SimpleMaxPropertyValue {...props} />
+      <SimpleMaxPropertyValue {...props} noPadding />
     </DialogSimple>
   );
 };

@@ -31,10 +31,10 @@ const getContent = (props) => {
 };
 
 export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
-  const { blue } = props;
+  const { blue, noPadding } = props;
 
   return (
-    <div className={cx('max-property-value simple', { blue })}>
+    <div className={cx('max-property-value simple', { blue, noPadding })}>
       {getContent(props)}
     </div>
   );
