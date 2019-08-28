@@ -1,5 +1,6 @@
 {
   "Forms.adminName": "Nom du fichier",
+  "Forms.adminName.placeholder": "Contrat de travail",
   "Forms.country": "Pays",
   "Forms.personalInformations": "Informations personelles",
   "FinancingResultAmortization.total": "Montant à amortir",

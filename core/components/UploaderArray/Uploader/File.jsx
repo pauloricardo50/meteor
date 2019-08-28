@@ -19,7 +19,7 @@ import Downloader from '../../Downloader';
 import FileStatusSetter from './FileStatusSetter';
 import Button from '../../Button';
 
-const isAllowedToDelete = (disabled) => {
+const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();
   const userIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
   const userIsAdmin = Roles.userIsInRole(currentUser, ROLES.ADMIN);
@@ -28,7 +28,7 @@ const isAllowedToDelete = (disabled) => {
     return true;
   }
 
-  return !disabled;
+  return !disabled && status !== FILE_STATUS.VALID;
 };
 
 const getDisplayName = (name, adminName) => {
@@ -118,7 +118,7 @@ const File = ({
             />
           )}
 
-          {isAllowedToDelete(disabled) && (
+          {isAllowedToDelete(disabled, status) && (
             <IconButton
               disabled={deleting}
               type={deleting ? 'loop-spin' : 'close'}
