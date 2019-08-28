@@ -7,6 +7,7 @@ import { Random } from 'meteor/random';
 import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import hashObject from 'object-hash';
 
 import Analytics from 'core/api/analytics/server/Analytics';
 import EVENTS from 'core/api/analytics/events';
@@ -317,10 +318,7 @@ export const verifySignature = (req) => {
 
 export const trackRequest = ({ req, result }) => {
   const { user: { _id: userId } = {}, headers = {} } = req;
-  const {
-    'x-forwarded-for': clientAddress,
-    'x-real-ip': realIp,
-  } = headers;
+  const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
 
   const analytics = new Analytics({
     userId,
@@ -350,9 +348,9 @@ export const getMatchingPathOptions = (req, options) => {
 
   endpoints.forEach((endpoint) => {
     const endpointParts = endpoint
-    .split('/')
-    .filter(x => x)
-    .map(part => (part.slice(0, 1) === ':' ? '*' : part));
+      .split('/')
+      .filter(x => x)
+      .map(part => (part.slice(0, 1) === ':' ? '*' : part));
     const match = endpointParts.length === parts.length
       && endpointParts.every((part, i) => {
         if (part === '*') {
@@ -382,3 +380,10 @@ export const setAPIUser = (user) => {
 };
 
 export const getAPIUser = () => getFromFiber('APIUser');
+
+export const getSimpleAuthToken = (params) => {
+  const { 'user-id': userId, timestamp, token, ...rest } = params;
+  const sortedObject = sortObject({ userId, timestamp, ...rest });
+
+  return hashObject.MD5(sortedObject);
+};

@@ -46,3 +46,10 @@ export const updateDocumentsCache = new Method({
     collection: String,
   },
 });
+
+export const getZipLoanUrl = new Method({
+  name: 'getZipLoanUrl',
+  params: {
+    loanId: String,
+  },
+});

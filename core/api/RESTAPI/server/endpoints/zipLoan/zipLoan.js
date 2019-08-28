@@ -8,7 +8,7 @@ const zipLoanFiles = (zip, { documents }) => {
 };
 
 const zipBorrowerFiles = (zip, borrowers) => {
-  borrowers.forEach(({ documents, firstName = 'bob', lastName = 'ross' }) => {
+  borrowers.forEach(({ documents = {}, firstName = 'bob', lastName = 'ross' }) => {
     zipDocuments({
       zip,
       documents,
@@ -20,10 +20,10 @@ const zipBorrowerFiles = (zip, borrowers) => {
   });
 };
 
-const zipPropertyFiles = (zip, { documents }) =>
+const zipPropertyFiles = (zip, { documents = {} } = {}) =>
   zipDocuments({ zip, documents, formatFileName: ({ name }) => name });
 
-const zipLoan = ({ res, query: { loanId } }) => {
+const zipLoan = ({ res, query: { 'loan-id': loanId } }) => {
   const zip = new archiver.create('zip');
 
   const loan = LoanService.fetchOne({
@@ -35,15 +35,17 @@ const zipLoan = ({ res, query: { loanId } }) => {
     name: 1,
   });
 
+  const { properties = [], borrowers = [], structure = {} } = loan;
+
   res.writeHead(200, {
     'Content-Disposition': `attachment; filename=${loan.name}.zip`,
   });
   zip.pipe(res);
   zipLoanFiles(zip, loan);
-  zipBorrowerFiles(zip, loan.borrowers);
+  zipBorrowerFiles(zip, borrowers);
   zipPropertyFiles(
     zip,
-    loan.properties.find(({ _id }) => _id === loan.structure.propertyId),
+    properties.find(({ _id }) => _id === structure.propertyId),
   );
   zip.finalize();
 };

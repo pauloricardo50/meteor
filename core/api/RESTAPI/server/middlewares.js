@@ -20,8 +20,10 @@ import {
   logRequest,
   trackRequest,
   getMatchingPathOptions,
+  getSimpleAuthToken,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
+import { sortObject } from '../../helpers';
 
 const bodyParserJsonMiddleware = () =>
   bodyParser.json({ limit: BODY_SIZE_LIMIT });
@@ -68,7 +70,6 @@ const replayHandlerMiddleware = (options = {}) => (req, res, next) => {
 // Filters out badly formatted requests, or ones missing basic headers
 const filterMiddleware = (options = {}) => (req, res, next) => {
   const endpointOptions = getMatchingPathOptions(req, options);
-  console.log('endpointOptions:', endpointOptions);
 
   if (endpointOptions.simpleAuth) {
     return next();
@@ -98,9 +99,18 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
   const endpointOptions = getMatchingPathOptions(req, options);
 
   if (endpointOptions.simpleAuth) {
-    const {
-      query: { userId, timestamp, token, ...params },
-    } = req;
+    const { query } = req;
+    const { token, timestamp } = query;
+    const authToken = getSimpleAuthToken(query);
+    console.log('token:', token);
+    console.log('authToken:', authToken);
+
+    const now = moment().unix();
+
+    if (authToken !== token || timestamp < now - 30) {
+      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED());
+    }
+
     next();
   }
 };
