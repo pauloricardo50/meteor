@@ -103,7 +103,7 @@ const File = ({
                   }
                   model={{ adminName }}
                   title="Renommer le fichier"
-                  description="Entrez le nouveau nom"
+                  description="Entrez le nouveau nom. Il ne sera visible uniquement que par les admins."
                   className="animated fadeIn"
                   important
                   onSubmit={closeModal => ({ adminName: newName }) => {
