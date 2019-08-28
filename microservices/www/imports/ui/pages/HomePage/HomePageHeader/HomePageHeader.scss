@@ -1,3 +1,5 @@
+@import './iphone.scss';
+
 .home-page header {
   position: relative;
 
@@ -5,11 +7,16 @@
   overflow: hidden;
   align-items: flex-start;
   flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-around; // Fallback for IE
+  justify-content: space-evenly;
 
-  height: 600px;
+  min-height: 600px;
   padding: 40px 16px 80px 16px;
+
+  @include screen(med) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
   .text h1,
   .text h4 {
@@ -42,15 +49,6 @@
     background-color: blue;
   }
 
-  .widget1-single-input-form {
-    max-width: 300px;
-
-    @include screen(small) {
-      margin-right: 0;
-      margin-left: 0;
-    }
-  }
-
   .buttons {
     margin-bottom: 16px;
 
@@ -63,6 +61,33 @@
         margin: 0;
         margin-bottom: 8px;
       }
+    }
+  }
+
+  .iphone-x {
+    // height of iphone is 864
+    transform: scale(0.7);
+    transform-origin: top center;
+    margin-bottom: -250px;
+    margin-left: 100px;
+
+    @include screen(xwide, min) {
+      transform: scale(0.8);
+      margin-bottom: -170px;
+    }
+
+    @include screen(large) {
+      margin-left: 0;
+    }
+
+    @include screen(med) {
+      align-self: center;
+      margin-top: 50px;
+    }
+
+    @include screen(small) {
+      margin-right: 0;
+      margin-left: 0;
     }
   }
 }
