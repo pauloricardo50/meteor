@@ -8,7 +8,7 @@ import {
   DOCUMENTS_CATEGORIES,
 } from '../../../../files/fileConstants';
 
-const getFileName = ({ Key, name, index, total, adminName }) => {
+const getFileName = ({ Key, name, index, total, adminName, prefix }) => {
   const category = Key.split('/').slice(-2, -1)[0];
   const fileExtension = Key.split('.').slice(-1)[0];
   const suffix = total > 1 ? ` (${index + 1} sur ${total})` : '';
@@ -25,8 +25,8 @@ const getFileName = ({ Key, name, index, total, adminName }) => {
         [],
       )
       .includes(category)
-    ? `${name.split('.').slice(0, -1)[0]}${suffix}.${name.split('.').slice(-1)}`
-    : `${Intl.formatMessage({
+    ? `${prefix}${name.split('.').slice(0, -1)[0]}${suffix}.${fileExtension}`
+    : `${prefix}${Intl.formatMessage({
       id: `files.${category}`,
     })}${suffix}.${fileExtension}`;
 };
@@ -63,17 +63,18 @@ const zipBorrowerFiles = (zip, borrowers) => {
         index,
         total,
       ) => {
-        const initials = `${firstName.toUpperCase()[0]}${
+        const prefix = `${firstName.toUpperCase()[0]}${
           lastName.toUpperCase()[0]
-        }`;
+        } `;
         const fileName = getFileName({
           Key,
           name: originalName,
           adminName,
           index,
           total,
+          prefix,
         });
-        return `${name}/${initials} ${fileName}`;
+        return `${name}/${fileName}`;
       },
     });
   });
@@ -83,14 +84,18 @@ const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
   zipDocuments({
     zip,
     documents,
-    formatFileName: ({ Key, name, adminname: adminName }, index, total) =>
-      `${address1}/${address1} ${getFileName({
+    formatFileName: ({ Key, name, adminname: adminName }, index, total) => {
+      const prefix = `${address1} `;
+      const fileName = getFileName({
         Key,
         name,
         adminName,
         index,
         total,
-      })}`,
+        prefix,
+      });
+      return `${address1}/${fileName}`;
+    },
   });
 
 const zipLoan = ({ res, query: { 'loan-id': loanId } }) => {
