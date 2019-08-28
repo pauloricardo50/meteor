@@ -15,10 +15,10 @@ const ZipLoan = ({ downloadZip, shouldDisableButton }: ZipLoanProps) => {
   const disabled = shouldDisableButton();
 
   return (
-    <div>
+    <div className="zip-loan">
       <Button
         label="Télécharger tous les documents"
-        primary
+        secondary
         raised
         onClick={downloadZip}
         disabled={disabled}
