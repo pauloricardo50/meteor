@@ -61,6 +61,7 @@ export default class PopoverStickOnHover extends React.Component {
         ref: this.ref,
         onFocus: this.handleMouseEnter,
         onBlur: this.handleMouseLeave,
+        showPopover,
       }))[0];
 
     return (

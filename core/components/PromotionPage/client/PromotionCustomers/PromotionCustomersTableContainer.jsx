@@ -9,10 +9,10 @@ import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { LOANS_COLLECTION } from '../../../../api/constants';
 import LoanProgressHeader from '../../../LoanProgress/LoanProgressHeader';
 import LoanProgress from '../../../LoanProgress';
-import PriorityOrder from '../../../PromotionLotPage/PriorityOrder';
 import T from '../../../Translation';
 import { CollectionIconLink } from '../../../IconLink';
 import StatusLabel from '../../../StatusLabel';
+import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 import PromotionCustomersTableActions from './PromotionCustomersTableActions';
 

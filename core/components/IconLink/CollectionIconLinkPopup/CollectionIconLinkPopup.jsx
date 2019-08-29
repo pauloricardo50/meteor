@@ -66,8 +66,8 @@ export default class CollectionIconLinkPopup extends Component<
   };
 
   render() {
-    const { children, forceOpen, placement } = this.props;
-    const { data } = this.state;
+    const { children, forceOpen, placement, data: overrideData } = this.props;
+    const { data = overrideData } = this.state;
 
     return (
       <StickyPopover
