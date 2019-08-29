@@ -157,6 +157,7 @@ export const components = {
     referredByUser = {},
     referredByOrganisation = {},
     emails = [],
+    loans = [],
   }) => {
     const emailVerified = !!emails.length && emails[0].verified;
 
@@ -238,6 +239,19 @@ export const components = {
           ) : (
             '-'
           )}
+        </div>
+
+        <div className="flex center-align">
+          <b>Dossiers:</b>
+          {loans.map(loan => (
+            <CollectionIconLink
+              key={loan._id}
+              relatedDoc={{
+                ...loan,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+          ))}
         </div>
       </div>
     );
