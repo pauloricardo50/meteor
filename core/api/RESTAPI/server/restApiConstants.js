@@ -39,10 +39,11 @@ export const REST_API_ERRORS = {
     message:
       'A replay attack has been detected. Please use a correct timestamp and a different nonce.',
   },
-  SIMPLE_AUTHORIZATION_FAILED: () => ({
+  SIMPLE_AUTHORIZATION_FAILED: info => ({
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
-    message: 'Wrong token or old timestamp',
+    message: 'Authorization failed',
+    info,
   }),
 };
 

@@ -111,14 +111,30 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
 
   if (endpointOptions.simpleAuth) {
     const { query } = req;
-    const { token, timestamp } = query;
+    const { token, timestamp, 'user-id': userId } = query;
     const authToken = getSimpleAuthToken(query);
 
     const now = moment().unix();
 
     if (authToken !== token || timestamp < now - 30) {
-      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED());
+      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED('Wrong token or old timestamp'));
     }
+
+    const user = UserService.fetchOne({
+      $filters: {
+        _id: userId,
+      },
+      emails: 1,
+      firstName: 1,
+      lastName: 1,
+      phoneNumbers: 1,
+    });
+
+    if (!user) {
+      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED('No user found with this userId'));
+    }
+
+    req.user = user;
   }
 
   next();
