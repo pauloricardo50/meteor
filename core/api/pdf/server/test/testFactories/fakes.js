@@ -60,6 +60,7 @@ export const FAKE_USER = {
   },
 };
 
+
 export const fakeOwnFunds = ({ borrowerId, type, value, usageType }) => ({
   borrowerId,
   type,
@@ -151,6 +152,7 @@ export const fakeDonationWithdraw = borrowerId =>
     value: 3000,
     usageType: OWN_FUNDS_TYPES.WITHDRAW,
   });
+
 
 export const FAKE_WANTED_LOAN = 800000;
 export const FAKE_NOTARY_FEES = 14500;

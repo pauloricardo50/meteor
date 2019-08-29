@@ -1,62 +1,110 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
 import { BORROWER_DOCUMENTS } from 'core/api/files/fileConstants';
+import { EXPENSES } from 'core/api/borrowers/borrowerConstants';
 import Borrowers from '../../borrowers';
 
 export const up = async () => {
   const allBorrowers = Borrowers.find({}).fetch();
 
-  return Promise.all(allBorrowers.map(({ _id, thirdPartyFortune }) =>
-    Borrowers.rawCollection().update(
-      { _id },
-      {
-        $set: {
-          donation: thirdPartyFortune
-            ? [{ value: thirdPartyFortune, description: '' }]
-            : [],
-          thirdPartyLoan: [],
-        },
+  return Promise.all([
+    ...allBorrowers.map(({ _id, thirdPartyFortune }) =>
+      Borrowers.rawCollection().update(
+        { _id },
+        {
+          $set: {
+            donation:
+              thirdPartyFortune > 0
+                ? [{ value: thirdPartyFortune, description: '' }]
+                : [],
+          },
 
-        $unset: {
-          thirdPartyFortune: true,
-        },
+          $unset: {
+            thirdPartyFortune: true,
+          },
 
-        ...(thirdPartyFortune
-          ? {
-            $push: {
-              additionalDocuments: {
-                id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION,
+          ...(thirdPartyFortune
+            ? {
+              $push: {
+                additionalDocuments: {
+                  $each: [
+                    {
+                      id:
+                          BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_CERTIFICATE,
+                    },
+                    {
+                      id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_IDENTITY,
+                    },
+                    {
+                      id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_STATEMENT,
+                    },
+                  ],
+                },
               },
+            }
+            : {}),
+        },
+      )),
+    ...allBorrowers.map(({ _id }) =>
+      Borrowers.rawCollection().update(
+        {
+          _id,
+          expenses: {
+            $elemMatch: {
+              description: 'THIRD_PARTY_FORTUNE_REIMBURSEMENT',
             },
-          }
-          : {}),
-      },
-    )));
+          },
+        },
+        {
+          $set: {
+            'expenses.$.description': EXPENSES.THIRD_PARTY_LOAN_REIMBURSEMENT,
+          },
+        },
+      )),
+  ]);
 };
 
 export const down = async () => {
   const allBorrowers = Borrowers.find({}).fetch();
 
-  return Promise.all(allBorrowers.map(({ _id, donation = [] }) =>
-    Borrowers.rawCollection().update(
-      {
-        _id,
-      },
-      {
-        ...(donation.length > 0
-          ? {
-            $set: {
-              thirdPartyFortune: donation.reduce(
-                (sum, { value }) => sum + value,
-                0,
-              ),
-            },
-          }
-          : {}),
+  return Promise.all([
+    ...allBorrowers.map(({ _id, donation = [] }) =>
+      Borrowers.rawCollection().update(
+        {
+          _id,
+        },
+        {
+          ...(donation.length > 0
+            ? {
+              $set: {
+                thirdPartyFortune: donation.reduce(
+                  (sum, { value }) => sum + value,
+                  0,
+                ),
+              },
+            }
+            : {}),
 
-        $unset: { donation: true, thirdPartyLoan: true },
-      },
-    )));
+          $unset: { donation: true },
+        },
+      )),
+    ...allBorrowers.map(({ _id }) =>
+      Borrowers.rawCollection().update(
+        {
+          _id,
+          expenses: {
+            $elemMatch: {
+              description: EXPENSES.THIRD_PARTY_LOAN_REIMBURSEMENT,
+            },
+          },
+        },
+        {
+          $set: {
+            'expenses.$.description': 'THIRD_PARTY_FORTUNE_REIMBURSEMENT',
+          },
+        },
+      )),
+  ]);
 };
 
 Migrations.add({

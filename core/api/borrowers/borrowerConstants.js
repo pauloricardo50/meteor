@@ -39,6 +39,7 @@ export const EXPENSES = {
   LEASING: 'LEASING',
   PERSONAL_LOAN: 'PERSONAL_LOAN',
   PENSIONS: 'PENSIONS',
+  THIRD_PARTY_LOAN_REIMBURSEMENT: 'THIRD_PARTY_LOAN_REIMBURSEMENT',
   OTHER: 'OTHER',
 };
 
@@ -53,7 +54,6 @@ export const OWN_FUNDS_TYPES = {
   INSURANCE_3A: 'insurance3A',
   BANK_3A: 'bank3A',
   INSURANCE_3B: 'insurance3B',
-  THIRD_PARTY_LOAN: 'thirdPartyLoan',
   DONATION: 'donation',
 };
 

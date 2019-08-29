@@ -158,7 +158,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         OWN_FUNDS_TYPES.INSURANCE_3A,
         OWN_FUNDS_TYPES.BANK_3A,
         OWN_FUNDS_TYPES.INSURANCE_3B,
-        OWN_FUNDS_TYPES.THIRD_PARTY_LOAN,
         OWN_FUNDS_TYPES.DONATION,
       ].includes(type);
 
@@ -174,29 +173,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
     }
 
-    getThirdPartyLoan({ borrowers }) {
-      const val = this.getArrayValues({
-        borrowers,
-        key: OWN_FUNDS_TYPES.THIRD_PARTY_LOAN,
-      });
-      return val;
-    }
 
-    getThirdPartyLoanExpense({ borrowers }) {
-      const thirdPartyLoans = borrowers.reduce(
-        (arr, { thirdPartyLoans: loans = [] }) => [...arr, ...loans],
-        [],
-      );
-
-      return thirdPartyLoans.reduce(
-        (total, { value, yearlyInterest, amortizationYears }) => {
-          const amortization = value / amortizationYears;
-          const interests = value * yearlyInterest;
-          return total + amortization + interests;
-        },
-        0,
-      );
-    }
 
     getDonationFortune({ borrowers }) {
       const val = this.getArrayValues({
@@ -209,7 +186,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getExpenses({ borrowers }) {
       return (
         this.getArrayValues({ borrowers, key: 'expenses' })
-        + this.getThirdPartyLoanExpense({ borrowers })
       );
     }
 
@@ -250,7 +226,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getCashFortune({ borrowers }) {
       return [
         this.getFortune,
-        this.getThirdPartyLoan,
         this.getInsurance3A,
         this.getInsurance3B,
         this.getBank3A,
@@ -303,7 +278,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getTotalFunds({ borrowers }) {
       return (
         this.getFortune({ borrowers })
-        + this.getThirdPartyLoan({ borrowers })
         + this.getInsuranceFortune({ borrowers })
         + this.getDonationFortune({ borrowers })
       );
@@ -595,7 +569,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getAllExpenses({ borrowers }) {
       const defaultExpenses = {
         ...this.getGroupedExpenses({ borrowers }),
-        [EXPENSE_TYPES.THIRD_PARTY_LOAN_REIMBURSEMENT]: this.getThirdPartyLoanExpense({ borrowers }),
       };
 
       if (
