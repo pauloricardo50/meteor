@@ -75,14 +75,6 @@ const ADMIN_ROUTES = {
     className: 'card1 card-top',
   },
   SINGLE_USER_PAGE: { component: SingleUserPage, path: '/users/:userId' },
-  // ADMIN_PROMOTION_LOT_PAGE: {
-  //   component: AdminPromotionLotPage,
-  //   path: '/promotions/:promotionId/promotionLots/:promotionLotId',
-  // },
-  // ADMIN_PROMOTION_USERS_PAGE: {
-  //   component: AdminPromotionUsersPage,
-  //   path: '/promotions/:promotionId/users',
-  // },
   ADMIN_PROMOTION_PAGE: {
     component: AdminPromotionPage,
     path: '/promotions/:promotionId/:tabId?',

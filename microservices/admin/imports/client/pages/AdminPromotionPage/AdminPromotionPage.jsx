@@ -11,8 +11,8 @@ import { proPromotion } from 'core/api/fragments';
 import withMatchParam from 'core/containers/withMatchParam';
 import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 import { ROLES } from 'core/api/constants';
-import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import PromotionPage from 'core/components/PromotionPage/client';
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const promotionFragment = {
   ...omit(proPromotion(), ['promotionLots']),
