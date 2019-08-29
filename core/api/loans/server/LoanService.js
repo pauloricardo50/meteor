@@ -557,7 +557,7 @@ export class LoanService extends CollectionService {
       propertyValueA - propertyValueB);
 
     if (sortedValues.length === 0) {
-      throw new Meteor.Error("Nous ne sommes pas parvenus à calculer votre capacité d'achat, contactez votre conseiller pour plus d'informations");
+      throw new Meteor.Error("Nous ne sommes pas parvenus à calculer votre capacité d'achat, ajustez vos informations financières, ou contactez votre conseiller pour plus d'informations");
     }
 
     // Only show min if there is more than 1 result

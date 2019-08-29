@@ -724,11 +724,13 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      if (this.getCashFortune({ borrowers }) === 0) {
+      const cashFortune = this.getCashFortune({ borrowers });
+      if (!cashFortune || cashFortune === 0) {
         return false;
       }
 
-      if (this.getSalary({ borrowers }) === 0) {
+      const salary = this.getSalary({ borrowers });
+      if (!salary || salary === 0) {
         return false;
       }
 
