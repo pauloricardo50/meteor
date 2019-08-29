@@ -10,9 +10,6 @@ type PromotionLotDetailRecapsProps = {};
 const getPromotionLotValueRecapArray = (promotionLot) => {
   const { lots = [], properties } = promotionLot;
   const property = properties.length > 0 && properties[0];
-  if (lots.length <= 0) {
-    return [];
-  }
 
   const {
     value: propertyValue,
@@ -25,7 +22,8 @@ const getPromotionLotValueRecapArray = (promotionLot) => {
   return [
     {
       title: true,
-      label: 'Recap.promotionLot.value',
+      label: 'Recap.promotionLot.price',
+      labelStyle: { textAlign: 'left' },
     },
     {
       label: promotionLot.name,
@@ -34,46 +32,22 @@ const getPromotionLotValueRecapArray = (promotionLot) => {
       hide: propertyValue !== totalValue,
     },
     {
-      label: (
-        <span>
-          {promotionLot.name}
-          {' - '}
-          <T id="Forms.landValue" />
-        </span>
-      ),
+      label: <T id="Forms.landValue" />,
       value: <Money value={landValue} />,
       hide: !landValue,
     },
     {
-      label: (
-        <span>
-          {promotionLot.name}
-          {' - '}
-          <T id="Forms.constructionValue" />
-        </span>
-      ),
+      label: <T id="Forms.constructionValue" />,
       value: <Money value={constructionValue} />,
       hide: !constructionValue,
     },
     {
-      label: (
-        <span>
-          {promotionLot.name}
-          {' - '}
-          <T id="Forms.additionalMargin" />
-        </span>
-      ),
+      label: <T id="Forms.additionalMargin" />,
       value: <Money value={additionalMargin} />,
       hide: !additionalMargin,
     },
     ...lots.map(({ _id, name, type, value }) => ({
-      label: (
-        <span>
-          <T id={`Forms.type.${type}`} />
-          {' '}
-          {name}
-        </span>
-      ),
+      label: name,
       key: _id,
       value: <Money value={value} />,
       spacing: false,
@@ -103,6 +77,7 @@ const getPromotionLotRecapArray = (promotionLot) => {
     {
       title: true,
       label: 'Recap.promotionLot',
+      labelStyle: { textAlign: 'left' },
     },
     {
       label: 'Forms.insideArea',
