@@ -23,7 +23,7 @@ const remainingFundsTableData = ({ loan, structureId, calculator }) =>
     .filter(type =>
       ![
         OWN_FUNDS_TYPES.BANK_FORTUNE,
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        OWN_FUNDS_TYPES.DONATION,
       ].includes(type))
     .map(type => ({
       label: <T id={`PDF.ownFund.${type}`} />,

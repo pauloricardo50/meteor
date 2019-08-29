@@ -133,7 +133,8 @@ class PDFService {
         document_content: html,
         name: pdfName,
         type: 'pdf',
-        test: !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment,
+        test:
+          !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment,
         // help: true,
         prince_options: { media: 'screen', baseurl: 'https://www.e-potek.ch' },
       },
@@ -147,6 +148,9 @@ class PDFService {
       body: JSON.stringify(body),
     })
       .then((res) => {
+        if (!res.ok) {
+          throw new Meteor.Error(res.status, res.statusText);
+        }
         const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
         const stream = res.body.pipe(dest);
         return new Promise((resolve) => {

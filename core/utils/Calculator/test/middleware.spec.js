@@ -25,7 +25,7 @@ describe('Calculator middleware', () => {
 
       expect(calc.parameters({ loan: { borrowers: 1 } })).to.deep.equal({
         loan: { borrowers: 1 },
-        borrowers: 1,
+        borrowers: [1],
       });
     });
 
@@ -34,7 +34,7 @@ describe('Calculator middleware', () => {
 
       expect(calc.parameters({ loan: { borrowers: 1 }, borrowers: 2 })).to.deep.equal({
         loan: { borrowers: 1 },
-        borrowers: 2,
+        borrowers: [2],
       });
     });
 

@@ -44,11 +44,13 @@ class ArrayInput extends Component {
         transform,
         intlId,
         Component: CustomComponent,
+        inputLabelProps: {shrink} = {},
       } = input;
       const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,
         inputProps: {
+          notched: shrink,
           ...input,
           id: `${id}.${i}.${inputId}`,
           currentValue: finalCurrentValue,
@@ -75,8 +77,22 @@ class ArrayInput extends Component {
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
           (opt.id === undefined
-            ? { id: opt, label: transform ? transform(opt) : <T id={`Forms.${intlId || id}.${opt}`} /> }
-            : { ...opt, label: transform ? transform(opt) : <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
+            ? {
+              id: opt,
+              label: transform ? (
+                transform(opt)
+              ) : (
+                <T id={`Forms.${intlId || id}.${opt}`} />
+              ),
+            }
+            : {
+              ...opt,
+              label: transform ? (
+                transform(opt)
+              ) : (
+                <T id={`Forms.${intlId || id}.${opt.id}`} />
+              ),
+            }));
         return (
           <AutoFormSelectFieldInput
             {...childProps}

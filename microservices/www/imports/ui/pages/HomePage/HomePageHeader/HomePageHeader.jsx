@@ -11,6 +11,7 @@ import { WWW_ROUTES } from 'imports/startup/shared/Routes';
 import useMedia from 'core/hooks/useMedia';
 import { ctaClicked } from 'core/api/analytics/helpers';
 import CTAS from 'core/api/analytics/ctas';
+import HomePageHeaderDevice from './HomePageHeaderDevice';
 
 const HomePageHeader = ({ history }) => {
   const isLarge = useMedia({ minWidth: 768 });
@@ -44,6 +45,7 @@ const HomePageHeader = ({ history }) => {
           </Button>
         </div>
       </div>
+      <HomePageHeaderDevice></HomePageHeaderDevice>
       <Waves noSlope={false} />
       {isLarge && <div />}
     </header>

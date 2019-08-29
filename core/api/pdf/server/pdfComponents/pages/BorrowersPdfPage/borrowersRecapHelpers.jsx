@@ -140,7 +140,7 @@ export const getBonus = (borrowers, calculator) =>
       const year = key.slice(7);
       return (
         <span key={borrower._id} style={{ whiteSpace: 'nowrap' }}>
-          '{year}: {toMoney(value)}
+          {`${year}: ${toMoney(value)}`}
         </span>
       );
     });
@@ -158,7 +158,6 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'company',
     'civilStatus',
     'bankFortune',
-    'thirdPartyFortune',
   ]),
   realEstateIncome: borrowers.map(borrower =>
     calculator.getRealEstateIncomeTotal({ borrowers: borrower })),
@@ -201,6 +200,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     OWN_FUNDS_TYPES.INSURANCE_3A,
     OWN_FUNDS_TYPES.BANK_3A,
     OWN_FUNDS_TYPES.INSURANCE_3B,
+    OWN_FUNDS_TYPES.DONATION,
   ]),
 });
 
