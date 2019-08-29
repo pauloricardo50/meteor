@@ -731,7 +731,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(3025041587);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1452524844);
     });
 
     it('changes for non required form values as well', () => {
@@ -757,7 +757,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(3643679285);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(5211477033);
     });
   });
 
