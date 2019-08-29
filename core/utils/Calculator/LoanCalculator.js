@@ -129,7 +129,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getAmorti;
 
     getAmortization({ loan, structureId, offerOverride }) {
       const offer = this.selectOffer({ loan, structureId });

@@ -3,6 +3,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { getZipLoanUrl } from 'core/api/methods/index';
+import Calculator from 'core/utils/Calculator';
 import Button from '../Button';
 
 type ZipLoanProps = {
@@ -22,7 +23,11 @@ const ZipLoan = ({ downloadZip, shouldDisableButton }: ZipLoanProps) => {
         raised
         onClick={downloadZip}
         disabled={disabled}
-        tooltip={disabled ? 'Il manque des informations' : undefined}
+        tooltip={
+          disabled
+            ? "Il manque des informations: il faut un nom et un prénom sur chaque emprunteur, ainsi qu'une addresse sur le bien immobilier."
+            : undefined
+        }
       />
     </div>
   );
@@ -30,12 +35,17 @@ const ZipLoan = ({ downloadZip, shouldDisableButton }: ZipLoanProps) => {
 
 export default withProps(({ loan }) => ({
   shouldDisableButton: () => {
-    const { borrowers = [], structure } = loan;
+    const { borrowers = [] } = loan;
     if (!borrowers.every(({ firstName, lastName }) => firstName && lastName)) {
       return true;
     }
 
-    if (structure.property && !structure.property.address1) {
+    if (
+      !Calculator.selectPropertyKey({
+        loan,
+        key: 'address1',
+      })
+    ) {
       return true;
     }
     return false;

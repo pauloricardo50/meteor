@@ -1,8 +1,8 @@
 import S3Service from '../../../../files/server/S3Service';
 
 export const zipDocuments = ({ zip, documents = {}, formatFileName }) => {
-  Object.keys(documents).forEach((category) => {
-    const files = documents[category];
+  Object.keys(documents).forEach((document) => {
+    const files = documents[document];
     const total = files.length;
     const adminNameCount = files.reduce(
       (sum, { adminname }) => (adminname ? sum + 1 : sum),

@@ -112,9 +112,9 @@ class FileService {
     return `${Meteor.settings.public.subdomains.backend}/api/zip-loan/?loan-id=${loanId}&user-id=${userId}&timestamp=${timestamp}&token=${token}`;
   };
 
-  setAdminName = ({ Key, adminName }) =>
+  setAdminName = ({ Key, adminName = '' }) =>
     S3Service.updateMetadata(Key, {
-      adminname: adminName || '',
+      adminname: adminName,
     });
 }
 

@@ -48,3 +48,16 @@ export const REST_API_ERRORS = {
 
 export const OS_TMP_DIR = os.tmpdir();
 export const FILE_UPLOAD_DIR = `${OS_TMP_DIR}/files`;
+
+export const SIMPLE_AUTH_SALT_GRAINS = [
+  'PGlOBHIWP120jyyS',
+  'OUc0YcfgwQVK9tHB',
+  'IwXJTpQdF7XgJE26',
+  'Ppplcc7UbinUqqHs',
+  '8C4CPmCEICzvBYNQ',
+  'Yc3Z6qV68HF8u7m2',
+  'o2HyyHPZIWpcrCyQ',
+  'bte3rTVQdNcp3Ei7',
+  '35nZ5kboOY22SWOo',
+  'wmnegUKAYlxAMkDT',
+];

@@ -84,9 +84,7 @@ export default class RESTAPI {
                 res,
               }))
             .then((result) => {
-              if (result) {
-                this.handleSuccess(result, req, res);
-              }
+              this.handleSuccess(result, req, res);
             })
             .catch(next);
         } catch (error) {
@@ -106,21 +104,23 @@ export default class RESTAPI {
     });
   }
 
-  handleSuccess(result = '', req, res) {
+  handleSuccess(result, req, res) {
     const { status } = result;
-    const stringified = JSON.stringify(result);
+    const stringified = JSON.stringify(result || '');
 
     // LOGS
     logRequest({ req, result: stringified });
 
     trackRequest({ req, result: stringified });
 
-    res.writeHead(status || HTTP_STATUS_CODES.OK, {
-      'Content-Type': 'application/json',
-    });
-    res.write(stringified);
+    if (result !== null) {
+      res.writeHead(status || HTTP_STATUS_CODES.OK, {
+        'Content-Type': 'application/json',
+      });
+      res.write(stringified);
 
-    res.end();
+      res.end();
+    }
   }
 
   addEndpoint(path, method, handler, options = {}) {
