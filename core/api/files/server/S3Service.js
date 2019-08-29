@@ -152,6 +152,9 @@ class S3Service {
       Key,
       Expires: 180,
     });
+
+  getObjectReadStream = Key =>
+    this.s3.getObject(this.makeParams({ Key })).createReadStream();
 }
 
 export default new S3Service();

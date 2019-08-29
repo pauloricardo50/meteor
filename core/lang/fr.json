@@ -1,4 +1,6 @@
 {
+  "Forms.adminName": "Nom du fichier",
+  "Forms.adminName.placeholder": "Contrat de travail",
   "Forms.donation.value.placeholder": "5000",
   "PDF.ownFund.donation": "Donation",
   "PDF.borrowersInfos.ownFund.donation": "Donation",

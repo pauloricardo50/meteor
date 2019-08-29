@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
 import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
-import { HTTP_STATUS_CODES } from './restApiConstants';
+import { HTTP_STATUS_CODES, RESPONSE_ALREADY_SENT } from './restApiConstants';
 import {
   setClientMicroservice,
   setClientUrl,
@@ -37,7 +37,10 @@ export default class RESTAPI {
 
   registerMiddlewares(middlewares) {
     middlewares.forEach((middleware) => {
-      WebApp.connectHandlers.use(this.rootPath, middleware(this.getEndpointsOptions()));
+      WebApp.connectHandlers.use(
+        this.rootPath,
+        middleware(this.getEndpointsOptions()),
+      );
     });
   }
 
@@ -78,8 +81,11 @@ export default class RESTAPI {
                 query: req.query,
                 params: req.params,
                 files: req.files,
+                res,
               }))
-            .then(result => this.handleSuccess(result, req, res))
+            .then((result) => {
+              this.handleSuccess(result, req, res);
+            })
             .catch(next);
         } catch (error) {
           next(error);
@@ -98,21 +104,23 @@ export default class RESTAPI {
     });
   }
 
-  handleSuccess(result = '', req, res) {
-    const { status } = result;
-    const stringified = JSON.stringify(result);
+  handleSuccess(result, req, res) {
+    const stringified = JSON.stringify(result || '');
 
     // LOGS
     logRequest({ req, result: stringified });
 
     trackRequest({ req, result: stringified });
 
-    res.writeHead(status || HTTP_STATUS_CODES.OK, {
-      'Content-Type': 'application/json',
-    });
-    res.write(stringified);
+    if (result !== RESPONSE_ALREADY_SENT) {
+      const { status } = result;
+      res.writeHead(status || HTTP_STATUS_CODES.OK, {
+        'Content-Type': 'application/json',
+      });
+      res.write(stringified);
 
-    res.end();
+      res.end();
+    }
   }
 
   addEndpoint(path, method, handler, options = {}) {

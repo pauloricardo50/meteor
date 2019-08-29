@@ -12,6 +12,7 @@
     "@material-ui/icons": "^4.2.1",
     "analytics-node": "^3.3.0",
     "antd": "^3.20.7",
+    "archiver": "^3.1.1",
     "aws-sdk": "^2.502.0",
     "babel-polyfill": "^6.26.0",
     "base64topdf": "^1.1.8",

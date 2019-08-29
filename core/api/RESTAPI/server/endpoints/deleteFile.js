@@ -6,11 +6,7 @@ import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
 import { withMeteorUserId } from '../helpers';
-import {
-  checkQuery,
-  impersonateSchema,
-  getImpersonateUserId,
-} from './helpers';
+import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const bodySchema = new SimpleSchema({

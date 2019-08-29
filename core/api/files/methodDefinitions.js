@@ -1,3 +1,4 @@
+import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const deleteFile = new Method({
@@ -44,5 +45,20 @@ export const updateDocumentsCache = new Method({
   params: {
     docId: String,
     collection: String,
+  },
+});
+
+export const getZipLoanUrl = new Method({
+  name: 'getZipLoanUrl',
+  params: {
+    loanId: String,
+  },
+});
+
+export const setFileAdminName = new Method({
+  name: 'setFileAdminName',
+  params: {
+    Key: String,
+    adminName: Match.Maybe(String),
   },
 });

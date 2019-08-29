@@ -6,6 +6,8 @@ import {
   downloadFile,
   getSignedUrl,
   updateDocumentsCache,
+  getZipLoanUrl,
+  setFileAdminName,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -53,4 +55,15 @@ updateDocumentsCache.setHandler((context, params) => {
   context.unblock();
   SecurityService.checkLoggedIn();
   return FileService.updateDocumentsCache(params);
+});
+
+getZipLoanUrl.setHandler(({ userId }, { loanId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return FileService.getZipLoanUrl({ userId, loanId });
+});
+
+setFileAdminName.setHandler((context, params) => {
+  context.unblock();
+  SecurityService.checkCurrentUserIsAdmin();
+  return FileService.setAdminName(params);
 });

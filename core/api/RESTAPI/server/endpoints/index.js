@@ -13,3 +13,4 @@ export { default as insertPropertyAPI } from './insertProperty';
 export { default as uploadFileAPI } from './uploadFile';
 export { default as deleteFileAPI } from './deleteFile';
 export { default as getPropertyAPI } from './getProperty';
+export {default as zipLoanAPI} from './zipLoan';
