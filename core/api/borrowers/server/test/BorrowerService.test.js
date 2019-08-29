@@ -146,6 +146,7 @@ describe('BorrowerService ', () => {
           otherIncome: [
             { description: borrowerConstants.OTHER_INCOME.WELFARE, value: 123 },
           ],
+          donation: [{ value: 123, description: 'donation' }],
         },
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);
@@ -159,6 +160,9 @@ describe('BorrowerService ', () => {
         { id: DOCUMENTS.EXPENSES_JUSTIFICATION },
         { id: DOCUMENTS.OTHER_FORTUNE_JUSTIFICATION },
         { id: DOCUMENTS.OTHER_INCOME_JUSTIFICATION },
+        { id: DOCUMENTS.DONATION_JUSTIFICATION_CERTIFICATE },
+        { id: DOCUMENTS.DONATION_JUSTIFICATION_IDENTITY },
+        { id: DOCUMENTS.DONATION_JUSTIFICATION_STATEMENT },
       ];
 
       checkDocuments({

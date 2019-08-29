@@ -258,12 +258,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       className: 'v-align-fortune',
     },
     { id: 'bankFortune', type: 'textInput', money: true },
-    {
-      id: 'thirdPartyFortune',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
+    makeArrayOfObjectsInput('donation'),
     {
       id: 'realEstate',
       type: 'arrayInput',
