@@ -61,3 +61,5 @@ export const SIMPLE_AUTH_SALT_GRAINS = [
   '35nZ5kboOY22SWOo',
   'wmnegUKAYlxAMkDT',
 ];
+
+export const RESPONSE_ALREADY_SENT = 'RESPONSE_ALREADY_SENT';

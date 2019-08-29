@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
 import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
-import { HTTP_STATUS_CODES } from './restApiConstants';
+import { HTTP_STATUS_CODES, RESPONSE_ALREADY_SENT } from './restApiConstants';
 import {
   setClientMicroservice,
   setClientUrl,
@@ -105,7 +105,6 @@ export default class RESTAPI {
   }
 
   handleSuccess(result, req, res) {
-    const { status } = result;
     const stringified = JSON.stringify(result || '');
 
     // LOGS
@@ -113,7 +112,8 @@ export default class RESTAPI {
 
     trackRequest({ req, result: stringified });
 
-    if (result !== null) {
+    if (result !== RESPONSE_ALREADY_SENT) {
+      const { status } = result;
       res.writeHead(status || HTTP_STATUS_CODES.OK, {
         'Content-Type': 'application/json',
       });

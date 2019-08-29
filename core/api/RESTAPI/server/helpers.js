@@ -393,3 +393,4 @@ export const getSimpleAuthToken = (params) => {
 
   return hashObject.MD5(sortedObject);
 };
+

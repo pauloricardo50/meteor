@@ -8,6 +8,7 @@ import {
   DOCUMENTS_CATEGORIES,
 } from '../../../../files/fileConstants';
 import { withMeteorUserId } from '../../helpers';
+import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
 
 export const getFileName = ({
   Key,
@@ -118,7 +119,6 @@ export const generateLoanZip = (zip, loan, res) => {
   zip.pipe(res);
   zipLoanFiles(zip, loan);
   borrowers.forEach(borrower => zipBorrowerFiles(zip, borrower));
-  // zipBorrowerFiles(zip, borrowers);
   zipPropertyFiles(
     zip,
     properties.find(({ _id }) => _id === structure.propertyId),
@@ -139,8 +139,9 @@ const zipLoan = ({ res, query: { 'loan-id': loanId, 'user-id': userId } }) => {
       name: 1,
     });
 
-    getLoanZip(zip, loan, res);
+    generateLoanZip(zip, loan, res);
   });
+  return Promise.resolve(RESPONSE_ALREADY_SENT);
 };
 
 export default zipLoan;
