@@ -1,13 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Roles } from 'meteor/alanning:roles';
 import Tooltip from '@material-ui/core/Tooltip';
+
+import { cleanDatabase, migrateToLatest } from 'core/api/methods/index';
 import Button from '../Button';
 import Icon from '../Icon';
+import ConfirmMethod from '../ConfirmMethod';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
-import ConfirmMethod from '../ConfirmMethod';
 
 class DevPage extends Component {
   constructor(props) {
@@ -38,7 +41,6 @@ class DevPage extends Component {
       addEmptyLoan,
       addLoanWithSomeData,
       purgeAndGenerateDatabase,
-      migrateToLatest,
       addCompleteLoan,
       addAnonymousLoan,
     } = this.props;
@@ -287,6 +289,12 @@ class DevPage extends Component {
             label="Migrate to latest"
             buttonProps={{ error: true, raised: true }}
           />
+          <ConfirmMethod
+            method={cb => cleanDatabase.run().then(cb)}
+            keyword="CLEAN_DATABASE"
+            label="Clean database"
+            buttonProps={{ error: true, raised: true }}
+          />
           <hr className="mbt20" />
           <ErrorThrower />
           <hr className="mbt20" />
@@ -304,9 +312,15 @@ class DevPage extends Component {
     return (
       <section id="dev-page">
         <ConfirmMethod
-          method={cb => migrateToLatest().then(cb)}
+          method={cb => migrateToLatest.run().then(cb)}
           keyword="MIGRATE"
           label="Migrate to latest"
+          buttonProps={{ error: true, raised: true }}
+        />
+        <ConfirmMethod
+          method={cb => cleanDatabase.run().then(cb)}
+          keyword="CLEAN_DATABASE"
+          label="Clean database"
           buttonProps={{ error: true, raised: true }}
         />
         <ErrorThrower />

@@ -47,7 +47,6 @@ export const structureSchema = {
   },
   wantedLoan: {
     ...roundedInteger(3, 'floor'),
-    defaultValue: 0,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
   ...loanTranchesSchema,
