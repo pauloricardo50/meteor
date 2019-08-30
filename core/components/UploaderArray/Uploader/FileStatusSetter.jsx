@@ -1,12 +1,20 @@
 // @flow
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
+import React, { useContext } from 'react';
+import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
 import { FILE_STATUS, ROLES } from 'core/api/constants';
-import { setFileStatus, updateDocumentsCache } from 'core/api/methods';
+import {
+  setFileStatus as setFileStatusMethod,
+  updateDocumentsCache,
+} from 'core/api/methods';
+import DialogForm from 'core/components/ModalManager/DialogForm';
+import { setFileError } from 'core/api/methods/index';
 import T from '../../Translation';
 import DropdownMenu from '../../DropdownMenu';
+import { ModalManagerContext } from '../../ModalManager';
 
 type FileStatusSetterProps = {};
 
@@ -15,7 +23,11 @@ const FileStatusSetter = ({
   fileKey,
   docId,
   collection,
+  setFileStatus,
+  error: currentError,
 }: FileStatusSetterProps) => {
+  const { openModal } = useContext(ModalManagerContext);
+
   const user = Meteor.user();
 
   if (user.roles.includes(ROLES.USER) || user.roles.includes(ROLES.PRO)) {
@@ -37,13 +49,38 @@ const FileStatusSetter = ({
       options={Object.values(FILE_STATUS).map(stat => ({
         id: stat,
         label: <T id={`File.status.${stat}`} />,
-        onClick: () =>
-          setFileStatus
-            .run({ fileKey, newStatus: stat })
-            .then(() => updateDocumentsCache.run({ docId, collection })),
+        onClick: () => {
+          if (stat !== FILE_STATUS.ERROR) {
+            return setFileStatus(stat);
+          }
+
+          openModal(<DialogForm
+            schema={
+              new SimpleSchema({
+                error: { type: String, optional: true },
+              })
+            }
+            model={{ error: currentError }}
+            title="Fichier non valide"
+            description="Entrez la raison"
+            className="animated fadeIn"
+            important
+            onSubmit={closeModal => ({ error }) => {
+              setFileError
+                .run({ fileKey, error })
+                .then(() => setFileStatus(stat))
+                .then(() => closeModal());
+            }}
+          />);
+        },
       }))}
     />
   );
 };
 
-export default FileStatusSetter;
+export default withProps(({ fileKey, docId, collection }) => ({
+  setFileStatus: newStatus =>
+    setFileStatusMethod
+      .run({ fileKey, newStatus })
+      .then(() => updateDocumentsCache.run({ docId, collection })),
+}))(FileStatusSetter);

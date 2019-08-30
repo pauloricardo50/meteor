@@ -8,7 +8,11 @@ import { withState, compose } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import DialogForm from 'core/components/ModalManager/DialogForm';
-import { setFileAdminName, updateDocumentsCache } from 'core/api/methods/index';
+import {
+  setFileAdminName,
+  updateDocumentsCache,
+  setFileError,
+} from 'core/api/methods/index';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';
@@ -63,7 +67,7 @@ const File = ({
   displayFile,
   docId,
   collection,
-  id
+  id,
 }) => {
   const { openModal } = useContext(ModalManagerContext);
 
@@ -97,6 +101,7 @@ const File = ({
             fileKey={Key}
             docId={docId}
             collection={collection}
+            error={message}
           />
           {Meteor.microservice === 'admin' && (
             <IconButton
@@ -178,7 +183,38 @@ const File = ({
         </div>
       </div>
       {message && status === FILE_STATUS.ERROR && (
-        <p className="error">{message}</p>
+        <p className="error">
+          {message}
+          {Meteor.microservice === 'admin' && (
+            <IconButton
+              disabled={deleting}
+              type={deleting ? 'loop-spin' : 'edit'}
+              tooltip="Modifier le message d'erreur"
+              onClick={(event) => {
+                event.preventDefault();
+                openModal(<DialogForm
+                  schema={
+                    new SimpleSchema({
+                      error: { type: String, optional: true },
+                    })
+                  }
+                  model={{ error: message }}
+                  title="Modifier l'erreur"
+                  description="Entrez le nouveau message d'erreur."
+                  className="animated fadeIn"
+                  important
+                  onSubmit={closeModal => ({ error }) => {
+                    setFileError
+                      .run({ fileKey: Key, error })
+                      .then(() =>
+                        updateDocumentsCache.run({ docId, collection }))
+                      .then(() => closeModal());
+                  }}
+                />);
+              }}
+            />
+          )}
+        </p>
       )}
     </div>
   );

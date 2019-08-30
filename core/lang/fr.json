@@ -1,4 +1,6 @@
 {
+  "Forms.error": "Erreur",
+  "Forms.error.placeholder": "Il manque le justificatif du bonus 2017",
   "Forms.adminName": "Nom du fichier",
   "Forms.adminName.placeholder": "Contrat de travail",
   "Forms.donation.value.placeholder": "5000",
