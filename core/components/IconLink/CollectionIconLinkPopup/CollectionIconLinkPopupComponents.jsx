@@ -119,7 +119,7 @@ export const components = {
         {anonymous && <div>Anonyme</div>}
         {user && (
           <div>
-            <b>Utilisateur:</b>
+            <b>Compte:</b>
             {' '}
             {user.name}
           </div>

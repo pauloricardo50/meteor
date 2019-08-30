@@ -32,7 +32,7 @@ const PromotionProUserAdder = ({
       <CollectionSearch
         query={userSearch}
         queryParams={{ roles: [ROLES.PRO] }}
-        title="Rechercher un utilisateur PRO"
+        title="Rechercher un compte Pro"
         renderItem={user => (
           <div className="user-search-item">
             <CollectionIconLink

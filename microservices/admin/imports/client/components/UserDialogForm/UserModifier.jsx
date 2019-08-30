@@ -31,7 +31,7 @@ const UserModifier = ({
     }}
     autoFieldProps={{ labels }}
     layout={userFormLayout[0].layout}
-    title={"Modifier l'utilisateur"}
+    title={<T id="UserModifier.dialogTitle" />}
   />
 );
 

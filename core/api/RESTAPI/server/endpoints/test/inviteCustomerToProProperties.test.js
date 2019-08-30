@@ -394,7 +394,7 @@ describe('REST: inviteCustomerToProProperties', function () {
         ],
         expectedResponse: {
           status: HTTP_STATUS_CODES.CONFLICT,
-          message: 'Cet utilisateur est déjà invité à ce bien immobilier [409]',
+          message: 'Ce client est déjà invité à ce bien immobilier [409]',
         },
       }));
   });

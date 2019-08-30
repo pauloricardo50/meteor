@@ -19,8 +19,8 @@ const ActionsTab = ({ loan }) => (
       buttonProps={{ error: true, raised: true, className: 'delete-button' }}
     />
     <UserAssigner
-      title="Choisir utilisateur"
-      buttonLabel="Choisir utilisateur"
+      title="Choisir compte utilisateur"
+      buttonLabel="Choisir compte utilisateur"
       onUserSelect={userId =>
         assignLoanToUser.run({ userId, loanId: loan._id })
       }

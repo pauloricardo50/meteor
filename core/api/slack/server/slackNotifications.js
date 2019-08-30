@@ -124,7 +124,7 @@ export const newLoan = ({ loanId, loanName, currentUser }) => {
 export const newUser = ({ loans = [], currentUser }) => {
   SlackService.notifyAssignee({
     currentUser,
-    title: `Nouvel utilisateur! ${
+    title: `Nouveau compte utilisateur! ${
       loans.length ? `(dossier ${loans[0].name})` : ''
     }`,
     link: `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`,

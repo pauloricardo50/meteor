@@ -10,7 +10,7 @@ export default compose(
     setOpenDialog,
   }) => ({
     handleRemove: () => {
-      const confirmed = window.confirm('Êtes vous sûr de vouloir enlever cet utilisateur de la promotion?');
+      const confirmed = window.confirm('Êtes vous sûr de vouloir enlever ce compte Pro de la promotion?');
 
       if (confirmed) {
         removeLoanFromPromotion.run({ loanId, promotionId });

@@ -100,7 +100,7 @@ export const schema = new SimpleSchema({
     uniforms: {
       transform: ({ name }) => name,
       labelProps: { shrink: true },
-      label: 'Assigner utilisateur',
+      label: 'Assigner conseiller',
       placeholder: null,
     },
   },

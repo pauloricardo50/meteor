@@ -221,7 +221,7 @@ class PropertySecurity {
       userId,
       checkingFunction: isAllowedToInviteProUsersToProProperty,
       errorMessage:
-        "Vous ne pouvez pas inviter d'utilisateurs sur ce bien immobilier",
+        'Vous ne pouvez pas inviter de comptes Pro sur ce bien immobilier',
     });
   }
 

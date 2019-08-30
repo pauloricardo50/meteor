@@ -21,7 +21,7 @@ describe('Loans', () => {
   it('creates and routes to a loan from the dashboard', () => {
     cy.contains('Nouvelle hypothèque').click();
     cy.url().should('include', '/loans/');
-    cy.contains("Pas d'utilisateur");
+    cy.contains('Pas de compte');
   });
 
   it('changes status', () => {

@@ -14,7 +14,7 @@ type PromotionUsersTableProps = {
 };
 
 const HiddenUsers = withHider(hide => ({
-  label: hide ? 'Afficher les utilisateurs' : 'Masquer les utilisateurs',
+  label: hide ? 'Afficher les comptes Pro' : 'Masquer les comptes Pro',
   primary: true,
   style: { display: 'block', margin: '0 auto' },
 }))(Table);

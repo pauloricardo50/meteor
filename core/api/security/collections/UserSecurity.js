@@ -34,7 +34,7 @@ class UserSecurity {
     });
 
     if (!organisations.some(({ _id }) => _id === organisationId)) {
-      Security.handleUnauthorized('Pas autorisé à inviter des utilisateurs à cette organisation');
+      Security.handleUnauthorized('Pas autorisé à inviter des comptes Pro à cette organisation');
     }
   };
 }

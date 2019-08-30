@@ -65,7 +65,7 @@ const renderUserSearcher = ({
           </ListItem>
         ))}
     </List>
-    {searchResults.length === 0 && <p>Aucun utilisateur trouvé</p>}
+    {searchResults.length === 0 && <p>Aucun compte trouvé</p>}
   </>
 );
 
@@ -115,8 +115,8 @@ const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
     <DialogSimple
       primary
       raised
-      label="Ajouter un utilisateur existant"
-      title="Ajouter utilisateur"
+      label="Ajouter un compte existant"
+      title="Ajouter compte"
       style={{ width: '100%' }}
       renderProps
       actions={handleClose => [

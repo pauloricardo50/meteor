@@ -43,7 +43,7 @@ const getUserName = ({ anonymous, user, category }) => {
   return (
     <small className="secondary">
       {' - '}
-      Pas d'utilisateur
+      Pas de compte
     </small>
   );
 };

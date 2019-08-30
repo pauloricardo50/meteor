@@ -209,7 +209,7 @@ export class UserServiceClass extends CollectionService {
       .length !== newOrganisations.length;
 
     if (duplicateOrganisations) {
-      throw new Meteor.Error('Vous ne pouvez pas lier un utilisateur deux fois à la même organisation.');
+      throw new Meteor.Error('Vous ne pouvez pas lier un compte deux fois à la même organisation.');
     }
     const { organisations: oldOrganisations = [] } = this.get(userId);
 
@@ -488,7 +488,7 @@ export class UserServiceClass extends CollectionService {
     let assigneeId;
 
     if (this.doesUserExist({ email })) {
-      throw new Meteor.Error('Cet utilisateur existe déjà');
+      throw new Meteor.Error('Ce compte existe déjà');
     }
 
     if (proId) {

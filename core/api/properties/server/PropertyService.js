@@ -81,7 +81,7 @@ export class PropertyService extends CollectionService {
     if (this.hasOneOfProperties({ userId, propertyIds })) {
       throw new Meteor.Error(
         HTTP_STATUS_CODES.CONFLICT,
-        'Cet utilisateur est déjà invité à ce bien immobilier',
+        'Ce client est déjà invité à ce bien immobilier',
       );
     }
 

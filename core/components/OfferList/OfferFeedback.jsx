@@ -46,7 +46,7 @@ const getButtonOtherProps = ({ offer }) => {
   if (!user) {
     otherProps = {
       ...otherProps,
-      tooltip: 'Assignez ce dossier à un utilisateur pour entrer un feedback',
+      tooltip: 'Assignez ce dossier à un compte utilisateur pour entrer un feedback',
     };
   } else if (!assignedEmployee) {
     otherProps = {

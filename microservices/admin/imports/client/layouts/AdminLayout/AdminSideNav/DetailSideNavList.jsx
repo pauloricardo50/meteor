@@ -33,7 +33,7 @@ const getListItemDetails = (
 
     return {
       primary: `${name} - ${
-        anonymous ? 'Anonyme' : user ? user.name : "Pas d'utilisateur"
+        anonymous ? 'Anonyme' : user ? user.name : 'Pas de compte'
       }`,
       secondary: (
         <span>
