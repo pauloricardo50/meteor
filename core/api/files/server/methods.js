@@ -8,9 +8,11 @@ import {
   updateDocumentsCache,
   getZipLoanUrl,
   setFileAdminName,
+  moveFile,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
+import { FILE_STATUS } from '../fileConstants';
 
 deleteFile.setHandler((context, { collection, docId, fileKey }) => {
   context.unblock();
@@ -66,4 +68,42 @@ setFileAdminName.setHandler((context, params) => {
   context.unblock();
   SecurityService.checkCurrentUserIsAdmin();
   return FileService.setAdminName(params);
+});
+
+moveFile.setHandler((context, { Key, status, oldCollection, newId, newDocId, newCollection }) => {
+  context.unblock();
+  const oldDocId = Key.split('/')[0];
+  const oldId = Key.split('/')[1];
+  const name = Key.split('/')[2];
+
+  SecurityService.isAllowedToModifyFiles({
+    collection: oldCollection,
+    docId: oldDocId,
+    userId: context.userId,
+    fileKey: Key,
+  });
+  SecurityService.isAllowedToModifyFiles({
+    collection: newCollection,
+    docId: newDocId,
+    userId: context.userId,
+    fileKey: `${newDocId}/${newId}/${name}`,
+  });
+
+  if (
+    !SecurityService.isUserAdmin(context.userId)
+      && status === FILE_STATUS.VALID
+  ) {
+    SecurityService.handleUnauthorized('Vous ne pouvez pas déplacer un document vérifié');
+  }
+
+  return FileService.moveFile({
+    Key,
+    name,
+    oldId,
+    oldDocId,
+    oldCollection,
+    newId,
+    newDocId,
+    newCollection,
+  });
 });
