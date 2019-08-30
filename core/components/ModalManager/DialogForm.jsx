@@ -29,12 +29,16 @@ const DialogForm = ({
   model,
   schema,
   description,
-  onSubmit,
+  onSubmit = () => undefined,
   children,
 }: DialogFormProps) => (
   <>
     {title && <DialogTitle>{title}</DialogTitle>}
-    <AutoForm model={model} schema={schema} onSubmit={onSubmit(closeModal) || closeModal}>
+    <AutoForm
+      model={model}
+      schema={schema}
+      onSubmit={onSubmit(closeModal) || closeModal}
+    >
       <DialogContent>
         {children}
         {description && <DialogContentText>{description}</DialogContentText>}
