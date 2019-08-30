@@ -47,13 +47,11 @@ const getDisplayName = (name, adminName) => {
   return <a>{name}</a>;
 };
 
-const makeOnDragStart = ({ Key, docId, collection, id, name }) => (event) => {
+const makeOnDragStart = ({ Key, status, collection }) => (event) => {
   event.dataTransfer.setData('move', true);
   event.dataTransfer.setData('Key', Key);
-  event.dataTransfer.setData('docId', docId);
+  event.dataTransfer.setData('status', status);
   event.dataTransfer.setData('collection', collection);
-  event.dataTransfer.setData('id', id);
-  event.dataTransfer.setData('name', name);
 };
 
 const File = ({
@@ -89,7 +87,7 @@ const File = ({
             }
           }}
           draggable
-          onDragStart={makeOnDragStart({ Key, docId, collection, name, id })}
+          onDragStart={makeOnDragStart({ Key, collection, status })}
         >
           {getDisplayName(name, adminName)}
         </h5>

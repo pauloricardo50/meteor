@@ -23,11 +23,9 @@ const getDataTransferItems = event => {
 
 const getMoveFileData = event => {
   const Key = event.dataTransfer.getData('Key');
-  const oldDocId = event.dataTransfer.getData('docId');
-  const oldCollection = event.dataTransfer.getData('collection');
-  const oldId = event.dataTransfer.getData('id');
-  const name = event.dataTransfer.getData('name');
-  return { Key, name, oldDocId, oldCollection, oldId };
+  const status = event.dataTransfer.getData('status');
+  const oldCollection = event.dataTransfer.getData('collection')
+  return { Key, status, oldCollection };
 };
 
 export default class FileDropper extends Component {

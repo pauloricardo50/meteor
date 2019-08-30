@@ -137,12 +137,10 @@ const props = withProps(({
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
     }),
-  handleMoveFile: ({ Key, name, oldDocId, oldCollection, oldId }) =>
+  handleMoveFile: ({ Key, status, oldCollection }) =>
     moveFile.run({
       Key,
-      name,
-      oldDocId,
-      oldId,
+      status,
       oldCollection,
       newId: id,
       newDocId: docId,

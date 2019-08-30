@@ -67,9 +67,7 @@ export const moveFile = new Method({
   name: 'moveFile',
   params: {
     Key: String,
-    name: String,
-    oldId: String,
-    oldDocId: String,
+    status: String,
     oldCollection: String,
     newId: String,
     newDocId: String,
