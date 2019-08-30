@@ -8,6 +8,7 @@ import {
   updateDocumentsCache,
   getZipLoanUrl,
   setFileAdminName,
+  moveFile,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -66,4 +67,42 @@ setFileAdminName.setHandler((context, params) => {
   context.unblock();
   SecurityService.checkCurrentUserIsAdmin();
   return FileService.setAdminName(params);
+});
+
+moveFile.setHandler((
+  context,
+  {
+    Key,
+    name,
+    oldId,
+    oldDocId,
+    oldCollection,
+    newId,
+    newDocId,
+    newCollection,
+  },
+) => {
+  context.unblock();
+  SecurityService.isAllowedToModifyFiles({
+    collection: oldCollection,
+    docId: oldDocId,
+    userId: context.userId,
+    fileKey: Key,
+  });
+  SecurityService.isAllowedToModifyFiles({
+    collection: newCollection,
+    docId: newDocId,
+    userId: context.userId,
+    fileKey: `${newDocId}/${newId}/${name}`,
+  });
+  return FileService.moveFile({
+    Key,
+    name,
+    oldId,
+    oldDocId,
+    oldCollection,
+    newId,
+    newDocId,
+    newCollection,
+  });
 });
