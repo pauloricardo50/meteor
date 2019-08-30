@@ -136,6 +136,16 @@ const props = withProps(({
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
     }),
+  handleMoveFile: ({
+    Key,
+    name,
+    oldDocId,
+    oldCollection,
+    oldId,
+  }) => {
+    console.log('move', { Key, name, oldDocId, oldCollection, oldId });
+    console.log('to', { docId, collection, id });
+  },
 }));
 
 const willReceiveProps = lifecycle({
