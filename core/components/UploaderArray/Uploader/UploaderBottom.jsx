@@ -15,6 +15,7 @@ const UploaderBottom = ({
   handleUploadComplete,
   handleAddFiles,
   fileMeta,
+  id
 }) => (
   <>
     {currentValue.map((f, i) => (
@@ -25,6 +26,7 @@ const UploaderBottom = ({
         handleRemove={handleRemove}
         docId={docId}
         collection={collection}
+        id={id}
       />
     ))}
 

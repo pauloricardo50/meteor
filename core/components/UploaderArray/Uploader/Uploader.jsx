@@ -21,6 +21,7 @@ const Uploader = (props) => {
     fileMeta: { id, requiredByAdmin, category },
     isDocumentToHide,
     allowRequireByAdmin,
+    handleMoveFile
   } = props;
 
   return (
@@ -41,9 +42,9 @@ const Uploader = (props) => {
           className={cx({ 'visibility-hidden': id === DOCUMENTS.OTHER })}
         />
       )}
-      <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id}>
+      <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id} handleMoveFile={handleMoveFile}>
         <UploaderTop {...props} />
-        {displayFull && <UploaderBottom {...props} />}
+        {displayFull && <UploaderBottom {...props} id={id} />}
       </FileDropper>
     </div>
   );

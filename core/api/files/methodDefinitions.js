@@ -62,3 +62,15 @@ export const setFileAdminName = new Method({
     adminName: Match.Maybe(String),
   },
 });
+
+export const moveFile = new Method({
+  name: 'moveFile',
+  params: {
+    Key: String,
+    status: String,
+    oldCollection: String,
+    newId: String,
+    newDocId: String,
+    newCollection: String,
+  },
+});

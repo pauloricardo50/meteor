@@ -47,6 +47,13 @@ const getDisplayName = (name, adminName) => {
   return <a>{name}</a>;
 };
 
+const makeOnDragStart = ({ Key, status, collection }) => (event) => {
+  event.dataTransfer.setData('move', true);
+  event.dataTransfer.setData('Key', Key);
+  event.dataTransfer.setData('status', status);
+  event.dataTransfer.setData('collection', collection);
+};
+
 const File = ({
   file: { name, Key, status, message, url, adminname: adminName },
   disabled,
@@ -56,6 +63,7 @@ const File = ({
   displayFile,
   docId,
   collection,
+  id
 }) => {
   const { openModal } = useContext(ModalManagerContext);
 
@@ -78,6 +86,8 @@ const File = ({
               });
             }
           }}
+          draggable
+          onDragStart={makeOnDragStart({ Key, collection, status })}
         >
           {getDisplayName(name, adminName)}
         </h5>

@@ -116,6 +116,39 @@ class FileService {
     S3Service.updateMetadata(Key, {
       adminname: adminName,
     });
+
+  moveFile = ({
+    Key,
+    name,
+    oldId,
+    oldDocId,
+    oldCollection,
+    newId,
+    newDocId,
+    newCollection,
+  }) => {
+    if (
+      oldId === newId
+      && oldDocId === newDocId
+      && oldCollection === newCollection
+    ) {
+      return;
+    }
+
+    const newKey = `${newDocId}/${newId}/${name}`;
+
+    return S3Service.moveObject(Key, newKey)
+      .then(() =>
+        this.updateDocumentsCache({
+          docId: oldDocId,
+          collection: oldCollection,
+        }))
+      .then(() =>
+        this.updateDocumentsCache({
+          docId: newDocId,
+          collection: newCollection,
+        }));
+  };
 }
 
 export default new FileService();
