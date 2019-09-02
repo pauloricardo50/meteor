@@ -295,6 +295,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
                   value={
                     currentValue || Calculator.getRealEstateCost(itemValue)
                   }
+                  tooltip={currentValue ? undefined : <T id="Forms.theoreticalExpenses.tooltip" />}
                 />
                 <span>
                   &nbsp;/

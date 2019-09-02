@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { toMoney } from '../../../utils/conversionFunctions';
 
@@ -32,11 +33,19 @@ const Money = ({
   className,
   tag: Tag,
   rounded,
-}) => (
-  <Tag className={className}>
-    {getValue({ displayZero, value, currency, rounded })}
-  </Tag>
-);
+  tooltip,
+}) =>
+  (tooltip ? (
+    <Tooltip title={tooltip}>
+      <Tag className={className}>
+        {getValue({ displayZero, value, currency, rounded })}
+      </Tag>
+    </Tooltip>
+  ) : (
+    <Tag className={className}>
+      {getValue({ displayZero, value, currency, rounded })}
+    </Tag>
+  ));
 
 Money.propTypes = {
   className: PropTypes.string,
