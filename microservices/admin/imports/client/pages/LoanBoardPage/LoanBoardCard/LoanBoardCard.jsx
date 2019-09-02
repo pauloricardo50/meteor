@@ -19,18 +19,14 @@ const LoanBoardCard = ({
   const {
     _id: loanId,
     adminNote,
-    borrowers,
     category,
     customName,
-    name,
     nextDueTask = {},
     promotions = [],
     properties = [],
     selectedStructure,
-    status,
     structures = [],
     tasksCache: tasks,
-    user = {},
   } = loan;
   const structure = structures.find(({ id }) => id === selectedStructure);
 
@@ -45,12 +41,8 @@ const LoanBoardCard = ({
       <div className="card-header">
         <LoanBoardCardTop
           admins={admins}
-          borrowers={borrowers}
-          loanId={loanId}
-          name={name}
           renderComplex={renderComplex}
-          status={status}
-          user={user}
+          loan={loan}
         />
       </div>
 
