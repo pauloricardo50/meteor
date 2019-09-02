@@ -23,7 +23,7 @@
   "FinancingResultAmortization.duration": "Durée de l'amortissement",
   "FinancingResultAmortization.yearly": "Amortissement annuel",
   "FinancingResultAmortization.none": "Vous n'avez pas besoin d'amortir votre prêt hypothécaire.",
-  "Forms.job": "Emploi",
+  "Forms.job": "Profession",
   "Forms.job.placeholder": "Conseiller en financement",
   "Forms.ref": "Referral",
   "Forms.variable.isNewProperty": "Bien immo est neuf",
