@@ -1,4 +1,5 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import cx from 'classnames';
 
@@ -50,6 +51,9 @@ const FinancingSingleHeader = ({
         placeholder={`Structure ${index + 1}`}
         onSubmit={handleEditTitle}
         disabled={structure.disableForms}
+        allowEditing={
+          Meteor.microservice === 'admin' || !structure.disableForms
+        }
       />
     </h3>
     <span className="secondary">
@@ -58,6 +62,9 @@ const FinancingSingleHeader = ({
         placeholder="Description"
         onSubmit={handleEditDescription}
         disabled={structure.disableForms}
+        allowEditing={
+          Meteor.microservice === 'admin' || !structure.disableForms
+        }
       />
     </span>
   </div>

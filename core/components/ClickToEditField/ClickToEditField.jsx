@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Input from '../Material/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
+import T from '../Translation';
 
 type ClickToEditFieldProps = {
   isEditing: boolean,
@@ -37,6 +39,40 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     }
   };
 
+  renderValue() {
+    const {
+      isEditing,
+      toggleEdit,
+      value,
+      placeholder,
+      className,
+      allowEditing = true,
+      disabled,
+      children,
+      style,
+    } = this.props;
+
+    return (
+      <div
+        className={cx('click-to-edit-field', className, {
+          'is-placeholder': placeholder && !value,
+          'not-editing': allowEditing,
+          'not-allowed-to-edit': !allowEditing,
+        })}
+        onClick={
+          allowEditing && !disabled
+            ? () => toggleEdit(true, () => this.input.current.focus())
+            : null
+        }
+        style={style}
+      >
+        {typeof children === 'function'
+          ? children({ value: value || placeholder, isEditing })
+          : value || placeholder}
+      </div>
+    );
+  }
+
   render() {
     const {
       isEditing,
@@ -49,6 +85,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       disabled,
       children,
       style,
+      tooltipWhenDisabled = <T id="general.clickToEditField.disabledTooltip" />,
     } = this.props;
 
     if (isEditing) {
@@ -71,25 +108,13 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       );
     }
 
-    return (
-      <div
-        className={cx('click-to-edit-field', className, {
-          'is-placeholder': placeholder && !value,
-          'not-editing': allowEditing,
-          'not-allowed-to-edit': !allowEditing,
-        })}
-        onClick={
-          allowEditing && !disabled
-            ? () => toggleEdit(true, () => this.input.current.focus())
-            : null
-        }
-        style={style}
-      >
-        {typeof children === 'function'
-          ? children({ value: value || placeholder, isEditing })
-          : value || placeholder}
-      </div>
-    );
+    if (disabled && tooltipWhenDisabled) {
+      return (
+        <Tooltip title={tooltipWhenDisabled}>{this.renderValue()}</Tooltip>
+      );
+    }
+
+    return this.renderValue();
   }
 }
 export default ClickToEditFieldContainer(ClickToEditField);
