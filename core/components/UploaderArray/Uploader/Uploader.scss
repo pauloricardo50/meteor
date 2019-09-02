@@ -104,3 +104,16 @@
     flex-grow: 1;
   }
 }
+
+.file-status-setter:hover {
+  cursor: pointer;
+}
+
+.file-error {
+  margin: 0;
+
+  button {
+    padding: 0;
+    padding-left: 8px;
+  }
+}

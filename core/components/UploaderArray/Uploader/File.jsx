@@ -183,7 +183,7 @@ const File = ({
         </div>
       </div>
       {message && status === FILE_STATUS.ERROR && (
-        <p className="error">
+        <p className="error file-error">
           {message}
           {Meteor.microservice === 'admin' && (
             <IconButton

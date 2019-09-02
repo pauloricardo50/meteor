@@ -42,7 +42,10 @@ const FileStatusSetter = ({
     <DropdownMenu
       noWrapper
       renderTrigger={({ handleOpen }) => (
-        <span onClick={handleOpen} className={`${status} bold`}>
+        <span
+          onClick={handleOpen}
+          className={`${status} bold file-status-setter`}
+        >
           <T id={`File.status.${status}`} />
         </span>
       )}

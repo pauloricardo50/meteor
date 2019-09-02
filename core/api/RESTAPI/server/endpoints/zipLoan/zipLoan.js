@@ -21,7 +21,7 @@ export const getFileName = ({
   const fileExtension = Key.split('.').slice(-1)[0];
 
   if (adminName) {
-    return `${adminName}.${fileExtension}`;
+    return `${prefix}${adminName}.${fileExtension}`;
   }
 
   const document = Key.split('/').slice(-2, -1)[0];

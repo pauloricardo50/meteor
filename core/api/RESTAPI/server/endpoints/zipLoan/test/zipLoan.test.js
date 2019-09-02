@@ -120,7 +120,7 @@ describe('zipLoan', () => {
         };
         const name = getFileName(file);
 
-        expect(name).to.equal('adminName.pdf');
+        expect(name).to.equal('PREFIX_adminName.pdf');
       });
 
       it('three files in same document with one file with adminName', () => {
@@ -149,7 +149,7 @@ describe('zipLoan', () => {
         const name3 = getFileName(file3);
 
         expect(name1).to.equal("PREFIX_Pièce d'identité (1 sur 2).pdf");
-        expect(name2).to.equal('adminName.pdf');
+        expect(name2).to.equal('PREFIX_adminName.pdf');
         expect(name3).to.equal("PREFIX_Pièce d'identité (2 sur 2).pdf");
       });
     });
@@ -248,7 +248,7 @@ describe('zipLoan', () => {
         'Bob Dylan/BD Fiches de salaire (1 sur 2).pdf',
         'Bob Dylan/BD Fiches de salaire (2 sur 2).pdf',
         'Bob Dylan/BD Carte de Légitimation (1 sur 2).pdf',
-        'Bob Dylan/customLegitimationCardAdminName.pdf',
+        'Bob Dylan/BD customLegitimationCardAdminName.pdf',
         'Bob Dylan/BD Carte de Légitimation (2 sur 2).pdf',
         'Bob Dylan/BD borrowerOtherDocName.pdf',
         "Barbra Streisand/BS Pièce d'identité.pdf",

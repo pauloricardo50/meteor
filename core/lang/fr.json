@@ -10,7 +10,7 @@
   "files.DONATION_JUSTIFICATION_IDENTITY": "Pièce d'identité du donateur",
   "files.DONATION_JUSTIFICATION_STATEMENT": "Relevé bancaire du donateur",
   "files.DONATION_JUSTIFICATION_CERTIFICATE.tooltip": "Pour chaque donation, une attestation dûment signée par les 2 parties (sans amortissement et intérêts).",
-  "files.DONATION_JUSTIFICATION_IDENTITY.tooltip": "Pour chaque donateur, une pièce d'identidé recto/verso.",
+  "files.DONATION_JUSTIFICATION_IDENTITY.tooltip": "Pour chaque donateur, une pièce d'identité recto/verso.",
   "files.DONATION_JUSTIFICATION_STATEMENT.tooltip": "Pour chaque donateur, un relevé bancaire justifiant les montants.",
   "Forms.donation": "Donation",
   "Forms.donation.description": "Description",
