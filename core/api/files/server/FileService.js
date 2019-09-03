@@ -1,8 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
+import moment from 'moment';
+
 import { readFileBuffer, removeFile } from 'core/utils/filesUtils';
-import { Meteor } from 'meteor/meteor';
 import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
+import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
 import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
 import { getS3FileKey } from './meteor-slingshot-server';
@@ -98,6 +101,54 @@ class FileService {
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))
       .then(files => ({ deletedFiles: [{ Key: key }], remainingFiles: files }));
+
+  getZipLoanUrl = ({ userId, loanId }) => {
+    const timestamp = moment().unix();
+    const token = getSimpleAuthToken({
+      'user-id': userId,
+      'loan-id': loanId,
+      timestamp: timestamp.toString(),
+    });
+    return `${Meteor.settings.public.subdomains.backend}/api/zip-loan/?loan-id=${loanId}&user-id=${userId}&timestamp=${timestamp}&token=${token}`;
+  };
+
+  setAdminName = ({ Key, adminName = '' }) =>
+    S3Service.updateMetadata(Key, {
+      adminname: adminName,
+    });
+
+  moveFile = ({
+    Key,
+    name,
+    oldId,
+    oldDocId,
+    oldCollection,
+    newId,
+    newDocId,
+    newCollection,
+  }) => {
+    if (
+      oldId === newId
+      && oldDocId === newDocId
+      && oldCollection === newCollection
+    ) {
+      return;
+    }
+
+    const newKey = `${newDocId}/${newId}/${name}`;
+
+    return S3Service.moveObject(Key, newKey)
+      .then(() =>
+        this.updateDocumentsCache({
+          docId: oldDocId,
+          collection: oldCollection,
+        }))
+      .then(() =>
+        this.updateDocumentsCache({
+          docId: newDocId,
+          collection: newCollection,
+        }));
+  };
 }
 
 export default new FileService();

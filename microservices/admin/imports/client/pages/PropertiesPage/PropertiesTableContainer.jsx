@@ -54,7 +54,7 @@ const mapProperty = history => ({
 const columnOptions = [
   { id: 'Lié à' },
   { id: 'Nom/Addresse', format: v => <b>{v}</b> },
-  { id: 'Utilisateur' },
+  { id: 'Compte' },
   { id: 'Créé le' },
   { id: 'Modifié' },
   {

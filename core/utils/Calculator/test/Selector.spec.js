@@ -36,7 +36,7 @@ describe('Calculator Selector', () => {
       structure.promotionOption = promotionOption;
       structure.property = undefined;
       structure.propertyId = undefined;
-      expect(Calculator.selectProperty(params)).to.deep.equal({
+      expect(Calculator.selectProperty(params)).to.deep.include({
         ...promotionOption,
         totalValue: 100,
       });
@@ -69,7 +69,7 @@ describe('Calculator Selector', () => {
         structure.promotionOptionId = promotionOption._id;
         structure.propertyId = undefined;
         params.loan.promotionOptions = [promotionOption];
-        expect(Calculator.selectProperty(params)).to.deep.equal({
+        expect(Calculator.selectProperty(params)).to.deep.include({
           ...promotionOption,
           totalValue: 100,
         });

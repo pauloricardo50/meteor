@@ -108,7 +108,7 @@ export class PromotionService extends CollectionService {
     if (UserService.hasPromotion({ userId, promotionId })) {
       throw new Meteor.Error(
         HTTP_STATUS_CODES.CONFLICT,
-        'Cet utilisateur est déjà invité à cette promotion',
+        'Ce client est déjà invité à cette promotion',
       );
     }
 

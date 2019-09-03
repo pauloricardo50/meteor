@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,12 +14,14 @@ import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
 import T from '../Translation';
+import ZipLoan from './ZipLoan';
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
 
   return (
     <div className="files-tab">
+      {Meteor.microservice === 'admin' && <ZipLoan loan={loan} />}
       <Tabs
         id="tabs"
         // Fetch new files every time you change tabs

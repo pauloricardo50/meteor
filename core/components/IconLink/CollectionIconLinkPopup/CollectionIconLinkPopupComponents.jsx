@@ -119,7 +119,7 @@ export const components = {
         {anonymous && <div>Anonyme</div>}
 
         <div className="flex center-align">
-          <b>Utilisateur:</b>
+          <b>Compte:</b>
           &nbsp;
           {user ? (
             <CollectionIconLink

@@ -1,10 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { withState, compose } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
+import DialogForm from 'core/components/ModalManager/DialogForm';
+import {
+  setFileAdminName,
+  updateDocumentsCache,
+  setFileError,
+} from 'core/api/methods/index';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';
@@ -15,7 +23,7 @@ import Downloader from '../../Downloader';
 import FileStatusSetter from './FileStatusSetter';
 import Button from '../../Button';
 
-const isAllowedToDelete = (disabled) => {
+const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();
   const userIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
   const userIsAdmin = Roles.userIsInRole(currentUser, ROLES.ADMIN);
@@ -24,11 +32,34 @@ const isAllowedToDelete = (disabled) => {
     return true;
   }
 
-  return !disabled;
+  return !disabled && status !== FILE_STATUS.VALID;
+};
+
+const getDisplayName = (name, adminName) => {
+  if (Meteor.microservice !== 'admin') {
+    return name;
+  }
+
+  if (adminName) {
+    return (
+      <Tooltip title={`Nom original: ${name}`}>
+        <a>{`${adminName}.${name.split('.').slice(-1)[0]}`}</a>
+      </Tooltip>
+    );
+  }
+
+  return <a>{name}</a>;
+};
+
+const makeOnDragStart = ({ Key, status, collection }) => (event) => {
+  event.dataTransfer.setData('move', true);
+  event.dataTransfer.setData('Key', Key);
+  event.dataTransfer.setData('status', status);
+  event.dataTransfer.setData('collection', collection);
 };
 
 const File = ({
-  file: { name, Key, status, message, url },
+  file: { name, Key, status, message, url, adminname: adminName },
   disabled,
   handleRemove,
   deleting,
@@ -36,6 +67,7 @@ const File = ({
   displayFile,
   docId,
   collection,
+  id,
 }) => {
   const { openModal } = useContext(ModalManagerContext);
 
@@ -58,8 +90,10 @@ const File = ({
               });
             }
           }}
+          draggable
+          onDragStart={makeOnDragStart({ Key, collection, status })}
         >
-          {Meteor.microservice === 'admin' ? <a>{name}</a> : name}
+          {getDisplayName(name, adminName)}
         </h5>
         <div className="actions flex center">
           <FileStatusSetter
@@ -67,8 +101,39 @@ const File = ({
             fileKey={Key}
             docId={docId}
             collection={collection}
+            error={message}
           />
-          {isAllowedToDelete(disabled) && (
+          {Meteor.microservice === 'admin' && (
+            <IconButton
+              disabled={deleting}
+              type={deleting ? 'loop-spin' : 'edit'}
+              tooltip="<ADMIN> Renommer le fichier"
+              onClick={(event) => {
+                event.preventDefault();
+                openModal(<DialogForm
+                  schema={
+                    new SimpleSchema({
+                      adminName: { type: String, optional: true },
+                    })
+                  }
+                  model={{ adminName }}
+                  title="Renommer le fichier"
+                  description="Entrez le nouveau nom. Il ne sera visible uniquement que par les admins."
+                  className="animated fadeIn"
+                  important
+                  onSubmit={closeModal => ({ adminName: newName }) => {
+                    setFileAdminName
+                      .run({ Key, adminName: newName })
+                      .then(() =>
+                        updateDocumentsCache.run({ docId, collection }))
+                      .then(() => closeModal());
+                  }}
+                />);
+              }}
+            />
+          )}
+
+          {isAllowedToDelete(disabled, status) && (
             <IconButton
               disabled={deleting}
               type={deleting ? 'loop-spin' : 'close'}
@@ -118,7 +183,38 @@ const File = ({
         </div>
       </div>
       {message && status === FILE_STATUS.ERROR && (
-        <p className="error">{message}</p>
+        <p className="error file-error">
+          {message}
+          {Meteor.microservice === 'admin' && (
+            <IconButton
+              disabled={deleting}
+              type={deleting ? 'loop-spin' : 'edit'}
+              tooltip="Modifier le message d'erreur"
+              onClick={(event) => {
+                event.preventDefault();
+                openModal(<DialogForm
+                  schema={
+                    new SimpleSchema({
+                      error: { type: String, optional: true },
+                    })
+                  }
+                  model={{ error: message }}
+                  title="Modifier l'erreur"
+                  description="Entrez le nouveau message d'erreur."
+                  className="animated fadeIn"
+                  important
+                  onSubmit={closeModal => ({ error }) => {
+                    setFileError
+                      .run({ fileKey: Key, error })
+                      .then(() =>
+                        updateDocumentsCache.run({ docId, collection }))
+                      .then(() => closeModal());
+                  }}
+                />);
+              }}
+            />
+          )}
+        </p>
       )}
     </div>
   );

@@ -10,7 +10,7 @@ import Calculator from 'core/utils/Calculator';
 
 const columnOptions = [
   { id: 'No.' },
-  { id: 'Utilisateur' },
+  { id: 'Compte' },
   { id: 'Statut' },
   { id: 'Créé le' },
   { id: 'Modifié' },

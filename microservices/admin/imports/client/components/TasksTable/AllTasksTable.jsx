@@ -20,7 +20,7 @@ export const withTasksQuery = compose(
       status,
       uptoDate,
     }),
-    queryOptions: { reactive: false },
+    queryOptions: { reactive: false, pollingMs: 5000 },
     dataName: 'tasks',
   }),
 );

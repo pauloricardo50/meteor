@@ -16,7 +16,7 @@ const CommissionEditor = ({ commissionRates = [], _id: organisationId }) => (
           Commissions <span className="error">désactivées</span>
           <br />
           Tant qu'il n'y a aucun taux de commissionnement sur cette
-          organisation, les utilisateurs PRO n'auront pas accès aux
+          organisation, les comptes Pro n'auront pas accès aux
           fonctionalités suivantes:
         </p>
         <ul>

@@ -20,6 +20,7 @@ import {
   logRequest,
   trackRequest,
   getMatchingPathOptions,
+  getSimpleAuthToken,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -33,7 +34,17 @@ const bodyParserUrlEncodedMiddleware = () =>
   });
 
 // Handles replay attacks
-const replayHandlerMiddleware = options => (req, res, next) => {
+const replayHandlerMiddleware = (options = {}) => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.simpleAuth) {
+    return next();
+  }
+
+  if (endpointOptions.noAuth) {
+    return next();
+  }
+
   if (req.isMultipart) {
     return next();
   }
@@ -60,8 +71,16 @@ const replayHandlerMiddleware = options => (req, res, next) => {
 };
 
 // Filters out badly formatted requests, or ones missing basic headers
-const filterMiddleware = options => (req, res, next) => {
+const filterMiddleware = (options = {}) => (req, res, next) => {
   const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.simpleAuth) {
+    return next();
+  }
+
+  if (endpointOptions.noAuth) {
+    return next();
+  }
 
   const supportedContentType = endpointOptions.multipart
     ? 'multipart/form-data'
@@ -83,8 +102,56 @@ const filterMiddleware = options => (req, res, next) => {
   next();
 };
 
+const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.noAuth) {
+    return next();
+  }
+
+  if (endpointOptions.simpleAuth) {
+    const { query } = req;
+    const { token, timestamp, 'user-id': userId } = query;
+    const authToken = getSimpleAuthToken(query);
+
+    const now = moment().unix();
+
+    if (authToken !== token || timestamp < now - 30) {
+      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED('Wrong token or old timestamp'));
+    }
+
+    const user = UserService.fetchOne({
+      $filters: {
+        _id: userId,
+      },
+      emails: 1,
+      firstName: 1,
+      lastName: 1,
+      phoneNumbers: 1,
+    });
+
+    if (!user) {
+      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED('No user found with this userId'));
+    }
+
+    req.user = user;
+  }
+
+  next();
+};
+
 // Gets the public key from the request, fetches the user and adds it to the request
-const authMiddleware = options => (req, res, next) => {
+const authMiddleware = (options = {}) => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.simpleAuth) {
+    return next();
+  }
+
+  if (endpointOptions.noAuth) {
+    return next();
+  }
+
   const publicKey = getPublicKey(req);
   const signature = getSignature(req);
 
@@ -174,6 +241,7 @@ export const preMiddlewares = [
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
+  simpleAuthMiddleware,
   replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

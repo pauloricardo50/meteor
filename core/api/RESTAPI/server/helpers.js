@@ -5,6 +5,7 @@ import { Random } from 'meteor/random';
 import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import hashObject from 'object-hash';
 
 import Analytics from 'core/api/analytics/server/Analytics';
 import EVENTS from 'core/api/analytics/events';
@@ -13,7 +14,7 @@ import { getClientHost } from 'core/utils/server/getClientUrl';
 import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
 import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import { sortObject } from '../../helpers';
-import { HTTP_STATUS_CODES } from './restApiConstants';
+import { HTTP_STATUS_CODES, SIMPLE_AUTH_SALT_GRAINS } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
 
 export const AUTH_ITEMS = {
@@ -369,3 +370,17 @@ export const setAPIUser = (user) => {
 };
 
 export const getAPIUser = () => getFromFiber('APIUser');
+
+const getSimpleAuthSaltGrain = (timestamp) => {
+  const index = timestamp % 10;
+  return SIMPLE_AUTH_SALT_GRAINS[index];
+};
+
+export const getSimpleAuthToken = (params) => {
+  const { 'user-id': userId, timestamp, token, ...rest } = params;
+  const saltGrain = getSimpleAuthSaltGrain(timestamp);
+  const sortedObject = sortObject({ userId, timestamp, saltGrain, ...rest });
+
+  return hashObject.MD5(sortedObject);
+};
+

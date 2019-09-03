@@ -4,6 +4,13 @@ import { FILE_STATUS } from './fileConstants';
 
 const documentIsRequired = required => required !== false;
 
+const documentIsInvalid = (doc, id) =>
+  doc
+  && doc.documents
+  && doc.documents[id]
+  && doc.documents[id].length > 0
+  && doc.documents[id].some(({ status }) => status === FILE_STATUS.ERROR);
+
 const getDocumentsToCount = (
   documentArray: Array<Object>,
   doc: Object,
@@ -63,7 +70,8 @@ const documentExists = (doc, id) =>
 export const getMissingDocumentIds = ({ fileArray, doc }) => {
   const ids = fileArray
     .filter(({ required, id }) =>
-      documentIsRequired(required) && !documentExists(doc, id))
+      (documentIsRequired(required) && !documentExists(doc, id))
+        || documentIsInvalid(doc, id))
     .map(({ id }) => id);
   return ids;
 };

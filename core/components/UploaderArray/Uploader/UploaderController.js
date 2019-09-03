@@ -4,6 +4,7 @@ import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
 import uniqBy from 'lodash/uniqBy';
 
+import { moveFile } from 'core/api/methods/index';
 import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
@@ -135,6 +136,15 @@ const props = withProps(({
       setTimeout(() => {
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
+    }),
+  handleMoveFile: ({ Key, status, oldCollection }) =>
+    moveFile.run({
+      Key,
+      status,
+      oldCollection,
+      newId: id,
+      newDocId: docId,
+      newCollection: collection,
     }),
 }));
 

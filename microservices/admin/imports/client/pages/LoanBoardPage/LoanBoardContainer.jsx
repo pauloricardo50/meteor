@@ -41,6 +41,7 @@ const defaultBody = {
     assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
   },
   financedPromotionLink: 1,
+  userId: 1,
 };
 
 const noPromotionIsChecked = promotionId =>

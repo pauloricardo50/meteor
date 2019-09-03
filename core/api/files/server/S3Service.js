@@ -152,6 +152,20 @@ class S3Service {
       Key,
       Expires: 180,
     });
+
+  getObjectReadStream = Key =>
+    this.s3.getObject(this.makeParams({ Key })).createReadStream();
+
+  moveObject = (oldKey, newKey) =>
+    this.headObject(oldKey)
+      .then(({ Metadata }) =>
+        this.copyObject({
+          Key: newKey,
+          Metadata,
+          CopySource: `/${this.params.Bucket}/${oldKey}`,
+          MetadataDirective: 'REPLACE',
+        }))
+      .then(() => this.deleteObject(oldKey));
 }
 
 export default new S3Service();

@@ -11,7 +11,7 @@ const adminLinks = [
   {
     link: '/users',
     icon: <span className="icon fa fa-users fa-2x" />,
-    label: 'Utilisateurs',
+    label: 'Comptes',
   },
   {
     link: '/loans',

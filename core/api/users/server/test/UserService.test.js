@@ -574,7 +574,7 @@ describe('UserService', function () {
               user: userToInvite,
               promotionIds: ['promotionId'],
               proUserId: 'proId',
-            })).to.throw('Cet utilisateur est déjà invité à cette promotion');
+            })).to.throw('Ce client est déjà invité à cette promotion');
         });
     });
 
@@ -789,7 +789,7 @@ describe('UserService', function () {
               user: userToInvite,
               propertyIds: ['propertyId'],
               proUserId: 'proId',
-            })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
+            })).to.throw('Ce client est déjà invité à ce bien immobilier');
         });
     });
 

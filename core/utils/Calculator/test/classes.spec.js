@@ -261,11 +261,6 @@ describe('Class composition', () => {
         return a / b;
       }
 
-      stuff({ borrowers }) {
-        this.count += 1;
-        return borrowers.a;
-      }
-
       nothing() {
         this.count += 1;
         return 'yo';
@@ -294,17 +289,6 @@ describe('Class composition', () => {
 
       expect(myClass.div({ a: 2, b: 3 })).to.equal(0.6666666667);
       expect(myClass.div({ a: 2, b: 3 })).to.equal(0.6666666667);
-
-      expect(myClass.memo).to.equal(2);
-      expect(myClass.count).to.equal(1);
-    });
-
-    it('does not care about other middlewares', () => {
-      const loan = { borrowers: { a: 3 } };
-      const myClass = new MemoizedClass();
-
-      expect(myClass.stuff({ loan })).to.equal(3);
-      expect(myClass.stuff({ loan })).to.equal(3);
 
       expect(myClass.memo).to.equal(2);
       expect(myClass.count).to.equal(1);

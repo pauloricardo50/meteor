@@ -5,7 +5,7 @@ import countries from 'i18n-iso-countries';
 import CantonField from 'core/components/CantonField/CantonField';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
+import { getSortedCountriesCodes, COMMON_COUNTRIES } from 'core/utils/countriesUtils';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -89,7 +89,13 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: addressFieldsAreNecessary,
       options: getSortedCountriesCodes(),
       defaultValue: 'CH',
-      transform: code => countries.getName(code, 'fr'),
+      transform: (code) => {
+        const name = countries.getName(code, 'fr');
+        if (COMMON_COUNTRIES.includes(code)) {
+          return <b>{name}</b>;
+        }
+        return countries.getName(code, 'fr');
+      },
     },
     {
       id: 'zipCode',
@@ -258,12 +264,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       className: 'v-align-fortune',
     },
     { id: 'bankFortune', type: 'textInput', money: true },
-    {
-      id: 'thirdPartyFortune',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
+    makeArrayOfObjectsInput('donation'),
     {
       id: 'realEstate',
       type: 'arrayInput',

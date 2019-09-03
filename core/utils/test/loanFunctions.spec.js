@@ -92,6 +92,7 @@ describe('Loan functions', () => {
         promotionOptionId: 'id',
         property: {
           _id: 'id',
+          borrowers: [],
           value: 100,
           totalValue: 100,
           landValue: 50,

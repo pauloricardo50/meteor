@@ -41,7 +41,7 @@ ServerEventService.addAfterMethodListener(
       } else {
         TaskService.insert({
           object: {
-            title: 'Nouvel utilisateur: prendre contact',
+            title: 'Nouveau compte utilisateur: prendre contact',
             docId: userId,
             collection: USERS_COLLECTION,
           },

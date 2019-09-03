@@ -1,8 +1,12 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import countries from 'i18n-iso-countries';
-import { getSortedCountriesCodes } from 'core/utils/countriesUtils';
+import {
+  getSortedCountriesCodes,
+  COMMON_COUNTRIES,
+} from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
@@ -56,7 +60,13 @@ export const address = {
     allowedValues: getSortedCountriesCodes(),
     defaultValue: 'CH',
     uniforms: {
-      transform: code => countries.getName(code, 'fr'),
+      transform: (code) => {
+        const name = countries.getName(code, 'fr');
+        if (COMMON_COUNTRIES.includes(code)) {
+          return <b>{name}</b>;
+        }
+        return countries.getName(code, 'fr');
+      },
       displayEmtpy: false,
       placeholder: '',
     },

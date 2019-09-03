@@ -51,7 +51,7 @@ export const financeFields = [
   'insurance3A',
   'insurance3B',
   'bank3A',
-  'thirdPartyFortune',
+  'donation',
   'hasOwnCompany',
   'ownCompanies',
 ];
@@ -185,7 +185,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
             Component: Box,
             fields: [
               'bankFortune',
-              'thirdPartyFortune',
+              'donation',
               'otherFortune',
               'realEstate',
             ],

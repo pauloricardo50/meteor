@@ -83,6 +83,10 @@
         align-self: center;
       }
 
+      @include screen(small) {
+        padding: 16px;
+      }
+
       &-recap {
         margin: 16px 0;
       }
@@ -172,6 +176,14 @@
           border-radius: 0;
           background: unset;
           box-shadow: unset;
+
+          &-top {
+            margin: 0;
+          }
+
+          .tab-content {
+            padding: 0;
+          }
         }
 
         .borrower-tab-labels {
@@ -241,6 +253,10 @@
       .button-switch {
         align-self: center;
         margin-bottom: 24px;
+      }
+
+      .flex-col {
+        flex-wrap: nowrap;
       }
     }
 

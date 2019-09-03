@@ -180,13 +180,14 @@ class AutoFormTextInput extends Component {
         decimal,
         intlId,
         saveOnChange,
+        inputLabelProps,
 
         ...otherProps
       },
+      inputLabelProps: inputLabelPropsOverride,
       noValidator,
       savingIconStyle,
       admin,
-      inputLabelProps,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
 
@@ -224,7 +225,7 @@ class AutoFormTextInput extends Component {
           style={{ width: '100%', ...style, marginBottom: 16 }}
           noValidate
           fullWidth
-          inputLabelProps={inputLabelProps}
+          inputLabelProps={inputLabelPropsOverride || inputLabelProps}
         />
         <ValidIcon
           saving={saving}

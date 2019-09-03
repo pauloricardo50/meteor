@@ -23,6 +23,10 @@ $footer-height: 64px;
     margin: 0;
   }
 
+  &.noPadding {
+    padding: 0;
+  }
+
   &-empty-state {
     display: flex;
     align-items: center;
@@ -169,13 +173,13 @@ $footer-height: 64px;
       font-weight: bold;
       margin: 64px 0 16px 0;
 
-      @include screen(small) {
-        font-size: 2em;
-      }
-
       @include screen(med) {
         margin: 32px 0 16px 0;
         font-size: 3em;
+      }
+
+      @include screen(small) {
+        font-size: 2em;
       }
     }
 
@@ -234,6 +238,12 @@ $footer-height: 64px;
     &.success {
       color: white;
       background-color: $success;
+    }
+
+    .sticky-result {
+      h3 {
+        margin-top: 8px;
+      }
     }
   }
 

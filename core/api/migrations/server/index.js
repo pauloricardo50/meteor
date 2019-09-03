@@ -19,6 +19,8 @@ import './16';
 import './17';
 import './18';
 import './19';
+import './20';
+import './21';
 
 // To migrate to a specific version
 // Migrations.migrateTo(2);

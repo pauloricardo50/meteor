@@ -23,10 +23,10 @@ export const PROPERTY_TYPE = {
 };
 
 export const VOLUME_NORM = {
+  ECA: 'ECA',
   SIA_416: 'SIA_416',
   SIA_116: 'SIA_116',
   BIC: 'BIC',
-  ECA: 'ECA',
 };
 
 export const AREA_NORM = {

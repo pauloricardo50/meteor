@@ -11,7 +11,7 @@ import { baseBorrower } from 'core/api/fragments';
 
 const columnOptions = [
   { id: 'Nom', format: v => <b>{v}</b> },
-  { id: 'Utilisateur' },
+  { id: 'Compte' },
   { id: 'Dossiers' },
   { id: 'Créé le' },
   { id: 'Modifié le' },

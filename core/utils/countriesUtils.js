@@ -1,10 +1,11 @@
 import countries from 'i18n-iso-countries';
 
+export const COMMON_COUNTRIES = ['CH', 'FR', 'DE', 'US'];
+
 export const getSortedCountriesCodes = () => {
-  const commonCountries = ['CH', 'FR', 'DE', 'US'];
-  const restCountries = Object.keys(countries.getNames('fr')).filter(code => !commonCountries.includes(code));
+  const restCountries = Object.keys(countries.getNames('fr')).filter(code => !COMMON_COUNTRIES.includes(code));
   return [
-    ...commonCountries,
+    ...COMMON_COUNTRIES,
     ...restCountries.sort((a, b) => {
       if (countries.getName(a, 'fr') > countries.getName(b, 'fr')) {
         return 1;

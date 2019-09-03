@@ -10,7 +10,7 @@ import UsersTable from './UsersTable';
 const UsersPage = () => (
   <section className="card1 card-top users-page">
     <Helmet>
-      <title>Utilisateurs</title>
+      <title>Comptes</title>
     </Helmet>
     <h1 className="flex center-align">
       <Icon

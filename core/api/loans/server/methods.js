@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import Analytics from '../../analytics/server/Analytics';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import EVENTS from '../../analytics/events';
@@ -291,6 +293,16 @@ loanSetStatus.setHandler(({ userId }, params) => {
 loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   const { loanId, createdAt } = params;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const date = new Date(createdAt);
+  date.setHours(0, 0, 0, 0);
+
+  if (date > today) {
+    throw new Meteor.Error('La date de création ne peut pas être dans le futur');
+  }
+
   LoanService.update({ loanId, object: { createdAt } });
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });
