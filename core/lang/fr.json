@@ -378,15 +378,9 @@
   "Forms.ownCompanies.netIncome2016.placeholder": "CHF 100 000",
   "Recap.netSalary": "Salaire net",
   "Forms.actions": "Actions",
-<<<<<<< HEAD
-  "ProPropertyPage.addUser.label": "Ajouter Pro",
-  "ProPropertyPage.addUser.title": "Ajouter Pro",
-  "ProPropertyPage.addUser.description": "Ajoute un Pro sur ce bien immobilier, qui pourra gérer les détails du bien, et consulter la liste des acheteurs. Vous pouvez restreindre ou augmenter les droits d'accès de cet utilisateur par la suite.{verticalSpace}Si la personne que vous souhaitez inviter n'a pas encore un compte PRO sur e-Potek, ajoutez le depuis la page de votre organisation, ou contactez e-Potek s'il fait partie d'une autre entreprise.",
-=======
   "ProPropertyPage.addUser.label": "Ajouter compte",
   "ProPropertyPage.addUser.title": "Ajouter compte",
   "ProPropertyPage.addUser.description": "Ajoute un compte PRO sur ce bien immobilier, qui pourra gérer les détails du bien, et consulter la liste des acheteurs. Vous pouvez restreindre ou augmenter les droits d'accès de ce compte par la suite.{verticalSpace}Si la personne que vous souhaitez inviter n'a pas encore un compte PRO sur e-Potek, ajoutez le depuis la page de votre organisation, ou contactez e-Potek s'il fait partie d'une autre entreprise.",
->>>>>>> cf751d5b2f66358e355a675a01bc103746e5387d
   "ProPropertyPage.ProUsers.name": "Nom",
   "ProPropertyPage.ProUsers.email": "Email",
   "ProPropertyPage.ProUsers.permissions": "Permissions",
@@ -1179,17 +1173,10 @@
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
   "AdvancedOptions.borrowRatio": "Endettement voulu",
   "AdminPromotionPage.addUser": "Ajouter",
-<<<<<<< HEAD
-  "AdminPromotionPage.addUser.label": "Ajouter un Pro",
-  "AdminPromotionPage.addUser.title": "Ajouter un Pro",
-  "AdminPromotionPage.noUserFound": "Aucun utilisateur trouvé",
-  "AdminPromotionPage.PromotionUsers": "Pros",
-=======
   "AdminPromotionPage.addUser.label": "Ajouter un compte",
   "AdminPromotionPage.addUser.title": "Ajouter un compte",
   "AdminPromotionPage.noUserFound": "Aucun compte trouvé",
   "AdminPromotionPage.PromotionUsers": "Comptes",
->>>>>>> cf751d5b2f66358e355a675a01bc103746e5387d
   "AdminPromotionPage.PromotionUsers.name": "Nom",
   "AdminPromotionPage.PromotionUsers.email": "Email",
   "AdminPromotionPage.PromotionUsers.permissions": "Permissions",
