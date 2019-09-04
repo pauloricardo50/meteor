@@ -23,10 +23,10 @@ const CommissionsTable = (props: CommissionsTableProps) => {
       <Select
         options={options}
         value={status.$in}
-        label="Statut"
+        label="Statut du revenu"
         onChange={(_, selected) => setStatus({ $in: selected })}
         multiple
-        style={{ display: 'inline-block' }}
+        style={{ display: 'inline-flex', minWidth: 150 }}
       />
 
       <WrappedRevenuesTable {...props} filterRevenues={() => ({ status })} />

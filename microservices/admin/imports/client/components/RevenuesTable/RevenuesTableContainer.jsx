@@ -15,15 +15,19 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 
-const getColumnOptions = ({ displayLoan, displayActions }) =>
+const getColumnOptions = ({
+  displayLoan,
+  displayActions,
+  displayOrganisationsToPay,
+}) =>
   [
     displayLoan && { id: 'loan' },
-    { id: 'status' },
+    { id: 'revenueStatus' },
     { id: 'date' },
     { id: 'type' },
     { id: 'description' },
     { id: 'sourceOrganisationLink' },
-    { id: 'organisationsToPay' },
+    displayOrganisationsToPay && { id: 'organisationsToPay' },
     { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
     displayActions && { id: 'actions' },
   ]
@@ -35,6 +39,7 @@ export const makeMapRevenue = ({
   setRevenueToModify,
   displayLoan,
   displayActions,
+  displayOrganisationsToPay,
 }) => (revenue) => {
   const {
     _id: revenueId,
@@ -89,12 +94,17 @@ export const makeMapRevenue = ({
           />
         ),
       },
-      organisations.map(organisation => (
-        <CollectionIconLink
-          relatedDoc={{ ...organisation, collection: ORGANISATIONS_COLLECTION }}
-          key={organisation._id}
-        />
-      )),
+      displayOrganisationsToPay
+        ? organisations.map(organisation => (
+          <CollectionIconLink
+            relatedDoc={{
+              ...organisation,
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+            key={organisation._id}
+          />
+        ))
+        : null,
       {
         raw: amount,
         label: (
@@ -128,13 +138,19 @@ export default compose(
     setRevenueToModify,
     displayLoan,
     displayActions,
+    displayOrganisationsToPay,
   }) => ({
     rows: revenues.map(makeMapRevenue({
       setOpenModifier,
       setRevenueToModify,
       displayLoan,
       displayActions,
+      displayOrganisationsToPay,
     })),
-    columnOptions: getColumnOptions({ displayLoan, displayActions }),
+    columnOptions: getColumnOptions({
+      displayLoan,
+      displayActions,
+      displayOrganisationsToPay,
+    }),
   })),
 );

@@ -1,4 +1,5 @@
 {
+  "Forms.revenueStatus": "Statut du revenu",
   "general.clickToEditField.disabledTooltip": "Ce champ est vérouillé",
   "Forms.error": "Erreur",
   "Forms.error.placeholder": "Il manque le justificatif du bonus 2017",
