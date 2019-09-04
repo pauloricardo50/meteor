@@ -247,7 +247,7 @@ export const loan = () => ({
     type: 1,
     users: { name: 1, email: 1, phoneNumber: 1 },
   },
-  properties: { totalValue: 1, address1: 1 },
+  properties: { totalValue: 1, address1: 1, category: 1 },
   propertyIds: 1,
   purchaseType: 1,
   residenceType: 1,
