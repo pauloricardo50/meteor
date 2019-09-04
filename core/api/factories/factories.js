@@ -182,6 +182,7 @@ Factory.define('lenderRules', LenderRules, {
 Factory.define('revenues', Revenues, {
   amount: 1000,
   type: REVENUE_TYPES.MORTGAGE,
+  expectedAt: () => new Date(),
 });
 
 Factory.define('lenderRulesAll', LenderRules, {

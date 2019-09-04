@@ -74,7 +74,7 @@ const addCommissionRows = (
 };
 
 export default compose(
-  withProps(() => ({ displayLoan: true })),
+  withProps(() => ({ displayLoan: true, displayOrganisationsToPay: false })),
   RevenuesTableContainer,
   withProps(({ columnOptions, rows }) => ({
     columnOptions: [
@@ -90,6 +90,6 @@ export default compose(
       { id: 'actions' },
     ],
     rows: rows.reduce(addCommissionRows, []),
-    initialOrderBy: 2,
+    initialOrderBy: 4,
   })),
 );

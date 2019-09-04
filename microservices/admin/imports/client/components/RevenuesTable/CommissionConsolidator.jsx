@@ -21,7 +21,10 @@ const schema = new SimpleSchema({
   },
   paidAt: {
     type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.DATE,
+      label: 'Paiement effectué le',
+    },
   },
 });
 

@@ -20,7 +20,7 @@ const LoanRenamer = ({ loan }: LoanRenamerProps) => (
         .fetchOneSync()
         .then((result) => {
           if (result) {
-            throw new Error('Ce nom exist deja');
+            throw new Error('Ce nom existe déjà');
           }
 
           return loanUpdate.run({ loanId: loan._id, object: { name } });

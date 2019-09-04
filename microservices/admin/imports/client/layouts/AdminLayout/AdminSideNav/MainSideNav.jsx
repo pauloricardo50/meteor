@@ -42,7 +42,7 @@ const items = [
     collection: ORGANISATIONS_COLLECTION,
   },
   {
-    label: 'Revenus',
+    label: 'Monitoring',
     to: createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, { tabId: 'monitoring' }),
     collection: REVENUES_COLLECTION,
   },

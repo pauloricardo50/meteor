@@ -84,7 +84,10 @@ describe('monitoring', () => {
               { id: '2', wantedLoan: 3000 },
             ],
           },
-          { selectedStructure: '1', structures: [{ id: '1', wantedLoan: 5000 }] },
+          {
+            selectedStructure: '1',
+            structures: [{ id: '1', wantedLoan: 5000 }],
+          },
           {
             selectedStructure: '1',
             structures: [{ id: '1', wantedLoan: 4000 }],
@@ -149,7 +152,6 @@ describe('monitoring', () => {
                 expectedAt: moment('2018/03/02', 'YYYY/MM/DD').toDate(),
                 paidAt: moment('2018/04/02', 'YYYY/MM/DD').toDate(),
               },
-              { amount: 400 },
               {
                 amount: 500,
                 expectedAt: moment('2018/05/02', 'YYYY/MM/DD').toDate(),
@@ -174,9 +176,9 @@ describe('monitoring', () => {
       expect(result).to.deep.equal([
         {
           _id: { month: null, year: null },
-          revenues: 1000,
+          revenues: 600,
           paidRevenues: 600,
-          expectedRevenues: 400,
+          expectedRevenues: 0,
         },
         {
           _id: { month: 1, year: 2018 },
