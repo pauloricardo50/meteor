@@ -16,7 +16,7 @@ const start = new Process();
 runBackend(backend);
 
 const runMicroservice = () => {
-  process.env.DDP_DEFAULT_CONNECTION_URL = `http://192.168.1.69:${backendPort}`;
+  process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;
 
   start.spawn({
     command: 'meteor',
