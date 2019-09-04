@@ -3,6 +3,7 @@ import React from 'react';
 
 import NewLoansStat from './NewLoansStat';
 import LastSeenUsers from './LastSeenUsers';
+import OutdatedRevenues from './OutdatedRevenues';
 
 type AdminDashboardStatsProps = {};
 
@@ -17,6 +18,7 @@ const AdminDashboardStats = ({
   <div className="admin-stats">
     <NewLoansStat />
     <LastSeenUsers />
+    <OutdatedRevenues />
   </div>
 );
 

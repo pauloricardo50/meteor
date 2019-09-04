@@ -16,6 +16,7 @@ exposeQuery({
           sourceOrganisationId,
           organisationId,
           commissionStatus,
+          expectedAt,
         },
       }) => {
         if (_id) {
@@ -45,6 +46,10 @@ exposeQuery({
             };
           }
         }
+
+        if (expectedAt) {
+          filters.expectedAt = expectedAt;
+        }
       };
     },
     validateParams: {
@@ -54,6 +59,7 @@ exposeQuery({
       organisationId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(Object, String)),
       commissionStatus: Match.Maybe(Match.OneOf(Object, String)),
+      expectedAt: Match.Maybe(Match.OneOf(Object, Date)),
     },
   },
 });
