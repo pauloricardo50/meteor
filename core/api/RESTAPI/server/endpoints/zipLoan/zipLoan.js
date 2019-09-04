@@ -53,10 +53,33 @@ export const getFileName = ({
     })}${suffix}.${fileExtension}`;
 };
 
-const zipLoanFiles = (zip, { documents, name, additionalDocuments = [] }) => {
+const filterDocuments = (documentsToFilter, docId, documents) =>
+  Object.keys(documentsToFilter)
+    .filter(document => documents[docId].some(doc => document === doc))
+    .reduce(
+      (docs, document) => ({
+        ...docs,
+        [document]: documentsToFilter[document],
+      }),
+      {},
+    );
+
+const zipLoanFiles = ({
+  zip,
+  loan: { documents: loanDocuments, name, additionalDocuments = [], _id },
+  documents,
+  options,
+}) => {
+  const filteredDocuments = filterDocuments(
+    loanDocuments,
+    _id,
+    documents,
+    options,
+  );
   zipDocuments({
     zip,
-    documents,
+    documents: filteredDocuments,
+    options,
     formatFileName: (
       { name: originalName, Key, adminname: adminName },
       index,
@@ -76,13 +99,28 @@ const zipLoanFiles = (zip, { documents, name, additionalDocuments = [] }) => {
   });
 };
 
-const zipBorrowerFiles = (
+const zipBorrowerFiles = ({
   zip,
-  { documents = {}, firstName, lastName, name, additionalDocuments = [] },
-) => {
+  borrower: {
+    documents: borrowerDocuments = {},
+    firstName,
+    lastName,
+    name,
+    additionalDocuments = [],
+    _id,
+  },
+  documents,
+  options,
+}) => {
+  const filteredDocuments = filterDocuments(
+    borrowerDocuments,
+    _id,
+    documents,
+    options,
+  );
   zipDocuments({
     zip,
-    documents,
+    documents: filteredDocuments,
     formatFileName: (
       { Key, name: originalName, adminname: adminName },
       index,
@@ -102,16 +140,30 @@ const zipBorrowerFiles = (
       });
       return `${name}/${fileName}`;
     },
+    options,
   });
 };
 
-const zipPropertyFiles = (
+const zipPropertyFiles = ({
   zip,
-  { documents = {}, address1, additionalDocuments = [] } = {},
-) =>
+  property: {
+    documents: propertyDocuments = {},
+    address1,
+    additionalDocuments = [],
+    _id,
+  } = {},
+  documents,
+  options,
+}) => {
+  const filteredDocuments = filterDocuments(
+    propertyDocuments,
+    _id,
+    documents,
+    options,
+  );
   zipDocuments({
     zip,
-    documents,
+    documents: filteredDocuments,
     formatFileName: ({ Key, name, adminname: adminName }, index, total) => {
       const prefix = `${address1} `;
       const fileName = getFileName({
@@ -125,24 +177,32 @@ const zipPropertyFiles = (
       });
       return `${address1}/${fileName}`;
     },
+    options,
   });
+};
 
-export const generateLoanZip = (zip, loan, res) => {
+export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
   const { properties = [], borrowers = [], structure = {} } = loan;
   res.writeHead(200, {
     'Content-Disposition': `attachment; filename=${loan.name}.zip`,
   });
   zip.pipe(res);
-  zipLoanFiles(zip, loan);
-  borrowers.forEach(borrower => zipBorrowerFiles(zip, borrower));
-  zipPropertyFiles(
+  zipLoanFiles({ zip, loan, documents, options });
+  borrowers.forEach(borrower =>
+    zipBorrowerFiles({ zip, borrower, documents, options }));
+  zipPropertyFiles({
     zip,
-    properties.find(({ _id }) => _id === structure.propertyId),
-  );
+    property: properties.find(({ _id }) => _id === structure.propertyId),
+    documents,
+    options,
+  });
   zip.finalize();
 };
 
-const zipLoan = ({ res, simpleAuthParams: { loanId, userId } }) => {
+const zipLoan = ({
+  res,
+  simpleAuthParams: { loanId, userId, documents, options },
+}) => {
   withMeteorUserId({ userId }, () => {
     const zip = new archiver.create('zip');
 
@@ -162,7 +222,7 @@ const zipLoan = ({ res, simpleAuthParams: { loanId, userId } }) => {
       name: 1,
     });
 
-    generateLoanZip(zip, loan, res);
+    generateLoanZip({ zip, loan, documents, options, res });
   });
   return Promise.resolve(RESPONSE_ALREADY_SENT);
 };
