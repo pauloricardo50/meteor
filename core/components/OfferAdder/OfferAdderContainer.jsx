@@ -1,4 +1,3 @@
-import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
 
@@ -146,16 +145,16 @@ const schema = lenders =>
     enableOffer: { type: Boolean, defaultValue: true, optional: true },
   });
 
-const getStandardRatesKeys = key => !key.includes('discount_');
-const getDiscountRatesKeys = key => !getStandardRatesKeys(key);
+const isStandardRatesKeys = key => !key.includes('discount_');
+const isDiscountRatesKeys = key => !isStandardRatesKeys(key);
 
 const filterRates = ({ isCounterPartOffer, hasFlatDiscount }) => (key) => {
   if (isCounterPartOffer) {
     return hasFlatDiscount
-      ? getStandardRatesKeys(key)
-      : getDiscountRatesKeys(key);
+      ? isStandardRatesKeys(key)
+      : isDiscountRatesKeys(key);
   }
-  return getStandardRatesKeys(key);
+  return isStandardRatesKeys(key);
 };
 
 const reformatInterestRatesObject = ({
@@ -163,18 +162,19 @@ const reformatInterestRatesObject = ({
   isCounterPartOffer,
   hasFlatDiscount,
   flatDiscount,
-}) =>
-  Object.keys(interestRates)
-    .filter(filterRates({ isCounterPartOffer, hasFlatDiscount }))
-    .reduce(
-      (rates, key) => ({
-        ...rates,
-        [key.split('discount_')[1]]: hasFlatDiscount
-          ? interestRates[key.split('discount_')[1]] - flatDiscount
-          : interestRates[key],
-      }),
-      {},
-    );
+}) => Object.keys(interestRates)
+  .filter(filterRates({ isCounterPartOffer, hasFlatDiscount }))
+  .reduce((rates, key) => {
+    const interestRateType = isDiscountRatesKeys(key)
+      ? key.split('discount_')[1]
+      : key;
+    return {
+      ...rates,
+      [interestRateType]: hasFlatDiscount
+        ? interestRates[interestRateType] - flatDiscount
+        : interestRates[key],
+    };
+  }, {});
 
 const mapValuesToOffer = ({
   withCounterparts,
