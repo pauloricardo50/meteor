@@ -17,15 +17,22 @@ export const getFileName = ({
   total,
   adminName,
   prefix = '',
+  label,
 }) => {
   const fileExtension = Key.split('.').slice(-1)[0];
+
+  if (label) {
+    return `${prefix}${label}.${fileExtension}`;
+  }
 
   if (adminName) {
     return `${prefix}${adminName}.${fileExtension}`;
   }
 
   const document = Key.split('/').slice(-2, -1)[0];
-  const suffix = total > 1 ? ` (${index + 1} sur ${total})` : '';
+  const suffix = total > 1 && document !== DOCUMENTS.OTHER
+    ? ` (${index + 1} sur ${total})`
+    : '';
 
   return document === DOCUMENTS.OTHER
     || !Object.keys(DOCUMENTS_CATEGORIES)
@@ -48,7 +55,7 @@ const zipLoanFiles = (zip, { documents, name }) => {
     zip,
     documents,
     formatFileName: (
-      { name: originalName, Key, adminname: adminName },
+      { name: originalName, Key, adminname: adminName, label },
       index,
       total,
     ) => {
@@ -58,6 +65,7 @@ const zipLoanFiles = (zip, { documents, name }) => {
         index,
         total,
         adminName,
+        label,
       });
 
       return `${name}/${filename}`;
@@ -73,7 +81,7 @@ const zipBorrowerFiles = (
     zip,
     documents,
     formatFileName: (
-      { Key, name: originalName, adminname: adminName },
+      { Key, name: originalName, adminname: adminName, label },
       index,
       total,
     ) => {
@@ -87,6 +95,7 @@ const zipBorrowerFiles = (
         index,
         total,
         prefix,
+        label,
       });
       return `${name}/${fileName}`;
     },
@@ -97,7 +106,11 @@ const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
   zipDocuments({
     zip,
     documents,
-    formatFileName: ({ Key, name, adminname: adminName }, index, total) => {
+    formatFileName: (
+      { Key, name, adminname: adminName, label },
+      index,
+      total,
+    ) => {
       const prefix = `${address1} `;
       const fileName = getFileName({
         Key,
@@ -106,6 +119,7 @@ const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
         index,
         total,
         prefix,
+        label,
       });
       return `${address1}/${fileName}`;
     },

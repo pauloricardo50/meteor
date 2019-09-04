@@ -25,7 +25,7 @@ class ZipMock {
   }
 }
 
-describe('zipLoan', () => {
+describe.only('zipLoan', () => {
   let zip;
   let spy;
 
@@ -197,6 +197,10 @@ describe('zipLoan', () => {
                   Key: `borrower1/${DOCUMENTS.OTHER}/otherDoc.pdf`,
                   name: 'borrowerOtherDocName.pdf',
                 },
+                {
+                  Key: `borrower1/${DOCUMENTS.OTHER}/otherDoc2.pdf`,
+                  label: 'Other doc',
+                },
               ],
             },
           },
@@ -251,6 +255,7 @@ describe('zipLoan', () => {
         'Bob Dylan/BD customLegitimationCardAdminName.pdf',
         'Bob Dylan/BD Carte de Légitimation (2 sur 2).pdf',
         'Bob Dylan/BD borrowerOtherDocName.pdf',
+        'Bob Dylan/BD Other doc.pdf',
         "Barbra Streisand/BS Pièce d'identité.pdf",
         'propertyAddress/propertyAddress Extrait du registre foncier.pdf',
       ]);
