@@ -283,6 +283,10 @@ export class FinanceCalculator {
     }, 0);
   }
 
+  getAmountToAmortize({ borrowRatio }) {
+    return borrowRatio - this.amortizationGoal;
+  }
+
   getAmortizationRateBase({
     borrowRatio = 0,
     amortizationYears = this.amortizationYears,
@@ -291,7 +295,10 @@ export class FinanceCalculator {
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
       // whichever comes first
-      const amountToAmortize = borrowRatio - this.amortizationGoal;
+      const amountToAmortize = this.getAmountToAmortize({
+        borrowRatio,
+        cacheFix: this.amortizationGoal,
+      });
 
       // Make sure we don't create a black hole, or use negative values by error
       if (amortizationYears > 0) {

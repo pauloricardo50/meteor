@@ -6,6 +6,7 @@ import {
   OWN_FUNDS_USAGE_TYPES,
   INTEREST_RATES,
   EXPENSES,
+  OWN_FUNDS_TYPES,
 } from '../../../api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
@@ -303,6 +304,67 @@ describe('LoanCalculator', () => {
         offerOverride: { amortizationGoal: 0.5, amortizationYears: 10 },
         structureId: 'asdf',
       })).to.equal(1250);
+    });
+
+    it('does not amortize pledged cash', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structures: [
+            {
+              id: 'asdf',
+              wantedLoan: 1080000,
+              propertyWork: 0,
+              propertyId: 'prop',
+              ownFunds: [
+                { value: 180000, type: OWN_FUNDS_TYPES.BANK_FORTUNE },
+                {
+                  value: 80000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_2,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+                {
+                  value: 40000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_3A,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+              ],
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1200000 }],
+        },
+        structureId: 'asdf',
+      })).to.be.within(1444, 1445);
+    });
+
+    it.only('does not amortize pledged cash with an offer', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structures: [
+            {
+              id: 'asdf',
+              wantedLoan: 1080000,
+              propertyWork: 0,
+              propertyId: 'prop',
+              ownFunds: [
+                { value: 180000, type: OWN_FUNDS_TYPES.BANK_FORTUNE },
+                {
+                  value: 80000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_2,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+                {
+                  value: 40000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_3A,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+              ],
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1200000 }],
+        },
+        offerOverride: { amortizationGoal: 0.7, amortizationYears: 10 },
+        structureId: 'asdf',
+      })).to.be.within(1666, 1667);
     });
   });
 
