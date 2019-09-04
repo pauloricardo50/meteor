@@ -17,9 +17,13 @@ export const getFileName = ({
   total,
   adminName,
   prefix = '',
-  label,
+  additionalDocuments = [],
 }) => {
   const fileExtension = Key.split('.').slice(-1)[0];
+
+  const document = Key.split('/').slice(-2, -1)[0];
+
+  const { label } = additionalDocuments.find(({ id }) => id === document) || {};
 
   if (label) {
     return `${prefix}${label}.${fileExtension}`;
@@ -29,7 +33,6 @@ export const getFileName = ({
     return `${prefix}${adminName}.${fileExtension}`;
   }
 
-  const document = Key.split('/').slice(-2, -1)[0];
   const suffix = total > 1 && document !== DOCUMENTS.OTHER
     ? ` (${index + 1} sur ${total})`
     : '';
@@ -50,12 +53,12 @@ export const getFileName = ({
     })}${suffix}.${fileExtension}`;
 };
 
-const zipLoanFiles = (zip, { documents, name }) => {
+const zipLoanFiles = (zip, { documents, name, additionalDocuments = [] }) => {
   zipDocuments({
     zip,
     documents,
     formatFileName: (
-      { name: originalName, Key, adminname: adminName, label },
+      { name: originalName, Key, adminname: adminName },
       index,
       total,
     ) => {
@@ -65,7 +68,7 @@ const zipLoanFiles = (zip, { documents, name }) => {
         index,
         total,
         adminName,
-        label,
+        additionalDocuments,
       });
 
       return `${name}/${filename}`;
@@ -75,13 +78,13 @@ const zipLoanFiles = (zip, { documents, name }) => {
 
 const zipBorrowerFiles = (
   zip,
-  { documents = {}, firstName, lastName, name },
+  { documents = {}, firstName, lastName, name, additionalDocuments = [] },
 ) => {
   zipDocuments({
     zip,
     documents,
     formatFileName: (
-      { Key, name: originalName, adminname: adminName, label },
+      { Key, name: originalName, adminname: adminName },
       index,
       total,
     ) => {
@@ -95,22 +98,21 @@ const zipBorrowerFiles = (
         index,
         total,
         prefix,
-        label,
+        additionalDocuments,
       });
       return `${name}/${fileName}`;
     },
   });
 };
 
-const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
+const zipPropertyFiles = (
+  zip,
+  { documents = {}, address1, additionalDocuments = [] } = {},
+) =>
   zipDocuments({
     zip,
     documents,
-    formatFileName: (
-      { Key, name, adminname: adminName, label },
-      index,
-      total,
-    ) => {
+    formatFileName: ({ Key, name, adminname: adminName }, index, total) => {
       const prefix = `${address1} `;
       const fileName = getFileName({
         Key,
@@ -119,7 +121,7 @@ const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
         index,
         total,
         prefix,
-        label,
+        additionalDocuments,
       });
       return `${address1}/${fileName}`;
     },
@@ -146,10 +148,17 @@ const zipLoan = ({ res, simpleAuthParams: { loanId, userId } }) => {
 
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
-      borrowers: { firstName: 1, lastName: 1, name: 1, documents: 1 },
-      properties: { address1: 1, documents: 1 },
+      borrowers: {
+        firstName: 1,
+        lastName: 1,
+        name: 1,
+        documents: 1,
+        additionalDocuments: 1,
+      },
+      properties: { address1: 1, documents: 1, additionalDocuments: 1 },
       structure: 1,
       documents: 1,
+      additionalDocuments: 1,
       name: 1,
     });
 

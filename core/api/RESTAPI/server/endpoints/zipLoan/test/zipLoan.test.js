@@ -197,12 +197,19 @@ describe('zipLoan', () => {
                   Key: `borrower1/${DOCUMENTS.OTHER}/otherDoc.pdf`,
                   name: 'borrowerOtherDocName.pdf',
                 },
+              ],
+              customDoc: [
                 {
-                  Key: `borrower1/${DOCUMENTS.OTHER}/otherDoc2.pdf`,
-                  label: 'Other doc',
+                  Key: 'borrower1/customDoc/otherDoc2.pdf',
                 },
               ],
             },
+            additionalDocuments: [
+              {
+                id: 'customDoc',
+                label: 'Other doc',
+              },
+            ],
           },
           {
             _id: 'borrower2',
