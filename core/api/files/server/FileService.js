@@ -105,11 +105,15 @@ class FileService {
   getZipLoanUrl = ({ userId, loanId }) => {
     const timestamp = moment().unix();
     const token = getSimpleAuthToken({
-      'user-id': userId,
-      'loan-id': loanId,
-      timestamp: timestamp.toString(),
+      userId,
+      loanId,
+      timestamp,
     });
-    return `${Meteor.settings.public.subdomains.backend}/api/zip-loan/?loan-id=${loanId}&user-id=${userId}&timestamp=${timestamp}&token=${token}`;
+    const simpleAuthParams = { loanId, userId, timestamp, token };
+
+    return `${
+      Meteor.settings.public.subdomains.backend
+    }/api/zip-loan/?simple-auth-params=${Buffer.from(JSON.stringify(simpleAuthParams)).toString('base64')}`;
   };
 
   setAdminName = ({ Key, adminName = '' }) =>

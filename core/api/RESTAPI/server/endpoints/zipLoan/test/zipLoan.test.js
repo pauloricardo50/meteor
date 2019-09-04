@@ -25,7 +25,7 @@ class ZipMock {
   }
 }
 
-describe.only('zipLoan', () => {
+describe('zipLoan', () => {
   let zip;
   let spy;
 

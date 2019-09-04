@@ -140,7 +140,7 @@ export const generateLoanZip = (zip, loan, res) => {
   zip.finalize();
 };
 
-const zipLoan = ({ res, query: { 'loan-id': loanId, 'user-id': userId } }) => {
+const zipLoan = ({ res, simpleAuthParams: { loanId, userId } }) => {
   withMeteorUserId({ userId }, () => {
     const zip = new archiver.create('zip');
 
