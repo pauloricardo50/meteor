@@ -102,14 +102,16 @@ class FileService {
       .then(() => this.listFilesForDoc(docId))
       .then(files => ({ deletedFiles: [{ Key: key }], remainingFiles: files }));
 
-  getZipLoanUrl = ({ userId, loanId }) => {
+  getZipLoanUrl = ({ userId, loanId, documents, options }) => {
     const timestamp = moment().unix();
     const token = getSimpleAuthToken({
       userId,
       loanId,
       timestamp,
+      documents,
+      options,
     });
-    const simpleAuthParams = { loanId, userId, timestamp, token };
+    const simpleAuthParams = { loanId, userId, timestamp, documents, options, token };
 
     return `${
       Meteor.settings.public.subdomains.backend

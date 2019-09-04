@@ -1,19 +1,20 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import { withProps } from 'recompose';
 
-import { getZipLoanUrl } from 'core/api/methods/index';
+import { ModalManagerContext } from 'core/components/ModalManager';
 import Calculator from 'core/utils/Calculator';
-import Button from '../Button';
+import Button from '../../Button';
+import ZipLoanModal from './ZipLoanModal';
 
 type ZipLoanProps = {
   loan: Object,
-  downloadZip: Function,
   shouldDisableButton: Function,
 };
 
-const ZipLoan = ({ downloadZip, shouldDisableButton }: ZipLoanProps) => {
+const ZipLoan = ({ shouldDisableButton, loan }: ZipLoanProps) => {
   const disabled = shouldDisableButton();
+  const { openModal } = useContext(ModalManagerContext);
 
   return (
     <div className="zip-loan">
@@ -21,7 +22,17 @@ const ZipLoan = ({ downloadZip, shouldDisableButton }: ZipLoanProps) => {
         label="Télécharger tous les documents"
         secondary
         raised
-        onClick={downloadZip}
+        onClick={() =>
+          openModal([
+            {
+              title: 'Télécharger tous les documents',
+              content: ({ closeModal }) => (
+                <ZipLoanModal closeModal={closeModal} loan={loan} />
+              ),
+              actions: [],
+            },
+          ])
+        }
         disabled={disabled}
         tooltip={
           disabled
@@ -49,10 +60,5 @@ export default withProps(({ loan }) => ({
       return true;
     }
     return false;
-  },
-  downloadZip: () => {
-    getZipLoanUrl.run({ loanId: loan._id }).then((url) => {
-      window.open(url);
-    });
   },
 }))(ZipLoan);
