@@ -1,4 +1,4 @@
-import { getUserNameAndOrganisation } from 'core/api/helpers/index';
+import { getUserNameAndOrganisation } from '../../helpers';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
@@ -23,6 +23,16 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
+const newUserTask = ({ userId, ...params }) =>
+  TaskService.insert({
+    object: {
+      title: 'Assigner un conseiller',
+      docId: userId,
+      collection: USERS_COLLECTION,
+      ...params,
+    },
+  });
+
 ServerEventService.addAfterMethodListener(
   [adminCreateUser, anonymousCreateUser],
   ({ result: userId }) => {
@@ -32,31 +42,20 @@ ServerEventService.addAfterMethodListener(
         assignedEmployeeId: 1,
       });
 
-      if (user && !user.assignedEmployeeId) {
-        TaskService.insert({
-          object: {
-            title: 'Assigner un conseiller',
-            docId: userId,
-            collection: USERS_COLLECTION,
-          },
-        });
-      } else {
-        TaskService.insert({
-          object: {
-            title: 'Nouveau compte utilisateur: prendre contact',
-            docId: userId,
-            collection: USERS_COLLECTION,
-          },
-        });
-      }
+      newUserTask({ userId });
     }
   },
 );
 
 ServerEventService.addAfterMethodListener(
   proInviteUser,
-  ({ result: userId, context: { userId: proId } }) => {
+  async ({ result: userId, context: { userId: proId } }) => {
     if (userId) {
+      if (typeof userId.then === 'function') {
+        // The result of the meteor method can be a promise
+        userId = await userId;
+      }
+
       const user = UserService.fetchOne({
         $filters: { _id: userId },
         assignedEmployeeId: 1,
@@ -72,22 +71,12 @@ ServerEventService.addAfterMethodListener(
         isNewUser = false;
       }
 
-      if (user && !user.assignedEmployeeId) {
-        TaskService.insert({
-          object: {
-            title: 'Assigner un conseiller',
-            docId: userId,
-            collection: USERS_COLLECTION,
-          },
-        });
-      } else if (isNewUser) {
-        TaskService.insert({
-          object: {
-            title: 'Nouveau compte utilisateur: prendre contact',
-            docId: userId,
-            collection: USERS_COLLECTION,
-            description: `Invitation par ${getUserNameAndOrganisation(pro)}`,
-          },
+      if (isNewUser) {
+        newUserTask({
+          userId,
+          description: `Invitation par ${getUserNameAndOrganisation({
+            user: pro,
+          })}`,
         });
       } else {
         TaskService.insert({
@@ -95,7 +84,9 @@ ServerEventService.addAfterMethodListener(
             title: "Invitation d'un client déjà existant",
             docId: userId,
             collection: USERS_COLLECTION,
-            description: `Invitation par ${getUserNameAndOrganisation(pro)}`,
+            description: `Invitation par ${getUserNameAndOrganisation({
+              user: pro,
+            })}`,
           },
         });
       }

@@ -267,15 +267,17 @@ export class UserServiceClass extends CollectionService {
     const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
-    return sendEmail.run({
-      emailId: EMAIL_IDS.REFER_USER,
-      userId,
-      params: {
-        proUserId,
-        proName: getUserNameAndOrganisation({ user: pro }),
-        ctaUrl: this.getEnrollmentUrl({ userId }),
-      },
-    });
+    return sendEmail
+      .run({
+        emailId: EMAIL_IDS.REFER_USER,
+        userId,
+        params: {
+          proUserId,
+          proName: getUserNameAndOrganisation({ user: pro }),
+          ctaUrl: this.getEnrollmentUrl({ userId }),
+        },
+      })
+      .then(() => userId);
   };
 
   proCreateUser = ({
@@ -429,7 +431,7 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => userId);
   };
 
   getEnrollmentUrl({ userId }) {
