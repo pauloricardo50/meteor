@@ -15,6 +15,22 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 
+const now = moment();
+export const formatDateTime = (date, toNow) => {
+  const momentDate = moment(date);
+  const text = date ? momentDate.format("D MMM 'YY") : '-';
+
+  if (momentDate.isBefore(now)) {
+    return (
+      <span className="error-box" style={{ whiteSpace: 'nowrap' }}>
+        {text}
+      </span>
+    );
+  }
+
+  return text;
+};
+
 const getColumnOptions = ({
   displayLoan,
   displayActions,
@@ -76,7 +92,7 @@ export const makeMapRevenue = ({
       },
       {
         raw: date && date.getTime(),
-        label: date && moment(date).format('DD MMM YYYY'),
+        label: date && formatDateTime(date),
       },
       {
         raw: type,

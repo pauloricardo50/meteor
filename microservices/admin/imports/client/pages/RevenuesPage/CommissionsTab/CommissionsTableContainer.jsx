@@ -90,6 +90,6 @@ export default compose(
       { id: 'actions' },
     ],
     rows: rows.reduce(addCommissionRows, []),
-    initialOrderBy: 2,
+    initialOrderBy: 4,
   })),
 );
