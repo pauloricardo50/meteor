@@ -241,6 +241,7 @@ export const loan = () => ({
   previousLoanTranches: 1,
   promotions: {
     address: 1,
+    canton: 1,
     contacts: 1,
     lenderOrganisationLink: 1,
     name: 1,
