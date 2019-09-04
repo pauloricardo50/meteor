@@ -14,24 +14,29 @@ type OutdatedRevenuesProps = {};
 
 const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
+  const isOk = revenues.length === 0;
 
   return (
     <StatItem
       value={<CountUp end={total} prefix="CHF " preserveValue separator=" " />}
       increment={`${revenues.length} revenus`}
-      positive={revenues.length === 0}
+      positive={isOk}
       title="Revenus en retard"
-      top={(
-        <Button
-          primary
-          link
-          to={createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, {
-            tabId: 'revenues',
-          })}
-        >
-          Résoudre le problème
-        </Button>
-      )}
+      top={
+        isOk ? (
+          <p>Tout est bon!</p>
+        ) : (
+          <Button
+            primary
+            link
+            to={createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, {
+              tabId: 'revenues',
+            })}
+          >
+            Résoudre le problème
+          </Button>
+        )
+      }
     />
   );
 };
