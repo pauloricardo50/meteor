@@ -70,7 +70,6 @@ export default class PopoverStickOnHover extends React.Component {
           show={show}
           placement={placement}
           target={this.ref.current}
-          shouldUpdatePosition
           transition={null}
           animation={null}
         >

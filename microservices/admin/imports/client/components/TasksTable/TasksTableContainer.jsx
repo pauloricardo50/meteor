@@ -14,7 +14,6 @@ import { ORDER } from 'core/utils/sortArrayOfObjects';
 import Linkify from 'core/components/Linkify';
 import TasksTableActions from './TasksTableActions';
 
-
 const now = moment();
 export const formatDateTime = (date, toNow) => {
   const momentDate = moment(date);
@@ -26,7 +25,6 @@ export const formatDateTime = (date, toNow) => {
 
   return text;
 };
-
 
 const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
   [
