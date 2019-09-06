@@ -117,7 +117,7 @@ export default compose(
         .run({ revenueId, object })
         .then(() => {
           setOpen(false);
-          import('../../../../../core/utils/message').then(({ default: message }) => {
+          import('../../../core/utils/message').then(({ default: message }) => {
             message.success("C'est dans la boîte !", 2);
           });
         })
