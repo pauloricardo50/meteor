@@ -59,9 +59,9 @@ updateDocumentsCache.setHandler((context, params) => {
   return FileService.updateDocumentsCache(params);
 });
 
-getZipLoanUrl.setHandler(({ userId }, { loanId }) => {
+getZipLoanUrl.setHandler(({ userId }, { loanId, documents, options }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return FileService.getZipLoanUrl({ userId, loanId });
+  return FileService.getZipLoanUrl({ userId, loanId, documents, options });
 });
 
 setFileAdminName.setHandler((context, params) => {
@@ -72,9 +72,11 @@ setFileAdminName.setHandler((context, params) => {
 
 moveFile.setHandler((context, { Key, status, oldCollection, newId, newDocId, newCollection }) => {
   context.unblock();
-  const oldDocId = Key.split('/')[0];
-  const oldId = Key.split('/')[1];
-  const name = Key.split('/')[2];
+  const {
+    docId: oldDocId,
+    documentId: oldId,
+    fileName: name,
+  } = FileService.getKeyParts(Key);
 
   SecurityService.isAllowedToModifyFiles({
     collection: oldCollection,

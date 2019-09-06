@@ -99,9 +99,7 @@ describe('REST: inviteUserToPromotion', function () {
     return inviteUser({
       userData: userToInvite,
       expectedResponse: {
-        message: `Successfully invited user "${
-          userToInvite.email
-        }" to promotion id "${promotionId}"`,
+        message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
     }).then(() => {
@@ -123,9 +121,7 @@ describe('REST: inviteUserToPromotion', function () {
       userData: userToInvite,
       shareSolvency: true,
       expectedResponse: {
-        message: `Successfully invited user "${
-          userToInvite.email
-        }" to promotion id "${promotionId}"`,
+        message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
     }).then(() => {
@@ -221,16 +217,14 @@ describe('REST: inviteUserToPromotion', function () {
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          message: `Successfully invited user "${
-            userToInvite.email
-          }" to promotion id "${promotionId}"`,
+          message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
         },
       }).then(() =>
         inviteUser({
           userData: userToInvite,
           expectedResponse: {
             status: HTTP_STATUS_CODES.CONFLICT,
-            message: 'Ce compte est déjà invité à cette promotion [409]',
+            message: 'Ce client est déjà invité à cette promotion [409]',
           },
         }));
     });

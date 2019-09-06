@@ -9,6 +9,7 @@ import {
 } from '../../../../files/fileConstants';
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
+import FileService from '../../../../files/server/FileService';
 
 export const getFileName = ({
   Key,
@@ -17,17 +18,26 @@ export const getFileName = ({
   total,
   adminName,
   prefix = '',
+  root = '',
+  additionalDocuments = [],
 }) => {
-  const fileExtension = Key.split('.').slice(-1)[0];
+  const { extension, documentId } = FileService.getKeyParts(Key);
 
-  if (adminName) {
-    return `${prefix}${adminName}.${fileExtension}`;
+  const { label } = additionalDocuments.find(({ id }) => id === documentId) || {};
+
+  if (label) {
+    return `${root}${prefix}${label}.${extension}`;
   }
 
-  const document = Key.split('/').slice(-2, -1)[0];
-  const suffix = total > 1 ? ` (${index + 1} sur ${total})` : '';
+  if (adminName) {
+    return `${root}${prefix}${adminName}.${extension}`;
+  }
 
-  return document === DOCUMENTS.OTHER
+  const suffix = total > 1 && documentId !== DOCUMENTS.OTHER
+    ? ` (${index + 1} sur ${total})`
+    : '';
+
+  return documentId === DOCUMENTS.OTHER
     || !Object.keys(DOCUMENTS_CATEGORIES)
       .reduce(
         (allCategories, cat) => [
@@ -36,110 +46,165 @@ export const getFileName = ({
         ],
         [],
       )
-      .includes(document)
-    ? `${prefix}${name.split('.').slice(0, -1)[0]}${suffix}.${fileExtension}`
-    : `${prefix}${Intl.formatMessage({
-      id: `files.${document}`,
-    })}${suffix}.${fileExtension}`;
+      .includes(documentId)
+    ? `${root}${prefix}${name.split('.').slice(0, -1)[0]}${suffix}.${extension}`
+    : `${root}${prefix}${Intl.formatMessage({
+      id: `files.${documentId}`,
+    })}${suffix}.${extension}`;
 };
 
-const zipLoanFiles = (zip, { documents, name }) => {
-  zipDocuments({
-    zip,
-    documents,
-    formatFileName: (
-      { name: originalName, Key, adminname: adminName },
-      index,
-      total,
-    ) => {
-      const filename = getFileName({
-        Key,
-        name: originalName,
-        index,
-        total,
-        adminName,
-      });
-
-      return `${name}/${filename}`;
-    },
+const makeFormatFileName = ({ root, additionalDocuments, prefix }) => (
+  { name: originalName, Key, adminname: adminName },
+  index,
+  total,
+) =>
+  getFileName({
+    Key,
+    name: originalName,
+    index,
+    total,
+    adminName,
+    additionalDocuments,
+    root,
+    prefix,
   });
-};
 
-const zipBorrowerFiles = (
+const filterDocuments = (documentsToFilter, docId, documents) =>
+  Object.keys(documentsToFilter)
+    .filter(document => documents[docId].some(doc => document === doc))
+    .reduce(
+      (docs, document) => ({
+        ...docs,
+        [document]: documentsToFilter[document],
+      }),
+      {},
+    );
+
+const zipLoanFiles = ({
   zip,
-  { documents = {}, firstName, lastName, name },
-) => {
+  loan: { documents: loanDocuments, name, additionalDocuments = [], _id },
+  documents,
+  options,
+}) => {
+  const filteredDocuments = filterDocuments(
+    loanDocuments,
+    _id,
+    documents,
+    options,
+  );
   zipDocuments({
     zip,
-    documents,
-    formatFileName: (
-      { Key, name: originalName, adminname: adminName },
-      index,
-      total,
-    ) => {
-      const prefix = `${firstName.toUpperCase()[0]}${
-        lastName.toUpperCase()[0]
-      } `;
-      const fileName = getFileName({
-        Key,
-        name: originalName,
-        adminName,
-        index,
-        total,
-        prefix,
-      });
-      return `${name}/${fileName}`;
-    },
+    documents: filteredDocuments,
+    options,
+    formatFileName: makeFormatFileName({
+      root: `${name}/`,
+      additionalDocuments,
+    }),
   });
 };
 
-const zipPropertyFiles = (zip, { documents = {}, address1 } = {}) =>
+const zipBorrowerFiles = ({
+  zip,
+  borrower: {
+    documents: borrowerDocuments = {},
+    firstName,
+    lastName,
+    name,
+    additionalDocuments = [],
+    _id,
+  },
+  documents,
+  options,
+}) => {
+  const filteredDocuments = filterDocuments(
+    borrowerDocuments,
+    _id,
+    documents,
+    options,
+  );
   zipDocuments({
     zip,
-    documents,
-    formatFileName: ({ Key, name, adminname: adminName }, index, total) => {
-      const prefix = `${address1} `;
-      const fileName = getFileName({
-        Key,
-        name,
-        adminName,
-        index,
-        total,
-        prefix,
-      });
-      return `${address1}/${fileName}`;
-    },
+    documents: filteredDocuments,
+    options,
+    formatFileName: makeFormatFileName({
+      root: `${name}/`,
+      additionalDocuments,
+      prefix: `${firstName.toUpperCase()[0]}${lastName.toUpperCase()[0]} `,
+    }),
   });
+};
 
-export const generateLoanZip = (zip, loan, res) => {
+const zipPropertyFiles = ({
+  zip,
+  property: {
+    documents: propertyDocuments = {},
+    address1,
+    additionalDocuments = [],
+    _id,
+  } = {},
+  documents,
+  options,
+}) => {
+  const filteredDocuments = filterDocuments(
+    propertyDocuments,
+    _id,
+    documents,
+    options,
+  );
+  zipDocuments({
+    zip,
+    documents: filteredDocuments,
+    options,
+    formatFileName: makeFormatFileName({
+      root: `${address1}/`,
+      additionalDocuments,
+      prefix: `${address1} `,
+    }),
+  });
+};
+
+export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
   const { properties = [], borrowers = [], structure = {} } = loan;
   res.writeHead(200, {
     'Content-Disposition': `attachment; filename=${loan.name}.zip`,
   });
   zip.pipe(res);
-  zipLoanFiles(zip, loan);
-  borrowers.forEach(borrower => zipBorrowerFiles(zip, borrower));
-  zipPropertyFiles(
+  zipLoanFiles({ zip, loan, documents, options });
+  borrowers.forEach(borrower =>
+    zipBorrowerFiles({ zip, borrower, documents, options }));
+  zipPropertyFiles({
     zip,
-    properties.find(({ _id }) => _id === structure.propertyId),
-  );
+    property: properties.find(({ _id }) => _id === structure.propertyId),
+    documents,
+    options,
+  });
   zip.finalize();
 };
 
-const zipLoan = ({ res, query: { 'loan-id': loanId, 'user-id': userId } }) => {
+const zipLoan = ({
+  res,
+  simpleAuthParams: { loanId, userId, documents, options },
+}) => {
   withMeteorUserId({ userId }, () => {
     const zip = new archiver.create('zip');
 
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
-      borrowers: { firstName: 1, lastName: 1, name: 1, documents: 1 },
-      properties: { address1: 1, documents: 1 },
+      borrowers: {
+        firstName: 1,
+        lastName: 1,
+        name: 1,
+        documents: 1,
+        additionalDocuments: 1,
+      },
+      properties: { address1: 1, documents: 1, additionalDocuments: 1 },
       structure: 1,
       documents: 1,
+      additionalDocuments: 1,
       name: 1,
     });
 
-    generateLoanZip(zip, loan, res);
+    generateLoanZip({ zip, loan, documents, options, res });
   });
   return Promise.resolve(RESPONSE_ALREADY_SENT);
 };
