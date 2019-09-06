@@ -66,7 +66,7 @@ describe('zipLoan', () => {
         zip,
         documents,
         formatFileName,
-        options: { validatedOnly: true },
+        options: { status: [FILE_STATUS.VALID] },
       });
 
       expect(spy.args).to.deep.equal([
@@ -308,7 +308,7 @@ describe('zipLoan', () => {
             DOCUMENTS.PROPERTY_VOLUME,
           ],
         },
-        options: { validatedOnly: true },
+        options: { status: [FILE_STATUS.VALID] },
         res: { writeHead: () => null },
       });
 

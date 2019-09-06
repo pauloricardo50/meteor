@@ -72,9 +72,11 @@ setFileAdminName.setHandler((context, params) => {
 
 moveFile.setHandler((context, { Key, status, oldCollection, newId, newDocId, newCollection }) => {
   context.unblock();
-  const oldDocId = Key.split('/')[0];
-  const oldId = Key.split('/')[1];
-  const name = Key.split('/')[2];
+  const {
+    docId: oldDocId,
+    documentId: oldId,
+    fileName: name,
+  } = FileService.getKeyParts(Key);
 
   SecurityService.isAllowedToModifyFiles({
     collection: oldCollection,

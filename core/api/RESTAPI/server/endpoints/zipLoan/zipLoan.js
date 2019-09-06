@@ -9,6 +9,7 @@ import {
 } from '../../../../files/fileConstants';
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
+import FileService from '../../../../files/server/FileService';
 
 export const getFileName = ({
   Key,
@@ -17,27 +18,26 @@ export const getFileName = ({
   total,
   adminName,
   prefix = '',
+  root = '',
   additionalDocuments = [],
 }) => {
-  const fileExtension = Key.split('.').slice(-1)[0];
+  const { extension, documentId } = FileService.getKeyParts(Key);
 
-  const document = Key.split('/').slice(-2, -1)[0];
-
-  const { label } = additionalDocuments.find(({ id }) => id === document) || {};
+  const { label } = additionalDocuments.find(({ id }) => id === documentId) || {};
 
   if (label) {
-    return `${prefix}${label}.${fileExtension}`;
+    return `${root}${prefix}${label}.${extension}`;
   }
 
   if (adminName) {
-    return `${prefix}${adminName}.${fileExtension}`;
+    return `${root}${prefix}${adminName}.${extension}`;
   }
 
-  const suffix = total > 1 && document !== DOCUMENTS.OTHER
+  const suffix = total > 1 && documentId !== DOCUMENTS.OTHER
     ? ` (${index + 1} sur ${total})`
     : '';
 
-  return document === DOCUMENTS.OTHER
+  return documentId === DOCUMENTS.OTHER
     || !Object.keys(DOCUMENTS_CATEGORIES)
       .reduce(
         (allCategories, cat) => [
@@ -46,12 +46,28 @@ export const getFileName = ({
         ],
         [],
       )
-      .includes(document)
-    ? `${prefix}${name.split('.').slice(0, -1)[0]}${suffix}.${fileExtension}`
-    : `${prefix}${Intl.formatMessage({
-      id: `files.${document}`,
-    })}${suffix}.${fileExtension}`;
+      .includes(documentId)
+    ? `${root}${prefix}${name.split('.').slice(0, -1)[0]}${suffix}.${extension}`
+    : `${root}${prefix}${Intl.formatMessage({
+      id: `files.${documentId}`,
+    })}${suffix}.${extension}`;
 };
+
+const makeFormatFileName = ({ root, additionalDocuments, prefix }) => (
+  { name: originalName, Key, adminname: adminName },
+  index,
+  total,
+) =>
+  getFileName({
+    Key,
+    name: originalName,
+    index,
+    total,
+    adminName,
+    additionalDocuments,
+    root,
+    prefix,
+  });
 
 const filterDocuments = (documentsToFilter, docId, documents) =>
   Object.keys(documentsToFilter)
@@ -80,22 +96,10 @@ const zipLoanFiles = ({
     zip,
     documents: filteredDocuments,
     options,
-    formatFileName: (
-      { name: originalName, Key, adminname: adminName },
-      index,
-      total,
-    ) => {
-      const filename = getFileName({
-        Key,
-        name: originalName,
-        index,
-        total,
-        adminName,
-        additionalDocuments,
-      });
-
-      return `${name}/${filename}`;
-    },
+    formatFileName: makeFormatFileName({
+      root: `${name}/`,
+      additionalDocuments,
+    }),
   });
 };
 
@@ -121,26 +125,12 @@ const zipBorrowerFiles = ({
   zipDocuments({
     zip,
     documents: filteredDocuments,
-    formatFileName: (
-      { Key, name: originalName, adminname: adminName },
-      index,
-      total,
-    ) => {
-      const prefix = `${firstName.toUpperCase()[0]}${
-        lastName.toUpperCase()[0]
-      } `;
-      const fileName = getFileName({
-        Key,
-        name: originalName,
-        adminName,
-        index,
-        total,
-        prefix,
-        additionalDocuments,
-      });
-      return `${name}/${fileName}`;
-    },
     options,
+    formatFileName: makeFormatFileName({
+      root: `${name}/`,
+      additionalDocuments,
+      prefix: `${firstName.toUpperCase()[0]}${lastName.toUpperCase()[0]} `,
+    }),
   });
 };
 
@@ -164,20 +154,12 @@ const zipPropertyFiles = ({
   zipDocuments({
     zip,
     documents: filteredDocuments,
-    formatFileName: ({ Key, name, adminname: adminName }, index, total) => {
-      const prefix = `${address1} `;
-      const fileName = getFileName({
-        Key,
-        name,
-        adminName,
-        index,
-        total,
-        prefix,
-        additionalDocuments,
-      });
-      return `${address1}/${fileName}`;
-    },
     options,
+    formatFileName: makeFormatFileName({
+      root: `${address1}/`,
+      additionalDocuments,
+      prefix: `${address1} `,
+    }),
   });
 };
 

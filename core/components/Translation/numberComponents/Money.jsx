@@ -34,18 +34,14 @@ const Money = ({
   tag: Tag,
   rounded,
   tooltip,
-}) =>
-  (tooltip ? (
-    <Tooltip title={tooltip}>
-      <Tag className={className}>
-        {getValue({ displayZero, value, currency, rounded })}
-      </Tag>
-    </Tooltip>
-  ) : (
+}) => {
+  const component = (
     <Tag className={className}>
       {getValue({ displayZero, value, currency, rounded })}
     </Tag>
-  ));
+  );
+  return tooltip ? <Tooltip title={tooltip}>{component}</Tooltip> : component;
+};
 
 Money.propTypes = {
   className: PropTypes.string,

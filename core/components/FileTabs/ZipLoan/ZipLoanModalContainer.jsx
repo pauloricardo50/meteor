@@ -6,6 +6,7 @@ import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
 import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
 import { getZipLoanUrl } from 'core/api/methods/index';
+import { FILE_STATUS } from 'core/api/constants';
 
 const getAllDocuments = (loan) => {
   const { borrowers = [], documents: loanDocs = {}, _id: loanId } = loan;
@@ -92,8 +93,8 @@ const getAutoFields = (loan) => {
       <h4>Options</h4>
       <p className="description secondary">Veuillez sélectionner les options</p>
       <CustomAutoField
-        name="validatedOnly"
-        overrideLabel="Télécharger uniquement les fichiers validés"
+        name="status"
+        overrideLabel="Télécharger uniquement les fichiers avec le status"
       />
       <br />
       <h4>Documents</h4>
@@ -120,7 +121,7 @@ const getAutoFields = (loan) => {
 
 const makeOnSubmit = (loan, closeModal) => (model) => {
   const { _id: loanId, borrowers = [] } = loan;
-  const { validatedOnly } = model;
+  const { status } = model;
   const docIds = [
     loanId,
     ...borrowers.map(({ _id }) => _id),
@@ -143,7 +144,7 @@ const makeOnSubmit = (loan, closeModal) => (model) => {
   );
 
   return getZipLoanUrl
-    .run({ loanId, documents, options: { validatedOnly } })
+    .run({ loanId, documents, options: { status } })
     .then((url) => {
       window.open(url);
     })
@@ -152,19 +153,26 @@ const makeOnSubmit = (loan, closeModal) => (model) => {
 
 export default compose(withProps(({ loan, closeModal }) => ({
   schema: new SimpleSchema({
-    validatedOnly: Boolean,
+    status: {
+      type: Array,
+      uniforms: {
+        checkboxes: true,
+        transform: status => <T id={`File.status.${status}`} />,
+      },
+    },
+    'status.$': {
+      type: String,
+      allowedValues: [FILE_STATUS.VALID, FILE_STATUS.UNVERIFIED],
+    },
     ...getAllDocuments(loan).reduce(
-      (docs, doc) => ({ ...docs, [doc]: Boolean }),
+      (docs, doc) => ({
+        ...docs,
+        [doc]: { type: Boolean, defaultValue: true },
+      }),
       {},
     ),
   }),
-  model: {
-    validatedOnly: true,
-    ...getAllDocuments(loan).reduce(
-      (docs, doc) => ({ ...docs, [doc]: true }),
-      {},
-    ),
-  },
   fields: getAutoFields(loan),
   onSubmit: makeOnSubmit(loan, closeModal),
+  model: { status: [FILE_STATUS.VALID] },
 })));
