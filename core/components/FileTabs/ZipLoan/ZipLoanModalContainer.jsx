@@ -94,7 +94,7 @@ const getAutoFields = (loan) => {
       <h4>Options</h4>
       <p className="description secondary">Veuillez sélectionner les options</p>
       <CustomAutoField
-        name="splitInChunks"
+        name="packFiles"
         overrideLabel="Grouper les fichiers par paquets de max. 10Mb"
       />
       <br />
@@ -127,7 +127,7 @@ const getAutoFields = (loan) => {
 
 const makeOnSubmit = (loan, closeModal) => (model) => {
   const { _id: loanId, borrowers = [] } = loan;
-  const { status, splitInChunks } = model;
+  const { status, packFiles } = model;
   const docIds = [
     loanId,
     ...borrowers.map(({ _id }) => _id),
@@ -150,7 +150,7 @@ const makeOnSubmit = (loan, closeModal) => (model) => {
   );
 
   return getZipLoanUrl
-    .run({ loanId, documents, options: { status, splitInChunks } })
+    .run({ loanId, documents, options: { status, packFiles } })
     .then((url) => {
       window.open(url);
     })
@@ -170,7 +170,7 @@ export default compose(withProps(({ loan, closeModal }) => ({
       type: String,
       allowedValues: [FILE_STATUS.VALID, FILE_STATUS.UNVERIFIED],
     },
-    splitInChunks: { type: Boolean, defaultValue: false },
+    packFiles: { type: Boolean, defaultValue: false },
     ...getAllDocuments(loan).reduce(
       (docs, doc) => ({
         ...docs,

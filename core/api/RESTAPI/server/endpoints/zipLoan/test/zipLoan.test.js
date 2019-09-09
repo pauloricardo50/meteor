@@ -494,23 +494,23 @@ describe('zipLoan', () => {
             DOCUMENTS.PROPERTY_VOLUME,
           ],
         },
-        options: { status: [FILE_STATUS.VALID], splitInChunks: true },
+        options: { status: [FILE_STATUS.VALID], packFiles: true },
         res: { writeHead: () => null },
       });
 
       expect(zip.getZip()).to.deep.equal([
-        'CHUNK_0/LOAN/requiredByAdmin.pdf',
-        "CHUNK_2/Bob Dylan/BD Pièce d'identité.pdf",
-        'CHUNK_2/Bob Dylan/BD Fiches de salaire (1 sur 2).pdf',
-        'CHUNK_3/Bob Dylan/BD Fiches de salaire (2 sur 2).pdf',
-        'CHUNK_3/Bob Dylan/BD Carte de Légitimation (1 sur 2).pdf',
-        'CHUNK_4/Bob Dylan/BD customLegitimationCardAdminName.pdf',
-        'CHUNK_4/Bob Dylan/BD Carte de Légitimation (2 sur 2).pdf',
-        'CHUNK_5/Bob Dylan/BD borrowerOtherDocName.pdf',
-        'CHUNK_5/Bob Dylan/BD Other doc.pdf',
-        "CHUNK_6/Barbra Streisand/BS Pièce d'identité.pdf",
-        'CHUNK_1/propertyAddress/propertyAddress Extrait du registre foncier.pdf',
-        'CHUNK_1/propertyAddress/propertyAddress Cubage m3.pdf',
+        'LOAN/DECK_1/requiredByAdmin.pdf',
+        "Bob Dylan/DECK_1/BD Pièce d'identité.pdf",
+        'Bob Dylan/DECK_1/BD Fiches de salaire (1 sur 2).pdf',
+        'Bob Dylan/DECK_2/BD Fiches de salaire (2 sur 2).pdf',
+        'Bob Dylan/DECK_2/BD Carte de Légitimation (1 sur 2).pdf',
+        'Bob Dylan/DECK_3/BD customLegitimationCardAdminName.pdf',
+        'Bob Dylan/DECK_3/BD Carte de Légitimation (2 sur 2).pdf',
+        'Bob Dylan/DECK_4/BD borrowerOtherDocName.pdf',
+        'Bob Dylan/DECK_4/BD Other doc.pdf',
+        "Barbra Streisand/DECK_1/BS Pièce d'identité.pdf",
+        'propertyAddress/DECK_1/propertyAddress Extrait du registre foncier.pdf',
+        'propertyAddress/DECK_1/propertyAddress Cubage m3.pdf',
       ]);
     });
   });

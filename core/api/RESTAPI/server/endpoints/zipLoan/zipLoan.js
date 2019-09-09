@@ -2,7 +2,7 @@ import archiver from 'archiver';
 
 import Intl from 'core/utils/server/intl';
 import LoanService from '../../../../loans/server/LoanService';
-import { zipDocuments, splitFilesInChunks } from './zipHelpers';
+import { zipDocuments } from './zipHelpers';
 import {
   DOCUMENTS,
   DOCUMENTS_CATEGORIES,
@@ -10,7 +10,7 @@ import {
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
 import FileService from '../../../../files/server/FileService';
-import FilesChunksManager from './FilesChunksManager';
+import FilesBinPacker from './FilesBinPacker';
 
 export const getFileName = ({
   Key,
@@ -21,30 +21,30 @@ export const getFileName = ({
   prefix = '',
   root = '',
   additionalDocuments = [],
-  filesChunks,
   options = {},
+  filesBinPacker,
 }) => {
   const { extension, documentId } = FileService.getKeyParts(Key);
 
   const { label } = additionalDocuments.find(({ id }) => id === documentId) || {};
 
-  const { splitInChunks } = options;
+  const { packFiles } = options;
 
-  let chunkPath = '';
+  let binPath = '';
 
-  if (splitInChunks) {
-    const { chunkIndex } = filesChunks
-      .getFiles()
+  if (packFiles) {
+    const { binIndex } = filesBinPacker
+      .getFilesBinIndex()
       .find(({ Key: fileKey }) => fileKey === Key);
-    chunkPath = `CHUNK_${chunkIndex}/`;
+    binPath = `DECK_${binIndex + 1}/`;
   }
 
   if (label) {
-    return `${chunkPath}${root}${prefix}${label}.${extension}`;
+    return `${root}${binPath}${prefix}${label}.${extension}`;
   }
 
   if (adminName) {
-    return `${chunkPath}${root}${prefix}${adminName}.${extension}`;
+    return `${root}${binPath}${prefix}${adminName}.${extension}`;
   }
 
   const suffix = total > 1 && documentId !== DOCUMENTS.OTHER
@@ -61,10 +61,10 @@ export const getFileName = ({
         [],
       )
       .includes(documentId)
-    ? `${chunkPath}${root}${prefix}${
+    ? `${root}${binPath}${prefix}${
       name.split('.').slice(0, -1)[0]
     }${suffix}.${extension}`
-    : `${chunkPath}${root}${prefix}${Intl.formatMessage({
+    : `${root}${binPath}${prefix}${Intl.formatMessage({
       id: `files.${documentId}`,
     })}${suffix}.${extension}`;
 };
@@ -73,7 +73,7 @@ const makeFormatFileName = ({
   root,
   additionalDocuments,
   prefix,
-  filesChunks,
+  filesBinPacker,
   options,
 }) => ({ name: originalName, Key, adminname: adminName }, index, total) =>
   getFileName({
@@ -85,8 +85,8 @@ const makeFormatFileName = ({
     additionalDocuments,
     root,
     prefix,
+    filesBinPacker,
     options,
-    filesChunks,
   });
 
 const filterDocuments = (documentsToFilter, docId, documents) =>
@@ -107,8 +107,8 @@ const zipDocFiles = ({
   doc,
   root = () => '',
   prefix = () => '',
-  filesChunks,
 }) => {
+  const { packFiles } = options;
   const { _id: docId, additionalDocuments = [], documents: docDocuments } = doc;
   const filteredDocuments = filterDocuments(
     docDocuments,
@@ -116,6 +116,16 @@ const zipDocFiles = ({
     documents,
     options,
   );
+  let filesBinPacker;
+
+  if (packFiles) {
+    filesBinPacker = new FilesBinPacker(Object.keys(filteredDocuments).reduce(
+      (allFiles, key) => [...allFiles, ...filteredDocuments[key]],
+      [],
+    ));
+    filesBinPacker.packFiles();
+  }
+
   zipDocuments({
     zip,
     documents: filteredDocuments,
@@ -124,7 +134,7 @@ const zipDocFiles = ({
       root: root(doc),
       additionalDocuments,
       prefix: prefix(doc),
-      filesChunks,
+      filesBinPacker,
       options,
     }),
   });
@@ -142,23 +152,6 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
   });
   zip.pipe(res);
 
-  const { splitInChunks } = options;
-
-  const filesChunks = new FilesChunksManager();
-
-  if (splitInChunks) {
-    splitFilesInChunks({
-      docs: [
-        loan,
-        !hasPromotion
-          && properties.find(({ _id }) => _id === structure.propertyId),
-        ...borrowers,
-      ].filter(x => x),
-      filesChunks,
-      options,
-    });
-  }
-
   // Zip loan files
   zipDocFiles({
     zip,
@@ -166,7 +159,6 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     documents,
     options,
     root: ({ name }) => `${name}/`,
-    filesChunks,
   });
 
   // Zip borrowers files
@@ -179,7 +171,6 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
       root: ({ name }) => `${name}/`,
       prefix: ({ firstName, lastName }) =>
         `${firstName.toUpperCase()[0]}${lastName.toUpperCase()[0]} `,
-      filesChunks,
     }));
 
   if (!hasPromotion) {
@@ -191,7 +182,6 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
       options,
       root: ({ address1 }) => `${address1}/`,
       prefix: ({ address1 }) => `${address1} `,
-      filesChunks,
     });
   }
 

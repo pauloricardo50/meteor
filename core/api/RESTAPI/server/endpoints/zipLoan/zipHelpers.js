@@ -35,16 +35,3 @@ export const zipDocuments = ({
     });
   });
 };
-
-export const splitFilesInChunks = ({ docs = [], options, filesChunks }) => {
-  const { status } = options;
-  docs.forEach((doc) => {
-    const { documents = {} } = doc;
-    Object.keys(documents).forEach((document) => {
-      const files = documents[document].filter(({ status: fileStatus }) =>
-        status.includes(fileStatus));
-      filesChunks.appendFiles(files);
-    });
-  });
-  filesChunks.splitFilesInChunks();
-};
