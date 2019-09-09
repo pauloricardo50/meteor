@@ -29,17 +29,17 @@ describe('FilesChunksManager', () => {
       'doc1/documentA/1.pdf',
       'doc1/documentB/2.pdf',
       'doc1/documentC/3.pdf',
-      'doc4/documentA/1.pdf',
     ]);
     expect(chunks[1].files).to.deep.equal([
-      'doc3/documentB/1.pdf',
-      'doc3/documentC/1.pdf',
-    ]);
-    expect(chunks[2].files).to.deep.equal([
       'doc2/documentA/1.pdf',
       'doc2/documentA/2.pdf',
     ]);
-    expect(chunks[3].files).to.deep.equal(['doc2/documentA/3.pdf']);
+    expect(chunks[2].files).to.deep.equal(['doc2/documentA/3.pdf']);
+    expect(chunks[3].files).to.deep.equal([
+      'doc3/documentB/1.pdf',
+      'doc3/documentC/1.pdf',
+      'doc4/documentA/1.pdf',
+    ]);
   });
 
   it('throws if a file exceeds maximum chunk size', () => {

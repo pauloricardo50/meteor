@@ -508,7 +508,7 @@ describe('zipLoan', () => {
         'CHUNK_4/Bob Dylan/BD Carte de Légitimation (2 sur 2).pdf',
         'CHUNK_5/Bob Dylan/BD borrowerOtherDocName.pdf',
         'CHUNK_5/Bob Dylan/BD Other doc.pdf',
-        "CHUNK_0/Barbra Streisand/BS Pièce d'identité.pdf",
+        "CHUNK_6/Barbra Streisand/BS Pièce d'identité.pdf",
         'CHUNK_1/propertyAddress/propertyAddress Extrait du registre foncier.pdf',
         'CHUNK_1/propertyAddress/propertyAddress Cubage m3.pdf',
       ]);

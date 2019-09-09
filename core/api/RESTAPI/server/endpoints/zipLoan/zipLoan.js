@@ -131,7 +131,12 @@ const zipDocFiles = ({
 };
 
 export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
-  const { properties = [], borrowers = [], structure = {} } = loan;
+  const {
+    properties = [],
+    borrowers = [],
+    structure = {},
+    hasPromotion,
+  } = loan;
   res.writeHead(200, {
     'Content-Disposition': `attachment; filename=${loan.name}.zip`,
   });
@@ -145,9 +150,10 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     splitFilesInChunks({
       docs: [
         loan,
-        properties.find(({ _id }) => _id === structure.propertyId),
+        !hasPromotion
+          && properties.find(({ _id }) => _id === structure.propertyId),
         ...borrowers,
-      ],
+      ].filter(x => x),
       filesChunks,
       options,
     });
@@ -176,16 +182,18 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
       filesChunks,
     }));
 
-  // Zip propterty files
-  zipDocFiles({
-    zip,
-    doc: properties.find(({ _id }) => _id === structure.propertyId),
-    documents,
-    options,
-    root: ({ address1 }) => `${address1}/`,
-    prefix: ({ address1 }) => `${address1} `,
-    filesChunks,
-  });
+  if (!hasPromotion) {
+    // Zip propterty files
+    zipDocFiles({
+      zip,
+      doc: properties.find(({ _id }) => _id === structure.propertyId),
+      documents,
+      options,
+      root: ({ address1 }) => `${address1}/`,
+      prefix: ({ address1 }) => `${address1} `,
+      filesChunks,
+    });
+  }
 
   zip.finalize();
 };
@@ -211,6 +219,7 @@ const zipLoan = ({
       documents: 1,
       additionalDocuments: 1,
       name: 1,
+      hasPromotion: 1,
     });
 
     generateLoanZip({ zip, loan, documents, options, res });

@@ -108,17 +108,14 @@ class FilesChunksManager {
       return;
     }
 
-    if (docIds.length > 1) {
-      // Try to append all docId files to last chunk
-      docIds.forEach((docId) => {
-        const files = sortedFiles[docId];
-        if (this.getLastChunk().canAppendFiles(files)) {
-          this.appendFilesToLastChunk(files);
-        }
-      });
+    const files = sortedFiles[docIds[0]];
+    // Try to append all docId files to last chunk
+    if (this.getLastChunk().canAppendFiles(files)) {
+      this.appendFilesToLastChunk(files);
     } else {
-      // Try to append each docId file (one after the other) to last chunk
-      sortedFiles[docIds[0]].forEach((file) => {
+      this.addChunk();
+      // Append each docId file to last chunk one after the other
+      files.forEach((file) => {
         if (this.getLastChunk().canAppendFile(file)) {
           this.appendFilesToLastChunk([file]);
         }
@@ -130,8 +127,6 @@ class FilesChunksManager {
     if (unclassifiedFiles.length === 0) {
       return;
     }
-
-    this.addChunk();
 
     return this.splitFilesInChunks(unclassifiedFiles);
   };

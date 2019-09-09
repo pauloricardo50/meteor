@@ -9,6 +9,7 @@ import { getZipLoanUrl } from 'core/api/methods/index';
 import { FILE_STATUS } from 'core/api/constants';
 
 const getAllDocuments = (loan) => {
+  console.log('loan:', loan)
   const { borrowers = [], documents: loanDocs = {}, _id: loanId } = loan;
   const loanDocuments = Object.keys(loanDocs).map(doc => `${loanId}/${doc}`);
   const borrowersDocuments = borrowers.reduce(
@@ -18,7 +19,7 @@ const getAllDocuments = (loan) => {
     ],
     [],
   );
-  const propertyDocuments = Object.keys(Calculator.selectPropertyKey({ loan, key: 'documents' })).map(doc => `${Calculator.selectPropertyKey({ loan, key: '_id' })}/${doc}`);
+  const propertyDocuments = Object.keys(Calculator.selectPropertyKey({ loan, key: 'documents' }) || []).map(doc => `${Calculator.selectPropertyKey({ loan, key: '_id' })}/${doc}`);
 
   return [...loanDocuments, ...borrowersDocuments, ...propertyDocuments];
 };
@@ -38,7 +39,7 @@ const getAllAdditionalDocuments = (loan) => {
   const propertyAdditionalDocuments = Calculator.selectPropertyKey({
     loan,
     key: 'additionalDocuments',
-  });
+  }) || [];
   return [
     ...loanAdditionalDocuments,
     ...borrowersAdditionalDocuments,
@@ -93,6 +94,11 @@ const getAutoFields = (loan) => {
       <h4>Options</h4>
       <p className="description secondary">Veuillez sélectionner les options</p>
       <CustomAutoField
+        name="splitInChunks"
+        overrideLabel="Grouper les fichiers par paquets de max. 10Mb"
+      />
+      <br />
+      <CustomAutoField
         name="status"
         overrideLabel="Télécharger uniquement les fichiers avec le status"
       />
@@ -121,7 +127,7 @@ const getAutoFields = (loan) => {
 
 const makeOnSubmit = (loan, closeModal) => (model) => {
   const { _id: loanId, borrowers = [] } = loan;
-  const { status } = model;
+  const { status, splitInChunks } = model;
   const docIds = [
     loanId,
     ...borrowers.map(({ _id }) => _id),
@@ -144,7 +150,7 @@ const makeOnSubmit = (loan, closeModal) => (model) => {
   );
 
   return getZipLoanUrl
-    .run({ loanId, documents, options: { status } })
+    .run({ loanId, documents, options: { status, splitInChunks } })
     .then((url) => {
       window.open(url);
     })
@@ -164,6 +170,7 @@ export default compose(withProps(({ loan, closeModal }) => ({
       type: String,
       allowedValues: [FILE_STATUS.VALID, FILE_STATUS.UNVERIFIED],
     },
+    splitInChunks: { type: Boolean, defaultValue: false },
     ...getAllDocuments(loan).reduce(
       (docs, doc) => ({
         ...docs,
