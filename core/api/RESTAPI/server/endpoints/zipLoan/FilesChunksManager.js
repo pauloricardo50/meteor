@@ -47,7 +47,7 @@ class FilesChunksManager {
 
   appendFile = (file) => {
     if (file.Size > this.chunkSize) {
-      throw new Meteor.Error('Your file size exceeds maximal chunk size');
+      throw new Meteor.Error('Your file size exceeds maximum chunk size');
     }
     this.files = [...this.files, file];
   };
