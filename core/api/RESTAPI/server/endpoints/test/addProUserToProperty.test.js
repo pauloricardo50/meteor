@@ -11,18 +11,18 @@ import {
 } from '../../test/apiTestHelpers.test';
 import RESTAPI from '../../RESTAPI';
 
-import setPropertyUserPermissionsAPI from '../setPropertyUserPermissions';
+import addProUserToPropertyAPI from '../addProUserToProperty';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import PropertyService from '../../../../properties/server/PropertyService';
 
 const api = new RESTAPI();
 api.addEndpoint(
-  '/properties/:propertyId/set-user-permissions',
+  '/properties/:propertyId/add-user',
   'POST',
-  setPropertyUserPermissionsAPI,
+  addProUserToPropertyAPI,
 );
 
-const setPropertyUserPermissions = ({
+const addUser = ({
   propertyId,
   body,
   expectedResponse,
@@ -35,7 +35,7 @@ const setPropertyUserPermissions = ({
     ? { 'impersonate-user': impersonateUser }
     : undefined;
   return fetchAndCheckResponse({
-    url: `/properties/${propertyId}/set-user-permissions`,
+    url: `/properties/${propertyId}/add-user`,
     query,
     data: {
       method: 'POST',
@@ -47,7 +47,7 @@ const setPropertyUserPermissions = ({
   });
 };
 
-describe('REST: setPropertyUserPermissions', function () {
+describe('REST: addProUserToProperty', function () {
   this.timeout(10000);
 
   before(function () {
@@ -80,6 +80,7 @@ describe('REST: setPropertyUserPermissions', function () {
               permissions: {
                 canModifyProperty: true,
                 canManagePermissions: true,
+                canInviteProUsers: true,
               },
             },
           },
@@ -95,7 +96,9 @@ describe('REST: setPropertyUserPermissions', function () {
             category: PROPERTY_CATEGORY.PRO,
             $metadata: {
               permissions: {
-                canModifyProperty: false,
+                canModifyProperty: true,
+                canManagePermissions: true,
+                canInviteProUsers: true,
               },
             },
           },
@@ -111,96 +114,91 @@ describe('REST: setPropertyUserPermissions', function () {
           _factory: 'pro',
           organisations: { _id: 'org2' },
           emails: [{ address: 'pro4@org2.com', verified: true }],
-          proProperties: {
-            _id: 'prop',
-            externalId: 'extId',
-            category: PROPERTY_CATEGORY.PRO,
-          },
         },
       ],
     });
   });
 
-  it('updates user permissions', () => {
+  it('add user to property', () => {
     const body = {
-      email: 'pro2@org.com',
+      email: 'pro3@org.com',
       permissions: {
         canModifyProperty: true,
       },
     };
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro',
       propertyId: 'prop',
       body,
     }).then((response) => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro2@org.com" on property with id "prop" updated !');
+      expect(message).to.equal('User with email "pro3@org.com" sucessfully added on property with id "prop" !');
       expect(permissions.canModifyProperty).to.equal(true);
     });
   });
 
-  it('updates user from another organisation permissions', () => {
+  it('add user from another organisation', () => {
     const body = {
       email: 'pro4@org2.com',
       permissions: {
         canModifyProperty: true,
       },
     };
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro',
       propertyId: 'prop',
       body,
     }).then((response) => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro4@org2.com" on property with id "prop" updated !');
+      expect(message).to.equal('User with email "pro4@org2.com" sucessfully added on property with id "prop" !');
       expect(permissions.canModifyProperty).to.equal(true);
     });
   });
 
-  it('updates user permissions with extId', () => {
+  it('add user to property with extId', () => {
     const body = {
-      email: 'pro2@org.com',
+      email: 'pro3@org.com',
       permissions: {
         canModifyProperty: true,
       },
     };
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro',
       propertyId: 'extId',
       body,
     }).then((response) => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro2@org.com" on property with id "extId" updated !');
+      expect(message).to.equal('User with email "pro3@org.com" sucessfully added on property with id "extId" !');
       expect(permissions.canModifyProperty).to.equal(true);
     });
   });
 
-  it('updates user permissions using impersonation', () => {
+  it('add user to property using impersonation', () => {
     const body = {
-      email: 'pro@org.com',
+      email: 'pro3@org.com',
       permissions: {
-        canModifyProperty: false,
+        canModifyProperty: true,
       },
     };
-    return setPropertyUserPermissions({
-      userId: 'pro2',
-      propertyId: 'extId',
-      impersonateUser: 'pro@org.com',
+    return addUser({
+      userId: 'pro',
+      propertyId: 'prop',
       body,
+      impersonateUser: 'pro2@org.com',
     }).then((response) => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro@org.com" on property with id "extId" updated !');
-      expect(permissions.canModifyProperty).to.equal(false);
+      expect(message).to.equal('User with email "pro3@org.com" sucessfully added on property with id "prop" !');
+      expect(permissions.canModifyProperty).to.equal(true);
     });
   });
 
-  it('throws if user cannot manage permissions', () => {
+  it('throws if user cannot add pro users', () => {
     const body = {
-      email: 'pro@org.com',
+      email: 'pro3@org.com',
       permissions: {
         canModifyProperty: false,
       },
@@ -208,15 +206,37 @@ describe('REST: setPropertyUserPermissions', function () {
     PropertyService.setProUserPermissions({
       propertyId: 'prop',
       userId: 'pro2',
-      permissions: { canModifyProperty: true },
+      permissions: { canInviteProUsers: false },
     });
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro2',
       propertyId: 'extId',
       body,
     }).then((response) => {
       const { message } = response;
-      expect(message).to.contain('Vous ne pouvez pas gérer les permissions');
+      expect(message).to.contain('Vous ne pouvez pas inviter');
+    });
+  });
+
+  it('throws if user cannot manage permissions', () => {
+    const body = {
+      email: 'pro3@org.com',
+      permissions: {
+        canModifyProperty: false,
+      },
+    };
+    PropertyService.setProUserPermissions({
+      propertyId: 'prop',
+      userId: 'pro2',
+      permissions: { canManagePermissions: false, canInviteProUsers: true },
+    });
+    return addUser({
+      userId: 'pro2',
+      propertyId: 'extId',
+      body,
+    }).then((response) => {
+      const { message } = response;
+      expect(message).to.contain('Vous ne pouvez pas gérer');
     });
   });
 
@@ -227,7 +247,7 @@ describe('REST: setPropertyUserPermissions', function () {
         canModifyProperty: false,
       },
     };
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro',
       propertyId: 'prop',
       body,
@@ -239,12 +259,12 @@ describe('REST: setPropertyUserPermissions', function () {
 
   it('throws if property does not exist', () => {
     const body = {
-      email: 'pro2@org.com',
+      email: 'pro3@org.com',
       permissions: {
         canModifyProperty: false,
       },
     };
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro',
       propertyId: 'wrongId',
       body,
@@ -254,20 +274,20 @@ describe('REST: setPropertyUserPermissions', function () {
     });
   });
 
-  it('throws if user is not on property', () => {
+  it('throws if user is already on property', () => {
     const body = {
-      email: 'pro3@org.com',
+      email: 'pro2@org.com',
       permissions: {
         canModifyProperty: false,
       },
     };
-    return setPropertyUserPermissions({
+    return addUser({
       userId: 'pro',
       propertyId: 'prop',
       body,
     }).then((response) => {
       const { message } = response;
-      expect(message).to.contain('User with email "pro3@org.com" is not part of property with id "prop". Add it the property before setting his permissions.');
+      expect(message).to.contain('User with email "pro2@org.com" is already part of property with id "prop".');
     });
   });
 });

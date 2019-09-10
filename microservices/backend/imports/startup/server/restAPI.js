@@ -17,6 +17,7 @@ import {
   getPropertyAPI,
   zipLoanAPI,
   setPropertyUserPermissionsAPI,
+  addProUserToPropertyAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -54,6 +55,11 @@ api.addEndpoint(
   '/properties/:propertyId/set-user-permissions',
   'POST',
   setPropertyUserPermissionsAPI,
+);
+api.addEndpoint(
+  '/properties/:propertyId/add-user',
+  'POST',
+  addProUserToPropertyAPI,
 );
 Meteor.startup(() => {
   makeFileUploadDir();

@@ -6,7 +6,10 @@ import PropertyService from '../../../properties/server/PropertyService';
 import { withMeteorUserId } from '../helpers';
 import { propertyPermissionsSchema } from '../../../properties/schemas/PropertySchema';
 import UserService from '../../../users/server/UserService';
-import { setProPropertyPermissions } from '../../../methods';
+import {
+  addProUserToProperty,
+  setProPropertyPermissions,
+} from '../../../methods';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const bodySchema = new SimpleSchema({
@@ -21,7 +24,7 @@ const bodySchema = new SimpleSchema({
   ),
 });
 
-const setPropertyUserPermissionsAPI = ({
+const addProUserToPropertyAPI = ({
   user: { _id: userId },
   params,
   body,
@@ -73,19 +76,24 @@ const setPropertyUserPermissionsAPI = ({
       users: { email: 1 },
     });
 
-    if (!users.some(({ email: userEmail }) => userEmail === email)) {
+    if (users.some(({ email: userEmail }) => userEmail === email)) {
       throw new Meteor.Error(
         HTTP_STATUS_CODES.CONFLICT,
-        `User with email "${email}" is not part of property with id "${params.propertyId}". Add it the property before setting his permissions.`,
+        `User with email "${email}" is already part of property with id "${params.propertyId}".`,
       );
     }
 
-    return setProPropertyPermissions
+    return addProUserToProperty
       .run({
         propertyId,
         userId: proUser._id,
-        permissions,
       })
+      .then(() =>
+        setProPropertyPermissions.run({
+          propertyId,
+          userId: proUser._id,
+          permissions,
+        }))
       .then(() => {
         const property = PropertyService.fetchOne({
           $filters: { _id: propertyId },
@@ -98,11 +106,11 @@ const setPropertyUserPermissionsAPI = ({
 
         return Promise.resolve({
           status: HTTP_STATUS_CODES.OK,
-          message: `Permissions for user with email "${email}" on property with id "${params.propertyId}" updated !`,
+          message: `User with email "${email}" sucessfully added on property with id "${params.propertyId}" !`,
           permissions: newPermissions,
         });
       });
   });
 };
 
-export default setPropertyUserPermissionsAPI;
+export default addProUserToPropertyAPI;

@@ -17,3 +17,4 @@ export { default as zipLoanAPI } from './zipLoan';
 export {
   default as setPropertyUserPermissionsAPI,
 } from './setPropertyUserPermissions';
+export { default as addProUserToPropertyAPI } from './addProUserToProperty';
