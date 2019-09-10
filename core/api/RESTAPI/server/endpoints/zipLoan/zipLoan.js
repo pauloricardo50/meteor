@@ -14,7 +14,7 @@ import FilesBinPacker from './FilesBinPacker';
 
 export const getFileName = ({
   Key,
-  name,
+  name = '',
   index,
   total,
   adminName,
@@ -25,6 +25,7 @@ export const getFileName = ({
   filesBinPacker,
 }) => {
   const { extension, documentId } = FileService.getKeyParts(Key);
+  const fileName = name.split('.').slice(0, -1)[0];
 
   const { label } = additionalDocuments.find(({ id }) => id === documentId) || {};
 
@@ -61,9 +62,7 @@ export const getFileName = ({
         [],
       )
       .includes(documentId)
-    ? `${root}${binPath}${prefix}${
-      name.split('.').slice(0, -1)[0]
-    }${suffix}.${extension}`
+    ? `${root}${binPath}${prefix}${fileName}${suffix}.${extension}`
     : `${root}${binPath}${prefix}${Intl.formatMessage({
       id: `files.${documentId}`,
     })}${suffix}.${extension}`;
@@ -174,7 +173,7 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     }));
 
   if (!hasPromotion) {
-    // Zip propterty files
+    // Zip property files
     zipDocFiles({
       zip,
       doc: properties.find(({ _id }) => _id === structure.propertyId),

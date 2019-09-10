@@ -9,7 +9,6 @@ import { getZipLoanUrl } from 'core/api/methods/index';
 import { FILE_STATUS } from 'core/api/constants';
 
 const getAllDocuments = (loan) => {
-  console.log('loan:', loan)
   const { borrowers = [], documents: loanDocs = {}, _id: loanId } = loan;
   const loanDocuments = Object.keys(loanDocs).map(doc => `${loanId}/${doc}`);
   const borrowersDocuments = borrowers.reduce(
