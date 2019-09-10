@@ -10,6 +10,7 @@ import {
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
 import FileService from '../../../../files/server/FileService';
+import FilesBinPacker from './FilesBinPacker';
 
 export const getFileName = ({
   Key,
@@ -20,17 +21,30 @@ export const getFileName = ({
   prefix = '',
   root = '',
   additionalDocuments = [],
+  options = {},
+  filesBinPacker,
 }) => {
   const { extension, documentId } = FileService.getKeyParts(Key);
 
   const { label } = additionalDocuments.find(({ id }) => id === documentId) || {};
 
+  const { packFiles } = options;
+
+  let binPath = '';
+
+  if (packFiles) {
+    const { binIndex } = filesBinPacker
+      .getFilesBinIndex()
+      .find(({ Key: fileKey }) => fileKey === Key);
+    binPath = `DECK_${binIndex + 1}/`;
+  }
+
   if (label) {
-    return `${root}${prefix}${label}.${extension}`;
+    return `${root}${binPath}${prefix}${label}.${extension}`;
   }
 
   if (adminName) {
-    return `${root}${prefix}${adminName}.${extension}`;
+    return `${root}${binPath}${prefix}${adminName}.${extension}`;
   }
 
   const suffix = total > 1 && documentId !== DOCUMENTS.OTHER
@@ -47,17 +61,21 @@ export const getFileName = ({
         [],
       )
       .includes(documentId)
-    ? `${root}${prefix}${name.split('.').slice(0, -1)[0]}${suffix}.${extension}`
-    : `${root}${prefix}${Intl.formatMessage({
+    ? `${root}${binPath}${prefix}${
+      name.split('.').slice(0, -1)[0]
+    }${suffix}.${extension}`
+    : `${root}${binPath}${prefix}${Intl.formatMessage({
       id: `files.${documentId}`,
     })}${suffix}.${extension}`;
 };
 
-const makeFormatFileName = ({ root, additionalDocuments, prefix }) => (
-  { name: originalName, Key, adminname: adminName },
-  index,
-  total,
-) =>
+const makeFormatFileName = ({
+  root,
+  additionalDocuments,
+  prefix,
+  filesBinPacker,
+  options,
+}) => ({ name: originalName, Key, adminname: adminName }, index, total) =>
   getFileName({
     Key,
     name: originalName,
@@ -67,6 +85,8 @@ const makeFormatFileName = ({ root, additionalDocuments, prefix }) => (
     additionalDocuments,
     root,
     prefix,
+    filesBinPacker,
+    options,
   });
 
 const filterDocuments = (documentsToFilter, docId, documents) =>
@@ -80,104 +100,91 @@ const filterDocuments = (documentsToFilter, docId, documents) =>
       {},
     );
 
-const zipLoanFiles = ({
+const zipDocFiles = ({
   zip,
-  loan: { documents: loanDocuments, name, additionalDocuments = [], _id },
   documents,
   options,
+  doc,
+  root = () => '',
+  prefix = () => '',
 }) => {
+  const { packFiles } = options;
+  const { _id: docId, additionalDocuments = [], documents: docDocuments } = doc;
   const filteredDocuments = filterDocuments(
-    loanDocuments,
-    _id,
+    docDocuments,
+    docId,
     documents,
     options,
   );
-  zipDocuments({
-    zip,
-    documents: filteredDocuments,
-    options,
-    formatFileName: makeFormatFileName({
-      root: `${name}/`,
-      additionalDocuments,
-    }),
-  });
-};
+  let filesBinPacker;
 
-const zipBorrowerFiles = ({
-  zip,
-  borrower: {
-    documents: borrowerDocuments = {},
-    firstName,
-    lastName,
-    name,
-    additionalDocuments = [],
-    _id,
-  },
-  documents,
-  options,
-}) => {
-  const filteredDocuments = filterDocuments(
-    borrowerDocuments,
-    _id,
-    documents,
-    options,
-  );
-  zipDocuments({
-    zip,
-    documents: filteredDocuments,
-    options,
-    formatFileName: makeFormatFileName({
-      root: `${name}/`,
-      additionalDocuments,
-      prefix: `${firstName.toUpperCase()[0]}${lastName.toUpperCase()[0]} `,
-    }),
-  });
-};
+  if (packFiles) {
+    filesBinPacker = new FilesBinPacker(Object.keys(filteredDocuments).reduce(
+      (allFiles, key) => [...allFiles, ...filteredDocuments[key]],
+      [],
+    ));
+    filesBinPacker.packFiles();
+  }
 
-const zipPropertyFiles = ({
-  zip,
-  property: {
-    documents: propertyDocuments = {},
-    address1,
-    additionalDocuments = [],
-    _id,
-  } = {},
-  documents,
-  options,
-}) => {
-  const filteredDocuments = filterDocuments(
-    propertyDocuments,
-    _id,
-    documents,
-    options,
-  );
   zipDocuments({
     zip,
     documents: filteredDocuments,
     options,
     formatFileName: makeFormatFileName({
-      root: `${address1}/`,
+      root: root(doc),
       additionalDocuments,
-      prefix: `${address1} `,
+      prefix: prefix(doc),
+      filesBinPacker,
+      options,
     }),
   });
 };
 
 export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
-  const { properties = [], borrowers = [], structure = {} } = loan;
+  const {
+    properties = [],
+    borrowers = [],
+    structure = {},
+    hasPromotion,
+  } = loan;
   res.writeHead(200, {
     'Content-Disposition': `attachment; filename=${loan.name}.zip`,
   });
   zip.pipe(res);
-  zipLoanFiles({ zip, loan, documents, options });
-  borrowers.forEach(borrower =>
-    zipBorrowerFiles({ zip, borrower, documents, options }));
-  zipPropertyFiles({
+
+  // Zip loan files
+  zipDocFiles({
     zip,
-    property: properties.find(({ _id }) => _id === structure.propertyId),
+    doc: loan,
     documents,
     options,
+    root: ({ name }) => `${name}/`,
   });
+
+  // Zip borrowers files
+  borrowers.forEach(borrower =>
+    zipDocFiles({
+      zip,
+      doc: borrower,
+      documents,
+      options,
+      root: ({ name }) => `${name}/`,
+      prefix: ({ firstName, lastName }) =>
+        `${firstName.toUpperCase()[0]}${lastName.toUpperCase()[0]} `,
+    }));
+
+  if (!hasPromotion) {
+    // Zip propterty files
+    zipDocFiles({
+      zip,
+      doc: properties.find(({ _id }) => _id === structure.propertyId),
+      documents,
+      options,
+      root: ({ address1 }) => `${address1}/`,
+      prefix: ({ address1 }) => `${address1} `,
+    });
+  }
+
   zip.finalize();
 };
 
@@ -202,6 +209,7 @@ const zipLoan = ({
       documents: 1,
       additionalDocuments: 1,
       name: 1,
+      hasPromotion: 1,
     });
 
     generateLoanZip({ zip, loan, documents, options, res });

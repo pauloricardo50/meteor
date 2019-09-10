@@ -336,7 +336,7 @@ describe('LoanCalculator', () => {
       })).to.be.within(1444, 1445);
     });
 
-    it.only('does not amortize pledged cash with an offer', () => {
+    it('does not amortize pledged cash with an offer', () => {
       expect(Calculator.getAmortization({
         loan: {
           structures: [
