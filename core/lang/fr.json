@@ -1,4 +1,6 @@
 {
+  "Forms.invitationNote": "Note d'invitation",
+  "Forms.invitationNote.placeholder": "Ce client est en recherche et souhaite connaître sa capacité d'achat.",
   "Forms.theoreticalExpenses.tooltip": "Selon les règles de la FINMA, les charges théoriques sont calculées sur la base du taux théorique de 5% sur le montant de l'hypothèque, auxquels se rajoutent des frais d'entretien calculés sur la base de la valeur vénale du bien à 1%.",
   "Forms.revenueStatus": "Statut du revenu",
   "general.clickToEditField.disabledTooltip": "Ce champ est vérouillé",

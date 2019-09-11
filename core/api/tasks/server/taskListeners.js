@@ -1,3 +1,5 @@
+import PropertyService from 'core/api/properties/server/PropertyService';
+import PromotionService from 'core/api/promotions/server/PromotionService';
 import { getUserNameAndOrganisation } from '../../helpers';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
@@ -26,7 +28,7 @@ ServerEventService.addAfterMethodListener(
 const newUserTask = ({ userId, ...params }) =>
   TaskService.insert({
     object: {
-      title: 'Assigner un conseiller',
+      title: 'Nouveau client, prendre contact',
       docId: userId,
       collection: USERS_COLLECTION,
       ...params,
@@ -49,7 +51,11 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   proInviteUser,
-  async ({ result: userId, context: { userId: proId } }) => {
+  async ({
+    result: userId,
+    context: { userId: proId },
+    params: { invitationNote, properties, propertyIds, promotionIds },
+  }) => {
     if (userId) {
       if (typeof userId.then === 'function') {
         // The result of the meteor method can be a promise
@@ -71,12 +77,60 @@ ServerEventService.addAfterMethodListener(
         isNewUser = false;
       }
 
+      let taskDescription = `Invitation par ${getUserNameAndOrganisation({
+        user: pro,
+      })}`;
+
+      let addresses = [];
+      let promotions = [];
+
+      if (properties && properties.length) {
+        addresses = properties.map(({ address1 }) => address1);
+      }
+
+      if (propertyIds && propertyIds.length) {
+        addresses = [
+          ...addresses,
+          ...propertyIds.map(id => PropertyService.get(id).address1),
+        ];
+      }
+
+      if (promotionIds && promotionIds.length) {
+        promotions = promotionIds.map(id => PromotionService.get(id).name);
+      }
+
+      if (addresses.length) {
+        const formattedAddresses = [
+          addresses.slice(0, -1).join(', '),
+          addresses.slice(-1)[0],
+        ].join(addresses.length < 2 ? '' : ' et ');
+
+        taskDescription = `${taskDescription}. Invité sur ${
+          addresses.length === 1
+            ? 'le bien immobilier: '
+            : 'les biens immobiliers: '
+        } ${formattedAddresses}`;
+      }
+
+      if (promotions.length) {
+        const formattedPromotions = [
+          promotions.slice(0, -1).join(', '),
+          promotions.slice(-1)[0],
+        ].join(promotions.length < 2 ? '' : ' et');
+
+        taskDescription = `${taskDescription}. Invité sur ${
+          promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
+        } ${formattedPromotions}`;
+      }
+
+      if (invitationNote) {
+        taskDescription = `${taskDescription}. Note du referral: ${invitationNote}`;
+      }
+
       if (isNewUser) {
         newUserTask({
           userId,
-          description: `Invitation par ${getUserNameAndOrganisation({
-            user: pro,
-          })}`,
+          description: taskDescription,
         });
       } else {
         TaskService.insert({
@@ -84,9 +138,7 @@ ServerEventService.addAfterMethodListener(
             title: "Invitation d'un client déjà existant",
             docId: userId,
             collection: USERS_COLLECTION,
-            description: `Invitation par ${getUserNameAndOrganisation({
-              user: pro,
-            })}`,
+            description: taskDescription,
           },
         });
       }
