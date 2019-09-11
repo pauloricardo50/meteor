@@ -121,6 +121,63 @@ const getBorrowersMissingDocuments = (props) => {
   };
 };
 
+const getBorrowersValidFieldsRatio = (props) => {
+  const { loan = {} } = props;
+  const { borrowers = [] } = loan;
+
+  const validFieldsRatio = Calculator.getValidBorrowerFieldsRatio({
+    borrowers,
+  });
+
+  return validFieldsRatio;
+};
+
+const getPropertyValidFieldsRatio = (props) => {
+  const { loan = {} } = props;
+
+  const validFieldsRatio = Calculator.getValidPropertyFieldsRatio({
+    loan,
+  });
+
+  return validFieldsRatio;
+};
+
+const getBorrowersValidDocumentsRatio = (props) => {
+  const { loan = {} } = props;
+  const { borrowers = [] } = loan;
+
+  const validDocumentsRatio = Calculator.getValidBorrowerDocumentsRatio({
+    loan,
+    borrowers,
+  });
+
+  return validDocumentsRatio;
+};
+
+const getPropertyValidDocumentsRatio = (props) => {
+  const { loan = {} } = props;
+
+  const validDocumentsRatio = Calculator.getValidPropertyDocumentsRatio({
+    loan,
+  });
+
+  return validDocumentsRatio;
+};
+
+export const getChecklistValidInformationsRatio = props =>
+  [
+    getBorrowersValidFieldsRatio(props),
+    getBorrowersValidDocumentsRatio(props),
+    getPropertyValidFieldsRatio(props),
+    getPropertyValidDocumentsRatio(props),
+  ].reduce(
+    (ratio, { valid, required }) => ({
+      valid: ratio.valid + valid,
+      required: ratio.required + required,
+    }),
+    { valid: 0, required: 0 },
+  );
+
 export const getChecklistMissingInformations = props => ({
   fields: {
     ...getPropertyMissingFields(props),

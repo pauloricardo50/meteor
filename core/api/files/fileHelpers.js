@@ -75,3 +75,8 @@ export const getMissingDocumentIds = ({ fileArray, doc }) => {
     .map(({ id }) => id);
   return ids;
 };
+
+export const getRequiredDocumentIds = fileArray =>
+  fileArray
+    .filter(({ required }) => documentIsRequired(required))
+    .map(({ id }) => id);
