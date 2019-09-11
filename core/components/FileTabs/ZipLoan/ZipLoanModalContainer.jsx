@@ -94,7 +94,11 @@ const getAutoFields = (loan) => {
       <p className="description secondary">Veuillez sélectionner les options</p>
       <CustomAutoField
         name="packFiles"
-        overrideLabel="Grouper les fichiers par paquets de max. 10Mb"
+        overrideLabel="Grouper les fichiers par paquets"
+      />
+      <CustomAutoField
+        name="packSize"
+        overrideLabel="Taille des paquets en MB"
       />
       <br />
       <CustomAutoField
@@ -126,7 +130,7 @@ const getAutoFields = (loan) => {
 
 const makeOnSubmit = (loan, closeModal) => (model) => {
   const { _id: loanId, borrowers = [] } = loan;
-  const { status, packFiles } = model;
+  const { status, packFiles, packSize } = model;
   const docIds = [
     loanId,
     ...borrowers.map(({ _id }) => _id),
@@ -149,7 +153,11 @@ const makeOnSubmit = (loan, closeModal) => (model) => {
   );
 
   return getZipLoanUrl
-    .run({ loanId, documents, options: { status, packFiles } })
+    .run({
+      loanId,
+      documents,
+      options: { status, packFiles, packSize: packSize * 1000 * 1000 },
+    })
     .then((url) => {
       window.open(url);
     })
@@ -170,6 +178,11 @@ export default compose(withProps(({ loan, closeModal }) => ({
       allowedValues: [FILE_STATUS.VALID, FILE_STATUS.UNVERIFIED],
     },
     packFiles: { type: Boolean, defaultValue: false },
+    packSize: {
+      type: Number,
+      defaultValue: 10,
+      condition: ({ packFiles }) => packFiles,
+    },
     ...getAllDocuments(loan).reduce(
       (docs, doc) => ({
         ...docs,

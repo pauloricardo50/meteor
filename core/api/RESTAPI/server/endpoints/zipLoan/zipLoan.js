@@ -10,7 +10,7 @@ import {
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
 import FileService from '../../../../files/server/FileService';
-import FilesBinPacker from './FilesBinPacker';
+import FilesBinPacker, { MIME_ENCODING_SIZE_FACTOR } from './FilesBinPacker';
 
 export const getFileName = ({
   Key,
@@ -107,7 +107,7 @@ const zipDocFiles = ({
   root = () => '',
   prefix = () => '',
 }) => {
-  const { packFiles } = options;
+  const { packFiles, packSize } = options;
   const { _id: docId, additionalDocuments = [], documents: docDocuments } = doc;
   const filteredDocuments = filterDocuments(
     docDocuments,
@@ -118,10 +118,13 @@ const zipDocFiles = ({
   let filesBinPacker;
 
   if (packFiles) {
-    filesBinPacker = new FilesBinPacker(Object.keys(filteredDocuments).reduce(
-      (allFiles, key) => [...allFiles, ...filteredDocuments[key]],
-      [],
-    ));
+    filesBinPacker = new FilesBinPacker(
+      Object.keys(filteredDocuments).reduce(
+        (allFiles, key) => [...allFiles, ...filteredDocuments[key]],
+        [],
+      ),
+      packSize / MIME_ENCODING_SIZE_FACTOR,
+    );
     filesBinPacker.packFiles();
   }
 

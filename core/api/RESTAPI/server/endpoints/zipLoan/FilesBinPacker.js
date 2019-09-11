@@ -1,6 +1,6 @@
 import FileService from '../../../../files/server/FileService';
 
-const MIME_ENCODING_SIZE_FACTOR = 5 / 7;
+export const MIME_ENCODING_SIZE_FACTOR = 5 / 7;
 const BIN_CAPACITY = 10 * 1000 * 1000; // 10Mb
 
 class Bin {
