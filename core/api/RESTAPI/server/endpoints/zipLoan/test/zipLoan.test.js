@@ -480,7 +480,11 @@ describe('zipLoan', () => {
             DOCUMENTS.PROPERTY_VOLUME,
           ],
         },
-        options: { status: [FILE_STATUS.VALID], packFiles: true },
+        options: {
+          status: [FILE_STATUS.VALID],
+          packFiles: true,
+          packSize: 10000000,
+        },
         res: { writeHead: () => null },
       });
 

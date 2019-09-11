@@ -123,7 +123,7 @@ const zipDocFiles = ({
         (allFiles, key) => [...allFiles, ...filteredDocuments[key]],
         [],
       ),
-      packSize / MIME_ENCODING_SIZE_FACTOR,
+      packSize,
     );
     filesBinPacker.packFiles();
   }
