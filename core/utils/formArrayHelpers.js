@@ -121,11 +121,10 @@ export const getRequiredFieldIds = (formArray, doc) =>
           ...fieldIds,
           ...additionalFields.reduce((conditionalFields, additionalField) => {
             if (!shouldCountField(additionalField)) {
-              return conditionalFields;
+              return [...conditionalFields];
             }
             return [...conditionalFields, additionalField.id];
-          }),
-          [],
+          }, []),
         ];
       }
 
