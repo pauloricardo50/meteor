@@ -13,7 +13,8 @@ type LoanChecklistEmailSenderProps = {
 };
 
 const schema = new SimpleSchema({
-  email: String,
+  to: { type: Array, minCount: 1 },
+  'to.$': { type: String, optional: false },
   customMessage: {
     type: String,
     optional: true,
@@ -41,7 +42,7 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
         label: 'Envoyer la checklist au client',
         style: { marginLeft: '8px' },
       }}
-      model={{ email }}
+      model={{ to: [email] }}
     />
   );
 };
@@ -50,15 +51,19 @@ export default withProps(({
   loan,
   currentUser: { name: assigneeName, email: assigneeAddress } = {},
 }) => ({
-  onSubmit: ({ email, customMessage }) =>
-    sendEmailToAddress.run({
-      address: email,
+  onSubmit: ({ to, customMessage }) => {
+    const [mainAddress, ...bccAddresses] = to;
+
+    return sendEmailToAddress.run({
+      address: mainAddress,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
       params: {
         loan,
         assigneeName,
         assigneeAddress,
         customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+        bccAddresses,
       },
-    }),
+    });
+  },
 }))(LoanChecklistEmailSender);
