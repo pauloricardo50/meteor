@@ -218,7 +218,7 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
-      bccAddress: assigneeAddress,
+      bccAddresses: [{ email: assigneeAddress, name: assigneeName }],
     };
   },
 });
@@ -292,6 +292,9 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       customMessage = '',
       assigneeName = 'e-Potek',
       assigneeAddress = 'info@e-potek.ch',
+      bccAddresses = [],
+      ccAddresses = [],
+      mainRecipientIsBcc = false,
       ...rest
     },
     { title, cta, ...rest2 },
@@ -318,7 +321,12 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
-      bccAddress: assigneeAddress,
+      bccAddresses: [
+        { email: assigneeAddress, name: assigneeName },
+        ...bccAddresses.map(email => ({ email })),
+      ],
+      ccAddresses: ccAddresses.map(email => ({ email })),
+      mainRecipientIsBcc,
     };
   },
   createIntlValues: params => ({
