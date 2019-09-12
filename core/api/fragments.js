@@ -808,6 +808,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  userLinks: 1,
   useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
@@ -855,6 +856,8 @@ export const proPropertySummary = () => ({
   totalValue: 1,
   loanCount: 1,
   country: 1,
+  userLinks: 1,
+  users: {name: 1}
 });
 
 export const proProperty = ({ withSort } = {}) => ({

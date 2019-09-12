@@ -8,12 +8,14 @@ import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
 import { proPropertySummary } from '../../api/fragments';
+import PropertyUsers from './PropertyUsers';
 
 const columnOptions = [
   { id: 'address' },
   { id: 'status' },
   { id: 'value' },
   { id: 'customers' },
+  { id: 'users' },
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 
 const makeMapProperty = history => ({
@@ -23,6 +25,7 @@ const makeMapProperty = history => ({
   status,
   totalValue,
   loanCount,
+  users = [],
 }) => ({
   id: _id,
   columns: [
@@ -33,6 +36,10 @@ const makeMapProperty = history => ({
     },
     { raw: totalValue, label: <Money value={totalValue} /> },
     loanCount,
+    {
+      raw: users.length && users[0].name,
+      label: <PropertyUsers users={users} />,
+    },
   ],
 });
 
