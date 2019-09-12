@@ -50,24 +50,30 @@ export const getMandrillTemplate = ({
   sendAt,
   templateContent = [],
   replyTo,
-  bccAddress,
-}) => ({
-  template_name: templateName,
-  template_content: [
-    { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
-    ...templateContent,
-  ],
-  message: {
-    from_email: senderAddress,
-    from_name: senderName,
-    subject,
-    to: [{ email: recipientAddress, name: recipientName }],
-    global_merge_vars: variables,
-    headers: { 'Reply-To': replyTo || senderAddress },
-    bcc_address: bccAddress,
-  },
-  send_at: sendAt ? sendAt.toISOString() : undefined,
-});
+  bccAddresses = [],
+}) => {
+  const [firstBcc, ...otherBccs] = bccAddresses;
+  return {
+    template_name: templateName,
+    template_content: [
+      { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
+      ...templateContent,
+    ],
+    message: {
+      from_email: senderAddress,
+      from_name: senderName,
+      subject,
+      to: [
+        { email: recipientAddress, name: recipientName, type: 'to' },
+        ...otherBccs.map(bcc => ({ ...bcc, type: 'bcc' })),
+      ],
+      global_merge_vars: variables,
+      headers: { 'Reply-To': replyTo || senderAddress },
+      bcc_address: firstBcc && firstBcc.email,
+    },
+    send_at: sendAt ? sendAt.toISOString() : undefined,
+  };
+};
 
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
