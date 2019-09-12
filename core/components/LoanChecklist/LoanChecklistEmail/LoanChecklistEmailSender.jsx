@@ -33,7 +33,7 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
   return (
     <AutoFormDialog
       title="Envoyer la checklist au client"
-      description={`Cet email partira depuis "${assigneeAddress}"`}
+      description={`Cet email partira depuis "${assigneeAddress}". Tous les destinataires recevront l'email en BCC.`}
       schema={schema}
       onSubmit={onSubmit}
       buttonProps={{
