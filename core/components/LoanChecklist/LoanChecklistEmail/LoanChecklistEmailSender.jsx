@@ -13,8 +13,14 @@ type LoanChecklistEmailSenderProps = {
 };
 
 const schema = new SimpleSchema({
-  to: { type: Array, minCount: 1 },
-  'to.$': { type: String, optional: false },
+  to: Array,
+  'to.$': Object,
+  'to.$.bcc': {
+    type: Boolean,
+    defaultValue: true,
+    condition: ({ to = [] }) => to.length > 1,
+  },
+  'to.$.email': { type: String, optional: false },
   customMessage: {
     type: String,
     optional: true,
@@ -33,7 +39,7 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
   return (
     <AutoFormDialog
       title="Envoyer la checklist au client"
-      description={`Cet email partira depuis "${assigneeAddress}". Tous les destinataires recevront l'email en BCC.`}
+      description={`Cet email partira depuis "${assigneeAddress}"`}
       schema={schema}
       onSubmit={onSubmit}
       buttonProps={{
@@ -42,7 +48,7 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
         label: 'Envoyer la checklist au client',
         style: { marginLeft: '8px' },
       }}
-      model={{ to: [email] }}
+      model={{ to: [{ email }] }}
     />
   );
 };
@@ -52,10 +58,16 @@ export default withProps(({
   currentUser: { name: assigneeName, email: assigneeAddress } = {},
 }) => ({
   onSubmit: ({ to, customMessage }) => {
-    const [mainAddress, ...bccAddresses] = to;
+    const [mainRecipient, ...otherRecipients] = to;
+    const bccAddresses = otherRecipients
+      .filter(({ bcc }) => bcc)
+      .map(({ email }) => email);
+    const ccAddresses = otherRecipients
+      .filter(({ bcc }) => !bcc)
+      .map(({ email }) => email);
 
     return sendEmailToAddress.run({
-      address: mainAddress,
+      address: mainRecipient.email,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
       params: {
         loan,
@@ -63,6 +75,8 @@ export default withProps(({
         assigneeAddress,
         customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
         bccAddresses,
+        ccAddresses,
+        mainRecipientIsBcc: mainRecipient.bcc,
       },
     });
   },

@@ -293,6 +293,8 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       assigneeName = 'e-Potek',
       assigneeAddress = 'info@e-potek.ch',
       bccAddresses = [],
+      ccAddresses = [],
+      mainRecipientIsBcc = false,
       ...rest
     },
     { title, cta, ...rest2 },
@@ -323,6 +325,8 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
         { email: assigneeAddress, name: assigneeName },
         ...bccAddresses.map(email => ({ email })),
       ],
+      ccAddresses: ccAddresses.map(email => ({ email })),
+      mainRecipientIsBcc,
     };
   },
   createIntlValues: params => ({

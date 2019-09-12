@@ -50,7 +50,9 @@ export const getMandrillTemplate = ({
   sendAt,
   templateContent = [],
   replyTo,
+  mainRecipientIsBcc = true,
   bccAddresses = [],
+  ccAddresses = [],
 }) => {
   const [firstBcc, ...otherBccs] = bccAddresses;
   return {
@@ -64,12 +66,18 @@ export const getMandrillTemplate = ({
       from_name: senderName,
       subject,
       to: [
-        { email: recipientAddress, name: recipientName, type: 'to' },
+        {
+          email: recipientAddress,
+          name: recipientName,
+          type: mainRecipientIsBcc ? 'bcc' : 'to',
+        },
+        ...ccAddresses.map(cc => ({ ...cc, type: 'cc' })),
         ...otherBccs.map(bcc => ({ ...bcc, type: 'bcc' })),
       ],
       global_merge_vars: variables,
       headers: { 'Reply-To': replyTo || senderAddress },
       bcc_address: firstBcc && firstBcc.email,
+      preserve_recipients: true,
     },
     send_at: sendAt ? sendAt.toISOString() : undefined,
   };
