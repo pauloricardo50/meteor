@@ -12,7 +12,7 @@ type LoanChecklistDialogProps = {};
 const LoanChecklistDialog = ({ loan }: LoanChecklistDialogProps) => {
   const { valid, required } = getChecklistValidInformationsRatio({ loan });
   let ratio = `(${valid}/${required})`;
-  if (valid === required) {
+  if (valid === required && required !== 0) {
     ratio = <Icon type="check" className="icon success" />;
   }
 

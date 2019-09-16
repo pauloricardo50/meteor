@@ -134,9 +134,9 @@ const getBorrowersValidFieldsRatio = (props) => {
 
 const getPropertyValidFieldsRatio = (props) => {
   const { loan = {} } = props;
-  const { hasProProperty, hasPromotion } = loan;
+  const { hasProProperty, hasPromotion, properties = [] } = loan;
 
-  if (hasProProperty || hasPromotion) {
+  if (hasProProperty || hasPromotion || properties.length === 0) {
     return null;
   }
 
@@ -161,9 +161,9 @@ const getBorrowersValidDocumentsRatio = (props) => {
 
 const getPropertyValidDocumentsRatio = (props) => {
   const { loan = {} } = props;
-  const { hasProProperty, hasPromotion } = loan;
+  const { hasProProperty, hasPromotion, properties = [] } = loan;
 
-  if (hasProProperty || hasPromotion) {
+  if (hasProProperty || hasPromotion || properties.length === 0) {
     return null;
   }
 
