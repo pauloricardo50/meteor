@@ -42,7 +42,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     emails = [],
   } = user;
 
-  const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
+  const allowAssign = currentUser.roles.includes(ROLES.DEV)
+    || (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;
 
