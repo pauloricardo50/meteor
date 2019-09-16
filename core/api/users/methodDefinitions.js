@@ -125,7 +125,7 @@ export const proInviteUser = new Method({
     promotionIds: Match.Maybe([String]),
     properties: Match.Maybe(Array),
     shareSolvency: Match.Maybe(Match.OneOf(Boolean, undefined)),
-    invitationNote: Match.Maybe(String),
+    invitationNote: Match.Maybe(Match.OneOf(String, undefined)),
   },
 });
 
