@@ -8,6 +8,10 @@ export const impersonateMiddleware = context => () => next => (...args) => {
     },
   } = context;
 
+  console.log('host:', host);
+  console.log('clientAddress:', clientAddress);
+  console.log('realIp:', realIp);
+
   // Don't track login events when impersonating
   if (!host.includes('admin')) {
     if (
