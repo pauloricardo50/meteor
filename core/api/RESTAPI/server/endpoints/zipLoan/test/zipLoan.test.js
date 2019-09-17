@@ -6,6 +6,7 @@ import { DOCUMENTS } from 'core/api/files/fileConstants';
 import S3Service from '../../../../../files/server/S3Service';
 import { zipDocuments } from '../zipHelpers';
 import { getFileName, generateLoanZip } from '../zipLoan';
+import { FILE_STATUS } from '../../../../../files/fileConstants';
 
 class ZipMock {
   constructor() {
@@ -42,9 +43,17 @@ describe('zipLoan', () => {
   describe('zipDocuments', () => {
     it('returns correct index and total', () => {
       const documents = {
-        a: [{ Key: '1' }],
-        b: [{ Key: '2' }, { Key: '3' }],
-        c: [{ Key: '4' }, { Key: '5', adminname: 'adminName' }, { Key: '6' }],
+        a: [{ Key: '1', status: FILE_STATUS.VALID }],
+        b: [
+          { Key: '2', status: FILE_STATUS.VALID },
+          { Key: '3', status: FILE_STATUS.VALID },
+        ],
+        c: [
+          { Key: '4', status: FILE_STATUS.VALID },
+          { Key: '5', adminname: 'adminName', status: FILE_STATUS.VALID },
+          { Key: '6', status: FILE_STATUS.VALID },
+          { Key: '7' },
+        ],
       };
 
       const formatFileName = (file, index, total) => ({
@@ -53,7 +62,12 @@ describe('zipLoan', () => {
         total,
       });
 
-      zipDocuments({ zip, documents, formatFileName });
+      zipDocuments({
+        zip,
+        documents,
+        formatFileName,
+        options: { status: [FILE_STATUS.VALID] },
+      });
 
       expect(spy.args).to.deep.equal([
         ['1'],
@@ -170,35 +184,54 @@ describe('zipLoan', () => {
               [DOCUMENTS.IDENTITY]: [
                 {
                   Key: `borrower1/${DOCUMENTS.IDENTITY}/id.pdf`,
+                  status: FILE_STATUS.VALID,
                 },
               ],
               [DOCUMENTS.LAST_SALARIES]: [
                 {
                   Key: `borrower1/${DOCUMENTS.LAST_SALARIES}/lastSalary1.pdf`,
+                  status: FILE_STATUS.VALID,
                 },
                 {
                   Key: `borrower1/${DOCUMENTS.LAST_SALARIES}/lastSalary2.pdf`,
+                  status: FILE_STATUS.VALID,
                 },
               ],
               [DOCUMENTS.LEGITIMATION_CARD]: [
                 {
                   Key: `borrower1/${DOCUMENTS.LEGITIMATION_CARD}/legitimationCard1.pdf`,
+                  status: FILE_STATUS.VALID,
                 },
                 {
                   Key: `borrower1/${DOCUMENTS.LEGITIMATION_CARD}/customLegitimationCard.pdf`,
                   adminname: 'customLegitimationCardAdminName',
+                  status: FILE_STATUS.VALID,
                 },
                 {
                   Key: `borrower1/${DOCUMENTS.LEGITIMATION_CARD}/legitimationCard2.pdf`,
+                  status: FILE_STATUS.VALID,
                 },
               ],
               [DOCUMENTS.OTHER]: [
                 {
                   Key: `borrower1/${DOCUMENTS.OTHER}/otherDoc.pdf`,
                   name: 'borrowerOtherDocName.pdf',
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+              customDoc: [
+                {
+                  Key: 'borrower1/customDoc/otherDoc2.pdf',
+                  status: FILE_STATUS.VALID,
                 },
               ],
             },
+            additionalDocuments: [
+              {
+                id: 'customDoc',
+                label: 'Other doc',
+              },
+            ],
           },
           {
             _id: 'borrower2',
@@ -209,6 +242,7 @@ describe('zipLoan', () => {
               [DOCUMENTS.IDENTITY]: [
                 {
                   Key: `borrower2/${DOCUMENTS.IDENTITY}/id.pdf`,
+                  status: FILE_STATUS.VALID,
                 },
               ],
             },
@@ -222,6 +256,21 @@ describe('zipLoan', () => {
               [DOCUMENTS.LAND_REGISTER_EXTRACT]: [
                 {
                   Key: `property/${DOCUMENTS.LAND_REGISTER_EXTRACT}/landRegisterExtract.pdf`,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+              [DOCUMENTS.PROPERTY_PLANS]: [
+                {
+                  Key: `property/${DOCUMENTS.PROPERTY_PLANS}/propertyPlans.pdf`,
+                },
+              ],
+              [DOCUMENTS.PROPERTY_VOLUME]: [
+                {
+                  Key: `property/${DOCUMENTS.PROPERTY_VOLUME}/propertyPlans.pdf`,
+                  status: FILE_STATUS.VALID,
+                },
+                {
+                  Key: `property/${DOCUMENTS.PROPERTY_VOLUME}/propertyPlans2.pdf`,
                 },
               ],
             },
@@ -235,12 +284,33 @@ describe('zipLoan', () => {
             {
               Key: 'loan/123/otherDoc.pdf',
               name: 'requiredByAdmin.pdf',
+              status: FILE_STATUS.VALID,
             },
           ],
         },
       };
 
-      generateLoanZip(zip, loan, { writeHead: () => null });
+      generateLoanZip({
+        zip,
+        loan,
+        documents: {
+          loan: [DOCUMENTS.OTHER],
+          borrower1: [
+            DOCUMENTS.IDENTITY,
+            DOCUMENTS.LAST_SALARIES,
+            DOCUMENTS.LEGITIMATION_CARD,
+            DOCUMENTS.OTHER,
+            'customDoc',
+          ],
+          borrower2: [DOCUMENTS.IDENTITY],
+          property: [
+            DOCUMENTS.LAND_REGISTER_EXTRACT,
+            DOCUMENTS.PROPERTY_VOLUME,
+          ],
+        },
+        options: { status: [FILE_STATUS.VALID] },
+        res: { writeHead: () => null },
+      });
 
       expect(zip.getZip()).to.deep.equal([
         'LOAN/requiredByAdmin.pdf',
@@ -251,8 +321,186 @@ describe('zipLoan', () => {
         'Bob Dylan/BD customLegitimationCardAdminName.pdf',
         'Bob Dylan/BD Carte de Légitimation (2 sur 2).pdf',
         'Bob Dylan/BD borrowerOtherDocName.pdf',
+        'Bob Dylan/BD Other doc.pdf',
         "Barbra Streisand/BS Pièce d'identité.pdf",
         'propertyAddress/propertyAddress Extrait du registre foncier.pdf',
+        'propertyAddress/propertyAddress Cubage m3.pdf',
+      ]);
+    });
+
+    it('generates the correct zip for a given loan using chunks', () => {
+      const loan = {
+        _id: 'loan',
+        name: 'LOAN',
+        borrowers: [
+          {
+            _id: 'borrower1',
+            firstName: 'Bob',
+            lastName: 'Dylan',
+            name: 'Bob Dylan',
+            documents: {
+              [DOCUMENTS.IDENTITY]: [
+                {
+                  Key: `borrower1/${DOCUMENTS.IDENTITY}/id.pdf`,
+                  status: FILE_STATUS.VALID,
+                  Size: 1500000,
+                },
+              ],
+              [DOCUMENTS.LAST_SALARIES]: [
+                {
+                  Key: `borrower1/${DOCUMENTS.LAST_SALARIES}/lastSalary1.pdf`,
+                  status: FILE_STATUS.VALID,
+                  Size: 2000000,
+                },
+                {
+                  Key: `borrower1/${DOCUMENTS.LAST_SALARIES}/lastSalary2.pdf`,
+                  Size: 2500000,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+              [DOCUMENTS.LEGITIMATION_CARD]: [
+                {
+                  Key: `borrower1/${DOCUMENTS.LEGITIMATION_CARD}/legitimationCard1.pdf`,
+                  Size: 2500000,
+                  status: FILE_STATUS.VALID,
+                },
+                {
+                  Key: `borrower1/${DOCUMENTS.LEGITIMATION_CARD}/customLegitimationCard.pdf`,
+                  adminname: 'customLegitimationCardAdminName',
+                  Size: 2000000,
+                  status: FILE_STATUS.VALID,
+                },
+                {
+                  Key: `borrower1/${DOCUMENTS.LEGITIMATION_CARD}/legitimationCard2.pdf`,
+                  Size: 1000000,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+              [DOCUMENTS.OTHER]: [
+                {
+                  Key: `borrower1/${DOCUMENTS.OTHER}/otherDoc.pdf`,
+                  name: 'borrowerOtherDocName.pdf',
+                  Size: 1000000,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+              customDoc: [
+                {
+                  Key: 'borrower1/customDoc/otherDoc2.pdf',
+                  Size: 2500000,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+            },
+            additionalDocuments: [
+              {
+                id: 'customDoc',
+                label: 'Other doc',
+              },
+            ],
+          },
+          {
+            _id: 'borrower2',
+            firstName: 'Barbra',
+            lastName: 'Streisand',
+            name: 'Barbra Streisand',
+            documents: {
+              [DOCUMENTS.IDENTITY]: [
+                {
+                  Key: `borrower2/${DOCUMENTS.IDENTITY}/id.pdf`,
+                  Size: 2000000,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+            },
+          },
+        ],
+        properties: [
+          {
+            _id: 'property',
+            address1: 'propertyAddress',
+            documents: {
+              [DOCUMENTS.LAND_REGISTER_EXTRACT]: [
+                {
+                  Key: `property/${DOCUMENTS.LAND_REGISTER_EXTRACT}/landRegisterExtract.pdf`,
+                  Size: 1000000,
+                  status: FILE_STATUS.VALID,
+                },
+              ],
+              [DOCUMENTS.PROPERTY_PLANS]: [
+                {
+                  Size: 1500000,
+                  Key: `property/${DOCUMENTS.PROPERTY_PLANS}/propertyPlans.pdf`,
+                },
+              ],
+              [DOCUMENTS.PROPERTY_VOLUME]: [
+                {
+                  Key: `property/${DOCUMENTS.PROPERTY_VOLUME}/propertyPlans.pdf`,
+                  Size: 4000000,
+                  status: FILE_STATUS.VALID,
+                },
+                {
+                  Size: 1200000,
+                  Key: `property/${DOCUMENTS.PROPERTY_VOLUME}/propertyPlans2.pdf`,
+                },
+              ],
+            },
+          },
+        ],
+        structure: {
+          propertyId: 'property',
+        },
+        documents: {
+          [DOCUMENTS.OTHER]: [
+            {
+              Key: 'loan/123/otherDoc.pdf',
+              name: 'requiredByAdmin.pdf',
+              Size: 2000000,
+              status: FILE_STATUS.VALID,
+            },
+          ],
+        },
+      };
+
+      generateLoanZip({
+        zip,
+        loan,
+        documents: {
+          loan: [DOCUMENTS.OTHER],
+          borrower1: [
+            DOCUMENTS.IDENTITY,
+            DOCUMENTS.LAST_SALARIES,
+            DOCUMENTS.LEGITIMATION_CARD,
+            DOCUMENTS.OTHER,
+            'customDoc',
+          ],
+          borrower2: [DOCUMENTS.IDENTITY],
+          property: [
+            DOCUMENTS.LAND_REGISTER_EXTRACT,
+            DOCUMENTS.PROPERTY_VOLUME,
+          ],
+        },
+        options: {
+          status: [FILE_STATUS.VALID],
+          packFiles: true,
+          packSize: 10000000,
+        },
+        res: { writeHead: () => null },
+      });
+
+      expect(zip.getZip()).to.deep.equal([
+        'LOAN/DECK_1/requiredByAdmin.pdf',
+        "Bob Dylan/DECK_1/BD Pièce d'identité.pdf",
+        'Bob Dylan/DECK_2/BD Fiches de salaire (1 sur 2).pdf',
+        'Bob Dylan/DECK_2/BD Fiches de salaire (2 sur 2).pdf',
+        'Bob Dylan/DECK_1/BD Carte de Légitimation (1 sur 2).pdf',
+        'Bob Dylan/DECK_1/BD customLegitimationCardAdminName.pdf',
+        'Bob Dylan/DECK_1/BD Carte de Légitimation (2 sur 2).pdf',
+        'Bob Dylan/DECK_3/BD borrowerOtherDocName.pdf',
+        'Bob Dylan/DECK_2/BD Other doc.pdf',
+        "Barbra Streisand/DECK_1/BS Pièce d'identité.pdf",
+        'propertyAddress/DECK_1/propertyAddress Extrait du registre foncier.pdf',
+        'propertyAddress/DECK_1/propertyAddress Cubage m3.pdf',
       ]);
     });
   });

@@ -23,7 +23,7 @@ const MonitoringFilters = ({
       label="Grouper par"
       options={[
         { id: 'status', label: 'Statut' },
-        { id: 'createdAt', label: "Date de d'ajout" },
+        { id: 'createdAt', label: "Date d'ajout" },
         { id: 'revenueDate', label: 'Date des revenus' },
       ]}
       onChange={(_, v) => makeSetState('groupBy')(v)}

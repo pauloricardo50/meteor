@@ -142,7 +142,7 @@ export const mortgageNoteLinks = {
   'mortgageNoteLinks.$._id': { type: String, optional: true },
 };
 
-export const roundedInteger = (digits, func = 'round') => {
+export const roundedInteger = ({ digits, func = 'round', min }) => {
   const rounder = 10 ** digits;
   return {
     type: SimpleSchema.Integer,
@@ -150,6 +150,10 @@ export const roundedInteger = (digits, func = 'round') => {
     max: 1000000000,
     autoValue() {
       if (this.isSet) {
+        if (min && this.value <= min) {
+          return;
+        }
+
         return Math[func](this.value / rounder) * rounder;
       }
     },

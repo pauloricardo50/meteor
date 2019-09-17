@@ -3,6 +3,7 @@ import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
+  getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
 import {
   INCOME_CONSIDERATION_TYPES,
@@ -23,6 +24,7 @@ import {
   getCountedArray,
   getMissingFieldIds,
   getFormValuesHashMultiple,
+  getRequiredFieldIds,
 } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
 import { borrowerExtractorMiddleware } from './middleware';
@@ -173,8 +175,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
     }
 
-
-
     getDonationFortune({ borrowers }) {
       const val = this.getArrayValues({
         borrowers,
@@ -184,9 +184,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getExpenses({ borrowers }) {
-      return (
-        this.getArrayValues({ borrowers, key: 'expenses' })
-      );
+      return this.getArrayValues({ borrowers, key: 'expenses' });
     }
 
     getInsurance2({ borrowers }) {
@@ -254,6 +252,36 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return res;
     }
 
+    getRequiredBorrowerFields({ borrowers }) {
+      const res = borrowers.reduce((fieldIds, borrower) => {
+        const formArray = getBorrowerInfoArray({
+          borrowers,
+          borrowerId: borrower._id,
+        });
+        const formArray2 = getBorrowerFinanceArray({
+          borrowers,
+          borrowerId: borrower._id,
+        });
+
+        return [
+          ...fieldIds,
+          ...getRequiredFieldIds(formArray, borrower),
+          ...getRequiredFieldIds(formArray2, borrower),
+        ];
+      }, []);
+
+      return res;
+    }
+
+    getValidBorrowerFieldsRatio({ borrowers }) {
+      const requiredFields = this.getRequiredBorrowerFields({ borrowers });
+      const missingFields = this.getMissingBorrowerFields({ borrowers });
+      return {
+        valid: requiredFields.length - missingFields.length,
+        required: requiredFields.length,
+      };
+    }
+
     getMissingBorrowerDocuments({ loan, borrowers }) {
       return borrowers.reduce(
         (missingIds, borrower) => [
@@ -265,6 +293,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         ],
         [],
       );
+    }
+
+    getRequiredBorrowerDocumentIds({ loan, borrowers }) {
+      return borrowers.reduce(
+        (requiredIds, borrower) => [
+          ...requiredIds,
+          ...getRequiredDocumentIds(getBorrowerDocuments({ loan, id: borrower._id }, this)),
+        ],
+        [],
+      );
+    }
+
+    getValidBorrowerDocumentsRatio({ loan, borrowers }) {
+      const requiredDocments = this.getRequiredBorrowerDocumentIds({
+        loan,
+        borrowers,
+      });
+      const missingDocuments = this.getMissingBorrowerDocuments({
+        loan,
+        borrowers,
+      });
+
+      return {
+        valid: requiredDocments.length - missingDocuments.length,
+        required: requiredDocments.length,
+      };
     }
 
     getOtherFortune({ borrowers }) {
@@ -513,7 +567,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       const realEstate = borrowers.reduce(
         (arr, borrower) => [...arr, ...(borrower.realEstate || [])],
         [],
-        );
+      );
       const realEstateCost = realEstate.reduce(
         (tot, obj) => tot + this.getRealEstateCost(obj),
         0,

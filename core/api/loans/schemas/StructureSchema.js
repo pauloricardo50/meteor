@@ -46,7 +46,8 @@ export const structureSchema = {
     optional: true,
   },
   wantedLoan: {
-    ...roundedInteger(3, 'floor'),
+    ...roundedInteger({ digits: 3, func: 'floor', min: 100000 }),
+    defaultValue: 0,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
   ...loanTranchesSchema,

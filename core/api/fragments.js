@@ -241,13 +241,14 @@ export const loan = () => ({
   previousLoanTranches: 1,
   promotions: {
     address: 1,
+    canton: 1,
     contacts: 1,
     lenderOrganisationLink: 1,
     name: 1,
     type: 1,
     users: { name: 1, email: 1, phoneNumber: 1 },
   },
-  properties: { totalValue: 1, address1: 1 },
+  properties: { totalValue: 1, address1: 1, category: 1 },
   propertyIds: 1,
   purchaseType: 1,
   residenceType: 1,
@@ -803,6 +804,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  userLinks: 1,
   useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
@@ -850,6 +852,8 @@ export const proPropertySummary = () => ({
   totalValue: 1,
   loanCount: 1,
   country: 1,
+  userLinks: 1,
+  users: {name: 1}
 });
 
 export const proProperty = ({ withSort } = {}) => ({

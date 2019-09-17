@@ -14,7 +14,7 @@ export const RevenuesTable = ({
   revenueToModify,
   openModifier,
   setOpenModifier,
-  initialOrderBy = 1
+  initialOrderBy = 1,
 }: RevenuesTableProps) => (
   <>
     <RevenueModifier
@@ -23,7 +23,11 @@ export const RevenuesTable = ({
       open={openModifier}
       setOpen={setOpenModifier}
     />
-    <Table rows={rows} columnOptions={columnOptions} initialOrderBy={initialOrderBy} />
+    <Table
+      rows={rows}
+      columnOptions={columnOptions}
+      initialOrderBy={initialOrderBy}
+    />
   </>
 );
 

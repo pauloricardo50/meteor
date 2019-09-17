@@ -43,7 +43,7 @@ const inviteCustomerToProPropertiesAPI = ({
   body,
   query,
 }) => {
-  let { user, properties = [], shareSolvency } = body;
+  let { user, properties = [], shareSolvency, invitationNote } = body;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: impersonateSchema,
@@ -63,6 +63,7 @@ const inviteCustomerToProPropertiesAPI = ({
     properties: externalProperties,
     user,
     shareSolvency,
+    invitationNote,
   };
 
   if (!payload.propertyIds.length && !payload.properties.length) {
@@ -74,9 +75,7 @@ const inviteCustomerToProPropertiesAPI = ({
     .then(() =>
       updateCustomerReferral({ customer: user, userId, impersonateUser }))
     .then(() => ({
-      message: `Successfully invited user "${
-        user.email
-      }" to property ids ${formattedIds}`,
+      message: `Successfully invited user "${user.email}" to property ids ${formattedIds}`,
     }));
 };
 

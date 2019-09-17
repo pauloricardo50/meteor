@@ -40,7 +40,7 @@ const RevenueSchema = new SimpleSchema({
   },
   expectedAt: {
     type: Date,
-    optional: true,
+    optional: false,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
   },
   paidAt: {

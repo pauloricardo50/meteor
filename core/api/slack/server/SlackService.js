@@ -186,10 +186,33 @@ export class SlackService {
   getNotificationOrigin = (currentUser) => {
     const APIUser = getAPIUser();
     const username = currentUser ? currentUser.name : undefined;
+    const isPro = currentUser && currentUser.roles.includes(ROLES.PRO);
 
     if (APIUser) {
       const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
-      return [username, `(API ${mainOrg && mainOrg.name})`].join(' ');
+      const proOrg = UserService.getUserMainOrganisation(currentUser._id);
+      return [
+        username,
+        `(${proOrg && proOrg.name}, API ${mainOrg && mainOrg.name})`,
+      ].join(' ');
+    }
+
+    if (isPro) {
+      const mainOrg = UserService.getUserMainOrganisation(currentUser._id);
+      return [username, `(${mainOrg && mainOrg.name})`].join(' ');
+    }
+
+    if (currentUser) {
+      const {
+        user: { name: referralUser } = {},
+        organisation: { name: referralOrg } = {},
+      } = UserService.getReferral(currentUser._id);
+      const referral = referralUser
+        ? `(ref ${referralUser} - ${referralOrg})`
+        : referralOrg
+          ? `(ref ${referralOrg})`
+          : undefined;
+      return [username, referral].filter(x => x).join(' ');
     }
 
     return username;

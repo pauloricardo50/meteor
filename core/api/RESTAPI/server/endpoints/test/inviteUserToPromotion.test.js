@@ -38,9 +38,10 @@ const inviteUser = ({
   status,
   id,
   shareSolvency = undefined,
+  invitationNote,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData, shareSolvency };
+  const body = { user: userData, shareSolvency, invitationNote };
   return fetchAndCheckResponse({
     url: `/promotions/${id || promotionId}/invite-customer`,
     data: {
@@ -99,9 +100,7 @@ describe('REST: inviteUserToPromotion', function () {
     return inviteUser({
       userData: userToInvite,
       expectedResponse: {
-        message: `Successfully invited user "${
-          userToInvite.email
-        }" to promotion id "${promotionId}"`,
+        message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
     }).then(() => {
@@ -123,9 +122,7 @@ describe('REST: inviteUserToPromotion', function () {
       userData: userToInvite,
       shareSolvency: true,
       expectedResponse: {
-        message: `Successfully invited user "${
-          userToInvite.email
-        }" to promotion id "${promotionId}"`,
+        message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
     }).then(() => {
@@ -138,6 +135,59 @@ describe('REST: inviteUserToPromotion', function () {
 
       expect(invitedUser.loans[0].shareSolvency).to.equal(true);
     });
+  });
+
+  it('invites a user to promotion with invitation note', () => {
+    setupPromotion();
+
+    return inviteUser({
+      userData: userToInvite,
+      shareSolvency: true,
+      invitationNote: 'testNote',
+      expectedResponse: {
+        message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
+      },
+      status: HTTP_STATUS_CODES.OK,
+    })
+      .then(() => {
+        const invitedUser = UserService.fetchOne({
+          $filters: { 'emails.address': { $in: [userToInvite.email] } },
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+          tasks: { description: 1 },
+        });
+
+        expect(invitedUser.loans[0].shareSolvency).to.equal(true);
+
+        let { tasks = [] } = invitedUser;
+        let intervalCount = 0;
+
+        return new Promise((resolve, reject) => {
+          const interval = Meteor.setInterval(() => {
+            if (tasks.length === 0 && intervalCount < 10) {
+              tasks = UserService.fetchOne({
+                $filters: {
+                  'emails.address': { $in: [userToInvite.email] },
+                },
+                tasks: { description: 1 },
+              }).tasks || [];
+              intervalCount++;
+            } else {
+              Meteor.clearInterval(interval);
+              if (intervalCount >= 10) {
+                reject('Fetch tasks timeout');
+              }
+              resolve(tasks);
+            }
+          }, 100);
+        });
+      })
+      .then((tasks) => {
+        expect(tasks.length).to.equal(1);
+        expect(tasks[0].description).to.contain('TestFirstName TestLastName');
+        expect(tasks[0].description).to.contain('testNote');
+      });
   });
 
   context('returns an error when', () => {
@@ -221,16 +271,14 @@ describe('REST: inviteUserToPromotion', function () {
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          message: `Successfully invited user "${
-            userToInvite.email
-          }" to promotion id "${promotionId}"`,
+          message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
         },
       }).then(() =>
         inviteUser({
           userData: userToInvite,
           expectedResponse: {
             status: HTTP_STATUS_CODES.CONFLICT,
-            message: 'Ce compte est déjà invité à cette promotion [409]',
+            message: 'Ce client est déjà invité à cette promotion [409]',
           },
         }));
     });

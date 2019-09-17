@@ -81,6 +81,7 @@ export default class RESTAPI {
                 query: req.query,
                 params: req.params,
                 files: req.files,
+                simpleAuthParams: req.simpleAuthParams,
                 res,
               }))
             .then((result) => {

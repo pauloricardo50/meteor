@@ -54,6 +54,10 @@ const schema = ({ proProperties, promotions }) =>
         displayEmpty: false,
       },
     },
+    invitationNote: {
+      type: String,
+      optional: true,
+    },
   });
 
 export default withProps(({ currentUser }) => {
@@ -72,11 +76,17 @@ export default withProps(({ currentUser }) => {
       promotions: filteredPromotions,
     }),
     onSubmit: (model) => {
-      const { propertyIds = [], promotionIds = [], ...user } = model;
+      const {
+        propertyIds = [],
+        promotionIds = [],
+        invitationNote,
+        ...user
+      } = model;
       return proInviteUser.run({
         user,
         propertyIds: propertyIds.length ? propertyIds : undefined,
         promotionIds: promotionIds.length ? promotionIds : undefined,
+        invitationNote,
       });
     },
   };

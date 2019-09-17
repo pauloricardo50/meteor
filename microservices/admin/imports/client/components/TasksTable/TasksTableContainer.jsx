@@ -15,7 +15,7 @@ import Linkify from 'core/components/Linkify';
 import TasksTableActions from './TasksTableActions';
 
 const now = moment();
-const formatDateTime = (date, toNow) => {
+export const formatDateTime = (date, toNow) => {
   const momentDate = moment(date);
   const text = date ? momentDate[toNow ? 'toNow' : 'fromNow']() : '-';
 

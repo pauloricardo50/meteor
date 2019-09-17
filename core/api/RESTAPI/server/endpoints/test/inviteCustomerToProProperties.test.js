@@ -41,12 +41,14 @@ const inviteCustomerToProProperties = ({
   properties,
   impersonateUser,
   shareSolvency,
+  invitationNote,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = {
     user: userData || customerToInvite,
     properties,
     shareSolvency,
+    invitationNote,
   };
   const query = impersonateUser
     ? { 'impersonate-user': impersonateUser }
@@ -218,6 +220,82 @@ describe('REST: inviteCustomerToProProperties', function () {
 
       expect(customer.loans[0].shareSolvency).to.equal(true);
     });
+  });
+
+  it('invites a customer to multiple properties with invitation note', () => {
+    PropertyService.setProUserPermissions({
+      propertyId: 'property1',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property2',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property3',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'externalProperty1',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    return inviteCustomerToProProperties({
+      properties: [
+        { _id: 'property1' },
+        { _id: 'property2' },
+        { _id: 'property3' },
+        { externalId: 'ext1' },
+        { externalId: 'ext3', category: PROPERTY_CATEGORY.PRO },
+      ],
+      shareSolvency: true,
+      invitationNote: 'testNote',
+      expectedResponse: {
+        message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
+      },
+    })
+      .then(() => {
+        const customer = UserService.fetchOne({
+          $filters: { 'emails.address': { $in: [customerToInvite.email] } },
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+          tasks: { description: 1 },
+        });
+
+        expect(customer.loans[0].shareSolvency).to.equal(true);
+
+        let { tasks = [] } = customer;
+        let intervalCount = 0;
+
+        return new Promise((resolve, reject) => {
+          const interval = Meteor.setInterval(() => {
+            if (tasks.length === 0 && intervalCount < 10) {
+              tasks = UserService.fetchOne({
+                $filters: {
+                  'emails.address': { $in: [customerToInvite.email] },
+                },
+                tasks: { description: 1 },
+              }).tasks || [];
+              intervalCount++;
+            } else {
+              Meteor.clearInterval(interval);
+              if (intervalCount >= 10) {
+                reject('Fetch tasks timeout');
+              }
+              resolve(tasks);
+            }
+          }, 100);
+        });
+      })
+      .then((tasks) => {
+        expect(tasks.length).to.equal(1);
+        expect(tasks[0].description).to.contain('TestFirstName TestLastName');
+        expect(tasks[0].description).to.contain('testNote');
+      });
   });
 
   it('invites a customer to multiple properties with impersonateUser', () => {

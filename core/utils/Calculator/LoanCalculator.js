@@ -129,6 +129,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getAmountToAmortize({ borrowRatio }) {
+      return borrowRatio - this.amortizationGoal;
+    }
 
     getAmortization({ loan, structureId, offerOverride }) {
       const offer = this.selectOffer({ loan, structureId });
@@ -163,18 +166,44 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return (this.getAmortizationRate({ loan, structureId }) * loanValue) / 12;
     }
 
+    getAmortizationBorrowRatio({ loan, structureId }) {
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+
+      // These funds should not be amortized, as they are considered as the equivalent of using cash directly
+      const cashPledgedFunds = ownFunds
+        .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .filter(({ type }) => type !== OWN_FUNDS_TYPES.INSURANCE_2)
+        .reduce((sum, { value }) => sum + value, 0);
+
+      const adjustedBorrowRatio = borrowRatio - cashPledgedFunds / propAndWork;
+      return adjustedBorrowRatio;
+    }
+
     getAmortizationRate({
       loan,
       structureId,
       amortizationYears = this.getAmortizationDuration({ loan, structureId }),
     }) {
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
-      return this.getAmortizationRateBase({
-        borrowRatio,
-        amortizationYears,
-        // Prevent caching of this function if amortizationGoal has changed
-        cacheFix: this.amortizationGoal,
+      const amortizationBorrowRatio = this.getAmortizationBorrowRatio({
+        loan,
+        structureId,
       });
+
+      // Readjust borrowRatio in function of the gross loan value (with pledged cash), instead of
+      // the net borrowRatio (without pledged cash)
+      return (
+        (this.getAmortizationRateBase({
+          borrowRatio: amortizationBorrowRatio,
+          amortizationYears,
+          // Prevent caching of this function if amortizationGoal has changed
+          cacheFix: this.amortizationGoal,
+        })
+          * amortizationBorrowRatio)
+        / borrowRatio
+      );
     }
 
     getTotalAmortization({ loan, structureId }) {

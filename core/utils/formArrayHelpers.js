@@ -106,6 +106,34 @@ export const getMissingFieldIds = (formArray, doc) =>
     return missingFieldIds;
   }, []);
 
+export const getRequiredFieldIds = (formArray, doc) =>
+  formArray.reduce((fieldIds, field) => {
+    const { type, id, inputs } = field;
+
+    if (!shouldCountField(field)) {
+      return fieldIds;
+    }
+
+    if (type === 'conditionalInput') {
+      const [conditionalField, ...additionalFields] = inputs;
+      if (conditionalInputIsTriggered(field, doc)) {
+        return [
+          ...fieldIds,
+          ...additionalFields.reduce((conditionalFields, additionalField) => {
+            if (!shouldCountField(additionalField)) {
+              return [...conditionalFields];
+            }
+            return [...conditionalFields, additionalField.id];
+          }, []),
+        ];
+      }
+
+      return [...fieldIds, conditionalField.id];
+    }
+
+    return [...fieldIds, id];
+  }, []);
+
 /**
  * Returns the hash of a form's values
  *

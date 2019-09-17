@@ -108,10 +108,11 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin, anonymous }) => {
     || isReferredByOrganisation({ organisations, referredByOrganisation })
     || isReferredByOrganisationUser({ organisationUsers, referredByUser })
   ) {
-    label = getUserNameAndOrganisation({ user: referredByUser });
+    label = getUserNameAndOrganisation({ user: referredByUser })
+      || referredByOrganisation.name;
   }
 
-  return { raw: referredByUser.name, label };
+  return { raw: referredByUser.name || referredByOrganisation.name, label };
 };
 
 export const sortObject = (object) => {
