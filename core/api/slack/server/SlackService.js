@@ -190,7 +190,11 @@ export class SlackService {
 
     if (APIUser) {
       const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
-      return [username, `(API ${mainOrg && mainOrg.name})`].join(' ');
+      const proOrg = UserService.getUserMainOrganisation(currentUser._id);
+      return [
+        username,
+        `(${proOrg && proOrg.name}, API ${mainOrg && mainOrg.name})`,
+      ].join(' ');
     }
 
     if (isPro) {
@@ -204,9 +208,9 @@ export class SlackService {
         organisation: { name: referralOrg } = {},
       } = UserService.getReferral(currentUser._id);
       const referral = referralUser
-        ? `(référé par ${referralUser} (${referralOrg}))`
+        ? `(ref ${referralUser} - ${referralOrg})`
         : referralOrg
-          ? `(référé par ${referralOrg})`
+          ? `(ref ${referralOrg})`
           : undefined;
       return [username, referral].filter(x => x).join(' ');
     }
