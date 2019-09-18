@@ -6,10 +6,10 @@
 1.  setup all microservices by using the command `meteor npm run setup`
     - Use `meteor npm run setup-clean` to empty npm cache, regenerate `package-lock`s and reset meteor
 1.  run a single microservice by going into the microservice folder and starting it with `meteor npm start`
-  1.  run more apps as needed by repeating this command within each microservice folder
+    - run more apps as needed by repeating this command within each microservice folder
 1. When running the apps from with a clean DB, a few demo users will be created.
-  1. 2 `dev` users will be created, `florian@e-potek.ch` and `quentin@e-potek.ch`
-  1. Their passwords are all `12345`
+    - 2 `dev` users will be created, `florian@e-potek.ch` and `quentin@e-potek.ch`
+    - Their passwords are all `12345`
 
 ## Microservices
 
