@@ -1,6 +1,9 @@
 /* eslint-env mocha */
 import { LOAN_STATUS } from '../../imports/core/api/loans/loanConstants';
-import { PRO_EMAIL, PRO_PASSWORD } from '../../imports/core/cypress/server/e2eConstants';
+import {
+  PRO_EMAIL,
+  PRO_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 const inviteUser = ({ firstName, lastName, email, phoneNumber }) => {
   cy.contains('Inviter un client').click();
@@ -58,7 +61,7 @@ describe('Promotion pages', () => {
       lastName: 'Dupont',
       phoneNumber: '022 566 01 10',
     });
-    cy.setSelect('propertyIds', 0);
+    cy.setSelect('propertyIds', 1);
     cy.get('body').trigger('keydown', { keyCode: 27, which: 27 }); // Hit escape to restore keyboard control
     cy.get('input[name="phoneNumber"]').type('{enter}');
 
