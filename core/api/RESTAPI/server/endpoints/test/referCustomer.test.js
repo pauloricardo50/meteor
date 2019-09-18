@@ -38,7 +38,6 @@ const referCustomer = ({
     user: userData || customerToRefer,
     shareSolvency,
     invitationNote,
-    
   };
   const query = impersonateUser
     ? { 'impersonate-user': impersonateUser }
@@ -88,9 +87,9 @@ describe('REST: referCustomer', function () {
             {
               _id: 'org',
               $metadata: { isMain: true, title: 'CTO' },
-              name: 'Main Org',
+              name: 'Org 1',
             },
-            { _id: 'org3' },
+            { _id: 'org3', name: 'Org 3' },
           ],
         },
         {
@@ -103,7 +102,9 @@ describe('REST: referCustomer', function () {
           _factory: 'pro',
           _id: 'pro3',
           emails: [{ address: 'pro3@org2.com', verified: true }],
-          organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
+          organisations: [
+            { _id: 'org2', $metadata: { isMain: true }, name: 'Org 2' },
+          ],
         },
         {
           _factory: 'pro',
@@ -260,7 +261,7 @@ describe('REST: referCustomer', function () {
       });
 
       expect(spy.calledOnce).to.equal(true);
-      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (Org 3, API Org 1)');
       expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité sur e-Potek en referral uniquement');
 
       SlackService.send.restore();
