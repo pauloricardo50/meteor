@@ -1,6 +1,7 @@
 // @flow
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
+import { Element } from 'react-scroll';
 
 import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { lotRemove, lotUpdate } from '../../../../api/methods';
@@ -43,7 +44,7 @@ const LotsTable = ({
   const schema = AdditionalLotModifierSchema(promotionLots);
 
   return (
-    <>
+    <Element name="additional-lots-table">
       <h3>
         <T id="PromotionPage.AdditionalLotsTable" />
       </h3>
@@ -52,7 +53,9 @@ const LotsTable = ({
         columnOptions={columnOptions}
         schema={canModifyLots && schema}
         title={<T id="PromotionPage.modifyLot" />}
-        allow={({ status }) => status === PROMOTION_LOT_STATUS.AVAILABLE}
+        allow={({ status }) =>
+          ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(status)
+        }
         onSubmit={({
           _id: lotId,
           name,
@@ -68,7 +71,7 @@ const LotsTable = ({
         onDelete={({ _id: lotId }) => lotRemove.run({ lotId })}
         {...props}
       />
-    </>
+    </Element>
   );
 };
 
