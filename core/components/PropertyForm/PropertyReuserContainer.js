@@ -16,7 +16,7 @@ export default compose(
     renderMissingDoc: false,
     refetchOnMethodCall: false,
   }),
-  mapProps(({ loans, loanId }) => {
+  mapProps(({ loans, loanId, disabled }) => {
     const currentLoan = loans.find(({ _id }) => _id === loanId);
     const { properties: currentProperties = [] } = currentLoan;
     const allOtherLoans = loans.filter(({ _id }) => _id !== loanId);
@@ -26,6 +26,7 @@ export default compose(
         !currentProperties.find(({ _id }) => _id === propertyId));
 
     return {
+      disabled,
       properties: propertiesToReuse,
       handleSelectProperty: propertyId =>
         reuseProperty.run({ propertyId, loanId }),
