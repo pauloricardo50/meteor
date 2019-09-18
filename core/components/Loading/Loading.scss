@@ -2,8 +2,8 @@
 .loading-container {
   display: flex;
   align-items: center;
-  justify-content: center;
   align-self: center;
+  justify-content: center;
 
   &.small {
     transform: scale(0.5);
@@ -39,10 +39,10 @@
   position: relative;
   top: 49%;
   top: -webkit-calc(50% - 43px);
-  top: calc(50% - 2.5px);
+  top:         calc(50% - 2.5px);
   left: 49%;
   left: -webkit-calc(50% - 43px);
-  left: calc(50% - 2.5px);
+  left:         calc(50% - 2.5px);
 
   width: 5px;
   height: 5px;
@@ -61,9 +61,9 @@
 
   content: '';
   -webkit-transform-origin: 0 100%;
-  transform-origin: 0 100%;
+          transform-origin: 0 100%;
   -webkit-animation: loader2 1.5s linear infinite;
-  animation: loader2 1.5s linear infinite;
+          animation: loader2 1.5s linear infinite;
 
   border-top: 3px solid $primary;
   border-right: 3px solid $primary;
@@ -81,9 +81,9 @@
 
   content: '';
   -webkit-transform-origin: 100% 0;
-  transform-origin: 100% 0;
+          transform-origin: 100% 0;
   -webkit-animation: loader2 1.5s linear infinite;
-  animation: loader2 1.5s linear infinite;
+          animation: loader2 1.5s linear infinite;
 
   border-bottom: 3px solid $primary;
   border-left: 3px solid $primary;

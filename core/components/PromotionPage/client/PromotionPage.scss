@@ -1,50 +1,52 @@
 @import './PromotionCustomers/PromotionCustomers.scss';
 
 .promotion-page {
-  margin: 0 auto;
-  max-width: 1400px;
-  width: 100%;
-  flex-grow: 1;
   display: flex;
-  flex-direction: column;
   align-items: stretch;
+  flex-direction: column;
+  flex-grow: 1;
+
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 
   &-header {
     display: flex;
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
 
     height: 50vw;
-    max-height: 500px;
     min-height: 200px;
+    max-height: 500px;
     padding: 32px;
-
-    .decrement {
-      top: unset;
-      left: 8px;
-      bottom: 8px;
-    }
-
-    .increment {
-      top: unset;
-      left: 72px;
-      bottom: 8px;
-    }
 
     @include screen(med) {
       padding: 16px;
     }
 
+    .decrement {
+      top: unset;
+      bottom: 8px;
+      left: 8px;
+    }
+
+    .increment {
+      top: unset;
+      bottom: 8px;
+      left: 72px;
+    }
+
     &-top {
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
+      justify-content: space-between;
     }
 
     &-text {
-      border-radius: 4px;
       padding: 8px;
-      background-color: rgba($color: #000000, $alpha: 0.4);
+
+      border-radius: 4px;
+      background-color: rgba($color: #000, $alpha: 0.4);
     }
 
     &-title {
@@ -60,8 +62,9 @@
     h1,
     h3,
     h4 {
-      color: white;
       margin: 0;
+
+      color: white;
     }
 
     h1 {
@@ -82,8 +85,8 @@
     display: flex;
     align-items: center;
     align-self: center;
-
     // On very small screens
+
     min-width: 224px;
     margin: 16px 0;
     padding: 16px;
@@ -91,8 +94,9 @@
     .icon {
       width: 80px;
       height: 80px;
-      color: $primary;
       padding: 8px 24px 8px 16px;
+
+      color: $primary;
     }
 
     > * {
@@ -102,8 +106,8 @@
 
   &-overview {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
 
     > button,
     .mui-table {
@@ -111,8 +115,8 @@
     }
 
     .promotion-timeline {
-      align-self: stretch;
       overflow-x: scroll;
+      align-self: stretch;
     }
 
     .mui-table,
@@ -128,34 +132,37 @@
 
   .promotion-partners {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
 
     .contacts,
     .logos {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
+
       margin-top: 32px;
     }
 
     .contacts {
-      flex-direction: row;
       align-items: flex-start;
-      justify-content: center;
+      flex-direction: row;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
     .contact {
       display: flex;
       flex-direction: column;
+
       margin-right: 16px;
     }
 
     .logo {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
+
       margin-bottom: 16px;
       padding: 32px;
 
@@ -170,9 +177,10 @@
   }
 
   &-map {
+    flex-grow: 1;
+
     width: 100%;
     min-height: 500px;
-    flex-grow: 1;
 
     .map {
       width: 100%;
@@ -204,29 +212,32 @@
   }
 
   .top {
-    justify-content: space-evenly;
     display: grid;
+    justify-content: space-evenly;
+
     grid-gap: 8px;
     grid-template-columns: repeat(auto-fit, 400px);
   }
 
   .promotion-lots-manager {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .document-download-list {
-    justify-content: flex-start;
-    margin: 0;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+
+    margin: 0;
 
     .document {
-      padding: 16px;
-      width: unset;
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
+
+      width: unset;
+      padding: 16px;
 
       p {
         margin: 0;
@@ -246,8 +257,9 @@
 
     .construction-timeline-header {
       display: flex;
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
+
       border-right: 1px solid $border-grey;
       border-top-right-radius: 0;
 
@@ -273,8 +285,9 @@
 }
 
 .modal-promotion-lot-title {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  width: 100%;
 }

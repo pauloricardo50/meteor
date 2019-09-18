@@ -1,24 +1,25 @@
 @import './AdminSideNav/AdminSideNav.scss';
 
 .admin-layout {
-  width: 100%;
-  flex-grow: 1;
   display: flex;
-  padding-top: 64px;
   flex-grow: 1;
+  flex-grow: 1;
+
+  width: 100%;
+  padding-top: 64px;
 
 
   .main {
     display: flex;
+    overflow: auto;
     flex-direction: column;
     flex-grow: 1;
     // flex-basis: 0;
     flex-shrink: 1;
-    overflow: auto;
 
-    padding: 16px;
     box-sizing: border-box;
     min-height: 100%;
+    padding: 16px;
   }
 
   .top-nav {

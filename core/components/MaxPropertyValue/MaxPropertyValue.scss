@@ -10,7 +10,6 @@ $footer-height: 64px;
   @include screen(small) {
     padding: 16px;
   }
-
   @include screen(xsmall) {
     padding: 8px;
   }
@@ -92,11 +91,12 @@ $footer-height: 64px;
 
     &-selects {
       display: flex;
+      align-items: center;
       align-self: stretch;
       flex-wrap: wrap;
       justify-content: space-between;
+
       margin-top: 16px;
-      align-items: center;
 
       .mui-select {
         width: calc(50% - 4px);
@@ -105,9 +105,11 @@ $footer-height: 64px;
       }
 
       p.locked-canton {
-        font-size: 1.3rem;
         margin-top: 8px;
+
         text-transform: uppercase;
+
+        font-size: 1.3rem;
       }
     }
 
@@ -169,15 +171,16 @@ $footer-height: 64px;
     }
 
     .recap-value {
+      margin: 64px 0 16px 0;
+
       font-size: 4em;
       font-weight: bold;
-      margin: 64px 0 16px 0;
 
       @include screen(med) {
         margin: 32px 0 16px 0;
+
         font-size: 3em;
       }
-
       @include screen(small) {
         font-size: 2em;
       }
@@ -200,9 +203,9 @@ $footer-height: 64px;
 
   &-sticky {
     position: fixed;
+    z-index: 1;
     bottom: 0;
     left: 0;
-    z-index: 1;
 
     display: flex;
     align-items: center;
@@ -215,8 +218,9 @@ $footer-height: 64px;
     background-color: $primary;
 
     .calculate {
-      border: 1px solid white;
       padding: 4px 16px;
+
+      border: 1px solid white;
       border-radius: $border-radius;
     }
 
@@ -253,8 +257,8 @@ $footer-height: 64px;
 
   &-signup {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
 
     .icon {
       width: 100px;
@@ -275,7 +279,7 @@ $footer-height: 64px;
 
 .max-property-sharing-toggle {
   display: flex;
-  justify-content: center;
   align-items: center;
   align-self: stretch;
+  justify-content: center;
 }
