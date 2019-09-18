@@ -1,8 +1,8 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import {
   toggleNotifications,
   promotionUpdate,
@@ -10,8 +10,8 @@ import {
   insertPromotionProperty,
   lotInsert,
   promotionRemove,
-} from 'core/api/methods';
-import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
+} from '../../../../api/methods';
+import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
 import {
   PROMOTIONS_COLLECTION,
   S3_ACLS,
@@ -20,19 +20,20 @@ import {
   USERS_COLLECTION,
   PROPERTY_TYPE,
   LOT_TYPES,
-} from 'core/api/constants';
-import { userSearch } from 'core/api/users/queries';
+} from '../../../../api/constants';
+import { userSearch } from '../../../../api/users/queries';
+import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import CollectionSearch from '../../../CollectionSearch';
 import CollectionIconLink from '../../../IconLink/CollectionIconLink';
 import Button from '../../../Button';
-import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import DropdownMenu from '../../../DropdownMenu';
 import Icon from '../../../Icon';
 import { ModalManagerContext } from '../../../ModalManager';
 import DialogForm from '../../../ModalManager/DialogForm';
 import T from '../../../Translation';
 import UploaderArray from '../../../UploaderArray';
+import Dialog from '../../../Material/Dialog';
 import PromotionMetadataContext from '../PromotionMetadata';
 
 type PromotionAdministrationProps = {};
@@ -95,7 +96,8 @@ const getOptions = ({
   metadata: { permissions, enableNotifications },
   openModal,
   promotion,
-  currentUser,
+  openDocumentsModal,
+  openProInvitationModal,
 }) => {
   const { _id: promotionId } = promotion;
   const {
@@ -133,60 +135,13 @@ const getOptions = ({
     {
       id: 'manageDocuments',
       condition: canManageDocuments,
-      onClick: () =>
-        openModal({
-          title: <T id="PromotionAdministration.manageDocuments" />,
-          content: (
-            <UploaderArray
-              doc={promotion}
-              collection={PROMOTIONS_COLLECTION}
-              documentArray={promotionDocuments}
-              currentUser={currentUser}
-              allowRequireByAdmin={false}
-            />
-          ),
-        }),
+      onClick: openDocumentsModal,
     },
     {
       id: 'addUser',
       dividerTop: true,
       condition: canAddPros,
-      onClick: () =>
-        openModal({
-          title: <T id="PromotionAdministration.addUser" />,
-          content: (
-            <div className="flex-col">
-              <CollectionSearch
-                query={userSearch}
-                queryParams={{ roles: [ROLES.PRO] }}
-                title="Rechercher un utilisateur PRO"
-                renderItem={user => (
-                  <div className="user-search-item">
-                    <CollectionIconLink
-                      relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-                      placement="left"
-                    />
-                    <Button
-                      onClick={() =>
-                        addProUserToPromotion.run({
-                          promotionId,
-                          userId: user._id,
-                        })
-                      }
-                      primary
-                      disabled={
-                        promotion.users
-                        && promotion.users.map(({ _id }) => _id).includes(user._id)
-                      }
-                    >
-                      <T id="AdminPromotionPage.addUser" />
-                    </Button>
-                  </div>
-                )}
-              />
-            </div>
-          ),
-        }),
+      onClick: openProInvitationModal,
     },
     {
       id: 'addPromotionLot',
@@ -237,28 +192,100 @@ const PromotionAdministration = ({
   const currentUser = useContext(CurrentUserContext);
   const metadata = useContext(PromotionMetadataContext);
   const { openModal } = useContext(ModalManagerContext);
-  const options = getOptions({ metadata, openModal, promotion, currentUser });
+  const [openDocumentsModal, setOpenDocumentsModal] = useState(false);
+  const [openProInvitationModal, setOpenProInvitationModal] = useState(false);
+
+  const { _id: promotionId } = promotion;
+  const options = getOptions({
+    metadata,
+    openModal,
+    promotion,
+    openDocumentsModal: () => setOpenDocumentsModal(true),
+    openProInvitationModal: () => setOpenProInvitationModal(true),
+  });
 
   if (options.length === 0) {
     return null;
   }
 
+  const dialogActions = [
+    <Button primary onClick={() => setOpenDocumentsModal(false)} key="close">
+      <T id="general.close" />
+    </Button>,
+  ];
+
   return (
-    <DropdownMenu
-      button
-      buttonProps={{
-        label: <T id="PromotionAdministration.buttonLabel" />,
-        raised: true,
-        primary: true,
-        icon: <Icon type="settings" />,
-      }}
-      options={options}
-      noWrapper
-      menuProps={{
-        anchorOrigin: { vertical: 'bottom', horizontal: 'start' },
-        transformOrigin: { vertical: 'top', horizontal: 'start' },
-      }}
-    />
+    <>
+      {/* The following 2 modals need to receive reactive data, and can not be used with the ModalManager */}
+      <Dialog
+        title={<T id="PromotionAdministration.manageDocuments" />}
+        open={openDocumentsModal}
+        onClose={() => setOpenDocumentsModal(false)}
+        actions={dialogActions}
+      >
+        <UploaderArray
+          doc={promotion}
+          collection={PROMOTIONS_COLLECTION}
+          documentArray={promotionDocuments}
+          currentUser={currentUser}
+          allowRequireByAdmin={false}
+        />
+      </Dialog>
+
+      <Dialog
+        title={<T id="PromotionAdministration.addUser" />}
+        open={openProInvitationModal}
+        onClose={() => setOpenProInvitationModal(false)}
+        actions={dialogActions}
+      >
+        <div className="flex-col">
+          <CollectionSearch
+            query={userSearch}
+            queryParams={{ roles: [ROLES.PRO] }}
+            title="Rechercher un utilisateur PRO"
+            renderItem={user => (
+              <div className="user-search-item">
+                <CollectionIconLink
+                  relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+                  placement="left"
+                />
+                <Button
+                  onClick={() =>
+                    addProUserToPromotion.run({
+                      promotionId,
+                      userId: user._id,
+                    })
+                  }
+                  primary
+                  disabled={
+                    promotion.users
+                    && promotion.users.map(({ _id }) => _id).includes(user._id)
+                  }
+                >
+                  <T id="AdminPromotionPage.addUser" />
+                </Button>
+              </div>
+            )}
+          />
+        </div>
+      </Dialog>
+
+      <DropdownMenu
+        button
+        buttonProps={{
+          label: <T id="PromotionAdministration.buttonLabel" />,
+          raised: true,
+          primary: true,
+          icon: <Icon type="settings" />,
+        }}
+        options={options}
+        noWrapper
+        menuProps={{
+          anchorOrigin: { vertical: 'bottom', horizontal: 'start' },
+          transformOrigin: { vertical: 'top', horizontal: 'start' },
+        }}
+      />
+    </>
   );
 };
 
