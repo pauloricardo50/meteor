@@ -4,9 +4,7 @@ import DevPage from 'core/components/DevPage/loadable';
 
 import AdminAccountPage from '../../client/pages/AdminAccountPage/loadable';
 import AdminDashboardPage from '../../client/pages/AdminDashboardPage/loadable';
-import AdminPromotionLotPage from '../../client/pages/AdminPromotionLotPage/loadable';
 import AdminPromotionPage from '../../client/pages/AdminPromotionPage/loadable';
-import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage/loadable';
 import LoansPage from '../../client/pages/LoansPage/loadable';
 import OrganisationsPage from '../../client/pages/OrganisationsPage/loadable';
 import PromotionsPage from '../../client/pages/PromotionsPage/loadable';
