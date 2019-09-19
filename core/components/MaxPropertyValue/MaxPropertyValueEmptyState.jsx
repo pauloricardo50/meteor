@@ -83,6 +83,7 @@ export const MaxPropertyValueEmptyStateReady = ({
             </i>
           )}
           error={error && <span className="error-box">{error}</span>}
+          name="max-property-value-canton"
         />
       )}
       <Button

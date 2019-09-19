@@ -62,7 +62,7 @@ const pages = {
   },
 };
 
-describe.only('App Pages', () => {
+describe('App Pages', () => {
   let testData;
 
   before(() => {
