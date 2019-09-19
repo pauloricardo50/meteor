@@ -8,8 +8,10 @@ Borrowers.addReducers({
       firstName: 1,
       lastName: 1,
     },
-    reduce: ({ firstName, lastName }) =>
-      [firstName, lastName].filter(x => x).join(' '),
+    reduce: ({ firstName, lastName }) => {
+      const name = [firstName, lastName].filter(x => x).join(' ');
+      return name.reverseFirstLastName();
+    },
   },
   age: {
     body: { birthDate: 1 },

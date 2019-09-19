@@ -30,8 +30,11 @@ const schema = ({ proProperties, promotions }) =>
       optional: true,
       allowedValues: proProperties.map(({ _id }) => _id),
       uniforms: {
-        transform: propertyId =>
-          proProperties.find(({ _id }) => _id === propertyId).address1,
+        transform: (propertyId) => {
+          const { address1, city = '', zipCode = '' } = proProperties.find(({ _id }) => _id === propertyId);
+
+          return `${address1}, ${zipCode} ${city}`;
+        },
         displayEmpty: false,
       },
     },

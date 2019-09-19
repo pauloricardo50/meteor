@@ -853,7 +853,7 @@ export const proPropertySummary = () => ({
   loanCount: 1,
   country: 1,
   userLinks: 1,
-  users: {name: 1}
+  users: { name: 1 },
 });
 
 export const proProperty = ({ withSort } = {}) => ({
@@ -975,9 +975,11 @@ export const proUser = () => ({
   proProperties: {
     _id: 1,
     address1: 1,
+    city: 1,
     permissions: 1,
     status: 1,
     users: { _id: 1 },
+    zipCode: 1,
   },
 });
 
