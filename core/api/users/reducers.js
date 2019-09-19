@@ -1,6 +1,4 @@
-import { compose } from 'recompose';
-
-import { getUserDisplayName } from '../../utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 import Users from './users';
 
 Users.addReducers({
@@ -12,10 +10,7 @@ Users.addReducers({
   },
   name: {
     body: { firstName: 1, lastName: 1, emails: 1 },
-    reduce: compose(
-      s => s.reverseFirstLastName(),
-      getUserDisplayName,
-    ),
+    reduce: getUserDisplayName,
   },
   phoneNumber: {
     body: {
