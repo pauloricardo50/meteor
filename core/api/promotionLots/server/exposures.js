@@ -5,45 +5,48 @@ import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { appPromotionLots, proPromotionLots } from '../queries';
 
+const promotionLotSecurity = ({ _id, userId, promotionId }) => {
+  if (_id) {
+    SecurityService.promotions.hasAccessToPromotionLot({
+      promotionLotId: _id,
+      userId,
+    });
+  }
+
+  if (promotionId) {
+    SecurityService.promotions.hasAccessToPromotion({
+      promotionId,
+      userId,
+    });
+  }
+
+  if (!promotionId && !_id) {
+    SecurityService.handleUnauthorized('Must supply _id or promotionId');
+  }
+};
+
+const promotionLotFilters = ({ filters, promotionId, status }) => {
+  if (promotionId) {
+    filters.promotionCache = { $elemMatch: { _id: promotionId } };
+  }
+
+  if (status) {
+    filters.status = status;
+  }
+};
+
 exposeQuery({
   query: appPromotionLots,
   overrides: {
     firewall(userId, { _id, promotionId }) {
-      if (_id) {
-        SecurityService.promotions.hasAccessToPromotionLot({
-          promotionLotId: _id,
-          userId,
-        });
-      }
-
-      if (promotionId) {
-        SecurityService.promotions.hasAccessToPromotion({
-          promotionId,
-          userId,
-        });
-      }
-
-      if (!promotionId && !_id) {
-        SecurityService.handleUnauthorized('Must supply _id or promotionId');
-      }
+      promotionLotSecurity({ _id, userId, promotionId });
     },
     embody: (body) => {
-      body.$filter = ({ filters, params: { _id, promotionId, status } }) => {
-        if (_id) {
-          filters._id = _id;
-        }
-
-        if (promotionId) {
-          filters['promotionCache._id'] = promotionId;
-        }
-
-        if (status) {
-          filters.status = status;
-        }
+      body.$filter = ({ filters, params: { promotionId, status } }) => {
+        promotionLotFilters({ filters, promotionId, status });
       };
     },
     validateParams: {
-      _id: Match.Maybe(String),
       promotionId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
     },
@@ -56,37 +59,11 @@ exposeQuery({
     firewall(userId, params) {
       const { _id, promotionId } = params;
       SecurityService.checkUserIsPro(userId);
-      if (_id) {
-        SecurityService.promotions.isAllowedToViewPromotionLot({
-          promotionLotId: _id,
-          userId,
-        });
-      }
-
-      if (promotionId) {
-        SecurityService.promotions.isAllowedToView({
-          promotionId,
-          userId,
-        });
-      }
-
-      if (!promotionId && !_id) {
-        SecurityService.handleUnauthorized('Must supply _id or promotionId');
-      }
+      promotionLotSecurity({ _id, userId, promotionId });
     },
     embody: (body) => {
       body.$filter = ({ filters, params: { _id, promotionId, status } }) => {
-        if (_id) {
-          filters._id = _id;
-        }
-
-        if (promotionId) {
-          filters.promotionCache = { $elemMatch: { _id: promotionId } };
-        }
-
-        if (status) {
-          filters.status = status;
-        }
+        promotionLotFilters({ filters, promotionId, status });
       };
       body.$postFilter = (results, { _userId }) => {
         try {
@@ -98,7 +75,6 @@ exposeQuery({
       };
     },
     validateParams: {
-      _id: Match.Maybe(String),
       promotionId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
     },

@@ -12,7 +12,7 @@ import PromotionMetadataContext from '../PromotionMetadata';
 
 type LotsTableProps = {};
 
-const AdditionalLotModifierSchema = (promotionLots = []) =>
+const additionalLotModifierSchema = ({ promotionLots = [], formatMessage }) =>
   lotSchema.extend(new SimpleSchema({
     promotionLot: {
       type: String,
@@ -26,7 +26,9 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
             <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
           )),
         labelProps: { shrink: true },
-        placeholder: 'Non alloué',
+        placeholder: formatMessage({
+          id: 'PromotionPage.AdditionalLotsTable.nonAllocated',
+        }),
       },
     },
   }));
@@ -35,12 +37,13 @@ const LotsTable = ({
   rows,
   columnOptions,
   promotion: { promotionLots },
+  intl: { formatMessage },
   ...props
 }: LotsTableProps) => {
   const {
     permissions: { canModifyLots },
   } = useContext(PromotionMetadataContext);
-  const schema = AdditionalLotModifierSchema(promotionLots);
+  const schema = additionalLotModifierSchema({ promotionLots, formatMessage });
 
   return (
     <>

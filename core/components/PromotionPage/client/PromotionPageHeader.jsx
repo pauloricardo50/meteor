@@ -35,13 +35,7 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
     >
       <div className="promotion-page-header-top">
         <div className="promotion-page-header-text">
-          <h4>
-            {address1}
-            {', '}
-            {zipCode}
-            {' '}
-            {city}
-          </h4>
+          <h4>{`${address1}, ${zipCode} ${city}`}</h4>
           <div className="promotion-page-header-title flex center-align">
             <h1>{name}</h1>
             <StatusLabel
