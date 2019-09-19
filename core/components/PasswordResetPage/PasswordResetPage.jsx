@@ -51,7 +51,7 @@ const getSchema = ({
   const hasAdditionalInfo = omitFields.length < 3;
 
   return new SimpleSchema({
-    // Do this to make password managers work properly
+    // Add hidden username field make password managers work properly
     username: {
       type: String,
       optional: true,
