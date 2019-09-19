@@ -111,8 +111,9 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
 
   if (endpointOptions.simpleAuth) {
     const { query } = req;
-    const { token, timestamp, 'user-id': userId } = query;
-    const authToken = getSimpleAuthToken(query);
+    const simpleAuthParams = JSON.parse(Buffer.from(query['simple-auth-params'], 'base64').toString('ascii'));
+    const { token, timestamp, userId } = simpleAuthParams;
+    const authToken = getSimpleAuthToken(simpleAuthParams);
 
     const now = moment().unix();
 
@@ -135,6 +136,7 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
     }
 
     req.user = user;
+    req.simpleAuthParams = simpleAuthParams;
   }
 
   next();

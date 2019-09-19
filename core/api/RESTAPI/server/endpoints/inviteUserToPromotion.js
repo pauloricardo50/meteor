@@ -15,7 +15,7 @@ const inviteUserToPromotionAPI = ({
   params,
   query,
 }) => {
-  const { user, shareSolvency } = body;
+  const { user, shareSolvency, invitationNote } = body;
   const { promotionId } = params;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
@@ -36,13 +36,12 @@ const inviteUserToPromotionAPI = ({
       promotionIds,
       user: { ...user, invitedBy: userId },
       shareSolvency,
+      invitationNote,
     }))
     .then(() =>
       updateCustomerReferral({ customer: user, userId, impersonateUser }))
     .then(() => ({
-      message: `Successfully invited user "${
-        user.email
-      }" to promotion id "${promotionId}"`,
+      message: `Successfully invited user "${user.email}" to promotion id "${promotionId}"`,
     }));
 };
 

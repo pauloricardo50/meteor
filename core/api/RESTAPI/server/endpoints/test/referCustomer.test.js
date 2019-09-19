@@ -30,10 +30,15 @@ const referCustomer = ({
   impersonateUser,
   expectedResponse,
   shareSolvency,
+  invitationNote,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
 
-  const body = { user: userData || customerToRefer, shareSolvency };
+  const body = {
+    user: userData || customerToRefer,
+    shareSolvency,
+    invitationNote,
+  };
   const query = impersonateUser
     ? { 'impersonate-user': impersonateUser }
     : undefined;
@@ -82,9 +87,9 @@ describe('REST: referCustomer', function () {
             {
               _id: 'org',
               $metadata: { isMain: true, title: 'CTO' },
-              name: 'Main Org',
+              name: 'Org 1',
             },
-            { _id: 'org3' },
+            { _id: 'org3', name: 'Org 3' },
           ],
         },
         {
@@ -97,7 +102,9 @@ describe('REST: referCustomer', function () {
           _factory: 'pro',
           _id: 'pro3',
           emails: [{ address: 'pro3@org2.com', verified: true }],
-          organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
+          organisations: [
+            { _id: 'org2', $metadata: { isMain: true }, name: 'Org 2' },
+          ],
         },
         {
           _factory: 'pro',
@@ -145,6 +152,54 @@ describe('REST: referCustomer', function () {
       expect(customer.referredByOrganisationLink).to.equal('org');
       expect(customer.loans[0].shareSolvency).to.equal(true);
     }));
+
+  it('refers a customer with invitationNote', () =>
+    referCustomer({
+      invitationNote: 'testNote',
+      expectedResponse: {
+        message: `Successfully referred user "${customerToRefer.email}"`,
+      },
+    })
+      .then(() => {
+        const customer = UserService.fetchOne({
+          $filters: { 'emails.address': { $in: [customerToRefer.email] } },
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+          tasks: { description: 1 },
+        });
+        expect(customer.referredByUserLink).to.equal('pro');
+        expect(customer.referredByOrganisationLink).to.equal('org');
+        expect(customer.loans[0].shareSolvency).to.equal(undefined);
+
+        let { tasks = [] } = customer;
+        let intervalCount = 0;
+
+        return new Promise((resolve, reject) => {
+          const interval = Meteor.setInterval(() => {
+            if (tasks.length === 0 && intervalCount < 10) {
+              tasks = UserService.fetchOne({
+                $filters: {
+                  'emails.address': { $in: [customerToRefer.email] },
+                },
+                tasks: { description: 1 },
+              }).tasks || [];
+              intervalCount++;
+            } else {
+              Meteor.clearInterval(interval);
+              if (intervalCount >= 10) {
+                reject('Fetch tasks timeout');
+              }
+              resolve(tasks);
+            }
+          }, 100);
+        });
+      })
+      .then((tasks) => {
+        expect(tasks.length).to.equal(1);
+        expect(tasks[0].description).to.contain('TestFirstName TestLastName');
+        expect(tasks[0].description).to.contain('testNote');
+      }));
 
   it('refers a customer with impersonateUser', () =>
     referCustomer({
@@ -206,7 +261,7 @@ describe('REST: referCustomer', function () {
       });
 
       expect(spy.calledOnce).to.equal(true);
-      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (Org 3, API Org 1)');
       expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité sur e-Potek en referral uniquement');
 
       SlackService.send.restore();

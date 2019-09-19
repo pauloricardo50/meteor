@@ -40,9 +40,10 @@ const FinancingProject = (props: FinancingProjectProps) => (
         Component: InputAndSlider,
         id: 'propertyValue',
         calculatePlaceholder: data => Calculator.selectPropertyValue(data),
-        max: 5000000,
+        max: 100000000,
         allowUndefined: true,
         forceUndefined: true,
+        maxSlider: 5000000,
       },
       {
         Component: FinancingProjectFees,

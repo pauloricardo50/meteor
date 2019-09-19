@@ -8,7 +8,6 @@ import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
 import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
-import { getS3FileKey } from './meteor-slingshot-server';
 
 class FileService {
   listFilesForDoc = (docId, subdocument) => {
@@ -46,7 +45,7 @@ class FileService {
 
   groupFilesByCategory = files =>
     files.reduce((groupedFiles, file) => {
-      const category = file.Key.split('/')[1];
+      const { documentId: category } = this.getKeyParts(file.Key);
       const currentCategoryFiles = groupedFiles[category] || [];
       return { ...groupedFiles, [category]: [...currentCategoryFiles, file] };
     }, {});
@@ -61,15 +60,14 @@ class FileService {
   formatFile = (file) => {
     let fileName = file.name;
     if (!fileName) {
-      const keyParts = file.Key.split('/');
-      fileName = keyParts[keyParts.length - 1];
+      fileName = this.getKeyParts(file.Key).fileName;
     }
     return { ...file, name: fileName };
   };
 
   uploadFileAPI = ({ file, docId, id, collection }) => {
     const { originalFilename, path } = file;
-    const key = getS3FileKey({ name: originalFilename }, { docId, id });
+    const key = this.getS3FileKey({ name: originalFilename }, { docId, id });
 
     return S3Service.putObject(
       readFileBuffer(path),
@@ -102,14 +100,27 @@ class FileService {
       .then(() => this.listFilesForDoc(docId))
       .then(files => ({ deletedFiles: [{ Key: key }], remainingFiles: files }));
 
-  getZipLoanUrl = ({ userId, loanId }) => {
+  getZipLoanUrl = ({ userId, loanId, documents, options }) => {
     const timestamp = moment().unix();
     const token = getSimpleAuthToken({
-      'user-id': userId,
-      'loan-id': loanId,
-      timestamp: timestamp.toString(),
+      userId,
+      loanId,
+      timestamp,
+      documents,
+      options,
     });
-    return `${Meteor.settings.public.subdomains.backend}/api/zip-loan/?loan-id=${loanId}&user-id=${userId}&timestamp=${timestamp}&token=${token}`;
+    const simpleAuthParams = {
+      loanId,
+      userId,
+      timestamp,
+      documents,
+      options,
+      token,
+    };
+
+    return `${
+      Meteor.settings.public.subdomains.backend
+    }/api/zip-loan/?simple-auth-params=${Buffer.from(JSON.stringify(simpleAuthParams)).toString('base64')}`;
   };
 
   setAdminName = ({ Key, adminName = '' }) =>
@@ -149,6 +160,17 @@ class FileService {
           collection: newCollection,
         }));
   };
+
+  getKeyParts = (key) => {
+    const [docId, documentId, fileName] = key.split('/');
+    const extension = fileName && fileName.split('.').slice(-1)[0];
+    return { docId, documentId, fileName, extension };
+  };
+
+  getS3FileKey = (file, { docId, id }) =>
+    `${docId}/${id}/${file.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')}`;
 }
 
 export default new FileService();

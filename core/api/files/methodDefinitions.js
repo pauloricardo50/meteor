@@ -52,6 +52,8 @@ export const getZipLoanUrl = new Method({
   name: 'getZipLoanUrl',
   params: {
     loanId: String,
+    documents: Object,
+    options: Object,
   },
 });
 

@@ -8,6 +8,7 @@ import {
   OBJECT_STORAGE_PATH,
 } from '../fileConstants';
 import { PROPERTY_CATEGORY } from '../../constants';
+import FileService from './FileService';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -43,7 +44,7 @@ class S3Service {
     }
 
     // Check if this user is the owner of the document
-    const keyId = key.split('/')[0];
+    const { docId: keyId } = FileService.getKeyParts(key);
     const loanFound = !!Loans.findOne({
       _id: keyId,
       userId: loggedInUser,

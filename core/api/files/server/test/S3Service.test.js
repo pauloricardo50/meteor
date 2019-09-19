@@ -143,8 +143,7 @@ describe('S3Service', function () {
           .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata1))
           .then(() => S3Service.updateMetadata(key, metadata2))
           .then(() => S3Service.getObject(key))
-          .then(({ Metadata }) =>
-            expect(Metadata).to.deep.equal(metadata1));
+          .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata1));
       });
     });
 

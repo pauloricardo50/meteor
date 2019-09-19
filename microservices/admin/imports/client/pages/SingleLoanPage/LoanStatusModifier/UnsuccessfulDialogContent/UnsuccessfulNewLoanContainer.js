@@ -17,7 +17,11 @@ const insertNewLoan = ({
   status = LOAN_STATUS.LEAD,
   confirmNewStatus,
 }) => {
-  const { properties = [], borrowers = [], userId } = loan;
+  const {
+    properties = [],
+    borrowers = [],
+    user: { _id: userId },
+  } = loan;
 
   const userProperties = properties.filter(({ category }) => category === PROPERTY_CATEGORY.USER);
   const borrowerIds = borrowers.map(({ _id }) => _id);

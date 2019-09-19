@@ -75,7 +75,11 @@ class Analytics {
     this.userAgent = userAgent;
     this.referrer = referrer;
 
-    this.analytics.initAnalytics(context);
+    this.analytics.initAnalytics({
+      ...context,
+      clientAddress: this.clientAddress,
+      host: this.host,
+    });
   }
 
   identify(trackingId) {

@@ -1,4 +1,5 @@
 import PropertyService from 'core/api/properties/server/PropertyService';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
@@ -11,6 +12,7 @@ import {
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import {
   promotionLotBooked,
   promotionLotSold,
@@ -93,28 +95,28 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-ServerEventService.addAfterMethodListener(
-  anonymousLoanInsert,
-  ({ params: { proPropertyId, referralId }, result: loanId }) => {
-    const property = proPropertyId
-      && PropertyService.fetchOne({
-        $filters: { _id: proPropertyId },
-        address1: 1,
-      });
-    const { name: loanName } = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      name: 1,
-    });
-    const referral = referralId
-      && UserService.fetchOne({
-        $filters: { _id: referralId },
-        name: 1,
-        organisations: { name: 1 },
-      });
+// ServerEventService.addAfterMethodListener(
+//   anonymousLoanInsert,
+//   ({ params: { proPropertyId, referralId }, result: loanId }) => {
+//     const property = proPropertyId
+//       && PropertyService.fetchOne({
+//         $filters: { _id: proPropertyId },
+//         address1: 1,
+//       });
+//     const { name: loanName } = LoanService.fetchOne({
+//       $filters: { _id: loanId },
+//       name: 1,
+//     });
+//     const referral = referralId
+//       && UserService.fetchOne({
+//         $filters: { _id: referralId },
+//         name: 1,
+//         organisations: { name: 1 },
+//       });
 
-    newAnonymousLoan({ loanName, loanId, property, referral });
-  },
-);
+//     newAnonymousLoan({ loanName, loanId, property, referral });
+//   },
+// );
 
 ServerEventService.addAfterMethodListener(
   userLoanInsert,
@@ -133,8 +135,32 @@ ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
   ({ result: userId }) => {
     const currentUser = UserService.get(userId);
-    const { loans, name } = UserService.get(userId);
+    const {
+      loans = [],
+      name,
+      referredByUserLink,
+      referredByOrganisationLink,
+    } = UserService.get(userId);
+    const referredBy = UserService.get(referredByUserLink);
+    const referredByOrg = OrganisationService.get(referredByOrganisationLink);
 
-    newUser({ loans, name, currentUser });
+    const suffix = [
+      referredBy && referredBy.name,
+      referredByOrg && referredByOrg.name,
+      loans[0]
+        && loans[0].properties
+        && loans[0].properties[0]
+        && loans[0].properties[0].category === PROPERTY_CATEGORY.PRO
+        && (loans[0].properties[0].address1 || loans[0].properties[0].name),
+      loans[0]
+        && loans[0].promotions
+        && loans[0].promotions[0]
+        && loans[0].promotions[0].name,
+    ]
+      .filter(x => x)
+      .map(x => `(${x})`)
+      .join(' ');
+
+    newUser({ loans, name, currentUser, suffix });
   },
 );

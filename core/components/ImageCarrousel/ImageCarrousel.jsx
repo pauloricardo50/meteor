@@ -30,10 +30,16 @@ const ImageCarrousel = ({ images, className }: ImageCarrouselProps) => {
     makeReducer(images.length),
     initialState,
   );
+  const imageAddress = `${images[state.index]
+    .split('/')
+    .slice(0, -1)
+    .join('/')}/${encodeURIComponent(images[state.index].split('/').slice(-1))}`;
 
   return (
     <div
-      style={{ backgroundImage: `url("${images[state.index]}")` }}
+      style={{
+        backgroundImage: `url("${imageAddress}")`,
+      }}
       className={cx('image-carrousel', className)}
     >
       {hasMultipleImages && (

@@ -8,14 +8,28 @@ const dateInPast = days =>
     .startOf('day')
     .toDate();
 
-export const newLoansResolver = ({ period = 7 } = {}) => {
+const getFilter = ({ gte, lte, withAnonymous }) => {
+  const filter = { createdAt: { $gte: gte } };
+
+  if (lte) {
+    filter.createdAt.$lte = lte;
+  }
+
+  if (!withAnonymous) {
+    filter.anonymous = { $ne: true };
+  }
+
+  return filter;
+};
+
+export const newLoansResolver = ({ period, withAnonymous } = {}) => {
   const end1 = dateInPast(period);
   const end2 = dateInPast(period * 2);
   const period1 = LoanService.count({
-    $filters: { createdAt: { $gte: end1 } },
+    $filters: getFilter({ gte: end1, withAnonymous }),
   });
   const period2 = LoanService.count({
-    $filters: { createdAt: { $gte: end2, $lte: end1 } },
+    $filters: getFilter({ gte: end2, lte: end1, withAnonymous }),
   });
 
   const change = period2 === 0 ? 1 : (period1 - period2) / period2;
@@ -23,9 +37,11 @@ export const newLoansResolver = ({ period = 7 } = {}) => {
   return { count: period1, change };
 };
 
-export const loanHistogramResolver = async ({ period = 7 }) => {
+export const loanHistogramResolver = async ({ period, withAnonymous }) => {
+  const match = getFilter({ gte: dateInPast(period), withAnonymous });
+
   const aggregation = await LoanService.aggregate([
-    { $match: { createdAt: { $gte: dateInPast(period) } } },
+    { $match: match },
     {
       $project: {
         // Filter out time of day

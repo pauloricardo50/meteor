@@ -387,7 +387,7 @@ const getSimpleAuthSaltGrain = (timestamp) => {
 };
 
 export const getSimpleAuthToken = (params) => {
-  const { 'user-id': userId, timestamp, token, ...rest } = params;
+  const { userId, timestamp, token, ...rest } = params;
   const saltGrain = getSimpleAuthSaltGrain(timestamp);
   const sortedObject = sortObject({ userId, timestamp, saltGrain, ...rest });
 

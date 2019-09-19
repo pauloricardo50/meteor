@@ -82,3 +82,45 @@
   justify-content: center;
   padding: 16px;
 }
+
+.zip-loan-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  fieldset {
+    margin: 0;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  &-documents {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    fieldset {
+      padding-left: 16px;
+    }
+  }
+
+  &-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    > * {
+      margin-left: 8px;
+    }
+  }
+}

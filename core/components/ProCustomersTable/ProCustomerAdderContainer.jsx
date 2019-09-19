@@ -30,8 +30,11 @@ const schema = ({ proProperties, promotions }) =>
       optional: true,
       allowedValues: proProperties.map(({ _id }) => _id),
       uniforms: {
-        transform: propertyId =>
-          proProperties.find(({ _id }) => _id === propertyId).address1,
+        transform: (propertyId) => {
+          const { address1, city = '', zipCode = '' } = proProperties.find(({ _id }) => _id === propertyId);
+
+          return `${address1}, ${zipCode} ${city}`;
+        },
         displayEmpty: false,
       },
     },
@@ -54,6 +57,10 @@ const schema = ({ proProperties, promotions }) =>
         displayEmpty: false,
       },
     },
+    invitationNote: {
+      type: String,
+      optional: true,
+    },
   });
 
 export default withProps(({ currentUser }) => {
@@ -72,11 +79,17 @@ export default withProps(({ currentUser }) => {
       promotions: filteredPromotions,
     }),
     onSubmit: (model) => {
-      const { propertyIds = [], promotionIds = [], ...user } = model;
+      const {
+        propertyIds = [],
+        promotionIds = [],
+        invitationNote,
+        ...user
+      } = model;
       return proInviteUser.run({
         user,
         propertyIds: propertyIds.length ? propertyIds : undefined,
         promotionIds: promotionIds.length ? promotionIds : undefined,
+        invitationNote,
       });
     },
   };

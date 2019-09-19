@@ -267,15 +267,17 @@ export class UserServiceClass extends CollectionService {
     const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
-    return sendEmail.run({
-      emailId: EMAIL_IDS.REFER_USER,
-      userId,
-      params: {
-        proUserId,
-        proName: getUserNameAndOrganisation({ user: pro }),
-        ctaUrl: this.getEnrollmentUrl({ userId }),
-      },
-    });
+    return sendEmail
+      .run({
+        emailId: EMAIL_IDS.REFER_USER,
+        userId,
+        params: {
+          proUserId,
+          proName: getUserNameAndOrganisation({ user: pro }),
+          ctaUrl: this.getEnrollmentUrl({ userId }),
+        },
+      })
+      .then(() => userId);
   };
 
   proCreateUser = ({
@@ -429,7 +431,7 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => userId);
   };
 
   getEnrollmentUrl({ userId }) {
@@ -608,6 +610,22 @@ export class UserServiceClass extends CollectionService {
     }
 
     return this.update({ userId, object: { assignedEmployeeId: newAssignee } });
+  }
+
+  getReferral(userId) {
+    const { referredByUser, referredByOrganisation } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+    });
+
+    if (referredByUser) {
+      const { _id: proId } = referredByUser;
+      const mainOrg = this.getUserMainOrganisation(proId);
+      return { user: referredByUser, organisation: mainOrg };
+    }
+
+    return { organisation: referredByOrganisation };
   }
 }
 

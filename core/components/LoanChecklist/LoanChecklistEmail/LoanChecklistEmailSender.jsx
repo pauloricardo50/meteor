@@ -13,7 +13,14 @@ type LoanChecklistEmailSenderProps = {
 };
 
 const schema = new SimpleSchema({
-  email: String,
+  to: Array,
+  'to.$': Object,
+  'to.$.bcc': {
+    type: Boolean,
+    defaultValue: true,
+    condition: ({ to = [] }) => to.length > 1,
+  },
+  'to.$.email': { type: String, optional: false },
   customMessage: {
     type: String,
     optional: true,
@@ -41,7 +48,7 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
         label: 'Envoyer la checklist au client',
         style: { marginLeft: '8px' },
       }}
-      model={{ email }}
+      model={{ to: [{ email }] }}
     />
   );
 };
@@ -50,15 +57,27 @@ export default withProps(({
   loan,
   currentUser: { name: assigneeName, email: assigneeAddress } = {},
 }) => ({
-  onSubmit: ({ email, customMessage }) =>
-    sendEmailToAddress.run({
-      address: email,
+  onSubmit: ({ to, customMessage }) => {
+    const [mainRecipient, ...otherRecipients] = to;
+    const bccAddresses = otherRecipients
+      .filter(({ bcc }) => bcc)
+      .map(({ email }) => email);
+    const ccAddresses = otherRecipients
+      .filter(({ bcc }) => !bcc)
+      .map(({ email }) => email);
+
+    return sendEmailToAddress.run({
+      address: mainRecipient.email,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
       params: {
         loan,
         assigneeName,
         assigneeAddress,
         customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+        bccAddresses,
+        ccAddresses,
+        mainRecipientIsBcc: mainRecipient.bcc,
       },
-    }),
+    });
+  },
 }))(LoanChecklistEmailSender);
