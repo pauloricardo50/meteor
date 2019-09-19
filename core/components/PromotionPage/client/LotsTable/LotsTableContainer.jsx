@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose, withProps } from 'recompose';
 import { scroller } from 'react-scroll';
+import { injectIntl } from 'react-intl';
 
 import withHider from 'core/containers/withHider';
 import T, { Money } from '../../../Translation';
@@ -87,4 +88,5 @@ export default compose(
     rows: lots.map(makeMapAdditionalLot({ canModifyLots })),
     columnOptions,
   })),
+  injectIntl,
 );

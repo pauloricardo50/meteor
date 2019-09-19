@@ -1,6 +1,4 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
-
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
@@ -15,39 +13,31 @@ import PromotionLotLoansTable from './PromotionLotLoansTable';
 
 type PromotionLotDetailProps = {};
 
-const displayPromotionLotLoansTable = ({ canSeeCustomers }) => {
-  if (Meteor.microservice === 'pro') {
-    return canSeeCustomers;
-  }
-
-  return Meteor.microservice === 'admin';
-};
-
 const PromotionLotDetail = ({
   promotionLot,
   promotion,
-  children
+  children,
 }: PromotionLotDetailProps) => {
   const {
-    lots,
+    lots = [],
     _id: promotionLotId,
     status,
     documents,
     promotionOptions,
   } = promotionLot;
-  const { lots: allLots, constructionTimeline, signingDate } = promotion;
+  const { lots: allLots, constructionTimeline = [], signingDate } = promotion;
   const {
     permissions: { canModifyLots, canSeeCustomers },
   } = useContext(PromotionMetadataContext);
   const currentUser = useContext(CurrentUserContext);
-  const files = documents && documents.promotionPropertyDocuments;
+  const files = (documents && documents.promotionPropertyDocuments) || [];
 
   return (
     <div className="promotion-lot-detail">
       {children}
       <section className="top">
         <PromotionLotDetailRecaps promotionLot={promotionLot} />
-        {lots && lots.length > 0 && (
+        {lots.length > 0 && (
           <Box>
             <h4>
               <T id="PromotionLotPage.manageLot" />
@@ -61,7 +51,7 @@ const PromotionLotDetail = ({
             />
           </Box>
         )}
-        {files && files.length > 0 && (
+        {files.length > 0 && (
           <Box>
             <h4>
               <T id="PromotionLotPage.downloads" />
@@ -71,7 +61,7 @@ const PromotionLotDetail = ({
         )}
       </section>
 
-      {constructionTimeline && constructionTimeline.length > 0 && (
+      {constructionTimeline.length > 0 && (
         <section>
           <h4>
             <T id="PromotionPage.timeline" />
@@ -83,7 +73,7 @@ const PromotionLotDetail = ({
           />
         </section>
       )}
-      {displayPromotionLotLoansTable({ canSeeCustomers }) && (
+      {canSeeCustomers && (
         <section>
           <h4>
             <T id="PromotionLotPage.loans" />

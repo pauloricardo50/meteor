@@ -20,16 +20,12 @@ exposeQuery({
   overrides: {
     embody: (body) => {
       body.$filter = ({ filters, params: { _id, hasTimeline } }) => {
-        if (_id) {
-          filters._id = _id;
-        }
-
         if (hasTimeline) {
           filters['constructionTimeline.0'] = { $exists: true };
         }
       };
     },
-    validateParams: { _id: Match.Maybe(String), hasTimeline: Match.Maybe(Boolean) },
+    validateParams: { hasTimeline: Match.Maybe(Boolean) },
   },
 });
 

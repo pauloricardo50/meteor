@@ -22,14 +22,8 @@ const PromotionLotAttributerContent = ({
   solvency,
 }: PromotionLotAttributerContentProps) => (
   <div className="book-client-infos">
-    <p className="bold">
-      Attribuer
-      {promotionLotName}
-      {' '}
-à
-    </p>
+    <p className="bold">{`Attribuer ${promotionLotName} à`}</p>
     <br />
-    <p>Notifiera tous les Pros qui ont activé leurs notifications</p>
     <table className="book-client-infos-table">
       <tr>
         <td>Nom</td>
@@ -42,6 +36,7 @@ const PromotionLotAttributerContent = ({
         </td>
       </tr>
     </table>
+    <p>Notifiera tous les Pros qui ont activé leurs notifications</p>
   </div>
 );
 
