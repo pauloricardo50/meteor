@@ -9,7 +9,11 @@ const dateInPast = days =>
     .toDate();
 
 const getFilter = ({ gte, lte, withAnonymous }) => {
-  const filter = { createdAt: { $gte: gte, $lte: lte } };
+  const filter = { createdAt: { $gte: gte } };
+
+  if (lte) {
+    filter.createdAt.$lte = lte;
+  }
 
   if (!withAnonymous) {
     filter.anonymous = { $ne: true };
