@@ -5,9 +5,9 @@
     "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
     "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
-    "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
+    "test": "TEST_SERVER=0 node -r esm ../../scripts/npm-scripts/run-script.js test",
     "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",
-    "test-ci": "../../scripts/circleci/run-script-ci.sh test-ci",
+    "test-ci": "TEST_SERVER=0 ../../scripts/circleci/run-script-ci.sh test-ci",
     "test-e2e-ci": "../../scripts/circleci/run-script-ci.sh test-e2e-ci"
   },
   "dependencies": {
