@@ -61,7 +61,7 @@ describe('Promotion pages', () => {
       lastName: 'Dupont',
       phoneNumber: '022 566 01 10',
     });
-    cy.setSelect('propertyIds', 1);
+    cy.setSelect('propertyIds', 0);
     cy.get('body').trigger('keydown', { keyCode: 27, which: 27 }); // Hit escape to restore keyboard control
     cy.get('input[name="phoneNumber"]').type('{enter}');
 

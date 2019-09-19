@@ -523,7 +523,7 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
 
     expect(spy.calledOnce).to.equal(true);
-    expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+    expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (Main Org, API Main Org)');
     expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité au bien immo "Rue du parc 3"');
 
     SlackService.send.restore();
