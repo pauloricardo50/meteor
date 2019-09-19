@@ -70,7 +70,6 @@ const scrollToAdditionalLotsTable = () => {
     delay: 200,
     duration: 500,
     offset: -50,
-    containerId: 'scroll-layout',
   });
 };
 
@@ -85,7 +84,7 @@ export default compose(
       }
     },
   })),
-  withProps(({ promotion: { lots }, canModifyLots }) => ({
+  withProps(({ promotion: { lots = [] }, canModifyLots }) => ({
     rows: lots.map(makeMapAdditionalLot({ canModifyLots })),
     columnOptions,
   })),

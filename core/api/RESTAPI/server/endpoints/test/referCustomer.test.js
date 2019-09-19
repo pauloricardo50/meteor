@@ -38,7 +38,6 @@ const referCustomer = ({
     user: userData || customerToRefer,
     shareSolvency,
     invitationNote,
-    
   };
   const query = impersonateUser
     ? { 'impersonate-user': impersonateUser }
@@ -248,6 +247,10 @@ describe('REST: referCustomer', function () {
   });
 
   describe('Slack notifications', () => {
+    afterEach(() => {
+      SlackService.send.restore();
+    });
+
     it('sends a properly formatted slack notification', async () => {
       const spy = sinon.spy();
       sinon.stub(SlackService, 'send').callsFake(spy);
@@ -260,10 +263,9 @@ describe('REST: referCustomer', function () {
       });
 
       expect(spy.calledOnce).to.equal(true);
-      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (API Main Org)');
+      expect(spy.args[0][0].username).to.include('TestFirstName TestLastName');
+      expect(spy.args[0][0].username).to.include('API Main Org');
       expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité sur e-Potek en referral uniquement');
-
-      SlackService.send.restore();
     });
   });
 });

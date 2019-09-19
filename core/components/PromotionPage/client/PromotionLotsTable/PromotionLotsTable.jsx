@@ -33,7 +33,7 @@ const PromotionLotsTable = ({
   });
 
   return (
-    <>
+    <div className="promotion-lots-table" style={{ width: '100%' }}>
       <h3 className="text-center">
         <T id="collections.lots" />
       </h3>
@@ -54,7 +54,7 @@ const PromotionLotsTable = ({
       />
 
       <Table rows={rows} columnOptions={columnOptions} {...props} />
-    </>
+    </div>
   );
 };
 

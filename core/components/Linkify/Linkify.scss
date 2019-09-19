@@ -1,10 +1,14 @@
 .linkify-link {
   display: block;
-  max-width: 250px;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+
+  max-width: 250px;
+
+  white-space: nowrap;
   text-decoration: underline !important;
-  font-family: Eina04-Regular, Helvetica;
+  text-overflow: ellipsis;
+
   color: blue !important;
+
+  font-family: Eina04-Regular, Helvetica;
 }

@@ -622,10 +622,10 @@ export class UserServiceClass extends CollectionService {
     if (referredByUser) {
       const { _id: proId } = referredByUser;
       const mainOrg = this.getUserMainOrganisation(proId);
-      return { user: referredByUser, organisation: mainOrg };
+      return { user: referredByUser, organisation: mainOrg || {} };
     }
 
-    return { organisation: referredByOrganisation };
+    return { organisation: referredByOrganisation || {}, user: {} };
   }
 }
 

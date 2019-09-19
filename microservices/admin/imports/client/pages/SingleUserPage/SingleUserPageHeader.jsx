@@ -34,7 +34,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     _id: userId,
     assignedEmployee,
     createdAt,
-    roles,
+    roles = [],
     phoneNumbers,
     name,
     email,
@@ -42,7 +42,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     emails = [],
   } = user;
 
-  const allowAssign = currentUser.roles.includes(ROLES.DEV)
+  const { roles: currentUserRoles = [] } = currentUser || {};
+
+  const allowAssign = currentUserRoles.includes(ROLES.DEV)
     || (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;

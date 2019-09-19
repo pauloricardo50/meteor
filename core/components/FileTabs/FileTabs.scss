@@ -75,18 +75,19 @@
 }
 
 .zip-loan {
-  width: 100%;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
   justify-content: center;
+
+  width: 100%;
   padding: 16px;
 }
 
 .zip-loan-modal {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-direction: column;
   justify-content: flex-start;
 
   fieldset {
@@ -105,6 +106,7 @@
   &-documents {
     display: flex;
     flex-direction: column;
+
     padding: 16px;
 
     fieldset {
@@ -113,11 +115,12 @@
   }
 
   &-actions {
-    width: 100%;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     justify-content: flex-end;
+
+    width: 100%;
 
     > * {
       margin-left: 8px;

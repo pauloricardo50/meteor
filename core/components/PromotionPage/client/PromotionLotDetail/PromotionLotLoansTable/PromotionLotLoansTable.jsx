@@ -15,6 +15,7 @@ const PromotionLotLoansTable = ({
     rows={rows}
     columnOptions={columnOptions}
     initialOrderBy={1} // By date
+    className="promotion-lot-loans-table"
   />
 );
 
