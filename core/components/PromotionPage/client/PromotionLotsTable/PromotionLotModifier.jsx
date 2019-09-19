@@ -9,7 +9,7 @@ import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import Button from '../../../Button';
-import { promotionLotSchema } from '../PromotionAdministration/PromotionAdministration';
+import { promotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 
 type ProPromotionLotModifierProps = {
   promotionLot: Object,

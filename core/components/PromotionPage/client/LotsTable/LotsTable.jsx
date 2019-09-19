@@ -8,7 +8,7 @@ import { lotRemove, lotUpdate } from '../../../../api/methods';
 import T from '../../../Translation';
 import LotsTableContainer from './LotsTableContainer';
 import TableModifier from '../../../TableModifier';
-import { lotSchema } from '../PromotionAdministration/PromotionAdministration';
+import { lotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 import PromotionMetadataContext from '../PromotionMetadata';
 
 type LotsTableProps = {};
