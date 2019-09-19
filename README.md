@@ -9,7 +9,7 @@
     - run more apps as needed by repeating this command within each microservice folder
 1. When running the apps with a clean DB, a few demo users will be created that you can use to quickly log in
     - 2 `dev` users will be created, `florian@e-potek.ch` and `quentin@e-potek.ch`
-    - Their passwords are all `12345`
+    - Their passwords are all `12345678`
 
 ## Microservices
 

@@ -262,6 +262,7 @@ Meteor.methods({
         lastName: 'User',
         sendEnrollmentEmail: true,
         password: withPassword && USER_PASSWORD,
+        phoneNumber: '0225660110',
       },
     });
     LoanService.fullLoanInsert({ userId });

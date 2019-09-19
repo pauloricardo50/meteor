@@ -14,6 +14,23 @@ const getMicroserviceFromHost = (host) => {
   Object.keys(subdomains).some((microservice) => {
     const microserviceUrl = subdomains[microservice];
 
+    // When testing, the port number is incremented by 5 or 15
+    // make sure these checks work coherently in test and regular modes
+    if (Meteor.isTest) {
+      const parts = microserviceUrl.split(':');
+      const port = Number(parts.slice(-1)[0]);
+      const urlStart = parts.slice(0, -1).join('');
+      if (port >= 1000) {
+        if (
+          `${urlStart}:${port + 5}`.includes(host)
+          || `${urlStart}:${port + 15}`.includes(host)
+        ) {
+          result = microservice;
+          return true;
+        }
+      }
+    }
+
     if (microserviceUrl.includes(host)) {
       result = microservice;
       return true;

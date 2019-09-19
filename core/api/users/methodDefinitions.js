@@ -1,5 +1,4 @@
-import { check, Match } from 'meteor/check';
-import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { Method } from '../methods/methods';
 

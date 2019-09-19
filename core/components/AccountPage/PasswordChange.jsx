@@ -5,31 +5,14 @@ import SimpleSchema from 'simpl-schema';
 
 import T from '../Translation';
 import { AutoFormDialog } from '../AutoForm2';
-
-SimpleSchema.setDefaultMessages({
-  messages: { fr: { passwordMismatch: 'Entrez 2 fois le même mot de passe' } },
-});
+import { passwordSchema } from '../PasswordResetPage/PasswordResetPage';
 
 const schema = new SimpleSchema({
   oldPassword: {
     type: String,
     uniforms: { type: 'password', placeholder: null },
   },
-  newPassword: {
-    type: String,
-    min: 8,
-    uniforms: { type: 'password', placeholder: null },
-  },
-  newPassword2: {
-    type: String,
-    min: 8,
-    uniforms: { type: 'password', placeholder: null },
-    custom() {
-      if (this.value !== this.field('newPassword').value) {
-        return 'passwordMismatch';
-      }
-    },
-  },
+  ...passwordSchema,
 });
 
 export default class PasswordChange extends Component {
