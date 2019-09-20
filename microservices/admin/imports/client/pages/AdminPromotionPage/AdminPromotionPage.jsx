@@ -47,6 +47,7 @@ const AdminPromotionPageContainer = compose(
       canLinkLoan: true,
       canModifyStatus: true,
       canLinkAssignee: true,
+      canLinkLender: true,
     },
   }),
   withProps({ route: ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path }),
