@@ -114,9 +114,6 @@ const getSchema = ({
 
 export const PasswordResetPage = ({ user, error, handleSubmit }) => {
   const isEnrollment = window.location && window.location.pathname.includes('enroll-account');
-  // const isValid = !!newPassword
-  //   && newPassword === newPassword2
-  //   && (!isEnrollment || hasReadConditions);
 
   if (error) {
     return <Redirect to="/login" />;
@@ -157,62 +154,6 @@ export const PasswordResetPage = ({ user, error, handleSubmit }) => {
             style: { margin: '0 auto', display: 'block' },
           }}
         />
-        {/* <TextField
-          label={<T id="PasswordResetPage.password" />}
-          floatingLabelFixed
-          type="password"
-          value={newPassword}
-          onChange={e => handleChange(e.target.value, 'newPassword')}
-          className="password-reset-page-input"
-        />
-        <TextField
-          label={<T id="PasswordResetPage.confirmPassword" />}
-          floatingLabelFixed
-          type="password"
-          value={newPassword2}
-          onChange={e => handleChange(e.target.value, 'newPassword2')}
-          className="password-reset-page-input"
-        /> */}
-
-        {/* {isEnrollment && (
-          <Checkbox
-            label={(
-              <span className="disclaimer">
-                <T
-                  id="PasswordResetPage.disclaimer"
-                  values={{
-                    link: (
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`${Meteor.settings.public.subdomains.app}/files/Privacy Policy - e-Potek.pdf`}
-                      >
-                        <T id="PasswordResetPage.disclaimer.privacyPolicy" />
-                      </a>
-                    ),
-                  }}
-                />
-              </span>
-            )}
-            value={hasReadConditions}
-            onChange={(e, c) => handleChange(c, 'hasReadConditions')}
-          />
-        )} */}
-
-        {/* <div
-          className={cx('password-reset-page-button', {
-            enrollment: isEnrollment,
-          })}
-        >
-          <Button
-            raised
-            label={<T id="PasswordResetPage.CTA" />}
-            // disabled={!isValid}
-            type="submit"
-            primary
-            // loading={submitting}
-          />
-        </div> */}
       </div>
     </div>
   );
