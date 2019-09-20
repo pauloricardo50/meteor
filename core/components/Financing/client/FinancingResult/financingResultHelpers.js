@@ -19,7 +19,11 @@ const initCalc = ({
     finalOffer = offers.find(({ _id }) => offerId === _id);
   }
 
-  if (finalOffer && finalOffer.organisation && finalOffer.organisation.lenderRules) {
+  if (
+    finalOffer
+    && finalOffer.organisation
+    && finalOffer.organisation.lenderRules
+  ) {
     return new CalculatorClass({
       loan,
       structureId,
@@ -27,7 +31,12 @@ const initCalc = ({
     });
   }
 
-  return InitializedCalculator;
+  // Always reinitialize the calculator
+  return new CalculatorClass({
+    loan,
+    structureId,
+    lenderRules: InitializedCalculator.lenderRules,
+  });
 };
 export const getInterests = (params) => {
   const {
@@ -84,6 +93,11 @@ export const getIncomeRatio = (params) => {
   const calc = initCalc(params);
   const { loan, structureId } = params;
   return calc.getIncomeRatio({ loan, structureId });
+};
+
+export const getMaxIncomeRatio = (params) => {
+  const calc = initCalc(params);
+  return calc.maxIncomeRatio;
 };
 
 export const getBorrowRatioStatus = (params) => {
