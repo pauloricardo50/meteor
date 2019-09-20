@@ -8,7 +8,7 @@ import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
 import { proPropertySummary } from '../../api/fragments';
-import PropertyUsers from './PropertyUsers';
+import TooltipArray from '../TooltipArray/TooltipArray';
 
 const columnOptions = [
   { id: 'address' },
@@ -38,7 +38,7 @@ const makeMapProperty = history => ({
     loanCount,
     {
       raw: users.length && users[0].name,
-      label: <PropertyUsers users={users} />,
+      label: <TooltipArray items={users.map(({ name }) => name)} />,
     },
   ],
 });
