@@ -11,11 +11,11 @@ type SimpleMaxPropertyValueSignupProps = {};
 const SimpleMaxPropertyValueSignup = ({
   fixed,
 }: SimpleMaxPropertyValueSignupProps) => (
-  <div className="simple-max-property-value">
+  <div className="max-property-value">
     <h2>
       <T id="MaxPropertyValue.signup.title" />
     </h2>
-    <div className="simple-max-property-value-signup">
+    <div className="max-property-value-signup">
       <FontAwesomeIcon icon={faCheckCircle} className="icon success" />
       <h4 className="text-center">
         <T id="MaxPropertyValue.signup.description" />
@@ -26,6 +26,8 @@ const SimpleMaxPropertyValueSignup = ({
           secondary: true,
           label: <T id="MaxPropertyValue.signup.cta" />,
         }}
+        omitValues={['firstName', 'lastName', 'phoneNumber']}
+        submitFieldProps={{ label: <T id="general.continue" />, size: 'large' }}
       />
     </div>
   </div>

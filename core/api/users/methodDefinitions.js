@@ -1,5 +1,4 @@
-import { check, Match } from 'meteor/check';
-import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { Method } from '../methods/methods';
 
@@ -164,10 +163,10 @@ export const anonymousCreateUser = new Method({
   params: {
     loanId: Match.Maybe(String),
     user: {
-      firstName: String,
-      lastName: String,
       email: String,
-      phoneNumber: String,
+      firstName: Match.Maybe(String),
+      lastName: Match.Maybe(String),
+      phoneNumber: Match.Maybe(String),
     },
     trackingId: String,
     referralId: Match.Maybe(String),
