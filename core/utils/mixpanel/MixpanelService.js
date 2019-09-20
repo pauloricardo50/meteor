@@ -79,9 +79,7 @@ class MixpanelService {
     return this.getData({
       method: 'POST',
       body: this.formatBody(body),
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
       url: this.buildUrl({ endpoint: 'engage' }),
     }).then(result => result.results);
   }

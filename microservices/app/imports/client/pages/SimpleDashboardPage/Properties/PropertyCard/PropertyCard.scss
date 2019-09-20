@@ -22,17 +22,17 @@ $borrowers-item-width: 600px;
     justify-content: space-between;
 
     @include screen(wide) {
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
+    }
+    @include screen(custom, max, 700) {
+      flex-wrap: wrap;
     }
 
     .property-card-actions {
-      margin-top: 16px;
       align-self: center;
-    }
 
-    @include screen(custom, max, 700) {
-      flex-wrap: wrap;
+      margin-top: 16px;
     }
   }
 
@@ -48,9 +48,9 @@ $borrowers-item-width: 600px;
       margin-right: 32px;
 
       @include screen(med) {
-        margin-right: 16px;
         width: 100px;
         height: 100px;
+        margin-right: 16px;
       }
     }
 

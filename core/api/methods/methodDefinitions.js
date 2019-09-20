@@ -130,3 +130,8 @@ export const referralExists = new Method({
     refId: String,
   },
 });
+
+export const cleanDatabase = new Method({
+  name: 'cleanDatabase',
+  params: {},
+});

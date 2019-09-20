@@ -671,4 +671,53 @@ describe('PromotionService', function () {
         })).to.throw('"lot 1"');
     });
   });
+
+  describe('toggleNotifications', () => {
+    it('toggles enableNotifications metadata', () => {
+      generator({
+        promotions: {
+          _id: 'promoId',
+          users: {
+            _id: 'userId',
+            $metadata: {
+              permissions: { canAddLots: true },
+            },
+          },
+        },
+      });
+
+      const result = PromotionService.toggleNotifications({
+        promotionId: 'promoId',
+        userId: 'userId',
+      });
+
+      const promotion = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        userLinks: 1,
+      });
+
+      expect(result).to.equal(false);
+      expect(promotion.userLinks[0]).to.deep.include({
+        _id: 'userId',
+        enableNotifications: false,
+      });
+
+      const result2 = PromotionService.toggleNotifications({
+        promotionId: 'promoId',
+        userId: 'userId',
+      });
+
+      const promotion2 = PromotionService.fetchOne({
+        $filters: { _id: 'promoId' },
+        userLinks: 1,
+      });
+
+      expect(result2).to.equal(true);
+      expect(promotion2.userLinks[0]).to.deep.include({
+        _id: 'userId',
+        enableNotifications: true,
+      });
+    });
+  });
+
 });

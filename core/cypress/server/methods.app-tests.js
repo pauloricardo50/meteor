@@ -28,6 +28,7 @@ import {
 } from 'core/utils/testHelpers/index';
 import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
+import { Services } from 'core/api/server/index';
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
@@ -386,5 +387,9 @@ Meteor.methods({
       city: 'Genève',
       features: [ORGANISATION_FEATURES.PRO],
     });
+  },
+  updateCollectionDocument({ docId, collection, object, operator }) {
+    const service = Services[collection];
+    return service._update({ id: docId, object, operator });
   },
 });

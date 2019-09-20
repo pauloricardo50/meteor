@@ -63,12 +63,14 @@ export const makeMapRevenue = ({
     paidAt,
     amount,
     type,
+    secondaryType,
     description,
     status,
     organisations = [],
     sourceOrganisation,
     loan,
   } = revenue;
+  console.log('revenue:', revenue);
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   return {
@@ -96,7 +98,17 @@ export const makeMapRevenue = ({
       },
       {
         raw: type,
-        label: <T id={`Forms.type.${type}`} />,
+        label: (
+          <span>
+            <T id={`Forms.type.${type}`} />
+            {secondaryType && (
+              <span>
+                {' - '}
+                <T id={`Forms.secondaryType.${secondaryType}`} />
+              </span>
+            )}
+          </span>
+        ),
       },
       description,
       {

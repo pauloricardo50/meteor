@@ -16,5 +16,6 @@
   },
   "editor.suggest.filteredTypes": {
     "keyword": true
-  }
+  },
+  "search.followSymlinks": false
 }

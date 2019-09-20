@@ -1,0 +1,128 @@
+# Grapher 1.3
+
+[![Build Status](https://api.travis-ci.org/cult-of-coders/grapher.svg?branch=master)](https://travis-ci.org/cult-of-coders/grapher)
+
+_Grapher_ is a Data Fetching Layer on top of Meteor and MongoDB. It is production ready and battle tested. Brought to you by [Cult of Coders](https://www.cultofcoders.com) — Web & Mobile Development Company. 
+
+Main features:
+
+*   Innovative way to make MongoDB relational
+*   Blends in with Apollo GraphQL making it highly performant
+*   Reactive data graphs for high availability
+*   Incredible performance
+*   Denormalization ability
+*   Connection to external data sources
+*   Usable from anywhere
+
+It marks a stepping stone into evolution of data, enabling developers to write complex and secure code,
+while maintaining the code base easy to understand.
+
+Grapher 1.3 is LTS until 2024
+
+[Read more about the GraphQL Bridge](docs/graphql.md)
+
+## Installation
+
+```
+meteor add cultofcoders:grapher
+```
+
+## [Documentation](docs/index.md)
+
+This provides a learning curve for Grapher and it explains all the features. If you want to visualize the documentation better, check it out here:
+
+https://cult-of-coders.github.io/grapher/
+
+## [API](docs/api.md)
+
+Grapher cheatsheet, after you've learned it's powers this is the document will be very useful.
+
+## Useful packages
+
+*   Live View: https://github.com/cult-of-coders/grapher-live
+*   Graphical Grapher: https://github.com/Herteby/graphical-grapher
+*   React HoC: https://github.com/cult-of-coders/grapher-react
+*   VueJS: https://github.com/Herteby/grapher-vue
+
+### Events for Meteor (+ Grapher, Redis Oplog and GraphQL/Apollo)
+
+*   Meteor Night 2018: [Arguments for Meteor](https://drive.google.com/file/d/1Tx9vO-XezO3DI2uAYalXPvhJ-Avqc4-q/view) - Theodor Diaconu, CEO of Cult of Coders: “Redis Oplog, Grapher, and Apollo Live.
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
+<a href="graphs/contributors"><img src="https://opencollective.com/grapher/contributors.svg?width=890" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/grapher#backer)]
+
+<a href="https://opencollective.com/grapher#backers" target="_blank"><img src="https://opencollective.com/grapher/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/grapher#sponsor)]
+
+<a href="https://opencollective.com/grapher/sponsor/0/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/1/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/2/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/3/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/4/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/5/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/6/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/7/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/8/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/grapher/sponsor/9/website" target="_blank"><img src="https://opencollective.com/grapher/sponsor/9/avatar.svg"></a>
+
+### Quick Illustration
+
+Query:
+
+```js
+createQuery({
+    posts: {
+        title: 1,
+        author: {
+            fullName: 1,
+        },
+        comments: {
+            text: 1,
+            createdAt: 1,
+            author: {
+                fullName: 1,
+            },
+        },
+        categories: {
+            name: 1,
+        },
+    },
+}).fetch();
+```
+
+Result:
+
+```
+[
+    {
+        _id: 'postId',
+        title: 'Introducing Grapher',
+        author: {
+            _id: 'authorId',
+            fullName: 'John Smith
+        },
+        comments: [
+            {
+                _id: 'commentId',
+                text: 'Nice article!,
+                createdAt: Date,
+                author: {
+                    fullName: 1
+                }
+            }
+        ],
+        categories: [ {_id: 'categoryId', name: 'JavaScript'} ]
+    }
+]
+```

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
+import { cleanAllData } from '../../migrations/server/dataCleaning';
 import { LOANS_COLLECTION } from '../../constants';
 import SecurityService from '../../security';
 import { Services } from '../../server';
@@ -24,6 +25,7 @@ import {
   updateDocumentUnset,
   generateScenario,
   referralExists,
+  cleanDatabase,
 } from '../methodDefinitions';
 import generator from '../../factories';
 import { migrate } from '../../migrations/server';
@@ -189,4 +191,9 @@ referralExists.setHandler((context, params) => {
   });
 
   return !!referralUser || !!referralOrg;
+});
+
+cleanDatabase.setHandler(({ userId }) => {
+  SecurityService.checkUserIsDev(userId);
+  return cleanAllData();
 });

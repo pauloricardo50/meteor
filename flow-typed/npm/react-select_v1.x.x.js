@@ -1,18 +1,11 @@
-// flow-typed signature: f5d352b5e5af485dd55e08aa2fc909e3
-// flow-typed version: 0c6e00f5a7/react-select_v1.x.x/flow_>=v0.53.x
+// flow-typed signature: 0dbd114d9ce6be6c1356d499cb05c49e
+// flow-typed version: c6154227d1/react-select_v1.x.x/flow_>=v0.53.x <=v0.103.x
 
 declare module 'react-select' {
-  declare type SelectOption = {
-    value: string | number,
-    label: string,
-    clearableValue?: boolean,
-  };
+  declare type OptionType = { [string]: any };
+  declare type OptionsType = OptionType[];
 
-  declare type Option = {
-    [key: string]: any,
-  };
-
-  declare type Props = {
+  declare type Props = {|
     // html id(s) of element(s) that should be used to describe this input (for assistive tech)
     'aria-describedby'?: string,
     // aria label (for assistive tech)
@@ -23,12 +16,12 @@ declare module 'react-select' {
     addLabelText?: string,
     // Create drop-down caret element
     arrowRenderer?: React$ComponentType<{
-      onMouseDown?: SyntheticMouseEvent<*>,
+      onMouseDown?: SyntheticMouseEvent<*>
     }>,
     // automatically blur the component when an option is selected
     autoBlur?: boolean,
-    // autofocus the component on mount
-    autofocus?: boolean,
+    // autoFocus the component on mount, autofocus deprecated; use autoFocus instead
+    autoFocus?: boolean,
     // whether to enable autosizing or not
     autosize?: boolean,
     // whether backspace removes an item if there is no text input
@@ -45,6 +38,8 @@ declare module 'react-select' {
     clearValueText?: string | React$Element<*>,
     // should it be possible to reset value
     clearable?: boolean,
+    // whether to close the menu when a value is selected
+    closeOnSelect?: boolean,
     // whether backspace removes an item if there is no text input
     deleteRemoves?: boolean,
     // delimiter to use to join multiple values for the hidden field value
@@ -54,16 +49,18 @@ declare module 'react-select' {
     // whether escape clears the value when the menu is closed
     escapeClearsValue?: boolean,
     // method to filter a single option (option, filterString)
-    filterOption?: (option: Option, filterString: string) => boolean,
+    filterOption?: (option: OptionType, filterString: string) => boolean,
     // boolean to enable default filtering or function to filter the options array ([options], filterString, [values])
     filterOptions?:
       | boolean
       | ((
-          options: Array<Option>,
+          options: OptionsType,
           filterValue: string,
           excludeOptions: Array<{}>,
           props: {}
-        ) => Array<{}>),
+        ) => OptionsType),
+    // html id to set on the input element for accessibility or tests
+    id?: string,
     // whether to strip diacritics when filtering
     ignoreAccents?: boolean,
     // whether to perform case-insensitive filtering
@@ -118,10 +115,14 @@ declare module 'react-select' {
     onMenuScrollToBottom?: () => void,
     // fires when the menu is opened
     onOpen?: () => void,
+    // whether input is cleared on select (works only for multiselect)
+    onSelectResetsInput?: boolean,
     // onClick handler for value labels: function (value, event) {}
     onValueClick?: (value: string, event: Event) => void,
     // boolean to enable opening dropdown when focused
     openAfterFocus?: boolean,
+    // boolean to control opening the menu when the control is clicked
+    openOnClick?: boolean,
     // always open options menu on focus
     openOnFocus?: boolean,
     // additional class(es) to apply to the <Option /> elements
@@ -130,20 +131,24 @@ declare module 'react-select' {
     optionComponent?: React$ComponentType<{}>,
     // optionRenderer: function (option) {}
     optionRenderer?: (
-      option: Option,
+      option: OptionType,
       idx: number,
       inputValue: any
     ) => React$Node,
     // array of options
-    options?: Array<SelectOption>,
+    options?: OptionsType,
     // number of entries to page when using page up/down keys
     pageSize?: number,
     // field placeholder, displayed when there's no value
     placeholder?: string | React$Element<*>,
+    // whether the selected option is removed from the dropdown on multi selects
+    removeSelected?: boolean,
     // applies HTML5 required attribute when needed
     required?: boolean,
     // value to use when you clear the control
     resetValue?: any,
+    // set to true in order to use react-select in right-to-left direction
+    rtl?: boolean,
     // boolean to enable the viewport to shift so that the full menu fully visible when engaged
     scrollMenuIntoView?: boolean,
     // whether to enable searching feature or not
@@ -156,6 +161,8 @@ declare module 'react-select' {
     tabIndex?: number,
     // whether to treat tabbing out while focused to be value selection
     tabSelectsValue?: boolean,
+    // whether to trim whitespace around filter value
+    trimFilter?: boolean,
     // initial field value
     value?: any,
     // value component to render
@@ -163,12 +170,27 @@ declare module 'react-select' {
     // path of the label value in option objects
     valueKey?: string,
     // valueRenderer: function (option) {}
-    valueRenderer?: (option: Option, idx?: number) => React$Node,
+    valueRenderer?: (option: OptionType, idx?: number) => React$Node,
     // optional style to apply to the component wrapper
     wrapperStyle?: {},
-  };
+    isSearchable?: boolean
+  |};
 
-  declare class Select extends React$Component<Props> {}
+  declare type AsyncProps = {|
+    /* The default set of options to show before the user starts searching. When
+     set to `true`, the results for loadOptions('') will be autoloaded. */
+    defaultOptions?: OptionsType | boolean,
+    /* Function that returns a promise, which is the set of options to be used
+     once the promise resolves. */
+    loadOptions: (string, (OptionsType) => void) => Promise<*> | void,
+    /* If cacheOptions is truthy, then the loaded data will be cached. The cache
+     will remain until `cacheOptions` changes value. */
+    cacheOptions?: any
+  |};
 
-  declare module.exports: typeof Select;
+  declare export default class Select extends React$Component<Props> {}
+  declare export class Async extends React$Component<{|
+    ...Props,
+    ...AsyncProps
+  |}> {}
 }

@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { LOANS_COLLECTION } from 'core/api/constants';
@@ -16,7 +15,7 @@ type PromotionLoanLinkerProps = {
   insertPromotionLoan: Function,
 };
 
-const PromotionLoanLinkerContent = ({
+const PromotionLoanLinker = ({
   promotion,
   unlinkPromotionLoan,
   insertPromotionLoan,
@@ -88,17 +87,6 @@ const PromotionLoanLinkerContent = ({
       )}
     />
   </div>
-);
-
-const PromotionLoanLinker = props => (
-  <DialogSimple
-    primary
-    raised
-    label="Lier un dossier de financement"
-    title="Lier un dossier de financement à la promotion"
-  >
-    <PromotionLoanLinkerContent {...props} />
-  </DialogSimple>
 );
 
 export default PromotionLoanLinkerContainer(PromotionLoanLinker);

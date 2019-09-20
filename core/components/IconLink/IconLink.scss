@@ -1,18 +1,18 @@
 .icon-link {
   display: inline-block;
-  max-width: 200px;
-  text-overflow: ellipsis;
   overflow: hidden;
 
+  max-width: 200px;
   padding: 2px 4px;
 
   white-space: nowrap;
+  text-overflow: ellipsis;
 
   border-radius: 4px;
 
   > * {
-    white-space: nowrap;
     vertical-align: middle;
+    white-space: nowrap;
   }
 
   &:hover,

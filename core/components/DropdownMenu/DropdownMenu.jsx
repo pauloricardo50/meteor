@@ -55,10 +55,13 @@ const DropdownMenu = ({
   paperClassName,
   disabled,
   noWrapper,
+  menuProps
 }) => {
   const onClickHandler = (event) => {
     // Prevent background from receiving clicks
-    event.stopPropagation();
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+    }
     // Pass currentTarget directly, to avoid it resetting to null
     // https://stackoverflow.com/questions/17607766/how-come-my-event-currenttarget-is-changing-automatically
     handleOpen(event.currentTarget);
@@ -95,6 +98,7 @@ const DropdownMenu = ({
                 : 48 * 4.5,
           },
         }}
+        {...menuProps}
       >
         {options}
       </Menu>

@@ -230,6 +230,22 @@ export class PromotionService extends CollectionService {
     );
   }
 
+  toggleNotifications({ promotionId, userId }) {
+    const promotion = this.fetchOne({
+      $filters: { _id: promotionId },
+      userLinks: 1,
+    });
+    const userLink = promotion.userLinks.find(({ _id }) => _id === userId);
+    const nextValue = !userLink.enableNotifications;
+    this.updateLinkMetadata({
+      id: promotionId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { enableNotifications: nextValue },
+    });
+    return nextValue;
+  }
+
   removeLoan({ promotionId, loanId }) {
     const {
       promotionOptionLinks = [],
@@ -300,6 +316,18 @@ export class PromotionService extends CollectionService {
       }
 
       PromotionOptionService.remove({ promotionOptionId });
+    });
+  }
+
+  reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
+    const { constructionTimeline } = this.fetchOne({
+      $filters: { _id: fromPromotionId },
+      constructionTimeline: 1,
+    });
+
+    return this.update({
+      promotionId: toPromotionId,
+      object: { constructionTimeline },
     });
   }
 }
