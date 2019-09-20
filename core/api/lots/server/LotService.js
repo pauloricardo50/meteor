@@ -11,6 +11,14 @@ export class LotService extends CollectionService {
     super(Lots);
   }
 
+  insert = ({ promotionLot: promotionLotId, ...lot }) => {
+    const lotId = super.insert(lot);
+    if (promotionLotId) {
+      PromotionLotService.addLotToPromotionLot({ promotionLotId, lotId });
+    }
+    return lotId;
+  };
+
   update = ({ lotId, object: { promotionLotId, ...rest } }) => {
     const currentPromotionLot = PromotionLotService.findOne({
       'lotLinks._id': lotId,

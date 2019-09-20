@@ -17,10 +17,10 @@
 
     &.fixed {
       position: fixed;
-      top: 64px;
-      left: calc(120px + 16px);
-      right: 16px;
       z-index: 1;
+      top: 64px;
+      right: 16px;
+      left: calc(120px + 16px);
     }
   }
 
@@ -110,10 +110,12 @@ $button-height: 30px;
     }
 
     .title {
-      margin: 0;
-      max-width: 200px;
-      white-space: nowrap;
       overflow: hidden;
+
+      max-width: 200px;
+      margin: 0;
+
+      white-space: nowrap;
       text-overflow: ellipsis;
     }
 

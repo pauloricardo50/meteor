@@ -140,7 +140,7 @@ ServerEventService.addAfterMethodListener(
       name,
       referredByUserLink,
       referredByOrganisationLink,
-    } = UserService.get(userId);
+    } = currentUser;
     const referredBy = UserService.get(referredByUserLink);
     const referredByOrg = OrganisationService.get(referredByOrganisationLink);
 

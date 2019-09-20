@@ -627,13 +627,12 @@ export class UserServiceClass extends CollectionService {
     // If the referredByUser is not in the organisation referredByOrganisation,
     // this could return inaccurate data. Make sure you understand what this does
     if (referredByUser) {
-      return {
-        user: referredByUser,
-        organisation: this.getUserMainOrganisation(referredByUser._id),
-      };
+      const { _id: proId } = referredByUser;
+      const mainOrg = this.getUserMainOrganisation(proId);
+      return { user: referredByUser, organisation: mainOrg || {} };
     }
 
-    return { organisation: referredByOrganisation };
+    return { organisation: referredByOrganisation || {}, user: {} };
   }
 }
 

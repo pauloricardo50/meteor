@@ -5,6 +5,7 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proUser } from 'core/api/users/queries';
 import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
+import { injectCurrentUser } from 'core/containers/CurrentUserContext';
 
 const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname);
@@ -29,6 +30,7 @@ const withRedirect = withProps(({ currentUser, history }) => {
 
 export default compose(
   withProUser,
+  injectCurrentUser,
   withRouter,
   withRedirect,
   withContactButtonProvider,

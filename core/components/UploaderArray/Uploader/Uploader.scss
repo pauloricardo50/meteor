@@ -44,11 +44,13 @@
     border-top: 1px solid $light-grey;
 
     &-name {
-      max-width: 300px;
+      display: block;
       overflow: hidden;
+
+      max-width: 300px;
+
       white-space: nowrap;
       text-overflow: ellipsis;
-      display: block;
     }
 
     .actions {

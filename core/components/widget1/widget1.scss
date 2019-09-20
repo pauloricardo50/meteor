@@ -77,20 +77,21 @@
   max-width: 364px;
   margin: 16px;
 
+  @include screen(xwide) {
+    margin: 8px;
+  }
+
   .card-top {
     display: flex;
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
     flex-grow: 1;
+
     padding: 32px;
 
     @include screen(xwide) {
       padding: 16px;
     }
-  }
-
-  @include screen(xwide) {
-    margin: 8px;
   }
 }
 

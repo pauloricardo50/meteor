@@ -562,6 +562,8 @@ export const proPromotionLot = () => ({
       description: 1,
       promotionLots: { _id: 1 },
     },
+    constructionTimeline: 1,
+    signingDate: 1,
   },
   promotionOptions: { _id: 1 },
   properties: promotionProperty(),
@@ -588,9 +590,11 @@ export const appPromotionLot = () => ({
 // // PromotionOption fragments
 // //
 export const fullPromotionOption = () => ({
+  agreementStatus: 1,
   canton: 1,
   createdAt: 1,
   custom: 1,
+  depositStatus: 1,
   loan: { name: 1 },
   lots: { name: 1, type: 1, status: 1, description: 1 },
   priority: 1,
@@ -600,9 +604,7 @@ export const fullPromotionOption = () => ({
 });
 
 export const proPromotionOption = () => ({
-  canton: 1,
-  createdAt: 1,
-  custom: 1,
+  ...fullPromotionOption(),
   loan: {
     name: 1,
     solvency: 1,
@@ -616,19 +618,17 @@ export const proPromotionOption = () => ({
     },
     loanProgress: 1,
   },
-  lots: { name: 1, type: 1, description: 1 },
-  priority: 1,
-  solvency: 1,
-  updatedAt: 1,
   promotion: { users: { _id: 1 } },
-  promotionLots: { _id: 1 },
+  proNote: 1,
 });
 
 export const appPromotionOption = () => ({
+  agreementStatus: 1,
   attributedToMe: 1,
   canton: 1,
   createdAt: 1,
   custom: 1,
+  depositStatus: 1,
   lots: { description: 1, name: 1, type: 1, value: 1 },
   promotionLots: appPromotionLot(),
   priority: 1,
@@ -637,11 +637,8 @@ export const appPromotionOption = () => ({
 });
 
 export const loanPromotionOption = () => ({
-  attributedToMe: 1,
-  canton: 1,
-  custom: 1,
+  ...appPromotionOption(),
   name: 1,
-  priority: 1,
   promotion: 1,
   promotionLots: {
     name: 1,
@@ -650,7 +647,6 @@ export const loanPromotionOption = () => ({
     value: 1,
     properties: promotionProperty(),
   },
-  solvency: 1,
   value: 1,
 });
 

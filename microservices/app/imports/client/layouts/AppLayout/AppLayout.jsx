@@ -48,7 +48,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
     <div className={rootClasses}>
       <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
 
-      <div className={classes}>
+      <div className={classes} id="scroll-layout">
         <LayoutErrorBoundary>
           <div className="wrapper">{React.cloneElement(children, props)}</div>
         </LayoutErrorBoundary>

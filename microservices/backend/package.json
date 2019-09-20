@@ -2,7 +2,7 @@
   "name": "epotek-backend",
   "private": true,
   "scripts": {
-    "start": "meteor run --settings settings-dev.json --port 5500",
+    "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500",
     "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505",
     "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505"
   },
@@ -74,9 +74,9 @@
     "sift": "^8.5.0",
     "simpl-schema": "^1.5.5",
     "text-mask-addons": "^3.8.0",
-    "uniforms": "^2.2.0",
-    "uniforms-bridge-simple-schema-2": "^2.2.0",
-    "uniforms-material": "^2.2.0",
+    "uniforms": "2.2.0",
+    "uniforms-bridge-simple-schema-2": "2.2.0",
+    "uniforms-material": "2.2.0",
     "url-search-params-polyfill": "^7.0.0"
   },
   "devDependencies": {

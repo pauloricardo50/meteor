@@ -50,7 +50,7 @@ exposeQuery({
     validateParams: {
       roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
-      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
+      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String, null)),
     },
   },
   options: { allowFilterById: true },
