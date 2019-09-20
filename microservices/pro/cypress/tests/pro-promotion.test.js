@@ -1,6 +1,10 @@
 /* eslint-env mocha */
 import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
-import { PRO_EMAIL, PRO_EMAIL_2, PRO_PASSWORD } from '../../imports/core/cypress/server/e2eConstants';
+import {
+  PRO_EMAIL,
+  PRO_EMAIL_2,
+  PRO_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Pro promotion', () => {
   before(() => {
@@ -26,7 +30,7 @@ describe('Pro promotion', () => {
       cy.visit('/');
     });
 
-    it('can access the promotion users page', () => {
+    it('can access the promotion users tab', () => {
       let usersCount;
 
       cy.callMethod('removeAllPromotions');
@@ -35,7 +39,7 @@ describe('Pro promotion', () => {
       cy.refetch();
       cy.contains('En cours').click();
 
-      cy.contains('Voir tous les clients').click();
+      cy.contains('Clients').click();
 
       // customers are invited by nobody
       cy.callMethod('setUserPermissions', {
@@ -136,9 +140,10 @@ describe('Pro promotion', () => {
         });
     });
 
-    it('Can access the promotion lot page', () => {
+    it('Can access the promotion lot modal', () => {
       let loanCount;
       let additionalLotsCount;
+      let lotIndex;
 
       cy.callMethod('removeAllPromotions');
       cy.callMethod('insertFullPromotion');
@@ -162,7 +167,7 @@ describe('Pro promotion', () => {
       cy.refetch();
       cy.contains('En cours').click();
 
-      cy.get('.pro-promotion-lots-table td.col-loans').each((td) => {
+      cy.get('td.col-loans').each((td, index) => {
         const loans = td.text();
 
         if (loanCount) {
@@ -170,12 +175,11 @@ describe('Pro promotion', () => {
         }
 
         if (loans > 0 && td) {
+          lotIndex = index;
           loanCount = Number(loans);
           td.click();
         }
       });
-
-      cy.url().should('include', '/promotionLots/');
 
       cy.get('.promotion-lot-loans-table tr').then((trs) => {
         expect(trs.length).to.equal(loanCount + 1);
@@ -207,6 +211,14 @@ describe('Pro promotion', () => {
 
       cy.reload();
 
+      cy.get('td.col-loans').each((td, index) => {
+        const loans = td.text();
+
+        if (loans > 0 && td && index === lotIndex) {
+          td.click();
+        }
+      });
+
       cy.get('.promotion-lots-manager')
         .children()
         .then((children) => {
@@ -221,6 +233,14 @@ describe('Pro promotion', () => {
       cy.get('[role="menuitem"').click();
 
       cy.reload();
+
+      cy.get('td.col-loans').each((td, index) => {
+        const loans = td.text();
+
+        if (loans > 0 && td && index === lotIndex) {
+          td.click();
+        }
+      });
 
       cy.get('.promotion-lots-manager')
         .children()
@@ -270,40 +290,35 @@ describe('Pro promotion', () => {
         cy.contains('Test promotion').click();
 
         // No permissions at all
-        cy.get('.promotion-page button').should('not.exist');
+        cy.get('.promotion-page-header-actions').should('not.exist');
 
         // canModifyPromotion
         cy.callMethod('setUserPermissions', {
           permissions: { canModifyPromotion: true },
         });
         cy.refetch();
-        cy.get('.promotion-page-header button')
-          .contains('Modifier')
-          .should('exist');
-        cy.get('.buttons > a')
-          .contains('Voir tous les clients')
-          .should('exist');
+        cy.get('.promotion-page-header-actions > button').click();
+
+        cy.contains('Modifier la promotion').should('exist');
+        cy.contains('Clients').should('exist');
 
         // canAddLots
         cy.callMethod('setUserPermissions', {
           permissions: { canModifyPromotion: true, canAddLots: true },
         });
         cy.refetch();
-        cy.get('.promotion-table-actions > button')
-          .contains('Ajouter lot principal')
-          .should('exist');
-        cy.get('.promotion-table-actions > button')
-          .contains('Ajouter lot annexe')
-          .should('exist');
+
+        cy.contains('Ajouter un lot').should('exist');
+
+        cy.contains('Ajouter un lot annexe').should('exist');
 
         // canManageDocuments
         cy.callMethod('setUserPermissions', {
           permissions: { canModifyPromotion: true, canManageDocuments: true },
         });
         cy.refetch();
-        cy.get('.buttons > span')
-          .contains('Gérer documents')
-          .should('exist');
+
+        cy.contains('Gérer les documents').should('exist');
 
         // canInviteCustomers
         cy.callMethod('setUserPermissions', {
@@ -311,15 +326,8 @@ describe('Pro promotion', () => {
         });
         cy.callMethod('setPromotionStatus', { status: 'OPEN' });
         cy.refetch();
-        cy.get('.buttons > button')
-          .contains('Ajouter un client')
-          .should('exist');
-        cy.get('.buttons > button')
-          .contains("Tester email d'invitation")
-          .should('exist');
-        cy.get('.buttons > a')
-          .contains('Voir tous les clients')
-          .should('exist');
+
+        cy.contains('Ajouter un client').should('exist');
       });
 
       it('should add lots and promotionLots', () => {
@@ -329,31 +337,33 @@ describe('Pro promotion', () => {
         cy.refetch();
         cy.contains('Test promotion').click();
 
-        cy.get('.promotion-table-actions > button:first-of-type').click();
-        cy.wait(2000); // Try to wait for focus to settle
+        cy.get('.promotion-page-header-actions > button').click();
+        cy.contains('Ajouter un lot').click();
 
         // Form should have autofocus
-        cy.focused().type('Promotion lot 1');
+        // FIXME: in modal manager, it doesn't have autoFocus
+        cy.get('input[name=name]').type('Promotion lot 1');
         cy.get('input[name=value]')
           .type('{backspace}') // Remove initial 0
           .type(1000000);
         cy.setSelect('propertyType', 'HOUSE');
-        cy.get('input[name=insideArea]').type('120{enter}');
+        cy.get('input[name=insideArea]').type('120');
+        cy.contains('Ok').click();
 
         cy.contains('Promotion lot 1').should('exist');
         cy.contains('1 000 000').should('exist');
 
-        cy.get('.promotion-table-actions > button:last-of-type').click();
+        cy.get('.promotion-page-header-actions > button').click();
+        cy.contains('Ajouter un lot annexe').click();
 
-        // Form should have autofocus
-        cy.focused().type('Lot 1');
+        cy.get('input[name=name]').type('Lot 1');
         cy.setSelect('type', 'PARKING_CAR');
         cy.get('input[name=value]')
           .type('{backspace}') // Remove initial 0
           .type(1200);
         cy.contains('Ok').click();
 
-        cy.get('.additional-lots button').click();
+        cy.contains('Afficher lots annexes').click();
 
         cy.contains('Lot 1').should('exist');
         cy.contains('1 200').should('exist');
@@ -369,13 +379,13 @@ describe('Pro promotion', () => {
           },
         });
         cy.contains('Test promotion').click();
-        cy.get('.additional-lots button').click();
+        cy.contains('Afficher lots annexes').click();
 
         // Make sure links don't exist initially
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('not.exist');
-        cy.get('.pro-promotion-lots-table')
+        cy.get('.promotion-lots-table')
           .contains('Lot 2')
           .should('not.exist');
 
@@ -396,7 +406,7 @@ describe('Pro promotion', () => {
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('exist');
-        cy.get('.pro-promotion-lots-table')
+        cy.get('.promotion-lots-table')
           .contains('Lot 2')
           .should('exist');
       });
@@ -411,7 +421,7 @@ describe('Pro promotion', () => {
           },
         });
         cy.contains('Test promotion').click();
-        cy.get('.additional-lots button').click();
+        cy.contains('Afficher lots annexes').click();
 
         cy.get('.additional-lots-table')
           .contains('Lot 2')

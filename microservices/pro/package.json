@@ -71,6 +71,7 @@
     "react-scroll": "^1.7.12",
     "react-scroll-sync": "^0.7.0",
     "react-string-replace": "^0.4.4",
+    "react-table": "^7.0.0-alpha.21",
     "react-text-mask": "^5.4.3",
     "react-use": "^11.0.2",
     "recompose": "^0.30.0",
@@ -80,9 +81,9 @@
     "reselect": "^4.0.0",
     "simpl-schema": "^1.5.5",
     "text-mask-addons": "^3.8.0",
-    "uniforms": "^2.2.0",
-    "uniforms-bridge-simple-schema-2": "^2.2.0",
-    "uniforms-material": "^2.2.0",
+    "uniforms": "2.2.0",
+    "uniforms-bridge-simple-schema-2": "2.2.0",
+    "uniforms-material": "2.2.0",
     "url-search-params-polyfill": "^7.0.0"
   },
   "devDependencies": {

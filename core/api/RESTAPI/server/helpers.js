@@ -1,5 +1,3 @@
-import { DDPCommon } from 'meteor/ddp-common';
-import { DDP } from 'meteor/ddp-client';
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Random } from 'meteor/random';
@@ -14,6 +12,7 @@ import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
 import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
+import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES, SIMPLE_AUTH_SALT_GRAINS } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
@@ -88,16 +87,7 @@ export const withMeteorUserId = ({ userId, impersonateUser }, func) => {
     impersonateUserId = getImpersonateUserId({ userId, impersonateUser });
   }
 
-  const invocation = new DDPCommon.MethodInvocation({
-    userId: impersonateUserId || userId,
-    // isSimulation: false,
-    // setUserId,
-    // unblock,
-    // connection: self.connectionHandle,
-    // randomSeed,
-  });
-
-  return DDP._CurrentInvocation.withValue(invocation, func);
+  return ddpWithUserId(impersonateUserId || userId, func);
 };
 
 export const getErrorObject = (error, res) => {

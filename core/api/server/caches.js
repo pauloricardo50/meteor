@@ -16,7 +16,10 @@ Properties.cacheCount({
 });
 
 Meteor.startup(() => {
-  migrate('properties', 'loanCount', { loanCount: { $exists: false } });
+  // migrate('properties', 'loanCount', { loanCount: { $exists: false } });
+  migrate('promotionLots', 'promotionCache', {
+    promotionCache: { $exists: false },
+  });
   // migrate('revenues', 'loanCache', { loanCache: { $exists: false } });
   //
   // Old migrations

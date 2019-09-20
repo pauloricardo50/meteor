@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { withProps, compose } from 'recompose';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
-import { migrateToLatest } from '../../api';
 
 const DevPageContainer = compose(withProps(({ currentUser: { _id: userId } }) => ({
   addEmptyLoan: options =>
@@ -26,7 +25,6 @@ const DevPageContainer = compose(withProps(({ currentUser: { _id: userId } }) =>
       }
     });
   },
-  migrateToLatest: () => migrateToLatest.run(),
 })));
 
 export default DevPageContainer;

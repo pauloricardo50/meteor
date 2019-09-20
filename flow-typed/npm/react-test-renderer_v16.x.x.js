@@ -1,5 +1,5 @@
-// flow-typed signature: 9b9f4128694a7f68659d945b81fb78ff
-// flow-typed version: 46dfe79a54/react-test-renderer_v16.x.x/flow_>=v0.47.x
+// flow-typed signature: b5cf98334b892160f64c6e932b1c2bca
+// flow-typed version: c6154227d1/react-test-renderer_v16.x.x/flow_>=v0.47.x <=v0.103.x
 
 // Type definitions for react-test-renderer 16.x.x
 // Ported from: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-test-renderer
@@ -57,10 +57,16 @@ declare module "react-test-renderer" {
     root: ReactTestInstance
   };
 
+  declare type Thenable = {
+    then(resolve: () => mixed, reject?: () => mixed): mixed,
+  };
+
   declare function create(
     nextElement: React$Element<any>,
     options?: TestRendererOptions
   ): ReactTestRenderer;
+
+  declare function act(callback: () => void): Thenable;
 }
 
 declare module "react-test-renderer/shallow" {

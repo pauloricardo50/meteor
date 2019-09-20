@@ -281,7 +281,7 @@ class PromotionSecurity {
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
-      user: {_id: 1},
+      user: { _id: 1 },
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({
@@ -346,7 +346,7 @@ class PromotionSecurity {
 
     const loan = LoanService.safeFetchOne({
       $filters: { _id: attributedTo._id },
-      user: {_id: 1},
+      user: { _id: 1 },
     });
 
     const customerOwnerType = getPromotionCustomerOwnerType({

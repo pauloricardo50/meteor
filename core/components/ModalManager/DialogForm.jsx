@@ -22,6 +22,14 @@ type DialogFormProps = {
   onSubmit?: Function,
 };
 
+const makeOnSubmit = (onSubmit, closeModal) => {
+  if (onSubmit) {
+    return (...args) => onSubmit(...args).then(closeModal);
+  }
+
+  return closeModal;
+};
+
 const DialogForm = ({
   closeModal,
   closeAll,
@@ -37,7 +45,7 @@ const DialogForm = ({
     <AutoForm
       model={model}
       schema={schema}
-      onSubmit={onSubmit(closeModal) || closeModal}
+      onSubmit={makeOnSubmit(onSubmit, closeModal)}
     >
       <DialogContent>
         {children}
@@ -45,14 +53,7 @@ const DialogForm = ({
         <CustomAutoFields autoField={CustomAutoField} />
       </DialogContent>
       <DialogActions>
-        <Button
-          primary
-          label={<T id="general.close" />}
-          onClick={() => {
-            closeAll();
-          }}
-          key="close"
-        />
+        <Button primary label={<T id="general.close" />} onClick={closeAll} />
         <CustomSubmitField />
       </DialogActions>
     </AutoForm>

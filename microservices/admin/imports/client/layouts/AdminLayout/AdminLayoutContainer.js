@@ -3,6 +3,7 @@ import { compose, shouldUpdate, withState } from 'recompose';
 import { currentUser } from 'core/api/users/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { withFileViewer } from 'core/containers/FileViewerContext';
+import { injectCurrentUser } from 'core/containers/CurrentUserContext';
 
 export default compose(
   withFileViewer,
@@ -22,5 +23,6 @@ export default compose(
     dataName: 'currentUser',
     renderMissingDoc: false,
   }),
+  injectCurrentUser,
   withState('openSearch', 'setOpenSearch', false),
 );

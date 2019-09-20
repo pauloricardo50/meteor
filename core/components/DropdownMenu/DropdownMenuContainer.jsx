@@ -43,8 +43,10 @@ const mapOption = (
     <MenuItem
       key={id}
       onClick={(event, index) => {
-        // Prevent background from receiving clicks
-        event.stopPropagation();
+        if (event && event.stopPropagation) {
+          // Prevent background from receiving clicks
+          event.stopPropagation();
+        }
         if (onClick) {
           onClick(index);
         }
