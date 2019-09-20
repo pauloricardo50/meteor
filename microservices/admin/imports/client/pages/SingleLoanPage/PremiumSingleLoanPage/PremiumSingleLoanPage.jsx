@@ -1,8 +1,7 @@
 // @flow
 import React from 'react';
 
-
-import PremiumBadge from '../../../components/PremiumBadge/PremiumBadge';
+import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
 import SingleLoanPageHeader from '../SingleLoanPageHeader';
 import PremiumLoanTabs from './PremiumLoanTabs';
 import SingleLoanPageTasks from '../SingleLoanPageTasks';
