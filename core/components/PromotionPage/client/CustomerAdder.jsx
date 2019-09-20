@@ -12,6 +12,12 @@ type CustomerAdderProps = {
   promotion: Object,
 };
 
+SimpleSchema.setDefaultMessages({
+  messages: {
+    fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moin un lot' },
+  },
+});
+
 export const CustomerAdderUserSchema = ({
   promotion: { users = [], promotionLots = [] },
 }) =>
@@ -42,14 +48,20 @@ export const CustomerAdderUserSchema = ({
       uniforms: {
         placeholder: null,
       },
-      optional: true,
+      optional: false,
+      // We don't use minCount: 1 because it inserts an undefined promotionLotId to the array by default
+      custom() {
+        if (this.value.length === 0) {
+          return 'emptyPromotionLotIds';
+        }
+      },
     },
     'promotionLotIds.$': {
       type: String,
       allowedValues: promotionLots.map(({ _id }) => _id),
       uniforms: {
         transform: (promotionLotId) => {
-          const { name } = promotionLots.find(({ _id }) => _id === promotionLotId);
+          const { name } = promotionLots.find(({ _id }) => _id === promotionLotId) || {};
           return name;
         },
       },
