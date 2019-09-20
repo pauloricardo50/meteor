@@ -10,6 +10,8 @@ import T from '../../Translation';
 import PromotionMetadataContext from './PromotionMetadata';
 import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
+import PromotionAssignee from './PromotionAssignee';
+import PromotionLender from './PromotionLender';
 
 type PromotionPageHeaderProps = {};
 
@@ -25,7 +27,12 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
     promotionLots = [],
   } = promotion;
   const {
-    permissions: { canInviteCustomers },
+    permissions: {
+      canInviteCustomers,
+      canModifyStatus,
+      canLinkAssignee,
+      canLinkLender,
+    },
   } = useContext(PromotionMetadataContext);
 
   return (
@@ -41,7 +48,7 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
             <StatusLabel
               status={status}
               collection={PROMOTIONS_COLLECTION}
-              allowModify={Meteor.microservice === 'admin'}
+              allowModify={canModifyStatus}
               docId={promotionId}
             />
           </div>
@@ -51,6 +58,10 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
               values={{ promotionLotCount: promotionLots.length }}
             />
           </h4>
+          <div className="promotion-page-header-linkers">
+            {canLinkAssignee && <PromotionAssignee promotion={promotion} />}
+            {canLinkLender && <PromotionLender promotion={promotion} />}
+          </div>
         </div>
         {Meteor.microservice !== 'app' && (
           <div className="promotion-page-header-actions">

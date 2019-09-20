@@ -84,6 +84,7 @@ const getOptions = ({
   promotion,
   openDocumentsModal,
   openProInvitationModal,
+  openLinkLoanModal,
 }) => {
   const { _id: promotionId } = promotion;
   const {
@@ -92,6 +93,7 @@ const getOptions = ({
     canAddLots,
     canAddPros,
     canRemovePromotion,
+    canLinkLoan,
   } = permissions;
   const { isPro } = useContext(CurrentUserContext);
 
@@ -154,6 +156,13 @@ const getOptions = ({
         />),
     },
     {
+      id: 'linkLoan',
+      label: <span>Lier un dossier de financement</span>,
+      dividerTop: true,
+      condition: canLinkLoan,
+      onClick: openLinkLoanModal,
+    },
+    {
       id: 'remove',
       label: <span className="error">Supprimer</span>,
       dividerTop: true,
@@ -177,6 +186,7 @@ export default withProps(({ promotion }) => {
   const { openModal } = useContext(ModalManagerContext);
   const [openDocumentsModal, setOpenDocumentsModal] = useState(false);
   const [openProInvitationModal, setOpenProInvitationModal] = useState(false);
+  const [openLinkLoanModal, setOpenLinkLoanModal] = useState(false);
 
   return {
     options: getOptions({
@@ -185,11 +195,14 @@ export default withProps(({ promotion }) => {
       promotion,
       openDocumentsModal: () => setOpenDocumentsModal(true),
       openProInvitationModal: () => setOpenProInvitationModal(true),
+      openLinkLoanModal: () => setOpenLinkLoanModal(true),
     }),
     promotionDocuments,
     openDocumentsModal,
     setOpenDocumentsModal,
     openProInvitationModal,
     setOpenProInvitationModal,
+    openLinkLoanModal,
+    setOpenLinkLoanModal,
   };
 });
