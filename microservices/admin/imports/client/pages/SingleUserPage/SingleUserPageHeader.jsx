@@ -8,6 +8,7 @@ import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamat
 import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'classnames';
 
+import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
@@ -78,16 +79,19 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           <LastSeen userId={userId} />
         </div>
         <div className="organisations">
-          {!!organisations.length
-            && organisations.map(organisation => (
-              <CollectionIconLink
-                key={organisation._id}
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            ))}
+          {!!organisations.length && (
+            <TooltipArray
+              items={organisations.map(organisation => (
+                <CollectionIconLink
+                  key={organisation._id}
+                  relatedDoc={{
+                    ...organisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              ))}
+            />
+          )}
         </div>
         <div className="email">
           <Icon type="mail" />
