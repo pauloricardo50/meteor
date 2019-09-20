@@ -10,12 +10,12 @@ import ImpersonateService from './ImpersonateService';
 function getDummies() {
   const adminId = Accounts.createUser({
     email: 'impersonator@epotek.ch',
-    password: '12345',
+    password: '12345678',
   });
 
   const userId = Accounts.createUser({
     email: 'sheep@epotek.ch',
-    password: '12345',
+    password: '12345678',
   });
 
   return { adminId, userId };

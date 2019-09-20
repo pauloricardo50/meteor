@@ -29,7 +29,7 @@ const handleSubmit = userId => ({ email: newEmail }) =>
 
 const EmailModifier = ({ userId, email }: EmailModifierProps) => (
   <AutoFormDialog
-    buttonProps={{ label: 'Modifer' }}
+    buttonProps={{ label: "Modifer l'email" }}
     title="Changer l'adresse email"
     schema={getSchema(email)}
     onSubmit={handleSubmit(userId)}

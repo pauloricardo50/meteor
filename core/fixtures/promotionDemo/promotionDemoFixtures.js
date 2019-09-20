@@ -108,7 +108,7 @@ const createUsers = async ({
       role: ROLES.USER,
       options: {
         email: user.email,
-        password: '12345',
+        password: '12345678',
       },
     });
 

@@ -77,6 +77,52 @@ describe('Public onboarding', () => {
     });
   });
 
+  it('should create a new account before revealing maxPropertyValue', () => {
+    cy.callMethod('generateProFixtures');
+    cy.get('.welcome-screen-top')
+      .find('button')
+      .click();
+
+    cy.get('.borrowers-adder')
+      .find('button')
+      .first()
+      .click();
+
+    cy.get('input#salary').type('120000');
+    cy.get('input#netSalary').type('100000');
+    cy.get('input#bankFortune').type('250000');
+    cy.wait(500);
+
+    cy.setSelect('max-property-value-canton', 'GE');
+    cy.contains('Valider').click();
+
+    cy.contains('Parfait').should('exist');
+
+    cy.get('[name="email"]').type('dev@e-potek.ch{enter}');
+
+    cy.url().should('include', '/signup/dev@e-potek.ch');
+    cy.get('.signup-success').should('exist');
+
+    cy.callMethod('getLoginToken', 'dev@e-potek.ch').then((loginToken) => {
+      cy.visit(`/enroll-account/${loginToken}`);
+    });
+
+    cy.get('[name="firstName"]').type('Jean');
+    cy.get('[name="lastName"]').type('Dujardin');
+    cy.get('[name="phoneNumber"]').type('+41 22 566 01 10');
+    cy.get('[name=newPassword]').type(USER_PASSWORD);
+    cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
+    cy.get('[type="checkbox"]').check();
+    cy.get('.password-reset-page')
+      .contains('Continuer')
+      .click();
+
+    cy.url().should('include', '/loans/');
+    cy.get('.max-property-value-results')
+      .contains('CHF 798 000')
+      .should('exist');
+  });
+
   it('Should attach an anonymous loan to a new user account', () => {
     cy.get('.welcome-screen-top')
       .find('button')
@@ -90,11 +136,11 @@ describe('Public onboarding', () => {
     cy.get('input#salary').type('300');
     cy.wait(500);
     cy.contains('Créez').click();
-    cy.get('input[name="firstName"]').type('Jean');
-    cy.get('input[name="lastName"]').type('Dujardin');
-    cy.get('input[name="email"]').type('dev@e-potek.ch');
-    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
-    cy.contains('Ok').click();
+
+    cy.get('[name="firstName"]').type('Jean');
+    cy.get('[name="lastName"]').type('Dujardin');
+    cy.get('[name="email"]').type('dev@e-potek.ch');
+    cy.get('[name="phoneNumber"]').type('+41 22 566 01 10{enter}');
 
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
@@ -103,15 +149,11 @@ describe('Public onboarding', () => {
       cy.visit(`/enroll-account/${loginToken}`);
     });
 
-    cy.get('input')
-      .eq(0)
-      .type(USER_PASSWORD);
-    cy.get('input')
-      .eq(1)
-      .type(`${USER_PASSWORD}`);
+    cy.get('[name=newPassword]').type(USER_PASSWORD);
+    cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
     cy.get('[type="checkbox"]').check();
     cy.get('.password-reset-page')
-      .contains('Login')
+      .contains('Continuer')
       .click();
 
     cy.url().should('include', '/loans/');
@@ -264,11 +306,10 @@ describe('Public onboarding', () => {
     });
 
     cy.contains('Créez').click();
-    cy.get('input[name="firstName"]').type('Jean');
-    cy.get('input[name="lastName"]').type('Dujardin');
-    cy.get('input[name="email"]').type('dev@e-potek.ch');
-    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
-    cy.contains('Ok').click();
+    cy.get('[name="firstName"]').type('Jean');
+    cy.get('[name="lastName"]').type('Dujardin');
+    cy.get('[name="email"]').type('dev@e-potek.ch');
+    cy.get('[name="phoneNumber"]').type('+41 22 566 01 10{enter}');
 
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
@@ -287,10 +328,10 @@ describe('Public onboarding', () => {
     });
 
     cy.contains('Créez').click();
-    cy.get('input[name="firstName"]').type('Jean');
-    cy.get('input[name="lastName"]').type('Dujardin');
-    cy.get('input[name="email"]').type('dev@e-potek.ch');
-    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
+    cy.get('[name="firstName"]').type('Jean');
+    cy.get('[name="lastName"]').type('Dujardin');
+    cy.get('[name="email"]').type('dev@e-potek.ch');
+    cy.get('[name="phoneNumber"]').type('+41 22 566 01 10');
     cy.contains('Ok').click();
 
     cy.url().should('include', '/signup/dev@e-potek.ch');
@@ -314,11 +355,10 @@ describe('Public onboarding', () => {
     cy.wait(500);
 
     cy.contains('Créez').click();
-    cy.get('input[name="firstName"]').type('Jean');
-    cy.get('input[name="lastName"]').type('Dujardin');
-    cy.get('input[name="email"]').type('dev@e-potek.ch');
-    cy.get('input[name="phoneNumber"]').type('+41 22 566 01 10');
-    cy.contains('Ok').click();
+    cy.get('[name="firstName"]').type('Jean');
+    cy.get('[name="lastName"]').type('Dujardin');
+    cy.get('[name="email"]').type('dev@e-potek.ch');
+    cy.get('[name="phoneNumber"]').type('+41 22 566 01 10{enter}');
 
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');

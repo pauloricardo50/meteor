@@ -4,6 +4,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { check } from 'meteor/check';
 
 import UserService from 'core/api/users/server/UserService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
@@ -15,10 +16,9 @@ import {
   ORGANISATION_FEATURES,
 } from 'core/api/constants';
 import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
-import OrganisationService from 'imports/core/api/organisations/server/OrganisationService';
-import LoanService from 'imports/core/api/loans/server/LoanService';
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
+import LoanService from 'core/api/loans/server/LoanService';
 import PropertyService from 'core/api/properties/server/PropertyService';
-import { check } from 'meteor/check';
 import Loans from 'core/api/loans/loans';
 import { loanBase } from 'core/api/fragments';
 import Users from 'core/api/users/users';
@@ -29,6 +29,7 @@ import {
 import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
 import { Services } from 'core/api/server/index';
+import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -83,6 +84,7 @@ Meteor.methods({
       zipCode: 1201,
       city: 'Genève',
       userLinks: [{ _id: userId }, { _id: userId2 }],
+      features: [ORGANISATION_FEATURES.PRO],
     });
     OrganisationService.insert({
       name: 'Organisation 2',
@@ -91,7 +93,18 @@ Meteor.methods({
       zipCode: 1201,
       city: 'Genève',
       userLinks: [{ _id: userId3 }],
+      features: [ORGANISATION_FEATURES.PRO],
     });
+
+    const organisationId = OrganisationService.insert({
+      name: 'Bank 1',
+      type: 'BANK',
+      address1: 'Rue du pré 1',
+      zipCode: 1201,
+      city: 'Genève',
+      features: [ORGANISATION_FEATURES.LENDER],
+    });
+    LenderRulesService.initialize({ organisationId });
   },
   insertPromotion() {
     const { _id: userId } = UserService.findOne({
@@ -263,6 +276,7 @@ Meteor.methods({
         lastName: 'User',
         sendEnrollmentEmail: true,
         password: withPassword && USER_PASSWORD,
+        phoneNumber: '0225660110',
       },
     });
     LoanService.fullLoanInsert({ userId });
@@ -279,8 +293,11 @@ Meteor.methods({
   updateLoan({ loanId, object }) {
     LoanService.update({ loanId, object });
   },
-  getLoginToken() {
-    const user = UserService.findOne({});
+  getLoginToken(email) {
+    console.log('email:', email);
+    const user = email
+      ? UserService.getByEmail(email)
+      : UserService.findOne({});
     const loginToken = UserService.getLoginToken({ userId: user._id });
     return loginToken;
   },
