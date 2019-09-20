@@ -44,6 +44,7 @@ const AdminPromotionPageContainer = compose(
       canAddPros: true,
       canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
       canChangeTimeline: true,
+      canLinkLoan: true,
     },
   }),
   withProps({ route: ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path }),

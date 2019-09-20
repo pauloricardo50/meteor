@@ -18,6 +18,7 @@ import T from '../../../Translation';
 import UploaderArray from '../../../UploaderArray';
 import Dialog from '../../../Material/Dialog';
 import PromotionAdministrationContainer from './PromotionAdministrationContainer';
+import PromotionLoanLinker from '../PromotionLoanLinker';
 
 type PromotionAdministrationProps = {};
 
@@ -29,6 +30,8 @@ const PromotionAdministration = ({
   setOpenDocumentsModal,
   openProInvitationModal,
   setOpenProInvitationModal,
+  openLinkLoanModal,
+  setOpenLinkLoanModal,
 }: PromotionAdministrationProps) => {
   const currentUser = useContext(CurrentUserContext);
 
@@ -38,8 +41,8 @@ const PromotionAdministration = ({
     return null;
   }
 
-  const dialogActions = [
-    <Button primary onClick={() => setOpenDocumentsModal(false)} key="close">
+  const dialogActions = setOpenModal => [
+    <Button primary onClick={() => setOpenModal(false)} key="close">
       <T id="general.close" />
     </Button>,
   ];
@@ -51,7 +54,7 @@ const PromotionAdministration = ({
         title={<T id="PromotionAdministration.manageDocuments" />}
         open={openDocumentsModal}
         onClose={() => setOpenDocumentsModal(false)}
-        actions={dialogActions}
+        actions={dialogActions(setOpenDocumentsModal)}
       >
         <UploaderArray
           doc={promotion}
@@ -66,7 +69,7 @@ const PromotionAdministration = ({
         title={<T id="PromotionAdministration.addUser" />}
         open={openProInvitationModal}
         onClose={() => setOpenProInvitationModal(false)}
-        actions={dialogActions}
+        actions={dialogActions(setOpenProInvitationModal)}
       >
         <div className="flex-col">
           <CollectionSearch
@@ -115,6 +118,14 @@ const PromotionAdministration = ({
           transformOrigin: { vertical: 'top', horizontal: 'start' },
         }}
       />
+      <Dialog
+        title={<T id="PromotionAdministration.linkLoan" />}
+        open={openLinkLoanModal}
+        onClose={() => setOpenLinkLoanModal(false)}
+        actions={dialogActions(setOpenLinkLoanModal)}
+      >
+        <PromotionLoanLinker promotion={promotion} />
+      </Dialog>
     </>
   );
 };
