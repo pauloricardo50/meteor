@@ -1,6 +1,9 @@
 /* eslint-env mocha */
 import { LOAN_STATUS } from '../../imports/core/api/loans/loanConstants';
-import { PRO_EMAIL, PRO_PASSWORD } from '../../imports/core/cypress/server/e2eConstants';
+import {
+  PRO_EMAIL,
+  PRO_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 const inviteUser = ({ firstName, lastName, email, phoneNumber }) => {
   cy.contains('Inviter un client').click();

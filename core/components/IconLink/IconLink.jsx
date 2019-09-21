@@ -15,27 +15,51 @@ const IconLink = React.forwardRef((
     stopPropagation = true,
     iconClassName,
     showIcon,
+    noRoute,
     ...rest
   },
   ref,
-) => (
-  <Link
-    to={link}
-    className={cx('icon-link', iconClassName)}
-    onClick={(e) => {
-      if (stopPropagation) {
+) => {
+  let Component = Link;
+  let props = {
+    to: link,
+    innerRef: ref,
+  };
+
+  if (noRoute) {
+    Component = 'div';
+    props = {
+      ref,
+      onClick: (e) => {
+        e.preventDefault();
         e.stopPropagation();
-      }
-    }}
-    innerRef={ref}
-    {...rest}
-  >
-    {showIcon && (
-      <Icon type={icon} className={className || 'icon-link-icon'} />
-    )}
-    {children || (typeof text === 'string' ? <span>{text}</span> : text)}
-  </Link>
-));
+        if (rest.showPopover && rest.onMouseLeave) {
+          rest.onMouseLeave();
+        } else if (rest.onMouseEnter) {
+          rest.onMouseEnter();
+        }
+      },
+    };
+  }
+
+  return (
+    <Component
+      className={cx('icon-link', iconClassName)}
+      onClick={(e) => {
+        if (stopPropagation) {
+          e.stopPropagation();
+        }
+      }}
+      {...props}
+      {...rest}
+    >
+      {showIcon && (
+        <Icon type={icon} className={className || 'icon-link-icon'} />
+      )}
+      {children || (typeof text === 'string' ? <span>{text}</span> : text)}
+    </Component>
+  );
+});
 
 IconLink.propTypes = {
   icon: PropTypes.node.isRequired,

@@ -5,13 +5,18 @@
 1.  install meteor using `curl https://install.meteor.com/ | sh`
 1.  setup all microservices by using the command `meteor npm run setup`
     - Use `meteor npm run setup-clean` to empty npm cache, regenerate `package-lock`s and reset meteor
-1.  run all apps on the same database by using the command `npm run run`
 1.  run a single microservice by going into the microservice folder and starting it with `meteor npm start`
+    - run more apps as needed by repeating this command within each microservice folder
+1. When running the apps with a clean DB, a few demo users will be created that you can use to quickly log in
+    - 2 `dev` users will be created, `florian@e-potek.ch` and `quentin@e-potek.ch`
+    - Their passwords are all `12345678`
 
 ## Microservices
 
 This app is composed of several microservices:
 
+- `backend` contains our shared backend. All of the other front-end microservices communicate with it
+  - Runs at `localhost:5500` by default
 - `www` contains the presentation/marketing website
   - Runs at `localhost:3000` by default
 - `app` contains the actual application where people apply for a loan
@@ -21,12 +26,12 @@ This app is composed of several microservices:
 - `pro` is for real-estate agents and promoters selling properties
   - Runs at `localhost:4100` by default
 
-More will be added later, such as `lender` and `real-estate`, for example.
+More could be added later, such as `lender` and `real-estate`, for example.
 
 ## Testing
 
-1.  run `meteor npm run test-console` to start a testing server inside a microservice folder
-1.  go to localhost:X006 to see the test-runner, X is the default port for the given microservice
+1.  run `meteor npm t` to run tests in a microservice
+1.  go to localhost:X005 to see the test-runner, X is the default port for the given microservice
 1.  Run E2E tests with `meteor npm run test-e2e`, which starts cypress and opens the browser to start running tests
 
 ## Repo explained
@@ -43,10 +48,7 @@ The repo is structured as follows:
 
 ## CI/CD
 
-A CircleCI account is watching the `master` and `staging` branches and automatically runs tests on them and deploys them to the proper servers.
-
-The staging branch is deployed to `XXX.staging.e-potek.ch`
-The master branch is deployed to `XXX.e-potek.ch`
+A CircleCI account is watching the `master` and `staging` branches and automatically runs tests on them.
 
 - When updating the Meteor version don't forget to update it in the CircleCI config also.
 

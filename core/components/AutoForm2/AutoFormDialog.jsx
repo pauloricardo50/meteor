@@ -73,8 +73,10 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
     const schemaKeys = this.props.schema._schemaKeys;
 
     const handleOpen = (event) => {
-      event.stopPropagation();
-      event.preventDefault();
+      if (event && event.stopPropagation) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
       setOpen(true);
     };
     const handleClose = (event) => {

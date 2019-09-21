@@ -14,14 +14,15 @@
   padding: 40px 16px 80px 16px;
 
   @include screen(med) {
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
   }
 
   .text h1,
   .text h4 {
-    color: white;
     max-width: 500px;
+
+    color: white;
   }
 
   .separator {
@@ -54,8 +55,8 @@
 
     @include screen(med) {
       display: flex;
-      flex-direction: column;
       align-items: stretch;
+      flex-direction: column;
 
       > * {
         margin: 0;
@@ -65,26 +66,26 @@
   }
 
   .iphone-x {
-    // height of iphone is 864
-    transform: scale(0.7);
-    transform-origin: top center;
     margin-bottom: -250px;
     margin-left: 100px;
+    // height of iphone is 864
+
+    transform: scale(0.7);
+    transform-origin: top center;
 
     @include screen(xwide, min) {
-      transform: scale(0.8);
       margin-bottom: -170px;
-    }
 
+      transform: scale(0.8);
+    }
     @include screen(large) {
       margin-left: 0;
     }
-
     @include screen(med) {
       align-self: center;
+
       margin-top: 50px;
     }
-
     @include screen(small) {
       margin-right: 0;
       margin-left: 0;

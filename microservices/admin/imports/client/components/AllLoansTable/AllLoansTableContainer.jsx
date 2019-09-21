@@ -3,7 +3,7 @@ import { mapProps } from 'recompose';
 import moment from 'moment';
 
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
-import T, { IntlNumber } from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
@@ -17,14 +17,14 @@ const columnOptions = [
   { id: 'Étape' },
   {
     id: 'Valeur du bien',
-    format: value => <IntlNumber value={value} format="money" />,
+    format: value => <Money value={value} />,
     align: 'right',
   },
   {
     id: 'Hypothèque',
     format: value => (
       <b>
-        <IntlNumber value={value} format="money" />
+        <Money value={value} />
       </b>
     ),
     align: 'right',

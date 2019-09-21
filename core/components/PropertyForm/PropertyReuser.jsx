@@ -14,6 +14,7 @@ type PropertyReuserProps = {};
 const PropertyReuser = ({
   properties,
   handleSelectProperty,
+  disabled,
 }: PropertyReuserProps) => (
   <DialogSimple
     buttonProps={{
@@ -21,6 +22,7 @@ const PropertyReuser = ({
       primary: true,
       label: <T id="PropertiesPageAdder.reuseProperty" />,
       icon: <Icon type="loop" />,
+      disabled,
     }}
     title={<T id="PropertiesPageAdder.reuseProperty" />}
   >

@@ -140,10 +140,15 @@ export class UserServiceClass extends CollectionService {
   getUserById = ({ userId }) => Users.findOne(userId);
 
   getUserByPasswordResetToken = ({ token }) =>
-    Users.findOne(
-      { 'services.password.reset.token': token },
-      { fields: { firstName: 1, lastName: 1, emails: 1 } },
-    );
+    this.fetchOne({
+      $filters: { 'services.password.reset.token': token },
+      email: 1,
+      emails: 1,
+      firstName: 1,
+      lastName: 1,
+      name: 1,
+      phoneNumbers: 1,
+    });
 
   getLoginToken = ({ userId }) => {
     const user = Users.findOne(userId, { fields: { services: 1 } });
@@ -540,7 +545,7 @@ export class UserServiceClass extends CollectionService {
       name: 1,
     });
 
-    let mainOrganisation = null;
+    let mainOrganisation;
     if (organisations.length === 1) {
       mainOrganisation = organisations[0];
     } else if (organisations.length > 1) {
@@ -619,13 +624,15 @@ export class UserServiceClass extends CollectionService {
       referredByOrganisation: { name: 1 },
     });
 
+    // If the referredByUser is not in the organisation referredByOrganisation,
+    // this could return inaccurate data. Make sure you understand what this does
     if (referredByUser) {
       const { _id: proId } = referredByUser;
       const mainOrg = this.getUserMainOrganisation(proId);
-      return { user: referredByUser, organisation: mainOrg };
+      return { user: referredByUser, organisation: mainOrg || {} };
     }
 
-    return { organisation: referredByOrganisation };
+    return { organisation: referredByOrganisation || {}, user: {} };
   }
 }
 

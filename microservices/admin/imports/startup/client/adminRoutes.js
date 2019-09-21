@@ -4,9 +4,7 @@ import DevPage from 'core/components/DevPage/loadable';
 
 import AdminAccountPage from '../../client/pages/AdminAccountPage/loadable';
 import AdminDashboardPage from '../../client/pages/AdminDashboardPage/loadable';
-import AdminPromotionLotPage from '../../client/pages/AdminPromotionLotPage/loadable';
 import AdminPromotionPage from '../../client/pages/AdminPromotionPage/loadable';
-import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage/loadable';
 import LoansPage from '../../client/pages/LoansPage/loadable';
 import OrganisationsPage from '../../client/pages/OrganisationsPage/loadable';
 import PromotionsPage from '../../client/pages/PromotionsPage/loadable';
@@ -75,17 +73,9 @@ const ADMIN_ROUTES = {
     className: 'card1 card-top',
   },
   SINGLE_USER_PAGE: { component: SingleUserPage, path: '/users/:userId' },
-  ADMIN_PROMOTION_LOT_PAGE: {
-    component: AdminPromotionLotPage,
-    path: '/promotions/:promotionId/promotionLots/:promotionLotId',
-  },
-  ADMIN_PROMOTION_USERS_PAGE: {
-    component: AdminPromotionUsersPage,
-    path: '/promotions/:promotionId/users',
-  },
   ADMIN_PROMOTION_PAGE: {
     component: AdminPromotionPage,
-    path: '/promotions/:promotionId',
+    path: '/promotions/:promotionId/:tabId?',
   },
 
   //   Other

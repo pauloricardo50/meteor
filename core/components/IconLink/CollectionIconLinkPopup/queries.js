@@ -33,6 +33,7 @@ export default {
           status: 1,
           structures: { wantedLoan: 1, id: 1 },
           user: { name: 1, assignedEmployee: { name: 1 } },
+          category: 1,
         },
       },
       cb,

@@ -280,7 +280,7 @@ export const PropertySchema = new SimpleSchema({
   additionalMargin: moneyField,
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
-  ...userLinksSchema(propertyPermissionsSchema),
+  ...userLinksSchema({ permissionsSchema: propertyPermissionsSchema }),
   externalId: {
     type: String,
     optional: true,

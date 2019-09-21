@@ -27,11 +27,12 @@
   &-borrowers {
     display: flex;
     align-self: center;
-    border-radius: 8px;
 
     width: 100%;
     max-width: calc(#{$borrowers-item-width} * 2);
     margin-top: 40px;
+
+    border-radius: 8px;
 
     @include screen(wide) {
       flex-direction: column;
@@ -39,16 +40,17 @@
 
     .borrowers-card,
     &-right {
-      border-radius: 8px;
       display: flex;
-      width: 50%;
       flex-basis: 50%;
       flex-direction: column;
       flex-shrink: 1;
 
       box-sizing: content-box;
+      width: 50%;
       max-width: $borrowers-item-width;
       padding: 32px;
+
+      border-radius: 8px;
 
       @include screen(wide) {
         max-width: unset;
@@ -59,30 +61,31 @@
     }
 
     &-right {
-      margin-left: 24px;
-      margin-top: 0;
-      padding: 0;
       height: 50%;
+      margin-top: 0;
+      margin-left: 24px;
+      padding: 0;
 
       @include screen(wide) {
-        margin-left: 0;
         width: 100%;
+        margin-left: 0;
       }
     }
 
     .borrowers-card {
-      height: 50%;
       max-width: 50%;
+      height: 50%;
+
       background: white;
 
       @include screen(wide) {
+        align-self: center;
+        flex-basis: 100%;
+
         box-sizing: border-box;
         width: 100%;
         max-width: 100%;
-        flex-basis: 100%;
-        align-self: center;
       }
-
       @include screen(small) {
         padding: 16px;
       }
@@ -104,6 +107,7 @@
       &-header {
         display: flex;
         flex-direction: column;
+
         margin-bottom: 24px;
 
         h2 {
@@ -173,6 +177,7 @@
 
         .core-tabs {
           padding: 0;
+
           border-radius: 0;
           background: unset;
           box-shadow: unset;
@@ -195,10 +200,11 @@
         }
 
         .borrower-form {
-          margin-top: 16px;
           display: flex;
-          flex-direction: column;
           align-items: stretch;
+          flex-direction: column;
+
+          margin-top: 16px;
 
           label[for='bonusExists'] {
             font-size: 0.9rem;
@@ -211,6 +217,7 @@
 
           .borrower-remover {
             align-self: flex-end;
+
             margin-bottom: 16px;
           }
         }
@@ -230,13 +237,14 @@
         &-signup {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          border-color: $primary;
           flex-wrap: wrap;
+          justify-content: space-between;
+
+          border-color: $primary;
 
           @include screen(small) {
-            flex-direction: column;
             align-items: stretch;
+            flex-direction: column;
           }
 
           > div {
@@ -245,6 +253,7 @@
             .icon {
               width: 24px;
               height: 24px;
+
               color: $primary;
             }
           }
@@ -253,6 +262,7 @@
 
       .button-switch {
         align-self: center;
+
         margin-bottom: 24px;
       }
 
@@ -263,8 +273,9 @@
 
     .max-property-value {
       height: 50%;
-      border-radius: 8px;
+
       color: white;
+      border-radius: 8px;
       background-color: $primary;
 
       h1,
@@ -310,9 +321,10 @@
 
   img {
     display: block;
-    margin: 0 auto;
-    margin-bottom: 24px;
+
     width: 175px;
     height: 175px;
+    margin: 0 auto;
+    margin-bottom: 24px;
   }
 }

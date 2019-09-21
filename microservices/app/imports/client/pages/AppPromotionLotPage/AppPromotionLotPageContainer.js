@@ -1,14 +1,14 @@
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import { appPromotionLot } from 'core/api/promotionLots/queries';
+import { appPromotionLots } from 'core/api/promotionLots/queries';
 import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
   withMatchParam(['promotionLotId', 'promotionId']),
   withSmartQuery({
-    query: appPromotionLot,
-    params: ({ promotionLotId }) => ({ promotionLotId }),
+    query: appPromotionLots,
+    params: ({ promotionLotId }) => ({ _id: promotionLotId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'promotionLot',
   }),

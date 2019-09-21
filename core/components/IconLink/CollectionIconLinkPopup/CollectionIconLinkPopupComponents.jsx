@@ -15,23 +15,27 @@ import {
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
+  LOAN_CATEGORIES,
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
+import PremiumBadge from '../../PremiumBadge'
 import T, { Money, IntlDate } from '../../Translation';
+import CollectionIconLink from '../CollectionIconLink';
 
 export const titles = {
-  [LOANS_COLLECTION]: ({ name, status }) => (
+  [LOANS_COLLECTION]: ({ name, status, category }) => (
     <span>
       {name}
-      {' '}
+      &nbsp;
       <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      {category === LOAN_CATEGORIES.PREMIUM && <span>&nbsp;<PremiumBadge small/></span>}
     </span>
   ),
   [USERS_COLLECTION]: ({ name, roles }) => (
     <span>
       {name}
-      {' '}
+      &nbsp;
       <Roles className="secondary" roles={roles} />
     </span>
   ),
@@ -41,7 +45,7 @@ export const titles = {
   [PROPERTIES_COLLECTION]: ({ address1, name, status }) => (
     <span>
       {name || address1 || 'Bien immobilier sans nom'}
-      {' '}
+      &nbsp;
       {status && (
         <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
       )}
@@ -55,22 +59,21 @@ export const titles = {
   }) => (
     <span>
       {orgName}
-      {' '}
-pour
+      &nbsp;pour
       {name}
     </span>
   ),
   [PROMOTIONS_COLLECTION]: ({ name, status }) => (
     <span>
       {name}
-      {' '}
+      &nbsp;
       <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
     </span>
   ),
   [ORGANISATIONS_COLLECTION]: ({ name, type }) => (
     <span>
       {name}
-      {' '}
+      &nbsp;
       <span className="secondary">
         <T id={`Forms.type.${type}`} />
       </span>
@@ -79,7 +82,7 @@ pour
   [CONTACTS_COLLECTION]: ({ name, organisations = [] }) => (
     <span>
       {name}
-      {' '}
+      &nbsp;
       <span className="secondary">
         {organisations.length > 0 && organisations[0].name}
       </span>
@@ -113,22 +116,37 @@ export const components = {
         )}
         <div>
           <b>Hypothèque:</b>
-          {' '}
+          &nbsp;
           {structure ? <Money value={structure.wantedLoan} /> : '-'}
         </div>
         {anonymous && <div>Anonyme</div>}
-        {user && (
-          <div>
-            <b>Compte:</b>
-            {' '}
-            {user.name}
-          </div>
-        )}
-        <div>
+
+        <div className="flex center-align">
+          <b>Compte:</b>
+          &nbsp;
+          {user ? (
+            <CollectionIconLink
+              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+            />
+          ) : (
+            '-'
+          )}
+        </div>
+
+        <div className="flex center-align">
           <b>Conseiller:</b>
-          {' '}
+          &nbsp;
           <span>
-            {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+            {user && user.assignedEmployee ? (
+              <CollectionIconLink
+                relatedDoc={{
+                  ...user.assignedEmployee,
+                  collection: USERS_COLLECTION,
+                }}
+              />
+            ) : (
+              '-'
+            )}
           </span>
         </div>
       </div>
@@ -142,6 +160,7 @@ export const components = {
     referredByUser = {},
     referredByOrganisation = {},
     emails = [],
+    loans = [],
   }) => {
     const emailVerified = !!emails.length && emails[0].verified;
 
@@ -178,37 +197,101 @@ export const components = {
             {phoneNumber}
           </a>
         </div>
-        <div>
+        <div className="flex center-align">
           <b>Conseiller:</b>
-          {' '}
-          <span>{assignedEmployee ? assignedEmployee.name : '-'}</span>
+          &nbsp;
+          <span>
+            {assignedEmployee ? (
+              <CollectionIconLink
+                relatedDoc={{
+                  ...assignedEmployee,
+                  collection: USERS_COLLECTION,
+                }}
+              />
+            ) : (
+              '-'
+            )}
+          </span>
         </div>
-        {(referredByUser.name || referredByOrganisation.name) && (
-          <div>
-            <b>Référé par:</b>
-            {' '}
-            <span>
-              {[referredByUser.name, referredByOrganisation.name]
-                .filter(x => x)
-                .join(' - ')}
-            </span>
-          </div>
-        )}
+
+        <div className="flex center-align">
+          <b>Référé par compte:</b>
+          &nbsp;
+          {referredByUser.name ? (
+            <CollectionIconLink
+              relatedDoc={{
+                ...referredByUser,
+                collection: USERS_COLLECTION,
+              }}
+            />
+          ) : (
+            '-'
+          )}
+        </div>
+
+        <div className="flex center-align">
+          <b>Référé par organisation:</b>
+          &nbsp;
+          {referredByOrganisation.name ? (
+            <CollectionIconLink
+              relatedDoc={{
+                ...referredByOrganisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+            />
+          ) : (
+            '-'
+          )}
+        </div>
+
+        <div className="flex center-align">
+          <b>Dossiers:</b>
+          {loans.map(loan => (
+            <CollectionIconLink
+              key={loan._id}
+              relatedDoc={{
+                ...loan,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+          ))}
+        </div>
       </div>
     );
   },
   [BORROWERS_COLLECTION]: ({ user, loans = [], children }) => (
     <div>
       {children}
-      {user && <div>{user.name}</div>}
-      <div>
+      {user && (
+        <CollectionIconLink
+          relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+        />
+      )}
+      <div className="flex center-align">
         <b>Conseiller:</b>
-        {' '}
-        {user && user.assignedEmployee ? user.assignedEmployee.name : '-'}
+        &nbsp;
+        {user && user.assignedEmployee ? (
+          <CollectionIconLink
+            relatedDoc={{
+              ...user.assignedEmployee,
+              collection: USERS_COLLECTION,
+            }}
+          />
+        ) : (
+          '-'
+        )}
       </div>
-      <div>
+      <div className="flex center-align">
         <b>Dossiers:</b>
-        {loans.map(({ name }) => name).join(', ')}
+        {loans.map(loan => (
+          <CollectionIconLink
+            key={loan._id}
+            relatedDoc={{
+              ...loan,
+              collection: LOANS_COLLECTION,
+            }}
+          />
+        ))}
       </div>
     </div>
   ),
@@ -224,7 +307,7 @@ export const components = {
       <Money value={maxAmount} />
       <div>
         <b>Feedback:</b>
-        {' '}
+        &nbsp;
         {feedback && feedback.date ? (
           <span className="success">
             Donné
@@ -248,10 +331,17 @@ export const components = {
     <div>
       {children}
       {lenderOrganisation && (
-        <div>
+        <div className="flex center-align">
           <b>Prêteur:</b>
-          {' '}
-          <b>{lenderOrganisation.name}</b>
+          &nbsp;
+          <b>
+            <CollectionIconLink
+              relatedDoc={{
+                ...lenderOrganisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+            />
+          </b>
         </div>
       )}
       <div>
@@ -306,6 +396,14 @@ export const components = {
   }) => (
     <div>
       {children}
+      {organisations.length > 0 && (
+        <CollectionIconLink
+          relatedDoc={{
+            ...organisations[0],
+            collection: ORGANISATIONS_COLLECTION,
+          }}
+        />
+      )}
       <div>{organisations.length > 0 && organisations[0].$metadata.title}</div>
       <div>
         <a

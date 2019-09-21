@@ -14,7 +14,20 @@ import { PROMOTION_STATUS } from '../promotionConstants';
 
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
-exposeQuery({ query: adminPromotions, options: { allowFilterById: true } });
+exposeQuery({
+  query: adminPromotions,
+  options: { allowFilterById: true },
+  overrides: {
+    embody: (body) => {
+      body.$filter = ({ filters, params: { _id, hasTimeline } }) => {
+        if (hasTimeline) {
+          filters['constructionTimeline.0'] = { $exists: true };
+        }
+      };
+    },
+    validateParams: { hasTimeline: Match.Maybe(Boolean) },
+  },
+});
 
 exposeQuery({
   query: appPromotion,
@@ -77,7 +90,7 @@ exposeQuery({
       };
 
       body.$postFilter = (promotions = [], params) => {
-        const { anonymize = false, simple, userId } = params;
+        const { anonymize = false, userId } = params;
 
         if (!anonymize) {
           return promotions;
@@ -85,18 +98,15 @@ exposeQuery({
 
         return promotions.map((promotion) => {
           const { promotionLots = [], ...rest } = promotion;
-          return simple
-            ? { promotionLots: promotionLots.map(({ name }) => name) }
-            : {
-              promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
-              ...rest,
-            };
+          return {
+            promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
+            ...rest,
+          };
         });
       };
     },
     validateParams: {
       userId: String,
-      simple: Match.Maybe(Boolean),
       anonymize: Match.Maybe(Boolean),
       _id: Match.Maybe(String),
     },

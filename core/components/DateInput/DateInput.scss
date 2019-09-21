@@ -42,8 +42,8 @@
 .mui-text-input .SingleDatePicker .SingleDatePickerInput .DateInput {
   display: flex;
   align-items: stretch;
-  justify-content: flex-start;
   flex-grow: 1;
+  justify-content: flex-start;
 
   padding: 0;
 
@@ -81,9 +81,10 @@
 }
 
 .DateInput input {
+  flex-grow: 1;
+
   padding-top: 18.5px;
   padding-bottom: 18.5px;
-  flex-grow: 1;
 }
 
 .SingleDatePicker_picker {

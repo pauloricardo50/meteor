@@ -20,6 +20,7 @@ type PropertyFormProps = {
   formDescriptionId: String,
   buttonLabelId: String,
   className?: string,
+  disabled?: Boolean,
 };
 
 const PropertyForm = ({
@@ -27,6 +28,7 @@ const PropertyForm = ({
   formDescriptionId,
   buttonLabelId,
   className = '',
+  disabled,
   ...props
 }: PropertyFormProps) => (
   <div
@@ -48,6 +50,7 @@ const PropertyForm = ({
         primary: true,
         icon: <Icon type="home" />,
         label: <T id={buttonLabelId} />,
+        disabled,
       }}
       layout={[
         'value',

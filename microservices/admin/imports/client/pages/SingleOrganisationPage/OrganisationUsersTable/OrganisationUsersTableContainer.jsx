@@ -3,6 +3,7 @@ import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation/Translation';
+import TooltipArray from 'core/components/TooltipArray';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
@@ -32,17 +33,19 @@ const makeMapUser = ({ history }) => (user) => {
       lastName,
       {
         raw: !!organisations.length && organisations[0].name,
-        label:
-          !!organisations.length
-          && organisations.map(organisation => (
-            <CollectionIconLink
-              key={organisation._id}
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          )),
+        label: !!organisations.length && (
+          <TooltipArray
+            items={organisations.map(organisation => (
+              <CollectionIconLink
+                key={organisation._id}
+                relatedDoc={{
+                  ...organisation,
+                  collection: ORGANISATIONS_COLLECTION,
+                }}
+              />
+            ))}
+          />
+        ),
       },
       email,
       phoneNumber,

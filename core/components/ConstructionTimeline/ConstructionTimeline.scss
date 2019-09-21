@@ -1,0 +1,74 @@
+.construction-timeline {
+  width: 100%;
+
+  border-spacing: 0;
+
+  border-collapse: collapse;
+  border-radius: 8px;
+
+  &-item {
+    display: flex;
+    align-items: center;
+
+    min-width: 150px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    color: white;
+    background-color: $primary;
+
+    .content {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+
+      padding: 16px;
+
+      @include screen(med) {
+        padding: 8px;
+      }
+    }
+
+    .line {
+      flex-grow: 1;
+
+      height: 1px;
+
+      background-color: white;
+    }
+
+    h4,
+    h5 {
+      margin: 0;
+
+      color: white;
+    }
+
+    h5 {
+      margin-bottom: 8px;
+    }
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px;
+
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    background-color: white;
+  }
+
+  tr:last-of-type {
+    th:first-of-type .construction-timeline-item {
+      border-bottom-left-radius: $border-radius;
+    }
+
+    th:last-of-type .construction-timeline-item {
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+}

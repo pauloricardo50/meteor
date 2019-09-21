@@ -11,7 +11,7 @@
   .accounting {
     display: flex;
 
-     > * {
+    > * {
       display: flex;
       display: flex;
       align-items: center;
@@ -39,7 +39,7 @@
   .card-bottom {
     display: flex;
 
-     > * {
+    > * {
       flex-grow: 1;
     }
   }
@@ -52,7 +52,7 @@
 
   margin-top: 16px;
 
-   > * {
+  > * {
     margin: 0;
   }
 
@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
 
-     > *:not(:nth-child(2)) {
+    > *:not(:nth-child(2)) {
       flex-basis: 0;
       flex-grow: 1;
     }

@@ -3,7 +3,10 @@ import SimpleSchema from 'simpl-schema';
 import { withRouter } from 'react-router-dom';
 
 import { anonymousCreateUser } from 'core/api/methods/index';
-import { LOCAL_STORAGE_ANONYMOUS_LOAN, LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
+import {
+  LOCAL_STORAGE_ANONYMOUS_LOAN,
+  LOCAL_STORAGE_REFERRAL,
+} from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { getCookie } from 'core/utils/cookiesHelpers';
@@ -18,8 +21,8 @@ export const userSchema = new SimpleSchema({
 
 export default compose(
   withRouter,
-  withProps(({ history }) => ({
-    schema: userSchema,
+  withProps(({ history, omitValues = [] }) => ({
+    schema: userSchema.omit(...omitValues),
     onSubmit: (values) => {
       const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
       const referralId = localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined;
