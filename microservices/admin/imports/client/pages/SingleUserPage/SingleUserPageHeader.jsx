@@ -7,6 +7,7 @@ import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
 import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'classnames';
+import { toggleAccount } from 'core/api';
 
 import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
@@ -14,6 +15,7 @@ import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
+import Toggle from 'core/components/Toggle';
 import { sendEnrollmentEmail } from 'core/api';
 import {
   ROLES,
@@ -41,15 +43,17 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     email,
     organisations = [],
     emails = [],
+    isDisabled,
   } = user;
 
   const { roles: currentUserRoles = [] } = currentUser || {};
-
   const allowAssign = currentUserRoles.includes(ROLES.DEV)
     || (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;
-
+  const toggleUserAccount = (event) => {
+    toggleAccount.run({ userId, isDisabled: event.target.checked });
+  };
   return (
     <div className="single-user-page-header">
       <Helmet>
@@ -75,7 +79,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
-
+      <Toggle labelLeft="Disabled" toggled={isDisabled} onToggle={toggleUserAccount} />
       <div className="bottom">
         <div>
           <LastSeen userId={userId} />

@@ -2,7 +2,7 @@ import '../shared-startup';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 import { ROLES } from 'core/api/constants';
-
+import { Meteor } from 'meteor/meteor';
 import 'core/api/initialization';
 import 'core/startup/server/kadira';
 
@@ -11,7 +11,10 @@ import 'core/startup/server/kadira';
 Inject.rawHead('loader', Assets.getText('loader.html'));
 
 Accounts.validateLoginAttempt(({ allowed, user }) => {
-  if (allowed) {
+  if (user.isDisabled) {
+    console.log('herere', user)
+    throw new Meteor.Error('403', 'User account is currently disabled');
+  } else if (allowed) {
     return [ROLES.PRO, ROLES.ADMIN, ROLES.DEV].includes(user.roles[0]);
   }
 
