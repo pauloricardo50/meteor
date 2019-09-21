@@ -15,6 +15,9 @@ import {
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import {
+  autoValueToSentenceCase,
+} from '../../helpers/sharedSchemaValues';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -85,11 +88,13 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     uniforms: { placeholder: null },
+    autoValue: autoValueToSentenceCase,
   },
   description: {
     type: String,
     optional: true,
     uniforms: { placeholder: null, multiline: true, rows: 5, rowsMax: 15 },
+    autoValue: autoValueToSentenceCase,
   },
   category: {
     type: String,

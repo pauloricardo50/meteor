@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; // Question:Not sure why react is here and file ext is jsx
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
@@ -9,6 +9,9 @@ import {
 } from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
+import {
+  autoValueToSentenceCase,
+} from '../../helpers/sharedSchemaValues';
 
 export const createdAt = {
   type: Date,
@@ -45,8 +48,16 @@ export const additionalDocuments = initialDocuments => ({
 });
 
 export const address = {
-  address1: { type: String, optional: true },
-  address2: { type: String, optional: true },
+  address1: {
+    type: String,
+    optional: true,
+    autoValue: autoValueToSentenceCase,
+  },
+  address2: {
+    type: String,
+    optional: true,
+    autoValue: autoValueToSentenceCase,
+  },
   zipCode: {
     type: SimpleSchema.Integer,
     optional: true,

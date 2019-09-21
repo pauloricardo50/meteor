@@ -8,6 +8,9 @@ import {
   ACTIVITY_SECONDARY_TYPES,
   ACTIVITIES_COLLECTION,
 } from './activityConstants';
+import {
+  autoValueToSentenceCase,
+} from '../../helpers/sharedSchemaValues';
 
 const Activities = new Mongo.Collection(ACTIVITIES_COLLECTION);
 
@@ -24,8 +27,15 @@ const ActivitySchema = new SimpleSchema({
       this.unset();
     },
   },
-  title: String,
-  description: { type: String, optional: true },
+  title: {
+    type: String,
+    autoValue: autoValueToSentenceCase,
+  },
+  description: {
+    type: String,
+    optional: true,
+    autoValue: autoValueToSentenceCase,
+  },
   type: { type: String, allowedValues: Object.values(ACTIVITY_TYPES) },
   secondaryType: {
     type: String,

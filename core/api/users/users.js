@@ -3,6 +3,9 @@ import { Meteor } from 'meteor/meteor';
 
 import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
+import {
+  autoValueToSentenceCase,
+} from '../../helpers/sharedSchemaValues';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -74,10 +77,12 @@ export const UserSchema = new SimpleSchema({
   firstName: {
     type: String,
     optional: true,
+    autoValue: autoValueToSentenceCase,
   },
   lastName: {
     type: String,
     optional: true,
+    autoValue: autoValueToSentenceCase,
   },
   phoneNumbers: {
     type: Array,
