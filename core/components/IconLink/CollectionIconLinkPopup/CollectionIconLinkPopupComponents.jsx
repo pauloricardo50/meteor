@@ -15,18 +15,21 @@ import {
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
+  LOAN_CATEGORIES,
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
+import PremiumBadge from '../../PremiumBadge'
 import T, { Money, IntlDate } from '../../Translation';
 import CollectionIconLink from '../CollectionIconLink';
 
 export const titles = {
-  [LOANS_COLLECTION]: ({ name, status }) => (
+  [LOANS_COLLECTION]: ({ name, status, category }) => (
     <span>
       {name}
       &nbsp;
       <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      {category === LOAN_CATEGORIES.PREMIUM && <span>&nbsp;<PremiumBadge small/></span>}
     </span>
   ),
   [USERS_COLLECTION]: ({ name, roles }) => (

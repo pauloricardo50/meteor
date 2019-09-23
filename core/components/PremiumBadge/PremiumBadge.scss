@@ -8,4 +8,9 @@
   background-color: #c3a343;
 
   font-weight: bold;
+
+  &.small {
+    padding: 1px 4px;
+    font-size: 12px;
+  }
 }
