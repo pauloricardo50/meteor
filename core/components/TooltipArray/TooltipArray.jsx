@@ -1,13 +1,19 @@
 // @flow
 import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
+
+import StickyPopover from '../StickyPopover';
 
 type TooltipArrayProps = {
   items: Array<String>,
   displayLimit: Number,
+  title: String,
 };
 
-const TooltipArray = ({ items = [], displayLimit = 1 }: TooltipArrayProps) => {
+const TooltipArray = ({
+  items = [],
+  displayLimit = 1,
+  title,
+}: TooltipArrayProps) => {
   const firstItems = items.slice(0, displayLimit);
   const remainingItems = items.slice(displayLimit);
 
@@ -26,8 +32,9 @@ const TooltipArray = ({ items = [], displayLimit = 1 }: TooltipArrayProps) => {
   }
 
   return (
-    <Tooltip
-      title={items.map(item => (
+    <StickyPopover
+      title={title}
+      component={items.map(item => (
         <li key={item}>{item}</li>
       ))}
     >
@@ -45,7 +52,7 @@ const TooltipArray = ({ items = [], displayLimit = 1 }: TooltipArrayProps) => {
           }`}
         </div>
       )}
-    </Tooltip>
+    </StickyPopover>
   );
 };
 

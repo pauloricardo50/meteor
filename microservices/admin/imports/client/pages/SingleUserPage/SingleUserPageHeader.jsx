@@ -92,6 +92,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
                   }}
                 />
               ))}
+              title="Organisations"
             />
           )}
         </div>
