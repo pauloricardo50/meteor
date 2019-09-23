@@ -33,12 +33,6 @@ class ImpersonateService {
     }
   }
 
-  _checkAccountDisabledForImpersonation(user) {
-    if (Security.checkAccountDisabled(user)) {
-      this._throwAccountDisabled();
-    }
-  }
-
   /**
    * @param {string} authToken
    * @returns {object|null}

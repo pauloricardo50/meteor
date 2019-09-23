@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Kadira } from 'meteor/lmachens:kadira';
-// import './accounts.js'
+
 if (Meteor.settings.Kadira) {
   const { endpoint } = Meteor.settings.Kadira;
   const { microservice } = Meteor;

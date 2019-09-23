@@ -1,7 +1,6 @@
 import '../shared-startup';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
-import { Meteor } from 'meteor/meteor';
 import 'core/startup/server';
 import { ROLES } from 'core/api/constants';
 import { localizationStartup } from 'core/utils/localization';
