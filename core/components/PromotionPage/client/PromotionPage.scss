@@ -1,4 +1,5 @@
 @import './PromotionCustomers/PromotionCustomers.scss';
+@import './PromotionLotDetail/PromotionLotDetail.scss';
 
 .promotion-page {
   display: flex;
@@ -38,7 +39,7 @@
 
     &-top {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap-reverse;
       justify-content: space-between;
     }
 
@@ -54,7 +55,9 @@
     }
 
     &-actions {
-      > * {
+      margin-bottom: 8px;
+
+      > *:last-child {
         margin-left: 8px;
       }
     }
@@ -87,7 +90,7 @@
       align-items: center;
 
       > * {
-        min-width: 300px;
+        min-width: 200px;
         margin-right: 8px;
 
         @include screen(med) {
@@ -224,95 +227,72 @@
   }
 }
 
-.promotion-lot-detail {
-  display: flex;
-  flex-direction: column;
-
-  section {
-    margin-bottom: 24px;
-
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-  }
-
-  .top {
-    display: grid;
-    justify-content: space-evenly;
-
-    grid-gap: 8px;
-    grid-template-columns: repeat(auto-fit, 400px);
-  }
-
-  .promotion-lots-manager {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .document-download-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-
-    margin: 0;
-
-    .document {
-      align-items: center;
-      flex-direction: row;
-
-      width: unset;
-      padding: 16px;
-
-      p {
-        margin: 0;
-      }
-
-      svg {
-        width: 32px;
-        height: 32px;
-        margin-right: 8px;
-      }
-    }
-  }
-
-  .promotion-lot-timeline {
-    border: 1px solid $border-grey;
-    border-radius: $border-radius;
-
-    .construction-timeline-header {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-
-      border-right: 1px solid $border-grey;
-      border-top-right-radius: 0;
-
-      h4 {
-        margin: 0;
-      }
-
-      &.end {
-        align-items: flex-end;
-      }
-    }
-
-    th:last-of-type .construction-timeline-header {
-      border-width: 0;
-    }
-
-    .construction-timeline-item {
-      h4 {
-        margin-bottom: 8px;
-      }
-    }
-  }
-}
-
 .modal-promotion-lot-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   width: 100%;
+}
+
+.priority-order {
+  display: flex;
+
+  > * {
+    margin-right: 4px;
+  }
+
+  .primary {
+    color: white;
+    background-color: $primary;
+  }
+
+  .success {
+    color: white;
+    background-color: $success;
+
+    &:hover {
+      background-color: $success-dark;
+    }
+  }
+
+  .error {
+    color: white;
+    background-color: $error;
+
+    &:hover {
+      background-color: $error-dark;
+    }
+  }
+
+  .icon {
+    color: white;
+  }
+}
+
+.book-client-infos {
+  display: flex;
+  flex-direction: column;
+
+  &-table {
+    border-spacing: 16px;
+  }
+}
+
+.promotion-progress {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 8px;
+  }
+}
+
+.promotion-lot-attributer {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 4px;
+  }
 }
