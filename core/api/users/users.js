@@ -5,7 +5,7 @@ import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
 import {
   autoValueToSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+} from '../helpers/sharedSchemaValues';
 
 export const UserSchema = new SimpleSchema({
   username: {

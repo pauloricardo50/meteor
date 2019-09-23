@@ -11,7 +11,7 @@ import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 import {
   autoValueToSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+} from './sharedSchemaValues';
 
 export const createdAt = {
   type: Date,

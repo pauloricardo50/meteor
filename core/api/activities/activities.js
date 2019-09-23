@@ -10,7 +10,7 @@ import {
 } from './activityConstants';
 import {
   autoValueToSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+} from '../helpers/sharedSchemaValues';
 
 const Activities = new Mongo.Collection(ACTIVITIES_COLLECTION);
 

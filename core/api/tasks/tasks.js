@@ -9,7 +9,7 @@ import {
 } from './taskConstants';
 import {
   autoValueToSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+} from '../helpers/sharedSchemaValues';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
