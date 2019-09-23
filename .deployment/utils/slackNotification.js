@@ -113,8 +113,8 @@ export const slackNotifyAppRestart = application => {
   const payload = {
     attachments: [
       {
-        fallback: 'Application restart...',
-        pretext: 'Application restart...',
+        fallback: 'Restarting application...',
+        pretext: 'Restarting application...',
         color: '#D0D000',
         fields: [
           {
