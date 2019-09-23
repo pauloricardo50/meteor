@@ -2,7 +2,7 @@ import './startup';
 import 'core/api/server';
 import 'core/api/api';
 import 'core/fixtures';
-import 'core/startup/server/kadira';
+import 'core/startup/server';
 import 'core/startup/accounts-config';
 import './restAPI';
 

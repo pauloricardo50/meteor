@@ -2,7 +2,7 @@ import '../shared-startup';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
-import 'core/startup/server/kadira';
+import 'core/startup/server';
 import { ROLES } from 'core/api/constants';
 import { localizationStartup } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
@@ -11,9 +11,7 @@ import messagesFR from '../../../lang/fr.json';
 Inject.rawHead('loader', Assets.getText('loader.html'));
 
 Accounts.validateLoginAttempt(({ allowed, user }) => {
-  if (user.isDisabled) {
-    throw new Meteor.Error('403', 'User account is currently disabled');
-  } else if (allowed) {
+  if (allowed) {
     return [ROLES.ADMIN, ROLES.DEV].includes(user.roles[0]);
   }
 

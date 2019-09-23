@@ -20,19 +20,11 @@ class ImpersonateService {
     }
 
     context.setUserId(userIdToImpersonate);
-    console.log(userIdToImpersonate)
-    const impersonatedUser = Users.findOne({ _id: userIdToImpersonate, isDisabled: { $ne: true } });
-    console.log('........', impersonatedUser)
-    this._checkAccountDisabledForImpersonation(impersonatedUser);
-    return impersonatedUser;
+    return Users.findOne(userIdToImpersonate);
   }
 
   _throwNotAuthorized() {
     throw new Meteor.Error(401, 'Unauthorized');
-  }
-
-  _throwAccountDisabled() {
-    throw new Meteor.Error(401, 'Account Disabled');
   }
 
   _checkRolesForImpersonation(userId) {
@@ -56,7 +48,7 @@ class ImpersonateService {
     const hashedToken = Accounts._hashLoginToken(authToken);
 
     return Users.findOne(
-      { isDisabled: { $ne: true }, 'services.resume.loginTokens.hashedToken': hashedToken },
+      { 'services.resume.loginTokens.hashedToken': hashedToken },
       // We just need to check the validity, no need for other data
       { fields: { _id: 1 } },
     );
