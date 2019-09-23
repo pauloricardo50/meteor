@@ -4,6 +4,7 @@ import { Random } from 'meteor/random';
 
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
+import { getClientTrackingId } from 'core/utils/server/getClientTrackingId';
 import { EVENTS_CONFIG } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
@@ -95,7 +96,7 @@ class Analytics {
     });
   }
 
-  track(event, data, trackingId) {
+  track(event, data, trackingId = getClientTrackingId()) {
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
     }
