@@ -4,6 +4,7 @@ import { Random } from 'meteor/random';
 
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
+import { getClientTrackingId } from 'core/utils/server/getClientTrackingId';
 import { EVENTS_CONFIG } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
@@ -29,7 +30,6 @@ class NodeAnalytics extends DefaultNodeAnalytics {
 
 const { Segment = {} } = Meteor.settings.public.analyticsSettings;
 const { key } = Segment;
-const nodeAnalytics = new NodeAnalytics(key);
 if (Meteor.isProduction && !key) {
   throw new Meteor.Error('No segment key found !');
 }
@@ -44,7 +44,7 @@ class Analytics {
     if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
       this.analytics = new TestAnalytics();
     } else {
-      this.analytics = nodeAnalytics;
+      this.analytics = new NodeAnalytics(key);
     }
 
     this.context(context);
@@ -96,7 +96,7 @@ class Analytics {
     });
   }
 
-  track(event, data, trackingId) {
+  track(event, data, trackingId = getClientTrackingId()) {
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
     }

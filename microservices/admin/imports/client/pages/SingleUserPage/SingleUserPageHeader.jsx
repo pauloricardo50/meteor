@@ -92,6 +92,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
                   }}
                 />
               ))}
+              title="Organisations"
             />
           )}
         </div>
@@ -118,11 +119,14 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           <div className="phone">
             <Icon type="phone" />
             {' '}
-            {phoneNumbers.map(number => (
-              <a key={number} href={`tel:${number}`}>
-                {number}
-              </a>
-            ))}
+            <TooltipArray
+              title="Numéros de téléphone"
+              items={phoneNumbers.map(number => (
+                <a key={number} href={`tel:${number}`}>
+                  <span>{number}&nbsp;</span>
+                </a>
+              ))}
+            />
           </div>
         )}
 
