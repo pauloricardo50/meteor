@@ -10,6 +10,7 @@ import PromotionFiles from './PromotionFiles';
 import PromotionUsers from './PromotionUsers/loadable';
 import PromotionCustomers from './PromotionCustomers/loadable';
 import PromotionMap from './PromotionMap/loadable';
+import PromotionManagement from './PromotionManagement/loadable';
 
 type PromotionPageContentProps = {};
 
@@ -41,6 +42,11 @@ const PromotionPageContent = ({
     <Route
       path={createRoute(route, { tabId: 'customers' })}
       component={PromotionCustomers}
+      {...props}
+    />
+    <Route
+      path={createRoute(route, { tabId: 'management' })}
+      component={PromotionManagement}
       {...props}
     />
     <Route

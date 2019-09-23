@@ -140,6 +140,7 @@ const PromotionSchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
+  adminNote: { type: String, optional: true },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

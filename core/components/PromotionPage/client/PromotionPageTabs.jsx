@@ -15,11 +15,11 @@ type PromotionPageTabsProps = {};
 const useStyles = makeStyles({ root: { backgroundColor: 'white' } });
 
 const getTabs = ({
-  canSeeCustomers,
-  canSeeUsers,
+  permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
   promotion: { users = [], loans = [], documents },
 }) =>
   [
+    { id: 'management', shouldDisplay: canSeeManagement },
     { id: 'overview', shouldDisplay: true },
     { id: 'map', shouldDisplay: true },
     { id: 'partners', shouldDisplay: true },
@@ -51,6 +51,16 @@ const getTabs = ({
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));
 
+const getInitialTab = (tabs, tabId) => {
+  const index = tabs.findIndex(({ id }) => id === tabId);
+
+  if (index < 0) {
+    return tabs.findIndex(({ id }) => id === 'management' || id === 'overview');
+  }
+
+  return index;
+};
+
 const PromotionPageTabs = ({
   promotion,
   route,
@@ -58,11 +68,9 @@ const PromotionPageTabs = ({
 }: PromotionPageTabsProps) => {
   const { _id: promotionId, users, loans } = promotion;
   const classes = useStyles();
-  const {
-    permissions: { canSeeCustomers, canSeeUsers },
-  } = useContext(PromotionMetadataContext);
-  const tabs = getTabs({ canSeeCustomers, canSeeUsers, promotion });
-  const [value, setValue] = useState(tabs.findIndex(({ id }) => id === tabId));
+  const { permissions } = useContext(PromotionMetadataContext);
+  const tabs = getTabs({ promotion, permissions });
+  const [value, setValue] = useState(getInitialTab(tabs, tabId));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

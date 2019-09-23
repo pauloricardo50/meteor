@@ -21,6 +21,9 @@
     max-height: 500px;
     padding: 32px;
 
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
     @include screen(med) {
       padding: 16px;
     }
@@ -295,4 +298,8 @@
   > * {
     margin-right: 4px;
   }
+}
+
+.promotion-management {
+  margin-top: 16px;
 }

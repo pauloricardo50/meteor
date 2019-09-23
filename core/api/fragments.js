@@ -701,6 +701,7 @@ export const basePromotion = () => ({
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
+  adminNote: 1,
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
   promotionLots: {
