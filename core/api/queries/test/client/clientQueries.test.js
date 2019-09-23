@@ -12,8 +12,6 @@ import {
   testCollectionInsert,
 } from '../collection.app-test';
 
-console.log('testCollectionInsert:', testCollectionInsert);
-
 const insertTestData = (n) => {
   const promises = [...Array(n)].map((_, index) =>
     testCollectionInsert.run({

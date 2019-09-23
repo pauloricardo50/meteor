@@ -321,7 +321,7 @@ describe('UserService', function () {
   describe('getUserByPasswordResetToken', () => {
     it('returns a user if found', () => {
       const token = 'testToken';
-      const userId = UserService.testCreateUser({
+      UserService.testCreateUser({
         user: {
           services: { password: { reset: { token } } },
         },
@@ -337,14 +337,19 @@ describe('UserService', function () {
           firstName,
           lastName,
           emails: [{ address: 'yo@dude.com', verified: false }],
-          phoneNumbers: ['secretNumber'],
+          phoneNumbers: ['phoneNumber'],
+          username: 'secretUsername',
         },
       });
       expect(UserService.getUserByPasswordResetToken({ token })).to.deep.equal({
         _id: userId,
         firstName,
         lastName,
+        email: 'yo@dude.com',
         emails: [{ address: 'yo@dude.com', verified: false }],
+        name: 'testFirstName testLastName',
+        phoneNumbers: ['phoneNumber'],
+        services: { password: { reset: { token } } },
       });
     });
 
