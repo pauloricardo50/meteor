@@ -27,8 +27,8 @@ export const slackLogError = ({ error, application }) => {
   const payload = {
     attachments: [
       {
-        fallback: 'Echec du déploiement',
-        pretext: 'Echec du déploiement',
+        fallback: 'Deployment failed',
+        pretext: 'Deployment failed',
         color: '#D00000',
         fields: [
           {
@@ -37,7 +37,7 @@ export const slackLogError = ({ error, application }) => {
             short: false,
           },
           {
-            title: 'Raison',
+            title: 'Reason',
             value: error,
             short: false,
           },
@@ -53,8 +53,8 @@ export const slackNotifyAppDeployed = application => {
   const payload = {
     attachments: [
       {
-        fallback: 'Déploiement terminé',
-        pretext: 'Déploiement terminé',
+        fallback: 'Deployment successful',
+        pretext: 'Deployment successful',
         color: '#00D000',
         fields: [
           {
@@ -72,7 +72,7 @@ export const slackNotifyAppDeployed = application => {
 
 const formatApplicationsList = (applications = []) => {
   if (applications.length === 0) {
-    return 'Toutes';
+    return 'All';
   }
   if (applications.length === 1) {
     return applications[0];
@@ -87,8 +87,8 @@ export const slackNotifyStartDeployment = ({ applications, environment }) => {
   const payload = {
     attachments: [
       {
-        fallback: 'Déploiement en cours',
-        pretext: 'Déploiement en cours',
+        fallback: 'Deploying...',
+        pretext: 'Deploying...',
         color: '#0000D0',
         fields: [
           {
@@ -113,8 +113,8 @@ export const slackNotifyAppRestart = application => {
   const payload = {
     attachments: [
       {
-        fallback: "Redémarrage de l'application",
-        pretext: "Redémarrage de l'application",
+        fallback: 'Application restart...',
+        pretext: 'Application restart...',
         color: '#D0D000',
         fields: [
           {
