@@ -64,4 +64,13 @@ export const EVENTS_CONFIG = {
       'promotionId',
     ]),
   },
+  [EVENTS.LOAN_BORROWERS_INSERTED]: {
+    name: 'Loan Borrowers inserted',
+    transform: curryPick([
+      'loanId, amount',
+      'anonymous',
+      'proProperty',
+      'promotion',
+    ]),
+  },
 };

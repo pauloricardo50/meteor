@@ -4,7 +4,10 @@ import EVENTS from 'core/api/analytics/events';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
 import { requestLoanVerification } from '../..';
-import { setMaxPropertyValueWithoutBorrowRatio } from '../methodDefinitions';
+import {
+  setMaxPropertyValueWithoutBorrowRatio,
+  loanInsertBorrowers,
+} from '../methodDefinitions';
 
 export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });
@@ -93,6 +96,48 @@ ServerEventService.addAfterMethodListener(
       secondMinOrganisationName,
       secondMaxOrganisationName,
       promotion: promotion._id,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  loanInsertBorrowers,
+  ({ context, params }) => {
+    const analytics = new Analytics(context);
+    const { loanId, amount } = params;
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      maxPropertyValue: 1,
+      properties: { value: 1, category: 1 },
+      hasProProperty: 1,
+      hasPromotion: 1,
+      anonymous: 1,
+    });
+    const {
+      properties = [],
+      hasProProperty,
+      anonymous,
+      promotions = [],
+      hasPromotion,
+    } = loan;
+
+    let property = {};
+    if (hasProProperty) {
+      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+    }
+
+    let promotion = {};
+    if (hasPromotion) {
+      promotion = promotions[0];
+    }
+
+    analytics.track(EVENTS.LOAN_BORROWERS_INSERTED, {
+      loanId,
+      amount,
+      anonymous,
+      proProperty: property,
+      promotion,
     });
   },
 );
