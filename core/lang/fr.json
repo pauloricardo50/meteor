@@ -2149,7 +2149,7 @@
   "OfferToggle.counterpart": "Offres avec contrepartie ({count})",
   "OfferToggle.standard-short": "Standard",
   "OfferToggle.standard": "Offres standard ({count})",
-  "OverviewTab.emptyRecap": "Il manque le valeur du bien et/ou les fonds propres voulus pour afficher ce recap",
+  "OverviewTab.emptyRecap": "Il manque la valeur du bien et/ou les fonds propres voulus pour afficher ce recap",
   "OverviewTab.recap": "Récapitulatif",
   "Page.footer.about": "À Propos",
   "Page.footer.careers": "Carrières",
