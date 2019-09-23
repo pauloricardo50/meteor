@@ -16,12 +16,14 @@ import {
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
   LOAN_CATEGORIES,
+  PROPERTY_CATEGORY,
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
-import PremiumBadge from '../../PremiumBadge'
+import PremiumBadge from '../../PremiumBadge';
 import T, { Money, IntlDate } from '../../Translation';
 import CollectionIconLink from '../CollectionIconLink';
+import TooltipArray from '../../TooltipArray';
 
 export const titles = {
   [LOANS_COLLECTION]: ({ name, status, category }) => (
@@ -29,7 +31,12 @@ export const titles = {
       {name}
       &nbsp;
       <StatusLabel status={status} collection={LOANS_COLLECTION} />
-      {category === LOAN_CATEGORIES.PREMIUM && <span>&nbsp;<PremiumBadge small/></span>}
+      {category === LOAN_CATEGORIES.PREMIUM && (
+        <span>
+          &nbsp;
+          <PremiumBadge small />
+        </span>
+      )}
     </span>
   ),
   [USERS_COLLECTION]: ({ name, roles }) => (
@@ -42,9 +49,11 @@ export const titles = {
   [BORROWERS_COLLECTION]: ({ name }) => (
     <span>{name || 'Emprunteur sans nom'}</span>
   ),
-  [PROPERTIES_COLLECTION]: ({ address1, name, status }) => (
+  [PROPERTIES_COLLECTION]: ({ address1, name, status, category }) => (
     <span>
       {name || address1 || 'Bien immobilier sans nom'}
+      &nbsp;
+      {category === PROPERTY_CATEGORY.PRO && <b>(PRO)</b>}
       &nbsp;
       {status && (
         <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
@@ -295,12 +304,58 @@ export const components = {
       </div>
     </div>
   ),
-  [PROPERTIES_COLLECTION]: ({ totalValue, children }) => (
-    <div>
-      {children}
-      <Money value={totalValue} />
-    </div>
-  ),
+  [PROPERTIES_COLLECTION]: ({
+    totalValue,
+    children,
+    category,
+    users = [],
+    loans = [],
+  }) => {
+    const allOrgs = users.reduce(
+      (orgs, { organisations = [] }) => [...orgs, ...organisations],
+      [],
+    );
+    const uniqueOrganisation = allOrgs.every(({ _id: orgId }) => orgId === allOrgs[0]._id);
+    const isPro = category === PROPERTY_CATEGORY.PRO;
+
+    return (
+      <div>
+        {children}
+        <div className="flex-col">
+          {isPro && uniqueOrganisation && (
+            <>
+              <b>Organisation</b>
+              <CollectionIconLink
+                key={allOrgs[0]._id}
+                relatedDoc={{
+                  _id: allOrgs[0]._id,
+                  name: allOrgs[0].name,
+                  collection: ORGANISATIONS_COLLECTION,
+                }}
+              />
+            </>
+          )}
+          {isPro && (
+            <>
+              <b>Dossiers</b>
+              <TooltipArray
+                title="Dossiers"
+                items={loans.map(loan => (
+                  <CollectionIconLink
+                    key={loan._id}
+                    relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+                  />
+                ))}
+                displayLimit={2}
+              />
+            </>
+          )}
+          <b>Prix d'achat</b>
+          <Money value={totalValue} />
+        </div>
+      </div>
+    );
+  },
   [OFFERS_COLLECTION]: ({ maxAmount, feedback, children }) => (
     <div>
       {children}

@@ -35,7 +35,7 @@ const TooltipArray = ({
     <StickyPopover
       title={title}
       component={items.map(item => (
-        <li key={item}>{item}</li>
+        <div key={item}>{item}</div>
       ))}
     >
       {typeof firstItems[0] === 'string' ? (
