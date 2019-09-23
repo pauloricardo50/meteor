@@ -163,7 +163,7 @@ export const components = {
   },
   [USERS_COLLECTION]: ({
     email,
-    phoneNumber,
+    phoneNumbers = [],
     assignedEmployee,
     children,
     referredByUser = {},
@@ -202,9 +202,17 @@ export const components = {
           </Tooltip>
         </div>
         <div>
-          <a className="color" href={`tel:${phoneNumber}`}>
-            {phoneNumber}
-          </a>
+          <TooltipArray
+            title="Numéros de téléphone"
+            items={phoneNumbers.map(number => (
+              <a key={number} href={`tel:${number}`}>
+                <span>
+                  {number}
+                  &nbsp;
+                </span>
+              </a>
+            ))}
+          />
         </div>
         <div className="flex center-align">
           <b>Conseiller:</b>
@@ -446,7 +454,7 @@ export const components = {
   [CONTACTS_COLLECTION]: ({
     organisations = [],
     email,
-    phoneNumber,
+    phoneNumbers = [],
     children,
   }) => (
     <div>
@@ -471,9 +479,17 @@ export const components = {
         </a>
       </div>
       <div>
-        <a className="color" href={`tel:${phoneNumber}`}>
-          {phoneNumber}
-        </a>
+        <TooltipArray
+          title="Numéros de téléphone"
+          items={phoneNumbers.map(number => (
+            <a key={number} href={`tel:${number}`}>
+              <span>
+                {number}
+                &nbsp;
+              </span>
+            </a>
+          ))}
+        />
       </div>
     </div>
   ),
