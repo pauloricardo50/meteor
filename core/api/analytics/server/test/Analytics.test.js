@@ -1,7 +1,5 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { Accounts } from 'meteor/accounts-base';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import sinon from 'sinon';
