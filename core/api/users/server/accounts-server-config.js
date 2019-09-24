@@ -1,4 +1,5 @@
 import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
 import pick from 'lodash/pick';
 
 Accounts.onCreateUser((options, user) => {
@@ -11,3 +12,17 @@ Accounts.onCreateUser((options, user) => {
 
   return user;
 });
+
+export const validateLoginAttempt = (allowedRoles) => {
+  // Globally manages the account's login for all the apps
+  Accounts.validateLoginAttempt(({ allowed, user }) => {
+    if (allowed && user.isDisabled) {
+      throw new Meteor.Error('403', 'Account Deactivated');
+    } else if (allowed && allowedRoles) {
+      return allowedRoles.includes(user.roles[0]);
+    } else if (allowed && !allowedRoles) {
+      return true;
+    }
+    return false;
+  });
+};

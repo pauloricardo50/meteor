@@ -11,3 +11,7 @@ import 'core/api/loans/server/expireLoansCron';
 import 'core/api/notifications/server/notificationGeneratorCron';
 import 'core/api/updateWatchers/server/updateWatcherCron';
 import './fetchIrs10yCron';
+
+import { validateLoginAttempt } from 'core/api/users/server/accounts-server-config';
+
+validateLoginAttempt();

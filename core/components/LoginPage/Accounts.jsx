@@ -168,10 +168,10 @@ class FormMessage extends Accounts.ui.FormMessage {
   render() {
     const { message } = this.props;
 
+
     if (!message) {
       return null;
     }
-
     return (
       <Snackbar
         open={this.state.open}

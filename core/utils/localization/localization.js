@@ -116,6 +116,13 @@ export const localizationStartup = ({
     const { T9n } = require('meteor-accounts-t9n');
     const { fr: accountsFr } = require('meteor-accounts-t9n/build/fr');
     T9n.map('fr', accountsFr);
+    T9n.map('fr', {
+      error: {
+        accounts: {
+          'Account Deactivated': 'Compte désactivés',
+        },
+      },
+    });
     T9n.setLanguage('fr');
   }
 
