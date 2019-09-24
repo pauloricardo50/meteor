@@ -13,7 +13,7 @@ const LoanGoogleDrive = ({ googleDrive, name }: LoanGoogleDriveProps) => {
       <div className="card1 card-top">
         <h3>Google Drive</h3>
         <p className="description">
-          Pas de dossier trouvé dans Emprunteurs, crée en un qui commence par
+          Pas de dossier trouvé dans Emprunteurs, crées-en un qui commence par
           {' '}
           <b>{name}</b>
         </p>
