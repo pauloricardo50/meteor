@@ -14,7 +14,7 @@ class SessionService extends CollectionService {
   }
 
   setUser(connectionId, userId) {
-    const { roles = [] } = UserService.getUserById({ userId });
+    const { roles = [] } = UserService.getUserById({ userId }) || {};
     return this.baseUpdate(
       { connectionId },
       { $set: { userId, role: roles.length ? roles[0] : undefined } },
