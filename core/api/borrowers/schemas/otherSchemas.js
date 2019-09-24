@@ -6,8 +6,8 @@ import {
   address,
 } from '../../helpers/sharedSchemas';
 import {
-  autoValueToSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+  stringToSentenceCase,
+} from '../../helpers/sharedHelpers';
 
 import {
   RESIDENCY_PERMIT,
@@ -23,7 +23,16 @@ import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants'
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
   [`${name}.$`]: Object,
-  [`${name}.$.value`]: { ...moneyField, optional: false, autoValue: autoValueToSentenceCase },
+  [`${name}.$.value`]: {
+    ...moneyField,
+    optional: false,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
+  },
   [`${name}.$.description`]: {
     type: String,
     optional: true,
@@ -40,12 +49,22 @@ export const personalInfoSchema = {
   firstName: {
     type: String,
     optional: true,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   lastName: {
     type: String,
     optional: true,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   gender: {
     type: String,

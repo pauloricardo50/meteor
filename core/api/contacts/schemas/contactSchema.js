@@ -1,19 +1,29 @@
 import SimpleSchema from 'simpl-schema';
 import { createdAt, updatedAt, address } from '../../helpers/sharedSchemas';
 import {
-  autoValueToSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+  stringToSentenceCase,
+} from '../../helpers/sharedHelpers';
 
 const ContactSchema = new SimpleSchema({
   createdAt,
   updatedAt,
   firstName: {
     type: String,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   lastName: {
     type: String,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   ...address,
   emails: { type: Array, optional: true },

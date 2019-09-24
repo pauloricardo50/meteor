@@ -9,9 +9,10 @@ import {
 } from 'core/utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
+
 import {
-  autoValueToSentenceCase,
-} from './sharedSchemaValues';
+  stringToSentenceCase,
+} from './sharedHelpers';
 
 export const createdAt = {
   type: Date,
@@ -51,12 +52,22 @@ export const address = {
   address1: {
     type: String,
     optional: true,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   address2: {
     type: String,
     optional: true,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   zipCode: {
     type: SimpleSchema.Integer,

@@ -9,8 +9,8 @@ import {
   ACTIVITIES_COLLECTION,
 } from './activityConstants';
 import {
-  autoValueToSentenceCase,
-} from '../helpers/sharedSchemaValues';
+  stringToSentenceCase,
+} from '../helpers/sharedHelpers';
 
 const Activities = new Mongo.Collection(ACTIVITIES_COLLECTION);
 
@@ -29,12 +29,22 @@ const ActivitySchema = new SimpleSchema({
   },
   title: {
     type: String,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   description: {
     type: String,
     optional: true,
-    autoValue: autoValueToSentenceCase,
+    autoValue() {
+      if (this.isSet) {
+        const { value } = this;
+        return stringToSentenceCase(value);
+      }
+    },
   },
   type: { type: String, allowedValues: Object.values(ACTIVITY_TYPES) },
   secondaryType: {
