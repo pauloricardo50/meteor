@@ -36,6 +36,7 @@ Meteor.startup(() => {
 
     const session = SessionService.getByConnectionId(connectionId);
 
+    // If session has expired, insert it again
     if (!session) {
       SessionService.insert({
         connectionId,
