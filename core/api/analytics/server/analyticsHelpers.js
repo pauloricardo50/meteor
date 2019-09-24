@@ -1,13 +1,14 @@
-import { LOGIN_IP_BLACKLIST } from '../analyticsConstants';
+import SessionService from '../../sessions/server/SessionService';
 
 export const impersonateMiddleware = context => () => next => (...args) => {
-  const { clientAddress, host } = context;
+  const {
+    connection: { id: connectionId },
+  } = context;
+  const isImpersonate = SessionService.isImpersonateSession(connectionId);
 
   // Don't track login events when impersonating
-  if (!host.includes('admin')) {
-    if (LOGIN_IP_BLACKLIST.includes(clientAddress)) {
-      return;
-    }
+  if (isImpersonate) {
+    return;
   }
 
   return next(...args);

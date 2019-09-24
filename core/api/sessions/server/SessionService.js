@@ -70,6 +70,11 @@ class SessionService extends CollectionService {
     const [mostRecentSession] = sessions.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     return mostRecentSession;
   }
+
+  isImpersonateSession(connectionId) {
+    const session = this.getByConnectionId(connectionId);
+    return session && session.isImpersonate;
+  }
 }
 
 export default new SessionService();
