@@ -1,4 +1,4 @@
-import React from 'react'; // Question:Not sure why react is here and file ext is jsx
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
