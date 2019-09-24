@@ -265,8 +265,10 @@ anonymousCreateUser.setHandler((context, params) => {
 });
 
 // Method to toggle provided user account only if the current user is admin
-toggleAccount.setHandler((context, params) => {
+toggleAccount.setHandler((context, { userId }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  const { userId, isDisabled } = params;
-  return UserService.update({ userId, object: { isDisabled, 'services.resume.loginTokens': [] } });
+  const userDetails = UserService.get(userId);
+  SecurityService.checkUserExistence(userDetails);
+  const { isDisabled } = userDetails;
+  return UserService.update({ userId, object: { isDisabled: !isDisabled, 'services.resume.loginTokens': [] } });
 });

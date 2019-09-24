@@ -49,8 +49,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     || (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;
-  const toggleUserAccount = (event) => {
-    toggleAccount.run({ userId, isDisabled: !event.target.checked });
+  const toggleUserAccount = () => {
+    toggleAccount.run({ userId });
   };
   return (
     <div className="single-user-page-header">

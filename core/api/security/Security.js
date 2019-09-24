@@ -28,7 +28,7 @@ export default class Security {
   }
 
   // Not in use at the moment, but might need in future, we can refine this method more
-  static checkAccountDisabled(user) {
+  static isAccountDisabled(user) {
     return (!user || user.isDisabled);
   }
 
@@ -45,6 +45,13 @@ export default class Security {
   static checkLoggedOut() {
     if (Meteor.userId()) {
       this.handleUnauthorized('Checking if logged out');
+    }
+  }
+
+  // Check if user exists or not, @florian let me know if this is teh correct place to add this method?
+  static checkUserExistence(user) {
+    if (!(user && typeof user)) {
+      this.handleUnauthorized('User not found');
     }
   }
 

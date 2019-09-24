@@ -178,6 +178,5 @@ export const toggleAccount = new Method({
   name: 'toggleAccount',
   params: {
     userId: String,
-    isDisabled: Boolean,
   },
 });
