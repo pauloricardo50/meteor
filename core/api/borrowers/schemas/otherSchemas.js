@@ -26,12 +26,6 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [`${name}.$.value`]: {
     ...moneyField,
     optional: false,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
   },
   [`${name}.$.description`]: {
     type: String,
