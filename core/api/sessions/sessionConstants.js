@@ -1,7 +1,5 @@
 export const SESSIONS_COLLECTION = 'sessions';
 
 export const SESSIONS_QUERIES = {
-  // Insert your queries name here
-  // Example:
-  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+  USER_IMPERSONATED_SESSION: 'USER_IMPERSONATED_SESSION',
 };
