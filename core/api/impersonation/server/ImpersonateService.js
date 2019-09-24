@@ -12,9 +12,7 @@ class ImpersonateService {
    * @param {*} userIdToImpersonate
    */
   impersonate({ context, authToken, userIdToImpersonate }) {
-    const {
-      connection: { id: connectionId },
-    } = context;
+    const { connection: { id: connectionId } = {} } = context;
     const user = this._findUserByToken(authToken);
 
     if (user) {

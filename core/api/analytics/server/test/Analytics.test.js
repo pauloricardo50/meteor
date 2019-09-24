@@ -9,7 +9,7 @@ import Analytics from '../Analytics';
 import EVENTS from '../../events';
 import TestAnalytics from '../TestAnalytics';
 
-describe.only('Analytics', () => {
+describe('Analytics', () => {
   beforeEach(() => {
     resetDatabase();
   });
