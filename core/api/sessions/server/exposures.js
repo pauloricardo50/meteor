@@ -15,6 +15,7 @@ exposeQuery({
       body.$filter = ({ filters, params }) => {
         filters.userId = params._userId;
         filters.isImpersonate = true;
+        filters.shared = true;
       };
 
       body.$postFilter = (result) => {

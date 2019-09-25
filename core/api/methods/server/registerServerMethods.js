@@ -21,6 +21,7 @@ import '../../promotionOptions/server/methods';
 import '../../promotions/server/methods';
 import '../../properties/server/methods';
 import '../../revenues/server/methods';
+import '../../sessions/server/methods';
 import '../../slack/server/methods';
 import '../../tasks/server/methods';
 import '../../users/server/methods';

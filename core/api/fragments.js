@@ -1011,4 +1011,5 @@ export const userSession = () => ({
   lastPageVisited: 1,
   userId: 1,
   connectionId: 1,
+  shared: 1,
 });

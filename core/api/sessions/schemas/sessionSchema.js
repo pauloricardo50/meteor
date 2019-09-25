@@ -11,6 +11,7 @@ const SessionSchema = new SimpleSchema({
   userId: { type: String, optional: true },
   role: { type: String, allowedValues: ROLES, optional: true },
   isImpersonate: { type: Boolean, defaultValue: false },
+  shared: { type: Boolean, optional: true, defaultValue: false },
   lastPageVisited: { type: String, optional: true },
   lastMethodCalled: { type: String, optional: true },
 });

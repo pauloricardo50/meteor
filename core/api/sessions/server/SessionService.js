@@ -59,21 +59,17 @@ class SessionService extends CollectionService {
     return oldSessions.length;
   }
 
-  getImpersonateSession(userId) {
-    const sessions = this.find({ userId, isImpersonate: true }).fetch();
-    const isUserImpersonated = !!sessions.length;
-
-    if (!isUserImpersonated) {
-      return undefined;
-    }
-
-    const [mostRecentSession] = sessions.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-    return mostRecentSession;
-  }
-
-  isImpersonateSession(connectionId) {
+  isImpersonatedSession(connectionId) {
     const session = this.getByConnectionId(connectionId);
     return session && session.isImpersonate;
+  }
+
+  shareImpersonatedSession(connectionId) {
+    if (!this.isImpersonatedSession(connectionId)) {
+      throw new Meteor.Error('Current session is not an impersonated session');
+    }
+
+    return this.baseUpdate({ connectionId }, { $set: { shared: true } });
   }
 }
 
