@@ -643,8 +643,8 @@ export class UserServiceClass extends CollectionService {
         throw new Meteor.Error('Utilisateur non trouvé');
       }
       return user;
-    }
-    throw new Meteor.Error('Valeur invalide');
+    } 
+      throw new Meteor.Error('Valeur invalide');
   }
 
   toggleAccount({ userId }) {

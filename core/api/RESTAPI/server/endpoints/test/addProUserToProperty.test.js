@@ -72,6 +72,7 @@ describe('REST: addProUserToProperty', function () {
           _factory: 'pro',
           organisations: { _id: 'org1' },
           emails: [{ address: 'pro@org.com', verified: true }],
+          isDisabled: false,
           proProperties: {
             _id: 'prop',
             externalId: 'extId',
@@ -90,6 +91,7 @@ describe('REST: addProUserToProperty', function () {
           _factory: 'pro',
           organisations: { _id: 'org1' },
           emails: [{ address: 'pro2@org.com', verified: true }],
+          isDisabled: false,
           proProperties: {
             _id: 'prop',
             externalId: 'extId',
@@ -107,12 +109,14 @@ describe('REST: addProUserToProperty', function () {
           _id: 'pro3',
           _factory: 'pro',
           organisations: { _id: 'org1' },
+          isDisabled: false,
           emails: [{ address: 'pro3@org.com', verified: true }],
         },
         {
           _id: 'pro4',
           _factory: 'pro',
           organisations: { _id: 'org2' },
+          isDisabled: false,
           emails: [{ address: 'pro4@org2.com', verified: true }],
         },
       ],
