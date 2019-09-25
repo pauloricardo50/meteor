@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import Chip from '@material-ui/core/Chip';
 
-import T from '../../Translation';
-import BorrowersSummary from '../BorrowersSummary';
+import T from '../../../Translation';
+import BorrowersSummary from '../../BorrowersSummary';
 
 describe('BorrowersSummary />', () => {
   const borrowers = [

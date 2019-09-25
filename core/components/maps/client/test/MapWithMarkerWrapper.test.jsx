@@ -3,8 +3,8 @@ import React from 'react';
 import { expect } from 'chai';
 
 import { shallow } from 'core/utils/testHelpers/enzyme';
-import MapWithMarkerWrapper from '../MapWithMarkerWrapper';
-import MapWithMarker from '../MapWithMarker';
+import MapWithMarkerWrapper from '../../MapWithMarkerWrapper';
+import MapWithMarker from '../../MapWithMarker';
 
 import { getAddressString } from '../googleMapsHelpers';
 
