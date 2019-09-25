@@ -77,7 +77,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
-      <Toggle labelLeft={<T id={`UsersTable.Enabled`} />} 
+      <Toggle labelLeft={<T id={`SingleUserPage.Enabled`} />} 
         toggled={!isDisabled} onToggle={toggleUserAccount} />
       <div className="bottom">
         <div>

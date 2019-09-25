@@ -2441,7 +2441,7 @@
   "UsersTable.email": "Email",
   "UsersTable.name": "Nom",
   "UsersTable.roles": "Rôles",
-  "UsersTable.Enabled": "Activé",
+  "SingleUserPage.Enabled": "Activé",
   "ValidatorItem.error.fortune": "Manque de fortune",
   "ValidatorItem.error.fortuneTight": "Possible avec prévoyance",
   "ValidatorItem.error.income": "Manque de revenus",

@@ -48,13 +48,6 @@ export default class Security {
     }
   }
 
-  // Check if user exists or not, @florian let me know if this is teh correct place to add this method?
-  static checkUserExistence(user) {
-    if (!(user && typeof user)) {
-      this.handleUnauthorized('User not found');
-    }
-  }
-
   static currentUserHasRole(role) {
     return this.hasRole(Meteor.userId(), role);
   }

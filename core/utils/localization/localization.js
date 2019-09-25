@@ -119,7 +119,7 @@ export const localizationStartup = ({
     T9n.map('fr', {
       error: {
         accounts: {
-          'Account Deactivated': 'Compte désactivés',
+          'Account Deactivated': 'Compte désactivé',
         },
       },
     });
