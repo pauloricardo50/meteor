@@ -11,6 +11,7 @@ import messagesFR from '../../../lang/fr.json';
 // is removed in the on startup function on the client
 Inject.rawHead('loader', Assets.getText('loader.html'));
 
+// TODO: need to see how to make roles working
 validateLoginAttempt([ROLES.ADMIN, ROLES.DEV]);
 
 Accounts.config({ forbidClientAccountCreation: true });

@@ -9,6 +9,8 @@ import { validateLoginAttempt } from 'core/api/users/server/accounts-server-conf
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client
 Inject.rawHead('loader', Assets.getText('loader.html'));
+
+// TODO: need to see how to make roles working
 validateLoginAttempt([ROLES.PRO, ROLES.ADMIN, ROLES.DEV]);
 
 

@@ -13,16 +13,12 @@ Accounts.onCreateUser((options, user) => {
   return user;
 });
 
-export const validateLoginAttempt = (allowedRoles) => {
+export const validateLoginAttempt = () => {
   // Globally manages the account's login for all the apps
   Accounts.validateLoginAttempt(({ allowed, user }) => {
     if (allowed && user.isDisabled) {
       throw new Meteor.Error('403', 'Account Deactivated');
-    } else if (allowed && allowedRoles) {
-      return allowedRoles.includes(user.roles[0]);
-    } else if (allowed && !allowedRoles) {
-      return true;
     }
-    return false;
+    return allowed;
   });
 };
