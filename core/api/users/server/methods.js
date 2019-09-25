@@ -267,6 +267,5 @@ anonymousCreateUser.setHandler((context, params) => {
 // Method to toggle provided user account only if the current user is admin
 toggleAccount.setHandler((context, { userId }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  console.log('userId......', userId)
   return UserService.toggleAccount({ userId });
 });
