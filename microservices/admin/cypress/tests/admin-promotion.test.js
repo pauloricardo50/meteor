@@ -122,7 +122,7 @@ describe('Admin promotion', () => {
     cy.contains('Répartition du financement').click();
 
     cy.get('.list-del-field')
-      .first()
+      .last()
       .click();
 
     cy.get('button[type=submit]').click();
