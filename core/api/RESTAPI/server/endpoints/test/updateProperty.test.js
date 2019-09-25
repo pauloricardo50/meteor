@@ -88,7 +88,7 @@ describe('REST: updateProperty', function () {
     });
   });
 
-  it.only('updates a property', () => {
+  it('updates a property', () => {
     const update = { value: 300000, status: PROPERTY_STATUS.SOLD };
     return updateProperty({
       userId: 'pro',
