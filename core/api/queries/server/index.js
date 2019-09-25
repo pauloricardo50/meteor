@@ -1,6 +1,7 @@
 import '../../activities/server/exposures';
 import '../../borrowers/server/exposures';
 import '../../contacts/server/exposures';
+import '../../googleDrive/server/exposures';
 import '../../interestRates/server/exposures';
 import '../../irs10y/server/exposures';
 import '../../lenderRules/server/exposures';
