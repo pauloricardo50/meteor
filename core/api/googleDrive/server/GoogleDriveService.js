@@ -45,7 +45,7 @@ class GoogleDriveService {
 
         return this.drive.files.list({
           pageSize: 1000, // The max
-          q: `mimeType != 'application/vnd.google-apps.folder' and '${folder.id}' in parents`,
+          q: `'${folder.id}' in parents`,
           fields:
             'files(createdTime, id, name, webViewLink, iconLink, modifiedTime)',
           spaces: 'drive',
