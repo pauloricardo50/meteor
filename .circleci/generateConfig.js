@@ -18,10 +18,10 @@ const defaultJobValues = {
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
-        METEOR_PROFILE: 0, // If you need to debug meteor, set this to a number (in ms)
+        // METEOR_PROFILE: 1000, // If you need to debug meteor, set this to a number (in ms)
         CIRCLE_CI: 1, // Helpful in your tests, to know whether you're in circle CI or not
         DEBUG: false, // Helps
-        METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
+        // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
       },
     },

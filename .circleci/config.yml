@@ -14,10 +14,8 @@ jobs:
           TOOL_NODE_FLAGS: >-
             --max_old_space_size=8192 --optimize_for_size --gc_interval=100
             --min_semi_space_size=8 --max_semi_space_size=256
-          METEOR_PROFILE: 0
           CIRCLE_CI: 1
           DEBUG: false
-          METEOR_ALLOW_SUPERUSER: true
     resource_class: large
     steps:
       - restore_cache:
