@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Meteor } from 'meteor/meteor';
 import { checkEmails } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
