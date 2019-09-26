@@ -1,4 +1,5 @@
 {
+  "Forms.permissions.canSeeManagement": "Peut accéder à la page Gestion",
   "PromotionPageTabs.management": "Gestion",
   "PromotionAdministration.linkLoan": "Lier un dossier de financement",
   "PromotionOptionDialog.interested": "Je suis intéressé par ce lot",

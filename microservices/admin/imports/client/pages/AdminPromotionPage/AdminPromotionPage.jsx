@@ -49,6 +49,7 @@ const AdminPromotionPageContainer = compose(
       canSeeCustomers: true,
       canSeeManagement: true,
       canSeeUsers: true,
+      canModifyAdminNote: true,
     },
   }),
   withProps({ route: ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path }),

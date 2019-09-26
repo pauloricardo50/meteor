@@ -12,6 +12,7 @@ import {
   isAllowedToAddLotsToPromotion,
   isAllowedToModifyPromotionLots,
   isAllowedToRemovePromotionLots,
+  isAllowedToSeeManagement,
 } from 'core/api/security/clientSecurityHelpers';
 import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 import PromotionPage from 'core/components/PromotionPage/client';
@@ -25,6 +26,8 @@ const makePermissions = props => ({
   canAddLots: isAllowedToAddLotsToPromotion(props),
   canModifyLots: isAllowedToModifyPromotionLots(props),
   canRemoveLots: isAllowedToRemovePromotionLots(props),
+  canSeeManagement: isAllowedToSeeManagement(props),
+  canModifyAdminNote: false,
 });
 
 const getEnableNotifications = ({

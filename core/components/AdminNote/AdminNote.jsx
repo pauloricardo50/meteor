@@ -16,6 +16,7 @@ const AdminNote = ({
   collection,
   placeholder,
   style,
+  allowEditing,
   ...rest
 }: AdminNoteProps) => (
   <ClickToEditField
@@ -23,13 +24,14 @@ const AdminNote = ({
     onSubmit={value =>
       updateDocument.run({ collection, docId, object: { adminNote: value } })
     }
-    placeholder={placeholder || '# Ajouter une note'}
+    placeholder={allowEditing ? placeholder || '# Ajouter une note' : ''}
     inputProps={{
       style: { width: '100%' },
       multiline: true,
       placeholder: tutorial,
     }}
     style={style}
+    allowEditing={allowEditing}
     {...rest}
   >
     {({ value, isEditing }) =>

@@ -228,3 +228,17 @@ export const isAllowedToSellPromotionLotToCustomer = ({
     && !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
+
+export const isAllowedToSeeManagement = ({
+  promotion,
+  currentUser,
+}) => {
+  const { _id: userId } = currentUser;
+  const requiredPermissions = { canSeeManagement: true };
+
+  return checkPromotionPermissions({
+    promotion,
+    userId,
+    requiredPermissions,
+  });
+};

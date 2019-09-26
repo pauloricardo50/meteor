@@ -67,6 +67,7 @@ export const promotionPermissionsSchema = {
   canBookLots: SCHEMA_BOOLEAN,
   // canPreBookLots: SCHEMA_BOOLEAN,
   canSellLots: SCHEMA_BOOLEAN,
+  canSeeManagement: SCHEMA_BOOLEAN,
 };
 
 SimpleSchema.setDefaultMessages({
