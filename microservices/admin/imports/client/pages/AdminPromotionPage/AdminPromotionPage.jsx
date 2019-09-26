@@ -16,7 +16,7 @@ import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const promotionFragment = {
   ...omit(proPromotion(), ['promotionLots']),
-  promotionLots: { _id: 1, status: 1, name: 1 },
+  promotionLots: { _id: 1, status: 1, name: 1, value: 1 },
 };
 
 const AdminPromotionPageContainer = compose(
