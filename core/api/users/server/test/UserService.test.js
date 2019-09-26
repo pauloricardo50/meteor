@@ -347,34 +347,39 @@ describe('getUserByPasswordResetToken', () => {
     expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(true);
   });
 
-  it('only returns the necessary data', () => {
-    const token = 'testToken';
-    const userId = UserService.testCreateUser({
-      user: {
-        services: { password: { reset: { token } } },
+  describe('getUserByPasswordResetToken', () => {
+    it('returns a user if found', () => {
+      const token = 'testToken';
+      UserService.testCreateUser({
+        user: {
+          services: { password: { reset: { token } } },
+        },
+      });
+      expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(true);
+    });
+
+    it('only returns the necessary data', () => {
+      const token = 'testToken';
+      const userId = UserService.testCreateUser({
+        user: {
+          services: { password: { reset: { token } } },
+          firstName,
+          lastName,
+          emails: [{ address: 'yo@dude.com', verified: false }],
+          phoneNumbers: ['phoneNumber'],
+          username: 'secretUsername',
+        },
+      });
+      expect(UserService.getUserByPasswordResetToken({ token })).to.deep.equal({
+        _id: userId,
         firstName,
         lastName,
+        email: 'yo@dude.com',
         emails: [{ address: 'yo@dude.com', verified: false }],
-        phoneNumbers: ['secretNumber'],
-      },
-    });
-    expect(UserService.getUserByPasswordResetToken({ token })).to.deep.equal({
-      _id: userId,
-      firstName,
-      lastName,
-      name: `${firstName} ${lastName}`,
-      email: 'yo@dude.com',
-      phoneNumbers: [
-        'secretNumber',
-      ],
-      services: {
-        password: {
-          reset: {
-            token: 'testToken',
-          },
-        },
-      },
-      emails: [{ address: 'yo@dude.com', verified: false }],
+        name: 'testFirstName testLastName',
+        phoneNumbers: ['phoneNumber'],
+        services: { password: { reset: { token } } },
+      });
     });
   });
 

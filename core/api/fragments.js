@@ -883,6 +883,7 @@ export const apiProperty = () => ({
   useOpenGraph: 1,
   imageUrls: 1,
   country: 1,
+  status: 1,
 });
 
 // //

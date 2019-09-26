@@ -39,7 +39,7 @@ const getInitialCanton = ({ loan = {} }) => {
   }
 
   if (hasProProperty) {
-    return properties.length === 1 ? properties[0].canton : '';
+    return !!properties.length && properties[0].canton;
   }
 
   return canton;

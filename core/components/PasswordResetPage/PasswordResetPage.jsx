@@ -112,8 +112,13 @@ const getSchema = ({
   }).omit(...omitFields, !isEnrollment && 'hasReadPrivacyPolicy');
 };
 
-export const PasswordResetPage = ({ user, error, handleSubmit }) => {
-  const isEnrollment = window.location && window.location.pathname.includes('enroll-account');
+export const PasswordResetPage = ({
+  user,
+  error,
+  handleSubmit,
+  pathname = '',
+}) => {
+  const isEnrollment = pathname.includes('enroll-account');
 
   if (error) {
     return <Redirect to="/login" />;

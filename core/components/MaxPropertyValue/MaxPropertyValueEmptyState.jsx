@@ -106,7 +106,7 @@ export const MaxPropertyValueEmptyStateReady = ({
 const MaxPropertyValueEmptyState = (props: MaxPropertyValueEmptyStateProps) => {
   const { loan, state } = props;
   return (
-    <div className="max-property-value-empty-state">
+    <div className="max-property-value-empty-state animated fadeIn">
       <FontAwesomeIcon className="icon" icon={faUsers} />
       <div className="flex-col center">
         {state === STATE.MISSING_INFOS ? (

@@ -71,6 +71,13 @@ export default compose(
         .then(() => history.push('/'));
     };
 
-    return <Component user={user} error={error} handleSubmit={handleSubmit} />;
+    return (
+      <Component
+        user={user}
+        error={error}
+        handleSubmit={handleSubmit}
+        pathname={(window.location && window.location.pathname)}
+      />
+    );
   },
 );

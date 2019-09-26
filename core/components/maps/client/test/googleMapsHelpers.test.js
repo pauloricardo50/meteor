@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { getAddressString, isIncompleteAddress } from '../googleMapsHelpers';
+import { getAddressString, isIncompleteAddress } from '../../googleMapsHelpers';
 
 describe('googleMapsHelpers', () => {
   let address;

@@ -157,7 +157,7 @@ const getOptions = ({
     },
     {
       id: 'linkLoan',
-      label: <span>Lier un dossier de financement</span>,
+      label: <span>Lier un dossier de développement</span>,
       dividerTop: true,
       condition: canLinkLoan,
       onClick: openLinkLoanModal,
