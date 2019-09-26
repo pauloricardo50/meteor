@@ -9,8 +9,8 @@ import {
 } from './taskConstants';
 
 import {
-  stringToSentenceCase,
-} from '../helpers/sharedHelpers';
+  autoValueSentenceCase,
+} from '../helpers/sharedSchemaValues';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
@@ -64,22 +64,12 @@ export const TasksSchema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   description: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   loanLink: {
     type: Object,

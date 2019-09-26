@@ -11,8 +11,8 @@ import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
 import {
-  stringToSentenceCase,
-} from './sharedHelpers';
+  autoValueSentenceCase,
+} from './sharedSchemaValues';
 
 export const createdAt = {
   type: Date,
@@ -52,22 +52,12 @@ export const address = {
   address1: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   address2: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   zipCode: {
     type: SimpleSchema.Integer,

@@ -167,7 +167,14 @@ describe('UserService', function () {
       });
       expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(newFirstName);
     });
-
+    it('updates a user: check the sentence case', () => {
+      const newFirstName = 'jon';
+      UserService.update({
+        userId: user._id,
+        object: { firstName: newFirstName },
+      });
+      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal('Jon');
+    });
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
       expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);

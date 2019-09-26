@@ -4,8 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
 import {
-  stringToSentenceCase,
-} from '../helpers/sharedHelpers';
+  autoValueSentenceCase,
+} from '../helpers/sharedSchemaValues';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -77,22 +77,12 @@ export const UserSchema = new SimpleSchema({
   firstName: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   lastName: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   phoneNumbers: {
     type: Array,

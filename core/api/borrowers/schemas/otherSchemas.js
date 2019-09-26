@@ -6,8 +6,8 @@ import {
   address,
 } from '../../helpers/sharedSchemas';
 import {
-  stringToSentenceCase,
-} from '../../helpers/sharedHelpers';
+  autoValueSentenceCase,
+} from '../../helpers/sharedSchemaValues';
 
 import {
   RESIDENCY_PERMIT,
@@ -43,22 +43,12 @@ export const personalInfoSchema = {
   firstName: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   lastName: {
     type: String,
     optional: true,
-    autoValue() {
-      if (this.isSet) {
-        const { value } = this;
-        return stringToSentenceCase(value);
-      }
-    },
+    autoValue: autoValueSentenceCase,
   },
   gender: {
     type: String,
