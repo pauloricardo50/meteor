@@ -27,6 +27,7 @@ import {
   proInviteUserToOrganisation,
   proSetShareCustomers,
   anonymousCreateUser,
+  toggleAccount,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -261,4 +262,10 @@ anonymousCreateUser.setHandler((context, params) => {
   }
 
   return userId;
+});
+
+// Method to toggle provided user account only if the current user is admin
+toggleAccount.setHandler((context, { userId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.toggleAccount({ userId });
 });

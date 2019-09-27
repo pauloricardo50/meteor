@@ -2,7 +2,7 @@ import '../shared-startup';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 import { Accounts } from 'meteor/accounts-base';
 
-import 'core/startup/server/kadira';
+import 'core/startup/server';
 
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client
