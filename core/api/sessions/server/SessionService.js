@@ -68,7 +68,13 @@ class SessionService extends CollectionService {
       throw new Meteor.Error('Current session is not an impersonated session');
     }
 
-    return this.baseUpdate({ connectionId }, { $set: { shared: share } });
+    return this.baseUpdate(
+      { connectionId },
+      {
+        $set: { shared: share },
+        $unset: { impersonatedUserLastPageVisited: true },
+      },
+    );
   }
 
   followImpersonatedSession({ connectionId }) {

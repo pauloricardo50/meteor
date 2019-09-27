@@ -9,7 +9,7 @@ const impersonateNotification = emails =>
           <p>{`Acutellement connecté comme ${emails[0].address}`}</p>
         </div>
       ),
-      duration: 0,
+      duration: 5,
     });
   });
 
