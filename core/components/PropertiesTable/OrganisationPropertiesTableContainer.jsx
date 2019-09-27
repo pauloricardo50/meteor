@@ -38,7 +38,9 @@ const makeMapProperty = history => ({
     loanCount,
     {
       raw: users.length && users[0].name,
-      label: <TooltipArray items={users.map(({ name }) => name)} />,
+      label: (
+        <TooltipArray items={users.map(({ name }) => name)} title="Comptes" />
+      ),
     },
   ],
 });

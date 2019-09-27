@@ -44,6 +44,7 @@ const makeMapUser = ({ history }) => (user) => {
                 }}
               />
             ))}
+            title="Organisations"
           />
         ),
       },

@@ -32,6 +32,7 @@
     "core-js": "^3.1.4",
     "faker": "^4.1.0",
     "file-saver": "^2.0.2",
+    "googleapis": "^43.0.0",
     "highcharts-export-data": "^0.1.7",
     "highcharts-exporting": "^0.1.7",
     "highcharts-more": "^0.1.7",

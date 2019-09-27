@@ -37,7 +37,7 @@ const DialogForm = ({
   model,
   schema,
   description,
-  onSubmit = () => undefined,
+  onSubmit,
   children,
 }: DialogFormProps) => (
   <>

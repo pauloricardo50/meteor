@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 19;
+const CACHE_VERSION = 20;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -18,10 +18,10 @@ const defaultJobValues = {
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
-        METEOR_PROFILE: 1000, // If you need to debug meteor, set this to a number (in ms)
+        // METEOR_PROFILE: 1000, // If you need to debug meteor, set this to a number (in ms)
         CIRCLE_CI: 1, // Helpful in your tests, to know whether you're in circle CI or not
-        DEBUG: true, // Helps
-        METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
+        DEBUG: false, // Helps
+        // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
       },
     },
@@ -61,21 +61,21 @@ const runCommand = (name, command, timeout) => ({
 });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-    case 'e2e':
-      return runCommand(
-        'Run e2e tests',
-        `
+  case 'e2e':
+    return runCommand(
+      'Run e2e tests',
+      `
         cd ./microservices/${name} && meteor npm run test-e2e-ci
         `,
-      );
-    case 'unit':
-      return runCommand(
-        'Run unit tests',
-        `cd ./microservices/${name} && meteor npm run test-ci`,
-        '15m',
-      );
-    default:
-      throw new Error(`Unknown tests type: ${testsType}`);
+    );
+  case 'unit':
+    return runCommand(
+      'Run unit tests',
+      `cd ./microservices/${name} && meteor npm run test-ci`,
+      '15m',
+    );
+  default:
+    throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
@@ -88,8 +88,8 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-')
+            + (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -188,11 +188,6 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
     ),
-    // saveCache(
-    //   'Cache meteor backend',
-    //   cacheKeys.meteorMicroservice('backend'),
-    //   cachePaths.meteorMicroservice('backend'),
-    // ),
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),

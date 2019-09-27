@@ -47,7 +47,7 @@ const PromotionLoanLinker = ({
       ) : (
         <div className="flex-row center space-children">
           <p className="secondary center">
-            Aucun dossier de financement lié à cette promotion.
+            Aucun dossier de développement lié à cette promotion.
           </p>
           <Button primary raised onClick={() => insertPromotionLoan()}>
             Lier un nouveau dossier

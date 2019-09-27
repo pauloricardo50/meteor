@@ -886,6 +886,7 @@ export const apiProperty = () => ({
   useOpenGraph: 1,
   imageUrls: 1,
   country: 1,
+  status: 1,
 });
 
 // //
@@ -923,6 +924,7 @@ export const simpleUser = () => ({
   phoneNumbers: 1,
   phoneNumber: 1,
   roles: 1,
+  isDisabled: 1,
 });
 
 export const organisationUser = () => ({

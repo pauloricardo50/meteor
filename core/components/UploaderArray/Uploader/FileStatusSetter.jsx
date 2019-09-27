@@ -68,12 +68,9 @@ const FileStatusSetter = ({
             description="Entrez la raison"
             className="animated fadeIn"
             important
-            onSubmit={closeModal => ({ error }) => {
-              setFileError
-                .run({ fileKey, error })
-                .then(() => setFileStatus(stat))
-                .then(() => closeModal());
-            }}
+            onSubmit={({ error }) => setFileError
+              .run({ fileKey, error })
+              .then(() => setFileStatus(stat))}
           />);
         },
       }))}
