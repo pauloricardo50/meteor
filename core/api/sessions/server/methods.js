@@ -1,10 +1,11 @@
-import { shareImpersonatedSession } from '../methodDefinitions';
+import {
+  shareImpersonatedSession,
+  followImpersonatedSession,
+} from '../methodDefinitions';
 import SessionService from './SessionService';
 
-shareImpersonatedSession.setHandler((context) => {
-  const {
-    connection: { id: connectionId },
-  } = context;
+shareImpersonatedSession.setHandler(({ connection: { id: connectionId } }, { share }) =>
+  SessionService.shareImpersonatedSession(connectionId, share));
 
-  return SessionService.shareImpersonatedSession(connectionId);
-});
+followImpersonatedSession.setHandler((context, params) =>
+  SessionService.followImpersonatedSession(params));

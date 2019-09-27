@@ -6,7 +6,7 @@ export const impersonateMiddleware = context => () => next => (...args) => {
   } = context;
   const isImpersonate = SessionService.isImpersonatedSession(connectionId);
 
-  // Don't track login events when impersonating
+  // Don't track anything when impersonating
   if (isImpersonate) {
     return;
   }

@@ -14,6 +14,7 @@ const SessionSchema = new SimpleSchema({
   shared: { type: Boolean, optional: true, defaultValue: false },
   lastPageVisited: { type: String, optional: true },
   lastMethodCalled: { type: String, optional: true },
+  impersonatedUserLastPageVisited: { type: String, optional: true },
 });
 
 export default SessionSchema;

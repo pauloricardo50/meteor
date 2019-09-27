@@ -3,41 +3,15 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from 'core/components/Button';
-import {
-  impersonateUser,
-  shareImpersonatedSession,
-} from '../../../api/methods';
+import { impersonateUser } from '../../../api/methods';
+import impersonateNotification from './impersonateNotification';
 
 export const impersonate = ({ userId, authToken, history }) => {
   impersonateUser
     .run({ userId, authToken })
     .then(({ emails }) => {
       Meteor.connection.setUserId(userId);
-      import('../../../utils/notification').then(({ default: notification }) => {
-        notification.success({
-          message: <span id="impersonation-success-message">Yay</span>,
-          description: (
-            <div>
-              <p>{`Acutellement connecté comme ${emails[0].address}`}</p>
-              <div className="p-8">
-                <Button
-                  onClick={() =>
-                    shareImpersonatedSession
-                      .run()
-                      .then(() => notification.destroy())
-                  }
-                  primary
-                  outlined
-                >
-                    Partager la session
-                </Button>
-              </div>
-            </div>
-          ),
-          duration: 0,
-        });
-      });
+      impersonateNotification(emails);
       if (history) {
         history.push('/');
       }

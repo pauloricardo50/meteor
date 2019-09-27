@@ -14,7 +14,8 @@ class SessionService extends CollectionService {
   }
 
   setUser(connectionId, userId) {
-    const { roles = [] } = UserService.getUserById({ userId }) || {};
+    const user = UserService.fetchOne({ $filters: { _id: userId }, roles: 1 });
+    const { roles = [] } = user || {};
     return this.baseUpdate(
       { connectionId },
       { $set: { userId, role: roles.length ? roles[0] : undefined } },
@@ -52,11 +53,9 @@ class SessionService extends CollectionService {
     const fifteenMinutesAgo = moment()
       .subtract(15, 'minutes')
       .toDate();
-    const oldSessions = this.find({
-      updatedAt: { $lte: fifteenMinutesAgo },
-    }).fetch();
-    oldSessions.forEach(({ connectionId }) => this.removeSession(connectionId));
-    return oldSessions.length;
+
+    const removed = this.remove({ updatedAt: { $lte: fifteenMinutesAgo } });
+    return removed;
   }
 
   isImpersonatedSession(connectionId) {
@@ -64,12 +63,21 @@ class SessionService extends CollectionService {
     return session && session.isImpersonate;
   }
 
-  shareImpersonatedSession(connectionId) {
+  shareImpersonatedSession(connectionId, share) {
     if (!this.isImpersonatedSession(connectionId)) {
       throw new Meteor.Error('Current session is not an impersonated session');
     }
 
-    return this.baseUpdate({ connectionId }, { $set: { shared: true } });
+    return this.baseUpdate({ connectionId }, { $set: { shared: share } });
+  }
+
+  followImpersonatedSession({ connectionId }) {
+    const session = this.getByConnectionId(connectionId);
+
+    return this.baseUpdate(
+      { connectionId },
+      { $set: { impersonatedUserLastPageVisited: session.lastPageVisited } },
+    );
   }
 }
 
