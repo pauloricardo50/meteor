@@ -2,7 +2,7 @@
 import React from 'react';
 import { withState } from 'recompose';
 
-import Button from 'core/components/Button';
+import Button from '../Button';
 import AdminNote from './AdminNote';
 
 type AdminNoteExpandProps = {};

@@ -16,7 +16,19 @@ import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const promotionFragment = {
   ...omit(proPromotion(), ['promotionLots']),
-  promotionLots: { _id: 1, status: 1, name: 1 },
+  promotionLots: {
+    _id: 1,
+    status: 1,
+    name: 1,
+    value: 1,
+    properties: {
+      landValue: 1,
+      constructionValue: 1,
+      additionalMargin: 1,
+      value: 1,
+    },
+    lots: { value: 1 },
+  },
 };
 
 const AdminPromotionPageContainer = compose(
@@ -33,21 +45,23 @@ const AdminPromotionPageContainer = compose(
   }),
   injectPromotionMetadata({
     permissions: {
-      canModifyPromotion: true,
-      canInviteCustomers: true,
-      canManageDocuments: true,
-      canSeeCustomers: true,
-      canSeeUsers: true,
       canAddLots: true,
-      canModifyLots: true,
-      canRemoveLots: true,
       canAddPros: true,
-      canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
       canChangeTimeline: true,
-      canLinkLoan: true,
-      canModifyStatus: true,
+      canInviteCustomers: true,
       canLinkAssignee: true,
       canLinkLender: true,
+      canLinkLoan: true,
+      canManageDocuments: true,
+      canModifyLots: true,
+      canModifyPromotion: true,
+      canModifyStatus: true,
+      canRemoveLots: true,
+      canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
+      canSeeCustomers: true,
+      canSeeManagement: true,
+      canSeeUsers: true,
+      canModifyAdminNote: true,
     },
   }),
   withProps({ route: ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path }),

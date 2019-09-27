@@ -452,3 +452,23 @@ p.description,
   grid-gap: 8px;
   justify-items: stretch;
 }
+
+.markdown {
+  table {
+    border-spacing: 0;
+
+    thead {
+      font-weight: bold;
+      color: $title-text;
+    }
+
+    td,
+    th {
+      padding: 8px 12px 8px 12px;
+    }
+
+    th {
+      border-bottom: 1px solid $border-grey;
+    }
+  }
+}

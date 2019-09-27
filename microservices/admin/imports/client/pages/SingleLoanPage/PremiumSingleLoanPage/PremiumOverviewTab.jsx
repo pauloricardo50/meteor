@@ -4,7 +4,7 @@ import React from 'react';
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import AdminNoteExpand from '../../../components/AdminNote/AdminNoteExpand';
+import AdminNoteExpand from 'core/components/AdminNote/AdminNoteExpand';
 import LoanTimeline from '../LoanTabs/OverviewTab/LoanTimeline';
 import StructureForm from './StructureForm';
 

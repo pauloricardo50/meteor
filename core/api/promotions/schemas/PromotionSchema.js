@@ -4,6 +4,7 @@ import {
   PROMOTION_TYPES,
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS,
+  PROMOTION_AUTHORIZATION_STATUS,
 } from '../promotionConstants';
 import {
   address,
@@ -67,6 +68,7 @@ export const promotionPermissionsSchema = {
   canBookLots: SCHEMA_BOOLEAN,
   // canPreBookLots: SCHEMA_BOOLEAN,
   canSellLots: SCHEMA_BOOLEAN,
+  canSeeManagement: SCHEMA_BOOLEAN,
 };
 
 SimpleSchema.setDefaultMessages({
@@ -140,6 +142,18 @@ const PromotionSchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
+  adminNote: { type: String, optional: true },
+  projectStatus: { type: String, optional: true },
+  authorizationStatus: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_AUTHORIZATION_STATUS),
+    optional: true,
+    defaultValue: PROMOTION_AUTHORIZATION_STATUS.NONE,
+    uniforms: {
+      displayEmpty: false,
+      placeholder: '',
+    },
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

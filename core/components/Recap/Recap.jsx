@@ -30,6 +30,8 @@ const arraySwitch = (props) => {
     return getNotaryFeesArray(props);
   case 'premium':
     return getPremiumArray(props);
+  case 'custom':
+    return props.recapArray;
   default:
     throw new Meteor.Error('Not a valid recap array');
   }

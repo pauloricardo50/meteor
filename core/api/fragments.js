@@ -665,7 +665,7 @@ export const basePromotion = () => ({
   createdAt: 1,
   documents: 1,
   lenderOrganisation: { name: 1, logo: 1 },
-  loans: { _id: 1 },
+  loans: { _id: 1, createdAt: 1 },
   lots: {
     value: 1,
     name: 1,
@@ -701,6 +701,7 @@ export const basePromotion = () => ({
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
+  adminNote: 1,
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
   promotionLots: {
@@ -715,6 +716,8 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     promotion: { _id: 1 },
   },
   promotionLoan: { _id: 1, name: 1 },
+  authorizationStatus: 1,
+  projectStatus: 1,
   ...(withFilteredLoan
     ? {
       loans: {
