@@ -7,17 +7,23 @@ import LotsChart from './LotsChart';
 import LoansChart from './LoansChart';
 import PromotionMetadataContext from '../PromotionMetadata';
 import LotsValueChart from './LotsValueChart';
+import PromotionRecap from './PromotionRecap';
 
 type PromotionManagementProps = {};
 
-const PromotionManagement = ({
-  promotion: { _id: promotionId, adminNote, promotionLots = [], loans = [] },
-}: PromotionManagementProps) => {
+const PromotionManagement = ({ promotion }: PromotionManagementProps) => {
   const {
     permissions: { canModifyAdminNote },
   } = useContext(PromotionMetadataContext);
+  const {
+    _id: promotionId,
+    adminNote,
+    promotionLots = [],
+    loans = [],
+  } = promotion;
   return (
     <div className="promotion-management card1 card-top">
+      <PromotionRecap promotion={promotion} />
       <div className="promotion-management-charts">
         <LotsChart promotionLots={promotionLots} />
         <LotsValueChart promotionLots={promotionLots} />

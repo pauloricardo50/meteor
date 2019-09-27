@@ -3,14 +3,7 @@ import { injectIntl } from 'react-intl';
 
 import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { toMoney } from 'core/utils/conversionFunctions';
-
-const getFilteredLots = (promotionLots = []) => {
-  const availableLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.AVAILABLE);
-  const bookedLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.BOOKED);
-  const soldLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.SOLD);
-
-  return { availableLots, bookedLots, soldLots };
-};
+import { getTotalValueByStatus, getFilteredLots } from './helpers';
 
 const getData = (promotionLots = []) => {
   const { availableLots, bookedLots, soldLots } = getFilteredLots(promotionLots);
@@ -28,34 +21,6 @@ const getData = (promotionLots = []) => {
       y: availableLots.length,
     },
   ].filter(({ y }) => y > 0);
-};
-
-const getTotalValueByStatus = (promotionLots = [], status) => {
-  const { availableLots, bookedLots, soldLots } = getFilteredLots(promotionLots);
-  let totalValue = 0;
-
-  switch (status) {
-  case PROMOTION_LOT_STATUS.BOOKED:
-    totalValue = bookedLots.reduce((total, { value }) => total + value, 0);
-    break;
-  case PROMOTION_LOT_STATUS.SOLD:
-    totalValue = soldLots.reduce((total, { value }) => total + value, 0);
-    break;
-  case PROMOTION_LOT_STATUS.AVAILABLE:
-    totalValue = availableLots.reduce((total, { value }) => total + value, 0);
-    break;
-  case 'ALL':
-    totalValue = [...bookedLots, ...soldLots, ...availableLots].reduce(
-      (total, { value }) => total + value,
-      0,
-    );
-    break;
-
-  default:
-    break;
-  }
-
-  return totalValue;
 };
 
 const getSubtitle = (promotionLots = [], formatMessage) => {

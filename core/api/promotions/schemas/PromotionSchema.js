@@ -4,6 +4,7 @@ import {
   PROMOTION_TYPES,
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS,
+  PROMOTION_AUTHORIZATION_STATUS,
 } from '../promotionConstants';
 import {
   address,
@@ -142,6 +143,13 @@ const PromotionSchema = new SimpleSchema({
   },
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
   adminNote: { type: String, optional: true },
+  projectStatus: { type: String, optional: true },
+  authorizationStatus: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_AUTHORIZATION_STATUS),
+    optional: true,
+    defaultValue: PROMOTION_AUTHORIZATION_STATUS.NONE,
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
