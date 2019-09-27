@@ -149,6 +149,10 @@ const PromotionSchema = new SimpleSchema({
     allowedValues: Object.values(PROMOTION_AUTHORIZATION_STATUS),
     optional: true,
     defaultValue: PROMOTION_AUTHORIZATION_STATUS.NONE,
+    uniforms: {
+      displayEmpty: false,
+      placeholder: '',
+    },
   },
 });
 

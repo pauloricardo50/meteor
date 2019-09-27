@@ -303,6 +303,22 @@
 .promotion-management {
   margin-top: 16px;
 
+  &-statuses {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    > * {
+      width: 200px;
+    }
+
+    > *:first-child {
+      margin-right: 8px;
+    }
+  }
+
   .promotion-recap {
     display: flex;
     width: 100%;
@@ -315,7 +331,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 
     @include screen(xwide) {

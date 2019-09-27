@@ -1,5 +1,6 @@
 {
   "Forms.projectStatus": "Phase",
+  "Forms.projectStatus.placeholder": "A - Préparation",
   "Forms.authorizationStatus": "Autorisation",
   "Forms.authorizationStatus.NONE": "Aucune",
   "Forms.authorizationStatus.PREPARATION": "Préparation",
@@ -9,7 +10,7 @@
   "Recap.landValue": "Coût foncier",
   "Recap.constructionValue": "Entreprise générale",
   "Recap.additionalMargin": "Mise en valeur",
-  "Recap.undetailedValue": "Prix de vente",
+  "Recap.undetailedValue": "Prix d'achat",
   "Recap.additionalLotsValue": "Lots annexes",
   "Recap.promotionValue": "Valeur de la promotion",
   "Recap.availableLots": "Lots en vente",

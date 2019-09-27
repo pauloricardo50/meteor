@@ -1,4 +1,5 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
@@ -8,6 +9,8 @@ import LoansChart from './LoansChart';
 import PromotionMetadataContext from '../PromotionMetadata';
 import LotsValueChart from './LotsValueChart';
 import PromotionRecap from './PromotionRecap';
+import PromotionAuthorizationStatus from './PromotionAuthorizationStatus';
+import PromotionProjectStatus from './PromotionProjectStatus';
 
 type PromotionManagementProps = {};
 
@@ -23,6 +26,12 @@ const PromotionManagement = ({ promotion }: PromotionManagementProps) => {
   } = promotion;
   return (
     <div className="promotion-management card1 card-top">
+      {Meteor.microservice === 'admin' && (
+        <div className="promotion-management-statuses">
+          <PromotionProjectStatus promotion={promotion} />
+          <PromotionAuthorizationStatus promotion={promotion} />
+        </div>
+      )}
       <PromotionRecap promotion={promotion} />
       <div className="promotion-management-charts">
         <LotsChart promotionLots={promotionLots} />
