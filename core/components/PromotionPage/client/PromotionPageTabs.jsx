@@ -17,7 +17,7 @@ const getInitialTab = (tabs, tabId) => {
   const index = tabs.findIndex(({ id }) => id === tabId);
 
   if (index < 0) {
-    return tabs.findIndex(({ id }) => id === 'management' || id === 'overview');
+    return 0;
   }
 
   return index;

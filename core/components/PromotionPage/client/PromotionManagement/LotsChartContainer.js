@@ -3,10 +3,10 @@ import { injectIntl } from 'react-intl';
 
 import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { getTotalValueByStatus, getFilteredLots } from './helpers';
+import { getTotalValueByStatus, getGroupedLots } from './helpers';
 
 const getData = (promotionLots = []) => {
-  const { availableLots, bookedLots, soldLots } = getFilteredLots(promotionLots);
+  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
   return [
     {
       name: PROMOTION_LOT_STATUS.SOLD,
@@ -24,7 +24,7 @@ const getData = (promotionLots = []) => {
 };
 
 const getSubtitle = (promotionLots = [], formatMessage) => {
-  const { availableLots, bookedLots, soldLots } = getFilteredLots(promotionLots);
+  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
   const totalValue = getTotalValueByStatus(promotionLots, 'ALL');
   const availableLotsLabel = formatMessage({
     id: `Forms.status.${PROMOTION_LOT_STATUS.AVAILABLE}`,
@@ -45,12 +45,8 @@ const getSubtitle = (promotionLots = [], formatMessage) => {
 
 const getConfig = (promotionLots = [], formatMessage) => ({
   chart: {
-    plotBackgroundColor: null,
-    plotBorderWidth: null,
-    plotShadow: false,
     type: 'pie',
   },
-  credits: { enabled: false },
   title: {
     text: 'Lots',
   },

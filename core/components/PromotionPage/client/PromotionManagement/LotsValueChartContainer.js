@@ -42,11 +42,8 @@ const getData = (promotionLots = []) => {
   ].filter(({ y }) => y);
 };
 
-const getSubtitle = (promotionLots = []) => {
-  const totalValue = getTotalValue(promotionLots);
-
-  return `CHF ${toMoney(totalValue)}`;
-};
+const getSubtitle = (promotionLots = []) =>
+  `CHF ${toMoney(getTotalValue(promotionLots))}`;
 
 const getConfig = (promotionLots = [], formatMessage) => ({
   chart: {
@@ -55,7 +52,6 @@ const getConfig = (promotionLots = [], formatMessage) => ({
     plotShadow: false,
     type: 'pie',
   },
-  credits: { enabled: false },
   title: {
     text: 'Valeur de la promotion',
   },

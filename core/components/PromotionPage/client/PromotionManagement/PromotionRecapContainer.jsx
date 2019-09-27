@@ -9,7 +9,7 @@ import {
   getTotalAdditionalLotsValue,
   getTotalValue,
   getTotalUndetailedValue,
-  getFilteredLots,
+  getGroupedLots,
 } from './helpers';
 import T from '../../../Translation';
 
@@ -23,7 +23,7 @@ const getRecapArray = (promotion = {}) => {
   const totalUndetailedValue = getTotalUndetailedValue(promotionLots);
   const totalValue = getTotalValue(promotionLots);
 
-  const { availableLots, bookedLots, soldLots } = getFilteredLots(promotionLots);
+  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
 
   return [
     {

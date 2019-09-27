@@ -1,5 +1,4 @@
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
+import { withProps } from 'recompose';
 import moment from 'moment';
 
 const getData = (loans = []) => {
@@ -26,7 +25,6 @@ const getConfig = (loans = []) => ({
   chart: {
     type: 'line',
   },
-  credits: { enabled: false },
   title: {
     text: 'Clients',
   },
@@ -60,10 +58,7 @@ const getConfig = (loans = []) => ({
   ],
 });
 
-export default compose(
-  injectIntl,
-  withProps(({ intl: { formatMessage }, loans = [] }) => ({
-    config: getConfig(loans),
-    data: getData(loans),
-  })),
-);
+export default withProps(({ loans = [] }) => ({
+  config: getConfig(loans),
+  data: getData(loans),
+}));

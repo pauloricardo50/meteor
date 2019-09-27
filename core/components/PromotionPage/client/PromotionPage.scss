@@ -333,10 +333,6 @@
     justify-content: center;
     flex-wrap: wrap;
 
-    @include screen(xwide) {
-      flex-direction: column;
-    }
-
     .chart {
       height: 400px;
       width: 600px;
@@ -344,6 +340,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @include screen(med) {
+        transform: scale(0.8);
+      }
 
       .empty {
         display: flex;
