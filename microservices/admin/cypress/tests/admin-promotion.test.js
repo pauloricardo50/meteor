@@ -99,6 +99,7 @@ describe('Admin promotion', () => {
   it('adds construction timeline to promotion', () => {
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
+    cy.contains("Vue d'ensemble").click();
 
     cy.contains('Répartition du financement').click();
     cy.contains('Nouvelle répartition').click();
@@ -112,6 +113,7 @@ describe('Admin promotion', () => {
   it('displays an error when construction timeline percent is not 100', () => {
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
+    cy.contains("Vue d'ensemble").click();
 
     cy.window().then((win) => {
       const promotionId = win.location.href.split('/').slice(-1)[0];
@@ -133,6 +135,7 @@ describe('Admin promotion', () => {
   it('displays the promotion timeline on a promotion lot', () => {
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
+    cy.contains("Vue d'ensemble").click();
 
     cy.window().then((win) => {
       const promotionId = win.location.href.split('/').slice(-1)[0];
@@ -194,6 +197,7 @@ describe('Admin promotion', () => {
   it('reuse construction timeline', () => {
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
+    cy.contains("Vue d'ensemble").click();
 
     cy.window().then((win) => {
       const promotionId = win.location.href.split('/').slice(-1)[0];
@@ -208,6 +212,7 @@ describe('Admin promotion', () => {
 
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
+    cy.contains("Vue d'ensemble").click();
 
     cy.contains('Répartition du financement').click();
     cy.contains('Promotion template').click();
