@@ -30,6 +30,7 @@ const getConfig = (loans = []) => ({
   title: {
     text: 'Clients',
   },
+  subtitle: { text: `${loans.length} clients` },
   xAxis: {
     type: 'datetime',
     title: { text: 'Date' },

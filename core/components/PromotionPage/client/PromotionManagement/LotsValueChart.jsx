@@ -4,12 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie } from '@fortawesome/pro-light-svg-icons/faChartPie';
 
 import BaseChart from 'core/components/charts/BaseChart';
-import LotsChartContainer from './LotsChartContainer';
+import LotsValueChartContainer from './LotsValueChartContainer';
 
-type LotsChartProps = {
-  config: Object,
-  data: Array,
-};
+type LotsValueChartProps = { config: Object, data: Array };
 
 const EmptyState = () => (
   <div className="empty">
@@ -19,10 +16,10 @@ const EmptyState = () => (
   </div>
 );
 
-const LotsChart = ({ config, data = [] }: LotsChartProps) => (
+const LotsValueChart = ({ config, data = [] }: LotsValueChartProps) => (
   <div className="chart">
     {data.length ? <BaseChart config={config} data={data} /> : <EmptyState />}
   </div>
 );
 
-export default LotsChartContainer(LotsChart);
+export default LotsValueChartContainer(LotsValueChart);

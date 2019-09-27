@@ -44,12 +44,38 @@ const getTotalValueByStatus = (promotionLots = [], status) => {
   case PROMOTION_LOT_STATUS.AVAILABLE:
     totalValue = availableLots.reduce((total, { value }) => total + value, 0);
     break;
+  case 'ALL':
+    totalValue = [...bookedLots, ...soldLots, ...availableLots].reduce(
+      (total, { value }) => total + value,
+      0,
+    );
+    break;
 
   default:
     break;
   }
 
   return totalValue;
+};
+
+const getSubtitle = (promotionLots = [], formatMessage) => {
+  const { availableLots, bookedLots, soldLots } = getFilteredLots(promotionLots);
+  const totalValue = getTotalValueByStatus(promotionLots, 'ALL');
+  const availableLotsLabel = formatMessage({
+    id: `Forms.status.${PROMOTION_LOT_STATUS.AVAILABLE}`,
+  });
+  const bookedLotsLabel = formatMessage({
+    id: `Forms.status.${PROMOTION_LOT_STATUS.BOOKED}`,
+  });
+  const soldLotsLabel = formatMessage({
+    id: `Forms.status.${PROMOTION_LOT_STATUS.SOLD}`,
+  });
+
+  return `<p>${availableLotsLabel}: ${
+    availableLots.length
+  } - ${bookedLotsLabel}: ${bookedLots.length} - ${soldLotsLabel}: ${
+    soldLots.length
+  }<br/>CHF ${toMoney(totalValue)}</p>`;
 };
 
 const getConfig = (promotionLots = [], formatMessage) => ({
@@ -62,6 +88,9 @@ const getConfig = (promotionLots = [], formatMessage) => ({
   credits: { enabled: false },
   title: {
     text: 'Lots',
+  },
+  subtitle: {
+    text: getSubtitle(promotionLots, formatMessage),
   },
   tooltip: {
     formatter() {
