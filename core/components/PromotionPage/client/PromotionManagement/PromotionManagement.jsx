@@ -4,13 +4,12 @@ import React, { useContext } from 'react';
 
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import AdminNote from 'core/components/AdminNote';
+import UpdateField from 'core/components/UpdateField';
 import LotsChart from './LotsChart';
 import LoansChart from './LoansChart';
 import PromotionMetadataContext from '../PromotionMetadata';
 import LotsValueChart from './LotsValueChart';
 import PromotionRecap from './PromotionRecap';
-import PromotionAuthorizationStatus from './PromotionAuthorizationStatus';
-import PromotionProjectStatus from './PromotionProjectStatus';
 
 type PromotionManagementProps = {};
 
@@ -28,8 +27,11 @@ const PromotionManagement = ({ promotion }: PromotionManagementProps) => {
     <div className="promotion-management card1 card-top">
       {Meteor.microservice === 'admin' && (
         <div className="promotion-management-statuses">
-          <PromotionProjectStatus promotion={promotion} />
-          <PromotionAuthorizationStatus promotion={promotion} />
+          <UpdateField
+            collection={PROMOTIONS_COLLECTION}
+            doc={promotion}
+            fields={['projectStatus', 'authorizationStatus']}
+          />
         </div>
       )}
       <PromotionRecap promotion={promotion} />
@@ -38,7 +40,7 @@ const PromotionManagement = ({ promotion }: PromotionManagementProps) => {
         <LotsValueChart promotionLots={promotionLots} />
         <LoansChart loans={loans} />
       </div>
-      <h3>Notes e-Potek</h3>
+      {(Meteor.microservice === 'admin' || adminNote) && <h3>Notes e-Potek</h3>}
       <AdminNote
         adminNote={adminNote}
         docId={promotionId}

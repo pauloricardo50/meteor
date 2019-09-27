@@ -44,6 +44,7 @@ const getRecapArray = (promotion = {}) => {
       label: 'Forms.authorizationStatus',
       value: <T id={`Forms.authorizationStatus.${authorizationStatus}`} />,
       hide: !authorizationStatus,
+      spacing: true,
     },
     {
       label: 'Recap.landValue',
@@ -72,7 +73,10 @@ const getRecapArray = (promotion = {}) => {
     },
     {
       label: 'Recap.promotionValue',
-      value: toMoney(totalValue),
+      value: <span className="sum">{toMoney(totalValue)}</span>,
+      spacingTop: true,
+      spacing: true,
+      bold: true,
       hide: !totalValue,
     },
     {
