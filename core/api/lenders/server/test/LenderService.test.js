@@ -61,7 +61,7 @@ describe('LenderService', () => {
         contact: { firstName: 1 },
       });
 
-      expect(lender.contact.firstName).to.equal('john');
+      expect(lender.contact.firstName).to.equal('John');
     });
   });
 

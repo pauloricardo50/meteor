@@ -72,9 +72,9 @@ const enterConstructionTimeline = (timeline = constructionTimeline) => {
       percent = 20,
     } = tranch;
     cy.get('.list-add-field').click();
-    cy.get(`input[name="constructionTimeline.${index}.description"]`).type(description);
-    cy.get(`input[name="constructionTimeline.${index}.duration"]`).type(duration);
-    cy.get(`input[name="constructionTimeline.${index}.percent"]`).type(percent);
+    cy.get(`input[name="constructionTimeline.${index}.description"]`).type(`{selectAll}${description}`);
+    cy.get(`input[name="constructionTimeline.${index}.duration"]`).type(`{selectAll}${duration}`);
+    cy.get(`input[name="constructionTimeline.${index}.percent"]`).type(`{selectAll}${percent}`);
   });
 
   cy.get('button[type=submit]').click();
@@ -113,23 +113,24 @@ describe('Admin promotion', () => {
   it('displays an error when construction timeline percent is not 100', () => {
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
-    cy.contains("Vue d'ensemble").click();
 
     cy.window().then((win) => {
       const promotionId = win.location.href.split('/').slice(-1)[0];
-      updateConstructionTimeline({ promotionId });
+      updateConstructionTimeline({
+        promotionId,
+      });
       cy.reload();
+      cy.contains("Vue d'ensemble").click();
+      cy.contains('Répartition du financement').click();
+
+      cy.get('.list-del-field')
+        .last()
+        .click();
+
+      cy.get('button[type=submit]').click();
+
+      cy.contains("Les pourcentages doivent s'additionner à 100%").should('exist');
     });
-
-    cy.contains('Répartition du financement').click();
-
-    cy.get('.list-del-field')
-      .last()
-      .click();
-
-    cy.get('button[type=submit]').click();
-
-    cy.contains("Les pourcentages doivent s'additionner à 100%").should('exist');
   });
 
   it('displays the promotion timeline on a promotion lot', () => {
@@ -197,7 +198,6 @@ describe('Admin promotion', () => {
   it('reuse construction timeline', () => {
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
-    cy.contains("Vue d'ensemble").click();
 
     cy.window().then((win) => {
       const promotionId = win.location.href.split('/').slice(-1)[0];
@@ -209,7 +209,6 @@ describe('Admin promotion', () => {
       });
       cy.callMethod('insertFullPromotion');
     });
-
     cy.visit('/promotions');
     cy.contains('Pré Polly').click();
     cy.contains("Vue d'ensemble").click();
