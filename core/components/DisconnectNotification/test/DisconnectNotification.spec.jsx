@@ -1,13 +1,12 @@
 // @flow
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 import { DisconnectNotification } from '../DisconnectNotification';
 
-describe.only('DisconnectNotification', () => {
+describe('DisconnectNotification', () => {
   let props;
   const component = () =>
     getMountedComponent({
