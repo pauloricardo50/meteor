@@ -1,6 +1,7 @@
 import {
   shareImpersonatedSession,
   followImpersonatedSession,
+  setUserConnected,
 } from '../methodDefinitions';
 import SessionService from './SessionService';
 
@@ -9,3 +10,6 @@ shareImpersonatedSession.setHandler(({ connection: { id: connectionId } }, { sha
 
 followImpersonatedSession.setHandler((context, params) =>
   SessionService.followImpersonatedSession(params));
+
+setUserConnected.setHandler((context, params) =>
+  SessionService.setUserConnected(params));

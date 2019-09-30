@@ -18,6 +18,7 @@ Meteor.startup(() => {
     });
 
     connection.onClose(() => {
+      SessionService.disconnectUser(connectionId);
       SessionService.removeSession(connectionId);
     });
   });
@@ -45,7 +46,7 @@ Meteor.startup(() => {
       });
     }
 
-    if (userId) {
+    if (userId && !session.userId) {
       SessionService.setUser(connectionId, userId);
     }
 

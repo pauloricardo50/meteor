@@ -1013,5 +1013,5 @@ export const userSession = () => ({
   connectionId: 1,
   shared: 1,
   impersonatedUserLastPageVisited: 1,
+  userIsConnected: 1,
 });
-

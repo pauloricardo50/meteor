@@ -85,6 +85,23 @@ class SessionService extends CollectionService {
       { $set: { impersonatedUserLastPageVisited: session.lastPageVisited } },
     );
   }
+
+  setUserConnected({ connectionId }) {
+    return this.baseUpdate(
+      { connectionId },
+      { $set: { userIsConnected: true } },
+    );
+  }
+
+  disconnectUser(connectionId) {
+    const session = this.getByConnectionId(connectionId);
+
+    return this.baseUpdate(
+      { userId: session.userId, isImpersonate: true },
+      { $set: { userIsConnected: false } },
+      { multi: true },
+    );
+  }
 }
 
 export default new SessionService();

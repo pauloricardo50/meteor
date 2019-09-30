@@ -10,7 +10,7 @@ import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
-import impersonatedSessionNotification from './impersonatedSessionNotification';
+import impersonateSessionNotification from './impersonateSessionNotification';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password'];
@@ -47,7 +47,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
   }
 
   useEffect(() => {
-    impersonatedSessionNotification(props);
+    impersonateSessionNotification(props);
   }, [props.impersonatedSession]);
 
   return (
