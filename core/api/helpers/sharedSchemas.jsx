@@ -65,7 +65,7 @@ export const address = {
     min: 1000,
     max: 99999,
   },
-  city: { type: String, optional: true },
+  city: { type: String, optional: true, autoValue: autoValueSentenceCase },
   country: {
     type: String,
     optional: true,

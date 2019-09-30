@@ -17,8 +17,8 @@ import UserService, { UserServiceClass } from '../UserService';
 describe('UserService', function () {
   this.timeout(10000);
 
-  const firstName = 'testFirstName';
-  const lastName = 'testLastName';
+  const firstName = 'TestFirstName';
+  const lastName = 'TestLastName';
   let user;
 
   beforeEach(() => {
@@ -77,7 +77,7 @@ describe('UserService', function () {
     });
 
     it('adds any additional info on options to the user', () => {
-      const options = { email: 'test@test.com', firstName: 'dude' };
+      const options = { email: 'test@test.com', firstName: 'Dude' };
       const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
       user = UserService.getUserById({ userId });
 
@@ -158,7 +158,7 @@ describe('UserService', function () {
 
   describe('update', () => {
     it('updates a user', () => {
-      const newFirstName = 'joe';
+      const newFirstName = 'Joe';
       expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(firstName);
       UserService.update({
         userId: user._id,
@@ -383,7 +383,7 @@ describe('getUserByPasswordResetToken', () => {
         lastName,
         email: 'yo@dude.com',
         emails: [{ address: 'yo@dude.com', verified: false }],
-        name: 'testFirstName testLastName',
+        name: 'TestFirstName TestLastName',
         phoneNumbers: ['phoneNumber'],
         services: { password: { reset: { token } } },
       });

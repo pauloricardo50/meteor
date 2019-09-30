@@ -133,7 +133,7 @@ describe('OfferService', () => {
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('dev@e-potek.ch');
         expect(bcc_address).to.equal('dev@e-potek.ch');
-        expect(from_name).to.equal('Dev e-Potek');
+        expect(from_name).to.equal('Dev E-Potek');
         expect(subject).to.include('Feedback client sur');
         expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
       });
