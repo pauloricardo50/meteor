@@ -2,9 +2,9 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-import ClickToEditField from 'core/components/ClickToEditField';
-import Icon from 'core/components/Icon';
-import { updateDocument } from 'core/api/methods/index';
+import ClickToEditField from '../ClickToEditField';
+import Icon from '../Icon';
+import { updateDocument } from '../../api/methods/index';
 
 type AdminNoteProps = {};
 
@@ -16,26 +16,30 @@ const AdminNote = ({
   collection,
   placeholder,
   style,
+  allowEditing,
+  ...rest
 }: AdminNoteProps) => (
   <ClickToEditField
     value={adminNote}
     onSubmit={value =>
       updateDocument.run({ collection, docId, object: { adminNote: value } })
     }
-    placeholder={placeholder || '# Ajouter une note'}
+    placeholder={allowEditing ? placeholder || '# Ajouter une note' : ''}
     inputProps={{
       style: { width: '100%' },
       multiline: true,
       placeholder: tutorial,
     }}
     style={style}
+    allowEditing={allowEditing}
+    {...rest}
   >
     {({ value, isEditing }) =>
       (isEditing ? (
         <Icon type="help" tooltip={tutorial} />
       ) : (
         <div>
-          <ReactMarkdown source={value} />
+          <ReactMarkdown source={value} className="markdown" />
         </div>
       ))
     }

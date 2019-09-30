@@ -63,6 +63,7 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
     canRemoveLots: true,
     canModifyPromotion: true,
     canManageDocuments: true,
+    canSeeManagement: true,
   }),
   BOOKING: settings => ({ canBookLots: true }),
   SELLING: settings => ({ canSellLots: true }),
@@ -81,4 +82,12 @@ export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {
       merge({}, bundles, PROMOTION_PERMISSIONS_BUNDLES[bundle](settings)),
     {},
   );
+};
+
+export const PROMOTION_AUTHORIZATION_STATUS = {
+  NONE: 'NONE',
+  PREPARATION: 'PREPARATION',
+  FILED: 'FILED',
+  PRE_APPROVED: 'PRE_APPROVED',
+  APPROVED: 'APPROVED',
 };

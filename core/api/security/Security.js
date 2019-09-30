@@ -27,6 +27,11 @@ export default class Security {
     this.checkUserLoggedIn(Meteor.userId());
   }
 
+  // Not in use at the moment, but might need in future, we can refine this method more
+  static isAccountDisabled(user) {
+    return (!user || user.isDisabled);
+  }
+
   static checkUserLoggedIn(userId) {
     if (!userId) {
       this.handleUnauthorized('Checking if logged in, no user');

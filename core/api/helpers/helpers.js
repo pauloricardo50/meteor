@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
+
 import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,

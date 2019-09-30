@@ -2,6 +2,18 @@
   padding: 0;
 }
 
+.files-tab-container {
+  display: grid;
+  grid-gap: 10px;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr minmax(400px, 33%);
+  align-items: start;
+
+  .loan-google-drive {
+    min-width: 400px;
+  }
+}
+
 .single-file-tab {
   display: flex;
   flex-direction: column;

@@ -7,8 +7,7 @@ import {
 } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import ClickToEditField from 'core/components/ClickToEditField';
-import AdminNote from 'imports/client/components/AdminNote/AdminNote';
+import AdminNote from 'core/components/AdminNote';
 import LenderContact from './LenderContact';
 import LenderOffer from './LenderOffer';
 

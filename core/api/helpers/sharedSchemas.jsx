@@ -10,6 +10,10 @@ import {
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
+import {
+  autoValueSentenceCase,
+} from './sharedSchemaValues';
+
 export const createdAt = {
   type: Date,
   autoValue() {
@@ -45,8 +49,16 @@ export const additionalDocuments = initialDocuments => ({
 });
 
 export const address = {
-  address1: { type: String, optional: true },
-  address2: { type: String, optional: true },
+  address1: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+  },
+  address2: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+  },
   zipCode: {
     type: SimpleSchema.Integer,
     optional: true,

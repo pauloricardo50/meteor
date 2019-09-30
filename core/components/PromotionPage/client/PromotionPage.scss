@@ -21,6 +21,9 @@
     max-height: 500px;
     padding: 32px;
 
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
     @include screen(med) {
       padding: 16px;
     }
@@ -159,7 +162,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      flex-direction: column;
 
       margin-top: 32px;
       flex-wrap: wrap;
@@ -294,5 +296,67 @@
 
   > * {
     margin-right: 4px;
+  }
+}
+
+.promotion-management {
+  margin-top: 16px;
+
+  &-statuses form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    > * {
+      width: 200px;
+    }
+
+    > *:first-child {
+      margin-right: 8px;
+    }
+  }
+
+  .promotion-recap {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-charts {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .chart {
+      height: 400px;
+      width: 600px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @include screen(med) {
+        transform: scale(0.8);
+      }
+
+      .empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .icon {
+          width: 200px;
+          height: 200px;
+          opacity: 0.5;
+        }
+      }
+    }
   }
 }

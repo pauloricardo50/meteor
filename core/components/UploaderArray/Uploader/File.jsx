@@ -121,13 +121,12 @@ const File = ({
                   description="Entrez le nouveau nom. Il ne sera visible uniquement que par les admins."
                   className="animated fadeIn"
                   important
-                  onSubmit={closeModal => ({ adminName: newName }) => {
+                  onSubmit={({ adminName: newName }) =>
                     setFileAdminName
                       .run({ Key, adminName: newName })
                       .then(() =>
                         updateDocumentsCache.run({ docId, collection }))
-                      .then(() => closeModal());
-                  }}
+                  }
                 />);
               }}
             />
@@ -203,13 +202,10 @@ const File = ({
                   description="Entrez le nouveau message d'erreur."
                   className="animated fadeIn"
                   important
-                  onSubmit={closeModal => ({ error }) => {
-                    setFileError
-                      .run({ fileKey: Key, error })
-                      .then(() =>
-                        updateDocumentsCache.run({ docId, collection }))
-                      .then(() => closeModal());
-                  }}
+                  onSubmit={({ error }) => setFileError
+                    .run({ fileKey: Key, error })
+                    .then(() =>
+                      updateDocumentsCache.run({ docId, collection }))}
                 />);
               }}
             />

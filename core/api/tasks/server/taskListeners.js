@@ -8,6 +8,7 @@ import {
   adminCreateUser,
   anonymousCreateUser,
   proInviteUser,
+  loanShareSolvency,
 } from '../../methods';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
@@ -142,6 +143,22 @@ ServerEventService.addAfterMethodListener(
           },
         });
       }
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  [loanShareSolvency],
+  ({ params: { shareSolvency, loanId } }) => {
+    if (shareSolvency) {
+      TaskService.insert({
+        object: {
+          collection: LOANS_COLLECTION,
+          docId: loanId,
+          title:
+            'Contacter le courtier du client pour lui parler de la solvabilité',
+        },
+      });
     }
   },
 );
