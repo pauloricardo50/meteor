@@ -46,7 +46,7 @@ Meteor.startup(() => {
       });
     }
 
-    if (userId && !session.userId) {
+    if (userId && session && !session.userId) {
       SessionService.setUser(connectionId, userId);
     }
 
