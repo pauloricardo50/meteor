@@ -1006,3 +1006,17 @@ export const revenue = () => ({
   status: 1,
   type: 1,
 });
+
+// //
+// // Sessions fragments
+// //
+export const userSession = () => ({
+  updatedAt: 1,
+  isImpersonate: 1,
+  lastPageVisited: 1,
+  userId: 1,
+  connectionId: 1,
+  shared: 1,
+  impersonatedUserLastPageVisited: 1,
+  userIsConnected: 1,
+});
