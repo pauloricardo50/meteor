@@ -139,7 +139,11 @@ export const PasswordResetPage = ({
             <h1>{user.name}</h1>
           </div>
           <h4 className="secondary">
-            <T id="PasswordResetPage.description" />
+            <T
+              id={`PasswordResetPage.${
+                isEnrollment ? 'enrollment' : 'description'
+              }`}
+            />
           </h4>
         </div>
 

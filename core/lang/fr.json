@@ -2188,6 +2188,7 @@
   "PasswordResetPage.password": "Mot de passe",
   "PasswordResetPage.title": "Bonjour {name}, choisissez un mot de passe",
   "PasswordResetPage.description": "Choisissez votre nouveau mot de passe",
+  "PasswordResetPage.enrollment": "Bienvenue sur votre nouveau compte e-Potek, encore quelques informations et on peut commencer!",
   "PDF.borrowersInfos.age": "Âge",
   "PDF.borrowersInfos.bonus": "Bonus considéré",
   "PDF.borrowersInfos.category.fortune": "Patrimoine",
