@@ -5,7 +5,6 @@ import { compose, withProps } from 'recompose';
 import moment from 'moment';
 
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
-import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { LOANS_COLLECTION } from '../../../../api/constants';
 import LoanProgressHeader from '../../../LoanProgress/LoanProgressHeader';
 import LoanProgress from '../../../LoanProgress';
@@ -13,17 +12,14 @@ import T from '../../../Translation';
 import { CollectionIconLink } from '../../../IconLink';
 import StatusLabel from '../../../StatusLabel';
 import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
-import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 import PromotionCustomersTableActions from './PromotionCustomersTableActions';
+import PromotionCustomer from '../PromotionCustomer';
 
 const columnOptions = [
   { id: 'loanName' },
   { id: 'status', label: <T id="Forms.status" /> },
-  { id: 'name' },
-  { id: 'phone' },
-  { id: 'email' },
+  { id: 'customer' },
   { id: 'createdAt' },
-  { id: 'invitedBy' },
   { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'priorityOrder' },
   { id: 'actions' },
@@ -40,7 +36,6 @@ const getColumns = ({
   promotionLots,
 }) => {
   const {
-    _id: loanId,
     name: loanName,
     status,
     user,
@@ -61,50 +56,31 @@ const getColumns = ({
     currentUser,
   });
 
-  const invitedByUser = invitedBy
-    && promotionUsers
-    && (!!promotionUsers.length
-      && promotionUsers.find(({ _id }) => _id === invitedBy));
-
-  const userName = invitedByUser
-    ? getUserNameAndOrganisation({ user: invitedByUser })
-    : 'Personne';
-
   return [
     {
       raw: loanName,
-      label:
-        Meteor.microservice === 'admin' ? (
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
-        ) : (
-          loanName
-        ),
+      label: (
+        <CollectionIconLink
+          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          noRoute={Meteor.microservice === 'pro'}
+        />
+      ),
     },
     {
       raw: status,
       label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
     },
-    user && user.name,
-    user && user.phoneNumbers && user.phoneNumbers[0],
-    user && user.email,
-    { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
-      raw: userName,
-      label:
-        Meteor.microservice === 'admin' ? (
-          <InvitedByAssignDropdown
-            promotionUsers={promotionUsers}
-            invitedBy={invitedBy}
-            invitedByName={userName}
-            loanId={loanId}
-            promotionId={promotionId}
-          />
-        ) : (
-          userName
-        ),
+      raw: user.name,
+      label: (
+        <PromotionCustomer
+          user={user}
+          invitedBy={invitedBy}
+          promotionUsers={promotionUsers}
+        />
+      ),
     },
+    { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
       raw: loanProgress.verificationStatus,
       label: <LoanProgress loanProgress={loanProgress} />,

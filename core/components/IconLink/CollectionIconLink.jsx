@@ -151,6 +151,8 @@ const CollectionIconLink = ({
   variant,
   placement,
   data,
+  replacementPopup,
+  noRoute,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
@@ -165,7 +167,7 @@ const CollectionIconLink = ({
     hasPopup,
   } = getIconConfig(relatedDoc, variant);
 
-  if (showPopups && hasPopup) {
+  if ((showPopups && hasPopup) || replacementPopup) {
     return (
       <CollectionIconLinkPopup
         {...relatedDoc}
@@ -173,6 +175,7 @@ const CollectionIconLink = ({
         forceOpen={forceOpen}
         placement={placement}
         data={data}
+        replacementPopup={replacementPopup}
       >
         <IconLink
           link={link}
@@ -182,6 +185,7 @@ const CollectionIconLink = ({
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
           showIcon={showIcon}
+          noRoute={noRoute}
         />
       </CollectionIconLinkPopup>
     );
@@ -197,6 +201,7 @@ const CollectionIconLink = ({
       iconClassName={iconClassName}
       showIcon={showIcon}
       noIcon
+      noRoute={noRoute}
     />
   );
 };
