@@ -11,6 +11,7 @@ import MiddlewareManager from '../../../utils/MiddlewareManager';
 import { impersonateMiddleware } from './analyticsHelpers';
 import TestAnalytics from './TestAnalytics';
 import EVENTS from '../events';
+import SessionService from '../../sessions/server/SessionService';
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -54,6 +55,7 @@ class Analytics {
     const {
       userId,
       connection: {
+        id: connectionId,
         clientAddress,
         httpHeaders: {
           'user-agent': userAgent,
@@ -74,6 +76,7 @@ class Analytics {
     this.host = getClientHost();
     this.userAgent = userAgent;
     this.referrer = referrer;
+    this.connectionId = connectionId;
 
     this.analytics.initAnalytics({
       ...context,
@@ -186,6 +189,11 @@ class Analytics {
         ...queryString,
         ...queryParams,
       },
+    });
+
+    SessionService.setLastActivity({
+      connectionId: this.connectionId,
+      lastPageVisited: path,
     });
   }
 }
