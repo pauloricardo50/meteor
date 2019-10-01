@@ -121,7 +121,7 @@ describe('Conversion functions', () => {
     });
   });
 
-  describe.only('To decimal number', () => {
+  describe('To decimal number', () => {
     it("Should return 0.1 for '0.1'", () => {
       expect(toDecimalNumber('0.1')).to.equal(0.1);
     });
