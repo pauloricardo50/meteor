@@ -15,6 +15,7 @@ describe('DisconnectNotification', () => {
     });
 
   beforeEach(() => {
+    getMountedComponent.reset();
     props = {};
   });
 
@@ -26,7 +27,7 @@ describe('DisconnectNotification', () => {
       .prop('open')).to.equal(false);
   });
 
-  it('changes to open if a disconnection happens, after timeout ms', (done) => {
+  it('changes to open if a disconnection happens, after TIMEOUT', (done) => {
     props = { status: { connected: true }, timeout: 500 };
     expect(component()
       .find(Snackbar)
@@ -52,21 +53,27 @@ describe('DisconnectNotification', () => {
     }, 600);
   });
 
-  it('changes back to closed if connection is made', () => {
-    props = { status: { connected: false } };
-    component().update();
-    expect(component()
-      .find(Snackbar)
-      .prop('open')).to.equal(true);
-
-    props = { status: { connected: true } };
-
-    component().setProps(props);
-
+  it('takes TIMEOUT to open if it starts disconnected, then changes back to closed instantly if connection is made', (done) => {
+    props = { status: { connected: false }, timeout: 500 };
     component().update();
 
-    expect(component()
-      .find(Snackbar)
-      .prop('open')).to.equal(false);
+    setTimeout(() => {
+      component().update();
+
+      expect(component()
+        .find(Snackbar)
+        .prop('open')).to.equal(true);
+
+      props = { status: { connected: true }, timeout: 500 };
+
+      component().setProps(props);
+
+      component().update();
+
+      expect(component()
+        .find(Snackbar)
+        .prop('open')).to.equal(false);
+      done();
+    }, 600);
   });
 });
