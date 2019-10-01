@@ -14,8 +14,8 @@ const PromotionCustomer = ({
   promotionUsers,
   invitedBy,
 }: PromotionCustomerProps) => {
-  const { _id, name, phoneNumber = '-', email } = user;
-
+  const { _id, name, phoneNumbers = ['-'], email } = user;
+  const isPro = Meteor.microservice === 'pro';
   const invitedByUser = invitedBy
     && promotionUsers
     && (!!promotionUsers.length
@@ -29,27 +29,29 @@ const PromotionCustomer = ({
     <CollectionIconLink
       relatedDoc={{ name, _id, collection: USERS_COLLECTION }}
       alwaysShowData={user}
-      noRoute={Meteor.microservice === 'pro'}
-      replacementPopup={(
-        <div>
-          <b>{name}</b>
+      noRoute={isPro}
+      replacementPopup={
+        isPro && (
           <div>
-            <i>Email:</i>
-            {' '}
-            {email}
+            <b>{name}</b>
+            <div>
+              <i>Email:</i>
+              {' '}
+              {email}
+            </div>
+            <div>
+              <i>Tél:</i>
+              {' '}
+              {phoneNumbers[0]}
+            </div>
+            <div>
+              <i>Invité par:</i>
+              {' '}
+              {invitingUser}
+            </div>
           </div>
-          <div>
-            <i>Tél:</i>
-            {' '}
-            {phoneNumber}
-          </div>
-          <div>
-            <i>Invité par:</i>
-            {' '}
-            {invitingUser}
-          </div>
-        </div>
-      )}
+        )
+      }
     />
   );
 };
