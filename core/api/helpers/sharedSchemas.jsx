@@ -10,9 +10,7 @@ import {
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
-import {
-  autoValueSentenceCase,
-} from './sharedSchemaValues';
+import { autoValueSentenceCase } from './sharedSchemaValues';
 
 export const createdAt = {
   type: Date,
@@ -217,4 +215,11 @@ export const cacheField = {
   type: Object,
   optional: true,
   blackbox: true,
+};
+
+export const decimalNegativeMoneyField = {
+  ...moneyField,
+  type: Number,
+  min: -1000000000,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL },
 };
