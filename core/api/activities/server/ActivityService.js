@@ -8,6 +8,7 @@ class ActivityService extends CollectionService {
   }
 
   addServerActivity(activity) {
+    console.log('activity:', activity);
     return this.insert({ ...activity, type: ACTIVITY_TYPES.SERVER });
   }
 

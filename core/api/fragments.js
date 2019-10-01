@@ -17,6 +17,7 @@ export const activity = () => ({
   title: 1,
   type: 1,
   updatedAt: 1,
+  user: { name: 1, email: 1 },
 });
 
 // //

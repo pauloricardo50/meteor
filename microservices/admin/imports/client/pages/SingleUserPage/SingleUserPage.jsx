@@ -21,6 +21,7 @@ const SingleUserPage = ({
   currentUser,
   children,
   history,
+  activities,
 }) => {
   const {
     loans,
@@ -31,6 +32,7 @@ const SingleUserPage = ({
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
   const isPro = user.roles.includes(ROLES.PRO);
+  console.log('activities:', activities);
 
   return (
     <section

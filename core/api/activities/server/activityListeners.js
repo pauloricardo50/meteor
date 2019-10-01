@@ -1,5 +1,5 @@
 import ServerEventService from '../../events/server/ServerEventService';
-import { removeLoanFromPromotion } from '../../methods';
+import { removeLoanFromPromotion, toggleAccount } from '../../methods';
 import { ACTIVITY_SECONDARY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -23,6 +23,24 @@ ServerEventService.addAfterMethodListener(
       title: `Enlevé de la promotion "${name}"`,
       description: userName ? `Par ${userName}` : '',
       createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  toggleAccount,
+  ({
+    params: { userId },
+    context: { userId: adminId },
+    result: isDisabled,
+  }) => {
+    const { name: adminName } = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    ActivityService.addServerActivity({
+      secondaryType: ACTIVITY_SECONDARY_TYPES.ACCOUNT_DISABLED,
+      userLink: { _id: userId },
+      title: `Compte ${isDisabled ? 'désactivé' : 'activé'}`,
+      description: adminName ? `Par ${adminName}` : '',
+      createdBy: adminId,
     });
   },
 );

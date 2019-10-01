@@ -651,6 +651,7 @@ export class UserServiceClass extends CollectionService {
     const userDetails = this.getUserDetails(userId);
     const { isDisabled } = userDetails;
     this.update({ userId, object: { isDisabled: !isDisabled, 'services.resume.loginTokens': [] } });
+    return !isDisabled;
   }
 }
 

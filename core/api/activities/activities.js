@@ -8,9 +8,7 @@ import {
   ACTIVITY_SECONDARY_TYPES,
   ACTIVITIES_COLLECTION,
 } from './activityConstants';
-import {
-  autoValueSentenceCase,
-} from '../helpers/sharedSchemaValues';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 
 const Activities = new Mongo.Collection(ACTIVITIES_COLLECTION);
 
@@ -53,6 +51,8 @@ const ActivitySchema = new SimpleSchema({
   loanLink: { type: Object, optional: true },
   'loanLink._id': { type: String, optional: true },
   shouldNotify: { type: Boolean, optional: true },
+  userLink: { type: Object, optional: true },
+  'userLink._id': { type: String, optional: true },
 });
 
 Activities.attachSchema(ActivitySchema);
