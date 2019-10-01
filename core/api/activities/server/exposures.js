@@ -17,7 +17,6 @@ exposeQuery({
         }
 
         if (userId) {
-          console.log('Link userId:', userId);
           filters['userLink._id'] = userId;
         }
 
