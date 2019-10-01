@@ -45,3 +45,8 @@ const makeSort = (isAscending = true) => {
 };
 
 export default makeSort;
+
+export const sortByStatus = (statuses, key = 'status') => (
+  { [key]: statusA },
+  { [key]: statusB },
+) => statuses.indexOf(statusA) - statuses.indexOf(statusB);
