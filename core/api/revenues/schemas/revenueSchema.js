@@ -5,7 +5,7 @@ import {
   createdAt,
   updatedAt,
   percentageField,
-  decimalMoneyField,
+  decimalNegativeMoneyField,
   cacheField,
 } from '../../helpers/sharedSchemas';
 import {
@@ -18,7 +18,7 @@ import {
 const RevenueSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  amount: { ...decimalMoneyField, optional: false },
+  amount: { ...decimalNegativeMoneyField, optional: false },
   description: { type: String, optional: true },
   type: {
     type: String,

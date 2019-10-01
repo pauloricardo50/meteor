@@ -121,7 +121,7 @@ describe('Conversion functions', () => {
     });
   });
 
-  describe('To decimal number', () => {
+  describe.only('To decimal number', () => {
     it("Should return 0.1 for '0.1'", () => {
       expect(toDecimalNumber('0.1')).to.equal(0.1);
     });
@@ -140,6 +140,30 @@ describe('Conversion functions', () => {
 
     it('Should return -1 for -1', () => {
       expect(toDecimalNumber(-1)).to.equal(-1);
+    });
+
+    it("Should return -1000.1 for '-1000.1'", () => {
+      expect(toDecimalNumber('-1000.1')).to.equal(-1000.1);
+    });
+
+    it("Should return -1000.1 for '-1000,1'", () => {
+      expect(toDecimalNumber('-1000,1')).to.equal(-1000.1);
+    });
+
+    it("Should return -1000.1 for '-1 000,1'", () => {
+      expect(toDecimalNumber('-1 000,1')).to.equal(-1000.1);
+    });
+
+    it("Should return -0.1 for '-0,1'", () => {
+      expect(toDecimalNumber('-0,1')).to.equal(-0.1);
+    });
+
+    it('Should return -. for -.', () => {
+      expect(toDecimalNumber('-.')).to.equal('-.');
+    });
+
+    it('Should return - for -', () => {
+      expect(toDecimalNumber('-')).to.equal('-');
     });
 
     it('should return the same value if given a falsy non-number', () => {
