@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import FileService from '../../../../files/server/FileService';
 
 export const MIME_ENCODING_SIZE_FACTOR = 5 / 7;
@@ -38,9 +40,9 @@ class FilesBinPacker {
   }
 
   addFile = (file) => {
-    const { Size } = file;
+    const { Size, Name } = file;
     if (Size > this.binCapacity) {
-      throw new Meteor.Error('Your file size exceeds maximum bin capacity');
+      throw new Meteor.Error(`Votre fichier "${Name}" dépasse la taille maximale possible`);
     }
     this.files = [...this.files, file];
   };

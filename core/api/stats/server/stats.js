@@ -1,6 +1,8 @@
 import moment from 'moment';
 
-import LoanService from '../loans/server/LoanService';
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
+import { sortByStatus } from 'core/utils/sorting';
+import LoanService from '../../loans/server/LoanService';
 
 const dateInPast = days =>
   moment()
@@ -51,5 +53,38 @@ export const loanHistogramResolver = async ({ period, withAnonymous }) => {
     { $group: { _id: '$date', count: { $sum: 1 } } },
     { $sort: { _id: 1 } },
   ]).toArray();
+  return aggregation;
+};
+
+// Gets all the closing+ loans that have no revenues, they should all have
+// some revenues
+export const loansWithoutRevenuesResolver = async () => {
+  const match = {
+    $match: {
+      status: {
+        $in: [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED],
+      },
+    },
+  };
+  const lookupRevenues = {
+    $lookup: {
+      from: 'revenues',
+      localField: 'revenueLinks',
+      foreignField: '_id',
+      as: 'revenues',
+    },
+  };
+  const filterHasRevenues = { $match: { revenues: { $size: 0 } } };
+  const project = { $project: { status: 1, _id: 1, name: 1, userCache: 1 } };
+  const sort = { $sort: { status: 1 } };
+
+  const aggregation = await LoanService.aggregate([
+    match,
+    lookupRevenues,
+    filterHasRevenues,
+    project,
+    sort,
+  ]).toArray();
+
   return aggregation;
 };

@@ -17,7 +17,7 @@ export const isUser = (user) => {
   return userHasRoles && intersection(userRoles, [ADMIN, DEV]).length === 0;
 };
 
-export const getUserDisplayName = ({ firstName, lastName, emails }) =>
+export const getUserDisplayName = ({ firstName, lastName, emails } = {}) =>
   [firstName, lastName].filter(name => name).join(' ')
   || (emails && emails[0] && emails[0].address)
   || '';
