@@ -295,8 +295,18 @@ export class LoanService extends CollectionService {
   };
 
   selectStructure = ({ loanId, structureId }) => {
+    const loan = this.get(loanId, {
+      fields: { structures: { id: 1, disabled: 1 }, selectedStructure: 1 },
+    });
+
+    const currentStructure = loan.structures.find(({ id }) => id === loan.selectedStructure);
+
+    if (currentStructure && currentStructure.disabled) {
+      throw new Meteor.Error('Vous ne pouvez pas changer votre plan financier, il est vérouillé');
+    }
+
     // Make sure the structure exists
-    const structureExists = this.get(loanId).structures.some(({ id }) => id === structureId);
+    const structureExists = loan.structures.some(({ id }) => id === structureId);
 
     if (structureExists) {
       return this.update({

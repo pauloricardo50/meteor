@@ -28,8 +28,8 @@ class CollectionService {
     return this.collection.remove(...args);
   }
 
-  get(id) {
-    return this.collection.findOne(id);
+  get(...args) {
+    return this.collection.findOne(...args);
   }
 
   safeGet(id) {
