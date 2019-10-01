@@ -1,9 +1,13 @@
 import { proInviteUser, adminCreateUser } from 'core/api/users/index';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
   toggleAccount,
   anonymousCreateUser,
+  sendEmailToAddress,
+  sendEmail,
+  sendEnrollmentEmail,
 } from '../../methods';
 import { ACTIVITY_SECONDARY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -185,3 +189,35 @@ ServerEventService.addAfterMethodListener(
     });
   },
 );
+
+// ServerEventService.addAfterMethodListener(
+//   [sendEmail, sendEmailToAddress],
+//   ({ params: { emailId, userId, address }, context: { userId: adminId } }) => {
+//     let user = {};
+
+//     if (!userId) {
+//       user = UserService.getByEmail(address);
+//     }
+
+//     ActivityService.addServerActivity({
+//       secondaryType: ACTIVITY_SECONDARY_TYPES.EMAIL_SENT,
+//       userLink: { _id: userId || user._id },
+//       title: 'Email envoyé',
+//       description: emailId,
+//       createdBy: adminId,
+//     });
+//   },
+// );
+
+// ServerEventService.addAfterMethodListener(
+//   [sendEnrollmentEmail],
+//   ({ params: { userId }, context: { userId: adminId } }) => {
+//     ActivityService.addServerActivity({
+//       secondaryType: ACTIVITY_SECONDARY_TYPES.EMAIL_SENT,
+//       userLink: { _id: userId },
+//       title: 'Email envoyé',
+//       description: EMAIL_IDS.ENROLL_ACCOUNT,
+//       createdBy: adminId,
+//     });
+//   },
+// );
