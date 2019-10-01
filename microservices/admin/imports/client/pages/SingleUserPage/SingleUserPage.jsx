@@ -14,6 +14,7 @@ import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
+import UserActivities from './UserActivities/UserActivities';
 
 const SingleUserPage = ({
   user,
@@ -32,7 +33,6 @@ const SingleUserPage = ({
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
   const isPro = user.roles.includes(ROLES.PRO);
-  console.log('activities:', activities);
 
   return (
     <section
@@ -45,6 +45,7 @@ const SingleUserPage = ({
         }}
         currentUser={currentUser}
       />
+      <UserActivities userId={userId} />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}

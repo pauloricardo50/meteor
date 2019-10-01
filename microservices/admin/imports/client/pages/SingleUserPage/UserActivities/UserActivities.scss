@@ -1,0 +1,90 @@
+.user-activities-timeline {
+  margin-top: 40px;
+  .timeline {
+    overflow-x: scroll;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 16px;
+  }
+
+  .user-activity-title {
+    position: relative;
+
+    h4 {
+      display: flex;
+      align-items: center;
+
+      margin: 0;
+      margin: 0;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      &.title {
+        margin-left: -4px;
+
+        .text {
+          overflow: hidden;
+
+          max-width: 250px;
+
+          vertical-align: middle;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .icon {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  li {
+    position: relative;
+
+    flex-basis: 250px;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    padding-bottom: 16px; // To avoid the scroll-bar from overlapping with text
+
+    &:hover {
+      .activity-modifier {
+        display: block;
+      }
+    }
+
+    .today {
+      position: absolute;
+      top: 0;
+      left: -8px;
+
+      width: 2px;
+      height: 100%;
+
+      background-color: red;
+
+      .today-dot {
+        position: absolute;
+        // content: '';
+        top: 0;
+        left: -3px;
+
+        width: 8px;
+        height: 8px;
+
+        border-radius: 50%;
+        background-color: red;
+      }
+    }
+  }
+}
