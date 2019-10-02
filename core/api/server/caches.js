@@ -41,9 +41,7 @@ Meteor.startup(() => {
   // Cache counts
   // They are currently broken, so we'll update them on each restart
   if (Meteor.isProduction) {
-    migrate('properties', 'loanCount', { loanCount: { $eq: 0 } });
-    migrate('organisations', 'lenderRulesCount', {
-      lenderRulesCount: { $eq: 0 },
-    });
+    migrate('properties', 'loanCount');
+    migrate('organisations', 'lenderRulesCount');
   }
 });
