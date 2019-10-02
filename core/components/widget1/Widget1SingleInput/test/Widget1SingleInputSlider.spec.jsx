@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import Slider from 'core/components/Material/Slider';
+import Slider from 'core/components/Slider';
 import IconButton from 'core/components/IconButton';
 import Widget1SingleInputSlider from '../Widget1SingleInputSlider';
 

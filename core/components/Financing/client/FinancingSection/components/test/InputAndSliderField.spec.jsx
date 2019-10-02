@@ -6,8 +6,8 @@ import sinon from 'sinon';
 import { mount } from 'core/utils/testHelpers/enzyme';
 
 import { InputAndSliderField } from '../InputAndSliderField';
-import MoneyInput from '../../../../../MoneyInput/MoneyInput';
-import Slider from '../../../../../Material/Slider';
+import MoneyInput from '../../../../../MoneyInput';
+import Slider from '../../../../../Slider';
 
 describe('InputAndSliderField', () => {
   let props;

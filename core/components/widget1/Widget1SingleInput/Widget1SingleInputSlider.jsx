@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Slider from 'core/components/Material/Slider';
+import Slider from 'core/components/Slider';
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
@@ -43,6 +43,7 @@ const Widget1SingleInputSlider = ({
       onChange={setValue}
       className="slider"
       tabIndex={-1}
+      debounce={false}
     />
     {showIncreaseButton(value, sliderMax, allowExtremeLoan) ? (
       <IconButton

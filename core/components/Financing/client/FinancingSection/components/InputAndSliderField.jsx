@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import connectField from 'uniforms/connectField';
-import Slider from 'core/components/Material/Slider';
+import Slider from 'core/components/Slider';
 
 import MoneyInput from '../../../../MoneyInput';
 
@@ -63,6 +63,7 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
         onChange={onChange}
         className="slider"
         disabled={disabled}
+        debounce={false}
       />
     </>
   );

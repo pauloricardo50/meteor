@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MuiSlider from 'core/components/Material/Slider';
+import MuiSlider from 'core/components/Slider';
 
 const styles = {
   div: {

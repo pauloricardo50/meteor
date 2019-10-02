@@ -15,6 +15,7 @@ const Range = ({
   value,
   onChange,
   tipFormatter = x => x,
+  debounce = true,
   ...rest
 }: RangeProps) => {
   const [fastValue, setFastValue] = useState(value);
@@ -22,15 +23,15 @@ const Range = ({
   // Only send the slider value to its parent after the slider has been
   // untouched for 300ms. This avoids performance issues if the slider value
   // is passed through other components that are expensive to update
-  useDebounce(() => onChange(fastValue), 300, [fastValue]);
+  useDebounce(() => debounce && onChange(fastValue), 300, [fastValue]);
 
   return (
     <RangeSlider
       min={min}
       max={max}
       defaultValue={defaultValue}
-      value={fastValue}
-      onChange={setFastValue}
+      value={debounce ? fastValue : value}
+      onChange={debounce ? setFastValue : onChange}
       allowCross={false}
       pushable
       tipFormatter={tipFormatter}
