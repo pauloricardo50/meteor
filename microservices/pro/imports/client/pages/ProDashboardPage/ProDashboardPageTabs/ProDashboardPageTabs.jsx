@@ -6,7 +6,6 @@ import T from 'core/components/Translation';
 import ProCustomersTable from 'core/components/ProCustomersTable';
 import ProPromotionsTable from './ProPromotionsTable';
 import ProPropertiesTable from './ProPropertiesTable';
-import ProOrganisationPropertiesTable from './ProOrganisationPropertiesTable';
 
 type ProDashboardPageTabsProps = {};
 
@@ -25,10 +24,9 @@ const getTabs = ({ currentUser }) => {
         </div>
       ),
     },
-    { id: 'properties', content: <ProPropertiesTable /> },
     {
-      id: 'organisationProperties',
-      content: <ProOrganisationPropertiesTable />,
+      id: 'properties',
+      content: <ProPropertiesTable currentUser={currentUser} />,
     },
     { id: 'promotions', content: <ProPromotionsTable /> },
   ].map(tab => ({
