@@ -7,10 +7,6 @@ import PropertiesTableContainer from 'core/components/PropertiesTable/Properties
 export default compose(
   PropertiesTableContainer,
   Component => (props) => {
-    if (!props.rows || !props.rows.length) {
-      return null;
-    }
-
     const { title } = props;
 
     return (
