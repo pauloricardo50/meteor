@@ -296,7 +296,7 @@ export class LoanService extends CollectionService {
 
   selectStructure = ({ loanId, structureId }) => {
     const loan = this.get(loanId, {
-      fields: { structures: { id: 1, disabled: 1 }, selectedStructure: 1 },
+      fields: { structures: 1, selectedStructure: 1 },
     });
 
     const currentStructure = loan.structures.find(({ id }) => id === loan.selectedStructure);
