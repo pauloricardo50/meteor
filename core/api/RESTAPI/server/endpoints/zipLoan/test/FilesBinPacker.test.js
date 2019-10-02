@@ -36,7 +36,7 @@ describe('FilesBinPacker', () => {
     const filesBinPacker = new FilesBinPacker([], (10 * 14) / 10);
     const files = [
       { Key: '1.pdf', Size: 8 },
-      { Key: '2.pdf', Size: 11, Name: 'myFile.pdf' },
+      { Key: '2.pdf', Size: 11, name: 'myFile.pdf' },
       { Key: '3.pdf', Size: 4 },
       { Key: '4.pdf', Size: 3 },
       { Key: '5.pdf', Size: 1 },

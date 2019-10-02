@@ -40,9 +40,9 @@ class FilesBinPacker {
   }
 
   addFile = (file) => {
-    const { Size, Name } = file;
+    const { Size, name } = file;
     if (Size > this.binCapacity) {
-      throw new Meteor.Error(`Le fichier "${Name}" dépasse la taille maximale possible`);
+      throw new Meteor.Error(`Le fichier "${name}" dépasse la taille maximale possible`);
     }
     this.files = [...this.files, file];
   };
