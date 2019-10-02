@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps, withProps, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -84,19 +84,19 @@ const getAnonymous = withAnonymous =>
   (withAnonymous ? undefined : { $in: [null, false] });
 
 export default compose(
-  mapProps(({ proUser, ...props }) => {
-    const { promotions = [], proProperties = [] } = proUser;
-    return {
-      ...props,
-      proUser,
-      propertyIds: proProperties.map(({ _id }) => _id),
-      promotionIds: promotions.map(({ _id }) => _id),
-    };
-  }),
+  withProps(({ proUser: { promotions = [], proProperties = [] } }) => ({
+    propertyIds: proProperties.map(({ _id }) => _id),
+    promotionIds: promotions.map(({ _id }) => _id),
+  })),
   withState('status', 'setStatus', {
     $in: Object.values(LOAN_STATUS).filter(s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST),
   }),
   withState('withAnonymous', 'setWithAnonymous', false),
+  withState(
+    'referredByUserId',
+    'setReferredByUserId',
+    ({ proUser }) => proUser._id,
+  ),
   withSmartQuery({
     query: proLoans,
     params: ({
@@ -106,12 +106,14 @@ export default compose(
       isAdmin = false,
       status,
       withAnonymous,
+      referredByUserId,
     }) => ({
       ...(isAdmin ? { userId } : {}),
       promotionId: { $in: promotionIds },
       propertyId: { $in: propertyIds },
       status,
       anonymous: getAnonymous(withAnonymous),
+      referredByUserId,
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',

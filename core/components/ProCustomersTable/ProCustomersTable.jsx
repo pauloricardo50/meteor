@@ -15,7 +15,10 @@ const ProCustomersTable = ({
   status,
   setStatus,
   withAnonymous,
-  setWithAnonymous
+  setWithAnonymous,
+  referredByUserId,
+  setReferredByUserId,
+  proUser,
 }: ProCustomersTableProps) => (
   <>
     <div>
@@ -25,13 +28,24 @@ const ProCustomersTable = ({
         options={LOAN_STATUS}
         id="status"
         label="Statut"
-        className="table-filter mr-8"
+        className="mr-8"
       />
       <Select
         label="Anonymes"
         value={withAnonymous}
         onChange={(_, v) => setWithAnonymous(v)}
         options={[{ id: true, label: 'Avec' }, { id: false, label: 'Sans' }]}
+        className="mr-8"
+      />
+      <Select
+        label="Référé par"
+        value={referredByUserId}
+        onChange={(_, v) => setReferredByUserId(v)}
+        options={[
+          { id: proUser._id, label: 'Moi' },
+          { id: false, label: 'Tous' },
+        ]}
+        className="mr-8"
       />
     </div>
     <Table

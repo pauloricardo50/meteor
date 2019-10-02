@@ -23,7 +23,6 @@ import {
 import { LOAN_STATUS } from '../loanConstants';
 import {
   proLoansResolver,
-  getLoanIds,
   proPromotionLoansResolver,
   proPropertyLoansResolver,
   proReferredByLoansResolver,
@@ -176,6 +175,7 @@ exposeQuery({
         organisationId,
         promotionId,
         propertyId,
+        referredByUserId,
       } = params;
       params.calledByUserId = userId;
 
@@ -203,6 +203,15 @@ exposeQuery({
       }
 
       SecurityService.checkUserIsPro(userId);
+
+      if (referredByUserId && referredByUserId !== userId) {
+        SecurityService.checkUserIsAdmin(userId);
+      }
+
+      if (!referredByUserId) {
+        // If false is provided here, remove it from the filters
+        delete params.referredByUserId;
+      }
     },
     validateParams: {
       anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
@@ -213,6 +222,7 @@ exposeQuery({
       organisationId: Match.Maybe(String),
       fetchOrganisationLoans: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
+      referredByUserId: Match.Maybe(Match.OneOf(String, Boolean)),
     },
   },
   // cacher: {

@@ -70,6 +70,51 @@ describe('proLoans', () => {
 
       expect(leadAndClosingLoans.length).to.equal(2);
     });
+
+    it('filters loans by referredByUser', () => {
+      generator({
+        users: [
+          {
+            _id: 'pro1',
+            _factory: 'pro',
+            referredCustomers: [
+              { loans: [{ status: LOAN_STATUS.CLOSING, _id: 'loanId' }, {}] },
+              { loans: {} },
+            ],
+          },
+          {
+            _id: 'pro2',
+            _factory: 'pro',
+            referredCustomers: [
+              { loans: [{ status: LOAN_STATUS.CLOSING }, {}] },
+              { loans: { status: LOAN_STATUS.CLOSING } },
+            ],
+          },
+        ],
+      });
+
+      const loans1 = proLoans
+        .clone({
+          userId: 'pro1',
+          calledByUserId: 'pro1',
+          referredByUserId: 'pro1',
+        })
+        .fetch();
+
+      expect(loans1.length).to.equal(3);
+
+      const loans2 = proLoans
+        .clone({
+          userId: 'pro1',
+          calledByUserId: 'pro1',
+          status: { $in: [LOAN_STATUS.CLOSING] },
+          referredByUserId: 'pro1',
+        })
+        .fetch();
+
+      expect(loans2.length).to.equal(1);
+      expect(loans2[0]._id).to.equal('loanId');
+    });
   });
 
   describe('organisationLoans', () => {

@@ -30,7 +30,7 @@ Meteor.startup(() => {
   //     { 'assignedEmployeeCache.firstName': { $exists: false } },
   //   ],
   // });
-  // migrate('loans', 'userCache', { 'userCache._id': { $exists: false } });
+  migrate('loans', 'userCache', { 'userCache.referredByUserLink': { $exists: false } });
   // migrate('loans', 'lendersCache', { lendersCache: { $exists: false } });
   // migrate('loans', 'tasksCache', { tasksCache: { $exists: false } });
   // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
