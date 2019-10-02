@@ -1,4 +1,9 @@
-import { proInviteUser, adminCreateUser } from 'core/api/users/index';
+import {
+  proInviteUser,
+  adminCreateUser,
+  assignAdminToUser,
+  assignAdminToNewUser,
+} from 'core/api/users/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -209,7 +214,7 @@ ServerEventService.addAfterMethodListener(
       title: 'Mot de passe choisi',
       createdBy: userId,
     });
-    
+
     if (!firstConnectionActivity) {
       ActivityService.addServerActivity({
         type: ACTIVITY_TYPES.EVENT,
@@ -217,6 +222,23 @@ ServerEventService.addAfterMethodListener(
         userLink: { _id: userId },
         title: 'Première connexion',
         createdBy: userId,
+      });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  [assignAdminToUser, assignAdminToNewUser],
+  ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
+    const { currentAssignee, newAssignee } = result;
+    if (currentAssignee !== newAssignee) {
+      ActivityService.addServerActivity({
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE },
+        userLink: { _id: userId },
+        title: 'Changemenet de conseiller',
+        description: newAssignee,
+        createdBy: adminId,
       });
     }
   },
