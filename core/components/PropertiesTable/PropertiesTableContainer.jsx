@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { compose, mapProps, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
+import debounce from 'lodash/debounce';
 
 import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
@@ -45,8 +46,6 @@ export const makeMapProperty = ({ history, currentUser }) => ({
     },
   ],
   handleClick: () => {
-    console.log('users:', users);
-    console.log('currentUser:', currentUser);
     if (users.find(({ _id }) => _id === currentUser._id)) {
       history.push(createRoute('/properties/:propertyId', { propertyId }));
     }
@@ -59,28 +58,22 @@ export default compose(
     'setFetchOrganisationProperties',
     false,
   ),
+  withState('propertyValue', 'setPropertyValue', { $gte: 0, $lte: 5000000 }),
   withSmartQuery({
     query: proProperties,
-    params: ({ fetchOrganisationProperties }) => ({
+    params: ({ fetchOrganisationProperties, propertyValue }) => ({
       $body: proPropertySummary(),
       fetchOrganisationProperties,
+      value: propertyValue,
     }),
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',
   }),
   withRouter,
-  mapProps(({
-    properties,
-    history,
-    currentUser,
-    fetchOrganisationProperties,
-    setFetchOrganisationProperties,
-  }) => ({
+  withProps(({ properties, history, currentUser }) => ({
     rows: properties.map(makeMapProperty({ history, currentUser })),
     columnOptions,
     title: <T id="ProDashboardPage.properties" />,
-    fetchOrganisationProperties,
-    setFetchOrganisationProperties,
   })),
 );

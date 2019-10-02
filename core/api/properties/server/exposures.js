@@ -43,15 +43,24 @@ exposeQuery({
         });
       }
     },
-    embody: (body, embodyParams) => {
+    embody: (body) => {
       body.$filter = ({ filters, params }) => {
-        const { _id: propertyId, userId, fetchOrganisationProperties } = params;
+        const {
+          _id: propertyId,
+          userId,
+          fetchOrganisationProperties,
+          value,
+        } = params;
         if (propertyId) {
           filters._id = propertyId;
         }
 
         if (userId) {
           filters['userLinks._id'] = userId;
+        }
+
+        if (value) {
+          filters.value = value;
         }
 
         if (fetchOrganisationProperties) {
@@ -85,6 +94,7 @@ exposeQuery({
     validateParams: {
       userId: Match.Maybe(String),
       fetchOrganisationProperties: Match.Maybe(Boolean),
+      value: Match.Maybe(Match.OneOf(Object, Number)),
     },
   },
   options: { allowFilterById: true },
@@ -109,7 +119,7 @@ exposeQuery({
 
       Security.properties.isAllowedToView({ propertyId, userId });
     },
-    embody: (body, embodyParams) => {
+    embody: (body) => {
       body.$filter = ({ filters, params: { propertyId } }) => {
         filters._id = propertyId;
       };
