@@ -24,9 +24,13 @@ const getSeries = ({ data, value }) => {
     return [
       {
         name: 'Attendu',
-        data: data.map(({ expectedRevenues }) => expectedRevenues),
+        data: data.map(({ expectedRevenues }) =>
+          Math.round(expectedRevenues)),
       },
-      { name: 'Payé', data: data.map(({ paidRevenues }) => paidRevenues) },
+      {
+        name: 'Payé',
+        data: data.map(({ paidRevenues }) => Math.round(paidRevenues)),
+      },
     ];
   case 'loanValue':
     return [
@@ -59,7 +63,19 @@ const MonitoringChart = ({
           plotOptions: {
             column: {
               stacking: value === 'revenues' ? 'normal' : undefined,
+              dataLabels: {
+                formatter() {
+                  if (value === 'revenues') {
+                    return `${Math.round(this.y / 1000)}k`;
+                  }
+                  if (value === 'loanValue') {
+                    return `${Math.round(this.y / 1000000)}M`;
+                  }
+                  return this.y;
+                },
+              },
             },
+            series: { dataLabels: { enabled: true } },
           },
         }}
         series={series}

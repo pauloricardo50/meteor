@@ -9,7 +9,7 @@ const getAnonymous = withAnonymous =>
 
 export default compose(
   withStateHandlers(
-    { groupBy: 'status', value: 'count', withAnonymous: false },
+    { groupBy: 'revenueDate', value: 'revenues', withAnonymous: false },
     { setState: () => newState => newState },
   ),
   withProps(({ setState }) => ({

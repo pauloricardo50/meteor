@@ -11,7 +11,6 @@ SyncedCron.add({
   job() {
     try {
       const count = SessionService.removeOldSessions();
-      console.log(`Removed ${count} sessions`);
     } catch (error) {
       SlackService.sendError({
         error,

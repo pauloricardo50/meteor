@@ -39,8 +39,11 @@ Meteor.startup(() => {
   // });
 
   // Cache counts
-  // migrate('properties', 'loanCount', { loanCount: { $eq: 0 } });
-  // migrate('organisations', 'lenderRulesCount', {
-  //   lenderRulesCount: { $eq: 0 },
-  // });
+  // They are currently broken, so we'll update them on each restart
+  if (Meteor.isProduction) {
+    migrate('properties', 'loanCount', { loanCount: { $eq: 0 } });
+    migrate('organisations', 'lenderRulesCount', {
+      lenderRulesCount: { $eq: 0 },
+    });
+  }
 });

@@ -1,4 +1,5 @@
 {
+  "ProCustomersTable.customer": "Client",
   "PromotionLotLoansTable.customer": "Client",
   "Forms.projectStatus": "Phase",
   "Forms.projectStatus.placeholder": "A - Préparation",
