@@ -4,7 +4,7 @@ import { Match, check } from 'meteor/check';
 import { getCookie } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
 
-if (Meteor.isTest) {
+if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;
 } else {
   Mutation.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
