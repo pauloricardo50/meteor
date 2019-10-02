@@ -77,11 +77,13 @@ ServerEventService.addAfterMethodListener(
 
     let referredBy;
     let referredByOrg;
+    let mainOrg;
 
     if (referralId) {
       referredBy = UserService.fetchOne({
         $filters: { _id: referralId },
         name: 1,
+        organisations: { name: 1 },
       });
       referredByOrg = OrganisationService.fetchOne({
         $filters: {
@@ -93,16 +95,15 @@ ServerEventService.addAfterMethodListener(
 
     let description = '';
 
-    if (!referredBy && referredByOrg) {
+    if (referredBy) {
+      description = `Référé par ${getUserNameAndOrganisation({
+        user: referredBy,
+      })}`;
+      mainOrg = UserService.getUserMainOrganisation(referredBy._id);
+    }
+
+    if (referredByOrg) {
       description = `Référé par ${referredByOrg.name}`;
-    }
-
-    if (referredBy && !referredByOrg) {
-      description = `Référé par ${referredBy.name}`;
-    }
-
-    if (referredBy && referredByOrg) {
-      description = `Référé par ${referredBy.name} (${referredByOrg.name})`;
     }
 
     ActivityService.addCreatedAtActivity({
@@ -114,7 +115,7 @@ ServerEventService.addAfterMethodListener(
       metadata: {
         details: {
           referredBy: pick(referredBy, ['_id', 'name']),
-          referredByOrg: pick(referredByOrg, ['_id', 'name']),
+          referredByOrg: pick(referredByOrg || mainOrg, ['_id', 'name']),
         },
       },
     });
@@ -273,7 +274,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   [setUserReferredBy, setUserReferredByOrganisation],
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
-    const { oldReferral, newReferral, referralType } = result;
+    const { oldReferral = {}, newReferral = {}, referralType } = result;
     if (oldReferral._id !== newReferral._id) {
       const description = referralType === 'org'
         ? newReferral.name
@@ -282,10 +283,14 @@ ServerEventService.addAfterMethodListener(
         type: ACTIVITY_TYPES.EVENT,
         metadata: {
           event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-          details: { oldReferral, newReferral, referralType },
+          details: {
+            oldReferral: pick(oldReferral, ['_id', 'name']),
+            newReferral: pick(newReferral, ['_id', 'name']),
+            referralType,
+          },
         },
         userLink: { _id: userId },
-        title: 'Changemenet de referral',
+        title: 'Changement de referral',
         description,
         createdBy: adminId,
       });

@@ -78,11 +78,11 @@ export class UserServiceClass extends CollectionService {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
-
+    
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
     }
-
+    
     if (referralId) {
       const referralUser = this.fetchOne({
         $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
