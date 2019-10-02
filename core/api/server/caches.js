@@ -9,11 +9,11 @@ Organisations.cacheCount({
   cacheField: 'lenderRulesCount',
 });
 
-// Properties.cacheCount({
-//   collection: Loans,
-//   referenceField: 'propertyIds',
-//   cacheField: 'loanCount',
-// });
+Properties.cacheCount({
+  collection: Loans,
+  referenceField: 'propertyIds',
+  cacheField: 'loanCount',
+});
 
 Meteor.startup(() => {
   // Caches
