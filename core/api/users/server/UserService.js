@@ -132,11 +132,11 @@ export class UserServiceClass extends CollectionService {
 
   assignAdminToUser = ({ userId, adminId }) => {
     if (adminId) {
-      const { assignedEmployee: { name: oldAssignee } = {} } = this.fetchOne({
+      const { assignedEmployee: oldAssignee = {} } = this.fetchOne({
         $filters: { _id: userId },
         assignedEmployee: { name: 1 },
       }) || {};
-      const { name: newAssignee } = this.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+      const newAssignee = this.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
 
       this.update({ userId, object: { assignedEmployeeId: adminId } });
       return { oldAssignee, newAssignee };
@@ -479,9 +479,8 @@ export class UserServiceClass extends CollectionService {
       });
 
       return {
-        oldReferral:
-          oldReferral && getUserNameAndOrganisation({ user: oldReferral }),
-        newReferral: 'Personne',
+        oldReferral,
+        referralType: 'user',
       };
     }
     if (!organisationId) {
@@ -504,16 +503,14 @@ export class UserServiceClass extends CollectionService {
     });
 
     return {
-      oldReferral:
-        oldReferral && getUserNameAndOrganisation({ user: currentReferral }),
-      newReferral: getUserNameAndOrganisation({ user: newReferral }),
+      oldReferral,
+      newReferral,
+      referralType: 'user',
     };
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
-    const {
-      referredByOrganisation: { name: oldReferral } = {},
-    } = this.fetchOne({
+    const { referredByOrganisation: oldReferral = {} } = this.fetchOne({
       $filters: { _id: userId },
       referredByOrganisation: { name: 1 },
     });
@@ -523,9 +520,9 @@ export class UserServiceClass extends CollectionService {
         object: { referredByOrganisationLink: true },
         operator: '$unset',
       });
-      return { oldReferral, newReferral: 'Aucune organisation' };
+      return { oldReferral, referralType: 'org' };
     }
-    const { name: newReferral } = OrganisationService.fetchOne({
+    const newReferral = OrganisationService.fetchOne({
       $filters: { _id: organisationId },
       name: 1,
     });
@@ -533,7 +530,7 @@ export class UserServiceClass extends CollectionService {
       userId,
       object: { referredByOrganisationLink: organisationId },
     });
-    return { oldReferral, newReferral };
+    return { oldReferral, newReferral, referralType: 'org' };
   }
 
   proInviteUserToOrganisation({ user, organisationId, title, proId, adminId }) {

@@ -1,3 +1,6 @@
+import pick from 'lodash/pick';
+
+import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -108,7 +111,12 @@ ServerEventService.addAfterMethodListener(
       title: 'Compte créé',
       description,
       createdBy: userId,
-      metadata: { details: { referredBy, referredByOrg } },
+      metadata: {
+        details: {
+          referredBy: pick(referredBy, ['_id', 'name']),
+          referredByOrg: pick(referredByOrg, ['_id', 'name']),
+        },
+      },
     });
   },
 );
@@ -180,7 +188,13 @@ ServerEventService.addAfterMethodListener(
       title: 'Compte créé',
       description,
       createdBy: proId,
-      metadata: { details: { referredBy, referredByOrg, referredByAPIOrg } },
+      metadata: {
+        details: {
+          referredBy: pick(referredBy, ['_id', 'name']),
+          referredByOrg: pick(referredByOrg, ['_id', 'name']),
+          referredByAPIOrg: pick(referredByAPIOrg, ['_id', 'name']),
+        },
+      },
     });
   },
 );
@@ -199,7 +213,7 @@ ServerEventService.addAfterMethodListener(
       title: 'Compte créé',
       description: adminName && `Par ${adminName}`,
       createdBy: adminId,
-      metadata: { details: { admin } },
+      metadata: { details: { admin: pick(admin, ['_id', 'name']) } },
     });
   },
 );
@@ -237,16 +251,19 @@ ServerEventService.addAfterMethodListener(
   [assignAdminToUser, assignAdminToNewUser],
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
     const { oldAssignee, newAssignee } = result;
-    if (oldAssignee !== newAssignee) {
+    if (oldAssignee._id !== newAssignee._id) {
       ActivityService.addServerActivity({
         type: ACTIVITY_TYPES.EVENT,
         metadata: {
           event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
-          details: { oldAssignee, newAssignee },
+          details: {
+            oldAssignee: pick(oldAssignee, ['_id', 'name']),
+            newAssignee: pick(newAssignee, ['_id', 'name']),
+          },
         },
         userLink: { _id: userId },
         title: 'Changemenet de conseiller',
-        description: newAssignee,
+        description: newAssignee.name,
         createdBy: adminId,
       });
     }
@@ -256,17 +273,20 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   [setUserReferredBy, setUserReferredByOrganisation],
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
-    const { oldReferral, newReferral } = result;
-    if (oldReferral !== newReferral) {
+    const { oldReferral, newReferral, referralType } = result;
+    if (oldReferral._id !== newReferral._id) {
+      const description = referralType === 'org'
+        ? newReferral.name
+        : getUserNameAndOrganisation({ user: newReferral });
       ActivityService.addServerActivity({
         type: ACTIVITY_TYPES.EVENT,
         metadata: {
           event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-          details: { oldReferral, newReferral },
+          details: { oldReferral, newReferral, referralType },
         },
         userLink: { _id: userId },
         title: 'Changemenet de referral',
-        description: newReferral,
+        description,
         createdBy: adminId,
       });
     }
