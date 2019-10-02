@@ -47,7 +47,7 @@ describe('BorrowerService ', () => {
 
       const { firstName } = BorrowerService.get(borrower._id);
 
-      expect(firstName).to.equal('bob');
+      expect(firstName).to.equal('Bob');
     });
   });
 

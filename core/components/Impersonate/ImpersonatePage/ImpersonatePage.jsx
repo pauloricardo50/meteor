@@ -4,19 +4,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { impersonateUser } from '../../../api/methods';
+import impersonateNotification from './impersonateNotification';
 
 export const impersonate = ({ userId, authToken, history }) => {
   impersonateUser
     .run({ userId, authToken })
     .then(({ emails }) => {
       Meteor.connection.setUserId(userId);
-      import('../../../utils/notification').then(({ default: notification }) => {
-        notification.success({
-          message: <span id="impersonation-success-message">Yay</span>,
-          description: `Actuellement connecté comme ${emails[0].address}`,
-          duration: 5,
-        });
-      });
+      impersonateNotification(emails);
       if (history) {
         history.push('/');
       }

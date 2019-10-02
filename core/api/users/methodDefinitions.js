@@ -172,3 +172,11 @@ export const anonymousCreateUser = new Method({
     referralId: Match.Maybe(String),
   },
 });
+
+// Toggle user account - enable or disable
+export const toggleAccount = new Method({
+  name: 'toggleAccount',
+  params: {
+    userId: String,
+  },
+});

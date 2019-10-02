@@ -52,8 +52,8 @@ describe('PromotionService', function () {
 
       PropertyService.find({}).forEach((property) => {
         expect(property).to.deep.include({
-          address1: 'address1',
-          address2: 'address2',
+          address1: 'Address1',
+          address2: 'Address2',
           city: 'Geneva',
           zipCode: 1200,
           canton: 'GE',
@@ -435,9 +435,9 @@ describe('PromotionService', function () {
       });
 
       expect(PropertyService.findOne()).to.deep.include({
-        address1: 'address1',
-        address2: 'address2',
-        city: 'city',
+        address1: 'Address1',
+        address2: 'Address2',
+        city: 'City',
         zipCode: 1400,
         canton: 'VD',
       });
@@ -668,7 +668,7 @@ describe('PromotionService', function () {
           loanId: 'loanId',
           promotionId: 'promoId',
           promotionLotIds: [],
-        })).to.throw('"lot 1"');
+        })).to.throw('"Lot 1"');
     });
   });
 

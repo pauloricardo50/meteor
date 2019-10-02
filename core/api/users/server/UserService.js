@@ -15,7 +15,7 @@ import OrganisationService from '../../organisations/server/OrganisationService'
 import SecurityService from '../../security';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
-import { roundRobinAdvisors } from './userServerContants';
+import roundRobinAdvisors from './roundRobinAdvisors';
 import Users from '../users';
 
 export class UserServiceClass extends CollectionService {
@@ -633,6 +633,27 @@ export class UserServiceClass extends CollectionService {
     }
 
     return { organisation: referredByOrganisation || {}, user: {} };
+  }
+
+  // May be we can replace one of our existing method or keep this one here?
+  getUserDetails(userId) {
+    if (typeof userId === 'string') {
+      const user = this.get(userId);
+      if (!(user && typeof user)) {
+        throw new Meteor.Error('Utilisateur non trouvé');
+      }
+      return user;
+    }
+    throw new Meteor.Error('Valeur invalide');
+  }
+
+  toggleAccount({ userId }) {
+    const userDetails = this.getUserDetails(userId);
+    const { isDisabled } = userDetails;
+    this.update({
+      userId,
+      object: { isDisabled: !isDisabled, 'services.resume.loginTokens': [] },
+    });
   }
 }
 

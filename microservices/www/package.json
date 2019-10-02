@@ -31,6 +31,7 @@
     "connect-route": "^0.1.5",
     "core-js": "^3.1.4",
     "faker": "^4.1.0",
+    "googleapis": "^43.0.0",
     "highcharts-export-data": "^0.1.7",
     "html-parse-stringify": "^1.0.3",
     "i18n-iso-countries": "^4.3.1",

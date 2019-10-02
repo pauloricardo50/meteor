@@ -16,7 +16,7 @@ Properties.cacheCount({
 });
 
 Meteor.startup(() => {
-  // migrate('properties', 'loanCount', { loanCount: { $exists: false } });
+  // Caches
   // migrate('promotionLots', 'promotionCache', {
   //   promotionCache: { $exists: false },
   // });
@@ -37,7 +37,13 @@ Meteor.startup(() => {
   // migrate('lenderRules', 'organisationCache', {
   //   'organisationCache._id': { $exists: false },
   // });
-  // migrate('organisations', 'lenderRulesCount', {
-  //   lenderRulesCount: { $exists: false },
-  // });
+
+  // Cache counts
+  // They are currently broken, so we'll update them on each restart
+  if (Meteor.isProduction) {
+    migrate('properties', 'loanCount', { loanCount: { $eq: 0 } });
+    migrate('organisations', 'lenderRulesCount', {
+      lenderRulesCount: { $eq: 0 },
+    });
+  }
 });

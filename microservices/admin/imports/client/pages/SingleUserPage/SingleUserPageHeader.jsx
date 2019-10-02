@@ -14,7 +14,8 @@ import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import { sendEnrollmentEmail } from 'core/api';
+import Toggle from 'core/components/Toggle';
+import { sendEnrollmentEmail, toggleAccount } from 'core/api';
 import {
   ROLES,
   USERS_COLLECTION,
@@ -41,15 +42,16 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     email,
     organisations = [],
     emails = [],
+    isDisabled,
   } = user;
-
   const { roles: currentUserRoles = [] } = currentUser || {};
-
   const allowAssign = currentUserRoles.includes(ROLES.DEV)
     || (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;
-
+  const toggleUserAccount = () => {
+    toggleAccount.run({ userId });
+  };
   return (
     <div className="single-user-page-header">
       <Helmet>
@@ -75,7 +77,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
-
+      <Toggle labelLeft={<T id={`SingleUserPage.Enabled`} />} 
+        toggled={!isDisabled} onToggle={toggleUserAccount} />
       <div className="bottom">
         <div>
           <LastSeen userId={userId} />
@@ -166,6 +169,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 };
 
 SingleUserPageHeader.propTypes = {
+  currentUser: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
 };
 

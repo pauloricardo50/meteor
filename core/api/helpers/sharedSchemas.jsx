@@ -10,6 +10,8 @@ import {
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
+import { autoValueSentenceCase } from './sharedSchemaValues';
+
 export const createdAt = {
   type: Date,
   autoValue() {
@@ -45,15 +47,23 @@ export const additionalDocuments = initialDocuments => ({
 });
 
 export const address = {
-  address1: { type: String, optional: true },
-  address2: { type: String, optional: true },
+  address1: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+  },
+  address2: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+  },
   zipCode: {
     type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 99999,
   },
-  city: { type: String, optional: true },
+  city: { type: String, optional: true, autoValue: autoValueSentenceCase },
   country: {
     type: String,
     optional: true,
@@ -205,4 +215,11 @@ export const cacheField = {
   type: Object,
   optional: true,
   blackbox: true,
+};
+
+export const decimalNegativeMoneyField = {
+  ...moneyField,
+  type: Number,
+  min: -1000000000,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL },
 };

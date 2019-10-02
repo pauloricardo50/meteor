@@ -73,6 +73,22 @@ const determineComponentFromProps = ({
     };
   }
 
+  if (
+    uniforms
+    && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL
+  ) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: {
+        margin: 'normal',
+        decimal: true,
+        negative: true,
+        variant: 'outlined',
+      },
+    };
+  }
+
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW) {
     return {
       Component: HtmlPreview,

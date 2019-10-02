@@ -61,8 +61,14 @@ export function toDecimalNumber(value) {
   if (typeof value === 'number') {
     return value;
   }
+
+  // If only negative sign is typed
+  if (value === '-.' || value === '-') {
+    return value;
+  }
+
   // Remove unwanted characters, except digits, dots and commas
-  const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
+  const newValue = value ? String(value).replace(/[^\d.,\-]/g, '') : value;
   // replace commas with dots
   const commaReplaced = newValue
     ? Number(newValue.replace(',', '.'))

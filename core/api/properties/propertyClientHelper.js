@@ -79,7 +79,11 @@ export const shouldAnonymize = ({
 
   const { displayCustomerNames } = permissions;
 
-  if (displayCustomerNames === false || !customerOwnerType) {
+  if (
+    displayCustomerNames === false
+    || !displayCustomerNames
+    || !customerOwnerType
+  ) {
     return true;
   }
 
@@ -100,6 +104,7 @@ export const shouldAnonymize = ({
       shouldHideForPropertyStatus,
       referredBy: displayCustomerNames.referredBy,
     });
+
   default:
     return true;
   }

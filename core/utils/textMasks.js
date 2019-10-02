@@ -33,3 +33,13 @@ export const decimalMask = createNumberMask({
   requireDecimal: false,
   allowLeadingZeroes: true,
 });
+
+export const swissFrancDecimalNegativeMask = createNumberMask({
+  prefix: '',
+  suffix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ' ',
+  allowDecimal: true,
+  requireDecimal: true,
+  allowNegative: true,
+});

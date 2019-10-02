@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
+import merge from 'lodash/merge';
 
 const initialazeHighcharts = () => {
   ReactHighcharts.Highcharts.setOptions({
@@ -81,7 +82,7 @@ export default class BaseChart extends PureComponent {
 
     return (
       <ReactHighcharts
-        config={config}
+        config={merge({}, { credits: { enabled: false } }, config)}
         ref={(c) => {
           this.chart = c;
         }}

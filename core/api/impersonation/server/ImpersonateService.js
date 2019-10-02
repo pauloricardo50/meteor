@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import Users from '../../users';
 import Security from '../../security';
+import SessionService from '../../sessions/server/SessionService';
 
 class ImpersonateService {
   /**
@@ -11,6 +12,7 @@ class ImpersonateService {
    * @param {*} userIdToImpersonate
    */
   impersonate({ context, authToken, userIdToImpersonate }) {
+    const { connection: { id: connectionId } = {} } = context;
     const user = this._findUserByToken(authToken);
 
     if (user) {
@@ -18,6 +20,8 @@ class ImpersonateService {
     } else {
       this._throwNotAuthorized();
     }
+
+    SessionService.setIsImpersonate(connectionId, true);
 
     context.setUserId(userIdToImpersonate);
     return Users.findOne(userIdToImpersonate);

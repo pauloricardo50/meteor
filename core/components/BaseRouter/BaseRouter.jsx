@@ -9,7 +9,7 @@ import history from 'core/utils/history';
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage/loadable';
-import DisconnectModal from '../DisconnectModal';
+import DisconnectNotification from '../DisconnectNotification';
 import MicroserviceHead from '../MicroserviceHead';
 
 import Switch from './Switch';
@@ -55,7 +55,7 @@ const BaseRouter = ({
         can't put it higher up, because it needs
         react-intl to display messages */}
       <ErrorBoundary helper="app">
-        <DisconnectModal />
+        <DisconnectNotification />
 
         <Router history={history}>
           <ModalManager>

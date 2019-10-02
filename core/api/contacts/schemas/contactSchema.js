@@ -1,11 +1,20 @@
 import SimpleSchema from 'simpl-schema';
 import { createdAt, updatedAt, address } from '../../helpers/sharedSchemas';
+import {
+  autoValueSentenceCase,
+} from '../../helpers/sharedSchemaValues';
 
 const ContactSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  firstName: String,
-  lastName: String,
+  firstName: {
+    type: String,
+    autoValue: autoValueSentenceCase,
+  },
+  lastName: {
+    type: String,
+    autoValue: autoValueSentenceCase,
+  },
   ...address,
   emails: { type: Array, optional: true },
   'emails.$': Object,

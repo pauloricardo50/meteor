@@ -10,11 +10,11 @@ import {
   moneyField,
   userLinksSchema,
   documentsField,
-  cacheField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -85,11 +85,13 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     uniforms: { placeholder: null },
+    autoValue: autoValueSentenceCase,
   },
   description: {
     type: String,
     optional: true,
     uniforms: { placeholder: null, multiline: true, rows: 5, rowsMax: 15 },
+    autoValue: autoValueSentenceCase,
   },
   category: {
     type: String,

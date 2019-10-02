@@ -7,7 +7,11 @@ import FormHelperText from '../Material/FormHelperText';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 import FormControl from '../Material/FormControl';
 import Input from '../Material/Input';
-import { swissFrancMask, swissFrancMaskDecimal } from '../../utils/textMasks';
+import {
+  swissFrancMask,
+  swissFrancMaskDecimal,
+  swissFrancDecimalNegativeMask,
+} from '../../utils/textMasks';
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 
 type MoneyInputProps = {
@@ -28,11 +32,17 @@ const MoneyInput = ({
   required,
   margin,
   decimal = false,
+  negative = false,
   ...props
 }: MoneyInputProps) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
   const parse = decimal ? toDecimalNumber : toNumber;
-  const mask = decimal ? swissFrancMaskDecimal : swissFrancMask;
+
+  const mask = decimal
+    ? negative
+      ? swissFrancDecimalNegativeMask
+      : swissFrancMaskDecimal
+    : swissFrancMask;
 
   return (
     <FormControl

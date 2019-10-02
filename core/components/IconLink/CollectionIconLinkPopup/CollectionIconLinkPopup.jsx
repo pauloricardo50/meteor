@@ -66,14 +66,20 @@ export default class CollectionIconLinkPopup extends Component<
   };
 
   render() {
-    const { children, forceOpen, placement, data: overrideData } = this.props;
+    const {
+      children,
+      forceOpen,
+      placement,
+      data: overrideData,
+      replacementPopup,
+    } = this.props;
     const { data = overrideData } = this.state;
 
     return (
       <StickyPopover
-        component={this.getPopoverContent()}
+        component={replacementPopup || this.getPopoverContent()}
         title={this.getPopoverTitle()}
-        onMouseEnter={!data ? this.loadData : null}
+        onMouseEnter={!data && !replacementPopup ? this.loadData : null}
         delay={data ? 0 : 200}
         forceOpen={forceOpen}
         placement={placement}
