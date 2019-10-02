@@ -21,7 +21,6 @@ const formatType = (type) => {
 
 export const activityFilterOptions = [
   'COMMUNICATION',
-  'SERVER',
   ...Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.EMAIL && type !== ACTIVITY_TYPES.PHONE),
 ];
 
