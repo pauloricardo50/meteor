@@ -59,6 +59,11 @@ const ActivityEventSchema = ActivitySchema.extend({
     allowedValues: Object.values(ACTIVITY_EVENT_METADATA),
     optional: true,
   },
+  'metadata.details': {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
 });
 
 const ActivityEmailSchema = ActivitySchema.extend({

@@ -232,11 +232,14 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   [assignAdminToUser, assignAdminToNewUser],
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
-    const { currentAssignee, newAssignee } = result;
-    if (currentAssignee !== newAssignee) {
+    const { oldAssignee, newAssignee } = result;
+    if (oldAssignee !== newAssignee) {
       ActivityService.addServerActivity({
         type: ACTIVITY_TYPES.EVENT,
-        metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE },
+        metadata: {
+          event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
+          details: { oldAssignee, newAssignee },
+        },
         userLink: { _id: userId },
         title: 'Changemenet de conseiller',
         description: newAssignee,
@@ -249,11 +252,14 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   [setUserReferredBy, setUserReferredByOrganisation],
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
-    const { currentReferral, newReferral } = result;
-    if (currentReferral !== newReferral) {
+    const { oldReferral, newReferral } = result;
+    if (oldReferral !== newReferral) {
       ActivityService.addServerActivity({
         type: ACTIVITY_TYPES.EVENT,
-        metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL },
+        metadata: {
+          event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
+          details: { oldReferral, newReferral },
+        },
         userLink: { _id: userId },
         title: 'Changemenet de referral',
         description: newReferral,
@@ -265,10 +271,17 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   changeEmail,
-  ({ params: { userId }, result: newEmail, context: { userId: adminId } }) => {
+  ({
+    params: { userId },
+    result: { oldEmail, newEmail },
+    context: { userId: adminId },
+  }) => {
     ActivityService.addServerActivity({
       type: ACTIVITY_TYPES.EVENT,
-      metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGE_EMAIL },
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_EMAIL,
+        details: { oldEmail, newEmail },
+      },
       userLink: { _id: userId },
       title: "Changemenet d'email",
       description: newEmail,
@@ -284,7 +297,7 @@ ServerEventService.addAfterMethodListener(
       type: ACTIVITY_TYPES.EVENT,
       metadata: { event: ACTIVITY_EVENT_METADATA.USER_VERIFIED_EMAIL },
       userLink: { _id: userId },
-      title: "Adresse email vérifiée",
+      title: 'Adresse email vérifiée',
       createdBy: userId,
     });
   },
