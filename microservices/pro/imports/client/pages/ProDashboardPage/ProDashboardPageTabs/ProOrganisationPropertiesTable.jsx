@@ -7,11 +7,7 @@ import OrganisationPropertiesTableContainer from 'core/components/PropertiesTabl
 export default compose(
   OrganisationPropertiesTableContainer,
   Component => (props) => {
-    const { title, rows } = props;
-
-    if (!rows || !rows.length) {
-      return null;
-    }
+    const { title } = props;
 
     return (
       <>

@@ -1,4 +1,8 @@
 {
+  "ProDashboardPageTabs.loans": "Dossiers",
+  "ProDashboardPageTabs.properties": "Biens immo",
+  "ProDashboardPageTabs.organisationProperties": "Biens immo ({orgName})",
+  "ProDashboardPageTabs.promotions": "Promotions",
   "ProCustomersTable.customer": "Client",
   "PromotionLotLoansTable.customer": "Client",
   "Forms.projectStatus": "Phase",

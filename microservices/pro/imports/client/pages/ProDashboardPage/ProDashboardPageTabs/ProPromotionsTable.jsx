@@ -7,18 +7,12 @@ import PromotionsTableContainer from 'core/components/PromotionsTable/Promotions
 
 export default compose(
   PromotionsTableContainer,
-  Component => (props) => {
-    if (!props.rows.length) {
-      return null;
-    }
-
-    return (
-      <>
-        <h3 className="text-center">
-          <T id="ProDashboardPage.promotions" />
-        </h3>
-        <Component {...props} />
-      </>
-    );
-  },
+  Component => props => (
+    <>
+      <h3 className="text-center">
+        <T id="ProDashboardPage.promotions" />
+      </h3>
+      <Component {...props} />
+    </>
+  ),
 )(PromotionsTable);

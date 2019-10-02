@@ -149,10 +149,6 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     structure = {},
     hasPromotion,
   } = loan;
-  res.writeHead(200, {
-    'Content-Disposition': `attachment; filename=${loan.name}.zip`,
-  });
-  zip.pipe(res);
 
   // Zip loan files
   zipDocFiles({
@@ -187,13 +183,17 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     });
   }
 
+  res.writeHead(200, {
+    'Content-Disposition': `attachment; filename=${loan.name}.zip`,
+  });
+  zip.pipe(res);
   zip.finalize();
 };
 
 const zipLoan = ({
   res,
   simpleAuthParams: { loanId, userId, documents, options },
-}) => {
+}) =>
   withMeteorUserId({ userId }, () => {
     const zip = new archiver.create('zip');
 
@@ -215,8 +215,12 @@ const zipLoan = ({
     });
 
     generateLoanZip({ zip, loan, documents, options, res });
-  });
-  return Promise.resolve(RESPONSE_ALREADY_SENT);
-};
+
+    return Promise.resolve();
+  })
+    .catch((error) => {
+      throw error;
+    })
+    .then(() => RESPONSE_ALREADY_SENT);
 
 export default zipLoan;
