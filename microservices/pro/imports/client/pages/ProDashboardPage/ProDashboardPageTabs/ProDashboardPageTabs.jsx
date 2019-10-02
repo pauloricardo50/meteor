@@ -14,10 +14,6 @@ const getTabs = ({ currentUser }) => {
 
   return [
     {
-      id: 'properties',
-      content: <ProPropertiesTable currentUser={currentUser} />,
-    },
-    {
       id: 'loans',
       content: (
         <div>
@@ -28,7 +24,10 @@ const getTabs = ({ currentUser }) => {
         </div>
       ),
     },
-    
+    {
+      id: 'properties',
+      content: <ProPropertiesTable currentUser={currentUser} />,
+    },
     { id: 'promotions', content: <ProPromotionsTable /> },
   ].map(tab => ({
     ...tab,
