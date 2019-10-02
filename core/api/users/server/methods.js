@@ -29,6 +29,7 @@ import {
   anonymousCreateUser,
   toggleAccount,
   userPasswordReset,
+  userVerifyEmail,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -272,3 +273,4 @@ toggleAccount.setHandler((context, { userId }) => {
 });
 
 userPasswordReset.setHandler(() => null);
+userVerifyEmail.setHandler(() => null);

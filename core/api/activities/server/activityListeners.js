@@ -10,6 +10,8 @@ import {
   assignAdminToUser,
   assignAdminToNewUser,
   setUserReferredBy,
+  changeEmail,
+  userVerifyEmail,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -258,5 +260,32 @@ ServerEventService.addAfterMethodListener(
         createdBy: adminId,
       });
     }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  changeEmail,
+  ({ params: { userId }, result: newEmail, context: { userId: adminId } }) => {
+    ActivityService.addServerActivity({
+      type: ACTIVITY_TYPES.EVENT,
+      metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGE_EMAIL },
+      userLink: { _id: userId },
+      title: "Changemenet d'email",
+      description: newEmail,
+      createdBy: adminId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  userVerifyEmail,
+  ({ context: { userId } }) => {
+    ActivityService.addServerActivity({
+      type: ACTIVITY_TYPES.EVENT,
+      metadata: { event: ACTIVITY_EVENT_METADATA.USER_VERIFIED_EMAIL },
+      userLink: { _id: userId },
+      title: "Adresse email vérifiée",
+      createdBy: userId,
+    });
   },
 );

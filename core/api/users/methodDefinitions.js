@@ -185,3 +185,8 @@ export const toggleAccount = new Method({
 export const userPasswordReset = new Method({
   name: 'userPasswordReset',
 });
+
+// Used only to trigger activity listener
+export const userVerifyEmail = new Method({
+  name: 'userVerifyEmail',
+});

@@ -218,6 +218,7 @@ export class UserServiceClass extends CollectionService {
     Accounts.addEmail(userId, newEmail);
     Accounts.removeEmail(userId, emails[0].address);
     Accounts.sendVerificationEmail(userId);
+    return newEmail;
   };
 
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
