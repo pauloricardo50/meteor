@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { ACTIVITY_SECONDARY_TYPES } from 'core/api/activities/activityConstants';
+import {  ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
@@ -296,7 +296,7 @@ export class LoanService extends CollectionService {
 
   selectStructure = ({ loanId, structureId }) => {
     const loan = this.get(loanId, {
-      fields: { structures: { id: 1, disabled: 1 }, selectedStructure: 1 },
+      fields: { structures: 1, selectedStructure: 1 },
     });
 
     const currentStructure = loan.structures.find(({ id }) => id === loan.selectedStructure);
@@ -904,10 +904,10 @@ export class LoanService extends CollectionService {
   setCreatedAtActivityDescription({ loanId, description }) {
     const { activities = [] } = this.fetchOne({
       $filters: { _id: loanId },
-      activities: { secondaryType: 1 },
+      activities: { metadata: 1 },
     });
-    const { _id: createdAtActivityId } = activities.find(({ secondaryType }) =>
-      secondaryType === ACTIVITY_SECONDARY_TYPES.CREATED) || {};
+    const { _id: createdAtActivityId } = activities.find(({ metadata }) =>
+      metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED) || {};
 
     if (createdAtActivityId) {
       ActivityService._update({

@@ -28,6 +28,7 @@ import {
   proSetShareCustomers,
   anonymousCreateUser,
   toggleAccount,
+  userPasswordReset,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -269,3 +270,5 @@ toggleAccount.setHandler((context, { userId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.toggleAccount({ userId });
 });
+
+userPasswordReset.setHandler(() => null);

@@ -1,6 +1,6 @@
 import CollectionService from '../../helpers/CollectionService';
 import Activities from '../activities';
-import { ACTIVITY_TYPES, ACTIVITY_SECONDARY_TYPES } from '../activityConstants';
+import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 
 class ActivityService extends CollectionService {
   constructor() {
@@ -8,13 +8,14 @@ class ActivityService extends CollectionService {
   }
 
   addServerActivity(activity) {
-    return this.insert({ ...activity, type: ACTIVITY_TYPES.SERVER });
+    return this.insert({ ...activity, isServerGenerated: true });
   }
 
   addCreatedAtActivity({ createdAt, ...rest }) {
     return this.addServerActivity({
-      secondaryType: ACTIVITY_SECONDARY_TYPES.CREATED,
+      metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
       date: createdAt,
+      type: ACTIVITY_TYPES.EVENT,
       ...rest,
     });
   }
@@ -23,7 +24,7 @@ class ActivityService extends CollectionService {
     const createdAtActivity = this.fetchOne({
       $filters: {
         'loanLink._id': loanId,
-        secondaryType: ACTIVITY_SECONDARY_TYPES.CREATED,
+        metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
       },
     });
     return this._update({

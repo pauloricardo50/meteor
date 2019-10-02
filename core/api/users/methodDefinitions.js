@@ -180,3 +180,8 @@ export const toggleAccount = new Method({
     userId: String,
   },
 });
+
+// Used only to trigger activity listener
+export const userPasswordReset = new Method({
+  name: 'userPasswordReset',
+});

@@ -7,7 +7,7 @@ import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 import LoanActivityAdder from './LoanActivityAdder';
 import LoanTimelineContainer, {
-  activityFilterOtions,
+  activityFilterOptions,
 } from './LoanTimelineContainer';
 import LoanTimelineTitle from './LoanTimelineTitle';
 import LoanTimelineDescription from './LoanTimelineDescription';
@@ -37,7 +37,7 @@ const LoanTimeline = ({
           value={type.$in}
           multiple
           label="Filtrer"
-          options={activityFilterOtions.map(t => ({
+          options={activityFilterOptions.map(t => ({
             id: t,
             label: <T id={`Forms.type.${t}`} />,
           }))}

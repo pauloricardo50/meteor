@@ -12,6 +12,7 @@ import {
   getUserByPasswordResetToken,
   notifyAssignee,
   updateUser,
+  userPasswordReset,
 } from '../../api';
 import withMatchParam from '../../containers/withMatchParam';
 
@@ -67,6 +68,7 @@ export default compose(
             analyticsVerifyEmail.run({
               trackingId: getCookie(TRACKING_COOKIE),
             }),
+            userPasswordReset.run({}),
           ]))
         .then(() => history.push('/'));
     };
@@ -76,7 +78,7 @@ export default compose(
         user={user}
         error={error}
         handleSubmit={handleSubmit}
-        pathname={(window.location && window.location.pathname)}
+        pathname={window.location && window.location.pathname}
       />
     );
   },

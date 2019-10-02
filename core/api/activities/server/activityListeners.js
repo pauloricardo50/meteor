@@ -1,15 +1,12 @@
 import { proInviteUser, adminCreateUser } from 'core/api/users/index';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
   toggleAccount,
   anonymousCreateUser,
-  sendEmailToAddress,
-  sendEmail,
-  sendEnrollmentEmail,
+  userPasswordReset,
 } from '../../methods';
-import { ACTIVITY_SECONDARY_TYPES } from '../activityConstants';
+import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
 import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
@@ -29,7 +26,10 @@ ServerEventService.addAfterMethodListener(
     }) || {};
 
     ActivityService.addServerActivity({
-      secondaryType: ACTIVITY_SECONDARY_TYPES.REMOVE_LOAN_FROM_PROMOTION,
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.REMOVE_LOAN_FROM_PROMOTION,
+      },
+      type: ACTIVITY_TYPES.EVENT,
       loanLink: { _id: loanId },
       title: `Enlevé de la promotion "${name}"`,
       description: userName ? `Par ${userName}` : '',
@@ -47,11 +47,14 @@ ServerEventService.addAfterMethodListener(
   }) => {
     const { name: adminName } = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
     ActivityService.addServerActivity({
-      secondaryType: ACTIVITY_SECONDARY_TYPES.ACCOUNT_DISABLED,
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.ACCOUNT_DISABLED,
+      },
       userLink: { _id: userId },
       title: `Compte ${isDisabled ? 'désactivé' : 'activé'}`,
       description: adminName ? `Par ${adminName}` : '',
       createdBy: adminId,
+      type: ACTIVITY_TYPES.EVENT,
     });
   },
 );
@@ -114,7 +117,7 @@ ServerEventService.addAfterMethodListener(
 
     const currentUser = UserService.fetchOne({
       $filters: { 'emails.address': { $in: [email] } },
-      activities: { secondaryType: 1 },
+      activities: { metadata: 1 },
       referredByUserLink: 1,
       referredByOrganisationLink: 1,
       createdAt: 1,
@@ -125,8 +128,8 @@ ServerEventService.addAfterMethodListener(
     // User already exists
     if (
       activities.length
-      && activities.find(({ secondaryType }) =>
-        secondaryType === ACTIVITY_SECONDARY_TYPES.CREATED)
+      && activities.find(({ metadata }) =>
+        metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED)
     ) {
       return;
     }
@@ -190,34 +193,31 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-// ServerEventService.addAfterMethodListener(
-//   [sendEmail, sendEmailToAddress],
-//   ({ params: { emailId, userId, address }, context: { userId: adminId } }) => {
-//     let user = {};
-
-//     if (!userId) {
-//       user = UserService.getByEmail(address);
-//     }
-
-//     ActivityService.addServerActivity({
-//       secondaryType: ACTIVITY_SECONDARY_TYPES.EMAIL_SENT,
-//       userLink: { _id: userId || user._id },
-//       title: 'Email envoyé',
-//       description: emailId,
-//       createdBy: adminId,
-//     });
-//   },
-// );
-
-// ServerEventService.addAfterMethodListener(
-//   [sendEnrollmentEmail],
-//   ({ params: { userId }, context: { userId: adminId } }) => {
-//     ActivityService.addServerActivity({
-//       secondaryType: ACTIVITY_SECONDARY_TYPES.EMAIL_SENT,
-//       userLink: { _id: userId },
-//       title: 'Email envoyé',
-//       description: EMAIL_IDS.ENROLL_ACCOUNT,
-//       createdBy: adminId,
-//     });
-//   },
-// );
+ServerEventService.addAfterMethodListener(
+  userPasswordReset,
+  ({ context: { userId } }) => {
+    const firstConnectionActivity = ActivityService.fetchOne({
+      $filters: {
+        'userLink._id': userId,
+        'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM,
+      },
+    });
+    ActivityService.addServerActivity({
+      type: ACTIVITY_TYPES.EVENT,
+      metadata: { event: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET },
+      userLink: { _id: userId },
+      title: 'Mot de passe choisi',
+      createdBy: userId,
+    });
+    
+    if (!firstConnectionActivity) {
+      ActivityService.addServerActivity({
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM },
+        userLink: { _id: userId },
+        title: 'Première connexion',
+        createdBy: userId,
+      });
+    }
+  },
+);
