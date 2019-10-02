@@ -7,7 +7,7 @@ import generator from '../../../factories/factoriesHelpers';
 import OrganisationService from '../OrganisationService';
 import LenderRulesService from '../../../lenderRules/server/LenderRulesService';
 
-describe.only('OrganisationService', function () {
+describe('OrganisationService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -23,16 +23,25 @@ describe.only('OrganisationService', function () {
         },
       });
 
-      const [id1, id2] = LenderRulesService.initialize({
+      const [id1] = LenderRulesService.initialize({
         organisationId: 'id1',
       });
 
-      LenderRulesService.remove(id1);
-      const rulez = LenderRulesService.findOne(id2);
-      console.log('rulez:', rulez);
+      let org = OrganisationService.fetchOne({
+        $filters: { _id: 'id1' },
+        lenderRules: { _id: 1 },
+        lenderRulesCount: 1,
+      });
 
-      const org = OrganisationService.findOne('id1');
-      console.log('org:', org);
+      expect(org.lenderRulesCount).to.equal(3);
+
+      LenderRulesService.remove({ lenderRulesId: id1 });
+
+      org = OrganisationService.fetchOne({
+        $filters: { _id: 'id1' },
+        lenderRules: { _id: 1 },
+        lenderRulesCount: 1,
+      });
 
       expect(org.lenderRulesCount).to.equal(2);
     });
