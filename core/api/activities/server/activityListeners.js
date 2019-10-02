@@ -108,6 +108,7 @@ ServerEventService.addAfterMethodListener(
       title: 'Compte créé',
       description,
       createdBy: userId,
+      metadata: { details: { referredBy, referredByOrg } },
     });
   },
 );
@@ -178,7 +179,8 @@ ServerEventService.addAfterMethodListener(
       userLink: { _id: userId },
       title: 'Compte créé',
       description,
-      createdBy: userId,
+      createdBy: proId,
+      metadata: { details: { referredBy, referredByOrg, referredByAPIOrg } },
     });
   },
 );
@@ -188,14 +190,16 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, context: { userId: adminId } }) => {
     const currentUser = UserService.get(userId);
     const { createdAt } = currentUser;
-    const { name: adminName } = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const admin = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const { name: adminName } = admin;
 
     ActivityService.addCreatedAtActivity({
       createdAt,
       userLink: { _id: userId },
       title: 'Compte créé',
       description: adminName && `Par ${adminName}`,
-      createdBy: userId,
+      createdBy: adminId,
+      metadata: { details: { admin } },
     });
   },
 );

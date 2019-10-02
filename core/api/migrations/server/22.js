@@ -29,7 +29,6 @@ export const down = () => {
     $filters: { isServerGenerated: true },
     metadata: 1,
   });
-  console.log('allServerActivities:', allServerActivities);
 
   return Promise.all(allServerActivities.map(({ _id, metadata: { event } }) =>
     Activities.rawCollection().update(

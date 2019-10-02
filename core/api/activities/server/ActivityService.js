@@ -12,11 +12,12 @@ class ActivityService extends CollectionService {
   }
 
   addCreatedAtActivity({ createdAt, ...rest }) {
+    const { metadata = {}, ...activity } = rest;
     return this.addServerActivity({
-      metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
+      metadata: { event: ACTIVITY_EVENT_METADATA.CREATED, ...metadata },
       date: createdAt,
       type: ACTIVITY_TYPES.EVENT,
-      ...rest,
+      ...activity,
     });
   }
 
