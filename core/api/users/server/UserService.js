@@ -468,39 +468,76 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
+    const { referredByUser: currentReferral } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByUser: { name: 1, organisations: { name: 1 } },
+    });
+
     if (!proId) {
-      return this._update({
+      this._update({
         id: userId,
         object: { referredByUserLink: true },
         operator: '$unset',
       });
+
+      return {
+        currentReferral:
+          currentReferral
+          && getUserNameAndOrganisation({ user: currentReferral }),
+        newReferral: 'Personne',
+      };
     }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
       organisationId = mainOrg && mainOrg._id;
     }
 
-    return this.update({
+    const newReferral = this.fetchOne({
+      $filters: { _id: proId },
+      name: 1,
+      organisations: { name: 1 },
+    });
+
+    this.update({
       userId,
       object: {
         referredByUserLink: proId,
         referredByOrganisationLink: organisationId,
       },
     });
+
+    return {
+      currentReferral:
+        currentReferral
+        && getUserNameAndOrganisation({ user: currentReferral }),
+      newReferral: getUserNameAndOrganisation({ user: newReferral }),
+    };
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
+    const {
+      referredByOrganisation: { name: currentReferral } = {},
+    } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByOrganisation: { name: 1 },
+    });
     if (!organisationId) {
-      return this._update({
+      this._update({
         id: userId,
         object: { referredByOrganisationLink: true },
         operator: '$unset',
       });
+      return { currentReferral, newReferral: 'Aucune organisation' };
     }
-    return this.update({
+    const { name: newReferral } = OrganisationService.fetchOne({
+      $filters: { _id: organisationId },
+      name: 1,
+    });
+    this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },
     });
+    return { currentReferral, newReferral };
   }
 
   proInviteUserToOrganisation({ user, organisationId, title, proId, adminId }) {

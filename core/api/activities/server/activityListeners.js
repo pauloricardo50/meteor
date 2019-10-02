@@ -1,15 +1,15 @@
-import {
-  proInviteUser,
-  adminCreateUser,
-  assignAdminToUser,
-  assignAdminToNewUser,
-} from 'core/api/users/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
   toggleAccount,
   anonymousCreateUser,
   userPasswordReset,
+  setUserReferredByOrganisation,
+  proInviteUser,
+  adminCreateUser,
+  assignAdminToUser,
+  assignAdminToNewUser,
+  setUserReferredBy,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -238,6 +238,23 @@ ServerEventService.addAfterMethodListener(
         userLink: { _id: userId },
         title: 'Changemenet de conseiller',
         description: newAssignee,
+        createdBy: adminId,
+      });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  [setUserReferredBy, setUserReferredByOrganisation],
+  ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
+    const { currentReferral, newReferral } = result;
+    if (currentReferral !== newReferral) {
+      ActivityService.addServerActivity({
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL },
+        userLink: { _id: userId },
+        title: 'Changemenet de referral',
+        description: newReferral,
         createdBy: adminId,
       });
     }
