@@ -61,7 +61,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
         label: <LoanProgress loanProgress={loanProgress} />,
       },
       {
-        raw: referredBy.name,
+        raw: user.name,
         label: <ProCustomer user={user} invitedByUser={referredBy.label} />,
       },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
