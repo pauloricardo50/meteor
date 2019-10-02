@@ -135,10 +135,9 @@ export class UserServiceClass extends CollectionService {
       const { assignedEmployee: { name: oldAssignee } = {} } = this.fetchOne({
         $filters: { _id: userId },
         assignedEmployee: { name: 1 },
-      });
-      const { name: newAssignee } = adminId
-        ? this.fetchOne({ $filters: { _id: adminId }, name: 1 })
-        : {};
+      }) || {};
+      const { name: newAssignee } = this.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+
       this.update({ userId, object: { assignedEmployeeId: adminId } });
       return { oldAssignee, newAssignee };
     }
