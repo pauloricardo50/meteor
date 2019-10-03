@@ -24,14 +24,6 @@ export const assignAdminToUser = new Method({
   },
 });
 
-export const assignAdminToNewUser = new Method({
-  name: 'assignAdminToNewUser',
-  params: {
-    userId: String,
-    adminId: String,
-  },
-});
-
 export const setRole = new Method({
   name: 'setRole',
   params: {

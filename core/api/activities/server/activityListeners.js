@@ -12,7 +12,6 @@ import {
   proInviteUser,
   adminCreateUser,
   assignAdminToUser,
-  assignAdminToNewUser,
   setUserReferredBy,
   changeEmail,
   userVerifyEmail,
@@ -254,7 +253,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  [assignAdminToUser, assignAdminToNewUser],
+  assignAdminToUser,
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
     const { oldAssignee, newAssignee } = result;
     if (oldAssignee._id !== newAssignee._id) {
