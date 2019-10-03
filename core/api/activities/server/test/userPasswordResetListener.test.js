@@ -40,14 +40,14 @@ describe('userPasswordResetListener', () => {
     expect(activities[1].type).to.equal(ACTIVITY_TYPES.EVENT);
     expect(activities[1].title).to.equal('Première connexion');
     expect(activities[1].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM,
+      event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
     });
   });
 
   it('adds activity on the user when it is not the first time he logs in', async () => {
     ActivityService.addServerActivity({
       type: ACTIVITY_TYPES.EVENT,
-      metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM },
+      metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION },
       userLink: { _id: 'user' },
       title: 'Première connexion',
       createdBy: 'user',
@@ -62,7 +62,7 @@ describe('userPasswordResetListener', () => {
     expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
     expect(activities[0].title).to.equal('Première connexion');
     expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM,
+      event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
     });
     expect(activities[1].type).to.equal(ACTIVITY_TYPES.EVENT);
     expect(activities[1].title).to.equal('Mot de passe choisi');

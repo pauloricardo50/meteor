@@ -230,7 +230,7 @@ ServerEventService.addAfterMethodListener(
     const firstConnectionActivity = ActivityService.fetchOne({
       $filters: {
         'userLink._id': userId,
-        'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM,
+        'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
       },
     });
     ActivityService.addServerActivity({
@@ -244,7 +244,7 @@ ServerEventService.addAfterMethodListener(
     if (!firstConnectionActivity) {
       ActivityService.addServerActivity({
         type: ACTIVITY_TYPES.EVENT,
-        metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTIOM },
+        metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION },
         userLink: { _id: userId },
         title: 'Première connexion',
         createdBy: userId,
