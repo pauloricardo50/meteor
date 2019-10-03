@@ -8,7 +8,7 @@ import { toggleAccount } from '../../../methods';
 import generator from '../../../factories';
 import UserService from '../../../users/server/UserService';
 
-describe.only('toggleAccountListener', () => {
+describe('toggleAccountListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({

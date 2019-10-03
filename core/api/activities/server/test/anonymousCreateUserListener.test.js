@@ -12,7 +12,7 @@ import {
   ACTIVITY_EVENT_METADATA,
 } from '../../activityConstants';
 
-describe.only('anonymousCreateUserListener', function () {
+describe('anonymousCreateUserListener', function () {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();

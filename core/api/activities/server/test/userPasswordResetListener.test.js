@@ -13,7 +13,7 @@ import {
   ACTIVITY_EVENT_METADATA,
 } from '../../activityConstants';
 
-describe.only('userPasswordResetListener', () => {
+describe('userPasswordResetListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({

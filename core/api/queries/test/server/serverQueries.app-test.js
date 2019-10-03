@@ -54,6 +54,6 @@ exposeQuery({
   options: { allowFilterById: true },
 });
 
-// describe.only('test', () => {
+// describe('test', () => {
 //   it('test', () => {});
 // });

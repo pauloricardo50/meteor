@@ -15,7 +15,7 @@ import {
 } from '../../activityConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 
-describe.only('proInviteUserListener', () => {
+describe('proInviteUserListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({

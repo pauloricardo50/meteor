@@ -4,11 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { ROLES } from 'core/api/users/userConstants';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
-import {
-  adminCreateUser,
-  changeEmail,
-  userVerifyEmail,
-} from '../../../methods';
+import { adminCreateUser } from '../../../methods';
 import generator from '../../../factories';
 import UserService from '../../../users/server/UserService';
 import {
@@ -16,7 +12,7 @@ import {
   ACTIVITY_EVENT_METADATA,
 } from '../../activityConstants';
 
-describe.only('adminCreateUserListener', function () {
+describe('adminCreateUserListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({

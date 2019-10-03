@@ -12,7 +12,7 @@ import {
   ACTIVITY_EVENT_METADATA,
 } from '../../activityConstants';
 
-describe.only('setUserReferredByListener', () => {
+describe('setUserReferredByListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({

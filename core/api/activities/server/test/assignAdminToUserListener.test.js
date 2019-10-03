@@ -12,7 +12,7 @@ import {
   ACTIVITY_EVENT_METADATA,
 } from '../../activityConstants';
 
-describe.only('assignAdminToUserListener', () => {
+describe('assignAdminToUserListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({
