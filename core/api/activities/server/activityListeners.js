@@ -161,25 +161,26 @@ ServerEventService.addAfterMethodListener(
     let description = '';
     const referredBy = UserService.get(referredByUserLink);
     const referredByOrg = OrganisationService.get(referredByOrganisationLink);
-    let referredByAPIOrg = '';
+    let referredByAPIOrgLabel = '';
+    let referredByAPIOrg;
 
     if (APIUser) {
-      const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
+      referredByAPIOrg = UserService.getUserMainOrganisation(APIUser._id);
       const proOrg = UserService.getUserMainOrganisation(proId);
-      referredByAPIOrg = `${proOrg && proOrg.name}, API ${mainOrg
-        && mainOrg.name}`;
+      referredByAPIOrgLabel = `${proOrg
+        && proOrg.name}, API ${referredByAPIOrg && referredByAPIOrg.name}`;
     }
 
-    if (!referredBy && (referredByOrg || referredByAPIOrg)) {
-      description = `Référé par ${referredByAPIOrg || referredByOrg.name}`;
+    if (!referredBy && (referredByOrg || referredByAPIOrgLabel)) {
+      description = `Référé par ${referredByAPIOrgLabel || referredByOrg.name}`;
     }
 
-    if (referredBy && !(referredByOrg || referredByAPIOrg)) {
+    if (referredBy && !(referredByOrg || referredByAPIOrgLabel)) {
       description = `Référé par ${referredBy.name}`;
     }
 
-    if (referredBy && (referredByOrg || referredByAPIOrg)) {
-      description = `Référé par ${referredBy.name} (${referredByAPIOrg
+    if (referredBy && (referredByOrg || referredByAPIOrgLabel)) {
+      description = `Référé par ${referredBy.name} (${referredByAPIOrgLabel
         || referredByOrg.name})`;
     }
 
@@ -263,7 +264,7 @@ ServerEventService.addAfterMethodListener(
           },
         },
         userLink: { _id: userId },
-        title: 'Changemenet de conseiller',
+        title: 'Changement de conseiller',
         description: newAssignee.name,
         createdBy: adminId,
       });

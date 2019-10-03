@@ -3,6 +3,9 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { setAPIUser } from 'core/api/RESTAPI/server/helpers';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+import { checkEmails } from '../../../../utils/testHelpers';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 import {
   toggleAccount,
@@ -12,7 +15,6 @@ import {
   proInviteUser,
   adminCreateUser,
   assignAdminToUser,
-  assignAdminToNewUser,
   setUserReferredBy,
   changeEmail,
   userVerifyEmail,
@@ -89,6 +91,9 @@ describe.only('activityListeners', function () {
         user: { email: 'john.doe@test.com' },
         trackingId: '123',
       });
+
+      await checkEmails();
+
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: userId },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -115,6 +120,8 @@ describe.only('activityListeners', function () {
         referralId: 'org2',
         trackingId: '123',
       });
+      await checkEmails();
+
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: userId },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -145,6 +152,8 @@ describe.only('activityListeners', function () {
         referralId: 'pro1',
         trackingId: '123',
       });
+      await checkEmails();
+
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: userId },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -178,6 +187,8 @@ describe.only('activityListeners', function () {
         referralId: 'pro2',
         trackingId: '123',
       });
+      await checkEmails();
+
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: userId },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -218,6 +229,7 @@ describe.only('activityListeners', function () {
 
     it('adds activities on the user', async () => {
       await ddpWithUserId('user', () => userPasswordReset.run({}));
+
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: 'user' },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -244,6 +256,7 @@ describe.only('activityListeners', function () {
         createdBy: 'user',
       });
       await ddpWithUserId('user', () => userPasswordReset.run({}));
+
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: 'user' },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -436,13 +449,280 @@ describe.only('activityListeners', function () {
         object: { referredByOrganisationLink: 'org2' },
       });
       await ddpWithUserId('admin', () =>
-        setUserReferredByOrganisation.run({ userId: 'user', organisationId: 'org2' }));
+        setUserReferredByOrganisation.run({
+          userId: 'user',
+          organisationId: 'org2',
+        }));
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: 'user' },
         activities: { type: 1, description: 1, title: 1, metadata: 1 },
       });
 
       expect(activities.length).to.equal(0);
+    });
+  });
+
+  describe('assignAdminToUser', () => {
+    beforeEach(() => {
+      generator({
+        users: [
+          {
+            _id: 'user',
+            emails: [{ address: 'john.doe@test.com', verified: true }],
+          },
+          {
+            _id: 'admin2',
+            _factory: 'admin',
+            firstName: 'Admin2',
+            lastName: 'E-Potek',
+          },
+        ],
+      });
+    });
+
+    it('adds activity on the user', async () => {
+      await ddpWithUserId('admin', () =>
+        assignAdminToUser.run({ userId: 'user', adminId: 'admin' }));
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { _id: 'user' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+
+      expect(activities.length).to.equal(1);
+      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
+      expect(activities[0].title).to.equal('Changement de conseiller');
+      expect(activities[0].description).to.equal('Admin E-Potek');
+      expect(activities[0].metadata).to.deep.equal({
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
+        details: {
+          oldAssignee: {},
+          newAssignee: { _id: 'admin', name: 'Admin E-Potek' },
+        },
+      });
+    });
+
+    it('adds activity on the user when the assignee changes', async () => {
+      UserService.update({
+        userId: 'user',
+        object: { assignedEmployeeId: 'admin2' },
+      });
+      await ddpWithUserId('admin', () =>
+        assignAdminToUser.run({ userId: 'user', adminId: 'admin' }));
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { _id: 'user' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+
+      expect(activities.length).to.equal(1);
+      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
+      expect(activities[0].title).to.equal('Changement de conseiller');
+      expect(activities[0].description).to.equal('Admin E-Potek');
+      expect(activities[0].metadata).to.deep.equal({
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
+        details: {
+          oldAssignee: { _id: 'admin2', name: 'Admin2 E-Potek' },
+          newAssignee: { _id: 'admin', name: 'Admin E-Potek' },
+        },
+      });
+    });
+
+    it('does not adds activity on the user when the assignee does not change', async () => {
+      UserService.update({
+        userId: 'user',
+        object: { assignedEmployeeId: 'admin2' },
+      });
+      await ddpWithUserId('admin', () =>
+        assignAdminToUser.run({ userId: 'user', adminId: 'admin2' }));
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { _id: 'user' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+
+      expect(activities.length).to.equal(0);
+    });
+  });
+
+  describe('proInviteUser', () => {
+    beforeEach(() => {
+      generator({
+        users: {
+          _id: 'pro2',
+          _factory: 'pro',
+        },
+        organisations: [
+          {
+            _id: 'org',
+            _factory: 'organisation',
+            name: 'Organisation',
+            users: [
+              {
+                _id: 'pro',
+                _factory: 'pro',
+                firstName: 'Pro',
+                lastName: 'Account',
+                $metadata: { isMain: true },
+              },
+              {
+                _id: 'pro3',
+                _factory: 'pro',
+                $metadata: { isMain: false },
+              },
+            ],
+          },
+          {
+            _id: 'api',
+            _factory: 'organisation',
+            name: 'OrganisationAPI',
+            users: [{ _id: 'pro3', $metadata: { isMain: true } }],
+          },
+        ],
+      });
+    });
+
+    it('adds activity on user', async () => {
+      await ddpWithUserId('pro', () =>
+        proInviteUser.run({
+          user: {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@test.com',
+            phoneNumber: '12345',
+          },
+        }));
+      await checkEmails();
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { 'emails.address': 'john.doe@test.com' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+      expect(activities.length).to.equal(2);
+      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
+      expect(activities[0].title).to.equal('Compte créé');
+      expect(activities[0].description).to.equal('Référé par Pro Account (Organisation)');
+      expect(activities[0].metadata).to.deep.equal({
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: { _id: 'pro', name: 'Pro Account' },
+          referredByOrg: { _id: 'org', name: 'Organisation' },
+          referredByAPIOrg: {},
+        },
+      });
+    });
+
+    it('adds activity on user when user is referred by a pro without organisation', async () => {
+      await ddpWithUserId('pro2', () =>
+        proInviteUser.run({
+          user: {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@test.com',
+            phoneNumber: '12345',
+          },
+        }));
+      await checkEmails();
+
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { 'emails.address': 'john.doe@test.com' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+      expect(activities.length).to.equal(2);
+      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
+      expect(activities[0].title).to.equal('Compte créé');
+      expect(activities[0].description).to.equal('Référé par TestFirstName TestLastName');
+      expect(activities[0].metadata).to.deep.equal({
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: { _id: 'pro2', name: 'TestFirstName TestLastName' },
+          referredByOrg: {},
+          referredByAPIOrg: {},
+        },
+      });
+    });
+
+    it('adds activity on user when user is referred by a pro via API', async () => {
+      const apiUser = UserService.fetchOne({
+        $filters: { _id: 'pro3' },
+        name: 1,
+        organisations: { name: 1 },
+      });
+      await ddpWithUserId('pro', () => {
+        setAPIUser(apiUser);
+        return proInviteUser.run({
+          user: {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@test.com',
+            phoneNumber: '12345',
+          },
+        });
+      });
+      await checkEmails();
+
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { 'emails.address': 'john.doe@test.com' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+
+      expect(activities.length).to.equal(2);
+      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
+      expect(activities[0].title).to.equal('Compte créé');
+      expect(activities[0].description).to.equal('Référé par Pro Account (Organisation, API OrganisationAPI)');
+      expect(activities[0].metadata).to.deep.equal({
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: { _id: 'pro', name: 'Pro Account' },
+          referredByOrg: { _id: 'org', name: 'Organisation' },
+          referredByAPIOrg: { _id: 'api', name: 'OrganisationAPI' },
+        },
+      });
+    });
+
+    it('does not add the activity if user already exists', async () => {
+      generator({
+        users: {
+          _id: 'user',
+          _factory: 'user',
+          firstName: 'John',
+          lastName: 'Doe',
+          emails: [{ address: 'john.doe@test.com', verified: true }],
+        },
+        activities: {
+          type: ACTIVITY_TYPES.EVENT,
+          isServerGenerated: true,
+          userLink: { _id: 'user' },
+          date: new Date(),
+          metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
+          title: 'Compte créé',
+        },
+        properties: {
+          _id: 'property',
+          _factory: 'property',
+          category: PROPERTY_CATEGORY.PRO,
+          users: [
+            {
+              _id: 'pro',
+              $metadata: { permissions: { canInviteCustomers: true } },
+            },
+          ],
+        },
+      });
+
+      await ddpWithUserId('pro', () =>
+        proInviteUser.run({
+          user: {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@test.com',
+            phoneNumber: '12345',
+          },
+          propertyIds: ['property'],
+        }));
+      await checkEmails();
+      const { activities = [] } = UserService.fetchOne({
+        $filters: { 'emails.address': 'john.doe@test.com' },
+        activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      });
+
+      expect(activities.length).to.equal(2);
     });
   });
 });
