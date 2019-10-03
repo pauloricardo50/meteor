@@ -1,6 +1,7 @@
 import pick from 'lodash/pick';
 
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
+import Intl from 'core/utils/server/intl';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -15,6 +16,7 @@ import {
   setUserReferredBy,
   changeEmail,
   userVerifyEmail,
+  loanSetStatus,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -22,6 +24,8 @@ import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+
+const formatMessage = Intl.formatMessage.bind(Intl);
 
 ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
@@ -329,6 +333,38 @@ ServerEventService.addAfterMethodListener(
       userLink: { _id: userId },
       title: 'Adresse email vérifiée',
       createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  loanSetStatus,
+  ({
+    context: { userId },
+    params: { loanId },
+    result: { prevStatus, nextStatus },
+  }) => {
+    const formattedPrevStatus = formatMessage({
+      id: `Forms.status.${prevStatus}`,
+    });
+    const formattedNexStatus = formatMessage({
+      id: `Forms.status.${nextStatus}`,
+    });
+    const { name: adminName } = UserService.fetchOne({
+      $filters: { _id: userId },
+      name: 1,
+    });
+
+    ActivityService.addServerActivity({
+      type: ACTIVITY_TYPES.EVENT,
+      loanLink: { _id: loanId },
+      title: 'Statut modifié',
+      description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
+      createdBy: userId,
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+        details: { prevStatus, nextStatus },
+      },
     });
   },
 );

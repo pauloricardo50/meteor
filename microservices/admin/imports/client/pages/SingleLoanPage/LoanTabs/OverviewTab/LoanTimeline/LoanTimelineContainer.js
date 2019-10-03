@@ -43,21 +43,18 @@ export default compose(
       taskComplete,
     ],
   }),
-  mapProps(({ activities, completedTasks, ...rest }) => {
-    console.log('activities:', activities);
-    return {
-      activities: [
-        ...activities,
-        ...completedTasks
-          .filter(({ completedAt }) => !!completedAt)
-          .map(({ completedAt, title }) => ({
-            date: completedAt,
-            title: 'Tâche complétée',
-            type: 'task',
-            description: title,
-          })),
-      ].sort((a, b) => a.date - b.date),
-      ...rest,
-    };
-  }),
+  mapProps(({ activities, completedTasks, ...rest }) => ({
+    activities: [
+      ...activities,
+      ...completedTasks
+        .filter(({ completedAt }) => !!completedAt)
+        .map(({ completedAt, title }) => ({
+          date: completedAt,
+          title: 'Tâche complétée',
+          type: 'task',
+          description: title,
+        })),
+    ].sort((a, b) => a.date - b.date),
+    ...rest,
+  })),
 );
