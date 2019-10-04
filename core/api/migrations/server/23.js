@@ -6,7 +6,7 @@ import ActivityService from '../../activities/server/ActivityService';
 import UserService from '../../users/server/UserService';
 
 export const up = () => {
-  const allUsers = UserService.fetch({ _id: 1, createdAt: 1 });
+  const allUsers = UserService.fetch({ createdAt: 1 });
 
   return Promise.all(allUsers.map(({ _id: userId, createdAt }) =>
     ActivityService.addCreatedAtActivity({
@@ -23,7 +23,6 @@ export const down = () => {
       'metadata.event': ACTIVITY_EVENT_METADATA.CREATED,
       'userLink._id': { $exists: true },
     },
-    _id: 1,
   });
 
   return Promise.all(allUserCreatedAtActivities.map(({ _id }) =>

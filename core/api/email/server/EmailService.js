@@ -126,14 +126,12 @@ class EmailService {
 
     const { message: { subject, from_email: from } = {} } = template;
 
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EMAIL,
-      metadata: {
-        emailId,
-        to: address,
-        from,
-        response,
-      },
+    ActivityService.addEmailActivity({
+      emailId,
+      to: address,
+      from,
+      response,
+      isServerGenerated: true,
       userLink: { _id: user._id },
       title: 'Email envoyé',
       description: `${subject}, de ${from}`,

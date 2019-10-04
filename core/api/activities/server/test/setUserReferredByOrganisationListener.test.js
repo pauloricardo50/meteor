@@ -55,15 +55,17 @@ describe('setUserReferredByOrganisationListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Changement de referral');
-    expect(activities[0].description).to.equal('Organisation1');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-      details: {
-        oldReferral: {},
-        newReferral: { _id: 'org1', name: 'Organisation1' },
-        referralType: 'org',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Changement de referral',
+      description: 'Organisation1',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
+        details: {
+          oldReferral: {},
+          newReferral: { _id: 'org1', name: 'Organisation1' },
+          referralType: 'org',
+        },
       },
     });
   });
@@ -84,20 +86,22 @@ describe('setUserReferredByOrganisationListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Changement de referral');
-    expect(activities[0].description).to.equal('Organisation1');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-      details: {
-        oldReferral: { _id: 'org2', name: 'Organisation2' },
-        newReferral: { _id: 'org1', name: 'Organisation1' },
-        referralType: 'org',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Changement de referral',
+      description: 'Organisation1',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
+        details: {
+          oldReferral: { _id: 'org2', name: 'Organisation2' },
+          newReferral: { _id: 'org1', name: 'Organisation1' },
+          referralType: 'org',
+        },
       },
     });
   });
 
-  it('does not adds activity on the user when the referral does not change', async () => {
+  it('does not add activity on the user when the referral does not change', async () => {
     UserService.update({
       userId: 'user',
       object: { referredByOrganisationLink: 'org2' },

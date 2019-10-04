@@ -42,12 +42,13 @@ describe('adminCreateUserListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Compte créé');
-    expect(activities[0].description).to.equal('Par Admin E-Potek');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: { admin: { _id: 'admin', name: 'Admin E-Potek' } },
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: { admin: { _id: 'admin', name: 'Admin E-Potek' } },
+      },
     });
   });
 });

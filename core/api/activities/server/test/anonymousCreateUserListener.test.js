@@ -27,12 +27,7 @@ describe('anonymousCreateUserListener', function () {
         },
         { _id: 'org2', name: 'Organisation 2' },
       ],
-      users: [
-        {
-          _id: 'pro2',
-          _factory: 'pro',
-        },
-      ],
+      users: [{ _id: 'pro2', _factory: 'pro' }],
     });
   });
 
@@ -42,25 +37,29 @@ describe('anonymousCreateUserListener', function () {
       trackingId: '123',
     });
 
-    await checkEmails();
+    await checkEmails(1);
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: userId },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EMAIL);
-    expect(activities[0].description).to.contain('Bienvenue');
-    expect(activities[0].metadata).to.deep.equal({
-      emailId: EMAIL_IDS.ENROLL_ACCOUNT,
-      to: 'john.doe@test.com',
-      from: 'e-Potek <info@e-potek.ch>',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EMAIL,
+      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      metadata: {
+        emailId: EMAIL_IDS.ENROLL_ACCOUNT,
+        to: 'john.doe@test.com',
+        from: 'e-Potek <info@e-potek.ch>',
+      },
     });
-    expect(activities[1].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[1].title).to.equal('Compte créé');
-    expect(activities[1].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: { referredBy: {}, referredByOrg: {} },
+    expect(activities[1]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: { referredBy: {}, referredByOrg: {} },
+      },
     });
   });
 
@@ -70,63 +69,71 @@ describe('anonymousCreateUserListener', function () {
       referralId: 'org2',
       trackingId: '123',
     });
-    await checkEmails();
+    await checkEmails(1);
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: userId },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EMAIL);
-    expect(activities[0].description).to.contain('Bienvenue');
-    expect(activities[0].metadata).to.deep.equal({
-      emailId: EMAIL_IDS.ENROLL_ACCOUNT,
-      to: 'john.doe@test.com',
-      from: 'e-Potek <info@e-potek.ch>',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EMAIL,
+      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      metadata: {
+        emailId: EMAIL_IDS.ENROLL_ACCOUNT,
+        to: 'john.doe@test.com',
+        from: 'e-Potek <info@e-potek.ch>',
+      },
     });
-    expect(activities[1].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[1].title).to.equal('Compte créé');
-    expect(activities[1].description).to.equal('Référé par Organisation 2');
-    expect(activities[1].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: {
-        referredBy: {},
-        referredByOrg: { _id: 'org2', name: 'Organisation 2' },
+    expect(activities[1]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Référé par Organisation 2',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: {},
+          referredByOrg: { _id: 'org2', name: 'Organisation 2' },
+        },
       },
     });
   });
 
-  it('adds activities on the user when user is referred by pro user', async () => {
+  it('adds activities on the user when he is referred by a pro', async () => {
     const userId = await anonymousCreateUser.run({
       user: { email: 'john.doe@test.com' },
       referralId: 'pro1',
       trackingId: '123',
     });
-    await checkEmails();
+    await checkEmails(1);
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: userId },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EMAIL);
-    expect(activities[0].description).to.contain('Bienvenue');
-    expect(activities[0].metadata).to.deep.equal({
-      emailId: EMAIL_IDS.ENROLL_ACCOUNT,
-      to: 'john.doe@test.com',
-      from: 'e-Potek <info@e-potek.ch>',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EMAIL,
+      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      metadata: {
+        emailId: EMAIL_IDS.ENROLL_ACCOUNT,
+        to: 'john.doe@test.com',
+        from: 'e-Potek <info@e-potek.ch>',
+      },
     });
-    expect(activities[1].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[1].title).to.equal('Compte créé');
-    expect(activities[1].description).to.equal('Référé par TestFirstName TestLastName (Organisation 1)');
-    expect(activities[1].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: {
-        referredBy: {
-          _id: 'pro1',
-          name: 'TestFirstName TestLastName',
+    expect(activities[1]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Référé par TestFirstName TestLastName (Organisation 1)',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: {
+            _id: 'pro1',
+            name: 'TestFirstName TestLastName',
+          },
+          referredByOrg: { _id: 'org1', name: 'Organisation 1' },
         },
-        referredByOrg: { _id: 'org1', name: 'Organisation 1' },
       },
     });
   });
@@ -137,31 +144,35 @@ describe('anonymousCreateUserListener', function () {
       referralId: 'pro2',
       trackingId: '123',
     });
-    await checkEmails();
+    await checkEmails(1);
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: userId },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EMAIL);
-    expect(activities[0].description).to.contain('Bienvenue');
-    expect(activities[0].metadata).to.deep.equal({
-      emailId: EMAIL_IDS.ENROLL_ACCOUNT,
-      to: 'john.doe@test.com',
-      from: 'e-Potek <info@e-potek.ch>',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EMAIL,
+      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      metadata: {
+        emailId: EMAIL_IDS.ENROLL_ACCOUNT,
+        to: 'john.doe@test.com',
+        from: 'e-Potek <info@e-potek.ch>',
+      },
     });
-    expect(activities[1].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[1].title).to.equal('Compte créé');
-    expect(activities[1].description).to.equal('Référé par TestFirstName TestLastName');
-    expect(activities[1].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: {
-        referredBy: {
-          _id: 'pro2',
-          name: 'TestFirstName TestLastName',
+    expect(activities[1]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Référé par TestFirstName TestLastName',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: {
+            _id: 'pro2',
+            name: 'TestFirstName TestLastName',
+          },
+          referredByOrg: {},
         },
-        referredByOrg: {},
       },
     });
   });

@@ -10,6 +10,7 @@ import UserService from '../../../users/server/UserService';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
 import { ACTIVITY_TYPES } from '../../activityConstants';
+import ActivityService from '../ActivityService';
 
 describe('sendEmailListener', () => {
   beforeEach(() => {
@@ -44,20 +45,26 @@ describe('sendEmailListener', () => {
           },
         }));
 
-      await checkEmails();
+      await checkEmails(1);
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: 'user' },
         activities: { type: 1, title: 1, description: 1, metadata: 1 },
       });
 
       expect(activities.length).to.equal(1);
-      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EMAIL);
-      expect(activities[0].title).to.equal('Email envoyé');
-      expect(activities[0].description).to.equal('E-Potek - Rue du test 1, de info@e-potek.ch');
-      expect(activities[0].metadata.emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
-      expect(activities[0].metadata.to).to.equal('john.doe@test.com');
-      expect(activities[0].metadata.from).to.equal('info@e-potek.ch');
-      expect(activities[0].metadata.response.status).to.equal('sent');
+      expect(activities[0]).to.deep.include({
+        type: ACTIVITY_TYPES.EMAIL,
+        title: 'Email envoyé',
+        description: 'E-Potek - Rue du test 1, de info@e-potek.ch',
+      });
+      expect(activities[0].metadata).to.deep.include({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+        to: 'john.doe@test.com',
+        from: 'info@e-potek.ch',
+      });
+      expect(activities[0].metadata.response).to.deep.include({
+        status: 'sent',
+      });
     });
   });
 
@@ -75,20 +82,26 @@ describe('sendEmailListener', () => {
           },
         }));
 
-      await checkEmails();
+      await checkEmails(1);
       const { activities = [] } = UserService.fetchOne({
         $filters: { _id: 'user' },
         activities: { type: 1, title: 1, description: 1, metadata: 1 },
       });
 
       expect(activities.length).to.equal(1);
-      expect(activities[0].type).to.equal(ACTIVITY_TYPES.EMAIL);
-      expect(activities[0].title).to.equal('Email envoyé');
-      expect(activities[0].description).to.equal('E-Potek - Rue du test 1, de info@e-potek.ch');
-      expect(activities[0].metadata.emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
-      expect(activities[0].metadata.to).to.equal('john.doe@test.com');
-      expect(activities[0].metadata.from).to.equal('info@e-potek.ch');
-      expect(activities[0].metadata.response.status).to.equal('sent');
+      expect(activities[0]).to.deep.include({
+        type: ACTIVITY_TYPES.EMAIL,
+        title: 'Email envoyé',
+        description: 'E-Potek - Rue du test 1, de info@e-potek.ch',
+      });
+      expect(activities[0].metadata).to.deep.include({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+        to: 'john.doe@test.com',
+        from: 'info@e-potek.ch',
+      });
+      expect(activities[0].metadata.response).to.deep.include({
+        status: 'sent',
+      });
     });
 
     it('does not throw if no user is registered with address', async () =>
@@ -104,8 +117,10 @@ describe('sendEmailListener', () => {
               multiple: false,
             },
           });
-          await checkEmails();
+          await checkEmails(1);
         });
       }).to.not.throw());
+    const activities = ActivityService.fetch();
+    expect(activities.length).to.equal(0);
   });
 });

@@ -26,13 +26,11 @@ export const createAccountsEmailConfig = emailId => ({
       ? `${title.content}, de ${Accounts.emailTemplates.from}`
       : `${emailId}, de ${Accounts.emailTemplates.from}`;
 
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EMAIL,
-      metadata: {
-        emailId,
-        to: address,
-        from: Accounts.emailTemplates.from,
-      },
+    ActivityService.addEmailActivity({
+      emailId,
+      to: address,
+      from: Accounts.emailTemplates.from,
+      isServerGenerated: true,
       userLink: { _id: user._id },
       title: 'Email envoyé',
       description,

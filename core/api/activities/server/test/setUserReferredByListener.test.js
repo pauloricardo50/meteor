@@ -52,15 +52,17 @@ describe('setUserReferredByListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Changement de referral');
-    expect(activities[0].description).to.equal('TestFirstName TestLastName (Organisation 1)');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-      details: {
-        oldReferral: {},
-        newReferral: { _id: 'pro1', name: 'TestFirstName TestLastName' },
-        referralType: 'user',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Changement de referral',
+      description: 'TestFirstName TestLastName (Organisation 1)',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
+        details: {
+          oldReferral: {},
+          newReferral: { _id: 'pro1', name: 'TestFirstName TestLastName' },
+          referralType: 'user',
+        },
       },
     });
   });
@@ -78,20 +80,22 @@ describe('setUserReferredByListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Changement de referral');
-    expect(activities[0].description).to.equal('TestFirstName TestLastName (Organisation 1)');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-      details: {
-        oldReferral: { _id: 'pro2', name: 'Pro 2' },
-        newReferral: { _id: 'pro1', name: 'TestFirstName TestLastName' },
-        referralType: 'user',
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Changement de referral',
+      description: 'TestFirstName TestLastName (Organisation 1)',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
+        details: {
+          oldReferral: { _id: 'pro2', name: 'Pro 2' },
+          newReferral: { _id: 'pro1', name: 'TestFirstName TestLastName' },
+          referralType: 'user',
+        },
       },
     });
   });
 
-  it('does not adds activity on the user when the referral does not change', async () => {
+  it('does not add activity on the user when the referral does not change', async () => {
     UserService.update({
       userId: 'user',
       object: { referredByUserLink: 'pro2' },

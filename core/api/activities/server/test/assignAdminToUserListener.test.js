@@ -46,14 +46,16 @@ describe('assignAdminToUserListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Changement de conseiller');
-    expect(activities[0].description).to.equal('Admin E-Potek');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
-      details: {
-        oldAssignee: {},
-        newAssignee: { _id: 'admin', name: 'Admin E-Potek' },
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Changement de conseiller',
+      description: 'Admin E-Potek',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
+        details: {
+          oldAssignee: {},
+          newAssignee: { _id: 'admin', name: 'Admin E-Potek' },
+        },
       },
     });
   });
@@ -71,19 +73,21 @@ describe('assignAdminToUserListener', () => {
     });
 
     expect(activities.length).to.equal(1);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Changement de conseiller');
-    expect(activities[0].description).to.equal('Admin E-Potek');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
-      details: {
-        oldAssignee: { _id: 'admin2', name: 'Admin2 E-Potek' },
-        newAssignee: { _id: 'admin', name: 'Admin E-Potek' },
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Changement de conseiller',
+      description: 'Admin E-Potek',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
+        details: {
+          oldAssignee: { _id: 'admin2', name: 'Admin2 E-Potek' },
+          newAssignee: { _id: 'admin', name: 'Admin E-Potek' },
+        },
       },
     });
   });
 
-  it('does not adds activity on the user when the assignee does not change', async () => {
+  it('does not add activity on the user when the assignee does not change', async () => {
     UserService.update({
       userId: 'user',
       object: { assignedEmployeeId: 'admin2' },

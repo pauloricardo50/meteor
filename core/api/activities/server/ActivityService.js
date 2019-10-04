@@ -11,13 +11,28 @@ class ActivityService extends CollectionService {
     return this.insert({ ...activity, isServerGenerated: true });
   }
 
-  addCreatedAtActivity({ createdAt, ...rest }) {
-    const { metadata = {}, ...activity } = rest;
+  addCreatedAtActivity({ createdAt, metadata = {}, ...rest }) {
     return this.addServerActivity({
       metadata: { event: ACTIVITY_EVENT_METADATA.CREATED, ...metadata },
       date: createdAt,
       type: ACTIVITY_TYPES.EVENT,
-      ...activity,
+      ...rest,
+    });
+  }
+
+  addEventActivity({ event, details, ...rest }) {
+    return this.insert({
+      type: ACTIVITY_TYPES.EVENT,
+      metadata: { event, details },
+      ...rest,
+    });
+  }
+
+  addEmailActivity({ emailId, to, from, response, ...rest }) {
+    return this.insert({
+      type: ACTIVITY_TYPES.EMAIL,
+      metadata: { emailId, to, from, response },
+      ...rest,
     });
   }
 

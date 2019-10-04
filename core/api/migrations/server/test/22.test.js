@@ -81,8 +81,10 @@ describe('Migration 22', () => {
       const activity4 = Activities.findOne('4');
       const activity5 = Activities.findOne('5');
 
-      expect(activity1.type).to.equal('SERVER');
-      expect(activity1.secondaryType).to.equal(ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET);
+      expect(activity1).to.deep.include({
+        type: 'SERVER',
+        secondaryType: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET,
+      });
       expect(activity1.metadata).to.equal(undefined);
       expect(activity2.type).to.equal(ACTIVITY_TYPES.EVENT);
       expect(activity2.metadata).to.equal(undefined);

@@ -41,7 +41,7 @@ describe('EmailService', function () {
         address,
         params: { name: 'Florian Bienefelt' },
       }).then(() =>
-        checkEmails().then((emails) => {
+        checkEmails(1).then((emails) => {
           expect(emails.length).to.equal(1);
           expect(emails[0]).to.deep.include({
             emailId: EMAIL_IDS.CONTACT_US,

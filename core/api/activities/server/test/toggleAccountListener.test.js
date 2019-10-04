@@ -35,9 +35,13 @@ describe('toggleAccountListener', () => {
       activities: { description: 1, title: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].title).to.equal('Compte désactivé');
-    expect(activities[0].description).to.equal('Par Admin E-Potek');
-    expect(activities[1].title).to.equal('Compte activé');
-    expect(activities[1].description).to.equal('Par Admin E-Potek');
+    expect(activities[0]).to.deep.include({
+      title: 'Compte désactivé',
+      description: 'Par Admin E-Potek',
+    });
+    expect(activities[1]).to.deep.include({
+      title: 'Compte activé',
+      description: 'Par Admin E-Potek',
+    });
   });
 });

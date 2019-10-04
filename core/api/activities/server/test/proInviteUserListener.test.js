@@ -14,6 +14,7 @@ import {
   ACTIVITY_EVENT_METADATA,
 } from '../../activityConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import ActivityService from '../ActivityService';
 
 describe('proInviteUserListener', () => {
   beforeEach(() => {
@@ -63,21 +64,23 @@ describe('proInviteUserListener', () => {
           phoneNumber: '12345',
         },
       }));
-    await checkEmails();
+    await checkEmails(2);
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Compte créé');
-    expect(activities[0].description).to.equal('Référé par Pro Account (Organisation)');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: {
-        referredBy: { _id: 'pro', name: 'Pro Account' },
-        referredByOrg: { _id: 'org', name: 'Organisation' },
-        referredByAPIOrg: {},
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Référé par Pro Account (Organisation)',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: { _id: 'pro', name: 'Pro Account' },
+          referredByOrg: { _id: 'org', name: 'Organisation' },
+          referredByAPIOrg: {},
+        },
       },
     });
   });
@@ -92,22 +95,24 @@ describe('proInviteUserListener', () => {
           phoneNumber: '12345',
         },
       }));
-    await checkEmails();
+    await checkEmails(2);
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Compte créé');
-    expect(activities[0].description).to.equal('Référé par TestFirstName TestLastName');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: {
-        referredBy: { _id: 'pro2', name: 'TestFirstName TestLastName' },
-        referredByOrg: {},
-        referredByAPIOrg: {},
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Référé par TestFirstName TestLastName',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: { _id: 'pro2', name: 'TestFirstName TestLastName' },
+          referredByOrg: {},
+          referredByAPIOrg: {},
+        },
       },
     });
   });
@@ -129,7 +134,7 @@ describe('proInviteUserListener', () => {
         },
       });
     });
-    await checkEmails();
+    await checkEmails(2);
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },
@@ -137,35 +142,29 @@ describe('proInviteUserListener', () => {
     });
 
     expect(activities.length).to.equal(2);
-    expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
-    expect(activities[0].title).to.equal('Compte créé');
-    expect(activities[0].description).to.equal('Référé par Pro Account (Organisation, API OrganisationAPI)');
-    expect(activities[0].metadata).to.deep.equal({
-      event: ACTIVITY_EVENT_METADATA.CREATED,
-      details: {
-        referredBy: { _id: 'pro', name: 'Pro Account' },
-        referredByOrg: { _id: 'org', name: 'Organisation' },
-        referredByAPIOrg: { _id: 'api', name: 'OrganisationAPI' },
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Référé par Pro Account (Organisation, API OrganisationAPI)',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+        details: {
+          referredBy: { _id: 'pro', name: 'Pro Account' },
+          referredByOrg: { _id: 'org', name: 'Organisation' },
+          referredByAPIOrg: { _id: 'api', name: 'OrganisationAPI' },
+        },
       },
     });
   });
 
   it('does not add the activity if user already exists', async () => {
-    generator({
+    await generator({
       users: {
         _id: 'user',
         _factory: 'user',
         firstName: 'John',
         lastName: 'Doe',
         emails: [{ address: 'john.doe@test.com', verified: true }],
-      },
-      activities: {
-        type: ACTIVITY_TYPES.EVENT,
-        isServerGenerated: true,
-        userLink: { _id: 'user' },
-        date: new Date(),
-        metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
-        title: 'Compte créé',
       },
       properties: {
         _id: 'property',
@@ -180,6 +179,13 @@ describe('proInviteUserListener', () => {
       },
     });
 
+    ActivityService.addCreatedAtActivity({
+      createdAt: new Date(),
+      title: 'Compte créé',
+      description: 'Generated',
+      userLink: { _id: 'user' },
+    });
+
     await ddpWithUserId('pro', () =>
       proInviteUser.run({
         user: {
@@ -190,12 +196,20 @@ describe('proInviteUserListener', () => {
         },
         propertyIds: ['property'],
       }));
-    await checkEmails();
+    await checkEmails(2);
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 
     expect(activities.length).to.equal(2);
+    expect(activities[0]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Compte créé',
+      description: 'Generated',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.CREATED,
+      },
+    });
   });
 });

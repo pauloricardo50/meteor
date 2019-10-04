@@ -14,7 +14,7 @@ import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
-import UserActivities from './UserActivities/UserActivities';
+import UserActivities from './UserActivities';
 
 const SingleUserPage = ({
   user,

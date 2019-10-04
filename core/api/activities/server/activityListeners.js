@@ -17,7 +17,7 @@ import {
   userVerifyEmail,
   loanSetStatus,
 } from '../../methods';
-import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
+import { ACTIVITY_EVENT_METADATA } from '../activityConstants';
 import UserService from '../../users/server/UserService';
 import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
@@ -38,11 +38,9 @@ ServerEventService.addAfterMethodListener(
       name: 1,
     }) || {};
 
-    ActivityService.addServerActivity({
-      metadata: {
-        event: ACTIVITY_EVENT_METADATA.REMOVE_LOAN_FROM_PROMOTION,
-      },
-      type: ACTIVITY_TYPES.EVENT,
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.REMOVE_LOAN_FROM_PROMOTION,
+      isServerGenerated: true,
       loanLink: { _id: loanId },
       title: `Enlevé de la promotion "${name}"`,
       description: userName ? `Par ${userName}` : '',
@@ -59,15 +57,14 @@ ServerEventService.addAfterMethodListener(
     result: isDisabled,
   }) => {
     const { name: adminName } = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
-    ActivityService.addServerActivity({
-      metadata: {
-        event: ACTIVITY_EVENT_METADATA.ACCOUNT_DISABLED,
-      },
+
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.ACCOUNT_DISABLED,
+      isServerGenerated: true,
       userLink: { _id: userId },
       title: `Compte ${isDisabled ? 'désactivé' : 'activé'}`,
       description: adminName ? `Par ${adminName}` : '',
       createdBy: adminId,
-      type: ACTIVITY_TYPES.EVENT,
     });
   },
 );
@@ -232,18 +229,18 @@ ServerEventService.addAfterMethodListener(
         'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
       },
     });
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EVENT,
-      metadata: { event: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET },
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET,
+      isServerGenerated: true,
       userLink: { _id: userId },
       title: 'Mot de passe choisi',
       createdBy: userId,
     });
 
     if (!firstConnectionActivity) {
-      ActivityService.addServerActivity({
-        type: ACTIVITY_TYPES.EVENT,
-        metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION },
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
+        isServerGenerated: true,
         userLink: { _id: userId },
         title: 'Première connexion',
         createdBy: userId,
@@ -257,15 +254,13 @@ ServerEventService.addAfterMethodListener(
   ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
     const { oldAssignee, newAssignee } = result;
     if (oldAssignee._id !== newAssignee._id) {
-      ActivityService.addServerActivity({
-        type: ACTIVITY_TYPES.EVENT,
-        metadata: {
-          event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
-          details: {
-            oldAssignee: pick(oldAssignee, ['_id', 'name']),
-            newAssignee: pick(newAssignee, ['_id', 'name']),
-          },
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_ASSIGNEE,
+        details: {
+          oldAssignee: pick(oldAssignee, ['_id', 'name']),
+          newAssignee: pick(newAssignee, ['_id', 'name']),
         },
+        isServerGenerated: true,
         userLink: { _id: userId },
         title: 'Changement de conseiller',
         description: newAssignee.name,
@@ -283,16 +278,15 @@ ServerEventService.addAfterMethodListener(
       const description = referralType === 'org'
         ? newReferral.name
         : getUserNameAndOrganisation({ user: newReferral });
-      ActivityService.addServerActivity({
-        type: ACTIVITY_TYPES.EVENT,
-        metadata: {
-          event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
-          details: {
-            oldReferral: pick(oldReferral, ['_id', 'name']),
-            newReferral: pick(newReferral, ['_id', 'name']),
-            referralType,
-          },
+
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
+        details: {
+          oldReferral: pick(oldReferral, ['_id', 'name']),
+          newReferral: pick(newReferral, ['_id', 'name']),
+          referralType,
         },
+        isServerGenerated: true,
         userLink: { _id: userId },
         title: 'Changement de referral',
         description,
@@ -309,12 +303,10 @@ ServerEventService.addAfterMethodListener(
     result: { oldEmail, newEmail },
     context: { userId: adminId },
   }) => {
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EVENT,
-      metadata: {
-        event: ACTIVITY_EVENT_METADATA.USER_CHANGE_EMAIL,
-        details: { oldEmail, newEmail },
-      },
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.USER_CHANGE_EMAIL,
+      details: { oldEmail, newEmail },
+      isServerGenerated: true,
       userLink: { _id: userId },
       title: "Changemenet d'email",
       description: newEmail,
@@ -326,9 +318,9 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   userVerifyEmail,
   ({ context: { userId } }) => {
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EVENT,
-      metadata: { event: ACTIVITY_EVENT_METADATA.USER_VERIFIED_EMAIL },
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.USER_VERIFIED_EMAIL,
+      isServerGenerated: true,
       userLink: { _id: userId },
       title: 'Adresse email vérifiée',
       createdBy: userId,
@@ -354,16 +346,14 @@ ServerEventService.addAfterMethodListener(
       name: 1,
     });
 
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EVENT,
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+      details: { prevStatus, nextStatus },
+      isServerGenerated: true,
       loanLink: { _id: loanId },
       title: 'Statut modifié',
       description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
       createdBy: userId,
-      metadata: {
-        event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
-        details: { prevStatus, nextStatus },
-      },
     });
   },
 );

@@ -78,11 +78,11 @@ export class UserServiceClass extends CollectionService {
     const userId = this.adminCreateUser({
       options: { ...user, sendEnrollmentEmail: true },
     });
-    
+
     if (loanId) {
       LoanService.assignLoanToUser({ userId, loanId });
     }
-    
+
     if (referralId) {
       const referralUser = this.fetchOne({
         $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
@@ -693,11 +693,12 @@ export class UserServiceClass extends CollectionService {
   toggleAccount({ userId }) {
     const userDetails = this.getUserDetails(userId);
     const { isDisabled } = userDetails;
+    const nextValue = !isDisabled;
     this.update({
       userId,
-      object: { isDisabled: !isDisabled, 'services.resume.loginTokens': [] },
+      object: { isDisabled: nextValue, 'services.resume.loginTokens': [] },
     });
-    return !isDisabled;
+    return nextValue;
   }
 }
 

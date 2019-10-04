@@ -30,15 +30,12 @@ export const down = () => {
     metadata: 1,
   });
 
-  return Promise.all(allServerActivities.map(({ _id, metadata: { event } }) =>
+  return Promise.all(allServerActivities.map(({ _id, metadata: { event } = {} }) =>
     Activities.rawCollection().update(
       { _id },
       {
         $unset: { isServerGenerated: true, metadata: true },
-        $set: {
-          type: 'SERVER',
-          secondaryType: event,
-        },
+        $set: { type: 'SERVER', secondaryType: event },
       },
     )));
 };
