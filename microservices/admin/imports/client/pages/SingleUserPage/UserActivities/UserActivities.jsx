@@ -2,9 +2,9 @@
 import React, { useEffect } from 'react';
 
 import Timeline from 'core/components/Timeline';
+import TimelineDescription from 'core/components/Timeline/TimelineDescription';
 import UserActivitiesContainer from './UserActivitiesContainer';
 import UserActivityTitle from './UserActivityTitle';
-import UserActivityDescription from './UserActivityDescription';
 
 type UserActivitiesProps = {
   activities: Array,
@@ -24,7 +24,12 @@ const UserActivities = ({ activities = [] }: UserActivitiesProps) => {
         className="user-activities-timeline"
         events={activities.map(activity => ({
           mainLabel: <UserActivityTitle activity={activity} />,
-          secondaryLabel: <UserActivityDescription activity={activity} />,
+          secondaryLabel: (
+            <TimelineDescription
+              activity={activity}
+              className="user-activity-description"
+            />
+          ),
         }))}
       />
     </div>

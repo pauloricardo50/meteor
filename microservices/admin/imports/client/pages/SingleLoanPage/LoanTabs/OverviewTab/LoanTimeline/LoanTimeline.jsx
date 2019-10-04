@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import Timeline from 'core/components/Timeline';
+import TimelineDescription from 'core/components/Timeline/TimelineDescription';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 import LoanActivityAdder from './LoanActivityAdder';
@@ -10,7 +11,6 @@ import LoanTimelineContainer, {
   activityFilterOptions,
 } from './LoanTimelineContainer';
 import LoanTimelineTitle from './LoanTimelineTitle';
-import LoanTimelineDescription from './LoanTimelineDescription';
 
 type LoanTimelineProps = {};
 
@@ -58,7 +58,12 @@ const LoanTimeline = ({
             </div>
           ),
           mainLabel: <LoanTimelineTitle activity={activity} />,
-          secondaryLabel: <LoanTimelineDescription activity={activity} />,
+          secondaryLabel: (
+            <TimelineDescription
+              activity={activity}
+              className="loan-timeline-description"
+            />
+          ),
         }))}
       />
     </div>
