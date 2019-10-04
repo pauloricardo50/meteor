@@ -1,11 +1,9 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { sendEmailToAddress } from '../../../api';
-import { EMAIL_IDS } from '../../../api/constants';
+import { sendLoanChecklist } from '../../../api';
 import { AutoFormDialog } from '../../AutoForm2';
 
 type LoanChecklistEmailSenderProps = {
@@ -66,10 +64,9 @@ export default withProps(({
       .filter(({ bcc }) => !bcc)
       .map(({ email }) => email);
 
-    return sendEmailToAddress.run({
+    return sendLoanChecklist.run({
       address: mainRecipient.email,
-      emailId: EMAIL_IDS.LOAN_CHECKLIST,
-      params: {
+      emailParams: {
         loan,
         assigneeName,
         assigneeAddress,

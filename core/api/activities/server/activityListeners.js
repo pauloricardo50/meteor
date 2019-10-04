@@ -2,6 +2,7 @@ import pick from 'lodash/pick';
 
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import Intl from 'core/utils/server/intl';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -16,6 +17,7 @@ import {
   changeEmail,
   userVerifyEmail,
   loanSetStatus,
+  sendLoanChecklist,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -353,6 +355,32 @@ ServerEventService.addAfterMethodListener(
       loanLink: { _id: loanId },
       title: 'Statut modifié',
       description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
+      createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  sendLoanChecklist,
+  ({
+    params: {
+      address,
+      emailParams: { assigneeAddress, loan },
+    },
+    context: { userId },
+  }) => {
+    const { email } = UserService.fetchOne({
+      $filters: { _id: userId },
+      email: 1,
+    });
+    ActivityService.addEmailActivity({
+      emailId: EMAIL_IDS.LOAN_CHECKLIST,
+      to: address,
+      from: assigneeAddress,
+      isServerGenerated: true,
+      loanLink: { _id: loan._id },
+      title: 'Checklist envoyée',
+      description: `Par ${email}`,
       createdBy: userId,
     });
   },
