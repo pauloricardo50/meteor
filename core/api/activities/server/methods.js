@@ -7,15 +7,14 @@ import {
   activityRemove,
 } from '../methodDefinitions';
 import ActivityService from './ActivityService';
-import { ACTIVITY_TYPES } from '../activityConstants';
 
 const allowModification = (activityId) => {
-  const { type } = ActivityService.fetchOne({
+  const { isServerGenerated } = ActivityService.fetchOne({
     $filters: { _id: activityId },
-    type: 1,
+    isServerGenerated: 1,
   });
 
-  return type !== ACTIVITY_TYPES.SERVER;
+  return !isServerGenerated;
 };
 
 activityInsert.setHandler(({ userId }, { object }) => {

@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
+import { sendEmailToAddress } from 'core/api/methods/index';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import Analytics from '../../analytics/server/Analytics';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import EVENTS from '../../analytics/events';
@@ -39,6 +41,7 @@ import {
   loanSetCreatedAtActivityDescription,
   loanSetStatus,
   loanUpdateCreatedAt,
+  sendLoanChecklist,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -305,4 +308,13 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
 
   LoanService.update({ loanId, object: { createdAt } });
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
+});
+
+sendLoanChecklist.setHandler(({ userId }, { address, emailParams }) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return sendEmailToAddress.run({
+    address,
+    emailId: EMAIL_IDS.LOAN_CHECKLIST,
+    params: emailParams,
+  });
 });

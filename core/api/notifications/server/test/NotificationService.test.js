@@ -175,7 +175,7 @@ describe('NotificationService', () => {
         },
       });
 
-      ActivityService._update({ id: 'a', object: { date: new Date() } });
+      ActivityService._update({ id: 'a', object: { date: new Date(), type: ACTIVITY_TYPES.OTHER } });
       const notifications = NotificationService.fetch({});
 
       expect(notifications.length).to.equal(0);

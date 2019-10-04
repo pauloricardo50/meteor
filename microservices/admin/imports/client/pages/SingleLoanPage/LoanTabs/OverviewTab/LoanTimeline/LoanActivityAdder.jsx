@@ -27,7 +27,7 @@ export const ActivitySchema = new SimpleSchema({
   },
   type: {
     type: String,
-    allowedValues: Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.SERVER),
+    allowedValues: Object.values(ACTIVITY_TYPES),
     uniforms: { placeholder: null },
   },
   shouldNotify: { type: Boolean, defaultValue: false },

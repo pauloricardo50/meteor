@@ -24,14 +24,6 @@ export const assignAdminToUser = new Method({
   },
 });
 
-export const assignAdminToNewUser = new Method({
-  name: 'assignAdminToNewUser',
-  params: {
-    userId: String,
-    adminId: String,
-  },
-});
-
 export const setRole = new Method({
   name: 'setRole',
   params: {
@@ -179,4 +171,14 @@ export const toggleAccount = new Method({
   params: {
     userId: String,
   },
+});
+
+// Used only to trigger activity listener
+export const userPasswordReset = new Method({
+  name: 'userPasswordReset',
+});
+
+// Used only to trigger activity listener
+export const userVerifyEmail = new Method({
+  name: 'userVerifyEmail',
 });

@@ -65,7 +65,8 @@ const addUnsuccesfulActivity = ({ loanId, reason }) =>
     object: {
       title: 'Sans suite',
       description: reason,
-      type: ACTIVITY_TYPES.SERVER,
+      type: ACTIVITY_TYPES.EVENT,
+      isServerGenerated: true,
       loanLink: { _id: loanId },
     },
   });

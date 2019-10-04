@@ -39,6 +39,7 @@ export { default as Contacts } from './contacts';
 export { default as Lenders } from './lenders';
 export { default as LenderRules } from './lenderRules';
 export { default as Revenues } from './revenues';
+export { default as Activities } from './activities';
 
 export * from './methods';
 export * from './helpers';
