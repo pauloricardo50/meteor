@@ -6,7 +6,6 @@ import SimpleSchema from 'simpl-schema';
 import { adminUsers as query } from '../../../api/users/queries';
 import { withSmartQuery, promotionUpdate } from '../../../api';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
-import LightTheme from './LightTheme';
 
 type PromotionAssigneeProps = {};
 
@@ -24,22 +23,20 @@ const getSchema = admins =>
   });
 
 const PromotionAssignee = ({ schema, promotion }: PromotionAssigneeProps) => (
-  <LightTheme>
-    <AutoForm
-      autosave
-      schema={schema}
-      model={{
-        assignedEmployeeId: promotion.assignedEmployee
-          ? promotion.assignedEmployee._id
-          : null,
-      }}
-      onSubmit={values =>
-        promotionUpdate.run({ promotionId: promotion._id, object: values })
-      }
-    >
-      <CustomAutoField name="assignedEmployeeId" />
-    </AutoForm>
-  </LightTheme>
+  <AutoForm
+    autosave
+    schema={schema}
+    model={{
+      assignedEmployeeId: promotion.assignedEmployee
+        ? promotion.assignedEmployee._id
+        : null,
+    }}
+    onSubmit={values =>
+      promotionUpdate.run({ promotionId: promotion._id, object: values })
+    }
+  >
+    <CustomAutoField name="assignedEmployeeId" />
+  </AutoForm>
 );
 
 export default compose(

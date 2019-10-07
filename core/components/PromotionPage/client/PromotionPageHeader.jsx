@@ -12,6 +12,7 @@ import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
+import LightTheme from './LightTheme';
 
 type PromotionPageHeaderProps = {};
 
@@ -59,8 +60,10 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
             />
           </h4>
           <div className="promotion-page-header-linkers">
-            {canLinkAssignee && <PromotionAssignee promotion={promotion} />}
-            {canLinkLender && <PromotionLender promotion={promotion} />}
+            <LightTheme>
+              {canLinkAssignee && <PromotionAssignee promotion={promotion} />}
+              {canLinkLender && <PromotionLender promotion={promotion} />}
+            </LightTheme>
           </div>
         </div>
         {Meteor.microservice !== 'app' && (
