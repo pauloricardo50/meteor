@@ -16,6 +16,7 @@ import '../properties/links';
 import '../revenues/links';
 import '../tasks/links';
 import '../users/links';
+import '../promotionReservations/links';
 import LinkInitializer from './LinkInitializer';
 
 LinkInitializer.setLinks();

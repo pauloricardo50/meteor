@@ -154,6 +154,10 @@ const PromotionSchema = new SimpleSchema({
       placeholder: '',
     },
   },
+  agreementDuration: {
+    type: Number,
+    optional: true,
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

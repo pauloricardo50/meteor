@@ -1,6 +1,7 @@
 import PromotionOptions from '.';
 
-import { PromotionLots, Lots, Loans } from '..';
+import { PromotionLots, Lots, Loans, PromotionReservations } from '..';
+import LinkInitializer from '../links/LinkInitializer';
 
 PromotionOptions.addLinks({
   promotionLots: {
@@ -15,8 +16,18 @@ PromotionOptions.addLinks({
     type: 'many',
     metadata: true,
   },
-  loan: {
-    collection: Loans,
-    inversedBy: 'promotionOptions',
-  },
+});
+
+LinkInitializer.inversedInit(() => {
+  PromotionOptions.addLinks({
+    loan: {
+      collection: Loans,
+      inversedBy: 'promotionOptions',
+    },
+    promotionReservation: {
+      inversedBy: 'promotionOption',
+      type: 'one',
+      collection: PromotionReservations,
+    },
+  });
 });
