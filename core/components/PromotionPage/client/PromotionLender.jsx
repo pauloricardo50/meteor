@@ -33,14 +33,15 @@ const PromotionLender = ({ promotion }: PromotionLenderProps) => (
     schema={schema}
     model={{ lenderOrganisationLink: promotion.lenderOrganisation }}
     onSubmit={(values) => {
-
       if (
         values.lenderOrganisationLink
+        && promotion.lenderOrganisation
         && values.lenderOrganisationLink._id === promotion.lenderOrganisation._id
       ) {
         // FIXME: Don't submit this form on mount.. because of customAllowedValues
         return Promise.reject();
       }
+
       return promotionUpdate.run({
         promotionId: promotion._id,
         object: values,
