@@ -14,22 +14,34 @@ const icons = {
   [ACTIVITY_TYPES.EVENT]: 'event',
   [ACTIVITY_TYPES.OTHER]: 'radioButtonChecked',
   [ACTIVITY_TYPES.PHONE]: 'phone',
-  [ACTIVITY_TYPES.SERVER]: 'computer',
   task: 'check',
 };
 
-const allowModify = type => type !== ACTIVITY_TYPES.SERVER && type !== 'task';
+const getIcon = (type, isServerGenerated) => {
+  if (isServerGenerated) {
+    return 'computer';
+  }
+
+  return icons[type] || 'computer';
+};
+
+const allowModify = (type, isServerGenerated) =>
+  !isServerGenerated && type !== 'task';
 
 const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
-  const { date, title, type } = activity;
+  const { date, title, type, isServerGenerated } = activity;
 
   return (
     <div className="loan-timeline-title">
-      {allowModify(type) && (
+      {allowModify(type, isServerGenerated) && (
         <LoanActivityModifier className="activity-modifier" model={activity} />
       )}
       <h4 className="title">
-        <Icon className="icon secondary" fontSize="small" type={icons[type]} />
+        <Icon
+          className="icon secondary"
+          fontSize="small"
+          type={getIcon(type, isServerGenerated)}
+        />
         <Tooltip title={title} placement="top-start">
           <span className="text">{title}</span>
         </Tooltip>

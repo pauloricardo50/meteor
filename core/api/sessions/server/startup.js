@@ -23,35 +23,40 @@ Meteor.startup(() => {
     });
   });
 
-  Mutation.addBeforeExecution(({ context, config }) => {
+  Mutation.addBeforeExecution(({ context = {}, config }) => {
     const {
       connection: {
         id: connectionId,
         clientAddress,
         httpHeaders: { 'x-real-ip': realIp } = {},
-      },
+      } = {},
       userId,
     } = context;
 
     const { name } = config;
 
-    const session = SessionService.getByConnectionId(connectionId);
+    if (connectionId) {
+      const session = SessionService.getByConnectionId(connectionId);
 
-    // If session has expired, insert it again
-    if (!session) {
-      SessionService.insert({
-        connectionId,
-        ip: realIp || clientAddress,
-        microservice: getClientMicroservice(),
-      });
-    }
+      // If session has expired, insert it again
+      if (!session) {
+        SessionService.insert({
+          connectionId,
+          ip: realIp || clientAddress,
+          microservice: getClientMicroservice(),
+        });
+      }
 
-    if (userId && session && !session.userId) {
-      SessionService.setUser(connectionId, userId);
-    }
+      if (userId && session && !session.userId) {
+        SessionService.setUser(connectionId, userId);
+      }
 
-    if (name) {
-      SessionService.setLastActivity({ connectionId, lastMethodCalled: name });
+      if (name) {
+        SessionService.setLastActivity({
+          connectionId,
+          lastMethodCalled: name,
+        });
+      }
     }
   });
 });

@@ -36,7 +36,7 @@ if (Meteor.isProduction && !key) {
 }
 
 class Analytics {
-  constructor(context) {
+  constructor(context = {}) {
     this.init(context);
   }
 
@@ -52,18 +52,17 @@ class Analytics {
   }
 
   context(context) {
+    const { userId } = context;
+    const connection = context.connection || {};
     const {
-      userId,
-      connection: {
-        id: connectionId,
-        clientAddress,
-        httpHeaders: {
-          'user-agent': userAgent,
-          'x-real-ip': realIp,
-          referer: referrer,
-        } = {},
+      id: connectionId,
+      clientAddress,
+      httpHeaders: {
+        'user-agent': userAgent,
+        'x-real-ip': realIp,
+        referer: referrer,
       } = {},
-    } = context;
+    } = connection;
     this.userId = userId;
     this.user = UserService.fetchOne({
       $filters: { _id: userId },

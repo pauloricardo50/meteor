@@ -49,10 +49,16 @@ const documentsToHide = ({ doc, collection, loan, id }) => {
 };
 
 const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
-  const { collection, loan, doc, className } = props;
+  const {
+    collection,
+    loan,
+    doc,
+    className,
+    withAdditionalDocAdder = true,
+  } = props;
   return (
     <div className={cx('single-file-tab', className)}>
-      {Meteor.microservice === 'admin' && (
+      {withAdditionalDocAdder && Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}
       <UploaderCategories

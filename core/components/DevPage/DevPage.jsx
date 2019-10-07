@@ -284,7 +284,7 @@ class DevPage extends Component {
           </Button>
           <hr className="mbt20" />
           <ConfirmMethod
-            method={cb => migrateToLatest().then(cb)}
+            method={cb => migrateToLatest.run().then(cb)}
             keyword="MIGRATE"
             label="Migrate to latest"
             buttonProps={{ error: true, raised: true }}

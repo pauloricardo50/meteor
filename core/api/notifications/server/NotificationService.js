@@ -131,7 +131,7 @@ class NotificationService extends CollectionService {
     });
 
     const admins = UserService.fetch({ $filters: { roles: ROLES.ADMIN } });
-    revenues.forEach(({ _id: revenueId, loan }) => {
+    revenues.forEach(({ _id: revenueId, loan = {} }) => {
       const existingNotification = this.fetchOne({
         $filters: { 'revenueLink._id': revenueId },
       });

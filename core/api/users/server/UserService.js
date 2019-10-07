@@ -130,8 +130,18 @@ export class UserServiceClass extends CollectionService {
   update = ({ userId, object }) =>
     this.allowUpdate({ object }) && Users.update(userId, { $set: object });
 
-  assignAdminToUser = ({ userId, adminId }) =>
-    adminId && this.update({ userId, object: { assignedEmployeeId: adminId } });
+  assignAdminToUser = ({ userId, adminId }) => {
+    if (adminId) {
+      const { assignedEmployee: oldAssignee = {} } = this.fetchOne({
+        $filters: { _id: userId },
+        assignedEmployee: { name: 1 },
+      }) || {};
+      const newAssignee = this.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+
+      this.update({ userId, object: { assignedEmployeeId: adminId } });
+      return { oldAssignee, newAssignee };
+    }
+  };
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 
@@ -205,6 +215,7 @@ export class UserServiceClass extends CollectionService {
     Accounts.addEmail(userId, newEmail);
     Accounts.removeEmail(userId, emails[0].address);
     Accounts.sendVerificationEmail(userId);
+    return { oldEmail: emails[0].address, newEmail };
   };
 
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
@@ -455,39 +466,71 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
+    const { referredByUser: oldReferral } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByUser: { name: 1, organisations: { name: 1 } },
+    });
+
     if (!proId) {
-      return this._update({
+      this._update({
         id: userId,
         object: { referredByUserLink: true },
         operator: '$unset',
       });
+
+      return {
+        oldReferral,
+        referralType: 'user',
+      };
     }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
       organisationId = mainOrg && mainOrg._id;
     }
 
-    return this.update({
+    const newReferral = this.fetchOne({
+      $filters: { _id: proId },
+      name: 1,
+      organisations: { name: 1 },
+    });
+
+    this.update({
       userId,
       object: {
         referredByUserLink: proId,
         referredByOrganisationLink: organisationId,
       },
     });
+
+    return {
+      oldReferral,
+      newReferral,
+      referralType: 'user',
+    };
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
+    const { referredByOrganisation: oldReferral = {} } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByOrganisation: { name: 1 },
+    });
     if (!organisationId) {
-      return this._update({
+      this._update({
         id: userId,
         object: { referredByOrganisationLink: true },
         operator: '$unset',
       });
+      return { oldReferral, referralType: 'org' };
     }
-    return this.update({
+    const newReferral = OrganisationService.fetchOne({
+      $filters: { _id: organisationId },
+      name: 1,
+    });
+    this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },
     });
+    return { oldReferral, newReferral, referralType: 'org' };
   }
 
   proInviteUserToOrganisation({ user, organisationId, title, proId, adminId }) {
@@ -650,10 +693,12 @@ export class UserServiceClass extends CollectionService {
   toggleAccount({ userId }) {
     const userDetails = this.getUserDetails(userId);
     const { isDisabled } = userDetails;
+    const nextValue = !isDisabled;
     this.update({
       userId,
-      object: { isDisabled: !isDisabled, 'services.resume.loginTokens': [] },
+      object: { isDisabled: nextValue, 'services.resume.loginTokens': [] },
     });
+    return nextValue;
   }
 }
 

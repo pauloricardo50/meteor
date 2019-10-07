@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
+import ActivityService from 'core/api/activities/server/ActivityService';
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import UserService from '../../users/server/UserService';
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
@@ -26,6 +28,7 @@ class EmailService {
     const template = getMandrillTemplate(templateOptions);
     return sendMandrillTemplate(template).then((response) => {
       this.emailLogger({ emailId, address, template, response });
+      this.addEmailActivity({ address, template, emailId, response });
     });
   };
 
@@ -112,6 +115,27 @@ class EmailService {
       }
       console.log(JSON.stringify(template, null, 2));
     }
+  };
+
+  addEmailActivity = ({ address, emailId, template = {}, response }) => {
+    const user = UserService.getByEmail(address);
+
+    if (!user) {
+      return;
+    }
+
+    const { message: { subject, from_email: from } = {} } = template;
+
+    ActivityService.addEmailActivity({
+      emailId,
+      to: address,
+      from,
+      response,
+      isServerGenerated: true,
+      userLink: { _id: user._id },
+      title: 'Email envoyé',
+      description: `${subject}, de ${from}`,
+    });
   };
 }
 

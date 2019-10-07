@@ -19,13 +19,13 @@ const formatType = (type) => {
   return type;
 };
 
-export const activityFilterOtions = [
+export const activityFilterOptions = [
   'COMMUNICATION',
   ...Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.EMAIL && type !== ACTIVITY_TYPES.PHONE),
 ];
 
 export default compose(
-  withState('type', 'setType', { $in: activityFilterOtions }),
+  withState('type', 'setType', { $in: activityFilterOptions }),
   withSmartQuery({
     query: adminActivities,
     params: ({ loanId, type }) => ({ loanId, type: formatType(type) }),

@@ -8,7 +8,6 @@ import {
   doesUserExist,
   sendVerificationLink,
   assignAdminToUser,
-  assignAdminToNewUser,
   setRole,
   adminCreateUser,
   updateUser,
@@ -28,6 +27,8 @@ import {
   proSetShareCustomers,
   anonymousCreateUser,
   toggleAccount,
+  userPasswordReset,
+  userVerifyEmail,
 } from '../methodDefinitions';
 import UserService from './UserService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -58,13 +59,6 @@ assignAdminToUser.setHandler((context, { userId, adminId }) => {
   return UserService.assignAdminToUser({ userId, adminId });
 });
 
-assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
-  // same action as assignAdminToUser, but with a dedicated
-  // listener that would complete & reassign the user's tasks
-  SecurityService.checkCurrentUserIsAdmin();
-
-  return UserService.assignAdminToUser({ userId, adminId });
-});
 
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -269,3 +263,6 @@ toggleAccount.setHandler((context, { userId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.toggleAccount({ userId });
 });
+
+userPasswordReset.setHandler(() => null);
+userVerifyEmail.setHandler(() => null);

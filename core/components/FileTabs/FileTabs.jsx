@@ -117,6 +117,7 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                   disabled={disabled}
                   currentUser={currentUser}
                   loan={loan}
+                  withAdditionalDocAdder={false}
                 />
               ),
             },

@@ -12,11 +12,13 @@ export const activity = () => ({
   date: 1,
   description: 1,
   loan: { name: 1 },
-  secondaryType: 1,
   shouldNotify: 1,
   title: 1,
   type: 1,
   updatedAt: 1,
+  user: { name: 1, email: 1 },
+  metadata: 1,
+  isServerGenerated: 1,
 });
 
 // //
@@ -634,6 +636,7 @@ export const appPromotionOption = () => ({
   priority: 1,
   solvency: 1,
   updatedAt: 1,
+  loan: { user: { _id: 1 } },
 });
 
 export const loanPromotionOption = () => ({
@@ -646,6 +649,7 @@ export const loanPromotionOption = () => ({
     reducedStatus: 1,
     value: 1,
     properties: promotionProperty(),
+    attributedTo: { user: { _id: 1 } },
   },
   value: 1,
 });

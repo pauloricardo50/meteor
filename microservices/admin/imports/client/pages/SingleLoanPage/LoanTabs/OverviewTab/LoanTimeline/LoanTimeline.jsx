@@ -3,14 +3,14 @@ import React, { useEffect } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import Timeline from 'core/components/Timeline';
+import TimelineDescription from 'core/components/Timeline/TimelineDescription';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 import LoanActivityAdder from './LoanActivityAdder';
 import LoanTimelineContainer, {
-  activityFilterOtions,
+  activityFilterOptions,
 } from './LoanTimelineContainer';
 import LoanTimelineTitle from './LoanTimelineTitle';
-import LoanTimelineDescription from './LoanTimelineDescription';
 
 type LoanTimelineProps = {};
 
@@ -37,7 +37,7 @@ const LoanTimeline = ({
           value={type.$in}
           multiple
           label="Filtrer"
-          options={activityFilterOtions.map(t => ({
+          options={activityFilterOptions.map(t => ({
             id: t,
             label: <T id={`Forms.type.${t}`} />,
           }))}
@@ -58,7 +58,12 @@ const LoanTimeline = ({
             </div>
           ),
           mainLabel: <LoanTimelineTitle activity={activity} />,
-          secondaryLabel: <LoanTimelineDescription activity={activity} />,
+          secondaryLabel: (
+            <TimelineDescription
+              activity={activity}
+              className="loan-timeline-description"
+            />
+          ),
         }))}
       />
     </div>
