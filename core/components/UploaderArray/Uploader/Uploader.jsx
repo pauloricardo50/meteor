@@ -3,26 +3,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import UploaderContainer from './UploaderContainer';
-import FileDropper from './FileDropper.jsx';
-import UploaderTop from './UploaderTop.jsx';
-import UploaderBottom from './UploaderBottom.jsx';
-import Checkbox from '../../Checkbox/Checkbox';
+import Checkbox from '../../Checkbox';
 import { setAdditionalDoc } from '../../../api';
 import { DOCUMENTS } from '../../../api/constants';
+import BaseUploader from './BaseUploader';
+import UploaderContainer from './UploaderContainer';
 
-const Uploader = (props) => {
+export const Uploader = ({
+  isDocumentToHide,
+  allowRequireByAdmin,
+  ...rest
+}) => {
   const {
-    handleAddFiles,
-    displayFull,
-    showFull,
     collection,
     docId,
     fileMeta: { id, requiredByAdmin, category },
-    isDocumentToHide,
-    allowRequireByAdmin,
-    handleMoveFile
-  } = props;
+  } = rest;
 
   return (
     <div className="uploader-admin">
@@ -42,10 +38,7 @@ const Uploader = (props) => {
           className={cx({ 'visibility-hidden': id === DOCUMENTS.OTHER })}
         />
       )}
-      <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id} handleMoveFile={handleMoveFile}>
-        <UploaderTop {...props} />
-        {displayFull && <UploaderBottom {...props} id={id} />}
-      </FileDropper>
+      <BaseUploader {...rest} />
     </div>
   );
 };

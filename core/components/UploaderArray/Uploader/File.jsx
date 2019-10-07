@@ -8,11 +8,6 @@ import { withState, compose } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import DialogForm from 'core/components/ModalManager/DialogForm';
-import {
-  setFileAdminName,
-  updateDocumentsCache,
-  setFileError,
-} from 'core/api/methods/index';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';
@@ -51,24 +46,34 @@ const getDisplayName = (name, adminName) => {
   return <a>{name}</a>;
 };
 
-const makeOnDragStart = ({ Key, status, collection }) => (event) => {
-  event.dataTransfer.setData('move', true);
-  event.dataTransfer.setData('Key', Key);
-  event.dataTransfer.setData('status', status);
-  event.dataTransfer.setData('collection', collection);
+const makeOnDragStart = ({ draggable, ...dragProps }) => {
+  if (!draggable) {
+    return;
+  }
+
+  return (event) => {
+    event.dataTransfer.setData('move', true);
+    Object.keys(dragProps).forEach((prop) => {
+      const value = dragProps[prop];
+      event.dataTransfer.setData(prop, value);
+    });
+  };
 };
 
-const File = ({
-  file: { name, Key, status, message, url, adminname: adminName },
-  disabled,
-  handleRemove,
-  deleting,
-  setDeleting,
-  displayFile,
-  docId,
-  collection,
-  id,
-}) => {
+const File = (props) => {
+  const {
+    file: { name, Key, status, message, url, adminname: adminName },
+    disabled,
+    handleRemove,
+    deleting,
+    setDeleting,
+    displayFile,
+    dragProps,
+    handleRenameFile,
+    handleChangeError,
+    draggable,
+    handleChangeFileStatus,
+  } = props;
   const { openModal } = useContext(ModalManagerContext);
 
   return (
@@ -90,19 +95,25 @@ const File = ({
               });
             }
           }}
-          draggable
-          onDragStart={makeOnDragStart({ Key, collection, status })}
+          draggable={draggable}
+          onDragStart={makeOnDragStart({
+            draggable,
+            Key,
+            status,
+            ...dragProps,
+          })}
         >
           {getDisplayName(name, adminName)}
         </h5>
         <div className="actions flex center">
-          <FileStatusSetter
-            status={status}
-            fileKey={Key}
-            docId={docId}
-            collection={collection}
-            error={message}
-          />
+          {handleChangeFileStatus && (
+            <FileStatusSetter
+              status={status}
+              fileKey={Key}
+              error={message}
+              handleChangeFileStatus={handleChangeFileStatus}
+            />
+          )}
           {Meteor.microservice === 'admin' && (
             <IconButton
               disabled={deleting}
@@ -122,10 +133,7 @@ const File = ({
                   className="animated fadeIn"
                   important
                   onSubmit={({ adminName: newName }) =>
-                    setFileAdminName
-                      .run({ Key, adminName: newName })
-                      .then(() =>
-                        updateDocumentsCache.run({ docId, collection }))
+                    handleRenameFile(newName, Key)
                   }
                 />);
               }}
@@ -202,10 +210,7 @@ const File = ({
                   description="Entrez le nouveau message d'erreur."
                   className="animated fadeIn"
                   important
-                  onSubmit={({ error }) => setFileError
-                    .run({ fileKey: Key, error })
-                    .then(() =>
-                      updateDocumentsCache.run({ docId, collection }))}
+                  onSubmit={({ error }) => handleChangeError(error, Key)}
                 />);
               }}
             />

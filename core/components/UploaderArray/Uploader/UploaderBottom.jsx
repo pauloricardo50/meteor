@@ -8,14 +8,18 @@ import File from './File';
 const UploaderBottom = ({
   currentValue,
   disabled,
-  handleRemove,
-  tempFiles,
-  docId,
-  collection,
-  handleUploadComplete,
+  draggable,
+  dragProps,
   handleAddFiles,
-  fileMeta,
-  id
+  handleChangeError,
+  handleRemove,
+  handleRenameFile,
+  handleUploadComplete,
+  handleUploadFailed,
+  handleChangeFileStatus,
+  tempFiles,
+  uploadDirective,
+  uploadDirectiveProps,
 }) => (
   <>
     {currentValue.map((f, i) => (
@@ -24,9 +28,11 @@ const UploaderBottom = ({
         file={f}
         disabled={disabled}
         handleRemove={handleRemove}
-        docId={docId}
-        collection={collection}
-        id={id}
+        draggable={draggable}
+        dragProps={dragProps}
+        handleRenameFile={handleRenameFile}
+        handleChangeError={handleChangeError}
+        handleChangeFileStatus={handleChangeFileStatus}
       />
     ))}
 
@@ -34,36 +40,35 @@ const UploaderBottom = ({
       <TempFile
         file={f}
         key={f.name + i} // if the same file is uploaded twice there's a conflict
-        docId={docId}
-        collection={collection}
         handleUploadComplete={handleUploadComplete}
-        {...fileMeta}
+        uploadDirective={uploadDirective}
+        uploadDirectiveProps={uploadDirectiveProps}
+        handleUploadFailed={handleUploadFailed}
       />
     ))}
 
-    <FileAdder
-      id={fileMeta.id}
-      handleAddFiles={handleAddFiles}
-      docId={docId}
-    />
+    <FileAdder handleAddFiles={handleAddFiles} />
   </>
 );
 
 UploaderBottom.propTypes = {
-  collection: PropTypes.string,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   disabled: PropTypes.bool.isRequired,
-  docId: PropTypes.string.isRequired,
+  draggable: PropTypes.bool,
+  dragProps: PropTypes.object,
   fileMeta: PropTypes.objectOf(PropTypes.any).isRequired,
   handleAddFiles: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
   handleUploadComplete: PropTypes.func.isRequired,
+  handleUploadFailed: PropTypes.func,
+  setFileStatus: PropTypes.func,
   tempFiles: PropTypes.array.isRequired,
+  uploadDirective: PropTypes.string.isRequired,
+  uploadDirectiveProps: PropTypes.object.isRequired,
 };
 
 UploaderBottom.defaultProps = {
   currentValue: [],
-  collection: 'loans',
 };
 
 export default UploaderBottom;

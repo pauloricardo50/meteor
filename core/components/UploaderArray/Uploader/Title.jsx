@@ -5,28 +5,17 @@ import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
 import FileStatusIcon from './FileStatusIcon';
-import AdditionalDocModifier from './AdditionalDocModifier';
 
 const Title = ({
-  fileMeta: {
-    id,
-    label,
-    noTooltips,
-    tooltipSuffix,
-    required,
-    requiredByAdmin,
-    category,
-  },
+  fileMeta: { id, label, noTooltips, tooltipSuffix, required },
   doubleTooltip,
   currentValue,
   displayFull,
   showFull,
   hideFull,
-  collection,
-  docId,
-  canModify,
+  uploaderTopRight,
 }) => {
-  // Construct the custom tooltip id for this file
+  // Construct the custom toocanModifyltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
 
   return (
@@ -54,13 +43,7 @@ const Title = ({
           />
         </h5>
       </div>
-      {canModify && (
-        <AdditionalDocModifier
-          collection={collection}
-          docId={docId}
-          additionalDoc={{ id, label, requiredByAdmin, category }}
-        />
-      )}
+      {uploaderTopRight}
 
       <IconButton
         type={displayFull ? 'up' : 'down'}

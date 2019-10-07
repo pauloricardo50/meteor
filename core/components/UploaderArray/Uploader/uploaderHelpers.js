@@ -1,20 +1,10 @@
-import { Meteor } from 'meteor/meteor';
-
-import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
-import { injectIntl } from 'react-intl';
+import { withStateHandlers, withProps, lifecycle } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
 
-import { moveFile } from 'core/api/methods/index';
-import {
-  FILE_STATUS,
-  ALLOWED_FILE_TYPES,
-  MAX_FILE_SIZE,
-} from '../../../api/constants';
+import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
-import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
-import withMatchParam from '../../../containers/withMatchParam';
 
 const checkFile = (file, currentValue = [], tempFiles = []) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
@@ -32,30 +22,7 @@ const checkFile = (file, currentValue = [], tempFiles = []) => {
   return true;
 };
 
-const filesExistAndAreValid = files =>
-  files
-  && files.length > 0
-  && files.every(file => file.status === FILE_STATUS.VALID);
-
-export const propHasChanged = (oldProp, newProp) =>
-  !!(
-    (!oldProp && newProp)
-    || (oldProp && !newProp)
-    || (oldProp && newProp && oldProp.length !== newProp.length)
-  );
-
-const displayFullState = withStateHandlers(
-  ({ currentValue }) => ({
-    displayFull:
-      Meteor.microservice === 'admin' || !filesExistAndAreValid(currentValue),
-  }),
-  {
-    showFull: () => () => ({ displayFull: true }),
-    hideFull: () => () => ({ displayFull: false }),
-  },
-);
-
-const tempFileState = withStateHandlers(
+export const tempFileState = withStateHandlers(
   { tempFiles: [], tempSuccessFiles: [] },
   {
     addTempSuccessFile: ({ tempSuccessFiles, tempFiles }) => file => ({
@@ -71,20 +38,16 @@ const tempFileState = withStateHandlers(
   },
 );
 
-const props = withProps(({
-  deleteFile,
+export const addProps = withProps(({
   addTempFiles,
-  addTempSuccessFile,
-  intl: { formatMessage: f },
-  handleSuccess,
   currentValue = [],
   tempFiles,
   tempSuccessFiles,
-  fileMeta: { id, label },
-  loanId,
+  deleteFile,
   setTempSuccessFiles,
-  docId,
-  collection,
+  handleSuccess,
+  addTempSuccessFile,
+  intl: { formatMessage: f },
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
@@ -117,12 +80,6 @@ const props = withProps(({
   },
   handleUploadComplete: (file, url) => {
     addTempSuccessFile(file);
-    ClientEventService.emit(MODIFIED_FILES_EVENT);
-    notifyOfUpload.run({
-      fileName: file.name,
-      docLabel: label || f({ id: `files.${id}` }),
-      loanId,
-    });
     if (handleSuccess) {
       handleSuccess(file, url);
     }
@@ -137,18 +94,16 @@ const props = withProps(({
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
     }),
-  handleMoveFile: ({ Key, status, oldCollection }) =>
-    moveFile.run({
-      Key,
-      status,
-      oldCollection,
-      newId: id,
-      newDocId: docId,
-      newCollection: collection,
-    }),
 }));
 
-const willReceiveProps = lifecycle({
+export const propHasChanged = (oldProp, newProp) =>
+  !!(
+    (!oldProp && newProp)
+    || (oldProp && !newProp)
+    || (oldProp && newProp && oldProp.length !== newProp.length)
+  );
+
+export const willReceiveProps = lifecycle({
   componentWillReceiveProps({ currentValue: nextValue = [] }) {
     const {
       currentValue = [],
@@ -166,16 +121,6 @@ const willReceiveProps = lifecycle({
   },
 });
 
-const withMergedSuccessfulFiles = withProps(({ currentValue = [], tempSuccessFiles }) => ({
+export const withMergedSuccessfulFiles = withProps(({ currentValue = [], tempSuccessFiles }) => ({
   currentValue: uniqBy([...currentValue, ...tempSuccessFiles], 'name'),
 }));
-
-export default compose(
-  injectIntl,
-  displayFullState,
-  tempFileState,
-  withMatchParam('loanId'),
-  props,
-  willReceiveProps,
-  withMergedSuccessfulFiles,
-);
