@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from './Material/Dialog';
+import Popover from './Material/Popover';
 import Button from './Button';
 import TextField from './Material/TextField';
 import T from './Translation';
@@ -10,6 +10,7 @@ export default class ConfirmMethod extends Component {
   state = {
     open: false,
     text: '',
+    anchorEl: null,
   };
 
   shouldAllowSubmit = keyword => !keyword || this.state.text === keyword;
@@ -17,7 +18,7 @@ export default class ConfirmMethod extends Component {
   handleOpen = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.setState({ open: true });
+    this.setState({ open: true, anchorEl: event.currentTarget });
   };
 
   handleClose = () => this.setState({ open: false });
@@ -54,7 +55,7 @@ export default class ConfirmMethod extends Component {
       title,
       description,
     } = this.props;
-    const { open, text, loading } = this.state;
+    const { open, text, loading, anchorEl } = this.state;
     const actions = [
       <Button
         label={<T id="ConfirmMethod.buttonCancel" />}
@@ -82,34 +83,39 @@ export default class ConfirmMethod extends Component {
           disabled={disabled}
           {...buttonProps}
         />
-        <Dialog
-          title={title}
-          actions={actions}
-          important
+        <Popover
           open={open}
-          text={description}
+          anchorEl={anchorEl}
+          onClose={this.handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          {children}
-          {keyword && (
-            <div>
-              <T
-                id="ConfirmMethod.dialogMessage"
-                values={{ keyword: <b>{keyword}</b> }}
-              />
-              <form
-                onSubmit={this.handleSubmit}
-                style={{ textAlign: 'center' }}
-              >
-                <TextField
-                  value={text}
-                  autoFocus
-                  onChange={this.handleChange}
-                  style={{ marginTop: 16 }}
+          <div style={{ padding: 8 }}>
+            {title && <h4>{title}</h4>}
+            {description && <p>{description}</p>}
+            {children}
+            {keyword && (
+              <div>
+                <T
+                  id="ConfirmMethod.dialogMessage"
+                  values={{ keyword: <b>{keyword}</b> }}
                 />
-              </form>
-            </div>
-          )}
-        </Dialog>
+                <form
+                  onSubmit={this.handleSubmit}
+                  style={{ textAlign: 'center' }}
+                >
+                  <TextField
+                    value={text}
+                    autoFocus
+                    onChange={this.handleChange}
+                    style={{ marginTop: 16 }}
+                  />
+                </form>
+              </div>
+            )}
+            {actions}
+          </div>
+        </Popover>
       </React.Fragment>
     );
   }
