@@ -16,7 +16,7 @@ import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
 import FinancingRefinancing from './FinancingRefinancing';
 import FinancingLenders from './FinancingLenders';
-import FinancingCollapser from './FinancingCollapser';
+import FinancingDetails from './FinancingDetails';
 
 type FinancingProps = {
   loan: userLoan,
@@ -32,7 +32,7 @@ const Financing = ({ loan }: FinancingProps) => {
       <div className="financing-structures">
         <FinancingHeader selectedStructure={loan.selectedStructure} />
 
-        <FinancingCollapser />
+        <FinancingDetails />
 
         <FinancingProject />
 

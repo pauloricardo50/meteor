@@ -10,12 +10,9 @@ import { proInviteUser } from 'core/api/methods/index';
 const schema = ({ proProperties, promotions }) =>
   new SimpleSchema({
     email: String,
-    firstName: String,
-    lastName: String,
-    phoneNumber: {
-      type: String,
-      optional: true,
-    },
+    firstName: { type: String, optional: true },
+    lastName: { type: String, optional: true },
+    phoneNumber: { type: String, optional: true },
     propertyIds: {
       optional: true,
       type: Array,

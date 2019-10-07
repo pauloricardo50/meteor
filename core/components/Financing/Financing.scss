@@ -348,8 +348,10 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   }
 }
 
-.financing-collapser {
+.financing-details {
+  display: flex;
   align-self: center;
+  align-items: center;
 
   margin-bottom: 16px;
 }
