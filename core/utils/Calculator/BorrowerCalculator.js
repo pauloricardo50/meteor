@@ -787,8 +787,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      const cashFortune = this.getCashFortune({ borrowers });
-      if (!cashFortune || cashFortune === 0) {
+      const bankFortune = this.getFortune({ borrowers });
+      if (!bankFortune || bankFortune === 0) {
         return false;
       }
 
