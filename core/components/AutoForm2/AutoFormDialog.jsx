@@ -32,9 +32,10 @@ type AutoFormDialogProps = {
 const getAutoFormProps = props =>
   pick(props, [
     'model',
-    'schema',
     'onSubmit',
+    'onSuccessMessage',
     'placeholder',
+    'schema',
     'showInlineError',
   ]);
 
@@ -131,20 +132,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
 
 export default compose(
   withState('open', 'setOpen', false),
-  withProps(({ onSubmit, setOpen, onSuccessMessage }) => ({
-    onSubmit: (...args) =>
-      onSubmit(...args).then(() => {
-        setOpen(false);
-        import('../../utils/message').then(({ default: message }) => {
-          message.success(
-            onSuccessMessage
-              ? typeof onSuccessMessage === 'function'
-                ? onSuccessMessage(...args)
-                : onSuccessMessage
-              : "C'est dans la boite !",
-            5,
-          );
-        });
-      }),
+  withProps(({ onSubmit, setOpen }) => ({
+    onSubmit: (...args) => onSubmit(...args).then(() => setOpen(false)),
   })),
 )(AutoFormDialog);
