@@ -23,5 +23,6 @@ export * from '../slack/methodDefinitions';
 export * from '../tasks/methodDefinitions';
 export * from '../users/methodDefinitions';
 export * from '../analytics/methodDefinitions';
+export * from '../promotionReservations/methodDefinitions';
 
 export * from './methodDefinitions';

@@ -269,6 +269,26 @@ class PromotionSecurity {
     });
   }
 
+  static isAllowedToManagePromotionReservation({ promotionOptionId, userId }) {
+    if (Security.isUserAdmin(userId)) {
+      return;
+    }
+
+    const {
+      promotionLots = [],
+      loan = {},
+    } = PromotionOptionService.safeFetchOne({
+      $filters: { _id: promotionOptionId },
+      promotionLots: { _id: 1 },
+      loan: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+    const { _id: loanId } = loan;
+
+    this.isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId });
+  }
+
   static isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId }) {
     if (Security.isUserAdmin(userId)) {
       return;

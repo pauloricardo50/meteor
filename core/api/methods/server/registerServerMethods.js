@@ -25,5 +25,6 @@ import '../../sessions/server/methods';
 import '../../slack/server/methods';
 import '../../tasks/server/methods';
 import '../../users/server/methods';
+import '../../promotionReservations/server/methods';
 
 import './methods';
