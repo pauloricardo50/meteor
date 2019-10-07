@@ -8,6 +8,7 @@ import {
   proOrganisation,
   userOrganisations,
 } from '../queries';
+import { ORGANISATION_FEATURES } from '../organisationConstants';
 
 const makeFilter = ({ param, field, filters }) => {
   if (param && !(Array.isArray(param) && !param.length)) {
@@ -34,6 +35,7 @@ exposeQuery({
         }
 
         if (hasRules) {
+          filters.features = ORGANISATION_FEATURES.LENDER;
           filters.lenderRulesCount = { $gte: 1 };
         }
 

@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import {  ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
@@ -600,7 +600,11 @@ export class LoanService extends CollectionService {
   }
 
   getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
-    let query = { features: { $in: [ORGANISATION_FEATURES.LENDER] } };
+    let query = {
+      features: ORGANISATION_FEATURES.LENDER,
+      lenderRulesCount: { $gte: 1 },
+    };
+
     if (loan.hasPromotion && loan.promotions[0].lenderOrganisationLink) {
       query = { _id: loan.promotions[0].lenderOrganisationLink._id };
     }
@@ -612,7 +616,7 @@ export class LoanService extends CollectionService {
     });
 
     return this.getMaxPropertyValueRange({
-      organisations: lenderOrganisations.filter(({ lenderRules }) => lenderRules && lenderRules.length > 0),
+      organisations: lenderOrganisations,
       loan,
       residenceType: residenceType || loan.residenceType,
       canton,
