@@ -636,6 +636,7 @@ export const appPromotionOption = () => ({
   priority: 1,
   solvency: 1,
   updatedAt: 1,
+  loan: { user: { _id: 1 } },
 });
 
 export const loanPromotionOption = () => ({
@@ -648,6 +649,7 @@ export const loanPromotionOption = () => ({
     reducedStatus: 1,
     value: 1,
     properties: promotionProperty(),
+    attributedTo: { user: { _id: 1 } },
   },
   value: 1,
 });
