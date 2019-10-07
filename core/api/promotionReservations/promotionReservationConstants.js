@@ -3,7 +3,7 @@ export const PROMOTION_RESERVATIONS_COLLECTION = 'promotionReservations';
 export const PROMOTION_RESERVATIONS_QUERIES = {
   // Insert your queries name here
   // Example:
-  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+  // EXAMPLE_QUERY: 'EXAMPLE_QUERY',
 };
 
 export const PROMOTION_RESERVATION_LENDER_STATUS = {

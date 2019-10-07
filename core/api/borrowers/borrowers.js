@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
 import { BORROWERS_COLLECTION } from './borrowerConstants';
 import BorrowerSchema from './schemas/BorrowerSchema';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
-
-// Prevent all client side modifications of mongoDB
-Borrowers.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-Borrowers.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Borrowers = createCollection(BORROWERS_COLLECTION);
 
 Borrowers.attachSchema(BorrowerSchema);
 export default Borrowers;

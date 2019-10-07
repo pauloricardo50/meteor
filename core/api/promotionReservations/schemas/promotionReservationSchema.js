@@ -17,6 +17,8 @@ import {
 const PromotionReservationSchema = new SimpleSchema({
   createdAt,
   updatedAt,
+  startDate: Date,
+  expirationDate: Date,
   status: {
     type: String,
     allowedValues: Object.values(PROMOTION_RESERVATION_STATUS),
@@ -50,8 +52,6 @@ const PromotionReservationSchema = new SimpleSchema({
     defaultValue: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE,
   },
   'mortgageCertification.date': { type: Date, optional: true },
-  startDate: Date,
-  expirationDate: Date,
   adminNote: { type: Object, optional: true },
   'adminNote.note': String,
   'adminNote.date': Date,

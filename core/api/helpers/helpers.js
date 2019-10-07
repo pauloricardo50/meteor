@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 
 import {

@@ -43,8 +43,8 @@ export { default as Revenues } from './revenues';
 export { default as Activities } from './activities';
 export { default as PromotionReservations } from './promotionReservations';
 
-export * from './methods';
 export * from './helpers';
+export * from './methods';
 export * from './containerToolkit';
 
 // Do this for autocompletion...

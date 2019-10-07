@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-
 import SessionSchema from './schemas/sessionSchema';
 import { SESSIONS_COLLECTION } from './sessionConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Sessions = new Mongo.Collection(SESSIONS_COLLECTION);
-
-Sessions.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-Sessions.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Sessions = createCollection(SESSIONS_COLLECTION);
 
 Sessions.attachSchema(SessionSchema);
 export default Sessions;

@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-
 import PromotionReservationSchema from './schemas/promotionReservationSchema';
 import { PROMOTION_RESERVATIONS_COLLECTION } from './promotionReservationConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const PromotionReservations = new Mongo.Collection(PROMOTION_RESERVATIONS_COLLECTION);
-
-PromotionReservations.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-PromotionReservations.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const PromotionReservations = createCollection(PROMOTION_RESERVATIONS_COLLECTION);
 
 PromotionReservations.attachSchema(PromotionReservationSchema);
 export default PromotionReservations;
