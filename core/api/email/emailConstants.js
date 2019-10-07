@@ -77,6 +77,17 @@ export const EMAIL_TEMPLATES = {
       CSS: 'CSS',
     },
   },
+  NOTIFICATION_AND_CTA_V3: {
+    name: 'NOTIFICATION_AND_CTA_V3',
+    mandrillId: 'notification-cta-v3',
+    variables: {
+      TITLE: 'TITLE',
+      BODY: 'BODY',
+      CTA: 'CTA',
+      CTA_URL: 'CTA_URL',
+      CSS: 'CSS',
+    },
+  },
 };
 
 export const EMAIL_IDS = {

@@ -286,7 +286,7 @@ addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
 });
 
 addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V2,
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V3,
   createOverrides(
     {
       loan,
