@@ -59,7 +59,6 @@ export default class ConfirmMethod extends Component {
     const actions = [
       <Button
         label={<T id="ConfirmMethod.buttonCancel" />}
-        primary
         onClick={this.handleClose}
         key="cancel"
         disabled={loading}
