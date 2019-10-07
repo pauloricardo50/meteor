@@ -14,8 +14,8 @@ import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({
-  firstName: { type: String, optional: false },
-  lastName: { type: String, optional: false },
+  firstName: { type: String, optional: true },
+  lastName: { type: String, optional: true },
   organisations: {
     type: Array,
     condition: ({ roles = [] }) => roles.includes(ROLES.PRO),
