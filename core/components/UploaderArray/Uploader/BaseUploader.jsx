@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileDropper from './FileDropper.jsx';
-import UploaderTop from './UploaderTop.jsx';
-import UploaderBottom from './UploaderBottom.jsx';
+import FileDropper from './FileDropper';
+import UploaderTop from './UploaderTop';
+import UploaderBottom from './UploaderBottom';
 
-const BaseUploader = (props) => {
+const BaseUploader = ({ showFull, handleMoveFile, ...rest }) => {
   const {
     handleAddFiles,
     displayFull,
-    showFull,
     fileMeta: { id },
-    handleMoveFile,
-  } = props;
+  } = rest;
 
   return (
     <FileDropper
@@ -21,8 +19,8 @@ const BaseUploader = (props) => {
       id={id}
       handleMoveFile={handleMoveFile}
     >
-      <UploaderTop {...props} />
-      {displayFull && <UploaderBottom {...props} id={id} />}
+      <UploaderTop {...rest} />
+      {displayFull && <UploaderBottom {...rest} id={id} />}
     </FileDropper>
   );
 };

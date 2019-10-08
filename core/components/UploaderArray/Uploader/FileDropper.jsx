@@ -35,32 +35,35 @@ export default class FileDropper extends Component {
   }
 
   handleDragEnter = (e) => {
+    const { disabled, showFull } = this.props;
     e.preventDefault();
     e.stopPropagation();
-    if (!this.props.disabled) {
+    if (!disabled) {
       this.setState({ dragging: true, target: e.target });
-      this.props.showFull();
+      showFull();
     }
   };
 
   handleDragLeave = (e) => {
+    const { target } = this.state;
     e.preventDefault();
     e.stopPropagation();
-    if (e.target === this.state.target) {
+    if (e.target === target) {
       this.setState({ dragging: false });
     }
   };
 
   handleDrop = (e) => {
+    const { disabled, handleMoveFile, handleAddFiles } = this.props;
     e.preventDefault();
     e.stopPropagation();
     this.setState({ dragging: false });
-    if (!this.props.disabled) {
+    if (!disabled) {
       const isMove = e.dataTransfer.getData('move');
       if (isMove) {
-        this.props.handleMoveFile(getMoveFileData(e));
+        handleMoveFile(getMoveFileData(e));
       } else {
-        this.props.handleAddFiles(getDataTransferItems(e));
+        handleAddFiles(getDataTransferItems(e));
       }
     }
   };

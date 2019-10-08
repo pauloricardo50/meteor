@@ -1,4 +1,5 @@
 {
+  "PromotionLotReservation.book": "Réserver",
   "ProDashboardPageTabs.loans": "Dossiers",
   "ProDashboardPageTabs.properties": "Biens immo",
   "ProDashboardPageTabs.organisationProperties": "Biens immo ({orgName})",
@@ -980,11 +981,6 @@
   "PromotionPage.lots.interested": "Intéressé",
   "PromotionPage.lots.priorityOrder": "Priorité",
   "PromotionLotLoansTable.priorityOrder": "Priorité",
-  "PromotionLotAttributer.sold": "Vendu",
-  "PromotionLotAttributer.book": "Réserver",
-  "PromotionLotAttributer.sell": "Confirmer vente",
-  "PromotionLotAttributer.notificationDisclaimer": "Notifiera tous les Pros",
-  "PromotionLotAttributer.cancelBooking": "Annuler réservation",
   "PromotionLotLoansTable.attribute": "Attribution",
   "PromotionPage.lots.attributedTo": "Attribué à",
   "PromotionLotLoansTable.status": "Niveau d'intérêt",

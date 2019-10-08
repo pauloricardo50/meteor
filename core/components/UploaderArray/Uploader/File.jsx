@@ -2,16 +2,15 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withState, compose } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import DialogForm from 'core/components/ModalManager/DialogForm';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';
-import { withFileViewerContext } from '../../../containers/FileViewerContext';
+import { FileViewerContext } from '../../../containers/FileViewerContext';
 import T from '../../Translation';
 import IconButton from '../../IconButton';
 import Downloader from '../../Downloader';
@@ -65,16 +64,15 @@ const File = (props) => {
     file: { name, Key, status, message, url, adminname: adminName },
     disabled,
     handleRemove,
-    deleting,
-    setDeleting,
-    displayFile,
     dragProps,
     handleRenameFile,
     handleChangeError,
     draggable,
     handleChangeFileStatus,
   } = props;
+  const { displayFile } = useContext(FileViewerContext);
   const { openModal } = useContext(ModalManagerContext);
+  const [deleting, setDeleting] = useState(false);
 
   return (
     <div className="flex-col">
@@ -116,8 +114,7 @@ const File = (props) => {
           )}
           {Meteor.microservice === 'admin' && (
             <IconButton
-              disabled={deleting}
-              type={deleting ? 'loop-spin' : 'edit'}
+              type="edit"
               tooltip="<ADMIN> Renommer le fichier"
               onClick={(event) => {
                 event.preventDefault();
@@ -227,7 +224,4 @@ File.propTypes = {
   handleRemove: PropTypes.func.isRequired,
 };
 
-export default compose(
-  withState('deleting', 'setDeleting', false),
-  withFileViewerContext,
-)(File);
+export default File;

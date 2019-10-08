@@ -1,7 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
-import { compose, withStateHandlers, withProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { injectIntl } from 'react-intl';
 
 import {
@@ -11,7 +9,7 @@ import {
   setFileError,
   setFileStatus,
 } from 'core/api/methods/index';
-import { FILE_STATUS, SLINGSHOT_DIRECTIVE_NAME } from '../../../api/constants';
+import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
@@ -22,24 +20,9 @@ import {
   addProps,
   willReceiveProps,
   withMergedSuccessfulFiles,
+  displayFullState,
 } from './uploaderHelpers';
 import AdditionalDocModifier from './AdditionalDocModifier';
-
-const filesExistAndAreValid = files =>
-  files
-  && files.length > 0
-  && files.every(file => file.status === FILE_STATUS.VALID);
-
-const displayFullState = withStateHandlers(
-  ({ currentValue }) => ({
-    displayFull:
-      Meteor.microservice === 'admin' || !filesExistAndAreValid(currentValue),
-  }),
-  {
-    showFull: () => () => ({ displayFull: true }),
-    hideFull: () => () => ({ displayFull: false }),
-  },
-);
 
 const addMeteorProps = withProps(({
   intl: { formatMessage: f },

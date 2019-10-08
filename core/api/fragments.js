@@ -603,6 +603,7 @@ export const fullPromotionOption = () => ({
   promotionLots: { name: 1, promotion: { name: 1 } },
   solvency: 1,
   updatedAt: 1,
+  promotionReservation: promotionReservation(),
 });
 
 export const proPromotionOption = () => ({
@@ -622,6 +623,7 @@ export const proPromotionOption = () => ({
   },
   promotion: { users: { _id: 1 } },
   proNote: 1,
+  promotionReservation: promotionReservation(),
 });
 
 export const appPromotionOption = () => ({
@@ -652,6 +654,15 @@ export const loanPromotionOption = () => ({
     attributedTo: { user: { _id: 1 } },
   },
   value: 1,
+});
+
+// //
+// // Promotion fragments
+// //
+export const promotionReservation = () => ({
+  startDate: 1,
+  expirationDate: 1,
+  status: 1,
 });
 
 // //

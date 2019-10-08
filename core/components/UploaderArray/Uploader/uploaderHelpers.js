@@ -1,7 +1,13 @@
+import { Meteor } from 'meteor/meteor';
+
 import { withStateHandlers, withProps, lifecycle } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
 
-import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '../../../api/constants';
+import {
+  FILE_STATUS,
+  ALLOWED_FILE_TYPES,
+  MAX_FILE_SIZE,
+} from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
@@ -21,6 +27,22 @@ const checkFile = (file, currentValue = [], tempFiles = []) => {
   }
   return true;
 };
+
+const filesExistAndAreValid = files =>
+  files
+  && files.length > 0
+  && files.every(file => file.status === FILE_STATUS.VALID);
+
+export const displayFullState = withStateHandlers(
+  ({ currentValue }) => ({
+    displayFull:
+      Meteor.microservice === 'admin' || !filesExistAndAreValid(currentValue),
+  }),
+  {
+    showFull: () => () => ({ displayFull: true }),
+    hideFull: () => () => ({ displayFull: false }),
+  },
+);
 
 export const tempFileState = withStateHandlers(
   { tempFiles: [], tempSuccessFiles: [] },
