@@ -2,7 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { LOAN_VERIFICATION_STATUS } from 'core/api/loans/loanConstants';
-import { AGREEMENT_STATUSES } from 'core/api/promotionOptions/promotionOptionConstants';
+import {
+  AGREEMENT_STATUSES,
+  DEPOSIT_STATUSES,
+} from 'core/api/promotionOptions/promotionOptionConstants';
 import FileService from 'core/api/files/server/FileService';
 import PromotionReservations from '../promotionReservations';
 import CollectionService from '../../helpers/CollectionService';
@@ -11,6 +14,7 @@ import {
   PROMOTION_RESERVATION_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   PROMOTION_RESERVATION_DOCUMENTS,
+  PROMOTION_RESERVATION_LENDER_STATUS,
 } from '../promotionReservationConstants';
 
 class PromotionReservationService extends CollectionService {
@@ -39,6 +43,8 @@ class PromotionReservationService extends CollectionService {
       },
     ] = promotionLots;
 
+    const { _id: loanId } = loan;
+
     // Check if there's any active promotion reservation on this lot
     if (promotionReservations.length) {
       const activePromotionReservation = promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE);
@@ -48,12 +54,11 @@ class PromotionReservationService extends CollectionService {
       }
     }
 
-    // Check if agreement duration is set
-    if (!agreementDuration) {
-      throw new Meteor.Error('Aucun délai de réservation configuré pour cette promotion');
-    }
-
     const { startDate, agreementFileKeys = [] } = promotionReservation;
+    const expirationDate = this.getExpirationDate({
+      startDate,
+      agreementDuration,
+    });
 
     // Check if promotion reservation agreement has been uploaded
     if (
@@ -61,6 +66,62 @@ class PromotionReservationService extends CollectionService {
       || agreementFileKeys.some(Key => !FileService.getFileFromKey(Key))
     ) {
       throw new Meteor.Error('Aucune convention de réservation uploadée');
+    }
+
+    // Insert promotion reservation
+    const promotionReservationId = this.collection.insert({
+      ...promotionReservation,
+      expirationDate,
+      agreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
+      deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
+      lender: {
+        date: startDate,
+        status: PROMOTION_RESERVATION_LENDER_STATUS.NONE,
+      },
+      mortgageCertification: this.getInitialMortgageCertification({
+        loan,
+        startDate,
+      }),
+    });
+
+    // Link all related docs
+    this.linkAllDocs({
+      promotionReservationId,
+      promotionOptionId,
+      promotionLotId,
+      promotionId,
+      loanId,
+    });
+
+    // Move promotion reservation agreement files to promotion reservation
+    this.mergeAgreementFiles({ promotionReservationId, agreementFileKeys });
+
+    return promotionReservationId;
+  }
+
+  getInitialMortgageCertification({ loan, startDate }) {
+    const {
+      maxPropertyValue: { date: maxPropertyValueDate } = {},
+      verificationStatus,
+    } = loan;
+
+    let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE;
+    let date = startDate;
+
+    if (maxPropertyValueDate) {
+      status = verificationStatus === LOAN_VERIFICATION_STATUS.OK
+        ? PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED
+        : PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+      date = maxPropertyValueDate;
+    }
+
+    return { status, date };
+  }
+
+  getExpirationDate({ startDate, agreementDuration }) {
+    // Check if agreement duration is set
+    if (!agreementDuration) {
+      throw new Meteor.Error('Aucun délai de réservation configuré pour cette promotion');
     }
 
     const today = moment().startOf('day');
@@ -83,28 +144,16 @@ class PromotionReservationService extends CollectionService {
       .endOf('day')
       .toDate();
 
-    const {
-      _id: loanId,
-      maxPropertyValue: { date: maxPropertyValueDate } = {},
-      verificationStatus,
-    } = loan;
+    return expirationDate;
+  }
 
-    // Insert promotion reservation
-    const promotionReservationId = this.collection.insert({
-      ...promotionReservation,
-      agreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
-      expirationDate,
-      mortgageCertification: {
-        status: maxPropertyValueDate
-          ? verificationStatus === LOAN_VERIFICATION_STATUS.OK
-            ? PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED
-            : PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED
-          : PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE,
-        date: maxPropertyValueDate,
-      },
-    });
-
-    // Link all related docs
+  linkAllDocs({
+    promotionReservationId,
+    promotionOptionId,
+    promotionId,
+    promotionLotId,
+    loanId,
+  }) {
     this.addLink({
       id: promotionReservationId,
       linkName: 'promotionOption',
@@ -125,8 +174,9 @@ class PromotionReservationService extends CollectionService {
       linkName: 'loan',
       linkId: loanId,
     });
+  }
 
-    // Move promotion reservation agreement files to promotion reservation
+  mergeAgreementFiles({ promotionReservationId, agreementFileKeys = [] }) {
     agreementFileKeys.forEach((Key) => {
       const name = FileService.getFileName(Key);
       FileService.moveFile({
@@ -137,8 +187,6 @@ class PromotionReservationService extends CollectionService {
         newCollection: this.collection._name,
       });
     });
-
-    return promotionReservationId;
   }
 
   updateStatus({ promotionReservationId, status }) {
