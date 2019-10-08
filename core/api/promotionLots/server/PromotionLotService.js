@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
-import { PromotionOptionService } from 'core/api/promotionOptions/server/PromotionOptionService';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
