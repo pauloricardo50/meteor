@@ -9,6 +9,7 @@ import {
   getZipLoanUrl,
   setFileAdminName,
   moveFile,
+  deleteTempFile,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -108,4 +109,9 @@ moveFile.setHandler((context, { Key, status, oldCollection, newId, newDocId, new
     newDocId,
     newCollection,
   });
+});
+
+deleteTempFile.setHandler(({ userId }, { fileKey }) => {
+  SecurityService.isAllowedToRemoveTempFile({ userId, fileKey });
+  return FileService.deleteFile(fileKey);
 });

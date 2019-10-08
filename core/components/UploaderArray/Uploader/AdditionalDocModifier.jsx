@@ -3,7 +3,7 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { setAdditionalDoc, removeAdditionalDoc } from '../../../api/methods';
-import { AutoFormDialog } from '../../AutoForm2';
+import AutoFormDialog from '../../AutoForm2/AutoFormDialog';
 import T from '../../Translation';
 import Button from '../../Button';
 import {
@@ -78,11 +78,12 @@ const AdditionalDocModifier = ({
         <Button
           onClick={() => {
             setDisableActions(true);
-            return removeAdditionalDoc.run({
-              collection,
-              id: docId,
-              additionalDocId: additionalDoc.id,
-            })
+            return removeAdditionalDoc
+              .run({
+                collection,
+                id: docId,
+                additionalDocId: additionalDoc.id,
+              })
               .then(closeDialog)
               .finally(() => setDisableActions(false));
           }}

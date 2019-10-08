@@ -29,7 +29,7 @@ export default class Security {
 
   // Not in use at the moment, but might need in future, we can refine this method more
   static isAccountDisabled(user) {
-    return (!user || user.isDisabled);
+    return !user || user.isDisabled;
   }
 
   static checkUserLoggedIn(userId) {
@@ -250,5 +250,13 @@ export default class Security {
     default:
       this[collection].isAllowedToUpdate(docId);
     }
+  }
+
+  static isAllowedToRemoveTempFile({ userId, fileKey }) {
+    if (fileKey && fileKey.startsWith(`${userId}/temp/`)) {
+      return;
+    }
+
+    this.handleUnauthorized('Vous ne pouvez pas supprimer ce fichier');
   }
 }
