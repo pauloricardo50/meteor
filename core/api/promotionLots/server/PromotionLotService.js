@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
+import { PromotionOptionService } from 'core/api/promotionOptions/server/PromotionOptionService';
 import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
@@ -32,18 +33,21 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  bookPromotionLot({ promotionLotId, loanId, promotionReservation }) {
-    const { promotionOptions = [] } = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      promotionOptions: { promotionLots: { _id: 1 } },
+  bookPromotionLot({ promotionOptionId, promotionReservation }) {
+    const {
+      loan: { _id: loanId } = {},
+      promotionLots,
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
     });
 
-    const promotionOption = promotionOptions.find(({ promotionLots = [] }) =>
-      promotionLots.some(({ _id }) => _id === promotionLotId));
+    const [{ _id: promotionLotId }] = promotionLots;
 
     const promotionReservationId = PromotionReservationService.insert({
       promotionReservation,
-      promotionOptionId: promotionOption._id,
+      promotionOptionId,
     });
 
     this.update({
@@ -61,6 +65,25 @@ export class PromotionLotService extends CollectionService {
   }
 
   cancelPromotionLotBooking({ promotionLotId }) {
+    const { _id: promotionReservationId } = this.getActivePromotionReservation({
+      promotionLotId,
+    });
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
+    });
+    this.removeLink({
+      id: promotionLotId,
+      linkName: 'attributedTo',
+    });
+
+    return PromotionReservationService.cancelReservation({
+      promotionReservationId,
+    });
+  }
+
+  getActivePromotionReservation({ promotionLotId }) {
     const { promotionReservations = [], status } = this.fetchOne({
       $filters: {
         _id: promotionLotId,
@@ -78,25 +101,21 @@ export class PromotionLotService extends CollectionService {
       throw new Meteor.Error("Ce lot n'est pas réservé");
     }
 
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
-    });
-    this.removeLink({
-      id: promotionLotId,
-      linkName: 'attributedTo',
-    });
-    const [{ _id: promotionReservationId }] = promotionReservations;
-
-    return PromotionReservationService.cancelReservation({
-      promotionReservationId,
-    });
+    const [activePromotionReservation] = promotionReservations;
+    return activePromotionReservation;
   }
 
   sellPromotionLot({ promotionLotId }) {
-    return this.update({
+    const { _id: promotionReservationId } = this.getActivePromotionReservation({
+      promotionLotId,
+    });
+    this.update({
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.SOLD },
+    });
+
+    return PromotionReservationService.completeReservation({
+      promotionReservationId,
     });
   }
 }

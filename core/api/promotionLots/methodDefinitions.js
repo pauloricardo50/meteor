@@ -43,8 +43,7 @@ export const removeLotLink = new Method({
 export const bookPromotionLot = new Method({
   name: 'bookPromotionLot',
   params: {
-    promotionLotId: String,
-    loanId: String,
+    promotionOptionId: String,
     promotionReservation: Object,
   },
 });

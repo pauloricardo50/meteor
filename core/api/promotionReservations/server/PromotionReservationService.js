@@ -98,10 +98,24 @@ class PromotionReservationService extends CollectionService {
     return promotionReservationId;
   }
 
-  cancelReservation({ promotionReservationId }) {
+  updateStatus({ promotionReservationId, status }) {
     return this._update({
       id: promotionReservationId,
-      object: { status: PROMOTION_RESERVATION_STATUS.CANCELED },
+      object: { status },
+    });
+  }
+
+  cancelReservation({ promotionReservationId }) {
+    return this.updateStatus({
+      promotionReservationId,
+      status: PROMOTION_RESERVATION_STATUS.CANCELED,
+    });
+  }
+
+  completeReservation({ promotionReservationId }) {
+    return this.updateStatus({
+      promotionReservationId,
+      status: PROMOTION_RESERVATION_STATUS.COMPLETED,
     });
   }
 
