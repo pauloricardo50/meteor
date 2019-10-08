@@ -169,7 +169,7 @@ class FileService {
     return { docId, documentId, fileName, extension };
   };
 
-  getFileName = key => key.split('/').slice(-1)[0]
+  getFileName = key => key.split('/').slice(-1)[0];
 
   formatFileName = fileName =>
     fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

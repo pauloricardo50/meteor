@@ -1,6 +1,5 @@
-import { PromotionOptionService } from 'core/api/promotionOptions/server/PromotionOptionService';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
-import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import { promotionShouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
@@ -11,7 +10,7 @@ import {
   sellPromotionLot,
 } from '../../methods';
 import { Loans } from '../..';
-import { EMAIL_IDS, INTERNAL_EMAIL, FROM_EMAIL } from '../emailConstants';
+import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 
 ServerEventService.addAfterMethodListener(
@@ -97,8 +96,8 @@ const makePromotionLotNotification = emailId => ({ context, params }) => {
         userLinks: 1,
         name: 1,
         assignedEmployee: { email: 1 },
-        attributedTo: { borrowers: { name: 1 }, user: { name: 1 } },
       },
+      attributedTo: { borrowers: { name: 1 }, user: { name: 1 } },
     },
   });
   const [

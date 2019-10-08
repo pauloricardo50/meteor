@@ -1,5 +1,6 @@
 import PropertyService from 'core/api/properties/server/PropertyService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
@@ -28,13 +29,21 @@ import {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ context: { userId }, params: { promotionLotId, loanId } }) => {
+  ({ context: { userId }, params: { promotionOptionId } }) => {
     const currentUser = UserService.get(userId);
-    const promotionLot = PromotionLotService.fetchOne({
-      $filters: { _id: promotionLotId },
-      name: 1,
-      promotion: { name: 1, assignedEmployee: { email: 1 } },
+    const {
+      promotionLots = [],
+      loan: { _id: loanId },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: {
+        name: 1,
+        promotion: { name: 1, assignedEmployee: { email: 1 } },
+      },
     });
+    const [promotionLot] = promotionLots;
+
     const { user } = LoanService.fetchOne({
       $filters: { _id: loanId },
       user: { name: 1 },

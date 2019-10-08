@@ -134,7 +134,7 @@ class PromotionReservationService extends CollectionService {
         name,
         newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
-        newCollection: this.collection,
+        newCollection: this.collection._name,
       });
     });
 
