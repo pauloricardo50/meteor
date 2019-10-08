@@ -200,39 +200,7 @@ export const isAllowedToBookPromotionLotToCustomer = ({
   );
 };
 
-export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
-  const { _id: userId } = currentUser;
-  const requiredPermissions = {
-    canSellLots: true,
-  };
-
-  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
-};
-
-export const isAllowedToSellPromotionLotToCustomer = ({
-  promotion,
-  currentUser,
-  customerOwnerType,
-}) => {
-  const { _id: userId } = currentUser;
-  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
-    return true;
-  }
-  const { _id: promotionId } = promotion;
-  const permissions = getCurrentUserPermissionsForPromotion({
-    currentUser,
-    promotionId,
-  });
-  return (
-    isAllowedToSellPromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
-  );
-};
-
-export const isAllowedToSeeManagement = ({
-  promotion,
-  currentUser,
-}) => {
+export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
   const requiredPermissions = { canSeeManagement: true };
 

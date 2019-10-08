@@ -199,7 +199,6 @@ Meteor.methods({
     }).fetch() || [];
 
     const permissions = {
-      canSellLots: false,
       canModifyLots: false,
       canRemoveLots: false,
       canModifyPromotion: false,
