@@ -33,12 +33,12 @@ const getSchema = ({ agreementDuration = 0 }) =>
         </div>
       ),
     },
-    agreementUrls: {
+    agreementFileKeys: {
       type: Array,
       uniforms: { type: CUSTOM_AUTOFIELD_TYPES.FILE_UPLOAD },
       defaultValue: [],
     },
-    'agreementUrls.$': String,
+    'agreementFileKeys.$': String,
   });
 
 const PromotionLotReservation = ({

@@ -1,4 +1,6 @@
 {
+  "Forms.startDate": "Début de la réservation",
+  "files.agreementFileKeys": "Convention de réservation signée",
   "PromotionLotReservation.book": "Réserver",
   "ProDashboardPageTabs.loans": "Dossiers",
   "ProDashboardPageTabs.properties": "Biens immo",
