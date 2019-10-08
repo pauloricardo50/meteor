@@ -177,6 +177,8 @@ class FileService {
 
   getTempS3FileKey = (userId, file, { id }) =>
     `${userId}/temp/${id}/${this.formatFileName(file.name)}`;
+
+  getFileFromKey = Key => S3Service.headObject(Key);
 }
 
 export default new FileService();
