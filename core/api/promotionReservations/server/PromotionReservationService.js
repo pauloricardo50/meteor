@@ -10,6 +10,7 @@ import PromotionOptionService from '../../promotionOptions/server/PromotionOptio
 import {
   PROMOTION_RESERVATION_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_RESERVATION_DOCUMENTS,
 } from '../promotionReservationConstants';
 
 class PromotionReservationService extends CollectionService {
@@ -117,7 +118,7 @@ class PromotionReservationService extends CollectionService {
         Key,
         name,
         oldId,
-        newId: oldId,
+        newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
         newCollection: this.collection,
       });
