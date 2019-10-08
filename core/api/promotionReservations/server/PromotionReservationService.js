@@ -25,17 +25,16 @@ class PromotionReservationService extends CollectionService {
     } = PromotionOptionService.safeFetchOne({
       $filters: { _id: promotionOptionId },
       promotionLots: {
-        _id: 1,
         promotionReservations: { status: 1, expirationDate: 1 },
-        promotionCache: { _id: 1, agreementDuration: 1 },
+        promotion: { agreementDuration: 1 },
       },
-      loan: { _id: 1, maxPropertyValue: { date: 1 }, verificationStatus: 1 },
+      loan: { maxPropertyValue: { date: 1 }, verificationStatus: 1 },
     });
 
     const [
       {
         _id: promotionLotId,
-        promotionCache: { _id: promotionId, agreementDuration },
+        promotion: { _id: promotionId, agreementDuration },
         promotionReservations = [],
       },
     ] = promotionLots;
@@ -81,6 +80,7 @@ class PromotionReservationService extends CollectionService {
 
     const expirationDate = moment(startDate)
       .add(agreementDuration, 'days')
+      .startOf('day')
       .toDate();
 
     const {
