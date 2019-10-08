@@ -80,7 +80,7 @@ class PromotionReservationService extends CollectionService {
 
     const expirationDate = moment(startDate)
       .add(agreementDuration, 'days')
-      .startOf('day')
+      .endOf('day')
       .toDate();
 
     const {
