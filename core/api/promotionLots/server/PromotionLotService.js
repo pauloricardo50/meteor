@@ -1,3 +1,5 @@
+import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
+import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
@@ -27,17 +29,32 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  bookPromotionLot({ promotionLotId, loanId }) {
+  bookPromotionLot({ promotionLotId, loanId, promotionReservation }) {
+    const { promotionOptions = [] } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      promotionOptions: { promotionLots: { _id: 1 } },
+    });
+
+    const promotionOption = promotionOptions.find(({ promotionLots = [] }) =>
+      promotionLots.some(({ _id }) => _id === promotionLotId));
+
+    const promotionReservationId = PromotionReservationService.insert({
+      promotionReservation,
+      promotionOptionId: promotionOption._id,
+    });
+
     this.update({
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.BOOKED },
     });
 
-    return this.addLink({
+    this.addLink({
       id: promotionLotId,
       linkName: 'attributedTo',
       linkId: loanId,
     });
+
+    return promotionReservationId;
   }
 
   cancelPromotionLotBooking({ promotionLotId }) {

@@ -45,6 +45,7 @@ export const bookPromotionLot = new Method({
   params: {
     promotionLotId: String,
     loanId: String,
+    promotionReservation: Object,
   },
 });
 
