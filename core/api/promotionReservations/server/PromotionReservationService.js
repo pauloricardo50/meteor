@@ -98,6 +98,13 @@ class PromotionReservationService extends CollectionService {
     return promotionReservationId;
   }
 
+  cancelReservation({ promotionReservationId }) {
+    return this._update({
+      id: promotionReservationId,
+      object: { status: PROMOTION_RESERVATION_STATUS.CANCELED },
+    });
+  }
+
   updateMortgageCertification({ promotionReservationId, status, date }) {
     return this._update({
       id: promotionReservationId,

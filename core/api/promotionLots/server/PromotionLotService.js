@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+
+import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
@@ -58,13 +61,35 @@ export class PromotionLotService extends CollectionService {
   }
 
   cancelPromotionLotBooking({ promotionLotId }) {
+    const { promotionReservations = [], status } = this.fetchOne({
+      $filters: {
+        _id: promotionLotId,
+        'promotionReservations.status': {
+          $in: [PROMOTION_RESERVATION_STATUS.ACTIVE],
+        },
+      },
+      promotionReservations: { _id: 1 },
+    });
+
+    if (
+      status !== PROMOTION_LOT_STATUS.BOOKED
+      || !promotionReservations.length
+    ) {
+      throw new Meteor.Error("Ce lot n'est pas réservé");
+    }
+
     this.update({
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
     });
-    return this.removeLink({
+    this.removeLink({
       id: promotionLotId,
       linkName: 'attributedTo',
+    });
+    const [{ _id: promotionReservationId }] = promotionReservations;
+
+    return PromotionReservationService.cancelReservation({
+      promotionReservationId,
     });
   }
 
