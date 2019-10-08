@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { LOAN_VERIFICATION_STATUS } from 'core/api/loans/loanConstants';
-import { AGREEMENT_STATUSES } from 'core/api/promotionOptions/promotionOptionConstants';
 import FileService from 'core/api/files/server/FileService';
 import PromotionReservations from '../promotionReservations';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import {
+  AGREEMENT_STATUSES,
   PROMOTION_RESERVATION_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   PROMOTION_RESERVATION_DOCUMENTS,
