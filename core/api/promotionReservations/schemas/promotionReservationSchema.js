@@ -30,13 +30,13 @@ const PromotionReservationSchema = new SimpleSchema({
     defaultValue: DEPOSIT_STATUSES.UNPAID,
   },
   'deposit.date': { type: Date, optional: true },
-  agreement: { type: Object, defaultValue: {} },
-  'agreement.status': {
+  reservationAgreement: { type: Object, defaultValue: {} },
+  'reservationAgreement.status': {
     type: String,
     allowedValues: Object.values(AGREEMENT_STATUSES),
     defaultValue: AGREEMENT_STATUSES.UNSIGNED,
   },
-  'agreement.date': { type: Date, optional: true },
+  'reservationAgreement.date': { type: Date, optional: true },
   lender: { type: Object, defaultValue: {} },
   'lender.status': {
     type: String,

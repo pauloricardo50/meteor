@@ -27,21 +27,25 @@ const makeGetIcon = ({ success = [], waiting = [], failed = [] }) => (status) =>
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-const iconTooltip = ({ date, status }) =>
+const iconTooltip = ({ date, status, id }) =>
   date && (
     <div>
+      <b>
+        <T id={`Forms.${id}`} />
+      </b>
+      <br />
       <i>{moment(date).format('D MMMM YY')}</i>
       <br />
       <T id={`Forms.status.${status}`} />
     </div>
   );
 
-const Icon = ({ icon, color, date, status }) => (
+const Icon = ({ icon, color, date, status, id }) => (
   <BaseIcon
     type={icon}
     color={color}
     className="mr-8"
-    tooltip={iconTooltip({ date, status })}
+    tooltip={iconTooltip({ date, status, id })}
   />
 );
 
@@ -51,7 +55,15 @@ const getMortgageCertificationIcon = ({ date, status }) => {
     success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED],
     waiting: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED],
   })(status);
-  return <Icon icon={icon} color={color} date={date} status={status} />;
+  return (
+    <Icon
+      icon={icon}
+      color={color}
+      date={date}
+      status={status}
+      id="mortgageCertification"
+    />
+  );
 };
 const getAgreementIcon = ({ date, status }) => {
   const { icon, color } = makeGetIcon({
@@ -59,14 +71,24 @@ const getAgreementIcon = ({ date, status }) => {
     waiting: [AGREEMENT_STATUSES.WAITING],
     error: [AGREEMENT_STATUSES.UNSIGNED],
   })(status);
-  return <Icon icon={icon} color={color} date={date} status={status} />;
+  return (
+    <Icon
+      icon={icon}
+      color={color}
+      date={date}
+      status={status}
+      id="reservationAgreement"
+    />
+  );
 };
 const getDepositIcon = ({ date, status }) => {
   const { icon, color } = makeGetIcon({
     success: [DEPOSIT_STATUSES.PAID],
     error: [DEPOSIT_STATUSES.UNPAID],
   })(status);
-  return <Icon icon={icon} color={color} date={date} status={status} />;
+  return (
+    <Icon icon={icon} color={color} date={date} status={status} id="deposit" />
+  );
 };
 const getLenderIcon = ({ date, status }) => {
   const { icon, color } = makeGetIcon({
@@ -74,7 +96,9 @@ const getLenderIcon = ({ date, status }) => {
     error: [PROMOTION_RESERVATION_LENDER_STATUS.REJECTED],
     waiting: [PROMOTION_RESERVATION_LENDER_STATUS.WAITING],
   })(status);
-  return <Icon icon={icon} color={color} date={date} status={status} />;
+  return (
+    <Icon icon={icon} color={color} date={date} status={status} id="lender" />
+  );
 };
 const getAdminNoteIcon = ({ note, date }) =>
   note && (
@@ -82,6 +106,10 @@ const getAdminNoteIcon = ({ note, date }) =>
       type="info"
       tooltip={(
         <div>
+          <b>
+            <T id="Forms.adminNote" />
+          </b>
+          <br />
           <i>{moment(date).toNow()}</i>
           <br />
           {note}
@@ -92,14 +120,14 @@ const getAdminNoteIcon = ({ note, date }) =>
 
 export const rawPromotionReservationProgress = ({
   mortgageCertification,
-  agreement,
+  reservationAgreement,
   deposit,
   lender,
 }) =>
   [
     mortgageCertification.status
       === PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
-    agreement.status === AGREEMENT_STATUSES.SIGNED,
+    reservationAgreement.status === AGREEMENT_STATUSES.SIGNED,
     deposit.status === DEPOSIT_STATUSES.PAID,
     lender.status === PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
@@ -109,7 +137,7 @@ const PromotionReservationProgress = ({
 }: PromotionReservationProgressProps) => {
   const {
     mortgageCertification,
-    agreement,
+    reservationAgreement,
     deposit,
     lender,
     adminNote,
@@ -117,7 +145,7 @@ const PromotionReservationProgress = ({
 
   const icons = [
     getMortgageCertificationIcon(mortgageCertification),
-    getAgreementIcon(agreement),
+    getAgreementIcon(reservationAgreement),
     getDepositIcon(deposit),
     getLenderIcon(lender),
     getAdminNoteIcon(adminNote),
