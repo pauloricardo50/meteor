@@ -14,12 +14,19 @@ export const ALLOWED_FILE_TYPES = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
+export const ALLOWED_FILE_TYPES_TEMP = [
+  'image/png',
+  'image/jpeg',
+  'application/pdf',
+];
+
 export const ONE_KB = 1024;
 
 // 50 MB (use null for unlimited)
 export const MAX_FILE_SIZE = 50 * ONE_KB * ONE_KB;
 
 export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
+export const SLINGSHOT_DIRECTIVE_NAME_TEMP = 'exoscale-temp';
 
 export const EXOSCALE_PATH = 'sos-ch-dk-2.exo.io';
 

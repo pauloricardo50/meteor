@@ -8,27 +8,22 @@ import { withRouter } from 'react-router-dom';
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
 import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
 import { LOANS_COLLECTION } from '../../../../../api/constants';
-import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
 import T from '../../../../Translation';
 import { CollectionIconLink } from '../../../../IconLink';
 import LoanProgress from '../../../../LoanProgress';
 import LoanProgressHeader from '../../../../LoanProgress/LoanProgressHeader';
 import StatusLabel from '../../../../StatusLabel';
 import PromotionCustomer from '../../PromotionCustomer';
-import PromotionLotAttributer from './PromotionLotAttributer';
+import PromotionLotReservation from './PromotionLotReservation';
 import PriorityOrder from './PriorityOrder';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
     _id: promotionLotId,
-    status: lotStatus,
     promotion: { _id: promotionId },
-    attributedTo,
-    name,
   } = promotionLot;
-  const { loan, custom, createdAt, solvency } = promotionOption;
+  const { loan, custom, createdAt } = promotionOption;
   const {
-    _id: loanId,
     status,
     user,
     loanProgress,
@@ -42,11 +37,6 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     $metadata: { invitedBy },
     users: promotionUsers = [],
   } = promotion;
-
-  const customerOwnerType = getPromotionCustomerOwnerType({
-    invitedBy,
-    currentUser,
-  });
 
   return [
     <CollectionIconLink
@@ -85,17 +75,12 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
         />
       ),
     },
-    <PromotionLotAttributer
-      promotionLotId={promotionLotId}
-      loanId={loanId}
-      promotionLotStatus={lotStatus}
-      attributedToId={attributedTo && attributedTo._id}
-      userName={user && user.name}
-      solvency={solvency}
-      promotionLotName={name}
-      currentUser={currentUser}
+    <PromotionLotReservation
       promotion={promotion}
-      customerOwnerType={customerOwnerType}
+      promotionLot={promotionLot}
+      loan={loan}
+      promotionOption={promotionOption}
+      currentUser={currentUser}
       key="promotionLotAttributer"
     />,
   ];

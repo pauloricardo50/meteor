@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // from https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
-const getDataTransferItems = event => {
+const getDataTransferItems = (event) => {
   let dataTransferItemsList = [];
   if (event.dataTransfer) {
     const dt = event.dataTransfer;
@@ -21,10 +21,10 @@ const getDataTransferItems = event => {
   return Array.prototype.slice.call(dataTransferItemsList);
 };
 
-const getMoveFileData = event => {
+const getMoveFileData = (event) => {
   const Key = event.dataTransfer.getData('Key');
   const status = event.dataTransfer.getData('status');
-  const oldCollection = event.dataTransfer.getData('collection')
+  const oldCollection = event.dataTransfer.getData('collection');
   return { Key, status, oldCollection };
 };
 
@@ -34,33 +34,36 @@ export default class FileDropper extends Component {
     this.state = {};
   }
 
-  handleDragEnter = e => {
+  handleDragEnter = (e) => {
+    const { disabled, showFull } = this.props;
     e.preventDefault();
     e.stopPropagation();
-    if (!this.props.disabled) {
+    if (!disabled) {
       this.setState({ dragging: true, target: e.target });
-      this.props.showFull();
+      showFull();
     }
   };
 
-  handleDragLeave = e => {
+  handleDragLeave = (e) => {
+    const { target } = this.state;
     e.preventDefault();
     e.stopPropagation();
-    if (e.target === this.state.target) {
+    if (e.target === target) {
       this.setState({ dragging: false });
     }
   };
 
-  handleDrop = e => {
+  handleDrop = (e) => {
+    const { disabled, handleMoveFile, handleAddFiles } = this.props;
     e.preventDefault();
     e.stopPropagation();
     this.setState({ dragging: false });
-    if (!this.props.disabled) {
+    if (!disabled) {
       const isMove = e.dataTransfer.getData('move');
       if (isMove) {
-        this.props.handleMoveFile(getMoveFileData(e));
+        handleMoveFile(getMoveFileData(e));
       } else {
-        this.props.handleAddFiles(getDataTransferItems(e));
+        handleAddFiles(getDataTransferItems(e));
       }
     }
   };

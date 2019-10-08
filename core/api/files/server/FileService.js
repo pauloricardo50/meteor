@@ -167,10 +167,14 @@ class FileService {
     return { docId, documentId, fileName, extension };
   };
 
+  formatFileName = fileName =>
+    fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
   getS3FileKey = (file, { docId, id }) =>
-    `${docId}/${id}/${file.name
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')}`;
+    `${docId}/${id}/${this.formatFileName(file.name)}`;
+
+  getTempS3FileKey = (userId, file, { id }) =>
+    `${userId}/temp/${id}/${this.formatFileName(file.name)}`;
 }
 
 export default new FileService();

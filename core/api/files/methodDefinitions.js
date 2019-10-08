@@ -76,3 +76,10 @@ export const moveFile = new Method({
     newCollection: String,
   },
 });
+
+export const deleteTempFile = new Method({
+  name: 'deleteTempFile',
+  params: {
+    fileKey: String,
+  },
+});

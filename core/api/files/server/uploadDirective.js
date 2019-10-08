@@ -5,6 +5,8 @@ import { _ } from 'meteor/underscore';
 
 import crypto from 'crypto';
 
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import {
   OBJECT_STORAGE_PATH,
   BUCKET_NAME,
@@ -14,8 +16,6 @@ import {
   MAX_FILE_SIZE,
   ONE_KB,
 } from '../fileConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -105,11 +105,13 @@ const exoscaleStorageService = {
   },
 
   getDefaultStatus(meta) {
-    if ([ORGANISATIONS_COLLECTION,PROMOTIONS_COLLECTION].includes(meta.collection)) {
-      return FILE_STATUS.VALID
+    if (
+      [ORGANISATIONS_COLLECTION, PROMOTIONS_COLLECTION].includes(meta.collection)
+    ) {
+      return FILE_STATUS.VALID;
     }
 
-    return FILE_STATUS.UNVERIFIED
+    return FILE_STATUS.UNVERIFIED;
   },
 
   /**
@@ -165,12 +167,7 @@ const exoscaleStorageService = {
     return {
       upload: bucketUrl,
       download: downloadUrl,
-      postData: [
-        {
-          name: 'key',
-          value: payload.key,
-        },
-      ].concat(_.chain(payload)
+      postData: [{ name: 'key', value: payload.key }].concat(_.chain(payload)
         .omit('key')
         .map((value, name) =>
           !_.isUndefined(value) && {
@@ -212,7 +209,6 @@ const exoscaleStorageService = {
 
     const matchedPolicy = policy.match(payload);
     const base64Policy = matchedPolicy.stringify();
-    const jsonPolicy = JSON.parse(matchedPolicy.stringify('utf-8'));
 
     payload.policy = base64Policy;
     payload['x-amz-signature'] = this.signAwsV4(

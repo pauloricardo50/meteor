@@ -6,7 +6,6 @@ import connectField from 'uniforms/connectField';
 import nothing from 'uniforms/nothing';
 import AutoField from 'uniforms-material/AutoField';
 import BoolField from 'uniforms-material/BoolField';
-import RadioField from 'uniforms-material/RadioField';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
@@ -23,6 +22,7 @@ import MoneyInput from '../MoneyInput';
 import HtmlPreview from '../HtmlPreview';
 import { ignoreProps } from '../../containers/updateForProps';
 import CustomBooleanRadioField from './CustomBooleanRadioField';
+import FileUploadField from './FileUploadField';
 
 const container = ignoreProps(FIELDS_TO_IGNORE);
 
@@ -103,6 +103,10 @@ const determineComponentFromProps = ({
       type: COMPONENT_TYPES.BOOLEAN_RADIO,
       props: { placeholder: null },
     };
+  }
+
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.FILE_UPLOAD) {
+    return { Component: FileUploadField };
   }
 
   if (fieldType === Array) {
