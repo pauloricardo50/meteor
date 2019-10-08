@@ -354,11 +354,23 @@ describe('PromotionService', function () {
           _id: 'promotionId',
           promotionLots: [
             {
-              promotionOptions: { loan: { _id: 'loanId' } },
+              promotionOptions: {
+                loan: { _id: 'loanId' },
+                promotionReservation: {
+                  _id: 'promotionReservation1',
+                  _factory: 'promotionReservation',
+                },
+              },
               propertyLinks: [{ _id: 'prop1' }],
             },
             {
-              promotionOptions: { loan: { _id: 'loanId' } },
+              promotionOptions: {
+                loan: { _id: 'loanId' },
+                promotionReservation: {
+                  _id: 'promotionReservation2',
+                  _factory: 'promotionReservation',
+                },
+              },
               propertyLinks: [{ _id: 'prop2' }],
             },
           ],

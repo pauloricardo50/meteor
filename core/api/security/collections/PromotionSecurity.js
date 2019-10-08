@@ -16,8 +16,6 @@ import {
   isAllowedToViewPromotion,
   isAllowedToBookPromotionLots,
   isAllowedToBookPromotionLotToCustomer,
-  isAllowedToSellPromotionLots,
-  isAllowedToSellPromotionLotToCustomer,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
 import {
@@ -342,58 +340,6 @@ class PromotionSecurity {
       loanId: attributedTo._id,
       userId,
     });
-  }
-
-  static isAllowedToSellLots({ promotionLotId, userId }) {
-    this.checkPermissions({
-      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
-      userId,
-      checkingFunction: isAllowedToSellPromotionLots,
-      errorMessage: 'Vous ne pouvez pas vendre des lots dans cette promotion',
-    });
-  }
-
-  static isAllowedToSellLotToCustomer({ promotionLotId, userId }) {
-    if (Security.currentUserIsAdmin()) {
-      return;
-    }
-
-    const { promotion, attributedTo } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1, users: { _id: 1 } },
-      attributedTo: { _id: 1 },
-    });
-
-    const loan = LoanService.safeFetchOne({
-      $filters: { _id: attributedTo._id },
-      user: { _id: 1 },
-    });
-
-    const customerOwnerType = getPromotionCustomerOwnerType({
-      customerId: loan.user._id,
-      userId,
-      promotionId: promotion._id,
-    });
-
-    const currentUser = UserService.safeFetchOne({
-      $filters: { _id: userId },
-      promotions: {
-        permissions: 1,
-        status: 1,
-        users: { _id: 1 },
-      },
-      organisations: { users: { _id: 1 } },
-    });
-
-    if (
-      !isAllowedToSellPromotionLotToCustomer({
-        promotion,
-        currentUser,
-        customerOwnerType,
-      })
-    ) {
-      Security.handleUnauthorized('Vous ne pouvez pas vendre de lot à ce client');
-    }
   }
 
   static isAllowedToModifyAdditionalLot({ lotId, userId }) {

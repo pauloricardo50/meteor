@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
@@ -247,13 +248,9 @@ export class PromotionService extends CollectionService {
   }
 
   removeLoan({ promotionId, loanId }) {
-    const {
-      promotionOptionLinks = [],
-      attributedPromotionLots = [],
-    } = LoanService.fetchOne({
+    const { promotionOptions = [] } = LoanService.fetchOne({
       $filters: { _id: loanId },
-      promotionOptionLinks: { _id: 1 },
-      attributedPromotionLots: { _id: 1 },
+      promotionOptions: { promotionReservation: { _id: 1 } },
     });
 
     this.removeLink({
@@ -262,12 +259,12 @@ export class PromotionService extends CollectionService {
       linkId: loanId,
     });
 
-    promotionOptionLinks.forEach(({ _id }) => {
+    promotionOptions.forEach(({ _id, promotionReservation: { _id: promotionReservationId } }) => {
+      PromotionLotService.cancelPromotionLotBooking({
+        promotionOptionId: _id,
+      });
       PromotionOptionService.remove({ promotionOptionId: _id });
-    });
-
-    attributedPromotionLots.forEach(({ _id }) => {
-      PromotionLotService.cancelPromotionLotBooking({ promotionLotId: _id });
+      PromotionReservationService.remove({ _id: promotionReservationId });
     });
   }
 

@@ -1,9 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-
-import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
-import LoanService from '../../loans/server/LoanService';
+import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
@@ -64,10 +60,18 @@ export class PromotionLotService extends CollectionService {
     return promotionReservationId;
   }
 
-  cancelPromotionLotBooking({ promotionLotId }) {
-    const { _id: promotionReservationId } = this.getActivePromotionReservation({
-      promotionLotId,
+  cancelPromotionLotBooking({ promotionOptionId }) {
+    const {
+      promotionLots,
+      promotionReservation: { _id: promotionReservationId },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+      promotionReservation: { _id: 1 },
     });
+
+    const [{ _id: promotionLotId }] = promotionLots;
 
     this.update({
       promotionLotId,
@@ -83,30 +87,19 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  getActivePromotionReservation({ promotionLotId }) {
-    const { promotionReservations = [], status } = this.fetchOne({
-      $filters: {
-        _id: promotionLotId,
-      },
-      promotionReservations: { _id: 1, status: 1 },
-      status: 1,
+  sellPromotionLot({ promotionOptionId }) {
+    const {
+      promotionLots,
+      promotionReservation: { _id: promotionReservationId },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+      promotionReservation: { _id: 1 },
     });
 
-    if (
-      ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(status)
-      || !promotionReservations.filter(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE).length
-    ) {
-      throw new Meteor.Error("Ce lot n'est pas réservé");
-    }
+    const [{ _id: promotionLotId }] = promotionLots;
 
-    const [activePromotionReservation] = promotionReservations.filter(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE);
-    return activePromotionReservation;
-  }
-
-  sellPromotionLot({ promotionLotId }) {
-    const { _id: promotionReservationId } = this.getActivePromotionReservation({
-      promotionLotId,
-    });
     this.update({
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.SOLD },

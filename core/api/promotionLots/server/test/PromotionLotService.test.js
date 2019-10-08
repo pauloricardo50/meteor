@@ -3,6 +3,8 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import FileService from 'core/api/files/server/FileService';
+import S3Service from 'core/api/files/server/S3Service';
 import generator from '../../../factories';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 import { bookPromotionLot } from '../../../methods/index';
@@ -85,10 +87,24 @@ describe('PromotionLotService', function () {
         },
       });
 
+      const reservationAgreementFile = Buffer.from('hello', 'utf-8');
+      const reservationAgreementFileKey = FileService.getTempS3FileKey(
+        'adminId1',
+        { name: 'Convention de réservation.pdf' },
+        { id: 'agreement' },
+      );
+      S3Service.putObject(
+        reservationAgreementFile,
+        reservationAgreementFileKey,
+      );
+
       return ddpWithUserId('adminId1', () =>
         bookPromotionLot.run({
-          promotionLotId: 'promotionLotId',
-          loanId: 'loanId',
+          promotionOptionId: 'pOptId',
+          promotionReservation: {
+            startDate: new Date(),
+            agreementFileKeys: [reservationAgreementFileKey],
+          },
         }))
         .then(() => checkEmails(2))
         .then((emails) => {

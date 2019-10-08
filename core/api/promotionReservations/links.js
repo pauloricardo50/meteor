@@ -13,6 +13,7 @@ PromotionReservations.addLinks({
     collection: PromotionOptions,
     type: 'one',
     metadata: true,
+    unique: true,
   },
   promotionLot: {
     field: 'promotionLotLink',

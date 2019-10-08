@@ -66,7 +66,6 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
     canSeeManagement: true,
   }),
   BOOKING: settings => ({ canBookLots: true }),
-  SELLING: settings => ({ canSellLots: true }),
 };
 
 export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {

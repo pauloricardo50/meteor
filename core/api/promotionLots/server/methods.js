@@ -58,19 +58,17 @@ bookPromotionLot.setHandler(({ userId }, params) => {
 });
 
 cancelPromotionLotBooking.setHandler(({ userId }, params) => {
-  const { promotionLotId } = params;
-  SecurityService.promotions.isAllowedToCancelLotBooking({
-    promotionLotId,
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
     userId,
   });
   return PromotionLotService.cancelPromotionLotBooking(params);
 });
 
 sellPromotionLot.setHandler(({ userId }, params) => {
-  const { promotionLotId } = params;
-  SecurityService.promotions.isAllowedToSellLotToCustomer({
-    promotionLotId,
-    userId,
-  });
+  // According to promotions process v1.1 - 201909
+  // Only admins can sell promotionLots
+  SecurityService.checkUserIsAdmin(userId);
   return PromotionLotService.sellPromotionLot(params);
 });

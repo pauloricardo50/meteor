@@ -51,13 +51,13 @@ export const bookPromotionLot = new Method({
 export const cancelPromotionLotBooking = new Method({
   name: 'cancelPromotionLotBooking',
   params: {
-    promotionLotId: String,
+    promotionOptionId: String,
   },
 });
 
 export const sellPromotionLot = new Method({
   name: 'sellPromotionLot',
   params: {
-    promotionLotId: String,
+    promotionOptionId: String,
   },
 });

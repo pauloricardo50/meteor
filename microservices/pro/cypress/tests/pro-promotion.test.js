@@ -141,7 +141,6 @@ describe('Pro promotion', () => {
       cy.callMethod('insertFullPromotion');
       cy.callMethod('setUserPermissions', {
         permissions: {
-          canSellLots: true,
           canModifyLots: true,
           canRemoveLots: true,
           canModifyPromotion: true,

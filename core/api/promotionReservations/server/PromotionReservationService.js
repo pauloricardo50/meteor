@@ -80,7 +80,7 @@ class PromotionReservationService extends CollectionService {
 
     const expirationDate = moment(startDate)
       .add(agreementDuration, 'days')
-      .startOf('day')
+      .endOf('day')
       .toDate();
 
     const {
@@ -134,7 +134,7 @@ class PromotionReservationService extends CollectionService {
         name,
         newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
-        newCollection: this.collection,
+        newCollection: this.collection._name,
       });
     });
 
