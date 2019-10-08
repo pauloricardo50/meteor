@@ -5,6 +5,7 @@ import moment from 'moment';
 import { promotionReservations as query } from '../../../../api/promotionReservations/queries';
 import { withSmartQuery } from '../../../../api/containerToolkit/index';
 import ProCustomer from '../../../ProCustomer';
+import T from '../../../Translation';
 import PromotionReservationProgress, {
   rawPromotionReservationProgress,
 } from './PromotionReservationProgress';
@@ -14,7 +15,10 @@ const columnOptions = [
   { id: 'customer' },
   { id: 'deadline' },
   { id: 'progress' },
-];
+].map(col => ({
+  ...col,
+  label: <T id={`PromotionReservationsTable.${col.id}`} />,
+}));
 
 const mapPromotionReservation = (promotionReservation) => {
   const { _id, promotionLot, loan, expirationDate } = promotionReservation;

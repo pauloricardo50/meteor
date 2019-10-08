@@ -1,4 +1,8 @@
 {
+  "PromotionReservationsTable.promotionLot": "Lot",
+  "PromotionReservationsTable.customer": "Client",
+  "PromotionReservationsTable.deadline": "Expiration de la convention",
+  "PromotionReservationsTable.progress": "Progrès",
   "Forms.reservationAgreement": "Convention de réservation",
   "Forms.mortgageCertification": "Attestation de financement",
   "Forms.deposit": "Acompte",
