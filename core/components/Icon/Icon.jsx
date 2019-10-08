@@ -84,6 +84,8 @@ import Snooze from '@material-ui/icons/Snooze';
 import DragHandle from '@material-ui/icons/DragHandle';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 
+import colors from '../../config/colors';
+
 export const iconMap = {
   close: CloseIcon,
   check: CheckIcon,
@@ -168,6 +170,8 @@ export const iconMap = {
   priorityHigh: PriorityHigh,
 };
 
+const getColorStyle = color => ({ color: colors[color], fill: colors[color] });
+
 const Icon = React.forwardRef((
   {
     type,
@@ -176,11 +180,13 @@ const Icon = React.forwardRef((
     tooltipPlacement,
     style = {},
     badgeContent,
+    color,
     ...props
   },
   ref,
 ) => {
   const iconStyle = {
+    ...(color ? getColorStyle(color) : {}),
     ...style,
     ...(size ? { width: size, height: size } : {}),
   };
