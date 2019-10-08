@@ -128,11 +128,10 @@ class PromotionReservationService extends CollectionService {
 
     // Move promotion reservation agreement files to promotion reservation
     agreementFileKeys.forEach((Key) => {
-      const { documentId: oldId, fileName: name } = FileService.getKeyParts(Key.replace('temp/', ''));
+      const name = FileService.getFileName(Key);
       FileService.moveFile({
         Key,
         name,
-        oldId,
         newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
         newCollection: this.collection,
