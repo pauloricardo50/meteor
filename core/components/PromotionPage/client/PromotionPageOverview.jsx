@@ -15,6 +15,7 @@ import PromotionTimelineForm from './PromotionTimelineForm';
 import PromotionMetadataContext from './PromotionMetadata';
 import PromotionTimeline from './PromotionTimeline';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
+import PromotionReservationsTable from './PromotionReservationsTable';
 
 type PromotionPageOverviewProps = {};
 
@@ -67,7 +68,12 @@ const PromotionPageOverview = ({
           )}
         </>
       ) : (
-        <ProPromotionLotsTable promotion={promotion} className="card1" />
+        <>
+          <PromotionReservationsTable
+            promotionId={promotion._id}
+          />
+          <ProPromotionLotsTable promotion={promotion} className="card1 card-top" />
+        </>
       )}
 
       {promotion.lots

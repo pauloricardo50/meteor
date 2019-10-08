@@ -1,9 +1,18 @@
 export const PROMOTION_RESERVATIONS_COLLECTION = 'promotionReservations';
 
 export const PROMOTION_RESERVATIONS_QUERIES = {
-  // Insert your queries name here
-  // Example:
-  // EXAMPLE_QUERY: 'EXAMPLE_QUERY',
+  PROMOTION_RESERVATIONS: 'PROMOTION_RESERVATIONS',
+};
+
+export const AGREEMENT_STATUSES = {
+  UNSIGNED: 'UNSIGNED',
+  SIGNED: 'SIGNED',
+  WAITING: 'WAITING',
+};
+
+export const DEPOSIT_STATUSES = {
+  UNPAID: 'UNPAID',
+  PAID: 'PAID',
 };
 
 export const PROMOTION_RESERVATION_LENDER_STATUS = {

@@ -1,14 +1,13 @@
 import SimpleSchema from 'simpl-schema';
-import {
-  DEPOSIT_STATUSES,
-  AGREEMENT_STATUSES,
-} from 'core/api/promotionOptions/promotionOptionConstants';
+
 import {
   createdAt,
   updatedAt,
   documentsField,
 } from '../../helpers/sharedSchemas';
 import {
+  DEPOSIT_STATUSES,
+  AGREEMENT_STATUSES,
   PROMOTION_RESERVATION_STATUS,
   PROMOTION_RESERVATION_LENDER_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,

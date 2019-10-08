@@ -1,4 +1,5 @@
 {
+  "collections.promotionReservations": "Réservations",
   "Forms.agreementDuration": "Durée de la convention de réservation",
   "Forms.agreementDuration.placeholder": "14 jours",
   "Forms.startDate": "Début de la réservation",

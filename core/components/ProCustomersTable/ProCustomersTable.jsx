@@ -3,6 +3,7 @@ import React from 'react';
 
 import Table from 'core/components/Table';
 import Select from 'core/components/Select';
+import T from 'core/components/Translation';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import { LOAN_STATUS } from 'core/api/constants';
 import ProCustomersTableContainer from './ProCustomersTableContainer';
@@ -27,7 +28,7 @@ const ProCustomersTable = ({
         onChange={setStatus}
         options={LOAN_STATUS}
         id="status"
-        label="Statut"
+        label={<T id="Forms.status" />}
         className="mr-8"
       />
       <Select

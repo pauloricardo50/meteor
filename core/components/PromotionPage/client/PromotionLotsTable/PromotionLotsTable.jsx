@@ -1,5 +1,6 @@
 // @flow
 import React, { useEffect, useState } from 'react';
+import cx from 'classnames';
 
 import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
 import T from '../../../Translation';
@@ -23,6 +24,7 @@ const PromotionLotsTable = ({
   promotionLotModal,
   setPromotionLotModal,
   promotion,
+  className,
   ...props
 }: PromotionLotsTableProps) => {
   const [modalPromotionLot, setModalPromotionLot] = useState();
@@ -33,11 +35,7 @@ const PromotionLotsTable = ({
   });
 
   return (
-    <div className="promotion-lots-table" style={{ width: '100%' }}>
-      <h3 className="text-center">
-        <T id="collections.lots" />
-      </h3>
-
+    <div className={cx('promotion-lots-table', className)}>
       <PromotionLotsTableDialog
         open={!!promotionLotModal}
         promotionLot={modalPromotionLot}
@@ -45,13 +43,18 @@ const PromotionLotsTable = ({
         handleClose={() => setPromotionLotModal()}
       />
 
-      <MongoSelect
-        value={status}
-        onChange={setStatus}
-        options={PROMOTION_LOT_STATUS}
-        id="status"
-        label="Statut"
-      />
+      <div className="flex center-align">
+        <h3 className="text-center mr-8">
+          <T id="collections.lots" />
+        </h3>
+        <MongoSelect
+          value={status}
+          onChange={setStatus}
+          options={PROMOTION_LOT_STATUS}
+          id="status"
+          label="Statut"
+        />
+      </div>
 
       <Table rows={rows} columnOptions={columnOptions} {...props} />
     </div>

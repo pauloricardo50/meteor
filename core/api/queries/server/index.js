@@ -14,6 +14,7 @@ import '../../offers/server/exposures';
 import '../../organisations/server/exposures';
 import '../../promotionLots/server/exposures';
 import '../../promotionOptions/server/exposures';
+import '../../promotionReservations/server/exposures';
 import '../../promotions/server/exposures';
 import '../../properties/server/exposures';
 import '../../revenues/server/exposures';

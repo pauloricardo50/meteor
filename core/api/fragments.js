@@ -665,6 +665,19 @@ export const promotionReservation = () => ({
   status: 1,
 });
 
+export const proPromotionReservation = () => ({
+  startDate: 1,
+  expirationDate: 1,
+  status: 1,
+  deposit: 1,
+  agreement: 1,
+  lender: 1,
+  mortgageCertification: 1,
+  adminNote: 1,
+  loan: { name: 1, user: { name: 1, email: 1, phoneNumbers: 1 } },
+  promotionLot: { name: 1 },
+});
+
 // //
 // // Promotion fragments
 // //
