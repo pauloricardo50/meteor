@@ -133,6 +133,7 @@ Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
   zipCode: 1201,
+  agreementDuration: 14,
 });
 
 Factory.define('promotionOption', PromotionOptions, {});
