@@ -150,10 +150,12 @@ class FileService {
 
     return S3Service.moveObject(Key, newKey)
       .then(() =>
-        this.updateDocumentsCache({
-          docId: oldDocId,
-          collection: oldCollection,
-        }))
+        oldDocId
+          && oldCollection
+          && this.updateDocumentsCache({
+            docId: oldDocId,
+            collection: oldCollection,
+          }))
       .then(() =>
         this.updateDocumentsCache({
           docId: newDocId,
