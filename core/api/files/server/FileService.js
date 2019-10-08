@@ -150,10 +150,12 @@ class FileService {
 
     return S3Service.moveObject(Key, newKey)
       .then(() =>
-        this.updateDocumentsCache({
-          docId: oldDocId,
-          collection: oldCollection,
-        }))
+        oldDocId
+          && oldCollection
+          && this.updateDocumentsCache({
+            docId: oldDocId,
+            collection: oldCollection,
+          }))
       .then(() =>
         this.updateDocumentsCache({
           docId: newDocId,
@@ -167,6 +169,8 @@ class FileService {
     return { docId, documentId, fileName, extension };
   };
 
+  getFileName = key => key.split('/').slice(-1)[0]
+
   formatFileName = fileName =>
     fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
@@ -175,6 +179,8 @@ class FileService {
 
   getTempS3FileKey = (userId, file, { id }) =>
     `${userId}/temp/${id}/${this.formatFileName(file.name)}`;
+
+  getFileFromKey = Key => S3Service.headObject(Key);
 }
 
 export default new FileService();
