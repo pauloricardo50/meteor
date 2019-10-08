@@ -1,6 +1,8 @@
 import Analytics from 'core/api/analytics/server/Analytics';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import EVENTS from 'core/api/analytics/events';
+import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
+import { PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
 import { requestLoanVerification } from '../..';
@@ -31,6 +33,7 @@ ServerEventService.addAfterMethodListener(
       hasPromotion: 1,
       anonymous: 1,
       promotions: { _id: 1 },
+      promotionReservations: { _id: 1 },
     });
     const {
       maxPropertyValue = {},
@@ -39,8 +42,9 @@ ServerEventService.addAfterMethodListener(
       anonymous,
       promotions = [],
       hasPromotion,
+      promotionReservations = [],
     } = loan;
-    const { canton, main = {}, second = {}, type } = maxPropertyValue;
+    const { canton, main = {}, second = {}, type, date } = maxPropertyValue;
     const {
       min: {
         borrowRatio: mainMinBorrowRatio,
@@ -74,6 +78,16 @@ ServerEventService.addAfterMethodListener(
     let promotion = {};
     if (hasPromotion) {
       promotion = promotions[0];
+    }
+
+    if (promotionReservations.length) {
+      promotionReservations.forEach(({ _id: promotionReservationId }) =>
+        PromotionReservationService.updateMortgageCertification({
+          promotionReservationId,
+          status:
+            PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+          date,
+        }));
     }
 
     analytics.track(EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED, {

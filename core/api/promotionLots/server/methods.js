@@ -49,10 +49,9 @@ removeLotLink.setHandler(({ userId }, params) => {
 });
 
 bookPromotionLot.setHandler(({ userId }, params) => {
-  const { promotionLotId, loanId } = params;
-  SecurityService.promotions.isAllowedToBookLotToCustomer({
-    promotionLotId,
-    loanId,
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
     userId,
   });
   return PromotionLotService.bookPromotionLot(params);
