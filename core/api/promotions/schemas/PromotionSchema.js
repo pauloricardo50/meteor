@@ -155,8 +155,9 @@ const PromotionSchema = new SimpleSchema({
     },
   },
   agreementDuration: {
-    type: Number,
-    optional: true,
+    type: SimpleSchema.Integer,
+    min: 0,
+    max: 30,
   },
 });
 
@@ -169,6 +170,7 @@ export const BasePromotionSchema = PromotionSchema.pick(
   'city',
   'signingDate',
   'contacts',
+  'agreementDuration',
 );
 
 export default PromotionSchema;

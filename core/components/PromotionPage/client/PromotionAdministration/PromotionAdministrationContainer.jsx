@@ -113,12 +113,15 @@ const getOptions = ({
       id: 'updatePromotion',
       condition: canModifyPromotion,
       onClick: () =>
-        openModal(<DialogForm
-          model={promotion}
-          schema={BasePromotionSchema}
-          title={<T id="PromotionAdministration.updatePromotion" />}
-          onSubmit={object => promotionUpdate.run({ promotionId, object })}
-        />),
+        openModal(
+          <DialogForm
+            model={promotion}
+            schema={BasePromotionSchema}
+            title={<T id="PromotionAdministration.updatePromotion" />}
+            onSubmit={object => promotionUpdate.run({ promotionId, object })}
+          />,
+          { maxWidth: 'sm', fullWidth: true },
+        ),
     },
     {
       id: 'manageDocuments',
