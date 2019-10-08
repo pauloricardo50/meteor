@@ -1,3 +1,4 @@
+import { PromotionOptionService } from 'core/api/promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import { promotionShouldAnonymize } from '../../promotions/server/promotionServerHelpers';
@@ -87,22 +88,33 @@ ServerEventService.addAfterMethodListener(
 const makePromotionLotNotification = emailId => ({ context, params }) => {
   const { userId } = context;
   context.unblock();
-  const { promotionLotId } = params;
-  const {
-    name: promotionLotName,
-    promotion: {
-      userLinks = [],
-      _id: promotionId,
-      name: promotionName,
-      assignedEmployee,
+  const { promotionOptionId } = params;
+  const { promotionLots = [] } = PromotionOptionService.fetchOne({
+    $filters: { _id: promotionOptionId },
+    promotionLots: {
+      name: 1,
+      promotion: {
+        userLinks: 1,
+        name: 1,
+        assignedEmployee: { email: 1 },
+        attributedTo: { borrowers: { name: 1 }, user: { name: 1 } },
+      },
     },
-    attributedTo: { _id: loanId, user } = {},
-  } = PromotionLotService.fetchOne({
-    $filters: { _id: promotionLotId },
-    name: 1,
-    promotion: { userLinks: 1, name: 1, assignedEmployee: { email: 1 } },
-    attributedTo: { borrowers: { name: 1 }, user: { name: 1 } },
   });
+  const [
+    {
+      _id: promotionLotId,
+      name: promotionLotName,
+      promotion: {
+        userLinks = [],
+        _id: promotionId,
+        name: promotionName,
+        assignedEmployee,
+      },
+      attributedTo: { _id: loanId, user } = {},
+    },
+  ] = promotionLots;
+
   const { name: userName } = UserService.fetchOne({
     $filters: { _id: userId },
     name: 1,

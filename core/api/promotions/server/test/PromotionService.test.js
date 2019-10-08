@@ -382,16 +382,28 @@ describe('PromotionService', function () {
     it('removes any status from the promotionLot as well as the attributedTo', () => {
       generator({
         properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
-        promotions: {
-          _id: 'promotionId',
-          promotionLots: {
-            _id: 'lot1',
-            status: 'SOLD',
-            promotionOptions: { loan: { _id: 'loanId' } },
-            propertyLinks: [{ _id: 'prop1' }],
-            attributedTo: { _id: 'loanId' },
+        promotionReservations: {
+          _factory: 'promotionReservation',
+          _id: 'promotionReservationId',
+          promotion: {
+            _id: 'promotionId',
+            promotionLots: [
+              {
+                _id: 'lot1',
+                status: 'SOLD',
+                promotionOptions: {
+                  _id: 'promotionOptionId',
+                  loan: { _id: 'loanId' },
+                },
+                propertyLinks: [{ _id: 'prop1' }],
+                attributedTo: { _id: 'loanId' },
+              },
+            ],
+            loans: { _id: 'loanId' },
           },
-          loans: { _id: 'loanId' },
+          promotionLot: [{ _id: 'lot1' }],
+          loan: { _id: 'loanId' },
+          promotionOption: { _id: 'promotionOptionId' },
         },
       });
 
@@ -719,5 +731,4 @@ describe('PromotionService', function () {
       });
     });
   });
-
 });

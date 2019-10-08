@@ -87,21 +87,19 @@ export class PromotionLotService extends CollectionService {
     const { promotionReservations = [], status } = this.fetchOne({
       $filters: {
         _id: promotionLotId,
-        'promotionReservations.status': {
-          $in: [PROMOTION_RESERVATION_STATUS.ACTIVE],
-        },
       },
-      promotionReservations: { _id: 1 },
+      promotionReservations: { _id: 1, status: 1 },
+      status: 1,
     });
 
     if (
-      status !== PROMOTION_LOT_STATUS.BOOKED
-      || !promotionReservations.length
+      ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(status)
+      || !promotionReservations.filter(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE).length
     ) {
       throw new Meteor.Error("Ce lot n'est pas réservé");
     }
 
-    const [activePromotionReservation] = promotionReservations;
+    const [activePromotionReservation] = promotionReservations.filter(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE);
     return activePromotionReservation;
   }
 

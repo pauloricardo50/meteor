@@ -52,7 +52,7 @@ LinkInitializer.inversedInit(() => {
       autoremove: true,
     },
     promotionReservations: {
-      inversedBy: 'promotion',
+      inversedBy: 'promotionLot',
       type: 'many',
       collection: PromotionReservations,
     },
