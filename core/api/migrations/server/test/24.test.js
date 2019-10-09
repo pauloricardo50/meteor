@@ -34,7 +34,7 @@ describe('Migration 24', () => {
 
       await up();
 
-      const allUsers = await UserService.fetch({
+      const allUsers = UserService.fetch({
         _id: 1,
         createdAt: 1,
         emails: { verified: 1 },
