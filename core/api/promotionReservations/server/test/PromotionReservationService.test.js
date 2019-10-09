@@ -318,7 +318,7 @@ describe('PromotionReservationService', function () {
         expect(promotionReservation).to.deep.include({
           status: PROMOTION_RESERVATION_STATUS.ACTIVE,
           startDate,
-          agreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
+          reservationAgreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
           deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
           lender: {
             date: startDate,
