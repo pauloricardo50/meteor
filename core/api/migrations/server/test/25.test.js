@@ -15,7 +15,7 @@ import {
 } from '../../../constants';
 import { up, down } from '../25';
 
-describe('Migration 25', () => {
+describe.only('Migration 25', () => {
   beforeEach(() => resetDatabase());
 
   describe('up', () => {

@@ -27,7 +27,7 @@ const handleBookedLots = async () => {
     },
   });
 
-  return bookedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
+  return Promise.all(bookedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
     const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
       promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
     if (promotionOption) {
@@ -47,7 +47,7 @@ const handleBookedLots = async () => {
         },
       });
     }
-  });
+  }));
 };
 
 const handleSoldLots = async () => {
@@ -56,7 +56,7 @@ const handleSoldLots = async () => {
     attributedTo: { promotionOptions: { promotionLotLinks: 1, createdAt: 1 } },
   });
 
-  soldPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
+  return Promise.all(soldPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
     const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
       promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
     if (promotionOption) {
@@ -84,7 +84,7 @@ const handleSoldLots = async () => {
         },
       });
     }
-  });
+  }));
 };
 
 export const up = async () => {
