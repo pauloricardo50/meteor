@@ -27,11 +27,11 @@ const handleBookedLots = async () => {
     },
   });
 
-  bookedPromotionLots.map(({ _id, attributedTo: { promotionOptions = [] } }) => {
+  return bookedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
     const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
       promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
     if (promotionOption) {
-      const id = PromotionReservationService.insert({
+      const id = await PromotionReservationService.insert({
         promotionOptionId: promotionOption._id,
         promotionReservation: { startDate: promotionOption.createdAt },
         withAgreement: false,
@@ -56,11 +56,11 @@ const handleSoldLots = async () => {
     attributedTo: { promotionOptions: { promotionLotLinks: 1, createdAt: 1 } },
   });
 
-  soldPromotionLots.map(({ _id, attributedTo: { promotionOptions = [] } }) => {
+  soldPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
     const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
       promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
     if (promotionOption) {
-      const id = PromotionReservationService.insert({
+      const id = await PromotionReservationService.insert({
         promotionOptionId: promotionOption._id,
         promotionReservation: { startDate: promotionOption.createdAt },
         withAgreement: false,

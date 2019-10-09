@@ -4,9 +4,11 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
+import PromotionReservationService from '../../../promotionReservations/server/PromotionReservationService';
 import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
 import PromotionOptionService from '../PromotionOptionService';
+import { PROMOTION_OPTION_SOLVENCY } from '../../promotionOptionConstants';
 
 describe('PromotionOptionService', () => {
   beforeEach(() => {
@@ -241,6 +243,41 @@ describe('PromotionOptionService', () => {
         'test',
         'pOptId2',
       ]);
+    });
+  });
+
+  describe('update', () => {
+    it('updates any related promotionReservation if solvency changes', async () => {
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: 'promotionId',
+          loans: { _id: 'loanId' },
+          promotionLots: {
+            _id: 'promotionLotId',
+            propertyLinks: [{ _id: 'propId' }],
+            promotionOptions: {
+              _id: 'promotionOptionId',
+              loan: { _id: 'loanId' },
+            },
+          },
+        },
+      });
+
+      await PromotionReservationService.insert({
+        promotionOptionId: 'promotionOptionId',
+        promotionReservation: { startDate: new Date() },
+        withAgreement: false,
+      });
+
+      PromotionOptionService.update({
+        promotionOptionId: 'promotionOptionId',
+        object: { solvency: PROMOTION_OPTION_SOLVENCY.SOLVENT },
+      });
+
+      const pR = PromotionReservationService.findOne({});
+
+      expect(pR.mortgageCertification.status).to.equal(PROMOTION_OPTION_SOLVENCY.SOLVENT);
     });
   });
 });
