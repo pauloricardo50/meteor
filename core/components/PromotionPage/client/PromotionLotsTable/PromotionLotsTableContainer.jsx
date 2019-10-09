@@ -17,6 +17,7 @@ import {
   PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
 } from '../../../../api/constants';
+import PromotionCustomer from '../PromotionCustomer';
 
 export const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
   const promotionLots = promotionOptions.filter(option => option.promotionLots[0]._id === promotionLotId);
@@ -110,7 +111,7 @@ const makeMapProPromotionLot = ({ setPromotionLotModal }) => (promotionLot) => {
         ),
       },
       promotionOptions.length,
-      attributedTo && attributedTo.user.name,
+      attributedTo && <PromotionCustomer user={attributedTo.user} />,
     ],
     handleClick: () => setPromotionLotModal(promotionLotId),
   };

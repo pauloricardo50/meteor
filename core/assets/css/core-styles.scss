@@ -242,6 +242,10 @@ p.description,
   &.center-align {
     align-items: center;
   }
+
+  &.sb {
+    justify-content: space-between;
+  }
 }
 
 .flex-col {

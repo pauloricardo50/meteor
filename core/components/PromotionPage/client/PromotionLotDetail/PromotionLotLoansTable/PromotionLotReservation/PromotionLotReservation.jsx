@@ -52,6 +52,7 @@ const PromotionLotReservation = ({
   if (!promotionReservation) {
     return (
       <AutoFormDialog
+        model={{ startDate: new Date() }}
         schema={getSchema(promotion)}
         buttonProps={{ label: <T id="PromotionLotReservation.book" /> }}
         onSubmit={values =>

@@ -670,7 +670,7 @@ export const proPromotionReservation = () => ({
   expirationDate: 1,
   status: 1,
   deposit: 1,
-  agreement: 1,
+  reservationAgreement: 1,
   lender: 1,
   mortgageCertification: 1,
   adminNote: 1,
