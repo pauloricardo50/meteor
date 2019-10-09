@@ -70,7 +70,7 @@ const File = (props) => {
     draggable,
     handleChangeFileStatus,
   } = props;
-  const { displayFile } = useContext(FileViewerContext);
+  const { displayFile } = useContext(FileViewerContext) || {};
   const { openModal } = useContext(ModalManagerContext);
   const [deleting, setDeleting] = useState(false);
 
