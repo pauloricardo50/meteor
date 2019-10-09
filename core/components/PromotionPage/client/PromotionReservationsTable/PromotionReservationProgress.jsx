@@ -56,8 +56,8 @@ const Icon = ({ icon, color, date, status, id, showText }) =>
 
 const getMortgageCertificationIcon = ({ date, status }, showText) => {
   const { icon, color } = makeGetIcon({
-    error: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE],
-    success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED],
+    error: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
+    success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
     waiting: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED],
   })(status);
   return (

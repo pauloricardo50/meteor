@@ -6,6 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import FileService from 'core/api/files/server/FileService';
 import S3Service from 'core/api/files/server/S3Service';
 import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
+import { PROMOTION_OPTION_SOLVENCY } from 'core/api/promotionOptions/promotionOptionConstants';
 import generator from '../../../factories';
 import { LOAN_VERIFICATION_STATUS } from '../../../loans/loanConstants';
 import PromotionReservationService from '../PromotionReservationService';
@@ -31,12 +32,13 @@ describe('PromotionReservationService', function () {
       const mortgageCertification = PromotionReservationService.getInitialMortgageCertification({ loan: {}, startDate });
 
       expect(mortgageCertification).to.deep.include({
-        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE,
+        status:
+          PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
         date: startDate,
       });
     });
 
-    it('returns CALCULATED status when verificationStatus is not OK', () => {
+    it('returns CALCULATED status when solvency is not SOLVENT', () => {
       const startDate = new Date();
       const yesterday = moment()
         .subtract(1, 'days')
@@ -54,7 +56,7 @@ describe('PromotionReservationService', function () {
       });
     });
 
-    it('returns VALIDATED status when verificationStatus is OK', () => {
+    it('returns VALIDATED status when solvency is SOLVENT', () => {
       const startDate = new Date();
       const yesterday = moment()
         .subtract(1, 'days')
@@ -65,10 +67,11 @@ describe('PromotionReservationService', function () {
           verificationStatus: LOAN_VERIFICATION_STATUS.OK,
         },
         startDate,
+        solvency: PROMOTION_OPTION_SOLVENCY.SOLVENT,
       });
 
       expect(mortgageCertification).to.deep.include({
-        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
+        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT,
         date: yesterday,
       });
     });
@@ -318,7 +321,10 @@ describe('PromotionReservationService', function () {
         expect(promotionReservation).to.deep.include({
           status: PROMOTION_RESERVATION_STATUS.ACTIVE,
           startDate,
-          reservationAgreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
+          reservationAgreement: {
+            date: startDate,
+            status: AGREEMENT_STATUSES.SIGNED,
+          },
           deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
           lender: {
             date: startDate,
@@ -326,7 +332,7 @@ describe('PromotionReservationService', function () {
           },
           mortgageCertification: {
             date: startDate,
-            status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE,
+            status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
           },
           promotionOptionLink: { _id: 'pO2' },
           promotionLotLink: { _id: 'pL1' },

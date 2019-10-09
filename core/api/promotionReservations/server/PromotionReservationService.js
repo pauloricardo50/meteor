@@ -118,16 +118,23 @@ class PromotionReservationService extends CollectionService {
   getInitialMortgageCertification({ solvency, loan, startDate }) {
     const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
 
-    let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE;
+    let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED;
     let date = startDate;
 
     if (maxPropertyValueDate) {
-      status = solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT
-        ? PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED
-        : PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+      switch (solvency) {
+      case PROMOTION_OPTION_SOLVENCY.SOLVENT:
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
+        break;
+      case PROMOTION_OPTION_SOLVENCY.INSOLVENT:
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT;
+        break;
+      default:
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+      }
       date = maxPropertyValueDate;
     } else if (solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT) {
-      status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED;
+      status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
     }
 
     return { status, date };
