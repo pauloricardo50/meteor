@@ -253,7 +253,7 @@ export default class Security {
   }
 
   static isAllowedToRemoveTempFile({ userId, fileKey }) {
-    if (fileKey && fileKey.startsWith(`${userId}/temp/`)) {
+    if (fileKey && fileKey.startsWith(`temp/${userId}`)) {
       return;
     }
 

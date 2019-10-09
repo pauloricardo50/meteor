@@ -73,7 +73,10 @@ class PromotionReservationService extends CollectionService {
     const promotionReservationId = this.collection.insert({
       ...promotionReservation,
       expirationDate,
-      reservationAgreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
+      reservationAgreement: {
+        date: startDate,
+        status: AGREEMENT_STATUSES.SIGNED,
+      },
       deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
       lender: {
         date: startDate,

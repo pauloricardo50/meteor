@@ -29,27 +29,29 @@ import {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ context: { userId }, params: { promotionOptionId } }) => {
-    const currentUser = UserService.get(userId);
-    const {
-      promotionLots = [],
-      loan: { _id: loanId },
-    } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
-      loan: { _id: 1 },
-      promotionLots: {
-        name: 1,
-        promotion: { name: 1, assignedEmployee: { email: 1 } },
-      },
-    });
-    const [promotionLot] = promotionLots;
+  ({ context: { userId }, params: { promotionOptionId }, result }) => {
+    result.then(() => {
+      const currentUser = UserService.get(userId);
+      const {
+        promotionLots = [],
+        loan: { _id: loanId },
+      } = PromotionOptionService.fetchOne({
+        $filters: { _id: promotionOptionId },
+        loan: { _id: 1 },
+        promotionLots: {
+          name: 1,
+          promotion: { name: 1, assignedEmployee: { email: 1 } },
+        },
+      });
+      const [promotionLot] = promotionLots;
 
-    const { user } = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      user: { name: 1 },
-    });
+      const { user } = LoanService.fetchOne({
+        $filters: { _id: loanId },
+        user: { name: 1 },
+      });
 
-    promotionLotBooked({ currentUser, promotionLot, user });
+      promotionLotBooked({ currentUser, promotionLot, user });
+    });
   },
 );
 
