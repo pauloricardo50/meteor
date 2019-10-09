@@ -671,12 +671,17 @@ export const proPromotionReservation = () => ({
   documents: 1,
   expirationDate: 1,
   lender: 1,
-  loan: { name: 1, user: { name: 1, email: 1, phoneNumbers: 1 } },
+  loan: {
+    name: 1,
+    user: { name: 1, email: 1, phoneNumbers: 1 },
+    promotions: { _id: 1 },
+  },
   mortgageCertification: 1,
   promotionLot: { name: 1 },
   reservationAgreement: 1,
   startDate: 1,
   status: 1,
+  promotionOption: { _id: 1 },
 });
 
 // //

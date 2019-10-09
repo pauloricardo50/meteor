@@ -1,3 +1,4 @@
+import SecurityService from 'core/api/security';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
@@ -228,4 +229,39 @@ export const makePromotionOptionAnonymizer = ({
     isAnonymized: !!anonymize,
     ...rest,
   };
+};
+
+export const makePromotionReservationAnonymizer = ({
+  userId,
+}) => (promotionReservation) => {
+  const {
+    promotionOption: { _id: promotionOptionId },
+  } = promotionReservation;
+
+  try {
+    SecurityService.promotions.isAllowedToManagePromotionReservation({
+      promotionOptionId,
+      userId,
+    });
+    return promotionReservation;
+  } catch (error) {
+    const {
+      loan: {
+        user: { _id },
+        ...rest
+      },
+    } = promotionReservation;
+    return {
+      ...promotionReservation,
+      loan: {
+        user: {
+          _id,
+          name: ANONYMIZED_STRING,
+          email: ANONYMIZED_STRING,
+          phoneNumbers: [ANONYMIZED_STRING],
+        },
+        ...rest,
+      },
+    };
+  }
 };

@@ -1,12 +1,15 @@
 import { Match } from 'meteor/check';
 
+import { makePromotionReservationAnonymizer } from 'core/api/promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
-import { promotionReservations } from '../queries';
+import { promotionReservations as query } from '../queries';
 
 exposeQuery({
-  query: promotionReservations,
+  query,
   overrides: {
-    firewall() {},
+    firewall(userId, params) {
+      params.userId = userId;
+    },
     embody: (body) => {
       body.$filter = ({ filters, params: { promotionId, status } }) => {
         filters['promotionLink._id'] = promotionId;
@@ -15,9 +18,12 @@ exposeQuery({
           filters.status = status;
         }
       };
+      body.$postFilter = (promotionReservations = [], params) =>
+        promotionReservations.map(makePromotionReservationAnonymizer(params));
     },
     validateParams: {
       promotionId: String,
+      userId: String,
       status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },

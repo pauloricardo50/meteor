@@ -29,35 +29,40 @@ import {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ context: { userId }, params: { promotionOptionId }, result }) => {
-    result.then(() => {
-      const currentUser = UserService.get(userId);
-      const {
-        promotionLots = [],
-        loan: { _id: loanId },
-      } = PromotionOptionService.fetchOne({
-        $filters: { _id: promotionOptionId },
-        loan: { _id: 1 },
-        promotionLots: {
-          name: 1,
-          promotion: { name: 1, assignedEmployee: { email: 1 } },
-        },
-      });
-      const [promotionLot] = promotionLots;
+  async ({ context: { userId }, params: { promotionOptionId }, result }) => {
+    if (typeof result.then === 'function') {
+      result = await result;
+    }
 
-      const { user } = LoanService.fetchOne({
-        $filters: { _id: loanId },
-        user: { name: 1 },
-      });
-
-      promotionLotBooked({ currentUser, promotionLot, user });
+    const currentUser = UserService.get(userId);
+    const {
+      promotionLots = [],
+      loan: { _id: loanId },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: {
+        name: 1,
+        promotion: { name: 1, assignedEmployee: { email: 1 } },
+      },
     });
+    const [promotionLot] = promotionLots;
+
+    const { user } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      user: { name: 1 },
+    });
+
+    promotionLotBooked({ currentUser, promotionLot, user });
   },
 );
 
 ServerEventService.addAfterMethodListener(
   sellPromotionLot,
-  ({ context: { userId }, params: { promotionLotId } }) => {
+  async ({ context: { userId }, params: { promotionLotId }, result }) => {
+    if (typeof result.then === 'function') {
+      result = await result;
+    }
     const currentUser = UserService.get(userId);
     const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -76,10 +81,14 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   proInviteUser,
-  ({
+  async ({
     context: { userId },
     params: { propertyIds = [], properties = [], promotionIds = [], user },
+    result,
   }) => {
+    if (typeof result.then === 'function') {
+      result = await result;
+    }
     const notificationPropertyIds = [
       ...propertyIds,
       ...properties.map(({ _id, externalId }) => _id || externalId),

@@ -84,7 +84,14 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-const makePromotionLotNotification = emailId => ({ context, params }) => {
+const makePromotionLotNotification = emailId => async ({
+  context,
+  params,
+  result,
+}) => {
+  if (typeof result.then === 'function') {
+    result = await result;
+  }
   const { userId } = context;
   context.unblock();
   const { promotionOptionId } = params;
@@ -150,9 +157,7 @@ const makePromotionLotNotification = emailId => ({ context, params }) => {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ result, ...rest }) =>
-    result.then(() =>
-      makePromotionLotNotification(EMAIL_IDS.BOOK_PROMOTION_LOT)({ ...rest })),
+  makePromotionLotNotification(EMAIL_IDS.BOOK_PROMOTION_LOT),
 );
 
 ServerEventService.addAfterMethodListener(
