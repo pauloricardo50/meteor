@@ -48,7 +48,7 @@ const PromotionReservationSchema = new SimpleSchema({
   'mortgageCertification.status': {
     type: String,
     allowedValues: Object.values(PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE,
+    defaultValue: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
   },
   'mortgageCertification.date': { type: Date, optional: true },
   adminNote: { type: Object, defaultValue: {} },

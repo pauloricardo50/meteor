@@ -150,7 +150,9 @@ const makePromotionLotNotification = emailId => ({ context, params }) => {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  makePromotionLotNotification(EMAIL_IDS.BOOK_PROMOTION_LOT),
+  ({ result, ...rest }) =>
+    result.then(() =>
+      makePromotionLotNotification(EMAIL_IDS.BOOK_PROMOTION_LOT)({ ...rest })),
 );
 
 ServerEventService.addAfterMethodListener(

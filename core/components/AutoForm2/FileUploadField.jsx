@@ -26,7 +26,7 @@ export default compose(
     const handleUploadFailed = () => {};
 
     const handleSuccess = (file) => {
-      onChange([...value, file.url]);
+      onChange([...value, file.Key]);
       setCurrentValue([
         ...currentValue,
         { ...file, status: FILE_STATUS.VALID },

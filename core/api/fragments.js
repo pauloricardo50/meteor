@@ -666,16 +666,17 @@ export const promotionReservation = () => ({
 });
 
 export const proPromotionReservation = () => ({
-  startDate: 1,
-  expirationDate: 1,
-  status: 1,
-  deposit: 1,
-  reservationAgreement: 1,
-  lender: 1,
-  mortgageCertification: 1,
   adminNote: 1,
+  deposit: 1,
+  documents: 1,
+  expirationDate: 1,
+  lender: 1,
   loan: { name: 1, user: { name: 1, email: 1, phoneNumbers: 1 } },
+  mortgageCertification: 1,
   promotionLot: { name: 1 },
+  reservationAgreement: 1,
+  startDate: 1,
+  status: 1,
 });
 
 // //

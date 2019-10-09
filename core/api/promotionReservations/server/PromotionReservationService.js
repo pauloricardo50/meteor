@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import { LOAN_VERIFICATION_STATUS } from 'core/api/loans/loanConstants';
 import FileService from 'core/api/files/server/FileService';
 import { PROMOTION_OPTION_SOLVENCY } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionReservations from '../promotionReservations';
@@ -14,6 +13,7 @@ import {
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATIONS_COLLECTION,
 } from '../promotionReservationConstants';
 
 class PromotionReservationService extends CollectionService {
@@ -21,7 +21,11 @@ class PromotionReservationService extends CollectionService {
     super(PromotionReservations);
   }
 
-  insert({ promotionReservation, promotionOptionId, withAgreement = true }) {
+  insert = async ({
+    promotionReservation,
+    promotionOptionId,
+    withAgreement = true,
+  }) => {
     const {
       promotionLots = [],
       loan = {},
@@ -62,12 +66,15 @@ class PromotionReservationService extends CollectionService {
     });
 
     // Check if promotion reservation agreement has been uploaded
-    if (
-      withAgreement
-      && (!agreementFileKeys.length
-        || agreementFileKeys.some(Key => !FileService.getFileFromKey(Key)))
-    ) {
-      throw new Meteor.Error('Aucune convention de réservation uploadée');
+    if (withAgreement) {
+      try {
+        if (!agreementFileKeys.length) {
+          throw new Error();
+        }
+        await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
+      } catch (error) {
+        throw new Meteor.Error('Aucune convention de réservation uploadée');
+      }
     }
 
     // Insert promotion reservation
@@ -100,24 +107,34 @@ class PromotionReservationService extends CollectionService {
     });
 
     // Move promotion reservation agreement files to promotion reservation
-    this.mergeAgreementFiles({ promotionReservationId, agreementFileKeys });
+    await this.mergeAgreementFiles({
+      promotionReservationId,
+      agreementFileKeys,
+    });
 
     return promotionReservationId;
-  }
+  };
 
   getInitialMortgageCertification({ solvency, loan, startDate }) {
     const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
 
-    let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE;
+    let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED;
     let date = startDate;
 
     if (maxPropertyValueDate) {
-      status = solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT
-        ? PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED
-        : PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+      switch (solvency) {
+      case PROMOTION_OPTION_SOLVENCY.SOLVENT:
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
+        break;
+      case PROMOTION_OPTION_SOLVENCY.INSOLVENT:
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT;
+        break;
+      default:
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+      }
       date = maxPropertyValueDate;
     } else if (solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT) {
-      status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED;
+      status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
     }
 
     return { status, date };
@@ -182,16 +199,16 @@ class PromotionReservationService extends CollectionService {
   }
 
   mergeAgreementFiles({ promotionReservationId, agreementFileKeys = [] }) {
-    agreementFileKeys.forEach((Key) => {
+    return Promise.all(agreementFileKeys.map((Key) => {
       const name = FileService.getFileName(Key);
-      FileService.moveFile({
+      return FileService.moveFile({
         Key,
         name,
         newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
-        newCollection: this.collection._name,
+        newCollection: PROMOTION_RESERVATIONS_COLLECTION,
       });
-    });
+    }));
   }
 
   updateStatus({ promotionReservationId, status }) {

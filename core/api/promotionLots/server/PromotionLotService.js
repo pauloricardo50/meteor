@@ -41,23 +41,27 @@ export class PromotionLotService extends CollectionService {
 
     const [{ _id: promotionLotId }] = promotionLots;
 
-    const promotionReservationId = PromotionReservationService.insert({
+    return PromotionReservationService.insert({
       promotionReservation,
       promotionOptionId,
-    });
+    })
+      .then((promotionReservationId) => {
+        this.update({
+          promotionLotId,
+          object: { status: PROMOTION_LOT_STATUS.BOOKED },
+        });
 
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.BOOKED },
-    });
+        this.addLink({
+          id: promotionLotId,
+          linkName: 'attributedTo',
+          linkId: loanId,
+        });
 
-    this.addLink({
-      id: promotionLotId,
-      linkName: 'attributedTo',
-      linkId: loanId,
-    });
-
-    return promotionReservationId;
+        return promotionReservationId;
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 
   cancelPromotionLotBooking({ promotionOptionId }) {

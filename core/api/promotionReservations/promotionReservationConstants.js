@@ -1,3 +1,5 @@
+import { PROMOTION_OPTION_SOLVENCY } from "../promotionOptions/promotionOptionConstants";
+
 export const PROMOTION_RESERVATIONS_COLLECTION = 'promotionReservations';
 
 export const PROMOTION_RESERVATIONS_QUERIES = {
@@ -30,9 +32,8 @@ export const PROMOTION_RESERVATION_STATUS = {
 };
 
 export const PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS = {
-  NONE: 'NONE',
+  ...PROMOTION_OPTION_SOLVENCY,
   CALCULATED: 'CALCULATED',
-  VALIDATED: 'VALIDATED',
 };
 
 export const PROMOTION_RESERVATION_DOCUMENTS = {

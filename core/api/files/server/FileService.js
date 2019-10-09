@@ -150,17 +150,18 @@ class FileService {
 
     return S3Service.moveObject(Key, newKey)
       .then(() =>
-        oldDocId
-          && oldCollection
-          && this.updateDocumentsCache({
-            docId: oldDocId,
-            collection: oldCollection,
-          }))
-      .then(() =>
         this.updateDocumentsCache({
           docId: newDocId,
           collection: newCollection,
-        }));
+        }))
+      .then(() => {
+        if (oldDocId && oldCollection) {
+          return this.updateDocumentsCache({
+            docId: oldDocId,
+            collection: oldCollection,
+          });
+        }
+      });
   };
 
   getKeyParts = (key) => {
@@ -178,9 +179,15 @@ class FileService {
     `${docId}/${id}/${this.formatFileName(file.name)}`;
 
   getTempS3FileKey = (userId, file, { id }) =>
-    `${userId}/temp/${id}/${this.formatFileName(file.name)}`;
+    `temp/${userId}/${id}/${this.formatFileName(file.name)}`;
 
-  getFileFromKey = Key => S3Service.headObject(Key);
+  getFileFromKey = (Key) => {
+    try {
+      return S3Service.headObject(Key);
+    } catch (error) {
+      return undefined;
+    }
+  };
 }
 
 export default new FileService();
