@@ -76,8 +76,7 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       label: <T id={`PromotionPage.lots.${column.id}`} />,
     }));
 
-const makeMapProPromotionLot = ({ setPromotionLotModal, promotion }) => (promotionLot) => {
-  console.log('promotion:', promotion);
+const makeMapProPromotionLot = ({ setPromotionLotModal }) => (promotionLot) => {
   const {
     _id: promotionLotId,
     name,
@@ -87,7 +86,6 @@ const makeMapProPromotionLot = ({ setPromotionLotModal, promotion }) => (promoti
     value,
     attributedTo,
   } = promotionLot;
-  console.log('attributedTo:', attributedTo);
 
   return {
     id: promotionLotId,
@@ -192,8 +190,8 @@ export const ProPromotionLotsTableContainer = compose(
     }),
     dataName: 'promotionLots',
   }),
-  withProps(({ promotionLots, setPromotionLotModal, promotion }) => ({
-    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal, promotion })),
+  withProps(({ promotionLots, setPromotionLotModal }) => ({
+    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal })),
     columnOptions: proColumnOptions,
   })),
 );

@@ -2,10 +2,12 @@
 import React from 'react';
 
 import { PROMOTION_RESERVATION_STATUS } from 'core/api/constants';
-import Table from '../../../Table';
+import TableWithModal from '../../../Table/TableWithModal';
 import T from '../../../Translation';
+import Button from '../../../Button';
 import MongoSelect from '../../../Select/MongoSelect';
 import PromotionReservationsTableContainer from './PromotionReservationsTableContainer';
+import PromotionReservationDetail from './PromotionReservationDetail/PromotionReservationDetail';
 
 type PromotionReservationsTableProps = {};
 
@@ -14,6 +16,7 @@ const PromotionReservationsTable = ({
   columnOptions,
   status,
   setStatus,
+  promotionReservations,
 }: PromotionReservationsTableProps) => (
   <div className="card1 card-top">
     <div className="flex center-align">
@@ -28,7 +31,29 @@ const PromotionReservationsTable = ({
         label={<T id="Forms.status" />}
       />
     </div>
-    <Table rows={rows} columnOptions={columnOptions} />
+    <TableWithModal
+      rows={rows}
+      columnOptions={columnOptions}
+      modalType="dialog"
+      modalProps={{}}
+      getModalProps={({ row: { data }, setOpen }) => ({
+        title: (
+          <T
+            id="PromotionReservationsTable.modalTitle"
+            values={{
+              lotName: <b>{data.promotionLot.name}</b>,
+              customerName: <b>{data.loan.user.name}</b>,
+            }}
+          />
+        ),
+        children: <PromotionReservationDetail promotionReservation={data} />,
+        actions: (
+          <Button onClick={() => setOpen(false)}>
+            <T id="general.close" />
+          </Button>
+        ),
+      })}
+    />
   </div>
 );
 

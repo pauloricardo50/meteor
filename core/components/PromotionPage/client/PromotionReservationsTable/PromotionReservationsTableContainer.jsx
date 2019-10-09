@@ -26,6 +26,7 @@ const mapPromotionReservation = (promotionReservation) => {
 
   return {
     id: _id,
+    data: promotionReservation,
     columns: [
       promotionLot.name,
       {
