@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import { LOAN_VERIFICATION_STATUS } from 'core/api/loans/loanConstants';
 import FileService from 'core/api/files/server/FileService';
+import { PROMOTION_OPTION_SOLVENCY } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionReservations from '../promotionReservations';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
@@ -20,10 +21,11 @@ class PromotionReservationService extends CollectionService {
     super(PromotionReservations);
   }
 
-  insert({ promotionReservation, promotionOptionId }) {
+  insert({ promotionReservation, promotionOptionId, withAgreement = true }) {
     const {
       promotionLots = [],
       loan = {},
+      solvency,
     } = PromotionOptionService.safeFetchOne({
       $filters: { _id: promotionOptionId },
       promotionLots: {
@@ -31,6 +33,7 @@ class PromotionReservationService extends CollectionService {
         promotion: { agreementDuration: 1 },
       },
       loan: { maxPropertyValue: { date: 1 }, verificationStatus: 1 },
+      solvency: 1,
     });
 
     const [
@@ -60,8 +63,9 @@ class PromotionReservationService extends CollectionService {
 
     // Check if promotion reservation agreement has been uploaded
     if (
-      !agreementFileKeys.length
-      || agreementFileKeys.some(Key => !FileService.getFileFromKey(Key))
+      withAgreement
+      && (!agreementFileKeys.length
+        || agreementFileKeys.some(Key => !FileService.getFileFromKey(Key)))
     ) {
       throw new Meteor.Error('Aucune convention de réservation uploadée');
     }
@@ -70,7 +74,10 @@ class PromotionReservationService extends CollectionService {
     const promotionReservationId = this.collection.insert({
       ...promotionReservation,
       expirationDate,
-      reservationAgreement: { date: startDate, status: AGREEMENT_STATUSES.SIGNED },
+      reservationAgreement: {
+        date: startDate,
+        status: AGREEMENT_STATUSES.SIGNED,
+      },
       deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
       lender: {
         date: startDate,
@@ -78,6 +85,7 @@ class PromotionReservationService extends CollectionService {
       },
       mortgageCertification: this.getInitialMortgageCertification({
         loan,
+        solvency,
         startDate,
       }),
     });
@@ -97,20 +105,19 @@ class PromotionReservationService extends CollectionService {
     return promotionReservationId;
   }
 
-  getInitialMortgageCertification({ loan, startDate }) {
-    const {
-      maxPropertyValue: { date: maxPropertyValueDate } = {},
-      verificationStatus,
-    } = loan;
+  getInitialMortgageCertification({ solvency, loan, startDate }) {
+    const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
 
     let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.NONE;
     let date = startDate;
 
     if (maxPropertyValueDate) {
-      status = verificationStatus === LOAN_VERIFICATION_STATUS.OK
+      status = solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT
         ? PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED
         : PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
       date = maxPropertyValueDate;
+    } else if (solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT) {
+      status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED;
     }
 
     return { status, date };
