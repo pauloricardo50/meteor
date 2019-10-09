@@ -13,6 +13,7 @@ import {
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATIONS_COLLECTION,
 } from '../promotionReservationConstants';
 
 class PromotionReservationService extends CollectionService {
@@ -20,7 +21,7 @@ class PromotionReservationService extends CollectionService {
     super(PromotionReservations);
   }
 
-  insert({ promotionReservation, promotionOptionId }) {
+  insert = async ({ promotionReservation, promotionOptionId }) => {
     const {
       promotionLots = [],
       loan = {},
@@ -59,10 +60,12 @@ class PromotionReservationService extends CollectionService {
     });
 
     // Check if promotion reservation agreement has been uploaded
-    if (
-      !agreementFileKeys.length
-      || agreementFileKeys.some(Key => !FileService.getFileFromKey(Key))
-    ) {
+    try {
+      if (!agreementFileKeys.length) {
+        throw new Error();
+      }
+      await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
+    } catch (error) {
       throw new Meteor.Error('Aucune convention de réservation uploadée');
     }
 
@@ -92,10 +95,13 @@ class PromotionReservationService extends CollectionService {
     });
 
     // Move promotion reservation agreement files to promotion reservation
-    this.mergeAgreementFiles({ promotionReservationId, agreementFileKeys });
+    await this.mergeAgreementFiles({
+      promotionReservationId,
+      agreementFileKeys,
+    });
 
     return promotionReservationId;
-  }
+  };
 
   getInitialMortgageCertification({ loan, startDate }) {
     const {
@@ -175,16 +181,16 @@ class PromotionReservationService extends CollectionService {
   }
 
   mergeAgreementFiles({ promotionReservationId, agreementFileKeys = [] }) {
-    agreementFileKeys.forEach((Key) => {
+    return Promise.all(agreementFileKeys.map((Key) => {
       const name = FileService.getFileName(Key);
-      FileService.moveFile({
+      return FileService.moveFile({
         Key,
         name,
         newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
-        newCollection: this.collection._name,
+        newCollection: PROMOTION_RESERVATIONS_COLLECTION,
       });
-    });
+    }));
   }
 
   updateStatus({ promotionReservationId, status }) {

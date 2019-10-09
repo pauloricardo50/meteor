@@ -19,7 +19,7 @@ describe('PromotionLotService', function () {
   });
 
   describe('bookPromotionLot', () => {
-    it('sends emails to those who need it', () => {
+    it('sends emails to those who need it', async () => {
       generator({
         users: [
           {
@@ -93,7 +93,8 @@ describe('PromotionLotService', function () {
         { name: 'Convention de réservation.pdf' },
         { id: 'agreement' },
       );
-      S3Service.putObject(
+
+      await S3Service.putObject(
         reservationAgreementFile,
         reservationAgreementFileKey,
       );
