@@ -153,6 +153,7 @@ const CollectionIconLink = ({
   data,
   replacementPopup,
   noRoute,
+  iconStyle,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
@@ -184,6 +185,7 @@ const CollectionIconLink = ({
           className="collection-icon"
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
+          iconStyle={iconStyle}
           showIcon={showIcon}
           noRoute={noRoute}
         />
@@ -199,6 +201,7 @@ const CollectionIconLink = ({
       stopPropagation={stopPropagation}
       className="collection-icon"
       iconClassName={iconClassName}
+      iconStyle={iconStyle}
       showIcon={showIcon}
       noIcon
       noRoute={noRoute}

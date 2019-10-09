@@ -17,8 +17,9 @@ const PromotionReservationsTable = ({
   status,
   setStatus,
   promotionReservations,
+  className,
 }: PromotionReservationsTableProps) => (
-  <div className="card1 card-top">
+  <div className={className}>
     <div className="flex center-align">
       <h3 className="text-center mr-8">
         <T id="collections.promotionReservations" />
