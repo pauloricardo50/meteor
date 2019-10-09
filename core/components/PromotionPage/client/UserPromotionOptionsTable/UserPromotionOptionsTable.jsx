@@ -28,7 +28,7 @@ const UserPromotionOptionsTable = ({
 
   return (
     <>
-      <h3 className="text-center">
+      <h3>
         <T id="collections.promotionOptions" />
       </h3>
 

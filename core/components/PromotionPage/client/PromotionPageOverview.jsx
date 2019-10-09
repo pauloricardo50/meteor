@@ -71,8 +71,12 @@ const PromotionPageOverview = ({
         <>
           <PromotionReservationsTable
             promotion={promotion}
+            className="card1 card-top"
           />
-          <ProPromotionLotsTable promotion={promotion} className="card1 card-top" />
+          <ProPromotionLotsTable
+            promotion={promotion}
+            className="card1 card-top"
+          />
         </>
       )}
 

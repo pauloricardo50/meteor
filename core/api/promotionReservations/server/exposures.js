@@ -11,11 +11,15 @@ exposeQuery({
       params.userId = userId;
     },
     embody: (body) => {
-      body.$filter = ({ filters, params: { promotionId, status } }) => {
+      body.$filter = ({ filters, params: { promotionId, status, loanId } }) => {
         filters['promotionLink._id'] = promotionId;
 
         if (status) {
           filters.status = status;
+        }
+
+        if (loanId) {
+          filters['loanLink._id'] = loanId;
         }
       };
       body.$postFilter = (promotionReservations = [], params) =>
@@ -24,6 +28,7 @@ exposeQuery({
     validateParams: {
       promotionId: String,
       userId: String,
+      loanId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },

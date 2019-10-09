@@ -71,9 +71,10 @@ export default compose(
   withState('status', 'setStatus'),
   withSmartQuery({
     query,
-    params: ({ promotion: { _id: promotionId }, status }) => ({
+    params: ({ promotion: { _id: promotionId }, status, loanId }) => ({
       promotionId,
       status,
+      loanId,
     }),
     dataName: 'promotionReservations',
   }),
