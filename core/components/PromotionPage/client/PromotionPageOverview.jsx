@@ -49,21 +49,22 @@ const PromotionPageOverview = ({
 
       {isApp ? (
         <>
-          <ResidenceTypeSetter loan={loan} />
+          <ResidenceTypeSetter
+            loan={loan}
+            text={<T id="PromotionPage.residenceTypeSetter.text" />}
+          />
           {loan.residenceType
             && loan.promotionOptions
             && loan.promotionOptions.length > 0 && (
-            <UserPromotionOptionsTable
-              promotion={promotion}
-              loan={loan}
-              className="card1"
-            />
+            <div className="card1 card-top">
+              <UserPromotionOptionsTable promotion={promotion} loan={loan} />
+            </div>
           )}
           {loan.residenceType && (
             <AppPromotionLotsTable
               promotion={promotion}
               loan={loan}
-              className="card1"
+              className="card1 card-top"
             />
           )}
         </>
@@ -73,7 +74,10 @@ const PromotionPageOverview = ({
             promotionId={promotion._id}
             className="card1 card-top"
           />
-          <ProPromotionLotsTable promotion={promotion} className="card1 card-top" />
+          <ProPromotionLotsTable
+            promotion={promotion}
+            className="card1 card-top"
+          />
         </>
       )}
 
