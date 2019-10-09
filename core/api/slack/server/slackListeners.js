@@ -31,7 +31,7 @@ ServerEventService.addAfterMethodListener(
   bookPromotionLot,
   async ({ context: { userId }, params: { promotionOptionId }, result }) => {
     if (typeof result.then === 'function') {
-      result = await result;
+      await result;
     }
 
     const currentUser = UserService.get(userId);
@@ -59,10 +59,7 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   sellPromotionLot,
-  async ({ context: { userId }, params: { promotionLotId }, result }) => {
-    if (typeof result.then === 'function') {
-      result = await result;
-    }
+  ({ context: { userId }, params: { promotionLotId } }) => {
     const currentUser = UserService.get(userId);
     const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -81,14 +78,10 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   proInviteUser,
-  async ({
+  ({
     context: { userId },
     params: { propertyIds = [], properties = [], promotionIds = [], user },
-    result,
   }) => {
-    if (typeof result.then === 'function') {
-      result = await result;
-    }
     const notificationPropertyIds = [
       ...propertyIds,
       ...properties.map(({ _id, externalId }) => _id || externalId),
