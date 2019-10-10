@@ -43,10 +43,16 @@ class ActivityService extends CollectionService {
         metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
       },
     });
-    return this._update({
-      id: createdAtActivity._id,
-      object: { date: createdAt },
-    });
+    this.rawCollection.update(
+      {
+        _id: createdAtActivity._id,
+      },
+      { $set: { date: createdAt } },
+    );
+  }
+
+  updateDescription({ id, description }) {
+    this.rawCollection.update({ _id: id }, { $set: { description } });
   }
 }
 
