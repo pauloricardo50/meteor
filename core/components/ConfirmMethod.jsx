@@ -75,50 +75,8 @@ export default class ConfirmMethod extends Component {
       />,
     ];
 
-    const popover = (
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={this.handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <div style={{ padding: 8 }}>
-          {title && <h4>{title}</h4>}
-          {description && <p>{description}</p>}
-          {children}
-          {keyword && (
-            <div>
-              <T
-                id="ConfirmMethod.dialogMessage"
-                values={{ keyword: <b>{keyword}</b> }}
-              />
-              <form
-                onSubmit={this.handleSubmit}
-                style={{ textAlign: 'center' }}
-              >
-                <TextField
-                  value={text}
-                  autoFocus
-                  onChange={this.handleChange}
-                  style={{ marginTop: 16 }}
-                />
-              </form>
-            </div>
-          )}
-          {actions}
-        </div>
-      </Popover>
-    );
-
-    const modal = (
-      <Dialog
-        title={title}
-        actions={actions}
-        important
-        open={open}
-        text={description}
-      >
+    const content = (
+      <>
         {children}
         {keyword && (
           <div>
@@ -136,6 +94,35 @@ export default class ConfirmMethod extends Component {
             </form>
           </div>
         )}
+      </>
+    );
+
+    const popover = (
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={this.handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <div style={{ padding: 8 }}>
+          {title && <h4>{title}</h4>}
+          {description && <p>{description}</p>}
+          {content}
+          {actions}
+        </div>
+      </Popover>
+    );
+
+    const modal = (
+      <Dialog
+        title={title}
+        actions={actions}
+        important
+        open={open}
+        text={description}
+      >
+        {content}
       </Dialog>
     );
 
