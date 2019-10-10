@@ -15,6 +15,7 @@ const StatusDateForm = ({
 }: StatusDateFormProps) => (
   <AutoForm
     autosave
+    autosaveDelay={300}
     schema={PromotionReservationSchema.getObjectSchema(id)}
     model={model}
     onSubmit={(values) => {

@@ -47,22 +47,23 @@ const makeIcon = (variant, isEditing, promotionReservationId) => ({
   />
 );
 
-const getAdminNoteIcon = ({ note, date } = {}, showText) =>
+const getAdminNoteIcon = (
+  { note, date } = {},
+  variant,
+  isEditing,
+  promotionReservationId,
+) =>
   date && (
-    <BaseIcon
-      type="info"
+    <PromotionReservationProgressItem
+      icon="info"
       color={note ? 'primary' : 'borderGrey'}
-      tooltip={(
-        <div>
-          <b>
-            <T id="Forms.adminNote" />
-          </b>
-          <br />
-          <i>{moment(date).format("hh:mm, D MMM 'YY")}</i>
-          <br />
-          {note || 'Pas de commentaire'}
-        </div>
-      )}
+      date={date}
+      note={note}
+      placeholder="Pas de commentaire"
+      variant={variant}
+      id="adminNote"
+      isEditing={isEditing}
+      promotionReservationId={promotionReservationId}
     />
   );
 
@@ -135,7 +136,7 @@ const PromotionReservationProgress = ({
       })(lender.status),
       id: 'lender',
     }),
-    getAdminNoteIcon(adminNote, variant === 'showText'),
+    getAdminNoteIcon(adminNote, variant, isEditing, promotionReservationId),
   ].filter(x => x);
 
   return (

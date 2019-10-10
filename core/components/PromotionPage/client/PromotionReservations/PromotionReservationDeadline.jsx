@@ -10,6 +10,7 @@ import T from '../../../Translation';
 type PromotionReservationDeadlineProps = {};
 
 const PromotionReservationDeadline = ({
+  startDate,
   expirationDate,
   status,
 }: PromotionReservationDeadlineProps) => {
@@ -21,7 +22,15 @@ const PromotionReservationDeadline = ({
     return (
       <label htmlFor="expirationDate">
         <T id="Forms.expirationDate" />
-        <Tooltip title={momentDate.format('D MMMM YYYY')}>
+        <Tooltip
+          title={(
+            <span>
+              {moment(startDate).format('D MMMM YYYY')}
+              &nbsp;-&nbsp;
+              {momentDate.format('D MMMM YYYY')}
+            </span>
+          )}
+        >
           <h1 className={cx({ 'error-box': isTight })}>
             {momentDate.fromNow()}
           </h1>

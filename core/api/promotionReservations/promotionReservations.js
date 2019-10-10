@@ -72,7 +72,7 @@ export const PromotionReservationSchema = new SimpleSchema({
   'adminNote.note': { type: String, defaultValue: '' },
   'adminNote.date': {
     type: Date,
-    autoValue: dateAutoValue(),
+    autoValue: dateAutoValue('note'),
   },
   promotionLink: { type: Object, optional: true },
   'promotionLink._id': { type: String, optional: true },

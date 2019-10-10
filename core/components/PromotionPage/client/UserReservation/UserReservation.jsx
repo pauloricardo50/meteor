@@ -11,9 +11,14 @@ type UserReservationProps = {};
 const UserReservation = ({
   promotionReservation,
   className,
-  progressVariant
+  progressVariant,
 }: UserReservationProps) => {
-  const { promotionLot, expirationDate, status } = promotionReservation;
+  const {
+    expirationDate,
+    promotionLot,
+    startDate,
+    status,
+  } = promotionReservation;
   return (
     <div className={cx('user-reservation', className)}>
       <h3>
@@ -26,6 +31,7 @@ const UserReservation = ({
       <div className="user-reservation-info">
         <div className="user-reservation-deadline">
           <PromotionReservationDeadline
+            startDate={startDate}
             expirationDate={expirationDate}
             status={status}
           />

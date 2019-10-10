@@ -8,17 +8,16 @@ import StatusDateForm from './StatusDateForm';
 
 type PromotionReservationProgressItemProps = {};
 
-const iconTooltip = ({ date, status, id }) =>
-  date && (
-    <div className="flex-col" style={{ flexGrow: 1 }}>
-      <b className="flex sb">
-        <T id={`Forms.${id}`} />
-        &nbsp;
-        <i className="secondary">{moment(date).format("h:mm, D MMM 'YY")}</i>
-      </b>
-      <T id={`Forms.status.${status}`} />
-    </div>
-  );
+const IconTooltip = ({ date, status, id, note, placeholder }) => (
+  <div className="flex-col" style={{ flexGrow: 1 }}>
+    <b className="flex sb">
+      <T id={`Forms.${id}`} />
+      &nbsp;
+      <i className="secondary">{moment(date).format("H:mm, D MMM 'YY")}</i>
+    </b>
+    {note || placeholder || <T id={`Forms.status.${status}`} />}
+  </div>
+);
 
 const PromotionReservationProgressItem = ({
   icon,
@@ -29,17 +28,26 @@ const PromotionReservationProgressItem = ({
   variant,
   isEditing,
   promotionReservationId,
+  iconProps,
+  note,
+  placeholder,
 }: PromotionReservationProgressItemProps) => {
   if (variant === 'text') {
     return (
       <>
         <p className="flex center-align">
-          <Icon type={icon} color={color} className="mr-16" />
-          {iconTooltip({ date, status, id })}
+          <Icon type={icon} color={color} className="mr-16" {...iconProps} />
+          <IconTooltip
+            date={date}
+            status={status}
+            id={id}
+            note={note}
+            placeholder={placeholder}
+          />
         </p>
         {isEditing && (
           <StatusDateForm
-            model={{ status, date }}
+            model={{ status, note, date }}
             id={id}
             promotionReservationId={promotionReservationId}
           />
@@ -53,7 +61,16 @@ const PromotionReservationProgressItem = ({
       type={icon}
       color={color}
       className="promotion-reservation-progress-icon"
-      tooltip={iconTooltip({ date, status, id })}
+      tooltip={(
+        <IconTooltip
+          date={date}
+          status={status}
+          id={id}
+          note={note}
+          placeholder={placeholder}
+        />
+      )}
+      {...iconProps}
     />
   );
 

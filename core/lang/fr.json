@@ -1,4 +1,6 @@
 {
+  "Forms.note": "Note admin",
+  "Forms.note.placeholder": "Salut!",
   "Forms.status.SOLVENT": "Solvable",
   "Forms.status.INSOLVENT": "Non solvable",
   "Forms.adminNote": "Note admin",

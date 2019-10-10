@@ -28,10 +28,11 @@ const PromotionReservationDetail = ({
 }: PromotionReservationDetailProps) => {
   const {
     _id,
+    expirationDate,
+    loan,
     promotionLot,
     promotionOption: { _id: promotionOptionId },
-    loan,
-    expirationDate,
+    startDate,
     status,
   } = promotionReservation;
   const isAdmin = Meteor.microservice === 'admin';
@@ -44,6 +45,7 @@ const PromotionReservationDetail = ({
     <div>
       <div className="text-center" style={{ marginBottom: 40 }}>
         <PromotionReservationDeadline
+          startDate={startDate}
           expirationDate={expirationDate}
           status={status}
         />
@@ -59,6 +61,7 @@ const PromotionReservationDetail = ({
         collection={PROMOTION_RESERVATIONS_COLLECTION}
         documentArray={promotionReservationsArray}
         allowRequireByAdmin={false}
+        disabled={!isAdmin}
       />
 
       {isAdmin && (
