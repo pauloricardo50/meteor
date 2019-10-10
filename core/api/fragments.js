@@ -314,6 +314,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   displayWelcomeScreen: 1,
   documents: 1,
   offers: 1,
+  promotionReservations: userPromotionReservation(),
   properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
@@ -665,11 +666,21 @@ export const promotionReservation = () => ({
   status: 1,
 });
 
+export const userPromotionReservation = () => ({
+  ...promotionReservation(),
+  deposit: 1,
+  documents: 1,
+  lender: 1,
+  mortgageCertification: 1,
+  promotionLot: { name: 1 },
+  reservationAgreement: 1,
+});
+
 export const proPromotionReservation = () => ({
+  ...promotionReservation(),
   adminNote: 1,
   deposit: 1,
   documents: 1,
-  expirationDate: 1,
   lender: 1,
   loan: {
     name: 1,
@@ -679,8 +690,6 @@ export const proPromotionReservation = () => ({
   mortgageCertification: 1,
   promotionLot: { name: 1 },
   reservationAgreement: 1,
-  startDate: 1,
-  status: 1,
   promotionOption: { _id: 1 },
 });
 

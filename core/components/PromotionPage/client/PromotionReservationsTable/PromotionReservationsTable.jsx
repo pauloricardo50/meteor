@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
 
-import { PROMOTION_RESERVATION_STATUS } from 'core/api/constants';
+import { PROMOTION_RESERVATION_STATUS } from '../../../../api/constants';
 import TableWithModal from '../../../Table/TableWithModal';
 import T from '../../../Translation';
 import Button from '../../../Button';
 import MongoSelect from '../../../Select/MongoSelect';
 import PromotionReservationsTableContainer from './PromotionReservationsTableContainer';
-import PromotionReservationDetail from './PromotionReservationDetail/PromotionReservationDetail';
+import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail';
 
 type PromotionReservationsTableProps = {};
 
