@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import FileService from 'core/api/files/server/FileService';
 import { PROMOTION_OPTION_SOLVENCY } from 'core/api/promotionOptions/promotionOptionConstants';
+import { expirePromotionLotBooking } from 'core/api/promotionLots/server/serverMethods';
 import PromotionReservations from '../promotionReservations';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
@@ -71,7 +72,7 @@ class PromotionReservationService extends CollectionService {
         if (!agreementFileKeys.length) {
           throw new Error();
         }
-        // await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
+        await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
       } catch (error) {
         throw new Meteor.Error('Aucune convention de réservation uploadée');
       }
@@ -232,12 +233,38 @@ class PromotionReservationService extends CollectionService {
     });
   }
 
+  expireReservation({ promotionReservationId }) {
+    return this.updateStatus({
+      promotionReservationId,
+      status: PROMOTION_RESERVATION_STATUS.EXPIRED,
+    });
+  }
+
   updateMortgageCertification({ promotionReservationId, status, date }) {
     return this._update({
       id: promotionReservationId,
       object: { status, date },
     });
   }
+
+  expirePromotionReservations = async () => {
+    const today = moment()
+      .startOf('day')
+      .toDate();
+
+    const promotionReservationsToExpire = this.fetch({
+      $filters: {
+        expirationDate: { $lte: today },
+        status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+      },
+      promotionOption: { _id: 1 },
+    });
+
+    await Promise.all(promotionReservationsToExpire.map(({ promotionOption: { _id: promotionOptionId } }) =>
+      expirePromotionLotBooking.run({ promotionOptionId })));
+
+    return promotionReservationsToExpire.length;
+  };
 }
 
 export default new PromotionReservationService();

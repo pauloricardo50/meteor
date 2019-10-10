@@ -1,4 +1,5 @@
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
+import { expirePromotionLotBooking } from 'core/api/promotionLots/server/serverMethods';
 import UserService from '../../users/server/UserService';
 import { promotionShouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 import ServerEventService from '../../events/server/ServerEventService';
@@ -121,10 +122,15 @@ const makePromotionLotNotification = emailId => async ({
     },
   ] = promotionLots;
 
-  const { name: userName } = UserService.fetchOne({
-    $filters: { _id: userId },
-    name: 1,
-  });
+  let userName = 'e-Potek';
+
+  if (userId) {
+    const { name } = UserService.fetchOne({
+      $filters: { _id: userId },
+      name: 1,
+    });
+    userName = name;
+  }
 
   return Promise.all(userLinks
     .filter(({ enableNotifications }) => enableNotifications)
@@ -161,7 +167,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  cancelPromotionLotBooking,
+  [cancelPromotionLotBooking, expirePromotionLotBooking],
   makePromotionLotNotification(EMAIL_IDS.CANCEL_PROMOTION_LOT_BOOKING),
 );
 

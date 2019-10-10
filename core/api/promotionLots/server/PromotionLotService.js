@@ -113,6 +113,33 @@ export class PromotionLotService extends CollectionService {
       promotionReservationId,
     });
   }
+
+  expirePromotionLotBooking({ promotionOptionId }) {
+    const {
+      promotionLots,
+      promotionReservation: { _id: promotionReservationId },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+      promotionReservation: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
+    });
+    this.removeLink({
+      id: promotionLotId,
+      linkName: 'attributedTo',
+    });
+
+    return PromotionReservationService.expireReservation({
+      promotionReservationId,
+    });
+  }
 }
 
 export default new PromotionLotService();
