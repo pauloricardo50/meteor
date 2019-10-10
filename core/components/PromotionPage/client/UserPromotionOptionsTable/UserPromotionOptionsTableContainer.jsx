@@ -23,10 +23,10 @@ import {
 import UpdateField from '../../../UpdateField';
 import PrioritySetter from './PrioritySetter';
 
-const getLotsAttributedToMe = promotionOptions =>
+export const getLotsAttributedToMe = promotionOptions =>
   promotionOptions.filter(({ attributedToMe }) => attributedToMe);
 
-const isAnyLotAttributedToMe = promotionOptions =>
+export const isAnyLotAttributedToMe = promotionOptions =>
   getLotsAttributedToMe(promotionOptions).length > 0;
 
 const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>

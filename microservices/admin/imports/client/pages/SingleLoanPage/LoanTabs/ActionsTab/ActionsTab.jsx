@@ -17,6 +17,7 @@ const ActionsTab = ({ loan }) => (
       keyword="SUPPRIMER"
       method={cb => loanDelete.run({ loanId: loan._id }).then(cb)}
       buttonProps={{ error: true, raised: true, className: 'delete-button' }}
+      type="modal"
     />
     <UserAssigner
       title="Choisir compte utilisateur"

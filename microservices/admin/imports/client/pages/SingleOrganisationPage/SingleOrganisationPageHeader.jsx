@@ -74,6 +74,7 @@ const SingleOrganisationPage = ({
                 className: 'mr-8',
               }}
               method={() => organisationRemove.run({ organisationId })}
+              type="modal"
             />
           )}
           <OrganisationModifier organisation={organisation} />
