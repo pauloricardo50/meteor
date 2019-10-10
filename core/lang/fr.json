@@ -1,4 +1,6 @@
 {
+  "Forms.status.UNDETERMINED": "Pas déterminé",
+  "UserReservation.title": "Réservation du lot {promotionLotName}",
   "Forms.expirationDate": "Échéance de la convention de réservation",
   "PromotionReservationsTable.modalTitle": "Réservation de {lotName} par {customerName}",
   "PromotionReservationsTable.promotionLot": "Lot",

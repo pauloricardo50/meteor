@@ -121,8 +121,11 @@ const getLenderIcon = ({ date, status }, showText) => {
     />
   );
 };
-const getAdminNoteIcon = ({ note, date }, showText) =>
-  note && (
+const getAdminNoteIcon = (
+  { note = 'Pas de commentaire', date } = {},
+  showText,
+) =>
+  date && (
     <Icon
       type="info"
       tooltip={(
@@ -175,7 +178,10 @@ const PromotionReservationProgress = ({
   ].filter(x => x);
 
   return (
-    <div className="flex center-align" style={style}>
+    <div
+      className="promotion-reservation-progress flex center-align"
+      style={style}
+    >
       {icons}
     </div>
   );

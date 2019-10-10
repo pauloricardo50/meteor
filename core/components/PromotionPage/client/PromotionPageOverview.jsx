@@ -16,6 +16,7 @@ import PromotionMetadataContext from './PromotionMetadata';
 import PromotionTimeline from './PromotionTimeline';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import PromotionReservationsTable from './PromotionReservationsTable';
+import UserReservation from './UserReservation';
 
 type PromotionPageOverviewProps = {};
 
@@ -53,6 +54,13 @@ const PromotionPageOverview = ({
             loan={loan}
             text={<T id="PromotionPage.residenceTypeSetter.text" />}
           />
+          {loan.promotionReservations
+            && loan.promotionReservations.map(promotionReservation => (
+              <UserReservation
+                promotionReservation={promotionReservation}
+                key={promotionReservation._id}
+              />
+            ))}
           {loan.residenceType
             && loan.promotionOptions
             && loan.promotionOptions.length > 0 && (
