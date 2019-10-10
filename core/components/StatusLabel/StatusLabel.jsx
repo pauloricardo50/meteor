@@ -103,6 +103,7 @@ const getStatuses = (collection) => {
       [PROMOTION_RESERVATION_STATUS.ACTIVE]: colors.primary,
       [PROMOTION_RESERVATION_STATUS.WAITLIST]: colors.warning,
       [PROMOTION_RESERVATION_STATUS.CANCELED]: colors.error,
+      [PROMOTION_RESERVATION_STATUS.EXPIRED]: colors.error,
       [PROMOTION_RESERVATION_STATUS.COMPLETED]: colors.success,
     };
 

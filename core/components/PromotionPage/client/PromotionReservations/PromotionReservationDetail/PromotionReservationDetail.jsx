@@ -35,6 +35,10 @@ const PromotionReservationDetail = ({
     status,
   } = promotionReservation;
   const isAdmin = Meteor.microservice === 'admin';
+  const isDeadReservation = [
+    PROMOTION_RESERVATION_STATUS.EXPIRED,
+    PROMOTION_RESERVATION_STATUS.CANCELED,
+  ].includes(status);
 
   return (
     <div>
@@ -59,7 +63,7 @@ const PromotionReservationDetail = ({
 
       {isAdmin && (
         <div className="flex center mt-16">
-          {status !== PROMOTION_RESERVATION_STATUS.CANCELED && (
+          {isDeadReservation && (
             <ConfirmMethod
               buttonProps={{ className: 'mr-8', error: true, outlined: true }}
               label="Annuler réservation"

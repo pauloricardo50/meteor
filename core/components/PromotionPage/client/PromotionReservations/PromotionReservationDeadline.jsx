@@ -41,13 +41,23 @@ const PromotionReservationDeadline = ({
     );
   }
 
+  if (status === PROMOTION_RESERVATION_STATUS.EXPIRED) {
+    return (
+      <div>
+        <h1>
+          <T id="PromotionReservationDeadline.expired" />
+        </h1>
+        <T id="PromotionReservationDeadline.expired.description" />
+      </div>
+    );
+  }
+
   if (status === PROMOTION_RESERVATION_STATUS.CANCELED) {
     return (
       <div>
         <h1>
           <T id="PromotionReservationDeadline.canceled" />
         </h1>
-        <T id="PromotionReservationDeadline.canceled.description" />
       </div>
     );
   }
