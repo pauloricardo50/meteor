@@ -59,11 +59,15 @@ const PromotionReservationDetail = ({
 
       {isAdmin && (
         <div className="flex center mt-16">
-          <ConfirmMethod
-            buttonProps={{ className: 'mr-8', error: true, outlined: true }}
-            label="Annuler réservation"
-            method={() => cancelPromotionLotBooking.run({ promotionOptionId })}
-          />
+          {status !== PROMOTION_RESERVATION_STATUS.CANCELED && (
+            <ConfirmMethod
+              buttonProps={{ className: 'mr-8', error: true, outlined: true }}
+              label="Annuler réservation"
+              method={() =>
+                cancelPromotionLotBooking.run({ promotionOptionId })
+              }
+            />
+          )}
           {status === PROMOTION_RESERVATION_STATUS.ACTIVE && (
             <ConfirmMethod
               buttonProps={{ secondary: true, raised: true }}

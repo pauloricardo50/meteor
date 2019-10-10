@@ -21,6 +21,8 @@ import {
   REVENUES_COLLECTION,
   REVENUE_STATUS,
   COMMISSION_STATUS,
+  PROMOTION_RESERVATIONS_COLLECTION,
+  PROMOTION_RESERVATION_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -94,6 +96,14 @@ const getStatuses = (collection) => {
       [REVENUE_STATUS.CLOSED]: colors.success,
       [COMMISSION_STATUS.TO_BE_PAID]: colors.primary,
       [COMMISSION_STATUS.PAID]: colors.success,
+    };
+
+  case PROMOTION_RESERVATIONS_COLLECTION:
+    return {
+      [PROMOTION_RESERVATION_STATUS.ACTIVE]: colors.primary,
+      [PROMOTION_RESERVATION_STATUS.WAITLIST]: colors.warning,
+      [PROMOTION_RESERVATION_STATUS.CANCELED]: colors.error,
+      [PROMOTION_RESERVATION_STATUS.COMPLETED]: colors.success,
     };
 
   default:
