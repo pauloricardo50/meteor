@@ -8,7 +8,7 @@ import ProCustomer from '../../../ProCustomer';
 import T from '../../../Translation';
 import PromotionReservationProgress, {
   rawPromotionReservationProgress,
-} from './PromotionReservationProgress';
+} from '../PromotionReservations/PromotionReservationProgress';
 
 const columnOptions = [
   { id: 'promotionLot' },

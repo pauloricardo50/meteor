@@ -1,4 +1,4 @@
-import { PROMOTION_OPTION_SOLVENCY } from "../promotionOptions/promotionOptionConstants";
+import { PROMOTION_OPTION_SOLVENCY } from '../promotionOptions/promotionOptionConstants';
 
 export const PROMOTION_RESERVATIONS_COLLECTION = 'promotionReservations';
 

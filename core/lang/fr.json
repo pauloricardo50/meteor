@@ -1,4 +1,10 @@
 {
+  "PromotionReservationDeadline.waitlist": "En file d'attente",
+  "PromotionReservationDeadline.waitlist.description": "Le lot est déjà réservé",
+  "PromotionReservationDeadline.canceled": "Réservation annulée",
+  "PromotionReservationDeadline.canceled.description": "Votre convention de réservation a expiré",
+  "PromotionReservationDeadline.completed": "Complété",
+  "PromotionReservationDeadline.completed.description": "Félicitations, vous êtes l'acquereur du lot",
   "Forms.status.UNDETERMINED": "Pas déterminé",
   "UserReservation.title": "Réservation du lot {promotionLotName}",
   "Forms.expirationDate": "Échéance de la convention de réservation",

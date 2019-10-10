@@ -59,6 +59,8 @@ const PromotionPageOverview = ({
               <UserReservation
                 promotionReservation={promotionReservation}
                 key={promotionReservation._id}
+                className="card1 card-top"
+                progressVariant="text"
               />
             ))}
           {loan.residenceType

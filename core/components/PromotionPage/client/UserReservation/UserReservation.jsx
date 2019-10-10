@@ -1,16 +1,21 @@
 // @flow
 import React from 'react';
-import moment from 'moment';
+import cx from 'classnames';
 
 import T from '../../../Translation';
-import PromotionReservationProgress from '../PromotionReservationsTable/PromotionReservationProgress';
+import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
+import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';
 
 type UserReservationProps = {};
 
-const UserReservation = ({ promotionReservation }: UserReservationProps) => {
-  const { promotionLot, expirationDate } = promotionReservation;
+const UserReservation = ({
+  promotionReservation,
+  className,
+  progressVariant
+}: UserReservationProps) => {
+  const { promotionLot, expirationDate, status } = promotionReservation;
   return (
-    <div className="user-reservation card1 card-top">
+    <div className={cx('user-reservation', className)}>
       <h3>
         <T
           id="UserReservation.title"
@@ -20,14 +25,14 @@ const UserReservation = ({ promotionReservation }: UserReservationProps) => {
 
       <div className="user-reservation-info">
         <div className="user-reservation-deadline">
-          <label htmlFor="">
-            <T id="Forms.expirationDate" />
-            <h1>{moment(expirationDate).fromNow()}</h1>
-          </label>
+          <PromotionReservationDeadline
+            expirationDate={expirationDate}
+            status={status}
+          />
         </div>
         <PromotionReservationProgress
           promotionReservation={promotionReservation}
-          showText
+          variant={progressVariant}
         />
       </div>
     </div>

@@ -4,6 +4,7 @@ import Link from 'core/components/Link';
 import { createRoute } from 'core/utils/routerUtils';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
+import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 import cx from 'classnames';
 import { PROMOTION_STATUS } from 'core/api/constants';
@@ -17,6 +18,7 @@ const DashboardRecapPromotion = ({
   loan,
   promotion,
 }: DashboardRecapPromotionProps) => {
+  const { promotionReservations = [] } = loan;
   const { status } = promotion;
   const { promotionImage = [] } = promotion.documents || {};
 
@@ -40,11 +42,18 @@ const DashboardRecapPromotion = ({
         })}
       />
       <h2 className="secondary">{promotion.name}</h2>
-      <UserPromotionOptionsTable
-        promotion={promotion}
-        loan={loan}
-        isDashboardTable
-      />
+      {promotionReservations.length > 0 ? (
+        <UserReservation
+          promotionReservation={promotionReservations[0]}
+          progressVariant="label"
+        />
+      ) : (
+        <UserPromotionOptionsTable
+          promotion={promotion}
+          loan={loan}
+          isDashboardTable
+        />
+      )}
     </Link>
   );
 };

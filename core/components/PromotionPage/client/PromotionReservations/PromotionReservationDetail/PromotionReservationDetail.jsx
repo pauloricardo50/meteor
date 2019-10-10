@@ -1,14 +1,13 @@
 // @flow
 import React from 'react';
-import moment from 'moment';
 
 import {
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATIONS_COLLECTION,
 } from '../../../../../api/promotionReservations/promotionReservationConstants';
-import T from '../../../../Translation';
 import UploaderArray from '../../../../UploaderArray';
 import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
+import PromotionReservationDeadline from '../PromotionReservationDeadline';
 
 type PromotionReservationDetailProps = {};
 
@@ -22,14 +21,20 @@ const promotionReservationsArray = [
 const PromotionReservationDetail = ({
   promotionReservation,
 }: PromotionReservationDetailProps) => {
-  const { _id, promotionLot, loan, expirationDate } = promotionReservation;
+  const {
+    _id,
+    promotionLot,
+    loan,
+    expirationDate,
+    status,
+  } = promotionReservation;
   return (
     <div>
       <div className="text-center" style={{ marginBottom: 40 }}>
-        <label htmlFor="">
-          <T id="Forms.expirationDate" />
-          <h1>{moment(expirationDate).fromNow()}</h1>
-        </label>
+        <PromotionReservationDeadline
+          expirationDate={expirationDate}
+          status={status}
+        />
       </div>
 
       <PromotionReservationProgressEditor
