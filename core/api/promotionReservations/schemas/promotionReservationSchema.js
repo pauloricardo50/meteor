@@ -29,31 +29,39 @@ const PromotionReservationSchema = new SimpleSchema({
     allowedValues: Object.values(DEPOSIT_STATUSES),
     defaultValue: DEPOSIT_STATUSES.UNPAID,
   },
-  'deposit.date': { type: Date, optional: true },
+  'deposit.date': Date,
   reservationAgreement: { type: Object, defaultValue: {} },
   'reservationAgreement.status': {
     type: String,
     allowedValues: Object.values(AGREEMENT_STATUSES),
     defaultValue: AGREEMENT_STATUSES.UNSIGNED,
   },
-  'reservationAgreement.date': { type: Date, optional: true },
+  'reservationAgreement.date': Date,
   lender: { type: Object, defaultValue: {} },
   'lender.status': {
     type: String,
     allowedValues: Object.values(PROMOTION_RESERVATION_LENDER_STATUS),
     defaultValue: PROMOTION_RESERVATION_LENDER_STATUS.NONE,
   },
-  'lender.date': { type: Date, optional: true },
+  'lender.date': Date,
   mortgageCertification: { type: Object, defaultValue: {} },
   'mortgageCertification.status': {
     type: String,
     allowedValues: Object.values(PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
+    defaultValue:
+      PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
   },
-  'mortgageCertification.date': { type: Date, optional: true },
+  'mortgageCertification.date': Date,
   adminNote: { type: Object, defaultValue: {} },
-  'adminNote.note': { type: String, optional: true },
-  'adminNote.date': { type: Date, optional: true },
+  'adminNote.note': { type: String, defaultValue: '' },
+  'adminNote.date': {
+    type: Date,
+    autoValue() {
+      if (this.isInsert) {
+        return new Date();
+      }
+    },
+  },
   promotionLink: { type: Object, optional: true },
   'promotionLink._id': { type: String, optional: true },
   promotionLotLink: { type: Object, optional: true },
