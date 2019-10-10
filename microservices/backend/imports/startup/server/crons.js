@@ -4,6 +4,7 @@ import LoanService from 'core/api/loans/server/LoanService';
 import NotificationService from 'core/api/notifications/server/NotificationService';
 import UpdateWatcherService from 'core/api/updateWatchers/server/UpdateWatcherService';
 import SessionService from 'core/api/sessions/server/SessionService';
+import FileService from 'core/api/files/server/FileService';
 
 CronService.init();
 
@@ -55,4 +56,13 @@ CronService.addCron(
     func: () => SessionService.removeOldSessions(),
   },
   { cronitorId: 'nECCcy' },
+);
+
+CronService.addCron(
+  {
+    name: 'Flush temp files',
+    frequency: 'every 1 minute',
+    func: () => FileService.flushTempFiles(),
+  },
+  { cronitorId: 'RntC9I' },
 );
