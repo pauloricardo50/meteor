@@ -21,6 +21,14 @@ html,
   min-height: 100%;
 }
 
+.login-input {
+  input {
+    font-size: 16px !important;
+    font-family: Eina04-Regular, Helvetica !important;
+  }
+}
+
+
 body {
   background-color: $background-color;
 }
