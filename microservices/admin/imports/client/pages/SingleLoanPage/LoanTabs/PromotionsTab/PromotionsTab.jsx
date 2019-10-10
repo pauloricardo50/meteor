@@ -20,10 +20,7 @@ const PromotionsTab = ({ loan }: PromotionsTabProps) => {
         />
       </h2>
       <br />
-      <PromotionReservationsTable
-        promotionId={promotion._id}
-        loanId={loan._id}
-      />
+      <PromotionReservationsTable promotion={promotion} loanId={loan._id} />
       <br />
       <UserPromotionOptionsTable loan={loan} promotion={promotion} isAdmin />
     </>

@@ -273,15 +273,15 @@ class PromotionSecurity {
     }
 
     const {
-      promotionLots = [],
+      promotionLotLinks = [],
       loan = {},
     } = PromotionOptionService.safeFetchOne({
       $filters: { _id: promotionOptionId },
-      promotionLots: { _id: 1 },
+      promotionLotLinks: 1,
       loan: { _id: 1 },
     });
 
-    const [{ _id: promotionLotId }] = promotionLots;
+    const [{ _id: promotionLotId }] = promotionLotLinks;
     const { _id: loanId } = loan;
 
     this.isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId });

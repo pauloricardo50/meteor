@@ -2,6 +2,7 @@ import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import moment from 'moment';
 
+import { getUserNameAndOrganisation } from '../../../../api/helpers/index';
 import { promotionReservations as query } from '../../../../api/promotionReservations/queries';
 import { withSmartQuery } from '../../../../api/containerToolkit/index';
 import ProCustomer from '../../../ProCustomer';
@@ -20,9 +21,17 @@ const columnOptions = [
   label: <T id={`PromotionReservationsTable.${col.id}`} />,
 }));
 
-const mapPromotionReservation = (promotionReservation) => {
+const makeMapPromotionReservation = promotion => (promotionReservation) => {
+  const { users: promotionUsers = [] } = promotion;
   const { _id, promotionLot, loan, expirationDate } = promotionReservation;
+  const { promotions } = loan;
+  const [{ $metadata: { invitedBy } = {} }] = promotions;
+
   const expirationMoment = moment(expirationDate);
+  const invitedByUser = invitedBy
+    && promotionUsers
+    && (!!promotionUsers.length
+      && promotionUsers.find(({ _id: id }) => id === invitedBy));
 
   return {
     id: _id,
@@ -31,7 +40,16 @@ const mapPromotionReservation = (promotionReservation) => {
       promotionLot.name,
       {
         raw: loan.user,
-        label: <ProCustomer user={loan.user} invitedByUser={null} />,
+        label: (
+          <ProCustomer
+            user={loan.user}
+            invitedByUser={
+              invitedByUser
+                ? getUserNameAndOrganisation({ user: invitedByUser })
+                : 'Personne'
+            }
+          />
+        ),
       },
       {
         raw: expirationMoment,
@@ -53,11 +71,15 @@ export default compose(
   withState('status', 'setStatus'),
   withSmartQuery({
     query,
-    params: ({ promotionId, status, loanId }) => ({ promotionId, status, loanId }),
+    params: ({ promotion: { _id: promotionId }, status, loanId }) => ({
+      promotionId,
+      status,
+      loanId,
+    }),
     dataName: 'promotionReservations',
   }),
-  withProps(({ promotionReservations }) => ({
-    rows: promotionReservations.map(mapPromotionReservation),
+  withProps(({ promotionReservations, promotion }) => ({
+    rows: promotionReservations.map(makeMapPromotionReservation(promotion)),
     columnOptions,
   })),
 );

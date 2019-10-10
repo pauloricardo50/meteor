@@ -188,6 +188,16 @@ class FileService {
       return undefined;
     }
   };
+
+  flushTempFiles = async () => {
+    const tempFiles = await this.listFilesForDoc('temp');
+    const fifteenMinutesAgo = moment(Date.now()).subtract(15, 'minutes');
+    const tempFilesToRemove = tempFiles.filter(({ LastModified }) => moment(LastModified) < fifteenMinutesAgo);
+
+    const deletedFiles = await Promise.all(tempFilesToRemove.map(({ Key }) => S3Service.deleteObject(Key)));
+    
+    return deletedFiles.length;
+  };
 }
 
 export default new FileService();

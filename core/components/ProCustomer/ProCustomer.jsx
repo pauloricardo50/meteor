@@ -31,11 +31,13 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
               {' '}
               {phoneNumbers[0]}
             </div>
-            <div>
-              <i>Invité par:</i>
-              {' '}
-              {invitedByUser}
-            </div>
+            {invitedByUser && (
+              <div>
+                <i>Invité par:</i>
+                {' '}
+                {invitedByUser}
+              </div>
+            )}
           </div>
         )
       }

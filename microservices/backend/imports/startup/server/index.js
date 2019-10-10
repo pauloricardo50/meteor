@@ -14,3 +14,4 @@ import 'core/api/notifications/server/notificationGeneratorCron';
 import 'core/api/updateWatchers/server/updateWatcherCron';
 import './fetchIrs10yCron';
 import 'core/api/sessions/server/removeOldSessionsCron';
+import 'core/api/files/server/flushTempFilesCron';

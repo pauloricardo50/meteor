@@ -914,9 +914,9 @@ export class LoanService extends CollectionService {
       metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED) || {};
 
     if (createdAtActivityId) {
-      ActivityService._update({
+      ActivityService.updateDescription({
         id: createdAtActivityId,
-        object: { description },
+        description,
       });
     }
 

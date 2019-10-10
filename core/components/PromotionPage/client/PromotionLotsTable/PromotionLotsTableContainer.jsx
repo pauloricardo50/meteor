@@ -76,7 +76,10 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       label: <T id={`PromotionPage.lots.${column.id}`} />,
     }));
 
-const makeMapProPromotionLot = ({ setPromotionLotModal }) => (promotionLot) => {
+const makeMapProPromotionLot = ({
+  setPromotionLotModal,
+  promotion,
+}) => (promotionLot) => {
   const {
     _id: promotionLotId,
     name,
@@ -86,6 +89,15 @@ const makeMapProPromotionLot = ({ setPromotionLotModal }) => (promotionLot) => {
     value,
     attributedTo,
   } = promotionLot;
+
+  let invitedBy;
+  const { _id: loanId } = attributedTo || {};
+  const { loans = [], users: promotionUsers = [] } = promotion;
+
+  if (loanId) {
+    const { $metadata = {} } = loans.find(({ _id }) => _id === loanId);
+    invitedBy = $metadata.invitedBy;
+  }
 
   return {
     id: promotionLotId,
@@ -111,7 +123,13 @@ const makeMapProPromotionLot = ({ setPromotionLotModal }) => (promotionLot) => {
         ),
       },
       promotionOptions.length,
-      attributedTo && <PromotionCustomer user={attributedTo.user} />,
+      attributedTo && (
+        <PromotionCustomer
+          user={attributedTo.user}
+          invitedBy={invitedBy}
+          promotionUsers={promotionUsers}
+        />
+      ),
     ],
     handleClick: () => setPromotionLotModal(promotionLotId),
   };
@@ -190,8 +208,8 @@ export const ProPromotionLotsTableContainer = compose(
     }),
     dataName: 'promotionLots',
   }),
-  withProps(({ promotionLots, setPromotionLotModal }) => ({
-    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal })),
+  withProps(({ promotionLots, setPromotionLotModal, promotion }) => ({
+    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal, promotion })),
     columnOptions: proColumnOptions,
   })),
 );

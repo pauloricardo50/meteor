@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 import FileService from '../FileService';
 import S3Service from '../S3Service';
@@ -25,7 +26,7 @@ describe('FileService', function () {
   this.timeout(10000);
 
   before(function () {
-    if (Meteor.settings.public.microservice !== 'admin') {
+    if (Meteor.settings.public.microservice !== 'pro') {
       // When running these tests in parallel, it breaks tests
       this.parent.pending = true;
       this.skip();
@@ -131,4 +132,29 @@ describe('FileService', function () {
       });
     });
   });
-}).timeout(10000);
+
+  describe('flushTempFiles', () => {
+    it('deletes 15 minutes old temp files', async () => {
+      const clock = sinon.useFakeTimers(Date.now());
+      clock.tick(16 * 60 * 1000);
+
+      const tempFiles = [...Array(5)].map((_, i) => ({
+        file: Buffer.from(`hello${i}`, 'utf-8'),
+        key: FileService.getTempS3FileKey(
+          'test',
+          {
+            name: `file${i}.pdf`,
+          },
+          { id: `file${i}` },
+        ),
+      }));
+
+      await Promise.all(tempFiles.map(({ file, key }) => S3Service.putObject(file, key)));
+
+      const deletedFiles = await FileService.flushTempFiles();
+
+      clock.restore();
+      return expect(deletedFiles).to.equal(5);
+    });
+  });
+});

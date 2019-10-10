@@ -37,7 +37,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
   handleSubmit = (...args) => {
     const { onSubmit, onSuccessMessage } = this.props;
 
-    return onSubmit(...args).then(() =>
+    return Promise.resolve(onSubmit(...args)).then(() =>
       import('../../utils/message').then(({ default: message }) => {
         message.success(
           onSuccessMessage
