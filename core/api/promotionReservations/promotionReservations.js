@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { createCollection } from '../helpers/collectionHelpers';
 import { createdAt, updatedAt, documentsField } from '../helpers/sharedSchemas';
 import {
@@ -28,8 +29,11 @@ const dateAutoValue = (triggerField = 'status') =>
 export const PromotionReservationSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  startDate: Date,
-  expirationDate: Date,
+  startDate: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
+  expirationDate: {
+    type: Date,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
   status: {
     type: String,
     allowedValues: Object.values(PROMOTION_RESERVATION_STATUS),
