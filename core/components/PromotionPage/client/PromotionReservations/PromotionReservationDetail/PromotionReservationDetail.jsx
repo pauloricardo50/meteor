@@ -45,6 +45,7 @@ const PromotionReservationDetail = ({
     <div>
       <div className="text-center" style={{ marginBottom: 40 }}>
         <PromotionReservationDeadline
+          promotionReservationId={_id}
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
