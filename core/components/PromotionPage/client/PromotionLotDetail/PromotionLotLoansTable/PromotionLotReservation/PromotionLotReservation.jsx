@@ -6,8 +6,10 @@ import moment from 'moment';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import T from '../../../../../Translation';
+import DialogSimple from '../../../../../DialogSimple';
 import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
 import { bookPromotionLot } from '../../../../../../api/methods';
+import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
 type PromotionLotReservationProps = {};
 
@@ -75,8 +77,29 @@ const PromotionLotReservation = ({
     invitedBy,
     currentUser,
   });
+  const { status, promotionLot } = promotionReservation;
 
-  return <div>Hello from PromotionLotReservation</div>;
+  return (
+    <DialogSimple
+      buttonProps={{
+        label: 'Réservation existante',
+        primary: true,
+        raised: false,
+      }}
+      title={(
+        <T
+          id="PromotionReservationsTable.modalTitle"
+          values={{
+            lotName: <b>{promotionLot.name}</b>,
+            customerName: <b>{loan.user.name}</b>,
+          }}
+        />
+      )}
+      closeOnly
+    >
+      <PromotionReservationDetail promotionReservation={promotionReservation} />
+    </DialogSimple>
+  );
 };
 
 export default PromotionLotReservation;
