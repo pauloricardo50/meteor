@@ -5,6 +5,18 @@ import { logError } from 'core/api/methods';
 import SlackService from 'core/api/slack/server/SlackService';
 import CronitorService from './CronitorService';
 
+const ACTIVATE_CRONITOR = !(
+  Meteor.isTest
+  || Meteor.isAppTest
+  || Meteor.isDevelopment
+);
+
+export const TestCronitor = {
+  run: () => null,
+  complete: () => null,
+  fail: () => null,
+};
+
 class CronService {
   init() {
     SyncedCron.config({
@@ -27,18 +39,19 @@ class CronService {
     });
   }
 
-  addJob(cronJob, cronitorSettings = {}) {
-    const { func, name, schedule } = cronJob;
-    const { id: cronitorId } = cronitorSettings;
+  addCron({ func, name, frequency }, { cronitorId } = {}) {
+    const withCronitor = cronitorId && ACTIVATE_CRONITOR;
 
-    const withCronitor = cronitorId
-      && !(Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment);
-
-    const cronitor = new CronitorService({ id: cronitorId });
+    let cronitor = TestCronitor;
+    if (withCronitor) {
+      cronitor = new CronitorService({ id: cronitorId });
+    }
 
     SyncedCron.add({
       name,
-      schedule,
+      schedule(parser) {
+        return parser.text(frequency);
+      },
       job: async () => {
         try {
           if (withCronitor) {
@@ -64,7 +77,7 @@ class CronService {
     });
   }
 
-  removeJob(jobName) {
+  removeCron(jobName) {
     SyncedCron.remove(jobName);
   }
 }

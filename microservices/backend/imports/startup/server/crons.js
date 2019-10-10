@@ -7,62 +7,52 @@ import SessionService from 'core/api/sessions/server/SessionService';
 
 CronService.init();
 
-CronService.addJob(
+CronService.addCron(
   {
     name: 'Fetch IRS 10Y',
-    schedule(parser) {
-      return parser.text('at 6:30am every day');
-    },
+    frequency: 'at 6:30am every day',
     func: () => Irs10yService.fetchIrs(),
   },
-  { id: '19MCrQ' },
+  { cronitorId: '19MCrQ' },
 );
 
-CronService.addJob(
+CronService.addCron(
   {
     name: 'Expire anonymous loans',
-    schedule(parser) {
-      return parser.text('every day');
-    },
+    frequency: 'every day',
     func: () => LoanService.expireAnonymousLoans(),
   },
-  { id: 'Ti1GXW' },
+  { cronitorId: 'Ti1GXW' },
 );
 
-CronService.addJob(
+CronService.addCron(
   {
     name: 'Generate notifications',
-    schedule(parser) {
-      return parser.text('every 1 minute');
-    },
+    frequency: 'every 1 minute',
     func: () => {
       NotificationService.addTaskNotifications();
       NotificationService.addActivityNotifications();
       NotificationService.addRevenueNotifications();
     },
   },
-  { id: 'GXHpfD' },
+  { cronitorId: 'GXHpfD' },
 );
 
-CronService.addJob(
+CronService.addCron(
   {
     name: 'Manage update watchers',
-    schedule(parser) {
-      return parser.text('every 1 minute');
-    },
+    frequency: 'every 1 minute',
     func: () =>
       UpdateWatcherService.manageUpdateWatchers({ secondsFromNow: 120 }),
   },
-  { id: 'hvqGtz' },
+  { cronitorId: 'hvqGtz' },
 );
 
-CronService.addJob(
+CronService.addCron(
   {
     name: 'Remove old sessions',
-    schedule(parser) {
-      return parser.text('every 1 minute');
-    },
+    frequency: 'every 1 minute',
     func: () => SessionService.removeOldSessions(),
   },
-  { id: 'nECCcy' },
+  { cronitorId: 'nECCcy' },
 );
