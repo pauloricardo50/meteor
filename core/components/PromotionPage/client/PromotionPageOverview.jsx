@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Element } from 'react-scroll';
 
+import { PROMOTION_RESERVATION_STATUS } from '../../../api/constants';
 import T from '../../Translation';
 import ResidenceTypeSetter from '../../ResidenceTypeSetter';
 import {
@@ -83,6 +84,7 @@ const PromotionPageOverview = ({
           <PromotionReservationsTable
             promotion={promotion}
             className="card1 card-top"
+            initialStatus={{ $in: [PROMOTION_RESERVATION_STATUS.ACTIVE] }}
           />
           <ProPromotionLotsTable
             promotion={promotion}
