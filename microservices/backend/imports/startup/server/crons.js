@@ -5,6 +5,7 @@ import NotificationService from 'core/api/notifications/server/NotificationServi
 import UpdateWatcherService from 'core/api/updateWatchers/server/UpdateWatcherService';
 import SessionService from 'core/api/sessions/server/SessionService';
 import FileService from 'core/api/files/server/FileService';
+import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
 
 CronService.init();
 
@@ -65,4 +66,13 @@ CronService.addCron(
     func: () => FileService.flushTempFiles(),
   },
   { cronitorId: 'RntC9I' },
+);
+
+CronService.addCron(
+  {
+    name: 'Expire promotion reservations',
+    frequency: 'every day',
+    func: () => PromotionReservationService.expirePromotionReservations(),
+  },
+  { cronitorId: 'cLKGgS' },
 );
