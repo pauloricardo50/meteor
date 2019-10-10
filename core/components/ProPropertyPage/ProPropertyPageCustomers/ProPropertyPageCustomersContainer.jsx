@@ -145,6 +145,7 @@ const makeMapLoan = ({
           }
           label={<T id="general.remove" />}
           key="remove"
+          type="modal"
         >
           <p>
             <T

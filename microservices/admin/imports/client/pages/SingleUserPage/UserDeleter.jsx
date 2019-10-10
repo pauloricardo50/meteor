@@ -17,6 +17,7 @@ const UserDeleter = ({ currentUser, user }: UserDeleterProps) => {
       method={() => removeUser.run({ userId: user._id })}
       label="Supprimer"
       keyword="SUPPRIMER"
+      type="modal"
     />
   );
 };
