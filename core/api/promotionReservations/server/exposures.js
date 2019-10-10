@@ -11,7 +11,10 @@ exposeQuery({
       params.userId = userId;
     },
     embody: (body) => {
-      body.$filter = ({ filters, params: { promotionId, status, loanId } }) => {
+      body.$filter = ({
+        filters,
+        params: { promotionId, status, loanId, promotionLotId },
+      }) => {
         filters['promotionLink._id'] = promotionId;
 
         if (status) {
@@ -21,6 +24,10 @@ exposeQuery({
         if (loanId) {
           filters['loanLink._id'] = loanId;
         }
+
+        if (promotionLotId) {
+          filters['promotionLotLink._id'] = promotionLotId;
+        }
       };
       body.$postFilter = (promotionReservations = [], params) =>
         promotionReservations.map(makePromotionReservationAnonymizer(params));
@@ -29,6 +36,7 @@ exposeQuery({
       promotionId: String,
       userId: String,
       loanId: Match.Maybe(String),
+      promotionLotId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },

@@ -2,10 +2,7 @@ import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import moment from 'moment';
 
-import {
-  PROMOTION_RESERVATIONS_COLLECTION,
-  PROMOTION_RESERVATION_STATUS,
-} from '../../../../api/promotionReservations/promotionReservationConstants';
+import { PROMOTION_RESERVATIONS_COLLECTION } from '../../../../api/promotionReservations/promotionReservationConstants';
 import { getUserNameAndOrganisation } from '../../../../api/helpers/index';
 import { promotionReservations as query } from '../../../../api/promotionReservations/queries';
 import { withSmartQuery } from '../../../../api/containerToolkit/index';
@@ -89,15 +86,19 @@ const makeMapPromotionReservation = promotion => (promotionReservation) => {
 };
 
 export default compose(
-  withState('status', 'setStatus', {
-    $in: [PROMOTION_RESERVATION_STATUS.ACTIVE],
-  }),
+  withState('status', 'setStatus', ({ initialStatus }) => initialStatus),
   withSmartQuery({
     query,
-    params: ({ promotion: { _id: promotionId }, status, loanId }) => ({
+    params: ({
+      promotion: { _id: promotionId },
+      status,
+      loanId,
+      promotionLotId,
+    }) => ({
       promotionId,
       status,
       loanId,
+      promotionLotId,
     }),
     dataName: 'promotionReservations',
   }),
