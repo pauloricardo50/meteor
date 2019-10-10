@@ -332,7 +332,8 @@ describe('PromotionReservationService', function () {
           },
           mortgageCertification: {
             date: startDate,
-            status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
+            status:
+              PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
           },
           promotionOptionLink: { _id: 'pO2' },
           promotionLotLink: { _id: 'pL1' },
@@ -340,6 +341,59 @@ describe('PromotionReservationService', function () {
           loanLink: { _id: 'loan2' },
         });
       });
+    });
+  });
+
+  describe('update', () => {
+    it('updates related date fields', () => {
+      const fiveDaysAgo = moment()
+        .subtract(5, 'd')
+        .toDate();
+      const now = new Date();
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionReservations: {
+          _id: 'promotionReservation',
+          _factory: 'promotionReservation',
+          lender: { date: fiveDaysAgo },
+        },
+      });
+
+      PromotionReservationService._update({
+        id: 'promotionReservation',
+        object: {
+          'lender.status': PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+        },
+      });
+      const pR = PromotionReservationService.findOne('promotionReservation');
+
+      expect(moment(pR.lender.date).isAfter(now)).to.equal(true);
+    });
+
+    it('does not update date if both are provided', () => {
+      const fiveDaysAgo = moment()
+        .subtract(5, 'd')
+        .toDate();
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionReservations: {
+          _id: 'promotionReservation',
+          _factory: 'promotionReservation',
+        },
+      });
+
+      PromotionReservationService._update({
+        id: 'promotionReservation',
+        object: {
+          lender: {
+            status: PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+            date: fiveDaysAgo,
+          },
+        },
+      });
+      const pR = PromotionReservationService.findOne('promotionReservation');
+
+      expect(moment(pR.lender.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
     });
   });
 });

@@ -366,3 +366,11 @@
     }
   }
 }
+
+.promotion-reservation-progress {
+  .status-date-form {
+    // Sometimes the form does not stretch properly when opening a
+    // select field
+    width: 100%;
+  }
+}

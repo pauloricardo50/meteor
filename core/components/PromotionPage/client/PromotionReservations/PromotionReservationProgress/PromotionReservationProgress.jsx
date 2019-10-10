@@ -7,17 +7,18 @@ import {
   AGREEMENT_STATUSES,
   DEPOSIT_STATUSES,
   PROMOTION_RESERVATION_LENDER_STATUS,
-} from '../../../../api/promotionReservations/promotionReservationConstants';
-import BaseIcon from '../../../Icon';
-import T from '../../../Translation';
+} from '../../../../../api/promotionReservations/promotionReservationConstants';
+import BaseIcon from '../../../../Icon';
+import T from '../../../../Translation';
+import PromotionReservationProgressItem from './PromotionReservationProgressItem';
 
 type PromotionReservationProgressProps = {};
 
-const makeGetIcon = ({ success = [], waiting = [], failed = [] }) => (status) => {
+const makeGetIcon = ({ success = [], waiting = [], error = [] }) => (status) => {
   if (waiting.includes(status)) {
     return { icon: 'waiting', color: 'warning' };
   }
-  if (failed.includes(status)) {
+  if (error.includes(status)) {
     return { icon: 'error', color: 'error' };
   }
   if (success.includes(status)) {
@@ -27,75 +28,39 @@ const makeGetIcon = ({ success = [], waiting = [], failed = [] }) => (status) =>
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-const iconTooltip = ({ date, status, id }) =>
-  date && (
-    <div className="flex-col" style={{ flexGrow: 1 }}>
-      <b className="flex sb">
-        <T id={`Forms.${id}`} />
-        &nbsp;
-        <i className="secondary">{moment(date).format('D MMMM YY')}</i>
-      </b>
-      <T id={`Forms.status.${status}`} />
-    </div>
-  );
-
-const Icon = ({ icon, color, date, status, id, variant }) => {
-  if (variant === 'text') {
-    return (
-      <p className="flex center-align">
-        <BaseIcon type={icon} color={color} className="mr-16" />
-        {iconTooltip({ date, status, id })}
-      </p>
-    );
-  }
-
-  const baseIcon = (
-    <BaseIcon
-      type={icon}
-      color={color}
-      className="promotion-reservation-progress-icon"
-      tooltip={iconTooltip({ date, status, id })}
-    />
-  );
-
-  if (variant === 'label') {
-    return (
-      <div className="flex-col center-align">
-        {baseIcon}
-        <T id={`Forms.${id}`} />
-      </div>
-    );
-  }
-
-  return baseIcon;
-};
-const makeIcon = variant => ({ icon, color, status, date, id }) => (
-  <Icon
+const makeIcon = (variant, isEditing, promotionReservationId) => ({
+  icon,
+  color,
+  status,
+  date,
+  id,
+}) => (
+  <PromotionReservationProgressItem
     icon={icon}
     color={color}
     date={date}
     status={status}
     variant={variant}
     id={id}
+    isEditing={isEditing}
+    promotionReservationId={promotionReservationId}
   />
 );
 
-const getAdminNoteIcon = (
-  { note = 'Pas de commentaire', date } = {},
-  showText,
-) =>
+const getAdminNoteIcon = ({ note, date } = {}, showText) =>
   date && (
-    <Icon
+    <BaseIcon
       type="info"
+      color={note ? 'primary' : 'borderGrey'}
       tooltip={(
         <div>
           <b>
             <T id="Forms.adminNote" />
           </b>
           <br />
-          <i>{moment(date).toNow()}</i>
+          <i>{moment(date).format("hh:mm, D MMM 'YY")}</i>
           <br />
-          {note}
+          {note || 'Pas de commentaire'}
         </div>
       )}
     />
@@ -119,8 +84,10 @@ const PromotionReservationProgress = ({
   promotionReservation,
   style,
   variant = 'icon',
+  isEditing,
 }: PromotionReservationProgressProps) => {
   const {
+    _id: promotionReservationId,
     mortgageCertification,
     reservationAgreement,
     deposit,
@@ -128,7 +95,7 @@ const PromotionReservationProgress = ({
     adminNote,
   } = promotionReservation;
 
-  const icon = makeIcon(variant);
+  const icon = makeIcon(variant, isEditing, promotionReservationId);
 
   const icons = [
     icon({

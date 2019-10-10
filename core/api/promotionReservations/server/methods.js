@@ -41,7 +41,7 @@ promotionReservationUpdate.setHandler(({ userId }, { promotionReservationId, obj
     userId,
   });
   return PromotionReservationService._update({
-    _id: promotionReservationId,
+    id: promotionReservationId,
     object,
   });
 });

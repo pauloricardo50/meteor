@@ -11,7 +11,7 @@ import T from '../../../Translation';
 import StatusLabel from '../../../StatusLabel';
 import PromotionReservationProgress, {
   rawPromotionReservationProgress,
-} from '../PromotionReservations/PromotionReservationProgress';
+} from '../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
 
 const columnOptions = [
   { id: 'promotionLot' },

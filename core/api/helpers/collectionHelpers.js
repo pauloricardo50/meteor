@@ -1,4 +1,6 @@
-export const createCollection = (collectionName) => {
+import { Mongo } from 'meteor/mongo';
+
+export const createCollection = (collectionName, schema) => {
   const Collection = new Mongo.Collection(collectionName);
 
   Collection.deny({
@@ -12,6 +14,10 @@ export const createCollection = (collectionName) => {
     update: () => false,
     remove: () => false,
   });
+
+  if (schema) {
+    Collection.attachSchema(schema);
+  }
 
   return Collection;
 };

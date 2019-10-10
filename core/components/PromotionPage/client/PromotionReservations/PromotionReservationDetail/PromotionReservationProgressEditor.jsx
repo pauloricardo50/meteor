@@ -19,13 +19,14 @@ const PromotionReservationProgressEditor = ({
           <T id="PromotionReservationsTable.progress" />
         </h3>
         <Button primary size="small" onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? <T id="general.save" /> : <T id="general.modify" />}
+          {isEditing ? <T id="general.close" /> : <T id="general.modify" />}
         </Button>
       </div>
       <PromotionReservationProgress
         promotionReservation={promotionReservation}
         style={{ flexDirection: 'column', alignItems: 'stretch' }}
         variant="text"
+        isEditing={isEditing}
       />
     </>
   );

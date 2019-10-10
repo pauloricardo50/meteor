@@ -1,4 +1,7 @@
 {
+  "Forms.status.SOLVENT": "Solvable",
+  "Forms.status.INSOLVENT": "Non solvable",
+  "Forms.adminNote": "Note admin",
   "PromotionReservationDeadline.waitlist": "En file d'attente",
   "PromotionReservationDeadline.waitlist.description": "Le lot est déjà réservé",
   "PromotionReservationDeadline.canceled": "Réservation annulée",
