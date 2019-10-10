@@ -39,90 +39,52 @@ const iconTooltip = ({ date, status, id }) =>
     </div>
   );
 
-const Icon = ({ icon, color, date, status, id, showText }) =>
-  (showText ? (
-    <p className="flex center-align">
-      <BaseIcon type={icon} color={color} className="mr-16" />
-      {iconTooltip({ date, status, id })}
-    </p>
-  ) : (
+const Icon = ({ icon, color, date, status, id, variant }) => {
+  if (variant === 'text') {
+    return (
+      <p className="flex center-align">
+        <BaseIcon type={icon} color={color} className="mr-16" />
+        {iconTooltip({ date, status, id })}
+      </p>
+    );
+  }
+
+  const baseIcon = (
     <BaseIcon
       type={icon}
       color={color}
-      className="mr-8"
+      className="promotion-reservation-progress-icon"
       tooltip={iconTooltip({ date, status, id })}
     />
-  ));
+  );
 
-const getMortgageCertificationIcon = ({ date, status }, showText) => {
-  const { icon, color } = makeGetIcon({
-    error: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
-    success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
-    waiting: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED],
-  })(status);
-  return (
-    <Icon
-      icon={icon}
-      color={color}
-      date={date}
-      status={status}
-      showText={showText}
-      id="mortgageCertification"
-    />
-  );
+  if (variant === 'label') {
+    return (
+      <div className="flex-col center-align">
+        {baseIcon}
+        <T id={`Forms.${id}`} />
+      </div>
+    );
+  }
+
+  return baseIcon;
 };
-const getAgreementIcon = ({ date, status }, showText) => {
-  const { icon, color } = makeGetIcon({
-    success: [AGREEMENT_STATUSES.SIGNED],
-    waiting: [AGREEMENT_STATUSES.WAITING],
-    error: [AGREEMENT_STATUSES.UNSIGNED],
-  })(status);
-  return (
-    <Icon
-      icon={icon}
-      color={color}
-      date={date}
-      status={status}
-      showText={showText}
-      id="reservationAgreement"
-    />
-  );
-};
-const getDepositIcon = ({ date, status }, showText) => {
-  const { icon, color } = makeGetIcon({
-    success: [DEPOSIT_STATUSES.PAID],
-    error: [DEPOSIT_STATUSES.UNPAID],
-  })(status);
-  return (
-    <Icon
-      icon={icon}
-      color={color}
-      date={date}
-      status={status}
-      showText={showText}
-      id="deposit"
-    />
-  );
-};
-const getLenderIcon = ({ date, status }, showText) => {
-  const { icon, color } = makeGetIcon({
-    success: [PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED],
-    error: [PROMOTION_RESERVATION_LENDER_STATUS.REJECTED],
-    waiting: [PROMOTION_RESERVATION_LENDER_STATUS.WAITING],
-  })(status);
-  return (
-    <Icon
-      icon={icon}
-      color={color}
-      date={date}
-      status={status}
-      showText={showText}
-      id="lender"
-    />
-  );
-};
-const getAdminNoteIcon = ({ note, date }, showText) =>
-  note && (
+const makeIcon = variant => ({ icon, color, status, date, id }) => (
+  <Icon
+    icon={icon}
+    color={color}
+    date={date}
+    status={status}
+    variant={variant}
+    id={id}
+  />
+);
+
+const getAdminNoteIcon = (
+  { note = 'Pas de commentaire', date } = {},
+  showText,
+) =>
+  date && (
     <Icon
       type="info"
       tooltip={(
@@ -156,7 +118,7 @@ export const rawPromotionReservationProgress = ({
 const PromotionReservationProgress = ({
   promotionReservation,
   style,
-  showText,
+  variant = 'icon',
 }: PromotionReservationProgressProps) => {
   const {
     mortgageCertification,
@@ -166,16 +128,54 @@ const PromotionReservationProgress = ({
     adminNote,
   } = promotionReservation;
 
+  const icon = makeIcon(variant);
+
   const icons = [
-    getMortgageCertificationIcon(mortgageCertification, showText),
-    getAgreementIcon(reservationAgreement, showText),
-    getDepositIcon(deposit, showText),
-    getLenderIcon(lender, showText),
-    getAdminNoteIcon(adminNote, showText),
+    icon({
+      ...mortgageCertification,
+      ...makeGetIcon({
+        error: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
+        success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
+        waiting: [
+          PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+        ],
+      })(mortgageCertification.status),
+      id: 'mortgageCertification',
+    }),
+    icon({
+      ...reservationAgreement,
+      ...makeGetIcon({
+        success: [AGREEMENT_STATUSES.SIGNED],
+        waiting: [AGREEMENT_STATUSES.WAITING],
+        error: [AGREEMENT_STATUSES.UNSIGNED],
+      })(reservationAgreement.status),
+      id: 'reservationAgreement',
+    }),
+    icon({
+      ...deposit,
+      ...makeGetIcon({
+        success: [DEPOSIT_STATUSES.PAID],
+        error: [DEPOSIT_STATUSES.UNPAID],
+      })(deposit.status),
+      id: 'deposit',
+    }),
+    icon({
+      ...lender,
+      ...makeGetIcon({
+        success: [PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED],
+        error: [PROMOTION_RESERVATION_LENDER_STATUS.REJECTED],
+        waiting: [PROMOTION_RESERVATION_LENDER_STATUS.WAITING],
+      })(lender.status),
+      id: 'lender',
+    }),
+    getAdminNoteIcon(adminNote, variant === 'showText'),
   ].filter(x => x);
 
   return (
-    <div className="flex center-align" style={style}>
+    <div
+      className="promotion-reservation-progress flex center-align"
+      style={style}
+    >
       {icons}
     </div>
   );

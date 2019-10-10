@@ -314,6 +314,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   displayWelcomeScreen: 1,
   documents: 1,
   offers: 1,
+  promotionReservations: userPromotionReservation(),
   properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
@@ -603,7 +604,7 @@ export const fullPromotionOption = () => ({
   promotionLots: { name: 1, promotion: { name: 1 } },
   solvency: 1,
   updatedAt: 1,
-  promotionReservation: promotionReservation(),
+  promotionReservation: userPromotionReservation(),
 });
 
 export const proPromotionOption = () => ({
@@ -623,7 +624,7 @@ export const proPromotionOption = () => ({
   },
   promotion: { users: { _id: 1 } },
   proNote: 1,
-  promotionReservation: promotionReservation(),
+  promotionReservation: proPromotionReservation(),
 });
 
 export const appPromotionOption = () => ({
@@ -659,28 +660,26 @@ export const loanPromotionOption = () => ({
 // //
 // // Promotion fragments
 // //
-export const promotionReservation = () => ({
-  startDate: 1,
-  expirationDate: 1,
-  status: 1,
-});
-
-export const proPromotionReservation = () => ({
-  adminNote: 1,
+export const userPromotionReservation = () => ({
   deposit: 1,
   documents: 1,
   expirationDate: 1,
   lender: 1,
-  loan: {
-    name: 1,
-    user: { name: 1, email: 1, phoneNumbers: 1 },
-    promotions: { _id: 1 },
-  },
   mortgageCertification: 1,
   promotionLot: { name: 1 },
   reservationAgreement: 1,
   startDate: 1,
   status: 1,
+});
+
+export const proPromotionReservation = () => ({
+  ...userPromotionReservation(),
+  adminNote: 1,
+  loan: {
+    name: 1,
+    user: { name: 1, email: 1, phoneNumbers: 1 },
+    promotions: { _id: 1 },
+  },
   promotionOption: { _id: 1 },
 });
 

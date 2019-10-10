@@ -41,6 +41,7 @@ const DEMO_PROMOTION = {
       phoneNumber: '+41 58 999 21 21',
     },
   ],
+  agreementDuration: 30,
 };
 
 const createLots = (promotionId) => {

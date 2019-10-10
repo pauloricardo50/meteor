@@ -2,17 +2,20 @@ import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import moment from 'moment';
 
+import { PROMOTION_RESERVATIONS_COLLECTION } from '../../../../api/promotionReservations/promotionReservationConstants';
 import { getUserNameAndOrganisation } from '../../../../api/helpers/index';
 import { promotionReservations as query } from '../../../../api/promotionReservations/queries';
 import { withSmartQuery } from '../../../../api/containerToolkit/index';
 import ProCustomer from '../../../ProCustomer';
 import T from '../../../Translation';
+import StatusLabel from '../../../StatusLabel';
 import PromotionReservationProgress, {
   rawPromotionReservationProgress,
-} from './PromotionReservationProgress';
+} from '../PromotionReservations/PromotionReservationProgress';
 
 const columnOptions = [
   { id: 'promotionLot' },
+  { id: 'status' },
   { id: 'customer' },
   { id: 'deadline' },
   { id: 'progress' },
@@ -22,8 +25,14 @@ const columnOptions = [
 }));
 
 const makeMapPromotionReservation = promotion => (promotionReservation) => {
+  const {
+    _id,
+    promotionLot,
+    loan,
+    expirationDate,
+    status,
+  } = promotionReservation;
   const { users: promotionUsers = [] } = promotion;
-  const { _id, promotionLot, loan, expirationDate } = promotionReservation;
   const { promotions } = loan;
   const [{ $metadata: { invitedBy } = {} }] = promotions;
 
@@ -38,6 +47,15 @@ const makeMapPromotionReservation = promotion => (promotionReservation) => {
     data: promotionReservation,
     columns: [
       promotionLot.name,
+      {
+        raw: status,
+        label: (
+          <StatusLabel
+            status={status}
+            collection={PROMOTION_RESERVATIONS_COLLECTION}
+          />
+        ),
+      },
       {
         raw: loan.user,
         label: (
@@ -68,13 +86,19 @@ const makeMapPromotionReservation = promotion => (promotionReservation) => {
 };
 
 export default compose(
-  withState('status', 'setStatus'),
+  withState('status', 'setStatus', ({ initialStatus }) => initialStatus),
   withSmartQuery({
     query,
-    params: ({ promotion: { _id: promotionId }, status, loanId }) => ({
+    params: ({
+      promotion: { _id: promotionId },
+      status,
+      loanId,
+      promotionLotId,
+    }) => ({
       promotionId,
       status,
       loanId,
+      promotionLotId,
     }),
     dataName: 'promotionReservations',
   }),

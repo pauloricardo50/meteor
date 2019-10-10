@@ -10,6 +10,7 @@ import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
+import PromotionReservationsTable from '../PromotionReservationsTable';
 
 type PromotionLotDetailProps = {};
 
@@ -70,6 +71,14 @@ const PromotionLotDetail = ({
             constructionTimeline={constructionTimeline}
             signingDate={signingDate}
             promotionLot={promotionLot}
+          />
+        </section>
+      )}
+      {canSeeCustomers && (
+        <section>
+          <PromotionReservationsTable
+            promotion={promotion}
+            promotionLotId={promotionLot._id}
           />
         </section>
       )}

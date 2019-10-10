@@ -24,8 +24,8 @@ const PromotionReservationProgressEditor = ({
       </div>
       <PromotionReservationProgress
         promotionReservation={promotionReservation}
-        showText
         style={{ flexDirection: 'column', alignItems: 'stretch' }}
+        variant="text"
       />
     </>
   );

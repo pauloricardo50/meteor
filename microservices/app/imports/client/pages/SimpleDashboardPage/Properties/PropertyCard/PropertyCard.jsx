@@ -3,6 +3,7 @@ import React from 'react';
 
 import Link from 'core/components/Link';
 import useMedia from 'core/hooks/useMedia';
+import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 import PropertyCardInfos from './PropertyCardInfos';
 import PropertyCardContainer from './PropertyCardContainer';
@@ -17,7 +18,10 @@ type PropertyCardProps = {
 };
 
 const PropertyCard = (props: PropertyCardProps) => {
-  const { loan, route } = props;
+  const {
+    loan: { promotionOptions, promotionReservations },
+    route,
+  } = props;
 
   const isMobile = useMedia({ maxWidth: 1200 });
 
@@ -26,10 +30,18 @@ const PropertyCard = (props: PropertyCardProps) => {
       <div className="top">
         <PropertyCardInfos isMobile={isMobile} {...props} />
       </div>
-      {loan.promotionOptions && loan.promotionOptions.length > 0 && (
-        <div className="bottom">
-          <PropertyCardPromotionOptions {...props} />
-        </div>
+      {promotionReservations.length > 0 ? (
+        <UserReservation
+          promotionReservation={promotionReservations[0]}
+          progressVariant="label"
+        />
+      ) : (
+        promotionOptions
+        && promotionOptions.length > 0 && (
+          <div className="bottom">
+            <PropertyCardPromotionOptions {...props} />
+          </div>
+        )
       )}
     </Link>
   );

@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Element } from 'react-scroll';
 
+import { PROMOTION_RESERVATION_STATUS } from '../../../api/constants';
 import T from '../../Translation';
 import ResidenceTypeSetter from '../../ResidenceTypeSetter';
 import {
@@ -16,6 +17,7 @@ import PromotionMetadataContext from './PromotionMetadata';
 import PromotionTimeline from './PromotionTimeline';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import PromotionReservationsTable from './PromotionReservationsTable';
+import UserReservation from './UserReservation';
 
 type PromotionPageOverviewProps = {};
 
@@ -49,21 +51,31 @@ const PromotionPageOverview = ({
 
       {isApp ? (
         <>
-          <ResidenceTypeSetter loan={loan} />
+          <ResidenceTypeSetter
+            loan={loan}
+            text={<T id="PromotionPage.residenceTypeSetter.text" />}
+          />
+          {loan.promotionReservations
+            && loan.promotionReservations.map(promotionReservation => (
+              <UserReservation
+                promotionReservation={promotionReservation}
+                key={promotionReservation._id}
+                className="card1 card-top"
+                progressVariant="text"
+              />
+            ))}
           {loan.residenceType
             && loan.promotionOptions
             && loan.promotionOptions.length > 0 && (
-            <UserPromotionOptionsTable
-              promotion={promotion}
-              loan={loan}
-              className="card1"
-            />
+            <div className="card1 card-top">
+              <UserPromotionOptionsTable promotion={promotion} loan={loan} />
+            </div>
           )}
           {loan.residenceType && (
             <AppPromotionLotsTable
               promotion={promotion}
               loan={loan}
-              className="card1"
+              className="card1 card-top"
             />
           )}
         </>
@@ -72,6 +84,7 @@ const PromotionPageOverview = ({
           <PromotionReservationsTable
             promotion={promotion}
             className="card1 card-top"
+            initialStatus={{ $in: [PROMOTION_RESERVATION_STATUS.ACTIVE] }}
           />
           <ProPromotionLotsTable
             promotion={promotion}
