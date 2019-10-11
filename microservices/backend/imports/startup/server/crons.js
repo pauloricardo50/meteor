@@ -76,3 +76,12 @@ CronService.addCron(
   },
   { cronitorId: 'cLKGgS' },
 );
+
+CronService.addCron(
+  {
+    name: 'Generate tasks for promotion reservations expiring soon',
+    frequency: 'every weekday',
+    func: () => PromotionReservationService.generateExpiringTomorrowTasks(),
+  },
+  { cronitorId: 'N77C0a' },
+);
