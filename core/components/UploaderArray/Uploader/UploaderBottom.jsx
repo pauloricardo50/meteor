@@ -20,6 +20,7 @@ const UploaderBottom = ({
   tempFiles,
   uploadDirective,
   uploadDirectiveProps,
+  disableUpload,
 }) => (
   <>
     {currentValue.map((f, i) => (
@@ -47,7 +48,7 @@ const UploaderBottom = ({
       />
     ))}
 
-    <FileAdder handleAddFiles={handleAddFiles} />
+    {!disableUpload && <FileAdder handleAddFiles={handleAddFiles} />}
   </>
 );
 

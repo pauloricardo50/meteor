@@ -255,6 +255,24 @@ class PromotionReservationService extends CollectionService {
       object: { status, date },
     });
   }
+
+  updateStatusObject({ promotionReservationId, id, object }) {
+    const { [id]: model } = this.get(promotionReservationId);
+    const changedKeys = Object.keys(object).filter(key => object[key].valueOf() !== model[key].valueOf());
+
+    if (!changedKeys.length) {
+      return;
+    }
+
+    // Send keys with dot-notation, to make sure simple-schema doesn't
+    // set the other keys in the object to their defaultValues
+    const updateObject = changedKeys.reduce(
+      (obj, key) => ({ ...obj, [`${id}.${key}`]: object[key] }),
+      {},
+    );
+
+    this._update({ id: promotionReservationId, object: updateObject });
+  }
 }
 
 export default new PromotionReservationService();

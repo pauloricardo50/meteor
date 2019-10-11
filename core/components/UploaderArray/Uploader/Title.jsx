@@ -11,8 +11,7 @@ const Title = ({
   doubleTooltip,
   currentValue,
   displayFull,
-  showFull,
-  hideFull,
+  toggleDisplayFull,
   uploaderTopRight,
 }) => {
   // Construct the custom toocanModifyltip id for this file
@@ -50,7 +49,7 @@ const Title = ({
         onClick={(event) => {
           // Don't trigger the file upload due to the <label /> in FileDropper
           event.preventDefault();
-          return displayFull ? hideFull() : showFull();
+          return toggleDisplayFull();
         }}
       />
     </div>
@@ -63,11 +62,10 @@ Title.propTypes = {
   doubleTooltip: PropTypes.bool,
   fileMeta: PropTypes.object.isRequired,
   handleRemove: PropTypes.func.isRequired,
-  hideFull: PropTypes.func.isRequired,
   label: PropTypes.string,
   noTooltips: PropTypes.bool,
   required: PropTypes.bool,
-  showFull: PropTypes.func.isRequired,
+  toggleDisplayFull: PropTypes.func.isRequired,
   tooltipSuffix: PropTypes.string,
   userIsAdmin: PropTypes.bool.isRequired,
 };

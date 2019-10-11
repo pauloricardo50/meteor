@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 
 import T from '../../../../Translation';
@@ -11,6 +13,7 @@ const PromotionReservationProgressEditor = ({
   promotionReservation,
 }: PromotionReservationProgressEditorProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const isAdmin = Meteor.microservice === 'admin';
 
   return (
     <>
@@ -18,9 +21,11 @@ const PromotionReservationProgressEditor = ({
         <h3 className="mr-16">
           <T id="PromotionReservationsTable.progress" />
         </h3>
-        <Button primary size="small" onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? <T id="general.close" /> : <T id="general.modify" />}
-        </Button>
+        {isAdmin && (
+          <Button primary size="small" onClick={() => setIsEditing(!isEditing)}>
+            {isEditing ? <T id="general.close" /> : <T id="general.modify" />}
+          </Button>
+        )}
       </div>
       <PromotionReservationProgress
         promotionReservation={promotionReservation}

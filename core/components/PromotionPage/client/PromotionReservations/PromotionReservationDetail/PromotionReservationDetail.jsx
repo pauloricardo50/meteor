@@ -63,6 +63,7 @@ const PromotionReservationDetail = ({
         documentArray={promotionReservationsArray}
         allowRequireByAdmin={false}
         disabled={!isAdmin}
+        disableUpload={!isAdmin}
       />
 
       {isAdmin && (

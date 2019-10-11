@@ -33,7 +33,7 @@ const PropertyCard = (props: PropertyCardProps) => {
       {promotionReservations.length > 0 ? (
         <UserReservation
           promotionReservation={promotionReservations[0]}
-          progressVariant="label"
+          progressVariant="text"
         />
       ) : (
         promotionOptions

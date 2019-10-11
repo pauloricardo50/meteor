@@ -35,12 +35,12 @@ export default class FileDropper extends Component {
   }
 
   handleDragEnter = (e) => {
-    const { disabled, showFull } = this.props;
+    const { disabled, toggleDisplayFull } = this.props;
     e.preventDefault();
     e.stopPropagation();
     if (!disabled) {
       this.setState({ dragging: true, target: e.target });
-      showFull();
+      toggleDisplayFull(true);
     }
   };
 

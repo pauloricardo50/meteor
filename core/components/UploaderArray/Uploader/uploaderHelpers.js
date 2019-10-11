@@ -39,8 +39,9 @@ export const displayFullState = withStateHandlers(
       Meteor.microservice === 'admin' || !filesExistAndAreValid(currentValue),
   }),
   {
-    showFull: () => () => ({ displayFull: true }),
-    hideFull: () => () => ({ displayFull: false }),
+    toggleDisplayFull: ({ displayFull }) => override => ({
+      displayFull: override || !displayFull,
+    }),
   },
 );
 
