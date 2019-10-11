@@ -4,6 +4,8 @@ import moment from 'moment';
 import FileService from 'core/api/files/server/FileService';
 import { PROMOTION_OPTION_SOLVENCY } from 'core/api/promotionOptions/promotionOptionConstants';
 import { expirePromotionLotBooking } from 'core/api/promotionLots/server/serverMethods';
+import TaskService from 'core/api/tasks/server/TaskService';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import PromotionReservations from '../promotionReservations';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
@@ -264,6 +266,50 @@ class PromotionReservationService extends CollectionService {
       expirePromotionLotBooking.run({ promotionOptionId })));
 
     return promotionReservationsToExpire.length;
+  };
+
+  generateExpiringTomorrowTasks = async () => {
+    const weekDay = moment().isoWeekday();
+    const tomorrow = moment().add(1, 'day');
+
+    // If weekDay is Friday
+    if (weekDay === 5) {
+      tomorrow.add(2, 'days');
+    }
+
+    const promotionReservationsExpiringTomorrow = this.fetch({
+      $filters: {
+        expirationDate: {
+          $lte: tomorrow.startOf('day').toDate(),
+        },
+        status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+      },
+      loan: { user: { name: 1 } },
+      promotion: { name: 1, assignedEmployee: { _id: 1 } },
+      promotionLot: { name: 1 },
+      expirationDate: 1,
+    });
+
+    await Promise.all(promotionReservationsExpiringTomorrow.map((promotionReservation) => {
+      const {
+        promotion: { _id: promotionId, assignedEmployee },
+        promotionLot: { name: promotionLotName },
+        expirationDate,
+        loan: {
+          user: { name: userName },
+        },
+      } = promotionReservation;
+
+      return TaskService.insert({
+        object: {
+          collection: PROMOTIONS_COLLECTION,
+          docId: promotionId,
+          assigneeLink: assignedEmployee,
+          title: `La réservation de ${userName} sur ${promotionLotName} arrive à échéance`,
+          description: `Valable jusqu'au ${moment(expirationDate).format('DD MMM')}`,
+        },
+      });
+    }));
   };
 }
 
