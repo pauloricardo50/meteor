@@ -11,6 +11,8 @@ import {
   sellPromotionLot,
 } from '../methodDefinitions';
 
+import { expirePromotionLotBooking } from './serverMethods';
+
 promotionLotInsert.setHandler(({ userId }, { promotionLot, promotionId }) => {
   SecurityService.promotions.isAllowedToAddLots({ promotionId, userId });
   return PromotionLotService.insert({ promotionLot, promotionId });
@@ -72,3 +74,5 @@ sellPromotionLot.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionLotService.sellPromotionLot(params);
 });
+
+expirePromotionLotBooking.setHandler((context, params) => PromotionLotService.expirePromotionLotBooking(params));

@@ -59,14 +59,23 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   sellPromotionLot,
-  ({ context: { userId }, params: { promotionLotId } }) => {
+  ({ context: { userId }, params: { promotionOptionId } }) => {
     const currentUser = UserService.get(userId);
-    const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
-      $filters: { _id: promotionLotId },
-      name: 1,
-      promotion: { name: 1, assignedEmployee: { email: 1 } },
-      attributedTo: { _id: 1 },
+
+    const {
+      promotionLots = [],
+      loan: { _id: loanId },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: {
+        name: 1,
+        promotion: { name: 1, assignedEmployee: { email: 1 } },
+      },
     });
+
+    const [{ attributedTo, ...promotionLot }] = promotionLots;
+
     const { user } = LoanService.fetchOne({
       $filters: { _id: attributedTo._id },
       user: { name: 1 },
