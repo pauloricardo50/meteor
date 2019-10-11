@@ -1,10 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 
 class CollectionService {
-  constructor(collection) {
+  constructor(collection, { autoValues } = {}) {
     if (!collection) {
       throw new Error('A collection is needed in CollectionService, but none was passed');
     }
+
+    if (autoValues) {
+      // Pass an object with fields and their respective server-side autovalues
+      // This lets you add server-only autoValues
+      const schema = collection.simpleSchema();
+      const extendedSchema = Object.keys(autoValues).reduce(
+        (obj, key) => ({ ...obj, [key]: { autoValue: autoValues[key] } }),
+        {},
+      );
+      collection.attachSchema(schema.extend(extendedSchema));
+    }
+
     this.collection = collection;
   }
 
@@ -36,9 +48,7 @@ class CollectionService {
     const result = this.get(id);
 
     if (!result) {
-      throw new Meteor.Error(`Could not find object with id "${id}" in collection "${
-        this.collection._name
-      }"`);
+      throw new Meteor.Error(`Could not find object with id "${id}" in collection "${this.collection._name}"`);
     }
 
     return result;

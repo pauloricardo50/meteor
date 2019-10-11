@@ -399,5 +399,28 @@ describe('PromotionReservationService', function () {
 
       expect(moment(pR.lender.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
     });
+
+    it('sets any expirationDate and startDate at end/start of day', () => {
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionReservations: {
+          _id: 'promotionReservation',
+          _factory: 'promotionReservation',
+        },
+      });
+      const now = new Date();
+      PromotionReservationService._update({
+        id: 'promotionReservation',
+        object: { startDate: now, expirationDate: now },
+      });
+
+      const pR = PromotionReservationService.findOne('promotionReservation');
+      expect(pR.startDate.getHours()).to.equal(0);
+      expect(pR.startDate.getMinutes()).to.equal(0);
+      expect(pR.startDate.getSeconds()).to.equal(0);
+      expect(pR.expirationDate.getHours()).to.equal(23);
+      expect(pR.expirationDate.getMinutes()).to.equal(59);
+      expect(pR.expirationDate.getSeconds()).to.equal(59);
+    });
   });
 });
