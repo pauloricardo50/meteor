@@ -71,7 +71,7 @@ class PromotionReservationService extends CollectionService {
         if (!agreementFileKeys.length) {
           throw new Error();
         }
-        // await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
+        await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
       } catch (error) {
         throw new Meteor.Error('Aucune convention de réservation uploadée');
       }

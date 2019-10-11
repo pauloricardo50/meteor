@@ -272,11 +272,15 @@ describe('PromotionReservationService', function () {
       });
 
       return PromotionReservationService.insert({
-        promotionReservation: { agreementFileKeys: ['wrongKey'] },
+        promotionReservation: {
+          agreementFileKeys: ['wrongKey'],
+          startDate: new Date(),
+        },
         promotionOptionId: 'pO2',
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
         .catch((error) => {
+          expect(error).to.not.equal(undefined);
           expect(error.message).to.include('Aucune convention');
         });
     });
