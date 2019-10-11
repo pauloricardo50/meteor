@@ -7,7 +7,10 @@ import UserPromotionOptionsTable from 'core/components/PromotionPage/client/User
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 import cx from 'classnames';
-import { PROMOTION_STATUS } from 'core/api/constants';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_RESERVATION_STATUS,
+} from 'core/api/constants';
 
 type DashboardRecapPromotionProps = {
   loan: Object,
@@ -44,7 +47,10 @@ const DashboardRecapPromotion = ({
       <h2 className="secondary">{promotion.name}</h2>
       {promotionReservations.length > 0 ? (
         <UserReservation
-          promotionReservation={promotionReservations[0]}
+          promotionReservation={
+            promotionReservations.sort(({ status }) =>
+              (status === PROMOTION_RESERVATION_STATUS.ACTIVE ? -1 : 0))[0]
+          }
           progressVariant="label"
         />
       ) : (

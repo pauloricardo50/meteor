@@ -2,6 +2,7 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { PROMOTION_RESERVATION_STATUS } from 'core/api/constants';
 import T from '../../../Translation';
 import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
 import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';
@@ -36,10 +37,12 @@ const UserReservation = ({
             status={status}
           />
         </div>
-        <PromotionReservationProgress
-          promotionReservation={promotionReservation}
-          variant={progressVariant}
-        />
+        {status === PROMOTION_RESERVATION_STATUS.ACTIVE && (
+          <PromotionReservationProgress
+            promotionReservation={promotionReservation}
+            variant={progressVariant}
+          />
+        )}
       </div>
     </div>
   );
