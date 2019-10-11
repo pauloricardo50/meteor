@@ -27,7 +27,7 @@ const TooltipArray = ({
         {[firstItems.slice(0, -1).join(', '), firstItems.slice(-1)[0]].join(firstItems.length < 2 ? '' : ' et ')}
       </span>
     ) : (
-      firstItems
+      <span>{firstItems}</span>
     );
   }
 

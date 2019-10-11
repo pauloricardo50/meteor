@@ -83,7 +83,7 @@ export default {
           name: 1,
           status: 1,
           totalValue: 1,
-          users: { organisations: { name: 1 } },
+          users: { organisations: { name: 1 }, name: 1 },
           loans: { name: 1 },
         },
       },

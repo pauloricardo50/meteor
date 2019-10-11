@@ -345,6 +345,21 @@ export const components = {
           )}
           {isPro && (
             <>
+              <b>Pros</b>
+              <TooltipArray
+                title="Pros"
+                items={users.map(user => (
+                  <CollectionIconLink
+                    key={user._id}
+                    relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+                  />
+                ))}
+                displayLimit={2}
+              />
+            </>
+          )}
+          {isPro && (
+            <>
               <b>Dossiers</b>
               <TooltipArray
                 title="Dossiers"
