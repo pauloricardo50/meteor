@@ -18,7 +18,24 @@ import {
 
 class PromotionReservationService extends CollectionService {
   constructor() {
-    super(PromotionReservations);
+    super(PromotionReservations, {
+      autoValues: {
+        startDate() {
+          if (this.isSet && this.value) {
+            return moment(this.value)
+              .startOf('day')
+              .toDate();
+          }
+        },
+        expirationDate() {
+          if (this.isSet && this.value) {
+            return moment(this.value)
+              .endOf('day')
+              .toDate();
+          }
+        },
+      },
+    });
   }
 
   insert = async ({
@@ -157,13 +174,13 @@ class PromotionReservationService extends CollectionService {
     }
 
     // Check if start date is older than half the agreement duration in the past
+    // If not, this reservation does not make sense, it has started too long ago
     if (moment(startDate).startOf('day') < startDateLowerBound) {
       throw new Meteor.Error('Le début de la réservation ne peut pas être antérieur à la moitié de la durée de réservation');
     }
 
     const expirationDate = moment(startDate)
       .add(agreementDuration, 'days')
-      .endOf('day')
       .toDate();
 
     return expirationDate;
