@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import { fullPromotionOption } from '../../fragments';
@@ -34,12 +35,28 @@ export class PromotionOptionService extends CollectionService {
   remove({ promotionOptionId }) {
     const {
       loan: { _id: loanId },
+      promotion: { _id: promotionId },
+      promotionReservation,
     } = this.fetchOne({
       $filters: { _id: promotionOptionId },
+      promotion: 1,
       loan: { _id: 1 },
+      promotionReservation: { _id: 1, status: 1 },
     });
 
-    const promotionId = this.getPromotion(promotionOptionId)._id;
+    if (promotionReservation) {
+      if (
+        [
+          PROMOTION_RESERVATION_STATUS.ACTIVE,
+          PROMOTION_RESERVATION_STATUS.COMPLETED,
+        ].includes(promotionReservation.status)
+      ) {
+        throw new Meteor.Error(
+          403,
+          "Une réservation est active sur ce lot, veuillez l'annuler d'abord",
+        );
+      }
+    }
 
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({
       loanId,

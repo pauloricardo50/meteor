@@ -28,6 +28,7 @@ LinkInitializer.inversedInit(() => {
       inversedBy: 'promotionOption',
       type: 'one',
       collection: PromotionReservations,
+      autoremove: true,
     },
   });
 });

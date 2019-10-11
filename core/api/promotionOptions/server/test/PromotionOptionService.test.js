@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
+import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import PromotionReservationService from '../../../promotionReservations/server/PromotionReservationService';
 import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
@@ -58,6 +59,33 @@ describe('PromotionOptionService', () => {
       expect(loan.promotionLinks).to.deep.equal([
         { _id: promotionId, priorityOrder: [], showAllLots: true },
       ]);
+    });
+
+    it('throws if there is an active/completed promotionReservation', async () => {
+      const pRId = await PromotionReservationService.insert({
+        promotionOptionId,
+        promotionReservation: { startDate: new Date() },
+        withAgreement: false,
+      });
+      expect(() =>
+        PromotionOptionService.remove({ promotionOptionId })).to.throw('active');
+    });
+
+    it('does not throw if there is a cancelled promotionReservation', async () => {
+      const pRId = await PromotionReservationService.insert({
+        promotionOptionId,
+        promotionReservation: { startDate: new Date() },
+        withAgreement: false,
+      });
+      PromotionReservationService._update({
+        id: pRId,
+        object: { status: PROMOTION_RESERVATION_STATUS.CANCELED },
+      });
+      expect(() =>
+        PromotionOptionService.remove({ promotionOptionId })).to.not.throw('active');
+
+      const pR = PromotionReservationService.findOne({});
+      expect(pR).to.equal(undefined);
     });
   });
 
