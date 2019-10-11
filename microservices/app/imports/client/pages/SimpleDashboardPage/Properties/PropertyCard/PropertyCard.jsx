@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'core/components/Link';
 import useMedia from 'core/hooks/useMedia';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
+import { PROMOTION_RESERVATION_STATUS } from 'core/api/constants';
 import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 import PropertyCardInfos from './PropertyCardInfos';
 import PropertyCardContainer from './PropertyCardContainer';
@@ -32,8 +33,11 @@ const PropertyCard = (props: PropertyCardProps) => {
       </div>
       {promotionReservations.length > 0 ? (
         <UserReservation
-          promotionReservation={promotionReservations[0]}
-          progressVariant="label"
+          promotionReservation={
+            promotionReservations.sort(({ status }) =>
+              (status === PROMOTION_RESERVATION_STATUS.ACTIVE ? -1 : 0))[0]
+          }
+          progressVariant="text"
         />
       ) : (
         promotionOptions

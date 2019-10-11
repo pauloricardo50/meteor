@@ -22,35 +22,42 @@ const CustomSubmitField = (
     primary = true,
     raised = true,
     secondary,
+    showSubmitField = true,
     ...props
   },
   { uniforms: { state, error } },
-) => (
-  <Button
-    disabled={shouldDisableButton({
-      disableActions,
-      error,
-      state,
-      setDisableActions,
-    })}
-    ref={inputRef}
-    type="submit"
-    value={value}
-    loading={state.submitting}
-    primary={!secondary && primary}
-    raised={raised}
-    secondary={secondary}
-    label={label || <T id="general.ok" />}
-    onClick={(e) => {
-      // Make sure the target type is event, even if the label of the button
-      // was clicked. This is useful in PropertyForm and DashboardRecapProperty
-      e.target.type = 'submit';
-    }}
-    {...filterDOMProps(props)}
-  >
-    {children}
-  </Button>
-);
+) => {
+  if (!showSubmitField) {
+    return null;
+  }
+  
+  return (
+    <Button
+      disabled={shouldDisableButton({
+        disableActions,
+        error,
+        state,
+        setDisableActions,
+      })}
+      ref={inputRef}
+      type="submit"
+      value={value}
+      loading={state.submitting}
+      primary={!secondary && primary}
+      raised={raised}
+      secondary={secondary}
+      label={label || <T id="general.ok" />}
+      onClick={(e) => {
+        // Make sure the target type is event, even if the label of the button
+        // was clicked. This is useful in PropertyForm and DashboardRecapProperty
+        e.target.type = 'submit';
+      }}
+      {...filterDOMProps(props)}
+    >
+      {children}
+    </Button>
+  );
+};
 
 CustomSubmitField.contextTypes = {
   uniforms: PropTypes.shape({

@@ -311,6 +311,7 @@ describe('PromotionReservationService', function () {
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
         .catch((error) => {
+          expect(error).to.not.equal(undefined);
           expect(error.message).to.include('Aucune convention');
         });
     });
@@ -375,6 +376,82 @@ describe('PromotionReservationService', function () {
           loanLink: { _id: 'loan2' },
         });
       });
+    });
+  });
+
+  describe('update', () => {
+    it('updates related date fields', () => {
+      const fiveDaysAgo = moment()
+        .subtract(5, 'd')
+        .toDate();
+      const now = new Date();
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionReservations: {
+          _id: 'promotionReservation',
+          _factory: 'promotionReservation',
+          lender: { date: fiveDaysAgo },
+        },
+      });
+
+      PromotionReservationService._update({
+        id: 'promotionReservation',
+        object: {
+          'lender.status': PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+        },
+      });
+      const pR = PromotionReservationService.findOne('promotionReservation');
+
+      expect(moment(pR.lender.date).isAfter(now)).to.equal(true);
+    });
+
+    it('does not update date if both are provided', () => {
+      const fiveDaysAgo = moment()
+        .subtract(5, 'd')
+        .toDate();
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionReservations: {
+          _id: 'promotionReservation',
+          _factory: 'promotionReservation',
+        },
+      });
+
+      PromotionReservationService._update({
+        id: 'promotionReservation',
+        object: {
+          lender: {
+            status: PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+            date: fiveDaysAgo,
+          },
+        },
+      });
+      const pR = PromotionReservationService.findOne('promotionReservation');
+
+      expect(moment(pR.lender.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
+    });
+
+    it('sets any expirationDate and startDate at end/start of day', () => {
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionReservations: {
+          _id: 'promotionReservation',
+          _factory: 'promotionReservation',
+        },
+      });
+      const now = new Date();
+      PromotionReservationService._update({
+        id: 'promotionReservation',
+        object: { startDate: now, expirationDate: now },
+      });
+
+      const pR = PromotionReservationService.findOne('promotionReservation');
+      expect(pR.startDate.getHours()).to.equal(0);
+      expect(pR.startDate.getMinutes()).to.equal(0);
+      expect(pR.startDate.getSeconds()).to.equal(0);
+      expect(pR.expirationDate.getHours()).to.equal(23);
+      expect(pR.expirationDate.getMinutes()).to.equal(59);
+      expect(pR.expirationDate.getSeconds()).to.equal(59);
     });
   });
 

@@ -33,7 +33,7 @@ const handleBookedLots = async () => {
     if (promotionOption) {
       const id = await PromotionReservationService.insert({
         promotionOptionId: promotionOption._id,
-        promotionReservation: { startDate: promotionOption.createdAt },
+        promotionReservation: { startDate: new Date() },
         withAgreement: false,
       });
 
@@ -62,7 +62,7 @@ const handleSoldLots = async () => {
     if (promotionOption) {
       const id = await PromotionReservationService.insert({
         promotionOptionId: promotionOption._id,
-        promotionReservation: { startDate: promotionOption.createdAt },
+        promotionReservation: { startDate: new Date() },
         withAgreement: false,
       });
 

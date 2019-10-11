@@ -20,7 +20,7 @@ import MortgageNoteSchema from './mortgageNotes/schemas/MortgageNoteSchema';
 import ContactSchema from './contacts/schemas/contactSchema';
 import LenderSchema from './lenders/schemas/lenderSchema';
 import RevenueSchema from './revenues/schemas/revenueSchema';
-import PromotionReservationSchema from './promotionReservations/schemas/promotionReservationSchema';
+import { PromotionReservationSchema } from './promotionReservations/promotionReservations';
 
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';

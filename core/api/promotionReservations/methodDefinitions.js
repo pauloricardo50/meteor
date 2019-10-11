@@ -14,3 +14,8 @@ export const promotionReservationUpdate = new Method({
   name: 'promotionReservationUpdate',
   params: { promotionReservationId: String, object: Object },
 });
+
+export const promotionReservationUpdateObject = new Method({
+  name: 'promotionReservationUpdateObject',
+  params: { promotionReservationId: String, object: Object, id: String },
+});

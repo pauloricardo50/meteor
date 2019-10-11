@@ -76,4 +76,11 @@ $borrowers-item-width: 600px;
       align-items: center;
     }
   }
+
+  .promotion-reservation-progress {
+    align-items: stretch !important;
+    > * {
+      justify-content: space-between;
+    }
+  }
 }

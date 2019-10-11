@@ -50,7 +50,7 @@ const TableWithModal = ({
   ...rest
 }: TableWithModalProps) => {
   const [open, setOpen] = useState(false);
-  const [activeRow, setActiveRow] = useState(null);
+  const [activeRowId, setActiveRowId] = useState(null);
   const mappedRows = useMemo(
     () =>
       rows.map(row => ({
@@ -61,11 +61,15 @@ const TableWithModal = ({
           }
 
           setOpen(true);
-          setActiveRow(row);
+          setActiveRowId(row.id);
         },
       })),
     [rows],
   );
+  const activeRow = useMemo(() => rows.find(({ id }) => id === activeRowId), [
+    rows,
+    activeRowId,
+  ]);
 
   return (
     <>

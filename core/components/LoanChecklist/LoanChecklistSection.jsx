@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import T from '../Translation';
 import LoanChecklistList from './LoanChecklistList';
 
 type LoanChecklistSectionProps = {
