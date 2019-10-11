@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import RCSlider from 'rc-slider';
+import { Slider as MuiSlider } from '@material-ui/core';
 import { useDebounce } from 'react-use';
 
 type SliderProps = {};
@@ -13,6 +13,7 @@ const Slider = ({
   onChange,
   tipFormatter = x => x,
   debounce = true,
+  className,
   ...rest
 }: SliderProps) => {
   const [fastValue, setFastValue] = useState(value);
@@ -23,13 +24,13 @@ const Slider = ({
   useDebounce(() => debounce && onChange(fastValue), 300, [fastValue]);
 
   return (
-    <RCSlider
+    <MuiSlider
       min={min}
       max={max}
       defaultValue={defaultValue}
       value={debounce ? fastValue : value}
-      onChange={debounce ? setFastValue : onChange}
-      tipFormatter={tipFormatter}
+      onChange={debounce ? setFastValue : (event, value) => onChange(value)}
+      valueLabelFormat={tipFormatter}
       {...rest}
     />
   );
