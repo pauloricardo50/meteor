@@ -194,5 +194,21 @@ describe('promotionClientHelpers', () => {
         },
       })).to.equal(true);
     });
+
+    it('returns false if lot is user can see names for every lot status, can see all customer names and lot is not attributed', () => {
+      const permissions = {
+        displayCustomerNames: {
+          forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+          invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
+        },
+      };
+
+      expect(shouldAnonymize({
+        customerOwnerType: null,
+        permissions,
+        promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+        isAttributed: false,
+      })).to.equal(false);
+    });
   });
 });

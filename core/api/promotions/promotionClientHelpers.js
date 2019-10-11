@@ -61,6 +61,13 @@ const shouldHideForLotStatus = (
   isAttributed,
 ) => {
   if (
+    Object.values(PROMOTION_LOT_STATUS).every(status =>
+      forLotStatus.includes(status))
+  ) {
+    return false;
+  }
+
+  if (
     promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE
     && forLotStatus.includes(promotionLotStatus)
   ) {
@@ -81,9 +88,13 @@ export const shouldAnonymize = ({
   promotionLotStatus = PROMOTION_LOT_STATUS.AVAILABLE,
   isAttributed,
 }) => {
+  if (!Object.keys(permissions).length) {
+    return true;
+  }
+
   const { displayCustomerNames } = permissions;
 
-  if (displayCustomerNames === false || !customerOwnerType) {
+  if (displayCustomerNames === false) {
     return true;
   }
 
