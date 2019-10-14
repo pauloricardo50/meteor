@@ -30,11 +30,13 @@ export const SLINGSHOT_DIRECTIVE_NAME_TEMP = 'exoscale-temp';
 
 export const EXOSCALE_PATH = 'sos-ch-dk-2.exo.io';
 
-export const BUCKET_NAME = Meteor.isServer
-  ? Meteor.settings.storage.bucketName
-  : '';
-
 export const TEST_BUCKET_NAME = 'e-potek-test-bucket';
+
+export const BUCKET_NAME = Meteor.isServer
+  ? Meteor.isTest || Meteor.isAppTest
+    ? TEST_BUCKET_NAME
+    : Meteor.settings.storage.bucketName
+  : '';
 
 export const OBJECT_STORAGE_PATH = `https://${BUCKET_NAME}.${EXOSCALE_PATH}`;
 
