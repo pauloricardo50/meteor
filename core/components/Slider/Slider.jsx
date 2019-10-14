@@ -13,7 +13,6 @@ const Slider = ({
   onChange,
   tipFormatter = x => x,
   debounce = true,
-  className,
   ...rest
 }: SliderProps) => {
   const [fastValue, setFastValue] = useState(value);
