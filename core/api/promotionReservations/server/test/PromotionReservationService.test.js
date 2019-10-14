@@ -162,10 +162,10 @@ describe('PromotionReservationService', function () {
       expect(moment(PromotionReservationService.getExpirationDate({
         startDate,
         agreementDuration,
-      })).format('DD-MM-YYYY HH:MM')).to.equal(moment(startDate)
+      })).format('DD-MM-YYYY')).to.equal(moment(startDate)
         .add(agreementDuration, 'days')
         .endOf('day')
-        .format('DD-MM-YYYY HH:MM'));
+        .format('DD-MM-YYYY'));
     });
   });
 
@@ -341,7 +341,7 @@ describe('PromotionReservationService', function () {
 
       await S3Service.putObject(file, key);
 
-      const startDate = new Date();
+      const startDate = moment().startOf('day').toDate();
 
       return PromotionReservationService.insert({
         promotionReservation: {
