@@ -1,3 +1,8 @@
+.loan-board-options,
+.loan-board-column-header {
+  position: sticky;
+}
+
 .loan-board {
   display: flex;
   flex-direction: column;
@@ -154,7 +159,7 @@ $button-height: 30px;
 
       text-align: center;
 
-      font-family: 'Eina04-Regular';
+      font-family: "Eina04-Regular";
     }
   }
 
