@@ -79,6 +79,7 @@ const PromotionLotDetail = ({
           <PromotionReservationsTable
             promotion={promotion}
             promotionLotId={promotionLot._id}
+            className="promotion-lot-reservations"
           />
         </section>
       )}

@@ -118,6 +118,7 @@ Meteor.methods({
         address1: 'Rue du four 1',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',
+        agreementDuration: 14,
       },
     });
   },

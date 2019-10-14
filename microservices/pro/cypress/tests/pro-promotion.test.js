@@ -180,16 +180,15 @@ describe('Pro promotion', () => {
       });
 
       // Some buttons are sometimes off-screen to the right, force click on them
-      cy.contains('Réserver').click({ force: true });
-      cy.contains('Confirmer').click();
-      cy.contains('Confirmer vente').should('exist');
-      cy.contains('Annuler réservation').should('exist');
-      cy.contains('Annuler réservation').click({ force: true });
-      cy.contains('sûr')
-        .parentsUntil('[role="document"]')
-        .contains('Confirmer')
-        .click();
-      cy.contains('Réserver').should('exist');
+
+      // cy.contains('Confirmer vente').should('exist');
+      // cy.contains('Annuler réservation').should('exist');
+      // cy.contains('Annuler réservation').click({ force: true });
+      // cy.contains('sûr')
+      //   .parentsUntil('[role="document"]')
+      //   .contains('Confirmer')
+      //   .click();
+      // cy.contains('Réserver').should('exist');
 
       cy.get('.promotion-lots-manager')
         .children()
@@ -245,6 +244,19 @@ describe('Pro promotion', () => {
           .children()
           .should('have.length', count);
       });
+
+      cy.contains('Réserver').click({ force: true });
+
+      cy.get('.uploader').uploadFile('test.pdf');
+      cy.wait(1000);
+      cy.contains('Ok').click();
+
+      cy.contains('Réservation existante').should('exist');
+
+      cy.get('.promotion-lot-reservations')
+        .find('tr')
+        .contains('Actif')
+        .should('exist');
     });
   });
 
@@ -274,7 +286,8 @@ describe('Pro promotion', () => {
         cy.get('input[name=address1]').type('Chemin Auguste-Vilbert 14');
         cy.get('input[name=address2]').type('1er étage');
         cy.get('input[name=zipCode]').type('1218');
-        cy.get('input[name=city]').type('Le Grand-Saconnex{enter}');
+        cy.get('input[name=city]').type('Le Grand-Saconnex');
+        cy.get('input[name=agreementDuration]').type('14{enter}');
 
         cy.url().should('include', 'promotions/');
         cy.get('h1').should('contain', 'New promotion');
