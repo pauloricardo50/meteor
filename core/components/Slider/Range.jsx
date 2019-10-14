@@ -1,20 +1,18 @@
 // @flow
-import React, { useState } from 'react';
-//import RCSlider from 'rc-slider';
-import { Slider as MuiSlider } from '@material-ui/core';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Slider as MuiSlider,
+  Tooltip,
+} from '@material-ui/core';
 import { useDebounce } from 'react-use';
-import Tooltip from '@material-ui/core/Tooltip'
-
-//const { createSliderWithTooltip } = RCSlider;
-//const RangeSlider = createSliderWithTooltip(RCSlider.Range);
 
 type RangeProps = {};
 
-function ValueLabelComponent(props) {
-  const { children, open, value } = props;
+const formatTooltip = (props) => {
+  const { children, value, open } = props;
 
-  const popperRef = React.useRef(null);
-  React.useEffect(() => {
+  const popperRef = useRef(null);
+  useEffect(() => {
     if (popperRef.current) {
       popperRef.current.update();
     }
@@ -22,13 +20,12 @@ function ValueLabelComponent(props) {
 
   return (
     <Tooltip
+      title={value}
+      open={open}
+      placement="top"
       PopperProps={{
         popperRef,
       }}
-      open={open}
-      enterTouchDelay={0}
-      placement="top"
-      title={value}
     >
       {children}
     </Tooltip>
@@ -63,10 +60,8 @@ const Range = ({
       defaultValue={defaultValue}
       value={debounce ? fastValue : value}
       onChange={debounce ? handleChange : (event, value) => onChange(value)}
-      allowCross={false}
-      pushable
-      ValueLabelComponent={ValueLabelComponent}
-      tipFormatter={tipFormatter}
+      valueLabelFormat={tipFormatter}
+      ValueLabelComponent={formatTooltip}
       {...rest}
     />
   );
