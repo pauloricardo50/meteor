@@ -5,7 +5,7 @@ import uploadDirective from './uploadDirective';
 
 const uploadDirectiveTemp = {
   ...uploadDirective,
-  getDefaultStatus: () => FILE_STATUS.VALID,
+  getDefaultStatus: () => FILE_STATUS.UNVERIFIED,
   directive: omit(uploadDirective, ['x-amz-meta-status']),
 };
 
