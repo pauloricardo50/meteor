@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { cancelPromotionLotBooking, sellPromotionLot } from 'core/api/methods';
-import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
+import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers/index';
 import {
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATIONS_COLLECTION,
@@ -26,6 +26,7 @@ const promotionReservationsArray = [
 
 const PromotionReservationDetail = ({
   promotionReservation,
+  anonymize,
 }: PromotionReservationDetailProps) => {
   const {
     _id,
@@ -37,7 +38,7 @@ const PromotionReservationDetail = ({
     status,
   } = promotionReservation;
   const { user } = loan;
-  const userIsAnonymized = isUserAnonymized(user);
+  const isAnonymized = anonymize || isUserAnonymized(user);
   const isAdmin = Meteor.microservice === 'admin';
   const isDeadReservation = [
     PROMOTION_RESERVATION_STATUS.EXPIRED,
@@ -58,7 +59,7 @@ const PromotionReservationDetail = ({
         promotionReservation={promotionReservation}
       />
       <br />
-      {!userIsAnonymized && (
+      {!isAnonymized && (
         <UploaderArray
           doc={promotionReservation}
           collection={PROMOTION_RESERVATIONS_COLLECTION}

@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { shouldAnonymize } from 'core/api/promotions/promotionClientHelpers';
 import T from '../../../../../Translation';
 import DialogSimple from '../../../../../DialogSimple';
 import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
@@ -12,6 +13,8 @@ import { bookPromotionLot } from '../../../../../../api/methods';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
 type PromotionLotReservationProps = {};
+
+const isAdmin = Meteor.microservice === 'admin';
 
 const getSchema = ({ agreementDuration = 0 }) =>
   new SimpleSchema({
@@ -50,6 +53,31 @@ const PromotionLotReservation = ({
   currentUser,
 }: PromotionLotReservationProps) => {
   const { promotionReservation } = promotionOption;
+  const { users = [] } = promotion;
+  const { $metadata: { permissions } = {} } = users.find(({ _id }) => _id === currentUser._id) || {};
+
+  const {
+    $metadata: { invitedBy },
+    users: promotionUsers = [],
+  } = promotion;
+
+  const customerOwnerType = getPromotionCustomerOwnerType({
+    invitedBy,
+    currentUser,
+  });
+  const { status, promotionLot = {} } = promotionReservation || {};
+  const { status: promotionLotStatus } = promotionLot;
+  const anonymize = isAdmin
+    ? false
+    : shouldAnonymize({
+      customerOwnerType,
+      permissions,
+      promotionLotStatus,
+    });
+
+  if (anonymize) {
+    return null;
+  }
 
   if (!promotionReservation) {
     return (
@@ -67,17 +95,6 @@ const PromotionLotReservation = ({
       />
     );
   }
-
-  const {
-    $metadata: { invitedBy },
-    users: promotionUsers = [],
-  } = promotion;
-
-  const customerOwnerType = getPromotionCustomerOwnerType({
-    invitedBy,
-    currentUser,
-  });
-  const { status, promotionLot } = promotionReservation;
 
   return (
     <DialogSimple
@@ -97,7 +114,7 @@ const PromotionLotReservation = ({
       )}
       closeOnly
     >
-      <PromotionReservationDetail promotionReservation={promotionReservation} />
+      <PromotionReservationDetail promotionReservation={promotionReservation} anonymize={anonymize} />
     </DialogSimple>
   );
 };
