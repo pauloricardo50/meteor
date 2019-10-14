@@ -7,8 +7,8 @@ import {
   clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
 import LoanService from '../../loans/server/LoanService';
+import { ANONYMIZED_STRING } from '../../security/constants';
 
-const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
   name: ANONYMIZED_STRING,
   phoneNumbers: [ANONYMIZED_STRING],

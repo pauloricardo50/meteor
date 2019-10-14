@@ -5,6 +5,7 @@ import {
   getCurrentUserPermissionsForPromotion,
 } from '../../promotions/promotionClientHelpers';
 import { hasMinimumRole } from './generalSecurityHelpers';
+import { ANONYMIZED_STRING } from '../constants';
 
 const checkPromotionPermissions = ({
   promotion,
@@ -210,3 +211,8 @@ export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {
     requiredPermissions,
   });
 };
+
+export const isUserAnonymized = ({ name, email, phoneNumbers = [] }) =>
+  name === ANONYMIZED_STRING
+  || email === ANONYMIZED_STRING
+  || phoneNumbers.some(phone => phone === ANONYMIZED_STRING);

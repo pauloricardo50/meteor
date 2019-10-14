@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { cancelPromotionLotBooking, sellPromotionLot } from 'core/api/methods';
+import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
 import {
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATIONS_COLLECTION,
@@ -35,6 +36,8 @@ const PromotionReservationDetail = ({
     startDate,
     status,
   } = promotionReservation;
+  const { user } = loan;
+  const userIsAnonymized = isUserAnonymized(user);
   const isAdmin = Meteor.microservice === 'admin';
   const isDeadReservation = [
     PROMOTION_RESERVATION_STATUS.EXPIRED,
@@ -51,20 +54,20 @@ const PromotionReservationDetail = ({
           status={status}
         />
       </div>
-
       <PromotionReservationProgressEditor
         promotionReservation={promotionReservation}
       />
       <br />
-
-      <UploaderArray
-        doc={promotionReservation}
-        collection={PROMOTION_RESERVATIONS_COLLECTION}
-        documentArray={promotionReservationsArray}
-        allowRequireByAdmin={false}
-        disabled={!isAdmin}
-        disableUpload={!isAdmin}
-      />
+      {!userIsAnonymized && (
+        <UploaderArray
+          doc={promotionReservation}
+          collection={PROMOTION_RESERVATIONS_COLLECTION}
+          documentArray={promotionReservationsArray}
+          allowRequireByAdmin={false}
+          disabled={!isAdmin}
+          disableUpload={!isAdmin}
+        />
+      )}
 
       {isAdmin && (
         <div className="flex center mt-16">
