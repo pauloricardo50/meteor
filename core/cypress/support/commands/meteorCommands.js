@@ -151,3 +151,27 @@ Cypress.Commands.add('dropdownShouldRender', (dropdownAssertionConfig) => {
     });
   });
 });
+
+Cypress.Commands.add(
+  'uploadFile',
+  { prevSubject: 'element' },
+  (subject, fileName) => {
+    cy.window().then((window) => {
+      const blob = new window.Blob(
+        [JSON.stringify({ hello: 'world' }, undefined, 2)],
+        {
+          type: 'application/pdf',
+        },
+      );
+      blob.lastModifiedDate = new Date();
+      blob.name = fileName;
+
+      cy.wrap(subject).trigger('drop', {
+        dataTransfer: {
+          files: [blob],
+          getData: () => false,
+        },
+      });
+    });
+  },
+);
