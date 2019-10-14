@@ -262,7 +262,7 @@ class PromotionReservationService extends CollectionService {
   updateMortgageCertification({ promotionReservationId, status, date }) {
     return this._update({
       id: promotionReservationId,
-      object: { status, date },
+      object: { mortgageCertification: { status, date } },
     });
   }
 

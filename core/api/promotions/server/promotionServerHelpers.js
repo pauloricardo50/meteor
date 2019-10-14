@@ -235,7 +235,7 @@ export const makePromotionReservationAnonymizer = ({
   userId,
 }) => (promotionReservation) => {
   const {
-    promotionOption: { _id: promotionOptionId },
+    promotionOption: { _id: promotionOptionId } = {},
   } = promotionReservation;
 
   try {
@@ -246,10 +246,7 @@ export const makePromotionReservationAnonymizer = ({
     return promotionReservation;
   } catch (error) {
     const {
-      loan: {
-        user: { _id },
-        ...rest
-      },
+      loan: { user: { _id } = {}, ...rest },
     } = promotionReservation;
     return {
       ...promotionReservation,
