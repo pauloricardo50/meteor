@@ -179,8 +179,6 @@ describe('Pro promotion', () => {
         );
       });
 
-      // Some buttons are sometimes off-screen to the right, force click on them
-
       // cy.contains('Confirmer vente').should('exist');
       // cy.contains('Annuler réservation').should('exist');
       // cy.contains('Annuler réservation').click({ force: true });
@@ -251,7 +249,13 @@ describe('Pro promotion', () => {
       cy.wait(1000);
       cy.contains('Ok').click();
 
-      cy.contains('Réservation existante').should('exist');
+      cy.contains('Réservation existante').click({ force: true });
+
+      cy.contains('dans 1 mois').should('exist');
+
+      cy.get('button:contains(Fermer)')
+        .last()
+        .click();
 
       cy.get('.promotion-lot-reservations')
         .find('tr')
