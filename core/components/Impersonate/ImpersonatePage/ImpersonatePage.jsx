@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import { impersonateUser } from '../../../api/methods';
 import impersonateNotification from './impersonateNotification';
 
-export const impersonate = ({ userId, authToken, history }) => {
+export const impersonate = ({ userId, authToken, history, adminId }) => {
   impersonateUser
-    .run({ userId, authToken })
+    .run({ userId, authToken, adminId })
     .then(({ emails }) => {
       Meteor.connection.setUserId(userId);
       impersonateNotification(emails);
@@ -35,8 +35,10 @@ class ImpersonatePage extends Component {
     const paramsQuery = new URLSearchParams(location.search);
     const userId = paramsQuery.get('userId');
     const authToken = paramsQuery.get('authToken');
+    const adminId = paramsQuery.get('adminId');
+    console.log('adminId:', adminId);
 
-    impersonate({ userId, authToken, history });
+    impersonate({ userId, authToken, history, adminId });
   };
 
   render() {
