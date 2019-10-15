@@ -6,11 +6,14 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import FileService from 'core/api/files/server/FileService';
 import S3Service from 'core/api/files/server/S3Service';
 import PromotionService from 'core/api/promotions/server/PromotionService';
+import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
+import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import generator from '../../../factories';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 import { bookPromotionLot } from '../../../methods/index';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
+import PromotionLotService from '../PromotionLotService';
 
 const uploadTempPromotionAgreement = async (userId) => {
   const reservationAgreementFile = Buffer.from('hello', 'utf-8');
@@ -159,7 +162,7 @@ describe('PromotionLotService', function () {
         });
     });
 
-    it('does not let a lot to be booked a pro who did not invite the customer', async () => {
+    it('does not let a lot be booked by a pro who did not invite the customer', async () => {
       const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro2');
 
       return ddpWithUserId('pro2', () =>
@@ -175,7 +178,7 @@ describe('PromotionLotService', function () {
           expect(error.message).to.include('Vous ne pouvez pas réserver de lot à ce client'));
     });
 
-    it('does not let a lot to be booked a pro who cannot book lots', async () => {
+    it('does not let a lot be booked by a pro who cannot book lots', async () => {
       const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
 
       return ddpWithUserId('pro1', () =>
@@ -189,6 +192,55 @@ describe('PromotionLotService', function () {
         .then(() => expect(1).to.equal(2, 'Should throw'))
         .catch(error =>
           expect(error.message).to.include('Vous ne pouvez pas réserver de lot à ce client'));
+    });
+
+    it.only('can book, cancel, and then reactivate an existing promotionReservation', async () => {
+      const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
+
+      const pRId = await PromotionLotService.bookPromotionLot({
+        promotionOptionId: 'pOptId',
+        promotionReservation: {
+          startDate: new Date(),
+          agreementFileKeys: [reservationAgreementFileKey],
+        },
+      });
+
+      await checkEmails(2);
+
+      PromotionLotService.sellPromotionLot({
+        promotionOptionId: 'pOptId',
+      });
+
+      await checkEmails(2);
+
+      let pR = PromotionReservationService.get(pRId);
+      let pL = PromotionLotService.get('promotionLotId');
+      expect(pR.status).to.equal(PROMOTION_RESERVATION_STATUS.COMPLETED);
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.SOLD);
+
+      PromotionLotService.cancelPromotionLotBooking({
+        promotionOptionId: 'pOptId',
+      });
+
+      await checkEmails(2);
+
+      pR = PromotionReservationService.get(pRId);
+      pL = PromotionLotService.get('promotionLotId');
+      expect(pR.status).to.equal(PROMOTION_RESERVATION_STATUS.CANCELED);
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
+
+      const pRId2 = await PromotionLotService.bookPromotionLot({
+        promotionOptionId: 'pOptId',
+      });
+
+      await checkEmails(2);
+
+      expect(pRId2).to.equal(pRId);
+
+      pR = PromotionReservationService.findOne(pRId);
+      pL = PromotionLotService.get('promotionLotId');
+      expect(pR.status).to.equal(PROMOTION_RESERVATION_STATUS.ACTIVE);
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
     });
   });
 });

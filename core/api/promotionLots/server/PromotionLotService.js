@@ -33,23 +33,34 @@ export class PromotionLotService extends CollectionService {
     const {
       loan: { _id: loanId } = {},
       promotionLots,
+      promotionReservation: existingPromotionReservation,
     } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
+      promotionReservation: { _id: 1 },
     });
 
     const [{ _id: promotionLotId }] = promotionLots;
 
-    return PromotionReservationService.insert({
-      promotionReservation,
-      promotionOptionId,
-    })
+    return (existingPromotionReservation
+      ? Promise.resolve(existingPromotionReservation._id)
+      : PromotionReservationService.insert({
+        promotionReservation,
+        promotionOptionId,
+      })
+    )
       .then((promotionReservationId) => {
         this.update({
           promotionLotId,
           object: { status: PROMOTION_LOT_STATUS.BOOKED },
         });
+
+        if (existingPromotionReservation) {
+          PromotionReservationService.activateReservation({
+            promotionReservationId: existingPromotionReservation._id,
+          });
+        }
 
         this.addLink({
           id: promotionLotId,

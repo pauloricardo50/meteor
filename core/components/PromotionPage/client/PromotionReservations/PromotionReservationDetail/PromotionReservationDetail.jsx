@@ -44,6 +44,10 @@ const PromotionReservationDetail = ({
     PROMOTION_RESERVATION_STATUS.EXPIRED,
     PROMOTION_RESERVATION_STATUS.CANCELED,
   ].includes(status);
+  const canCancelReservation = [
+    PROMOTION_RESERVATION_STATUS.EXPIRED,
+    PROMOTION_RESERVATION_STATUS.CANCELED,
+  ].includes(status);
 
   return (
     <div>
@@ -72,13 +76,20 @@ const PromotionReservationDetail = ({
 
       {isAdmin && (
         <div className="flex center mt-16">
-          {isDeadReservation && (
+          {canCancelReservation && (
             <ConfirmMethod
               buttonProps={{ className: 'mr-8', error: true, outlined: true }}
               label="Annuler réservation"
               method={() =>
                 cancelPromotionLotBooking.run({ promotionOptionId })
               }
+            />
+          )}
+          {isDeadReservation && (
+            <ConfirmMethod
+              buttonProps={{ primary: true, raised: true }}
+              label="Réactiver réservation"
+              method={() => bookPromotionLot.run({ promotionOptionId })}
             />
           )}
           {status === PROMOTION_RESERVATION_STATUS.ACTIVE && (
@@ -93,4 +104,5 @@ const PromotionReservationDetail = ({
     </div>
   );
 };
+
 export default PromotionReservationDetail;

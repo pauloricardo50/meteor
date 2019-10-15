@@ -259,6 +259,13 @@ class PromotionReservationService extends CollectionService {
     });
   }
 
+  activateReservation({ promotionReservationId }) {
+    return this.updateStatus({
+      promotionReservationId,
+      status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+    });
+  }
+
   updateMortgageCertification({ promotionReservationId, status, date }) {
     return this._update({
       id: promotionReservationId,

@@ -11,7 +11,6 @@ import { PROMOTION_OPTION_SOLVENCY } from 'core/api/promotionOptions/promotionOp
 import PromotionService from 'core/api/promotions/server/PromotionService';
 import { checkEmails } from 'core/utils/testHelpers';
 import TaskService from 'core/api/tasks/server/TaskService';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import generator from '../../../factories';
 import { LOAN_VERIFICATION_STATUS } from '../../../loans/loanConstants';
 import PromotionReservationService from '../PromotionReservationService';
