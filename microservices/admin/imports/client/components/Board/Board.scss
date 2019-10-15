@@ -4,6 +4,8 @@
   align-items: stretch;
 
   padding: 8px;
+  height: 1rem;
+  overflow-y: hidden;
 
   //   Make sure the edge padding appears properly
   &:after {
