@@ -9,6 +9,7 @@ import {
   Organisations,
   Tasks,
   Activities,
+  Sessions,
 } from '..';
 
 const assignedEmployeeCache = {
@@ -52,6 +53,10 @@ Users.addLinks({
   contact: {
     collection: Contacts,
     inversedBy: 'user',
+  },
+  impersonatingSession: {
+    collection: Sessions,
+    inversedBy: 'adminImpersonating',
   },
   loans: {
     collection: Loans,
