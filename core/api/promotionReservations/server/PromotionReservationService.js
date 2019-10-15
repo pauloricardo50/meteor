@@ -227,7 +227,8 @@ class PromotionReservationService extends CollectionService {
         newId: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
         newDocId: promotionReservationId,
         newCollection: PROMOTION_RESERVATIONS_COLLECTION,
-      });
+      }).then(newKey =>
+        FileService.autoRenameFile(newKey, PROMOTION_RESERVATIONS_COLLECTION));
     }));
   }
 

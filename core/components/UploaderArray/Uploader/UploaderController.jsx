@@ -8,6 +8,7 @@ import {
   setFileAdminName,
   setFileError,
   setFileStatus,
+  autoRenameFile,
 } from 'core/api/methods/index';
 import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/constants';
 import ClientEventService, {
@@ -32,15 +33,22 @@ const addMeteorProps = withProps(({
   docId,
   collection,
   canModify,
+  autoRenameFiles = false,
 }) => ({
-  handleSuccess: (file, url) => {
+  handleSuccess: async (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    notifyOfUpload.run({
+    await notifyOfUpload.run({
       fileName: file.name,
       docLabel: label || f({ id: `files.${fileId}` }),
       loanId,
     });
-    updateDocumentsCache.run({ collection, docId });
+
+    await updateDocumentsCache.run({ collection, docId });
+
+    if (autoRenameFiles) {
+      await autoRenameFile.run({ key: file.Key, collection });
+    }
+
     if (handleSuccess) {
       handleSuccess(file, url);
     }

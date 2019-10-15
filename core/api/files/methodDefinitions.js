@@ -83,3 +83,11 @@ export const deleteTempFile = new Method({
     fileKey: String,
   },
 });
+
+export const autoRenameFile = new Method({
+  name: 'autoRenameFile',
+  params: {
+    key: String,
+    collection: String,
+  },
+});

@@ -6,8 +6,12 @@ import moment from 'moment';
 import { readFileBuffer, removeFile } from 'core/utils/filesUtils';
 import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
+import Intl from 'core/utils/server/intl';
+import { asyncForEach } from 'core/api/helpers/index';
 import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
+
+const formatMessage = Intl.formatMessage.bind(Intl);
 
 class FileService {
   listFilesForDoc = (docId, subdocument) => {
@@ -131,22 +135,17 @@ class FileService {
   moveFile = ({
     Key,
     name,
-    oldId,
     oldDocId,
     oldCollection,
     newId,
     newDocId,
     newCollection,
   }) => {
-    if (
-      oldId === newId
-      && oldDocId === newDocId
-      && oldCollection === newCollection
-    ) {
+    const newKey = `${newDocId}/${newId}/${name}`;
+
+    if (newKey === Key) {
       return;
     }
-
-    const newKey = `${newDocId}/${newId}/${name}`;
 
     return S3Service.moveObject(Key, newKey)
       .then(() =>
@@ -161,7 +160,8 @@ class FileService {
             collection: oldCollection,
           });
         }
-      });
+      })
+      .then(() => newKey);
   };
 
   getKeyParts = (key) => {
@@ -195,8 +195,42 @@ class FileService {
     const tempFilesToRemove = tempFiles.filter(({ LastModified }) => moment(LastModified) < fifteenMinutesAgo);
 
     const deletedFiles = await Promise.all(tempFilesToRemove.map(({ Key }) => S3Service.deleteObject(Key)));
-    
+
     return deletedFiles.length;
+  };
+
+  autoRenameFile = async (key, collection) => {
+    const { docId, documentId } = this.getKeyParts(key);
+    const files = (await this.listFilesForDoc(docId, documentId)) || [];
+    const keys = files.map(({ Key }) => Key);
+    const today = moment().format('YYYY-MM-DD');
+
+    const renameFiles = async () => {
+      await asyncForEach(keys, async (Key, index) => {
+        const { extension, fileName } = this.getKeyParts(Key);
+        const existingDate = fileName.match(/\d{4}-\d{2}-\d{2}/g);
+        const date = existingDate ? existingDate[0] : today;
+        const documentName = formatMessage({ id: `files.${documentId}` });
+        const name = keys.length === 1
+          ? `${date} ${documentName}.${extension}`
+          : `${date} ${documentName} (${index + 1} sur ${
+            keys.length
+          }).${extension}`;
+
+        await this.moveFile({
+          Key,
+          name,
+          oldId: documentId,
+          oldDocId: docId,
+          oldCollection: collection,
+          newId: documentId,
+          newDocId: docId,
+          newCollection: collection,
+        });
+      });
+    };
+
+    await renameFiles();
   };
 }
 

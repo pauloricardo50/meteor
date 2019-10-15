@@ -2,11 +2,15 @@
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import moment from 'moment';
 
+import generator from 'core/api/factories/index';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { asyncForEach } from 'core/api/helpers/index';
 import FileService from '../FileService';
 import S3Service from '../S3Service';
 import { clearBucket } from './S3Service.test';
-import { FILE_STATUS } from '../../fileConstants';
+import { FILE_STATUS, BORROWER_DOCUMENTS } from '../../fileConstants';
 
 const docId = 'someDocId';
 const json = { hello: 'world' };
@@ -23,7 +27,7 @@ const setupBucket = () =>
     .then(() => S3Service.putObject(binaryData, key3));
 
 describe('FileService', function () {
-  this.timeout(10000);
+  this.timeout(30000);
 
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
@@ -155,6 +159,91 @@ describe('FileService', function () {
 
       clock.restore();
       return expect(deletedFiles).to.equal(5);
+    });
+  });
+
+  describe('autoRenameFile', () => {
+    const generateAndRenameFiles = async (count, date = '') => {
+      await asyncForEach([...Array(count)], async (_, i) => {
+        const fileKey = FileService.getS3FileKey(
+          {
+            name: `${date ? `${date} ` : ''}file${i}.pdf`,
+          },
+          { docId: 'borrower', id: BORROWER_DOCUMENTS.IDENTITY },
+        );
+
+        await S3Service.putObject(Buffer.from(`hello${i}`, 'utf-8'), fileKey);
+
+        await FileService.autoRenameFile(fileKey, BORROWERS_COLLECTION);
+      });
+    };
+
+    it('renames a single file', async () => {
+      generator({
+        borrowers: {
+          _id: 'borrower',
+        },
+      });
+
+      const today = moment().format('YYYY-MM-DD');
+
+      await generateAndRenameFiles(1);
+
+      const files = await FileService.listFilesForDoc('borrower');
+
+      expect(files.length).to.equal(1);
+      expect(files[0]).to.deep.include({
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité.pdf`,
+      });
+    });
+
+    it('renames multiple files', async () => {
+      generator({
+        borrowers: {
+          _id: 'borrower',
+        },
+      });
+
+      const today = moment().format('YYYY-MM-DD');
+
+      await generateAndRenameFiles(2);
+
+      const files = await FileService.listFilesForDoc('borrower');
+
+      expect(files.length).to.equal(2);
+      expect(files[0]).to.deep.include({
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité (1 sur 2).pdf`,
+      });
+      expect(files[1]).to.deep.include({
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité (2 sur 2).pdf`,
+      });
+    });
+
+    it('does not override date if it already exists', async () => {
+      generator({
+        borrowers: {
+          _id: 'borrower',
+        },
+      });
+
+      const today = moment().format('YYYY-MM-DD');
+      const yesterday = moment()
+        .subtract(1, 'days')
+        .format('YYYY-MM-DD');
+
+      await generateAndRenameFiles(1, yesterday);
+
+      await generateAndRenameFiles(1);
+
+      const files = await FileService.listFilesForDoc('borrower');
+
+      expect(files.length).to.equal(2);
+      expect(files[0]).to.deep.include({
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${yesterday} Pièce d'identité (1 sur 2).pdf`,
+      });
+      expect(files[1]).to.deep.include({
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité (2 sur 2).pdf`,
+      });
     });
   });
 });
