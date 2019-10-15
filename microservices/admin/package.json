@@ -54,7 +54,6 @@
     "open-graph-scraper": "^3.6.1",
     "prop-types": "^15.7.2",
     "query-string": "5.1.1",
-    "rc-slider": "^8.6.13",
     "react": "^16.8.6",
     "react-ace": "^7.0.2",
     "react-autosuggest": "^9.4.3",
