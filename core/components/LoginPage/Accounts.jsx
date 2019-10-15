@@ -29,7 +29,7 @@ class Form extends Accounts.ui.Form {
         ref={(ref) => {
           this.form = ref;
         }}
-        className={['accounts', className].join(' ')}
+        className={['accounts','login-input', className].join(' ')}
       >
         {Object.keys(fields).length > 0 ? (
           <Accounts.ui.Fields fields={fields} />

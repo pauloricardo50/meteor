@@ -17,6 +17,13 @@
     }
   }
 
+  .login-input {
+    input {
+      font-size: 16px !important;
+      font-family: Eina04-Regular, Helvetica !important;
+    }
+  }
+
   .right,
   .left {
     display: flex;
