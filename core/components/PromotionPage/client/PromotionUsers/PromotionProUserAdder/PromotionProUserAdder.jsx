@@ -22,8 +22,8 @@ const PromotionProUserAdder = ({
   <DialogSimple
     primary
     raised
-    label={<T id="AdminPromotionPage.addUser.label" />}
-    title={<T id="AdminPromotionPage.addUser.title" />}
+    label={<T id="PromotionPage.addUser.label" />}
+    title={<T id="PromotionPage.addUser.title" />}
     className="dialog-overflow"
   >
     <div className="flex-col">
@@ -44,7 +44,7 @@ const PromotionProUserAdder = ({
                 && promotion.users.map(({ _id }) => _id).includes(user._id)
               }
             >
-              <T id="AdminPromotionPage.addUser" />
+              <T id="PromotionPage.addUser" />
             </Button>
           </div>
         )}
