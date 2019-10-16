@@ -6,7 +6,6 @@ import impersonatingSessionNotification from './impersonatingSessionNotification
 
 const impersonateSessionNotification = ({ impersonatedSession, history }) => {
   if (impersonatedSession) {
-    console.log('impersonatedSession:', impersonatedSession);
     const { connectionId, userIsConnected, shared } = impersonatedSession;
     const currentSessionId = Meteor.connection._lastSessionId;
 

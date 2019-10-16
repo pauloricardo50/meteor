@@ -2,8 +2,8 @@ import Sessions from './sessions';
 import { Users } from '..';
 
 Sessions.addLinks({
-  adminImpersonating: {
-    field: 'adminImpersonatingLink',
+  impersonatingAdmin: {
+    field: 'impersonatingAdminLink',
     collection: Users,
     type: 'one',
     metadata: true,

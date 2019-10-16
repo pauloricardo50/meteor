@@ -36,7 +36,6 @@ class ImpersonatePage extends Component {
     const userId = paramsQuery.get('userId');
     const authToken = paramsQuery.get('authToken');
     const adminId = paramsQuery.get('adminId');
-    console.log('adminId:', adminId);
 
     impersonate({ userId, authToken, history, adminId });
   };

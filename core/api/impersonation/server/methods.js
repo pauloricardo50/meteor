@@ -14,7 +14,7 @@ impersonateUser.setHandler((context, { authToken, userId, adminId }) => {
   const session = SessionService.getByConnectionId(connectionId);
   SessionService.addLink({
     id: session._id,
-    linkName: 'adminImpersonating',
+    linkName: 'impersonatingAdmin',
     linkId: adminId,
   });
 

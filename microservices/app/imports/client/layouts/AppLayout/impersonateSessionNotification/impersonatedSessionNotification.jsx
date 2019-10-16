@@ -8,7 +8,7 @@ const impersonatedSessionNotification = ({ impersonatedSession, history }) => {
   const {
     connectionId,
     lastPageVisited,
-    adminImpersonating: {
+    impersonatingAdmin: {
       name: adminName,
       _id: adminId,
       firstName: adminFirstName,

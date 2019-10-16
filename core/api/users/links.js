@@ -56,7 +56,7 @@ Users.addLinks({
   },
   impersonatingSession: {
     collection: Sessions,
-    inversedBy: 'adminImpersonating',
+    inversedBy: 'impersonatingAdmin',
   },
   loans: {
     collection: Loans,
