@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import cx from 'classnames';
-import { capitalize } from '@material-ui/core/utils/helpers';
+import { capitalize } from '@material-ui/core/utils';
 
 import MuiIconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
