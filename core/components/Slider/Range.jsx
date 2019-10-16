@@ -1,43 +1,12 @@
 // @flow
-import React, { useState } from 'react';
-import RCSlider from 'rc-slider';
-import { useDebounce } from 'react-use';
+import React from 'react';
 
-const { createSliderWithTooltip } = RCSlider;
-const RangeSlider = createSliderWithTooltip(RCSlider.Range);
+import Slider from './Slider';
 
 type RangeProps = {};
 
-const Range = ({
-  min = 0,
-  max,
-  defaultValue = [0],
-  value,
-  onChange,
-  tipFormatter = x => x,
-  debounce = true,
-  ...rest
-}: RangeProps) => {
-  const [fastValue, setFastValue] = useState(value);
-
-  // Only send the slider value to its parent after the slider has been
-  // untouched for 300ms. This avoids performance issues if the slider value
-  // is passed through other components that are expensive to update
-  useDebounce(() => debounce && onChange(fastValue), 300, [fastValue]);
-
-  return (
-    <RangeSlider
-      min={min}
-      max={max}
-      defaultValue={defaultValue}
-      value={debounce ? fastValue : value}
-      onChange={debounce ? setFastValue : onChange}
-      allowCross={false}
-      pushable
-      tipFormatter={tipFormatter}
-      {...rest}
-    />
-  );
-};
+const Range = ({ defaultValue = [0], ...rest }: RangeProps) => (
+  <Slider defaultValue={defaultValue} {...rest} />
+);
 
 export default Range;

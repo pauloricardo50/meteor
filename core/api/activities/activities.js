@@ -80,6 +80,7 @@ const ActivityEmailSchema = ActivitySchema.extend({
 
 const ActivityPhoneSchema = ActivitySchema;
 const ActivityOtherSchema = ActivitySchema;
+const ActivityMailSchema = ActivitySchema;
 
 Activities.attachSchema(ActivityEventSchema, {
   selector: { type: ACTIVITY_TYPES.EVENT },
@@ -92,6 +93,9 @@ Activities.attachSchema(ActivityPhoneSchema, {
 });
 Activities.attachSchema(ActivityOtherSchema, {
   selector: { type: ACTIVITY_TYPES.OTHER },
+});
+Activities.attachSchema(ActivityMailSchema, {
+  selector: { type: ACTIVITY_TYPES.MAIL },
 });
 
 export default Activities;

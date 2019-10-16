@@ -1,4 +1,6 @@
+import SessionService from 'core/api/sessions/server/SessionService';
 import { loanSetStatus } from '../../loans/methodDefinitions';
+import { followImpersonatedSession } from '../../sessions/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
@@ -67,6 +69,22 @@ ServerEventService.addAfterMethodListener(
       prevStatus,
       referredByOrganisation,
       referredByUser,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  followImpersonatedSession,
+  ({ context, params: { connectionId } }) => {
+    const { impersonatingAdmin: admin } = SessionService.fetchOne({
+      $filters: { connectionId },
+      impersonatingAdmin: { name: 1 },
+    });
+
+    const analytics = new Analytics(context);
+    analytics.track(EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN, {
+      adminId: admin._id,
+      adminName: admin.name,
     });
   },
 );

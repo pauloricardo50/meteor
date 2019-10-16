@@ -28,6 +28,7 @@ const lotBooking = ({
         }}
         method={bookPromotionLot}
         disabled={!isAdmin && !canBookLot}
+        type="modal"
       >
         <PromotionLotAttributerContent
           promotionLotName={promotionLotName}
@@ -58,6 +59,7 @@ const lotSelling = ({
         label={<T id="PromotionLotAttributer.sell" />}
         description={<T id="PromotionLotAttributer.notificationDisclaimer" />}
         disabled={!isAdmin && !canSellLot}
+        type="modal"
       />
     );
   }
@@ -91,6 +93,7 @@ const cancelLotBooking = ({
           </div>
         )}
         disabled={!isAdmin && !canBookLot}
+        type="modal"
       />
     );
   }

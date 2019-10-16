@@ -40,6 +40,7 @@ export { default as Lenders } from './lenders';
 export { default as LenderRules } from './lenderRules';
 export { default as Revenues } from './revenues';
 export { default as Activities } from './activities';
+export { default as Sessions } from './sessions';
 
 export * from './methods';
 export * from './helpers';

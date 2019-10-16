@@ -76,6 +76,7 @@ const SimpleDashboardPageCTAs = ({
 
       {currentUser && (
         <ConfirmMethod
+          type="modal"
           buttonProps={buttonProps}
           method={() => fullApplication(loanId)}
           title={<T id="BorrowersProgress.fullApplication" />}

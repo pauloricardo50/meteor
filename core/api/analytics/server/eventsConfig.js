@@ -73,4 +73,8 @@ export const EVENTS_CONFIG = {
       'promotion',
     ]),
   },
+  [EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN]: {
+    name: 'User Followed impersonating admin',
+    transform: curryPick(['adminName', 'adminId']),
+  },
 };

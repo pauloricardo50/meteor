@@ -7,6 +7,7 @@ export const ACTIVITY_QUERIES = {
 export const ACTIVITY_TYPES = {
   EMAIL: 'EMAIL',
   EVENT: 'EVENT',
+  MAIL: 'MAIL',
   PHONE: 'PHONE',
   OTHER: 'OTHER',
 };

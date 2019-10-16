@@ -9,6 +9,7 @@ import Button from '../../Button';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
+  LOANS_COLLECTION,
 } from '../../../api/constants';
 
 type AdditionalDocModifierProps = {
@@ -30,6 +31,8 @@ export const getAdditionalDocSchema = (collection) => {
       'RETIREMENT',
       'OTHER',
     ];
+  } else {
+    allowedValues = ['OTHER'];
   }
 
   return new SimpleSchema({
@@ -78,11 +81,12 @@ const AdditionalDocModifier = ({
         <Button
           onClick={() => {
             setDisableActions(true);
-            return removeAdditionalDoc.run({
-              collection,
-              id: docId,
-              additionalDocId: additionalDoc.id,
-            })
+            return removeAdditionalDoc
+              .run({
+                collection,
+                id: docId,
+                additionalDocId: additionalDoc.id,
+              })
               .then(closeDialog)
               .finally(() => setDisableActions(false));
           }}

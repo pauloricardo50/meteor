@@ -56,7 +56,7 @@ const ImpersonateLink = ({ user, className, classes }) => {
   return (
     <a
       target="_blank"
-      href={generateImpersonateLink(user)}
+      href={generateImpersonateLink(user, Meteor.userId())}
       className={className}
     >
       <Tooltip
