@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
+import { faCreditCard } from '@fortawesome/pro-light-svg-icons/faCreditCard';
 
 import List from '@material-ui/core/List';
 
@@ -22,6 +23,14 @@ const items = [
     label: 'Dashboard',
     icon: 'home',
     to: ADMIN_ROUTES.DASHBOARD_PAGE.path,
+    exact: true,
+  },
+  {
+    label: 'Dossiers',
+    icon: (
+      <FontAwesomeIcon icon={faCreditCard} className="collection-icon" />
+    ),
+    to: '/loan-board',
     exact: true,
   },
   {
@@ -74,14 +83,17 @@ const createOnClickHandler = (
 
 const MainSideNav = props => (
   <List className="main-side-nav">
-    {items.map((item, index) => (
-      <MainSideNavListItem
-        onClick={createOnClickHandler(item, props)}
-        key={index}
-        {...item}
-        {...props}
-      />
-    ))}
+    {items.map((item, index) => {
+      console.log('--------', item);
+      return (
+        <MainSideNavListItem
+          onClick={createOnClickHandler(item, props)}
+          key={index}
+          {...item}
+          {...props}
+        />
+      )
+    })}
   </List>
 );
 

@@ -26,7 +26,6 @@ const LoanBoard = ({
   setActivateSync,
 }: LoanBoardProps) => (
   <>
-    <AdminDashboardTabs />
     <div className="loan-board">
       <LoanBoardOptions
         options={options}
