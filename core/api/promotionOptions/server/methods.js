@@ -11,21 +11,42 @@ import {
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
   const loan = LoanService.get(params.loanId);
-  SecurityService.checkOwnership(loan);
+  SecurityService.checkOwnership(loan, userId);
   return PromotionOptionService.insert(params);
 });
 
-promotionOptionUpdate.setHandler(({ userId }, params) =>
-  // TODO: Security check
-  PromotionOptionService.update(params));
+promotionOptionUpdate.setHandler(({ userId }, params) => {
+  const { loan } = PromotionOptionService.fetchOne({
+    $filters: { _id: params.promotionOptionId },
+    loan: { _id: 1, userId: 1 },
+  });
+  SecurityService.checkOwnership(loan, userId);
+  PromotionOptionService.update(params);
+});
 
-promotionOptionRemove.setHandler(({ userId }, params) =>
-// TODO: Security check
+promotionOptionRemove.setHandler(({ userId }, params) => {
+  const { loan } = PromotionOptionService.fetchOne({
+    $filters: { _id: params.promotionOptionId },
+    loan: { _id: 1, userId: 1 },
+  });
+  SecurityService.checkOwnership(loan, userId);
+  PromotionOptionService.remove(params);
+});
 
-  PromotionOptionService.remove(params));
+increaseOptionPriority.setHandler(({ userId }, params) => {
+  const { loan } = PromotionOptionService.fetchOne({
+    $filters: { _id: params.promotionOptionId },
+    loan: { _id: 1, userId: 1 },
+  });
+  SecurityService.checkOwnership(loan, userId);
+  PromotionOptionService.increasePriorityOrder(params);
+});
 
-increaseOptionPriority.setHandler((context, params) =>
-  PromotionOptionService.increasePriorityOrder(params));
-
-reducePriorityOrder.setHandler((context, params) =>
-  PromotionOptionService.reducePriorityOrder(params));
+reducePriorityOrder.setHandler(({ userId }, params) => {
+  const { loan } = PromotionOptionService.fetchOne({
+    $filters: { _id: params.promotionOptionId },
+    loan: { _id: 1, userId: 1 },
+  });
+  SecurityService.checkOwnership(loan, userId);
+  PromotionOptionService.reducePriorityOrder(params);
+});

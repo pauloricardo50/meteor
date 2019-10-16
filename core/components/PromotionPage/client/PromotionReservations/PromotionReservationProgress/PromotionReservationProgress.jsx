@@ -105,7 +105,7 @@ const PromotionReservationProgress = ({
         error: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
         success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
         waiting: [
-          PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+          PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
         ],
       })(mortgageCertification.status),
       id: 'mortgageCertification',

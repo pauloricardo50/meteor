@@ -67,7 +67,7 @@ describe('PromotionReservationService', function () {
       });
     });
 
-    it('returns CALCULATED status when solvency is not SOLVENT', () => {
+    it('returns TO_BE_VERIFIED status when solvency is not SOLVENT', () => {
       const startDate = new Date();
       const yesterday = moment()
         .subtract(1, 'days')
@@ -80,7 +80,7 @@ describe('PromotionReservationService', function () {
       });
 
       expect(mortgageCertification).to.deep.include({
-        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
         date: yesterday,
       });
     });

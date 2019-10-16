@@ -150,7 +150,7 @@ class PromotionReservationService extends CollectionService {
         status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT;
         break;
       default:
-        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED;
       }
       date = maxPropertyValueDate;
     } else if (solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT) {

@@ -79,7 +79,7 @@ ServerEventService.addAfterMethodListener(
         PromotionReservationService.updateMortgageCertification({
           promotionReservationId,
           status:
-            PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+            PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
           date,
         }));
     }

@@ -34,13 +34,13 @@ export class PromotionOptionService extends CollectionService {
 
   remove({ promotionOptionId }) {
     const {
-      loan: { _id: loanId },
+      loan: { _id: loanId, promotionOptions },
       promotion: { _id: promotionId },
       promotionReservation,
     } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       promotion: 1,
-      loan: { _id: 1 },
+      loan: { _id: 1, promotionOptions: { _id: 1 } },
       promotionReservation: { _id: 1, status: 1 },
     });
 
@@ -56,6 +56,13 @@ export class PromotionOptionService extends CollectionService {
           "Une réservation est active sur ce lot, veuillez l'annuler d'abord",
         );
       }
+    }
+
+    if (promotionOptions.length === 1) {
+      throw new Meteor.Error(
+        403,
+        'Vous devez choisir au moins un lot dans la promotion',
+      );
     }
 
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({
