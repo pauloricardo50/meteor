@@ -139,10 +139,10 @@ describe('PromotionReservationService', function () {
         })).to.not.throw();
     });
 
-    it('throws if start date is anterior to half agreement duration', () => {
+    it('throws if start date is anterior to agreement duration', () => {
       const agreementDuration = 11;
       const startDate = moment()
-        .subtract(7, 'days')
+        .subtract(13, 'days')
         .toDate();
 
       expect(() =>

@@ -168,7 +168,7 @@ class PromotionReservationService extends CollectionService {
 
     const today = moment().startOf('day');
     const startDateLowerBound = moment(today)
-      .subtract(Math.ceil(agreementDuration / 2), 'days')
+      .subtract(agreementDuration, 'days')
       .startOf('day');
 
     // Check if start date is in future
