@@ -1,5 +1,6 @@
 import { matchPath } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
+import { Meteor } from 'meteor/meteor';
 
 import { fetchBlogPostMeta } from 'core/api/blog';
 import BlogPostSeo from 'imports/ui/pages/BlogPostPage/BlogPostSeo';
@@ -17,10 +18,10 @@ const setBlogHeaders = (sink, url) => {
       if (post.error) {
         return;
       }
-
+      const { www: host } = Meteor.settings.public.subdomains
       const { title, excerpt, post_thumbnail } = post;
       sink.appendToHead(renderToString(BlogPostSeo({ ...post })));
-      sink.appendToHead(`<meta property="og:url" content="https://www.e-potek.ch${url}" />`);
+      sink.appendToHead(`<meta property="og:url" content="${host}${url}" />`);
       sink.appendToHead(`<meta property="og:title" content="${title}" />`);
       sink.appendToHead('<meta property="og:type" content="website" />');
       sink.appendToHead('<meta property="fb:app_id" content="1868218996582233" />');
