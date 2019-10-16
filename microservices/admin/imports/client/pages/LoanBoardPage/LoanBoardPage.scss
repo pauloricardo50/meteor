@@ -78,7 +78,6 @@
 
   .board-column {
     width: 300px;
-    height: 73vh;
     position: relative;
     overflow: auto;
   }
@@ -120,7 +119,7 @@ $button-height: 30px;
     .title {
       overflow: hidden;
 
-      max-width: 200px;
+      max-width: 190px;
       margin: 0;
 
       white-space: nowrap;
