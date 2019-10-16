@@ -2,6 +2,7 @@
 import React from 'react';
 import moment from 'moment';
 
+import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
 import {
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   AGREEMENT_STATUSES,
@@ -94,7 +95,12 @@ const PromotionReservationProgress = ({
     deposit,
     lender,
     adminNote,
+    loan,
   } = promotionReservation;
+
+  const { user } = loan;
+
+  const isAnonymized = isUserAnonymized(user);
 
   const icon = makeIcon(variant, isEditing, promotionReservationId);
 
@@ -136,7 +142,8 @@ const PromotionReservationProgress = ({
       })(lender.status),
       id: 'lender',
     }),
-    getAdminNoteIcon(adminNote, variant, isEditing, promotionReservationId),
+    !isAnonymized
+      && getAdminNoteIcon(adminNote, variant, isEditing, promotionReservationId),
   ].filter(x => x);
 
   return (

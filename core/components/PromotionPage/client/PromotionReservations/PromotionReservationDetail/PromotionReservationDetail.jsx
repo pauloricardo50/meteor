@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { cancelPromotionLotBooking, sellPromotionLot } from 'core/api/methods';
-import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers/index';
+import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
 import {
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATIONS_COLLECTION,
