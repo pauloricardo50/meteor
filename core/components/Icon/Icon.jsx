@@ -83,6 +83,7 @@ import Notifications from '@material-ui/icons/Notifications';
 import Snooze from '@material-ui/icons/Snooze';
 import DragHandle from '@material-ui/icons/DragHandle';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
+import MarkunreadMailbox from '@material-ui/icons/MarkunreadMailbox';
 
 export const iconMap = {
   close: CloseIcon,
@@ -166,6 +167,7 @@ export const iconMap = {
   snooze: Snooze,
   dragHandle: DragHandle,
   priorityHigh: PriorityHigh,
+  'markunread_mailbox': MarkunreadMailbox,
 };
 
 const Icon = React.forwardRef((
