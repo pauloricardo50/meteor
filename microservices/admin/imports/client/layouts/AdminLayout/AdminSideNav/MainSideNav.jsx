@@ -29,8 +29,9 @@ const items = [
     label: 'Dossiers',
     icon: (
       <FontAwesomeIcon icon={faCreditCard} className="collection-icon" />
-    ),
-    to: '/loan-board',
+      ),
+      to: '/loan-board',
+      collection: 'loan',
     exact: true,
   },
   {
@@ -84,7 +85,6 @@ const createOnClickHandler = (
 const MainSideNav = props => (
   <List className="main-side-nav">
     {items.map((item, index) => {
-      console.log('--------', item);
       return (
         <MainSideNavListItem
           onClick={createOnClickHandler(item, props)}

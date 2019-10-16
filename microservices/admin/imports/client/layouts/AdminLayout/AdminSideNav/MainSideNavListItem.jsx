@@ -23,11 +23,9 @@ const shouldRenderInPrimaryColor = ({
   if (collection && collection === collectionName) {
     return true;
   }
-
-  if (path.slice(1).startsWith(collection)) {
+  if (path.slice(1).startsWith(collection) || path.includes(collection)) {
     return true;
   }
-
   if (
     path === ADMIN_ROUTES.DASHBOARD_PAGE.path
     && to === ADMIN_ROUTES.DASHBOARD_PAGE.path
@@ -47,36 +45,36 @@ const MainSideNavListItem = ({
   to,
   history,
 }) => (
-  <ListItem
-    button
-    classes={classes}
-    onClick={onClick}
-    onDoubleClick={() => {
-      if (!to) {
-        history.push(`/${collection}`);
-      }
-    }}
-    component={!detail ? NavLink : undefined}
-    to={!detail ? to : undefined}
-    className="main-side-nav-list-item"
-  >
-    <div
-      className={classnames({
-        primary: shouldRenderInPrimaryColor({
-          collection,
-          collectionName,
-          path: history.location.pathname,
-          to,
-        }),
-      })}
+    <ListItem
+      button
+      classes={classes}
+      onClick={onClick}
+      onDoubleClick={() => {
+        if (!to) {
+          history.push(`/${collection}`);
+        }
+      }}
+      component={!detail ? NavLink : undefined}
+      to={!detail ? to : undefined}
+      className="main-side-nav-list-item"
     >
-      {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
-      <h5 className="label">
-        {label || <T id={`collections.${collection}`} noTooltips />}
-      </h5>
-    </div>
-  </ListItem>
-);
+      <div
+        className={classnames({
+          primary: shouldRenderInPrimaryColor({
+            collection,
+            collectionName,
+            path: history.location.pathname,
+            to,
+          }),
+        })}
+      >
+        {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
+        <h5 className="label">
+          {label || <T id={`collections.${collection}`} noTooltips />}
+        </h5>
+      </div>
+    </ListItem>
+  );
 
 MainSideNavListItem.propTypes = {
   classes: PropTypes.object.isRequired,
