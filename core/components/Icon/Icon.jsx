@@ -167,7 +167,7 @@ export const iconMap = {
   snooze: Snooze,
   dragHandle: DragHandle,
   priorityHigh: PriorityHigh,
-  'markunread_mailbox': MarkunreadMailbox,
+  markunreadMailbox: MarkunreadMailbox,
 };
 
 const Icon = React.forwardRef((

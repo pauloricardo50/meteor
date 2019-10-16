@@ -14,7 +14,7 @@ const icons = {
   [ACTIVITY_TYPES.EVENT]: 'event',
   [ACTIVITY_TYPES.OTHER]: 'radioButtonChecked',
   [ACTIVITY_TYPES.PHONE]: 'phone',
-  [ACTIVITY_TYPES.MAIL]: 'markunread_mailbox',
+  [ACTIVITY_TYPES.MAIL]: 'markunreadMailbox',
   task: 'check',
 };
 
