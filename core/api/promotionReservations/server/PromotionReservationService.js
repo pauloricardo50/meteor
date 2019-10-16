@@ -311,7 +311,7 @@ class PromotionReservationService extends CollectionService {
     return promotionReservationsToExpire.length;
   };
 
-  generateExpiringTomorrowTasks = async () => {
+  generateExpiringSoonTasks = async () => {
     const weekDay = moment().isoWeekday();
     const tomorrow = moment().add(1, 'day');
 
@@ -320,7 +320,7 @@ class PromotionReservationService extends CollectionService {
       tomorrow.add(2, 'days');
     }
 
-    const promotionReservationsExpiringTomorrow = this.fetch({
+    const promotionReservationsExpiringSoon = this.fetch({
       $filters: {
         expirationDate: {
           $lte: tomorrow.startOf('day').toDate(),
@@ -333,7 +333,7 @@ class PromotionReservationService extends CollectionService {
       expirationDate: 1,
     });
 
-    await Promise.all(promotionReservationsExpiringTomorrow.map((promotionReservation) => {
+    await Promise.all(promotionReservationsExpiringSoon.map((promotionReservation) => {
       const {
         promotion: { _id: promotionId, assignedEmployee },
         promotionLot: { name: promotionLotName },
@@ -349,6 +349,44 @@ class PromotionReservationService extends CollectionService {
           docId: promotionId,
           assigneeLink: assignedEmployee,
           title: `La réservation de ${userName} sur ${promotionLotName} arrive à échéance`,
+          description: `Valable jusqu'au ${moment(expirationDate).format('DD MMM')}`,
+        },
+      });
+    }));
+  };
+
+  generateHalfLifeReminderTasks = async () => {
+    const in10Days = moment().add(10, 'days');
+
+    const promotionReservationsExpiringIn10Days = this.fetch({
+      $filters: {
+        expirationDate: {
+          $lte: in10Days.startOf('day').toDate(),
+        },
+        status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+      },
+      loan: { user: { name: 1 } },
+      promotion: { name: 1, assignedEmployee: { _id: 1 } },
+      promotionLot: { name: 1 },
+      expirationDate: 1,
+    });
+
+    await Promise.all(promotionReservationsExpiringIn10Days.map((promotionReservation) => {
+      const {
+        promotion: { _id: promotionId, assignedEmployee },
+        promotionLot: { name: promotionLotName },
+        expirationDate,
+        loan: {
+          user: { name: userName },
+        },
+      } = promotionReservation;
+
+      return TaskService.insert({
+        object: {
+          collection: PROMOTIONS_COLLECTION,
+          docId: promotionId,
+          assigneeLink: assignedEmployee,
+          title: `La réservation de ${userName} sur ${promotionLotName} échoue dans 10 jours, relancer le client`,
           description: `Valable jusqu'au ${moment(expirationDate).format('DD MMM')}`,
         },
       });
