@@ -98,7 +98,7 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: 15 } });
+      wrapper.find('input').at(0).simulate('change', { target: { value: 15 } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([15]);
@@ -113,7 +113,7 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: 60 } });
+      wrapper.find('input').at(0).simulate('change', { target: { value: 60 } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([50]);
@@ -128,7 +128,7 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([0]);
@@ -144,7 +144,7 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal(['']);
@@ -160,7 +160,7 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal(['']);
@@ -175,7 +175,7 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: 0 } });
+      wrapper.find('input').at(0).simulate('change', { target: { value: 0 } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([0]);
