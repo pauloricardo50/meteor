@@ -19,7 +19,7 @@ import {
   PROMOTION_RESERVATION_STATUS,
   AGREEMENT_STATUSES,
   DEPOSIT_STATUSES,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
 } from '../../promotionReservationConstants';
 
 const makePromotionLotWithReservation = ({
@@ -358,9 +358,9 @@ describe('PromotionReservationService', function () {
             status: AGREEMENT_STATUSES.SIGNED,
           },
           deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
-          lender: {
+          bank: {
             date: startDate,
-            status: PROMOTION_RESERVATION_LENDER_STATUS.NONE,
+            status: PROMOTION_RESERVATION_BANK_STATUS.NONE,
           },
           mortgageCertification: {
             date: startDate,
@@ -387,19 +387,19 @@ describe('PromotionReservationService', function () {
         promotionReservations: {
           _id: 'promotionReservation',
           _factory: 'promotionReservation',
-          lender: { date: fiveDaysAgo },
+          bank: { date: fiveDaysAgo },
         },
       });
 
       PromotionReservationService._update({
         id: 'promotionReservation',
         object: {
-          'lender.status': PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+          'bank.status': PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
         },
       });
       const pR = PromotionReservationService.findOne('promotionReservation');
 
-      expect(moment(pR.lender.date).isAfter(now)).to.equal(true);
+      expect(moment(pR.bank.date).isAfter(now)).to.equal(true);
     });
 
     it('does not update date if both are provided', () => {
@@ -417,15 +417,15 @@ describe('PromotionReservationService', function () {
       PromotionReservationService._update({
         id: 'promotionReservation',
         object: {
-          lender: {
-            status: PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+          bank: {
+            status: PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
             date: fiveDaysAgo,
           },
         },
       });
       const pR = PromotionReservationService.findOne('promotionReservation');
 
-      expect(moment(pR.lender.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
+      expect(moment(pR.bank.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
     });
 
     it('sets any expirationDate and startDate at end/start of day', () => {

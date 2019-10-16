@@ -8,7 +8,7 @@ import {
   DEPOSIT_STATUSES,
   AGREEMENT_STATUSES,
   PROMOTION_RESERVATION_STATUS,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
 } from './promotionReservationConstants';
 
@@ -55,14 +55,14 @@ export const PromotionReservationSchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   'reservationAgreement.date': { type: Date, autoValue: dateAutoValue() },
-  lender: { type: Object, defaultValue: {} },
-  'lender.status': {
+  bank: { type: Object, defaultValue: {} },
+  'bank.status': {
     type: String,
-    allowedValues: Object.values(PROMOTION_RESERVATION_LENDER_STATUS),
-    defaultValue: PROMOTION_RESERVATION_LENDER_STATUS.NONE,
+    allowedValues: Object.values(PROMOTION_RESERVATION_BANK_STATUS),
+    defaultValue: PROMOTION_RESERVATION_BANK_STATUS.NONE,
     uniforms: { placeholder: null },
   },
-  'lender.date': { type: Date, autoValue: dateAutoValue() },
+  'bank.date': { type: Date, autoValue: dateAutoValue() },
   mortgageCertification: { type: Object, defaultValue: {} },
   'mortgageCertification.status': {
     type: String,

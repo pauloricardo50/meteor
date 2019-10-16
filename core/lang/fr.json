@@ -28,6 +28,7 @@
   "Forms.status.SIGNED": "Signé",
   "Forms.status.WAITING": "En attente",
   "Forms.status.VALIDATED": "Validé",
+  "Forms.status.VALIDATED_WITH_CONDITIONS": "Validé sous conditions",
   "Forms.status.REJECTED": "Refusé",
   "Forms.status.WAITLIST": "En liste d'attente",
   "Forms.status.CANCELED": "Annulé",

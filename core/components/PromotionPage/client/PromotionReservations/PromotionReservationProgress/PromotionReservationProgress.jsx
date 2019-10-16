@@ -6,7 +6,7 @@ import {
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   AGREEMENT_STATUSES,
   DEPOSIT_STATUSES,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
 } from '../../../../../api/promotionReservations/promotionReservationConstants';
 import BaseIcon from '../../../../Icon';
 import T from '../../../../Translation';
@@ -78,7 +78,7 @@ export const rawPromotionReservationProgress = ({
       === PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === AGREEMENT_STATUSES.SIGNED,
     deposit.status === DEPOSIT_STATUSES.PAID,
-    lender.status === PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+    lender.status === PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
 
 const PromotionReservationProgress = ({
@@ -130,9 +130,9 @@ const PromotionReservationProgress = ({
     icon({
       ...lender,
       ...makeGetIcon({
-        success: [PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED],
-        error: [PROMOTION_RESERVATION_LENDER_STATUS.REJECTED],
-        waiting: [PROMOTION_RESERVATION_LENDER_STATUS.WAITING],
+        success: [PROMOTION_RESERVATION_BANK_STATUS.VALIDATED],
+        error: [PROMOTION_RESERVATION_BANK_STATUS.REJECTED],
+        waiting: [PROMOTION_RESERVATION_BANK_STATUS.WAITING],
       })(lender.status),
       id: 'lender',
     }),

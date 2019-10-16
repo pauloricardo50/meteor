@@ -10,7 +10,7 @@ import {
   PROMOTION_LOT_STATUS,
   PROMOTION_RESERVATION_STATUS,
   AGREEMENT_STATUSES,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
   DEPOSIT_STATUSES,
 } from '../../../constants';
 import { up, down } from '../25';
@@ -109,7 +109,7 @@ describe('Migration 25', () => {
         status: AGREEMENT_STATUSES.WAITING,
       });
       expect(pRs[0].lender).to.deep.include({
-        status: PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+        status: PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
       });
       expect(pRs[0].deposit).to.deep.include({
         status: DEPOSIT_STATUSES.PAID,

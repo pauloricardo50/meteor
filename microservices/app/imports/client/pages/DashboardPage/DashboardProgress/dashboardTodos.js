@@ -9,7 +9,7 @@ import {
 } from 'core/api/constants';
 import {
   DEPOSIT_STATUSES,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
 } from 'imports/core/api/constants';
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
@@ -190,7 +190,7 @@ export const getDashboardTodosArray = list =>
         return (
           reservation
           && reservation.lender.status
-            === PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED
+            === PROMOTION_RESERVATION_BANK_STATUS.VALIDATED
         );
       },
       hide: loan => !getReservation(loan),
