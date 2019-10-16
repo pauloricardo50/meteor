@@ -3,7 +3,11 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { cancelPromotionLotBooking, sellPromotionLot } from 'core/api/methods';
+import {
+  bookPromotionLot,
+  sellPromotionLot,
+  cancelPromotionLotBooking,
+} from 'core/api/methods';
 import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers/index';
 import {
   PROMOTION_RESERVATION_DOCUMENTS,

@@ -11,7 +11,12 @@ import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 
 const DashboardProgressBar = ({ loan, variant }) => {
-  const { step: currentStep, promotionReservations = [], promotions } = loan;
+  const {
+    step: currentStep,
+    promotionReservations = [],
+    promotions,
+    maxPropertyValue,
+  } = loan;
   let currentIndex = STEP_ORDER.indexOf(currentStep);
   let steps = STEP_ORDER.map(step => ({
     label: <T id={`Forms.step.${step}`} />,
@@ -41,22 +46,26 @@ const DashboardProgressBar = ({ loan, variant }) => {
       ),
     }));
 
-    if (
-      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE)
-    ) {
+    if (loan.maxPropertyValue && loan.maxPropertyValue.date) {
       currentIndex = steps.findIndex(({ id }) => id === 'reserveLot');
     }
 
     if (
-      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.CONFIRMED)
+      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE)
     ) {
       currentIndex = steps.findIndex(({ id }) => id === 'confirmReservation');
     }
 
     if (
-      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.COMPLETED)
+      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.CONFIRMED)
     ) {
       currentIndex = steps.findIndex(({ id }) => id === 'notarySignature');
+    }
+
+    if (
+      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.COMPLETED)
+    ) {
+      currentIndex = steps.findIndex(({ id }) => id === 'notarySignature') + 1;
     }
   }
 
