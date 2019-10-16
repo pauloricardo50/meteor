@@ -21,7 +21,7 @@ CronService.addCron(
 CronService.addCron(
   {
     name: 'Expire anonymous loans',
-    frequency: 'every day',
+    frequency: 'at 00:00',
     func: () => LoanService.expireAnonymousLoans(),
   },
   { cronitorId: 'Ti1GXW' },

@@ -9,6 +9,7 @@ import Button from '../../Button';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
+  LOANS_COLLECTION,
 } from '../../../api/constants';
 
 type AdditionalDocModifierProps = {
@@ -30,6 +31,8 @@ export const getAdditionalDocSchema = (collection) => {
       'RETIREMENT',
       'OTHER',
     ];
+  } else {
+    allowedValues = ['OTHER'];
   }
 
   return new SimpleSchema({

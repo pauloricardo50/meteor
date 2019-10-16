@@ -83,6 +83,7 @@ import Notifications from '@material-ui/icons/Notifications';
 import Snooze from '@material-ui/icons/Snooze';
 import DragHandle from '@material-ui/icons/DragHandle';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
+import MarkunreadMailbox from '@material-ui/icons/MarkunreadMailbox';
 
 import colors from '../../config/colors';
 
@@ -168,6 +169,7 @@ export const iconMap = {
   snooze: Snooze,
   dragHandle: DragHandle,
   priorityHigh: PriorityHigh,
+  markunreadMailbox: MarkunreadMailbox,
 };
 
 const getColorStyle = color => ({ color: colors[color], fill: colors[color] });

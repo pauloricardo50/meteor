@@ -467,7 +467,7 @@ describe('Collection Security', () => {
             users: {
               _factory: 'pro',
               _id: 'proId',
-              $metadata: { permissions: {} },
+              $metadata: { permissions: { canSeeCustomerNames: false } },
             },
           },
         });

@@ -25,6 +25,12 @@ const getMenuItems = ({
     };
   });
 
+const getInvitedByName = ({ invitedBy, promotionUsers = [] }) => {
+  const user = promotionUsers.find(({ _id }) => _id === invitedBy);
+  return user && getUserNameAndOrganisation({ user });
+};
+
 export default withProps(({ promotionUsers, invitedBy, loanId, promotionId }) => ({
   options: getMenuItems({ promotionUsers, invitedBy, loanId, promotionId }),
+  invitedByName: getInvitedByName({ invitedBy, promotionUsers }),
 }));

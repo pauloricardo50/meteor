@@ -35,10 +35,11 @@ export const PropertiesTable = ({
       <MongoRange
         style={{ width: 250, marginLeft: 14, marginTop: 8 }}
         max={5000000}
+        step={10000}
         value={propertyValue}
         onChange={setPropertyValue}
         id="propertyValue"
-        tipFormatter={toMoney}
+        valueLabelFormat={toMoney}
       />
     </div>
     <Table {...props} />

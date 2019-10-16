@@ -4,10 +4,11 @@
 
 .files-tab-container {
   display: grid;
-  grid-gap: 10px;
-  grid-auto-flow: column;
-  grid-template-columns: 1fr minmax(400px, 33%);
   align-items: start;
+
+  grid-auto-flow: column;
+  grid-gap: 10px;
+  grid-template-columns: 1fr minmax(400px, 33%);
 
   .loan-google-drive {
     min-width: 400px;
