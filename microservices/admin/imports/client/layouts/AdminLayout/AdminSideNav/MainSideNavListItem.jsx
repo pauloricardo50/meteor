@@ -8,7 +8,6 @@ import classnames from 'classnames';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { compose } from 'recompose';
-import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 const styles = () => ({
   root: { justifyContent: 'center' },
@@ -19,6 +18,7 @@ const shouldRenderInPrimaryColor = ({
   collectionName,
   path,
   to,
+  exact,
 }) => {
   if (collection && collection === collectionName) {
     return true;
@@ -26,10 +26,7 @@ const shouldRenderInPrimaryColor = ({
   if (path.slice(1).startsWith(collection) || path.includes(collection)) {
     return true;
   }
-  if (
-    path === ADMIN_ROUTES.DASHBOARD_PAGE.path
-    && to === ADMIN_ROUTES.DASHBOARD_PAGE.path
-  ) {
+  if (exact && path === to) {
     return true;
   }
 };
@@ -44,37 +41,39 @@ const MainSideNavListItem = ({
   collectionName,
   to,
   history,
+  exact,
 }) => (
-    <ListItem
-      button
-      classes={classes}
-      onClick={onClick}
-      onDoubleClick={() => {
-        if (!to) {
-          history.push(`/${collection}`);
-        }
-      }}
-      component={!detail ? NavLink : undefined}
-      to={!detail ? to : undefined}
-      className="main-side-nav-list-item"
+  <ListItem
+    button
+    classes={classes}
+    onClick={onClick}
+    onDoubleClick={() => {
+      if (!to) {
+        history.push(`/${collection}`);
+      }
+    }}
+    component={!detail ? NavLink : undefined}
+    to={!detail ? to : undefined}
+    className="main-side-nav-list-item"
+  >
+    <div
+      className={classnames({
+        primary: shouldRenderInPrimaryColor({
+          collection,
+          collectionName,
+          path: history.location.pathname,
+          to,
+          exact,
+        }),
+      })}
     >
-      <div
-        className={classnames({
-          primary: shouldRenderInPrimaryColor({
-            collection,
-            collectionName,
-            path: history.location.pathname,
-            to,
-          }),
-        })}
-      >
-        {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
-        <h5 className="label">
-          {label || <T id={`collections.${collection}`} noTooltips />}
-        </h5>
-      </div>
-    </ListItem>
-  );
+      {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
+      <h5 className="label">
+        {label || <T id={`collections.${collection}`} noTooltips />}
+      </h5>
+    </div>
+  </ListItem>
+);
 
 MainSideNavListItem.propTypes = {
   classes: PropTypes.object.isRequired,

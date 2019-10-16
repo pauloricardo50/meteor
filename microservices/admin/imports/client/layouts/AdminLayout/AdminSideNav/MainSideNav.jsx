@@ -27,11 +27,8 @@ const items = [
   },
   {
     label: 'Dossiers',
-    icon: (
-      <FontAwesomeIcon icon={faCreditCard} className="collection-icon" />
-      ),
-      to: '/loan-board',
-      collection: 'loan',
+    icon: <FontAwesomeIcon icon={faCreditCard} className="collection-icon" />,
+    to: '/loan-board',
     exact: true,
   },
   {
@@ -62,8 +59,14 @@ const items = [
     icon: (
       <FontAwesomeIcon icon={faProjectDiagram} className="collection-icon" />
     ),
+    collection: 'other',
   },
-  { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },
+  {
+    label: 'Dev',
+    icon: 'developerMode',
+    to: ADMIN_ROUTES.DEV_PAGE.path,
+    exact: true,
+  },
 ].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (
@@ -84,16 +87,14 @@ const createOnClickHandler = (
 
 const MainSideNav = props => (
   <List className="main-side-nav">
-    {items.map((item, index) => {
-      return (
-        <MainSideNavListItem
-          onClick={createOnClickHandler(item, props)}
-          key={index}
-          {...item}
-          {...props}
-        />
-      )
-    })}
+    {items.map((item, index) => (
+      <MainSideNavListItem
+        onClick={createOnClickHandler(item, props)}
+        key={index}
+        {...item}
+        {...props}
+      />
+    ))}
   </List>
 );
 
