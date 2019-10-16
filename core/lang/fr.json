@@ -1,4 +1,9 @@
 {
+  "Forms.roles.PROMOTER": "Promoteur",
+  "Forms.roles.BROKER": "Courtier",
+  "Forms.roles.NOTARY": "Notaire",
+  "Forms.roles.VISITOR": "Visiteur",
+  "AdminPromotionPage.PromotionUsers.roles": "Roles",
   "Forms.note": "Note admin",
   "Forms.note.placeholder": "Salut!",
   "Forms.status.SOLVENT": "Solvable",

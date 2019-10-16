@@ -1,18 +1,20 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 
 import { removeProFromPromotion } from '../../../../api/methods';
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
-import { createRoute } from '../../../../utils/routerUtils';
 import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
 import IconButton from '../../../IconButton';
 import T from '../../../Translation';
 import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
+import PromotionUserRolesModifier from './PromotionUserRolesModifier';
+import { USERS_COLLECTION } from '../../../../api/constants';
+import { CollectionIconLink } from '../../../IconLink';
 
 const columnOptions = [
   { id: 'name' },
   { id: 'email' },
+  { id: 'roles' },
   { id: 'permissions' },
   { id: 'actions' },
 ].map(({ id }) => ({
@@ -20,17 +22,35 @@ const columnOptions = [
   label: <T id={`AdminPromotionPage.PromotionUsers.${id}`} />,
 }));
 
-const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
+const makeMapPromotionUser = ({ promotionId }) => (user) => {
   const {
-    _id,
+    _id: userId,
+    name,
     email,
-    $metadata: { permissions },
+    $metadata: { permissions, roles = [] },
   } = user;
   return {
-    id: _id,
+    id: userId,
     columns: [
-      getUserNameAndOrganisation({ user }),
+      {
+        raw: name,
+        label: (
+          <CollectionIconLink
+            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+          />
+        ),
+      },
       email,
+      {
+        raw: roles,
+        label: (
+          <PromotionUserRolesModifier
+            userId={userId}
+            promotionId={promotionId}
+            roles={roles}
+          />
+        ),
+      },
       {
         raw: permissions,
         label: (
@@ -42,7 +62,7 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
           </div>
         ),
       },
-      <div onClick={event => event.stopPropagation()} key={_id}>
+      <div onClick={event => event.stopPropagation()} key={userId}>
         <ImpersonateLink
           user={user}
           key="impersonate"
@@ -54,7 +74,7 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
               user,
             })} de la promotion ?`);
             if (confirm) {
-              return removeProFromPromotion.run({ promotionId, userId: _id });
+              return removeProFromPromotion.run({ promotionId, userId });
             }
             return Promise.resolve();
           }}
@@ -63,17 +83,10 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
         />
       </div>,
     ],
-    handleClick: () =>
-      history.push(createRoute('/users/:userId', { userId: _id })),
   };
 };
 
-export default compose(
-  withRouter,
-  withProps(({ promotion: { _id: promotionId, users }, history }) => ({
-    columnOptions,
-    rows: users
-      ? users.map(makeMapPromotionUser({ history, promotionId }))
-      : [],
-  })),
-);
+export default withProps(({ promotion: { _id: promotionId, users } }) => ({
+  columnOptions,
+  rows: users ? users.map(makeMapPromotionUser({ promotionId })) : [],
+}));
