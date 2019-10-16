@@ -14,9 +14,7 @@ const DashboardProgress = props => (
         <T id="DashboardProgressBar.title" />
       </b>
     </p>
-    {!props.loan.hasPromotion && (
-      <DashboardProgressBar {...props} currentStep={props.loan.step} />
-    )}
+    <DashboardProgressBar {...props} />
     <DashboardProgressInfo {...props} />
     <LoanChecklistDialog {...props} />
   </div>
