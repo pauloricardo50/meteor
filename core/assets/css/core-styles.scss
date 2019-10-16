@@ -458,8 +458,9 @@ p.description,
     border-spacing: 0;
 
     thead {
-      font-weight: bold;
       color: $title-text;
+
+      font-weight: bold;
     }
 
     td,

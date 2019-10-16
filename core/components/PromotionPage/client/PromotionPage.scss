@@ -21,8 +21,8 @@
     max-height: 500px;
     padding: 32px;
 
-    border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 
     @include screen(med) {
       padding: 16px;
@@ -87,10 +87,11 @@
     }
 
     &-linkers {
-      width: 100%;
       display: flex;
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
+
+      width: 100%;
 
       > * {
         min-width: 200px;
@@ -160,12 +161,12 @@
     .contacts,
     .logos {
       display: flex;
-      flex-direction: row;
       align-items: center;
-
-      margin-top: 32px;
+      flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
+
+      margin-top: 32px;
     }
 
     .contacts {
@@ -191,16 +192,17 @@
       padding: 32px;
 
       &-wrapper {
-        height: 120px;
-        max-width: 200px;
         display: flex;
-        flex-direction: column;
         align-items: center;
+        flex-direction: column;
         justify-content: center;
 
+        max-width: 200px;
+        height: 120px;
+
         img {
-          max-height: 100%;
           max-width: 100%;
+          max-height: 100%;
         }
       }
     }
@@ -303,11 +305,12 @@
   margin-top: 16px;
 
   &-statuses form {
-    width: 100%;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     justify-content: center;
+
+    width: 100%;
 
     > * {
       width: 200px;
@@ -320,26 +323,29 @@
 
   .promotion-recap {
     display: flex;
-    width: 100%;
     align-items: center;
     justify-content: center;
+
+    width: 100%;
   }
 
   &-charts {
-    padding: 16px;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
+
+    padding: 16px;
 
     .chart {
-      height: 400px;
-      width: 600px;
-      padding: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
+
+      width: 600px;
+      height: 400px;
+      padding: 8px;
 
       @include screen(med) {
         transform: scale(0.8);
@@ -347,13 +353,14 @@
 
       .empty {
         display: flex;
-        flex-direction: column;
         align-items: center;
+        flex-direction: column;
         justify-content: center;
 
         .icon {
           width: 200px;
           height: 200px;
+
           opacity: 0.5;
         }
       }
