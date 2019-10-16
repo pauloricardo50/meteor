@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
+import cx from 'classnames';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
@@ -37,6 +38,12 @@ const getRedirect = ({ currentUser, history }) => {
   }
 
   return false;
+};
+
+const routeHasNoPadding = (pathname) => {
+  if (pathname.startsWith('/loan-board')) {
+    return true;
+  }
 };
 
 const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
@@ -84,7 +91,11 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
         toggleDrawer={toggleDrawer}
       />
 
-      <div className="main">
+      <div
+        className={cx('main', {
+          'no-padding': routeHasNoPadding(history.location.pathname),
+        })}
+      >
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
           {React.cloneElement(children, { ...props })}
         </ErrorBoundary>
