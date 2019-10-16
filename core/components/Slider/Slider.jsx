@@ -1,9 +1,37 @@
 // @flow
-import React, { useState } from 'react';
-import { Slider as MuiSlider } from '@material-ui/core';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDebounce } from 'react-use';
 
+import MuiSlider from '../Material/Slider';
+import Tooltip from '../Material/Tooltip';
+
 type SliderProps = {};
+
+const formatTooltip = (props) => {
+  const { children, value, open, valueLabelFormat, valueLabelDisplay } = props;
+
+  if (valueLabelDisplay === 'off') {
+    return null;
+  }
+
+  const popperRef = useRef(null);
+  useEffect(() => {
+    if (popperRef.current) {
+      popperRef.current.update();
+    }
+  });
+
+  return (
+    <Tooltip
+      title={valueLabelFormat(value)}
+      open={open}
+      placement="top"
+      PopperProps={{ popperRef }}
+    >
+      {children}
+    </Tooltip>
+  );
+};
 
 const Slider = ({
   min = 0,
@@ -11,7 +39,7 @@ const Slider = ({
   defaultValue = 0,
   value,
   onChange,
-  tipFormatter = x => x,
+  valueLabelFormat,
   debounce = true,
   ...rest
 }: SliderProps) => {
@@ -22,14 +50,20 @@ const Slider = ({
   // is passed through other components that are expensive to update
   useDebounce(() => debounce && onChange(fastValue), 300, [fastValue]);
 
+  const handleChange = (event, newValue) => {
+    setFastValue(newValue);
+  };
+
   return (
     <MuiSlider
       min={min}
       max={max}
       defaultValue={defaultValue}
       value={debounce ? fastValue : value}
-      onChange={debounce ? setFastValue : (event, value) => onChange(value)}
-      valueLabelFormat={tipFormatter}
+      onChange={debounce ? handleChange : (event, v) => onChange(v)}
+      valueLabelFormat={valueLabelFormat}
+      ValueLabelComponent={valueLabelFormat ? formatTooltip : undefined}
+      valueLabelDisplay={valueLabelFormat ? 'auto' : 'off'}
       {...rest}
     />
   );
