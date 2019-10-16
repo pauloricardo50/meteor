@@ -18,26 +18,25 @@ const setBlogHeaders = (sink, url) => {
       if (post.error) {
         return;
       }
-      const { www: host } = Meteor.settings.public.subdomains
-      const { title, excerpt, post_thumbnail } = post;
-      sink.appendToHead(renderToString(BlogPostSeo({ ...post })));
-      sink.appendToHead(`<meta property="og:url" content="${host}${url}" />`);
+      const { title, excerpt, post_thumbnail: postThumbnail } = post;
+      sink.appendToHead(renderToString(BlogPostSeo({ ...post, url })));
+      sink.appendToHead(`<meta property="og:url" content="${Meteor.settings.public.subdomains.www}${url}" />`);
       sink.appendToHead(`<meta property="og:title" content="${title}" />`);
       sink.appendToHead('<meta property="og:type" content="website" />');
       sink.appendToHead('<meta property="fb:app_id" content="1868218996582233" />');
       sink.appendToHead(`<meta property="og:description" content="${excerpt}" />`);
-      sink.appendToHead(`<meta property="og:image" content="${post_thumbnail.URL}" />`);
+      sink.appendToHead(`<meta property="og:image" content="${postThumbnail.URL}" />`);
       sink.appendToHead(`<meta property="og:image:height" content="${
-        post_thumbnail.height
-        }" />`);
-      sink.appendToHead(`<meta property="og:image:width" content="${post_thumbnail.width}" />`);
+        postThumbnail.height
+      }" />`);
+      sink.appendToHead(`<meta property="og:image:width" content="${postThumbnail.width}" />`);
     });
   }
 };
 
 export const setHeaders = async (sink) => {
   const { request } = sink;
-  const path = request.url.path;
+  const { path } = request.url;
 
   if (path.includes('/blog/')) {
     await setBlogHeaders(sink, path);
