@@ -8,7 +8,6 @@ import LoanBoardColumnHeader from './LoanBoardColumnHeader';
 import LoanBoardCard from './LoanBoardCard';
 import LoanModal from './LoanModal';
 import { ACTIONS } from './loanBoardConstants';
-import AdminDashboardTabs from '../AdminDashboardPage/AdminDashboardTabs';
 
 type LoanBoardProps = {};
 
@@ -26,7 +25,6 @@ const LoanBoard = ({
   setActivateSync,
 }: LoanBoardProps) => (
   <>
-    <AdminDashboardTabs />
     <div className="loan-board">
       <LoanBoardOptions
         options={options}
