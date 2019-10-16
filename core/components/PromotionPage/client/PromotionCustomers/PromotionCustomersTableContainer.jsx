@@ -82,7 +82,7 @@ const getColumns = ({
     },
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
-      raw: loanProgress.verificationStatus,
+      raw:  loanProgress.info + loanProgress.documents,
       label: <LoanProgress loanProgress={loanProgress} />,
     },
     {

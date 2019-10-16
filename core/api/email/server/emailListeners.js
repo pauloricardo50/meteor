@@ -4,30 +4,13 @@ import UserService from '../../users/server/UserService';
 import { promotionShouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
-  requestLoanVerification,
   submitContactForm,
   bookPromotionLot,
   cancelPromotionLotBooking,
   sellPromotionLot,
 } from '../../methods';
-import { Loans } from '../..';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
-
-ServerEventService.addAfterMethodListener(
-  requestLoanVerification,
-  ({ context, params }) => {
-    context.unblock();
-    const { loanId } = params;
-    const { userId } = Loans.findOne(loanId);
-
-    return sendEmail.run({
-      emailId: EMAIL_IDS.VERIFICATION_REQUESTED,
-      userId,
-      params,
-    });
-  },
-);
 
 ServerEventService.addAfterMethodListener(
   submitContactForm,

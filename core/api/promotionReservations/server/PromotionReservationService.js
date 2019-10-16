@@ -56,7 +56,7 @@ class PromotionReservationService extends CollectionService {
         promotionReservations: { status: 1, expirationDate: 1 },
         promotion: { agreementDuration: 1 },
       },
-      loan: { maxPropertyValue: { date: 1 }, verificationStatus: 1 },
+      loan: { maxPropertyValue: { date: 1 } },
       solvency: 1,
     });
 

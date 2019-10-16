@@ -13,7 +13,6 @@ import {
   loanInsert,
   loanUpdate,
   loanDelete,
-  requestLoanVerification,
   confirmClosing,
   pushLoanValue,
   popLoanValue,
@@ -59,11 +58,6 @@ loanUpdate.setHandler((context, { loanId, object }) => {
 loanDelete.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
   return LoanService.remove({ loanId });
-});
-
-requestLoanVerification.setHandler((context, { loanId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.askVerification({ loanId });
 });
 
 confirmClosing.setHandler((context, { loanId, object }) => {

@@ -2,7 +2,6 @@ import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 import { sortByStatus } from 'core/utils/sorting';
 import {
-  LOAN_VERIFICATION_STATUS,
   PURCHASE_TYPE,
   PROPERTY_CATEGORY,
   PROMOTION_RESERVATION_STATUS,
@@ -13,7 +12,6 @@ import {
   PROMOTION_RESERVATION_LENDER_STATUS,
 } from 'imports/core/api/constants';
 import APP_ROUTES from '../../../../startup/client/appRoutes';
-import VerificationRequester from './VerificationRequester';
 
 const createFinancingLink = ({ _id: loanId }) =>
   createRoute(APP_ROUTES.FINANCING_PAGE.path, { ':loanId': loanId });
@@ -202,11 +200,6 @@ export const getDashboardTodosArray = list =>
       isDone: loan => Calculator.filesProgress({ loan }).percent >= 1,
       link: ({ _id: loanId }) =>
         createRoute(APP_ROUTES.FILES_PAGE.path, { ':loanId': loanId }),
-    },
-    {
-      id: 'verification',
-      isDone: loan => loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK,
-      Component: VerificationRequester,
     },
     {
       id: 'chooseOffer',

@@ -146,26 +146,6 @@ export class LoanService extends CollectionService {
     return { prevStatus, nextStatus: status };
   }
 
-  askVerification = ({ loanId }) => {
-    const loan = this.get(loanId);
-
-    if (
-      loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED
-      || loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
-    ) {
-      // Don't do anything if this loan is already in requested mode
-      throw new Meteor.Error('La vérification est déjà en cours, ou effectuée.');
-    }
-
-    return this.update({
-      loanId,
-      object: {
-        verificationStatus: LOAN_VERIFICATION_STATUS.REQUESTED,
-        userFormsEnabled: false,
-      },
-    });
-  };
-
   insertPromotionLoan = ({
     userId,
     promotionId,

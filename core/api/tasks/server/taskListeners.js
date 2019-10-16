@@ -4,7 +4,6 @@ import { getUserNameAndOrganisation } from '../../helpers';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
-  requestLoanVerification,
   adminCreateUser,
   anonymousCreateUser,
   proInviteUser,
@@ -12,19 +11,6 @@ import {
 } from '../../methods';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
-
-ServerEventService.addAfterMethodListener(
-  requestLoanVerification,
-  ({ params: { loanId } }) => {
-    TaskService.insert({
-      object: {
-        title: 'Vérification du dossier demandée',
-        docId: loanId,
-        collection: LOANS_COLLECTION,
-      },
-    });
-  },
-);
 
 const newUserTask = ({ userId, ...params }) =>
   TaskService.insert({

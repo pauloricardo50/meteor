@@ -115,18 +115,6 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
   },
 });
 
-addEmailConfig(EMAIL_IDS.VERIFICATION_REQUESTED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION,
-});
-
-addEmailConfig(EMAIL_IDS.VERIFICATION_ERROR, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
-addEmailConfig(EMAIL_IDS.VERIFICATION_PASSED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
 const getFirstName = string => string.trim().split(' ')[0];
 
 addEmailConfig(EMAIL_IDS.CONTACT_US, {

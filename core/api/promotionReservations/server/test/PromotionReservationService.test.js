@@ -12,7 +12,6 @@ import PromotionService from 'core/api/promotions/server/PromotionService';
 import { checkEmails } from 'core/utils/testHelpers';
 import TaskService from 'core/api/tasks/server/TaskService';
 import generator from '../../../factories';
-import { LOAN_VERIFICATION_STATUS } from '../../../loans/loanConstants';
 import PromotionReservationService from '../PromotionReservationService';
 import {
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
@@ -94,7 +93,6 @@ describe('PromotionReservationService', function () {
       const mortgageCertification = PromotionReservationService.getInitialMortgageCertification({
         loan: {
           maxPropertyValue: { date: yesterday },
-          verificationStatus: LOAN_VERIFICATION_STATUS.OK,
         },
         startDate,
         solvency: PROMOTION_OPTION_SOLVENCY.SOLVENT,
