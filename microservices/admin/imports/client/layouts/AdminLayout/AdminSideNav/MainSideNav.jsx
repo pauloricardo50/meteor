@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
-import { faCreditCard } from '@fortawesome/pro-light-svg-icons/faCreditCard';
 
 import List from '@material-ui/core/List';
 
@@ -27,7 +26,7 @@ const items = [
   },
   {
     label: 'Dossiers',
-    icon: <FontAwesomeIcon icon={faCreditCard} className="collection-icon" />,
+    icon: 'viewWeek',
     to: '/loan-board',
     exact: true,
   },
