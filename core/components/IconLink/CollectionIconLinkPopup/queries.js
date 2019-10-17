@@ -54,6 +54,7 @@ export default {
           referredByUser: { name: 1 },
           referredByOrganisation: { name: 1 },
           emails: 1,
+          organisations: { name: 1 },
         },
       },
       cb,

@@ -726,6 +726,7 @@ export const basePromotion = () => ({
     email: 1,
     roles: 1,
     phoneNumber: 1,
+    phoneNumbers: 1,
     organisations: { name: 1 },
   },
   zipCode: 1,

@@ -327,6 +327,15 @@ export class PromotionService extends CollectionService {
       object: { constructionTimeline },
     });
   }
+
+  updateUserRoles({ promotionId, userId, roles = [] }) {
+    this.updateLinkMetadata({
+      id: promotionId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { roles },
+    });
+  }
 }
 
 export default new PromotionService();
