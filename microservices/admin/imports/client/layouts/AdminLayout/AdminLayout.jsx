@@ -41,12 +41,14 @@ const getRedirect = ({ currentUser, history }) => {
 };
 
 const routeHasNoPadding = (pathname) => {
+  console.log('routeHasNoPadding:', pathname);
   if (pathname.startsWith('/loan-board')) {
     return true;
   }
 };
 
 const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
+  console.log('AdminLayout: refresh', );
   const isMobile = useMedia({ maxWidth: 768 });
   const [openDrawer, setDrawer] = useState(false);
   const toggleDrawer = () => setDrawer(!openDrawer);
