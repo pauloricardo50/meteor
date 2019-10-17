@@ -3,10 +3,10 @@ import { documentsField } from 'core/api/helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import {
-  PROMOTION_RESERVATION_STATUS,
   DEPOSIT_STATUSES,
   AGREEMENT_STATUSES,
   PROMOTION_RESERVATION_BANK_STATUS,
+  PROMOTION_OPTION_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
 } from '../promotionOptionConstants';
 
@@ -24,68 +24,6 @@ const dateAutoValue = (triggerField = 'status') =>
     }
   };
 
-const reservationSchema = {
-  reservation: { type: Object, optional: true, defaultValue: {} },
-  'reservation.startDate': {
-    type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
-  'reservation.expirationDate': {
-    type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
-  'reservation.status': {
-    type: String,
-    allowedValues: Object.values(PROMOTION_RESERVATION_STATUS),
-    defaultValue: PROMOTION_RESERVATION_STATUS.ACTIVE,
-  },
-  'reservation.deposit': { type: Object, defaultValue: {} },
-  'reservation.deposit.status': {
-    type: String,
-    allowedValues: Object.values(DEPOSIT_STATUSES),
-    defaultValue: DEPOSIT_STATUSES.UNPAID,
-    uniforms: { placeholder: null },
-  },
-  'reservation.deposit.date': { type: Date, autoValue: dateAutoValue() },
-  'reservation.reservationAgreement': { type: Object, defaultValue: {} },
-  'reservation.reservationAgreement.status': {
-    type: String,
-    allowedValues: Object.values(AGREEMENT_STATUSES),
-    defaultValue: AGREEMENT_STATUSES.UNSIGNED,
-    uniforms: { placeholder: null },
-  },
-  'reservation.reservationAgreement.date': {
-    type: Date,
-    autoValue: dateAutoValue(),
-  },
-  'reservation.bank': { type: Object, defaultValue: {} },
-  'reservation.bank.status': {
-    type: String,
-    allowedValues: Object.values(PROMOTION_RESERVATION_BANK_STATUS),
-    defaultValue: PROMOTION_RESERVATION_BANK_STATUS.NONE,
-    uniforms: { placeholder: null },
-  },
-  'reservation.bank.date': { type: Date, autoValue: dateAutoValue() },
-  'reservation.mortgageCertification': { type: Object, defaultValue: {} },
-  'reservation.mortgageCertification.status': {
-    type: String,
-    allowedValues: Object.values(PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue:
-      PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
-    uniforms: { placeholder: null },
-  },
-  'reservation.mortgageCertification.date': {
-    type: Date,
-    autoValue: dateAutoValue(),
-  },
-  'reservation.adminNote': { type: Object, defaultValue: {} },
-  'reservation.adminNote.note': { type: String, defaultValue: '' },
-  'reservation.adminNote.date': {
-    type: Date,
-    autoValue: dateAutoValue('note'),
-  },
-};
-
 const PromotionOptionSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -101,9 +39,67 @@ const PromotionOptionSchema = new SimpleSchema({
   },
   promotionLink: { type: Object, optional: true },
   'promotionLink._id': { type: String, optional: true },
-  proNote: { type: String, optional: true },
   documents: documentsField,
-  ...reservationSchema,
+  adminNote: { type: Object, defaultValue: {} },
+  'adminNote.note': { type: String, defaultValue: '' },
+  'adminNote.date': {
+    type: Date,
+    autoValue: dateAutoValue('note'),
+  },
+  status: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_OPTION_STATUS),
+    defaultValue: PROMOTION_OPTION_STATUS.INTERESTED,
+  },
+  reservationAgreement: { type: Object, defaultValue: {} },
+  'reservationAgreement.status': {
+    type: String,
+    allowedValues: Object.values(AGREEMENT_STATUSES),
+    defaultValue: AGREEMENT_STATUSES.UNSIGNED,
+    uniforms: { placeholder: null },
+  },
+  'reservationAgreement.date': {
+    type: Date,
+    autoValue: dateAutoValue(),
+  },
+  'reservationAgreement.startDate': {
+    type: Date,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    optional: true,
+  },
+  'reservationAgreement.expirationDate': {
+    type: Date,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    optional: true,
+  },
+  deposit: { type: Object, defaultValue: {} },
+  'deposit.status': {
+    type: String,
+    allowedValues: Object.values(DEPOSIT_STATUSES),
+    defaultValue: DEPOSIT_STATUSES.UNPAID,
+    uniforms: { placeholder: null },
+  },
+  'deposit.date': { type: Date, autoValue: dateAutoValue() },
+  bank: { type: Object, defaultValue: {} },
+  'bank.status': {
+    type: String,
+    allowedValues: Object.values(PROMOTION_RESERVATION_BANK_STATUS),
+    defaultValue: PROMOTION_RESERVATION_BANK_STATUS.NONE,
+    uniforms: { placeholder: null },
+  },
+  'bank.date': { type: Date, autoValue: dateAutoValue() },
+  mortgageCertification: { type: Object, defaultValue: {} },
+  'mortgageCertification.status': {
+    type: String,
+    allowedValues: Object.values(PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS),
+    defaultValue:
+      PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
+    uniforms: { placeholder: null },
+  },
+  'mortgageCertification.date': {
+    type: Date,
+    autoValue: dateAutoValue(),
+  },
 });
 
 export default PromotionOptionSchema;

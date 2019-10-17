@@ -1,3 +1,4 @@
+import FileService from '../../files/server/FileService';
 import LoanService from '../../loans/server/LoanService';
 import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
 import PromotionOptions from '..';
@@ -40,3 +41,6 @@ PromotionOptions.after.update(function (userId, doc, fieldNames) {
     }
   }
 });
+
+PromotionOptions.after.remove((userId, { _id }) =>
+  FileService.deleteAllFilesForDoc(_id));

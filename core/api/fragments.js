@@ -622,7 +622,6 @@ export const proPromotionOption = () => ({
     loanProgress: 1,
   },
   promotion: { users: { _id: 1 } },
-  proNote: 1,
   promotionReservation: proPromotionReservation(),
 });
 
