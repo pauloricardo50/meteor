@@ -18,9 +18,6 @@ const MonitoringTab = ({
   <div>
     <h1>Monitoring</h1>
 
-    <h2 className="text-center">Activité</h2>
-    <MonitoringActivity />
-
     <h2 className="text-center">Revenus</h2>
     <LoanMonitoringChart
       initialValue="revenues"
@@ -41,6 +38,9 @@ const MonitoringTab = ({
       initialGroupBy="createdAt"
       allowedGroupBy={['status', 'createdAt']}
     />
+
+    <h2 className="text-center">Activité</h2>
+    <MonitoringActivity />
   </div>
 );
 

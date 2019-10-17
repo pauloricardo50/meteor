@@ -39,11 +39,11 @@ const makeNode = formatMessage => (status, index) => ({
   column: index,
   name: formatMessage({ id: `Forms.status.${status}` }),
 });
-const mapData =({ _id: { prevStatus, nextStatus }, count }) => ({
+const mapData = ({ _id: { prevStatus, nextStatus }, count }) => ({
   from: prevStatus,
   to: nextStatus,
   weight: count,
-})
+});
 
 const MonitoringActivity = ({
   range,
@@ -139,10 +139,10 @@ const MonitoringActivity = ({
 export default compose(
   withState('range', 'setRange', {
     startDate: moment()
-      .startOf('month')
+      .subtract(30, 'd')
       .toDate(),
     endDate: moment()
-      .endOf('month')
+      .endOf('day')
       .toDate(),
   }),
   withSmartQuery({
