@@ -4,12 +4,12 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
-import PromotionReservationService from '../../../promotionReservations/server/PromotionReservationService';
+// import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
+// import PromotionReservationService from '../../../promotionReservations/server/PromotionReservationService';
 import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
 import PromotionOptionService from '../PromotionOptionService';
-import { PROMOTION_OPTION_SOLVENCY } from '../../promotionOptionConstants';
+import { PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS } from '../../promotionOptionConstants';
 
 describe('PromotionOptionService', () => {
   beforeEach(() => {

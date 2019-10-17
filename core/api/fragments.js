@@ -602,6 +602,7 @@ export const fullPromotionOption = () => ({
   promotionLots: { name: 1, promotion: { name: 1 } },
   solvency: 1,
   updatedAt: 1,
+  status: 1,
 });
 
 export const proPromotionOption = () => ({
@@ -640,7 +641,7 @@ export const appPromotionOption = () => ({
 export const loanPromotionOption = () => ({
   ...appPromotionOption(),
   name: 1,
-  promotion: 1,
+  promotion: { name: 1 },
   promotionLots: {
     name: 1,
     status: 1,

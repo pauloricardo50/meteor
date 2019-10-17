@@ -75,8 +75,8 @@ export class PromotionOptionService extends CollectionService {
 
     if (
       [
-        PROMOTION_OPTION_STATUS.ACTIVE,
-        PROMOTION_OPTION_STATUS.COMPLETED,
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        PROMOTION_OPTION_STATUS.RESERVED,
       ].includes(status)
     ) {
       throw new Meteor.Error(
@@ -185,7 +185,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   updateStatus({ promotionOptionId, status }) {
-    this._update({ id: promotionOptionId, status });
+    this._update({ id: promotionOptionId, object: { status } });
   }
 
   requestReservation({ promotionOptionId }) {
@@ -233,7 +233,7 @@ export class PromotionOptionService extends CollectionService {
     agreementFileKeys = [],
     withAgreement = true,
   }) => {
-    const { promotionLots = [] } = this.fetchOne({
+    const { promotionLots = [], status } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       promotionLots: {
         promotion: { agreementDuration: 1 },
@@ -242,6 +242,7 @@ export class PromotionOptionService extends CollectionService {
           reservationAgreement: { expirationDate: 1 },
         },
       },
+      status: 1,
     });
 
     const [
@@ -253,7 +254,7 @@ export class PromotionOptionService extends CollectionService {
 
     // Check if there's any active reservation on this lot
     if (promotionOptions.length) {
-      const activeReservation = promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.ACTIVE);
+      const activeReservation = promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE);
 
       if (activeReservation) {
         const {
@@ -269,7 +270,7 @@ export class PromotionOptionService extends CollectionService {
     });
 
     // Check if promotion reservation agreement has been uploaded
-    if (withAgreement) {
+    if (withAgreement && status !== PROMOTION_OPTION_STATUS.RESERVATION_CANCELED) {
       try {
         if (!agreementFileKeys.length) {
           throw new Error();
@@ -283,7 +284,7 @@ export class PromotionOptionService extends CollectionService {
     this._update({
       id: promotionOptionId,
       object: {
-        status: PROMOTION_OPTION_STATUS.ACTIVE,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
         reervationAgreement: {
           startDate,
           expirationDate,
@@ -302,6 +303,7 @@ export class PromotionOptionService extends CollectionService {
       promotionOptionId,
       agreementFileKeys,
     });
+
   };
 
   getReservationExpirationDate({ startDate, agreementDuration }) {
@@ -353,21 +355,28 @@ export class PromotionOptionService extends CollectionService {
   cancelReservation({ promotionOptionId }) {
     return this.updateStatus({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.CANCELED,
+      status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELED,
     });
   }
 
   completeReservation({ promotionOptionId }) {
     return this.updateStatus({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.COMPLETED,
+      status: PROMOTION_OPTION_STATUS.RESERVED,
     });
   }
 
   expireReservation({ promotionOptionId }) {
     return this.updateStatus({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.EXPIRED,
+      status: PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+    });
+  }
+
+  sellLot({ promotionOptionId }) {
+    return this.updateStatus({
+      promotionOptionId,
+      status: PROMOTION_OPTION_STATUS.SOLD,
     });
   }
 
@@ -400,7 +409,7 @@ export class PromotionOptionService extends CollectionService {
     const toExpire = this.fetch({
       $filters: {
         'reservationAgreement.expirationDate': { $lte: today },
-        status: PROMOTION_OPTION_STATUS.ACTIVE,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
     });
 
@@ -424,7 +433,7 @@ export class PromotionOptionService extends CollectionService {
         'reservationAgreement.expirationDate': {
           $lte: tomorrow.startOf('day').toDate(),
         },
-        status: PROMOTION_OPTION_STATUS.ACTIVE,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
       loan: { user: { name: 1 } },
       promotion: { name: 1, assignedEmployee: { _id: 1 } },
@@ -464,7 +473,7 @@ export class PromotionOptionService extends CollectionService {
         'reservationAgreement.expirationDate': {
           $lte: in10Days.startOf('day').toDate(),
         },
-        status: PROMOTION_OPTION_STATUS.ACTIVE,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
       loan: { user: { name: 1 } },
       promotion: { name: 1, assignedEmployee: { _id: 1 } },

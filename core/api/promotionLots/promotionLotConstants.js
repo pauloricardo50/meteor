@@ -2,6 +2,7 @@ export const PROMOTION_LOTS_COLLECTION = 'promotionLots';
 
 export const PROMOTION_LOT_STATUS = {
   AVAILABLE: 'AVAILABLE',
+  PRE_BOOKED: 'PRE_BOOKED',
   BOOKED: 'BOOKED',
   SOLD: 'SOLD',
 };

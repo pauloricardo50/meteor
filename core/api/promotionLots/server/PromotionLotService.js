@@ -2,6 +2,7 @@ import PromotionOptionService from '../../promotionOptions/server/PromotionOptio
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 
 export class PromotionLotService extends CollectionService {
   constructor() {
@@ -48,7 +49,7 @@ export class PromotionLotService extends CollectionService {
       .then(() => {
         this.update({
           promotionLotId,
-          object: { status: PROMOTION_LOT_STATUS.BOOKED },
+          object: { status: PROMOTION_LOT_STATUS.PRE_BOOKED },
         });
         this.addLink({
           id: promotionLotId,
@@ -84,6 +85,25 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
+  completePromotionLotBooking({ promotionOptionId }) {
+    const { promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.BOOKED },
+    });
+
+    return PromotionOptionService.completeReservation({
+      promotionOptionId,
+    });
+  }
+
   sellPromotionLot({ promotionOptionId }) {
     const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
@@ -98,7 +118,7 @@ export class PromotionLotService extends CollectionService {
       object: { status: PROMOTION_LOT_STATUS.SOLD },
     });
 
-    return PromotionOptionService.completeReservation({
+    return PromotionOptionService.sellLot({
       promotionOptionId,
     });
   }
