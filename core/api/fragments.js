@@ -313,7 +313,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   displayWelcomeScreen: 1,
   documents: 1,
   offers: 1,
-  promotionReservations: userPromotionReservation(),
   properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
@@ -603,7 +602,6 @@ export const fullPromotionOption = () => ({
   promotionLots: { name: 1, promotion: { name: 1 } },
   solvency: 1,
   updatedAt: 1,
-  promotionReservation: userPromotionReservation(),
 });
 
 export const proPromotionOption = () => ({
@@ -622,7 +620,6 @@ export const proPromotionOption = () => ({
     loanProgress: 1,
   },
   promotion: { users: { _id: 1 } },
-  promotionReservation: proPromotionReservation(),
 });
 
 export const appPromotionOption = () => ({

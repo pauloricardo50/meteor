@@ -1,6 +1,5 @@
 import FileService from '../../files/server/FileService';
 import LoanService from '../../loans/server/LoanService';
-import PromotionReservationService from '../../promotionReservations/server/PromotionReservationService';
 import PromotionOptions from '..';
 
 PromotionOptions.before.remove((userId, { _id: promotionOptionId }) => {
@@ -23,23 +22,6 @@ PromotionOptions.before.remove((userId, { _id: promotionOptionId }) => {
       },
     });
   });
-});
-
-PromotionOptions.after.update(function (userId, doc, fieldNames) {
-  if (fieldNames.includes('solvency')) {
-    const { solvency } = doc;
-    const { solvency: prevSolvency } = this.previous;
-    if (solvency !== prevSolvency) {
-      PromotionReservationService.baseUpdate(
-        { 'promotionOptionLink._id': doc._id },
-        {
-          $set: {
-            mortgageCertification: { status: solvency, date: new Date() },
-          },
-        },
-      );
-    }
-  }
 });
 
 PromotionOptions.after.remove((userId, { _id }) =>

@@ -88,7 +88,7 @@ const PromotionLotReservation = ({
         onSubmit={values =>
           bookPromotionLot.run({
             promotionOptionId: promotionOption._id,
-            promotionReservation: values,
+            ...values,
           })
         }
         title="Réserver"
@@ -114,7 +114,10 @@ const PromotionLotReservation = ({
       )}
       closeOnly
     >
-      <PromotionReservationDetail promotionReservation={promotionReservation} anonymize={anonymize} />
+      <PromotionReservationDetail
+        promotionReservation={promotionReservation}
+        anonymize={anonymize}
+      />
     </DialogSimple>
   );
 };

@@ -23,14 +23,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservation.startDate': function () {
+        'reservationAgreement.startDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservation.expirationDate': function () {
+        'reservationAgreement.expirationDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -71,7 +71,6 @@ export class PromotionOptionService extends CollectionService {
       $filters: { _id: promotionOptionId },
       promotion: 1,
       loan: { _id: 1, promotionOptions: { _id: 1 } },
-      promotionReservation: { _id: 1, status: 1 },
     });
 
     if (
@@ -196,16 +195,22 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
+  updateMortgageCertification({ promotionOptionId, status, date }) {
+    return this._update({
+      id: promotionOptionId,
+      object: { mortgageCertification: { status, date } },
+    });
+  }
+
   setInitialMortgageCertification({ promotionOptionId, loanId }) {
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       maxPropertyValue: { date: 1 },
     });
-    this._update({
-      id: promotionOptionId,
-      object: {
-        mortgageCertification: this.getInitialMortgageCertification({ loan }),
-      },
+
+    this.updateMortgageCertification({
+      promotionOptionId,
+      ...this.getInitialMortgageCertification({ loan }),
     });
   }
 
@@ -366,13 +371,6 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
-  updateReservationMortgageCertification({ promotionOptionId, status, date }) {
-    return this._update({
-      id: promotionOptionId,
-      object: { mortgageCertification: { status, date } },
-    });
-  }
-
   updateStatusObject({ promotionOptionId, id, object }) {
     const { [id]: model } = this.get(promotionOptionId);
     const changedKeys = Object.keys(object).filter(key => object[key].valueOf() !== model[key].valueOf());
@@ -423,7 +421,7 @@ export class PromotionOptionService extends CollectionService {
 
     const expiringSoon = this.fetch({
       $filters: {
-        'promotionAgreement.expirationDate': {
+        'reservationAgreement.expirationDate': {
           $lte: tomorrow.startOf('day').toDate(),
         },
         status: PROMOTION_OPTION_STATUS.ACTIVE,
@@ -431,14 +429,14 @@ export class PromotionOptionService extends CollectionService {
       loan: { user: { name: 1 } },
       promotion: { name: 1, assignedEmployee: { _id: 1 } },
       promotionLots: { name: 1 },
-      promotionAgreement: { expirationDate: 1 },
+      reservationAgreement: { expirationDate: 1 },
     });
 
     await Promise.all(expiringSoon.map((promotionOption) => {
       const {
         promotion: { _id: promotionId, assignedEmployee },
         promotionLots = [],
-        promotionAgreement: { expirationDate },
+        reservationAgreement: { expirationDate },
         loan: {
           user: { name: userName },
         },
@@ -463,7 +461,7 @@ export class PromotionOptionService extends CollectionService {
 
     const expiringIn10Days = this.fetch({
       $filters: {
-        'promotionAgreement.expirationDate': {
+        'reservationAgreement.expirationDate': {
           $lte: in10Days.startOf('day').toDate(),
         },
         status: PROMOTION_OPTION_STATUS.ACTIVE,
@@ -471,18 +469,18 @@ export class PromotionOptionService extends CollectionService {
       loan: { user: { name: 1 } },
       promotion: { name: 1, assignedEmployee: { _id: 1 } },
       promotionLot: { name: 1 },
-      promotionAgreement: { expirationDate: 1 },
+      reservationAgreement: { expirationDate: 1 },
     });
 
-    await Promise.all(expiringIn10Days.map((promotionReservation) => {
+    await Promise.all(expiringIn10Days.map((promotionOption) => {
       const {
         promotion: { _id: promotionId, assignedEmployee },
         promotionLots = [],
-        promotionAgreement: { expirationDate },
+        reservationAgreement: { expirationDate },
         loan: {
           user: { name: userName },
         },
-      } = promotionReservation;
+      } = promotionOption;
 
       const [{ name: promotionLotName }] = promotionLots;
 

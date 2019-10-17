@@ -5,9 +5,9 @@ import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import {
   DEPOSIT_STATUSES,
   AGREEMENT_STATUSES,
-  PROMOTION_RESERVATION_BANK_STATUS,
   PROMOTION_OPTION_STATUS,
-  PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
 } from '../promotionOptionConstants';
 
 const dateAutoValue = (triggerField = 'status') =>
@@ -83,17 +83,16 @@ const PromotionOptionSchema = new SimpleSchema({
   bank: { type: Object, defaultValue: {} },
   'bank.status': {
     type: String,
-    allowedValues: Object.values(PROMOTION_RESERVATION_BANK_STATUS),
-    defaultValue: PROMOTION_RESERVATION_BANK_STATUS.NONE,
+    allowedValues: Object.values(PROMOTION_OPTION_BANK_STATUS),
+    defaultValue: PROMOTION_OPTION_BANK_STATUS.NONE,
     uniforms: { placeholder: null },
   },
   'bank.date': { type: Date, autoValue: dateAutoValue() },
   mortgageCertification: { type: Object, defaultValue: {} },
   'mortgageCertification.status': {
     type: String,
-    allowedValues: Object.values(PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue:
-      PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
+    allowedValues: Object.values(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS),
+    defaultValue: PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
     uniforms: { placeholder: null },
   },
   'mortgageCertification.date': {
