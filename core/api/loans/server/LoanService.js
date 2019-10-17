@@ -142,6 +142,10 @@ export class LoanService extends CollectionService {
       status: 1,
     });
 
+    if (prevStatus === status) {
+      throw new Meteor.Error("Ce statut est le même qu'avant");
+    }
+
     this.update({ loanId, object: { status } });
     return { prevStatus, nextStatus: status };
   }

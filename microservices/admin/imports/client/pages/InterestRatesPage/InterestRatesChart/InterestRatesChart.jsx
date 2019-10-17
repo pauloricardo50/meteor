@@ -33,9 +33,11 @@ const InterestRatesChart = ({
       title={title}
       series={lines}
       config={config}
-      HighchartsExporting={HighchartsExporting}
-      HighchartsMore={HighchartsMore}
-      HighchartsExportData={HighchartsExportData}
+      highchartsWrappers={{
+        HighchartsExporting,
+        HighchartsMore,
+        HighchartsExportData,
+      }}
     />
   </>
 );

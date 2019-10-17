@@ -17,8 +17,10 @@ const Irs10yChart = ({ title, lines, config }: Irs10yChartProps) => (
     title={title}
     series={lines}
     config={config}
-    HighchartsExporting={HighchartsExporting}
-    HighchartsMore={HighchartsMore}
+    highchartsWrappers={{
+      HighchartsExporting,
+      HighchartsMore,
+    }}
   />
 );
 
