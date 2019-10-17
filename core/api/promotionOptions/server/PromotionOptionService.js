@@ -69,8 +69,9 @@ export class PromotionOptionService extends CollectionService {
       status,
     } = this.fetchOne({
       $filters: { _id: promotionOptionId },
-      promotion: 1,
+      promotion: { _id: 1 },
       loan: { _id: 1, promotionOptions: { _id: 1 } },
+      status: 1,
     });
 
     if (
@@ -270,7 +271,10 @@ export class PromotionOptionService extends CollectionService {
     });
 
     // Check if promotion reservation agreement has been uploaded
-    if (withAgreement && status !== PROMOTION_OPTION_STATUS.RESERVATION_CANCELED) {
+    if (
+      withAgreement
+      && status !== PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED
+    ) {
       try {
         if (!agreementFileKeys.length) {
           throw new Error();
@@ -303,7 +307,6 @@ export class PromotionOptionService extends CollectionService {
       promotionOptionId,
       agreementFileKeys,
     });
-
   };
 
   getReservationExpirationDate({ startDate, agreementDuration }) {
@@ -355,7 +358,7 @@ export class PromotionOptionService extends CollectionService {
   cancelReservation({ promotionOptionId }) {
     return this.updateStatus({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELED,
+      status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     });
   }
 

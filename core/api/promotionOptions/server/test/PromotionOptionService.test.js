@@ -4,12 +4,10 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-// import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
-// import PromotionReservationService from '../../../promotionReservations/server/PromotionReservationService';
 import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
 import PromotionOptionService from '../PromotionOptionService';
-import { PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS } from '../../promotionOptionConstants';
+import { PROMOTION_OPTION_STATUS } from '../../promotionOptionConstants';
 
 describe('PromotionOptionService', () => {
   beforeEach(() => {
@@ -18,24 +16,43 @@ describe('PromotionOptionService', () => {
 
   describe('remove', () => {
     let promotionOptionId;
+    let promotionOptionId2;
     let loanId;
     let promotionId;
     let promotionLotId;
+    let promotionLotId2;
 
     beforeEach(() => {
       promotionId = 'promoId';
       promotionLotId = 'pLotId';
+      promotionLotId2 = 'pLotId2';
       promotionOptionId = 'pOptId';
+      promotionOptionId2 = 'pOptId2';
       loanId = 'loanId';
       generator({
-        properties: { _id: 'propId' },
+        properties: [{ _id: 'propId' }, { _id: 'propId2' }],
         promotions: {
           _id: promotionId,
-          promotionLots: {
-            _id: promotionLotId,
-            propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
-          },
+          promotionLots: [
+            {
+              _id: promotionLotId,
+              propertyLinks: [{ _id: 'propId' }],
+              promotionOptions: {
+                _id: promotionOptionId,
+                loan: { _id: loanId },
+                promotion: { _id: promotionId },
+              },
+            },
+            {
+              _id: promotionLotId2,
+              propertyLinks: [{ _id: 'propId2' }],
+              promotionOptions: {
+                _id: promotionOptionId2,
+                loan: { _id: loanId },
+                promotion: { _id: promotionId },
+              },
+            },
+          ],
           loans: { _id: loanId },
         },
       });
@@ -50,7 +67,9 @@ describe('PromotionOptionService', () => {
     it('Removes the link from the loan', () => {
       PromotionOptionService.remove({ promotionOptionId });
       const loan = LoanService.get(loanId);
-      expect(loan.promotionOptionLinks).to.deep.equal([]);
+      expect(loan.promotionOptionLinks).to.deep.equal([
+        { _id: promotionOptionId2 },
+      ]);
     });
 
     it('Removes the priority order from the loan', () => {
@@ -61,31 +80,23 @@ describe('PromotionOptionService', () => {
       ]);
     });
 
-    it('throws if there is an active/completed promotionReservation', async () => {
-      const pRId = await PromotionReservationService.insert({
+    it('throws if there is an active/completed reservation', async () => {
+      PromotionOptionService.updateStatus({
         promotionOptionId,
-        promotionReservation: { startDate: new Date() },
-        withAgreement: false,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       });
       expect(() =>
         PromotionOptionService.remove({ promotionOptionId })).to.throw('active');
     });
 
-    it('does not throw if there is a cancelled promotionReservation', async () => {
-      const pRId = await PromotionReservationService.insert({
+    it('does not throw if there is a cancelled reservation', async () => {
+      PromotionOptionService.updateStatus({
         promotionOptionId,
-        promotionReservation: { startDate: new Date() },
-        withAgreement: false,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
       });
-      PromotionReservationService._update({
-        id: pRId,
-        object: { status: PROMOTION_RESERVATION_STATUS.CANCELED },
-      });
+
       expect(() =>
         PromotionOptionService.remove({ promotionOptionId })).to.not.throw('active');
-
-      const pR = PromotionReservationService.findOne({});
-      expect(pR).to.equal(undefined);
     });
   });
 
@@ -271,41 +282,6 @@ describe('PromotionOptionService', () => {
         'test',
         'pOptId2',
       ]);
-    });
-  });
-
-  describe('update', () => {
-    it('updates any related promotionReservation if solvency changes', async () => {
-      generator({
-        properties: { _id: 'propId' },
-        promotions: {
-          _id: 'promotionId',
-          loans: { _id: 'loanId' },
-          promotionLots: {
-            _id: 'promotionLotId',
-            propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: {
-              _id: 'promotionOptionId',
-              loan: { _id: 'loanId' },
-            },
-          },
-        },
-      });
-
-      await PromotionReservationService.insert({
-        promotionOptionId: 'promotionOptionId',
-        promotionReservation: { startDate: new Date() },
-        withAgreement: false,
-      });
-
-      PromotionOptionService.update({
-        promotionOptionId: 'promotionOptionId',
-        object: { solvency: PROMOTION_OPTION_SOLVENCY.SOLVENT },
-      });
-
-      const pR = PromotionReservationService.findOne({});
-
-      expect(pR.mortgageCertification.status).to.equal(PROMOTION_OPTION_SOLVENCY.SOLVENT);
     });
   });
 });

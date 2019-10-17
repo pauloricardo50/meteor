@@ -215,7 +215,7 @@ describe('PromotionLotService', function () {
 
       pO = PromotionOptionService.get('pOptId');
       pL = PromotionLotService.get('promotionLotId');
-      expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELED);
+      expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
 
       await PromotionLotService.bookPromotionLot({
