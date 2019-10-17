@@ -23,13 +23,16 @@ const PromotionUsers = ({
   } = useContext(PromotionMetadataContext);
   return (
     <div className="animated fadeIn">
-      <div className="flex center-align">
-        <h2 style={{ marginRight: 16 }}>
-          <T id="PromotionPage.PromotionUsers" />
-        </h2>
-        {canManageProUsers && <PromotionProUserAdder promotion={promotion} />}
-      </div>
       <div className="card1 card-top promotion-users-table">
+        <div
+          className="flex center-align"
+          style={{ justifyContent: 'space-between' }}
+        >
+          <h2>
+            <T id="PromotionPage.PromotionUsers" />
+          </h2>
+          {canManageProUsers && <PromotionProUserAdder promotion={promotion} />}
+        </div>
         <Table rows={rows} columnOptions={columnOptions} />
       </div>
     </div>

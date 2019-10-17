@@ -8,8 +8,6 @@ import IconButton from '../../../IconButton';
 import T from '../../../Translation';
 import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
 import PromotionUserRolesModifier from './PromotionUserRolesModifier';
-import { USERS_COLLECTION } from '../../../../api/constants';
-import { CollectionIconLink } from '../../../IconLink';
 import PromotionMetadataContext from '../PromotionMetadata';
 import ProCustomer from '../../../ProCustomer';
 import TooltipArray from '../../../TooltipArray';
@@ -41,11 +39,7 @@ const makeMapPromotionUser = ({
     columns: [
       {
         raw: name,
-        label: canManageProUsers ? (
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        ) : (
+        label: (
           <ProCustomer
             user={{ ...user, name: getUserNameAndOrganisation({ user }) }}
           />
