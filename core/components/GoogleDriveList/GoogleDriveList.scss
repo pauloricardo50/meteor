@@ -1,12 +1,13 @@
 .google-drive-list {
   &-item {
     display: flex;
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
 
     a {
       display: flex;
       align-items: center;
+
       margin-bottom: 8px;
 
       h4 {

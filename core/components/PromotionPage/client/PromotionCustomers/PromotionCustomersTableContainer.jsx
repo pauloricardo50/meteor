@@ -14,19 +14,25 @@ import StatusLabel from '../../../StatusLabel';
 import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
 import PromotionCustomersTableActions from './PromotionCustomersTableActions';
 import PromotionCustomer from '../PromotionCustomer';
+import InvitedByAssignDropdown from './InvitedByAssignDropdown';
+
+const isAdmin = Meteor.microservice === 'admin';
 
 const columnOptions = [
   { id: 'loanName' },
   { id: 'status', label: <T id="Forms.status" /> },
   { id: 'customer' },
+  isAdmin && { id: 'invitedBy' },
   { id: 'createdAt' },
   { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'priorityOrder' },
   { id: 'actions' },
-].map(({ id, label }) => ({
-  id,
-  label: label || <T id={`PromotionLotLoansTable.${id}`} />,
-}));
+]
+  .filter(x => x)
+  .map(({ id, label }) => ({
+    id,
+    label: label || <T id={`PromotionLotLoansTable.${id}`} />,
+  }));
 
 const getColumns = ({
   promotionId,
@@ -36,6 +42,7 @@ const getColumns = ({
   promotionLots,
 }) => {
   const {
+    _id: loanId,
     name: loanName,
     status,
     user,
@@ -80,6 +87,17 @@ const getColumns = ({
         />
       ),
     },
+    isAdmin && {
+      raw: invitedBy,
+      label: (
+        <InvitedByAssignDropdown
+          promotionUsers={promotionUsers}
+          invitedBy={invitedBy}
+          loanId={loanId}
+          promotionId={promotionId}
+        />
+      ),
+    },
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
       raw:  loanProgress.info + loanProgress.documents,
@@ -102,7 +120,7 @@ const getColumns = ({
       customerOwnerType={customerOwnerType}
       loan={loan}
     />,
-  ];
+  ].filter(x => x);
 };
 
 const makeMapLoan = ({

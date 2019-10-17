@@ -5,6 +5,7 @@ import {
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS,
   PROMOTION_AUTHORIZATION_STATUS,
+  PROMOTION_USERS_ROLES,
 } from '../promotionConstants';
 import {
   address,
@@ -110,6 +111,16 @@ const PromotionSchema = new SimpleSchema({
       enableNotifications: {
         type: Boolean,
         defaultValue: true,
+        optional: true,
+      },
+      roles: {
+        type: Array,
+        optional: true,
+        defaultValue: [PROMOTION_USERS_ROLES.BROKER],
+      },
+      'roles.$': {
+        type: String,
+        allowedValues: Object.values(PROMOTION_USERS_ROLES),
         optional: true,
       },
     },

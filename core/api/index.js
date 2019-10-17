@@ -42,6 +42,7 @@ export { default as LenderRules } from './lenderRules';
 export { default as Revenues } from './revenues';
 export { default as Activities } from './activities';
 export { default as PromotionReservations } from './promotionReservations';
+export { default as Sessions } from './sessions';
 
 export * from './helpers';
 export * from './methods';

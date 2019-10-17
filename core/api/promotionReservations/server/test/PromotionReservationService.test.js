@@ -590,7 +590,7 @@ describe('PromotionReservationService', function () {
     });
   });
 
-  describe('generateExpiringTomorrowTasks', () => {
+  describe('generateExpiringSoonTasks', () => {
     it('inserts tasks for soon expiring reservations', async () => {
       const nextFriday = moment().isoWeekday() <= 5
         ? moment().isoWeekday(5)
@@ -717,7 +717,7 @@ describe('PromotionReservationService', function () {
         },
       });
 
-      await PromotionReservationService.generateExpiringTomorrowTasks();
+      await PromotionReservationService.generateExpiringSoonTasks();
 
       const tasks = TaskService.fetch({
         assignee: { _id: 1 },

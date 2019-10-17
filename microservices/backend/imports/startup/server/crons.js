@@ -21,7 +21,7 @@ CronService.addCron(
 CronService.addCron(
   {
     name: 'Expire anonymous loans',
-    frequency: 'every day',
+    frequency: 'every 1 day',
     func: () => LoanService.expireAnonymousLoans(),
   },
   { cronitorId: 'Ti1GXW' },
@@ -71,7 +71,7 @@ CronService.addCron(
 CronService.addCron(
   {
     name: 'Expire promotion reservations',
-    frequency: 'every day',
+    frequency: 'every 1 day',
     func: () => PromotionReservationService.expirePromotionReservations(),
   },
   { cronitorId: 'cLKGgS' },
@@ -81,7 +81,16 @@ CronService.addCron(
   {
     name: 'Generate tasks for promotion reservations expiring soon',
     frequency: 'every weekday',
-    func: () => PromotionReservationService.generateExpiringTomorrowTasks(),
+    func: () => PromotionReservationService.generateExpiringSoonTasks(),
   },
   { cronitorId: 'N77C0a' },
+);
+
+CronService.addCron(
+  {
+    name: 'Generate tasks for promotion reservations reaching their half-life',
+    frequency: 'every 1 day',
+    func: () => PromotionReservationService.generateHalfLifeReminderTasks(),
+  },
+  { cronitorId: 'KbK0Gy' },
 );

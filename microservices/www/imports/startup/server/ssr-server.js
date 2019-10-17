@@ -3,7 +3,7 @@ import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
-import { ServerStyleSheets } from '@material-ui/styles';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 
 import createStore from '../../redux';
 import * as startupConstants from '../shared/startupConstants';

@@ -170,6 +170,7 @@ export const components = {
     referredByOrganisation = {},
     emails = [],
     loans = [],
+    organisations = [],
   }) => {
     const emailVerified = !!emails.length && emails[0].verified;
 
@@ -230,6 +231,18 @@ export const components = {
             )}
           </span>
         </div>
+        {organisations.length && (
+          <div className="flex center-align">
+            <b>Organisations:</b>
+            &nbsp;
+            <TooltipArray
+              title="Organisations"
+              items={organisations.map(organisation => (
+                <CollectionIconLink relatedDoc={{...organisation, collection: ORGANISATIONS_COLLECTION}} />
+              ))}
+            />
+          </div>
+        )}
 
         <div className="flex center-align">
           <b>Référé par compte:</b>
@@ -441,7 +454,7 @@ export const components = {
         <div>
           <b>
             <T id="Forms.signingDate" />
-            {':'}
+:
           </b>
           {' '}
           {moment(signingDate).format('DD.MM.YYYY')}
