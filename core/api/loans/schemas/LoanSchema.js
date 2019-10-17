@@ -11,7 +11,6 @@ import {
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
-  LOAN_VERIFICATION_STATUS,
   PURCHASE_TYPE,
   OWNER,
   CANTONS,
@@ -48,13 +47,6 @@ const LoanSchema = new SimpleSchema({
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
-  verificationStatus: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
-    defaultValue: LOAN_VERIFICATION_STATUS.NONE,
-    uniforms: { displayEmpty: false },
-  },
   purchaseType: {
     type: String,
     defaultValue: PURCHASE_TYPE.ACQUISITION,

@@ -3,8 +3,12 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { cancelPromotionLotBooking, sellPromotionLot } from 'core/api/methods';
-import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
+import {
+  bookPromotionLot,
+  sellPromotionLot,
+  cancelPromotionLotBooking,
+} from 'core/api/methods';
+import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers/index';
 import {
   PROMOTION_RESERVATION_DOCUMENTS,
   PROMOTION_RESERVATIONS_COLLECTION,
@@ -45,8 +49,9 @@ const PromotionReservationDetail = ({
     PROMOTION_RESERVATION_STATUS.CANCELED,
   ].includes(status);
   const canCancelReservation = [
-    PROMOTION_RESERVATION_STATUS.EXPIRED,
-    PROMOTION_RESERVATION_STATUS.CANCELED,
+    PROMOTION_RESERVATION_STATUS.ACTIVE,
+    PROMOTION_RESERVATION_STATUS.CONFIRMED,
+    PROMOTION_RESERVATION_STATUS.COMPLETED,
   ].includes(status);
 
   return (

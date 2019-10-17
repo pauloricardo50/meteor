@@ -6,7 +6,7 @@ import PromotionService from '../../promotions/server/PromotionService';
 import {
   AGREEMENT_STATUSES,
   PROMOTION_RESERVATION_STATUS,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
   DEPOSIT_STATUSES,
 } from '../../promotionReservations/promotionReservationConstants';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
@@ -74,7 +74,7 @@ const handleSoldLots = async () => {
             date: new Date(),
           },
           lender: {
-            status: PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+            status: PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
             date: new Date(),
           },
           deposit: {

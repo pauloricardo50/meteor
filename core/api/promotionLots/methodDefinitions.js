@@ -44,7 +44,7 @@ export const bookPromotionLot = new Method({
   name: 'bookPromotionLot',
   params: {
     promotionOptionId: String,
-    promotionReservation: Object,
+    promotionReservation: Match.Maybe(Object),
   },
 });
 

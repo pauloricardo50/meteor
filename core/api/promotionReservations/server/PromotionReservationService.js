@@ -15,7 +15,7 @@ import {
   PROMOTION_RESERVATION_STATUS,
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
   PROMOTION_RESERVATION_DOCUMENTS,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
   PROMOTION_RESERVATIONS_COLLECTION,
 } from '../promotionReservationConstants';
 
@@ -56,7 +56,7 @@ class PromotionReservationService extends CollectionService {
         promotionReservations: { status: 1, expirationDate: 1 },
         promotion: { agreementDuration: 1 },
       },
-      loan: { maxPropertyValue: { date: 1 }, verificationStatus: 1 },
+      loan: { maxPropertyValue: { date: 1 } },
       solvency: 1,
     });
 
@@ -106,9 +106,9 @@ class PromotionReservationService extends CollectionService {
         status: AGREEMENT_STATUSES.SIGNED,
       },
       deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
-      lender: {
+      bank: {
         date: startDate,
-        status: PROMOTION_RESERVATION_LENDER_STATUS.NONE,
+        status: PROMOTION_RESERVATION_BANK_STATUS.NONE,
       },
       mortgageCertification: this.getInitialMortgageCertification({
         loan,
@@ -150,7 +150,7 @@ class PromotionReservationService extends CollectionService {
         status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT;
         break;
       default:
-        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED;
+        status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED;
       }
       date = maxPropertyValueDate;
     } else if (solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT) {
@@ -168,7 +168,7 @@ class PromotionReservationService extends CollectionService {
 
     const today = moment().startOf('day');
     const startDateLowerBound = moment(today)
-      .subtract(Math.ceil(agreementDuration / 2), 'days')
+      .subtract(agreementDuration, 'days')
       .startOf('day');
 
     // Check if start date is in future

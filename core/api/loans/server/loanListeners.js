@@ -5,7 +5,6 @@ import PromotionReservationService from 'core/api/promotionReservations/server/P
 import { PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
-import { requestLoanVerification } from '../..';
 import {
   setMaxPropertyValueWithoutBorrowRatio,
   loanInsertBorrowers,
@@ -14,11 +13,6 @@ import {
 export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });
 };
-
-ServerEventService.addAfterMethodListener(
-  requestLoanVerification,
-  disableUserFormsListener,
-);
 
 ServerEventService.addAfterMethodListener(
   setMaxPropertyValueWithoutBorrowRatio,
@@ -85,7 +79,7 @@ ServerEventService.addAfterMethodListener(
         PromotionReservationService.updateMortgageCertification({
           promotionReservationId,
           status:
-            PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+            PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
           date,
         }));
     }

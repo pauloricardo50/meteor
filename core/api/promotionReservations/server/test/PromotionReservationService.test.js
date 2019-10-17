@@ -12,7 +12,6 @@ import PromotionService from 'core/api/promotions/server/PromotionService';
 import { checkEmails } from 'core/utils/testHelpers';
 import TaskService from 'core/api/tasks/server/TaskService';
 import generator from '../../../factories';
-import { LOAN_VERIFICATION_STATUS } from '../../../loans/loanConstants';
 import PromotionReservationService from '../PromotionReservationService';
 import {
   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
@@ -20,7 +19,7 @@ import {
   PROMOTION_RESERVATION_STATUS,
   AGREEMENT_STATUSES,
   DEPOSIT_STATUSES,
-  PROMOTION_RESERVATION_LENDER_STATUS,
+  PROMOTION_RESERVATION_BANK_STATUS,
 } from '../../promotionReservationConstants';
 
 const makePromotionLotWithReservation = ({
@@ -68,7 +67,7 @@ describe('PromotionReservationService', function () {
       });
     });
 
-    it('returns CALCULATED status when solvency is not SOLVENT', () => {
+    it('returns TO_BE_VERIFIED status when solvency is not SOLVENT', () => {
       const startDate = new Date();
       const yesterday = moment()
         .subtract(1, 'days')
@@ -81,7 +80,7 @@ describe('PromotionReservationService', function () {
       });
 
       expect(mortgageCertification).to.deep.include({
-        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.CALCULATED,
+        status: PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
         date: yesterday,
       });
     });
@@ -94,7 +93,6 @@ describe('PromotionReservationService', function () {
       const mortgageCertification = PromotionReservationService.getInitialMortgageCertification({
         loan: {
           maxPropertyValue: { date: yesterday },
-          verificationStatus: LOAN_VERIFICATION_STATUS.OK,
         },
         startDate,
         solvency: PROMOTION_OPTION_SOLVENCY.SOLVENT,
@@ -139,10 +137,10 @@ describe('PromotionReservationService', function () {
         })).to.not.throw();
     });
 
-    it('throws if start date is anterior to half agreement duration', () => {
+    it('throws if start date is anterior to agreement duration', () => {
       const agreementDuration = 11;
       const startDate = moment()
-        .subtract(7, 'days')
+        .subtract(13, 'days')
         .toDate();
 
       expect(() =>
@@ -360,9 +358,9 @@ describe('PromotionReservationService', function () {
             status: AGREEMENT_STATUSES.SIGNED,
           },
           deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
-          lender: {
+          bank: {
             date: startDate,
-            status: PROMOTION_RESERVATION_LENDER_STATUS.NONE,
+            status: PROMOTION_RESERVATION_BANK_STATUS.NONE,
           },
           mortgageCertification: {
             date: startDate,
@@ -389,19 +387,19 @@ describe('PromotionReservationService', function () {
         promotionReservations: {
           _id: 'promotionReservation',
           _factory: 'promotionReservation',
-          lender: { date: fiveDaysAgo },
+          bank: { date: fiveDaysAgo },
         },
       });
 
       PromotionReservationService._update({
         id: 'promotionReservation',
         object: {
-          'lender.status': PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+          'bank.status': PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
         },
       });
       const pR = PromotionReservationService.findOne('promotionReservation');
 
-      expect(moment(pR.lender.date).isAfter(now)).to.equal(true);
+      expect(moment(pR.bank.date).isAfter(now)).to.equal(true);
     });
 
     it('does not update date if both are provided', () => {
@@ -419,15 +417,15 @@ describe('PromotionReservationService', function () {
       PromotionReservationService._update({
         id: 'promotionReservation',
         object: {
-          lender: {
-            status: PROMOTION_RESERVATION_LENDER_STATUS.VALIDATED,
+          bank: {
+            status: PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
             date: fiveDaysAgo,
           },
         },
       });
       const pR = PromotionReservationService.findOne('promotionReservation');
 
-      expect(moment(pR.lender.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
+      expect(moment(pR.bank.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
     });
 
     it('sets any expirationDate and startDate at end/start of day', () => {

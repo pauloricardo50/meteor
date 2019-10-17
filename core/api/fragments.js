@@ -279,7 +279,6 @@ export const loan = () => ({
   },
   updatedAt: 1,
   userId: 1,
-  verificationStatus: 1,
   shareSolvency: 1,
   simpleBorrowersForm: 1,
 });

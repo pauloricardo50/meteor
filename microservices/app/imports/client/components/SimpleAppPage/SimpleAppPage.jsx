@@ -15,7 +15,7 @@ const withSimpleAppPage = Component => (props: SimpleAppPageProps) => {
   if (loan && loan.applicationType === APPLICATION_TYPES.SIMPLE) {
     return (
       <>
-        <DashboardProgressBar currentStep={loan.step} variant="light" />
+        <DashboardProgressBar loan={loan} variant="light" />
         <SimpleDashboardPageCTAs
           loanId={loan._id}
           progress={progress}
