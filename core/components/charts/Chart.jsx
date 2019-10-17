@@ -15,12 +15,9 @@ const getConfig = ({ series, title, subtitle, config }) =>
 
 type ChartProps = {};
 
-const Chart = ({ series, title, subtitle, config, ...props }: ChartProps) => (
-  <BaseChart
-    config={getConfig({ series, title, subtitle, config })}
-    data={series}
-    {...props}
-  />
-);
+const Chart = ({ series, title, subtitle, config, ...props }: ChartProps) => {
+  const finalConfig = getConfig({ series, title, subtitle, config });
+  return <BaseChart config={finalConfig} data={series} {...props} />;
+};
 
 export default Chart;

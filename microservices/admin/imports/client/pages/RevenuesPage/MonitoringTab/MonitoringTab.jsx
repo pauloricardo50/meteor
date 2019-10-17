@@ -2,6 +2,7 @@
 import React from 'react';
 import MonitoringContainer from './MonitoringContainer';
 import LoanMonitoringChart from './LoanMonitoringChart';
+import MonitoringActivity from './MonitoringActivity';
 
 type MonitoringTabProps = {};
 
@@ -16,6 +17,9 @@ const MonitoringTab = ({
 }: MonitoringTabProps) => (
   <div>
     <h1>Monitoring</h1>
+
+    <h2 className="text-center">Activité</h2>
+    <MonitoringActivity />
 
     <h2 className="text-center">Revenus</h2>
     <LoanMonitoringChart
@@ -34,7 +38,7 @@ const MonitoringTab = ({
     <h2 className="text-center">Dossiers</h2>
     <LoanMonitoringChart
       initialValue="count"
-      initialGroupBy="status"
+      initialGroupBy="createdAt"
       allowedGroupBy={['status', 'createdAt']}
     />
   </div>

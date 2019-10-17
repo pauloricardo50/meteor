@@ -34,7 +34,7 @@ type StatusLabelProps = {
   color: string,
 };
 
-const getStatuses = (collection) => {
+export const getStatuses = (collection) => {
   switch (collection) {
   case LOANS_COLLECTION:
     return {
