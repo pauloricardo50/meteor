@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
+import { asyncForEach } from '../../helpers/index';
 import { expirePromotionLotBooking } from '../../promotionLots/server/serverMethods';
 import {
   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
@@ -299,7 +300,7 @@ export class PromotionOptionService extends CollectionService {
       id: promotionOptionId,
       object: {
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-        reervationAgreement: {
+        reservationAgreement: {
           startDate,
           expirationDate,
           date: startDate,
@@ -317,6 +318,8 @@ export class PromotionOptionService extends CollectionService {
       promotionOptionId,
       agreementFileKeys,
     });
+
+    return promotionOptionId;
   };
 
   getReservationExpirationDate({ startDate, agreementDuration }) {
@@ -348,22 +351,26 @@ export class PromotionOptionService extends CollectionService {
     return expirationDate;
   }
 
-  mergeReservationAgreementFiles({
+  mergeReservationAgreementFiles = async ({
     promotionOptionId,
     agreementFileKeys = [],
-  }) {
-    return Promise.all(agreementFileKeys.map((Key) => {
-      const name = FileService.getFileName(Key);
-      return FileService.moveFile({
-        Key,
-        name,
-        newId: PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT,
-        newDocId: promotionOptionId,
-        newCollection: PROMOTION_OPTIONS_COLLECTION,
-      }).then(newKey =>
-        FileService.autoRenameFile(newKey, PROMOTION_OPTIONS_COLLECTION));
-    }));
-  }
+  }) => {
+    const mergeFiles = async () => {
+      await asyncForEach(agreementFileKeys, async (Key) => {
+        const name = FileService.getFileName(Key);
+        const newKey = await FileService.moveFile({
+          Key,
+          name,
+          newId: PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT,
+          newDocId: promotionOptionId,
+          newCollection: PROMOTION_OPTIONS_COLLECTION,
+        });
+        await FileService.autoRenameFile(newKey, PROMOTION_OPTIONS_COLLECTION);
+      });
+    };
+
+    await mergeFiles();
+  };
 
   cancelReservation({ promotionOptionId }) {
     return this.updateStatus({

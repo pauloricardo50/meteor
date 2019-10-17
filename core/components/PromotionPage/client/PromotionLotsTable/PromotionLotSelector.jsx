@@ -13,7 +13,6 @@ export const PromotionLotSelector = ({
   isLoading,
   onChange,
   disabled,
-  promotionId,
 }: PromotionLotSelectorProps) => (
   <Checkbox
     onChange={(event) => {
@@ -29,7 +28,7 @@ export const PromotionLotSelector = ({
 
 export default compose(
   withState('isLoading', 'setLoading', false),
-  withProps(({ promotionLotId, promotionOptions, setLoading, loanId }) => {
+  withProps(({ promotionLotId, promotionOptions, setLoading, loanId, promotionId }) => {
     const promotionOption = promotionOptions.find(({ promotionLots }) =>
       promotionLots.find(({ _id }) => _id === promotionLotId));
 
