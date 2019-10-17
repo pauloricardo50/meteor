@@ -2,22 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import PromotionOptions from '.';
 
 PromotionOptions.addReducers({
-  promotion: {
-    body: {
-      promotionLots: {
-        promotion: {
-          name: 1,
-          address1: 1,
-          address2: 1,
-          zipCode: 1,
-          canton: 1,
-          city: 1,
-        },
-      },
-    },
-    reduce: ({ promotionLots = [] }) =>
-      (promotionLots.length > 0 ? promotionLots[0].promotion : {}),
-  },
   name: {
     body: { promotionLots: { name: 1 } },
     reduce: ({ promotionLots = [] }) =>

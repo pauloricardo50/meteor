@@ -1,13 +1,6 @@
 import PromotionLots from '.';
 
-import {
-  Promotions,
-  Properties,
-  Lots,
-  PromotionOptions,
-  Loans,
-  PromotionReservations,
-} from '..';
+import { Promotions, Properties, Lots, PromotionOptions, Loans } from '..';
 import LinkInitializer from '../links/LinkInitializer';
 
 const promotionCache = {
@@ -50,11 +43,6 @@ LinkInitializer.inversedInit(() => {
       collection: PromotionOptions,
       inversedBy: 'promotionLots',
       autoremove: true,
-    },
-    promotionReservations: {
-      inversedBy: 'promotionLot',
-      type: 'many',
-      collection: PromotionReservations,
     },
   });
 });

@@ -7,7 +7,7 @@ import {
   Users,
   Loans,
   Organisations,
-  PromotionReservations,
+  PromotionOptions,
 } from '..';
 import Tasks from '../tasks';
 
@@ -73,10 +73,10 @@ LinkInitializer.inversedInit(() => {
       type: 'one',
       collection: Loans,
     },
-    promotionReservations: {
+    promotionOptions: {
       inversedBy: 'promotion',
       type: 'many',
-      collection: PromotionReservations,
+      collection: PromotionOptions,
     },
   });
 });
