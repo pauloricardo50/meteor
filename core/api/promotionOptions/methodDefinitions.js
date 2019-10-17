@@ -6,6 +6,7 @@ export const promotionOptionInsert = new Method({
   params: {
     promotionLotId: String,
     loanId: String,
+    promotionId: String,
   },
 });
 

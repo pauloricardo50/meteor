@@ -81,7 +81,11 @@ describe('PromotionService', function () {
           promotionLots: {
             _id: promotionLotId,
             propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+            promotionOptions: {
+              _id: promotionOptionId,
+              loan: { _id: loanId },
+              promotion: { _id: 'promoId' },
+            },
           },
           loans: { _id: loanId },
           lots: {},
@@ -356,20 +360,14 @@ describe('PromotionService', function () {
             {
               promotionOptions: {
                 loan: { _id: 'loanId' },
-                promotionReservation: {
-                  _id: 'promotionReservation1',
-                  _factory: 'promotionReservation',
-                },
+                promotion: { _id: 'promotionId' },
               },
               propertyLinks: [{ _id: 'prop1' }],
             },
             {
               promotionOptions: {
                 loan: { _id: 'loanId' },
-                promotionReservation: {
-                  _id: 'promotionReservation2',
-                  _factory: 'promotionReservation',
-                },
+                promotion: { _id: 'promotionId' },
               },
               propertyLinks: [{ _id: 'prop2' }],
             },
@@ -394,28 +392,22 @@ describe('PromotionService', function () {
     it('removes any status from the promotionLot as well as the attributedTo', () => {
       generator({
         properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
-        promotionReservations: {
-          _factory: 'promotionReservation',
-          _id: 'promotionReservationId',
-          promotion: {
-            _id: 'promotionId',
-            promotionLots: [
-              {
-                _id: 'lot1',
-                status: 'SOLD',
-                promotionOptions: {
-                  _id: 'promotionOptionId',
-                  loan: { _id: 'loanId' },
-                },
-                propertyLinks: [{ _id: 'prop1' }],
-                attributedTo: { _id: 'loanId' },
+        promotions: {
+          _id: 'promotionId',
+          promotionLots: [
+            {
+              _id: 'lot1',
+              status: 'SOLD',
+              promotionOptions: {
+                _id: 'promotionOptionId',
+                loan: { _id: 'loanId' },
+                promotion: { _id: 'promotionId' },
               },
-            ],
-            loans: { _id: 'loanId' },
-          },
-          promotionLot: [{ _id: 'lot1' }],
-          loan: { _id: 'loanId' },
-          promotionOption: { _id: 'promotionOptionId' },
+              propertyLinks: [{ _id: 'prop1' }],
+              attributedTo: { _id: 'loanId' },
+            },
+          ],
+          loans: { _id: 'loanId' },
         },
       });
 
@@ -630,17 +622,20 @@ describe('PromotionService', function () {
             {
               _id: 'pLot1',
               propertyLinks: [{ _id: 'prop' }],
-              promotionOptions: { _id: 'pOpt1' },
+              promotionOptions: { _id: 'pOpt1', promotion: { _id: 'promoId' } },
             },
             {
               _id: 'pLot2',
               propertyLinks: [{ _id: 'prop' }],
-              promotionOptions: { _id: 'pOpt2' },
+              promotionOptions: { _id: 'pOpt2', promotion: { _id: 'promoId' } },
             },
           ],
           loans: {
             _id: 'loanId',
-            promotionOptions: [{ _id: 'pOpt1' }, { _id: 'pOpt2' }],
+            promotionOptions: [
+              { _id: 'pOpt1', promotion: { _id: 'promoId' } },
+              { _id: 'pOpt2', promotion: { _id: 'promoId' } },
+            ],
           },
         },
       });

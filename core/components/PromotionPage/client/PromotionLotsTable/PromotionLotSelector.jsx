@@ -13,6 +13,7 @@ export const PromotionLotSelector = ({
   isLoading,
   onChange,
   disabled,
+  promotionId,
 }: PromotionLotSelectorProps) => (
   <Checkbox
     onChange={(event) => {
@@ -43,7 +44,7 @@ export default compose(
         }
 
         return promotionOptionInsert
-          .run({ promotionLotId, loanId })
+          .run({ promotionLotId, loanId, promotionId })
           .finally(() => setLoading(false));
       },
     };

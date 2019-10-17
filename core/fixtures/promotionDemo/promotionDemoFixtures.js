@@ -82,6 +82,7 @@ const addPromotionOptions = (loanId, promotion) => {
     const promotionOptionId = PromotionOptionService.insert({
       loanId,
       promotionLotId,
+      promotionId: promotion._id,
     });
     return promotionOptionId;
   });

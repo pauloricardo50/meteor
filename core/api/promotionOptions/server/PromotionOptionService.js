@@ -41,6 +41,16 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
+  insert({ promotionId, ...promotionOption }) {
+    const promotionOptionId = this.collection.insert(promotionOption);
+    this.addLink({
+      id: promotionOptionId,
+      linkName: 'promotion',
+      linkId: promotionId,
+    });
+    return promotionOptionId;
+  }
+
   get(promotionOptionId) {
     return this.collection
       .createQuery({
@@ -62,7 +72,7 @@ export class PromotionOptionService extends CollectionService {
     );
   }
 
-  remove({ promotionOptionId }) {
+  remove({ promotionOptionId, isLoanRemoval = false }) {
     const {
       loan: { _id: loanId, promotionOptions },
       promotion: { _id: promotionId },
@@ -86,7 +96,7 @@ export class PromotionOptionService extends CollectionService {
       );
     }
 
-    if (promotionOptions.length === 1) {
+    if (!isLoanRemoval && promotionOptions.length === 1) {
       throw new Meteor.Error(
         403,
         'Vous devez choisir au moins un lot dans la promotion',

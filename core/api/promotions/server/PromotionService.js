@@ -249,7 +249,7 @@ export class PromotionService extends CollectionService {
   removeLoan({ promotionId, loanId }) {
     const { promotionOptions = [] } = LoanService.fetchOne({
       $filters: { _id: loanId },
-      promotionOptions: {_id: 1 },
+      promotionOptions: { _id: 1 },
     });
 
     this.removeLink({
@@ -262,7 +262,10 @@ export class PromotionService extends CollectionService {
       PromotionLotService.cancelPromotionLotBooking({
         promotionOptionId: _id,
       });
-      PromotionOptionService.remove({ promotionOptionId: _id });
+      PromotionOptionService.remove({
+        promotionOptionId: _id,
+        isLoanRemoval: true,
+      });
     });
   }
 
@@ -294,7 +297,7 @@ export class PromotionService extends CollectionService {
         promotionOptionLots[0]._id === promotionLotId);
 
       if (!existingPromotionOption) {
-        PromotionOptionService.insert({ promotionLotId, loanId });
+        PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       }
     });
 

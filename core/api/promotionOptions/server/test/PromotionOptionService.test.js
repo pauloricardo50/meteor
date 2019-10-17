@@ -123,26 +123,26 @@ describe('PromotionOptionService', () => {
     });
 
     it('inserts a new promotionOption', () => {
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
     });
 
     it('throws if promotion lot exists in another promotionOption in the loan', () => {
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
 
       expect(() =>
-        PromotionOptionService.insert({ promotionLotId, loanId })).to.throw('Vous avez déjà');
+        PromotionOptionService.insert({ promotionLotId, loanId, promotionId })).to.throw('Vous avez déjà');
     });
 
     it('adds a link on the loan', () => {
-      PromotionOptionService.insert({ promotionLotId, loanId });
+      PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       const loan = LoanService.get(loanId);
       expect(loan.promotionOptionLinks.length).to.equal(1);
     });
 
     it('inserts the promotionOptionId in the priorityOrder', () => {
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       const loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder[0]).to.equal(id);
     });
@@ -155,7 +155,7 @@ describe('PromotionOptionService', () => {
       let loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(1);
 
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({ promotionLotId, loanId, promotionId});
       loan = LoanService.get(loanId);
 
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
