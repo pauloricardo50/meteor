@@ -1079,6 +1079,7 @@
   "Forms.status": "Statut",
   "Forms.status.TEST": "Test",
   "Forms.status.LEAD": "Prospect",
+  "Forms.status.QUALIFIED_LEAD": "Prospect ++",
   "Forms.status.ONGOING": "En cours",
   "Forms.status.PENDING": "Pending",
   "Forms.status.CANCELLED": "Annulé",

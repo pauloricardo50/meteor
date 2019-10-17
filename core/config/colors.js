@@ -3,6 +3,7 @@ import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 const colors = {
   primary: '#005bea',
   primaryArray: [0, 91, 234],
+  medium: '#00a2ff',
   secondary: '#00c6ff',
   tertiary: '#001a8f',
   success: '#21d3b5',

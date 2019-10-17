@@ -39,6 +39,7 @@ const getStatuses = (collection) => {
   case LOANS_COLLECTION:
     return {
       [LOAN_STATUS.LEAD]: colors.secondary,
+      [LOAN_STATUS.QUALIFIED_LEAD]: colors.medium,
       [LOAN_STATUS.ONGOING]: colors.primary,
       [LOAN_STATUS.PENDING]: colors.warning,
       [LOAN_STATUS.CLOSING]: colors.tertiary,
