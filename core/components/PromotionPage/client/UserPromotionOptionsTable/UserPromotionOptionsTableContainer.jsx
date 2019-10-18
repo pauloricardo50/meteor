@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  compose,
-  mapProps,
-  withState,
-  withProps,
-  withStateHandlers,
-} from 'recompose';
+import { compose, mapProps, withState, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { toMoney } from '../../../../utils/conversionFunctions';
@@ -58,7 +52,6 @@ const makeMapPromotionOption = ({
   isDashboardTable = false,
   promotionStatus,
   isAdmin,
-  setPromotionOptionModal,
   loan,
   promotion,
 }) => (promotionOption, index, arr) => {
@@ -67,7 +60,6 @@ const makeMapPromotionOption = ({
     promotionLots,
     custom,
     attributedToMe,
-    solvency,
     loan: {
       user: { _id: userId },
     },
@@ -75,6 +67,7 @@ const makeMapPromotionOption = ({
   const { name, status, reducedStatus, value, attributedTo } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
+    promotionOption,
     columns: [
       !attributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
@@ -127,10 +120,6 @@ const makeMapPromotionOption = ({
         />
       ),
     ].filter(x => x !== false),
-
-    handleClick: (event) => {
-      setPromotionOptionModal(promotionOptionId);
-    },
   };
 };
 
@@ -171,16 +160,6 @@ const columnOptions = ({
         && id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
-const addState = withStateHandlers(
-  {},
-  {
-    setStatus: () => status => ({ status }),
-    setPromotionOptionModal: () => promotionOptionModal => ({
-      promotionOptionModal,
-    }),
-  },
-);
-
 export default compose(
   withRouter,
   withState('isLoading', 'setLoading', false),
@@ -191,7 +170,6 @@ export default compose(
         object: { custom: value },
       }),
   }),
-  addState,
   mapProps(({
     promotion,
     loan,
@@ -201,7 +179,6 @@ export default compose(
     isDashboardTable,
     isAdmin,
     className,
-    setPromotionOptionModal,
     ...rest
   }) => {
     const { promotionOptions } = loan;
@@ -226,7 +203,6 @@ export default compose(
         isDashboardTable,
         promotionStatus: promotion.status,
         isAdmin,
-        setPromotionOptionModal,
         loan,
         promotion,
       })),
@@ -244,7 +220,6 @@ export default compose(
       isDashboardTable,
       className,
       promotionOptions,
-      setPromotionOptionModal,
       promotion,
       ...rest,
     };
