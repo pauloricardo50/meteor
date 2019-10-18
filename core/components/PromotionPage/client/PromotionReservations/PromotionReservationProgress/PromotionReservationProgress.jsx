@@ -69,14 +69,14 @@ export const rawPromotionReservationProgress = ({
   mortgageCertification,
   reservationAgreement,
   deposit,
-  lender,
+  bank,
 }) =>
   [
     mortgageCertification.status
       === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === AGREEMENT_STATUSES.SIGNED,
     deposit.status === DEPOSIT_STATUSES.PAID,
-    lender.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+    bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
 
 const PromotionReservationProgress = ({

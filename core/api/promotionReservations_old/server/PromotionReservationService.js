@@ -242,7 +242,7 @@
 //   cancelReservation({ promotionReservationId }) {
 //     return this.updateStatus({
 //       promotionReservationId,
-//       status: PROMOTION_OPTION_STATUS.CANCELED,
+//       status: PROMOTION_OPTION_STATUS.CANCELLED,
 //     });
 //   }
 

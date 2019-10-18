@@ -7,7 +7,7 @@
 // };
 
 // export const PROMOTION_OPTION_STATUS = {
-//   CANCELED: 'CANCELED',
+//   CANCELLED: 'CANCELLED',
 //   EXPIRED: 'EXPIRED',
 //   WAITLIST: 'WAITLIST',
 //   ACTIVE: 'ACTIVE',

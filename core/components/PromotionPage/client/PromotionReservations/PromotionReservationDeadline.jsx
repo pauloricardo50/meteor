@@ -89,7 +89,7 @@ const PromotionReservationDeadline = ({
     );
   }
 
-  if (status === PROMOTION_OPTION_STATUS.RESERVATION_CANCELED) {
+  if (status === PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED) {
     return (
       <div>
         <h1>

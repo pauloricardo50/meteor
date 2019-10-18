@@ -43,7 +43,7 @@ const PromotionReservationDetail = ({
   const isAdmin = Meteor.microservice === 'admin';
   const isDeadReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
-    PROMOTION_OPTION_STATUS.RESERVATION_CANCELED,
+    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
   ].includes(status);
   const canCancelReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
