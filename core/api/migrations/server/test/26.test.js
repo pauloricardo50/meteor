@@ -13,9 +13,9 @@ import {
   PROMOTION_OPTION_BANK_STATUS,
   DEPOSIT_STATUSES,
 } from '../../../constants';
-import { up, down } from '../25';
+import { up, down } from '../26';
 
-describe('Migration 25', () => {
+describe('Migration 26', () => {
   beforeEach(() => resetDatabase());
 
   describe('up', () => {
