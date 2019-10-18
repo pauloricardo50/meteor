@@ -10,10 +10,10 @@ import {
 } from 'core/api/methods';
 import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers/index';
 import {
-  PROMOTION_RESERVATION_DOCUMENTS,
-  PROMOTION_RESERVATIONS_COLLECTION,
-  PROMOTION_RESERVATION_STATUS,
-} from '../../../../../api/promotionReservations/promotionReservationConstants';
+  PROMOTION_OPTION_DOCUMENTS,
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_STATUS,
+} from '../../../../../api/promotionOptions/promotionOptionConstants';
 import UploaderArray from '../../../../UploaderArray';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
@@ -23,55 +23,50 @@ type PromotionReservationDetailProps = {};
 
 const promotionReservationsArray = [
   {
-    id: PROMOTION_RESERVATION_DOCUMENTS.RESERVATION_AGREEMENT,
+    id: PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT,
     noTooltips: true,
   },
 ];
 
 const PromotionReservationDetail = ({
-  promotionReservation,
+  promotionOption,
   anonymize,
 }: PromotionReservationDetailProps) => {
   const {
-    _id,
-    expirationDate,
+    _id: promotionOptionId,
+    reservationAgreement: { expirationDate, startDate },
     loan,
-    promotionLot,
-    promotionOption: { _id: promotionOptionId },
-    startDate,
     status,
-  } = promotionReservation;
+  } = promotionOption;
   const { user } = loan;
   const isAnonymized = anonymize || isUserAnonymized(user);
   const isAdmin = Meteor.microservice === 'admin';
   const isDeadReservation = [
-    PROMOTION_RESERVATION_STATUS.EXPIRED,
-    PROMOTION_RESERVATION_STATUS.CANCELED,
+    PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
   ].includes(status);
   const canCancelReservation = [
-    PROMOTION_RESERVATION_STATUS.ACTIVE,
-    PROMOTION_RESERVATION_STATUS.CONFIRMED,
-    PROMOTION_RESERVATION_STATUS.COMPLETED,
+    PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+    PROMOTION_OPTION_STATUS.RESERVED,
+    PROMOTION_OPTION_STATUS.SOLD,
   ].includes(status);
 
   return (
     <div>
       <div className="text-center" style={{ marginBottom: 40 }}>
         <PromotionReservationDeadline
-          promotionReservationId={_id}
+          promotionOptionId={promotionOptionId}
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
         />
       </div>
-      <PromotionReservationProgressEditor
-        promotionReservation={promotionReservation}
-      />
+      <PromotionReservationProgressEditor promotionOption={promotionOption} />
       <br />
       {!isAnonymized && (
         <UploaderArray
-          doc={promotionReservation}
-          collection={PROMOTION_RESERVATIONS_COLLECTION}
+          doc={promotionOption}
+          collection={PROMOTION_OPTIONS_COLLECTION}
           documentArray={promotionReservationsArray}
           allowRequireByAdmin={false}
           disabled={!isAdmin}
@@ -98,7 +93,7 @@ const PromotionReservationDetail = ({
               method={() => bookPromotionLot.run({ promotionOptionId })}
             />
           )}
-          {status === PROMOTION_RESERVATION_STATUS.ACTIVE && (
+          {status === PROMOTION_OPTION_STATUS.ACTIVE && (
             <ConfirmMethod
               buttonProps={{ secondary: true, raised: true }}
               label="Confirmer vente"

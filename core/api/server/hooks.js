@@ -6,7 +6,6 @@ import '../mortgageNotes/server/hooks';
 import '../offers/server/hooks';
 import '../organisations/server/hooks';
 import '../promotionOptions/server/hooks';
-import '../promotionReservations/server/hooks';
 import '../promotions/server/hooks';
 import '../properties/server/hooks';
 import '../revenues/server/hooks';

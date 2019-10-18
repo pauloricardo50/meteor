@@ -2,7 +2,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { PROMOTION_RESERVATION_STATUS } from 'core/api/constants';
+import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import T from '../../../Translation';
 import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
 import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';
@@ -10,16 +10,16 @@ import PromotionReservationDeadline from '../PromotionReservations/PromotionRese
 type UserReservationProps = {};
 
 const UserReservation = ({
-  promotionReservation,
+  promotionOption,
   className,
   progressVariant,
 }: UserReservationProps) => {
   const {
-    expirationDate,
-    promotionLot,
-    startDate,
+    reservationAgreement: { expirationDate, startDate },
+    promotionLots,
     status,
-  } = promotionReservation;
+  } = promotionOption;
+  const [promotionLot] = promotionLots;
   return (
     <div className={cx('user-reservation', className)}>
       <h3>
@@ -37,9 +37,13 @@ const UserReservation = ({
             status={status}
           />
         </div>
-        {status === PROMOTION_RESERVATION_STATUS.ACTIVE && (
+        {[
+          PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+          PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED,
+          PROMOTION_OPTION_STATUS.RESERVED,
+        ].includes(status) && (
           <PromotionReservationProgress
-            promotionReservation={promotionReservation}
+            promotionOption={promotionOption}
             variant={progressVariant}
           />
         )}

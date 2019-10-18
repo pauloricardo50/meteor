@@ -168,7 +168,7 @@ export class LoanService extends CollectionService {
     });
 
     promotionLotIds.forEach((promotionLotId) => {
-      PromotionOptionService.insert({ promotionLotId, loanId });
+      PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
     });
 
     this.addNewStructure({ loanId });

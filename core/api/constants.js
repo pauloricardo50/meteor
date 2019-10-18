@@ -17,7 +17,6 @@ import { CONTACTS_COLLECTION } from './contacts/contactsConstants';
 import { LENDERS_COLLECTION } from './lenders/lenderConstants';
 import { LENDER_RULES_COLLECTION } from './lenderRules/lenderRulesConstants';
 import { REVENUES_COLLECTION } from './revenues/revenueConstants';
-import { PROMOTION_RESERVATIONS_COLLECTION } from './promotionReservations/promotionReservationConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './contacts/contactsConstants';
@@ -43,7 +42,6 @@ export * from './security/constants';
 export * from './tasks/taskConstants';
 export * from './updateWatchers/updateWatcherConstants';
 export * from './users/userConstants';
-export * from './promotionReservations/promotionReservationConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -70,5 +68,4 @@ export const COLLECTIONS = {
   LENDERS_COLLECTION,
   LENDER_RULES_COLLECTION,
   REVENUES_COLLECTION,
-  PROMOTION_RESERVATIONS_COLLECTION,
 };

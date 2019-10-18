@@ -1,6 +1,5 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
-import moment from 'moment';
 
 import {
   LOT_TYPES,
@@ -13,7 +12,6 @@ import {
   DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
-  PROMOTION_RESERVATION_STATUS,
 } from '../constants';
 import {
   Borrowers,
@@ -33,7 +31,6 @@ import {
   Revenues,
   Tasks,
   Users,
-  PromotionReservations,
 } from '..';
 import {
   PROPERTY_CATEGORY,
@@ -210,14 +207,3 @@ Factory.define('lenderRulesSecondary', LenderRules, {
 Factory.define('notification', Notifications, {});
 
 Factory.define('activity', Activities, {});
-
-Factory.define('promotionReservation', PromotionReservations, {
-  status: PROMOTION_RESERVATION_STATUS.ACTIVE,
-  startDate: moment()
-    .startOf('day')
-    .toDate(),
-  expirationDate: moment()
-    .add(14, 'days')
-    .startOf('day')
-    .toDate(),
-});

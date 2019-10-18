@@ -140,6 +140,7 @@ const makeMapAppPromotionLot = ({
   loan: { _id: loanId, promotionOptions },
   isALotAttributedToMe,
   promotionStatus,
+  promotionId,
 }) => (promotionLot) => {
   const {
     _id: promotionLotId,
@@ -182,6 +183,7 @@ const makeMapAppPromotionLot = ({
               isLotAttributedToMe({ promotionOptions, promotionLotId })
               || status !== PROMOTION_LOT_STATUS.AVAILABLE
             }
+            promotionId={promotionId}
           />
         </div>
       ),
@@ -226,7 +228,7 @@ export const AppPromotionLotsTableContainer = compose(
   }),
   withProps(({
     promotionLots,
-    promotion: { status: promotionStatus },
+    promotion: { status: promotionStatus, _id: promotionId },
     setPromotionLotModal,
     loan,
   }) => {
@@ -238,6 +240,7 @@ export const AppPromotionLotsTableContainer = compose(
         loan,
         isALotAttributedToMe,
         promotionStatus,
+        promotionId
       })),
       columnOptions: appColumnOptions({
         isALotAttributedToMe,

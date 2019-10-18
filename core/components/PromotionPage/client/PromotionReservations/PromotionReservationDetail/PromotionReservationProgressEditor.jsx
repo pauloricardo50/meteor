@@ -10,7 +10,7 @@ import PromotionReservationProgress from '../PromotionReservationProgress';
 type PromotionReservationProgressEditorProps = {};
 
 const PromotionReservationProgressEditor = ({
-  promotionReservation,
+  promotionOption,
 }: PromotionReservationProgressEditorProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const isAdmin = Meteor.microservice === 'admin';
@@ -28,7 +28,7 @@ const PromotionReservationProgressEditor = ({
         )}
       </div>
       <PromotionReservationProgress
-        promotionReservation={promotionReservation}
+        promotionOption={promotionOption}
         style={{ flexDirection: 'column', alignItems: 'stretch' }}
         variant="text"
         isEditing={isEditing}

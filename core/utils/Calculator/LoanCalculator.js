@@ -1,5 +1,5 @@
 // @flow
-import { OWN_FUNDS_TYPES } from 'core/api/constants';
+import { OWN_FUNDS_TYPES, PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -10,6 +10,7 @@ import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
+import { sortByStatus } from '../sorting';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -486,5 +487,21 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
         return false;
       });
+    }
+
+    hasActivePromotionOption({ loan: { promotionOptions = [] } }) {
+      return (
+        promotionOptions.length > 0
+        && promotionOptions.some(({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status)
+      );
+    }
+
+    getActivePromotionOptions({ loan: { promotionOptions = [] } }) {
+      return promotionOptions.filter(({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status);
+    }
+
+    getMostActivePromotionOption({ loan: { promotionOptions = [] } }) {
+      const sorted = promotionOptions.sort(sortByStatus(Object.values(PROMOTION_OPTION_STATUS)));
+      return sorted.slice(-1)[0];
     }
   };

@@ -1,8 +1,8 @@
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 
 export class PromotionLotService extends CollectionService {
   constructor() {
@@ -29,46 +29,33 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  bookPromotionLot({ promotionOptionId, promotionReservation }) {
+  bookPromotionLot({ promotionOptionId, startDate, agreementFileKeys }) {
     const {
       loan: { _id: loanId } = {},
       promotionLots,
-      promotionReservation: existingPromotionReservation,
     } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
-      promotionReservation: { _id: 1 },
     });
 
     const [{ _id: promotionLotId }] = promotionLots;
 
-    return (existingPromotionReservation
-      ? Promise.resolve(existingPromotionReservation._id)
-      : PromotionReservationService.insert({
-        promotionReservation,
-        promotionOptionId,
-      })
-    )
-      .then((promotionReservationId) => {
+    return PromotionOptionService.activateReservation({
+      promotionOptionId,
+      startDate,
+      agreementFileKeys,
+    })
+      .then(() => {
         this.update({
           promotionLotId,
-          object: { status: PROMOTION_LOT_STATUS.BOOKED },
+          object: { status: PROMOTION_LOT_STATUS.PRE_BOOKED },
         });
-
-        if (existingPromotionReservation) {
-          PromotionReservationService.activateReservation({
-            promotionReservationId: existingPromotionReservation._id,
-          });
-        }
-
         this.addLink({
           id: promotionLotId,
           linkName: 'attributedTo',
           linkId: loanId,
         });
-
-        return promotionReservationId;
       })
       .catch((error) => {
         throw error;
@@ -76,14 +63,10 @@ export class PromotionLotService extends CollectionService {
   }
 
   cancelPromotionLotBooking({ promotionOptionId }) {
-    const {
-      promotionLots,
-      promotionReservation: { _id: promotionReservationId },
-    } = PromotionOptionService.fetchOne({
+    const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
-      promotionReservation: { _id: 1 },
     });
 
     const [{ _id: promotionLotId }] = promotionLots;
@@ -97,20 +80,35 @@ export class PromotionLotService extends CollectionService {
       linkName: 'attributedTo',
     });
 
-    return PromotionReservationService.cancelReservation({
-      promotionReservationId,
+    return PromotionOptionService.cancelReservation({
+      promotionOptionId,
+    });
+  }
+
+  completePromotionLotBooking({ promotionOptionId }) {
+    const { promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.BOOKED },
+    });
+
+    return PromotionOptionService.completeReservation({
+      promotionOptionId,
     });
   }
 
   sellPromotionLot({ promotionOptionId }) {
-    const {
-      promotionLots,
-      promotionReservation: { _id: promotionReservationId },
-    } = PromotionOptionService.fetchOne({
+    const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
-      promotionReservation: { _id: 1 },
     });
 
     const [{ _id: promotionLotId }] = promotionLots;
@@ -120,20 +118,16 @@ export class PromotionLotService extends CollectionService {
       object: { status: PROMOTION_LOT_STATUS.SOLD },
     });
 
-    return PromotionReservationService.completeReservation({
-      promotionReservationId,
+    return PromotionOptionService.sellLot({
+      promotionOptionId,
     });
   }
 
   expirePromotionLotBooking({ promotionOptionId }) {
-    const {
-      promotionLots,
-      promotionReservation: { _id: promotionReservationId },
-    } = PromotionOptionService.fetchOne({
+    const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
-      promotionReservation: { _id: 1 },
     });
 
     const [{ _id: promotionLotId }] = promotionLots;
@@ -147,8 +141,8 @@ export class PromotionLotService extends CollectionService {
       linkName: 'attributedTo',
     });
 
-    return PromotionReservationService.expireReservation({
-      promotionReservationId,
+    return PromotionOptionService.expireReservation({
+      promotionOptionId,
     });
   }
 }

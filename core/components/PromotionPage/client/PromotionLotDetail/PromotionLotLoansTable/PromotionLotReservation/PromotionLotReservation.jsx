@@ -1,16 +1,20 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { shouldAnonymize } from 'core/api/promotions/promotionClientHelpers';
+import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import T from '../../../../../Translation';
+import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
 import { bookPromotionLot } from '../../../../../../api/methods';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
+import PromotionReservationProgress from '../../../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
 
 type PromotionLotReservationProps = {};
 
@@ -50,12 +54,12 @@ const PromotionLotReservation = ({
   loan,
   promotion,
   promotionOption,
-  currentUser,
 }: PromotionLotReservationProps) => {
-  const { promotionReservation } = promotionOption;
+  const currentUser = useContext(CurrentUserContext);
+  const { reservation, status, promotionLots } = promotionOption;
   const { users = [] } = promotion;
   const { $metadata: { permissions } = {} } = users.find(({ _id }) => _id === currentUser._id) || {};
-
+  const [promotionLot] = promotionLots;
   const {
     $metadata: { invitedBy },
     users: promotionUsers = [],
@@ -65,7 +69,6 @@ const PromotionLotReservation = ({
     invitedBy,
     currentUser,
   });
-  const { status, promotionLot = {} } = promotionReservation || {};
   const { status: promotionLotStatus } = promotionLot;
   const anonymize = isAdmin
     ? false
@@ -79,7 +82,7 @@ const PromotionLotReservation = ({
     return null;
   }
 
-  if (!promotionReservation) {
+  if (status === PROMOTION_OPTION_STATUS.INTERESTED) {
     return (
       <AutoFormDialog
         model={{ startDate: new Date() }}
@@ -88,7 +91,7 @@ const PromotionLotReservation = ({
         onSubmit={values =>
           bookPromotionLot.run({
             promotionOptionId: promotionOption._id,
-            promotionReservation: values,
+            ...values,
           })
         }
         title="Réserver"
@@ -98,11 +101,6 @@ const PromotionLotReservation = ({
 
   return (
     <DialogSimple
-      buttonProps={{
-        label: 'Réservation existante',
-        primary: true,
-        raised: false,
-      }}
       title={(
         <T
           id="PromotionReservationsTable.modalTitle"
@@ -113,8 +111,22 @@ const PromotionLotReservation = ({
         />
       )}
       closeOnly
+      renderTrigger={({ handleOpen }) => (
+        <div className="flex center-align">
+          <PromotionReservationProgress
+            promotionOption={promotionOption}
+            className="mr-8"
+          />
+          <Button raised primary onClick={handleOpen}>
+            Détail
+          </Button>
+        </div>
+      )}
     >
-      <PromotionReservationDetail promotionReservation={promotionReservation} anonymize={anonymize} />
+      <PromotionReservationDetail
+        promotionOption={promotionOption}
+        anonymize={anonymize}
+      />
     </DialogSimple>
   );
 };

@@ -4,7 +4,7 @@ import cx from 'classnames';
 import {
   STEP_ORDER,
   STEPS,
-  PROMOTION_RESERVATION_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from 'core/api/constants';
 import ProgressBar from 'core/components/ProgressBar';
 import Icon from 'core/components/Icon';
@@ -13,7 +13,7 @@ import T from 'core/components/Translation';
 const DashboardProgressBar = ({ loan, variant }) => {
   const {
     step: currentStep,
-    promotionReservations = [],
+    promotionOptions = [],
     promotions,
     maxPropertyValue,
   } = loan;
@@ -51,19 +51,19 @@ const DashboardProgressBar = ({ loan, variant }) => {
     }
 
     if (
-      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE)
+      promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE)
     ) {
       currentIndex = steps.findIndex(({ id }) => id === 'confirmReservation');
     }
 
     if (
-      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.CONFIRMED)
+      promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.RESERVED)
     ) {
       currentIndex = steps.findIndex(({ id }) => id === 'notarySignature');
     }
 
     if (
-      promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.COMPLETED)
+      promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.SOLD)
     ) {
       currentIndex = steps.findIndex(({ id }) => id === 'notarySignature') + 1;
     }

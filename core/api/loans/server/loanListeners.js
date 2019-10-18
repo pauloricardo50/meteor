@@ -1,14 +1,14 @@
 import Analytics from 'core/api/analytics/server/Analytics';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import EVENTS from 'core/api/analytics/events';
-import PromotionReservationService from 'core/api/promotionReservations/server/PromotionReservationService';
-import { PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
 import {
   setMaxPropertyValueWithoutBorrowRatio,
   loanInsertBorrowers,
 } from '../methodDefinitions';
+import { PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS } from '../../promotionOptions/promotionOptionConstants';
 
 export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });
@@ -27,7 +27,7 @@ ServerEventService.addAfterMethodListener(
       hasPromotion: 1,
       anonymous: 1,
       promotions: { _id: 1 },
-      promotionReservations: { _id: 1 },
+      promotionOptions: { _id: 1 },
     });
     const {
       maxPropertyValue = {},
@@ -36,7 +36,7 @@ ServerEventService.addAfterMethodListener(
       anonymous,
       promotions = [],
       hasPromotion,
-      promotionReservations = [],
+      promotionOptions = [],
     } = loan;
     const { canton, main = {}, second = {}, type, date } = maxPropertyValue;
     const {
@@ -74,12 +74,11 @@ ServerEventService.addAfterMethodListener(
       promotion = promotions[0];
     }
 
-    if (promotionReservations.length) {
-      promotionReservations.forEach(({ _id: promotionReservationId }) =>
-        PromotionReservationService.updateMortgageCertification({
-          promotionReservationId,
-          status:
-            PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
+    if (promotionOptions.length) {
+      promotionOptions.forEach(({ _id: promotionOptionId }) =>
+        PromotionOptionService.updateMortgageCertification({
+          promotionOptionId,
+          status: PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
           date,
         }));
     }

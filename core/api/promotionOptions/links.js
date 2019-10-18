@@ -1,6 +1,6 @@
 import PromotionOptions from '.';
 
-import { PromotionLots, Lots, Loans, PromotionReservations } from '..';
+import { PromotionLots, Lots, Loans, Promotions } from '..';
 import LinkInitializer from '../links/LinkInitializer';
 
 PromotionOptions.addLinks({
@@ -16,6 +16,12 @@ PromotionOptions.addLinks({
     type: 'many',
     metadata: true,
   },
+  promotion: {
+    field: 'promotionLink',
+    collection: Promotions,
+    type: 'one',
+    metadata: true,
+  },
 });
 
 LinkInitializer.inversedInit(() => {
@@ -23,12 +29,6 @@ LinkInitializer.inversedInit(() => {
     loan: {
       collection: Loans,
       inversedBy: 'promotionOptions',
-    },
-    promotionReservation: {
-      inversedBy: 'promotionOption',
-      type: 'one',
-      collection: PromotionReservations,
-      autoremove: true,
     },
   });
 });

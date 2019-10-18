@@ -1,4 +1,3 @@
-import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const promotionOptionInsert = new Method({
@@ -6,6 +5,7 @@ export const promotionOptionInsert = new Method({
   params: {
     promotionLotId: String,
     loanId: String,
+    promotionId: String,
   },
 });
 
@@ -32,4 +32,9 @@ export const increaseOptionPriority = new Method({
 export const reducePriorityOrder = new Method({
   name: 'reducePriorityOrder',
   params: { promotionOptionId: String },
+});
+
+export const promotionOptionUpdateObject = new Method({
+  name: 'promotionOptionUpdateObject',
+  params: { promotionOptionId: String, object: Object, id: String },
 });

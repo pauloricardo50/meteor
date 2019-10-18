@@ -11,7 +11,6 @@ import {
   Revenues,
   Tasks,
   Users,
-  PromotionReservations,
 } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
@@ -121,11 +120,6 @@ LinkInitializer.inversedInit(() => {
         field: 'tasksCache',
         body: tasksCache,
       },
-    },
-    promotionReservations: {
-      collection: PromotionReservations,
-      type: 'many',
-      inversedBy: 'loan',
     },
   });
 });

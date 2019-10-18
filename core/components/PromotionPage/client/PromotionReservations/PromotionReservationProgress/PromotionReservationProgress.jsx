@@ -1,16 +1,14 @@
 // @flow
 import React from 'react';
-import moment from 'moment';
+import cx from 'classnames';
 
 import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
 import {
-  PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
   AGREEMENT_STATUSES,
   DEPOSIT_STATUSES,
-  PROMOTION_RESERVATION_BANK_STATUS,
-} from '../../../../../api/promotionReservations/promotionReservationConstants';
-import BaseIcon from '../../../../Icon';
-import T from '../../../../Translation';
+  PROMOTION_OPTION_BANK_STATUS,
+} from '../../../../../api/promotionOptions/promotionOptionConstants';
 import PromotionReservationProgressItem from './PromotionReservationProgressItem';
 
 type PromotionReservationProgressProps = {};
@@ -29,7 +27,7 @@ const makeGetIcon = ({ success = [], waiting = [], error = [] }) => (status) => 
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-const makeIcon = (variant, isEditing, promotionReservationId) => ({
+const makeIcon = (variant, isEditing, promotionOptionId) => ({
   icon,
   color,
   status,
@@ -44,7 +42,7 @@ const makeIcon = (variant, isEditing, promotionReservationId) => ({
     variant={variant}
     id={id}
     isEditing={isEditing}
-    promotionReservationId={promotionReservationId}
+    promotionOptionId={promotionOptionId}
   />
 );
 
@@ -52,7 +50,7 @@ const getAdminNoteIcon = (
   { note, date } = {},
   variant,
   isEditing,
-  promotionReservationId,
+  promotionOptionId,
 ) =>
   date && (
     <PromotionReservationProgressItem
@@ -64,7 +62,7 @@ const getAdminNoteIcon = (
       variant={variant}
       id="adminNote"
       isEditing={isEditing}
-      promotionReservationId={promotionReservationId}
+      promotionOptionId={promotionOptionId}
     />
   );
 
@@ -72,46 +70,47 @@ export const rawPromotionReservationProgress = ({
   mortgageCertification,
   reservationAgreement,
   deposit,
-  lender,
+  bank,
 }) =>
   [
     mortgageCertification.status
-      === PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
+      === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === AGREEMENT_STATUSES.SIGNED,
     deposit.status === DEPOSIT_STATUSES.PAID,
-    lender.status === PROMOTION_RESERVATION_BANK_STATUS.VALIDATED,
+    bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
 
 const PromotionReservationProgress = ({
-  promotionReservation,
+  promotionOption,
   style,
   variant = 'icon',
   isEditing,
+  className,
 }: PromotionReservationProgressProps) => {
   const {
-    _id: promotionReservationId,
+    _id: promotionOptionId,
     mortgageCertification,
     reservationAgreement,
     deposit,
-    lender,
+    bank,
     adminNote,
     loan,
-  } = promotionReservation;
+  } = promotionOption;
 
   const { user } = loan;
 
   const isAnonymized = isUserAnonymized(user);
 
-  const icon = makeIcon(variant, isEditing, promotionReservationId);
+  const icon = makeIcon(variant, isEditing, promotionOptionId);
 
   const icons = [
     icon({
       ...mortgageCertification,
       ...makeGetIcon({
-        error: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
-        success: [PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
+        error: [PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
+        success: [PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
         waiting: [
-          PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
+          PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
         ],
       })(mortgageCertification.status),
       id: 'mortgageCertification',
@@ -134,21 +133,24 @@ const PromotionReservationProgress = ({
       id: 'deposit',
     }),
     icon({
-      ...lender,
+      ...bank,
       ...makeGetIcon({
-        success: [PROMOTION_RESERVATION_BANK_STATUS.VALIDATED],
-        error: [PROMOTION_RESERVATION_BANK_STATUS.REJECTED],
-        waiting: [PROMOTION_RESERVATION_BANK_STATUS.WAITING],
-      })(lender.status),
-      id: 'lender',
+        success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
+        error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
+        waiting: [PROMOTION_OPTION_BANK_STATUS.WAITING],
+      })(bank.status),
+      id: 'bank',
     }),
     !isAnonymized
-      && getAdminNoteIcon(adminNote, variant, isEditing, promotionReservationId),
+      && getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId),
   ].filter(x => x);
 
   return (
     <div
-      className="promotion-reservation-progress flex center-align"
+      className={cx(
+        'promotion-reservation-progress flex center-align',
+        className,
+      )}
       style={style}
     >
       {icons}

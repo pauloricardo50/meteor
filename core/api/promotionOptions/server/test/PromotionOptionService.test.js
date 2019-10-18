@@ -3,39 +3,94 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import moment from 'moment';
+import sinon from 'sinon';
 
-import { PROMOTION_RESERVATION_STATUS } from 'core/api/promotionReservations/promotionReservationConstants';
-import PromotionReservationService from '../../../promotionReservations/server/PromotionReservationService';
+import { checkEmails } from '../../../../utils/testHelpers/index';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
+import PromotionService from '../../../promotions/server/PromotionService';
 import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
 import PromotionOptionService from '../PromotionOptionService';
-import { PROMOTION_OPTION_SOLVENCY } from '../../promotionOptionConstants';
+import {
+  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
+  AGREEMENT_STATUSES,
+  DEPOSIT_STATUSES,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
+} from '../../promotionOptionConstants';
+import FileService from '../../../files/server/FileService';
+import S3Service from '../../../files/server/S3Service';
+import TaskService from '../../../tasks/server/TaskService';
 
-describe('PromotionOptionService', () => {
+const makePromotionLotWithReservation = ({
+  key,
+  status,
+  promotionOptionStatus,
+  expirationDate,
+}) => ({
+  _id: `pL${key}`,
+  status,
+  propertyLinks: [{ _id: `prop${key}` }],
+  attributedTo: { _id: `loan${key}` },
+  promotionOptions: [
+    {
+      _id: `pO${key}`,
+      loan: { _id: `loan${key}` },
+      status: promotionOptionStatus,
+      promotionLots: [{ _id: `pL${key}` }],
+      promotion: { _id: 'promo' },
+      reservationAgreement: { expirationDate },
+    },
+  ],
+});
+
+describe('PromotionOptionService', function () {
+  this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
   });
 
   describe('remove', () => {
     let promotionOptionId;
+    let promotionOptionId2;
     let loanId;
     let promotionId;
     let promotionLotId;
+    let promotionLotId2;
 
     beforeEach(() => {
       promotionId = 'promoId';
       promotionLotId = 'pLotId';
+      promotionLotId2 = 'pLotId2';
       promotionOptionId = 'pOptId';
+      promotionOptionId2 = 'pOptId2';
       loanId = 'loanId';
       generator({
-        properties: { _id: 'propId' },
+        properties: [{ _id: 'propId' }, { _id: 'propId2' }],
         promotions: {
           _id: promotionId,
-          promotionLots: {
-            _id: promotionLotId,
-            propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
-          },
+          promotionLots: [
+            {
+              _id: promotionLotId,
+              propertyLinks: [{ _id: 'propId' }],
+              promotionOptions: {
+                _id: promotionOptionId,
+                loan: { _id: loanId },
+                promotion: { _id: promotionId },
+              },
+            },
+            {
+              _id: promotionLotId2,
+              propertyLinks: [{ _id: 'propId2' }],
+              promotionOptions: {
+                _id: promotionOptionId2,
+                loan: { _id: loanId },
+                promotion: { _id: promotionId },
+              },
+            },
+          ],
           loans: { _id: loanId },
         },
       });
@@ -50,7 +105,9 @@ describe('PromotionOptionService', () => {
     it('Removes the link from the loan', () => {
       PromotionOptionService.remove({ promotionOptionId });
       const loan = LoanService.get(loanId);
-      expect(loan.promotionOptionLinks).to.deep.equal([]);
+      expect(loan.promotionOptionLinks).to.deep.equal([
+        { _id: promotionOptionId2 },
+      ]);
     });
 
     it('Removes the priority order from the loan', () => {
@@ -61,31 +118,23 @@ describe('PromotionOptionService', () => {
       ]);
     });
 
-    it('throws if there is an active/completed promotionReservation', async () => {
-      const pRId = await PromotionReservationService.insert({
+    it('throws if there is an active/completed reservation', async () => {
+      PromotionOptionService.updateStatus({
         promotionOptionId,
-        promotionReservation: { startDate: new Date() },
-        withAgreement: false,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       });
       expect(() =>
         PromotionOptionService.remove({ promotionOptionId })).to.throw('active');
     });
 
-    it('does not throw if there is a cancelled promotionReservation', async () => {
-      const pRId = await PromotionReservationService.insert({
+    it('does not throw if there is a cancelled reservation', async () => {
+      PromotionOptionService.updateStatus({
         promotionOptionId,
-        promotionReservation: { startDate: new Date() },
-        withAgreement: false,
+        status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
       });
-      PromotionReservationService._update({
-        id: pRId,
-        object: { status: PROMOTION_RESERVATION_STATUS.CANCELED },
-      });
+
       expect(() =>
         PromotionOptionService.remove({ promotionOptionId })).to.not.throw('active');
-
-      const pR = PromotionReservationService.findOne({});
-      expect(pR).to.equal(undefined);
     });
   });
 
@@ -112,26 +161,38 @@ describe('PromotionOptionService', () => {
     });
 
     it('inserts a new promotionOption', () => {
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
     });
 
     it('throws if promotion lot exists in another promotionOption in the loan', () => {
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
 
       expect(() =>
-        PromotionOptionService.insert({ promotionLotId, loanId })).to.throw('Vous avez déjà');
+        PromotionOptionService.insert({ promotionLotId, loanId, promotionId })).to.throw('Vous avez déjà');
     });
 
     it('adds a link on the loan', () => {
-      PromotionOptionService.insert({ promotionLotId, loanId });
+      PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       const loan = LoanService.get(loanId);
       expect(loan.promotionOptionLinks.length).to.equal(1);
     });
 
     it('inserts the promotionOptionId in the priorityOrder', () => {
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
       const loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder[0]).to.equal(id);
     });
@@ -144,7 +205,11 @@ describe('PromotionOptionService', () => {
       let loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(1);
 
-      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
       loan = LoanService.get(loanId);
 
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
@@ -274,38 +339,666 @@ describe('PromotionOptionService', () => {
     });
   });
 
-  describe('update', () => {
-    it('updates any related promotionReservation if solvency changes', async () => {
+  describe('getReservationExpirationDate', () => {
+    it('throws if no agreement duration is set', () => {
+      expect(() =>
+        PromotionOptionService.getReservationExpirationDate({
+          startDate: new Date(),
+        })).to.throw('Aucun délai');
+    });
+
+    it('throws if start date is in the future', () => {
+      const startDate = moment()
+        .add(1, 'days')
+        .toDate();
+
+      expect(() =>
+        PromotionOptionService.getReservationExpirationDate({
+          startDate,
+          agreementDuration: 14,
+        })).to.throw('ne peut pas être dans le futur');
+    });
+
+    it('does not throw if start date is today', () => {
+      const startDate = moment()
+        .add(1, 'hour')
+        .toDate();
+
+      expect(() =>
+        PromotionOptionService.getReservationExpirationDate({
+          startDate,
+          agreementDuration: 14,
+        })).to.not.throw();
+    });
+
+    it('throws if start date is anterior to agreement duration', () => {
+      const agreementDuration = 11;
+      const startDate = moment()
+        .subtract(13, 'days')
+        .toDate();
+
+      expect(() =>
+        PromotionOptionService.getReservationExpirationDate({
+          startDate,
+          agreementDuration,
+        })).to.throw('ne peut pas être antérieur');
+    });
+
+    it('returns expiration date', () => {
+      const agreementDuration = 11;
+      const startDate = moment()
+        .subtract(6, 'days')
+        .toDate();
+
+      expect(moment(PromotionOptionService.getReservationExpirationDate({
+        startDate,
+        agreementDuration,
+      })).format('DD-MM-YYYY')).to.equal(moment(startDate)
+        .add(agreementDuration, 'days')
+        .endOf('day')
+        .format('DD-MM-YYYY'));
+    });
+  });
+
+  describe('mergeReservationAgreementFiles', () => {
+    it('merges temp agreement files to promotion option', async () => {
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionOptions: {
+          _id: 'promotionOption',
+          _factory: 'promotionOption',
+        },
+      });
+
+      const files = [
+        {
+          file: Buffer.from('hello1', 'utf-8'),
+          key: FileService.getTempS3FileKey(
+            'adminId',
+            { name: 'agreement1.pdf' },
+            { id: 'agreement1' },
+          ),
+        },
+        {
+          file: Buffer.from('hello2', 'utf-8'),
+          key: FileService.getTempS3FileKey(
+            'adminId',
+            { name: 'agreement2.pdf' },
+            { id: 'agreement2' },
+          ),
+        },
+      ];
+
+      await Promise.all(files.map(({ file, key }) => S3Service.putObject(file, key)));
+
+      await PromotionOptionService.mergeReservationAgreementFiles({
+        promotionOptionId: 'promotionOption',
+        agreementFileKeys: files.map(({ key }) => key),
+      });
+
+      const promotionOption = PromotionOptionService.findOne({
+        _id: 'promotionOption',
+      });
+
+      expect(promotionOption.documents[
+        PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT
+      ].length).to.equal(2);
+
+      const tempFiles = await S3Service.listObjects('temp/adminId');
+      expect(tempFiles.length).to.equal(0);
+
+      await FileService.deleteAllFilesForDoc('promotionOption');
+    });
+  });
+
+  describe('activateReservation', () => {
+    it('throws if promotion lot is already booked', () => {
+      const expirationDate = moment()
+        .add(1, 'days')
+        .endOf('day')
+        .toDate();
       generator({
         properties: { _id: 'propId' },
         promotions: {
-          _id: 'promotionId',
-          loans: { _id: 'loanId' },
+          _id: 'promo',
+          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
           promotionLots: {
-            _id: 'promotionLotId',
-            propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: {
-              _id: 'promotionOptionId',
-              loan: { _id: 'loanId' },
-            },
+            _id: 'pL1',
+            status: PROMOTION_LOT_STATUS.BOOKED,
+            propertyLinks: [{ _id: 'prop1' }],
+            promotionOptions: [
+              {
+                _id: 'pO1',
+                loan: { _id: 'loan1' },
+                promotion: { _id: 'promo' },
+                status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+                reservationAgreement: {
+                  expirationDate,
+                },
+              },
+              {
+                _id: 'pO2',
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            ],
+          },
+        },
+      });
+      return PromotionOptionService.activateReservation({
+        promotionOptionId: 'pO2',
+      })
+        .then(() => expect(1).to.equal(2, 'This should not throw'))
+        .catch((error) => {
+          expect(error.message).to.include(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
+        });
+    });
+
+    it('throws if no reservation agreement has been uploaded', () => {
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: 'promo',
+          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+          promotionLots: {
+            _id: 'pL1',
+            status: PROMOTION_LOT_STATUS.AVAILABLE,
+            propertyLinks: [{ _id: 'prop1' }],
+            promotionOptions: [
+              {
+                _id: 'pO2',
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            ],
           },
         },
       });
 
-      await PromotionReservationService.insert({
-        promotionOptionId: 'promotionOptionId',
-        promotionReservation: { startDate: new Date() },
-        withAgreement: false,
+      return PromotionOptionService.activateReservation({
+        promotionOptionId: 'pO2',
+      })
+        .then(() => expect(1).to.equal(2, 'This should not throw'))
+        .catch((error) => {
+          expect(error.message).to.include('Aucune convention');
+        });
+    });
+
+    it('throws if reservation agreement file keys are wrong', () => {
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: 'promo',
+          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+          promotionLots: {
+            _id: 'pL1',
+            status: PROMOTION_LOT_STATUS.AVAILABLE,
+            propertyLinks: [{ _id: 'prop1' }],
+            promotionOptions: [
+              {
+                _id: 'pO2',
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            ],
+          },
+        },
       });
 
-      PromotionOptionService.update({
-        promotionOptionId: 'promotionOptionId',
-        object: { solvency: PROMOTION_OPTION_SOLVENCY.SOLVENT },
+      return PromotionOptionService.activateReservation({
+        agreementFileKeys: ['wrongKey'],
+        startDate: new Date(),
+        promotionOptionId: 'pO2',
+      })
+        .then(() => expect(1).to.equal(2, 'This should not throw'))
+        .catch((error) => {
+          expect(error).to.not.equal(undefined);
+          expect(error.message).to.include('Aucune convention');
+        });
+    });
+
+    it('activates the reservation', async () => {
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: 'promo',
+          agreementDuration: 14,
+          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+          promotionLots: {
+            _id: 'pL1',
+            status: PROMOTION_LOT_STATUS.AVAILABLE,
+            propertyLinks: [{ _id: 'prop1' }],
+            promotionOptions: [
+              {
+                _id: 'pO2',
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            ],
+          },
+        },
       });
 
-      const pR = PromotionReservationService.findOne({});
+      const file = Buffer.from('hello1', 'utf-8');
+      const key = FileService.getTempS3FileKey(
+        'adminId',
+        { name: 'agreement1.pdf' },
+        { id: 'agreement1' },
+      );
 
-      expect(pR.mortgageCertification.status).to.equal(PROMOTION_OPTION_SOLVENCY.SOLVENT);
+      await S3Service.putObject(file, key);
+
+      const startDate = moment()
+        .startOf('day')
+        .toDate();
+
+      return PromotionOptionService.activateReservation({
+        agreementFileKeys: [key],
+        startDate,
+        promotionOptionId: 'pO2',
+      }).then(() => {
+        const promotionOption = PromotionOptionService.findOne({
+          _id: 'pO2',
+        });
+        expect(promotionOption).to.deep.include({
+          status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+          deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
+          bank: {
+            date: startDate,
+            status: PROMOTION_OPTION_BANK_STATUS.NONE,
+          },
+          promotionLink: { _id: 'promo' },
+          reservationAgreement: {
+            expirationDate: moment(startDate)
+              .add(14, 'days')
+              .endOf('day')
+              .toDate(),
+            startDate,
+            date: startDate,
+            status: AGREEMENT_STATUSES.SIGNED,
+          },
+        });
+        expect(promotionOption.mortgageCertification).to.deep.include({
+          status: PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
+        });
+      });
+    });
+  });
+
+  describe('update', () => {
+    it('updates related date fields', () => {
+      const fiveDaysAgo = moment()
+        .subtract(5, 'd')
+        .toDate();
+      const now = new Date();
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionOptions: {
+          _id: 'promotionOption',
+          _factory: 'promotionOption',
+          bank: { date: fiveDaysAgo },
+        },
+      });
+
+      PromotionOptionService._update({
+        id: 'promotionOption',
+        object: {
+          'bank.status': PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+        },
+      });
+      const pO = PromotionOptionService.findOne('promotionOption');
+
+      expect(moment(pO.bank.date).isAfter(now)).to.equal(true);
+    });
+
+    it('does not update date if both are provided', () => {
+      const fiveDaysAgo = moment()
+        .subtract(5, 'd')
+        .toDate();
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionOptions: {
+          _id: 'promotionOption',
+          _factory: 'promotionOption',
+        },
+      });
+
+      PromotionOptionService._update({
+        id: 'promotionOption',
+        object: {
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+            date: fiveDaysAgo,
+          },
+        },
+      });
+      const pO = PromotionOptionService.findOne('promotionOption');
+
+      expect(moment(pO.bank.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
+    });
+
+    it('sets any expirationDate and startDate at end/start of day', () => {
+      generator({
+        users: { _id: 'adminId', _factory: 'admin' },
+        promotionOptions: {
+          _id: 'promotionOption',
+          _factory: 'promotionOption',
+        },
+      });
+      const now = new Date();
+      PromotionOptionService._update({
+        id: 'promotionOption',
+        object: {
+          'reservationAgreement.startDate': now,
+          'reservationAgreement.expirationDate': now,
+        },
+      });
+
+      const pO = PromotionOptionService.findOne('promotionOption');
+      expect(pO.reservationAgreement.startDate.getHours()).to.equal(0);
+      expect(pO.reservationAgreement.startDate.getMinutes()).to.equal(0);
+      expect(pO.reservationAgreement.startDate.getSeconds()).to.equal(0);
+      expect(pO.reservationAgreement.expirationDate.getHours()).to.equal(23);
+      expect(pO.reservationAgreement.expirationDate.getMinutes()).to.equal(59);
+      expect(pO.reservationAgreement.expirationDate.getSeconds()).to.equal(59);
+    });
+  });
+
+  describe('expireReservations', () => {
+    it('expires required reservations', async () => {
+      const today = moment().toDate();
+      const yesterday = moment()
+        .subtract(1, 'days')
+        .toDate();
+      const tomorrow = moment()
+        .add(1, 'days')
+        .toDate();
+
+      generator({
+        properties: [
+          { _id: 'prop1', name: 'Lot 1' },
+          { _id: 'prop2', name: 'Lot 2' },
+          { _id: 'prop3', name: 'Lot 3' },
+          { _id: 'prop4', name: 'Lot 4' },
+        ],
+        promotions: {
+          _id: 'promo',
+          users: [
+            {
+              _id: 'pro1',
+              $metadata: {
+                enableNotifications: true,
+                permissions: {
+                  displayCustomerNames: {
+                    invitedBy: 'USER',
+                    forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+                  },
+                },
+              },
+              organisations: { _id: 'org1', name: 'Org 1' },
+              emails: [{ address: 'pro1@e-potek.ch', verified: true }],
+            },
+            {
+              _id: 'pro2',
+              $metadata: {
+                enableNotifications: true,
+                permissions: { displayCustomerNames: { invitedBy: 'USER' } },
+              },
+              organisations: { _id: 'org2', name: 'Org 2' },
+              emails: [{ address: 'pro2@e-potek.ch', verified: true }],
+            },
+            {
+              _id: 'pro3',
+              $metadata: { enableNotifications: false },
+              organisations: { _id: 'org1', name: 'Org 1' },
+            },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              user: { firstName: 'John', lastName: 'Doe' },
+              $metadata: { invitedBy: 'pro1' },
+            },
+            { _id: 'loan2' },
+            { _id: 'loan3' },
+            { _id: 'loan4' },
+          ],
+          promotionLots: [
+            makePromotionLotWithReservation({
+              key: 1,
+              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+              expirationDate: yesterday,
+            }),
+            makePromotionLotWithReservation({
+              key: 2,
+              status: PROMOTION_LOT_STATUS.BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+              expirationDate: today,
+            }),
+            makePromotionLotWithReservation({
+              key: 3,
+              status: PROMOTION_LOT_STATUS.BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+              expirationDate: tomorrow,
+            }),
+            makePromotionLotWithReservation({
+              key: 4,
+              status: PROMOTION_LOT_STATUS.SOLD,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.SOLD,
+              expirationDate: yesterday,
+            }),
+          ],
+        },
+      });
+
+      const expiredReservations = await PromotionOptionService.expireReservations();
+      const emails = await checkEmails(2);
+
+      expect(expiredReservations).to.equal(1);
+
+      const { promotionLots = [] } = PromotionService.fetchOne({
+        $filters: { _id: 'promo' },
+        promotionLots: {
+          status: 1,
+          promotionOptions: { status: 1 },
+          attributedTo: { _id: 1 },
+        },
+      });
+
+      const [pL1, pL2, pL3, pL4] = promotionLots;
+
+      expect(pL1.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
+      expect(pL1.attributedTo).to.equal(undefined);
+      expect(pL1.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED);
+
+      expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL2.attributedTo).to.deep.include({ _id: 'loan2' });
+      expect(pL2.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
+
+      expect(pL3.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL3.attributedTo).to.deep.include({ _id: 'loan3' });
+      expect(pL3.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
+
+      expect(pL4.status).to.equal(PROMOTION_LOT_STATUS.SOLD);
+      expect(pL4.attributedTo).to.deep.include({ _id: 'loan4' });
+      expect(pL4.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
+
+      const [email1] = emails.sort(({ address: a }, { address: b }) =>
+        a.localeCompare(b));
+      const {
+        address,
+        response: { status },
+        template: {
+          message: { from_email, subject, global_merge_vars, from_name },
+        },
+      } = email1;
+      expect(status).to.equal('sent');
+      expect(address).to.equal('pro1@e-potek.ch');
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal('Promotion "Test promotion", réservation annulée');
+      expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('La réservation pour le lot "Lot 1" a été annulée par e-Potek.');
+    });
+  });
+
+  describe('generateExpiringSoonTasks', () => {
+    it('inserts tasks for soon expiring reservations', async () => {
+      const nextFriday = moment().isoWeekday() <= 5
+        ? moment().isoWeekday(5)
+        : moment()
+          .add(1, 'weeks')
+          .isoWeekday(5);
+
+      const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
+
+      const today = moment().toDate();
+      const tomorrow = moment()
+        .add(1, 'days')
+        .toDate();
+      const in2Days = moment()
+        .add(2, 'days')
+        .toDate();
+      const in3Days = moment()
+        .add(3, 'days')
+        .toDate();
+
+      generator({
+        properties: [
+          { _id: 'prop1', name: 'Lot 1' },
+          { _id: 'prop2', name: 'Lot 2' },
+          { _id: 'prop3', name: 'Lot 3' },
+          { _id: 'prop4', name: 'Lot 4' },
+        ],
+        users: {
+          _id: 'admin',
+          _factory: 'admin',
+        },
+        promotions: {
+          _id: 'promo',
+          assignedEmployee: { _id: 'admin' },
+          users: [
+            {
+              _id: 'pro1',
+              $metadata: {
+                enableNotifications: true,
+                permissions: {
+                  displayCustomerNames: {
+                    invitedBy: 'USER',
+                    forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+                  },
+                },
+              },
+              organisations: { _id: 'org1', name: 'Org 1' },
+              emails: [{ address: 'pro1@e-potek.ch', verified: true }],
+            },
+            {
+              _id: 'pro2',
+              $metadata: {
+                enableNotifications: true,
+                permissions: { displayCustomerNames: { invitedBy: 'USER' } },
+              },
+              organisations: { _id: 'org2', name: 'Org 2' },
+              emails: [{ address: 'pro2@e-potek.ch', verified: true }],
+            },
+            {
+              _id: 'pro3',
+              $metadata: { enableNotifications: false },
+              organisations: { _id: 'org1', name: 'Org 1' },
+            },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              user: { firstName: 'User1', lastName: 'Lastname1' },
+              $metadata: { invitedBy: 'pro1' },
+            },
+            {
+              _id: 'loan2',
+              user: { firstName: 'User2', lastName: 'Lastname2' },
+              $metadata: { invitedBy: 'pro2' },
+            },
+            {
+              _id: 'loan3',
+              user: { firstName: 'User3', lastName: 'Lastname3' },
+              $metadata: { invitedBy: 'pro3' },
+            },
+            {
+              _id: 'loan4',
+              user: { firstName: 'User4', lastName: 'Lastname4' },
+              $metadata: { invitedBy: 'pro3' },
+            },
+            {
+              _id: 'loan5',
+              user: { firstName: 'User5', lastName: 'Lastname5' },
+              $metadata: { invitedBy: 'pro3' },
+            },
+          ],
+          promotionLots: [
+            makePromotionLotWithReservation({
+              key: 1,
+              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+              expirationDate: in2Days,
+            }),
+            makePromotionLotWithReservation({
+              key: 2,
+              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+              expirationDate: today,
+            }),
+            makePromotionLotWithReservation({
+              key: 3,
+              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+              expirationDate: tomorrow,
+            }),
+            makePromotionLotWithReservation({
+              key: 4,
+              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+              expirationDate: in3Days,
+            }),
+            makePromotionLotWithReservation({
+              key: 4,
+              status: PROMOTION_LOT_STATUS.BOOKED,
+              promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+              expirationDate: tomorrow,
+            }),
+          ],
+        },
+      });
+
+      await PromotionOptionService.generateExpiringSoonTasks();
+
+      const tasks = TaskService.fetch({
+        assignee: { _id: 1 },
+        promotion: { _id: 1 },
+        title: 1,
+        description: 1,
+      });
+
+      expect(tasks.length).to.equal(3);
+      tasks.forEach(({
+        assignee: { _id: assigneeId },
+        promotion: { _id: promotionId },
+      }) => {
+        expect(assigneeId).to.equal('admin');
+        expect(promotionId).to.equal('promo');
+      });
+      expect(tasks[0]).to.deep.include({
+        title: 'La réservation de User1 Lastname1 sur Lot 1 arrive à échéance',
+        description: `Valable jusqu'au ${moment(in2Days).format('DD MMM')}`,
+      });
+      expect(tasks[1]).to.deep.include({
+        title: 'La réservation de User2 Lastname2 sur Lot 2 arrive à échéance',
+        description: `Valable jusqu'au ${moment(today).format('DD MMM')}`,
+      });
+      expect(tasks[2]).to.deep.include({
+        title: 'La réservation de User3 Lastname3 sur Lot 3 arrive à échéance',
+        description: `Valable jusqu'au ${moment(tomorrow).format('DD MMM')}`,
+      });
+      clock.restore();
     });
   });
 });

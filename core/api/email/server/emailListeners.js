@@ -73,7 +73,7 @@ const makePromotionLotNotification = emailId => async ({
   params,
   result,
 }) => {
-  if (typeof result.then === 'function') {
+  if (result && typeof result.then === 'function') {
     result = await result;
   }
   const { userId } = context;

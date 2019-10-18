@@ -52,4 +52,5 @@ const UserPromotionOptionsTable = ({
     </>
   );
 };
+
 export default UserPromotionOptionsTableContainer(UserPromotionOptionsTable);
