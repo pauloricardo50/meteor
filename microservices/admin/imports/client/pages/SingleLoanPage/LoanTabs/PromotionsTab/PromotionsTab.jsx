@@ -2,7 +2,6 @@
 import React from 'react';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
-import PromotionReservationsTable from 'core/components/PromotionPage/client/PromotionReservationsTable';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 
@@ -19,9 +18,6 @@ const PromotionsTab = ({ loan }: PromotionsTabProps) => {
           iconStyle={{ maxWidth: 'unset' }}
         />
       </h2>
-      <br />
-      <PromotionReservationsTable promotion={promotion} loanId={loan._id} />
-      <br />
       <UserPromotionOptionsTable loan={loan} promotion={promotion} isAdmin />
     </>
   );

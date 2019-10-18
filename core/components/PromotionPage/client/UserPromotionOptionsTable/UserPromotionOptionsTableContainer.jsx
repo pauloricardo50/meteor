@@ -17,11 +17,10 @@ import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
-  PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_LOT_REDUCED_STATUS,
 } from '../../../../api/constants';
-import UpdateField from '../../../UpdateField';
 import PrioritySetter from './PrioritySetter';
+import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
 
 export const getLotsAttributedToMe = promotionOptions =>
   promotionOptions.filter(({ attributedToMe }) => attributedToMe);
@@ -60,6 +59,8 @@ const makeMapPromotionOption = ({
   promotionStatus,
   isAdmin,
   setPromotionOptionModal,
+  loan,
+  promotion,
 }) => (promotionOption, index, arr) => {
   const {
     _id: promotionOptionId,
@@ -118,10 +119,11 @@ const makeMapPromotionOption = ({
         </div>
       ),
       !!isAdmin && (
-        <UpdateField
-          doc={{ _id: promotionOptionId, solvency }}
-          collection={PROMOTION_OPTIONS_COLLECTION}
-          fields={['solvency']}
+        <PromotionLotReservation
+          loan={loan}
+          promotion={promotion}
+          promotionOption={promotionOption}
+          key="promotionLotAttributer"
         />
       ),
     ].filter(x => x !== false),
@@ -153,7 +155,7 @@ const columnOptions = ({
     { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
     !isDashboardTable && { id: 'custom', style: { maxWidth: '400px' } },
-    !!isAdmin && { id: 'solvency' },
+    !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
     .map(({ id, ...rest }) => ({
@@ -225,6 +227,8 @@ export default compose(
         promotionStatus: promotion.status,
         isAdmin,
         setPromotionOptionModal,
+        loan,
+        promotion,
       })),
       columnOptions: columnOptions({
         isDashboardTable,

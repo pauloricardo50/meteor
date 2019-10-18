@@ -22,7 +22,7 @@ const PromotionUsers = ({
     permissions: { canManageProUsers },
   } = useContext(PromotionMetadataContext);
   return (
-    <div className="animated fadeIn">
+    <div className="animated fadeIn mt-16">
       <div className="card1 card-top promotion-users-table">
         <div
           className="flex center-align"

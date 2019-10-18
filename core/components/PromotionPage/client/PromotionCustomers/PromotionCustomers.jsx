@@ -14,17 +14,13 @@ const PromotionCustomers = (props: PromotionCustomersProps) => {
   const { loans = [] } = props;
 
   return (
-    <div className="animated fadeIn">
+    <div className="animated fadeIn mt-16">
       <div className="card1 card-top">
-        <div
-          className="flex space-children"
-          style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}
-        >
-          <h2>
-            <T id="PromotionUsersPage.title" />
-          </h2>
-          <h3 className="secondary">{`${loans.length} clients`}</h3>
-        </div>
+        <h2>
+          <T id="PromotionUsersPage.title" />
+          &nbsp;
+          <small className="secondary">{`${loans.length} clients`}</small>
+        </h2>
         <PromotionCustomersTable {...props} currentUser={currentUser} />
       </div>
     </div>

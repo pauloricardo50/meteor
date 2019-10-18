@@ -20,7 +20,7 @@ import PromotionCustomer from '../../PromotionCustomer';
 import PromotionLotReservation from './PromotionLotReservation';
 import PriorityOrder from './PriorityOrder';
 
-const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
+const getColumns = ({ promotionLot, promotionOption }) => {
   const {
     _id: promotionLotId,
     promotion: { _id: promotionId },
@@ -96,22 +96,20 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
       ),
     },
     <PromotionLotReservation
-      promotion={promotion}
-      promotionLot={promotionLot}
       loan={loan}
+      promotion={promotion}
       promotionOption={promotionOption}
-      currentUser={currentUser}
       key="promotionLotAttributer"
     />,
   ];
 };
 
-const makeMapOption = ({ promotionLot, currentUser }) => (promotionOption) => {
+const makeMapOption = ({ promotionLot }) => (promotionOption) => {
   const { _id: promotionOptionId } = promotionOption;
 
   return {
     id: promotionOptionId,
-    columns: getColumns({ promotionLot, promotionOption, currentUser }),
+    columns: getColumns({ promotionLot, promotionOption }),
   };
 };
 
@@ -130,10 +128,9 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
+  mapProps(({ promotionOptions = [], promotionLot }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
-    currentUser,
   })),
   withSmartQuery({
     query: proPromotionOptions,
@@ -142,8 +139,8 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
-    rows: promotionOptions.map(makeMapOption({ promotionLot, currentUser })),
+  withProps(({ promotionOptions = [], promotionLot }) => ({
+    rows: promotionOptions.map(makeMapOption({ promotionLot })),
     columnOptions,
   })),
 );

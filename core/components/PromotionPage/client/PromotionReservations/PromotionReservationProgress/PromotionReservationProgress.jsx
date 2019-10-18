@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
 import {
@@ -84,6 +85,7 @@ const PromotionReservationProgress = ({
   style,
   variant = 'icon',
   isEditing,
+  className,
 }: PromotionReservationProgressProps) => {
   const {
     _id: promotionOptionId,
@@ -145,7 +147,10 @@ const PromotionReservationProgress = ({
 
   return (
     <div
-      className="promotion-reservation-progress flex center-align"
+      className={cx(
+        'promotion-reservation-progress flex center-align',
+        className,
+      )}
       style={style}
     >
       {icons}

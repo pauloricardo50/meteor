@@ -1,7 +1,7 @@
 import Analytics from 'core/api/analytics/server/Analytics';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import EVENTS from 'core/api/analytics/events';
-import { PromotionOptionService } from 'core/api/promotionOptions/server/PromotionOptionService';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
 import {
