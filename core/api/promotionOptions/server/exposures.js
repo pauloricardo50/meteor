@@ -42,8 +42,16 @@ exposeQuery({
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionOptionIds = [] } = params;
+        const { promotionOptionIds = [], status, promotionId } = params;
         filters._id = { $in: promotionOptionIds };
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (promotionId) {
+          filters['promotionLink._id'] = promotionId;
+        }
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
@@ -54,9 +62,11 @@ exposeQuery({
       };
     },
     validateParams: {
-      promotionOptionIds: [String],
+      promotionId: Match.Maybe(String),
+      promotionOptionIds: Match.Maybe([String]),
       userId: String,
       anonymize: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

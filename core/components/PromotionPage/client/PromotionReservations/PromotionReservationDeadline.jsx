@@ -6,7 +6,7 @@ import moment from 'moment';
 import cx from 'classnames';
 
 import { promotionOptionUpdate } from 'core/api/methods';
-import PromotionOptionSchema from 'core/api/promotionOptions/schemas/promotionOptionSchema';
+import PromotionOptionSchema from 'core/api/promotionOptions/schemas/PromotionOptionSchema';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import Tooltip from '../../../Material/Tooltip';

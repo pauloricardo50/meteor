@@ -1,25 +1,29 @@
 // @flow
 import React from 'react';
 
-import { promotionReservationUpdateObject } from '../../../../../api/methods';
+import { promotionOptionUpdateObject } from '../../../../../api/methods';
 import AutoForm from '../../../../AutoForm2';
-import { PromotionReservationSchema } from '../../../../../api/promotionReservations/promotionReservations';
+import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
 
 type StatusDateFormProps = {};
 
 const StatusDateForm = ({
   model,
   id,
-  promotionReservationId,
+  promotionOptionId,
 }: StatusDateFormProps) => (
   <AutoForm
     autosave
     autosaveDelay={300}
-    schema={PromotionReservationSchema.getObjectSchema(id)}
+    schema={PromotionOptionSchema.getObjectSchema(id).pick(
+      'date',
+      'status',
+      'note',
+    )}
     model={model}
     onSubmit={values =>
-      promotionReservationUpdateObject.run({
-        promotionReservationId,
+      promotionOptionUpdateObject.run({
+        promotionOptionId,
         id,
         object: values,
       })

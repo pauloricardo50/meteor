@@ -415,10 +415,7 @@ export class PromotionOptionService extends CollectionService {
       {},
     );
 
-    this._update({
-      id: promotionOptionId,
-      object: updateObject,
-    });
+    this._update({ id: promotionOptionId, object: updateObject });
   }
 
   expireReservations = async () => {

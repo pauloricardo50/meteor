@@ -230,35 +230,3 @@ export const makePromotionOptionAnonymizer = ({
     ...rest,
   };
 };
-
-export const makePromotionReservationAnonymizer = ({
-  userId,
-}) => (promotionReservation) => {
-  const {
-    promotionOption: { _id: promotionOptionId } = {},
-  } = promotionReservation;
-
-  try {
-    SecurityService.promotions.isAllowedToManagePromotionReservation({
-      promotionOptionId,
-      userId,
-    });
-    return promotionReservation;
-  } catch (error) {
-    const {
-      loan: { user: { _id } = {}, ...rest },
-    } = promotionReservation;
-    return {
-      ...promotionReservation,
-      loan: {
-        user: {
-          _id,
-          name: ANONYMIZED_STRING,
-          email: ANONYMIZED_STRING,
-          phoneNumbers: [ANONYMIZED_STRING],
-        },
-        ...rest,
-      },
-    };
-  }
-};
