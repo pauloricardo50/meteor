@@ -21,7 +21,7 @@ import {
   REVENUES_COLLECTION,
   REVENUE_STATUS,
   COMMISSION_STATUS,
-  PROMOTION_RESERVATIONS_COLLECTION,
+  PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_OPTION_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
@@ -61,6 +61,7 @@ const getStatuses = (collection) => {
   case PROMOTION_LOTS_COLLECTION:
     return {
       [PROMOTION_LOT_STATUS.AVAILABLE]: colors.success,
+      [PROMOTION_LOT_STATUS.PRE_BOOKED]: colors.secondary,
       [PROMOTION_LOT_STATUS.BOOKED]: colors.primary,
       [PROMOTION_LOT_STATUS.SOLD]: colors.error,
       [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.tertiary,
@@ -98,13 +99,16 @@ const getStatuses = (collection) => {
       [COMMISSION_STATUS.PAID]: colors.success,
     };
 
-  case PROMOTION_RESERVATIONS_COLLECTION:
+  case PROMOTION_OPTIONS_COLLECTION:
     return {
-      [PROMOTION_OPTION_STATUS.ACTIVE]: colors.primary,
-      [PROMOTION_OPTION_STATUS.WAITLIST]: colors.warning,
-      [PROMOTION_OPTION_STATUS.CANCELED]: colors.error,
-      [PROMOTION_OPTION_STATUS.EXPIRED]: colors.error,
-      [PROMOTION_OPTION_STATUS.COMPLETED]: colors.success,
+      [PROMOTION_OPTION_STATUS.INTERESTED]: colors.secondary,
+      [PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED]: colors.primary,
+      [PROMOTION_OPTION_STATUS.RESERVATION_CANCELED]: colors.error,
+      [PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED]: colors.error,
+      [PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE]: colors.tertiary,
+      [PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST]: colors.warning,
+      [PROMOTION_OPTION_STATUS.RESERVED]: colors.primary,
+      [PROMOTION_OPTION_STATUS.SOLD]: colors.error,
     };
 
   default:
@@ -119,12 +123,13 @@ const getLabel = ({
   statuses,
   suffix,
   variant,
+  className,
 }) => {
   switch (variant) {
   case 'full':
     return props => (
       <span
-        className={cx({ allowModify, 'status-label': true })}
+        className={cx('status-label', { allowModify }, className)}
         style={{ backgroundColor: color || statuses[status] }}
         {...props}
       >
@@ -139,7 +144,7 @@ const getLabel = ({
       (showTooltip ? (
         <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
           <span
-            className={cx({ allowModify, 'status-label-dot': true })}
+            className={cx('status-label-dot', { allowModify }, className)}
             {...props}
           >
             <span style={{ backgroundColor: color || statuses[status] }} />
@@ -147,7 +152,7 @@ const getLabel = ({
         </Tooltip>
       ) : (
         <span
-          className={cx({ allowModify, 'status-label-dot': true })}
+          className={cx('status-label-dot', { allowModify }, className)}
           {...props}
         >
           <span style={{ backgroundColor: color || statuses[status] }} />
@@ -171,6 +176,7 @@ const StatusLabel = ({
   variant = 'full',
   showTooltip = true,
   method,
+  className,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -182,6 +188,7 @@ const StatusLabel = ({
     statuses,
     suffix,
     variant,
+    className,
   });
 
   if (allowModify) {

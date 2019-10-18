@@ -7,7 +7,10 @@ import { withRouter } from 'react-router-dom';
 
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
 import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
-import { LOANS_COLLECTION } from '../../../../../api/constants';
+import {
+  LOANS_COLLECTION,
+  PROMOTION_OPTIONS_COLLECTION,
+} from '../../../../../api/constants';
 import T from '../../../../Translation';
 import { CollectionIconLink } from '../../../../IconLink';
 import LoanProgress from '../../../../LoanProgress';
@@ -22,7 +25,12 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     _id: promotionLotId,
     promotion: { _id: promotionId },
   } = promotionLot;
-  const { loan, custom, createdAt } = promotionOption;
+  const {
+    loan,
+    custom,
+    createdAt,
+    status: promotionOptionStatus,
+  } = promotionOption;
   const {
     status,
     user,
@@ -46,7 +54,19 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     />,
     {
       raw: status,
-      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      label: (
+        <>
+          <StatusLabel
+            status={status}
+            collection={LOANS_COLLECTION}
+            className="mr-8"
+          />
+          <StatusLabel
+            status={promotionOptionStatus}
+            collection={PROMOTION_OPTIONS_COLLECTION}
+          />
+        </>
+      ),
     },
     {
       raw: user.name,

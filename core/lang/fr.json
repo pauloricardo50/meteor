@@ -1,4 +1,13 @@
 {
+  "Forms.bank": "Banque",
+  "Forms.status.PRE_BOOKED": "Réservation en cours",
+  "Forms.status.INTERESTED": "Intéressé",
+  "Forms.status.RESERVATION_REQUESTED": "Réservation demandée",
+  "Forms.status.RESERVATION_CANCELED": "Réservation annulée",
+  "Forms.status.RESERVATION_EXPIRED": "Réservation expirée",
+  "Forms.status.RESERVATION_ACTIVE": "Réservation en cours",
+  "Forms.status.RESERVATION_WAITLIST": "Liste d'attente",
+  "Forms.status.RESERVED": "Réservé",
   "PromotionSteps.purchasingCapacity.title": "Établissez votre attestation de financement",
   "PromotionSteps.purchasingCapacity.tooltip": "Remplissez vos données financières, puis calculez votre capacité d'achat.",
   "PromotionSteps.reserveLot.title": "Réservez votre lot",

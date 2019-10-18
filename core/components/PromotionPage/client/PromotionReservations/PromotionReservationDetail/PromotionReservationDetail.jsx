@@ -29,18 +29,15 @@ const promotionReservationsArray = [
 ];
 
 const PromotionReservationDetail = ({
-  promotionReservation,
+  promotionOption,
   anonymize,
 }: PromotionReservationDetailProps) => {
   const {
-    _id,
-    expirationDate,
+    _id: promotionOptionId,
+    reservationAgreement: { expirationDate, startDate },
     loan,
-    promotionLot,
-    promotionOption: { _id: promotionOptionId },
-    startDate,
     status,
-  } = promotionReservation;
+  } = promotionOption;
   const { user } = loan;
   const isAnonymized = anonymize || isUserAnonymized(user);
   const isAdmin = Meteor.microservice === 'admin';
@@ -58,19 +55,17 @@ const PromotionReservationDetail = ({
     <div>
       <div className="text-center" style={{ marginBottom: 40 }}>
         <PromotionReservationDeadline
-          promotionReservationId={_id}
+          promotionOptionId={promotionOptionId}
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
         />
       </div>
-      <PromotionReservationProgressEditor
-        promotionReservation={promotionReservation}
-      />
+      <PromotionReservationProgressEditor promotionOption={promotionOption} />
       <br />
       {!isAnonymized && (
         <UploaderArray
-          doc={promotionReservation}
+          doc={promotionOption}
           collection={PROMOTION_OPTIONS_COLLECTION}
           documentArray={promotionReservationsArray}
           allowRequireByAdmin={false}

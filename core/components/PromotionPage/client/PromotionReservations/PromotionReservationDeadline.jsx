@@ -19,7 +19,7 @@ const PromotionReservationDeadline = ({
   startDate,
   expirationDate,
   status,
-  promotionReservationId,
+  promotionOptionId,
 }: PromotionReservationDeadlineProps) => {
   const inThreeDays = moment().add(3, 'd');
   const momentDate = moment(expirationDate);
@@ -50,7 +50,7 @@ const PromotionReservationDeadline = ({
                 )}
                 onSubmit={object =>
                   promotionOptionUpdate.run({
-                    promotionReservationId,
+                    promotionOptionId,
                     object: {
                       'reservationAgreement.startDate': object.startDate,
                       'reservationAgreement.expirationDate':

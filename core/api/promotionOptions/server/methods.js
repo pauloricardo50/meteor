@@ -16,47 +16,37 @@ promotionOptionInsert.setHandler(({ userId }, params) => {
   return PromotionOptionService.insert(params);
 });
 
+const canUpdatePromotionOption = (_id, userId) => {
+  if (!SecurityService.isUserAdmin(userId)) {
+    const { loan } = PromotionOptionService.fetchOne({
+      $filters: { _id },
+      loan: { _id: 1, userId: 1 },
+    });
+    SecurityService.checkOwnership(loan, userId);
+  }
+};
+
 promotionOptionUpdate.setHandler(({ userId }, params) => {
-  const { loan } = PromotionOptionService.fetchOne({
-    $filters: { _id: params.promotionOptionId },
-    loan: { _id: 1, userId: 1 },
-  });
-  SecurityService.checkOwnership(loan, userId);
+  canUpdatePromotionOption(params.promotionOptionId, userId);
   PromotionOptionService.update(params);
 });
 
 promotionOptionRemove.setHandler(({ userId }, params) => {
-  const { loan } = PromotionOptionService.fetchOne({
-    $filters: { _id: params.promotionOptionId },
-    loan: { _id: 1, userId: 1 },
-  });
-  SecurityService.checkOwnership(loan, userId);
+  canUpdatePromotionOption(params.promotionOptionId, userId);
   PromotionOptionService.remove(params);
 });
 
 increaseOptionPriority.setHandler(({ userId }, params) => {
-  const { loan } = PromotionOptionService.fetchOne({
-    $filters: { _id: params.promotionOptionId },
-    loan: { _id: 1, userId: 1 },
-  });
-  SecurityService.checkOwnership(loan, userId);
+  canUpdatePromotionOption(params.promotionOptionId, userId);
   PromotionOptionService.increasePriorityOrder(params);
 });
 
 reducePriorityOrder.setHandler(({ userId }, params) => {
-  const { loan } = PromotionOptionService.fetchOne({
-    $filters: { _id: params.promotionOptionId },
-    loan: { _id: 1, userId: 1 },
-  });
-  SecurityService.checkOwnership(loan, userId);
+  canUpdatePromotionOption(params.promotionOptionId, userId);
   PromotionOptionService.reducePriorityOrder(params);
 });
 
 promotionOptionUpdateObject.setHandler(({ userId }, params) => {
-  const { loan } = PromotionOptionService.fetchOne({
-    $filters: { _id: params.promotionOptionId },
-    loan: { _id: 1, userId: 1 },
-  });
-  SecurityService.checkOwnership(loan, userId);
+  canUpdatePromotionOption(params.promotionOptionId, userId);
   PromotionOptionService.updateStatusObject(params);
 });

@@ -27,7 +27,7 @@ const PromotionReservationProgressItem = ({
   id,
   variant,
   isEditing,
-  promotionReservationId,
+  promotionOptionId,
   iconProps,
   note,
   placeholder,
@@ -49,7 +49,7 @@ const PromotionReservationProgressItem = ({
           <StatusDateForm
             model={{ status, note, date }}
             id={id}
-            promotionReservationId={promotionReservationId}
+            promotionOptionId={promotionOptionId}
           />
         )}
       </>

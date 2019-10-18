@@ -6,6 +6,7 @@ import moment from 'moment';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { shouldAnonymize } from 'core/api/promotions/promotionClientHelpers';
+import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import T from '../../../../../Translation';
 import DialogSimple from '../../../../../DialogSimple';
 import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
@@ -52,10 +53,10 @@ const PromotionLotReservation = ({
   promotionOption,
   currentUser,
 }: PromotionLotReservationProps) => {
-  const { promotionReservation } = promotionOption;
+  const { reservation, status, promotionLots } = promotionOption;
   const { users = [] } = promotion;
   const { $metadata: { permissions } = {} } = users.find(({ _id }) => _id === currentUser._id) || {};
-
+  const [promotionLot] = promotionLots;
   const {
     $metadata: { invitedBy },
     users: promotionUsers = [],
@@ -65,7 +66,6 @@ const PromotionLotReservation = ({
     invitedBy,
     currentUser,
   });
-  const { status, promotionLot = {} } = promotionReservation || {};
   const { status: promotionLotStatus } = promotionLot;
   const anonymize = isAdmin
     ? false
@@ -79,7 +79,7 @@ const PromotionLotReservation = ({
     return null;
   }
 
-  if (!promotionReservation) {
+  if (status === PROMOTION_OPTION_STATUS.INTERESTED) {
     return (
       <AutoFormDialog
         model={{ startDate: new Date() }}
@@ -115,7 +115,7 @@ const PromotionLotReservation = ({
       closeOnly
     >
       <PromotionReservationDetail
-        promotionReservation={promotionReservation}
+        promotionOption={promotionOption}
         anonymize={anonymize}
       />
     </DialogSimple>

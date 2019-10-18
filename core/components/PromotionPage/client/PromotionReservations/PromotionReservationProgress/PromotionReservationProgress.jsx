@@ -26,7 +26,7 @@ const makeGetIcon = ({ success = [], waiting = [], error = [] }) => (status) => 
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-const makeIcon = (variant, isEditing, promotionReservationId) => ({
+const makeIcon = (variant, isEditing, promotionOptionId) => ({
   icon,
   color,
   status,
@@ -41,7 +41,7 @@ const makeIcon = (variant, isEditing, promotionReservationId) => ({
     variant={variant}
     id={id}
     isEditing={isEditing}
-    promotionReservationId={promotionReservationId}
+    promotionOptionId={promotionOptionId}
   />
 );
 
@@ -49,7 +49,7 @@ const getAdminNoteIcon = (
   { note, date } = {},
   variant,
   isEditing,
-  promotionReservationId,
+  promotionOptionId,
 ) =>
   date && (
     <PromotionReservationProgressItem
@@ -61,7 +61,7 @@ const getAdminNoteIcon = (
       variant={variant}
       id="adminNote"
       isEditing={isEditing}
-      promotionReservationId={promotionReservationId}
+      promotionOptionId={promotionOptionId}
     />
   );
 
@@ -80,26 +80,26 @@ export const rawPromotionReservationProgress = ({
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
 
 const PromotionReservationProgress = ({
-  promotionReservation,
+  promotionOption,
   style,
   variant = 'icon',
   isEditing,
 }: PromotionReservationProgressProps) => {
   const {
-    _id: promotionReservationId,
+    _id: promotionOptionId,
     mortgageCertification,
     reservationAgreement,
     deposit,
-    lender,
+    bank,
     adminNote,
     loan,
-  } = promotionReservation;
+  } = promotionOption;
 
   const { user } = loan;
 
   const isAnonymized = isUserAnonymized(user);
 
-  const icon = makeIcon(variant, isEditing, promotionReservationId);
+  const icon = makeIcon(variant, isEditing, promotionOptionId);
 
   const icons = [
     icon({
@@ -131,16 +131,16 @@ const PromotionReservationProgress = ({
       id: 'deposit',
     }),
     icon({
-      ...lender,
+      ...bank,
       ...makeGetIcon({
         success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
         error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
         waiting: [PROMOTION_OPTION_BANK_STATUS.WAITING],
-      })(lender.status),
-      id: 'lender',
+      })(bank.status),
+      id: 'bank',
     }),
     !isAnonymized
-      && getAdminNoteIcon(adminNote, variant, isEditing, promotionReservationId),
+      && getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId),
   ].filter(x => x);
 
   return (
