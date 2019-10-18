@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { PROMOTION_RESERVATION_STATUS } from '../../../../api/constants';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/constants';
 import TableWithModal from '../../../Table/TableWithModal';
 import T from '../../../Translation';
 import Button from '../../../Button';
@@ -27,7 +27,7 @@ const PromotionReservationsTable = ({
       <MongoSelect
         value={status}
         onChange={setStatus}
-        options={PROMOTION_RESERVATION_STATUS}
+        options={PROMOTION_OPTION_STATUS}
         id="status"
         label={<T id="Forms.status" />}
       />

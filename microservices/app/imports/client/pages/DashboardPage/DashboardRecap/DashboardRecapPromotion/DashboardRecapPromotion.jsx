@@ -1,16 +1,14 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
+
 import Link from 'core/components/Link';
 import { createRoute } from 'core/utils/routerUtils';
-
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
-import cx from 'classnames';
-import {
-  PROMOTION_STATUS,
-  PROMOTION_RESERVATION_STATUS,
-} from 'core/api/constants';
+import { PROMOTION_STATUS } from 'core/api/constants';
+import Calculator from 'core/utils/Calculator';
 
 type DashboardRecapPromotionProps = {
   loan: Object,
@@ -21,7 +19,6 @@ const DashboardRecapPromotion = ({
   loan,
   promotion,
 }: DashboardRecapPromotionProps) => {
-  const { promotionReservations = [] } = loan;
   const { status } = promotion;
   const { promotionImage = [] } = promotion.documents || {};
 
@@ -45,12 +42,11 @@ const DashboardRecapPromotion = ({
         })}
       />
       <h2 className="secondary">{promotion.name}</h2>
-      {promotionReservations.length > 0 ? (
+      {Calculator.hasActivePromotionOption({ loan }) ? (
         <UserReservation
-          promotionReservation={
-            promotionReservations.sort(({ status }) =>
-              (status === PROMOTION_RESERVATION_STATUS.ACTIVE ? -1 : 0))[0]
-          }
+          promotionOption={Calculator.getMostActivePromotionOption({
+            loan,
+          })}
           progressVariant="label"
         />
       ) : (

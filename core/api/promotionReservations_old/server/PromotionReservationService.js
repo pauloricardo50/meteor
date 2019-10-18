@@ -12,10 +12,10 @@
 // import {
 //   DEPOSIT_STATUSES,
 //   AGREEMENT_STATUSES,
-//   PROMOTION_RESERVATION_STATUS,
-//   PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS,
+//   PROMOTION_OPTION_STATUS,
+//   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
 //   PROMOTION_RESERVATION_DOCUMENTS,
-//   PROMOTION_RESERVATION_BANK_STATUS,
+//   PROMOTION_OPTION_BANK_STATUS,
 //   PROMOTION_RESERVATIONS_COLLECTION,
 // } from '../promotionReservationConstants';
 
@@ -72,7 +72,7 @@
 
 //     // Check if there's any active promotion reservation on this lot
 //     if (promotionReservations.length) {
-//       const activePromotionReservation = promotionReservations.find(({ status }) => status === PROMOTION_RESERVATION_STATUS.ACTIVE);
+//       const activePromotionReservation = promotionReservations.find(({ status }) => status === PROMOTION_OPTION_STATUS.ACTIVE);
 //       if (activePromotionReservation) {
 //         const { expirationDate } = activePromotionReservation;
 //         throw new Meteor.Error(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
@@ -108,7 +108,7 @@
 //       deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
 //       bank: {
 //         date: startDate,
-//         status: PROMOTION_RESERVATION_BANK_STATUS.NONE,
+//         status: PROMOTION_OPTION_BANK_STATUS.NONE,
 //       },
 //       mortgageCertification: this.getInitialMortgageCertification({
 //         loan,
@@ -138,23 +138,23 @@
 //   getInitialMortgageCertification({ solvency, loan, startDate }) {
 //     const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
 
-//     let status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED;
+//     let status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED;
 //     let date = startDate;
 
 //     if (maxPropertyValueDate) {
 //       switch (solvency) {
 //       case PROMOTION_OPTION_SOLVENCY.SOLVENT:
-//         status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
+//         status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
 //         break;
 //       case PROMOTION_OPTION_SOLVENCY.INSOLVENT:
-//         status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT;
+//         status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT;
 //         break;
 //       default:
-//         status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED;
+//         status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED;
 //       }
 //       date = maxPropertyValueDate;
 //     } else if (solvency === PROMOTION_OPTION_SOLVENCY.SOLVENT) {
-//       status = PROMOTION_RESERVATION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
+//       status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT;
 //     }
 
 //     return { status, date };
@@ -242,28 +242,28 @@
 //   cancelReservation({ promotionReservationId }) {
 //     return this.updateStatus({
 //       promotionReservationId,
-//       status: PROMOTION_RESERVATION_STATUS.CANCELED,
+//       status: PROMOTION_OPTION_STATUS.CANCELED,
 //     });
 //   }
 
 //   completeReservation({ promotionReservationId }) {
 //     return this.updateStatus({
 //       promotionReservationId,
-//       status: PROMOTION_RESERVATION_STATUS.COMPLETED,
+//       status: PROMOTION_OPTION_STATUS.COMPLETED,
 //     });
 //   }
 
 //   expireReservation({ promotionReservationId }) {
 //     return this.updateStatus({
 //       promotionReservationId,
-//       status: PROMOTION_RESERVATION_STATUS.EXPIRED,
+//       status: PROMOTION_OPTION_STATUS.EXPIRED,
 //     });
 //   }
 
 //   activateReservation({ promotionReservationId }) {
 //     return this.updateStatus({
 //       promotionReservationId,
-//       status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+//       status: PROMOTION_OPTION_STATUS.ACTIVE,
 //     });
 //   }
 
@@ -300,7 +300,7 @@
 //     const promotionReservationsToExpire = this.fetch({
 //       $filters: {
 //         expirationDate: { $lte: today },
-//         status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+//         status: PROMOTION_OPTION_STATUS.ACTIVE,
 //       },
 //       promotionOption: { _id: 1 },
 //     });
@@ -325,7 +325,7 @@
 //         expirationDate: {
 //           $lte: tomorrow.startOf('day').toDate(),
 //         },
-//         status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+//         status: PROMOTION_OPTION_STATUS.ACTIVE,
 //       },
 //       loan: { user: { name: 1 } },
 //       promotion: { name: 1, assignedEmployee: { _id: 1 } },
@@ -363,7 +363,7 @@
 //         expirationDate: {
 //           $lte: in10Days.startOf('day').toDate(),
 //         },
-//         status: PROMOTION_RESERVATION_STATUS.ACTIVE,
+//         status: PROMOTION_OPTION_STATUS.ACTIVE,
 //       },
 //       loan: { user: { name: 1 } },
 //       promotion: { name: 1, assignedEmployee: { _id: 1 } },

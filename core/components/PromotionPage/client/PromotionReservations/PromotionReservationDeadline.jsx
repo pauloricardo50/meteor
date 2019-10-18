@@ -5,10 +5,10 @@ import React from 'react';
 import moment from 'moment';
 import cx from 'classnames';
 
-import { promotionReservationUpdate } from 'core/api/methods';
-import { PromotionReservationSchema } from 'core/api/promotionReservations/promotionReservations';
+import { promotionOptionUpdate } from 'core/api/methods';
+import PromotionOptionSchema from 'core/api/promotionOptions/schemas/promotionOptionSchema';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import { PROMOTION_RESERVATION_STATUS } from '../../../../api/promotionReservations/promotionReservationConstants';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
 import IconButton from '../../../IconButton';
@@ -26,7 +26,7 @@ const PromotionReservationDeadline = ({
   const isTight = inThreeDays.isAfter(momentDate);
   const isAdmin = Meteor.microservice === 'admin';
 
-  if (status === PROMOTION_RESERVATION_STATUS.ACTIVE) {
+  if (status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE) {
     return (
       <label htmlFor="expirationDate">
         <T id="Forms.expirationDate" />
@@ -43,18 +43,19 @@ const PromotionReservationDeadline = ({
             {momentDate.fromNow()}
             {isAdmin && (
               <AutoFormDialog
-                schema={PromotionReservationSchema.pick(
-                  'startDate',
-                  'expirationDate',
-                )}
+                schema={PromotionOptionSchema.getObjectSchema('reservationAgreement').pick('startDate', 'expirationDate')}
                 model={{ startDate, expirationDate }}
                 triggerComponent={handleOpen => (
                   <IconButton onClick={() => handleOpen(true)} type="edit" />
                 )}
                 onSubmit={object =>
-                  promotionReservationUpdate.run({
+                  promotionOptionUpdate.run({
                     promotionReservationId,
-                    object,
+                    object: {
+                      'reservationAgreement.startDate': object.startDate,
+                      'reservationAgreement.expirationDate':
+                        object.expirationDate,
+                    },
                   })
                 }
                 title="Changer les dates"
@@ -66,7 +67,7 @@ const PromotionReservationDeadline = ({
     );
   }
 
-  if (status === PROMOTION_RESERVATION_STATUS.WAITLIST) {
+  if (status === PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST) {
     return (
       <div>
         <h1>
@@ -77,7 +78,7 @@ const PromotionReservationDeadline = ({
     );
   }
 
-  if (status === PROMOTION_RESERVATION_STATUS.EXPIRED) {
+  if (status === PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED) {
     return (
       <div>
         <h1>
@@ -88,7 +89,7 @@ const PromotionReservationDeadline = ({
     );
   }
 
-  if (status === PROMOTION_RESERVATION_STATUS.CANCELED) {
+  if (status === PROMOTION_OPTION_STATUS.RESERVATION_CANCELED) {
     return (
       <div>
         <h1>
@@ -98,13 +99,24 @@ const PromotionReservationDeadline = ({
     );
   }
 
-  if (status === PROMOTION_RESERVATION_STATUS.COMPLETED) {
+  if (status === PROMOTION_OPTION_STATUS.RESERVED) {
     return (
       <div>
         <h1>
-          <T id="PromotionReservationDeadline.completed" />
+          <T id="PromotionReservationDeadline.reserved" />
         </h1>
-        <T id="PromotionReservationDeadline.completed.description" />
+        <T id="PromotionReservationDeadline.reserved.description" />
+      </div>
+    );
+  }
+
+  if (status === PROMOTION_OPTION_STATUS.SOLD) {
+    return (
+      <div>
+        <h1>
+          <T id="PromotionReservationDeadline.sold" />
+        </h1>
+        <T id="PromotionReservationDeadline.sold.description" />
       </div>
     );
   }

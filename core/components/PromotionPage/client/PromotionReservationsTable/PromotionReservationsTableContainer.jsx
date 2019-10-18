@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import moment from 'moment';
 
-import { PROMOTION_RESERVATIONS_COLLECTION } from '../../../../api/promotionReservations/promotionReservationConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from '../../../../api/promotionOptions/promotionOptionConstants';
 import { getUserNameAndOrganisation } from '../../../../api/helpers/index';
 import { promotionReservations as query } from '../../../../api/promotionReservations/queries';
 import { withSmartQuery } from '../../../../api/containerToolkit/index';
@@ -52,7 +52,7 @@ const makeMapPromotionReservation = promotion => (promotionReservation) => {
         label: (
           <StatusLabel
             status={status}
-            collection={PROMOTION_RESERVATIONS_COLLECTION}
+            collection={PROMOTION_OPTIONS_COLLECTION}
           />
         ),
       },

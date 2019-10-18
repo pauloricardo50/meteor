@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'core/components/Link';
 import useMedia from 'core/hooks/useMedia';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
-import { PROMOTION_RESERVATION_STATUS } from 'core/api/constants';
+import Calculator from 'core/utils/Calculator';
 import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 import PropertyCardInfos from './PropertyCardInfos';
 import PropertyCardContainer from './PropertyCardContainer';
@@ -19,10 +19,8 @@ type PropertyCardProps = {
 };
 
 const PropertyCard = (props: PropertyCardProps) => {
-  const {
-    loan: { promotionOptions, promotionReservations },
-    route,
-  } = props;
+  const { loan, route } = props;
+  const { promotionOptions } = loan;
 
   const isMobile = useMedia({ maxWidth: 1200 });
 
@@ -31,12 +29,11 @@ const PropertyCard = (props: PropertyCardProps) => {
       <div className="top">
         <PropertyCardInfos isMobile={isMobile} {...props} />
       </div>
-      {promotionReservations.length > 0 ? (
+      {Calculator.hasActivePromotionOption({ loan }) ? (
         <UserReservation
-          promotionReservation={
-            promotionReservations.sort(({ status }) =>
-              (status === PROMOTION_RESERVATION_STATUS.ACTIVE ? -1 : 0))[0]
-          }
+          promotionOption={Calculator.getMostActivePromotionOption({
+            loan,
+          })}
           progressVariant="text"
         />
       ) : (

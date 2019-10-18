@@ -1,16 +1,6 @@
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { sortByStatus } from 'core/utils/sorting';
-import {
-  PURCHASE_TYPE,
-  PROPERTY_CATEGORY,
-  PROMOTION_RESERVATION_STATUS,
-  AGREEMENT_STATUSES,
-} from 'core/api/constants';
-import {
-  DEPOSIT_STATUSES,
-  PROMOTION_RESERVATION_BANK_STATUS,
-} from 'imports/core/api/constants';
+import { PURCHASE_TYPE, PROPERTY_CATEGORY } from 'core/api/constants';
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 const createFinancingLink = ({ _id: loanId }) =>
@@ -35,14 +25,6 @@ export const checkArrayIsDone = (array = [], params) =>
 
 export const disablePropertyTodos = ({ structure: { property } = {} }) =>
   !property || property.category === PROPERTY_CATEGORY.PRO;
-
-const getReservation = ({ promotionReservations = [] }) => {
-  if (!promotionReservations.length) {
-    return;
-  }
-
-  return promotionReservations.sort(sortByStatus(Object.values(PROMOTION_RESERVATION_STATUS).reverse()))[0];
-};
 
 export const promotionTodoList = {
   completeBorrowers: true,
@@ -162,38 +144,6 @@ export const getDashboardTodosArray = list =>
       id: 'chooseLots',
       isDone: loan => loan.promotionOptions && loan.promotionOptions.length > 0,
       link: createPropertiesLink,
-    },
-    {
-      id: 'agreement',
-      isDone: (loan) => {
-        const reservation = getReservation(loan);
-        return (
-          reservation
-          && reservation.reservationAgreement.status === AGREEMENT_STATUSES.SIGNED
-        );
-      },
-    },
-    {
-      id: 'deposit',
-      isDone: (loan) => {
-        const reservation = getReservation(loan);
-        return (
-          reservation && reservation.deposit.status === DEPOSIT_STATUSES.PAID
-        );
-      },
-      hide: loan => !getReservation(loan),
-    },
-    {
-      id: 'lender',
-      isDone: (loan) => {
-        const reservation = getReservation(loan);
-        return (
-          reservation
-          && reservation.lender.status
-            === PROMOTION_RESERVATION_BANK_STATUS.VALIDATED
-        );
-      },
-      hide: loan => !getReservation(loan),
     },
     {
       id: 'uploadDocuments',

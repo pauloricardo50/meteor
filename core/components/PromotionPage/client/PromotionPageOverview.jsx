@@ -4,7 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Element } from 'react-scroll';
 
-import { PROMOTION_RESERVATION_STATUS } from '../../../api/constants';
+import { PROMOTION_OPTION_STATUS } from '../../../api/constants';
+import Calculator from '../../../utils/Calculator';
 import T from '../../Translation';
 import ResidenceTypeSetter from '../../ResidenceTypeSetter';
 import {
@@ -30,6 +31,7 @@ const PromotionPageOverview = ({
   } = useContext(PromotionMetadataContext);
   const isApp = Meteor.microservice === 'app';
   const { constructionTimeline, signingDate } = promotion;
+  const activePromotionOptions = Calculator.getActivePromotionOptions({ loan });
 
   return (
     <div className="promotion-page-overview animated fadeIn">
@@ -55,11 +57,11 @@ const PromotionPageOverview = ({
             loan={loan}
             text={<T id="PromotionPage.residenceTypeSetter.text" />}
           />
-          {loan.promotionReservations
-            && loan.promotionReservations.map(promotionReservation => (
+          {activePromotionOptions.length
+            && activePromotionOptions.map(promotionOption => (
               <UserReservation
-                promotionReservation={promotionReservation}
-                key={promotionReservation._id}
+                promotionOption={promotionOption}
+                key={promotionOption._id}
                 className="card1 card-top"
                 progressVariant="text"
               />
@@ -84,7 +86,7 @@ const PromotionPageOverview = ({
           <PromotionReservationsTable
             promotion={promotion}
             className="card1 card-top"
-            initialStatus={{ $in: [PROMOTION_RESERVATION_STATUS.ACTIVE] }}
+            initialStatus={{ $in: [PROMOTION_OPTION_STATUS.ACTIVE] }}
           />
           <ProPromotionLotsTable
             promotion={promotion}
