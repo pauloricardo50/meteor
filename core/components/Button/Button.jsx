@@ -74,6 +74,20 @@ const getContent = ({ icon, fab, label, children, iconAfter }) => {
   );
 };
 
+const getStartIcon = ({ icon, iconAfter }) => {
+  if (!iconAfter) {
+    return icon;
+  }
+}
+
+const getButtonContent = (props) => {
+  if (props.fab) {
+    return getContent(props);
+  }
+
+  return props.label || props.children;
+}
+
 const Button = (props) => {
   const childProps = omit(props, [
     'iconAfter',
@@ -90,9 +104,10 @@ const Button = (props) => {
 
   const variant = props.variant || getVariant(props);
   const color = props.color || getColor(props);
+  const startIcon = props.icon && getStartIcon(props);
 
   const Comp = props.fab ? Fab : MuiButton;
-
+  
   const button = (
     <Comp
       {...childProps}
@@ -108,8 +123,10 @@ const Button = (props) => {
         props.className,
       )}
       role="button"
+      startIcon={startIcon}
+      endIcon={props.iconAfter && props.icon}
     >
-      {getContent(props)}
+      {getButtonContent(props)}
     </Comp>
   );
 
