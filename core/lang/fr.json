@@ -1,4 +1,7 @@
 {
+  "PromotionPage.lots.requestReservation.button": "Demander une réservation",
+  "PromotionPage.lots.requestReservation.title": "Demande de réservation",
+  "PromotionPage.lots.requestReservation.description": "Informe votre courtier de votre intérêt pour le lot {promotionLotName}. Il vous enverra une convention de réservation à lui retourner dûment signée.",
   "PromotionPage.lots.requestReservation": "Demande de réservation",
   "PromotionReservationDeadline.requested": "Réservation demandée",
   "PromotionReservationDeadline.requested.description": "Votre courtier a été informé de votre requête et vous fera signer une convention de réservation",

@@ -62,13 +62,16 @@ const TableWithModal = ({
     () =>
       rows.map(row => ({
         ...row,
-        handleClick: () => {
+        handleClick: (event) => {
           if (row.handleClick) {
             row.handleClick();
           }
 
-          setOpen(true);
-          setActiveRowId(row.id);
+          // Prevent modal to open when event propagation has been stopped
+          if (!event.isPropagationStopped) {
+            setOpen(true);
+            setActiveRowId(row.id);
+          }
         },
       })),
     [rows],

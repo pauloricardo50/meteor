@@ -75,4 +75,5 @@ sellPromotionLot.setHandler(({ userId }, params) => {
   return PromotionLotService.sellPromotionLot(params);
 });
 
-expirePromotionLotBooking.setHandler((context, params) => PromotionLotService.expirePromotionLotBooking(params));
+expirePromotionLotBooking.setHandler((context, params) =>
+  PromotionLotService.expirePromotionLotBooking(params));

@@ -17,12 +17,7 @@ import {
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
-
-export const getLotsAttributedToMe = promotionOptions =>
-  promotionOptions.filter(({ attributedToMe }) => attributedToMe);
-
-export const isAnyLotAttributedToMe = promotionOptions =>
-  getLotsAttributedToMe(promotionOptions).length > 0;
+import RequestReservation from './RequestReservation';
 
 const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>
   !attributedToMe
@@ -49,12 +44,12 @@ const makeMapPromotionOption = ({
     },
     status,
   } = promotionOption;
-  const { name, value, attributedTo } = (promotionLots && promotionLots[0]) || {};
+  const { name, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
     promotionOption,
     columns: [
-      !attributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
+      promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
           <PrioritySetter
             index={index}
@@ -93,16 +88,10 @@ const makeMapPromotionOption = ({
         </div>
       ),
       !isDashboardTable && (
-        <ConfirmMethod
-          method={() =>
-            promotionOptionRequestReservation.run({ promotionOptionId })
-          }
-          label="Demander une réservation"
-          buttonProps={{
-            secondary: true,
-            raised: true,
-            disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
-          }}
+        <RequestReservation
+          promotionOptionId={promotionOptionId}
+          promotionLotName={name}
+          status={status}
         />
       ),
 
@@ -125,13 +114,11 @@ const makeSortByPriority = priorityOrder => (
 
 const columnOptions = ({
   isDashboardTable = false,
-  isLotAttributedToMe,
   promotionStatus,
   isAdmin,
 }) =>
   [
-    !isLotAttributedToMe
-      && promotionStatus === PROMOTION_STATUS.OPEN && {
+    promotionStatus === PROMOTION_STATUS.OPEN && {
       id: 'priorityOrder',
       ...(isDashboardTable && { style: { width: '10%' } }),
     },
@@ -178,9 +165,6 @@ export default compose(
     ...rest
   }) => {
     const { promotionOptions } = loan;
-    const options = isAnyLotAttributedToMe(promotionOptions)
-      ? getLotsAttributedToMe(promotionOptions)
-      : promotionOptions;
 
     let priorityOrder = promotion.loans
         && promotion.loans[0]
@@ -192,7 +176,7 @@ export default compose(
     }
 
     return {
-      rows: options.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
+      rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
         isLoading,
         setLoading,
         makeChangeCustom,
@@ -204,7 +188,6 @@ export default compose(
       })),
       columnOptions: columnOptions({
         isDashboardTable,
-        isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
         promotionStatus: promotion.status,
         isAdmin,
       }),

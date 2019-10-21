@@ -24,10 +24,6 @@ export const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
   return !!(promotionLots[0] && promotionLots[0].attributedToMe);
 };
 
-const isAnyLotAttributedToMe = promotionLots =>
-  promotionLots.filter(({ attributedTo }) =>
-    attributedTo && attributedTo.user._id === Meteor.userId()).length > 0;
-
 const proColumnOptions = [
   { id: 'name' },
   { id: 'status' },
@@ -49,7 +45,7 @@ const proColumnOptions = [
   label: <T id={`PromotionPage.lots.${column.id}`} />,
 }));
 
-const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
+const appColumnOptions = ({ promotionStatus }) =>
   [
     { id: 'name' },
     { id: 'status' },
@@ -64,8 +60,7 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       ),
     },
     { id: 'lots' },
-    !isALotAttributedToMe
-      && promotionStatus === PROMOTION_STATUS.OPEN && {
+    promotionStatus === PROMOTION_STATUS.OPEN && {
       id: 'interested',
       padding: 'checkbox',
     },
@@ -134,7 +129,6 @@ const makeMapProPromotionLot = ({ promotion }) => (promotionLot) => {
 
 const makeMapAppPromotionLot = ({
   loan: { _id: loanId, promotionOptions },
-  isALotAttributedToMe,
   promotionStatus,
   promotionId,
 }) => (promotionLot) => {
@@ -169,16 +163,13 @@ const makeMapAppPromotionLot = ({
           </div>
         ),
       },
-      !isALotAttributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
+      promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
           <PromotionLotSelector
             promotionLotId={promotionLotId}
             promotionOptions={promotionOptions}
             loanId={loanId}
-            disabled={
-              isLotAttributedToMe({ promotionOptions, promotionLotId })
-              || status !== PROMOTION_LOT_STATUS.AVAILABLE
-            }
+            disabled={isLotAttributedToMe({ promotionOptions, promotionLotId })}
             promotionId={promotionId}
           />
         </div>
@@ -218,20 +209,14 @@ export const AppPromotionLotsTableContainer = compose(
     promotionLots,
     promotion: { status: promotionStatus, _id: promotionId },
     loan,
-  }) => {
-    const isALotAttributedToMe = isAnyLotAttributedToMe(promotionLots);
-
-    return {
-      rows: promotionLots.map(makeMapAppPromotionLot({
-        loan,
-        isALotAttributedToMe,
-        promotionStatus,
-        promotionId,
-      })),
-      columnOptions: appColumnOptions({
-        isALotAttributedToMe,
-        promotionStatus,
-      }),
-    };
-  }),
+  }) => ({
+    rows: promotionLots.map(makeMapAppPromotionLot({
+      loan,
+      promotionStatus,
+      promotionId,
+    })),
+    columnOptions: appColumnOptions({
+      promotionStatus,
+    }),
+  })),
 );
