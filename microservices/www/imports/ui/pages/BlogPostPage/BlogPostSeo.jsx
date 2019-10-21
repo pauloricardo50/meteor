@@ -1,9 +1,16 @@
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-export default ({ title, excerpt, post_thumbnail: postThumbnail, url }) => (
+import React from 'react';
+
+const BlogPostSeo = ({
+  post: { title, excerpt, post_thumbnail: postThumbnail },
+  url,
+}) => (
   <>
-    <meta property="og:url" content={`${Meteor.settings.public.subdomains.www}${url}`} />
+    <meta
+      property="og:url"
+      content={`${Meteor.settings.public.subdomains.www}${url}`}
+    />
     <meta
       property="og:image"
       content="https://d2gb1cl8lbi69k.cloudfront.net/facebook-img.png"
@@ -17,3 +24,5 @@ export default ({ title, excerpt, post_thumbnail: postThumbnail, url }) => (
     <meta property="og:image:width" content={postThumbnail.width} />
   </>
 );
+
+export default BlogPostSeo;

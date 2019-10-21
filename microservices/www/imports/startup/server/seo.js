@@ -24,7 +24,7 @@ const setBlogHeaders = (sink, url) => {
       }
 
       const { title, excerpt, post_thumbnail: postThumbnail } = post;
-      sink.appendToHead(renderToString(BlogPostSeo({ ...post })));
+      sink.appendToHead(renderToString(BlogPostSeo({ post, url })));
       sink.appendToHead(`<meta property="og:url" content="${rootUrl + url}" />`);
       sink.appendToHead(`<meta property="og:title" content="${title}" />`);
       sink.appendToHead('<meta property="og:type" content="website" />');
