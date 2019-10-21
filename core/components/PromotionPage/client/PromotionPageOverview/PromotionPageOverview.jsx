@@ -10,6 +10,7 @@ import LotsTable from '../LotsTable';
 import PromotionTimelineForm from '../PromotionTimelineForm';
 import PromotionMetadataContext from '../PromotionMetadata';
 import PromotionTimeline from '../PromotionTimeline';
+import PromotionOptionsTable from '../PromotionOptionsTable';
 import AppPromotionPageOverview from './AppPromotionPageOverview';
 
 type PromotionPageOverviewProps = {};
@@ -45,10 +46,16 @@ const PromotionPageOverview = ({
       {isApp ? (
         <AppPromotionPageOverview loan={loan} promotion={promotion} />
       ) : (
-        <ProPromotionLotsTable
-          promotion={promotion}
-          className="card1 card-top"
-        />
+        <>
+          <PromotionOptionsTable
+            promotion={promotion}
+            className="card1 card-top"
+          />
+          <ProPromotionLotsTable
+            promotion={promotion}
+            className="card1 card-top"
+          />
+        </>
       )}
 
       {promotion.lots
