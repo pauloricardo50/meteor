@@ -2,6 +2,8 @@ import React from 'react';
 import { compose, mapProps, withState, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import { promotionOptionRequestReservation } from 'core/api/methods/index';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
@@ -11,6 +13,7 @@ import {
   PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
@@ -89,6 +92,21 @@ const makeMapPromotionOption = ({
           />
         </div>
       ),
+      !isDashboardTable && (
+        <ConfirmMethod
+          method={() =>
+            promotionOptionRequestReservation.run({ promotionOptionId })
+          }
+          keyword="CONFIRMER"
+          label="Demander une réservation"
+          buttonProps={{
+            secondary: true,
+            raised: true,
+            disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
+          }}
+        />
+      ),
+
       !!isAdmin && (
         <PromotionLotReservation
           loan={loan}
@@ -122,6 +140,7 @@ const columnOptions = ({
     { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
     !isDashboardTable && { id: 'custom', style: { maxWidth: '400px' } },
+    !isDashboardTable && { id: 'requestReservation' },
     !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)

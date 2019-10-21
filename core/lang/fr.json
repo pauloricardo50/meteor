@@ -1,4 +1,7 @@
 {
+  "PromotionPage.lots.requestReservation": "Demande de réservation",
+  "PromotionReservationDeadline.requested": "Réservation demandée",
+  "PromotionReservationDeadline.requested.description": "Votre courtier a été informé de votre requête et vous fera signer une convention de réservation",
   "Forms.bank": "Banque",
   "Forms.status.PRE_BOOKED": "Réservation en cours",
   "Forms.status.INTERESTED": "Intéressé",

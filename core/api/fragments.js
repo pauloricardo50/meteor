@@ -616,7 +616,10 @@ export const proPromotionOption = () => ({
     solvency: 1,
     status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
-    promotions: { users: { _id: 1, name: 1, organisations: { name: 1 } } },
+    promotions: {
+      users: { _id: 1, name: 1, organisations: { name: 1 } },
+      agreementDuration: 1,
+    },
     promotionOptions: {
       name: 1,
       promotionLots: { attributedTo: { user: { _id: 1 } } },
@@ -624,7 +627,7 @@ export const proPromotionOption = () => ({
     },
     loanProgress: 1,
   },
-  promotion: { users: { _id: 1 } },
+  promotion: { users: { _id: 1 }, agreementDuration: 1 },
   adminNote: 1,
 });
 

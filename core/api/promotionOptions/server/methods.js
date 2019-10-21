@@ -8,6 +8,7 @@ import {
   increaseOptionPriority,
   reducePriorityOrder,
   promotionOptionUpdateObject,
+  promotionOptionRequestReservation,
 } from '../methodDefinitions';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
@@ -49,4 +50,9 @@ reducePriorityOrder.setHandler(({ userId }, params) => {
 promotionOptionUpdateObject.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
   PromotionOptionService.updateStatusObject(params);
+});
+
+promotionOptionRequestReservation.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.requestReservation(params);
 });

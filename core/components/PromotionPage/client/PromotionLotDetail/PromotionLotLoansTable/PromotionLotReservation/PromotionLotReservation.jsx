@@ -82,7 +82,10 @@ const PromotionLotReservation = ({
     return null;
   }
 
-  if (status === PROMOTION_OPTION_STATUS.INTERESTED) {
+  if (
+    status === PROMOTION_OPTION_STATUS.INTERESTED
+    || status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED
+  ) {
     return (
       <AutoFormDialog
         model={{ startDate: new Date() }}

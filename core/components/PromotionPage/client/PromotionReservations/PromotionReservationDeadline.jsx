@@ -67,6 +67,17 @@ const PromotionReservationDeadline = ({
     );
   }
 
+  if (status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED) {
+    return (
+      <div>
+        <h1>
+          <T id="PromotionReservationDeadline.requested" />
+        </h1>
+        <T id="PromotionReservationDeadline.requested.description" />
+      </div>
+    );
+  }
+
   if (status === PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST) {
     return (
       <div>
@@ -120,6 +131,8 @@ const PromotionReservationDeadline = ({
       </div>
     );
   }
+
+  return null;
 };
 
 export default PromotionReservationDeadline;
