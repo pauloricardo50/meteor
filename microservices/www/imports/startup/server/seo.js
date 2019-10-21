@@ -23,16 +23,16 @@ const setBlogHeaders = (sink, url) => {
         return;
       }
 
-      const { title, excerpt, post_thumbnail } = post;
+      const { title, excerpt, post_thumbnail: postThumbnail } = post;
       sink.appendToHead(renderToString(BlogPostSeo({ ...post })));
       sink.appendToHead(`<meta property="og:url" content="${rootUrl + url}" />`);
       sink.appendToHead(`<meta property="og:title" content="${title}" />`);
       sink.appendToHead('<meta property="og:type" content="website" />');
       sink.appendToHead('<meta property="fb:app_id" content="1868218996582233" />');
       sink.appendToHead(`<meta property="og:description" content="${excerpt}" />`);
-      sink.appendToHead(`<meta property="og:image" content="${post_thumbnail.URL}" />`);
-      sink.appendToHead(`<meta property="og:image:height" content="${post_thumbnail.height}" />`);
-      sink.appendToHead(`<meta property="og:image:width" content="${post_thumbnail.width}" />`);
+      sink.appendToHead(`<meta property="og:image" content="${postThumbnail.URL}" />`);
+      sink.appendToHead(`<meta property="og:image:height" content="${postThumbnail.height}" />`);
+      sink.appendToHead(`<meta property="og:image:width" content="${postThumbnail.width}" />`);
     });
   }
 };
