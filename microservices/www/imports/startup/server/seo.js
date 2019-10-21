@@ -8,8 +8,6 @@ import BlogPostSeo from 'imports/ui/pages/BlogPostPage/BlogPostSeo';
 import { defaultOgTags } from 'core/components/MicroserviceHead/MicroserviceHead';
 
 const setBlogHeaders = (sink, url) => {
-  const rootUrl = Meteor.settings.public.subdomains.www;
-
   const {
     params: { slug },
   } = matchPath(url, {
@@ -23,16 +21,7 @@ const setBlogHeaders = (sink, url) => {
         return;
       }
 
-      const { title, excerpt, post_thumbnail: postThumbnail } = post;
       sink.appendToHead(renderToString(BlogPostSeo({ post, url })));
-      sink.appendToHead(`<meta property="og:url" content="${rootUrl + url}" />`);
-      sink.appendToHead(`<meta property="og:title" content="${title}" />`);
-      sink.appendToHead('<meta property="og:type" content="website" />');
-      sink.appendToHead('<meta property="fb:app_id" content="1868218996582233" />');
-      sink.appendToHead(`<meta property="og:description" content="${excerpt}" />`);
-      sink.appendToHead(`<meta property="og:image" content="${postThumbnail.URL}" />`);
-      sink.appendToHead(`<meta property="og:image:height" content="${postThumbnail.height}" />`);
-      sink.appendToHead(`<meta property="og:image:width" content="${postThumbnail.width}" />`);
     });
   }
 };
@@ -53,7 +42,12 @@ export const setHeaders = async (sink) => {
   const { request } = sink;
   const { path } = request.url;
 
-  if (path.includes('/blog/')) {
+  if (path.startsWith('/client')) {
+    // This path is used for static assets, don't do anything here
+    return;
+  }
+
+  if (path.startsWith('/blog/')) {
     await setBlogHeaders(sink, path);
   } else {
     await setDefaultHeaders(sink, path);
