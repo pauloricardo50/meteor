@@ -30,20 +30,27 @@ exposeQuery({
       const { promotionOptionIds } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
-      promotionOptionIds.forEach((promotionOptionId) => {
-        SecurityService.promotions.isAllowedToViewPromotionOption({
-          promotionOptionId,
-          userId,
+
+      if (promotionOptionIds) {
+        promotionOptionIds.forEach((promotionOptionId) => {
+          SecurityService.promotions.isAllowedToViewPromotionOption({
+            promotionOptionId,
+            userId,
+          });
         });
-      });
+      }
+
       if (!SecurityService.isUserAdmin(userId)) {
         params.anonymize = true;
       }
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionOptionIds = [], status, promotionId } = params;
-        filters._id = { $in: promotionOptionIds };
+        const { promotionOptionIds, status, promotionId } = params;
+
+        if (promotionOptionIds) {
+          filters._id = { $in: promotionOptionIds };
+        }
 
         if (status) {
           filters.status = status;

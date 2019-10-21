@@ -1,4 +1,9 @@
 {
+  "PromotionOptionsTable.lotName": "Lot",
+  "PromotionOptionsTable.status": "Statut",
+  "PromotionOptionsTable.customer": "Client",
+  "PromotionOptionsTable.createdAt": "Date",
+  "PromotionOptionsTable.progress": "Progrès",
   "Forms.bank": "Banque",
   "Forms.status.PRE_BOOKED": "Réservation en cours",
   "Forms.status.INTERESTED": "Intéressé",

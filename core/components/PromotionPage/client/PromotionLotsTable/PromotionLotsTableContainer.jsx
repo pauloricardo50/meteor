@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps, withStateHandlers } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import {
@@ -187,7 +187,10 @@ const makeMapAppPromotionLot = ({
   };
 };
 
+const withStatusFilter = withState('status', 'setStatus', undefined);
+
 export const ProPromotionLotsTableContainer = compose(
+  withStatusFilter,
   withSmartQuery({
     query: proPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
