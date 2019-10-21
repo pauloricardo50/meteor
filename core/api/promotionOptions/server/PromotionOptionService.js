@@ -42,16 +42,6 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
-  insert({ promotionId, ...promotionOption }) {
-    const promotionOptionId = this.collection.insert(promotionOption);
-    this.addLink({
-      id: promotionOptionId,
-      linkName: 'promotion',
-      linkId: promotionId,
-    });
-    return promotionOptionId;
-  }
-
   get(promotionOptionId) {
     return this.collection
       .createQuery({
@@ -141,6 +131,11 @@ export class PromotionOptionService extends CollectionService {
       linkId: promotionOptionId,
     });
     const promotionId = this.getPromotion(promotionOptionId)._id;
+    this.addLink({
+      id: promotionOptionId,
+      linkName: 'promotion',
+      linkId: promotionId,
+    });
     const priorityOrder = LoanService.getPromotionPriorityOrder({
       loanId,
       promotionId,
