@@ -97,7 +97,6 @@ const makeMapPromotionOption = ({
           method={() =>
             promotionOptionRequestReservation.run({ promotionOptionId })
           }
-          keyword="CONFIRMER"
           label="Demander une réservation"
           buttonProps={{
             secondary: true,
