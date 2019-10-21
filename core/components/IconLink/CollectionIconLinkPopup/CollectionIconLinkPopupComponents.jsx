@@ -231,14 +231,20 @@ export const components = {
             )}
           </span>
         </div>
-        {organisations.length && (
+        {!!organisations.length && (
           <div className="flex center-align">
             <b>Organisations:</b>
             &nbsp;
             <TooltipArray
               title="Organisations"
               items={organisations.map(organisation => (
-                <CollectionIconLink relatedDoc={{...organisation, collection: ORGANISATIONS_COLLECTION}} />
+                <CollectionIconLink
+                  key={organisation._id}
+                  relatedDoc={{
+                    ...organisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
               ))}
             />
           </div>

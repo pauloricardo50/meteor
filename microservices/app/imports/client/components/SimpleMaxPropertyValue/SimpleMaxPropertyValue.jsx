@@ -27,7 +27,12 @@ const getContent = (props) => {
     return <SimpleMaxPropertyValueSignup {...props} />;
   }
 
-  return <MaxPropertyValueResults {...props} />;
+  return (
+    <MaxPropertyValueResults
+      showSecondButton={!loan.hasPromotion}
+      {...props}
+    />
+  );
 };
 
 export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
