@@ -1,11 +1,15 @@
+import { Meteor } from 'meteor/meteor';
+
 import { matchPath } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
-import { Meteor } from 'meteor/meteor';
 
 import { fetchBlogPostMeta } from 'core/api/blog';
 import BlogPostSeo from 'imports/ui/pages/BlogPostPage/BlogPostSeo';
+import { defaultOgTags } from 'core/components/MicroserviceHead/MicroserviceHead';
 
 const setBlogHeaders = (sink, url) => {
+  const rootUrl = Meteor.settings.public.subdomains.www;
+
   const {
     params: { slug },
   } = matchPath(url, {
@@ -18,20 +22,31 @@ const setBlogHeaders = (sink, url) => {
       if (post.error) {
         return;
       }
+
       const { title, excerpt, post_thumbnail: postThumbnail } = post;
-      sink.appendToHead(renderToString(BlogPostSeo({ ...post, url })));
-      sink.appendToHead(`<meta property="og:url" content="${Meteor.settings.public.subdomains.www}${url}" />`);
+      sink.appendToHead(renderToString(BlogPostSeo({ ...post })));
+      sink.appendToHead(`<meta property="og:url" content="${rootUrl + url}" />`);
       sink.appendToHead(`<meta property="og:title" content="${title}" />`);
       sink.appendToHead('<meta property="og:type" content="website" />');
       sink.appendToHead('<meta property="fb:app_id" content="1868218996582233" />');
       sink.appendToHead(`<meta property="og:description" content="${excerpt}" />`);
       sink.appendToHead(`<meta property="og:image" content="${postThumbnail.URL}" />`);
-      sink.appendToHead(`<meta property="og:image:height" content="${
-        postThumbnail.height
-      }" />`);
+      sink.appendToHead(`<meta property="og:image:height" content="${postThumbnail.height}" />`);
       sink.appendToHead(`<meta property="og:image:width" content="${postThumbnail.width}" />`);
     });
   }
+};
+
+const setDefaultHeaders = (sink) => {
+  const url = Meteor.settings.public.subdomains.www;
+  sink.appendToHead(`<meta property="og:url" content="${url}" />`);
+  sink.appendToHead(`<meta property="og:title" content="${defaultOgTags.title}" />`);
+  sink.appendToHead(`<meta property="og:type" content="${defaultOgTags.type}" />`);
+  sink.appendToHead(`<meta property="fb:app_id" content="${defaultOgTags.app_id}" />`);
+  sink.appendToHead(`<meta property="og:description" content="${defaultOgTags.description}" />`);
+  sink.appendToHead(`<meta property="og:image" content="${defaultOgTags.image}" />`);
+  sink.appendToHead(`<meta property="og:image:height" content="${defaultOgTags.image_height}" />`);
+  sink.appendToHead(`<meta property="og:image:width" content="${defaultOgTags.image_width}" />`);
 };
 
 export const setHeaders = async (sink) => {
@@ -40,5 +55,7 @@ export const setHeaders = async (sink) => {
 
   if (path.includes('/blog/')) {
     await setBlogHeaders(sink, path);
+  } else {
+    await setDefaultHeaders(sink, path);
   }
 };
