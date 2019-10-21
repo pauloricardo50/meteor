@@ -211,8 +211,3 @@ export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {
     requiredPermissions,
   });
 };
-
-export const isUserAnonymized = ({ name, email, phoneNumbers = [] }) =>
-  name === ANONYMIZED_STRING
-  || email === ANONYMIZED_STRING
-  || phoneNumbers.some(phone => phone === ANONYMIZED_STRING);

@@ -2,7 +2,6 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers';
 import {
   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
   AGREEMENT_STATUSES,
@@ -95,11 +94,9 @@ const PromotionReservationProgress = ({
     bank,
     adminNote,
     loan,
+    isAnonymized,
   } = promotionOption;
-
   const { user } = loan;
-
-  const isAnonymized = isUserAnonymized(user);
 
   const icon = makeIcon(variant, isEditing, promotionOptionId);
 

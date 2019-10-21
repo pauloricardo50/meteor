@@ -61,12 +61,12 @@ exposeQuery({
         }
       };
 
-      body.$postFilter = (promotionOptions = [], params) => {
-        const { anonymize = false, userId } = params;
-        return anonymize
-          ? promotionOptions.map(makePromotionOptionAnonymizer({ userId }))
-          : promotionOptions;
-      };
+      // body.$postFilter = (promotionOptions = [], params) => {
+      //   const { anonymize = false, userId } = params;
+      //   return anonymize
+      //     ? promotionOptions.map(makePromotionOptionAnonymizer({ userId }))
+      //     : promotionOptions;
+      // };
     },
     validateParams: {
       promotionId: Match.Maybe(String),

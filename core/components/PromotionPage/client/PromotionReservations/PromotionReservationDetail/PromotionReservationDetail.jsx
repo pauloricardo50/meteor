@@ -8,7 +8,6 @@ import {
   sellPromotionLot,
   cancelPromotionLotBooking,
 } from 'core/api/methods';
-import { isUserAnonymized } from 'core/api/security/clientSecurityHelpers/index';
 import {
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTIONS_COLLECTION,
@@ -30,16 +29,14 @@ const promotionReservationsArray = [
 
 const PromotionReservationDetail = ({
   promotionOption,
-  anonymize,
 }: PromotionReservationDetailProps) => {
   const {
     _id: promotionOptionId,
     reservationAgreement: { expirationDate, startDate },
     loan,
     status,
+    isAnonymized,
   } = promotionOption;
-  const { user } = loan;
-  const isAnonymized = anonymize || isUserAnonymized(user);
   const isAdmin = Meteor.microservice === 'admin';
   const isDeadReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
@@ -50,6 +47,7 @@ const PromotionReservationDetail = ({
     PROMOTION_OPTION_STATUS.RESERVED,
     PROMOTION_OPTION_STATUS.SOLD,
   ].includes(status);
+  const hasRequestedReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED;
 
   return (
     <div>
@@ -77,6 +75,13 @@ const PromotionReservationDetail = ({
 
       {isAdmin && (
         <div className="flex center mt-16">
+          {hasRequestedReservation && (
+            <ConfirmMethod
+              buttonProps={{ className: 'mr-8', error: true, outlined: true }}
+              label="Démarrer réservation"
+              method={() => bookPromotionLot.run({ promotionOptionId })}
+            />
+          )}
           {canCancelReservation && (
             <ConfirmMethod
               buttonProps={{ className: 'mr-8', error: true, outlined: true }}

@@ -80,13 +80,17 @@ export default compose(
   withSmartQuery({
     query: proPromotionOptions,
     params: ({ status, promotion: { _id: promotionId } }) => ({
-      status: { ...status, $ne: PROMOTION_OPTION_STATUS.INTERESTED },
+      status, // { ...status, $ne: PROMOTION_OPTION_STATUS.INTERESTED },
       promotionId,
     }),
     dataName: 'promotionOptions',
   }),
-  withProps(({ promotionOptions, promotion }) => ({
-    rows: promotionOptions.map(makeMapPromotionOption({ promotion })),
-    columnOptions,
-  })),
+  withProps(({ promotionOptions, promotion }) => {
+    console.log('promotionOptions:', promotionOptions);
+
+    return {
+      rows: promotionOptions.map(makeMapPromotionOption({ promotion })),
+      columnOptions,
+    };
+  }),
 );
