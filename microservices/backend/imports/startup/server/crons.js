@@ -10,7 +10,7 @@ CronService.init();
 CronService.addCron(
   {
     name: 'Fetch IRS 10Y',
-    frequency: 'at 6:30am every day',
+    frequency: 'at 6:30',
     func: () => Irs10yService.fetchIrs(),
   },
   { cronitorId: '19MCrQ' },
@@ -19,7 +19,7 @@ CronService.addCron(
 CronService.addCron(
   {
     name: 'Expire anonymous loans',
-    frequency: 'at 00:00',
+    frequency: 'at 0:00',
     func: () => LoanService.expireAnonymousLoans(),
   },
   { cronitorId: 'Ti1GXW' },
