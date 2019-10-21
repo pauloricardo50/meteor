@@ -76,10 +76,7 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       label: <T id={`PromotionPage.lots.${column.id}`} />,
     }));
 
-const makeMapProPromotionLot = ({
-  setPromotionLotModal,
-  promotion,
-}) => (promotionLot) => {
+const makeMapProPromotionLot = ({ promotion }) => (promotionLot) => {
   const {
     _id: promotionLotId,
     name,
@@ -101,6 +98,7 @@ const makeMapProPromotionLot = ({
 
   return {
     id: promotionLotId,
+    promotionLot,
     columns: [
       name,
       {
@@ -131,12 +129,10 @@ const makeMapProPromotionLot = ({
         />
       ),
     ],
-    handleClick: () => setPromotionLotModal(promotionLotId),
   };
 };
 
 const makeMapAppPromotionLot = ({
-  setPromotionLotModal,
   loan: { _id: loanId, promotionOptions },
   isALotAttributedToMe,
   promotionStatus,
@@ -188,20 +184,10 @@ const makeMapAppPromotionLot = ({
         </div>
       ),
     ].filter(x => x !== false),
-    handleClick: () => setPromotionLotModal(promotionLotId),
   };
 };
 
-const addState = withStateHandlers(
-  {},
-  {
-    setStatus: () => status => ({ status }),
-    setPromotionLotModal: () => promotionLotModal => ({ promotionLotModal }),
-  },
-);
-
 export const ProPromotionLotsTableContainer = compose(
-  addState,
   withSmartQuery({
     query: proPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
@@ -210,14 +196,13 @@ export const ProPromotionLotsTableContainer = compose(
     }),
     dataName: 'promotionLots',
   }),
-  withProps(({ promotionLots, setPromotionLotModal, promotion }) => ({
-    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal, promotion })),
+  withProps(({ promotionLots, promotion }) => ({
+    rows: promotionLots.map(makeMapProPromotionLot({ promotion })),
     columnOptions: proColumnOptions,
   })),
 );
 
 export const AppPromotionLotsTableContainer = compose(
-  addState,
   withSmartQuery({
     query: appPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
@@ -229,18 +214,16 @@ export const AppPromotionLotsTableContainer = compose(
   withProps(({
     promotionLots,
     promotion: { status: promotionStatus, _id: promotionId },
-    setPromotionLotModal,
     loan,
   }) => {
     const isALotAttributedToMe = isAnyLotAttributedToMe(promotionLots);
 
     return {
       rows: promotionLots.map(makeMapAppPromotionLot({
-        setPromotionLotModal,
         loan,
         isALotAttributedToMe,
         promotionStatus,
-        promotionId
+        promotionId,
       })),
       columnOptions: appColumnOptions({
         isALotAttributedToMe,

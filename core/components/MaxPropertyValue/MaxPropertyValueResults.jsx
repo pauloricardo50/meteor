@@ -35,6 +35,7 @@ const MaxPropertyValueResults = ({
   lockCanton,
   recalculate,
   cantonOptions,
+  showSecondButton = true,
 }: MaxPropertyValueResultsProps) => {
   const {
     maxPropertyValue: { main, second, borrowerHash, canton },
@@ -101,13 +102,15 @@ const MaxPropertyValueResults = ({
       >
         Recalculer
       </Button>
-      <MaxPropertyValueSharing
-        hasProProperty={hasProProperty}
-        hasPromotion={hasPromotion}
-        shareSolvency={shareSolvency}
-        loanId={loanId}
-        propertyOrganisation={getPropertyOrganisation(loan)}
-      />
+      {showSecondButton && (
+        <MaxPropertyValueSharing
+          hasProProperty={hasProProperty}
+          hasPromotion={hasPromotion}
+          shareSolvency={shareSolvency}
+          loanId={loanId}
+          propertyOrganisation={getPropertyOrganisation(loan)}
+        />
+      )}
     </div>
   );
 };

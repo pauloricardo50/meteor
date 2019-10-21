@@ -2,6 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import moment from 'moment';
 
 import FileService from 'core/api/files/server/FileService';
 import S3Service from 'core/api/files/server/S3Service';
@@ -32,7 +33,7 @@ const uploadTempPromotionAgreement = async (userId) => {
 };
 
 describe('PromotionLotService', function () {
-  this.timeout(10000);
+  this.timeout(20000);
 
   beforeEach(() => {
     resetDatabase();
@@ -122,7 +123,7 @@ describe('PromotionLotService', function () {
       return ddpWithUserId('pro1', () =>
         bookPromotionLot.run({
           promotionOptionId: 'pOptId',
-          startDate: new Date(),
+          startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
         }))
         .then(() => checkEmails(2))
@@ -166,7 +167,7 @@ describe('PromotionLotService', function () {
       return ddpWithUserId('pro2', () =>
         bookPromotionLot.run({
           promotionOptionId: 'pOptId',
-          startDate: new Date(),
+          startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
         }))
         .then(() => expect(1).to.equal(2, 'Should throw'))
@@ -180,7 +181,7 @@ describe('PromotionLotService', function () {
       return ddpWithUserId('pro1', () =>
         bookPromotionLot.run({
           promotionOptionId: 'pOptId',
-          startDate: new Date(),
+          startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
         }))
         .then(() => expect(1).to.equal(2, 'Should throw'))
@@ -193,15 +194,13 @@ describe('PromotionLotService', function () {
 
       await PromotionLotService.bookPromotionLot({
         promotionOptionId: 'pOptId',
-        startDate: new Date(),
+        startDate: moment().format('YYYY-MM-DD'),
         agreementFileKeys: [reservationAgreementFileKey],
       });
-
 
       PromotionLotService.sellPromotionLot({
         promotionOptionId: 'pOptId',
       });
-
 
       let pO = PromotionOptionService.get('pOptId');
       let pL = PromotionLotService.get('promotionLotId');
@@ -212,7 +211,6 @@ describe('PromotionLotService', function () {
         promotionOptionId: 'pOptId',
       });
 
-
       pO = PromotionOptionService.get('pOptId');
       pL = PromotionLotService.get('promotionLotId');
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED);
@@ -221,7 +219,6 @@ describe('PromotionLotService', function () {
       await PromotionLotService.bookPromotionLot({
         promotionOptionId: 'pOptId',
       });
-
 
       pO = PromotionOptionService.get('pOptId');
       pL = PromotionLotService.get('promotionLotId');

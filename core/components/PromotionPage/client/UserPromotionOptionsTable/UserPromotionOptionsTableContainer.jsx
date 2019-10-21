@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  compose,
-  mapProps,
-  withState,
-  withProps,
-  withStateHandlers,
-} from 'recompose';
+import { compose, mapProps, withState, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { toMoney } from '../../../../utils/conversionFunctions';
@@ -14,10 +8,9 @@ import T from '../../../Translation';
 import ClickToEditField from '../../../ClickToEditField';
 import StatusLabel from '../../../StatusLabel';
 import {
-  PROMOTION_LOTS_COLLECTION,
+  PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
-  PROMOTION_LOT_REDUCED_STATUS,
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
@@ -33,24 +26,6 @@ const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>
   && status === PROMOTION_LOT_STATUS.AVAILABLE
   && promotionStatus === PROMOTION_STATUS.OPEN;
 
-const adminReducedStatus = ({ attributedTo = {}, userId, status }) => {
-  const { user: { _id: attributedToUserId } = {} } = attributedTo;
-  if (userId === attributedToUserId) {
-    switch (status) {
-    case PROMOTION_LOT_STATUS.BOOKED:
-      return PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME;
-    case PROMOTION_LOT_STATUS.SOLD:
-      return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
-    default:
-      return status;
-    }
-  }
-  if (status === PROMOTION_LOT_STATUS.BOOKED) {
-    return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
-  }
-  return status;
-};
-
 const makeMapPromotionOption = ({
   isLoading,
   setLoading,
@@ -58,7 +33,6 @@ const makeMapPromotionOption = ({
   isDashboardTable = false,
   promotionStatus,
   isAdmin,
-  setPromotionOptionModal,
   loan,
   promotion,
 }) => (promotionOption, index, arr) => {
@@ -67,14 +41,15 @@ const makeMapPromotionOption = ({
     promotionLots,
     custom,
     attributedToMe,
-    solvency,
     loan: {
       user: { _id: userId },
     },
+    status,
   } = promotionOption;
-  const { name, status, reducedStatus, value, attributedTo } = (promotionLots && promotionLots[0]) || {};
+  const { name, value, attributedTo } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
+    promotionOption,
     columns: [
       !attributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
@@ -90,15 +65,11 @@ const makeMapPromotionOption = ({
       ),
       { raw: name, label: name },
       {
-        raw: reducedStatus,
+        raw: status,
         label: (
           <StatusLabel
-            status={
-              !isAdmin
-                ? reducedStatus
-                : adminReducedStatus({ attributedTo, userId, status })
-            }
-            collection={PROMOTION_LOTS_COLLECTION}
+            status={status}
+            collection={PROMOTION_OPTIONS_COLLECTION}
           />
         ),
       },
@@ -127,10 +98,6 @@ const makeMapPromotionOption = ({
         />
       ),
     ].filter(x => x !== false),
-
-    handleClick: (event) => {
-      setPromotionOptionModal(promotionOptionId);
-    },
   };
 };
 
@@ -171,16 +138,6 @@ const columnOptions = ({
         && id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
-const addState = withStateHandlers(
-  {},
-  {
-    setStatus: () => status => ({ status }),
-    setPromotionOptionModal: () => promotionOptionModal => ({
-      promotionOptionModal,
-    }),
-  },
-);
-
 export default compose(
   withRouter,
   withState('isLoading', 'setLoading', false),
@@ -191,7 +148,6 @@ export default compose(
         object: { custom: value },
       }),
   }),
-  addState,
   mapProps(({
     promotion,
     loan,
@@ -201,7 +157,6 @@ export default compose(
     isDashboardTable,
     isAdmin,
     className,
-    setPromotionOptionModal,
     ...rest
   }) => {
     const { promotionOptions } = loan;
@@ -226,7 +181,6 @@ export default compose(
         isDashboardTable,
         promotionStatus: promotion.status,
         isAdmin,
-        setPromotionOptionModal,
         loan,
         promotion,
       })),
@@ -244,7 +198,6 @@ export default compose(
       isDashboardTable,
       className,
       promotionOptions,
-      setPromotionOptionModal,
       promotion,
       ...rest,
     };

@@ -23,7 +23,7 @@ const AppPromotionPageOverview = ({
         loan={loan}
         text={<T id="PromotionPage.residenceTypeSetter.text" />}
       />
-      {activePromotionOptions.length
+      {!!activePromotionOptions.length
         && activePromotionOptions.map(promotionOption => (
           <UserReservation
             promotionOption={promotionOption}
