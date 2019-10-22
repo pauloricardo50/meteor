@@ -155,12 +155,9 @@ ServerEventService.addAfterMethodListener(
   [bookPromotionLot],
   ({ context: { userId }, params: { promotionOptionId } }) => {
     const {
-      loan: {
-        _id: loanId,
-        user: { name: userName },
-      },
+      loan: { _id: loanId, user: { name: userName } = {} },
       promotionLots = [],
-      promotion: { name: promotionName },
+      promotion: { name: promotionName } = {},
     } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { user: { name: 1 } },
