@@ -638,7 +638,7 @@ export const appPromotionOption = () => ({
   deposit: 1,
   depositStatus: 1,
   documents: 1,
-  loan: { user: { _id: 1 } },
+  loan: { user: { _id: 1 }, promotions: { _id: 1 } },
   lots: { description: 1, name: 1, type: 1, value: 1 },
   mortgageCertification: 1,
   priority: 1,
