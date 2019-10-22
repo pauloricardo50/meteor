@@ -9,51 +9,70 @@ import T from 'core/components/Translation';
 import { promotionOptionRequestReservation } from 'core/api/methods';
 import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import colors from 'core/config/colors';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 
 type RequestReservationProps = {
-  promotionOptionId: String,
+  promotionOption: Object,
   promotionLotName: String,
   status: String,
 };
 
 const RequestReservation = ({
-  promotionOptionId,
+  promotionOption,
   promotionLotName,
   status,
-}: RequestReservationProps) => (
-  <ConfirmMethod
-    type="modal"
-    method={() => promotionOptionRequestReservation.run({ promotionOptionId })}
-    label={<T id="PromotionPage.lots.requestReservation.button" />}
-    buttonProps={{
-      secondary: true,
-      raised: true,
-      disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
-      style: { alignSelf: 'center' },
-    }}
-    title={<T id="PromotionPage.lots.requestReservation.title" />}
-    description={(
-      <div className="request-reservation-description">
-        <span className="fa-layers fa-fw icon">
-          <FontAwesomeIcon
-            icon={faHome}
-            transform="grow-60 down-10 left-10"
-            color={colors.primary}
+}: RequestReservationProps) => {
+  const {
+    _id: promotionOptionId,
+    loan: { promotions = [] },
+  } = promotionOption;
+
+  const [promotion] = promotions;
+  const {
+    $metadata: { invitedBy },
+    users = [],
+  } = promotion;
+
+  const pro = users.find(({ _id }) => _id === invitedBy);
+  const proName = getUserNameAndOrganisation({ user: pro });
+
+  return (
+    <ConfirmMethod
+      type="modal"
+      method={() =>
+        promotionOptionRequestReservation.run({ promotionOptionId })
+      }
+      label={<T id="PromotionPage.lots.requestReservation.button" />}
+      buttonProps={{
+        secondary: true,
+        raised: true,
+        disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
+        style: { alignSelf: 'center' },
+      }}
+      title={<T id="PromotionPage.lots.requestReservation.title" />}
+      description={(
+        <div className="request-reservation-description">
+          <span className="fa-layers fa-fw icon">
+            <FontAwesomeIcon
+              icon={faHome}
+              transform="grow-60 down-10 left-10"
+              color={colors.primary}
+            />
+            <FontAwesomeIcon
+              icon={faPlus}
+              transform="up-24 right-40 grow-16"
+              color={colors.success}
+              className="animated fadeInUp delay-400"
+            />
+          </span>
+          <T
+            id="PromotionPage.lots.requestReservation.description"
+            values={{ promotionLotName, proName }}
           />
-          <FontAwesomeIcon
-            icon={faPlus}
-            transform="up-24 right-40 grow-16"
-            color={colors.success}
-            className="animated fadeInUp delay-400"
-          />
-        </span>
-        <T
-          id="PromotionPage.lots.requestReservation.description"
-          values={{ promotionLotName }}
-        />
-      </div>
-    )}
-  />
-);
+        </div>
+      )}
+    />
+  );
+};
 
 export default RequestReservation;

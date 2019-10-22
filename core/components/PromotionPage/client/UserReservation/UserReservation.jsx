@@ -35,6 +35,7 @@ const UserReservation = ({
             startDate={startDate}
             expirationDate={expirationDate}
             status={status}
+            promotionOption={promotionOption}
           />
         </div>
         {[

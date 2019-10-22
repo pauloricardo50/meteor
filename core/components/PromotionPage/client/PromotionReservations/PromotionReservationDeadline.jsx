@@ -8,6 +8,7 @@ import cx from 'classnames';
 import { promotionOptionUpdate } from 'core/api/methods';
 import PromotionOptionSchema from 'core/api/promotionOptions/schemas/PromotionOptionSchema';
 import { AutoFormDialog } from 'core/components/AutoForm2';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
@@ -19,12 +20,24 @@ const PromotionReservationDeadline = ({
   startDate,
   expirationDate,
   status,
-  promotionOptionId,
+  promotionOption,
 }: PromotionReservationDeadlineProps) => {
   const inThreeDays = moment().add(3, 'd');
   const momentDate = moment(expirationDate);
   const isTight = inThreeDays.isAfter(momentDate);
   const isAdmin = Meteor.microservice === 'admin';
+  const {
+    _id: promotionOptionId,
+    loan: { promotions = [] },
+  } = promotionOption;
+  const [promotion] = promotions;
+  const {
+    $metadata: { invitedBy },
+    users = [],
+  } = promotion;
+
+  const pro = users.find(({ _id }) => _id === invitedBy);
+  const proName = getUserNameAndOrganisation({ user: pro });
 
   if (status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE) {
     return (
@@ -72,7 +85,10 @@ const PromotionReservationDeadline = ({
       <h1>
         <T id={`PromotionReservationDeadline.${status}`} />
       </h1>
-      <T id={`PromotionReservationDeadline.${status}.description`} />
+      <T
+        id={`PromotionReservationDeadline.${status}.description`}
+        values={{ proName }}
+      />
     </div>
   );
 };

@@ -19,7 +19,7 @@ const PromotionOptionDialog = ({
   const { promotionLots } = promotionOption;
   const [promotionLot] = promotionLots;
   const { name } = promotionLot;
-  const { status, _id: promotionOptionId } = promotionOption;
+  const { status } = promotionOption;
 
   return (
     <div className="flex-col">
@@ -37,7 +37,7 @@ const PromotionOptionDialog = ({
         </section>
       </PromotionLotDetail>
       <RequestReservation
-        promotionOptionId={promotionOptionId}
+        promotionOption={promotionOption}
         promotionLotName={name}
         status={status}
       />

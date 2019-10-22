@@ -60,7 +60,7 @@ const makeMapPromotionOption = ({
       { raw: value, label: toMoney(value) },
       <RequestReservation
         key="reservation"
-        promotionOptionId={promotionOptionId}
+        promotionOption={promotionOption}
         promotionLotName={name}
         status={status}
       />,

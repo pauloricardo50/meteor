@@ -28,7 +28,6 @@ const PromotionReservationDetail = ({
   const {
     _id: promotionOptionId,
     reservationAgreement: { expirationDate, startDate },
-    loan,
     status,
     isAnonymized,
   } = promotionOption;
@@ -39,7 +38,7 @@ const PromotionReservationDetail = ({
     <div>
       <div className="text-center" style={{ marginBottom: 40 }}>
         <PromotionReservationDeadline
-          promotionOptionId={promotionOptionId}
+          promotionOption={promotionOption}
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
