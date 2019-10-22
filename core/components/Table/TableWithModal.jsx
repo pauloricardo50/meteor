@@ -68,7 +68,7 @@ const TableWithModal = ({
           }
 
           // Prevent modal to open when event propagation has been stopped
-          if (!event.isPropagationStopped) {
+          if (!event.isPropagationStopped()) {
             setOpen(true);
             setActiveRowId(row.id);
           }

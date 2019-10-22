@@ -203,7 +203,7 @@ export const makePromotionLotAnonymizer = ({ userId }) => (promotionLot) => {
 export const makePromotionOptionAnonymizer = ({
   userId,
 }) => (promotionOption) => {
-  const { loan, custom, adminNote, ...rest } = promotionOption;
+  const { loan,  adminNote, ...rest } = promotionOption;
   const {
     promotionLots,
     promotion: { _id: promotionId },
@@ -225,7 +225,6 @@ export const makePromotionOptionAnonymizer = ({
       promotionLotId,
       anonymize,
     })(loan),
-    custom: anonymize ? ANONYMIZED_STRING : custom,
     isAnonymized: !!anonymize,
     adminNote: { date: undefined, note: 'XXX' },
     ...rest,

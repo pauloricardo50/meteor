@@ -25,12 +25,7 @@ const getColumns = ({ promotionLot, promotionOption }) => {
     _id: promotionLotId,
     promotion: { _id: promotionId },
   } = promotionLot;
-  const {
-    loan,
-    custom,
-    createdAt,
-    status: promotionOptionStatus,
-  } = promotionOption;
+  const { loan, createdAt, status: promotionOptionStatus } = promotionOption;
   const {
     status,
     user,
@@ -83,7 +78,6 @@ const getColumns = ({ promotionLot, promotionOption }) => {
       raw: loanProgress.info + loanProgress.documents,
       label: <LoanProgress loanProgress={loanProgress} />,
     },
-    custom,
     {
       raw: promotionOptions.length,
       label: (
@@ -119,7 +113,6 @@ const columnOptions = [
   { id: 'customer' },
   { id: 'date' },
   { id: 'loanProgress', label: <LoanProgressHeader /> },
-  { id: 'custom' },
   { id: 'priorityOrder' },
   { id: 'attribute' },
 ].map(({ id, label }) => ({

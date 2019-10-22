@@ -19,15 +19,21 @@ export default class ConfirmMethod extends Component {
   handleOpen = (event) => {
     event.preventDefault();
     event.stopPropagation();
+
     this.setState({ open: true, anchorEl: event.currentTarget });
   };
 
-  handleClose = () => this.setState({ open: false });
+  handleClose = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({ open: false });
+  };
 
   handleSubmit = (event) => {
     const { keyword, method } = this.props;
     if (event) {
       event.preventDefault();
+      event.stopPropagation();
     }
 
     if (this.shouldAllowSubmit(keyword)) {
