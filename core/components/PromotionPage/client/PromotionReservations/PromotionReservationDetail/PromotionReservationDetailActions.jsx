@@ -1,5 +1,7 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
+import { withProps } from 'recompose';
 
 import {
   confirmPromotionLotBooking,
@@ -17,47 +19,14 @@ type PromotionReservationDetailActionsProps = {};
 
 const PromotionReservationDetailActions = ({
   promotionOption,
+  agreementDuration,
+  canActivateReservation,
+  canReactivateReservation,
+  canCancelReservation,
+  canConfirmReservation,
+  canSellLot,
 }: PromotionReservationDetailActionsProps) => {
-  const {
-    _id: promotionOptionId,
-    status,
-    promotion,
-    loan: { promotions = [] },
-  } = promotionOption;
-
-  const { agreementDuration } = promotion;
-
-  const [loanPromotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-  } = loanPromotion;
-
-  const currentUser = useContext(CurrentUserContext);
-  const customerOwnerType = getPromotionCustomerOwnerType({
-    invitedBy,
-    currentUser,
-  });
-  const isAllowedToBookLot = isAllowedToBookPromotionLotToCustomer({
-    promotion,
-    currentUser,
-    customerOwnerType,
-  });
-  const isAdmin = Meteor.microservice === 'admin';
-
-  const canReactivateReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
-    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
-    PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-  ].includes(status) && isAllowedToBookLot;
-  const canCancelReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-    PROMOTION_OPTION_STATUS.RESERVED,
-    PROMOTION_OPTION_STATUS.SOLD,
-  ].includes(status) && isAdmin;
-  const canActivateReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED
-    && isAllowedToBookLot;
-  const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
-  const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
+  const { _id: promotionOptionId } = promotionOption;
 
   return (
     <div className="flex center mt-16">
@@ -110,4 +79,53 @@ const PromotionReservationDetailActions = ({
   );
 };
 
-export default PromotionReservationDetailActions;
+export default withProps(({ promotionOption }) => {
+  const {
+    status,
+    promotion,
+    loan: { promotions = [] },
+  } = promotionOption;
+
+  const { agreementDuration } = promotion;
+
+  const [loanPromotion] = promotions;
+  const {
+    $metadata: { invitedBy },
+  } = loanPromotion;
+
+  const currentUser = useContext(CurrentUserContext);
+  const customerOwnerType = getPromotionCustomerOwnerType({
+    invitedBy,
+    currentUser,
+  });
+  const isAllowedToBookLot = isAllowedToBookPromotionLotToCustomer({
+    promotion,
+    currentUser,
+    customerOwnerType,
+  });
+  const isAdmin = Meteor.microservice === 'admin';
+
+  const canReactivateReservation = [
+    PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
+    PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+  ].includes(status) && isAllowedToBookLot;
+  const canCancelReservation = [
+    PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+    PROMOTION_OPTION_STATUS.RESERVED,
+    PROMOTION_OPTION_STATUS.SOLD,
+  ].includes(status) && isAdmin;
+  const canActivateReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED
+    && isAllowedToBookLot;
+  const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
+  const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
+
+  return {
+    agreementDuration,
+    canActivateReservation,
+    canReactivateReservation,
+    canCancelReservation,
+    canConfirmReservation,
+    canSellLot,
+  };
+})(PromotionReservationDetailActions);
