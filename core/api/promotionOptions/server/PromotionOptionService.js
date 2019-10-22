@@ -261,13 +261,24 @@ export class PromotionOptionService extends CollectionService {
 
     // Check if there's any active reservation on this lot
     if (promotionOptions.length) {
-      const activeReservation = promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE);
-
+      const activeReservation = promotionOptions.find(({ status }) =>
+        [
+          PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+          PROMOTION_OPTION_STATUS.RESERVED,
+          PROMOTION_OPTION_STATUS.SOLD,
+        ].includes(status));
       if (activeReservation) {
-        const {
-          reservationAgreement: { expirationDate },
-        } = activeReservation;
-        throw new Meteor.Error(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
+        if (
+          activeReservation.status
+          === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
+        ) {
+          const {
+            reservationAgreement: { expirationDate },
+          } = activeReservation;
+          throw new Meteor.Error(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
+        } else {
+          throw new Meteor.Error('Ce lot est déjà réservé');
+        }
       }
     }
 
