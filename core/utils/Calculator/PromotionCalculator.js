@@ -1,6 +1,11 @@
 import pick from 'lodash/pick';
 
-import { PROMOTION_TYPES, PURCHASE_TYPE } from '../../api/constants';
+import {
+  PROMOTION_TYPES,
+  PURCHASE_TYPE,
+  PROMOTION_OPTION_STATUS,
+} from '../../api/constants';
+import { sortByStatus } from '../sorting';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -104,5 +109,28 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       const promotion = promotions[0];
 
       return promotion.type === PROMOTION_TYPES.SHARE;
+    }
+
+    hasActivePromotionOption({ loan: { promotionOptions = [] } }) {
+      return (
+        promotionOptions.length > 0
+        && promotionOptions.some(({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status)
+      );
+    }
+
+    getActivePromotionOptions({ loan: { promotionOptions = [] } }) {
+      return promotionOptions.filter(({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status);
+    }
+
+    getMostActivePromotionOption({ loan: { promotionOptions = [] } }) {
+      const sorted = promotionOptions.sort(sortByStatus(Object.values(PROMOTION_OPTION_STATUS)));
+      return sorted.slice(-1)[0];
+    }
+
+    isActivePromotionOption({ promotionOption: { status } }) {
+      return ![
+        PROMOTION_OPTION_STATUS.INTERESTED,
+        PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED,
+      ].includes(status);
     }
   };

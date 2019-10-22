@@ -9,6 +9,7 @@ import {
   bookPromotionLot,
   cancelPromotionLotBooking,
   sellPromotionLot,
+  confirmPromotionLotBooking,
 } from '../methodDefinitions';
 
 import { expirePromotionLotBooking } from './serverMethods';
@@ -66,6 +67,13 @@ cancelPromotionLotBooking.setHandler(({ userId }, params) => {
     userId,
   });
   return PromotionLotService.cancelPromotionLotBooking(params);
+});
+
+confirmPromotionLotBooking.setHandler(({ userId }, params) => {
+  // According to promotions process v1.1 - 201909
+  // Only admins can book promotionLots
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionLotService.confirmPromotionLotBooking(params);
 });
 
 sellPromotionLot.setHandler(({ userId }, params) => {

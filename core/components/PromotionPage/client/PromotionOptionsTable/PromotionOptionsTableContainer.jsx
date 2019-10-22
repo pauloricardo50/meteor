@@ -4,7 +4,10 @@ import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proPromotionOptions } from 'core/api/promotionOptions/queries';
-import { PROMOTION_OPTIONS_COLLECTION } from 'core/api/constants';
+import {
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_STATUS,
+} from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import T from 'core/components/Translation';
 import PromotionReservationProgress, {
@@ -77,7 +80,7 @@ export default compose(
   withSmartQuery({
     query: proPromotionOptions,
     params: ({ status, promotion: { _id: promotionId } }) => ({
-      status, // { ...status, $ne: PROMOTION_OPTION_STATUS.INTERESTED },
+      status: { ...status, $ne: PROMOTION_OPTION_STATUS.INTERESTED },
       promotionId,
     }),
     dataName: 'promotionOptions',
