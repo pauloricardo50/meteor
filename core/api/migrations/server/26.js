@@ -42,13 +42,8 @@ const handleBookedLots = async () => {
       });
 
       const {
-        loan: {
-          _id: loanId,
-          promotionLinks: { _id: promotions = [] } = {},
-        },
+        loan: { _id: loanId },
       } = promotionOption;
-
-      const [promotionId] = promotions;
 
       PromotionOptionService.setInitialMortgageCertification({
         promotionOptionId: promotionOption._id,
@@ -62,7 +57,6 @@ const handleBookedLots = async () => {
             status: AGREEMENT_STATUSES.WAITING,
             date: new Date(),
           },
-          promotionLink: { _id: promotionId },
         },
         $unset: {
           proNote: true,
@@ -97,13 +91,8 @@ const handleSoldLots = async () => {
       });
 
       const {
-        loan: {
-          _id: loanId,
-          promotionLinks: { _id: promotions = [] } = {},
-        },
+        loan: { _id: loanId },
       } = promotionOption;
-
-      const [promotionId] = promotions;
 
       PromotionOptionService.baseUpdate(promotionOption._id, {
         $set: {
@@ -120,7 +109,6 @@ const handleSoldLots = async () => {
             date: new Date(),
             status: DEPOSIT_STATUSES.PAID,
           },
-          promotionLink: { _id: promotionId },
         },
         $unset: {
           proNote: true,
@@ -157,7 +145,6 @@ export const down = async () => {
           reservationAgreement: true,
           bank: true,
           deposit: true,
-          promotionLink: true,
         },
         $set: { solvency: status },
       },
