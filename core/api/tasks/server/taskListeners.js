@@ -1,5 +1,6 @@
 import PropertyService from 'core/api/properties/server/PropertyService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import { getUserNameAndOrganisation } from '../../helpers';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
@@ -8,6 +9,7 @@ import {
   anonymousCreateUser,
   proInviteUser,
   loanShareSolvency,
+  bookPromotionLot,
 } from '../../methods';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
@@ -146,5 +148,38 @@ ServerEventService.addAfterMethodListener(
         },
       });
     }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  [bookPromotionLot],
+  ({ context: { userId }, params: { promotionOptionId } }) => {
+    const {
+      loan: {
+        _id: loanId,
+        user: { name: userName },
+      },
+      promotionLots = [],
+      promotion: { name: promotionName },
+    } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { user: { name: 1 } },
+      promotionLots: { name: 1 },
+      promotion: { name: 1 },
+    });
+    const { name: proName } = UserService.fetchOne({
+      $filters: { _id: userId },
+      name: 1,
+    });
+    const [{ name: promotionLotName }] = promotionLots;
+
+    TaskService.insert({
+      object: {
+        collection: LOANS_COLLECTION,
+        docId: loanId,
+        title: 'Nouvelle réservation, prendre contact',
+        description: `Le lot "${promotionLotName}" de la promotion "${promotionName}" est en cours de réservation pour ${userName} par ${proName}`,
+      },
+    });
   },
 );

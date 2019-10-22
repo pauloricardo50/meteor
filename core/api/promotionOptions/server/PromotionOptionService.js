@@ -275,7 +275,7 @@ export class PromotionOptionService extends CollectionService {
           const {
             reservationAgreement: { expirationDate },
           } = activeReservation;
-          throw new Meteor.Error(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
+          throw new Meteor.Error(`Ce lot est en cours de réservation jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
         } else {
           throw new Meteor.Error('Ce lot est déjà réservé');
         }
@@ -288,10 +288,7 @@ export class PromotionOptionService extends CollectionService {
     });
 
     // Check if promotion reservation agreement has been uploaded
-    if (
-      withAgreement
-      && status !== PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED
-    ) {
+    if (withAgreement) {
       try {
         if (!agreementFileKeys.length) {
           throw new Error();
