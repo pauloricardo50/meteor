@@ -45,7 +45,8 @@ setFileError.setHandler((context, { fileKey, error }) => {
 
 downloadFile.setHandler((context, { key }) => {
   context.unblock();
-  S3Service.isAllowedToAccess(key);
+  const { userId } = context;
+  S3Service.isAllowedToAccess({ userId, key });
   return S3Service.getObject(key);
 });
 
@@ -118,6 +119,6 @@ deleteTempFile.setHandler(({ userId }, { fileKey }) => {
 });
 
 autoRenameFile.setHandler(({ userId }, { key, collection }) => {
-  S3Service.isAllowedToAccess(key);
+  S3Service.isAllowedToAccess({ userId, key });
   return FileService.autoRenameFile(key, collection);
 });

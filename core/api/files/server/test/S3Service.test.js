@@ -200,37 +200,37 @@ describe('S3Service', function () {
     it('should return true if the user is dev', () => {
       Meteor.users.update(userId, { $set: { roles: ['dev'] } });
 
-      expect(S3Service.isAllowedToAccess('')).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: '', userId })).to.equal(true);
     });
 
     it('should return true if the user is admin', () => {
       Meteor.users.update(userId, { $set: { roles: 'admin' } });
 
-      expect(S3Service.isAllowedToAccess('')).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: '', userId })).to.equal(true);
     });
 
     it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowedToAccess('')).to.throw('Unauthorized download');
+      expect(() => S3Service.isAllowedToAccess({ key: '', userId })).to.throw('Unauthorized download');
     });
 
     it('should return true if this user has the loan', () => {
       const loan = Factory.create('loan', { userId });
 
-      expect(S3Service.isAllowedToAccess(`${loan._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: `${loan._id}/`, userId })).to.equal(true);
       Loans.remove(loan._id);
     });
 
     it('should return true if this user has the borrower', () => {
       const borrower = Factory.create('borrower', { userId });
 
-      expect(S3Service.isAllowedToAccess(`${borrower._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: `${borrower._id}/`, userId })).to.equal(true);
       Borrowers.remove(borrower._id);
     });
 
     it('should return true if this user has the property', () => {
       const property = Factory.create('property', { userId });
 
-      expect(S3Service.isAllowedToAccess(`${property._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: `${property._id}/`, userId })).to.equal(true);
       Properties.remove(property._id);
     });
 
@@ -239,7 +239,7 @@ describe('S3Service', function () {
         category: PROPERTY_CATEGORY.PRO,
       });
 
-      expect(S3Service.isAllowedToAccess(`${property._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: `${property._id}/`, userId })).to.equal(true);
       Properties.remove(property._id);
     });
 
@@ -248,7 +248,7 @@ describe('S3Service', function () {
         userLinks: [{ _id: userId, permissions: { canManageDocuments: true } }],
       });
 
-      expect(S3Service.isAllowedToAccess(`${promotion._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess({ key: `${promotion._id}/`, userId })).to.equal(true);
       Promotions.remove(promotion._id);
     });
   });
