@@ -2,7 +2,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import moment from 'moment';
 
+import { PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import generator from '../../../factories/index';
@@ -29,6 +31,63 @@ describe('Migration 26', () => {
       expect(promotions.length).to.equal(2);
       promotions.forEach((p) => {
         expect(p.agreementDuration).to.equal(30);
+      });
+    });
+
+    it('inits the reservation for each promotion option', async () => {
+      generator({
+        properties: [{ _id: 'a' }, { _id: 'b' }, { _id: 'c' }],
+        promotions: {
+          _id: 'promo',
+          promotionLots: [
+            {
+              status: PROMOTION_LOT_STATUS.AVAILABLE,
+              propertyLinks: [{ _id: 'a' }],
+              promotionOptions: {
+                loan: { _id: 'loan1' },
+                promotion: { _id: 'promo' },
+              },
+            },
+            {
+              status: PROMOTION_LOT_STATUS.AVAILABLE,
+              propertyLinks: [{ _id: 'b' }],
+              promotionOptions: {
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            },
+            {
+              status: PROMOTION_LOT_STATUS.AVAILABLE,
+              propertyLinks: [{ _id: 'c' }],
+              promotionOptions: {
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            },
+          ],
+        },
+        loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+      });
+
+      await up();
+
+      const promotionOptions = PromotionOptionService.find({}).fetch();
+
+      const today = moment().format('YYYY MM DD');
+
+      promotionOptions.forEach(({
+        mortgageCertification,
+        adminNote,
+        bank,
+        deposit,
+        reservationAgreement,
+      }) => {
+        expect(moment(mortgageCertification.date).format('YYYY MM DD')).to.equal(today);
+        expect(mortgageCertification.status).to.equal(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED);
+        expect(moment(adminNote.date).format('YYYY MM DD')).to.equal(today);
+        expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
+        expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
+        expect(moment(reservationAgreement.date).format('YYYY MM DD')).to.equal(today);
       });
     });
 
