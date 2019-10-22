@@ -2,7 +2,7 @@
 import React from 'react';
 
 import {
-  bookPromotionLot,
+  confirmPromotionLotBooking,
   sellPromotionLot,
   cancelPromotionLotBooking,
 } from 'core/api/methods';
@@ -31,6 +31,8 @@ const PromotionReservationDetailActions = ({
     PROMOTION_OPTION_STATUS.SOLD,
   ].includes(status);
   const hasRequestedReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED;
+  const canConfirmReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
+  const canSellLot = status === PROMOTION_OPTION_STATUS.RESERVED;
 
   return (
     <div className="flex center mt-16">
@@ -65,7 +67,14 @@ const PromotionReservationDetailActions = ({
           }}
         />
       )}
-      {status === PROMOTION_OPTION_STATUS.ACTIVE && (
+      {canConfirmReservation && (
+        <ConfirmMethod
+          buttonProps={{ secondary: true, raised: true }}
+          label="Confirmer réservation"
+          method={() => confirmPromotionLotBooking.run({ promotionOptionId })}
+        />
+      )}
+      {canSellLot && (
         <ConfirmMethod
           buttonProps={{ secondary: true, raised: true }}
           label="Confirmer vente"

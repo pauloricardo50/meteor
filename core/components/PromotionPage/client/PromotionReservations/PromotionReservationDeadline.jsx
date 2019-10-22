@@ -67,72 +67,14 @@ const PromotionReservationDeadline = ({
     );
   }
 
-  if (status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED) {
-    return (
-      <div>
-        <h1>
-          <T id="PromotionReservationDeadline.requested" />
-        </h1>
-        <T id="PromotionReservationDeadline.requested.description" />
-      </div>
-    );
-  }
-
-  if (status === PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST) {
-    return (
-      <div>
-        <h1>
-          <T id="PromotionReservationDeadline.waitlist" />
-        </h1>
-        <T id="PromotionReservationDeadline.waitlist.description" />
-      </div>
-    );
-  }
-
-  if (status === PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED) {
-    return (
-      <div>
-        <h1>
-          <T id="PromotionReservationDeadline.expired" />
-        </h1>
-        <T id="PromotionReservationDeadline.expired.description" />
-      </div>
-    );
-  }
-
-  if (status === PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED) {
-    return (
-      <div>
-        <h1>
-          <T id="PromotionReservationDeadline.canceled" />
-        </h1>
-      </div>
-    );
-  }
-
-  if (status === PROMOTION_OPTION_STATUS.RESERVED) {
-    return (
-      <div>
-        <h1>
-          <T id="PromotionReservationDeadline.reserved" />
-        </h1>
-        <T id="PromotionReservationDeadline.reserved.description" />
-      </div>
-    );
-  }
-
-  if (status === PROMOTION_OPTION_STATUS.SOLD) {
-    return (
-      <div>
-        <h1>
-          <T id="PromotionReservationDeadline.sold" />
-        </h1>
-        <T id="PromotionReservationDeadline.sold.description" />
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div>
+      <h1>
+        <T id={`PromotionReservationDeadline.${status}`} />
+      </h1>
+      <T id={`PromotionReservationDeadline.${status}.description`} />
+    </div>
+  );
 };
 
 export default PromotionReservationDeadline;

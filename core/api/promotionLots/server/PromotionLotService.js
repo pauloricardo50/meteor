@@ -1,8 +1,8 @@
+import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
-import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 
 export class PromotionLotService extends CollectionService {
   constructor() {
@@ -104,10 +104,27 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
+  confirmPromotionLotBooking({ promotionOptionId }) {
+    const { promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      promotionLots: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.BOOKED },
+    });
+
+    return PromotionOptionService.completeReservation({
+      promotionOptionId,
+    });
+  }
+
   sellPromotionLot({ promotionOptionId }) {
     const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
-      loan: { _id: 1 },
       promotionLots: { _id: 1 },
     });
 

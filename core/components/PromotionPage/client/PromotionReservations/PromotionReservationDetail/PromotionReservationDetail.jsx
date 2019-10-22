@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
+import Calculator from 'core/utils/Calculator';
 import {
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTIONS_COLLECTION,
@@ -32,6 +33,7 @@ const PromotionReservationDetail = ({
     isAnonymized,
   } = promotionOption;
   const isAdmin = Meteor.microservice === 'admin';
+  const isActive = Calculator.isActivePromotionOption({ promotionOption });
 
   return (
     <div>
@@ -45,7 +47,7 @@ const PromotionReservationDetail = ({
       </div>
       <PromotionReservationProgressEditor promotionOption={promotionOption} />
       <br />
-      {!isAnonymized && (
+      {isActive && !isAnonymized && (
         <UploaderArray
           doc={promotionOption}
           collection={PROMOTION_OPTIONS_COLLECTION}
