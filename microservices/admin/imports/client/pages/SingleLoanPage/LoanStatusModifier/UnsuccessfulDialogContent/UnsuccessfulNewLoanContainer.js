@@ -99,6 +99,21 @@ export default compose(
         .then(() => closeModal())
         .catch(cancelNewStatus);
     },
+    insertQualifiedLeadLoan: () => {
+      addUnsuccesfulActivity({ loanId: loan._id, reason })
+        .then(() =>
+          insertNewLoan({
+            loan,
+            cancelNewStatus,
+            confirmNewStatus,
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }))
+        .then((loanId) => {
+          history.push(`/loans/${loanId}`);
+        })
+        .then(() => closeModal())
+        .catch(cancelNewStatus);
+    },
     insertPendingLoan: () => {
       addUnsuccesfulActivity({ loanId: loan._id, reason })
         .then(() =>

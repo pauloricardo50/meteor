@@ -4,6 +4,8 @@
   align-items: stretch;
 
   padding: 8px;
+  height: 1rem;
+  overflow-y: hidden;
 
   //   Make sure the edge padding appears properly
   &:after {
@@ -22,10 +24,11 @@
     flex-direction: column;
     flex-shrink: 0;
 
-    margin: 8px;
+    margin: 4px;
     padding: 0;
 
     background-color: $grey3;
+    overflow-x: hidden;
 
     &-subtitle {
       padding: 8px;

@@ -55,4 +55,5 @@ onPageLoad(async (sink) => {
       ${css}
     </style>
   `);
+  sink.setStatusCode(200);
 });

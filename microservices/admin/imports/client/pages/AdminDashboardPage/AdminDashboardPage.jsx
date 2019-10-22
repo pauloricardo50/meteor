@@ -8,12 +8,10 @@ import { adminLoanInsert } from 'core/api/loans/index';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
 import AdminDashboardStats from './AdminDashboardStats';
-import AdminDashboardTabs from './AdminDashboardTabs';
 
 const AdminDashboardPage = ({ currentUser, history }) => {
   return (
     <>
-      <AdminDashboardTabs />
       <AdminDashboardStats />
       <section className="card1 card-top admin-dashboard-page">
         <Helmet>

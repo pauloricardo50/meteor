@@ -20,14 +20,14 @@ export const htmlDecode = (input) => {
 };
 
 const BlogPostPageContent = ({ post }: BlogPostPageContentProps) => {
-  const { title, date, content, author, excerpt, post_thumbnail } = post;
+  const { title, date, content, author, excerpt, post_thumbnail, slug } = post;
   const escapedTitle = htmlDecode(title);
   const headerTitle = `${escapedTitle} | e-Potek`;
   return (
     <section className="blog-post-page-content card1 card-top">
       <Helmet>
         <title>{headerTitle}</title>
-        <BlogPostSeo {...post} />
+        <BlogPostSeo post={post} url={`/blog/${slug}`} />
       </Helmet>
       <h1 dangerouslySetInnerHTML={{ __html: title }} />
 

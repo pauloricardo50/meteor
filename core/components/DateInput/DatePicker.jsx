@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
 import omit from 'lodash/omit';
-
 import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
+import { defaultDatePickerProps } from './dateInputConstants';
 
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = undefined, maxDate = undefined) => day =>
@@ -62,19 +61,17 @@ const DatePicker = ({ minDate, maxDate, value, ...props }) => {
   ]);
   return (
     <SingleDatePicker
+      {...defaultDatePickerProps}
       {...otherProps}
+      reopenPickerOnClearDate
+      showClearDate
       date={value}
       numberOfMonths={1}
-      hideKeyboardShortcutsPanel
-      showClearDate
-      showDefaultInputIcon
       placeholder="p.ex: 1/1/1980"
-      firstDayOfWeek={1}
       enableOutsideDays
       isOutsideRange={
         minDate || maxDate ? setDateRange(minDate, maxDate) : () => false
       }
-      displayFormat="D/M/YYYY"
       renderMonthElement={renderMonthElement}
     />
   );

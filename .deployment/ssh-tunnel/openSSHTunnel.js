@@ -80,7 +80,7 @@ const cleanCredentials = creds => {
 const openSSHTunnel = ({
   sshIdNumber = 0,
   environmentOverride,
-  mongoPort = 0,
+  mongoPort = 2,
 } = {}) => {
   let environment;
   const args = argv
