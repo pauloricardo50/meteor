@@ -59,6 +59,9 @@ const PromotionOptionSchema = new SimpleSchema({
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,
+    uniforms: {
+      withUtcOffset: true,
+    },
   },
   'reservationAgreement.startDate': {
     type: Date,

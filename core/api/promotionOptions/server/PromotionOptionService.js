@@ -379,6 +379,11 @@ export class PromotionOptionService extends CollectionService {
   };
 
   cancelReservation({ promotionOptionId }) {
+    this.updateStatusObject({
+      promotionOptionId,
+      id: 'adminNote',
+      object: { status: AGREEMENT_STATUSES.UNSIGNED },
+    });
     return this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
@@ -393,6 +398,11 @@ export class PromotionOptionService extends CollectionService {
   }
 
   expireReservation({ promotionOptionId }) {
+    this.updateStatusObject({
+      promotionOptionId,
+      id: 'adminNote',
+      object: { status: AGREEMENT_STATUSES.UNSIGNED },
+    });
     return this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,

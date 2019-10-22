@@ -1,4 +1,7 @@
-import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
+import { Meteor } from 'meteor/meteor';
+
+import Calculator from '../../../utils/Calculator';
+import { PROMOTION_OPTION_STATUS } from '../../constants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
@@ -86,12 +89,12 @@ export class PromotionLotService extends CollectionService {
   }
 
   completePromotionLotBooking({ promotionOptionId }) {
-    const { promotionLots } = PromotionOptionService.fetchOne({
+    const promotionOption = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
     });
-
+    const { promotionLots } = promotionOption;
     const [{ _id: promotionLotId }] = promotionLots;
 
     this.update({
@@ -105,12 +108,23 @@ export class PromotionLotService extends CollectionService {
   }
 
   confirmPromotionLotBooking({ promotionOptionId }) {
-    const { promotionLots } = PromotionOptionService.fetchOne({
+    const promotionOption = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       promotionLots: { _id: 1 },
+      bank: 1,
+      deposit: 1,
+      mortgageCertification: 1,
+      reservationAgreement: 1,
     });
-
+    const { promotionLots } = promotionOption;
     const [{ _id: promotionLotId }] = promotionLots;
+
+    if (!Calculator.canConfirmPromotionLotBooking({ promotionOption })) {
+      throw new Meteor.Error(
+        403,
+        "Cette réservation n'est pas encore complète",
+      );
+    }
 
     this.update({
       promotionLotId,

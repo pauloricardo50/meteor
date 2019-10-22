@@ -4,6 +4,10 @@ import {
   PROMOTION_TYPES,
   PURCHASE_TYPE,
   PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  DEPOSIT_STATUSES,
+  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
+  AGREEMENT_STATUSES,
 } from '../../api/constants';
 import { sortByStatus } from '../sorting';
 
@@ -132,5 +136,25 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         PROMOTION_OPTION_STATUS.INTERESTED,
         PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED,
       ].includes(status);
+    }
+
+    canConfirmPromotionLotBooking({
+      promotionOption: {
+        bank,
+        mortgageCertification,
+        reservationAgreement,
+        deposit,
+      },
+    }) {
+      return (
+        [
+          PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+          PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+        ].includes(bank.status)
+        && deposit.status === DEPOSIT_STATUSES.PAID
+        && mortgageCertification.status
+          === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT
+        && reservationAgreement.status === AGREEMENT_STATUSES.SIGNED
+      );
     }
   };

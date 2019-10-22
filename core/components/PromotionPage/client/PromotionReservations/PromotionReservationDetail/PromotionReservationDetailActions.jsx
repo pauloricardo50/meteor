@@ -11,6 +11,7 @@ import {
 import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { isAllowedToBookPromotionLotToCustomer } from 'core/api/security/clientSecurityHelpers/index';
+import Calculator from 'core/utils/Calculator';
 import { PROMOTION_OPTION_STATUS } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
@@ -25,6 +26,7 @@ const PromotionReservationDetailActions = ({
   canCancelReservation,
   canConfirmReservation,
   canSellLot,
+  confirmReservationIsDisabled,
 }: PromotionReservationDetailActionsProps) => {
   const { _id: promotionOptionId } = promotionOption;
 
@@ -63,7 +65,14 @@ const PromotionReservationDetailActions = ({
       )}
       {canConfirmReservation && (
         <ConfirmMethod
-          buttonProps={{ secondary: true, raised: true }}
+          buttonProps={{
+            secondary: true,
+            raised: true,
+            disabled: confirmReservationIsDisabled,
+            tooltip: confirmReservationIsDisabled
+              ? 'Veuillez compléter toutes les étapes pour cette réservation'
+              : undefined,
+          }}
           label="Confirmer réservation"
           method={() => confirmPromotionLotBooking.run({ promotionOptionId })}
         />
@@ -119,6 +128,7 @@ export default withProps(({ promotionOption }) => {
     && isAllowedToBookLot;
   const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
   const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
+  const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotBooking({ promotionOption });
 
   return {
     agreementDuration,
@@ -127,5 +137,6 @@ export default withProps(({ promotionOption }) => {
     canCancelReservation,
     canConfirmReservation,
     canSellLot,
+    confirmReservationIsDisabled,
   };
 })(PromotionReservationDetailActions);
