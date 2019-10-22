@@ -8,11 +8,18 @@ import { appPromotionOption, proPromotionOptions } from '../queries';
 exposeQuery({
   query: appPromotionOption,
   overrides: {
-    firewall(userId, { promotionOptionId }) {
+    firewall(userId, { promotionOptionId, promotionId }) {
       SecurityService.promotions.hasAccessToPromotionOption({
         promotionOptionId,
         userId,
       });
+
+      if (promotionId) {
+        SecurityService.promotions.hasAccessToPromotion({
+          promotionId,
+          userId,
+        });
+      }
     },
     embody: (body) => {
       body.$filter = ({ filters, params: { promotionOptionId } }) => {
@@ -27,7 +34,7 @@ exposeQuery({
   query: proPromotionOptions,
   overrides: {
     firewall(userId, params) {
-      const { promotionOptionIds } = params;
+      const { promotionOptionIds, promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
 
@@ -37,6 +44,13 @@ exposeQuery({
             promotionOptionId,
             userId,
           });
+        });
+      }
+
+      if (promotionId) {
+        SecurityService.promotions.hasAccessToPromotion({
+          promotionId,
+          userId,
         });
       }
 
@@ -61,12 +75,12 @@ exposeQuery({
         }
       };
 
-      // body.$postFilter = (promotionOptions = [], params) => {
-      //   const { anonymize = false, userId } = params;
-      //   return anonymize
-      //     ? promotionOptions.map(makePromotionOptionAnonymizer({ userId }))
-      //     : promotionOptions;
-      // };
+      body.$postFilter = (promotionOptions = [], params) => {
+        const { anonymize = false, userId } = params;
+        return anonymize
+          ? promotionOptions.map(makePromotionOptionAnonymizer({ userId }))
+          : promotionOptions;
+      };
     },
     validateParams: {
       promotionId: Match.Maybe(String),
