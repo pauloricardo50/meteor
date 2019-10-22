@@ -407,8 +407,25 @@ export class PromotionOptionService extends CollectionService {
   }
 
   updateStatusObject({ promotionOptionId, id, object }) {
-    const { [id]: model } = this.get(promotionOptionId);
-    const changedKeys = Object.keys(object).filter(key => object[key].valueOf() !== model[key].valueOf());
+    const { [id]: model } = this.fetchOne({
+      $filters: { _id: promotionOptionId },
+      adminNote: 1,
+      bank: 1,
+      deposit: 1,
+      mortgageCertification: 1,
+      reservationAgreement: 1,
+    });
+    const changedKeys = Object.keys(object).filter((key) => {
+      const newValue = object[key] && object[key].valueOf();
+      const oldValue = model[key] && model[key].valueOf();
+
+      // Allow the adminNote.note to be updated to an empty string value
+      if (key === 'note') {
+        return newValue !== oldValue;
+      }
+
+      return newValue && newValue !== oldValue;
+    });
 
     if (!changedKeys.length) {
       return;
@@ -416,12 +433,12 @@ export class PromotionOptionService extends CollectionService {
 
     // Send keys with dot-notation, to make sure simple-schema doesn't
     // set the other keys in the object to their defaultValues
-    const updateObject = changedKeys.reduce(
-      (obj, key) => ({ ...obj, [`${id}.${key}`]: object[key] }),
-      {},
-    );
-
-    this._update({ id: promotionOptionId, object: updateObject });
+    changedKeys.forEach((key) => {
+      this._update({
+        id: promotionOptionId,
+        object: { [`${id}.${key}`]: object[key] },
+      });
+    });
   }
 
   expireReservations = async () => {
