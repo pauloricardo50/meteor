@@ -19,11 +19,6 @@ import {
 } from '../../../../api/constants';
 import PromotionCustomer from '../PromotionCustomer';
 
-export const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
-  const promotionLots = promotionOptions.filter(option => option.promotionLots[0]._id === promotionLotId);
-  return !!(promotionLots[0] && promotionLots[0].attributedToMe);
-};
-
 const proColumnOptions = [
   { id: 'name' },
   { id: 'status' },
@@ -143,6 +138,7 @@ const makeMapAppPromotionLot = ({
 
   return {
     id: promotionLotId,
+    promotionLot,
     columns: [
       name,
       {
@@ -169,7 +165,6 @@ const makeMapAppPromotionLot = ({
             promotionLotId={promotionLotId}
             promotionOptions={promotionOptions}
             loanId={loanId}
-            disabled={isLotAttributedToMe({ promotionOptions, promotionLotId })}
             promotionId={promotionId}
           />
         </div>

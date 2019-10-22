@@ -48,7 +48,7 @@ const makeMapPromotionOption = ({
         </div>
       ),
       { raw: name, label: name },
-      {
+      !isDashboardTable && {
         raw: status,
         label: (
           <StatusLabel
@@ -58,14 +58,11 @@ const makeMapPromotionOption = ({
         ),
       },
       { raw: value, label: toMoney(value) },
-      !isDashboardTable && (
-        <RequestReservation
-          promotionOptionId={promotionOptionId}
-          promotionLotName={name}
-          status={status}
-        />
-      ),
-
+      <RequestReservation
+        promotionOptionId={promotionOptionId}
+        promotionLotName={name}
+        status={status}
+      />,
       !!isAdmin && (
         <PromotionLotReservation
           loan={loan}
@@ -94,9 +91,9 @@ const columnOptions = ({
       ...(isDashboardTable && { style: { width: '10%' } }),
     },
     { id: 'name' },
-    { id: 'status' },
+    !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
-    !isDashboardTable && { id: 'requestReservation' },
+    { id: 'requestReservation' },
     !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
