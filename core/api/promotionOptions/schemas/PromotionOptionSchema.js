@@ -37,7 +37,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'promotionLink._id': { type: String, optional: true },
   documents: documentsField,
   adminNote: { type: Object, defaultValue: {} },
-  'adminNote.note': { type: String, defaultValue: '' },
+  'adminNote.note': { type: String, defaultValue: '', optional: true },
   'adminNote.date': {
     type: Date,
     autoValue: dateAutoValue('note'),

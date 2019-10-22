@@ -12,9 +12,17 @@ import PromotionReservationProgressItem from './PromotionReservationProgressItem
 
 type PromotionReservationProgressProps = {};
 
-const makeGetIcon = ({ success = [], waiting = [], error = [] }) => (status) => {
+const makeGetIcon = ({
+  success = [],
+  waiting = [],
+  error = [],
+  warning = [],
+}) => (status) => {
   if (waiting.includes(status)) {
     return { icon: 'waiting', color: 'warning' };
+  }
+  if (warning.includes(status)) {
+    return { icon: 'error', color: 'warning' };
   }
   if (error.includes(status)) {
     return { icon: 'error', color: 'error' };
@@ -141,6 +149,7 @@ const PromotionReservationProgress = ({
       ...makeGetIcon({
         success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
         error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
+        warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
         waiting: [PROMOTION_OPTION_BANK_STATUS.WAITING],
       })(bank.status),
       id: 'bank',
