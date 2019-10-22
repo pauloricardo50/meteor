@@ -6,7 +6,7 @@ import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import T from '../../../Translation';
 import Checkbox from '../../../Checkbox';
 import PromotionLotDetail from '../PromotionLotDetail';
-import { isLotAttributedToMe } from '../PromotionLotsTable/PromotionLotsTableContainer';
+import RequestReservation from './RequestReservation';
 
 type PromotionOptionDialogProps = {};
 
@@ -17,28 +17,31 @@ const PromotionOptionDialog = ({
   promotion,
 }: PromotionOptionDialogProps) => {
   const { promotionLots } = promotionOption;
-  const promotionLot = promotionLots[0];
+  const [promotionLot] = promotionLots;
+  const { name } = promotionLot;
+  const { status, _id: promotionOptionId } = promotionOption;
 
   return (
-    <PromotionLotDetail promotionLot={promotionLot} promotion={promotion}>
-      <section className="flex center-align">
-        <Checkbox
-          label={<T id="PromotionOptionDialog.interested" />}
-          value
-          disabled={
-            isLotAttributedToMe({
-              promotionOptions: [promotionOption],
-              promotionLotId: promotionLot._id,
-            }) || promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE
-          }
-          onChange={() =>
-            promotionOptionRemove
-              .run({ promotionOptionId: promotionOption._id })
-              .then(handleClose)
-          }
-        />
-      </section>
-    </PromotionLotDetail>
+    <div className="flex-col">
+      <PromotionLotDetail promotionLot={promotionLot} promotion={promotion}>
+        <section className="flex center-align">
+          <Checkbox
+            label={<T id="PromotionOptionDialog.interested" />}
+            value
+            onChange={() =>
+              promotionOptionRemove
+                .run({ promotionOptionId: promotionOption._id })
+                .then(handleClose)
+            }
+          />
+        </section>
+      </PromotionLotDetail>
+      <RequestReservation
+        promotionOptionId={promotionOptionId}
+        promotionLotName={name}
+        status={status}
+      />
+    </div>
   );
 };
 

@@ -29,6 +29,7 @@ const RequestReservation = ({
       secondary: true,
       raised: true,
       disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
+      style: { alignSelf: 'center' },
     }}
     title={<T id="PromotionPage.lots.requestReservation.title" />}
     description={(
