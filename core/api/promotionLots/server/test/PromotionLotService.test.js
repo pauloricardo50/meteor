@@ -190,7 +190,7 @@ describe('PromotionLotService', function () {
     });
 
     it('can book, cancel, and then reactivate an existing promotionReservation', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
+      let reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
 
       await PromotionLotService.bookPromotionLot({
         promotionOptionId: 'pOptId',
@@ -216,8 +216,12 @@ describe('PromotionLotService', function () {
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
 
+      reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
+
       await PromotionLotService.bookPromotionLot({
         promotionOptionId: 'pOptId',
+        startDate: moment().format('YYYY-MM-DD'),
+        agreementFileKeys: [reservationAgreementFileKey]
       });
 
       pO = PromotionOptionService.get('pOptId');

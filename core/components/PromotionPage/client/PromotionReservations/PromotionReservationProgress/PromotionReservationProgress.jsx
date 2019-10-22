@@ -1,4 +1,5 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import cx from 'classnames';
 
@@ -59,7 +60,7 @@ const getAdminNoteIcon = (
   isEditing,
   promotionOptionId,
 ) => {
-  const shouldShowNote = !isAnonymized;
+  const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
 
   if (!shouldShowNote) {
     return null;

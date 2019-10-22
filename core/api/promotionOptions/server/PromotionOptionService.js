@@ -275,7 +275,7 @@ export class PromotionOptionService extends CollectionService {
           const {
             reservationAgreement: { expirationDate },
           } = activeReservation;
-          throw new Meteor.Error(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
+          throw new Meteor.Error(`Ce lot est en cours de réservation jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
         } else {
           throw new Meteor.Error('Ce lot est déjà réservé');
         }
@@ -288,10 +288,7 @@ export class PromotionOptionService extends CollectionService {
     });
 
     // Check if promotion reservation agreement has been uploaded
-    if (
-      withAgreement
-      && status !== PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED
-    ) {
+    if (withAgreement) {
       try {
         if (!agreementFileKeys.length) {
           throw new Error();
@@ -347,7 +344,7 @@ export class PromotionOptionService extends CollectionService {
     // Check if start date is older than half the agreement duration in the past
     // If not, this reservation does not make sense, it has started too long ago
     if (moment(startDate).startOf('day') < startDateLowerBound) {
-      throw new Meteor.Error('Le début de la réservation ne peut pas être antérieur à la moitié de la durée de réservation');
+      throw new Meteor.Error(`Le début de la réservation ne peut pas être avant le ${moment(startDateLowerBound).format('D MMM YYYY')}`);
     }
 
     const expirationDate = moment(startDate)

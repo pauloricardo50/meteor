@@ -381,7 +381,7 @@ describe('PromotionOptionService', function () {
         PromotionOptionService.getReservationExpirationDate({
           startDate,
           agreementDuration,
-        })).to.throw('ne peut pas être antérieur');
+        })).to.throw('ne peut pas être avant');
     });
 
     it('returns expiration date', () => {
@@ -490,7 +490,7 @@ describe('PromotionOptionService', function () {
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
         .catch((error) => {
-          expect(error.message).to.include(`Ce lot est déjà réservé jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
+          expect(error.message).to.include(`Ce lot est en cours de réservation jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
         });
     });
 

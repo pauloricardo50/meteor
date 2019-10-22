@@ -226,7 +226,9 @@ export const makePromotionOptionAnonymizer = ({
       anonymize,
     })(loan),
     isAnonymized: !!anonymize,
-    adminNote: { date: undefined, note: ANONYMIZED_STRING, isAnonymized: true },
+    adminNote: anonymize
+      ? { date: undefined, note: ANONYMIZED_STRING, isAnonymized: true }
+      : adminNote,
     ...rest,
   };
 };
