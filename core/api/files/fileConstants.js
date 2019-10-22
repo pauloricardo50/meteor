@@ -16,8 +16,8 @@ export const ALLOWED_FILE_TYPES = [
 
 export const ONE_KB = 1024;
 
-// 50 MB (use null for unlimited)
-export const MAX_FILE_SIZE = 50 * ONE_KB * ONE_KB;
+// 16 MB (use null for unlimited), https://community.exoscale.com/api/sos/
+export const MAX_FILE_SIZE = 16 * ONE_KB * ONE_KB;
 
 export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
 
