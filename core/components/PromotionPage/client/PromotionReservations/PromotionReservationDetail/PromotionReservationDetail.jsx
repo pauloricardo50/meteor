@@ -59,9 +59,7 @@ const PromotionReservationDetail = ({
         />
       )}
 
-      {isAdmin && (
-        <PromotionReservationDetailActions promotionOption={promotionOption} />
-      )}
+      <PromotionReservationDetailActions promotionOption={promotionOption} />
     </div>
   );
 };
