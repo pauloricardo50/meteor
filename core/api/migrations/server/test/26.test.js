@@ -178,7 +178,6 @@ describe('Migration 26', () => {
         expect(pO.reservationAgreement).to.equal(undefined);
         expect(pO.bank).to.equal(undefined);
         expect(pO.deposit).to.equal(undefined);
-        expect(pO.promotionLink).to.equal(undefined);
       });
     });
   });
