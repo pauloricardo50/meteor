@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
@@ -38,6 +39,9 @@ export default class NotFound extends Component {
     const { to } = this.props;
     return (
       <section id="not-found-page" style={styles.section}>
+        <Helmet>
+          <meta name="prerender-status-code" content="404" />
+        </Helmet>
         <h1 style={styles.h1}>
           <T id="NotFound.title" />
         </h1>
