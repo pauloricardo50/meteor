@@ -41,6 +41,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'adminNote.date': {
     type: Date,
     autoValue: dateAutoValue('note'),
+    optional: true,
   },
   status: {
     type: String,
@@ -57,6 +58,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'reservationAgreement.date': {
     type: Date,
     autoValue: dateAutoValue(),
+    optional: true,
   },
   'reservationAgreement.startDate': {
     type: Date,
@@ -75,7 +77,11 @@ const PromotionOptionSchema = new SimpleSchema({
     defaultValue: DEPOSIT_STATUSES.UNPAID,
     uniforms: { placeholder: null },
   },
-  'deposit.date': { type: Date, autoValue: dateAutoValue() },
+  'deposit.date': {
+    type: Date,
+    autoValue: dateAutoValue(),
+    optional: true,
+  },
   bank: { type: Object, defaultValue: {} },
   'bank.status': {
     type: String,
@@ -83,7 +89,11 @@ const PromotionOptionSchema = new SimpleSchema({
     defaultValue: PROMOTION_OPTION_BANK_STATUS.NONE,
     uniforms: { placeholder: null },
   },
-  'bank.date': { type: Date, autoValue: dateAutoValue() },
+  'bank.date': {
+    type: Date,
+    autoValue: dateAutoValue(),
+    optional: true,
+  },
   mortgageCertification: { type: Object, defaultValue: {} },
   'mortgageCertification.status': {
     type: String,
@@ -94,6 +104,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'mortgageCertification.date': {
     type: Date,
     autoValue: dateAutoValue(),
+    optional: true,
   },
 });
 
