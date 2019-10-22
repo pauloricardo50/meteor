@@ -1,4 +1,5 @@
 {
+  "Forms.permissions.displayCustomerNames.forLotStatus.PRE_BOOKED": "Réservation en cours",
   "PromotionPage.lots.requestReservation.button": "Réserver",
   "PromotionPage.lots.requestReservation.title": "Demande de réservation",
   "PromotionPage.lots.requestReservation.description": "Informe votre courtier de votre intérêt pour le lot {promotionLotName}. Il vous enverra une convention de réservation à lui retourner dûment signée.",
