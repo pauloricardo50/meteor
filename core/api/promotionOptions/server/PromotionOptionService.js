@@ -347,7 +347,7 @@ export class PromotionOptionService extends CollectionService {
     // Check if start date is older than half the agreement duration in the past
     // If not, this reservation does not make sense, it has started too long ago
     if (moment(startDate).startOf('day') < startDateLowerBound) {
-      throw new Meteor.Error('Le début de la réservation ne peut pas être antérieur à la moitié de la durée de réservation');
+      throw new Meteor.Error(`Le début de la réservation ne peut pas être avant le ${moment(startDateLowerBound).format('D MMM YYYY')}`);
     }
 
     const expirationDate = moment(startDate)
