@@ -25,7 +25,6 @@ export const AdminSideNav = ({
   ...otherProps
 }) => {
   const classes = useStyles(showDetail);
-
   return (
     <Drawer
       className={classes.drawer}

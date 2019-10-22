@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
-import merge from 'lodash/merge';
 
-const initialazeHighcharts = () => {
+const initializeHighcharts = () => {
   ReactHighcharts.Highcharts.setOptions({
     lang: {
       months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
@@ -34,23 +33,15 @@ export default class BaseChart extends PureComponent {
   constructor(props) {
     super(props);
     this.chart = null;
-    const {
-      HighchartsExporting,
-      HighchartsMore,
-      HighchartsExportData,
-    } = this.props;
+    const { highchartsWrappers = {} } = props;
 
-    if (HighchartsExporting) {
-      HighchartsExporting(ReactHighcharts.Highcharts);
-    }
-    if (HighchartsMore) {
-      HighchartsMore(ReactHighcharts.Highcharts);
-    }
-    if (HighchartsExportData) {
-      HighchartsExportData(ReactHighcharts.Highcharts);
+    if (Object.keys(highchartsWrappers).length) {
+      Object.values(highchartsWrappers).forEach((wrapper) => {
+        wrapper(ReactHighcharts.Highcharts);
+      });
     }
 
-    initialazeHighcharts();
+    initializeHighcharts();
   }
 
   componentWillReceiveProps({ data: nextData }) {
@@ -65,6 +56,10 @@ export default class BaseChart extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this.chart = null;
+  }
+
   update = (data) => {
     if (this.chart) {
       // FIXME: This should animate the chart somehow
@@ -73,16 +68,12 @@ export default class BaseChart extends PureComponent {
     }
   };
 
-  componentWillUnmount() {
-    this.chart = null;
-  }
-
   render() {
     const { config } = this.props;
 
     return (
       <ReactHighcharts
-        config={merge({}, { credits: { enabled: false } }, config)}
+        config={config}
         ref={(c) => {
           this.chart = c;
         }}

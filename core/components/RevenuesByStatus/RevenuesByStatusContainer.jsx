@@ -9,7 +9,7 @@ import StatusLabel from '../StatusLabel';
 const statuses = Object.values(LOAN_STATUS).filter(status => status !== LOAN_STATUS.TEST);
 
 const isEstimationStatus = status =>
-  [LOAN_STATUS.LEAD, LOAN_STATUS.ONGOING].includes(status);
+  [LOAN_STATUS.LEAD, LOAN_STATUS.QUALIFIED_LEAD, LOAN_STATUS.ONGOING].includes(status);
 
 const columnOptions = [
   {

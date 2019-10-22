@@ -8,7 +8,6 @@ import classnames from 'classnames';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { compose } from 'recompose';
-import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 const styles = () => ({
   root: { justifyContent: 'center' },
@@ -19,19 +18,15 @@ const shouldRenderInPrimaryColor = ({
   collectionName,
   path,
   to,
+  exact,
 }) => {
   if (collection && collection === collectionName) {
     return true;
   }
-
-  if (path.slice(1).startsWith(collection)) {
+  if (path.slice(1).startsWith(collection) || path.includes(collection)) {
     return true;
   }
-
-  if (
-    path === ADMIN_ROUTES.DASHBOARD_PAGE.path
-    && to === ADMIN_ROUTES.DASHBOARD_PAGE.path
-  ) {
+  if (exact && path === to) {
     return true;
   }
 };
@@ -46,6 +41,7 @@ const MainSideNavListItem = ({
   collectionName,
   to,
   history,
+  exact,
 }) => (
   <ListItem
     button
@@ -67,6 +63,7 @@ const MainSideNavListItem = ({
           collectionName,
           path: history.location.pathname,
           to,
+          exact,
         }),
       })}
     >

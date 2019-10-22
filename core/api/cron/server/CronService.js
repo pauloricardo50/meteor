@@ -65,7 +65,7 @@ class CronService {
           }
         } catch (error) {
           if (withCronitor) {
-            await cronitor.fail(error);
+            await cronitor.fail(error.message);
           }
 
           await SlackService.sendError({

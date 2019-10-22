@@ -7,21 +7,24 @@
     flex-grow: 1;
   }
 
-  .loan-board-options.fixed + .board {
-    padding-top: 120px;
+  .loan-board .board-column {
+    margin-top: 32px;
+  }
+
+  .loan-board-column-header {
+    position: sticky;
+    display: block;
+    padding: 8px;
+    padding-right: 24px;
+    z-index: 1;
+    background: #ffffff;
+    top: 0;
+    margin-bottom: 1em;
   }
 
   &-options {
     display: flex;
     justify-content: space-between;
-
-    &.fixed {
-      position: fixed;
-      z-index: 1;
-      top: 64px;
-      right: 16px;
-      left: calc(120px + 16px);
-    }
   }
 
   &-options > * {
@@ -73,6 +76,8 @@
 
   .board-column {
     width: 300px;
+    position: relative;
+    overflow: auto;
   }
 }
 
@@ -90,6 +95,11 @@ $button-height: 30px;
 
     min-height: $button-height;
     padding: 4px 8px;
+
+
+    .left, .right {
+      height: 30px;
+    }
 
     .status-label-dot,
     img {
@@ -112,19 +122,22 @@ $button-height: 30px;
     .title {
       overflow: hidden;
 
-      max-width: 200px;
-      margin: 0;
+      max-width: 190px;
+      margin: auto 0;
 
       white-space: nowrap;
       text-overflow: ellipsis;
+      height: 24px;
     }
 
     .title-placeholder {
       padding: 4px;
+      height: 16px;
     }
 
     .icon-link {
       white-space: pre-wrap;
+      height: 16px;
     }
   }
 

@@ -7,9 +7,11 @@ import { expect } from 'chai';
 
 import LoanService from 'core/api/loans/server/LoanService';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import { loanSetStatus } from 'core/api/loans/index';
+import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import generator from '../../../factories/factoriesHelpers';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
-import { loanMonitoring } from '../resolvers';
+import { loanMonitoring, loanStatusChanges } from '../resolvers';
 
 describe('monitoring', () => {
   beforeEach(() => {
@@ -199,6 +201,52 @@ describe('monitoring', () => {
           expectedRevenues: 300,
         },
       ]);
+    });
+  });
+
+  describe('loanStatusChanges', () => {
+    it('groups status changes', async () => {
+      generator({
+        loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+        users: { _id: 'admin', _factory: 'admin' },
+      });
+      await ddpWithUserId('admin', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }));
+      await ddpWithUserId('admin', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.BILLING }));
+      await ddpWithUserId('admin', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }));
+      await ddpWithUserId('admin', () =>
+        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.ONGOING }));
+      await ddpWithUserId('admin', () =>
+        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.PENDING }));
+      await ddpWithUserId('admin', () =>
+        loanSetStatus.run({
+          loanId: 'loan2',
+          status: LOAN_STATUS.FINALIZED,
+        }));
+
+      const result = await loanStatusChanges({
+        fromDate: moment()
+          .subtract(1, 'd')
+          .toDate(),
+        toDate: moment()
+          .add(1, 'd')
+          .toDate(),
+      });
+
+      expect(result.length).to.equal(5);
+      expect(result[0]).to.deep.include({
+        _id: { prevStatus: LOAN_STATUS.LEAD, nextStatus: LOAN_STATUS.ONGOING },
+        count: 2,
+      });
+      expect(result[1]).to.deep.include({
+        _id: {
+          prevStatus: LOAN_STATUS.ONGOING,
+          nextStatus: LOAN_STATUS.PENDING,
+        },
+        count: 1,
+      });
     });
   });
 });
