@@ -46,12 +46,18 @@ const makeIcon = (variant, isEditing, promotionOptionId) => ({
 );
 
 const getAdminNoteIcon = (
-  { note, date } = {},
+  { note, date, isAnonymized } = {},
   variant,
   isEditing,
   promotionOptionId,
-) =>
-  date && (
+) => {
+  const shouldShowNote = !isAnonymized;
+
+  if (!shouldShowNote) {
+    return null;
+  }
+
+  return (
     <PromotionReservationProgressItem
       icon="info"
       color={note ? 'primary' : 'borderGrey'}
@@ -64,6 +70,7 @@ const getAdminNoteIcon = (
       promotionOptionId={promotionOptionId}
     />
   );
+};
 
 export const rawPromotionReservationProgress = ({
   mortgageCertification,

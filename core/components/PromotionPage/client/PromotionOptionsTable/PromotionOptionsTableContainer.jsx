@@ -4,10 +4,7 @@ import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proPromotionOptions } from 'core/api/promotionOptions/queries';
-import {
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_OPTION_STATUS,
-} from 'core/api/constants';
+import { PROMOTION_OPTIONS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import T from 'core/components/Translation';
 import PromotionReservationProgress, {
@@ -85,12 +82,8 @@ export default compose(
     }),
     dataName: 'promotionOptions',
   }),
-  withProps(({ promotionOptions, promotion }) => {
-    console.log('promotionOptions:', promotionOptions);
-
-    return {
-      rows: promotionOptions.map(makeMapPromotionOption({ promotion })),
-      columnOptions,
-    };
-  }),
+  withProps(({ promotionOptions, promotion }) => ({
+    rows: promotionOptions.map(makeMapPromotionOption({ promotion })),
+    columnOptions,
+  })),
 );

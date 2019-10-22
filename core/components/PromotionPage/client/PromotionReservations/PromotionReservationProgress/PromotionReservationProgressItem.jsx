@@ -13,7 +13,9 @@ const IconTooltip = ({ date, status, id, note, placeholder }) => (
     <b className="flex sb">
       <T id={`Forms.${id}`} />
       &nbsp;
-      <i className="secondary">{moment(date).format("H:mm, D MMM 'YY")}</i>
+      {date && (
+        <i className="secondary">{moment(date).format("H:mm, D MMM 'YY")}</i>
+      )}
     </b>
     {note || placeholder || <T id={`Forms.status.${status}`} />}
   </div>

@@ -4,19 +4,13 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import {
-  bookPromotionLot,
-  sellPromotionLot,
-  cancelPromotionLotBooking,
-} from 'core/api/methods';
-import {
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_OPTION_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import UploaderArray from '../../../../UploaderArray';
-import ConfirmMethod from '../../../../ConfirmMethod';
 import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
 import PromotionReservationDeadline from '../PromotionReservationDeadline';
+import PromotionReservationDetailActions from './PromotionReservationDetailActions';
 
 type PromotionReservationDetailProps = {};
 
@@ -38,16 +32,6 @@ const PromotionReservationDetail = ({
     isAnonymized,
   } = promotionOption;
   const isAdmin = Meteor.microservice === 'admin';
-  const isDeadReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
-    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
-  ].includes(status);
-  const canCancelReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-    PROMOTION_OPTION_STATUS.RESERVED,
-    PROMOTION_OPTION_STATUS.SOLD,
-  ].includes(status);
-  const hasRequestedReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED;
 
   return (
     <div>
@@ -74,38 +58,7 @@ const PromotionReservationDetail = ({
       )}
 
       {isAdmin && (
-        <div className="flex center mt-16">
-          {hasRequestedReservation && (
-            <ConfirmMethod
-              buttonProps={{ className: 'mr-8', error: true, outlined: true }}
-              label="Démarrer réservation"
-              method={() => bookPromotionLot.run({ promotionOptionId })}
-            />
-          )}
-          {canCancelReservation && (
-            <ConfirmMethod
-              buttonProps={{ className: 'mr-8', error: true, outlined: true }}
-              label="Annuler réservation"
-              method={() =>
-                cancelPromotionLotBooking.run({ promotionOptionId })
-              }
-            />
-          )}
-          {isDeadReservation && (
-            <ConfirmMethod
-              buttonProps={{ primary: true, raised: true }}
-              label="Réactiver réservation"
-              method={() => bookPromotionLot.run({ promotionOptionId })}
-            />
-          )}
-          {status === PROMOTION_OPTION_STATUS.ACTIVE && (
-            <ConfirmMethod
-              buttonProps={{ secondary: true, raised: true }}
-              label="Confirmer vente"
-              method={() => sellPromotionLot.run({ promotionOptionId })}
-            />
-          )}
-        </div>
+        <PromotionReservationDetailActions promotionOption={promotionOption} />
       )}
     </div>
   );
