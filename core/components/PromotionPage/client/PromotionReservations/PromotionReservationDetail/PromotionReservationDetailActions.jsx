@@ -1,11 +1,14 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   confirmPromotionLotBooking,
   sellPromotionLot,
   cancelPromotionLotBooking,
 } from 'core/api/methods';
+import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { isAllowedToBookPromotionLotToCustomer } from 'core/api/security/clientSecurityHelpers/index';
 import { PROMOTION_OPTION_STATUS } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
@@ -18,25 +21,47 @@ const PromotionReservationDetailActions = ({
   const {
     _id: promotionOptionId,
     status,
-    promotion: { agreementDuration },
+    promotion,
+    loan: { promotions = [] },
   } = promotionOption;
-  const isDeadReservation = [
+
+  const { agreementDuration } = promotion;
+
+  const [loanPromotion] = promotions;
+  const {
+    $metadata: { invitedBy },
+  } = loanPromotion;
+
+  const currentUser = useContext(CurrentUserContext);
+  const customerOwnerType = getPromotionCustomerOwnerType({
+    invitedBy,
+    currentUser,
+  });
+  const isAllowedToBookLot = isAllowedToBookPromotionLotToCustomer({
+    promotion,
+    currentUser,
+    customerOwnerType,
+  });
+  const isAdmin = Meteor.microservice === 'admin';
+
+  const canReactivateReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
     PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-  ].includes(status);
+  ].includes(status) && isAllowedToBookLot;
   const canCancelReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
     PROMOTION_OPTION_STATUS.RESERVED,
     PROMOTION_OPTION_STATUS.SOLD,
-  ].includes(status);
-  const hasRequestedReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED;
-  const canConfirmReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
-  const canSellLot = status === PROMOTION_OPTION_STATUS.RESERVED;
+  ].includes(status) && isAdmin;
+  const canActivateReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED
+    && isAllowedToBookLot;
+  const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
+  const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
 
   return (
     <div className="flex center mt-16">
-      {hasRequestedReservation && (
+      {canActivateReservation && (
         <PromotionLotReservationForm
           agreementDuration={agreementDuration}
           promotionOption={promotionOption}
@@ -55,7 +80,7 @@ const PromotionReservationDetailActions = ({
           method={() => cancelPromotionLotBooking.run({ promotionOptionId })}
         />
       )}
-      {isDeadReservation && (
+      {canReactivateReservation && (
         <PromotionLotReservationForm
           agreementDuration={agreementDuration}
           promotionOption={promotionOption}
