@@ -605,7 +605,7 @@ describe('PromotionOptionService', function () {
           deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
           bank: {
             date: startDate,
-            status: PROMOTION_OPTION_BANK_STATUS.NONE,
+            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
           },
           promotionLink: { _id: 'promo' },
           reservationAgreement: {
@@ -615,7 +615,7 @@ describe('PromotionOptionService', function () {
               .toDate(),
             startDate,
             date: startDate,
-            status: AGREEMENT_STATUSES.SIGNED,
+            status: AGREEMENT_STATUSES.RECEIVED,
           },
         });
         expect(promotionOption.mortgageCertification).to.deep.include({

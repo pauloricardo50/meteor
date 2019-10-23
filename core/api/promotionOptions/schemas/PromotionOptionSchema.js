@@ -52,7 +52,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'reservationAgreement.status': {
     type: String,
     allowedValues: Object.values(AGREEMENT_STATUSES),
-    defaultValue: AGREEMENT_STATUSES.UNSIGNED,
+    defaultValue: AGREEMENT_STATUSES.WAITING,
     uniforms: { placeholder: null },
   },
   'reservationAgreement.date': {
@@ -89,7 +89,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'bank.status': {
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_BANK_STATUS),
-    defaultValue: PROMOTION_OPTION_BANK_STATUS.NONE,
+    defaultValue: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
     uniforms: { placeholder: null },
   },
   'bank.date': {

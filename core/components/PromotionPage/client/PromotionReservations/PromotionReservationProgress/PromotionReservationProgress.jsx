@@ -90,7 +90,7 @@ export const rawPromotionReservationProgress = ({
   [
     mortgageCertification.status
       === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
-    reservationAgreement.status === AGREEMENT_STATUSES.SIGNED,
+    reservationAgreement.status === AGREEMENT_STATUSES.RECEIVED,
     deposit.status === DEPOSIT_STATUSES.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
@@ -131,9 +131,8 @@ const PromotionReservationProgress = ({
     icon({
       ...reservationAgreement,
       ...makeGetIcon({
-        success: [AGREEMENT_STATUSES.SIGNED],
-        waiting: [AGREEMENT_STATUSES.WAITING],
-        error: [AGREEMENT_STATUSES.UNSIGNED],
+        success: [AGREEMENT_STATUSES.RECEIVED],
+        error: [AGREEMENT_STATUSES.WAITING],
       })(reservationAgreement.status),
       id: 'reservationAgreement',
     }),
@@ -151,7 +150,7 @@ const PromotionReservationProgress = ({
         success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
         error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
         warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
-        waiting: [PROMOTION_OPTION_BANK_STATUS.WAITING],
+        waiting: [PROMOTION_OPTION_BANK_STATUS.SENT],
       })(bank.status),
       id: 'bank',
     }),

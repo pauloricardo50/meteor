@@ -39,6 +39,7 @@ PromotionLots.addReducers({
         && attributedTo.user
         && attributedTo.user._id === Meteor.userId()
       ) {
+        // This lot is booked for the user
         switch (status) {
         case PROMOTION_LOT_STATUS.BOOKED:
           return PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME;
@@ -48,9 +49,13 @@ PromotionLots.addReducers({
           return status;
         }
       }
-      if (status === PROMOTION_LOT_STATUS.BOOKED) {
+
+      if (
+        [PROMOTION_LOT_STATUS.PRE_BOOKED, PROMOTION_LOT_STATUS.BOOKED].includes(status)
+      ) {
         return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
       }
+
       return status;
     },
   },

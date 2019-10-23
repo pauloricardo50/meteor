@@ -307,12 +307,12 @@ export class PromotionOptionService extends CollectionService {
           startDate,
           expirationDate,
           date: startDate,
-          status: AGREEMENT_STATUSES.SIGNED,
+          status: AGREEMENT_STATUSES.RECEIVED,
         },
         deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
         bank: {
           date: startDate,
-          status: PROMOTION_OPTION_BANK_STATUS.NONE,
+          status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
         },
       },
     });
@@ -379,7 +379,7 @@ export class PromotionOptionService extends CollectionService {
     this.updateStatusObject({
       promotionOptionId,
       id: 'adminNote',
-      object: { status: AGREEMENT_STATUSES.UNSIGNED },
+      object: { status: AGREEMENT_STATUSES.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
@@ -398,7 +398,7 @@ export class PromotionOptionService extends CollectionService {
     this.updateStatusObject({
       promotionOptionId,
       id: 'adminNote',
-      object: { status: AGREEMENT_STATUSES.UNSIGNED },
+      object: { status: AGREEMENT_STATUSES.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,

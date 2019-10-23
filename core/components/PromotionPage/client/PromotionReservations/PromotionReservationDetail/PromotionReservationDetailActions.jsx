@@ -49,6 +49,13 @@ const PromotionReservationDetailActions = ({
           buttonProps={{ className: 'mr-8', error: true, outlined: true }}
           label="Annuler réservation"
           method={() => cancelPromotionLotBooking.run({ promotionOptionId })}
+          description={(
+            <span>
+              Ce lot deviendra a nouveau disponible.
+              <br />
+              Notifiera tous les Pros par email.
+            </span>
+          )}
         />
       )}
       {canReactivateReservation && (
@@ -75,6 +82,13 @@ const PromotionReservationDetailActions = ({
           }}
           label="Confirmer réservation"
           method={() => confirmPromotionLotBooking.run({ promotionOptionId })}
+          description={(
+            <span>
+              Vous confirmez que ce lot est maintenant réservé pour ce client?
+              <br />
+              Notifiera tous les Pros par email.
+            </span>
+          )}
         />
       )}
       {canSellLot && (
@@ -82,6 +96,14 @@ const PromotionReservationDetailActions = ({
           buttonProps={{ secondary: true, raised: true }}
           label="Confirmer vente"
           method={() => sellPromotionLot.run({ promotionOptionId })}
+          description={(
+            <span>
+              Vous confirmez que le client a signé le contrat de la banque, de
+              l'EG, et l'acte d'achat du notaire?
+              <br />
+              Notifiera tous les Pros par email.
+            </span>
+          )}
         />
       )}
     </div>

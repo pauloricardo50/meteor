@@ -154,7 +154,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         && deposit.status === DEPOSIT_STATUSES.PAID
         && mortgageCertification.status
           === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT
-        && reservationAgreement.status === AGREEMENT_STATUSES.SIGNED
+        && reservationAgreement.status === AGREEMENT_STATUSES.RECEIVED
       );
     }
   };
