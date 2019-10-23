@@ -44,7 +44,7 @@ class CronService {
 
     let cronitor = TestCronitor;
     if (withCronitor) {
-      cronitor = new CronitorService({ id: cronitorId });
+      cronitor = new CronitorService({ id: cronitorId, name });
     }
 
     SyncedCron.add({

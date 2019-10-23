@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import https from 'https';
 import queryString from 'query-string';
+import SlackService from 'core/api/slack/server/SlackService';
 
 const CRONITOR_URL = 'https://cronitor.io';
 const ACTIONS = {
@@ -12,10 +13,11 @@ const ACTIONS = {
 const REQ_TIMEOUT = 10000;
 
 export default class CronitorService {
-  constructor({ id, authKey }) {
+  constructor({ id, authKey, name }) {
     this.id = id;
     this.authKey = authKey;
     this.baseUrl = CRONITOR_URL;
+    this.name = name;
   }
 
   run = () => {
@@ -90,10 +92,15 @@ export default class CronitorService {
         .on('error', reject);
     });
 
-    const timeout = new Promise((resolve, reject) => {
+    const timeout = new Promise((resolve) => {
       const wait = Meteor.setTimeout(() => {
         Meteor.clearTimeout(wait);
-        reject(new Meteor.Error('Timed out'));
+
+        SlackService.sendError({
+          error: new Meteor.Error('Timed out'),
+          additionalData: [`${this.name} CRON error`],
+        });
+        resolve();
       }, REQ_TIMEOUT);
     });
 
