@@ -48,13 +48,8 @@ const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
 export default compose(
-  /* withReducer('options', 'dispatch', filterReducer, getInitialOptions), */
   addLiveSync,
   withLiveSync,
-  mapProps((ss) => {
-    console.log('---------->>>', ss);
-    return ss;
-  }),
   withSmartQuery({
     query: adminLoans,
     params: ({
@@ -91,7 +86,6 @@ export default compose(
     refetchOnMethodCall: false,
   }),
   mapProps(({ admins, ...rest }) => {
-    console.log('---------->>>', admins, rest)
     return {
       devAndAdmins: admins,
       admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),

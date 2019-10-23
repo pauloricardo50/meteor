@@ -8,7 +8,6 @@ import AdminStore from '../../client/components/AdminStore';
 import ADMIN_ROUTES from './adminRoutes';
 const Admin = (props) => (
   <Switch>
-    {console.log("props", props)}
     {Object.keys(ADMIN_ROUTES).map(route => (
       <Route {...ADMIN_ROUTES[route]} {...props} key={route} />
     ))}
