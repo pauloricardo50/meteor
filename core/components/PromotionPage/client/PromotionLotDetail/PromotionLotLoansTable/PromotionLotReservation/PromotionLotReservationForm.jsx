@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
 
@@ -44,22 +44,26 @@ const PromotionLotReservationForm = ({
   agreementDuration,
   promotionOption,
   buttonProps,
-}: PromotionLotReservationFormProps) => (
-  <AutoFormDialog
-    model={{ startDate: new Date() }}
-    schema={getSchema(agreementDuration)}
-    buttonProps={{
-      label: <T id="PromotionLotReservation.book" />,
-      ...buttonProps,
-    }}
-    onSubmit={values =>
-      bookPromotionLot.run({
-        promotionOptionId: promotionOption._id,
-        ...values,
-      })
-    }
-    title="Réserver"
-  />
-);
+}: PromotionLotReservationFormProps) => {
+  const [schema] = useState(getSchema(agreementDuration));
+  const [today] = useState(new Date());
+  return (
+    <AutoFormDialog
+      model={{ startDate: today }}
+      schema={schema}
+      buttonProps={{
+        label: <T id="PromotionLotReservation.book" />,
+        ...buttonProps,
+      }}
+      onSubmit={values =>
+        bookPromotionLot.run({
+          promotionOptionId: promotionOption._id,
+          ...values,
+        })
+      }
+      title="Réserver"
+    />
+  );
+};
 
 export default PromotionLotReservationForm;

@@ -1,7 +1,7 @@
 // @flow
 import { Random } from 'meteor/random';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { compose } from 'recompose';
 import connectField from 'uniforms/connectField';
 import { injectIntl } from 'react-intl';
@@ -22,6 +22,14 @@ export default compose(
   Component => ({ onChange, value = [], name, ...rest }) => {
     const [id] = useState(Random.id());
     const [currentValue, setCurrentValue] = useState([]);
+
+    // Always keep the uploader in sync with the form value,
+    // sometimes value is changed to an empty array again
+    useEffect(() => {
+      if (currentValue.some(({ Key }) => !value.includes(Key))) {
+        setCurrentValue(currentValue.filter(({ Key }) => value.includes(Key)));
+      }
+    }, [value, currentValue]);
 
     const handleUploadFailed = () => {};
 
