@@ -48,10 +48,12 @@ const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
 export default compose(
-  withState('activateSync', 'setActivateSync', false),
-  withReducer('options', 'dispatch', filterReducer, getInitialOptions),
+  /* withReducer('options', 'dispatch', filterReducer, getInitialOptions), */
   addLiveSync,
   withLiveSync,
+  mapProps((ss) => {
+    console.log('---------->>>', ss);
+  }),
   withSmartQuery({
     query: adminLoans,
     params: ({
@@ -87,12 +89,15 @@ export default compose(
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
-  mapProps(({ admins, ...rest }) => ({
-    devAndAdmins: admins,
-    admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
-    devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
-    ...rest,
-  })),
+  mapProps(({ admins, ...rest }) => {
+    console.log('---------->>>', admin, rest)
+    return {
+      devAndAdmins: admins,
+      admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
+      devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
+      ...rest,
+    };
+  }),
   withSmartQuery({
     query: adminPromotions,
     params: { $body: { name: 1 } },
