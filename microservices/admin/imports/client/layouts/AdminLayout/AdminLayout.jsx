@@ -48,7 +48,9 @@ const routeHasNoPadding = (pathname) => {
 };
 
 const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
-  console.log('AdminLayout: refresh', );
+  console.log('AdminLayout: refresh');
+  console.log('-------props?', props)
+  console.log('-------children?', children)
   const isMobile = useMedia({ maxWidth: 768 });
   const [openDrawer, setDrawer] = useState(false);
   const toggleDrawer = () => setDrawer(!openDrawer);
@@ -92,7 +94,7 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
       />
-
+      
       <div
         className={cx('main', {
           'no-padding': routeHasNoPadding(history.location.pathname),

@@ -53,6 +53,7 @@ export default compose(
   withLiveSync,
   mapProps((ss) => {
     console.log('---------->>>', ss);
+    return ss;
   }),
   withSmartQuery({
     query: adminLoans,
@@ -90,7 +91,7 @@ export default compose(
     refetchOnMethodCall: false,
   }),
   mapProps(({ admins, ...rest }) => {
-    console.log('---------->>>', admin, rest)
+    console.log('---------->>>', admins, rest)
     return {
       devAndAdmins: admins,
       admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
