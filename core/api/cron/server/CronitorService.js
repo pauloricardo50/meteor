@@ -76,7 +76,7 @@ export default class CronitorService {
     urlObj.basePath + (urlObj.qs ? `?${queryString.stringify(urlObj.qs)}` : '');
 
   getWithTimeout = ({ url }) => {
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve) => {
       https
         .get(url, (response) => {
           let data = '';
@@ -89,7 +89,13 @@ export default class CronitorService {
             resolve(data);
           });
         })
-        .on('error', reject);
+        .on('error', (error) => {
+          SlackService.sendError({
+            error,
+            additionalData: [`${this.name} CRON error`],
+          });
+          resolve();
+        });
     });
 
     const timeout = new Promise((resolve) => {
