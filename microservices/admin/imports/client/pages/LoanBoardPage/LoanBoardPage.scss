@@ -292,3 +292,12 @@ $button-height: 30px;
     padding: 4px;
   }
 }
+
+.loan-board-single-loan-page {
+  .single-loan-page-tabs > .core-tabs-top {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 9;
+  }
+}
