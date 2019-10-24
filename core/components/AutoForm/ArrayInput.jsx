@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from 'core/components/Button';
-
-import T from 'core/components/Translation';
+import Button from '../Button';
+import T from '../Translation';
 import AutoFormTextInput from './AutoFormTextInput';
 import AutoFormDateInput from './AutoFormDateInput';
 import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
-
-import FormValidator from './FormValidator';
 
 const styles = {
   button: {
@@ -44,7 +41,7 @@ class ArrayInput extends Component {
         transform,
         intlId,
         Component: CustomComponent,
-        inputLabelProps: {shrink} = {},
+        inputLabelProps: { shrink } = {},
       } = input;
       const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
@@ -64,13 +61,7 @@ class ArrayInput extends Component {
       };
 
       if (type === 'textInput') {
-        return (
-          <AutoFormTextInput
-            {...childProps}
-            noValidator
-            key={id + inputId + i}
-          />
-        );
+        return <AutoFormTextInput {...childProps} key={id + inputId + i} />;
       }
       if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
@@ -94,21 +85,11 @@ class ArrayInput extends Component {
               ),
             }));
         return (
-          <AutoFormSelectFieldInput
-            {...childProps}
-            noValidator
-            key={id + inputId + i}
-          />
+          <AutoFormSelectFieldInput {...childProps} key={id + inputId + i} />
         );
       }
       if (type === 'dateInput') {
-        return (
-          <AutoFormDateInput
-            {...childProps}
-            noValidator
-            key={id + inputId + i}
-          />
-        );
+        return <AutoFormDateInput {...childProps} key={id + inputId + i} />;
       }
 
       if (type === 'custom') {
@@ -158,7 +139,6 @@ class ArrayInput extends Component {
         </label>
 
         {this.getArray()}
-        <FormValidator {...this.props} />
 
         <div className="text-center">
           {count <= 0 && (

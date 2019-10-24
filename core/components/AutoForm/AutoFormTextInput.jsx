@@ -9,7 +9,6 @@ import colors from '../../config/colors';
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';
-import FormValidator from './FormValidator';
 
 const styles = {
   div: {
@@ -185,7 +184,6 @@ class AutoFormTextInput extends Component {
         ...otherProps
       },
       inputLabelProps: inputLabelPropsOverride,
-      noValidator,
       savingIconStyle,
       admin,
     } = this.props;
@@ -236,7 +234,6 @@ class AutoFormTextInput extends Component {
           hide={admin}
           todo={todo}
         />
-        {!noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }
@@ -263,7 +260,6 @@ AutoFormTextInput.propTypes = {
   }).isRequired,
   inputStyle: PropTypes.objectOf(PropTypes.any),
   money: PropTypes.bool,
-  noValidator: PropTypes.bool,
   number: PropTypes.bool,
   rows: PropTypes.number,
   saveOnChange: PropTypes.bool,
@@ -280,7 +276,6 @@ AutoFormTextInput.defaultProps = {
   info: '',
   inputStyle: undefined,
   money: false,
-  noValidator: false,
   number: false,
   rows: 1,
   saveOnChange: true,
