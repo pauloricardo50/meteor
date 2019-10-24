@@ -1,5 +1,5 @@
 // @flow
-import { OWN_FUNDS_TYPES } from 'core/api/constants';
+import { OWN_FUNDS_TYPES, SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -271,7 +271,19 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return wantedLoan / propAndWork;
     }
 
-    getMaxBorrowRatio() {
+    getMaxBorrowRatio({ loan, structureId } = {}) {
+      const offer = !!loan && this.selectOffer({ loan, structureId });
+
+      if (offer) {
+        const { maxAmount } = offer;
+        const propertyValue = this.getPropAndWork({ loan, structureId });
+        const maxBorrowRatio = propertyValue
+          ? maxAmount / propertyValue
+          : this.maxBorrowRatio;
+
+        return Math.min(maxBorrowRatio, 1);
+      }
+
       return this.maxBorrowRatio;
     }
 
@@ -486,5 +498,170 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
         return false;
       });
+    }
+
+    getRequiredPledgedOwnFunds({ loan, structureId }) {
+      const { maxBorrowRatio } = this;
+      // const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+
+      if (borrowRatio <= maxBorrowRatio) {
+        return 0;
+      }
+
+      return (
+        (borrowRatio - maxBorrowRatio)
+        * this.getPropAndWork({ loan, structureId })
+      );
+    }
+
+    getLoanFromBorrowRatio({ loan, structureId, borrowRatio }) {
+      return borrowRatio * this.getPropAndWork({ loan, structureId });
+    }
+
+    getBorrowRatioStatusTooltip({
+      loan,
+      structureId,
+      status,
+      borrowRatio,
+      maxBorrowRatio,
+      neededPledgedOwnFunds,
+    }) {
+
+      switch (status) {
+      case SUCCESS:
+        return ({ id: 'StatusIconTooltip.borrowRatio.SUCCESS' });
+      case WARNING: {
+        if (this.lenderRules && this.lenderRules.length) {
+          return ({
+            id: 'StatusIconTooltip.borrowRatio.WARNING.withLenderRules',
+            values: {
+              neededPledgedOwnFunds,
+              wantedLoan: this.getLoanFromBorrowRatio({
+                loan,
+                structureId,
+                borrowRatio,
+              }),
+            },
+          });
+        }
+        return ({
+          id: 'StatusIconTooltip.borrowRatio.WARNING',
+        });
+      }
+      case ERROR:
+        return ({
+          id: 'StatusIconTooltip.borrowRatio.ERROR',
+          values: {
+            maxBorrowRatio,
+            maxLoan: this.getLoanFromBorrowRatio({
+              loan,
+              structureId,
+              borrowRatio: maxBorrowRatio,
+            }),
+          },
+        });
+      default:
+        return undefined;
+      }
+    }
+
+    getBorrowRatioStatus({ loan, structureId }) {
+      const currentPledgedOwnFunds = this.getPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+      const neededPledgedOwnFunds = this.getRequiredPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+
+      const {
+        maxBorrowRatio: defaultMaxBorrowRatio,
+        maxBorrowRatioWithPledge,
+      } = this;
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+      const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+
+      if (this.selectOffer({ loan, structureId })) {
+        if (maxBorrowRatio <= defaultMaxBorrowRatio) {
+          const status = borrowRatio <= maxBorrowRatio ? SUCCESS : ERROR;
+          return {
+            status,
+            tooltip: this.getBorrowRatioStatusTooltip({
+              status,
+              loan,
+              structureId,
+              borrowRatio,
+              maxBorrowRatio,
+            }),
+          };
+        }
+
+        if (currentPledgedOwnFunds >= neededPledgedOwnFunds) {
+          const status = borrowRatio <= maxBorrowRatio ? SUCCESS : ERROR;
+          return {
+            status,
+            tooltip: this.getBorrowRatioStatusTooltip({
+              status,
+              loan,
+              structureId,
+              borrowRatio,
+              maxBorrowRatio,
+            }),
+          };
+        }
+
+        const status = borrowRatio <= defaultMaxBorrowRatio
+          ? SUCCESS
+          : borrowRatio <= Math.min(maxBorrowRatio, maxBorrowRatioWithPledge)
+            ? WARNING
+            : ERROR;
+
+        return {
+          status,
+          tooltip: this.getBorrowRatioStatusTooltip({
+            status,
+            loan,
+            structureId,
+            borrowRatio,
+            maxBorrowRatio: Math.min(maxBorrowRatio, maxBorrowRatioWithPledge),
+            neededPledgedOwnFunds,
+          }),
+        };
+      }
+
+      if (currentPledgedOwnFunds >= neededPledgedOwnFunds) {
+        const status = borrowRatio <= maxBorrowRatioWithPledge ? SUCCESS : ERROR;
+
+        return {
+          status,
+          tooltip: this.getBorrowRatioStatusTooltip({
+            status,
+            loan,
+            structureId,
+            borrowRatio,
+            maxBorrowRatio,
+          }),
+        };
+      }
+
+      const status = borrowRatio <= maxBorrowRatio
+        ? SUCCESS
+        : borrowRatio <= maxBorrowRatioWithPledge
+          ? WARNING
+          : ERROR;
+
+      return {
+        status,
+        tooltip: this.getBorrowRatioStatusTooltip({
+          status,
+          loan,
+          structureId,
+          borrowRatio,
+          maxBorrowRatio: maxBorrowRatioWithPledge,
+          neededPledgedOwnFunds,
+        }),
+      };
     }
   };

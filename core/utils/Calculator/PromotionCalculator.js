@@ -16,13 +16,13 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       const insurance2 = this.getInsurance2({ loan });
 
       const results = {
-        withBankFortune: Math.round((bankFortune - notaryFees) / (1 - this.maxBorrowRatio)),
+        withBankFortune: Math.round((bankFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan }))),
         withInsurance2: this.getMaxPropertyValueWithInsurance2({
           cash: bankFortune,
           insurance2,
           notaryFees,
         }),
-        withInsurance3: Math.round((cashFortune - notaryFees) / (1 - this.maxBorrowRatio)),
+        withInsurance3: Math.round((cashFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan }))),
         withInsurance2And3: this.getMaxPropertyValueWithInsurance2({
           cash: cashFortune,
           insurance2,
@@ -40,13 +40,14 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       const availableFortune = cash - notaryFees;
       const maxPropertyValue = availableFortune / this.minCash;
       const canAffordProperty = (maxPropertyValue - availableFortune - insurance2) / maxPropertyValue
-        <= this.maxBorrowRatio;
+        <= this.getMaxBorrowRatio();
 
       if (canAffordProperty) {
         return Math.round(maxPropertyValue);
       }
 
-      return Math.round((availableFortune + insurance2) / (1 - this.maxBorrowRatio));
+      return Math.round((availableFortune + insurance2)
+          / (1 - this.getMaxBorrowRatio()));
     }
 
     getIncomeLimitedProperty({

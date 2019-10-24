@@ -17,14 +17,13 @@ import {
   getRemainingBank3A,
   getRemainingInsurance3B,
   getPropertyExpenses,
-  getBorrowRatio,
   getIncomeRatio,
-  getBorrowRatioStatus,
   getIncomeRatioStatus,
   makeHasOwnFundsOfType,
 } from './financingResultHelpers';
 import FinancingResultInterests from './FinancingResultInterests';
 import FinancingResultAmortization from './FinancingResultAmortization';
+import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 
 type FinancingResultProps = {};
 
@@ -79,10 +78,7 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
         {
           id: 'borrowRatio',
-          Component: FinmaRatio,
-          value: getBorrowRatio,
-          status: getBorrowRatioStatus,
-          tooltip: true,
+          Component: props => <BorrowRatioStatus {...props} />,
         },
         {
           id: 'incomeRatio',
