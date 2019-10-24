@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 import T from '../Translation';
 import RadioButtons from '../RadioButtons';
-import FormValidator from './FormValidator';
 import ValidIcon from './ValidIcon';
 
 export default class AutoFormRadioInput extends Component {
@@ -99,7 +98,6 @@ export default class AutoFormRadioInput extends Component {
           required={required}
           hide={admin}
         />
-        <FormValidator {...this.props} />
       </div>
     );
   }
