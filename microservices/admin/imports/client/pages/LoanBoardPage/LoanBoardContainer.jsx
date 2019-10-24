@@ -1,8 +1,6 @@
 import {
   compose,
-  withReducer,
   mapProps,
-  withState,
   withProps,
 } from 'recompose';
 
@@ -15,8 +13,6 @@ import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
 import { userCache } from 'core/api/loans/links';
 import {
   groupLoans,
-  filterReducer,
-  getInitialOptions,
 } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
@@ -85,14 +81,12 @@ export default compose(
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
-  mapProps(({ admins, ...rest }) => {
-    return {
-      devAndAdmins: admins,
-      admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
-      devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
-      ...rest,
-    };
-  }),
+  mapProps(({ admins, ...rest }) => ({
+    devAndAdmins: admins,
+    admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
+    devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
+    ...rest,
+  })),
   withSmartQuery({
     query: adminPromotions,
     params: { $body: { name: 1 } },

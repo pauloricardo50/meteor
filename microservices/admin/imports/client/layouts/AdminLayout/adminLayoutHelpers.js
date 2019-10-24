@@ -1,10 +1,10 @@
-import { ACTIONS, SORT_BY, SORT_ORDER, GROUP_BY } from './adminLayoutConstants';
+import { LOAN_BOARD_ACTIONS,  LOAN_BOARD_SORT_BY,  LOAN_BOARD_SORT_ORDER,  LOAN_BOARD_GROUP_BY } from './adminLayoutConstants';
 
 export const getInitialOptions = ({ currentUser }) => ({
-    groupBy: GROUP_BY.STATUS,
+    groupBy:  LOAN_BOARD_GROUP_BY.STATUS,
     assignedEmployeeId: { $in: [currentUser._id] },
-    sortBy: SORT_BY.DUE_AT,
-    sortOrder: SORT_ORDER.ASC,
+    sortBy:  LOAN_BOARD_SORT_BY.DUE_AT,
+    sortOrder:  LOAN_BOARD_SORT_ORDER.ASC,
     step: undefined,
     category: undefined,
     status: undefined,
@@ -15,40 +15,40 @@ export const getInitialOptions = ({ currentUser }) => ({
 
 export const filterReducer = (state, { type, payload }) => {
     switch (type) {
-        case ACTIONS.SET_FILTER: {
+        case LOAN_BOARD_ACTIONS.SET_FILTER: {
             const { name, value } = payload;
             return { ...state, [name]: value };
         }
 
-        case ACTIONS.SET_COLUMN_SORT: {
+        case LOAN_BOARD_ACTIONS.SET_COLUMN_SORT: {
             const { sortOrder } = state;
             if (state.sortBy === payload) {
                 return {
                     ...state,
                     sortOrder:
-                        sortOrder === SORT_ORDER.ASC ? SORT_ORDER.DESC : SORT_ORDER.ASC,
+                        sortOrder ===  LOAN_BOARD_SORT_ORDER.ASC ?  LOAN_BOARD_SORT_ORDER.DESC :  LOAN_BOARD_SORT_ORDER.ASC,
                 };
             }
-            return { ...state, sortBy: payload, sortOrder: SORT_ORDER.ASC };
+            return { ...state, sortBy: payload, sortOrder:  LOAN_BOARD_SORT_ORDER.ASC };
         }
 
-        case ACTIONS.SET_GROUP_BY: {
+        case LOAN_BOARD_ACTIONS.SET_GROUP_BY: {
             const newStatus = { ...state, groupBy: payload };
 
-            if (payload === GROUP_BY.STATUS) {
-                return { ...newStatus, sortBy: SORT_BY.CREATED_AT };
+            if (payload ===  LOAN_BOARD_GROUP_BY.STATUS) {
+                return { ...newStatus, sortBy:  LOAN_BOARD_SORT_BY.CREATED_AT };
             }
             return {
                 ...newStatus,
-                sortBy: SORT_BY.STATUS,
-                sortOrder: SORT_ORDER.DESC,
+                sortBy:  LOAN_BOARD_SORT_BY.STATUS,
+                sortOrder:  LOAN_BOARD_SORT_ORDER.DESC,
             };
         }
 
-        case ACTIONS.SET_LOAN_ID:
+        case LOAN_BOARD_ACTIONS.SET_LOAN_ID:
             return { ...state, loanId: payload };
 
-        case ACTIONS.RESET: {
+        case LOAN_BOARD_ACTIONS.RESET: {
             if (payload) {
                 return payload;
             }

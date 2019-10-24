@@ -20,8 +20,8 @@ const LoanBoard = ({
   lenders,
   refetchLoans,
   currentUser,
-  activateSync,
-  setActivateSync,
+  activateLoanBoardSync,
+  setActivateLoanBoardSync,
   options
 }: LoanBoardProps) => (
   <>
@@ -34,8 +34,8 @@ const LoanBoard = ({
         promotions={promotions}
         lenders={lenders}
         refetchLoans={refetchLoans}
-        activateSync={activateSync}
-        setActivateSync={setActivateSync}
+        activateLoanBoardSync={activateLoanBoardSync}
+        setActivateLoanBoardSync={setActivateLoanBoardSync}
       />
       <Board
         data={data}

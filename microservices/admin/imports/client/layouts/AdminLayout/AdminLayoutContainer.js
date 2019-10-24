@@ -28,7 +28,7 @@ export default compose(
   }),
   injectCurrentUser,
   withState('openSearch', 'setOpenSearch', false),
-  withState('activateSync', 'setActivateSync', false),
+  withState('activateLoanBoardSync', 'setActivateLoanBoardSync', false),
   withReducer('loanBoardOptions', 'loanBoardDispatch', filterReducer, getInitialOptions),
   withRouter, // history is not properly reactive if we don't add this HOC here, but depend on the props being passed from above
 );

@@ -6,7 +6,8 @@ import messagesFR from '../../../lang/fr.json';
 import AdminLayout from '../../client/layouts/AdminLayout';
 import AdminStore from '../../client/components/AdminStore';
 import ADMIN_ROUTES from './adminRoutes';
-const Admin = (props) => (
+
+const AdminRoutes = (props) => (
   <Switch>
     {Object.keys(ADMIN_ROUTES).map(route => (
       <Route {...ADMIN_ROUTES[route]} {...props} key={route} />
@@ -23,7 +24,7 @@ const AdminRouter = () => (
     routes={ADMIN_ROUTES}
   >
     <AdminLayout type="admin">
-      <Admin/>
+      <AdminRoutes />
     </AdminLayout>
   </BaseRouter>
 );
