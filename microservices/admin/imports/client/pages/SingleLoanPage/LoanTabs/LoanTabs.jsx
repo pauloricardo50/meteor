@@ -116,13 +116,14 @@ const LoanTabs = ({ tabs, ...props }) => {
   const formattedTabs = formatTabs(tabs || getTabs(props), props);
 
   return (
-    <Tabs
-      tabs={formattedTabs}
-      routerParamName={enableTabRouting ? 'tabId' : undefined}
-      variant="scrollable"
-      scrollButtons="auto"
-      disableTouchRipple
-    />
+      <Tabs
+        tabs={formattedTabs}
+        routerParamName={enableTabRouting ? 'tabId' : undefined}
+        variant="scrollable"
+        scrollButtons="auto"
+        disableTouchRipple
+        className="single-loan-page-tabs"
+      />
   );
 };
 
