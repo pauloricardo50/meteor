@@ -539,6 +539,7 @@ export const adminOrganisation = () => ({
   lenders: adminLender(),
   adminNote: 1,
   documents: 1,
+  referredCustomers: { _id: 1 },
 });
 
 // //

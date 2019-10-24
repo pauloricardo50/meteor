@@ -17,6 +17,7 @@ import {
   CONTACTS_COLLECTION,
   LOAN_CATEGORIES,
   PROPERTY_CATEGORY,
+  ORGANISATION_FEATURES,
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
@@ -24,6 +25,44 @@ import PremiumBadge from '../../PremiumBadge';
 import T, { Money, IntlDate } from '../../Translation';
 import CollectionIconLink from '../CollectionIconLink';
 import TooltipArray from '../../TooltipArray';
+import FullDate from '../../dateComponents/FullDate';
+
+const Information = ({
+  label,
+  value,
+  shouldDisplay = true,
+  isEmpty,
+  emptyText = '-',
+}) => {
+  if (!shouldDisplay) {
+    return null;
+  }
+
+  return (
+    <div className="flex center-align wrap">
+      {label && (
+        <>
+          <b>
+            {label}
+:
+          </b>
+          &nbsp;
+        </>
+      )}
+      {isEmpty ? <span className="secondary">{emptyText}</span> : value}
+    </div>
+  );
+};
+
+const LinkList = ({ docs, collection }) => (
+  <TooltipArray
+    items={docs.map(doc => (
+      <CollectionIconLink key={doc._id} relatedDoc={{ ...doc, collection }} />
+    ))}
+    displayLimit={2}
+    className="flex wrap"
+  />
+);
 
 export const titles = {
   [LOANS_COLLECTION]: ({ name, status, category }) => (
@@ -47,7 +86,12 @@ export const titles = {
     </span>
   ),
   [BORROWERS_COLLECTION]: ({ name }) => (
-    <span>{name || 'Emprunteur sans nom'}</span>
+    <span>
+      {name || 'Emprunteur sans nom'}
+      {' '}
+&nbsp;
+      <span>Emprunteur</span>
+    </span>
   ),
   [PROPERTIES_COLLECTION]: ({ address1, name, status, category }) => (
     <span>
@@ -101,63 +145,71 @@ export const titles = {
 
 export const components = {
   [LOANS_COLLECTION]: ({
-    user,
+    user = {},
     structures = [],
     selectedStructure,
     anonymous,
     children,
     borrowers = [],
+    promotions = [],
   }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
+    const [promotion] = promotions;
 
     return (
       <div>
         {children}
-        {borrowers.length > 0 && (
-          <div>
-            <b>Emprunteurs</b>
-            <ul style={{ margin: 0 }}>
-              {borrowers.map(({ _id, name }, index) => (
-                <li key={_id}>{name || `Emprunteur ${index + 1}`}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div>
-          <b>Hypothèque:</b>
-          &nbsp;
-          {structure ? <Money value={structure.wantedLoan} /> : '-'}
-        </div>
-        {anonymous && <div>Anonyme</div>}
 
-        <div className="flex center-align">
-          <b>Compte:</b>
-          &nbsp;
-          {user ? (
+        <Information
+          label="Promotion"
+          value={(
+            <CollectionIconLink
+              relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
+            />
+          )}
+          shouldDisplay={!!promotion}
+        />
+
+        <Information
+          label="Emprunteurs"
+          value={
+            <LinkList docs={borrowers} collection={BORROWERS_COLLECTION} />
+          }
+          isEmpty={borrowers.length === 0}
+        />
+
+        <Information
+          label="Hypothèque"
+          value={<Money value={structure && structure.wantedLoan} />}
+          isEmpty={!structure}
+        />
+
+        <Information label="Anonyme" value="Yep!" shouldDisplay={!!anonymous} />
+
+        <Information
+          className="flex center-align"
+          label="Compte"
+          value={(
             <CollectionIconLink
               relatedDoc={{ ...user, collection: USERS_COLLECTION }}
             />
-          ) : (
-            '-'
           )}
-        </div>
+          isEmpty={!user || !user._id}
+          emptyText="Sans compte"
+        />
 
-        <div className="flex center-align">
-          <b>Conseiller:</b>
-          &nbsp;
-          <span>
-            {user && user.assignedEmployee ? (
-              <CollectionIconLink
-                relatedDoc={{
-                  ...user.assignedEmployee,
-                  collection: USERS_COLLECTION,
-                }}
-              />
-            ) : (
-              '-'
-            )}
-          </span>
-        </div>
+        <Information
+          label="Conseiller"
+          value={(
+            <CollectionIconLink
+              relatedDoc={{
+                ...user.assignedEmployee,
+                collection: USERS_COLLECTION,
+              }}
+            />
+          )}
+          isEmpty={!(user && user.assignedEmployee)}
+        />
       </div>
     );
   },
@@ -170,6 +222,7 @@ export const components = {
     referredByOrganisation = {},
     emails = [],
     loans = [],
+    organisations = [],
   }) => {
     const emailVerified = !!emails.length && emails[0].verified;
 
@@ -214,65 +267,62 @@ export const components = {
             ))}
           />
         </div>
-        <div className="flex center-align">
-          <b>Conseiller:</b>
-          &nbsp;
-          <span>
-            {assignedEmployee ? (
-              <CollectionIconLink
-                relatedDoc={{
-                  ...assignedEmployee,
-                  collection: USERS_COLLECTION,
-                }}
-              />
-            ) : (
-              '-'
-            )}
-          </span>
-        </div>
 
-        <div className="flex center-align">
-          <b>Référé par compte:</b>
-          &nbsp;
-          {referredByUser.name ? (
+        <Information
+          label="Organisations"
+          value={(
+            <LinkList
+              docs={organisations}
+              collection={ORGANISATIONS_COLLECTION}
+            />
+          )}
+          shouldDisplay={organisations.length > 0}
+        />
+
+        <Information
+          label="Conseiller"
+          value={(
+            <CollectionIconLink
+              relatedDoc={{
+                ...assignedEmployee,
+                collection: USERS_COLLECTION,
+              }}
+            />
+          )}
+          isEmpty={!assignedEmployee}
+        />
+
+        <Information
+          label="Référé par compte"
+          value={(
             <CollectionIconLink
               relatedDoc={{
                 ...referredByUser,
                 collection: USERS_COLLECTION,
               }}
             />
-          ) : (
-            '-'
           )}
-        </div>
+          isEmpty={!referredByUser.name}
+        />
 
-        <div className="flex center-align">
-          <b>Référé par organisation:</b>
-          &nbsp;
-          {referredByOrganisation.name ? (
+        <Information
+          label="Référé par organisation"
+          value={(
             <CollectionIconLink
               relatedDoc={{
                 ...referredByOrganisation,
                 collection: ORGANISATIONS_COLLECTION,
               }}
             />
-          ) : (
-            '-'
           )}
-        </div>
+          isEmpty={!referredByOrganisation.name}
+        />
 
-        <div className="flex center-align">
-          <b>Dossiers:</b>
-          {loans.map(loan => (
-            <CollectionIconLink
-              key={loan._id}
-              relatedDoc={{
-                ...loan,
-                collection: LOANS_COLLECTION,
-              }}
-            />
-          ))}
-        </div>
+        <Information
+          label="Dossiers"
+          value={<LinkList docs={loans} collection={LOANS_COLLECTION} />}
+          shouldDisplay={loans.length > 0}
+        />
       </div>
     );
   },
@@ -284,32 +334,24 @@ export const components = {
           relatedDoc={{ ...user, collection: USERS_COLLECTION }}
         />
       )}
-      <div className="flex center-align">
-        <b>Conseiller:</b>
-        &nbsp;
-        {user && user.assignedEmployee ? (
+      <Information
+        label="Conseiller"
+        value={(
           <CollectionIconLink
             relatedDoc={{
               ...user.assignedEmployee,
               collection: USERS_COLLECTION,
             }}
           />
-        ) : (
-          '-'
         )}
-      </div>
-      <div className="flex center-align">
-        <b>Dossiers:</b>
-        {loans.map(loan => (
-          <CollectionIconLink
-            key={loan._id}
-            relatedDoc={{
-              ...loan,
-              collection: LOANS_COLLECTION,
-            }}
-          />
-        ))}
-      </div>
+        isEmpty={!(user && user.assignedEmployee)}
+      />
+
+      <Information
+        label="Dossiers"
+        value={<LinkList docs={loans} collection={LOANS_COLLECTION} />}
+        isEmpty={loans.length === 0}
+      />
     </div>
   ),
   [PROPERTIES_COLLECTION]: ({
@@ -330,9 +372,9 @@ export const components = {
       <div>
         {children}
         <div className="flex-col">
-          {isPro && uniqueOrganisation && (
-            <>
-              <b>Organisation</b>
+          <Information
+            label="Organisation"
+            value={(
               <CollectionIconLink
                 key={allOrgs[0]._id}
                 relatedDoc={{
@@ -341,46 +383,43 @@ export const components = {
                   collection: ORGANISATIONS_COLLECTION,
                 }}
               />
-            </>
-          )}
-          {isPro && (
-            <>
-              <b>Dossiers</b>
-              <TooltipArray
-                title="Dossiers"
-                items={loans.map(loan => (
-                  <CollectionIconLink
-                    key={loan._id}
-                    relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                  />
-                ))}
-                displayLimit={2}
-              />
-            </>
-          )}
-          <b>Prix d'achat</b>
-          <Money value={totalValue} />
+            )}
+            shouldDisplay={isPro && uniqueOrganisation}
+          />
+
+          <Information
+            label="Dossiers"
+            value={<LinkList docs={loans} collection={LOANS_COLLECTION} />}
+            isEmpty={loans.length === 0}
+            shouldDisplay={isPro}
+          />
+
+          <Information
+            label="Prix d'achat"
+            value={<Money value={totalValue} />}
+          />
         </div>
       </div>
     );
   },
-  [OFFERS_COLLECTION]: ({ maxAmount, feedback, children }) => (
+  [OFFERS_COLLECTION]: ({ maxAmount, feedback, children, createdAt }) => (
     <div>
       {children}
-      <Money value={maxAmount} />
-      <div>
-        <b>Feedback:</b>
-        &nbsp;
-        {feedback && feedback.date ? (
+      <Information label="Date" value={<FullDate date={createdAt} />} />
+
+      <Information label="Prêt maximal" value={<Money value={maxAmount} />} />
+
+      <Information
+        label="Feedback"
+        value={(
           <span className="success">
             Donné
             {' '}
             <IntlDate type="relative" value={feedback.date} />
           </span>
-        ) : (
-          <span>Non</span>
         )}
-      </div>
+        isEmpty={!(feedback && feedback.date)}
+      />
     </div>
   ),
   [PROMOTIONS_COLLECTION]: ({
@@ -393,62 +432,75 @@ export const components = {
   }) => (
     <div>
       {children}
-      {lenderOrganisation && (
-        <div className="flex center-align">
-          <b>Prêteur:</b>
-          &nbsp;
-          <b>
-            <CollectionIconLink
-              relatedDoc={{
-                ...lenderOrganisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          </b>
-        </div>
-      )}
-      <div>
-        <b>Lots dispo:</b>
-        {' '}
-        {availablePromotionLots.length}
-      </div>
-      <div>
-        <b>Réservés:</b>
-        {' '}
-        {bookedPromotionLots.length}
-      </div>
-      <div>
-        <b>Vendus:</b>
-        {' '}
-        {soldPromotionLots.length}
-      </div>
-      {signingDate && (
-        <div>
-          <b>
-            <T id="Forms.signingDate" />
-            {':'}
-          </b>
-          {' '}
-          {moment(signingDate).format('DD.MM.YYYY')}
-        </div>
-      )}
+      <Information
+        label="Prêteur"
+        value={(
+          <CollectionIconLink
+            relatedDoc={{
+              ...lenderOrganisation,
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+          />
+        )}
+        isEmpty={!lenderOrganisation}
+        emptyText="Pas choisi"
+      />
+
+      <Information label="Lots dispo" value={availablePromotionLots.length} />
+      <Information label="Lots réservés" value={bookedPromotionLots.length} />
+      <Information label="Lots vendus" value={soldPromotionLots.length} />
+
+      <Information
+        label={<T id="Forms.signingDate" />}
+        value={moment(signingDate).format('DD.MM.YYYY')}
+        isEmpty={!signingDate}
+      />
     </div>
   ),
-  [ORGANISATIONS_COLLECTION]: ({ logo, offerCount, children }) => (
+  [ORGANISATIONS_COLLECTION]: ({
+    logo,
+    offerCount,
+    children,
+    features = [],
+    users = [],
+    referredCustomers = [],
+    contacts = [],
+  }) => (
     <div>
       {children}
-      {logo && (
-        <div style={{ width: 100, height: 50 }}>
-          <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
-        </div>
-      )}
-      {offerCount > 0 && (
-        <div>
-          <b>Offres:</b>
-          {' '}
-          {offerCount}
-        </div>
-      )}
+
+      <Information
+        value={(
+          <div style={{ width: 100, height: 50 }}>
+            <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
+          </div>
+        )}
+        shouldDisplay={!!logo}
+      />
+
+      <Information
+        label="Comptes"
+        value={<LinkList docs={users} collection={USERS_COLLECTION} />}
+        shouldDisplay={users.length > 0}
+      />
+
+      <Information
+        label="Contacts"
+        value={<LinkList docs={contacts} collection={CONTACTS_COLLECTION} />}
+        shouldDisplay={contacts.length > 0}
+      />
+
+      <Information
+        label="Clients référés"
+        value={referredCustomers.length}
+        shouldDisplay={features.includes(ORGANISATION_FEATURES.PRO)}
+      />
+
+      <Information
+        label="Offres"
+        value={offerCount}
+        shouldDisplay={features.includes(ORGANISATION_FEATURES.LENDER)}
+      />
     </div>
   ),
   [CONTACTS_COLLECTION]: ({
@@ -459,38 +511,57 @@ export const components = {
   }) => (
     <div>
       {children}
-      {organisations.length > 0 && (
-        <CollectionIconLink
-          relatedDoc={{
-            ...organisations[0],
-            collection: ORGANISATIONS_COLLECTION,
-          }}
-        />
-      )}
-      <div>{organisations.length > 0 && organisations[0].$metadata.title}</div>
-      <div>
-        <a
-          className="color"
-          href={`mailto:${email}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {email}
-        </a>
-      </div>
-      <div>
-        <TooltipArray
-          title="Numéros de téléphone"
-          items={phoneNumbers.map(number => (
-            <a key={number} href={`tel:${number}`}>
-              <span>
-                {number}
-                &nbsp;
-              </span>
-            </a>
-          ))}
-        />
-      </div>
+
+      <Information
+        label="Organisation"
+        value={(
+          <CollectionIconLink
+            relatedDoc={{
+              ...organisations[0],
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+          />
+        )}
+        isEmpty={organisations.length === 0}
+      />
+
+      <Information
+        label="Rôle"
+        value={organisations[0] && organisations[0].$metadata.title}
+        shouldDisplay={organisations.length > 0}
+      />
+
+      <Information
+        label="Email"
+        value={(
+          <a
+            className="color"
+            href={`mailto:${email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {email}
+          </a>
+        )}
+      />
+
+      <Information
+        label="Tél"
+        value={(
+          <TooltipArray
+            title="Numéros de téléphone"
+            items={phoneNumbers.map(number => (
+              <a key={number} href={`tel:${number}`}>
+                <span>
+                  {number}
+                  &nbsp;
+                </span>
+              </a>
+            ))}
+          />
+        )}
+        isEmpty={phoneNumbers.length === 0}
+      />
     </div>
   ),
 };
