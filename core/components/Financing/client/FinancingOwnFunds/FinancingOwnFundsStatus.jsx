@@ -1,0 +1,64 @@
+// @flow
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown';
+import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import colors from 'core/config/colors';
+import { getLabel } from './financingOwnFundsHelpers';
+import T, { Money } from '../../../Translation';
+import StatusIcon from '../../../StatusIcon';
+import { SUCCESS, ERROR } from '../../../../api/constants';
+
+type FinancingOwnFundsStatusProps = {
+  value: Number,
+};
+
+const FinancingOwnFundsStatus = ({ value }: FinancingOwnFundsStatusProps) => {
+  const label = getLabel(value);
+  const tooltip = (
+    <T
+      id={`${label}.tooltip`}
+      values={{ value: <Money value={Math.abs(value)} /> }}
+    />
+  );
+
+  if (label.endsWith('valid')) {
+    return (
+      <StatusIcon
+        status={label.endsWith('valid') ? SUCCESS : ERROR}
+        style={{ marginLeft: 8 }}
+        tooltip={tooltip}
+      />
+    );
+  }
+
+  return (
+    <Tooltip title={tooltip} placement="right" enterTouchDelay={0}>
+      <span className="fa-layers fa-fw own-funds-icon">
+        <FontAwesomeIcon
+          icon={faCircle}
+          transform="grow-5"
+          color={colors.error}
+        />
+        <FontAwesomeIcon
+          icon={faDollarSign}
+          transform="shrink-4 left-3"
+          color="white"
+        />
+        <FontAwesomeIcon
+          icon={label.endsWith('high') ? faArrowDown : faArrowUp}
+          transform={`shrink-8 right-4 ${
+            label.endsWith('high') ? 'down-2' : 'up-2'
+          }`}
+          color="white"
+        />
+      </span>
+    </Tooltip>
+  );
+};
+
+export default FinancingOwnFundsStatus;
