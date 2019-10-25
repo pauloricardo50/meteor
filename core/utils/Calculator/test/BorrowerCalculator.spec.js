@@ -561,7 +561,6 @@ describe('BorrowerCalculator', () => {
         borrowers: [
           {
             _id: 'aBcNvYnq34rnb29nh',
-            adminValidation: {},
             birthDate: '1992-04-14',
             bonusExists: false,
             childrenCount: 0,

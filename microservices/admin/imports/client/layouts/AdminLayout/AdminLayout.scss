@@ -10,7 +10,7 @@
 
   .main {
     display: flex;
-    overflow: auto;
+    overflow: unset;
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;

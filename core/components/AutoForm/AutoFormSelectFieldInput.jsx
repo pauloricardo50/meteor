@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import T from 'core/components/Translation';
-import Select from 'core/components/Select';
+import T from '../Translation';
+import Select from '../Select';
 import ValidIcon from './ValidIcon';
-import FormValidator from './FormValidator';
 
 export default class AutoFormSelectFieldInput extends Component {
   constructor(props) {
@@ -64,7 +63,6 @@ export default class AutoFormSelectFieldInput extends Component {
         id,
         required,
       },
-      noValidator,
       admin,
     } = this.props;
     const { value, saving, errorText } = this.state;
@@ -89,7 +87,6 @@ export default class AutoFormSelectFieldInput extends Component {
           required={required}
           hide={admin}
         />
-        {!noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }

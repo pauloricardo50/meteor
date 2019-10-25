@@ -84,7 +84,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
   case BORROWERS_COLLECTION:
     return {
       link: `/borrowers/${docId}`,
-      text: data.name,
+      text: data.name || 'Emprunteur sans nom',
       hasPopup: true,
     };
   case PROPERTIES_COLLECTION:

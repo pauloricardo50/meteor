@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import T from 'core/components/Translation';
-import RadioButtons from 'core/components/RadioButtons';
-import FormValidator from './FormValidator';
+import T from '../Translation';
+import RadioButtons from '../RadioButtons';
 import ValidIcon from './ValidIcon';
 
 export default class AutoFormRadioInput extends Component {
@@ -99,7 +98,6 @@ export default class AutoFormRadioInput extends Component {
           required={required}
           hide={admin}
         />
-        <FormValidator {...this.props} />
       </div>
     );
   }
