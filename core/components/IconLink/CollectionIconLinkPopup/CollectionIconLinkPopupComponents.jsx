@@ -5,7 +5,8 @@ import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamat
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 
-import colors from 'core/config/colors';
+import colors from '../../../config/colors';
+import Calculator from '../../../utils/Calculator';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
@@ -85,12 +86,17 @@ export const titles = {
       <Roles className="secondary" roles={roles} />
     </span>
   ),
-  [BORROWERS_COLLECTION]: ({ name }) => (
+  [BORROWERS_COLLECTION]: ({ name, age }) => (
     <span>
       {name || 'Emprunteur sans nom'}
-      {' '}
-&nbsp;
-      <span>Emprunteur</span>
+      &nbsp;
+      {age && (
+        <>
+          <span>{`- ${age} ans`}</span>
+          &nbsp;
+        </>
+      )}
+      <span className="secondary">Emprunteur</span>
     </span>
   ),
   [PROPERTIES_COLLECTION]: ({ address1, name, status, category }) => (
@@ -326,14 +332,38 @@ export const components = {
       </div>
     );
   },
-  [BORROWERS_COLLECTION]: ({ user, loans = [], children }) => (
+  [BORROWERS_COLLECTION]: ({
+    user,
+    loans = [],
+    children,
+    salary = 0,
+    bankFortune = 0,
+  }) => (
     <div>
       {children}
-      {user && (
-        <CollectionIconLink
-          relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-        />
-      )}
+      <Information
+        label="Salaire brut"
+        value={<Money value={salary} />}
+        isEmpty={salary === 0}
+      />
+
+      <Information
+        label="Fortune bancaire"
+        value={<Money value={bankFortune} />}
+        isEmpty={bankFortune === 0}
+      />
+
+      <Information
+        label="Compte"
+        value={(
+          <CollectionIconLink
+            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+          />
+        )}
+        isEmpty={!user}
+        emptyText="Sans compte"
+      />
+
       <Information
         label="Conseiller"
         value={(
@@ -497,7 +527,7 @@ export const components = {
       />
 
       <Information
-        label="Offres"
+        label="Offres faites"
         value={offerCount}
         shouldDisplay={features.includes(ORGANISATION_FEATURES.LENDER)}
       />

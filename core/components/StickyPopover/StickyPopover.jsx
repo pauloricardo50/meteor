@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Overlay from 'react-bootstrap/lib/Overlay';
-import Popover from 'react-bootstrap/lib/Popover';
+// import Overlay from 'react-bootstrap/lib/Overlay';
+// import Popover from 'react-bootstrap/lib/Popover';
+import Popper from '@material-ui/core/Popper';
+import Paper from '@material-ui/core/Paper';
 
 export default class PopoverStickOnHover extends React.Component {
   constructor(props) {
@@ -67,22 +69,19 @@ export default class PopoverStickOnHover extends React.Component {
     return (
       <>
         {enhancedChildren}
-        <Overlay
-          show={show}
+        <Popper
+          open={show}
+          anchorEl={this.ref.current}
           placement={placement}
-          target={this.ref.current}
-          transition={null}
-          animation={null}
+          onMouseEnter={this.handleMousePopoverEnter}
+          onMouseLeave={this.handleMouseLeave}
+          onClick={e => e.stopPropagation()}
         >
-          <Popover
-            onMouseEnter={this.handleMousePopoverEnter}
-            onMouseLeave={this.handleMouseLeave}
-            title={title}
-            onClick={e => e.stopPropagation()}
-          >
+          <Paper style={{ padding: 8 }} elevation={15}>
+            {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
             {component}
-          </Popover>
-        </Overlay>
+          </Paper>
+        </Popper>
       </>
     );
   }
@@ -92,7 +91,7 @@ PopoverStickOnHover.defaultProps = {
   delay: 0,
   exitDelay: 100,
   onMouseEnter: undefined,
-  placement: 'right',
+  placement: 'right-start',
   title: null,
 };
 

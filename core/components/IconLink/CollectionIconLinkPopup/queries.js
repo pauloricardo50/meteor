@@ -67,8 +67,11 @@ export default {
       {
         _id,
         $body: {
+          age: 1,
+          bankFortune: 1,
           loans: { name: 1 },
           name: 1,
+          salary: 1,
           user: { name: 1, assignedEmployee: { name: 1 } },
         },
       },
