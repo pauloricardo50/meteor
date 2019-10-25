@@ -11,12 +11,15 @@ import FinancingOwnFundsStatus from './FinancingOwnFundsStatus';
 
 type RequiredOwnFundsBodyProps = {};
 
-const RequiredOwnFundsBody = ({
-  value,
-  suggestStructure,
-  disableForms,
-  loan = {},
-}: RequiredOwnFundsBodyProps) => {
+const RequiredOwnFundsBody = (props: RequiredOwnFundsBodyProps) => {
+  const {
+    value,
+    suggestStructure,
+    disableForms,
+    loan = {},
+    structureId,
+  } = props;
+
   const label = getLabel(value);
   const { borrowers = [] } = loan;
   return (
@@ -28,7 +31,7 @@ const RequiredOwnFundsBody = ({
         <div className="value">
           <span className="chf">CHF</span>
           {toMoney(Math.abs(value))}
-          <FinancingOwnFundsStatus value={value} />
+          <FinancingOwnFundsStatus {...props} />
         </div>
       </div>
       {!disableForms && !!borrowers.length && (

@@ -11,13 +11,21 @@ import colors from 'core/config/colors';
 import { getLabel } from './financingOwnFundsHelpers';
 import T, { Money } from '../../../Translation';
 import StatusIcon from '../../../StatusIcon';
-import { SUCCESS, ERROR } from '../../../../api/constants';
+import { SUCCESS, WARNING } from '../../../../api/constants';
+import { getBorrowRatioStatus } from '../FinancingResult/financingResultHelpers';
 
 type FinancingOwnFundsStatusProps = {
   value: Number,
 };
 
-const FinancingOwnFundsStatus = ({ value }: FinancingOwnFundsStatusProps) => {
+const FinancingOwnFundsStatus = ({
+  value,
+  ...props
+}: FinancingOwnFundsStatusProps) => {
+  const {
+    status: borrowRatioStatus,
+    tooltip: borrowRatioTooltip,
+  } = getBorrowRatioStatus(props);
   const label = getLabel(value);
   const tooltip = (
     <T
@@ -27,11 +35,18 @@ const FinancingOwnFundsStatus = ({ value }: FinancingOwnFundsStatusProps) => {
   );
 
   if (label.endsWith('valid')) {
+    const isBorrowRatioStatusWarning = borrowRatioStatus === WARNING;
     return (
       <StatusIcon
-        status={label.endsWith('valid') ? SUCCESS : ERROR}
+        status={isBorrowRatioStatusWarning ? borrowRatioStatus : SUCCESS}
+        tooltip={
+          isBorrowRatioStatusWarning ? (
+            <T id={borrowRatioTooltip.id} values={borrowRatioTooltip.values} />
+          ) : (
+            tooltip
+          )
+        }
         style={{ marginLeft: 8 }}
-        tooltip={tooltip}
       />
     );
   }

@@ -29,6 +29,7 @@ const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
             />
             <FinancingOwnFundsStatus
               value={Calculator.getMissingOwnFunds(props)}
+              {...props}
             />
           </div>
         ),
