@@ -1,8 +1,6 @@
 import {
   compose,
-  withReducer,
   mapProps,
-  withState,
   withProps,
 } from 'recompose';
 
@@ -15,8 +13,6 @@ import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
 import { userCache } from 'core/api/loans/links';
 import {
   groupLoans,
-  filterReducer,
-  getInitialOptions,
 } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
@@ -48,8 +44,6 @@ const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
 export default compose(
-  withState('activateSync', 'setActivateSync', false),
-  withReducer('options', 'dispatch', filterReducer, getInitialOptions),
   addLiveSync,
   withLiveSync,
   withSmartQuery({
