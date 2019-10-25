@@ -95,8 +95,7 @@ export default class DialogSimple extends Component {
     };
 
     return (
-      // Prevent triggering background clicks
-      <span style={rootStyle} onClick={e => e.stopPropagation()}>
+      <>
         {renderTrigger ? (
           renderTrigger({ handleOpen: this.handleOpen })
         ) : (
@@ -125,7 +124,7 @@ export default class DialogSimple extends Component {
               ? children(childProps)
               : children}
         </Dialog>
-      </span>
+      </>
     );
   }
 }

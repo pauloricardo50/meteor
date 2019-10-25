@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Overlay from 'react-bootstrap/lib/Overlay';
-// import Popover from 'react-bootstrap/lib/Popover';
 import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
 

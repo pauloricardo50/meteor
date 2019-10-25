@@ -37,7 +37,7 @@ const LenderPicker = ({
     label="Choisir prêteurs"
     closeOnly
     primary
-    rootStyle={{ marginRight: 8 }}
+    buttonProps={{ style: { marginRight: 8 } }}
     onClose={() => filterOrganisations({ tags: [] })}
   >
     <div className="lender-picker-dialog">
