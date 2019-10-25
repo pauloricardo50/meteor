@@ -19,7 +19,6 @@ const renderInput = (inputProps) => {
     placeholder,
     ...other
   } = inputProps;
-
   return (
     <TextInput
       id={`${id}autocomplete`}
