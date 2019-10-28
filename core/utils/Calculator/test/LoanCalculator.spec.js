@@ -1058,6 +1058,21 @@ describe('LoanCalculator', () => {
                   },
                   structureId: 'struct1',
                 }).status).to.equal('WARNING');
+
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 920,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 950 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('WARNING');
               });
 
               it('returns ERROR when borrowRatio is greather than maxBorrowRatio', () => {

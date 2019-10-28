@@ -614,7 +614,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
         const status = borrowRatio <= defaultMaxBorrowRatio
           ? SUCCESS
-          : borrowRatio <= Math.min(maxBorrowRatio, maxBorrowRatioWithPledge)
+          : borrowRatio <= Math.max(maxBorrowRatio, maxBorrowRatioWithPledge)
             ? WARNING
             : ERROR;
 
@@ -625,7 +625,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
             loan,
             structureId,
             borrowRatio,
-            maxBorrowRatio: Math.min(maxBorrowRatio, maxBorrowRatioWithPledge),
+            maxBorrowRatio: Math.max(maxBorrowRatio, maxBorrowRatioWithPledge),
             neededPledgedOwnFunds,
           }),
         };
