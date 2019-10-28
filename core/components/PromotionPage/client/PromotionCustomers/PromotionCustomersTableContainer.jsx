@@ -51,14 +51,12 @@ const getColumns = ({
     promotions,
     createdAt,
   } = loan;
-  console.log('promotionUsers:', promotionUsers);
 
   const promotion = promotions.find(({ _id }) => _id === promotionId);
 
   const {
     $metadata: { invitedBy },
   } = promotion;
-  console.log('invitedBy:', invitedBy);
 
   const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
