@@ -90,7 +90,7 @@ export const titles = {
     <span>
       {name || 'Emprunteur sans nom'}
       &nbsp;
-      {age && (
+      {age > 0 && (
         <>
           <span>{`- ${age} ans`}</span>
           &nbsp;
