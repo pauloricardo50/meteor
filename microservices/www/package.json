@@ -48,7 +48,6 @@
     "open-graph-scraper": "^3.6.1",
     "query-string": "5.1.1",
     "react": "^16.8.6",
-    "react-bootstrap": "0.32.4",
     "react-countup": "^4.2.0",
     "react-dom": "^16.8.6",
     "react-flip-move": "^3.0.3",
