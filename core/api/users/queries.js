@@ -31,7 +31,7 @@ export const currentUser = Users.createQuery(
 
 export const proReferredByUsers = Users.createQuery(
   USER_QUERIES.PRO_REFERRED_BY,
-  () => {},
+  proUserFragment(),
 );
 
 export const proUser = Users.createQuery(

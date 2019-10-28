@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { ROLES } from '../../constants';
 import SecurityService from '../../security';
+import UserService from './UserService';
 import {
   adminUsers,
   appUser,
@@ -14,15 +15,14 @@ import {
   userSearch,
   proUser,
 } from '../queries';
-import { proReferredByUsersResolver } from './resolvers';
 
 exposeQuery({
   query: adminUsers,
   overrides: {
-    embody: (body, params) => {
+    embody: (body) => {
       body.$filter = ({
         filters,
-        params: { roles, _id, admins, assignedEmployeeId, _userId },
+        params: { roles, _id, admins, assignedEmployeeId },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -120,13 +120,36 @@ exposeQuery({
         SecurityService.checkUserIsAdmin(userId);
       }
     },
+    embody: (body) => {
+      body.$filter = ({
+        filters,
+        params: { userId, organisationId: providedOrganisationId },
+      }) => {
+        let organisationId;
+        if (!providedOrganisationId) {
+          const { organisations = [] } = UserService.fetchOne({
+            $filters: { _id: userId },
+            organisations: { _id: 1 },
+          });
+          organisationId = !!organisations.length && organisations[0]._id;
+        } else {
+          organisationId = providedOrganisationId;
+        }
+
+        const or = [
+          userId && { referredByUserLink: userId },
+          organisationId && { referredByOrganisationLink: organisationId },
+        ].filter(x => x);
+
+        filters.$or = or;
+      };
+    },
     validateParams: {
       userId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
       ownReferredUsers: Match.Maybe(Boolean),
     },
   },
-  resolver: proReferredByUsersResolver,
 });
 
 exposeQuery({ query: userEmails, options: { allowFilterById: true } });
@@ -144,7 +167,6 @@ exposeQuery({
 exposeQuery({
   query: proUser,
   overrides: {
-    firewall(userId, params) {},
     embody: (body) => {
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
