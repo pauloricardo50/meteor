@@ -12,7 +12,9 @@ import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 import { ACTIVITY_TYPES } from '../../activityConstants';
 import ActivityService from '../ActivityService';
 
-describe('sendEmailListener', () => {
+describe('sendEmailListener', function () {
+  this.timeout(10000);
+
   beforeEach(() => {
     resetDatabase();
     generator({
