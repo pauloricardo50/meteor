@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import moment from 'moment';
@@ -21,6 +22,12 @@ class TaskService extends CollectionService {
     let assignee = assigneeLink._id;
     if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
+    }
+
+    const { isPrivate } = rest;
+
+    if (docId && isPrivate) {
+      throw new Meteor.Error('Uniquement les tâches orphelines peuvent être privées');
     }
 
     const taskId = Tasks.insert({

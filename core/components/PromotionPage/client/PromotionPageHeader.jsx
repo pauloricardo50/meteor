@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import ImageCarrousel from 'core/components/ImageCarrousel/ImageCarrousel';
+import { LightTheme } from 'core/components/Themes';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionMetadataContext from './PromotionMetadata';
@@ -12,7 +13,6 @@ import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
-import LightTheme from './LightTheme';
 
 type PromotionPageHeaderProps = {};
 
