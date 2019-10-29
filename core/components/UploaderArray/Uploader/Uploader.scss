@@ -107,8 +107,14 @@
   }
 }
 
-.file-status-setter:hover {
-  cursor: pointer;
+.file-status-setter {
+  border-radius: 4px;
+  padding: 4px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $light-grey;
+  }
 }
 
 .file-error {

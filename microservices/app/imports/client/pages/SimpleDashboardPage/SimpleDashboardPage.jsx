@@ -7,8 +7,8 @@ import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import useMedia from 'core/hooks/useMedia';
 import createTheme from 'core/config/muiCustom';
+import { LightTheme } from 'core/components/Themes';
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
-import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueLightTheme';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
 import Properties from './Properties';
 import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
@@ -40,9 +40,9 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
                 <SimpleMaxPropertyValueSticky {...props} />
               </MuiThemeProvider>
             ) : (
-              <SimpleMaxPropertyValueLightTheme>
+              <LightTheme>
                 <SimpleMaxPropertyValue blue {...props} />
-              </SimpleMaxPropertyValueLightTheme>
+              </LightTheme>
             )}
             <Properties loan={loan} />
           </div>

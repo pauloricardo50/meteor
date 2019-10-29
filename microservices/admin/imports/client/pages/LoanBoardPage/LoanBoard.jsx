@@ -12,7 +12,6 @@ import { ACTIONS } from './loanBoardConstants';
 type LoanBoardProps = {};
 
 const LoanBoard = ({
-  options,
   dispatch,
   data,
   admins,
@@ -21,8 +20,9 @@ const LoanBoard = ({
   lenders,
   refetchLoans,
   currentUser,
-  activateSync,
-  setActivateSync,
+  activateLoanBoardSync,
+  setActivateLoanBoardSync,
+  options
 }: LoanBoardProps) => (
   <>
     <div className="loan-board">
@@ -34,8 +34,8 @@ const LoanBoard = ({
         promotions={promotions}
         lenders={lenders}
         refetchLoans={refetchLoans}
-        activateSync={activateSync}
-        setActivateSync={setActivateSync}
+        activateLoanBoardSync={activateLoanBoardSync}
+        setActivateLoanBoardSync={setActivateLoanBoardSync}
       />
       <Board
         data={data}

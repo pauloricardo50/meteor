@@ -81,6 +81,13 @@
   }
 }
 
+.single-loan-page-tabs > .core-tabs-top {
+  position: sticky;
+  top: 65px;
+  background: #fff;
+  z-index: 9;
+}
+
 .single-loan-page-tabs-label {
   display: flex;
   align-items: center;

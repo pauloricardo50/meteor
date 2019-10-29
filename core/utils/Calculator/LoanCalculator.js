@@ -662,4 +662,74 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         }),
       };
     }
+
+    getBorrowersValidFieldsRatio({ loan }) {
+      const { borrowers = [] } = loan;
+      return this.getValidBorrowerFieldsRatio({
+        borrowers,
+      });
+    }
+
+    getPropertyValidFieldsRatio({ loan }) {
+      const { hasProProperty, hasPromotion, properties = [] } = loan;
+
+      if (hasProProperty || hasPromotion || properties.length === 0) {
+        return null;
+      }
+
+      return this.getValidPropertyFieldsRatio({
+        loan,
+      });
+    }
+
+    getBorrowersValidDocumentsRatio({ loan }) {
+      const { borrowers = [] } = loan;
+
+      return this.getValidBorrowerDocumentsRatio({
+        loan,
+        borrowers,
+      });
+    }
+
+    getPropertyValidDocumentsRatio({ loan }) {
+      const { hasProProperty, hasPromotion, properties = [] } = loan;
+
+      if (hasProProperty || hasPromotion || properties.length === 0) {
+        return null;
+      }
+
+      return this.getValidPropertyDocumentsRatio({
+        loan,
+      });
+    }
+
+    getValidFieldsRatio({ loan }) {
+      return [
+        this.getBorrowersValidFieldsRatio({ loan }),
+        this.getPropertyValidFieldsRatio({ loan }),
+      ]
+        .filter(x => x)
+        .reduce(
+          (ratio, { valid, required }) => ({
+            valid: ratio.valid + valid,
+            required: ratio.required + required,
+          }),
+          { valid: 0, required: 0 },
+        );
+    }
+
+    getValidDocumentsRatio({ loan }) {
+      return [
+        this.getBorrowersValidDocumentsRatio({ loan }),
+        this.getPropertyValidDocumentsRatio({ loan }),
+      ]
+        .filter(x => x)
+        .reduce(
+          (ratio, { valid, required }) => ({
+            valid: ratio.valid + valid,
+            required: ratio.required + required,
+          }),
+          { valid: 0, required: 0 },
+        );
+    }
   };

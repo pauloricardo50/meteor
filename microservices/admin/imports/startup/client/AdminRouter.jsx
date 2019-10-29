@@ -7,6 +7,14 @@ import AdminLayout from '../../client/layouts/AdminLayout';
 import AdminStore from '../../client/components/AdminStore';
 import ADMIN_ROUTES from './adminRoutes';
 
+const AdminRoutes = (props) => (
+  <Switch>
+    {Object.keys(ADMIN_ROUTES).map(route => (
+      <Route {...ADMIN_ROUTES[route]} {...props} key={route} />
+    ))}
+  </Switch>
+)
+
 const AdminRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
@@ -16,11 +24,7 @@ const AdminRouter = () => (
     routes={ADMIN_ROUTES}
   >
     <AdminLayout type="admin">
-      <Switch>
-        {Object.keys(ADMIN_ROUTES).map(route => (
-          <Route {...ADMIN_ROUTES[route]} key={route} />
-        ))}
-      </Switch>
+      <AdminRoutes />
     </AdminLayout>
   </BaseRouter>
 );

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { getLocations } from 'core/utils/APIs';
 
 import ValidIcon from '../AutoForm/ValidIcon';
-import FormValidator from '../AutoForm/FormValidator';
 import AutoComplete from '../AutoComplete';
 
 const styles = {
@@ -149,7 +148,6 @@ class ZipAutoComplete extends Component {
           required={required}
           hide={admin}
         />
-        <FormValidator {...this.props} />
       </div>
     );
   }

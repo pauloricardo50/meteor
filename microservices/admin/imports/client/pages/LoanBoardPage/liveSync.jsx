@@ -17,16 +17,16 @@ export const addLiveSync = Comp =>
 
     componentWillReceiveProps({
       options: nextOptions,
-      activateSync: nextActivateSync,
+      activateLoanBoardSync: nextActivateSync,
     }) {
-      const { activateSync } = this.props;
+      const { activateLoanBoardSync } = this.props;
       if (nextActivateSync === true) {
         Meteor.call('liveSyncUpdate', JSON.stringify(nextOptions));
       }
 
-      if (activateSync && !nextActivateSync) {
+      if (activateLoanBoardSync && !nextActivateSync) {
         Meteor.call('liveSyncStop');
-      } else if (!activateSync && nextActivateSync === true) {
+      } else if (!activateLoanBoardSync && nextActivateSync === true) {
         Meteor.call('liveSyncStart');
         Meteor.call('liveSyncUpdate', JSON.stringify(nextOptions));
       }
@@ -44,7 +44,7 @@ export const addLiveSync = Comp =>
 export const withLiveSync = compose(
   withSmartQuery({
     query: liveSyncs,
-    params: ({ activateSync }) => ({ userId: activateSync }),
+    params: ({ activateLoanBoardSync }) => ({ userId: activateLoanBoardSync }),
     queryOptions: { reactive: true, single: true },
     dataName: 'liveSyncOptions',
     renderMissingDoc: false,
@@ -62,10 +62,10 @@ export const withLiveSync = compose(
       }
 
       componentWillReceiveProps({ liveSyncOptions: nextOptions }) {
-        const { activateSync, liveSyncOptions: options, dispatch } = this.props;
+        const { activateLoanBoardSync, liveSyncOptions: options, dispatch } = this.props;
         if (
-          activateSync
-          && activateSync !== true
+          activateLoanBoardSync
+          && activateLoanBoardSync !== true
           && nextOptions
           && (options && options.options) !== (nextOptions && nextOptions.options)
         ) {
@@ -86,13 +86,13 @@ export const LiveQueryMonitor = withSmartQuery({
   query: liveSyncs,
   queryOptions: { reactive: true },
   dataName: 'currentLiveSyncs',
-})(({ currentLiveSyncs, devAndAdmins, activateSync, setActivateSync }) => {
+})(({ currentLiveSyncs, devAndAdmins, activateLoanBoardSync, setActivateLoanBoardSync }) => {
   const currentUserId = Meteor.userId();
   return (
     <div>
       <h4
-        style={{ margin: 0, color: activateSync === true ? 'blue' : '' }}
-        onClick={() => setActivateSync(!activateSync)}
+        style={{ margin: 0, color: activateLoanBoardSync === true ? 'blue' : '' }}
+        onClick={() => setActivateLoanBoardSync(!activateLoanBoardSync)}
       >
         Synchroniser
       </h4>
@@ -100,11 +100,11 @@ export const LiveQueryMonitor = withSmartQuery({
         .filter(({ userId }) => userId !== currentUserId)
         .map(({ userId }) => {
           const admin = devAndAdmins.find(({ _id }) => _id === userId);
-          const isSynced = userId === activateSync;
+          const isSynced = userId === activateLoanBoardSync;
           return (
             <div
               key={userId}
-              onClick={() => setActivateSync(isSynced ? false : userId)}
+              onClick={() => setActivateLoanBoardSync(isSynced ? false : userId)}
               style={{ color: isSynced ? 'red' : '', marginTop: 8 }}
             >
               {admin.firstName}

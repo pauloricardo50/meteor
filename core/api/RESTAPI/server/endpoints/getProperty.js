@@ -44,7 +44,6 @@ const getPropertyAPI = ({ user: { _id: userId }, params, query }) => {
     .fetch({ userId: proId || userId });
 
   const filteredProperty = omit(property, [
-    'adminValidation',
     'additionalDocuments',
     'promotion',
     'users',

@@ -47,8 +47,8 @@ const LoanBoardOptionsContent = ({
   promotions,
   lenders,
   refetchLoans,
-  activateSync,
-  setActivateSync,
+  activateLoanBoardSync,
+  setActivateLoanBoardSync,
 }: LoanBoardOptionsContentProps) => {
   const {
     assignedEmployeeId,
@@ -189,8 +189,8 @@ const LoanBoardOptionsContent = ({
 
         <LiveQueryMonitor
           devAndAdmins={devAndAdmins}
-          setActivateSync={setActivateSync}
-          activateSync={activateSync}
+          setActivateLoanBoardSync={setActivateLoanBoardSync}
+          activateLoanBoardSync={activateLoanBoardSync}
         />
       </div>
 
