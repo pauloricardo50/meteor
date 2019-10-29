@@ -98,18 +98,17 @@ export default class CronitorService {
         });
     });
 
-    const timeout = new Promise((resolve) => {
-      const wait = Meteor.setTimeout(() => {
-        Meteor.clearTimeout(wait);
+    const timeout = new Promise(resolve =>
+      Meteor.setTimeout(() => {
+        resolve('timeout');
+      }, REQ_TIMEOUT));
 
-        SlackService.sendError({
-          error: new Meteor.Error('Timed out'),
-          additionalData: [`${this.name} CRON error`],
-        });
-        resolve();
-      }, REQ_TIMEOUT);
+    return Promise.race([promise, timeout]).then((result) => {
+      if (result === 'timeout') {
+        throw new Meteor.Error(`${this.name} CRON timed out`);
+      }
+
+      return result;
     });
-
-    return Promise.race([promise, timeout]);
   };
 }

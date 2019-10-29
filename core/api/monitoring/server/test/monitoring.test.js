@@ -242,8 +242,8 @@ describe('monitoring', () => {
       });
       expect(result[1]).to.deep.include({
         _id: {
-          prevStatus: LOAN_STATUS.ONGOING,
-          nextStatus: LOAN_STATUS.PENDING,
+          prevStatus: LOAN_STATUS.BILLING,
+          nextStatus: LOAN_STATUS.ONGOING,
         },
         count: 1,
       });

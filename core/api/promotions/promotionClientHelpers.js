@@ -88,7 +88,7 @@ export const shouldAnonymize = ({
   promotionLotStatus = PROMOTION_LOT_STATUS.AVAILABLE,
   isAttributed,
 }) => {
-  if (!Object.keys(permissions).length) {
+  if (!permissions || !Object.keys(permissions).length) {
     return true;
   }
 
