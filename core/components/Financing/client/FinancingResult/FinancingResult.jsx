@@ -78,7 +78,7 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
         {
           id: 'borrowRatio',
-          Component: props => <BorrowRatioStatus {...props} />,
+          Component: BorrowRatioStatus,
         },
         {
           id: 'incomeRatio',

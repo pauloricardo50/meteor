@@ -936,7 +936,7 @@ describe('LoanCalculator', () => {
         }).status).to.equal('SUCCESS');
       });
 
-      it('returns WARNING when there is not enough pledged own funds', () => {
+      it('returns WARNING when there are not enough pledged own funds', () => {
         expect(Calculator.getBorrowRatioStatus({
           loan: {
             structures: [
@@ -947,7 +947,7 @@ describe('LoanCalculator', () => {
         }).status).to.equal('WARNING');
       });
 
-      it('returns ERROR when borrowRatio is greather than maxBorrowRatioWithPledge', () => {
+      it('returns ERROR when borrowRatio is greater than maxBorrowRatioWithPledge', () => {
         expect(Calculator.getBorrowRatioStatus({
           loan: {
             structures: [
@@ -958,7 +958,7 @@ describe('LoanCalculator', () => {
         }).status).to.equal('ERROR');
       });
 
-      it('returns SUCCESS when there is enough pledged own funds', () => {
+      it('returns SUCCESS when there are enough pledged own funds', () => {
         expect(Calculator.getBorrowRatioStatus({
           loan: {
             structures: [
@@ -1001,7 +1001,7 @@ describe('LoanCalculator', () => {
             }).status).to.equal('SUCCESS');
           });
 
-          it('returns ERROR if borrowRatio is greather than maxBorrowRatio', () => {
+          it('returns ERROR if borrowRatio is greater than maxBorrowRatio', () => {
             expect(Calculator.getBorrowRatioStatus({
               loan: {
                 structures: [
@@ -1021,10 +1021,10 @@ describe('LoanCalculator', () => {
       );
 
       context(
-        'when offer maxBorrowRatio is greather than lender rules maxBorrowRatio',
+        'when offer maxBorrowRatio is greater than lender rules maxBorrowRatio',
         () => {
           context(
-            'when maxBorrowRatio is greather than lender rules maxBorrowRatioWithPledge',
+            'when maxBorrowRatio is greater than lender rules maxBorrowRatioWithPledge',
             () => {
               it('returns SUCCESS when borrowRatio is lower than lender rules maxBorrowRatio', () => {
                 expect(Calculator.getBorrowRatioStatus({
@@ -1043,7 +1043,7 @@ describe('LoanCalculator', () => {
                 }).status).to.equal('SUCCESS');
               });
 
-              it('returns WARNING when there is not enough pledged own founds', () => {
+              it('returns WARNING when there are not enough pledged own funds', () => {
                 expect(Calculator.getBorrowRatioStatus({
                   loan: {
                     structures: [
@@ -1075,7 +1075,7 @@ describe('LoanCalculator', () => {
                 }).status).to.equal('WARNING');
               });
 
-              it('returns ERROR when borrowRatio is greather than maxBorrowRatio', () => {
+              it('returns ERROR when borrowRatio is greater than maxBorrowRatio', () => {
                 expect(Calculator.getBorrowRatioStatus({
                   loan: {
                     structures: [
@@ -1092,7 +1092,7 @@ describe('LoanCalculator', () => {
                 }).status).to.equal('ERROR');
               });
 
-              it('returns SUCCESS when there is enough pledged own funds', () => {
+              it('returns SUCCESS when there are enough pledged own funds', () => {
                 expect(Calculator.getBorrowRatioStatus({
                   loan: {
                     structures: [
@@ -1137,7 +1137,7 @@ describe('LoanCalculator', () => {
                 }).status).to.equal('SUCCESS');
               });
 
-              it('returns WARNING when there is not enough pledged own founds', () => {
+              it('returns WARNING when there are not enough pledged own funds', () => {
                 expect(Calculator.getBorrowRatioStatus({
                   loan: {
                     structures: [
@@ -1154,7 +1154,7 @@ describe('LoanCalculator', () => {
                 }).status).to.equal('WARNING');
               });
 
-              it('returns ERROR when borrowRatio is greather than maxBorrowRatio', () => {
+              it('returns ERROR when borrowRatio is greater than maxBorrowRatio', () => {
                 expect(Calculator.getBorrowRatioStatus({
                   loan: {
                     structures: [
@@ -1171,7 +1171,7 @@ describe('LoanCalculator', () => {
                 }).status).to.equal('ERROR');
               });
 
-              it('returns SUCCESS when there is enough pledged own funds', () => {
+              it('returns SUCCESS when there are enough pledged own funds', () => {
                 expect(Calculator.getBorrowRatioStatus({
                   loan: {
                     structures: [

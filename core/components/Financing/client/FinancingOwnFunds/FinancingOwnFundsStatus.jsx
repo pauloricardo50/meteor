@@ -5,9 +5,10 @@ import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown';
 import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import colors from 'core/config/colors';
+import { toMoney } from 'core/utils/conversionFunctions';
+import Tooltip from '../../../Material/Tooltip';
 import { getLabel } from './financingOwnFundsHelpers';
 import T, { Money } from '../../../Translation';
 import StatusIcon from '../../../StatusIcon';
@@ -36,12 +37,24 @@ const FinancingOwnFundsStatus = ({
 
   if (label.endsWith('valid')) {
     const isBorrowRatioStatusWarning = borrowRatioStatus === WARNING;
+    const {
+      values: {
+        requiredPledgedOwnFunds,
+        currentPledgedOwnFunds,
+        wantedLoan,
+      } = {},
+    } = borrowRatioTooltip;
+    const values = {
+      requiredPledgedOwnFunds: toMoney(requiredPledgedOwnFunds),
+      currentPledgedOwnFunds: toMoney(currentPledgedOwnFunds),
+      wantedLoan: toMoney(wantedLoan),
+    };
     return (
       <StatusIcon
         status={isBorrowRatioStatusWarning ? borrowRatioStatus : SUCCESS}
         tooltip={
           isBorrowRatioStatusWarning ? (
-            <T id={borrowRatioTooltip.id} values={borrowRatioTooltip.values} />
+            <T id={borrowRatioTooltip.id} values={values} />
           ) : (
             tooltip
           )
@@ -56,7 +69,7 @@ const FinancingOwnFundsStatus = ({
       <span className="fa-layers fa-fw own-funds-icon">
         <FontAwesomeIcon
           icon={faCircle}
-          transform="grow-5"
+          transform="grow-8"
           color={colors.error}
         />
         <FontAwesomeIcon

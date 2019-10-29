@@ -502,7 +502,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getRequiredPledgedOwnFunds({ loan, structureId }) {
       const { maxBorrowRatio } = this;
-      // const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
 
       if (borrowRatio <= maxBorrowRatio) {
@@ -515,55 +514,54 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getLoanFromBorrowRatio({ loan, structureId, borrowRatio }) {
+    getLoanFromBorrowRatio({ loan, structureId }) {
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
       return borrowRatio * this.getPropAndWork({ loan, structureId });
+    }
+
+    getLoanFromMaxBorrowRatio({ loan, structureId }) {
+      const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+      return maxBorrowRatio * this.getPropAndWork({ loan, structureId });
     }
 
     getBorrowRatioStatusTooltip({
       loan,
       structureId,
       status,
-      borrowRatio,
       maxBorrowRatio,
-      neededPledgedOwnFunds,
+      requiredPledgedOwnFunds,
+      currentPledgedOwnFunds,
     }) {
-
+      const values = {
+        requiredPledgedOwnFunds,
+        wantedLoan: this.getLoanFromBorrowRatio({ loan, structureId }),
+        currentPledgedOwnFunds,
+        maxBorrowRatio,
+        maxLoan: this.getLoanFromMaxBorrowRatio({ loan, structureId }),
+      };
+      let id;
       switch (status) {
       case SUCCESS:
-        return ({ id: 'StatusIconTooltip.borrowRatio.SUCCESS' });
-      case WARNING: {
+        id = 'StatusIconTooltip.borrowRatio.SUCCESS';
+        break;
+      case WARNING:
         if (this.lenderRules && this.lenderRules.length) {
-          return ({
-            id: 'StatusIconTooltip.borrowRatio.WARNING.withLenderRules',
-            values: {
-              neededPledgedOwnFunds,
-              wantedLoan: this.getLoanFromBorrowRatio({
-                loan,
-                structureId,
-                borrowRatio,
-              }),
-            },
-          });
+          id = 'StatusIconTooltip.borrowRatio.WARNING.withLenderRules';
+          break;
         }
-        return ({
-          id: 'StatusIconTooltip.borrowRatio.WARNING',
-        });
-      }
+
+        id = 'StatusIconTooltip.borrowRatio.WARNING';
+        break;
+
       case ERROR:
-        return ({
-          id: 'StatusIconTooltip.borrowRatio.ERROR',
-          values: {
-            maxBorrowRatio,
-            maxLoan: this.getLoanFromBorrowRatio({
-              loan,
-              structureId,
-              borrowRatio: maxBorrowRatio,
-            }),
-          },
-        });
+        id = 'StatusIconTooltip.borrowRatio.ERROR';
+        break;
+
       default:
-        return undefined;
+        break;
       }
+
+      return { id, values };
     }
 
     getBorrowRatioStatus({ loan, structureId }) {
@@ -571,7 +569,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         loan,
         structureId,
       });
-      const neededPledgedOwnFunds = this.getRequiredPledgedOwnFunds({
+      const requiredPledgedOwnFunds = this.getRequiredPledgedOwnFunds({
         loan,
         structureId,
       });
@@ -592,13 +590,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
               status,
               loan,
               structureId,
-              borrowRatio,
               maxBorrowRatio,
+              currentPledgedOwnFunds,
             }),
           };
         }
 
-        if (currentPledgedOwnFunds >= neededPledgedOwnFunds) {
+        if (currentPledgedOwnFunds >= requiredPledgedOwnFunds) {
           const status = borrowRatio <= maxBorrowRatio ? SUCCESS : ERROR;
           return {
             status,
@@ -606,15 +604,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
               status,
               loan,
               structureId,
-              borrowRatio,
               maxBorrowRatio,
+              currentPledgedOwnFunds,
             }),
           };
         }
 
         const status = borrowRatio <= defaultMaxBorrowRatio
           ? SUCCESS
-          : borrowRatio <= Math.max(maxBorrowRatio, maxBorrowRatioWithPledge)
+          : borrowRatio <= maxBorrowRatio
             ? WARNING
             : ERROR;
 
@@ -624,14 +622,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
             status,
             loan,
             structureId,
-            borrowRatio,
-            maxBorrowRatio: Math.max(maxBorrowRatio, maxBorrowRatioWithPledge),
-            neededPledgedOwnFunds,
+            maxBorrowRatio,
+            requiredPledgedOwnFunds,
+            currentPledgedOwnFunds,
           }),
         };
       }
 
-      if (currentPledgedOwnFunds >= neededPledgedOwnFunds) {
+      if (currentPledgedOwnFunds >= requiredPledgedOwnFunds) {
         const status = borrowRatio <= maxBorrowRatioWithPledge ? SUCCESS : ERROR;
 
         return {
@@ -640,8 +638,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
             status,
             loan,
             structureId,
-            borrowRatio,
             maxBorrowRatio,
+            currentPledgedOwnFunds,
           }),
         };
       }
@@ -658,9 +656,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           status,
           loan,
           structureId,
-          borrowRatio,
           maxBorrowRatio: maxBorrowRatioWithPledge,
-          neededPledgedOwnFunds,
+          requiredPledgedOwnFunds,
+          currentPledgedOwnFunds,
         }),
       };
     }

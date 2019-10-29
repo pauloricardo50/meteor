@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { toMoney } from 'core/utils/conversionFunctions';
 import {
   getBorrowRatio,
   getBorrowRatioStatus,
@@ -9,6 +10,27 @@ import { FinmaRatio } from '.';
 
 type BorrowRatioStatusProps = {};
 
+const formatValues = (values) => {
+  if (!values) {
+    return;
+  }
+  const {
+    maxBorrowRatio,
+    requiredPledgedOwnFunds,
+    currentPledgedOwnFunds,
+    wantedLoan,
+    maxLoan,
+  } = values;
+
+  return {
+    maxBorrowRatio: maxBorrowRatio * 100,
+    requiredPledgedOwnFunds: toMoney(requiredPledgedOwnFunds),
+    currentPledgedOwnFunds: toMoney(currentPledgedOwnFunds),
+    wantedLoan: toMoney(wantedLoan),
+    maxLoan: toMoney(maxLoan),
+  };
+};
+
 const BorrowRatioStatus = (props: BorrowRatioStatusProps) => {
   const borrowRatio = getBorrowRatio(props);
   const {
@@ -16,11 +38,13 @@ const BorrowRatioStatus = (props: BorrowRatioStatusProps) => {
     tooltip: { id, values },
   } = getBorrowRatioStatus(props);
 
+  const formattedValues = formatValues(values);
+
   return (
     <FinmaRatio
       value={borrowRatio}
       status={status}
-      tooltip={<T id={id} values={values} />}
+      tooltip={<T id={id} values={formattedValues} />}
       {...props}
     />
   );
