@@ -187,6 +187,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'incomeConsiderationType',
         'investmentIncomeConsideration',
         'maxBorrowRatio',
+        'maxBorrowRatioWithPledge',
         'maxIncomeRatio',
         'pdfComments',
         'pensionIncomeConsideration',
@@ -207,6 +208,5 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     cleanUpUnusedRules() {
       this.maxIncomeRatioTight = 0;
-      this.maxBorrowRatioWithPledge = 0;
     }
   };

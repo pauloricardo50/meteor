@@ -7,6 +7,8 @@ import FinancingSection, { CalculatedValue } from '../FinancingSection';
 import RequiredOwnFunds from './RequiredOwnFunds';
 import FinancingOwnFundsPicker from './FinancingOwnFundsPicker';
 import Calculator from '../../../../utils/Calculator';
+import FinancingOwnFundsStatus from './FinancingOwnFundsStatus';
+import { FORMATS } from '../FinancingSection/components/CalculatedValue';
 
 type FinancingOwnFundsProps = {};
 
@@ -20,8 +22,25 @@ const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
             <T id="FinancingOwnFunds.title" />
           </span>
         ),
-        Component: CalculatedValue,
-        value: Calculator.getNonPledgedOwnFunds,
+        Component: props => (
+          <div className="financing-ownFunds-summary">
+            <CalculatedValue
+              value={Calculator.getNonPledgedOwnFunds}
+              {...props}
+            />
+            <div className="flex-row center">
+              <CalculatedValue
+                value={Calculator.getCashRatio}
+                format={FORMATS.PERCENT}
+                {...props}
+              />
+              <FinancingOwnFundsStatus
+                value={Calculator.getMissingOwnFunds(props)}
+                {...props}
+              />
+            </div>
+          </div>
+        ),
       },
     ]}
     detailConfig={[

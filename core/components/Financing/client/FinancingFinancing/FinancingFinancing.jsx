@@ -17,6 +17,7 @@ import {
 } from '../FinancingResult/financingResultHelpers';
 import LoanPercent from './LoanPercent';
 import Calculator from '../../../../utils/Calculator';
+import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -72,11 +73,7 @@ const FinancingFinancing = (props: FinancingFinancingProps) => (
         Component: props => (
           <div className="mortgageLoan financing-mortgageLoan">
             <CalculatedValue value={calculateLoan} {...props} />
-            <FinmaRatio
-              value={getBorrowRatio}
-              status={getBorrowRatioStatus}
-              {...props}
-            />
+            <BorrowRatioStatus {...props} />
           </div>
         ),
       },
