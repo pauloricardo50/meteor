@@ -4,7 +4,11 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import { PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
+import {
+  PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS,
+} from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import generator from '../../../factories/index';
@@ -77,6 +81,8 @@ describe.only('Migration 26', () => {
 
       promotionOptions.forEach(({
         userMortgageCertification,
+        ePotekMortgageCertification,
+        mortgageCertificationOfPrinciple,
         adminNote,
         bank,
         deposit,
@@ -84,10 +90,18 @@ describe.only('Migration 26', () => {
       }) => {
         expect(moment(userMortgageCertification.date).format('YYYY MM DD')).to.equal(today);
         expect(userMortgageCertification.status).to.equal(PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE);
+        expect(moment(ePotekMortgageCertification.date).format('YYYY MM DD')).to.equal(today);
+        expect(ePotekMortgageCertification.status).to.equal(PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE);
+        expect(moment(mortgageCertificationOfPrinciple.date).format('YYYY MM DD')).to.equal(today);
+        expect(mortgageCertificationOfPrinciple.status).to.equal(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS.INCOMPLETE);
         expect(moment(adminNote.date).format('YYYY MM DD')).to.equal(today);
+        expect(adminNote.note).to.equal('');
         expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
+        expect(bank.status).to.equal(PROMOTION_OPTION_BANK_STATUS.INCOMPLETE);
         expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
+        expect(deposit.status).to.equal(DEPOSIT_STATUS.UNPAID);
         expect(moment(reservationAgreement.date).format('YYYY MM DD')).to.equal(today);
+        expect(reservationAgreement.status).to.equal(AGREEMENT_STATUS.WAITING);
       });
     });
 
