@@ -127,14 +127,14 @@ const PromotionOptionSchema = new SimpleSchema({
     optional: true,
   },
   ePotekMortgageCertification: { type: Object, defaultValue: {} },
-  'ePoteMortgageCertification.status': {
+  'ePotekMortgageCertification.status': {
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS),
     defaultValue:
       PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE,
     uniforms: { placeholder: null },
   },
-  'ePoteMortgageCertification.date': {
+  'ePotekMortgageCertification.date': {
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,

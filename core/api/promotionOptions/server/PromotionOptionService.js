@@ -216,9 +216,9 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
-  getInitiaUserlMortgageCertification({ loan }) {
+  getInitialUserMortgageCertification({ loan }) {
     const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
-    let status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED;
+    let status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE;
     let date = new Date();
 
     if (maxPropertyValueDate) {

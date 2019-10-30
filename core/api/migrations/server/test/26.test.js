@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import { PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
+import { PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import generator from '../../../factories/index';
@@ -17,7 +17,7 @@ import {
 } from '../../../constants';
 import { up, down } from '../26';
 
-describe('Migration 26', () => {
+describe.only('Migration 26', () => {
   beforeEach(() => resetDatabase());
 
   describe('up', () => {
@@ -76,14 +76,14 @@ describe('Migration 26', () => {
       const today = moment().format('YYYY MM DD');
 
       promotionOptions.forEach(({
-        mortgageCertification,
+        userMortgageCertification,
         adminNote,
         bank,
         deposit,
         reservationAgreement,
       }) => {
-        expect(moment(mortgageCertification.date).format('YYYY MM DD')).to.equal(today);
-        expect(mortgageCertification.status).to.equal(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED);
+        expect(moment(userMortgageCertification.date).format('YYYY MM DD')).to.equal(today);
+        expect(userMortgageCertification.status).to.equal(PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE);
         expect(moment(adminNote.date).format('YYYY MM DD')).to.equal(today);
         expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
         expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);

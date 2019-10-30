@@ -22,7 +22,7 @@ const handlePromotionOptions = async () => {
   const promotionOptions = PromotionOptionService.fetch({ loan: { _id: 1 } });
 
   return Promise.all(promotionOptions.map(async ({ _id: promotionOptionId, loan: { _id: loanId } }) => {
-    await PromotionOptionService.setInitialMortgageCertification({
+    await PromotionOptionService.setInitialUserMortgageCertification({
       promotionOptionId,
       loanId,
     });
@@ -34,6 +34,8 @@ const handlePromotionOptions = async () => {
         bank: { date: new Date() },
         deposit: { date: new Date() },
         reservationAgreement: { date: new Date() },
+        ePotekMortgageCertification: { date: new Date() },
+        mortgageCertificationOfPrinciple: { date: new Date() },
       },
       $unset: {
         proNote: true,
@@ -62,15 +64,13 @@ const handleBookedLots = async () => {
     if (promotionOption) {
       const id = await PromotionOptionService.activateReservation({
         promotionOptionId: promotionOption._id,
-        startDate: new Date(),
-        withAgreement: false,
       });
 
       const {
         loan: { _id: loanId },
       } = promotionOption;
 
-      PromotionOptionService.setInitialMortgageCertification({
+      PromotionOptionService.setInitialUserMortgageCertification({
         promotionOptionId: promotionOption._id,
         loanId,
       });
@@ -82,6 +82,8 @@ const handleBookedLots = async () => {
             status: AGREEMENT_STATUS.WAITING,
             date: new Date(),
           },
+          ePotekMortgageCertification: { date: new Date() },
+          mortgageCertificationOfPrinciple: { date: new Date() },
         },
       });
     }
@@ -107,8 +109,6 @@ const handleSoldLots = async () => {
     if (promotionOption) {
       const id = await PromotionOptionService.activateReservation({
         promotionOptionId: promotionOption._id,
-        startDate: new Date(),
-        withAgreement: false,
       });
 
       const {
@@ -130,10 +130,12 @@ const handleSoldLots = async () => {
             date: new Date(),
             status: DEPOSIT_STATUS.PAID,
           },
+          ePotekMortgageCertification: { date: new Date() },
+          mortgageCertificationOfPrinciple: { date: new Date() },
         },
       });
 
-      PromotionOptionService.setInitialMortgageCertification({
+      PromotionOptionService.setInitialUserMortgageCertification({
         promotionOptionId: promotionOption._id,
         loanId,
       });
@@ -150,11 +152,11 @@ export const up = async () => {
 
 export const down = async () => {
   const promotionOptions = PromotionOptionService.fetch({
-    mortgageCertification: { status: 1 },
+    userMortgageCertification: { status: 1 },
   });
 
   return Promise.all(promotionOptions.map((promotionOption) => {
-    const { mortgageCertification: { status } = {} } = promotionOption;
+    const { userMortgageCertification: { status } = {} } = promotionOption;
     return PromotionOptions.rawCollection().update(
       {},
       {
@@ -163,6 +165,9 @@ export const down = async () => {
           reservationAgreement: true,
           bank: true,
           deposit: true,
+          userMortgageCertification: true,
+          mortgageCertificationOfPrinciple: true,
+          ePotekMortgageCertification: true,
         },
         $set: { solvency: status },
       },
