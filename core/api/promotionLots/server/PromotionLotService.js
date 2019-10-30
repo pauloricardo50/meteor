@@ -32,7 +32,7 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  bookPromotionLot({ promotionOptionId, startDate, agreementFileKeys }) {
+  bookPromotionLot({ promotionOptionId }) {
     const {
       loan: { _id: loanId } = {},
       promotionLots,
@@ -44,16 +44,11 @@ export class PromotionLotService extends CollectionService {
 
     const [{ _id: promotionLotId }] = promotionLots;
 
-    return PromotionOptionService.activateReservation({
+    return PromotionOptionService.updateStatus({
       promotionOptionId,
-      startDate,
-      agreementFileKeys,
+      status: PROMOTION_OPTION_STATUS.BOOKED,
     })
       .then(() => {
-        this.update({
-          promotionLotId,
-          object: { status: PROMOTION_LOT_STATUS.PRE_BOOKED },
-        });
         this.addLink({
           id: promotionLotId,
           linkName: 'attributedTo',
