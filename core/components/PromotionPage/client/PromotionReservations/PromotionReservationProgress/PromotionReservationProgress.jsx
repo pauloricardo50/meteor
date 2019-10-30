@@ -5,8 +5,8 @@ import cx from 'classnames';
 
 import {
   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
-  AGREEMENT_STATUSES,
-  DEPOSIT_STATUSES,
+  AGREEMENT_STATUS,
+  DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import PromotionReservationProgressItem from './PromotionReservationProgressItem';
@@ -90,8 +90,8 @@ export const rawPromotionReservationProgress = ({
   [
     mortgageCertification.status
       === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
-    reservationAgreement.status === AGREEMENT_STATUSES.RECEIVED,
-    deposit.status === DEPOSIT_STATUSES.PAID,
+    reservationAgreement.status === AGREEMENT_STATUS.RECEIVED,
+    deposit.status === DEPOSIT_STATUS.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
 
@@ -131,16 +131,16 @@ const PromotionReservationProgress = ({
     icon({
       ...reservationAgreement,
       ...makeGetIcon({
-        success: [AGREEMENT_STATUSES.RECEIVED],
-        error: [AGREEMENT_STATUSES.WAITING],
+        success: [AGREEMENT_STATUS.RECEIVED],
+        error: [AGREEMENT_STATUS.WAITING],
       })(reservationAgreement.status),
       id: 'reservationAgreement',
     }),
     icon({
       ...deposit,
       ...makeGetIcon({
-        success: [DEPOSIT_STATUSES.PAID],
-        error: [DEPOSIT_STATUSES.UNPAID],
+        success: [DEPOSIT_STATUS.PAID],
+        error: [DEPOSIT_STATUS.UNPAID],
       })(deposit.status),
       id: 'deposit',
     }),

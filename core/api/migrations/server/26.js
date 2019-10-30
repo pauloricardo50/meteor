@@ -5,10 +5,10 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants'
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import PromotionService from '../../promotions/server/PromotionService';
 import {
-  AGREEMENT_STATUSES,
+  AGREEMENT_STATUS,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  DEPOSIT_STATUSES,
+  DEPOSIT_STATUS,
 } from '../../promotionOptions/promotionOptionConstants';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 
@@ -79,7 +79,7 @@ const handleBookedLots = async () => {
         $set: {
           status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
           reservationAgreement: {
-            status: AGREEMENT_STATUSES.WAITING,
+            status: AGREEMENT_STATUS.WAITING,
             date: new Date(),
           },
         },
@@ -119,7 +119,7 @@ const handleSoldLots = async () => {
         $set: {
           status: PROMOTION_OPTION_STATUS.SOLD,
           reservationAgreement: {
-            status: AGREEMENT_STATUSES.WAITING,
+            status: AGREEMENT_STATUS.WAITING,
             date: new Date(),
           },
           bank: {
@@ -128,7 +128,7 @@ const handleSoldLots = async () => {
           },
           deposit: {
             date: new Date(),
-            status: DEPOSIT_STATUSES.PAID,
+            status: DEPOSIT_STATUS.PAID,
           },
         },
       });

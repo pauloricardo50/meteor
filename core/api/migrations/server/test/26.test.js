@@ -11,9 +11,9 @@ import generator from '../../../factories/index';
 import {
   PROMOTION_LOT_STATUS,
   PROMOTION_OPTION_STATUS,
-  AGREEMENT_STATUSES,
+  AGREEMENT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  DEPOSIT_STATUSES,
+  DEPOSIT_STATUS,
 } from '../../../constants';
 import { up, down } from '../26';
 
@@ -157,7 +157,7 @@ describe('Migration 26', () => {
 
       const pOs = PromotionOptionService.find({}).fetch();
       expect(pOs[0].reservationAgreement).to.deep.include({
-        status: AGREEMENT_STATUSES.WAITING,
+        status: AGREEMENT_STATUS.WAITING,
       });
     });
 
@@ -183,13 +183,13 @@ describe('Migration 26', () => {
 
       const pOs = PromotionOptionService.find({}).fetch();
       expect(pOs[0].reservationAgreement).to.deep.include({
-        status: AGREEMENT_STATUSES.WAITING,
+        status: AGREEMENT_STATUS.WAITING,
       });
       expect(pOs[0].bank).to.deep.include({
         status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
       });
       expect(pOs[0].deposit).to.deep.include({
-        status: DEPOSIT_STATUSES.PAID,
+        status: DEPOSIT_STATUS.PAID,
       });
     });
   });

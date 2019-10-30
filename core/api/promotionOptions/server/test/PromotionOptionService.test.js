@@ -15,8 +15,8 @@ import PromotionOptionService from '../PromotionOptionService';
 import {
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
-  AGREEMENT_STATUSES,
-  DEPOSIT_STATUSES,
+  AGREEMENT_STATUS,
+  DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
 } from '../../promotionOptionConstants';
@@ -602,7 +602,7 @@ describe('PromotionOptionService', function () {
         });
         expect(promotionOption).to.deep.include({
           status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-          deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
+          deposit: { date: startDate, status: DEPOSIT_STATUS.UNPAID },
           bank: {
             date: startDate,
             status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
@@ -615,7 +615,7 @@ describe('PromotionOptionService', function () {
               .toDate(),
             startDate,
             date: startDate,
-            status: AGREEMENT_STATUSES.RECEIVED,
+            status: AGREEMENT_STATUS.RECEIVED,
           },
         });
         expect(promotionOption.mortgageCertification).to.deep.include({

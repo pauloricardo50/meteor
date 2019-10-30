@@ -5,8 +5,8 @@ import { asyncForEach } from '../../helpers/index';
 import { expirePromotionLotBooking } from '../../promotionLots/server/serverMethods';
 import {
   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
-  AGREEMENT_STATUSES,
-  DEPOSIT_STATUSES,
+  AGREEMENT_STATUS,
+  DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTION_STATUS,
@@ -307,9 +307,9 @@ export class PromotionOptionService extends CollectionService {
           startDate,
           expirationDate,
           date: startDate,
-          status: AGREEMENT_STATUSES.RECEIVED,
+          status: AGREEMENT_STATUS.RECEIVED,
         },
-        deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
+        deposit: { date: startDate, status: DEPOSIT_STATUS.UNPAID },
         bank: {
           date: startDate,
           status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
@@ -379,7 +379,7 @@ export class PromotionOptionService extends CollectionService {
     this.updateStatusObject({
       promotionOptionId,
       id: 'adminNote',
-      object: { status: AGREEMENT_STATUSES.WAITING },
+      object: { status: AGREEMENT_STATUS.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
@@ -398,7 +398,7 @@ export class PromotionOptionService extends CollectionService {
     this.updateStatusObject({
       promotionOptionId,
       id: 'adminNote',
-      object: { status: AGREEMENT_STATUSES.WAITING },
+      object: { status: AGREEMENT_STATUS.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
