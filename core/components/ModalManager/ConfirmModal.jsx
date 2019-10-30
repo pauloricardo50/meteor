@@ -45,7 +45,7 @@ const ConfirmModal = ({
             <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
               <TextInput
                 value={keywordState}
-                onChange={(_, v) => setKeyword(v)}
+                onChange={(v) => setKeyword(v)}
                 style={{ marginTop: 16 }}
                 autoFocus
               />

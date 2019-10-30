@@ -15,7 +15,7 @@ export const Search = ({ search, changeSearch }) => (
         placeholder="Search.placeholder"
         id="search"
         value={search}
-        onChange={(_, value) => changeSearch(value)}
+        onChange={(value) => changeSearch(value)}
       />
     </h2>
     <SearchResults search={search} />
