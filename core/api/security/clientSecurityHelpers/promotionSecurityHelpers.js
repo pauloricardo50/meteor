@@ -201,16 +201,7 @@ export const isAllowedToBookPromotionLotToCustomer = ({
   );
 };
 
-export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
-  const { _id: userId } = currentUser;
-  const requiredPermissions = {
-    canSellLots: true,
-  };
-
-  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
-};
-
-export const isAllowedToSellPromotionLotToCustomer = ({
+export const isAllowedToManageCustomerPromotionReservation = ({
   promotion,
   currentUser,
   customerOwnerType,
@@ -224,10 +215,7 @@ export const isAllowedToSellPromotionLotToCustomer = ({
     currentUser,
     promotionId,
   });
-  return (
-    isAllowedToSellPromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
-  );
+  return !shouldAnonymize({ customerOwnerType, permissions });
 };
 
 export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {

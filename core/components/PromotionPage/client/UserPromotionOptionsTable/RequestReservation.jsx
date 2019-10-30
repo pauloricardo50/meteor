@@ -6,7 +6,7 @@ import { faPlus } from '@fortawesome/pro-light-svg-icons/faPlus';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import T from 'core/components/Translation';
-import { promotionOptionRequestReservation } from 'core/api/methods';
+import { promotionOptionActivateReservation } from 'core/api/methods';
 import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import colors from 'core/config/colors';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
@@ -40,7 +40,7 @@ const RequestReservation = ({
     <ConfirmMethod
       type="modal"
       method={() =>
-        promotionOptionRequestReservation.run({ promotionOptionId })
+        promotionOptionActivateReservation.run({ promotionOptionId })
       }
       label={<T id="PromotionPage.lots.requestReservation.button" />}
       buttonProps={{

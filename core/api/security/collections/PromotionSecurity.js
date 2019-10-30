@@ -16,6 +16,7 @@ import {
   isAllowedToViewPromotion,
   isAllowedToBookPromotionLots,
   isAllowedToBookPromotionLotToCustomer,
+  isAllowedToManageCustomerPromotionReservation,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
 import {
@@ -258,9 +259,22 @@ class PromotionSecurity {
     });
   }
 
-  static isAllowedToBookLots({ promotionLotId, userId }) {
+  static isAllowedToBookLots({ promotionOptionId, promotionLotId, userId }) {
+    let lotId;
+
+    if (promotionOptionId) {
+      const { promotionLots = [] } = PromotionOptionService.fetchOne({
+        $filters: { _id: promotionOptionId },
+        promotionLots: { _id: 1 },
+      });
+      const [{ _id }] = promotionLots;
+      lotId = _id;
+    }
+
     this.checkPermissions({
-      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
+      promotionId: this.getPromotionIdFromPromotionLot({
+        promotionLotId: lotId || promotionLotId,
+      }),
       userId,
       checkingFunction: isAllowedToBookPromotionLots,
       errorMessage: 'Vous ne pouvez pas réserver des lots dans cette promotion',
@@ -278,13 +292,41 @@ class PromotionSecurity {
     } = PromotionOptionService.safeFetchOne({
       $filters: { _id: promotionOptionId },
       promotionLotLinks: 1,
-      loan: { _id: 1 },
+      loan: { user: { _id: 1 } },
     });
 
     const [{ _id: promotionLotId }] = promotionLotLinks;
-    const { _id: loanId } = loan;
 
-    this.isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId });
+    const { promotion } = PromotionLotService.safeFetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1, users: { _id: 1 } },
+    });
+
+    const customerOwnerType = getPromotionCustomerOwnerType({
+      customerId: loan.user._id,
+      userId,
+      promotionId: promotion._id,
+    });
+
+    const currentUser = UserService.safeFetchOne({
+      $filters: { _id: userId },
+      promotions: {
+        permissions: 1,
+        status: 1,
+        users: { _id: 1 },
+      },
+      organisations: { users: { _id: 1 } },
+    });
+
+    if (
+      !isAllowedToManageCustomerPromotionReservation({
+        promotion,
+        currentUser,
+        customerOwnerType,
+      })
+    ) {
+      Security.handleUnauthorized('Vous ne pouvez pas gérer la réservation de ce client');
+    }
   }
 
   static isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId }) {

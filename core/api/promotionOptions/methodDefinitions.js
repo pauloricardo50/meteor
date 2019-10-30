@@ -39,7 +39,7 @@ export const promotionOptionUpdateObject = new Method({
   params: { promotionOptionId: String, object: Object, id: String },
 });
 
-export const promotionOptionRequestReservation = new Method({
-  name: 'promotionOptionRequestReservation',
+export const promotionOptionActivateReservation = new Method({
+  name: 'promotionOptionActivateReservation',
   params: { promotionOptionId: String },
 });
