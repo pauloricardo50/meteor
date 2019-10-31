@@ -10,8 +10,8 @@ const pages = {
         shouldRender: '#password-reset-page',
       }),
 
-    'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
-      route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
+    'Impersonate (Valid Token)': ({ userId, adminLoginToken, adminId }) =>
+      route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}&adminId=${adminId}`, {
         shouldRender: '#impersonation-success-message',
       }),
 
