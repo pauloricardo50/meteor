@@ -30,7 +30,7 @@ describe('Pro promotion', () => {
       cy.visit('/');
     });
 
-    it.only('can access the promotion users tab', () => {
+    it('can access the promotion users tab', () => {
       cy.callMethod('removeAllPromotions');
       cy.callMethod('insertFullPromotion');
       cy.callMethod('addProUsersToPromotion');
@@ -190,8 +190,8 @@ describe('Pro promotion', () => {
       cy.contains('Confirmer vente').should('exist');
       cy.contains('Annuler réservation').should('exist');
       cy.contains('Annuler réservation').click({ force: true });
-      cy.contains('sûr')
-        .parentsUntil('[role="document"]')
+      cy.contains('Êtes-vous sûr')
+        .parents('[role="dialog"]')
         .contains('Confirmer')
         .click();
       cy.contains('Réserver').should('exist');
