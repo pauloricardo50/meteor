@@ -84,10 +84,6 @@ const getAnonymous = withAnonymous =>
   (withAnonymous ? undefined : { $in: [null, false] });
 
 export default compose(
-  withProps(({ proUser: { promotions = [], proProperties = [] } }) => ({
-    propertyIds: proProperties.map(({ _id }) => _id),
-    promotionIds: promotions.map(({ _id }) => _id),
-  })),
   withState('status', 'setStatus', {
     $in: Object.values(LOAN_STATUS).filter(s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST),
   }),
@@ -100,8 +96,6 @@ export default compose(
   withSmartQuery({
     query: proLoans,
     params: ({
-      propertyIds,
-      promotionIds,
       proUser: { _id: userId },
       isAdmin = false,
       status,
@@ -109,17 +103,20 @@ export default compose(
       referredByUserId,
     }) => ({
       ...(isAdmin ? { userId } : {}),
-      promotionId: { $in: promotionIds },
-      propertyId: { $in: propertyIds },
       status,
       anonymous: getAnonymous(withAnonymous),
       referredByUserId,
+      fetchOrganisationLoans: !referredByUserId,
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  withProps(({ loans, proUser, isAdmin = false }) => ({
-    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
-    columnOptions,
-  })),
+  withProps(({ loans, proUser, isAdmin = false }) => {
+    console.log('loans:', loans);
+
+    return {
+      rows: loans.map(makeMapLoan({ proUser, isAdmin })),
+      columnOptions,
+    };
+  }),
 );
