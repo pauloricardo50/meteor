@@ -41,7 +41,7 @@ export const injectCurrentUser = Component => (props) => {
   const user = formattedUser || meteorCurrentUser;
 
   if (!formattedUser) {
-    return <Component {...props} />;
+    return <Component {...props} currentUser={user} />;
   }
 
   return (
