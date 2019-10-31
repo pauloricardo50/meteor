@@ -92,7 +92,7 @@ class AutoFormTextInput extends Component {
     this.saveValue(true);
   };
 
-  handleChange = (_, value) => {
+  handleChange = (value) => {
     const {
       saveOnChange,
       showValidIconOnChange,

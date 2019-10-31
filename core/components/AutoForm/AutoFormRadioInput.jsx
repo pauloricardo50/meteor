@@ -83,7 +83,7 @@ export default class AutoFormRadioInput extends Component {
             id: o.id,
             label: this.getOptionLabel(o.id, o.intlValues),
           }))}
-          onChange={(_, newValue) => {
+          onChange={(newValue) => {
             if (typeof onConditionalChange === 'function') {
               onConditionalChange(newValue);
             }
