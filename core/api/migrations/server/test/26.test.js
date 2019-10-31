@@ -2,252 +2,205 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import moment from 'moment';
 
-import {
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
-} from 'core/api/promotionOptions/promotionOptionConstants';
-import PromotionService from '../../../promotions/server/PromotionService';
-import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
-import generator from '../../../factories/index';
-import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-} from '../../../constants';
 import { up, down } from '../26';
+import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
+import PromotionService from '../../../promotions/server/PromotionService';
+import UserService from '../../../users/server/UserService';
 
 describe('Migration 26', () => {
   beforeEach(() => resetDatabase());
 
   describe('up', () => {
-    it('sets agreementDuration on all promotions', async () => {
-      await PromotionService.collection.rawCollection().insert({ _id: 'a' });
-      await PromotionService.collection.rawCollection().insert({ _id: 'b' });
-
-      await up();
-
-      const promotions = PromotionService.find().fetch();
-      expect(promotions.length).to.equal(2);
-      promotions.forEach((p) => {
-        expect(p.agreementDuration).to.equal(30);
+    it('sets all BOOKED promotionLots to RESERVED', async () => {
+      await PromotionLotService.rawCollection.insert({
+        _id: 'a',
+        status: 'BOOKED',
       });
-    });
-
-    it('inits the reservation for each promotion option', async () => {
-      generator({
-        properties: [{ _id: 'a' }, { _id: 'b' }, { _id: 'c' }],
-        promotions: {
-          _id: 'promo',
-          promotionLots: [
-            {
-              status: PROMOTION_LOT_STATUS.AVAILABLE,
-              propertyLinks: [{ _id: 'a' }],
-              promotionOptions: {
-                loan: { _id: 'loan1' },
-                promotion: { _id: 'promo' },
-              },
-            },
-            {
-              status: PROMOTION_LOT_STATUS.AVAILABLE,
-              propertyLinks: [{ _id: 'b' }],
-              promotionOptions: {
-                loan: { _id: 'loan2' },
-                promotion: { _id: 'promo' },
-              },
-            },
-            {
-              status: PROMOTION_LOT_STATUS.AVAILABLE,
-              propertyLinks: [{ _id: 'c' }],
-              promotionOptions: {
-                loan: { _id: 'loan2' },
-                promotion: { _id: 'promo' },
-              },
-            },
-          ],
-        },
-        loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+      await PromotionLotService.rawCollection.insert({
+        _id: 'b',
+        status: 'SOLD',
+      });
+      await PromotionLotService.rawCollection.insert({
+        _id: 'c',
+        status: 'AVAILABLE',
       });
 
       await up();
 
-      const promotionOptions = PromotionOptionService.find({}).fetch();
+      const [pL1, pL2, pL3] = PromotionLotService.find().fetch();
 
-      const today = moment().format('YYYY MM DD');
-
-      promotionOptions.forEach(({
-        simpleVerification,
-        fullVerification,
-        adminNote,
-        bank,
-        deposit,
-        reservationAgreement,
-      }) => {
-        expect(moment(simpleVerification.date).format('YYYY MM DD')).to.equal(today);
-        expect(simpleVerification.status).to.equal(PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE);
-        expect(moment(fullVerification.date).format('YYYY MM DD')).to.equal(today);
-        expect(fullVerification.status).to.equal(PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE);
-        expect(moment(adminNote.date).format('YYYY MM DD')).to.equal(today);
-        expect(adminNote.note).to.equal('');
-        expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
-        expect(bank.status).to.equal(PROMOTION_OPTION_BANK_STATUS.INCOMPLETE);
-        expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
-        expect(deposit.status).to.equal(PROMOTION_OPTION_DEPOSIT_STATUS.WAITING);
-        expect(moment(reservationAgreement.date).format('YYYY MM DD')).to.equal(today);
-        expect(reservationAgreement.status).to.equal(PROMOTION_OPTION_AGREEMENT_STATUS.WAITING);
-      });
+      expect(pL1.status).to.equal('RESERVED');
+      expect(pL2.status).to.equal('SOLD');
+      expect(pL3.status).to.equal('AVAILABLE');
     });
 
-    it('sets the reservation for each reserved or sold promotionLot', async () => {
-      generator({
-        properties: [{ _id: 'a' }, { _id: 'b' }, { _id: 'c' }],
-        promotions: {
-          _id: 'promo',
-          promotionLots: [
-            {
-              status: PROMOTION_LOT_STATUS.AVAILABLE,
-              propertyLinks: [{ _id: 'a' }],
-            },
-            {
-              status: PROMOTION_LOT_STATUS.RESERVED,
-              propertyLinks: [{ _id: 'b' }],
-              promotionOptions: {
-                loan: { _id: 'loan1' },
-                promotion: { _id: 'promo' },
+    it('updates promotion permissions', async () => {
+      await UserService.rawCollection.insert({ _id: 'a' });
+      await UserService.rawCollection.insert({ _id: 'b' });
+      await UserService.rawCollection.insert({ _id: 'c' });
+      await PromotionService.rawCollection.insert({
+        _id: 'a',
+        userLinks: [
+          {
+            _id: 'a',
+            permissions: {
+              canBookLots: true,
+              displayCustomerNames: {
+                forLotStatus: ['BOOKED', 'SOLD'],
+                invitedBy: 'USER',
               },
-              attributedTo: { _id: 'loan1' },
+              canModifyPromotion: true,
             },
-            {
-              status: PROMOTION_LOT_STATUS.SOLD,
-              propertyLinks: [{ _id: 'c' }],
-              promotionOptions: {
-                loan: { _id: 'loan2' },
-                promotion: { _id: 'promo' },
-              },
-              attributedTo: { _id: 'loan2' },
-            },
-          ],
-          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
-        },
-      });
-
-      await up();
-
-      const pOs = PromotionOptionService.find(
-        {},
-        { sort: { status: 1 } },
-      ).fetch();
-      expect(pOs.length).to.equal(2);
-      expect(pOs[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE);
-      expect(pOs[1].status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
-    });
-
-    it('sets agreement to waiting on reserved lots', async () => {
-      generator({
-        properties: { _id: 'a' },
-        promotions: {
-          _id: 'promo',
-          promotionLots: {
-            status: PROMOTION_LOT_STATUS.RESERVED,
-            propertyLinks: [{ _id: 'b' }],
-            promotionOptions: {
-              loan: { _id: 'loan1' },
-              promotion: { _id: 'promo' },
-            },
-            attributedTo: { _id: 'loan1' },
           },
-          loans: [{ _id: 'loan1' }],
-        },
-      });
-
-      await up();
-
-      const pOs = PromotionOptionService.find({}).fetch();
-      expect(pOs[0].reservationAgreement).to.deep.include({
-        status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
-      });
-    });
-
-    it('sets statuses on sold lots', async () => {
-      generator({
-        properties: { _id: 'a' },
-        promotions: {
-          _id: 'promo',
-          promotionLots: {
-            status: PROMOTION_LOT_STATUS.SOLD,
-            propertyLinks: [{ _id: 'b' }],
-            promotionOptions: {
-              loan: { _id: 'loan1' },
-              promotion: { _id: 'promo' },
+          {
+            _id: 'b',
+            permissions: {
+              canBookLots: false,
+              displayCustomerNames: {
+                forLotStatus: ['SOLD'],
+                invitedBy: 'USER',
+              },
+              canModifyPromotion: true,
             },
-            attributedTo: { _id: 'loan1' },
           },
-          loans: [{ _id: 'loan1' }],
-        },
+          {
+            _id: 'c',
+            permissions: {
+              canBookLots: true,
+              displayCustomerNames: false,
+              canModifyPromotion: true,
+            },
+          },
+        ],
       });
 
       await up();
 
-      const pOs = PromotionOptionService.find({}).fetch();
-      expect(pOs[0].reservationAgreement).to.deep.include({
-        status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
+      const { userLinks = [] } = PromotionService.findOne({ _id: 'a' });
+      const [
+        { permissions: permissions1 },
+        { permissions: permissions2 },
+        { permissions: permissions3 },
+      ] = userLinks;
+
+      expect(permissions1).to.deep.include({
+        canReserveLots: true,
+        canModifyPromotion: true,
+        displayCustomerNames: {
+          forLotStatus: ['SOLD', 'RESERVED'],
+          invitedBy: 'USER',
+        },
       });
-      expect(pOs[0].bank).to.deep.include({
-        status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+      expect(permissions2).to.deep.include({
+        canReserveLots: false,
+        canModifyPromotion: true,
+        displayCustomerNames: {
+          forLotStatus: ['SOLD'],
+          invitedBy: 'USER',
+        },
       });
-      expect(pOs[0].deposit).to.deep.include({
-        status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+      expect(permissions3).to.deep.include({
+        canReserveLots: true,
+        canModifyPromotion: true,
+        displayCustomerNames: false,
       });
     });
   });
 
   describe('down', () => {
-    it('resets all promotion options', async () => {
-      generator({
-        properties: [{ _id: 'a' }, { _id: 'b' }, { _id: 'c' }],
-        promotions: {
-          promotionLots: [
-            {
-              status: PROMOTION_LOT_STATUS.AVAILABLE,
-              propertyLinks: [{ _id: 'a' }],
-            },
-            {
-              status: PROMOTION_LOT_STATUS.RESERVED,
-              propertyLinks: [{ _id: 'b' }],
-              promotionOptions: {
-                loan: { _id: 'loan1' },
-                promotion: { _id: 'promo' },
-              },
-              attributedTo: { _id: 'loan1' },
-            },
-            {
-              status: PROMOTION_LOT_STATUS.SOLD,
-              propertyLinks: [{ _id: 'c' }],
-              promotionOptions: {
-                loan: { _id: 'loan2' },
-                promotion: { _id: 'promo' },
-              },
-              attributedTo: { _id: 'loan2' },
-            },
-          ],
-        },
-        loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+    it('sets all RESERVED promotionLots to BOOKED', async () => {
+      await PromotionLotService.rawCollection.insert({
+        _id: 'a',
+        status: 'RESERVED',
+      });
+      await PromotionLotService.rawCollection.insert({
+        _id: 'b',
+        status: 'SOLD',
+      });
+      await PromotionLotService.rawCollection.insert({
+        _id: 'c',
+        status: 'AVAILABLE',
       });
 
-      await up();
       await down();
 
-      const pOs = PromotionOptionService.find({}).fetch();
+      const [pL1, pL2, pL3] = PromotionLotService.find().fetch();
 
-      pOs.forEach((pO) => {
-        expect(pO.status).to.equal(undefined);
-        expect(pO.reservationAgreement).to.equal(undefined);
-        expect(pO.bank).to.equal(undefined);
-        expect(pO.deposit).to.equal(undefined);
+      expect(pL1.status).to.equal('BOOKED');
+      expect(pL2.status).to.equal('SOLD');
+      expect(pL3.status).to.equal('AVAILABLE');
+    });
+
+    it('migrates back promotion permissions', async () => {
+      await UserService.rawCollection.insert({ _id: 'a' });
+      await UserService.rawCollection.insert({ _id: 'b' });
+      await UserService.rawCollection.insert({ _id: 'c' });
+      await PromotionService.rawCollection.insert({
+        _id: 'a',
+        userLinks: [
+          {
+            _id: 'a',
+            permissions: {
+              canReserveLots: true,
+              displayCustomerNames: {
+                forLotStatus: ['RESERVED', 'SOLD'],
+                invitedBy: 'USER',
+              },
+              canModifyPromotion: true,
+            },
+          },
+          {
+            _id: 'b',
+            permissions: {
+              canReserveLots: false,
+              displayCustomerNames: {
+                forLotStatus: ['SOLD'],
+                invitedBy: 'USER',
+              },
+              canModifyPromotion: true,
+            },
+          },
+          {
+            _id: 'c',
+            permissions: {
+              canReserveLots: true,
+              displayCustomerNames: false,
+              canModifyPromotion: true,
+            },
+          },
+        ],
+      });
+
+      await down();
+
+      const { userLinks = [] } = PromotionService.findOne({ _id: 'a' });
+      const [
+        { permissions: permissions1 },
+        { permissions: permissions2 },
+        { permissions: permissions3 },
+      ] = userLinks;
+
+      expect(permissions1).to.deep.include({
+        canBookLots: true,
+        canModifyPromotion: true,
+        displayCustomerNames: {
+          forLotStatus: ['SOLD', 'BOOKED'],
+          invitedBy: 'USER',
+        },
+      });
+      expect(permissions2).to.deep.include({
+        canBookLots: false,
+        canModifyPromotion: true,
+        displayCustomerNames: {
+          forLotStatus: ['SOLD'],
+          invitedBy: 'USER',
+        },
+      });
+      expect(permissions3).to.deep.include({
+        canBookLots: true,
+        canModifyPromotion: true,
+        displayCustomerNames: false,
       });
     });
   });

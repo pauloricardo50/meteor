@@ -26,6 +26,7 @@ import './23';
 import './24';
 import './25';
 import './26';
+import './27';
 
 // To migrate to a specific version
 // Migrations.migrateTo(2);
