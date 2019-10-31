@@ -19,9 +19,7 @@ export default class AutoFormSelectFieldInput extends Component {
     };
   }
 
-  handleChange = (_, value) => {
-    this.setState({ value }, () => this.saveValue());
-  };
+  handleChange = value => this.setState({ value }, () => this.saveValue());
 
   saveValue = () => {
     const {

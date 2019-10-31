@@ -24,7 +24,7 @@ const CommissionsTable = (props: CommissionsTableProps) => {
         options={options}
         value={status.$in}
         label="Statut du revenu"
-        onChange={(_, selected) => setStatus({ $in: selected })}
+        onChange={selected => setStatus({ $in: selected })}
         multiple
         style={{ display: 'inline-flex', minWidth: 150 }}
       />

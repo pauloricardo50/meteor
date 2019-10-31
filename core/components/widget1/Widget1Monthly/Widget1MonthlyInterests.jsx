@@ -37,7 +37,7 @@ const Widget1MonthlyInterests = ({ value, onChange, interestRates }) => (
   <Select
     label={<T id="Widget1MonthlyInterests.label" />}
     value={value}
-    onChange={(_, val) => onChange(val)}
+    onChange={onChange}
     options={options(interestRates)}
     className="widget1-montly-interests"
   />

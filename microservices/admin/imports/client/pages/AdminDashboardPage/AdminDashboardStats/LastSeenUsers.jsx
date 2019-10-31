@@ -49,7 +49,7 @@ const LastSeenUsers = (props: LastSeenUsersProps) => {
             { id: ROLES.USER, label: <T id="roles.user" /> },
             { id: ROLES.PRO, label: <T id="roles.pro" /> },
           ]}
-          onChange={(_, v) => setRole(v)}
+          onChange={setRole}
         />
       </div>
       {lastSeenUsers ? (

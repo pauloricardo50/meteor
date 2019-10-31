@@ -47,7 +47,7 @@ const NewLoansStat = ({
               { id: 30, label: '30 derniers jours' },
               { id: 90, label: '90 derniers jours' },
             ]}
-            onChange={(_, v) => setPeriod(v)}
+            onChange={setPeriod}
             value={period}
           />
           <Select
@@ -56,7 +56,7 @@ const NewLoansStat = ({
               { id: true, label: 'Avec' },
               { id: false, label: 'Sans' },
             ]}
-            onChange={(_, v) => setWithAnonymous(v)}
+            onChange={setWithAnonymous}
             value={withAnonymous}
           />
         </DialogSimple>

@@ -43,7 +43,7 @@ const FinancingPropertyPickerContainer = compose(
       },
     ],
     value: propertyId || promotionOptionId,
-    handleChange: (_, value) => {
+    handleChange: (value) => {
       if (value === 'add') {
         push(`/loans/${loanId}/properties`);
       } else {

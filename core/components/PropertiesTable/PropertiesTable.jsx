@@ -21,7 +21,7 @@ export const PropertiesTable = ({
     <Select
       label="Filtre"
       value={fetchOrganisationProperties}
-      onChange={(_, v) => setFetchOrganisationProperties(v)}
+      onChange={setFetchOrganisationProperties}
       options={[
         { id: false, label: 'Mes biens immobiliers' },
         { id: true, label: 'De mon organisation' },

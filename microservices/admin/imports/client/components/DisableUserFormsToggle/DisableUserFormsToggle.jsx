@@ -5,10 +5,8 @@ import { loanUpdate } from 'core/api/methods';
 import { T } from 'core/components/Translation';
 import Toggle from 'core/components/Toggle';
 
-const makeHandleForDisablingUserForms = ({ _id: loanId }) => (
-  event,
-  isToggledOn,
-) => loanUpdate.run({ loanId, object: { userFormsEnabled: isToggledOn } });
+const makeHandleForDisablingUserForms = ({ _id: loanId }) => value =>
+  loanUpdate.run({ loanId, object: { userFormsEnabled: value } });
 
 const DisableUserFormsToggle = ({ loan }) => {
   const { userFormsEnabled } = loan;

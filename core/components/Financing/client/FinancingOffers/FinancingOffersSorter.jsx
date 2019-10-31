@@ -17,11 +17,7 @@ const FinancingOffersSorter = ({
     <p>
       <T id="Financing.offerId" />
     </p>
-    <Select
-      value={sortBy}
-      options={options}
-      onChange={(_, val) => setSort(val)}
-    />
+    <Select value={sortBy} options={options} onChange={setSort} />
   </div>
 );
 

@@ -173,7 +173,7 @@ const LoanBoardOptionsContent = ({
             component={(
               <RadioButtons
                 options={groupByOptions}
-                onChange={(_, newValue) =>
+                onChange={newValue =>
                   dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
                 }
                 value={groupBy}

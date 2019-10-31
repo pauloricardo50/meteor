@@ -41,7 +41,7 @@ const LoanTimeline = ({
             id: t,
             label: <T id={`Forms.type.${t}`} />,
           }))}
-          onChange={(_, selected) => setType({ $in: selected })}
+          onChange={selected => setType({ $in: selected })}
         />
       </div>
       <Timeline
