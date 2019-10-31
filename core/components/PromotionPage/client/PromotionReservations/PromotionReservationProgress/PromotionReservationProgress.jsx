@@ -4,12 +4,14 @@ import React from 'react';
 import cx from 'classnames';
 
 import {
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import PromotionReservationProgressItem from './PromotionReservationProgressItem';
+import ProgressCircle from '../../../../ProgressCircle';
 
 type PromotionReservationProgressProps = {};
 
@@ -18,6 +20,8 @@ const makeGetIcon = ({
   waiting = [],
   error = [],
   warning = [],
+  sent = [],
+  waitList = [],
 }) => (status) => {
   if (waiting.includes(status)) {
     return { icon: 'waiting', color: 'warning' };
@@ -30,6 +34,12 @@ const makeGetIcon = ({
   }
   if (success.includes(status)) {
     return { icon: 'checkCircle', color: 'success' };
+  }
+  if (sent.includes(status)) {
+    return { icon: 'send', color: 'warning' };
+  }
+  if (waitList.includes(status)) {
+    return { icon: 'schedule', color: 'warning' };
   }
 
   return { icon: 'radioButtonChecked', color: 'primary' };
@@ -82,14 +92,14 @@ const getAdminNoteIcon = (
 };
 
 export const rawPromotionReservationProgress = ({
-  mortgageCertification,
+  simpleVerification,
   reservationAgreement,
   deposit,
   bank,
 }) =>
   [
-    mortgageCertification.status
-      === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.VALIDATED,
+    simpleVerification.status
+      === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
     deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
@@ -104,13 +114,15 @@ const PromotionReservationProgress = ({
 }: PromotionReservationProgressProps) => {
   const {
     _id: promotionOptionId,
-    mortgageCertification,
+    simpleVerification,
+    fullVerification,
     reservationAgreement,
     deposit,
     bank,
     adminNote,
     loan,
     isAnonymized,
+    loan: { loanProgress: { info, documents } } = {},
   } = promotionOption;
   const { user } = loan;
 
@@ -118,15 +130,41 @@ const PromotionReservationProgress = ({
 
   const icons = [
     icon({
-      ...mortgageCertification,
+      ...simpleVerification,
       ...makeGetIcon({
-        error: [PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.INSOLVENT],
-        success: [PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT],
-        waiting: [
-          PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
-        ],
-      })(mortgageCertification.status),
-      id: 'mortgageCertification',
+        error: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED],
+        success: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED],
+        waiting: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED],
+      })(simpleVerification.status),
+      id: 'simpleVerification',
+    }),
+    <ProgressCircle
+      percent={info}
+      options={{ squareSize: 20, strokeWidth: 4, animated: true }}
+    />,
+    <ProgressCircle
+      percent={documents}
+      options={{ squareSize: 20, strokeWidth: 4, animated: true }}
+    />,
+
+    icon({
+      ...fullVerification,
+      ...makeGetIcon({
+        error: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED],
+        success: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED],
+      })(fullVerification.status),
+      id: 'fullVerification',
+    }),
+    icon({
+      ...bank,
+      ...makeGetIcon({
+        success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
+        error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
+        warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
+        sent: [PROMOTION_OPTION_BANK_STATUS.SENT],
+        waitList: [PROMOTION_OPTION_BANK_STATUS.WAITLIST],
+      })(bank.status),
+      id: 'bank',
     }),
     icon({
       ...reservationAgreement,
@@ -143,16 +181,6 @@ const PromotionReservationProgress = ({
         error: [PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID],
       })(deposit.status),
       id: 'deposit',
-    }),
-    icon({
-      ...bank,
-      ...makeGetIcon({
-        success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
-        error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
-        warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
-        waiting: [PROMOTION_OPTION_BANK_STATUS.SENT],
-      })(bank.status),
-      id: 'bank',
     }),
     !isAnonymized
       && getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId),
