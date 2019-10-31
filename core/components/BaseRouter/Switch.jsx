@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Switch as RRSwitch } from 'react-router-dom';
 
 const Switch = ({ children, ...rest }) => (
@@ -12,7 +11,5 @@ const Switch = ({ children, ...rest }) => (
     )}
   </RRSwitch>
 );
-
-Switch.propTypes = {};
 
 export default Switch;

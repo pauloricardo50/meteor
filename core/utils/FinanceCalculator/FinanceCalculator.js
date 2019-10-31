@@ -182,16 +182,6 @@ export class FinanceCalculator {
     });
   }
 
-  getBorrowRatioStatus({ borrowRatio }) {
-    if (borrowRatio <= this.maxBorrowRatio) {
-      return SUCCESS;
-    }
-    if (borrowRatio <= this.maxBorrowRatioWithPledge) {
-      return WARNING;
-    }
-    return ERROR;
-  }
-
   getRetirementForGender({ gender = GENDER.M }: { gender?: string } = {}) {
     return gender === GENDER.F ? 64 : 65;
   }

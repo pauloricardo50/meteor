@@ -167,6 +167,9 @@ exposeQuery({
 exposeQuery({
   query: proUser,
   overrides: {
+    firewall: (userId) => {
+      SecurityService.checkUserIsPro(userId);
+    },
     embody: (body) => {
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;

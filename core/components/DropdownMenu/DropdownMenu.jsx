@@ -15,10 +15,16 @@ const getTrigger = ({
   tooltip,
   tooltipPlacement,
   disabled,
+  className,
 }) => {
   if (button) {
     return (
-      <Button onClick={onClickHandler} disabled={disabled} {...buttonProps} />
+      <Button
+        onClick={onClickHandler}
+        disabled={disabled}
+        className={className}
+        {...buttonProps}
+      />
     );
   }
   if (renderTrigger) {
@@ -32,6 +38,7 @@ const getTrigger = ({
       tooltip={tooltip}
       tooltipPlacement={tooltipPlacement}
       disabled={disabled}
+      className={className}
       {...buttonProps}
     />
   );
@@ -55,7 +62,7 @@ const DropdownMenu = ({
   paperClassName,
   disabled,
   noWrapper,
-  menuProps
+  menuProps,
 }) => {
   const onClickHandler = (event) => {
     // Prevent background from receiving clicks
@@ -78,6 +85,7 @@ const DropdownMenu = ({
         tooltip,
         tooltipPlacement,
         disabled,
+        className: noWrapper ? className : '',
       })}
       <Menu
         anchorEl={anchorEl}

@@ -102,7 +102,7 @@ export const getMaxIncomeRatio = (params) => {
 
 export const getBorrowRatioStatus = (params) => {
   const calc = initCalc(params);
-  return calc.getBorrowRatioStatus({ borrowRatio: params.value });
+  return calc.getBorrowRatioStatus(params);
 };
 
 export const getIncomeRatioStatus = (params) => {

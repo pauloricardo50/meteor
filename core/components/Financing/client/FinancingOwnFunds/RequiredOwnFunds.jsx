@@ -24,7 +24,6 @@ const RequiredOwnFunds = (props: RequiredOwnFundsProps) => {
     >
       {value => (
         <RequiredOwnFundsBody
-          value={value}
           suggestStructure={() => {
             const ownFunds = Calculator.suggestStructureForLoan({
               loan,
@@ -33,7 +32,8 @@ const RequiredOwnFunds = (props: RequiredOwnFundsProps) => {
             updateStructure({ ownFunds });
           }}
           disableForms={disableForms}
-          loan={loan}
+          {...props}
+          value={value}
         />
       )}
     </CalculatedValue>

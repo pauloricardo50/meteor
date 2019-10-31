@@ -37,6 +37,7 @@ export const proReferredByUsers = Users.createQuery(
 export const proUser = Users.createQuery(
   USER_QUERIES.PRO_USER,
   proUserFragment(),
+  { scoped: true },
 );
 
 export const userEmails = Users.createQuery(USER_QUERIES.USER_EMAILS, {

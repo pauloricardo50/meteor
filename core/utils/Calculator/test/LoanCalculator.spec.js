@@ -526,8 +526,54 @@ describe('LoanCalculator', () => {
   });
 
   describe('getMaxBorrowRatio', () => {
-    it('returns the max ratio for a loan', () => {
-      expect(Calculator.getMaxBorrowRatio({ loan: {} })).to.equal(0.8);
+    it('returns the max ratio for a loan without offer', () => {
+      expect(Calculator.getMaxBorrowRatio({
+        loan: { structures: [] },
+      })).to.equal(0.8);
+    });
+
+    it('returns the max ratio for a loan with an offer', () => {
+      expect(Calculator.getMaxBorrowRatio({
+        loan: {
+          structures: [
+            { id: 'struct1', propertyValue: 1000, offerId: 'offer1' },
+          ],
+          offers: [{ _id: 'offer1', maxAmount: 500 }],
+        },
+        structureId: 'struct1',
+      })).to.equal(0.5);
+    });
+
+    it('returns the max ratio for a loan with an offer with higher maxAmount than propertyValue', () => {
+      expect(Calculator.getMaxBorrowRatio({
+        loan: {
+          structures: [
+            { id: 'struct1', propertyValue: 1000, offerId: 'offer1' },
+          ],
+          offers: [{ _id: 'offer1', maxAmount: 1500 }],
+        },
+        structureId: 'struct1',
+      })).to.equal(1);
+    });
+
+    it('returns the max ratio for a loan with an offer and without propertyValue', () => {
+      expect(Calculator.getMaxBorrowRatio({
+        loan: {
+          structures: [{ id: 'struct1', offerId: 'offer1' }],
+          offers: [{ _id: 'offer1', maxAmount: 500 }],
+        },
+        structureId: 'struct1',
+      })).to.equal(0.8);
+    });
+
+    it('returns the max ratio for a loan with an offer and without propertyValue', () => {
+      const calc = new CalculatorClass({ maxBorrowRatio: 0.5 });
+      expect(calc.getMaxBorrowRatio({
+        loan: {
+          structures: [{ id: 'struct1' }],
+        },
+        structureId: 'struct1',
+      })).to.equal(0.5);
     });
   });
 
@@ -874,6 +920,283 @@ describe('LoanCalculator', () => {
         },
         structureId: 'struct1',
       })).to.be.within(720693, 720694);
+    });
+  });
+
+  describe('getBorrowRatioStatus', () => {
+    context('without an offer', () => {
+      it('returns SUCCESS when borrowRatio is lower than maxBorrowRatio', () => {
+        expect(Calculator.getBorrowRatioStatus({
+          loan: {
+            structures: [
+              { id: 'struct1', wantedLoan: 500, propertyValue: 1000 },
+            ],
+          },
+          structureId: 'struct1',
+        }).status).to.equal('SUCCESS');
+      });
+
+      it('returns WARNING when there are not enough pledged own funds', () => {
+        expect(Calculator.getBorrowRatioStatus({
+          loan: {
+            structures: [
+              { id: 'struct1', wantedLoan: 900, propertyValue: 1000 },
+            ],
+          },
+          structureId: 'struct1',
+        }).status).to.equal('WARNING');
+      });
+
+      it('returns ERROR when borrowRatio is greater than maxBorrowRatioWithPledge', () => {
+        expect(Calculator.getBorrowRatioStatus({
+          loan: {
+            structures: [
+              { id: 'struct1', wantedLoan: 950, propertyValue: 1000 },
+            ],
+          },
+          structureId: 'struct1',
+        }).status).to.equal('ERROR');
+      });
+
+      it('returns SUCCESS when there are enough pledged own funds', () => {
+        expect(Calculator.getBorrowRatioStatus({
+          loan: {
+            structures: [
+              {
+                id: 'struct1',
+                wantedLoan: 850,
+                propertyValue: 1000,
+                ownFunds: [
+                  {
+                    value: 50,
+                    usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                  },
+                ],
+              },
+            ],
+          },
+          structureId: 'struct1',
+        }).status).to.equal('SUCCESS');
+      });
+    });
+
+    context('with an offer', () => {
+      context(
+        'when offer maxBorrowRatio is lower than lender rules maxBorrowRatio',
+        () => {
+          it('returns SUCCESS if borrowRatio is lower than maxBorrowRatio', () => {
+            expect(Calculator.getBorrowRatioStatus({
+              loan: {
+                structures: [
+                  {
+                    id: 'struct1',
+                    wantedLoan: 750,
+                    propertyValue: 1000,
+                    offerId: 'offer1',
+                  },
+                ],
+                offers: [{ _id: 'offer1', maxAmount: 750 }],
+              },
+              structureId: 'struct1',
+            }).status).to.equal('SUCCESS');
+          });
+
+          it('returns ERROR if borrowRatio is greater than maxBorrowRatio', () => {
+            expect(Calculator.getBorrowRatioStatus({
+              loan: {
+                structures: [
+                  {
+                    id: 'struct1',
+                    wantedLoan: 760,
+                    propertyValue: 1000,
+                    offerId: 'offer1',
+                  },
+                ],
+                offers: [{ _id: 'offer1', maxAmount: 750 }],
+              },
+              structureId: 'struct1',
+            }).status).to.equal('ERROR');
+          });
+        },
+      );
+
+      context(
+        'when offer maxBorrowRatio is greater than lender rules maxBorrowRatio',
+        () => {
+          context(
+            'when maxBorrowRatio is greater than lender rules maxBorrowRatioWithPledge',
+            () => {
+              it('returns SUCCESS when borrowRatio is lower than lender rules maxBorrowRatio', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 750,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 950 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('SUCCESS');
+              });
+
+              it('returns WARNING when there are not enough pledged own funds', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 850,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 950 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('WARNING');
+
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 920,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 950 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('WARNING');
+              });
+
+              it('returns ERROR when borrowRatio is greater than maxBorrowRatio', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 960,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 950 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('ERROR');
+              });
+
+              it('returns SUCCESS when there are enough pledged own funds', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 950,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                        ownFunds: [
+                          {
+                            value: 150,
+                            usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                          },
+                        ],
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 950 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('SUCCESS');
+              });
+            },
+          );
+
+          context(
+            'when maxBorrowRatio is lower than lender rules maxBorrowRatioWithPledge',
+            () => {
+              it('returns SUCCESS when borrowRatio is lower than lender rules maxBorrowRatio', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 750,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 850 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('SUCCESS');
+              });
+
+              it('returns WARNING when there are not enough pledged own funds', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 810,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 850 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('WARNING');
+              });
+
+              it('returns ERROR when borrowRatio is greater than maxBorrowRatio', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 860,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 850 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('ERROR');
+              });
+
+              it('returns SUCCESS when there are enough pledged own funds', () => {
+                expect(Calculator.getBorrowRatioStatus({
+                  loan: {
+                    structures: [
+                      {
+                        id: 'struct1',
+                        wantedLoan: 820,
+                        propertyValue: 1000,
+                        offerId: 'offer1',
+                        ownFunds: [
+                          {
+                            value: 20,
+                            usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                          },
+                        ],
+                      },
+                    ],
+                    offers: [{ _id: 'offer1', maxAmount: 850 }],
+                  },
+                  structureId: 'struct1',
+                }).status).to.equal('SUCCESS');
+              });
+            },
+          );
+        },
+      );
     });
   });
 });

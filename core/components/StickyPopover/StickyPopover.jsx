@@ -74,6 +74,7 @@ export default class PopoverStickOnHover extends React.Component {
           onMouseEnter={this.handleMousePopoverEnter}
           onMouseLeave={this.handleMouseLeave}
           onClick={e => e.stopPropagation()}
+          style={{ zIndex: 9999 }}
         >
           <Paper style={{ padding: 8 }} elevation={15} className="popover-content">
             {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}

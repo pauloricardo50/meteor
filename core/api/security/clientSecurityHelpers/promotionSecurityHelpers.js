@@ -229,10 +229,7 @@ export const isAllowedToSellPromotionLotToCustomer = ({
   );
 };
 
-export const isAllowedToSeeManagement = ({
-  promotion,
-  currentUser,
-}) => {
+export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
   const requiredPermissions = { canSeeManagement: true };
 
