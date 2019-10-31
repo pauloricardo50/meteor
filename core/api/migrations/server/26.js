@@ -5,10 +5,10 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants'
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import PromotionService from '../../promotions/server/PromotionService';
 import {
-  AGREEMENT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  DEPOSIT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
 } from '../../promotionOptions/promotionOptionConstants';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 
@@ -22,7 +22,7 @@ const handlePromotionOptions = async () => {
   const promotionOptions = PromotionOptionService.fetch({ loan: { _id: 1 } });
 
   return Promise.all(promotionOptions.map(async ({ _id: promotionOptionId, loan: { _id: loanId } }) => {
-    await PromotionOptionService.setInitialUserMortgageCertification({
+    await PromotionOptionService.setInitialSimpleVerification({
       promotionOptionId,
       loanId,
     });
@@ -34,8 +34,7 @@ const handlePromotionOptions = async () => {
         bank: { date: new Date() },
         deposit: { date: new Date() },
         reservationAgreement: { date: new Date() },
-        ePotekMortgageCertification: { date: new Date() },
-        mortgageCertificationOfPrinciple: { date: new Date() },
+        fullVerification: { date: new Date() },
       },
       $unset: {
         proNote: true,
@@ -70,7 +69,7 @@ const handleBookedLots = async () => {
         loan: { _id: loanId },
       } = promotionOption;
 
-      PromotionOptionService.setInitialUserMortgageCertification({
+      PromotionOptionService.setInitialSimpleVerification({
         promotionOptionId: promotionOption._id,
         loanId,
       });
@@ -79,11 +78,10 @@ const handleBookedLots = async () => {
         $set: {
           status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
           reservationAgreement: {
-            status: AGREEMENT_STATUS.WAITING,
+            status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
             date: new Date(),
           },
-          ePotekMortgageCertification: { date: new Date() },
-          mortgageCertificationOfPrinciple: { date: new Date() },
+          fullVerification: { date: new Date() },
         },
       });
     }
@@ -119,7 +117,7 @@ const handleSoldLots = async () => {
         $set: {
           status: PROMOTION_OPTION_STATUS.SOLD,
           reservationAgreement: {
-            status: AGREEMENT_STATUS.WAITING,
+            status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
             date: new Date(),
           },
           bank: {
@@ -128,14 +126,13 @@ const handleSoldLots = async () => {
           },
           deposit: {
             date: new Date(),
-            status: DEPOSIT_STATUS.PAID,
+            status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
           },
-          ePotekMortgageCertification: { date: new Date() },
-          mortgageCertificationOfPrinciple: { date: new Date() },
+          fullVerification: { date: new Date() },
         },
       });
 
-      PromotionOptionService.setInitialUserMortgageCertification({
+      PromotionOptionService.setInitialSimpleVerification({
         promotionOptionId: promotionOption._id,
         loanId,
       });
@@ -152,11 +149,11 @@ export const up = async () => {
 
 export const down = async () => {
   const promotionOptions = PromotionOptionService.fetch({
-    userMortgageCertification: { status: 1 },
+    simpleVerification: { status: 1 },
   });
 
   return Promise.all(promotionOptions.map((promotionOption) => {
-    const { userMortgageCertification: { status } = {} } = promotionOption;
+    const { simpleVerification: { status } = {} } = promotionOption;
     return PromotionOptions.rawCollection().update(
       {},
       {
@@ -165,9 +162,8 @@ export const down = async () => {
           reservationAgreement: true,
           bank: true,
           deposit: true,
-          userMortgageCertification: true,
-          mortgageCertificationOfPrinciple: true,
-          ePotekMortgageCertification: true,
+          simpleVerification: true,
+          fullVerification: true,
         },
         $set: { solvency: status },
       },

@@ -46,7 +46,7 @@ export class PromotionLotService extends CollectionService {
 
     return PromotionOptionService.updateStatus({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.BOOKED,
+      status: PROMOTION_OPTION_STATUS.RESERVED,
     })
       .then(() => {
         this.addLink({
@@ -55,6 +55,11 @@ export class PromotionLotService extends CollectionService {
           linkId: loanId,
         });
       })
+      .then(() =>
+        this.update({
+          promotionLotId,
+          object: { status: PROMOTION_LOT_STATUS.BOOKED },
+        }))
       .catch((error) => {
         throw error;
       });
@@ -108,7 +113,8 @@ export class PromotionLotService extends CollectionService {
       promotionLots: { _id: 1 },
       bank: 1,
       deposit: 1,
-      mortgageCertification: 1,
+      simpleVerification: 1,
+      fullVerification: 1,
       reservationAgreement: 1,
     });
     const { promotionLots } = promotionOption;

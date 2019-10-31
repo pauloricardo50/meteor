@@ -57,6 +57,10 @@ bookPromotionLot.setHandler(({ userId }, params) => {
     promotionOptionId,
     userId,
   });
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
+    userId,
+  });
   return PromotionLotService.bookPromotionLot(params);
 });
 

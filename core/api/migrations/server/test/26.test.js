@@ -5,9 +5,9 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
 import {
-  PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS,
-  PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS,
   PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
 } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
@@ -15,13 +15,13 @@ import generator from '../../../factories/index';
 import {
   PROMOTION_LOT_STATUS,
   PROMOTION_OPTION_STATUS,
-  AGREEMENT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  DEPOSIT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
 } from '../../../constants';
 import { up, down } from '../26';
 
-describe.only('Migration 26', () => {
+describe('Migration 26', () => {
   beforeEach(() => resetDatabase());
 
   describe('up', () => {
@@ -80,28 +80,25 @@ describe.only('Migration 26', () => {
       const today = moment().format('YYYY MM DD');
 
       promotionOptions.forEach(({
-        userMortgageCertification,
-        ePotekMortgageCertification,
-        mortgageCertificationOfPrinciple,
+        simpleVerification,
+        fullVerification,
         adminNote,
         bank,
         deposit,
         reservationAgreement,
       }) => {
-        expect(moment(userMortgageCertification.date).format('YYYY MM DD')).to.equal(today);
-        expect(userMortgageCertification.status).to.equal(PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE);
-        expect(moment(ePotekMortgageCertification.date).format('YYYY MM DD')).to.equal(today);
-        expect(ePotekMortgageCertification.status).to.equal(PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE);
-        expect(moment(mortgageCertificationOfPrinciple.date).format('YYYY MM DD')).to.equal(today);
-        expect(mortgageCertificationOfPrinciple.status).to.equal(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS.INCOMPLETE);
+        expect(moment(simpleVerification.date).format('YYYY MM DD')).to.equal(today);
+        expect(simpleVerification.status).to.equal(PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE);
+        expect(moment(fullVerification.date).format('YYYY MM DD')).to.equal(today);
+        expect(fullVerification.status).to.equal(PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE);
         expect(moment(adminNote.date).format('YYYY MM DD')).to.equal(today);
         expect(adminNote.note).to.equal('');
         expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
         expect(bank.status).to.equal(PROMOTION_OPTION_BANK_STATUS.INCOMPLETE);
         expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
-        expect(deposit.status).to.equal(DEPOSIT_STATUS.UNPAID);
+        expect(deposit.status).to.equal(PROMOTION_OPTION_DEPOSIT_STATUS.WAITING);
         expect(moment(reservationAgreement.date).format('YYYY MM DD')).to.equal(today);
-        expect(reservationAgreement.status).to.equal(AGREEMENT_STATUS.WAITING);
+        expect(reservationAgreement.status).to.equal(PROMOTION_OPTION_AGREEMENT_STATUS.WAITING);
       });
     });
 
@@ -171,7 +168,7 @@ describe.only('Migration 26', () => {
 
       const pOs = PromotionOptionService.find({}).fetch();
       expect(pOs[0].reservationAgreement).to.deep.include({
-        status: AGREEMENT_STATUS.WAITING,
+        status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
       });
     });
 
@@ -197,13 +194,13 @@ describe.only('Migration 26', () => {
 
       const pOs = PromotionOptionService.find({}).fetch();
       expect(pOs[0].reservationAgreement).to.deep.include({
-        status: AGREEMENT_STATUS.WAITING,
+        status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
       });
       expect(pOs[0].bank).to.deep.include({
         status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
       });
       expect(pOs[0].deposit).to.deep.include({
-        status: DEPOSIT_STATUS.PAID,
+        status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
       });
     });
   });

@@ -4,13 +4,13 @@ import moment from 'moment';
 import { asyncForEach } from '../../helpers/index';
 import { expirePromotionLotBooking } from '../../promotionLots/server/serverMethods';
 import {
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
-  AGREEMENT_STATUS,
-  DEPOSIT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../promotionOptionConstants';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
@@ -147,7 +147,7 @@ export class PromotionOptionService extends CollectionService {
       priorityOrder: [...priorityOrder, promotionOptionId],
     });
 
-    this.setInitialUserMortgageCertification({ promotionOptionId, loanId });
+    this.setInitialSimpleVerification({ promotionOptionId, loanId });
 
     return promotionOptionId;
   };
@@ -194,53 +194,46 @@ export class PromotionOptionService extends CollectionService {
 
   updateStatus({ promotionOptionId, status }) {
     this._update({ id: promotionOptionId, object: { status } });
+    return Promise.resolve();
   }
 
-  updateUserMortgageCertification({ promotionOptionId, status, date }) {
+  updateSimpleVerification({ promotionOptionId, status, date }) {
     return this.updateStatusObject({
       promotionOptionId,
-      id: 'userMortgageCertification',
+      id: 'simpleVerification',
       object: { status, date },
     });
   }
 
-  setInitialUserMortgageCertification({ promotionOptionId, loanId }) {
+  setInitialSimpleVerification({ promotionOptionId, loanId }) {
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       maxPropertyValue: { date: 1 },
     });
 
-    this.updateUserMortgageCertification({
+    this.updateSimpleVerification({
       promotionOptionId,
-      ...this.getInitialUserMortgageCertification({ loan }),
+      ...this.getInitialSimpleVerification({ loan }),
     });
   }
 
-  getInitialUserMortgageCertification({ loan }) {
+  getInitialSimpleVerification({ loan }) {
     const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
-    let status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE;
+    let status = PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE;
     let date = new Date();
 
     if (maxPropertyValueDate) {
       date = maxPropertyValueDate;
-      status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED;
+      status = PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED;
     }
 
     return { status, date };
   }
 
-  updateMortgageCertificationOfPrinciple({ promotionOptionId, status, date }) {
+  updateFullVerification({ promotionOptionId, status, date }) {
     return this.updateStatusObject({
       promotionOptionId,
-      id: 'mortgageCertificationOfPrinciple',
-      object: { status, date },
-    });
-  }
-
-  updateEPotekMortgageCertification({ promotionOptionId, status, date }) {
-    return this.updateStatusObject({
-      promotionOptionId,
-      id: 'ePotekMortgageCertification',
+      id: 'fullVerification',
       object: { status, date },
     });
   }
@@ -289,9 +282,12 @@ export class PromotionOptionService extends CollectionService {
           startDate,
           expirationDate,
           date: startDate,
-          status: AGREEMENT_STATUS.RECEIVED,
+          status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
         },
-        deposit: { status: DEPOSIT_STATUS.UNPAID, date: startDate },
+        deposit: {
+          status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
+          date: startDate,
+        },
       },
     });
 
@@ -357,7 +353,7 @@ export class PromotionOptionService extends CollectionService {
     this.updateStatusObject({
       promotionOptionId,
       id: 'reservationAgreement',
-      object: { status: AGREEMENT_STATUS.WAITING },
+      object: { status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
@@ -376,7 +372,7 @@ export class PromotionOptionService extends CollectionService {
     this.updateStatusObject({
       promotionOptionId,
       id: 'reservationAgreement',
-      object: { status: AGREEMENT_STATUS.WAITING },
+      object: { status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
@@ -409,9 +405,8 @@ export class PromotionOptionService extends CollectionService {
       adminNote: 1,
       bank: 1,
       deposit: 1,
-      userMortgageCertification: 1,
-      ePotekMortgageCertification: 1,
-      mortgageCertificationOfPrinciple: 1,
+      simpleVerification: 1,
+      fullVerification: 1,
       reservationAgreement: 1,
     });
     const changedKeys = Object.keys(object).filter((key) => {

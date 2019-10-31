@@ -163,6 +163,17 @@ describe('PromotionLotService', function () {
 
     it('does not let a lot be booked by a pro who did not invite the customer', async () => {
       const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro2');
+      PromotionService.setUserPermissions({
+        promotionId: 'promoId',
+        userId: 'pro2',
+        permissions: {
+          displayCustomerNames: {
+            invitedBy: 'USER',
+            forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+          },
+          canBookLots: true,
+        },
+      });
 
       return ddpWithUserId('pro2', () =>
         bookPromotionLot.run({
@@ -172,7 +183,7 @@ describe('PromotionLotService', function () {
         }))
         .then(() => expect(1).to.equal(2, 'Should throw'))
         .catch(error =>
-          expect(error.message).to.include('Vous ne pouvez pas réserver de lot à ce client'));
+          expect(error.message).to.include('Vous ne pouvez pas gérer la réservation'));
     });
 
     it('does not let a lot be booked by a pro who cannot book lots', async () => {
@@ -186,7 +197,7 @@ describe('PromotionLotService', function () {
         }))
         .then(() => expect(1).to.equal(2, 'Should throw'))
         .catch(error =>
-          expect(error.message).to.include('Vous ne pouvez pas réserver de lot à ce client'));
+          expect(error.message).to.include('Vous ne pouvez pas réserver des lots'));
     });
 
     it('can book, cancel, and then reactivate an existing promotionReservation', async () => {
@@ -221,13 +232,13 @@ describe('PromotionLotService', function () {
       await PromotionLotService.bookPromotionLot({
         promotionOptionId: 'pOptId',
         startDate: moment().format('YYYY-MM-DD'),
-        agreementFileKeys: [reservationAgreementFileKey]
+        agreementFileKeys: [reservationAgreementFileKey],
       });
 
       pO = PromotionOptionService.get('pOptId');
       pL = PromotionLotService.get('promotionLotId');
-      expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE);
-      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.PRE_BOOKED);
+      expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
     });
   });
 });

@@ -3,14 +3,12 @@ import { documentsField } from 'core/api/helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import {
-  DEPOSIT_STATUS,
-  AGREEMENT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
-  PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS,
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS,
-  PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
 } from '../promotionOptionConstants';
 
 const dateAutoValue = (triggerField = 'status') =>
@@ -54,8 +52,8 @@ const PromotionOptionSchema = new SimpleSchema({
   reservationAgreement: { type: Object, defaultValue: {} },
   'reservationAgreement.status': {
     type: String,
-    allowedValues: Object.values(AGREEMENT_STATUS),
-    defaultValue: AGREEMENT_STATUS.WAITING,
+    allowedValues: Object.values(PROMOTION_OPTION_AGREEMENT_STATUS),
+    defaultValue: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
     uniforms: { placeholder: null },
   },
   'reservationAgreement.date': {
@@ -79,8 +77,8 @@ const PromotionOptionSchema = new SimpleSchema({
   deposit: { type: Object, defaultValue: {} },
   'deposit.status': {
     type: String,
-    allowedValues: Object.values(DEPOSIT_STATUS),
-    defaultValue: DEPOSIT_STATUS.UNPAID,
+    allowedValues: Object.values(PROMOTION_OPTION_DEPOSIT_STATUS),
+    defaultValue: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
     uniforms: { placeholder: null },
   },
   'deposit.date': {
@@ -100,41 +98,24 @@ const PromotionOptionSchema = new SimpleSchema({
     autoValue: dateAutoValue(),
     optional: true,
   },
-  userMortgageCertification: { type: Object, defaultValue: {} },
-  'userMortgageCertification.status': {
+  simpleVerification: { type: Object, defaultValue: {} },
+  'simpleVerification.status': {
     type: String,
-    allowedValues: Object.values(PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue:
-      PROMOTION_OPTION_USER_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE,
-    uniforms: { placeholder: null },
+    allowedValues: Object.values(PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS),
+    defaultValue: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
   },
-  'userMortgageCertification.date': {
+  'simpleVerification.date': {
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,
   },
-  mortgageCertificationOfPrinciple: { type: Object, defaultValue: {} },
-  'mortgageCertificationOfPrinciple.status': {
+  fullVerification: { type: Object, defaultValue: {} },
+  'fullVerification.status': {
     type: String,
-    allowedValues: Object.values(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS),
-    defaultValue:
-      PROMOTION_OPTION_MORTGAGE_CERTIFICATION_OF_PRINCIPLE_STATUS.INCOMPLETE,
-    uniforms: { placeholder: null },
+    allowedValues: Object.values(PROMOTION_OPTION_FULL_VERIFICATION_STATUS),
+    defaultValue: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE,
   },
-  'mortgageCertificationOfPrinciple.date': {
-    type: Date,
-    autoValue: dateAutoValue(),
-    optional: true,
-  },
-  ePotekMortgageCertification: { type: Object, defaultValue: {} },
-  'ePotekMortgageCertification.status': {
-    type: String,
-    allowedValues: Object.values(PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue:
-      PROMOTION_OPTION_EPOTEK_MORTGAGE_CERTIFICATION_STATUS.INCOMPLETE,
-    uniforms: { placeholder: null },
-  },
-  'ePotekMortgageCertification.date': {
+  'fullVerification.date': {
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,
