@@ -211,9 +211,11 @@ export class PromotionOptionService extends CollectionService {
       maxPropertyValue: { date: 1 },
     });
 
-    this.updateSimpleVerification({
-      promotionOptionId,
-      ...this.getInitialSimpleVerification({ loan }),
+    this._update({
+      id: promotionOptionId,
+      object: {
+        simpleVerification: { ...this.getInitialSimpleVerification({ loan }) },
+      },
     });
   }
 
