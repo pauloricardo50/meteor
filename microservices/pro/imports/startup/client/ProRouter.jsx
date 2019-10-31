@@ -1,11 +1,6 @@
 // @flow
 import React from 'react';
 
-// // Add this to prevent .finally errors on MS Edge
-// //
-// import 'babel-polyfill';
-// import 'core-js/modules/es7.promise.finally';
-
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 

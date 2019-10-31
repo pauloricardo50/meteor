@@ -13,16 +13,17 @@ const AppRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
-    WrapperComponent={AppStore}
     routes={APP_ROUTES}
   >
-    <AppLayout>
-      <Switch>
-        {Object.keys(APP_ROUTES).map(route => (
-          <Route {...APP_ROUTES[route]} key={route} />
-        ))}
-      </Switch>
-    </AppLayout>
+    <AppStore>
+      <AppLayout>
+        <Switch>
+          {Object.keys(APP_ROUTES).map(route => (
+            <Route {...APP_ROUTES[route]} key={route} />
+          ))}
+        </Switch>
+      </AppLayout>
+    </AppStore>
   </BaseRouter>
 );
 

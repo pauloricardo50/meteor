@@ -30,7 +30,7 @@ describe('Pro promotion', () => {
       cy.visit('/');
     });
 
-    it('can access the promotion users tab', () => {
+    it.only('can access the promotion users tab', () => {
       cy.callMethod('removeAllPromotions');
       cy.callMethod('insertFullPromotion');
       cy.callMethod('addProUsersToPromotion');
@@ -82,6 +82,10 @@ describe('Pro promotion', () => {
           cy.wrap(tr)
             .get('.button')
             .should('not.exist');
+          cy.wrap(tr)
+            .find('.icon-link')
+            .last()
+            .trigger('mouseleave');
         });
 
       // customers are invited by user's organisation member

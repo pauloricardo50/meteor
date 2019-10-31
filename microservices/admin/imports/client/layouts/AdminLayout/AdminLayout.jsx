@@ -41,7 +41,6 @@ const getRedirect = ({ currentUser, history }) => {
 };
 
 const routeHasNoPadding = (pathname) => {
-  console.log('routeHasNoPadding:', pathname);
   if (pathname.startsWith('/loan-board')) {
     return true;
   }

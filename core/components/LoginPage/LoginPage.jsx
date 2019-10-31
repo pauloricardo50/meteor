@@ -1,6 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { Redirect } from 'react-router-dom';
@@ -8,11 +6,13 @@ import { Redirect } from 'react-router-dom';
 import PageHead from '../PageHead';
 import LoginPageLeft from './LoginPageLeft';
 import LoginPageRight from './LoginPageRight';
+import { CurrentUserContext } from '../../containers/CurrentUserContext';
 
 const LoginPage = ({ location: { search }, history: { push } }) => {
   const { path } = queryString.parse(search);
+  const currentUser = useContext(CurrentUserContext);
 
-  if (Meteor.userId()) {
+  if (currentUser) {
     return <Redirect to="/" />;
   }
 

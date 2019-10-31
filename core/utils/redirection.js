@@ -39,11 +39,6 @@ export const getRedirectIfInRoleForOtherApp = (currentUser, role, app) => {
   return url.join('');
 };
 
-const redirectIfInRoleForOtherApp = (...args) => {
-  const url = getRedirectIfInRoleForOtherApp(...args);
-  if (url) window.location.replace(url);
-};
-
 const getBaseRedirect = (currentUser, pathname, withoutLoginRoutes = []) => {
   if (!currentUser) {
     const allowedRoutes = [...WITHOUT_LOGIN, ...withoutLoginRoutes];
