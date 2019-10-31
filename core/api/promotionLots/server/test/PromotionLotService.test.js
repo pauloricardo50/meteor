@@ -10,7 +10,7 @@ import PromotionService from 'core/api/promotions/server/PromotionService';
 import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 import generator from '../../../factories';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
-import { bookPromotionLot } from '../../../methods/index';
+import { reservePromotionLot } from '../../../methods/index';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
@@ -105,7 +105,7 @@ describe('PromotionLotService', function () {
     });
   });
 
-  describe('bookPromotionLot', () => {
+  describe('reservePromotionLot', () => {
     it('sends emails to those who need it', async () => {
       const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
       PromotionService.setUserPermissions({
@@ -116,12 +116,12 @@ describe('PromotionLotService', function () {
             invitedBy: 'USER',
             forLotStatus: Object.values(PROMOTION_LOT_STATUS),
           },
-          canBookLots: true,
+          canReserveLots: true,
         },
       });
 
       return ddpWithUserId('pro1', () =>
-        bookPromotionLot.run({
+        reservePromotionLot.run({
           promotionOptionId: 'pOptId',
           startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
@@ -161,7 +161,7 @@ describe('PromotionLotService', function () {
         });
     });
 
-    it('does not let a lot be booked by a pro who did not invite the customer', async () => {
+    it('does not let a lot be reserved by a pro who did not invite the customer', async () => {
       const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro2');
       PromotionService.setUserPermissions({
         promotionId: 'promoId',
@@ -171,12 +171,12 @@ describe('PromotionLotService', function () {
             invitedBy: 'USER',
             forLotStatus: Object.values(PROMOTION_LOT_STATUS),
           },
-          canBookLots: true,
+          canReserveLots: true,
         },
       });
 
       return ddpWithUserId('pro2', () =>
-        bookPromotionLot.run({
+        reservePromotionLot.run({
           promotionOptionId: 'pOptId',
           startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
@@ -186,11 +186,11 @@ describe('PromotionLotService', function () {
           expect(error.message).to.include('Vous ne pouvez pas gérer la réservation'));
     });
 
-    it('does not let a lot be booked by a pro who cannot book lots', async () => {
+    it('does not let a lot be reserved by a pro who cannot reserve lots', async () => {
       const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
 
       return ddpWithUserId('pro1', () =>
-        bookPromotionLot.run({
+        reservePromotionLot.run({
           promotionOptionId: 'pOptId',
           startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
@@ -200,10 +200,10 @@ describe('PromotionLotService', function () {
           expect(error.message).to.include('Vous ne pouvez pas réserver des lots'));
     });
 
-    it('can book, cancel, and then reactivate an existing promotionReservation', async () => {
+    it('can reserve, cancel, and then reactivate an existing promotionReservation', async () => {
       let reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
 
-      await PromotionLotService.bookPromotionLot({
+      await PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',
         startDate: moment().format('YYYY-MM-DD'),
         agreementFileKeys: [reservationAgreementFileKey],
@@ -218,7 +218,7 @@ describe('PromotionLotService', function () {
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.SOLD);
 
-      PromotionLotService.cancelPromotionLotBooking({
+      PromotionLotService.cancelPromotionLotReservation({
         promotionOptionId: 'pOptId',
       });
 
@@ -229,7 +229,7 @@ describe('PromotionLotService', function () {
 
       reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
 
-      await PromotionLotService.bookPromotionLot({
+      await PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',
         startDate: moment().format('YYYY-MM-DD'),
         agreementFileKeys: [reservationAgreementFileKey],
@@ -238,7 +238,7 @@ describe('PromotionLotService', function () {
       pO = PromotionOptionService.get('pOptId');
       pL = PromotionLotService.get('promotionLotId');
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
-      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
     });
   });
 });

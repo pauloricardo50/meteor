@@ -40,7 +40,7 @@ export const promotionInviteNotification = ({
   });
 };
 
-export const promotionLotBooked = ({
+export const promotionLotReserved = ({
   currentUser,
   promotionLot,
   user: { name },

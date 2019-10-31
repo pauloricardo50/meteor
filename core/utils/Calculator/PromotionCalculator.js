@@ -140,7 +140,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       ].includes(status);
     }
 
-    canConfirmPromotionLotBooking({
+    canConfirmPromotionLotReservation({
       promotionOption: {
         bank,
         simpleVerification,

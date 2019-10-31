@@ -156,7 +156,7 @@ export const makeLoanAnonymizer = ({
 
     if (!promotionLotId) {
       // If no promotionLot is passed here, we get the best one from the loan
-      // For statuses BOOKED and SOLD, we check that it is attributed to
+      // For statuses RESERVED and SOLD, we check that it is attributed to
       // this loan
       promotionLotStatus = getBestPromotionLotStatus({ loanId });
       isAttributed = true;

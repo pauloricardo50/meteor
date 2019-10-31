@@ -525,8 +525,8 @@ describe('Collection Security', () => {
                 user: {},
                 promotionOptions: {
                   promotionLots: {
-                    _id: 'bookedPromotionLot',
-                    status: 'BOOKED',
+                    _id: 'reservedPromotionLot',
+                    status: 'RESERVED',
                     propertyLinks: [{ _id: 'prop' }],
                     attributedTo: { _id: 'loanId' },
                   },

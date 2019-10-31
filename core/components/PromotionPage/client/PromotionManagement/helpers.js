@@ -51,19 +51,19 @@ export const getTotalValue = (promotionLots = []) =>
 
 export const getGroupedLots = (promotionLots = []) => {
   const availableLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.AVAILABLE);
-  const bookedLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.BOOKED);
+  const reservedLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.RESERVED);
   const soldLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.SOLD);
 
-  return { availableLots, bookedLots, soldLots };
+  return { availableLots, reservedLots, soldLots };
 };
 
 export const getTotalValueByStatus = (promotionLots = [], status) => {
-  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
   let totalValue = 0;
 
   switch (status) {
-  case PROMOTION_LOT_STATUS.BOOKED:
-    totalValue = bookedLots.reduce((total, { value }) => total + value, 0);
+  case PROMOTION_LOT_STATUS.RESERVED:
+    totalValue = reservedLots.reduce((total, { value }) => total + value, 0);
     break;
   case PROMOTION_LOT_STATUS.SOLD:
     totalValue = soldLots.reduce((total, { value }) => total + value, 0);
@@ -72,7 +72,7 @@ export const getTotalValueByStatus = (promotionLots = [], status) => {
     totalValue = availableLots.reduce((total, { value }) => total + value, 0);
     break;
   case 'ALL':
-    totalValue = [...bookedLots, ...soldLots, ...availableLots].reduce(
+    totalValue = [...reservedLots, ...soldLots, ...availableLots].reduce(
       (total, { value }) => total + value,
       0,
     );

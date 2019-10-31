@@ -57,7 +57,7 @@ const LotsTable = ({
         schema={canModifyLots && schema}
         title={<T id="PromotionPage.modifyLot" />}
         allow={({ status }) =>
-          ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(status)
+          ![PROMOTION_LOT_STATUS.RESERVED, PROMOTION_LOT_STATUS.SOLD].includes(status)
         }
         onSubmit={({
           _id: lotId,

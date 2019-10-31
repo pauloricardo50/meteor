@@ -9,7 +9,7 @@ import {
   anonymousCreateUser,
   proInviteUser,
   loanShareSolvency,
-  bookPromotionLot,
+  reservePromotionLot,
 } from '../../methods';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
@@ -152,7 +152,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  [bookPromotionLot],
+  [reservePromotionLot],
   ({ context: { userId }, params: { promotionOptionId } }) => {
     const {
       loan: { _id: loanId, user: { name: userName } = {} },

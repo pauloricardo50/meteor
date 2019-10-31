@@ -116,7 +116,7 @@ export default {
         _id,
         $body: {
           availablePromotionLots: 1,
-          bookedPromotionLots: 1,
+          reservedPromotionLots: 1,
           documents: { promotionImage: 1 },
           lenderOrganisation: { name: 1 },
           name: 1,

@@ -40,8 +40,8 @@ export const removeLotLink = new Method({
   },
 });
 
-export const bookPromotionLot = new Method({
-  name: 'bookPromotionLot',
+export const reservePromotionLot = new Method({
+  name: 'reservePromotionLot',
   params: {
     promotionOptionId: String,
     startDate: Match.Maybe(Match.OneOf(Date, String, null)),
@@ -49,15 +49,15 @@ export const bookPromotionLot = new Method({
   },
 });
 
-export const cancelPromotionLotBooking = new Method({
-  name: 'cancelPromotionLotBooking',
+export const cancelPromotionLotReservation = new Method({
+  name: 'cancelPromotionLotReservation',
   params: {
     promotionOptionId: String,
   },
 });
 
-export const confirmPromotionLotBooking = new Method({
-  name: 'confirmPromotionLotBooking',
+export const confirmPromotionLotReservation = new Method({
+  name: 'confirmPromotionLotReservation',
   params: {
     promotionOptionId: String,
   },

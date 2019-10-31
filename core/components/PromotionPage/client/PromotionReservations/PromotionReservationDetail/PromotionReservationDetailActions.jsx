@@ -4,13 +4,13 @@ import React, { useContext } from 'react';
 import { withProps } from 'recompose';
 
 import {
-  confirmPromotionLotBooking,
+  confirmPromotionLotReservation,
   sellPromotionLot,
-  cancelPromotionLotBooking,
+  cancelPromotionLotReservation,
 } from 'core/api/methods';
 import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { isAllowedToBookPromotionLotToCustomer } from 'core/api/security/clientSecurityHelpers/index';
+import { isAllowedToReservePromotionLotToCustomer } from 'core/api/security/clientSecurityHelpers/index';
 import Calculator from 'core/utils/Calculator';
 import { PROMOTION_OPTION_STATUS } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import ConfirmMethod from '../../../../ConfirmMethod';
@@ -48,7 +48,7 @@ const PromotionReservationDetailActions = ({
         <ConfirmMethod
           buttonProps={{ className: 'mr-8', error: true, outlined: true }}
           label="Annuler réservation"
-          method={() => cancelPromotionLotBooking.run({ promotionOptionId })}
+          method={() => cancelPromotionLotReservation.run({ promotionOptionId })}
           description={(
             <span>
               Ce lot deviendra a nouveau disponible.
@@ -81,7 +81,7 @@ const PromotionReservationDetailActions = ({
               : undefined,
           }}
           label="Confirmer réservation"
-          method={() => confirmPromotionLotBooking.run({ promotionOptionId })}
+          method={() => confirmPromotionLotReservation.run({ promotionOptionId })}
           description={(
             <span>
               Vous confirmez que ce lot est maintenant réservé pour ce client?
@@ -129,7 +129,7 @@ export default withProps(({ promotionOption }) => {
     invitedBy,
     currentUser,
   });
-  const isAllowedToBookLot = isAllowedToBookPromotionLotToCustomer({
+  const isAllowedToReserveLot = isAllowedToReservePromotionLotToCustomer({
     promotion,
     currentUser,
     customerOwnerType,
@@ -140,17 +140,17 @@ export default withProps(({ promotionOption }) => {
     PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
     PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-  ].includes(status) && isAllowedToBookLot;
+  ].includes(status) && isAllowedToReserveLot;
   const canCancelReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
     PROMOTION_OPTION_STATUS.RESERVED,
     PROMOTION_OPTION_STATUS.SOLD,
   ].includes(status) && isAdmin;
   const canActivateReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED
-    && isAllowedToBookLot;
+    && isAllowedToReserveLot;
   const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
   const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
-  const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotBooking({ promotionOption });
+  const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotReservation({ promotionOption });
 
   return {
     agreementDuration,

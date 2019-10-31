@@ -13,6 +13,6 @@ const promotionLotStatusReducer = status => ({
 Promotions.addReducers({
   ...addressReducer,
   soldPromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.SOLD),
-  bookedPromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.BOOKED),
+  reservedPromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.RESERVED),
   availablePromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.AVAILABLE),
 });

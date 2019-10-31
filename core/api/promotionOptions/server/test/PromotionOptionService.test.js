@@ -719,19 +719,19 @@ describe('PromotionOptionService', function () {
           promotionLots: [
             makePromotionLotWithReservation({
               key: 1,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: yesterday,
             }),
             makePromotionLotWithReservation({
               key: 2,
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
               expirationDate: today,
             }),
             makePromotionLotWithReservation({
               key: 3,
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
               expirationDate: tomorrow,
             }),
@@ -765,11 +765,11 @@ describe('PromotionOptionService', function () {
       expect(pL1.attributedTo).to.equal(undefined);
       expect(pL1.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED);
 
-      expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
       expect(pL2.attributedTo).to.deep.include({ _id: 'loan2' });
       expect(pL2.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
 
-      expect(pL3.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL3.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
       expect(pL3.attributedTo).to.deep.include({ _id: 'loan3' });
       expect(pL3.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
 
@@ -890,31 +890,31 @@ describe('PromotionOptionService', function () {
           promotionLots: [
             makePromotionLotWithReservation({
               key: 1,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: in2Days,
             }),
             makePromotionLotWithReservation({
               key: 2,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: today,
             }),
             makePromotionLotWithReservation({
               key: 3,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: tomorrow,
             }),
             makePromotionLotWithReservation({
               key: 4,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: in3Days,
             }),
             makePromotionLotWithReservation({
               key: 4,
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
               expirationDate: tomorrow,
             }),

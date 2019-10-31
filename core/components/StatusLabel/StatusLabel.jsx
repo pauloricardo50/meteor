@@ -62,11 +62,10 @@ export const getStatuses = (collection) => {
   case PROMOTION_LOTS_COLLECTION:
     return {
       [PROMOTION_LOT_STATUS.AVAILABLE]: colors.success,
-      [PROMOTION_LOT_STATUS.PRE_BOOKED]: colors.secondary,
-      [PROMOTION_LOT_STATUS.BOOKED]: colors.primary,
+      [PROMOTION_LOT_STATUS.RESERVED]: colors.primary,
       [PROMOTION_LOT_STATUS.SOLD]: colors.error,
       [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.tertiary,
-      [PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME]: colors.primary,
+      [PROMOTION_LOT_REDUCED_STATUS.RESERVED_FOR_ME]: colors.primary,
       [PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE]: colors.warning,
     };
 

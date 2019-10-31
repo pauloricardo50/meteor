@@ -14,8 +14,8 @@ import {
   isAllowedToModifyPromotionLots,
   isAllowedToRemovePromotionLots,
   isAllowedToViewPromotion,
-  isAllowedToBookPromotionLots,
-  isAllowedToBookPromotionLotToCustomer,
+  isAllowedToReservePromotionLots,
+  isAllowedToReservePromotionLotToCustomer,
   isAllowedToManageCustomerPromotionReservation,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
@@ -259,7 +259,7 @@ class PromotionSecurity {
     });
   }
 
-  static isAllowedToBookLots({ promotionOptionId, promotionLotId, userId }) {
+  static isAllowedToReserveLots({ promotionOptionId, promotionLotId, userId }) {
     let lotId;
 
     if (promotionOptionId) {
@@ -276,7 +276,7 @@ class PromotionSecurity {
         promotionLotId: lotId || promotionLotId,
       }),
       userId,
-      checkingFunction: isAllowedToBookPromotionLots,
+      checkingFunction: isAllowedToReservePromotionLots,
       errorMessage: 'Vous ne pouvez pas réserver des lots dans cette promotion',
     });
   }
@@ -329,7 +329,7 @@ class PromotionSecurity {
     }
   }
 
-  static isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId }) {
+  static isAllowedToReserveLotToCustomer({ promotionLotId, loanId, userId }) {
     if (Security.isUserAdmin(userId)) {
       return;
     }
@@ -361,7 +361,7 @@ class PromotionSecurity {
     });
 
     if (
-      !isAllowedToBookPromotionLotToCustomer({
+      !isAllowedToReservePromotionLotToCustomer({
         promotion,
         currentUser,
         customerOwnerType,
@@ -371,13 +371,13 @@ class PromotionSecurity {
     }
   }
 
-  static isAllowedToCancelLotBooking({ promotionLotId, userId }) {
+  static isAllowedToCancelLotReservation({ promotionLotId, userId }) {
     const { attributedTo } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       attributedTo: { _id: 1 },
     });
 
-    this.isAllowedToBookLotToCustomer({
+    this.isAllowedToReserveLotToCustomer({
       promotionLotId,
       loanId: attributedTo._id,
       userId,

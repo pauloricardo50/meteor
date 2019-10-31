@@ -102,7 +102,7 @@ describe('Migration 26', () => {
       });
     });
 
-    it('sets the reservation for each booked or sold promotionLot', async () => {
+    it('sets the reservation for each reserved or sold promotionLot', async () => {
       generator({
         properties: [{ _id: 'a' }, { _id: 'b' }, { _id: 'c' }],
         promotions: {
@@ -113,7 +113,7 @@ describe('Migration 26', () => {
               propertyLinks: [{ _id: 'a' }],
             },
             {
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               propertyLinks: [{ _id: 'b' }],
               promotionOptions: {
                 loan: { _id: 'loan1' },
@@ -146,13 +146,13 @@ describe('Migration 26', () => {
       expect(pOs[1].status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
     });
 
-    it('sets agreement to waiting on booked lots', async () => {
+    it('sets agreement to waiting on reserved lots', async () => {
       generator({
         properties: { _id: 'a' },
         promotions: {
           _id: 'promo',
           promotionLots: {
-            status: PROMOTION_LOT_STATUS.BOOKED,
+            status: PROMOTION_LOT_STATUS.RESERVED,
             propertyLinks: [{ _id: 'b' }],
             promotionOptions: {
               loan: { _id: 'loan1' },
@@ -216,7 +216,7 @@ describe('Migration 26', () => {
               propertyLinks: [{ _id: 'a' }],
             },
             {
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               propertyLinks: [{ _id: 'b' }],
               promotionOptions: {
                 loan: { _id: 'loan1' },

@@ -149,7 +149,7 @@ describe('Pro promotion', () => {
           canRemoveLots: true,
           canModifyPromotion: true,
           canManageDocuments: true,
-          canBookLots: true,
+          canReserveLots: true,
           canInviteCustomers: true,
           canAddLots: true,
           displayCustomerNames: {

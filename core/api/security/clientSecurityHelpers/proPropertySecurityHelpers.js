@@ -165,7 +165,7 @@ export const isAllowedToSeeProPropertyCustomers = ({
 
 export const isAllowedToBookProProperty = ({ property, currentUser }) => {
   const { _id: userId } = currentUser;
-  const requiredPermissions = { canBookLots: true };
+  const requiredPermissions = { canReserveLots: true };
 
   return checkProPropertyPermissions({ property, userId, requiredPermissions });
 };

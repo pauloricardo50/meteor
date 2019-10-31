@@ -1,7 +1,7 @@
 import { Method } from '../../methods/methods';
 
-export const expirePromotionLotBooking = new Method({
-  name: 'expirePromotionLotBooking',
+export const expirePromotionLotReservation = new Method({
+  name: 'expirePromotionLotReservation',
   params: {
     promotionOptionId: String,
   },

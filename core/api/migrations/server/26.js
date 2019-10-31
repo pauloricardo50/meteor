@@ -44,9 +44,9 @@ const handlePromotionOptions = async () => {
   }));
 };
 
-const handleBookedLots = async () => {
-  const bookedPromotionLots = PromotionLotService.fetch({
-    $filters: { status: PROMOTION_LOT_STATUS.BOOKED },
+const handleReservedLots = async () => {
+  const reservedPromotionLots = PromotionLotService.fetch({
+    $filters: { status: PROMOTION_LOT_STATUS.RESERVED },
     attributedTo: {
       _id: 1,
       promotionOptions: {
@@ -57,7 +57,7 @@ const handleBookedLots = async () => {
     },
   });
 
-  return Promise.all(bookedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
+  return Promise.all(reservedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
     const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
       promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
     if (promotionOption) {
@@ -143,7 +143,7 @@ const handleSoldLots = async () => {
 export const up = async () => {
   await handlePromotions();
   await handlePromotionOptions();
-  await handleBookedLots();
+  await handleReservedLots();
   await handleSoldLots();
 };
 

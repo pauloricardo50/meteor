@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { asyncForEach } from '../../helpers/index';
-import { expirePromotionLotBooking } from '../../promotionLots/server/serverMethods';
+import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
@@ -448,7 +448,7 @@ export class PromotionOptionService extends CollectionService {
     });
 
     await Promise.all(toExpire.map(({ _id: promotionOptionId }) =>
-      expirePromotionLotBooking.run({ promotionOptionId })));
+      expirePromotionLotReservation.run({ promotionOptionId })));
 
     return toExpire.length;
   };

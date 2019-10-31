@@ -1,4 +1,4 @@
-import { cancelPromotionLotBooking } from 'core/api/methods/index';
+import { cancelPromotionLotReservation } from 'core/api/methods/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import PromotionService from './PromotionService';
 
@@ -19,6 +19,6 @@ ServerEventService.addBeforeMethodListener(
       .filter(({ attributedTo }) => attributedTo === loanId)
       .map(({ _id: promotionLotId }) =>
       // Also sets the status to AVAILABLE
-        cancelPromotionLotBooking.run({ promotionLotId })));
+        cancelPromotionLotReservation.run({ promotionLotId })));
   },
 );

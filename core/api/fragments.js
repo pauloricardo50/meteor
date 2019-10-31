@@ -676,7 +676,7 @@ export const basePromotion = () => ({
   address1: 1,
   availablePromotionLots: 1,
   agreementDuration: 1,
-  bookedPromotionLots: 1,
+  reservedPromotionLots: 1,
   canton: 1,
   city: 1,
   constructionTimeline: 1,
