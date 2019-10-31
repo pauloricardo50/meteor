@@ -70,7 +70,7 @@ export const isAllowedToInviteCustomersToProProperty = ({
     property,
     userId,
     requiredPermissions,
-    propertyStatus: [PROPERTY_STATUS.FOR_SALE, PROPERTY_STATUS.BOOKED],
+    propertyStatus: [PROPERTY_STATUS.FOR_SALE, PROPERTY_STATUS.RESERVED],
   });
 };
 

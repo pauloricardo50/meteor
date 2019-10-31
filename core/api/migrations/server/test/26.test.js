@@ -7,6 +7,7 @@ import { up, down } from '../26';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 import PromotionService from '../../../promotions/server/PromotionService';
 import UserService from '../../../users/server/UserService';
+import PropertyService from '../../../properties/server/PropertyService';
 
 describe('Migration 26', () => {
   beforeEach(() => resetDatabase());
@@ -35,7 +36,30 @@ describe('Migration 26', () => {
       expect(pL3.status).to.equal('AVAILABLE');
     });
 
-    it('updates promotion permissions', async () => {
+    it('sets all BOOKED properties to RESERVED', async () => {
+      await PropertyService.rawCollection.insert({
+        _id: 'a',
+        status: 'BOOKED',
+      });
+      await PropertyService.rawCollection.insert({
+        _id: 'b',
+        status: 'SOLD',
+      });
+      await PropertyService.rawCollection.insert({
+        _id: 'c',
+        status: 'FOR_SALE',
+      });
+
+      await up();
+
+      const [p1, p2, p3] = PropertyService.find().fetch();
+
+      expect(p1.status).to.equal('RESERVED');
+      expect(p2.status).to.equal('SOLD');
+      expect(p3.status).to.equal('FOR_SALE');
+    });
+
+    it('updates promotions permissions', async () => {
       await UserService.rawCollection.insert({ _id: 'a' });
       await UserService.rawCollection.insert({ _id: 'b' });
       await UserService.rawCollection.insert({ _id: 'c' });
@@ -106,6 +130,78 @@ describe('Migration 26', () => {
         displayCustomerNames: false,
       });
     });
+
+    it('updates properties permissions', async () => {
+      await UserService.rawCollection.insert({ _id: 'a' });
+      await UserService.rawCollection.insert({ _id: 'b' });
+      await UserService.rawCollection.insert({ _id: 'c' });
+      await PropertyService.rawCollection.insert({
+        _id: 'a',
+        userLinks: [
+          {
+            _id: 'a',
+            permissions: {
+              canBookProperty: true,
+              displayCustomerNames: {
+                forPropertyStatus: ['BOOKED', 'SOLD'],
+                referredBy: 'USER',
+              },
+              canModifyProperty: true,
+            },
+          },
+          {
+            _id: 'b',
+            permissions: {
+              canBookProperty: false,
+              displayCustomerNames: {
+                forPropertyStatus: ['SOLD'],
+                referredBy: 'USER',
+              },
+              canModifyProperty: true,
+            },
+          },
+          {
+            _id: 'c',
+            permissions: {
+              canBookProperty: true,
+              displayCustomerNames: false,
+              canModifyProperty: true,
+            },
+          },
+        ],
+      });
+
+      await up();
+
+      const { userLinks = [] } = PropertyService.findOne({ _id: 'a' });
+      const [
+        { permissions: permissions1 },
+        { permissions: permissions2 },
+        { permissions: permissions3 },
+      ] = userLinks;
+
+      expect(permissions1).to.deep.include({
+        canReserveProperty: true,
+        canModifyProperty: true,
+        displayCustomerNames: {
+          forPropertyStatus: ['SOLD', 'RESERVED'],
+          referredBy: 'USER',
+        },
+      });
+      expect(permissions2).to.deep.include({
+        canReserveProperty: false,
+        canModifyProperty: true,
+        displayCustomerNames: {
+          forPropertyStatus: ['SOLD'],
+          referredBy: 'USER',
+        },
+      });
+      expect(permissions3).to.deep.include({
+        canReserveProperty: true,
+        canModifyProperty: true,
+        displayCustomerNames: false,
+      });
+    });
   });
 
   describe('down', () => {
@@ -132,7 +228,30 @@ describe('Migration 26', () => {
       expect(pL3.status).to.equal('AVAILABLE');
     });
 
-    it('migrates back promotion permissions', async () => {
+    it('sets all RESERVED properties to BOOKED', async () => {
+      await PropertyService.rawCollection.insert({
+        _id: 'a',
+        status: 'RESERVED',
+      });
+      await PropertyService.rawCollection.insert({
+        _id: 'b',
+        status: 'SOLD',
+      });
+      await PropertyService.rawCollection.insert({
+        _id: 'c',
+        status: 'FOR_SALE',
+      });
+
+      await down();
+
+      const [p1, p2, p3] = PropertyService.find().fetch();
+
+      expect(p1.status).to.equal('BOOKED');
+      expect(p2.status).to.equal('SOLD');
+      expect(p3.status).to.equal('FOR_SALE');
+    });
+
+    it('migrates back promotions permissions', async () => {
       await UserService.rawCollection.insert({ _id: 'a' });
       await UserService.rawCollection.insert({ _id: 'b' });
       await UserService.rawCollection.insert({ _id: 'c' });
@@ -200,6 +319,78 @@ describe('Migration 26', () => {
       expect(permissions3).to.deep.include({
         canBookLots: true,
         canModifyPromotion: true,
+        displayCustomerNames: false,
+      });
+    });
+
+    it('migrates back properties permissions', async () => {
+      await UserService.rawCollection.insert({ _id: 'a' });
+      await UserService.rawCollection.insert({ _id: 'b' });
+      await UserService.rawCollection.insert({ _id: 'c' });
+      await PropertyService.rawCollection.insert({
+        _id: 'a',
+        userLinks: [
+          {
+            _id: 'a',
+            permissions: {
+              canReserveProperty: true,
+              displayCustomerNames: {
+                forPropertyStatus: ['RESERVED', 'SOLD'],
+                referredBy: 'USER',
+              },
+              canModifyProperty: true,
+            },
+          },
+          {
+            _id: 'b',
+            permissions: {
+              canReserveProperty: false,
+              displayCustomerNames: {
+                forPropertyStatus: ['SOLD'],
+                referredBy: 'USER',
+              },
+              canModifyProperty: true,
+            },
+          },
+          {
+            _id: 'c',
+            permissions: {
+              canReserveProperty: true,
+              displayCustomerNames: false,
+              canModifyProperty: true,
+            },
+          },
+        ],
+      });
+
+      await down();
+
+      const { userLinks = [] } = PropertyService.findOne({ _id: 'a' });
+      const [
+        { permissions: permissions1 },
+        { permissions: permissions2 },
+        { permissions: permissions3 },
+      ] = userLinks;
+
+      expect(permissions1).to.deep.include({
+        canBookProperty: true,
+        canModifyProperty: true,
+        displayCustomerNames: {
+          forPropertyStatus: ['SOLD', 'BOOKED'],
+          referredBy: 'USER',
+        },
+      });
+      expect(permissions2).to.deep.include({
+        canBookProperty: false,
+        canModifyProperty: true,
+        displayCustomerNames: {
+          forPropertyStatus: ['SOLD'],
+          referredBy: 'USER',
+        },
+      });
+      expect(permissions3).to.deep.include({
+        canBookProperty: true,
+        canModifyProperty: true,
         displayCustomerNames: false,
       });
     });

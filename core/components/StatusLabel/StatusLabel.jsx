@@ -87,7 +87,7 @@ export const getStatuses = (collection) => {
   case PROPERTIES_COLLECTION:
     return {
       [PROPERTY_STATUS.FOR_SALE]: colors.success,
-      [PROPERTY_STATUS.BOOKED]: colors.primary,
+      [PROPERTY_STATUS.RESERVED]: colors.primary,
       [PROPERTY_STATUS.SOLD]: colors.error,
     };
 
