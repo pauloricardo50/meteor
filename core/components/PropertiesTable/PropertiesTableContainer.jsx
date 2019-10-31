@@ -46,7 +46,11 @@ export const makeMapProperty = ({ history, currentUser }) => ({
     },
   ],
   handleClick: () => {
-    if (users.find(({ _id }) => _id === currentUser._id)) {
+    if (
+      currentUser.isAdmin
+      || currentUser.isDev
+      || users.find(({ _id }) => _id === currentUser._id)
+    ) {
       history.push(createRoute('/properties/:propertyId', { propertyId }));
     }
   },
