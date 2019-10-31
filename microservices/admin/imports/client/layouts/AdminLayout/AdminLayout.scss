@@ -18,6 +18,11 @@
     box-sizing: border-box;
     min-height: 100%;
     padding: 16px 16px 0 16px;
+    max-width: calc(100% - #{$admin-side-nav-width});
+
+    &.is-mobile {
+      max-width: 100%;
+    }
 
     &.no-padding {
       padding: 0;

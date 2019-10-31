@@ -90,10 +90,11 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
       />
-      
+
       <div
         className={cx('main', {
           'no-padding': routeHasNoPadding(history.location.pathname),
+          'is-mobile': isMobile,
         })}
       >
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
