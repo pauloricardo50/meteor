@@ -82,6 +82,10 @@ describe('Pro promotion', () => {
           cy.wrap(tr)
             .get('.button')
             .should('not.exist');
+          cy.wrap(tr)
+            .find('.icon-link')
+            .last()
+            .trigger('mouseleave');
         });
 
       // customers are invited by user's organisation member
@@ -186,8 +190,8 @@ describe('Pro promotion', () => {
       cy.contains('Confirmer vente').should('exist');
       cy.contains('Annuler réservation').should('exist');
       cy.contains('Annuler réservation').click({ force: true });
-      cy.contains('sûr')
-        .parentsUntil('[role="document"]')
+      cy.contains('Êtes-vous sûr')
+        .parents('[role="dialog"]')
         .contains('Confirmer')
         .click();
       cy.contains('Réserver').should('exist');

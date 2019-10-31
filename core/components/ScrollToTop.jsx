@@ -1,20 +1,19 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import usePrevious from 'core/hooks/usePrevious';
 
 /* Every route change should scroll to top, which isn't automatic */
-
-class ScrollToTop extends Component {
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+const ScrollToTop = ({ children, location }) => {
+  const prevLocation = usePrevious(location);
+  useEffect(() => {
+    if (prevLocation !== location) {
       window.scrollTo(0, 0);
     }
-  }
+  }, [location]);
 
-  render() {
-    return this.props.children;
-  }
-}
+  return children;
+};
 
 ScrollToTop.propTypes = {
   children: PropTypes.node.isRequired,

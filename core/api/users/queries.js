@@ -15,6 +15,7 @@ import Users from '.';
 export const adminUsers = Users.createQuery(
   USER_QUERIES.ADMIN_USERS,
   adminUser(),
+  { scoped: true },
 );
 
 export const appUser = Users.createQuery(

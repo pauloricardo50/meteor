@@ -6,7 +6,7 @@ const impersonateNotification = emails =>
       message: <span id="impersonation-success-message">Yay</span>,
       description: (
         <div>
-          <p>{`Acutellement connecté comme ${emails[0].address}`}</p>
+          <p>{`Actuellement connecté comme ${emails[0].address}`}</p>
         </div>
       ),
       duration: 5,
