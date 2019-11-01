@@ -101,6 +101,7 @@ describe('REST: getPropertyLoans', function () {
       permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
     });
     generator({ users: makeCustomers(5) });
+
     return getPropertyLoans({
       propertyId: 'property',
       userId: 'pro',

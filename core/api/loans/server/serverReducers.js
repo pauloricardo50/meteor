@@ -3,12 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 
-import UserService from 'core/api/users/server/UserService';
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import UserService from '../../users/server/UserService';
 import Calculator from '../../../utils/Calculator';
-import Loans from '../loans';
 import assigneeReducer from '../../reducers/assigneeReducer';
 import { userLoan } from '../../fragments';
+import { isMeteorMethod } from '../../methods/server/methodHelpers';
+import Loans from '../loans';
 
 const body = merge(
   {},
@@ -50,7 +51,8 @@ Loans.addReducers({
     reduce({ anonymous, referralId, userCache = {} }) {
       let user;
       let org;
-      const currentUserId = Meteor.userId();
+
+      const currentUserId = isMeteorMethod() ? Meteor.userId() : null;
 
       if (anonymous && !referralId) {
         return 'Anonyme';
