@@ -855,6 +855,7 @@ export const userProperty = ({ withSort } = {}) => {
 export const proPropertySummary = () => ({
   address1: 1,
   city: 1,
+  createdAt: 1,
   status: 1,
   totalValue: 1,
   loanCount: 1,
