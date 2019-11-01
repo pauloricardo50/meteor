@@ -138,7 +138,7 @@ export const PasswordResetPage = ({
             <FontAwesomeIcon icon={faUserCircle} className="icon" />
             <h1>{user.name}</h1>
           </div>
-          <h4 className="secondary">
+          <h4 className="description secondary text-center">
             <T
               id={`PasswordResetPage.${
                 isEnrollment ? 'enrollment' : 'description'

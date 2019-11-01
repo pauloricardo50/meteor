@@ -13,7 +13,7 @@ import AnonymousLoanRemover from './AnonymousLoanRemover';
 import impersonateSessionNotification from './impersonateSessionNotification';
 
 const exactMobilePaths = ['/account', '/'];
-const mobilePaths = ['/enroll-account', '/reset-password'];
+const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
 
 const renderMobile = (props) => {
   const {
