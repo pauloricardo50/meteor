@@ -67,7 +67,6 @@ export const promotionPermissionsSchema = {
   },
   canInviteCustomers: SCHEMA_BOOLEAN,
   canReserveLots: SCHEMA_BOOLEAN,
-  // canPreReserveLots: SCHEMA_BOOLEAN,
   canSeeManagement: SCHEMA_BOOLEAN,
 };
 

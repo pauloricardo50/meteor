@@ -1,17 +1,15 @@
-import Analytics from 'core/api/analytics/server/Analytics';
-import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import EVENTS from 'core/api/analytics/events';
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import SecurityService from 'core/api/security';
+import Analytics from '../../analytics/server/Analytics';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import EVENTS from '../../analytics/events';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import SecurityService from '../../security';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
 import {
   setMaxPropertyValueWithoutBorrowRatio,
   loanInsertBorrowers,
 } from '../methodDefinitions';
-import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-} from '../../promotionOptions/promotionOptionConstants';
+import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../promotionOptions/promotionOptionConstants';
 
 export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });
