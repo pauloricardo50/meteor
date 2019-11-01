@@ -69,7 +69,7 @@ describe('TranchePicker', () => {
 
     expect(select.prop('value')).to.equal('type1');
 
-    select.props().onChange(null, 'type2');
+    select.props().onChange('type2');
 
     wrapper.update();
     select = wrapper.find('.select').first();
