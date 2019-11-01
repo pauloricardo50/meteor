@@ -64,6 +64,16 @@ const makeIcon = (variant, isEditing, promotionOptionId) => ({
   />
 );
 
+const getPercent = ({ valid, required }) => {
+  if (valid === 0 || required === 0) {
+    return 0;
+  }
+
+  return valid / required;
+};
+
+const getRatio = ({ valid, required }) => ({ value: valid, target: required });
+
 const getAdminNoteIcon = (
   { note, date, isAnonymized } = {},
   variant,
@@ -128,7 +138,7 @@ const PromotionReservationProgress = ({
 
   const icon = makeIcon(variant, isEditing, promotionOptionId);
 
-  const icons = [
+  const verificationAndBankIcons = [
     icon({
       ...simpleVerification,
       ...makeGetIcon({
@@ -139,14 +149,31 @@ const PromotionReservationProgress = ({
       id: 'simpleVerification',
     }),
     <ProgressCircle
-      percent={info}
-      options={{ squareSize: 20, strokeWidth: 4, animated: true }}
+      key="infos"
+      percent={getPercent(info)}
+      ratio={getRatio(info)}
+      options={{
+        squareSize: 20,
+        strokeWidth: 4,
+        animated: true,
+        withRatio: true,
+        tooltipPrefix: 'Informations:',
+        style: { padding: 2 },
+      }}
     />,
     <ProgressCircle
-      percent={documents}
-      options={{ squareSize: 20, strokeWidth: 4, animated: true }}
+      key="documents"
+      percent={getPercent(documents)}
+      ratio={getRatio(documents)}
+      options={{
+        squareSize: 20,
+        strokeWidth: 4,
+        animated: true,
+        withRatio: true,
+        tooltipPrefix: 'Documents:',
+        style: { padding: 2 },
+      }}
     />,
-
     icon({
       ...fullVerification,
       ...makeGetIcon({
@@ -166,6 +193,9 @@ const PromotionReservationProgress = ({
       })(bank.status),
       id: 'bank',
     }),
+  ];
+
+  const agreementAndDepositIcons = [
     icon({
       ...reservationAgreement,
       ...makeGetIcon({
@@ -182,9 +212,7 @@ const PromotionReservationProgress = ({
       })(deposit.status),
       id: 'deposit',
     }),
-    !isAnonymized
-      && getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId),
-  ].filter(x => x);
+  ];
 
   return (
     <div
@@ -194,7 +222,24 @@ const PromotionReservationProgress = ({
       )}
       style={style}
     >
-      {icons}
+      <div className="promotion-reservation-progress-icons">
+        {verificationAndBankIcons.map((icon, index) => (
+          <div className="icon" key={`verification${index}`}>
+            {icon}
+          </div>
+        ))}
+      </div>
+      <div className="promotion-reservation-progress-icons">
+        {agreementAndDepositIcons.map((icon, index) => (
+          <div className="icon" key={`agreement${index}`}>
+            {icon}
+          </div>
+        ))}
+      </div>
+      <div className="promotion-reservation-progress-icons">
+        {!isAnonymized
+          && getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId)}
+      </div>
     </div>
   );
 };

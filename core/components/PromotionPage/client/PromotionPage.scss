@@ -381,4 +381,39 @@
     // select field
     width: 100%;
   }
+
+  &-icons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 8px;
+
+    .icon {
+      display: flex;
+      margin-right: 8px;
+      position: relative;
+
+      &::before,
+      &::after {
+        position: absolute;
+        width: 8px;
+        border-bottom: 1px solid black;
+        top: 50%;
+        content: '';
+      }
+
+      &::after {
+        left: 100%;
+      }
+
+      &::before {
+        right: 100%;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
 }

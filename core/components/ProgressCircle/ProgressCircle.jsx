@@ -15,6 +15,7 @@ class ProgressCircle extends Component {
       withTooltip = true,
       withRatio = false,
       tooltipPrefix = '',
+      style = {},
     } = options;
     this.animated = animated;
     this.withLabel = withLabel;
@@ -28,6 +29,7 @@ class ProgressCircle extends Component {
     this.radius = (squareSize - strokeWidth) / 2;
     this.viewBox = `0 0 ${squareSize} ${squareSize}`;
     this.dashArray = this.radius * Math.PI * 2;
+    this.style = style;
   }
 
   componentWillMount() {
@@ -54,7 +56,7 @@ class ProgressCircle extends Component {
   getTooltipTitle() {
     if (this.ratio) {
       const { value, target } = this.ratio;
-      return `${this.tooltipPrefix} ${value}/${target}`;
+      return `${this.tooltipPrefix} ${value}/${target} (${Math.round(this.targetPercent * 100)}%)`;
     }
 
     return `${this.tooltipPrefix} ${Math.round(this.targetPercent * 100)}%`;
@@ -72,7 +74,13 @@ class ProgressCircle extends Component {
         disableHoverListener={!this.withTooltip}
         disableTouchListener={!this.withTooltip}
       >
-        <span style={{ height: this.squareSize, width: this.squareSize }}>
+        <span
+          style={{
+            height: this.squareSize,
+            width: this.squareSize,
+            ...this.style,
+          }}
+        >
           <svg
             width={this.squareSize}
             height={this.squareSize}
