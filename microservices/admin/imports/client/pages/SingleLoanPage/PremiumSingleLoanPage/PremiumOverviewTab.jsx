@@ -36,6 +36,7 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
           docId={loan._id}
           adminNote={loan.adminNote}
           collection={LOANS_COLLECTION}
+          allowEditing
         />
       </div>
 

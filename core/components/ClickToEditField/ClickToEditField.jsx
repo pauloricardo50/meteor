@@ -52,6 +52,8 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       style,
     } = this.props;
 
+    const displayValue = value || placeholder;
+
     return (
       <div
         className={cx('click-to-edit-field', className, {
@@ -67,8 +69,8 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
         style={style}
       >
         {typeof children === 'function'
-          ? children({ value: value || placeholder, isEditing })
-          : value || placeholder}
+          ? children({ value: displayValue, isEditing })
+          : displayValue}
       </div>
     );
   }
@@ -117,4 +119,5 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     return this.renderValue();
   }
 }
+
 export default ClickToEditFieldContainer(ClickToEditField);

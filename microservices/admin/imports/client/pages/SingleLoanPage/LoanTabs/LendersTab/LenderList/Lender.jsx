@@ -60,6 +60,7 @@ const Lender = ({ lender }: LenderProps) => {
         adminNote={adminNote}
         collection={LENDERS_COLLECTION}
         placeholder="#### Ajouter un commentaire"
+        allowEditing
       />
       {/* <ClickToEditField
         placeholder="Ajouter un commentaire"
