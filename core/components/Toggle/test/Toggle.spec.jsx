@@ -34,12 +34,4 @@ describe('Toggle', () => {
     expect(labels.at(1).text()).to.equal('Left Label');
     expect(labels.at(2).text()).to.equal('Right Label');
   });
-
-  it('passes the toggle callback function to the Switch component', () => {
-    const onToggle = () => {};
-    expect(component({ ...requiredProps, onToggle })
-      .find(Switch)
-      .first()
-      .prop('onChange')).to.equal(onToggle);
-  });
 });
