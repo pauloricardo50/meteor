@@ -11,7 +11,7 @@ const generateTestsForPages = (pages, getTestData) => {
   });
 
   Object.keys(pages)
-    // .filter(page => page === 'admin')
+    // .filter(page => page === 'user')
     .forEach((pageAuthentication) => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
@@ -24,14 +24,16 @@ const generateTestsForPages = (pages, getTestData) => {
         });
 
         it('Pages should render without errors', () => {
-          Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-            const testName = `${pageName} Page`;
+          Object.keys(pages[pageAuthentication])
+            // .filter(page => page === 'Loan Single Property')
+            .forEach((pageName) => {
+              const testName = `${pageName} Page`;
 
-            cy.routeShouldRenderSuccessfully(
-              pages[pageAuthentication][pageName],
-              testData,
-            );
-          });
+              cy.routeShouldRenderSuccessfully(
+                pages[pageAuthentication][pageName],
+                testData,
+              );
+            });
         });
       });
     });
