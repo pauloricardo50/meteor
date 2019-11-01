@@ -2,6 +2,7 @@ import React from 'react';
 import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
+import Calculator from 'core/utils/Calculator';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import StatusLabel from '../../../StatusLabel';
@@ -12,6 +13,11 @@ import {
 import PrioritySetter from './PrioritySetter';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
 import RequestReservation from './RequestReservation';
+
+const getLoanProgress = loan => ({
+  info: Calculator.getValidFieldsRatio({ loan }),
+  documents: Calculator.getValidDocumentsRatio({ loan }),
+});
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -31,9 +37,13 @@ const makeMapPromotionOption = ({
     status,
   } = promotionOption;
   const { name, value } = (promotionLots && promotionLots[0]) || {};
+  const loanProgress = getLoanProgress(loan);
   return {
     id: promotionOptionId,
-    promotionOption,
+    promotionOption: {
+      ...promotionOption,
+      loan: { ...promotionOption.loan, loanProgress },
+    },
     columns: [
       promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
@@ -68,7 +78,10 @@ const makeMapPromotionOption = ({
         <PromotionLotReservation
           loan={loan}
           promotion={promotion}
-          promotionOption={promotionOption}
+          promotionOption={{
+            ...promotionOption,
+            loan: { ...promotionOption.loan, loanProgress },
+          }}
           key="promotionLotAttributer"
         />
       ),

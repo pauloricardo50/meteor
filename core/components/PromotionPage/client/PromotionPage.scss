@@ -388,6 +388,10 @@
     .icon {
       display: block;
 
+      span {
+        margin-right: 16px;
+      }
+
       &::before,
       &::after {
         display: none;

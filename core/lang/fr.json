@@ -1,4 +1,9 @@
 {
+  "Forms.status.CALCULATED": "En attente de vérification",
+  "Forms.simpleVerification": "Attestation de principe",
+  "Forms.info": "Informations",
+  "Forms.documents": "Documents",
+  "Forms.fullVerification": "Attestation e-Potek",
   "PromotionPage.lots.requestReservation.button": "Réserver",
   "PromotionPage.lots.requestReservation.title": "Demande de réservation",
   "PromotionPage.lots.requestReservation.description": "Informe {proName} de votre intérêt pour le lot {promotionLotName}. Il vous enverra une convention de réservation à lui retourner dûment signée.",

@@ -51,6 +51,8 @@ const makeIcon = (variant, isEditing, promotionOptionId) => ({
   status,
   date,
   id,
+  component,
+  placeholder,
 }) => (
   <PromotionReservationProgressItem
     icon={icon}
@@ -61,6 +63,8 @@ const makeIcon = (variant, isEditing, promotionOptionId) => ({
     id={id}
     isEditing={isEditing}
     promotionOptionId={promotionOptionId}
+    component={component}
+    placeholder={placeholder}
   />
 );
 
@@ -132,9 +136,8 @@ const PromotionReservationProgress = ({
     adminNote,
     loan,
     isAnonymized,
-    loan: { loanProgress: { info, documents } } = {},
   } = promotionOption;
-  const { user } = loan;
+  const { user, loanProgress: { info = {}, documents = {} } = {} } = loan;
 
   const icon = makeIcon(variant, isEditing, promotionOptionId);
 
@@ -148,32 +151,28 @@ const PromotionReservationProgress = ({
       })(simpleVerification.status),
       id: 'simpleVerification',
     }),
-    <ProgressCircle
-      key="infos"
-      percent={getPercent(info)}
-      ratio={getRatio(info)}
-      options={{
-        squareSize: 20,
-        strokeWidth: 4,
-        animated: true,
-        withRatio: true,
-        tooltipPrefix: 'Informations:',
-        style: { padding: 2 },
-      }}
-    />,
-    <ProgressCircle
-      key="documents"
-      percent={getPercent(documents)}
-      ratio={getRatio(documents)}
-      options={{
-        squareSize: 20,
-        strokeWidth: 4,
-        animated: true,
-        withRatio: true,
-        tooltipPrefix: 'Documents:',
-        style: { padding: 2 },
-      }}
-    />,
+    ...[
+      { data: info, id: 'info', tooltipPrefix: 'Informations:' },
+      { data: documents, id: 'documents', tooltipPrefix: 'Documents:' },
+    ].map(({ data, id, tooltipPrefix }) =>
+      icon({
+        component: (
+          <ProgressCircle
+            percent={getPercent(data)}
+            ratio={getRatio(data)}
+            options={{
+              squareSize: 20,
+              strokeWidth: 4,
+              animated: true,
+              withRatio: true,
+              tooltipPrefix,
+              style: { padding: 2 },
+            }}
+          />
+        ),
+        placeholder: `${data.valid}/${data.required} (${Math.round(getPercent(info) * 100)}%)`,
+        id,
+      })),
     icon({
       ...fullVerification,
       ...makeGetIcon({

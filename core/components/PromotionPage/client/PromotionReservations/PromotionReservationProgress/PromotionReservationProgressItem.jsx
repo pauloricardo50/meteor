@@ -33,8 +33,19 @@ const PromotionReservationProgressItem = ({
   iconProps,
   note,
   placeholder,
+  component,
 }: PromotionReservationProgressItemProps) => {
   if (variant === 'text') {
+    if (component) {
+      return (
+        !isEditing && (
+          <p className="flex center-align">
+            {component}
+            <IconTooltip id={id} placeholder={placeholder} />
+          </p>
+        )
+      );
+    }
     return (
       <>
         <p className="flex center-align">
@@ -56,6 +67,10 @@ const PromotionReservationProgressItem = ({
         )}
       </>
     );
+  }
+
+  if (component) {
+    return component;
   }
 
   const baseIcon = (
