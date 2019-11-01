@@ -32,8 +32,8 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
       onChangeHandler: event =>
         onChange(
           Math.round(parseFloat(event.target.value) * 100) / 10000,
-          id
-          ),
+          id,
+        ),
       showMask: true,
       mask: percentMask,
       placeholder: '%',
