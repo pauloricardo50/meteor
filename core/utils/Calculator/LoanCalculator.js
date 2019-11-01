@@ -1,5 +1,5 @@
 // @flow
-import { OWN_FUNDS_TYPES, OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
+import { OWN_FUNDS_TYPES, SUCCESS, WARNING, ERROR, OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
   filesPercent,
@@ -270,7 +270,19 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return wantedLoan / propAndWork;
     }
 
-    getMaxBorrowRatio() {
+    getMaxBorrowRatio({ loan, structureId } = {}) {
+      const offer = !!loan && this.selectOffer({ loan, structureId });
+
+      if (offer) {
+        const { maxAmount } = offer;
+        const propertyValue = this.getPropAndWork({ loan, structureId });
+        const maxBorrowRatio = propertyValue
+          ? maxAmount / propertyValue
+          : this.maxBorrowRatio;
+
+        return Math.min(maxBorrowRatio, 1);
+      }
+
       return this.maxBorrowRatio;
     }
 
@@ -485,5 +497,238 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
         return false;
       });
+    }
+
+    getRequiredPledgedOwnFunds({ loan, structureId }) {
+      const { maxBorrowRatio } = this;
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+
+      if (borrowRatio <= maxBorrowRatio) {
+        return 0;
+      }
+
+      return (
+        (borrowRatio - maxBorrowRatio)
+        * this.getPropAndWork({ loan, structureId })
+      );
+    }
+
+    getLoanFromBorrowRatio({ loan, structureId }) {
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+      return borrowRatio * this.getPropAndWork({ loan, structureId });
+    }
+
+    getLoanFromMaxBorrowRatio({ loan, structureId }) {
+      const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+      return maxBorrowRatio * this.getPropAndWork({ loan, structureId });
+    }
+
+    getBorrowRatioStatusTooltip({
+      loan,
+      structureId,
+      status,
+      maxBorrowRatio,
+      requiredPledgedOwnFunds,
+      currentPledgedOwnFunds,
+    }) {
+      const values = {
+        requiredPledgedOwnFunds,
+        wantedLoan: this.getLoanFromBorrowRatio({ loan, structureId }),
+        currentPledgedOwnFunds,
+        maxBorrowRatio,
+        maxLoan: this.getLoanFromMaxBorrowRatio({ loan, structureId }),
+      };
+      let id;
+      switch (status) {
+      case SUCCESS:
+        id = 'StatusIconTooltip.borrowRatio.SUCCESS';
+        break;
+      case WARNING:
+        if (this.lenderRules && this.lenderRules.length) {
+          id = 'StatusIconTooltip.borrowRatio.WARNING.withLenderRules';
+          break;
+        }
+
+        id = 'StatusIconTooltip.borrowRatio.WARNING';
+        break;
+
+      case ERROR:
+        id = 'StatusIconTooltip.borrowRatio.ERROR';
+        break;
+
+      default:
+        break;
+      }
+
+      return { id, values };
+    }
+
+    getBorrowRatioStatus({ loan, structureId }) {
+      const currentPledgedOwnFunds = this.getPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+      const requiredPledgedOwnFunds = this.getRequiredPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+
+      const {
+        maxBorrowRatio: defaultMaxBorrowRatio,
+        maxBorrowRatioWithPledge,
+      } = this;
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+      const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+
+      if (this.selectOffer({ loan, structureId })) {
+        if (maxBorrowRatio <= defaultMaxBorrowRatio) {
+          const status = borrowRatio <= maxBorrowRatio ? SUCCESS : ERROR;
+          return {
+            status,
+            tooltip: this.getBorrowRatioStatusTooltip({
+              status,
+              loan,
+              structureId,
+              maxBorrowRatio,
+              currentPledgedOwnFunds,
+            }),
+          };
+        }
+
+        if (currentPledgedOwnFunds >= requiredPledgedOwnFunds) {
+          const status = borrowRatio <= maxBorrowRatio ? SUCCESS : ERROR;
+          return {
+            status,
+            tooltip: this.getBorrowRatioStatusTooltip({
+              status,
+              loan,
+              structureId,
+              maxBorrowRatio,
+              currentPledgedOwnFunds,
+            }),
+          };
+        }
+
+        const status = borrowRatio <= defaultMaxBorrowRatio
+          ? SUCCESS
+          : borrowRatio <= maxBorrowRatio
+            ? WARNING
+            : ERROR;
+
+        return {
+          status,
+          tooltip: this.getBorrowRatioStatusTooltip({
+            status,
+            loan,
+            structureId,
+            maxBorrowRatio,
+            requiredPledgedOwnFunds,
+            currentPledgedOwnFunds,
+          }),
+        };
+      }
+
+      if (currentPledgedOwnFunds >= requiredPledgedOwnFunds) {
+        const status = borrowRatio <= maxBorrowRatioWithPledge ? SUCCESS : ERROR;
+
+        return {
+          status,
+          tooltip: this.getBorrowRatioStatusTooltip({
+            status,
+            loan,
+            structureId,
+            maxBorrowRatio,
+            currentPledgedOwnFunds,
+          }),
+        };
+      }
+
+      const status = borrowRatio <= maxBorrowRatio
+        ? SUCCESS
+        : borrowRatio <= maxBorrowRatioWithPledge
+          ? WARNING
+          : ERROR;
+
+      return {
+        status,
+        tooltip: this.getBorrowRatioStatusTooltip({
+          status,
+          loan,
+          structureId,
+          maxBorrowRatio: maxBorrowRatioWithPledge,
+          requiredPledgedOwnFunds,
+          currentPledgedOwnFunds,
+        }),
+      };
+    }
+
+    getBorrowersValidFieldsRatio({ loan }) {
+      const { borrowers = [] } = loan;
+      return this.getValidBorrowerFieldsRatio({
+        borrowers,
+      });
+    }
+
+    getPropertyValidFieldsRatio({ loan }) {
+      const { hasProProperty, hasPromotion, properties = [] } = loan;
+
+      if (hasProProperty || hasPromotion || properties.length === 0) {
+        return null;
+      }
+
+      return this.getValidPropertyFieldsRatio({
+        loan,
+      });
+    }
+
+    getBorrowersValidDocumentsRatio({ loan }) {
+      const { borrowers = [] } = loan;
+
+      return this.getValidBorrowerDocumentsRatio({
+        loan,
+        borrowers,
+      });
+    }
+
+    getPropertyValidDocumentsRatio({ loan }) {
+      const { hasProProperty, hasPromotion, properties = [] } = loan;
+
+      if (hasProProperty || hasPromotion || properties.length === 0) {
+        return null;
+      }
+
+      return this.getValidPropertyDocumentsRatio({
+        loan,
+      });
+    }
+
+    getValidFieldsRatio({ loan }) {
+      return [
+        this.getBorrowersValidFieldsRatio({ loan }),
+        this.getPropertyValidFieldsRatio({ loan }),
+      ]
+        .filter(x => x)
+        .reduce(
+          (ratio, { valid, required }) => ({
+            valid: ratio.valid + valid,
+            required: ratio.required + required,
+          }),
+          { valid: 0, required: 0 },
+        );
+    }
+
+    getValidDocumentsRatio({ loan }) {
+      return [
+        this.getBorrowersValidDocumentsRatio({ loan }),
+        this.getPropertyValidDocumentsRatio({ loan }),
+      ]
+        .filter(x => x)
+        .reduce(
+          (ratio, { valid, required }) => ({
+            valid: ratio.valid + valid,
+            required: ratio.required + required,
+          }),
+          { valid: 0, required: 0 },
+        );
     }
   };

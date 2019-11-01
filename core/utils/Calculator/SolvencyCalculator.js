@@ -74,7 +74,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     suggestStructure({
       borrowers,
       propertyValue,
-      maxBorrowRatio = this.maxBorrowRatio,
+      maxBorrowRatio = this.getMaxBorrowRatio(),
       loanValue,
       canton,
       residenceType,
@@ -150,7 +150,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     suggestedStructureIsValid({
       borrowers,
       propertyValue,
-      maxBorrowRatio = this.maxBorrowRatio,
+      maxBorrowRatio = this.getMaxBorrowRatio(),
       loanValue,
       canton,
       residenceType,
@@ -188,7 +188,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
     getMaxPropertyValue({ borrowers, maxBorrowRatio, canton, residenceType }) {
       // Immediately stop iterating if maxBorrowRatio is above what is allowed
-      if (this.maxBorrowRatio < maxBorrowRatio) {
+      if (this.getMaxBorrowRatio() < maxBorrowRatio) {
         return 0;
       }
 

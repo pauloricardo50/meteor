@@ -237,13 +237,16 @@ describe('monitoring', () => {
 
       expect(result.length).to.equal(5);
       expect(result[0]).to.deep.include({
-        _id: { prevStatus: LOAN_STATUS.LEAD, nextStatus: LOAN_STATUS.ONGOING },
-        count: 2,
+        _id: {
+          prevStatus: LOAN_STATUS.ONGOING,
+          nextStatus: LOAN_STATUS.BILLING,
+        },
+        count: 1,
       });
       expect(result[1]).to.deep.include({
         _id: {
-          prevStatus: LOAN_STATUS.ONGOING,
-          nextStatus: LOAN_STATUS.PENDING,
+          prevStatus: LOAN_STATUS.PENDING,
+          nextStatus: LOAN_STATUS.FINALIZED,
         },
         count: 1,
       });

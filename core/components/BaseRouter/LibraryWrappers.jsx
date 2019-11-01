@@ -6,27 +6,30 @@ import { withProps } from 'recompose';
 
 import createTheme from '../../config/muiCustom';
 
+const MaterialUiTheme = withProps({ theme: createTheme() })(MuiThemeProvider);
+
 const LibraryWrappers = ({
   i18n: { locale, messages, formats },
-  WrapperComponent,
   children,
-  MuiWrapper,
-}) => (
-  <WrapperComponent>
-    {/* Inject custom material-ui theme for everything to look good */}
-    <MuiWrapper>
-      {/* Inject Intl props to all components to render the proper locale */}
-      <IntlProvider
-        locale={locale}
-        messages={messages}
-        formats={formats}
-        defaultLocale="fr"
-      >
-        {children}
-      </IntlProvider>
-    </MuiWrapper>
-  </WrapperComponent>
-);
+  withMui = true,
+}) => {
+  const content = (
+    <IntlProvider
+      locale={locale}
+      messages={messages}
+      formats={formats}
+      defaultLocale="fr"
+    >
+      {children}
+    </IntlProvider>
+  );
+
+  if (!withMui) {
+    return content;
+  }
+
+  return <MaterialUiTheme>{content}</MaterialUiTheme>;
+};
 
 LibraryWrappers.propTypes = {
   children: PropTypes.node.isRequired,
@@ -35,16 +38,6 @@ LibraryWrappers.propTypes = {
     messages: PropTypes.objectOf(PropTypes.string).isRequired,
     formats: PropTypes.object.isRequired,
   }).isRequired,
-  WrapperComponent: PropTypes.any,
 };
 
-LibraryWrappers.defaultProps = {
-  WrapperComponent: React.Fragment,
-};
-
-// Can toggle material-ui off with the `withMui` prop
-export default withProps(({ withMui = true }) => ({
-  MuiWrapper: withMui
-    ? withProps({ theme: createTheme() })(MuiThemeProvider)
-    : React.Fragment,
-}))(LibraryWrappers);
+export default LibraryWrappers;

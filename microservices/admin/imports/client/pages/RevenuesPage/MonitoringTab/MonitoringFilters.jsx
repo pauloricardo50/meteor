@@ -26,7 +26,7 @@ const MonitoringFilters = ({
           { id: 'createdAt', label: "Date d'ajout" },
           { id: 'revenueDate', label: 'Date des revenus' },
         ].filter(({ id }) => allowedGroupBy.includes(id))}
-        onChange={(_, v) => makeSetState('groupBy')(v)}
+        onChange={makeSetState('groupBy')}
         value={groupBy}
         className="mr-8"
       />
@@ -54,7 +54,7 @@ const MonitoringFilters = ({
         <Select
           label="Anonymes"
           value={withAnonymous}
-          onChange={(_, v) => makeSetState('withAnonymous')(v)}
+          onChange={makeSetState('withAnonymous')}
           options={[{ id: true, label: 'Avec' }, { id: false, label: 'Sans' }]}
         />
       </div>

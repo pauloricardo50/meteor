@@ -10,6 +10,30 @@ $item-height: 24px;
 $card1_padding: 24px;
 $result-section-negative-offset: -32px;
 
+.own-funds-icon {
+  margin-left: 4px;
+  margin-bottom: 4px;
+
+  width: 20px;
+  height: 20px;
+}
+
+.financing-select-residence-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+
+  > * {
+    margin-bottom: 16px;
+  }
+
+  .icon {
+    width: 150px;
+    height: 150px;
+  }
+}
+
 .financing-structures {
   position: relative;
 
@@ -257,6 +281,23 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
+  > *:first-child {
+    margin-bottom: 8px;
+  }
+
+  > *:last-child {
+    align-self: center;
+  }
+}
+
+.financing-ownFunds-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 24px;
+  padding: 8px 0;
+
   > *:first-child {
     margin-bottom: 8px;
   }

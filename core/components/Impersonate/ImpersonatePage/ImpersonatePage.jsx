@@ -18,6 +18,7 @@ export const impersonate = ({ userId, authToken, history, adminId }) => {
     })
     .then(() => {
       if (Meteor.isDevelopment) {
+        sessionStorage.setItem('dev_impersonate_adminId', adminId);
         sessionStorage.setItem('dev_impersonate_userId', userId);
         sessionStorage.setItem('dev_impersonate_authToken', authToken);
       }

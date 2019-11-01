@@ -142,7 +142,7 @@ export default compose(
           setLoading(false);
         });
     },
-    onChangeCanton: (_, newCanton) => {
+    onChangeCanton: (newCanton) => {
       setCanton(newCanton);
       setError(undefined);
       const { canton: existingCanton } = maxPropertyValue || {};

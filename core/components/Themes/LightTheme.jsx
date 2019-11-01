@@ -2,8 +2,8 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
-import createTheme from 'core/config/muiCustom';
-import colors from 'core/config/colors';
+import createTheme from '../../config/muiCustom';
+import colors from '../../config/colors';
 
 type LightThemeProps = {};
 
@@ -33,6 +33,7 @@ const LightTheme = ({ children }: LightThemeProps) => (
             '&:hover $notchedOutline': {
               borderColor,
             },
+            // Reset on touch devices, it doesn't add specificity
             '@media (hover: none)': {
               '&:hover $notchedOutline': {
                 borderColor,

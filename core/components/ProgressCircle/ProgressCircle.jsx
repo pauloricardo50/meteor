@@ -6,13 +6,15 @@ import Tooltip from '../Material/Tooltip';
 class ProgressCircle extends Component {
   constructor(props) {
     super(props);
-    const { percent, options = {} } = props;
+    const { percent, options = {}, ratio } = props;
     const {
       squareSize = 50,
       strokeWidth = 10,
       animated = false,
       withLabel = false,
       withTooltip = true,
+      withRatio = false,
+      tooltipPrefix = '',
     } = options;
     this.animated = animated;
     this.withLabel = withLabel;
@@ -20,6 +22,9 @@ class ProgressCircle extends Component {
     this.targetPercent = percent;
     this.squareSize = squareSize;
     this.strokeWidth = strokeWidth;
+    this.withRatio = withRatio;
+    this.ratio = withRatio && ratio;
+    this.tooltipPrefix = tooltipPrefix;
     this.radius = (squareSize - strokeWidth) / 2;
     this.viewBox = `0 0 ${squareSize} ${squareSize}`;
     this.dashArray = this.radius * Math.PI * 2;
@@ -46,13 +51,22 @@ class ProgressCircle extends Component {
     }
   }
 
+  getTooltipTitle() {
+    if (this.ratio) {
+      const { value, target } = this.ratio;
+      return `${this.tooltipPrefix} ${value}/${target}`;
+    }
+
+    return `${this.tooltipPrefix} ${Math.round(this.targetPercent * 100)}%`;
+  }
+
   render() {
     const { currentPercent } = this.state;
     const dashOffset = this.dashArray * (1 - currentPercent);
 
     return (
       <Tooltip
-        title={`${Math.round(this.targetPercent * 100)}%`}
+        title={this.getTooltipTitle()}
         enterTouchDelay={0}
         disableFocusListener={!this.withTooltip}
         disableHoverListener={!this.withTooltip}

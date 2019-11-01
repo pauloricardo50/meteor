@@ -137,7 +137,10 @@ const getInterestRateLines = (interestRates, formatMessage) =>
       }
 
       const rates = getAllRatesOfType({ interestRates, type });
-      return [...lines, ...getAllRatesOfTypeLines({ rates, type, formatMessage })];
+      return [
+        ...lines,
+        ...getAllRatesOfTypeLines({ rates, type, formatMessage }),
+      ];
     }, [])
     .filter(x => x);
 
@@ -180,12 +183,12 @@ export default compose(
       showRanges,
       formatMessage,
     });
-    
+
     return {
       title: "Taux d'intérêt",
       lines,
       config: getConfig({ showRanges }),
-      toggleRanges: () => setShowRanges(!showRanges),
+      toggleRanges: setShowRanges,
     };
   }),
 );

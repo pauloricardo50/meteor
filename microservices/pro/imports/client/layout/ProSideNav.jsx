@@ -41,19 +41,25 @@ const getItems = (currentUser = {}) => {
 
 type ProSideNavProps = {};
 
-const ProSideNav = ({ currentUser }: ProSideNavProps) => (
-  <Drawer variant="permanent" className="pro-side-nav">
-    <List>
-      {getItems(currentUser).map(({ to, icon, label, exact }) => (
-        <ListItem button key={to} className="pro-side-nav-item">
-          <NavLink to={to} exact={exact}>
-            {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
-            <h5>{label}</h5>
-          </NavLink>
-        </ListItem>
-      ))}
-    </List>
-  </Drawer>
-);
+const ProSideNav = ({ currentUser }: ProSideNavProps) => {
+  if (!currentUser) {
+    return null;
+  }
+
+  return (
+    <Drawer variant="permanent" className="pro-side-nav">
+      <List>
+        {getItems(currentUser).map(({ to, icon, label, exact }) => (
+          <ListItem button key={to} className="pro-side-nav-item">
+            <NavLink to={to} exact={exact}>
+              {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
+              <h5>{label}</h5>
+            </NavLink>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
+};
 
 export default ProSideNav;

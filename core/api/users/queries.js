@@ -15,6 +15,7 @@ import Users from '.';
 export const adminUsers = Users.createQuery(
   USER_QUERIES.ADMIN_USERS,
   adminUser(),
+  { scoped: true },
 );
 
 export const appUser = Users.createQuery(
@@ -31,12 +32,13 @@ export const currentUser = Users.createQuery(
 
 export const proReferredByUsers = Users.createQuery(
   USER_QUERIES.PRO_REFERRED_BY,
-  () => {},
+  proUserFragment(),
 );
 
 export const proUser = Users.createQuery(
   USER_QUERIES.PRO_USER,
   proUserFragment(),
+  { scoped: true },
 );
 
 export const userEmails = Users.createQuery(USER_QUERIES.USER_EMAILS, {

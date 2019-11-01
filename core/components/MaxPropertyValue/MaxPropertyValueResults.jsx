@@ -71,7 +71,7 @@ const MaxPropertyValueResults = ({
 
           <Select
             value={residenceType}
-            onChange={(_, val) => setResidenceType(val)}
+            onChange={setResidenceType}
             options={Object.values(RESIDENCE_TYPE)
               .filter(type =>
                 [

@@ -729,6 +729,32 @@ describe('LoanService', function () {
       });
     });
 
+    it('refers a user by an organisation if it is not already set', () => {
+      generator({
+        users: [
+          { _id: 'userId' },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'orgId' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.include({
+        referredByOrganisationLink: 'orgId',
+      });
+    });
+
     it('does not change referredBy if it is already set', () => {
       generator({
         users: [

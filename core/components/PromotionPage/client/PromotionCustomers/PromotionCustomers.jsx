@@ -26,6 +26,7 @@ const PromotionCustomers = (props: PromotionCustomersProps) => {
     </div>
   );
 };
+
 export default withSmartQuery({
   query: proPromotionLoans,
   params: ({ promotion: { _id: promotionId } }) => ({ promotionId }),

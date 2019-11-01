@@ -25,7 +25,7 @@ const CommissionsToReceive = (props: CommissionsToReceiveProps) => {
         options={options}
         value={status.$in}
         label="Statut"
-        onChange={(_, selected) => setStatus({ $in: selected })}
+        onChange={selected => setStatus({ $in: selected })}
         multiple
         style={{ display: 'inline-block' }}
       />

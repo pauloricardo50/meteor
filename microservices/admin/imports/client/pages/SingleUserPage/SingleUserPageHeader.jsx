@@ -77,8 +77,11 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
-      <Toggle labelLeft={<T id={`SingleUserPage.Enabled`} />} 
-        toggled={!isDisabled} onToggle={toggleUserAccount} />
+      <Toggle
+        labelLeft={<T id="SingleUserPage.Enabled" />}
+        toggled={!isDisabled}
+        onToggle={toggleUserAccount}
+      />
       <div className="bottom">
         <div>
           <LastSeen userId={userId} />
@@ -126,7 +129,10 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
               title="Numéros de téléphone"
               items={phoneNumbers.map(number => (
                 <a key={number} href={`tel:${number}`}>
-                  <span>{number}&nbsp;</span>
+                  <span>
+                    {number}
+&nbsp;
+                  </span>
                 </a>
               ))}
             />

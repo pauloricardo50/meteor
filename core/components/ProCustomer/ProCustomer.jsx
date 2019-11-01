@@ -20,24 +20,22 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
       replacementPopup={
         isPro && (
           <div>
-            <b>{name}</b>
+            <h4 style={{ marginTop: 0 }}>{name}</h4>
             <div>
-              <i>Email:</i>
+              <b>Email:</b>
               {' '}
               {email}
             </div>
             <div>
-              <i>Tél:</i>
+              <b>Tél:</b>
               {' '}
               {phoneNumbers[0]}
             </div>
-            {invitedByUser && (
-              <div>
-                <i>Invité par:</i>
-                {' '}
-                {invitedByUser}
-              </div>
-            )}
+            <div>
+              <b>Invité par:</b>
+              {' '}
+              {invitedByUser}
+            </div>
           </div>
         )
       }

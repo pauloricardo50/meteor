@@ -13,11 +13,13 @@ const LoanModal = ({ loanId, closeModal, currentUser }: LoanModalProps) => (
     fullWidth
     maxWidth="xl"
   >
-    <SingleLoanPage
-      loanId={loanId}
-      currentUser={currentUser}
-      enableTabRouting={false}
-    />
+    <div className="loan-board-single-loan-page">
+      <SingleLoanPage
+        loanId={loanId}
+        currentUser={currentUser}
+        enableTabRouting={false}
+      />
+    </div>
   </Dialog>
 );
 

@@ -65,7 +65,7 @@ export const withSelector = (SuperClass = class {}) =>
       }
       return (
         loan.structure
-        || loan.structures.find(({ id }) => id === loan.selectedStructure)
+        || (loan.structures && loan.structures.find(({ id }) => id === loan.selectedStructure))
         || EMPTY_STRUCTURE
       );
     }

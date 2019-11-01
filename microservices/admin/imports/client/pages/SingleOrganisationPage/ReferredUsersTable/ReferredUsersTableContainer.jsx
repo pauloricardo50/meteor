@@ -37,7 +37,7 @@ const makeMapUser = history => (user) => {
         label: moment(createdAt).format('D MMM YY à HH:mm'),
       },
     ],
-    handleClick: (event) => {
+    handleClick: () => {
       history.push(`/users/${user._id}`);
     },
   };
@@ -47,7 +47,16 @@ export default compose(
   mapProps(({ _id }) => ({ organisationId: _id })),
   withSmartQuery({
     query: proReferredByUsers,
-    params: ({ organisationId }) => ({ organisationId }),
+    params: ({ organisationId }) => ({
+      organisationId,
+      $body: {
+        firstName: 1,
+        lastName: 1,
+        email: 1,
+        phoneNumber: 1,
+        createdAt: 1,
+      },
+    }),
     queryOptions: { reactive: false },
     dataName: 'users',
   }),

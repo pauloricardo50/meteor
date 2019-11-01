@@ -3,7 +3,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe('Loans', () => {
+describe('Single Loan Page', () => {
   before(() => {
     cy.initiateTest();
 

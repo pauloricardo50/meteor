@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
@@ -5,7 +6,10 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proUser } from 'core/api/users/queries';
 import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
-import { injectCurrentUser } from 'core/containers/CurrentUserContext';
+import {
+  injectCurrentUser,
+  CurrentUserContext,
+} from 'core/containers/CurrentUserContext';
 
 const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname);
@@ -23,7 +27,8 @@ const withProUser = withSmartQuery({
   renderMissingDoc: false,
 });
 
-const withRedirect = withProps(({ currentUser, history }) => {
+const withRedirect = withProps(({ history }) => {
+  const currentUser = useContext(CurrentUserContext);
   const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });

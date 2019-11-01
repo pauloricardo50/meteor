@@ -121,65 +121,13 @@ const getBorrowersMissingDocuments = (props) => {
   };
 };
 
-const getBorrowersValidFieldsRatio = (props) => {
-  const { loan = {} } = props;
-  const { borrowers = [] } = loan;
-
-  const validFieldsRatio = Calculator.getValidBorrowerFieldsRatio({
-    borrowers,
-  });
-
-  return validFieldsRatio;
-};
-
-const getPropertyValidFieldsRatio = (props) => {
-  const { loan = {} } = props;
-  const { hasProProperty, hasPromotion, properties = [] } = loan;
-
-  if (hasProProperty || hasPromotion || properties.length === 0) {
-    return null;
-  }
-
-  const validFieldsRatio = Calculator.getValidPropertyFieldsRatio({
-    loan,
-  });
-
-  return validFieldsRatio;
-};
-
-const getBorrowersValidDocumentsRatio = (props) => {
-  const { loan = {} } = props;
-  const { borrowers = [] } = loan;
-
-  const validDocumentsRatio = Calculator.getValidBorrowerDocumentsRatio({
-    loan,
-    borrowers,
-  });
-
-  return validDocumentsRatio;
-};
-
-const getPropertyValidDocumentsRatio = (props) => {
-  const { loan = {} } = props;
-  const { hasProProperty, hasPromotion, properties = [] } = loan;
-
-  if (hasProProperty || hasPromotion || properties.length === 0) {
-    return null;
-  }
-
-  const validDocumentsRatio = Calculator.getValidPropertyDocumentsRatio({
-    loan,
-  });
-
-  return validDocumentsRatio;
-};
 
 export const getChecklistValidInformationsRatio = props =>
   [
-    getBorrowersValidFieldsRatio(props),
-    getBorrowersValidDocumentsRatio(props),
-    getPropertyValidFieldsRatio(props),
-    getPropertyValidDocumentsRatio(props),
+    Calculator.getBorrowersValidFieldsRatio(props),
+    Calculator.getBorrowersValidDocumentsRatio(props),
+    Calculator.getPropertyValidFieldsRatio(props),
+    Calculator.getPropertyValidDocumentsRatio(props),
   ]
     .filter(x => x)
     .reduce(

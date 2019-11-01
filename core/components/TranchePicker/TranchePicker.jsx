@@ -45,7 +45,7 @@ export const TranchePicker = ({
         type={type}
         removeTranche={() => removeTranche(type)}
         setValue={newValue => setValue(type, newValue)}
-        setType={(_, newType) => setType(type, newType)}
+        setType={newType => setType(type, newType)}
         options={filterOptions(options, tranches, type)}
       />
     ))}

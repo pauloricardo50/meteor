@@ -27,7 +27,7 @@ const MaxPropertyValueResultsToggle = ({
   <Toggle
     className="show-best-toggle"
     toggled={showBest}
-    onToggle={(_, v) => setShowBest(v)}
+    onToggle={setShowBest}
     labelLeft={(
       <div className="flex-col">
         <span className={cx({ secondary: showBest })}>

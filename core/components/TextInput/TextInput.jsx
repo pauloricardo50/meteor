@@ -21,7 +21,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   switch (type) {
   case 'money':
     return {
-      onChangeHandler: event => onChange(id, toNumber(event.target.value)),
+      onChangeHandler: event => onChange(toNumber(event.target.value), id),
       showMask: true,
       mask: swissFrancMask,
       placeholder: 0,
@@ -31,9 +31,9 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     return {
       onChangeHandler: event =>
         onChange(
-          id,
           Math.round(parseFloat(event.target.value) * 100) / 10000,
-        ),
+          id
+          ),
       showMask: true,
       mask: percentMask,
       placeholder: '%',
@@ -47,13 +47,13 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     };
   case 'date':
     return {
-      onChangeHandler: event => onChange(id, event.target.value, event),
+      onChangeHandler: event => onChange(event.target.value, id, event),
       onDateChange: (val) => {
         // This specific format should be used for the server to get the
         // date in the right order
         const date = moment(val).format('YYYY-MM-DD');
         // Allow setting a date to null
-        onChange(id, val ? date : null, {});
+        onChange(val ? date : null, id, {});
       },
       showMask: false,
       value: value ? moment(value) : null,
@@ -62,7 +62,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     return {
       // Pass event as third argument, for some components which need it
       // like react-autosuggest
-      onChangeHandler: event => onChange(id, event.target.value, event),
+      onChangeHandler: event => onChange(event.target.value, id, event),
       showMask: false,
       value,
     };

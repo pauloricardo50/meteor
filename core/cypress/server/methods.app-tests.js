@@ -266,6 +266,7 @@ Meteor.methods({
       emailVerificationToken,
       userId,
       passwordResetToken,
+      adminId: admin._id,
     };
   },
   inviteTestUser({ withPassword } = {}) {
@@ -294,7 +295,6 @@ Meteor.methods({
     LoanService.update({ loanId, object });
   },
   getLoginToken(email) {
-    console.log('email:', email);
     const user = email
       ? UserService.getByEmail(email)
       : UserService.findOne({});

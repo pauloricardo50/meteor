@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import FormValidator from './FormValidator';
-
 export default class AutoFormConditionalInput extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +43,6 @@ export default class AutoFormConditionalInput extends Component {
               ...children[0].props.inputProps,
               onConditionalChange: this.onConditionalChange,
             },
-            noValidator: true,
           },
         )}
         {this.state.conditional ? (
@@ -55,13 +52,11 @@ export default class AutoFormConditionalInput extends Component {
             {React.Children.map(conditionalChildren, child =>
               React.cloneElement(child, {
                 inputProps: child.props.inputProps,
-                noValidator: true,
               }))}
           </div>
         ) : (
           ''
         )}
-        <FormValidator {...this.props} id={children[0].id} />
       </div>
     );
   }

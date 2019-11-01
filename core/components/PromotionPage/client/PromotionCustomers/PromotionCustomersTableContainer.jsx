@@ -143,7 +143,7 @@ const makeMapLoan = ({
   };
 };
 
-export default compose(withProps(({
+export default withProps(({
   loans,
   currentUser,
   promotion: { _id: promotionId, promotionLots, users: promotionUsers },
@@ -155,4 +155,4 @@ export default compose(withProps(({
     promotionLots,
   })),
   columnOptions,
-})));
+}));

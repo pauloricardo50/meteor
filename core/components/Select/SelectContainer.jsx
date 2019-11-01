@@ -89,7 +89,7 @@ const SelectContainer = compose(
   mapProps(({ options, classes, onChange, id, ...otherProps }) => ({
     rawOptions: options,
     options: mapOptions(options, classes),
-    onChange: e => onChange(id, e.target.value),
+    onChange: e => onChange(e.target.value, id),
     id,
     ...otherProps,
   })),

@@ -58,7 +58,7 @@ const SingleUserPage = ({
         <>
           <h3>Biens immobiliers</h3>
           <Table
-            rows={proProperties.map(makeMapProperty(history))}
+            rows={proProperties.map(makeMapProperty({ history, currentUser }))}
             columnOptions={columnOptions}
           />
         </>
