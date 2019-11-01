@@ -218,6 +218,7 @@ const PromotionReservationProgress = ({
       className={cx(
         'promotion-reservation-progress flex center-align',
         className,
+        isEditing ? 'editing' : '',
       )}
       style={style}
     >

@@ -382,18 +382,51 @@
     width: 100%;
   }
 
+  &.editing &-icons {
+    display: block;
+    .icon {
+      display: block;
+      span {
+        margin-right: 16px;
+      }
+
+      &::after,
+      &::before {
+        display: none;
+      }
+    }
+  }
+
   &.modal &-icons {
     display: block;
 
     .icon {
       display: block;
+      position: relative;
 
       span {
         margin-right: 16px;
       }
 
-      &::before,
       &::after {
+        position: absolute;
+        height: 24px;
+        border-left: 1px solid black;
+        border-bottom: unset;
+        left: 12px;
+        content: '';
+      }
+
+      &::after {
+        top: 32px;
+      }
+
+      &::before {
+        display: none;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
         display: none;
       }
     }
