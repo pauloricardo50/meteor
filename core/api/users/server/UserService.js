@@ -607,6 +607,10 @@ export class UserServiceClass extends CollectionService {
   }
 
   getMainUsersOfOrg({ userId, orgId }) {
+    if (!!userId === !!orgId) {
+      throw new Meteor.Error('You should provide exactly one of "userId" or "orgId" to "getMainUsersOfOrg"');
+    }
+
     const query = { users: { organisations: { _id: 1 } } };
     const organisations = OrganisationService.fetch({
       $filters: { userLinks: { $elemMatch: { _id: userId } } },
@@ -616,10 +620,6 @@ export class UserServiceClass extends CollectionService {
     let mainOrganisation;
 
     if (orgId) {
-      if (userId) {
-        throw new Meteor.Error('You should provide exactly one of "userId" or "orgId" to "getMainUsersOfOrg"');
-      }
-
       mainOrganisation = OrganisationService.fetchOne({
         $filters: { _id: orgId },
         ...query,

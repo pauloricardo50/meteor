@@ -8,7 +8,7 @@ import { proLoans2 } from '../../queries';
 import LoanService from '../LoanService';
 import { LOAN_STATUS } from '../../loanConstants';
 
-describe.only('proLoans2', () => {
+describe('proLoans2', () => {
   beforeEach(() => {
     resetDatabase();
   });

@@ -2,7 +2,6 @@ import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
 import OrganisationService from 'core/api/organisations/server/OrganisationService';
-import { Loans } from 'core/api/index';
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import UserService from '../../users/server/UserService';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
@@ -14,17 +13,15 @@ import {
   anonymousLoan,
   fullLoan,
   loanSearch,
-  proLoans,
+  proLoans2,
+  proLoansAggregate,
   proPromotionLoans,
   proPropertyLoans,
   proReferredByLoans,
   userLoans,
-  proLoansAggregate,
-  proLoans2,
 } from '../queries';
 import { LOAN_STATUS } from '../loanConstants';
 import {
-  proLoansResolver,
   proPromotionLoansResolver,
   proPropertyLoansResolver,
   proReferredByLoansResolver,
@@ -168,73 +165,6 @@ exposeQuery({
 });
 
 exposeQuery({
-  query: proLoans,
-  overrides: {
-    firewall(userId, params) {
-      const {
-        userId: providedUserId,
-        fetchOrganisationLoans,
-        organisationId,
-        promotionId,
-        propertyId,
-        referredByUserId,
-      } = params;
-      params.calledByUserId = userId;
-
-      if (providedUserId && SecurityService.isUserAdmin(userId)) {
-        params.userId = providedUserId;
-      } else {
-        params.userId = userId;
-      }
-
-      if (fetchOrganisationLoans) {
-        if (organisationId) {
-          SecurityService.checkUserIsAdmin(userId);
-        } else {
-          const { organisations } = UserService.fetchOne({
-            $filters: { _id: userId },
-            organisations: { _id: 1 },
-          });
-
-          if (!organisations || organisations.length === 0) {
-            throw new Meteor.Error("Pas d'organisation!");
-          }
-
-          params.organisationId = organisations[0]._id;
-        }
-      }
-
-      SecurityService.checkUserIsPro(userId);
-
-      if (referredByUserId && referredByUserId !== userId) {
-        SecurityService.checkUserIsAdmin(userId);
-      }
-
-      if (!referredByUserId) {
-        // If false is provided here, remove it from the filters
-        delete params.referredByUserId;
-      }
-    },
-    validateParams: {
-      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
-      promotionId: Match.Maybe(Match.OneOf(String, Object)),
-      propertyId: Match.Maybe(Match.OneOf(String, Object)),
-      userId: String,
-      calledByUserId: String,
-      organisationId: Match.Maybe(String),
-      fetchOrganisationLoans: Match.Maybe(Boolean),
-      status: Match.Maybe(Match.OneOf(String, Object)),
-      referredByUserId: Match.Maybe(Match.OneOf(String, Boolean)),
-    },
-  },
-  // cacher: {
-  //   getDataToHash: getLoanIds({ withReferredBy: true }),
-  //   ttl: 60 * 1000,
-  // },
-  resolver: proLoansResolver,
-});
-
-exposeQuery({
   query: proPromotionLoans,
   overrides: {
     firewall(userId, params) {
@@ -354,10 +284,9 @@ exposeQuery({
   query: proLoans2,
   overrides: {
     firewall(userId, params) {
-      const { impersonateUserId } = params;
-      if (impersonateUserId) {
+      if (params.userId) {
         SecurityService.checkUserIsAdmin(userId);
-        params._userId = impersonateUserId;
+        params._userId = params.userId;
       } else {
         SecurityService.checkUserIsPro(userId);
       }
@@ -381,18 +310,17 @@ exposeQuery({
           filters.anonymous = anonymous;
         }
 
-        if (
-          (!referredByMe && !referredByMyOrganisation)
-          || (referredByMe && referredByMyOrganisation)
-        ) {
+        if (!!referredByMe === !!referredByMyOrganisation) {
           throw new Meteor.Error('You have to pick exactly one of "referredByMe" or "referredByMyOrganisation"');
         }
 
-        const referralMatchers = [];
+        let referralMatchers = [];
 
         if (referredByMe) {
-          referralMatchers.push({ 'userCache.referredByUserLink': _userId });
-          referralMatchers.push({ referralId: _userId });
+          referralMatchers = [
+            { 'userCache.referredByUserLink': _userId },
+            { referralId: _userId },
+          ];
         }
 
         if (referredByMyOrganisation) {
@@ -411,16 +339,12 @@ exposeQuery({
             .filter(({ $metadata }) => !$metadata.shareCustomers)
             .map(({ _id }) => _id);
 
-          referralMatchers.push({
-            'userCache.referredByUserLink': { $in: includeUserIds },
-          });
+          referralMatchers = [
+            { 'userCache.referredByUserLink': { $in: includeUserIds } },
+            { 'userCache.referredByOrganisationLink': orgId },
+            { referralId: { $in: [orgId, ...includeUserIds] } },
+          ];
           filters['userCache.referredByUserLink'] = { $nin: excludeUserIds };
-          referralMatchers.push({
-            'userCache.referredByOrganisationLink': orgId,
-          });
-          referralMatchers.push({
-            referralId: { $in: [orgId, ...includeUserIds] },
-          });
           filters.referralId = { $nin: excludeUserIds };
         }
 
@@ -429,7 +353,7 @@ exposeQuery({
     },
     validateParams: {
       anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
-      impersonateUserId: Match.Maybe(String),
+      userId: Match.Maybe(String),
       referredByMe: Match.Maybe(Boolean),
       referredByMyOrganisation: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
