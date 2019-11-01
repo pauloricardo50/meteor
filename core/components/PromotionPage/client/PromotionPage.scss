@@ -382,6 +382,19 @@
     width: 100%;
   }
 
+  &.modal &-icons {
+    display: block;
+
+    .icon {
+      display: block;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+
   &-icons {
     display: flex;
     flex-direction: row;
