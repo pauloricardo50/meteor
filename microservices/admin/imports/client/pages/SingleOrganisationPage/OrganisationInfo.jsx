@@ -20,6 +20,7 @@ const OrganisationInfo = ({
       adminNote={adminNote}
       docId={_id}
       collection={ORGANISATIONS_COLLECTION}
+      allowEditing
     />
     <UploaderArray
       doc={{ _id, documents }}

@@ -17,9 +17,8 @@ const getItems = (currentUser = {}) => {
   return [
     {
       label: <T id="ProSideNav.dashboard" />,
-      to: PRO_ROUTES.PRO_DASHBOARD_PAGE.path,
+      to: createRoute(PRO_ROUTES.PRO_DASHBOARD_PAGE.path, { tabId: 'loans' }),
       icon: 'home',
-      exact: true,
     },
     {
       label: <T id="ProSideNav.revenues" />,

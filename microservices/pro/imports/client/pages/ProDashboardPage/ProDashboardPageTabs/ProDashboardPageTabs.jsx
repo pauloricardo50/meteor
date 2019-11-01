@@ -39,12 +39,19 @@ const getTabs = ({ currentUser }) => {
         }}
       />
     ),
+    to: `/${tab.id}`,
   }));
 };
 
 const ProDashboardPageTabs = ({ currentUser }: ProDashboardPageTabsProps) => {
   const tabs = getTabs({ currentUser });
-  return <Tabs tabs={tabs} className="pro-dashboard-page-tabs" />;
+  return (
+    <Tabs
+      tabs={tabs}
+      className="pro-dashboard-page-tabs"
+      routerParamName="tabId"
+    />
+  );
 };
 
 export default ProDashboardPageTabs;

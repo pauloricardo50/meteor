@@ -409,7 +409,9 @@ export const proLoans = () => ({
   hasProProperty: 1,
   maxPropertyValue: userMaxPropertyValue,
   properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
+  relatedTo: 1,
   referralId: 1,
+  referredByText: 1,
   residenceType: 1,
   shareSolvency: 1,
   structure: 1,
@@ -853,6 +855,7 @@ export const userProperty = ({ withSort } = {}) => {
 export const proPropertySummary = () => ({
   address1: 1,
   city: 1,
+  createdAt: 1,
   status: 1,
   totalValue: 1,
   loanCount: 1,
