@@ -2,6 +2,7 @@ import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
 import OrganisationService from 'core/api/organisations/server/OrganisationService';
+import { Loans } from 'core/api/index';
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import UserService from '../../users/server/UserService';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
@@ -19,6 +20,7 @@ import {
   proReferredByLoans,
   userLoans,
   proLoansAggregate,
+  proLoans2,
 } from '../queries';
 import { LOAN_STATUS } from '../loanConstants';
 import {
@@ -344,6 +346,93 @@ exposeQuery({
     validateParams: {
       loanId: Match.Maybe(String),
       userId: Match.Maybe(String),
+    },
+  },
+});
+
+exposeQuery({
+  query: proLoans2,
+  overrides: {
+    firewall(userId, params) {
+      const { impersonateUserId } = params;
+      if (impersonateUserId) {
+        SecurityService.checkUserIsAdmin(userId);
+        params._userId = impersonateUserId;
+      } else {
+        SecurityService.checkUserIsPro(userId);
+      }
+    },
+    embody: (body) => {
+      body.$filter = ({
+        filters,
+        params: {
+          _userId,
+          status,
+          anonymous,
+          referredByMe,
+          referredByMyOrganisation,
+        },
+      }) => {
+        if (status) {
+          filters.status = status;
+        }
+
+        if (anonymous) {
+          filters.anonymous = anonymous;
+        }
+
+        if (
+          (!referredByMe && !referredByMyOrganisation)
+          || (referredByMe && referredByMyOrganisation)
+        ) {
+          throw new Meteor.Error('You have to pick exactly one of "referredByMe" or "referredByMyOrganisation"');
+        }
+
+        const referralMatchers = [];
+
+        if (referredByMe) {
+          referralMatchers.push({ 'userCache.referredByUserLink': _userId });
+          referralMatchers.push({ referralId: _userId });
+        }
+
+        if (referredByMyOrganisation) {
+          const {
+            organisation: mainOrg,
+            users,
+          } = UserService.getMainUsersOfOrg({ userId: _userId });
+          if (!mainOrg) {
+            throw new Meteor.Error('You do not have a main org');
+          }
+          const { _id: orgId } = mainOrg;
+          const includeUserIds = users
+            .filter(({ $metadata }) => $metadata.shareCustomers)
+            .map(({ _id }) => _id);
+          const excludeUserIds = users
+            .filter(({ $metadata }) => !$metadata.shareCustomers)
+            .map(({ _id }) => _id);
+
+          referralMatchers.push({
+            'userCache.referredByUserLink': { $in: includeUserIds },
+          });
+          filters['userCache.referredByUserLink'] = { $nin: excludeUserIds };
+          referralMatchers.push({
+            'userCache.referredByOrganisationLink': orgId,
+          });
+          referralMatchers.push({
+            referralId: { $in: [orgId, ...includeUserIds] },
+          });
+          filters.referralId = { $nin: excludeUserIds };
+        }
+
+        filters.$or = referralMatchers;
+      };
+    },
+    validateParams: {
+      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
+      impersonateUserId: Match.Maybe(String),
+      referredByMe: Match.Maybe(Boolean),
+      referredByMyOrganisation: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

@@ -577,8 +577,19 @@ export class UserServiceClass extends CollectionService {
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { ...metadata, isMain, shareCustomers: true },
+      metadata: { ...metadata, isMain },
     });
+  }
+
+  getMainOrg({ organisations, getIsMain }) {
+    let mainOrganisation;
+    if (organisations.length === 1) {
+      mainOrganisation = organisations[0];
+    } else if (organisations.length > 1) {
+      mainOrganisation = organisations.find(getIsMain) || organisations[0];
+    }
+
+    return mainOrganisation;
   }
 
   getUserMainOrganisation(userId) {
@@ -588,17 +599,51 @@ export class UserServiceClass extends CollectionService {
       name: 1,
     });
 
+    return this.getMainOrg({
+      organisations,
+      getIsMain: ({ userLinks }) =>
+        userLinks.find(({ _id }) => _id === userId).isMain,
+    });
+  }
+
+  getMainUsersOfOrg({ userId, orgId }) {
+    const query = { users: { organisations: { _id: 1 } } };
+    const organisations = OrganisationService.fetch({
+      $filters: { userLinks: { $elemMatch: { _id: userId } } },
+      ...query,
+    });
+
     let mainOrganisation;
-    if (organisations.length === 1) {
-      mainOrganisation = organisations[0];
-    } else if (organisations.length > 1) {
-      mainOrganisation = organisations.find(({ userLinks }) => {
-        const userLink = userLinks.find(({ _id }) => _id === userId);
-        return userLink.isMain;
-      }) || organisations[0];
+
+    if (orgId) {
+      if (userId) {
+        throw new Meteor.Error('You should provide exactly one of "userId" or "orgId" to "getMainUsersOfOrg"');
+      }
+
+      mainOrganisation = OrganisationService.fetchOne({
+        $filters: { _id: orgId },
+        ...query,
+      });
+    } else {
+      mainOrganisation = this.getMainOrg({
+        organisations,
+        getIsMain: ({ users }) =>
+          users.find(({ _id }) => _id === userId).$metadata.isMain,
+      });
     }
 
-    return mainOrganisation;
+    if (!mainOrganisation) {
+      return {};
+    }
+
+    // Only return users for whom this organisation is their main org
+    const users = mainOrganisation.users.filter(({ $metadata, organisations: userOrganisations }) => {
+      if ($metadata.isMain || userOrganisations.length === 1) {
+        return true;
+      }
+    });
+
+    return { organisation: mainOrganisation, users };
   }
 
   proSetShareCustomers({ userId, organisationId, shareCustomers }) {

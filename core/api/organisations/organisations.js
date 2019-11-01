@@ -15,8 +15,6 @@ import {
   ORGANISATION_TAGS,
 } from './organisationConstants';
 
-// console.trace();
-
 const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
 
 Organisations.deny({
@@ -74,7 +72,7 @@ export const OrganisationSchema = new SimpleSchema({
   'userLinks.$._id': { type: String, optional: true },
   'userLinks.$.title': { type: String, optional: true },
   'userLinks.$.isMain': { type: Boolean, optional: true },
-  'userLinks.$.shareCustomers': { type: Boolean, optional: true },
+  'userLinks.$.shareCustomers': { type: Boolean, defaultValue: true },
   commissionRates: { type: Array, defaultValue: [] },
   'commissionRates.$': Object,
   'commissionRates.$.rate': percentageField,
