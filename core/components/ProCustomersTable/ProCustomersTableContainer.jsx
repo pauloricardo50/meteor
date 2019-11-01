@@ -28,16 +28,15 @@ const columnOptions = [
 const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   const {
     _id: loanId,
+    anonymous,
+    createdAt,
+    loanProgress,
+    name: loanName,
+    referredByText,
+    relatedTo: relatedDocs = [],
     status,
     user,
-    createdAt,
-    name: loanName,
-    relatedTo: relatedDocs = [],
-    loanProgress,
-    anonymous,
   } = loan;
-
-  const referredBy = getReferredBy({ user, proUser, isAdmin, anonymous });
 
   return {
     id: loanId,
@@ -65,7 +64,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
         label: anonymous ? (
           'Anonyme'
         ) : (
-          <ProCustomer user={user} invitedByUser={referredBy.label} />
+          <ProCustomer user={user} invitedByUser={referredByText} />
         ),
       },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },

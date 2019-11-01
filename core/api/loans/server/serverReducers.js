@@ -1,8 +1,10 @@
+import { Meteor } from 'meteor/meteor';
+
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 
 import UserService from 'core/api/users/server/UserService';
-import { OrganisationService } from 'core/api/organisations/server/OrganisationService';
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import Calculator from '../../../utils/Calculator';
 import Loans from '../loans';
 import assigneeReducer from '../../reducers/assigneeReducer';
@@ -43,12 +45,12 @@ Loans.addReducers({
     body: {
       anonymous: 1,
       referralId: 1,
-      referredByUser: { name: 1, organisations: { name: 1 } },
-      referredByOrganisation: { name: 1 },
+      userCache: 1,
     },
-    reduce({ anonymous, referralId, referredByUser, referredByOrganisation }) {
-      let user = referredByUser;
-      let org = referredByOrganisation;
+    reduce({ anonymous, referralId, userCache = {} }) {
+      let user;
+      let org;
+      const currentUserId = Meteor.userId();
 
       if (anonymous && !referralId) {
         return 'Anonyme';
@@ -64,11 +66,44 @@ Loans.addReducers({
           org = OrganisationService.fetchOne({
             $filters: { _id: referralId },
             name: 1,
+            userLinks: 1,
+          });
+        }
+      } else {
+        if (userCache.referredByUserLink) {
+          user = UserService.fetchOne({
+            $filters: { _id: userCache.referredByUserLink },
+            name: 1,
+            organisations: { name: 1 },
+          });
+        }
+
+        if (userCache.referredByOrganisationLink) {
+          org = OrganisationService.fetchOne({
+            $filters: { _id: userCache.referredByOrganisationLink },
+            name: 1,
+            userLinks: 1,
           });
         }
       }
 
-      // TODO
+      if (!user && !org) {
+        return 'Déjà référé';
+      }
+
+      if (
+        (user && user._id === currentUserId)
+        || (org && org.userLinks.find(({ _id }) => _id === currentUserId))
+      ) {
+        const organisationName = org && org.name;
+        const userName = user && user.name;
+        return [
+          userName
+            && `${userName}${organisationName ? ` (${organisationName})` : ''}`,
+          organisationName,
+        ].filter(x => x)[0];
+      }
+      return 'Déjà référé';
     },
   },
 });
