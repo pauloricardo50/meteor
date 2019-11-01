@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import cx from 'classnames';
 
 import Tabs from 'core/components/Tabs';
 import VerticalAligner from 'core/components/VerticalAligner';
@@ -19,11 +21,12 @@ import LoanGoogleDrive from './LoanGoogleDrive';
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
+  const isAdmin = Meteor.microservice === 'admin';
 
   return (
     <div className="files-tab">
-      {Meteor.microservice === 'admin' && <ZipLoan loan={loan} />}
-      <div className="files-tab-container">
+      {isAdmin && <ZipLoan loan={loan} />}
+      <div className={cx('files-tab-container', { admin: isAdmin })}>
         <Tabs
           id="tabs"
           // Fetch new files every time you change tabs
@@ -125,9 +128,7 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
           scrollButtons="auto"
         />
 
-        {Meteor.microservice === 'admin' && (
-          <LoanGoogleDrive loanId={loan._id} name={loan.name} />
-        )}
+        {isAdmin && <LoanGoogleDrive loanId={loan._id} name={loan.name} />}
       </div>
     </div>
   );
