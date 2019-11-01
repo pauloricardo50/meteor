@@ -21,7 +21,8 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   switch (type) {
   case 'money':
     return {
-      onChangeHandler: event => onChange(toNumber(event.target.value), id),
+      onChangeHandler: event =>
+        onChange(toNumber(event.target.value), id, event),
       showMask: true,
       mask: swissFrancMask,
       placeholder: 0,
@@ -33,6 +34,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
         onChange(
           Math.round(parseFloat(event.target.value) * 100) / 10000,
           id,
+          event,
         ),
       showMask: true,
       mask: percentMask,
@@ -41,7 +43,8 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     };
   case 'number':
     return {
-      onChangeHandler: event => onChange(id, toNumber(event.target.value)),
+      onChangeHandler: event =>
+        onChange(toNumber(event.target.value), id, event),
       showMask: false,
       value,
     };
