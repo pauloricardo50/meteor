@@ -1,13 +1,11 @@
 import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
-import UserService from '../../users/server/UserService';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-
+import UserService from '../../users/server/UserService';
 import {
   adminLoans,
   anonymousLoan,
@@ -26,6 +24,7 @@ import {
   proPropertyLoansResolver,
   proReferredByLoansResolver,
 } from './resolvers';
+import { getProLoanFilters } from './exposureHelpers';
 
 exposeQuery({
   query: adminLoans,
@@ -215,35 +214,50 @@ exposeQuery({
 exposeQuery({
   query: proLoansAggregate,
   overrides: {
-    firewall(userId, params) {
-      let organisation;
-      if (!SecurityService.isUserAdmin(userId)) {
-        SecurityService.checkUserIsPro(userId);
+    firewall(userId, { referredByUserId }) {
+      SecurityService.checkUserIsPro(userId);
 
-        const { organisationId } = params;
-        organisation = OrganisationService.fetchOne({
-          $filters: { _id: organisationId, 'userLinks._id': userId },
-          userLinks: 1,
-        });
-
-        if (!organisation) {
-          SecurityService.handleUnauthorized('Not allowed to access this organisation');
+      if (referredByUserId && referredByUserId !== 'nobody') {
+        const org = UserService.getUserMainOrganisation(userId);
+        if (!org.userLinks.find(({ _id }) => _id === userId)) {
+          SecurityService.handleUnauthorized('Not allowed');
         }
       }
-
-      params.userIds = organisation.userLinks
-        .filter(({ isMain }) => isMain)
-        .map(({ _id }) => _id);
     },
     embody: (body) => {
-      body.$filter = ({ filters, params: { organisationId, userIds } }) => {
-        filters.$or = [
-          { 'userCache.referredByOrganisationLink': organisationId },
-          { referralId: { $in: userIds } },
-        ];
+      body.$filter = ({
+        filters,
+        params: { _userId, anonymous, referredByUserId },
+      }) => {
+        if (anonymous) {
+          filters.anonymous = anonymous;
+        }
+
+        getProLoanFilters({
+          filters,
+          userId: _userId,
+          referredByMyOrganisation: true,
+        });
+
+        if (referredByUserId) {
+          let forceReferralFilter = [
+            { 'userCache.referredByUserLink': referredByUserId },
+            { referralId: referredByUserId },
+          ];
+          if (referredByUserId === 'nobody') {
+            forceReferralFilter = [
+              { 'userCache.referredByUserLink': { $in: [false, null] } },
+            ];
+          }
+          filters.$and = [{ $or: filters.$or }, { $or: forceReferralFilter }];
+          delete filters.$or;
+        }
       };
     },
-    validateParams: { organisationId: String, userIds: Match.Maybe([String]) },
+    validateParams: {
+      referredByUserId: Match.Maybe(String),
+      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
+    },
   },
 });
 
@@ -314,41 +328,12 @@ exposeQuery({
           throw new Meteor.Error('You have to pick exactly one of "referredByMe" or "referredByMyOrganisation"');
         }
 
-        let referralMatchers = [];
-
-        if (referredByMe) {
-          referralMatchers = [
-            { 'userCache.referredByUserLink': _userId },
-            { referralId: _userId },
-          ];
-        }
-
-        if (referredByMyOrganisation) {
-          const {
-            organisation: mainOrg,
-            users,
-          } = UserService.getMainUsersOfOrg({ userId: _userId });
-          if (!mainOrg) {
-            throw new Meteor.Error('You do not have a main org');
-          }
-          const { _id: orgId } = mainOrg;
-          const includeUserIds = users
-            .filter(({ $metadata }) => $metadata.shareCustomers)
-            .map(({ _id }) => _id);
-          const excludeUserIds = users
-            .filter(({ $metadata }) => !$metadata.shareCustomers)
-            .map(({ _id }) => _id);
-
-          referralMatchers = [
-            { 'userCache.referredByUserLink': { $in: includeUserIds } },
-            { 'userCache.referredByOrganisationLink': orgId },
-            { referralId: { $in: [orgId, ...includeUserIds] } },
-          ];
-          filters['userCache.referredByUserLink'] = { $nin: excludeUserIds };
-          filters.referralId = { $nin: excludeUserIds };
-        }
-
-        filters.$or = referralMatchers;
+        getProLoanFilters({
+          filters,
+          userId: _userId,
+          referredByMe,
+          referredByMyOrganisation,
+        });
       };
     },
     validateParams: {
