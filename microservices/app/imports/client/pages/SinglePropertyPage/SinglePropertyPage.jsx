@@ -16,7 +16,9 @@ import SinglePropertyPageForms from './SinglePropertyPageForms';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 
 const SinglePropertyPage = (props) => {
-  const { loan, propertyId, history, currentUser: { loans } = {} } = props;
+  console.log('props:', props);
+  const { loan, propertyId, history, currentUser } = props;
+  const { loans } = currentUser || {};
   const {
     borrowers,
     properties,
