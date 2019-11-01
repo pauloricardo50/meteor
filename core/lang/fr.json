@@ -2096,7 +2096,7 @@
   "Microlocation.terrainLabel": "Terrain, vue et climat",
   "Microlocation.title": "Analyse géographique",
   "MissingDoc.redirectHome": "Page d'accueil",
-  "MissingDoc.text": "Le document a été supprimé ou n'existe pas!",
+  "MissingDoc.text": "Ce document a été supprimé, n'existe pas, ou vous n'avez pas le droit de le voir!",
   "NewDocumentForm.cta": "Ajouter",
   "NewDocumentForm.label": "Ajouter nouveau document à ce prêt",
   "NewDocumentForm.placeholder": "Nom du document (visible au client)",

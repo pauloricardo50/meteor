@@ -14,8 +14,6 @@ import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
 import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
 
 const PRO_ROUTES = {
-  PRO_DASHBOARD_PAGE: { component: ProDashboardPage, path: '/', exact: true },
-
   PRO_PROMOTION_USERS_PAGE: {
     component: ProPromotionUsersPage,
     path: '/promotions/:promotionId/users',
@@ -52,6 +50,10 @@ const PRO_ROUTES = {
   ACCOUNT_PAGE: { component: AccountPage, path: '/account' },
   DEV_PAGE: { component: DevPage, path: '/dev' },
   IMPERSONATE_PAGE: { component: ImpersonatePage, path: IMPERSONATE_ROUTE },
+  PRO_DASHBOARD_PAGE: {
+    component: ProDashboardPage,
+    path: '/:tabId?',
+  },
 
   // Not found
   NOT_FOUND: { component: NotFound },
