@@ -11,7 +11,7 @@ const generateTestsForPages = (pages, getTestData) => {
   });
 
   Object.keys(pages)
-    // .filter(page => page === 'user')
+    // .filter(page => page === 'admin')
     .forEach((pageAuthentication) => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {

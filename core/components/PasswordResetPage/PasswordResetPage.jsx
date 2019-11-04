@@ -117,6 +117,7 @@ export const PasswordResetPage = ({
   error,
   handleSubmit,
   pathname = '',
+  loading,
 }) => {
   const isEnrollment = pathname.includes('enroll-account');
 
@@ -161,6 +162,9 @@ export const PasswordResetPage = ({
             primary: false,
             size: 'large',
             style: { margin: '0 auto', display: 'block' },
+            // Let the form handle loading of the button, but override it
+            // if the loading state is true
+            loading: loading || undefined,
           }}
         />
       </div>

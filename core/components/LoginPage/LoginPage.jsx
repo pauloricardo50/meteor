@@ -9,8 +9,8 @@ import LoginPageRight from './LoginPageRight';
 import { CurrentUserContext } from '../../containers/CurrentUserContext';
 
 const LoginPage = ({ location: { search }, history: { push } }) => {
-  const { path } = queryString.parse(search);
   const currentUser = useContext(CurrentUserContext);
+  const { path } = queryString.parse(search);
 
   if (currentUser) {
     return <Redirect to="/" />;
