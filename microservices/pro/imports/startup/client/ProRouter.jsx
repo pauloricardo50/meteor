@@ -3,6 +3,7 @@ import React from 'react';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import { getUserLocale, getFormats } from 'core/utils/localization';
+import { proUser } from 'core/api/users/queries';
 
 import messagesFR from '../../../lang/fr.json';
 import ProLayout from '../../client/layout/loadable';
@@ -14,6 +15,7 @@ const ProRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={PRO_ROUTES}
+    currentUser={{ query: proUser }}
   >
     <ProLayout>
       <Switch>

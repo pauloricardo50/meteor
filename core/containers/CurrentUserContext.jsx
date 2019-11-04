@@ -1,8 +1,7 @@
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
+import React from 'react';
+import { compose, mapProps } from 'recompose';
 
-import React, { useContext } from 'react';
-
+import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { ROLES } from 'core/api/constants';
 
 const hasRole = ({ roles }, role) => roles.includes(role);
@@ -23,30 +22,21 @@ const formatCurrentUser = (user) => {
 
 export const CurrentUserContext = React.createContext();
 
-// Meteor.user() is a faster user store than our user queries.
-// So return meteorUser first, and then override it on the layout with the proper
-// user id
-export const InjectMeteorUser = withTracker(() => ({
-  meteorUser: Meteor.user(),
-}))(({ meteorUser, children }) => (
-  <CurrentUserContext.Provider value={meteorUser}>
+export const queryContainer = compose(
+  withSmartQuery({
+    query: ({ query }) => query,
+    params: ({ params, ...props }) => params && params(props),
+    queryOptions: { reactive: true, single: true },
+    dataName: 'currentUser',
+    renderMissingDoc: false,
+  }),
+  mapProps(({ query, params, ...rest }) => rest),
+);
+
+const ContextProvider = ({ currentUser, children }) => (
+  <CurrentUserContext.Provider value={formatCurrentUser(currentUser)}>
     {children}
   </CurrentUserContext.Provider>
-));
+);
 
-export const injectCurrentUser = Component => (props) => {
-  const meteorCurrentUser = useContext(CurrentUserContext);
-  const { currentUser } = props;
-  const formattedUser = formatCurrentUser(currentUser);
-  const user = formattedUser || meteorCurrentUser;
-
-  if (!formattedUser) {
-    return <Component {...props} currentUser={user} />;
-  }
-
-  return (
-    <CurrentUserContext.Provider value={user}>
-      <Component {...props} currentUser={user} />
-    </CurrentUserContext.Provider>
-  );
-};
+export const InjectCurrentUser = queryContainer(ContextProvider);

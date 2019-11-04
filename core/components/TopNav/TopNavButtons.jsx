@@ -1,7 +1,8 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
+import { CurrentUserContext } from '../../containers/CurrentUserContext';
 import useMedia from '../../hooks/useMedia';
 import Button from '../Button';
 import T from '../Translation';
@@ -9,11 +10,8 @@ import TopNavDropdown from './TopNavDropdown';
 
 type TopNavButtonsProps = {};
 
-const TopNavButtons = ({
-  children,
-  currentUser,
-  history,
-}: TopNavButtonsProps) => {
+const TopNavButtons = ({ children, history }: TopNavButtonsProps) => {
+  const currentUser = useContext(CurrentUserContext);
   const { name, organisations } = currentUser || {};
   const isMobile = useMedia({ maxWidth: 768 });
 

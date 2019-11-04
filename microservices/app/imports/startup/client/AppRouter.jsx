@@ -2,6 +2,7 @@ import React from 'react';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import { getUserLocale, getFormats } from 'core/utils/localization';
+import { appUser } from 'core/api/users/queries';
 import messagesFR from '../../../lang/fr.json';
 import AppLayout from '../../client/layouts/AppLayout';
 import AppStore from '../../client/components/AppStore';
@@ -14,6 +15,7 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={APP_ROUTES}
+    currentUser={{ query: appUser }}
   >
     <AppStore>
       <AppLayout>
