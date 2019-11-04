@@ -23,7 +23,6 @@ export default class FinancingSectionSummary extends PureComponent {
     const {
       summaryConfig,
       sectionProps,
-      noWrapper,
       content,
       expandedClass,
       ...rest

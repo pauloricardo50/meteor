@@ -39,7 +39,7 @@ const FinancingSectionExpansionPanel = ({
   expanded,
   changeExpanded,
   sectionProps,
-  noWrapper,
+  sectionItemProps,
 }: FinancingSectionExpansionPanelProps) => (
   <ExpansionPanel
     className={cx('financing-structures-section', className, { expanded })}
@@ -50,14 +50,13 @@ const FinancingSectionExpansionPanel = ({
     <FinancingSectionSummary
       summaryConfig={summaryConfig}
       sectionProps={sectionProps}
-      noWrapper={noWrapper}
       content={content}
       expandedClass={expandedClass}
     />
     <FinancingSectionDetails
       detailConfig={detailConfig}
       sectionProps={sectionProps}
-      noWrapper={noWrapper}
+      sectionItemProps={sectionItemProps}
     />
   </ExpansionPanel>
 );

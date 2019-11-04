@@ -44,7 +44,7 @@ const FinancingOffers = ({ loan }: FinancingOffersProps) => {
                     label: 'Activer',
                     size: 'small',
                     raised: true,
-                    success: offers.length > 0,
+                    secondary: offers.length > 0,
                   }}
                   method={() =>
                     loanUpdate.run({
@@ -78,8 +78,8 @@ const FinancingOffers = ({ loan }: FinancingOffersProps) => {
             Component: OfferPicker,
           },
         ]}
-        noWrapper
         className="financing-offers"
+        sectionItemProps={{ className: 'financing-offers-structure' }}
       />
     </>
   );
