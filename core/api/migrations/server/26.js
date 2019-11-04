@@ -1,179 +1,242 @@
 import { Migrations } from 'meteor/percolate:migrations';
-
-import PromotionOptions from 'core/api/promotionOptions';
-import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import PromotionService from '../../promotions/server/PromotionService';
-import {
-  AGREEMENT_STATUSES,
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  DEPOSIT_STATUSES,
-} from '../../promotionOptions/promotionOptionConstants';
+import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
+import { PROPERTY_STATUS } from 'core/api/properties/propertyConstants';
+import { asyncForEach } from 'core/api/helpers/index';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import PromotionService from '../../promotions/server/PromotionService';
+import PropertyService from '../../properties/server/PropertyService';
 
-const handlePromotions = async () => {
-  await PromotionService.collection
-    .rawCollection()
-    .update({}, { $set: { agreementDuration: 30 } }, { multi: true });
-};
+const handleUpPromotionLots = async () =>
+  PromotionLotService.rawCollection.update(
+    { status: 'BOOKED' },
+    { $set: { status: PROMOTION_LOT_STATUS.RESERVED } },
+    { multi: true },
+  );
 
-const handlePromotionOptions = async () => {
-  const promotionOptions = PromotionOptionService.fetch({ loan: { _id: 1 } });
+const handleUpPromotionPermissions = async () => {
+  const promotions = PromotionService.fetch({ users: { _id: 1 } });
 
-  return Promise.all(promotionOptions.map(async ({ _id: promotionOptionId, loan: { _id: loanId } }) => {
-    await PromotionOptionService.setInitialMortgageCertification({
-      promotionOptionId,
-      loanId,
+  const handlePermissions = async () => {
+    await asyncForEach(promotions, async (promotion) => {
+      const { users = [], _id: promotionId } = promotion;
+
+      const handleUsersPermissions = async () => {
+        await asyncForEach(users, async (user) => {
+          const {
+            $metadata: {
+              permissions: {
+                canBookLots = false,
+                displayCustomerNames = false,
+                ...permissions
+              },
+            },
+            _id: userId,
+          } = user;
+          const newPermissions = {
+            ...permissions,
+            canReserveLots: canBookLots,
+          };
+          const newDisplayCustomerNames = displayCustomerNames;
+          if (displayCustomerNames) {
+            const { forLotStatus = [] } = displayCustomerNames;
+            if (forLotStatus.includes('BOOKED')) {
+              newDisplayCustomerNames.forLotStatus = [
+                ...forLotStatus.filter(status => status !== 'BOOKED'),
+                PROMOTION_LOT_STATUS.RESERVED,
+              ];
+            }
+          }
+          newPermissions.displayCustomerNames = newDisplayCustomerNames;
+          await PromotionService.setUserPermissions({
+            promotionId,
+            userId,
+            permissions: newPermissions,
+          });
+        });
+      };
+
+      await handleUsersPermissions();
     });
+  };
 
-    await PromotionOptionService.baseUpdate(promotionOptionId, {
-      $set: {
-        status: PROMOTION_OPTION_STATUS.INTERESTED,
-        adminNote: { date: new Date() },
-        bank: { date: new Date() },
-        deposit: { date: new Date() },
-        reservationAgreement: { date: new Date() },
-      },
-      $unset: {
-        proNote: true,
-        solvency: true,
-      },
+  await handlePermissions();
+};
+
+const handleUpProperties = async () =>
+  PropertyService.rawCollection.update(
+    { status: 'BOOKED' },
+    { $set: { status: PROPERTY_STATUS.RESERVED } },
+    { multi: true },
+  );
+
+const handleUpPropertiesPermissions = async () => {
+  const properties = PropertyService.fetch({ users: { _id: 1 } });
+
+  const handlePermissions = async () => {
+    await asyncForEach(properties, async (property) => {
+      const { users = [], _id: propertyId } = property;
+
+      const handleUsersPermissions = async () => {
+        await asyncForEach(users, async (user) => {
+          const {
+            $metadata: {
+              permissions: {
+                canBookProperty = false,
+                displayCustomerNames = false,
+                ...permissions
+              },
+            },
+            _id: userId,
+          } = user;
+          const newPermissions = {
+            ...permissions,
+            canReserveProperty: canBookProperty,
+          };
+          const newDisplayCustomerNames = displayCustomerNames;
+          if (displayCustomerNames) {
+            const { forPropertyStatus = [] } = displayCustomerNames;
+            if (forPropertyStatus.includes('BOOKED')) {
+              newDisplayCustomerNames.forPropertyStatus = [
+                ...forPropertyStatus.filter(status => status !== 'BOOKED'),
+                PROPERTY_STATUS.RESERVED,
+              ];
+            }
+          }
+          newPermissions.displayCustomerNames = newDisplayCustomerNames;
+          await PropertyService.setProUserPermissions({
+            propertyId,
+            userId,
+            permissions: newPermissions,
+          });
+        });
+      };
+
+      await handleUsersPermissions();
     });
-  }));
+  };
+
+  await handlePermissions();
 };
 
-const handleBookedLots = async () => {
-  const bookedPromotionLots = PromotionLotService.fetch({
-    $filters: { status: PROMOTION_LOT_STATUS.BOOKED },
-    attributedTo: {
-      _id: 1,
-      promotionOptions: {
-        promotionLotLinks: 1,
-        createdAt: 1,
-        loan: { promotionLinks: { _id: 1 } },
-      },
-    },
-  });
+const handleDownPromotionLots = async () =>
+  PromotionLotService.rawCollection.update(
+    { status: PROMOTION_LOT_STATUS.RESERVED },
+    { $set: { status: 'BOOKED' } },
+    { multi: true },
+  );
 
-  return Promise.all(bookedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
-    const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
-      promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
-    if (promotionOption) {
-      const id = await PromotionOptionService.activateReservation({
-        promotionOptionId: promotionOption._id,
-        startDate: new Date(),
-        withAgreement: false,
-      });
+const handleDownPromotionPermissions = async () => {
+  const promotions = PromotionService.find().fetch();
 
-      const {
-        loan: { _id: loanId },
-      } = promotionOption;
+  const handlePermissions = async () => {
+    await asyncForEach(promotions, async (promotion) => {
+      const { userLinks = [], _id: promotionId } = promotion;
 
-      PromotionOptionService.setInitialMortgageCertification({
-        promotionOptionId: promotionOption._id,
-        loanId,
-      });
-
-      PromotionOptionService.baseUpdate(id, {
-        $set: {
-          status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-          reservationAgreement: {
-            status: AGREEMENT_STATUSES.WAITING,
-            date: new Date(),
+      const newUserLinks = userLinks.map((user) => {
+        const {
+          permissions: {
+            canReserveLots = false,
+            displayCustomerNames = false,
+            ...permissions
           },
-        },
+          _id: userId,
+        } = user;
+        const newPermissions = {
+          ...permissions,
+          canBookLots: canReserveLots,
+        };
+        const newDisplayCustomerNames = displayCustomerNames;
+        if (displayCustomerNames) {
+          const { forLotStatus = [] } = displayCustomerNames;
+          if (forLotStatus.includes(PROMOTION_LOT_STATUS.RESERVED)) {
+            newDisplayCustomerNames.forLotStatus = [
+              ...forLotStatus.filter(status => status !== PROMOTION_LOT_STATUS.RESERVED),
+              'BOOKED',
+            ];
+          }
+        }
+        newPermissions.displayCustomerNames = newDisplayCustomerNames;
+
+        return { _id: userId, permissions: newPermissions };
       });
-    }
-  }));
+      await PromotionService.rawCollection.update(
+        { _id: promotionId },
+        { $set: { userLinks: newUserLinks } },
+      );
+    });
+  };
+
+  await handlePermissions();
 };
 
-const handleSoldLots = async () => {
-  const soldPromotionLots = PromotionLotService.fetch({
-    $filters: { status: PROMOTION_LOT_STATUS.SOLD },
-    loan: { promotionLinks: { _id: 1 } },
-    attributedTo: {
-      promotionOptions: {
-        promotionLotLinks: 1,
-        createdAt: 1,
-        loan: { promotionLinks: { _id: 1 } },
-      },
-    },
-  });
+const handleDownProperties = async () =>
+  PropertyService.rawCollection.update(
+    { status: PROPERTY_STATUS.RESERVED },
+    { $set: { status: 'BOOKED' } },
+    { multi: true },
+  );
 
-  return Promise.all(soldPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
-    const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
-      promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
-    if (promotionOption) {
-      const id = await PromotionOptionService.activateReservation({
-        promotionOptionId: promotionOption._id,
-        startDate: new Date(),
-        withAgreement: false,
-      });
+const handleDownPropertiesPermissions = async () => {
+  const properties = PropertyService.find().fetch();
 
-      const {
-        loan: { _id: loanId },
-      } = promotionOption;
+  const handlePermissions = async () => {
+    await asyncForEach(properties, async (property) => {
+      const { userLinks = [], _id: propertyId } = property;
 
-      PromotionOptionService.baseUpdate(promotionOption._id, {
-        $set: {
-          status: PROMOTION_OPTION_STATUS.SOLD,
-          reservationAgreement: {
-            status: AGREEMENT_STATUSES.WAITING,
-            date: new Date(),
+      const newUserLinks = userLinks.map((user) => {
+        const {
+          permissions: {
+            canReserveProperty = false,
+            displayCustomerNames = false,
+            ...permissions
           },
-          bank: {
-            status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
-            date: new Date(),
-          },
-          deposit: {
-            date: new Date(),
-            status: DEPOSIT_STATUSES.PAID,
-          },
-        },
-      });
+          _id: userId,
+        } = user;
+        const newPermissions = {
+          ...permissions,
+          canBookProperty: canReserveProperty,
+        };
+        const newDisplayCustomerNames = displayCustomerNames;
+        if (displayCustomerNames) {
+          const { forPropertyStatus = [] } = displayCustomerNames;
+          if (forPropertyStatus.includes(PROPERTY_STATUS.RESERVED)) {
+            newDisplayCustomerNames.forPropertyStatus = [
+              ...forPropertyStatus.filter(status => status !== PROPERTY_STATUS.RESERVED),
+              'BOOKED',
+            ];
+          }
+        }
+        newPermissions.displayCustomerNames = newDisplayCustomerNames;
 
-      PromotionOptionService.setInitialMortgageCertification({
-        promotionOptionId: promotionOption._id,
-        loanId,
+        return { _id: userId, permissions: newPermissions };
       });
-    }
-  }));
+      await PropertyService.rawCollection.update(
+        { _id: propertyId },
+        { $set: { userLinks: newUserLinks } },
+      );
+    });
+  };
+
+  await handlePermissions();
 };
 
 export const up = async () => {
-  await handlePromotions();
-  await handlePromotionOptions();
-  await handleBookedLots();
-  await handleSoldLots();
+  await handleUpPromotionLots();
+  await handleUpPromotionPermissions();
+  await handleUpProperties();
+  await handleUpPropertiesPermissions();
 };
 
 export const down = async () => {
-  const promotionOptions = PromotionOptionService.fetch({
-    mortgageCertification: { status: 1 },
-  });
-
-  return Promise.all(promotionOptions.map((promotionOption) => {
-    const { mortgageCertification: { status } = {} } = promotionOption;
-    return PromotionOptions.rawCollection().update(
-      {},
-      {
-        $unset: {
-          status: true,
-          reservationAgreement: true,
-          bank: true,
-          deposit: true,
-        },
-        $set: { solvency: status },
-      },
-      { multi: true },
-    );
-  }));
+  await handleDownPromotionLots();
+  await handleDownPromotionPermissions();
+  await handleDownProperties();
+  await handleDownPropertiesPermissions();
 };
 
 Migrations.add({
   version: 26,
-  name: 'Add reservations on all promotions',
+  name: 'Migrate BOOKED to RESERVED',
   up,
   down,
 });

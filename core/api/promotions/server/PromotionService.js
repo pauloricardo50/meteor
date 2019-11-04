@@ -259,7 +259,7 @@ export class PromotionService extends CollectionService {
     });
 
     promotionOptions.forEach(({ _id }) => {
-      PromotionLotService.cancelPromotionLotBooking({
+      PromotionLotService.cancelPromotionLotReservation({
         promotionOptionId: _id,
       });
       PromotionOptionService.remove({

@@ -5,9 +5,10 @@ import {
   PURCHASE_TYPE,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  DEPOSIT_STATUSES,
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
-  AGREEMENT_STATUSES,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
 } from '../../api/constants';
 import { sortByStatus } from '../sorting';
 
@@ -55,8 +56,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return Math.round(maxPropertyValue);
       }
 
-      return Math.round((availableFortune + insurance2)
-          / (1 - this.getMaxBorrowRatio()));
+      return Math.round((availableFortune + insurance2) / (1 - this.getMaxBorrowRatio()));
     }
 
     getIncomeLimitedProperty({
@@ -139,10 +139,11 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       ].includes(status);
     }
 
-    canConfirmPromotionLotBooking({
+    canConfirmPromotionLotReservation({
       promotionOption: {
         bank,
-        mortgageCertification,
+        simpleVerification,
+        fullVerification,
         reservationAgreement,
         deposit,
       },
@@ -152,10 +153,13 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
           PROMOTION_OPTION_BANK_STATUS.VALIDATED,
           PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
         ].includes(bank.status)
-        && deposit.status === DEPOSIT_STATUSES.PAID
-        && mortgageCertification.status
-          === PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.SOLVENT
-        && reservationAgreement.status === AGREEMENT_STATUSES.RECEIVED
+        && deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID
+        && simpleVerification.status
+          === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED
+        && fullVerification.status
+          === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED
+        && reservationAgreement.status
+          === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
       );
     }
   };

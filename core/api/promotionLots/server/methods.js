@@ -6,13 +6,13 @@ import {
   promotionLotRemove,
   addLotToPromotionLot,
   removeLotLink,
-  bookPromotionLot,
-  cancelPromotionLotBooking,
+  reservePromotionLot,
+  cancelPromotionLotReservation,
   sellPromotionLot,
-  confirmPromotionLotBooking,
+  confirmPromotionLotReservation,
 } from '../methodDefinitions';
 
-import { expirePromotionLotBooking } from './serverMethods';
+import { expirePromotionLotReservation } from './serverMethods';
 
 promotionLotInsert.setHandler(({ userId }, { promotionLot, promotionId }) => {
   SecurityService.promotions.isAllowedToAddLots({ promotionId, userId });
@@ -51,29 +51,33 @@ removeLotLink.setHandler(({ userId }, params) => {
   return PromotionLotService.removeLotLink(params);
 });
 
-bookPromotionLot.setHandler(({ userId }, params) => {
+reservePromotionLot.setHandler(({ userId }, params) => {
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToReserveLots({
+    promotionOptionId,
+    userId,
+  });
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
+    userId,
+  });
+  return PromotionLotService.reservePromotionLot(params);
+});
+
+cancelPromotionLotReservation.setHandler(({ userId }, params) => {
   const { promotionOptionId } = params;
   SecurityService.promotions.isAllowedToManagePromotionReservation({
     promotionOptionId,
     userId,
   });
-  return PromotionLotService.bookPromotionLot(params);
+  return PromotionLotService.cancelPromotionLotReservation(params);
 });
 
-cancelPromotionLotBooking.setHandler(({ userId }, params) => {
-  const { promotionOptionId } = params;
-  SecurityService.promotions.isAllowedToManagePromotionReservation({
-    promotionOptionId,
-    userId,
-  });
-  return PromotionLotService.cancelPromotionLotBooking(params);
-});
-
-confirmPromotionLotBooking.setHandler(({ userId }, params) => {
+confirmPromotionLotReservation.setHandler(({ userId }, params) => {
   // According to promotions process v1.1 - 201909
-  // Only admins can book promotionLots
+  // Only admins can reserve promotionLots
   SecurityService.checkUserIsAdmin(userId);
-  return PromotionLotService.confirmPromotionLotBooking(params);
+  return PromotionLotService.confirmPromotionLotReservation(params);
 });
 
 sellPromotionLot.setHandler(({ userId }, params) => {
@@ -83,5 +87,5 @@ sellPromotionLot.setHandler(({ userId }, params) => {
   return PromotionLotService.sellPromotionLot(params);
 });
 
-expirePromotionLotBooking.setHandler((context, params) =>
-  PromotionLotService.expirePromotionLotBooking(params));
+expirePromotionLotReservation.setHandler((context, params) =>
+  PromotionLotService.expirePromotionLotReservation(params));

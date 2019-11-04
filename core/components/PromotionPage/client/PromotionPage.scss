@@ -281,7 +281,7 @@
   }
 }
 
-.book-client-infos {
+.reserve-client-infos {
   display: flex;
   flex-direction: column;
 
@@ -380,5 +380,90 @@
     // Sometimes the form does not stretch properly when opening a
     // select field
     width: 100%;
+  }
+
+  &.editing &-icons {
+    display: block;
+    .icon {
+      display: block;
+      span {
+        margin-right: 16px;
+      }
+
+      &::after,
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &.full &-icons {
+    display: block;
+
+    .icon {
+      display: block;
+      position: relative;
+
+      span {
+        margin-right: 16px;
+      }
+
+      &::after {
+        position: absolute;
+        height: 24px;
+        border-left: 1px solid black;
+        border-bottom: unset;
+        left: 12px;
+        content: '';
+      }
+
+      &::after {
+        top: 32px;
+      }
+
+      &::before {
+        display: none;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
+
+  &-icons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 8px;
+
+    .icon {
+      display: flex;
+      margin-right: 8px;
+      position: relative;
+
+      &::before,
+      &::after {
+        position: absolute;
+        width: 8px;
+        border-bottom: 1px solid black;
+        top: 50%;
+        content: '';
+      }
+
+      &::after {
+        left: 100%;
+      }
+
+      &::before {
+        right: 100%;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
+      }
+    }
   }
 }

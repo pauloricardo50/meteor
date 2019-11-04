@@ -74,7 +74,7 @@ describe('promotionServerHelpers', () => {
           promotionOptions: [
             {
               promotionLots: {
-                status: 'BOOKED',
+                status: 'RESERVED',
                 propertyLinks: [{ _id: 'prop' }],
                 attributedTo: { _id: 'loanId' },
               },
@@ -83,7 +83,7 @@ describe('promotionServerHelpers', () => {
         },
       });
 
-      expect(getBestPromotionLotStatus({ loanId: 'loanId' })).to.equal('BOOKED');
+      expect(getBestPromotionLotStatus({ loanId: 'loanId' })).to.equal('RESERVED');
     });
   });
 });

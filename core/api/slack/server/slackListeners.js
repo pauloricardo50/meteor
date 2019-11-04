@@ -3,7 +3,7 @@ import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
-  bookPromotionLot,
+  reservePromotionLot,
   sellPromotionLot,
   proInviteUser,
   anonymousLoanInsert,
@@ -15,7 +15,7 @@ import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import {
-  promotionLotBooked,
+  promotionLotReserved,
   promotionLotSold,
   referralOnlyNotification,
   newAnonymousLoan,
@@ -28,7 +28,7 @@ import {
 } from './slackNotificationHelpers';
 
 ServerEventService.addAfterMethodListener(
-  bookPromotionLot,
+  reservePromotionLot,
   async ({ context: { userId }, params: { promotionOptionId }, result }) => {
     if (typeof result.then === 'function') {
       await result;
@@ -53,7 +53,7 @@ ServerEventService.addAfterMethodListener(
       user: { name: 1 },
     });
 
-    promotionLotBooked({ currentUser, promotionLot, user });
+    promotionLotReserved({ currentUser, promotionLot, user });
   },
 );
 

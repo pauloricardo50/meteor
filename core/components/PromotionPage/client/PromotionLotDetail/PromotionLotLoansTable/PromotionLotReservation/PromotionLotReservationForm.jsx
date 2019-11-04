@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
 
-import { bookPromotionLot } from '../../../../../../api/methods';
+import { promotionOptionUploadAgreement } from '../../../../../../api/methods';
 import AutoFormDialog from '../../../../../AutoForm2/AutoFormDialog';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../../../AutoForm2/constants';
 import T from '../../../../../Translation';
@@ -52,11 +52,11 @@ const PromotionLotReservationForm = ({
       model={{ startDate: today }}
       schema={schema}
       buttonProps={{
-        label: <T id="PromotionLotReservation.book" />,
+        label: <T id="PromotionLotReservation.reserve" />,
         ...buttonProps,
       }}
       onSubmit={values =>
-        bookPromotionLot.run({
+        promotionOptionUploadAgreement.run({
           promotionOptionId: promotionOption._id,
           ...values,
         })

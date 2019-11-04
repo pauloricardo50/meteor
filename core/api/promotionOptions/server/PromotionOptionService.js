@@ -2,15 +2,15 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { asyncForEach } from '../../helpers/index';
-import { expirePromotionLotBooking } from '../../promotionLots/server/serverMethods';
+import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
 import {
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
-  AGREEMENT_STATUSES,
-  DEPOSIT_STATUSES,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../promotionOptionConstants';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
@@ -78,6 +78,7 @@ export class PromotionOptionService extends CollectionService {
     if (
       [
         PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
         PROMOTION_OPTION_STATUS.RESERVED,
       ].includes(status)
     ) {
@@ -146,7 +147,7 @@ export class PromotionOptionService extends CollectionService {
       priorityOrder: [...priorityOrder, promotionOptionId],
     });
 
-    this.setInitialMortgageCertification({ promotionOptionId, loanId });
+    this.setInitialSimpleVerification({ promotionOptionId, loanId });
 
     return promotionOptionId;
   };
@@ -193,94 +194,73 @@ export class PromotionOptionService extends CollectionService {
 
   updateStatus({ promotionOptionId, status }) {
     this._update({ id: promotionOptionId, object: { status } });
+    return Promise.resolve();
   }
 
-  requestReservation({ promotionOptionId }) {
-    this.updateStatus({
+  updateSimpleVerification({ promotionOptionId, status, date }) {
+    return this.updateStatusObject({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED,
+      id: 'simpleVerification',
+      object: { status, date },
     });
   }
 
-  updateMortgageCertification({ promotionOptionId, status, date }) {
-    return this._update({
-      id: promotionOptionId,
-      object: { mortgageCertification: { status, date } },
-    });
-  }
-
-  setInitialMortgageCertification({ promotionOptionId, loanId }) {
+  setInitialSimpleVerification({ promotionOptionId, loanId }) {
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       maxPropertyValue: { date: 1 },
     });
 
-    this.updateMortgageCertification({
-      promotionOptionId,
-      ...this.getInitialMortgageCertification({ loan }),
+    this._update({
+      id: promotionOptionId,
+      object: {
+        simpleVerification: { ...this.getInitialSimpleVerification({ loan }) },
+      },
     });
   }
 
-  getInitialMortgageCertification({ loan }) {
+  getInitialSimpleVerification({ loan }) {
     const { maxPropertyValue: { date: maxPropertyValueDate } = {} } = loan;
-    let status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED;
+    let status = PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE;
     let date = new Date();
 
     if (maxPropertyValueDate) {
       date = maxPropertyValueDate;
-      status = PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED;
+      status = PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED;
     }
 
     return { status, date };
   }
 
-  activateReservation = async ({
+  updateFullVerification({ promotionOptionId, status, date }) {
+    return this.updateStatusObject({
+      promotionOptionId,
+      id: 'fullVerification',
+      object: { status, date },
+    });
+  }
+
+  activateReservation({ promotionOptionId }) {
+    this.updateStatus({
+      promotionOptionId,
+      status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+    });
+  }
+
+  uploadAgreement = async ({
     promotionOptionId,
     startDate,
     agreementFileKeys = [],
     withAgreement = true,
   }) => {
-    const { promotionLots = [], status } = this.fetchOne({
+    const {
+      promotion: { agreementDuration },
+      status,
+    } = this.fetchOne({
       $filters: { _id: promotionOptionId },
-      promotionLots: {
-        promotion: { agreementDuration: 1 },
-        promotionOptions: {
-          status: 1,
-          reservationAgreement: { expirationDate: 1 },
-        },
-      },
+      promotion: { agreementDuration: 1 },
       status: 1,
     });
-
-    const [
-      {
-        promotionOptions = [],
-        promotion: { agreementDuration },
-      },
-    ] = promotionLots;
-
-    // Check if there's any active reservation on this lot
-    if (promotionOptions.length) {
-      const activeReservation = promotionOptions.find(({ status }) =>
-        [
-          PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-          PROMOTION_OPTION_STATUS.RESERVED,
-          PROMOTION_OPTION_STATUS.SOLD,
-        ].includes(status));
-      if (activeReservation) {
-        if (
-          activeReservation.status
-          === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
-        ) {
-          const {
-            reservationAgreement: { expirationDate },
-          } = activeReservation;
-          throw new Meteor.Error(`Ce lot est en cours de réservation jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
-        } else {
-          throw new Meteor.Error('Ce lot est déjà réservé');
-        }
-      }
-    }
 
     const expirationDate = this.getReservationExpirationDate({
       startDate,
@@ -302,17 +282,15 @@ export class PromotionOptionService extends CollectionService {
     this._update({
       id: promotionOptionId,
       object: {
-        status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
         reservationAgreement: {
           startDate,
           expirationDate,
           date: startDate,
-          status: AGREEMENT_STATUSES.RECEIVED,
+          status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
         },
-        deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
-        bank: {
+        deposit: {
+          status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           date: startDate,
-          status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
         },
       },
     });
@@ -321,6 +299,15 @@ export class PromotionOptionService extends CollectionService {
       promotionOptionId,
       agreementFileKeys,
     });
+
+    const shouldActivateReservation = [
+      PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
+      PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+    ].includes(status);
+
+    if (shouldActivateReservation) {
+      this.activateReservation({ promotionOptionId });
+    }
 
     return promotionOptionId;
   };
@@ -378,8 +365,8 @@ export class PromotionOptionService extends CollectionService {
   cancelReservation({ promotionOptionId }) {
     this.updateStatusObject({
       promotionOptionId,
-      id: 'adminNote',
-      object: { status: AGREEMENT_STATUSES.WAITING },
+      id: 'reservationAgreement',
+      object: { status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
@@ -397,12 +384,24 @@ export class PromotionOptionService extends CollectionService {
   expireReservation({ promotionOptionId }) {
     this.updateStatusObject({
       promotionOptionId,
-      id: 'adminNote',
-      object: { status: AGREEMENT_STATUSES.WAITING },
+      id: 'reservationAgreement',
+      object: { status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING },
     });
     return this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+    });
+  }
+
+  addToWaitList({ promotionOptionId }) {
+    this.updateStatus({
+      promotionOptionId,
+      status: PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+    });
+    this.updateStatusObject({
+      promotionOptionId,
+      id: 'bank',
+      object: { status: PROMOTION_OPTION_BANK_STATUS.WAITLIST },
     });
   }
 
@@ -419,7 +418,8 @@ export class PromotionOptionService extends CollectionService {
       adminNote: 1,
       bank: 1,
       deposit: 1,
-      mortgageCertification: 1,
+      simpleVerification: 1,
+      fullVerification: 1,
       reservationAgreement: 1,
     });
     const changedKeys = Object.keys(object).filter((key) => {
@@ -461,7 +461,7 @@ export class PromotionOptionService extends CollectionService {
     });
 
     await Promise.all(toExpire.map(({ _id: promotionOptionId }) =>
-      expirePromotionLotBooking.run({ promotionOptionId })));
+      expirePromotionLotReservation.run({ promotionOptionId })));
 
     return toExpire.length;
   };

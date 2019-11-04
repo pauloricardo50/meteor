@@ -32,7 +32,7 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  bookPromotionLot({ promotionOptionId, startDate, agreementFileKeys }) {
+  reservePromotionLot({ promotionOptionId }) {
     const {
       loan: { _id: loanId } = {},
       promotionLots,
@@ -44,28 +44,28 @@ export class PromotionLotService extends CollectionService {
 
     const [{ _id: promotionLotId }] = promotionLots;
 
-    return PromotionOptionService.activateReservation({
+    return PromotionOptionService.updateStatus({
       promotionOptionId,
-      startDate,
-      agreementFileKeys,
+      status: PROMOTION_OPTION_STATUS.RESERVED,
     })
       .then(() => {
-        this.update({
-          promotionLotId,
-          object: { status: PROMOTION_LOT_STATUS.PRE_BOOKED },
-        });
         this.addLink({
           id: promotionLotId,
           linkName: 'attributedTo',
           linkId: loanId,
         });
       })
+      .then(() =>
+        this.update({
+          promotionLotId,
+          object: { status: PROMOTION_LOT_STATUS.RESERVED },
+        }))
       .catch((error) => {
         throw error;
       });
   }
 
-  cancelPromotionLotBooking({ promotionOptionId }) {
+  cancelPromotionLotReservation({ promotionOptionId }) {
     const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
@@ -88,7 +88,7 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  completePromotionLotBooking({ promotionOptionId }) {
+  completePromotionLotReservation({ promotionOptionId }) {
     const promotionOption = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
@@ -99,7 +99,7 @@ export class PromotionLotService extends CollectionService {
 
     this.update({
       promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.BOOKED },
+      object: { status: PROMOTION_LOT_STATUS.RESERVED },
     });
 
     return PromotionOptionService.completeReservation({
@@ -107,19 +107,24 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  confirmPromotionLotBooking({ promotionOptionId }) {
+  confirmPromotionLotReservation({ promotionOptionId }) {
     const promotionOption = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
-      promotionLots: { _id: 1 },
+      promotionLots: { _id: 1, status: 1 },
       bank: 1,
       deposit: 1,
-      mortgageCertification: 1,
+      simpleVerification: 1,
+      fullVerification: 1,
       reservationAgreement: 1,
     });
     const { promotionLots } = promotionOption;
-    const [{ _id: promotionLotId }] = promotionLots;
+    const [{ _id: promotionLotId, status }] = promotionLots;
 
-    if (!Calculator.canConfirmPromotionLotBooking({ promotionOption })) {
+    if (status !== PROMOTION_LOT_STATUS.AVAILABLE) {
+      throw new Meteor.Error(403, 'Ce lot est déjà réservé');
+    }
+
+    if (!Calculator.canConfirmPromotionLotReservation({ promotionOption })) {
       throw new Meteor.Error(
         403,
         "Cette réservation n'est pas encore complète",
@@ -128,7 +133,7 @@ export class PromotionLotService extends CollectionService {
 
     this.update({
       promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.BOOKED },
+      object: { status: PROMOTION_LOT_STATUS.RESERVED },
     });
 
     return PromotionOptionService.completeReservation({
@@ -154,7 +159,7 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  expirePromotionLotBooking({ promotionOptionId }) {
+  expirePromotionLotReservation({ promotionOptionId }) {
     const { promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },

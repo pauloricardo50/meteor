@@ -8,7 +8,7 @@ export const PERMISSIONS = {
   canRemoveLots: false,
   canModifyPromotion: false,
   canManageDocuments: false,
-  canBookLots: false,
+  canReserveLots: false,
   canInviteCustomers: false,
   canAddLots: false,
   displayCustomerNames: false,

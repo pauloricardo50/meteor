@@ -10,17 +10,18 @@ import {
   PROMOTION_STATUS,
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
-import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
 import RequestReservation from './RequestReservation';
+import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
+import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 
 const makeMapPromotionOption = ({
   isLoading,
   setLoading,
   isDashboardTable = false,
   promotionStatus,
-  isAdmin,
   loan,
   promotion,
+  isAdmin,
 }) => (promotionOption, index, arr) => {
   const {
     _id: promotionOptionId,
@@ -58,18 +59,19 @@ const makeMapPromotionOption = ({
         ),
       },
       { raw: value, label: toMoney(value) },
-      <RequestReservation
-        key="reservation"
-        promotionOption={promotionOption}
-        promotionLotName={name}
-        status={status}
-      />,
+      !isAdmin && (
+        <RequestReservation
+          key="reservation"
+          promotionOption={promotionOption}
+          promotionLotName={name}
+          status={status}
+        />
+      ),
       !!isAdmin && (
         <PromotionLotReservation
           loan={loan}
           promotion={promotion}
           promotionOption={promotionOption}
-          key="promotionLotAttributer"
         />
       ),
     ].filter(x => x !== false),
@@ -94,7 +96,7 @@ const columnOptions = ({
     { id: 'name' },
     !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
-    { id: 'requestReservation' },
+    !isAdmin && { id: 'requestReservation' },
     !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)

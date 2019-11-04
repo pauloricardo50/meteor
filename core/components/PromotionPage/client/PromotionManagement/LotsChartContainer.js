@@ -6,15 +6,15 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import { getTotalValueByStatus, getGroupedLots } from './helpers';
 
 const getData = (promotionLots = []) => {
-  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
   return [
     {
       name: PROMOTION_LOT_STATUS.SOLD,
       y: soldLots.length,
     },
     {
-      name: PROMOTION_LOT_STATUS.BOOKED,
-      y: bookedLots.length,
+      name: PROMOTION_LOT_STATUS.RESERVED,
+      y: reservedLots.length,
     },
     {
       name: PROMOTION_LOT_STATUS.AVAILABLE,
@@ -24,13 +24,13 @@ const getData = (promotionLots = []) => {
 };
 
 const getSubtitle = (promotionLots = [], formatMessage) => {
-  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
   const totalValue = getTotalValueByStatus(promotionLots, 'ALL');
   const availableLotsLabel = formatMessage({
     id: `Forms.status.${PROMOTION_LOT_STATUS.AVAILABLE}`,
   });
-  const bookedLotsLabel = formatMessage({
-    id: `Forms.status.${PROMOTION_LOT_STATUS.BOOKED}`,
+  const reservedLotsLabel = formatMessage({
+    id: `Forms.status.${PROMOTION_LOT_STATUS.RESERVED}`,
   });
   const soldLotsLabel = formatMessage({
     id: `Forms.status.${PROMOTION_LOT_STATUS.SOLD}`,
@@ -38,7 +38,7 @@ const getSubtitle = (promotionLots = [], formatMessage) => {
 
   return `<p>${availableLotsLabel}: ${
     availableLots.length
-  } - ${bookedLotsLabel}: ${bookedLots.length} - ${soldLotsLabel}: ${
+  } - ${reservedLotsLabel}: ${reservedLots.length} - ${soldLotsLabel}: ${
     soldLots.length
   }<br/>CHF ${toMoney(totalValue)}</p>`;
 };

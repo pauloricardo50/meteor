@@ -65,7 +65,7 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
     canManageDocuments: true,
     canSeeManagement: true,
   }),
-  BOOKING: settings => ({ canBookLots: true }),
+  RESERVATION: settings => ({ canReserveLots: true }),
 };
 
 export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {

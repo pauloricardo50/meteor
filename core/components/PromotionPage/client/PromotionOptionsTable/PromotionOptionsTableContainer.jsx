@@ -10,9 +10,8 @@ import {
 } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import T from 'core/components/Translation';
-import PromotionReservationProgress, {
-  rawPromotionReservationProgress,
-} from '../PromotionReservations/PromotionReservationProgress';
+import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
+import { rawPromotionReservationProgress } from '../PromotionReservations/PromotionReservationProgress/PromotionReservationProgressHelpers';
 import PromotionCustomer from '../PromotionCustomer';
 
 const columnOptions = [

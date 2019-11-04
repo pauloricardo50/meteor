@@ -8,7 +8,9 @@ import {
   increaseOptionPriority,
   reducePriorityOrder,
   promotionOptionUpdateObject,
-  promotionOptionRequestReservation,
+  promotionOptionActivateReservation,
+  promotionOptionUploadAgreement,
+  promotionOptionAddToWaitList,
 } from '../methodDefinitions';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
@@ -19,11 +21,18 @@ promotionOptionInsert.setHandler(({ userId }, params) => {
 
 const canUpdatePromotionOption = (_id, userId) => {
   if (!SecurityService.isUserAdmin(userId)) {
-    const { loan } = PromotionOptionService.fetchOne({
-      $filters: { _id },
-      loan: { _id: 1, userId: 1 },
-    });
-    SecurityService.checkOwnership(loan, userId);
+    try {
+      const { loan } = PromotionOptionService.fetchOne({
+        $filters: { _id },
+        loan: { _id: 1, userId: 1 },
+      });
+      SecurityService.checkOwnership(loan, userId);
+    } catch (error) {
+      SecurityService.promotions.isAllowedToManagePromotionReservation({
+        promotionOptionId: _id,
+        userId,
+      });
+    }
   }
 };
 
@@ -52,7 +61,21 @@ promotionOptionUpdateObject.setHandler(({ userId }, params) => {
   PromotionOptionService.updateStatusObject(params);
 });
 
-promotionOptionRequestReservation.setHandler(({ userId }, params) => {
+promotionOptionActivateReservation.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  return PromotionOptionService.requestReservation(params);
+  return PromotionOptionService.activateReservation(params);
+});
+
+promotionOptionUploadAgreement.setHandler(({ userId }, params) => {
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
+    userId,
+  });
+  return PromotionOptionService.uploadAgreement(params);
+});
+
+promotionOptionAddToWaitList.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionOptionService.addToWaitList(params);
 });

@@ -1,14 +1,15 @@
-import Analytics from 'core/api/analytics/server/Analytics';
-import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import EVENTS from 'core/api/analytics/events';
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
+import Analytics from '../../analytics/server/Analytics';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import EVENTS from '../../analytics/events';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import SecurityService from '../../security';
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from './LoanService';
 import {
   setMaxPropertyValueWithoutBorrowRatio,
   loanInsertBorrowers,
 } from '../methodDefinitions';
-import { PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS } from '../../promotionOptions/promotionOptionConstants';
+import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../promotionOptions/promotionOptionConstants';
 
 export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });
@@ -17,6 +18,8 @@ export const disableUserFormsListener = ({ params: { loanId } }) => {
 ServerEventService.addAfterMethodListener(
   setMaxPropertyValueWithoutBorrowRatio,
   ({ context, params }) => {
+    const { userId } = context;
+    const isAdmin = SecurityService.isUserAdmin(userId);
     const analytics = new Analytics(context);
     const { loanId } = params;
     const loan = LoanService.fetchOne({
@@ -74,12 +77,15 @@ ServerEventService.addAfterMethodListener(
       promotion = promotions[0];
     }
 
-    if (promotionOptions.length) {
+    if (promotionOptions.length && isAdmin) {
       promotionOptions.forEach(({ _id: promotionOptionId }) =>
-        PromotionOptionService.updateMortgageCertification({
+        PromotionOptionService.updateStatusObject({
           promotionOptionId,
-          status: PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.TO_BE_VERIFIED,
-          date,
+          id: 'simpleVerification',
+          object: {
+            status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED,
+            date,
+          },
         }));
     }
 

@@ -45,8 +45,8 @@ export const clientGetBestPromotionLotStatus = (promotionOptions, loanId) => {
   if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.SOLD) >= 0) {
     return PROMOTION_LOT_STATUS.SOLD;
   }
-  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.BOOKED) >= 0) {
-    return PROMOTION_LOT_STATUS.BOOKED;
+  if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.RESERVED) >= 0) {
+    return PROMOTION_LOT_STATUS.RESERVED;
   }
   if (myPromotionLotStatuses.indexOf(PROMOTION_LOT_STATUS.AVAILABLE) >= 0) {
     return PROMOTION_LOT_STATUS.AVAILABLE;
@@ -74,7 +74,7 @@ const shouldHideForLotStatus = (
     return false;
   }
 
-  // For status BOOKED and SOLD, we check that it is attributed
+  // For status RESERVED and SOLD, we check that it is attributed
   if (forLotStatus.includes(promotionLotStatus) && isAttributed) {
     return false;
   }

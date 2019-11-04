@@ -32,6 +32,7 @@ const PromotionReservationProgressEditor = ({
         style={{ flexDirection: 'column', alignItems: 'stretch' }}
         variant="text"
         isEditing={isEditing}
+        className="full"
       />
     </>
   );

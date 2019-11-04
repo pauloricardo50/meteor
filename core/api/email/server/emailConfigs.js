@@ -344,12 +344,12 @@ const promotionLotEmailOverrides = function (
   };
 };
 
-addEmailConfig(EMAIL_IDS.BOOK_PROMOTION_LOT, {
+addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides: promotionLotEmailOverrides,
 });
 
-addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_BOOKING, {
+addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides: promotionLotEmailOverrides,
 });

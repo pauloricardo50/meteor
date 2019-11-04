@@ -9,7 +9,10 @@ import { promotionOptionUpdate } from 'core/api/methods';
 import PromotionOptionSchema from 'core/api/promotionOptions/schemas/PromotionOptionSchema';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
-import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
+import {
+  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+} from '../../../../api/promotionOptions/promotionOptionConstants';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
 import IconButton from '../../../IconButton';
@@ -29,6 +32,7 @@ const PromotionReservationDeadline = ({
   const {
     _id: promotionOptionId,
     loan: { promotions = [] },
+    reservationAgreement: { status: reservationAgreementStatus },
   } = promotionOption;
   const [promotion] = promotions;
   const {
@@ -39,7 +43,10 @@ const PromotionReservationDeadline = ({
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });
 
-  if (status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE) {
+  if (
+    status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
+    && reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
+  ) {
     return (
       <label htmlFor="expirationDate">
         <T id="Forms.expirationDate" />

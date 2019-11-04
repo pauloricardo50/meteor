@@ -1,12 +1,12 @@
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import { expirePromotionLotBooking } from 'core/api/promotionLots/server/serverMethods';
+import { expirePromotionLotReservation } from 'core/api/promotionLots/server/serverMethods';
 import UserService from '../../users/server/UserService';
 import { promotionShouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   submitContactForm,
-  bookPromotionLot,
-  cancelPromotionLotBooking,
+  reservePromotionLot,
+  cancelPromotionLotReservation,
   sellPromotionLot,
 } from '../../methods';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
@@ -145,13 +145,13 @@ const makePromotionLotNotification = emailId => async ({
 };
 
 ServerEventService.addAfterMethodListener(
-  bookPromotionLot,
-  makePromotionLotNotification(EMAIL_IDS.BOOK_PROMOTION_LOT),
+  reservePromotionLot,
+  makePromotionLotNotification(EMAIL_IDS.RESERVE_PROMOTION_LOT),
 );
 
 ServerEventService.addAfterMethodListener(
-  [cancelPromotionLotBooking, expirePromotionLotBooking],
-  makePromotionLotNotification(EMAIL_IDS.CANCEL_PROMOTION_LOT_BOOKING),
+  [cancelPromotionLotReservation, expirePromotionLotReservation],
+  makePromotionLotNotification(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION),
 );
 
 ServerEventService.addAfterMethodListener(

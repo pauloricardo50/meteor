@@ -30,7 +30,7 @@ const styles = theme => ({
   raised: {},
 });
 
-const getColor = ({ primary, secondary, color, error }) => {
+const getColor = ({ primary, secondary, color, error, warning }) => {
   if (primary) {
     return 'primary';
   }
@@ -39,6 +39,9 @@ const getColor = ({ primary, secondary, color, error }) => {
   }
   if (error) {
     return 'error';
+  }
+  if (warning) {
+    return 'warning';
   }
 
   return color;
@@ -78,7 +81,7 @@ const getStartIcon = ({ icon, iconAfter }) => {
   if (!iconAfter) {
     return icon;
   }
-}
+};
 
 const getButtonContent = (props) => {
   if (props.fab) {
@@ -86,7 +89,7 @@ const getButtonContent = (props) => {
   }
 
   return props.label || props.children;
-}
+};
 
 const Button = (props) => {
   const childProps = omit(props, [
@@ -107,7 +110,7 @@ const Button = (props) => {
   const startIcon = props.icon && getStartIcon(props);
 
   const Comp = props.fab ? Fab : MuiButton;
-  
+
   const button = (
     <Comp
       {...childProps}

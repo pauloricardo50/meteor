@@ -290,7 +290,7 @@ class PropertySecurity {
     }
   }
 
-  static isAllowedToCancelBooking({ propertyId, loanId, userId }) {
+  static isAllowedToCancelReservation({ propertyId, loanId, userId }) {
     // TODO
   }
 

@@ -15,10 +15,9 @@ import PromotionOptionService from '../PromotionOptionService';
 import {
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
-  AGREEMENT_STATUSES,
-  DEPOSIT_STATUSES,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
 } from '../../promotionOptionConstants';
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
@@ -451,49 +450,7 @@ describe('PromotionOptionService', function () {
     });
   });
 
-  describe('activateReservation', () => {
-    it('throws if promotion lot is already booked', () => {
-      const expirationDate = moment()
-        .add(1, 'days')
-        .endOf('day')
-        .toDate();
-      generator({
-        properties: { _id: 'propId' },
-        promotions: {
-          _id: 'promo',
-          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
-          promotionLots: {
-            _id: 'pL1',
-            status: PROMOTION_LOT_STATUS.BOOKED,
-            propertyLinks: [{ _id: 'prop1' }],
-            promotionOptions: [
-              {
-                _id: 'pO1',
-                loan: { _id: 'loan1' },
-                promotion: { _id: 'promo' },
-                status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-                reservationAgreement: {
-                  expirationDate,
-                },
-              },
-              {
-                _id: 'pO2',
-                loan: { _id: 'loan2' },
-                promotion: { _id: 'promo' },
-              },
-            ],
-          },
-        },
-      });
-      return PromotionOptionService.activateReservation({
-        promotionOptionId: 'pO2',
-      })
-        .then(() => expect(1).to.equal(2, 'This should not throw'))
-        .catch((error) => {
-          expect(error.message).to.include(`Ce lot est en cours de réservation jusqu'au ${moment(expirationDate).format('D MMM YYYY')}`);
-        });
-    });
-
+  describe('uploadAgreement', () => {
     it('throws if no reservation agreement has been uploaded', () => {
       generator({
         properties: { _id: 'propId' },
@@ -515,7 +472,7 @@ describe('PromotionOptionService', function () {
         },
       });
 
-      return PromotionOptionService.activateReservation({
+      return PromotionOptionService.uploadAgreement({
         promotionOptionId: 'pO2',
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
@@ -545,7 +502,7 @@ describe('PromotionOptionService', function () {
         },
       });
 
-      return PromotionOptionService.activateReservation({
+      return PromotionOptionService.uploadAgreement({
         agreementFileKeys: ['wrongKey'],
         startDate: new Date(),
         promotionOptionId: 'pO2',
@@ -557,7 +514,7 @@ describe('PromotionOptionService', function () {
         });
     });
 
-    it('activates the reservation', async () => {
+    it('uploads the agreement', async () => {
       generator({
         properties: { _id: 'propId' },
         promotions: {
@@ -592,7 +549,7 @@ describe('PromotionOptionService', function () {
         .startOf('day')
         .toDate();
 
-      return PromotionOptionService.activateReservation({
+      return PromotionOptionService.uploadAgreement({
         agreementFileKeys: [key],
         startDate,
         promotionOptionId: 'pO2',
@@ -601,11 +558,9 @@ describe('PromotionOptionService', function () {
           _id: 'pO2',
         });
         expect(promotionOption).to.deep.include({
-          status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-          deposit: { date: startDate, status: DEPOSIT_STATUSES.UNPAID },
-          bank: {
+          deposit: {
             date: startDate,
-            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+            status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           },
           promotionLink: { _id: 'promo' },
           reservationAgreement: {
@@ -615,12 +570,10 @@ describe('PromotionOptionService', function () {
               .toDate(),
             startDate,
             date: startDate,
-            status: AGREEMENT_STATUSES.RECEIVED,
+            status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
           },
         });
-        expect(promotionOption.mortgageCertification).to.deep.include({
-          status: PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
-        });
+
       });
     });
   });
@@ -766,19 +719,19 @@ describe('PromotionOptionService', function () {
           promotionLots: [
             makePromotionLotWithReservation({
               key: 1,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: yesterday,
             }),
             makePromotionLotWithReservation({
               key: 2,
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
               expirationDate: today,
             }),
             makePromotionLotWithReservation({
               key: 3,
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
               expirationDate: tomorrow,
             }),
@@ -812,11 +765,11 @@ describe('PromotionOptionService', function () {
       expect(pL1.attributedTo).to.equal(undefined);
       expect(pL1.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED);
 
-      expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
       expect(pL2.attributedTo).to.deep.include({ _id: 'loan2' });
       expect(pL2.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
 
-      expect(pL3.status).to.equal(PROMOTION_LOT_STATUS.BOOKED);
+      expect(pL3.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
       expect(pL3.attributedTo).to.deep.include({ _id: 'loan3' });
       expect(pL3.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
 
@@ -937,31 +890,31 @@ describe('PromotionOptionService', function () {
           promotionLots: [
             makePromotionLotWithReservation({
               key: 1,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: in2Days,
             }),
             makePromotionLotWithReservation({
               key: 2,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: today,
             }),
             makePromotionLotWithReservation({
               key: 3,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: tomorrow,
             }),
             makePromotionLotWithReservation({
               key: 4,
-              status: PROMOTION_LOT_STATUS.PRE_BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
               expirationDate: in3Days,
             }),
             makePromotionLotWithReservation({
               key: 4,
-              status: PROMOTION_LOT_STATUS.BOOKED,
+              status: PROMOTION_LOT_STATUS.RESERVED,
               promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
               expirationDate: tomorrow,
             }),

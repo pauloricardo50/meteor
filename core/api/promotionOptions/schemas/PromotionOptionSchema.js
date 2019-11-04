@@ -3,11 +3,12 @@ import { documentsField } from 'core/api/helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import {
-  DEPOSIT_STATUSES,
-  AGREEMENT_STATUSES,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
 } from '../promotionOptionConstants';
 
 const dateAutoValue = (triggerField = 'status') =>
@@ -51,8 +52,8 @@ const PromotionOptionSchema = new SimpleSchema({
   reservationAgreement: { type: Object, defaultValue: {} },
   'reservationAgreement.status': {
     type: String,
-    allowedValues: Object.values(AGREEMENT_STATUSES),
-    defaultValue: AGREEMENT_STATUSES.WAITING,
+    allowedValues: Object.values(PROMOTION_OPTION_AGREEMENT_STATUS),
+    defaultValue: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
     uniforms: { placeholder: null },
   },
   'reservationAgreement.date': {
@@ -76,8 +77,8 @@ const PromotionOptionSchema = new SimpleSchema({
   deposit: { type: Object, defaultValue: {} },
   'deposit.status': {
     type: String,
-    allowedValues: Object.values(DEPOSIT_STATUSES),
-    defaultValue: DEPOSIT_STATUSES.UNPAID,
+    allowedValues: Object.values(PROMOTION_OPTION_DEPOSIT_STATUS),
+    defaultValue: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
     uniforms: { placeholder: null },
   },
   'deposit.date': {
@@ -97,14 +98,24 @@ const PromotionOptionSchema = new SimpleSchema({
     autoValue: dateAutoValue(),
     optional: true,
   },
-  mortgageCertification: { type: Object, defaultValue: {} },
-  'mortgageCertification.status': {
+  simpleVerification: { type: Object, defaultValue: {} },
+  'simpleVerification.status': {
     type: String,
-    allowedValues: Object.values(PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS),
-    defaultValue: PROMOTION_OPTION_MORTGAGE_CERTIFICATION_STATUS.UNDETERMINED,
-    uniforms: { placeholder: null },
+    allowedValues: Object.values(PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS),
+    defaultValue: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
   },
-  'mortgageCertification.date': {
+  'simpleVerification.date': {
+    type: Date,
+    autoValue: dateAutoValue(),
+    optional: true,
+  },
+  fullVerification: { type: Object, defaultValue: {} },
+  'fullVerification.status': {
+    type: String,
+    allowedValues: Object.values(PROMOTION_OPTION_FULL_VERIFICATION_STATUS),
+    defaultValue: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE,
+  },
+  'fullVerification.date': {
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,
