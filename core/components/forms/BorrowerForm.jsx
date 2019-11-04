@@ -111,7 +111,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
   const { mortgageNotes, _id: borrowerId } = borrower;
   return (
     <div className="borrower-admin-form">
-      <h3>Informations personelles</h3>
+      <h3>Informations personnelles</h3>
       <AutoForm
         schema={BorrowerSchemaAdmin.pick(...personalFields)}
         model={borrower}
