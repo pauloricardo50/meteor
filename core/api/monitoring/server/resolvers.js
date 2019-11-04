@@ -190,5 +190,6 @@ export const loanStatusChanges = async (args) => {
       secondSort.indexOf(_idA.nextStatus) - secondSort.indexOf(_idB.nextStatus)
     );
   });
+
   return sortedResults;
 };

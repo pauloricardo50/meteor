@@ -160,8 +160,6 @@
         display: flex;
         align-items: center;
 
-        margin: 16px 0;
-
         .icon {
           width: 40px;
           height: 40px;
@@ -256,6 +254,21 @@
 
               color: $primary;
             }
+          }
+        }
+
+        &-recap {
+          border-radius: $border-radius;
+          padding: 8px;
+          margin-top: 8px;
+          cursor: pointer;
+
+          h4 {
+            margin-top: 0;
+          }
+
+          &:hover {
+            background-color: $grey3;
           }
         }
       }

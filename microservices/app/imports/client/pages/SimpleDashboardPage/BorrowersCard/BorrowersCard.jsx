@@ -18,7 +18,7 @@ const BorrowersCard = (props: BorrowersCardProps) => {
   return (
     <div className="borrowers-card">
       <BorrowersCardHeader {...props} />
-      {openBorrowersForm ? (
+      {openBorrowersForm !== false ? (
         <div className="flex-col animated fadeIn">
           <BorrowersForm {...props} />
           {!!borrowers.length && (
@@ -34,7 +34,7 @@ const BorrowersCard = (props: BorrowersCardProps) => {
             raised
             secondary={progress < 1}
             primary={progress >= 1}
-            onClick={() => setOpenBorrowersForm(true)}
+            onClick={() => setOpenBorrowersForm(0)}
           >
             <T
               id={
