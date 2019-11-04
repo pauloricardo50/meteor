@@ -9,7 +9,7 @@ import SimpleFormSwitch from '../SimpleFormSwitch';
 type BorrowersFormProps = {};
 
 const BorrowersForm = (props: BorrowersFormProps) => {
-  const { loan, tabs } = props;
+  const { loan, tabs, openBorrowersForm } = props;
   const { borrowers = [], _id: loanId, simpleBorrowersForm } = loan;
 
   return (
@@ -21,7 +21,10 @@ const BorrowersForm = (props: BorrowersFormProps) => {
       {!borrowers.length ? (
         <BorrowersAdder loanId={loanId} />
       ) : (
-        <Tabs tabs={tabs} />
+        <Tabs
+          tabs={tabs}
+          initialIndex={openBorrowersForm >= 0 ? openBorrowersForm : undefined}
+        />
       )}
     </div>
   );
