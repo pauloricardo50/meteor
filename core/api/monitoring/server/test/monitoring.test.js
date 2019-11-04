@@ -236,14 +236,21 @@ describe('monitoring', () => {
       });
 
       expect(result.length).to.equal(5);
-      expect(result[0]).to.deep.include({
+
+      const ongoingToBilling = result.find(({ _id: { prevStatus, nextStatus } }) =>
+        prevStatus === LOAN_STATUS.LEAD && nextStatus === LOAN_STATUS.ONGOING);
+      expect(ongoingToBilling).to.deep.include({
         _id: {
-          prevStatus: LOAN_STATUS.ONGOING,
-          nextStatus: LOAN_STATUS.BILLING,
+          prevStatus: LOAN_STATUS.LEAD,
+          nextStatus: LOAN_STATUS.ONGOING,
         },
-        count: 1,
+        count: 2,
       });
-      expect(result[1]).to.deep.include({
+
+      const pendingToFinalized = result.find(({ _id: { prevStatus, nextStatus } }) =>
+        prevStatus === LOAN_STATUS.PENDING
+          && nextStatus === LOAN_STATUS.FINALIZED);
+      expect(pendingToFinalized).to.deep.include({
         _id: {
           prevStatus: LOAN_STATUS.PENDING,
           nextStatus: LOAN_STATUS.FINALIZED,
