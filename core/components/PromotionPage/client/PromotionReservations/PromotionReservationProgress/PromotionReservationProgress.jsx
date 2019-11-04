@@ -44,7 +44,6 @@ const PromotionReservationProgress = ({
   } = promotionOption;
   const { user } = loan;
   const { info = {}, documents = {} } = loanProgress;
-  console.log('loanProgress:', loanProgress);
 
   const icon = makeIcon(variant, isEditing, promotionOptionId);
 

@@ -110,7 +110,7 @@ export class PromotionLotService extends CollectionService {
   confirmPromotionLotReservation({ promotionOptionId }) {
     const promotionOption = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
-      promotionLots: { _id: 1 },
+      promotionLots: { _id: 1, status: 1 },
       bank: 1,
       deposit: 1,
       simpleVerification: 1,
@@ -118,7 +118,11 @@ export class PromotionLotService extends CollectionService {
       reservationAgreement: 1,
     });
     const { promotionLots } = promotionOption;
-    const [{ _id: promotionLotId }] = promotionLots;
+    const [{ _id: promotionLotId, status }] = promotionLots;
+
+    if (status !== PROMOTION_LOT_STATUS.AVAILABLE) {
+      throw new Meteor.Error(403, 'Ce lot est déjà réservé');
+    }
 
     if (!Calculator.canConfirmPromotionLotReservation({ promotionOption })) {
       throw new Meteor.Error(

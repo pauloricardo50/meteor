@@ -10,6 +10,7 @@ import {
   promotionOptionUpdateObject,
   promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
+  promotionOptionAddToWaitList,
 } from '../methodDefinitions';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
@@ -72,4 +73,9 @@ promotionOptionUploadAgreement.setHandler(({ userId }, params) => {
     userId,
   });
   return PromotionOptionService.uploadAgreement(params);
+});
+
+promotionOptionAddToWaitList.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionOptionService.addToWaitList(params);
 });

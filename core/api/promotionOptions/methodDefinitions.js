@@ -53,3 +53,10 @@ export const promotionOptionUploadAgreement = new Method({
     agreementFileKeys: Array,
   },
 });
+
+export const promotionOptionAddToWaitList = new Method({
+  name: 'promotionOptionAddToWaitList',
+  params: {
+    promotionOptionId: String,
+  },
+});

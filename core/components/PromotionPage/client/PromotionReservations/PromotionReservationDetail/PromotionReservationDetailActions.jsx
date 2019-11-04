@@ -7,6 +7,7 @@ import {
   confirmPromotionLotReservation,
   sellPromotionLot,
   cancelPromotionLotReservation,
+  promotionOptionAddToWaitList,
 } from 'core/api/methods';
 import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
@@ -30,6 +31,7 @@ const PromotionReservationDetailActions = ({
   canConfirmReservation,
   canSellLot,
   confirmReservationIsDisabled,
+  canAddToWaitList,
 }: PromotionReservationDetailActionsProps) => {
   const { _id: promotionOptionId } = promotionOption;
 
@@ -40,7 +42,7 @@ const PromotionReservationDetailActions = ({
           agreementDuration={agreementDuration}
           promotionOption={promotionOption}
           buttonProps={{
-            className: 'mr-8',
+            className: 'mr-8 mb-8',
             primary: true,
             raised: true,
             label: 'Uploader convention de réservation',
@@ -49,7 +51,7 @@ const PromotionReservationDetailActions = ({
       )}
       {canCancelReservation && (
         <ConfirmMethod
-          buttonProps={{ className: 'mr-8', error: true, outlined: true }}
+          buttonProps={{ className: 'mr-8 mb-8', error: true, outlined: true }}
           label="Annuler réservation"
           method={() =>
             cancelPromotionLotReservation.run({ promotionOptionId })
@@ -68,11 +70,22 @@ const PromotionReservationDetailActions = ({
           agreementDuration={agreementDuration}
           promotionOption={promotionOption}
           buttonProps={{
-            className: 'mr-8',
+            className: 'mr-8 mb-8',
             primary: true,
             raised: true,
             label: 'Réactiver réservation',
           }}
+        />
+      )}
+      {canAddToWaitList && (
+        <ConfirmMethod
+          buttonProps={{
+            className: 'mr-8 mb-8',
+            outlined: true,
+          }}
+          label="Mettre en liste d'attente"
+          method={() => promotionOptionAddToWaitList.run({ promotionOptionId })}
+          description={<span>Met cette réservation en liste d'attente</span>}
         />
       )}
       {canConfirmReservation && (
@@ -84,6 +97,7 @@ const PromotionReservationDetailActions = ({
             tooltip: confirmReservationIsDisabled
               ? 'Veuillez compléter toutes les étapes pour cette réservation'
               : undefined,
+            className: 'mr-8 mb-8',
           }}
           label="Confirmer réservation"
           method={() =>
@@ -100,7 +114,11 @@ const PromotionReservationDetailActions = ({
       )}
       {canSellLot && (
         <ConfirmMethod
-          buttonProps={{ secondary: true, raised: true }}
+          buttonProps={{
+            secondary: true,
+            raised: true,
+            className: 'mr-8 mb-8',
+          }}
           label="Confirmer vente"
           method={() => sellPromotionLot.run({ promotionOptionId })}
           description={(
@@ -144,19 +162,24 @@ export default withProps(({ promotionOption }) => {
   const canReactivateReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
     PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
-    PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
   ].includes(status) && isAllowedToManageReservation;
   const canCancelReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
     PROMOTION_OPTION_STATUS.RESERVED,
     PROMOTION_OPTION_STATUS.SOLD,
+    PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
   ].includes(status) && isAdmin;
   const canUploadReservationAgreement = status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
     && reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.WAITING
     && isAllowedToManageReservation;
-  const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
+  const canConfirmReservation = isAdmin
+    && [
+      PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+    ].includes(status);
   const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
   const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotReservation({ promotionOption });
+  const canAddToWaitList = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
 
   return {
     agreementDuration,
@@ -166,5 +189,6 @@ export default withProps(({ promotionOption }) => {
     canConfirmReservation,
     canSellLot,
     confirmReservationIsDisabled,
+    canAddToWaitList,
   };
 })(PromotionReservationDetailActions);
