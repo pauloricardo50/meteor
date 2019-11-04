@@ -11,6 +11,8 @@ import {
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
 import RequestReservation from './RequestReservation';
+import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
+import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -19,6 +21,7 @@ const makeMapPromotionOption = ({
   promotionStatus,
   loan,
   promotion,
+  isAdmin,
 }) => (promotionOption, index, arr) => {
   const {
     _id: promotionOptionId,
@@ -56,12 +59,21 @@ const makeMapPromotionOption = ({
         ),
       },
       { raw: value, label: toMoney(value) },
-      <RequestReservation
-        key="reservation"
-        promotionOption={promotionOption}
-        promotionLotName={name}
-        status={status}
-      />,
+      !isAdmin && (
+        <RequestReservation
+          key="reservation"
+          promotionOption={promotionOption}
+          promotionLotName={name}
+          status={status}
+        />
+      ),
+      isAdmin && (
+        <PromotionLotReservation
+          loan={loan}
+          promotion={promotion}
+          promotionOption={promotionOption}
+        />
+      ),
     ].filter(x => x !== false),
   };
 };
@@ -71,7 +83,11 @@ const makeSortByPriority = priorityOrder => (
   { _id: optionId2 },
 ) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
-const columnOptions = ({ isDashboardTable = false, promotionStatus }) =>
+const columnOptions = ({
+  isDashboardTable = false,
+  promotionStatus,
+  isAdmin,
+}) =>
   [
     promotionStatus === PROMOTION_STATUS.OPEN && {
       id: 'priorityOrder',
@@ -80,7 +96,8 @@ const columnOptions = ({ isDashboardTable = false, promotionStatus }) =>
     { id: 'name' },
     !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
-    { id: 'requestReservation' },
+    !isAdmin && { id: 'requestReservation' },
+    isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
     .map(({ id, ...rest }) => ({
