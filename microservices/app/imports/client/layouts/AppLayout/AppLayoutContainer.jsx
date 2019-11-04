@@ -36,8 +36,7 @@ const isOnAllowedRouteWithoutLoan = (loans, path) =>
   && path !== '/'
   && !isOnAllowedRoute(path, WITHOUT_LOAN);
 
-export const getRedirect = (pathname) => {
-  const currentUser = useContext(CurrentUserContext);
+export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
   if (baseRedirect !== undefined) {
     return baseRedirect;
@@ -85,7 +84,8 @@ const withInterestRates = withSmartQuery({
 });
 
 const withRedirect = withProps(({ history }) => {
-  const redirect = getRedirect(history.location.pathname);
+  const currentUser = useContext(CurrentUserContext);
+  const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });
 
