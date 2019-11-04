@@ -13,6 +13,7 @@ import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClie
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { isAllowedToManageCustomerPromotionReservation } from 'core/api/security/clientSecurityHelpers/index';
 import Calculator from 'core/utils/Calculator';
+import colors from 'core/config/colors';
 import {
   PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
@@ -82,6 +83,7 @@ const PromotionReservationDetailActions = ({
           buttonProps={{
             className: 'mr-8 mb-8',
             outlined: true,
+            style: { color: colors.warning, borderColor: colors.warning },
           }}
           label="Mettre en liste d'attente"
           method={() => promotionOptionAddToWaitList.run({ promotionOptionId })}

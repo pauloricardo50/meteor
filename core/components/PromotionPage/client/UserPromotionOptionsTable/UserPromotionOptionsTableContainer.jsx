@@ -67,7 +67,7 @@ const makeMapPromotionOption = ({
           status={status}
         />
       ),
-      isAdmin && (
+      !!isAdmin && (
         <PromotionLotReservation
           loan={loan}
           promotion={promotion}
@@ -97,7 +97,7 @@ const columnOptions = ({
     !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
     !isAdmin && { id: 'requestReservation' },
-    isAdmin && { id: 'reservation' },
+    !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
     .map(({ id, ...rest }) => ({
