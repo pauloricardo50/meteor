@@ -70,6 +70,14 @@ const PromotionReservationProgressItem = ({
   }
 
   if (component) {
+    if (variant === 'label') {
+      return (
+        <div className="flex-col center-align">
+          {component}
+          <T id={`Forms.${id}`} />
+        </div>
+      );
+    }
     return component;
   }
 

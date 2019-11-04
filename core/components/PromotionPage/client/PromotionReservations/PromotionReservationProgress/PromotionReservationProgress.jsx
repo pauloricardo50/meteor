@@ -1,7 +1,7 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import cx from 'classnames';
+import { compose, withProps } from 'recompose';
 
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
@@ -10,114 +10,18 @@ import {
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
-import PromotionReservationProgressItem from './PromotionReservationProgressItem';
 import ProgressCircle from '../../../../ProgressCircle';
+import {
+  makeIcon,
+  makeGetIcon,
+  getAdminNoteIcon,
+  getPercent,
+  getRatio,
+} from './PromotionReservationProgressHelpers';
+import { withSmartQuery } from '../../../../../api';
+import { loanProgress as loanProgressQuery } from '../../../../../api/loans/queries';
 
 type PromotionReservationProgressProps = {};
-
-const makeGetIcon = ({
-  success = [],
-  waiting = [],
-  error = [],
-  warning = [],
-  sent = [],
-  waitList = [],
-}) => (status) => {
-  if (waiting.includes(status)) {
-    return { icon: 'waiting', color: 'warning' };
-  }
-  if (warning.includes(status)) {
-    return { icon: 'error', color: 'warning' };
-  }
-  if (error.includes(status)) {
-    return { icon: 'error', color: 'error' };
-  }
-  if (success.includes(status)) {
-    return { icon: 'checkCircle', color: 'success' };
-  }
-  if (sent.includes(status)) {
-    return { icon: 'send', color: 'warning' };
-  }
-  if (waitList.includes(status)) {
-    return { icon: 'schedule', color: 'warning' };
-  }
-
-  return { icon: 'radioButtonChecked', color: 'primary' };
-};
-
-const makeIcon = (variant, isEditing, promotionOptionId) => ({
-  icon,
-  color,
-  status,
-  date,
-  id,
-  component,
-  placeholder,
-}) => (
-  <PromotionReservationProgressItem
-    icon={icon}
-    color={color}
-    date={date}
-    status={status}
-    variant={variant}
-    id={id}
-    isEditing={isEditing}
-    promotionOptionId={promotionOptionId}
-    component={component}
-    placeholder={placeholder}
-  />
-);
-
-const getPercent = ({ valid, required }) => {
-  if (valid === 0 || required === 0) {
-    return 0;
-  }
-
-  return valid / required;
-};
-
-const getRatio = ({ valid, required }) => ({ value: valid, target: required });
-
-const getAdminNoteIcon = (
-  { note, date, isAnonymized } = {},
-  variant,
-  isEditing,
-  promotionOptionId,
-) => {
-  const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
-
-  if (!shouldShowNote) {
-    return null;
-  }
-
-  return (
-    <PromotionReservationProgressItem
-      icon="info"
-      color={note ? 'primary' : 'borderGrey'}
-      date={date}
-      note={note}
-      placeholder="Pas de commentaire"
-      variant={variant}
-      id="adminNote"
-      isEditing={isEditing}
-      promotionOptionId={promotionOptionId}
-    />
-  );
-};
-
-export const rawPromotionReservationProgress = ({
-  simpleVerification,
-  reservationAgreement,
-  deposit,
-  bank,
-}) =>
-  [
-    simpleVerification.status
-      === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
-    reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
-    deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
-    bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
-  ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);
 
 const PromotionReservationProgress = ({
   promotionOption,
@@ -125,6 +29,7 @@ const PromotionReservationProgress = ({
   variant = 'icon',
   isEditing,
   className,
+  loanProgress = {},
 }: PromotionReservationProgressProps) => {
   const {
     _id: promotionOptionId,
@@ -137,7 +42,9 @@ const PromotionReservationProgress = ({
     loan,
     isAnonymized,
   } = promotionOption;
-  const { user, loanProgress: { info = {}, documents = {} } = {} } = loan;
+  const { user } = loan;
+  const { info = {}, documents = {} } = loanProgress;
+  console.log('loanProgress:', loanProgress);
 
   const icon = makeIcon(variant, isEditing, promotionOptionId);
 
@@ -244,4 +151,13 @@ const PromotionReservationProgress = ({
   );
 };
 
-export default PromotionReservationProgress;
+export default compose(withSmartQuery({
+  query: loanProgressQuery,
+  queryOptions: { single: true, reactive: false },
+  params: ({
+    promotionOption: {
+      loan: { _id: loanId },
+    },
+  }) => ({ loanId }),
+  dataName: 'loanProgress',
+}))(PromotionReservationProgress);

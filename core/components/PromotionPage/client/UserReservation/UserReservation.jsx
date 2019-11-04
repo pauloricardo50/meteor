@@ -40,12 +40,12 @@ const UserReservation = ({
         </div>
         {[
           PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-          PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED,
           PROMOTION_OPTION_STATUS.RESERVED,
         ].includes(status) && (
           <PromotionReservationProgress
             promotionOption={promotionOption}
             variant={progressVariant}
+            className="full"
           />
         )}
       </div>

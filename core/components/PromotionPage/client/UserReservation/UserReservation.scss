@@ -1,6 +1,7 @@
 .user-reservation {
   &-info {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     flex-wrap: wrap;
   }
@@ -14,8 +15,12 @@
   }
 
   .promotion-reservation-progress {
-    flex-grow: 1;
-    flex-direction: column;
     align-items: flex-start !important;
+    justify-content: space-between;
+    flex-grow: 1;
+
+    &-icons {
+      flex-basis: 100%;
+    }
   }
 }

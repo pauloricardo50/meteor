@@ -10,9 +10,12 @@ import {
 } from 'core/api/methods';
 import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { isAllowedToReservePromotionLotToCustomer } from 'core/api/security/clientSecurityHelpers/index';
+import { isAllowedToManageCustomerPromotionReservation } from 'core/api/security/clientSecurityHelpers/index';
 import Calculator from 'core/utils/Calculator';
-import { PROMOTION_OPTION_STATUS } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import {
+  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+} from '../../../../../api/promotionOptions/promotionOptionConstants';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
 
@@ -21,7 +24,7 @@ type PromotionReservationDetailActionsProps = {};
 const PromotionReservationDetailActions = ({
   promotionOption,
   agreementDuration,
-  canActivateReservation,
+  canUploadReservationAgreement,
   canReactivateReservation,
   canCancelReservation,
   canConfirmReservation,
@@ -32,7 +35,7 @@ const PromotionReservationDetailActions = ({
 
   return (
     <div className="flex center mt-16">
-      {canActivateReservation && (
+      {canUploadReservationAgreement && (
         <PromotionLotReservationForm
           agreementDuration={agreementDuration}
           promotionOption={promotionOption}
@@ -40,7 +43,7 @@ const PromotionReservationDetailActions = ({
             className: 'mr-8',
             primary: true,
             raised: true,
-            label: 'Démarrer réservation',
+            label: 'Uploader convention de réservation',
           }}
         />
       )}
@@ -48,7 +51,9 @@ const PromotionReservationDetailActions = ({
         <ConfirmMethod
           buttonProps={{ className: 'mr-8', error: true, outlined: true }}
           label="Annuler réservation"
-          method={() => cancelPromotionLotReservation.run({ promotionOptionId })}
+          method={() =>
+            cancelPromotionLotReservation.run({ promotionOptionId })
+          }
           description={(
             <span>
               Ce lot deviendra a nouveau disponible.
@@ -81,7 +86,9 @@ const PromotionReservationDetailActions = ({
               : undefined,
           }}
           label="Confirmer réservation"
-          method={() => confirmPromotionLotReservation.run({ promotionOptionId })}
+          method={() =>
+            confirmPromotionLotReservation.run({ promotionOptionId })
+          }
           description={(
             <span>
               Vous confirmez que ce lot est maintenant réservé pour ce client?
@@ -115,6 +122,7 @@ export default withProps(({ promotionOption }) => {
     status,
     promotion,
     loan: { promotions = [] },
+    reservationAgreement: { status: reservationAgreementStatus },
   } = promotionOption;
 
   const { agreementDuration } = promotion;
@@ -129,32 +137,30 @@ export default withProps(({ promotionOption }) => {
     invitedBy,
     currentUser,
   });
-  const isAllowedToReserveLot = isAllowedToReservePromotionLotToCustomer({
-    promotion,
-    currentUser,
-    customerOwnerType,
-  });
+  const isAllowedToManageReservation = isAllowedToManageCustomerPromotionReservation({ promotion, currentUser, customerOwnerType });
+
   const isAdmin = Meteor.microservice === 'admin';
 
   const canReactivateReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
     PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-  ].includes(status) && isAllowedToReserveLot;
+  ].includes(status) && isAllowedToManageReservation;
   const canCancelReservation = [
     PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
     PROMOTION_OPTION_STATUS.RESERVED,
     PROMOTION_OPTION_STATUS.SOLD,
   ].includes(status) && isAdmin;
-  const canActivateReservation = status === PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED
-    && isAllowedToReserveLot;
+  const canUploadReservationAgreement = status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
+    && reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.WAITING
+    && isAllowedToManageReservation;
   const canConfirmReservation = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
   const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
   const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotReservation({ promotionOption });
 
   return {
     agreementDuration,
-    canActivateReservation,
+    canUploadReservationAgreement,
     canReactivateReservation,
     canCancelReservation,
     canConfirmReservation,

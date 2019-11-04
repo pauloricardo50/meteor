@@ -7,6 +7,7 @@ import Calculator from 'core/utils/Calculator';
 import {
   PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import UploaderArray from '../../../../UploaderArray';
 import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
@@ -27,7 +28,11 @@ const PromotionReservationDetail = ({
 }: PromotionReservationDetailProps) => {
   const {
     _id: promotionOptionId,
-    reservationAgreement: { expirationDate, startDate },
+    reservationAgreement: {
+      expirationDate,
+      startDate,
+      status: reservationStatus,
+    },
     status,
     isAnonymized,
   } = promotionOption;
@@ -46,7 +51,9 @@ const PromotionReservationDetail = ({
       </div>
       <PromotionReservationProgressEditor promotionOption={promotionOption} />
       <br />
-      {isActive && !isAnonymized && (
+      {isActive
+        && reservationStatus === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
+        && !isAnonymized && (
         <UploaderArray
           doc={promotionOption}
           collection={PROMOTION_OPTIONS_COLLECTION}

@@ -1,3 +1,4 @@
+import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const promotionOptionInsert = new Method({
@@ -42,4 +43,13 @@ export const promotionOptionUpdateObject = new Method({
 export const promotionOptionActivateReservation = new Method({
   name: 'promotionOptionActivateReservation',
   params: { promotionOptionId: String },
+});
+
+export const promotionOptionUploadAgreement = new Method({
+  name: 'promotionOptionUploadAgreement',
+  params: {
+    promotionOptionId: String,
+    startDate: Match.OneOf(String, Date),
+    agreementFileKeys: Array,
+  },
 });

@@ -56,8 +56,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return Math.round(maxPropertyValue);
       }
 
-      return Math.round((availableFortune + insurance2)
-          / (1 - this.getMaxBorrowRatio()));
+      return Math.round((availableFortune + insurance2) / (1 - this.getMaxBorrowRatio()));
     }
 
     getIncomeLimitedProperty({
@@ -156,9 +155,9 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         ].includes(bank.status)
         && deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID
         && simpleVerification.status
-          === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.SOLVENT
+          === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED
         && fullVerification.status
-          === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.SOLVENT
+          === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED
         && reservationAgreement.status
           === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
       );

@@ -12,7 +12,7 @@ import DialogSimple from '../../../../../DialogSimple';
 import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 import PromotionReservationProgress from '../../../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
-import PromotionLotReservationForm from './PromotionLotReservationForm';
+import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
 type PromotionLotReservationProps = {};
 
@@ -52,9 +52,10 @@ const PromotionLotReservation = ({
 
   if (status === PROMOTION_OPTION_STATUS.INTERESTED) {
     return (
-      <PromotionLotReservationForm
-        agreementDuration={agreementDuration}
+      <RequestReservation
         promotionOption={promotionOption}
+        promotionLotName={promotionLot.name}
+        status={status}
       />
     );
   }

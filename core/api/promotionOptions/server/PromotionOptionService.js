@@ -255,9 +255,11 @@ export class PromotionOptionService extends CollectionService {
   }) => {
     const {
       promotion: { agreementDuration },
+      status,
     } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       promotion: { agreementDuration: 1 },
+      status: 1,
     });
 
     const expirationDate = this.getReservationExpirationDate({
@@ -297,6 +299,15 @@ export class PromotionOptionService extends CollectionService {
       promotionOptionId,
       agreementFileKeys,
     });
+
+    const shouldActivateReservation = [
+      PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
+      PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+    ].includes(status);
+
+    if (shouldActivateReservation) {
+      this.activateReservation({ promotionOptionId });
+    }
 
     return promotionOptionId;
   };

@@ -2,7 +2,6 @@ import React from 'react';
 import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import Calculator from 'core/utils/Calculator';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import StatusLabel from '../../../StatusLabel';
@@ -11,20 +10,13 @@ import {
   PROMOTION_STATUS,
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
-import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation';
 import RequestReservation from './RequestReservation';
-
-const getLoanProgress = loan => ({
-  info: Calculator.getValidFieldsRatio({ loan }),
-  documents: Calculator.getValidDocumentsRatio({ loan }),
-});
 
 const makeMapPromotionOption = ({
   isLoading,
   setLoading,
   isDashboardTable = false,
   promotionStatus,
-  isAdmin,
   loan,
   promotion,
 }) => (promotionOption, index, arr) => {
@@ -37,13 +29,9 @@ const makeMapPromotionOption = ({
     status,
   } = promotionOption;
   const { name, value } = (promotionLots && promotionLots[0]) || {};
-  const loanProgress = getLoanProgress(loan);
   return {
     id: promotionOptionId,
-    promotionOption: {
-      ...promotionOption,
-      loan: { ...promotionOption.loan, loanProgress },
-    },
+    promotionOption,
     columns: [
       promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
@@ -74,17 +62,6 @@ const makeMapPromotionOption = ({
         promotionLotName={name}
         status={status}
       />,
-      !!isAdmin && (
-        <PromotionLotReservation
-          loan={loan}
-          promotion={promotion}
-          promotionOption={{
-            ...promotionOption,
-            loan: { ...promotionOption.loan, loanProgress },
-          }}
-          key="promotionLotAttributer"
-        />
-      ),
     ].filter(x => x !== false),
   };
 };
@@ -94,11 +71,7 @@ const makeSortByPriority = priorityOrder => (
   { _id: optionId2 },
 ) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
-const columnOptions = ({
-  isDashboardTable = false,
-  promotionStatus,
-  isAdmin,
-}) =>
+const columnOptions = ({ isDashboardTable = false, promotionStatus }) =>
   [
     promotionStatus === PROMOTION_STATUS.OPEN && {
       id: 'priorityOrder',
@@ -108,7 +81,6 @@ const columnOptions = ({
     !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
     { id: 'requestReservation' },
-    !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
     .map(({ id, ...rest }) => ({

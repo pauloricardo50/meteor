@@ -9,6 +9,7 @@ import {
   reducePriorityOrder,
   promotionOptionUpdateObject,
   promotionOptionActivateReservation,
+  promotionOptionUploadAgreement,
 } from '../methodDefinitions';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
@@ -19,11 +20,18 @@ promotionOptionInsert.setHandler(({ userId }, params) => {
 
 const canUpdatePromotionOption = (_id, userId) => {
   if (!SecurityService.isUserAdmin(userId)) {
-    const { loan } = PromotionOptionService.fetchOne({
-      $filters: { _id },
-      loan: { _id: 1, userId: 1 },
-    });
-    SecurityService.checkOwnership(loan, userId);
+    try {
+      const { loan } = PromotionOptionService.fetchOne({
+        $filters: { _id },
+        loan: { _id: 1, userId: 1 },
+      });
+      SecurityService.checkOwnership(loan, userId);
+    } catch (error) {
+      SecurityService.promotions.isAllowedToManagePromotionReservation({
+        promotionOptionId: _id,
+        userId,
+      });
+    }
   }
 };
 
@@ -55,4 +63,13 @@ promotionOptionUpdateObject.setHandler(({ userId }, params) => {
 promotionOptionActivateReservation.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
   return PromotionOptionService.activateReservation(params);
+});
+
+promotionOptionUploadAgreement.setHandler(({ userId }, params) => {
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
+    userId,
+  });
+  return PromotionOptionService.uploadAgreement(params);
 });

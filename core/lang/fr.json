@@ -1,4 +1,6 @@
 {
+  "PromotionReservationDeadline.RESERVATION_ACTIVE": "Réservation en cours",
+  "PromotionReservationDeadline.RESERVATION_ACTIVE.description": "Avancez dans votre dossier afin que nous puissions l'envoyer à la banque le plus rapidement possible",
   "Forms.status.CALCULATED": "En attente de vérification",
   "Forms.simpleVerification": "Attestation de principe",
   "Forms.info": "Informations",

@@ -63,3 +63,7 @@ export const userLoans = Loans.createQuery(
   },
   { scoped: true },
 );
+
+export const loanProgress = Loans.createQuery(LOAN_QUERIES.LOAN_PROGRESS, {
+  loanProgress: 1,
+});
