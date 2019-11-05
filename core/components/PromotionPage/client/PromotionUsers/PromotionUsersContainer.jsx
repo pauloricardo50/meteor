@@ -16,7 +16,7 @@ const makeColumnOptions = ({ canManageProUsers }) =>
   [
     { id: 'name' },
     { id: 'roles' },
-    canManageProUsers && { id: 'permissions' },
+    { id: 'permissions' },
     canManageProUsers && { id: 'actions' },
   ]
     .filter(x => x)
@@ -66,13 +66,14 @@ const makeMapPromotionUser = ({
           />
         ),
       },
-      canManageProUsers && {
+      {
         raw: permissions,
         label: (
           <div onClick={event => event.stopPropagation()}>
             <PromotionUserPermissionsModifier
               user={user}
               promotionId={promotionId}
+              canModify={canManageProUsers}
             />
           </div>
         ),

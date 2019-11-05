@@ -13,7 +13,6 @@ import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
 import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
 
 const PRO_ROUTES = {
-  PRO_DASHBOARD_PAGE: { component: ProDashboardPage, path: '/', exact: true },
   PRO_PROMOTION_PAGE: {
     component: ProPromotionPage,
     path: '/promotions/:promotionId/:tabId?',
