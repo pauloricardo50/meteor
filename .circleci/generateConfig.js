@@ -34,19 +34,19 @@ const defaultJobValues = {
 // Then follow with the variable identifiers, each separated by a hyphen "-"
 const cacheKeys = {
   global: () => `global_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
-  meteorSystem: name =>
-    `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
-  meteorMicroservice: name =>
+  meteorSystem: (name) =>
+    `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+  meteorMicroservice: (name) =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
-    `node_modules_${CACHE_VERSION}-{{ checksum "./package-lock.json" }}`,
+    `node_modules_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
   global: () => '~/.cache',
   meteorSystem: () => '~/.meteor',
-  meteorMicroservice: name => [
+  meteorMicroservice: (name) => [
     `./microservices/${name}/.meteor/local/bundler-cache`,
     `./microservices/${name}/.meteor/local/isopacks`,
     `./microservices/${name}/.meteor/local/plugin-cache`,
@@ -61,21 +61,21 @@ const runCommand = (name, command, timeout) => ({
 });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-  case 'e2e':
-    return runCommand(
-      'Run e2e tests',
-      `
+    case 'e2e':
+      return runCommand(
+        'Run e2e tests',
+        `
         cd ./microservices/${name} && meteor npm run test-e2e-ci
         `,
-    );
-  case 'unit':
-    return runCommand(
-      'Run unit tests',
-      `cd ./microservices/${name} && meteor npm run test-ci`,
-      '15m',
-    );
-  default:
-    throw new Error(`Unknown tests type: ${testsType}`);
+      );
+    case 'unit':
+      return runCommand(
+        'Run unit tests',
+        `cd ./microservices/${name} && meteor npm run test-ci`,
+        '15m',
+      );
+    default:
+      throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
@@ -88,8 +88,8 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-')
-            + (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-') +
+            (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -98,8 +98,8 @@ const restoreCache = (name, key) => ({
 const saveCache = (name, key, path) => ({
   save_cache: { name, key, paths: Array.isArray(path) ? path : [path] },
 });
-const storeTestResults = path => ({ store_test_results: { path } });
-const storeArtifacts = path => ({ store_artifacts: { path } });
+const storeTestResults = (path) => ({ store_test_results: { path } });
+const storeArtifacts = (path) => ({ store_artifacts: { path } });
 
 // Create preparation job with shared work
 const makePrepareJob = () => ({

@@ -49,7 +49,7 @@ jobs:
             - ~/.cache
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules_20-{{ checksum "./package-lock.json" }}'
+          key: 'node_modules_20_{{ checksum "./package-lock.json" }}'
           paths:
             - ./node_modules
       - restore_cache:
@@ -57,11 +57,8 @@ jobs:
           keys:
             - >-
               meteor_system_20_backend_{{ checksum
-              "./microservices/backend/.meteor/release" }}-{{ checksum
+              "./microservices/backend/.meteor/release" }}_{{ checksum
               "./microservices/backend/.meteor/versions" }}
-            - >-
-              meteor_system_20_backend_{{ checksum
-              "./microservices/backend/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor backend
           keys:
@@ -104,18 +101,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_www_{{ checksum
-              "./microservices/www/.meteor/release" }}-{{ checksum
+              "./microservices/www/.meteor/release" }}_{{ checksum
               "./microservices/www/.meteor/versions" }}
-            - >-
-              meteor_system_20_www_{{ checksum
-              "./microservices/www/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -152,7 +145,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_www_{{ checksum
-            "./microservices/www/.meteor/release" }}-{{ checksum
+            "./microservices/www/.meteor/release" }}_{{ checksum
             "./microservices/www/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -187,18 +180,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_app_{{ checksum
-              "./microservices/app/.meteor/release" }}-{{ checksum
+              "./microservices/app/.meteor/release" }}_{{ checksum
               "./microservices/app/.meteor/versions" }}
-            - >-
-              meteor_system_20_app_{{ checksum
-              "./microservices/app/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -235,7 +224,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_app_{{ checksum
-            "./microservices/app/.meteor/release" }}-{{ checksum
+            "./microservices/app/.meteor/release" }}_{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -270,18 +259,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_admin_{{ checksum
-              "./microservices/admin/.meteor/release" }}-{{ checksum
+              "./microservices/admin/.meteor/release" }}_{{ checksum
               "./microservices/admin/.meteor/versions" }}
-            - >-
-              meteor_system_20_admin_{{ checksum
-              "./microservices/admin/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -318,7 +303,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_admin_{{ checksum
-            "./microservices/admin/.meteor/release" }}-{{ checksum
+            "./microservices/admin/.meteor/release" }}_{{ checksum
             "./microservices/admin/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -353,18 +338,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_pro_{{ checksum
-              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/release" }}_{{ checksum
               "./microservices/pro/.meteor/versions" }}
-            - >-
-              meteor_system_20_pro_{{ checksum
-              "./microservices/pro/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -401,7 +382,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_pro_{{ checksum
-            "./microservices/pro/.meteor/release" }}-{{ checksum
+            "./microservices/pro/.meteor/release" }}_{{ checksum
             "./microservices/pro/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -436,18 +417,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_www_{{ checksum
-              "./microservices/www/.meteor/release" }}-{{ checksum
+              "./microservices/www/.meteor/release" }}_{{ checksum
               "./microservices/www/.meteor/versions" }}
-            - >-
-              meteor_system_20_www_{{ checksum
-              "./microservices/www/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -486,7 +463,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_www_{{ checksum
-            "./microservices/www/.meteor/release" }}-{{ checksum
+            "./microservices/www/.meteor/release" }}_{{ checksum
             "./microservices/www/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -521,18 +498,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_app_{{ checksum
-              "./microservices/app/.meteor/release" }}-{{ checksum
+              "./microservices/app/.meteor/release" }}_{{ checksum
               "./microservices/app/.meteor/versions" }}
-            - >-
-              meteor_system_20_app_{{ checksum
-              "./microservices/app/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -571,7 +544,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_app_{{ checksum
-            "./microservices/app/.meteor/release" }}-{{ checksum
+            "./microservices/app/.meteor/release" }}_{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -606,18 +579,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_admin_{{ checksum
-              "./microservices/admin/.meteor/release" }}-{{ checksum
+              "./microservices/admin/.meteor/release" }}_{{ checksum
               "./microservices/admin/.meteor/versions" }}
-            - >-
-              meteor_system_20_admin_{{ checksum
-              "./microservices/admin/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -656,7 +625,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_admin_{{ checksum
-            "./microservices/admin/.meteor/release" }}-{{ checksum
+            "./microservices/admin/.meteor/release" }}_{{ checksum
             "./microservices/admin/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -691,18 +660,14 @@ jobs:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_20-{{ checksum "./package-lock.json" }}'
-            - node_modules_20-
+            - 'node_modules_20_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor_system_20_pro_{{ checksum
-              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/release" }}_{{ checksum
               "./microservices/pro/.meteor/versions" }}
-            - >-
-              meteor_system_20_pro_{{ checksum
-              "./microservices/pro/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -741,7 +706,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_20_pro_{{ checksum
-            "./microservices/pro/.meteor/release" }}-{{ checksum
+            "./microservices/pro/.meteor/release" }}_{{ checksum
             "./microservices/pro/.meteor/versions" }}
           paths:
             - ~/.meteor
