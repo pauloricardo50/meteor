@@ -16,9 +16,9 @@
     flex-shrink: 1;
 
     box-sizing: border-box;
+    max-width: calc(100% - #{$admin-side-nav-width});
     min-height: 100%;
     padding: 16px 16px 0 16px;
-    max-width: calc(100% - #{$admin-side-nav-width});
 
     &.is-mobile {
       max-width: 100%;

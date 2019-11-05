@@ -11,20 +11,20 @@ $card1_padding: 24px;
 $result-section-negative-offset: -32px;
 
 .own-funds-icon {
-  margin-left: 4px;
-  margin-bottom: 4px;
-
   width: 20px;
   height: 20px;
+  margin-bottom: 4px;
+  margin-left: 4px;
 }
 
 .financing-select-residence-type {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
   padding: 32px;
 
-  > * {
+   > * {
     margin-bottom: 16px;
   }
 
@@ -62,8 +62,8 @@ $result-section-negative-offset: -32px;
   border-right: solid 1px $light-grey;
   border-left: solid 1px $light-grey;
 
-  > .card1 > *,
-  > * {
+   > .card1 > *,
+   > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -114,13 +114,15 @@ $result-section-negative-offset: -32px;
 
     .card1 {
       justify-content: flex-start;
+
       min-height: unset;
     }
 
     .offerId {
-      padding: 0;
-      min-height: unset;
       justify-content: flex-start;
+
+      min-height: unset;
+      padding: 0;
     }
   }
 }
@@ -229,7 +231,7 @@ $result-section-negative-offset: -32px;
       box-sizing: border-box;
       padding: 16px;
 
-      > .card1 {
+       > .card1 {
         display: flex;
         flex-direction: column;
 
@@ -292,28 +294,29 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-  > *:first-child {
+   > *:first-child {
     margin-bottom: 8px;
   }
 
-  > *:last-child {
+   > *:last-child {
     align-self: center;
   }
 }
 
 .financing-ownFunds-summary {
   display: flex;
-  flex-direction: column;
   align-items: stretch;
+  flex-direction: column;
   justify-content: center;
+
   min-height: 24px;
   padding: 8px 0;
 
-  > *:first-child {
+   > *:first-child {
     margin-bottom: 8px;
   }
 
-  > *:last-child {
+   > *:last-child {
     align-self: center;
   }
 }

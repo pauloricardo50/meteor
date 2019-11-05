@@ -2,12 +2,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'core/utils/testHelpers/enzyme';
 import { IntlProvider, intlShape } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
-import messages from 'core/lang/fr.json';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
+import { mount } from 'core/utils/testHelpers/enzyme';
+import messages from 'core/lang/fr.json';
+import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';

@@ -245,7 +245,7 @@
             flex-direction: column;
           }
 
-          > div {
+           > div {
             display: flex;
             align-items: center;
             .icon {
@@ -258,10 +258,12 @@
         }
 
         &-recap {
-          border-radius: $border-radius;
-          padding: 8px;
           margin-top: 8px;
+          padding: 8px;
+
           cursor: pointer;
+
+          border-radius: $border-radius;
 
           h4 {
             margin-top: 0;
@@ -318,7 +320,7 @@
       align-items: stretch;
       flex-direction: column-reverse;
 
-      > * {
+       > * {
         margin-bottom: 16px;
       }
     }
