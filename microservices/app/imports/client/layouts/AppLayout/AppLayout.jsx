@@ -28,10 +28,10 @@ const renderMobile = (props) => {
   if (isSimple) {
     return true;
   }
-  if (exactMobilePaths.some(path => pathname === path)) {
+  if (exactMobilePaths.some((path) => pathname === path)) {
     return true;
   }
-  if (mobilePaths.some(path => pathname.startsWith(path))) {
+  if (mobilePaths.some((path) => pathname.startsWith(path))) {
     return true;
   }
 
@@ -53,7 +53,11 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
 
   return (
     <div className={rootClasses}>
-      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
+      <Navs
+        {...props}
+        shouldShowSideNav={shouldShowSideNav}
+        currentUser={currentUser}
+      />
       <div className={classes} id="scroll-layout">
         <LayoutErrorBoundary>
           <div className="wrapper">
