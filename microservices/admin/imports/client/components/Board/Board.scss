@@ -1,11 +1,11 @@
 .board {
   display: flex;
   overflow-x: scroll;
+  overflow-y: hidden;
   align-items: stretch;
 
-  padding: 8px;
   height: 1rem;
-  overflow-y: hidden;
+  padding: 8px;
 
   //   Make sure the edge padding appears properly
   &:after {
@@ -19,6 +19,7 @@
 
   &-column {
     display: flex;
+    overflow-x: hidden;
     align-items: stretch;
     flex-basis: 300px;
     flex-direction: column;
@@ -28,7 +29,6 @@
     padding: 0;
 
     background-color: $grey3;
-    overflow-x: hidden;
 
     &-subtitle {
       padding: 8px;

@@ -1,5 +1,5 @@
-// flow-typed signature: c469e2157f6c6d42d7a93696b21a1650
-// flow-typed version: c6154227d1/chai_v4.x.x/flow_>=v0.53.0 <=v0.103.x
+// flow-typed signature: 0dd4bb1e813d16799c0a1fce94b24b4a
+// flow-typed version: 0ab98275d2/chai_v4.x.x/flow_>=v0.25.0
 
 declare module "chai" {
   declare type ExpectChain<T> = {
@@ -21,7 +21,6 @@ declare module "chai" {
     deep: ExpectChain<T>,
     any: ExpectChain<T>,
     all: ExpectChain<T>,
-    own: ExpectChain<T>,
 
     a: ExpectChain<T> & ((type: string, message?: string) => ExpectChain<T>),
     an: ExpectChain<T> & ((type: string, message?: string) => ExpectChain<T>),
@@ -47,7 +46,6 @@ declare module "chai" {
     within: (start: T & number, finish: T & number, message?: string) => ExpectChain<T>,
 
     instanceof: (constructor: mixed, message?: string) => ExpectChain<T>,
-    instanceOf: (constructor: mixed, message?: string) => ExpectChain<T>,
     nested: ExpectChain<T>,
     property: <P>(
       name: string,
@@ -55,12 +53,10 @@ declare module "chai" {
       message?: string
     ) => ExpectChain<P> & ((name: string) => ExpectChain<mixed>),
 
-    length: ExpectChain<number> & ((value: number, message?: string) => ExpectChain<T>),
+    length: (value: number, message?: string) => ExpectChain<T> | ExpectChain<number>,
     lengthOf: (value: number, message?: string) => ExpectChain<T>,
 
     match: (regex: RegExp, message?: string) => ExpectChain<T>,
-    matches: (regex: RegExp, message?: string) => ExpectChain<T>,
-
     string: (string: string, message?: string) => ExpectChain<T>,
 
     key: (key: string) => ExpectChain<T>,
@@ -141,11 +137,11 @@ declare module "chai" {
     fulfilled: () => Promise<mixed> & ExpectChain<T>,
 
     // chai-subset
-    containSubset: (obj: {} | Array< {} >) => ExpectChain<T>,
+    containSubset: (obj: Object | Object[]) => ExpectChain<T>,
 
     // chai-redux-mock-store
     dispatchedActions: (
-      actions: Array<{} | ((action: {}) => any)>
+      actions: Array<Object | ((action: Object) => any)>
     ) => ExpectChain<T>,
     dispatchedTypes: (actions: Array<string>) => ExpectChain<T>,
 
@@ -162,11 +158,7 @@ declare module "chai" {
     matchSnapshot: (lang?: any, update?: boolean, msg?: any) => ExpectChain<T>
   };
 
-
-  declare var expect: {
-    <T>(actual: T, message?: string): ExpectChain<T>,
-    fail: ((message?: string) => void) & ((actual: any, expected: any, message?: string, operator?: string) => void)
-  };
+  declare function expect<T>(actual: T, message?: string): ExpectChain<T>;
 
   declare function use(plugin: (chai: Object, utils: Object) => void): void;
 
@@ -238,8 +230,8 @@ declare module "chai" {
     static typeOf(val: mixed, type: string, msg?: string): void;
     static notTypeOf(val: mixed, type: string, msg?: string): void;
 
-    static instanceOf(val: mixed, constructor: Class< * >, msg?: string): void;
-    static notInstanceOf(val: mixed, constructor: Class< * >, msg?: string): void;
+    static instanceOf(val: mixed, constructor: Function, msg?: string): void;
+    static notInstanceOf(val: mixed, constructor: Function, msg?: string): void;
 
     static include(exp: string, inc: mixed, msg?: string): void;
     static include<T>(exp: Array<T>, inc: T, msg?: string): void;
