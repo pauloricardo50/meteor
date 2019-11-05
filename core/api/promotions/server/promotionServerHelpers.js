@@ -100,7 +100,7 @@ export const getPromotionCustomerOwnerType = ({
   });
 };
 
-const shouldAnonymize = ({
+export const shouldAnonymize = ({
   customerId,
   userId,
   promotionId,
