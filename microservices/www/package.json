@@ -54,7 +54,6 @@
     "react-helmet": "^5.2.1",
     "react-highcharts": "^16.1.0",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
-    "react-jss": "^10.0.0",
     "react-linkify": "^1.0.0-alpha",
     "react-loadable": "^5.5.0",
     "react-motion": "^0.5.2",
