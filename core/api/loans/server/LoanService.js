@@ -53,7 +53,7 @@ const zeroPadding = (num, places) => {
   return Array(+(zero > 0 && zero)).join('0') + num;
 };
 
-export class LoanService extends CollectionService {
+class LoanService extends CollectionService {
   constructor() {
     super(Loans);
   }

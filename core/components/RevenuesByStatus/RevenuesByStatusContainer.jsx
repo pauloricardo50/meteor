@@ -6,9 +6,9 @@ import { LOAN_STATUS, LOANS_COLLECTION } from '../../api/constants';
 import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 
-const statuses = Object.values(LOAN_STATUS).filter(status => status !== LOAN_STATUS.TEST);
+const statuses = Object.values(LOAN_STATUS).filter((status) => status !== LOAN_STATUS.TEST);
 
-const isEstimationStatus = status =>
+const isEstimationStatus = (status) =>
   [LOAN_STATUS.LEAD, LOAN_STATUS.QUALIFIED_LEAD, LOAN_STATUS.ONGOING].includes(status);
 
 const columnOptions = [
@@ -16,7 +16,7 @@ const columnOptions = [
     id: 'x',
     label: <span />,
   },
-  ...statuses.map(status => ({
+  ...statuses.map((status) => ({
     id: status,
     label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
     style: { whiteSpace: 'nowrap' },
@@ -33,7 +33,6 @@ const calculateRevenuesByStatus = (loans = [], status, multiplier = 1) =>
 
     if (isEstimationStatus(status)) {
       const estimatedRevenues = Calculator.getEstimatedRevenues({ loan });
-      console.log('estimatedRevenues:', estimatedRevenues);
       return tot + estimatedRevenues;
     }
 
@@ -45,7 +44,7 @@ const makeRow = (loansByStatus, multiplier) => ({
   columns: [
     <T key="id" id="RevenuesByStatus.revenues" />,
     ...statuses
-      .map(status =>
+      .map((status) =>
         calculateRevenuesByStatus(loansByStatus[status], status, multiplier))
       .map((amount, i) => {
         const status = statuses[i];
@@ -67,11 +66,11 @@ const makeRow = (loansByStatus, multiplier) => ({
   ],
 });
 
-const makeCountRow = loansByStatus => ({
+const makeCountRow = (loansByStatus) => ({
   id: 'count',
   columns: [
     <T key="id" id="RevenuesByStatus.loanCount" />,
-    ...statuses.map(status => (loansByStatus[status] || []).length),
+    ...statuses.map((status) => (loansByStatus[status] || []).length),
   ],
 });
 

@@ -100,7 +100,17 @@ const LoanSchema = new SimpleSchema({
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
-  revenueLinks: { type: Array, optional: true },
+  revenueLinks: {
+    type: Array,
+    optional: true,
+    autoValue() {
+      // Avoid a weird edge case where removing revenues would cause this
+      // potential empty array to throw on MongoDB with: `E11000 duplicate key error collection: meteor.loans index: revenueLinks_1 dup key: { : undefined }`
+      if (this.isSet && Array.isArray(this.value) && this.value.length === 0) {
+        this.unset();
+      }
+    },
+  },
   'revenueLinks.$': String,
   userCache: cacheField,
   step: {
