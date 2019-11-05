@@ -418,14 +418,6 @@ describe('PromotionOptionService', function () {
             { id: 'agreement1' },
           ),
         },
-        {
-          file: Buffer.from('hello2', 'utf-8'),
-          key: FileService.getTempS3FileKey(
-            'adminId',
-            { name: 'agreement2.pdf' },
-            { id: 'agreement2' },
-          ),
-        },
       ];
 
       await Promise.all(files.map(({ file, key }) => S3Service.putObject(file, key)));
@@ -441,7 +433,7 @@ describe('PromotionOptionService', function () {
 
       expect(promotionOption.documents[
         PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT
-      ].length).to.equal(2);
+      ].length).to.equal(1);
 
       const tempFiles = await S3Service.listObjects('temp/adminId');
       expect(tempFiles.length).to.equal(0);
