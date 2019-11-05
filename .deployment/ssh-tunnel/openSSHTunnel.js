@@ -42,7 +42,7 @@ export const REDIS_SERVICES = {
 
 export const HOST = 'kubernetes-service-node.service.consul';
 
-const applicationManifestData = environment => ({
+const applicationManifestData = (environment) => ({
   applications: [
     {
       name: `e-potek-ssh-tunnel-${environment}-${SSH_ID}`,
@@ -55,22 +55,22 @@ const applicationManifestData = environment => ({
   ],
 });
 
-const writeApplicationManifest = environment =>
+const writeApplicationManifest = (environment) =>
   writeYAML({
     file: `${__dirname}/${environment}-${SSH_ID}/manifest.yml`,
     data: applicationManifestData(environment),
   });
 
 // Parse and remove any trailing comma from the credentials
-const cleanCredentials = creds => {
+const cleanCredentials = (creds) => {
   const res = JSON.parse(
     '{' +
       creds
         .split('\n')
-        .map(line => line.replace(/,\s*$/, ''))
+        .map((line) => line.replace(/,\s*$/, ''))
         // Filter out some empty character lines, if this causes
         // valid lines to be filtered, find a better solution
-        .filter(str => str && str.length >= 5)
+        .filter((str) => str && str.length >= 5)
         .join(',') +
       '}',
   );
@@ -80,7 +80,7 @@ const cleanCredentials = creds => {
 const openSSHTunnel = ({
   sshIdNumber = 0,
   environmentOverride,
-  mongoPort = 2,
+  mongoPort = 0, // Cycle this variable from 0 to 2 to get access to the primary DB, not the 2 secondary ones
 } = {}) => {
   let environment;
   const args = argv
@@ -121,7 +121,7 @@ const openSSHTunnel = ({
         `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\" -e \\"ports\\"`,
       ),
     )
-    .then(credentials => ({
+    .then((credentials) => ({
       ...cleanCredentials(credentials),
       mongoPort: Number(
         cleanCredentials(credentials).ports.split(',')[mongoPort],
