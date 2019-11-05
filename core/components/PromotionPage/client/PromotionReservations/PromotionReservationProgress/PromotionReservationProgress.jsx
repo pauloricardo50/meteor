@@ -42,10 +42,10 @@ const PromotionReservationProgress = ({
     loan,
     isAnonymized,
   } = promotionOption;
-  const { user } = loan;
+  const { user, _id: loanId } = loan;
   const { info = {}, documents = {} } = loanProgress;
 
-  const icon = makeIcon(variant, isEditing, promotionOptionId);
+  const icon = makeIcon(variant, isEditing, promotionOptionId, loanId);
 
   const verificationAndBankIcons = [
     icon({
@@ -105,7 +105,7 @@ const PromotionReservationProgress = ({
       ...reservationAgreement,
       ...makeGetIcon({
         success: [PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED],
-        error: [PROMOTION_OPTION_AGREEMENT_STATUS.WAITING],
+        waiting: [PROMOTION_OPTION_AGREEMENT_STATUS.WAITING],
       })(reservationAgreement.status),
       id: 'reservationAgreement',
     }),

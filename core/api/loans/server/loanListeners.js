@@ -19,7 +19,6 @@ ServerEventService.addAfterMethodListener(
   setMaxPropertyValueWithoutBorrowRatio,
   ({ context, params }) => {
     const { userId } = context;
-    const isAdmin = SecurityService.isUserAdmin(userId);
     const analytics = new Analytics(context);
     const { loanId } = params;
     const loan = LoanService.fetchOne({
@@ -77,7 +76,7 @@ ServerEventService.addAfterMethodListener(
       promotion = promotions[0];
     }
 
-    if (promotionOptions.length && isAdmin) {
+    if (promotionOptions.length) {
       promotionOptions.forEach(({ _id: promotionOptionId }) =>
         PromotionOptionService.updateStatusObject({
           promotionOptionId,

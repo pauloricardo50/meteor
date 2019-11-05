@@ -1,27 +1,29 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
-import React, { useContext } from 'react';
-import { withProps } from 'recompose';
+import React from 'react';
 
-import {
-  confirmPromotionLotReservation,
-  sellPromotionLot,
-  cancelPromotionLotReservation,
-  promotionOptionAddToWaitList,
-} from 'core/api/methods';
-import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { isAllowedToManageCustomerPromotionReservation } from 'core/api/security/clientSecurityHelpers/index';
-import Calculator from 'core/utils/Calculator';
-import colors from 'core/config/colors';
-import {
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-} from '../../../../../api/promotionOptions/promotionOptionConstants';
+import colors from '../../../../../config/colors';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
+import Button from '../../../../Button';
+import T from '../../../../Translation';
+import PromotionReservationDetailActionsContainer from './PromotionReservationDetailActionsContainer';
 
-type PromotionReservationDetailActionsProps = {};
+type PromotionReservationDetailActionsProps = {
+  promotionOption: Object,
+  agreementDuration: Number,
+  canUploadReservationAgreement: Boolean,
+  canReactivateReservation: Boolean,
+  canCancelReservation: Boolean,
+  canConfirmReservation: Boolean,
+  canSellLot: Boolean,
+  confirmReservationIsDisabled: Boolean,
+  canAddToWaitList: Boolean,
+  cancelReservation: Function,
+  reactivateReservation: Function,
+  addToWaitList: Function,
+  confirmReservation: Function,
+  sellPromotionLot: Function,
+};
 
 const PromotionReservationDetailActions = ({
   promotionOption,
@@ -33,164 +35,92 @@ const PromotionReservationDetailActions = ({
   canSellLot,
   confirmReservationIsDisabled,
   canAddToWaitList,
-}: PromotionReservationDetailActionsProps) => {
-  const { _id: promotionOptionId } = promotionOption;
+  cancelReservation,
+  reactivateReservation,
+  addToWaitList,
+  confirmReservation,
+  sellPromotionLot,
+}: PromotionReservationDetailActionsProps) => (
+  <div className="flex center mt-16">
+    {canUploadReservationAgreement && (
+      <PromotionLotReservationForm
+        agreementDuration={agreementDuration}
+        promotionOption={promotionOption}
+        buttonProps={{
+          className: 'mr-8 mb-8',
+          primary: true,
+          raised: true,
+          label: <T id="PromotionReservationActions.uploadAgreement" />,
+        }}
+      />
+    )}
+    {canCancelReservation && (
+      <ConfirmMethod
+        buttonProps={{ className: 'mr-8 mb-8', error: true, outlined: true }}
+        label={<T id="PromotionReservationActions.cancelReservation" />}
+        method={cancelReservation}
+        description={
+          <T id="PromotionReservationActions.cancelReservation.description" />
+        }
+      />
+    )}
 
-  return (
-    <div className="flex center mt-16">
-      {canUploadReservationAgreement && (
-        <PromotionLotReservationForm
-          agreementDuration={agreementDuration}
-          promotionOption={promotionOption}
-          buttonProps={{
-            className: 'mr-8 mb-8',
-            primary: true,
-            raised: true,
-            label: 'Uploader convention de réservation',
-          }}
-        />
-      )}
-      {canCancelReservation && (
-        <ConfirmMethod
-          buttonProps={{ className: 'mr-8 mb-8', error: true, outlined: true }}
-          label="Annuler réservation"
-          method={() =>
-            cancelPromotionLotReservation.run({ promotionOptionId })
-          }
-          description={(
-            <span>
-              Ce lot deviendra a nouveau disponible.
-              <br />
-              Notifiera tous les Pros par email.
-            </span>
-          )}
-        />
-      )}
-      {canReactivateReservation && (
-        <PromotionLotReservationForm
-          agreementDuration={agreementDuration}
-          promotionOption={promotionOption}
-          buttonProps={{
-            className: 'mr-8 mb-8',
-            primary: true,
-            raised: true,
-            label: 'Réactiver réservation',
-          }}
-        />
-      )}
-      {canAddToWaitList && (
-        <ConfirmMethod
-          buttonProps={{
-            className: 'mr-8 mb-8',
-            outlined: true,
-            style: { color: colors.warning, borderColor: colors.warning },
-          }}
-          label="Mettre en liste d'attente"
-          method={() => promotionOptionAddToWaitList.run({ promotionOptionId })}
-          description={<span>Met cette réservation en liste d'attente</span>}
-        />
-      )}
-      {canConfirmReservation && (
-        <ConfirmMethod
-          buttonProps={{
-            secondary: true,
-            raised: true,
-            disabled: confirmReservationIsDisabled,
-            tooltip: confirmReservationIsDisabled
-              ? 'Veuillez compléter toutes les étapes pour cette réservation'
-              : undefined,
-            className: 'mr-8 mb-8',
-          }}
-          label="Confirmer réservation"
-          method={() =>
-            confirmPromotionLotReservation.run({ promotionOptionId })
-          }
-          description={(
-            <span>
-              Vous confirmez que ce lot est maintenant réservé pour ce client?
-              <br />
-              Notifiera tous les Pros par email.
-            </span>
-          )}
-        />
-      )}
-      {canSellLot && (
-        <ConfirmMethod
-          buttonProps={{
-            secondary: true,
-            raised: true,
-            className: 'mr-8 mb-8',
-          }}
-          label="Confirmer vente"
-          method={() => sellPromotionLot.run({ promotionOptionId })}
-          description={(
-            <span>
-              Vous confirmez que le client a signé le contrat de la banque, de
-              l'EG, et l'acte d'achat du notaire?
-              <br />
-              Notifiera tous les Pros par email.
-            </span>
-          )}
-        />
-      )}
-    </div>
-  );
-};
+    {canReactivateReservation && (
+      <Button
+        raised
+        primary
+        className="mr-8 mb-8"
+        onClick={reactivateReservation}
+        label={<T id="PromotionReservationActions.reactivateReservation" />}
+      />
+    )}
+    {canAddToWaitList && (
+      <ConfirmMethod
+        buttonProps={{
+          className: 'mr-8 mb-8',
+          outlined: true,
+          style: { color: colors.warning, borderColor: colors.warning },
+        }}
+        label={<T id="PromotionReservationActions.addToWaitList" />}
+        method={addToWaitList}
+        description={
+          <T id="PromotionReservationActions.addToWaitList.description" />
+        }
+      />
+    )}
+    {canConfirmReservation && (
+      <ConfirmMethod
+        buttonProps={{
+          secondary: true,
+          raised: true,
+          disabled: confirmReservationIsDisabled,
+          tooltip: confirmReservationIsDisabled ? (
+            <T id="PromotionReservationActions.confirmReservation.tooltip" />
+          ) : (
+            undefined
+          ),
+          className: 'mr-8 mb-8',
+        }}
+        label={<T id="PromotionReservationActions.confirmReservation" />}
+        method={confirmReservation}
+        description={
+          <T id="PromotionReservationActions.confirmReservation.description" />
+        }
+      />
+    )}
+    {canSellLot && (
+      <ConfirmMethod
+        buttonProps={{
+          secondary: true,
+          raised: true,
+          className: 'mr-8 mb-8',
+        }}
+        label={<T id="PromotionReservationActions.sellLot" />}
+        method={sellPromotionLot}
+        description={<T id="PromotionReservationActions.sellLot.description" />}
+      />
+    )}
+  </div>
+);
 
-export default withProps(({ promotionOption }) => {
-  const {
-    status,
-    promotion,
-    loan: { promotions = [] },
-    reservationAgreement: { status: reservationAgreementStatus },
-  } = promotionOption;
-
-  const { agreementDuration } = promotion;
-
-  const [loanPromotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-  } = loanPromotion;
-
-  const currentUser = useContext(CurrentUserContext);
-  const customerOwnerType = getPromotionCustomerOwnerType({
-    invitedBy,
-    currentUser,
-  });
-  const isAllowedToManageReservation = isAllowedToManageCustomerPromotionReservation({ promotion, currentUser, customerOwnerType });
-
-  const isAdmin = Meteor.microservice === 'admin';
-
-  const canReactivateReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
-    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
-  ].includes(status) && isAllowedToManageReservation;
-  const canCancelReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-    PROMOTION_OPTION_STATUS.RESERVED,
-    PROMOTION_OPTION_STATUS.SOLD,
-    PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-  ].includes(status) && isAdmin;
-  const canUploadReservationAgreement = status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
-    && reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.WAITING
-    && isAllowedToManageReservation;
-  const canConfirmReservation = isAdmin
-    && [
-      PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-      PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-    ].includes(status);
-  const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
-  const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotReservation({ promotionOption });
-  const canAddToWaitList = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
-
-  return {
-    agreementDuration,
-    canUploadReservationAgreement,
-    canReactivateReservation,
-    canCancelReservation,
-    canConfirmReservation,
-    canSellLot,
-    confirmReservationIsDisabled,
-    canAddToWaitList,
-  };
-})(PromotionReservationDetailActions);
+export default PromotionReservationDetailActionsContainer(PromotionReservationDetailActions);

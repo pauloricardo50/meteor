@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
 
-import { promotionOptionUpdateObject } from '../../../../../api/methods';
+import Dialog from 'core/components/Material/Dialog';
 import AutoForm from '../../../../AutoForm2';
-import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
+import Button from '../../../../Button';
+import T from '../../../../Translation';
+import StatusDateFormContainer from './StatusDateFormContainer';
 
 type StatusDateFormProps = {};
 
@@ -11,37 +13,45 @@ const StatusDateForm = ({
   model,
   id,
   promotionOptionId,
-}: StatusDateFormProps) => {
-  const isTextField = id === 'adminNote';
-  return (
+  onSubmit,
+  openDialog,
+  dialogProps,
+  dialogActions,
+  autosave,
+  schema,
+  layout,
+  submitFieldProps,
+}: StatusDateFormProps) => (
+  <>
     <AutoForm
-      autosave
-      autosaveDelay={isTextField ? 600 : 0}
-      schema={PromotionOptionSchema.getObjectSchema(id).pick(
-        'date',
-        'status',
-        'note',
-      )}
+      autosave={autosave}
+      autosaveDelay={0}
+      schema={schema}
       model={model}
-      onSubmit={values =>
-        promotionOptionUpdateObject.run({
-          promotionOptionId,
-          id,
-          object: values,
-        })
-      }
+      onSubmit={onSubmit}
       className="status-date-form"
       fullWidth={false}
-      layout={[
-        {
-          className: 'grid-col',
-          style: { gridTemplateColumns: '1fr 220px' },
-          fields: ['__REST'],
-        },
-      ]}
-      submitFieldProps={{ showSubmitField: false }}
+      layout={layout}
+      submitFieldProps={submitFieldProps}
     />
-  );
-};
+    <Dialog
+      open={openDialog}
+      actions={[
+        <Button
+          label={<T id="ConfirmMethod.buttonCancel" />}
+          onClick={dialogActions.cancel}
+          key="cancel"
+        />,
+        <Button
+          label={<T id="ConfirmMethod.buttonConfirm" />}
+          primary
+          onClick={dialogActions.ok}
+          key="ok"
+        />,
+      ]}
+      {...dialogProps}
+    />
+  </>
+);
 
-export default StatusDateForm;
+export default StatusDateFormContainer(StatusDateForm);

@@ -34,6 +34,7 @@ const PromotionReservationProgressItem = ({
   note,
   placeholder,
   component,
+  loanId,
 }: PromotionReservationProgressItemProps) => {
   if (variant === 'text') {
     if (component) {
@@ -63,6 +64,7 @@ const PromotionReservationProgressItem = ({
             model={{ status, note, date }}
             id={id}
             promotionOptionId={promotionOptionId}
+            loanId={loanId}
           />
         )}
       </>

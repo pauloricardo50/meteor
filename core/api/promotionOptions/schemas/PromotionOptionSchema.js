@@ -38,7 +38,12 @@ const PromotionOptionSchema = new SimpleSchema({
   'promotionLink._id': { type: String, optional: true },
   documents: documentsField,
   adminNote: { type: Object, defaultValue: {} },
-  'adminNote.note': { type: String, defaultValue: '', optional: true },
+  'adminNote.note': {
+    type: String,
+    defaultValue: '',
+    optional: true,
+    uniforms: { multiline: true, rows: 3, rowsMax: 5 },
+  },
   'adminNote.date': {
     type: Date,
     autoValue: dateAutoValue('note'),
@@ -103,6 +108,7 @@ const PromotionOptionSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS),
     defaultValue: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
+    uniforms: { placeholder: null },
   },
   'simpleVerification.date': {
     type: Date,
@@ -114,6 +120,7 @@ const PromotionOptionSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_FULL_VERIFICATION_STATUS),
     defaultValue: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE,
+    uniforms: { placeholder: null },
   },
   'fullVerification.date': {
     type: Date,

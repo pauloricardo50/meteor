@@ -441,6 +441,14 @@ p.description,
   justify-items: stretch;
 }
 
+.grid-row {
+  display: grid;
+
+  grid-auto-flow: row;
+  grid-gap: 8px;
+  justify-items: stretch;
+}
+
 .markdown {
   table {
     border-spacing: 0;

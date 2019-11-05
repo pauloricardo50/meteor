@@ -41,6 +41,7 @@ const UserReservation = ({
         {[
           PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
           PROMOTION_OPTION_STATUS.RESERVED,
+          PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
         ].includes(status) && (
           <PromotionReservationProgress
             promotionOption={promotionOption}

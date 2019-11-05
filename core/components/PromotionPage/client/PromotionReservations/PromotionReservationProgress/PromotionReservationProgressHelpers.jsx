@@ -40,7 +40,7 @@ export const makeGetIcon = ({
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-export const makeIcon = (variant, isEditing, promotionOptionId) => ({
+export const makeIcon = (variant, isEditing, promotionOptionId, loanId) => ({
   icon,
   color,
   status,
@@ -60,6 +60,7 @@ export const makeIcon = (variant, isEditing, promotionOptionId) => ({
     promotionOptionId={promotionOptionId}
     component={component}
     placeholder={placeholder}
+    loanId={loanId}
   />
 );
 
