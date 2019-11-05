@@ -3,7 +3,7 @@ Package.describe({
   summary: 'Run Meteor package or app tests with Mocha',
   git: 'https://github.com/meteortesting/meteor-mocha.git',
   documentation: '../README.md',
-  version: '1.1.4',
+  version: '1.1.3',
   testOnly: true,
 });
 

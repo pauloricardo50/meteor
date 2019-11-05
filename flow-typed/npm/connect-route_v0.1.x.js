@@ -1,5 +1,5 @@
-// flow-typed signature: b9a141399f5027c4f6350dd0c80e4dae
-// flow-typed version: c6154227d1/connect-route_v0.1.x/flow_>=v0.32.x <=v0.103.x
+// flow-typed signature: a98a06010ee4172678db6e44a5145143
+// flow-typed version: 67ef6b1056/connect-route_v0.1.x/flow_>=v0.32.x
 
 declare module 'connect-route' {
   declare class Request extends http$IncomingMessage {
