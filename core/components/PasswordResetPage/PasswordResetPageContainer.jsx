@@ -22,6 +22,7 @@ export default compose(
   Component => ({ token, history, ...props }) => {
     const [user, setUser] = useState();
     const [error, setError] = useState();
+    const [loading, setLoading] = useState();
     useEffect(() => {
       if (Meteor.user()) {
         // Avoid multi user issues
@@ -40,6 +41,7 @@ export default compose(
     }, []);
 
     const handleSubmit = (values) => {
+      setLoading(true);
       const { newPassword, firstName, lastName, phoneNumber } = values;
 
       new Promise((resolve, reject) => {
@@ -70,7 +72,13 @@ export default compose(
             }),
             userPasswordReset.run({}),
           ]))
-        .then(() => history.push('/'));
+        .then(() => history.push('/'))
+        .catch((err) => {
+          // Don't clear loading if the submission is successful, because it 
+          // should route to '/' always, and the user shouldn't click on submit twice
+          setLoading(false);
+          throw err;
+        });
     };
 
     return (
@@ -79,6 +87,7 @@ export default compose(
         error={error}
         handleSubmit={handleSubmit}
         pathname={window.location && window.location.pathname}
+        loading={loading}
       />
     );
   },

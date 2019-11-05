@@ -62,9 +62,6 @@ export default compose(
   withProps(({ loan }) => ({
     progress: Calculator.personalInfoPercentSimple({ loan }),
   })),
-  withState(
-    'openBorrowersForm',
-    'setOpenBorrowersForm',
-    ({ progress = 0 }) => progress === 0,
-  ),
+  withState('openBorrowersForm', 'setOpenBorrowersForm', ({ progress = 0 }) =>
+    (progress === 0 ? 0 : false)),
 )(SimpleDashboardPage);

@@ -12,9 +12,8 @@ import ProSideNav from './ProSideNav';
 type ProLayoutProps = {};
 
 const ProLayout = ({ children, redirect, ...props }: ProLayoutProps) => {
-  console.log('redirect:', redirect);
   const currentUser = useContext(CurrentUserContext);
-  console.log('ProLayout currentUser:', currentUser);
+
   if (redirect) {
     return <Redirect to={redirect} />;
   }
@@ -25,7 +24,7 @@ const ProLayout = ({ children, redirect, ...props }: ProLayoutProps) => {
       <ProSideNav currentUser={currentUser} />
       <LayoutErrorBoundary>
         <div className="pro-layout-content" id="scroll-layout">
-          {React.cloneElement(children, props)}
+          {React.cloneElement(children, { ...props, currentUser })}
         </div>
       </LayoutErrorBoundary>
 

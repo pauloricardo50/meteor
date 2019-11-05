@@ -9,7 +9,7 @@ import {
 
 export const getInitialOptions = ({ currentUser }) => ({
   groupBy: LOAN_BOARD_GROUP_BY.STATUS,
-  assignedEmployeeId: { $in: [currentUser._id] },
+  assignedEmployeeId: currentUser && { $in: [currentUser._id] },
   sortBy: LOAN_BOARD_SORT_BY.DUE_AT,
   sortOrder: LOAN_BOARD_SORT_ORDER.ASC,
   step: undefined,

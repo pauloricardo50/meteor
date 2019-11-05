@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps, withState } from 'recompose';
-import debounce from 'lodash/debounce';
+import moment from 'moment';
 
 import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
@@ -15,6 +15,7 @@ import TooltipArray from '../TooltipArray';
 export const columnOptions = [
   { id: 'address' },
   { id: 'status' },
+  { id: 'createdAt' },
   { id: 'value', style: { whiteSpace: 'nowrap' } },
   { id: 'customers' },
   { id: 'users' },
@@ -24,9 +25,10 @@ export const makeMapProperty = ({ history, currentUser }) => ({
   _id: propertyId,
   address1,
   city,
+  createdAt,
+  loanCount,
   status,
   totalValue,
-  loanCount,
   users = [],
 }) => ({
   id: propertyId,
@@ -35,6 +37,10 @@ export const makeMapProperty = ({ history, currentUser }) => ({
     {
       raw: status,
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
+    },
+    {
+      raw: createdAt && createdAt.getTime(),
+      label: moment(createdAt).fromNow(),
     },
     { raw: totalValue, label: <Money value={totalValue} /> },
     loanCount,

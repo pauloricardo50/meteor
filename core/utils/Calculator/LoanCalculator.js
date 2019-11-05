@@ -731,4 +731,36 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           { valid: 0, required: 0 },
         );
     }
+
+    getOwnFundsRatio({ loan, structureId }) {
+      const fees = this.getFees({ loan, structureId }).total;
+      const requiredOwnFunds = this.getRequiredOwnFunds({ loan, structureId }) - fees;
+      const totalUsed = this.getNonPledgedOwnFunds({ loan, structureId });
+
+      if (totalUsed <= 0) {
+        return 0;
+      }
+
+      if (totalUsed > requiredOwnFunds) {
+        return requiredOwnFunds / this.getPropAndWork({ loan, structureId });
+      }
+
+      return totalUsed / this.getPropAndWork({ loan, structureId });
+    }
+
+    getNotaryFeesTooltipValue({ loan, structureId }) {
+      const fees = this.getFees({ loan, structureId }).total;
+      const requiredOwnFunds = this.getRequiredOwnFunds({ loan, structureId }) - fees;
+      const totalUsed = this.getNonPledgedOwnFunds({ loan, structureId });
+
+      if (totalUsed <= requiredOwnFunds) {
+        return null;
+      }
+
+      if (fees >= totalUsed - requiredOwnFunds) {
+        return totalUsed - requiredOwnFunds;
+      }
+
+      return fees;
+    }
   };

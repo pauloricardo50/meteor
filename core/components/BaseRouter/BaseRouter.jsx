@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Router } from 'react-router-dom';
 
 import history from '../../utils/history';
-import { InjectMeteorUser } from '../../containers/CurrentUserContext';
+import { InjectCurrentUser } from '../../containers/CurrentUserContext';
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage/loadable';
@@ -42,10 +42,11 @@ const BaseRouter = ({
   WrapperComponent,
   hasLogin,
   routes,
+  currentUser,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
-    <InjectMeteorUser>
+    <InjectCurrentUser {...currentUser}>
       <LibraryWrappers
         i18n={{ locale, messages, formats }}
         WrapperComponent={WrapperComponent}
@@ -94,7 +95,7 @@ const BaseRouter = ({
           </Router>
         </ErrorBoundary>
       </LibraryWrappers>
-    </InjectMeteorUser>
+    </InjectCurrentUser>
   </ErrorBoundary>
 );
 

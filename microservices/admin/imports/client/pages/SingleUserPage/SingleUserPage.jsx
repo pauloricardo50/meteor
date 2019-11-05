@@ -33,6 +33,7 @@ const SingleUserPage = ({
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
   const isPro = user.roles.includes(ROLES.PRO);
+  const currentUserIsDev = currentUser.roles.includes(ROLES.DEV);
 
   return (
     <section
@@ -72,7 +73,7 @@ const SingleUserPage = ({
       )}
 
       {/* Make sure this component reloads when the userId changes */}
-      <EmailList userId={userId} key={userId} />
+      {currentUserIsDev && <EmailList userId={userId} key={userId} />}
       {children}
     </section>
   );

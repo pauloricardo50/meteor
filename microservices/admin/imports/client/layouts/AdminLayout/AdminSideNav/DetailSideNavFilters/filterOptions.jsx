@@ -6,6 +6,7 @@ import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
   PROMOTIONS_COLLECTION,
+  PROMOTION_STATUS,
 } from 'core/api/constants';
 import { Meteor } from 'meteor/meteor';
 
@@ -34,6 +35,12 @@ export const getFilterOptionFromValue = (options, filterValue) =>
 
 const loanFilters = [assignedToMeFilter, relevantLoansOnlyFilter];
 const userFilters = [assignedToMeFilter];
+const promotionFilters = [
+  {
+    label: 'Actives uniquement',
+    value: { status: PROMOTION_STATUS.OPEN },
+  },
+];
 
 const getFilterOptions = (props) => {
   const { collectionName } = props;
@@ -41,14 +48,14 @@ const getFilterOptions = (props) => {
   return {
     [LOANS_COLLECTION]: loanFilters,
     [USERS_COLLECTION]: userFilters,
-    [PROMOTIONS_COLLECTION]: [],
+    [PROMOTIONS_COLLECTION]: promotionFilters,
   }[collectionName];
 };
 
 export const defaultFilterOptions = {
   [LOANS_COLLECTION]: loanFilters.map(({ value }) => value),
   [USERS_COLLECTION]: userFilters.map(({ value }) => value),
-  [PROMOTIONS_COLLECTION]: [],
+  [PROMOTIONS_COLLECTION]: promotionFilters.map(({ value }) => value),
 };
 
 export default getFilterOptions;

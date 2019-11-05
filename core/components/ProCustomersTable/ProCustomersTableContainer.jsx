@@ -3,7 +3,7 @@ import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { proLoans } from 'core/api/loans/queries';
+import { proLoans2 } from 'core/api/loans/queries';
 import { getReferredBy } from 'core/api/helpers';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
@@ -28,16 +28,15 @@ const columnOptions = [
 const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   const {
     _id: loanId,
+    anonymous,
+    createdAt,
+    loanProgress,
+    name: loanName,
+    referredByText,
+    relatedTo: relatedDocs = [],
     status,
     user,
-    createdAt,
-    name: loanName,
-    relatedTo: relatedDocs = [],
-    loanProgress,
-    anonymous,
   } = loan;
-
-  const referredBy = getReferredBy({ user, proUser, isAdmin, anonymous });
 
   return {
     id: loanId,
@@ -61,8 +60,12 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
         label: <LoanProgress loanProgress={loanProgress} />,
       },
       {
-        raw: user.name,
-        label: <ProCustomer user={user} invitedByUser={referredBy.label} />,
+        raw: !anonymous && user.name,
+        label: anonymous ? (
+          'Anonyme'
+        ) : (
+          <ProCustomer user={user} invitedByUser={referredByText} />
+        ),
       },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       {
@@ -84,36 +87,35 @@ const getAnonymous = withAnonymous =>
   (withAnonymous ? undefined : { $in: [null, false] });
 
 export default compose(
-  withProps(({ proUser: { promotions = [], proProperties = [] } }) => ({
-    propertyIds: proProperties.map(({ _id }) => _id),
-    promotionIds: promotions.map(({ _id }) => _id),
-  })),
   withState('status', 'setStatus', {
     $in: Object.values(LOAN_STATUS).filter(s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST),
   }),
   withState('withAnonymous', 'setWithAnonymous', false),
-  withState(
-    'referredByUserId',
-    'setReferredByUserId',
-    ({ proUser }) => proUser._id,
-  ),
+  withState('referredByMe', 'setReferredByMe', true),
   withSmartQuery({
-    query: proLoans,
+    query: proLoans2,
     params: ({
-      propertyIds,
-      promotionIds,
       proUser: { _id: userId },
       isAdmin = false,
       status,
       withAnonymous,
-      referredByUserId,
+      referredByMe,
     }) => ({
       ...(isAdmin ? { userId } : {}),
-      promotionId: { $in: promotionIds },
-      propertyId: { $in: propertyIds },
       status,
       anonymous: getAnonymous(withAnonymous),
-      referredByUserId,
+      referredByMe,
+      referredByMyOrganisation: !referredByMe,
+      $body: {
+        anonymous: 1,
+        createdAt: 1,
+        loanProgress: 1,
+        name: 1,
+        referredByText: 1,
+        relatedTo: 1,
+        status: 1,
+        user: { name: 1, phoneNumbers: 1 },
+      },
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',

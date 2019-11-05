@@ -1,33 +1,31 @@
 import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
-import UserService from '../../users/server/UserService';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-
+import UserService from '../../users/server/UserService';
 import {
   adminLoans,
   anonymousLoan,
   fullLoan,
   loanSearch,
-  proLoans,
+  proLoans2,
+  proLoansAggregate,
   proPromotionLoans,
   proPropertyLoans,
   proReferredByLoans,
   userLoans,
-  proLoansAggregate,
-  loanProgress,
+  loanProgress as loanProgressQuery,
 } from '../queries';
 import { LOAN_STATUS } from '../loanConstants';
 import {
-  proLoansResolver,
   proPromotionLoansResolver,
   proPropertyLoansResolver,
   proReferredByLoansResolver,
 } from './resolvers';
+import { getProLoanFilters } from './exposureHelpers';
 
 exposeQuery({
   query: adminLoans,
@@ -167,73 +165,6 @@ exposeQuery({
 });
 
 exposeQuery({
-  query: proLoans,
-  overrides: {
-    firewall(userId, params) {
-      const {
-        userId: providedUserId,
-        fetchOrganisationLoans,
-        organisationId,
-        promotionId,
-        propertyId,
-        referredByUserId,
-      } = params;
-      params.calledByUserId = userId;
-
-      if (providedUserId && SecurityService.isUserAdmin(userId)) {
-        params.userId = providedUserId;
-      } else {
-        params.userId = userId;
-      }
-
-      if (fetchOrganisationLoans) {
-        if (organisationId) {
-          SecurityService.checkUserIsAdmin(userId);
-        } else {
-          const { organisations } = UserService.fetchOne({
-            $filters: { _id: userId },
-            organisations: { _id: 1 },
-          });
-
-          if (!organisations || organisations.length === 0) {
-            throw new Meteor.Error("Pas d'organisation!");
-          }
-
-          params.organisationId = organisations[0]._id;
-        }
-      }
-
-      SecurityService.checkUserIsPro(userId);
-
-      if (referredByUserId && referredByUserId !== userId) {
-        SecurityService.checkUserIsAdmin(userId);
-      }
-
-      if (!referredByUserId) {
-        // If false is provided here, remove it from the filters
-        delete params.referredByUserId;
-      }
-    },
-    validateParams: {
-      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
-      promotionId: Match.Maybe(Match.OneOf(String, Object)),
-      propertyId: Match.Maybe(Match.OneOf(String, Object)),
-      userId: String,
-      calledByUserId: String,
-      organisationId: Match.Maybe(String),
-      fetchOrganisationLoans: Match.Maybe(Boolean),
-      status: Match.Maybe(Match.OneOf(String, Object)),
-      referredByUserId: Match.Maybe(Match.OneOf(String, Boolean)),
-    },
-  },
-  // cacher: {
-  //   getDataToHash: getLoanIds({ withReferredBy: true }),
-  //   ttl: 60 * 1000,
-  // },
-  resolver: proLoansResolver,
-});
-
-exposeQuery({
   query: proPromotionLoans,
   overrides: {
     firewall(userId, params) {
@@ -284,35 +215,50 @@ exposeQuery({
 exposeQuery({
   query: proLoansAggregate,
   overrides: {
-    firewall(userId, params) {
-      let organisation;
-      if (!SecurityService.isUserAdmin(userId)) {
-        SecurityService.checkUserIsPro(userId);
+    firewall(userId, { referredByUserId }) {
+      SecurityService.checkUserIsPro(userId);
 
-        const { organisationId } = params;
-        organisation = OrganisationService.fetchOne({
-          $filters: { _id: organisationId, 'userLinks._id': userId },
-          userLinks: 1,
-        });
-
-        if (!organisation) {
-          SecurityService.handleUnauthorized('Not allowed to access this organisation');
+      if (referredByUserId && referredByUserId !== 'nobody') {
+        const org = UserService.getUserMainOrganisation(userId);
+        if (!org.userLinks.find(({ _id }) => _id === userId)) {
+          SecurityService.handleUnauthorized('Not allowed');
         }
       }
-
-      params.userIds = organisation.userLinks
-        .filter(({ isMain }) => isMain)
-        .map(({ _id }) => _id);
     },
     embody: (body) => {
-      body.$filter = ({ filters, params: { organisationId, userIds } }) => {
-        filters.$or = [
-          { 'userCache.referredByOrganisationLink': organisationId },
-          { referralId: { $in: userIds } },
-        ];
+      body.$filter = ({
+        filters,
+        params: { _userId, anonymous, referredByUserId },
+      }) => {
+        if (anonymous) {
+          filters.anonymous = anonymous;
+        }
+
+        getProLoanFilters({
+          filters,
+          userId: _userId,
+          referredByMyOrganisation: true,
+        });
+
+        if (referredByUserId) {
+          let forceReferralFilter = [
+            { 'userCache.referredByUserLink': referredByUserId },
+            { referralId: referredByUserId },
+          ];
+          if (referredByUserId === 'nobody') {
+            forceReferralFilter = [
+              { 'userCache.referredByUserLink': { $in: [false, null] } },
+            ];
+          }
+          filters.$and = [{ $or: filters.$or }, { $or: forceReferralFilter }];
+          delete filters.$or;
+        }
       };
     },
-    validateParams: { organisationId: String, userIds: Match.Maybe([String]) },
+    validateParams: {
+      referredByUserId: Match.Maybe(String),
+      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
+    },
   },
 });
 
@@ -350,7 +296,7 @@ exposeQuery({
 });
 
 exposeQuery({
-  query: loanProgress,
+  query: loanProgressQuery,
   overrides: {
     firewall() {},
     embody: (body, params) => {
@@ -362,6 +308,58 @@ exposeQuery({
     },
     validateParams: {
       loanId: String,
+    },
+  },
+});
+
+exposeQuery({
+  query: proLoans2,
+  overrides: {
+    firewall(userId, params) {
+      if (params.userId) {
+        SecurityService.checkUserIsAdmin(userId);
+        params._userId = params.userId;
+      } else {
+        SecurityService.checkUserIsPro(userId);
+      }
+    },
+    embody: (body) => {
+      body.$filter = ({
+        filters,
+        params: {
+          _userId,
+          status,
+          anonymous,
+          referredByMe,
+          referredByMyOrganisation,
+        },
+      }) => {
+        if (status) {
+          filters.status = status;
+        }
+
+        if (anonymous) {
+          filters.anonymous = anonymous;
+        }
+
+        if (!!referredByMe === !!referredByMyOrganisation) {
+          throw new Meteor.Error('You have to pick exactly one of "referredByMe" or "referredByMyOrganisation"');
+        }
+
+        getProLoanFilters({
+          filters,
+          userId: _userId,
+          referredByMe,
+          referredByMyOrganisation,
+        });
+      };
+    },
+    validateParams: {
+      anonymous: Match.Maybe(Match.OneOf(Boolean, Object)),
+      userId: Match.Maybe(String),
+      referredByMe: Match.Maybe(Boolean),
+      referredByMyOrganisation: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

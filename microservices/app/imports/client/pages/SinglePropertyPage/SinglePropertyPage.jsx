@@ -16,14 +16,9 @@ import SinglePropertyPageForms from './SinglePropertyPageForms';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 
 const SinglePropertyPage = (props) => {
-  const { loan, propertyId, history, currentUser: { loans } = {} } = props;
-  const {
-    borrowers,
-    properties,
-    _id: loanId,
-    residenceType,
-    applicationType,
-  } = loan;
+  const { loan, propertyId, history, currentUser } = props;
+  const { loans } = currentUser || {};
+  const { borrowers, properties, _id: loanId, applicationType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
   if (property.category === PROPERTY_CATEGORY.PRO) {

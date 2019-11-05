@@ -98,10 +98,6 @@ $result-section-negative-offset: -32px;
     color: initial;
   }
 
-  .offerId {
-    justify-content: flex-start !important;
-  }
-
   .interestsCost,
   .amortizationCost {
     align-items: center;
@@ -110,6 +106,21 @@ $result-section-negative-offset: -32px;
 
     svg {
       margin-left: 8px;
+    }
+  }
+
+  &.financing-offers-structure {
+    justify-content: flex-start;
+
+    .card1 {
+      justify-content: flex-start;
+      min-height: unset;
+    }
+
+    .offerId {
+      padding: 0;
+      min-height: unset;
+      justify-content: flex-start;
     }
   }
 }

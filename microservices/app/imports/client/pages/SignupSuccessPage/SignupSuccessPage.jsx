@@ -12,10 +12,10 @@ const SignupSuccessPage = ({ email }: SignupSuccessPageProps) => (
     <div className="card1 card-top">
       <AnimatedSuccess />
 
-      <h3>
+      <h3 className="text-center">
         <T id="SignupSuccessPage.title" values={{ email }} />
       </h3>
-      <h4 className="secondary">
+      <h4 className="text-center secondary">
         <T id="SignupSuccessPage.description" />
       </h4>
     </div>

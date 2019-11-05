@@ -41,9 +41,7 @@ const LoanSelector = ({
       <Select
         id="loan-selector"
         value={value}
-        onChange={(id, newValue) =>
-          handleChange(newValue, closeDrawer, history)
-        }
+        onChange={newValue => handleChange(newValue, closeDrawer, history)}
         options={options}
         displayEmpty
       />

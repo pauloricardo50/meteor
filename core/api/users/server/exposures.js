@@ -167,8 +167,15 @@ exposeQuery({
 exposeQuery({
   query: proUser,
   overrides: {
-    firewall: (userId) => {
-      SecurityService.checkUserIsPro(userId);
+    firewall: (userId, params) => {
+      if (userId) {
+        SecurityService.checkUserIsPro(userId);
+      } else {
+        // Don't throw unauthorized error here, it causes race-conditions in E2E tests
+        // to not reload this subscription
+        // So simply set userId to an impossible id
+        params._userId = 'none';
+      }
     },
     embody: (body) => {
       body.$filter = ({ filters, params }) => {

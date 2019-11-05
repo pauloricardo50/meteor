@@ -6,7 +6,11 @@ import {
 } from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
 import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
-import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import {
+  PROPERTY_CATEGORY,
+  PROPERTIES_COLLECTION,
+} from '../properties/propertyConstants';
+import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
 
 Loans.addReducers({
   structure: {
@@ -49,5 +53,17 @@ Loans.addReducers({
   nextDueTask: {
     body: { tasksCache: 1 },
     reduce: nextDueTaskReducer,
+  },
+  relatedTo: {
+    body: {
+      properties: { address1: 1, city: 1, zipCode: 1, category: 1 },
+      promotions: { name: 1 },
+    },
+    reduce: ({ properties = [], promotions = [] }) => [
+      ...properties
+        .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
+        .map(p => ({ ...p, collection: PROPERTIES_COLLECTION })),
+      ...promotions.map(p => ({ ...p, collection: PROMOTIONS_COLLECTION })),
+    ],
   },
 });

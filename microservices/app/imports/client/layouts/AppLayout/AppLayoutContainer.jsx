@@ -1,11 +1,11 @@
 // @flow
+import { useContext } from 'react';
 import { compose, withProps, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { userLoans } from 'core/api/loans/queries';
-import { appUser } from 'core/api/users/queries';
 import { userImpersonatedSession } from 'core/api/sessions/queries';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
@@ -16,7 +16,7 @@ import withTranslationContext from 'core/components/Translation/withTranslationC
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import { userLoan } from 'core/api/fragments';
-import { injectCurrentUser } from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import {
   withSideNavContextProvider,
   withSideNavContext,
@@ -52,13 +52,6 @@ export const getRedirect = (currentUser, pathname) => {
   return false;
 };
 
-const withAppUser = withSmartQuery({
-  query: appUser,
-  queryOptions: { reactive: true, single: true },
-  dataName: 'currentUser',
-  renderMissingDoc: false,
-});
-
 const fullFragment = userLoan({ withSort: true, withFilteredPromotions: true });
 const fragment = {
   ...fullFragment,
@@ -90,7 +83,8 @@ const withInterestRates = withSmartQuery({
   refetchOnMethodCall: false,
 });
 
-const withRedirect = withProps(({ currentUser, history }) => {
+const withRedirect = withProps(({ history }) => {
+  const currentUser = useContext(CurrentUserContext);
   const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });
@@ -103,8 +97,6 @@ const withImpersonatedSession = withSmartQuery({
 });
 
 export default compose(
-  withAppUser,
-  injectCurrentUser,
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
   injectCalculator(),

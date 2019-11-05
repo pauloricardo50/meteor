@@ -80,7 +80,7 @@ class AutoFormTextInput extends Component {
       const valueExistsInHistory = this.state.history.includes(nextProps.inputProps.currentValue);
 
       if (!valueExistsInHistory) {
-        this.handleChange(null, nextProps.inputProps.currentValue);
+        this.handleChange(nextProps.inputProps.currentValue);
       }
     }
   }
@@ -131,6 +131,7 @@ class AutoFormTextInput extends Component {
       inputProps: { id, currentValue, inputType },
     } = this.props;
     const { value } = this.state;
+
     // Save data to DB
     const object = { [id]: value };
     let shouldSave = true;

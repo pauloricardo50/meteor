@@ -1,6 +1,11 @@
 .pro-revenues-page {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+
+  .explained {
+    align-self: flex-start;
+  }
 
   h1 {
     margin-bottom: 0;

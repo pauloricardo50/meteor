@@ -29,6 +29,7 @@ const BorrowersProgress = ({
               key={borrower._id}
               borrower={borrower}
               index={index}
+              handleClick={() => setOpenBorrowersForm(index)}
             />,
           ])}
         </div>

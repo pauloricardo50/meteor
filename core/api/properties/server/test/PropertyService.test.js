@@ -343,7 +343,7 @@ describe('PropertyService', function () {
       expect(prop.organisation).to.deep.equal({
         _id: 'org',
         name: 'Org1',
-        userLinks: [{ _id: 'proId' }],
+        userLinks: [{ _id: 'proId', shareCustomers: true }],
       });
     });
   });
