@@ -384,6 +384,7 @@
 
   &.editing &-icons {
     display: block;
+    width: 100%;
     .icon {
       display: block;
       span {
@@ -403,6 +404,10 @@
     .icon {
       display: block;
       position: relative;
+
+      p {
+        width: 100%;
+      }
 
       span {
         margin-right: 16px;

@@ -65,7 +65,7 @@ export default withProps(({ id, loanId, promotionOptionId }) => {
       : [
         {
           className: 'grid-col',
-          style: { gridTemplateColumns: '1fr 220px' },
+          style: { gridTemplateColumns: '1fr 220px', width: '100%' },
           fields: ['__REST'],
         },
       ],

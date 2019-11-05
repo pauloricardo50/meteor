@@ -38,12 +38,12 @@ const StatusDateForm = ({
       open={openDialog}
       actions={[
         <Button
-          label={<T id="ConfirmMethod.buttonCancel" />}
+          label={<T id="general.no" />}
           onClick={dialogActions.cancel}
           key="cancel"
         />,
         <Button
-          label={<T id="ConfirmMethod.buttonConfirm" />}
+          label={<T id="general.yes" />}
           primary
           onClick={dialogActions.ok}
           key="ok"
