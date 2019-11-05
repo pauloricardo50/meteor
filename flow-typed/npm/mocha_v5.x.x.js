@@ -1,5 +1,5 @@
-// flow-typed signature: 53581b0def7d3e88c8eaa16f0638ef52
-// flow-typed version: c6154227d1/mocha_v6.x.x/flow_>=v0.28.x <=v0.103.x
+// flow-typed signature: ae94222964881f91f3333824878bbb2f
+// flow-typed version: fee7183de9/mocha_v5.x.x/flow_>=v0.28.x
 
 declare interface $npm$mocha$SetupOptions {
   slow?: number;
