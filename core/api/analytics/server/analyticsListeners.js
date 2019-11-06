@@ -1,5 +1,10 @@
+import { PropertyService } from 'core/api/properties/server/PropertyService';
+import { PromotionService } from 'core/api/promotions/server/PromotionService';
 import { ROLES } from '../../users/userConstants';
-import { anonymousCreateUser } from '../../users/methodDefinitions';
+import {
+  anonymousCreateUser,
+  proInviteUser,
+} from '../../users/methodDefinitions';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import SessionService from '../../sessions/server/SessionService';
@@ -317,6 +322,112 @@ ServerEventService.addAfterMethodListener(
       analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
         loanId,
       });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  proInviteUser,
+  async ({
+    context,
+    params: { user, propertyIds = [], promotionIds = [], properties = [] },
+    result: customerId,
+  }) => {
+    const analytics = new Analytics(context);
+    const { userId } = context;
+    const {
+      firstName,
+      lastName,
+      email,
+      promotionLotIds = [],
+      showAllLots = false,
+    } = user;
+
+    const { name: pro } = UserService.fetchOne({
+      $filters: { _id: userId },
+      name: 1,
+    });
+    const { name: org } = UserService.getUserMainOrganisation(userId);
+
+    const referOnly = propertyIds.length === 0
+      && promotionIds.length === 0
+      && properties.length === 0;
+
+    if (referOnly) {
+      return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+        customerId,
+        customerName: `${firstName} ${lastName}`,
+        customerEmail: email,
+        proId: userId,
+        proName: pro,
+        proOrganisation: org,
+        referOnly,
+      });
+    }
+
+    if (propertyIds.length) {
+      await Promise.all(propertyIds.map((propertyId) => {
+        const { address } = PropertyService.fetchOne({
+          $filters: { _id: propertyId },
+          address: 1,
+        });
+
+        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+          customerId,
+          customerName: `${firstName} ${lastName}`,
+          customerEmail: email,
+          proId: userId,
+          proName: pro,
+          proOrganisation: org,
+          propertyId,
+          propertyAddress: address,
+          referOnly,
+        });
+      }));
+    }
+
+    if (promotionIds.length) {
+      await Promise.all(promotionIds.map((promotionId) => {
+        const { name } = PromotionService.fetchOne({
+          $filters: { _id: promotionId },
+          name: 1,
+        });
+
+        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+          customerId,
+          customerName: `${firstName} ${lastName}`,
+          customerEmail: email,
+          proId: userId,
+          proName: pro,
+          proOrganisation: org,
+          promotionId,
+          promotionName: name,
+          promotionLotIds,
+          showAllLots,
+          referOnly,
+        });
+      }));
+    }
+
+    if (properties.length) {
+      await Promise.all(properties.map((property) => {
+        const { address, _id: propertyId } = PropertyService.fetchOne({
+          $filters: { externalId: property.externalId },
+          address: 1,
+        });
+
+        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+          customerId,
+          customerName: `${firstName} ${lastName}`,
+          customerEmail: email,
+          proId: userId,
+          proName: pro,
+          proOrganisation: org,
+          propertyId,
+          propertyAddress: address,
+          referOnly,
+        });
+      }));
     }
   },
 );

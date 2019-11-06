@@ -77,4 +77,22 @@ export const EVENTS_CONFIG = {
     name: 'User Followed impersonating admin',
     transform: curryPick(['adminName', 'adminId']),
   },
+  [EVENTS.PRO_INVITED_CUSTOMER]: {
+    name: 'Pro Invited customer',
+    transform: curryPick([
+      'customerId',
+      'customerName',
+      'customerEmail',
+      'proId',
+      'proName',
+      'proOrganisation',
+      'propertyId',
+      'propertyAddress',
+      'promotionId',
+      'promotionName',
+      'promotionLotIds',
+      'showAllLots',
+      'referOnly',
+    ]),
+  },
 };

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -55,7 +56,6 @@ assignAdminToUser.setHandler((context, { userId, adminId }) => {
 
   return UserService.assignAdminToUser({ userId, adminId });
 });
-
 
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -128,15 +128,22 @@ proInviteUser.setHandler((context, params) => {
   SecurityService.checkUserIsPro(userId);
 
   if (propertyIds && propertyIds.length) {
-    propertyIds.forEach(propertyId =>
+    propertyIds.forEach((propertyId) =>
       SecurityService.properties.isAllowedToInviteCustomers({
         userId,
         propertyId,
       }));
   }
 
+  if (promotionIds && promotionIds.length > 1) {
+    throw new Meteor.Error(
+      HTTP_STATUS_CODES.BAD_REQUEST,
+      "Vous ne pouvez inviter un client qu'à une seule promotion à la fois",
+    );
+  }
+
   if (promotionIds && promotionIds.length) {
-    promotionIds.forEach(promotionId =>
+    promotionIds.forEach((promotionId) =>
       SecurityService.promotions.isAllowedToInviteCustomers({
         promotionId,
         userId,

@@ -25,6 +25,8 @@ export const EVENTS = {
   CTA_CLICKED: 'CTA_CLICKED',
 
   API_CALLED: 'API_CALLED',
+
+  PRO_INVITED_CUSTOMER: 'PRO_INVITED_CUSTOMER',
 };
 
 export default EVENTS;
