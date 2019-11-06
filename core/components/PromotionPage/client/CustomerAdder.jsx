@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
+import { withProps } from 'recompose';
 
 import SimpleSchema from 'simpl-schema';
+import useSearchParams from 'core/hooks/useSearchParams';
 import { proInviteUser } from '../../../api/methods';
 import { PROMOTION_STATUS } from '../../../api/constants';
 import T from '../../Translation';
@@ -76,7 +78,11 @@ export const CustomerAdderUserSchema = ({
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;
 
-const CustomerAdder = ({ promotion }: CustomerAdderProps) => {
+const CustomerAdder = ({
+  promotion,
+  model,
+  opened = false,
+}: CustomerAdderProps) => {
   const { _id: promotionId, status } = promotion;
   const disabled = status !== PROMOTION_STATUS.OPEN;
 
@@ -93,14 +99,22 @@ const CustomerAdder = ({ promotion }: CustomerAdderProps) => {
           : undefined,
       }}
       schema={CustomerAdderUserSchema({ promotion })}
-      onSubmit={user =>
-        proInviteUser.run({ user, promotionIds: [promotionId] })
-      }
+      onSubmit={(user) =>
+        proInviteUser.run({ user, promotionIds: [promotionId] })}
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
       onSuccessMessage={onSuccessMessage}
+      model={model}
+      opened={opened}
     />
   );
 };
 
-export default CustomerAdder;
+export default withProps(() => {
+  const searchParams = useSearchParams();
+  return {
+    model: searchParams,
+    opened: !!Object.keys(searchParams).filter((key) =>
+      ['email', 'firstName', 'lastName', 'phoneNumber'].includes(key)).length,
+  };
+})(CustomerAdder);

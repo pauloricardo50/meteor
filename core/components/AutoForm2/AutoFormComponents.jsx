@@ -139,7 +139,11 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
-    const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
+    const {
+      condition,
+      customAllowedValues,
+      customAutoValue,
+    } = schema.getField(props.name);
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
     let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
       allowedValues,

@@ -29,7 +29,7 @@ type AutoFormDialogProps = {
   noButton?: Boolean,
 };
 
-const getAutoFormProps = props =>
+const getAutoFormProps = (props) =>
   pick(props, [
     'model',
     'onSubmit',
@@ -131,7 +131,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
 }
 
 export default compose(
-  withState('open', 'setOpen', false),
+  withState('open', 'setOpen', ({ opened }) => !!opened),
   withProps(({ onSubmit, setOpen }) => ({
     onSubmit: (...args) => onSubmit(...args).then(() => setOpen(false)),
   })),
