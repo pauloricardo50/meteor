@@ -5,7 +5,8 @@ import { Random } from 'meteor/random';
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
 import { getClientTrackingId } from 'core/utils/server/getClientTrackingId';
-import { EVENTS_CONFIG } from './eventsConfig';
+import { isAPI } from 'core/api/RESTAPI/server/helpers';
+import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
 import { impersonateMiddleware } from './analyticsHelpers';
@@ -98,6 +99,10 @@ class Analytics {
     });
   }
 
+  getTrackingOrigin() {
+    return isAPI() ? TRACKING_ORIGIN.API : TRACKING_ORIGIN.METEOR_METHOD;
+  }
+
   track(event, data, trackingId = getClientTrackingId()) {
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
@@ -111,7 +116,10 @@ class Analytics {
       ...(trackingId ? { anonymousId: trackingId } : {}),
       userId: this.userId,
       event: name,
-      properties: eventProperties,
+      properties: {
+        ...eventProperties,
+        trackingOrigin: this.getTrackingOrigin(),
+      },
       context: {
         ip: this.clientAddress,
         userAgent: this.userAgent,

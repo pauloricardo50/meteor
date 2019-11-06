@@ -134,5 +134,6 @@ module.exports = {
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',
+    'max-classes-per-file': 0,
   },
 };

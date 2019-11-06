@@ -96,3 +96,8 @@ export const EVENTS_CONFIG = {
     ]),
   },
 };
+
+export const TRACKING_ORIGIN = {
+  API: 'API',
+  METEOR_METHOD: 'METEOR_METHOD',
+};
