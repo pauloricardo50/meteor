@@ -50,6 +50,7 @@ exposeQuery({
           userId,
           fetchOrganisationProperties,
           value,
+          search,
         } = params;
         if (propertyId) {
           filters._id = propertyId;
@@ -63,6 +64,13 @@ exposeQuery({
           filters.value = value;
         }
 
+        if (search) {
+          Object.assign(
+            filters,
+            createSearchFilters(['address1', 'city', 'zipCode'], search),
+          );
+        }
+
         if (fetchOrganisationProperties) {
           const { organisations = [] } = UserService.fetchOne({
             $filters: { _id: userId },
@@ -72,7 +80,7 @@ exposeQuery({
           const otherOrganisationUsers = organisations.length
             ? organisations[0].users
               .map(({ _id: orgUserId }) => orgUserId)
-              .filter(id => id !== userId)
+              .filter((id) => id !== userId)
             : [];
 
           filters['userLinks._id'] = { $in: otherOrganisationUsers };
@@ -93,6 +101,7 @@ exposeQuery({
     },
     validateParams: {
       userId: Match.Maybe(String),
+      search: Match.Maybe(String),
       fetchOrganisationProperties: Match.Maybe(Boolean),
       value: Match.Maybe(Match.OneOf(Object, Number)),
     },

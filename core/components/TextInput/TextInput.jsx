@@ -21,7 +21,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   switch (type) {
   case 'money':
     return {
-      onChangeHandler: event =>
+      onChangeHandler: (event) =>
         onChange(toNumber(event.target.value), id, event),
       showMask: true,
       mask: swissFrancMask,
@@ -30,7 +30,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     };
   case 'percent':
     return {
-      onChangeHandler: event =>
+      onChangeHandler: (event) =>
         onChange(
           Math.round(parseFloat(event.target.value) * 100) / 10000,
           id,
@@ -43,14 +43,14 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     };
   case 'number':
     return {
-      onChangeHandler: event =>
+      onChangeHandler: (event) =>
         onChange(toNumber(event.target.value), id, event),
       showMask: false,
       value,
     };
   case 'date':
     return {
-      onChangeHandler: event => onChange(event.target.value, id, event),
+      onChangeHandler: (event) => onChange(event.target.value, id, event),
       onDateChange: (val) => {
         // This specific format should be used for the server to get the
         // date in the right order
@@ -65,7 +65,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     return {
       // Pass event as third argument, for some components which need it
       // like react-autosuggest
-      onChangeHandler: event => onChange(event.target.value, id, event),
+      onChangeHandler: (event) => onChange(event.target.value, id, event),
       showMask: false,
       value,
     };
@@ -98,6 +98,27 @@ export const getFinalPlaceholder = ({
 
   return finalPlaceholder;
 };
+
+const getStartAdornment = ({ money, startAdornment }) => {
+  if (money) {
+    return <InputAdornment position="start">CHF</InputAdornment>;
+  }
+
+  if (startAdornment) {
+    return <InputAdornment position="start">{startAdornment}</InputAdornment>;
+  }
+
+  return null;
+};
+
+const getEndAdornment = ({ endAdornment }) => {
+  if (endAdornment) {
+    return <InputAdornment position="end">{endAdornment}</InputAdornment>;
+  }
+
+  return null;
+};
+
 const TextInput = (props) => {
   const {
     classes,
@@ -121,6 +142,7 @@ const TextInput = (props) => {
     type,
     inputType,
     inputLabelProps,
+    endAdornment,
     ...otherProps
   } = props;
 
@@ -176,11 +198,8 @@ const TextInput = (props) => {
           pattern: mask ? '[0-9]*' : undefined,
           onDateChange: inputType === 'date' ? onDateChange : undefined,
         }}
-        startAdornment={
-          props.type === 'money' ? (
-            <InputAdornment position="start">CHF</InputAdornment>
-          ) : null
-        }
+        startAdornment={getStartAdornment(props)}
+        endAdornment={getEndAdornment(props)}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
     </FormControl>

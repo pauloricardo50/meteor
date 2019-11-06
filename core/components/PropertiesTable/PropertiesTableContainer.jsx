@@ -33,7 +33,7 @@ export const makeMapProperty = ({ history, currentUser }) => ({
 }) => ({
   id: propertyId,
   columns: [
-    [address1, city].filter(x => x).join(', '),
+    [address1, city].filter((x) => x).join(', '),
     {
       raw: status,
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
@@ -69,12 +69,14 @@ export default compose(
     false,
   ),
   withState('propertyValue', 'setPropertyValue', { $gte: 0, $lte: 5000000 }),
+  withState('search', 'setSearch', ''),
   withSmartQuery({
     query: proProperties,
-    params: ({ fetchOrganisationProperties, propertyValue }) => ({
+    params: ({ fetchOrganisationProperties, propertyValue, search }) => ({
       $body: proPropertySummary(),
       fetchOrganisationProperties,
       value: propertyValue,
+      search,
     }),
     queryOptions: { reactive: false },
     renderMissingDoc: false,
