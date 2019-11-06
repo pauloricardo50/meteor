@@ -7,7 +7,13 @@ const curryPick = curryRight((obj, keys) =>
 export const EVENTS_CONFIG = {
   [EVENTS.USER_CREATED]: {
     name: 'User Created',
-    transform: curryPick(['userId', 'origin', 'referralId', 'orgReferralId']),
+    transform: curryPick([
+      'userId',
+      'origin',
+      'referralId',
+      'orgReferralId',
+      'ctaId',
+    ]),
   },
   [EVENTS.USER_LOGGED_IN]: {
     name: 'User Logged in',

@@ -143,7 +143,7 @@ export class UserServiceClass extends CollectionService {
     }
   };
 
-  getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
+  getUsersByRole = (role) => Users.find({ roles: { $in: [role] } }).fetch();
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
@@ -206,7 +206,7 @@ export class UserServiceClass extends CollectionService {
     return (
       loans
       && loans.some(({ propertyIds = [] }) =>
-        propertyIds.some(id => id === propertyId))
+        propertyIds.some((id) => id === propertyId))
     );
   };
 
@@ -293,7 +293,7 @@ export class UserServiceClass extends CollectionService {
           ctaUrl: this.getEnrollmentUrl({ userId }),
         },
       })
-      .then(() => userId);
+      .then(() => ({ userId, isNewUser: true }));
   };
 
   proCreateUser = ({
@@ -398,7 +398,7 @@ export class UserServiceClass extends CollectionService {
     if (promotionIds && promotionIds.length) {
       promises = [
         ...promises,
-        ...promotionIds.map(promotionId =>
+        ...promotionIds.map((promotionId) =>
           PromotionService.inviteUser({
             promotionId,
             userId,
@@ -447,7 +447,7 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises).then(() => userId);
+    return Promise.all(promises).then(() => ({ userId, isNewUser: false }));
   };
 
   getEnrollmentUrl({ userId }) {
@@ -663,7 +663,7 @@ export class UserServiceClass extends CollectionService {
           return employee._id;
         }
       })
-      .filter(x => x);
+      .filter((x) => x);
   }
 
   setAssigneeForNewUser(userId) {

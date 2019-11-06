@@ -1,9 +1,10 @@
-import { PropertyService } from 'core/api/properties/server/PropertyService';
-import { PromotionService } from 'core/api/promotions/server/PromotionService';
+import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
 import { ROLES } from '../../users/userConstants';
 import {
   anonymousCreateUser,
   proInviteUser,
+  adminCreateUser,
 } from '../../users/methodDefinitions';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
@@ -288,7 +289,11 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
-  ({ context, params: { trackingId, referralId, loanId }, result: userId }) => {
+  ({
+    context,
+    params: { trackingId, referralId, loanId, ctaId },
+    result: userId,
+  }) => {
     const analytics = new Analytics({ ...context, userId });
 
     let referralUser;
@@ -312,11 +317,12 @@ ServerEventService.addAfterMethodListener(
     analytics.identify(trackingId);
     analytics.track(EVENTS.USER_CREATED, {
       userId,
-      origin: referralId ? 'referral' : 'organic',
+      origin: 'user',
       referralId: referralUser ? referralId : undefined,
       orgReferralId: referralOrg
         ? referralId
         : referralUserMainOrg && referralUserMainOrg._id,
+      ctaId,
     });
     if (loanId) {
       analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
@@ -331,7 +337,7 @@ ServerEventService.addAfterMethodListener(
   async ({
     context,
     params: { user, propertyIds = [], promotionIds = [], properties = [] },
-    result: customerId,
+    result: { userId: customerId, isNewUser = false },
   }) => {
     const analytics = new Analytics(context);
     const { userId } = context;
@@ -347,14 +353,14 @@ ServerEventService.addAfterMethodListener(
       $filters: { _id: userId },
       name: 1,
     });
-    const { name: org } = UserService.getUserMainOrganisation(userId);
+    const { name: org, _id: orgId } = UserService.getUserMainOrganisation(userId);
 
     const referOnly = propertyIds.length === 0
       && promotionIds.length === 0
       && properties.length === 0;
 
     if (referOnly) {
-      return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+      analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
         customerId,
         customerName: `${firstName} ${lastName}`,
         customerEmail: email,
@@ -429,5 +435,26 @@ ServerEventService.addAfterMethodListener(
         });
       }));
     }
+
+    if (isNewUser) {
+      analytics.track(EVENTS.USER_CREATED, {
+        userId: customerId,
+        origin: 'pro',
+        referralId: userId,
+        orgReferralId: orgId,
+      });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  adminCreateUser,
+  ({ context, result: userId }) => {
+    const analytics = new Analytics(context);
+
+    analytics.track(EVENTS.USER_CREATED, {
+      userId,
+      origin: 'admin',
+    });
   },
 );

@@ -28,7 +28,7 @@ const renderButtons = ({ location: { pathname, search } }) => {
     }
   }
 
-  return blacklist.every(route => !pathname.startsWith(route));
+  return blacklist.every((route) => !pathname.startsWith(route));
 };
 
 const AppTopNav = ({
@@ -58,6 +58,7 @@ const AppTopNav = ({
                   primary: true,
                   label: 'Créez votre compte',
                 }}
+                ctaId="topNav"
               />
             )}
             <TopNavButtons>{children}</TopNavButtons>
