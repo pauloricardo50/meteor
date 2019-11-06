@@ -1,11 +1,26 @@
-import SessionService from 'core/api/sessions/server/SessionService';
-import { loanSetStatus } from '../../loans/methodDefinitions';
+import { ROLES } from '../../users/userConstants';
+import { anonymousCreateUser } from '../../users/methodDefinitions';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import SessionService from '../../sessions/server/SessionService';
+import {
+  loanSetStatus,
+  loanInsertBorrowers,
+  setMaxPropertyValueWithoutBorrowRatio,
+  anonymousLoanInsert,
+} from '../../loans/methodDefinitions';
 import { followImpersonatedSession } from '../../sessions/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
 import EVENTS from '../events';
 import Analytics from './Analytics';
+import {
+  analyticsLogin,
+  analyticsPage,
+  analyticsVerifyEmail,
+  analyticsCTA,
+} from '../methodDefinitions';
 
 ServerEventService.addAfterMethodListener(
   loanSetStatus,
@@ -86,5 +101,222 @@ ServerEventService.addAfterMethodListener(
       adminId: admin._id,
       adminName: admin.name,
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(analyticsLogin, ({ context }) => {
+  const analytics = new Analytics(context);
+  analytics.identify();
+  analytics.track(EVENTS.USER_LOGGED_IN);
+});
+
+ServerEventService.addAfterMethodListener(
+  analyticsPage,
+  ({ context, params }) => {
+    const analytics = new Analytics(context);
+    analytics.page(params);
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  analyticsVerifyEmail,
+  ({ context, params: { trackingId } }) => {
+    const analytics = new Analytics(context);
+    analytics.identify(trackingId);
+    analytics.track(EVENTS.USER_VERIFIED_EMAIL);
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  analyticsCTA,
+  ({ context, params }) => {
+    const analytics = new Analytics(context);
+    analytics.cta(params);
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  setMaxPropertyValueWithoutBorrowRatio,
+  ({ context, params }) => {
+    const analytics = new Analytics(context);
+
+    const { loanId } = params;
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      maxPropertyValue: 1,
+      properties: { value: 1, category: 1 },
+      hasProProperty: 1,
+      hasPromotion: 1,
+      anonymous: 1,
+      promotions: { _id: 1 },
+    });
+    const {
+      maxPropertyValue = {},
+      properties = [],
+      hasProProperty,
+      anonymous,
+      promotions = [],
+      hasPromotion,
+    } = loan;
+    const { canton, main = {}, second = {}, type } = maxPropertyValue;
+    const {
+      min: {
+        borrowRatio: mainMinBorrowRatio,
+        propertyValue: mainMinPropertyValue,
+        organisationName: mainMinOrganisationName,
+      } = {},
+      max: {
+        borrowRatio: mainMaxBorrowRatio,
+        propertyValue: mainMaxPropertyValue,
+        organisationName: mainMaxOrganisationName,
+      } = {},
+    } = main;
+    const {
+      min: {
+        borrowRatio: secondMinBorrowRatio,
+        propertyValue: secondMinPropertyValue,
+        organisationName: secondMinOrganisationName,
+      } = {},
+      max: {
+        borrowRatio: secondMaxBorrowRatio,
+        propertyValue: secondMaxPropertyValue,
+        organisationName: secondMaxOrganisationName,
+      } = {},
+    } = second;
+
+    let property = {};
+    if (hasProProperty) {
+      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+    }
+
+    let promotion = {};
+    if (hasPromotion) {
+      promotion = promotions[0];
+    }
+
+    analytics.track(EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED, {
+      loanId,
+      canton,
+      type,
+      anonymous,
+      proPropertyValue: property.value,
+      proProperty: property._id,
+      mainMinBorrowRatio,
+      mainMaxBorrowRatio,
+      mainMinPropertyValue,
+      mainMaxPropertyValue,
+      mainMinOrganisationName,
+      mainMaxOrganisationName,
+      secondMinBorrowRatio,
+      secondMaxBorrowRatio,
+      secondMinPropertyValue,
+      secondMaxPropertyValue,
+      secondMinOrganisationName,
+      secondMaxOrganisationName,
+      promotion: promotion._id,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  loanInsertBorrowers,
+  ({ context, params }) => {
+    const analytics = new Analytics(context);
+    const { loanId, amount } = params;
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      maxPropertyValue: 1,
+      properties: { value: 1, category: 1 },
+      hasProProperty: 1,
+      hasPromotion: 1,
+      anonymous: 1,
+    });
+    const {
+      properties = [],
+      hasProProperty,
+      anonymous,
+      promotions = [],
+      hasPromotion,
+    } = loan;
+
+    let property = {};
+    if (hasProProperty) {
+      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+    }
+
+    let promotion = {};
+    if (hasPromotion) {
+      promotion = promotions[0];
+    }
+
+    analytics.track(EVENTS.LOAN_BORROWERS_INSERTED, {
+      loanId,
+      amount,
+      anonymous,
+      proProperty: property,
+      promotion,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  anonymousLoanInsert,
+  ({
+    context,
+    params: { proPropertyId, referralId, trackingId },
+    result: loanId,
+  }) => {
+    const analytics = new Analytics(context);
+    analytics.track(
+      EVENTS.LOAN_CREATED,
+      {
+        loanId,
+        propertyId: proPropertyId,
+        referralId,
+        anonymous: true,
+      },
+      trackingId,
+    );
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  anonymousCreateUser,
+  ({ context, params: { trackingId, referralId, loanId }, result: userId }) => {
+    const analytics = new Analytics({ ...context, userId });
+
+    let referralUser;
+    let referralOrg;
+
+    if (referralId) {
+      referralUser = UserService.fetchOne({
+        $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
+      });
+      referralOrg = OrganisationService.fetchOne({
+        $filters: {
+          _id: referralId,
+        },
+      });
+    }
+
+    const referralUserMainOrg = referralId
+      && !referralOrg
+      && UserService.getUserMainOrganisation(referralId);
+
+    analytics.identify(trackingId);
+    analytics.track(EVENTS.USER_CREATED, {
+      userId,
+      origin: referralId ? 'referral' : 'organic',
+      referralId: referralUser ? referralId : undefined,
+      orgReferralId: referralOrg
+        ? referralId
+        : referralUserMainOrg && referralUserMainOrg._id,
+    });
+    if (loanId) {
+      analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
+        loanId,
+      });
+    }
   },
 );

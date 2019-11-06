@@ -1,8 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -221,40 +218,6 @@ anonymousCreateUser.setHandler((context, params) => {
   }
 
   const userId = UserService.anonymousCreateUser(params);
-
-  const analytics = new Analytics({ ...context, userId });
-  let referralUser;
-  let referralOrg;
-
-  if (params.referralId) {
-    referralUser = UserService.fetchOne({
-      $filters: { _id: params.referralId, roles: { $in: [ROLES.PRO] } },
-    });
-    referralOrg = OrganisationService.fetchOne({
-      $filters: {
-        _id: params.referralId,
-      },
-    });
-  }
-  analytics.identify(params.trackingId);
-  const referralUserMainOrg = params.referralId
-    && !referralOrg
-    && UserService.getUserMainOrganisation(params.referralId);
-
-  analytics.track(EVENTS.USER_CREATED, {
-    userId,
-    origin: params.referralId ? 'referral' : 'organic',
-    referralId: referralUser ? params.referralId : undefined,
-    orgReferralId: referralOrg
-      ? params.referralId
-      : referralUserMainOrg && referralUserMainOrg._id,
-  });
-  if (params.loanId) {
-    analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
-      loanId: params.loanId,
-    });
-  }
-
   return userId;
 });
 
