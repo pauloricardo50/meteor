@@ -57,6 +57,7 @@ describe('PromotionLotService', function () {
       properties: { _id: 'propId', name: 'Lot 1' },
       promotions: {
         _id: 'promoId',
+        name: 'Test promotion',
         users: [
           {
             _id: 'pro1',
@@ -66,6 +67,7 @@ describe('PromotionLotService', function () {
                 displayCustomerNames: {
                   invitedBy: 'USER',
                   forLotStatus: Object.values(PROMOTION_LOT_STATUS),
+                  roles: ['BROKER'],
                 },
               },
             },
@@ -77,13 +79,14 @@ describe('PromotionLotService', function () {
             $metadata: {
               enableNotifications: true,
               permissions: { displayCustomerNames: { invitedBy: 'USER' } },
+              roles: ['BROKER'],
             },
             organisations: { _id: 'org2', name: 'Org 2' },
             emails: [{ address: 'pro2@e-potek.ch', verified: true }],
           },
           {
             _id: 'pro3',
-            $metadata: { enableNotifications: false },
+            $metadata: { enableNotifications: false, roles: ['BROKER'] },
             organisations: { _id: 'org1', name: 'Org 1' },
           },
         ],
@@ -98,6 +101,7 @@ describe('PromotionLotService', function () {
           promotionOptions: {
             _id: 'pOptId',
             loan: { _id: 'loanId' },
+            promotion: { _id: 'promoId' },
           },
         },
         assignedEmployee: { _id: 'adminId2' },
@@ -182,7 +186,7 @@ describe('PromotionLotService', function () {
           agreementFileKeys: [reservationAgreementFileKey],
         }))
         .then(() => expect(1).to.equal(2, 'Should throw'))
-        .catch(error =>
+        .catch((error) =>
           expect(error.message).to.include('Vous ne pouvez pas gérer la réservation'));
     });
 
@@ -196,7 +200,7 @@ describe('PromotionLotService', function () {
           agreementFileKeys: [reservationAgreementFileKey],
         }))
         .then(() => expect(1).to.equal(2, 'Should throw'))
-        .catch(error =>
+        .catch((error) =>
           expect(error.message).to.include('Vous ne pouvez pas réserver des lots'));
     });
 

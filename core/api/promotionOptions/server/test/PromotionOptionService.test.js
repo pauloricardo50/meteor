@@ -27,6 +27,7 @@ import {
   PROMOTION_PERMISSIONS_FULL_ACCESS,
   PROMOTION_INVITED_BY_TYPE,
   PROMOTION_PERMISSIONS,
+  PROMOTION_EMAIL_RECIPIENTS,
 } from '../../../promotions/promotionConstants';
 
 const makePromotionLotWithReservation = ({
@@ -1091,6 +1092,7 @@ describe('PromotionOptionService', function () {
               {
                 _id: 'loan1',
                 user: {
+                  _id: 'user1',
                   firstName: 'Customer',
                   lastName: 'One',
                   emails: [{ address: 'customer1@test.com', verified: true }],
@@ -1101,6 +1103,7 @@ describe('PromotionOptionService', function () {
               {
                 _id: 'loan2',
                 user: {
+                  _id: 'user2',
                   firstName: 'Customer',
                   lastName: 'Two',
                   emails: [{ address: 'customer2@test.com', verified: true }],
@@ -1111,6 +1114,7 @@ describe('PromotionOptionService', function () {
               {
                 _id: 'loan3',
                 user: {
+                  _id: 'user3',
                   firstName: 'Customer',
                   lastName: 'Three',
                   emails: [{ address: 'customer3@test.com', verified: true }],
@@ -1121,6 +1125,7 @@ describe('PromotionOptionService', function () {
               {
                 _id: 'loan4',
                 user: {
+                  _id: 'user4',
                   firstName: 'Customer',
                   lastName: 'Four',
                   emails: [{ address: 'customer4@test.com', verified: true }],
@@ -1147,48 +1152,88 @@ describe('PromotionOptionService', function () {
       });
 
       expect(recipients1).to.deep.include({
-        user: [{ email: 'customer1@test.com', anonymize: false }],
-        admin: [{ email: 'admin@e-potek.ch', anonymize: false }],
-        broker: [{ email: 'pro1@org1.com', anonymize: false }],
-        brokers: [
-          { email: 'pro2@org1.com', anonymize: false },
-          { email: 'pro3@org2.com', anonymize: true },
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer1@test.com', anonymize: false, userId: 'user1' },
         ],
-        promoter: [{ email: 'pro1@org1.com', anonymize: false }],
-        notary: [{ email: 'pro4@org3.com', anonymize: true }],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+        ],
       });
 
       expect(recipients2).to.deep.include({
-        user: [{ email: 'customer2@test.com', anonymize: false }],
-        admin: [{ email: 'admin@e-potek.ch', anonymize: false }],
-        broker: [{ email: 'pro2@org1.com', anonymize: false }],
-        brokers: [
-          { email: 'pro3@org2.com', anonymize: true },
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer2@test.com', anonymize: false, userId: 'user2' },
         ],
-        promoter: [{ email: 'pro1@org1.com', anonymize: false }],
-        notary: [{ email: 'pro4@org3.com', anonymize: true }],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+        ],
       });
 
       expect(recipients3).to.deep.include({
-        user: [{ email: 'customer3@test.com', anonymize: false }],
-        admin: [{ email: 'admin@e-potek.ch', anonymize: false }],
-        broker: [{ email: 'pro3@org2.com', anonymize: false }],
-        brokers: [
-          { email: 'pro2@org1.com', anonymize: true },
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer3@test.com', anonymize: false, userId: 'user3' },
         ],
-        promoter: [{ email: 'pro1@org1.com', anonymize: false }],
-        notary: [{ email: 'pro4@org3.com', anonymize: true }],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro3@org2.com', anonymize: false, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro2@org1.com', anonymize: true, userId: 'pro2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+        ],
       });
 
       expect(recipients4).to.deep.include({
-        user: [{ email: 'customer4@test.com', anonymize: false }],
-        admin: [{ email: 'admin@e-potek.ch', anonymize: false }],
-        broker: [{ email: 'pro2@org1.com', anonymize: false }],
-        brokers: [
-          { email: 'pro3@org2.com', anonymize: true },
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer4@test.com', anonymize: false, userId: 'user4' },
         ],
-        promoter: [{ email: 'pro1@org1.com', anonymize: false }],
-        notary: [{ email: 'pro4@org3.com', anonymize: false }],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: false, userId: 'pro4' },
+        ],
       });
     });
   });
