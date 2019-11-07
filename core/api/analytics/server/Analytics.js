@@ -2,10 +2,10 @@ import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import UserService from 'core/api/users/server/UserService';
-import { getClientHost } from 'core/utils/server/getClientUrl';
-import { getClientTrackingId } from 'core/utils/server/getClientTrackingId';
-import { isAPI } from 'core/api/RESTAPI/server/helpers';
+import { getClientHost } from '../../../utils/server/getClientUrl';
+import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
+import UserService from '../../users/server/UserService';
+import { isAPI } from '../../RESTAPI/server/helpers';
 import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
@@ -104,7 +104,10 @@ class Analytics {
       },
     });
 
-    const { name, properties } = this.getEventProperties(EVENTS.USER_CREATED, data);
+    const { name, properties } = this.getEventProperties(
+      EVENTS.USER_CREATED,
+      data,
+    );
 
     this.analytics.track({
       userId,
