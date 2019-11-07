@@ -107,7 +107,7 @@ export const EVENTS_CONFIG = {
     transform: curryPick(['userId', 'proId', 'organisationId']),
   },
   [EVENTS.ADMIN_INVITED_USER]: {
-    name: 'Admin Invited pro',
+    name: 'Admin Invited user',
     transform: curryPick(['userId', 'adminId']),
   },
 };
