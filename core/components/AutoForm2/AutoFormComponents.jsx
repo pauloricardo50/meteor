@@ -6,7 +6,6 @@ import connectField from 'uniforms/connectField';
 import nothing from 'uniforms/nothing';
 import AutoField from 'uniforms-material/AutoField';
 import BoolField from 'uniforms-material/BoolField';
-import RadioField from 'uniforms-material/RadioField';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
