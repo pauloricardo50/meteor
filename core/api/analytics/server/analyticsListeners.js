@@ -438,7 +438,7 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (isNewUser) {
-      analytics.createUser(customerId, {
+      analytics.createAnalyticsUser(customerId, {
         userId: customerId,
         origin: 'pro',
         referralId: userId,
@@ -456,7 +456,7 @@ ServerEventService.addAfterMethodListener(
 
     analytics.track(EVENTS.ADMIN_INVITED_USER, { userId, adminId });
 
-    analytics.createUser(userId, {
+    analytics.createAnalyticsUser(userId, {
       userId,
       origin: 'admin',
       adminId,
@@ -478,7 +478,7 @@ ServerEventService.addAfterMethodListener(
       organisationId: orgId,
     });
 
-    analytics.createUser(userId, {
+    analytics.createAnalyticsUser(userId, {
       userId,
       origin: 'pro',
       referralId: proId,

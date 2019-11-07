@@ -85,7 +85,7 @@ class Analytics {
     });
   }
 
-  createUser(userId, data) {
+  createAnalyticsUser(userId, data) {
     const { firstName, lastName, email, roles } = UserService.fetchOne({
       $filters: { _id: userId },
       firstName: 1,
