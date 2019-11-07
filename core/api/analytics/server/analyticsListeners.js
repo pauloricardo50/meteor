@@ -5,6 +5,7 @@ import {
   anonymousCreateUser,
   proInviteUser,
   adminCreateUser,
+  proInviteUserToOrganisation,
 } from '../../users/methodDefinitions';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
@@ -437,7 +438,7 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (isNewUser) {
-      analytics.track(EVENTS.USER_CREATED, {
+      analytics.createUser(customerId, {
         userId: customerId,
         origin: 'pro',
         referralId: userId,
@@ -451,10 +452,37 @@ ServerEventService.addAfterMethodListener(
   adminCreateUser,
   ({ context, result: userId }) => {
     const analytics = new Analytics(context);
+    const { userId: adminId } = context;
 
-    analytics.track(EVENTS.USER_CREATED, {
+    analytics.track(EVENTS.ADMIN_INVITED_USER, { userId, adminId });
+
+    analytics.createUser(userId, {
       userId,
       origin: 'admin',
+      adminId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  proInviteUserToOrganisation,
+  ({ context, result: userId }) => {
+    const analytics = new Analytics(context);
+    const { userId: proId } = context;
+
+    const { _id: orgId } = UserService.getUserMainOrganisation(proId);
+
+    analytics.track(EVENTS.PRO_INVITED_PRO, {
+      userId,
+      proId,
+      organisationId: orgId,
+    });
+
+    analytics.createUser(userId, {
+      userId,
+      origin: 'pro',
+      referralId: proId,
+      orgReferralId: orgId,
     });
   },
 );

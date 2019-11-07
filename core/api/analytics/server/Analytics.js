@@ -85,6 +85,34 @@ class Analytics {
     });
   }
 
+  createUser(userId, data) {
+    const { firstName, lastName, email, roles } = UserService.fetchOne({
+      $filters: { _id: userId },
+      firstName: 1,
+      lastName: 1,
+      email: 1,
+      roles: 1,
+    });
+
+    this.analytics.identify({
+      userId,
+      traits: {
+        firstName,
+        lastName,
+        email,
+        role: roles[0],
+      },
+    });
+
+    const { name, properties } = this.getEventProperties(EVENTS.USER_CREATED, data);
+
+    this.analytics.track({
+      userId,
+      event: name,
+      properties,
+    });
+  }
+
   identify(trackingId) {
     this.alias(trackingId);
 
@@ -103,23 +131,33 @@ class Analytics {
     return isAPI() ? TRACKING_ORIGIN.API : TRACKING_ORIGIN.METEOR_METHOD;
   }
 
-  track(event, data, trackingId = getClientTrackingId()) {
-    if (!Object.keys(this.events).includes(event)) {
-      throw new Meteor.Error(`Unknown event ${event}`);
-    }
+  getEventProperties(event, data) {
     const eventConfig = this.events[event];
     const { name, transform } = eventConfig;
 
     const eventProperties = transform ? transform(data) : data;
 
-    this.analytics.track({
-      ...(trackingId ? { anonymousId: trackingId } : {}),
-      userId: this.userId,
-      event: name,
+    return {
+      name,
       properties: {
         ...eventProperties,
         trackingOrigin: this.getTrackingOrigin(),
       },
+    };
+  }
+
+  track(event, data, trackingId = getClientTrackingId()) {
+    if (!Object.keys(this.events).includes(event)) {
+      throw new Meteor.Error(`Unknown event ${event}`);
+    }
+
+    const { name, properties } = this.getEventProperties(event, data);
+
+    this.analytics.track({
+      ...(trackingId ? { anonymousId: trackingId } : {}),
+      userId: this.userId,
+      event: name,
+      properties,
       context: {
         ip: this.clientAddress,
         userAgent: this.userAgent,

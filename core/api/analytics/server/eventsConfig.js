@@ -12,6 +12,7 @@ export const EVENTS_CONFIG = {
       'origin',
       'referralId',
       'orgReferralId',
+      'adminId',
       'ctaId',
     ]),
   },
@@ -100,6 +101,14 @@ export const EVENTS_CONFIG = {
       'showAllLots',
       'referOnly',
     ]),
+  },
+  [EVENTS.PRO_INVITED_PRO]: {
+    name: 'Pro Invited pro',
+    transform: curryPick(['userId', 'proId', 'organisationId']),
+  },
+  [EVENTS.ADMIN_INVITED_USER]: {
+    name: 'Admin Invited pro',
+    transform: curryPick(['userId', 'adminId']),
   },
 };
 
