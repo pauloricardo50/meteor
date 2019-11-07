@@ -1,14 +1,13 @@
-import { compose, withProps } from 'recompose';
-import { withRouter } from 'react-router-dom';
-
+import { withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
-import queryString from 'query-string';
 
 import {
   isAllowedToInviteCustomersToProProperty,
   isAllowedToInviteCustomersToPromotion,
 } from 'core/api/security/clientSecurityHelpers/index';
 import { proInviteUser } from 'core/api/methods/index';
+import { createRoute } from 'core/utils/routerUtils';
 
 const schema = ({ proProperties, promotions, history }) =>
   new SimpleSchema({
@@ -56,12 +55,11 @@ const schema = ({ proProperties, promotions, history }) =>
           const [promotionId] = promotionIds;
 
           if (promotionId) {
-            history.push(`/promotions/${promotionId}/overview?${queryString.stringify({
-              email,
-              firstName,
-              lastName,
-              phoneNumber,
-            })}`);
+            history.push(createRoute(
+              '/promotions/:promotionId',
+              { promotionId },
+              { email, firstName, lastName, phoneNumber },
+            ));
           }
         },
       },
@@ -82,38 +80,36 @@ const schema = ({ proProperties, promotions, history }) =>
     },
   });
 
-export default compose(
-  withRouter,
-  withProps(({ currentUser, history }) => {
-    const { proProperties = [], promotions = [] } = currentUser;
-    const filteredProProperties = proProperties
-      .filter((property) =>
-        isAllowedToInviteCustomersToProProperty({ property, currentUser }))
-      .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
-    const filteredPromotions = promotions
-      .filter((promotion) =>
-        isAllowedToInviteCustomersToPromotion({ promotion, currentUser }))
-      .sort(({ name: A }, { name: B }) => A.localeCompare(B));
-    return {
-      schema: schema({
-        proProperties: filteredProProperties,
-        promotions: filteredPromotions,
-        history,
-      }),
-      onSubmit: (model) => {
-        const {
-          propertyIds = [],
-          promotionIds = [],
-          invitationNote,
-          ...user
-        } = model;
-        return proInviteUser.run({
-          user,
-          propertyIds: propertyIds.length ? propertyIds : undefined,
-          promotionIds: promotionIds.length ? promotionIds : undefined,
-          invitationNote,
-        });
-      },
-    };
-  }),
-);
+export default withProps(({ currentUser }) => {
+  const history = useHistory();
+  const { proProperties = [], promotions = [] } = currentUser;
+  const filteredProProperties = proProperties
+    .filter((property) =>
+      isAllowedToInviteCustomersToProProperty({ property, currentUser }))
+    .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
+  const filteredPromotions = promotions
+    .filter((promotion) =>
+      isAllowedToInviteCustomersToPromotion({ promotion, currentUser }))
+    .sort(({ name: A }, { name: B }) => A.localeCompare(B));
+  return {
+    schema: schema({
+      proProperties: filteredProProperties,
+      promotions: filteredPromotions,
+      history,
+    }),
+    onSubmit: (model) => {
+      const {
+        propertyIds = [],
+        promotionIds = [],
+        invitationNote,
+        ...user
+      } = model;
+      return proInviteUser.run({
+        user,
+        propertyIds: propertyIds.length ? propertyIds : undefined,
+        promotionIds: promotionIds.length ? promotionIds : undefined,
+        invitationNote,
+      });
+    },
+  };
+});

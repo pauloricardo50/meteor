@@ -24,7 +24,7 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED]: {
     name: 'Loan Anonymous loan claimed',
-    transform: curryPick(['loanId']),
+    transform: curryPick(['loanId', 'loanName']),
   },
   [EVENTS.API_CALLED]: {
     name: 'Api Called',
@@ -34,6 +34,7 @@ export const EVENTS_CONFIG = {
     name: 'Loan Created',
     transform: curryPick([
       'loanId',
+      'loanName',
       'propertyId',
       'promotionId',
       'referralId',
@@ -51,11 +52,13 @@ export const EVENTS_CONFIG = {
     name: 'Loan Max property value calculated',
     transform: curryPick([
       'loanId',
+      'loanName',
       'canton',
       'type',
       'anonymous',
       'proProperty',
       'proPropertyValue',
+      'proPropertyAddress',
       'mainMinBorrowRatio',
       'mainMaxBorrowRatio',
       'mainMinPropertyValue',
@@ -69,15 +72,20 @@ export const EVENTS_CONFIG = {
       'secondMinOrganisationName',
       'secondMaxOrganisationName',
       'promotionId',
+      'promotionName',
     ]),
   },
   [EVENTS.LOAN_BORROWERS_INSERTED]: {
     name: 'Loan Borrowers inserted',
     transform: curryPick([
-      'loanId, amount',
+      'loanId',
+      'loanName',
+      'amount',
       'anonymous',
-      'proProperty',
-      'promotion',
+      'proPropertyId',
+      'proPropertyAddress',
+      'promotionId',
+      'promotionName',
     ]),
   },
   [EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN]: {

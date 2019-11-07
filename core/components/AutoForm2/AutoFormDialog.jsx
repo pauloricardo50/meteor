@@ -21,7 +21,6 @@ type AutoFormDialogProps = {
   title?: React.Node,
   important?: Boolean,
   autoFieldProps?: Object,
-  opened: Boolean,
   renderAdditionalActions?: Function,
   children?: React.Node,
   triggerComponent?: Function,
@@ -61,7 +60,6 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
       important,
       noButton,
       onSubmit,
-      opened,
       renderAdditionalActions,
       setOpen,
       title,
@@ -131,7 +129,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
 }
 
 export default compose(
-  withState('open', 'setOpen', ({ opened }) => !!opened),
+  withState('open', 'setOpen', ({ openOnMount }) => !!openOnMount),
   withProps(({ onSubmit, setOpen }) => ({
     onSubmit: (...args) => onSubmit(...args).then(() => setOpen(false)),
   })),

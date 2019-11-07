@@ -447,7 +447,7 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises).then(() => ({ userId, isNewUser: false }));
+    return Promise.all(promises).then(() => ({ userId, isNewUser }));
   };
 
   getEnrollmentUrl({ userId }) {
