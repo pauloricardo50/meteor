@@ -2,42 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import { GlobalHotKeys } from 'react-hotkeys';
 
 import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
-import { compose, lifecycle } from 'recompose';
+import { titles } from 'core/components/IconLink/CollectionIconLinkPopup/CollectionIconLinkPopupComponents';
+import { CollectionIconLink } from 'core/components/IconLink';
 import LinkToCollection from '../../LinkToCollection';
 import AdminSearchResultsContainer from './AdminSearchResultsContainer';
-import ResultsPerCollection from './ResultsPerCollection';
-
-let index = 0;
-
-export const goDown = () => {
-  const nodes = document.getElementsByClassName('focusable-result');
-  const nodeCount = nodes.length;
-  const shouldInitiateFocus = !document.activeElement.classList.contains('focusable-result');
-
-  if (!shouldInitiateFocus && index < nodeCount - 1) {
-    index += 1;
-  }
-
-  nodes[index].focus();
-};
-
-const goUp = () => {
-  const nodes = document.getElementsByClassName('focusable-result');
-
-  if (index > 0) {
-    index -= 1;
-  }
-
-  nodes[index].focus();
-};
-
-const resetFocus = () => {
-  index = 0;
-};
 
 const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
   if (isLoading || !results) {
@@ -66,38 +37,40 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
   }
 
   return (
-    <>
-      <GlobalHotKeys
-        keyMap={{ down: 'down', up: 'up' }}
-        handlers={{ down: goDown, up: goUp }}
-      />
-      <List className="search-results">
-        {Object.keys(results).map((collectionName) => {
-          const resultsFromThisCollection = results[collectionName];
+    <List className="search-results">
+      {Object.keys(results).map((collectionName) => {
+        const resultsFromThisCollection = results[collectionName];
 
-          if (resultsFromThisCollection.length === 0) {
-            return null;
-          }
+        if (resultsFromThisCollection.length === 0) {
+          return null;
+        }
 
-          return (
-            <ListItem
-              onClick={closeSearch}
-              key={collectionName}
-              className="search-results-collection"
-            >
-              <h3>
-                <LinkToCollection collection={collectionName} />
-              </h3>
-              <ResultsPerCollection
-                collection={collectionName}
-                results={resultsFromThisCollection}
-                closeSearch={closeSearch}
-              />
-            </ListItem>
-          );
-        })}
-      </List>
-    </>
+        return (
+          <ListItem
+            onClick={closeSearch}
+            key={collectionName}
+            className="search-results-collection"
+            jooe
+          >
+            <h3>
+              <LinkToCollection collection={collectionName} />
+            </h3>
+
+            <div className="flex-col">
+              {resultsFromThisCollection.map((result) => (
+                <CollectionIconLink
+                  relatedDoc={{ ...result, collection: collectionName }}
+                  key={result._id}
+                  onClick={closeSearch}
+                >
+                  {titles[collectionName](result)}
+                </CollectionIconLink>
+              ))}
+            </div>
+          </ListItem>
+        );
+      })}
+    </List>
   );
 };
 
@@ -112,14 +85,4 @@ AdminSearchResults.defaultProps = {
   error: undefined,
 };
 
-export default compose(
-  AdminSearchResultsContainer,
-  lifecycle({
-    componentWillReceiveProps({ results: nextResults = [] }) {
-      const { results = [] } = this.props;
-      if (nextResults.length !== results.length) {
-        resetFocus();
-      }
-    },
-  }),
-)(AdminSearchResults);
+export default AdminSearchResultsContainer(AdminSearchResults);

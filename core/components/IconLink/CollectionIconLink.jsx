@@ -153,6 +153,8 @@ const CollectionIconLink = ({
   data,
   replacementPopup,
   noRoute,
+  children,
+  onClick,
 }: CollectionIconLinkProps) => {
   const { collection, _id: docId } = relatedDoc;
 
@@ -186,7 +188,10 @@ const CollectionIconLink = ({
           iconClassName={iconClassName}
           showIcon={showIcon}
           noRoute={noRoute}
-        />
+          onClick={onClick}
+        >
+          {children}
+        </IconLink>
       </CollectionIconLinkPopup>
     );
   }
@@ -202,7 +207,10 @@ const CollectionIconLink = ({
       showIcon={showIcon}
       noIcon
       noRoute={noRoute}
-    />
+      onClick={onClick}
+    >
+      {children}
+    </IconLink>
   );
 };
 

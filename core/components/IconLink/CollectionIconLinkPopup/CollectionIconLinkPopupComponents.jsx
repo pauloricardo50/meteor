@@ -57,7 +57,7 @@ const Information = ({
 
 const LinkList = ({ docs, collection }) => (
   <TooltipArray
-    items={docs.map(doc => (
+    items={docs.map((doc) => (
       <CollectionIconLink key={doc._id} relatedDoc={{ ...doc, collection }} />
     ))}
     displayLimit={2}
@@ -104,6 +104,7 @@ export const titles = {
       {name || address1 || 'Bien immobilier sans nom'}
       &nbsp;
       {category === PROPERTY_CATEGORY.PRO && <b>(PRO)</b>}
+      {category === PROPERTY_CATEGORY.PROMOTION && <b>(PROMO)</b>}
       &nbsp;
       {status && (
         <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
@@ -263,7 +264,7 @@ export const components = {
         <div>
           <TooltipArray
             title="Numéros de téléphone"
-            items={phoneNumbers.map(number => (
+            items={phoneNumbers.map((number) => (
               <a key={number} href={`tel:${number}`}>
                 <span>
                   {number}
@@ -364,18 +365,20 @@ export const components = {
         emptyText="Sans compte"
       />
 
-      <Information
-        label="Conseiller"
-        value={(
-          <CollectionIconLink
-            relatedDoc={{
-              ...user.assignedEmployee,
-              collection: USERS_COLLECTION,
-            }}
-          />
-        )}
-        isEmpty={!(user && user.assignedEmployee)}
-      />
+      {!!user && (
+        <Information
+          label="Conseiller"
+          value={(
+            <CollectionIconLink
+              relatedDoc={{
+                ...user.assignedEmployee,
+                collection: USERS_COLLECTION,
+              }}
+            />
+          )}
+          isEmpty={!(user && user.assignedEmployee)}
+        />
+      )}
 
       <Information
         label="Dossiers"
@@ -402,20 +405,22 @@ export const components = {
       <div>
         {children}
         <div className="flex-col">
-          <Information
-            label="Organisation"
-            value={(
-              <CollectionIconLink
-                key={allOrgs[0]._id}
-                relatedDoc={{
-                  _id: allOrgs[0]._id,
-                  name: allOrgs[0].name,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            )}
-            shouldDisplay={isPro && uniqueOrganisation}
-          />
+          {!!(isPro && uniqueOrganisation) && (
+            <Information
+              label="Organisation"
+              value={(
+                <CollectionIconLink
+                  key={allOrgs[0]._id}
+                  relatedDoc={{
+                    _id: allOrgs[0]._id,
+                    name: allOrgs[0].name,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              )}
+              shouldDisplay={isPro && uniqueOrganisation}
+            />
+          )}
 
           <Information
             label="Dossiers"
@@ -580,7 +585,7 @@ export const components = {
         value={(
           <TooltipArray
             title="Numéros de téléphone"
-            items={phoneNumbers.map(number => (
+            items={phoneNumbers.map((number) => (
               <a key={number} href={`tel:${number}`}>
                 <span>
                   {number}

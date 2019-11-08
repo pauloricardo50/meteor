@@ -6,9 +6,7 @@ import { searchDatabaseResolver } from './resolvers';
 
 exposeQuery({
   query: searchDatabase,
-  overrides: {
-    validateParams: { searchQuery: Match.Maybe(String) },
-  },
+  overrides: { validateParams: { searchQuery: Match.Maybe(String) } },
   resolver: searchDatabaseResolver,
   cacher: { ttl: 20 * 1000 },
 });

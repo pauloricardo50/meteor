@@ -26,13 +26,17 @@
 }
 
 .search-input {
-  font-size: 36px;
+  font-size: 20px;
 }
 
 .search-results,
 .search-results-collection {
   display: flex;
   flex-direction: column;
+
+  .icon-link {
+    max-width: unset;
+  }
 }
 
 .link {

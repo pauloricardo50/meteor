@@ -115,6 +115,11 @@ exposeQuery({
     firewall(userId, { _id: propertyId }) {
       Security.properties.hasAccessToProperty({ propertyId, userId });
     },
+    embody: (body) => {
+      body.$filter = ({ filters, params: { propertyId } }) => {
+        filters._id = propertyId;
+      };
+    },
   },
   options: { allowFilterById: true },
 });

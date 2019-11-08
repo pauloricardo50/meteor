@@ -16,6 +16,7 @@ const IconLink = React.forwardRef((
     iconClassName,
     showIcon,
     noRoute,
+    onClick,
     ...rest
   },
   ref,
@@ -48,6 +49,9 @@ const IconLink = React.forwardRef((
       onClick={(e) => {
         if (stopPropagation) {
           e.stopPropagation();
+        }
+        if (onClick) {
+          onClick();
         }
       }}
       {...props}

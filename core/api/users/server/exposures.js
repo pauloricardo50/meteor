@@ -1,11 +1,14 @@
+import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
-import { Meteor } from 'meteor/meteor';
 
 import { exposeQuery } from '../../queries/queryHelpers';
 import { ROLES } from '../../constants';
 import SecurityService from '../../security';
-import UserService from './UserService';
+import {
+  createRegexQuery,
+  generateMatchAnyWordRegexp,
+} from '../../helpers/mongoHelpers';
 import {
   adminUsers,
   appUser,
@@ -15,6 +18,7 @@ import {
   userSearch,
   proUser,
 } from '../queries';
+import UserService from './UserService';
 
 exposeQuery({
   query: adminUsers,
@@ -139,7 +143,7 @@ exposeQuery({
         const or = [
           userId && { referredByUserLink: userId },
           organisationId && { referredByOrganisationLink: organisationId },
-        ].filter(x => x);
+        ].filter((x) => x);
 
         filters.$or = or;
       };
@@ -152,11 +156,41 @@ exposeQuery({
   },
 });
 
-exposeQuery({ query: userEmails, options: { allowFilterById: true } });
+exposeQuery({
+  query: userEmails,
+  overrides: {
+    embody: (body) => {
+      body.$filter = ({ filters, params: { _id } }) => {
+        filters._id = _id;
+      };
+    },
+  },
+  options: { allowFilterById: true },
+});
 
 exposeQuery({
   query: userSearch,
   overrides: {
+    embody: (body) => {
+      body.$filter = ({ filters, params: { searchQuery, roles } }) => {
+        const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
+        if (roles) {
+          filters.roles = { $in: roles };
+        }
+        filters.$or = [
+          createRegexQuery('_id', searchQuery),
+          createRegexQuery('emails.0.address', searchQuery),
+          createRegexQuery('firstName', searchQuery),
+          createRegexQuery('lastName', searchQuery),
+          {
+            $and: [
+              createRegexQuery('firstName', formattedSearchQuery),
+              createRegexQuery('lastName', formattedSearchQuery),
+            ],
+          },
+        ];
+      };
+    },
     validateParams: {
       searchQuery: Match.Maybe(String),
       roles: Match.Maybe([String]),
