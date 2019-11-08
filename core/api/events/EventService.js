@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 
 const IS_LOGGING = !Meteor.isProduction;
 
+const EVENT_BLACKLIST = ['analyticsPage', 'analyticsLogin'];
+
 export default class EventService {
   constructor({ emmitter }) {
     this.emmitter = emmitter;
@@ -99,9 +101,9 @@ export default class EventService {
   }
 
   logListener(eventName, ...args) {
-    if (IS_LOGGING && !Meteor.isTest) {
+    if (IS_LOGGING && !Meteor.isTest && !EVENT_BLACKLIST.includes(eventName)) {
       console.log(`Event "${eventName}" listened to with args:`);
-      args.forEach(arg => console.log(arg));
+      args.forEach((arg) => console.log(arg));
     }
   }
 
