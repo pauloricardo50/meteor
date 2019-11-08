@@ -1014,7 +1014,7 @@ describe('PromotionOptionService', function () {
       });
     };
 
-    it.only('returns the correct recipients', () => {
+    beforeEach(() => {
       generatePromotion({
         pros: [
           {
@@ -1095,103 +1095,107 @@ describe('PromotionOptionService', function () {
           },
         ],
       });
+    });
 
-      const recipients1 = PromotionOptionService.getEmailRecipients({
-        promotionOptionId: 'pO1',
-      });
-      const recipients2 = PromotionOptionService.getEmailRecipients({
-        promotionOptionId: 'pO2',
-      });
-      const recipients3 = PromotionOptionService.getEmailRecipients({
-        promotionOptionId: 'pO3',
-      });
-      const recipients4 = PromotionOptionService.getEmailRecipients({
-        promotionOptionId: 'pO4',
-      });
+    context('when promoter invited customer', () => {
+      it('returns promoter as PROMOTER and BROKER', () => {
+        const recipients = PromotionOptionService.getEmailRecipients({
+          promotionOptionId: 'pO1',
+        });
 
-      expect(recipients1).to.deep.include({
-        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
-          { email: 'customer1@test.com', anonymize: false, userId: 'user1' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
-          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
-          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
-          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
-          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
-          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
-          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
-        ],
+        expect(recipients).to.deep.include({
+          [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+            { email: 'customer1@test.com', anonymize: false, userId: 'user1' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+            { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+            { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+            { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+          ],
+        });
       });
+    });
 
-      expect(recipients2).to.deep.include({
-        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
-          { email: 'customer2@test.com', anonymize: false, userId: 'user2' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
-          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
-          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
-          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
-          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
-          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
-        ],
+    context('when a broker invited a customer', () => {
+      it('does not return the broker in BROKERS', () => {
+        const recipients = PromotionOptionService.getEmailRecipients({
+          promotionOptionId: 'pO2',
+        });
+        expect(recipients).to.deep.include({
+          [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+            { email: 'customer2@test.com', anonymize: false, userId: 'user2' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+            { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+            { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+            { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+            { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+          ],
+        });
       });
 
-      expect(recipients3).to.deep.include({
-        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
-          { email: 'customer3@test.com', anonymize: false, userId: 'user3' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
-          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
-          { email: 'pro3@org2.com', anonymize: false, userId: 'pro3' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
-          { email: 'pro2@org1.com', anonymize: true, userId: 'pro2' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
-          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
-          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
-        ],
+      it('anonymize for the notary when required', () => {
+        const recipients = PromotionOptionService.getEmailRecipients({
+          promotionOptionId: 'pO3',
+        });
+
+        expect(recipients).to.deep.include({
+          [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+            { email: 'customer3@test.com', anonymize: false, userId: 'user3' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+            { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+            { email: 'pro3@org2.com', anonymize: false, userId: 'pro3' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+            { email: 'pro2@org1.com', anonymize: true, userId: 'pro2' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+            { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+            { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+          ],
+        });
       });
 
-      expect(recipients4).to.deep.include({
-        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
-          { email: 'customer4@test.com', anonymize: false, userId: 'user4' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
-          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
-          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
-          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
-          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
-        ],
-        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
-          { email: 'pro4@org3.com', anonymize: false, userId: 'pro4' },
-        ],
+      it('does not anonymize for the notary when not required', () => {
+        const recipients = PromotionOptionService.getEmailRecipients({
+          promotionOptionId: 'pO4',
+        });
+
+        expect(recipients).to.deep.include({
+          [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+            { email: 'customer4@test.com', anonymize: false, userId: 'user4' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+            { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+            { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+            { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+            { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+          ],
+          [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+            { email: 'pro4@org3.com', anonymize: false, userId: 'pro4' },
+          ],
+        });
       });
     });
   });
