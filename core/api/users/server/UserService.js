@@ -49,7 +49,14 @@ export class UserServiceClass extends CollectionService {
   };
 
   adminCreateUser = ({
-    options: { email, password, sendEnrollmentEmail, ...additionalData },
+    options: {
+      email,
+      password,
+      sendEnrollmentEmail,
+      referredByUserId,
+      referredByOrganisation,
+      ...additionalData
+    },
     role = ROLES.USER,
     adminId,
   }) => {
@@ -65,6 +72,16 @@ export class UserServiceClass extends CollectionService {
       this.assignAdminToUser({ userId: newUserId, adminId });
     } else if (!additionalData.assignedEmployeeId) {
       this.setAssigneeForNewUser(newUserId);
+    }
+
+    if (referredByUserId) {
+      this.setReferredBy({ userId: newUserId, proId: referredByUserId });
+    }
+    if (referredByOrganisation) {
+      this.setReferredByOrganisation({
+        userId: newUserId,
+        organisationId: referredByOrganisation._id,
+      });
     }
 
     if (sendEnrollmentEmail) {
