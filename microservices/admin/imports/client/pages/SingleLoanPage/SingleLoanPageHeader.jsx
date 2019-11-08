@@ -11,6 +11,7 @@ import {
   LOAN_CATEGORIES,
 } from 'core/api/constants';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { toMoney } from 'core/utils/conversionFunctions';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
@@ -20,12 +21,7 @@ type SingleLoanPageHeaderProps = {};
 
 const getUserName = ({ anonymous, user, category }) => {
   if (anonymous) {
-    return (
-      <small className="secondary">
-        {' - '}
-        Anonyme
-      </small>
-    );
+    return <small className="secondary">&nbsp;- Anonyme</small>;
   }
 
   if (user) {
@@ -40,12 +36,7 @@ const getUserName = ({ anonymous, user, category }) => {
     return null;
   }
 
-  return (
-    <small className="secondary">
-      {' - '}
-      Pas de compte
-    </small>
-  );
+  return <small className="secondary">&nbsp;- Pas de compte</small>;
 };
 
 const SingleLoanPageHeader = ({
@@ -53,28 +44,23 @@ const SingleLoanPageHeader = ({
   withPdf = true,
   withCustomName = true,
 }: SingleLoanPageHeaderProps) => {
-  const { user, status } = loan;
+  const { user, status, name } = loan;
   const userName = getUserName(loan);
+  const loanValue = Calculator.selectLoanValue({ loan });
+
   return (
     <div className="single-loan-page-header">
       <div className="left">
         <div className="left-top">
           <ImpersonateLink user={user} className="impersonate-link" />
-          <h1>
-            <T
-              id="SingleLoanPageHeader.title"
-              values={{
-                name: loan.name || <T id="general.mortgageLoan" />,
-                value: (
-                  <IntlNumber
-                    value={Calculator.selectLoanValue({ loan })}
-                    format="money"
-                  />
-                ),
-              }}
-            />
+          <h1 className="mr-8">
+            {`${name} - ${
+              loanValue > 0
+                ? `PH de CHF ${toMoney(loanValue)}`
+                : 'Pas de plan financier'
+            }`}
           </h1>
-          <h2>{userName}</h2>
+          <h2 className="flex center-align mr-8">{userName}</h2>
           <LoanStatusModifier loan={loan} />
         </div>
 

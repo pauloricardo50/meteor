@@ -109,12 +109,13 @@ const getLabel = ({
   statuses,
   suffix,
   variant,
+  className,
 }) => {
   switch (variant) {
   case 'full':
-    return props => (
+    return (props) => (
       <span
-        className={cx({ allowModify, 'status-label': true })}
+        className={cx('status-label', className, { allowModify })}
         style={{ backgroundColor: color || statuses[status] }}
         {...props}
       >
@@ -129,7 +130,7 @@ const getLabel = ({
       (showTooltip ? (
         <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
           <span
-            className={cx({ allowModify, 'status-label-dot': true })}
+            className={cx('status-label-dot', className, { allowModify })}
             {...props}
           >
             <span style={{ backgroundColor: color || statuses[status] }} />
@@ -137,7 +138,7 @@ const getLabel = ({
         </Tooltip>
       ) : (
         <span
-          className={cx({ allowModify, 'status-label-dot': true })}
+          className={cx('status-label-dot', className, { allowModify })}
           {...props}
         >
           <span style={{ backgroundColor: color || statuses[status] }} />
@@ -161,6 +162,7 @@ const StatusLabel = ({
   variant = 'full',
   showTooltip = true,
   method,
+  className,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -172,6 +174,7 @@ const StatusLabel = ({
     statuses,
     suffix,
     variant,
+    className,
   });
 
   if (allowModify) {
@@ -179,9 +182,8 @@ const StatusLabel = ({
       <DropdownMenu
         noWrapper
         renderTrigger={({ handleOpen }) =>
-          statusLabel({ onClick: handleOpen, showTooltip })
-        }
-        options={Object.keys(statuses).map(stat => ({
+          statusLabel({ onClick: handleOpen, showTooltip })}
+        options={Object.keys(statuses).map((stat) => ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
