@@ -1,18 +1,19 @@
-import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+
+import DefaultNodeAnalytics from 'analytics-node';
 
 import { getClientHost } from '../../../utils/server/getClientUrl';
 import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import UserService from '../../users/server/UserService';
 import { isAPI } from '../../RESTAPI/server/helpers';
-import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
-import { TRACKING_COOKIE } from '../analyticsConstants';
+import SessionService from '../../sessions/server/SessionService';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
+import { TRACKING_COOKIE } from '../analyticsConstants';
+import EVENTS from '../events';
+import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
 import { impersonateMiddleware } from './analyticsHelpers';
 import TestAnalytics from './TestAnalytics';
-import EVENTS from '../events';
-import SessionService from '../../sessions/server/SessionService';
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -210,14 +211,7 @@ class Analytics {
   }
 
   page(params) {
-    const {
-      cookies,
-      sessionStorage,
-      path,
-      route,
-      queryParams,
-      queryString,
-    } = params;
+    const { cookies, path, route, queryParams, queryString } = params;
     const trackingId = cookies[TRACKING_COOKIE];
     const formattedRoute = this.formatRouteName(route);
 
