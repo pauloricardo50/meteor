@@ -53,15 +53,17 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   proInviteUser,
   async ({
-    result: userId,
+    result,
     context: { userId: proId },
     params: { invitationNote, properties, propertyIds, promotionIds },
   }) => {
-    if (userId) {
-      if (typeof userId.then === 'function') {
+    if (result) {
+      if (typeof result.then === 'function') {
         // The result of the meteor method can be a promise
-        userId = await userId;
+        result = await result;
       }
+
+      const { userId } = result;
 
       const user = UserService.fetchOne({
         $filters: { _id: userId },
@@ -92,12 +94,12 @@ ServerEventService.addAfterMethodListener(
       if (propertyIds && propertyIds.length) {
         addresses = [
           ...addresses,
-          ...propertyIds.map(id => PropertyService.get(id).address1),
+          ...propertyIds.map((id) => PropertyService.get(id).address1),
         ];
       }
 
       if (promotionIds && promotionIds.length) {
-        promotions = promotionIds.map(id => PromotionService.get(id).name);
+        promotions = promotionIds.map((id) => PromotionService.get(id).name);
       }
 
       if (addresses.length) {

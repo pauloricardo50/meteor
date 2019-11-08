@@ -49,7 +49,14 @@ export class UserServiceClass extends CollectionService {
   };
 
   adminCreateUser = ({
-    options: { email, password, sendEnrollmentEmail, ...additionalData },
+    options: {
+      email,
+      password,
+      sendEnrollmentEmail,
+      referredByUserId,
+      referredByOrganisation,
+      ...additionalData
+    },
     role = ROLES.USER,
     adminId,
   }) => {
@@ -65,6 +72,16 @@ export class UserServiceClass extends CollectionService {
       this.assignAdminToUser({ userId: newUserId, adminId });
     } else if (!additionalData.assignedEmployeeId) {
       this.setAssigneeForNewUser(newUserId);
+    }
+
+    if (referredByUserId) {
+      this.setReferredBy({ userId: newUserId, proId: referredByUserId });
+    }
+    if (referredByOrganisation) {
+      this.setReferredByOrganisation({
+        userId: newUserId,
+        organisationId: referredByOrganisation._id,
+      });
     }
 
     if (sendEnrollmentEmail) {
@@ -143,7 +160,7 @@ export class UserServiceClass extends CollectionService {
     }
   };
 
-  getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
+  getUsersByRole = (role) => Users.find({ roles: { $in: [role] } }).fetch();
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
@@ -206,7 +223,7 @@ export class UserServiceClass extends CollectionService {
     return (
       loans
       && loans.some(({ propertyIds = [] }) =>
-        propertyIds.some(id => id === propertyId))
+        propertyIds.some((id) => id === propertyId))
     );
   };
 
@@ -293,7 +310,7 @@ export class UserServiceClass extends CollectionService {
           ctaUrl: this.getEnrollmentUrl({ userId }),
         },
       })
-      .then(() => userId);
+      .then(() => ({ userId, isNewUser: true }));
   };
 
   proCreateUser = ({
@@ -398,7 +415,7 @@ export class UserServiceClass extends CollectionService {
     if (promotionIds && promotionIds.length) {
       promises = [
         ...promises,
-        ...promotionIds.map(promotionId =>
+        ...promotionIds.map((promotionId) =>
           PromotionService.inviteUser({
             promotionId,
             userId,
@@ -447,7 +464,7 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises).then(() => userId);
+    return Promise.all(promises).then(() => ({ userId, isNewUser }));
   };
 
   getEnrollmentUrl({ userId }) {
@@ -663,7 +680,7 @@ export class UserServiceClass extends CollectionService {
           return employee._id;
         }
       })
-      .filter(x => x);
+      .filter((x) => x);
   }
 
   setAssigneeForNewUser(userId) {

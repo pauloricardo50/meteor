@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
+import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -58,7 +56,6 @@ assignAdminToUser.setHandler((context, { userId, adminId }) => {
 
   return UserService.assignAdminToUser({ userId, adminId });
 });
-
 
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -131,15 +128,22 @@ proInviteUser.setHandler((context, params) => {
   SecurityService.checkUserIsPro(userId);
 
   if (propertyIds && propertyIds.length) {
-    propertyIds.forEach(propertyId =>
+    propertyIds.forEach((propertyId) =>
       SecurityService.properties.isAllowedToInviteCustomers({
         userId,
         propertyId,
       }));
   }
 
+  if (promotionIds && promotionIds.length > 1) {
+    throw new Meteor.Error(
+      HTTP_STATUS_CODES.BAD_REQUEST,
+      "Vous ne pouvez inviter un client qu'à une seule promotion à la fois",
+    );
+  }
+
   if (promotionIds && promotionIds.length) {
-    promotionIds.forEach(promotionId =>
+    promotionIds.forEach((promotionId) =>
       SecurityService.promotions.isAllowedToInviteCustomers({
         promotionId,
         userId,
@@ -221,40 +225,6 @@ anonymousCreateUser.setHandler((context, params) => {
   }
 
   const userId = UserService.anonymousCreateUser(params);
-
-  const analytics = new Analytics({ ...context, userId });
-  let referralUser;
-  let referralOrg;
-
-  if (params.referralId) {
-    referralUser = UserService.fetchOne({
-      $filters: { _id: params.referralId, roles: { $in: [ROLES.PRO] } },
-    });
-    referralOrg = OrganisationService.fetchOne({
-      $filters: {
-        _id: params.referralId,
-      },
-    });
-  }
-  analytics.identify(params.trackingId);
-  const referralUserMainOrg = params.referralId
-    && !referralOrg
-    && UserService.getUserMainOrganisation(params.referralId);
-
-  analytics.track(EVENTS.USER_CREATED, {
-    userId,
-    origin: params.referralId ? 'referral' : 'organic',
-    referralId: referralUser ? params.referralId : undefined,
-    orgReferralId: referralOrg
-      ? params.referralId
-      : referralUserMainOrg && referralUserMainOrg._id,
-  });
-  if (params.loanId) {
-    analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
-      loanId: params.loanId,
-    });
-  }
-
   return userId;
 });
 

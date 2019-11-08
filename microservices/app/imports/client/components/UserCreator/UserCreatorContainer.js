@@ -21,7 +21,7 @@ export const userSchema = new SimpleSchema({
 
 export default compose(
   withRouter,
-  withProps(({ history, omitValues = [] }) => ({
+  withProps(({ history, omitValues = [], ctaId }) => ({
     schema: userSchema.omit(...omitValues),
     onSubmit: (values) => {
       const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
@@ -35,6 +35,7 @@ export default compose(
 
           // Remove null values
           loanId: loanId || undefined,
+          ctaId,
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);

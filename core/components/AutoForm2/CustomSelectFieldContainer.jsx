@@ -17,10 +17,18 @@ export default (Component) => {
 
     componentWillReceiveProps(nextProps) {
       const { model: nextModel } = nextProps;
-      const { model } = this.props;
+      const { model, handleClick, name } = this.props;
 
       if (model !== nextModel) {
         this.getAllowedValues(nextProps);
+      }
+
+      if (typeof handleClick === 'function') {
+        const currentValues = model[name] || [];
+        const nextValues = nextModel[name] || [];
+        if (currentValues.length !== nextValues.length) {
+          handleClick(nextModel);
+        }
       }
     }
 
@@ -36,7 +44,7 @@ export default (Component) => {
         Promise.resolve()
           .then(() =>
             customAllowedValues(model, parent && Number(parent.name.slice(-1))))
-          .then(result => this.setState({ values: result }))
+          .then((result) => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (
         customAllowedValues
@@ -80,7 +88,7 @@ export default (Component) => {
         if (value.length === 0) {
           return placeholder;
         }
-        return value.map(val => (
+        return value.map((val) => (
           <Chip
             key={val}
             label={transform ? transform(val) : this.formatOption(val)}
@@ -105,7 +113,7 @@ export default (Component) => {
             // If the value is falsy, just transform it
             return transform(value);
           }
-          return transform(data.find(item => (item && item._id) === value));
+          return transform(data.find((item) => (item && item._id) === value));
         };
       }
       return transform;
@@ -121,6 +129,7 @@ export default (Component) => {
         model,
         placeholder,
         uniforms,
+        handleClick,
         ...rest
       } = this.props;
 

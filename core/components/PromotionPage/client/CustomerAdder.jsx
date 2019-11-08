@@ -1,7 +1,11 @@
 // @flow
 import React from 'react';
+import { withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
 
 import SimpleSchema from 'simpl-schema';
+import useSearchParams from 'core/hooks/useSearchParams';
+import { createRoute } from 'core/utils/routerUtils';
 import { proInviteUser } from '../../../api/methods';
 import { PROMOTION_STATUS } from '../../../api/constants';
 import T from '../../Translation';
@@ -76,9 +80,14 @@ export const CustomerAdderUserSchema = ({
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;
 
-const CustomerAdder = ({ promotion }: CustomerAdderProps) => {
+const CustomerAdder = ({
+  promotion,
+  model,
+  openOnMount = false,
+}: CustomerAdderProps) => {
   const { _id: promotionId, status } = promotion;
   const disabled = status !== PROMOTION_STATUS.OPEN;
+  const history = useHistory();
 
   return (
     <AutoFormDialog
@@ -93,14 +102,25 @@ const CustomerAdder = ({ promotion }: CustomerAdderProps) => {
           : undefined,
       }}
       schema={CustomerAdderUserSchema({ promotion })}
-      onSubmit={user =>
-        proInviteUser.run({ user, promotionIds: [promotionId] })
-      }
+      onSubmit={(user) =>
+        proInviteUser.run({ user, promotionIds: [promotionId] }).then(() =>
+          history.push(createRoute('/promotions/:promotionId/customers', {
+            promotionId,
+          })))}
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
       onSuccessMessage={onSuccessMessage}
+      model={model}
+      openOnMount={openOnMount}
     />
   );
 };
 
-export default CustomerAdder;
+export default withProps(() => {
+  const searchParams = useSearchParams();
+  return {
+    model: searchParams,
+    openOnMount: !!Object.keys(searchParams).filter((key) =>
+      ['email', 'firstName', 'lastName', 'phoneNumber'].includes(key)).length,
+  };
+})(CustomerAdder);

@@ -2,9 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { sendEmailToAddress } from 'core/api/methods/index';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import Analytics from '../../analytics/server/Analytics';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
-import EVENTS from '../../analytics/events';
 
 import Security from '../../security/Security';
 import ActivityService from '../../activities/server/ActivityService';
@@ -248,17 +246,7 @@ anonymousLoanInsert.setHandler((context, params) => {
   }
 
   const loanId = LoanService.insertAnonymousLoan(params);
-  const analytics = new Analytics(context);
-  analytics.track(
-    EVENTS.LOAN_CREATED,
-    {
-      loanId,
-      propertyId: proPropertyId,
-      referralId,
-      anonymous: true,
-    },
-    trackingId,
-  );
+
   return loanId;
 });
 
