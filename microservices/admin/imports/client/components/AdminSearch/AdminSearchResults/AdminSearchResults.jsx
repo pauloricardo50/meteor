@@ -8,7 +8,7 @@ import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
 import { compose, lifecycle } from 'recompose';
 import LinkToCollection from '../../LinkToCollection';
-import SearchResultsContainer from './SearchResultsContainer';
+import AdminSearchResultsContainer from './AdminSearchResultsContainer';
 import ResultsPerCollection from './ResultsPerCollection';
 
 let index = 0;
@@ -39,21 +39,21 @@ const resetFocus = () => {
   index = 0;
 };
 
-const SearchResults = ({ isLoading, error, results, closeSearch }) => {
+const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
   if (isLoading || !results) {
     return <Loading />;
   }
 
   if (error) {
     return (
-      <React.Fragment>
+      <>
         Error:
         {error.reason}
-      </React.Fragment>
+      </>
     );
   }
 
-  const hasNoSearchResults = Object.values(results).every(collection => collection.length === 0);
+  const hasNoSearchResults = Object.values(results).every((collection) => collection.length === 0);
 
   if (hasNoSearchResults) {
     return (
@@ -101,19 +101,19 @@ const SearchResults = ({ isLoading, error, results, closeSearch }) => {
   );
 };
 
-SearchResults.propTypes = {
+AdminSearchResults.propTypes = {
   closeSearch: PropTypes.func.isRequired,
   error: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
   results: PropTypes.any.isRequired,
 };
 
-SearchResults.defaultProps = {
+AdminSearchResults.defaultProps = {
   error: undefined,
 };
 
 export default compose(
-  SearchResultsContainer,
+  AdminSearchResultsContainer,
   lifecycle({
     componentWillReceiveProps({ results: nextResults = [] }) {
       const { results = [] } = this.props;
@@ -122,4 +122,4 @@ export default compose(
       }
     },
   }),
-)(SearchResults);
+)(AdminSearchResults);

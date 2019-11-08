@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from 'core/components/Icon';
-import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
-import T from 'core/components/Translation';
-import { goDown } from './SearchResults/SearchResults';
+import { goDown } from './AdminSearchResults/AdminSearchResults';
 
 const DOWN_ARROW = 40;
 
-class SearchForm extends Component {
+class AdminSearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = { searchText: '' };
@@ -58,8 +55,8 @@ class SearchForm extends Component {
   }
 }
 
-SearchForm.propTypes = {
+AdminSearchForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default SearchForm;
+export default AdminSearchForm;
