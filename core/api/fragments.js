@@ -19,6 +19,7 @@ export const activity = () => ({
   user: { name: 1, email: 1 },
   metadata: 1,
   isServerGenerated: 1,
+  isImportant: 1,
 });
 
 // //
@@ -118,7 +119,7 @@ export const contact = () => ({
 // //
 // // InterestRate fragments
 // //
-const singleInterestRate = type => ({
+const singleInterestRate = (type) => ({
   [type]: { rateLow: 1, rateHigh: 1, trend: 1 },
 });
 

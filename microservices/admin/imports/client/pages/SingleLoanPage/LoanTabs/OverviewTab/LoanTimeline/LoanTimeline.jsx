@@ -37,17 +37,17 @@ const LoanTimeline = ({
           value={type.$in}
           multiple
           label="Filtrer"
-          options={activityFilterOptions.map(t => ({
+          options={activityFilterOptions.map((t) => ({
             id: t,
             label: <T id={`Forms.type.${t}`} />,
           }))}
-          onChange={selected => setType({ $in: selected })}
+          onChange={(selected) => setType({ $in: selected })}
         />
       </div>
       <Timeline
         variant="horizontal"
         className="loan-timeline-timeline"
-        events={activities.map(activity => ({
+        events={activities.map((activity) => ({
           children: elementAfterToday
             && activities.length >= 2
             && activity._id === elementAfterToday._id && (
