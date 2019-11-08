@@ -17,7 +17,7 @@ type SimpleDashboardPageCTAsProps = {};
 
 // On some slow connections/devices, the new UI is not reloaded properly, this forces
 // it to appear
-const fullApplication = loanId =>
+const fullApplication = (loanId) =>
   loanUpdate
     .run({
       loanId,
@@ -72,7 +72,9 @@ const SimpleDashboardPageCTAs = ({
         </Button>
       )}
 
-      {!currentUser && <UserCreator buttonProps={buttonProps} />}
+      {!currentUser && (
+        <UserCreator buttonProps={buttonProps} ctaId="fullApplication" />
+      )}
 
       {currentUser && (
         <ConfirmMethod

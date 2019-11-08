@@ -162,6 +162,7 @@ export const anonymousCreateUser = new Method({
     },
     trackingId: String,
     referralId: Match.Maybe(String),
+    ctaId: Match.Maybe(String),
   },
 });
 

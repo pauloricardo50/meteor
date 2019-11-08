@@ -5,29 +5,14 @@ import {
   analyticsCTA,
 } from '../methodDefinitions';
 import SecurityService from '../../security';
-import Analytics from './Analytics';
-import EVENTS from '../events';
 
-analyticsLogin.setHandler((context, params) => {
+// All these analytics methods are used to trigger analytics listeners
+analyticsLogin.setHandler(() => {
   SecurityService.checkLoggedIn();
-
-  const analytics = new Analytics(context);
-  analytics.identify();
-  analytics.track(EVENTS.USER_LOGGED_IN);
 });
 
-analyticsPage.setHandler((context, params) => {
-  const analytics = new Analytics(context);
-  analytics.page(params);
-});
+analyticsPage.setHandler(() => {});
 
-analyticsVerifyEmail.setHandler((context, params) => {
-  const analytics = new Analytics(context);
-  analytics.identify(params.trackingId);
-  analytics.track(EVENTS.USER_VERIFIED_EMAIL);
-});
+analyticsVerifyEmail.setHandler(() => {});
 
-analyticsCTA.setHandler((context, params) => {
-  const analytics = new Analytics(context);
-  analytics.cta(params);
-});
+analyticsCTA.setHandler(() => {});
