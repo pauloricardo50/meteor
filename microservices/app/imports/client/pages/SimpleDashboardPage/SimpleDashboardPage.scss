@@ -245,7 +245,7 @@
             flex-direction: column;
           }
 
-           > div {
+          > div {
             display: flex;
             align-items: center;
             .icon {
@@ -320,7 +320,7 @@
       align-items: stretch;
       flex-direction: column-reverse;
 
-       > * {
+      > * {
         margin-bottom: 16px;
       }
     }
