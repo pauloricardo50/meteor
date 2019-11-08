@@ -18,7 +18,12 @@ import { fullPromotionOption } from '../../fragments';
 import PromotionOptions from '../promotionOptions';
 import FileService from '../../files/server/FileService';
 import TaskService from '../../tasks/server/TaskService';
-import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import {
+  PROMOTIONS_COLLECTION,
+  PROMOTION_USERS_ROLES,
+  PROMOTION_EMAIL_RECIPIENTS,
+} from '../../promotions/promotionConstants';
+import { shouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
@@ -98,7 +103,7 @@ export class PromotionOptionService extends CollectionService {
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({
       loanId,
       promotionId,
-    }).filter(id => id !== promotionOptionId);
+    }).filter((id) => id !== promotionOptionId);
     LoanService.setPromotionPriorityOrder({
       loanId,
       promotionId,
@@ -117,7 +122,7 @@ export class PromotionOptionService extends CollectionService {
     const existingPromotionOption = promotionOptions
       && promotionOptions.find(({ promotionLots }) =>
         promotionLots
-          && promotionLots.some(lot => lot._id === promotionLotId));
+          && promotionLots.some((lot) => lot._id === promotionLotId));
 
     if (existingPromotionOption) {
       throw new Meteor.Error('Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.');
@@ -198,7 +203,6 @@ export class PromotionOptionService extends CollectionService {
   }
 
   updateSimpleVerification({ promotionOptionId, status, date }) {
-    
     return this.updateStatusObject({
       promotionOptionId,
       id: 'simpleVerification',
@@ -274,7 +278,7 @@ export class PromotionOptionService extends CollectionService {
         if (!agreementFileKeys.length) {
           throw new Error();
         }
-        await Promise.all(agreementFileKeys.map(Key => FileService.getFileFromKey(Key)));
+        await Promise.all(agreementFileKeys.map((Key) => FileService.getFileFromKey(Key)));
       } catch (error) {
         throw new Meteor.Error('Aucune convention de réservation uploadée');
       }
@@ -404,6 +408,8 @@ export class PromotionOptionService extends CollectionService {
   }
 
   updateStatusObject({ promotionOptionId, id, object }) {
+    this.getEmailRecipients({ promotionOptionId });
+
     const { [id]: model } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       adminNote: 1,
@@ -542,6 +548,117 @@ export class PromotionOptionService extends CollectionService {
       });
     }));
   };
+
+  getEmailRecipients({ promotionOptionId }) {
+    const promotionOption = this.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: {
+        user: {
+          email: 1,
+          assignedEmployee: { email: 1 },
+        },
+        promotions: { _id: 1 },
+      },
+      promotion: { users: { email: 1 } },
+      promotionLots: { _id: 1 },
+    });
+
+    const {
+      loan: {
+        _id: loanId,
+        user: {
+          _id: customerId,
+          email: userEmail,
+          assignedEmployee: { email: adminEmail, _id: adminId } = {},
+        },
+        promotions = [],
+      },
+      promotion: { _id: promotionId, users: promotionUsers = [] },
+      promotionLots = [],
+    } = promotionOption;
+
+    const [
+      {
+        $metadata: { invitedBy },
+      },
+    ] = promotions;
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    const mapAnonymize = ({ email, _id: userId }) => ({
+      userId,
+      email,
+      anonymize: shouldAnonymize({
+        customerId,
+        promotionId,
+        promotionLotId,
+        loanId,
+        userId,
+      }),
+    });
+
+    const filterEnableNotifications = ({
+      $metadata: { enableNotifications = true },
+    }) => enableNotifications;
+    const makeFilterRole = (role) => ({ $metadata: { roles = [] } }) =>
+      roles.includes(role);
+
+    const user = [{ userId: customerId, email: userEmail, anonymize: false }];
+    const admin = [{ userId: adminId, email: adminEmail, anonymize: false }];
+    const broker = [
+      {
+        _id: invitedBy,
+        email: promotionUsers.find(({ _id }) => _id === invitedBy).email,
+      },
+    ].map(mapAnonymize);
+
+    const recipients = [
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+        role: PROMOTION_USERS_ROLES.PROMOTER,
+        withNotificationsFilter: false,
+        withMapAnonymize: true,
+      },
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+        role: PROMOTION_USERS_ROLES.BROKER,
+        withNotificationsFilter: true,
+        withMapAnonymize: true,
+        customFilter: ({ email }) =>
+          !broker.some(({ email: brokerEmail }) => brokerEmail === email),
+      },
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.NOTARY,
+        role: PROMOTION_USERS_ROLES.NOTARY,
+        withNotificationsFilter: true,
+        withMapAnonymize: true,
+      },
+    ].reduce(
+      (
+        object,
+        { type, role, withMapAnonymize, withNotificationsFilter, customFilter },
+      ) => {
+        let recipient = promotionUsers.filter(makeFilterRole(role));
+        if (withNotificationsFilter) {
+          recipient = recipient.filter(filterEnableNotifications);
+        }
+        if (customFilter) {
+          recipient = recipient.filter(customFilter);
+        }
+        if (withMapAnonymize) {
+          recipient = recipient.map(mapAnonymize);
+        }
+        return { ...object, [type]: recipient };
+      },
+      {},
+    );
+
+    return {
+      [PROMOTION_EMAIL_RECIPIENTS.USER]: user,
+      [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: admin,
+      [PROMOTION_EMAIL_RECIPIENTS.BROKER]: broker,
+      ...recipients,
+    };
+  }
 }
 
 export default new PromotionOptionService();

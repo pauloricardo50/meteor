@@ -22,6 +22,13 @@ import {
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
 import TaskService from '../../../tasks/server/TaskService';
+import {
+  PROMOTION_USERS_ROLES,
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_INVITED_BY_TYPE,
+  PROMOTION_PERMISSIONS,
+  PROMOTION_EMAIL_RECIPIENTS,
+} from '../../../promotions/promotionConstants';
 
 const makePromotionLotWithReservation = ({
   key,
@@ -565,7 +572,6 @@ describe('PromotionOptionService', function () {
             status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
           },
         });
-
       });
     });
   });
@@ -944,6 +950,249 @@ describe('PromotionOptionService', function () {
         description: `Valable jusqu'au ${moment(tomorrow).format('DD MMM')}`,
       });
       clock.restore();
+    });
+  });
+
+  describe('getEmailRecipients', () => {
+    const generatePro = ({ id, org }) => ({
+      _id: id,
+      _factory: 'pro',
+      emails: [{ address: `${id}@${org}.com`, verified: true }],
+      organisations: [{ _id: org }],
+    });
+    const addProToPromotion = ({ id, permissions, role }) => ({
+      _id: id,
+      $metadata: {
+        roles: [role],
+        permissions,
+      },
+    });
+    const addLoanToPromotion = ({ id, invitedBy }) => ({
+      _id: `loan${id}`,
+      user: {
+        _id: `user${id}`,
+        firstName: 'Customer',
+        lastName: `No${id}`,
+        emails: [{ address: `customer${id}@test.com`, verified: true }],
+        assignedEmployeeId: 'admin',
+      },
+      $metadata: { invitedBy },
+    });
+
+    const generatePromotion = ({ pros = [], loans = [] }) => {
+      generator({
+        users: [
+          {
+            _id: 'admin',
+            _factory: 'admin',
+            emails: [{ address: 'admin@e-potek.ch', verified: true }],
+          },
+          ...pros.map(({ id, org }) => generatePro({ id, org })),
+        ],
+        properties: [
+          { _id: 'prop1', name: 'Lot 1' },
+          { _id: 'prop2', name: 'Lot 2' },
+          { _id: 'prop3', name: 'Lot 3' },
+          { _id: 'prop4', name: 'Lot 4' },
+        ],
+        promotions: [
+          {
+            _id: 'promo',
+            users: pros.map(({ id, permissions, role }) =>
+              addProToPromotion({ id, permissions, role })),
+            promotionLots: loans.map(({ id, promotionLotStatus, promotionOptionStatus }) =>
+              makePromotionLotWithReservation({
+                key: id,
+                status: promotionLotStatus,
+                promotionOptionStatus,
+                expirationDate: new Date(),
+              })),
+            loans: loans.map(({ id, invitedBy }) =>
+              addLoanToPromotion({ id, invitedBy })),
+          },
+        ],
+      });
+    };
+
+    it.only('returns the correct recipients', () => {
+      generatePromotion({
+        pros: [
+          {
+            id: 'pro1',
+            org: 'org1',
+            role: PROMOTION_USERS_ROLES.PROMOTER,
+            permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+          },
+          {
+            id: 'pro2',
+            org: 'org1',
+            role: PROMOTION_USERS_ROLES.BROKER,
+            permissions: {
+              displayCustomerNames: {
+                invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+              },
+            },
+          },
+          {
+            id: 'pro3',
+            org: 'org2',
+            role: PROMOTION_USERS_ROLES.BROKER,
+            permissions: {
+              displayCustomerNames: {
+                invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+                forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+              },
+            },
+          },
+          {
+            id: 'pro4',
+            org: 'org3',
+            role: PROMOTION_USERS_ROLES.NOTARY,
+            permissions: {
+              displayCustomerNames: {
+                invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
+                forLotStatus: [
+                  PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS
+                    .SOLD,
+                ],
+              },
+            },
+          },
+          {
+            id: 'pro5',
+            org: 'org3',
+            role: PROMOTION_USERS_ROLES.VISITOR,
+            permissions: {
+              displayCustomerNames: false,
+            },
+          },
+        ],
+        loans: [
+          {
+            id: 1,
+            invitedBy: 'pro1',
+            promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+          },
+          {
+            id: 2,
+            invitedBy: 'pro2',
+            promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+          },
+          {
+            id: 3,
+            invitedBy: 'pro3',
+            promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+          },
+          {
+            id: 4,
+            invitedBy: 'pro2',
+            promotionLotStatus: PROMOTION_LOT_STATUS.SOLD,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.SOLD,
+          },
+        ],
+      });
+
+      const recipients1 = PromotionOptionService.getEmailRecipients({
+        promotionOptionId: 'pO1',
+      });
+      const recipients2 = PromotionOptionService.getEmailRecipients({
+        promotionOptionId: 'pO2',
+      });
+      const recipients3 = PromotionOptionService.getEmailRecipients({
+        promotionOptionId: 'pO3',
+      });
+      const recipients4 = PromotionOptionService.getEmailRecipients({
+        promotionOptionId: 'pO4',
+      });
+
+      expect(recipients1).to.deep.include({
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer1@test.com', anonymize: false, userId: 'user1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+        ],
+      });
+
+      expect(recipients2).to.deep.include({
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer2@test.com', anonymize: false, userId: 'user2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+        ],
+      });
+
+      expect(recipients3).to.deep.include({
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer3@test.com', anonymize: false, userId: 'user3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro3@org2.com', anonymize: false, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro2@org1.com', anonymize: true, userId: 'pro2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: true, userId: 'pro4' },
+        ],
+      });
+
+      expect(recipients4).to.deep.include({
+        [PROMOTION_EMAIL_RECIPIENTS.USER]: [
+          { email: 'customer4@test.com', anonymize: false, userId: 'user4' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: [
+          { email: 'admin@e-potek.ch', anonymize: false, userId: 'admin' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKER]: [
+          { email: 'pro2@org1.com', anonymize: false, userId: 'pro2' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: [
+          { email: 'pro3@org2.com', anonymize: true, userId: 'pro3' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: [
+          { email: 'pro1@org1.com', anonymize: false, userId: 'pro1' },
+        ],
+        [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: [
+          { email: 'pro4@org3.com', anonymize: false, userId: 'pro4' },
+        ],
+      });
     });
   });
 });

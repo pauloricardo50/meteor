@@ -1,7 +1,6 @@
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import { expirePromotionLotReservation } from 'core/api/promotionLots/server/serverMethods';
+import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
-import { promotionShouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   submitContactForm,
@@ -11,6 +10,7 @@ import {
 } from '../../methods';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
+import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
 
 ServerEventService.addAfterMethodListener(
   submitContactForm,
@@ -68,16 +68,16 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-const makePromotionLotNotification = emailId => async ({
-  context,
-  params,
-  result,
-}) => {
+const getPromotionOptionMailParams = async (
+  { context, params, result },
+  recipient,
+) => {
+  context.unblock();
   if (result && typeof result.then === 'function') {
     result = await result;
   }
+  const { anonymize } = recipient;
   const { userId } = context;
-  context.unblock();
   const { promotionOptionId } = params;
   const { promotionLots = [] } = PromotionOptionService.fetchOne({
     $filters: { _id: promotionOptionId },
@@ -93,15 +93,9 @@ const makePromotionLotNotification = emailId => async ({
   });
   const [
     {
-      _id: promotionLotId,
       name: promotionLotName,
-      promotion: {
-        userLinks = [],
-        _id: promotionId,
-        name: promotionName,
-        assignedEmployee,
-      },
-      attributedTo: { _id: loanId, user } = {},
+      promotion: { _id: promotionId, name: promotionName, assignedEmployee },
+      attributedTo: { user } = {},
     },
   ] = promotionLots;
 
@@ -115,46 +109,109 @@ const makePromotionLotNotification = emailId => async ({
     userName = name;
   }
 
-  return Promise.all(userLinks
-    .filter(({ enableNotifications }) => enableNotifications)
-    .map(({ _id }) => {
-      const anonymize = promotionShouldAnonymize({
-        customerId: user && user._id,
-        userId: _id,
-        promotionId,
-        promotionLotId,
-        loanId,
-      });
-      return sendEmail.run({
-        emailId,
-        userId: _id,
-        params: {
-          promotionId,
-          promotionName,
-          promotionLotName,
-          userName,
-          customerName: anonymize
-            ? 'une personne anonymisée'
-            : user
-              ? user.name
-              : 'un acquéreur sans nom',
-          fromEmail: assignedEmployee && assignedEmployee.email,
-        },
-      });
-    }));
+  return {
+    promotionId,
+    promotionName,
+    promotionLotName,
+    userName,
+    customerName: anonymize
+      ? 'une personne anonymisée'
+      : user
+        ? user.name
+        : 'un acquéreur sans nom',
+    fromEmail: assignedEmployee && assignedEmployee.email,
+  };
 };
 
-ServerEventService.addAfterMethodListener(
-  reservePromotionLot,
-  makePromotionLotNotification(EMAIL_IDS.RESERVE_PROMOTION_LOT),
-);
+const PROMOTION_EMAILS = [
+  {
+    method: reservePromotionLot,
+    emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT,
+    recipients: [
+      // {
+      //   type: PROMOTION_EMAIL_RECIPIENTS.USER,
+      //   emailId: 'EMAIL_IDS.USER_RESERVE_PROMOTION_LOT',
+      //   getEmailParams: () => ({}),
+      // },
+      // {
+      //   type: PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      //   emailId: 'EMAIL_IDS.BROKER_RESERVE_PROMOTION_LOT',
+      //   getEmailParams: () => ({}),
+      // },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
+      { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
+    ],
+    getEmailParams: getPromotionOptionMailParams,
+  },
+  {
+    method: sellPromotionLot,
+    emailId: EMAIL_IDS.SELL_PROMOTION_LOT,
+    recipients: [
+      // {
+      //   type: PROMOTION_EMAIL_RECIPIENTS.USER,
+      //   emailId: 'EMAIL_IDS.USER_SELL_PROMOTION_LOT',
+      //   getEmailParams: () => ({}),
+      // },
+      // {
+      //   type: PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      //   emailId: 'EMAIL_IDS.BROKER_SELL_PROMOTION_LOT',
+      //   getEmailParams: () => ({}),
+      // },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
+      { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
+    ],
+    getEmailParams: getPromotionOptionMailParams,
+  },
+  {
+    method: [cancelPromotionLotReservation, expirePromotionLotReservation],
+    emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
+    recipients: [
+      // {
+      //   type: PROMOTION_EMAIL_RECIPIENTS.USER,
+      //   emailId: 'EMAIL_IDS.USER_CANCEL_PROMOTION_LOT',
+      //   getEmailParams: () => ({}),
+      // },
+      // {
+      //   type: PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      //   emailId: 'EMAIL_IDS.BROKER_CANCEL_PROMOTION_LOT',
+      //   getEmailParams: () => ({}),
+      // },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
+      { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
+    ],
+    getEmailParams: getPromotionOptionMailParams,
+  },
+];
 
-ServerEventService.addAfterMethodListener(
-  [cancelPromotionLotReservation, expirePromotionLotReservation],
-  makePromotionLotNotification(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION),
-);
-
-ServerEventService.addAfterMethodListener(
-  sellPromotionLot,
-  makePromotionLotNotification(EMAIL_IDS.SELL_PROMOTION_LOT),
-);
+PROMOTION_EMAILS.forEach(({ method, emailId, recipients, getEmailParams }) => {
+  ServerEventService.addAfterMethodListener(method, (...args) => {
+    const [
+      {
+        params: { promotionOptionId },
+      },
+    ] = args;
+    const emailRecipients = PromotionOptionService.getEmailRecipients({
+      promotionOptionId,
+    });
+    recipients.forEach(({
+      type,
+      emailId: emailIdOverride,
+      getEmailParams: getEmailParamsOverride,
+    }) => {
+      emailRecipients[type].forEach(async (recipient) => {
+        const { userId } = recipient;
+        const emailParams = getEmailParamsOverride
+          ? await getEmailParamsOverride(...args, recipient)
+          : await getEmailParams(...args, recipient);
+        sendEmail.run({
+          emailId: emailIdOverride || emailId,
+          userId,
+          params: emailParams,
+        });
+      });
+    });
+  });
+});
