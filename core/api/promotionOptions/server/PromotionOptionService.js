@@ -556,7 +556,6 @@ export class PromotionOptionService extends CollectionService {
         user: {
           email: 1,
           assignedEmployee: { email: 1 },
-          referredByUser: { email: 1 },
         },
         promotions: { _id: 1 },
       },
@@ -585,7 +584,7 @@ export class PromotionOptionService extends CollectionService {
     ] = promotions;
     const [{ _id: promotionLotId }] = promotionLots;
 
-    const makeMapAnonymize = ({ email, _id: userId }) => ({
+    const mapAnonymize = ({ email, _id: userId }) => ({
       userId,
       email,
       anonymize: shouldAnonymize({
@@ -597,7 +596,7 @@ export class PromotionOptionService extends CollectionService {
       }),
     });
 
-    const makeFilterEnableNotifications = ({
+    const filterEnableNotifications = ({
       $metadata: { enableNotifications = true },
     }) => enableNotifications;
     const makeFilterRole = (role) => ({ $metadata: { roles = [] } }) =>
@@ -610,28 +609,54 @@ export class PromotionOptionService extends CollectionService {
         _id: invitedBy,
         email: promotionUsers.find(({ _id }) => _id === invitedBy).email,
       },
-    ].map(makeMapAnonymize);
-    const promoter = promotionUsers
-      .filter(makeFilterRole(PROMOTION_USERS_ROLES.PROMOTER))
-      .map(makeMapAnonymize);
-    const brokers = promotionUsers
-      .filter(makeFilterEnableNotifications)
-      .filter(makeFilterRole(PROMOTION_USERS_ROLES.BROKER))
-      .filter(({ email }) =>
-        !broker.some(({ email: brokerEmail }) => brokerEmail === email))
-      .map(makeMapAnonymize);
-    const notary = promotionUsers
-      .filter(makeFilterEnableNotifications)
-      .filter(makeFilterRole(PROMOTION_USERS_ROLES.NOTARY))
-      .map(makeMapAnonymize);
+    ].map(mapAnonymize);
+
+    const recipients = [
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+        role: PROMOTION_USERS_ROLES.PROMOTER,
+        withNotificationsFilter: false,
+        withMapAnonymize: true,
+      },
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+        role: PROMOTION_USERS_ROLES.BROKER,
+        withNotificationsFilter: true,
+        withMapAnonymize: true,
+        customFilter: ({ email }) =>
+          !broker.some(({ email: brokerEmail }) => brokerEmail === email),
+      },
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.NOTARY,
+        role: PROMOTION_USERS_ROLES.NOTARY,
+        withNotificationsFilter: true,
+        withMapAnonymize: true,
+      },
+    ].reduce(
+      (
+        object,
+        { type, role, withMapAnonymize, withNotificationsFilter, customFilter },
+      ) => {
+        let recipient = promotionUsers.filter(makeFilterRole(role));
+        if (withNotificationsFilter) {
+          recipient = recipient.filter(filterEnableNotifications);
+        }
+        if (customFilter) {
+          recipient = recipient.filter(customFilter);
+        }
+        if (withMapAnonymize) {
+          recipient = recipient.map(mapAnonymize);
+        }
+        return { ...object, [type]: recipient };
+      },
+      {},
+    );
 
     return {
       [PROMOTION_EMAIL_RECIPIENTS.USER]: user,
       [PROMOTION_EMAIL_RECIPIENTS.ADMIN]: admin,
       [PROMOTION_EMAIL_RECIPIENTS.BROKER]: broker,
-      [PROMOTION_EMAIL_RECIPIENTS.BROKERS]: brokers,
-      [PROMOTION_EMAIL_RECIPIENTS.PROMOTER]: promoter,
-      [PROMOTION_EMAIL_RECIPIENTS.NOTARY]: notary,
+      ...recipients,
     };
   }
 }

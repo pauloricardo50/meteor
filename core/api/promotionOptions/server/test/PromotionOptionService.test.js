@@ -954,7 +954,32 @@ describe('PromotionOptionService', function () {
   });
 
   describe('getEmailRecipients', () => {
-    it('returns the correct recipients', () => {
+    const generatePro = ({ id, org }) => ({
+      _id: id,
+      _factory: 'pro',
+      emails: [{ address: `${id}@${org}.com`, verified: true }],
+      organisations: [{ _id: org }],
+    });
+    const addProToPromotion = ({ id, permissions, role }) => ({
+      _id: id,
+      $metadata: {
+        roles: [role],
+        permissions,
+      },
+    });
+    const addLoanToPromotion = ({ id, invitedBy }) => ({
+      _id: `loan${id}`,
+      user: {
+        _id: `user${id}`,
+        firstName: 'Customer',
+        lastName: `No${id}`,
+        emails: [{ address: `customer${id}@test.com`, verified: true }],
+        assignedEmployeeId: 'admin',
+      },
+      $metadata: { invitedBy },
+    });
+
+    const generatePromotion = ({ pros = [], loans = [] }) => {
       generator({
         users: [
           {
@@ -962,36 +987,7 @@ describe('PromotionOptionService', function () {
             _factory: 'admin',
             emails: [{ address: 'admin@e-potek.ch', verified: true }],
           },
-          {
-            _id: 'pro1',
-            _factory: 'pro',
-            emails: [{ address: 'pro1@org1.com', verified: true }],
-            organisations: [{ _id: 'org1' }],
-          },
-          {
-            _id: 'pro2',
-            _factory: 'pro',
-            emails: [{ address: 'pro2@org1.com', verified: true }],
-            organisations: [{ _id: 'org1' }],
-          },
-          {
-            _id: 'pro3',
-            _factory: 'pro',
-            emails: [{ address: 'pro3@org2.com', verified: true }],
-            organisations: [{ _id: 'org2' }],
-          },
-          {
-            _id: 'pro4',
-            _factory: 'pro',
-            emails: [{ address: 'pro4@org3.com', verified: true }],
-            organisations: [{ _id: 'org3' }],
-          },
-          {
-            _id: 'pro5',
-            _factory: 'pro',
-            emails: [{ address: 'pro5@org3.com', verified: true }],
-            organisations: [{ _id: 'org3' }],
-          },
+          ...pros.map(({ id, org }) => generatePro({ id, org })),
         ],
         properties: [
           { _id: 'prop1', name: 'Lot 1' },
@@ -1002,138 +998,100 @@ describe('PromotionOptionService', function () {
         promotions: [
           {
             _id: 'promo',
-            users: [
-              {
-                _id: 'pro1',
-                $metadata: {
-                  roles: [PROMOTION_USERS_ROLES.PROMOTER],
-                  permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
-                },
-              },
-              {
-                _id: 'pro2',
-                $metadata: {
-                  roles: [PROMOTION_USERS_ROLES.BROKER],
-                  permissions: {
-                    displayCustomerNames: {
-                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
-                      forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-                        .FOR_LOT_STATUS),
-                    },
-                  },
-                },
-              },
-              {
-                _id: 'pro3',
-                $metadata: {
-                  roles: [PROMOTION_USERS_ROLES.BROKER],
-                  permissions: {
-                    displayCustomerNames: {
-                      invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-                      forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-                        .FOR_LOT_STATUS),
-                    },
-                  },
-                },
-              },
-              {
-                _id: 'pro4',
-                $metadata: {
-                  roles: [PROMOTION_USERS_ROLES.NOTARY],
-                  permissions: {
-                    displayCustomerNames: {
-                      invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
-                      forLotStatus: [
-                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-                          .FOR_LOT_STATUS.SOLD,
-                      ],
-                    },
-                  },
-                },
-              },
-              {
-                _id: 'pro5',
-                $metadata: {
-                  roles: [PROMOTION_USERS_ROLES.VISITOR],
-                  permissions: {
-                    displayCustomerNames: false,
-                  },
-                },
-              },
-            ],
-            promotionLots: [
+            users: pros.map(({ id, permissions, role }) =>
+              addProToPromotion({ id, permissions, role })),
+            promotionLots: loans.map(({ id, promotionLotStatus, promotionOptionStatus }) =>
               makePromotionLotWithReservation({
-                key: 1,
-                status: PROMOTION_LOT_STATUS.RESERVED,
-                promotionOptionStatus:
-                  PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+                key: id,
+                status: promotionLotStatus,
+                promotionOptionStatus,
                 expirationDate: new Date(),
-              }),
-              makePromotionLotWithReservation({
-                key: 2,
-                status: PROMOTION_LOT_STATUS.RESERVED,
-                promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
-                expirationDate: new Date(),
-              }),
-              makePromotionLotWithReservation({
-                key: 3,
-                status: PROMOTION_LOT_STATUS.RESERVED,
-                promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
-                expirationDate: new Date(),
-              }),
-              makePromotionLotWithReservation({
-                key: 4,
-                status: PROMOTION_LOT_STATUS.SOLD,
-                promotionOptionStatus: PROMOTION_OPTION_STATUS.SOLD,
-                expirationDate: new Date(),
-              }),
-            ],
-            loans: [
-              {
-                _id: 'loan1',
-                user: {
-                  _id: 'user1',
-                  firstName: 'Customer',
-                  lastName: 'One',
-                  emails: [{ address: 'customer1@test.com', verified: true }],
-                  assignedEmployeeId: 'admin',
-                },
-                $metadata: { invitedBy: 'pro1' },
+              })),
+            loans: loans.map(({ id, invitedBy }) =>
+              addLoanToPromotion({ id, invitedBy })),
+          },
+        ],
+      });
+    };
+
+    it.only('returns the correct recipients', () => {
+      generatePromotion({
+        pros: [
+          {
+            id: 'pro1',
+            org: 'org1',
+            role: PROMOTION_USERS_ROLES.PROMOTER,
+            permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+          },
+          {
+            id: 'pro2',
+            org: 'org1',
+            role: PROMOTION_USERS_ROLES.BROKER,
+            permissions: {
+              displayCustomerNames: {
+                invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
               },
-              {
-                _id: 'loan2',
-                user: {
-                  _id: 'user2',
-                  firstName: 'Customer',
-                  lastName: 'Two',
-                  emails: [{ address: 'customer2@test.com', verified: true }],
-                  assignedEmployeeId: 'admin',
-                },
-                $metadata: { invitedBy: 'pro2' },
+            },
+          },
+          {
+            id: 'pro3',
+            org: 'org2',
+            role: PROMOTION_USERS_ROLES.BROKER,
+            permissions: {
+              displayCustomerNames: {
+                invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+                forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
               },
-              {
-                _id: 'loan3',
-                user: {
-                  _id: 'user3',
-                  firstName: 'Customer',
-                  lastName: 'Three',
-                  emails: [{ address: 'customer3@test.com', verified: true }],
-                  assignedEmployeeId: 'admin',
-                },
-                $metadata: { invitedBy: 'pro3' },
+            },
+          },
+          {
+            id: 'pro4',
+            org: 'org3',
+            role: PROMOTION_USERS_ROLES.NOTARY,
+            permissions: {
+              displayCustomerNames: {
+                invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
+                forLotStatus: [
+                  PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS
+                    .SOLD,
+                ],
               },
-              {
-                _id: 'loan4',
-                user: {
-                  _id: 'user4',
-                  firstName: 'Customer',
-                  lastName: 'Four',
-                  emails: [{ address: 'customer4@test.com', verified: true }],
-                  assignedEmployeeId: 'admin',
-                },
-                $metadata: { invitedBy: 'pro2' },
-              },
-            ],
+            },
+          },
+          {
+            id: 'pro5',
+            org: 'org3',
+            role: PROMOTION_USERS_ROLES.VISITOR,
+            permissions: {
+              displayCustomerNames: false,
+            },
+          },
+        ],
+        loans: [
+          {
+            id: 1,
+            invitedBy: 'pro1',
+            promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+          },
+          {
+            id: 2,
+            invitedBy: 'pro2',
+            promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+          },
+          {
+            id: 3,
+            invitedBy: 'pro3',
+            promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.RESERVED,
+          },
+          {
+            id: 4,
+            invitedBy: 'pro2',
+            promotionLotStatus: PROMOTION_LOT_STATUS.SOLD,
+            promotionOptionStatus: PROMOTION_OPTION_STATUS.SOLD,
           },
         ],
       });
