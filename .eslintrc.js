@@ -36,7 +36,6 @@ module.exports = {
     'plugin:cypress/recommended',
   ],
   plugins: [
-    'prettier',
     'import',
     'jsx-a11y',
     'meteor',
@@ -44,6 +43,7 @@ module.exports = {
     'react-hooks',
     'flowtype',
     'cypress',
+    'prettier',
   ],
   env: {
     es6: true,
@@ -66,7 +66,8 @@ module.exports = {
 
     // eslint default rules
     'class-methods-use-this': 0,
-    indent: [1, 2, { SwitchCase: 1 }],
+    // Let this be managed by prettier
+    indent: 'off',
     'max-len': 0,
     'no-underscore-dangle': 0,
     // The most sane value, allows objects to stay on a single line if possible
@@ -88,7 +89,9 @@ module.exports = {
     'no-nested-ternary': 0,
     'newline-per-chained-call': [2, { ignoreChainWithDepth: 3 }],
     'prefer-arrow-callback': 0,
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+    // Let this rule be managed by prettier
+    // https://github.com/prettier/prettier/issues/5309
+    'arrow-parens': 0,
     'prefer-destructuring': [
       'error',
       {
