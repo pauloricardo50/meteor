@@ -120,7 +120,8 @@ ServerEventService.addAfterMethodListener(
       });
       assigneeId = user.assignedEmployee && user.assignedEmployee._id;
       assigneeName = user.assignedEmployee && user.assignedEmployee.name;
-      referredByOrganisation = user.referredByOrganisation && user.referredByOrganisation.name;
+      referredByOrganisation =
+        user.referredByOrganisation && user.referredByOrganisation.name;
       referredByUser = user.referredByUser && user.referredByUser.name;
       customerName = user.name;
     }
@@ -253,7 +254,9 @@ ServerEventService.addAfterMethodListener(
 
     let property = {};
     if (hasProProperty) {
-      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+      property = properties.find(
+        ({ category }) => category === PROPERTY_CATEGORY.PRO,
+      );
     }
 
     let promotion = {};
@@ -316,7 +319,9 @@ ServerEventService.addAfterMethodListener(
 
     let property = {};
     if (hasProProperty) {
-      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+      property = properties.find(
+        ({ category }) => category === PROPERTY_CATEGORY.PRO,
+      );
     }
 
     let promotion = {};
@@ -432,11 +437,14 @@ ServerEventService.addAfterMethodListener(
       $filters: { _id: userId },
       name: 1,
     });
-    const { name: org, _id: orgId } = UserService.getUserMainOrganisation(userId);
+    const { name: org, _id: orgId } = UserService.getUserMainOrganisation(
+      userId,
+    );
 
-    const referOnly = propertyIds.length === 0
-      && promotionIds.length === 0
-      && properties.length === 0;
+    const referOnly =
+      propertyIds.length === 0 &&
+      promotionIds.length === 0 &&
+      properties.length === 0;
 
     const sharedEventProperties = {
       customerId,
@@ -456,50 +464,56 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (propertyIds.length) {
-      await Promise.all(propertyIds.map((propertyId) => {
-        const { address } = PropertyService.fetchOne({
-          $filters: { _id: propertyId },
-          address: 1,
-        });
+      await Promise.all(
+        propertyIds.map(propertyId => {
+          const { address } = PropertyService.fetchOne({
+            $filters: { _id: propertyId },
+            address: 1,
+          });
 
-        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-          ...sharedEventProperties,
-          propertyId,
-          propertyAddress: address,
-        });
-      }));
+          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+            ...sharedEventProperties,
+            propertyId,
+            propertyAddress: address,
+          });
+        }),
+      );
     }
 
     if (promotionIds.length) {
-      await Promise.all(promotionIds.map((promotionId) => {
-        const { name } = PromotionService.fetchOne({
-          $filters: { _id: promotionId },
-          name: 1,
-        });
+      await Promise.all(
+        promotionIds.map(promotionId => {
+          const { name } = PromotionService.fetchOne({
+            $filters: { _id: promotionId },
+            name: 1,
+          });
 
-        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-          ...sharedEventProperties,
-          promotionId,
-          promotionName: name,
-          promotionLotIds,
-          showAllLots,
-        });
-      }));
+          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+            ...sharedEventProperties,
+            promotionId,
+            promotionName: name,
+            promotionLotIds,
+            showAllLots,
+          });
+        }),
+      );
     }
 
     if (properties.length) {
-      await Promise.all(properties.map((property) => {
-        const { address, _id: propertyId } = PropertyService.fetchOne({
-          $filters: { externalId: property.externalId },
-          address: 1,
-        });
+      await Promise.all(
+        properties.map(property => {
+          const { address, _id: propertyId } = PropertyService.fetchOne({
+            $filters: { externalId: property.externalId },
+            address: 1,
+          });
 
-        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-          ...sharedEventProperties,
-          propertyId,
-          propertyAddress: address,
-        });
-      }));
+          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+            ...sharedEventProperties,
+            propertyId,
+            propertyAddress: address,
+          });
+        }),
+      );
     }
   },
 );

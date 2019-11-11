@@ -71,10 +71,10 @@ const inviteCustomerToProProperties = ({
   });
 };
 
-describe('REST: inviteCustomerToProProperties', function () {
+describe('REST: inviteCustomerToProProperties', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -274,12 +274,13 @@ describe('REST: inviteCustomerToProProperties', function () {
         return new Promise((resolve, reject) => {
           const interval = Meteor.setInterval(() => {
             if (tasks.length === 0 && intervalCount < 10) {
-              tasks = UserService.fetchOne({
-                $filters: {
-                  'emails.address': { $in: [customerToInvite.email] },
-                },
-                tasks: { description: 1 },
-              }).tasks || [];
+              tasks =
+                UserService.fetchOne({
+                  $filters: {
+                    'emails.address': { $in: [customerToInvite.email] },
+                  },
+                  tasks: { description: 1 },
+                }).tasks || [];
               intervalCount++;
             } else {
               Meteor.clearInterval(interval);
@@ -291,7 +292,7 @@ describe('REST: inviteCustomerToProProperties', function () {
           }, 100);
         });
       })
-      .then((tasks) => {
+      .then(tasks => {
         expect(tasks.length).to.equal(1);
         expect(tasks[0].description).to.contain('TestFirstName TestLastName');
         expect(tasks[0].description).to.contain('testNote');
@@ -474,7 +475,8 @@ describe('REST: inviteCustomerToProProperties', function () {
           status: HTTP_STATUS_CODES.CONFLICT,
           message: 'Ce client est déjà invité à ce bien immobilier [409]',
         },
-      }));
+      }),
+    );
   });
 
   it('cleans invalid fields in insert', () => {
@@ -523,8 +525,12 @@ describe('REST: inviteCustomerToProProperties', function () {
     });
 
     expect(spy.calledOnce).to.equal(true);
-    expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (Main Org, API Main Org)');
-    expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité au bien immo "Rue du parc 3"');
+    expect(spy.args[0][0].username).to.equal(
+      'TestFirstName TestLastName (Main Org, API Main Org)',
+    );
+    expect(spy.args[0][0].attachments[0].title).to.equal(
+      'Test User a été invité au bien immo "Rue du parc 3"',
+    );
 
     SlackService.send.restore();
   });

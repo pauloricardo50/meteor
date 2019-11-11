@@ -7,7 +7,7 @@ import { adminNotifications } from '../queries';
 exposeQuery({
   query: adminNotifications,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({
         filters,
         params: { _userId, userId, read, unread },

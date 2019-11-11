@@ -22,7 +22,7 @@ class NodeAnalytics extends DefaultNodeAnalytics {
   }
 
   initAnalytics(context) {
-    ['identify', 'track', 'page', 'alias'].forEach((method) => {
+    ['identify', 'track', 'page', 'alias'].forEach(method => {
       this.middlewareManager.applyToMethod(
         method,
         impersonateMiddleware(context),

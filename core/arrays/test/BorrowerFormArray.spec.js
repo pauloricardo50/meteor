@@ -12,7 +12,8 @@ describe('BorrowerFormArrays', () => {
 
     it('throws an error if a wrong ID is passed', () => {
       expect(() =>
-        getBorrowerInfoArray({ borrowers, borrowerId: 'id4' })).to.throw();
+        getBorrowerInfoArray({ borrowers, borrowerId: 'id4' }),
+      ).to.throw();
     });
 
     it('returns an array of objects, each having an id', () => {
@@ -20,7 +21,7 @@ describe('BorrowerFormArrays', () => {
 
       expect(typeof array).to.equal('object');
       expect(array).to.have.length.above(0);
-      array.forEach((field) => {
+      array.forEach(field => {
         expect(typeof field).to.equal('object');
         if (field.type !== 'conditionalInput' && field.type !== 'h3') {
           expect(!!field.id).to.equal(true);
@@ -34,7 +35,8 @@ describe('BorrowerFormArrays', () => {
 
     it('throws an error if a wrong ID is passed', () => {
       expect(() =>
-        getBorrowerFinanceArray({ borrowers, borrowerId: 'id4' })).to.throw();
+        getBorrowerFinanceArray({ borrowers, borrowerId: 'id4' }),
+      ).to.throw();
     });
 
     it('returns an array of objects, each having an id', () => {
@@ -42,7 +44,7 @@ describe('BorrowerFormArrays', () => {
 
       expect(typeof array).to.equal('object');
       expect(array).to.have.length.above(0);
-      array.forEach((field) => {
+      array.forEach(field => {
         expect(typeof field).to.equal('object');
         if (field.type !== 'conditionalInput' && field.type !== 'h3') {
           expect(!!field.id).to.equal(true);

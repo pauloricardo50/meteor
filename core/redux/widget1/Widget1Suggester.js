@@ -22,7 +22,8 @@ export class Widget1SuggesterClass {
     const i = INTERESTS_FINMA;
     const mR = MAX_INCOME_RATIO;
 
-    const withAmortizing = (property * m + loan * (i + (loan - 0.65 * property) / (15 * loan))) / mR;
+    const withAmortizing =
+      (property * m + loan * (i + (loan - 0.65 * property) / (15 * loan))) / mR;
 
     const withoutAmortizing = (property * m + loan * i) / mR;
 
@@ -44,8 +45,9 @@ export class Widget1SuggesterClass {
 
     // For the case that there is a reasonable amount of fortune, go to rank 2
     // Here amortization is complex and depends on the borrow Ratio
-    const rank2Fortune = (property * (15 * m + nF + 0.35 + 15 * i * (1 + nF)) - mR * 15 * salary)
-      / (15 * i + 1);
+    const rank2Fortune =
+      (property * (15 * m + nF + 0.35 + 15 * i * (1 + nF)) - mR * 15 * salary) /
+      (15 * i + 1);
 
     const rankFortune = Math.max(rank1Fortune, rank2Fortune);
 
@@ -72,8 +74,9 @@ export class Widget1SuggesterClass {
     const incomeLimited1 = (mR * salary + fortune * i) / (m + (1 + nF) * i);
 
     // The second is with amortization factored in (and it could be negative due to math)
-    const incomeLimited2 = ((1 + r * i) * fortune + mR * r * salary)
-      / (r * (m + i) + nF * (1 + r * i) + 0.35);
+    const incomeLimited2 =
+      ((1 + r * i) * fortune + mR * r * salary) /
+      (r * (m + i) + nF * (1 + r * i) + 0.35);
 
     // Therefore, take the minimum value of both, which is the most limiting one
     // Because of the ratios, round this value down
@@ -106,15 +109,15 @@ export class Widget1SuggesterClass {
   // Property < > Salary
   //
   defaultAmortization = () =>
-    (MAX_BORROW_RATIO_PRIMARY_PROPERTY - AMORTIZATION_STOP)
-    / MAX_BORROW_RATIO_PRIMARY_PROPERTY
-    / AMORTIZATION_YEARS;
+    (MAX_BORROW_RATIO_PRIMARY_PROPERTY - AMORTIZATION_STOP) /
+    MAX_BORROW_RATIO_PRIMARY_PROPERTY /
+    AMORTIZATION_YEARS;
 
   loanCost = () => INTERESTS_FINMA + this.defaultAmortization();
 
   propertyToSalaryRatio = () =>
-    3
-    * (MAINTENANCE_FINMA + MAX_BORROW_RATIO_PRIMARY_PROPERTY * this.loanCost());
+    3 *
+    (MAINTENANCE_FINMA + MAX_BORROW_RATIO_PRIMARY_PROPERTY * this.loanCost());
 
   propertyToSalary = ({ property }) => property * this.propertyToSalaryRatio();
 

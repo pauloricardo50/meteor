@@ -59,11 +59,13 @@ describe('fileHelpers', () => {
       it('returns 0 if no files are valid', () => {
         fileArray = [{ id: 'myFile', condition: undefined }];
         dummyDoc.documents.myFile = [{ status: 'INVALID' }];
-        expect(filesPercent({
-          doc: dummyDoc,
-          fileArray,
-          checkValidity: true,
-        })).to.deep.equal({
+        expect(
+          filesPercent({
+            doc: dummyDoc,
+            fileArray,
+            checkValidity: true,
+          }),
+        ).to.deep.equal({
           percent: 0,
           count: 1,
         });
@@ -77,11 +79,13 @@ describe('fileHelpers', () => {
 
         dummyDoc.documents.myFile = [{ status: 'INVALID' }];
         dummyDoc.documents.myFile2 = [{ status: 'VALID' }];
-        expect(filesPercent({
-          doc: dummyDoc,
-          fileArray,
-          checkValidity: true,
-        })).to.deep.equal({
+        expect(
+          filesPercent({
+            doc: dummyDoc,
+            fileArray,
+            checkValidity: true,
+          }),
+        ).to.deep.equal({
           percent: 0.5,
           count: 2,
         });
@@ -91,18 +95,22 @@ describe('fileHelpers', () => {
 
   describe('getMissingDocumentIds', () => {
     it('returns the array of missing docs', () => {
-      expect(getMissingDocumentIds({
-        doc: dummyDoc,
-        fileArray,
-      })).to.deep.equal([fileId]);
+      expect(
+        getMissingDocumentIds({
+          doc: dummyDoc,
+          fileArray,
+        }),
+      ).to.deep.equal([fileId]);
     });
 
     it('returns an empty array if all documents have been uploaded', () => {
       dummyDoc.documents[fileId] = [{}];
-      expect(getMissingDocumentIds({
-        doc: dummyDoc,
-        fileArray,
-      })).to.deep.equal([]);
+      expect(
+        getMissingDocumentIds({
+          doc: dummyDoc,
+          fileArray,
+        }),
+      ).to.deep.equal([]);
     });
   });
 });

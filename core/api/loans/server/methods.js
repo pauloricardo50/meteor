@@ -230,9 +230,9 @@ anonymousLoanInsert.setHandler((context, params) => {
       });
 
       if (
-        existingLoan
-        && existingLoan.propertyIds
-        && !existingLoan.propertyIds.includes(proPropertyId)
+        existingLoan &&
+        existingLoan.propertyIds &&
+        !existingLoan.propertyIds.includes(proPropertyId)
       ) {
         // TODO: Quentin, track this
         LoanService.addPropertyToLoan({
@@ -291,7 +291,9 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   date.setHours(0, 0, 0, 0);
 
   if (date > today) {
-    throw new Meteor.Error('La date de création ne peut pas être dans le futur');
+    throw new Meteor.Error(
+      'La date de création ne peut pas être dans le futur',
+    );
   }
 
   LoanService.update({ loanId, object: { createdAt } });

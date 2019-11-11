@@ -70,7 +70,7 @@ export const getRows = ({ data: users, history, showAssignee }) => {
     return users.map(user => ({
       id: user._id,
       columns: getColumns({ showAssignee, user }),
-      handleClick: (event) => {
+      handleClick: event => {
         if (event.target.href) {
           event.stopPropagation();
         } else {

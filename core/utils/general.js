@@ -1,7 +1,7 @@
 // @flow
 import isArray from 'lodash/isArray';
 
-export const arrayify = (value) => {
+export const arrayify = value => {
   if (value) {
     if (isArray(value)) {
       return value;
@@ -20,7 +20,7 @@ export const arrayify = (value) => {
  *
  * @return {number} a value between 0 and 1
  */
-export const getPercent = (array) => {
+export const getPercent = array => {
   if (!array) {
     return 0;
   }
@@ -29,22 +29,23 @@ export const getPercent = (array) => {
     return 1;
   }
 
-  const percent = array.reduce((tot, val) => {
-    if (isArray(val)) {
-      // Empty arrays need to be filled
-      return tot + (val.length ? 1 : 0);
-    }
-    if (val !== undefined && val !== null) {
-      return tot + 1;
-    }
-    return tot;
-  }, 0) / array.length;
+  const percent =
+    array.reduce((tot, val) => {
+      if (isArray(val)) {
+        // Empty arrays need to be filled
+        return tot + (val.length ? 1 : 0);
+      }
+      if (val !== undefined && val !== null) {
+        return tot + 1;
+      }
+      return tot;
+    }, 0) / array.length;
   return Number.isFinite(percent) ? percent : 0;
 };
 
 // Given multiple objects of the form { percent, count },
 // Merge them together with a single count and percent
-export const getAggregatePercent = (percentageObjects) => {
+export const getAggregatePercent = percentageObjects => {
   const {
     percent: aggregatePercent,
     count: aggregateCount,
@@ -65,7 +66,7 @@ export const getAggregatePercent = (percentageObjects) => {
 export const normalize = array =>
   array.reduce((obj, item) => ({ ...obj, [item.id || item._id]: item }), {});
 
-export const simpleHash = (data) => {
+export const simpleHash = data => {
   let string = data;
   if (typeof data !== 'string') {
     string = JSON.stringify(data);

@@ -26,30 +26,34 @@ export const allDocuments = ({ doc, collection }) => {
     : [];
   let documents = [];
   switch (collection) {
-  case BORROWERS_COLLECTION:
-    documents = makeAllObjectDocuments(BORROWER_DOCUMENTS);
-    break;
-  case PROPERTIES_COLLECTION:
-    documents = makeAllObjectDocuments(PROPERTY_DOCUMENTS);
-    break;
-  case LOANS_COLLECTION:
-    documents = makeAllObjectDocuments(LOAN_DOCUMENTS);
-    break;
-  default:
-    break;
+    case BORROWERS_COLLECTION:
+      documents = makeAllObjectDocuments(BORROWER_DOCUMENTS);
+      break;
+    case PROPERTIES_COLLECTION:
+      documents = makeAllObjectDocuments(PROPERTY_DOCUMENTS);
+      break;
+    case LOANS_COLLECTION:
+      documents = makeAllObjectDocuments(LOAN_DOCUMENTS);
+      break;
+    default:
+      break;
   }
 
-  const otherAdditionalDocuments = documents.filter(({ id }) => !doc.additionalDocuments.some(document => id === document.id));
-  const legacyCustomDocuments = s3Documents.filter(({ id }) =>
-    !doc.additionalDocuments.some(document => id === document.id)
-      && !documents.some(document => id === document.id));
+  const otherAdditionalDocuments = documents.filter(
+    ({ id }) => !doc.additionalDocuments.some(document => id === document.id),
+  );
+  const legacyCustomDocuments = s3Documents.filter(
+    ({ id }) =>
+      !doc.additionalDocuments.some(document => id === document.id) &&
+      !documents.some(document => id === document.id),
+  );
 
   return doc.additionalDocuments && doc.additionalDocuments.length > 0
     ? [
-      ...doc.additionalDocuments,
-      ...otherAdditionalDocuments,
-      ...legacyCustomDocuments,
-    ]
+        ...doc.additionalDocuments,
+        ...otherAdditionalDocuments,
+        ...legacyCustomDocuments,
+      ]
     : documents;
 };
 
@@ -69,16 +73,18 @@ const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
     return [];
   }
 
-  const document = doc || (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
-  const additionalDocumentsExist = document
-    && document.additionalDocuments
-    && document.additionalDocuments.length > 0;
+  const document =
+    doc || (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
+  const additionalDocumentsExist =
+    document &&
+    document.additionalDocuments &&
+    document.additionalDocuments.length > 0;
 
   return [
     ...(additionalDocumentsExist
       ? document.additionalDocuments
-        .filter(requiredByAdminOnly)
-        .map(formatAdditionalDoc)
+          .filter(requiredByAdminOnly)
+          .map(formatAdditionalDoc)
       : []),
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
   ];

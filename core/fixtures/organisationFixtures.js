@@ -3,7 +3,11 @@ import random from 'lodash/random';
 
 import OrganisationService from '../api/organisations/server/OrganisationService';
 import ContactService from '../api/contacts/server/ContactService';
-import { ORGANISATION_TYPES, ORGANISATION_FEATURES, ORGANISATION_TAGS } from '../api/constants';
+import {
+  ORGANISATION_TYPES,
+  ORGANISATION_FEATURES,
+  ORGANISATION_TAGS,
+} from '../api/constants';
 import { createLenderRules } from './lenderRulesFixtures';
 
 const orgs = [
@@ -38,7 +42,7 @@ const orgs = [
 ];
 
 export const createOrganisations = () =>
-  orgs.map((org) => {
+  orgs.map(org => {
     const orgId = OrganisationService.insert(org);
 
     if (org.features.includes(ORGANISATION_FEATURES.LENDER)) {

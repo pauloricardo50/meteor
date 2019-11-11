@@ -12,18 +12,18 @@ class Bin {
     this.items = [];
   }
 
-  canPackItem = (item) => {
+  canPackItem = item => {
     const size = this.getItemSize(item);
     return this.remainingCapacity >= size;
   };
 
-  packItem = (item) => {
+  packItem = item => {
     const size = this.getItemSize(item);
     this.items = [...this.items, item];
     this.remainingCapacity -= size;
   };
 
-  getItemSize = (item) => {
+  getItemSize = item => {
     const { Size } = item;
     return Size;
   };
@@ -39,15 +39,17 @@ class FilesBinPacker {
     }
   }
 
-  addFile = (file) => {
+  addFile = file => {
     const { Size, name } = file;
     if (Size > this.binCapacity) {
-      throw new Meteor.Error(`Le fichier "${name}" dépasse la taille maximale possible`);
+      throw new Meteor.Error(
+        `Le fichier "${name}" dépasse la taille maximale possible`,
+      );
     }
     this.files = [...this.files, file];
   };
 
-  addFiles = (files) => {
+  addFiles = files => {
     files.forEach(this.addFile);
   };
 
@@ -63,7 +65,9 @@ class FilesBinPacker {
       .filter((documentId, index, self) => self.indexOf(documentId) === index);
 
   getAllFilesForDocumentId = documentId =>
-    this.files.filter(({ Key }) => FileService.getKeyParts(Key).documentId === documentId);
+    this.files.filter(
+      ({ Key }) => FileService.getKeyParts(Key).documentId === documentId,
+    );
 
   getFilesTotalSize = files =>
     files.reduce((total, { Size }) => total + Size, 0);
@@ -71,7 +75,7 @@ class FilesBinPacker {
   sortFiles = () => {
     const documentIds = this.getAllDocumentIds();
     return documentIds
-      .map((documentId) => {
+      .map(documentId => {
         const files = this.getAllFilesForDocumentId(documentId).sort((a, b) => {
           if (a.Size > b.Size) {
             return -1;
@@ -104,31 +108,36 @@ class FilesBinPacker {
 
   getAllUnpackedFiles = documentId =>
     this.files
+      .filter(
+        ({ Key }) =>
+          !this.bins
+            .reduce((files, { items = [] }) => [...files, ...items], [])
+            .some(file => Key === file.Key),
+      )
       .filter(({ Key }) =>
-        !this.bins
-          .reduce((files, { items = [] }) => [...files, ...items], [])
-          .some(file => Key === file.Key))
-      .filter(({ Key }) =>
-        (documentId
+        documentId
           ? FileService.getKeyParts(Key).documentId === documentId
-          : true));
+          : true,
+      );
 
   getFilesTotalSize = files =>
     files.reduce((total, { Size }) => total + Size, 0);
 
   // Best-fit bin packing algorithm
   packFiles = () => {
-    this.sortFiles().forEach((file) => {
+    this.sortFiles().forEach(file => {
       const { bin: bestBin } = this.bins
-        .map(bin =>
-          bin.canPackItem(file) && {
-            bin,
-            remainingCapacity: bin.remainingCapacity - file.Size,
-          })
+        .map(
+          bin =>
+            bin.canPackItem(file) && {
+              bin,
+              remainingCapacity: bin.remainingCapacity - file.Size,
+            },
+        )
         .filter(x => x)
         .reduce(
           (best, bin) =>
-            (bin.remainingCapacity < best.remainingCapacity ? bin : best),
+            bin.remainingCapacity < best.remainingCapacity ? bin : best,
           { remainingCapacity: Infinity },
         );
 
@@ -140,10 +149,11 @@ class FilesBinPacker {
     });
   };
 
-  getFileBinIndex = (file) => {
+  getFileBinIndex = file => {
     const { Key } = file;
     return this.bins.findIndex(({ items = [] }) =>
-      items.some(({ Key: fileKey }) => fileKey === Key));
+      items.some(({ Key: fileKey }) => fileKey === Key),
+    );
   };
 
   getFilesBinIndex = () =>

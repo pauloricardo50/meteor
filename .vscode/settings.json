@@ -1,5 +1,4 @@
 {
-  "prettier.tabWidth": 4,
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
@@ -14,8 +13,6 @@
     "**/.DS_Store": true,
     "microservices/**/imports/core": true
   },
-  "editor.suggest.filteredTypes": {
-    "keyword": true
-  },
+  "editor.suggest.showKeywords": true,
   "search.followSymlinks": false
 }

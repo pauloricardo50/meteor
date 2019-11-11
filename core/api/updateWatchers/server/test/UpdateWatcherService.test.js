@@ -151,9 +151,11 @@ describe('UpdateWatcherService', () => {
 
   describe('formatUpdatedFields', () => {
     it('does not fail when formatting value', () => {
-      expect(UpdateWatcherService.formatUpdatedFields([
-        { currentValue: 100, fieldName: 'value' },
-      ])).to.equal("*Prix d'achat*: 100");
+      expect(
+        UpdateWatcherService.formatUpdatedFields([
+          { currentValue: 100, fieldName: 'value' },
+        ]),
+      ).to.equal("*Prix d'achat*: 100");
     });
   });
 
@@ -175,7 +177,11 @@ describe('UpdateWatcherService', () => {
     });
 
     it('formats numbers properly if they are small or large', () => {
-      expect(UpdateWatcherService.formatValue(new Date('December 17, 1995 03:24:00'))).to.equal('17/12/1995');
+      expect(
+        UpdateWatcherService.formatValue(
+          new Date('December 17, 1995 03:24:00'),
+        ),
+      ).to.equal('17/12/1995');
     });
 
     it('formats arrays properly', () => {
@@ -183,41 +189,55 @@ describe('UpdateWatcherService', () => {
     });
 
     it('formats objects properly', () => {
-      expect(UpdateWatcherService.formatValue({ a: 10, b: 'yo' }, 'obj')).to.equal('*Forms.obj.a*: 10, *Forms.obj.b*: yo');
+      expect(
+        UpdateWatcherService.formatValue({ a: 10, b: 'yo' }, 'obj'),
+      ).to.equal('*Forms.obj.a*: 10, *Forms.obj.b*: yo');
     });
   });
 
   describe('formatArrayDiff', () => {
     it('only shows the difference', () => {
-      expect(UpdateWatcherService.formatArrayDiff(
-        'arr',
-        ['ha1', 'ha2'],
-        ['ha1', 'ha3'],
-      )).to.equal('*Forms.arr*:\n`2`\nha2 -> ha3');
+      expect(
+        UpdateWatcherService.formatArrayDiff(
+          'arr',
+          ['ha1', 'ha2'],
+          ['ha1', 'ha3'],
+        ),
+      ).to.equal('*Forms.arr*:\n`2`\nha2 -> ha3');
     });
 
     it('only shows the difference in objects when added', () => {
-      expect(UpdateWatcherService.formatArrayDiff(
-        'arr',
-        [{ id: 'ha1' }, { id: 'ha2' }],
-        [{ id: 'ha1' }, { id: 'ha3' }, { id: 'ha4' }],
-      )).to.equal('*Forms.arr*:\n`2`\n*Forms.arr.id*: ha2 -> ha3\n`3`\n*Forms.arr.id*: ha4');
+      expect(
+        UpdateWatcherService.formatArrayDiff(
+          'arr',
+          [{ id: 'ha1' }, { id: 'ha2' }],
+          [{ id: 'ha1' }, { id: 'ha3' }, { id: 'ha4' }],
+        ),
+      ).to.equal(
+        '*Forms.arr*:\n`2`\n*Forms.arr.id*: ha2 -> ha3\n`3`\n*Forms.arr.id*: ha4',
+      );
     });
 
     it('only shows the difference in objects when added and new keys', () => {
-      expect(UpdateWatcherService.formatArrayDiff(
-        'arr',
-        [{ a: 'b', id: 'ha2' }],
-        [{ a: 'b', id: 'ha3', yo: 'dude' }],
-      )).to.equal('*Forms.arr*:\n`1`\n*Forms.arr.id*: ha2 -> ha3\n*Forms.arr.yo*: dude');
+      expect(
+        UpdateWatcherService.formatArrayDiff(
+          'arr',
+          [{ a: 'b', id: 'ha2' }],
+          [{ a: 'b', id: 'ha3', yo: 'dude' }],
+        ),
+      ).to.equal(
+        '*Forms.arr*:\n`1`\n*Forms.arr.id*: ha2 -> ha3\n*Forms.arr.yo*: dude',
+      );
     });
 
     it('only shows the difference in objects when removed', () => {
-      expect(UpdateWatcherService.formatArrayDiff(
-        'arr',
-        [{ id: 'ha1' }, { id: 'ha2' }],
-        [{ id: 'ha1' }],
-      )).to.equal('*Forms.arr*:\n`2`\n*Forms.arr.id*: ha2 -> _supprimé_');
+      expect(
+        UpdateWatcherService.formatArrayDiff(
+          'arr',
+          [{ id: 'ha1' }, { id: 'ha2' }],
+          [{ id: 'ha1' }],
+        ),
+      ).to.equal('*Forms.arr*:\n`2`\n*Forms.arr.id*: ha2 -> _supprimé_');
     });
   });
 });

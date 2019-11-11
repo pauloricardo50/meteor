@@ -4,4 +4,3 @@ export default loadable({
   req: () => require('./index'),
   loader: () => import('./index'),
 });
-

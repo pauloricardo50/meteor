@@ -6,10 +6,10 @@ Lots.addReducers({
     { promotions: { userLinks: 1 } },
     ({ promotions }) =>
       !!(
-        promotions
-        && promotions.length > 0
-        && promotions[0].userLinks
-        && promotions[0].userLinks.length > 0
+        promotions &&
+        promotions.length > 0 &&
+        promotions[0].userLinks &&
+        promotions[0].userLinks.length > 0
       ) && promotions[0].userLinks[0]._id,
   ),
 });

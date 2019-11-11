@@ -86,7 +86,7 @@ export const getMandrillTemplate = ({
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 
-export const sendMandrillTemplate = (mandrillTemplate) => {
+export const sendMandrillTemplate = mandrillTemplate => {
   if (skipEmails) {
     return Promise.resolve();
   }
@@ -95,7 +95,9 @@ export const sendMandrillTemplate = (mandrillTemplate) => {
     Mandrill.messages.sendTemplate(mandrillTemplate, (error, result) => {
       if (error) {
         logError.run({
-          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          error: JSON.parse(
+            JSON.stringify(error, Object.getOwnPropertyNames(error)),
+          ),
           additionalData: ['Mandrill error'],
         });
         reject(error);
@@ -119,7 +121,9 @@ export const getEmailsForAddress = email =>
       (error, result) => {
         if (error) {
           logError.run({
-            error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+            error: JSON.parse(
+              JSON.stringify(error, Object.getOwnPropertyNames(error)),
+            ),
             additionalData: ['Mandrill error'],
           });
           resolve(error);
@@ -128,4 +132,5 @@ export const getEmailsForAddress = email =>
         }
         resolve(result.data);
       },
-    ));
+    ),
+  );

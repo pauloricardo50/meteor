@@ -27,7 +27,9 @@ class TaskService extends CollectionService {
     const { isPrivate } = rest;
 
     if (docId && isPrivate) {
-      throw new Meteor.Error('Uniquement les tâches orphelines peuvent être privées');
+      throw new Meteor.Error(
+        'Uniquement les tâches orphelines peuvent être privées',
+      );
     }
 
     const taskId = Tasks.insert({

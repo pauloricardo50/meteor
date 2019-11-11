@@ -23,7 +23,7 @@ import UserService from './UserService';
 exposeQuery({
   query: adminUsers,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({
         filters,
         params: { roles, _id, admins, assignedEmployeeId },
@@ -71,7 +71,7 @@ exposeQuery({
         params._userId = 'none';
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };
@@ -90,7 +90,7 @@ exposeQuery({
         params._userId = 'none';
       }
     },
-    embody: (body) => {
+    embody: body => {
       // This will deepExtend your body
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
@@ -124,7 +124,7 @@ exposeQuery({
         SecurityService.checkUserIsAdmin(userId);
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({
         filters,
         params: { userId, organisationId: providedOrganisationId },
@@ -143,7 +143,7 @@ exposeQuery({
         const or = [
           userId && { referredByUserLink: userId },
           organisationId && { referredByOrganisationLink: organisationId },
-        ].filter((x) => x);
+        ].filter(x => x);
 
         filters.$or = or;
       };
@@ -159,7 +159,7 @@ exposeQuery({
 exposeQuery({
   query: userEmails,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { _id } }) => {
         filters._id = _id;
       };
@@ -171,7 +171,7 @@ exposeQuery({
 exposeQuery({
   query: userSearch,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery, roles } }) => {
         const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
         if (roles) {
@@ -211,7 +211,7 @@ exposeQuery({
         params._userId = 'none';
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };

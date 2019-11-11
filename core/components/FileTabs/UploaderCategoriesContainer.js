@@ -2,8 +2,10 @@ import { withProps } from 'recompose';
 import { DOCUMENTS_CATEGORIES } from '../../api/files/fileConstants';
 
 const getDocumentsForCategory = ({ documents, documentsCategory, category }) =>
-  documents.filter(({ id, category: docCategory }) =>
-    documentsCategory.includes(id) || category === docCategory);
+  documents.filter(
+    ({ id, category: docCategory }) =>
+      documentsCategory.includes(id) || category === docCategory,
+  );
 
 const makeDocumentsForCategoryObject = ({
   documentsToDisplay,
@@ -29,7 +31,8 @@ const getOtherDocuments = documents =>
     }
 
     const docIsInList = Object.keys(DOCUMENTS_CATEGORIES).some(category =>
-      DOCUMENTS_CATEGORIES[category].includes(id));
+      DOCUMENTS_CATEGORIES[category].includes(id),
+    );
     return !docIsInList;
   });
 

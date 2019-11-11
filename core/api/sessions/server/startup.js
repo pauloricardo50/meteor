@@ -5,7 +5,7 @@ import SessionService from 'core/api/sessions/server/SessionService';
 import { getClientMicroservice } from 'core/utils/server/getClientUrl';
 
 Meteor.startup(() => {
-  Meteor.onConnection((connection) => {
+  Meteor.onConnection(connection => {
     const {
       id: connectionId,
       clientAddress,

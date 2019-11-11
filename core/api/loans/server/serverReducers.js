@@ -94,14 +94,14 @@ Loans.addReducers({
       }
 
       if (
-        (user && user._id === currentUserId)
-        || (org && org.userLinks.find(({ _id }) => _id === currentUserId))
+        (user && user._id === currentUserId) ||
+        (org && org.userLinks.find(({ _id }) => _id === currentUserId))
       ) {
         const organisationName = org && org.name;
         const userName = user && user.name;
         return [
-          userName
-            && `${userName}${organisationName ? ` (${organisationName})` : ''}`,
+          userName &&
+            `${userName}${organisationName ? ` (${organisationName})` : ''}`,
           organisationName,
         ].filter(x => x)[0];
       }

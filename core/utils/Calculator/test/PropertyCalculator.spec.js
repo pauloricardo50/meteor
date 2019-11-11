@@ -100,7 +100,9 @@ describe('PropertyCalculator', () => {
 
   describe('getMissingPropertyDocuments', () => {
     it('returns the list of missing documents from a property 1', () => {
-      expect(Calculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments.map(({ id }) => id));
+      expect(Calculator.getMissingPropertyDocuments(params)).to.deep.equal(
+        initialDocuments.map(({ id }) => id),
+      );
     });
 
     it('returns the list of missing documents from a property 2', () => {
@@ -108,10 +110,16 @@ describe('PropertyCalculator', () => {
         [DOCUMENTS.PROPERTY_PLANS]: [{}],
         [DOCUMENTS.PROPERTY_PICTURES]: [{}],
       };
-      expect(Calculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments
-        .map(({ id }) => id)
-        .filter(id =>
-          ![DOCUMENTS.PROPERTY_PLANS, DOCUMENTS.PROPERTY_PICTURES].includes(id)));
+      expect(Calculator.getMissingPropertyDocuments(params)).to.deep.equal(
+        initialDocuments
+          .map(({ id }) => id)
+          .filter(
+            id =>
+              ![DOCUMENTS.PROPERTY_PLANS, DOCUMENTS.PROPERTY_PICTURES].includes(
+                id,
+              ),
+          ),
+      );
     });
   });
 

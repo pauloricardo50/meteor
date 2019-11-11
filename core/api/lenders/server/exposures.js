@@ -10,7 +10,7 @@ exposeQuery({
         SecurityService.loans.isAllowedToUpdate(loanId);
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters['loanLink._id'] = params.loanId;
       };

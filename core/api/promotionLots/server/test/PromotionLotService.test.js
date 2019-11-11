@@ -9,7 +9,7 @@ import { bookPromotionLot } from '../../../methods/index';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 
-describe('PromotionLotService', function () {
+describe('PromotionLotService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -89,10 +89,16 @@ describe('PromotionLotService', function () {
         bookPromotionLot.run({
           promotionLotId: 'promotionLotId',
           loanId: 'loanId',
-        }))
+        }),
+      )
         .then(() => checkEmails(2))
-        .then((emails) => {
-          const [email1, email2] = emails.sort(({ address: a }, { address: b }) => a.localeCompare(b));
+        .then(emails => {
+          const [
+            email1,
+            email2,
+          ] = emails.sort(({ address: a }, { address: b }) =>
+            a.localeCompare(b),
+          );
           const {
             address,
             response: { status },
@@ -106,7 +112,11 @@ describe('PromotionLotService', function () {
           expect(from_email).to.equal('test2@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('Promotion "Test promotion", lot réservé');
-          expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Le lot "Lot 1" a été réservé pour John Doe, par Admin User 1.');
+          expect(
+            global_merge_vars.find(({ name }) => name === 'BODY').content,
+          ).to.include(
+            'Le lot "Lot 1" a été réservé pour John Doe, par Admin User 1.',
+          );
           {
             const {
               address,
@@ -120,7 +130,11 @@ describe('PromotionLotService', function () {
             expect(from_email).to.equal('test2@e-potek.ch');
             expect(from_name).to.equal('e-Potek');
             expect(subject).to.equal('Promotion "Test promotion", lot réservé');
-            expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Le lot "Lot 1" a été réservé pour une personne anonymisée, par Admin User 1.');
+            expect(
+              global_merge_vars.find(({ name }) => name === 'BODY').content,
+            ).to.include(
+              'Le lot "Lot 1" a été réservé pour une personne anonymisée, par Admin User 1.',
+            );
           }
         });
     });

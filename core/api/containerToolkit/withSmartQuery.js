@@ -21,10 +21,10 @@ const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
   let renderFunc;
   if (typeof render === 'function') {
     renderFunc = props =>
-      render(props) && single && (!props.isLoading && !props.data);
+      render(props) && single && !props.isLoading && !props.data;
   } else {
     renderFunc = ({ isLoading, data }) =>
-      render && single && (!isLoading && !data);
+      render && single && !isLoading && !data;
   }
 
   return branch(renderFunc, renderComponent(MissingDoc));
@@ -65,7 +65,8 @@ const withGlobalQueryManager = (
   { reactive },
   refetchOnMethodCall,
 ) => {
-  const shouldActivateGlobalRefetch = refetchOnMethodCall && !reactive && global.window;
+  const shouldActivateGlobalRefetch =
+    refetchOnMethodCall && !reactive && global.window;
 
   if (!shouldActivateGlobalRefetch) {
     return x => x;

@@ -22,9 +22,10 @@ const mapStateToProps = ({
     purchaseType,
   },
 }) => {
-  const loanValue = purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
-    ? getLoanValue(propertyValue, fortune)
-    : wantedLoan;
+  const loanValue =
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
+      ? getLoanValue(propertyValue, fortune)
+      : wantedLoan;
   const yearlyValues = {
     interests: getSimpleYearlyInterests(loanValue, interestRate),
     amortization: getYearlyAmortization({
@@ -58,8 +59,5 @@ export default compose(
     dataName: 'currentInterestRates',
     smallLoader: true,
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 );

@@ -87,9 +87,10 @@ const mortgageEstimateAPI = ({ query }) => {
     currentInterestRates: interestRates,
     loanTranches: [{ value: 1, type: INTEREST_RATES.YEARS_10 }],
   });
-  const amortizationGoal = borrowRatio === SECOND_OR_LUXURY_BORROW_RATIO
-    ? SECOND_OR_LUXURY_AMORTIZATION_GOAL
-    : undefined;
+  const amortizationGoal =
+    borrowRatio === SECOND_OR_LUXURY_BORROW_RATIO
+      ? SECOND_OR_LUXURY_AMORTIZATION_GOAL
+      : undefined;
 
   const calc = new CalculatorClass({ loan: loanObject, amortizationGoal });
   const getInterestsForType = type =>
@@ -112,7 +113,9 @@ const mortgageEstimateAPI = ({ query }) => {
   const notaryFees = includeNotaryFees
     ? calc.getFees({ loan: loanObject })
     : null;
-  const totalValue = roundToCents(propertyValue + (notaryFees ? notaryFees.total : 0));
+  const totalValue = roundToCents(
+    propertyValue + (notaryFees ? notaryFees.total : 0),
+  );
 
   return {
     borrowRatio,
@@ -134,10 +137,10 @@ const mortgageEstimateAPI = ({ query }) => {
     },
     notaryFees: notaryFees
       ? {
-        canton: notaryFees.canton,
-        estimate: notaryFees.estimate,
-        total: notaryFees.total,
-      }
+          canton: notaryFees.canton,
+          estimate: notaryFees.estimate,
+          total: notaryFees.total,
+        }
       : undefined,
     ownFunds: roundToCents(totalValue - loanValue),
     purchaseType,

@@ -52,7 +52,8 @@ import {
 import { fakeProperty } from '../../api/properties/fakes';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 
-const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
+const isAuthorizedToRun = () =>
+  !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
 const getAdmins = () => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
@@ -63,7 +64,7 @@ const getAdmins = () => {
   return admins.map(admin => admin._id);
 };
 
-const deleteUsersRelatedData = (usersToDelete) => {
+const deleteUsersRelatedData = usersToDelete => {
   Borrowers.remove({ userId: { $in: usersToDelete } });
   Properties.remove({ userId: { $in: usersToDelete } });
   Offers.remove({ userId: { $in: usersToDelete } });

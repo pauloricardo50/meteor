@@ -33,7 +33,8 @@ import PropertyService from '../../properties/server/PropertyService';
 import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
-  UserService.doesUserExist({ email }));
+  UserService.doesUserExist({ email }),
+);
 
 sendVerificationLink.setHandler((context, { userId } = {}) => {
   if (userId) {
@@ -44,7 +45,9 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
   const id = userId || Meteor.userId();
 
   if (Meteor.isDevelopment) {
-    console.log(`Not sending verification link in development for userId: ${id}`);
+    console.log(
+      `Not sending verification link in development for userId: ${id}`,
+    );
     return false;
   }
 
@@ -82,7 +85,8 @@ updateUser.setHandler((context, { userId, object }) => {
 });
 
 getUserByPasswordResetToken.setHandler((context, params) =>
-  UserService.getUserByPasswordResetToken(params));
+  UserService.getUserByPasswordResetToken(params),
+);
 
 testCreateUser.setHandler((context, params) => {
   if (!Meteor.isTest) {
@@ -128,11 +132,12 @@ proInviteUser.setHandler((context, params) => {
   SecurityService.checkUserIsPro(userId);
 
   if (propertyIds && propertyIds.length) {
-    propertyIds.forEach((propertyId) =>
+    propertyIds.forEach(propertyId =>
       SecurityService.properties.isAllowedToInviteCustomers({
         userId,
         propertyId,
-      }));
+      }),
+    );
   }
 
   if (promotionIds && promotionIds.length > 1) {
@@ -143,11 +148,12 @@ proInviteUser.setHandler((context, params) => {
   }
 
   if (promotionIds && promotionIds.length) {
-    promotionIds.forEach((promotionId) =>
+    promotionIds.forEach(promotionId =>
       SecurityService.promotions.isAllowedToInviteCustomers({
         promotionId,
         userId,
-      }));
+      }),
+    );
   }
 
   if (properties && properties.length) {

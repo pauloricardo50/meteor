@@ -60,11 +60,12 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     getPropAndWork({ loan, structureId }) {
       const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'propertyWork',
-      }) || 0;
+      const propertyWork =
+        this.selectStructureKey({
+          loan,
+          structureId,
+          key: 'propertyWork',
+        }) || 0;
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
@@ -187,7 +188,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       const selectedProperty = this.selectProperty({ loan, structureId });
       const propertyToCalculateWith = property || selectedProperty;
 
-      return getRequiredDocumentIds(getPropertyDocuments({ loan, id: propertyToCalculateWith._id }));
+      return getRequiredDocumentIds(
+        getPropertyDocuments({ loan, id: propertyToCalculateWith._id }),
+      );
     }
 
     getValidPropertyDocumentsRatio({ loan, structureId, property }) {
@@ -235,9 +238,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     isNewProperty({ loan, structureId }) {
       return !!(
-        this.isPromotionProperty({ loan, structureId })
-        || this.selectPropertyKey({ loan, structureId, key: 'isNew' })
-        || loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
+        this.isPromotionProperty({ loan, structureId }) ||
+        this.selectPropertyKey({ loan, structureId, key: 'isNew' }) ||
+        loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
       );
     }
   };

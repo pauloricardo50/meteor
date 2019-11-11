@@ -4,8 +4,8 @@ import { expect } from 'chai';
 
 import * as fragments from '../fragments';
 
-const checkFields = (obj) => {
-  Object.keys(obj).forEach((fieldName) => {
+const checkFields = obj => {
+  Object.keys(obj).forEach(fieldName => {
     const field = obj[fieldName];
     expect(typeof field).to.not.equal('function', fieldName);
     expect(field).to.not.equal(undefined, fieldName);
@@ -28,7 +28,7 @@ describe('fragments', () => {
   });
 
   describe('fragments are all well defined and do not crash', () => {
-    Object.keys(fragments).forEach((fragmentName) => {
+    Object.keys(fragments).forEach(fragmentName => {
       it(fragmentName, () => {
         const fragmentCreator = fragments[fragmentName];
         const fragment = fragmentCreator();

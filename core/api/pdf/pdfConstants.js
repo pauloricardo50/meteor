@@ -38,6 +38,7 @@ export const MARGIN_TOP = 10;
 export const MARGIN_BOTTOM = 15;
 export const MARGIN_SIDE = 15;
 export const WIGGLE_ROOM = 2; // Required to make things fit on one page
-export const CONTENT_HEIGHT = A4_HEIGHT - MARGIN_BOTTOM - MARGIN_TOP - WIGGLE_ROOM;
+export const CONTENT_HEIGHT =
+  A4_HEIGHT - MARGIN_BOTTOM - MARGIN_TOP - WIGGLE_ROOM;
 export const BORDER_BLUE = '#213875';
 export const BORDER_GREY = '#DEE2E6';

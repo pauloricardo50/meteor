@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { widget1Selectors } from 'core/redux/widget1';
 import { getFinmaValues } from 'core/components/widget1/widget1Helpers';
 
-const AppWidget1PageContainer = connect((state) => {
+const AppWidget1PageContainer = connect(state => {
   const {
     widget1: {
       step,

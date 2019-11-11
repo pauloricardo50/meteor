@@ -19,7 +19,7 @@ export default compose(
   withProps(({ options, selected, onChange }) => ({
     optionsIncludeOption,
 
-    handleChange: (option) => {
+    handleChange: option => {
       const newOptions = optionsIncludeOption(selected, option)
         ? removeOptionFromOptions(option, selected)
         : [...selected, option];

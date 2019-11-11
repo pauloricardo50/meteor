@@ -56,12 +56,16 @@ export const promotionPermissionsSchema = {
   },
   'displayCustomerNames.forLotStatus.$': {
     type: String,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+    ),
   },
   'displayCustomerNames.invitedBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY,
+    ),
     uniforms: { displayEmpty: false, placeholder: '' },
   },
   canInviteCustomers: SCHEMA_BOOLEAN,
@@ -129,7 +133,9 @@ const PromotionSchema = new SimpleSchema({
 
       // Round up to 100 to avoid JS math rounding issues
       if (
-        Math.round(this.value.reduce((tot, { percent }) => tot + percent, 0) * 100) !== 100
+        Math.round(
+          this.value.reduce((tot, { percent }) => tot + percent, 0) * 100,
+        ) !== 100
       ) {
         return 'incompleteTimeline';
       }

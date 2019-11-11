@@ -72,7 +72,7 @@ describe('OfferService', () => {
     });
   });
 
-  describe('send feedback', function () {
+  describe('send feedback', function() {
     this.timeout(10000);
 
     it('sends the feedback to the lender', () => {
@@ -108,7 +108,7 @@ describe('OfferService', () => {
       const feedback = 'This is my feedback';
       OfferService.sendFeedback({ offerId, feedback });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         expect(emails.length).to.equal(1);
         const {
           emailId,
@@ -135,7 +135,9 @@ describe('OfferService', () => {
         expect(bcc_address).to.equal('dev@e-potek.ch');
         expect(from_name).to.equal('Dev E-Potek');
         expect(subject).to.include('Feedback client sur');
-        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include(feedback);
       });
     });
   });

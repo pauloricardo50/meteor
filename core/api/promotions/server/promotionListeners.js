@@ -15,10 +15,13 @@ ServerEventService.addBeforeMethodListener(
       promotionLots: { attributedTo: 1 },
     });
 
-    return Promise.all(promotionLots
-      .filter(({ attributedTo }) => attributedTo === loanId)
-      .map(({ _id: promotionLotId }) =>
-      // Also sets the status to AVAILABLE
-        cancelPromotionLotBooking.run({ promotionLotId })));
+    return Promise.all(
+      promotionLots
+        .filter(({ attributedTo }) => attributedTo === loanId)
+        .map(({ _id: promotionLotId }) =>
+          // Also sets the status to AVAILABLE
+          cancelPromotionLotBooking.run({ promotionLotId }),
+        ),
+    );
   },
 );

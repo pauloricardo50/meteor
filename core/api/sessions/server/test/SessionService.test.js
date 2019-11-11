@@ -14,13 +14,15 @@ describe('SessionService', () => {
   it('removes old sessions', async () => {
     const promises = [];
     for (let index = 10; index < 20; index++) {
-      promises.push(SessionService.rawCollection.insert({
-        _id: index,
-        connectionId: index,
-        updatedAt: moment()
-          .subtract(index, 'minutes')
-          .toDate(),
-      }));
+      promises.push(
+        SessionService.rawCollection.insert({
+          _id: index,
+          connectionId: index,
+          updatedAt: moment()
+            .subtract(index, 'minutes')
+            .toDate(),
+        }),
+      );
     }
 
     await Promise.all(promises);

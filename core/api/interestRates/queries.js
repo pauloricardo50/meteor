@@ -19,8 +19,8 @@ const makeFormatRate = rates => type => ({
 });
 
 const sortRates = ({ type: a }, { type: b }) =>
-  Object.values(INTEREST_RATES).indexOf(a)
-  - Object.values(INTEREST_RATES).indexOf(b);
+  Object.values(INTEREST_RATES).indexOf(a) -
+  Object.values(INTEREST_RATES).indexOf(b);
 
 const getAverageRates = rates =>
   rates.reduce(

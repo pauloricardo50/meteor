@@ -13,9 +13,9 @@ describe('AppLayout', () => {
         expect(getRedirect(undefined, '/account')).to.include('login');
         expect(getRedirect(undefined, '/whatever')).to.include('login');
       });
-      
+
       it('should not redirect if user is on allowed route', () => {
-      expect(getRedirect(undefined, '/')).to.equal(false);
+        expect(getRedirect(undefined, '/')).to.equal(false);
         expect(getRedirect(undefined, '/login')).to.equal(false);
         expect(getRedirect(undefined, '/reset-password')).to.equal(false);
         expect(getRedirect(undefined, '/enroll-account')).to.equal(false);

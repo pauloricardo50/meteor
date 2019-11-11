@@ -15,13 +15,19 @@ const [microservice, script, ...args] = process.argv.slice(2);
 const custom = new Process();
 
 if (!script) {
-  throw new Error('Custom script argument not provided. Usage: "node -r esm run-script.js custom <custom_script>"');
+  throw new Error(
+    'Custom script argument not provided. Usage: "node -r esm run-script.js custom <custom_script>"',
+  );
 }
 
 if (!Object.keys(CUSTOM_SCRIPTS).includes(script)) {
-  throw new Error(`Unknown custom script "${script}". Available custom scripts:\n${Object.keys(CUSTOM_SCRIPTS)
-    .map(s => `"${s}"`)
-    .join(', ')}`);
+  throw new Error(
+    `Unknown custom script "${script}". Available custom scripts:\n${Object.keys(
+      CUSTOM_SCRIPTS,
+    )
+      .map(s => `"${s}"`)
+      .join(', ')}`,
+  );
 }
 
 if (CUSTOM_SCRIPTS[script]) {

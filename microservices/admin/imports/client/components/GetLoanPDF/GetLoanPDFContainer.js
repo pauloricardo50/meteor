@@ -29,27 +29,29 @@ const saveHtmlFile = ({ html, pdfName }) => {
   }
 };
 
-export default compose(withProps(({ loan: { _id: loanId } }) => ({
-  handlePDF: ({ anonymous, organisationId, structureIds }) =>
-    generatePDF
-      .run({
-        type: PDF_TYPES.LOAN,
-        params: { loanId, organisationId, structureIds },
-        options: { anonymous },
-      })
-      .then(savePdf)
-      .catch((error) => {
+export default compose(
+  withProps(({ loan: { _id: loanId } }) => ({
+    handlePDF: ({ anonymous, organisationId, structureIds }) =>
+      generatePDF
+        .run({
+          type: PDF_TYPES.LOAN,
+          params: { loanId, organisationId, structureIds },
+          options: { anonymous },
+        })
+        .then(savePdf)
+        .catch(error => {
           import('../../../core/utils/message').then(({ default: message }) => {
             message.error(error.message, 5);
           });
-      }),
-  handleHTML: ({ anonymous, organisationId, structureIds }) =>
-    generatePDF
-      .run({
-        type: PDF_TYPES.LOAN,
-        params: { loanId, organisationId, structureIds },
-        options: { anonymous },
-        htmlOnly: true,
-      })
-      .then(saveHtmlFile),
-})));
+        }),
+    handleHTML: ({ anonymous, organisationId, structureIds }) =>
+      generatePDF
+        .run({
+          type: PDF_TYPES.LOAN,
+          params: { loanId, organisationId, structureIds },
+          options: { anonymous },
+          htmlOnly: true,
+        })
+        .then(saveHtmlFile),
+  })),
+);

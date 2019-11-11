@@ -5,7 +5,7 @@ import { proLoansAggregate } from 'core/api/loans/queries';
 import { proOrganisation } from 'core/api/organisations/queries';
 
 const getAnonymous = withAnonymous =>
-  (withAnonymous ? undefined : { $in: [null, false] });
+  withAnonymous ? undefined : { $in: [null, false] };
 
 const getReferredBy = (referredByUserId, organisationId) => {
   if (referredByUserId === true) {

@@ -39,7 +39,7 @@ describe('Www Pages', () => {
     cy.callMethod('generateFixtures');
   });
 
-  Object.keys(pages).forEach((pageName) => {
+  Object.keys(pages).forEach(pageName => {
     it(`${pageName} Page should render`, () => {
       cy.routeShouldRenderSuccessfully(pages[pageName], null, {
         reloadWindowOnNavigation: true,

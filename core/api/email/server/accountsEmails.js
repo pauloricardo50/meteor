@@ -40,6 +40,12 @@ export const createAccountsEmailConfig = emailId => ({
   },
 });
 
-Accounts.emailTemplates.verifyEmail = createAccountsEmailConfig(EMAIL_IDS.VERIFY_EMAIL);
-Accounts.emailTemplates.resetPassword = createAccountsEmailConfig(EMAIL_IDS.RESET_PASSWORD);
-Accounts.emailTemplates.enrollAccount = createAccountsEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT);
+Accounts.emailTemplates.verifyEmail = createAccountsEmailConfig(
+  EMAIL_IDS.VERIFY_EMAIL,
+);
+Accounts.emailTemplates.resetPassword = createAccountsEmailConfig(
+  EMAIL_IDS.RESET_PASSWORD,
+);
+Accounts.emailTemplates.enrollAccount = createAccountsEmailConfig(
+  EMAIL_IDS.ENROLL_ACCOUNT,
+);

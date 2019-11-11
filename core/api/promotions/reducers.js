@@ -7,12 +7,16 @@ const promotionLotStatusReducer = status => ({
     promotionLots: { status: 1 },
   },
   reduce: ({ promotionLots = [] }) =>
-    promotionLots.filter(({ status: promotionLotStatus }) => status === promotionLotStatus),
+    promotionLots.filter(
+      ({ status: promotionLotStatus }) => status === promotionLotStatus,
+    ),
 });
 
 Promotions.addReducers({
   ...addressReducer,
   soldPromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.SOLD),
   bookedPromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.BOOKED),
-  availablePromotionLots: promotionLotStatusReducer(PROMOTION_LOT_STATUS.AVAILABLE),
+  availablePromotionLots: promotionLotStatusReducer(
+    PROMOTION_LOT_STATUS.AVAILABLE,
+  ),
 });

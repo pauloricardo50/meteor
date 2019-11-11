@@ -14,7 +14,7 @@ exposeQuery({
         userId,
       });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { promotionOptionId } }) => {
         filters._id = promotionOptionId;
       };
@@ -30,7 +30,7 @@ exposeQuery({
       const { promotionOptionIds } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
-      promotionOptionIds.forEach((promotionOptionId) => {
+      promotionOptionIds.forEach(promotionOptionId => {
         SecurityService.promotions.isAllowedToViewPromotionOption({
           promotionOptionId,
           userId,

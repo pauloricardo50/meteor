@@ -156,15 +156,15 @@ ServerEventService.addAfterMethodListener(
     const suffix = [
       referredBy && referredBy.name,
       referredByOrg && referredByOrg.name,
-      loans[0]
-        && loans[0].properties
-        && loans[0].properties[0]
-        && loans[0].properties[0].category === PROPERTY_CATEGORY.PRO
-        && (loans[0].properties[0].address1 || loans[0].properties[0].name),
-      loans[0]
-        && loans[0].promotions
-        && loans[0].promotions[0]
-        && loans[0].promotions[0].name,
+      loans[0] &&
+        loans[0].properties &&
+        loans[0].properties[0] &&
+        loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
+        (loans[0].properties[0].address1 || loans[0].properties[0].name),
+      loans[0] &&
+        loans[0].promotions &&
+        loans[0].promotions[0] &&
+        loans[0].promotions[0].name,
     ]
       .filter(x => x)
       .map(x => `(${x})`)

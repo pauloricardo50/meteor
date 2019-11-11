@@ -5,7 +5,7 @@ const { useState, useEffect } = React;
 const camelToHyphen = str =>
   str.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`).toLowerCase();
 
-const objectToString = (query) => {
+const objectToString = query => {
   if (typeof query === 'string') return query;
   return Object.entries(query)
     .map(([feature, value]) => {

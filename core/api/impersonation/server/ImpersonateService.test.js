@@ -22,7 +22,7 @@ function getDummies() {
 }
 
 describe('ImpersonateService', () => {
-  it('Should be able to authenticate a user as an admin', (done) => {
+  it('Should be able to authenticate a user as an admin', done => {
     const { adminId, userId } = getDummies();
 
     const FICTIONAL_TOKEN = Random.id();

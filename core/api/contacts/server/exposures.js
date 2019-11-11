@@ -11,7 +11,7 @@ exposeQuery({ query: adminContacts, options: { allowFilterById: true } });
 exposeQuery({
   query: contactSearch,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
 

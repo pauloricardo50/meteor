@@ -10,13 +10,7 @@ const writeProdToStagingTmuxinator = () =>
     data: {
       name: `restore-db-${prod.sshId}`,
       root: '~/',
-      on_project_exit: `cf target -s Staging && cf delete e-potek-ssh-tunnel-staging-${
-        staging.sshId
-      } -r -f && cf target -s Production && cf delete e-potek-ssh-tunnel-production-${
-        prod.sshId
-      } -r -f && rm -rf ${__dirname}/staging-${
-        staging.sshId
-      } && rm -rf ${__dirname}/production-${prod.sshId}`,
+      on_project_exit: `cf target -s Staging && cf delete e-potek-ssh-tunnel-staging-${staging.sshId} -r -f && cf target -s Production && cf delete e-potek-ssh-tunnel-production-${prod.sshId} -r -f && rm -rf ${__dirname}/staging-${staging.sshId} && rm -rf ${__dirname}/production-${prod.sshId}`,
       windows: [
         {
           sshTunnel: {

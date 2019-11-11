@@ -2,11 +2,11 @@ import { withProps } from 'recompose';
 
 import getFilterOptions, { filterFilterOptionsByValues } from './filterOptions';
 
-export default withProps((props) => {
+export default withProps(props => {
   const { setFilters, collectionName, filters = {} } = props;
 
   return {
-    handleChange: (selectedOptions) => {
+    handleChange: selectedOptions => {
       const selectedFilters = selectedOptions
         .map(({ value }) => value)
         .filter(value => value);

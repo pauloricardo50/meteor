@@ -63,10 +63,13 @@ export const getIncomeRatio = (yearlySalary, monthlyCost) =>
   monthlyCost / (yearlySalary / 12);
 
 export const getFinmaMonthlyCost = (propertyValue, fortune, wantedLoan) => {
-  const maintenanceMonthly = getSimpleYearlyMaintenance(propertyValue, MAINTENANCE_FINMA) / 12;
+  const maintenanceMonthly =
+    getSimpleYearlyMaintenance(propertyValue, MAINTENANCE_FINMA) / 12;
   const loanValue = wantedLoan || getLoanValue(propertyValue, fortune);
-  const interestsMonthly = getSimpleYearlyInterests(loanValue, INTERESTS_FINMA) / 12;
-  const amortizationMonthly = getYearlyAmortization({ propertyValue, loanValue }) / 12;
+  const interestsMonthly =
+    getSimpleYearlyInterests(loanValue, INTERESTS_FINMA) / 12;
+  const amortizationMonthly =
+    getYearlyAmortization({ propertyValue, loanValue }) / 12;
 
   return {
     maintenanceMonthly,
@@ -76,7 +79,7 @@ export const getFinmaMonthlyCost = (propertyValue, fortune, wantedLoan) => {
   };
 };
 
-export const validateIncomeRatio = (incomeRatio) => {
+export const validateIncomeRatio = incomeRatio => {
   // add 0.01% to avoid rounding issues
   const safeIncomeRatio = incomeRatio - 0.0001;
   if (safeIncomeRatio <= MAX_INCOME_RATIO) {

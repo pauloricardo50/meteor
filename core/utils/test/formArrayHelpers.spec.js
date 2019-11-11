@@ -51,26 +51,34 @@ describe('formArrayHelpers', () => {
     });
 
     it('should return an array with the values of the document', () => {
-      expect(getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' })).to.deep.equal(['1', '2']);
+      expect(
+        getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' }),
+      ).to.deep.equal(['1', '2']);
     });
 
     it('should work with nested id values', () => {
-      expect(getCountedArray([...dummyArray, { id: 'id3.id' }], {
-        id1: '1',
-        id2: '2',
-        id3: { id: '3' },
-        idx: 'x',
-      })).to.deep.equal(['1', '2', '3']);
+      expect(
+        getCountedArray([...dummyArray, { id: 'id3.id' }], {
+          id1: '1',
+          id2: '2',
+          id3: { id: '3' },
+          idx: 'x',
+        }),
+      ).to.deep.equal(['1', '2', '3']);
     });
 
     it('should not count non required values', () => {
-      expect(getCountedArray([{ id: 'id', required: false }], {
-        id: 'yo',
-      })).to.deep.equal([]);
+      expect(
+        getCountedArray([{ id: 'id', required: false }], {
+          id: 'yo',
+        }),
+      ).to.deep.equal([]);
     });
 
     it('should count non required values if specified', () => {
-      expect(getCountedArray([{ id: 'id', required: false }], { id: 'yo' }, true)).to.deep.equal(['yo']);
+      expect(
+        getCountedArray([{ id: 'id', required: false }], { id: 'yo' }, true),
+      ).to.deep.equal(['yo']);
     });
 
     describe('conditional values', () => {
@@ -85,11 +93,15 @@ describe('formArrayHelpers', () => {
       ];
 
       it('should only count the conditional value if it is false', () => {
-        expect(getCountedArray(array, { conditional: 'anything' })).to.deep.equal(['anything']);
+        expect(
+          getCountedArray(array, { conditional: 'anything' }),
+        ).to.deep.equal(['anything']);
       });
 
       it('should count the conditional value and the following if it is true', () => {
-        expect(getCountedArray(array, { conditional: trueValue })).to.deep.equal([trueValue, undefined]);
+        expect(
+          getCountedArray(array, { conditional: trueValue }),
+        ).to.deep.equal([trueValue, undefined]);
       });
 
       it('should not count the additionalValue if its not required', () => {
@@ -101,7 +113,9 @@ describe('formArrayHelpers', () => {
             inputs: [{ id: 'conditional', required: false }, { id: 'test' }],
           },
         ];
-        expect(getCountedArray(array, { conditional: trueValue })).to.deep.equal([undefined]);
+        expect(
+          getCountedArray(array, { conditional: trueValue }),
+        ).to.deep.equal([undefined]);
       });
     });
   });
@@ -225,21 +239,27 @@ describe('formArrayHelpers', () => {
       array = [{ id: 'test.value' }];
       const doc2 = { test: { value: 'stuff2' } };
 
-      expect(getFormValuesHash(array, doc)).to.not.equal(getFormValuesHash(array, doc2));
+      expect(getFormValuesHash(array, doc)).to.not.equal(
+        getFormValuesHash(array, doc2),
+      );
     });
 
     it('ignores irrelevant fields', () => {
       array = [{ id: 'test.value' }];
       const doc2 = { test: { value: 'stuff' }, a: 'b' };
 
-      expect(getFormValuesHash(array, doc)).to.equal(getFormValuesHash(array, doc2));
+      expect(getFormValuesHash(array, doc)).to.equal(
+        getFormValuesHash(array, doc2),
+      );
     });
 
     it('counts non required values', () => {
       array = [{ id: 'test.value' }, { id: 'stuff', required: false }];
       const doc2 = { test: { value: 'stuff' }, stuff: 'r' };
 
-      expect(getFormValuesHash(array, doc)).to.not.equal(getFormValuesHash(array, doc2));
+      expect(getFormValuesHash(array, doc)).to.not.equal(
+        getFormValuesHash(array, doc2),
+      );
     });
   });
 });

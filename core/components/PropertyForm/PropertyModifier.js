@@ -7,16 +7,18 @@ type PropertyModifierContainerProps = {
   property: Object,
 };
 
-const PropertyModifierContainer = withProps(({
-  property: { _id, address1, zipCode, city, value },
-}: PropertyModifierContainerProps) => ({
-  onSubmit: formValues =>
-    propertyUpdate.run({ propertyId: _id, object: formValues }),
-  buttonLabelId: 'PropertyForm.modifierLabel',
-  form: 'modify-property',
-  formTitleId: 'PropertyForm.modifierDialogTitle',
-  formDescriptionId: 'PropertyForm.modifierDialogDescription',
-  model: { address1, zipCode, city, value },
-}));
+const PropertyModifierContainer = withProps(
+  ({
+    property: { _id, address1, zipCode, city, value },
+  }: PropertyModifierContainerProps) => ({
+    onSubmit: formValues =>
+      propertyUpdate.run({ propertyId: _id, object: formValues }),
+    buttonLabelId: 'PropertyForm.modifierLabel',
+    form: 'modify-property',
+    formTitleId: 'PropertyForm.modifierDialogTitle',
+    formDescriptionId: 'PropertyForm.modifierDialogDescription',
+    model: { address1, zipCode, city, value },
+  }),
+);
 
 export default PropertyModifierContainer(PropertyForm);

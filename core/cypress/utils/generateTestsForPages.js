@@ -12,7 +12,7 @@ const generateTestsForPages = (pages, getTestData) => {
 
   Object.keys(pages)
     // .filter(page => page === 'admin')
-    .forEach((pageAuthentication) => {
+    .forEach(pageAuthentication => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
           cy.initiateTest();
@@ -26,7 +26,7 @@ const generateTestsForPages = (pages, getTestData) => {
         it('Pages should render without errors', () => {
           Object.keys(pages[pageAuthentication])
             // .filter(page => page === 'Loan Single Property')
-            .forEach((pageName) => {
+            .forEach(pageName => {
               const testName = `${pageName} Page`;
 
               cy.routeShouldRenderSuccessfully(

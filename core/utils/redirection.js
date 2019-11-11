@@ -16,7 +16,7 @@ export const WITHOUT_LOGIN = [
 ];
 
 export const isOnAllowedRoute = (path, routes) =>
-  routes.some((allowedRoute) => {
+  routes.some(allowedRoute => {
     if (allowedRoute === '/') {
       return path === allowedRoute;
     }

@@ -23,24 +23,28 @@ const insertNewLoan = ({
     user: { _id: userId },
   } = loan;
 
-  const userProperties = properties.filter(({ category }) => category === PROPERTY_CATEGORY.USER);
+  const userProperties = properties.filter(
+    ({ category }) => category === PROPERTY_CATEGORY.USER,
+  );
   const borrowerIds = borrowers.map(({ _id }) => _id);
 
   return adminLoanInsert
     .run({ userId })
     .then(loanId =>
-      loanUpdate.run({ loanId, object: { status } }).then(() => loanId))
-    .then((loanId) => {
+      loanUpdate.run({ loanId, object: { status } }).then(() => loanId),
+    )
+    .then(loanId => {
       if (userProperties.length) {
         const promises = userProperties.map(({ _id: propertyId }) =>
-          reuseProperty.run({ loanId, propertyId }));
+          reuseProperty.run({ loanId, propertyId }),
+        );
 
         return Promise.all(promises).then(() => loanId);
       }
 
       return loanId;
     })
-    .then((loanId) => {
+    .then(loanId => {
       if (borrowerIds.length) {
         return loanUpdate
           .run({ loanId, object: { borrowerIds } })
@@ -53,8 +57,9 @@ const insertNewLoan = ({
       loanSetCreatedAtActivityDescription.run({
         loanId,
         description: `Après avoir passé dossier ${loan.name} en sans suite`,
-      }))
-    .then((loanId) => {
+      }),
+    )
+    .then(loanId => {
       confirmNewStatus();
       return loanId;
     });
@@ -73,61 +78,66 @@ const addUnsuccesfulActivity = ({ loanId, reason }) =>
 
 export default compose(
   withRouter,
-  withProps(({
-    loan,
-    cancelNewStatus,
-    confirmNewStatus,
-    closeModal,
-    history,
-    returnValue: { reason },
-  }) => ({
-    setUnsuccessfulOnly: () => {
-      addUnsuccesfulActivity({ loanId: loan._id, reason })
-        .then(() => {
-          confirmNewStatus();
-          closeModal();
-        })
-        .catch(cancelNewStatus);
-    },
-    insertLeadLoan: () => {
-      addUnsuccesfulActivity({ loanId: loan._id, reason })
-        .then(() =>
-          insertNewLoan({ loan, cancelNewStatus, confirmNewStatus }))
-        .then((loanId) => {
-          history.push(`/loans/${loanId}`);
-        })
-        .then(() => closeModal())
-        .catch(cancelNewStatus);
-    },
-    insertQualifiedLeadLoan: () => {
-      addUnsuccesfulActivity({ loanId: loan._id, reason })
-        .then(() =>
-          insertNewLoan({
-            loan,
-            cancelNewStatus,
-            confirmNewStatus,
-            status: LOAN_STATUS.QUALIFIED_LEAD,
-          }))
-        .then((loanId) => {
-          history.push(`/loans/${loanId}`);
-        })
-        .then(() => closeModal())
-        .catch(cancelNewStatus);
-    },
-    insertPendingLoan: () => {
-      addUnsuccesfulActivity({ loanId: loan._id, reason })
-        .then(() =>
-          insertNewLoan({
-            loan,
-            status: LOAN_STATUS.PENDING,
-            cancelNewStatus,
-            confirmNewStatus,
-          }))
-        .then((loanId) => {
-          history.push(`/loans/${loanId}`);
-        })
-        .then(() => closeModal())
-        .catch(cancelNewStatus);
-    },
-  })),
+  withProps(
+    ({
+      loan,
+      cancelNewStatus,
+      confirmNewStatus,
+      closeModal,
+      history,
+      returnValue: { reason },
+    }) => ({
+      setUnsuccessfulOnly: () => {
+        addUnsuccesfulActivity({ loanId: loan._id, reason })
+          .then(() => {
+            confirmNewStatus();
+            closeModal();
+          })
+          .catch(cancelNewStatus);
+      },
+      insertLeadLoan: () => {
+        addUnsuccesfulActivity({ loanId: loan._id, reason })
+          .then(() =>
+            insertNewLoan({ loan, cancelNewStatus, confirmNewStatus }),
+          )
+          .then(loanId => {
+            history.push(`/loans/${loanId}`);
+          })
+          .then(() => closeModal())
+          .catch(cancelNewStatus);
+      },
+      insertQualifiedLeadLoan: () => {
+        addUnsuccesfulActivity({ loanId: loan._id, reason })
+          .then(() =>
+            insertNewLoan({
+              loan,
+              cancelNewStatus,
+              confirmNewStatus,
+              status: LOAN_STATUS.QUALIFIED_LEAD,
+            }),
+          )
+          .then(loanId => {
+            history.push(`/loans/${loanId}`);
+          })
+          .then(() => closeModal())
+          .catch(cancelNewStatus);
+      },
+      insertPendingLoan: () => {
+        addUnsuccesfulActivity({ loanId: loan._id, reason })
+          .then(() =>
+            insertNewLoan({
+              loan,
+              status: LOAN_STATUS.PENDING,
+              cancelNewStatus,
+              confirmNewStatus,
+            }),
+          )
+          .then(loanId => {
+            history.push(`/loans/${loanId}`);
+          })
+          .then(() => closeModal())
+          .catch(cancelNewStatus);
+      },
+    }),
+  ),
 );

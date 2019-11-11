@@ -1,19 +1,21 @@
 import { PROPERTY_CATEGORY } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 
-const shouldDisplayPropertyChecklist = (props) => {
+const shouldDisplayPropertyChecklist = props => {
   const { loan = {} } = props;
   const property = Calculator.selectProperty({ loan });
   return (
-    !loan.hasPromotion
-    && property
-    && property._id // Perform extra check in case property is an empty object
-    && property.category !== PROPERTY_CATEGORY.PRO
+    !loan.hasPromotion &&
+    property &&
+    property._id && // Perform extra check in case property is an empty object
+    property.category !== PROPERTY_CATEGORY.PRO
   );
 };
 
-const makeLabelOverrider = doc => (id) => {
-  const additionalDocument = doc.additionalDocuments.find(({ id: documentId }) => documentId === id);
+const makeLabelOverrider = doc => id => {
+  const additionalDocument = doc.additionalDocuments.find(
+    ({ id: documentId }) => documentId === id,
+  );
 
   if (additionalDocument) {
     return additionalDocument.label;
@@ -22,14 +24,14 @@ const makeLabelOverrider = doc => (id) => {
   return false;
 };
 
-const formatFileTitle = ({ doc, formatMessage }) => (file) => {
+const formatFileTitle = ({ doc, formatMessage }) => file => {
   const labelOverrider = makeLabelOverrider(doc);
   const label = labelOverrider(file);
 
   return label || formatMessage({ id: `files.${file}` });
 };
 
-const getPropertyMissingFields = (props) => {
+const getPropertyMissingFields = props => {
   const {
     loan = {},
     intl: { formatMessage },
@@ -40,19 +42,20 @@ const getPropertyMissingFields = (props) => {
   return {
     ...(displayPropertyChecklist
       ? {
-        property: {
-          title:
-              (property && property.address1)
-              || formatMessage({ id: 'general.property' }),
-          labels: Calculator.getMissingPropertyFields({ loan }).map(field =>
-            formatMessage({ id: `Forms.${field}` })),
-        },
-      }
+          property: {
+            title:
+              (property && property.address1) ||
+              formatMessage({ id: 'general.property' }),
+            labels: Calculator.getMissingPropertyFields({ loan }).map(field =>
+              formatMessage({ id: `Forms.${field}` }),
+            ),
+          },
+        }
       : {}),
   };
 };
 
-const getPropertyMissingDocuments = (props) => {
+const getPropertyMissingDocuments = props => {
   const {
     loan = {},
     intl: { formatMessage },
@@ -63,20 +66,20 @@ const getPropertyMissingDocuments = (props) => {
   return {
     ...(displayPropertyChecklist
       ? {
-        property: {
-          title:
-              (property && property.address1)
-              || formatMessage({ id: 'general.property' }),
-          labels: Calculator.getMissingPropertyDocuments({
-            loan,
-          }).map(formatFileTitle({ doc: property, formatMessage })),
-        },
-      }
+          property: {
+            title:
+              (property && property.address1) ||
+              formatMessage({ id: 'general.property' }),
+            labels: Calculator.getMissingPropertyDocuments({
+              loan,
+            }).map(formatFileTitle({ doc: property, formatMessage })),
+          },
+        }
       : {}),
   };
 };
 
-const getBorrowersMissingFields = (props) => {
+const getBorrowersMissingFields = props => {
   const {
     loan = {},
     intl: { formatMessage },
@@ -86,8 +89,8 @@ const getBorrowersMissingFields = (props) => {
   return {
     borrowers: borrowers.map((borrower, index) => ({
       title:
-        borrower.name
-        || formatMessage(
+        borrower.name ||
+        formatMessage(
           { id: 'general.borrowerWithIndex' },
           { index: index + 1 },
         ),
@@ -98,7 +101,7 @@ const getBorrowersMissingFields = (props) => {
   };
 };
 
-const getBorrowersMissingDocuments = (props) => {
+const getBorrowersMissingDocuments = props => {
   const {
     loan = {},
     intl: { formatMessage },
@@ -108,8 +111,8 @@ const getBorrowersMissingDocuments = (props) => {
   return {
     borrowers: borrowers.map((borrower, index) => ({
       title:
-        borrower.name
-        || formatMessage(
+        borrower.name ||
+        formatMessage(
           { id: 'general.borrowerWithIndex' },
           { index: index + 1 },
         ),
@@ -120,7 +123,6 @@ const getBorrowersMissingDocuments = (props) => {
     })),
   };
 };
-
 
 export const getChecklistValidInformationsRatio = props =>
   [

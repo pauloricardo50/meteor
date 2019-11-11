@@ -26,7 +26,7 @@ if (isEmailTestEnv) {
       // them, poll the DB for 10 seconds until something is found
       let counter = 0;
 
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         const interval = Meteor.setInterval(() => {
           counter += 1;
 

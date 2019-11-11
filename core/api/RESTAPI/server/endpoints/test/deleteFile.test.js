@@ -5,9 +5,7 @@ import { expect } from 'chai';
 import { appendFileSync } from 'fs';
 import { Random } from 'meteor/random';
 
-import {
-  PROPERTY_DOCUMENTS,
-} from 'core/api/files/fileConstants';
+import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
@@ -56,10 +54,10 @@ const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
   });
 };
 
-describe('REST: deleteFile', function () {
+describe('REST: deleteFile', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -115,17 +113,18 @@ describe('REST: deleteFile', function () {
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
-      .then((res) => {
+      .then(res => {
         const { files } = res;
         expect(files.length).to.equal(1);
         return files[0].Key;
       })
       .then(key =>
-        deleteFile({ key, propertyId, userId: 'pro' }).then((res) => {
+        deleteFile({ key, propertyId, userId: 'pro' }).then(res => {
           const { deletedFiles = [] } = res;
           expect(deletedFiles.length).to.equal(1);
           expect(deletedFiles[0].Key).to.equal(key);
-        }));
+        }),
+      );
   });
 
   it('does not allow to delete file when user does not have permissions', () => {
@@ -143,19 +142,19 @@ describe('REST: deleteFile', function () {
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
-      .then((res) => {
+      .then(res => {
         const { files } = res;
         expect(files.length).to.equal(1);
         return files[0].Key;
       })
-      .then((key) => {
+      .then(key => {
         PropertyService.setProUserPermissions({
           propertyId,
           userId: 'pro',
           permissions: { canModifyProperty: false },
         });
 
-        return deleteFile({ key, propertyId, userId: 'pro' }).then((res) => {
+        return deleteFile({ key, propertyId, userId: 'pro' }).then(res => {
           const { status, message } = res;
           expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
           expect(message).to.include('[NOT_AUTHORIZED]');
@@ -178,7 +177,7 @@ describe('REST: deleteFile', function () {
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
-      .then((res) => {
+      .then(res => {
         const { files } = res;
         expect(files.length).to.equal(1);
         return files[0].Key;
@@ -189,11 +188,12 @@ describe('REST: deleteFile', function () {
           propertyId,
           userId: 'pro2',
           impersonateUser: 'pro@org.com',
-        }).then((res) => {
+        }).then(res => {
           const { deletedFiles = [] } = res;
           expect(deletedFiles.length).to.equal(1);
           expect(deletedFiles[0].Key).to.equal(key);
-        }));
+        }),
+      );
   });
 
   it('fails with a wrong propertyId', () =>
@@ -201,7 +201,7 @@ describe('REST: deleteFile', function () {
       key: 'wathever',
       propertyId: '12345',
       userId: 'pro',
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
       expect(message).to.include('No property found');
@@ -218,7 +218,7 @@ describe('REST: deleteFile', function () {
       key: 'wathever',
       propertyId,
       userId: 'pro',
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
       expect(message).to.include('not found');
@@ -229,7 +229,7 @@ describe('REST: deleteFile', function () {
     deleteFile({
       key: 'wathever',
       userId: 'pro',
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
       expect(message).to.include('Property ID is required');
@@ -250,18 +250,17 @@ describe('REST: deleteFile', function () {
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
-      .then((res) => {
+      .then(res => {
         const { files } = res;
         expect(files.length).to.equal(1);
         return files[0].Key;
       })
       .then(key =>
-        deleteFile({ key, propertyId: 'extId', userId: 'pro' }).then((res) => {
+        deleteFile({ key, propertyId: 'extId', userId: 'pro' }).then(res => {
           const { deletedFiles = [] } = res;
           expect(deletedFiles.length).to.equal(1);
           expect(deletedFiles[0].Key).to.equal(key);
-        }));
+        }),
+      );
   });
-
-  
 });
