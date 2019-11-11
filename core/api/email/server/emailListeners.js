@@ -10,7 +10,7 @@ import {
   sellPromotionLot,
 } from '../../methods';
 import { Loans } from '../..';
-import { EMAIL_IDS, INTERNAL_EMAIL, FROM_EMAIL } from '../emailConstants';
+import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 
 ServerEventService.addAfterMethodListener(

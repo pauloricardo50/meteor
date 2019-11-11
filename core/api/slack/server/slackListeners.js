@@ -1,11 +1,9 @@
-import PropertyService from 'core/api/properties/server/PropertyService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
   sellPromotionLot,
   proInviteUser,
-  anonymousLoanInsert,
   userLoanInsert,
   anonymousCreateUser,
 } from '../../methods';
@@ -17,7 +15,6 @@ import {
   promotionLotBooked,
   promotionLotSold,
   referralOnlyNotification,
-  newAnonymousLoan,
   newLoan,
   newUser,
 } from './slackNotifications';
@@ -100,29 +97,6 @@ ServerEventService.addAfterMethodListener(
     }
   },
 );
-
-// ServerEventService.addAfterMethodListener(
-//   anonymousLoanInsert,
-//   ({ params: { proPropertyId, referralId }, result: loanId }) => {
-//     const property = proPropertyId
-//       && PropertyService.fetchOne({
-//         $filters: { _id: proPropertyId },
-//         address1: 1,
-//       });
-//     const { name: loanName } = LoanService.fetchOne({
-//       $filters: { _id: loanId },
-//       name: 1,
-//     });
-//     const referral = referralId
-//       && UserService.fetchOne({
-//         $filters: { _id: referralId },
-//         name: 1,
-//         organisations: { name: 1 },
-//       });
-
-//     newAnonymousLoan({ loanName, loanId, property, referral });
-//   },
-// );
 
 ServerEventService.addAfterMethodListener(
   userLoanInsert,
