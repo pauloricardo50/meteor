@@ -7,7 +7,7 @@ import T from 'core/components/Translation';
 import DetailSideNavFiltersContainer from './DetailSideNavFiltersContainer';
 
 const DetailSideNavFilters = ({ options = [], selected, handleChange }) =>
-  (options.length ? (
+  options.length ? (
     <DropdownSelect
       selected={selected}
       options={options}
@@ -17,7 +17,7 @@ const DetailSideNavFilters = ({ options = [], selected, handleChange }) =>
     />
   ) : (
     <span style={{ width: 48, height: 48 }} />
-  ));
+  );
 
 DetailSideNavFilters.propTypes = {
   handleChange: PropTypes.func.isRequired,

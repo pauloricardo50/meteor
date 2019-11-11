@@ -24,7 +24,9 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
     );
   }
 
-  const hasNoSearchResults = Object.values(results).every((collection) => collection.length === 0);
+  const hasNoSearchResults = Object.values(results).every(
+    collection => collection.length === 0,
+  );
 
   if (hasNoSearchResults) {
     return (
@@ -38,7 +40,7 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
 
   return (
     <List className="search-results">
-      {Object.keys(results).map((collectionName) => {
+      {Object.keys(results).map(collectionName => {
         const resultsFromThisCollection = results[collectionName];
 
         if (resultsFromThisCollection.length === 0) {
@@ -57,7 +59,7 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
             </h3>
 
             <div className="flex-col">
-              {resultsFromThisCollection.map((result) => (
+              {resultsFromThisCollection.map(result => (
                 <CollectionIconLink
                   relatedDoc={{ ...result, collection: collectionName }}
                   key={result._id}

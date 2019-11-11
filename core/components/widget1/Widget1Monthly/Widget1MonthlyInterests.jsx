@@ -52,7 +52,9 @@ Widget1MonthlyInterests.propTypes = {
 // rates
 export default lifecycle({
   componentDidMount() {
-    const initialRate = options(this.props.interestRates).find(rate => rate.type === INTEREST_RATES.YEARS_10).id;
+    const initialRate = options(this.props.interestRates).find(
+      rate => rate.type === INTEREST_RATES.YEARS_10,
+    ).id;
     this.props.onChange(initialRate);
   },
 })(Widget1MonthlyInterests);

@@ -13,7 +13,7 @@ const DEFAULT_DISABLED_LINES = [
   INTEREST_RATES.YEARS_20,
 ];
 
-const getAverageRate = (rate) => {
+const getAverageRate = rate => {
   if (!rate || !rate.rateLow || !rate.rateHigh) {
     return null;
   }
@@ -75,12 +75,12 @@ const getRangeTypeData = ({ rates }) =>
 
 const getData = ({ rates, dataType }) => {
   switch (dataType) {
-  case 'average':
-    return getAverageTypeData({ rates });
-  case 'range':
-    return getRangeTypeData({ rates });
-  default:
-    return [];
+    case 'average':
+      return getAverageTypeData({ rates });
+    case 'range':
+      return getRangeTypeData({ rates });
+    default:
+      return [];
   }
 };
 
@@ -113,7 +113,7 @@ const getAllRatesOfTypeLines = ({ rates, type, formatMessage }) =>
 
 const getAllRatesOfType = ({ interestRates, type }) =>
   interestRates
-    .map((rates) => {
+    .map(rates => {
       const { date } = rates;
       const rate = rates[type];
 
@@ -170,25 +170,27 @@ const getLines = ({ interestRates, irs10y, formatMessage }) =>
 export default compose(
   injectIntl,
   withState('showRanges', 'setShowRanges', false),
-  withProps(({
-    interestRates = [],
-    irs10y = [],
-    showRanges,
-    setShowRanges,
-    intl: { formatMessage },
-  }) => {
-    const lines = getLines({
-      interestRates,
-      irs10y,
+  withProps(
+    ({
+      interestRates = [],
+      irs10y = [],
       showRanges,
-      formatMessage,
-    });
+      setShowRanges,
+      intl: { formatMessage },
+    }) => {
+      const lines = getLines({
+        interestRates,
+        irs10y,
+        showRanges,
+        formatMessage,
+      });
 
-    return {
-      title: "Taux d'intérêt",
-      lines,
-      config: getConfig({ showRanges }),
-      toggleRanges: setShowRanges,
-    };
-  }),
+      return {
+        title: "Taux d'intérêt",
+        lines,
+        config: getConfig({ showRanges }),
+        toggleRanges: setShowRanges,
+      };
+    },
+  ),
 );

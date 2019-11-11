@@ -67,7 +67,7 @@ const makeMapTask = ({
   setShowDialog,
   relatedTo = true,
   showStatusColumn,
-}) => (task) => {
+}) => task => {
   const {
     _id: taskId,
     title,
@@ -139,8 +139,9 @@ export default compose(
   withProps(({ tasks = [], setTaskToModify, setShowDialog, relatedTo }) => {
     let stat;
     // Only show the status column if necessary
-    const showStatusColumn = tasks.length > 1
-      && !tasks.every(({ status }) => {
+    const showStatusColumn =
+      tasks.length > 1 &&
+      !tasks.every(({ status }) => {
         if (!stat) {
           stat = status;
         }
@@ -150,12 +151,14 @@ export default compose(
 
     const columnOptions = getColumnOptions({ relatedTo, showStatusColumn });
     return {
-      rows: tasks.map(makeMapTask({
-        setTaskToModify,
-        setShowDialog,
-        relatedTo,
-        showStatusColumn,
-      })),
+      rows: tasks.map(
+        makeMapTask({
+          setTaskToModify,
+          setShowDialog,
+          relatedTo,
+          showStatusColumn,
+        }),
+      ),
       columnOptions,
       initialOrderBy: columnOptions.findIndex(({ id }) => id === 'dueAt'),
       initialOrder: ORDER.ASC,

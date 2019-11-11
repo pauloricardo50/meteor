@@ -31,7 +31,7 @@ export default compose(
 
       getUserByPasswordResetToken
         .run({ token })
-        .then((result) => {
+        .then(result => {
           if (!result) {
             throw new Error('user not found');
           }
@@ -40,12 +40,12 @@ export default compose(
         .catch(setError);
     }, []);
 
-    const handleSubmit = (values) => {
+    const handleSubmit = values => {
       setLoading(true);
       const { newPassword, firstName, lastName, phoneNumber } = values;
 
       new Promise((resolve, reject) => {
-        Accounts.resetPassword(token, newPassword, (err) => {
+        Accounts.resetPassword(token, newPassword, err => {
           if (err) {
             reject(err);
           }
@@ -61,7 +61,8 @@ export default compose(
               lastName,
               phoneNumbers: phoneNumber ? [phoneNumber] : undefined,
             },
-          }))
+          }),
+        )
         .then(() =>
           Promise.all([
             notifyAssignee.run({
@@ -71,10 +72,11 @@ export default compose(
               trackingId: getCookie(TRACKING_COOKIE),
             }),
             userPasswordReset.run({}),
-          ]))
+          ]),
+        )
         .then(() => history.push('/'))
-        .catch((err) => {
-          // Don't clear loading if the submission is successful, because it 
+        .catch(err => {
+          // Don't clear loading if the submission is successful, because it
           // should route to '/' always, and the user shouldn't click on submit twice
           setLoading(false);
           throw err;

@@ -30,11 +30,13 @@ describe('FaqPageFaqs', () => {
       panels.forEach((panel, index) => {
         expect(panel.find(ExpansionPanelSummary).length).to.equal(1);
         expect(panel.find(ExpansionPanelSummary).find(T).length).to.equal(1);
-        expect(panel
-          .find(ExpansionPanelSummary)
-          .find(T)
-          .first()
-          .prop('id')).to.equal(`FaqPageFaqs.${faqs[index]}.question`);
+        expect(
+          panel
+            .find(ExpansionPanelSummary)
+            .find(T)
+            .first()
+            .prop('id'),
+        ).to.equal(`FaqPageFaqs.${faqs[index]}.question`);
       });
     });
 
@@ -43,11 +45,13 @@ describe('FaqPageFaqs', () => {
       panels.forEach((panel, index) => {
         expect(panel.find(ExpansionPanelDetails).length).to.equal(1);
         expect(panel.find(ExpansionPanelDetails).find(T).length).to.equal(1);
-        expect(panel
-          .find(ExpansionPanelDetails)
-          .find(T)
-          .first()
-          .prop('id')).to.equal(`FaqPageFaqs.${faqs[index]}.answer`);
+        expect(
+          panel
+            .find(ExpansionPanelDetails)
+            .find(T)
+            .first()
+            .prop('id'),
+        ).to.equal(`FaqPageFaqs.${faqs[index]}.answer`);
       });
     });
   });

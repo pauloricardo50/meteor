@@ -46,7 +46,9 @@ export default class TempFile extends Component {
       progressSetter.stop();
       if (error) {
         logError.run({
-          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          error: JSON.parse(
+            JSON.stringify(error, Object.getOwnPropertyNames(error)),
+          ),
           additionalData: [file],
         });
         this.setState({ error: error.reason || error.message });
@@ -77,8 +79,8 @@ export default class TempFile extends Component {
       <div className="temp-file flex-col">
         <div className="file">
           <h5 className="secondary bold file-name">{name}</h5>
-          {!error
-            && (fileIsUploading ? (
+          {!error &&
+            (fileIsUploading ? (
               <div className="uploading-progress">
                 <LinearProgress
                   color="primary"

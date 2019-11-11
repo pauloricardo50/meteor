@@ -17,43 +17,43 @@ const getTrigger = ({
   propertyOrganisation,
 }) => {
   switch (shareSolvency) {
-  case null:
-  case undefined:
-    return (
-      <Button secondary raised onClick={() => setOpenDialog(true)}>
-        {propertyOrganisation ? (
-          <T
-            id="MaxPropertyValueSharing.buttonLabelOrg"
-            values={{ orgName: propertyOrganisation.name }}
-          />
-        ) : (
-          <T id="MaxPropertyValueSharing.buttonLabel" />
-        )}
-      </Button>
-    );
-
-  case true:
-  case false:
-    return (
-      <div className="max-property-sharing-toggle">
-        <span>
+    case null:
+    case undefined:
+      return (
+        <Button secondary raised onClick={() => setOpenDialog(true)}>
           {propertyOrganisation ? (
             <T
               id="MaxPropertyValueSharing.buttonLabelOrg"
               values={{ orgName: propertyOrganisation.name }}
             />
           ) : (
-            <T id="MaxPropertyValueSharing.toggleLabel" />
+            <T id="MaxPropertyValueSharing.buttonLabel" />
           )}
-        </span>
-        <Toggle
-          toggled={shareSolvency}
-          onToggle={shareSolvency ? handleDisable : () => setOpenDialog(true)}
-        />
-      </div>
-    );
+        </Button>
+      );
 
-  default:
+    case true:
+    case false:
+      return (
+        <div className="max-property-sharing-toggle">
+          <span>
+            {propertyOrganisation ? (
+              <T
+                id="MaxPropertyValueSharing.buttonLabelOrg"
+                values={{ orgName: propertyOrganisation.name }}
+              />
+            ) : (
+              <T id="MaxPropertyValueSharing.toggleLabel" />
+            )}
+          </span>
+          <Toggle
+            toggled={shareSolvency}
+            onToggle={shareSolvency ? handleDisable : () => setOpenDialog(true)}
+          />
+        </div>
+      );
+
+    default:
   }
 };
 
@@ -83,7 +83,7 @@ const MaxPropertyValueSharing = ({
       <Dialog
         open={openDialog}
         title={<T id="SimpleDashboardPage.shareSolvency.title" />}
-        text={(
+        text={
           <T
             id="SimpleDashboardPage.shareSolvency.disclaimer"
             values={{
@@ -92,7 +92,7 @@ const MaxPropertyValueSharing = ({
                 : 'votre courtier',
             }}
           />
-        )}
+        }
         actions={[
           <Button
             label={<T id="ConfirmMethod.buttonCancel" />}

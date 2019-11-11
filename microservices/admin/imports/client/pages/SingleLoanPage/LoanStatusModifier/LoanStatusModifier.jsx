@@ -26,7 +26,7 @@ const LoanStatusModifier = ({
       allowModify
       docId={loan._id}
       additionalActions={additionalActions(openModal)}
-      method={(status) => loanSetStatus.run({ loanId: loan._id, status })}
+      method={status => loanSetStatus.run({ loanId: loan._id, status })}
       {...props}
     />
   );

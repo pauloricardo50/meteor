@@ -16,7 +16,7 @@ import TextField from 'core/components/AutoForm2/CustomTextField';
 
 type LenderRulesFormValueProps = {};
 
-const getSelectProps = (variable) => {
+const getSelectProps = variable => {
   if (variable === LENDER_RULES_VARIABLES.RESIDENCE_TYPE) {
     return {
       allowedValues: Object.values(RESIDENCE_TYPE),
@@ -88,7 +88,10 @@ const LenderRulesFormValue = (props: LenderRulesFormValueProps) => {
       <RadioButtons
         {...props}
         onChange={onChange}
-        options={[{ id: false, label: 'Faux' }, { id: true, label: 'Vrai' }]}
+        options={[
+          { id: false, label: 'Faux' },
+          { id: true, label: 'Vrai' },
+        ]}
       />
     );
   }

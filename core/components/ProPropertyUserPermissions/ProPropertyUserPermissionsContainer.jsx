@@ -20,8 +20,10 @@ const userPermissionsSchema = ({ user }) => {
     );
 
   const displayCustomerNamesSchema = Object.keys(propertyPermissionsSchema)
-    .filter(key =>
-      key.includes('displayCustomerNames') && key !== 'displayCustomerNames')
+    .filter(
+      key =>
+        key.includes('displayCustomerNames') && key !== 'displayCustomerNames',
+    )
     .reduce(
       (permissions, key) => ({
         ...permissions,

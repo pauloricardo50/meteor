@@ -9,20 +9,22 @@ describe('TooltipContext', () => {
     // FIXME: Can't test react context for now
     // https://github.com/airbnb/enzyme/pulls
     const id = 'test';
-    const Component = TooltipContainer(({ tooltipList }) => (
-      <React.Fragment>{tooltipList}</React.Fragment>
-    ));
-    const wrapper = mount(<TooltipProvider tooltipList={id}>
-      <React.Fragment>
-        <span>
-          <Component />
-        </span>
-      </React.Fragment>
-    </TooltipProvider>);
+    const Component = TooltipContainer(({ tooltipList }) => <>{tooltipList}</>);
+    const wrapper = mount(
+      <TooltipProvider tooltipList={id}>
+        <>
+          <span>
+            <Component />
+          </span>
+        </>
+      </TooltipProvider>,
+    );
     expect(wrapper.find(Component)).to.have.length(1);
-    expect(wrapper
-      .find(Component)
-      .dive()
-      .prop('tooltipList')).to.equal(true);
+    expect(
+      wrapper
+        .find(Component)
+        .dive()
+        .prop('tooltipList'),
+    ).to.equal(true);
   });
 });

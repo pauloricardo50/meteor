@@ -28,7 +28,9 @@ const PromotionLotsTable = ({
   const [modalPromotionLot, setModalPromotionLot] = useState();
   useEffect(() => {
     if (promotionLotModal) {
-      setModalPromotionLot(promotionLots.find(({ _id }) => _id === promotionLotModal));
+      setModalPromotionLot(
+        promotionLots.find(({ _id }) => _id === promotionLotModal),
+      );
     }
   });
 
@@ -58,5 +60,9 @@ const PromotionLotsTable = ({
   );
 };
 
-export const ProPromotionLotsTable = ProPromotionLotsTableContainer(PromotionLotsTable);
-export const AppPromotionLotsTable = AppPromotionLotsTableContainer(PromotionLotsTable);
+export const ProPromotionLotsTable = ProPromotionLotsTableContainer(
+  PromotionLotsTable,
+);
+export const AppPromotionLotsTable = AppPromotionLotsTableContainer(
+  PromotionLotsTable,
+);

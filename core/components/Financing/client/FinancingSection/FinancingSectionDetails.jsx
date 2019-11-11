@@ -21,7 +21,8 @@ export default class FinancingSectionDetails extends PureComponent {
         <FinancingLabels config={detailConfig} />
 
         {structures.map(structure =>
-          this.renderDetail(structure, sectionProps))}
+          this.renderDetail(structure, sectionProps),
+        )}
       </ExpansionPanelDetails>
     );
   }

@@ -40,7 +40,9 @@ describe('<AutoTooltip />', () => {
   it('returns a parsed string with multiple tooltips', () => {
     const text = 'a match1 b match2 c';
     props = { children: text, tooltipList: TOOLTIP_LISTS.DEV };
-    expect(component().text()).to.equal('a <TextWithTooltip /> b <TextWithTooltip /> c');
+    expect(component().text()).to.equal(
+      'a <TextWithTooltip /> b <TextWithTooltip /> c',
+    );
   });
 
   it('takes a list as a string to take tooltips from', () => {

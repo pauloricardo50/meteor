@@ -32,7 +32,9 @@ describe('BorrowersSummary />', () => {
 
     expect(chipsArray).to.have.length(expectedNbOfBorrowers);
 
-    expect(chipsArray.first().prop('label').props).to.deep.equal(expectedFirstBorrowerLabel.props);
+    expect(chipsArray.first().prop('label').props).to.deep.equal(
+      expectedFirstBorrowerLabel.props,
+    );
   });
 
   it('displays just the corresponding message when there are no borrowers', () => {
@@ -40,10 +42,12 @@ describe('BorrowersSummary />', () => {
     const wrapper = shallow(<BorrowersSummary {...props} />);
 
     expect(wrapper.find('.borrowers-list').children()).to.have.length(1);
-    expect(wrapper
-      .find('.borrowers-list')
-      .children()
-      .find(T)
-      .prop('id')).to.equal('general.noBorrowersForLoan');
+    expect(
+      wrapper
+        .find('.borrowers-list')
+        .children()
+        .find(T)
+        .prop('id'),
+    ).to.equal('general.noBorrowersForLoan');
   });
 });

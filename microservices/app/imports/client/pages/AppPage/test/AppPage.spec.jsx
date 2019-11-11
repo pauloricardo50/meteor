@@ -23,9 +23,11 @@ describe('AppPage', () => {
     const id = 'testId';
     props.currentUser.loans = [{ _id: id }];
     expect(component().find(Redirect).length).to.equal(1);
-    expect(component()
-      .find(Redirect)
-      .first()
-      .props().to).to.equal(`/loans/${id}`);
+    expect(
+      component()
+        .find(Redirect)
+        .first()
+        .props().to,
+    ).to.equal(`/loans/${id}`);
   });
 });

@@ -12,7 +12,7 @@ import { getBorrowRatioStatus } from '../FinancingResult/financingResultHelpers'
 
 type RequiredOwnFundsBodyProps = {};
 
-const getLabel = (props) => {
+const getLabel = props => {
   const { value } = props;
   const rawLabel = getRawLabel(value);
   const {
@@ -33,7 +33,9 @@ const getLabel = (props) => {
           </span>
           <div className="value">
             <span className="chf">CHF</span>
-            {toMoney(Math.abs(requiredPledgedOwnFunds - currentPledgedOwnFunds))}
+            {toMoney(
+              Math.abs(requiredPledgedOwnFunds - currentPledgedOwnFunds),
+            )}
           </div>
         </>
       );

@@ -11,7 +11,8 @@ import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 
 const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   const { promotions = [] } = loan;
-  const { $metadata = {} } = promotions.find(({ _id }) => _id === promotionId) || {};
+  const { $metadata = {} } =
+    promotions.find(({ _id }) => _id === promotionId) || {};
   const { invitedBy } = $metadata;
   const { users = [] } = promotion;
   return users.find(({ _id }) => _id === invitedBy);

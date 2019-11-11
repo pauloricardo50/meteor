@@ -10,7 +10,7 @@ const InterestRate = ({ type, low, high, trend }) => (
     <span className="value">
       <span className={`trend ${trend}`} />
       <IntlNumber format="percentage" value={low} />
-      {' - '}
+      -
       <IntlNumber format="percentage" value={high} />
     </span>
   </div>

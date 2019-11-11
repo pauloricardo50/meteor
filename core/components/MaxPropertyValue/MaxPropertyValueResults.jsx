@@ -20,7 +20,7 @@ type MaxPropertyValueResultsProps = {
   setResidenceType: Function,
 };
 
-const getPropertyOrganisation = (loan) => {
+const getPropertyOrganisation = loan => {
   if (loan.hasProProperty && loan.properties.length === 1) {
     return loan.properties[0].organisation;
   }
@@ -76,7 +76,8 @@ const MaxPropertyValueResults = ({
                 [
                   RESIDENCE_TYPE.MAIN_RESIDENCE,
                   RESIDENCE_TYPE.SECOND_RESIDENCE,
-                ].includes(type))
+                ].includes(type),
+              )
               .map(type => ({
                 id: type,
                 label: <T id={`Forms.residenceType.${type}`} />,

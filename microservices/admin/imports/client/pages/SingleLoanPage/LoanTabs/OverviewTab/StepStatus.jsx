@@ -5,7 +5,7 @@ import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { STEP_ORDER } from 'core/api/constants';
 
-const StepStatus = (props) => {
+const StepStatus = props => {
   const currentStep = STEP_ORDER.indexOf(props.loan.step);
   return (
     <ul
@@ -19,10 +19,10 @@ const StepStatus = (props) => {
     >
       {STEP_ORDER.map((step, i) => (
         <li key={step.nb} style={{ display: 'flex', flexDirection: 'column' }}>
-          <React.Fragment>
+          <>
             <T id={`steps.${step.nb}.title`} />{' '}
             {currentStep > i && <Icon type="check" />}
-          </React.Fragment>
+          </>
           <ul>
             {step.items.map(item => (
               <li key={item.id}>

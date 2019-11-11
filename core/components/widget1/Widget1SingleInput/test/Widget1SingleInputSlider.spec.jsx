@@ -22,32 +22,42 @@ describe('Widget1SingleInputSlider', () => {
   it('should pass the value to the slider', () => {
     props.value = 100;
     props.sliderMax = 150;
-    expect(component()
-      .find(Slider)
-      .props().value).to.equal(100);
+    expect(
+      component()
+        .find(Slider)
+        .props().value,
+    ).to.equal(100);
   });
 
   it('should pass a value of 0 to slider if value is falsy', () => {
     props.value = '';
-    expect(component()
-      .find(Slider)
-      .props().value).to.equal(0);
+    expect(
+      component()
+        .find(Slider)
+        .props().value,
+    ).to.equal(0);
     props.value = undefined;
-    expect(component()
-      .find(Slider)
-      .props().value).to.equal(0);
+    expect(
+      component()
+        .find(Slider)
+        .props().value,
+    ).to.equal(0);
     props.value = null;
-    expect(component()
-      .find(Slider)
-      .props().value).to.equal(0);
+    expect(
+      component()
+        .find(Slider)
+        .props().value,
+    ).to.equal(0);
   });
 
   it('should pass the sliderMax to the Slider if the value is larger', () => {
     props.value = 100;
     props.sliderMax = 50;
-    expect(component()
-      .find(Slider)
-      .props().value).to.equal(50);
+    expect(
+      component()
+        .find(Slider)
+        .props().value,
+    ).to.equal(50);
   });
 
   it('should render an IconButton if value is large than sliderMax', () => {
@@ -85,13 +95,17 @@ describe('Widget1SingleInputSlider', () => {
     props.value = 2;
     props.isLoanValue = true;
 
-    expect(component()
-      .find(IconButton)
-      .props().tooltip.props.id).to.include('buttonTooltipLoan');
+    expect(
+      component()
+        .find(IconButton)
+        .props().tooltip.props.id,
+    ).to.include('buttonTooltipLoan');
 
     props.isLoanValue = false;
-    expect(component()
-      .find(IconButton)
-      .props().tooltip.props.id).to.not.include('buttonTooltipLoan');
+    expect(
+      component()
+        .find(IconButton)
+        .props().tooltip.props.id,
+    ).to.not.include('buttonTooltipLoan');
   });
 });

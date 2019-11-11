@@ -28,7 +28,7 @@ const MaxPropertyValueResultsToggle = ({
     className="show-best-toggle"
     toggled={showBest}
     onToggle={setShowBest}
-    labelLeft={(
+    labelLeft={
       <div className="flex-col">
         <span className={cx({ secondary: showBest })}>
           {isSmallMobile ? 'Le moins compétitif' : 'Prêteur le - compétitif'}
@@ -40,8 +40,8 @@ const MaxPropertyValueResultsToggle = ({
           </span>
         )}
       </div>
-    )}
-    labelRight={(
+    }
+    labelRight={
       <div className="flex-col">
         <span className={cx({ secondary: !showBest })}>
           {isSmallMobile ? 'Le plus compétitif' : 'Prêteur le + compétitif'}
@@ -53,7 +53,7 @@ const MaxPropertyValueResultsToggle = ({
           </span>
         )}
       </div>
-    )}
+    }
   />
 );
 
@@ -154,14 +154,14 @@ const MaxPropertyValueResultsTable = ({
           maxOrganisationName={maxOrganisationName}
         />
       )}
-      {!!min.propertyValue
-        && min.propertyValue === max.propertyValue
-        && Meteor.microservice === 'admin' && (
-        <span>
+      {!!min.propertyValue &&
+        min.propertyValue === max.propertyValue &&
+        Meteor.microservice === 'admin' && (
+          <span>
             [ADMIN]&nbsp;
-          {minOrganisationName}
-        </span>
-      )}
+            {minOrganisationName}
+          </span>
+        )}
 
       <div className="balance-sheet animated fadeIn">
         <div className="left">
@@ -199,4 +199,8 @@ const MaxPropertyValueResultsTable = ({
   );
 };
 
-export default withState('showBest', 'setShowBest', true)(MaxPropertyValueResultsTable);
+export default withState(
+  'showBest',
+  'setShowBest',
+  true,
+)(MaxPropertyValueResultsTable);

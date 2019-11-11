@@ -8,7 +8,7 @@ import GoogleMapContainer from './GoogleMapContainer';
 import GoogleMap from './GoogleMap';
 import { getLatLngFromAddress } from './googleMapsHelpers';
 
-const MapWithMarker = (props) => {
+const MapWithMarker = props => {
   const { address, options, id, latlng } = props;
 
   return latlng ? (

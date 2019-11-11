@@ -15,7 +15,7 @@ import BorrowersPageTitle from './BorrowersPageTitle';
 import BorrowersPageNextTab from './BorrowersPageNextTab';
 import BorrowersPageContainer from './BorrowersPageContainer';
 
-const getTabs = (props) => {
+const getTabs = props => {
   const { loan } = props;
   return [
     {
@@ -31,10 +31,10 @@ const getTabs = (props) => {
   ].map(tab => ({
     ...tab,
     content: (
-      <React.Fragment>
+      <>
         <BorrowerHeader {...props} />
         {tab.content}
-      </React.Fragment>
+      </>
     ),
     label: (
       <span className="borrower-tab-labels">
@@ -51,7 +51,7 @@ const getTabs = (props) => {
   }));
 };
 
-const BorrowersPage = (props) => {
+const BorrowersPage = props => {
   const {
     tabId,
     loan: { borrowers, _id: loanId },

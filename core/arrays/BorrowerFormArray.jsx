@@ -5,7 +5,10 @@ import countries from 'i18n-iso-countries';
 import CantonField from 'core/components/CantonField/CantonField';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import { getSortedCountriesCodes, COMMON_COUNTRIES } from 'core/utils/countriesUtils';
+import {
+  getSortedCountriesCodes,
+  COMMON_COUNTRIES,
+} from 'core/utils/countriesUtils';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -89,7 +92,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: addressFieldsAreNecessary,
       options: getSortedCountriesCodes(),
       defaultValue: 'CH',
-      transform: (code) => {
+      transform: code => {
         const name = countries.getName(code, 'fr');
         if (COMMON_COUNTRIES.includes(code)) {
           return <b>{name}</b>;
@@ -295,7 +298,13 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
                   value={
                     currentValue || Calculator.getRealEstateCost(itemValue)
                   }
-                  tooltip={currentValue ? undefined : <T id="Forms.theoreticalExpenses.tooltip" />}
+                  tooltip={
+                    currentValue ? (
+                      undefined
+                    ) : (
+                      <T id="Forms.theoreticalExpenses.tooltip" />
+                    )
+                  }
                 />
                 <span>
                   &nbsp;/

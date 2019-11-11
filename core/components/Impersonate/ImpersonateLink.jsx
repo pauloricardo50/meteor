@@ -24,9 +24,9 @@ const styles = {
 };
 
 const isAdminAndDev = ({ roles }) =>
-  roles.includes(ROLES.ADMIN)
-  && Meteor.user()
-  && Meteor.user().roles.includes(ROLES.DEV);
+  roles.includes(ROLES.ADMIN) &&
+  Meteor.user() &&
+  Meteor.user().roles.includes(ROLES.DEV);
 
 const ImpersonateLink = ({ user, className, classes }) => {
   if (!user) {

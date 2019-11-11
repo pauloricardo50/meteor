@@ -24,7 +24,7 @@ const getDataTransferItems = event => {
 const getMoveFileData = event => {
   const Key = event.dataTransfer.getData('Key');
   const status = event.dataTransfer.getData('status');
-  const oldCollection = event.dataTransfer.getData('collection')
+  const oldCollection = event.dataTransfer.getData('collection');
   return { Key, status, oldCollection };
 };
 

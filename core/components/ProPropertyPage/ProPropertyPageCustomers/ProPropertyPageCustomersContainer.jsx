@@ -57,28 +57,28 @@ const canRemoveCustomerFromProperty = ({
   });
 };
 
-const getSolvencyLabel = (solvent) => {
+const getSolvencyLabel = solvent => {
   const title = <T id={`Forms.solvency.${solvent}`} />;
   let props = {};
   switch (solvent) {
-  case PROPERTY_SOLVENCY.UNDETERMINED: {
-    props = { type: 'waiting', className: 'warning' };
-    break;
-  }
-  case PROPERTY_SOLVENCY.NOT_SHARED: {
-    props = { type: 'eyeCrossed', className: 'warning' };
-    break;
-  }
-  case PROPERTY_SOLVENCY.SOLVENT: {
-    props = { type: 'check', className: 'success' };
-    break;
-  }
-  case PROPERTY_SOLVENCY.INSOLVENT: {
-    props = { type: 'close', className: 'error' };
-    break;
-  }
-  default:
-    break;
+    case PROPERTY_SOLVENCY.UNDETERMINED: {
+      props = { type: 'waiting', className: 'warning' };
+      break;
+    }
+    case PROPERTY_SOLVENCY.NOT_SHARED: {
+      props = { type: 'eyeCrossed', className: 'warning' };
+      break;
+    }
+    case PROPERTY_SOLVENCY.SOLVENT: {
+      props = { type: 'check', className: 'success' };
+      break;
+    }
+    case PROPERTY_SOLVENCY.INSOLVENT: {
+      props = { type: 'close', className: 'error' };
+      break;
+    }
+    default:
+      break;
   }
 
   return (
@@ -95,7 +95,7 @@ const makeMapLoan = ({
   permissions,
   currentUser,
   property,
-}) => (loan) => {
+}) => loan => {
   const {
     _id: loanId,
     name: loanName,
@@ -162,9 +162,9 @@ const makeMapLoan = ({
     ],
     ...(isAdmin
       ? {
-        handleClick: () =>
-          history.push(createRoute('/loans/:loanId', { loanId })),
-      }
+          handleClick: () =>
+            history.push(createRoute('/loans/:loanId', { loanId })),
+        }
       : {}),
   };
 };
@@ -178,7 +178,9 @@ export default compose(
   }),
   withRouter,
   mapProps(({ loans = [], history, permissions, property, currentUser }) => ({
-    rows: loans.map(makeMapLoan({ history, permissions, currentUser, property })),
+    rows: loans.map(
+      makeMapLoan({ history, permissions, currentUser, property }),
+    ),
     columnOptions,
     permissions,
     property,

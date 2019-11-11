@@ -4,12 +4,12 @@ import { FormattedDate, FormattedTime, FormattedRelative } from 'react-intl';
 
 export const IntlDate = ({ type, ...props }) => {
   switch (type) {
-  case 'time':
-    return <FormattedTime {...props} />;
-  case 'relative':
-    return <FormattedRelative {...props} />;
-  default:
-    return <FormattedDate {...props} />;
+    case 'time':
+      return <FormattedTime {...props} />;
+    case 'relative':
+      return <FormattedRelative {...props} />;
+    default:
+      return <FormattedDate {...props} />;
   }
 };
 

@@ -18,7 +18,7 @@ type ProPromotionLotModifierProps = {
   deletePromotionLot: Function,
 };
 
-const disableModification = (promotionLotStatus) => {
+const disableModification = promotionLotStatus => {
   const isAdmin = Meteor.microservice === 'admin';
   return isAdmin
     ? false
@@ -32,9 +32,10 @@ const ProPromotionLotModifier = ({
   deletePromotionLot,
   className,
 }: ProPromotionLotModifierProps) => {
-  const model = promotionLot.properties
-    && promotionLot.properties.length > 0
-    && promotionLot.properties[0];
+  const model =
+    promotionLot.properties &&
+    promotionLot.properties.length > 0 &&
+    promotionLot.properties[0];
   return (
     <AutoFormDialog
       buttonProps={{

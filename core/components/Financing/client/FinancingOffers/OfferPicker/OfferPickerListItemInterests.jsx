@@ -15,14 +15,14 @@ const OfferPickerListItemInterests = ({
     return (
       <OfferPickerListItemValue
         label={<T id="FinancingOffers.interests" />}
-        value={(
+        value={
           <T
             id="FinancingOffers.invalidRate"
             values={{
               rate: <T id={`offer.${offer.hasInvalidInterestRates}.short`} />,
             }}
           />
-        )}
+        }
         valueProps={{ className: 'error' }}
       />
     );

@@ -56,7 +56,7 @@ export const makeMapRevenue = ({
   displayLoan,
   displayActions,
   displayOrganisationsToPay,
-}) => (revenue) => {
+}) => revenue => {
   const {
     _id: revenueId,
     expectedAt,
@@ -80,13 +80,13 @@ export const makeMapRevenue = ({
     columns: [
       displayLoan
         ? {
-          raw: loan && loan.name,
-          label: loan && (
-            <CollectionIconLink
-              relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-            />
-          ),
-        }
+            raw: loan && loan.name,
+            label: loan && (
+              <CollectionIconLink
+                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+              />
+            ),
+          }
         : null,
       {
         raw: status,
@@ -103,7 +103,7 @@ export const makeMapRevenue = ({
             <T id={`Forms.type.${type}`} />
             {secondaryType && (
               <span>
-                {' - '}
+                -
                 <T id={`Forms.secondaryType.${secondaryType}`} />
               </span>
             )}
@@ -124,14 +124,14 @@ export const makeMapRevenue = ({
       },
       displayOrganisationsToPay
         ? organisations.map(organisation => (
-          <CollectionIconLink
-            relatedDoc={{
-              ...organisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-            key={organisation._id}
-          />
-        ))
+            <CollectionIconLink
+              relatedDoc={{
+                ...organisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+              key={organisation._id}
+            />
+          ))
         : null,
       {
         raw: amount,
@@ -160,25 +160,29 @@ export default compose(
     params: ({ filterRevenues, ...props }) => filterRevenues(props),
     dataName: 'revenues',
   }),
-  withProps(({
-    revenues = [],
-    setOpenModifier,
-    setRevenueToModify,
-    displayLoan,
-    displayActions,
-    displayOrganisationsToPay,
-  }) => ({
-    rows: revenues.map(makeMapRevenue({
+  withProps(
+    ({
+      revenues = [],
       setOpenModifier,
       setRevenueToModify,
       displayLoan,
       displayActions,
       displayOrganisationsToPay,
-    })),
-    columnOptions: getColumnOptions({
-      displayLoan,
-      displayActions,
-      displayOrganisationsToPay,
+    }) => ({
+      rows: revenues.map(
+        makeMapRevenue({
+          setOpenModifier,
+          setRevenueToModify,
+          displayLoan,
+          displayActions,
+          displayOrganisationsToPay,
+        }),
+      ),
+      columnOptions: getColumnOptions({
+        displayLoan,
+        displayActions,
+        displayOrganisationsToPay,
+      }),
     }),
-  })),
+  ),
 );

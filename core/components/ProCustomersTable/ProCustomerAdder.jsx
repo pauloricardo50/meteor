@@ -13,11 +13,11 @@ const ProCustomerAdder = ({ schema, onSubmit }: ProCustomerAdderProps) => (
     schema={schema}
     onSubmit={onSubmit}
     title={<T id="ProCustomerAdder.title" />}
-    description={(
+    description={
       <p className="description">
         <T id="ProCustomerAdder.description" />
       </p>
-    )}
+    }
     buttonProps={{
       raised: true,
       secondary: true,

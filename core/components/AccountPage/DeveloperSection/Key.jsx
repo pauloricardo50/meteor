@@ -17,7 +17,7 @@ type KeyProps = {
   setHideKey: Function,
 };
 
-const copyKeyToClipboard = (key) => {
+const copyKeyToClipboard = key => {
   const dummyInput = document.createElement('textarea');
   dummyInput.value = key;
   document.body.appendChild(dummyInput);
@@ -29,9 +29,11 @@ const copyKeyToClipboard = (key) => {
   });
 };
 
-const formatKey = (keyValue) => {
+const formatKey = keyValue => {
   const [header, key, footer] = keyValue
-    .split(/(\W+\w+\s+\w+\s+\w+\s+\w+\W+)([A-Za-z0-9+\/=]+)(\W+\w+\s+\w+\s+\w+\s+\w+\W+)/g)
+    .split(
+      /(\W+\w+\s+\w+\s+\w+\s+\w+\W+)([A-Za-z0-9+\/=]+)(\W+\w+\s+\w+\s+\w+\s+\w+\W+)/g,
+    )
     .filter(x => x);
 
   return `${header}\n${key.match(/.{1,45}/g).join('\n')}\n${footer}`;

@@ -57,35 +57,36 @@ export default class DialogSimple extends Component {
       ...otherProps
     } = this.props;
 
-    const finalActions = (actions && actions(this.handleClose))
-      || (closeOnly
+    const finalActions =
+      (actions && actions(this.handleClose)) ||
+      (closeOnly
         ? [
-          <Button
-            primary
-            label={<T id="general.close" />}
-            onClick={(args) => {
-              onClose();
-              this.handleClose(args);
-            }}
-            key="close"
-          />,
-        ]
+            <Button
+              primary
+              label={<T id="general.close" />}
+              onClick={args => {
+                onClose();
+                this.handleClose(args);
+              }}
+              key="close"
+            />,
+          ]
         : [
-          <Button
-            primary
-            label={<T id="general.cancel" />}
-            onClick={this.handleClose}
-            key="cancel"
-          />,
-          <Button
-            primary
-            label="Ok"
-            onClick={() => this.handleClose(true)}
-            autoFocus={autoFocus} // TODO doesn't work with tooltips
-            disabled={disabled}
-            key="submit"
-          />,
-        ]);
+            <Button
+              primary
+              label={<T id="general.cancel" />}
+              onClick={this.handleClose}
+              key="cancel"
+            />,
+            <Button
+              primary
+              label="Ok"
+              onClick={() => this.handleClose(true)}
+              autoFocus={autoFocus} // TODO doesn't work with tooltips
+              disabled={disabled}
+              key="submit"
+            />,
+          ]);
 
     const childProps = {
       disableClose: this.disableClose,
@@ -121,8 +122,8 @@ export default class DialogSimple extends Component {
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
             : renderProps
-              ? children(childProps)
-              : children}
+            ? children(childProps)
+            : children}
         </Dialog>
       </>
     );

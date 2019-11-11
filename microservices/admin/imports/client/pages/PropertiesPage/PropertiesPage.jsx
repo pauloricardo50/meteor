@@ -29,7 +29,9 @@ const Propertiespage = ({ history }) => (
       category={PROPERTY_CATEGORY.PRO}
       buttonLabelId="PropertiesPage.addProProperty"
       onSubmitSuccess={propertyId =>
-        history.push(createRoute(ADMIN_ROUTES.SINGLE_PROPERTY_PAGE.path, { propertyId }))
+        history.push(
+          createRoute(ADMIN_ROUTES.SINGLE_PROPERTY_PAGE.path, { propertyId }),
+        )
       }
     />
     <PropertiesTable />

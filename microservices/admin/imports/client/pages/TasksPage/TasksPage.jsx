@@ -8,14 +8,11 @@ import collectionIcons from 'core/arrays/collectionIcons';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 
 const TasksPage = () => (
-  <section
-    className="tasks-page"
-    style={{ overflow: 'initial' }}
-  >
+  <section className="tasks-page" style={{ overflow: 'initial' }}>
     <Helmet>
       <title>Tâches</title>
     </Helmet>
-    
+
     <h1 className="flex center-align">
       <Icon
         type={collectionIcons[TASKS_COLLECTION]}

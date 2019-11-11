@@ -29,8 +29,10 @@ const schema = ({ proProperties, promotions, history }) =>
       optional: true,
       allowedValues: proProperties.map(({ _id }) => _id),
       uniforms: {
-        transform: (propertyId) => {
-          const { address1, city = '', zipCode = '' } = proProperties.find(({ _id }) => _id === propertyId);
+        transform: propertyId => {
+          const { address1, city = '', zipCode = '' } = proProperties.find(
+            ({ _id }) => _id === propertyId,
+          );
 
           return `${address1}, ${zipCode} ${city}`;
         },
@@ -44,7 +46,7 @@ const schema = ({ proProperties, promotions, history }) =>
       uniforms: {
         displayEmpty: false,
         placeholder: '',
-        handleClick: (model) => {
+        handleClick: model => {
           const {
             promotionIds = [],
             email,
@@ -55,11 +57,13 @@ const schema = ({ proProperties, promotions, history }) =>
           const [promotionId] = promotionIds;
 
           if (promotionId) {
-            history.push(createRoute(
-              '/promotions/:promotionId',
-              { promotionId },
-              { email, firstName, lastName, phoneNumber },
-            ));
+            history.push(
+              createRoute(
+                '/promotions/:promotionId',
+                { promotionId },
+                { email, firstName, lastName, phoneNumber },
+              ),
+            );
           }
         },
       },
@@ -69,7 +73,7 @@ const schema = ({ proProperties, promotions, history }) =>
       optional: true,
       allowedValues: promotions.map(({ _id }) => _id),
       uniforms: {
-        transform: (promotionId) =>
+        transform: promotionId =>
           promotions.find(({ _id }) => _id === promotionId).name,
         displayEmpty: false,
       },
@@ -84,12 +88,14 @@ export default withProps(({ currentUser }) => {
   const history = useHistory();
   const { proProperties = [], promotions = [] } = currentUser;
   const filteredProProperties = proProperties
-    .filter((property) =>
-      isAllowedToInviteCustomersToProProperty({ property, currentUser }))
+    .filter(property =>
+      isAllowedToInviteCustomersToProProperty({ property, currentUser }),
+    )
     .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
   const filteredPromotions = promotions
-    .filter((promotion) =>
-      isAllowedToInviteCustomersToPromotion({ promotion, currentUser }))
+    .filter(promotion =>
+      isAllowedToInviteCustomersToPromotion({ promotion, currentUser }),
+    )
     .sort(({ name: A }, { name: B }) => A.localeCompare(B));
   return {
     schema: schema({
@@ -97,7 +103,7 @@ export default withProps(({ currentUser }) => {
       promotions: filteredPromotions,
       history,
     }),
-    onSubmit: (model) => {
+    onSubmit: model => {
       const {
         propertyIds = [],
         promotionIds = [],

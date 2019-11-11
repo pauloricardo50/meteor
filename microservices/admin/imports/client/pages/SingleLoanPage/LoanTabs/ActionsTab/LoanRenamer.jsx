@@ -18,7 +18,7 @@ const LoanRenamer = ({ loan }: LoanRenamerProps) => (
       adminLoans
         .clone({ name, $body: { _id: 1 } })
         .fetchOneSync()
-        .then((result) => {
+        .then(result => {
           if (result) {
             throw new Error('Ce nom existe déjà');
           }

@@ -6,7 +6,7 @@ import { tooltips, TOOLTIP_LISTS } from '../../arrays/tooltips';
 import TextWithTooltip from './TextWithTooltip';
 import { TooltipContainer } from './TooltipContext';
 
-export const createRegexThatFindsAnyWordFromList = (list) => {
+export const createRegexThatFindsAnyWordFromList = list => {
   if (list) {
     return new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
   }
@@ -32,7 +32,7 @@ export const autoTooltipParser = (
   tooltipList = TOOLTIP_LISTS.GENERAL,
 ) => parseTextForTooltips({ children: string, tooltipList });
 
-export const AutoTooltip = (props) => {
+export const AutoTooltip = props => {
   const { children, tooltipId } = props;
   if (!children) {
     return null;

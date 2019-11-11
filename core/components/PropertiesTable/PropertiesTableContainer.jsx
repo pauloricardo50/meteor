@@ -33,7 +33,7 @@ export const makeMapProperty = ({ history, currentUser }) => ({
 }) => ({
   id: propertyId,
   columns: [
-    [address1, city].filter((x) => x).join(', '),
+    [address1, city].filter(x => x).join(', '),
     {
       raw: status,
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
@@ -53,9 +53,9 @@ export const makeMapProperty = ({ history, currentUser }) => ({
   ],
   handleClick: () => {
     if (
-      currentUser.isAdmin
-      || currentUser.isDev
-      || users.find(({ _id }) => _id === currentUser._id)
+      currentUser.isAdmin ||
+      currentUser.isDev ||
+      users.find(({ _id }) => _id === currentUser._id)
     ) {
       history.push(createRoute('/properties/:propertyId', { propertyId }));
     }

@@ -71,13 +71,16 @@ class AutoFormTextInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const valueIsDifferent = nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
+    const valueIsDifferent =
+      nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
     if (valueIsDifferent) {
       // To handle race conditions, check if the new value from the DB
       // has been typed in the past
       // If it has, then don't update the textfield
       // If it hasn't, override it, because the backend says it should be a new value
-      const valueExistsInHistory = this.state.history.includes(nextProps.inputProps.currentValue);
+      const valueExistsInHistory = this.state.history.includes(
+        nextProps.inputProps.currentValue,
+      );
 
       if (!valueExistsInHistory) {
         this.handleChange(nextProps.inputProps.currentValue);
@@ -92,7 +95,7 @@ class AutoFormTextInput extends Component {
     this.saveValue(true);
   };
 
-  handleChange = (value) => {
+  handleChange = value => {
     const {
       saveOnChange,
       showValidIconOnChange,
@@ -124,7 +127,7 @@ class AutoFormTextInput extends Component {
     this.setState({ showInfo: true });
   };
 
-  saveValue = (showSaving) => {
+  saveValue = showSaving => {
     const {
       updateFunc,
       docId,

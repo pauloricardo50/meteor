@@ -64,7 +64,7 @@ const DropdownMenu = ({
   noWrapper,
   menuProps,
 }) => {
-  const onClickHandler = (event) => {
+  const onClickHandler = event => {
     // Prevent background from receiving clicks
     if (event && event.stopPropagation) {
       event.stopPropagation();
@@ -90,7 +90,7 @@ const DropdownMenu = ({
       <Menu
         anchorEl={anchorEl}
         open={isOpen}
-        onClose={(event) => {
+        onClose={event => {
           // Stop propagation here to avoid parents' onClick from firing
           event.stopPropagation();
           handleClose();

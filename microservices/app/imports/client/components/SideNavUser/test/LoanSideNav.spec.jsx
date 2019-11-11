@@ -29,17 +29,21 @@ describe('LoanSideNav', () => {
 
   it('replaces the path with the right ids', () => {
     props.links[0] = { id: 'test', to: '/path/to/:loanId' };
-    expect(component()
-      .find(NavLink)
-      .first()
-      .props().to).to.equal(`/path/to/${props.loan._id}`);
+    expect(
+      component()
+        .find(NavLink)
+        .first()
+        .props().to,
+    ).to.equal(`/path/to/${props.loan._id}`);
   });
 
   it('passes any extra props on a link to the NavLink', () => {
     props.links[0] = { id: 'test', to: '/path/to/:loanId', someProp: 'yo' };
-    expect(component()
-      .find(NavLink)
-      .first()
-      .props().someProp).to.equal('yo');
+    expect(
+      component()
+        .find(NavLink)
+        .first()
+        .props().someProp,
+    ).to.equal('yo');
   });
 });

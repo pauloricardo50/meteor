@@ -19,56 +19,56 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   }
 
   switch (type) {
-  case 'money':
-    return {
-      onChangeHandler: (event) =>
-        onChange(toNumber(event.target.value), id, event),
-      showMask: true,
-      mask: swissFrancMask,
-      placeholder: 0,
-      value,
-    };
-  case 'percent':
-    return {
-      onChangeHandler: (event) =>
-        onChange(
-          Math.round(parseFloat(event.target.value) * 100) / 10000,
-          id,
-          event,
-        ),
-      showMask: true,
-      mask: percentMask,
-      placeholder: '%',
-      value: (value * 100).toFixed(2),
-    };
-  case 'number':
-    return {
-      onChangeHandler: (event) =>
-        onChange(toNumber(event.target.value), id, event),
-      showMask: false,
-      value,
-    };
-  case 'date':
-    return {
-      onChangeHandler: (event) => onChange(event.target.value, id, event),
-      onDateChange: (val) => {
-        // This specific format should be used for the server to get the
-        // date in the right order
-        const date = moment(val).format('YYYY-MM-DD');
-        // Allow setting a date to null
-        onChange(val ? date : null, id, {});
-      },
-      showMask: false,
-      value: value ? moment(value) : null,
-    };
-  default:
-    return {
-      // Pass event as third argument, for some components which need it
-      // like react-autosuggest
-      onChangeHandler: (event) => onChange(event.target.value, id, event),
-      showMask: false,
-      value,
-    };
+    case 'money':
+      return {
+        onChangeHandler: event =>
+          onChange(toNumber(event.target.value), id, event),
+        showMask: true,
+        mask: swissFrancMask,
+        placeholder: 0,
+        value,
+      };
+    case 'percent':
+      return {
+        onChangeHandler: event =>
+          onChange(
+            Math.round(parseFloat(event.target.value) * 100) / 10000,
+            id,
+            event,
+          ),
+        showMask: true,
+        mask: percentMask,
+        placeholder: '%',
+        value: (value * 100).toFixed(2),
+      };
+    case 'number':
+      return {
+        onChangeHandler: event =>
+          onChange(toNumber(event.target.value), id, event),
+        showMask: false,
+        value,
+      };
+    case 'date':
+      return {
+        onChangeHandler: event => onChange(event.target.value, id, event),
+        onDateChange: val => {
+          // This specific format should be used for the server to get the
+          // date in the right order
+          const date = moment(val).format('YYYY-MM-DD');
+          // Allow setting a date to null
+          onChange(val ? date : null, id, {});
+        },
+        showMask: false,
+        value: value ? moment(value) : null,
+      };
+    default:
+      return {
+        // Pass event as third argument, for some components which need it
+        // like react-autosuggest
+        onChangeHandler: event => onChange(event.target.value, id, event),
+        showMask: false,
+        value,
+      };
   }
 };
 
@@ -83,11 +83,12 @@ export const getFinalPlaceholder = ({
   if (noIntl) {
     finalPlaceholder = placeholder || defaultPlaceholder;
   } else {
-    finalPlaceholder = placeholder && typeof placeholder === 'string'
-      ? `${intl.formatMessage({
-        id: 'Forms.textInput.placeholderPrefix',
-      })} ${intl.formatMessage({ id: placeholder })}`
-      : defaultPlaceholder;
+    finalPlaceholder =
+      placeholder && typeof placeholder === 'string'
+        ? `${intl.formatMessage({
+            id: 'Forms.textInput.placeholderPrefix',
+          })} ${intl.formatMessage({ id: placeholder })}`
+        : defaultPlaceholder;
   }
 
   // Ignore placeholder for money inputs, and just show the currency
@@ -119,7 +120,7 @@ const getEndAdornment = ({ endAdornment }) => {
   return null;
 };
 
-const TextInput = (props) => {
+const TextInput = props => {
   const {
     classes,
     className,

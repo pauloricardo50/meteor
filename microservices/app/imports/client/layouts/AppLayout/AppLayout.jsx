@@ -16,7 +16,7 @@ import impersonateSessionNotification from './impersonateSessionNotification';
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
 
-const renderMobile = (props) => {
+const renderMobile = props => {
   const {
     history: {
       location: { pathname },
@@ -28,10 +28,10 @@ const renderMobile = (props) => {
   if (isSimple) {
     return true;
   }
-  if (exactMobilePaths.some((path) => pathname === path)) {
+  if (exactMobilePaths.some(path => pathname === path)) {
     return true;
   }
-  if (mobilePaths.some((path) => pathname.startsWith(path))) {
+  if (mobilePaths.some(path => pathname.startsWith(path))) {
     return true;
   }
 

@@ -26,12 +26,12 @@ const LotDocumentsManager = ({
       primary
       raised
       label={<T id="PromotionPage.manageDocuments" />}
-      title={(
+      title={
         <T
           id="PromotionPage.managePropertyDocuments"
           values={{ name: property.name }}
         />
-      )}
+      }
       text={<T id="PromotionPage.managePropertyDocuments.description" />}
     >
       <UploaderArray

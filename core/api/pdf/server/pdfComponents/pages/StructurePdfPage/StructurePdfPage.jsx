@@ -25,12 +25,12 @@ const StructurePdfPage = ({
   return (
     <PdfPage
       className="property-page"
-      title={(
+      title={
         <T
           id="PDF.title.structure"
           values={{ name: structureName || structureIndex + 1 }}
         />
-      )}
+      }
       withFooter
       pageNb={pageNb}
       pageCount={pageCount}

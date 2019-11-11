@@ -58,43 +58,47 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
   );
 };
 
-export default withProps(({
-  loan,
-  currentUser: { name: assigneeName, email: assigneeAddress } = {},
-}) => ({
-  onSubmit: ({ to, customMessage, addTask }) => {
-    const [mainRecipient, ...otherRecipients] = to;
-    const bccAddresses = otherRecipients
-      .filter(({ bcc }) => bcc)
-      .map(({ email }) => email);
-    const ccAddresses = otherRecipients
-      .filter(({ bcc }) => !bcc)
-      .map(({ email }) => email);
+export default withProps(
+  ({
+    loan,
+    currentUser: { name: assigneeName, email: assigneeAddress } = {},
+  }) => ({
+    onSubmit: ({ to, customMessage, addTask }) => {
+      const [mainRecipient, ...otherRecipients] = to;
+      const bccAddresses = otherRecipients
+        .filter(({ bcc }) => bcc)
+        .map(({ email }) => email);
+      const ccAddresses = otherRecipients
+        .filter(({ bcc }) => !bcc)
+        .map(({ email }) => email);
 
-    return sendLoanChecklist
-      .run({
-        address: mainRecipient.email,
-        emailParams: {
-          loan,
-          assigneeName,
-          assigneeAddress,
-          customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
-          bccAddresses,
-          ccAddresses,
-          mainRecipientIsBcc: mainRecipient.bcc,
-        },
-      })
-      .then(() => {
-        if (addTask) {
-          return taskInsert.run({
-            object: {
-              collection: LOANS_COLLECTION,
-              dueAt: moment().add(3, 'd').toDate(),
-              docId: loan._id,
-              title: "Suivi de l'envoi de la checklist",
-            },
-          });
-        }
-      });
-  },
-}))(LoanChecklistEmailSender);
+      return sendLoanChecklist
+        .run({
+          address: mainRecipient.email,
+          emailParams: {
+            loan,
+            assigneeName,
+            assigneeAddress,
+            customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+            bccAddresses,
+            ccAddresses,
+            mainRecipientIsBcc: mainRecipient.bcc,
+          },
+        })
+        .then(() => {
+          if (addTask) {
+            return taskInsert.run({
+              object: {
+                collection: LOANS_COLLECTION,
+                dueAt: moment()
+                  .add(3, 'd')
+                  .toDate(),
+                docId: loan._id,
+                title: "Suivi de l'envoi de la checklist",
+              },
+            });
+          }
+        });
+    },
+  }),
+)(LoanChecklistEmailSender);

@@ -12,9 +12,12 @@ import {
   VOLUME_NORM,
 } from 'core/api/constants';
 import CantonField from 'core/components/CantonField/CantonField';
-import { getSortedCountriesCodes, COMMON_COUNTRIES } from 'core/utils/countriesUtils';
+import {
+  getSortedCountriesCodes,
+  COMMON_COUNTRIES,
+} from 'core/utils/countriesUtils';
 
-const mapInput = (input) => {
+const mapInput = input => {
   const intlSafeObject = { ...input };
   // If the id contains a dot in it, split it and add a intlId
   // This makes it easier to write intl messages
@@ -30,9 +33,10 @@ const mapInput = (input) => {
   if (input.inputs) {
     // If there are nested inputs, give them an intlId too
     intlSafeObject.inputs = input.inputs.map(obj =>
-      (obj.id && obj.id.indexOf('.') > 0
+      obj.id && obj.id.indexOf('.') > 0
         ? { ...obj, intlId: obj.id.split('.')[1] }
-        : obj));
+        : obj,
+    );
   }
 
   return intlSafeObject;
@@ -41,7 +45,7 @@ const mapInput = (input) => {
 const getOwnerOptions = ({ borrowers }) =>
   Object.values(OWNER)
     .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
-    .map((value) => {
+    .map(value => {
       const isFirst = value === OWNER.FIRST;
       const isSecond = value === OWNER.SECOND;
       let borrowerFirstName;
@@ -54,11 +58,11 @@ const getOwnerOptions = ({ borrowers }) =>
 
       return isFirst || isSecond
         ? {
-          id: isFirst ? 0 : 1,
-          intlValues: {
-            name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
-          },
-        }
+            id: isFirst ? 0 : 1,
+            intlValues: {
+              name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
+            },
+          }
         : value;
     });
 
@@ -118,10 +122,10 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
 };
 
 const shouldDisplayFloorNumber = ({ propertyType, flatType }) =>
-  propertyType === PROPERTY_TYPE.FLAT
-  && flatType !== FLAT_TYPE.PENTHOUSE_APARTMENT
-  && flatType !== FLAT_TYPE.PENTHOUSE_MAISONETTE
-  && flatType !== FLAT_TYPE.TERRACE_APARTMENT;
+  propertyType === PROPERTY_TYPE.FLAT &&
+  flatType !== FLAT_TYPE.PENTHOUSE_APARTMENT &&
+  flatType !== FLAT_TYPE.PENTHOUSE_MAISONETTE &&
+  flatType !== FLAT_TYPE.TERRACE_APARTMENT;
 
 const shouldDisplayTerraceArea = ({ propertyType, flatType }) =>
   propertyType === PROPERTY_TYPE.FLAT;
@@ -191,7 +195,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       type: 'selectFieldInput',
       options: getSortedCountriesCodes(),
       defaultValue: 'CH',
-      transform: (code) => {
+      transform: code => {
         const name = countries.getName(code, 'fr');
         if (COMMON_COUNTRIES.includes(code)) {
           return <b>{name}</b>;

@@ -25,4 +25,6 @@ const ProPropertyUserPermissionsModifier = ({
   />
 );
 
-export default ProPropertyUserPermissionsContainer(ProPropertyUserPermissionsModifier);
+export default ProPropertyUserPermissionsContainer(
+  ProPropertyUserPermissionsModifier,
+);

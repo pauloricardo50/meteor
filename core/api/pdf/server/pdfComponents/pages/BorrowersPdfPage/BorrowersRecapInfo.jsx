@@ -51,9 +51,11 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
     },
     {
       label: <T id="PDF.borrowersInfos.civilStatus" />,
-      data: borrowersInfos.civilStatus.map(status =>
-        (status && <T id={`PDF.borrowersInfos.civilStatus.${status}`} />)
-          || '-'),
+      data: borrowersInfos.civilStatus.map(
+        status =>
+          (status && <T id={`PDF.borrowersInfos.civilStatus.${status}`} />) ||
+          '-',
+      ),
 
       condition: shouldRenderArray(borrowersInfos.civilStatus),
     },

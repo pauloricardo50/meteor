@@ -14,7 +14,8 @@ const LoanBoardCardAssignee = ({
   user,
 }: LoanBoardCardAssigneeProps) => {
   const { assignedEmployeeCache: assignee } = user || {};
-  const img = (assignee && employeesById[assignee._id].src) || '/img/placeholder.png';
+  const img =
+    (assignee && employeesById[assignee._id].src) || '/img/placeholder.png';
   const userId = user && user._id;
 
   if (renderComplex) {

@@ -61,44 +61,44 @@ const openFirstModal = (state, { payload: modals }) => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-  case 'OPEN_MODAL': {
-    if (Array.isArray(action.payload)) {
-      return openFirstModal(state, action);
+    case 'OPEN_MODAL': {
+      if (Array.isArray(action.payload)) {
+        return openFirstModal(state, action);
+      }
+
+      const modalId = id;
+      id += 1;
+      if (state.activeModal === null) {
+        return { ...state, [modalId]: action.payload, activeModal: modalId };
+      }
+      return { ...state, [modalId]: action.payload };
+    }
+    case 'CLOSE_MODAL': {
+      const {
+        [action.payload.activeModal]: removedModal,
+        activeModal,
+        ...newState
+      } = state;
+      const pendingModals = Object.keys(newState);
+      if (pendingModals.length > 0) {
+        const nextModal = Math.min(...pendingModals);
+        return {
+          ...newState,
+          activeModal: nextModal,
+          [nextModal]: {
+            ...newState[nextModal],
+            returnValue: action.payload.returnValue,
+          },
+        };
+      }
+      return { ...newState, activeModal: null };
+    }
+    case 'CLOSE_ALL': {
+      return initialState;
     }
 
-    const modalId = id;
-    id += 1;
-    if (state.activeModal === null) {
-      return { ...state, [modalId]: action.payload, activeModal: modalId };
-    }
-    return { ...state, [modalId]: action.payload };
-  }
-  case 'CLOSE_MODAL': {
-    const {
-      [action.payload.activeModal]: removedModal,
-      activeModal,
-      ...newState
-    } = state;
-    const pendingModals = Object.keys(newState);
-    if (pendingModals.length > 0) {
-      const nextModal = Math.min(...pendingModals);
-      return {
-        ...newState,
-        activeModal: nextModal,
-        [nextModal]: {
-          ...newState[nextModal],
-          returnValue: action.payload.returnValue,
-        },
-      };
-    }
-    return { ...newState, activeModal: null };
-  }
-  case 'CLOSE_ALL': {
-    return initialState;
-  }
-
-  default:
-    return state;
+    default:
+      return state;
   }
 };
 
@@ -116,7 +116,7 @@ const ModalManager = ({ children }: ModalManagerProps) => {
 
   const { props: { important: importantComponent = false } = {} } = dialogProps;
 
-  const openModal = (payload) => {
+  const openModal = payload => {
     dispatch({ type: 'OPEN_MODAL', payload });
   };
 

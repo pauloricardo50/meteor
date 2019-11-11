@@ -45,7 +45,7 @@ const HomePageHeader = ({ history }) => {
           </Button>
         </div>
       </div>
-      <HomePageHeaderDevice></HomePageHeaderDevice>
+      <HomePageHeaderDevice />
       <Waves noSlope={false} />
       {isLarge && <div />}
     </header>

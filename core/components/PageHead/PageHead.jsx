@@ -30,11 +30,11 @@ export const PageHead = ({
     meta={[
       ...(descriptionId
         ? [
-          {
-            name: 'description',
-            content: formatMessage({ id: descriptionId }),
-          },
-        ]
+            {
+              name: 'description',
+              content: formatMessage({ id: descriptionId }),
+            },
+          ]
         : []),
       {
         charSet: 'UTF-8',

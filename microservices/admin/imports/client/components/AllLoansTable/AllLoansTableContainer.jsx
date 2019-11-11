@@ -32,7 +32,7 @@ const columnOptions = [
 ];
 
 const getRows = ({ loans, history }) =>
-  loans.map((loan) => {
+  loans.map(loan => {
     const {
       _id: loanId,
       name,

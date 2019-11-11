@@ -5,10 +5,10 @@ import WwwTopNavLinksSmall from './WwwTopNavLinksSmall';
 import WwwTopNavLinksLarge from './WwwTopNavLinksLarge';
 
 const WwwTopNavLinks = ({ variant }) => (
-  <React.Fragment>
+  <>
     <WwwTopNavLinksSmall />
     <WwwTopNavLinksLarge variant={variant} />
-  </React.Fragment>
+  </>
 );
 
 WwwTopNavLinks.propTypes = {

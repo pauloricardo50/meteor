@@ -21,7 +21,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     this.input = React.createRef();
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     const { onSubmit, toggleEdit, value } = this.props;
     const nextValue = this.input.current.value;
@@ -33,7 +33,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     }
   };
 
-  handleKeyDown = (e) => {
+  handleKeyDown = e => {
     if (e.keyCode === 13 && e.metaKey) {
       this.handleSubmit(e);
     }
@@ -104,8 +104,8 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
             onKeyDown={this.handleKeyDown}
             {...inputProps}
           />
-          {typeof children === 'function'
-            && children({ value: value || placeholder, isEditing })}
+          {typeof children === 'function' &&
+            children({ value: value || placeholder, isEditing })}
         </form>
       );
     }

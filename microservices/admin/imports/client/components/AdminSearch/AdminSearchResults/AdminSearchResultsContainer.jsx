@@ -7,7 +7,7 @@ import { searchDatabase as query } from 'core/api/queries/queries';
 
 export default compose(
   withQuery(({ searchQuery }) => query.clone({ searchQuery })),
-  (MyComponent) =>
+  MyComponent =>
     class extends Component {
       constructor(props) {
         super(props);

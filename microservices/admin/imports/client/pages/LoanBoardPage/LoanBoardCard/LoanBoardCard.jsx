@@ -51,8 +51,10 @@ const LoanBoardCard = ({
         <LoanBoardCardTasks
           nextDueTask={nextDueTask}
           renderComplex={renderComplex}
-          tasks={tasks.filter(({ isPrivate = false, assigneeLink: { _id: assigneeId } = {} }) =>
-            (isPrivate && assigneeId ? assigneeId === Meteor.userId() : true))}
+          tasks={tasks.filter(
+            ({ isPrivate = false, assigneeLink: { _id: assigneeId } = {} }) =>
+              isPrivate && assigneeId ? assigneeId === Meteor.userId() : true,
+          )}
         />
       </div>
 

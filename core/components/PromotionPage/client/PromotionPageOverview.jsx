@@ -49,15 +49,15 @@ const PromotionPageOverview = ({
       {isApp ? (
         <>
           <ResidenceTypeSetter loan={loan} />
-          {loan.residenceType
-            && loan.promotionOptions
-            && loan.promotionOptions.length > 0 && (
-            <UserPromotionOptionsTable
-              promotion={promotion}
-              loan={loan}
-              className="card1"
-            />
-          )}
+          {loan.residenceType &&
+            loan.promotionOptions &&
+            loan.promotionOptions.length > 0 && (
+              <UserPromotionOptionsTable
+                promotion={promotion}
+                loan={loan}
+                className="card1"
+              />
+            )}
           {loan.residenceType && (
             <AppPromotionLotsTable
               promotion={promotion}
@@ -70,16 +70,16 @@ const PromotionPageOverview = ({
         <ProPromotionLotsTable promotion={promotion} className="card1" />
       )}
 
-      {promotion.lots
-        && promotion.lots.length > 0
-        && (!isApp || loan.residenceType) && (
-        <Element
-          name="additional-lots-table"
-          className="additional-lots-table"
-        >
-          <LotsTable promotion={promotion} className="card1" />
-        </Element>
-      )}
+      {promotion.lots &&
+        promotion.lots.length > 0 &&
+        (!isApp || loan.residenceType) && (
+          <Element
+            name="additional-lots-table"
+            className="additional-lots-table"
+          >
+            <LotsTable promotion={promotion} className="card1" />
+          </Element>
+        )}
     </div>
   );
 };

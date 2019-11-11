@@ -50,42 +50,54 @@ describe('FinancingResultErrors', () => {
 
   it('warns if no mortgage loan exists', () => {
     structure.wantedLoan = 0;
-    expect(component()
-      .find(T)
-      .props().id).to.contain('noMortgageLoan');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('noMortgageLoan');
 
     structure.wantedLoan = undefined;
-    expect(component()
-      .find(T)
-      .props().id).to.contain('noMortgageLoan');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('noMortgageLoan');
   });
 
   it('warns of missing own funds', () => {
-    expect(component()
-      .find(T)
-      .props().id).to.contain('missingOwnFunds');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('missingOwnFunds');
   });
 
   it('warns of missing own funds if the value is NaN', () => {
-    expect(component()
-      .find(T)
-      .props().id).to.contain('missingOwnFunds');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('missingOwnFunds');
   });
 
   it('warns of too much own funds', () => {
     structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 50000 }];
 
-    expect(component()
-      .find(T)
-      .props().id).to.contain('tooMuchOwnFunds');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('tooMuchOwnFunds');
   });
 
   it('warns of a high income ratio', () => {
     structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
 
-    expect(component()
-      .find(T)
-      .props().id).to.contain('highIncomeRatio');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('highIncomeRatio');
   });
 
   it('warns of missing cash', () => {
@@ -99,9 +111,11 @@ describe('FinancingResultErrors', () => {
     ];
     borrower.salary = 100000;
 
-    expect(component()
-      .find(T)
-      .props().id).to.contain('missingCash');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('missingCash');
   });
 
   it('warns of invalid interest rates', () => {
@@ -110,16 +124,20 @@ describe('FinancingResultErrors', () => {
     structure.loanTranches = [{ type: 'interest5', value: 1 }];
     borrower.salary = 100000;
 
-    expect(component()
-      .find(T)
-      .props().id).to.contain('invalidInterestRates');
+    expect(
+      component()
+        .find(T)
+        .props().id,
+    ).to.contain('invalidInterestRates');
   });
 
   it('returns null if no error exists in the structure', () => {
     structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
     borrower.salary = 100000;
-    expect(component()
-      .find(FinancingResultChart)
-      .exists()).to.equal(true);
+    expect(
+      component()
+        .find(FinancingResultChart)
+        .exists(),
+    ).to.equal(true);
   });
 });

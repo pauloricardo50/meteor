@@ -3,7 +3,7 @@ import React from 'react';
 import PasswordChange from 'core/components/AccountPage/PasswordChange';
 import SingleUserPage from '../SingleUserPage';
 
-const AdminAccountPage = (props) => {
+const AdminAccountPage = props => {
   const { currentUser } = props;
 
   return (

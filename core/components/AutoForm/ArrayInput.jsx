@@ -43,7 +43,8 @@ class ArrayInput extends Component {
         Component: CustomComponent,
         inputLabelProps: { shrink } = {},
       } = input;
-      const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
+      const finalCurrentValue =
+        currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,
         inputProps: {
@@ -67,23 +68,24 @@ class ArrayInput extends Component {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
-          (opt.id === undefined
+          opt.id === undefined
             ? {
-              id: opt,
-              label: transform ? (
-                transform(opt)
-              ) : (
-                <T id={`Forms.${intlId || id}.${opt}`} />
-              ),
-            }
+                id: opt,
+                label: transform ? (
+                  transform(opt)
+                ) : (
+                  <T id={`Forms.${intlId || id}.${opt}`} />
+                ),
+              }
             : {
-              ...opt,
-              label: transform ? (
-                transform(opt)
-              ) : (
-                <T id={`Forms.${intlId || id}.${opt.id}`} />
-              ),
-            }));
+                ...opt,
+                label: transform ? (
+                  transform(opt)
+                ) : (
+                  <T id={`Forms.${intlId || id}.${opt.id}`} />
+                ),
+              },
+        );
         return (
           <AutoFormSelectFieldInput {...childProps} key={id + inputId + i} />
         );
@@ -99,13 +101,15 @@ class ArrayInput extends Component {
 
     for (let i = 0; i < this.state.count; i += 1) {
       // If there are multiple components per array item
-      array.push(<div
-        className="card1 card-top card-top"
-        style={styles.arrayItem}
-        key={`${id + i}item`}
-      >
-        {inputs.map(input => mapInput(input, i))}
-      </div>);
+      array.push(
+        <div
+          className="card1 card-top card-top"
+          style={styles.arrayItem}
+          key={`${id + i}item`}
+        >
+          {inputs.map(input => mapInput(input, i))}
+        </div>,
+      );
     }
 
     return array;
@@ -115,8 +119,8 @@ class ArrayInput extends Component {
 
   // Only remove a value if there's more than 1 left
   removeValue = () =>
-    this.state.count > 0
-    && this.props
+    this.state.count > 0 &&
+    this.props
       .popFunc({
         object: { [`${this.props.inputProps.id}`]: 1 },
         id: this.props.docId,

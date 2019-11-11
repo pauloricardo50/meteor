@@ -6,7 +6,7 @@ import Widget1SingleInputForm from './Widget1SingleInputForm';
 const Widget1Part1 = ({ step, fields }) => (
   <div className="widget1-part-1">
     {fields.map((field, index) =>
-      (step >= index ? (
+      step >= index ? (
         <Widget1SingleInputForm
           key={field}
           name={field}
@@ -14,7 +14,8 @@ const Widget1Part1 = ({ step, fields }) => (
         />
       ) : (
         <div className="input-form-placeholder" key={field} />
-      )))}
+      ),
+    )}
   </div>
 );
 

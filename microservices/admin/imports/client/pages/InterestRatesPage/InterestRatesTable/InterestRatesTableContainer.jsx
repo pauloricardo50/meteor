@@ -37,18 +37,19 @@ const interestRatesData = ({ rateLow, rateHigh, trend }) => (
 const makeMapInterestRatesData = interestRates =>
   Object.values(INTEREST_RATES)
     .map(type =>
-      (interestRates[type]
+      interestRates[type]
         ? {
-          raw: interestRates[type],
-          label: interestRatesData(interestRates[type]),
-        }
-        : null))
+            raw: interestRates[type],
+            label: interestRatesData(interestRates[type]),
+          }
+        : null,
+    )
     .filter(x => x);
 
 const makeMapInterestRates = ({
   setInterestRatesToModify,
   setShowDialog,
-}) => (interestRates) => {
+}) => interestRates => {
   const { _id: interestRatesId, date } = interestRates;
 
   return {
@@ -70,8 +71,12 @@ const makeMapInterestRates = ({
 export default compose(
   withState('interestRatesToModify', 'setInterestRatesToModify', null),
   withState('showDialog', 'setShowDialog', false),
-  withProps(({ interestRates = [], setInterestRatesToModify, setShowDialog }) => ({
-    rows: interestRates.map(makeMapInterestRates({ setInterestRatesToModify, setShowDialog })),
-    columnOptions,
-  })),
+  withProps(
+    ({ interestRates = [], setInterestRatesToModify, setShowDialog }) => ({
+      rows: interestRates.map(
+        makeMapInterestRates({ setInterestRatesToModify, setShowDialog }),
+      ),
+      columnOptions,
+    }),
+  ),
 );

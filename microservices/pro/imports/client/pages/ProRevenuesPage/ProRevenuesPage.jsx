@@ -50,7 +50,10 @@ const ProRevenuesPage = ({
           label="Anonymes"
           value={withAnonymous}
           onChange={setWithAnonymous}
-          options={[{ id: true, label: 'Avec' }, { id: false, label: 'Sans' }]}
+          options={[
+            { id: true, label: 'Avec' },
+            { id: false, label: 'Sans' },
+          ]}
           className="mr-8"
         />
         <Select

@@ -5,12 +5,7 @@ import Button from 'core/components/Button';
 
 const Widget1SingleInputFormButtons = ({ disableSubmit, onDoNotKnow }) => (
   <div className="buttons">
-    <Button
-      color="primary"
-      type="submit"
-      raised
-      disabled={disableSubmit}
-    >
+    <Button color="primary" type="submit" raised disabled={disableSubmit}>
       Entrer
     </Button>
     <Button onClick={onDoNotKnow} raised className="button">

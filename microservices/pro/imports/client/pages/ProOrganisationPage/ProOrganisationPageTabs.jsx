@@ -32,7 +32,7 @@ const getTabs = ({ organisation, currentUser }) => {
       condition: !!(commissionRates && commissionRates.length > 0),
       Component: CommissionRatesViewer,
     },
-  ].map((tab) => {
+  ].map(tab => {
     const { id, Component } = tab;
     return {
       ...tab,

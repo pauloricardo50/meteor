@@ -22,7 +22,7 @@ const getMenuItems = (taskId, taskStatus) => {
   return options;
 };
 
-const TaskStatusSetter = (props) => {
+const TaskStatusSetter = props => {
   const { taskId, taskStatus, styles } = props;
 
   return (

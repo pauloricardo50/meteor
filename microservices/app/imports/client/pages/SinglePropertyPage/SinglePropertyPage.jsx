@@ -15,7 +15,7 @@ import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 
-const SinglePropertyPage = (props) => {
+const SinglePropertyPage = props => {
   const { loan, propertyId, history, currentUser } = props;
   const { loans } = currentUser || {};
   const { borrowers, properties, _id: loanId, applicationType } = loan;
@@ -58,9 +58,12 @@ const SinglePropertyPage = (props) => {
           }}
           method={() =>
             propertyDelete.run({ propertyId, loanId }).then(() =>
-              history.push(createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
-                ':loanId': loan._id,
-              })))
+              history.push(
+                createRoute(APP_ROUTES.PROPERTIES_PAGE.path, {
+                  ':loanId': loan._id,
+                }),
+              ),
+            )
           }
           label={<T id="general.delete" />}
         >

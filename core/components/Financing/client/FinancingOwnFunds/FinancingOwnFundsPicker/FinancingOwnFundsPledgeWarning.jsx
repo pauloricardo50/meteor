@@ -9,7 +9,9 @@ import { toMoney } from '../../../../../utils/conversionFunctions';
 
 type FinancingOwnFundsPledgeWarningProps = {};
 
-const FinancingOwnFundsPledgeWarning = (props: FinancingOwnFundsPledgeWarningProps) => {
+const FinancingOwnFundsPledgeWarning = (
+  props: FinancingOwnFundsPledgeWarningProps,
+) => {
   if (props.usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE) {
     const maxPledge = getMaxPledge(props);
     return (

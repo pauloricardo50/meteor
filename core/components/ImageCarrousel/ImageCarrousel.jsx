@@ -11,16 +11,16 @@ const initialState = { index: 0 };
 
 const makeReducer = maxLength => (state, action) => {
   switch (action.type) {
-  case 'increment': {
-    const nextIndex = state.index + 1;
-    return { index: nextIndex >= maxLength ? 0 : nextIndex };
-  }
-  case 'decrement': {
-    const nextIndex = state.index - 1;
-    return { index: nextIndex < 0 ? maxLength - 1 : nextIndex };
-  }
-  default:
-    return state;
+    case 'increment': {
+      const nextIndex = state.index + 1;
+      return { index: nextIndex >= maxLength ? 0 : nextIndex };
+    }
+    case 'decrement': {
+      const nextIndex = state.index - 1;
+      return { index: nextIndex < 0 ? maxLength - 1 : nextIndex };
+    }
+    default:
+      return state;
   }
 };
 
@@ -37,7 +37,9 @@ const ImageCarrousel = ({
   const imageAddress = `${images[state.index]
     .split('/')
     .slice(0, -1)
-    .join('/')}/${encodeURIComponent(images[state.index].split('/').slice(-1))}`;
+    .join('/')}/${encodeURIComponent(
+    images[state.index].split('/').slice(-1),
+  )}`;
 
   return (
     <div

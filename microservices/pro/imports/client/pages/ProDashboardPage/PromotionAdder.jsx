@@ -24,7 +24,10 @@ const PromotionAdder = ({ history }: PromotionAdderProps) => (
       promotionInsert
         .run({ promotion })
         .then(promotionId =>
-          history.push(createRoute(PRO_ROUTES.PRO_PROMOTION_PAGE.path, { promotionId })))
+          history.push(
+            createRoute(PRO_ROUTES.PRO_PROMOTION_PAGE.path, { promotionId }),
+          ),
+        )
     }
     autoFieldProps={{
       labels: {

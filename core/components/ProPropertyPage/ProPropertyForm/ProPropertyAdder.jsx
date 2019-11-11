@@ -14,7 +14,8 @@ export default compose(
       proPropertyInsert
         .run({ userId, property })
         .then(propertyId =>
-          history.push(createRoute('/properties/:propertyId', { propertyId }))),
+          history.push(createRoute('/properties/:propertyId', { propertyId })),
+        ),
     buttonLabel: <T id="ProDashboardPage.addProperty" />,
   })),
 )(ProPropertyForm);

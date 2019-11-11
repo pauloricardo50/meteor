@@ -32,9 +32,9 @@ const WITHOUT_LOAN = [
 const WITHOUT_LOGIN = ['/', '/loans', '/borrowers', '/properties', '/signup'];
 
 const isOnAllowedRouteWithoutLoan = (loans, path) =>
-  (!loans || loans.length < 1)
-  && path !== '/'
-  && !isOnAllowedRoute(path, WITHOUT_LOAN);
+  (!loans || loans.length < 1) &&
+  path !== '/' &&
+  !isOnAllowedRoute(path, WITHOUT_LOAN);
 
 export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname, WITHOUT_LOGIN);
@@ -101,16 +101,18 @@ export default compose(
   withUserLoan,
   injectCalculator(),
   withInterestRates,
-  mapProps(({
-    loan,
-    query,
-    refetch,
-    currentInterestRates: { averageRates },
-    ...props
-  }) => ({
-    ...props,
-    loan: { ...loan, currentInterestRates: averageRates },
-  })),
+  mapProps(
+    ({
+      loan,
+      query,
+      refetch,
+      currentInterestRates: { averageRates },
+      ...props
+    }) => ({
+      ...props,
+      loan: { ...loan, currentInterestRates: averageRates },
+    }),
+  ),
   withRouter,
   withRedirect,
   withTranslationContext(({ loan = {} }) => ({

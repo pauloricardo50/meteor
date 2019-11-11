@@ -15,7 +15,7 @@ const UploaderBottom = ({
   handleUploadComplete,
   handleAddFiles,
   fileMeta,
-  id
+  id,
 }) => (
   <>
     {currentValue.map((f, i) => (
@@ -41,11 +41,7 @@ const UploaderBottom = ({
       />
     ))}
 
-    <FileAdder
-      id={fileMeta.id}
-      handleAddFiles={handleAddFiles}
-      docId={docId}
-    />
+    <FileAdder id={fileMeta.id} handleAddFiles={handleAddFiles} docId={docId} />
   </>
 );
 

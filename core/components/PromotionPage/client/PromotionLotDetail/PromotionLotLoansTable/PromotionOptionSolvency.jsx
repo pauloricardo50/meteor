@@ -14,17 +14,17 @@ const PromotionOptionSolvency = ({
   let icon = 'help';
 
   switch (solvency) {
-  case PROMOTION_OPTION_SOLVENCY.SOLVENT:
-    tooltip = 'Solvable';
-    icon = 'check';
-    break;
-  case PROMOTION_OPTION_SOLVENCY.INSOLVENT:
-    tooltip = 'Non solvable';
-    icon = 'close';
-    break;
+    case PROMOTION_OPTION_SOLVENCY.SOLVENT:
+      tooltip = 'Solvable';
+      icon = 'check';
+      break;
+    case PROMOTION_OPTION_SOLVENCY.INSOLVENT:
+      tooltip = 'Non solvable';
+      icon = 'close';
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 
   return (

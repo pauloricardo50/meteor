@@ -104,21 +104,26 @@ const getOptions = ({
       onClick: () =>
         toggleNotifications.run({ promotionId }).then(result =>
           import('../../../../utils/message').then(({ default: message }) => {
-            message.success(result
-              ? 'Vos notifications par email ont été activées'
-              : 'Vos notifications par email ont été désactivées');
-          })),
+            message.success(
+              result
+                ? 'Vos notifications par email ont été activées'
+                : 'Vos notifications par email ont été désactivées',
+            );
+          }),
+        ),
     },
     {
       id: 'updatePromotion',
       condition: canModifyPromotion,
       onClick: () =>
-        openModal(<DialogForm
-          model={promotion}
-          schema={BasePromotionSchema}
-          title={<T id="PromotionAdministration.updatePromotion" />}
-          onSubmit={object => promotionUpdate.run({ promotionId, object })}
-        />),
+        openModal(
+          <DialogForm
+            model={promotion}
+            schema={BasePromotionSchema}
+            title={<T id="PromotionAdministration.updatePromotion" />}
+            onSubmit={object => promotionUpdate.run({ promotionId, object })}
+          />,
+        ),
     },
     {
       id: 'manageDocuments',
@@ -136,24 +141,28 @@ const getOptions = ({
       dividerTop: true,
       condition: canAddLots,
       onClick: () =>
-        openModal(<DialogForm
-          schema={promotionLotSchema}
-          title={<T id="PromotionAdministration.addPromotionLot" />}
-          description={<T id="PromotionPage.promotionLotValueDescription" />}
-          onSubmit={property =>
-            insertPromotionProperty.run({ promotionId, property })
-          }
-        />),
+        openModal(
+          <DialogForm
+            schema={promotionLotSchema}
+            title={<T id="PromotionAdministration.addPromotionLot" />}
+            description={<T id="PromotionPage.promotionLotValueDescription" />}
+            onSubmit={property =>
+              insertPromotionProperty.run({ promotionId, property })
+            }
+          />,
+        ),
     },
     {
       id: 'addLot',
       condition: canAddLots,
       onClick: () =>
-        openModal(<DialogForm
-          schema={lotSchema}
-          title={<T id="PromotionAdministration.addLot" />}
-          onSubmit={lot => lotInsert.run({ promotionId, lot })}
-        />),
+        openModal(
+          <DialogForm
+            schema={lotSchema}
+            title={<T id="PromotionAdministration.addLot" />}
+            onSubmit={lot => lotInsert.run({ promotionId, lot })}
+          />,
+        ),
     },
     {
       id: 'linkLoan',
@@ -168,10 +177,12 @@ const getOptions = ({
       dividerTop: true,
       condition: canRemovePromotion,
       onClick: () =>
-        openModal(<ConfirmModal
-          func={() => promotionRemove.run({ promotionId })}
-          keyword={promotion.name}
-        />),
+        openModal(
+          <ConfirmModal
+            func={() => promotionRemove.run({ promotionId })}
+            keyword={promotion.name}
+          />,
+        ),
     },
   ]
     .filter(({ condition }) => !!condition)

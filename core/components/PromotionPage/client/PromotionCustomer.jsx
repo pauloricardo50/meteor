@@ -13,10 +13,11 @@ const PromotionCustomer = ({
   promotionUsers,
 }: PromotionCustomerProps) => {
   const { _id, name, phoneNumbers = ['-'], email } = user;
-  const invitedByUser = invitedBy
-    && promotionUsers
-    && (!!promotionUsers.length
-      && promotionUsers.find(({ _id: id }) => id === invitedBy));
+  const invitedByUser =
+    invitedBy &&
+    promotionUsers &&
+    !!promotionUsers.length &&
+    promotionUsers.find(({ _id: id }) => id === invitedBy);
 
   return (
     <ProCustomer

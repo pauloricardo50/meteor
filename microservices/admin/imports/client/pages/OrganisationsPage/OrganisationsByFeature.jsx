@@ -15,7 +15,8 @@ const OrganisationsByFeature = ({
 }: OrganisationsByFeatureProps) => {
   const filteredOrganisations = organisations
     .filter(({ features = [] }) =>
-      (feature ? features.includes(feature) : features.length === 0))
+      feature ? features.includes(feature) : features.length === 0,
+    )
     .sort(({ name: nameA }, { name: nameB }) => nameA.localeCompare(nameB));
 
   return filteredOrganisations.length ? (

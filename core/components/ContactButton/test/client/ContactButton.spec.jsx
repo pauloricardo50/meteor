@@ -24,30 +24,38 @@ describe('ContactButton', () => {
   });
 
   it('renders the closed version', () => {
-    expect(component()
-      .find('.contact-button-overlay')
-      .hasClass('closed')).to.equal(true);
+    expect(
+      component()
+        .find('.contact-button-overlay')
+        .hasClass('closed'),
+    ).to.equal(true);
   });
 
   it('renders the opened version', () => {
-    expect(component()
-      .find('.contact-button-overlay')
-      .hasClass('closed')).to.equal(true);
+    expect(
+      component()
+        .find('.contact-button-overlay')
+        .hasClass('closed'),
+    ).to.equal(true);
 
     component()
       .find('button')
       .simulate('click');
 
-    expect(component()
-      .find('.contact-button-overlay')
-      .hasClass('closed')).to.equal(false);
+    expect(
+      component()
+        .find('.contact-button-overlay')
+        .hasClass('closed'),
+    ).to.equal(false);
   });
 
   describe('renders staff value', () => {
     it('name', () => {
-      expect(component()
-        .find('.staff-name')
-        .text()).to.equal(employees[0].name);
+      expect(
+        component()
+          .find('.staff-name')
+          .text(),
+      ).to.equal(employees[0].name);
     });
 
     it('phoneNumber', () => {

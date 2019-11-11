@@ -136,7 +136,7 @@ const labels = {
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
 
-const getTime = (date) => {
+const getTime = date => {
   if (!date) {
     return undefined;
   }
@@ -171,7 +171,7 @@ const TaskModifier = ({
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
-    updateTask: (values) => {
+    updateTask: values => {
       setSubmitting(true);
       return taskUpdate
         .run({ taskId, object: values })

@@ -36,10 +36,13 @@ export const CustomerAdderUserSchema = ({
       defaultValue: null,
       allowedValues: users.map(({ _id }) => _id),
       uniforms: {
-        transform: (userId) => {
-          const { name, organisations = [] } = users.find(({ _id }) => _id === userId);
+        transform: userId => {
+          const { name, organisations = [] } = users.find(
+            ({ _id }) => _id === userId,
+          );
           // Display user's first organisation name
-          const organisationName = !!organisations.length && organisations[0].name;
+          const organisationName =
+            !!organisations.length && organisations[0].name;
           return organisationName ? `${name} (${organisationName})` : name;
         },
         displayEmpty: false,
@@ -64,8 +67,9 @@ export const CustomerAdderUserSchema = ({
       type: String,
       allowedValues: promotionLots.map(({ _id }) => _id),
       uniforms: {
-        transform: (promotionLotId) => {
-          const { name } = promotionLots.find(({ _id }) => _id === promotionLotId) || {};
+        transform: promotionLotId => {
+          const { name } =
+            promotionLots.find(({ _id }) => _id === promotionLotId) || {};
           return name;
         },
       },
@@ -102,11 +106,15 @@ const CustomerAdder = ({
           : undefined,
       }}
       schema={CustomerAdderUserSchema({ promotion })}
-      onSubmit={(user) =>
+      onSubmit={user =>
         proInviteUser.run({ user, promotionIds: [promotionId] }).then(() =>
-          history.push(createRoute('/promotions/:promotionId/customers', {
-            promotionId,
-          })))}
+          history.push(
+            createRoute('/promotions/:promotionId/customers', {
+              promotionId,
+            }),
+          ),
+        )
+      }
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
       onSuccessMessage={onSuccessMessage}
@@ -120,7 +128,8 @@ export default withProps(() => {
   const searchParams = useSearchParams();
   return {
     model: searchParams,
-    openOnMount: !!Object.keys(searchParams).filter((key) =>
-      ['email', 'firstName', 'lastName', 'phoneNumber'].includes(key)).length,
+    openOnMount: !!Object.keys(searchParams).filter(key =>
+      ['email', 'firstName', 'lastName', 'phoneNumber'].includes(key),
+    ).length,
   };
 })(CustomerAdder);

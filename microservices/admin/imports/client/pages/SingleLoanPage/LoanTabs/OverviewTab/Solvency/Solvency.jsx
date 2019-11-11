@@ -32,7 +32,7 @@ const Solvency = ({
     <div className="card1 card-top solvency">
       <form
         className="flex"
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           setShowResults(false);
           setTimeout(() => setShowResults(true), 0);

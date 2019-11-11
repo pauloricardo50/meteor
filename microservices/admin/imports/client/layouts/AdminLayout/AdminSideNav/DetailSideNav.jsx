@@ -5,7 +5,7 @@ import DetailSideNavHeader from './DetailSideNavHeader';
 import DetailSideNavList from './DetailSideNavList';
 import DetailSideNavContainer from './DetailSideNavContainer';
 
-const DetailSideNav = (props) => {
+const DetailSideNav = props => {
   const { filterOptions, sortOption } = props;
 
   return (

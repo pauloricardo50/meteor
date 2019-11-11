@@ -15,8 +15,8 @@ const WwwFooterCopyright = () => (
       href={`${Meteor.settings.public.subdomains.www}/files/Privacy Policy - e-Potek.pdf`}
     >
       Privacy policy
-    </a>{' '}&bull;{' '}
-    UID : CHE-405.084.029 &bull;{' '}
+    </a>{' '}
+    &bull; UID : CHE-405.084.029 &bull;{' '}
     <a
       target="_blank"
       rel="noopener noreferrer"

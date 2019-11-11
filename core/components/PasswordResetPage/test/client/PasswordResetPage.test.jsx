@@ -78,10 +78,18 @@ describe('PasswordResetPage', () => {
 
     expect(dumbComponent().find('input[name="firstName"]').length).to.equal(1);
     expect(dumbComponent().find('input[name="lastName"]').length).to.equal(1);
-    expect(dumbComponent().find('input[name="phoneNumber"]').length).to.equal(1);
-    expect(dumbComponent().find('input[name="newPassword"]').length).to.equal(1);
-    expect(dumbComponent().find('input[name="newPassword2"]').length).to.equal(1);
-    expect(dumbComponent().find('input[name="hasReadPrivacyPolicy"]').length).to.equal(0);
+    expect(dumbComponent().find('input[name="phoneNumber"]').length).to.equal(
+      1,
+    );
+    expect(dumbComponent().find('input[name="newPassword"]').length).to.equal(
+      1,
+    );
+    expect(dumbComponent().find('input[name="newPassword2"]').length).to.equal(
+      1,
+    );
+    expect(
+      dumbComponent().find('input[name="hasReadPrivacyPolicy"]').length,
+    ).to.equal(0);
   });
 
   it('requests firstName field if it is not provided, and a divider', () => {
@@ -91,9 +99,15 @@ describe('PasswordResetPage', () => {
 
     expect(dumbComponent().find('input[name="firstName"]').length).to.equal(1);
     expect(dumbComponent().find('input[name="lastName"]').length).to.equal(0);
-    expect(dumbComponent().find('input[name="phoneNumber"]').length).to.equal(0);
-    expect(dumbComponent().find('input[name="newPassword"]').length).to.equal(1);
-    expect(dumbComponent().find('input[name="newPassword2"]').length).to.equal(1);
+    expect(dumbComponent().find('input[name="phoneNumber"]').length).to.equal(
+      0,
+    );
+    expect(dumbComponent().find('input[name="newPassword"]').length).to.equal(
+      1,
+    );
+    expect(dumbComponent().find('input[name="newPassword2"]').length).to.equal(
+      1,
+    );
 
     expect(dumbComponent().find('hr').length).to.equal(1);
   });
@@ -129,7 +143,9 @@ describe('PasswordResetPage', () => {
       user: { email: 'yo@test.com' },
     };
 
-    expect(dumbComponent().find('input[name="hasReadPrivacyPolicy"]').length).to.equal(1);
+    expect(
+      dumbComponent().find('input[name="hasReadPrivacyPolicy"]').length,
+    ).to.equal(1);
   });
 
   it('does not render a privacy policy disclaimer if the user is resetting his password', () => {
@@ -138,7 +154,9 @@ describe('PasswordResetPage', () => {
       user: { email: 'yo@test.com' },
     };
 
-    expect(dumbComponent().find('input[name="hasReadPrivacyPolicy"]').length).to.equal(0);
+    expect(
+      dumbComponent().find('input[name="hasReadPrivacyPolicy"]').length,
+    ).to.equal(0);
   });
 
   it('does not submit the form if password do not match', () => {
@@ -168,14 +186,18 @@ describe('PasswordResetPage', () => {
       .first()
       .simulate('submit');
 
-    expect(dumbComponent()
-      .find('button')
-      .last()
-      .prop('disabled')).to.equal(true);
+    expect(
+      dumbComponent()
+        .find('button')
+        .last()
+        .prop('disabled'),
+    ).to.equal(true);
 
-    expect(dumbComponent()
-      .find('[name="newPassword2"]')
-      .first()
-      .text()).to.include('newPassword2 is invalid');
+    expect(
+      dumbComponent()
+        .find('[name="newPassword2"]')
+        .first()
+        .text(),
+    ).to.include('newPassword2 is invalid');
   });
 });

@@ -9,7 +9,7 @@ const keyMap = {
 };
 
 const makeHandlers = ({ setOpenSearch }) => ({
-  SEARCH: (e) => {
+  SEARCH: e => {
     // Prevent the space key to be sent to the search input
     e.preventDefault();
     setOpenSearch(true);

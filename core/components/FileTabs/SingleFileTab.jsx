@@ -30,22 +30,24 @@ type SingleFileTabProps = {
 
 const documentsToDisplay = ({ collection, loan, id }) => {
   switch (collection) {
-  case BORROWERS_COLLECTION: {
-    return getBorrowerDocuments({ loan, id });
-  }
-  case PROPERTIES_COLLECTION:
-    return getPropertyDocuments({ loan, id });
-  case LOANS_COLLECTION:
-    return getLoanDocuments({ loan, id });
-  default:
-    return [];
+    case BORROWERS_COLLECTION: {
+      return getBorrowerDocuments({ loan, id });
+    }
+    case PROPERTIES_COLLECTION:
+      return getPropertyDocuments({ loan, id });
+    case LOANS_COLLECTION:
+      return getLoanDocuments({ loan, id });
+    default:
+      return [];
   }
 };
 
 const documentsToHide = ({ doc, collection, loan, id }) => {
   const allDocs = allDocuments({ doc, collection });
   const docsToDisplay = documentsToDisplay({ collection, loan, id });
-  return allDocs.filter(document => !docsToDisplay.some(({ id: docId }) => docId === document.id));
+  return allDocs.filter(
+    document => !docsToDisplay.some(({ id: docId }) => docId === document.id),
+  );
 };
 
 const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {

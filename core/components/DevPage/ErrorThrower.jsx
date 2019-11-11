@@ -47,8 +47,8 @@ const ErrorThrower = ({ fuckedUp, fuckShitUp }: ErrorThrowerProps) => (
     >
       Throw server error in promise and don't return
     </Button>
-    {fuckedUp
-      && (() => {
+    {fuckedUp &&
+      (() => {
         throw new Error('DevPage render error thrown');
       })()}
   </div>

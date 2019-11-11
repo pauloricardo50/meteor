@@ -43,20 +43,22 @@ export const InputAndSlider = ({
 export default compose(
   FinancingDataContainer,
   StructureUpdateContainer,
-  withProps(({
-    max: _max,
-    calculatePlaceholder,
-    placeholder,
-    id,
-    allowUndefined,
-    ...props
-  }) => ({
-    max: typeof _max === 'function' ? _max(props) : _max,
-    placeholder: calculatePlaceholder
-      ? toMoney(calculatePlaceholder(props))
-      : placeholder,
-    schema: new SimpleSchema({
-      [id]: { type: Number, optional: allowUndefined },
+  withProps(
+    ({
+      max: _max,
+      calculatePlaceholder,
+      placeholder,
+      id,
+      allowUndefined,
+      ...props
+    }) => ({
+      max: typeof _max === 'function' ? _max(props) : _max,
+      placeholder: calculatePlaceholder
+        ? toMoney(calculatePlaceholder(props))
+        : placeholder,
+      schema: new SimpleSchema({
+        [id]: { type: Number, optional: allowUndefined },
+      }),
     }),
-  })),
+  ),
 )(InputAndSlider);

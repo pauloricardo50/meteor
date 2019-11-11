@@ -51,7 +51,7 @@ export const LoanActivityForm = ({
   <AutoFormDialog
     schema={ActivitySchema}
     model={model}
-    triggerComponent={(handleOpen) => (
+    triggerComponent={handleOpen => (
       <IconButton className={className} onClick={handleOpen} type={iconType} />
     )}
     onSubmit={onSubmit}
@@ -61,7 +61,7 @@ export const LoanActivityForm = ({
 );
 
 export const LoanActivityModifier = withProps(({ model }) => ({
-  onSubmit: (values) =>
+  onSubmit: values =>
     activityUpdate.run({ activityId: model._id, object: values }),
   iconType: 'edit',
   renderAdditionalActions: ({ closeDialog, setDisableActions }) => (
@@ -82,7 +82,7 @@ export const LoanActivityModifier = withProps(({ model }) => ({
 }))(LoanActivityForm);
 
 export default withProps(({ loanId }) => ({
-  onSubmit: (values) =>
+  onSubmit: values =>
     activityInsert.run({ object: { ...values, loanLink: { _id: loanId } } }),
   iconType: 'add',
   title: 'Ajouter événement',

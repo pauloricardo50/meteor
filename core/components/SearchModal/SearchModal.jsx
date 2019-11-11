@@ -9,7 +9,7 @@ import Button from '../Button';
 import Search from './Search';
 
 export const SearchModal = ({ isOpen, handleOpen, handleClose }) => (
-  <React.Fragment>
+  <>
     <IconButton type="search" onClick={handleOpen} />
     <Dialog
       fullScreen
@@ -26,7 +26,7 @@ export const SearchModal = ({ isOpen, handleOpen, handleClose }) => (
     >
       <Search />
     </Dialog>
-  </React.Fragment>
+  </>
 );
 
 SearchModal.propTypes = {

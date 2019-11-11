@@ -26,7 +26,9 @@ const LoanTimeline = ({
     const el = document.getElementsByClassName('loan-timeline-timeline')[0];
     el.scrollLeft = el.scrollWidth;
   }, []);
-  const elementAfterToday = activities.find(({ date }) => date.getTime() > now.getTime());
+  const elementAfterToday = activities.find(
+    ({ date }) => date.getTime() > now.getTime(),
+  );
 
   return (
     <div className="loan-timeline">
@@ -37,26 +39,26 @@ const LoanTimeline = ({
           value={type.$in}
           multiple
           label="Filtrer"
-          options={activityFilterOptions.map((t) => ({
+          options={activityFilterOptions.map(t => ({
             id: t,
             label: <T id={`Forms.type.${t}`} />,
           }))}
-          onChange={(selected) => setType({ $in: selected })}
+          onChange={selected => setType({ $in: selected })}
         />
       </div>
       <Timeline
         variant="horizontal"
         className="loan-timeline-timeline"
-        events={activities.map((activity) => ({
-          children: elementAfterToday
-            && activities.length >= 2
-            && activity._id === elementAfterToday._id && (
-            <div className="today">
-              <Tooltip title="Aujourd'hui">
-                <div className="today-dot" />
-              </Tooltip>
-            </div>
-          ),
+        events={activities.map(activity => ({
+          children: elementAfterToday &&
+            activities.length >= 2 &&
+            activity._id === elementAfterToday._id && (
+              <div className="today">
+                <Tooltip title="Aujourd'hui">
+                  <div className="today-dot" />
+                </Tooltip>
+              </div>
+            ),
           mainLabel: <LoanTimelineTitle activity={activity} />,
           secondaryLabel: (
             <TimelineDescription

@@ -66,12 +66,12 @@ const DashboardInfoTeamMember = ({
         <a href={`tel:${phoneNumber}`}>
           <IconButton
             type="phone"
-            tooltip={(
+            tooltip={
               <T
                 id="DashboardInfoTeamMember.phoneTooltip"
                 values={{ phoneNumber }}
               />
-            )}
+            }
           />
         </a>
       )}

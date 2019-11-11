@@ -20,7 +20,7 @@ const columnOptions = [
   label: <T id={`AdminPromotionPage.PromotionUsers.${id}`} />,
 }));
 
-const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
+const makeMapPromotionUser = ({ promotionId, history }) => user => {
   const {
     _id,
     email,
@@ -50,9 +50,11 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
         />
         <IconButton
           onClick={() => {
-            const confirm = window.confirm(`Supprimer ${getUserNameAndOrganisation({
-              user,
-            })} de la promotion ?`);
+            const confirm = window.confirm(
+              `Supprimer ${getUserNameAndOrganisation({
+                user,
+              })} de la promotion ?`,
+            );
             if (confirm) {
               return removeProFromPromotion.run({ promotionId, userId: _id });
             }

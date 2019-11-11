@@ -9,7 +9,7 @@ const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
   gender: doc.gender,
 }))(AutoForm);
 
-const Info = (props) => {
+const Info = props => {
   const {
     loan: { userFormsEnabled, borrowers, _id: loanId },
   } = props;

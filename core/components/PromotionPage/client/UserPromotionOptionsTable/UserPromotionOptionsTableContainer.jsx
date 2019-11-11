@@ -30,20 +30,20 @@ export const isAnyLotAttributedToMe = promotionOptions =>
   getLotsAttributedToMe(promotionOptions).length > 0;
 
 const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>
-  !attributedToMe
-  && status === PROMOTION_LOT_STATUS.AVAILABLE
-  && promotionStatus === PROMOTION_STATUS.OPEN;
+  !attributedToMe &&
+  status === PROMOTION_LOT_STATUS.AVAILABLE &&
+  promotionStatus === PROMOTION_STATUS.OPEN;
 
 const adminReducedStatus = ({ attributedTo = {}, userId, status }) => {
   const { user: { _id: attributedToUserId } = {} } = attributedTo;
   if (userId === attributedToUserId) {
     switch (status) {
-    case PROMOTION_LOT_STATUS.BOOKED:
-      return PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME;
-    case PROMOTION_LOT_STATUS.SOLD:
-      return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
-    default:
-      return status;
+      case PROMOTION_LOT_STATUS.BOOKED:
+        return PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME;
+      case PROMOTION_LOT_STATUS.SOLD:
+        return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
+      default:
+        return status;
     }
   }
   if (status === PROMOTION_LOT_STATUS.BOOKED) {
@@ -71,7 +71,8 @@ const makeMapPromotionOption = ({
       user: { _id: userId },
     },
   } = promotionOption;
-  const { name, status, reducedStatus, value, attributedTo } = (promotionLots && promotionLots[0]) || {};
+  const { name, status, reducedStatus, value, attributedTo } =
+    (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
     columns: [
@@ -126,7 +127,7 @@ const makeMapPromotionOption = ({
       ),
     ].filter(x => x !== false),
 
-    handleClick: (event) => {
+    handleClick: event => {
       setPromotionOptionModal(promotionOptionId);
     },
   };
@@ -144,11 +145,11 @@ const columnOptions = ({
   isAdmin,
 }) =>
   [
-    !isLotAttributedToMe
-      && promotionStatus === PROMOTION_STATUS.OPEN && {
-      id: 'priorityOrder',
-      ...(isDashboardTable && { style: { width: '10%' } }),
-    },
+    !isLotAttributedToMe &&
+      promotionStatus === PROMOTION_STATUS.OPEN && {
+        id: 'priorityOrder',
+        ...(isDashboardTable && { style: { width: '10%' } }),
+      },
     { id: 'name' },
     { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
@@ -165,8 +166,8 @@ const columnOptions = ({
         ) : (
           <T id={`PromotionPage.lots.${id}`} />
         ),
-      ...(isDashboardTable
-        && id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
+      ...(isDashboardTable &&
+        id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
 const addState = withStateHandlers(
@@ -190,59 +191,65 @@ export default compose(
       }),
   }),
   addState,
-  mapProps(({
-    promotion,
-    loan,
-    isLoading,
-    setLoading,
-    makeChangeCustom,
-    isDashboardTable,
-    isAdmin,
-    className,
-    setPromotionOptionModal,
-    ...rest
-  }) => {
-    const { promotionOptions } = loan;
-    const options = isAnyLotAttributedToMe(promotionOptions)
-      ? getLotsAttributedToMe(promotionOptions)
-      : promotionOptions;
-
-    let priorityOrder = promotion.loans
-        && promotion.loans[0]
-        && promotion.loans[0].$metadata.priorityOrder;
-
-    // On admin, the priorityOrder is on the promotion itself
-    if (!priorityOrder) {
-      priorityOrder = promotion.$metadata && promotion.$metadata.priorityOrder;
-    }
-
-    return {
-      rows: options.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
-        isLoading,
-        setLoading,
-        makeChangeCustom,
-        isDashboardTable,
-        promotionStatus: promotion.status,
-        isAdmin,
-        setPromotionOptionModal,
-      })),
-      columnOptions: columnOptions({
-        isDashboardTable,
-        isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
-        promotionStatus: promotion.status,
-        isAdmin,
-      }),
-      setCustom: (promotionOptionId, value) =>
-        promotionOptionUpdate.run({
-          promotionOptionId,
-          object: { custom: value },
-        }),
-      isDashboardTable,
-      className,
-      promotionOptions,
-      setPromotionOptionModal,
+  mapProps(
+    ({
       promotion,
-      ...rest,
-    };
-  }),
+      loan,
+      isLoading,
+      setLoading,
+      makeChangeCustom,
+      isDashboardTable,
+      isAdmin,
+      className,
+      setPromotionOptionModal,
+      ...rest
+    }) => {
+      const { promotionOptions } = loan;
+      const options = isAnyLotAttributedToMe(promotionOptions)
+        ? getLotsAttributedToMe(promotionOptions)
+        : promotionOptions;
+
+      let priorityOrder =
+        promotion.loans &&
+        promotion.loans[0] &&
+        promotion.loans[0].$metadata.priorityOrder;
+
+      // On admin, the priorityOrder is on the promotion itself
+      if (!priorityOrder) {
+        priorityOrder =
+          promotion.$metadata && promotion.$metadata.priorityOrder;
+      }
+
+      return {
+        rows: options.sort(makeSortByPriority(priorityOrder)).map(
+          makeMapPromotionOption({
+            isLoading,
+            setLoading,
+            makeChangeCustom,
+            isDashboardTable,
+            promotionStatus: promotion.status,
+            isAdmin,
+            setPromotionOptionModal,
+          }),
+        ),
+        columnOptions: columnOptions({
+          isDashboardTable,
+          isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
+          promotionStatus: promotion.status,
+          isAdmin,
+        }),
+        setCustom: (promotionOptionId, value) =>
+          promotionOptionUpdate.run({
+            promotionOptionId,
+            object: { custom: value },
+          }),
+        isDashboardTable,
+        className,
+        promotionOptions,
+        setPromotionOptionModal,
+        promotion,
+        ...rest,
+      };
+    },
+  ),
 );

@@ -70,7 +70,7 @@ export const address = {
     allowedValues: getSortedCountriesCodes(),
     defaultValue: 'CH',
     uniforms: {
-      transform: (code) => {
+      transform: code => {
         const name = countries.getName(code, 'fr');
         if (COMMON_COUNTRIES.includes(code)) {
           return <b>{name}</b>;

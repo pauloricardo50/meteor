@@ -38,16 +38,18 @@ export default class AutoFormSelectFieldInput extends Component {
   };
 
   mapOptions = (transform = () => null) =>
-    this.props.inputProps.options.map(({ id, intlId, intlValues, label, ref, ...otherProps }) => ({
-      label: label || transform(id) || (
-        <T
-          id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
-          values={intlValues}
-        />
-      ),
-      id,
-      ...otherProps,
-    }));
+    this.props.inputProps.options.map(
+      ({ id, intlId, intlValues, label, ref, ...otherProps }) => ({
+        label: label || transform(id) || (
+          <T
+            id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
+            values={intlValues}
+          />
+        ),
+        id,
+        ...otherProps,
+      }),
+    );
 
   render() {
     const {

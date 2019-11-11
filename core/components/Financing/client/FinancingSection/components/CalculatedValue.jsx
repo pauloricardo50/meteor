@@ -24,10 +24,10 @@ export const FORMATS = {
 
 const formatters = {
   [FORMATS.MONEY]: value => (
-    <React.Fragment>
+    <>
       <span className="chf">CHF</span>
       {toMoney(value)}
-    </React.Fragment>
+    </>
   ),
   [FORMATS.PERCENT]: value => <Percent value={value} />,
   [FORMATS.DEFAULT]: value => value,

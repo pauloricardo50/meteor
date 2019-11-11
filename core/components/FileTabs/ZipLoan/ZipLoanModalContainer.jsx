@@ -8,7 +8,7 @@ import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
 import { getZipLoanUrl } from 'core/api/methods/index';
 import { FILE_STATUS } from 'core/api/constants';
 
-const getAllDocuments = (loan) => {
+const getAllDocuments = loan => {
   const { borrowers = [], documents: loanDocs = {}, _id: loanId } = loan;
   const loanDocuments = Object.keys(loanDocs).map(doc => `${loanId}/${doc}`);
   const borrowersDocuments = borrowers.reduce(
@@ -18,12 +18,14 @@ const getAllDocuments = (loan) => {
     ],
     [],
   );
-  const propertyDocuments = Object.keys(Calculator.selectPropertyKey({ loan, key: 'documents' }) || []).map(doc => `${Calculator.selectPropertyKey({ loan, key: '_id' })}/${doc}`);
+  const propertyDocuments = Object.keys(
+    Calculator.selectPropertyKey({ loan, key: 'documents' }) || [],
+  ).map(doc => `${Calculator.selectPropertyKey({ loan, key: '_id' })}/${doc}`);
 
   return [...loanDocuments, ...borrowersDocuments, ...propertyDocuments];
 };
 
-const getAllAdditionalDocuments = (loan) => {
+const getAllAdditionalDocuments = loan => {
   const {
     borrowers = [],
     additionalDocuments: loanAdditionalDocuments = [],
@@ -35,10 +37,11 @@ const getAllAdditionalDocuments = (loan) => {
     ],
     [],
   );
-  const propertyAdditionalDocuments = Calculator.selectPropertyKey({
-    loan,
-    key: 'additionalDocuments',
-  }) || [];
+  const propertyAdditionalDocuments =
+    Calculator.selectPropertyKey({
+      loan,
+      key: 'additionalDocuments',
+    }) || [];
   return [
     ...loanAdditionalDocuments,
     ...borrowersAdditionalDocuments,
@@ -48,7 +51,8 @@ const getAllAdditionalDocuments = (loan) => {
 
 const getDocumentsAutoFields = (doc, documents, additionalDocuments) =>
   documents.map((document, index) => {
-    const { label } = additionalDocuments.find(({ id }) => id === document.split('/')[1]) || {};
+    const { label } =
+      additionalDocuments.find(({ id }) => id === document.split('/')[1]) || {};
     return (
       <CustomAutoField
         name={document}
@@ -58,7 +62,7 @@ const getDocumentsAutoFields = (doc, documents, additionalDocuments) =>
     );
   });
 
-const getAutoFields = (loan) => {
+const getAutoFields = loan => {
   const { _id: loanId, name: loanName, borrowers = [] } = loan;
   const allDocuments = getAllDocuments(loan);
   const loanDocuments = {
@@ -67,7 +71,9 @@ const getAutoFields = (loan) => {
   const borrowersDocuments = borrowers.reduce(
     (borrowersDocs, { _id: borrowerId, name: borrowerName }) => ({
       ...borrowersDocs,
-      [borrowerName]: allDocuments.filter(doc => doc.split('/')[0] === borrowerId),
+      [borrowerName]: allDocuments.filter(
+        doc => doc.split('/')[0] === borrowerId,
+      ),
     }),
     {},
   );
@@ -75,9 +81,11 @@ const getAutoFields = (loan) => {
     [Calculator.selectPropertyKey({
       loan,
       key: 'address1',
-    })]: allDocuments.filter(doc =>
-      doc.split('/')[0]
-        === Calculator.selectPropertyKey({ loan, key: '_id' })),
+    })]: allDocuments.filter(
+      doc =>
+        doc.split('/')[0] ===
+        Calculator.selectPropertyKey({ loan, key: '_id' }),
+    ),
   };
 
   const allDocumentsFormatted = {
@@ -128,7 +136,7 @@ const getAutoFields = (loan) => {
   );
 };
 
-const makeOnSubmit = (loan, closeModal) => (model) => {
+const makeOnSubmit = (loan, closeModal) => model => {
   const { _id: loanId, borrowers = [] } = loan;
   const { status, packFiles, packSize } = model;
   const docIds = [
@@ -158,40 +166,42 @@ const makeOnSubmit = (loan, closeModal) => (model) => {
       documents,
       options: { status, packFiles, packSize: packSize * 1000 * 1000 },
     })
-    .then((url) => {
+    .then(url => {
       window.open(url);
     })
     .then(() => closeModal());
 };
 
-export default compose(withProps(({ loan, closeModal }) => ({
-  schema: new SimpleSchema({
-    status: {
-      type: Array,
-      uniforms: {
-        checkboxes: true,
-        transform: status => <T id={`File.status.${status}`} />,
+export default compose(
+  withProps(({ loan, closeModal }) => ({
+    schema: new SimpleSchema({
+      status: {
+        type: Array,
+        uniforms: {
+          checkboxes: true,
+          transform: status => <T id={`File.status.${status}`} />,
+        },
       },
-    },
-    'status.$': {
-      type: String,
-      allowedValues: [FILE_STATUS.VALID, FILE_STATUS.UNVERIFIED],
-    },
-    packFiles: { type: Boolean, defaultValue: false },
-    packSize: {
-      type: Number,
-      defaultValue: 10,
-      condition: ({ packFiles }) => packFiles,
-    },
-    ...getAllDocuments(loan).reduce(
-      (docs, doc) => ({
-        ...docs,
-        [doc]: { type: Boolean, defaultValue: true },
-      }),
-      {},
-    ),
-  }),
-  fields: getAutoFields(loan),
-  onSubmit: makeOnSubmit(loan, closeModal),
-  model: { status: [FILE_STATUS.VALID] },
-})));
+      'status.$': {
+        type: String,
+        allowedValues: [FILE_STATUS.VALID, FILE_STATUS.UNVERIFIED],
+      },
+      packFiles: { type: Boolean, defaultValue: false },
+      packSize: {
+        type: Number,
+        defaultValue: 10,
+        condition: ({ packFiles }) => packFiles,
+      },
+      ...getAllDocuments(loan).reduce(
+        (docs, doc) => ({
+          ...docs,
+          [doc]: { type: Boolean, defaultValue: true },
+        }),
+        {},
+      ),
+    }),
+    fields: getAutoFields(loan),
+    onSubmit: makeOnSubmit(loan, closeModal),
+    model: { status: [FILE_STATUS.VALID] },
+  })),
+);

@@ -4,10 +4,10 @@ import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
 import AssignAdminDropdownContainer from './AssignAdminDropdownContainer';
 
-const AssignAdminDropdown = (props) => {
+const AssignAdminDropdown = props => {
   const { error, styles, options } = props;
   if (error) {
-    return <React.Fragment>Error: {error.reason}</React.Fragment>;
+    return <>Error: {error.reason}</>;
   }
 
   return (

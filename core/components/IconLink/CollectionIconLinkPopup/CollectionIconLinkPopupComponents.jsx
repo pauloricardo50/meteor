@@ -43,10 +43,7 @@ const Information = ({
     <div className="flex center-align wrap">
       {label && (
         <>
-          <b>
-            {label}
-:
-          </b>
+          <b>{label}:</b>
           &nbsp;
         </>
       )}
@@ -57,7 +54,7 @@ const Information = ({
 
 const LinkList = ({ docs, collection }) => (
   <TooltipArray
-    items={docs.map((doc) => (
+    items={docs.map(doc => (
       <CollectionIconLink key={doc._id} relatedDoc={{ ...doc, collection }} />
     ))}
     displayLimit={2}
@@ -169,11 +166,11 @@ export const components = {
 
         <Information
           label="Promotion"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
             />
-          )}
+          }
           shouldDisplay={!!promotion}
         />
 
@@ -196,25 +193,25 @@ export const components = {
         <Information
           className="flex center-align"
           label="Compte"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{ ...user, collection: USERS_COLLECTION }}
             />
-          )}
+          }
           isEmpty={!user || !user._id}
           emptyText="Sans compte"
         />
 
         <Information
           label="Conseiller"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{
                 ...user.assignedEmployee,
                 collection: USERS_COLLECTION,
               }}
             />
-          )}
+          }
           isEmpty={!(user && user.assignedEmployee)}
         />
       </div>
@@ -264,7 +261,7 @@ export const components = {
         <div>
           <TooltipArray
             title="Numéros de téléphone"
-            items={phoneNumbers.map((number) => (
+            items={phoneNumbers.map(number => (
               <a key={number} href={`tel:${number}`}>
                 <span>
                   {number}
@@ -277,51 +274,51 @@ export const components = {
 
         <Information
           label="Organisations"
-          value={(
+          value={
             <LinkList
               docs={organisations}
               collection={ORGANISATIONS_COLLECTION}
             />
-          )}
+          }
           shouldDisplay={organisations.length > 0}
         />
 
         <Information
           label="Conseiller"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{
                 ...assignedEmployee,
                 collection: USERS_COLLECTION,
               }}
             />
-          )}
+          }
           isEmpty={!assignedEmployee}
         />
 
         <Information
           label="Référé par compte"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{
                 ...referredByUser,
                 collection: USERS_COLLECTION,
               }}
             />
-          )}
+          }
           isEmpty={!referredByUser.name}
         />
 
         <Information
           label="Référé par organisation"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{
                 ...referredByOrganisation,
                 collection: ORGANISATIONS_COLLECTION,
               }}
             />
-          )}
+          }
           isEmpty={!referredByOrganisation.name}
         />
 
@@ -356,11 +353,11 @@ export const components = {
 
       <Information
         label="Compte"
-        value={(
+        value={
           <CollectionIconLink
             relatedDoc={{ ...user, collection: USERS_COLLECTION }}
           />
-        )}
+        }
         isEmpty={!user}
         emptyText="Sans compte"
       />
@@ -368,14 +365,14 @@ export const components = {
       {!!user && (
         <Information
           label="Conseiller"
-          value={(
+          value={
             <CollectionIconLink
               relatedDoc={{
                 ...user.assignedEmployee,
                 collection: USERS_COLLECTION,
               }}
             />
-          )}
+          }
           isEmpty={!(user && user.assignedEmployee)}
         />
       )}
@@ -398,7 +395,9 @@ export const components = {
       (orgs, { organisations = [] }) => [...orgs, ...organisations],
       [],
     );
-    const uniqueOrganisation = allOrgs.every(({ _id: orgId }) => orgId === allOrgs[0]._id);
+    const uniqueOrganisation = allOrgs.every(
+      ({ _id: orgId }) => orgId === allOrgs[0]._id,
+    );
     const isPro = category === PROPERTY_CATEGORY.PRO;
 
     return (
@@ -408,7 +407,7 @@ export const components = {
           {!!(isPro && uniqueOrganisation) && (
             <Information
               label="Organisation"
-              value={(
+              value={
                 <CollectionIconLink
                   key={allOrgs[0]._id}
                   relatedDoc={{
@@ -417,7 +416,7 @@ export const components = {
                     collection: ORGANISATIONS_COLLECTION,
                   }}
                 />
-              )}
+              }
               shouldDisplay={isPro && uniqueOrganisation}
             />
           )}
@@ -446,13 +445,11 @@ export const components = {
 
       <Information
         label="Feedback"
-        value={(
+        value={
           <span className="success">
-            Donné
-            {' '}
-            <IntlDate type="relative" value={feedback.date} />
+            Donné <IntlDate type="relative" value={feedback.date} />
           </span>
-        )}
+        }
         isEmpty={!(feedback && feedback.date)}
       />
     </div>
@@ -469,14 +466,14 @@ export const components = {
       {children}
       <Information
         label="Prêteur"
-        value={(
+        value={
           <CollectionIconLink
             relatedDoc={{
               ...lenderOrganisation,
               collection: ORGANISATIONS_COLLECTION,
             }}
           />
-        )}
+        }
         isEmpty={!lenderOrganisation}
         emptyText="Pas choisi"
       />
@@ -505,11 +502,11 @@ export const components = {
       {children}
 
       <Information
-        value={(
+        value={
           <div style={{ width: 100, height: 50 }}>
             <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
           </div>
-        )}
+        }
         shouldDisplay={!!logo}
       />
 
@@ -549,14 +546,14 @@ export const components = {
 
       <Information
         label="Organisation"
-        value={(
+        value={
           <CollectionIconLink
             relatedDoc={{
               ...organisations[0],
               collection: ORGANISATIONS_COLLECTION,
             }}
           />
-        )}
+        }
         isEmpty={organisations.length === 0}
       />
 
@@ -568,7 +565,7 @@ export const components = {
 
       <Information
         label="Email"
-        value={(
+        value={
           <a
             className="color"
             href={`mailto:${email}`}
@@ -577,15 +574,15 @@ export const components = {
           >
             {email}
           </a>
-        )}
+        }
       />
 
       <Information
         label="Tél"
-        value={(
+        value={
           <TooltipArray
             title="Numéros de téléphone"
-            items={phoneNumbers.map((number) => (
+            items={phoneNumbers.map(number => (
               <a key={number} href={`tel:${number}`}>
                 <span>
                   {number}
@@ -594,7 +591,7 @@ export const components = {
               </a>
             ))}
           />
-        )}
+        }
         isEmpty={phoneNumbers.length === 0}
       />
     </div>

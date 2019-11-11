@@ -10,14 +10,14 @@ class AdminSearchForm extends Component {
     this.ref = React.createRef();
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     const { searchText } = this.state;
     const { onSubmit } = this.props;
     onSubmit(searchText);
   };
 
-  handleChange = (value) => {
+  handleChange = value => {
     this.setState({ searchText: value }, () => {
       if (value.length > 0) {
         const { onSubmit } = this.props;

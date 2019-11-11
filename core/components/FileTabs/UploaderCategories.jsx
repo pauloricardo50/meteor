@@ -12,12 +12,12 @@ type UploaderCategoriesProps = {
 };
 
 const filterDocumentsForMicroservice = categories => category =>
-  (Meteor.microservice === 'admin'
+  Meteor.microservice === 'admin'
     ? !(
-      categories[category].documentsToDisplay.length === 0
-        && categories[category].documentsToHide.length === 0
-    )
-    : categories[category].documentsToDisplay.length > 0);
+        categories[category].documentsToDisplay.length === 0 &&
+        categories[category].documentsToHide.length === 0
+      )
+    : categories[category].documentsToDisplay.length > 0;
 
 const UploaderCategories = (props: UploaderCategoriesProps) => {
   const { categories } = props;

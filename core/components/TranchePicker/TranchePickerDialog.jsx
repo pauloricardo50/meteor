@@ -7,7 +7,7 @@ import TranchePickerContainer from './TranchePickerContainer';
 
 type TranchePickerDialogProps = {};
 
-const tranchesAreValid = (tranches) => {
+const tranchesAreValid = tranches => {
   const sum = tranches.reduce((total, { value }) => total + value, 0);
   const sumIsOne = sum === 1;
   const allTypesAreDefined = tranches.every(({ type }) => !!type);

@@ -19,19 +19,19 @@ const TopNavButtons = ({ children, history }: TopNavButtonsProps) => {
     <div className="buttons">
       {children}
       {currentUser ? (
-        <React.Fragment>
+        <>
           {!isMobile && (
             <div className="flex-col">
               <span>{name}</span>
               <span className="secondary">
-                {organisations
-                  && organisations.length > 0
-                  && organisations[0].name}
+                {organisations &&
+                  organisations.length > 0 &&
+                  organisations[0].name}
               </span>
             </div>
           )}
           <TopNavDropdown currentUser={currentUser} />
-        </React.Fragment>
+        </>
       ) : (
         <Button
           label={<T id="TopNav.login" />}

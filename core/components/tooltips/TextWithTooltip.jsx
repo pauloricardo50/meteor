@@ -34,7 +34,7 @@ class TextWithTooltip extends Component {
         <span
           className="text-with-tooltip"
           tabIndex={-1}
-          onClick={(event) => {
+          onClick={event => {
             // Trigger tooltip instead of another onClick handler in a parent
             event.preventDefault();
             event.stopPropagation();

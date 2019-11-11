@@ -22,7 +22,9 @@ const UserPromotionOptionsTable = ({
   const [modalPromotionOption, setModalPromotionOption] = useState();
   useEffect(() => {
     if (promotionOptionModal) {
-      setModalPromotionOption(promotionOptions.find(({ _id }) => _id === promotionOptionModal));
+      setModalPromotionOption(
+        promotionOptions.find(({ _id }) => _id === promotionOptionModal),
+      );
     }
   });
 

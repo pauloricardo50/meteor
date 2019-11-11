@@ -22,19 +22,13 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
           <div>
             <h4 style={{ marginTop: 0 }}>{name}</h4>
             <div>
-              <b>Email:</b>
-              {' '}
-              {email}
+              <b>Email:</b> {email}
             </div>
             <div>
-              <b>Tél:</b>
-              {' '}
-              {phoneNumbers[0]}
+              <b>Tél:</b> {phoneNumbers[0]}
             </div>
             <div>
-              <b>Invité par:</b>
-              {' '}
-              {invitedByUser}
+              <b>Invité par:</b> {invitedByUser}
             </div>
           </div>
         )

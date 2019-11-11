@@ -14,25 +14,27 @@ import PromotionMetadataContext from '../PromotionMetadata';
 type LotsTableProps = {};
 
 const additionalLotModifierSchema = ({ promotionLots = [], formatMessage }) =>
-  lotSchema.extend(new SimpleSchema({
-    promotionLot: {
-      type: String,
-      allowedValues: promotionLots.map(({ _id }) => _id),
-      optional: true,
-      uniforms: {
-        transform: _id =>
-          (_id ? (
-            promotionLots.find(promotionLot => promotionLot._id === _id).name
-          ) : (
-            <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
-          )),
-        labelProps: { shrink: true },
-        placeholder: formatMessage({
-          id: 'PromotionPage.AdditionalLotsTable.nonAllocated',
-        }),
+  lotSchema.extend(
+    new SimpleSchema({
+      promotionLot: {
+        type: String,
+        allowedValues: promotionLots.map(({ _id }) => _id),
+        optional: true,
+        uniforms: {
+          transform: _id =>
+            _id ? (
+              promotionLots.find(promotionLot => promotionLot._id === _id).name
+            ) : (
+              <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
+            ),
+          labelProps: { shrink: true },
+          placeholder: formatMessage({
+            id: 'PromotionPage.AdditionalLotsTable.nonAllocated',
+          }),
+        },
       },
-    },
-  }));
+    }),
+  );
 
 const LotsTable = ({
   rows,
@@ -57,7 +59,9 @@ const LotsTable = ({
         schema={canModifyLots && schema}
         title={<T id="PromotionPage.modifyLot" />}
         allow={({ status }) =>
-          ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(status)
+          ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(
+            status,
+          )
         }
         onSubmit={({
           _id: lotId,

@@ -44,12 +44,13 @@ class DevPage extends Component {
       addCompleteLoan,
       addAnonymousLoan,
     } = this.props;
-    const showDevStuff = !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
+    const showDevStuff =
+      !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
     if (showDevStuff) {
       return (
         <section id="dev-page">
-          <React.Fragment>
+          <>
             {!Meteor.isDevelopment ? (
               <h4 className="error">
                 You are on a shared database. Avoid touching these buttons if
@@ -86,7 +87,7 @@ class DevPage extends Component {
                 Purge database & Generate test data
               </Button>
             </Tooltip>
-          </React.Fragment>
+          </>
           <hr className="mbt20" />
           <Tooltip title="Generate fake users, loans, borrowers, properties, tasks and offers">
             <Button

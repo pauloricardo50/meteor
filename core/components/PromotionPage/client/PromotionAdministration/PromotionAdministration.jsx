@@ -91,8 +91,8 @@ const PromotionAdministration = ({
                   }
                   primary
                   disabled={
-                    promotion.users
-                    && promotion.users.map(({ _id }) => _id).includes(user._id)
+                    promotion.users &&
+                    promotion.users.map(({ _id }) => _id).includes(user._id)
                   }
                 >
                   <T id="AdminPromotionPage.addUser" />

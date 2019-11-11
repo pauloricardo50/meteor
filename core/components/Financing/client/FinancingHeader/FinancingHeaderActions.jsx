@@ -9,9 +9,7 @@ type FinancingHeaderActionsProps = {
   options: Array<{ onClick: Function, label: React.Node }>,
 };
 
-const FinancingHeaderActions = ({
-  options,
-}: FinancingHeaderActionsProps) => (
+const FinancingHeaderActions = ({ options }: FinancingHeaderActionsProps) => (
   <DropdonwMenu
     iconType="more"
     className="financing-structures-header-actions"

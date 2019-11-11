@@ -78,17 +78,17 @@ const getStartIcon = ({ icon, iconAfter }) => {
   if (!iconAfter) {
     return icon;
   }
-}
+};
 
-const getButtonContent = (props) => {
+const getButtonContent = props => {
   if (props.fab) {
     return getContent(props);
   }
 
   return props.label || props.children;
-}
+};
 
-const Button = (props) => {
+const Button = props => {
   const childProps = omit(props, [
     'iconAfter',
     'primary',
@@ -107,7 +107,7 @@ const Button = (props) => {
   const startIcon = props.icon && getStartIcon(props);
 
   const Comp = props.fab ? Fab : MuiButton;
-  
+
   const button = (
     <Comp
       {...childProps}
@@ -162,16 +162,14 @@ Button.defaultProps = {
 };
 
 const withLoadingProp = mapProps(({ loading, ...props }) =>
-  (loading
+  loading
     ? {
-      ...props,
-      disabled: true,
-      icon: <Icon type="loop-spin" />,
-      children: props.fab ? null : props.children,
-    }
-    : props));
+        ...props,
+        disabled: true,
+        icon: <Icon type="loop-spin" />,
+        children: props.fab ? null : props.children,
+      }
+    : props,
+);
 
-export default compose(
-  withLoadingProp,
-  withStyles(styles),
-)(Button);
+export default compose(withLoadingProp, withStyles(styles))(Button);

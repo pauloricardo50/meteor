@@ -16,14 +16,14 @@ const Widget1OptionSelector = ({ options, value, onChange, className }) => (
       <Tab
         key={option}
         value={option}
-        label={(
+        label={
           <div className="label" id={option}>
             <img src={`/img/widget1_${option}.svg`} alt={option} />
             <h4>
               <T id={`Widget1OptionSelector.${option}`} />
             </h4>
           </div>
-        )}
+        }
         className="widget1-option"
       />
     ))}

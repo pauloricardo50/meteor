@@ -33,7 +33,7 @@ const columnOptions = [
   label: <T id={`PromotionPage.AdditionalLotsTable.${column.id}`} />,
 }));
 
-const makeMapAdditionalLot = ({ canModifyLots }) => (lot) => {
+const makeMapAdditionalLot = ({ canModifyLots }) => lot => {
   const { _id, name, type, value, description, promotionLots, status } = lot;
   return {
     id: _id,
@@ -78,7 +78,7 @@ export default compose(
     style: { alignSelf: 'center' },
     label: hide ? 'Afficher lots annexes' : 'Masquer lots annexes',
     primary: true,
-    callback: (nextHide) => {
+    callback: nextHide => {
       if (!nextHide) {
         scrollToAdditionalLotsTable();
       }
