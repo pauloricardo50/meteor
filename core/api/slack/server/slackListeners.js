@@ -28,7 +28,9 @@ import {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ context: { userId }, params: { promotionLotId, loanId } }) => {
+  ({ context, params: { promotionLotId, loanId } }) => {
+    context.unblock();
+    const { userId } = context;
     const currentUser = UserService.get(userId);
     const promotionLot = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -46,7 +48,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   sellPromotionLot,
-  ({ context: { userId }, params: { promotionLotId } }) => {
+  ({ context, params: { promotionLotId } }) => {
+    context.unblock();
+    const { userId } = context;
     const currentUser = UserService.get(userId);
     const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -66,9 +70,11 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   proInviteUser,
   ({
-    context: { userId },
+    context,
     params: { propertyIds = [], properties = [], promotionIds = [], user },
   }) => {
+    context.unblock();
+    const { userId } = context;
     const notificationPropertyIds = [
       ...propertyIds,
       ...properties.map(({ _id, externalId }) => _id || externalId),
@@ -120,7 +126,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   userLoanInsert,
-  ({ context: { userId }, result: loanId }) => {
+  ({ context, result: loanId }) => {
+    context.unblock();
+    const { userId } = context;
     const currentUser = UserService.get(userId);
     const { name: loanName } = LoanService.fetchOne({
       $filters: { _id: loanId },
@@ -133,7 +141,8 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
-  ({ result: userId }) => {
+  ({ context, result: userId }) => {
+    context.unblock();
     const currentUser = UserService.get(userId);
     const {
       loans = [],

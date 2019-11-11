@@ -84,9 +84,9 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-const makePromotionLotNotification = emailId => ({ context, params }) => {
-  const { userId } = context;
+const makePromotionLotNotification = (emailId) => ({ context, params }) => {
   context.unblock();
+  const { userId } = context;
   const { promotionLotId } = params;
   const {
     name: promotionLotName,
