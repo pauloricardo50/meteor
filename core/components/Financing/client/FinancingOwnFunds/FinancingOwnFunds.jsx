@@ -14,7 +14,7 @@ import { FORMATS } from '../FinancingSection/components/CalculatedValue';
 
 type FinancingOwnFundsProps = {};
 
-const feesTooltip = (props) => {
+const feesTooltip = props => {
   const value = Calculator.getNotaryFeesTooltipValue(props);
 
   if (value) {
