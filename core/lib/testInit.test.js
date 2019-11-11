@@ -5,6 +5,10 @@ const SimpleSchema = require('simpl-schema').default;
 
 const uniforms = require('uniforms-material');
 
+const globalThis = require('./getGlobalThis.js').default();
+
+global.globalThis = globalThis;
+
 SimpleSchema.extendOptions([
   'condition',
   'customAllowedValues',
