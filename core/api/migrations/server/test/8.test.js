@@ -17,7 +17,8 @@ describe('Migration 8', () => {
       Loans.rawCollection()
         .insert({ _id: 'test', name: '18-0001' })
         .then(() =>
-          Loans.rawCollection().insert({ _id: 'test2', name: '18-0002' }))
+          Loans.rawCollection().insert({ _id: 'test2', name: '18-0002' }),
+        )
         .then(up)
         .then(() => {
           Loans.find({}).forEach(({ applicationType }) => {
@@ -35,7 +36,8 @@ describe('Migration 8', () => {
             _id: 'test2',
             applicationType: 'SIMPLE',
             name: '18-0002',
-          }))
+          }),
+        )
         .then(down)
         .then(() => {
           Loans.find({}).forEach(({ applicationType }) => {

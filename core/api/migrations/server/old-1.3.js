@@ -11,7 +11,7 @@ Migrations.add({
   version: MIGRATIONS['1.3'],
   name: 'Change loan.logic.step from number to a string',
   up: () => {
-    Loans.find({}).forEach((loan) => {
+    Loans.find({}).forEach(loan => {
       Loans.update(loan._id, {
         $set: { 'logic.step': STEP_ORDER[loan.logic.step - 1] },
       });
@@ -30,7 +30,7 @@ Migrations.add({
     );
   },
   down: () => {
-    Loans.find({}).forEach((loan) => {
+    Loans.find({}).forEach(loan => {
       Loans.update(loan._id, {
         $set: { 'logic.step': STEP_ORDER.indexOf([loan.logic.step]) + 1 },
       });

@@ -15,7 +15,7 @@ exposeQuery({
 exposeQuery({
   query: borrowerSearch,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         // the following method forces one word to be found in lastname field
         // and one word in firstName field.

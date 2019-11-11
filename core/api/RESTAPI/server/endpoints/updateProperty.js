@@ -43,7 +43,8 @@ const updatePropertyAPI = ({
         message: `Property with id "${params.propertyId}" updated !`,
         property,
       });
-    }));
+    }),
+  );
 };
 
 export default updatePropertyAPI;

@@ -11,24 +11,28 @@ const initializeOrders = ({ lenderRules = [] }) => ({
 
 export default compose(
   withStateHandlers(initializeOrders, {
-    increaseOrder: ({ orders }) => (id) => {
+    increaseOrder: ({ orders }) => id => {
       const currentOrder = orders[id];
       const nextOrder = Math.min(
         currentOrder + 1,
         Object.keys(orders).length - 1,
       );
 
-      const idToChange = Object.keys(orders).find(_id => orders[_id] === nextOrder);
+      const idToChange = Object.keys(orders).find(
+        _id => orders[_id] === nextOrder,
+      );
 
       return {
         orders: { ...orders, [id]: nextOrder, [idToChange]: currentOrder },
       };
     },
-    decreaseOrder: ({ orders }) => (id) => {
+    decreaseOrder: ({ orders }) => id => {
       const currentOrder = orders[id];
       const nextOrder = Math.max(currentOrder - 1, 0);
 
-      const idToChange = Object.keys(orders).find(_id => orders[_id] === nextOrder);
+      const idToChange = Object.keys(orders).find(
+        _id => orders[_id] === nextOrder,
+      );
 
       return {
         orders: { ...orders, [id]: nextOrder, [idToChange]: currentOrder },

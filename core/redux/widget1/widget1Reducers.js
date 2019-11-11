@@ -28,36 +28,37 @@ export const createWidget1ValueReducers = names =>
         action = {},
       ) => {
         switch (action.type) {
-        case SET_VALUE(name):
-          if (action.value === '') {
-            // Allow empty string if the user edits the textfield
-            return { ...state, value: '', auto: false };
+          case SET_VALUE(name):
+            if (action.value === '') {
+              // Allow empty string if the user edits the textfield
+              return { ...state, value: '', auto: false };
+            }
+            if (!action.value && name !== CURRENT_LOAN) {
+              // Set auto to true if the value is changed to 0
+              // (via slider or by typing 0)
+              // Exception for current_loan which is the only value that
+              // can explicitly be set to 0
+              return { ...state, value: 0, auto: true };
+            }
+            // Set auto to false if this value is set
+            return { ...state, auto: false, value: roundedValue(action.value) };
+          case SUGGEST_VALUE(name):
+            // If the value is suggested, don't change auto
+            return { ...state, value: roundedValue(action.value) };
+          case SET_AUTO(name): {
+            const nextAuto =
+              action.auto !== undefined ? action.auto : !state.auto;
+            return { ...state, auto: nextAuto };
           }
-          if (!action.value && name !== CURRENT_LOAN) {
-            // Set auto to true if the value is changed to 0
-            // (via slider or by typing 0)
-            // Exception for current_loan which is the only value that
-            // can explicitly be set to 0
-            return { ...state, value: 0, auto: true };
-          }
-          // Set auto to false if this value is set
-          return { ...state, auto: false, value: roundedValue(action.value) };
-        case SUGGEST_VALUE(name):
-          // If the value is suggested, don't change auto
-          return { ...state, value: roundedValue(action.value) };
-        case SET_AUTO(name): {
-          const nextAuto = action.auto !== undefined ? action.auto : !state.auto;
-          return { ...state, auto: nextAuto };
-        }
-        case INCREASE_SLIDER_MAX(name):
-          return {
-            ...state,
-            sliderMax: Math.min(state.sliderMax * 2, 100000000),
-          };
-        case SET_ALLOW_EXTREME_LOAN(name):
-          return { ...state, allowExtremeLoan: true };
-        default:
-          return state;
+          case INCREASE_SLIDER_MAX(name):
+            return {
+              ...state,
+              sliderMax: Math.min(state.sliderMax * 2, 100000000),
+            };
+          case SET_ALLOW_EXTREME_LOAN(name):
+            return { ...state, allowExtremeLoan: true };
+          default:
+            return state;
         }
       },
     }),

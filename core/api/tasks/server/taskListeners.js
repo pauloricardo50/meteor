@@ -96,12 +96,12 @@ ServerEventService.addAfterMethodListener(
       if (propertyIds && propertyIds.length) {
         addresses = [
           ...addresses,
-          ...propertyIds.map((id) => PropertyService.get(id).address1),
+          ...propertyIds.map(id => PropertyService.get(id).address1),
         ];
       }
 
       if (promotionIds && promotionIds.length) {
-        promotions = promotionIds.map((id) => PromotionService.get(id).name);
+        promotions = promotionIds.map(id => PromotionService.get(id).name);
       }
 
       if (addresses.length) {

@@ -10,7 +10,7 @@ import { createOrganisations } from './organisationFixtures';
 
 const getOrgIds = () => OrganisationService.fetch({}).map(({ _id }) => _id);
 
-export const createFakeOffer = (loanId) => {
+export const createFakeOffer = loanId => {
   const loan = LoanService.findOne(loanId);
   const property = PropertyService.findOne(loan.propertyIds[0]);
   const offer = getRandomOffer(

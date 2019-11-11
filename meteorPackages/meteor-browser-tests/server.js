@@ -42,7 +42,9 @@ function startBrowser(options) {
     default:
       throw new Error(
         `Unknown driver "${driver}". browser-tests package requires that you set the TEST_BROWSER_DRIVER` +
-        ` environment variable to one of the following: ${supportedDrivers.join(', ')}`
+          ` environment variable to one of the following: ${supportedDrivers.join(
+            ', ',
+          )}`,
       );
   }
 }

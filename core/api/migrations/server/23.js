@@ -8,12 +8,15 @@ import UserService from '../../users/server/UserService';
 export const up = () => {
   const allUsers = UserService.fetch({ createdAt: 1 });
 
-  return Promise.all(allUsers.map(({ _id: userId, createdAt }) =>
-    ActivityService.addCreatedAtActivity({
-      createdAt,
-      userLink: { _id: userId },
-      title: 'Compte créé',
-    })));
+  return Promise.all(
+    allUsers.map(({ _id: userId, createdAt }) =>
+      ActivityService.addCreatedAtActivity({
+        createdAt,
+        userLink: { _id: userId },
+        title: 'Compte créé',
+      }),
+    ),
+  );
 };
 
 export const down = () => {
@@ -25,8 +28,11 @@ export const down = () => {
     },
   });
 
-  return Promise.all(allUserCreatedAtActivities.map(({ _id }) =>
-    Activities.rawCollection().remove({ _id })));
+  return Promise.all(
+    allUserCreatedAtActivities.map(({ _id }) =>
+      Activities.rawCollection().remove({ _id }),
+    ),
+  );
 };
 
 Migrations.add({

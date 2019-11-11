@@ -22,10 +22,16 @@ module.exports = {
     data.collectionFile = data.collectionNamePlural;
     data.schema = `${changeCase.pascal(data.collectionNameSingular)}Schema`;
     data.schemaFile = `${data.collectionNameSingular}Schema`;
-    data.serviceName = `${changeCase.pascal(data.collectionNameSingular)}Service`;
-    data.collectionConstant = `${changeCase.constantCase(data.collectionNamePlural)}_COLLECTION`;
+    data.serviceName = `${changeCase.pascal(
+      data.collectionNameSingular,
+    )}Service`;
+    data.collectionConstant = `${changeCase.constantCase(
+      data.collectionNamePlural,
+    )}_COLLECTION`;
     data.constantsFile = `${data.collectionNameSingular}Constants`;
-    data.collectionQueries = `${changeCase.constantCase(data.collectionNamePlural)}_QUERIES`;
+    data.collectionQueries = `${changeCase.constantCase(
+      data.collectionNamePlural,
+    )}_QUERIES`;
     data.methodInsert = `${data.collectionNameSingular}Insert`;
     data.methodRemove = `${data.collectionNameSingular}Remove`;
     data.methodUpdate = `${data.collectionNameSingular}Update`;

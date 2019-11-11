@@ -27,7 +27,7 @@ const stateHandlers = withStateHandlers(
   }),
   {
     handleChange: () => (id, value) => ({ [id]: value }),
-    handleNext: ({ step: currentStep }) => (event) => {
+    handleNext: ({ step: currentStep }) => event => {
       event.preventDefault();
       return {
         step:
@@ -36,7 +36,7 @@ const stateHandlers = withStateHandlers(
             : currentStep + 1,
       };
     },
-    handlePrevious: ({ step: currentStep }) => (event) => {
+    handlePrevious: ({ step: currentStep }) => event => {
       event.preventDefault();
       return {
         step: currentStep === 0 ? currentStep : currentStep - 1,
@@ -46,29 +46,29 @@ const stateHandlers = withStateHandlers(
   },
 );
 
-const props = withProps(({ handleCloseDialog, loan: { borrowers, properties }, ...props }) => ({
-  handleSubmit: (event) => {
-    event.preventDefault();
-    return borrowerUpdate
-      .run({
-        object: {
-          salary: props[STEPS.BORROWER_SALARY.name],
-          bankFortune: props[STEPS.BORROWER_FORTUNE.name],
-        },
-        borrowerId: borrowers[0]._id,
-      })
-      .then(() =>
-        propertyUpdate.run({
+const props = withProps(
+  ({ handleCloseDialog, loan: { borrowers, properties }, ...props }) => ({
+    handleSubmit: event => {
+      event.preventDefault();
+      return borrowerUpdate
+        .run({
           object: {
-            value: props[STEPS.PROPERTY_VALUE.name],
+            salary: props[STEPS.BORROWER_SALARY.name],
+            bankFortune: props[STEPS.BORROWER_FORTUNE.name],
           },
-          propertyId: properties[0]._id,
-        }))
-      .then(handleCloseDialog);
-  },
-}));
-
-export default compose(
-  stateHandlers,
-  props,
+          borrowerId: borrowers[0]._id,
+        })
+        .then(() =>
+          propertyUpdate.run({
+            object: {
+              value: props[STEPS.PROPERTY_VALUE.name],
+            },
+            propertyId: properties[0]._id,
+          }),
+        )
+        .then(handleCloseDialog);
+    },
+  }),
 );
+
+export default compose(stateHandlers, props);

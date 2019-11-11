@@ -4,7 +4,7 @@ Package.describe({
   version: '1.4.1',
 });
 
-Package.onUse((api) => {
+Package.onUse(api => {
   api.export('MeteorX');
   api.use(['lamhieu:meteorx']);
 });

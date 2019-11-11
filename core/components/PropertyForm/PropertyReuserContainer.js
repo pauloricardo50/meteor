@@ -22,8 +22,10 @@ export default compose(
     const allOtherLoans = loans.filter(({ _id }) => _id !== loanId);
     const propertiesToReuse = allOtherLoans
       .reduce((array, { properties = [] }) => [...array, ...properties], [])
-      .filter(({ _id: propertyId }) =>
-        !currentProperties.find(({ _id }) => _id === propertyId));
+      .filter(
+        ({ _id: propertyId }) =>
+          !currentProperties.find(({ _id }) => _id === propertyId),
+      );
 
     return {
       disabled,

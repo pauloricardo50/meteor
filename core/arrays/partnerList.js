@@ -95,7 +95,8 @@ export const partnerList = [
 // lenders we will potentially contact
 export const getPartnerList = (canton, partnersToAvoid) => {
   const filteredList = partnerList.filter(partner =>
-    partner.cantons.includes(canton));
+    partner.cantons.includes(canton),
+  );
 
   if (partnersToAvoid && partnersToAvoid.length > 0) {
     partnersToAvoid.forEach((partnerToAvoid, index) => {

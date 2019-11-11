@@ -5,9 +5,7 @@ import {
   moneyField,
   address,
 } from '../../helpers/sharedSchemas';
-import {
-  autoValueSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
 
 import {
   RESIDENCY_PERMIT,

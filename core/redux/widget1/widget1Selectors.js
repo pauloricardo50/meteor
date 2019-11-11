@@ -27,16 +27,18 @@ export const makeSelectAuto = name =>
 export const selectFields = createSelector(
   makeWidget1Selector('purchaseType'),
   purchaseType =>
-    (purchaseType === PURCHASE_TYPE.ACQUISITION
+    purchaseType === PURCHASE_TYPE.ACQUISITION
       ? ACQUISITION_FIELDS
-      : REFINANCING_FIELDS),
+      : REFINANCING_FIELDS,
 );
 
 const pickAutoValues = (state, fields) =>
-  createStructuredSelector(fields.reduce(
-    (acc, name) => ({ ...acc, [name]: makeSelectAuto(name) }),
-    {},
-  ))(state);
+  createStructuredSelector(
+    fields.reduce(
+      (acc, name) => ({ ...acc, [name]: makeSelectAuto(name) }),
+      {},
+    ),
+  )(state);
 
 export const selectAutoValues = createSelector(
   [selectState, selectFields],

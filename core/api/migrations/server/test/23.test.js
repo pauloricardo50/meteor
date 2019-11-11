@@ -18,13 +18,16 @@ describe('Migration 23', () => {
     it('adds createdAt activity on all users', async () => {
       const today = new Date();
 
-      await Promise.all([...Array(5)].map((_, i) =>
-        Users.rawCollection().insert({
-          _id: String(i + 1),
-          createdAt: moment(today)
-            .add(i, 'day')
-            .toDate(),
-        })));
+      await Promise.all(
+        [...Array(5)].map((_, i) =>
+          Users.rawCollection().insert({
+            _id: String(i + 1),
+            createdAt: moment(today)
+              .add(i, 'day')
+              .toDate(),
+          }),
+        ),
+      );
 
       await up();
 
@@ -41,7 +44,9 @@ describe('Migration 23', () => {
         expect(activities.length).to.equal(1);
         expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
         expect(activities[0].date.toString()).to.equal(date.toString());
-        expect(activities[0].metadata.event).to.equal(ACTIVITY_EVENT_METADATA.CREATED);
+        expect(activities[0].metadata.event).to.equal(
+          ACTIVITY_EVENT_METADATA.CREATED,
+        );
       });
     });
   });
@@ -49,13 +54,16 @@ describe('Migration 23', () => {
   describe('down', () => {
     it('removes createdAt activities on users', async () => {
       const today = new Date();
-      await Promise.all([...Array(5)].map((_, i) =>
-        Users.rawCollection().insert({
-          _id: String(i + 1),
-          createdAt: moment(today)
-            .add(i, 'day')
-            .toDate(),
-        })));
+      await Promise.all(
+        [...Array(5)].map((_, i) =>
+          Users.rawCollection().insert({
+            _id: String(i + 1),
+            createdAt: moment(today)
+              .add(i, 'day')
+              .toDate(),
+          }),
+        ),
+      );
 
       await up();
       await down();

@@ -16,7 +16,7 @@ describe('getPropertyArray', () => {
     });
     expect(arr).to.have.length.above(0);
 
-    arr.forEach((field) => {
+    arr.forEach(field => {
       if (field.type !== 'conditionalInput' && field.type !== 'h3') {
         expect(!!field.id).to.equal(true);
       }
@@ -33,7 +33,7 @@ describe('getPropertyLoanArray', () => {
     });
     expect(arr).to.have.length.above(0);
 
-    arr.forEach((field) => {
+    arr.forEach(field => {
       if (field.type !== 'conditionalInput' && field.type !== 'h3') {
         expect(!!field.id).to.equal(true);
       }

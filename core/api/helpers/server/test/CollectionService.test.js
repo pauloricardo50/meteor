@@ -9,20 +9,22 @@ import CollectionService from '../../CollectionService';
 const CollectionA = new Mongo.Collection('collectionA');
 const CollectionB = new Mongo.Collection('collectionB');
 
-CollectionA.attachSchema(new SimpleSchema({
-  data: String,
-  oneLink: { type: String, optional: true },
-  oneMetaLink: { type: Object, optional: true },
-  'oneMetaLink._id': { type: String, optional: true },
-  'oneMetaLink.meta': { type: String, optional: true },
-  manyLink: { type: Array, optional: true },
-  'manyLink.$': { type: String, optional: true },
-  'manyLink.$._id': { type: String, optional: true },
-  manyMetaLink: { type: Array, optional: true },
-  'manyMetaLink.$': { type: Object, optional: true },
-  'manyMetaLink.$._id': { type: String, optional: true },
-  'manyMetaLink.$.meta': { type: String, optional: true },
-}));
+CollectionA.attachSchema(
+  new SimpleSchema({
+    data: String,
+    oneLink: { type: String, optional: true },
+    oneMetaLink: { type: Object, optional: true },
+    'oneMetaLink._id': { type: String, optional: true },
+    'oneMetaLink.meta': { type: String, optional: true },
+    manyLink: { type: Array, optional: true },
+    'manyLink.$': { type: String, optional: true },
+    'manyLink.$._id': { type: String, optional: true },
+    manyMetaLink: { type: Array, optional: true },
+    'manyMetaLink.$': { type: Object, optional: true },
+    'manyMetaLink.$._id': { type: String, optional: true },
+    'manyMetaLink.$.meta': { type: String, optional: true },
+  }),
+);
 
 CollectionB.attachSchema(new SimpleSchema({ data: String }));
 
@@ -117,21 +119,29 @@ describe('CollectionService', () => {
     describe('should add link documents when link strategy is', () => {
       it('one with direct link', () => {
         AService.addLink({ id: ADocId, linkName: 'one', linkId: BDocId });
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          one: { _id: BDocId },
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          oneA: [{ _id: ADocId }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            one: { _id: BDocId },
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            oneA: [{ _id: ADocId }],
+          },
+        );
       });
       it('one with inverse link', () => {
         BService.addLink({ id: BDocId, linkName: 'oneA', linkId: ADocId });
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          one: { _id: BDocId },
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          oneA: [{ _id: ADocId }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            one: { _id: BDocId },
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            oneA: [{ _id: ADocId }],
+          },
+        );
       });
       it('one-meta with direct link', () => {
         const metadata = { meta: 'someData' };
@@ -141,12 +151,16 @@ describe('CollectionService', () => {
           linkId: BDocId,
           metadata: { ...metadata },
         });
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          oneMeta: { _id: BDocId, $metadata: metadata },
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          oneMetaA: [{ _id: ADocId, $metadata: metadata }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            oneMeta: { _id: BDocId, $metadata: metadata },
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            oneMetaA: [{ _id: ADocId, $metadata: metadata }],
+          },
+        );
       });
       // https://github.com/cult-of-coders/grapher/issues/335
       it.skip('one-meta with inverse link', () => {
@@ -157,12 +171,16 @@ describe('CollectionService', () => {
           linkId: ADocId,
           metadata: { ...metadata },
         });
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          oneMeta: { _id: BDocId, $metadata: metadata },
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          oneMetaA: [{ _id: ADocId, $metadata: metadata }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            oneMeta: { _id: BDocId, $metadata: metadata },
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            oneMetaA: [{ _id: ADocId, $metadata: metadata }],
+          },
+        );
       });
       it('many with direct link', () => {
         AService.addLink({
@@ -170,12 +188,16 @@ describe('CollectionService', () => {
           linkName: 'many',
           linkId: BDocId,
         });
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          many: [{ _id: BDocId }],
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          manyA: [{ _id: ADocId }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            many: [{ _id: BDocId }],
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            manyA: [{ _id: ADocId }],
+          },
+        );
       });
       it('many with inverse link', () => {
         BService.addLink({
@@ -184,12 +206,16 @@ describe('CollectionService', () => {
           linkId: ADocId,
         });
 
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          many: [{ _id: BDocId }],
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          manyA: [{ _id: ADocId }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            many: [{ _id: BDocId }],
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            manyA: [{ _id: ADocId }],
+          },
+        );
       });
       it('many-meta with direct link', () => {
         const metadata = { meta: 'someData' };
@@ -199,12 +225,16 @@ describe('CollectionService', () => {
           linkId: BDocId,
           metadata: { ...metadata },
         });
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          manyMeta: [{ _id: BDocId, $metadata: metadata }],
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          manyMetaA: [{ _id: ADocId, $metadata: metadata }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            manyMeta: [{ _id: BDocId, $metadata: metadata }],
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            manyMetaA: [{ _id: ADocId, $metadata: metadata }],
+          },
+        );
       });
 
       it('many-meta with inverse link', () => {
@@ -216,12 +246,16 @@ describe('CollectionService', () => {
           metadata: { ...metadata },
         });
 
-        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include({
-          manyMeta: [{ _id: BDocId, $metadata: metadata }],
-        });
-        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include({
-          manyMetaA: [{ _id: ADocId, $metadata: metadata }],
-        });
+        expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
+          {
+            manyMeta: [{ _id: BDocId, $metadata: metadata }],
+          },
+        );
+        expect(BService.createQuery(BQuery(BDocId)).fetchOne()).to.deep.include(
+          {
+            manyMetaA: [{ _id: ADocId, $metadata: metadata }],
+          },
+        );
       });
     });
   });

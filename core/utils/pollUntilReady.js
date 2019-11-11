@@ -11,7 +11,7 @@ const pollUntilReady = (
     let count = 0;
     let poll;
 
-    const handleIsReady = (isReady) => {
+    const handleIsReady = isReady => {
       const hasTimedOut = count > timeout / interval;
 
       if (isReady) {

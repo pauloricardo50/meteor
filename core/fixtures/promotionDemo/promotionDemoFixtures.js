@@ -43,7 +43,7 @@ const DEMO_PROMOTION = {
   ],
 };
 
-const createLots = (promotionId) => {
+const createLots = promotionId => {
   properties.forEach(({ name, value, lots }) => {
     const promotionLotId = PromotionService.insertPromotionProperty({
       promotionId,
@@ -57,19 +57,22 @@ const createLots = (promotionId) => {
           Number.parseInt(lotName, 10) > 0
             ? LOT_TYPES.PARKING_CAR
             : LOT_TYPES.BASEMENT,
-      }));
+      }),
+    );
     lotIds.forEach(lotId =>
       PromotionLotService.addLink({
         id: promotionLotId,
         linkName: 'lots',
         linkId: lotId,
-      }));
+      }),
+    );
     lotIds.forEach(lotId =>
       PromotionService.addLink({
         id: promotionId,
         linkName: 'lots',
         linkId: lotId,
-      }));
+      }),
+    );
   });
 };
 
@@ -77,13 +80,15 @@ const getDistinctRandomValues = (arr, amount) => shuffle(arr).slice(0, amount);
 
 const addPromotionOptions = (loanId, promotion) => {
   const amount = random(1, 3);
-  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) => {
-    const promotionOptionId = PromotionOptionService.insert({
-      loanId,
-      promotionLotId,
-    });
-    return promotionOptionId;
-  });
+  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(
+    ({ _id: promotionLotId }) => {
+      const promotionOptionId = PromotionOptionService.insert({
+        loanId,
+        promotionLotId,
+      });
+      return promotionOptionId;
+    },
+  );
 };
 
 const createUsers = async ({
@@ -121,19 +126,21 @@ const createUsers = async ({
       },
     });
 
-    promises.push(PromotionService.inviteUser({
-      promotionId,
-      userId: promotionCustomerId,
-      sendInvitation: false,
-      ...(withInvitedBy ? { pro: { _id: Meteor.userId() } } : {}),
-    }).then((loanId) => {
-      const promotionOptionIds = addPromotionOptions(loanId, promotion);
-      LoanService.setPromotionPriorityOrder({
-        loanId,
+    promises.push(
+      PromotionService.inviteUser({
         promotionId,
-        priorityOrder: promotionOptionIds,
-      });
-    }));
+        userId: promotionCustomerId,
+        sendInvitation: false,
+        ...(withInvitedBy ? { pro: { _id: Meteor.userId() } } : {}),
+      }).then(loanId => {
+        const promotionOptionIds = addPromotionOptions(loanId, promotion);
+        LoanService.setPromotionPriorityOrder({
+          loanId,
+          promotionId,
+          priorityOrder: promotionOptionIds,
+        });
+      }),
+    );
   }
 
   await Promise.all(promises);

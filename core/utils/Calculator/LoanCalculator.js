@@ -103,11 +103,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getTheoreticalInterests({ loan, structureId }) {
       const loanValue = this.selectLoanValue({ loan, structureId });
       const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'propertyWork',
-      }) || 0;
+      const propertyWork =
+        this.selectStructureKey({
+          loan,
+          structureId,
+          key: 'propertyWork',
+        }) || 0;
       const firstRank = Math.min(
         loanValue,
         this.amortizationGoal * (propertyValue + propertyWork),
@@ -115,17 +116,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const secondRank = Math.max(0, loanValue - firstRank);
 
       const firstRankInterests = firstRank * this.theoreticalInterestRate;
-      const secondRankInterests = secondRank
-        * (this.theoreticalInterestRate2ndRank || this.theoreticalInterestRate);
+      const secondRankInterests =
+        secondRank *
+        (this.theoreticalInterestRate2ndRank || this.theoreticalInterestRate);
 
       return (firstRankInterests + secondRankInterests) / 12;
     }
 
     getTheoreticalMaintenance({ loan, structureId }) {
       return (
-        (this.getPropAndWork({ loan, structureId })
-          * this.theoreticalMaintenanceRate)
-        / 12
+        (this.getPropAndWork({ loan, structureId }) *
+          this.theoreticalMaintenanceRate) /
+        12
       );
     }
 
@@ -169,7 +171,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getAmortizationBorrowRatio({ loan, structureId }) {
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
       const propAndWork = this.getPropAndWork({ loan, structureId });
-      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+      const ownFunds =
+        this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
 
       // These funds should not be amortized, as they are considered as the equivalent of using cash directly
       const cashPledgedFunds = ownFunds
@@ -200,9 +203,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           amortizationYears,
           // Prevent caching of this function if amortizationGoal has changed
           cacheFix: this.amortizationGoal,
-        })
-          * amortizationBorrowRatio)
-        / borrowRatio
+        }) *
+          amortizationBorrowRatio) /
+        borrowRatio
       );
     }
 
@@ -217,8 +220,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getMonthly({ loan, interestRates, structureId }) {
       return (
-        this.getInterests({ loan, interestRates, structureId })
-        + this.getAmortization({ loan, structureId })
+        this.getInterests({ loan, interestRates, structureId }) +
+        this.getAmortization({ loan, structureId })
       );
     }
 
@@ -231,11 +234,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const maintenance = this.getTheoreticalMaintenance({ loan, structureId });
       return asObject
         ? {
-          interests,
-          amortization,
-          maintenance,
-          total: interests + amortization + maintenance,
-        }
+            interests,
+            amortization,
+            maintenance,
+            total: interests + amortization + maintenance,
+          }
         : interests + amortization + maintenance;
     }
 
@@ -244,7 +247,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         loan,
         structureId,
       });
-      const expensesToAddToTheoreticalCost = this.getFormattedExpenses({ loan, structureId }).add / 12;
+      const expensesToAddToTheoreticalCost =
+        this.getFormattedExpenses({ loan, structureId }).add / 12;
 
       return propertyCost + expensesToAddToTheoreticalCost;
     }
@@ -291,10 +295,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const structure = this.selectStructure({ loan });
 
       return !!(
-        structure.ownFunds
-        && structure.ownFunds.length > 0
-        && this.selectPropertyValue({ loan })
-        && this.selectLoanValue({ loan })
+        structure.ownFunds &&
+        structure.ownFunds.length > 0 &&
+        this.selectPropertyValue({ loan }) &&
+        this.selectLoanValue({ loan })
       );
     }
 
@@ -311,39 +315,43 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getTotalFinancing({ loan, structureId }) {
       return (
-        this.selectStructureKey({ loan, structureId, key: 'wantedLoan' })
-        + this.getNonPledgedOwnFunds({ loan, structureId })
+        this.selectStructureKey({ loan, structureId, key: 'wantedLoan' }) +
+        this.getNonPledgedOwnFunds({ loan, structureId })
       );
     }
 
     getNonPledgedOwnFunds({ loan, structureId }) {
-      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+      const ownFunds =
+        this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
     }
 
     getPledgedOwnFunds({ loan, structureId }) {
-      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+      const ownFunds =
+        this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
     }
 
     getUsedFundsOfType({ loan, type, usageType, structureId }) {
-      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+      const ownFunds =
+        this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ type: ownFundType }) => (type ? ownFundType === type : true))
         .filter(({ usageType: ownFundUsageType }) =>
-          (usageType ? ownFundUsageType === usageType : true))
+          usageType ? ownFundUsageType === usageType : true,
+        )
         .reduce((sum, { value }) => sum + value, 0);
     }
 
     getRemainingFundsOfType({ loan, structureId, type }) {
       const ownFunds = this.getFunds({ loan, type, structureId });
       return (
-        ownFunds
-        - this.getUsedFundsOfType({
+        ownFunds -
+        this.getUsedFundsOfType({
           loan,
           type,
           structureId,
@@ -378,10 +386,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         structureId,
       });
 
-      const { mortgageNotes: propertyMortgageNotes = [] } = this.selectProperty({ loan, structureId });
+      const {
+        mortgageNotes: propertyMortgageNotes = [],
+      } = this.selectProperty({ loan, structureId });
       const borrowerMortgageNotes = this.getMortgageNotes({ borrowers });
       const structureMortgageNotes = mortgageNoteIds.map(id =>
-        borrowerMortgageNotes.find(({ _id }) => _id === id));
+        borrowerMortgageNotes.find(({ _id }) => _id === id),
+      );
 
       const allMortgageNotes = [
         ...structureMortgageNotes,
@@ -400,9 +411,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const { ownFunds } = this.selectStructure({ loan, structureId });
 
       return ownFunds
-        .filter(({ type, usageType }) =>
-          type !== OWN_FUNDS_TYPES.INSURANCE_2
-            && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .filter(
+          ({ type, usageType }) =>
+            type !== OWN_FUNDS_TYPES.INSURANCE_2 &&
+            usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        )
         .reduce((sum, { value }) => sum + value, 0);
     }
 
@@ -424,15 +437,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
 
       if (
-        incomeRatio > this.maxIncomeRatio
-        || borrowRatio > this.maxBorrowRatio
+        incomeRatio > this.maxIncomeRatio ||
+        borrowRatio > this.maxBorrowRatio
       ) {
         return false;
       }
 
       if (
-        !this.allowPledge
-        && this.getPledgedOwnFunds({ loan, structureId }) > 0
+        !this.allowPledge &&
+        this.getPledgedOwnFunds({ loan, structureId }) > 0
       ) {
         return false;
       }
@@ -447,8 +460,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getEstimatedReferralRevenues({ loan, structureId }) {
       return (
-        this.getEstimatedRevenues({ loan, structureId })
-        * this.referralCommission
+        this.getEstimatedRevenues({ loan, structureId }) *
+        this.referralCommission
       );
     }
 
@@ -490,8 +503,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         }
 
         if (
-          !this.isMissingOwnFunds({ loan, structureId: id })
-          && !this.hasTooMuchOwnFunds({ loan, structureId: id })
+          !this.isMissingOwnFunds({ loan, structureId: id }) &&
+          !this.hasTooMuchOwnFunds({ loan, structureId: id })
         ) {
           return true;
         }
@@ -509,8 +522,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }
 
       return (
-        (borrowRatio - maxBorrowRatio)
-        * this.getPropAndWork({ loan, structureId })
+        (borrowRatio - maxBorrowRatio) *
+        this.getPropAndWork({ loan, structureId })
       );
     }
 
@@ -541,24 +554,24 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       };
       let id;
       switch (status) {
-      case SUCCESS:
-        id = 'StatusIconTooltip.borrowRatio.SUCCESS';
-        break;
-      case WARNING:
-        if (this.lenderRules && this.lenderRules.length) {
-          id = 'StatusIconTooltip.borrowRatio.WARNING.withLenderRules';
+        case SUCCESS:
+          id = 'StatusIconTooltip.borrowRatio.SUCCESS';
           break;
-        }
+        case WARNING:
+          if (this.lenderRules && this.lenderRules.length) {
+            id = 'StatusIconTooltip.borrowRatio.WARNING.withLenderRules';
+            break;
+          }
 
-        id = 'StatusIconTooltip.borrowRatio.WARNING';
-        break;
+          id = 'StatusIconTooltip.borrowRatio.WARNING';
+          break;
 
-      case ERROR:
-        id = 'StatusIconTooltip.borrowRatio.ERROR';
-        break;
+        case ERROR:
+          id = 'StatusIconTooltip.borrowRatio.ERROR';
+          break;
 
-      default:
-        break;
+        default:
+          break;
       }
 
       return { id, values };
@@ -610,9 +623,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           };
         }
 
-        const status = borrowRatio <= defaultMaxBorrowRatio
-          ? SUCCESS
-          : borrowRatio <= maxBorrowRatio
+        const status =
+          borrowRatio <= defaultMaxBorrowRatio
+            ? SUCCESS
+            : borrowRatio <= maxBorrowRatio
             ? WARNING
             : ERROR;
 
@@ -630,7 +644,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }
 
       if (currentPledgedOwnFunds >= requiredPledgedOwnFunds) {
-        const status = borrowRatio <= maxBorrowRatioWithPledge ? SUCCESS : ERROR;
+        const status =
+          borrowRatio <= maxBorrowRatioWithPledge ? SUCCESS : ERROR;
 
         return {
           status,
@@ -644,9 +659,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         };
       }
 
-      const status = borrowRatio <= maxBorrowRatio
-        ? SUCCESS
-        : borrowRatio <= maxBorrowRatioWithPledge
+      const status =
+        borrowRatio <= maxBorrowRatio
+          ? SUCCESS
+          : borrowRatio <= maxBorrowRatioWithPledge
           ? WARNING
           : ERROR;
 
@@ -735,7 +751,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getOwnFundsRatio({ loan, structureId }) {
       const fees = this.getFees({ loan, structureId }).total;
-      const requiredOwnFunds = this.getRequiredOwnFunds({ loan, structureId }) - fees;
+      const requiredOwnFunds =
+        this.getRequiredOwnFunds({ loan, structureId }) - fees;
       const totalUsed = this.getNonPledgedOwnFunds({ loan, structureId });
 
       if (totalUsed <= 0) {
@@ -751,7 +768,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getNotaryFeesTooltipValue({ loan, structureId }) {
       const fees = this.getFees({ loan, structureId }).total;
-      const requiredOwnFunds = this.getRequiredOwnFunds({ loan, structureId }) - fees;
+      const requiredOwnFunds =
+        this.getRequiredOwnFunds({ loan, structureId }) - fees;
       const totalUsed = this.getNonPledgedOwnFunds({ loan, structureId });
 
       if (totalUsed <= requiredOwnFunds) {

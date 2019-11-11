@@ -30,7 +30,8 @@ export const getSingleBorrowerLoan = ({
     borrowerIds: [borrowerId],
     propertyIds: [propertyId],
     structures: structures.map(structure =>
-      fakeStructure({ borrowerIds: [borrowerId], ...structure })),
+      fakeStructure({ borrowerIds: [borrowerId], ...structure }),
+    ),
   })._id;
 };
 
@@ -58,7 +59,8 @@ export const getTwoBorrowersLoan = ({
       borrowerIds: [borrower1Id, borrower2Id],
       propertyId,
       ...structure,
-    }));
+    }),
+  );
 
   return Factory.create('testLoan', {
     purchaseType,

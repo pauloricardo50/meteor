@@ -20,7 +20,7 @@ import AppRouter from './AppRouter';
  *
  * @return {type} undefined
  */
-const start = (testElement) => {
+const start = testElement => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
   if (loader) {

@@ -22,7 +22,7 @@ class UpdateWatcherService extends CollectionService {
 
   addUpdateWatching({ collection, fields, shouldWatch = () => true }) {
     const that = this;
-    const hookHandle = collection.after.update(function (
+    const hookHandle = collection.after.update(function(
       userId,
       doc,
       fieldNames,
@@ -91,7 +91,7 @@ class UpdateWatcherService extends CollectionService {
 
   createFieldDiffs({ previous, current, fieldNames }) {
     return fieldNames
-      .map((fieldName) => {
+      .map(fieldName => {
         if (previous[fieldName] === current[fieldName]) {
           return null;
         }
@@ -107,7 +107,7 @@ class UpdateWatcherService extends CollectionService {
 
   getUpdatedFieldDiffs({ updatedFields, doc }) {
     return updatedFields
-      .map((updatedField) => {
+      .map(updatedField => {
         const newValue = doc[updatedField.fieldName];
 
         // If a value is changed back to its old value, remove it
@@ -125,7 +125,9 @@ class UpdateWatcherService extends CollectionService {
   }
 
   update({ currentWatcher, doc, previousDoc, changedFields }) {
-    const previouslyUpdatedFields = currentWatcher.updatedFields.map(({ fieldName }) => fieldName);
+    const previouslyUpdatedFields = currentWatcher.updatedFields.map(
+      ({ fieldName }) => fieldName,
+    );
     const newFields = difference(changedFields, previouslyUpdatedFields);
 
     const updatedDiffs = this.getUpdatedFieldDiffs({
@@ -194,31 +196,31 @@ class UpdateWatcherService extends CollectionService {
     }
 
     switch (collection) {
-    case BORROWERS_COLLECTION: {
-      const { firstName, lastName } = doc;
-      return `Modifications pour l'emprunteur "${firstName
-          || ''} ${lastName || ''}"`;
-    }
+      case BORROWERS_COLLECTION: {
+        const { firstName, lastName } = doc;
+        return `Modifications pour l'emprunteur "${firstName ||
+          ''} ${lastName || ''}"`;
+      }
 
-    case PROPERTIES_COLLECTION: {
-      const { address1 } = doc;
-      return `Modifications pour le bien immo "${address1}"`;
-    }
+      case PROPERTIES_COLLECTION: {
+        const { address1 } = doc;
+        return `Modifications pour le bien immo "${address1}"`;
+      }
 
-    case LOANS_COLLECTION: {
-      const { name, promotions, hasPromotion } = LoanService.fetchOne({
-        $filters: { _id: docId },
-        name: 1,
-        promotions: { name: 1 },
-        hasPromotion: 1,
-      });
-      const text = `Modifications dans le dossier ${name}`;
-      const suffix = hasPromotion ? ` (${promotions[0].name})` : '';
-      return text + suffix;
-    }
+      case LOANS_COLLECTION: {
+        const { name, promotions, hasPromotion } = LoanService.fetchOne({
+          $filters: { _id: docId },
+          name: 1,
+          promotions: { name: 1 },
+          hasPromotion: 1,
+        });
+        const text = `Modifications dans le dossier ${name}`;
+        const suffix = hasPromotion ? ` (${promotions[0].name})` : '';
+        return text + suffix;
+      }
 
-    default:
-      return `Modifications dans ${collection}`;
+      default:
+        return `Modifications dans ${collection}`;
     }
   }
 
@@ -227,8 +229,9 @@ class UpdateWatcherService extends CollectionService {
   }
 
   formatField({ fieldName, previousValue, currentValue }) {
-    const previousValueIsNonEmpty = previousValue
-      || (Array.isArray(previousValue) && previousValue.length > 0);
+    const previousValueIsNonEmpty =
+      previousValue ||
+      (Array.isArray(previousValue) && previousValue.length > 0);
 
     if (previousValueIsNonEmpty) {
       if (Array.isArray(currentValue)) {
@@ -279,22 +282,23 @@ class UpdateWatcherService extends CollectionService {
       })
       .join('\n');
 
-    const removedValues = previousValue.length > currentValue.length
-      ? previousValue
-        .map((item, i) => {
-          if (i >= currentValue.length) {
-            const prefix = `\`${i + 1}\`\n`;
+    const removedValues =
+      previousValue.length > currentValue.length
+        ? previousValue
+            .map((item, i) => {
+              if (i >= currentValue.length) {
+                const prefix = `\`${i + 1}\`\n`;
 
-            return `${prefix}${this.formatValue(
-              item,
-              fieldName,
-            )} -> _supprimé_`;
-          }
-          return null;
-        })
-        .filter(x => x)
-        .join('\n')
-      : '';
+                return `${prefix}${this.formatValue(
+                  item,
+                  fieldName,
+                )} -> _supprimé_`;
+              }
+              return null;
+            })
+            .filter(x => x)
+            .join('\n')
+        : '';
 
     return `*${Intl.formatMessage({
       id: `Forms.${fieldName}`,
@@ -303,7 +307,7 @@ class UpdateWatcherService extends CollectionService {
 
   formatObjectDiff(parentName, previousValue, currentValue) {
     const updated = Object.keys(currentValue)
-      .map((key) => {
+      .map(key => {
         const value = currentValue[key];
         const previous = previousValue && previousValue[key];
 
@@ -336,8 +340,8 @@ class UpdateWatcherService extends CollectionService {
       return value === 0
         ? '0'
         : value > 1
-          ? toMoney(value)
-          : `${percentFormatters.format(value)}%`;
+        ? toMoney(value)
+        : `${percentFormatters.format(value)}%`;
     }
 
     if (!value) {
@@ -354,7 +358,7 @@ class UpdateWatcherService extends CollectionService {
 
     if (typeof value === 'object') {
       return Object.keys(value)
-        .map((key) => {
+        .map(key => {
           const val = value[key];
 
           if (skipPrefix) {
@@ -373,7 +377,8 @@ class UpdateWatcherService extends CollectionService {
 
   manageUpdateWatchers({ secondsFromNow }) {
     this.getOldUpdateWatchers({ secondsFromNow }).forEach(updateWatcher =>
-      this.processUpdateWatcher(updateWatcher));
+      this.processUpdateWatcher(updateWatcher),
+    );
   }
 }
 

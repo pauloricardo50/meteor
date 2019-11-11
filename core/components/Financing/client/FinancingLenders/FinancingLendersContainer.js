@@ -28,18 +28,23 @@ export default compose(
     'setShowAllLenders',
     ({ loan: { lenders = [] } }) => lenders.length === 0,
   ),
-  mapProps(({
-    organisations,
-    loan: { lenders = [] },
-    showAllLenders,
-    setShowAllLenders,
-  }) => ({
-    organisations: showAllLenders
-      ? organisations
-      : organisations.filter(({ _id }) =>
-        lenders.find(({ organisation: { _id: organisationId } }) =>
-          _id === organisationId)),
-    showAllLenders,
-    setShowAllLenders,
-  })),
+  mapProps(
+    ({
+      organisations,
+      loan: { lenders = [] },
+      showAllLenders,
+      setShowAllLenders,
+    }) => ({
+      organisations: showAllLenders
+        ? organisations
+        : organisations.filter(({ _id }) =>
+            lenders.find(
+              ({ organisation: { _id: organisationId } }) =>
+                _id === organisationId,
+            ),
+          ),
+      showAllLenders,
+      setShowAllLenders,
+    }),
+  ),
 );

@@ -15,7 +15,8 @@ borrowerInsert.setHandler((context, { borrower, userId }) =>
   BorrowerService.insert({
     borrower,
     userId: checkInsertUserId(userId),
-  }));
+  }),
+);
 
 borrowerUpdate.setHandler((context, params) => {
   SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);

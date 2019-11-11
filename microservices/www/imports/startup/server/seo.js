@@ -16,7 +16,7 @@ const setBlogHeaders = (sink, url) => {
     strict: false,
   });
   if (slug) {
-    return fetchBlogPostMeta(slug).then((post) => {
+    return fetchBlogPostMeta(slug).then(post => {
       if (post.error) {
         return;
       }
@@ -26,19 +26,33 @@ const setBlogHeaders = (sink, url) => {
   }
 };
 
-const setDefaultHeaders = (sink) => {
+const setDefaultHeaders = sink => {
   const url = Meteor.settings.public.subdomains.www;
   sink.appendToHead(`<meta property="og:url" content="${url}" />`);
-  sink.appendToHead(`<meta property="og:title" content="${defaultOgTags.title}" />`);
-  sink.appendToHead(`<meta property="og:type" content="${defaultOgTags.type}" />`);
-  sink.appendToHead(`<meta property="fb:app_id" content="${defaultOgTags.app_id}" />`);
-  sink.appendToHead(`<meta property="og:description" content="${defaultOgTags.description}" />`);
-  sink.appendToHead(`<meta property="og:image" content="${defaultOgTags.image}" />`);
-  sink.appendToHead(`<meta property="og:image:height" content="${defaultOgTags.image_height}" />`);
-  sink.appendToHead(`<meta property="og:image:width" content="${defaultOgTags.image_width}" />`);
+  sink.appendToHead(
+    `<meta property="og:title" content="${defaultOgTags.title}" />`,
+  );
+  sink.appendToHead(
+    `<meta property="og:type" content="${defaultOgTags.type}" />`,
+  );
+  sink.appendToHead(
+    `<meta property="fb:app_id" content="${defaultOgTags.app_id}" />`,
+  );
+  sink.appendToHead(
+    `<meta property="og:description" content="${defaultOgTags.description}" />`,
+  );
+  sink.appendToHead(
+    `<meta property="og:image" content="${defaultOgTags.image}" />`,
+  );
+  sink.appendToHead(
+    `<meta property="og:image:height" content="${defaultOgTags.image_height}" />`,
+  );
+  sink.appendToHead(
+    `<meta property="og:image:width" content="${defaultOgTags.image_width}" />`,
+  );
 };
 
-export const setHeaders = async (sink) => {
+export const setHeaders = async sink => {
   const { request } = sink;
   const { path } = request.url;
 

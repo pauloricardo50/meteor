@@ -211,20 +211,26 @@ describe('monitoring', () => {
         users: { _id: 'admin', _factory: 'admin' },
       });
       await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }));
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+      );
       await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.BILLING }));
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.BILLING }),
+      );
       await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }));
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }),
+      );
       await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.ONGOING }));
+        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.ONGOING }),
+      );
       await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.PENDING }));
+        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.PENDING }),
+      );
       await ddpWithUserId('admin', () =>
         loanSetStatus.run({
           loanId: 'loan2',
           status: LOAN_STATUS.FINALIZED,
-        }));
+        }),
+      );
 
       const result = await loanStatusChanges({
         fromDate: moment()
@@ -237,8 +243,10 @@ describe('monitoring', () => {
 
       expect(result.length).to.equal(5);
 
-      const ongoingToBilling = result.find(({ _id: { prevStatus, nextStatus } }) =>
-        prevStatus === LOAN_STATUS.LEAD && nextStatus === LOAN_STATUS.ONGOING);
+      const ongoingToBilling = result.find(
+        ({ _id: { prevStatus, nextStatus } }) =>
+          prevStatus === LOAN_STATUS.LEAD && nextStatus === LOAN_STATUS.ONGOING,
+      );
       expect(ongoingToBilling).to.deep.include({
         _id: {
           prevStatus: LOAN_STATUS.LEAD,
@@ -247,9 +255,11 @@ describe('monitoring', () => {
         count: 2,
       });
 
-      const pendingToFinalized = result.find(({ _id: { prevStatus, nextStatus } }) =>
-        prevStatus === LOAN_STATUS.PENDING
-          && nextStatus === LOAN_STATUS.FINALIZED);
+      const pendingToFinalized = result.find(
+        ({ _id: { prevStatus, nextStatus } }) =>
+          prevStatus === LOAN_STATUS.PENDING &&
+          nextStatus === LOAN_STATUS.FINALIZED,
+      );
       expect(pendingToFinalized).to.deep.include({
         _id: {
           prevStatus: LOAN_STATUS.PENDING,

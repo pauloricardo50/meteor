@@ -58,7 +58,7 @@ const insertPropertyAPI = ({
     }
     return proPropertyInsert
       .run({ userId: impersonateUserId || userId, property })
-      .then((propertyId) => {
+      .then(propertyId => {
         const insertedProperty = PropertyService.fetchOne({
           $filters: { _id: propertyId },
           ...apiProperty(),

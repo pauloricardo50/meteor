@@ -17,11 +17,7 @@ process.on('exit', () => {
   }
 });
 
-export default function startChrome({
-  stdout,
-  stderr,
-  done,
-}) {
+export default function startChrome({ stdout, stderr, done }) {
   let chromedriver;
   let webdriver;
   let logging;
@@ -35,7 +31,7 @@ export default function startChrome({
     console.error(error);
     throw new Error(
       'When running app tests with TEST_BROWSER_DRIVER=chrome, you must first ' +
-      '"npm i --save-dev selenium-webdriver@3.0.0-beta-2 chromedriver"'
+        '"npm i --save-dev selenium-webdriver@3.0.0-beta-2 chromedriver"',
     );
   }
 
@@ -46,21 +42,31 @@ export default function startChrome({
   // Pass additional chrome options as appropriate
   if (process.env.TEST_CHROME_ARGS) {
     // Convert any appearances of "%20" to " " so as to support spaces in arguments if necessary
-    let additionalOptions = process.env.TEST_CHROME_ARGS
-        .split(/\s+/)
-        .map((arg) => arg.replace(/%20/g, " "));
+    const additionalOptions = process.env.TEST_CHROME_ARGS.split(
+      /\s+/,
+    ).map(arg => arg.replace(/%20/g, ' '));
     options.addArguments.apply(options, additionalOptions);
   }
-  driver = new webdriver.Builder().forBrowser('chrome').withCapabilities(options.toCapabilities()).setLoggingPrefs({ browser: 'ALL' }).build();
+  driver = new webdriver.Builder()
+    .forBrowser('chrome')
+    .withCapabilities(options.toCapabilities())
+    .setLoggingPrefs({ browser: 'ALL' })
+    .build();
 
   // Can't hide the window but can move it off screen
-  driver.manage().window().setPosition(20000, 20000);
+  driver
+    .manage()
+    .window()
+    .setPosition(20000, 20000);
 
   // We periodically grab logs from Chrome and pass them back.
   // Every time we call this, we get only the log entries since
   // the previous time we called it.
   function passThroughLogs() {
-    return driver.manage().logs().get(logging.Type.BROWSER)
+    return driver
+      .manage()
+      .logs()
+      .get(logging.Type.BROWSER)
       .then(entries => {
         (entries || []).forEach(entry => {
           let message = entry.message || '';
@@ -91,21 +97,19 @@ export default function startChrome({
 
   let testFailures;
   driver
-    .wait(function() {
-      // After the page loads, the tests are running. Eventually they
-      // finish and the driver package is supposed to set window.testsDone
-      // and window.testFailures at that time.
-      return passThroughLogs().then(() => {
-        return driver.executeScript('return window.testsDone');
-      });
-    }, 600000)
-    .then(() => {
+    .wait(
+      () =>
+        // After the page loads, the tests are running. Eventually they
+        // finish and the driver package is supposed to set window.testsDone
+        // and window.testFailures at that time.
+        passThroughLogs().then(() => driver.executeScript('return window.testsDone'),),
+      600000,
+    )
+    .then(() =>
       // Empty the logs one last time
-      return passThroughLogs();
-    })
-    .then(() => {
-      return driver.executeScript('return window.testFailures');
-    })
+      passThroughLogs(),
+    )
+    .then(() => driver.executeScript('return window.testFailures'))
     .then(failures => {
       testFailures = failures;
       return driver.quit();

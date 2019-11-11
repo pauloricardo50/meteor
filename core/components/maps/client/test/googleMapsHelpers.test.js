@@ -28,7 +28,9 @@ describe('googleMapsHelpers', () => {
 
   describe('getAddressString', () => {
     it('returns a formated address', () => {
-      expect(getAddressString(address)).to.equal('Thamel Marg, 123456 Kathmandu');
+      expect(getAddressString(address)).to.equal(
+        'Thamel Marg, 123456 Kathmandu',
+      );
     });
   });
 });

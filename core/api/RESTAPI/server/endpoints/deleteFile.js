@@ -14,7 +14,7 @@ const bodySchema = new SimpleSchema({
   key: String,
 });
 
-const deleteFileAPI = (req) => {
+const deleteFileAPI = req => {
   const {
     user: { _id: userId },
     query,

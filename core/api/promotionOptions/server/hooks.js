@@ -7,7 +7,7 @@ PromotionOptions.before.remove((userId, { _id: promotionOptionId }) => {
     'promotionOptionLinks._id': promotionOptionId,
   }).fetch();
 
-  loans.forEach((loan) => {
+  loans.forEach(loan => {
     LoanService.update({
       loanId: loan._id,
       object: {

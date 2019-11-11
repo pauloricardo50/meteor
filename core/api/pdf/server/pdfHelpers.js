@@ -1,6 +1,6 @@
 import Intl from 'core/utils/server/intl';
 
-const formatKey = (key) => {
+const formatKey = key => {
   const i18nKey = `Forms.${key}`;
   const translated = Intl.formatMessage({
     id: `Forms.${key}`,
@@ -17,13 +17,13 @@ const formatKey = (key) => {
 
 export const frenchErrors = {
   missingKey: (key, parentKey) =>
-    (parentKey
+    parentKey
       ? `Il manque ${formatKey(key)} dans ${formatKey(parentKey)}`
-      : `Il manque ${formatKey(key)}`),
+      : `Il manque ${formatKey(key)}`,
   shouldBeArray: key => `${formatKey(key)} doit être une liste`,
   shouldBeObject: key => `${formatKey(key)} doit être un objet`,
   emptyArray: (key, parentKey) =>
-    (parentKey
+    parentKey
       ? `${formatKey(key)} ne doit pas être vide dans ${formatKey(parentKey)}`
-      : `${formatKey(key)} ne doit pas être vide`),
+      : `${formatKey(key)} ne doit pas être vide`,
 };

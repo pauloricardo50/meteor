@@ -75,10 +75,7 @@ const withCalc3 = SuperClass =>
     }
   };
 
-const UberClass = compose(
-  withCalc3,
-  withCalc2,
-)(RootCalculator);
+const UberClass = compose(withCalc3, withCalc2)(RootCalculator);
 
 describe('Class composition', () => {
   it('extends properly', () => {
@@ -103,10 +100,7 @@ describe('Class composition', () => {
   });
 
   it('combines multiple classes with compose', () => {
-    class MyClass extends compose(
-      withCalc3,
-      withCalc2,
-    )(RootCalculator) {}
+    class MyClass extends compose(withCalc3, withCalc2)(RootCalculator) {}
 
     expect(new MyClass().increment(1)).to.equal(2);
     expect(new MyClass().add(1, 2)).to.equal(3);
@@ -128,10 +122,7 @@ describe('Class composition', () => {
   });
 
   it('autocompletion works', () => {
-    class MyClass extends compose(
-      withCalc3,
-      withCalc2,
-    )(RootCalculator) {}
+    class MyClass extends compose(withCalc3, withCalc2)(RootCalculator) {}
 
     const Calc = new MyClass();
 
@@ -224,7 +215,7 @@ describe('Class composition', () => {
   });
 
   describe('memoization', () => {
-    const memoizeMiddleware = calc => (next) => {
+    const memoizeMiddleware = calc => next => {
       const memoFunc = memoizeOne(next);
       return (...args) => {
         calc.memo += 1;

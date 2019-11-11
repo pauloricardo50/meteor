@@ -23,11 +23,15 @@ export class OrganisationService extends CollectionService {
       const { rate: previousRate, threshold: previousThreshold } = arr[i - 1];
 
       if (previousRate >= rate) {
-        throw new Meteor.Error('Chaque taux doit être plus élevé que le précédent');
+        throw new Meteor.Error(
+          'Chaque taux doit être plus élevé que le précédent',
+        );
       }
 
       if (previousThreshold >= threshold) {
-        throw new Meteor.Error('Chaque seuil doit être plus élevé que le précédent');
+        throw new Meteor.Error(
+          'Chaque seuil doit être plus élevé que le précédent',
+        );
       }
     });
 

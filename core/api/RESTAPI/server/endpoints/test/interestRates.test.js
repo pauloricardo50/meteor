@@ -33,10 +33,10 @@ const getRates = ({ expectedResponse }) => {
   });
 };
 
-describe('REST: interestRates', function () {
+describe('REST: interestRates', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

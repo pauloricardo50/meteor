@@ -12,7 +12,7 @@ import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 import { ACTIVITY_TYPES } from '../../activityConstants';
 import ActivityService from '../ActivityService';
 
-describe('sendEmailListener', function () {
+describe('sendEmailListener', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -45,7 +45,8 @@ describe('sendEmailListener', function () {
             ctaUrl: 'www.e-potek.ch',
             multiple: false,
           },
-        }));
+        }),
+      );
 
       await checkEmails(1);
       const { activities = [] } = UserService.fetchOne({
@@ -82,7 +83,8 @@ describe('sendEmailListener', function () {
             ctaUrl: 'www.e-potek.ch',
             multiple: false,
           },
-        }));
+        }),
+      );
 
       await checkEmails(1);
       const { activities = [] } = UserService.fetchOne({

@@ -1,6 +1,6 @@
-const getCombinations = (items) => {
+const getCombinations = items => {
   const result = [];
-  var f = function (keyarr, items, lvl) {
+  var f = function(keyarr, items, lvl) {
     for (let i = 0; i < items.length; i++) {
       const nka = keyarr.concat(items[i]);
       result.push(nka);
@@ -23,9 +23,9 @@ const createPivotFacets = (dims, measures) => {
   // Only need to do this once; the $project is the same for all
   // variations of $group.
   const prj = { _id: 1, _x: 1, _n: 1 };
-  measures.forEach((m) => {
+  measures.forEach(m => {
     const z = {};
-    ['sum', 'avg', 'max', 'min'].forEach((f) => {
+    ['sum', 'avg', 'max', 'min'].forEach(f => {
       z[f] = `$${f}_${m}`;
       prj[m] = z;
     });
@@ -40,18 +40,18 @@ const createPivotFacets = (dims, measures) => {
     const grp = {};
 
     const idd = {};
-    karr.forEach((k) => {
+    karr.forEach(k => {
       idd[k] = `$${k}`;
     });
     grp._id = idd;
 
     if (parr.length > 0) {
       const pdd = {};
-      measures.forEach((m) => {
+      measures.forEach(m => {
         pdd[m] = `$${m}`;
       });
 
-      parr.forEach((k) => {
+      parr.forEach(k => {
         pdd[k] = `$${k}`;
       });
       grp._x = { $push: pdd };
@@ -59,8 +59,8 @@ const createPivotFacets = (dims, measures) => {
 
     grp._n = { $sum: 1 }; // handy but basically {$size: "$_x"}
 
-    measures.forEach((m) => {
-      ['sum', 'avg', 'max', 'min'].forEach((f) => {
+    measures.forEach(m => {
+      ['sum', 'avg', 'max', 'min'].forEach(f => {
         const z = {};
         z[`$${f}`] = `$${m}`;
         grp[`${f}_${m}`] = z;

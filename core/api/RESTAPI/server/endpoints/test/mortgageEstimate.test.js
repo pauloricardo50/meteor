@@ -38,12 +38,12 @@ const getResult = ({ expectedResponse, query }) => {
   });
 };
 
-describe('REST: mortgageEstimate', function () {
+describe('REST: mortgageEstimate', function() {
   this.timeout(10000);
   let now;
   let clock;
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

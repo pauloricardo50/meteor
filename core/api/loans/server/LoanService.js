@@ -125,7 +125,9 @@ class LoanService extends CollectionService {
 
     if (shouldSendStepNotification(step, nextStep)) {
       if (!user || !user.assignedEmployee) {
-        throw new Meteor.Error('Il faut un conseiller sur ce dossier pour envoyer un email');
+        throw new Meteor.Error(
+          'Il faut un conseiller sur ce dossier pour envoyer un email',
+        );
       }
 
       sendEmail.run({
@@ -154,11 +156,13 @@ class LoanService extends CollectionService {
     const loan = this.get(loanId);
 
     if (
-      loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED
-      || loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
+      loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED ||
+      loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
     ) {
       // Don't do anything if this loan is already in requested mode
-      throw new Meteor.Error('La vérification est déjà en cours, ou effectuée.');
+      throw new Meteor.Error(
+        'La vérification est déjà en cours, ou effectuée.',
+      );
     }
 
     return this.update({
@@ -191,7 +195,7 @@ class LoanService extends CollectionService {
       userId,
     });
 
-    promotionLotIds.forEach((promotionLotId) => {
+    promotionLotIds.forEach(promotionLotId => {
       PromotionOptionService.insert({ promotionLotId, loanId });
     });
 
@@ -244,24 +248,27 @@ class LoanService extends CollectionService {
   addNewStructure = ({ loanId, structure }) => {
     const { structures, selectedStructure, propertyIds } = this.get(loanId);
     const isFirstStructure = structures.length === 0;
-    const shouldCopyExistingStructure = !isFirstStructure && !structure && selectedStructure;
+    const shouldCopyExistingStructure =
+      !isFirstStructure && !structure && selectedStructure;
 
     if (shouldCopyExistingStructure) {
-      structure = omit(structures.find(({ id }) => selectedStructure === id), [
-        'name',
-      ]);
+      structure = omit(
+        structures.find(({ id }) => selectedStructure === id),
+        ['name'],
+      );
     }
 
-    const propertyId = (structure && structure.propertyId)
-      || (propertyIds.length > 0 ? propertyIds[0] : undefined);
+    const propertyId =
+      (structure && structure.propertyId) ||
+      (propertyIds.length > 0 ? propertyIds[0] : undefined);
     const newStructureId = this.addStructure({
       loanId,
       structure: {
         ...structure,
         propertyId,
         name:
-          (structure && structure.name)
-          || `Plan financier ${structures.length + 1}`,
+          (structure && structure.name) ||
+          `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({
@@ -276,7 +283,9 @@ class LoanService extends CollectionService {
     const { selectedStructure: currentlySelected } = this.get(loanId);
 
     if (currentlySelected === structureId) {
-      throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
+      throw new Meteor.Error(
+        'Vous ne pouvez pas supprimer votre plan financier choisi',
+      );
     }
 
     const updateObj = {
@@ -290,7 +299,9 @@ class LoanService extends CollectionService {
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
-    const currentStructure = this.get(loanId).structures.find(({ id }) => id === structureId);
+    const currentStructure = this.get(loanId).structures.find(
+      ({ id }) => id === structureId,
+    );
 
     return Loans.update(
       { _id: loanId, 'structures.id': structureId },
@@ -303,14 +314,20 @@ class LoanService extends CollectionService {
       fields: { structures: 1, selectedStructure: 1 },
     });
 
-    const currentStructure = loan.structures.find(({ id }) => id === loan.selectedStructure);
+    const currentStructure = loan.structures.find(
+      ({ id }) => id === loan.selectedStructure,
+    );
 
     if (currentStructure && currentStructure.disabled) {
-      throw new Meteor.Error('Vous ne pouvez pas changer votre plan financier, il est vérouillé');
+      throw new Meteor.Error(
+        'Vous ne pouvez pas changer votre plan financier, il est vérouillé',
+      );
     }
 
     // Make sure the structure exists
-    const structureExists = loan.structures.some(({ id }) => id === structureId);
+    const structureExists = loan.structures.some(
+      ({ id }) => id === structureId,
+    );
 
     if (structureExists) {
       return this.update({
@@ -325,11 +342,13 @@ class LoanService extends CollectionService {
   duplicateStructure = ({ loanId, structureId }) => {
     const { structures } = this.get(loanId);
     const currentStructure = structures.find(({ id }) => id === structureId);
-    const currentStructureIndex = structures.findIndex(({ id }) => id === structureId);
+    const currentStructureIndex = structures.findIndex(
+      ({ id }) => id === structureId,
+    );
 
     return (
-      !!currentStructure
-      && this.addStructure({
+      !!currentStructure &&
+      this.addStructure({
         loanId,
         structure: {
           ...currentStructure,
@@ -347,27 +366,31 @@ class LoanService extends CollectionService {
 
     // Add this property to all structures that don't have a property
     // for a better user experience
-    loan.structures.forEach(({ id, propertyId: structurePropertyId, promotionOptionId }) => {
-      if (!structurePropertyId && !promotionOptionId) {
-        this.updateStructure({
-          loanId,
-          structureId: id,
-          structure: { propertyId },
-        });
-      }
-    });
+    loan.structures.forEach(
+      ({ id, propertyId: structurePropertyId, promotionOptionId }) => {
+        if (!structurePropertyId && !promotionOptionId) {
+          this.updateStructure({
+            loanId,
+            structureId: id,
+            structure: { propertyId },
+          });
+        }
+      },
+    );
   };
 
   cleanupRemovedBorrower = ({ borrowerId }) => {
     // Remove all references to this borrower on the loan
     const loans = Loans.find({ borrowerIds: borrowerId }).fetch();
-    loans.forEach((loan) => {
+    loans.forEach(loan => {
       this.update({
         loanId: loan._id,
         object: {
           structures: loan.structures.map(structure => ({
             ...structure,
-            ownFunds: structure.ownFunds.filter(({ borrowerId: bId }) => bId !== borrowerId),
+            ownFunds: structure.ownFunds.filter(
+              ({ borrowerId: bId }) => bId !== borrowerId,
+            ),
           })),
         },
       });
@@ -382,7 +405,9 @@ class LoanService extends CollectionService {
   }
 
   getPromotionPriorityOrder({ loanId, promotionId }) {
-    const promotionLink = this.get(loanId).promotionLinks.find(({ _id }) => _id === promotionId);
+    const promotionLink = this.get(loanId).promotionLinks.find(
+      ({ _id }) => _id === promotionId,
+    );
     return promotionLink ? promotionLink.priorityOrder : [];
   }
 
@@ -402,12 +427,16 @@ class LoanService extends CollectionService {
 
     borrowers.forEach(({ loans = [], name }) => {
       if (loans.length > 1) {
-        throw new Meteor.Error(`Peut pas réassigner l'hypothèque, l'emprunteur "${name}" est assigné à plus d'une hypothèque`);
+        throw new Meteor.Error(
+          `Peut pas réassigner l'hypothèque, l'emprunteur "${name}" est assigné à plus d'une hypothèque`,
+        );
       }
     });
     properties.forEach(({ loans = [], address1, category }) => {
       if (category === PROPERTY_CATEGORY.USER && loans.length > 1) {
-        throw new Meteor.Error(`Peut pas réassigner l'hypothèque, le bien immobilier "${address1}" est assigné à plus d'une hypothèque`);
+        throw new Meteor.Error(
+          `Peut pas réassigner l'hypothèque, le bien immobilier "${address1}" est assigné à plus d'une hypothèque`,
+        );
       }
     });
 
@@ -457,7 +486,10 @@ class LoanService extends CollectionService {
           referredByOrganisationLink: 1,
         });
         if (!referredByUserLink && !referredByOrganisationLink) {
-          UserService.setReferredByOrganisation({ userId, organisationId: referralId });
+          UserService.setReferredByOrganisation({
+            userId,
+            organisationId: referralId,
+          });
         }
       }
     }
@@ -471,14 +503,17 @@ class LoanService extends CollectionService {
     }).fetchOne();
 
     if (borrowerIds.includes(borrowerId)) {
-      throw new Meteor.Error('Cet emprunteur est déjà sur ce prêt hypothécaire');
+      throw new Meteor.Error(
+        'Cet emprunteur est déjà sur ce prêt hypothécaire',
+      );
     }
 
     this.update({
       loanId,
       object: {
         borrowerIds: borrowerIds.map(id =>
-          (id === oldBorrowerId ? borrowerId : id)),
+          id === oldBorrowerId ? borrowerId : id,
+        ),
       },
     });
 
@@ -491,11 +526,12 @@ class LoanService extends CollectionService {
     const {
       offers = [],
       structure: { property },
-    } = this.createQuery({
-      $filters: { _id: loanId },
-      ...adminLoan({ withSort: true }),
-      $options: { sort: { createdAt: -1 } },
-    }).fetchOne() || {};
+    } =
+      this.createQuery({
+        $filters: { _id: loanId },
+        ...adminLoan({ withSort: true }),
+        $options: { sort: { createdAt: -1 } },
+      }).fetchOne() || {};
 
     // Get lenders' last offer
     const filteredOffers = offers.reduce((filtered, offer) => {
@@ -505,11 +541,13 @@ class LoanService extends CollectionService {
         },
       } = offer;
 
-      const lenderIsAlreadyInMailingList = filtered.find(({
-        lender: {
-          contact: { email },
-        },
-      }) => lenderEmail === email);
+      const lenderIsAlreadyInMailingList = filtered.find(
+        ({
+          lender: {
+            contact: { email },
+          },
+        }) => lenderEmail === email,
+      );
 
       if (lenderIsAlreadyInMailingList) {
         return filtered;
@@ -518,7 +556,7 @@ class LoanService extends CollectionService {
       return [...filtered, offer];
     }, []);
 
-    const promises = filteredOffers.map((offer) => {
+    const promises = filteredOffers.map(offer => {
       const feedback = makeFeedback({
         offer: { ...offer, property },
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
@@ -583,11 +621,15 @@ class LoanService extends CollectionService {
       })
       .filter(x => x);
 
-    const sortedValues = maxPropertyValues.sort(({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
-      propertyValueA - propertyValueB);
+    const sortedValues = maxPropertyValues.sort(
+      ({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
+        propertyValueA - propertyValueB,
+    );
 
     if (sortedValues.length === 0) {
-      throw new Meteor.Error("Nous ne sommes pas parvenus à calculer votre capacité d'achat, ajustez vos informations financières, ou contactez votre conseiller pour plus d'informations");
+      throw new Meteor.Error(
+        "Nous ne sommes pas parvenus à calculer votre capacité d'achat, ajustez vos informations financières, ou contactez votre conseiller pour plus d'informations",
+      );
     }
 
     // Only show min if there is more than 1 result
@@ -607,10 +649,10 @@ class LoanService extends CollectionService {
     // If there are at least 3 organisations, show a special label
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
-      ? `${secondMax
-          && secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-        max.organisationName
-      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      ? `${secondMax &&
+          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+          max.organisationName
+        } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -646,16 +688,20 @@ class LoanService extends CollectionService {
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
     const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
 
-    const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
-      loan,
-      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      canton,
-    });
-    const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
-      loan,
-      residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
-      canton,
-    });
+    const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
+      {
+        loan,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        canton,
+      },
+    );
+    const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
+      {
+        loan,
+        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+        canton,
+      },
+    );
 
     const borrowerHash = Calculator.getBorrowerFormHash({
       borrowers: loan.borrowers,
@@ -696,7 +742,9 @@ class LoanService extends CollectionService {
       loan,
       canton,
     });
-    const firstOrganisationName = organisationName.split(ORGANISATION_NAME_SEPARATOR)[0];
+    const firstOrganisationName = organisationName.split(
+      ORGANISATION_NAME_SEPARATOR,
+    )[0];
 
     const organisation = OrganisationService.fetchOne({
       $filters: { name: firstOrganisationName },
@@ -717,7 +765,9 @@ class LoanService extends CollectionService {
       residenceType,
     });
 
-    let propertyWithCanton = properties.find(({ canton: propertyCanton }) => propertyCanton === canton);
+    let propertyWithCanton = properties.find(
+      ({ canton: propertyCanton }) => propertyCanton === canton,
+    );
     const createNewProperty = !propertyWithCanton;
 
     // If there is no property from this canton, insert a new one
@@ -834,7 +884,9 @@ class LoanService extends CollectionService {
     const { structures = [], borrowerIds = [], status } = loan;
 
     if (status !== LOAN_STATUS.TEST) {
-      throw new Meteor.Error('Seuls les dossiers avec le statut TEST peuvent être réinitialisés !');
+      throw new Meteor.Error(
+        'Seuls les dossiers avec le statut TEST peuvent être réinitialisés !',
+      );
     }
 
     // Set step to solvency
@@ -930,8 +982,11 @@ class LoanService extends CollectionService {
       $filters: { _id: loanId },
       activities: { metadata: 1 },
     });
-    const { _id: createdAtActivityId } = activities.find(({ metadata }) =>
-      metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED) || {};
+    const { _id: createdAtActivityId } =
+      activities.find(
+        ({ metadata }) =>
+          metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED,
+      ) || {};
 
     if (createdAtActivityId) {
       ActivityService.updateDescription({

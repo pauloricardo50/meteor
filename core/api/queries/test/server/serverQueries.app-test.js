@@ -12,7 +12,8 @@ import { exposeQuery } from '../../queryHelpers';
 const TestCollection = require('../collection.app-test').default;
 
 testCollectionInsert.setHandler((context, params) =>
-  TestCollection.insert(params));
+  TestCollection.insert(params),
+);
 
 exposeQuery({
   query: query1,
@@ -30,7 +31,7 @@ exposeQuery({
   query: query2,
   overrides: {
     firewall: (userId, params) => null,
-    embody: (body) => {
+    embody: body => {
       body.$options = { sort: { value: 1 }, limit: 10 };
       body.$filters = { value: { $gt: 20 } };
     },
@@ -45,7 +46,7 @@ exposeQuery({
   query: query4,
   overrides: {
     firewall: (userId, params) => null,
-    embody: (body) => {
+    embody: body => {
       body.$options = { sort: { value: 1 }, limit: 10 };
       body.$filters = { value: { $gt: 20 } };
     },

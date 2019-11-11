@@ -17,5 +17,5 @@ export const unreadNotification = new Method({
 
 export const generateAllNotifications = new Method({
   name: 'generateAllNotifications',
-  params: {  },
+  params: {},
 });

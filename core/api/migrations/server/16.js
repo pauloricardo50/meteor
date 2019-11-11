@@ -10,17 +10,23 @@ export const up = async () => {
     { fields: { phoneNumbers: 1 } },
   ).fetch();
 
-  await Promise.all(allUsers.map(({ _id, phoneNumbers = [] }) =>
-    Users.rawCollection().update(
-      { _id },
-      { $set: { phoneNumbers: phoneNumbers.map(formatPhoneNumber) } },
-    )));
+  await Promise.all(
+    allUsers.map(({ _id, phoneNumbers = [] }) =>
+      Users.rawCollection().update(
+        { _id },
+        { $set: { phoneNumbers: phoneNumbers.map(formatPhoneNumber) } },
+      ),
+    ),
+  );
 
-  await Promise.all(allContacts.map(({ _id, phoneNumbers = [] }) =>
-    Contacts.rawCollection().update(
-      { _id },
-      { $set: { phoneNumbers: phoneNumbers.map(formatPhoneNumber) } },
-    )));
+  await Promise.all(
+    allContacts.map(({ _id, phoneNumbers = [] }) =>
+      Contacts.rawCollection().update(
+        { _id },
+        { $set: { phoneNumbers: phoneNumbers.map(formatPhoneNumber) } },
+      ),
+    ),
+  );
 };
 
 // Do nothing, can't go back!

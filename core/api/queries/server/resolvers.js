@@ -8,32 +8,32 @@ import { organisationSearch } from '../../organisations/queries';
 import { COLLECTIONS } from '../../constants';
 
 const collectionSearches = {
-  [COLLECTIONS.USERS_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.USERS_COLLECTION]: searchQuery =>
     userSearch.clone({ searchQuery, $body: { name: 1, roles: 1 } }).fetch(),
-  [COLLECTIONS.LOANS_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.LOANS_COLLECTION]: searchQuery =>
     loanSearch
       .clone({ searchQuery, $body: { name: 1, status: 1, category: 1 } })
       .fetch(),
-  [COLLECTIONS.CONTACTS_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.CONTACTS_COLLECTION]: searchQuery =>
     contactSearch
       .clone({ searchQuery, $body: { name: 1, organisations: { name: 1 } } })
       .fetch(),
-  [COLLECTIONS.ORGANISATIONS_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.ORGANISATIONS_COLLECTION]: searchQuery =>
     organisationSearch
       .clone({ searchQuery, $body: { name: 1, type: 1 } })
       .fetch(),
-  [COLLECTIONS.PROMOTIONS_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.PROMOTIONS_COLLECTION]: searchQuery =>
     promotionSearch
       .clone({ searchQuery, $body: { name: 1, status: 1 } })
       .fetch(),
-  [COLLECTIONS.PROPERTIES_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.PROPERTIES_COLLECTION]: searchQuery =>
     propertySearch
       .clone({
         searchQuery,
         $body: { address1: 1, name: 1, status: 1, category: 1 },
       })
       .fetch(),
-  [COLLECTIONS.BORROWERS_COLLECTION]: (searchQuery) =>
+  [COLLECTIONS.BORROWERS_COLLECTION]: searchQuery =>
     borrowerSearch.clone({ searchQuery, $body: { name: 1, age: 1 } }).fetch(),
 };
 

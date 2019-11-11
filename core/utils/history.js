@@ -8,7 +8,7 @@ window.reactRouterDomHistory = history;
 
 // if the user logged out, perform whatever after-logout actions are needed,
 // especially redirecting them
-export const handleLoggedOut = (redirectToUrl) => {
+export const handleLoggedOut = redirectToUrl => {
   if (Meteor.userId()) {
     return;
   }

@@ -1,4 +1,4 @@
-export const storageAvailable = (type) => {
+export const storageAvailable = type => {
   try {
     const storage = window[type];
     const x = '__storage_test__';

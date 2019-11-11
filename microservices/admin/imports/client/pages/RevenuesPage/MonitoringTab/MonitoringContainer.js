@@ -5,7 +5,7 @@ import { loanMonitoring } from 'core/api/monitoring/queries';
 import { LOAN_STATUS_ORDER } from 'core/api/constants';
 
 const getAnonymous = withAnonymous =>
-  (withAnonymous ? undefined : { $in: [null, false] });
+  withAnonymous ? undefined : { $in: [null, false] };
 
 export default compose(
   withStateHandlers({}),
@@ -28,9 +28,11 @@ export default compose(
   withProps(({ data, groupBy }) => {
     if (groupBy === 'status') {
       return {
-        data: data.sort(({ _id: statusA }, { _id: statusB }) =>
-          LOAN_STATUS_ORDER.indexOf(statusA)
-            - LOAN_STATUS_ORDER.indexOf(statusB)),
+        data: data.sort(
+          ({ _id: statusA }, { _id: statusB }) =>
+            LOAN_STATUS_ORDER.indexOf(statusA) -
+            LOAN_STATUS_ORDER.indexOf(statusB),
+        ),
       };
     }
   }),

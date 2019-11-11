@@ -24,7 +24,9 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
   const user = UserService.getByEmail(email);
 
   if (!user) {
-    throw new Meteor.Error(`User with email "${email}" not found, or you don't have access to it.`);
+    throw new Meteor.Error(
+      `User with email "${email}" not found, or you don't have access to it.`,
+    );
   }
 
   checkAccessToUser({ user, proId: proId || userId });

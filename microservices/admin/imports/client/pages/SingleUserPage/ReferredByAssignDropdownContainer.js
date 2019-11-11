@@ -15,7 +15,7 @@ const getMenuItems = ({
   userId,
   name,
 }) =>
-  [null, ...proUsers].map((pro) => {
+  [null, ...proUsers].map(pro => {
     const { _id: proId } = pro || {};
     let userName = 'Personne';
     let organisationName;
@@ -60,21 +60,23 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'proUsers',
   }),
-  withProps(({ proUsers = [], user: { _id: userId, referredByUser, name } }) => ({
-    options: getMenuItems({
-      proUsers: proUsers.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+  withProps(
+    ({ proUsers = [], user: { _id: userId, referredByUser, name } }) => ({
+      options: getMenuItems({
+        proUsers: proUsers.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        }),
+        referredByUser,
+        userId,
+        name,
       }),
       referredByUser,
-      userId,
-      name,
     }),
-    referredByUser,
-  })),
+  ),
 );

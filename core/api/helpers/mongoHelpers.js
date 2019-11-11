@@ -27,7 +27,8 @@ export const createSearchFilters = (searchFieldsArray, searchQuery) => {
     // multiple fields to match
     return {
       $or: searchFieldsArray.map(searchField =>
-        createRegexQuery(searchField, searchQuery)),
+        createRegexQuery(searchField, searchQuery),
+      ),
     };
   }
   // single field to match

@@ -18,7 +18,7 @@ export const phoneFormatters = {
 
 export const percentFormatters = {
   parse: value =>
-    (value === '' ? '' : Math.round(parseFloat(value) * 100) / 10000),
+    value === '' ? '' : Math.round(parseFloat(value) * 100) / 10000,
   format: value => (value === '' ? '' : (value * 100).toFixed(2)),
 };
 
@@ -27,7 +27,7 @@ export const moneyFormatters = {
 };
 
 const setRequired = initialValue =>
-  (initialValue === undefined ? true : initialValue);
+  initialValue === undefined ? true : initialValue;
 
 export const makeFormArray = (array, intlPrefix) =>
   array.map(field => ({

@@ -38,60 +38,61 @@ class PDFService {
 
   checkData = ({ data, type }) => {
     switch (type) {
-    case PDF_TYPES.LOAN: {
-      try {
-        validateLoanPdf(data);
-      } catch (error) {
-        throw new Meteor.Error(error);
+      case PDF_TYPES.LOAN: {
+        try {
+          validateLoanPdf(data);
+        } catch (error) {
+          throw new Meteor.Error(error);
+        }
+        break;
       }
-      break;
-    }
-    default:
-      throw new Meteor.Error(`Invalid pdf type: ${type}`);
+      default:
+        throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
   checkParams = ({ params, type }) => {
     switch (type) {
-    case PDF_TYPES.LOAN: {
-      const { loanId, organisationId, structureIds } = params;
-      check(loanId, String);
-      check(organisationId, Match.Maybe(String));
-      check(structureIds, Match.Maybe([String]));
-      break;
-    }
+      case PDF_TYPES.LOAN: {
+        const { loanId, organisationId, structureIds } = params;
+        check(loanId, String);
+        check(organisationId, Match.Maybe(String));
+        check(structureIds, Match.Maybe([String]));
+        break;
+      }
 
-    default:
-      throw new Meteor.Error(`Invalid pdf type: ${type}`);
+      default:
+        throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
   getDataForPDF = (type, params) => {
     switch (type) {
-    case PDF_TYPES.LOAN: {
-      const { loanId, organisationId } = params;
+      case PDF_TYPES.LOAN: {
+        const { loanId, organisationId } = params;
 
-      const organisation = organisationId
-          && OrganisationService.fetchOne({
+        const organisation =
+          organisationId &&
+          OrganisationService.fetchOne({
             $filters: { _id: organisationId },
             lenderRules: lenderRules(),
             name: 1,
             logo: 1,
           });
-      const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+        const loan = adminLoans.clone({ _id: loanId }).fetchOne();
 
-      if (loan.hasPromotion) {
-        return {
-          ...params,
-          loan: formatLoanWithPromotion(loan),
-          organisation,
-        };
+        if (loan.hasPromotion) {
+          return {
+            ...params,
+            loan: formatLoanWithPromotion(loan),
+            organisation,
+          };
+        }
+
+        return { ...params, loan, organisation };
       }
-
-      return { ...params, loan, organisation };
-    }
-    default:
-      throw new Meteor.Error(`Invalid pdf type: ${type}`);
+      default:
+        throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
@@ -99,23 +100,23 @@ class PDFService {
     const fileName = Random.id();
 
     switch (type) {
-    case PDF_TYPES.LOAN: {
-      const { loan, organisation } = data;
-      return {
-        component: LoanBankPDF,
-        props: { ...data, options },
-        fileName,
-        pdfName: organisation
-          ? `${loan.name} - ${organisation.name}`
-          : loan.name,
-      };
-    }
-    default:
-      throw new Meteor.Error(`Invalid pdf type: ${type}`);
+      case PDF_TYPES.LOAN: {
+        const { loan, organisation } = data;
+        return {
+          component: LoanBankPDF,
+          props: { ...data, options },
+          fileName,
+          pdfName: organisation
+            ? `${loan.name} - ${organisation.name}`
+            : loan.name,
+        };
+      }
+      default:
+        throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
-  getBase64String = (path) => {
+  getBase64String = path => {
     const file = fs.readFileSync(path);
     fs.unlink(path); // Async delete
     const base64 = new Buffer(file).toString('base64');
@@ -147,13 +148,13 @@ class PDFService {
       },
       body: JSON.stringify(body),
     })
-      .then((res) => {
+      .then(res => {
         if (!res.ok) {
           throw new Meteor.Error(res.status, res.statusText);
         }
         const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
         const stream = res.body.pipe(dest);
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           stream.on('finish', resolve);
         });
       })

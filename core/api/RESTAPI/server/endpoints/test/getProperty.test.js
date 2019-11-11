@@ -51,10 +51,10 @@ const getProperty = ({ id, userId, impersonateUser }) => {
   });
 };
 
-describe('REST: getProperty', function () {
+describe('REST: getProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -126,16 +126,19 @@ describe('REST: getProperty', function () {
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
-      .then((res) => {
+      .then(res => {
         const { files } = res;
         expect(files.length).to.equal(1);
-        expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+        expect(files[0].url).to.equal(
+          `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+        );
       })
       .then(() =>
         getProperty({
           userId: 'pro',
           impersonateUser: 'pro2@org.com',
-        }))
+        }),
+      )
       .then(({ property }) => {
         const { _id, documents = {} } = property;
         expect(_id).to.equal(propertyId);
@@ -143,16 +146,18 @@ describe('REST: getProperty', function () {
       });
   });
 
-  it('returns an error if user has no access to property', () => getProperty({
-    userId: 'pro',
-  }).then(({ message }) => {
-    expect(message).to.include("Vous n'avez pas accès");
-  }));
+  it('returns an error if user has no access to property', () =>
+    getProperty({
+      userId: 'pro',
+    }).then(({ message }) => {
+      expect(message).to.include("Vous n'avez pas accès");
+    }));
 
-  it('fails when property does not exist', () => getProperty({
-    userId: 'pro',
-    id: '12345'
-  }).then(({ message }) => {
-    expect(message).to.include("No property found");
-  }));
+  it('fails when property does not exist', () =>
+    getProperty({
+      userId: 'pro',
+      id: '12345',
+    }).then(({ message }) => {
+      expect(message).to.include('No property found');
+    }));
 });

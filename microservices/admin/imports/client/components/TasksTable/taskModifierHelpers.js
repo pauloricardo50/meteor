@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const toNearest15Minutes = (momentObj) => {
+const toNearest15Minutes = momentObj => {
   const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
   return momentObj
     .clone()
