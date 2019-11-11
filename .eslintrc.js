@@ -17,7 +17,7 @@ const path = require('path');
 // They are importing the prettier config, as done below
 
 const prettierOptions = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '.prettierrc'), 'utf8')
+  fs.readFileSync(path.resolve(__dirname, '.prettierrc'), 'utf8'),
 );
 
 module.exports = {
@@ -53,12 +53,8 @@ module.exports = {
   },
   globals: {},
   settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: true,
-    },
-    react: {
-      version: 'detect',
-    },
+    flowtype: { onlyFilesWithFlowAnnotation: true },
+    react: { version: 'detect' },
     linkComponents: [
       // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
       { name: 'Link', linkAttribute: 'to' },
@@ -70,27 +66,29 @@ module.exports = {
 
     // eslint default rules
     'class-methods-use-this': 0,
-    indent: [
-      1,
-      2,
-      {
-        SwitchCase: 1,
-      },
-    ],
+    indent: [1, 2, { SwitchCase: 1 }],
     'max-len': 0,
     'no-underscore-dangle': 0,
     // The most sane value, allows objects to stay on a single line if possible
-    'object-curly-newline': ['error', { multiline: true, consistent: true }],
+    'object-curly-newline': [
+      'error',
+      {
+        ObjectExpression: { multiline: true, consistent: true },
+        ObjectPattern: { multiline: true, consistent: true },
+        ImportDeclaration: { multiline: true, consistent: true },
+        ExportDeclaration: { multiline: true, consistent: true },
+      },
+    ],
     'object-property-newline': [
       'error',
-      { allowMultiplePropertiesPerLine: true },
+      { allowAllPropertiesOnSameLine: true },
     ],
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 0,
     'no-nested-ternary': 0,
     'newline-per-chained-call': [2, { ignoreChainWithDepth: 3 }],
     'prefer-arrow-callback': 0,
-    'arrow-parens': ['error', 'as-needed'],
+    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
     'prefer-destructuring': [
       'error',
       {
@@ -103,9 +101,7 @@ module.exports = {
           object: false,
         },
       },
-      {
-        enforceForRenamedProperties: false,
-      },
+      { enforceForRenamedProperties: false },
     ],
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
