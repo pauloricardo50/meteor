@@ -100,8 +100,8 @@ export const getFinalPlaceholder = ({
   return finalPlaceholder;
 };
 
-const getStartAdornment = ({ money, startAdornment }) => {
-  if (money) {
+const getStartAdornment = ({ type, startAdornment }) => {
+  if (type === 'money') {
     return <InputAdornment position="start">CHF</InputAdornment>;
   }
 
@@ -119,6 +119,10 @@ const getEndAdornment = ({ endAdornment }) => {
 
   return null;
 };
+
+// A hack for number inputs because material-ui can't be sure of the initial
+// shrink value: https://material-ui.com/components/text-fields/#floating-label
+const shouldShrinkLabel = value => !!value || undefined;
 
 const TextInput = props => {
   const {
@@ -169,6 +173,7 @@ const TextInput = props => {
           ref={inputLabelRef}
           htmlFor={id}
           style={labelStyle}
+          shrink={shouldShrinkLabel(value)}
           {...inputLabelProps}
         >
           {label}
@@ -183,6 +188,7 @@ const TextInput = props => {
         type={inputType || 'text'}
         style={{ fontSize: 'inherit' }}
         inputComponent={showMask ? MaskedInput : inputComponent || undefined}
+        notched={shouldShrinkLabel(value)}
         inputProps={{
           ...inputProps, // Backwards compatible
           ...InputProps,
