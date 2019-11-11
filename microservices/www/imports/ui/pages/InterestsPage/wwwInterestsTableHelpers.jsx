@@ -23,9 +23,9 @@ export const rows = interestRates =>
   interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
     id: type,
     columns: [
-      <T id={`InterestsTable.${type}`} />,
-      <InterestsTableTrend trend={trend} />,
-      <span>
+      <T id={`InterestsTable.${type}`} key={1} />,
+      <InterestsTableTrend trend={trend} key={2} />,
+      <span key={3}>
         {formatRate(rateLow)} -{formatRate(rateHigh)}
       </span>,
     ],

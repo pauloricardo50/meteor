@@ -186,7 +186,8 @@ module.exports = {
     ],
     // Causes bugs: https://github.com/yannickcr/eslint-plugin-react/issues/1775
     // And not always practical
-    'react/jsx-one-expression-per-line': [2, { allow: 'single-child' }],
+    // Let prettier manage it
+    'react/jsx-one-expression-per-line': 0,
     'react/display-name': 0,
     'react/no-multi-comp': 0,
     'react/sort-comp': [
