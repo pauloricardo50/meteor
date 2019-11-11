@@ -70,7 +70,13 @@ module.exports = {
 
     // eslint default rules
     'class-methods-use-this': 0,
-    indent: [1, 2],
+    indent: [
+      1,
+      2,
+      {
+        SwitchCase: 1,
+      },
+    ],
     'max-len': 0,
     'no-underscore-dangle': 0,
     // The most sane value, allows objects to stay on a single line if possible
