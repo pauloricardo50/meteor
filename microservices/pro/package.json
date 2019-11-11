@@ -82,7 +82,7 @@
     "text-mask-addons": "^3.8.0",
     "uniforms": "^2.6.0",
     "uniforms-bridge-simple-schema-2": "^2.6.0",
-    "uniforms-material": "^2.6.0",
+    "uniforms-material": "https://github.com/MisterQH/uniforms-material/tarball/master",
     "url-search-params-polyfill": "^7.0.0"
   },
   "devDependencies": {

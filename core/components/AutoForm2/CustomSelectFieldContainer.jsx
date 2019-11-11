@@ -144,7 +144,7 @@ export default (Component) => {
       return (
         <Component
           {...rest}
-          placeholder={displayEmpty ? placeholder : ''}
+          displayEmpty
           values={values}
           formatOption={this.formatOption}
           renderValue={this.renderValue}

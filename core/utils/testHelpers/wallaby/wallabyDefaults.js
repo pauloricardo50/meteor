@@ -62,6 +62,7 @@ function setWallabyConfig(name, overrides = {}) {
           // Follow this issue: https://github.com/streamich/react-use/issues/73
           global.history = {};
 
+          require('uniforms-bridge-simple-schema-2');
           const SimpleSchema = require('simpl-schema').default;
           SimpleSchema.extendOptions([
             'index',

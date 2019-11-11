@@ -1,5 +1,5 @@
-// flow-typed signature: 6fc01eb9181f2145910817c4b79d7df7
-// flow-typed version: a027b02c08/react-router_v5.x.x/flow_>=v0.104.x
+// flow-typed signature: 1f000048434229fbad1dbd00c6046a0c
+// flow-typed version: 822e55b7ba/react-router_v5.x.x/flow_>=v0.104.x
 
 declare module "react-router" {
   // NOTE: many of these are re-exported by react-router-dom and
@@ -142,7 +142,7 @@ declare module "react-router" {
   declare export function useHistory(): $PropertyType<ContextRouter, 'history'>;
   declare export function useLocation(): $PropertyType<ContextRouter, 'location'>;
   declare export function useParams(): $PropertyType<$PropertyType<ContextRouter, 'match'>, 'params'>;
-  declare export function useRouteMatch(path?: string): $PropertyType<ContextRouter, 'match'>;
+  declare export function useRouteMatch(path?: MatchPathOptions | string | string[]): $PropertyType<ContextRouter, 'match'>;
 
   declare export function generatePath(pattern?: string, params?: {...}): string;
 

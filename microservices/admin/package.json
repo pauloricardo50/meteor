@@ -89,7 +89,7 @@
     "text-mask-addons": "^3.8.0",
     "uniforms": "^2.6.0",
     "uniforms-bridge-simple-schema-2": "^2.6.0",
-    "uniforms-material": "^2.6.0"
+    "uniforms-material": "https://github.com/MisterQH/uniforms-material/tarball/master"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -104,7 +104,7 @@
     "enzyme-adapter-react-16": "^1.15.1",
     "flow-typed": "^2.6.2",
     "jsdom": "^15.2.1",
-    "meteor-babel": "7.6.1",
+    "meteor-babel": "7.4.4",
     "mocha": "5.2.0",
     "mocha-junit-reporter": "^1.23.1",
     "mocha-multi-reporters": "^1.1.7",
