@@ -39,7 +39,7 @@ const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
           </span>
         ),
         Component: props => (
-          <div className="financing-ownFunds-summary">
+          <div className="financing-ownFunds-summary ownFunds">
             <CalculatedValue
               value={Calculator.getNonPledgedOwnFunds}
               {...props}
