@@ -405,6 +405,7 @@ export const proLoans = () => ({
     email: 1,
     referredByUser: { name: 1, organisations: { name: 1 } },
     referredByOrganisation: { name: 1 },
+    assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
   },
   hasPromotion: 1,
   hasProProperty: 1,

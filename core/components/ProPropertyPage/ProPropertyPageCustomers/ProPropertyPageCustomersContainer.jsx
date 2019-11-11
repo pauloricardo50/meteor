@@ -16,15 +16,13 @@ import { removeCustomerFromProperty, getReferredBy } from '../../../api';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import Icon from '../../Icon';
+import ProCustomer from '../../ProCustomer';
 
 const columnOptions = [
   { id: 'loanName' },
   { id: 'status' },
-  { id: 'name' },
-  { id: 'phone' },
-  { id: 'email' },
+  { id: 'customer' },
   { id: 'createdAt' },
-  { id: 'referredBy' },
   { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'solvency' },
   { id: 'actions' },
@@ -125,11 +123,24 @@ const makeMapLoan = ({
         raw: status,
         label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
       },
-      anonymous ? 'Anonyme' : user && user.name,
-      user && user.phoneNumbers && user.phoneNumbers[0],
-      user && user.email,
+      {
+        raw: !anonymous && user.name,
+        label: anonymous ? (
+          'Anonyme'
+        ) : (
+          <ProCustomer
+            user={user}
+            invitedByUser={
+              getReferredBy({
+                user,
+                proUser: currentUser,
+                isAdmin,
+              }).label
+            }
+          />
+        ),
+      },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      getReferredBy({ user, proUser: currentUser, isAdmin }),
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,

@@ -1,4 +1,5 @@
 {
+  "Forms.customer": "Client",
   "Forms.isImportant": "Important",
   "PropertiesTable.createdAt": "Créé le",
   "Forms.shareCustomers": "Partage des dossiers",
@@ -958,25 +959,21 @@
   "emails.INVITE_USER_TO_PROPERTY.from": "e-Potek",
   "emails.INVITE_USER_TO_PROPERTY.SUBJECT": "e-Potek - {address}",
   "emails.INVITE_USER_TO_PROPERTY.TITLE": "{address}",
-
   "emails.BOOK_PROMOTION_LOT.BODY": "Le lot \"{promotionLotName}\" a été réservé pour {customerName}, par {userName}.",
   "emails.BOOK_PROMOTION_LOT.CTA": "Voir la promotion",
   "emails.BOOK_PROMOTION_LOT.from": "e-Potek",
   "emails.BOOK_PROMOTION_LOT.SUBJECT": "Promotion \"{promotionName}\", lot réservé",
   "emails.BOOK_PROMOTION_LOT.TITLE": "Promotion \"{promotionName}\", lot réservé",
-
   "emails.SELL_PROMOTION_LOT.BODY": "Le lot \"{promotionLotName}\" a été vendu à {customerName}, par {userName}.",
   "emails.SELL_PROMOTION_LOT.CTA": "Voir la promotion",
   "emails.SELL_PROMOTION_LOT.from": "e-Potek",
   "emails.SELL_PROMOTION_LOT.SUBJECT": "Promotion \"{promotionName}\", lot vendu",
   "emails.SELL_PROMOTION_LOT.TITLE": "Promotion \"{promotionName}\", lot vendu",
-
   "emails.CANCEL_PROMOTION_LOT_BOOKING.BODY": "La réservation pour le lot \"{promotionLotName}\" a été annulée par {userName}.",
   "emails.CANCEL_PROMOTION_LOT_BOOKING.CTA": "Voir la promotion",
   "emails.CANCEL_PROMOTION_LOT_BOOKING.from": "e-Potek",
   "emails.CANCEL_PROMOTION_LOT_BOOKING.SUBJECT": "Promotion \"{promotionName}\", réservation annulée",
   "emails.CANCEL_PROMOTION_LOT_BOOKING.TITLE": "Promotion \"{promotionName}\", réservation annulée",
-
   "Forms.promotionOptions.custom": "Souhaits particuliers",
   "Forms.promotionOptions.custom.placeholder": "Parkings supplémentaires, lots adjacents, etc.",
   "AppPromotionLotPage.subtitle": "Promotion {promotionName} - {value}",
@@ -1035,7 +1032,6 @@
   "files.promotionImage": "Photo de couverture",
   "files.logos": "Logos",
   "Forms.gardenArea": "Surface du jardin en m2",
-
   "PromotionPage.manageDocuments": "Gérer documents",
   "PromotionPage.lots.name": "Nom",
   "PromotionPage.lots.status": "Statut",
@@ -1053,13 +1049,11 @@
   "PromotionPage.AdditionalLotsTable.value": "Prix",
   "PromotionPage.AdditionalLotsTable.description": "Description",
   "PromotionPage.addCustomer": "Ajouter un client",
-
   "PromotionPage.subtitle": "Promotion immobilière - {promotionLotCount} lots",
   "Forms.status.PREPARATION": "Préparation",
   "ProDashboardPage.title": "Dashboard",
   "ProDashboardPage.promotions": "Promotions",
   "NewPromotionPage.title": "Nouvelle promotion",
-
   "PromotionsTable.name": "Nom",
   "PromotionsTable.status": "Statut",
   "PromotionsTable.lots": "Lots",
@@ -1067,14 +1061,11 @@
   "PromotionsTable.booked": "Réservé",
   "PromotionsTable.sold": "Vendu",
   "PromotionsTable.loans": "Clients",
-
   "ProDashboardPage.addProperty": "Ajouter bien immobilier",
   "ProDashboardPage.addPromotion": "Ajouter promotion immobilière",
-
   "ProTopNav.dev": "Dev",
   "ProTopNav.dashboard": "Dashboard",
   "ProTopNav.account": "Mon compte",
-
   "Forms.purchaseType.ACQUISITION": "Acquisition",
   "Forms.purchaseType.REFINANCING": "Refinancement",
   "LoanSelector.name": "Dossier {name}",
@@ -1095,14 +1086,12 @@
   "Recap.promotionLot": "Détails du lot",
   "Recap.promotionLot.price": "Prix",
   "Recap.promotionLot.totalValue": "Total",
-
   "FinancingOwnFundsPledgeWarning.description": "Attention, vous pouvez nantir CHF {maxPledge} au maximum.",
   "UserAdder.sendEnrollmentEmail": "Envoyer email d'invitation immédiatement",
   "UserAdder.assignedEmployeeId": "Assigner à",
   "AdminLayout.title": "Admin",
   "DashboardRecapFinance.emptyButton": "Plans financiers",
   "FinancingCurrentOwnFunds.error": "Pas assez de {type}",
-
   "FinancingOwnFundsPickerForm.remaining": "Restant: CHF {value}",
   "Financing.ownFundsCompleter": "{current} / {required} alloués",
   "Financing.ownFundsCompleterButton": "Ajuster",
@@ -1112,24 +1101,18 @@
   "FinancingOwnFundsPickerForm.borrower": "Emprunteur",
   "FinancingOwnFundsPickerForm.value": "Montant",
   "FinancingOwnFundsPickerForm.usageType": "Type d'utilisation",
-
   "Forms.ownFundsUsageType.WITHDRAW": "Retrait",
   "Forms.ownFundsUsageType.PLEDGE": "Nantissement",
-
   "FinancingOwnFundsDialog.title": "Allouer des fonds propres",
   "Financing.ownFundsAdder": "Ajouter fonds propres",
   "Financing.ownFundsPicker": "Fonds propres alloués",
-
   "LoanTabs.dev": "Dev",
   "AppWidget1Page.title": "Calculateur",
-
   "DashboardProgressInfo.uploadDocuments": "Ajoutez vos documents",
-
   "LoanChecklist.missingFields": "Informations manquantes",
   "LoanChecklist.missingDocuments": "Documents manquants",
   "LoanChecklist.done": "Nous avons tout ce qu'il faut",
   "LoanChecklist.dialogButton": "Voir la checklist",
-
   "Financing.wantedLoanPercent": "Prêt hypothécaire (%)",
   "FinancingRefresher.label": "Rafraîchir",
   "FinancingResult.cost": "Charges du projet",
@@ -1138,15 +1121,12 @@
   "WwwTopNavLinks.login": "Se connecter",
   "files.OTHER": "Autres documents",
   "BorrowersSummary.borrower": "Emprunteur {index}",
-
   "Maps.addressNotFound": "Cette adresse n'a pas pu être trouvée",
-
   "FinancingResultErrors.noMortgageLoan": "Ajoutez un prêt hypothécaire",
   "FinancingResultErrors.missingOwnFunds": "Allouez plus de fonds propres à ce plan financier",
   "FinancingResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à ce plan financier",
   "FinancingResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de ce plan financier",
   "FinancingResultErrors.missingCash": "Vous devez allouer au moins 10% de cash en plus des frais de notaire à votre projet",
-
   "ReturnToDashboard.label": "Retourner au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
   "Financing.OwnFundsLabel.available": "Disponible:",

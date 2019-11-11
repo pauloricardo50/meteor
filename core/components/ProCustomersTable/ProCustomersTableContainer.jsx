@@ -4,7 +4,6 @@ import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proLoans2 } from 'core/api/loans/queries';
-import { getReferredBy } from 'core/api/helpers';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import ProCustomer from 'core/components/ProCustomer';
@@ -116,7 +115,11 @@ export default compose(
         referredByText: 1,
         relatedTo: 1,
         status: 1,
-        user: { name: 1, phoneNumbers: 1 },
+        user: {
+          name: 1,
+          phoneNumbers: 1,
+          assignedEmployee: { name: 1, email: 1, phoneNumbers: 1 },
+        },
       },
     }),
     queryOptions: { reactive: false },
