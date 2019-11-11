@@ -45,7 +45,7 @@ export default class EventService {
 
   addBeforeMethodListener(methods, listenerFunction) {
     if (Array.isArray(methods)) {
-      methods.forEach((method) => {
+      methods.forEach(method => {
         this.checkMethod(method);
         const {
           config: { name },
@@ -63,7 +63,7 @@ export default class EventService {
 
   addAfterMethodListener(methods, listenerFunction) {
     if (Array.isArray(methods)) {
-      methods.forEach((method) => {
+      methods.forEach(method => {
         this.checkMethod(method);
         const {
           config: { name },
@@ -86,7 +86,7 @@ export default class EventService {
   }
 
   addErrorListener() {
-    this.addListener('error', (error) => {
+    this.addListener('error', error => {
       console.log('An error occured in an event listener:');
       console.log(error);
       throw error;
@@ -103,7 +103,7 @@ export default class EventService {
   logListener(eventName, ...args) {
     if (IS_LOGGING && !Meteor.isTest && !EVENT_BLACKLIST.includes(eventName)) {
       console.log(`Event "${eventName}" listened to with args:`);
-      args.forEach((arg) => console.log(arg));
+      args.forEach(arg => console.log(arg));
     }
   }
 

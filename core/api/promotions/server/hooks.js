@@ -5,10 +5,12 @@ import formatNumbersHook, {
 } from '../../../utils/phoneFormatting';
 
 Promotions.after.remove((userId, { _id }) =>
-  FileService.deleteAllFilesForDoc(_id));
+  FileService.deleteAllFilesForDoc(_id),
+);
 
 formatNumbersHook(Promotions, 'contacts', oldContacts =>
   oldContacts.map(contact => ({
     ...contact,
     phoneNumber: formatPhoneNumber(contact.phoneNumber),
-  })));
+  })),
+);

@@ -25,26 +25,27 @@ export const up = async () => {
 
           ...(thirdPartyFortune
             ? {
-              $push: {
-                additionalDocuments: {
-                  $each: [
-                    {
-                      id:
+                $push: {
+                  additionalDocuments: {
+                    $each: [
+                      {
+                        id:
                           BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_CERTIFICATE,
-                    },
-                    {
-                      id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_IDENTITY,
-                    },
-                    {
-                      id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_STATEMENT,
-                    },
-                  ],
+                      },
+                      {
+                        id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_IDENTITY,
+                      },
+                      {
+                        id: BORROWER_DOCUMENTS.DONATION_JUSTIFICATION_STATEMENT,
+                      },
+                    ],
+                  },
                 },
-              },
-            }
+              }
             : {}),
         },
-      )),
+      ),
+    ),
     ...allBorrowers.map(({ _id }) =>
       Borrowers.rawCollection().update(
         {
@@ -60,7 +61,8 @@ export const up = async () => {
             'expenses.$.description': EXPENSES.THIRD_PARTY_LOAN_REIMBURSEMENT,
           },
         },
-      )),
+      ),
+    ),
   ]);
 };
 
@@ -76,18 +78,19 @@ export const down = async () => {
         {
           ...(donation.length > 0
             ? {
-              $set: {
-                thirdPartyFortune: donation.reduce(
-                  (sum, { value }) => sum + value,
-                  0,
-                ),
-              },
-            }
+                $set: {
+                  thirdPartyFortune: donation.reduce(
+                    (sum, { value }) => sum + value,
+                    0,
+                  ),
+                },
+              }
             : {}),
 
           $unset: { donation: true },
         },
-      )),
+      ),
+    ),
     ...allBorrowers.map(({ _id }) =>
       Borrowers.rawCollection().update(
         {
@@ -103,7 +106,8 @@ export const down = async () => {
             'expenses.$.description': 'THIRD_PARTY_FORTUNE_REIMBURSEMENT',
           },
         },
-      )),
+      ),
+    ),
   ]);
 };
 

@@ -15,15 +15,18 @@ export const up = () => {
     createdAt: 1,
   });
 
-  return Promise.all(allVerifiedUsers.map(({ _id: userId, createdAt }) =>
-    ActivityService.addServerActivity({
-      type: ACTIVITY_TYPES.EVENT,
-      metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION },
-      userLink: { _id: userId },
-      title: 'Première connexion',
-      createdBy: userId,
-      date: createdAt,
-    })));
+  return Promise.all(
+    allVerifiedUsers.map(({ _id: userId, createdAt }) =>
+      ActivityService.addServerActivity({
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: { event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION },
+        userLink: { _id: userId },
+        title: 'Première connexion',
+        createdBy: userId,
+        date: createdAt,
+      }),
+    ),
+  );
 };
 
 export const down = () => {
@@ -36,8 +39,11 @@ export const down = () => {
     _id: 1,
   });
 
-  return Promise.all(allUserCreatedAtActivities.map(({ _id }) =>
-    Activities.rawCollection().remove({ _id })));
+  return Promise.all(
+    allUserCreatedAtActivities.map(({ _id }) =>
+      Activities.rawCollection().remove({ _id }),
+    ),
+  );
 };
 
 Migrations.add({

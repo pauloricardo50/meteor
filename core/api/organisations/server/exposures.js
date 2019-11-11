@@ -56,7 +56,7 @@ exposeQuery({
     firewall: () => {
       SecurityService.checkCurrentUserIsAdmin();
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         Object.assign(
           filters,
@@ -71,11 +71,11 @@ exposeQuery({
 exposeQuery({
   query: proOrganisation,
   overrides: {
-    firewall: (userId) => {
+    firewall: userId => {
       SecurityService.checkUserIsPro(userId);
     },
     validateParams: { organisationId: String, $body: Match.Maybe(Object) },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { organisationId } }) => {
         filters._id = organisationId;
       };
@@ -86,10 +86,10 @@ exposeQuery({
 exposeQuery({
   query: userOrganisations,
   overrides: {
-    firewall: (userId) => {
+    firewall: userId => {
       SecurityService.checkUserLoggedIn(userId);
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters }) => {
         filters.features = { $in: [ORGANISATION_FEATURES.LENDER] };
       };

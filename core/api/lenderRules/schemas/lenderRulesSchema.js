@@ -62,10 +62,10 @@ export const incomeConsideration = {
     },
     autoValue() {
       if (
-        Meteor.isServer
-        && this.isSet
-        && Array.isArray(this.value)
-        && this.value.length === 0
+        Meteor.isServer &&
+        this.isSet &&
+        Array.isArray(this.value) &&
+        this.value.length === 0
       ) {
         return { $unset: true };
       }

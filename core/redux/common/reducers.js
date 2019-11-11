@@ -5,11 +5,11 @@ export const createValueReducer = (valueName, initialState = null) => (
   { type, value } = {},
 ) => {
   switch (type) {
-  case SET_VALUE(valueName):
-    return value;
-  case RESET_VALUE(valueName):
-    return initialState;
-  default:
-    return state;
+    case SET_VALUE(valueName):
+      return value;
+    case RESET_VALUE(valueName):
+      return initialState;
+    default:
+      return state;
   }
 };

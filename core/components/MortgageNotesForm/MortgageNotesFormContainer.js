@@ -13,10 +13,10 @@ const makeGetInputs = withCanton => mortgageNote =>
     { id: 'value', type: 'textInput', money: true },
     withCanton
       ? {
-        id: 'canton',
-        type: 'selectFieldInput',
-        options: Object.keys(CANTONS),
-      }
+          id: 'canton',
+          type: 'selectFieldInput',
+          options: Object.keys(CANTONS),
+        }
       : null,
     { id: 'rank', type: 'textInput', number: true, required: false },
     {

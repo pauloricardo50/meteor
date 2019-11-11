@@ -8,7 +8,7 @@ import {
 } from '../methodDefinitions';
 import ActivityService from './ActivityService';
 
-const allowModification = (activityId) => {
+const allowModification = activityId => {
   const { isServerGenerated } = ActivityService.fetchOne({
     $filters: { _id: activityId },
     isServerGenerated: 1,
@@ -25,7 +25,9 @@ activityInsert.setHandler(({ userId }, { object }) => {
 activityUpdate.setHandler(({ userId }, { activityId, object }) => {
   SecurityService.checkUserIsAdmin(userId);
   if (!allowModification(activityId)) {
-    throw new Meteor.Error("Peut pas changer l'activité générée automatiquement");
+    throw new Meteor.Error(
+      "Peut pas changer l'activité générée automatiquement",
+    );
   }
   return ActivityService._update({ id: activityId, object });
 });
@@ -33,7 +35,9 @@ activityUpdate.setHandler(({ userId }, { activityId, object }) => {
 activityRemove.setHandler(({ userId }, { activityId }) => {
   SecurityService.checkUserIsAdmin(userId);
   if (!allowModification(activityId)) {
-    throw new Meteor.Error("Peut pas changer l'activité générée automatiquement");
+    throw new Meteor.Error(
+      "Peut pas changer l'activité générée automatiquement",
+    );
   }
   return ActivityService.remove(activityId);
 });

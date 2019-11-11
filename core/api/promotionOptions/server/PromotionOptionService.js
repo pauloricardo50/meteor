@@ -26,8 +26,8 @@ export class PromotionOptionService extends CollectionService {
     });
 
     return (
-      promotionOption.promotionLots
-      && promotionOption.promotionLots[0].promotion
+      promotionOption.promotionLots &&
+      promotionOption.promotionLots[0].promotion
     );
   }
 
@@ -60,13 +60,18 @@ export class PromotionOptionService extends CollectionService {
       promotionOptions: { _id: 1, promotionLots: { _id: 1 } },
     });
 
-    const existingPromotionOption = promotionOptions
-      && promotionOptions.find(({ promotionLots }) =>
-        promotionLots
-          && promotionLots.some(lot => lot._id === promotionLotId));
+    const existingPromotionOption =
+      promotionOptions &&
+      promotionOptions.find(
+        ({ promotionLots }) =>
+          promotionLots &&
+          promotionLots.some(lot => lot._id === promotionLotId),
+      );
 
     if (existingPromotionOption) {
-      throw new Meteor.Error('Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.');
+      throw new Meteor.Error(
+        'Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.',
+      );
     }
 
     const promotionOptionId = super.insert({

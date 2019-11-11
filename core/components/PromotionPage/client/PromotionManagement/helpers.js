@@ -42,17 +42,23 @@ export const getTotalValue = (promotionLots = []) =>
     const propertyAdditionalMargin = property.additionalMargin || 0;
 
     return (
-      totalValue
-      + propertyLandValue
-      + propertyConstrunctionValue
-      + propertyAdditionalMargin
+      totalValue +
+      propertyLandValue +
+      propertyConstrunctionValue +
+      propertyAdditionalMargin
     );
   }, getTotalAdditionalLotsValue(promotionLots));
 
 export const getGroupedLots = (promotionLots = []) => {
-  const availableLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.AVAILABLE);
-  const bookedLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.BOOKED);
-  const soldLots = promotionLots.filter(({ status }) => status === PROMOTION_LOT_STATUS.SOLD);
+  const availableLots = promotionLots.filter(
+    ({ status }) => status === PROMOTION_LOT_STATUS.AVAILABLE,
+  );
+  const bookedLots = promotionLots.filter(
+    ({ status }) => status === PROMOTION_LOT_STATUS.BOOKED,
+  );
+  const soldLots = promotionLots.filter(
+    ({ status }) => status === PROMOTION_LOT_STATUS.SOLD,
+  );
 
   return { availableLots, bookedLots, soldLots };
 };
@@ -62,24 +68,24 @@ export const getTotalValueByStatus = (promotionLots = [], status) => {
   let totalValue = 0;
 
   switch (status) {
-  case PROMOTION_LOT_STATUS.BOOKED:
-    totalValue = bookedLots.reduce((total, { value }) => total + value, 0);
-    break;
-  case PROMOTION_LOT_STATUS.SOLD:
-    totalValue = soldLots.reduce((total, { value }) => total + value, 0);
-    break;
-  case PROMOTION_LOT_STATUS.AVAILABLE:
-    totalValue = availableLots.reduce((total, { value }) => total + value, 0);
-    break;
-  case 'ALL':
-    totalValue = [...bookedLots, ...soldLots, ...availableLots].reduce(
-      (total, { value }) => total + value,
-      0,
-    );
-    break;
+    case PROMOTION_LOT_STATUS.BOOKED:
+      totalValue = bookedLots.reduce((total, { value }) => total + value, 0);
+      break;
+    case PROMOTION_LOT_STATUS.SOLD:
+      totalValue = soldLots.reduce((total, { value }) => total + value, 0);
+      break;
+    case PROMOTION_LOT_STATUS.AVAILABLE:
+      totalValue = availableLots.reduce((total, { value }) => total + value, 0);
+      break;
+    case 'ALL':
+      totalValue = [...bookedLots, ...soldLots, ...availableLots].reduce(
+        (total, { value }) => total + value,
+        0,
+      );
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 
   return totalValue;

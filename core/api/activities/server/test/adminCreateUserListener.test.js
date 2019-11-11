@@ -34,7 +34,8 @@ describe('adminCreateUserListener', () => {
           email: 'john.doe@test.com',
         },
         role: ROLES.USER,
-      }));
+      }),
+    );
 
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },

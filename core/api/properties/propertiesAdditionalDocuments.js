@@ -12,7 +12,7 @@ export const initialDocuments = [
   { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE },
 ];
 
-const getLoanResidenceType = (propertyId) => {
+const getLoanResidenceType = propertyId => {
   // If a property is shared among multiple loans, this may work in unexpected ways,
   // since each of those properties could have a different residenceType
   const loan = Loans.findOne(

@@ -1,9 +1,10 @@
-import { ClientVersions } from "./client_versions.js";
+import { ClientVersions } from './client_versions.js';
 
-var autoupdateVersionsCordova =
-  __meteor_runtime_config__.autoupdate.versions["web.cordova"] || {
-    version: "unknown"
-  };
+const autoupdateVersionsCordova = __meteor_runtime_config__.autoupdate.versions[
+  'web.cordova'
+] || {
+  version: 'unknown',
+};
 
 export const Autoupdate = {};
 
@@ -11,19 +12,19 @@ export const Autoupdate = {};
 const clientVersions = new ClientVersions();
 
 Meteor.connection.registerStore(
-  "meteor_autoupdate_clientVersions",
-  clientVersions.createStore()
+  'meteor_autoupdate_clientVersions',
+  clientVersions.createStore(),
 );
 
-Autoupdate.newClientAvailable = function () {
+Autoupdate.newClientAvailable = function() {
   return clientVersions.newClientAvailable(
-    "web.cordova",
-    ["version"],
-    autoupdateVersionsCordova
+    'web.cordova',
+    ['version'],
+    autoupdateVersionsCordova,
   );
 };
 
-var retry = new Retry({
+const retry = new Retry({
   // Unlike the stream reconnect use of Retry, which we want to be instant
   // in normal operation, this is a wacky failure. We don't want to retry
   // right away, we can start slowly.
@@ -33,7 +34,7 @@ var retry = new Retry({
   // server fixing code will result in a restart and reconnect, but
   // potentially the subscription could have a transient error.
   minCount: 0, // don't do any immediate retries
-  baseTimeout: 30*1000 // start with 30s
+  baseTimeout: 30 * 1000, // start with 30s
 });
 
 let failures = 0;
@@ -41,9 +42,9 @@ let failures = 0;
 Autoupdate._retrySubscription = () => {
   const { appId } = __meteor_runtime_config__;
 
-  Meteor.subscribe("meteor_autoupdate_clientVersions", appId, {
+  Meteor.subscribe('meteor_autoupdate_clientVersions', appId, {
     onError(error) {
-      console.log("autoupdate subscription failed:", error);
+      console.log('autoupdate subscription failed:', error);
       failures++;
       retry.retryLater(failures, function() {
         // Just retry making the subscription, don't reload the whole
@@ -66,10 +67,10 @@ Autoupdate._retrySubscription = () => {
         }
 
         clientVersions.watch(checkNewVersionDocument, {
-          filter: "web.cordova"
+          filter: 'web.cordova',
         });
       }
-    }
+    },
   });
 };
 

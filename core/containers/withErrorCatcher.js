@@ -30,7 +30,8 @@ const withErrorCatcher = lifecycle({
       handleError(error, ['JS error', msg]);
 
     window.addEventListener('unhandledrejection', ({ reason }) =>
-      handleError(reason, ['Promise error']));
+      handleError(reason, ['Promise error']),
+    );
 
     hasAddedListeners = true;
   },

@@ -26,7 +26,7 @@ export default compose(
   withProps(({ setOpen, setSubmitting }) => ({
     schema: irs10ySchema,
     insertIrs10y: data => irs10yInsert.run({ irs10y: data }),
-    modifyIrs10y: (data) => {
+    modifyIrs10y: data => {
       const { _id: irs10yId, ...object } = data;
       setSubmitting(true);
       return irs10yUpdate
@@ -34,7 +34,7 @@ export default compose(
         .then(() => setOpen(false))
         .finally(() => setSubmitting(false));
     },
-    removeIrs10y: (irs10yId) => {
+    removeIrs10y: irs10yId => {
       setSubmitting(true);
       return irs10yRemove
         .run({ irs10yId })

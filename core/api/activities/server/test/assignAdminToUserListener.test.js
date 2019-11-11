@@ -39,7 +39,8 @@ describe('assignAdminToUserListener', () => {
 
   it('adds activity on the user', async () => {
     await ddpWithUserId('admin', () =>
-      assignAdminToUser.run({ userId: 'user', adminId: 'admin' }));
+      assignAdminToUser.run({ userId: 'user', adminId: 'admin' }),
+    );
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: 'user' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -66,7 +67,8 @@ describe('assignAdminToUserListener', () => {
       object: { assignedEmployeeId: 'admin2' },
     });
     await ddpWithUserId('admin', () =>
-      assignAdminToUser.run({ userId: 'user', adminId: 'admin' }));
+      assignAdminToUser.run({ userId: 'user', adminId: 'admin' }),
+    );
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: 'user' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -93,7 +95,8 @@ describe('assignAdminToUserListener', () => {
       object: { assignedEmployeeId: 'admin2' },
     });
     await ddpWithUserId('admin', () =>
-      assignAdminToUser.run({ userId: 'user', adminId: 'admin2' }));
+      assignAdminToUser.run({ userId: 'user', adminId: 'admin2' }),
+    );
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: 'user' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },

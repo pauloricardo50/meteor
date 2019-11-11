@@ -7,7 +7,8 @@ export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
     selectProperty({ loan, structureId } = {}) {
       let propertyId = loan.structure && loan.structure.propertyId;
-      let promotionOptionId = loan.structure && loan.structure.promotionOptionId;
+      let promotionOptionId =
+        loan.structure && loan.structure.promotionOptionId;
       const structure = this.selectStructure({ loan, structureId });
 
       if (!structureId) {
@@ -15,13 +16,19 @@ export const withSelector = (SuperClass = class {}) =>
           return structure.property;
         }
         if (structure.propertyId) {
-          return loan.properties.find(({ _id }) => _id === structure.propertyId);
+          return loan.properties.find(
+            ({ _id }) => _id === structure.propertyId,
+          );
         }
         if (structure.promotionOption) {
-          return this.formatPromotionOptionIntoProperty(structure.promotionOption);
+          return this.formatPromotionOptionIntoProperty(
+            structure.promotionOption,
+          );
         }
         if (structure.promotionOptionId) {
-          const promotionOption = loan.promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
+          const promotionOption = loan.promotionOptions.find(
+            ({ _id }) => _id === structure.promotionOptionId,
+          );
           return this.formatPromotionOptionIntoProperty(promotionOption);
         }
 
@@ -38,7 +45,9 @@ export const withSelector = (SuperClass = class {}) =>
       }
 
       if (promotionOptionId) {
-        return this.formatPromotionOptionIntoProperty(loan.promotionOptions.find(({ _id }) => _id === promotionOptionId));
+        return this.formatPromotionOptionIntoProperty(
+          loan.promotionOptions.find(({ _id }) => _id === promotionOptionId),
+        );
       }
 
       return {};
@@ -64,9 +73,10 @@ export const withSelector = (SuperClass = class {}) =>
         return loan.structures.find(({ id }) => id === structureId);
       }
       return (
-        loan.structure
-        || (loan.structures && loan.structures.find(({ id }) => id === loan.selectedStructure))
-        || EMPTY_STRUCTURE
+        loan.structure ||
+        (loan.structures &&
+          loan.structures.find(({ id }) => id === loan.selectedStructure)) ||
+        EMPTY_STRUCTURE
       );
     }
 
@@ -102,10 +112,10 @@ export const withSelector = (SuperClass = class {}) =>
         structureId,
       });
       return (
-        structurePropertyValue
-        || this.selectPropertyKey({ loan, structureId, key: 'totalValue' })
-        || this.selectPropertyKey({ loan, structureId, key: 'value' })
-        || 0
+        structurePropertyValue ||
+        this.selectPropertyKey({ loan, structureId, key: 'totalValue' }) ||
+        this.selectPropertyKey({ loan, structureId, key: 'value' }) ||
+        0
       );
     }
 

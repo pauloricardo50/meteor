@@ -11,7 +11,7 @@ export const sendPropertyInvitations = (
   currentUser,
   invitedUser,
 ) => {
-  propertyIds.forEach((id) => {
+  propertyIds.forEach(id => {
     const property = PropertyService.fetchOne({
       $filters: { $or: [{ _id: id }, { externalId: id }] },
       address1: 1,
@@ -29,7 +29,7 @@ export const sendPromotionInvitations = (
   currentUser,
   invitedUser,
 ) => {
-  promotionIds.forEach((id) => {
+  promotionIds.forEach(id => {
     const promotion = PromotionService.fetchOne({
       $filters: { _id: id },
       name: 1,

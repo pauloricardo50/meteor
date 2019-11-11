@@ -1,6 +1,6 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js/max';
 
-export const formatPhoneNumber = (string) => {
+export const formatPhoneNumber = string => {
   const phoneNumber = parsePhoneNumberFromString(string, 'CH');
 
   if (!phoneNumber) {

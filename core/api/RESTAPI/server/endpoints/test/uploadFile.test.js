@@ -26,10 +26,10 @@ const api = new RESTAPI();
 let propertyId = '';
 api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
 
-describe('REST: uploadFile', function () {
+describe('REST: uploadFile', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -84,10 +84,12 @@ describe('REST: uploadFile', function () {
       url: '/upload',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
+    }).then(res => {
       const { files } = res;
       expect(files.length).to.equal(1);
-      expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+      expect(files[0].url).to.equal(
+        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+      );
     });
   });
 
@@ -115,12 +117,17 @@ describe('REST: uploadFile', function () {
           url: '/upload',
           propertyId,
           category: PROPERTY_DOCUMENTS.PROPERTY_PLANS,
-        }))
-      .then((res) => {
+        }),
+      )
+      .then(res => {
         const { files } = res;
         expect(files.length).to.equal(2);
-        expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`);
-        expect(files[1].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`);
+        expect(files[0].url).to.equal(
+          `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`,
+        );
+        expect(files[1].url).to.equal(
+          `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`,
+        );
       });
   });
 
@@ -133,7 +140,7 @@ describe('REST: uploadFile', function () {
       url: '/upload',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
       expect(message).to.include('[NOT_AUTHORIZED]');
@@ -155,10 +162,12 @@ describe('REST: uploadFile', function () {
       query: { 'impersonate-user': 'pro@org.com' },
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
+    }).then(res => {
       const { files } = res;
       expect(files.length).to.equal(1);
-      expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+      expect(files[0].url).to.equal(
+        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+      );
     });
   });
 
@@ -171,7 +180,7 @@ describe('REST: uploadFile', function () {
       url: '/upload',
       propertyId: 'property',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
       expect(message).to.include('No property found');
@@ -186,7 +195,7 @@ describe('REST: uploadFile', function () {
       userId: 'pro2',
       url: '/upload',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
       expect(message).to.include('Property ID is required');
@@ -202,7 +211,7 @@ describe('REST: uploadFile', function () {
       url: '/upload',
       propertyId,
       category: 'wrong',
-    }).then((res) => {
+    }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
       expect(message).to.include('wrong is not an allowed value');
@@ -223,10 +232,12 @@ describe('REST: uploadFile', function () {
       url: '/upload',
       propertyId: 'extId',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then((res) => {
+    }).then(res => {
       const { files } = res;
       expect(files.length).to.equal(1);
-      expect(files[0].url).to.equal(`${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`);
+      expect(files[0].url).to.equal(
+        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+      );
     });
   });
 });

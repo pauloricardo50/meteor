@@ -31,7 +31,8 @@ describe('Migration 4', () => {
               { _id: userId1, permissions: 'READ' },
               { _id: userId2, permissions: 'MODIFY' },
             ],
-          }))
+          }),
+        )
         .then(() => {
           Promotions.find().forEach(({ userLinks }) => {
             userLinks.forEach(({ permissions }) => {
@@ -47,7 +48,8 @@ describe('Migration 4', () => {
               expect(typeof permissions).to.equal('object');
               expect(permissions).to.deep.equal(PERMISSIONS);
             });
-          }));
+          }),
+        );
     });
   });
 
@@ -71,7 +73,8 @@ describe('Migration 4', () => {
               { _id: userId1, permissions: { canInviteCustomers: true } },
               { _id: userId2, permissions: { canInviteCustomers: true } },
             ],
-          }))
+          }),
+        )
         .then(() => {
           Promotions.find().forEach(({ userLinks }) => {
             userLinks.forEach(({ permissions }) => {
@@ -87,7 +90,8 @@ describe('Migration 4', () => {
               expect(typeof permissions).to.equal('string');
               expect(permissions).to.equal('READ');
             });
-          }));
+          }),
+        );
     });
   });
 });

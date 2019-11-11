@@ -5,31 +5,37 @@ import { Properties } from '../..';
 export const up = () => {
   const allProperties = Properties.find({}).fetch();
 
-  return Promise.all(allProperties.map(({ _id, monthlyExpenses }) =>
-    Properties.rawCollection().update(
-      { _id },
-      {
-        ...(monthlyExpenses
-          ? { $set: { yearlyExpenses: monthlyExpenses * 12 } }
-          : {}),
-        $unset: { monthlyExpenses: true },
-      },
-    )));
+  return Promise.all(
+    allProperties.map(({ _id, monthlyExpenses }) =>
+      Properties.rawCollection().update(
+        { _id },
+        {
+          ...(monthlyExpenses
+            ? { $set: { yearlyExpenses: monthlyExpenses * 12 } }
+            : {}),
+          $unset: { monthlyExpenses: true },
+        },
+      ),
+    ),
+  );
 };
 
 export const down = () => {
   const allProperties = Properties.find({}).fetch();
 
-  return Promise.all(allProperties.map(({ _id, yearlyExpenses }) =>
-    Properties.rawCollection().update(
-      { _id },
-      {
-        ...(yearlyExpenses
-          ? { $set: { monthlyExpenses: Math.round(yearlyExpenses / 12) } }
-          : {}),
-        $unset: { yearlyExpenses: true },
-      },
-    )));
+  return Promise.all(
+    allProperties.map(({ _id, yearlyExpenses }) =>
+      Properties.rawCollection().update(
+        { _id },
+        {
+          ...(yearlyExpenses
+            ? { $set: { monthlyExpenses: Math.round(yearlyExpenses / 12) } }
+            : {}),
+          $unset: { yearlyExpenses: true },
+        },
+      ),
+    ),
+  );
 };
 
 Migrations.add({

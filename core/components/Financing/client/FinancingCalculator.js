@@ -9,7 +9,7 @@ export const getProperty = ({ loan, structureId }) =>
 export const getOffer = ({ structureId, loan }) =>
   Calculator.selectOffer({ loan, structureId });
 
-export const getAmortizationRateMapper = (data) => {
+export const getAmortizationRateMapper = data => {
   const {
     structure: { wantedLoan, propertyWork },
   } = data;
@@ -57,13 +57,14 @@ const argumentMappings = {
   }),
 
   getLoanFromBorrowRatio: (borrowRatio, data) => {
-    const propertyValue = Calculator.selectPropertyValue(data) + data.structure.propertyWork;
+    const propertyValue =
+      Calculator.selectPropertyValue(data) + data.structure.propertyWork;
     return { propertyValue, borrowRatio };
   },
 
   getAmortizationRateBase: getAmortizationRateMapper,
 
-  getInterestsWithTranches: (data) => {
+  getInterestsWithTranches: data => {
     const { loan, structureId } = data;
     const { loanTranches } = Calculator.selectStructure({
       loan,

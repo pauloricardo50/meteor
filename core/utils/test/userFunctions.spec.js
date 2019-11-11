@@ -15,7 +15,9 @@ describe('User Functions', () => {
     });
 
     it("should return the user's names when they are defined", () => {
-      expect(getUserDisplayName({ firstName, lastName })).to.equal(`${firstName} ${lastName}`);
+      expect(getUserDisplayName({ firstName, lastName })).to.equal(
+        `${firstName} ${lastName}`,
+      );
     });
 
     it('should return just the firstName when the lastName is undefined', () => {

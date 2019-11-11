@@ -88,7 +88,7 @@ describe('PDFService', () => {
       { data: { ...loan, ...FAKE_USER }, type: PDF_TYPES.LOAN },
       true,
     )
-      .then((response) => {
+      .then(response => {
         const file = fs.readFileSync('/tmp/pdf_output.html', 'utf8');
         const $ = cheerio.load(file);
 

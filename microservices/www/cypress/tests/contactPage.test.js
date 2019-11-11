@@ -3,13 +3,15 @@ import { expect } from 'chai';
 
 const email = 'digital@e-potek.ch';
 const assertEmails = () => {
-  cy.callMethod('getAllTestEmails', { expected: 2 }).then((emails) => {
+  cy.callMethod('getAllTestEmails', { expected: 2 }).then(emails => {
     expect(emails.length).to.equal(2);
 
     const contactEmail = emails.find(({ emailId }) => emailId === 'CONTACT_US');
     expect(contactEmail.address).to.equal(email);
 
-    const contactAdminEmail = emails.find(({ emailId }) => emailId === 'CONTACT_US_ADMIN');
+    const contactAdminEmail = emails.find(
+      ({ emailId }) => emailId === 'CONTACT_US_ADMIN',
+    );
     expect(contactAdminEmail.address).to.equal('dev@e-potek.ch');
   });
 };

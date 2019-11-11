@@ -20,9 +20,11 @@ const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
       user: { ...user, invitedBy: userId },
       shareSolvency,
       invitationNote,
-    }))
+    }),
+  )
     .then(() =>
-      updateCustomerReferral({ customer: user, userId, impersonateUser }))
+      updateCustomerReferral({ customer: user, userId, impersonateUser }),
+    )
     .then(() => ({
       message: `Successfully referred user "${user.email}"`,
     }));

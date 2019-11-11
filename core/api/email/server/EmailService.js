@@ -14,7 +14,8 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-export const skipEmails = (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
+export const skipEmails =
+  (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
 // export const skipEmails = false;
 
 class EmailService {
@@ -26,7 +27,7 @@ class EmailService {
       params,
     });
     const template = getMandrillTemplate(templateOptions);
-    return sendMandrillTemplate(template).then((response) => {
+    return sendMandrillTemplate(template).then(response => {
       this.emailLogger({ emailId, address, template, response });
       this.addEmailActivity({ address, template, emailId, response });
     });
@@ -87,9 +88,9 @@ class EmailService {
     } catch (error) {
       throw new Meteor.Error(
         'MANDRILL_ERROR',
-        `Error while rendering mandrill template for ${emailId}: ${error.reason
-          || error.message
-          || error}`,
+        `Error while rendering mandrill template for ${emailId}: ${error.reason ||
+          error.message ||
+          error}`,
       );
     }
 
@@ -109,9 +110,13 @@ class EmailService {
     }
     if (skipEmails) {
       if (address) {
-        console.log(`EmailService dev: Would've sent ${emailId} to ${address} with this template:`);
+        console.log(
+          `EmailService dev: Would've sent ${emailId} to ${address} with this template:`,
+        );
       } else {
-        console.log(`EmailService dev: Would've sent ${emailId} with this template:`);
+        console.log(
+          `EmailService dev: Would've sent ${emailId} with this template:`,
+        );
       }
       console.log(JSON.stringify(template, null, 2));
     }

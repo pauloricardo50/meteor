@@ -16,13 +16,21 @@ const checkDocuments = ({
   shouldCheckRequiredByAdmin = true,
 }) => {
   expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-  expect(expectedDocuments.every(doc =>
-    additionalDocuments.find(({ id, requiredByAdmin }) =>
-      id === doc.id
-          && shouldCheckRequiredByAdmin
-          && requiredByAdmin === doc.requiredByAdmin))).to.exist;
-  expect(additionalDocuments.find(doc =>
-    expectedDocuments.every(({ id }) => id !== doc.id))).to.not.exist;
+  expect(
+    expectedDocuments.every(doc =>
+      additionalDocuments.find(
+        ({ id, requiredByAdmin }) =>
+          id === doc.id &&
+          shouldCheckRequiredByAdmin &&
+          requiredByAdmin === doc.requiredByAdmin,
+      ),
+    ),
+  ).to.exist;
+  expect(
+    additionalDocuments.find(doc =>
+      expectedDocuments.every(({ id }) => id !== doc.id),
+    ),
+  ).to.not.exist;
 };
 
 describe('BorrowerService ', () => {
@@ -114,7 +122,9 @@ describe('BorrowerService ', () => {
       expect(MortgageNoteService.find({}).count()).to.equal(0, 'mortgageNotes');
 
       LoanService.find({}).forEach(({ structures }) => {
-        expect(structures[0].mortgageNoteIds.every(id => id !== mortgageNoteId)).to.equal(true);
+        expect(
+          structures[0].mortgageNoteIds.every(id => id !== mortgageNoteId),
+        ).to.equal(true);
       });
     });
   });

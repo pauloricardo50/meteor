@@ -20,9 +20,8 @@ export const executeCommand = (command, printCommand = true) =>
   });
 
 export const mkdir = path =>
-  checkIfDirectoryOrFileExists(path).then(
-    directoryExists =>
-      directoryExists ? true : executeCommand(`mkdir ${path}`),
+  checkIfDirectoryOrFileExists(path).then(directoryExists =>
+    directoryExists ? true : executeCommand(`mkdir ${path}`),
   );
 
 export const rmDir = path => executeCommand(`rm -rf ${path}`);

@@ -166,7 +166,9 @@ describe('proLoans2', () => {
     try {
       const result = proLoans2.clone({ _userId: 'pro1' }).fetch();
     } catch (error) {
-      expect(error.message).to.include('one of "referredByMe" or "referredByMyOrganisation"');
+      expect(error.message).to.include(
+        'one of "referredByMe" or "referredByMyOrganisation"',
+      );
       return;
     }
 
@@ -184,7 +186,9 @@ describe('proLoans2', () => {
         })
         .fetch();
     } catch (error) {
-      expect(error.message).to.include('one of "referredByMe" or "referredByMyOrganisation"');
+      expect(error.message).to.include(
+        'one of "referredByMe" or "referredByMyOrganisation"',
+      );
       return;
     }
 

@@ -10,18 +10,21 @@ export const up = () => {
     secondaryType: 1,
   });
 
-  return Promise.all(allServerActivities.map(({ _id, secondaryType }) =>
-    Activities.rawCollection().update(
-      { _id },
-      {
-        $unset: { secondaryType: true },
-        $set: {
-          type: ACTIVITY_TYPES.EVENT,
-          isServerGenerated: true,
-          metadata: { event: secondaryType },
+  return Promise.all(
+    allServerActivities.map(({ _id, secondaryType }) =>
+      Activities.rawCollection().update(
+        { _id },
+        {
+          $unset: { secondaryType: true },
+          $set: {
+            type: ACTIVITY_TYPES.EVENT,
+            isServerGenerated: true,
+            metadata: { event: secondaryType },
+          },
         },
-      },
-    )));
+      ),
+    ),
+  );
 };
 
 export const down = () => {
@@ -30,14 +33,17 @@ export const down = () => {
     metadata: 1,
   });
 
-  return Promise.all(allServerActivities.map(({ _id, metadata: { event } = {} }) =>
-    Activities.rawCollection().update(
-      { _id },
-      {
-        $unset: { isServerGenerated: true, metadata: true },
-        $set: { type: 'SERVER', secondaryType: event },
-      },
-    )));
+  return Promise.all(
+    allServerActivities.map(({ _id, metadata: { event } = {} }) =>
+      Activities.rawCollection().update(
+        { _id },
+        {
+          $unset: { isServerGenerated: true, metadata: true },
+          $set: { type: 'SERVER', secondaryType: event },
+        },
+      ),
+    ),
+  );
 };
 
 Migrations.add({

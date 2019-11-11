@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import Security from '../security';
 import QueryCacher from '../helpers/server/QueryCacher';
 
-const defaultParams = (options) => {
+const defaultParams = options => {
   const { allowFilterById = false } = options;
   return {
     $body: Match.Maybe(Object),
@@ -56,7 +56,7 @@ const addLimit = (body, params) => {
   }
 };
 
-const addPaginate = (body) => {
+const addPaginate = body => {
   body.$paginate = true;
 };
 

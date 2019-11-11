@@ -38,10 +38,11 @@ ServerEventService.addAfterMethodListener(
       $filters: { _id: promotionId },
       name: 1,
     });
-    const { name: userName } = UserService.fetchOne({
-      $filters: { _id: userId },
-      name: 1,
-    }) || {};
+    const { name: userName } =
+      UserService.fetchOne({
+        $filters: { _id: userId },
+        name: 1,
+      }) || {};
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.REMOVE_LOAN_FROM_PROMOTION,
@@ -59,7 +60,8 @@ ServerEventService.addAfterMethodListener(
   ({ params: { userId }, context, result: isDisabled }) => {
     context.unblock();
     const { userId: adminId } = context;
-    const { name: adminName } = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const { name: adminName } =
+      UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.ACCOUNT_DISABLED,
@@ -151,9 +153,11 @@ ServerEventService.addAfterMethodListener(
 
     // User already exists
     if (
-      activities.length
-      && activities.find(({ metadata }) =>
-        metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED)
+      activities.length &&
+      activities.find(
+        ({ metadata }) =>
+          metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED,
+      )
     ) {
       return;
     }
@@ -174,8 +178,8 @@ ServerEventService.addAfterMethodListener(
     if (APIUser) {
       referredByAPIOrg = UserService.getUserMainOrganisation(APIUser._id);
       const proOrg = UserService.getUserMainOrganisation(proId);
-      referredByAPIOrgLabel = `${proOrg
-        && proOrg.name}, API ${referredByAPIOrg && referredByAPIOrg.name}`;
+      referredByAPIOrgLabel = `${proOrg &&
+        proOrg.name}, API ${referredByAPIOrg && referredByAPIOrg.name}`;
     }
 
     if (!referredBy && (referredByOrg || referredByAPIOrgLabel)) {
@@ -187,8 +191,8 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (referredBy && (referredByOrg || referredByAPIOrgLabel)) {
-      description = `Référé par ${referredBy.name} (${referredByAPIOrgLabel
-        || referredByOrg.name})`;
+      description = `Référé par ${referredBy.name} (${referredByAPIOrgLabel ||
+        referredByOrg.name})`;
     }
 
     ActivityService.addCreatedAtActivity({
@@ -215,7 +219,8 @@ ServerEventService.addAfterMethodListener(
     const { userId: adminId } = context;
     const currentUser = UserService.get(userId);
     const { createdAt } = currentUser;
-    const admin = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const admin =
+      UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
     const { name: adminName } = admin;
 
     ActivityService.addCreatedAtActivity({
@@ -287,9 +292,10 @@ ServerEventService.addAfterMethodListener(
     const { userId: adminId } = context;
     const { oldReferral = {}, newReferral = {}, referralType } = result;
     if (oldReferral._id !== newReferral._id) {
-      const description = referralType === 'org'
-        ? newReferral.name
-        : getUserNameAndOrganisation({ user: newReferral });
+      const description =
+        referralType === 'org'
+          ? newReferral.name
+          : getUserNameAndOrganisation({ user: newReferral });
 
       ActivityService.addEventActivity({
         event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,

@@ -19,7 +19,9 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
     if (error && !hasLoggedAnError) {
       setHasLoggedError(true);
       logError.run({
-        error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+        error: JSON.parse(
+          JSON.stringify(error, Object.getOwnPropertyNames(error)),
+        ),
         additionalData: ['Loadable error'],
         url:
           window && window.location && window.location.href

@@ -1,5 +1,5 @@
 export default {
-    reactive: false,
-    single: false,
-    dataProp: 'data',
-}
+  reactive: false,
+  single: false,
+  dataProp: 'data',
+};

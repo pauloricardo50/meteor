@@ -34,17 +34,19 @@ const getUserPromotionPermissions = ({ userId, promotionId }) => {
 };
 
 const getCustomerInvitedBy = ({ customerId, promotionId }) => {
-  const { loans = [] } = UserService.fetchOne({
-    $filters: { _id: customerId },
-    loans: { promotions: { _id: 1 } },
-  }) || {};
+  const { loans = [] } =
+    UserService.fetchOne({
+      $filters: { _id: customerId },
+      loans: { promotions: { _id: 1 } },
+    }) || {};
 
-  const { $metadata } = loans
-    .reduce((promotions, loan) => {
-      const { promotions: loanPromotions = [] } = loan;
-      return [...promotions, ...loanPromotions];
-    }, [])
-    .find(({ _id }) => _id === promotionId) || {};
+  const { $metadata } =
+    loans
+      .reduce((promotions, loan) => {
+        const { promotions: loanPromotions = [] } = loan;
+        return [...promotions, ...loanPromotions];
+      }, [])
+      .find(({ _id }) => _id === promotionId) || {};
 
   return $metadata && $metadata.invitedBy;
 };
@@ -54,11 +56,12 @@ const getPromotionLotStatus = ({ promotionLotId }) => {
     return {};
   }
 
-  const { status, attributedToLink = {} } = PromotionLotService.fetchOne({
-    $filters: { _id: promotionLotId },
-    status: 1,
-    attributedToLink: 1,
-  }) || {};
+  const { status, attributedToLink = {} } =
+    PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      status: 1,
+      attributedToLink: 1,
+    }) || {};
 
   return { status, attributedTo: attributedToLink._id };
 };
@@ -147,7 +150,7 @@ export const makeLoanAnonymizer = ({
     attributedTo = attr;
   }
 
-  return (loan) => {
+  return loan => {
     const { _id: loanId, user = {}, ...rest } = loan;
     const { _id: customerId } = user;
 
@@ -167,14 +170,15 @@ export const makeLoanAnonymizer = ({
       userId,
     });
 
-    const anonymizeUser = anonymize === undefined
-      ? clientShouldAnonymize({
-        customerOwnerType,
-        permissions,
-        promotionLotStatus,
-        isAttributed,
-      })
-      : anonymize;
+    const anonymizeUser =
+      anonymize === undefined
+        ? clientShouldAnonymize({
+            customerOwnerType,
+            permissions,
+            promotionLotStatus,
+            isAttributed,
+          })
+        : anonymize;
 
     return {
       user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
@@ -185,7 +189,7 @@ export const makeLoanAnonymizer = ({
   };
 };
 
-export const makePromotionLotAnonymizer = ({ userId }) => (promotionLot) => {
+export const makePromotionLotAnonymizer = ({ userId }) => promotionLot => {
   const { attributedTo, ...rest } = promotionLot;
   const {
     _id: promotionLotId,
@@ -201,7 +205,7 @@ export const makePromotionLotAnonymizer = ({ userId }) => (promotionLot) => {
 
 export const makePromotionOptionAnonymizer = ({
   userId,
-}) => (promotionOption) => {
+}) => promotionOption => {
   const { loan, custom, ...rest } = promotionOption;
   const {
     promotionLots,

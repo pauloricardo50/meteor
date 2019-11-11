@@ -17,7 +17,7 @@ export const makeCheckObjectStructure = (errorMessages = testErrors) => {
 
   const checkObjectStructure = ({ obj, template, parentKey }) => {
     const checkTemplate = (subObj, subTemplate, subParentKey) =>
-      Object.keys(subTemplate).forEach((key) => {
+      Object.keys(subTemplate).forEach(key => {
         if (subObj[key] === undefined) {
           if (typeof subTemplate[key] === 'object' && subTemplate[key].$or) {
             if (!subObj[subTemplate[key].$or]) {
@@ -39,16 +39,17 @@ export const makeCheckObjectStructure = (errorMessages = testErrors) => {
           }
 
           if (
-            subTemplate[key].length > 0
-            && typeof subTemplate[key][0] === 'object'
-            && !Array.isArray(subTemplate[key][0])
+            subTemplate[key].length > 0 &&
+            typeof subTemplate[key][0] === 'object' &&
+            !Array.isArray(subTemplate[key][0])
           ) {
             subObj[key].forEach(object =>
-              checkTemplate(object, subTemplate[key][0]));
+              checkTemplate(object, subTemplate[key][0]),
+            );
           }
         } else if (
-          typeof subTemplate[key] === 'object'
-          && !Object.keys(subTemplate[key]).includes('$or')
+          typeof subTemplate[key] === 'object' &&
+          !Object.keys(subTemplate[key]).includes('$or')
         ) {
           if (typeof subObj[key] !== 'object' || Array.isArray(subObj[key])) {
             errors.push(shouldBeObject(key));

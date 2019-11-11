@@ -43,7 +43,7 @@ exposeQuery({
         });
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         const {
           _id: propertyId,
@@ -79,8 +79,8 @@ exposeQuery({
 
           const otherOrganisationUsers = organisations.length
             ? organisations[0].users
-              .map(({ _id: orgUserId }) => orgUserId)
-              .filter((id) => id !== userId)
+                .map(({ _id: orgUserId }) => orgUserId)
+                .filter(id => id !== userId)
             : [];
 
           filters['userLinks._id'] = { $in: otherOrganisationUsers };
@@ -92,8 +92,10 @@ exposeQuery({
 
         if (fetchOrganisationProperties) {
           // Filter out properties this user is on, to avoid duplicates
-          return properties.filter(({ userLinks }) =>
-            !userLinks.some(({ _id: userLinkId }) => userLinkId === userId));
+          return properties.filter(
+            ({ userLinks }) =>
+              !userLinks.some(({ _id: userLinkId }) => userLinkId === userId),
+          );
         }
 
         return properties;
@@ -115,7 +117,7 @@ exposeQuery({
     firewall(userId, { _id: propertyId }) {
       Security.properties.hasAccessToProperty({ propertyId, userId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { propertyId } }) => {
         filters._id = propertyId;
       };
@@ -133,7 +135,7 @@ exposeQuery({
 
       Security.properties.isAllowedToView({ propertyId, userId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { propertyId } }) => {
         filters._id = propertyId;
       };
@@ -160,7 +162,7 @@ exposeQuery({
   query: propertySearch,
   overrides: {
     validateParams: { searchQuery: Match.Maybe(String) },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         Object.assign(
           filters,

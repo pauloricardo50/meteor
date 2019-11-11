@@ -1,6 +1,6 @@
 import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../../../config/financeConstants';
 
-export const getLabel = (value) => {
+export const getLabel = value => {
   if (value > OWN_FUNDS_ROUNDING_AMOUNT) {
     return 'Financing.requiredOwnFunds.low';
   }

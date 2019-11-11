@@ -17,7 +17,8 @@ if (Package['browser-policy-common'] && Package['browser-policy-content']) {
 }
 
 const { mochaOptions, runnerOptions, coverageOptions } = setArgs();
-const { grep, invert, reporter, serverReporter, serverOutput, clientOutput } = mochaOptions || {};
+const { grep, invert, reporter, serverReporter, serverOutput, clientOutput } =
+  mochaOptions || {};
 
 // Since intermingling client and server log lines would be confusing,
 // the idea here is to buffer all client logs until server tests have
@@ -43,7 +44,7 @@ function printHeader(type) {
       : `----- RUNNING ${type} TESTS -----`,
     '--------------------------------\n',
   ];
-  lines.forEach((line) => {
+  lines.forEach(line => {
     if (type === 'CLIENT') {
       clientLogBuffer(line);
     } else {
@@ -62,7 +63,7 @@ function exitIfDone(type, failures) {
   } else {
     serverFailures = failures;
     serverTestsDone = true;
-    clientLines.forEach((line) => {
+    clientLines.forEach(line => {
       // printing and removing the extra new-line character. The first was added by the client log, the second here.
       console.log(line.replace(/\n$/, ''));
     });
@@ -71,14 +72,18 @@ function exitIfDone(type, failures) {
   if (callCount === 2) {
     // We only need to show this final summary if we ran both kinds of tests in the same console
     if (
-      runnerOptions.runServer
-      && runnerOptions.runClient
-      && runnerOptions.browserDriver
+      runnerOptions.runServer &&
+      runnerOptions.runClient &&
+      runnerOptions.browserDriver
     ) {
       console.log('All tests finished!\n');
       console.log('--------------------------------');
-      console.log(`${Meteor.isAppTest ? 'APP ' : ''}SERVER FAILURES: ${serverFailures}`);
-      console.log(`${Meteor.isAppTest ? 'APP ' : ''}CLIENT FAILURES: ${clientFailures}`);
+      console.log(
+        `${Meteor.isAppTest ? 'APP ' : ''}SERVER FAILURES: ${serverFailures}`,
+      );
+      console.log(
+        `${Meteor.isAppTest ? 'APP ' : ''}CLIENT FAILURES: ${clientFailures}`,
+      );
       console.log('--------------------------------');
     }
 
@@ -116,9 +121,11 @@ function serverTests(cb) {
     output: serverOutput,
   });
 
-  mochaInstance.run((failureCount) => {
+  mochaInstance.run(failureCount => {
     if (typeof failureCount !== 'number') {
-      console.log('Mocha did not return a failure count for server tests as expected');
+      console.log(
+        'Mocha did not return a failure count for server tests as expected',
+      );
       exitIfDone('server', 1);
     } else {
       exitIfDone('server', failureCount);
@@ -141,8 +148,10 @@ function clientTests() {
   }
 
   if (!runnerOptions.browserDriver) {
-    console.log('Load the app in a browser to run client tests, or set the TEST_BROWSER_DRIVER environment variable. '
-        + 'See https://github.com/meteortesting/meteor-mocha/blob/master/README.md#run-app-tests');
+    console.log(
+      'Load the app in a browser to run client tests, or set the TEST_BROWSER_DRIVER environment variable. ' +
+        'See https://github.com/meteortesting/meteor-mocha/blob/master/README.md#run-app-tests',
+    );
     exitIfDone('client', 0);
     return;
   }
@@ -176,7 +185,9 @@ function clientTests() {
         cleanClientOutput();
       }
       if (typeof failureCount !== 'number') {
-        console.log('The browser driver package did not return a failure count for server tests as expected');
+        console.log(
+          'The browser driver package did not return a failure count for server tests as expected',
+        );
         exitIfDone('client', 1);
       } else {
         exitIfDone('client', failureCount);
@@ -191,7 +202,9 @@ function start() {
   // Running in series is a better default since it avoids db and state conflicts for newbs.
   // If you want parallel you will know these risks.
   if (runnerOptions.runParallel) {
-    console.log('Warning: Running in parallel can cause side-effects from state/db sharing');
+    console.log(
+      'Warning: Running in parallel can cause side-effects from state/db sharing',
+    );
 
     serverTests();
     clientTests();

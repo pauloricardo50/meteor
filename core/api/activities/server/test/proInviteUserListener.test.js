@@ -63,7 +63,8 @@ describe('proInviteUserListener', () => {
           email: 'john.doe@test.com',
           phoneNumber: '12345',
         },
-      }));
+      }),
+    );
     await checkEmails(2);
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },
@@ -94,7 +95,8 @@ describe('proInviteUserListener', () => {
           email: 'john.doe@test.com',
           phoneNumber: '12345',
         },
-      }));
+      }),
+    );
     await checkEmails(2);
 
     const { activities = [] } = UserService.fetchOne({
@@ -195,7 +197,8 @@ describe('proInviteUserListener', () => {
           phoneNumber: '12345',
         },
         propertyIds: ['property'],
-      }));
+      }),
+    );
     await checkEmails(2);
     const { activities = [] } = UserService.fetchOne({
       $filters: { 'emails.address': 'john.doe@test.com' },

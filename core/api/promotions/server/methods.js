@@ -35,24 +35,30 @@ insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
   return PromotionService.insertPromotionProperty({ promotionId, property });
 });
 
-setPromotionUserPermissions.setHandler(({ userId: currentUserId }, { promotionId, userId, permissions }) => {
-  SecurityService.checkUserIsAdmin(currentUserId);
-  return PromotionService.setUserPermissions({
-    promotionId,
-    userId,
-    permissions,
-  });
-});
+setPromotionUserPermissions.setHandler(
+  ({ userId: currentUserId }, { promotionId, userId, permissions }) => {
+    SecurityService.checkUserIsAdmin(currentUserId);
+    return PromotionService.setUserPermissions({
+      promotionId,
+      userId,
+      permissions,
+    });
+  },
+);
 
-addProUserToPromotion.setHandler(({ userId: currentUserId }, { promotionId, userId }) => {
-  SecurityService.checkUserIsAdmin(currentUserId);
-  return PromotionService.addProUser({ promotionId, userId });
-});
+addProUserToPromotion.setHandler(
+  ({ userId: currentUserId }, { promotionId, userId }) => {
+    SecurityService.checkUserIsAdmin(currentUserId);
+    return PromotionService.addProUser({ promotionId, userId });
+  },
+);
 
-removeProFromPromotion.setHandler(({ userId: currentUserId }, { promotionId, userId }) => {
-  SecurityService.checkUserIsAdmin(currentUserId);
-  return PromotionService.removeProUser({ promotionId, userId });
-});
+removeProFromPromotion.setHandler(
+  ({ userId: currentUserId }, { promotionId, userId }) => {
+    SecurityService.checkUserIsAdmin(currentUserId);
+    return PromotionService.removeProUser({ promotionId, userId });
+  },
+);
 
 sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
   SecurityService.promotions.isAllowedToInviteCustomers({

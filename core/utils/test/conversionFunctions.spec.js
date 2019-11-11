@@ -70,7 +70,9 @@ describe('Conversion functions', () => {
 
       it('should handle negative values', () => {
         expect(toMoney(-0.9999999, { rounded: false })).to.equal('-1.00');
-        expect(toMoney(-123456.789, { rounded: false })).to.equal('-123 456.79');
+        expect(toMoney(-123456.789, { rounded: false })).to.equal(
+          '-123 456.79',
+        );
       });
     });
   });

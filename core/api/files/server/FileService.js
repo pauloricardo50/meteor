@@ -13,7 +13,8 @@ class FileService {
   listFilesForDoc = (docId, subdocument) => {
     const prefix = subdocument ? `${docId}/${subdocument}` : docId;
     return S3Service.listObjectsWithMetadata(prefix).then(results =>
-      results.map(this.formatFile));
+      results.map(this.formatFile),
+    );
   };
 
   listFilesForDocByCategory = (docId, subdocument) =>
@@ -55,9 +56,10 @@ class FileService {
       Mongo.Collection.get(collection).update(
         { _id: docId },
         { $set: { documents } },
-      ));
+      ),
+    );
 
-  formatFile = (file) => {
+  formatFile = file => {
     let fileName = file.name;
     if (!fileName) {
       fileName = this.getKeyParts(file.Key).fileName;
@@ -77,7 +79,7 @@ class FileService {
     )
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))
-      .then((files) => {
+      .then(files => {
         removeFile(path);
         return { files };
       });
@@ -85,7 +87,7 @@ class FileService {
 
   deleteFileAPI = ({ docId, collection, key }) =>
     this.listFilesForDoc(docId)
-      .then((files) => {
+      .then(files => {
         const keyExists = files.map(({ Key }) => Key).some(Key => Key === key);
         if (!keyExists) {
           throw new Meteor.Error(
@@ -120,7 +122,9 @@ class FileService {
 
     return `${
       Meteor.settings.public.subdomains.backend
-    }/api/zip-loan/?simple-auth-params=${Buffer.from(JSON.stringify(simpleAuthParams)).toString('base64')}`;
+    }/api/zip-loan/?simple-auth-params=${Buffer.from(
+      JSON.stringify(simpleAuthParams),
+    ).toString('base64')}`;
   };
 
   setAdminName = ({ Key, adminName = '' }) =>
@@ -139,9 +143,9 @@ class FileService {
     newCollection,
   }) => {
     if (
-      oldId === newId
-      && oldDocId === newDocId
-      && oldCollection === newCollection
+      oldId === newId &&
+      oldDocId === newDocId &&
+      oldCollection === newCollection
     ) {
       return;
     }
@@ -153,15 +157,17 @@ class FileService {
         this.updateDocumentsCache({
           docId: oldDocId,
           collection: oldCollection,
-        }))
+        }),
+      )
       .then(() =>
         this.updateDocumentsCache({
           docId: newDocId,
           collection: newCollection,
-        }));
+        }),
+      );
   };
 
-  getKeyParts = (key) => {
+  getKeyParts = key => {
     const [docId, documentId, fileName] = key.split('/');
     const extension = fileName && fileName.split('.').slice(-1)[0];
     return { docId, documentId, fileName, extension };

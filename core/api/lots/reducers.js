@@ -7,7 +7,7 @@ Lots.addReducers({
       promotionLots: { status: 1, value: 1 },
     },
     reduce: ({ promotionLots }) =>
-      (promotionLots && promotionLots[0] && promotionLots[0].status)
-      || PROMOTION_LOT_STATUS.AVAILABLE,
+      (promotionLots && promotionLots[0] && promotionLots[0].status) ||
+      PROMOTION_LOT_STATUS.AVAILABLE,
   },
 });

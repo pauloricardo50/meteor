@@ -97,8 +97,8 @@ class SessionService extends CollectionService {
     const session = this.getByConnectionId(connectionId);
 
     return (
-      !!session
-      && this.baseUpdate(
+      !!session &&
+      this.baseUpdate(
         { userId: session.userId, isImpersonate: true },
         { $set: { userIsConnected: false } },
         { multi: true },

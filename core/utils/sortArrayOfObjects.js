@@ -13,7 +13,7 @@ export default (data, fieldPath, order) => {
     return data;
   }
 
-  const iteratee = (item) => {
+  const iteratee = item => {
     const value = get(item, fieldPath);
     if (typeof value === 'string') {
       return value.toLowerCase();

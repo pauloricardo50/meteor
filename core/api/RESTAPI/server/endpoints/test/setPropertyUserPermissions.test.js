@@ -47,10 +47,10 @@ const setPropertyUserPermissions = ({
   });
 };
 
-describe('REST: setPropertyUserPermissions', function () {
+describe('REST: setPropertyUserPermissions', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -132,10 +132,12 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro',
       propertyId: 'prop',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro2@org.com" on property with id "prop" updated !');
+      expect(message).to.equal(
+        'Permissions for user with email "pro2@org.com" on property with id "prop" updated !',
+      );
       expect(permissions.canModifyProperty).to.equal(true);
     });
   });
@@ -151,10 +153,12 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro',
       propertyId: 'prop',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro4@org2.com" on property with id "prop" updated !');
+      expect(message).to.equal(
+        'Permissions for user with email "pro4@org2.com" on property with id "prop" updated !',
+      );
       expect(permissions.canModifyProperty).to.equal(true);
     });
   });
@@ -170,10 +174,12 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro',
       propertyId: 'extId',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro2@org.com" on property with id "extId" updated !');
+      expect(message).to.equal(
+        'Permissions for user with email "pro2@org.com" on property with id "extId" updated !',
+      );
       expect(permissions.canModifyProperty).to.equal(true);
     });
   });
@@ -190,10 +196,12 @@ describe('REST: setPropertyUserPermissions', function () {
       propertyId: 'extId',
       impersonateUser: 'pro@org.com',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { status, message, permissions } = response;
       expect(status).to.equal(HTTP_STATUS_CODES.OK);
-      expect(message).to.equal('Permissions for user with email "pro@org.com" on property with id "extId" updated !');
+      expect(message).to.equal(
+        'Permissions for user with email "pro@org.com" on property with id "extId" updated !',
+      );
       expect(permissions.canModifyProperty).to.equal(false);
     });
   });
@@ -214,7 +222,7 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro2',
       propertyId: 'extId',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { message } = response;
       expect(message).to.contain('Vous ne pouvez pas gérer les permissions');
     });
@@ -231,7 +239,7 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro',
       propertyId: 'prop',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { message } = response;
       expect(message).to.contain('No user found');
     });
@@ -248,7 +256,7 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro',
       propertyId: 'wrongId',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { message } = response;
       expect(message).to.contain('No property found');
     });
@@ -265,9 +273,11 @@ describe('REST: setPropertyUserPermissions', function () {
       userId: 'pro',
       propertyId: 'prop',
       body,
-    }).then((response) => {
+    }).then(response => {
       const { message } = response;
-      expect(message).to.contain('User with email "pro3@org.com" is not part of property with id "prop". Add it the property before setting his permissions.');
+      expect(message).to.contain(
+        'User with email "pro3@org.com" is not part of property with id "prop". Add it the property before setting his permissions.',
+      );
     });
   });
 });

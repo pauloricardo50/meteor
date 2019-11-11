@@ -3,7 +3,9 @@ import { Meteor } from 'meteor/meteor';
 class CollectionService {
   constructor(collection) {
     if (!collection) {
-      throw new Error('A collection is needed in CollectionService, but none was passed');
+      throw new Error(
+        'A collection is needed in CollectionService, but none was passed',
+      );
     }
     this.collection = collection;
   }
@@ -36,9 +38,9 @@ class CollectionService {
     const result = this.get(id);
 
     if (!result) {
-      throw new Meteor.Error(`Could not find object with id "${id}" in collection "${
-        this.collection._name
-      }"`);
+      throw new Meteor.Error(
+        `Could not find object with id "${id}" in collection "${this.collection._name}"`,
+      );
     }
 
     return result;
@@ -54,7 +56,9 @@ class CollectionService {
 
   checkQuery(body) {
     if (body && body.$filter) {
-      throw new Meteor.Error('$filter found in query body, did you mean $filters?');
+      throw new Meteor.Error(
+        '$filter found in query body, did you mean $filters?',
+      );
     }
   }
 
@@ -73,7 +77,11 @@ class CollectionService {
     const result = this.fetchOne(...args);
 
     if (!result) {
-      throw new Meteor.Error(`Could not find object with filters "${JSON.stringify($filters)}" in collection "${this.collection._name}"`);
+      throw new Meteor.Error(
+        `Could not find object with filters "${JSON.stringify(
+          $filters,
+        )}" in collection "${this.collection._name}"`,
+      );
     }
 
     return result;
@@ -121,20 +129,20 @@ class CollectionService {
     } = linker;
 
     switch (strategy) {
-    case 'one':
-      linker.set(linkId);
-      return;
-    case 'many':
-      linker.add(linkId);
-      return;
-    case 'one-meta':
-      linker.set(linkId, metadata);
-      return;
-    case 'many-meta':
-      linker.add(linkId, metadata);
-      return;
-    default:
-      return null;
+      case 'one':
+        linker.set(linkId);
+        return;
+      case 'many':
+        linker.add(linkId);
+        return;
+      case 'one-meta':
+        linker.set(linkId, metadata);
+        return;
+      case 'many-meta':
+        linker.add(linkId, metadata);
+        return;
+      default:
+        return null;
     }
   }
 
@@ -146,14 +154,14 @@ class CollectionService {
     } = linker;
 
     switch (strategy.split('-')[0]) {
-    case 'one':
-      linker.unset(linkId);
-      return;
-    case 'many':
-      linker.remove(linkId);
-      return;
-    default:
-      return null;
+      case 'one':
+        linker.unset(linkId);
+        return;
+      case 'many':
+        linker.remove(linkId);
+        return;
+      default:
+        return null;
     }
   }
 
@@ -164,14 +172,14 @@ class CollectionService {
     } = linker;
 
     switch (strategy.split('-')[0]) {
-    case 'one':
-      linker.metadata(metadata);
-      return;
-    case 'many':
-      linker.metadata(linkId, metadata);
-      return;
-    default:
-      return null;
+      case 'one':
+        linker.metadata(metadata);
+        return;
+      case 'many':
+        linker.metadata(linkId, metadata);
+        return;
+      default:
+        return null;
     }
   }
 
@@ -195,7 +203,9 @@ class CollectionService {
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
     const { additionalDocuments } = this.get(id);
 
-    const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
+    const additionalDoc = additionalDocuments.find(
+      doc => doc.id === additionalDocId,
+    );
 
     if (additionalDoc) {
       const additionalDocumentsUpdate = [
@@ -229,7 +239,9 @@ class CollectionService {
     return this._update({
       id: docId,
       object: {
-        additionalDocuments: additionalDocuments.filter(({ id }) => id !== additionalDocId),
+        additionalDocuments: additionalDocuments.filter(
+          ({ id }) => id !== additionalDocId,
+        ),
       },
     });
   }

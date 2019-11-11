@@ -7,7 +7,7 @@ import generator from '../../../factories/factoriesHelpers';
 import OrganisationService from '../OrganisationService';
 import LenderRulesService from '../../../lenderRules/server/LenderRulesService';
 
-describe('OrganisationService', function () {
+describe('OrganisationService', function() {
   this.timeout(10000);
 
   beforeEach(() => {

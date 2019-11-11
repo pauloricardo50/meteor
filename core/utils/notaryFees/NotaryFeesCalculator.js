@@ -35,7 +35,9 @@ class NotaryFeesCalculator {
       loan,
       structureId,
     });
-    const shouldUseConstructionNotaryFees = Calculator.shouldUseConstructionNotaryFees({ loan, structureId });
+    const shouldUseConstructionNotaryFees = Calculator.shouldUseConstructionNotaryFees(
+      { loan, structureId },
+    );
 
     return hasDetailedValue && shouldUseConstructionNotaryFees;
   }
@@ -160,10 +162,10 @@ class NotaryFeesCalculator {
 
     return {
       total:
-        propertyRegistrationTax
-        + notaryIncomeFromProperty
-        + landRegistryPropertyTax
-        + additionalFees,
+        propertyRegistrationTax +
+        notaryIncomeFromProperty +
+        landRegistryPropertyTax +
+        additionalFees,
       propertyRegistrationTax,
       landRegistryPropertyTax,
       notaryIncomeFromProperty,
@@ -201,11 +203,11 @@ class NotaryFeesCalculator {
 
     return {
       total:
-        propertyRegistrationTax
-        + notaryIncomeFromProperty
-        + landRegistryPropertyTax
-        + propertyConstructionTax
-        + additionalFees,
+        propertyRegistrationTax +
+        notaryIncomeFromProperty +
+        landRegistryPropertyTax +
+        propertyConstructionTax +
+        additionalFees,
       propertyRegistrationTax,
       propertyConstructionTax,
       landRegistryPropertyTax,
@@ -233,10 +235,10 @@ class NotaryFeesCalculator {
 
     return {
       total:
-        mortgageNoteRegistrationTax
-        + landRegistryMortgageNoteTax
-        + notaryIncomeFromMortgageNote
-        + additionalFees,
+        mortgageNoteRegistrationTax +
+        landRegistryMortgageNoteTax +
+        notaryIncomeFromMortgageNote +
+        additionalFees,
       mortgageNoteRegistrationTax,
       landRegistryMortgageNoteTax,
       notaryIncomeFromMortgageNote,
@@ -252,20 +254,20 @@ class NotaryFeesCalculator {
   }) {
     const buyersContractDeductions = this.buyersContractDeductions
       ? this.buyersContractDeductions({
-        residenceType,
-        propertyValue,
-        transferTax: propertyTransferTax,
-      })
+          residenceType,
+          propertyValue,
+          transferTax: propertyTransferTax,
+        })
       : 0;
 
     const mortgageNoteDeductions = this.mortgageNoteDeductions
       ? this.mortgageNoteDeductions({
-        residenceType,
-        propertyValue,
-        mortgageNoteRegistrationTax: this.mortgageNoteRegistrationTax({
-          mortgageNoteIncrease,
-        }),
-      })
+          residenceType,
+          propertyValue,
+          mortgageNoteRegistrationTax: this.mortgageNoteRegistrationTax({
+            mortgageNoteIncrease,
+          }),
+        })
       : 0;
 
     return {

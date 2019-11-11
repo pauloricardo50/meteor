@@ -45,7 +45,8 @@ describe('setUserReferredByListener', () => {
 
   it('adds activity on the user', async () => {
     await ddpWithUserId('admin', () =>
-      setUserReferredBy.run({ userId: 'user', proId: 'pro1' }));
+      setUserReferredBy.run({ userId: 'user', proId: 'pro1' }),
+    );
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: 'user' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -73,7 +74,8 @@ describe('setUserReferredByListener', () => {
       object: { referredByUserLink: 'pro2' },
     });
     await ddpWithUserId('admin', () =>
-      setUserReferredBy.run({ userId: 'user', proId: 'pro1' }));
+      setUserReferredBy.run({ userId: 'user', proId: 'pro1' }),
+    );
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: 'user' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
@@ -101,7 +103,8 @@ describe('setUserReferredByListener', () => {
       object: { referredByUserLink: 'pro2' },
     });
     await ddpWithUserId('admin', () =>
-      setUserReferredBy.run({ userId: 'user', proId: 'pro2' }));
+      setUserReferredBy.run({ userId: 'user', proId: 'pro2' }),
+    );
     const { activities = [] } = UserService.fetchOne({
       $filters: { _id: 'user' },
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
