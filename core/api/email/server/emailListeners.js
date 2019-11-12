@@ -103,9 +103,12 @@ const getPromotionOptionMailParams = async (
 
   if (userId) {
     const { name } = UserService.fetchOne({
-      $filters: { _id: userId },
+      $filters: {
+        _id: userId,
+      },
       name: 1,
     });
+
     userName = name;
   }
 
