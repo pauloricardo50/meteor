@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
+import { setLoanStep } from 'core/api/loans/index';
+import { shouldSendStepNotification } from 'core/utils/loanFunctions';
 import { proInviteUser } from '../../users/index';
 import FileService from '../../files/server/FileService';
 import { getUserNameAndOrganisation } from '../../helpers/index';
@@ -335,3 +337,24 @@ PROMOTION_EMAILS.forEach(({ method, emailId, recipients, getEmailParams }) => {
     );
   });
 });
+
+ServerEventService.addAfterMethodListener(
+  setLoanStep,
+  ({ context, params: { loanId }, result: { step, nextStep, user } }) => {
+    context.unblock();
+
+    if (shouldSendStepNotification(step, nextStep)) {
+      if (!user || !user.assignedEmployee) {
+        throw new Meteor.Error(
+          'Il faut un conseiller sur ce dossier pour envoyer un email',
+        );
+      }
+
+      sendEmail.run({
+        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
+        userId: user._id,
+        params: { loanId, assigneeName: user.assignedEmployee.name },
+      });
+    }
+  },
+);

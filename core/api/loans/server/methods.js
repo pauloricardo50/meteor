@@ -188,7 +188,6 @@ setLoanStep.setHandler((context, params) => {
     Security.checkUserIsAdmin(context.userId);
   }
 
-  context.unblock();
   return LoanService.setStep(params);
 });
 

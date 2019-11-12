@@ -7,7 +7,7 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { loanSetStatus } from '../../../methods/index';
+import { loanSetStatus, setLoanStep } from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
@@ -954,7 +954,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setStep', () => {
+  describe('setStep', async () => {
     it('sets the step', () => {
       generator({
         loans: { _id: 'id', step: STEPS.SOLVENCY },
@@ -967,7 +967,7 @@ describe('LoanService', function() {
       expect(loan.step).to.equal(STEPS.REQUEST);
     });
 
-    it('sends a notification email if the step goes from SOLVENCY to OFFERS', () => {
+    it('sends a notification email if the step goes from SOLVENCY to OFFERS', async () => {
       generator({
         users: {
           _id: 'admin',
@@ -985,40 +985,42 @@ describe('LoanService', function() {
         },
       });
 
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
 
       loan = LoanService.get('myLoan');
 
       expect(loan.step).to.equal(STEPS.OFFERS);
 
-      return checkEmails(1).then(emails => {
-        const {
+      const [
+        {
           emailId,
           address,
           response: { status },
           template: {
             message: { from_email, subject, global_merge_vars, from_name },
           },
-        } = emails[0];
+        },
+      ] = await checkEmails(1);
 
-        expect(status).to.equal('sent');
-        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
-        expect(address).to.equal('john@doe.com');
-        expect(from_email).to.equal('info@e-potek.ch');
-        expect(from_name).to.equal('e-Potek');
-        expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(
-          global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
-        ).to.include('/loans/myLoan');
-        expect(
-          global_merge_vars.find(({ name }) => name === 'BODY').content,
-        ).to.include('Admin User');
-      });
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+      expect(address).to.equal('john@doe.com');
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
+      ).to.include('/loans/myLoan');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('Admin User');
     });
 
-    it('sends a notification email if the step goes from REQUEST to OFFERS', () => {
+    it('sends a notification email if the step goes from REQUEST to OFFERS', async () => {
       generator({
-        users: { _id: 'admin' },
+        users: { _id: 'admin', _factory: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.REQUEST,
@@ -1028,32 +1030,39 @@ describe('LoanService', function() {
           },
         },
       });
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1).then(emails => {
-        const {
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
+
+      const [
+        {
           emailId,
           response: { status },
-        } = emails[0];
+        },
+      ] = await checkEmails(1);
 
-        expect(status).to.equal('sent');
-        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
-      });
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
     });
 
-    it('does not send a notification email if the step goes from REQUEST to OFFERS', () => {
+    it('does not send a notification email if the step goes from REQUEST to OFFERS', async () => {
       generator({
+        users: { _id: 'admin', _factory: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.CLOSING,
           user: { emails: [{ address: 'john@doe.com', verified: false }] },
         },
       });
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1, { timeout: 2000, noExpect: true }).then(emails => {
-        expect(emails.length).to.equal(0);
-      });
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
+
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
     });
   });
 
