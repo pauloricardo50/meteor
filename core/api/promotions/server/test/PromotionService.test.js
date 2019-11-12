@@ -148,123 +148,28 @@ describe('PromotionService', function() {
       });
     });
 
-    it('creates user and sends the invitation email if user does not exist', () => {
+    it('creates user and sends the invitation email if user does not exist', async () => {
       const newUser = {
         email: 'new@user.com',
         firstName: 'New',
         lastName: 'User',
         phoneNumber: '1234',
       };
-
-      let resetToken;
 
       const { userId, isNewUser } = UserService.proCreateUser({
         user: newUser,
       });
 
-      return PromotionService.inviteUser({
+      const loanId = await PromotionService.inviteUser({
         promotionId,
         userId,
         isNewUser,
         pro: { _id: 'proId' },
-      })
-        .then(loanId => {
-          const user = UserService.getByEmail(newUser.email);
-          const {
-            services: {
-              password: {
-                reset: { token },
-              },
-            },
-          } = user;
-
-          resetToken = token;
-
-          expect(!!loanId).to.equal(true);
-          expect(!!userId).to.equal(true);
-          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(
-            true,
-          );
-
-          return checkEmails(2);
-        })
-        .then(emails => {
-          expect(emails.length).to.equal(2);
-          const {
-            emailId,
-            response: { status },
-            template: {
-              message: { global_merge_vars },
-            },
-          } = emails.find(
-            ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-          );
-
-          expect(status).to.equal('sent');
-          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-          expect(
-            global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
-          ).to.include(resetToken);
-          expect(
-            global_merge_vars
-              .find(({ name }) => name === 'BODY')
-              .content.startsWith('Pro User'),
-          ).to.equal(true);
-          expect(
-            global_merge_vars
-              .find(({ name }) => name === 'BODY')
-              .content.endsWith('Admin User'),
-          ).to.equal(true);
-
-          expect(
-            emails.filter(
-              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
-            ).length,
-          ).to.equal(1);
-        });
-    });
-
-    it('sends the invitation email if user exists', () => {
-      const newUser = {
-        email: 'new@user.com',
-        firstName: 'New',
-        lastName: 'User',
-        phoneNumber: '1234',
-      };
-
-      const userId = UserService.adminCreateUser({
-        options: {
-          email: newUser.email,
-          sendEnrollmentEmail: false,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          phoneNumbers: [newUser.phoneNumber],
-        },
-        role: ROLES.USER,
       });
 
-      return PromotionService.inviteUser({
-        promotionId,
-        userId,
-      })
-        .then(loanId => {
-          expect(!!loanId).to.equal(true);
-          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(
-            true,
-          );
-
-          return checkEmails(1);
-        })
-        .then(emails => {
-          expect(emails.length).to.equal(1);
-          const {
-            emailId,
-            response: { status },
-          } = emails[0];
-
-          expect(status).to.equal('sent');
-          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-        });
+      expect(!!loanId).to.equal(true);
+      expect(!!userId).to.equal(true);
+      expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
     });
 
     it('throws an error if user is already invited to the promotion', () => {
@@ -341,8 +246,6 @@ describe('PromotionService', function() {
         const user = UserService.getByEmail(newUser.email);
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
-
-        return checkEmails(1);
       });
     });
   });

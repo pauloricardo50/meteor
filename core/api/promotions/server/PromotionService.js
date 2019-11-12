@@ -1,10 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import { getUserNameAndOrganisation } from '../../helpers/index';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
-import FileService from '../../files/server/FileService';
 import CollectionService from '../../helpers/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
@@ -12,14 +10,12 @@ import {
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS_FULL_ACCESS,
 } from '../../constants';
-import { sendEmail } from '../../email/methodDefinitions';
-import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import SecurityService from '../../security';
 import Promotions from '../promotions';
 
-export class PromotionService extends CollectionService {
+class PromotionService extends CollectionService {
   constructor() {
     super(Promotions);
   }
@@ -129,75 +125,75 @@ export class PromotionService extends CollectionService {
       UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
     }
 
-    const { assignedEmployeeId } = UserService.fetchOne({
-      $filters: { _id: userId },
-      assignedEmployeeId: 1,
-    });
+    // const { assignedEmployeeId } = UserService.fetchOne({
+    //   $filters: { _id: userId },
+    //   assignedEmployeeId: 1,
+    // });
 
-    if (sendInvitation) {
-      return this.sendPromotionInvitationEmail({
-        userId,
-        isNewUser,
-        promotionId,
-        firstName: user.firstName,
-        proId: pro._id,
-        adminId: assignedEmployeeId,
-      }).then(() => loanId);
-    }
+    // if (sendInvitation) {
+    //   return this.sendPromotionInvitationEmail({
+    //     userId,
+    //     isNewUser,
+    //     promotionId,
+    //     firstName: user.firstName,
+    //     proId: pro._id,
+    //     adminId: assignedEmployeeId,
+    //   }).then(() => loanId);
+    // }
 
     return Promise.resolve(loanId);
   }
 
-  sendPromotionInvitationEmail({
-    userId,
-    isNewUser,
-    promotionId,
-    firstName,
-    proId,
-  }) {
-    return FileService.listFilesForDocByCategory(promotionId).then(
-      ({ promotionImage, logos }) => {
-        const coverImageUrl =
-          promotionImage && promotionImage.length > 0 && promotionImage[0].url;
-        const logoUrls = logos && logos.map(({ url }) => url);
+  // sendPromotionInvitationEmail({
+  //   userId,
+  //   isNewUser,
+  //   promotionId,
+  //   firstName,
+  //   proId,
+  // }) {
+  //   return FileService.listFilesForDocByCategory(promotionId).then(
+  //     ({ promotionImage, logos }) => {
+  //       const coverImageUrl =
+  //         promotionImage && promotionImage.length > 0 && promotionImage[0].url;
+  //       const logoUrls = logos && logos.map(({ url }) => url);
 
-        let ctaUrl = Meteor.settings.public.subdomains.app;
-        const promotion = this.get(promotionId);
-        const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
+  //       let ctaUrl = Meteor.settings.public.subdomains.app;
+  //       const promotion = this.get(promotionId);
+  //       const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
 
-        if (isNewUser) {
-          // Envoyer invitation avec enrollment link
-          ctaUrl = UserService.getEnrollmentUrl({ userId });
-        }
+  //       if (isNewUser) {
+  //         // Envoyer invitation avec enrollment link
+  //         ctaUrl = UserService.getEnrollmentUrl({ userId });
+  //       }
 
-        let invitedBy;
+  //       let invitedBy;
 
-        if (proId) {
-          invitedBy = getUserNameAndOrganisation({
-            user: UserService.fetchOne({
-              $filters: { _id: proId },
-              name: 1,
-              organisations: { name: 1 },
-            }),
-          });
-        }
+  //       if (proId) {
+  //         invitedBy = getUserNameAndOrganisation({
+  //           user: UserService.fetchOne({
+  //             $filters: { _id: proId },
+  //             name: 1,
+  //             organisations: { name: 1 },
+  //           }),
+  //         });
+  //       }
 
-        return sendEmail.run({
-          emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-          userId,
-          params: {
-            proUserId: proId,
-            promotion: { ...promotion, assignedEmployee },
-            coverImageUrl,
-            logoUrls,
-            ctaUrl,
-            name: firstName,
-            invitedBy,
-          },
-        });
-      },
-    );
-  }
+  //       return sendEmail.run({
+  //         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+  //         userId,
+  //         params: {
+  //           proUserId: proId,
+  //           promotion: { ...promotion, assignedEmployee },
+  //           coverImageUrl,
+  //           logoUrls,
+  //           ctaUrl,
+  //           name: firstName,
+  //           invitedBy,
+  //         },
+  //       });
+  //     },
+  //   );
+  // }
 
   addProUser({ promotionId, userId }) {
     return this.addLink({

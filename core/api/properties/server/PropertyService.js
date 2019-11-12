@@ -1,7 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { sendEmail } from 'core/api/methods/index';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import {
@@ -11,10 +9,9 @@ import {
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { removePropertyFromLoan } from './propertyServerHelpers';
-import { getUserNameAndOrganisation } from '../../helpers';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 
-export class PropertyService extends CollectionService {
+class PropertyService extends CollectionService {
   constructor() {
     super(Properties);
   }
@@ -69,16 +66,7 @@ export class PropertyService extends CollectionService {
       UserService.hasProperty({ userId, propertyId }),
     );
 
-  inviteUser = ({
-    propertyIds,
-    admin,
-    pro,
-    userId,
-    isNewUser,
-    shareSolvency,
-  }) => {
-    const properties = propertyIds.map(propertyId => this.get(propertyId));
-
+  inviteUser = ({ propertyIds, userId, shareSolvency }) => {
     if (this.hasOneOfProperties({ userId, propertyIds })) {
       throw new Meteor.Error(
         HTTP_STATUS_CODES.CONFLICT,
@@ -87,49 +75,7 @@ export class PropertyService extends CollectionService {
     }
 
     LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });
-
-    const addresses = properties.map(({ address1 }) => `"${address1}"`);
-
-    return this.sendPropertyInvitationEmail({
-      userId,
-      isNewUser,
-      addresses,
-      proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
-      proUserId: pro && pro._id,
-    });
   };
-
-  sendPropertyInvitationEmail({
-    userId,
-    isNewUser,
-    proName,
-    addresses,
-    proUserId,
-  }) {
-    let ctaUrl = Meteor.settings.public.subdomains.app;
-
-    const formattedAddresses = [
-      addresses.slice(0, -1).join(', '),
-      addresses.slice(-1)[0],
-    ].join(addresses.length < 2 ? '' : ' et ');
-
-    if (isNewUser) {
-      // Envoyer invitation avec enrollment link
-      ctaUrl = UserService.getEnrollmentUrl({ userId });
-    }
-
-    return sendEmail.run({
-      emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-      userId,
-      params: {
-        proUserId,
-        proName,
-        address: formattedAddresses,
-        ctaUrl,
-        multiple: addresses.length > 1,
-      },
-    });
-  }
 
   addProUser({ propertyId, userId }) {
     this.addLink({

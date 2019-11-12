@@ -1,3 +1,10 @@
+import { Meteor } from 'meteor/meteor';
+
+import { proInviteUser } from '../../users/index';
+import FileService from '../../files/server/FileService';
+import { getUserNameAndOrganisation } from '../../helpers/index';
+import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
 import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
@@ -9,8 +16,8 @@ import {
   sellPromotionLot,
 } from '../../methods';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
-import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
+import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 
 ServerEventService.addAfterMethodListener(
   submitContactForm,
@@ -65,6 +72,117 @@ ServerEventService.addAfterMethodListener(
       userId: params.proUserId,
       params: { name, email },
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  proInviteUser,
+  async ({ context, params, result }) => {
+    context.unblock();
+
+    if (result && typeof result.then === 'function') {
+      result = await result;
+    }
+    const { userId, isNewUser, pro, admin } = result;
+    const { promotionIds = [], propertyIds = [] } = params;
+
+    if (promotionIds.length > 0) {
+      promotionIds.forEach(async promotionId => {
+        const {
+          promotionImage,
+          logos,
+        } = await FileService.listFilesForDocByCategory(promotionId);
+        const coverImageUrl =
+          promotionImage && promotionImage.length > 0 && promotionImage[0].url;
+        const logoUrls = logos && logos.map(({ url }) => url);
+
+        let ctaUrl = Meteor.settings.public.subdomains.app;
+        const promotion = PromotionService.fetchOne({
+          $filters: { _id: promotionId },
+          name: 1,
+          contacts: 1,
+          assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
+        });
+        const user = UserService.fetchOne({
+          $filters: { _id: userId },
+          firstName: 1,
+        });
+
+        if (isNewUser) {
+          // Envoyer invitation avec enrollment link
+          ctaUrl = UserService.getEnrollmentUrl({ userId });
+        }
+
+        let invitedBy;
+
+        if (pro && pro._id) {
+          invitedBy = getUserNameAndOrganisation({
+            user: UserService.fetchOne({
+              $filters: { _id: pro._id },
+              name: 1,
+              organisations: { name: 1 },
+            }),
+          });
+        }
+
+        return sendEmail.run({
+          emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+          userId,
+          params: {
+            proUserId: pro && pro._id,
+            promotion,
+            coverImageUrl,
+            logoUrls,
+            ctaUrl,
+            name: user.firstName,
+            invitedBy,
+          },
+        });
+      });
+    }
+
+    if (propertyIds.length > 0) {
+      let ctaUrl = Meteor.settings.public.subdomains.app;
+      const properties = PropertyService.fetch({
+        $filters: { _id: { $in: propertyIds } },
+        address1: 1,
+      });
+      const addresses = properties.map(({ address1 }) => `"${address1}"`);
+
+      const formattedAddresses = [
+        addresses.slice(0, -1).join(', '),
+        addresses.slice(-1)[0],
+      ].join(addresses.length < 2 ? '' : ' et ');
+
+      if (isNewUser) {
+        // Envoyer invitation avec enrollment link
+        ctaUrl = UserService.getEnrollmentUrl({ userId });
+      }
+
+      return sendEmail.run({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+        userId,
+        params: {
+          proUserId: pro && pro._id,
+          proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
+          address: formattedAddresses,
+          ctaUrl,
+          multiple: addresses.length > 1,
+        },
+      });
+    }
+
+    if (propertyIds.length === 0 && promotionIds.length === 0) {
+      sendEmail.run({
+        emailId: EMAIL_IDS.REFER_USER,
+        userId,
+        params: {
+          proUserId: pro && pro._id,
+          proName: getUserNameAndOrganisation({ user: pro }),
+          ctaUrl: UserService.getEnrollmentUrl({ userId }),
+        },
+      });
+    }
   },
 );
 

@@ -51,9 +51,9 @@ describe('promotionClientHelpers', () => {
               forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
             },
           },
-        },
-        promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
-      })).to.equal(true);
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+        }),
+      ).to.equal(true);
     });
 
     it('returns true if lot status is in permissions and belongs to owner, but not attributed', () => {
@@ -63,20 +63,22 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-            forLotStatus: [
-              PROMOTION_LOT_STATUS.AVAILABLE,
-              PROMOTION_LOT_STATUS.RESERVED,
-            ],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+              forLotStatus: [
+                PROMOTION_LOT_STATUS.AVAILABLE,
+                PROMOTION_LOT_STATUS.RESERVED,
+              ],
+            },
           },
-        },
-        promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
-        isAttributed: false,
-      })).to.equal(true);
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+          isAttributed: false,
+        }),
+      ).to.equal(true);
     });
 
     it('returns false if lot status is in permissions and belongs to owner', () => {
@@ -86,20 +88,22 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-            forLotStatus: [
-              PROMOTION_LOT_STATUS.AVAILABLE,
-              PROMOTION_LOT_STATUS.RESERVED,
-            ],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+              forLotStatus: [
+                PROMOTION_LOT_STATUS.AVAILABLE,
+                PROMOTION_LOT_STATUS.RESERVED,
+              ],
+            },
           },
-        },
-        promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
-        isAttributed: true,
-      })).to.equal(false);
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+          isAttributed: true,
+        }),
+      ).to.equal(false);
     });
 
     it('returns true if lot status is undefined', () => {
@@ -109,15 +113,17 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-            forLotStatus: [
-              PROMOTION_LOT_STATUS.RESERVED,
-              PROMOTION_LOT_STATUS.SOLD,
-            ],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+              forLotStatus: [
+                PROMOTION_LOT_STATUS.RESERVED,
+                PROMOTION_LOT_STATUS.SOLD,
+              ],
+            },
           },
         }),
       ).to.equal(true);
@@ -217,12 +223,14 @@ describe('promotionClientHelpers', () => {
         },
       };
 
-      expect(shouldAnonymize({
-        customerOwnerType: null,
-        permissions,
-        promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
-        isAttributed: false,
-      })).to.equal(false);
+      expect(
+        shouldAnonymize({
+          customerOwnerType: null,
+          permissions,
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
+          isAttributed: false,
+        }),
+      ).to.equal(false);
     });
   });
 });
