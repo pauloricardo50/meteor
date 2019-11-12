@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { getUserNameAndOrganisation } from '../../helpers/index';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
@@ -172,10 +173,13 @@ export class PromotionService extends CollectionService {
         let invitedBy;
 
         if (proId) {
-          invitedBy = UserService.fetchOne({
-            $filters: { _id: proId },
-            name: 1,
-          }).name;
+          invitedBy = getUserNameAndOrganisation({
+            user: UserService.fetchOne({
+              $filters: { _id: proId },
+              name: 1,
+              organisations: { name: 1 },
+            }),
+          });
         }
 
         return sendEmail.run({

@@ -32,10 +32,7 @@ const handleDialog = ({
         cancel: () => setOpenDialog(false),
         ok: () =>
           loanUpdate
-            .run({
-              loanId,
-              object: { userFormsEnabled: false },
-            })
+            .run({ loanId, object: { userFormsEnabled: false } })
             .then(() => setOpenDialog(false)),
       });
       setOpenDialog(true);
@@ -63,17 +60,17 @@ export default withProps(({ id, loanId, promotionOptionId }) => {
     layout: isTextField
       ? [{ fields: ['date'] }, { fields: ['note'] }]
       : [
-        {
-          className: 'grid-col',
-          style: { gridTemplateColumns: '1fr 220px', width: '100%' },
-          fields: ['__REST'],
-        },
-      ],
+          {
+            className: 'grid-col',
+            style: { gridTemplateColumns: '1fr 220px', width: '100%' },
+            fields: ['__REST'],
+          },
+        ],
     submitFieldProps: { showSubmitField: isTextField },
     openDialog,
     dialogProps,
     dialogActions,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       await promotionOptionUpdateObject.run({
         promotionOptionId,
         id,

@@ -186,7 +186,7 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       (params.promotion.assignedEmployee &&
         params.promotion.assignedEmployee.phoneNumbers[0]) ||
       EPOTEK_PHONE,
-    invitedBy: params.invitedBy || 'e-Potek',
+    invitedBy: params.invitedBy,
   }),
 });
 
