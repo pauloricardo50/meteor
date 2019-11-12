@@ -53,6 +53,7 @@ export const getMandrillTemplate = ({
   mainRecipientIsBcc = true,
   bccAddresses = [],
   ccAddresses = [],
+  attachments = [],
 }) => {
   const [firstBcc, ...otherBccs] = bccAddresses;
   return {
@@ -78,6 +79,7 @@ export const getMandrillTemplate = ({
       headers: { 'Reply-To': replyTo || senderAddress },
       bcc_address: firstBcc && firstBcc.email,
       preserve_recipients: true,
+      attachments: attachments.length ? attachments : undefined,
     },
     send_at: sendAt ? sendAt.toISOString() : undefined,
   };
