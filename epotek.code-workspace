@@ -1,12 +1,27 @@
 {
   "folders": [
-    { "path": "." },
-    { "path": "./core" },
-    { "path": "microservices/backend" },
-    { "path": "microservices/admin" },
-    { "path": "microservices/app" },
-    { "path": "microservices/www" },
-    { "path": "microservices/pro" }
+    {
+      "path": ".",
+      "name": "root"
+    },
+    {
+      "path": "./core"
+    },
+    {
+      "path": "microservices/backend"
+    },
+    {
+      "path": "microservices/admin"
+    },
+    {
+      "path": "microservices/app"
+    },
+    {
+      "path": "microservices/www"
+    },
+    {
+      "path": "microservices/pro"
+    }
   ],
   "settings": {
     "editor.snippetSuggestions": "top",
