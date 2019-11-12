@@ -16,7 +16,7 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 
-const uploadTempPromotionAgreement = async (userId) => {
+const uploadTempPromotionAgreement = async userId => {
   const reservationAgreementFile = Buffer.from('hello', 'utf-8');
   const reservationAgreementFileKey = FileService.getTempS3FileKey(
     userId,
@@ -32,7 +32,7 @@ const uploadTempPromotionAgreement = async (userId) => {
   return reservationAgreementFileKey;
 };
 
-describe('PromotionLotService', function () {
+describe('PromotionLotService', function() {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -111,7 +111,9 @@ describe('PromotionLotService', function () {
 
   describe('reservePromotionLot', () => {
     it('sends emails to those who need it', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
+      const reservationAgreementFileKey = await uploadTempPromotionAgreement(
+        'pro1',
+      );
       PromotionService.setUserPermissions({
         promotionId: 'promoId',
         userId: 'pro1',
@@ -129,10 +131,16 @@ describe('PromotionLotService', function () {
           promotionOptionId: 'pOptId',
           startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
-        }))
+        }),
+      )
         .then(() => checkEmails(2))
-        .then((emails) => {
-          const [email1, email2] = emails.sort(({ address: a }, { address: b }) => a.localeCompare(b));
+        .then(emails => {
+          const [
+            email1,
+            email2,
+          ] = emails.sort(({ address: a }, { address: b }) =>
+            a.localeCompare(b),
+          );
           const {
             address,
             response: { status },
@@ -146,7 +154,11 @@ describe('PromotionLotService', function () {
           expect(from_email).to.equal('test2@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('Promotion "Test promotion", lot réservé');
-          expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Le lot "Lot 1" a été réservé pour John Doe, par TestFirstName TestLastName.');
+          expect(
+            global_merge_vars.find(({ name }) => name === 'BODY').content,
+          ).to.include(
+            'Le lot "Lot 1" a été réservé pour John Doe, par TestFirstName TestLastName.',
+          );
           {
             const {
               address,
@@ -160,13 +172,19 @@ describe('PromotionLotService', function () {
             expect(from_email).to.equal('test2@e-potek.ch');
             expect(from_name).to.equal('e-Potek');
             expect(subject).to.equal('Promotion "Test promotion", lot réservé');
-            expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Le lot "Lot 1" a été réservé pour une personne anonymisée, par TestFirstName TestLastName.');
+            expect(
+              global_merge_vars.find(({ name }) => name === 'BODY').content,
+            ).to.include(
+              'Le lot "Lot 1" a été réservé pour une personne anonymisée, par TestFirstName TestLastName.',
+            );
           }
         });
     });
 
     it('does not let a lot be reserved by a pro who did not invite the customer', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro2');
+      const reservationAgreementFileKey = await uploadTempPromotionAgreement(
+        'pro2',
+      );
       PromotionService.setUserPermissions({
         promotionId: 'promoId',
         userId: 'pro2',
@@ -184,28 +202,40 @@ describe('PromotionLotService', function () {
           promotionOptionId: 'pOptId',
           startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
-        }))
+        }),
+      )
         .then(() => expect(1).to.equal(2, 'Should throw'))
-        .catch((error) =>
-          expect(error.message).to.include('Vous ne pouvez pas gérer la réservation'));
+        .catch(error =>
+          expect(error.message).to.include(
+            'Vous ne pouvez pas gérer la réservation',
+          ),
+        );
     });
 
     it('does not let a lot be reserved by a pro who cannot reserve lots', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
+      const reservationAgreementFileKey = await uploadTempPromotionAgreement(
+        'pro1',
+      );
 
       return ddpWithUserId('pro1', () =>
         reservePromotionLot.run({
           promotionOptionId: 'pOptId',
           startDate: moment().format('YYYY-MM-DD'),
           agreementFileKeys: [reservationAgreementFileKey],
-        }))
+        }),
+      )
         .then(() => expect(1).to.equal(2, 'Should throw'))
-        .catch((error) =>
-          expect(error.message).to.include('Vous ne pouvez pas réserver des lots'));
+        .catch(error =>
+          expect(error.message).to.include(
+            'Vous ne pouvez pas réserver des lots',
+          ),
+        );
     });
 
     it('can reserve, cancel, and then reactivate an existing promotionReservation', async () => {
-      let reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
+      let reservationAgreementFileKey = await uploadTempPromotionAgreement(
+        'pro1',
+      );
 
       await PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',

@@ -18,7 +18,9 @@ const ProProperty = ({
   const { address1, city, zipCode } = property;
 
   return (
-    <div className={cx('pro-property card1 card-top animated fadeIn', { simple })}>
+    <div
+      className={cx('pro-property card1 card-top animated fadeIn', { simple })}
+    >
       <ProPropertyheader property={property} loan={loan} />
       <MapWithMarkerWrapper
         address1={address1}

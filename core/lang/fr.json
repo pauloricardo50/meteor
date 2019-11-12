@@ -100,6 +100,8 @@
   "files.RESERVATION_AGREEMENT": "Convention de réservation signée",
   "files.agreementFileKeys": "Convention de réservation signée",
   "PromotionLotReservation.book": "Réserver",
+  "Forms.customer": "Client",
+  "Forms.isImportant": "Important",
   "PropertiesTable.createdAt": "Créé le",
   "Forms.shareCustomers": "Partage des dossiers",
   "Financing.residenceTypeSelect.description": "Sélectionnez un type d'utilisation pour créer un plan financier",
@@ -1054,25 +1056,21 @@
   "emails.INVITE_USER_TO_PROPERTY.from": "e-Potek",
   "emails.INVITE_USER_TO_PROPERTY.SUBJECT": "e-Potek - {address}",
   "emails.INVITE_USER_TO_PROPERTY.TITLE": "{address}",
-
   "emails.RESERVE_PROMOTION_LOT.BODY": "Le lot \"{promotionLotName}\" a été réservé pour {customerName}, par {userName}.",
   "emails.RESERVE_PROMOTION_LOT.CTA": "Voir la promotion",
   "emails.RESERVE_PROMOTION_LOT.from": "e-Potek",
   "emails.RESERVE_PROMOTION_LOT.SUBJECT": "Promotion \"{promotionName}\", lot réservé",
   "emails.RESERVE_PROMOTION_LOT.TITLE": "Promotion \"{promotionName}\", lot réservé",
-
   "emails.SELL_PROMOTION_LOT.BODY": "Le lot \"{promotionLotName}\" a été vendu à {customerName}, par {userName}.",
   "emails.SELL_PROMOTION_LOT.CTA": "Voir la promotion",
   "emails.SELL_PROMOTION_LOT.from": "e-Potek",
   "emails.SELL_PROMOTION_LOT.SUBJECT": "Promotion \"{promotionName}\", lot vendu",
   "emails.SELL_PROMOTION_LOT.TITLE": "Promotion \"{promotionName}\", lot vendu",
-
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.BODY": "La réservation pour le lot \"{promotionLotName}\" a été annulée par {userName}.",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.CTA": "Voir la promotion",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.from": "e-Potek",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.SUBJECT": "Promotion \"{promotionName}\", réservation annulée",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.TITLE": "Promotion \"{promotionName}\", réservation annulée",
-
   "Forms.promotionOptions.custom": "Souhaits particuliers",
   "Forms.promotionOptions.custom.placeholder": "Parkings supplémentaires, lots adjacents, etc.",
   "AppPromotionLotPage.subtitle": "Promotion {promotionName} - {value}",
@@ -1125,7 +1123,6 @@
   "files.promotionImage": "Photo de couverture",
   "files.logos": "Logos",
   "Forms.gardenArea": "Surface du jardin en m2",
-
   "PromotionPage.manageDocuments": "Gérer documents",
   "PromotionPage.lots.name": "Nom",
   "PromotionPage.lots.status": "Statut",
@@ -1143,13 +1140,11 @@
   "PromotionPage.AdditionalLotsTable.value": "Prix",
   "PromotionPage.AdditionalLotsTable.description": "Description",
   "PromotionPage.addCustomer": "Ajouter un client",
-
   "PromotionPage.subtitle": "Promotion immobilière - {promotionLotCount} lots",
   "Forms.status.PREPARATION": "Préparation",
   "ProDashboardPage.title": "Dashboard",
   "ProDashboardPage.promotions": "Promotions",
   "NewPromotionPage.title": "Nouvelle promotion",
-
   "PromotionsTable.name": "Nom",
   "PromotionsTable.status": "Statut",
   "PromotionsTable.lots": "Lots",
@@ -1157,14 +1152,11 @@
   "PromotionsTable.reserved": "Réservé",
   "PromotionsTable.sold": "Vendu",
   "PromotionsTable.loans": "Clients",
-
   "ProDashboardPage.addProperty": "Ajouter bien immobilier",
   "ProDashboardPage.addPromotion": "Ajouter promotion immobilière",
-
   "ProTopNav.dev": "Dev",
   "ProTopNav.dashboard": "Dashboard",
   "ProTopNav.account": "Mon compte",
-
   "Forms.purchaseType.ACQUISITION": "Acquisition",
   "Forms.purchaseType.REFINANCING": "Refinancement",
   "LoanSelector.name": "Dossier {name}",
@@ -1185,14 +1177,12 @@
   "Recap.promotionLot": "Détails du lot",
   "Recap.promotionLot.price": "Prix",
   "Recap.promotionLot.totalValue": "Total",
-
   "FinancingOwnFundsPledgeWarning.description": "Attention, vous pouvez nantir CHF {maxPledge} au maximum.",
   "UserAdder.sendEnrollmentEmail": "Envoyer email d'invitation immédiatement",
   "UserAdder.assignedEmployeeId": "Assigner à",
   "AdminLayout.title": "Admin",
   "DashboardRecapFinance.emptyButton": "Plans financiers",
   "FinancingCurrentOwnFunds.error": "Pas assez de {type}",
-
   "FinancingOwnFundsPickerForm.remaining": "Restant: CHF {value}",
   "Financing.ownFundsCompleter": "{current} / {required} alloués",
   "Financing.ownFundsCompleterButton": "Ajuster",
@@ -1202,24 +1192,18 @@
   "FinancingOwnFundsPickerForm.borrower": "Emprunteur",
   "FinancingOwnFundsPickerForm.value": "Montant",
   "FinancingOwnFundsPickerForm.usageType": "Type d'utilisation",
-
   "Forms.ownFundsUsageType.WITHDRAW": "Retrait",
   "Forms.ownFundsUsageType.PLEDGE": "Nantissement",
-
   "FinancingOwnFundsDialog.title": "Allouer des fonds propres",
   "Financing.ownFundsAdder": "Ajouter fonds propres",
   "Financing.ownFundsPicker": "Fonds propres alloués",
-
   "LoanTabs.dev": "Dev",
   "AppWidget1Page.title": "Calculateur",
-
   "DashboardProgressInfo.uploadDocuments": "Ajoutez vos documents",
-
   "LoanChecklist.missingFields": "Informations manquantes",
   "LoanChecklist.missingDocuments": "Documents manquants",
   "LoanChecklist.done": "Nous avons tout ce qu'il faut",
   "LoanChecklist.dialogButton": "Voir la checklist",
-
   "Financing.wantedLoanPercent": "Prêt hypothécaire (%)",
   "FinancingRefresher.label": "Rafraîchir",
   "FinancingResult.cost": "Charges du projet",
@@ -1228,15 +1212,12 @@
   "WwwTopNavLinks.login": "Se connecter",
   "files.OTHER": "Autres documents",
   "BorrowersSummary.borrower": "Emprunteur {index}",
-
   "Maps.addressNotFound": "Cette adresse n'a pas pu être trouvée",
-
   "FinancingResultErrors.noMortgageLoan": "Ajoutez un prêt hypothécaire",
   "FinancingResultErrors.missingOwnFunds": "Allouez plus de fonds propres à ce plan financier",
   "FinancingResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à ce plan financier",
   "FinancingResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de ce plan financier",
   "FinancingResultErrors.missingCash": "Vous devez allouer au moins 10% de cash en plus des frais de notaire à votre projet",
-
   "ReturnToDashboard.label": "Retourner au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
   "Financing.OwnFundsLabel.available": "Disponible:",
@@ -2195,8 +2176,6 @@
   "NewLoanModal.label": "Nom du projet",
   "NewLoanModal.placeholder": "Rue du Pré 2",
   "NewLoanModal.title": "Donnez un nom à votre projet, il sera visible par e-Potek.",
-  "NewUserOptions.description": "Vous pourrez monter votre dossier, lancer les enchères, et conclure votre demande de prêt depuis ici.",
-  "NewUserOptions.title": "Ça à l'air bien vide ici!",
   "NotFound.button": "Retourner à la maison",
   "NotFound.description": "On dirait que vous vous êtes perdu!",
   "NotFound.title": "Oops..",
@@ -2482,7 +2461,6 @@
   "Forms.step.SOLVENCY.tooltip": "Renseignez votre profil financier, et identifiez votre capacité d'achat auprès de tous les prêteurs",
   "Forms.step.REQUEST.tooltip": "Montez un dossier de financement complet, simulez votre situation future, et préparez-vous à obtenir des offres de financement",
   "Forms.step.OFFERS.tooltip": "Découvrez les offres sur-mesure qu'e-Potek a obtenues pour vous, prenez des décisions financières stratégiques avec votre conseiller, et choisissez votre prêteur",
-  "StrategyChoices.recommended": "Recommandé pour vous",
   "Table.empty": "Rien à afficher",
   "Table.sort": "Trier",
   "TaskStatusSetter.ACTIVE": "Actif",

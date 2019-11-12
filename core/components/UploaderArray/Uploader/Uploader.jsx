@@ -25,7 +25,7 @@ export const Uploader = ({
       {Meteor.microservice === 'admin' && allowRequireByAdmin && (
         <Checkbox
           value={requiredByAdmin !== false && !isDocumentToHide}
-          onChange={(event) => {
+          onChange={event => {
             setAdditionalDoc.run({
               collection,
               id: docId,

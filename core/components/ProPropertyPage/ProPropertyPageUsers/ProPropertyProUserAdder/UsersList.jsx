@@ -17,7 +17,7 @@ type UsersListProps = {
 };
 
 const UsersList = ({ users, property, addUser }: UsersListProps) =>
-  (users && !!users.length ? (
+  users && !!users.length ? (
     <List className="flex-col user-list">
       {users.map(user => (
         <ListItem key={user._id} className="user">
@@ -27,8 +27,8 @@ const UsersList = ({ users, property, addUser }: UsersListProps) =>
               onClick={() => addUser({ userId: user._id })}
               primary
               disabled={
-                property.users
-                && property.users.map(({ _id }) => _id).includes(user._id)
+                property.users &&
+                property.users.map(({ _id }) => _id).includes(user._id)
               }
             >
               <T id="Forms.add" />
@@ -41,6 +41,6 @@ const UsersList = ({ users, property, addUser }: UsersListProps) =>
     <p>
       <T id="AdminPromotionPage.noUserFound" />
     </p>
-  ));
+  );
 
 export default UsersList;

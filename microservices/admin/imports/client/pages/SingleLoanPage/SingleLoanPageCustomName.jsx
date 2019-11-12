@@ -20,7 +20,7 @@ const SingleLoanPageCustomName = ({
       placeholder="Ajouter un nom..."
     >
       {({ isEditing, value }) =>
-        (isEditing ? (
+        isEditing ? (
           <Icon
             type="warning"
             tooltip="Attention, sera visible pour le client"
@@ -28,7 +28,7 @@ const SingleLoanPageCustomName = ({
           />
         ) : (
           value
-        ))
+        )
       }
     </ClickToEditField>
   </h3>

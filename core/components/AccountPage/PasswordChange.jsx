@@ -18,7 +18,7 @@ const schema = new SimpleSchema({
 export default class PasswordChange extends Component {
   handleSubmit = ({ oldPassword, newPassword }) =>
     new Promise((resolve, reject) => {
-      Accounts.changePassword(oldPassword, newPassword, (err) => {
+      Accounts.changePassword(oldPassword, newPassword, err => {
         if (err) {
           reject(err);
         } else {

@@ -66,7 +66,7 @@ const appColumnOptions = ({ promotionStatus }) =>
       label: <T id={`PromotionPage.lots.${column.id}`} />,
     }));
 
-const makeMapProPromotionLot = ({ promotion }) => (promotionLot) => {
+const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
   const {
     _id: promotionLotId,
     name,
@@ -126,7 +126,7 @@ const makeMapAppPromotionLot = ({
   loan: { _id: loanId, promotionOptions },
   promotionStatus,
   promotionId,
-}) => (promotionLot) => {
+}) => promotionLot => {
   const {
     _id: promotionLotId,
     name,
@@ -200,18 +200,22 @@ export const AppPromotionLotsTableContainer = compose(
     }),
     dataName: 'promotionLots',
   }),
-  withProps(({
-    promotionLots,
-    promotion: { status: promotionStatus, _id: promotionId },
-    loan,
-  }) => ({
-    rows: promotionLots.map(makeMapAppPromotionLot({
+  withProps(
+    ({
+      promotionLots,
+      promotion: { status: promotionStatus, _id: promotionId },
       loan,
-      promotionStatus,
-      promotionId,
-    })),
-    columnOptions: appColumnOptions({
-      promotionStatus,
+    }) => ({
+      rows: promotionLots.map(
+        makeMapAppPromotionLot({
+          loan,
+          promotionStatus,
+          promotionId,
+        }),
+      ),
+      columnOptions: appColumnOptions({
+        promotionStatus,
+      }),
     }),
-  })),
+  ),
 );

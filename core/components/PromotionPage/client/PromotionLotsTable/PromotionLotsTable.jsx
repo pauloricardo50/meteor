@@ -91,5 +91,9 @@ const PromotionLotsTable = ({
   );
 };
 
-export const ProPromotionLotsTable = ProPromotionLotsTableContainer(PromotionLotsTable);
-export const AppPromotionLotsTable = AppPromotionLotsTableContainer(PromotionLotsTable);
+export const ProPromotionLotsTable = ProPromotionLotsTableContainer(
+  PromotionLotsTable,
+);
+export const AppPromotionLotsTable = AppPromotionLotsTableContainer(
+  PromotionLotsTable,
+);

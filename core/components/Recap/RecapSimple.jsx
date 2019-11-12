@@ -14,60 +14,62 @@ const renderLabel = ({ label, noIntl, intlValues }) => {
 
 const RecapSimple = ({ array, noScale, className }) => (
   <div className={cx('result animated fadeIn no-responsive-typo-m', className)}>
-    {array.map((
-      {
-        hide,
-        space,
-        title,
-        props,
-        label,
-        labelStyle,
-        noIntl,
-        bold,
-        spacing,
-        spacingTop,
-        value,
-        intlValues,
-        className: itemClassName,
-      },
-      index,
-    ) => {
-      const finalLabel = renderLabel({ label, noIntl, intlValues });
-      if (hide) {
-        return null;
-      }
-      if (space) {
-        return <div key={index} style={{ height: 16 }} />;
-      }
-      if (title) {
+    {array.map(
+      (
+        {
+          hide,
+          space,
+          title,
+          props,
+          label,
+          labelStyle,
+          noIntl,
+          bold,
+          spacing,
+          spacingTop,
+          value,
+          intlValues,
+          className: itemClassName,
+        },
+        index,
+      ) => {
+        const finalLabel = renderLabel({ label, noIntl, intlValues });
+        if (hide) {
+          return null;
+        }
+        if (space) {
+          return <div key={index} style={{ height: 16 }} />;
+        }
+        if (title) {
+          return (
+            <h4
+              className={cx('text-center', itemClassName)}
+              {...props}
+              key={index}
+              style={labelStyle}
+            >
+              {finalLabel}
+            </h4>
+          );
+        }
         return (
-          <h4
-            className={cx('text-center', itemClassName)}
-            {...props}
+          <div
+            className={cx('fixed-size recap-item', {
+              'no-scale': noScale,
+              bold,
+            })}
+            style={{
+              marginBottom: spacing && 32,
+              marginTop: spacingTop && 8,
+            }}
             key={index}
-            style={labelStyle}
           >
-            {finalLabel}
-          </h4>
+            <p>{finalLabel}</p>
+            <p {...props}>{value}</p>
+          </div>
         );
-      }
-      return (
-        <div
-          className={cx('fixed-size recap-item', {
-            'no-scale': noScale,
-            bold,
-          })}
-          style={{
-            marginBottom: spacing && 32,
-            marginTop: spacingTop && 8,
-          }}
-          key={index}
-        >
-          <p>{finalLabel}</p>
-          <p {...props}>{value}</p>
-        </div>
-      );
-    })}
+      },
+    )}
   </div>
 );
 

@@ -1,10 +1,8 @@
 // @flow
 import React from 'react';
-import moment from 'moment';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import Icon from 'core/components/Icon';
+import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import { LoanActivityModifier } from './LoanActivityAdder';
 
 type LoanTimelineTitleProps = {};
@@ -33,24 +31,15 @@ const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
   const { date, title, type, isServerGenerated } = activity;
 
   return (
-    <div className="loan-timeline-title">
+    <TimelineTitle
+      title={title}
+      icon={getIcon(type, isServerGenerated)}
+      date={date}
+    >
       {allowModify(type, isServerGenerated) && (
         <LoanActivityModifier className="activity-modifier" model={activity} />
       )}
-      <h4 className="title">
-        <Icon
-          className="icon secondary"
-          fontSize="small"
-          type={getIcon(type, isServerGenerated)}
-        />
-        <Tooltip title={title} placement="top-start">
-          <span className="text">{title}</span>
-        </Tooltip>
-      </h4>
-      <h4 className="secondary">
-        <small>{moment(date).format("D MMM 'YY")}</small>
-      </h4>
-    </div>
+    </TimelineTitle>
   );
 };
 

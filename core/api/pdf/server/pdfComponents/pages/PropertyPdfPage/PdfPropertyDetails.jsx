@@ -12,7 +12,7 @@ import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type PdfPropertyDetailsProps = {};
 
-const getPropertyRows = (loan) => {
+const getPropertyRows = loan => {
   const {
     address1,
     zipCode,
@@ -115,9 +115,9 @@ const getPropertyRows = (loan) => {
       label: <T id="PDF.projectInfos.property.terraceArea" />,
       data: `${terraceArea} m2`,
       condition:
-        !!terraceArea
-        && propertyType === PROPERTY_TYPE.FLAT
-        && flatType === FLAT_TYPE.TERRACE_APARTMENT,
+        !!terraceArea &&
+        propertyType === PROPERTY_TYPE.FLAT &&
+        flatType === FLAT_TYPE.TERRACE_APARTMENT,
     },
     {
       label: <T id="PDF.projectInfos.property.numberOfFloors" />,
@@ -128,9 +128,9 @@ const getPropertyRows = (loan) => {
       label: <T id="PDF.projectInfos.property.floorNumber" />,
       data: floorNumber,
       condition:
-        propertyType === PROPERTY_TYPE.FLAT
-        && (flatType === FLAT_TYPE.SINGLE_FLOOR_APARTMENT
-          || flatType === FLAT_TYPE.DUPLEX_APARTMENT),
+        propertyType === PROPERTY_TYPE.FLAT &&
+        (flatType === FLAT_TYPE.SINGLE_FLOOR_APARTMENT ||
+          flatType === FLAT_TYPE.DUPLEX_APARTMENT),
     },
     {
       label: <T id="PDF.projectInfos.property.constructionYear" />,

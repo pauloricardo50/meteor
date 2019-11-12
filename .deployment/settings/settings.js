@@ -46,7 +46,7 @@ const generateSmokeTestFilesList = ({ applicationName }) =>
 
 const applicationSettings = ({ applicationName, environment }) => ({
   applicationName,
-  name: generateServerApplicationName({ applicationName, environment }), //Name on the server
+  name: generateServerApplicationName({ applicationName, environment }), // Name on the server
   microservicePath: `${MICROSERVICES_DIR_PATH}/${applicationName}`,
   smokeTests: generateSmokeTestFilesList({ environment, applicationName }),
   ...ENVIRONMENT_CONFIG[environment][applicationName].appConfig,

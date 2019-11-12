@@ -28,7 +28,7 @@ const makeColumnOptions = ({ canManageProUsers }) =>
 const makeMapPromotionUser = ({
   promotionId,
   permissions: { canManageProUsers },
-}) => (user) => {
+}) => user => {
   const {
     _id: userId,
     name,
@@ -87,9 +87,11 @@ const makeMapPromotionUser = ({
           />
           <IconButton
             onClick={() => {
-              const confirm = window.confirm(`Supprimer ${getUserNameAndOrganisation({
-                user,
-              })} de la promotion ?`);
+              const confirm = window.confirm(
+                `Supprimer ${getUserNameAndOrganisation({
+                  user,
+                })} de la promotion ?`,
+              );
               if (confirm) {
                 return removeProFromPromotion.run({ promotionId, userId });
               }

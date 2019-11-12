@@ -50,16 +50,16 @@ const makeOnDragStart = ({ draggable, ...dragProps }) => {
     return;
   }
 
-  return (event) => {
+  return event => {
     event.dataTransfer.setData('move', true);
-    Object.keys(dragProps).forEach((prop) => {
+    Object.keys(dragProps).forEach(prop => {
       const value = dragProps[prop];
       event.dataTransfer.setData(prop, value);
     });
   };
 };
 
-const File = (props) => {
+const File = props => {
   const {
     file: { name, Key, status, message, url, adminname: adminName },
     disabled,
@@ -79,10 +79,10 @@ const File = (props) => {
       <div className="file">
         <h5
           className="secondary bold file-name"
-          onClick={(event) => {
+          onClick={event => {
             if (Meteor.microservice === 'admin') {
               event.preventDefault();
-              getSignedUrl.run({ key: Key }).then((signedUrl) => {
+              getSignedUrl.run({ key: Key }).then(signedUrl => {
                 displayFile(
                   signedUrl,
                   url
@@ -116,23 +116,25 @@ const File = (props) => {
             <IconButton
               type="edit"
               tooltip="<ADMIN> Renommer le fichier"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
-                openModal(<DialogForm
-                  schema={
-                    new SimpleSchema({
-                      adminName: { type: String, optional: true },
-                    })
-                  }
-                  model={{ adminName }}
-                  title="Renommer le fichier"
-                  description="Entrez le nouveau nom. Il ne sera visible uniquement que par les admins."
-                  className="animated fadeIn"
-                  important
-                  onSubmit={({ adminName: newName }) =>
-                    handleRenameFile(newName, Key)
-                  }
-                />);
+                openModal(
+                  <DialogForm
+                    schema={
+                      new SimpleSchema({
+                        adminName: { type: String, optional: true },
+                      })
+                    }
+                    model={{ adminName }}
+                    title="Renommer le fichier"
+                    description="Entrez le nouveau nom. Il ne sera visible uniquement que par les admins."
+                    className="animated fadeIn"
+                    important
+                    onSubmit={({ adminName: newName }) =>
+                      handleRenameFile(newName, Key)
+                    }
+                  />,
+                );
               }}
             />
           )}
@@ -142,7 +144,7 @@ const File = (props) => {
               disabled={deleting}
               type={deleting ? 'loop-spin' : 'close'}
               tooltip={<T id="general.delete" />}
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 setDeleting(true);
                 openModal({
@@ -165,7 +167,7 @@ const File = (props) => {
                       primary
                       raised
                       onClick={() => {
-                        handleRemove(Key).catch((error) => {
+                        handleRemove(Key).catch(error => {
                           // Only stop the loader if deleting fails
                           // This component will be deleted anyways when the deletion worked
                           setDeleting(false);
@@ -194,21 +196,23 @@ const File = (props) => {
               disabled={deleting}
               type={deleting ? 'loop-spin' : 'edit'}
               tooltip="Modifier le message d'erreur"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
-                openModal(<DialogForm
-                  schema={
-                    new SimpleSchema({
-                      error: { type: String, optional: true },
-                    })
-                  }
-                  model={{ error: message }}
-                  title="Modifier l'erreur"
-                  description="Entrez le nouveau message d'erreur."
-                  className="animated fadeIn"
-                  important
-                  onSubmit={({ error }) => handleChangeError(error, Key)}
-                />);
+                openModal(
+                  <DialogForm
+                    schema={
+                      new SimpleSchema({
+                        error: { type: String, optional: true },
+                      })
+                    }
+                    model={{ error: message }}
+                    title="Modifier l'erreur"
+                    description="Entrez le nouveau message d'erreur."
+                    className="animated fadeIn"
+                    important
+                    onSubmit={({ error }) => handleChangeError(error, Key)}
+                  />,
+                );
               }}
             />
           )}

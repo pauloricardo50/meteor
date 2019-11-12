@@ -3,9 +3,10 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import LoanService from '../../../loans/server/LoanService';
 import generator from '../../../factories';
+import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenueConstants';
 import RevenueService from '../RevenueService';
-import { REVENUE_STATUS } from '../../revenueConstants';
 
 describe('RevenueService', () => {
   beforeEach(() => {
@@ -141,6 +142,35 @@ describe('RevenueService', () => {
           name: '18-0001',
         },
       ]);
+    });
+  });
+
+  describe('remove', () => {
+    it('removes a revenue from a loan without throwing a mongo error', () => {
+      // Fixed by adding an autovalue on revenueLinks in LoanSchema
+      generator({
+        loans: [{ revenueLinks: [] }, { _id: 'loan' }],
+      });
+
+      const revenueId = RevenueService.insert({
+        revenue: {
+          amount: 100,
+          type: REVENUE_TYPES.MORTGAGE,
+          expectedAt: new Date(),
+        },
+        loanId: 'loan',
+      });
+
+      RevenueService.remove({ revenueId });
+
+      const loan = LoanService.fetchOne({
+        $filters: { _id: 'loan' },
+        revenueLinks: 1,
+      });
+
+      expect(loan.revenueLinks).to.deep.equal([]);
+
+      expect(RevenueService.find({}).fetch()).to.deep.equal([]);
     });
   });
 });

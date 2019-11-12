@@ -9,8 +9,7 @@ export type EqualityFn = (newArgs: mixed[], lastArgs: mixed[]) => boolean;
 // ResultFn:        Generic type (which is the same as the resultFn).
 // (...any[]): Accepts any length of arguments - and they are not checked
 // mixed:           The result can be anything but needs to be checked before usage
-const memoizeOne = function<ResultFn: (
-...any[]) => mixed>(
+const memoizeOne = function<ResultFn: (...any[]) => mixed>(
   resultFn: ResultFn,
   isEqual?: EqualityFn = areInputsEqual,
 ): ResultFn {
@@ -20,7 +19,7 @@ const memoizeOne = function<ResultFn: (
   let calledOnce: boolean = false;
 
   // breaking cache when context (this) or arguments change
-  const result = function (...newArgs: mixed[]) {
+  const result = function(...newArgs: mixed[]) {
     if (calledOnce && lastThis === this && isEqual(newArgs, lastArgs)) {
       return lastResult;
     }

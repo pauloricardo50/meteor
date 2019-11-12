@@ -28,6 +28,7 @@ const SimpleMaxPropertyValueSignup = ({
         }}
         omitValues={['firstName', 'lastName', 'phoneNumber']}
         submitFieldProps={{ label: <T id="general.continue" />, size: 'large' }}
+        ctaId="maxPropertyValue"
       />
     </div>
   </div>

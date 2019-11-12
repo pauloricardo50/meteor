@@ -15,14 +15,18 @@ describe('Widget1Input', () => {
   });
 
   it('renders a root div with the right class', () => {
-    expect(component()
-      .find('div')
-      .first()
-      .hasClass('widget1-inputs')).to.equal(true);
+    expect(
+      component()
+        .find('div')
+        .first()
+        .hasClass('widget1-inputs'),
+    ).to.equal(true);
   });
 
   it('renders multiple fields', () => {
-    expect(component().find(Widget1SingleInput).length).to.equal(props.fields.length);
+    expect(component().find(Widget1SingleInput).length).to.equal(
+      props.fields.length,
+    );
   });
 
   it('passes the proper field name to each field', () => {

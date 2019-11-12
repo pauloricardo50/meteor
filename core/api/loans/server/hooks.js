@@ -9,7 +9,7 @@ import Loans from '../loans';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
-  borrowerIds.forEach((borrowerId) => {
+  borrowerIds.forEach(borrowerId => {
     const { loans } = BorrowerService.createQuery({
       $filters: { _id: borrowerId },
       loans: { _id: 1 },
@@ -19,7 +19,7 @@ Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
       BorrowerService.remove({ borrowerId });
     }
   });
-  propertyIds.forEach((propertyId) => {
+  propertyIds.forEach(propertyId => {
     const { loans, category } = PropertyService.createQuery({
       $filters: { _id: propertyId },
       loans: { _id: 1 },
@@ -46,8 +46,8 @@ UpdateWatcherService.addUpdateWatching({
     // 'structures', // The structures notifications are hard to read in slack
   ],
   shouldWatch: ({ userId }) =>
-    SecurityService.hasRole(userId, ROLES.USER)
-    || SecurityService.hasRole(userId, ROLES.PRO),
+    SecurityService.hasRole(userId, ROLES.USER) ||
+    SecurityService.hasRole(userId, ROLES.PRO),
 });
 
 Loans.after.remove((userId, { _id }) => FileService.deleteAllFilesForDoc(_id));
@@ -57,4 +57,5 @@ Loans.after.insert((userId, doc) =>
     createdAt: doc.createdAt,
     loanLink: { _id: doc._id },
     title: 'Dossier créé',
-  }));
+  }),
+);

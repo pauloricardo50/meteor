@@ -15,39 +15,6 @@
     margin-bottom: 16px;
   }
 
-  .user-activity-title {
-    position: relative;
-
-    h4 {
-      display: flex;
-      align-items: center;
-
-      margin: 0;
-      margin: 0;
-
-      white-space: nowrap;
-      text-overflow: ellipsis;
-
-      &.title {
-        margin-left: -4px;
-
-        .text {
-          overflow: hidden;
-
-          max-width: 250px;
-
-          vertical-align: middle;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-      }
-
-      .icon {
-        margin-right: 4px;
-      }
-    }
-  }
-
   li {
     position: relative;
 

@@ -20,16 +20,6 @@ const employees = [
     gender: 'M',
   },
   {
-    email: 'marie@e-potek.ch',
-    src: '/img/team/marie.jpg',
-    name: 'Marie Blunier',
-    title: 'Conseillère en financement',
-    appTitle: 'Financement',
-    phoneNumber: '+41 22 566 82 96',
-    _id: 'QYGPaynWrAWePJ8CT',
-    gender: 'F',
-  },
-  {
     email: 'quentin@e-potek.ch',
     src: '/img/team/quentin.jpg',
     name: 'Quentin Herzig',
@@ -86,13 +76,13 @@ const employees = [
 
 export const employeesByEmail = employees.reduce(
   (acc, employee) =>
-    (employee.email ? { ...acc, [employee.email]: employee } : acc),
+    employee.email ? { ...acc, [employee.email]: employee } : acc,
   {},
 );
 
 export const employeesById = employees.reduce(
   (acc, employee) =>
-    (employee._id ? { ...acc, [employee._id]: employee } : acc),
+    employee._id ? { ...acc, [employee._id]: employee } : acc,
   {},
 );
 

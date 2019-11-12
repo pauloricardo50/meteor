@@ -61,48 +61,48 @@ const openFirstModal = (state, { payload: modals }) => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-  case 'OPEN_MODAL': {
-    if (Array.isArray(action.payload)) {
-      return openFirstModal(state, action);
+    case 'OPEN_MODAL': {
+      if (Array.isArray(action.payload)) {
+        return openFirstModal(state, action);
+      }
+
+      // Use extraPayload in case you're passing a react component as the payload
+      // but still want extra props on the root dialog
+      const payload = { ...action.payload, ...action.extraPayload };
+
+      const modalId = id;
+      id += 1;
+      if (state.activeModal === null) {
+        return { ...state, [modalId]: payload, activeModal: modalId };
+      }
+      return { ...state, [modalId]: payload };
+    }
+    case 'CLOSE_MODAL': {
+      const {
+        [action.payload.activeModal]: removedModal,
+        activeModal,
+        ...newState
+      } = state;
+      const pendingModals = Object.keys(newState);
+      if (pendingModals.length > 0) {
+        const nextModal = Math.min(...pendingModals);
+        return {
+          ...newState,
+          activeModal: nextModal,
+          [nextModal]: {
+            ...newState[nextModal],
+            returnValue: action.payload.returnValue,
+          },
+        };
+      }
+      return { ...newState, activeModal: null };
+    }
+    case 'CLOSE_ALL': {
+      return initialState;
     }
 
-    // Use extraPayload in case you're passing a react component as the payload
-    // but still want extra props on the root dialog
-    const payload = { ...action.payload, ...action.extraPayload };
-
-    const modalId = id;
-    id += 1;
-    if (state.activeModal === null) {
-      return { ...state, [modalId]: payload, activeModal: modalId };
-    }
-    return { ...state, [modalId]: payload };
-  }
-  case 'CLOSE_MODAL': {
-    const {
-      [action.payload.activeModal]: removedModal,
-      activeModal,
-      ...newState
-    } = state;
-    const pendingModals = Object.keys(newState);
-    if (pendingModals.length > 0) {
-      const nextModal = Math.min(...pendingModals);
-      return {
-        ...newState,
-        activeModal: nextModal,
-        [nextModal]: {
-          ...newState[nextModal],
-          returnValue: action.payload.returnValue,
-        },
-      };
-    }
-    return { ...newState, activeModal: null };
-  }
-  case 'CLOSE_ALL': {
-    return initialState;
-  }
-
-  default:
-    return state;
+    default:
+      return state;
   }
 };
 

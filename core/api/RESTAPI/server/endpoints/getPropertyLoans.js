@@ -48,7 +48,8 @@ const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
       'loanProgress',
       'status',
       'properties',
-    ]));
+    ]),
+  );
 
   return filteredLoans.map(({ properties, ...loan }) => {
     const property = properties.find(({ _id }) => _id === propertyId) || {};

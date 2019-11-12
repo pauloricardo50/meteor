@@ -139,7 +139,7 @@ exposeQuery({
 exposeQuery({
   query: fullLoan,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$postFilter = (loans = []) => loans.map(formatLoanWithDocuments);
     },
   },
@@ -152,7 +152,7 @@ exposeQuery({
     firewall(userId) {
       SecurityService.checkUserIsAdmin(userId);
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         Object.assign(
           filters,
@@ -225,7 +225,7 @@ exposeQuery({
         }
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({
         filters,
         params: { _userId, anonymous, referredByUserId },
@@ -323,7 +323,7 @@ exposeQuery({
         SecurityService.checkUserIsPro(userId);
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({
         filters,
         params: {
@@ -343,7 +343,9 @@ exposeQuery({
         }
 
         if (!!referredByMe === !!referredByMyOrganisation) {
-          throw new Meteor.Error('You have to pick exactly one of "referredByMe" or "referredByMyOrganisation"');
+          throw new Meteor.Error(
+            'You have to pick exactly one of "referredByMe" or "referredByMyOrganisation"',
+          );
         }
 
         getProLoanFilters({

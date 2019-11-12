@@ -52,17 +52,25 @@ describe('makeFeedback', () => {
       },
       createdAt: new Date(),
     };
-    expect(component({ model, offer })
-      .text()
-      .includes('Bob')).to.equal(true);
-    expect(component({ model, offer })
-      .text()
-      .includes('John')).to.equal(true);
-    expect(component({ model, offer })
-      .text()
-      .includes('Julia')).to.equal(true);
-    expect(component({ model, offer })
-      .text()
-      .includes('Rue du test 1, 1201 Genève')).to.equal(true);
+    expect(
+      component({ model, offer })
+        .text()
+        .includes('Bob'),
+    ).to.equal(true);
+    expect(
+      component({ model, offer })
+        .text()
+        .includes('John'),
+    ).to.equal(true);
+    expect(
+      component({ model, offer })
+        .text()
+        .includes('Julia'),
+    ).to.equal(true);
+    expect(
+      component({ model, offer })
+        .text()
+        .includes('Rue du test 1, 1201 Genève'),
+    ).to.equal(true);
   });
 });

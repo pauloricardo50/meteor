@@ -22,7 +22,7 @@ const LoanBoard = ({
   currentUser,
   activateLoanBoardSync,
   setActivateLoanBoardSync,
-  options
+  options,
 }: LoanBoardProps) => (
   <>
     <div className="loan-board">
@@ -50,9 +50,7 @@ const LoanBoard = ({
       />
       <LoanModal
         loanId={options.loanId}
-        closeModal={() =>
-          dispatch({ type: ACTIONS.SET_LOAN_ID, payload: '' })
-        }
+        closeModal={() => dispatch({ type: ACTIONS.SET_LOAN_ID, payload: '' })}
         currentUser={currentUser}
       />
     </div>

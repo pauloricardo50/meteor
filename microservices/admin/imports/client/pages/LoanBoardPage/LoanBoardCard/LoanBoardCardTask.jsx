@@ -22,7 +22,7 @@ const LoanBoardCardTask = ({
       {showButtons && (
         <span className="buttons">
           <IconButton
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               taskComplete.run({ taskId: _id });
             }}
@@ -32,7 +32,7 @@ const LoanBoardCardTask = ({
             className="task-complete-button"
           />
           <IconButton
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               taskChangeStatus.run({
                 taskId: _id,

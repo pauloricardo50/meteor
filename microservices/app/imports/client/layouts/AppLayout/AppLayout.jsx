@@ -16,7 +16,7 @@ import impersonateSessionNotification from './impersonateSessionNotification';
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
 
-const renderMobile = (props) => {
+const renderMobile = props => {
   const {
     history: {
       location: { pathname },
@@ -53,7 +53,11 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
 
   return (
     <div className={rootClasses}>
-      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
+      <Navs
+        {...props}
+        shouldShowSideNav={shouldShowSideNav}
+        currentUser={currentUser}
+      />
       <div className={classes} id="scroll-layout">
         <LayoutErrorBoundary>
           <div className="wrapper">

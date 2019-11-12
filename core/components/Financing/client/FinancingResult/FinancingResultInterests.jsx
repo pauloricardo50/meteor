@@ -28,7 +28,7 @@ const getTooltipTitle = ({ structure, loan, structureId }) => {
   return <T id="FinancingResultInterests.noOffer" />;
 };
 
-const InterestsTooltip = (props) => {
+const InterestsTooltip = props => {
   const { loanTranches } = props.structure;
   const rates = getInterestRates(props);
 

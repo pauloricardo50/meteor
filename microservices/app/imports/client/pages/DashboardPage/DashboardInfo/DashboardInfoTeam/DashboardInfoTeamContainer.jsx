@@ -10,11 +10,13 @@ const mergeContacts = ({ promotion, contacts }) => {
     name: promotionName,
     $metadata: { invitedBy },
   } = promotion;
-  const invitedByUser = invitedBy && promotionUsers.find(({ _id }) => _id === invitedBy);
-  const organisation = invitedByUser
-    && invitedByUser.organisations
-    && !!invitedByUser.organisations.length
-    && invitedByUser.organisations[0];
+  const invitedByUser =
+    invitedBy && promotionUsers.find(({ _id }) => _id === invitedBy);
+  const organisation =
+    invitedByUser &&
+    invitedByUser.organisations &&
+    !!invitedByUser.organisations.length &&
+    invitedByUser.organisations[0];
   const title = organisation && organisation.$metadata.title;
 
   return [
@@ -50,30 +52,32 @@ const mergeContacts = ({ promotion, contacts }) => {
     }, []);
 };
 
-export default withProps(({ loan: { _id: loanId, contacts = [], promotions, hasPromotion } }) => ({
-  addContact: newContact =>
-    loanUpdate.run({
-      loanId,
-      object: { contacts: [...contacts, newContact] },
-    }),
-  removeContact: contactName =>
-    loanUpdate.run({
-      loanId,
-      object: {
-        contacts: contacts.filter(({ name }) => name !== contactName),
-      },
-    }),
-  editContact: (oldName, editedContact) =>
-    loanUpdate.run({
-      loanId,
-      object: {
-        contacts: [
-          ...contacts.filter(({ name }) => name !== oldName),
-          editedContact,
-        ],
-      },
-    }),
-  contacts: hasPromotion
-    ? mergeContacts({ promotion: promotions[0], contacts })
-    : contacts,
-}));
+export default withProps(
+  ({ loan: { _id: loanId, contacts = [], promotions, hasPromotion } }) => ({
+    addContact: newContact =>
+      loanUpdate.run({
+        loanId,
+        object: { contacts: [...contacts, newContact] },
+      }),
+    removeContact: contactName =>
+      loanUpdate.run({
+        loanId,
+        object: {
+          contacts: contacts.filter(({ name }) => name !== contactName),
+        },
+      }),
+    editContact: (oldName, editedContact) =>
+      loanUpdate.run({
+        loanId,
+        object: {
+          contacts: [
+            ...contacts.filter(({ name }) => name !== oldName),
+            editedContact,
+          ],
+        },
+      }),
+    contacts: hasPromotion
+      ? mergeContacts({ promotion: promotions[0], contacts })
+      : contacts,
+  }),
+);

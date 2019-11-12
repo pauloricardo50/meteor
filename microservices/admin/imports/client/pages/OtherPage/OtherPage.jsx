@@ -44,9 +44,7 @@ const tabs = [
   ...obj,
   label: (
     <span className="other-page-label">
-      <Icon type={collectionIcons[obj.id]} />
-      {' '}
-      <T id={`collections.${obj.id}`} />
+      <Icon type={collectionIcons[obj.id]} /> <T id={`collections.${obj.id}`} />
     </span>
   ),
   to: createRoute(ADMIN_ROUTES.OTHER_PAGE.path, { tabId: obj.id }),

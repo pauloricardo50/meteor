@@ -21,7 +21,7 @@ import Calculator from 'core/utils/Calculator';
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import PercentWithStatus from '../../../core/components/PercentWithStatus/PercentWithStatus';
 
-const isOnProProperty = (loan) => {
+const isOnProProperty = loan => {
   // If there's only one property, don't show the percentage
   if (loan.properties && loan.properties.length === 1) {
     return loan.properties[0].category === PROPERTY_CATEGORY.PRO;
@@ -29,8 +29,8 @@ const isOnProProperty = (loan) => {
 
   // Else: show the percentage if the selected structure is not a pro property
   return (
-    Calculator.selectPropertyKey({ loan, key: 'category' })
-    === PROPERTY_CATEGORY.PRO
+    Calculator.selectPropertyKey({ loan, key: 'category' }) ===
+    PROPERTY_CATEGORY.PRO
   );
 };
 
@@ -72,9 +72,9 @@ const sideNavLinks: linksType = [
     to: APP_ROUTES.PROPERTIES_PAGE.path,
     icon: faHome,
     percent: loan =>
-      !loan.hasPromotion
-      && !isOnProProperty(loan)
-      && Calculator.propertyPercent({ loan }),
+      !loan.hasPromotion &&
+      !isOnProProperty(loan) &&
+      Calculator.propertyPercent({ loan }),
   },
   {
     id: 'FilesPage',
@@ -96,15 +96,16 @@ export const LoanSideNav = ({
     {links
       .filter(({ condition }) => (condition ? condition(loan) : true))
       .map(link =>
-        (link.Component
+        link.Component
           ? link
           : {
-            ...link,
-            to: createRoute(link.to, {
-              loanId: loan._id,
-              borrowerId: loan.borrowers.length && loan.borrowers[0]._id,
-            }),
-          }))
+              ...link,
+              to: createRoute(link.to, {
+                loanId: loan._id,
+                borrowerId: loan.borrowers.length && loan.borrowers[0]._id,
+              }),
+            },
+      )
       .map(({ Component, to, id, icon, percent, condition, ...otherProps }) => {
         if (Component) {
           return <Component key={id} />;

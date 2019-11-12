@@ -23,9 +23,11 @@ const TableModifier = ({
   const [open, setOpen] = useState(false);
   const [model, setModel] = useState({});
 
-  const mappedRows = rows.map((row) => {
+  const mappedRows = rows.map(row => {
     if (!row.doc) {
-      throw new Error('Each row must have a "doc" property when using TableModifier');
+      throw new Error(
+        'Each row must have a "doc" property when using TableModifier',
+      );
     }
 
     return {
@@ -59,7 +61,9 @@ const TableModifier = ({
             onDelete && (
               <Button
                 onClick={() => {
-                  const confirm = window.confirm('Êtes vous sûr de vouloir supprimer?');
+                  const confirm = window.confirm(
+                    'Êtes vous sûr de vouloir supprimer?',
+                  );
 
                   if (!confirm) {
                     return;

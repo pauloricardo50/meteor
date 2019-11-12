@@ -15,10 +15,11 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
     loan,
     structureId,
   });
-  const yearlyAmortization = Calculator.getAmortization({
-    loan,
-    structureId,
-  }) * 12;
+  const yearlyAmortization =
+    Calculator.getAmortization({
+      loan,
+      structureId,
+    }) * 12;
 
   return (
     <div>
@@ -28,7 +29,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
             <span>
               <T id="FinancingResultAmortization.total" />
             </span>
-            {': '}
+            :
             <b>
               <Money value={amortizationAmount} />
             </b>
@@ -38,11 +39,9 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
             <span>
               <T id="FinancingResultAmortization.duration" />
             </span>
-            {': '}
+            :
             <b>
-              {amortizationYears}
-              {' '}
-              <T id="general.years" />
+              {amortizationYears} <T id="general.years" />
             </b>
           </div>
 
@@ -50,10 +49,10 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
             <span>
               <T id="FinancingResultAmortization.yearly" />
             </span>
-            {': '}
+            :
             <b>
               <Money value={yearlyAmortization} />
-              {' /'}
+              /
               <T id="general.year" />
             </b>
           </div>

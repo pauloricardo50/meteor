@@ -20,7 +20,7 @@ const ConfirmModal = ({
   const [keywordState, setKeyword] = useState('');
   const [loading, setLoading] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
 
     if (!keyword || keyword === keywordState) {
@@ -45,7 +45,7 @@ const ConfirmModal = ({
             <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
               <TextInput
                 value={keywordState}
-                onChange={(v) => setKeyword(v)}
+                onChange={v => setKeyword(v)}
                 style={{ marginTop: 16 }}
                 autoFocus
               />

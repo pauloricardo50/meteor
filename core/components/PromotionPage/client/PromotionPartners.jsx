@@ -13,10 +13,11 @@ const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
     return contacts;
   }
 
-  const organisation = invitedByUser
-    && invitedByUser.organisations
-    && !!invitedByUser.organisations.length
-    && invitedByUser.organisations[0];
+  const organisation =
+    invitedByUser &&
+    invitedByUser.organisations &&
+    !!invitedByUser.organisations.length &&
+    invitedByUser.organisations[0];
 
   const title = organisation && organisation.$metadata.title;
 
@@ -39,16 +40,18 @@ const PromotionPartners = ({
     <div className="promotion-partners animated fadeIn">
       {mergedContacts.length > 0 && (
         <div className="contacts">
-          {mergedContacts.map(({ name: contactName, phoneNumber, title, email }) => (
-            <div className="contact" key={email}>
-              <h4 className="name">{contactName}</h4>
-              <span className="title secondary">{title}</span>
-              {phoneNumber && (
-                <span className="phone-number">{phoneNumber}</span>
-              )}
-              {email && <span className="email">{email}</span>}
-            </div>
-          ))}
+          {mergedContacts.map(
+            ({ name: contactName, phoneNumber, title, email }) => (
+              <div className="contact" key={email}>
+                <h4 className="name">{contactName}</h4>
+                <span className="title secondary">{title}</span>
+                {phoneNumber && (
+                  <span className="phone-number">{phoneNumber}</span>
+                )}
+                {email && <span className="email">{email}</span>}
+              </div>
+            ),
+          )}
         </div>
       )}
 

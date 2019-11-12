@@ -31,16 +31,16 @@ export const conditionalDocuments = [
   {
     id: DOCUMENTS.THIRD_PILLAR_ACCOUNTS,
     condition: ({ doc: { insurance3A, insurance3B, bank3A } }) =>
-      (insurance3A && insurance3A.length > 0)
-      || (insurance3B && insurance3B.length > 0)
-      || (bank3A && bank3A.length > 0),
+      (insurance3A && insurance3A.length > 0) ||
+      (insurance3B && insurance3B.length > 0) ||
+      (bank3A && bank3A.length > 0),
   },
   {
     id: DOCUMENTS.CURRENT_MORTGAGES,
     condition: ({ doc: { realEstate } }) =>
-      realEstate
-      && realEstate.length > 0
-      && realEstate.some(({ loan }) => loan > 0),
+      realEstate &&
+      realEstate.length > 0 &&
+      realEstate.some(({ loan }) => loan > 0),
   },
   {
     id: DOCUMENTS.EXPENSES_JUSTIFICATION,

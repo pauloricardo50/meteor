@@ -12,8 +12,12 @@ const TasksTablePriority = ({
   initialOrderBy,
   initialOrder,
 }: TasksTablePriorityProps) => {
-  const defaultPriority = rows.filter(({ priority }) => priority === TASK_PRIORITIES.DEFAULT);
-  const highPriority = rows.filter(({ priority }) => priority === TASK_PRIORITIES.HIGH);
+  const defaultPriority = rows.filter(
+    ({ priority }) => priority === TASK_PRIORITIES.DEFAULT,
+  );
+  const highPriority = rows.filter(
+    ({ priority }) => priority === TASK_PRIORITIES.HIGH,
+  );
   const showPriorityTable = !!highPriority.length;
 
   return (

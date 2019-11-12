@@ -132,7 +132,9 @@ class PropertySecurity {
     } else if (category === PROPERTY_CATEGORY.PROMOTION) {
       this.checkBelongsToPromotion(propertyId, userId);
     } else {
-      Security.handleUnauthorized('Vous ne pouvez pas modifier ce bien immobilier');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas modifier ce bien immobilier',
+      );
     }
   }
 
@@ -166,7 +168,9 @@ class PropertySecurity {
       const hasProperty = UserService.hasProperty({ userId, propertyId });
 
       if (!hasProperty) {
-        Security.handleUnauthorized("Vous n'avez pas accès à ce bien immobilier");
+        Security.handleUnauthorized(
+          "Vous n'avez pas accès à ce bien immobilier",
+        );
       }
     }
   }
@@ -249,7 +253,9 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      Security.handleUnauthorized('Vous ne pouvez pas supprimer ce client de ce bien immobilier');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas supprimer ce client de ce bien immobilier',
+      );
     }
   }
 
@@ -286,7 +292,9 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      Security.handleUnauthorized('Vous ne pouvez pas réserver ce bien immobilier à ce client');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas réserver ce bien immobilier à ce client',
+      );
     }
   }
 
@@ -326,7 +334,9 @@ class PropertySecurity {
         customerOwnerType,
       })
     ) {
-      Security.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas vendre ce bien immobilier à ce client',
+      );
     }
   }
 

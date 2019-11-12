@@ -69,4 +69,5 @@ export const schemas = {
 };
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';
-Meteor.isDevEnvironment = Meteor.settings.public.environment === 'dev-production';
+Meteor.isDevEnvironment =
+  Meteor.settings.public.environment === 'dev-production';

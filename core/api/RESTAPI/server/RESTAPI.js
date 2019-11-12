@@ -36,7 +36,7 @@ export default class RESTAPI {
   }
 
   registerMiddlewares(middlewares) {
-    middlewares.forEach((middleware) => {
+    middlewares.forEach(middleware => {
       WebApp.connectHandlers.use(
         this.rootPath,
         middleware(this.getEndpointsOptions()),
@@ -49,10 +49,10 @@ export default class RESTAPI {
   registerEndpoints() {
     const endpoints = Object.keys(this.endpoints);
 
-    endpoints.forEach((endpoint) => {
+    endpoints.forEach(endpoint => {
       const methods = Object.keys(this.endpoints[endpoint]);
 
-      methods.forEach((method) => {
+      methods.forEach(method => {
         const finalEndpoint = this.makeEndpoint(endpoint);
         const { handler } = this.endpoints[endpoint][method];
 
@@ -83,8 +83,9 @@ export default class RESTAPI {
                 files: req.files,
                 simpleAuthParams: req.simpleAuthParams,
                 res,
-              }))
-            .then((result) => {
+              }),
+            )
+            .then(result => {
               this.handleSuccess(result, req, res);
             })
             .catch(next);
@@ -100,7 +101,7 @@ export default class RESTAPI {
       WebApp.connectHandlers.use.bind(WebApp.connectHandlers),
       Meteor.bindEnvironment,
       connectRoute,
-    )((router) => {
+    )(router => {
       router[method.toLowerCase()](endpoint, this.wrapHandler(handler));
     });
   }
@@ -126,7 +127,9 @@ export default class RESTAPI {
 
   addEndpoint(path, method, handler, options = {}) {
     if (this.endpoints[path] && this.endpoints[path][method]) {
-      throw new Error(`Endpoint "${path}" for method "${method}" already exists in REST API`);
+      throw new Error(
+        `Endpoint "${path}" for method "${method}" already exists in REST API`,
+      );
     }
 
     this.endpoints[path] = {

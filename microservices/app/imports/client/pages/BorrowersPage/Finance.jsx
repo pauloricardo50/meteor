@@ -13,7 +13,7 @@ import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
 import { withCalculator } from 'core/containers/withCalculator';
 
-const BorrowerFinancePage = (props) => {
+const BorrowerFinancePage = props => {
   const {
     loan: { userFormsEnabled, borrowers },
     Calculator,

@@ -14,7 +14,7 @@ import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 
 type MortgageNotesFormProps = {};
 
-const handleSubmitMortgageNote = mortgageNoteId => (doc) => {
+const handleSubmitMortgageNote = mortgageNoteId => doc => {
   let message;
   let hideLoader;
 
@@ -30,7 +30,7 @@ const handleSubmitMortgageNote = mortgageNoteId => (doc) => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const removeMortgageNote = (mortgageNoteId) => {
+const removeMortgageNote = mortgageNoteId => {
   let message;
   let hideLoader;
 

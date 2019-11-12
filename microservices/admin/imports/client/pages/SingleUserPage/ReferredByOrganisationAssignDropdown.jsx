@@ -36,4 +36,6 @@ const ReferredByOrganisationAssignDropdown = ({
   </div>
 );
 
-export default ReferredByOrganisationAssignDropdownContainer(ReferredByOrganisationAssignDropdown);
+export default ReferredByOrganisationAssignDropdownContainer(
+  ReferredByOrganisationAssignDropdown,
+);

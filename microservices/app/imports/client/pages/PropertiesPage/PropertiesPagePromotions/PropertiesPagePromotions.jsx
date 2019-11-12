@@ -12,29 +12,31 @@ const PropertiesPagePromotions = ({
 }: PropertiesPagePromotionsProps) => (
   <div className="promotions">
     <div className="promotion-cards">
-      {promotions
-          && promotions.map(promotion => (
-            <PromotionDetail
-              promotion={promotion}
-              loanId={loanId}
-              key={promotion._id}
-            />
-          ))}
+      {promotions &&
+        promotions.map(promotion => (
+          <PromotionDetail
+            promotion={promotion}
+            loanId={loanId}
+            key={promotion._id}
+          />
+        ))}
     </div>
 
     {promotionOptions.length > 0 && (
-    <>
-      <hr />
-      <h2 className="text-center">
-        <T id="collections.promotionOptions" />
-      </h2>
-    </>
+      <>
+        <hr />
+        <h2 className="text-center">
+          <T id="collections.promotionOptions" />
+        </h2>
+      </>
     )}
 
     <div className="promotion-options">
       {promotionOptions
-        .sort(({ priority: priority1 }, { priority: priority2 }) =>
-          priority1 - priority2)
+        .sort(
+          ({ priority: priority1 }, { priority: priority2 }) =>
+            priority1 - priority2,
+        )
         .map(promotionOption => (
           <PromotionOptionDetail
             promotionOption={promotionOption}

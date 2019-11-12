@@ -139,9 +139,9 @@ class NotificationService extends CollectionService {
       if (!existingNotification) {
         this.insert({
           recipientLinks: this.getNotificationRecipient(
-            loan.userCache
-              && loan.userCache.assignedEmployeeCache
-              && loan.userCache.assignedEmployeeCache._id,
+            loan.userCache &&
+              loan.userCache.assignedEmployeeCache &&
+              loan.userCache.assignedEmployeeCache._id,
             admins,
           ),
           revenueLink: { _id: revenueId },

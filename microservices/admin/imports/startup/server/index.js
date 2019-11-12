@@ -9,7 +9,6 @@ import messagesFR from '../../../lang/fr.json';
 // is removed in the on startup function on the client
 Inject.rawHead('loader', Assets.getText('loader.html'));
 
-
 Accounts.config({ forbidClientAccountCreation: true });
 
 localizationStartup({ messages: messagesFR });

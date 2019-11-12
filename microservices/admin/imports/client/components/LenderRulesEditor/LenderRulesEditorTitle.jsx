@@ -50,7 +50,7 @@ const renderValue = (name, value) => {
   return <T id={`Forms.${name}.${value}`} />;
 };
 
-const renderSingleVariable = (ruleObject) => {
+const renderSingleVariable = ruleObject => {
   if (ruleObject === true) {
     return <T id="LenderRulesEditorTitle.all" />;
   }

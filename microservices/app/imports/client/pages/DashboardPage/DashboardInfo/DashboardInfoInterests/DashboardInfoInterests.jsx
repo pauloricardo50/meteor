@@ -8,7 +8,7 @@ import APP_ROUTES from '../../../../../startup/client/appRoutes';
 import DashboardInfoInterestsTable from './DashboardInfoInterestsTable';
 import DashboardInfoInterestsContainer from './DashboardInfoInterestsContainer';
 
-const DashboardInfoInterests = (props) => {
+const DashboardInfoInterests = props => {
   const {
     loan: { enableOffers, _id: loanId },
     offers,

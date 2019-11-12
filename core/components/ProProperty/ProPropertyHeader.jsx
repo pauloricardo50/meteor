@@ -17,8 +17,8 @@ const getImages = (documents = {}, imageUrls = []) => {
   }
 
   if (
-    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
-    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES] &&
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
   ) {
     images = [
       ...images,

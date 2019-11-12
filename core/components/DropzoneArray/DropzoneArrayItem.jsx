@@ -28,7 +28,7 @@ const getStyles = (props, currentValue) => ({
   },
 });
 
-const DropzoneArrayItem = (props) => {
+const DropzoneArrayItem = props => {
   const {
     active,
     disabled,

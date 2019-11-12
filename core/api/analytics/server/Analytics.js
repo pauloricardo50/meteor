@@ -1,17 +1,19 @@
-import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import UserService from 'core/api/users/server/UserService';
-import { getClientHost } from 'core/utils/server/getClientUrl';
-import { getClientTrackingId } from 'core/utils/server/getClientTrackingId';
-import { EVENTS_CONFIG } from './eventsConfig';
-import { TRACKING_COOKIE } from '../analyticsConstants';
+import DefaultNodeAnalytics from 'analytics-node';
+
+import { getClientHost } from '../../../utils/server/getClientUrl';
+import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
+import UserService from '../../users/server/UserService';
+import { isAPI } from '../../RESTAPI/server/helpers';
+import SessionService from '../../sessions/server/SessionService';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
+import { TRACKING_COOKIE } from '../analyticsConstants';
+import EVENTS from '../events';
+import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
 import { impersonateMiddleware } from './analyticsHelpers';
 import TestAnalytics from './TestAnalytics';
-import EVENTS from '../events';
-import SessionService from '../../sessions/server/SessionService';
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -20,7 +22,7 @@ class NodeAnalytics extends DefaultNodeAnalytics {
   }
 
   initAnalytics(context) {
-    ['identify', 'track', 'page', 'alias'].forEach((method) => {
+    ['identify', 'track', 'page', 'alias'].forEach(method => {
       this.middlewareManager.applyToMethod(
         method,
         impersonateMiddleware(context),
@@ -84,6 +86,37 @@ class Analytics {
     });
   }
 
+  createAnalyticsUser(userId, data) {
+    const { firstName, lastName, email, roles } = UserService.fetchOne({
+      $filters: { _id: userId },
+      firstName: 1,
+      lastName: 1,
+      email: 1,
+      roles: 1,
+    });
+
+    this.analytics.identify({
+      userId,
+      traits: {
+        firstName,
+        lastName,
+        email,
+        role: roles[0],
+      },
+    });
+
+    const { name, properties } = this.getEventProperties(
+      EVENTS.USER_CREATED,
+      data,
+    );
+
+    this.analytics.track({
+      userId,
+      event: name,
+      properties,
+    });
+  }
+
   identify(trackingId) {
     this.alias(trackingId);
 
@@ -98,20 +131,37 @@ class Analytics {
     });
   }
 
-  track(event, data, trackingId = getClientTrackingId()) {
-    if (!Object.keys(this.events).includes(event)) {
-      throw new Meteor.Error(`Unknown event ${event}`);
-    }
+  getTrackingOrigin() {
+    return isAPI() ? TRACKING_ORIGIN.API : TRACKING_ORIGIN.METEOR_METHOD;
+  }
+
+  getEventProperties(event, data) {
     const eventConfig = this.events[event];
     const { name, transform } = eventConfig;
 
     const eventProperties = transform ? transform(data) : data;
 
+    return {
+      name,
+      properties: {
+        ...eventProperties,
+        trackingOrigin: this.getTrackingOrigin(),
+      },
+    };
+  }
+
+  track(event, data, trackingId = getClientTrackingId()) {
+    if (!Object.keys(this.events).includes(event)) {
+      throw new Meteor.Error(`Unknown event ${event}`);
+    }
+
+    const { name, properties } = this.getEventProperties(event, data);
+
     this.analytics.track({
       ...(trackingId ? { anonymousId: trackingId } : {}),
       userId: this.userId,
       event: name,
-      properties: eventProperties,
+      properties,
       context: {
         ip: this.clientAddress,
         userAgent: this.userAgent,
@@ -161,14 +211,7 @@ class Analytics {
   }
 
   page(params) {
-    const {
-      cookies,
-      sessionStorage,
-      path,
-      route,
-      queryParams,
-      queryString,
-    } = params;
+    const { cookies, path, route, queryParams, queryString } = params;
     const trackingId = cookies[TRACKING_COOKIE];
     const formattedRoute = this.formatRouteName(route);
 

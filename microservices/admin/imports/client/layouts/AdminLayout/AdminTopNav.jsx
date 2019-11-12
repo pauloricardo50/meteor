@@ -4,7 +4,7 @@ import updateForProps from 'core/containers/updateForProps';
 import TopNav from 'core/components/TopNav';
 import IconButton from 'core/components/IconButton';
 import NotificationsManager from '../../components/NotificationsManager';
-import Search from '../../components/Search';
+import AdminSearch from '../../components/AdminSearch';
 import TaskAdder from '../../components/TasksTable/TaskAdder';
 
 const AdminTopNav = ({
@@ -23,7 +23,7 @@ const AdminTopNav = ({
     >
       <TaskAdder label={isMobile ? '+' : undefined} />
       <NotificationsManager />
-      <Search openSearch={openSearch} setOpenSearch={setOpenSearch} />
+      <AdminSearch openSearch={openSearch} setOpenSearch={setOpenSearch} />
     </TopNav>
   </div>
 );

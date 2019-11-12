@@ -15,7 +15,7 @@ const OwnFundsAdder = ({
   structureId,
   disabled,
 }: OwnFundsAdderProps) => (
-  <React.Fragment>
+  <>
     <Button raised primary onClick={handleOpen} disabled={disabled}>
       <T id="Financing.ownFundsAdder" />
     </Button>
@@ -26,7 +26,7 @@ const OwnFundsAdder = ({
       disableDelete
       ownFundsIndex={-1}
     />
-  </React.Fragment>
+  </>
 );
 
 export default FinancingOwnFundsDialogContainer(OwnFundsAdder);

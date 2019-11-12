@@ -83,16 +83,18 @@ export default compose(
     schema: userSchema,
     labels: { assignedEmployeeId: <T id="Forms.assignedEmployee" /> },
     createUser: data =>
-      adminCreateUser.run({ options: data, role: ROLES.USER }).then((newId) => {
+      adminCreateUser.run({ options: data, role: ROLES.USER }).then(newId => {
         history.push(`/users/${newId}`);
       }),
-    editUser: (data) => {
+    editUser: data => {
       const { organisations = [], ...object } = data;
       return updateUser
         .run({ userId: user._id, object })
-        .then(() =>
-          user.roles.includes(ROLES.PRO)
-            && updateOrganisations({ userId: user._id, organisations }));
+        .then(
+          () =>
+            user.roles.includes(ROLES.PRO) &&
+            updateOrganisations({ userId: user._id, organisations }),
+        );
     },
   })),
 );

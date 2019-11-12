@@ -55,7 +55,10 @@ const MonitoringFilters = ({
           label="Anonymes"
           value={withAnonymous}
           onChange={makeSetState('withAnonymous')}
-          options={[{ id: true, label: 'Avec' }, { id: false, label: 'Sans' }]}
+          options={[
+            { id: true, label: 'Avec' },
+            { id: false, label: 'Sans' },
+          ]}
         />
       </div>
     </div>

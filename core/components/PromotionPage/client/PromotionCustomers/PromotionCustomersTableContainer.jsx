@@ -128,7 +128,7 @@ const makeMapLoan = ({
   promotionUsers,
   currentUser = {},
   promotionLots,
-}) => (loan) => {
+}) => loan => {
   const { _id: loanId } = loan;
 
   return {
@@ -143,16 +143,20 @@ const makeMapLoan = ({
   };
 };
 
-export default withProps(({
-  loans,
-  currentUser,
-  promotion: { _id: promotionId, promotionLots, users: promotionUsers },
-}) => ({
-  rows: loans.map(makeMapLoan({
-    promotionId,
-    promotionUsers,
+export default withProps(
+  ({
+    loans,
     currentUser,
-    promotionLots,
-  })),
-  columnOptions,
-}));
+    promotion: { _id: promotionId, promotionLots, users: promotionUsers },
+  }) => ({
+    rows: loans.map(
+      makeMapLoan({
+        promotionId,
+        promotionUsers,
+        currentUser,
+        promotionLots,
+      }),
+    ),
+    columnOptions,
+  }),
+);

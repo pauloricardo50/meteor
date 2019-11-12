@@ -29,12 +29,13 @@ const degressive = ({
     }
 
     if (max < previousBracket.max) {
-      throw new Error(`Tax brackets should come in increasing order, but found ${
-        previousBracket.max
-      } -> ${max}`);
+      throw new Error(
+        `Tax brackets should come in increasing order, but found ${previousBracket.max} -> ${max}`,
+      );
     }
 
-    const bracketTax = Math.min(amount - previousBracket.max, max - previousBracket.max) * rate;
+    const bracketTax =
+      Math.min(amount - previousBracket.max, max - previousBracket.max) * rate;
 
     tax += bracketTax;
 

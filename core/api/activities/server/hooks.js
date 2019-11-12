@@ -2,7 +2,7 @@ import Activities from '../activities';
 import NotificationService from '../../notifications/server/NotificationService';
 
 Activities.after.update(
-  function (userId, doc, fieldNames) {
+  function(userId, doc, fieldNames) {
     if (fieldNames.includes('date')) {
       const { date: newDate } = doc;
       const { date: oldDate } = this.previous;

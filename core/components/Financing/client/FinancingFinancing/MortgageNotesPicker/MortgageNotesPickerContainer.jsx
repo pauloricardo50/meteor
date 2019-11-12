@@ -25,7 +25,7 @@ const formatBorrowerMortgageNote = (
   updateStructure,
   mortgageNoteIds,
 ) =>
-  notes.map((note) => {
+  notes.map(note => {
     const selected = mortgageNoteIds.includes(note._id);
     const available = note.canton === canton;
 
@@ -47,7 +47,7 @@ export default compose(
   FinancingDataContainer,
   SingleStructureContainer,
   StructureUpdateContainer,
-  withProps((props) => {
+  withProps(props => {
     const {
       structure: { mortgageNoteIds = [] },
       borrowers = [],

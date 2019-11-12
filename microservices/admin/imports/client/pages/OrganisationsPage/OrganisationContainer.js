@@ -8,9 +8,11 @@ export default compose(
   withRouter,
   withProps(({ organisation: { _id: organisationId }, history }) => ({
     onClick: () =>
-      history.push(createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
-        organisationId,
-        tabId: '',
-      })),
+      history.push(
+        createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
+          organisationId,
+          tabId: '',
+        }),
+      ),
   })),
 );

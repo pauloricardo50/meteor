@@ -113,9 +113,7 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       label: 'Recap.monthlyCost',
       value: (
         <span>
-          {toMoney(monthly)}
-          {' '}
-          <small>/mois</small>
+          {toMoney(monthly)} <small>/mois</small>
         </span>
       ),
     },
@@ -433,7 +431,7 @@ export const getPropertyArray = ({ property }) => {
   ];
 };
 
-export const getStructureArray = (props) => {
+export const getStructureArray = props => {
   const borrowRatio = Calculator.getBorrowRatio(props);
   const incomeRatio = Calculator.getIncomeRatio(props);
   const loanValue = Calculator.selectLoanValue(props);
@@ -481,9 +479,7 @@ export const getStructureArray = (props) => {
       label: 'Recap.monthlyCost',
       value: (
         <span>
-          {toMoney(monthly)}
-          {' '}
-          <small>/mois</small>
+          {toMoney(monthly)} <small>/mois</small>
         </span>
       ),
     },
@@ -495,8 +491,7 @@ export const getStructureArray = (props) => {
       label: propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
-          <Percent value={borrowRatio} />
-          {' '}
+          <Percent value={borrowRatio} />{' '}
           <span
             className={
               borrowRatio <= maxBorrowRatio + 0.001 // add 0.1% to avoid rounding errors
@@ -511,15 +506,14 @@ export const getStructureArray = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          <Percent value={incomeRatio} />
-          {' '}
+          <Percent value={incomeRatio} />{' '}
           <span
             className={
               incomeRatio <= 1 / 3
                 ? 'fa fa-check success'
                 : incomeRatio <= 0.38
-                  ? 'fa fa-exclamation warning'
-                  : 'fa fa-times error'
+                ? 'fa fa-exclamation warning'
+                : 'fa fa-times error'
             }
           />
         </span>

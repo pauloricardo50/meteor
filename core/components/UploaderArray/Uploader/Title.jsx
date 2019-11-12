@@ -46,7 +46,7 @@ const Title = ({
 
       <IconButton
         type={displayFull ? 'up' : 'down'}
-        onClick={(event) => {
+        onClick={event => {
           // Don't trigger the file upload due to the <label /> in FileDropper
           event.preventDefault();
           return toggleDisplayFull();

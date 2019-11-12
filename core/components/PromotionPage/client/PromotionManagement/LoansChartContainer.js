@@ -3,7 +3,8 @@ import moment from 'moment';
 
 const getData = (loans = []) => {
   const dates = loans.map(({ createdAt }) =>
-    moment(createdAt).format('YYYY-M-D'));
+    moment(createdAt).format('YYYY-M-D'),
+  );
   const filteredDates = dates
     .filter((date, index, self) => self.indexOf(date) === index)
     .sort((a, b) => new Date(b) - new Date(a));
@@ -11,7 +12,8 @@ const getData = (loans = []) => {
     (sortedLoans, date) => ({
       ...sortedLoans,
       [date]: loans.filter(({ createdAt }) =>
-        moment(moment(createdAt).format('YYYY-M-D')).isSameOrBefore(date)).length,
+        moment(moment(createdAt).format('YYYY-M-D')).isSameOrBefore(date),
+      ).length,
     }),
     {},
   );

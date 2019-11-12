@@ -264,14 +264,14 @@ export const zipcodes = {
   9999: 5,
 };
 
-export default (zipcode) => {
+export default zipcode => {
   let result;
 
   if (zipcode > 9999 || zipcode < 1000) {
     return null;
   }
 
-  Object.keys(zipcodes).some((code) => {
+  Object.keys(zipcodes).some(code => {
     if (zipcode >= code) {
       result = code;
       return false;
@@ -291,10 +291,10 @@ export default (zipcode) => {
  * @param {String} canton
  * @returns Number
  */
-export const getZipcodeForCanton = (canton) => {
+export const getZipcodeForCanton = canton => {
   const cantonIndex = Object.keys(CANTONS).findIndex(c => c === canton);
 
-  return Object.keys(zipcodes).find((zipcode) => {
+  return Object.keys(zipcodes).find(zipcode => {
     const cantonIndexForZipcode = zipcodes[zipcode];
     return cantonIndexForZipcode === cantonIndex;
   });

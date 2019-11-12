@@ -20,8 +20,8 @@ const OwnFundsCompleter = ({ required, current }: OwnFundsCompleterProps) => (
                 current === required
                   ? 'success'
                   : current < required
-                    ? 'primary'
-                    : 'error'
+                  ? 'primary'
+                  : 'error'
               }
             >
               {toMoney(current)}

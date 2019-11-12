@@ -2,7 +2,6 @@
 import React from 'react';
 
 import { promotionOptionRemove } from 'core/api/methods';
-import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import T from '../../../Translation';
 import Checkbox from '../../../Checkbox';
 import PromotionLotDetail from '../PromotionLotDetail';

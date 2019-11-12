@@ -58,6 +58,7 @@ const AppTopNav = ({
                   primary: true,
                   label: 'Créez votre compte',
                 }}
+                ctaId="topNav"
               />
             )}
             <TopNavButtons>{children}</TopNavButtons>

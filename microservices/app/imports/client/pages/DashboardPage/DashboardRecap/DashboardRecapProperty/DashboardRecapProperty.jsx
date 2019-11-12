@@ -45,7 +45,7 @@ const getContent = (property, loanId, growRecap) => {
   const canDisplayDetails = shouldDisplay(property, loanId);
   const propertyAddress = getPropertyAddressString(property);
   return (
-    <React.Fragment>
+    <>
       {canDisplayDetails ? (
         <MapWithMarker
           address={getPropertyAddressString(property)}
@@ -69,7 +69,7 @@ const getContent = (property, loanId, growRecap) => {
           <PropertyModifier property={property} />
         </span>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
@@ -86,7 +86,7 @@ const DashboardRecapProperty = ({ property, loanId, growRecap }) => {
         ':loanId': loanId,
       })}
       className="dashboard-recap-property card1 card-hover"
-      onClick={(event) => {
+      onClick={event => {
         // Do this to prevent the link from triggering if a form is submitted
         // in the propertyModifier
         // This hack skips the link in react-router

@@ -30,15 +30,19 @@ const formatMessage = Intl.formatMessage.bind(Intl);
 
 ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
-  ({ params: { loanId, promotionId }, context: { userId } }) => {
+  ({ params: { loanId, promotionId }, context }) => {
+    context.unblock();
+    const { userId } = context;
+
     const { name } = PromotionService.fetchOne({
       $filters: { _id: promotionId },
       name: 1,
     });
-    const { name: userName } = UserService.fetchOne({
-      $filters: { _id: userId },
-      name: 1,
-    }) || {};
+    const { name: userName } =
+      UserService.fetchOne({
+        $filters: { _id: userId },
+        name: 1,
+      }) || {};
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.REMOVE_LOAN_FROM_PROMOTION,
@@ -53,12 +57,11 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   toggleAccount,
-  ({
-    params: { userId },
-    context: { userId: adminId },
-    result: isDisabled,
-  }) => {
-    const { name: adminName } = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+  ({ params: { userId }, context, result: isDisabled }) => {
+    context.unblock();
+    const { userId: adminId } = context;
+    const { name: adminName } =
+      UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.ACCOUNT_DISABLED,
@@ -73,7 +76,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
-  ({ result: userId, params: { referralId } }) => {
+  ({ result: userId, params: { referralId }, context }) => {
+    context.unblock();
+
     const currentUser = UserService.get(userId);
     const { createdAt } = currentUser;
 
@@ -130,8 +135,10 @@ ServerEventService.addAfterMethodListener(
     params: {
       user: { email },
     },
-    context: { userId: proId },
+    context,
   }) => {
+    context.unblock();
+    const { userId: proId } = context;
     const APIUser = getAPIUser();
 
     const currentUser = UserService.fetchOne({
@@ -146,9 +153,11 @@ ServerEventService.addAfterMethodListener(
 
     // User already exists
     if (
-      activities.length
-      && activities.find(({ metadata }) =>
-        metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED)
+      activities.length &&
+      activities.find(
+        ({ metadata }) =>
+          metadata && metadata.event === ACTIVITY_EVENT_METADATA.CREATED,
+      )
     ) {
       return;
     }
@@ -169,8 +178,8 @@ ServerEventService.addAfterMethodListener(
     if (APIUser) {
       referredByAPIOrg = UserService.getUserMainOrganisation(APIUser._id);
       const proOrg = UserService.getUserMainOrganisation(proId);
-      referredByAPIOrgLabel = `${proOrg
-        && proOrg.name}, API ${referredByAPIOrg && referredByAPIOrg.name}`;
+      referredByAPIOrgLabel = `${proOrg &&
+        proOrg.name}, API ${referredByAPIOrg && referredByAPIOrg.name}`;
     }
 
     if (!referredBy && (referredByOrg || referredByAPIOrgLabel)) {
@@ -182,8 +191,8 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (referredBy && (referredByOrg || referredByAPIOrgLabel)) {
-      description = `Référé par ${referredBy.name} (${referredByAPIOrgLabel
-        || referredByOrg.name})`;
+      description = `Référé par ${referredBy.name} (${referredByAPIOrgLabel ||
+        referredByOrg.name})`;
     }
 
     ActivityService.addCreatedAtActivity({
@@ -205,10 +214,13 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   adminCreateUser,
-  ({ result: userId, context: { userId: adminId } }) => {
+  ({ result: userId, context }) => {
+    context.unblock();
+    const { userId: adminId } = context;
     const currentUser = UserService.get(userId);
     const { createdAt } = currentUser;
-    const admin = UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const admin =
+      UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
     const { name: adminName } = admin;
 
     ActivityService.addCreatedAtActivity({
@@ -222,38 +234,39 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-ServerEventService.addAfterMethodListener(
-  userPasswordReset,
-  ({ context: { userId } }) => {
-    const firstConnectionActivity = ActivityService.fetchOne({
-      $filters: {
-        'userLink._id': userId,
-        'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
-      },
-    });
+ServerEventService.addAfterMethodListener(userPasswordReset, ({ context }) => {
+  context.unblock();
+  const { userId } = context;
+  const firstConnectionActivity = ActivityService.fetchOne({
+    $filters: {
+      'userLink._id': userId,
+      'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
+    },
+  });
+  ActivityService.addEventActivity({
+    event: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET,
+    isServerGenerated: true,
+    userLink: { _id: userId },
+    title: 'Mot de passe choisi',
+    createdBy: userId,
+  });
+
+  if (!firstConnectionActivity) {
     ActivityService.addEventActivity({
-      event: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET,
+      event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
       isServerGenerated: true,
       userLink: { _id: userId },
-      title: 'Mot de passe choisi',
+      title: 'Première connexion',
       createdBy: userId,
     });
-
-    if (!firstConnectionActivity) {
-      ActivityService.addEventActivity({
-        event: ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
-        isServerGenerated: true,
-        userLink: { _id: userId },
-        title: 'Première connexion',
-        createdBy: userId,
-      });
-    }
-  },
-);
+  }
+});
 
 ServerEventService.addAfterMethodListener(
   assignAdminToUser,
-  ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
+  ({ params: { userId }, result = {}, context }) => {
+    context.unblock();
+    const { userId: adminId } = context;
     const { oldAssignee, newAssignee } = result;
     if (oldAssignee._id !== newAssignee._id) {
       ActivityService.addEventActivity({
@@ -274,12 +287,15 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   [setUserReferredBy, setUserReferredByOrganisation],
-  ({ params: { userId }, result = {}, context: { userId: adminId } }) => {
+  ({ params: { userId }, result = {}, context }) => {
+    context.unblock();
+    const { userId: adminId } = context;
     const { oldReferral = {}, newReferral = {}, referralType } = result;
     if (oldReferral._id !== newReferral._id) {
-      const description = referralType === 'org'
-        ? newReferral.name
-        : getUserNameAndOrganisation({ user: newReferral });
+      const description =
+        referralType === 'org'
+          ? newReferral.name
+          : getUserNameAndOrganisation({ user: newReferral });
 
       ActivityService.addEventActivity({
         event: ACTIVITY_EVENT_METADATA.USER_CHANGE_REFERRAL,
@@ -300,11 +316,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   changeEmail,
-  ({
-    params: { userId },
-    result: { oldEmail, newEmail },
-    context: { userId: adminId },
-  }) => {
+  ({ params: { userId }, result: { oldEmail, newEmail }, context }) => {
+    context.unblock();
+    const { userId: adminId } = context;
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.USER_CHANGE_EMAIL,
       details: { oldEmail, newEmail },
@@ -317,26 +331,23 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-ServerEventService.addAfterMethodListener(
-  userVerifyEmail,
-  ({ context: { userId } }) => {
-    ActivityService.addEventActivity({
-      event: ACTIVITY_EVENT_METADATA.USER_VERIFIED_EMAIL,
-      isServerGenerated: true,
-      userLink: { _id: userId },
-      title: 'Adresse email vérifiée',
-      createdBy: userId,
-    });
-  },
-);
+ServerEventService.addAfterMethodListener(userVerifyEmail, ({ context }) => {
+  context.unblock();
+  const { userId } = context;
+  ActivityService.addEventActivity({
+    event: ACTIVITY_EVENT_METADATA.USER_VERIFIED_EMAIL,
+    isServerGenerated: true,
+    userLink: { _id: userId },
+    title: 'Adresse email vérifiée',
+    createdBy: userId,
+  });
+});
 
 ServerEventService.addAfterMethodListener(
   loanSetStatus,
-  ({
-    context: { userId },
-    params: { loanId },
-    result: { prevStatus, nextStatus },
-  }) => {
+  ({ context, params: { loanId }, result: { prevStatus, nextStatus } }) => {
+    context.unblock();
+    const { userId } = context;
     const formattedPrevStatus = formatMessage({
       id: `Forms.status.${prevStatus}`,
     });
@@ -367,8 +378,10 @@ ServerEventService.addAfterMethodListener(
       address,
       emailParams: { assigneeAddress, loan },
     },
-    context: { userId },
+    context,
   }) => {
+    context.unblock();
+    const { userId } = context;
     const { email } = UserService.fetchOne({
       $filters: { _id: userId },
       email: 1,

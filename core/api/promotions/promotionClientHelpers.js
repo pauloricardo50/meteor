@@ -62,14 +62,15 @@ const shouldHideForLotStatus = (
 ) => {
   if (
     Object.values(PROMOTION_LOT_STATUS).every(status =>
-      forLotStatus.includes(status))
+      forLotStatus.includes(status),
+    )
   ) {
     return false;
   }
 
   if (
-    promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE
-    && forLotStatus.includes(promotionLotStatus)
+    promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE &&
+    forLotStatus.includes(promotionLotStatus)
   ) {
     return false;
   }
@@ -109,21 +110,21 @@ export const shouldAnonymize = ({
   }
 
   switch (customerOwnerType) {
-  case PROMOTION_INVITED_BY_TYPE.USER:
-    return (
-      shouldHide
-        || ![
+    case PROMOTION_INVITED_BY_TYPE.USER:
+      return (
+        shouldHide ||
+        ![
           PROMOTION_INVITED_BY_TYPE.USER,
           PROMOTION_INVITED_BY_TYPE.ORGANISATION,
         ].includes(displayCustomerNames.invitedBy)
-    );
-  case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
-    return (
-      shouldHide
-        || displayCustomerNames.invitedBy
-          !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
-    );
-  default:
-    return true;
+      );
+    case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
+      return (
+        shouldHide ||
+        displayCustomerNames.invitedBy !==
+          PROMOTION_INVITED_BY_TYPE.ORGANISATION
+      );
+    default:
+      return true;
   }
 };

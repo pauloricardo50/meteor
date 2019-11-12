@@ -43,11 +43,11 @@ const translateSimpleSchema = () => {
           `${translate(args)} doit être un ${args.dataType}`,
         regEx({ label, regExp }) {
           switch (regExp) {
-          case SimpleSchema.RegEx.Email:
-          case SimpleSchema.RegEx.WeakEmail:
-            return 'Cette adresse e-mail est incorrecte';
-          default:
-            return "Le format n'est pas valide";
+            case SimpleSchema.RegEx.Email:
+            case SimpleSchema.RegEx.WeakEmail:
+              return 'Cette adresse e-mail est incorrecte';
+            default:
+              return "Le format n'est pas valide";
           }
         },
       },

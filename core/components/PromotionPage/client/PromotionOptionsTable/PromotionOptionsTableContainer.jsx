@@ -25,7 +25,7 @@ const columnOptions = [
   label: <T id={`PromotionOptionsTable.${opt.id}`} />,
 }));
 
-const makeMapPromotionOption = ({ promotion }) => (promotionOption) => {
+const makeMapPromotionOption = ({ promotion }) => promotionOption => {
   const { users: promotionUsers } = promotion;
   const {
     _id: promotionOptionId,
@@ -35,9 +35,11 @@ const makeMapPromotionOption = ({ promotion }) => (promotionOption) => {
     createdAt,
   } = promotionOption;
   const [promotionLot] = promotionLots;
-  const {
-    $metadata: { invitedBy },
-  } = loan.promotions[0];
+  const [
+    {
+      $metadata: { invitedBy },
+    },
+  ] = loan.promotions;
 
   return {
     id: promotionOptionId,

@@ -14,12 +14,12 @@ const Nest = ({ children, fields, itemProps, label, name, ...props }) =>
     children
       ? injectName(name, children)
       : fields.map(key => (
-        <CustomAutoField
-          key={key}
-          name={joinName(name, key)}
-          {...itemProps}
-        />
-      )),
+          <CustomAutoField
+            key={key}
+            name={joinName(name, key)}
+            {...itemProps}
+          />
+        )),
   );
 
 Nest.defaultProps = {

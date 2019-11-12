@@ -9,7 +9,9 @@ import T from 'core/components/Translation';
 
 type SimpleMaxPropertyValueEmptyStateProps = {};
 
-const SimpleMaxPropertyValueEmptyState = (props: SimpleMaxPropertyValueEmptyStateProps) => {
+const SimpleMaxPropertyValueEmptyState = (
+  props: SimpleMaxPropertyValueEmptyStateProps,
+) => {
   const { state } = props;
 
   return (

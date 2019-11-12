@@ -170,7 +170,7 @@ const LoanBoardOptionsContent = ({
 
         <div>
           <StickyPopover
-            component={(
+            component={
               <RadioButtons
                 options={groupByOptions}
                 onChange={newValue =>
@@ -179,7 +179,7 @@ const LoanBoardOptionsContent = ({
                 value={groupBy}
                 radioGroupStyle={{ flexDirection: 'column' }}
               />
-            )}
+            }
             placement="bottom"
           >
             <b>Mode d'affichage</b>

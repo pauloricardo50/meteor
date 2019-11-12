@@ -43,12 +43,16 @@ const bundlesSchema = {
   },
   'bundlesSettings.consultation.forLotStatus.$': {
     type: String,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+    ),
   },
   'bundlesSettings.consultation.invitedBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY,
+    ),
     defaultValue:
       PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
     uniforms: { displayEmpty: false, placeholder: '' },
@@ -63,7 +67,9 @@ const displayCustomerNamesSchema = {
   'permissions.displayCustomerNames.invitedBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY,
+    ),
     uniforms: {
       displayEmpty: true,
       placeholder: 'Ne pas afficher le nom des clients',
@@ -81,7 +87,9 @@ const displayCustomerNamesSchema = {
   },
   'permissions.displayCustomerNames.forLotStatus.$': {
     type: String,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+    ),
   },
 };
 
@@ -103,7 +111,7 @@ const userPermissionsSchema = () => {
       prefix: 'permissions',
       autoFormDisplayCondition: ({ useBundles }) => !useBundles,
     }),
-      ...displayCustomerNamesSchema,
+    ...displayCustomerNamesSchema,
   });
 };
 
@@ -115,7 +123,7 @@ const makeUserPermissions = ({
 }) => {
   if (useBundles) {
     const bundlesPermissions = {};
-    bundles.forEach((bundleName) => {
+    bundles.forEach(bundleName => {
       merge(
         bundlesPermissions,
         PROMOTION_PERMISSIONS_BUNDLES[bundleName](bundlesSettings),

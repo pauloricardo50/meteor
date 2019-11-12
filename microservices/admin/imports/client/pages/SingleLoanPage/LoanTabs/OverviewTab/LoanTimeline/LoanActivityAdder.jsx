@@ -31,12 +31,14 @@ export const ActivitySchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   shouldNotify: { type: Boolean, defaultValue: false },
+  isImportant: { type: Boolean, defaultValue: false },
 });
 
 export const activityFormLayout = [
   { className: 'grid-col', fields: ['title', 'type'] },
   { className: 'grid-col', fields: ['date', 'shouldNotify'] },
   'description',
+  'isImportant',
 ];
 
 export const LoanActivityForm = ({

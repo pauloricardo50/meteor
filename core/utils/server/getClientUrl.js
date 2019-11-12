@@ -6,12 +6,12 @@ const MICROSERVICE = '__MICROSERVICE_NAME';
 const CLIENT_URL = '__CLIENT_URL';
 const HOST = '__CLIENT_HOST';
 
-const getMicroserviceFromHost = (host) => {
+const getMicroserviceFromHost = host => {
   const { subdomains } = Meteor.settings.public;
   // In case the subdomain is missing, assume it is e-potek.ch, i.e. www
   let result = 'www';
 
-  Object.keys(subdomains).some((microservice) => {
+  Object.keys(subdomains).some(microservice => {
     const microserviceUrl = subdomains[microservice];
 
     // When testing, the port number is incremented by 5 or 15
@@ -22,8 +22,8 @@ const getMicroserviceFromHost = (host) => {
       const urlStart = parts.slice(0, -1).join('');
       if (port >= 1000) {
         if (
-          `${urlStart}:${port + 5}`.includes(host)
-          || `${urlStart}:${port + 15}`.includes(host)
+          `${urlStart}:${port + 5}`.includes(host) ||
+          `${urlStart}:${port + 15}`.includes(host)
         ) {
           result = microservice;
           return true;
@@ -63,7 +63,7 @@ export const setClientUrl = ({ host, href }) => {
   }
 };
 
-export const setClientMicroservice = (microservice) => {
+export const setClientMicroservice = microservice => {
   const currentMicroservice = getClientMicroservice();
   if (!currentMicroservice) {
     storeOnFiber(MICROSERVICE, microservice);

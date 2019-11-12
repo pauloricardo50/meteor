@@ -20,9 +20,9 @@ const getTabs = ({
     {
       id: 'files',
       shouldDisplay:
-        documents
-        && documents.promotionDocuments
-        && documents.promotionDocuments.length > 0,
+        documents &&
+        documents.promotionDocuments &&
+        documents.promotionDocuments.length > 0,
     },
     {
       id: 'customers',

@@ -40,7 +40,10 @@ const PropertyAdder = ({
           userId,
         })
         .then(propertyId =>
-          history.push(createRoute(PRO_ROUTES.PRO_PROPERTY_PAGE.path, { propertyId })))
+          history.push(
+            createRoute(PRO_ROUTES.PRO_PROPERTY_PAGE.path, { propertyId }),
+          ),
+        )
     }
   />
 );

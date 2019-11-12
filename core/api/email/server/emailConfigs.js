@@ -159,7 +159,9 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       templateContent: [
         {
           name: 'logos',
-          content: ReactDOMServer.renderToStaticMarkup(PromotionLogos({ logoUrls })),
+          content: ReactDOMServer.renderToStaticMarkup(
+            PromotionLogos({ logoUrls }),
+          ),
         },
       ],
     };
@@ -168,22 +170,22 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     ...params,
     promotionName: params.promotion.name,
     phoneNumber:
-      params.promotion.contacts.length
-      && params.promotion.contacts[0].phoneNumber,
+      params.promotion.contacts.length &&
+      params.promotion.contacts[0].phoneNumber,
     name: params.promotion.contacts.length && params.promotion.contacts[0].name,
     epotekNumber: EPOTEK_PHONE,
     assignedEmployeeName:
-      (params.promotion.assignedEmployee
-        && params.promotion.assignedEmployee.name)
-      || 'Yannis Eggert',
+      (params.promotion.assignedEmployee &&
+        params.promotion.assignedEmployee.name) ||
+      'Yannis Eggert',
     assignedEmployeeFirstName:
-      (params.promotion.assignedEmployee
-        && params.promotion.assignedEmployee.firstName)
-      || 'Yannis',
+      (params.promotion.assignedEmployee &&
+        params.promotion.assignedEmployee.firstName) ||
+      'Yannis',
     assignedEmployeePhone:
-      (params.promotion.assignedEmployee
-        && params.promotion.assignedEmployee.phoneNumbers[0])
-      || EPOTEK_PHONE,
+      (params.promotion.assignedEmployee &&
+        params.promotion.assignedEmployee.phoneNumbers[0]) ||
+      EPOTEK_PHONE,
     invitedBy: params.invitedBy || 'e-Potek',
   }),
 });
@@ -302,10 +304,12 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       templateContent: [
         {
           name: 'body-content-1',
-          content: ReactDOMServer.renderToStaticMarkup(LoanChecklistEmail({
-            loan,
-            intl: { formatMessage: Intl.formatMessage.bind(Intl) },
-          })),
+          content: ReactDOMServer.renderToStaticMarkup(
+            LoanChecklistEmail({
+              loan,
+              intl: { formatMessage: Intl.formatMessage.bind(Intl) },
+            }),
+          ),
         },
       ],
       senderName: assigneeName,
@@ -324,7 +328,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   }),
 });
 
-const promotionLotEmailOverrides = function (
+const promotionLotEmailOverrides = function(
   { promotionId, fromEmail },
   { title, body, cta },
 ) {

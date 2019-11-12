@@ -6,7 +6,7 @@ type PublicLinkProps = {
   link: String,
 };
 
-const copyLinkToClipboard = (link) => {
+const copyLinkToClipboard = link => {
   navigator.clipboard
     .writeText(link)
     .then(() => import('core/utils/message'))

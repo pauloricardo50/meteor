@@ -12,9 +12,9 @@ import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 
 export const getPropertyAddress = ({ address1, zipCode, city }) =>
-  (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
+  address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined;
 
-const SinglePropertyPage = (props) => {
+const SinglePropertyPage = props => {
   const { property, displayLoans, className, loanId } = props;
 
   if (property.category === PROPERTY_CATEGORY.PRO) {

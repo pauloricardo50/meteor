@@ -21,11 +21,12 @@ export const userSchema = new SimpleSchema({
 
 export default compose(
   withRouter,
-  withProps(({ history, omitValues = [] }) => ({
+  withProps(({ history, omitValues = [], ctaId }) => ({
     schema: userSchema.omit(...omitValues),
-    onSubmit: (values) => {
+    onSubmit: values => {
       const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      const referralId = localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined;
+      const referralId =
+        localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined;
 
       return anonymousCreateUser
         .run({
@@ -35,13 +36,16 @@ export default compose(
 
           // Remove null values
           loanId: loanId || undefined,
+          ctaId,
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
-          history.push(createRoute(APP_ROUTES.SIGNUP_SUCCESS_PAGE.path, {
-            email: values.email,
-          }));
+          history.push(
+            createRoute(APP_ROUTES.SIGNUP_SUCCESS_PAGE.path, {
+              email: values.email,
+            }),
+          );
         });
     },
   })),

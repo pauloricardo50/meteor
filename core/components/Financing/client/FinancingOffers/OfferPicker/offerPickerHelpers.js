@@ -14,11 +14,11 @@ export const getAmortizationForStructureWithOffer = ({
   });
 
 export const getInterestsForStructureWithOffer = props =>
-  (FinancingCalculator.getInterestsWithTranches(props)
-    * props.structure.wantedLoan)
-  / 12;
+  (FinancingCalculator.getInterestsWithTranches(props) *
+    props.structure.wantedLoan) /
+  12;
 
-export const getMonthlyForStructureWithOffer = (props) => {
+export const getMonthlyForStructureWithOffer = props => {
   const amort = getAmortizationForStructureWithOffer(props);
   const interests = getInterestsForStructureWithOffer(props);
   const prop = getPropertyExpenses(props);

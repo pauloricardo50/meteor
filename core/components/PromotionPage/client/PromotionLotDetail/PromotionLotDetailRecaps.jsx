@@ -7,7 +7,7 @@ import T, { MetricArea, Money } from '../../../Translation';
 
 type PromotionLotDetailRecapsProps = {};
 
-const getPromotionLotValueRecapArray = (promotionLot) => {
+const getPromotionLotValueRecapArray = promotionLot => {
   const { lots = [], properties } = promotionLot;
   const property = properties.length > 0 && properties[0];
 
@@ -61,7 +61,7 @@ const getPromotionLotValueRecapArray = (promotionLot) => {
   ];
 };
 
-const getPromotionLotRecapArray = (promotionLot) => {
+const getPromotionLotRecapArray = promotionLot => {
   const { lots = [], properties } = promotionLot;
   const property = properties.length > 0 && properties[0];
   const {
@@ -109,9 +109,7 @@ const getPromotionLotRecapArray = (promotionLot) => {
       label: 'Forms.yearlyExpenses',
       value: (
         <span>
-          <Money value={yearlyExpenses} />
-          {' '}
-          <small>/année</small>
+          <Money value={yearlyExpenses} /> <small>/année</small>
         </span>
       ),
       hide: !yearlyExpenses,

@@ -98,7 +98,7 @@ const getColumns = ({ promotionLot, promotionOption }) => {
   ];
 };
 
-const makeMapOption = ({ promotionLot }) => (promotionOption) => {
+const makeMapOption = ({ promotionLot }) => promotionOption => {
   const { _id: promotionOptionId } = promotionOption;
 
   return {

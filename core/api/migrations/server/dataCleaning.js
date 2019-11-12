@@ -35,11 +35,11 @@ const makeCleanDocument = collection => (doc) => {
     .update({ _id }, { $set: withoutSkippedFields });
 };
 
-const cleanCollection = async (collection) => {
+const cleanCollection = async collection => {
   if (
-    !collection.name
-    || skippedCollections.includes(collection.name)
-    || !collection.instance._c2
+    !collection.name ||
+    skippedCollections.includes(collection.name) ||
+    !collection.instance._c2
   ) {
     console.log(`Skipping ${collection.name}`);
 

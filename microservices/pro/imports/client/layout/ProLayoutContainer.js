@@ -6,7 +6,7 @@ import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 
-const getRedirect = (pathname) => {
+const getRedirect = pathname => {
   const currentUser = useContext(CurrentUserContext);
   const baseRedirect = getBaseRedirect(currentUser, pathname);
 
@@ -22,8 +22,4 @@ const withRedirect = withProps(({ history }) => {
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });
 
-export default compose(
-  withRouter,
-  withRedirect,
-  withContactButtonProvider,
-);
+export default compose(withRouter, withRedirect, withContactButtonProvider);

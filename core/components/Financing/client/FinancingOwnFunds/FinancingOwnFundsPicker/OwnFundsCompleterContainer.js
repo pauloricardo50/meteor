@@ -13,7 +13,8 @@ const removePreviousValueEffect = ({ props, ownFundsIndex, ownFunds }) => {
   let requiredChange = 0;
   let currentChange = 0;
   // Editing existing value, cancel its effect
-  const previousIsPledged = ownFunds[ownFundsIndex].usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE;
+  const previousIsPledged =
+    ownFunds[ownFundsIndex].usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE;
 
   if (previousIsPledged) {
     const maxPledge = getMaxPledge(props);
@@ -39,7 +40,7 @@ const removePledgingEffect = ({ props, ownFunds, ownFundsIndex, value }) => {
   };
 };
 
-export const getRequiredAndCurrentFunds = (props) => {
+export const getRequiredAndCurrentFunds = props => {
   const {
     value,
     structure: { ownFunds },

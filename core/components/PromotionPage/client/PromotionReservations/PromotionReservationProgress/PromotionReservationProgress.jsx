@@ -76,9 +76,12 @@ const PromotionReservationProgress = ({
             }}
           />
         ),
-        placeholder: `${data.valid}/${data.required} (${Math.round(getPercent(info) * 100)}%)`,
+        placeholder: `${data.valid}/${data.required} (${Math.round(
+          getPercent(info) * 100,
+        )}%)`,
         id,
-      })),
+      }),
+    ),
     icon({
       ...fullVerification,
       ...makeGetIcon({
@@ -143,20 +146,23 @@ const PromotionReservationProgress = ({
         ))}
       </div>
       <div className="promotion-reservation-progress-icons">
-        {!isAnonymized
-          && getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId)}
+        {!isAnonymized &&
+          getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId)}
       </div>
     </div>
   );
 };
 
-export default compose(withSmartQuery({
-  query: loanProgressQuery,
-  queryOptions: { single: true, reactive: false },
-  params: ({
-    promotionOption: {
-      loan: { _id: loanId },
-    },
-  }) => ({ loanId }),
-  dataName: 'loanProgress',
-}))(PromotionReservationProgress);
+export default compose(
+  withSmartQuery({
+    query: loanProgressQuery,
+    queryOptions: { single: true, reactive: false },
+    params: ({
+      promotionOption: {
+        loan: { _id: loanId },
+      },
+    }) => ({ loanId }),
+    dataName: 'loanProgress',
+    smallLoader: true,
+  }),
+)(PromotionReservationProgress);

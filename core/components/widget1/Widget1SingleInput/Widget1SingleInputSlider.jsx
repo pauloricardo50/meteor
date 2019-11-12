@@ -20,9 +20,9 @@ const getSliderValue = (value, sliderMax) => {
 const INCREASE_SLIDER_LIMIT = 0.9;
 
 const showIncreaseButton = (value, sliderMax, allowExtremeLoan) =>
-  sliderMax > 0
-  && value >= INCREASE_SLIDER_LIMIT * sliderMax
-  && !allowExtremeLoan;
+  sliderMax > 0 &&
+  value >= INCREASE_SLIDER_LIMIT * sliderMax &&
+  !allowExtremeLoan;
 
 const Widget1SingleInputSlider = ({
   value,
@@ -48,13 +48,13 @@ const Widget1SingleInputSlider = ({
     {showIncreaseButton(value, sliderMax, allowExtremeLoan) ? (
       <IconButton
         type="add"
-        tooltip={(
+        tooltip={
           <T
             id={`Widget1SingleInputSlider.${
               isLoanValue ? 'buttonTooltipLoan' : 'buttonTooltip'
             }`}
           />
-        )}
+        }
         onClick={increaseSliderMax}
         tabIndex={-1}
         size="small"

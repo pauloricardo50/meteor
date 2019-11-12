@@ -32,7 +32,9 @@ describe('Calculator middleware', () => {
     it('does not overwrite existing borrowers', () => {
       const calc = new Calc();
 
-      expect(calc.parameters({ loan: { borrowers: 1 }, borrowers: 2 })).to.deep.equal({
+      expect(
+        calc.parameters({ loan: { borrowers: 1 }, borrowers: 2 }),
+      ).to.deep.equal({
         loan: { borrowers: 1 },
         borrowers: [2],
       });

@@ -117,8 +117,8 @@ const getPromotionOptionMailParams = async (
     customerName: anonymize
       ? 'une personne anonymisée'
       : user
-        ? user.name
-        : 'un acquéreur sans nom',
+      ? user.name
+      : 'un acquéreur sans nom',
     fromEmail: assignedEmployee && assignedEmployee.email,
   };
 };
@@ -196,22 +196,24 @@ PROMOTION_EMAILS.forEach(({ method, emailId, recipients, getEmailParams }) => {
     const emailRecipients = PromotionOptionService.getEmailRecipients({
       promotionOptionId,
     });
-    recipients.forEach(({
-      type,
-      emailId: emailIdOverride,
-      getEmailParams: getEmailParamsOverride,
-    }) => {
-      emailRecipients[type].forEach(async (recipient) => {
-        const { userId } = recipient;
-        const emailParams = getEmailParamsOverride
-          ? await getEmailParamsOverride(...args, recipient)
-          : await getEmailParams(...args, recipient);
-        sendEmail.run({
-          emailId: emailIdOverride || emailId,
-          userId,
-          params: emailParams,
+    recipients.forEach(
+      ({
+        type,
+        emailId: emailIdOverride,
+        getEmailParams: getEmailParamsOverride,
+      }) => {
+        emailRecipients[type].forEach(async recipient => {
+          const { userId } = recipient;
+          const emailParams = getEmailParamsOverride
+            ? await getEmailParamsOverride(...args, recipient)
+            : await getEmailParams(...args, recipient);
+          sendEmail.run({
+            emailId: emailIdOverride || emailId,
+            userId,
+            params: emailParams,
+          });
         });
-      });
-    });
+      },
+    );
   });
 });

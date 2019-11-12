@@ -17,7 +17,7 @@ import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
 import BorrowerAge from '../BorrowerAge';
 
-const OverviewTab = (props) => {
+const OverviewTab = props => {
   const {
     loan,
     currentUser: { roles },

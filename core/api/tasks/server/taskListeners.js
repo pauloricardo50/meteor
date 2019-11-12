@@ -26,13 +26,10 @@ const newUserTask = ({ userId, ...params }) =>
 
 ServerEventService.addAfterMethodListener(
   [adminCreateUser, anonymousCreateUser],
-  ({ result: userId }) => {
-    if (userId) {
-      const user = UserService.fetchOne({
-        $filters: { _id: userId },
-        assignedEmployeeId: 1,
-      });
+  ({ context, result: userId }) => {
+    context.unblock();
 
+    if (userId) {
       newUserTask({ userId });
     }
   },
@@ -41,15 +38,20 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   proInviteUser,
   async ({
-    result: userId,
-    context: { userId: proId },
+    result,
+    context,
     params: { invitationNote, properties, propertyIds, promotionIds },
   }) => {
-    if (userId) {
-      if (typeof userId.then === 'function') {
+    const { userId: proId } = context;
+    context.unblock();
+
+    if (result) {
+      if (typeof result.then === 'function') {
         // The result of the meteor method can be a promise
-        userId = await userId;
+        result = await result;
       }
+
+      const { userId } = result;
 
       const user = UserService.fetchOne({
         $filters: { _id: userId },
@@ -137,7 +139,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   [loanShareSolvency],
-  ({ params: { shareSolvency, loanId } }) => {
+  ({ context, params: { shareSolvency, loanId } }) => {
+    context.unblock();
+
     if (shareSolvency) {
       TaskService.insert({
         object: {

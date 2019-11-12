@@ -8,7 +8,7 @@ type NumberInputProps = {};
 
 const NumberInput = ({ onChange, value, ...props }: NumberInputProps) => (
   <Input
-    onChange={(event) => {
+    onChange={event => {
       onChange(numberFormatters.parse(event.target.value));
     }}
     value={value}

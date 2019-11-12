@@ -32,7 +32,8 @@ const SideNavUser = ({
   // Get the pathname, remove the leading '/', and split by '/'
   const splittedUrl = history.location.pathname.substring(1).split('/');
   // If it has enough elements, parse the loanId
-  const loanId = splittedUrl.length >= 2 && splittedUrl[0] === 'loans' ? splittedUrl[1] : '';
+  const loanId =
+    splittedUrl.length >= 2 && splittedUrl[0] === 'loans' ? splittedUrl[1] : '';
   let currentLoan;
 
   if (loanId) {

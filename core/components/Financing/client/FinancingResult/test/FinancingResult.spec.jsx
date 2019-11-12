@@ -24,7 +24,9 @@ const expectResult = (component, name, value) => {
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
     // due to the web's "intl" API
-    expect(val.contains(`${value}`) || val.contains(`${value}`.replace('.', ','))).to.equal(true);
+    expect(
+      val.contains(`${value}`) || val.contains(`${value}`.replace('.', ',')),
+    ).to.equal(true);
   } else {
     expect(val.contains(`${value}`)).to.equal(true);
   }
@@ -94,7 +96,9 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find('.financing-structures-result-chart .total');
+      const monthly = component().find(
+        '.financing-structures-result-chart .total',
+      );
       const string = monthly.text();
       const hasNonZeroNumber = /[1-9]/.test(string);
       // Interests rates change constantly, can't pin a precise value
@@ -205,7 +209,9 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find('.financing-structures-result-chart .total');
+      const monthly = component().find(
+        '.financing-structures-result-chart .total',
+      );
       const string = monthly.text();
       const value = string.match(/\d/g).join('');
       expect(value).to.equal('9720');

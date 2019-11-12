@@ -6,7 +6,7 @@ import { adminRevenues } from '../queries';
 exposeQuery({
   query: adminRevenues,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({
         filters,
         params: {

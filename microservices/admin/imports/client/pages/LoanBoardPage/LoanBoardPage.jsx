@@ -6,19 +6,19 @@ import LoanBoard from './LoanBoard';
 type LoanBoardPageProps = {};
 
 const LoanBoardPage = ({
-    currentUser,
-    loanBoardOptions,
-    loanBoardDispatch,
-    activateLoanBoardSync,
-    setActivateLoanBoardSync,
+  currentUser,
+  loanBoardOptions,
+  loanBoardDispatch,
+  activateLoanBoardSync,
+  setActivateLoanBoardSync,
 }: LoanBoardPageProps) => (
-        <LoanBoard
-            currentUser={currentUser}
-            options={loanBoardOptions}
-            dispatch={loanBoardDispatch}
-            activateLoanBoardSync={activateLoanBoardSync}
-            setActivateLoanBoardSync={setActivateLoanBoardSync}
-        />
-    );
+  <LoanBoard
+    currentUser={currentUser}
+    options={loanBoardOptions}
+    dispatch={loanBoardDispatch}
+    activateLoanBoardSync={activateLoanBoardSync}
+    setActivateLoanBoardSync={setActivateLoanBoardSync}
+  />
+);
 
 export default LoanBoardPage;

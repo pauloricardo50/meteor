@@ -6,8 +6,9 @@ import ClientEventService, {
 import { logError } from '../../slack/methodDefinitions';
 import { refetchQueries } from '../clientQueryManager';
 
-const shouldLogErrorsToConsole = (Meteor.isDevelopment || Meteor.isStaging || Meteor.isDevEnvironment)
-  && !Meteor.isTest;
+const shouldLogErrorsToConsole =
+  (Meteor.isDevelopment || Meteor.isStaging || Meteor.isDevEnvironment) &&
+  !Meteor.isTest;
 
 const handleError = ({ config, params, result, error }) => {
   if (shouldLogErrorsToConsole) {

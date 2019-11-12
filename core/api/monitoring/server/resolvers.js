@@ -71,52 +71,52 @@ const getRevenues = ({ value }) => {
   }
 };
 
-const getGroupBy = (groupBy) => {
+const getGroupBy = groupBy => {
   switch (groupBy) {
-  case 'status':
-    return '$status';
-  case 'revenueDate':
-    return { month: '$revenueMonth', year: '$revenueYear' };
-  case 'createdAt':
-    return { month: '$createdMonth', year: '$createdYear' };
+    case 'status':
+      return '$status';
+    case 'revenueDate':
+      return { month: '$revenueMonth', year: '$revenueYear' };
+    case 'createdAt':
+      return { month: '$createdMonth', year: '$createdYear' };
 
-  default:
-    throw new Meteor.Error(`Invalid groupBy: "${groupBy}"`);
+    default:
+      throw new Meteor.Error(`Invalid groupBy: "${groupBy}"`);
   }
 };
 
 const getGrouping = ({ groupBy, value }) => {
   const fields = {};
   switch (value) {
-  case 'count':
-    fields.count = { $sum: 1 };
-    break;
-  case 'revenues':
-    fields.revenues = { $sum: '$revenues.amount' };
-    fields.paidRevenues = {
-      $sum: {
-        $cond: {
-          if: { $eq: ['$revenues.status', REVENUE_STATUS.CLOSED] },
-          then: '$revenues.amount',
-          else: 0,
+    case 'count':
+      fields.count = { $sum: 1 };
+      break;
+    case 'revenues':
+      fields.revenues = { $sum: '$revenues.amount' };
+      fields.paidRevenues = {
+        $sum: {
+          $cond: {
+            if: { $eq: ['$revenues.status', REVENUE_STATUS.CLOSED] },
+            then: '$revenues.amount',
+            else: 0,
+          },
         },
-      },
-    };
-    fields.expectedRevenues = {
-      $sum: {
-        $cond: {
-          if: { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
-          then: '$revenues.amount',
-          else: 0,
+      };
+      fields.expectedRevenues = {
+        $sum: {
+          $cond: {
+            if: { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
+            then: '$revenues.amount',
+            else: 0,
+          },
         },
-      },
-    };
-    break;
-  case 'loanValue':
-    fields.loanValue = { $sum: '$structure.wantedLoan' };
-    break;
-  default:
-    throw new Meteor.Error('Invalid grouping value');
+      };
+      break;
+    case 'loanValue':
+      fields.loanValue = { $sum: '$structure.wantedLoan' };
+      break;
+    default:
+      throw new Meteor.Error('Invalid grouping value');
   }
 
   return { $group: { _id: getGroupBy(groupBy), ...fields } };
@@ -139,13 +139,13 @@ const buildPipeline = ({ filters, groupBy, value }) =>
     .reduce((arr, val) => [...arr, ...(Array.isArray(val) ? val : [val])], [])
     .filter(x => x);
 
-export const loanMonitoring = async (args) => {
+export const loanMonitoring = async args => {
   const pipeline = buildPipeline(args);
   const agg = await LoanService.aggregate(pipeline).toArray();
   return agg;
 };
 
-export const loanStatusChanges = async (args) => {
+export const loanStatusChanges = async args => {
   const { fromDate, toDate } = args;
 
   if (!fromDate || !toDate) {
@@ -174,8 +174,8 @@ export const loanStatusChanges = async (args) => {
   const sortedResults = agg.sort(({ _id: _idA }, { _id: _idB }) => {
     if (_idA.prevStatus !== _idB.prevStatus) {
       return (
-        LOAN_STATUS_ORDER.indexOf(_idA.prevStatus)
-        - LOAN_STATUS_ORDER.indexOf(_idB.prevStatus)
+        LOAN_STATUS_ORDER.indexOf(_idA.prevStatus) -
+        LOAN_STATUS_ORDER.indexOf(_idB.prevStatus)
       );
     }
 

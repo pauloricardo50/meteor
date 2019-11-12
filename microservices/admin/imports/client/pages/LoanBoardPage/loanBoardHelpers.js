@@ -8,52 +8,51 @@ import get from 'lodash/get';
 import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
 import { SORT_ORDER, GROUP_BY, ACTIONS, SORT_BY } from './loanBoardConstants';
 
-
-
-
 export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   switch (groupBy) {
-  case GROUP_BY.STATUS: {
-    const statuses = LOAN_STATUS_ORDER;
-    return ({ id: statusA }, { id: statusB }) =>
-      statuses.indexOf(statusA) - statuses.indexOf(statusB);
-  }
-  case GROUP_BY.PROMOTION: {
-    return ({ id: idA }, { id: idB }) => {
-      const promotionA = promotions.find(({ _id }) => idA === _id);
-      const nameA = promotionA ? promotionA.name : '';
-      const promotionB = promotions.find(({ _id }) => idB === _id);
-      const nameB = promotionB ? promotionB.name : '';
-      return nameA.localeCompare(nameB);
-    };
-  }
-  case GROUP_BY.ADMIN: {
-    return ({ id: idA }, { id: idB }) => {
-      const adminA = admins.find(({ _id }) => idA === _id);
-      const nameA = adminA ? adminA.firstName : '';
-      const adminB = admins.find(({ _id }) => idB === _id);
-      const nameB = adminB ? adminB.firstName : '';
+    case GROUP_BY.STATUS: {
+      const statuses = LOAN_STATUS_ORDER;
+      return ({ id: statusA }, { id: statusB }) =>
+        statuses.indexOf(statusA) - statuses.indexOf(statusB);
+    }
+    case GROUP_BY.PROMOTION: {
+      return ({ id: idA }, { id: idB }) => {
+        const promotionA = promotions.find(({ _id }) => idA === _id);
+        const nameA = promotionA ? promotionA.name : '';
+        const promotionB = promotions.find(({ _id }) => idB === _id);
+        const nameB = promotionB ? promotionB.name : '';
+        return nameA.localeCompare(nameB);
+      };
+    }
+    case GROUP_BY.ADMIN: {
+      return ({ id: idA }, { id: idB }) => {
+        const adminA = admins.find(({ _id }) => idA === _id);
+        const nameA = adminA ? adminA.firstName : '';
+        const adminB = admins.find(({ _id }) => idB === _id);
+        const nameB = adminB ? adminB.firstName : '';
 
-      return nameA.localeCompare(nameB);
-    };
-  }
+        return nameA.localeCompare(nameB);
+      };
+    }
 
-  default:
-    return () => true;
+    default:
+      return () => true;
   }
 };
 
 const getMissingColumns = (groupBy, groups) => {
   switch (groupBy) {
-  case GROUP_BY.STATUS: {
-    return LOAN_STATUS_ORDER.filter(status =>
-      status !== LOAN_STATUS.UNSUCCESSFUL
-          && status !== LOAN_STATUS.TEST
-          && !groups.includes(status));
-  }
+    case GROUP_BY.STATUS: {
+      return LOAN_STATUS_ORDER.filter(
+        status =>
+          status !== LOAN_STATUS.UNSUCCESSFUL &&
+          status !== LOAN_STATUS.TEST &&
+          !groups.includes(status),
+      );
+    }
 
-  default:
-    return [];
+    default:
+      return [];
   }
 };
 
@@ -72,7 +71,7 @@ const loanBoardStatusOrder = [
 const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
   let sortOrders = [sortOrder];
   let sorters = [
-    (item) => {
+    item => {
       const value = get(item, sortBy);
 
       if (sortBy === SORT_BY.STATUS) {
@@ -90,7 +89,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
   if (groupBy === GROUP_BY.PROMOTION) {
     // Keep the promotionLoan at the top of the column
     sorters = [
-      (item) => {
+      item => {
         if (item.financedPromotionLink && item.financedPromotionLink._id) {
           return 1;
         }
@@ -105,20 +104,20 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
   return data => _orderBy(data, sorters, sortOrders);
 };
 
-export const groupByFunc = (groupBy) => {
+export const groupByFunc = groupBy => {
   if (groupBy === GROUP_BY.PROMOTION) {
     // When grouping by promotion, also group promotionLoan
     return loan =>
-      get(loan, groupBy)
-      || (loan.financedPromotionLink && loan.financedPromotionLink._id);
+      get(loan, groupBy) ||
+      (loan.financedPromotionLink && loan.financedPromotionLink._id);
   }
 
   return groupBy;
 };
 
-export const makeFormatData = ({ groupBy }) => (data) => {
+export const makeFormatData = ({ groupBy }) => data => {
   if (groupBy === GROUP_BY.PROMOTION) {
-    return data.map((item) => {
+    return data.map(item => {
       if (item.financedPromotionLink && item.financedPromotionLink._id) {
         return {
           ...item,
@@ -149,7 +148,7 @@ export const makeFormatColumn = ({
   const formatData = makeFormatData({ groupBy });
   const sortColumnData = makeSortColumnData({ sortBy, sortOrder, groupBy });
 
-  return (group) => {
+  return group => {
     const data = groupedLoans[group];
     const sortedData = sortColumnData(data);
     const formattedData = formatData(sortedData);

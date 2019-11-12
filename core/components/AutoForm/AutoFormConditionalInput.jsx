@@ -12,7 +12,7 @@ export default class AutoFormConditionalInput extends Component {
     this.setConditional(this.props.children[0].props.inputProps.currentValue);
   }
 
-  onConditionalChange = (value) => {
+  onConditionalChange = value => {
     // Make sure boolean values are treated as booleans
     let safeValue = value;
     if (value === 'true') {
@@ -52,7 +52,8 @@ export default class AutoFormConditionalInput extends Component {
             {React.Children.map(conditionalChildren, child =>
               React.cloneElement(child, {
                 inputProps: child.props.inputProps,
-              }))}
+              }),
+            )}
           </div>
         ) : (
           ''
@@ -63,7 +64,9 @@ export default class AutoFormConditionalInput extends Component {
 }
 
 AutoFormConditionalInput.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
+  children: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  ),
   conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
     .isRequired,
 };

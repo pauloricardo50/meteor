@@ -27,7 +27,7 @@ export default WrappedComponent =>
     }
 
     setServerTime = () =>
-      getServerTime.run({}).then((serverTime) => {
+      getServerTime.run({}).then(serverTime => {
         this.setState({ serverTime }, () => {
           Meteor.clearInterval(this.clientInterval);
           this.clientInterval = Meteor.setInterval(

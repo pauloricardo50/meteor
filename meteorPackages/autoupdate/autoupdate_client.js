@@ -30,8 +30,8 @@ import { ClientVersions } from './client_versions.js';
 const clientArch = Meteor.isCordova
   ? 'web.cordova'
   : Meteor.isModern
-    ? 'web.browser'
-    : 'web.browser.legacy';
+  ? 'web.browser'
+  : 'web.browser.legacy';
 
 const autoupdateVersions = ((__meteor_runtime_config__.autoupdate || {})
   .versions || {})[clientArch] || {
@@ -52,7 +52,7 @@ connection.registerStore(
   clientVersions.createStore(),
 );
 
-Autoupdate.newClientAvailable = function () {
+Autoupdate.newClientAvailable = function() {
   return clientVersions.newClientAvailable(
     clientArch,
     ['versionRefreshable', 'versionNonRefreshable'],
@@ -135,7 +135,7 @@ Autoupdate._retrySubscription = () => {
 
           Array.prototype.forEach.call(
             document.getElementsByTagName('link'),
-            (link) => {
+            link => {
               if (link.className === '__meteor-css__') {
                 oldLinks.push(link);
               }
@@ -145,7 +145,7 @@ Autoupdate._retrySubscription = () => {
           function waitUntilCssLoads(link, callback) {
             let called;
 
-            link.onload = function () {
+            link.onload = function() {
               knownToSupportCssOnLoad = true;
               if (!called) {
                 called = true;
@@ -169,14 +169,14 @@ Autoupdate._retrySubscription = () => {
           let newLinksLeftToLoad = newCss.length;
           function removeOldLinks() {
             if (oldLinks.length > 0 && --newLinksLeftToLoad < 1) {
-              oldLinks.splice(0).forEach((link) => {
+              oldLinks.splice(0).forEach(link => {
                 link.parentNode.removeChild(link);
               });
             }
           }
 
           if (newCss.length > 0) {
-            newCss.forEach((css) => {
+            newCss.forEach(css => {
               const newLink = document.createElement('link');
               newLink.setAttribute('rel', 'stylesheet');
               newLink.setAttribute('type', 'text/css');

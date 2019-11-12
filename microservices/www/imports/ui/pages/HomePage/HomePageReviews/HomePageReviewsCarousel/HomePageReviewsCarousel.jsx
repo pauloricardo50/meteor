@@ -18,7 +18,7 @@ export default class HomePageReviewsCarousel extends Component {
     this.state = { currentIndex: 0 };
   }
 
-  handleClick = (buttonType) => {
+  handleClick = buttonType => {
     const { currentIndex } = this.state;
     let nextIndex = buttonType === NEXT ? currentIndex + 1 : currentIndex - 1;
 

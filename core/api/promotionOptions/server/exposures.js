@@ -21,7 +21,7 @@ exposeQuery({
         });
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { promotionOptionId } }) => {
         filters._id = promotionOptionId;
       };
@@ -39,7 +39,7 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
 
       if (promotionOptionIds) {
-        promotionOptionIds.forEach((promotionOptionId) => {
+        promotionOptionIds.forEach(promotionOptionId => {
           SecurityService.promotions.isAllowedToViewPromotionOption({
             promotionOptionId,
             userId,

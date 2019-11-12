@@ -17,7 +17,7 @@ type MaxPropertyValueEmptyStateProps = {
   calculateSolvency: Function,
 };
 
-export const getReadyToCalculateTitle = (props) => {
+export const getReadyToCalculateTitle = props => {
   const { loan, lockCanton, canton } = props;
   const {
     hasPromotion,
@@ -77,11 +77,11 @@ export const MaxPropertyValueEmptyStateReady = ({
           onChange={onChangeCanton}
           options={cantonOptions}
           disabled={loading}
-          placeholder={(
+          placeholder={
             <i>
               <T id="general.pick" />
             </i>
-          )}
+          }
           error={error && <span className="error-box">{error}</span>}
           name="max-property-value-canton"
         />

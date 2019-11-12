@@ -9,7 +9,8 @@ import Link from '../../../../Link';
 type PriorityOrderProps = {};
 
 const getChipColor = ({ currentId, userId, promotionLots }) => {
-  const attributedTo = promotionLots[0].attributedTo && promotionLots[0].attributedTo.user._id;
+  const attributedTo =
+    promotionLots[0].attributedTo && promotionLots[0].attributedTo.user._id;
   const promotionLotId = promotionLots[0]._id;
 
   if (attributedTo && attributedTo === userId) {
@@ -25,17 +26,17 @@ const getChipColor = ({ currentId, userId, promotionLots }) => {
   return '';
 };
 
-const getTooltip = (color) => {
+const getTooltip = color => {
   switch (color) {
-  case 'success':
-    return 'Ce lot a été attribué à ce client';
-  case 'error':
-    return "Ce lot a été attribué à quelqu'un d'autre";
-  case 'primary':
-    return 'Vous êtes sur la page de ce lot';
+    case 'success':
+      return 'Ce lot a été attribué à ce client';
+    case 'error':
+      return "Ce lot a été attribué à quelqu'un d'autre";
+    case 'primary':
+      return 'Vous êtes sur la page de ce lot';
 
-  default:
-    return "Ce lot n'est attribué à personne";
+    default:
+      return "Ce lot n'est attribué à personne";
   }
 };
 
@@ -47,7 +48,8 @@ const PriorityOrder = ({
 }: PriorityOrderProps) => {
   const { priorityOrder = [] } = promotion.$metadata;
   const options = priorityOrder.map(promotionOptionId =>
-    promotionOptions.find(({ _id }) => _id === promotionOptionId));
+    promotionOptions.find(({ _id }) => _id === promotionOptionId),
+  );
 
   return (
     <div className="priority-order">

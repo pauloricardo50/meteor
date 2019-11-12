@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
+import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
 import {
   doesUserExist,
@@ -35,7 +33,8 @@ import PropertyService from '../../properties/server/PropertyService';
 import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
-  UserService.doesUserExist({ email }));
+  UserService.doesUserExist({ email }),
+);
 
 sendVerificationLink.setHandler((context, { userId } = {}) => {
   if (userId) {
@@ -46,7 +45,9 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
   const id = userId || Meteor.userId();
 
   if (Meteor.isDevelopment) {
-    console.log(`Not sending verification link in development for userId: ${id}`);
+    console.log(
+      `Not sending verification link in development for userId: ${id}`,
+    );
     return false;
   }
 
@@ -58,7 +59,6 @@ assignAdminToUser.setHandler((context, { userId, adminId }) => {
 
   return UserService.assignAdminToUser({ userId, adminId });
 });
-
 
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -85,7 +85,8 @@ updateUser.setHandler((context, { userId, object }) => {
 });
 
 getUserByPasswordResetToken.setHandler((context, params) =>
-  UserService.getUserByPasswordResetToken(params));
+  UserService.getUserByPasswordResetToken(params),
+);
 
 testCreateUser.setHandler((context, params) => {
   if (!Meteor.isTest) {
@@ -135,7 +136,15 @@ proInviteUser.setHandler((context, params) => {
       SecurityService.properties.isAllowedToInviteCustomers({
         userId,
         propertyId,
-      }));
+      }),
+    );
+  }
+
+  if (promotionIds && promotionIds.length > 1) {
+    throw new Meteor.Error(
+      HTTP_STATUS_CODES.BAD_REQUEST,
+      "Vous ne pouvez inviter un client qu'à une seule promotion à la fois",
+    );
   }
 
   if (promotionIds && promotionIds.length) {
@@ -143,7 +152,8 @@ proInviteUser.setHandler((context, params) => {
       SecurityService.promotions.isAllowedToInviteCustomers({
         promotionId,
         userId,
-      }));
+      }),
+    );
   }
 
   if (properties && properties.length) {
@@ -221,40 +231,6 @@ anonymousCreateUser.setHandler((context, params) => {
   }
 
   const userId = UserService.anonymousCreateUser(params);
-
-  const analytics = new Analytics({ ...context, userId });
-  let referralUser;
-  let referralOrg;
-
-  if (params.referralId) {
-    referralUser = UserService.fetchOne({
-      $filters: { _id: params.referralId, roles: { $in: [ROLES.PRO] } },
-    });
-    referralOrg = OrganisationService.fetchOne({
-      $filters: {
-        _id: params.referralId,
-      },
-    });
-  }
-  analytics.identify(params.trackingId);
-  const referralUserMainOrg = params.referralId
-    && !referralOrg
-    && UserService.getUserMainOrganisation(params.referralId);
-
-  analytics.track(EVENTS.USER_CREATED, {
-    userId,
-    origin: params.referralId ? 'referral' : 'organic',
-    referralId: referralUser ? params.referralId : undefined,
-    orgReferralId: referralOrg
-      ? params.referralId
-      : referralUserMainOrg && referralUserMainOrg._id,
-  });
-  if (params.loanId) {
-    analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
-      loanId: params.loanId,
-    });
-  }
-
   return userId;
 });
 

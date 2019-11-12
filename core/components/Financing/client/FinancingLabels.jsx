@@ -13,7 +13,7 @@ type FinancingLabelsProps = {
   data: Object,
 };
 
-const renderLabel = (configItem) => {
+const renderLabel = configItem => {
   const { label, id } = configItem;
   if (!label) {
     return <T id={`Financing.${id}`} />;

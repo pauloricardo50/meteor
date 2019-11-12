@@ -15,7 +15,7 @@ const columnOptions = [
   { id: 'createdAt', label: <T id="Forms.createdAt" /> },
 ];
 
-const makeMapUser = history => (user) => {
+const makeMapUser = history => user => {
   const {
     _id: userId,
     firstName,

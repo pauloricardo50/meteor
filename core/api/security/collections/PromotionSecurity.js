@@ -206,7 +206,9 @@ class PromotionSecurity {
         customerOwnerType,
       })
     ) {
-      Security.handleUnauthorized('Vous ne pouvez pas supprimer ce client de cette promotion');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas supprimer ce client de cette promotion',
+      );
     }
   }
 
@@ -325,7 +327,9 @@ class PromotionSecurity {
         customerOwnerType,
       })
     ) {
-      Security.handleUnauthorized('Vous ne pouvez pas gérer la réservation de ce client');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas gérer la réservation de ce client',
+      );
     }
   }
 
@@ -367,7 +371,9 @@ class PromotionSecurity {
         customerOwnerType,
       })
     ) {
-      Security.handleUnauthorized('Vous ne pouvez pas réserver de lot à ce client');
+      Security.handleUnauthorized(
+        'Vous ne pouvez pas réserver de lot à ce client',
+      );
     }
   }
 

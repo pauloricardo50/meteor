@@ -16,7 +16,7 @@ const renderArray = (configArray, sectionProps, structureId) =>
   configArray
     .filter(makeFilterConfig(sectionProps))
     .map(({ Component, id, ...props }) =>
-      (Component ? (
+      Component ? (
         <Component
           key={id}
           structureId={structureId}
@@ -27,7 +27,8 @@ const renderArray = (configArray, sectionProps, structureId) =>
         />
       ) : (
         <div className={cx('empty-line', id)} key={id} />
-      )));
+      ),
+    );
 
 export const makeRenderSummary = configArray => (structure, sectionProps) => {
   const { id: structureId } = structure;

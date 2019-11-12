@@ -64,15 +64,13 @@ const writeApplicationManifest = environment =>
 // Parse and remove any trailing comma from the credentials
 const cleanCredentials = creds => {
   const res = JSON.parse(
-    '{' +
-      creds
-        .split('\n')
-        .map(line => line.replace(/,\s*$/, ''))
-        // Filter out some empty character lines, if this causes
-        // valid lines to be filtered, find a better solution
-        .filter(str => str && str.length >= 5)
-        .join(',') +
-      '}',
+    `{${creds
+      .split('\n')
+      .map(line => line.replace(/,\s*$/, ''))
+      // Filter out some empty character lines, if this causes
+      // valid lines to be filtered, find a better solution
+      .filter(str => str && str.length >= 5)
+      .join(',')}}`,
   );
   return res;
 };
@@ -80,7 +78,7 @@ const cleanCredentials = creds => {
 const openSSHTunnel = ({
   sshIdNumber = 0,
   environmentOverride,
-  mongoPort = 2,
+  mongoPort = 0, // Cycle this variable from 0 to 2 to get access to the primary DB, not the 2 secondary ones
 } = {}) => {
   let environment;
   const args = argv

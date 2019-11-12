@@ -21,7 +21,7 @@ export default class MixpanelAnalytics extends Component {
       loan: { userId },
     } = this.props;
     return MixpanelService.getEventsByUserId(userId)
-      .then((data) => {
+      .then(data => {
         if (data.status === 'ok') {
           this.setState({
             error: false,
@@ -32,7 +32,7 @@ export default class MixpanelAnalytics extends Component {
           this.setState({ error: data.status });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ error });
       });
   };
@@ -43,10 +43,7 @@ export default class MixpanelAnalytics extends Component {
     if (error) {
       return (
         <h3 className="error">
-          Il y a eu une erreur Mixpanel (status:
-          {' '}
-          {error}
-)
+          Il y a eu une erreur Mixpanel (status: {error})
         </h3>
       );
     }

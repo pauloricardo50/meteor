@@ -17,7 +17,9 @@ import CheckMailboxPage from '../../ui/pages/CheckMailboxPage/loadable';
 import InterestsPage from '../../ui/pages/InterestsPage/loadable';
 import BlogPage from '../../ui/pages/BlogPage/loadable';
 
-const liteVersionModifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
+const liteVersionModifier = togglePoint(
+  TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
+);
 
 export const WWW_ROUTES = {
   HOME_PAGE: { exact: true, path: '/', component: HomePage },

@@ -15,7 +15,7 @@ type TasksTableActionsProps = {};
 const TasksTableActions = ({ taskId, priority }: TasksTableActionsProps) => (
   <div className="flex space-children">
     <IconButton
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation();
         taskComplete.run({ taskId });
       }}
@@ -25,7 +25,7 @@ const TasksTableActions = ({ taskId, priority }: TasksTableActionsProps) => (
       className="success"
     />
     <IconButton
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation();
         taskChangeStatus.run({
           taskId,
@@ -38,7 +38,7 @@ const TasksTableActions = ({ taskId, priority }: TasksTableActionsProps) => (
       className="error"
     />
     <IconButton
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation();
         taskUpdate.run({
           taskId,

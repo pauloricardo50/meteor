@@ -7,10 +7,11 @@ export const zipDocuments = ({
   options,
 }) => {
   const { status } = options;
-  Object.keys(documents).forEach((document) => {
+  Object.keys(documents).forEach(document => {
     const files = documents[document];
     const total = files.filter(({ status: fileStatus }) =>
-      status.includes(fileStatus)).length;
+      status.includes(fileStatus),
+    ).length;
     const adminNameCount = files.reduce(
       (sum, { adminname }) => (adminname ? sum + 1 : sum),
       0,

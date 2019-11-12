@@ -12,7 +12,7 @@ import PremiumOverviewTab from './PremiumOverviewTab';
 
 type PremiumLoanTabsProps = {};
 
-const getTabs = (props) => {
+const getTabs = props => {
   const { currentUser } = props;
   return [
     { id: 'overview', Component: PremiumOverviewTab },

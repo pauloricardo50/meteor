@@ -18,7 +18,7 @@ type AdditionalDocModifierProps = {
   collection: String,
 };
 
-export const getAdditionalDocSchema = (collection) => {
+export const getAdditionalDocSchema = collection => {
   let allowedValues = [];
 
   if (collection === PROPERTIES_COLLECTION) {
@@ -62,7 +62,7 @@ const AdditionalDocModifier = ({
   docId,
   collection,
 }: AdditionalDocModifierProps) =>
-  (additionalDoc.label ? (
+  additionalDoc.label ? (
     <AutoFormDialog
       buttonProps={{ primary: true, label: <T id="general.modify" /> }}
       model={additionalDoc}
@@ -96,6 +96,6 @@ const AdditionalDocModifier = ({
         </Button>
       )}
     />
-  ) : null);
+  ) : null;
 
 export default AdditionalDocModifier;

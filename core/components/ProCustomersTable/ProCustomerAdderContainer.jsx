@@ -1,4 +1,5 @@
 import { withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -6,8 +7,9 @@ import {
   isAllowedToInviteCustomersToPromotion,
 } from 'core/api/security/clientSecurityHelpers/index';
 import { proInviteUser } from 'core/api/methods/index';
+import { createRoute } from 'core/utils/routerUtils';
 
-const schema = ({ proProperties, promotions }) =>
+const schema = ({ proProperties, promotions, history }) =>
   new SimpleSchema({
     email: String,
     firstName: { type: String, optional: true },
@@ -27,8 +29,10 @@ const schema = ({ proProperties, promotions }) =>
       optional: true,
       allowedValues: proProperties.map(({ _id }) => _id),
       uniforms: {
-        transform: (propertyId) => {
-          const { address1, city = '', zipCode = '' } = proProperties.find(({ _id }) => _id === propertyId);
+        transform: propertyId => {
+          const { address1, city = '', zipCode = '' } = proProperties.find(
+            ({ _id }) => _id === propertyId,
+          );
 
           return `${address1}, ${zipCode} ${city}`;
         },
@@ -42,6 +46,26 @@ const schema = ({ proProperties, promotions }) =>
       uniforms: {
         displayEmpty: false,
         placeholder: '',
+        handleClick: model => {
+          const {
+            promotionIds = [],
+            email,
+            firstName,
+            lastName,
+            phoneNumber,
+          } = model;
+          const [promotionId] = promotionIds;
+
+          if (promotionId) {
+            history.push(
+              createRoute(
+                '/promotions/:promotionId',
+                { promotionId },
+                { email, firstName, lastName, phoneNumber },
+              ),
+            );
+          }
+        },
       },
     },
     'promotionIds.$': {
@@ -61,21 +85,25 @@ const schema = ({ proProperties, promotions }) =>
   });
 
 export default withProps(({ currentUser }) => {
+  const history = useHistory();
   const { proProperties = [], promotions = [] } = currentUser;
   const filteredProProperties = proProperties
     .filter(property =>
-      isAllowedToInviteCustomersToProProperty({ property, currentUser }))
+      isAllowedToInviteCustomersToProProperty({ property, currentUser }),
+    )
     .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
   const filteredPromotions = promotions
     .filter(promotion =>
-      isAllowedToInviteCustomersToPromotion({ promotion, currentUser }))
+      isAllowedToInviteCustomersToPromotion({ promotion, currentUser }),
+    )
     .sort(({ name: A }, { name: B }) => A.localeCompare(B));
   return {
     schema: schema({
       proProperties: filteredProProperties,
       promotions: filteredPromotions,
+      history,
     }),
-    onSubmit: (model) => {
+    onSubmit: model => {
       const {
         propertyIds = [],
         promotionIds = [],

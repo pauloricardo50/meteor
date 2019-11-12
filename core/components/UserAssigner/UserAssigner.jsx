@@ -42,12 +42,12 @@ const UserAssigner = ({
         />
       </form>
       <List className="flex-col">
-        {searchResults
-          && searchResults.map(user => (
+        {searchResults &&
+          searchResults.map(user => (
             <ListItem
               key={user._id}
               onClick={() =>
-                (user._id === userId ? onUserDeselect() : onUserSelect(user._id))
+                user._id === userId ? onUserDeselect() : onUserSelect(user._id)
               }
               button
             >

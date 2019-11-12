@@ -53,7 +53,7 @@ describe('Pro promotion', () => {
 
       cy.get('tbody tr')
         .first()
-        .then((tr) => {
+        .then(tr => {
           cy.wrap(tr).should('contain', 'XXX');
           cy.wrap(tr)
             .find('.icon-link')
@@ -71,7 +71,7 @@ describe('Pro promotion', () => {
       cy.refetch();
       cy.get('tbody tr')
         .first()
-        .then((tr) => {
+        .then(tr => {
           cy.wrap(tr).should('not.contain', 'XXX');
           cy.wrap(tr)
             .find('.icon-link')
@@ -101,7 +101,7 @@ describe('Pro promotion', () => {
       cy.refetch();
       cy.get('tbody tr')
         .first()
-        .then((tr) => {
+        .then(tr => {
           cy.wrap(tr).should('not.contain', 'XXX');
           cy.wrap(tr)
             .find('.icon-link')
@@ -164,19 +164,19 @@ describe('Pro promotion', () => {
 
       cy.get('td.col-loans')
         .invoke('text')
-        .then((text) => {
+        .then(text => {
           const counts = text.split('');
           cy.wrap(Number(counts.find(i => i > 0))).as('loanCount');
           cy.wrap(counts.findIndex(i => i > 0)).as('lotIndex');
         });
 
-      cy.get('@lotIndex').then((lotIndex) => {
+      cy.get('@lotIndex').then(lotIndex => {
         cy.get('.promotion-lots-table tbody tr')
           .eq(lotIndex)
           .click();
       });
 
-      cy.get('@loanCount').then((count) => {
+      cy.get('@loanCount').then(count => {
         cy.get('.promotion-lot-loans-table tbody tr').should(
           'have.length',
           count,
@@ -197,7 +197,7 @@ describe('Pro promotion', () => {
 
       cy.get('.promotion-lots-manager')
         .children()
-        .then((children) => {
+        .then(children => {
           cy.wrap(children.length).as('additionalLotsCount');
         });
 
@@ -209,7 +209,7 @@ describe('Pro promotion', () => {
 
       cy.refetch();
 
-      cy.get('@lotIndex').then((lotIndex) => {
+      cy.get('@lotIndex').then(lotIndex => {
         cy.get('td.col-loans').each((td, index) => {
           const loans = td.text();
 
@@ -219,7 +219,7 @@ describe('Pro promotion', () => {
         });
       });
 
-      cy.get('@additionalLotsCount').then((count) => {
+      cy.get('@additionalLotsCount').then(count => {
         cy.get('.promotion-lots-manager')
           .children()
           .should('have.length', count - 1);
@@ -234,7 +234,7 @@ describe('Pro promotion', () => {
 
       cy.refetch();
 
-      cy.get('@lotIndex').then((lotIndex) => {
+      cy.get('@lotIndex').then(lotIndex => {
         cy.get('td.col-loans').each((td, index) => {
           const loans = td.text();
 
@@ -244,7 +244,7 @@ describe('Pro promotion', () => {
         });
       });
 
-      cy.get('@additionalLotsCount').then((count) => {
+      cy.get('@additionalLotsCount').then(count => {
         cy.get('.promotion-lots-manager')
           .children()
           .should('have.length', count);
@@ -302,7 +302,9 @@ describe('Pro promotion', () => {
 
         cy.url().should('include', 'promotions/');
         cy.get('h1').should('contain', 'New promotion');
-        cy.contains('Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex').should('exist');
+        cy.contains('Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex').should(
+          'exist',
+        );
 
         cy.contains('Préparation').should('exist');
       });

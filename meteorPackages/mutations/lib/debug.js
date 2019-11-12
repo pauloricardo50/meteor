@@ -4,7 +4,7 @@ Object.assign(Mutation, {
   isDebugEnabled: Meteor.isDevelopment || process.env.MUTATION_DEBUG_ENABLED,
 });
 
-const shouldDebug = (config) => {
+const shouldDebug = config => {
   if (!Mutation.isDebugEnabled) {
     return false;
   }
@@ -37,8 +37,10 @@ Mutation.addAfterCall(({ config, params, context, result, error }) => {
 Mutation.addBeforeExecution(({ config, params, context }) => {
   if (shouldDebug(config)) {
     const time = new Date();
-    console.log(`[mutations][${
-      config.name
-    }] Received call with params: ${JSON.stringify(params)}`);
+    console.log(
+      `[mutations][${config.name}] Received call with params: ${JSON.stringify(
+        params,
+      )}`,
+    );
   }
 });

@@ -48,7 +48,7 @@ const ProAppPage = ({ loans, history, insertLoan }: ProAppPageProps) => (
           if (loans.length) {
             history.push(createRoute(DASHBOARD_PAGE, { loanId: loans[0]._id }));
           } else {
-            insertLoan({ test: true }).then((loanId) => {
+            insertLoan({ test: true }).then(loanId => {
               history.push(createRoute(DASHBOARD_PAGE, { loanId }));
             });
           }

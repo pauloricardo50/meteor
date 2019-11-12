@@ -43,8 +43,9 @@ export const isAllowedToViewPromotion = ({
 
   const { userLinks = [], users = [] } = promotion;
 
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId);
 
   if (!user) {
     return false;
@@ -84,8 +85,8 @@ export const isAllowedToRemoveCustomerFromPromotion = ({
   });
 
   return (
-    isAllowedToInviteCustomersToPromotion({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToInviteCustomersToPromotion({ promotion, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -128,8 +129,9 @@ export const isAllowedToSeePromotionCustomers = ({
 
   const { userLinks = [], users = [] } = promotion;
 
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId);
 
   if (!user) {
     return false;
@@ -196,8 +198,8 @@ export const isAllowedToReservePromotionLotToCustomer = ({
     promotionId,
   });
   return (
-    isAllowedToReservePromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToReservePromotionLots({ promotion, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 

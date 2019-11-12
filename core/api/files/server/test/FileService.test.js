@@ -26,10 +26,10 @@ const setupBucket = () =>
     .then(() => S3Service.putObject(binaryData, key2))
     .then(() => S3Service.putObject(binaryData, key3));
 
-describe('FileService', function () {
+describe('FileService', function() {
   this.timeout(30000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       // When running these tests in parallel, it breaks tests
       this.parent.pending = true;
@@ -42,20 +42,22 @@ describe('FileService', function () {
   describe('getFilesForDoc', () => {
     it('lists all files uploaded to a doc', () => {
       const expected = [{ Key: key1 }, { Key: key2 }, { Key: key3 }];
-      return FileService.listFilesForDoc(docId).then((results) => {
+      return FileService.listFilesForDoc(docId).then(results => {
         expect(results.length).to.equal(expected.length);
         results.forEach((result, index) =>
-          expect(result).to.deep.include(expected[index]));
+          expect(result).to.deep.include(expected[index]),
+        );
       });
     });
 
     it('lists all files uploaded to a doc at a subdocument', () => {
       const expected = [{ Key: key1 }, { Key: key2 }];
       const subdocument = 'a';
-      return FileService.listFilesForDoc(docId, subdocument).then((results) => {
+      return FileService.listFilesForDoc(docId, subdocument).then(results => {
         expect(results.length).to.equal(expected.length);
         results.forEach((result, index) =>
-          expect(result).to.deep.include(expected[index]));
+          expect(result).to.deep.include(expected[index]),
+        );
       });
     });
   });
@@ -66,7 +68,8 @@ describe('FileService', function () {
       return FileService.setFileStatus(key1, nextStatus)
         .then(() => S3Service.getObject(key1))
         .then(({ Metadata: { status } }) =>
-          expect(status).to.equal(nextStatus));
+          expect(status).to.equal(nextStatus),
+        );
     });
   });
 
@@ -101,10 +104,11 @@ describe('FileService', function () {
       const expected = [{ Key: key3 }];
       return FileService.deleteAllFilesForDoc(docId, subdocument)
         .then(() => FileService.listFilesForDoc(docId))
-        .then((results) => {
+        .then(results => {
           expect(results.length).to.equal(expected.length);
           results.forEach((result, index) =>
-            expect(result).to.deep.include(expected[index]));
+            expect(result).to.deep.include(expected[index]),
+          );
         });
     });
 
@@ -153,7 +157,9 @@ describe('FileService', function () {
         ),
       }));
 
-      await Promise.all(tempFiles.map(({ file, key }) => S3Service.putObject(file, key)));
+      await Promise.all(
+        tempFiles.map(({ file, key }) => S3Service.putObject(file, key)),
+      );
 
       const deletedFiles = await FileService.flushTempFiles();
 

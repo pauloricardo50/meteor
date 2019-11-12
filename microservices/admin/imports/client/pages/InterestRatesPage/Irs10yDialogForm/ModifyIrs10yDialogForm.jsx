@@ -40,7 +40,8 @@ const ModifyIrs10ytRatesDialogForm = ({
         onClick={() => {
           setDisableActions(true);
           return removeIrs10y(irs10yToModify._id).finally(() =>
-            setDisableActions(false));
+            setDisableActions(false),
+          );
         }}
       />
     )}

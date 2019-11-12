@@ -22,7 +22,8 @@ class ContactService extends CollectionService {
         id: contactId,
         linkName: 'organisations',
         linkId: organisationId,
-      }));
+      }),
+    );
 
     newOrganisations.forEach(({ _id: organisationId, metadata }) =>
       this.addLink({
@@ -30,7 +31,8 @@ class ContactService extends CollectionService {
         linkName: 'organisations',
         linkId: organisationId,
         metadata,
-      }));
+      }),
+    );
   }
 }
 

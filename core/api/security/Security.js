@@ -62,9 +62,9 @@ export default class Security {
 
   static isUserPro(userId) {
     return (
-      this.hasRole(userId, ROLES.PRO)
-      || this.hasRole(userId, ROLES.ADMIN)
-      || this.hasRole(userId, ROLES.DEV)
+      this.hasRole(userId, ROLES.PRO) ||
+      this.hasRole(userId, ROLES.ADMIN) ||
+      this.hasRole(userId, ROLES.DEV)
     );
   }
 
@@ -100,9 +100,10 @@ export default class Security {
   static checkOwnership(doc, userId) {
     userId = userId || Meteor.userId();
     const userIdIsValid = doc && doc.userId === userId;
-    const userLinksIsValid = doc
-      && doc.userLinks
-      && doc.userLinks.filter(({ _id }) => userId === _id).length > 0;
+    const userLinksIsValid =
+      doc &&
+      doc.userLinks &&
+      doc.userLinks.filter(({ _id }) => userId === _id).length > 0;
 
     if (!(userIdIsValid || userLinksIsValid)) {
       this.handleUnauthorized('Checking ownership');
@@ -111,7 +112,7 @@ export default class Security {
 
   static checkRequiredPermissions({ requiredPermissions, userPermissions }) {
     if (
-      !Object.keys(flattenObject(requiredPermissions)).every((permission) => {
+      !Object.keys(flattenObject(requiredPermissions)).every(permission => {
         const userPermission = get(userPermissions, permission);
         const requiredPermission = get(requiredPermissions, permission);
 
@@ -124,7 +125,8 @@ export default class Security {
             return false;
           }
           return requiredPermission.every(required =>
-            userPermission.includes(required));
+            userPermission.includes(required),
+          );
         }
 
         return userPermission === requiredPermission;
@@ -141,8 +143,9 @@ export default class Security {
   }) {
     const { userLinks = [], users = [] } = doc;
 
-    const user = userLinks.find(({ _id }) => _id === userId)
-      || users.find(({ _id }) => _id === userId);
+    const user =
+      userLinks.find(({ _id }) => _id === userId) ||
+      users.find(({ _id }) => _id === userId);
 
     if (!user) {
       this.handleUnauthorized('Checking permissions');
@@ -165,25 +168,26 @@ export default class Security {
     let allowedRoles;
 
     switch (role) {
-    case ROLES.DEV:
-      allowedRoles = [ROLES.DEV];
-      break;
-    case ROLES.ADMIN:
-      allowedRoles = [ROLES.DEV, ROLES.ADMIN];
-      break;
-    case ROLES.USER:
-      allowedRoles = [ROLES.DEV, ROLES.ADMIN, ROLES.USER];
-      break;
-    case ROLES.PRO:
-      allowedRoles = [ROLES.DEV, ROLES.ADMIN, ROLES.PRO];
-      break;
+      case ROLES.DEV:
+        allowedRoles = [ROLES.DEV];
+        break;
+      case ROLES.ADMIN:
+        allowedRoles = [ROLES.DEV, ROLES.ADMIN];
+        break;
+      case ROLES.USER:
+        allowedRoles = [ROLES.DEV, ROLES.ADMIN, ROLES.USER];
+        break;
+      case ROLES.PRO:
+        allowedRoles = [ROLES.DEV, ROLES.ADMIN, ROLES.PRO];
+        break;
 
-    default:
-      throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
+      default:
+        throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
     }
 
     const isAllowed = allowedRoles.some(allowedRole =>
-      this.hasRole(userId, allowedRole));
+      this.hasRole(userId, allowedRole),
+    );
 
     if (!isAllowed) {
       return false;
@@ -194,12 +198,12 @@ export default class Security {
 
   static minimumRole(role) {
     return userId =>
-      (this.hasMinimumRole({ userId, role })
+      this.hasMinimumRole({ userId, role })
         ? undefined
-        : this.handleUnauthorized('Unauthorized role'));
+        : this.handleUnauthorized('Unauthorized role');
   }
 
-  static canModifyDoc = (doc) => {
+  static canModifyDoc = doc => {
     // Only for client side docs that replace userLinks with users
     const { _id: userId } = Meteor.user();
     if (this.minimumRole(ROLES.ADMIN)(userId)) {
@@ -209,9 +213,9 @@ export default class Security {
     const me = doc.users.find(({ _id }) => _id === userId);
 
     return (
-      me
-      && me.$metadata
-      && me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
+      me &&
+      me.$metadata &&
+      me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
     );
   };
 
@@ -228,27 +232,27 @@ export default class Security {
     } catch (error) {}
 
     switch (collection) {
-    case COLLECTIONS.PROMOTIONS_COLLECTION: {
-      this.promotions.isAllowedToManageDocuments({
-        promotionId: docId,
-        userId,
-      });
-      break;
-    }
-    case COLLECTIONS.PROPERTIES_COLLECTION: {
-      if (this.properties.isPromotionLot(docId)) {
-        this.promotions.isAllowedToManagePromotionLotDocuments({
-          propertyId: docId,
+      case COLLECTIONS.PROMOTIONS_COLLECTION: {
+        this.promotions.isAllowedToManageDocuments({
+          promotionId: docId,
           userId,
         });
         break;
       }
+      case COLLECTIONS.PROPERTIES_COLLECTION: {
+        if (this.properties.isPromotionLot(docId)) {
+          this.promotions.isAllowedToManagePromotionLotDocuments({
+            propertyId: docId,
+            userId,
+          });
+          break;
+        }
 
-      this.properties.isAllowedToUpdate(docId, userId);
-      break;
-    }
-    default:
-      this[collection].isAllowedToUpdate(docId);
+        this.properties.isAllowedToUpdate(docId, userId);
+        break;
+      }
+      default:
+        this[collection].isAllowedToUpdate(docId);
     }
   }
 

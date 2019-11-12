@@ -13,10 +13,10 @@ import { PROPERTY_CATEGORY } from '../../../constants';
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
 
-describe('S3Service', function () {
+describe('S3Service', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       // When running these tests in parallel, it breaks tests
       this.parent.pending = true;
@@ -45,7 +45,8 @@ describe('S3Service', function () {
     describe('putObject', () => {
       it('puts an object without failing', () =>
         S3Service.putObject(binaryData, key).then(result =>
-          expect(result).to.not.equal(undefined)));
+          expect(result).to.not.equal(undefined),
+        ));
     });
 
     describe('deleteObject', () => {
@@ -60,7 +61,7 @@ describe('S3Service', function () {
 
       it('throws if you try to delete an unexisting object', () => {
         key = 'someKey.txt';
-        return S3Service.deleteObject(key).catch((err) => {
+        return S3Service.deleteObject(key).catch(err => {
           expect(err.name).to.equal('NoSuchKey');
         });
       });
@@ -71,11 +72,13 @@ describe('S3Service', function () {
         S3Service.putObject(binaryData, key)
           .then(() => S3Service.getObject(key))
           .then(result =>
-            expect(JSON.parse(result.Body.toString())).to.deep.equal(json)));
+            expect(JSON.parse(result.Body.toString())).to.deep.equal(json),
+          ));
 
       it('returns an error if the object does not exist', () =>
         S3Service.getObject(key).catch(err =>
-          expect(err.name).to.equal('NoSuchKey')));
+          expect(err.name).to.equal('NoSuchKey'),
+        ));
     });
 
     describe('listObjects', () => {
@@ -97,7 +100,8 @@ describe('S3Service', function () {
         ])
           .then(() => S3Service.listObjects('asdf'))
           .then(results =>
-            expect(results.map(({ Key }) => Key)).to.deep.equal([key1, key2]));
+            expect(results.map(({ Key }) => Key)).to.deep.equal([key1, key2]),
+          );
       });
     });
 
@@ -121,7 +125,8 @@ describe('S3Service', function () {
           .then(() => S3Service.updateMetadata(key, metadata2))
           .then(() => S3Service.getObject(key))
           .then(({ Metadata }) =>
-            expect(Metadata).to.deep.equal({ ...metadata1, ...metadata2 }));
+            expect(Metadata).to.deep.equal({ ...metadata1, ...metadata2 }),
+          );
       });
 
       it('lowercases your metadata keys', () => {
@@ -131,7 +136,8 @@ describe('S3Service', function () {
           .then(() => S3Service.updateMetadata(key, metadata))
           .then(() => S3Service.getObject(key))
           .then(({ Metadata: { camelcase } }) =>
-            expect(camelcase).to.deep.equal(metadata.camelCase));
+            expect(camelcase).to.deep.equal(metadata.camelCase),
+          );
       });
 
       it('does not fail if you set the same metadata', () => {
@@ -157,7 +163,8 @@ describe('S3Service', function () {
 
       it('returns an error if the object does not exist', () =>
         S3Service.headObject(key).catch(err =>
-          expect(err.name).to.equal('NotFound')));
+          expect(err.name).to.equal('NotFound'),
+        ));
     });
 
     describe('listObjectsWithMetadata', () => {
@@ -171,7 +178,7 @@ describe('S3Service', function () {
           S3Service.putObject(binaryData, key2, { status: statuses[1] }),
         ])
           .then(() => S3Service.listObjectsWithMetadata('asdf'))
-          .then((results) => {
+          .then(results => {
             results.forEach(({ status }, index) => {
               expect(status).to.equal(statuses[index]);
             });
@@ -210,27 +217,35 @@ describe('S3Service', function () {
     });
 
     it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowedToAccess({ key: '', userId })).to.throw('Unauthorized download');
+      expect(() => S3Service.isAllowedToAccess({ key: '', userId })).to.throw(
+        'Unauthorized download',
+      );
     });
 
     it('should return true if this user has the loan', () => {
       const loan = Factory.create('loan', { userId });
 
-      expect(S3Service.isAllowedToAccess({ key: `${loan._id}/`, userId })).to.equal(true);
+      expect(
+        S3Service.isAllowedToAccess({ key: `${loan._id}/`, userId }),
+      ).to.equal(true);
       Loans.remove(loan._id);
     });
 
     it('should return true if this user has the borrower', () => {
       const borrower = Factory.create('borrower', { userId });
 
-      expect(S3Service.isAllowedToAccess({ key: `${borrower._id}/`, userId })).to.equal(true);
+      expect(
+        S3Service.isAllowedToAccess({ key: `${borrower._id}/`, userId }),
+      ).to.equal(true);
       Borrowers.remove(borrower._id);
     });
 
     it('should return true if this user has the property', () => {
       const property = Factory.create('property', { userId });
 
-      expect(S3Service.isAllowedToAccess({ key: `${property._id}/`, userId })).to.equal(true);
+      expect(
+        S3Service.isAllowedToAccess({ key: `${property._id}/`, userId }),
+      ).to.equal(true);
       Properties.remove(property._id);
     });
 
@@ -239,7 +254,9 @@ describe('S3Service', function () {
         category: PROPERTY_CATEGORY.PRO,
       });
 
-      expect(S3Service.isAllowedToAccess({ key: `${property._id}/`, userId })).to.equal(true);
+      expect(
+        S3Service.isAllowedToAccess({ key: `${property._id}/`, userId }),
+      ).to.equal(true);
       Properties.remove(property._id);
     });
 
@@ -248,14 +265,18 @@ describe('S3Service', function () {
         userLinks: [{ _id: userId, permissions: { canManageDocuments: true } }],
       });
 
-      expect(S3Service.isAllowedToAccess({ key: `${promotion._id}/`, userId })).to.equal(true);
+      expect(
+        S3Service.isAllowedToAccess({ key: `${promotion._id}/`, userId }),
+      ).to.equal(true);
       Promotions.remove(promotion._id);
     });
   });
 
   describe('makeSignedUrl', () => {
     it('should return a signed url', () => {
-      expect(S3Service.makeSignedUrl('dude/file.pdf')).to.include('dude/file.pdf');
+      expect(S3Service.makeSignedUrl('dude/file.pdf')).to.include(
+        'dude/file.pdf',
+      );
     });
   });
 });

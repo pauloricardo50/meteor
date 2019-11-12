@@ -11,7 +11,6 @@ import {
 } from '../../../../api/constants';
 import PrioritySetter from './PrioritySetter';
 import RequestReservation from './RequestReservation';
-import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 
 const makeMapPromotionOption = ({
@@ -109,54 +108,60 @@ const columnOptions = ({
         ) : (
           <T id={`PromotionPage.lots.${id}`} />
         ),
-      ...(isDashboardTable
-        && id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
+      ...(isDashboardTable &&
+        id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
 export default compose(
   withRouter,
   withState('isLoading', 'setLoading', false),
-  mapProps(({
-    promotion,
-    loan,
-    isLoading,
-    setLoading,
-    isDashboardTable,
-    isAdmin,
-    className,
-    ...rest
-  }) => {
-    const { promotionOptions } = loan;
-
-    let priorityOrder = promotion.loans
-        && promotion.loans[0]
-        && promotion.loans[0].$metadata.priorityOrder;
-
-    // On admin, the priorityOrder is on the promotion itself
-    if (!priorityOrder) {
-      priorityOrder = promotion.$metadata && promotion.$metadata.priorityOrder;
-    }
-
-    return {
-      rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
-        isLoading,
-        setLoading,
-        isDashboardTable,
-        promotionStatus: promotion.status,
-        isAdmin,
-        loan,
-        promotion,
-      })),
-      columnOptions: columnOptions({
-        isDashboardTable,
-        promotionStatus: promotion.status,
-        isAdmin,
-      }),
-      isDashboardTable,
-      className,
-      promotionOptions,
+  mapProps(
+    ({
       promotion,
-      ...rest,
-    };
-  }),
+      loan,
+      isLoading,
+      setLoading,
+      isDashboardTable,
+      isAdmin,
+      className,
+      ...rest
+    }) => {
+      const { promotionOptions } = loan;
+
+      let priorityOrder =
+        promotion.loans &&
+        promotion.loans[0] &&
+        promotion.loans[0].$metadata.priorityOrder;
+
+      // On admin, the priorityOrder is on the promotion itself
+      if (!priorityOrder) {
+        priorityOrder =
+          promotion.$metadata && promotion.$metadata.priorityOrder;
+      }
+
+      return {
+        rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(
+          makeMapPromotionOption({
+            isLoading,
+            setLoading,
+            isDashboardTable,
+            promotionStatus: promotion.status,
+            isAdmin,
+            loan,
+            promotion,
+          }),
+        ),
+        columnOptions: columnOptions({
+          isDashboardTable,
+          promotionStatus: promotion.status,
+          isAdmin,
+        }),
+        isDashboardTable,
+        className,
+        promotionOptions,
+        promotion,
+        ...rest,
+      };
+    },
+  ),
 );

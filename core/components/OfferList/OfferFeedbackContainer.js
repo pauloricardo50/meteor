@@ -64,13 +64,15 @@ export default compose(
 
     return {
       schema: schema({ offer, formatMessage }),
-      onSubmit: (object) => {
+      onSubmit: object => {
         if (message) {
           return Promise.resolve();
         }
 
         const { name } = contact || {};
-        const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`);
+        const confirm = window.confirm(
+          `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
+        );
         if (confirm) {
           return offerSendFeedback.run({
             offerId,

@@ -78,7 +78,9 @@ const renderCurrentRates = ({ rateLow, rateHigh, trend }) => (
 );
 
 const singleInterestRateField = ({ type, currentInterestRates }) => {
-  const currentRates = currentInterestRates.find(({ type: rateType }) => type === rateType);
+  const currentRates = currentInterestRates.find(
+    ({ type: rateType }) => type === rateType,
+  );
   return (
     <div className="single-interest-rate-field">
       <div className="single-interest-rate-field-title">
@@ -108,7 +110,8 @@ const singleInterestRateField = ({ type, currentInterestRates }) => {
 const fields = currentInterestRates => [
   <CustomAutoField name="date" key="date" />,
   ...Object.values(INTEREST_RATES).map(type =>
-    singleInterestRateField({ type, currentInterestRates })),
+    singleInterestRateField({ type, currentInterestRates }),
+  ),
 ];
 
 export default compose(
@@ -118,7 +121,7 @@ export default compose(
     fields: fields(currentInterestRates),
     insertInterestRates: data =>
       interestRatesInsert.run({ interestRates: data }),
-    modifyInterestRates: (data) => {
+    modifyInterestRates: data => {
       const { _id: interestRatesId, ...object } = data;
       setSubmitting(true);
       return interestRatesUpdate
@@ -126,7 +129,7 @@ export default compose(
         .then(() => setOpen(false))
         .finally(() => setSubmitting(false));
     },
-    removeInterestRates: (interestRatesId) => {
+    removeInterestRates: interestRatesId => {
       setSubmitting(true);
       return interestRatesRemove
         .run({ interestRatesId })

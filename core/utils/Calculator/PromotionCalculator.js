@@ -26,13 +26,17 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       const insurance2 = this.getInsurance2({ loan });
 
       const results = {
-        withBankFortune: Math.round((bankFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan }))),
+        withBankFortune: Math.round(
+          (bankFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan })),
+        ),
         withInsurance2: this.getMaxPropertyValueWithInsurance2({
           cash: bankFortune,
           insurance2,
           notaryFees,
         }),
-        withInsurance3: Math.round((cashFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan }))),
+        withInsurance3: Math.round(
+          (cashFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan })),
+        ),
         withInsurance2And3: this.getMaxPropertyValueWithInsurance2({
           cash: cashFortune,
           insurance2,
@@ -49,14 +53,17 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     getMaxPropertyValueWithInsurance2({ cash, insurance2, notaryFees }) {
       const availableFortune = cash - notaryFees;
       const maxPropertyValue = availableFortune / this.minCash;
-      const canAffordProperty = (maxPropertyValue - availableFortune - insurance2) / maxPropertyValue
-        <= this.getMaxBorrowRatio();
+      const canAffordProperty =
+        (maxPropertyValue - availableFortune - insurance2) / maxPropertyValue <=
+        this.getMaxBorrowRatio();
 
       if (canAffordProperty) {
         return Math.round(maxPropertyValue);
       }
 
-      return Math.round((availableFortune + insurance2) / (1 - this.getMaxBorrowRatio()));
+      return Math.round(
+        (availableFortune + insurance2) / (1 - this.getMaxBorrowRatio()),
+      );
     }
 
     getIncomeLimitedProperty({
@@ -118,17 +125,23 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
 
     hasActivePromotionOption({ loan: { promotionOptions = [] } }) {
       return (
-        promotionOptions.length > 0
-        && promotionOptions.some(({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status)
+        promotionOptions.length > 0 &&
+        promotionOptions.some(
+          ({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status,
+        )
       );
     }
 
     getActivePromotionOptions({ loan: { promotionOptions = [] } }) {
-      return promotionOptions.filter(({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status);
+      return promotionOptions.filter(
+        ({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status,
+      );
     }
 
     getMostActivePromotionOption({ loan: { promotionOptions = [] } }) {
-      const sorted = promotionOptions.sort(sortByStatus(Object.values(PROMOTION_OPTION_STATUS)));
+      const sorted = promotionOptions.sort(
+        sortByStatus(Object.values(PROMOTION_OPTION_STATUS)),
+      );
       return sorted.slice(-1)[0];
     }
 
@@ -152,14 +165,14 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         [
           PROMOTION_OPTION_BANK_STATUS.VALIDATED,
           PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
-        ].includes(bank.status)
-        && deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID
-        && simpleVerification.status
-          === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED
-        && fullVerification.status
-          === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED
-        && reservationAgreement.status
-          === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
+        ].includes(bank.status) &&
+        deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID &&
+        simpleVerification.status ===
+          PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED &&
+        fullVerification.status ===
+          PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED &&
+        reservationAgreement.status ===
+          PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
       );
     }
   };

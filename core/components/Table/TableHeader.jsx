@@ -10,7 +10,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import T from 'core/components/Translation';
 
-
 const TableHeader = ({
   columnOptions,
   sortable,
@@ -34,38 +33,35 @@ const TableHeader = ({
           />
         </TableCell>
       )}
-      {columnOptions.map(({ id, style, intlValues, label, align, padding }, index) => (
-        <TableCell
-          key={id}
-          style={style}
-          align={align}
-          padding={padding}
-        >
-          {sortable ? (
-            <Tooltip
-              title={<T id="Table.sort" />}
-              placement="bottom-start"
-              enterDelay={300}
-            >
-              <TableSortLabel
-                active={orderBy === index}
-                direction={order}
-                onClick={() => onSort(index)}
+      {columnOptions.map(
+        ({ id, style, intlValues, label, align, padding }, index) => (
+          <TableCell key={id} style={style} align={align} padding={padding}>
+            {sortable ? (
+              <Tooltip
+                title={<T id="Table.sort" />}
+                placement="bottom-start"
+                enterDelay={300}
               >
-                {label
-                    || (noIntl ? (
+                <TableSortLabel
+                  active={orderBy === index}
+                  direction={order}
+                  onClick={() => onSort(index)}
+                >
+                  {label ||
+                    (noIntl ? (
                       id
                     ) : (
                       <T id={id} values={intlValues} list="table" />
                     ))}
-              </TableSortLabel>
-            </Tooltip>
-          ) : (
-            label
-              || (noIntl ? id : <T id={id} values={intlValues} list="table" />)
-          )}
-        </TableCell>
-      ))}
+                </TableSortLabel>
+              </Tooltip>
+            ) : (
+              label ||
+              (noIntl ? id : <T id={id} values={intlValues} list="table" />)
+            )}
+          </TableCell>
+        ),
+      )}
     </TableRow>
   </TableHead>
 );

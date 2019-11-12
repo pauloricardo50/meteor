@@ -17,7 +17,7 @@ const buildByteArray = (string, stringLength) => {
 const createBlob = byteArray =>
   new Blob([byteArray], { type: 'application/pdf' });
 
-export const base64ToBlob = (base64String) => {
+export const base64ToBlob = base64String => {
   const decodedString = decodeBase64(base64String);
   const decodedStringLength = getLength(decodedString);
   const byteArray = buildByteArray(decodedString, decodedStringLength);

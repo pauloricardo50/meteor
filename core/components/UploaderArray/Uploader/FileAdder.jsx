@@ -32,7 +32,7 @@ const FileAdder = ({ handleAddFiles }) => {
         id={uniqueId}
         style={styles.input}
         multiple
-        onChange={(event) => {
+        onChange={event => {
           handleAddFiles(Array.from(event.target.files));
           // Clear the input after upload to be able to upload the same file
           // twice: https://stackoverflow.com/questions/42192346/how-to-reset-reactjs-file-input

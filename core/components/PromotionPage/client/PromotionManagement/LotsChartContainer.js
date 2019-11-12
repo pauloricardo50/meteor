@@ -59,7 +59,9 @@ const getConfig = (promotionLots = [], formatMessage) => ({
       const totalValue = getTotalValueByStatus(promotionLots, key);
       const title = formatMessage({ id: `Forms.status.${key}` });
 
-      return `<b>${title}</b><br/><b>${y}</b> lots<br/><b>CHF ${toMoney(totalValue)}</b>`;
+      return `<b>${title}</b><br/><b>${y}</b> lots<br/><b>CHF ${toMoney(
+        totalValue,
+      )}</b>`;
     },
   },
   plotOptions: {

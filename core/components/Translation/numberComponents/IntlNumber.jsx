@@ -15,10 +15,10 @@ const IntlNumber = ({ type, value, ...rest }) => {
   }
 
   switch (type) {
-  case 'plural':
-    return <FormattedPlural {...rest} value={value} />;
-  default:
-    return <FormattedNumber {...rest} value={value} />;
+    case 'plural':
+      return <FormattedPlural {...rest} value={value} />;
+    default:
+      return <FormattedNumber {...rest} value={value} />;
   }
 };
 

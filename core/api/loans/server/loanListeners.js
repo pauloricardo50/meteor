@@ -68,7 +68,9 @@ ServerEventService.addAfterMethodListener(
 
     let property = {};
     if (hasProProperty) {
-      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+      property = properties.find(
+        ({ category }) => category === PROPERTY_CATEGORY.PRO,
+      );
     }
 
     let promotion = {};
@@ -85,7 +87,8 @@ ServerEventService.addAfterMethodListener(
             status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED,
             date,
           },
-        }));
+        }),
+      );
     }
 
     analytics.track(EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED, {
@@ -136,7 +139,9 @@ ServerEventService.addAfterMethodListener(
 
     let property = {};
     if (hasProProperty) {
-      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+      property = properties.find(
+        ({ category }) => category === PROPERTY_CATEGORY.PRO,
+      );
     }
 
     let promotion = {};

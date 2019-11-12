@@ -32,11 +32,11 @@ const PromotionLender = ({ promotion }: PromotionLenderProps) => (
     autosave
     schema={schema}
     model={{ lenderOrganisationLink: promotion.lenderOrganisation }}
-    onSubmit={(values) => {
+    onSubmit={values => {
       if (
-        values.lenderOrganisationLink
-        && promotion.lenderOrganisation
-        && values.lenderOrganisationLink._id === promotion.lenderOrganisation._id
+        values.lenderOrganisationLink &&
+        promotion.lenderOrganisation &&
+        values.lenderOrganisationLink._id === promotion.lenderOrganisation._id
       ) {
         // FIXME: Don't submit this form on mount.. because of customAllowedValues
         return Promise.reject();

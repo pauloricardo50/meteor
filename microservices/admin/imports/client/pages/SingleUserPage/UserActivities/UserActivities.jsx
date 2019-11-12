@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 
 import Timeline from 'core/components/Timeline';
 import TimelineDescription from 'core/components/Timeline/TimelineDescription';
+import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import UserActivitiesContainer from './UserActivitiesContainer';
-import UserActivityTitle from './UserActivityTitle';
 
 type UserActivitiesProps = {
   activities: Array,
@@ -22,15 +22,20 @@ const UserActivities = ({ activities = [] }: UserActivitiesProps) => {
       <Timeline
         variant="horizontal"
         className="user-activities-timeline"
-        events={activities.map(activity => ({
-          mainLabel: <UserActivityTitle activity={activity} />,
-          secondaryLabel: (
-            <TimelineDescription
-              activity={activity}
-              className="user-activity-description"
-            />
-          ),
-        }))}
+        events={activities.map(activity => {
+          const { title, date } = activity;
+          return {
+            mainLabel: (
+              <TimelineTitle title={title} date={date} icon="computer" />
+            ),
+            secondaryLabel: (
+              <TimelineDescription
+                activity={activity}
+                className="user-activity-description"
+              />
+            ),
+          };
+        })}
       />
     </div>
   );

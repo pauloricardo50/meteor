@@ -10,47 +10,49 @@ import { COLLECTIONS } from '../constants';
 import { NOTIFICATIONS_COLLECTION } from '../notifications/notificationConstants';
 import { ACTIVITIES_COLLECTION } from '../activities/activityConstants';
 
-const getSingularFactoryName = (collection) => {
+const getSingularFactoryName = collection => {
   switch (collection) {
-  case COLLECTIONS.LOANS_COLLECTION:
-    return 'loan';
-  case COLLECTIONS.BORROWERS_COLLECTION:
-    return 'borrower';
-  case COLLECTIONS.PROPERTIES_COLLECTION:
-    return 'property';
-  case COLLECTIONS.USERS_COLLECTION:
-    return 'user';
-  case COLLECTIONS.TASKS_COLLECTION:
-    return 'task';
-  case COLLECTIONS.OFFERS_COLLECTION:
-    return 'offer';
-  case COLLECTIONS.PROMOTIONS_COLLECTION:
-    return 'promotion';
-  case COLLECTIONS.PROMOTION_OPTIONS_COLLECTION:
-    return 'promotionOption';
-  case COLLECTIONS.PROMOTION_LOTS_COLLECTION:
-    return 'promotionLot';
-  case COLLECTIONS.LOTS_COLLECTION:
-    return 'lot';
-  case COLLECTIONS.MORTGAGE_NOTES_COLLECTION:
-    return 'mortgageNote';
-  case COLLECTIONS.ORGANISATIONS_COLLECTION:
-    return 'organisation';
-  case COLLECTIONS.LENDERS_COLLECTION:
-    return 'lender';
-  case COLLECTIONS.CONTACTS_COLLECTION:
-    return 'contact';
-  case NOTIFICATIONS_COLLECTION:
-    return 'notification';
-  case ACTIVITIES_COLLECTION:
-    return 'activity';
-  default:
-    throw new Error(`No singular factory name found for ${collection}, add it in the generator`);
+    case COLLECTIONS.LOANS_COLLECTION:
+      return 'loan';
+    case COLLECTIONS.BORROWERS_COLLECTION:
+      return 'borrower';
+    case COLLECTIONS.PROPERTIES_COLLECTION:
+      return 'property';
+    case COLLECTIONS.USERS_COLLECTION:
+      return 'user';
+    case COLLECTIONS.TASKS_COLLECTION:
+      return 'task';
+    case COLLECTIONS.OFFERS_COLLECTION:
+      return 'offer';
+    case COLLECTIONS.PROMOTIONS_COLLECTION:
+      return 'promotion';
+    case COLLECTIONS.PROMOTION_OPTIONS_COLLECTION:
+      return 'promotionOption';
+    case COLLECTIONS.PROMOTION_LOTS_COLLECTION:
+      return 'promotionLot';
+    case COLLECTIONS.LOTS_COLLECTION:
+      return 'lot';
+    case COLLECTIONS.MORTGAGE_NOTES_COLLECTION:
+      return 'mortgageNote';
+    case COLLECTIONS.ORGANISATIONS_COLLECTION:
+      return 'organisation';
+    case COLLECTIONS.LENDERS_COLLECTION:
+      return 'lender';
+    case COLLECTIONS.CONTACTS_COLLECTION:
+      return 'contact';
+    case NOTIFICATIONS_COLLECTION:
+      return 'notification';
+    case ACTIVITIES_COLLECTION:
+      return 'activity';
+    default:
+      throw new Error(
+        `No singular factory name found for ${collection}, add it in the generator`,
+      );
   }
 };
 
 const arrayify = maybeArray =>
-  (Array.isArray(maybeArray) ? maybeArray : [maybeArray]);
+  Array.isArray(maybeArray) ? maybeArray : [maybeArray];
 
 const findCollectionNameByLinkName = ({ collection, linkName }) =>
   Mongo.Collection.get(collection).__links[linkName].linkConfig.collection
@@ -82,8 +84,8 @@ const insertDoc = ({ doc, collection, useFactories, factory }) => {
       return Factory.create(collection, doc);
     } catch (error) {
       if (
-        error.message
-        && error.message === `Factory: There is no factory named ${collection}`
+        error.message &&
+        error.message === `Factory: There is no factory named ${collection}`
       ) {
         return Factory.create(getSingularFactoryName(collection), doc);
       }
@@ -131,19 +133,21 @@ const generator = (scenario, { useFactories = true } = {}) => {
 
     const linksToInsert = pick(doc, linkKeys);
 
-    Object.keys(linksToInsert).forEach((linkName) => {
+    Object.keys(linksToInsert).forEach(linkName => {
       const linkCollection = findCollectionNameByLinkName({
         collection,
         linkName,
       });
       const linkedDocs = arrayify(linksToInsert[linkName]);
-      linkedDocs.forEach((linkedDoc) => {
+      linkedDocs.forEach(linkedDoc => {
         const linkId = createNestedObject({
           doc: linkedDoc,
           collection: linkCollection,
           parentId: id,
         });
-        const collectionService = new CollectionService(Mongo.Collection.get(collection));
+        const collectionService = new CollectionService(
+          Mongo.Collection.get(collection),
+        );
         collectionService.addLink({
           id,
           linkName,
@@ -156,7 +160,7 @@ const generator = (scenario, { useFactories = true } = {}) => {
     return id;
   };
 
-  Object.keys(scenario).forEach((collection) => {
+  Object.keys(scenario).forEach(collection => {
     const docsInCollection = arrayify(scenario[collection]);
     docsInCollection.forEach(doc => createNestedObject({ doc, collection }));
   });

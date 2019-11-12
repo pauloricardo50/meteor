@@ -13,7 +13,7 @@ import DashboardRecapFinanceEmpty from './DashboardRecapFinanceEmpty';
 
 const shouldDisplayRecap = loan => Calculator.selectPropertyValue({ loan });
 
-const DashboardRecapFinance = (props) => {
+const DashboardRecapFinance = props => {
   const { loan } = props;
   if (!shouldDisplayRecap(loan)) {
     return <DashboardRecapFinanceEmpty loan={loan} />;

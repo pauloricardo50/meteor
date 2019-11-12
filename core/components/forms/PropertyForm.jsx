@@ -69,7 +69,7 @@ const otherSchema = PropertySchemaAdmin.omit(
   ...omittedFields,
 );
 
-const handleSubmit = propertyId => (doc) => {
+const handleSubmit = propertyId => doc => {
   let message;
   let hideLoader;
 
@@ -88,7 +88,7 @@ const handleSubmit = propertyId => (doc) => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const insertMortgageNote = (propertyId) => {
+const insertMortgageNote = propertyId => {
   let message;
   let hideLoader;
 

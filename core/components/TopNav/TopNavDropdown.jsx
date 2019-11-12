@@ -15,7 +15,7 @@ import DropdownMenu from '../DropdownMenu';
 // an admin link for admins,
 // a partner link for partners,
 // a home, settings, and contact link for regular users
-const getMenuItems = (currentUser) => {
+const getMenuItems = currentUser => {
   const isDev = Roles.userIsInRole(currentUser._id, ROLES.DEV);
   const isPro = Roles.userIsInRole(currentUser._id, ROLES.PRO);
   return [

@@ -17,18 +17,24 @@ describe('FinanceCalculator', () => {
 
   describe('getLoanValue', () => {
     it('returns the difference between property and fortune without fees', () => {
-      expect(calc.getLoanValue({ propertyValue: 100, fortune: 20 })).to.equal(85);
+      expect(calc.getLoanValue({ propertyValue: 100, fortune: 20 })).to.equal(
+        85,
+      );
     });
 
     it('uses fortune to pay for fees', () => {
       calc = new FinanceCalculator({ notaryFees: 0.1 });
-      expect(calc.getLoanValue({ propertyValue: 100, fortune: 30 })).to.equal(80);
+      expect(calc.getLoanValue({ propertyValue: 100, fortune: 30 })).to.equal(
+        80,
+      );
     });
   });
 
   describe('getBorrowRatio', () => {
     it('returns a percentage borrowRatio', () => {
-      expect(calc.getBorrowRatio({ propertyValue: 100, loan: 80 })).to.equal(0.8);
+      expect(calc.getBorrowRatio({ propertyValue: 100, loan: 80 })).to.equal(
+        0.8,
+      );
     });
 
     it('returns zero if no loan is provided', () => {
@@ -38,15 +44,23 @@ describe('FinanceCalculator', () => {
 
   describe('getBorrowRatioWithoutLoan', () => {
     it('returns a percentage borrowRatio', () => {
-      expect(calc.getBorrowRatioWithoutLoan({ propertyValue: 100, fortune: 25 })).to.equal(0.8);
+      expect(
+        calc.getBorrowRatioWithoutLoan({ propertyValue: 100, fortune: 25 }),
+      ).to.equal(0.8);
     });
   });
 
   describe('getRetirementForGender', () => {
     it('returns a different value for male and female', () => {
-      expect(calc.getRetirementForGender({ gender: 'M' })).to.not.equal(undefined);
-      expect(calc.getRetirementForGender({ gender: 'M' })).to.not.equal(undefined);
-      expect(calc.getRetirementForGender({ gender: 'M' })).to.not.equal(calc.getRetirementForGender({ gender: 'F' }));
+      expect(calc.getRetirementForGender({ gender: 'M' })).to.not.equal(
+        undefined,
+      );
+      expect(calc.getRetirementForGender({ gender: 'M' })).to.not.equal(
+        undefined,
+      );
+      expect(calc.getRetirementForGender({ gender: 'M' })).to.not.equal(
+        calc.getRetirementForGender({ gender: 'F' }),
+      );
     });
 
     it('returns male retirement if nothing is provided', () => {
@@ -57,17 +71,23 @@ describe('FinanceCalculator', () => {
 
   describe('getIncomeRatio', () => {
     it('returns the ratio between payment and income', () => {
-      expect(calc.getIncomeRatio({ monthlyIncome: 1, monthlyPayment: 0.5 })).to.equal(0.5);
+      expect(
+        calc.getIncomeRatio({ monthlyIncome: 1, monthlyPayment: 0.5 }),
+      ).to.equal(0.5);
     });
 
     it('returns zero if no payment is provided', () => {
-      expect(calc.getIncomeRatio({ monthlyIncome: 1, monthlyPayment: 0 })).to.equal(0);
+      expect(
+        calc.getIncomeRatio({ monthlyIncome: 1, monthlyPayment: 0 }),
+      ).to.equal(0);
     });
   });
 
   describe('getLoanCost', () => {
     it('returns the sum of the 3 components', () => {
-      expect(calc.getLoanCost({ maintenance: 1, interests: 2, amortization: 3 })).to.equal(6);
+      expect(
+        calc.getLoanCost({ maintenance: 1, interests: 2, amortization: 3 }),
+      ).to.equal(6);
     });
 
     it('ignores a value if not provided', () => {
@@ -83,10 +103,15 @@ describe('FinanceCalculator', () => {
 
   describe('getInterestsWithTranches', () => {
     it('aggregates interest rates with loan tranches', () => {
-      expect(calc.getInterestsWithTranches({
-        tranches: [{ value: 0.5, type: 'a' }, { value: 0.5, type: 'b' }],
-        interestRates: { a: 0.01, b: 0.02 },
-      })).to.equal(0.5 * 0.01 + 0.5 * 0.02);
+      expect(
+        calc.getInterestsWithTranches({
+          tranches: [
+            { value: 0.5, type: 'a' },
+            { value: 0.5, type: 'b' },
+          ],
+          interestRates: { a: 0.01, b: 0.02 },
+        }),
+      ).to.equal(0.5 * 0.01 + 0.5 * 0.02);
     });
 
     it('returns zero if nothing is provided', () => {
@@ -94,10 +119,12 @@ describe('FinanceCalculator', () => {
     });
 
     it('return a dash if an interest rate is not present', () => {
-      expect(calc.getInterestsWithTranches({
-        tranches: [{ value: 0.5, type: 'a' }],
-        interestRates: { b: 0.02 },
-      })).to.equal('-');
+      expect(
+        calc.getInterestsWithTranches({
+          tranches: [{ value: 0.5, type: 'a' }],
+          interestRates: { b: 0.02 },
+        }),
+      ).to.equal('-');
     });
   });
 
@@ -107,7 +134,9 @@ describe('FinanceCalculator', () => {
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.0125);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(
+        0.0125,
+      );
     });
 
     it('returns zero if already below the amortizationGoal', () => {
@@ -142,18 +171,26 @@ describe('FinanceCalculator', () => {
     });
 
     it('has default initialization settings', () => {
-      expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(80);
-      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.0125);
+      expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(
+        80,
+      );
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(
+        0.0125,
+      );
     });
   });
 
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(35);
+      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(
+        35,
+      );
     });
 
     it('Should return 34 with a female of 30 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'F' })).to.equal(34);
+      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'F' })).to.equal(
+        34,
+      );
     });
 
     it('Should return 35 with an undefined gender of 30 yo', () => {
@@ -169,12 +206,14 @@ describe('FinanceCalculator', () => {
     });
 
     it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
-      expect(calc.getYearsToRetirement({
-        age1: 54,
-        age2: 54,
-        gender1: 'F',
-        gender2: 'M',
-      })).to.equal(10);
+      expect(
+        calc.getYearsToRetirement({
+          age1: 54,
+          age2: 54,
+          gender1: 'F',
+          gender2: 'M',
+        }),
+      ).to.equal(10);
     });
   });
 
@@ -203,66 +242,80 @@ describe('FinanceCalculator', () => {
         total: 6000,
       };
 
-      expect(calc.getTheoreticalMonthly({
-        propAndWork: 1200000,
-        loanValue: 960000,
-        amortizationRate: calc.getAmortizationRateBase({ borrowRatio: 0.8 }),
-      })).to.deep.equal(expected);
+      expect(
+        calc.getTheoreticalMonthly({
+          propAndWork: 1200000,
+          loanValue: 960000,
+          amortizationRate: calc.getAmortizationRateBase({ borrowRatio: 0.8 }),
+        }),
+      ).to.deep.equal(expected);
     });
   });
 
   describe('getMaxLoanBase', () => {
     it('returns 80% of the property by default', () => {
-      expect(calc.getMaxLoanBase({
-        propertyValue: 90,
-        propertyWork: 10,
-        pledgedAmount: 1000,
-      })).to.equal(80);
+      expect(
+        calc.getMaxLoanBase({
+          propertyValue: 90,
+          propertyWork: 10,
+          pledgedAmount: 1000,
+        }),
+      ).to.equal(80);
     });
 
     it('returns 80% of the property for a main residence if nothing is pledged', () => {
-      expect(calc.getMaxLoanBase({
-        propertyValue: 90,
-        propertyWork: 10,
-        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      })).to.equal(80);
+      expect(
+        calc.getMaxLoanBase({
+          propertyValue: 90,
+          propertyWork: 10,
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        }),
+      ).to.equal(80);
     });
 
     it('returns between 80 and 90% of the property for a main residence if a little is pledged', () => {
-      expect(calc.getMaxLoanBase({
-        propertyValue: 90,
-        propertyWork: 10,
-        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-        pledgedAmount: 5,
-      })).to.equal(85);
+      expect(
+        calc.getMaxLoanBase({
+          propertyValue: 90,
+          propertyWork: 10,
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          pledgedAmount: 5,
+        }),
+      ).to.equal(85);
     });
 
     it('caps at 90% of the property', () => {
-      expect(calc.getMaxLoanBase({
-        propertyValue: 90,
-        propertyWork: 10,
-        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-        pledgedAmount: 20,
-      })).to.equal(90);
+      expect(
+        calc.getMaxLoanBase({
+          propertyValue: 90,
+          propertyWork: 10,
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+          pledgedAmount: 20,
+        }),
+      ).to.equal(90);
     });
   });
 
   describe('getAveragedInterestRate', () => {
     it('returns the same value if only one rate at 100%', () => {
-      expect(calc.getAveragedInterestRate({
-        tranches: [{ type: 'rateType', value: 1 }],
-        interestRates: { rateType: 0.01 },
-      })).to.equal(0.01);
+      expect(
+        calc.getAveragedInterestRate({
+          tranches: [{ type: 'rateType', value: 1 }],
+          interestRates: { rateType: 0.01 },
+        }),
+      ).to.equal(0.01);
     });
 
     it('averages 2 rates out', () => {
-      expect(calc.getAveragedInterestRate({
-        tranches: [
-          { type: 'rateType1', value: 0.5 },
-          { type: 'rateType2', value: 0.5 },
-        ],
-        interestRates: { rateType1: 0.01, rateType2: 0.02 },
-      })).to.equal(0.015);
+      expect(
+        calc.getAveragedInterestRate({
+          tranches: [
+            { type: 'rateType1', value: 0.5 },
+            { type: 'rateType2', value: 0.5 },
+          ],
+          interestRates: { rateType1: 0.01, rateType2: 0.02 },
+        }),
+      ).to.equal(0.015);
     });
   });
 });

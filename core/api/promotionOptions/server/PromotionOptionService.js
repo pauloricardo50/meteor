@@ -29,14 +29,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function () {
+        'reservationAgreement.startDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function () {
+        'reservationAgreement.expirationDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -63,8 +63,8 @@ export class PromotionOptionService extends CollectionService {
     });
 
     return (
-      promotionOption.promotionLots
-      && promotionOption.promotionLots[0].promotion
+      promotionOption.promotionLots &&
+      promotionOption.promotionLots[0].promotion
     );
   }
 
@@ -103,7 +103,7 @@ export class PromotionOptionService extends CollectionService {
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({
       loanId,
       promotionId,
-    }).filter((id) => id !== promotionOptionId);
+    }).filter(id => id !== promotionOptionId);
     LoanService.setPromotionPriorityOrder({
       loanId,
       promotionId,
@@ -119,13 +119,18 @@ export class PromotionOptionService extends CollectionService {
       promotionOptions: { _id: 1, promotionLots: { _id: 1 } },
     });
 
-    const existingPromotionOption = promotionOptions
-      && promotionOptions.find(({ promotionLots }) =>
-        promotionLots
-          && promotionLots.some((lot) => lot._id === promotionLotId));
+    const existingPromotionOption =
+      promotionOptions &&
+      promotionOptions.find(
+        ({ promotionLots }) =>
+          promotionLots &&
+          promotionLots.some(lot => lot._id === promotionLotId),
+      );
 
     if (existingPromotionOption) {
-      throw new Meteor.Error('Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.');
+      throw new Meteor.Error(
+        'Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.',
+      );
     }
 
     const promotionOptionId = super.insert({
@@ -278,7 +283,9 @@ export class PromotionOptionService extends CollectionService {
         if (!agreementFileKeys.length) {
           throw new Error();
         }
-        await Promise.all(agreementFileKeys.map((Key) => FileService.getFileFromKey(Key)));
+        await Promise.all(
+          agreementFileKeys.map(Key => FileService.getFileFromKey(Key)),
+        );
       } catch (error) {
         throw new Meteor.Error('Aucune convention de réservation uploadée');
       }
@@ -320,7 +327,9 @@ export class PromotionOptionService extends CollectionService {
   getReservationExpirationDate({ startDate, agreementDuration }) {
     // Check if agreement duration is set
     if (!agreementDuration) {
-      throw new Meteor.Error('Aucun délai de réservation configuré pour cette promotion');
+      throw new Meteor.Error(
+        'Aucun délai de réservation configuré pour cette promotion',
+      );
     }
 
     const today = moment().startOf('day');
@@ -330,13 +339,19 @@ export class PromotionOptionService extends CollectionService {
 
     // Check if start date is in future
     if (moment(startDate).startOf('day') > today) {
-      throw new Meteor.Error('Le début de la réservation ne peut pas être dans le futur');
+      throw new Meteor.Error(
+        'Le début de la réservation ne peut pas être dans le futur',
+      );
     }
 
     // Check if start date is older than half the agreement duration in the past
     // If not, this reservation does not make sense, it has started too long ago
     if (moment(startDate).startOf('day') < startDateLowerBound) {
-      throw new Meteor.Error(`Le début de la réservation ne peut pas être avant le ${moment(startDateLowerBound).format('D MMM YYYY')}`);
+      throw new Meteor.Error(
+        `Le début de la réservation ne peut pas être avant le ${moment(
+          startDateLowerBound,
+        ).format('D MMM YYYY')}`,
+      );
     }
 
     const expirationDate = moment(startDate)
@@ -351,7 +366,7 @@ export class PromotionOptionService extends CollectionService {
     agreementFileKeys = [],
   }) => {
     const mergeFiles = async () => {
-      await asyncForEach(agreementFileKeys, async (Key) => {
+      await asyncForEach(agreementFileKeys, async Key => {
         const name = FileService.getFileName(Key);
         const newKey = await FileService.moveFile({
           Key,
@@ -419,7 +434,7 @@ export class PromotionOptionService extends CollectionService {
       fullVerification: 1,
       reservationAgreement: 1,
     });
-    const changedKeys = Object.keys(object).filter((key) => {
+    const changedKeys = Object.keys(object).filter(key => {
       const newValue = object[key] && object[key].valueOf();
       const oldValue = model[key] && model[key].valueOf();
 
@@ -437,7 +452,7 @@ export class PromotionOptionService extends CollectionService {
 
     // Send keys with dot-notation, to make sure simple-schema doesn't
     // set the other keys in the object to their defaultValues
-    changedKeys.forEach((key) => {
+    changedKeys.forEach(key => {
       this._update({
         id: promotionOptionId,
         object: { [`${id}.${key}`]: object[key] },
@@ -457,8 +472,11 @@ export class PromotionOptionService extends CollectionService {
       },
     });
 
-    await Promise.all(toExpire.map(({ _id: promotionOptionId }) =>
-      expirePromotionLotReservation.run({ promotionOptionId })));
+    await Promise.all(
+      toExpire.map(({ _id: promotionOptionId }) =>
+        expirePromotionLotReservation.run({ promotionOptionId }),
+      ),
+    );
 
     return toExpire.length;
   };
@@ -485,28 +503,32 @@ export class PromotionOptionService extends CollectionService {
       reservationAgreement: { expirationDate: 1 },
     });
 
-    await Promise.all(expiringSoon.map((promotionOption) => {
-      const {
-        promotion: { _id: promotionId, assignedEmployee },
-        promotionLots = [],
-        reservationAgreement: { expirationDate },
-        loan: {
-          user: { name: userName },
-        },
-      } = promotionOption;
+    await Promise.all(
+      expiringSoon.map(promotionOption => {
+        const {
+          promotion: { _id: promotionId, assignedEmployee },
+          promotionLots = [],
+          reservationAgreement: { expirationDate },
+          loan: {
+            user: { name: userName },
+          },
+        } = promotionOption;
 
-      const [{ name: promotionLotName }] = promotionLots;
+        const [{ name: promotionLotName }] = promotionLots;
 
-      return TaskService.insert({
-        object: {
-          collection: PROMOTIONS_COLLECTION,
-          docId: promotionId,
-          assigneeLink: assignedEmployee,
-          title: `La réservation de ${userName} sur ${promotionLotName} arrive à échéance`,
-          description: `Valable jusqu'au ${moment(expirationDate).format('DD MMM')}`,
-        },
-      });
-    }));
+        return TaskService.insert({
+          object: {
+            collection: PROMOTIONS_COLLECTION,
+            docId: promotionId,
+            assigneeLink: assignedEmployee,
+            title: `La réservation de ${userName} sur ${promotionLotName} arrive à échéance`,
+            description: `Valable jusqu'au ${moment(expirationDate).format(
+              'DD MMM',
+            )}`,
+          },
+        });
+      }),
+    );
   };
 
   generateHalfLifeReminderTasks = async () => {
@@ -525,28 +547,32 @@ export class PromotionOptionService extends CollectionService {
       reservationAgreement: { expirationDate: 1 },
     });
 
-    await Promise.all(expiringIn10Days.map((promotionOption) => {
-      const {
-        promotion: { _id: promotionId, assignedEmployee },
-        promotionLots = [],
-        reservationAgreement: { expirationDate },
-        loan: {
-          user: { name: userName },
-        },
-      } = promotionOption;
+    await Promise.all(
+      expiringIn10Days.map(promotionOption => {
+        const {
+          promotion: { _id: promotionId, assignedEmployee },
+          promotionLots = [],
+          reservationAgreement: { expirationDate },
+          loan: {
+            user: { name: userName },
+          },
+        } = promotionOption;
 
-      const [{ name: promotionLotName }] = promotionLots;
+        const [{ name: promotionLotName }] = promotionLots;
 
-      return TaskService.insert({
-        object: {
-          collection: PROMOTIONS_COLLECTION,
-          docId: promotionId,
-          assigneeLink: assignedEmployee,
-          title: `La réservation de ${userName} sur ${promotionLotName} échoue dans 10 jours, relancer le client`,
-          description: `Valable jusqu'au ${moment(expirationDate).format('DD MMM')}`,
-        },
-      });
-    }));
+        return TaskService.insert({
+          object: {
+            collection: PROMOTIONS_COLLECTION,
+            docId: promotionId,
+            assigneeLink: assignedEmployee,
+            title: `La réservation de ${userName} sur ${promotionLotName} échoue dans 10 jours, relancer le client`,
+            description: `Valable jusqu'au ${moment(expirationDate).format(
+              'DD MMM',
+            )}`,
+          },
+        });
+      }),
+    );
   };
 
   getEmailRecipients({ promotionOptionId }) {
@@ -599,7 +625,7 @@ export class PromotionOptionService extends CollectionService {
     const filterEnableNotifications = ({
       $metadata: { enableNotifications = true },
     }) => enableNotifications;
-    const makeFilterRole = (role) => ({ $metadata: { roles = [] } }) =>
+    const makeFilterRole = role => ({ $metadata: { roles = [] } }) =>
       roles.includes(role);
 
     const user = [{ userId: customerId, email: userEmail, anonymize: false }];

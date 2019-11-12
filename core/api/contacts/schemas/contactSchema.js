@@ -1,8 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { createdAt, updatedAt, address } from '../../helpers/sharedSchemas';
-import {
-  autoValueSentenceCase,
-} from '../../helpers/sharedSchemaValues';
+import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
 
 const ContactSchema = new SimpleSchema({
   createdAt,

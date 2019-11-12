@@ -21,7 +21,6 @@ type AutoFormDialogProps = {
   title?: React.Node,
   important?: Boolean,
   autoFieldProps?: Object,
-  opened: Boolean,
   renderAdditionalActions?: Function,
   children?: React.Node,
   triggerComponent?: Function,
@@ -62,7 +61,6 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
       important,
       noButton,
       onSubmit,
-      opened,
       renderAdditionalActions,
       setOpen,
       title,
@@ -74,14 +72,14 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
     } = this.props;
     const schemaKeys = this.props.schema._schemaKeys;
 
-    const handleOpen = (event) => {
+    const handleOpen = event => {
       if (event && event.stopPropagation) {
         event.stopPropagation();
         event.preventDefault();
       }
       setOpen(true);
     };
-    const handleClose = (event) => {
+    const handleClose = event => {
       event.stopPropagation();
       event.preventDefault();
       setOpen(false);
@@ -99,7 +97,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
           className="autoform-dialog"
           maxWidth={maxWidth}
           fullWidth
-          onClick={(e) => {
+          onClick={e => {
             // Clicking on the dialog should not trigger a table row below it..
             e.stopPropagation();
           }}
@@ -132,7 +130,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
 }
 
 export default compose(
-  withState('open', 'setOpen', false),
+  withState('open', 'setOpen', ({ openOnMount }) => !!openOnMount),
   withProps(({ onSubmit, setOpen }) => ({
     onSubmit: (...args) => onSubmit(...args).then(() => setOpen(false)),
   })),

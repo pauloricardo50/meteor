@@ -148,26 +148,28 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   };
 
   switch (step) {
-  case STEPS.OFFERS:
-    loan.step = STEPS.OFFERS;
-    loan.loanTranches = [{ value: 750000, type: 'interest10' }];
-    loan.applicationType = APPLICATION_TYPES.FULL;
-    loan.displayWelcomeScreen = false;
-    break;
-  case STEPS.REQUEST:
-    loan.step = STEPS.REQUEST;
-    loan.applicationType = APPLICATION_TYPES.FULL;
-    loan.displayWelcomeScreen = false;
-    break;
-  default:
-    loan.step = STEPS.SOLVENCY;
+    case STEPS.OFFERS:
+      loan.step = STEPS.OFFERS;
+      loan.loanTranches = [{ value: 750000, type: 'interest10' }];
+      loan.applicationType = APPLICATION_TYPES.FULL;
+      loan.displayWelcomeScreen = false;
+      break;
+    case STEPS.REQUEST:
+      loan.step = STEPS.REQUEST;
+      loan.applicationType = APPLICATION_TYPES.FULL;
+      loan.displayWelcomeScreen = false;
+      break;
+    default:
+      loan.step = STEPS.SOLVENCY;
   }
 
   return LoanService.insert({ loan, userId });
 };
 
 export const getRelatedLoansIds = usersIds =>
-  LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(item => item._id);
+  LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(
+    item => item._id,
+  );
 
 export const addLoanWithData = ({
   borrowers = [],

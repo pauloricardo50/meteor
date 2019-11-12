@@ -51,7 +51,9 @@ export const propertyPermissionsSchema = {
   'displayCustomerNames.referredBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
+    allowedValues: Object.values(
+      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY,
+    ),
     uniforms: {
       displayEmpty: true,
       placeholder: 'Ne pas afficher le nom des clients',
@@ -69,8 +71,10 @@ export const propertyPermissionsSchema = {
   },
   'displayCustomerNames.forPropertyStatus.$': {
     type: String,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-      .FOR_PROPERTY_STATUS),
+    allowedValues: Object.values(
+      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+        .FOR_PROPERTY_STATUS,
+    ),
   },
 };
 

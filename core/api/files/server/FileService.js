@@ -17,7 +17,8 @@ class FileService {
   listFilesForDoc = (docId, subdocument) => {
     const prefix = subdocument ? `${docId}/${subdocument}` : docId;
     return S3Service.listObjectsWithMetadata(prefix).then(results =>
-      results.map(this.formatFile));
+      results.map(this.formatFile),
+    );
   };
 
   listFilesForDocByCategory = (docId, subdocument) =>
@@ -59,9 +60,10 @@ class FileService {
       Mongo.Collection.get(collection).update(
         { _id: docId },
         { $set: { documents } },
-      ));
+      ),
+    );
 
-  formatFile = (file) => {
+  formatFile = file => {
     let fileName = file.name;
     if (!fileName) {
       fileName = this.getKeyParts(file.Key).fileName;
@@ -81,7 +83,7 @@ class FileService {
     )
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))
-      .then((files) => {
+      .then(files => {
         removeFile(path);
         return { files };
       });
@@ -89,7 +91,7 @@ class FileService {
 
   deleteFileAPI = ({ docId, collection, key }) =>
     this.listFilesForDoc(docId)
-      .then((files) => {
+      .then(files => {
         const keyExists = files.map(({ Key }) => Key).some(Key => Key === key);
         if (!keyExists) {
           throw new Meteor.Error(
@@ -124,7 +126,9 @@ class FileService {
 
     return `${
       Meteor.settings.public.subdomains.backend
-    }/api/zip-loan/?simple-auth-params=${Buffer.from(JSON.stringify(simpleAuthParams)).toString('base64')}`;
+    }/api/zip-loan/?simple-auth-params=${Buffer.from(
+      JSON.stringify(simpleAuthParams),
+    ).toString('base64')}`;
   };
 
   setAdminName = ({ Key, adminName = '' }) =>
@@ -152,7 +156,8 @@ class FileService {
         this.updateDocumentsCache({
           docId: newDocId,
           collection: newCollection,
-        }))
+        }),
+      )
       .then(() => {
         if (oldDocId && oldCollection) {
           return this.updateDocumentsCache({
@@ -164,7 +169,7 @@ class FileService {
       .then(() => newKey);
   };
 
-  getKeyParts = (key) => {
+  getKeyParts = key => {
     const [docId, documentId, fileName] = key.split('/');
     const extension = fileName && fileName.split('.').slice(-1)[0];
     return { docId, documentId, fileName, extension };
@@ -181,7 +186,7 @@ class FileService {
   getTempS3FileKey = (userId, file, { id }) =>
     `temp/${userId}/${id}/${this.formatFileName(file.name)}`;
 
-  getFileFromKey = (Key) => {
+  getFileFromKey = Key => {
     try {
       return S3Service.headObject(Key);
     } catch (error) {
@@ -192,9 +197,13 @@ class FileService {
   flushTempFiles = async () => {
     const tempFiles = await this.listFilesForDoc('temp');
     const fifteenMinutesAgo = moment(Date.now()).subtract(15, 'minutes');
-    const tempFilesToRemove = tempFiles.filter(({ LastModified }) => moment(LastModified) < fifteenMinutesAgo);
+    const tempFilesToRemove = tempFiles.filter(
+      ({ LastModified }) => moment(LastModified) < fifteenMinutesAgo,
+    );
 
-    const deletedFiles = await Promise.all(tempFilesToRemove.map(({ Key }) => S3Service.deleteObject(Key)));
+    const deletedFiles = await Promise.all(
+      tempFilesToRemove.map(({ Key }) => S3Service.deleteObject(Key)),
+    );
 
     return deletedFiles.length;
   };
@@ -211,11 +220,12 @@ class FileService {
         const existingDate = fileName.match(/\d{4}-\d{2}-\d{2}/g);
         const date = existingDate ? existingDate[0] : today;
         const documentName = formatMessage({ id: `files.${documentId}` });
-        const name = keys.length === 1
-          ? `${date} ${documentName}.${extension}`
-          : `${date} ${documentName} (${index + 1} sur ${
-            keys.length
-          }).${extension}`;
+        const name =
+          keys.length === 1
+            ? `${date} ${documentName}.${extension}`
+            : `${date} ${documentName} (${index + 1} sur ${
+                keys.length
+              }).${extension}`;
 
         await this.moveFile({
           Key,

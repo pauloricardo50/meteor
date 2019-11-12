@@ -23,7 +23,7 @@ describe('App onboarding', () => {
       });
 
       it('should login with the login token', () => {
-        cy.callMethod('inviteTestUser').then((loginToken) => {
+        cy.callMethod('inviteTestUser').then(loginToken => {
           cy.visit(`/enroll-account/${loginToken}`);
         });
 

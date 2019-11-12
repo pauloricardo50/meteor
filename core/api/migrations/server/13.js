@@ -34,7 +34,7 @@ export const up = async () => {
 };
 
 export const down = () => {
-  collections.forEach((collection) => {
+  collections.forEach(collection => {
     Mongo.Collection.get(collection).update(
       {},
       { $unset: { documents: true } },

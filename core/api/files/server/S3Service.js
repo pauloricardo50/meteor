@@ -43,8 +43,8 @@ class S3Service {
 
   isAllowedToAccess = ({ userId, key }) => {
     if (
-      Roles.userIsInRole(userId, 'admin')
-      || Roles.userIsInRole(userId, 'dev')
+      Roles.userIsInRole(userId, 'admin') ||
+      Roles.userIsInRole(userId, 'dev')
     ) {
       return true;
     }
@@ -128,21 +128,32 @@ class S3Service {
   getObject = Key => this.callS3Method('getObject', { Key });
 
   listObjects = Prefix =>
-    this.callS3Method('listObjectsV2', { Prefix }).then(results => results.Contents);
+    this.callS3Method('listObjectsV2', { Prefix }).then(
+      results => results.Contents,
+    );
 
   listObjectsWithMetadata = Prefix =>
     this.listObjects(Prefix).then(results =>
-      Promise.all(results.map(object =>
-        this.headObject(object.Key).then(({ Metadata, ContentDisposition }) => {
-          const name = ContentDisposition
-                && decodeURIComponent(ContentDisposition.match(/filename="(.*)"/)[1]);
-          return {
-            ...object,
-            ...Metadata,
-            url: this.buildFileUrl(object),
-            name,
-          };
-        }))));
+      Promise.all(
+        results.map(object =>
+          this.headObject(object.Key).then(
+            ({ Metadata, ContentDisposition }) => {
+              const name =
+                ContentDisposition &&
+                decodeURIComponent(
+                  ContentDisposition.match(/filename="(.*)"/)[1],
+                );
+              return {
+                ...object,
+                ...Metadata,
+                url: this.buildFileUrl(object),
+                name,
+              };
+            },
+          ),
+        ),
+      ),
+    );
 
   copyObject = params => this.callS3Method('copyObject', params);
 
@@ -154,7 +165,9 @@ class S3Service {
   promisify = (methodName, params) =>
     new Promise((resolve, reject) =>
       this.s3[methodName](params, (err, data) =>
-        (err ? reject(err) : resolve(data))));
+        err ? reject(err) : resolve(data),
+      ),
+    );
 
   updateMetadata = (key, newMetadata) =>
     this.headObject(key).then(({ Metadata: oldMetaData }) =>
@@ -163,7 +176,8 @@ class S3Service {
         Metadata: { ...oldMetaData, ...newMetadata },
         CopySource: `/${this.params.Bucket}/${key}`,
         MetadataDirective: 'REPLACE',
-      }));
+      }),
+    );
 
   buildFileUrl = file => `${OBJECT_STORAGE_PATH}/${file.Key}`;
 
@@ -185,7 +199,8 @@ class S3Service {
           Metadata,
           CopySource: `/${this.params.Bucket}/${oldKey}`,
           MetadataDirective: 'REPLACE',
-        }))
+        }),
+      )
       .then(() => this.deleteObject(oldKey));
 }
 

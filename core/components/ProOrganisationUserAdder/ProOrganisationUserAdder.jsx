@@ -34,22 +34,22 @@ const ProOrganisationUserAdder = ({
     title={
       <T id="ProOrganisationUserAdder.title" values={{ organisationName }} />
     }
-    description={(
+    description={
       <T
         id="ProOrganisationUserAdder.description"
         values={{ organisationName }}
       />
-    )}
+    }
     triggerComponent={handleOpen => (
       <IconButton
         onClick={handleOpen}
         type="personAdd"
-        tooltip={(
+        tooltip={
           <T
             id="ProOrganisationUserAdder.tooltip"
             values={{ organisationName }}
           />
-        )}
+        }
       />
     )}
   />

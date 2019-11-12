@@ -21,23 +21,23 @@ const AboutPageTeamMember = ({ name, src, title }) => (
         <a href={getMailTo(name)} className="email">
           <IconButton
             type="mail"
-            tooltip={(
+            tooltip={
               <T
                 id="AboutPageTeamMember.emailTooltip"
                 values={{ name: extractFirstName(name) }}
               />
-            )}
+            }
           />
         </a>
         <a href="tel:+41225660110">
           <IconButton
             type="phone"
-            tooltip={(
+            tooltip={
               <T
                 id="AboutPageTeamMember.phoneTooltip"
                 values={{ name: extractFirstName(name) }}
               />
-            )}
+            }
           />
         </a>
       </span>

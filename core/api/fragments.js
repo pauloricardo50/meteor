@@ -19,6 +19,7 @@ export const activity = () => ({
   user: { name: 1, email: 1 },
   metadata: 1,
   isServerGenerated: 1,
+  isImportant: 1,
 });
 
 // //
@@ -317,31 +318,31 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
-      promotions: {
-        address: 1,
-        contacts: 1,
-        documents: { promotionImage: 1 },
-        lenderOrganisationLink: 1,
-        name: 1,
-        status: 1,
-        type: 1,
-        canton: 1,
-        users: {
-          _id: 1,
+        promotions: {
+          address: 1,
+          contacts: 1,
+          documents: { promotionImage: 1 },
+          lenderOrganisationLink: 1,
           name: 1,
-          email: 1,
-          phoneNumber: 1,
-          organisations: { users: { title: 1 } },
-        },
-        loans: {
-          _id: 1,
-          $filter({ filters, params: { loanId } }) {
-            filters.userId = Meteor.userId();
-            filters._id = loanId;
+          status: 1,
+          type: 1,
+          canton: 1,
+          users: {
+            _id: 1,
+            name: 1,
+            email: 1,
+            phoneNumber: 1,
+            organisations: { users: { title: 1 } },
+          },
+          loans: {
+            _id: 1,
+            $filter({ filters, params: { loanId } }) {
+              filters.userId = Meteor.userId();
+              filters._id = loanId;
+            },
           },
         },
-      },
-    }
+      }
     : {}),
 });
 
@@ -403,6 +404,7 @@ export const proLoans = () => ({
     email: 1,
     referredByUser: { name: 1, organisations: { name: 1 } },
     referredByOrganisation: { name: 1 },
+    assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
   },
   hasPromotion: 1,
   hasProProperty: 1,
@@ -742,12 +744,12 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   projectStatus: 1,
   ...(withFilteredLoan
     ? {
-      loans: {
-        $filter({ filters, params: { loanId } }) {
-          filters._id = loanId;
+        loans: {
+          $filter({ filters, params: { loanId } }) {
+            filters._id = loanId;
+          },
         },
-      },
-    }
+      }
     : {}),
 });
 

@@ -1,13 +1,13 @@
 // @flow
-import React, { useState, useEffect, useRef } from 'react';
-import { useDebounce } from 'react-use';
+import React, { useEffect, useRef } from 'react';
 
+import useDebouncedInput from '../../hooks/useDebouncedInput';
 import MuiSlider from '../Material/Slider';
 import Tooltip from '../Material/Tooltip';
 
 type SliderProps = {};
 
-const formatTooltip = (props) => {
+const formatTooltip = props => {
   const { children, value, open, valueLabelFormat, valueLabelDisplay } = props;
 
   if (valueLabelDisplay === 'off') {
@@ -40,27 +40,32 @@ const Slider = ({
   value,
   onChange,
   valueLabelFormat,
-  debounce = true,
+  debounce,
   ...rest
 }: SliderProps) => {
-  const [fastValue, setFastValue] = useState(value);
+  const [debouncedValue, debouncedOnChange] = useDebouncedInput({
+    value,
+    onChange,
+    debounce,
+  });
+  // const [fastValue, setFastValue] = useState(value);
 
-  // Only send the slider value to its parent after the slider has been
-  // untouched for 300ms. This avoids performance issues if the slider value
-  // is passed through other components that are expensive to update
-  useDebounce(() => debounce && onChange(fastValue), 300, [fastValue]);
+  // // Only send the slider value to its parent after the slider has been
+  // // untouched for 300ms. This avoids performance issues if the slider value
+  // // is passed through other components that are expensive to update
+  // useDebounce(() => debounce && onChange(fastValue), 300, [fastValue]);
 
-  const handleChange = (event, newValue) => {
-    setFastValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setFastValue(newValue);
+  // };
 
   return (
     <MuiSlider
       min={min}
       max={max}
       defaultValue={defaultValue}
-      value={debounce ? fastValue : value}
-      onChange={debounce ? handleChange : (event, v) => onChange(v)}
+      value={debouncedValue}
+      onChange={(event, v) => debouncedOnChange(v)}
       valueLabelFormat={valueLabelFormat}
       ValueLabelComponent={valueLabelFormat ? formatTooltip : undefined}
       valueLabelDisplay={valueLabelFormat ? 'auto' : 'off'}

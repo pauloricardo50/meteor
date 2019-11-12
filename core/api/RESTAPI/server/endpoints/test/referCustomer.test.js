@@ -60,10 +60,10 @@ const referCustomer = ({
   });
 };
 
-describe('REST: referCustomer', function () {
+describe('REST: referCustomer', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -178,12 +178,13 @@ describe('REST: referCustomer', function () {
         return new Promise((resolve, reject) => {
           const interval = Meteor.setInterval(() => {
             if (tasks.length === 0 && intervalCount < 10) {
-              tasks = UserService.fetchOne({
-                $filters: {
-                  'emails.address': { $in: [customerToRefer.email] },
-                },
-                tasks: { description: 1 },
-              }).tasks || [];
+              tasks =
+                UserService.fetchOne({
+                  $filters: {
+                    'emails.address': { $in: [customerToRefer.email] },
+                  },
+                  tasks: { description: 1 },
+                }).tasks || [];
               intervalCount++;
             } else {
               Meteor.clearInterval(interval);
@@ -195,7 +196,7 @@ describe('REST: referCustomer', function () {
           }, 100);
         });
       })
-      .then((tasks) => {
+      .then(tasks => {
         expect(tasks.length).to.equal(1);
         expect(tasks[0].description).to.contain('TestFirstName TestLastName');
         expect(tasks[0].description).to.contain('testNote');
@@ -265,8 +266,12 @@ describe('REST: referCustomer', function () {
       });
 
       expect(spy.calledOnce).to.equal(true);
-      expect(spy.args[0][0].username).to.equal('TestFirstName TestLastName (Org 3, API Org 1)');
-      expect(spy.args[0][0].attachments[0].title).to.equal('Test User a été invité sur e-Potek en referral uniquement');
+      expect(spy.args[0][0].username).to.equal(
+        'TestFirstName TestLastName (Org 3, API Org 1)',
+      );
+      expect(spy.args[0][0].attachments[0].title).to.equal(
+        'Test User a été invité sur e-Potek en referral uniquement',
+      );
     });
   });
 });

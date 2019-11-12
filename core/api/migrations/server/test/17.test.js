@@ -32,7 +32,7 @@ describe.skip('Migration 17', () => {
 
       await up();
 
-      Loans.find().forEach((loan) => {
+      Loans.find().forEach(loan => {
         expect(loan.closingDate).to.equal(undefined);
         expect(loan.signingDate).to.equal(undefined);
       });
@@ -51,14 +51,18 @@ describe.skip('Migration 17', () => {
       const activities = Activities.find().fetch();
       expect(activities.length).to.equal(3);
 
-      activities.forEach((activity) => {
+      activities.forEach(activity => {
         expect(activity.loanLink._id).to.equal('1');
       });
 
-      const events = activities.filter(({ type }) => type === ACTIVITY_TYPES.EVENT);
+      const events = activities.filter(
+        ({ type }) => type === ACTIVITY_TYPES.EVENT,
+      );
       expect(events.length).to.equal(2);
 
-      const server = activities.filter(({ type }) => type === ACTIVITY_TYPES.SERVER);
+      const server = activities.filter(
+        ({ type }) => type === ACTIVITY_TYPES.SERVER,
+      );
       expect(server.length).to.equal(1);
     });
 
@@ -74,14 +78,18 @@ describe.skip('Migration 17', () => {
       const activities = Activities.find().fetch();
       expect(activities.length).to.equal(2);
 
-      activities.forEach((activity) => {
+      activities.forEach(activity => {
         expect(activity.loanLink._id).to.equal('1');
       });
 
-      const events = activities.filter(({ type }) => type === ACTIVITY_TYPES.EVENT);
+      const events = activities.filter(
+        ({ type }) => type === ACTIVITY_TYPES.EVENT,
+      );
       expect(events.length).to.equal(1);
 
-      const server = activities.filter(({ type }) => type === ACTIVITY_TYPES.SERVER);
+      const server = activities.filter(
+        ({ type }) => type === ACTIVITY_TYPES.SERVER,
+      );
       expect(server.length).to.equal(1);
     });
 
@@ -105,10 +113,12 @@ describe.skip('Migration 17', () => {
 
       const activities = Activities.find().fetch();
 
-      const events = activities.filter(({ type }) => type === ACTIVITY_TYPES.EVENT);
+      const events = activities.filter(
+        ({ type }) => type === ACTIVITY_TYPES.EVENT,
+      );
       expect(events.length).to.equal(2);
 
-      events.forEach((event) => {
+      events.forEach(event => {
         expect(event.createdBy).to.equal('2');
       });
     });

@@ -33,7 +33,7 @@ export const addQueryToRefetch = (queryName, type) => {
     }
 
     if (Array.isArray(type)) {
-      type.forEach((t) => {
+      type.forEach(t => {
         addQuery(queryName, t);
       });
     } else {
@@ -42,11 +42,13 @@ export const addQueryToRefetch = (queryName, type) => {
   }
 };
 
-export const removeQueryToRefetch = (queryName) => {
+export const removeQueryToRefetch = queryName => {
   if (isActive()) {
-    Object.keys(window.activeQueries).forEach((type) => {
+    Object.keys(window.activeQueries).forEach(type => {
       if (Array.isArray(window.activeQueries[type])) {
-        window.activeQueries[type] = window.activeQueries[type].filter(query => query !== queryName);
+        window.activeQueries[type] = window.activeQueries[type].filter(
+          query => query !== queryName,
+        );
 
         // Clean up this particular refetch key if there is no query in it anymore
         if (window.activeQueries[type].length === 0) {
@@ -59,7 +61,7 @@ export const removeQueryToRefetch = (queryName) => {
 
 export const refetchQuery = query => ClientEventService.emit(query);
 
-export const refetchQueries = (methodName) => {
+export const refetchQueries = methodName => {
   if (isActive()) {
     if (window.activeQueries.all) {
       window.activeQueries.all.forEach(refetchQuery);

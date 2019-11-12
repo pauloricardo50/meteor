@@ -21,7 +21,7 @@ const searchUser = ({ isAdmin, searchQuery, setSearchResult }) => {
       });
   }
 
-  getUserByEmail.run({ email: searchQuery }).then((user) => {
+  getUserByEmail.run({ email: searchQuery }).then(user => {
     if (!user) {
       return setSearchResult({
         error: <T id="ProPropertyPage.proUserAdder.noUserFound" />,
@@ -36,16 +36,18 @@ export default compose(
   withContextConsumer({ Context: ProPropertyPageContext }),
   withState('searchQuery', 'setSearchQuery', null),
   withState('searchResult', 'setSearchResult', null),
-  withProps(({ searchQuery, setSearchResult, property, permissions: { isAdmin } }) => ({
-    onSearch: (event) => {
-      event.preventDefault();
-      if (searchQuery) {
-        return searchUser({ isAdmin, searchQuery, setSearchResult });
-      }
+  withProps(
+    ({ searchQuery, setSearchResult, property, permissions: { isAdmin } }) => ({
+      onSearch: event => {
+        event.preventDefault();
+        if (searchQuery) {
+          return searchUser({ isAdmin, searchQuery, setSearchResult });
+        }
 
-      setSearchResult(null);
-    },
-    addUser: ({ userId }) =>
-      addProUserToProperty.run({ propertyId: property._id, userId }),
-  })),
+        setSearchResult(null);
+      },
+      addUser: ({ userId }) =>
+        addProUserToProperty.run({ propertyId: property._id, userId }),
+    }),
+  ),
 );

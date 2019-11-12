@@ -9,19 +9,27 @@ const microservice = process
   .slice(-1)[0];
 
 if (!Object.values(MICROSERVICES).includes(microservice)) {
-  throw new Error(`Unknown microservice "${microservice}". Available microservices:\n${Object.values(MICROSERVICES)
-    .map(m => `"${m}"`)
-    .join(', ')}`);
+  throw new Error(
+    `Unknown microservice "${microservice}". Available microservices:\n${Object.values(
+      MICROSERVICES,
+    )
+      .map(m => `"${m}"`)
+      .join(', ')}`,
+  );
 }
 
 if (!script) {
-  throw new Error('Script argument not provided. Usage: "node -r esm run-script.js <script>"');
+  throw new Error(
+    'Script argument not provided. Usage: "node -r esm run-script.js <script>"',
+  );
 }
 
 if (!Object.keys(SCRIPTS).includes(script)) {
-  throw new Error(`Unknown script "${script}". Available scripts:\n${Object.keys(SCRIPTS)
-    .map(s => `"${s}"`)
-    .join(', ')}`);
+  throw new Error(
+    `Unknown script "${script}". Available scripts:\n${Object.keys(SCRIPTS)
+      .map(s => `"${s}"`)
+      .join(', ')}`,
+  );
 }
 
 const scriptProcess = spawn(
@@ -33,6 +41,6 @@ const scriptProcess = spawn(
   },
 );
 
-scriptProcess.once('exit', (code) => {
+scriptProcess.once('exit', code => {
   process.exit(code);
 });

@@ -19,7 +19,7 @@ describe('tooltips', () => {
         it('is made of objects with at least an id', () => {
           const tooltipTargets = Object.keys(list);
 
-          tooltipTargets.forEach((tooltipTarget) => {
+          tooltipTargets.forEach(tooltipTarget => {
             const value = list[tooltipTarget];
             expect(value).to.be.an('object');
             expect(value.id).to.be.a('string');
@@ -48,7 +48,9 @@ describe('tooltips', () => {
     });
 
     it('returns undefined for a non-existent tooltip', () => {
-      expect(tooltipsById(`${TOOLTIP_LISTS.GENERAL}.noexist`)).to.equal(undefined);
+      expect(tooltipsById(`${TOOLTIP_LISTS.GENERAL}.noexist`)).to.equal(
+        undefined,
+      );
     });
   });
 });

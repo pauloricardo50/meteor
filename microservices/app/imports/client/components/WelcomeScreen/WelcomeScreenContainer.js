@@ -12,30 +12,32 @@ export default compose(
     ({ loan: { displayWelcomeScreen } }) => !displayWelcomeScreen,
   ),
   withRouter,
-  withProps(({
-    dontShowAgain,
-    rerender,
-    rerenderState,
-    loan: { _id: loanId },
-    page,
-    history,
-  }) => ({
-    handleClick: () => {
-      window.hideWelcomeScreen = true;
+  withProps(
+    ({
+      dontShowAgain,
+      rerender,
+      rerenderState,
+      loan: { _id: loanId },
+      page,
+      history,
+    }) => ({
+      handleClick: () => {
+        window.hideWelcomeScreen = true;
 
-      if (page) {
-        // If this is the welcome page, simply route to the dashboard
-        history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
-      } else {
-        // Else, this is shown instead of the dashboard, so hide it using the
-        // `window` object, but react does not re-render when you change window
-        // So toggling this boolean state does the trick
-        rerender(!rerenderState);
-      }
+        if (page) {
+          // If this is the welcome page, simply route to the dashboard
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
+        } else {
+          // Else, this is shown instead of the dashboard, so hide it using the
+          // `window` object, but react does not re-render when you change window
+          // So toggling this boolean state does the trick
+          rerender(!rerenderState);
+        }
 
-      if (dontShowAgain) {
-        loanUpdate.run({ loanId, object: { displayWelcomeScreen: false } });
-      }
-    },
-  })),
+        if (dontShowAgain) {
+          loanUpdate.run({ loanId, object: { displayWelcomeScreen: false } });
+        }
+      },
+    }),
+  ),
 );

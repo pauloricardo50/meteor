@@ -16,7 +16,7 @@ const withContext = Component => props => (
 export const getAvailableRates = (offers, loan) => {
   const rates = [];
 
-  offers.forEach((offer) => {
+  offers.forEach(offer => {
     const offerRates = pick(offer, Object.values(INTEREST_RATES));
     const validRates = pickBy(offerRates, v => v);
     rates.push(...Object.keys(validRates));
@@ -45,8 +45,4 @@ const withOptions = withProps(({ offers, loan }) => ({
   })),
 }));
 
-export default compose(
-  FinancingDataContainer,
-  withContext,
-  withOptions,
-);
+export default compose(FinancingDataContainer, withContext, withOptions);

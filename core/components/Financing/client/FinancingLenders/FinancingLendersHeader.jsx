@@ -19,9 +19,7 @@ const FinancingLendersHeader = ({
 
   return (
     <div className="lenders lenders-header">
-      {interestedLenders.length}
-      {' '}
-prêteurs intéressés
+      {interestedLenders.length} prêteurs intéressés
     </div>
   );
 };

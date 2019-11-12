@@ -22,7 +22,9 @@ contactUpdate.setHandler((context, { contactId, object }) => {
   return ContactService._update({ id: contactId, object });
 });
 
-contactChangeOrganisations.setHandler((context, { contactId, newOrganisations }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return ContactService.changeOrganisations({ contactId, newOrganisations });
-});
+contactChangeOrganisations.setHandler(
+  (context, { contactId, newOrganisations }) => {
+    SecurityService.checkCurrentUserIsAdmin();
+    return ContactService.changeOrganisations({ contactId, newOrganisations });
+  },
+);

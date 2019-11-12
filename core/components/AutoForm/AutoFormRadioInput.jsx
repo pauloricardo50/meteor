@@ -30,14 +30,14 @@ export default class AutoFormRadioInput extends Component {
     }
     return (
       <T
-        id={`Forms.${this.props.inputProps.intlId
-          || this.props.inputProps.id}.${optionId}`}
+        id={`Forms.${this.props.inputProps.intlId ||
+          this.props.inputProps.id}.${optionId}`}
         values={intlValues}
       />
     );
   };
 
-  saveValue = (value) => {
+  saveValue = value => {
     this.setState({ saving: true });
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String
@@ -83,7 +83,7 @@ export default class AutoFormRadioInput extends Component {
             id: o.id,
             label: this.getOptionLabel(o.id, o.intlValues),
           }))}
-          onChange={(newValue) => {
+          onChange={newValue => {
             if (typeof onConditionalChange === 'function') {
               onConditionalChange(newValue);
             }

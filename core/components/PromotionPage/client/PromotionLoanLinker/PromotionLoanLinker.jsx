@@ -59,9 +59,9 @@ const PromotionLoanLinker = ({
       query={loanSearch}
       title="Rechercher un dossier existant"
       resultsFilter={loans =>
-        (promotion.promotionLoan
+        promotion.promotionLoan
           ? loans.filter(loan => promotion.promotionLoan._id !== loan._id)
-          : loans)
+          : loans
       }
       renderItem={(loan, hideResults) => (
         <div
@@ -77,8 +77,8 @@ const PromotionLoanLinker = ({
             }
             primary
             disabled={
-              promotion.promotionLoan
-              && promotion.promotionLoan._id === loan._id
+              promotion.promotionLoan &&
+              promotion.promotionLoan._id === loan._id
             }
           >
             Lier

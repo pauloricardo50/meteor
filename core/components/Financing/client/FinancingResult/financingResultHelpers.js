@@ -20,9 +20,9 @@ const initCalc = ({
   }
 
   if (
-    finalOffer
-    && finalOffer.organisation
-    && finalOffer.organisation.lenderRules
+    finalOffer &&
+    finalOffer.organisation &&
+    finalOffer.organisation.lenderRules
   ) {
     return new CalculatorClass({
       loan,
@@ -38,21 +38,21 @@ const initCalc = ({
     lenderRules: InitializedCalculator.lenderRules,
   });
 };
-export const getInterests = (params) => {
+export const getInterests = params => {
   const {
     structure: { wantedLoan },
   } = params;
   return (FinanceCalculator.getInterestsWithTranches(params) * wantedLoan) / 12;
 };
 
-export const getAmortization = (params) => {
+export const getAmortization = params => {
   const calc = initCalc(params);
   const { loan, structureId } = params;
 
   return calc.getAmortization({ loan, structureId });
 };
 
-export const getPropertyExpenses = (data) => {
+export const getPropertyExpenses = data => {
   const property = getProperty(data);
   return Math.round((property && property.yearlyExpenses) / 12 || 0);
 };
@@ -64,48 +64,48 @@ const getNonPledgedFundsOfType = ({ structure: { ownFunds }, type }) =>
     .reduce((sum, { value }) => sum + value, 0);
 
 export const getRemainingCash = ({ borrowers, structure }) =>
-  Calculator.getFortune({ borrowers })
-  - getNonPledgedFundsOfType({ structure, type: 'bankFortune' });
+  Calculator.getFortune({ borrowers }) -
+  getNonPledgedFundsOfType({ structure, type: 'bankFortune' });
 
 export const getRemainingInsurance2 = ({ borrowers, structure }) =>
-  Calculator.getInsurance2({ borrowers })
-  - getNonPledgedFundsOfType({ structure, type: 'insurance2' });
+  Calculator.getInsurance2({ borrowers }) -
+  getNonPledgedFundsOfType({ structure, type: 'insurance2' });
 
 export const getRemainingInsurance3A = ({ borrowers, structure }) =>
-  Calculator.getInsurance3A({ borrowers })
-  - getNonPledgedFundsOfType({ structure, type: 'insurance3A' });
+  Calculator.getInsurance3A({ borrowers }) -
+  getNonPledgedFundsOfType({ structure, type: 'insurance3A' });
 
 export const getRemainingInsurance3B = ({ borrowers, structure }) =>
-  Calculator.getInsurance3B({ borrowers })
-  - getNonPledgedFundsOfType({ structure, type: 'insurance3B' });
+  Calculator.getInsurance3B({ borrowers }) -
+  getNonPledgedFundsOfType({ structure, type: 'insurance3B' });
 
 export const getRemainingBank3A = ({ borrowers, structure }) =>
-  Calculator.getBank3A({ borrowers })
-  - getNonPledgedFundsOfType({ structure, type: 'bank3A' });
+  Calculator.getBank3A({ borrowers }) -
+  getNonPledgedFundsOfType({ structure, type: 'bank3A' });
 
-export const getBorrowRatio = (params) => {
+export const getBorrowRatio = params => {
   const calc = initCalc(params);
   const { loan, structureId } = params;
   return calc.getBorrowRatio({ loan, structureId });
 };
 
-export const getIncomeRatio = (params) => {
+export const getIncomeRatio = params => {
   const calc = initCalc(params);
   const { loan, structureId } = params;
   return calc.getIncomeRatio({ loan, structureId });
 };
 
-export const getMaxIncomeRatio = (params) => {
+export const getMaxIncomeRatio = params => {
   const calc = initCalc(params);
   return calc.maxIncomeRatio;
 };
 
-export const getBorrowRatioStatus = (params) => {
+export const getBorrowRatioStatus = params => {
   const calc = initCalc(params);
   return calc.getBorrowRatioStatus(params);
 };
 
-export const getIncomeRatioStatus = (params) => {
+export const getIncomeRatioStatus = params => {
   const calc = initCalc(params);
   return calc.getIncomeRatioStatus({ incomeRatio: params.value });
 };

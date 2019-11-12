@@ -33,7 +33,7 @@ const NewLoansStat = ({
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
     title="Nouveaux dossiers"
-    top={(
+    top={
       <>
         <DialogSimple
           buttonProps={{ label: 'Options', raised: false, primary: true }}
@@ -65,7 +65,7 @@ const NewLoansStat = ({
           onClick={() => setShowChart(!showChart)}
         />
       </>
-    )}
+    }
   >
     {showChart && (
       <div className="chart">

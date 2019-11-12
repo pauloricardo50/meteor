@@ -83,7 +83,7 @@ const getStartIcon = ({ icon, iconAfter }) => {
   }
 };
 
-const getButtonContent = (props) => {
+const getButtonContent = props => {
   if (props.fab) {
     return getContent(props);
   }
@@ -91,7 +91,7 @@ const getButtonContent = (props) => {
   return props.label || props.children;
 };
 
-const Button = (props) => {
+const Button = props => {
   const childProps = omit(props, [
     'iconAfter',
     'primary',
@@ -165,16 +165,14 @@ Button.defaultProps = {
 };
 
 const withLoadingProp = mapProps(({ loading, ...props }) =>
-  (loading
+  loading
     ? {
-      ...props,
-      disabled: true,
-      icon: <Icon type="loop-spin" />,
-      children: props.fab ? null : props.children,
-    }
-    : props));
+        ...props,
+        disabled: true,
+        icon: <Icon type="loop-spin" />,
+        children: props.fab ? null : props.children,
+      }
+    : props,
+);
 
-export default compose(
-  withLoadingProp,
-  withStyles(styles),
-)(Button);
+export default compose(withLoadingProp, withStyles(styles))(Button);

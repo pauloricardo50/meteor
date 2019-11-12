@@ -27,7 +27,4 @@ const FinmaRatio = ({ status, tooltip, id, ...props }: FinmaRatioProps) => (
   </CalculatedValue>
 );
 
-export default compose(
-  FinancingDataContainer,
-  React.memo,
-)(FinmaRatio);
+export default compose(FinancingDataContainer, React.memo)(FinmaRatio);

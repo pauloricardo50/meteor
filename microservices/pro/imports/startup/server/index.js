@@ -10,5 +10,4 @@ Inject.rawHead('loader', Assets.getText('loader.html'));
 
 // TODO: need to see how to make roles working
 
-
 Accounts.config({ forbidClientAccountCreation: true });

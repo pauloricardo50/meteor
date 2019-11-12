@@ -26,8 +26,8 @@ const PropertyReuser = ({
     }}
     title={<T id="PropertiesPageAdder.reuseProperty" />}
   >
-    {!properties
-      || (properties.length === 0 && (
+    {!properties ||
+      (properties.length === 0 && (
         <p>
           Vous n'avez pas de bien immobiliers à réutiliser dans d'autres
           dossiers

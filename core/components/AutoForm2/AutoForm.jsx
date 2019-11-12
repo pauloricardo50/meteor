@@ -47,7 +47,8 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
             : "C'est dans la boite !",
           5,
         );
-      }));
+      }),
+    );
   };
 
   render() {

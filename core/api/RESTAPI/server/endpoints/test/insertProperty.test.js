@@ -47,10 +47,10 @@ const insertProperty = ({
   });
 };
 
-describe('REST: insertProperty', function () {
+describe('REST: insertProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -123,10 +123,12 @@ describe('REST: insertProperty', function () {
     return insertProperty({
       userId: 'pro',
       body: property,
-    }).then((response) => {
+    }).then(response => {
       const { status, message, property: returnedProperty } = response;
       expect(status).to.equal(409);
-      expect(message).to.equal('A property with externalId "1234" already exists !');
+      expect(message).to.equal(
+        'A property with externalId "1234" already exists !',
+      );
       expect(returnedProperty).to.not.equal(undefined);
     });
   });
@@ -143,10 +145,12 @@ describe('REST: insertProperty', function () {
         status: 409,
         message: 'A property with externalId "1234" already exists !',
       },
-    }).then((response) => {
+    }).then(response => {
       const { status, message, property: returnedProperty } = response;
       expect(status).to.equal(409);
-      expect(message).to.equal('A property with externalId "1234" already exists !');
+      expect(message).to.equal(
+        'A property with externalId "1234" already exists !',
+      );
       expect(returnedProperty).to.equal(undefined);
     });
   });

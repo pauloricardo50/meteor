@@ -5,7 +5,7 @@ import React from 'react';
 import { defaultOgTags } from 'core/components/MicroserviceHead/MicroserviceHead';
 
 // Remove the automatic p tag that wordpress adds on the excerpt
-const cleanExcerpt = (excerpt) => {
+const cleanExcerpt = excerpt => {
   let finalExcerpt = excerpt;
   if (finalExcerpt.indexOf('<p>') >= 0) {
     finalExcerpt = finalExcerpt.slice(finalExcerpt.indexOf('<p>') + 3);

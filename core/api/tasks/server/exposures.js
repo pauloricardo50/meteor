@@ -5,21 +5,21 @@ import moment from 'moment';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { tasks } from '../queries';
 
-const getUptoDate = (uptoDate) => {
+const getUptoDate = uptoDate => {
   switch (uptoDate) {
-  case 'TODAY':
-    return moment()
-      .endOf('day')
-      .toDate();
-  case 'TOMORROW':
-    return moment()
-      .endOf('day')
-      .add(1, 'days')
-      .endOf('day')
-      .toDate();
+    case 'TODAY':
+      return moment()
+        .endOf('day')
+        .toDate();
+    case 'TOMORROW':
+      return moment()
+        .endOf('day')
+        .add(1, 'days')
+        .endOf('day')
+        .toDate();
 
-  default:
-    return null;
+    default:
+      return null;
   }
 };
 
@@ -53,7 +53,7 @@ exposeQuery({
       body.$postFilter = (results, postFilterParams) => {
         const { _userId } = postFilterParams;
 
-        return results.filter((task) => {
+        return results.filter(task => {
           const {
             assigneeLink: { _id: assigneeId } = {},
             isPrivate = false,

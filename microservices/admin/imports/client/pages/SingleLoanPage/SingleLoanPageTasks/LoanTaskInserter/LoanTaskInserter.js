@@ -18,8 +18,8 @@ const LoanTaskInserter = withProps(({ loan: { _id: loanId, user } }) => ({
   model: {
     assigneeLink: {
       _id:
-        (user && user.assignedEmployee && user.assignedEmployee._id)
-        || Meteor.userId(),
+        (user && user.assignedEmployee && user.assignedEmployee._id) ||
+        Meteor.userId(),
     },
   },
   buttonLabelId: 'LoanTaskInsertForm.label',

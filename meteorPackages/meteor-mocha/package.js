@@ -7,7 +7,7 @@ Package.describe({
   testOnly: true,
 });
 
-Package.onUse((api) => {
+Package.onUse(api => {
   api.use([
     'meteortesting:mocha-core@1.0.1 || 5.2.0 || 6.0.0',
     'ecmascript@0.3.0',

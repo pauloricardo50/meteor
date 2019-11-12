@@ -39,7 +39,9 @@ describe('LotService', () => {
 
     it('removes the lot link when promotionLotId is null', () => {
       LotService.update({ lotId, object: { promotionLotId: null } });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(0);
+      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+        0,
+      );
     });
 
     it('adds a new link', () => {
@@ -62,8 +64,12 @@ describe('LotService', () => {
 
     it('does not remove the link if no new link is provided', () => {
       LotService.update({ lotId, object: { name: 'testname' } });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(1);
-      expect(PromotionLotService.get(promotionLotId).lotLinks[0]._id).to.equal(lotId);
+      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+        1,
+      );
+      expect(PromotionLotService.get(promotionLotId).lotLinks[0]._id).to.equal(
+        lotId,
+      );
     });
 
     it('adds a new link when no current link is present', () => {
@@ -72,15 +78,21 @@ describe('LotService', () => {
         lotId,
         object: { promotionLotId: null },
       });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(0);
+      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+        0,
+      );
 
       // Adds link again
       LotService.update({
         lotId,
         object: { promotionLotId },
       });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(1);
-      expect(PromotionLotService.get(promotionLotId).lotLinks[0]._id).to.equal(lotId);
+      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+        1,
+      );
+      expect(PromotionLotService.get(promotionLotId).lotLinks[0]._id).to.equal(
+        lotId,
+      );
     });
   });
 

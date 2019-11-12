@@ -36,9 +36,15 @@ describe('Migration 20', () => {
         description: '',
       });
       expect(borrower1.additionalDocuments.length).to.equal(4);
-      expect(borrower1.additionalDocuments[1].id).to.equal('DONATION_JUSTIFICATION_CERTIFICATE');
-      expect(borrower1.additionalDocuments[2].id).to.equal('DONATION_JUSTIFICATION_IDENTITY');
-      expect(borrower1.additionalDocuments[3].id).to.equal('DONATION_JUSTIFICATION_STATEMENT');
+      expect(borrower1.additionalDocuments[1].id).to.equal(
+        'DONATION_JUSTIFICATION_CERTIFICATE',
+      );
+      expect(borrower1.additionalDocuments[2].id).to.equal(
+        'DONATION_JUSTIFICATION_IDENTITY',
+      );
+      expect(borrower1.additionalDocuments[3].id).to.equal(
+        'DONATION_JUSTIFICATION_STATEMENT',
+      );
       expect(borrower2.donation.length).to.equal(0);
     });
 

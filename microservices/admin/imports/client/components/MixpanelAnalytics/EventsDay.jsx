@@ -8,7 +8,7 @@ import Event from './Event';
 const today = moment();
 const yesterday = moment().subtract(1, 'day');
 
-const getDayTitle = (day) => {
+const getDayTitle = day => {
   const momentDate = moment(day);
 
   if (momentDate.isSame(today, 'day')) {

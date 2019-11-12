@@ -37,9 +37,11 @@ const inviteUserToPromotionAPI = ({
       user: { ...user, invitedBy: userId },
       shareSolvency,
       invitationNote,
-    }))
+    }),
+  )
     .then(() =>
-      updateCustomerReferral({ customer: user, userId, impersonateUser }))
+      updateCustomerReferral({ customer: user, userId, impersonateUser }),
+    )
     .then(() => ({
       message: `Successfully invited user "${user.email}" to promotion id "${promotionId}"`,
     }));

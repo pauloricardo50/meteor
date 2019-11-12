@@ -14,7 +14,7 @@ import { FORMATS } from '../FinancingSection/components/CalculatedValue';
 
 type FinancingOwnFundsProps = {};
 
-const feesTooltip = (props) => {
+const feesTooltip = props => {
   const value = Calculator.getNotaryFeesTooltipValue(props);
 
   if (value) {
@@ -39,7 +39,7 @@ const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
           </span>
         ),
         Component: props => (
-          <div className="financing-ownFunds-summary">
+          <div className="financing-ownFunds-summary ownFunds">
             <CalculatedValue
               value={Calculator.getNonPledgedOwnFunds}
               {...props}

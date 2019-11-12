@@ -51,10 +51,10 @@ const updateProperty = ({
   });
 };
 
-describe('REST: updateProperty', function () {
+describe('REST: updateProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -94,7 +94,7 @@ describe('REST: updateProperty', function () {
       userId: 'pro',
       propertyId: 'prop',
       body: update,
-    }).then((response) => {
+    }).then(response => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
@@ -111,7 +111,7 @@ describe('REST: updateProperty', function () {
       userId: 'pro',
       propertyId: 'extId',
       body: update,
-    }).then((response) => {
+    }).then(response => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
@@ -136,7 +136,7 @@ describe('REST: updateProperty', function () {
       propertyId: 'prop',
       body: update,
       impersonateUser: 'pro@org.com',
-    }).then((response) => {
+    }).then(response => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;

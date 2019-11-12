@@ -10,7 +10,7 @@ import T from 'core/components/Translation';
 
 type BorrowersProgressRecapProps = {};
 
-const getBorrowerArray = (borrower) => {
+const getBorrowerArray = borrower => {
   const totalFunds = Calculator.getTotalFunds({ borrowers: borrower });
   const totalIncome = Calculator.getTotalIncome({ borrowers: borrower });
 

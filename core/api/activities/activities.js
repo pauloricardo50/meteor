@@ -50,6 +50,7 @@ const ActivitySchema = new SimpleSchema({
   userLink: { type: Object, optional: true },
   'userLink._id': { type: String, optional: true },
   isServerGenerated: { type: Boolean, defaultValue: false },
+  isImportant: { type: Boolean, defaultValue: false },
 });
 
 const ActivityEventSchema = ActivitySchema.extend({

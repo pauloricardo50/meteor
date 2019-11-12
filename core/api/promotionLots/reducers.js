@@ -35,18 +35,18 @@ PromotionLots.addReducers({
     body: { status: 1, attributedTo: { user: { _id: 1 } } },
     reduce: ({ status, attributedTo }) => {
       if (
-        attributedTo
-        && attributedTo.user
-        && attributedTo.user._id === Meteor.userId()
+        attributedTo &&
+        attributedTo.user &&
+        attributedTo.user._id === Meteor.userId()
       ) {
         // This lot is reserved for the user
         switch (status) {
-        case PROMOTION_LOT_STATUS.RESERVED:
-          return PROMOTION_LOT_REDUCED_STATUS.RESERVED_FOR_ME;
-        case PROMOTION_LOT_STATUS.SOLD:
-          return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
-        default:
-          return status;
+          case PROMOTION_LOT_STATUS.RESERVED:
+            return PROMOTION_LOT_REDUCED_STATUS.RESERVED_FOR_ME;
+          case PROMOTION_LOT_STATUS.SOLD:
+            return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
+          default:
+            return status;
         }
       }
 

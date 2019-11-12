@@ -33,8 +33,8 @@ export class LotService extends CollectionService {
       : null;
 
     if (
-      currentPromotionLotStatus
-      && currentPromotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE
+      currentPromotionLotStatus &&
+      currentPromotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE
     ) {
       throw new Meteor.Error(
         ERROR_CODES.FORBIDDEN,

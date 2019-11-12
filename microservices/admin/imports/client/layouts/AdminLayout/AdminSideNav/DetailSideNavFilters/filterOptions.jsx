@@ -28,7 +28,8 @@ const filterIncludedInFilters = (filter, filterArray) =>
 
 export const filterFilterOptionsByValues = (filterOptions, filterArray = []) =>
   filterOptions.filter(({ value }) =>
-    filterIncludedInFilters(value, filterArray));
+    filterIncludedInFilters(value, filterArray),
+  );
 
 export const getFilterOptionFromValue = (options, filterValue) =>
   options.find(({ value }) => isEqual(value, filterValue));
@@ -42,7 +43,7 @@ const promotionFilters = [
   },
 ];
 
-const getFilterOptions = (props) => {
+const getFilterOptions = props => {
   const { collectionName } = props;
 
   return {

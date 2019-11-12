@@ -13,15 +13,16 @@ const createSinglePropertyLink = ({
   _id: loanId,
   structure: { propertyId } = {},
 }) =>
-  (propertyId
+  propertyId
     ? createRoute(APP_ROUTES.PROPERTY_PAGE.path, { loanId, propertyId })
-    : createPropertiesLink({ _id: loanId }));
+    : createPropertiesLink({ _id: loanId });
 
 export const checkArrayIsDone = (array = [], params) =>
   array
     .filter(({ id }) => id !== 'callEpotek')
     .every(({ isDone, hide }) =>
-      (hide ? hide(params) || isDone(params) : isDone(params)));
+      hide ? hide(params) || isDone(params) : isDone(params),
+    );
 
 export const disablePropertyTodos = ({ structure: { property } = {} }) =>
   !property || property.category === PROPERTY_CATEGORY.PRO;
@@ -58,7 +59,8 @@ export const getDashboardTodosArray = list =>
       id: 'completeBorrowers',
       isDone: ({ borrowers }) => {
         const percentages = borrowers.map(borrower =>
-          Calculator.personalInfoPercent({ borrowers: borrower }));
+          Calculator.personalInfoPercent({ borrowers: borrower }),
+        );
 
         if (percentages.some(percent => percent >= 1)) {
           return true;
@@ -84,7 +86,7 @@ export const getDashboardTodosArray = list =>
     },
     {
       id: 'addProperty',
-      isDone: (loan) => {
+      isDone: loan => {
         const { properties } = loan;
         return properties && properties.length > 0;
       },
@@ -94,7 +96,7 @@ export const getDashboardTodosArray = list =>
     },
     {
       id: 'completeProperty',
-      isDone: (loan) => {
+      isDone: loan => {
         const {
           structure: { property },
         } = loan;
@@ -116,7 +118,7 @@ export const getDashboardTodosArray = list =>
     },
     {
       id: 'completeRefinancing',
-      isDone: (loan) => {
+      isDone: loan => {
         const percent = Calculator.refinancingPercent({ loan });
 
         if (percent >= 1) {

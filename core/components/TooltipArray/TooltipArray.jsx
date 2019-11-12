@@ -26,7 +26,9 @@ const TooltipArray = ({
   if (items.length <= displayLimit) {
     return typeof firstItems[0] === 'string' ? (
       <span className={className}>
-        {[firstItems.slice(0, -1).join(', '), firstItems.slice(-1)[0]].join(firstItems.length < 2 ? '' : ' et ')}
+        {[firstItems.slice(0, -1).join(', '), firstItems.slice(-1)[0]].join(
+          firstItems.length < 2 ? '' : ' et ',
+        )}
       </span>
     ) : (
       <span className={className}>{firstItems}</span>

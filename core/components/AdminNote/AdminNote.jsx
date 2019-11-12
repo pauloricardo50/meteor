@@ -8,7 +8,8 @@ import { updateDocument } from '../../api/methods/index';
 
 type AdminNoteProps = {};
 
-const tutorial = '# Un titre - ## Un sous-titre - * liste - **En gras** - *En italique* -- "CMD + Enter" pour enregistrer';
+const tutorial =
+  '# Un titre - ## Un sous-titre - * liste - **En gras** - *En italique* -- "CMD + Enter" pour enregistrer';
 
 const AdminNote = ({
   adminNote,
@@ -35,13 +36,13 @@ const AdminNote = ({
     {...rest}
   >
     {({ value, isEditing }) =>
-      (isEditing ? (
+      isEditing ? (
         <Icon type="help" tooltip={tutorial} />
       ) : (
         <div>
           <ReactMarkdown source={value} className="markdown" />
         </div>
-      ))
+      )
     }
   </ClickToEditField>
 );

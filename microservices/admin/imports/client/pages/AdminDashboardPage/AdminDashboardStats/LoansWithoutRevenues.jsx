@@ -22,10 +22,12 @@ const LoansTable = ({ loans }) => (
       { id: 'Compte' },
       { id: 'Conseiller' },
     ]}
-    rows={loans.map((loan) => {
+    rows={loans.map(loan => {
       const { _id, userCache, name, status } = loan;
       const userName = getUserDisplayName(userCache);
-      const assigneeName = getUserDisplayName(userCache && userCache.assignedEmployeeCache);
+      const assigneeName = getUserDisplayName(
+        userCache && userCache.assignedEmployeeCache,
+      );
       return {
         id: _id,
         columns: [

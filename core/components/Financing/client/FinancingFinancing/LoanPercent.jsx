@@ -26,7 +26,7 @@ export default compose(
   SingleStructureContainer,
   StructureUpdateContainer,
   withProps(({ updateStructure, ...data }) => ({
-    handleChange: (borrowValue) => {
+    handleChange: borrowValue => {
       const wantedLoan = FinancingCalculator.getLoanFromBorrowRatio(
         borrowValue,
         data,

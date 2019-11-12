@@ -11,9 +11,12 @@ const pages = {
       }),
 
     'Impersonate (Valid Token)': ({ userId, adminLoginToken, adminId }) =>
-      route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}&adminId=${adminId}`, {
-        shouldRender: '#impersonation-success-message',
-      }),
+      route(
+        `/impersonate?userId=${userId}&authToken=${adminLoginToken}&adminId=${adminId}`,
+        {
+          shouldRender: '#impersonation-success-message',
+        },
+      ),
 
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
       route(`/verify-email/${emailVerificationToken}`, {
@@ -69,7 +72,7 @@ describe('App Pages', () => {
     cy.initiateTest();
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');
-    cy.callMethod('getAppEndToEndTestData').then((data) => {
+    cy.callMethod('getAppEndToEndTestData').then(data => {
       testData = data;
     });
   });

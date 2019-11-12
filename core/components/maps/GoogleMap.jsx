@@ -29,7 +29,9 @@ export default class GoogleMap extends Component {
   componentWillUnmount() {
     const { id } = this.props;
     if (GoogleMaps.maps[id]) {
-      window.google.maps.event.clearInstanceListeners(GoogleMaps.maps[id].instance);
+      window.google.maps.event.clearInstanceListeners(
+        GoogleMaps.maps[id].instance,
+      );
       delete GoogleMaps.maps[id];
     }
   }
@@ -37,7 +39,7 @@ export default class GoogleMap extends Component {
   addMarker = () => {
     const { id, latlng, address, withMarker } = this.props;
 
-    GoogleMaps.ready(id, (map) => {
+    GoogleMaps.ready(id, map => {
       const infowindow = new window.google.maps.InfoWindow({
         content: address,
       });
@@ -67,7 +69,7 @@ export default class GoogleMap extends Component {
       <div
         className="google-map"
         id={this.props.id}
-        ref={(component) => {
+        ref={component => {
           this.map = component;
         }}
       />

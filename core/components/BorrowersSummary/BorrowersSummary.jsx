@@ -24,7 +24,7 @@ const BorrowersSummary = ({ borrowers, showTitle = true, className }) => {
       <div className="borrowers-list">
         {borrowers.length > 0 ? (
           borrowers.map((borrower, index) =>
-            (isAdmin ? (
+            isAdmin ? (
               <CollectionIconLink
                 relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
               />
@@ -32,11 +32,11 @@ const BorrowersSummary = ({ borrowers, showTitle = true, className }) => {
               <Chip
                 style={{ margin: 8 }}
                 key={borrower._id}
-                avatar={(
+                avatar={
                   <Avatar>
                     <Icon type="face" />
                   </Avatar>
-                )}
+                }
                 label={
                   borrower.name || (
                     <T
@@ -46,7 +46,8 @@ const BorrowersSummary = ({ borrowers, showTitle = true, className }) => {
                   )
                 }
               />
-            )))
+            ),
+          )
         ) : (
           <T id="general.noBorrowersForLoan" />
         )}

@@ -52,7 +52,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function () {
+describe('PromotionOptionService', function() {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
@@ -103,7 +103,9 @@ describe('PromotionOptionService', function () {
     });
 
     it('Removes the promotionOption', () => {
-      expect(PromotionOptionService.get(promotionOptionId)).to.not.equal(undefined);
+      expect(PromotionOptionService.get(promotionOptionId)).to.not.equal(
+        undefined,
+      );
       PromotionOptionService.remove({ promotionOptionId });
       expect(PromotionOptionService.get(promotionOptionId)).to.equal(undefined);
     });
@@ -130,7 +132,8 @@ describe('PromotionOptionService', function () {
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       });
       expect(() =>
-        PromotionOptionService.remove({ promotionOptionId })).to.throw('active');
+        PromotionOptionService.remove({ promotionOptionId }),
+      ).to.throw('active');
     });
 
     it('does not throw if there is a cancelled reservation', async () => {
@@ -140,7 +143,8 @@ describe('PromotionOptionService', function () {
       });
 
       expect(() =>
-        PromotionOptionService.remove({ promotionOptionId })).to.not.throw('active');
+        PromotionOptionService.remove({ promotionOptionId }),
+      ).to.not.throw('active');
     });
   });
 
@@ -184,7 +188,8 @@ describe('PromotionOptionService', function () {
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
 
       expect(() =>
-        PromotionOptionService.insert({ promotionLotId, loanId, promotionId })).to.throw('Vous avez déjà');
+        PromotionOptionService.insert({ promotionLotId, loanId, promotionId }),
+      ).to.throw('Vous avez déjà');
     });
 
     it('adds a link on the loan', () => {
@@ -350,7 +355,8 @@ describe('PromotionOptionService', function () {
       expect(() =>
         PromotionOptionService.getReservationExpirationDate({
           startDate: new Date(),
-        })).to.throw('Aucun délai');
+        }),
+      ).to.throw('Aucun délai');
     });
 
     it('throws if start date is in the future', () => {
@@ -362,7 +368,8 @@ describe('PromotionOptionService', function () {
         PromotionOptionService.getReservationExpirationDate({
           startDate,
           agreementDuration: 14,
-        })).to.throw('ne peut pas être dans le futur');
+        }),
+      ).to.throw('ne peut pas être dans le futur');
     });
 
     it('does not throw if start date is today', () => {
@@ -374,7 +381,8 @@ describe('PromotionOptionService', function () {
         PromotionOptionService.getReservationExpirationDate({
           startDate,
           agreementDuration: 14,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('throws if start date is anterior to agreement duration', () => {
@@ -387,7 +395,8 @@ describe('PromotionOptionService', function () {
         PromotionOptionService.getReservationExpirationDate({
           startDate,
           agreementDuration,
-        })).to.throw('ne peut pas être avant');
+        }),
+      ).to.throw('ne peut pas être avant');
     });
 
     it('returns expiration date', () => {
@@ -396,13 +405,19 @@ describe('PromotionOptionService', function () {
         .subtract(6, 'days')
         .toDate();
 
-      expect(moment(PromotionOptionService.getReservationExpirationDate({
-        startDate,
-        agreementDuration,
-      })).format('DD-MM-YYYY')).to.equal(moment(startDate)
-        .add(agreementDuration, 'days')
-        .endOf('day')
-        .format('DD-MM-YYYY'));
+      expect(
+        moment(
+          PromotionOptionService.getReservationExpirationDate({
+            startDate,
+            agreementDuration,
+          }),
+        ).format('DD-MM-YYYY'),
+      ).to.equal(
+        moment(startDate)
+          .add(agreementDuration, 'days')
+          .endOf('day')
+          .format('DD-MM-YYYY'),
+      );
     });
   });
 
@@ -427,7 +442,9 @@ describe('PromotionOptionService', function () {
         },
       ];
 
-      await Promise.all(files.map(({ file, key }) => S3Service.putObject(file, key)));
+      await Promise.all(
+        files.map(({ file, key }) => S3Service.putObject(file, key)),
+      );
 
       await PromotionOptionService.mergeReservationAgreementFiles({
         promotionOptionId: 'promotionOption',
@@ -438,9 +455,11 @@ describe('PromotionOptionService', function () {
         _id: 'promotionOption',
       });
 
-      expect(promotionOption.documents[
-        PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT
-      ].length).to.equal(1);
+      expect(
+        promotionOption.documents[
+          PROMOTION_OPTION_DOCUMENTS.RESERVATION_AGREEMENT
+        ].length,
+      ).to.equal(1);
 
       const tempFiles = await S3Service.listObjects('temp/adminId');
       expect(tempFiles.length).to.equal(0);
@@ -475,7 +494,7 @@ describe('PromotionOptionService', function () {
         promotionOptionId: 'pO2',
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
-        .catch((error) => {
+        .catch(error => {
           expect(error.message).to.include('Aucune convention');
         });
     });
@@ -507,7 +526,7 @@ describe('PromotionOptionService', function () {
         promotionOptionId: 'pO2',
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
-        .catch((error) => {
+        .catch(error => {
           expect(error).to.not.equal(undefined);
           expect(error.message).to.include('Aucune convention');
         });
@@ -625,7 +644,9 @@ describe('PromotionOptionService', function () {
       });
       const pO = PromotionOptionService.findOne('promotionOption');
 
-      expect(moment(pO.bank.date).isBefore(moment().subtract(5, 'd'))).to.equal(true);
+      expect(moment(pO.bank.date).isBefore(moment().subtract(5, 'd'))).to.equal(
+        true,
+      );
     });
 
     it('sets any expirationDate and startDate at end/start of day', () => {
@@ -761,22 +782,31 @@ describe('PromotionOptionService', function () {
 
       expect(pL1.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
       expect(pL1.attributedTo).to.equal(undefined);
-      expect(pL1.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED);
+      expect(pL1.promotionOptions[0].status).to.equal(
+        PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+      );
 
       expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
       expect(pL2.attributedTo).to.deep.include({ _id: 'loan2' });
-      expect(pL2.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
+      expect(pL2.promotionOptions[0].status).to.equal(
+        PROMOTION_OPTION_STATUS.RESERVED,
+      );
 
       expect(pL3.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
       expect(pL3.attributedTo).to.deep.include({ _id: 'loan3' });
-      expect(pL3.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
+      expect(pL3.promotionOptions[0].status).to.equal(
+        PROMOTION_OPTION_STATUS.RESERVED,
+      );
 
       expect(pL4.status).to.equal(PROMOTION_LOT_STATUS.SOLD);
       expect(pL4.attributedTo).to.deep.include({ _id: 'loan4' });
-      expect(pL4.promotionOptions[0].status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
+      expect(pL4.promotionOptions[0].status).to.equal(
+        PROMOTION_OPTION_STATUS.SOLD,
+      );
 
       const [email1] = emails.sort(({ address: a }, { address: b }) =>
-        a.localeCompare(b));
+        a.localeCompare(b),
+      );
       const {
         address,
         response: { status },
@@ -788,18 +818,25 @@ describe('PromotionOptionService', function () {
       expect(address).to.equal('pro1@e-potek.ch');
       expect(from_email).to.equal('info@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
-      expect(subject).to.equal('Promotion "Test promotion", réservation annulée');
-      expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('La réservation pour le lot "Lot 1" a été annulée par e-Potek.');
+      expect(subject).to.equal(
+        'Promotion "Test promotion", réservation annulée',
+      );
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include(
+        'La réservation pour le lot "Lot 1" a été annulée par e-Potek.',
+      );
     });
   });
 
   describe('generateExpiringSoonTasks', () => {
     it('inserts tasks for soon expiring reservations', async () => {
-      const nextFriday = moment().isoWeekday() <= 5
-        ? moment().isoWeekday(5)
-        : moment()
-          .add(1, 'weeks')
-          .isoWeekday(5);
+      const nextFriday =
+        moment().isoWeekday() <= 5
+          ? moment().isoWeekday(5)
+          : moment()
+              .add(1, 'weeks')
+              .isoWeekday(5);
 
       const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
 
@@ -930,13 +967,15 @@ describe('PromotionOptionService', function () {
       });
 
       expect(tasks.length).to.equal(3);
-      tasks.forEach(({
-        assignee: { _id: assigneeId },
-        promotion: { _id: promotionId },
-      }) => {
-        expect(assigneeId).to.equal('admin');
-        expect(promotionId).to.equal('promo');
-      });
+      tasks.forEach(
+        ({
+          assignee: { _id: assigneeId },
+          promotion: { _id: promotionId },
+        }) => {
+          expect(assigneeId).to.equal('admin');
+          expect(promotionId).to.equal('promo');
+        },
+      );
       expect(tasks[0]).to.deep.include({
         title: 'La réservation de User1 Lastname1 sur Lot 1 arrive à échéance',
         description: `Valable jusqu'au ${moment(in2Days).format('DD MMM')}`,
@@ -999,16 +1038,20 @@ describe('PromotionOptionService', function () {
           {
             _id: 'promo',
             users: pros.map(({ id, permissions, role }) =>
-              addProToPromotion({ id, permissions, role })),
-            promotionLots: loans.map(({ id, promotionLotStatus, promotionOptionStatus }) =>
-              makePromotionLotWithReservation({
-                key: id,
-                status: promotionLotStatus,
-                promotionOptionStatus,
-                expirationDate: new Date(),
-              })),
+              addProToPromotion({ id, permissions, role }),
+            ),
+            promotionLots: loans.map(
+              ({ id, promotionLotStatus, promotionOptionStatus }) =>
+                makePromotionLotWithReservation({
+                  key: id,
+                  status: promotionLotStatus,
+                  promotionOptionStatus,
+                  expirationDate: new Date(),
+                }),
+            ),
             loans: loans.map(({ id, invitedBy }) =>
-              addLoanToPromotion({ id, invitedBy })),
+              addLoanToPromotion({ id, invitedBy }),
+            ),
           },
         ],
       });
@@ -1030,7 +1073,9 @@ describe('PromotionOptionService', function () {
             permissions: {
               displayCustomerNames: {
                 invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
-                forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+                forLotStatus: Object.values(
+                  PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+                ),
               },
             },
           },
@@ -1041,7 +1086,9 @@ describe('PromotionOptionService', function () {
             permissions: {
               displayCustomerNames: {
                 invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-                forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+                forLotStatus: Object.values(
+                  PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+                ),
               },
             },
           },

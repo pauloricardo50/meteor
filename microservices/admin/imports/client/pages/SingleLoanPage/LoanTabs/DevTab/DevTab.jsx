@@ -46,9 +46,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     ]),
                   })
                   .then(() => {
-                    import('../../../../../core/utils/message').then(({ default: message }) => {
-                      message('Done', 2);
-                    });
+                    import('../../../../../core/utils/message').then(
+                      ({ default: message }) => {
+                        message('Done', 2);
+                      },
+                    );
                   })
               }
               collection={LOANS_COLLECTION}
@@ -69,9 +71,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     object: omit(doc, ['loans', 'user', 'documents']),
                   })
                   .then(() => {
-                    import('../../../../../core/utils/message').then(({ default: message }) => {
-                      message('Done', 2);
-                    });
+                    import('../../../../../core/utils/message').then(
+                      ({ default: message }) => {
+                        message('Done', 2);
+                      },
+                    );
                   })
               }
               collection={PROPERTIES_COLLECTION}
@@ -92,9 +96,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     object: omit(doc, ['loans', 'user', 'documents']),
                   })
                   .then(() => {
-                    import('../../../../../core/utils/message').then(({ default: message }) => {
-                      message('Done', 2);
-                    });
+                    import('../../../../../core/utils/message').then(
+                      ({ default: message }) => {
+                        message('Done', 2);
+                      },
+                    );
                   })
               }
               collection={BORROWERS_COLLECTION}
@@ -115,9 +121,11 @@ const DevTab = ({ loan }: DevTabProps) => {
                     object: omit(doc, ['loan', 'user', 'documents']),
                   })
                   .then(() => {
-                    import('../../../../../core/utils/message').then(({ default: message }) => {
-                      message('Done', 2);
-                    });
+                    import('../../../../../core/utils/message').then(
+                      ({ default: message }) => {
+                        message('Done', 2);
+                      },
+                    );
                   })
               }
               collection={OFFERS_COLLECTION}

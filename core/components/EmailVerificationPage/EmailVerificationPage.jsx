@@ -20,7 +20,7 @@ class EmailVerificationPage extends Component {
       history.push('/');
     }
 
-    Accounts.verifyEmail(token, (error) => {
+    Accounts.verifyEmail(token, error => {
       if (error) {
         history.push('/');
 

@@ -136,9 +136,13 @@ describe('NotaryFeesCalculator', () => {
       loan.structure.property.additionalMargin = 100000;
 
       const fees = calc.getNotaryFeesForLoan({ loan });
-      expect(fees.buyersContractFees.propertyRegistrationTax).to.equal(fees.deductions.buyersContractDeductions);
-      expect(fees.mortgageNoteFees.mortgageNoteRegistrationTax
-          * GE.MORTGAGE_NOTE_CASATAX_DEDUCTION).to.equal(fees.deductions.mortgageNoteDeductions);
+      expect(fees.buyersContractFees.propertyRegistrationTax).to.equal(
+        fees.deductions.buyersContractDeductions,
+      );
+      expect(
+        fees.mortgageNoteFees.mortgageNoteRegistrationTax *
+          GE.MORTGAGE_NOTE_CASATAX_DEDUCTION,
+      ).to.equal(fees.deductions.mortgageNoteDeductions);
       expect(fees.buyersContractFees.total).to.equal(27034.85);
     });
   });

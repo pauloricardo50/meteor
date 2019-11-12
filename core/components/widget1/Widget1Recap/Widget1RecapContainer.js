@@ -9,7 +9,7 @@ import {
   Widget1Suggester,
 } from '../../../redux/widget1';
 
-const getAcquisitionArray = (state) => {
+const getAcquisitionArray = state => {
   const propertyValue = widget1Selectors.makeSelectValue('property')(state);
   const fortune = widget1Selectors.makeSelectValue('fortune')(state);
   const loanValue = getLoanValue(propertyValue, fortune);
@@ -31,7 +31,7 @@ const getAcquisitionArray = (state) => {
   ];
 };
 
-const getRefinancingArray = (state) => {
+const getRefinancingArray = state => {
   const propertyValue = widget1Selectors.makeSelectValue('property')(state);
   const currentLoan = widget1Selectors.makeSelectValue('currentLoan')(state);
   const wantedLoan = widget1Selectors.makeSelectValue('wantedLoan')(state);
@@ -61,15 +61,18 @@ const cleanUpArray = (array, showValues) =>
     value: showValues ? toMoney(item.value) : '-',
   }));
 
-const getArray = (state) => {
+const getArray = state => {
   const propertyValue = widget1Selectors.makeSelectValue('property')(state);
   const fortune = widget1Selectors.makeSelectValue('fortune')(state);
-  const purchaseType = widget1Selectors.makeWidget1Selector('purchaseType')(state);
+  const purchaseType = widget1Selectors.makeWidget1Selector('purchaseType')(
+    state,
+  );
   const currentLoan = widget1Selectors.makeSelectValue('currentLoan')(state);
   const wantedLoan = widget1Selectors.makeSelectValue('wantedLoan')(state);
-  const showValues = purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
-    ? propertyValue && fortune
-    : propertyValue && currentLoan && wantedLoan;
+  const showValues =
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
+      ? propertyValue && fortune
+      : propertyValue && currentLoan && wantedLoan;
 
   const array = (purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
     ? getAcquisitionArray

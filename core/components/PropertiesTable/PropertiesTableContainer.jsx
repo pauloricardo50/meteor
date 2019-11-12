@@ -53,9 +53,9 @@ export const makeMapProperty = ({ history, currentUser }) => ({
   ],
   handleClick: () => {
     if (
-      currentUser.isAdmin
-      || currentUser.isDev
-      || users.find(({ _id }) => _id === currentUser._id)
+      currentUser.isAdmin ||
+      currentUser.isDev ||
+      users.find(({ _id }) => _id === currentUser._id)
     ) {
       history.push(createRoute('/properties/:propertyId', { propertyId }));
     }
@@ -69,12 +69,14 @@ export default compose(
     false,
   ),
   withState('propertyValue', 'setPropertyValue', { $gte: 0, $lte: 5000000 }),
+  withState('search', 'setSearch', ''),
   withSmartQuery({
     query: proProperties,
-    params: ({ fetchOrganisationProperties, propertyValue }) => ({
+    params: ({ fetchOrganisationProperties, propertyValue, search }) => ({
       $body: proPropertySummary(),
       fetchOrganisationProperties,
       value: propertyValue,
+      search,
     }),
     queryOptions: { reactive: false },
     renderMissingDoc: false,

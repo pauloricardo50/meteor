@@ -32,7 +32,7 @@ const makeMapProPropertyUser = ({
   propertyId,
   history,
   permissions,
-}) => (user) => {
+}) => user => {
   const { _id, email, name } = user;
   const { isAdmin, canManagePermissions } = permissions;
 
@@ -64,9 +64,11 @@ const makeMapProPropertyUser = ({
           />
           <IconButton
             onClick={() => {
-              const confirm = window.confirm(`Supprimer ${getUserNameAndOrganisation({
-                user,
-              })} du bien immobilier ?`);
+              const confirm = window.confirm(
+                `Supprimer ${getUserNameAndOrganisation({
+                  user,
+                })} du bien immobilier ?`,
+              );
               if (confirm) {
                 return removeProFromProperty.run({
                   propertyId,
@@ -95,10 +97,14 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'proUsers',
   }),
-  withProps(({ property: { _id: propertyId }, proUsers, history, permissions }) => ({
-    columnOptions: columnOptions({ permissions }),
-    rows: proUsers
-      ? proUsers.map(makeMapProPropertyUser({ propertyId, history, permissions }))
-      : [],
-  })),
+  withProps(
+    ({ property: { _id: propertyId }, proUsers, history, permissions }) => ({
+      columnOptions: columnOptions({ permissions }),
+      rows: proUsers
+        ? proUsers.map(
+            makeMapProPropertyUser({ propertyId, history, permissions }),
+          )
+        : [],
+    }),
+  ),
 );

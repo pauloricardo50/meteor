@@ -13,8 +13,7 @@ const LoanGoogleDrive = ({ googleDrive, name }: LoanGoogleDriveProps) => {
       <div className="card1 card-top">
         <h3>Google Drive</h3>
         <p className="description">
-          Pas de dossier trouvé dans Emprunteurs, crées-en un qui commence par
-          {' '}
+          Pas de dossier trouvé dans Emprunteurs, crées-en un qui commence par{' '}
           <b>{name}</b>
         </p>
       </div>
@@ -33,9 +32,7 @@ const LoanGoogleDrive = ({ googleDrive, name }: LoanGoogleDriveProps) => {
           rel="noopener noreferrer"
         >
           <h3>
-            Google Drive
-            {' '}
-            <small className="secondary">{folder.name}</small>
+            Google Drive <small className="secondary">{folder.name}</small>
           </h3>
         </a>
       </div>

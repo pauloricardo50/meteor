@@ -97,7 +97,9 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
       <div className="rates">
         {Object.keys(rates).map(rate => (
           <span key={rate}>
-            <p>{<T id={`offer.${rate}.short`} />}</p>
+            <p>
+              <T id={`offer.${rate}.short`} />
+            </p>
             <h4>
               <Percent value={rates[rate]} />
             </h4>
