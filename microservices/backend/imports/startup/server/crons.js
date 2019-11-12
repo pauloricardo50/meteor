@@ -7,6 +7,11 @@ import SessionService from 'core/api/sessions/server/SessionService';
 import FileService from 'core/api/files/server/FileService';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 
+import {
+  generateExpiringSoonReservationTasks,
+  generateHalfLifeReservationReminderTasks,
+} from 'core/api/promotionOptions/server/methods';
+
 CronService.init();
 
 CronService.addCron(
@@ -81,7 +86,10 @@ CronService.addCron(
   {
     name: 'Generate tasks for promotion reservations expiring soon',
     frequency: 'every weekday',
-    func: () => PromotionOptionService.generateExpiringSoonTasks(),
+    func: () =>
+      generateExpiringSoonReservationTasks
+        .run({})
+        .then((promotionOptions = []) => promotionOptions.length),
   },
   { cronitorId: 'N77C0a' },
 );
@@ -90,7 +98,10 @@ CronService.addCron(
   {
     name: 'Generate tasks for promotion reservations reaching their half-life',
     frequency: 'every 1 day',
-    func: () => PromotionOptionService.generateHalfLifeReminderTasks(),
+    func: () =>
+      generateHalfLifeReservationReminderTasks
+        .run({})
+        .then((promotionOptions = []) => promotionOptions.length),
   },
   { cronitorId: 'KbK0Gy' },
 );

@@ -101,8 +101,11 @@ class EmailService {
     );
   };
 
-  getAccountsTemplate = (emailId, params = {}) => {
-    const templateOptions = this.createTemplateOptions({ emailId, params });
+  getAccountsTemplate = async ({ emailId, params = {} }) => {
+    const templateOptions = await this.createTemplateOptions({
+      emailId,
+      params,
+    });
     return getSimpleMandrillTemplate(templateOptions);
   };
 

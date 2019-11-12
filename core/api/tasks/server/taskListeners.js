@@ -1,6 +1,12 @@
+import moment from 'moment';
+
 import PropertyService from 'core/api/properties/server/PropertyService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
+import {
+  generateExpiringSoonReservationTasks,
+  generateHalfLifeReservationReminderTasks,
+} from 'core/api/promotionOptions/server/methods';
 import { getUserNameAndOrganisation } from '../../helpers';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
@@ -11,7 +17,11 @@ import {
   loanShareSolvency,
   reservePromotionLot,
 } from '../../methods';
-import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
+import {
+  LOANS_COLLECTION,
+  USERS_COLLECTION,
+  PROMOTIONS_COLLECTION,
+} from '../../constants';
 import TaskService from './TaskService';
 
 const newUserTask = ({ userId, ...params }) =>
@@ -181,6 +191,66 @@ ServerEventService.addAfterMethodListener(
         title: 'Nouvelle réservation, prendre contact',
         description: `Le lot "${promotionLotName}" de la promotion "${promotionName}" est en cours de réservation pour ${userName} par ${proName}`,
       },
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  generateExpiringSoonReservationTasks,
+  ({ result: promotionOptions = [] }) => {
+    promotionOptions.forEach(promotionOption => {
+      const {
+        promotion: { _id: promotionId, assignedEmployee },
+        promotionLots = [],
+        reservationAgreement: { expirationDate },
+        loan: {
+          user: { name: userName },
+        },
+      } = promotionOption;
+
+      const [{ name: promotionLotName }] = promotionLots;
+
+      TaskService.insert({
+        object: {
+          collection: PROMOTIONS_COLLECTION,
+          docId: promotionId,
+          assigneeLink: assignedEmployee,
+          title: `La réservation de ${userName} sur ${promotionLotName} arrive à échéance`,
+          description: `Valable jusqu'au ${moment(expirationDate).format(
+            'DD MMM',
+          )}`,
+        },
+      });
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  generateHalfLifeReservationReminderTasks,
+  ({ result: promotionOptions = [] }) => {
+    promotionOptions.forEach(promotionOption => {
+      const {
+        promotion: { _id: promotionId, assignedEmployee },
+        promotionLots = [],
+        reservationAgreement: { expirationDate },
+        loan: {
+          user: { name: userName },
+        },
+      } = promotionOption;
+
+      const [{ name: promotionLotName }] = promotionLots;
+
+      TaskService.insert({
+        object: {
+          collection: PROMOTIONS_COLLECTION,
+          docId: promotionId,
+          assigneeLink: assignedEmployee,
+          title: `La réservation de ${userName} sur ${promotionLotName} échoue dans 10 jours, relancer le client`,
+          description: `Valable jusqu'au ${moment(expirationDate).format(
+            'DD MMM',
+          )}`,
+        },
+      });
     });
   },
 );

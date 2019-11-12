@@ -30,6 +30,8 @@ import {
   PROMOTION_EMAIL_RECIPIENTS,
 } from '../../../promotions/promotionConstants';
 
+import { generateExpiringSoonReservationTasks } from '../methods';
+
 const makePromotionLotWithReservation = ({
   key,
   status,
@@ -957,7 +959,7 @@ describe('PromotionOptionService', function() {
         },
       });
 
-      await PromotionOptionService.generateExpiringSoonTasks();
+      await generateExpiringSoonReservationTasks.run({});
 
       const tasks = TaskService.fetch({
         assignee: { _id: 1 },
