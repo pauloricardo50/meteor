@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
+import SecurityService from 'core/api/security/index';
 import { Method } from '../../methods/methods';
 import EmailService from './EmailService';
 
@@ -13,6 +14,7 @@ export const sendEmail = new Method({
   },
 });
 sendEmail.setHandler((context, params) => {
+  SecurityService.checkIsInternalCall(context);
   context.unblock();
   try {
     return EmailService.sendEmailToUser(params);
@@ -32,6 +34,7 @@ export const sendEmailToAddress = new Method({
   },
 });
 sendEmailToAddress.setHandler((context, params) => {
+  SecurityService.checkIsInternalCall(context);
   context.unblock();
   try {
     return EmailService.sendEmail(params);

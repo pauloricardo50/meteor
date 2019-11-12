@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+
+import Fibers from 'fibers';
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
@@ -263,4 +265,27 @@ export default class Security {
 
     this.handleUnauthorized('Vous ne pouvez pas supprimer ce fichier');
   }
+
+  static checkIsInternalCall = context => {
+    if (!this.isInternalCall(context)) {
+      this.handleUnauthorized('method is not internal');
+    }
+  };
+
+  static isInternalCall = context => {
+    if (context && !context.connection) {
+      // Server initiated call
+      return true;
+    }
+
+    // Dark, dark magic...
+    if (Fibers.current && Fibers.current._meteor_dynamics[0]) {
+      // Method within a method
+      return Fibers.current._meteor_dynamics[0].description.startsWith(
+        'internal',
+      );
+    }
+
+    return false;
+  };
 }
