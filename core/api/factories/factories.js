@@ -70,14 +70,6 @@ Factory.define('admin', Users, {
   phoneNumbers: [TEST_PHONE],
 });
 
-Factory.define('adminEpotek', Users, {
-  roles: [ROLES.ADMIN],
-  emails: () => [{ address: 'dev@e-potek.ch', verified: true }],
-  lastName: 'e-Potek',
-  firstName: 'Dev',
-  phoneNumbers: [TEST_PHONE],
-});
-
 Factory.define('pro', Users, {
   roles: [ROLES.PRO],
   emails: () => [{ address: faker.internet.email(), verified: false }],

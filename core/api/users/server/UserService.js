@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
+
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import { EMAIL_IDS } from '../../email/emailConstants';
-import { sendEmail } from '../../methods';
 import { fullUser } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
@@ -13,10 +12,9 @@ import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
-import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
-import roundRobinAdvisors from './roundRobinAdvisors';
 import Users from '../users';
+import roundRobinAdvisors from './roundRobinAdvisors';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {

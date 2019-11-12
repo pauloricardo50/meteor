@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import { sendEmailToAddress } from 'core/api/methods/index';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { EMAIL_IDS } from '../../email/emailConstants';
+import { sendEmailToAddress } from '../../email/server/methods';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
-
 import Security from '../../security/Security';
 import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
@@ -155,7 +154,6 @@ switchBorrower.setHandler((context, params) => {
 sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
   const { userId } = context;
   Security.checkUserIsAdmin(userId);
-  context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
 

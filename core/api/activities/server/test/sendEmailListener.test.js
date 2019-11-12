@@ -2,9 +2,9 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { checkEmails } from 'core/utils/testHelpers/index';
-import { sendEmail, sendEmailToAddress } from '../../../methods';
+import { checkEmails } from '../../../../utils/testHelpers/index';
+import { EMAIL_IDS } from '../../../email/emailConstants';
+import { sendEmail, sendEmailToAddress } from '../../../email/server/methods';
 import generator from '../../../factories';
 import UserService from '../../../users/server/UserService';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';

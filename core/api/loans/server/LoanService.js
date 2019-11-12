@@ -518,20 +518,16 @@ class LoanService extends CollectionService {
       return [...filtered, offer];
     }, []);
 
-    const promises = filteredOffers.map(offer => {
-      const feedback = makeFeedback({
-        offer: { ...offer, property },
-        model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-        formatMessage: Intl.formatMessage.bind(Intl),
-      });
-      return OfferService.sendFeedback({
+    return filteredOffers.map(offer => {
+      return {
+        feedback: makeFeedback({
+          offer: { ...offer, property },
+          model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
+          formatMessage: Intl.formatMessage.bind(Intl),
+        }),
         offerId: offer._id,
-        feedback,
-        saveFeedback: false,
-      });
+      };
     });
-
-    return Promise.all(promises);
   }
 
   updatePromotionInvitedBy({ loanId, promotionId, invitedBy }) {

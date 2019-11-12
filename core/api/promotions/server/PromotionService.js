@@ -144,57 +144,6 @@ class PromotionService extends CollectionService {
     return Promise.resolve(loanId);
   }
 
-  // sendPromotionInvitationEmail({
-  //   userId,
-  //   isNewUser,
-  //   promotionId,
-  //   firstName,
-  //   proId,
-  // }) {
-  //   return FileService.listFilesForDocByCategory(promotionId).then(
-  //     ({ promotionImage, logos }) => {
-  //       const coverImageUrl =
-  //         promotionImage && promotionImage.length > 0 && promotionImage[0].url;
-  //       const logoUrls = logos && logos.map(({ url }) => url);
-
-  //       let ctaUrl = Meteor.settings.public.subdomains.app;
-  //       const promotion = this.get(promotionId);
-  //       const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
-
-  //       if (isNewUser) {
-  //         // Envoyer invitation avec enrollment link
-  //         ctaUrl = UserService.getEnrollmentUrl({ userId });
-  //       }
-
-  //       let invitedBy;
-
-  //       if (proId) {
-  //         invitedBy = getUserNameAndOrganisation({
-  //           user: UserService.fetchOne({
-  //             $filters: { _id: proId },
-  //             name: 1,
-  //             organisations: { name: 1 },
-  //           }),
-  //         });
-  //       }
-
-  //       return sendEmail.run({
-  //         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-  //         userId,
-  //         params: {
-  //           proUserId: proId,
-  //           promotion: { ...promotion, assignedEmployee },
-  //           coverImageUrl,
-  //           logoUrls,
-  //           ctaUrl,
-  //           name: firstName,
-  //           invitedBy,
-  //         },
-  //       });
-  //     },
-  //   );
-  // }
-
   addProUser({ promotionId, userId }) {
     return this.addLink({
       id: promotionId,

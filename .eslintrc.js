@@ -106,6 +106,7 @@ module.exports = {
       },
       { enforceForRenamedProperties: false },
     ],
+    camelcase: ['error', { ignoreDestructuring: true }],
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
     // and then remove these comments

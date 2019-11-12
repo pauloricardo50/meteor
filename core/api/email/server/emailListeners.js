@@ -1,7 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
-import { setLoanStep } from 'core/api/loans/index';
-import { shouldSendStepNotification } from 'core/utils/loanFunctions';
+import moment from 'moment';
+
+import OfferService from '../../offers/server/OfferService';
+import { shouldSendStepNotification } from '../../../utils/loanFunctions';
+import {
+  setLoanStep,
+  sendNegativeFeedbackToAllLenders,
+} from '../../loans/index';
+import { offerSendFeedback } from '../../offers/index';
+import { fullOffer } from '../../fragments';
 import { proInviteUser } from '../../users/index';
 import FileService from '../../files/server/FileService';
 import { getUserNameAndOrganisation } from '../../helpers/index';
@@ -19,7 +27,7 @@ import {
 } from '../../methods';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
-import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
+import { sendEmail, sendEmailToAddress } from './methods';
 
 ServerEventService.addAfterMethodListener(
   submitContactForm,
@@ -356,5 +364,63 @@ ServerEventService.addAfterMethodListener(
         params: { loanId, assigneeName: user.assignedEmployee.name },
       });
     }
+  },
+);
+
+const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
+  const {
+    createdAt,
+    lender: {
+      organisation: { name: organisationName },
+      contact: { email: address, name },
+      loan: {
+        name: loanName,
+        user: { assignedEmployee },
+      },
+    },
+  } = OfferService.fetchOne({
+    $filters: { _id: offerId },
+    createdAt: 1,
+    lender: {
+      organisation: { name: 1 },
+      contact: { email: 1, name: 1 },
+      loan: { name: 1, user: { assignedEmployee: { name: 1, email: 1 } } },
+    },
+  });
+
+  const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
+
+  return sendEmailToAddress.run({
+    emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
+    address,
+    name,
+    params: {
+      assigneeAddress,
+      assigneeName,
+      loanName,
+      organisationName,
+      date: moment(createdAt).format('DD.MM.YYYY'),
+      feedback,
+    },
+  });
+};
+
+ServerEventService.addAfterMethodListener(
+  offerSendFeedback,
+  ({ context, params }) => {
+    context.unblock();
+    sendOfferFeedbackEmail(params);
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  sendNegativeFeedbackToAllLenders,
+  async ({ context, result }) => {
+    context.unblock();
+    if (result && typeof result.then === 'function') {
+      result = await result;
+    }
+
+    result.map(sendOfferFeedbackEmail);
   },
 );
