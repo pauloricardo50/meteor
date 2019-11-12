@@ -1,4 +1,5 @@
 {
+  "files.promotionGuide": "Guide du financement bancaire",
   "PromotionReservationActions.uploadAgreement": "Uploader convention",
   "PromotionReservationActions.cancelReservation": "Annuler réservation",
   "PromotionReservationActions.cancelReservation.description": "Ce lot deviendra à nouveau disponible. Notifiera tous les Pros par email",
