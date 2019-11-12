@@ -86,7 +86,8 @@ export const generateExpiringSoonReservationTasks = new Method({
   params: {},
 });
 
-generateExpiringSoonReservationTasks.setHandler(() => {
+generateExpiringSoonReservationTasks.setHandler(context => {
+  SecurityService.checkIsServerCall(context);
   return PromotionOptionService.getExpiringSoonReservations();
 });
 
@@ -95,6 +96,7 @@ export const generateHalfLifeReservationReminderTasks = new Method({
   params: {},
 });
 
-generateHalfLifeReservationReminderTasks.setHandler(() => {
+generateHalfLifeReservationReminderTasks.setHandler(context => {
+  SecurityService.checkIsServerCall(context);
   return PromotionOptionService.getHalfLifeReservations();
 });
