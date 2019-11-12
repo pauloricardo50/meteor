@@ -16,6 +16,7 @@ import {
   proInviteUser,
   loanShareSolvency,
   reservePromotionLot,
+  setMaxPropertyValueWithoutBorrowRatio,
 } from '../../methods';
 import {
   LOANS_COLLECTION,
@@ -23,6 +24,7 @@ import {
   PROMOTIONS_COLLECTION,
 } from '../../constants';
 import TaskService from './TaskService';
+import LoanService from '../../loans/server/LoanService';
 
 const newUserTask = ({ userId, ...params }) =>
   TaskService.insert({
@@ -252,5 +254,37 @@ ServerEventService.addAfterMethodListener(
         },
       });
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  setMaxPropertyValueWithoutBorrowRatio,
+  ({ params }) => {
+    const { loanId } = params;
+    const {
+      hasPromotion,
+      promotions = [],
+      user: { name: userName } = {},
+    } = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      hasPromotion: 1,
+      promotions: { assignedEmployee: 1 },
+      user: { name: 1 },
+    });
+
+    if (hasPromotion) {
+      const [{ _id: promotionId, assignedEmployee }] = promotions;
+
+      TaskService.insert({
+        object: {
+          collection: PROMOTIONS_COLLECTION,
+          docId: promotionId,
+          assigneeLink: assignedEmployee,
+          title: `Le client ${userName} a effectué un caclul de solvabilité`,
+          description:
+            "Identifier s'il est nécessaire de le contacter pour valider son attestation préliminaire de financement et s'assurer qu'il ait établi une demande de réservation",
+        },
+      });
+    }
   },
 );

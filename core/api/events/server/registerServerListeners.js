@@ -2,7 +2,6 @@
 import '../../activities/server/activityListeners';
 import '../../analytics/server/analyticsListeners';
 import '../../email/server/emailListeners';
-import '../../loans/server/loanListeners';
 import '../../slack/server/slackListeners';
 import '../../tasks/server/taskListeners';
 import '../../notifications/server/notificationListeners';
