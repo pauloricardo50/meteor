@@ -25,19 +25,20 @@ const getButtonOtherProps = ({ offer }) => {
   } = offer;
 
   const { assignedEmployee, name: userName } = user || {};
-  const { name: assignedEmployeeName, email: assignedEmployeeEmail } = assignedEmployee || {};
+  const { name: assignedEmployeeName, email: assignedEmployeeEmail } =
+    assignedEmployee || {};
   const { email: contactEmail, name: contactName } = contact || {};
   const { address1, zipCode, city } = property || {};
 
   // Should disable button
   if (
-    !assignedEmployeeEmail
-    || !contactEmail
-    || !user
-    || !property
-    || !address1
-    || !zipCode
-    || !city
+    !assignedEmployeeEmail ||
+    !contactEmail ||
+    !user ||
+    !property ||
+    !address1 ||
+    !zipCode ||
+    !city
   ) {
     otherProps = { ...otherProps, disabled: true };
   }
@@ -46,7 +47,8 @@ const getButtonOtherProps = ({ offer }) => {
   if (!user) {
     otherProps = {
       ...otherProps,
-      tooltip: 'Assignez ce dossier à un compte utilisateur pour entrer un feedback',
+      tooltip:
+        'Assignez ce dossier à un compte utilisateur pour entrer un feedback',
     };
   } else if (!assignedEmployee) {
     otherProps = {
@@ -102,12 +104,12 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
       important
     >
       {() =>
-        (message && date ? (
+        message && date ? (
           <>
             <h4>Feedback envoyé le {moment(date).format('DD.MM.YYYY')}</h4>
             <HtmlPreview value={message} />
           </>
-        ) : null)
+        ) : null
       }
     </AutoFormDialog>
   );

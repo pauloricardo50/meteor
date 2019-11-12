@@ -25,9 +25,9 @@ const getItems = (currentUser = {}) => {
       to: createRoute(PRO_ROUTES.PRO_REVENUES_PAGE.path),
       icon: 'monetizationOn',
       condition: !!(
-        organisations.length
-        && organisations[0].commissionRates
-        && organisations[0].commissionRates.length > 0
+        organisations.length &&
+        organisations[0].commissionRates &&
+        organisations[0].commissionRates.length > 0
       ),
     },
     {

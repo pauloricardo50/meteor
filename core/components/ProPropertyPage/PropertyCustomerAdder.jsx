@@ -23,7 +23,7 @@ const inviteReferredUser = ({ referredUsers, setModel, loans }) => {
   const invitedUserIds = loans.map(({ user: { _id } = {} }) => _id);
   const options = referredUsers
     .filter(({ _id }) => !invitedUserIds.some(userId => userId === _id))
-    .map((user) => {
+    .map(user => {
       const { _id, name } = user;
 
       return {
@@ -72,11 +72,11 @@ const PropertyCustomerAdder = ({
       label: <T id="PropertyCustomerAdder.title" />,
     }}
     title={<T id="PropertyCustomerAdder.title" />}
-    description={(
+    description={
       <p className="description">
         <T id="PropertyCustomerAdder.description" />
       </p>
-    )}
+    }
   >
     {() => inviteReferredUser({ referredUsers, setModel, loans })}
   </AutoFormDialog>

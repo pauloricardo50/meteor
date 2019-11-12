@@ -41,7 +41,7 @@ class ZipAutoComplete extends Component {
 
     if (zipCode && zipCode.length === 4) {
       getLocations(zipCode)
-        .then((array) => {
+        .then(array => {
           if (array && array.length) {
             this.setState({
               data: array.map(city => ({
@@ -71,10 +71,12 @@ class ZipAutoComplete extends Component {
       const city = value.slice(5);
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
-        this.saveValue(zipCode, city));
+        this.saveValue(zipCode, city),
+      );
     } else {
       this.setState({ searchText: '', isValid: false }, () =>
-        this.saveValue(null, ''));
+        this.saveValue(null, ''),
+      );
     }
   };
 

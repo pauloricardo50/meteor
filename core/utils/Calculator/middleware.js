@@ -8,7 +8,9 @@ import { arrayify } from '../general';
 
 const argumentMappings = {};
 
-export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappings);
+export const financeCalculatorArgumentMapper = makeArgumentMapper(
+  argumentMappings,
+);
 
 export const borrowerExtractorMiddleware = () => next => (params, ...args) => {
   const { borrowers, loan: { borrowers: loanBorrowers } = {} } = params || {};
@@ -23,7 +25,7 @@ export const borrowerExtractorMiddleware = () => next => (params, ...args) => {
   );
 };
 
-export const memoizeMiddleware = () => (next) => {
+export const memoizeMiddleware = () => next => {
   const memoFunc = memoizeOne(next);
   return memoFunc;
 };

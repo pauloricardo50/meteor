@@ -94,7 +94,4 @@ MainSideNavListItem.defaultProps = {
   to: undefined,
 };
 
-export default compose(
-  withStyles(styles),
-  withRouter,
-)(MainSideNavListItem);
+export default compose(withStyles(styles), withRouter)(MainSideNavListItem);

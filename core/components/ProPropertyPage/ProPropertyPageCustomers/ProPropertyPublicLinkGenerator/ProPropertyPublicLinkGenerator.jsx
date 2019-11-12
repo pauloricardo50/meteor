@@ -50,4 +50,6 @@ const ProPropertyPublicLinkGenerator = ({
   );
 };
 
-export default ProPropertyPublicLinkGeneratorContainer(ProPropertyPublicLinkGenerator);
+export default ProPropertyPublicLinkGeneratorContainer(
+  ProPropertyPublicLinkGenerator,
+);

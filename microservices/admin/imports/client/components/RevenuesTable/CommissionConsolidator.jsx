@@ -38,31 +38,31 @@ const CommissionsConsolidator = ({
 }: CommissionsConsolidatorProps) => (
   <AutoFormDialog
     title="Confirmer paiment de la commission"
-    description={(
+    description={
       <div>
         <h2 className="text-center">
           <Money value={commissionAmount} />
           <small className="secondary">
             {organisation && (
-            <>
+              <>
                 &nbsp;
-              <CollectionIconLink
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            </>
+                <CollectionIconLink
+                  relatedDoc={{
+                    ...organisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              </>
             )}
           </small>
         </h2>
         <p className="text-center">
           <Percent value={commissionRate} />
-          {' de '}
+          de
           <Money value={amount} />
         </p>
       </div>
-    )}
+    }
     schema={schema}
     model={{ commissionRate, paidAt: moment(paidAt).format('YYYY-MM-DD') }}
     onSubmit={values =>

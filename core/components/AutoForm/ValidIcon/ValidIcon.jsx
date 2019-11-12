@@ -12,50 +12,50 @@ const ValidIcon = ({ status, style, fade, hide }) => {
   }
 
   switch (status) {
-  case STATUS.HIDE:
-    return null;
-  case STATUS.ERROR:
-    return (
-      <Icon
-        style={{ ...style, color: colors.error }}
-        icon="close"
-        size={50}
-      />
-    );
-  case STATUS.VALID:
-    return (
-      <span
-        style={style}
-        className={classnames('saving-icon', { 'animated zoomOut': !!fade })}
-      >
-        <svg
-          className="checkmark"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 52 52"
+    case STATUS.HIDE:
+      return null;
+    case STATUS.ERROR:
+      return (
+        <Icon
+          style={{ ...style, color: colors.error }}
+          icon="close"
+          size={50}
+        />
+      );
+    case STATUS.VALID:
+      return (
+        <span
+          style={style}
+          className={classnames('saving-icon', { 'animated zoomOut': !!fade })}
         >
-          <circle
-            className="checkmark__circle"
-            cx="26"
-            cy="26"
-            r="25"
-            fill="none"
-          />
-          <path
-            className="checkmark__check"
-            fill="none"
-            d="M14.1 27.2l7.1 7.2 16.7-16.8"
-          />
-        </svg>
-      </span>
-    );
-  case STATUS.TODO:
-    return (
-      <span className="todo-circle" style={style}>
-        <span className="inside" />
-      </span>
-    );
-  default:
-    return null;
+          <svg
+            className="checkmark"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 52 52"
+          >
+            <circle
+              className="checkmark__circle"
+              cx="26"
+              cy="26"
+              r="25"
+              fill="none"
+            />
+            <path
+              className="checkmark__check"
+              fill="none"
+              d="M14.1 27.2l7.1 7.2 16.7-16.8"
+            />
+          </svg>
+        </span>
+      );
+    case STATUS.TODO:
+      return (
+        <span className="todo-circle" style={style}>
+          <span className="inside" />
+        </span>
+      );
+    default:
+      return null;
   }
 };
 

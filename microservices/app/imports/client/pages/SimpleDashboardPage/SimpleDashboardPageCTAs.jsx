@@ -17,7 +17,7 @@ type SimpleDashboardPageCTAsProps = {};
 
 // On some slow connections/devices, the new UI is not reloaded properly, this forces
 // it to appear
-const fullApplication = (loanId) =>
+const fullApplication = loanId =>
   loanUpdate
     .run({
       loanId,
@@ -82,7 +82,7 @@ const SimpleDashboardPageCTAs = ({
           buttonProps={buttonProps}
           method={() => fullApplication(loanId)}
           title={<T id="BorrowersProgress.fullApplication" />}
-          description={(
+          description={
             <div className="full-application-description">
               <img src="/img/homepage-application.svg" alt="Demande de prêt" />
               <T id="BorrowersProgress.fullApplicationDescription" />
@@ -102,7 +102,7 @@ const SimpleDashboardPageCTAs = ({
                 <T id="BorrowersProgress.fullApplicationDescription4" />
               </small>
             </div>
-          )}
+          }
         />
       )}
     </div>

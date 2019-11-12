@@ -6,7 +6,7 @@ import { adminActivities } from '../queries';
 exposeQuery({
   query: adminActivities,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { _id, loanId, type, userId } }) => {
         if (_id) {
           filters._id = _id;

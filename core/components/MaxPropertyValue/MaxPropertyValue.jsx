@@ -9,7 +9,7 @@ import MaxPropertyValueLoading from './MaxPropertyValueLoading';
 
 type MaxPropertyValueProps = {};
 
-const renderState = (props) => {
+const renderState = props => {
   const { state, loading, loan } = props;
 
   if (loading) {

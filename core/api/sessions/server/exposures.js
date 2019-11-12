@@ -11,14 +11,14 @@ exposeQuery({
         params._userId = 'none';
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters.userId = params._userId;
         filters.isImpersonate = true;
         // filters.shared = true;
       };
 
-      body.$postFilter = (result) => {
+      body.$postFilter = result => {
         if (result.length) {
           return [result[0]];
         }

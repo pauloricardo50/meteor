@@ -21,10 +21,7 @@ const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
         collection: USERS_COLLECTION,
       }}
     />
-    <span>
-      {' '}
-      {moment($last_seen).fromNow()}
-    </span>
+    <span> {moment($last_seen).fromNow()}</span>
   </div>
 );
 
@@ -33,7 +30,7 @@ const LastSeenUsers = (props: LastSeenUsersProps) => {
   const [lastSeenUsers, setLastSeenUsers] = useState(null);
   useEffect(() => {
     setLastSeenUsers(null);
-    MixpanelService.getLastSeen({ role }).then((result) => {
+    MixpanelService.getLastSeen({ role }).then(result => {
       setLastSeenUsers(result);
     });
   }, [role]);

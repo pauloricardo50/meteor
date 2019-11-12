@@ -18,27 +18,27 @@ import {
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
 
-const getCollectionIcon = (collection) => {
+const getCollectionIcon = collection => {
   switch (collection) {
-  case BORROWERS_COLLECTION:
-    return 'people';
-  case LOANS_COLLECTION:
-    return 'dollarSign';
-  case PROPERTIES_COLLECTION:
-    return 'building';
-  case USERS_COLLECTION:
-    return 'contactMail';
-  case PROMOTIONS_COLLECTION:
-    return <FontAwesomeIcon icon={faCity} className="icon-link-icon" />;
-  case OFFERS_COLLECTION:
-    return 'monetizationOn';
-  case ORGANISATIONS_COLLECTION:
-    return <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />;
-  case CONTACTS_COLLECTION:
-    return <FontAwesomeIcon icon={faUserTie} className="icon-link-icon" />;
+    case BORROWERS_COLLECTION:
+      return 'people';
+    case LOANS_COLLECTION:
+      return 'dollarSign';
+    case PROPERTIES_COLLECTION:
+      return 'building';
+    case USERS_COLLECTION:
+      return 'contactMail';
+    case PROMOTIONS_COLLECTION:
+      return <FontAwesomeIcon icon={faCity} className="icon-link-icon" />;
+    case OFFERS_COLLECTION:
+      return 'monetizationOn';
+    case ORGANISATIONS_COLLECTION:
+      return <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />;
+    case CONTACTS_COLLECTION:
+      return <FontAwesomeIcon icon={faUserTie} className="icon-link-icon" />;
 
-  default:
-    return null;
+    default:
+      return null;
   }
 };
 

@@ -32,7 +32,9 @@ describe('documents', () => {
     });
 
     it('returns an array of documents for the first step', () => {
-      expect(getPropertyDocuments({ loan, id: 'propertyId' }).map(({ id }) => id)).to.deep.equal([
+      expect(
+        getPropertyDocuments({ loan, id: 'propertyId' }).map(({ id }) => id),
+      ).to.deep.equal([
         ...propertyDocuments.map(({ id }) => id),
         DOCUMENTS.OTHER,
       ]);
@@ -43,7 +45,9 @@ describe('documents', () => {
         { id: 'someId' },
         { id: 'someId2' },
       ];
-      expect(getPropertyDocuments({ loan, id: 'propertyId' }).map(({ id }) => id)).to.deep.equal(['someId', 'someId2', DOCUMENTS.OTHER]);
+      expect(
+        getPropertyDocuments({ loan, id: 'propertyId' }).map(({ id }) => id),
+      ).to.deep.equal(['someId', 'someId2', DOCUMENTS.OTHER]);
     });
   });
 
@@ -64,9 +68,11 @@ describe('documents', () => {
 
   describe('getLoanDocuments', () => {
     it('returns documents for the loan', () => {
-      expect(getLoanDocuments({
-        loan: { general: {} },
-      }).map(({ id }) => id)).to.deep.equal([DOCUMENTS.OTHER]);
+      expect(
+        getLoanDocuments({
+          loan: { general: {} },
+        }).map(({ id }) => id),
+      ).to.deep.equal([DOCUMENTS.OTHER]);
     });
   });
 });

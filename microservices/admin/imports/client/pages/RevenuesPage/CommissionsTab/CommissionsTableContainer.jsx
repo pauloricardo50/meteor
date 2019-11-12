@@ -21,55 +21,57 @@ const addCommissionRows = (
 
   return [
     ...rows,
-    ...organisations.map(({ name, _id, $metadata: { status, commissionRate, paidAt } }) => {
-      const commissionAmount = amount * commissionRate;
+    ...organisations.map(
+      ({ name, _id, $metadata: { status, commissionRate, paidAt } }) => {
+        const commissionAmount = amount * commissionRate;
 
-      return {
-        id: revenueId + _id,
-        columns: [
-          {
-            raw: name,
-            label: (
-              <CollectionIconLink
-                relatedDoc={{
-                  _id,
-                  name,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            ),
-          },
-          {
-            raw: status,
-            label: (
-              <StatusLabel status={status} collection={REVENUES_COLLECTION} />
-            ),
-          },
-          ...columns,
-          {
-            raw: commissionAmount,
-            label: (
-              <b>
+        return {
+          id: revenueId + _id,
+          columns: [
+            {
+              raw: name,
+              label: (
+                <CollectionIconLink
+                  relatedDoc={{
+                    _id,
+                    name,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              ),
+            },
+            {
+              raw: status,
+              label: (
+                <StatusLabel status={status} collection={REVENUES_COLLECTION} />
+              ),
+            },
+            ...columns,
+            {
+              raw: commissionAmount,
+              label: (
+                <b>
                   (
-                <Percent value={commissionRate} />
+                  <Percent value={commissionRate} />
                   )&nbsp;
-                <Money value={commissionAmount} />
-              </b>
-            ),
-          },
-          <CommissionsConsolidator
-            revenueId={revenueId}
-            amount={amount}
-            paidAt={paidAt}
-            organisation={{ _id, name }}
-            commissionRate={commissionRate}
-            commissionAmount={commissionAmount}
-            key="commissions-consolidator"
-          />,
-        ],
-        ...rest,
-      };
-    }),
+                  <Money value={commissionAmount} />
+                </b>
+              ),
+            },
+            <CommissionsConsolidator
+              revenueId={revenueId}
+              amount={amount}
+              paidAt={paidAt}
+              organisation={{ _id, name }}
+              commissionRate={commissionRate}
+              commissionAmount={commissionAmount}
+              key="commissions-consolidator"
+            />,
+          ],
+          ...rest,
+        };
+      },
+    ),
   ];
 };
 

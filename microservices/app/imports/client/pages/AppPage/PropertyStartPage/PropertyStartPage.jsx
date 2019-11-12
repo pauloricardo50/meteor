@@ -21,7 +21,7 @@ const PropertyStartPage = ({
   return (
     <WelcomeScreen
       displayCheckbox={false}
-      cta={(
+      cta={
         <div className="property-start">
           <h3>{name || address1}</h3>
           <h4 className="secondary">
@@ -37,7 +37,7 @@ const PropertyStartPage = ({
             <T id="PropertyStartPage.buttonLabel" />
           </Button>
         </div>
-      )}
+      }
       img={anonymousProperty.thumbnail}
     />
   );

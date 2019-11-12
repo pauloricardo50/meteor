@@ -22,8 +22,7 @@ const FinancingOffers = ({ loan }: FinancingOffersProps) => {
     <>
       {Meteor.microservice === 'admin' && (
         <span>
-          Offres
-          {' '}
+          Offres{' '}
           {loan.enableOffers ? (
             <span className="success">Activées</span>
           ) : (
@@ -33,13 +32,12 @@ const FinancingOffers = ({ loan }: FinancingOffersProps) => {
               <span>
                 <ConfirmMethod
                   size="small"
-                  description={(
+                  description={
                     <span>
                       Passera l'étape du dossier à "
-                      <T id="Forms.step.OFFERS" />
-"
+                      <T id="Forms.step.OFFERS" />"
                     </span>
-                  )}
+                  }
                   buttonProps={{
                     label: 'Activer',
                     size: 'small',

@@ -63,7 +63,9 @@ describe('promotionServerHelpers', () => {
         },
       });
 
-      expect(getBestPromotionLotStatus({ loanId: 'loanId' })).to.equal('AVAILABLE');
+      expect(getBestPromotionLotStatus({ loanId: 'loanId' })).to.equal(
+        'AVAILABLE',
+      );
     });
 
     it('finds the best status of any promotionLot 3', () => {
@@ -83,7 +85,9 @@ describe('promotionServerHelpers', () => {
         },
       });
 
-      expect(getBestPromotionLotStatus({ loanId: 'loanId' })).to.equal('BOOKED');
+      expect(getBestPromotionLotStatus({ loanId: 'loanId' })).to.equal(
+        'BOOKED',
+      );
     });
   });
 });

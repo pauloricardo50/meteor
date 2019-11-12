@@ -54,7 +54,9 @@ const PdfTable = ({
       );
     })}
     <PdfTableTooltips
-      tooltips={rows.filter(({ tooltip, condition }) => !!tooltip && shouldRenderRow(condition))}
+      tooltips={rows.filter(
+        ({ tooltip, condition }) => !!tooltip && shouldRenderRow(condition),
+      )}
       startIndex={rows.length + 1}
     />
   </table>

@@ -6,7 +6,7 @@ const path = require('path');
 const runBackend = (process, ...args) => {
   const listener = net
     .createServer()
-    .once('error', (err) => {
+    .once('error', err => {
       if (err.code === 'EADDRINUSE') {
         process.logError('Backend already running');
       } else {

@@ -48,7 +48,8 @@ const lotSelling = ({
   canSellLot,
   isAdmin,
 }) => {
-  const isAllowedToSellLot = loanId === attributedToId && (isAdmin || canSellLot);
+  const isAllowedToSellLot =
+    loanId === attributedToId && (isAdmin || canSellLot);
 
   if (isAllowedToSellLot) {
     return (
@@ -74,7 +75,8 @@ const cancelLotBooking = ({
   canBookLot,
   isAdmin,
 }) => {
-  const isAllowedToCancelLotBooking = loanId === attributedToId && (isAdmin || canBookLot);
+  const isAllowedToCancelLotBooking =
+    loanId === attributedToId && (isAdmin || canBookLot);
 
   if (isAllowedToCancelLotBooking) {
     return (
@@ -83,7 +85,7 @@ const cancelLotBooking = ({
         key="cancel"
         method={cancelPromotionLotBooking}
         label={<T id="PromotionLotAttributer.cancelBooking" />}
-        description={(
+        description={
           <div>
             <b>
               <T id="PromotionLotAttributer.cancelBooking" />
@@ -91,7 +93,7 @@ const cancelLotBooking = ({
             <br />
             <T id="PromotionLotAttributer.notificationDisclaimer" />
           </div>
-        )}
+        }
         disabled={!isAdmin && !canBookLot}
         type="modal"
       />
@@ -108,18 +110,18 @@ const lotSold = ({ loanId, attributedToId }) =>
     </span>
   );
 
-const selectComponent = (props) => {
+const selectComponent = props => {
   const { promotionLotStatus } = props;
 
   switch (promotionLotStatus) {
-  case PROMOTION_LOT_STATUS.AVAILABLE:
-    return lotBooking(props);
-  case PROMOTION_LOT_STATUS.BOOKED:
-    return [lotSelling(props), cancelLotBooking(props)];
-  case PROMOTION_LOT_STATUS.SOLD:
-    return lotSold(props);
-  default:
-    return null;
+    case PROMOTION_LOT_STATUS.AVAILABLE:
+      return lotBooking(props);
+    case PROMOTION_LOT_STATUS.BOOKED:
+      return [lotSelling(props), cancelLotBooking(props)];
+    case PROMOTION_LOT_STATUS.SOLD:
+      return lotSold(props);
+    default:
+      return null;
   }
 };
 

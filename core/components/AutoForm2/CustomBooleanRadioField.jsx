@@ -9,7 +9,7 @@ import wrapField from 'uniforms-material/wrapField';
 
 import T from '../Translation';
 
-const stringToBool = (string) => {
+const stringToBool = string => {
   if (string) {
     return string === 'true';
   }

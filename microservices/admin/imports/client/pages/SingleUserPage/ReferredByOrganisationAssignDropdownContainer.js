@@ -9,7 +9,7 @@ const getMenuItems = ({
   referredByOrganisation: { referredByOrganisationId } = {},
   userId,
 }) =>
-  [null, ...organisations].map((organisation) => {
+  [null, ...organisations].map(organisation => {
     const { _id: organisationId, name } = organisation || {};
     let organisationName = 'Aucune';
     if (organisationId) {
@@ -32,23 +32,25 @@ export default compose(
     params: { $body: { name: 1 } },
     dataName: 'organisations',
   }),
-  withProps(({
-    organisations = [],
-    user: { _id: userId, referredByOrganisation },
-  }) => ({
-    options: getMenuItems({
-      organisations: organisations.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+  withProps(
+    ({
+      organisations = [],
+      user: { _id: userId, referredByOrganisation },
+    }) => ({
+      options: getMenuItems({
+        organisations: organisations.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        }),
+        referredByOrganisation,
+        userId,
       }),
       referredByOrganisation,
-      userId,
     }),
-    referredByOrganisation,
-  })),
+  ),
 );

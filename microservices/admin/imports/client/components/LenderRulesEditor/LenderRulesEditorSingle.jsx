@@ -14,7 +14,7 @@ import LenderRulesModifier from './LenderRulesForm/LenderRulesModifier';
 import LenderRulesEditorSingleForm from './LenderRulesEditorSingleForm';
 
 const getInitialFormKeys = ({ lenderRules }) =>
-  Object.keys(lenderRules).filter((key) => {
+  Object.keys(lenderRules).filter(key => {
     const val = lenderRules[key];
 
     if (val && val.length !== undefined && val.length === 0) {
@@ -71,4 +71,8 @@ const LenderRulesEditorSingle = ({
   </ExpansionPanel>
 );
 
-export default withState('formKeys', 'setFormKeys', getInitialFormKeys)(LenderRulesEditorSingle);
+export default withState(
+  'formKeys',
+  'setFormKeys',
+  getInitialFormKeys,
+)(LenderRulesEditorSingle);

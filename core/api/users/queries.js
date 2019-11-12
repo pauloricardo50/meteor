@@ -1,8 +1,4 @@
 import {
-  createRegexQuery,
-  generateMatchAnyWordRegexp,
-} from '../helpers/mongoHelpers';
-import {
   adminUser,
   appUser as appUserFragment,
   fullUser,
@@ -42,31 +38,10 @@ export const proUser = Users.createQuery(
 );
 
 export const userEmails = Users.createQuery(USER_QUERIES.USER_EMAILS, {
-  $filter({ filters, params: { _id } }) {
-    filters._id = _id;
-  },
   sentEmails: 1,
 });
 
 export const userSearch = Users.createQuery(USER_QUERIES.USER_SEARCH, {
-  $filter({ filters, params: { searchQuery, roles } }) {
-    const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
-    if (roles) {
-      filters.roles = { $in: roles };
-    }
-    filters.$or = [
-      createRegexQuery('_id', searchQuery),
-      createRegexQuery('emails.0.address', searchQuery),
-      createRegexQuery('firstName', searchQuery),
-      createRegexQuery('lastName', searchQuery),
-      {
-        $and: [
-          createRegexQuery('firstName', formattedSearchQuery),
-          createRegexQuery('lastName', formattedSearchQuery),
-        ],
-      },
-    ];
-  },
   assignedEmployee: { name: 1 },
   createdAt: 1,
   email: 1,

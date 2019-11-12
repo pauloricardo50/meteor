@@ -137,9 +137,10 @@ Meteor.methods({
     const { _id: userId3 } = UserService.findOne({
       'emails.address': PRO_EMAIL_3,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }) || [];
+    const promotions =
+      PromotionService.find({
+        'userLinks._id': userId,
+      }) || [];
 
     promotions.forEach(({ _id: promotionId }) => {
       PromotionService.addProUser({ promotionId, userId: userId2 });
@@ -151,10 +152,11 @@ Meteor.methods({
       'emails.address': PRO_EMAIL,
     });
     const { _id: invitedBy } = UserService.findOne({ 'emails.address': email });
-    const promotions = PromotionService.find(
-      { 'userLinks._id': userId },
-      { fields: { _id: 1 } },
-    ).fetch() || [];
+    const promotions =
+      PromotionService.find(
+        { 'userLinks._id': userId },
+        { fields: { _id: 1 } },
+      ).fetch() || [];
 
     promotions.forEach(({ _id: promotionId }) => {
       const loans = LoanService.find({}).fetch() || [];
@@ -171,32 +173,37 @@ Meteor.methods({
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find(
-      { 'userLinks._id': userId },
-      { fields: { _id: 1 } },
-    ).fetch() || [];
+    const promotions =
+      PromotionService.find(
+        { 'userLinks._id': userId },
+        { fields: { _id: 1 } },
+      ).fetch() || [];
 
     promotions.forEach(({ _id: promotionId }) =>
-      PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+      PromotionService.setUserPermissions({ promotionId, userId, permissions }),
+    );
   },
   setPromotionStatus({ status }) {
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }) || [];
+    const promotions =
+      PromotionService.find({
+        'userLinks._id': userId,
+      }) || [];
 
     promotions.forEach(({ _id: promotionId }) =>
-      PromotionService.update({ promotionId, object: { status } }));
+      PromotionService.update({ promotionId, object: { status } }),
+    );
   },
   resetUserPermissions() {
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }).fetch() || [];
+    const promotions =
+      PromotionService.find({
+        'userLinks._id': userId,
+      }).fetch() || [];
 
     const permissions = {
       canSellLots: false,
@@ -211,7 +218,8 @@ Meteor.methods({
     };
 
     promotions.forEach(({ _id: promotionId }) =>
-      PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+      PromotionService.setUserPermissions({ promotionId, userId, permissions }),
+    );
   },
   editOrganisation({ ...organisation }) {
     OrganisationService.baseUpdate({ name: ORG_NAME }, { $set: organisation });
@@ -332,7 +340,7 @@ Meteor.methods({
       },
     });
   },
-  serverLog: (log) => {
+  serverLog: log => {
     check(log, String);
     if (Meteor.isServer) {
       console.log('Cypress logging from server: ', log);
@@ -348,8 +356,9 @@ Meteor.methods({
   addProUser() {
     const { _id } = UserService.getByEmail(PRO_EMAIL) || {};
 
-    const userId = _id
-      || UserService.adminCreateUser({
+    const userId =
+      _id ||
+      UserService.adminCreateUser({
         options: {
           email: PRO_EMAIL,
           firstName: 'Pro',

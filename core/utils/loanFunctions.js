@@ -17,21 +17,29 @@ export const formatLoanWithStructure = ({
   let structure = {};
 
   if (selectedStructure) {
-    const foundStructure = structures.find(({ id }) => id === selectedStructure);
+    const foundStructure = structures.find(
+      ({ id }) => id === selectedStructure,
+    );
 
     if (foundStructure) {
       structure = foundStructure;
 
       if (structure.propertyId) {
-        const property = properties.find(({ _id }) => _id === structure.propertyId);
+        const property = properties.find(
+          ({ _id }) => _id === structure.propertyId,
+        );
         structure = { ...structure, property };
       }
 
       if (structure.promotionOptionId) {
-        const promotionOption = promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
+        const promotionOption = promotionOptions.find(
+          ({ _id }) => _id === structure.promotionOptionId,
+        );
         structure = {
           ...structure,
-          property: Calculator.formatPromotionOptionIntoProperty(promotionOption),
+          property: Calculator.formatPromotionOptionIntoProperty(
+            promotionOption,
+          ),
         };
       }
 
@@ -46,7 +54,8 @@ export const formatLoanWithStructure = ({
           [],
         );
         const mortgageNotes = structure.mortgageNoteIds.map(id =>
-          borrowerMortgageNotes.find(({ _id }) => _id === id));
+          borrowerMortgageNotes.find(({ _id }) => _id === id),
+        );
 
         structure = { ...structure, mortgageNotes };
       }
@@ -60,7 +69,7 @@ export const formatLoanWithStructure = ({
   return structure;
 };
 
-export const formatLoanWithDocuments = (loan) => {
+export const formatLoanWithDocuments = loan => {
   if (!loan || !loan.structure) {
     return loan;
   }
@@ -82,7 +91,7 @@ export const formatLoanWithDocuments = (loan) => {
   };
 };
 
-export const formatLoanWithPromotion = (loan) => {
+export const formatLoanWithPromotion = loan => {
   if (loan.structure.promotionOptionId) {
     const property = Calculator.selectProperty({
       loan,
@@ -97,25 +106,27 @@ export const formatLoanWithPromotion = (loan) => {
 };
 
 export const shouldSendStepNotification = (prevStep, nextStep) =>
-  (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
-  && nextStep === STEPS.OFFERS;
+  (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST) &&
+  nextStep === STEPS.OFFERS;
 
 export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
-  const activeTasks = tasks.filter(({
-    status: taskStatus,
-    isPrivate = false,
-    assigneeLink: { _id: assigneeId } = {},
-  }) => {
-    if (taskStatus !== TASK_STATUS.ACTIVE) {
-      return false;
-    }
+  const activeTasks = tasks.filter(
+    ({
+      status: taskStatus,
+      isPrivate = false,
+      assigneeLink: { _id: assigneeId } = {},
+    }) => {
+      if (taskStatus !== TASK_STATUS.ACTIVE) {
+        return false;
+      }
 
-    if (isPrivate && assigneeId) {
-      return assigneeId === Meteor.userId();
-    }
+      if (isPrivate && assigneeId) {
+        return assigneeId === Meteor.userId();
+      }
 
-    return true;
-  });
+      return true;
+    },
+  );
   const tasksWithoutDate = activeTasks
     .filter(({ dueAt }) => !dueAt)
     .sort(({ createdAt: A }, { createdAt: B }) => A - B);

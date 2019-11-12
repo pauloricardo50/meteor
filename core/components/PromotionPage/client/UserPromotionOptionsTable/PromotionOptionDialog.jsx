@@ -26,16 +26,16 @@ const PromotionOptionDialog = ({
   return (
     <Dialog
       open={open}
-      title={(
+      title={
         <div className="modal-promotion-lot-title">
           <span>{promotionLot && promotionLot.name}</span>
         </div>
-      )}
-      actions={(
+      }
+      actions={
         <Button primary onClick={handleClose}>
           <T id="general.close" />
         </Button>
-      )}
+      }
       fullWidth
       maxWidth={false}
       onClose={handleClose}

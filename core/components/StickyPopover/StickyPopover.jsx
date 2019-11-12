@@ -62,7 +62,8 @@ export default class PopoverStickOnHover extends React.Component {
         onFocus: this.handleMouseEnter,
         onBlur: this.handleMouseLeave,
         showPopover,
-      }))[0];
+      }),
+    )[0];
 
     return (
       <>
@@ -76,7 +77,11 @@ export default class PopoverStickOnHover extends React.Component {
           onClick={e => e.stopPropagation()}
           style={{ zIndex: 9999 }}
         >
-          <Paper style={{ padding: 8 }} elevation={15} className="popover-content">
+          <Paper
+            style={{ padding: 8 }}
+            elevation={15}
+            className="popover-content"
+          >
             {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
             {component}
           </Paper>

@@ -34,14 +34,20 @@ const ProCustomersTable = ({
         label="Anonymes"
         value={withAnonymous}
         onChange={setWithAnonymous}
-        options={[{ id: true, label: 'Avec' }, { id: false, label: 'Sans' }]}
+        options={[
+          { id: true, label: 'Avec' },
+          { id: false, label: 'Sans' },
+        ]}
         className="mr-8"
       />
       <Select
         label="Référé par"
         value={referredByMe}
         onChange={setReferredByMe}
-        options={[{ id: true, label: 'Moi' }, { id: false, label: 'Tous' }]}
+        options={[
+          { id: true, label: 'Moi' },
+          { id: false, label: 'Tous' },
+        ]}
         className="mr-8"
       />
     </div>

@@ -5,9 +5,15 @@ import ReactHighcharts from 'react-highcharts';
 const initializeHighcharts = () => {
   ReactHighcharts.Highcharts.setOptions({
     lang: {
-      months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
-      shortMonths: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split('_'),
-      weekdays: 'Dimanche_Lundi_Mardi_Mercredi_Jeudi_Vendredi_Samedi'.split('_'),
+      months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split(
+        '_',
+      ),
+      shortMonths: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split(
+        '_',
+      ),
+      weekdays: 'Dimanche_Lundi_Mardi_Mercredi_Jeudi_Vendredi_Samedi'.split(
+        '_',
+      ),
       shortWeekdays: 'Dim._Lun._Mar._Mer._Jeu._Ven._Sam.'.split('_'),
     },
   });
@@ -15,9 +21,9 @@ const initializeHighcharts = () => {
   ReactHighcharts.Highcharts.wrap(
     ReactHighcharts.Highcharts.Chart.prototype,
     'init',
-    function (proceed, options, callback) {
+    function(proceed, options, callback) {
       if (options.chart && options.chart.forExport && options.series) {
-        options.series.forEach((serie) => {
+        options.series.forEach(serie => {
           if (serie.visible === false) {
             serie.showInLegend = false;
           }
@@ -36,7 +42,7 @@ export default class BaseChart extends PureComponent {
     const { highchartsWrappers = {} } = props;
 
     if (Object.keys(highchartsWrappers).length) {
-      Object.values(highchartsWrappers).forEach((wrapper) => {
+      Object.values(highchartsWrappers).forEach(wrapper => {
         wrapper(ReactHighcharts.Highcharts);
       });
     }
@@ -49,8 +55,10 @@ export default class BaseChart extends PureComponent {
     // If previous data[i].value is different from next data, update chart
 
     if (
-      prevData.length !== nextData.length
-      || nextData.some((dataPoint, index) => dataPoint.value !== prevData[index].value)
+      prevData.length !== nextData.length ||
+      nextData.some(
+        (dataPoint, index) => dataPoint.value !== prevData[index].value,
+      )
     ) {
       this.update(nextData);
     }
@@ -60,7 +68,7 @@ export default class BaseChart extends PureComponent {
     this.chart = null;
   }
 
-  update = (data) => {
+  update = data => {
     if (this.chart) {
       // FIXME: This should animate the chart somehow
       this.chart.getChart().series[0].setData(data);
@@ -74,7 +82,7 @@ export default class BaseChart extends PureComponent {
     return (
       <ReactHighcharts
         config={config}
-        ref={(c) => {
+        ref={c => {
           this.chart = c;
         }}
       />

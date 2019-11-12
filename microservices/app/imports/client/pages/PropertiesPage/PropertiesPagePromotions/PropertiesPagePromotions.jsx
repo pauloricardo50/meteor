@@ -21,8 +21,8 @@ const PropertiesPagePromotions = ({
   return (
     <div className="promotions">
       <div className="promotion-cards">
-        {promotions
-          && promotions.map(promotion => (
+        {promotions &&
+          promotions.map(promotion => (
             <PromotionDetail
               promotion={promotion}
               loanId={loanId}
@@ -42,8 +42,10 @@ const PropertiesPagePromotions = ({
 
       <div className="promotion-options">
         {options
-          .sort(({ priority: priority1 }, { priority: priority2 }) =>
-            priority1 - priority2)
+          .sort(
+            ({ priority: priority1 }, { priority: priority2 }) =>
+              priority1 - priority2,
+          )
           .map(promotionOption => (
             <PromotionOptionDetail
               promotionOption={promotionOption}

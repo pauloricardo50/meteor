@@ -11,13 +11,16 @@ import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 export default compose(
   withRouter,
   withState('filters', 'setFilters', ({ location }) =>
-    queryString.parse(location.search, { arrayFormat: 'bracket' })),
+    queryString.parse(location.search, { arrayFormat: 'bracket' }),
+  ),
   withProps(({ history }) => ({
     insertOrganisation: organisation =>
-      organisationInsert.run({ organisation }).then((organisationId) => {
-        history.push(createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
-          organisationId,
-        }));
+      organisationInsert.run({ organisation }).then(organisationId => {
+        history.push(
+          createRoute(ADMIN_ROUTES.SINGLE_ORGANISATION_PAGE.path, {
+            organisationId,
+          }),
+        );
       }),
   })),
   withSmartQuery({

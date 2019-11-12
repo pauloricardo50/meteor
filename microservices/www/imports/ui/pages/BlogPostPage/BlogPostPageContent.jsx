@@ -12,7 +12,7 @@ type BlogPostPageContentProps = {
   post: Object,
 };
 
-export const htmlDecode = (input) => {
+export const htmlDecode = input => {
   const e = document.createElement('div');
   e.innerHTML = input;
   // handle case of empty input

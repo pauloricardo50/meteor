@@ -10,7 +10,7 @@ import * as startupConstants from '../shared/startupConstants';
 import ServerApp from './ServerApp';
 import { setHeaders } from './seo';
 
-const prepareState = (store) => {
+const prepareState = store => {
   const preloadedState = store.getState();
   // Make sure .replace always runs, as stringify can return undefined
   const stringifiedState = JSON.stringify(preloadedState) || '';
@@ -18,7 +18,7 @@ const prepareState = (store) => {
   return stringifiedState.replace(/</g, '\\u003c');
 };
 
-onPageLoad(async (sink) => {
+onPageLoad(async sink => {
   const context = {};
   const { store } = createStore();
   const serverState = prepareState(store);
@@ -30,11 +30,15 @@ onPageLoad(async (sink) => {
     startupConstants.ROOT_ID,
     // Can't use the new "renderToNodeStream" because of JSS
     // See this issue: https://github.com/mui-org/material-ui/issues/8503
-    renderToString(sheets.collect(<ServerApp
-      store={store}
-      context={context}
-      location={sink.request.url}
-    />)),
+    renderToString(
+      sheets.collect(
+        <ServerApp
+          store={store}
+          context={context}
+          location={sink.request.url}
+        />,
+      ),
+    ),
   );
 
   const helmet = Helmet.renderStatic();

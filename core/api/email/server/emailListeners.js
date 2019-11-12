@@ -10,7 +10,7 @@ import {
   sellPromotionLot,
 } from '../../methods';
 import { Loans } from '../..';
-import { EMAIL_IDS, INTERNAL_EMAIL, FROM_EMAIL } from '../emailConstants';
+import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 
 ServerEventService.addAfterMethodListener(
@@ -85,8 +85,8 @@ ServerEventService.addAfterMethodListener(
 );
 
 const makePromotionLotNotification = emailId => ({ context, params }) => {
-  const { userId } = context;
   context.unblock();
+  const { userId } = context;
   const { promotionLotId } = params;
   const {
     name: promotionLotName,
@@ -108,33 +108,35 @@ const makePromotionLotNotification = emailId => ({ context, params }) => {
     name: 1,
   });
 
-  return Promise.all(userLinks
-    .filter(({ enableNotifications }) => enableNotifications)
-    .map(({ _id }) => {
-      const anonymize = promotionShouldAnonymize({
-        customerId: user && user._id,
-        userId: _id,
-        promotionId,
-        promotionLotId,
-        loanId,
-      });
-      return sendEmail.run({
-        emailId,
-        userId: _id,
-        params: {
+  return Promise.all(
+    userLinks
+      .filter(({ enableNotifications }) => enableNotifications)
+      .map(({ _id }) => {
+        const anonymize = promotionShouldAnonymize({
+          customerId: user && user._id,
+          userId: _id,
           promotionId,
-          promotionName,
-          promotionLotName,
-          userName,
-          customerName: anonymize
-            ? 'une personne anonymisée'
-            : user
+          promotionLotId,
+          loanId,
+        });
+        return sendEmail.run({
+          emailId,
+          userId: _id,
+          params: {
+            promotionId,
+            promotionName,
+            promotionLotName,
+            userName,
+            customerName: anonymize
+              ? 'une personne anonymisée'
+              : user
               ? user.name
               : 'un acquéreur sans nom',
-          fromEmail: assignedEmployee && assignedEmployee.email,
-        },
-      });
-    }));
+            fromEmail: assignedEmployee && assignedEmployee.email,
+          },
+        });
+      }),
+  );
 };
 
 ServerEventService.addAfterMethodListener(

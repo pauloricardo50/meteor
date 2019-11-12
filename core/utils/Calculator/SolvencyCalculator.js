@@ -24,18 +24,18 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     getAllowedOwnFundsTypes({ residenceType }) {
       return residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
         ? [
-          OWN_FUNDS_TYPES.DONATION,
-          OWN_FUNDS_TYPES.BANK_FORTUNE,
-          OWN_FUNDS_TYPES.INSURANCE_3A,
-          OWN_FUNDS_TYPES.BANK_3A,
-          OWN_FUNDS_TYPES.INSURANCE_3B,
-          OWN_FUNDS_TYPES.INSURANCE_2,
-        ]
+            OWN_FUNDS_TYPES.DONATION,
+            OWN_FUNDS_TYPES.BANK_FORTUNE,
+            OWN_FUNDS_TYPES.INSURANCE_3A,
+            OWN_FUNDS_TYPES.BANK_3A,
+            OWN_FUNDS_TYPES.INSURANCE_3B,
+            OWN_FUNDS_TYPES.INSURANCE_2,
+          ]
         : [
-          OWN_FUNDS_TYPES.DONATION,
-          OWN_FUNDS_TYPES.BANK_FORTUNE,
-          OWN_FUNDS_TYPES.INSURANCE_3B,
-        ];
+            OWN_FUNDS_TYPES.DONATION,
+            OWN_FUNDS_TYPES.BANK_FORTUNE,
+            OWN_FUNDS_TYPES.INSURANCE_3B,
+          ];
     }
 
     ownFundTypeRequiresUsageType({ type }) {
@@ -48,10 +48,12 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
     makeOwnFunds({ borrowers, type, usageType, max }) {
       return arrayify(borrowers)
-        .map((borrower) => {
+        .map(borrower => {
           const ownFundsObject = {
             type,
-            value: Math.ceil(Math.min(max, this.getFunds({ borrowers: borrower, type }))),
+            value: Math.ceil(
+              Math.min(max, this.getFunds({ borrowers: borrower, type })),
+            ),
             borrowerId: borrower._id,
           };
 
@@ -82,7 +84,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     }) {
       let notaryFees;
 
-      const finalLoanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
+      const finalLoanValue =
+        loanValue || Math.round(propertyValue * maxBorrowRatio);
 
       if (forcedNotaryFees >= 0) {
         notaryFees = forcedNotaryFees;
@@ -95,7 +98,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         }).total;
       }
 
-      let requiredOwnFunds = Math.round(propertyValue + notaryFees - finalLoanValue);
+      let requiredOwnFunds = Math.round(
+        propertyValue + notaryFees - finalLoanValue,
+      );
       let ownFunds = [];
 
       // Get all possible OWN_FUNDS_TYPES
@@ -103,8 +108,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         residenceType,
       });
 
-      allowedOwnFundsTypes.forEach((type) => {
-        borrowers.forEach((borrower) => {
+      allowedOwnFundsTypes.forEach(type => {
+        borrowers.forEach(borrower => {
           const newOwnFunds = this.makeOwnFunds({
             borrowers: borrower,
             type,
@@ -156,7 +161,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       residenceType,
       ownFunds,
     }) {
-      const finalLoanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
+      const finalLoanValue =
+        loanValue || Math.round(propertyValue * maxBorrowRatio);
       const loanObject = this.createLoanObject({
         residenceType,
         borrowers,
@@ -269,16 +275,18 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       while (!foundBetterValue) {
         let nextValue;
         if (direction === 'upwards') {
-          nextValue = cache[currentBorrowRatio + stepSize]
-            || this.getMaxPropertyValue({
+          nextValue =
+            cache[currentBorrowRatio + stepSize] ||
+            this.getMaxPropertyValue({
               borrowers,
               residenceType,
               maxBorrowRatio: currentBorrowRatio + stepSize,
               canton,
             });
         } else {
-          nextValue = cache[currentBorrowRatio - stepSize]
-            || this.getMaxPropertyValue({
+          nextValue =
+            cache[currentBorrowRatio - stepSize] ||
+            this.getMaxPropertyValue({
               borrowers,
               residenceType,
               maxBorrowRatio: currentBorrowRatio - stepSize,
@@ -332,8 +340,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       while (!foundValue) {
         iterations += 1;
 
-        const center = cache[borrowRatio]
-          || this.getMaxPropertyValue({
+        const center =
+          cache[borrowRatio] ||
+          this.getMaxPropertyValue({
             borrowers,
             residenceType,
             maxBorrowRatio: borrowRatio,
@@ -341,16 +350,18 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           });
         setMax(borrowRatio, center);
 
-        const yLeft = cache[borrowRatio - deltaX]
-          || this.getMaxPropertyValue({
+        const yLeft =
+          cache[borrowRatio - deltaX] ||
+          this.getMaxPropertyValue({
             borrowers,
             residenceType,
             maxBorrowRatio: borrowRatio - deltaX,
             canton,
           });
         setMax(borrowRatio - deltaX, yLeft);
-        const yRight = cache[borrowRatio + deltaX]
-          || this.getMaxPropertyValue({
+        const yRight =
+          cache[borrowRatio + deltaX] ||
+          this.getMaxPropertyValue({
             borrowers,
             residenceType,
             maxBorrowRatio: borrowRatio + deltaX,
@@ -403,8 +414,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
       // Round the borrowRatio, and recompute the exact property value
       const finalBorrowRatio = Math.round(optimalBorrowRatio * 10000) / 10000;
-      const finalPropertyValue = cache[finalBorrowRatio]
-        || this.getMaxPropertyValue({
+      const finalPropertyValue =
+        cache[finalBorrowRatio] ||
+        this.getMaxPropertyValue({
           borrowers,
           residenceType,
           maxBorrowRatio: finalBorrowRatio,

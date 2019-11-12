@@ -20,7 +20,7 @@ const PercentWithStatus = ({
   tooltip,
   rounded,
 }: PercentWithStatusProps) => (
-  <React.Fragment>
+  <>
     {Number.isNaN(value) ? '-' : <Percent value={value} rounded={rounded} />}
     {!Number.isNaN(value) && (
       <StatusIcon
@@ -31,7 +31,7 @@ const PercentWithStatus = ({
         id={id}
       />
     )}
-  </React.Fragment>
+  </>
 );
 
 export default PercentWithStatus;

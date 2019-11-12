@@ -40,22 +40,22 @@ const isSolventForProProperty = ({
   const { totalValue } = property;
 
   switch (residenceType) {
-  case RESIDENCE_TYPE.MAIN_RESIDENCE: {
-    return totalValue <= mainMaxValue
-      ? PROPERTY_SOLVENCY.SOLVENT
-      : PROPERTY_SOLVENCY.INSOLVENT;
-  }
-  case RESIDENCE_TYPE.SECOND_RESIDENCE: {
-    return totalValue <= secondMaxValue
-      ? PROPERTY_SOLVENCY.SOLVENT
-      : PROPERTY_SOLVENCY.INSOLVENT;
-  }
-  default:
-    return null;
+    case RESIDENCE_TYPE.MAIN_RESIDENCE: {
+      return totalValue <= mainMaxValue
+        ? PROPERTY_SOLVENCY.SOLVENT
+        : PROPERTY_SOLVENCY.INSOLVENT;
+    }
+    case RESIDENCE_TYPE.SECOND_RESIDENCE: {
+      return totalValue <= secondMaxValue
+        ? PROPERTY_SOLVENCY.SOLVENT
+        : PROPERTY_SOLVENCY.INSOLVENT;
+    }
+    default:
+      return null;
   }
 };
 
-const handleLoanSolvencySharing = ({ isAdmin = false }) => (loanObject) => {
+const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
   const { maxPropertyValue, shareSolvency, ...loan } = loanObject;
 
   const propertiesWithSolvency = loan.properties.map(property => ({
@@ -76,7 +76,7 @@ const handleLoanSolvencySharing = ({ isAdmin = false }) => (loanObject) => {
 };
 
 const anonymizePromotionLoans = ({ loans = [], userId }) =>
-  loans.map((loan) => {
+  loans.map(loan => {
     const { promotions } = loan;
     const promotionId = promotions[0]._id;
 
@@ -89,7 +89,7 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
   });
 
 const anonymizePropertyLoans = ({ loans = [], userId }) =>
-  loans.map((loan) => {
+  loans.map(loan => {
     const { properties } = loan;
     const proPropertyIds = properties
       .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)

@@ -16,7 +16,7 @@ export default class ConfirmMethod extends Component {
 
   shouldAllowSubmit = keyword => !keyword || this.state.text === keyword;
 
-  handleOpen = (event) => {
+  handleOpen = event => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ open: true, anchorEl: event.currentTarget });
@@ -24,7 +24,7 @@ export default class ConfirmMethod extends Component {
 
   handleClose = () => this.setState({ open: false });
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     const { keyword, method } = this.props;
     if (event) {
       event.preventDefault();
@@ -127,7 +127,7 @@ export default class ConfirmMethod extends Component {
     );
 
     return (
-      <React.Fragment>
+      <>
         <Button
           label={label}
           onClick={this.handleOpen}
@@ -137,7 +137,7 @@ export default class ConfirmMethod extends Component {
         />
         {type === 'popover' && popover}
         {type === 'modal' && modal}
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -14,11 +14,11 @@ export default function areInputsEqual(
 
   // Handle memoization for functions with 1 argument which is an object
   if (
-    newInputs.length === 1
-    && typeof newInputs[0] === 'object'
-    && typeof lastInputs[0] === 'object'
-    && newInputs[0] !== null
-    && lastInputs[0] !== null
+    newInputs.length === 1 &&
+    typeof newInputs[0] === 'object' &&
+    typeof lastInputs[0] === 'object' &&
+    newInputs[0] !== null &&
+    lastInputs[0] !== null
   ) {
     const newArgs = Object.values(newInputs[0]);
     const lastArgs = Object.values(lastInputs[0]);

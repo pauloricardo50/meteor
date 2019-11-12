@@ -15,9 +15,11 @@ describe('promotionClientHelpers', () => {
     });
 
     it('returns true if user cannot see customers', () => {
-      expect(shouldAnonymize({
-        permissions: { displayCustomerNames: false },
-      })).to.equal(true);
+      expect(
+        shouldAnonymize({
+          permissions: { displayCustomerNames: false },
+        }),
+      ).to.equal(true);
     });
 
     it('returns true if customer is invited by nobody', () => {
@@ -25,10 +27,12 @@ describe('promotionClientHelpers', () => {
       const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {},
-      })).to.equal(true);
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {},
+        }),
+      ).to.equal(true);
     });
 
     it('returns true if lot status is not in permissions', () => {
@@ -38,16 +42,18 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
-            forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
+              forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+            },
           },
-        },
-        promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
-      })).to.equal(true);
+          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+        }),
+      ).to.equal(true);
     });
 
     it('returns true if lot status is in permissions and belongs to owner, but not attributed', () => {
@@ -57,20 +63,22 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-            forLotStatus: [
-              PROMOTION_LOT_STATUS.AVAILABLE,
-              PROMOTION_LOT_STATUS.BOOKED,
-            ],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+              forLotStatus: [
+                PROMOTION_LOT_STATUS.AVAILABLE,
+                PROMOTION_LOT_STATUS.BOOKED,
+              ],
+            },
           },
-        },
-        promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
-        isAttributed: false,
-      })).to.equal(true);
+          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          isAttributed: false,
+        }),
+      ).to.equal(true);
     });
 
     it('returns false if lot status is in permissions and belongs to owner', () => {
@@ -80,20 +88,22 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-            forLotStatus: [
-              PROMOTION_LOT_STATUS.AVAILABLE,
-              PROMOTION_LOT_STATUS.BOOKED,
-            ],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+              forLotStatus: [
+                PROMOTION_LOT_STATUS.AVAILABLE,
+                PROMOTION_LOT_STATUS.BOOKED,
+              ],
+            },
           },
-        },
-        promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
-        isAttributed: true,
-      })).to.equal(false);
+          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          isAttributed: true,
+        }),
+      ).to.equal(false);
     });
 
     it('returns true if lot status is undefined', () => {
@@ -103,18 +113,20 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
-            forLotStatus: [
-              PROMOTION_LOT_STATUS.BOOKED,
-              PROMOTION_LOT_STATUS.SOLD,
-            ],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+              forLotStatus: [
+                PROMOTION_LOT_STATUS.BOOKED,
+                PROMOTION_LOT_STATUS.SOLD,
+              ],
+            },
           },
-        },
-      })).to.equal(true);
+        }),
+      ).to.equal(true);
     });
 
     it('returns true if customer is not invited by current user', () => {
@@ -124,14 +136,16 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
+            },
           },
-        },
-      })).to.equal(true);
+        }),
+      ).to.equal(true);
     });
 
     it('returns true if customer is not invited by current user organisation member', () => {
@@ -144,14 +158,16 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+            },
           },
-        },
-      })).to.equal(true);
+        }),
+      ).to.equal(true);
     });
 
     it('returns false if customer is invited by current user organisation member', () => {
@@ -167,15 +183,17 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
-            forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+              forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+            },
           },
-        },
-      })).to.equal(false);
+        }),
+      ).to.equal(false);
     });
 
     it('returns true if current user has no organisation', () => {
@@ -185,14 +203,16 @@ describe('promotionClientHelpers', () => {
         currentUser,
         invitedBy,
       });
-      expect(shouldAnonymize({
-        customerOwnerType,
-        permissions: {
-          displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+      expect(
+        shouldAnonymize({
+          customerOwnerType,
+          permissions: {
+            displayCustomerNames: {
+              invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+            },
           },
-        },
-      })).to.equal(true);
+        }),
+      ).to.equal(true);
     });
 
     it('returns false if lot is user can see names for every lot status, can see all customer names and lot is not attributed', () => {
@@ -203,12 +223,14 @@ describe('promotionClientHelpers', () => {
         },
       };
 
-      expect(shouldAnonymize({
-        customerOwnerType: null,
-        permissions,
-        promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
-        isAttributed: false,
-      })).to.equal(false);
+      expect(
+        shouldAnonymize({
+          customerOwnerType: null,
+          permissions,
+          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          isAttributed: false,
+        }),
+      ).to.equal(false);
     });
   });
 });

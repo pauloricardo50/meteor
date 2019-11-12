@@ -23,7 +23,7 @@ const interestRatesSchema = ({ isDiscount }) =>
         },
         optional: true,
         condition: ({ hasCounterparts, hasFlatDiscount }) =>
-          (isDiscount ? hasCounterparts && !hasFlatDiscount : true),
+          isDiscount ? hasCounterparts && !hasFlatDiscount : true,
       },
     }),
     {},
@@ -42,8 +42,9 @@ const schema = lenders =>
       defaultValue: null,
       allowedValues: lenders.map(({ _id }) => _id),
       uniforms: {
-        transform: (lenderId) => {
-          const { organisation, contact } = lenders.find(({ _id }) => lenderId === _id) || {};
+        transform: lenderId => {
+          const { organisation, contact } =
+            lenders.find(({ _id }) => lenderId === _id) || {};
           const { name: organisationName } = organisation || {};
           const { name: contactName } = contact || {};
           return contactName
@@ -148,7 +149,7 @@ const schema = lenders =>
 const isStandardRatesKeys = key => !key.includes('discount_');
 const isDiscountRatesKeys = key => !isStandardRatesKeys(key);
 
-const filterRates = ({ isCounterPartOffer, hasFlatDiscount }) => (key) => {
+const filterRates = ({ isCounterPartOffer, hasFlatDiscount }) => key => {
   if (isCounterPartOffer) {
     return hasFlatDiscount
       ? isStandardRatesKeys(key)
@@ -162,19 +163,20 @@ const reformatInterestRatesObject = ({
   isCounterPartOffer,
   hasFlatDiscount,
   flatDiscount,
-}) => Object.keys(interestRates)
-  .filter(filterRates({ isCounterPartOffer, hasFlatDiscount }))
-  .reduce((rates, key) => {
-    const interestRateType = isDiscountRatesKeys(key)
-      ? key.split('discount_')[1]
-      : key;
-    return {
-      ...rates,
-      [interestRateType]: hasFlatDiscount
-        ? interestRates[interestRateType] - flatDiscount
-        : interestRates[key],
-    };
-  }, {});
+}) =>
+  Object.keys(interestRates)
+    .filter(filterRates({ isCounterPartOffer, hasFlatDiscount }))
+    .reduce((rates, key) => {
+      const interestRateType = isDiscountRatesKeys(key)
+        ? key.split('discount_')[1]
+        : key;
+      return {
+        ...rates,
+        [interestRateType]: hasFlatDiscount
+          ? interestRates[interestRateType] - flatDiscount
+          : interestRates[key],
+      };
+    }, {});
 
 const mapValuesToOffer = ({
   withCounterparts,
@@ -204,21 +206,22 @@ const mapValuesToOffer = ({
     }),
   };
 
-  const counterpartsOffer = !withCounterparts && hasCounterparts
-    ? {
-      withCounterparts: true,
-      maxAmount,
-      amortizationGoal,
-      amortizationYears,
-      enableOffer,
-      ...reformatInterestRatesObject({
-        interestRates,
-        isCounterPartOffer: true,
-        hasFlatDiscount,
-        flatDiscount,
-      }),
-    }
-    : undefined;
+  const counterpartsOffer =
+    !withCounterparts && hasCounterparts
+      ? {
+          withCounterparts: true,
+          maxAmount,
+          amortizationGoal,
+          amortizationYears,
+          enableOffer,
+          ...reformatInterestRatesObject({
+            interestRates,
+            isCounterPartOffer: true,
+            hasFlatDiscount,
+            flatDiscount,
+          }),
+        }
+      : undefined;
 
   return [
     {
@@ -228,18 +231,18 @@ const mapValuesToOffer = ({
       epotekFees,
       ...standardOffer,
     },
-    !withCounterparts
-      && hasCounterparts && {
-      lenderId,
-      conditions: [...conditions, ...counterparts].filter(x => x),
-      fees,
-      epotekFees,
-      ...counterpartsOffer,
-    },
+    !withCounterparts &&
+      hasCounterparts && {
+        lenderId,
+        conditions: [...conditions, ...counterparts].filter(x => x),
+        fees,
+        epotekFees,
+        ...counterpartsOffer,
+      },
   ].filter(x => x);
 };
 
-const insertOffer = (values) => {
+const insertOffer = values => {
   const offers = mapValuesToOffer({ ...values });
   return Promise.all(offers.map(offer => offerInsert.run({ offer })));
 };

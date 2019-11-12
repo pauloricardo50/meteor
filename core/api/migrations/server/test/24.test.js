@@ -18,19 +18,22 @@ describe('Migration 24', () => {
     it('adds first connection activity on all verified users', async () => {
       const today = new Date();
 
-      await Promise.all([...Array(5)].map((_, i) =>
-        Users.rawCollection().insert({
-          _id: String(i + 1),
-          emails: [
-            {
-              address: `user${i + 1}@e-potek.ch`,
-              verified: (i + 1) % 2 === 0,
-            },
-          ],
-          createdAt: moment(today)
-            .add(i, 'day')
-            .toDate(),
-        })));
+      await Promise.all(
+        [...Array(5)].map((_, i) =>
+          Users.rawCollection().insert({
+            _id: String(i + 1),
+            emails: [
+              {
+                address: `user${i + 1}@e-potek.ch`,
+                verified: (i + 1) % 2 === 0,
+              },
+            ],
+            createdAt: moment(today)
+              .add(i, 'day')
+              .toDate(),
+          }),
+        ),
+      );
 
       await up();
 
@@ -50,7 +53,9 @@ describe('Migration 24', () => {
           expect(activities.length).to.equal(1);
           expect(activities[0].type).to.equal(ACTIVITY_TYPES.EVENT);
           expect(activities[0].date.toString()).to.equal(date.toString());
-          expect(activities[0].metadata.event).to.equal(ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION);
+          expect(activities[0].metadata.event).to.equal(
+            ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
+          );
         } else {
           expect(activities.length).to.equal(0);
         }
@@ -61,19 +66,22 @@ describe('Migration 24', () => {
   describe('down', () => {
     it('removes first connection activities on users', async () => {
       const today = new Date();
-      await Promise.all([...Array(5)].map((_, i) =>
-        Users.rawCollection().insert({
-          _id: String(i + 1),
-          emails: [
-            {
-              address: `user${i + 1}@e-potek.ch`,
-              verified: (i + 1) % 2 === 0,
-            },
-          ],
-          createdAt: moment(today)
-            .add(i, 'day')
-            .toDate(),
-        })));
+      await Promise.all(
+        [...Array(5)].map((_, i) =>
+          Users.rawCollection().insert({
+            _id: String(i + 1),
+            emails: [
+              {
+                address: `user${i + 1}@e-potek.ch`,
+                verified: (i + 1) % 2 === 0,
+              },
+            ],
+            createdAt: moment(today)
+              .add(i, 'day')
+              .toDate(),
+          }),
+        ),
+      );
 
       await up();
       await down();

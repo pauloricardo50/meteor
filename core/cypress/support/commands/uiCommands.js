@@ -1,4 +1,4 @@
-Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
+Cypress.Commands.add('routeShouldExist', expectedPageUri => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here
   const baseUrl = Cypress.config('baseUrl');
@@ -8,7 +8,8 @@ Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
   (routeConfig, testData, options = {}) => {
-    const pageRoute = typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
+    const pageRoute =
+      typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
 
     const {
       uri,
@@ -29,12 +30,12 @@ Cypress.Commands.add(
 );
 
 // select dropdown items and check if what we want gets rendered
-Cypress.Commands.add('dropdownShouldRender', (dropdownAssertionConfig) => {
+Cypress.Commands.add('dropdownShouldRender', dropdownAssertionConfig => {
   if (!dropdownAssertionConfig) {
     return;
   }
 
-  Object.keys(dropdownAssertionConfig).forEach((dropdownSelector) => {
+  Object.keys(dropdownAssertionConfig).forEach(dropdownSelector => {
     const items = dropdownAssertionConfig[dropdownSelector];
     items.forEach(({ item: itemSelector, shouldRender }) => {
       cy.selectDropdownOption(dropdownSelector, itemSelector);
@@ -74,7 +75,7 @@ Cypress.Commands.add('setSelect', (name, value) => {
   }
 });
 
-Cypress.Commands.add('routeTo', (path) => {
+Cypress.Commands.add('routeTo', path => {
   cy.window().then(({ reactRouterDomHistory }) => {
     reactRouterDomHistory.push(path);
   });

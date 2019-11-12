@@ -10,7 +10,9 @@ class MortgageNoteService extends CollectionService {
 
   insert({ mortgageNote = {}, propertyId, borrowerId }) {
     if (!borrowerId && !propertyId) {
-      throw new Meteor.Error('Une cédule doit être liée à un emprunteur ou bien immo');
+      throw new Meteor.Error(
+        'Une cédule doit être liée à un emprunteur ou bien immo',
+      );
     }
 
     const id = super.insert(mortgageNote);

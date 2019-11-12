@@ -10,7 +10,7 @@ const UserCreatorForm = ({
   schema,
   buttonProps,
   onSubmit,
-  submitFieldProps
+  submitFieldProps,
 }: UserCreatorProps) => (
   <AutoForm
     schema={schema}
@@ -20,7 +20,7 @@ const UserCreatorForm = ({
       raised: true,
       secondary: true,
       style: { width: '100%', marginTop: 16 },
-      ...submitFieldProps
+      ...submitFieldProps,
     }}
     style={{ width: '100%' }}
   />

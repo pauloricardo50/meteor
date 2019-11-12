@@ -8,39 +8,40 @@ type MonitoringChartProps = {};
 
 const getX = ({ data, groupBy, f }) => {
   switch (groupBy) {
-  case 'status':
-    return data.map(({ _id }) => f({ id: `Forms.status.${_id}` }));
+    case 'status':
+      return data.map(({ _id }) => f({ id: `Forms.status.${_id}` }));
 
-  default:
-    return data.map(({ _id: { month, year } }) => `${month}/${year}`);
+    default:
+      return data.map(({ _id: { month, year } }) => `${month}/${year}`);
   }
 };
 
 const getSeries = ({ data, value }) => {
   switch (value) {
-  case 'count':
-    return [{ name: 'Total', data: data.map(({ count }) => count) }];
-  case 'revenues':
-    return [
-      {
-        name: 'Attendu',
-        data: data.map(({ expectedRevenues }) =>
-          Math.round(expectedRevenues)),
-      },
-      {
-        name: 'Payé',
-        data: data.map(({ paidRevenues }) => Math.round(paidRevenues)),
-      },
-    ];
-  case 'loanValue':
-    return [
-      {
-        name: 'Volume hypothécaire',
-        data: data.map(({ loanValue }) => loanValue),
-      },
-    ];
-  default:
-    break;
+    case 'count':
+      return [{ name: 'Total', data: data.map(({ count }) => count) }];
+    case 'revenues':
+      return [
+        {
+          name: 'Attendu',
+          data: data.map(({ expectedRevenues }) =>
+            Math.round(expectedRevenues),
+          ),
+        },
+        {
+          name: 'Payé',
+          data: data.map(({ paidRevenues }) => Math.round(paidRevenues)),
+        },
+      ];
+    case 'loanValue':
+      return [
+        {
+          name: 'Volume hypothécaire',
+          data: data.map(({ loanValue }) => loanValue),
+        },
+      ];
+    default:
+      break;
   }
 };
 

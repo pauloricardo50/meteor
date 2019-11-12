@@ -36,7 +36,7 @@ const getChartData = ({ loan, Calculator }) => {
   }));
 };
 
-const DashboardRecapChart = (props) => {
+const DashboardRecapChart = props => {
   const data = getChartData(props);
   const total = data.reduce((sum, item) => sum + item.value, 0);
 

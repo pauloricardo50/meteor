@@ -16,7 +16,7 @@ const columnOptions = [
   { id: 'phoneNumber', label: <T id="Forms.phoneNumber" /> },
 ];
 
-const makeMapUser = ({ history }) => (user) => {
+const makeMapUser = ({ history }) => user => {
   const {
     _id: userId,
     firstName,
@@ -51,7 +51,7 @@ const makeMapUser = ({ history }) => (user) => {
       email,
       phoneNumber,
     ],
-    handleClick: (event) => {
+    handleClick: event => {
       event.stopPropagation();
       history.push(createRoute('/users/:userId', { userId }));
     },

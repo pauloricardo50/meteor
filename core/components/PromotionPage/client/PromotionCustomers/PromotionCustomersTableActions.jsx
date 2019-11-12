@@ -64,21 +64,25 @@ const PromotionCustomersTableActions = ({
           promotion,
         }).pick('promotionLotIds', 'showAllLots')}
         model={{
-          promotionLotIds: promotionOptions.map(({ promotionLots }) => promotionLots[0]._id),
+          promotionLotIds: promotionOptions.map(
+            ({ promotionLots }) => promotionLots[0]._id,
+          ),
           showAllLots: promotion.$metadata.showAllLots,
         }}
         onSubmit={editLots}
         setOpen={setOpenDialog}
-        title={(
+        title={
           <T
             id="PromotionUsersTableActions.editLots.title"
             values={{ name: user.name }}
           />
-        )}
+        }
         noButton
       />
     </>
   );
 };
 
-export default PromotionCustomersTableActionsContainer(PromotionCustomersTableActions);
+export default PromotionCustomersTableActionsContainer(
+  PromotionCustomersTableActions,
+);

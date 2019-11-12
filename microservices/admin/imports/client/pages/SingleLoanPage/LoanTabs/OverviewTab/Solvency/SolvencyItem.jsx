@@ -43,7 +43,9 @@ const SolvencyItem = ({
     };
   });
 
-  const sorted = solvencies.sort(({ solvency: solvencyA }, { solvency: solvencyB }) => solvencyB - solvencyA);
+  const sorted = solvencies.sort(
+    ({ solvency: solvencyA }, { solvency: solvencyB }) => solvencyB - solvencyA,
+  );
   const toDisplay = showAll ? sorted : sorted.slice(0, 3);
 
   return (

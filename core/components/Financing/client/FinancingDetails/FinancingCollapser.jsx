@@ -9,7 +9,8 @@ type FinancingCollapserProps = {};
 
 const FinancingCollapser = ({ Calculator, loan }: FinancingCollapserProps) => {
   const [shouldExpand, setShouldExpand] = useState(() =>
-    Calculator.hasCompleteStructure({ loan }));
+    Calculator.hasCompleteStructure({ loan }),
+  );
 
   return (
     <Button

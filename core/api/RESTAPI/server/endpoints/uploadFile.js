@@ -7,11 +7,7 @@ import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
 import { withMeteorUserId } from '../helpers';
-import {
-  checkQuery,
-  impersonateSchema,
-  getImpersonateUserId,
-} from './helpers';
+import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const bodySchema = new SimpleSchema({
@@ -29,7 +25,7 @@ const bodySchema = new SimpleSchema({
   },
 });
 
-const uploadFileAPI = (req) => {
+const uploadFileAPI = req => {
   const {
     files: { file } = {},
     user: { _id: userId },

@@ -6,7 +6,7 @@ import { ROLES } from 'core/api/constants';
 
 const hasRole = ({ roles }, role) => roles.includes(role);
 
-const formatCurrentUser = (user) => {
+const formatCurrentUser = user => {
   if (user) {
     return {
       ...user,

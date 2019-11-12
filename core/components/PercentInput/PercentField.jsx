@@ -15,7 +15,7 @@ type PercentFieldProps = {
 
 // A hack for number inputs because material-ui can't be sure of the initial
 // shrink value: https://material-ui.com/components/text-fields/#floating-label
-const shouldShrinkLabel = (value) => !!value || undefined;
+const shouldShrinkLabel = value => !!value || undefined;
 
 const PercentField = ({
   fullWidth = true,

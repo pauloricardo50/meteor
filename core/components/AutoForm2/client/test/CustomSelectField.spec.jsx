@@ -36,10 +36,12 @@ describe('CustomSelectField', () => {
         }),
       };
 
-      expect(component()
-        .find(CustomSelectField)
-        .childAt(0)
-        .prop('values')).to.deep.equal(['yo', 'dude']);
+      expect(
+        component()
+          .find(CustomSelectField)
+          .childAt(0)
+          .prop('values'),
+      ).to.deep.equal(['yo', 'dude']);
     });
 
     it('renders the select field', () => {
@@ -69,7 +71,7 @@ describe('CustomSelectField', () => {
         .find(MenuItem)
         .find('li');
 
-      items.forEach((item) => {
+      items.forEach(item => {
         expect(item.text()).to.equal(transform(item.prop('data-value')));
       });
     });
@@ -154,13 +156,13 @@ describe('CustomSelectField', () => {
 
         expect(items.length).to.equal(2);
 
-        items.forEach((item) => {
+        items.forEach(item => {
           expect(item.text()).to.equal(transform(item.prop('data-value')));
         });
       });
     });
 
-    it('renders custom allowed values coming from a promise', (done) => {
+    it('renders custom allowed values coming from a promise', done => {
       props = {
         schema: new SimpleSchema({
           text: {
@@ -173,15 +175,17 @@ describe('CustomSelectField', () => {
 
       setTimeout(() => {
         component().update();
-        expect(component()
-          .find(CustomSelectField)
-          .childAt(0)
-          .prop('values')).to.deep.equal(['yo', 'dude']);
+        expect(
+          component()
+            .find(CustomSelectField)
+            .childAt(0)
+            .prop('values'),
+        ).to.deep.equal(['yo', 'dude']);
         done();
       }, 0);
     });
 
-    it('renders custom allowed values coming from a function', (done) => {
+    it('renders custom allowed values coming from a function', done => {
       props = {
         schema: new SimpleSchema({
           text: {
@@ -194,15 +198,17 @@ describe('CustomSelectField', () => {
 
       setTimeout(() => {
         component().update();
-        expect(component()
-          .find(CustomSelectField)
-          .childAt(0)
-          .prop('values')).to.deep.equal(['yo', 'dude']);
+        expect(
+          component()
+            .find(CustomSelectField)
+            .childAt(0)
+            .prop('values'),
+        ).to.deep.equal(['yo', 'dude']);
         done();
       }, 0);
     });
 
-    it('fetches allowed values based on the model', (done) => {
+    it('fetches allowed values based on the model', done => {
       props = {
         schema: new SimpleSchema({
           text: {
@@ -216,19 +222,23 @@ describe('CustomSelectField', () => {
 
       setTimeout(() => {
         component().update();
-        expect(component()
-          .find(CustomSelectField)
-          .childAt(0)
-          .prop('values')).to.deep.equal(['']);
+        expect(
+          component()
+            .find(CustomSelectField)
+            .childAt(0)
+            .prop('values'),
+        ).to.deep.equal(['']);
 
         setInput('text2', 'dude');
 
         setTimeout(() => {
           component().update();
-          expect(component()
-            .find(CustomSelectField)
-            .childAt(0)
-            .prop('values')).to.deep.equal(['dude']);
+          expect(
+            component()
+              .find(CustomSelectField)
+              .childAt(0)
+              .prop('values'),
+          ).to.deep.equal(['dude']);
           done();
         }, 0);
       }, 0);

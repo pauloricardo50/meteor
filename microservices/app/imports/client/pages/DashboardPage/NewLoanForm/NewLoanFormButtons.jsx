@@ -27,7 +27,7 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
     handleSubmit,
   } = props;
   return (
-    <Fragment>
+    <>
       {step === 0 ? null : (
         <Button
           id="previous"
@@ -63,7 +63,7 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
           })}
         />
       )}
-    </Fragment>
+    </>
   );
 };
 

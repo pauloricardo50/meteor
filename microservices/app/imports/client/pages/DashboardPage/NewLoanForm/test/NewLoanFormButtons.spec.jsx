@@ -43,29 +43,35 @@ describe('NewLoanFormButtons', () => {
     props.numberOfSteps = 3;
     props.step = 0;
     props[STEPS_ARRAY[props.step]] = '';
-    expect(component()
-      .find('#next')
-      .first()
-      .props().disabled).to.equal(true);
+    expect(
+      component()
+        .find('#next')
+        .first()
+        .props().disabled,
+    ).to.equal(true);
   });
 
   it('enables next button when prop is set', () => {
     props.numberOfSteps = 3;
     props.step = 1;
     props[STEPS_ARRAY[props.step]] = 'test';
-    expect(component()
-      .find('#next')
-      .first()
-      .props().disabled).to.equal(false);
+    expect(
+      component()
+        .find('#next')
+        .first()
+        .props().disabled,
+    ).to.equal(false);
   });
 
   it('enables submit button when last prop is set', () => {
     props.numberOfSteps = 3;
     props.step = 2;
     props[STEPS_ARRAY[props.step]] = 'test';
-    expect(component()
-      .find('#submit')
-      .first()
-      .props().disabled).to.equal(false);
+    expect(
+      component()
+        .find('#submit')
+        .first()
+        .props().disabled,
+    ).to.equal(false);
   });
 });

@@ -5,6 +5,8 @@ import { _ } from 'meteor/underscore';
 
 import crypto from 'crypto';
 
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import {
   OBJECT_STORAGE_PATH,
   BUCKET_NAME,
@@ -14,8 +16,6 @@ import {
   MAX_FILE_SIZE,
   ONE_KB,
 } from '../fileConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -47,15 +47,17 @@ const exoscaleStorageService = {
     AWSAccessKeyId: String,
     AWSSecretAccessKey: String,
 
-    acl: Match.Optional(Match.Where((acl) => {
-      check(acl, String);
+    acl: Match.Optional(
+      Match.Where(acl => {
+        check(acl, String);
 
-      return Object.values(S3_ACLS).indexOf(acl) >= 0;
-    })),
+        return Object.values(S3_ACLS).indexOf(acl) >= 0;
+      }),
+    ),
 
     key: Match.OneOf(String, Function),
 
-    expire: Match.Where((expire) => {
+    expire: Match.Where(expire => {
       check(expire, Number);
 
       return expire > 0;
@@ -81,13 +83,13 @@ const exoscaleStorageService = {
     let getContentDisposition = directive.contentDisposition;
 
     if (!_.isFunction(getContentDisposition)) {
-      getContentDisposition = function () {
+      getContentDisposition = function() {
         const filename = file.name && encodeURIComponent(file.name);
 
         return (
-          directive.contentDisposition
-          || (filename
-            && `inline; filename="${filename}"; filename*=utf-8''${filename}`)
+          directive.contentDisposition ||
+          (filename &&
+            `inline; filename="${filename}"; filename*=utf-8''${filename}`)
         );
       };
     }
@@ -105,11 +107,15 @@ const exoscaleStorageService = {
   },
 
   getDefaultStatus(meta) {
-    if ([ORGANISATIONS_COLLECTION,PROMOTIONS_COLLECTION].includes(meta.collection)) {
-      return FILE_STATUS.VALID
+    if (
+      [ORGANISATIONS_COLLECTION, PROMOTIONS_COLLECTION].includes(
+        meta.collection,
+      )
+    ) {
+      return FILE_STATUS.VALID;
     }
 
-    return FILE_STATUS.UNVERIFIED
+    return FILE_STATUS.UNVERIFIED;
   },
 
   /**
@@ -128,8 +134,10 @@ const exoscaleStorageService = {
       .contentLength(0, Math.min(file.size, maxSize));
 
     if (file.size > maxSize) {
-      throw new Meteor.Error(`Votre fichier ne peut pas dépasser ${maxSize
-          / ONE_KB}kb, essayez de réduire la résolution du fichier, ou de le compresser à l'aide de tinyjpg.com`);
+      throw new Meteor.Error(
+        `Votre fichier ne peut pas dépasser ${maxSize /
+          ONE_KB}kb, essayez de réduire la résolution du fichier, ou de le compresser à l'aide de tinyjpg.com`,
+      );
     }
 
     const payload = {
@@ -170,15 +178,19 @@ const exoscaleStorageService = {
           name: 'key',
           value: payload.key,
         },
-      ].concat(_.chain(payload)
-        .omit('key')
-        .map((value, name) =>
-          !_.isUndefined(value) && {
-            name,
-            value,
-          })
-        .compact()
-        .value()),
+      ].concat(
+        _.chain(payload)
+          .omit('key')
+          .map(
+            (value, name) =>
+              !_.isUndefined(value) && {
+                name,
+                value,
+              },
+          )
+          .compact()
+          .value(),
+      ),
     };
   },
 
@@ -192,9 +204,10 @@ const exoscaleStorageService = {
   applySignature(payload, policy, directive) {
     const now = new Date();
 
-    const today = now.getUTCFullYear()
-      + formatNumber(now.getUTCMonth() + 1, 2)
-      + formatNumber(now.getUTCDate(), 2);
+    const today =
+      now.getUTCFullYear() +
+      formatNumber(now.getUTCMonth() + 1, 2) +
+      formatNumber(now.getUTCDate(), 2);
 
     const service = 's3';
 

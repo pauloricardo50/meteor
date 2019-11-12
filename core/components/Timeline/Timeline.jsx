@@ -40,7 +40,7 @@ const makeFormatEvent = variant => (
 const hasSecondaryLabel = events =>
   events.some(({ secondaryLabel }) => !!secondaryLabel);
 
-const getLongestSecondaryLabelLength = (id) => {
+const getLongestSecondaryLabelLength = id => {
   const leftLabels = document
     .getElementById(id)
     .getElementsByClassName('secondary-label');

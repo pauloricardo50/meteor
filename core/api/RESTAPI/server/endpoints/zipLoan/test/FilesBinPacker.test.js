@@ -45,6 +45,8 @@ describe('FilesBinPacker', () => {
       { Key: '8.pdf', Size: 5 },
       { Key: '9.pdf', Size: 2 },
     ];
-    expect(() => filesBinPacker.addFiles(files)).to.throw('[Le fichier "myFile.pdf" dépasse la taille maximale possible]');
+    expect(() => filesBinPacker.addFiles(files)).to.throw(
+      '[Le fichier "myFile.pdf" dépasse la taille maximale possible]',
+    );
   });
 });

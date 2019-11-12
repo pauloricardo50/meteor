@@ -8,9 +8,7 @@ import {
   TASK_PRIORITIES,
 } from './taskConstants';
 
-import {
-  autoValueSentenceCase,
-} from '../helpers/sharedSchemaValues';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 

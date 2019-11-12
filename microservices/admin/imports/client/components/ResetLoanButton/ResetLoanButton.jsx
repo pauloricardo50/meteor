@@ -19,8 +19,8 @@ const ResetLoanButton = ({
     error
     disabled={loading || status !== LOAN_STATUS.TEST}
     tooltip={
-      status !== LOAN_STATUS.TEST
-      && 'Seuls les dossiers TEST peuvent être réinitialisés'
+      status !== LOAN_STATUS.TEST &&
+      'Seuls les dossiers TEST peuvent être réinitialisés'
     }
   >
     Réinitialiser le dossier

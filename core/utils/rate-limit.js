@@ -32,16 +32,23 @@ const defaultRateLimit = {
   },
 };
 
-const roleLimiterCheckPattern = Match.Optional(Match.ObjectIncluding({
-  limit: Match.Optional(Number),
-  timeRange: Match.Optional(Number),
-}));
+const roleLimiterCheckPattern = Match.Optional(
+  Match.ObjectIncluding({
+    limit: Match.Optional(Number),
+    timeRange: Match.Optional(Number),
+  }),
+);
 
 const rateLimitCheckPattern = limitRoles =>
-  Match.ObjectIncluding(zipObject(limitRoles, map(limitRoles, () => roleLimiterCheckPattern)));
+  Match.ObjectIncluding(
+    zipObject(
+      limitRoles,
+      map(limitRoles, () => roleLimiterCheckPattern),
+    ),
+  );
 
 const methodLimiterRule = ({ name, limitRoles = [], role = 'global' }) => ({
-  userId: (userId) => {
+  userId: userId => {
     if (userId) {
       if (role !== 'global') {
         return SecurityService.hasRole(userId, role);
@@ -65,7 +72,7 @@ export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
 
     check(currentRateLimit, rateLimitCheckPattern(limitRoles));
 
-    limitRoles.forEach((role) => {
+    limitRoles.forEach(role => {
       const {
         limit = defaultLimit,
         timeRange = defaultTimeRange,

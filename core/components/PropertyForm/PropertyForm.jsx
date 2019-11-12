@@ -33,7 +33,7 @@ const PropertyForm = ({
 }: PropertyFormProps) => (
   <div
     className={cx('property-form', className)}
-    onClick={(event) => {
+    onClick={event => {
       // Prevent all event defaults except when submitting
       // In this case, the skip is handled by DashboardRecapProperty
       if (event.target.type !== 'submit') {

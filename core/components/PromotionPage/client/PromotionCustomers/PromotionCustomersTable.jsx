@@ -12,9 +12,7 @@ const PromotionCustomersTable = ({
 }: PromotionUsersTableProps) => (
   <>
     <h3 className="secondary" style={{ marginTop: 0 }}>
-      {rows.length}
-      {' '}
-clients
+      {rows.length} clients
     </h3>
     <Table
       rows={rows}

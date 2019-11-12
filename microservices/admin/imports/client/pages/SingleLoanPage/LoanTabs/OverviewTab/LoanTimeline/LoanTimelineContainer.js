@@ -12,7 +12,7 @@ import {
 } from 'core/api/methods';
 import { TASK_STATUS } from 'core/api/constants';
 
-const formatType = (type) => {
+const formatType = type => {
   if (type.$in && type.$in.includes('COMMUNICATION')) {
     return { $in: [...type.$in, ACTIVITY_TYPES.EMAIL, ACTIVITY_TYPES.PHONE] };
   }
@@ -21,7 +21,9 @@ const formatType = (type) => {
 
 export const activityFilterOptions = [
   'COMMUNICATION',
-  ...Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.EMAIL && type !== ACTIVITY_TYPES.PHONE),
+  ...Object.values(ACTIVITY_TYPES).filter(
+    type => type !== ACTIVITY_TYPES.EMAIL && type !== ACTIVITY_TYPES.PHONE,
+  ),
 ];
 
 export default compose(

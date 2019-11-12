@@ -8,7 +8,8 @@ import {
 const defaultChildrenEnhancer = c => c;
 
 export const makeEnhancedChildrenComponent = ({ id, children }) => {
-  const togglePointEnhancer = FeatureService.getFeatureDecision(id) || defaultChildrenEnhancer;
+  const togglePointEnhancer =
+    FeatureService.getFeatureDecision(id) || defaultChildrenEnhancer;
   return togglePointEnhancer(childrenToComponent(children));
 };
 
@@ -21,7 +22,8 @@ export const makeOnOffSwitchedComponent = ({
 }) => {
   const featureDecision = FeatureService.getFeatureDecision(id);
 
-  const shouldSwitchOn = featureDecision === undefined ? defaultSwitchOption : featureDecision;
+  const shouldSwitchOn =
+    featureDecision === undefined ? defaultSwitchOption : featureDecision;
 
   return branch(
     () => shouldSwitchOn,

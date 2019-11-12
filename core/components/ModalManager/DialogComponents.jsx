@@ -10,7 +10,7 @@ import T from '../Translation';
 
 type DialogComponentsProps = {};
 
-const makeRenderDialogPart = dialogProps => (part) => {
+const makeRenderDialogPart = dialogProps => part => {
   if (typeof part === 'function') {
     return part(dialogProps);
   }

@@ -3,7 +3,7 @@ import { assignAdminToUser } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
 
 const changeAssignedUser = ({ newAdmin, user }) => {
-    assignAdminToUser.run({ userId: user._id, adminId: newAdmin._id }) 
+  assignAdminToUser.run({ userId: user._id, adminId: newAdmin._id });
 };
 
 const onAdminSelectHandler = ({ newAdmin, relatedDoc }) =>

@@ -5,9 +5,13 @@ import UserService from '../../users/server/UserService';
 class UserSecurity {
   isAllowedToInsertByRole = ({ role }) => {
     if (!role || !Object.values(ROLES).includes(role)) {
-      Security.handleUnauthorized('You can only create accounts with one of the accepted roles.');
+      Security.handleUnauthorized(
+        'You can only create accounts with one of the accepted roles.',
+      );
     } else if (!Security.currentUserIsAdmin()) {
-      Security.handleUnauthorized("You don't have enough privileges to create an account");
+      Security.handleUnauthorized(
+        "You don't have enough privileges to create an account",
+      );
     } else if (role === ROLES.DEV || role === ROLES.ADMIN) {
       Security.checkCurrentUserIsDev();
     }
@@ -34,7 +38,9 @@ class UserSecurity {
     });
 
     if (!organisations.some(({ _id }) => _id === organisationId)) {
-      Security.handleUnauthorized('Pas autorisé à inviter des comptes Pro à cette organisation');
+      Security.handleUnauthorized(
+        'Pas autorisé à inviter des comptes Pro à cette organisation',
+      );
     }
   };
 }

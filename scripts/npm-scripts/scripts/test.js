@@ -44,7 +44,7 @@ test.spawn({
   },
 });
 
-test.process.once('exit', (code) => {
+test.process.once('exit', code => {
   if (backend.process) {
     backend.kill();
   }

@@ -68,7 +68,7 @@ const errors = [
   },
   {
     id: 'missingCash',
-    func: (data) => {
+    func: data => {
       const { loan, structureId } = data;
       return !Calculator.hasEnoughCash({ loan, structureId });
     },

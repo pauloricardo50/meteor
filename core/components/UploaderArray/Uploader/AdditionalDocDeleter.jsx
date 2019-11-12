@@ -17,8 +17,9 @@ const AdditionalDocDeleter = ({
   collection,
   docId,
 }: AdditionalDocDeleterProps) => {
-  const userIsAdmin = Roles.userIsInRole(Meteor.user(), ROLES.DEV)
-    || Roles.userIsInRole(Meteor.user(), ROLES.ADMIN);
+  const userIsAdmin =
+    Roles.userIsInRole(Meteor.user(), ROLES.DEV) ||
+    Roles.userIsInRole(Meteor.user(), ROLES.ADMIN);
 
   if (isAdditionalDoc && userIsAdmin) {
     return (

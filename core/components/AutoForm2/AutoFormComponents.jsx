@@ -73,8 +73,8 @@ const determineComponentFromProps = ({
   }
 
   if (
-    uniforms
-    && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL
+    uniforms &&
+    uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL
   ) {
     return {
       Component: OptimizedMoneyInput,
@@ -138,14 +138,18 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
-    const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
+    const { condition, customAllowedValues, customAutoValue } = schema.getField(
+      props.name,
+    );
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
-    let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
-      allowedValues,
-      customAllowedValues,
-      field,
-      fieldType,
-    }));
+    let [{ Component, type, props: additionalProps = {} }] = useState(
+      determineComponentFromProps({
+        allowedValues,
+        customAllowedValues,
+        field,
+        fieldType,
+      }),
+    );
 
     Component = Component || AutoField;
 
@@ -156,17 +160,21 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     }
 
     // Don't recalculate these
-    const [label] = useState(getLabel({
-      ...props,
-      ...additionalProps,
-      intlPrefix,
-      label: labels[props.name],
-    }));
-    const [placeholder] = useState(getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }));
+    const [label] = useState(
+      getLabel({
+        ...props,
+        ...additionalProps,
+        intlPrefix,
+        label: labels[props.name],
+      }),
+    );
+    const [placeholder] = useState(
+      getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
+    );
 
     if (
-      typeof condition === 'function'
-      && !condition(model, props.parent && Number(props.parent.name.slice(-1)))
+      typeof condition === 'function' &&
+      !condition(model, props.parent && Number(props.parent.name.slice(-1)))
     ) {
       return nothing;
     }

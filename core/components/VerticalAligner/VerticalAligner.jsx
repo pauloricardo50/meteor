@@ -8,7 +8,7 @@ type VerticalAlignerProps = {
   defaultMargin?: Number,
 };
 
-const getOffset = (el) => {
+const getOffset = el => {
   let _y = 0;
   while (el && !Number.isNaN(el.offsetLeft) && !Number.isNaN(el.offsetTop)) {
     _y += el.offsetTop - el.scrollTop;
@@ -17,15 +17,15 @@ const getOffset = (el) => {
   return _y;
 };
 
-const resetMargins = (nodes) => {
-  nodes.forEach((node) => {
+const resetMargins = nodes => {
+  nodes.forEach(node => {
     //   Reset all margins before processing
     // node.style.marginTop = `0px !important`;
     node.style.setProperty('margin-top', '0px', 'important');
   });
 };
 
-const skipUpdate = (updateList) => {
+const skipUpdate = updateList => {
   if (updateList.length > 1) {
     return false;
   }
@@ -48,7 +48,7 @@ const setMargin = (node, margin) => {
   node.style.setProperty('margin-top', `${margin}px`);
 };
 
-const makeUpdateMargins = (target, defaultMargin = 0) => (updatelist) => {
+const makeUpdateMargins = (target, defaultMargin = 0) => updatelist => {
   if (updatelist && skipUpdate(updatelist)) {
     return;
   }
@@ -59,10 +59,11 @@ const makeUpdateMargins = (target, defaultMargin = 0) => (updatelist) => {
 
   resetMargins(nodes);
 
-  nodes.forEach((node) => {
+  nodes.forEach(node => {
     const { classList } = node;
     const verticalAlignerClass = [...classList].find(className =>
-      className.includes('v-align'));
+      className.includes('v-align'),
+    );
 
     if (processedClasses.includes(verticalAlignerClass)) {
       // Don't process the same nodes twice
@@ -71,7 +72,9 @@ const makeUpdateMargins = (target, defaultMargin = 0) => (updatelist) => {
 
     processedClasses.push(verticalAlignerClass);
 
-    const nodePairs = Array.from(document.getElementsByClassName(verticalAlignerClass));
+    const nodePairs = Array.from(
+      document.getElementsByClassName(verticalAlignerClass),
+    );
 
     if (nodePairs.length <= 1) {
       setMargin(nodePairs[0], defaultMargin);
@@ -87,9 +90,9 @@ const makeUpdateMargins = (target, defaultMargin = 0) => (updatelist) => {
   });
 };
 
-const pollForChild = (className) => {
+const pollForChild = className => {
   let interval;
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     interval = setInterval(() => {
       const elements = document.getElementsByClassName(className);
 
@@ -108,7 +111,8 @@ class VerticalAligner extends Component<VerticalAlignerProps> {
     const elements = await pollForChild(className);
     const target = `[class*='${id}']`;
 
-    const MutObserver = window.MutationObserver || window.WebKitMutationObserver;
+    const MutObserver =
+      window.MutationObserver || window.WebKitMutationObserver;
 
     if (!MutObserver) {
       return;
@@ -118,7 +122,7 @@ class VerticalAligner extends Component<VerticalAlignerProps> {
     updateFunc();
 
     this.observer = new MutObserver(updateFunc);
-    elements.forEach((element) => {
+    elements.forEach(element => {
       this.observer.observe(element, { childList: true, subtree: true });
     });
   }
@@ -137,7 +141,8 @@ class VerticalAligner extends Component<VerticalAlignerProps> {
   render() {
     const { children } = this.props;
     const mappedChildren = React.Children.map(children, child =>
-      React.cloneElement(child, { className: this.getClassName() }));
+      React.cloneElement(child, { className: this.getClassName() }),
+    );
     return mappedChildren;
   }
 }

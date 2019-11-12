@@ -72,7 +72,8 @@ describe('LenderRulesService', () => {
         LenderRulesService.update({
           lenderRulesId: '',
           object: { filter: 'stuff' },
-        })).to.throw('can not');
+        }),
+      ).to.throw('can not');
     });
 
     it('unsets expensesSubtractFromIncome if it is set to an empty array', () => {
@@ -87,7 +88,9 @@ describe('LenderRulesService', () => {
         object: { expensesSubtractFromIncome: [] },
       });
 
-      expect(LenderRulesService.get('rulesId').expensesSubtractFromIncome).to.equal(undefined);
+      expect(
+        LenderRulesService.get('rulesId').expensesSubtractFromIncome,
+      ).to.equal(undefined);
     });
   });
 
@@ -129,7 +132,8 @@ describe('LenderRulesService', () => {
       })._id;
 
       expect(() =>
-        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } })).to.throw('ordre des filtres');
+        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } }),
+      ).to.throw('ordre des filtres');
     });
 
     it("throws if lenderRules don't belong to the same org", () => {
@@ -144,7 +148,8 @@ describe('LenderRulesService', () => {
       })._id;
 
       expect(() =>
-        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } })).to.throw('même organisation');
+        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } }),
+      ).to.throw('même organisation');
     });
   });
 });

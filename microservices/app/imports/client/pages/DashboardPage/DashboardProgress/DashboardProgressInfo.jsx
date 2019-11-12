@@ -15,7 +15,7 @@ type DashboardProgressInfoProps = {
   loan: Object,
 };
 
-const getTodos = (loan) => {
+const getTodos = loan => {
   let list = defaultTodoList;
 
   if (loan.hasPromotion) {
@@ -41,7 +41,7 @@ const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
 
   return (
     <div className="dashboard-progress-info">
-      {todos.map((todo) => {
+      {todos.map(todo => {
         const { id, link, isDone, Component } = todo;
         const WrapperComponent = link && !isDone ? Link : 'div';
         return (

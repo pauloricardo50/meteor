@@ -24,7 +24,7 @@ exposeQuery({
     firewall(userId) {},
     embody(body) {
       body.$postFilter = (rates = []) =>
-        rates.map((rate) => {
+        rates.map(rate => {
           const { _id, date } = rate;
           return Object.values(INTEREST_RATES).reduce(
             (formattedRate, key) => ({

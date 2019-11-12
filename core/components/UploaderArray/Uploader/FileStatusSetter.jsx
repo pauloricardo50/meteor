@@ -57,21 +57,25 @@ const FileStatusSetter = ({
             return setFileStatus(stat);
           }
 
-          openModal(<DialogForm
-            schema={
-              new SimpleSchema({
-                error: { type: String, optional: true },
-              })
-            }
-            model={{ error: currentError }}
-            title="Fichier non valide"
-            description="Entrez la raison"
-            className="animated fadeIn"
-            important
-            onSubmit={({ error }) => setFileError
-              .run({ fileKey, error })
-              .then(() => setFileStatus(stat))}
-          />);
+          openModal(
+            <DialogForm
+              schema={
+                new SimpleSchema({
+                  error: { type: String, optional: true },
+                })
+              }
+              model={{ error: currentError }}
+              title="Fichier non valide"
+              description="Entrez la raison"
+              className="animated fadeIn"
+              important
+              onSubmit={({ error }) =>
+                setFileError
+                  .run({ fileKey, error })
+                  .then(() => setFileStatus(stat))
+              }
+            />,
+          );
         },
       }))}
     />

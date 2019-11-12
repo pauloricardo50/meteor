@@ -51,7 +51,7 @@ class SearchResults extends Component {
     const f = this.props.intl.formatMessage;
     const intlValues = { verticalSpace: ' ' };
 
-    return Object.keys(generalTooltips).map((match) => {
+    return Object.keys(generalTooltips).map(match => {
       const tooltipId = generalTooltips[match].id;
       const tooltip = {
         id: tooltipId,
@@ -72,7 +72,9 @@ class SearchResults extends Component {
     const results = this.search.search(search);
 
     if (showId) {
-      const selectedResult = this.tooltips.filter((result) => result.id === showId)[0];
+      const selectedResult = this.tooltips.filter(
+        result => result.id === showId,
+      )[0];
       return (
         <div className="flex-col" style={styles.selected}>
           <h3>{selectedResult.tooltipMatch}</h3>
@@ -92,7 +94,7 @@ class SearchResults extends Component {
     if (search === '') {
       return (
         <List style={styles.list}>
-          {this.tooltips.map((result) => (
+          {this.tooltips.map(result => (
             <ListItem
               button
               divider
@@ -121,7 +123,7 @@ class SearchResults extends Component {
 
     return (
       <List style={styles.list}>
-        {results.map((result) => (
+        {results.map(result => (
           <ListItem
             button
             divider

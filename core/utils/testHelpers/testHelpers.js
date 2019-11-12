@@ -15,7 +15,7 @@ import { ROLES } from '../../api/constants';
  *
  * @return {string} the generated login token
  */
-export const createLoginToken = (userId) => {
+export const createLoginToken = userId => {
   const loginToken = Random.id();
   const hashedToken = Accounts._hashLoginToken(loginToken);
 
@@ -77,11 +77,14 @@ export const userLogin = ({ email, password, role }) => {
         password: userPassword,
         role: role || ROLES.USER,
       })
-      .then(user =>
-        new Promise((resolve, reject) => {
-          Meteor.loginWithPassword({ id: user._id }, userPassword, err =>
-            (err ? reject(err) : resolve(user)));
-        }));
+      .then(
+        user =>
+          new Promise((resolve, reject) => {
+            Meteor.loginWithPassword({ id: user._id }, userPassword, err =>
+              err ? reject(err) : resolve(user),
+            );
+          }),
+      );
   }
 };
 
@@ -109,5 +112,6 @@ export const checkEmails = (expected, options = {}) =>
 export const resetDatabase = () =>
   new Promise((resolve, reject) => {
     Meteor.call('resetDatabase', (err, res) =>
-      (err ? reject(err) : resolve(res)));
+      err ? reject(err) : resolve(res),
+    );
   });

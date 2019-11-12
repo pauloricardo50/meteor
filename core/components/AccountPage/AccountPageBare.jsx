@@ -26,9 +26,7 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
             <T id="AccountPage.email" />
           </h4>
           <span className="secondary">
-            {email}
-            {' '}
-            <EmailModifier userId={userId} email={email} />
+            {email} <EmailModifier userId={userId} email={email} />
           </span>
         </div>
         {phoneNumbers && phoneNumbers.length > 0 && (

@@ -9,8 +9,10 @@ const makeTableContent = (leftRows, rightRows) => {
   const lines = Math.max(rightRows.length, leftRows.length);
 
   return [...Array(lines)].map((_, index) => {
-    const { label: leftLabel, value: leftValue, money: leftMoney = true } = leftRows[index] || {};
-    const { label: rightLabel, value: rightValue, money: rightMoney = true } = rightRows[index] || {};
+    const { label: leftLabel, value: leftValue, money: leftMoney = true } =
+      leftRows[index] || {};
+    const { label: rightLabel, value: rightValue, money: rightMoney = true } =
+      rightRows[index] || {};
 
     return (
       <tr key={index} className={classes[ROW_TYPES.REGULAR]}>

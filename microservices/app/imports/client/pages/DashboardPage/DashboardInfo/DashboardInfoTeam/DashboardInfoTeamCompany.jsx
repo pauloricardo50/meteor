@@ -35,7 +35,7 @@ const DashboardInfoTeamCompany = ({ assignedEmployee, hasPromotion }) => {
   const team = getTeam(assignedEmployee, hasPromotion);
 
   return (
-    <React.Fragment>
+    <>
       {removeDuplicates(team, 'email').map(teamMember => (
         <DashboardInfoTeamMember
           {...teamMember}
@@ -44,7 +44,7 @@ const DashboardInfoTeamCompany = ({ assignedEmployee, hasPromotion }) => {
           src={teamMember.src || '/img/placeholder.png'}
         />
       ))}
-    </React.Fragment>
+    </>
   );
 };
 

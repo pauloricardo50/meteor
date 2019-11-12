@@ -107,7 +107,7 @@ describe('Admin Pages', () => {
     cy.initiateTest();
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');
-    cy.callMethod('getAdminEndToEndTestData').then((data) => {
+    cy.callMethod('getAdminEndToEndTestData').then(data => {
       testData = data;
     });
   });

@@ -2,7 +2,9 @@ import { Mongo } from 'meteor/mongo';
 import * as propertyConstants from './propertyConstants';
 import PropertySchema from './schemas/PropertySchema';
 
-const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
+const Properties = new Mongo.Collection(
+  propertyConstants.PROPERTIES_COLLECTION,
+);
 
 // Prevent all client side modifications of mongoDB
 Properties.deny({

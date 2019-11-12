@@ -30,6 +30,7 @@ import {
 ServerEventService.addAfterMethodListener(
   [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
   async ({ context, params, result, config: { name: methodName } }) => {
+    context.unblock();
     let userId;
     let isNewUser = false;
 
@@ -82,6 +83,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   loanSetStatus,
   ({ context, result: { prevStatus, nextStatus }, params: { loanId } }) => {
+    context.unblock();
     const { userId: adminId } = context;
     let referredByOrganisation;
     let referredByUser;
@@ -118,7 +120,8 @@ ServerEventService.addAfterMethodListener(
       });
       assigneeId = user.assignedEmployee && user.assignedEmployee._id;
       assigneeName = user.assignedEmployee && user.assignedEmployee.name;
-      referredByOrganisation = user.referredByOrganisation && user.referredByOrganisation.name;
+      referredByOrganisation =
+        user.referredByOrganisation && user.referredByOrganisation.name;
       referredByUser = user.referredByUser && user.referredByUser.name;
       customerName = user.name;
     }
@@ -148,6 +151,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   followImpersonatedSession,
   ({ context, params: { connectionId } }) => {
+    context.unblock();
     const { impersonatingAdmin: admin } = SessionService.fetchOne({
       $filters: { connectionId },
       impersonatingAdmin: { name: 1 },
@@ -162,6 +166,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(analyticsLogin, ({ context }) => {
+  context.unblock();
   const analytics = new Analytics(context);
   analytics.identify();
   analytics.track(EVENTS.USER_LOGGED_IN);
@@ -170,6 +175,7 @@ ServerEventService.addAfterMethodListener(analyticsLogin, ({ context }) => {
 ServerEventService.addAfterMethodListener(
   analyticsPage,
   ({ context, params }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     analytics.page(params);
   },
@@ -178,6 +184,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   analyticsVerifyEmail,
   ({ context, params: { trackingId } }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     analytics.identify(trackingId);
     analytics.track(EVENTS.USER_VERIFIED_EMAIL);
@@ -187,6 +194,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   analyticsCTA,
   ({ context, params }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     analytics.cta(params);
   },
@@ -195,6 +203,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   setMaxPropertyValueWithoutBorrowRatio,
   ({ context, params }) => {
+    context.unblock();
     const analytics = new Analytics(context);
 
     const { loanId } = params;
@@ -245,7 +254,9 @@ ServerEventService.addAfterMethodListener(
 
     let property = {};
     if (hasProProperty) {
-      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+      property = properties.find(
+        ({ category }) => category === PROPERTY_CATEGORY.PRO,
+      );
     }
 
     let promotion = {};
@@ -283,6 +294,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   loanInsertBorrowers,
   ({ context, params }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     const { loanId, amount } = params;
 
@@ -307,7 +319,9 @@ ServerEventService.addAfterMethodListener(
 
     let property = {};
     if (hasProProperty) {
-      property = properties.find(({ category }) => category === PROPERTY_CATEGORY.PRO);
+      property = properties.find(
+        ({ category }) => category === PROPERTY_CATEGORY.PRO,
+      );
     }
 
     let promotion = {};
@@ -335,6 +349,7 @@ ServerEventService.addAfterMethodListener(
     params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     const { name: loanName } = LoanService.fetchOne({
       $filters: { _id: loanId },
@@ -357,6 +372,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
   ({ context, params: { trackingId, loanId, ctaId }, result: userId }) => {
+    context.unblock();
     const analytics = new Analytics({ ...context, userId });
 
     const user = UserService.fetchOne({
@@ -406,6 +422,7 @@ ServerEventService.addAfterMethodListener(
     params: { user, propertyIds = [], promotionIds = [], properties = [] },
     result: { userId: customerId },
   }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     const { userId } = context;
     const {
@@ -420,11 +437,14 @@ ServerEventService.addAfterMethodListener(
       $filters: { _id: userId },
       name: 1,
     });
-    const { name: org, _id: orgId } = UserService.getUserMainOrganisation(userId);
+    const { name: org, _id: orgId } = UserService.getUserMainOrganisation(
+      userId,
+    );
 
-    const referOnly = propertyIds.length === 0
-      && promotionIds.length === 0
-      && properties.length === 0;
+    const referOnly =
+      propertyIds.length === 0 &&
+      promotionIds.length === 0 &&
+      properties.length === 0;
 
     const sharedEventProperties = {
       customerId,
@@ -444,50 +464,56 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (propertyIds.length) {
-      await Promise.all(propertyIds.map((propertyId) => {
-        const { address } = PropertyService.fetchOne({
-          $filters: { _id: propertyId },
-          address: 1,
-        });
+      await Promise.all(
+        propertyIds.map(propertyId => {
+          const { address } = PropertyService.fetchOne({
+            $filters: { _id: propertyId },
+            address: 1,
+          });
 
-        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-          ...sharedEventProperties,
-          propertyId,
-          propertyAddress: address,
-        });
-      }));
+          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+            ...sharedEventProperties,
+            propertyId,
+            propertyAddress: address,
+          });
+        }),
+      );
     }
 
     if (promotionIds.length) {
-      await Promise.all(promotionIds.map((promotionId) => {
-        const { name } = PromotionService.fetchOne({
-          $filters: { _id: promotionId },
-          name: 1,
-        });
+      await Promise.all(
+        promotionIds.map(promotionId => {
+          const { name } = PromotionService.fetchOne({
+            $filters: { _id: promotionId },
+            name: 1,
+          });
 
-        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-          ...sharedEventProperties,
-          promotionId,
-          promotionName: name,
-          promotionLotIds,
-          showAllLots,
-        });
-      }));
+          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+            ...sharedEventProperties,
+            promotionId,
+            promotionName: name,
+            promotionLotIds,
+            showAllLots,
+          });
+        }),
+      );
     }
 
     if (properties.length) {
-      await Promise.all(properties.map((property) => {
-        const { address, _id: propertyId } = PropertyService.fetchOne({
-          $filters: { externalId: property.externalId },
-          address: 1,
-        });
+      await Promise.all(
+        properties.map(property => {
+          const { address, _id: propertyId } = PropertyService.fetchOne({
+            $filters: { externalId: property.externalId },
+            address: 1,
+          });
 
-        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-          ...sharedEventProperties,
-          propertyId,
-          propertyAddress: address,
-        });
-      }));
+          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+            ...sharedEventProperties,
+            propertyId,
+            propertyAddress: address,
+          });
+        }),
+      );
     }
   },
 );
@@ -495,6 +521,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   adminCreateUser,
   ({ context, result: userId }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     const { userId: adminId } = context;
 
@@ -505,6 +532,7 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   proInviteUserToOrganisation,
   ({ context, result: userId }) => {
+    context.unblock();
     const analytics = new Analytics(context);
     const { userId: proId } = context;
 

@@ -16,18 +16,18 @@ const TranchePickerContainer = compose(
       setValue: ({ tranches }) => (type, value) => ({
         tranches: tranches.reduce(
           (acc, tranche) =>
-            (tranche.type === type
+            tranche.type === type
               ? [...acc, { ...tranche, value }]
-              : [...acc, tranche]),
+              : [...acc, tranche],
           [],
         ),
       }),
       setType: ({ tranches }) => (oldType, newType) => ({
         tranches: tranches.reduce(
           (acc, tranche) =>
-            (tranche.type === oldType
+            tranche.type === oldType
               ? [...acc, { ...tranche, type: newType }]
-              : [...acc, tranche]),
+              : [...acc, tranche],
           [],
         ),
       }),

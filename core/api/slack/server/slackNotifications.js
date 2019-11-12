@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import SlackService from './SlackService';
 
 export const referralOnlyNotification = ({ currentUser, user }) => {
@@ -94,18 +93,6 @@ export const updateWatcherNotification = ({
     message,
   });
 };
-
-// export const newAnonymousLoan = ({ loanName, loanId, property, referral }) => {
-//   SlackService.notifyAssignee({
-//     title: `Nouveau dossier anonyme: ${loanName}`,
-//     link: `${Meteor.settings.public.subdomains.admin}/loans/${loanId}`,
-//     message: property
-//       ? `Pour le bien immo ${property.address1} ${
-//         referral ? `de ${getUserNameAndOrganisation({ user: referral })}` : ''
-//       }`
-//       : '',
-//   });
-// };
 
 export const newLoan = ({ loanId, loanName, currentUser }) => {
   SlackService.notifyAssignee({

@@ -24,7 +24,7 @@ const getPledgedAmount = ({ structure: { ownFunds } }) =>
     .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
-export const calculateLoan = (params) => {
+export const calculateLoan = params => {
   const {
     structure: { wantedLoan },
   } = params;

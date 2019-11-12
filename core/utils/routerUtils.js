@@ -1,7 +1,7 @@
 // @flow
 import queryString from 'query-string';
 
-const formatReplacerObject = (replacers) =>
+const formatReplacerObject = replacers =>
   Object.keys(replacers).reduce(
     (obj, key) => ({
       ...obj,

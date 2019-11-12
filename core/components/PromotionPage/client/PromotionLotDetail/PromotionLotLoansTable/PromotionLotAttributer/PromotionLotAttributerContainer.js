@@ -23,10 +23,12 @@ const makePermissions = ({ currentUser, promotion, customerOwnerType }) => ({
   }),
 });
 
-export default withProps(({ promotionLotId, loanId, promotion, currentUser, customerOwnerType }) => ({
-  ...makePermissions({ currentUser, promotion, customerOwnerType }),
-  bookPromotionLot: () => bookPromotionLot.run({ promotionLotId, loanId }),
-  cancelPromotionLotBooking: () =>
-    cancelPromotionLotBooking.run({ promotionLotId }),
-  sellPromotionLot: () => sellPromotionLot.run({ promotionLotId }),
-}));
+export default withProps(
+  ({ promotionLotId, loanId, promotion, currentUser, customerOwnerType }) => ({
+    ...makePermissions({ currentUser, promotion, customerOwnerType }),
+    bookPromotionLot: () => bookPromotionLot.run({ promotionLotId, loanId }),
+    cancelPromotionLotBooking: () =>
+      cancelPromotionLotBooking.run({ promotionLotId }),
+    sellPromotionLot: () => sellPromotionLot.run({ promotionLotId }),
+  }),
+);

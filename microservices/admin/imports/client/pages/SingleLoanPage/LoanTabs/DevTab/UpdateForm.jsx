@@ -9,7 +9,7 @@ const UpdateForm = ({ id, collection }: UpdateFormProps) => {
   const [$unset, setUnset] = useState('');
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={e => {
         e.preventDefault();
         if ($set) {
           updateDocument

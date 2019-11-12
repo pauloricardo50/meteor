@@ -25,14 +25,14 @@ const schema = PromotionSchema.pick(
         <h4>
           {signingDate && constructionTimeline.length > 0
             ? moment(signingDate)
-              .add(
-                constructionTimeline.reduce(
-                  (tot, { duration }) => tot + duration,
-                  0,
-                ),
-                'M',
-              )
-              .format('MMMM YYYY')
+                .add(
+                  constructionTimeline.reduce(
+                    (tot, { duration }) => tot + duration,
+                    0,
+                  ),
+                  'M',
+                )
+                .format('MMMM YYYY')
             : '-'}
         </h4>
       </div>
@@ -53,8 +53,8 @@ const PromotionTimelineForm = ({
       <PromotionTimelinePicker
         handleOpen={handleOpen}
         hasTimeline={
-          promotion.constructionTimeline
-          && promotion.constructionTimeline.length > 0
+          promotion.constructionTimeline &&
+          promotion.constructionTimeline.length > 0
         }
         promotionId={promotion._id}
       />

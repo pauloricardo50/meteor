@@ -41,7 +41,7 @@ exposeQuery({
     firewall(userId, { _id, promotionId }) {
       promotionLotSecurity({ _id, userId, promotionId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { promotionId, status } }) => {
         promotionLotFilters({ filters, promotionId, status });
       };
@@ -61,7 +61,7 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
       promotionLotSecurity({ _id, userId, promotionId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { _id, promotionId, status } }) => {
         promotionLotFilters({ filters, promotionId, status });
       };

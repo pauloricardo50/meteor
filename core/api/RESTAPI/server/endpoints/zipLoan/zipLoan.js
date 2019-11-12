@@ -27,7 +27,8 @@ export const getFileName = ({
   const { extension, documentId } = FileService.getKeyParts(Key);
   const fileName = name.split('.').slice(0, -1)[0];
 
-  const { label } = additionalDocuments.find(({ id }) => id === documentId) || {};
+  const { label } =
+    additionalDocuments.find(({ id }) => id === documentId) || {};
 
   const { packFiles } = options;
 
@@ -48,12 +49,13 @@ export const getFileName = ({
     return `${root}${binPath}${prefix}${adminName}.${extension}`;
   }
 
-  const suffix = total > 1 && documentId !== DOCUMENTS.OTHER
-    ? ` (${index + 1} sur ${total})`
-    : '';
+  const suffix =
+    total > 1 && documentId !== DOCUMENTS.OTHER
+      ? ` (${index + 1} sur ${total})`
+      : '';
 
-  return documentId === DOCUMENTS.OTHER
-    || !Object.keys(DOCUMENTS_CATEGORIES)
+  return documentId === DOCUMENTS.OTHER ||
+    !Object.keys(DOCUMENTS_CATEGORIES)
       .reduce(
         (allCategories, cat) => [
           ...allCategories,
@@ -64,8 +66,8 @@ export const getFileName = ({
       .includes(documentId)
     ? `${root}${binPath}${prefix}${fileName}${suffix}.${extension}`
     : `${root}${binPath}${prefix}${Intl.formatMessage({
-      id: `files.${documentId}`,
-    })}${suffix}.${extension}`;
+        id: `files.${documentId}`,
+      })}${suffix}.${extension}`;
 };
 
 const makeFormatFileName = ({
@@ -169,7 +171,8 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
       root: ({ name }) => `${name}/`,
       prefix: ({ firstName, lastName }) =>
         `${firstName.toUpperCase()[0]}${lastName.toUpperCase()[0]} `,
-    }));
+    }),
+  );
 
   if (!hasPromotion) {
     // Zip property files
@@ -218,7 +221,7 @@ const zipLoan = ({
 
     return Promise.resolve();
   })
-    .catch((error) => {
+    .catch(error => {
       throw error;
     })
     .then(() => RESPONSE_ALREADY_SENT);

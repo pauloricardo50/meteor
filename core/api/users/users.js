@@ -3,9 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
-import {
-  autoValueSentenceCase,
-} from '../helpers/sharedSchemaValues';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 
 export const UserSchema = new SimpleSchema({
   username: {

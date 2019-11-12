@@ -14,26 +14,26 @@ import {
   getPremiumArray,
 } from './recapArrays';
 
-const arraySwitch = (props) => {
+const arraySwitch = props => {
   switch (props.arrayName) {
-  case 'start1':
-    return null;
-  case 'dashboard':
-    return getDashboardArray(props);
-  case 'borrower':
-    return getBorrowerArray(props);
-  case 'structure':
-    return getStructureArray(props);
-  case 'property':
-    return getPropertyArray(props);
-  case 'notaryFees':
-    return getNotaryFeesArray(props);
-  case 'premium':
-    return getPremiumArray(props);
-  case 'custom':
-    return props.recapArray;
-  default:
-    throw new Meteor.Error('Not a valid recap array');
+    case 'start1':
+      return null;
+    case 'dashboard':
+      return getDashboardArray(props);
+    case 'borrower':
+      return getBorrowerArray(props);
+    case 'structure':
+      return getStructureArray(props);
+    case 'property':
+      return getPropertyArray(props);
+    case 'notaryFees':
+      return getNotaryFeesArray(props);
+    case 'premium':
+      return getPremiumArray(props);
+    case 'custom':
+      return props.recapArray;
+    default:
+      throw new Meteor.Error('Not a valid recap array');
   }
 };
 

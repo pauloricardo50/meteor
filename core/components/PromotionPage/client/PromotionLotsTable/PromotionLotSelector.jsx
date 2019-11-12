@@ -15,7 +15,7 @@ export const PromotionLotSelector = ({
   disabled,
 }: PromotionLotSelectorProps) => (
   <Checkbox
-    onChange={(event) => {
+    onChange={event => {
       event.preventDefault();
       event.stopPropagation();
       onChange();
@@ -30,7 +30,8 @@ export default compose(
   withState('isLoading', 'setLoading', false),
   withProps(({ promotionLotId, promotionOptions, setLoading, loanId }) => {
     const promotionOption = promotionOptions.find(({ promotionLots }) =>
-      promotionLots.find(({ _id }) => _id === promotionLotId));
+      promotionLots.find(({ _id }) => _id === promotionLotId),
+    );
 
     return {
       promotionLotIsSelected: !!promotionOption,

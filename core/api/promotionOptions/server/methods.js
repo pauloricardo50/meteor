@@ -17,15 +17,19 @@ promotionOptionInsert.setHandler(({ userId }, params) => {
 
 promotionOptionUpdate.setHandler(({ userId }, params) =>
   // TODO: Security check
-  PromotionOptionService.update(params));
+  PromotionOptionService.update(params),
+);
 
 promotionOptionRemove.setHandler(({ userId }, params) =>
-// TODO: Security check
+  // TODO: Security check
 
-  PromotionOptionService.remove(params));
+  PromotionOptionService.remove(params),
+);
 
 increaseOptionPriority.setHandler((context, params) =>
-  PromotionOptionService.increasePriorityOrder(params));
+  PromotionOptionService.increasePriorityOrder(params),
+);
 
 reducePriorityOrder.setHandler((context, params) =>
-  PromotionOptionService.reducePriorityOrder(params));
+  PromotionOptionService.reducePriorityOrder(params),
+);

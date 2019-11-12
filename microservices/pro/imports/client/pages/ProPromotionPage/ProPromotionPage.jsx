@@ -35,8 +35,9 @@ const getEnableNotifications = ({
   currentUser: { _id: userId },
 }) => {
   const { userLinks = [], users = [] } = promotion;
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId);
 
   return user.enableNotifications || user.$metadata.enableNotifications;
 };

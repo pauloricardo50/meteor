@@ -26,7 +26,7 @@ export default class CronitorService {
     return this.getWithTimeout({ url });
   };
 
-  complete = (msg) => {
+  complete = msg => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.COMPLETE });
     if (msg) {
       if (!urlObj.qs) {
@@ -39,14 +39,14 @@ export default class CronitorService {
     return this.getWithTimeout({ url });
   };
 
-  pause = (hours) => {
+  pause = hours => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.PAUSE });
     urlObj.basePath = `${urlObj.basePath}/${hours}`;
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
   };
 
-  fail = (msg) => {
+  fail = msg => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.FAIL });
     if (msg) {
       if (!urlObj.qs) {
@@ -76,12 +76,12 @@ export default class CronitorService {
     urlObj.basePath + (urlObj.qs ? `?${queryString.stringify(urlObj.qs)}` : '');
 
   getWithTimeout = ({ url }) => {
-    const promise = new Promise((resolve) => {
+    const promise = new Promise(resolve => {
       https
-        .get(url, (response) => {
+        .get(url, response => {
           let data = '';
 
-          response.on('data', (chunk) => {
+          response.on('data', chunk => {
             data += chunk;
           });
 
@@ -89,7 +89,7 @@ export default class CronitorService {
             resolve(data);
           });
         })
-        .on('error', (error) => {
+        .on('error', error => {
           SlackService.sendError({
             error,
             additionalData: [`${this.name} CRON error`],
@@ -101,9 +101,10 @@ export default class CronitorService {
     const timeout = new Promise(resolve =>
       Meteor.setTimeout(() => {
         resolve('timeout');
-      }, REQ_TIMEOUT));
+      }, REQ_TIMEOUT),
+    );
 
-    return Promise.race([promise, timeout]).then((result) => {
+    return Promise.race([promise, timeout]).then(result => {
       if (result === 'timeout') {
         throw new Meteor.Error(`${this.name} CRON timed out`);
       }

@@ -13,32 +13,32 @@ import { adminUsers } from 'core/api/users/queries';
 
 const PAGINATION_AMOUNT = 10;
 
-const getQuery = (collectionName) => {
+const getQuery = collectionName => {
   switch (collectionName) {
-  case LOANS_COLLECTION:
-    return {
-      query: adminLoans,
-      body: {
-        structure: 1,
-        name: 1,
-        status: 1,
-        user: { name: 1 },
-        anonymous: 1,
-      },
-    };
-  case USERS_COLLECTION:
-    return { query: adminUsers, body: { name: 1, roles: 1 } };
-  case PROMOTIONS_COLLECTION:
-    return {
-      query: adminPromotions,
-      body: { name: 1, status: 1, city: 1, canton: 1 },
-    };
-  default:
-    return null;
+    case LOANS_COLLECTION:
+      return {
+        query: adminLoans,
+        body: {
+          structure: 1,
+          name: 1,
+          status: 1,
+          user: { name: 1 },
+          anonymous: 1,
+        },
+      };
+    case USERS_COLLECTION:
+      return { query: adminUsers, body: { name: 1, roles: 1 } };
+    case PROMOTIONS_COLLECTION:
+      return {
+        query: adminPromotions,
+        body: { name: 1, status: 1, city: 1, canton: 1 },
+      };
+    default:
+      return null;
   }
 };
 
-const applyFilters = (filterOptions) => {
+const applyFilters = filterOptions => {
   if (Object.keys(filterOptions).length === 0) {
     return {};
   }
@@ -46,7 +46,7 @@ const applyFilters = (filterOptions) => {
   return filterOptions;
 };
 
-const setTotalCount = (props) => {
+const setTotalCount = props => {
   const { collectionName, updateTotalCount, filterOptions } = props;
   getQuery(collectionName)
     .query.clone({ ...applyFilters(filterOptions) })
@@ -72,7 +72,8 @@ export const withSetTotalCountLifecycle = lifecycle({
     filters: prevFilters,
   }) {
     const { collectionName, filters } = this.props;
-    const shouldSetTotalCount = collectionName !== prevCollectionName || prevFilters !== filters;
+    const shouldSetTotalCount =
+      collectionName !== prevCollectionName || prevFilters !== filters;
 
     if (shouldSetTotalCount) {
       setTotalCount(this.props);

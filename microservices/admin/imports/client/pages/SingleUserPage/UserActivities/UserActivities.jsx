@@ -22,7 +22,7 @@ const UserActivities = ({ activities = [] }: UserActivitiesProps) => {
       <Timeline
         variant="horizontal"
         className="user-activities-timeline"
-        events={activities.map((activity) => {
+        events={activities.map(activity => {
           const { title, date } = activity;
           return {
             mainLabel: (

@@ -8,7 +8,7 @@ import Calculator from '../../../../../../utils/Calculator';
 
 type PdfGoogleMapProps = {};
 
-const makeGoogleMapsUrl = (property) => {
+const makeGoogleMapsUrl = property => {
   const { address1, city } = property;
 
   const place = `${address1}, ${city}`;

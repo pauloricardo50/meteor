@@ -18,7 +18,7 @@ exposeQuery({
   query: adminPromotions,
   options: { allowFilterById: true },
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { _id, hasTimeline, status } }) => {
         if (hasTimeline) {
           filters['constructionTimeline.0'] = { $exists: true };
@@ -42,7 +42,7 @@ exposeQuery({
     firewall(userId, { promotionId }) {
       SecurityService.promotions.hasAccessToPromotion({ promotionId, userId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters._id = params.promotionId;
         filters.status = PROMOTION_STATUS.OPEN;
@@ -55,7 +55,7 @@ exposeQuery({
 exposeQuery({
   query: promotionSearch,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         Object.assign(
           filters,
@@ -103,10 +103,12 @@ exposeQuery({
           return promotions;
         }
 
-        return promotions.map((promotion) => {
+        return promotions.map(promotion => {
           const { promotionLots = [], ...rest } = promotion;
           return {
-            promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
+            promotionLots: promotionLots.map(
+              makePromotionLotAnonymizer({ userId }),
+            ),
             ...rest,
           };
         });
@@ -126,7 +128,7 @@ exposeQuery({
     firewall(userId, { _id: promotionId }) {
       SecurityService.promotions.hasAccessToPromotion({ promotionId, userId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { promotionId } }) => {
         filters._id = promotionId;
       };

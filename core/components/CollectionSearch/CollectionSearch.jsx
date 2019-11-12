@@ -72,8 +72,8 @@ const CollectionSearch = ({
           onClickAway={() => {
             // When clicking back in the input, don't hide the results
             if (
-              document.activeElement.getAttribute('name')
-              !== 'collection-search'
+              document.activeElement.getAttribute('name') !==
+              'collection-search'
             ) {
               hideResults();
             }
@@ -86,7 +86,9 @@ const CollectionSearch = ({
               <MenuItem>Aucun résultat</MenuItem>
             ) : (
               <MenuList>
-                {results.map(renderResult(renderItem, onClickItem, hideResults))}
+                {results.map(
+                  renderResult(renderItem, onClickItem, hideResults),
+                )}
               </MenuList>
             )}
           </Paper>

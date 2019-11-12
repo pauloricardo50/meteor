@@ -22,7 +22,8 @@ export const defaultOgTags = {
 const MicroserviceHead = ({ addOgTags }: MicroserviceHeadProps) => {
   const title = formatTitle(Meteor.microservice);
   const allowScale = Meteor.microservice !== 'app';
-  const addFacebookData = addOgTags === undefined ? Meteor.microservice !== 'admin' : addOgTags;
+  const addFacebookData =
+    addOgTags === undefined ? Meteor.microservice !== 'admin' : addOgTags;
   const rootUrl = Meteor.settings.public.subdomains[Meteor.microservice] || '';
 
   return (

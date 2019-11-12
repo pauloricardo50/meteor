@@ -3,7 +3,7 @@ import faker from 'faker/locale/fr';
 import BorrowerService from '../api/borrowers/server/BorrowerService';
 import { RESIDENCE_TYPE, OTHER_INCOME, EXPENSES } from '../api/constants';
 
-const insertFakeBorrower = (userId) => {
+const insertFakeBorrower = userId => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
 

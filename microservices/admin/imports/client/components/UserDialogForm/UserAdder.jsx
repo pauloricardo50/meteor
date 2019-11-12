@@ -50,64 +50,69 @@ const UserAdder = ({
 }: UserAdderProps) => (
   <AutoFormDialog
     title={<T id="UserAdder.buttonLabel" />}
-    schema={schema.extend(new SimpleSchema({
-      sendEnrollmentEmail: {
-        type: Boolean,
-        optional: true,
-        defaultValue: false,
-      },
-      referredByUserId: {
-        type: String,
-        optional: true,
-        customAllowedValues: {
-          query: adminUsers,
-          params: () => ({
-            roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
-            $body: {
-              name: 1,
-              organisations: { name: 1 },
-              $options: { sort: { name: 1 } },
-            },
-          }),
-          allowNull: true,
+    schema={schema.extend(
+      new SimpleSchema({
+        sendEnrollmentEmail: {
+          type: Boolean,
+          optional: true,
+          defaultValue: false,
         },
-        uniforms: {
-          transform: (pro) =>
-            (pro ? getUserNameAndOrganisation({ user: pro }) : 'Personne'),
-          labelProps: { shrink: true },
-          label: 'Référé par',
-          placeholder: null,
+        referredByUserId: {
+          type: String,
+          optional: true,
+          customAllowedValues: {
+            query: adminUsers,
+            params: () => ({
+              roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
+              $body: {
+                name: 1,
+                organisations: { name: 1 },
+                $options: { sort: { name: 1 } },
+              },
+            }),
+            allowNull: true,
+          },
+          uniforms: {
+            transform: pro =>
+              pro ? getUserNameAndOrganisation({ user: pro }) : 'Personne',
+            labelProps: { shrink: true },
+            label: 'Référé par',
+            placeholder: null,
+          },
         },
-      },
-      referredByOrganisation: {
-        type: String,
-        optional: true,
-        allowedValues: organisations,
-        uniforms: {
-          transform: (organisation) =>
-            (organisation ? organisation.name : 'Aucune'),
-          labelProps: { shrink: true },
-          label: 'Référé par organisation',
-          placeholder: null,
-        },
-        customAutoValue: (model) => {
-          const { referredByUserId, referredByOrganisation } = model;
-          if (referredByOrganisation) {
-            return referredByOrganisation;
-          }
+        referredByOrganisation: {
+          type: String,
+          optional: true,
+          allowedValues: organisations,
+          uniforms: {
+            transform: organisation =>
+              organisation ? organisation.name : 'Aucune',
+            labelProps: { shrink: true },
+            label: 'Référé par organisation',
+            placeholder: null,
+          },
+          customAutoValue: model => {
+            const { referredByUserId, referredByOrganisation } = model;
+            if (referredByOrganisation) {
+              return referredByOrganisation;
+            }
 
-          if (!referredByUserId) {
-            return null;
-          }
+            if (!referredByUserId) {
+              return null;
+            }
 
-          const org = organisations.find(({ users = [] }) =>
-            users.some(({ _id, $metadata: { isMain } }) =>
-              _id === referredByUserId && isMain));
+            const org = organisations.find(({ users = [] }) =>
+              users.some(
+                ({ _id, $metadata: { isMain } }) =>
+                  _id === referredByUserId && isMain,
+              ),
+            );
 
-          return org;
+            return org;
+          },
         },
-      },
-    }))}
+      }),
+    )}
     model={{ assignedEmployeeId: adminId }}
     onSubmit={createUser}
     buttonProps={{

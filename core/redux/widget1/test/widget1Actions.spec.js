@@ -81,7 +81,7 @@ describe('widget1Actions', () => {
       );
     });
 
-    widget1Constants.ALL_FIELDS.forEach((field) => {
+    widget1Constants.ALL_FIELDS.forEach(field => {
       const cappedFields = widget1Constants.CAPPED_FIELDS;
 
       it(`caps field ${field} at 80% of the property price`, () => {
@@ -168,7 +168,9 @@ describe('widget1Actions', () => {
         type: widget1Types.INCREASE_SLIDER_MAX(NAME),
       };
 
-      expect(widget1Actions.increaseSliderMax(NAME)).to.deep.equal(expectedActions);
+      expect(widget1Actions.increaseSliderMax(NAME)).to.deep.equal(
+        expectedActions,
+      );
     });
   });
 

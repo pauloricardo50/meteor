@@ -8,7 +8,7 @@ const getMenuItems = ({
   loanId,
   promotionId,
 }) =>
-  promotionUsers.map((user) => {
+  promotionUsers.map(user => {
     const { _id } = user;
     const userName = getUserNameAndOrganisation({ user });
     return {
@@ -30,7 +30,9 @@ const getInvitedByName = ({ invitedBy, promotionUsers = [] }) => {
   return user && getUserNameAndOrganisation({ user });
 };
 
-export default withProps(({ promotionUsers, invitedBy, loanId, promotionId }) => ({
-  options: getMenuItems({ promotionUsers, invitedBy, loanId, promotionId }),
-  invitedByName: getInvitedByName({ invitedBy, promotionUsers }),
-}));
+export default withProps(
+  ({ promotionUsers, invitedBy, loanId, promotionId }) => ({
+    options: getMenuItems({ promotionUsers, invitedBy, loanId, promotionId }),
+    invitedByName: getInvitedByName({ invitedBy, promotionUsers }),
+  }),
+);

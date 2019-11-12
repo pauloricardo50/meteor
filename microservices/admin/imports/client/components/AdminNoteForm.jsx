@@ -12,7 +12,7 @@ const styles = {
 };
 
 export default class AdminNoteForm extends Component {
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
 
     console.log('TODO :)');

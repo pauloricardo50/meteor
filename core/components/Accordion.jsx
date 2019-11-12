@@ -68,13 +68,13 @@ export default class Accordion extends Component {
       <div
         className="Accordion-container"
         style={{ ...adjustedStyles, ...this.props.style }}
-        ref={(c) => {
+        ref={c => {
           this.container = c;
         }}
       >
         <div
           className="Accordion-content"
-          ref={(c) => {
+          ref={c => {
             this.content = c;
           }}
         >

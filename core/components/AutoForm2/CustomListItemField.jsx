@@ -18,7 +18,8 @@ const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
         React.cloneElement(child, {
           name: joinName(props.name, child.props.name),
           label: null,
-        }))
+        }),
+      )
     ) : (
       <CustomAutoField isListField {...props} />
     )}

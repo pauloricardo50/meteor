@@ -19,13 +19,13 @@ const LoanChecklistDialog = ({ loan }: LoanChecklistDialogProps) => {
   return (
     <DialogSimple
       closeOnly
-      label={(
+      label={
         <div className="flex-row center">
           <T id="LoanChecklist.dialogButton" />
           &nbsp;
           {ratio}
         </div>
-      )}
+      }
       buttonProps={{ className: 'loan-checklist-dialog' }}
     >
       <LoanChecklist loan={loan} />

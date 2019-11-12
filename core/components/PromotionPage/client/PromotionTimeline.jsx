@@ -40,7 +40,6 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
   );
 };
 
-
 const PromotionTimeline = ({
   constructionTimeline,
   signingDate,

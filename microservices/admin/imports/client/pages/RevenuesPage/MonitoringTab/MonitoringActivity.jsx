@@ -79,19 +79,24 @@ const MonitoringActivity = ({
           id="yooo"
           series={[
             {
-              data: goodData.map(({ _id: { prevStatus, nextStatus }, count }) => {
-                const isOutgoing = isBadStatus(nextStatus)
-                    || LOAN_STATUS_ORDER.indexOf(nextStatus)
-                      < LOAN_STATUS_ORDER.indexOf(prevStatus);
-                return {
-                  from: prevStatus,
-                  to: nextStatus,
-                  weight: count,
-                  outgoing: isOutgoing,
-                };
-              }),
+              data: goodData.map(
+                ({ _id: { prevStatus, nextStatus }, count }) => {
+                  const isOutgoing =
+                    isBadStatus(nextStatus) ||
+                    LOAN_STATUS_ORDER.indexOf(nextStatus) <
+                      LOAN_STATUS_ORDER.indexOf(prevStatus);
+                  return {
+                    from: prevStatus,
+                    to: nextStatus,
+                    weight: count,
+                    outgoing: isOutgoing,
+                  };
+                },
+              ),
               name: 'Changement de statut',
-              nodes: LOAN_STATUS_ORDER.filter(s => !isBadStatus(s)).map(getNode),
+              nodes: LOAN_STATUS_ORDER.filter(s => !isBadStatus(s)).map(
+                getNode,
+              ),
               ...sharedConfig,
             },
           ]}

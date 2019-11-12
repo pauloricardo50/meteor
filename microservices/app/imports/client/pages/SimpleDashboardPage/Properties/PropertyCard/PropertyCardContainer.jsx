@@ -11,8 +11,8 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
   }
 
   if (
-    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
-    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES] &&
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
   ) {
     images = [
       ...images,
@@ -31,24 +31,26 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
   return images[0];
 };
 
-export default withProps(({
-  additionalInfos,
-  collection,
-  document,
-  loan: { _id: loanId },
-  shareSolvency,
-}) => ({
-  name: <span>{document.name || document.address1}</span>,
-  address: document.address,
-  category: document.category,
-  image: getImage(document),
-  additionalInfos,
-  loanId,
-  shareSolvency,
-  route: createRoute('/loans/:loanId/:collection/:docId/:tabId', {
-    loanId,
+export default withProps(
+  ({
+    additionalInfos,
     collection,
-    docId: document._id,
-    tabId: collection === PROMOTIONS_COLLECTION ? 'overview' : '',
+    document,
+    loan: { _id: loanId },
+    shareSolvency,
+  }) => ({
+    name: <span>{document.name || document.address1}</span>,
+    address: document.address,
+    category: document.category,
+    image: getImage(document),
+    additionalInfos,
+    loanId,
+    shareSolvency,
+    route: createRoute('/loans/:loanId/:collection/:docId/:tabId', {
+      loanId,
+      collection,
+      docId: document._id,
+      tabId: collection === PROMOTIONS_COLLECTION ? 'overview' : '',
+    }),
   }),
-}));
+);

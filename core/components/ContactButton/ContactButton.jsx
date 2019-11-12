@@ -17,7 +17,7 @@ export const ContactButton = ({ ...props }: ContactButtonProps) => {
   return (
     <div className="contact-button">
       <Fab
-        onClick={(event) => {
+        onClick={event => {
           // Allow onClickAwayListener to work properly
           event.preventDefault();
           toggleOpenContact(!openContact);

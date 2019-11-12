@@ -12,7 +12,7 @@ import SelectContainer from './SelectContainer';
 
 const makeRenderValue = ({ multiple, rawOptions }) => {
   if (!multiple) {
-    return (value) => {
+    return value => {
       const option = rawOptions.find(({ id }) => id === value);
       return option && option.label;
     };

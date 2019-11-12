@@ -17,7 +17,8 @@ const CustomAutoFields = (
           key: field,
           name: field,
           autoFocus: automaticFocus && index === 0,
-        })),
+        }),
+      ),
   );
 
 CustomAutoFields.contextTypes = AutoField.contextTypes;

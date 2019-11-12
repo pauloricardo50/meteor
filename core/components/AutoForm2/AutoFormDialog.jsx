@@ -28,7 +28,7 @@ type AutoFormDialogProps = {
   noButton?: Boolean,
 };
 
-const getAutoFormProps = (props) =>
+const getAutoFormProps = props =>
   pick(props, [
     'model',
     'onSubmit',
@@ -71,14 +71,14 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
     } = this.props;
     const schemaKeys = this.props.schema._schemaKeys;
 
-    const handleOpen = (event) => {
+    const handleOpen = event => {
       if (event && event.stopPropagation) {
         event.stopPropagation();
         event.preventDefault();
       }
       setOpen(true);
     };
-    const handleClose = (event) => {
+    const handleClose = event => {
       event.stopPropagation();
       event.preventDefault();
       setOpen(false);
@@ -96,7 +96,7 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
           className="autoform-dialog"
           maxWidth={maxWidth}
           fullWidth
-          onClick={(e) => {
+          onClick={e => {
             // Clicking on the dialog should not trigger a table row below it..
             e.stopPropagation();
           }}

@@ -18,9 +18,11 @@ import {
 describe('FinancingOwnFundsPickerHelpers', () => {
   describe('chooseOwnFundsTypes', () => {
     it('returns the right values for main', () => {
-      expect(chooseOwnFundsTypes({
-        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
-      })).to.deep.equal([
+      expect(
+        chooseOwnFundsTypes({
+          loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
+        }),
+      ).to.deep.equal([
         OWN_FUNDS_TYPES.DONATION,
         OWN_FUNDS_TYPES.BANK_FORTUNE,
         OWN_FUNDS_TYPES.INSURANCE_3A,
@@ -37,13 +39,17 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         OWN_FUNDS_TYPES.INSURANCE_3B,
       ];
 
-      expect(chooseOwnFundsTypes({
-        loan: { residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE },
-      })).to.deep.equal(expected);
+      expect(
+        chooseOwnFundsTypes({
+          loan: { residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE },
+        }),
+      ).to.deep.equal(expected);
 
-      expect(chooseOwnFundsTypes({
-        loan: { residenceType: RESIDENCE_TYPE.INVESTMENT },
-      })).to.deep.equal(expected);
+      expect(
+        chooseOwnFundsTypes({
+          loan: { residenceType: RESIDENCE_TYPE.INVESTMENT },
+        }),
+      ).to.deep.equal(expected);
     });
   });
 
@@ -53,7 +59,9 @@ describe('FinancingOwnFundsPickerHelpers', () => {
     });
 
     it('should return false for the other own funds types', () => {
-      expect(shouldAskForUsageType(OWN_FUNDS_TYPES.BANK_FORTUNE)).to.equal(false);
+      expect(shouldAskForUsageType(OWN_FUNDS_TYPES.BANK_FORTUNE)).to.equal(
+        false,
+      );
     });
   });
 
@@ -69,13 +77,15 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         ],
       };
       const borrowers = [{ bankFortune: 10, _id: 'id' }];
-      expect(calculateRemainingFunds({
-        type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-        structure,
-        ownFundsIndex: -1,
-        borrowers,
-        borrowerId: 'id',
-      })).to.equal(0);
+      expect(
+        calculateRemainingFunds({
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          structure,
+          ownFundsIndex: -1,
+          borrowers,
+          borrowerId: 'id',
+        }),
+      ).to.equal(0);
     });
 
     it('should return the remaining left over if any is', () => {
@@ -85,13 +95,15 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         ],
       };
       const borrowers = [{ insurance2: [{ value: 10 }], _id: 'id' }];
-      expect(calculateRemainingFunds({
-        type: OWN_FUNDS_TYPES.INSURANCE_2,
-        structure,
-        ownFundsIndex: -1,
-        borrowers,
-        borrowerId: 'id',
-      })).to.equal(5);
+      expect(
+        calculateRemainingFunds({
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          structure,
+          ownFundsIndex: -1,
+          borrowers,
+          borrowerId: 'id',
+        }),
+      ).to.equal(5);
     });
 
     it('should not count the currently editing ownFunds object', () => {
@@ -102,13 +114,15 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         ],
       };
       const borrowers = [{ insurance2: [{ value: 10 }], _id: 'id' }];
-      expect(calculateRemainingFunds({
-        type: OWN_FUNDS_TYPES.INSURANCE_2,
-        structure,
-        ownFundsIndex: 1,
-        borrowers,
-        borrowerId: 'id',
-      })).to.equal(5);
+      expect(
+        calculateRemainingFunds({
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          structure,
+          ownFundsIndex: 1,
+          borrowers,
+          borrowerId: 'id',
+        }),
+      ).to.equal(5);
     });
 
     it('should ignore all other ownFunds of different types', () => {
@@ -125,13 +139,15 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         ],
       };
       const borrowers = [{ donation: [{ value: 10 }], _id: 'id' }];
-      expect(calculateRemainingFunds({
-        type: OWN_FUNDS_TYPES.DONATION,
-        structure,
-        ownFundsIndex: 1,
-        borrowers,
-        borrowerId: 'id',
-      })).to.equal(5);
+      expect(
+        calculateRemainingFunds({
+          type: OWN_FUNDS_TYPES.DONATION,
+          structure,
+          ownFundsIndex: 1,
+          borrowers,
+          borrowerId: 'id',
+        }),
+      ).to.equal(5);
     });
 
     it('ignores ownFunds from other borrowers', () => {
@@ -141,13 +157,15 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         ],
       };
       const borrowers = [{ bankFortune: 10, _id: 'id' }];
-      expect(calculateRemainingFunds({
-        type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-        structure,
-        ownFundsIndex: -1,
-        borrowers,
-        borrowerId: 'id',
-      })).to.equal(10);
+      expect(
+        calculateRemainingFunds({
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          structure,
+          ownFundsIndex: -1,
+          borrowers,
+          borrowerId: 'id',
+        }),
+      ).to.equal(10);
     });
   });
 
@@ -157,11 +175,13 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         { type: 1, borrowerId: 3, value: 4, usageType: undefined },
       ];
 
-      expect(makeNewOwnFundsArray({
-        structure: { ownFunds: [] },
-        ownFundsIndex: -1,
-        ...expected[0],
-      })).to.deep.equal(expected);
+      expect(
+        makeNewOwnFundsArray({
+          structure: { ownFunds: [] },
+          ownFundsIndex: -1,
+          ...expected[0],
+        }),
+      ).to.deep.equal(expected);
     });
 
     it('replaces the current object at index', () => {
@@ -169,13 +189,15 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         { type: 1, borrowerId: 3, value: 4, usageType: undefined },
       ];
 
-      expect(makeNewOwnFundsArray({
-        structure: {
-          ownFunds: [{ type: 5, borrowerId: 6, value: 7, usageType: 8 }],
-        },
-        ownFundsIndex: 0,
-        ...expected[0],
-      })).to.deep.equal(expected);
+      expect(
+        makeNewOwnFundsArray({
+          structure: {
+            ownFunds: [{ type: 5, borrowerId: 6, value: 7, usageType: 8 }],
+          },
+          ownFundsIndex: 0,
+          ...expected[0],
+        }),
+      ).to.deep.equal(expected);
     });
 
     it('replaces the current object at larger index', () => {
@@ -185,17 +207,19 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         { type: 1, borrowerId: 3, value: 4, usageType: undefined },
       ];
 
-      expect(makeNewOwnFundsArray({
-        structure: {
-          ownFunds: [
-            { type: 5, borrowerId: 6, value: 7, usageType: 8 },
-            { type: 9, borrowerId: 10, value: 11, usageType: 12 },
-            { type: 14, borrowerId: 15, value: 16, usageType: 17 },
-          ],
-        },
-        ownFundsIndex: 2,
-        ...expected[2],
-      })).to.deep.equal(expected);
+      expect(
+        makeNewOwnFundsArray({
+          structure: {
+            ownFunds: [
+              { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+              { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+              { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+            ],
+          },
+          ownFundsIndex: 2,
+          ...expected[2],
+        }),
+      ).to.deep.equal(expected);
     });
 
     it('deletes object at index', () => {
@@ -204,18 +228,20 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         { type: 14, borrowerId: 15, value: 16, usageType: 17 },
       ];
 
-      expect(makeNewOwnFundsArray({
-        structure: {
-          ownFunds: [
-            { type: 5, borrowerId: 6, value: 7, usageType: 8 },
-            { type: 9, borrowerId: 10, value: 11, usageType: 12 },
-            { type: 14, borrowerId: 15, value: 16, usageType: 17 },
-          ],
-        },
-        ownFundsIndex: 1,
-        shouldDelete: true,
-        ...expected[2],
-      })).to.deep.equal(expected);
+      expect(
+        makeNewOwnFundsArray({
+          structure: {
+            ownFunds: [
+              { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+              { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+              { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+            ],
+          },
+          ownFundsIndex: 1,
+          shouldDelete: true,
+          ...expected[2],
+        }),
+      ).to.deep.equal(expected);
     });
 
     it('deletes object if value is 0', () => {
@@ -224,164 +250,180 @@ describe('FinancingOwnFundsPickerHelpers', () => {
         { type: 14, borrowerId: 15, value: 16, usageType: 17 },
       ];
 
-      expect(makeNewOwnFundsArray({
-        structure: {
-          ownFunds: [
-            { type: 5, borrowerId: 6, value: 7, usageType: 8 },
-            { type: 9, borrowerId: 10, value: 11, usageType: 12 },
-            { type: 14, borrowerId: 15, value: 16, usageType: 17 },
-          ],
-        },
-        ownFundsIndex: 1,
-        value: 0,
-      })).to.deep.equal(expected);
+      expect(
+        makeNewOwnFundsArray({
+          structure: {
+            ownFunds: [
+              { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+              { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+              { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+            ],
+          },
+          ownFundsIndex: 1,
+          value: 0,
+        }),
+      ).to.deep.equal(expected);
     });
   });
 
   describe('getNewWantedLoanAfterPledge', () => {
     it('returns the current wantedLoan if this is not a pledged value', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          structures: [{ wantedLoan: 100, id: 'struct' }],
-        },
-        structureId: 'struct',
-        usageType: 'something else',
-      })).to.equal(100);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            structures: [{ wantedLoan: 100, id: 'struct' }],
+          },
+          structureId: 'struct',
+          usageType: 'something else',
+        }),
+      ).to.equal(100);
     });
 
     it('returns wantedLoan plus a small pledge', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-          structures: [
-            {
-              id: 'struct',
-              wantedLoan: 800000,
-              propertyId: 'propertyId',
-              ownFunds: [],
-              propertyWork: 0,
-            },
-          ],
-        },
-        structureId: 'struct',
-        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-        value: 50000,
-      })).to.equal(850000);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000 }],
+            residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            structures: [
+              {
+                id: 'struct',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+                propertyWork: 0,
+              },
+            ],
+          },
+          structureId: 'struct',
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          value: 50000,
+        }),
+      ).to.equal(850000);
     });
 
     it('does not exceed maxBorrowRatioWithPledge', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-          structures: [
-            {
-              id: 'struct',
-              wantedLoan: 800000,
-              propertyId: 'propertyId',
-              ownFunds: [],
-              propertyWork: 0,
-            },
-          ],
-        },
-        structureId: 'struct',
-        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-        value: 150000,
-      })).to.equal(900000);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000 }],
+            residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            structures: [
+              {
+                id: 'struct',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+                propertyWork: 0,
+              },
+            ],
+          },
+          structureId: 'struct',
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          value: 150000,
+        }),
+      ).to.equal(900000);
     });
 
     it('does not exceed maxBorrowRatio if not a main residence', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          residenceType: RESIDENCE_TYPE.INVESTMENT,
-          structures: [
-            {
-              id: 'struct',
-              wantedLoan: 800000,
-              propertyId: 'propertyId',
-              ownFunds: [],
-              propertyWork: 0,
-            },
-          ],
-        },
-        structureId: 'struct',
-        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-        value: 150000,
-      })).to.equal(800000);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000 }],
+            residenceType: RESIDENCE_TYPE.INVESTMENT,
+            structures: [
+              {
+                id: 'struct',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+                propertyWork: 0,
+              },
+            ],
+          },
+          structureId: 'struct',
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          value: 150000,
+        }),
+      ).to.equal(800000);
     });
 
     it('counts other pledged own funds', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-          structures: [
-            {
-              id: 'struct',
-              wantedLoan: 800000,
-              propertyId: 'propertyId',
-              ownFunds: [
-                { value: 10000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
-              ],
-              propertyWork: 0,
-            },
-          ],
-        },
-        structureId: 'struct',
-        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-        value: 50000,
-        ownFundsIndex: -1,
-      })).to.equal(860000);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000 }],
+            residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            structures: [
+              {
+                id: 'struct',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [
+                  { value: 10000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+                ],
+                propertyWork: 0,
+              },
+            ],
+          },
+          structureId: 'struct',
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          value: 50000,
+          ownFundsIndex: -1,
+        }),
+      ).to.equal(860000);
     });
 
     it('reduces loan if pledge is reduced', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-          structures: [
-            {
-              id: 'struct',
-              wantedLoan: 800000,
-              propertyId: 'propertyId',
-              ownFunds: [
-                { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
-              ],
-              propertyWork: 0,
-            },
-          ],
-        },
-        structureId: 'struct',
-        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-        value: 40000,
-        ownFundsIndex: 0,
-      })).to.equal(840000);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000 }],
+            residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            structures: [
+              {
+                id: 'struct',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [
+                  { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+                ],
+                propertyWork: 0,
+              },
+            ],
+          },
+          structureId: 'struct',
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          value: 40000,
+          ownFundsIndex: 0,
+        }),
+      ).to.equal(840000);
     });
 
     it('increases loan if usageType is changed to pledge', () => {
-      expect(getNewWantedLoanAfterPledge({
-        loan: {
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-          structures: [
-            {
-              id: 'struct',
-              wantedLoan: 800000,
-              propertyId: 'propertyId',
-              ownFunds: [
-                { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
-              ],
-              propertyWork: 0,
-            },
-          ],
-        },
-        structureId: 'struct',
-        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-        value: 40000,
-        ownFundsIndex: 0,
-      })).to.equal(840000);
+      expect(
+        getNewWantedLoanAfterPledge({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000 }],
+            residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            structures: [
+              {
+                id: 'struct',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [
+                  { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+                ],
+                propertyWork: 0,
+              },
+            ],
+          },
+          structureId: 'struct',
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          value: 40000,
+          ownFundsIndex: 0,
+        }),
+      ).to.equal(840000);
     });
   });
 });

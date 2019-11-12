@@ -13,25 +13,25 @@ type LoanBoardColumnHeaderProps = {};
 
 const getTitle = ({ id, groupBy, admins, promotions }) => {
   switch (groupBy) {
-  case GROUP_BY.STATUS:
-    return <StatusLabel status={id} collection={LOANS_COLLECTION} />;
-  case GROUP_BY.PROMOTION: {
-    const promotion = promotions.find(({ _id }) => id === _id);
-    return promotion ? (
-      <CollectionIconLink
-        relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
-      />
-    ) : (
-      'Sans promo'
-    );
-  }
-  case GROUP_BY.ADMIN: {
-    const admin = admins.find(({ _id }) => id === _id);
-    return admin ? admin.firstName : 'Personne';
-  }
+    case GROUP_BY.STATUS:
+      return <StatusLabel status={id} collection={LOANS_COLLECTION} />;
+    case GROUP_BY.PROMOTION: {
+      const promotion = promotions.find(({ _id }) => id === _id);
+      return promotion ? (
+        <CollectionIconLink
+          relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
+        />
+      ) : (
+        'Sans promo'
+      );
+    }
+    case GROUP_BY.ADMIN: {
+      const admin = admins.find(({ _id }) => id === _id);
+      return admin ? admin.firstName : 'Personne';
+    }
 
-  default:
-    break;
+    default:
+      break;
   }
 };
 
@@ -41,7 +41,7 @@ const getOptions = ({ sortBy, sortOrder }, dispatch) =>
     { id: SORT_BY.CREATED_AT, label: "Date d'ajout" },
     { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
     { id: SORT_BY.STATUS, label: 'Statut' },
-  ].map((item) => {
+  ].map(item => {
     let { label } = item;
     if (item.id === sortBy) {
       label = (
@@ -78,11 +78,7 @@ const LoanBoardColumnHeader = ({
       <h4 className="title">
         <span>{getTitle({ id, groupBy, admins, promotions })}</span>
         &nbsp;
-        <span className="secondary">
-(
-          {count}
-)
-        </span>
+        <span className="secondary">({count})</span>
       </h4>
       <DropdownMenu
         iconType="sort"

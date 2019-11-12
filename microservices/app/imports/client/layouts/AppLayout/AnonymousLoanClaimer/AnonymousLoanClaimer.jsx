@@ -68,30 +68,34 @@ export default compose(
   withAnonymousLoan,
   withRouter,
   withState('loading', 'setLoading', false),
-  withProps(({
-    anonymousLoan,
-    setAnonymousLoanId,
-    currentUser,
-    setLoading,
-    history,
-  }) => ({
-    open: !!anonymousLoan,
-    claimLoan: () => {
-      setLoading(true);
-      assignLoanToUser
-        .run({ loanId: anonymousLoan._id, userId: currentUser._id })
-        .then(() => {
-          localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-          setAnonymousLoanId(undefined);
-          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
-            loanId: anonymousLoan._id,
-          }));
-        })
-        .finally(() => setLoading(false));
-    },
-    removeAnonymousLoan: () => {
-      localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      setAnonymousLoanId(undefined);
-    },
-  })),
+  withProps(
+    ({
+      anonymousLoan,
+      setAnonymousLoanId,
+      currentUser,
+      setLoading,
+      history,
+    }) => ({
+      open: !!anonymousLoan,
+      claimLoan: () => {
+        setLoading(true);
+        assignLoanToUser
+          .run({ loanId: anonymousLoan._id, userId: currentUser._id })
+          .then(() => {
+            localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+            setAnonymousLoanId(undefined);
+            history.push(
+              createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+                loanId: anonymousLoan._id,
+              }),
+            );
+          })
+          .finally(() => setLoading(false));
+      },
+      removeAnonymousLoan: () => {
+        localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+        setAnonymousLoanId(undefined);
+      },
+    }),
+  ),
 )(AnonymousLoanClaimer);

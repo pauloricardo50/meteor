@@ -85,7 +85,7 @@ const addState = compose(
   withStateHandlers(
     { anchorEl: null, isOpen: false, fetchedOptions: [] },
     {
-      handleOpen: (_, { fetchOptions, setFetchedOptions }) => (currentTarget) => {
+      handleOpen: (_, { fetchOptions, setFetchedOptions }) => currentTarget => {
         if (fetchOptions) {
           fetchOptions().then(setFetchedOptions);
         }
@@ -103,22 +103,25 @@ const addState = compose(
 export default compose(
   addState,
   withStyles(styles),
-  withProps(({
-    options = [],
-    fetchedOptions = [],
-    fetchOptions,
-    handleClose,
-    classes,
-  }) => {
-    if (fetchOptions) {
-      return {
-        options: fetchedOptions.map(option =>
-          mapOption(option, handleClose, classes)),
-      };
-    }
+  withProps(
+    ({
+      options = [],
+      fetchedOptions = [],
+      fetchOptions,
+      handleClose,
+      classes,
+    }) => {
+      if (fetchOptions) {
+        return {
+          options: fetchedOptions.map(option =>
+            mapOption(option, handleClose, classes),
+          ),
+        };
+      }
 
-    return {
-      options: options.map(option => mapOption(option, handleClose, classes)),
-    };
-  }),
+      return {
+        options: options.map(option => mapOption(option, handleClose, classes)),
+      };
+    },
+  ),
 );

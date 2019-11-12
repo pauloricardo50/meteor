@@ -94,8 +94,8 @@ class ProgressCircle extends Component {
               cy={this.squareSize / 2}
               r={this.radius}
               strokeWidth={`${this.strokeWidth}px`}
-              transform={`rotate(-90 ${this.squareSize / 2} ${this.squareSize
-                / 2})`}
+              transform={`rotate(-90 ${this.squareSize / 2} ${this.squareSize /
+                2})`}
               style={{
                 strokeDasharray: this.dashArray,
                 strokeDashoffset: dashOffset,

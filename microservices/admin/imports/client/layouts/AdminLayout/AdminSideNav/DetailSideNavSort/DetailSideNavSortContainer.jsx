@@ -25,14 +25,15 @@ const mapOptions = (options, currentSortOption) =>
 const getReversedSortOrder = order => order * -1;
 
 export default withProps(({ collectionName, sortOption, setSortOption }) => ({
-  handleSort: (newOption) => {
+  handleSort: newOption => {
     const selectedOption = getSortOptionFromField(
       sortOptions[collectionName],
       newOption.id,
     );
-    const order = selectedOption.value.field === sortOption.field
-      ? getReversedSortOrder(sortOption.order)
-      : -1;
+    const order =
+      selectedOption.value.field === sortOption.field
+        ? getReversedSortOrder(sortOption.order)
+        : -1;
 
     setSortOption(collectionName, {
       ...selectedOption.value,

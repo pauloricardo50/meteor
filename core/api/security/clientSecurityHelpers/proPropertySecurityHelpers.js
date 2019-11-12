@@ -38,9 +38,10 @@ const isUserLinkedToProperty = ({ userId, property = {} }) => {
     .reduce((usersLoans, { user }) => [...usersLoans, user], [])
     .filter(x => x);
 
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId)
-    || userLoans.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId) ||
+    userLoans.find(({ _id }) => _id === userId);
 
   if (!user) {
     return false;
@@ -118,8 +119,8 @@ export const isAllowedToRemoveCustomerFromProProperty = ({
   });
 
   return (
-    isAllowedToInviteCustomersToProProperty({ property, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToInviteCustomersToProProperty({ property, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -147,8 +148,9 @@ export const isAllowedToSeeProPropertyCustomers = ({
 
   const { userLinks = [], users = [] } = property;
 
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId);
 
   if (!user) {
     return false;
@@ -187,8 +189,8 @@ export const isAllowedToBookProPropertyToCustomer = ({
   });
 
   return (
-    isAllowedToBookProProperty({ property, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToBookProProperty({ property, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -218,7 +220,7 @@ export const isAllowedToSellProPropertyToCustomer = ({
   });
 
   return (
-    isAllowedToSellProProperty({ property, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToSellProProperty({ property, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };

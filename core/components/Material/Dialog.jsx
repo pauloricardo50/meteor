@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const Dialog = (props) => {
+const Dialog = props => {
   const { title, actions, children, important, text, ...otherProps } = props;
   return (
     <MuiDialog

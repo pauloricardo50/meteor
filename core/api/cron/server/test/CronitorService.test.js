@@ -14,7 +14,7 @@ const testSchema = new SimpleSchema({
 });
 TestCollection.attachSchema(testSchema);
 
-describe('CronitorService', function () {
+describe('CronitorService', function() {
   this.timeout(10000);
 
   const cronitor = new CronitorService({

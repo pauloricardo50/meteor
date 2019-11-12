@@ -46,7 +46,7 @@ prestart.spawn({
   },
 });
 
-prestart.stderr.on('data', (error) => {
+prestart.stderr.on('data', error => {
   prestart.throw(error);
   process.exit(1);
 });

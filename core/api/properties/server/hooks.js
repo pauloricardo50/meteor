@@ -17,30 +17,35 @@ Properties.before.remove((userId, { _id: propertyId }) => {
   // Remove all references to this property on the loan
   const loans = LoanService.find({ propertyIds: propertyId }).fetch();
 
-  loans.forEach((loan) => {
+  loans.forEach(loan => {
     removePropertyFromLoan({ loan, propertyId });
   });
 });
 
-Properties.after.insert(additionalDocumentsHook({
-  collection: PROPERTIES_COLLECTION,
-  initialDocuments,
-  conditionalDocuments,
-}));
+Properties.after.insert(
+  additionalDocumentsHook({
+    collection: PROPERTIES_COLLECTION,
+    initialDocuments,
+    conditionalDocuments,
+  }),
+);
 
-Properties.after.update(additionalDocumentsHook({
-  collection: PROPERTIES_COLLECTION,
-  initialDocuments,
-  conditionalDocuments,
-}));
+Properties.after.update(
+  additionalDocumentsHook({
+    collection: PROPERTIES_COLLECTION,
+    initialDocuments,
+    conditionalDocuments,
+  }),
+);
 
 UpdateWatcherService.addUpdateWatching({
   collection: Properties,
   fields: PropertySchemaAdmin._schemaKeys,
   shouldWatch: ({ userId }) =>
-    SecurityService.hasRole(userId, ROLES.USER)
-    || SecurityService.hasRole(userId, ROLES.PRO),
+    SecurityService.hasRole(userId, ROLES.USER) ||
+    SecurityService.hasRole(userId, ROLES.PRO),
 });
 
 Properties.after.remove((userId, { _id }) =>
-  FileService.deleteAllFilesForDoc(_id));
+  FileService.deleteAllFilesForDoc(_id),
+);

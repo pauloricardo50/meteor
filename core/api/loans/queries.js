@@ -30,10 +30,9 @@ export const fullLoan = Loans.createQuery(LOAN_QUERIES.FULL_LOAN, {
 });
 
 export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
+  category: 1,
   name: 1,
-  createdAt: 1,
-  updatedAt: 1,
-  step: 1,
+  status: 1,
   $options: { sort: { createdAt: -1 }, limit: 5 },
 });
 

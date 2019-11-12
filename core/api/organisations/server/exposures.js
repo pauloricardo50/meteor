@@ -1,6 +1,7 @@
 import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
+import { createSearchFilters } from '../../helpers';
 import SecurityService from '../../security';
 import {
   adminOrganisations,
@@ -55,6 +56,14 @@ exposeQuery({
     firewall: () => {
       SecurityService.checkCurrentUserIsAdmin();
     },
+    embody: body => {
+      body.$filter = ({ filters, params: { searchQuery } }) => {
+        Object.assign(
+          filters,
+          createSearchFilters(['name', '_id', 'type'], searchQuery),
+        );
+      };
+    },
     validateParams: { searchQuery: Match.Maybe(String) },
   },
 });
@@ -62,11 +71,11 @@ exposeQuery({
 exposeQuery({
   query: proOrganisation,
   overrides: {
-    firewall: (userId) => {
+    firewall: userId => {
       SecurityService.checkUserIsPro(userId);
     },
     validateParams: { organisationId: String, $body: Match.Maybe(Object) },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { organisationId } }) => {
         filters._id = organisationId;
       };
@@ -77,8 +86,13 @@ exposeQuery({
 exposeQuery({
   query: userOrganisations,
   overrides: {
-    firewall: (userId) => {
+    firewall: userId => {
       SecurityService.checkUserLoggedIn(userId);
+    },
+    embody: body => {
+      body.$filter = ({ filters }) => {
+        filters.features = { $in: [ORGANISATION_FEATURES.LENDER] };
+      };
     },
     validateParams: {},
   },

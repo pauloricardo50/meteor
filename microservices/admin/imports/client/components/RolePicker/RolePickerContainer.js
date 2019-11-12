@@ -6,6 +6,8 @@ import { ROLES } from 'core/api/constants';
 export default withProps(({ userId }) => ({
   roles: SecurityService.currentUserHasRole(ROLES.DEV)
     ? Object.values(ROLES)
-    : Object.values(ROLES).filter(role => role === ROLES.USER || role === ROLES.PRO),
+    : Object.values(ROLES).filter(
+        role => role === ROLES.USER || role === ROLES.PRO,
+      ),
   onChooseRole: newRole => setRole.run({ userId, role: newRole }),
 }));

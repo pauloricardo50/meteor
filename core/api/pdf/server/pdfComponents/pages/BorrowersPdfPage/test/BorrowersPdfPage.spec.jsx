@@ -44,28 +44,34 @@ describe('BorrowersPdfPage', () => {
 
   describe('Info table', () => {
     it('renders an info table with rows depending on content', () => {
-      expect(component()
-        .find('table')
-        .at(0)
-        .find('tr').length).to.equal(3);
+      expect(
+        component()
+          .find('table')
+          .at(0)
+          .find('tr').length,
+      ).to.equal(3);
 
       props.loan.borrowers = [
         { expenses: [], childrenCount: 2, company: 'e-Potek' },
       ];
       getMountedComponent.reset();
-      expect(component()
-        .find('table')
-        .at(0)
-        .find('tr').length).to.equal(5);
+      expect(
+        component()
+          .find('table')
+          .at(0)
+          .find('tr').length,
+      ).to.equal(5);
     });
   });
 
   describe('Finance table', () => {
     it('has 2 subsections', () => {
-      expect(component()
-        .find('table')
-        .at(1)
-        .find('.subsection-row').length).to.equal(2);
+      expect(
+        component()
+          .find('table')
+          .at(1)
+          .find('.subsection-row').length,
+      ).to.equal(2);
     });
 
     it('contains income of the borrowers', () => {

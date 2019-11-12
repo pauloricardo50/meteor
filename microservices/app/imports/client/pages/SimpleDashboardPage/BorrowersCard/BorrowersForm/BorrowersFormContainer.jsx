@@ -23,7 +23,7 @@ const getSimpleParams = (rawParams, key) => {
 };
 
 const overrides = {
-  updateFunc: idKey => (rawParams) => {
+  updateFunc: idKey => rawParams => {
     const simpleParams = [
       'insurance2Simple',
       'bank3ASimple',
@@ -87,10 +87,10 @@ const getBorrowersTabs = ({ loan }) => {
     twoBorrowers
       ? null
       : {
-        id: 'borrower2',
-        content: null,
-        label: <BorrowerAdder loanId={loan._id} />,
-      },
+          id: 'borrower2',
+          content: null,
+          label: <BorrowerAdder loanId={loan._id} />,
+        },
   ].filter(x => x);
 };
 

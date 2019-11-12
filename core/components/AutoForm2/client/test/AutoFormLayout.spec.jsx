@@ -39,12 +39,16 @@ describe('AutoFormLayout', () => {
     };
 
     expect(component().find(DemoComponent).length).to.equal(1);
-    expect(component()
-      .find(DemoComponent)
-      .prop('className')).to.equal('div1');
-    expect(component()
-      .find(DemoComponent)
-      .find('span[name="field1"]').length).to.equal(1);
+    expect(
+      component()
+        .find(DemoComponent)
+        .prop('className'),
+    ).to.equal('div1');
+    expect(
+      component()
+        .find(DemoComponent)
+        .find('span[name="field1"]').length,
+    ).to.equal(1);
   });
 
   it('renders all fields when a star is used in the field name', () => {

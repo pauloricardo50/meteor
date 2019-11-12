@@ -15,7 +15,9 @@ import TaskService from './TaskService';
 
 ServerEventService.addAfterMethodListener(
   requestLoanVerification,
-  ({ params: { loanId } }) => {
+  ({ context, params: { loanId } }) => {
+    context.unblock();
+
     TaskService.insert({
       object: {
         title: 'Vérification du dossier demandée',
@@ -38,13 +40,10 @@ const newUserTask = ({ userId, ...params }) =>
 
 ServerEventService.addAfterMethodListener(
   [adminCreateUser, anonymousCreateUser],
-  ({ result: userId }) => {
-    if (userId) {
-      const user = UserService.fetchOne({
-        $filters: { _id: userId },
-        assignedEmployeeId: 1,
-      });
+  ({ context, result: userId }) => {
+    context.unblock();
 
+    if (userId) {
       newUserTask({ userId });
     }
   },
@@ -54,9 +53,12 @@ ServerEventService.addAfterMethodListener(
   proInviteUser,
   async ({
     result,
-    context: { userId: proId },
+    context,
     params: { invitationNote, properties, propertyIds, promotionIds },
   }) => {
+    const { userId: proId } = context;
+    context.unblock();
+
     if (result) {
       if (typeof result.then === 'function') {
         // The result of the meteor method can be a promise
@@ -94,12 +96,12 @@ ServerEventService.addAfterMethodListener(
       if (propertyIds && propertyIds.length) {
         addresses = [
           ...addresses,
-          ...propertyIds.map((id) => PropertyService.get(id).address1),
+          ...propertyIds.map(id => PropertyService.get(id).address1),
         ];
       }
 
       if (promotionIds && promotionIds.length) {
-        promotions = promotionIds.map((id) => PromotionService.get(id).name);
+        promotions = promotionIds.map(id => PromotionService.get(id).name);
       }
 
       if (addresses.length) {
@@ -151,7 +153,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   [loanShareSolvency],
-  ({ params: { shareSolvency, loanId } }) => {
+  ({ context, params: { shareSolvency, loanId } }) => {
+    context.unblock();
+
     if (shareSolvency) {
       TaskService.insert({
         object: {

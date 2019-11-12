@@ -6,7 +6,9 @@ module.exports = (answers, config, plop) => {
     cmd
       .get(command, (err, data, stderr) => {
         if (stderr || err) {
-          console.error(`Error while executing command ${command}: ${stderr || err}`);
+          console.error(
+            `Error while executing command ${command}: ${stderr || err}`,
+          );
         }
         resolve('Successfully formatted files');
       })

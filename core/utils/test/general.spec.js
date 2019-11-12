@@ -67,10 +67,12 @@ describe('general helpers', () => {
 
   describe('getAggregatePercent', () => {
     it('calculates the true progress based on count', () => {
-      expect(getAggregatePercent([
-        { percent: 0.1, count: 10 },
-        { percent: 0.4, count: 20 },
-      ])).to.deep.equal({ count: 30, percent: 0.3 });
+      expect(
+        getAggregatePercent([
+          { percent: 0.1, count: 10 },
+          { percent: 0.4, count: 20 },
+        ]),
+      ).to.deep.equal({ count: 30, percent: 0.3 });
     });
 
     it('returns 0 for empty arrays', () => {

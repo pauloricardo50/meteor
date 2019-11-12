@@ -14,7 +14,4 @@ const UploaderContainer = withProps(({ collection, docId, disabled }) => {
   };
 });
 
-export default compose(
-  UploaderContainer,
-  UploaderController,
-);
+export default compose(UploaderContainer, UploaderController);

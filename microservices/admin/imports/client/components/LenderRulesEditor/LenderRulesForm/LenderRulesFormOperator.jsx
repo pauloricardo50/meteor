@@ -29,7 +29,9 @@ const LenderRulesFormOperator = (props: LenderRulesFormOperatorProps) => {
   } else if ([LENDER_RULES_VARIABLES.IS_NEW_PROPERTY].includes(variable)) {
     allowedValues = [LENDER_RULES_OPERATORS.EQUALS];
   } else {
-    allowedValues = Object.values(LENDER_RULES_OPERATORS).filter(v => v !== LENDER_RULES_OPERATORS.IN);
+    allowedValues = Object.values(LENDER_RULES_OPERATORS).filter(
+      v => v !== LENDER_RULES_OPERATORS.IN,
+    );
   }
 
   return (

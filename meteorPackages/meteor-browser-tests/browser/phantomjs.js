@@ -11,16 +11,14 @@ import childProcess from 'child_process';
 
 const PHANTOMJS_SCRIPT_FILE_NAME = 'browser/phantomjs_script.js';
 
-export default function startPhantom({
-  stdout,
-  stderr,
-  done,
-}) {
+export default function startPhantom({ stdout, stderr, done }) {
   let phantomjs;
   try {
     phantomjs = require('phantomjs-prebuilt');
   } catch (error) {
-    throw new Error('When running tests with TEST_BROWSER_DRIVER=phantomjs, you must first "npm i --save-dev phantomjs-prebuilt"');
+    throw new Error(
+      'When running tests with TEST_BROWSER_DRIVER=phantomjs, you must first "npm i --save-dev phantomjs-prebuilt"',
+    );
   }
 
   const scriptPath = Assets.absoluteFilePath(PHANTOMJS_SCRIPT_FILE_NAME);

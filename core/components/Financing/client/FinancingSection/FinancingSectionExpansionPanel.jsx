@@ -73,14 +73,17 @@ export default compose(
       const { changeExpanded } = this.props;
       ClientEventService.addListener('expandAll', () => changeExpanded(true));
       ClientEventService.addListener('collapseAll', () =>
-        changeExpanded(false));
+        changeExpanded(false),
+      );
     },
     componentWillUnmount() {
       const { changeExpanded } = this.props;
       ClientEventService.removeListener('expandAll', () =>
-        changeExpanded(true));
+        changeExpanded(true),
+      );
       ClientEventService.removeListener('collapseAll', () =>
-        changeExpanded(false));
+        changeExpanded(false),
+      );
     },
   }),
   withStyles(styles),

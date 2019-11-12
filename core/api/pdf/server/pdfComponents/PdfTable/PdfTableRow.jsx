@@ -11,7 +11,8 @@ type PdfTableRowProps = {
 
 const multiColumn = (data, style, columnOptions = []) =>
   data.map((x, index) => {
-    const { className = '', style: columnStyle = {} } = columnOptions[index] || {};
+    const { className = '', style: columnStyle = {} } =
+      columnOptions[index] || {};
     return (
       <td
         className={className}
@@ -48,7 +49,8 @@ const PdfTableRow = ({
   columnOptions = [],
 }: PdfTableRowProps) => {
   if (colspan > 1) {
-    const { className: columnClassName = '', style: columnStyle = {} } = columnOptions[0] || {};
+    const { className: columnClassName = '', style: columnStyle = {} } =
+      columnOptions[0] || {};
     return (
       <tr key={index} className={cx(classes[type], className)}>
         {label && (
@@ -64,7 +66,8 @@ const PdfTableRow = ({
     );
   }
 
-  const { className: columnClassName = '', style: columnStyle = {} } = columnOptions[0] || {};
+  const { className: columnClassName = '', style: columnStyle = {} } =
+    columnOptions[0] || {};
 
   return (
     <tr key={index} className={cx(classes[type], className)}>

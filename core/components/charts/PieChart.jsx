@@ -42,10 +42,12 @@ const PieChart = props => (
 
 PieChart.propTypes = {
   config: PropTypes.object,
-  data: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
-  })),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired,
+    }),
+  ),
   intlPrefix: PropTypes.string,
   subtitle: PropTypes.string,
   title: PropTypes.string,

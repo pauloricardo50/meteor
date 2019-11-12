@@ -55,10 +55,10 @@ const testEndpoint = ({
   });
 };
 
-describe('REST: testEndpoint', function () {
+describe('REST: testEndpoint', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -73,7 +73,7 @@ describe('REST: testEndpoint', function () {
 
   beforeEach(() => {
     resetDatabase();
-    const createdUser = Factory.create('pro', {_id: 'pro'});
+    const createdUser = Factory.create('pro', { _id: 'pro' });
     user = pick(UserService.get(createdUser._id), [
       'emails',
       'firstName',
@@ -137,7 +137,7 @@ describe('REST: testEndpoint', function () {
         }));
     });
 
-    ['POST', 'PUT', 'DELETE'].forEach((method) => {
+    ['POST', 'PUT', 'DELETE'].forEach(method => {
       context(method, () => {
         it('without query and body', () =>
           testEndpoint({

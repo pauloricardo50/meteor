@@ -99,7 +99,9 @@ export const makeSuggestValue = suggesters => (name, state) => {
 
   // Get an array of the keys that are manual and should be used to compute
   // the next value
-  const manualValueKeys = Object.keys(autoValues).filter(key => !autoValues[key]);
+  const manualValueKeys = Object.keys(autoValues).filter(
+    key => !autoValues[key],
+  );
   const manualValues = manualValueKeys.map(key => makeSelectValue(key)(state));
   const suggester = makeValueSuggester(
     suggesters[purchaseType],

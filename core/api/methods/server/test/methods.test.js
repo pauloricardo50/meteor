@@ -15,18 +15,18 @@ import { submitContactForm } from '../../methodDefinitions';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import { Loans } from '../../..';
 
-describe('methods', function () {
+describe('methods', function() {
   this.timeout(10000);
 
   beforeEach(() => {
     resetDatabase();
   });
 
-  Object.keys(methods).forEach((methodName) => {
+  Object.keys(methods).forEach(methodName => {
     const method = methods[methodName];
     describe(`method ${methodName}`, () => {
       it('is defined', () =>
-        method.run({}).catch((error) => {
+        method.run({}).catch(error => {
           expect(error.error).to.not.equal(404);
         }));
 
@@ -50,7 +50,7 @@ describe('methods', function () {
           phoneNumber: '+41 22 566 01 10',
         })
         .then(() => checkEmails(2))
-        .then((emails) => {
+        .then(emails => {
           expect(emails.length).to.equal(2);
           const ids = emails.map(({ emailId }) => emailId);
           expect(ids).to.include(EMAIL_IDS.CONTACT_US);

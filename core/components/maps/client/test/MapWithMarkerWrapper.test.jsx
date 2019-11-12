@@ -27,8 +27,10 @@ describe('MapWithMarkerWrapper', () => {
     expect(component(address).find(MapWithMarker).length).to.equal(1));
 
   it('passes the correct address to the MapWithMarker component', () =>
-    expect(component(address)
-      .find(MapWithMarker)
-      .first()
-      .prop('address')).to.equal(getAddressString(address)));
+    expect(
+      component(address)
+        .find(MapWithMarker)
+        .first()
+        .prop('address'),
+    ).to.equal(getAddressString(address)));
 });

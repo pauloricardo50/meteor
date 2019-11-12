@@ -24,15 +24,21 @@ const makeSendNegativeFeedbackToAllLenders = (
         contact: { name },
       },
     }) => name,
-  ).map(({
-    lender: {
-      contact: { name },
-      organisation: { name: organisationName },
-    },
-  }) => `${name} (${organisationName})`);
+  ).map(
+    ({
+      lender: {
+        contact: { name },
+        organisation: { name: organisationName },
+      },
+    }) => `${name} (${organisationName})`,
+  );
 
   if (offers.length) {
-    const confirm = window.confirm(`Attention: enverra un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
+    const confirm = window.confirm(
+      `Attention: enverra un feedback aux prêteurs suivants:\n\n${contacts.join(
+        '\n',
+      )}\n\nValider pour envoyer les feedbacks.`,
+    );
 
     if (confirm) {
       return sendNegativeFeedbackToAllLenders

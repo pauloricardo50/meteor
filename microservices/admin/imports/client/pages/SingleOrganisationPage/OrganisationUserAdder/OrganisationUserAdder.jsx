@@ -46,8 +46,8 @@ const renderUserSearcher = ({
       />
     </form>
     <List className="flex-col" style={{ width: '250px' }}>
-      {searchResults
-        && searchResults.map(user => (
+      {searchResults &&
+        searchResults.map(user => (
           <ListItem key={user._id} className="user">
             <ListItemText primary={user.name} />
             <ListItemSecondaryAction>
@@ -55,8 +55,8 @@ const renderUserSearcher = ({
                 onClick={() => setUserId(user._id)}
                 primary
                 disabled={
-                  organisation.users
-                  && organisation.users.map(({ _id }) => _id).includes(user._id)
+                  organisation.users &&
+                  organisation.users.map(({ _id }) => _id).includes(user._id)
                 }
               >
                 Ajouter
@@ -78,7 +78,7 @@ const renderTitleSetter = ({
   resetState,
 }) => (
   <form
-    onSubmit={(event) => {
+    onSubmit={event => {
       event.preventDefault();
       event.stopPropagation();
       return addUser({ userId, title })
@@ -135,9 +135,9 @@ const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
           {!userId
             ? renderUserSearcher(props)
             : renderTitleSetter({
-              ...props,
-              handleClose,
-            })}
+                ...props,
+                handleClose,
+              })}
         </div>
       )}
     </DialogSimple>

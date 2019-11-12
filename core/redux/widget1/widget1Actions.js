@@ -29,7 +29,8 @@ export const suggestValues = () => (dispatch, getState) => {
       dispatch({
         type: types.SUGGEST_VALUE(NAME),
         value: suggestValue(NAME, state),
-      }));
+      }),
+    );
   }
 
   return Promise.all(suggestActions);
@@ -65,7 +66,8 @@ export const setValue = (name, nextValue) => (dispatch, getState) =>
       dispatch({
         type: types.SET_VALUE(name),
         value: cleanNextValue(name, nextValue, getState),
-      }))
+      }),
+    )
     .then(() => dispatch(suggestValues()));
 
 export const setAuto = (name, nextAuto) => dispatch =>
@@ -89,12 +91,15 @@ export const setStep = nextStep => (dispatch, getState) => {
   const willBeFinalStep = nextStep === FINAL_STEP;
   return Promise.resolve()
     .then(() =>
-      dispatch({ type: commonTypes.SET_VALUE('step'), value: nextStep }))
-    .then(() =>
-    // Special exception here, as suggestValues only runs once
-    // the widget1 is at the FINAL_STEP. Suggest values should be run
-    // if the user enters a value here
-      willBeFinalStep && dispatch(suggestValues()))
+      dispatch({ type: commonTypes.SET_VALUE('step'), value: nextStep }),
+    )
+    .then(
+      () =>
+        // Special exception here, as suggestValues only runs once
+        // the widget1 is at the FINAL_STEP. Suggest values should be run
+        // if the user enters a value here
+        willBeFinalStep && dispatch(suggestValues()),
+    )
     .then(() => {
       const fields = selectFields(state);
       if (step >= fields.length - 1) {
@@ -110,10 +115,12 @@ export const resetCalculator = () => (dispatch, getState) => {
   const state = getState();
   const purchaseType = makeWidget1Selector('purchaseType')(state);
 
-  return Promise.all(ALL_FIELDS.map((name) => {
-    dispatch({ type: types.SET_VALUE(name), value: 0 });
-    dispatch({ type: types.SET_AUTO(name), auto: true });
-  })).then(() => {
+  return Promise.all(
+    ALL_FIELDS.map(name => {
+      dispatch({ type: types.SET_VALUE(name), value: 0 });
+      dispatch({ type: types.SET_AUTO(name), auto: true });
+    }),
+  ).then(() => {
     if (purchaseType === PURCHASE_TYPE.REFINANCING) {
       // Keep property and current loan to false during refinancing
       dispatch({ type: types.SET_AUTO(PROPERTY), auto: false });

@@ -10,7 +10,7 @@ export const legendConfig = {
 };
 
 export function adjustLegend(that) {
-  const legend = that.legend;
+  const { legend } = that;
   const legendWidth = that.chartWidth - 20;
 
   legend.allItems.forEach((item, i, allItems) => {

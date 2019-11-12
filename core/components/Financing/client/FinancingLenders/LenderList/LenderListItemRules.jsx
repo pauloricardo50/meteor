@@ -27,7 +27,7 @@ const LenderListItemRules = ({
         <Icon
           type="warning"
           style={{ color: colors.warning }}
-          tooltip={(
+          tooltip={
             <ul style={{ padding: 0 }}>
               {calc.adminComments.map(comment => (
                 <li key="comment">
@@ -36,7 +36,7 @@ const LenderListItemRules = ({
                 </li>
               ))}
             </ul>
-          )}
+          }
         />
       )}
 
@@ -44,7 +44,7 @@ const LenderListItemRules = ({
         type="info"
         className="icon"
         style={{ color: '#999' }}
-        tooltip={(
+        tooltip={
           <div>
             <div>
               <span>
@@ -66,12 +66,12 @@ const LenderListItemRules = ({
               ))}
             </ul>
           </div>
-        )}
+        }
       />
 
       <StatusIcon
         status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
-        tooltip={(
+        tooltip={
           <span>
             <T id="Financing.incomeRatio" />
             :&nbsp;
@@ -82,12 +82,12 @@ const LenderListItemRules = ({
               values={{ max: <Percent value={calc.maxIncomeRatio} /> }}
             />
           </span>
-        )}
+        }
       />
 
       <StatusIcon
         status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
-        tooltip={(
+        tooltip={
           <span>
             <T id="Financing.borrowRatio" />
             :&nbsp;
@@ -98,7 +98,7 @@ const LenderListItemRules = ({
               values={{ max: <Percent value={calc.maxBorrowRatio} /> }}
             />
           </span>
-        )}
+        }
       />
     </>
   );

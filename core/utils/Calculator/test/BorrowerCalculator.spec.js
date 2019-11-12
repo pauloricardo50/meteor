@@ -18,87 +18,103 @@ describe('BorrowerCalculator', () => {
     });
 
     it("returns the sum of all value keys in an object's array", () => {
-      expect(Calculator.getArrayValues({
-        borrowers: {
-          array: [{ value: 1 }, { value: 2 }],
-        },
-        key: 'array',
-      })).to.equal(3);
+      expect(
+        Calculator.getArrayValues({
+          borrowers: {
+            array: [{ value: 1 }, { value: 2 }],
+          },
+          key: 'array',
+        }),
+      ).to.equal(3);
     });
 
     it('works with arrays', () => {
-      expect(Calculator.getArrayValues({
-        borrowers: [
-          { array: [{ value: 1 }, { value: 2 }] },
-          { array: [{ value: 3 }, { value: 4 }] },
-        ],
-        key: 'array',
-      })).to.equal(10);
+      expect(
+        Calculator.getArrayValues({
+          borrowers: [
+            { array: [{ value: 1 }, { value: 2 }] },
+            { array: [{ value: 3 }, { value: 4 }] },
+          ],
+          key: 'array',
+        }),
+      ).to.equal(10);
     });
 
     it('works with a provided mapFunc', () => {
-      expect(Calculator.getArrayValues(
-        {
-          borrowers: [
-            { array: [{ yo: 1 }, { value: 2 }] },
-            { array: [{ value: 3 }, { yo: 4 }] },
-          ],
-          key: 'array',
-        },
+      expect(
+        Calculator.getArrayValues(
+          {
+            borrowers: [
+              { array: [{ yo: 1 }, { value: 2 }] },
+              { array: [{ value: 3 }, { yo: 4 }] },
+            ],
+            key: 'array',
+          },
 
-        item => item.yo,
-      )).to.equal(5);
+          item => item.yo,
+        ),
+      ).to.equal(5);
     });
   });
 
   describe('getBonusIncome', () => {
     it('returns half of 1 bonus', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: { bonusExists: true, bonus2018: 100 },
-      })).to.equal(50);
+      expect(
+        Calculator.getBonusIncome({
+          borrowers: { bonusExists: true, bonus2018: 100 },
+        }),
+      ).to.equal(50);
     });
 
     it('returns half of average 2 bonuses', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: { bonusExists: true, bonus2018: 100, bonus2015: 0 },
-      })).to.equal(50);
+      expect(
+        Calculator.getBonusIncome({
+          borrowers: { bonusExists: true, bonus2018: 100, bonus2015: 0 },
+        }),
+      ).to.equal(50);
     });
 
     it('returns half of average 3 bonuses', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2018: 100,
-          bonus2017: 0,
-          bonus2016: 200,
-        },
-      })).to.equal(75);
+      expect(
+        Calculator.getBonusIncome({
+          borrowers: {
+            bonusExists: true,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+        }),
+      ).to.equal(75);
     });
 
     it('returns 0 if bonusExists is false', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: {
-          bonusExists: false,
-          bonus2015: 50,
-          bonus2016: 150,
-          bonus2017: 40,
-          bonus2018: 100,
-        },
-      })).to.equal(0);
+      expect(
+        Calculator.getBonusIncome({
+          borrowers: {
+            bonusExists: false,
+            bonus2015: 50,
+            bonus2016: 150,
+            bonus2017: 40,
+            bonus2018: 100,
+          },
+        }),
+      ).to.equal(0);
     });
 
     it('considers bonuses differently based on bonusConsideration', () => {
       const calc = new CalculatorClass({ bonusConsideration: 1 });
 
-      expect(calc.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2015: 40,
-          bonus2016: 150,
-          bonus2017: 50,
-          bonus2018: 100,
-        },
-      })).to.equal(100);
+      expect(
+        calc.getBonusIncome({
+          borrowers: {
+            bonusExists: true,
+            bonus2015: 40,
+            bonus2016: 150,
+            bonus2017: 50,
+            bonus2018: 100,
+          },
+        }),
+      ).to.equal(100);
     });
 
     it('considers fewer bonuses with bonusHistoryToConsider', () => {
@@ -107,34 +123,38 @@ describe('BorrowerCalculator', () => {
         bonusHistoryToConsider: 1,
       });
 
-      expect(calc.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2015: 50,
-          bonus2016: 150,
-          bonus2017: 40,
-          bonus2019: 200,
-        },
-      })).to.equal(200);
+      expect(
+        calc.getBonusIncome({
+          borrowers: {
+            bonusExists: true,
+            bonus2015: 50,
+            bonus2016: 150,
+            bonus2017: 40,
+            bonus2019: 200,
+          },
+        }),
+      ).to.equal(200);
     });
 
     it('works with 2 borrowers', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: [
-          {
-            bonusExists: true,
-            bonus2018: 100,
-            bonus2017: 0,
-            bonus2016: 200,
-          },
-          {
-            bonusExists: false,
-            bonus2018: 100,
-            bonus2017: 0,
-            bonus2016: 200,
-          },
-        ],
-      })).to.equal(75);
+      expect(
+        Calculator.getBonusIncome({
+          borrowers: [
+            {
+              bonusExists: true,
+              bonus2018: 100,
+              bonus2017: 0,
+              bonus2016: 200,
+            },
+            {
+              bonusExists: false,
+              bonus2018: 100,
+              bonus2017: 0,
+              bonus2016: 200,
+            },
+          ],
+        }),
+      ).to.equal(75);
     });
 
     it('uses the AVERAGE algorithm', () => {
@@ -144,12 +164,14 @@ describe('BorrowerCalculator', () => {
         bonusAlgorithm: BONUS_ALGORITHMS.AVERAGE,
       });
 
-      expect(calc.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2019: 200,
-        },
-      })).to.equal(100);
+      expect(
+        calc.getBonusIncome({
+          borrowers: {
+            bonusExists: true,
+            bonus2019: 200,
+          },
+        }),
+      ).to.equal(100);
     });
 
     it('uses the WEAK_AVERAGE algorithm', () => {
@@ -159,155 +181,175 @@ describe('BorrowerCalculator', () => {
         bonusAlgorithm: BONUS_ALGORITHMS.WEAK_AVERAGE,
       });
 
-      expect(calc.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2019: 200,
-          bonus2018: 200,
-          bonus2017: 0,
-        },
-      })).to.equal(200);
+      expect(
+        calc.getBonusIncome({
+          borrowers: {
+            bonusExists: true,
+            bonus2019: 200,
+            bonus2018: 200,
+            bonus2017: 0,
+          },
+        }),
+      ).to.equal(200);
     });
   });
 
   describe('getBonuses', () => {
     it('returns the sum of bonuses for a given year', () => {
-      expect(Calculator.getBonuses({
-        borrowers: [
-          {
-            bonusExists: 10,
-            bonus2018: null,
-            bonus2016: 200,
-          },
-          {
-            bonusExists: true,
-            bonus2017: 5,
-            bonus2016: 200,
-            bonus2019: 5,
-          },
-        ],
-      })).to.deep.equal({ bonus2016: 400, bonus2017: 5, bonus2019: 5 });
+      expect(
+        Calculator.getBonuses({
+          borrowers: [
+            {
+              bonusExists: 10,
+              bonus2018: null,
+              bonus2016: 200,
+            },
+            {
+              bonusExists: true,
+              bonus2017: 5,
+              bonus2016: 200,
+              bonus2019: 5,
+            },
+          ],
+        }),
+      ).to.deep.equal({ bonus2016: 400, bonus2017: 5, bonus2019: 5 });
     });
 
     it('omits borrowers with bonusExists false', () => {
-      expect(Calculator.getBonuses({
-        borrowers: [
-          {
-            bonusExists: 10,
-            bonus2018: null,
-            bonus2016: 200,
-          },
-          {
-            bonusExists: false,
-            bonus2017: 5,
-            bonus2016: 200,
-            bonus2019: 5,
-          },
-        ],
-      })).to.deep.equal({ bonus2016: 200 });
+      expect(
+        Calculator.getBonuses({
+          borrowers: [
+            {
+              bonusExists: 10,
+              bonus2018: null,
+              bonus2016: 200,
+            },
+            {
+              bonusExists: false,
+              bonus2017: 5,
+              bonus2016: 200,
+              bonus2019: 5,
+            },
+          ],
+        }),
+      ).to.deep.equal({ bonus2016: 200 });
     });
   });
 
   describe('getBorrowerCompletion', () => {
     it('should be 0% for a new borrower', () => {
-      expect(Calculator.getBorrowerCompletion({
-        loan: {
-          borrowers: [
-            {
-              documents: {},
-              _id: 'docId',
-              additionalDocuments: initialDocuments,
-            },
-          ],
-        },
-      })).to.equal(0);
+      expect(
+        Calculator.getBorrowerCompletion({
+          loan: {
+            borrowers: [
+              {
+                documents: {},
+                _id: 'docId',
+                additionalDocuments: initialDocuments,
+              },
+            ],
+          },
+        }),
+      ).to.equal(0);
     });
 
     it('should not be 0% when adding data', () => {
-      expect(Calculator.getBorrowerCompletion({
-        loan: {
-          borrowers: [
-            {
-              firstName: 'joe',
-              lastName: 'johnson',
-              documents: {},
-              logic: {},
-              _id: 'docId',
-              additionalDocuments: initialDocuments,
-            },
-          ],
-        },
-      })).to.be.within(0.01, 0.1);
+      expect(
+        Calculator.getBorrowerCompletion({
+          loan: {
+            borrowers: [
+              {
+                firstName: 'joe',
+                lastName: 'johnson',
+                documents: {},
+                logic: {},
+                _id: 'docId',
+                additionalDocuments: initialDocuments,
+              },
+            ],
+          },
+        }),
+      ).to.be.within(0.01, 0.1);
     });
 
     it('should not be 0% when adding a document', () => {
-      expect(Calculator.getBorrowerCompletion({
-        loan: {
-          borrowers: [
-            {
-              documents: { [DOCUMENTS.IDENTITY]: [{}] },
-              logic: {},
-              _id: 'docId',
-              additionalDocuments: initialDocuments,
-            },
-          ],
-        },
-      })).to.be.within(0.01, 0.1);
+      expect(
+        Calculator.getBorrowerCompletion({
+          loan: {
+            borrowers: [
+              {
+                documents: { [DOCUMENTS.IDENTITY]: [{}] },
+                logic: {},
+                _id: 'docId',
+                additionalDocuments: initialDocuments,
+              },
+            ],
+          },
+        }),
+      ).to.be.within(0.01, 0.1);
     });
 
     it('should count files and info', () => {
-      expect(Calculator.getBorrowerCompletion({
-        loan: {
-          borrowers: [
-            {
-              firstName: 'joe',
-              lastName: 'johnson',
-              documents: { [DOCUMENTS.IDENTITY]: [{}] },
-              logic: {},
-              _id: 'borrowerId',
-              additionalDocuments: initialDocuments,
-            },
-          ],
-        },
-      })).to.be.within(0.13, 0.14);
+      expect(
+        Calculator.getBorrowerCompletion({
+          loan: {
+            borrowers: [
+              {
+                firstName: 'joe',
+                lastName: 'johnson',
+                documents: { [DOCUMENTS.IDENTITY]: [{}] },
+                logic: {},
+                _id: 'borrowerId',
+                additionalDocuments: initialDocuments,
+              },
+            ],
+          },
+        }),
+      ).to.be.within(0.13, 0.14);
     });
   });
 
   describe('getBorrowerFilesProgress', () => {
     it('returns 0 when no file is present', () => {
-      expect(Calculator.getBorrowerFilesProgress({
-        loan: {
-          borrowers: [
-            {
-              documents: {},
-              _id: 'borrowerId',
-              additionalDocuments: initialDocuments,
-            },
-          ],
-        },
-      })).to.deep.equal({ percent: 0, count: 6 });
+      expect(
+        Calculator.getBorrowerFilesProgress({
+          loan: {
+            borrowers: [
+              {
+                documents: {},
+                _id: 'borrowerId',
+                additionalDocuments: initialDocuments,
+              },
+            ],
+          },
+        }),
+      ).to.deep.equal({ percent: 0, count: 6 });
     });
 
     it('returns 0 when no documents are present', () => {
-      expect(Calculator.getBorrowerFilesProgress({
-        loan: {
-          borrowers: [{}],
-        },
-      })).to.deep.equal({ percent: 0, count: 1 });
+      expect(
+        Calculator.getBorrowerFilesProgress({
+          loan: {
+            borrowers: [{}],
+          },
+        }),
+      ).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns more than 0 when a file is present', () => {
-      expect(Calculator.getBorrowerFilesProgress({
-        loan: {
-          borrowers: [
-            {
-              documents: { [DOCUMENTS.IDENTITY]: [{}] },
-              _id: 'borrowerId',
-              additionalDocuments: initialDocuments,
-            },
-          ],
-        },
-      })).to.deep.equal({ percent: 1 / 6, count: 6 });
+      expect(
+        Calculator.getBorrowerFilesProgress({
+          loan: {
+            borrowers: [
+              {
+                documents: { [DOCUMENTS.IDENTITY]: [{}] },
+                _id: 'borrowerId',
+                additionalDocuments: initialDocuments,
+              },
+            ],
+          },
+        }),
+      ).to.deep.equal({ percent: 1 / 6, count: 6 });
     });
   });
 
@@ -317,9 +359,11 @@ describe('BorrowerCalculator', () => {
     });
 
     it('sums expenses array', () => {
-      expect(Calculator.getExpenses({
-        borrowers: { expenses: [{ value: 2 }, { value: 3 }] },
-      })).to.equal(5);
+      expect(
+        Calculator.getExpenses({
+          borrowers: { expenses: [{ value: 2 }, { value: 3 }] },
+        }),
+      ).to.equal(5);
     });
   });
 
@@ -329,63 +373,75 @@ describe('BorrowerCalculator', () => {
     });
 
     it('sums bankFortunes if given multiple borrowers', () => {
-      expect(Calculator.getFortune({
-        borrowers: [{ bankFortune: 1 }, { bankFortune: 2 }],
-      })).to.equal(3);
+      expect(
+        Calculator.getFortune({
+          borrowers: [{ bankFortune: 1 }, { bankFortune: 2 }],
+        }),
+      ).to.equal(3);
     });
   });
 
   describe('getInsuranceFortune', () => {
     it('properly sums insurance2, insurance3A, insurance3B and bank3A', () => {
-      expect(Calculator.getInsuranceFortune({
-        borrowers: {
-          insurance2: [{ value: 2 }],
-          insurance3A: [{ value: 3 }],
-          insurance3B: [{ value: 4 }],
-          bank3A: [{ value: 5 }],
-        },
-      })).to.equal(14);
+      expect(
+        Calculator.getInsuranceFortune({
+          borrowers: {
+            insurance2: [{ value: 2 }],
+            insurance3A: [{ value: 3 }],
+            insurance3B: [{ value: 4 }],
+            bank3A: [{ value: 5 }],
+          },
+        }),
+      ).to.equal(14);
 
-      expect(Calculator.getInsuranceFortune({
-        borrowers: {
-          insurance3B: [{ value: 2 }],
-          bank3A: [{ value: undefined }],
-        },
-      })).to.equal(2);
+      expect(
+        Calculator.getInsuranceFortune({
+          borrowers: {
+            insurance3B: [{ value: 2 }],
+            bank3A: [{ value: undefined }],
+          },
+        }),
+      ).to.equal(2);
     });
 
     it('works with multiple borrowers', () => {
-      expect(Calculator.getInsuranceFortune({
-        borrowers: [
-          {
-            insurance2: [{ value: 2 }],
-            insurance3A: [{ value: 3 }],
-          },
-          {
-            bank3A: [{ value: 4 }],
-            insurance3B: [{ value: 5 }],
-          },
-        ],
-      })).to.equal(14);
+      expect(
+        Calculator.getInsuranceFortune({
+          borrowers: [
+            {
+              insurance2: [{ value: 2 }],
+              insurance3A: [{ value: 3 }],
+            },
+            {
+              bank3A: [{ value: 4 }],
+              insurance3B: [{ value: 5 }],
+            },
+          ],
+        }),
+      ).to.equal(14);
     });
   });
 
   describe('getMissingBorrowerDocuments', () => {
     it('returns all missing ids for an empty borrower', () => {
-      expect(Calculator.getMissingBorrowerDocuments({
-        loan: {
-          borrowers: [
-            { _id: 'borrowerId', additionalDocuments: initialDocuments },
-          ],
-          step: STEPS.SOLVENCY,
-        },
-      })).to.deep.equal(initialDocuments.map(({ id }) => id));
+      expect(
+        Calculator.getMissingBorrowerDocuments({
+          loan: {
+            borrowers: [
+              { _id: 'borrowerId', additionalDocuments: initialDocuments },
+            ],
+            step: STEPS.SOLVENCY,
+          },
+        }),
+      ).to.deep.equal(initialDocuments.map(({ id }) => id));
     });
   });
 
   describe('getMissingBorrowerFields', () => {
     it('returns all missing ids for an empty borrower', () => {
-      expect(Calculator.getMissingBorrowerFields({ borrowers: {} })).to.deep.equal([
+      expect(
+        Calculator.getMissingBorrowerFields({ borrowers: {} }),
+      ).to.deep.equal([
         'firstName',
         'lastName',
         'gender',
@@ -426,53 +482,65 @@ describe('BorrowerCalculator', () => {
     });
 
     it('sums otherFortune if given multiple borrowers', () => {
-      expect(Calculator.getOtherFortune({
-        borrowers: [
-          { otherFortune: [{ value: 3 }, { value: 4 }] },
-          { otherFortune: [{ value: 5 }, { value: 6 }] },
-        ],
-      })).to.equal(18);
+      expect(
+        Calculator.getOtherFortune({
+          borrowers: [
+            { otherFortune: [{ value: 3 }, { value: 4 }] },
+            { otherFortune: [{ value: 5 }, { value: 6 }] },
+          ],
+        }),
+      ).to.equal(18);
     });
   });
 
   describe('getRealEstateFortune', () => {
     it('returns the difference between property values and loans', () => {
-      expect(Calculator.getRealEstateFortune({
-        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
-      })).to.equal(1);
+      expect(
+        Calculator.getRealEstateFortune({
+          borrowers: { realEstate: [{ value: 2, loan: 1 }] },
+        }),
+      ).to.equal(1);
     });
   });
 
   describe('getRealEstateValue', () => {
     it('returns value of all realEstate', () => {
-      expect(Calculator.getRealEstateValue({
-        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
-      })).to.equal(2);
+      expect(
+        Calculator.getRealEstateValue({
+          borrowers: { realEstate: [{ value: 2, loan: 1 }] },
+        }),
+      ).to.equal(2);
     });
   });
 
   describe('getRealEstateValue', () => {
     it('returns loans of all realEstate', () => {
-      expect(Calculator.getRealEstateDebt({
-        borrowers: { realEstate: [{ value: 2, loan: 1 }] },
-      })).to.equal(1);
+      expect(
+        Calculator.getRealEstateDebt({
+          borrowers: { realEstate: [{ value: 2, loan: 1 }] },
+        }),
+      ).to.equal(1);
     });
   });
 
   describe('getRealEstateIncome', () => {
     it('returns realEstate income', () => {
-      expect(Calculator.getRealEstateIncome({
-        borrowers: { realEstate: [{ income: 10 }] },
-      })).to.equal(10);
+      expect(
+        Calculator.getRealEstateIncome({
+          borrowers: { realEstate: [{ income: 10 }] },
+        }),
+      ).to.equal(10);
     });
 
     it('changes with realEstateIncomeConsideration', () => {
       const calc = new CalculatorClass({
         realEstateIncomeConsideration: 0.5,
       });
-      expect(calc.getRealEstateIncome({
-        borrowers: { realEstate: [{ income: 10 }, { income: 20 }] },
-      })).to.equal(15);
+      expect(
+        calc.getRealEstateIncome({
+          borrowers: { realEstate: [{ income: 10 }, { income: 20 }] },
+        }),
+      ).to.equal(15);
     });
   });
 
@@ -483,9 +551,11 @@ describe('BorrowerCalculator', () => {
 
     it("returns sum of borrowers' salary", () => {
       expect(Calculator.getSalary({ borrowers: { salary: 1 } })).to.equal(1);
-      expect(Calculator.getSalary({
-        borrowers: [{ salary: 1 }, { salary: 2 }],
-      })).to.equal(3);
+      expect(
+        Calculator.getSalary({
+          borrowers: [{ salary: 1 }, { salary: 2 }],
+        }),
+      ).to.equal(3);
     });
   });
 
@@ -495,13 +565,15 @@ describe('BorrowerCalculator', () => {
     });
 
     it('should sum all fortune items in a borrower', () => {
-      expect(Calculator.getTotalFunds({
-        borrowers: {
-          bankFortune: 1,
-          insurance2: [{ value: 2 }],
-          insurance3A: [{ value: 3 }],
-        },
-      })).to.equal(6);
+      expect(
+        Calculator.getTotalFunds({
+          borrowers: {
+            bankFortune: 1,
+            insurance2: [{ value: 2 }],
+            insurance3A: [{ value: 3 }],
+          },
+        }),
+      ).to.equal(6);
     });
   });
 
@@ -511,103 +583,120 @@ describe('BorrowerCalculator', () => {
     });
 
     it('should return sum of all incomes for a borrower, and subtract expenses', () => {
-      expect(Calculator.getTotalIncome({
-        borrowers: {
-          salary: 1,
-          bonusExists: true,
-          bonus2018: 2, // Adds 1
-          otherIncome: [{ value: 3 }],
-          expenses: [{ value: 5, description: EXPENSES.LEASING }], // Subtracts 5
-        },
-      })).to.equal(0);
+      expect(
+        Calculator.getTotalIncome({
+          borrowers: {
+            salary: 1,
+            bonusExists: true,
+            bonus2018: 2, // Adds 1
+            otherIncome: [{ value: 3 }],
+            expenses: [{ value: 5, description: EXPENSES.LEASING }], // Subtracts 5
+          },
+        }),
+      ).to.equal(0);
     });
 
     it('adds fortuneReturns if they exist', () => {
       const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
-      expect(calc.getTotalIncome({
-        borrowers: {
-          bankFortune: 100,
-          salary: 1,
-          bonusExists: true,
-          bonus2018: 2, // Adds 1
-          otherIncome: [{ value: 3 }],
-          expenses: [{ value: 5, description: EXPENSES.LEASING }], // Subtracts 5
-        },
-      })).to.equal(1);
+      expect(
+        calc.getTotalIncome({
+          borrowers: {
+            bankFortune: 100,
+            salary: 1,
+            bonusExists: true,
+            bonus2018: 2, // Adds 1
+            otherIncome: [{ value: 3 }],
+            expenses: [{ value: 5, description: EXPENSES.LEASING }], // Subtracts 5
+          },
+        }),
+      ).to.equal(1);
     });
 
     it('should only subtract expenses that are meant to be subtracted', () => {
       const calc = new CalculatorClass({
         expensesSubtractFromIncome: [EXPENSES.LEASING],
       });
-      expect(calc.getTotalIncome({
-        borrowers: {
-          salary: 1,
-          bonusExists: true,
-          bonus2018: 2, // Adds 1
-          otherIncome: [{ value: 3 }],
-          expenses: [
-            { value: 1, description: EXPENSES.LEASING },
-            { value: 5, description: EXPENSES.OTHER },
-          ],
-        },
-      })).to.equal(4);
+      expect(
+        calc.getTotalIncome({
+          borrowers: {
+            salary: 1,
+            bonusExists: true,
+            bonus2018: 2, // Adds 1
+            otherIncome: [{ value: 3 }],
+            expenses: [
+              { value: 1, description: EXPENSES.LEASING },
+              { value: 5, description: EXPENSES.OTHER },
+            ],
+          },
+        }),
+      ).to.equal(4);
     });
   });
 
   describe('personalInfoPercent', () => {
     it('works', () => {
-      expect(Calculator.personalInfoPercent({
-        borrowers: [
-          {
-            _id: 'aBcNvYnq34rnb29nh',
-            birthDate: '1992-04-14',
-            bonusExists: false,
-            childrenCount: 0,
-            citizenship: 'hello',
-            civilStatus: 'MARRIED',
-            createdAt: '2018-08-23T10:18:18.139Z',
-            expenses: [],
-            firstName: 'dfadf',
-            gender: 'M',
-            isSwiss: false,
-            isUSPerson: false,
-            lastName: 'asdfasd',
-            otherFortune: [],
-            otherIncome: [],
-            realEstate: [],
-            residencyPermit: 'b',
-            sameAddress: true,
-            updatedAt: '2018-08-23T10:20:22.234Z',
-            userId: 'fAksm7pJveZybme5F',
-            salary: 100,
-            netSalary: 80,
-            bankFortune: 1000,
-            hasOwnCompany: false,
-            ownCompanies: [],
-          },
-        ],
-      })).to.equal(1);
+      expect(
+        Calculator.personalInfoPercent({
+          borrowers: [
+            {
+              _id: 'aBcNvYnq34rnb29nh',
+              birthDate: '1992-04-14',
+              bonusExists: false,
+              childrenCount: 0,
+              citizenship: 'hello',
+              civilStatus: 'MARRIED',
+              createdAt: '2018-08-23T10:18:18.139Z',
+              expenses: [],
+              firstName: 'dfadf',
+              gender: 'M',
+              isSwiss: false,
+              isUSPerson: false,
+              lastName: 'asdfasd',
+              otherFortune: [],
+              otherIncome: [],
+              realEstate: [],
+              residencyPermit: 'b',
+              sameAddress: true,
+              updatedAt: '2018-08-23T10:20:22.234Z',
+              userId: 'fAksm7pJveZybme5F',
+              salary: 100,
+              netSalary: 80,
+              bankFortune: 1000,
+              hasOwnCompany: false,
+              ownCompanies: [],
+            },
+          ],
+        }),
+      ).to.equal(1);
     });
   });
 
   describe('sumValues', () => {
     it('sums values with a single key', () => {
-      expect(Calculator.sumValues({
-        borrowers: [{ a: 1 }, { a: 2 }],
-        keys: 'a',
-      })).to.equal(3);
+      expect(
+        Calculator.sumValues({
+          borrowers: [{ a: 1 }, { a: 2 }],
+          keys: 'a',
+        }),
+      ).to.equal(3);
     });
 
     it('sums values with multiple keys', () => {
-      expect(Calculator.sumValues({
-        borrowers: [{ a: 1, b: 4 }, { a: 2, b: 3 }],
-        keys: ['a', 'b'],
-      })).to.equal(10);
+      expect(
+        Calculator.sumValues({
+          borrowers: [
+            { a: 1, b: 4 },
+            { a: 2, b: 3 },
+          ],
+          keys: ['a', 'b'],
+        }),
+      ).to.equal(10);
     });
 
     it('omits keys if they are not provided', () => {
-      expect(Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
+      expect(
+        Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' }),
+      ).to.equal(1);
     });
   });
 
@@ -616,56 +705,70 @@ describe('BorrowerCalculator', () => {
       const yearsAgo25 = new Date();
       yearsAgo25.setFullYear(yearsAgo25.getFullYear() - 25);
       yearsAgo25.setDate(yearsAgo25.getDate() - 1);
-      expect(Calculator.getRetirement({
-        borrowers: [{ birthDate: yearsAgo25, gender: GENDER.M }],
-      })).to.equal(40);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo25, gender: GENDER.M }],
+        }),
+      ).to.equal(40);
     });
 
     it('returns 0 for a retired person', () => {
-      expect(Calculator.getRetirement({
-        borrowers: [{ age: 70, gender: GENDER.M }],
-      })).to.equal(0);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ age: 70, gender: GENDER.M }],
+        }),
+      ).to.equal(0);
     });
   });
 
   describe('getFortuneReturns', () => {
     it('returns 0 if the ratio is not set', () => {
-      expect(Calculator.getFortuneReturns({
-        borrowers: [{ bankFortune: 100 }],
-      })).to.equal(0);
+      expect(
+        Calculator.getFortuneReturns({
+          borrowers: [{ bankFortune: 100 }],
+        }),
+      ).to.equal(0);
     });
 
     it('returns some revenue if the constant is set', () => {
       const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
-      expect(calc.getFortuneReturns({ borrowers: [{ bankFortune: 100 }] })).to.equal(1);
+      expect(
+        calc.getFortuneReturns({ borrowers: [{ bankFortune: 100 }] }),
+      ).to.equal(1);
     });
   });
 
   describe('getRealEstateExpenses', () => {
     it('adds up expenses for real estate', () => {
       // 12k maintenance, 48k interests, 12k amort
-      expect(Calculator.getRealEstateExpenses({
-        borrowers: [{ realEstate: [{ value: 1200000, loan: 960000 }] }],
-      })).to.equal(6000);
+      expect(
+        Calculator.getRealEstateExpenses({
+          borrowers: [{ realEstate: [{ value: 1200000, loan: 960000 }] }],
+        }),
+      ).to.equal(6000);
     });
 
     it('counts no amortization if the loan is below amortizationGoal', () => {
       // 12k maintenance, 39k interests, 0 amort
-      expect(Calculator.getRealEstateExpenses({
-        borrowers: [{ realEstate: [{ value: 1200000, loan: 780000 }] }],
-      })).to.equal(4250);
+      expect(
+        Calculator.getRealEstateExpenses({
+          borrowers: [{ realEstate: [{ value: 1200000, loan: 780000 }] }],
+        }),
+      ).to.equal(4250);
     });
 
     it('uses theoreticalExpenses if provided', () => {
-      expect(Calculator.getRealEstateExpenses({
-        borrowers: [
-          {
-            realEstate: [
-              { value: 1200000, loan: 780000, theoreticalExpenses: 120 },
-            ],
-          },
-        ],
-      })).to.equal(10);
+      expect(
+        Calculator.getRealEstateExpenses({
+          borrowers: [
+            {
+              realEstate: [
+                { value: 1200000, loan: 780000, theoreticalExpenses: 120 },
+              ],
+            },
+          ],
+        }),
+      ).to.equal(10);
     });
   });
 
@@ -730,14 +833,18 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(1452524844);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
+        1452524844,
+      );
     });
 
     it('changes for non required form values as well', () => {
       const borrower1 = { company: 'a' };
       const borrower2 = { company: 'b' };
 
-      expect(Calculator.getBorrowerFormHash({ borrowers: borrower1 })).to.not.equal(Calculator.getBorrowerFormHash({ borrowers: borrower2 }));
+      expect(
+        Calculator.getBorrowerFormHash({ borrowers: borrower1 }),
+      ).to.not.equal(Calculator.getBorrowerFormHash({ borrowers: borrower2 }));
     });
 
     it('returns a different value for multiple borrowers', () => {
@@ -756,7 +863,9 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(5211477033);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
+        5211477033,
+      );
     });
   });
 

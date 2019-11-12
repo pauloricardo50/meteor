@@ -4,7 +4,7 @@ import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
 
-export default (Component) => {
+export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
     constructor(props) {
       super(props);
@@ -32,7 +32,7 @@ export default (Component) => {
       }
     }
 
-    getAllowedValues = (props) => {
+    getAllowedValues = props => {
       const { customAllowedValues, model, parent } = props;
       const { values } = this.state;
 
@@ -43,12 +43,13 @@ export default (Component) => {
       if (customAllowedValues && typeof customAllowedValues === 'function') {
         Promise.resolve()
           .then(() =>
-            customAllowedValues(model, parent && Number(parent.name.slice(-1))))
-          .then((result) => this.setState({ values: result }))
+            customAllowedValues(model, parent && Number(parent.name.slice(-1))),
+          )
+          .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (
-        customAllowedValues
-        && typeof customAllowedValues === 'object'
+        customAllowedValues &&
+        typeof customAllowedValues === 'object'
       ) {
         const { query, params = () => ({}), allowNull } = customAllowedValues;
 
@@ -69,14 +70,14 @@ export default (Component) => {
       }
     };
 
-    formatOption = (option) => {
+    formatOption = option => {
       const { allowedValuesIntlId, intlId, name } = this.props;
       return (
         <T id={`Forms.${allowedValuesIntlId || intlId || name}.${option}`} />
       );
     };
 
-    renderValue = (value) => {
+    renderValue = value => {
       const transform = this.makeTransform();
       const { placeholder } = this.props;
 
@@ -88,7 +89,7 @@ export default (Component) => {
         if (value.length === 0) {
           return placeholder;
         }
-        return value.map((val) => (
+        return value.map(val => (
           <Chip
             key={val}
             label={transform ? transform(val) : this.formatOption(val)}
@@ -108,12 +109,12 @@ export default (Component) => {
       const { transform } = this.props;
       const { data } = this.state;
       if (data) {
-        return (value) => {
+        return value => {
           if (!value) {
             // If the value is falsy, just transform it
             return transform(value);
           }
-          return transform(data.find((item) => (item && item._id) === value));
+          return transform(data.find(item => (item && item._id) === value));
         };
       }
       return transform;

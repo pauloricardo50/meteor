@@ -41,13 +41,13 @@ server.spawn({
 
 const waitServer = (retries, cb) => {
   http
-    .get(`http://localhost:${port}`, (res) => {
+    .get(`http://localhost:${port}`, res => {
       res.on('data', () => {});
       res.on('end', () => {
         cb();
       });
     })
-    .on('error', (e) => {
+    .on('error', e => {
       if (retries > 0) {
         setTimeout(() => waitServer(--retries, cb), 1000);
       } else {
@@ -67,7 +67,7 @@ waitServer(50, () => {
     },
   });
 
-  cypress.process.once('exit', (code) => {
+  cypress.process.once('exit', code => {
     if (backend.process) {
       backend.kill();
     }

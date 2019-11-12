@@ -7,7 +7,7 @@ import Tooltip from '../Material/Tooltip';
 
 type SliderProps = {};
 
-const formatTooltip = (props) => {
+const formatTooltip = props => {
   const { children, value, open, valueLabelFormat, valueLabelDisplay } = props;
 
   if (valueLabelDisplay === 'off') {

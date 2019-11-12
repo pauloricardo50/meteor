@@ -26,10 +26,10 @@ class Form extends Accounts.ui.Form {
     } = this.props;
     return (
       <form
-        ref={(ref) => {
+        ref={ref => {
           this.form = ref;
         }}
-        className={['accounts','login-input', className].join(' ')}
+        className={['accounts', 'login-input', className].join(' ')}
       >
         {Object.keys(fields).length > 0 ? (
           <Accounts.ui.Fields fields={fields} />
@@ -167,7 +167,6 @@ class FormMessage extends Accounts.ui.FormMessage {
 
   render() {
     const { message } = this.props;
-
 
     if (!message) {
       return null;

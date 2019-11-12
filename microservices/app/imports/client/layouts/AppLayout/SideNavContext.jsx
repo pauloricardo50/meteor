@@ -8,11 +8,11 @@ const exactRoutesWithoutSidenav = ['/'];
 const routesWithoutSidenav = ['/enroll-account', '/reset-password', '/signup'];
 
 const getShowSideNav = ({ location }, { applicationType }) =>
-  exactRoutesWithoutSidenav.indexOf(location.pathname) === -1
-  && routesWithoutSidenav.every(route => !location.pathname.startsWith(route))
-  && applicationType !== APPLICATION_TYPES.SIMPLE;
+  exactRoutesWithoutSidenav.indexOf(location.pathname) === -1 &&
+  routesWithoutSidenav.every(route => !location.pathname.startsWith(route)) &&
+  applicationType !== APPLICATION_TYPES.SIMPLE;
 
-export const withSideNavContextProvider = Component => (props) => {
+export const withSideNavContextProvider = Component => props => {
   const { history, loan } = props;
   return (
     <Provider value={getShowSideNav(history, loan)}>

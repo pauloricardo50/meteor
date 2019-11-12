@@ -82,7 +82,9 @@ describe('widget1 Reducer', () => {
           { name: CURRENT_LOAN, initialSliderMax },
         ])[CURRENT_LOAN];
         const value = 0;
-        expect(currentLoanReducer({}, { type: SET_VALUE(CURRENT_LOAN), value })).to.deep.equal({
+        expect(
+          currentLoanReducer({}, { type: SET_VALUE(CURRENT_LOAN), value }),
+        ).to.deep.equal({
           value: 0,
           auto: false,
         });
@@ -109,13 +111,17 @@ describe('widget1 Reducer', () => {
       it('sets the value without changing auto', () => {
         const value = 100;
         let auto = true;
-        expect(reducer({ auto }, { type: SUGGEST_VALUE(TEST), value })).to.deep.equal({
+        expect(
+          reducer({ auto }, { type: SUGGEST_VALUE(TEST), value }),
+        ).to.deep.equal({
           value,
           auto,
         });
 
         auto = false;
-        expect(reducer({ auto }, { type: SUGGEST_VALUE(TEST), value })).to.deep.equal({
+        expect(
+          reducer({ auto }, { type: SUGGEST_VALUE(TEST), value }),
+        ).to.deep.equal({
           value,
           auto,
         });
@@ -148,19 +154,25 @@ describe('widget1 Reducer', () => {
 
     describe('increaseSliderMax action', () => {
       it('doubles sliderMax', () => {
-        expect(reducer({ sliderMax: 50 }, { type: INCREASE_SLIDER_MAX(TEST) })).to.deep.equal({
+        expect(
+          reducer({ sliderMax: 50 }, { type: INCREASE_SLIDER_MAX(TEST) }),
+        ).to.deep.equal({
           sliderMax: 2 * 50,
         });
       });
 
       it('prevents a user from going above 100M', () => {
-        expect(reducer({ sliderMax: 50000001 }, { type: INCREASE_SLIDER_MAX(TEST) })).to.deep.equal({ sliderMax: 100000000 });
+        expect(
+          reducer({ sliderMax: 50000001 }, { type: INCREASE_SLIDER_MAX(TEST) }),
+        ).to.deep.equal({ sliderMax: 100000000 });
       });
     });
 
     describe('setAllowExtremeLoan action', () => {
       it('sets allowExtremeLoan to true', () => {
-        expect(reducer({}, { type: SET_ALLOW_EXTREME_LOAN(TEST) })).to.deep.equal({
+        expect(
+          reducer({}, { type: SET_ALLOW_EXTREME_LOAN(TEST) }),
+        ).to.deep.equal({
           allowExtremeLoan: true,
         });
       });

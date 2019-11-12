@@ -1,11 +1,9 @@
-import PropertyService from 'core/api/properties/server/PropertyService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   bookPromotionLot,
   sellPromotionLot,
   proInviteUser,
-  anonymousLoanInsert,
   userLoanInsert,
   anonymousCreateUser,
 } from '../../methods';
@@ -17,7 +15,6 @@ import {
   promotionLotBooked,
   promotionLotSold,
   referralOnlyNotification,
-  newAnonymousLoan,
   newLoan,
   newUser,
 } from './slackNotifications';
@@ -28,7 +25,9 @@ import {
 
 ServerEventService.addAfterMethodListener(
   bookPromotionLot,
-  ({ context: { userId }, params: { promotionLotId, loanId } }) => {
+  ({ context, params: { promotionLotId, loanId } }) => {
+    context.unblock();
+    const { userId } = context;
     const currentUser = UserService.get(userId);
     const promotionLot = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -46,7 +45,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   sellPromotionLot,
-  ({ context: { userId }, params: { promotionLotId } }) => {
+  ({ context, params: { promotionLotId } }) => {
+    context.unblock();
+    const { userId } = context;
     const currentUser = UserService.get(userId);
     const { attributedTo, ...promotionLot } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
@@ -66,9 +67,11 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   proInviteUser,
   ({
-    context: { userId },
+    context,
     params: { propertyIds = [], properties = [], promotionIds = [], user },
   }) => {
+    context.unblock();
+    const { userId } = context;
     const notificationPropertyIds = [
       ...propertyIds,
       ...properties.map(({ _id, externalId }) => _id || externalId),
@@ -95,32 +98,11 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-// ServerEventService.addAfterMethodListener(
-//   anonymousLoanInsert,
-//   ({ params: { proPropertyId, referralId }, result: loanId }) => {
-//     const property = proPropertyId
-//       && PropertyService.fetchOne({
-//         $filters: { _id: proPropertyId },
-//         address1: 1,
-//       });
-//     const { name: loanName } = LoanService.fetchOne({
-//       $filters: { _id: loanId },
-//       name: 1,
-//     });
-//     const referral = referralId
-//       && UserService.fetchOne({
-//         $filters: { _id: referralId },
-//         name: 1,
-//         organisations: { name: 1 },
-//       });
-
-//     newAnonymousLoan({ loanName, loanId, property, referral });
-//   },
-// );
-
 ServerEventService.addAfterMethodListener(
   userLoanInsert,
-  ({ context: { userId }, result: loanId }) => {
+  ({ context, result: loanId }) => {
+    context.unblock();
+    const { userId } = context;
     const currentUser = UserService.get(userId);
     const { name: loanName } = LoanService.fetchOne({
       $filters: { _id: loanId },
@@ -133,7 +115,8 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
-  ({ result: userId }) => {
+  ({ context, result: userId }) => {
+    context.unblock();
     const currentUser = UserService.get(userId);
     const {
       loans = [],
@@ -147,15 +130,15 @@ ServerEventService.addAfterMethodListener(
     const suffix = [
       referredBy && referredBy.name,
       referredByOrg && referredByOrg.name,
-      loans[0]
-        && loans[0].properties
-        && loans[0].properties[0]
-        && loans[0].properties[0].category === PROPERTY_CATEGORY.PRO
-        && (loans[0].properties[0].address1 || loans[0].properties[0].name),
-      loans[0]
-        && loans[0].promotions
-        && loans[0].promotions[0]
-        && loans[0].promotions[0].name,
+      loans[0] &&
+        loans[0].properties &&
+        loans[0].properties[0] &&
+        loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
+        (loans[0].properties[0].address1 || loans[0].properties[0].name),
+      loans[0] &&
+        loans[0].promotions &&
+        loans[0].promotions[0] &&
+        loans[0].promotions[0].name,
     ]
       .filter(x => x)
       .map(x => `(${x})`)

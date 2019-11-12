@@ -8,8 +8,8 @@ import { defaultDatePickerProps } from './dateInputConstants';
 
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = undefined, maxDate = undefined) => day =>
-  (minDate && !isInclusivelyAfterDay(day, moment(minDate)))
-  || (maxDate && isInclusivelyAfterDay(day, moment(maxDate)));
+  (minDate && !isInclusivelyAfterDay(day, moment(minDate))) ||
+  (maxDate && isInclusivelyAfterDay(day, moment(maxDate)));
 
 const returnYears = () => {
   const years = [];

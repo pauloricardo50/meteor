@@ -93,7 +93,8 @@ const addProUserToPropertyAPI = ({
           propertyId,
           userId: proUser._id,
           permissions,
-        }))
+        }),
+      )
       .then(() => {
         const property = PropertyService.fetchOne({
           $filters: { _id: propertyId },

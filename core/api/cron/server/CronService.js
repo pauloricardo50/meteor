@@ -6,9 +6,9 @@ import SlackService from 'core/api/slack/server/SlackService';
 import CronitorService from './CronitorService';
 
 const ACTIVATE_CRONITOR = !(
-  Meteor.isTest
-  || Meteor.isAppTest
-  || Meteor.isDevelopment
+  Meteor.isTest ||
+  Meteor.isAppTest ||
+  Meteor.isDevelopment
 );
 
 export const TestCronitor = {

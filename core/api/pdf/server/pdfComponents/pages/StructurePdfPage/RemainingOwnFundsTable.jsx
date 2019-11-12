@@ -10,7 +10,7 @@ import { ROW_TYPES } from '../../PdfTable/PdfTable';
 type RemainingOwnFundsTableProps = {};
 
 const oneBorrowerHasOwnFunds = ({ borrowers }, type) =>
-  borrowers.filter((borrower) => {
+  borrowers.filter(borrower => {
     const valueForType = borrower[type];
     if (Array.isArray(valueForType)) {
       return valueForType.length > 0;
@@ -20,14 +20,17 @@ const oneBorrowerHasOwnFunds = ({ borrowers }, type) =>
 
 const remainingFundsTableData = ({ loan, structureId, calculator }) =>
   Object.values(OWN_FUNDS_TYPES)
-    .filter(type =>
-      ![
-        OWN_FUNDS_TYPES.BANK_FORTUNE,
-        OWN_FUNDS_TYPES.DONATION,
-      ].includes(type))
+    .filter(
+      type =>
+        ![OWN_FUNDS_TYPES.BANK_FORTUNE, OWN_FUNDS_TYPES.DONATION].includes(
+          type,
+        ),
+    )
     .map(type => ({
       label: <T id={`PDF.ownFund.${type}`} />,
-      data: toMoney(calculator.getRemainingFundsOfType({ loan, type, structureId })),
+      data: toMoney(
+        calculator.getRemainingFundsOfType({ loan, type, structureId }),
+      ),
       condition: oneBorrowerHasOwnFunds(loan, type),
       style: { textAlign: 'right' },
     }));
@@ -42,11 +45,13 @@ const getRemainingOwnFundsRows = ({ loan, structureId, calculator }) => [
   },
   {
     label: <T id="PDF.ownFund.bankFortune" />,
-    data: toMoney(calculator.getRemainingFundsOfType({
-      loan,
-      structureId,
-      type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-    })),
+    data: toMoney(
+      calculator.getRemainingFundsOfType({
+        loan,
+        structureId,
+        type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+      }),
+    ),
   },
   ...remainingFundsTableData({ loan, structureId, calculator }),
   {

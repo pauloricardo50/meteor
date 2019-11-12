@@ -56,9 +56,11 @@ export const DisconnectNotification = ({
     }
 
     if (!connected && !timer) {
-      setTimer(setTimeout(() => {
-        setOpen(true);
-      }, timeout));
+      setTimer(
+        setTimeout(() => {
+          setOpen(true);
+        }, timeout),
+      );
     }
 
     return () => timer && clearTimeout(timer);
@@ -74,7 +76,7 @@ export const DisconnectNotification = ({
       <SnackbarContent
         className={classes.errorSnackbar}
         aria-describedby="disconnected-notification"
-        message={(
+        message={
           <div
             className={cx(classes.message, 'disconnect-notification-message')}
           >
@@ -84,8 +86,8 @@ export const DisconnectNotification = ({
             />
             <span>Il semble que vous soyiez déconnecté</span>
           </div>
-        )}
-        action={(
+        }
+        action={
           <Button
             variant="outlined"
             size="small"
@@ -94,10 +96,12 @@ export const DisconnectNotification = ({
           >
             Se reconnecter
           </Button>
-        )}
+        }
       />
     </Snackbar>
   );
 };
 
-export default withTracker(() => ({ status: Meteor.status() }))(DisconnectNotification);
+export default withTracker(() => ({ status: Meteor.status() }))(
+  DisconnectNotification,
+);

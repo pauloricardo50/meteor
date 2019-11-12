@@ -30,7 +30,8 @@ const PropertiesTab = ({ loan }: PropertiesTabProps) => {
   const { properties, userId, _id: loanId, hasPromotion } = loan;
   return (
     <div className="properties-tab">
-      {hasPromotion && 'Peut pas avoir de biens immobilier sur un dossier avec une promotion.'}
+      {hasPromotion &&
+        'Peut pas avoir de biens immobilier sur un dossier avec une promotion.'}
       <div className="buttons">
         <PropertyAdder
           loanId={loanId}

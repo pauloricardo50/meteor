@@ -10,7 +10,7 @@ const columnOptions = [
   { id: 'rate', label: <T id="Irs10y.rate" /> },
 ];
 
-const makeMapIrs10y = ({ setIrs10yToModify, setShowDialog }) => (irs10y) => {
+const makeMapIrs10y = ({ setIrs10yToModify, setShowDialog }) => irs10y => {
   const { _id: irs10yId, date, rate } = irs10y;
 
   return {

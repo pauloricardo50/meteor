@@ -6,18 +6,18 @@ import Downloader from '../Downloader';
 
 type DocumentDownloadListProps = {};
 
-const getIconForFileType = (key) => {
+const getIconForFileType = key => {
   const extension = key.split('.').slice(-1)[0];
 
   switch (extension) {
-  case 'pdf':
-    return 'attachFile';
-  case 'jpg':
-  case 'jpeg':
-  case 'png':
-    return 'image';
-  default:
-    return 'attachFile';
+    case 'pdf':
+      return 'attachFile';
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+      return 'image';
+    default:
+      return 'attachFile';
   }
 };
 

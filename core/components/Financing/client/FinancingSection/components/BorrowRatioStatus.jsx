@@ -10,7 +10,7 @@ import { FinmaRatio } from '.';
 
 type BorrowRatioStatusProps = {};
 
-const formatValues = (values) => {
+const formatValues = values => {
   if (!values) {
     return;
   }

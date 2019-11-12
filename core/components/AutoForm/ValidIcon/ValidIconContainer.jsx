@@ -50,8 +50,8 @@ export default WrappedComponent =>
         return STATUS.ERROR;
       }
       if (
-        todo
-        || (required === true && [undefined, '', null].includes(value))
+        todo ||
+        (required === true && [undefined, '', null].includes(value))
       ) {
         return STATUS.TODO;
       }

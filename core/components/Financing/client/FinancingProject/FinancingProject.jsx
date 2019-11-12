@@ -17,8 +17,8 @@ const MAX_NOTARY_FEES_RATE = 0.1;
 const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
 
 const calculateMaxNotaryFees = data =>
-  (Calculator.selectPropertyValue(data) + data.structure.propertyWork)
-  * MAX_NOTARY_FEES_RATE;
+  (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
+  MAX_NOTARY_FEES_RATE;
 
 const FinancingProject = (props: FinancingProjectProps) => (
   <FinancingSection

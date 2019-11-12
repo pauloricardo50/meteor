@@ -28,7 +28,7 @@ import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus'
 type FinancingResultProps = {};
 
 const FinancingResult = ({ error }: FinancingResultProps) =>
-  (error ? (
+  error ? (
     <h3 className="error">{error.message}</h3>
   ) : (
     <FinancingSection
@@ -127,6 +127,6 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
       ]}
     />
-  ));
+  );
 
 export default React.memo(FinancingResult);

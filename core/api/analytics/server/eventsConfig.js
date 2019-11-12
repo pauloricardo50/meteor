@@ -2,7 +2,8 @@ import curryRight from 'lodash/curryRight';
 import EVENTS from '../events';
 
 const curryPick = curryRight((obj, keys) =>
-  keys.reduce((o, k) => ({ ...o, [k]: obj[k] }), {}));
+  keys.reduce((o, k) => ({ ...o, [k]: obj[k] }), {}),
+);
 
 export const EVENTS_CONFIG = {
   [EVENTS.USER_CREATED]: {

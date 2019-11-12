@@ -19,11 +19,11 @@ const getLoanTitle = (name, customName) => {
 };
 
 const getAddress = ({ promotions, properties, hasPromotion }) =>
-  (hasPromotion
+  hasPromotion
     ? promotions[0].address
     : properties.length
-      ? properties[0].address
-      : '');
+    ? properties[0].address
+    : '';
 
 const getImage = ({ promotions, properties, hasPromotion, hasProProperty }) => {
   if (hasPromotion) {

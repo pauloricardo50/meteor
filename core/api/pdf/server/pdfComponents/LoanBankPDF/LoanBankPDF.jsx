@@ -49,12 +49,12 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
       data: { loan, options, calculator: defaultCalculator },
     },
     { id: 'property', Component: PropertyPdfPage, data: { loan, options } },
-    lenderRules
-      && lenderRules.length > 0 && {
-      id: 'lenderRules',
-      Component: LenderRulesPdfPage,
-      data: { loan, organisation, options },
-    },
+    lenderRules &&
+      lenderRules.length > 0 && {
+        id: 'lenderRules',
+        Component: LenderRulesPdfPage,
+        data: { loan, organisation, options },
+      },
   ].filter(x => x);
 };
 
@@ -64,4 +64,6 @@ const LoanBankPDF = (props: LoanBankPDFProps) => {
   return <Pdf stylesheet={stylesheet} pages={pages} pdfName={pdfName} />;
 };
 
-export default withTranslationContext(() => ({ purchaseType: 'ACQUISITION' }))(LoanBankPDF);
+export default withTranslationContext(() => ({ purchaseType: 'ACQUISITION' }))(
+  LoanBankPDF,
+);

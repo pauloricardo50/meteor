@@ -45,8 +45,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     isDisabled,
   } = user;
   const { roles: currentUserRoles = [] } = currentUser || {};
-  const allowAssign = currentUserRoles.includes(ROLES.DEV)
-    || (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
+  const allowAssign =
+    currentUserRoles.includes(ROLES.DEV) ||
+    (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => {
@@ -103,9 +104,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           )}
         </div>
         <div className="email">
-          <Icon type="mail" />
-          {' '}
-          <a href={`mailto:${email}`}>{email}</a>
+          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
           <Tooltip
             title={
               emailVerified
@@ -115,23 +114,23 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           >
             <FontAwesomeIcon
               icon={emailVerified ? faCheckCircle : faExclamationCircle}
-              className={cx(emailVerified ? 'email-verified' : 'email-unverified')}
+              className={cx(
+                emailVerified ? 'email-verified' : 'email-unverified',
+              )}
             />
-          </Tooltip>
-          {' '}
+          </Tooltip>{' '}
           <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
-            <Icon type="phone" />
-            {' '}
+            <Icon type="phone" />{' '}
             <TooltipArray
               title="Numéros de téléphone"
               items={phoneNumbers.map(number => (
                 <a key={number} href={`tel:${number}`}>
                   <span>
                     {number}
-&nbsp;
+                    &nbsp;
                   </span>
                 </a>
               ))}
@@ -140,8 +139,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         )}
 
         <p className="secondary created-at">
-          <T id="UsersTable.createdAt" />
-          {' '}
+          <T id="UsersTable.createdAt" />{' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
 

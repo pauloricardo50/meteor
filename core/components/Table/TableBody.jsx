@@ -18,7 +18,7 @@ const TableBody = ({
     {data
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((row, i) =>
-        (selectable ? (
+        selectable ? (
           <SelectableRow
             key={row.id || i}
             row={row}
@@ -33,7 +33,8 @@ const TableBody = ({
             columnOptions={columnOptions}
             clickable={clickable}
           />
-        )))}
+        ),
+      )}
   </MuiTableBody>
 );
 

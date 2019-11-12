@@ -12,7 +12,7 @@ import SimpleMaxPropertyValueEmptyState from './SimpleMaxPropertyValueEmptyState
 
 type SimpleMaxPropertyValueProps = {};
 
-const getContent = (props) => {
+const getContent = props => {
   const { state, loading, loan } = props;
 
   if (loading) {

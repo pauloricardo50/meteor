@@ -15,7 +15,7 @@ const makeHandleTextChange = ({
   max,
   allowUndefined,
   forceUndefined,
-}) => (value) => {
+}) => value => {
   if (allowUndefined && valueIsNotDefined(value)) {
     return onChange('');
   }

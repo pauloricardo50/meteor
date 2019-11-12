@@ -31,27 +31,27 @@ const RevenueConsolidator = ({
 }: RevenueConsolidatorProps) => (
   <AutoFormDialog
     title="Confirmer paiement de"
-    description={(
+    description={
       <div>
         <h2 className="text-center">
           <Money value={amount} />
           <small className="secondary">
             {sourceOrganisation && (
-            <>
+              <>
                 &nbsp;
-              <CollectionIconLink
-                relatedDoc={{
-                  ...sourceOrganisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            </>
+                <CollectionIconLink
+                  relatedDoc={{
+                    ...sourceOrganisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              </>
             )}
           </small>
         </h2>
         {description && <p className="text-center">{description}</p>}
       </div>
-    )}
+    }
     schema={schema}
     model={{ amount, paidAt: moment(paidAt).format('YYYY-MM-DD') }}
     onSubmit={values => consolidateRevenue.run({ revenueId, ...values })}

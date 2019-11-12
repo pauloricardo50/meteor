@@ -20,7 +20,7 @@ class ErrorBoundary extends Component {
     }
   }
 
-  sendToKadira = (error) => {
+  sendToKadira = error => {
     // Error should also log to kadira
     const { Kadira } = window;
     if (Kadira && Kadira.trackError) {
@@ -32,7 +32,9 @@ class ErrorBoundary extends Component {
     this.setState({ hasError: true, error });
     this.sendToKadira(error);
     logError.run({
-      error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+      error: JSON.parse(
+        JSON.stringify(error, Object.getOwnPropertyNames(error)),
+      ),
       additionalData: ['Render error', info],
       url:
         window && window.location && window.location.href
@@ -47,19 +49,19 @@ class ErrorBoundary extends Component {
 
     if (hasError) {
       switch (helper) {
-      case 'layout':
-        return <LayoutError error={error} />;
-      case 'app':
-        return (
-          <LayoutError
-            error={error}
-            style={{ width: '100%', height: '100%' }}
-          />
-        );
-      case 'root':
-        return <RootError error={error} />;
-      default:
-        return <React.Fragment>Woops!</React.Fragment>;
+        case 'layout':
+          return <LayoutError error={error} />;
+        case 'app':
+          return (
+            <LayoutError
+              error={error}
+              style={{ width: '100%', height: '100%' }}
+            />
+          );
+        case 'root':
+          return <RootError error={error} />;
+        default:
+          return <>Woops!</>;
       }
     }
 
