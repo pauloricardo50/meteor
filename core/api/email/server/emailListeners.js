@@ -77,6 +77,15 @@ ServerEventService.addAfterMethodListener(
       email: 1,
     });
 
+    if (emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION) {
+      const { promotion } = params;
+      return sendEmail.run({
+        emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
+        userId: params.proUserId,
+        params: { name, email, promotionName: promotion.name },
+      });
+    }
+
     return sendEmail.run({
       emailId: EMAIL_IDS.CONFIRM_USER_INVITATION,
       userId: params.proUserId,
