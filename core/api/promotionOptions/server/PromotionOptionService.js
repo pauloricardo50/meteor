@@ -59,13 +59,10 @@ export class PromotionOptionService extends CollectionService {
   getPromotion(promotionOptionId) {
     const promotionOption = this.fetchOne({
       $filters: { _id: promotionOptionId },
-      promotionLots: { promotion: { _id: 1 } },
+      promotion: { _id: 1 },
     });
 
-    return (
-      promotionOption.promotionLots &&
-      promotionOption.promotionLots[0].promotion
-    );
+    return promotionOption.promotion;
   }
 
   remove({ promotionOptionId, isLoanRemoval = false }) {
@@ -207,14 +204,6 @@ export class PromotionOptionService extends CollectionService {
     return Promise.resolve();
   }
 
-  updateSimpleVerification({ promotionOptionId, status, date }) {
-    return this.updateStatusObject({
-      promotionOptionId,
-      id: 'simpleVerification',
-      object: { status, date },
-    });
-  }
-
   setInitialSimpleVerification({ promotionOptionId, loanId }) {
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
@@ -240,14 +229,6 @@ export class PromotionOptionService extends CollectionService {
     }
 
     return { status, date };
-  }
-
-  updateFullVerification({ promotionOptionId, status, date }) {
-    return this.updateStatusObject({
-      promotionOptionId,
-      id: 'fullVerification',
-      object: { status, date },
-    });
   }
 
   activateReservation({ promotionOptionId }) {
@@ -408,7 +389,7 @@ export class PromotionOptionService extends CollectionService {
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
     });
-    this.updateStatusObject({
+    this.setProgress({
       promotionOptionId,
       id: 'bank',
       object: { status: PROMOTION_OPTION_BANK_STATUS.WAITLIST },
@@ -422,9 +403,7 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
-  updateStatusObject({ promotionOptionId, id, object }) {
-    this.getEmailRecipients({ promotionOptionId });
-
+  setProgress({ promotionOptionId, id, object }) {
     const { [id]: model } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       adminNote: 1,

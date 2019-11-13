@@ -7,7 +7,7 @@ import {
   promotionOptionRemove,
   increaseOptionPriority,
   reducePriorityOrder,
-  promotionOptionUpdateObject,
+  setPromotionOptionProgress,
   promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
   promotionOptionAddToWaitList,
@@ -56,9 +56,9 @@ reducePriorityOrder.setHandler(({ userId }, params) => {
   PromotionOptionService.reducePriorityOrder(params);
 });
 
-promotionOptionUpdateObject.setHandler(({ userId }, params) => {
+setPromotionOptionProgress.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.updateStatusObject(params);
+  PromotionOptionService.setProgress(params);
 });
 
 promotionOptionActivateReservation.setHandler(({ userId }, params) => {

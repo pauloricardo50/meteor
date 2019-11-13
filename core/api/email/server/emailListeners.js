@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 import moment from 'moment';
 
+import {
+  setPromotionOptionProgress,
+  promotionOptionActivateReservation,
+} from 'core/api/methods/index';
 import OfferService from '../../offers/server/OfferService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import {
@@ -9,7 +13,6 @@ import {
   sendNegativeFeedbackToAllLenders,
 } from '../../loans/index';
 import { offerSendFeedback } from '../../offers/index';
-import { fullOffer } from '../../fragments';
 import { proInviteUser } from '../../users/index';
 import FileService from '../../files/server/FileService';
 import { getUserNameAndOrganisation } from '../../helpers/index';
@@ -431,5 +434,46 @@ ServerEventService.addAfterMethodListener(
     }
 
     result.map(sendOfferFeedbackEmail);
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  setPromotionOptionProgress,
+  ({ context, params }) => {
+    context.unblock();
+    // TODO
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  promotionOptionActivateReservation,
+  ({ context, params }) => {
+    context.unblock();
+    const { promotionOptionId } = params;
+    const { loan, promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: {
+        promotions: { name: 1 },
+        user: { name: 1 },
+      },
+      promotionLots: { name: 1 },
+    });
+    const { promotions, user } = loan;
+    const [
+      {
+        name: promotionName,
+        $metadata: { invitedBy },
+      },
+    ] = promotions;
+
+    return sendEmail.run({
+      emailId: EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION,
+      userId: invitedBy,
+      params: {
+        promotionName,
+        name: user.name,
+        lotName: promotionLots[0].name,
+      },
+    });
   },
 );

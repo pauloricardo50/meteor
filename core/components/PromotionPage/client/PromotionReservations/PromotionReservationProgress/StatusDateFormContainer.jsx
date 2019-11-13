@@ -3,7 +3,7 @@ import { withProps } from 'recompose';
 
 import {
   loanUpdate,
-  promotionOptionUpdateObject,
+  setPromotionOptionProgress,
 } from '../../../../../api/methods';
 import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../../../api/constants';
 import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
@@ -60,18 +60,18 @@ export default withProps(({ id, loanId, promotionOptionId }) => {
     layout: isTextField
       ? [{ fields: ['date'] }, { fields: ['note'] }]
       : [
-          {
-            className: 'grid-col',
-            style: { gridTemplateColumns: '1fr 220px', width: '100%' },
-            fields: ['__REST'],
-          },
-        ],
+        {
+          className: 'grid-col',
+          style: { gridTemplateColumns: '1fr 220px', width: '100%' },
+          fields: ['__REST'],
+        },
+      ],
     submitFieldProps: { showSubmitField: isTextField },
     openDialog,
     dialogProps,
     dialogActions,
     onSubmit: async values => {
-      await promotionOptionUpdateObject.run({
+      await setPromotionOptionProgress.run({
         promotionOptionId,
         id,
         object: values,

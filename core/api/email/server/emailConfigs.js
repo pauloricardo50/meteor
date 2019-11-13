@@ -367,4 +367,8 @@ addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT, {
   createOverrides: promotionLotEmailOverrides,
 });
 
+addEmailConfig(EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
 export default emailConfigs;
