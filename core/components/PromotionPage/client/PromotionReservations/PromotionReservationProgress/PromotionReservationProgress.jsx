@@ -41,6 +41,7 @@ const PromotionReservationProgressComponent = ({
   className,
   loanProgress = {},
 }: PromotionReservationProgressProps) => {
+  console.log('loanProgress:', loanProgress);
   const {
     _id: promotionOptionId,
     simpleVerification,
@@ -198,5 +199,9 @@ export default withSmartQuery({
 })(PromotionReservationProgressComponent);
 
 export const PromotionReservationProgress = withProps(
-  ({ promotionOption: { loanProgress } }) => ({ loanProgress }),
+  ({
+    promotionOption: {
+      loan: { loanProgress },
+    },
+  }) => ({ loanProgress }),
 )(PromotionReservationProgressComponent);
