@@ -2,7 +2,6 @@ import moment from 'moment';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import {
   generateExpiringSoonReservationTasks,
   generateHalfLifeReservationReminderTasks,
@@ -15,7 +14,6 @@ import {
   anonymousCreateUser,
   proInviteUser,
   loanShareSolvency,
-  reservePromotionLot,
   setMaxPropertyValueWithoutBorrowRatio,
 } from '../../methods';
 import {
@@ -150,7 +148,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  [loanShareSolvency],
+  loanShareSolvency,
   ({ context, params: { shareSolvency, loanId } }) => {
     context.unblock();
 
@@ -164,36 +162,6 @@ ServerEventService.addAfterMethodListener(
         },
       });
     }
-  },
-);
-
-ServerEventService.addAfterMethodListener(
-  [reservePromotionLot],
-  ({ context: { userId }, params: { promotionOptionId } }) => {
-    const {
-      loan: { _id: loanId, user: { name: userName } = {} },
-      promotionLots = [],
-      promotion: { name: promotionName } = {},
-    } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
-      loan: { user: { name: 1 } },
-      promotionLots: { name: 1 },
-      promotion: { name: 1 },
-    });
-    const { name: proName } = UserService.fetchOne({
-      $filters: { _id: userId },
-      name: 1,
-    });
-    const [{ name: promotionLotName }] = promotionLots;
-
-    TaskService.insert({
-      object: {
-        collection: LOANS_COLLECTION,
-        docId: loanId,
-        title: 'Nouvelle réservation, prendre contact',
-        description: `Le lot "${promotionLotName}" de la promotion "${promotionName}" est en cours de réservation pour ${userName} par ${proName}`,
-      },
-    });
   },
 );
 
@@ -268,7 +236,7 @@ ServerEventService.addAfterMethodListener(
     } = LoanService.fetchOne({
       $filters: { _id: loanId },
       hasPromotion: 1,
-      promotions: { assignedEmployee: 1 },
+      promotions: { assignedEmployee: { email: 1 } },
       user: { name: 1 },
     });
 
