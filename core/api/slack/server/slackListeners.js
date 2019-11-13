@@ -28,12 +28,9 @@ import PromotionService from '../../promotions/server/PromotionService';
 
 ServerEventService.addAfterMethodListener(
   reservePromotionLot,
-  async ({ context, params: { promotionOptionId }, result }) => {
+  ({ context, params: { promotionOptionId } }) => {
     context.unblock();
     const { userId } = context;
-    if (typeof result.then === 'function') {
-      await result;
-    }
 
     const currentUser = UserService.get(userId);
     const {
@@ -150,14 +147,14 @@ ServerEventService.addAfterMethodListener(
       referredBy && referredBy.name,
       referredByOrg && referredByOrg.name,
       loans[0] &&
-      loans[0].properties &&
-      loans[0].properties[0] &&
-      loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
-      (loans[0].properties[0].address1 || loans[0].properties[0].name),
+        loans[0].properties &&
+        loans[0].properties[0] &&
+        loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
+        (loans[0].properties[0].address1 || loans[0].properties[0].name),
       loans[0] &&
-      loans[0].promotions &&
-      loans[0].promotions[0] &&
-      loans[0].promotions[0].name,
+        loans[0].promotions &&
+        loans[0].promotions[0] &&
+        loans[0].promotions[0].name,
     ]
       .filter(x => x)
       .map(x => `(${x})`)
@@ -246,30 +243,23 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   promotionOptionUploadAgreement,
-  ({
-    context: { userId: proId },
-    params: { promotionOptionId, startDate },
-  }) => {
+  ({ context: { userId: proId }, params: { promotionOptionId } }) => {
     const {
-      promotion: {
-        _id: promotionId,
-        name: promotionName,
-        assignedEmployee,
-        agreementDuration,
-      },
+      promotion: { _id: promotionId, name: promotionName, assignedEmployee },
       promotionLots = [],
       loan: {
         user: { name: userName },
       },
+      reservationAgreement: { startDate, expirationDate },
     } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       promotion: {
         name: 1,
         assignedEmployee: { email: 1 },
-        agreementDuration: 1,
       },
       promotionLots: { name: 1 },
       loan: { user: { name: 1 } },
+      reservationAgreement: { startDate: 1, expirationDate: 1 },
     });
 
     const [{ name: promotionLotName }] = promotionLots;
@@ -284,10 +274,7 @@ ServerEventService.addAfterMethodListener(
       userName,
       assignedEmployee,
       startDate,
-      expirationDate: PromotionOptionService.getReservationExpirationDate({
-        startDate,
-        agreementDuration,
-      }),
+      expirationDate,
     });
   },
 );

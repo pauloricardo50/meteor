@@ -68,14 +68,8 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-const getPromotionOptionMailParams = async (
-  { context, params, result },
-  recipient,
-) => {
+const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   context.unblock();
-  if (result && typeof result.then === 'function') {
-    result = await result;
-  }
   const { anonymize } = recipient;
   const { userId } = context;
   const { promotionOptionId } = params;
