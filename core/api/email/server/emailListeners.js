@@ -219,25 +219,27 @@ const getPromotionOptionMailParams = async (
   const { anonymize } = recipient;
   const { userId } = context;
   const { promotionOptionId } = params;
-  const { promotionLots = [] } = PromotionOptionService.fetchOne({
+  const {
+    promotionLots = [],
+    promotion: { _id: promotionId, name: promotionName, assignedEmployee },
+    loan: { promotionLinks },
+  } = PromotionOptionService.fetchOne({
     $filters: { _id: promotionOptionId },
     promotionLots: {
       name: 1,
-      promotion: {
-        userLinks: 1,
-        name: 1,
-        assignedEmployee: { email: 1 },
-      },
       attributedTo: { borrowers: { name: 1 }, user: { name: 1 } },
     },
+    promotion: {
+      userLinks: 1,
+      name: 1,
+      assignedEmployee: { email: 1 },
+    },
+    loan: { promotionLinks: 1 },
   });
   const [
-    {
-      name: promotionLotName,
-      promotion: { _id: promotionId, name: promotionName, assignedEmployee },
-      attributedTo: { user } = {},
-    },
+    { name: promotionLotName, attributedTo: { user } = {} },
   ] = promotionLots;
+  const [{ invitedBy }] = promotionLinks;
 
   let userName = 'e-Potek';
 
@@ -260,6 +262,7 @@ const getPromotionOptionMailParams = async (
       ? user.name
       : 'un acquéreur sans nom',
     fromEmail: assignedEmployee && assignedEmployee.email,
+    invitedBy,
   };
 };
 
@@ -268,17 +271,11 @@ const PROMOTION_EMAILS = [
     method: reservePromotionLot,
     emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT,
     recipients: [
-      // {
-      //   type: PROMOTION_EMAIL_RECIPIENTS.USER,
-      //   emailId: 'EMAIL_IDS.USER_RESERVE_PROMOTION_LOT',
-      //   getEmailParams: () => ({}),
-      // },
-      // {
-      //   type: PROMOTION_EMAIL_RECIPIENTS.BROKER,
-      //   emailId: 'EMAIL_IDS.BROKER_RESERVE_PROMOTION_LOT',
-      //   getEmailParams: () => ({}),
-      // },
-      { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.USER,
+        emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT_USER,
+      },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
       { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
     ],
@@ -288,16 +285,10 @@ const PROMOTION_EMAILS = [
     method: sellPromotionLot,
     emailId: EMAIL_IDS.SELL_PROMOTION_LOT,
     recipients: [
-      // {
-      //   type: PROMOTION_EMAIL_RECIPIENTS.USER,
-      //   emailId: 'EMAIL_IDS.USER_SELL_PROMOTION_LOT',
-      //   getEmailParams: () => ({}),
-      // },
-      // {
-      //   type: PROMOTION_EMAIL_RECIPIENTS.BROKER,
-      //   emailId: 'EMAIL_IDS.BROKER_SELL_PROMOTION_LOT',
-      //   getEmailParams: () => ({}),
-      // },
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.USER,
+        emailId: EMAIL_IDS.SELL_PROMOTION_LOT_USER,
+      },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
       { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
@@ -308,16 +299,6 @@ const PROMOTION_EMAILS = [
     method: [cancelPromotionLotReservation, expirePromotionLotReservation],
     emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
     recipients: [
-      // {
-      //   type: PROMOTION_EMAIL_RECIPIENTS.USER,
-      //   emailId: 'EMAIL_IDS.USER_CANCEL_PROMOTION_LOT',
-      //   getEmailParams: () => ({}),
-      // },
-      // {
-      //   type: PROMOTION_EMAIL_RECIPIENTS.BROKER,
-      //   emailId: 'EMAIL_IDS.BROKER_CANCEL_PROMOTION_LOT',
-      //   getEmailParams: () => ({}),
-      // },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
       { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
@@ -472,7 +453,7 @@ ServerEventService.addAfterMethodListener(
       params: {
         promotionName,
         name: user.name,
-        lotName: promotionLots[0].name,
+        promotionLotName: promotionLots[0].name,
       },
     });
   },
