@@ -5,7 +5,12 @@ import moment from 'moment';
 import {
   setPromotionOptionProgress,
   promotionOptionActivateReservation,
+  promotionOptionUploadAgreement,
 } from 'core/api/methods/index';
+import {
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+} from 'core/api/promotionOptions/promotionOptionConstants';
 import OfferService from '../../offers/server/OfferService';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import {
@@ -420,9 +425,40 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   setPromotionOptionProgress,
-  ({ context, params }) => {
+  ({ context, params: { promotionOptionId, id }, result }) => {
     context.unblock();
-    // TODO
+
+    if (result) {
+      const { nextStatus, prevStatus } = result;
+
+      if (id === 'simpleVerification') {
+        if (
+          nextStatus === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED
+        ) {
+          return sendEmail.run();
+        }
+        if (
+          nextStatus === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED
+        ) {
+          return sendEmail.run();
+        }
+      }
+
+      if (id === 'bank') {
+        if (nextStatus === PROMOTION_OPTION_BANK_STATUS.SENT) {
+          return sendEmail.run();
+        }
+        if (
+          nextStatus === PROMOTION_OPTION_BANK_STATUS.VALIDATED ||
+          nextStatus === PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS
+        ) {
+          return sendEmail.run();
+        }
+        if (nextStatus === PROMOTION_OPTION_BANK_STATUS.REJECTED) {
+          return sendEmail.run();
+        }
+      }
+    }
   },
 );
 
@@ -456,5 +492,27 @@ ServerEventService.addAfterMethodListener(
         promotionLotName: promotionLots[0].name,
       },
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  promotionOptionUploadAgreement,
+  async ({ context, params: { promotionOptionId }, result }) => {
+    context.unblock();
+
+    if (result && typeof result.then === 'function') {
+      await result;
+    }
+
+    // TODO: Wait for sender destination confirmation
+    // sendEmail.run({
+    //   emailId: EMAIL_IDS.PROMOTION_AGREEMENT_UPLOAD_NOTIFICATION,
+    //   userId: invitedBy,
+    //   params: {
+    //     promotionName,
+    //     name: user.name,
+    //     promotionLotName: promotionLots[0].name,
+    //   },
+    // });
   },
 );

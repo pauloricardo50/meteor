@@ -18,6 +18,7 @@ import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../../promotionOptionConstants';
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
@@ -1244,6 +1245,106 @@ describe('PromotionOptionService', function() {
           ],
         });
       });
+    });
+  });
+
+  describe.only('setProgress', () => {
+    it('updates a status and its date', () => {
+      const startDate = new Date();
+      generator({
+        promotionOptions: {
+          _id: 'id',
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+            date: startDate,
+          },
+        },
+      });
+
+      PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'bank',
+        object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+      });
+
+      const promotionOption = PromotionOptionService.findOne('id');
+
+      expect(promotionOption.bank.status).to.equal(
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+      );
+      expect(promotionOption.bank.date.getTime()).to.be.above(
+        startDate.getTime(),
+      );
+    });
+
+    it('does not update the date if the status has not changed', () => {
+      const startDate = new Date();
+      generator({
+        promotionOptions: {
+          _id: 'id',
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+            date: startDate,
+          },
+        },
+      });
+
+      const result = PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'bank',
+        object: { status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE },
+      });
+      expect(result).to.equal(undefined);
+
+      const promotionOption = PromotionOptionService.findOne('id');
+
+      expect(promotionOption.bank.status).to.equal(
+        PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+      );
+      expect(promotionOption.bank.date.getTime()).to.equal(startDate.getTime());
+    });
+
+    it('returns the next and previous status if changed', () => {
+      generator({ promotionOptions: { _id: 'id' } });
+
+      const result = PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'simpleVerification',
+        object: {
+          status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+        },
+      });
+
+      expect(result).to.deep.equal({
+        prevStatus: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
+        nextStatus: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+      });
+    });
+
+    it('does not return anything if only a date is changed, to not trigger emails', () => {
+      generator({ promotionOptions: { _id: 'id' } });
+
+      const updatedDate = new Date();
+      const result = PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'simpleVerification',
+        object: { date: updatedDate },
+      });
+
+      expect(result).to.equal(undefined);
+
+      const promotionOption = PromotionOptionService.findOne('id');
+
+      expect(promotionOption.simpleVerification.status).to.equal(
+        PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
+      );
+      expect(promotionOption.simpleVerification.date.getTime()).to.equal(
+        updatedDate.getTime(),
+      );
+    });
+
+    it('sends emails', () => {
+      // Test code
     });
   });
 });

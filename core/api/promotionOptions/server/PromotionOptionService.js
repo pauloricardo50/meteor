@@ -437,6 +437,13 @@ export class PromotionOptionService extends CollectionService {
         object: { [`${id}.${key}`]: object[key] },
       });
     });
+
+    if (changedKeys.includes('status')) {
+      return {
+        prevStatus: model.status,
+        nextStatus: object.status,
+      };
+    }
   }
 
   expireReservations = async () => {
