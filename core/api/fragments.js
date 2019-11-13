@@ -934,6 +934,9 @@ export const task = () => ({
   assignee: simpleUser(),
   loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   user: { name: 1 },
+  promotion: { name: 1 },
+  lender: { name: 1 },
+  organisation: { name: 1 },
 });
 
 // //
