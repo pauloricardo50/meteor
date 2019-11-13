@@ -17,7 +17,7 @@ export const makeGetIcon = ({
   warning = [],
   sent = [],
   waitList = [],
-}) => (status) => {
+}) => status => {
   if (waiting.includes(status)) {
     return { icon: 'waiting', color: 'warning' };
   }
@@ -112,10 +112,10 @@ export const rawPromotionReservationProgress = ({
   bank,
 }) =>
   [
-    simpleVerification.status
-      === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
-    fullVerification.status
-      === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+    simpleVerification.status ===
+      PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+    fullVerification.status ===
+      PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
     deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,

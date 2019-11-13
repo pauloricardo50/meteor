@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
-import { compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
@@ -23,7 +23,17 @@ import { loanProgress as loanProgressQuery } from '../../../../../api/loans/quer
 
 type PromotionReservationProgressProps = {};
 
-const PromotionReservationProgress = ({
+const getAnimationDelay = (index, offset = 0) => {
+  return (index + offset) * 125;
+};
+
+const getAnimation = (variant, index, offset) => {
+  return `animated ${
+    variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
+  } delay-${getAnimationDelay(index, offset)}`;
+};
+
+const PromotionReservationProgressComponent = ({
   promotionOption,
   style,
   variant = 'icon',
@@ -133,36 +143,60 @@ const PromotionReservationProgress = ({
     >
       <div className="promotion-reservation-progress-icons">
         {verificationAndBankIcons.map((icon, index) => (
-          <div className="icon" key={`verification${index}`}>
+          <div
+            className={cx('icon', getAnimation(variant, index))}
+            key={`verification${index}`}
+          >
             {icon}
           </div>
         ))}
       </div>
       <div className="promotion-reservation-progress-icons">
         {agreementAndDepositIcons.map((icon, index) => (
-          <div className="icon" key={`agreement${index}`}>
+          <div
+            className={cx(
+              'icon',
+              getAnimation(variant, index, verificationAndBankIcons.length),
+            )}
+            key={`agreement${index}`}
+          >
             {icon}
           </div>
         ))}
       </div>
       <div className="promotion-reservation-progress-icons">
-        {!isAnonymized &&
-          getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId)}
+        {!isAnonymized && (
+          <div
+            className={cx(
+              'icon',
+              getAnimation(
+                variant,
+                0,
+                verificationAndBankIcons.length +
+                  agreementAndDepositIcons.length,
+              ),
+            )}
+          >
+            {getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId)}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default compose(
-  withSmartQuery({
-    query: loanProgressQuery,
-    queryOptions: { single: true, reactive: false },
-    params: ({
-      promotionOption: {
-        loan: { _id: loanId },
-      },
-    }) => ({ loanId }),
-    dataName: 'loanProgress',
-    smallLoader: true,
-  }),
-)(PromotionReservationProgress);
+export default withSmartQuery({
+  query: loanProgressQuery,
+  queryOptions: { single: true, reactive: false },
+  params: ({
+    promotionOption: {
+      loan: { _id: loanId },
+    },
+  }) => ({ loanId }),
+  dataName: 'loanProgress',
+  smallLoader: true,
+})(PromotionReservationProgressComponent);
+
+export const PromotionReservationProgress = withProps(
+  ({ promotionOption: { loanProgress } }) => ({ loanProgress }),
+)(PromotionReservationProgressComponent);
