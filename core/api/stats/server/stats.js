@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
-import { sortByStatus } from 'core/utils/sorting';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
+import UserService from '../../users/server/UserService';
 
 const dateInPast = days =>
   moment()
@@ -10,50 +10,84 @@ const dateInPast = days =>
     .startOf('day')
     .toDate();
 
-const getFilter = ({ gte, lte, withAnonymous }) => {
+const getFilter = ({ gte, lte }) => {
   const filter = { createdAt: { $gte: gte } };
 
   if (lte) {
     filter.createdAt.$lte = lte;
   }
 
-  if (!withAnonymous) {
-    filter.anonymous = { $ne: true };
-  }
-
   return filter;
 };
 
+const makeCountResolver = service => {
+  return ({ period, filters } = {}) => {
+    const end1 = dateInPast(period);
+    const end2 = dateInPast(period * 2);
+    const period1 = service.count({
+      $filters: { ...getFilter({ gte: end1 }), ...filters },
+    });
+    const period2 = service.count({
+      $filters: { ...getFilter({ gte: end2, lte: end1 }), ...filters },
+    });
+
+    const change = period2 === 0 ? 1 : (period1 - period2) / period2;
+
+    return { count: period1, change };
+  };
+};
+
+const makeHistogramResolver = service => {
+  return async ({ period, filters }) => {
+    const match = { ...getFilter({ gte: dateInPast(period) }), ...filters };
+
+    const aggregation = await service
+      .aggregate([
+        { $match: match },
+        {
+          $project: {
+            // Filter out time of day
+            date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          },
+        },
+        { $group: { _id: '$date', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ])
+      .toArray();
+    return aggregation;
+  };
+};
+
 export const newLoansResolver = ({ period, withAnonymous } = {}) => {
-  const end1 = dateInPast(period);
-  const end2 = dateInPast(period * 2);
-  const period1 = LoanService.count({
-    $filters: getFilter({ gte: end1, withAnonymous }),
+  const resolver = makeCountResolver(LoanService);
+  return resolver({
+    period,
+    filters: withAnonymous ? {} : { anonymous: { $ne: true } },
   });
-  const period2 = LoanService.count({
-    $filters: getFilter({ gte: end2, lte: end1, withAnonymous }),
-  });
-
-  const change = period2 === 0 ? 1 : (period1 - period2) / period2;
-
-  return { count: period1, change };
 };
 
 export const loanHistogramResolver = async ({ period, withAnonymous }) => {
-  const match = getFilter({ gte: dateInPast(period), withAnonymous });
+  const resolver = makeHistogramResolver(LoanService);
+  return resolver({
+    period,
+    filters: withAnonymous ? {} : { anonymous: { $ne: true } },
+  });
+};
 
-  const aggregation = await LoanService.aggregate([
-    { $match: match },
-    {
-      $project: {
-        // Filter out time of day
-        date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
-      },
-    },
-    { $group: { _id: '$date', count: { $sum: 1 } } },
-    { $sort: { _id: 1 } },
-  ]).toArray();
-  return aggregation;
+export const newUsersResolver = ({ period, verified, roles } = {}) => {
+  const resolver = makeCountResolver(UserService);
+  return resolver({
+    period,
+    filters: { roles, ...(verified ? { 'emails.0.verified': true } : {}) },
+  });
+};
+
+export const userHistogramResolver = async ({ period, verified, roles }) => {
+  const resolver = makeHistogramResolver(UserService);
+  return resolver({
+    period,
+    filters: { roles, ...(verified ? { 'emails.0.verified': true } : {}) },
+  });
 };
 
 // Gets all the closing+ loans that have no revenues, they should all have
