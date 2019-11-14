@@ -60,7 +60,7 @@ ServerEventService.addAfterMethodListener(
       assignedEmployeeId: 1,
       createdAt: 1,
     });
-    const pro = UserService.get(proId);
+    const pro = UserService.get(proId, { name: 1, organisations: { name: 1 } });
 
     let isNewUser = true;
     const now = new Date();
@@ -84,12 +84,16 @@ ServerEventService.addAfterMethodListener(
     if (propertyIds && propertyIds.length) {
       addresses = [
         ...addresses,
-        ...propertyIds.map(id => PropertyService.findOne(id).address1),
+        ...propertyIds.map(
+          id => PropertyService.findOne(id, { address1: 1 }).address1,
+        ),
       ];
     }
 
     if (promotionIds && promotionIds.length) {
-      promotions = promotionIds.map(id => PromotionService.findOne(id).name);
+      promotions = promotionIds.map(
+        id => PromotionService.findOne(id, { name: 1 }).name,
+      );
     }
 
     if (addresses.length) {
