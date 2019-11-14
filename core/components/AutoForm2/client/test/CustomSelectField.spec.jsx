@@ -45,13 +45,16 @@ describe('CustomSelectField', () => {
     });
 
     it('renders the select field', () => {
-      const transform = value => `${value}-mec`;
+      const transform = (value) => `${value}-mec`;
       props = {
         schema: new SimpleSchema({
           text: {
             type: String,
             allowedValues: ['yo', 'hola'],
-            uniforms: { transform, displayEmpty: false, placeholder: '' },
+            uniforms: {
+              transform,
+              placeholder: '',
+            },
           },
         }),
       };
@@ -72,11 +75,48 @@ describe('CustomSelectField', () => {
         expect(item.text()).to.equal(transform(item.prop('data-value')));
       });
     });
+
+    it('renders the select field with placeholder', () => {
+      const transform = (value) => `${value}-mec`;
+      props = {
+        schema: new SimpleSchema({
+          text: {
+            type: String,
+            allowedValues: ['yo', 'hola'],
+            uniforms: {
+              transform,
+              placeholder: 'test',
+            },
+          },
+        }),
+      };
+
+      const SelectField = component()
+        .find(CustomSelectField)
+        .at(0);
+
+      expect(SelectField).to.not.equal(undefined);
+      SelectField.find('[role="button"]').simulate('click');
+
+      const items = component()
+        .find(CustomSelectField)
+        .find(MenuItem)
+        .find('li');
+
+      const placeholder = items.first();
+      const rest = items.slice(1);
+
+      expect(placeholder.text()).to.equal('test');
+
+      rest.forEach((item) => {
+        expect(item.text()).to.equal(transform(item.prop('data-value')));
+      });
+    });
   });
 
   context('with custom allowed values', () => {
     it('renders the select field', () => {
-      const transform = value => `${value}-mec`;
+      const transform = (value) => `${value}-mec`;
       props = {
         schema: new SimpleSchema({
           text: {
