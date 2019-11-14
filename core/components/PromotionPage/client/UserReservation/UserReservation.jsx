@@ -13,6 +13,7 @@ const UserReservation = ({
   promotionOption,
   className,
   progressVariant,
+  loan,
 }: UserReservationProps) => {
   const {
     reservationAgreement: { expirationDate, startDate },
@@ -47,6 +48,7 @@ const UserReservation = ({
             promotionOption={promotionOption}
             variant={progressVariant}
             className="full"
+            loan={loan}
           />
         )}
       </div>

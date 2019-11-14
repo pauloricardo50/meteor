@@ -23,13 +23,14 @@ const AppPromotionPageOverview = ({
         loan={loan}
         text={<T id="PromotionPage.residenceTypeSetter.text" />}
       />
-      {!!activePromotionOptions.length
-        && activePromotionOptions.map(promotionOption => (
+      {!!activePromotionOptions.length &&
+        activePromotionOptions.map(promotionOption => (
           <UserReservation
             promotionOption={promotionOption}
             key={promotionOption._id}
             className="card1 card-top"
             progressVariant="text"
+            loan={loan}
           />
         ))}
       {residenceType && promotionOptions && promotionOptions.length > 0 && (

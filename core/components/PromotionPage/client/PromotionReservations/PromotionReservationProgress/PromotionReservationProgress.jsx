@@ -3,6 +3,8 @@ import React from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';
 
+import Calculator from 'core/utils/Calculator/';
+import { getLoanProgress } from 'core/api/loans/helpers';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
@@ -18,8 +20,6 @@ import {
   getPercent,
   getRatio,
 } from './PromotionReservationProgressHelpers';
-import { withSmartQuery } from '../../../../../api';
-import { loanProgress as loanProgressQuery } from '../../../../../api/loans/queries';
 
 type PromotionReservationProgressProps = {};
 
@@ -41,7 +41,6 @@ const PromotionReservationProgressComponent = ({
   className,
   loanProgress = {},
 }: PromotionReservationProgressProps) => {
-  console.log('loanProgress:', loanProgress);
   const {
     _id: promotionOptionId,
     simpleVerification,
@@ -186,17 +185,9 @@ const PromotionReservationProgressComponent = ({
   );
 };
 
-export default withSmartQuery({
-  query: loanProgressQuery,
-  queryOptions: { single: true, reactive: false },
-  params: ({
-    promotionOption: {
-      loan: { _id: loanId },
-    },
-  }) => ({ loanId }),
-  dataName: 'loanProgress',
-  smallLoader: true,
-})(PromotionReservationProgressComponent);
+export default withProps(({ loan }) => ({
+  loanProgress: getLoanProgress(loan),
+}))(PromotionReservationProgressComponent);
 
 export const PromotionReservationProgress = withProps(
   ({

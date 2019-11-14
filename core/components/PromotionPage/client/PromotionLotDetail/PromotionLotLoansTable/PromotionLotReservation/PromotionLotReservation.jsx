@@ -75,6 +75,7 @@ const PromotionLotReservation = ({
       renderTrigger={({ handleOpen }) => (
         <div className="flex center-align">
           <PromotionReservationProgress
+            loan={loan}
             promotionOption={promotionOption}
             className="mr-8"
           />
