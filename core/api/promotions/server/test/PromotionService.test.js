@@ -18,7 +18,7 @@ import PromotionOptionService from '../../../promotionOptions/server/PromotionOp
 import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
 
-describe('PromotionService', function() {
+describe('PromotionService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -363,7 +363,7 @@ describe('PromotionService', function() {
 
       PromotionService.removeLoan({ promotionId, loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.promotionLinks).to.deep.equal([
         { _id: 'someOtherPromotion', priorityOrder: [], showAllLots: true },
       ]);
@@ -433,7 +433,7 @@ describe('PromotionService', function() {
         promotionId: 'promotionId',
         loanId: 'loanId',
       });
-      const promotionLot = PromotionLotService.get('lot1');
+      const promotionLot = PromotionLotService.findOne('lot1');
 
       expect(promotionLot.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
       expect(promotionLot.attributedToLink).to.deep.equal({});
@@ -487,14 +487,14 @@ describe('PromotionService', function() {
         },
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(0);
     });
 
     it('does not fail if no loans are attributed to the pro', () => {
@@ -506,14 +506,14 @@ describe('PromotionService', function() {
         },
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(0);
     });
 
     it('only removes him from the current promotion', () => {
@@ -532,16 +532,16 @@ describe('PromotionService', function() {
         ],
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
-      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId2').userLinks.length).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
-      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId2').userLinks.length).to.equal(1);
       expect(
         LoanService.findOne('loanId').promotionLinks[0].invitedBy,
       ).to.equal(undefined);

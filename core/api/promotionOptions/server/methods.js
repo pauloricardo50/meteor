@@ -15,7 +15,7 @@ import {
 import { Method } from '../../methods/methods';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
-  const loan = LoanService.get(params.loanId);
+  const loan = LoanService.findOne(params.loanId);
   SecurityService.checkOwnership(loan, userId);
   return PromotionOptionService.insert(params);
 });

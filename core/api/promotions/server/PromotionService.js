@@ -35,7 +35,7 @@ export class PromotionService extends CollectionService {
   }
 
   insertPromotionProperty({ promotionId, property }) {
-    const { address1, address2, zipCode, city, canton } = this.get(promotionId);
+    const { address1, address2, zipCode, city, canton } = this.findOne(promotionId);
     const propertyId = PropertyService.insert({
       property: {
         ...property,
@@ -97,7 +97,7 @@ export class PromotionService extends CollectionService {
     showAllLots,
     shareSolvency,
   }) {
-    const promotion = this.get(promotionId);
+    const promotion = this.findOne(promotionId);
     const user = UserService.get(userId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
@@ -161,7 +161,7 @@ export class PromotionService extends CollectionService {
         const logoUrls = logos && logos.map(({ url }) => url);
 
         let ctaUrl = Meteor.settings.public.subdomains.app;
-        const promotion = this.get(promotionId);
+        const promotion = this.findOne(promotionId);
         const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
 
         if (isNewUser) {

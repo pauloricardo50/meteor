@@ -49,7 +49,7 @@ downloadPDF.setHandler(() => {
 
 addBorrower.setHandler((context, { loanId, borrower }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  const loan = LoanService.get(loanId);
+  const loan = LoanService.findOne(loanId);
 
   // A loan can't have more than 2 borrowers at the moment
   if (loan.borrowerIds.length >= 2) {
@@ -69,7 +69,7 @@ addBorrower.setHandler((context, { loanId, borrower }) => {
 
 setUserToLoan.setHandler((context, { loanId }) => {
   SecurityService.checkLoggedIn();
-  const loan = LoanService.get(loanId);
+  const loan = LoanService.findOne(loanId);
   const { borrowerIds, propertyId } = loan;
 
   if (loan.userId) {
@@ -89,7 +89,7 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
 
-  const loan = LoanService.get(loanId);
+  const loan = LoanService.findOne(loanId);
 
   // A loan has to have at least 1 borrower
   if (loan.borrowerIds.length <= 1) {

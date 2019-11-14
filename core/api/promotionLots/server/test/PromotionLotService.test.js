@@ -32,7 +32,7 @@ const uploadTempPromotionAgreement = async userId => {
   return reservationAgreementFileKey;
 };
 
-describe('PromotionLotService', function() {
+describe('PromotionLotService', function () {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -248,7 +248,7 @@ describe('PromotionLotService', function() {
       });
 
       let pO = PromotionOptionService.get('pOptId');
-      let pL = PromotionLotService.get('promotionLotId');
+      let pL = PromotionLotService.findOne('promotionLotId');
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.SOLD);
 
@@ -257,7 +257,7 @@ describe('PromotionLotService', function() {
       });
 
       pO = PromotionOptionService.get('pOptId');
-      pL = PromotionLotService.get('promotionLotId');
+      pL = PromotionLotService.findOne('promotionLotId');
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
 
@@ -270,7 +270,7 @@ describe('PromotionLotService', function() {
       });
 
       pO = PromotionOptionService.get('pOptId');
-      pL = PromotionLotService.get('promotionLotId');
+      pL = PromotionLotService.findOne('promotionLotId');
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
     });

@@ -84,12 +84,12 @@ ServerEventService.addAfterMethodListener(
     if (propertyIds && propertyIds.length) {
       addresses = [
         ...addresses,
-        ...propertyIds.map(id => PropertyService.get(id).address1),
+        ...propertyIds.map(id => PropertyService.findOne(id).address1),
       ];
     }
 
     if (promotionIds && promotionIds.length) {
-      promotions = promotionIds.map(id => PromotionService.get(id).name);
+      promotions = promotionIds.map(id => PromotionService.findOne(id).name);
     }
 
     if (addresses.length) {
@@ -102,7 +102,7 @@ ServerEventService.addAfterMethodListener(
         addresses.length === 1
           ? 'le bien immobilier: '
           : 'les biens immobiliers: '
-      } ${formattedAddresses}`;
+        } ${formattedAddresses}`;
     }
 
     if (promotions.length) {
@@ -113,7 +113,7 @@ ServerEventService.addAfterMethodListener(
 
       taskDescription = `${taskDescription}. Invité sur ${
         promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
-      } ${formattedPromotions}`;
+        } ${formattedPromotions}`;
     }
 
     if (invitationNote) {

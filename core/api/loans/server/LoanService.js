@@ -224,7 +224,7 @@ class LoanService extends CollectionService {
   };
 
   addNewStructure = ({ loanId, structure }) => {
-    const { structures, selectedStructure, propertyIds } = this.get(loanId);
+    const { structures, selectedStructure, propertyIds } = this.findOne(loanId);
     const isFirstStructure = structures.length === 0;
     const shouldCopyExistingStructure =
       !isFirstStructure && !structure && selectedStructure;
@@ -258,7 +258,7 @@ class LoanService extends CollectionService {
   };
 
   removeStructure = ({ loanId, structureId }) => {
-    const { selectedStructure: currentlySelected } = this.get(loanId);
+    const { selectedStructure: currentlySelected } = this.findOne(loanId);
 
     if (currentlySelected === structureId) {
       throw new Meteor.Error(
@@ -277,7 +277,7 @@ class LoanService extends CollectionService {
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
-    const currentStructure = this.get(loanId).structures.find(
+    const currentStructure = this.findOne(loanId).structures.find(
       ({ id }) => id === structureId,
     );
 
@@ -288,7 +288,7 @@ class LoanService extends CollectionService {
   };
 
   selectStructure = ({ loanId, structureId }) => {
-    const loan = this.get(loanId, {
+    const loan = this.findOne(loanId, {
       fields: { structures: 1, selectedStructure: 1 },
     });
 
@@ -318,7 +318,7 @@ class LoanService extends CollectionService {
   };
 
   duplicateStructure = ({ loanId, structureId }) => {
-    const { structures } = this.get(loanId);
+    const { structures } = this.findOne(loanId);
     const currentStructure = structures.find(({ id }) => id === structureId);
     const currentStructureIndex = structures.findIndex(
       ({ id }) => id === structureId,
@@ -339,7 +339,7 @@ class LoanService extends CollectionService {
   };
 
   addPropertyToLoan = ({ loanId, propertyId }) => {
-    const loan = this.get(loanId);
+    const loan = this.findOne(loanId);
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
 
     // Add this property to all structures that don't have a property
@@ -383,7 +383,7 @@ class LoanService extends CollectionService {
   }
 
   getPromotionPriorityOrder({ loanId, promotionId }) {
-    const promotionLink = this.get(loanId).promotionLinks.find(
+    const promotionLink = this.findOne(loanId).promotionLinks.find(
       ({ _id }) => _id === promotionId,
     );
     return promotionLink ? promotionLink.priorityOrder : [];
@@ -474,7 +474,7 @@ class LoanService extends CollectionService {
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
-    const { borrowerIds } = this.get(loanId);
+    const { borrowerIds } = this.findOne(loanId);
     const { loans: oldBorrowerLoans = [] } = BorrowerService.createQuery({
       $filters: { _id: oldBorrowerId },
       loans: { name: 1 },
@@ -560,7 +560,7 @@ class LoanService extends CollectionService {
   }
 
   reuseProperty({ loanId, propertyId }) {
-    const loan = this.get(loanId);
+    const loan = this.findOne(loanId);
 
     if (loan.propertyIds.includes(propertyId)) {
       return false;
@@ -628,9 +628,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+      max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -821,7 +821,7 @@ class LoanService extends CollectionService {
   }
 
   insertBorrowers({ loanId, amount }) {
-    const { borrowerIds: existingBorrowers = [], userId } = this.get(loanId);
+    const { borrowerIds: existingBorrowers = [], userId } = this.findOne(loanId);
 
     if (existingBorrowers.length === 2) {
       throw new Meteor.Error('Cannot insert more borrowers');
