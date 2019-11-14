@@ -6,7 +6,10 @@ import moment from 'moment';
 import { expect } from 'chai';
 
 import LoanService from 'core/api/loans/server/LoanService';
-import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import {
+  REVENUE_STATUS,
+  COMMISSION_STATUS,
+} from 'core/api/revenues/revenueConstants';
 import { loanSetStatus } from 'core/api/loans/index';
 import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import generator from '../../../factories/factoriesHelpers';
@@ -66,12 +69,16 @@ describe('monitoring', () => {
           revenues: 200,
           expectedRevenues: 100,
           paidRevenues: 100,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
         },
         {
           _id: LOAN_STATUS.LEAD,
           revenues: 100,
           expectedRevenues: 100,
           paidRevenues: 0,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
         },
       ]);
     });
@@ -181,24 +188,83 @@ describe('monitoring', () => {
           revenues: 600,
           paidRevenues: 600,
           expectedRevenues: 0,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
         },
         {
           _id: { month: 1, year: 2018 },
           revenues: 600,
           paidRevenues: 500,
           expectedRevenues: 100,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
         },
         {
           _id: { month: 2, year: 2018 },
           revenues: 200,
           paidRevenues: 0,
           expectedRevenues: 200,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
         },
         {
           _id: { month: 3, year: 2018 },
           revenues: 300,
           paidRevenues: 0,
           expectedRevenues: 300,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
+        },
+      ]);
+    });
+
+    it('counts commissions paid and to pay', async () => {
+      generator({
+        loans: {
+          revenues: [
+            {
+              amount: 100,
+              expectedAt: moment('2018/01/02', 'YYYY/MM/DD').toDate(),
+              organisations: [
+                { $metadata: { commissionRate: 0.05 } },
+                {
+                  $metadata: {
+                    commissionRate: 0.1,
+                    status: COMMISSION_STATUS.PAID,
+                  },
+                },
+              ],
+            },
+            {
+              amount: 100,
+              expectedAt: moment('2018/01/02', 'YYYY/MM/DD').toDate(),
+              organisations: [
+                { $metadata: { commissionRate: 0.02 } },
+                {
+                  $metadata: {
+                    commissionRate: 0.01,
+                    status: COMMISSION_STATUS.PAID,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      const result = await loanMonitoring({
+        groupBy: 'revenueDate',
+        value: 'revenues',
+      });
+
+      expect(result).to.deep.equal([
+        {
+          _id: { month: 1, year: 2018 },
+          revenues: 200,
+          paidRevenues: 0,
+          expectedRevenues: 200,
+          commissionsToPay: 7,
+          commissionsPaid: 11,
         },
       ]);
     });

@@ -10,28 +10,39 @@ import MonitoringChart from './MonitoringChart';
 
 type LoanMonitoringChartProps = {};
 
-const LoanMonitoringChart = ({
-  category,
-  status,
-  groupBy,
-  withAnonymous,
-  makeSetState,
-  data,
-  value,
-  allowedGroupBy,
-}: LoanMonitoringChartProps) => (
-  <div>
-    <MonitoringFilters
-      category={category}
-      makeSetState={makeSetState}
-      status={status}
-      groupBy={groupBy}
-      withAnonymous={withAnonymous}
-      allowedGroupBy={allowedGroupBy}
-    />
-    <MonitoringChart data={data} groupBy={groupBy} value={value} />
-  </div>
-);
+const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
+  const {
+    category,
+    status,
+    groupBy,
+    withAnonymous,
+    makeSetState,
+    data,
+    value,
+    allowedGroupBy,
+    filters,
+    postProcess = ({ data }) => data,
+  } = props;
+
+  return (
+    <div>
+      <MonitoringFilters
+        category={category}
+        makeSetState={makeSetState}
+        status={status}
+        groupBy={groupBy}
+        withAnonymous={withAnonymous}
+        allowedGroupBy={allowedGroupBy}
+        filters={filters}
+      />
+      <MonitoringChart
+        data={postProcess(props)}
+        groupBy={groupBy}
+        value={value}
+      />
+    </div>
+  );
+};
 
 const getAnonymous = withAnonymous =>
   withAnonymous ? undefined : { $in: [null, false] };

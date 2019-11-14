@@ -23,14 +23,32 @@ const getSeries = ({ data, value }) => {
     case 'revenues':
       return [
         {
-          name: 'Attendu',
+          name: 'Revenus attendus',
           data: data.map(({ expectedRevenues }) =>
             Math.round(expectedRevenues),
           ),
+          stack: 'Revenus bruts',
+          color: '#90ee90',
         },
         {
-          name: 'Payé',
+          name: 'Revenus perçus',
           data: data.map(({ paidRevenues }) => Math.round(paidRevenues)),
+          stack: 'Revenus bruts',
+          color: '#024b30',
+        },
+        {
+          name: 'Rétrocession à payer',
+          data: data.map(({ commissionsToPay }) =>
+            Math.round(commissionsToPay),
+          ),
+          stack: 'Rétrocessions',
+          color: '#f08080',
+        },
+        {
+          name: 'Rétrocession payées',
+          data: data.map(({ commissionsPaid }) => Math.round(commissionsPaid)),
+          stack: 'Rétrocessions',
+          color: '#8b0000',
         },
       ];
     case 'loanValue':

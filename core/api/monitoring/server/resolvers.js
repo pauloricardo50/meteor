@@ -5,6 +5,7 @@ import merge from 'lodash/merge';
 import { REVENUE_STATUS, LOAN_STATUS } from 'core/api/constants';
 import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import { LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
+import { COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import LoanService from '../../loans/server/LoanService';
 
@@ -53,10 +54,45 @@ const getRevenues = ({ value }) => {
       {
         $addFields: {
           revenueDate: {
-            $cond: {
-              if: { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
-              then: '$revenues.expectedAt',
-              else: '$revenues.paidAt',
+            $cond: [
+              { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
+              '$revenues.expectedAt',
+              '$revenues.paidAt',
+            ],
+          },
+          commissionRateToPay: {
+            $sum: {
+              $map: {
+                input: '$revenues.organisationLinks',
+                as: 'organisation',
+                in: {
+                  $cond: [
+                    {
+                      $eq: [
+                        '$$organisation.status',
+                        COMMISSION_STATUS.TO_BE_PAID,
+                      ],
+                    },
+                    '$$organisation.commissionRate',
+                    0,
+                  ],
+                },
+              },
+            },
+          },
+          commissionRatePaid: {
+            $sum: {
+              $map: {
+                input: '$revenues.organisationLinks',
+                as: 'organisation',
+                in: {
+                  $cond: [
+                    { $eq: ['$$organisation.status', COMMISSION_STATUS.PAID] },
+                    '$$organisation.commissionRate',
+                    0,
+                  ],
+                },
+              },
             },
           },
         },
@@ -65,6 +101,12 @@ const getRevenues = ({ value }) => {
         $addFields: {
           revenueYear: { $year: { date: '$revenueDate' } },
           revenueMonth: { $month: { date: '$revenueDate' } },
+          'revenues.commissionsToPay': {
+            $multiply: ['$commissionRateToPay', '$revenues.amount'],
+          },
+          'revenues.commissionsPaid': {
+            $multiply: ['$commissionRatePaid', '$revenues.amount'],
+          },
         },
       },
     ];
@@ -111,6 +153,9 @@ const getGrouping = ({ groupBy, value }) => {
           },
         },
       };
+      fields.commissionsToPay = { $sum: '$revenues.commissionsToPay' };
+      fields.commissionsPaid = { $sum: '$revenues.commissionsPaid' };
+
       break;
     case 'loanValue':
       fields.loanValue = { $sum: '$structure.wantedLoan' };

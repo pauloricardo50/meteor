@@ -15,6 +15,7 @@ const MonitoringFilters = ({
   withAnonymous,
   makeSetState,
   allowedGroupBy,
+  filters,
 }: MonitoringFiltersProps) => (
   <div className="flex">
     <div className="flex-col mr-16">
@@ -59,7 +60,9 @@ const MonitoringFilters = ({
             { id: true, label: 'Avec' },
             { id: false, label: 'Sans' },
           ]}
+          className="mr-8"
         />
+        {filters}
       </div>
     </div>
   </div>
