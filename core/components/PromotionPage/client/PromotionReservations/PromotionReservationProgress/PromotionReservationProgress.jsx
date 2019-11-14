@@ -3,7 +3,6 @@ import React from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';
 
-import Calculator from 'core/utils/Calculator/';
 import { getLoanProgress } from 'core/api/loans/helpers';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
@@ -24,7 +23,7 @@ import {
 type PromotionReservationProgressProps = {};
 
 const getAnimationDelay = (index, offset = 0) => {
-  return (index + offset) * 125;
+  return (index + offset) * 50;
 };
 
 const getAnimation = (variant, index, offset) => {
@@ -185,9 +184,11 @@ const PromotionReservationProgressComponent = ({
   );
 };
 
-export default withProps(({ loan }) => ({
-  loanProgress: getLoanProgress(loan),
-}))(PromotionReservationProgressComponent);
+export default withProps(({ loan }) => {
+  return {
+    loanProgress: getLoanProgress(loan),
+  };
+})(PromotionReservationProgressComponent);
 
 export const PromotionReservationProgress = withProps(
   ({

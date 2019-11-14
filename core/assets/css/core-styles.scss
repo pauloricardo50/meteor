@@ -323,7 +323,7 @@ p.description,
 }
 
 .delay {
-  @include delays(50, 25);
+  @include delays(20, 50);
 }
 
 .visibility-hidden {

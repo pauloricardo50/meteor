@@ -25,6 +25,7 @@ const promotionReservationsArray = [
 
 const PromotionReservationDetail = ({
   promotionOption,
+  loan,
 }: PromotionReservationDetailProps) => {
   const {
     _id: promotionOptionId,
@@ -49,21 +50,24 @@ const PromotionReservationDetail = ({
           status={status}
         />
       </div>
-      <PromotionReservationProgressEditor promotionOption={promotionOption} />
+      <PromotionReservationProgressEditor
+        promotionOption={promotionOption}
+        loan={loan}
+      />
       <br />
-      {isActive
-        && reservationStatus === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
-        && !isAnonymized && (
-        <UploaderArray
-          doc={promotionOption}
-          collection={PROMOTION_OPTIONS_COLLECTION}
-          documentArray={promotionReservationsArray}
-          allowRequireByAdmin={false}
-          disabled={!isAdmin}
-          disableUpload={!isAdmin}
-          autoRenameFiles
-        />
-      )}
+      {isActive &&
+        reservationStatus === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED &&
+        !isAnonymized && (
+          <UploaderArray
+            doc={promotionOption}
+            collection={PROMOTION_OPTIONS_COLLECTION}
+            documentArray={promotionReservationsArray}
+            allowRequireByAdmin={false}
+            disabled={!isAdmin}
+            disableUpload={!isAdmin}
+            autoRenameFiles
+          />
+        )}
 
       <PromotionReservationDetailActions promotionOption={promotionOption} />
     </div>

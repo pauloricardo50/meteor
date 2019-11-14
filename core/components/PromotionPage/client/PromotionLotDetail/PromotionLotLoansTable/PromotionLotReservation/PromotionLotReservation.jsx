@@ -26,7 +26,8 @@ const PromotionLotReservation = ({
   const currentUser = useContext(CurrentUserContext);
   const { status, promotionLots } = promotionOption;
   const { users = [] } = promotion;
-  const { $metadata: { permissions } = {} } = users.find(({ _id }) => _id === currentUser._id) || {};
+  const { $metadata: { permissions } = {} } =
+    users.find(({ _id }) => _id === currentUser._id) || {};
   const [promotionLot] = promotionLots;
   const {
     $metadata: { invitedBy },
@@ -62,7 +63,7 @@ const PromotionLotReservation = ({
 
   return (
     <DialogSimple
-      title={(
+      title={
         <T
           id="PromotionReservationsTable.modalTitle"
           values={{
@@ -70,7 +71,7 @@ const PromotionLotReservation = ({
             customerName: <b>{loan.user.name}</b>,
           }}
         />
-      )}
+      }
       closeOnly
       renderTrigger={({ handleOpen }) => (
         <div className="flex center-align">
@@ -88,6 +89,7 @@ const PromotionLotReservation = ({
       <PromotionReservationDetail
         promotionOption={promotionOption}
         anonymize={anonymize}
+        loan={loan}
       />
     </DialogSimple>
   );

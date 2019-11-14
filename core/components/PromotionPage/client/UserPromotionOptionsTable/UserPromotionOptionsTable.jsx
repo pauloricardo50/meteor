@@ -15,6 +15,7 @@ const UserPromotionOptionsTable = ({
   promotionOptions,
   promotion,
   setCustom,
+  loan,
   ...props
 }: UserPromotionOptionsTableProps) => (
   <>
@@ -40,6 +41,7 @@ const UserPromotionOptionsTable = ({
               promotionOption={promotionOption}
               promotion={promotion}
               handleClose={() => setOpen(false)}
+              loan={loan}
             />
           ),
         };
