@@ -12,7 +12,11 @@ const LoanBoardCardDescription = ({
   return (
     <>
       <div className="admin-note">
-        {adminNote ? adminNote.split('\n')[0] : 'Pas de note'}
+        {adminNote ? (
+          adminNote.split('\n')[0]
+        ) : (
+          <i className="secondary">Pas de note</i>
+        )}
       </div>
       {structure && structure.wantedLoan ? (
         <h5 className="flex center-align text-center">
@@ -20,7 +24,9 @@ const LoanBoardCardDescription = ({
           <Money value={structure.wantedLoan} />
         </h5>
       ) : (
-        <h5 className="secondary">Pas de plan financier</h5>
+        <h5 className="secondary">
+          <i>Pas de plan financier</i>
+        </h5>
       )}
     </>
   );
