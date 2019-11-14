@@ -9,20 +9,21 @@ const LoanBoardCardDescription = ({
   structure,
   adminNote,
 }: LoanBoardCardDescriptionProps) => {
-  if (adminNote) {
-    return <div className="admin-note">{adminNote.split('\n')[0]}</div>;
-  }
-
-  if (structure && structure.wantedLoan) {
-    return (
-      <h5 className="wanted-loan">
-        <small className="secondary">Prêt hypothécaire</small>
-        <Money value={structure.wantedLoan} tag="div" />
-      </h5>
-    );
-  }
-
-  return <h5 className="secondary text-center">Pas d'infos</h5>;
+  return (
+    <>
+      <div className="admin-note">
+        {adminNote ? adminNote.split('\n')[0] : 'Pas de note'}
+      </div>
+      {structure && structure.wantedLoan ? (
+        <h5 className="flex center-align text-center">
+          <small className="secondary">PH:&nbsp;</small>
+          <Money value={structure.wantedLoan} />
+        </h5>
+      ) : (
+        <h5 className="secondary">Pas de plan financier</h5>
+      )}
+    </>
+  );
 };
 
 export default LoanBoardCardDescription;
