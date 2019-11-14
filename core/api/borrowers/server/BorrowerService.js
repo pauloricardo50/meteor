@@ -1,15 +1,12 @@
 import Borrowers from '../borrowers';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
-import { loanBorrower } from '../../fragments';
+import { fullBorrower } from '../../fragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
     super(Borrowers);
-  }
-
-  get(borrowerId) {
-    return this.fetchOne({ $filters: { _id: borrowerId }, ...loanBorrower() });
+    this.get = this.makeGet(fullBorrower());
   }
 
   update = ({ borrowerId, object }) =>
@@ -58,7 +55,7 @@ export class BorrowerService extends CollectionService {
       name: 1,
       loans: { name: 1 },
     });
-    const loan = LoanService.get(loanId);
+    const loan = LoanService.findOne(loanId);
     const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 
     const borrowersNotOnLoan = userBorrowers.filter(
