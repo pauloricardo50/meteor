@@ -66,31 +66,25 @@ const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
   ].filter(x => x);
 
 const getRelatedDoc = task => {
-  const {
-    user = {},
-    loan = {},
-    promotion = {},
-    organisation = {},
-    lender = {},
-  } = task;
+  const { user, loan, promotion, organisation, lender } = task;
 
-  if (user.name) {
+  if (user) {
     return { ...user, collection: USERS_COLLECTION };
   }
 
-  if (loan.name) {
+  if (loan) {
     return { ...loan, collection: LOANS_COLLECTION };
   }
 
-  if (promotion.name) {
+  if (promotion) {
     return { ...promotion, collection: PROMOTIONS_COLLECTION };
   }
 
-  if (organisation.name) {
+  if (organisation) {
     return { ...organisation, collection: ORGANISATIONS_COLLECTION };
   }
 
-  if (lender.name) {
+  if (lender) {
     return { ...lender, collection: LENDERS_COLLECTION };
   }
 };
@@ -108,11 +102,11 @@ const makeMapTask = ({
     status,
     dueAt,
     assignee,
-    loan = {},
-    user = {},
-    promotion = {},
-    organisation = {},
-    lender = {},
+    loan,
+    user,
+    promotion,
+    organisation,
+    lender,
     priority,
     createdAt,
   } = task;
@@ -122,17 +116,8 @@ const makeMapTask = ({
     priority,
     columns: [
       relatedTo && {
-        raw:
-          loan.name ||
-          user.name ||
-          promotion.name ||
-          organisation.name ||
-          lender.name,
-        label: (loan.name ||
-          user.name ||
-          promotion.name ||
-          organisation.name ||
-          lender.name) && (
+        raw: loan || user || promotion || organisation || lender,
+        label: (loan || user || promotion || organisation || lender) && (
           <CollectionIconLink
             relatedDoc={getRelatedDoc(task)}
             variant="TASKS_TABLE"
