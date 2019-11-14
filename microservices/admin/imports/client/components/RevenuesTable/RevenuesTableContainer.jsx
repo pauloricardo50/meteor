@@ -70,7 +70,6 @@ export const makeMapRevenue = ({
     sourceOrganisation,
     loan,
   } = revenue;
-  console.log('revenue:', revenue);
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   return {
@@ -80,13 +79,13 @@ export const makeMapRevenue = ({
     columns: [
       displayLoan
         ? {
-            raw: loan && loan.name,
-            label: loan && (
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-              />
-            ),
-          }
+          raw: loan && loan.name,
+          label: loan && (
+            <CollectionIconLink
+              relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+            />
+          ),
+        }
         : null,
       {
         raw: status,
@@ -124,14 +123,14 @@ export const makeMapRevenue = ({
       },
       displayOrganisationsToPay
         ? organisations.map(organisation => (
-            <CollectionIconLink
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-              key={organisation._id}
-            />
-          ))
+          <CollectionIconLink
+            relatedDoc={{
+              ...organisation,
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+            key={organisation._id}
+          />
+        ))
         : null,
       {
         raw: amount,

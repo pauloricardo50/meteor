@@ -173,12 +173,19 @@ export const lender = () => ({
   },
 });
 
-export const adminLender = () => ({
-  ...lender(),
-  status: 1,
-  adminNote: 1,
-  offers: adminOffer(),
-});
+export const adminLender = () => {
+  const lenderFragment = lender();
+  return {
+    ...lenderFragment,
+    adminNote: 1,
+    offers: adminOffer(),
+    organisation: {
+      ...lenderFragment.organisation,
+      commissionRates: 1,
+    },
+    status: 1,
+  };
+};
 
 // //
 // // LenderRules fragments
