@@ -87,7 +87,7 @@ describe('REST: insertProperty', function() {
       body: property,
     }).then(({ message }) => {
       const propertyId = message.split('"')[1];
-      const insertedProperty = PropertyService.get(propertyId);
+      const insertedProperty = PropertyService.findOne(propertyId);
       expect(insertedProperty.value).to.equal(property.value);
       expect(insertedProperty.externalId).to.equal(property.externalId);
     });
@@ -109,7 +109,7 @@ describe('REST: insertProperty', function() {
       impersonateUser: 'pro@org.com',
     }).then(({ message }) => {
       const propertyId = message.split('"')[1];
-      const insertedProperty = PropertyService.get(propertyId);
+      const insertedProperty = PropertyService.findOne(propertyId);
       expect(insertedProperty.value).to.equal(property.value);
       expect(insertedProperty.externalId).to.equal(property.externalId);
     });

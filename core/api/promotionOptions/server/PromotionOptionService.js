@@ -481,7 +481,7 @@ export class PromotionOptionService extends CollectionService {
     return toExpire.length;
   };
 
-  generateExpiringSoonTasks = async () => {
+  getExpiringSoonReservations = () => {
     const weekDay = moment().isoWeekday();
     const tomorrow = moment().add(1, 'day');
 
@@ -503,35 +503,10 @@ export class PromotionOptionService extends CollectionService {
       reservationAgreement: { expirationDate: 1 },
     });
 
-    await Promise.all(
-      expiringSoon.map(promotionOption => {
-        const {
-          promotion: { _id: promotionId, assignedEmployee },
-          promotionLots = [],
-          reservationAgreement: { expirationDate },
-          loan: {
-            user: { name: userName },
-          },
-        } = promotionOption;
-
-        const [{ name: promotionLotName }] = promotionLots;
-
-        return TaskService.insert({
-          object: {
-            collection: PROMOTIONS_COLLECTION,
-            docId: promotionId,
-            assigneeLink: assignedEmployee,
-            title: `La réservation de ${userName} sur ${promotionLotName} arrive à échéance`,
-            description: `Valable jusqu'au ${moment(expirationDate).format(
-              'DD MMM',
-            )}`,
-          },
-        });
-      }),
-    );
+    return expiringSoon;
   };
 
-  generateHalfLifeReminderTasks = async () => {
+  getHalfLifeReservations = () => {
     const in10Days = moment().add(10, 'days');
 
     const expiringIn10Days = this.fetch({
@@ -547,32 +522,7 @@ export class PromotionOptionService extends CollectionService {
       reservationAgreement: { expirationDate: 1 },
     });
 
-    await Promise.all(
-      expiringIn10Days.map(promotionOption => {
-        const {
-          promotion: { _id: promotionId, assignedEmployee },
-          promotionLots = [],
-          reservationAgreement: { expirationDate },
-          loan: {
-            user: { name: userName },
-          },
-        } = promotionOption;
-
-        const [{ name: promotionLotName }] = promotionLots;
-
-        return TaskService.insert({
-          object: {
-            collection: PROMOTIONS_COLLECTION,
-            docId: promotionId,
-            assigneeLink: assignedEmployee,
-            title: `La réservation de ${userName} sur ${promotionLotName} échoue dans 10 jours, relancer le client`,
-            description: `Valable jusqu'au ${moment(expirationDate).format(
-              'DD MMM',
-            )}`,
-          },
-        });
-      }),
-    );
+    return expiringIn10Days;
   };
 
   getEmailRecipients({ promotionOptionId }) {

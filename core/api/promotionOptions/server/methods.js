@@ -12,9 +12,10 @@ import {
   promotionOptionUploadAgreement,
   promotionOptionAddToWaitList,
 } from '../methodDefinitions';
+import { Method } from '../../methods/methods';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
-  const loan = LoanService.get(params.loanId);
+  const loan = LoanService.findOne(params.loanId);
   SecurityService.checkOwnership(loan, userId);
   return PromotionOptionService.insert(params);
 });
@@ -78,4 +79,24 @@ promotionOptionUploadAgreement.setHandler(({ userId }, params) => {
 promotionOptionAddToWaitList.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionOptionService.addToWaitList(params);
+});
+
+export const generateExpiringSoonReservationTasks = new Method({
+  name: 'generateExpiringSoonReservationTasks',
+  params: {},
+});
+
+generateExpiringSoonReservationTasks.setHandler(context => {
+  SecurityService.checkIsServerCall(context);
+  return PromotionOptionService.getExpiringSoonReservations();
+});
+
+export const generateHalfLifeReservationReminderTasks = new Method({
+  name: 'generateHalfLifeReservationReminderTasks',
+  params: {},
+});
+
+generateHalfLifeReservationReminderTasks.setHandler(context => {
+  SecurityService.checkIsServerCall(context);
+  return PromotionOptionService.getHalfLifeReservations();
 });

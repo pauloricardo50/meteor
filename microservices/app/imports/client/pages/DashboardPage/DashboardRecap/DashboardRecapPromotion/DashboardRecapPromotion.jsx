@@ -48,6 +48,7 @@ const DashboardRecapPromotion = ({
             loan,
           })}
           progressVariant="label"
+          loan={loan}
         />
       ) : (
         <UserPromotionOptionsTable

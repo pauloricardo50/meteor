@@ -51,7 +51,10 @@ const PromotionOptionsTable = ({
             />
           ),
           children: (
-            <PromotionReservationDetail promotionOption={promotionOption} />
+            <PromotionReservationDetail
+              promotionOption={promotionOption}
+              loan={loan}
+            />
           ),
         };
       }}

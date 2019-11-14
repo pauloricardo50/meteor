@@ -24,7 +24,7 @@ describe('OfferService', () => {
       expect(offer.interest10).to.equal(0.05);
 
       OfferService.update({ offerId, object: { interest10: 0.1 } });
-      offer = OfferService.get(offerId);
+      offer = OfferService.findOne(offerId);
 
       expect(offer.interest10).to.equal(0.1);
     });
@@ -40,7 +40,7 @@ describe('OfferService', () => {
           amortizationGoal: 0.65,
         },
       });
-      offer = OfferService.get(offerId);
+      offer = OfferService.findOne(offerId);
 
       expect(offer.createdAt).to.not.equal(undefined);
     });
@@ -56,7 +56,7 @@ describe('OfferService', () => {
         },
       });
 
-      expect(OfferService.get(offerId).interest1).to.equal(0.0123);
+      expect(OfferService.findOne(offerId).interest1).to.equal(0.0123);
     });
   });
 
@@ -66,13 +66,13 @@ describe('OfferService', () => {
       offerId = offer._id;
 
       OfferService.remove({ offerId });
-      offer = OfferService.get(offerId);
+      offer = OfferService.findOne(offerId);
 
       expect(offer).to.equal(undefined);
     });
   });
 
-  describe('send feedback', function() {
+  describe('send feedback', function () {
     this.timeout(10000);
 
     it('sends the feedback to the lender', () => {

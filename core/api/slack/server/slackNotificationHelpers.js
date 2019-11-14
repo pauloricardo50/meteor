@@ -1,10 +1,6 @@
 import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
 
-import {
-  promotionInviteNotification,
-  propertyInviteNotification,
-} from './slackNotifications';
+import { propertyInviteNotification } from './slackNotifications';
 
 export const sendPropertyInvitations = (
   propertyIds,
@@ -21,20 +17,5 @@ export const sendPropertyInvitations = (
       user: invitedUser,
       property,
     });
-  });
-};
-
-export const sendPromotionInvitations = (
-  promotionIds,
-  currentUser,
-  invitedUser,
-) => {
-  promotionIds.forEach(id => {
-    const promotion = PromotionService.fetchOne({
-      $filters: { _id: id },
-      name: 1,
-      assignedEmployee: { email: 1 },
-    });
-    promotionInviteNotification({ currentUser, promotion, user: invitedUser });
   });
 };

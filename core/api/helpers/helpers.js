@@ -52,11 +52,13 @@ export const getCollectionNameFromIdField = idFieldName =>
   }[idFieldName]);
 
 export const createMeteorAsyncFunction = promiseFunc =>
-  Meteor.wrapAsync((params, callback) =>
-    promiseFunc(params)
+  Meteor.wrapAsync((...args) => {
+    // Last argument should be the callback
+    const [callback, ...params] = [...args].reverse();
+    return promiseFunc(...params)
       .then(result => callback(null, result))
-      .catch(callback),
-  );
+      .catch(callback);
+  });
 
 export const flattenObject = (object, delimiter) => {
   const delim = delimiter || '.';

@@ -1,17 +1,11 @@
 import Contacts from '../contacts';
 import CollectionService from '../../helpers/CollectionService';
-import { contact } from '../../fragments';
+import { fullContact } from '../../fragments';
 
 class ContactService extends CollectionService {
   constructor() {
     super(Contacts);
-  }
-
-  get(contactId) {
-    return this.fetchOne({
-      $filters: { _id: contactId },
-      ...contact(),
-    });
+    this.get = this.makeGet(fullContact);
   }
 
   changeOrganisations({ contactId, newOrganisations = [] }) {

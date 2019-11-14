@@ -45,12 +45,12 @@ describe('LoanService', function() {
       loanId = Factory.create('loan', {
         contacts: [{ name: 'Joe', title: 'Mah dude' }],
       })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.contacts.length).to.equal(1);
 
       LoanService.popValue({ loanId, object: { contacts: 1 } });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.contacts).to.deep.equal([]);
     });
   });
@@ -137,7 +137,7 @@ describe('LoanService', function() {
         propertyId: 'propertyId',
       });
 
-      loan = LoanService.get('loanId');
+      loan = LoanService.findOne('loanId');
 
       loan.structures.forEach(({ propertyId }) => {
         expect(propertyId).to.equal('propertyId');
@@ -162,7 +162,7 @@ describe('LoanService', function() {
         propertyId: 'propertyId',
       });
 
-      loan = LoanService.get('loanId');
+      loan = LoanService.findOne('loanId');
 
       loan.structures.forEach(({ propertyId, promotionOptionId }, i) => {
         if (i === 2) {
@@ -177,12 +177,12 @@ describe('LoanService', function() {
   describe('addNewStructure', () => {
     it('adds a new structure to a loan', () => {
       loanId = Factory.create('loan')._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures).to.deep.equal([]);
 
       LoanService.addNewStructure({ loanId });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures).to.have.length(1);
       expect(typeof loan.structures[0].id).to.equal('string');
@@ -192,7 +192,7 @@ describe('LoanService', function() {
       loanId = Factory.create('loan')._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.selectedStructure).to.equal(loan.structures[0].id);
     });
 
@@ -203,7 +203,7 @@ describe('LoanService', function() {
       })._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.selectedStructure).to.equal('first');
     });
 
@@ -221,7 +221,7 @@ describe('LoanService', function() {
       })._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, name, ...structure1 } = loan.structures[0];
@@ -235,7 +235,7 @@ describe('LoanService', function() {
       loanId = Factory.create('loan')._id;
       const structureId = LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.equal(structureId);
@@ -248,7 +248,7 @@ describe('LoanService', function() {
         structures: [{ id: '1' }, { id: '2' }],
         selectedStructure: '1',
       })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
 
@@ -256,7 +256,7 @@ describe('LoanService', function() {
 
       LoanService.removeStructure({ loanId, structureId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.not.equal(structureId);
@@ -282,7 +282,7 @@ describe('LoanService', function() {
 
       LoanService.duplicateStructure({ loanId, structureId: '1' });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
 
@@ -291,7 +291,7 @@ describe('LoanService', function() {
         structureId: loan.structures[1].id,
       });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
     });
@@ -312,7 +312,7 @@ describe('LoanService', function() {
 
       LoanService.removeStructure({ loanId, structureId: 'CfN4k8WKqRySCfvns' });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
     });
@@ -329,7 +329,7 @@ describe('LoanService', function() {
           { id: `${structureId}1` },
         ],
       })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.structures.propertyId).to.equal(undefined);
       LoanService.updateStructure({
         loanId,
@@ -337,7 +337,7 @@ describe('LoanService', function() {
         structure: { propertyId },
       });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       // This structure is correct
       expect(
         loan.structures.find(({ id }) => id === structureId),
@@ -365,7 +365,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.selectStructure({ loanId, structureId: structureId2 });
-      const { selectedStructure } = LoanService.get(loanId);
+      const { selectedStructure } = LoanService.findOne(loanId);
 
       expect(selectedStructure).to.equal(structureId2);
     });
@@ -397,7 +397,7 @@ describe('LoanService', function() {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, name, ...structure1 } = loan.structures[0];
@@ -426,7 +426,7 @@ describe('LoanService', function() {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       const { id: id1, name, ...structure1 } = loan.structures[0];
       const { id: id2, name: name2, ...structure2 } = loan.structures[1];
@@ -443,7 +443,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures[1].name).to.equal(`${name} - copie`);
     });
@@ -459,7 +459,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId: structureId + 0 });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(3);
       expect(loan.structures[0].name).to.equal(name + 0);
@@ -473,7 +473,7 @@ describe('LoanService', function() {
         selectedStructure: 'testId',
       })._id;
       LoanService.duplicateStructure({ loanId, structureId: 'testId' });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.structures[1].name).to.equal('Plan financier - copie');
     });
   });
@@ -486,7 +486,7 @@ describe('LoanService', function() {
 
     it('returns 19-0002 for the second loan', () => {
       loanId = LoanService.insert({ loan: {} });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.name).to.equal('19-0001');
 
       const name = LoanService.getNewLoanName();
@@ -582,7 +582,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.cleanupRemovedBorrower({ borrowerId });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures[0].ownFunds.length).to.equal(1);
       expect(loan.structures[0].ownFunds[0].borrowerId).to.equal(borrowerId2);
@@ -594,13 +594,13 @@ describe('LoanService', function() {
       const oldBorrowerId = Factory.create('borrower')._id;
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId] })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([oldBorrowerId]);
 
       LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([borrowerId]);
     });
@@ -610,13 +610,13 @@ describe('LoanService', function() {
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId, 'dude'] })
         ._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([oldBorrowerId, 'dude']);
 
       LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([borrowerId, 'dude']);
     });
@@ -673,11 +673,11 @@ describe('LoanService', function() {
 
       LoanService.assignLoanToUser({ loanId, userId });
 
-      expect(LoanService.get(loanId).userId).to.equal(userId);
+      expect(LoanService.findOne(loanId).userId).to.equal(userId);
       expect(BorrowerService.get(borrowerId1).userId).to.equal(userId);
       expect(BorrowerService.get(borrowerId2).userId).to.equal(userId);
-      expect(PropertyService.get(propertyId1).userId).to.equal(userId);
-      expect(PropertyService.get(propertyId2).userId).to.equal(userId);
+      expect(PropertyService.findOne(propertyId1).userId).to.equal(userId);
+      expect(PropertyService.findOne(propertyId2).userId).to.equal(userId);
     });
 
     it('throws if a borrower is assigned to multiple loans', () => {
@@ -720,8 +720,8 @@ describe('LoanService', function() {
       expect(() =>
         LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' }),
       ).to.not.throw();
-      expect(PropertyService.get('propId1').userId).to.equal(undefined);
-      expect(PropertyService.get('propId2').userId).to.equal('dude');
+      expect(PropertyService.findOne('propId1').userId).to.equal(undefined);
+      expect(PropertyService.findOne('propId2').userId).to.equal('dude');
     });
 
     it('refers a user if this is his first loan', () => {
@@ -962,7 +962,7 @@ describe('LoanService', function() {
 
       LoanService.setStep({ loanId: 'id', nextStep: STEPS.REQUEST });
 
-      loan = LoanService.get('id');
+      loan = LoanService.findOne('id');
 
       expect(loan.step).to.equal(STEPS.REQUEST);
     });
@@ -987,7 +987,7 @@ describe('LoanService', function() {
 
       LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      loan = LoanService.get('myLoan');
+      loan = LoanService.findOne('myLoan');
 
       expect(loan.step).to.equal(STEPS.OFFERS);
 

@@ -54,7 +54,11 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
                         </div>
 
                         <div>
-                          <b>Tél:</b> {assignedEmployee.phoneNumbers[0]}
+                          <b>Tél:</b>{' '}
+                          {assignedEmployee.phoneNumbers &&
+                          assignedEmployee.phoneNumbers.length
+                            ? assignedEmployee.phoneNumbers[0]
+                            : '-'}
                         </div>
                       </div>
                     )

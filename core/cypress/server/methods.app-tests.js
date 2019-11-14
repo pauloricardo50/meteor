@@ -370,7 +370,7 @@ Meteor.methods({
     return userId;
   },
   getLoan(loanId) {
-    return LoanService.get(loanId);
+    return LoanService.findOne(loanId);
   },
   getUser(email) {
     return UserService.getByEmail(email);

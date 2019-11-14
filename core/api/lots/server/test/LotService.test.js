@@ -33,13 +33,13 @@ describe('LotService', () => {
 
     it('updates the name', () => {
       LotService.update({ lotId, object: { name: 'testname' } });
-      const lot = LotService.get(lotId);
+      const lot = LotService.findOne(lotId);
       expect(lot.name).to.equal('testname');
     });
 
     it('removes the lot link when promotionLotId is null', () => {
       LotService.update({ lotId, object: { promotionLotId: null } });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+      expect(PromotionLotService.findOne(promotionLotId).lotLinks.length).to.equal(
         0,
       );
     });
@@ -54,8 +54,8 @@ describe('LotService', () => {
         lotId,
         object: { promotionLotId: id },
       });
-      const { lotLinks } = PromotionLotService.get(promotionLotId);
-      const { lotLinks: newLotLinks } = PromotionLotService.get(id);
+      const { lotLinks } = PromotionLotService.findOne(promotionLotId);
+      const { lotLinks: newLotLinks } = PromotionLotService.findOne(id);
 
       expect(newLotLinks.length).to.equal(1);
       expect(newLotLinks[0]._id).to.equal(lotId);
@@ -64,10 +64,10 @@ describe('LotService', () => {
 
     it('does not remove the link if no new link is provided', () => {
       LotService.update({ lotId, object: { name: 'testname' } });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+      expect(PromotionLotService.findOne(promotionLotId).lotLinks.length).to.equal(
         1,
       );
-      expect(PromotionLotService.get(promotionLotId).lotLinks[0]._id).to.equal(
+      expect(PromotionLotService.findOne(promotionLotId).lotLinks[0]._id).to.equal(
         lotId,
       );
     });
@@ -78,7 +78,7 @@ describe('LotService', () => {
         lotId,
         object: { promotionLotId: null },
       });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+      expect(PromotionLotService.findOne(promotionLotId).lotLinks.length).to.equal(
         0,
       );
 
@@ -87,10 +87,10 @@ describe('LotService', () => {
         lotId,
         object: { promotionLotId },
       });
-      expect(PromotionLotService.get(promotionLotId).lotLinks.length).to.equal(
+      expect(PromotionLotService.findOne(promotionLotId).lotLinks.length).to.equal(
         1,
       );
-      expect(PromotionLotService.get(promotionLotId).lotLinks[0]._id).to.equal(
+      expect(PromotionLotService.findOne(promotionLotId).lotLinks[0]._id).to.equal(
         lotId,
       );
     });
@@ -109,7 +109,7 @@ describe('LotService', () => {
     });
 
     it('removes the link from the promotion', () => {
-      let promotion = PromotionService.get(promotionId);
+      let promotion = PromotionService.findOne(promotionId);
 
       expect(LotService.collection.find({}).count()).to.equal(1);
       expect(promotion.lotLinks).to.deep.equal([{ _id: lotId }]);
@@ -117,7 +117,7 @@ describe('LotService', () => {
       LotService.remove(lotId);
 
       expect(LotService.collection.find({}).count()).to.equal(0);
-      promotion = PromotionService.get(promotionId);
+      promotion = PromotionService.findOne(promotionId);
       expect(promotion.lotLinks).to.deep.equal([]);
     });
   });

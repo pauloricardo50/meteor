@@ -9,6 +9,9 @@ import {
   USERS_COLLECTION,
   TASKS_COLLECTION,
   LOANS_COLLECTION,
+  PROMOTIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+  LENDERS_COLLECTION,
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
 import Linkify from 'core/components/Linkify';
@@ -62,6 +65,30 @@ const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
     { id: 'actions', label: 'Actions', style: { width: 96 } },
   ].filter(x => x);
 
+const getRelatedDoc = task => {
+  const { user, loan, promotion, organisation, lender } = task;
+
+  if (user) {
+    return { ...user, collection: USERS_COLLECTION };
+  }
+
+  if (loan) {
+    return { ...loan, collection: LOANS_COLLECTION };
+  }
+
+  if (promotion) {
+    return { ...promotion, collection: PROMOTIONS_COLLECTION };
+  }
+
+  if (organisation) {
+    return { ...organisation, collection: ORGANISATIONS_COLLECTION };
+  }
+
+  if (lender) {
+    return { ...lender, collection: LENDERS_COLLECTION };
+  }
+};
+
 const makeMapTask = ({
   setTaskToModify,
   setShowDialog,
@@ -75,8 +102,11 @@ const makeMapTask = ({
     status,
     dueAt,
     assignee,
-    loan = {},
-    user = {},
+    loan,
+    user,
+    promotion,
+    organisation,
+    lender,
     priority,
     createdAt,
   } = task;
@@ -86,14 +116,10 @@ const makeMapTask = ({
     priority,
     columns: [
       relatedTo && {
-        raw: loan.name || user.name,
-        label: (loan.name || user.name) && (
+        raw: loan || user || promotion || organisation || lender,
+        label: (loan || user || promotion || organisation || lender) && (
           <CollectionIconLink
-            relatedDoc={
-              loan.name
-                ? { ...loan, collection: LOANS_COLLECTION }
-                : { ...user, collection: USERS_COLLECTION }
-            }
+            relatedDoc={getRelatedDoc(task)}
             variant="TASKS_TABLE"
           />
         ),

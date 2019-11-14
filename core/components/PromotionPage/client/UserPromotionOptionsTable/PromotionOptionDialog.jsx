@@ -14,6 +14,7 @@ const PromotionOptionDialog = ({
   promotionOption = { promotionLots: [{}] },
   handleClose,
   promotion,
+  loan,
 }: PromotionOptionDialogProps) => {
   const { promotionLots } = promotionOption;
   const [promotionLot] = promotionLots;

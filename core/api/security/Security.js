@@ -263,4 +263,13 @@ export default class Security {
 
     this.handleUnauthorized('Vous ne pouvez pas supprimer ce fichier');
   }
+
+  static checkIsServerCall(context) {
+    const { connection } = context;
+
+    // connection is null when server calls a method
+    if (connection) {
+      this.handleUnauthorized('Unauthorized server method');
+    }
+  }
 }

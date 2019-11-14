@@ -43,7 +43,7 @@ export class PropertyService extends CollectionService {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
         return removePropertyFromLoan({
-          loan: LoanService.get(loanId),
+          loan: LoanService.findOne(loanId),
           propertyId,
         });
       }
@@ -77,7 +77,7 @@ export class PropertyService extends CollectionService {
     isNewUser,
     shareSolvency,
   }) => {
-    const properties = propertyIds.map(propertyId => this.get(propertyId));
+    const properties = propertyIds.map(propertyId => this.findOne(propertyId));
 
     if (this.hasOneOfProperties({ userId, propertyIds })) {
       throw new Meteor.Error(

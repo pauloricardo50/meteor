@@ -164,7 +164,7 @@ export const createPromotionDemo = async (
   console.log('creating lots');
   createLots(promotionId);
 
-  const promotion = PromotionService.get(promotionId);
+  const promotion = PromotionService.findOne(promotionId);
 
   if (addCurrentUser) {
     console.log('Adding current user');
