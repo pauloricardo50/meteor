@@ -76,9 +76,9 @@
     "reselect": "^4.0.0",
     "simpl-schema": "^1.5.6",
     "text-mask-addons": "^3.8.0",
-    "uniforms": "^2.6.0",
-    "uniforms-bridge-simple-schema-2": "^2.6.0",
-    "uniforms-material": "https://github.com/MisterQH/uniforms-material/tarball/master"
+    "uniforms": "^2.6.1",
+    "uniforms-bridge-simple-schema-2": "^2.6.1",
+    "uniforms-material": "^2.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
