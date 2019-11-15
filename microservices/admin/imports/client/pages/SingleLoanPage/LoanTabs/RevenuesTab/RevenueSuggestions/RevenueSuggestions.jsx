@@ -25,14 +25,16 @@ const RevenueSuggestions = ({
   const { wantedLoan } = structure;
   const hasReferral = !!referralOrganisation;
 
-  if (!lenders) {
-    return <h3 className="secondary">Pas de suggestions</h3>;
+  if (!lenders || !lenders.length) {
+    return (
+      <h3 className="secondary">Pas de suggestions, ajoutez des prêteurs!</h3>
+    );
   }
 
   return (
     <div>
       <h3>Suggestions</h3>
-      <div className="flex wrap space-children">
+      <div className="flex center-align wrap space-children">
         {lenders.map(lender => {
           const { organisation } = lender;
           const { commissionRates = [] } = organisation;
@@ -52,12 +54,14 @@ const RevenueSuggestions = ({
                   expectedAt: getLastDateinXMonths(3),
                   amount: hasCommissionRate ? amount : 0,
                   sourceOrganisationLink: { _id: lender.organisation._id },
-                  organisationLinks: hasReferral && [
-                    {
-                      _id: referralOrganisation._id,
-                      commissionRate: referralOrganisation.commissionRate,
-                    },
-                  ],
+                  organisationLinks: hasReferral
+                    ? [
+                      {
+                        _id: referralOrganisation._id,
+                        commissionRate: referralOrganisation.commissionRate,
+                      },
+                    ]
+                    : [],
                 })
               }
               className="card1 card-top card-hover"
@@ -111,4 +115,5 @@ export default withSmartQuery({
   }),
   dataName: 'referralOrganisation',
   queryOptions: { single: true },
+  renderMissingDoc: false,
 })(RevenueSuggestions);

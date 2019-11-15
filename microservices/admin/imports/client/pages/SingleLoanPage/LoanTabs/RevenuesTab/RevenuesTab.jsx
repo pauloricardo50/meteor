@@ -21,8 +21,8 @@ const RevenuesTab = ({ loan }) => {
 
   return (
     <div className="revenues-tab">
-      <div className="flex space-children">
-        <h2>Revenus</h2>
+      <div className="flex center-align">
+        <h2 className="mr-8">Revenus</h2>
         <RevenueAdder
           loan={loan}
           revenue={revenueSuggestion}
