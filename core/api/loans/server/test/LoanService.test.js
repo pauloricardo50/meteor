@@ -1065,12 +1065,12 @@ describe('LoanService', function() {
 
       const result = LoanService.setStatus({
         loanId: 'myLoan',
-        status: LOAN_STATUS.FINALIZED,
+        status: LOAN_STATUS.BILLING,
       });
 
       expect(result).to.deep.equal({
         prevStatus: LOAN_STATUS.CLOSING,
-        nextStatus: LOAN_STATUS.FINALIZED,
+        nextStatus: LOAN_STATUS.BILLING,
       });
     });
 
@@ -1107,12 +1107,15 @@ describe('LoanService', function() {
       });
 
       return ddpWithUserId('adminId2', () =>
-        loanSetStatus.run({ loanId: 'myLoan', status: LOAN_STATUS.ONGOING }),
+        loanSetStatus.run({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
       )
         .then(result => {
           expect(result).to.deep.equal({
             prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.ONGOING,
+            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
           });
 
           expect(spy.calledOnce).to.equal(true);
@@ -1130,7 +1133,7 @@ describe('LoanService', function() {
             loanPurchaseType: PURCHASE_TYPE.ACQUISITION,
             loanResidenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
             loanStep: STEPS.SOLVENCY,
-            nextStatus: LOAN_STATUS.ONGOING,
+            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
             prevStatus: LOAN_STATUS.LEAD,
             referredByOrganisation: 'Org 1',
             referredByUser: 'Pro 1',
@@ -1139,6 +1142,149 @@ describe('LoanService', function() {
         .finally(() => {
           Analytics.prototype.track.restore();
         });
+    });
+
+    it('does not allow to change to the same status', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.ONGOING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.ONGOING,
+        }),
+      ).to.throw('le même');
+    });
+
+    it('allows one step forward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.ONGOING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.CLOSING,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows one step backward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.ONGOING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows resurrections from UNSUCCESSFUL', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.UNSUCCESSFUL },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows resurrections from PENDING', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.PENDING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows resurrections from TEST', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.TEST },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows killings to UNSUCCESSFUL', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.QUALIFIED_LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.UNSUCCESSFUL,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows killings to PENDING', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.QUALIFIED_LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.PENDING,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows killings to TEST', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.QUALIFIED_LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.TEST,
+        }),
+      ).to.not.throw();
+    });
+
+    it('does not allow 2 steps forward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.ONGOING,
+        }),
+      ).to.throw('Vous ne pouvez pas');
+    });
+
+    it('does not allow 2 steps backward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.BILLING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.ONGOING,
+        }),
+      ).to.throw('Vous ne pouvez pas');
     });
   });
 
