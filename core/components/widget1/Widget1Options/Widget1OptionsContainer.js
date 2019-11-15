@@ -7,7 +7,7 @@ const mapStateToProps = ({ widget1: { purchaseType } }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setPurchaseType: value => {
+  setPurchaseType: (_, value) => {
     dispatch({ type: commonTypes.SET_VALUE('purchaseType'), value });
     if (value === widget1Constants.PURCHASE_TYPE.REFINANCING) {
       dispatch({ type: widget1Types.SET_AUTO('property'), auto: false });
