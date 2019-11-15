@@ -270,17 +270,21 @@ describe('monitoring', () => {
     });
   });
 
-  describe('loanStatusChanges', () => {
+  describe('loanStatusChanges', function() {
+    this.timeout(5000);
     it('groups status changes', async () => {
       generator({
-        loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+        loans: [
+          { _id: 'loan1', status: LOAN_STATUS.QUALIFIED_LEAD },
+          { _id: 'loan2', status: LOAN_STATUS.QUALIFIED_LEAD },
+        ],
         users: { _id: 'admin', _factory: 'admin' },
       });
       await ddpWithUserId('admin', () =>
         loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
       );
       await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.BILLING }),
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.CLOSING }),
       );
       await ddpWithUserId('admin', () =>
         loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }),
@@ -309,13 +313,14 @@ describe('monitoring', () => {
 
       expect(result.length).to.equal(5);
 
-      const ongoingToBilling = result.find(
+      const qualifiedLeadToOngoing = result.find(
         ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.LEAD && nextStatus === LOAN_STATUS.ONGOING,
+          prevStatus === LOAN_STATUS.QUALIFIED_LEAD &&
+          nextStatus === LOAN_STATUS.ONGOING,
       );
-      expect(ongoingToBilling).to.deep.include({
+      expect(qualifiedLeadToOngoing).to.deep.include({
         _id: {
-          prevStatus: LOAN_STATUS.LEAD,
+          prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
           nextStatus: LOAN_STATUS.ONGOING,
         },
         count: 2,
