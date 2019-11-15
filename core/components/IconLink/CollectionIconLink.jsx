@@ -43,11 +43,11 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     case LOANS_COLLECTION: {
       let text;
 
-      if (variant === 'TASKS_TABLE') {
-        text = getLoanLinkTitle(data);
-      } else {
-        text = data.name;
-      }
+      // if (variant === 'TASKS_TABLE') {
+      text = getLoanLinkTitle(data);
+      // } else {
+      //   text = data.name;
+      // }
 
       return {
         link: `/loans/${docId}`,
@@ -113,7 +113,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
       if (data.$metadata && data.$metadata.title) {
         text = `${data.$metadata.title} @ ${data.name}${
           isDev && isMain ? ' (main)' : ''
-        }`;
+          }`;
       } else {
         text = `${data.name}${isDev && isMain ? ' (main)' : ''}`;
       }

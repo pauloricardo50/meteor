@@ -11,7 +11,7 @@ import {
 import CommissionsConsolidator from 'imports/client/components/RevenuesTable/CommissionConsolidator';
 import RevenuesTableContainer from '../../../components/RevenuesTable/RevenuesTableContainer';
 
-const addCommissionRows = (
+const makeAddCommissionRows = commissionStatus => (
   rows,
   { organisations = [], columns, id: revenueId, amount, ...rest },
 ) => {
@@ -21,8 +21,9 @@ const addCommissionRows = (
 
   return [
     ...rows,
-    ...organisations.map(
-      ({ name, _id, $metadata: { status, commissionRate, paidAt } }) => {
+    ...organisations
+      .filter(({ $metadata: { status } }) => commissionStatus.includes(status))
+      .map(({ name, _id, $metadata: { status, commissionRate, paidAt } }) => {
         const commissionAmount = amount * commissionRate;
 
         return {
@@ -70,15 +71,14 @@ const addCommissionRows = (
           ],
           ...rest,
         };
-      },
-    ),
+      }),
   ];
 };
 
 export default compose(
   withProps(() => ({ displayLoan: true, displayOrganisationsToPay: false })),
   RevenuesTableContainer,
-  withProps(({ columnOptions, rows }) => ({
+  withProps(({ columnOptions, rows, commissionStatus }) => ({
     columnOptions: [
       { id: 'commissionOrganisation', label: 'À payer' },
       { id: 'commissionStatus', label: 'Statut de la commission' },
@@ -91,7 +91,7 @@ export default compose(
       },
       { id: 'actions' },
     ],
-    rows: rows.reduce(addCommissionRows, []),
+    rows: rows.reduce(makeAddCommissionRows(commissionStatus), []),
     initialOrderBy: 4,
   })),
 );

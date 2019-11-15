@@ -22,11 +22,12 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
             <h4 style={{ marginTop: 0 }}>{name}</h4>
 
             <div>
-              <b>Email:</b> {email}
+              <b>Email:</b> <a href={`mailto:${email}`}>{email}</a>
             </div>
 
             <div>
-              <b>Tél:</b> {phoneNumbers[0]}
+              <b>Tél:</b>{' '}
+              <a href={`tel:${phoneNumbers[0]}`}>{phoneNumbers[0]}</a>
             </div>
 
             <div>
@@ -50,11 +51,17 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
                         </h4>
 
                         <div>
-                          <b>Email:</b> {assignedEmployee.email}
+                          <b>Email:</b>{' '}
+                          <a href={`mailto:${assignedEmployee.email}`}>
+                            {assignedEmployee.email}
+                          </a>
                         </div>
 
                         <div>
-                          <b>Tél:</b> {assignedEmployee.phoneNumbers[0]}
+                          <b>Tél:</b>{' '}
+                          <a href={`tel:${assignedEmployee.phoneNumbers[0]}`}>
+                            {assignedEmployee.phoneNumbers[0]}
+                          </a>
                         </div>
                       </div>
                     )
