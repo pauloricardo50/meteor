@@ -25,6 +25,7 @@ import {
   LOAN_VERIFICATION_STATUS,
   CANTONS,
   EMAIL_IDS,
+  LOAN_STATUS_ORDER,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -138,7 +139,7 @@ class LoanService extends CollectionService {
     }
   }
 
-  setStatus({ loanId, status }) {
+  verifyStatusChange({ loanId, status }) {
     const { status: prevStatus } = this.fetchOne({
       $filters: { _id: loanId },
       status: 1,
@@ -147,6 +148,40 @@ class LoanService extends CollectionService {
     if (prevStatus === status) {
       throw new Meteor.Error("Ce statut est le même qu'avant");
     }
+
+    const orderedStatuses = LOAN_STATUS_ORDER.filter(
+      s =>
+        ![
+          LOAN_STATUS.PENDING,
+          LOAN_STATUS.UNSUCCESSFUL,
+          LOAN_STATUS.TEST,
+        ].includes(s),
+    );
+
+    // Resurrection or kill
+    if (
+      !orderedStatuses.includes(status) ||
+      !orderedStatuses.includes(prevStatus)
+    ) {
+      return prevStatus;
+    }
+
+    const statusIndex = orderedStatuses.indexOf(status);
+    const prevStatusIndex = orderedStatuses.indexOf(prevStatus);
+
+    // Status change does not respect the order
+    if (
+      statusIndex !== prevStatusIndex + 1 &&
+      statusIndex !== prevStatusIndex - 1
+    ) {
+      throw new Meteor.Error('Vous ne pouvez pas sauter des statuts');
+    }
+
+    return prevStatus;
+  }
+
+  setStatus({ loanId, status }) {
+    const prevStatus = this.verifyStatusChange({ loanId, status });
 
     this.update({ loanId, object: { status } });
     return { prevStatus, nextStatus: status };
