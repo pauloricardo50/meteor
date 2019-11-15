@@ -14,7 +14,7 @@ export default function withStaticQueryContainer(config) {
         data: [],
       };
 
-      componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) {
         const { query } = nextProps;
 
         if (!config.shouldRefetch) {

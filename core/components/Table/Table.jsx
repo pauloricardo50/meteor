@@ -26,7 +26,7 @@ export default class Table extends Component {
     this.handleNewData(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { data } = this.state;
     const currentLength = data.length;
     const nextLength = nextProps.rows.length;

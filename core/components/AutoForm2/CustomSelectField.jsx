@@ -89,8 +89,8 @@ const renderSelect = ({
       variant={variant}
     >
       {hasPlaceholder && (
-        <Item value="" disabled={!!required}>
-          {placeholder}
+        <Item value="" disabled>
+          <i>{placeholder}</i>
         </Item>
       )}
       {allowedValues.map(value => (

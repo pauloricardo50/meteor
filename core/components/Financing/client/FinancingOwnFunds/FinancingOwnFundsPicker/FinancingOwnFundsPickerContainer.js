@@ -169,7 +169,7 @@ const FinancingOwnFundsPickerContainer = compose(
   FinancingDataContainer,
   addState,
   lifecycle({
-    componentWillReceiveProps({
+    UNSAFE_componentWillReceiveProps({
       structure: { ownFunds: nextFunds },
       ownFundsIndex: nextIndex,
     }) {

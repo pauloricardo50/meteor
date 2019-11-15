@@ -30,7 +30,7 @@ class SearchResults extends Component {
     this.setupSearch();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Cancel viewing results if something new is typed/deleted
     if (nextProps.search !== this.props.search && this.state.showId) {
       this.setState({ showId: '' });

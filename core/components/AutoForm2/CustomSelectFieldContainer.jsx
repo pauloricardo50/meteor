@@ -15,7 +15,7 @@ export default Component => {
       this.getAllowedValues(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_UNSAFE_componentWillReceiveProps(nextProps) {
       const { model: nextModel } = nextProps;
       const { model, handleClick, name } = this.props;
 
@@ -82,7 +82,7 @@ export default Component => {
       const { placeholder } = this.props;
 
       if (!value) {
-        return placeholder;
+        return placeholder && <i className="secondary">{placeholder}</i>;
       }
 
       if (Array.isArray(value)) {

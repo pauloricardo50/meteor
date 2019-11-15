@@ -30,7 +30,7 @@ class ProgressCircle extends Component {
     this.dashArray = this.radius * Math.PI * 2;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ currentPercent: this.animated ? 0 : this.targetPercent });
   }
 

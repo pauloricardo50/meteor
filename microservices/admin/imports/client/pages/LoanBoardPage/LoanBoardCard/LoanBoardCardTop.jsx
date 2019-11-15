@@ -74,7 +74,7 @@ const LoanBoardCardTop = ({
 export default compose(
   React.memo,
   lifecycle({
-    componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
+    UNSAFE_componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
       const { renderComplex } = this.props;
       if (!renderComplex && nextRenderComplex) {
         this.setState({ hasRenderedComplexOnce: true });

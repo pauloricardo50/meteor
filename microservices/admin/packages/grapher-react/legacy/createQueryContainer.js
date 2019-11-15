@@ -37,7 +37,7 @@ export default (query, component, options = {}) => {
       };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       this._fetch(nextProps.params);
     }
 

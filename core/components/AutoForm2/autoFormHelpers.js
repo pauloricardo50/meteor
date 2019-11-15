@@ -20,7 +20,7 @@ const formatStringId = ({ intlId, name, intlPrefix, parent }) => {
   return start + end;
 };
 
-const flowProps = (arr) =>
+const flowProps = arr =>
   arr.reduce((val, i) => {
     if (val === null) {
       return null;
@@ -32,7 +32,7 @@ const flowProps = (arr) =>
     return i;
   }, '');
 
-const oneIsNull = (arr) => arr.some((i) => i === null);
+const oneIsNull = arr => arr.some(i => i === null);
 
 export const getLabel = ({
   name,
@@ -112,6 +112,10 @@ export const getPlaceholder = ({
   // Let select fields manage their own null states
   if (type === COMPONENT_TYPES.PERCENT) {
     return '';
+  }
+
+  if (type === COMPONENT_TYPES.SELECT) {
+    return formatMessage({ id: 'general.pick' });
   }
 
   return `${placeholderPrefix}${formatMessage({

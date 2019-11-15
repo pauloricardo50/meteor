@@ -47,7 +47,7 @@ export default compose(
     componentDidMount() {
       this.props.getLatlngFromGoogle();
     },
-    componentWillReceiveProps({ address }) {
+    UNSAFE_componentWillReceiveProps({ address }) {
       if (address !== this.props.address) {
         this.props.getLatlngFromGoogle();
       }

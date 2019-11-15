@@ -14,7 +14,7 @@ class Tabs extends Component {
     this.state = { value: Math.max(this.props.initialIndex, 0) };
   }
 
-  componentWillReceiveProps({ initialIndex: nextIndex }) {
+  UNSAFE_componentWillReceiveProps({ initialIndex: nextIndex }) {
     const { initialIndex } = this.props;
 
     if (nextIndex !== initialIndex) {

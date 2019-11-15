@@ -14,7 +14,7 @@ class ErrorBoundary extends Component {
 
   // Remove error if user switches page
   // If it crashes again then it will simply go through componentDidCatch
-  componentWillReceiveProps({ pathname }) {
+  UNSAFE_componentWillReceiveProps({ pathname }) {
     if (this.state.hasError && pathname !== this.props.pathname) {
       this.setState({ hasError: false, error: null });
     }

@@ -15,7 +15,7 @@ export const addLiveSync = Comp =>
       Meteor.call('liveSyncClear');
     }
 
-    componentWillReceiveProps({
+    UNSAFE_componentWillReceiveProps({
       options: nextOptions,
       activateLoanBoardSync: nextActivateSync,
     }) {
@@ -61,7 +61,7 @@ export const withLiveSync = compose(
         }
       }
 
-      componentWillReceiveProps({ liveSyncOptions: nextOptions }) {
+      UNSAFE_componentWillReceiveProps({ liveSyncOptions: nextOptions }) {
         const {
           activateLoanBoardSync,
           liveSyncOptions: options,

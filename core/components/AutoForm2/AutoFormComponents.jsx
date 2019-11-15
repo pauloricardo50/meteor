@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import connectField from 'uniforms/connectField';
@@ -168,7 +168,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         label: labels[props.name],
       }),
     );
-    const [placeholder] = useState(
+    const placeholder = useMemo(() =>
       getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
     );
 

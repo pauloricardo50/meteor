@@ -22,7 +22,7 @@ export default WrappedComponent =>
       this.timer = null;
     }
 
-    componentWillReceiveProps({ saving: nextSaving }) {
+    UNSAFE_componentWillReceiveProps({ saving: nextSaving }) {
       // If the animation is going on, don't trigger this again
       if (this.timer) {
         return;

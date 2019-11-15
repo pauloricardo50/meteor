@@ -153,7 +153,7 @@ const props = withProps(
 );
 
 const willReceiveProps = lifecycle({
-  componentWillReceiveProps({ currentValue: nextValue = [] }) {
+  UNSAFE_componentWillReceiveProps({ currentValue: nextValue = [] }) {
     const {
       currentValue = [],
       tempSuccessFiles,
