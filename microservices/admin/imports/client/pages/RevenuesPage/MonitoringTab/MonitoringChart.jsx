@@ -3,6 +3,7 @@ import React from 'react';
 
 import Chart from 'core/components/charts/Chart';
 import { injectIntl } from 'react-intl';
+import colors from 'core/config/colors';
 
 type MonitoringChartProps = {};
 
@@ -17,6 +18,7 @@ const getX = ({ data, groupBy, f }) => {
 };
 
 const getSeries = ({ data, value }) => {
+  console.log('data:', data);
   switch (value) {
     case 'count':
       return [{ name: 'Total', data: data.map(({ count }) => count) }];
@@ -37,17 +39,25 @@ const getSeries = ({ data, value }) => {
           color: '#024b30',
         },
         {
-          name: 'Rétrocession à payer',
+          name: 'Net e-Potek',
+          data: data.map(({ revenues, commissionsToPay, commissionsPaid }) =>
+            Math.round(revenues - commissionsPaid - commissionsToPay),
+          ),
+          stack: 'Commissions',
+          color: colors.primary,
+        },
+        {
+          name: 'Commissions à payer',
           data: data.map(({ commissionsToPay }) =>
             Math.round(commissionsToPay),
           ),
-          stack: 'Rétrocessions',
+          stack: 'Commissions',
           color: '#f08080',
         },
         {
-          name: 'Rétrocession payées',
+          name: 'Commissions payées',
           data: data.map(({ commissionsPaid }) => Math.round(commissionsPaid)),
-          stack: 'Rétrocessions',
+          stack: 'Commissions',
           color: '#8b0000',
         },
       ];
