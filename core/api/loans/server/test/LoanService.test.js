@@ -1286,6 +1286,32 @@ describe('LoanService', function() {
         }),
       ).to.throw('Vous ne pouvez pas');
     });
+
+    it('does not allow overflows', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.FINALIZED },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.LEAD,
+        }),
+      ).to.throw('Vous ne pouvez pas');
+    });
+
+    it('does not allow undeflows', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.FINALIZED,
+        }),
+      ).to.throw('Vous ne pouvez pas');
+    });
   });
 
   describe('getLoanCalculator', () => {
