@@ -37,6 +37,10 @@ const MonitoringTab = () => {
             return data;
           }
 
+          if (!revenueDateRange.startDate && !revenueDateRange.endDate) {
+            return data;
+          }
+
           return data.filter(({ _id: { month, year } }) => {
             const dateTime = new Date(year, month, 0).getTime();
             return (

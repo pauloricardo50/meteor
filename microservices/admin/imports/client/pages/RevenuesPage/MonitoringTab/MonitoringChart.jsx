@@ -18,14 +18,13 @@ const getX = ({ data, groupBy, f }) => {
 };
 
 const getSeries = ({ data, value }) => {
-  console.log('data:', data);
   switch (value) {
     case 'count':
       return [{ name: 'Total', data: data.map(({ count }) => count) }];
     case 'revenues':
       return [
         {
-          name: 'Revenus attendus',
+          name: 'Revenus bruts attendus',
           data: data.map(({ expectedRevenues }) =>
             Math.round(expectedRevenues),
           ),
@@ -33,13 +32,13 @@ const getSeries = ({ data, value }) => {
           color: '#90ee90',
         },
         {
-          name: 'Revenus perçus',
+          name: 'Revenus bruts perçus',
           data: data.map(({ paidRevenues }) => Math.round(paidRevenues)),
           stack: 'Revenus bruts',
           color: '#024b30',
         },
         {
-          name: 'Net e-Potek',
+          name: 'Revenus nets',
           data: data.map(({ revenues, commissionsToPay, commissionsPaid }) =>
             Math.round(revenues - commissionsPaid - commissionsToPay),
           ),
@@ -95,6 +94,8 @@ const MonitoringChart = ({
               dataLabels: {
                 formatter() {
                   if (value === 'revenues') {
+                    console.log('this', this);
+
                     return `${Math.round(this.y / 1000)}k`;
                   }
                   if (value === 'loanValue') {
