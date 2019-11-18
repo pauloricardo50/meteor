@@ -1,4 +1,9 @@
 {
+  "ImpersonateNotification.dialog.description": "{adminFirstName} souhaite vous accompagner à travers e-Potek",
+  "ImpersonateNotification.follow": "Suivre {adminFirstName}",
+  "ImpersonateNotification.following": "Vous suivez {adminFirstName}",
+  "ImpersonateNotification.stopFollowing": "Arrêter de suivre {adminFirstName}",
+  "ImpersonateNotification.followLater": "Plus tard",
   "Forms.customer": "Client",
   "Forms.isImportant": "Important",
   "PropertiesTable.createdAt": "Créé le",

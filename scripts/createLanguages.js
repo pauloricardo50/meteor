@@ -81,6 +81,7 @@ const config = {
         'Financing',
         'Forms',
         'Impersonation',
+        'ImpersonateNotification',
         'LoginPage',
         'MaxPropertyValue',
         'Microlocation',
@@ -276,7 +277,7 @@ const getCustomConfig = () => {
     if (!possibleArguments.includes(argument)) {
       throw Error(
         'Invalid argument, it has to be one of these: ' +
-          possibleArguments.join(' '),
+        possibleArguments.join(' '),
       );
     }
 
