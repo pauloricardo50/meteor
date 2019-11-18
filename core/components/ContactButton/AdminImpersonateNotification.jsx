@@ -7,7 +7,7 @@ import Icon from '../Icon/Icon';
 import Button from '../Button';
 import { styles } from './fabStyles';
 
-type ImpersonatingSessionProps = {
+type AdminImpersonateNotificationProps = {
   impersonatedSession: Object,
 };
 
@@ -41,9 +41,9 @@ const getText = ({ followed, shared, userIsConnected }) => {
 
 const useStyles = makeStyles(styles);
 
-const ImpersonatingSession = ({
+const AdminImpersonateNotification = ({
   impersonatedSession,
-}: ImpersonatingSessionProps) => {
+}: AdminImpersonateNotificationProps) => {
   const { shared, userIsConnected, followed } = impersonatedSession;
 
   const classes = useStyles();
@@ -69,4 +69,4 @@ const ImpersonatingSession = ({
   );
 };
 
-export default ImpersonatingSession;
+export default AdminImpersonateNotification;

@@ -8,12 +8,12 @@ import { setUserConnected } from 'core/api/sessions/methodDefinitions';
 import ContactButtonContainer from './ContactButtonContainer';
 import ContactButtonOverlay from './ContactButtonOverlay';
 import { ContactButtonContext } from './ContactButtonContext';
-import ImpersonatingSession from './ImpersonatingSession';
-import ImpersonatedSession from './ImpersonatedSession';
+import AdminImpersonateNotification from './AdminImpersonateNotification';
+import UserImpersonateNotification from './UserImpersonateNotification';
 
 type ContactButtonProps = {};
 
-export const ContactButton = ({ ...props }: ContactButtonProps) => {
+export const ContactButton = (props: ContactButtonProps) => {
   const { openContact, toggleOpenContact } = useContext(ContactButtonContext);
   const { impersonatedSession } = props;
 
@@ -21,7 +21,11 @@ export const ContactButton = ({ ...props }: ContactButtonProps) => {
     const { connectionId, userIsConnected, shared } = impersonatedSession;
     const currentSessionId = Meteor.connection._lastSessionId;
     if (connectionId === currentSessionId) {
-      return <ImpersonatingSession impersonatedSession={impersonatedSession} />;
+      return (
+        <AdminImpersonateNotification
+          impersonatedSession={impersonatedSession}
+        />
+      );
     }
 
     if (connectionId !== currentSessionId && !userIsConnected) {
@@ -29,7 +33,11 @@ export const ContactButton = ({ ...props }: ContactButtonProps) => {
     }
 
     if (shared) {
-      return <ImpersonatedSession impersonatedSession={impersonatedSession} />;
+      return (
+        <UserImpersonateNotification
+          impersonatedSession={impersonatedSession}
+        />
+      );
     }
   }
 
