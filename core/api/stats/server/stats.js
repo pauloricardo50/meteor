@@ -38,22 +38,20 @@ const makeCountResolver = service => {
 };
 
 const makeHistogramResolver = service => {
-  return async ({ period, filters }) => {
+  return ({ period, filters }) => {
     const match = { ...getFilter({ gte: dateInPast(period) }), ...filters };
 
-    const aggregation = await service
-      .aggregate([
-        { $match: match },
-        {
-          $project: {
-            // Filter out time of day
-            date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
-          },
+    const aggregation = service.aggregate([
+      { $match: match },
+      {
+        $project: {
+          // Filter out time of day
+          date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
         },
-        { $group: { _id: '$date', count: { $sum: 1 } } },
-        { $sort: { _id: 1 } },
-      ])
-      .toArray();
+      },
+      { $group: { _id: '$date', count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
     return aggregation;
   };
 };
@@ -92,7 +90,7 @@ export const userHistogramResolver = async ({ period, verified, roles }) => {
 
 // Gets all the closing+ loans that have no revenues, they should all have
 // some revenues
-export const loansWithoutRevenuesResolver = async () => {
+export const loansWithoutRevenuesResolver = () => {
   const match = {
     $match: {
       status: {
@@ -112,13 +110,11 @@ export const loansWithoutRevenuesResolver = async () => {
   const project = { $project: { status: 1, _id: 1, name: 1, userCache: 1 } };
   const sort = { $sort: { status: 1 } };
 
-  const aggregation = await LoanService.aggregate([
+  return LoanService.aggregate([
     match,
     lookupRevenues,
     filterHasRevenues,
     project,
     sort,
-  ]).toArray();
-
-  return aggregation;
+  ]);
 };

@@ -184,13 +184,12 @@ const buildPipeline = ({ filters, groupBy, value }) =>
     .reduce((arr, val) => [...arr, ...(Array.isArray(val) ? val : [val])], [])
     .filter(x => x);
 
-export const loanMonitoring = async args => {
+export const loanMonitoring = args => {
   const pipeline = buildPipeline(args);
-  const agg = await LoanService.aggregate(pipeline).toArray();
-  return agg;
+  return LoanService.aggregate(pipeline);
 };
 
-export const loanStatusChanges = async args => {
+export const loanStatusChanges = args => {
   const { fromDate, toDate } = args;
 
   if (!fromDate || !toDate) {
@@ -215,7 +214,7 @@ export const loanStatusChanges = async args => {
       },
     },
   ];
-  const agg = await ActivityService.aggregate(pipeline).toArray();
+  const agg = ActivityService.aggregate(pipeline);
   const sortedResults = agg.sort(({ _id: _idA }, { _id: _idB }) => {
     if (_idA.prevStatus !== _idB.prevStatus) {
       return (

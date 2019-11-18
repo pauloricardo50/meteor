@@ -49,12 +49,16 @@ export const getCollectionNameFromIdField = idFieldName =>
     propertyId: PROPERTIES_COLLECTION,
   }[idFieldName]);
 
-export const createMeteorAsyncFunction = promiseFunc =>
-  Meteor.wrapAsync((params, callback) =>
-    promiseFunc(params)
+export const createMeteorAsyncFunction = (promiseFunc, context) => {
+  const promiseWithCallback = (...args) => {
+    const callback = args.pop();
+    return promiseFunc(...args)
       .then(result => callback(null, result))
-      .catch(callback),
-  );
+      .catch(callback);
+  };
+
+  return Meteor.wrapAsync(promiseWithCallback, context);
+};
 
 export const flattenObject = (object, delimiter) => {
   const delim = delimiter || '.';

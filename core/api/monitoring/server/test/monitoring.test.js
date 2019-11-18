@@ -22,7 +22,7 @@ describe('monitoring', () => {
   });
 
   describe('loanMonitoring', () => {
-    it('groups loans by status', async () => {
+    it('groups loans by status', () => {
       generator({
         loans: [
           { status: LOAN_STATUS.LEAD },
@@ -32,7 +32,7 @@ describe('monitoring', () => {
         ],
       });
 
-      const result = await loanMonitoring({
+      const result = loanMonitoring({
         groupBy: 'status',
         value: 'count',
       });
@@ -44,7 +44,7 @@ describe('monitoring', () => {
       ]);
     });
 
-    it('adds up revenues for each status', async () => {
+    it('adds up revenues for each status', () => {
       generator({
         loans: [
           { status: LOAN_STATUS.LEAD, revenues: { amount: 100 } },
@@ -58,7 +58,7 @@ describe('monitoring', () => {
         ],
       });
 
-      const result = await loanMonitoring({
+      const result = loanMonitoring({
         groupBy: 'status',
         value: 'revenues',
       });
@@ -83,7 +83,7 @@ describe('monitoring', () => {
       ]);
     });
 
-    it('adds up wantedLoan values', async () => {
+    it('adds up wantedLoan values', () => {
       generator({
         loans: [
           {
@@ -105,7 +105,7 @@ describe('monitoring', () => {
         ],
       });
 
-      const result = await loanMonitoring({
+      const result = loanMonitoring({
         groupBy: 'status',
         value: 'loanValue',
       });
@@ -130,7 +130,7 @@ describe('monitoring', () => {
         createdAt: moment('2018/03/02', 'YYYY/MM/DD').toDate(),
       });
 
-      const result = await loanMonitoring({
+      const result = loanMonitoring({
         groupBy: 'createdAt',
         value: 'count',
       });
@@ -141,7 +141,7 @@ describe('monitoring', () => {
       ]);
     });
 
-    it('groups revenues by date', async () => {
+    it('groups revenues by date', () => {
       generator({
         loans: [
           {
@@ -177,7 +177,7 @@ describe('monitoring', () => {
         ],
       });
 
-      const result = await loanMonitoring({
+      const result = loanMonitoring({
         groupBy: 'revenueDate',
         value: 'revenues',
       });
@@ -218,7 +218,7 @@ describe('monitoring', () => {
       ]);
     });
 
-    it('counts commissions paid and to pay', async () => {
+    it('counts commissions paid and to pay', () => {
       generator({
         loans: {
           revenues: [
@@ -252,7 +252,7 @@ describe('monitoring', () => {
         },
       });
 
-      const result = await loanMonitoring({
+      const result = loanMonitoring({
         groupBy: 'revenueDate',
         value: 'revenues',
       });
@@ -302,7 +302,7 @@ describe('monitoring', () => {
         }),
       );
 
-      const result = await loanStatusChanges({
+      const result = loanStatusChanges({
         fromDate: moment()
           .subtract(1, 'd')
           .toDate(),
