@@ -1,24 +1,19 @@
 // @flow
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { shareImpersonatedSession } from 'core/api/sessions/methodDefinitions';
-import colors from 'core/config/colors';
-import IconButton from '../IconButton';
 import Icon from '../Icon/Icon';
+import Button from '../Button';
+import { styles } from './fabStyles';
 
-type ImpersonatingSessionProps = {};
+type ImpersonatingSessionProps = {
+  impersonatedSession: Object,
+};
 
 const getIcon = ({ followed, shared, userIsConnected }) => {
   if (userIsConnected && !shared) {
-    return (
-      <IconButton
-        onClick={() => shareImpersonatedSession.run({ share: !shared })}
-        type="airplay"
-        color="secondary"
-        style={{ marginLeft: '1px' }}
-        tooltip="Partager la session"
-      />
-    );
+    return <Icon type="info" className="impersonate-icon primary" />;
   }
 
   if (userIsConnected && shared && !followed) {
@@ -44,29 +39,32 @@ const getText = ({ followed, shared, userIsConnected }) => {
   }
 };
 
+const useStyles = makeStyles(styles);
+
 const ImpersonatingSession = ({
   impersonatedSession,
 }: ImpersonatingSessionProps) => {
-  const {
-    shared,
-    impersonatedUserLastPageVisited,
-    userIsConnected,
-    followed,
-  } = impersonatedSession;
+  const { shared, userIsConnected, followed } = impersonatedSession;
+
+  const classes = useStyles();
 
   return (
     <div className="impersonate-notification">
       {getIcon({ followed, shared, userIsConnected })}
       {getText({ followed, shared, userIsConnected })}
 
-      {shared && (
-        <IconButton
-          onClick={() => shareImpersonatedSession.run({ share: !shared })}
-          type="close"
-          iconStyle={{ color: colors.error }}
-          tooltip="Arrêter le partage de session"
-        />
-      )}
+      <Button
+        fab
+        className={shared ? classes.error : classes.success}
+        onClick={() => shareImpersonatedSession.run({ share: !shared })}
+        tooltip={
+          shared ? 'Arrêter le partage de session' : 'Partager la session'
+        }
+        tooltipPlacement="top-end"
+        key={shared ? 'stopSharing' : 'startSharing'}
+      >
+        <Icon type={shared ? 'close' : 'airplay'} />
+      </Button>
     </div>
   );
 };

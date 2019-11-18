@@ -142,7 +142,11 @@ const Button = props => {
       );
     }
 
-    return <Tooltip title={props.tooltip}>{button}</Tooltip>;
+    return (
+      <Tooltip title={props.tooltip} placement={props.tooltipPlacement}>
+        {button}
+      </Tooltip>
+    );
   }
 
   return button;

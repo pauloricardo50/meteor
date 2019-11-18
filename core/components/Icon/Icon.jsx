@@ -86,6 +86,7 @@ import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import MarkunreadMailbox from '@material-ui/icons/MarkunreadMailbox';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import Airplay from '@material-ui/icons/Airplay';
+import HowToReg from '@material-ui/icons/HowToReg';
 
 export const iconMap = {
   close: CloseIcon,
@@ -172,6 +173,7 @@ export const iconMap = {
   markunreadMailbox: MarkunreadMailbox,
   viewWeek: ViewWeek,
   airplay: Airplay,
+  howToReg: HowToReg,
 };
 
 const Icon = React.forwardRef(
