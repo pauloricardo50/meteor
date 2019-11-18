@@ -18,6 +18,7 @@ const SessionSchema = new SimpleSchema({
   userIsConnected: { type: Boolean, optional: true, defaultValue: false },
   impersonatingAdminLink: { type: Object, optional: true },
   'impersonatingAdminLink._id': { type: String, optional: true },
+  followed: { type: Boolean, optional: true, defaultValue: false },
 });
 
 export default SessionSchema;

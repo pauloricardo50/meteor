@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { shareImpersonatedSession } from 'core/api/sessions/methodDefinitions';
 import colors from 'core/config/colors';
@@ -9,39 +8,39 @@ import Icon from '../Icon/Icon';
 
 type ImpersonatingSessionProps = {};
 
-const getIcon = ({ isUserOnSamePage, shared, userIsConnected }) => {
+const getIcon = ({ followed, shared, userIsConnected }) => {
   if (userIsConnected && !shared) {
     return (
       <IconButton
         onClick={() => shareImpersonatedSession.run({ share: !shared })}
         type="airplay"
-        iconProps={{ className: 'icon' }}
-        style={{ backgroundColor: colors.success, marginLeft: '4px' }}
+        color="secondary"
+        style={{ marginLeft: '1px' }}
         tooltip="Partager la session"
       />
     );
   }
 
-  if (userIsConnected && shared && !isUserOnSamePage) {
-    return <Icon type="info" className="icon warning" />;
+  if (userIsConnected && shared && !followed) {
+    return <Icon type="info" className="impersonate-icon warning" />;
   }
 
-  if (userIsConnected && shared && isUserOnSamePage) {
-    return <Icon type="checkCircle" className="icon success" />;
+  if (userIsConnected && shared && followed) {
+    return <Icon type="checkCircle" className="impersonate-icon success" />;
   }
 };
 
-const getText = ({ isUserOnSamePage, shared, userIsConnected }) => {
+const getText = ({ followed, shared, userIsConnected }) => {
   if (userIsConnected && !shared) {
     return <h4>Le client est connecté</h4>;
   }
 
-  if (userIsConnected && shared && !isUserOnSamePage) {
-    return <h4>Client sur une autre page</h4>;
+  if (userIsConnected && shared && !followed) {
+    return <h4>Le client ne vous suit pas</h4>;
   }
 
-  if (userIsConnected && shared && isUserOnSamePage) {
-    return <h4>Client sur la même page</h4>;
+  if (userIsConnected && shared && followed) {
+    return <h4>Le client vous suit</h4>;
   }
 };
 
@@ -52,24 +51,19 @@ const ImpersonatingSession = ({
     shared,
     impersonatedUserLastPageVisited,
     userIsConnected,
+    followed,
   } = impersonatedSession;
-
-  const history = useHistory();
-
-  const isUserOnSamePage =
-    history.location.pathname === impersonatedUserLastPageVisited;
 
   return (
     <div className="impersonate-notification">
-      {getIcon({ isUserOnSamePage, shared, userIsConnected })}
-      {getText({ isUserOnSamePage, shared, userIsConnected })}
+      {getIcon({ followed, shared, userIsConnected })}
+      {getText({ followed, shared, userIsConnected })}
 
       {shared && (
         <IconButton
           onClick={() => shareImpersonatedSession.run({ share: !shared })}
           type="close"
-          iconProps={{ className: 'icon' }}
-          style={{ backgroundColor: colors.error }}
+          iconStyle={{ color: colors.error }}
           tooltip="Arrêter le partage de session"
         />
       )}

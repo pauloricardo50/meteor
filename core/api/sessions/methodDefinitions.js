@@ -7,7 +7,7 @@ export const shareImpersonatedSession = new Method({
 
 export const followImpersonatedSession = new Method({
   name: 'followImpersonatedSession',
-  params: { connectionId: String },
+  params: { connectionId: String, follow: Boolean },
 });
 
 export const setUserConnected = new Method({

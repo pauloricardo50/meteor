@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { employeesById } from 'core/arrays/epotekEmployees';
-import Button from 'core/components/Button';
 import { followImpersonatedSession } from 'core/api/sessions/methodDefinitions';
 import colors from 'core/config/colors';
 import IconButton from '../IconButton';
-import Icon from '../Icon/Icon';
 
 type ImpersonatedSessionProps = {};
 
@@ -18,29 +16,29 @@ const getIcon = ({
   connectionId,
   lastPageVisited,
   history,
-  isAdminOnSamePage,
 }) => {
-  if (!followAdmin || !isAdminOnSamePage) {
+  if (!followAdmin) {
     return (
       <IconButton
         onClick={() => {
-          followImpersonatedSession.run({ connectionId });
+          followImpersonatedSession.run({ connectionId, follow: true });
           history.push(lastPageVisited);
           setFollowAdmin(true);
         }}
         type="right"
-        iconProps={{ className: 'icon' }}
-        style={{ backgroundColor: colors.warning, marginLeft: '4px' }}
+        color="secondary"
         tooltip={`Suivre ${adminFirstName}`}
       />
     );
   }
   return (
     <IconButton
-      onClick={() => setFollowAdmin(false)}
+      onClick={() => {
+        followImpersonatedSession.run({ connectionId, follow: false });
+        setFollowAdmin(false);
+      }}
       type="close"
-      iconProps={{ className: 'icon' }}
-      style={{ backgroundColor: colors.error, marginLeft: '4px' }}
+      iconStyle={{ color: colors.error }}
       tooltip={`Arrêter de suivre ${adminFirstName}`}
     />
   );
@@ -66,17 +64,21 @@ const ImpersonatedSession = ({
   const adminImage = employeesById[adminId].src;
 
   const isAdminOnSamePage = history.location.pathname === lastPageVisited;
+
   useEffect(() => {
     if (followAdmin && !isAdminOnSamePage) {
-      followImpersonatedSession.run({ connectionId });
       history.push(lastPageVisited);
     }
-  }, [impersonatedSession]);
+  }, [impersonatedSession, isAdminOnSamePage]);
 
   return (
     <div className="impersonate-notification">
       <img src={adminImage} />
-      <h4>{`${adminName} est en train de travailler sur votre dossier`}</h4>
+      <h4>
+        {followAdmin
+          ? `Vous suivez ${adminName}`
+          : `${adminName} est en train de travailler sur votre dossier`}
+      </h4>
       {getIcon({
         followAdmin,
         adminFirstName,
@@ -84,7 +86,6 @@ const ImpersonatedSession = ({
         connectionId,
         lastPageVisited,
         history,
-        isAdminOnSamePage,
       })}
     </div>
   );

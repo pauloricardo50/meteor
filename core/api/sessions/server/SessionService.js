@@ -77,12 +77,11 @@ class SessionService extends CollectionService {
     );
   }
 
-  followImpersonatedSession({ connectionId }) {
-    const session = this.getByConnectionId(connectionId);
+  followImpersonatedSession({ connectionId, follow }) {
 
     return this.baseUpdate(
       { connectionId },
-      { $set: { impersonatedUserLastPageVisited: session.lastPageVisited } },
+      { $set: { followed: follow } },
     );
   }
 

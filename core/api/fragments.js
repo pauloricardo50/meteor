@@ -1034,4 +1034,5 @@ export const userSession = () => ({
   impersonatedUserLastPageVisited: 1,
   userIsConnected: 1,
   impersonatingAdmin: { name: 1, firstName: 1, lastName: 1 },
+  followed: 1,
 });
