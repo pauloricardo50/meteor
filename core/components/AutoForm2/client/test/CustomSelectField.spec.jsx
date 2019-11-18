@@ -45,7 +45,7 @@ describe('CustomSelectField', () => {
     });
 
     it('renders the select field', () => {
-      const transform = (value) => `${value}-mec`;
+      const transform = value => `${value}-mec`;
       props = {
         schema: new SimpleSchema({
           text: {
@@ -77,7 +77,7 @@ describe('CustomSelectField', () => {
     });
 
     it('renders the select field with placeholder', () => {
-      const transform = (value) => `${value}-mec`;
+      const transform = value => `${value}-mec`;
       props = {
         schema: new SimpleSchema({
           text: {
@@ -108,7 +108,7 @@ describe('CustomSelectField', () => {
 
       expect(placeholder.text()).to.equal('test');
 
-      rest.forEach((item) => {
+      rest.forEach(item => {
         expect(item.text()).to.equal(transform(item.prop('data-value')));
       });
     });
@@ -116,7 +116,7 @@ describe('CustomSelectField', () => {
 
   context('with custom allowed values', () => {
     it('renders the select field', () => {
-      const transform = (value) => `${value}-mec`;
+      const transform = value => `${value}-mec`;
       props = {
         schema: new SimpleSchema({
           text: {
@@ -214,6 +214,7 @@ describe('CustomSelectField', () => {
           text: {
             type: String,
             customAllowedValues: ({ text2 }) => [text2],
+            uniforms: { placeholder: '' },
           },
           text2: String,
         }),
@@ -222,6 +223,7 @@ describe('CustomSelectField', () => {
 
       setTimeout(() => {
         component().update();
+
         expect(
           component()
             .find(CustomSelectField)
@@ -233,6 +235,7 @@ describe('CustomSelectField', () => {
 
         setTimeout(() => {
           component().update();
+
           expect(
             component()
               .find(CustomSelectField)

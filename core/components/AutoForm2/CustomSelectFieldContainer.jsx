@@ -15,7 +15,7 @@ export default Component => {
       this.getAllowedValues(this.props);
     }
 
-    UNSAFE_UNSAFE_componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       const { model: nextModel } = nextProps;
       const { model, handleClick, name } = this.props;
 
