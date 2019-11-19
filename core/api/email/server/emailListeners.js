@@ -26,7 +26,6 @@ import PromotionService from '../../promotions/server/PromotionService';
 import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
-import ServerEventService from '../../events/server/ServerEventService';
 import {
   submitContactForm,
   reservePromotionLot,
@@ -36,35 +35,36 @@ import {
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
 import { sendEmail, sendEmailToAddress } from './methods';
+import { addEmailListener } from './emailHelpers';
 
-ServerEventService.addAfterMethodListener(
-  submitContactForm,
-  ({ context, params }) => {
-    context.unblock();
+addEmailListener({
+  description: 'Formulaire de contact -> Client',
+  method: submitContactForm,
+  func: ({ params }) => {
     return sendEmailToAddress.run({
       emailId: EMAIL_IDS.CONTACT_US,
       address: params.email,
       params,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  submitContactForm,
-  ({ context, params }) => {
-    context.unblock();
+addEmailListener({
+  description: 'Formulaire de contact -> info@e-potek.ch',
+  method: submitContactForm,
+  func: ({ params }) => {
     return sendEmailToAddress.run({
       emailId: EMAIL_IDS.CONTACT_US_ADMIN,
       address: INTERNAL_EMAIL,
       params,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  sendEmail,
-  ({ context, params: { emailId, params, userId } }) => {
-    context.unblock();
+addEmailListener({
+  description: "Confirmation d'invitation d'un client par un Pro -> Pro",
+  method: sendEmail,
+  func: ({ params: { emailId, params, userId } }) => {
     const emailsToWatch = [
       EMAIL_IDS.INVITE_USER_TO_PROMOTION,
       EMAIL_IDS.INVITE_USER_TO_PROPERTY,
@@ -100,13 +100,12 @@ ServerEventService.addAfterMethodListener(
       params: { name, email },
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  proInviteUser,
-  async ({ context, params, result }) => {
-    context.unblock();
-
+addEmailListener({
+  description: "Invitation d'un client par un Pro -> Client",
+  method: proInviteUser,
+  func: async ({ params, result }) => {
     if (result && typeof result.then === 'function') {
       result = await result;
     }
@@ -211,13 +210,12 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
 const getPromotionOptionMailParams = async (
   { context, params, result },
   recipient,
 ) => {
-  context.unblock();
   if (result && typeof result.then === 'function') {
     result = await result;
   }
@@ -313,42 +311,45 @@ const PROMOTION_EMAILS = [
 ];
 
 PROMOTION_EMAILS.forEach(({ method, emailId, recipients, getEmailParams }) => {
-  ServerEventService.addAfterMethodListener(method, (...args) => {
-    const [
-      {
-        params: { promotionOptionId },
-      },
-    ] = args;
-    const emailRecipients = PromotionOptionService.getEmailRecipients({
-      promotionOptionId,
-    });
-    recipients.forEach(
-      ({
-        type,
-        emailId: emailIdOverride,
-        getEmailParams: getEmailParamsOverride,
-      }) => {
-        emailRecipients[type].forEach(async recipient => {
-          const { userId } = recipient;
-          const emailParams = getEmailParamsOverride
-            ? await getEmailParamsOverride(...args, recipient)
-            : await getEmailParams(...args, recipient);
-          sendEmail.run({
-            emailId: emailIdOverride || emailId,
-            userId,
-            params: emailParams,
+  addEmailListener({
+    description: `${emailId} -> ???`,
+    method,
+    func: (...args) => {
+      const [
+        {
+          params: { promotionOptionId },
+        },
+      ] = args;
+      const emailRecipients = PromotionOptionService.getEmailRecipients({
+        promotionOptionId,
+      });
+      recipients.forEach(
+        ({
+          type,
+          emailId: emailIdOverride,
+          getEmailParams: getEmailParamsOverride,
+        }) => {
+          emailRecipients[type].forEach(async recipient => {
+            const { userId } = recipient;
+            const emailParams = getEmailParamsOverride
+              ? await getEmailParamsOverride(...args, recipient)
+              : await getEmailParams(...args, recipient);
+            sendEmail.run({
+              emailId: emailIdOverride || emailId,
+              userId,
+              params: emailParams,
+            });
           });
-        });
-      },
-    );
+        },
+      );
+    },
   });
 });
 
-ServerEventService.addAfterMethodListener(
-  setLoanStep,
-  ({ context, params: { loanId }, result: { step, nextStep, user } }) => {
-    context.unblock();
-
+addEmailListener({
+  description: 'Étape du dossier à "Identification du prêteur" -> Client',
+  method: setLoanStep,
+  func: ({ params: { loanId }, result: { step, nextStep, user } }) => {
     if (shouldSendStepNotification(step, nextStep)) {
       if (!user || !user.assignedEmployee) {
         throw new Meteor.Error(
@@ -363,7 +364,7 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
 const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
   const {
@@ -403,31 +404,28 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
   });
 };
 
-ServerEventService.addAfterMethodListener(
-  offerSendFeedback,
-  ({ context, params }) => {
-    context.unblock();
-    sendOfferFeedbackEmail(params);
-  },
-);
+addEmailListener({
+  description: "Envoyer feedback d'une offre à un prêteur -> Prêteur",
+  method: offerSendFeedback,
+  func: ({ params }) => sendOfferFeedbackEmail(params),
+});
 
-ServerEventService.addAfterMethodListener(
-  sendNegativeFeedbackToAllLenders,
-  async ({ context, result }) => {
-    context.unblock();
+addEmailListener({
+  description: "Feedback négatif à tous les prêteurs d'un dossier -> Prêteurs",
+  method: sendNegativeFeedbackToAllLenders,
+  func: async ({ result }) => {
     if (result && typeof result.then === 'function') {
       result = await result;
     }
 
     result.map(sendOfferFeedbackEmail);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  setPromotionOptionProgress,
-  ({ context, params: { promotionOptionId, id }, result }) => {
-    context.unblock();
-
+addEmailListener({
+  description: 'TODO',
+  method: setPromotionOptionProgress,
+  func: ({ params: { promotionOptionId, id }, result }) => {
     if (result) {
       const { nextStatus, prevStatus } = result;
 
@@ -460,13 +458,12 @@ ServerEventService.addAfterMethodListener(
       }
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  promotionOptionActivateReservation,
-  ({ context, params }) => {
-    context.unblock();
-    const { promotionOptionId } = params;
+addEmailListener({
+  description: 'Nouvelle demande de réservation par un client -> Pro',
+  method: promotionOptionActivateReservation,
+  func: ({ params: { promotionOptionId } }) => {
     const { loan, promotionLots } = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: {
@@ -493,26 +490,39 @@ ServerEventService.addAfterMethodListener(
       },
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  promotionOptionUploadAgreement,
-  async ({ context, params: { promotionOptionId }, result }) => {
-    context.unblock();
+addEmailListener({
+  description: [
+    'Nouvelle convention de réservation -> Client',
+    'Nouvelle convention de réservation -> Pros',
+  ],
+  method: promotionOptionUploadAgreement,
+  func: async ({ params: { promotionOptionId } }) => {
+    const { loan, promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: {
+        promotions: { name: 1 },
+        user: { name: 1 },
+      },
+      promotionLots: { name: 1 },
+    });
+    const { promotions, user } = loan;
+    const [
+      {
+        name: promotionName,
+        $metadata: { invitedBy },
+      },
+    ] = promotions;
 
-    if (result && typeof result.then === 'function') {
-      await result;
-    }
-
-    // TODO: Wait for sender destination confirmation
-    // sendEmail.run({
-    //   emailId: EMAIL_IDS.PROMOTION_AGREEMENT_UPLOAD_NOTIFICATION,
-    //   userId: invitedBy,
-    //   params: {
-    //     promotionName,
-    //     name: user.name,
-    //     promotionLotName: promotionLots[0].name,
-    //   },
-    // });
+    sendEmail.run({
+      emailId: EMAIL_IDS.PROMOTION_AGREEMENT_UPLOAD_NOTIFICATION,
+      userId: invitedBy,
+      params: {
+        promotionName,
+        name: user.name,
+        promotionLotName: promotionLots[0].name,
+      },
+    });
   },
-);
+});
