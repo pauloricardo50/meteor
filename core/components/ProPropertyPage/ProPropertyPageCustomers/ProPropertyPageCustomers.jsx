@@ -31,6 +31,9 @@ const ProPropertyPageCustomers = ({
         </div>
       )}
     </span>
+    <p className="description">
+      Les dossiers anonymes sans suite ne sont pas affichés
+    </p>
     <Table rows={rows} columnOptions={columnOptions} />
   </div>
 );
