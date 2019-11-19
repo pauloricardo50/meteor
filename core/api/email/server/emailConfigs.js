@@ -44,6 +44,10 @@ const emailDefaults = {
  * i18n strings
  */
 const addEmailConfig = (emailId, config) => {
+  if (emailConfigs[emailId]) {
+    throw new Error(`Duplicate emailConfig for emailId "${emailId}"`);
+  }
+
   if (config.template === EMAIL_TEMPLATES.NOTIFICATION) {
     emailConfigs[emailId] = {
       createOverrides: notificationTemplateDefaultOverride,
@@ -374,5 +378,64 @@ addEmailConfig(EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION, {
 addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
 });
+
+addEmailConfig(EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.LOAN_VALIDATED_BY_BANK_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.PROMOTION_LOAN_SENT_TO_BANK, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.NEW_RESERVATION_AGREEMENT_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.NEW_RESERVATION_AGREEMENT_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+const checkAllEmailAreDefined = () => {
+  const undefinedEmailIds = [];
+  Object.values(EMAIL_IDS).forEach(emailId => {
+    if (!emailConfigs[emailId]) {
+      undefinedEmailIds.push(emailId);
+    }
+  });
+
+  if (undefinedEmailIds.length) {
+    throw new Error(
+      `No emailConfig found for emailIds: ${undefinedEmailIds.join(
+        ', ',
+      )}, please add them in "email/server/emailConfigs.js"`,
+    );
+  }
+};
+
+Meteor.startup(checkAllEmailAreDefined);
 
 export default emailConfigs;
