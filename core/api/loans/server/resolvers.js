@@ -11,6 +11,7 @@ import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanService from './LoanService';
+import { LOAN_STATUS } from '../loanConstants';
 
 const proLoansFragment = proLoans();
 
@@ -206,6 +207,10 @@ export const proPropertyLoansResolver = ({
       status,
       anonymous,
       'userCache.referredByUserLink': referredByUserId,
+      $or: [
+        { anonymous: true, status: { $ne: LOAN_STATUS.UNSUCCESSFUL } },
+        { anonymous: { $ne: true } },
+      ],
     },
     ...proLoansFragment,
   });
