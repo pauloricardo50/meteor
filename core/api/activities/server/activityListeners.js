@@ -171,7 +171,7 @@ ServerEventService.addAfterMethodListener(
 
     let description = '';
     const referredBy = UserService.get(referredByUserLink);
-    const referredByOrg = OrganisationService.get(referredByOrganisationLink);
+    const referredByOrg = OrganisationService.findOne(referredByOrganisationLink);
     let referredByAPIOrgLabel = '';
     let referredByAPIOrg;
 

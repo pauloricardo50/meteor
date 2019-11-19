@@ -17,7 +17,6 @@ import {
   proPropertyLoans,
   proReferredByLoans,
   userLoans,
-  loanProgress as loanProgressQuery,
 } from '../queries';
 import { LOAN_STATUS } from '../loanConstants';
 import {
@@ -291,23 +290,6 @@ exposeQuery({
     validateParams: {
       loanId: Match.Maybe(String),
       userId: Match.Maybe(String),
-    },
-  },
-});
-
-exposeQuery({
-  query: loanProgressQuery,
-  overrides: {
-    firewall() {},
-    embody: (body, params) => {
-      body.$filter = ({ filters, params }) => {
-        filters._id = params.loanId;
-      };
-      body.$postFilter = (loans = []) =>
-        loans.map(({ loanProgress }) => loanProgress);
-    },
-    validateParams: {
-      loanId: String,
     },
   },
 });

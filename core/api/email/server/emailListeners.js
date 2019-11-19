@@ -4,12 +4,6 @@ import moment from 'moment';
 
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-} from '../../promotionOptions/promotionOptionConstants';
-import {
-  setPromotionOptionProgress,
-  promotionOptionActivateReservation,
   submitContactForm,
   setLoanStep,
   sendNegativeFeedbackToAllLenders,
@@ -20,7 +14,6 @@ import OfferService from '../../offers/server/OfferService';
 import FileService from '../../files/server/FileService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
 import { getUserNameAndOrganisation } from '../../helpers/index';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
@@ -160,11 +153,7 @@ addEmailListener({
 addEmailListener({
   description: "Feedback négatif à tous les prêteurs d'un dossier -> Prêteurs",
   method: sendNegativeFeedbackToAllLenders,
-  func: async ({ result }) => {
-    if (result && typeof result.then === 'function') {
-      result = await result;
-    }
-
+  func: ({ result }) => {
     result.map(sendOfferFeedbackEmail);
   },
 });
@@ -172,10 +161,7 @@ addEmailListener({
 addEmailListener({
   description: "Invitation d'un client par un Pro -> Client",
   method: proInviteUser,
-  func: async ({ params, result }) => {
-    if (result && typeof result.then === 'function') {
-      result = await result;
-    }
+  func: ({ params, result }) => {
     const { userId, isNewUser, pro, admin } = result;
     const { promotionIds = [], propertyIds = [] } = params;
 

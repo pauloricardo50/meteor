@@ -35,10 +35,11 @@ const PropertyCard = (props: PropertyCardProps) => {
             loan,
           })}
           progressVariant="text"
+          loan={loan}
         />
       ) : (
-        promotionOptions
-        && promotionOptions.length > 0 && (
+        promotionOptions &&
+        promotionOptions.length > 0 && (
           <div className="bottom">
             <PropertyCardPromotionOptions {...props} />
           </div>

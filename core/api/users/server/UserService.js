@@ -20,10 +20,7 @@ export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
     super(Users);
     this.setupRoundRobin(employees);
-  }
-
-  get(userId) {
-    return this.fetchOne({ $filters: { _id: userId }, ...fullUser() });
+    this.get = this.makeGet(fullUser());
   }
 
   getByEmail(email) {

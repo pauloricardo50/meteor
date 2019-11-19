@@ -11,6 +11,7 @@ type PromotionReservationProgressEditorProps = {};
 
 const PromotionReservationProgressEditor = ({
   promotionOption,
+  loan,
 }: PromotionReservationProgressEditorProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const isAdmin = Meteor.microservice === 'admin';
@@ -33,6 +34,7 @@ const PromotionReservationProgressEditor = ({
         variant="text"
         isEditing={isEditing}
         className="full"
+        loan={loan}
       />
     </>
   );

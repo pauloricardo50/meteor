@@ -32,7 +32,9 @@ class PromotionService extends CollectionService {
   }
 
   insertPromotionProperty({ promotionId, property }) {
-    const { address1, address2, zipCode, city, canton } = this.get(promotionId);
+    const { address1, address2, zipCode, city, canton } = this.findOne(
+      promotionId,
+    );
     const propertyId = PropertyService.insert({
       property: {
         ...property,
@@ -94,7 +96,7 @@ class PromotionService extends CollectionService {
     showAllLots,
     shareSolvency,
   }) {
-    const promotion = this.get(promotionId);
+    const promotion = this.findOne(promotionId);
     const user = UserService.get(userId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 

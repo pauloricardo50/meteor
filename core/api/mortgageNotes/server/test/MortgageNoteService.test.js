@@ -27,7 +27,7 @@ describe('MortgageNoteService', () => {
 
       expect(MortgageNoteService.find({}).count()).to.equal(0);
 
-      const loan = LoanService.get(loanId);
+      const loan = LoanService.findOne(loanId);
       expect(loan.structures[0].mortgageNoteIds).to.deep.equal([]);
     });
   });

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
+import { defaultConfig } from './chartSettings';
 
 const initializeHighcharts = () => {
   ReactHighcharts.Highcharts.setOptions({
@@ -81,7 +82,7 @@ export default class BaseChart extends PureComponent {
 
     return (
       <ReactHighcharts
-        config={config}
+        config={{ ...defaultConfig, ...config }}
         ref={c => {
           this.chart = c;
         }}

@@ -29,14 +29,10 @@ import {
 
 ServerEventService.addAfterMethodListener(
   [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
-  async ({ context, params, result, config: { name: methodName } }) => {
+  ({ context, params, result, config: { name: methodName } }) => {
     context.unblock();
     let userId;
     let isNewUser = false;
-
-    if (typeof result.then === 'function') {
-      result = await result;
-    }
 
     if (typeof result === 'object') {
       userId = result.userId;
@@ -417,12 +413,13 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   proInviteUser,
-  async ({
+  ({
     context,
     params: { user, propertyIds = [], promotionIds = [], properties = [] },
     result: { userId: customerId },
   }) => {
     context.unblock();
+
     const analytics = new Analytics(context);
     const { userId } = context;
     const {
@@ -437,9 +434,8 @@ ServerEventService.addAfterMethodListener(
       $filters: { _id: userId },
       name: 1,
     });
-    const { name: org, _id: orgId } = UserService.getUserMainOrganisation(
-      userId,
-    );
+    const { name: org, _id: orgId } =
+      UserService.getUserMainOrganisation(userId) || {};
 
     const referOnly =
       propertyIds.length === 0 &&
@@ -464,56 +460,50 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (propertyIds.length) {
-      await Promise.all(
-        propertyIds.map(propertyId => {
-          const { address } = PropertyService.fetchOne({
-            $filters: { _id: propertyId },
-            address: 1,
-          });
+      propertyIds.map(propertyId => {
+        const { address } = PropertyService.fetchOne({
+          $filters: { _id: propertyId },
+          address: 1,
+        });
 
-          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-            ...sharedEventProperties,
-            propertyId,
-            propertyAddress: address,
-          });
-        }),
-      );
+        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+          ...sharedEventProperties,
+          propertyId,
+          propertyAddress: address,
+        });
+      });
     }
 
     if (promotionIds.length) {
-      await Promise.all(
-        promotionIds.map(promotionId => {
-          const { name } = PromotionService.fetchOne({
-            $filters: { _id: promotionId },
-            name: 1,
-          });
+      promotionIds.map(promotionId => {
+        const { name } = PromotionService.fetchOne({
+          $filters: { _id: promotionId },
+          name: 1,
+        });
 
-          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-            ...sharedEventProperties,
-            promotionId,
-            promotionName: name,
-            promotionLotIds,
-            showAllLots,
-          });
-        }),
-      );
+        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+          ...sharedEventProperties,
+          promotionId,
+          promotionName: name,
+          promotionLotIds,
+          showAllLots,
+        });
+      });
     }
 
     if (properties.length) {
-      await Promise.all(
-        properties.map(property => {
-          const { address, _id: propertyId } = PropertyService.fetchOne({
-            $filters: { externalId: property.externalId },
-            address: 1,
-          });
+      properties.map(property => {
+        const { address, _id: propertyId } = PropertyService.fetchOne({
+          $filters: { externalId: property.externalId },
+          address: 1,
+        });
 
-          return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
-            ...sharedEventProperties,
-            propertyId,
-            propertyAddress: address,
-          });
-        }),
-      );
+        return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
+          ...sharedEventProperties,
+          propertyId,
+          propertyAddress: address,
+        });
+      });
     }
   },
 );

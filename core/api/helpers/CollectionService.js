@@ -43,19 +43,24 @@ class CollectionService {
   }
 
   get(...args) {
+    throw new Meteor.Error(
+      `Should initialize get in ${this.collection._name}Service`,
+    );
     return this.collection.findOne(...args);
   }
 
-  safeGet(id) {
-    const result = this.get(id);
+  makeGet(defaultFragment) {
+    return function(filters, fields) {
+      // When fetching by id
+      if (typeof filters === 'string') {
+        filters = { _id: filters };
+      }
 
-    if (!result) {
-      throw new Meteor.Error(
-        `Could not find object with id "${id}" in collection "${this.collection._name}"`,
-      );
-    }
-
-    return result;
+      return this.fetchOne({
+        $filters: filters,
+        ...(fields || defaultFragment),
+      });
+    };
   }
 
   find(...args) {

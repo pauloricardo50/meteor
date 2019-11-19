@@ -40,7 +40,7 @@ class PropertyService extends CollectionService {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
         return removePropertyFromLoan({
-          loan: LoanService.get(loanId),
+          loan: LoanService.findOne(loanId),
           propertyId,
         });
       }
