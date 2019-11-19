@@ -57,3 +57,4 @@ percolate:migrations
 cultofcoders:grapher-react
 littledata:synced-cron
 zodern:standard-minifier-js@4.0.0-beta.2
+qualia:prod-shell
