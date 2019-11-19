@@ -229,7 +229,7 @@ const getPromotionOptionMailParams = async ({ context, params }, recipient) => {
     promotion: {
       userLinks: 1,
       name: 1,
-      assignedEmployee: { email: 1 },
+      assignedEmployee: { email: 1, name: 1 },
     },
     loan: { promotionLinks: 1 },
   });
@@ -259,6 +259,9 @@ const getPromotionOptionMailParams = async ({ context, params }, recipient) => {
       ? user.name
       : 'un acquéreur sans nom',
     fromEmail: assignedEmployee && assignedEmployee.email,
+    assignedEmployeeName: assignedEmployee
+      ? assignedEmployee.name
+      : 'Le conseiller',
     invitedBy,
   };
 };
@@ -308,7 +311,12 @@ const PROMOTION_EMAILS = [
   },
   {
     method: promotionOptionUploadAgreement,
+    emailId: EMAIL_IDS.NEW_RESERVATION_AGREEMENT_PRO,
     recipients: [
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.USER,
+        emailId: EMAIL_IDS.NEW_RESERVATION_AGREEMENT_USER,
+      },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
       { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
