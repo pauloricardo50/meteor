@@ -4,7 +4,7 @@ import { PROPERTY_DOCUMENTS } from 'core/api/constants';
 import { withSmartQuery } from '../../api';
 import { userProperty } from '../../api/properties/queries';
 
-const getPropertyDocuments = (property) => {
+const getPropertyDocuments = property => {
   const { documents = {} } = property;
   return Object.keys(documents)
     .filter(category => category !== PROPERTY_DOCUMENTS.PROPERTY_PICTURES)

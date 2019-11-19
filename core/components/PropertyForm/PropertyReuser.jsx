@@ -14,6 +14,7 @@ type PropertyReuserProps = {};
 const PropertyReuser = ({
   properties,
   handleSelectProperty,
+  disabled,
 }: PropertyReuserProps) => (
   <DialogSimple
     buttonProps={{
@@ -21,11 +22,12 @@ const PropertyReuser = ({
       primary: true,
       label: <T id="PropertiesPageAdder.reuseProperty" />,
       icon: <Icon type="loop" />,
+      disabled,
     }}
     title={<T id="PropertiesPageAdder.reuseProperty" />}
   >
-    {!properties
-      || (properties.length === 0 && (
+    {!properties ||
+      (properties.length === 0 && (
         <p>
           Vous n'avez pas de bien immobiliers à réutiliser dans d'autres
           dossiers

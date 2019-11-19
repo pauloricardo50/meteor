@@ -9,9 +9,9 @@ import {
 } from './widget1Math';
 
 export const hideFinmaValues = (borrowRatio, incomeRatio) =>
-  !(borrowRatio && incomeRatio)
-  || Math.abs(borrowRatio) === Infinity
-  || Math.abs(incomeRatio) === Infinity;
+  !(borrowRatio && incomeRatio) ||
+  Math.abs(borrowRatio) === Infinity ||
+  Math.abs(incomeRatio) === Infinity;
 
 export const getFinmaValues = ({
   salary,
@@ -25,9 +25,10 @@ export const getFinmaValues = ({
     fortune,
     wantedLoan,
   );
-  const borrowRatio = purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
-    ? getBorrowRatio(propertyValue, fortune)
-    : getRefinancingBorrowRatio(propertyValue, wantedLoan);
+  const borrowRatio =
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
+      ? getBorrowRatio(propertyValue, fortune)
+      : getRefinancingBorrowRatio(propertyValue, wantedLoan);
   const incomeRatio = getIncomeRatio(salary, finmaMonthlyCost);
   const borrowRuleStatus = validateBorrowRatio(borrowRatio);
   const incomeRuleStatus = validateIncomeRatio(incomeRatio);

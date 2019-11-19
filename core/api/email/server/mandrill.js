@@ -50,29 +50,43 @@ export const getMandrillTemplate = ({
   sendAt,
   templateContent = [],
   replyTo,
-  bccAddress,
-}) => ({
-  template_name: templateName,
-  template_content: [
-    { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
-    ...templateContent,
-  ],
-  message: {
-    from_email: senderAddress,
-    from_name: senderName,
-    subject,
-    to: [{ email: recipientAddress, name: recipientName }],
-    global_merge_vars: variables,
-    headers: { 'Reply-To': replyTo || senderAddress },
-    bcc_address: bccAddress,
-  },
-  send_at: sendAt ? sendAt.toISOString() : undefined,
-});
+  mainRecipientIsBcc = true,
+  bccAddresses = [],
+  ccAddresses = [],
+}) => {
+  const [firstBcc, ...otherBccs] = bccAddresses;
+  return {
+    template_name: templateName,
+    template_content: [
+      { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
+      ...templateContent,
+    ],
+    message: {
+      from_email: senderAddress,
+      from_name: senderName,
+      subject,
+      to: [
+        {
+          email: recipientAddress,
+          name: recipientName,
+          type: mainRecipientIsBcc ? 'bcc' : 'to',
+        },
+        ...ccAddresses.map(cc => ({ ...cc, type: 'cc' })),
+        ...otherBccs.map(bcc => ({ ...bcc, type: 'bcc' })),
+      ],
+      global_merge_vars: variables,
+      headers: { 'Reply-To': replyTo || senderAddress },
+      bcc_address: firstBcc && firstBcc.email,
+      preserve_recipients: true,
+    },
+    send_at: sendAt ? sendAt.toISOString() : undefined,
+  };
+};
 
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 
-export const sendMandrillTemplate = (mandrillTemplate) => {
+export const sendMandrillTemplate = mandrillTemplate => {
   if (skipEmails) {
     return Promise.resolve();
   }
@@ -81,7 +95,9 @@ export const sendMandrillTemplate = (mandrillTemplate) => {
     Mandrill.messages.sendTemplate(mandrillTemplate, (error, result) => {
       if (error) {
         logError.run({
-          error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+          error: JSON.parse(
+            JSON.stringify(error, Object.getOwnPropertyNames(error)),
+          ),
           additionalData: ['Mandrill error'],
         });
         reject(error);
@@ -105,7 +121,9 @@ export const getEmailsForAddress = email =>
       (error, result) => {
         if (error) {
           logError.run({
-            error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+            error: JSON.parse(
+              JSON.stringify(error, Object.getOwnPropertyNames(error)),
+            ),
             additionalData: ['Mandrill error'],
           });
           resolve(error);
@@ -114,4 +132,5 @@ export const getEmailsForAddress = email =>
         }
         resolve(result.data);
       },
-    ));
+    ),
+  );

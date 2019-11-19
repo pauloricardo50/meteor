@@ -14,7 +14,27 @@ import { PROMOTION_STATUS } from '../promotionConstants';
 
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
-exposeQuery({ query: adminPromotions, options: { allowFilterById: true } });
+exposeQuery({
+  query: adminPromotions,
+  options: { allowFilterById: true },
+  overrides: {
+    embody: body => {
+      body.$filter = ({ filters, params: { _id, hasTimeline, status } }) => {
+        if (hasTimeline) {
+          filters['constructionTimeline.0'] = { $exists: true };
+        }
+
+        if (status) {
+          filters.status = status;
+        }
+      };
+    },
+    validateParams: {
+      hasTimeline: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
+    },
+  },
+});
 
 exposeQuery({
   query: appPromotion,
@@ -22,7 +42,7 @@ exposeQuery({
     firewall(userId, { promotionId }) {
       SecurityService.promotions.hasAccessToPromotion({ promotionId, userId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters._id = params.promotionId;
         filters.status = PROMOTION_STATUS.OPEN;
@@ -35,7 +55,7 @@ exposeQuery({
 exposeQuery({
   query: promotionSearch,
   overrides: {
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {
         Object.assign(
           filters,
@@ -77,26 +97,25 @@ exposeQuery({
       };
 
       body.$postFilter = (promotions = [], params) => {
-        const { anonymize = false, simple, userId } = params;
+        const { anonymize = false, userId } = params;
 
         if (!anonymize) {
           return promotions;
         }
 
-        return promotions.map((promotion) => {
+        return promotions.map(promotion => {
           const { promotionLots = [], ...rest } = promotion;
-          return simple
-            ? { promotionLots: promotionLots.map(({ name }) => name) }
-            : {
-              promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
-              ...rest,
-            };
+          return {
+            promotionLots: promotionLots.map(
+              makePromotionLotAnonymizer({ userId }),
+            ),
+            ...rest,
+          };
         });
       };
     },
     validateParams: {
       userId: String,
-      simple: Match.Maybe(Boolean),
       anonymize: Match.Maybe(Boolean),
       _id: Match.Maybe(String),
     },
@@ -109,7 +128,7 @@ exposeQuery({
     firewall(userId, { _id: promotionId }) {
       SecurityService.promotions.hasAccessToPromotion({ promotionId, userId });
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params: { promotionId } }) => {
         filters._id = promotionId;
       };

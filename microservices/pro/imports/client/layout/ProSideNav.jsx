@@ -17,18 +17,17 @@ const getItems = (currentUser = {}) => {
   return [
     {
       label: <T id="ProSideNav.dashboard" />,
-      to: PRO_ROUTES.PRO_DASHBOARD_PAGE.path,
+      to: createRoute(PRO_ROUTES.PRO_DASHBOARD_PAGE.path, { tabId: 'loans' }),
       icon: 'home',
-      exact: true,
     },
     {
       label: <T id="ProSideNav.revenues" />,
       to: createRoute(PRO_ROUTES.PRO_REVENUES_PAGE.path),
       icon: 'monetizationOn',
       condition: !!(
-        organisations.length
-        && organisations[0].commissionRates
-        && organisations[0].commissionRates.length > 0
+        organisations.length &&
+        organisations[0].commissionRates &&
+        organisations[0].commissionRates.length > 0
       ),
     },
     {
@@ -41,19 +40,25 @@ const getItems = (currentUser = {}) => {
 
 type ProSideNavProps = {};
 
-const ProSideNav = ({ currentUser }: ProSideNavProps) => (
-  <Drawer variant="permanent" className="pro-side-nav">
-    <List>
-      {getItems(currentUser).map(({ to, icon, label, exact }) => (
-        <ListItem button key={to} className="pro-side-nav-item">
-          <NavLink to={to} exact={exact}>
-            {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
-            <h5>{label}</h5>
-          </NavLink>
-        </ListItem>
-      ))}
-    </List>
-  </Drawer>
-);
+const ProSideNav = ({ currentUser }: ProSideNavProps) => {
+  if (!currentUser) {
+    return null;
+  }
+
+  return (
+    <Drawer variant="permanent" className="pro-side-nav">
+      <List>
+        {getItems(currentUser).map(({ to, icon, label, exact }) => (
+          <ListItem button key={to} className="pro-side-nav-item">
+            <NavLink to={to} exact={exact}>
+              {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
+              <h5>{label}</h5>
+            </NavLink>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
+};
 
 export default ProSideNav;

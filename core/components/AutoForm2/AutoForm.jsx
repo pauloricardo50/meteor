@@ -34,6 +34,23 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
     }
   }
 
+  handleSubmit = (...args) => {
+    const { onSubmit, onSuccessMessage } = this.props;
+
+    return Promise.resolve(onSubmit(...args)).then(() =>
+      import('../../utils/message').then(({ default: message }) => {
+        message.success(
+          onSuccessMessage
+            ? typeof onSuccessMessage === 'function'
+              ? onSuccessMessage(...args)
+              : onSuccessMessage
+            : "C'est dans la boite !",
+          5,
+        );
+      }),
+    );
+  };
+
   render() {
     const {
       children,
@@ -43,6 +60,8 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
       submitFieldProps,
       layout,
       schemaKeys,
+      onSubmit,
+      onSuccessMessage,
       ...props
     } = this.props;
 
@@ -52,6 +71,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
         model={pickBy(model, (_, key) => !key.startsWith('$'))}
         placeholder={placeholder}
         className="autoform"
+        onSubmit={this.handleSubmit}
         {...props}
       >
         {children || (
@@ -79,7 +99,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;
   return {
-    onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])),
+    onSubmit: (values) => onSubmit(pick(values, [...schemaKeys, '_id'])),
     schemaKeys,
   };
 })(CustomAutoForm);

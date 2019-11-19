@@ -16,7 +16,7 @@ export const WITHOUT_LOGIN = [
 ];
 
 export const isOnAllowedRoute = (path, routes) =>
-  routes.some((allowedRoute) => {
+  routes.some(allowedRoute => {
     if (allowedRoute === '/') {
       return path === allowedRoute;
     }
@@ -37,11 +37,6 @@ export const getRedirectIfInRoleForOtherApp = (currentUser, role, app) => {
   ];
 
   return url.join('');
-};
-
-const redirectIfInRoleForOtherApp = (...args) => {
-  const url = getRedirectIfInRoleForOtherApp(...args);
-  if (url) window.location.replace(url);
 };
 
 const getBaseRedirect = (currentUser, pathname, withoutLoginRoutes = []) => {

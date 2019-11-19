@@ -21,6 +21,7 @@ export const userCache = {
   firstName: 1,
   lastName: 1,
   referredByOrganisationLink: 1,
+  referredByUserLink: 1,
   assignedEmployeeCache: 1,
 };
 

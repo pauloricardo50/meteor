@@ -15,15 +15,35 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 
-const getColumnOptions = ({ displayLoan, displayActions }) =>
+const now = moment();
+export const formatDateTime = (date, toNow) => {
+  const momentDate = moment(date);
+  const text = date ? momentDate.format("D MMM 'YY") : '-';
+
+  if (momentDate.isBefore(now)) {
+    return (
+      <span className="error-box" style={{ whiteSpace: 'nowrap' }}>
+        {text}
+      </span>
+    );
+  }
+
+  return text;
+};
+
+const getColumnOptions = ({
+  displayLoan,
+  displayActions,
+  displayOrganisationsToPay,
+}) =>
   [
     displayLoan && { id: 'loan' },
-    { id: 'status' },
+    { id: 'revenueStatus' },
     { id: 'date' },
     { id: 'type' },
     { id: 'description' },
     { id: 'sourceOrganisationLink' },
-    { id: 'organisationsToPay' },
+    displayOrganisationsToPay && { id: 'organisationsToPay' },
     { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
     displayActions && { id: 'actions' },
   ]
@@ -35,13 +55,15 @@ export const makeMapRevenue = ({
   setRevenueToModify,
   displayLoan,
   displayActions,
-}) => (revenue) => {
+  displayOrganisationsToPay,
+}) => revenue => {
   const {
     _id: revenueId,
     expectedAt,
     paidAt,
     amount,
     type,
+    secondaryType,
     description,
     status,
     organisations = [],
@@ -57,13 +79,13 @@ export const makeMapRevenue = ({
     columns: [
       displayLoan
         ? {
-          raw: loan && loan.name,
-          label: loan && (
-            <CollectionIconLink
-              relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-            />
-          ),
-        }
+            raw: loan && loan.name,
+            label: loan && (
+              <CollectionIconLink
+                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+              />
+            ),
+          }
         : null,
       {
         raw: status,
@@ -71,11 +93,21 @@ export const makeMapRevenue = ({
       },
       {
         raw: date && date.getTime(),
-        label: date && moment(date).format('DD MMM YYYY'),
+        label: date && formatDateTime(date),
       },
       {
         raw: type,
-        label: <T id={`Forms.type.${type}`} />,
+        label: (
+          <span>
+            <T id={`Forms.type.${type}`} />
+            {secondaryType && (
+              <span>
+                -
+                <T id={`Forms.secondaryType.${secondaryType}`} />
+              </span>
+            )}
+          </span>
+        ),
       },
       description,
       {
@@ -89,12 +121,17 @@ export const makeMapRevenue = ({
           />
         ),
       },
-      organisations.map(organisation => (
-        <CollectionIconLink
-          relatedDoc={{ ...organisation, collection: ORGANISATIONS_COLLECTION }}
-          key={organisation._id}
-        />
-      )),
+      displayOrganisationsToPay
+        ? organisations.map(organisation => (
+            <CollectionIconLink
+              relatedDoc={{
+                ...organisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+              key={organisation._id}
+            />
+          ))
+        : null,
       {
         raw: amount,
         label: (
@@ -122,19 +159,29 @@ export default compose(
     params: ({ filterRevenues, ...props }) => filterRevenues(props),
     dataName: 'revenues',
   }),
-  withProps(({
-    revenues = [],
-    setOpenModifier,
-    setRevenueToModify,
-    displayLoan,
-    displayActions,
-  }) => ({
-    rows: revenues.map(makeMapRevenue({
+  withProps(
+    ({
+      revenues = [],
       setOpenModifier,
       setRevenueToModify,
       displayLoan,
       displayActions,
-    })),
-    columnOptions: getColumnOptions({ displayLoan, displayActions }),
-  })),
+      displayOrganisationsToPay,
+    }) => ({
+      rows: revenues.map(
+        makeMapRevenue({
+          setOpenModifier,
+          setRevenueToModify,
+          displayLoan,
+          displayActions,
+          displayOrganisationsToPay,
+        }),
+      ),
+      columnOptions: getColumnOptions({
+        displayLoan,
+        displayActions,
+        displayOrganisationsToPay,
+      }),
+    }),
+  ),
 );

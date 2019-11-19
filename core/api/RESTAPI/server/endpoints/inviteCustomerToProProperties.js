@@ -8,18 +8,22 @@ import PropertySchema, {
 import { withMeteorUserId, updateCustomerReferral } from '../helpers';
 import { checkQuery, impersonateSchema } from './helpers';
 
-const formatPropertyIds = (propertyIds) => {
+const formatPropertyIds = propertyIds => {
   const ids = propertyIds.map(id => `"${id}"`);
-  return [ids.slice(0, -1).join(', '), ids.slice(-1)[0]].join(ids.length < 2 ? '' : ' and ');
+  return [ids.slice(0, -1).join(', '), ids.slice(-1)[0]].join(
+    ids.length < 2 ? '' : ' and ',
+  );
 };
 
-const checkProperties = (properties) => {
+const checkProperties = properties => {
   const schema = PropertySchema.pick(...userAllowedKeys);
 
-  return properties.map((property) => {
+  return properties.map(property => {
     const { _id, externalId } = property;
     if ((!_id && !externalId) || (_id && externalId)) {
-      throw new Meteor.Error('Each property must have either a "_id" or "externalId" key');
+      throw new Meteor.Error(
+        'Each property must have either a "_id" or "externalId" key',
+      );
     }
     if (_id) {
       const exists = PropertyService.exists(_id);
@@ -43,7 +47,7 @@ const inviteCustomerToProPropertiesAPI = ({
   body,
   query,
 }) => {
-  let { user, properties = [], shareSolvency } = body;
+  let { user, properties = [], shareSolvency, invitationNote } = body;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: impersonateSchema,
@@ -63,6 +67,7 @@ const inviteCustomerToProPropertiesAPI = ({
     properties: externalProperties,
     user,
     shareSolvency,
+    invitationNote,
   };
 
   if (!payload.propertyIds.length && !payload.properties.length) {
@@ -70,13 +75,13 @@ const inviteCustomerToProPropertiesAPI = ({
   }
 
   return withMeteorUserId({ userId, impersonateUser }, () =>
-    proInviteUser.run(payload))
+    proInviteUser.run(payload),
+  )
     .then(() =>
-      updateCustomerReferral({ customer: user, userId, impersonateUser }))
+      updateCustomerReferral({ customer: user, userId, impersonateUser }),
+    )
     .then(() => ({
-      message: `Successfully invited user "${
-        user.email
-      }" to property ids ${formattedIds}`,
+      message: `Successfully invited user "${user.email}" to property ids ${formattedIds}`,
     }));
 };
 

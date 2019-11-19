@@ -74,7 +74,21 @@ const getContent = ({ icon, fab, label, children, iconAfter }) => {
   );
 };
 
-const Button = (props) => {
+const getStartIcon = ({ icon, iconAfter }) => {
+  if (!iconAfter) {
+    return icon;
+  }
+};
+
+const getButtonContent = props => {
+  if (props.fab) {
+    return getContent(props);
+  }
+
+  return props.label || props.children;
+};
+
+const Button = props => {
   const childProps = omit(props, [
     'iconAfter',
     'primary',
@@ -90,6 +104,7 @@ const Button = (props) => {
 
   const variant = props.variant || getVariant(props);
   const color = props.color || getColor(props);
+  const startIcon = props.icon && getStartIcon(props);
 
   const Comp = props.fab ? Fab : MuiButton;
 
@@ -108,8 +123,10 @@ const Button = (props) => {
         props.className,
       )}
       role="button"
+      startIcon={startIcon}
+      endIcon={props.iconAfter && props.icon}
     >
-      {getContent(props)}
+      {getButtonContent(props)}
     </Comp>
   );
 
@@ -125,7 +142,11 @@ const Button = (props) => {
       );
     }
 
-    return <Tooltip title={props.tooltip}>{button}</Tooltip>;
+    return (
+      <Tooltip title={props.tooltip} placement={props.tooltipPlacement}>
+        {button}
+      </Tooltip>
+    );
   }
 
   return button;
@@ -145,16 +166,14 @@ Button.defaultProps = {
 };
 
 const withLoadingProp = mapProps(({ loading, ...props }) =>
-  (loading
+  loading
     ? {
-      ...props,
-      disabled: true,
-      icon: <Icon type="loop-spin" />,
-      children: props.fab ? null : props.children,
-    }
-    : props));
+        ...props,
+        disabled: true,
+        icon: <Icon type="loop-spin" />,
+        children: props.fab ? null : props.children,
+      }
+    : props,
+);
 
-export default compose(
-  withLoadingProp,
-  withStyles(styles),
-)(Button);
+export default compose(withLoadingProp, withStyles(styles))(Button);

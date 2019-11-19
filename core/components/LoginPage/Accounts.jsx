@@ -26,10 +26,10 @@ class Form extends Accounts.ui.Form {
     } = this.props;
     return (
       <form
-        ref={(ref) => {
+        ref={ref => {
           this.form = ref;
         }}
-        className={['accounts', className].join(' ')}
+        className={['accounts', 'login-input', className].join(' ')}
       >
         {Object.keys(fields).length > 0 ? (
           <Accounts.ui.Fields fields={fields} />
@@ -157,7 +157,7 @@ class FormMessage extends Accounts.ui.FormMessage {
     this.state = { open: false };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.message) {
       this.setState({ open: true });
     }
@@ -171,7 +171,6 @@ class FormMessage extends Accounts.ui.FormMessage {
     if (!message) {
       return null;
     }
-
     return (
       <Snackbar
         open={this.state.open}

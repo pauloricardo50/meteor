@@ -60,7 +60,7 @@ const MongoSelect = ({
       multiple
       value={finalValue}
       options={finalOptions}
-      onChange={(_, v) => finalOnChange(finalValue, v)}
+      onChange={v => finalOnChange(finalValue, v)}
       id={id}
       {...props}
     />

@@ -5,6 +5,8 @@ import {
   moneyField,
   address,
 } from '../../helpers/sharedSchemas';
+import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
+
 import {
   RESIDENCY_PERMIT,
   GENDER,
@@ -19,7 +21,10 @@ import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants'
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
   [`${name}.$`]: Object,
-  [`${name}.$.value`]: { ...moneyField, optional: false },
+  [`${name}.$.value`]: {
+    ...moneyField,
+    optional: false,
+  },
   [`${name}.$.description`]: {
     type: String,
     optional: true,
@@ -33,8 +38,16 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
 });
 
 export const personalInfoSchema = {
-  firstName: { type: String, optional: true },
-  lastName: { type: String, optional: true },
+  firstName: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+  },
+  lastName: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+  },
   gender: {
     type: String,
     optional: true,

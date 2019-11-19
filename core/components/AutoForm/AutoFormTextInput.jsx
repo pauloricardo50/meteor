@@ -9,7 +9,6 @@ import colors from '../../config/colors';
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';
-import FormValidator from './FormValidator';
 
 const styles = {
   div: {
@@ -71,17 +70,20 @@ class AutoFormTextInput extends Component {
     Meteor.clearTimeout(this.timeout);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const valueIsDifferent = nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const valueIsDifferent =
+      nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
     if (valueIsDifferent) {
       // To handle race conditions, check if the new value from the DB
       // has been typed in the past
       // If it has, then don't update the textfield
       // If it hasn't, override it, because the backend says it should be a new value
-      const valueExistsInHistory = this.state.history.includes(nextProps.inputProps.currentValue);
+      const valueExistsInHistory = this.state.history.includes(
+        nextProps.inputProps.currentValue,
+      );
 
       if (!valueExistsInHistory) {
-        this.handleChange(null, nextProps.inputProps.currentValue);
+        this.handleChange(nextProps.inputProps.currentValue);
       }
     }
   }
@@ -93,7 +95,7 @@ class AutoFormTextInput extends Component {
     this.saveValue(true);
   };
 
-  handleChange = (_, value) => {
+  handleChange = value => {
     const {
       saveOnChange,
       showValidIconOnChange,
@@ -125,13 +127,14 @@ class AutoFormTextInput extends Component {
     this.setState({ showInfo: true });
   };
 
-  saveValue = (showSaving) => {
+  saveValue = showSaving => {
     const {
       updateFunc,
       docId,
       inputProps: { id, currentValue, inputType },
     } = this.props;
     const { value } = this.state;
+
     // Save data to DB
     const object = { [id]: value };
     let shouldSave = true;
@@ -185,7 +188,6 @@ class AutoFormTextInput extends Component {
         ...otherProps
       },
       inputLabelProps: inputLabelPropsOverride,
-      noValidator,
       savingIconStyle,
       admin,
     } = this.props;
@@ -236,7 +238,6 @@ class AutoFormTextInput extends Component {
           hide={admin}
           todo={todo}
         />
-        {!noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }
@@ -263,7 +264,6 @@ AutoFormTextInput.propTypes = {
   }).isRequired,
   inputStyle: PropTypes.objectOf(PropTypes.any),
   money: PropTypes.bool,
-  noValidator: PropTypes.bool,
   number: PropTypes.bool,
   rows: PropTypes.number,
   saveOnChange: PropTypes.bool,
@@ -280,7 +280,6 @@ AutoFormTextInput.defaultProps = {
   info: '',
   inputStyle: undefined,
   money: false,
-  noValidator: false,
   number: false,
   rows: 1,
   saveOnChange: true,

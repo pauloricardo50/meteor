@@ -8,6 +8,8 @@ import {
   Contacts,
   Organisations,
   Tasks,
+  Activities,
+  Sessions,
 } from '..';
 
 const assignedEmployeeCache = {
@@ -17,6 +19,11 @@ const assignedEmployeeCache = {
 };
 
 Users.addLinks({
+  activities: {
+    inversedBy: 'user',
+    collection: Activities,
+    autoremove: true,
+  },
   assignedEmployee: {
     collection: Users,
     field: 'assignedEmployeeId',
@@ -46,6 +53,10 @@ Users.addLinks({
   contact: {
     collection: Contacts,
     inversedBy: 'user',
+  },
+  impersonatingSession: {
+    collection: Sessions,
+    inversedBy: 'impersonatingAdmin',
   },
   loans: {
     collection: Loans,

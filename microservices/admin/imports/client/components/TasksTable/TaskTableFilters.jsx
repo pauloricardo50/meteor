@@ -37,7 +37,7 @@ const TaskTableFilters = ({
           multiple
           label="Assigné"
           options={assigneeOptions}
-          onChange={(_, selected) => setAssignee({ $in: selected })}
+          onChange={selected => setAssignee({ $in: selected })}
         />
       )}
 
@@ -50,7 +50,7 @@ const TaskTableFilters = ({
             id: t,
             label: <T id={`Forms.status.${t}`} />,
           }))}
-          onChange={(_, selected) => setStatus({ $in: selected })}
+          onChange={selected => setStatus({ $in: selected })}
         />
       )}
 
@@ -59,7 +59,7 @@ const TaskTableFilters = ({
           value={uptoDate}
           label="Date"
           options={uptoDateOptions}
-          onChange={(_, value) => setUptoDate(value)}
+          onChange={value => setUptoDate(value)}
         />
       )}
     </div>

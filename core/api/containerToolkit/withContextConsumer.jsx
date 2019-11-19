@@ -3,7 +3,8 @@ import React from 'react';
 const consumeContext = ({ consume, context, props, contextName }) => {
   if (consume && typeof consume === 'function') {
     return consume(props, context);
-  } if (contextName) {
+  }
+  if (contextName) {
     return { [contextName]: context };
   }
 

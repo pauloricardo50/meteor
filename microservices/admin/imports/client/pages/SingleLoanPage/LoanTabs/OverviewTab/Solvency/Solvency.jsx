@@ -32,7 +32,7 @@ const Solvency = ({
     <div className="card1 card-top solvency">
       <form
         className="flex"
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           setShowResults(false);
           setTimeout(() => setShowResults(true), 0);
@@ -42,12 +42,14 @@ const Solvency = ({
           <h3>Capacité d'achat</h3>
           <Toggle
             value={singleLender}
-            onToggle={(_, v) => setSingleLender(v)}
+            onToggle={setSingleLender}
             labelLeft={<small>Un prêteur</small>}
           />
         </div>
 
-        {!singleLender && <PercentInput value={maxBorrowRatio} onChange={setMaxborrowRatio} />}
+        {!singleLender && (
+          <PercentInput value={maxBorrowRatio} onChange={setMaxborrowRatio} />
+        )}
 
         {singleLender && (
           <Select
@@ -55,7 +57,7 @@ const Solvency = ({
               value: _id,
               label: name,
             }))}
-            onChange={(_, v) => setSingleLender(v)}
+            onChange={setSingleLender}
             value={singleLender && singleLender !== true ? singleLender : null}
             className="organisation-select"
           />
@@ -66,7 +68,7 @@ const Solvency = ({
               value,
               label: <T id={`Forms.residenceType.${value}`} />,
             }))}
-            onChange={(_, v) => setResidenceType(v)}
+            onChange={setResidenceType}
             value={residenceType}
           />
         )}
@@ -76,7 +78,7 @@ const Solvency = ({
               value,
               label: <T id={`Forms.canton.${value}`} />,
             }))}
-            onChange={(_, v) => setCanton(v)}
+            onChange={setCanton}
             value={canton}
           />
         )}

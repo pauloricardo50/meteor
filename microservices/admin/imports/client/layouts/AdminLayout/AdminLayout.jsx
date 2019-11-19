@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
+import cx from 'classnames';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
@@ -39,7 +40,19 @@ const getRedirect = ({ currentUser, history }) => {
   return false;
 };
 
-const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
+const routeHasNoPadding = pathname => {
+  if (pathname.startsWith('/loan-board')) {
+    return true;
+  }
+};
+
+const AdminLayout = ({
+  setOpenSearch,
+  openSearch,
+  children,
+  currentUser,
+  ...props
+}) => {
   const isMobile = useMedia({ maxWidth: 768 });
   const [openDrawer, setDrawer] = useState(false);
   const toggleDrawer = () => setDrawer(!openDrawer);
@@ -52,7 +65,7 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
   }
 
   const { history } = props;
-  const redirect = getRedirect(props);
+  const redirect = getRedirect({ currentUser, history });
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
 
@@ -61,7 +74,6 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
   }
 
   if (redirect && !isLogin) {
-    debugger;
     return <Redirect to={redirect} />;
   }
 
@@ -84,9 +96,14 @@ const AdminLayout = ({ setOpenSearch, openSearch, children, ...props }) => {
         toggleDrawer={toggleDrawer}
       />
 
-      <div className="main">
+      <div
+        className={cx('main', {
+          'no-padding': routeHasNoPadding(history.location.pathname),
+          'is-mobile': isMobile,
+        })}
+      >
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          {React.cloneElement(children, { ...props })}
+          {React.cloneElement(children, { ...props, currentUser })}
         </ErrorBoundary>
       </div>
 

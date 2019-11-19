@@ -6,8 +6,8 @@ import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { loanSetStatus } from 'core/api/methods/index';
-import { withMeteorUserId } from 'core/api/RESTAPI/server/helpers';
+import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { loanSetStatus } from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
@@ -27,11 +27,11 @@ import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
 import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
+import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
-describe('LoanService', function () {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -270,7 +270,8 @@ describe('LoanService', function () {
       })._id;
 
       expect(() =>
-        LoanService.removeStructure({ loanId, structureId })).to.throw('pouvez pas');
+        LoanService.removeStructure({ loanId, structureId }),
+      ).to.throw('pouvez pas');
     });
 
     it('removes a duplicate structure', () => {
@@ -338,7 +339,9 @@ describe('LoanService', function () {
 
       loan = LoanService.get(loanId);
       // This structure is correct
-      expect(loan.structures.find(({ id }) => id === structureId)).to.deep.include({ id: structureId, propertyId });
+      expect(
+        loan.structures.find(({ id }) => id === structureId),
+      ).to.deep.include({ id: structureId, propertyId });
 
       // Other structures are unaffected
       loan.structures
@@ -372,7 +375,8 @@ describe('LoanService', function () {
       const badId = 'inexistentId';
 
       expect(() =>
-        LoanService.selectStructure({ loanId, structureId: badId })).to.throw(badId);
+        LoanService.selectStructure({ loanId, structureId: badId }),
+      ).to.throw(badId);
     });
   });
 
@@ -532,13 +536,27 @@ describe('LoanService', function () {
     });
 
     it('does not allow loan names with incorrect format', () => {
-      expect(() => Factory.create('loan', { name: '18-202' })).to.throw('regular expression');
-      expect(() => Factory.create('loan', { name: '202' })).to.throw('regular expression');
-      expect(() => Factory.create('loan', { name: '1-202' })).to.throw('regular expression');
-      expect(() => Factory.create('loan', { name: '18202' })).to.throw('regular expression');
-      expect(() => Factory.create('loan', { name: '0202' })).to.throw('regular expression');
-      expect(() => Factory.create('loan', { name: 'abc' })).to.throw('regular expression');
-      expect(() => Factory.create('loan', { name: '18-a202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '18-202' })).to.throw(
+        'regular expression',
+      );
+      expect(() => Factory.create('loan', { name: '202' })).to.throw(
+        'regular expression',
+      );
+      expect(() => Factory.create('loan', { name: '1-202' })).to.throw(
+        'regular expression',
+      );
+      expect(() => Factory.create('loan', { name: '18202' })).to.throw(
+        'regular expression',
+      );
+      expect(() => Factory.create('loan', { name: '0202' })).to.throw(
+        'regular expression',
+      );
+      expect(() => Factory.create('loan', { name: 'abc' })).to.throw(
+        'regular expression',
+      );
+      expect(() => Factory.create('loan', { name: '18-a202' })).to.throw(
+        'regular expression',
+      );
     });
   });
 
@@ -636,7 +654,8 @@ describe('LoanService', function () {
       })._id;
 
       expect(() =>
-        LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId })).to.throw('déjà');
+        LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId }),
+      ).to.throw('déjà');
     });
   });
 
@@ -670,7 +689,8 @@ describe('LoanService', function () {
       });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('emprunteur');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' }),
+      ).to.throw('emprunteur');
     });
 
     it('throws if a property is assigned to multiple loans', () => {
@@ -682,7 +702,8 @@ describe('LoanService', function () {
       });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.throw('bien immobilier');
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' }),
+      ).to.throw('bien immobilier');
     });
 
     it('does not throw for a PRO property, and assigns only USER properties', () => {
@@ -697,7 +718,8 @@ describe('LoanService', function () {
       });
 
       expect(() =>
-        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' })).to.not.throw();
+        LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' }),
+      ).to.not.throw();
       expect(PropertyService.get('propId1').userId).to.equal(undefined);
       expect(PropertyService.get('propId2').userId).to.equal('dude');
     });
@@ -725,6 +747,32 @@ describe('LoanService', function () {
 
       expect(user).to.deep.include({
         referredByUserLink: 'proId',
+        referredByOrganisationLink: 'orgId',
+      });
+    });
+
+    it('refers a user by an organisation if it is not already set', () => {
+      generator({
+        users: [
+          { _id: 'userId' },
+          {
+            _id: 'proId',
+            _factory: 'pro',
+            organisations: { _id: 'orgId' },
+          },
+        ],
+        loans: { _id: 'loanId', referralId: 'orgId' },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      const user = UserService.fetchOne({
+        $filters: { _id: 'userId' },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+
+      expect(user).to.deep.include({
         referredByOrganisationLink: 'orgId',
       });
     });
@@ -837,14 +885,19 @@ describe('LoanService', function () {
         numberOfOffersPerLender,
       });
 
-      expect(offerIds.length).to.equal(numberOfLenders * numberOfOffersPerLender);
+      expect(offerIds.length).to.equal(
+        numberOfLenders * numberOfOffersPerLender,
+      );
 
       return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
         .then(() => checkEmails(numberOfLenders))
-        .then((emails) => {
+        .then(emails => {
           expect(emails.length).to.equal(numberOfLenders);
           addresses.forEach(email =>
-            expect(emails.some(({ address }) => address === email)).to.equal(true));
+            expect(emails.some(({ address }) => address === email)).to.equal(
+              true,
+            ),
+          );
         });
     });
 
@@ -858,21 +911,26 @@ describe('LoanService', function () {
         numberOfOffersPerLender,
       });
 
-      expect(offerIds.length).to.equal(numberOfLenders * numberOfOffersPerLender);
+      expect(offerIds.length).to.equal(
+        numberOfLenders * numberOfOffersPerLender,
+      );
 
       return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
         .then(() => checkEmails(numberOfLenders))
-        .then((emails) => {
+        .then(emails => {
           expect(emails.length).to.equal(numberOfLenders);
           addresses.forEach(email =>
-            expect(emails.some(({ address }) => address === email)).to.equal(true));
+            expect(emails.some(({ address }) => address === email)).to.equal(
+              true,
+            ),
+          );
         });
     });
 
     it('does not send any feedback if there is no lender', () =>
       LoanService.sendNegativeFeedbackToAllLenders({ loanId })
         .then(() => checkEmails(0))
-        .then((emails) => {
+        .then(emails => {
           expect(emails.length).to.equal(0);
         }));
 
@@ -890,7 +948,7 @@ describe('LoanService', function () {
 
       return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
         .then(() => checkEmails(0))
-        .then((emails) => {
+        .then(emails => {
           expect(emails.length).to.equal(0);
         });
     });
@@ -933,7 +991,7 @@ describe('LoanService', function () {
 
       expect(loan.step).to.equal(STEPS.OFFERS);
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         const {
           emailId,
           address,
@@ -949,8 +1007,12 @@ describe('LoanService', function () {
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(global_merge_vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
-        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Admin User');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
+        ).to.include('/loans/myLoan');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include('Admin User');
       });
     });
 
@@ -968,7 +1030,7 @@ describe('LoanService', function () {
       });
       LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         const {
           emailId,
           response: { status },
@@ -989,7 +1051,7 @@ describe('LoanService', function () {
       });
       LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1, { timeout: 2000, noExpect: true }).then((emails) => {
+      return checkEmails(1, { timeout: 2000, noExpect: true }).then(emails => {
         expect(emails.length).to.equal(0);
       });
     });
@@ -1003,12 +1065,12 @@ describe('LoanService', function () {
 
       const result = LoanService.setStatus({
         loanId: 'myLoan',
-        status: LOAN_STATUS.FINALIZED,
+        status: LOAN_STATUS.BILLING,
       });
 
       expect(result).to.deep.equal({
         prevStatus: LOAN_STATUS.CLOSING,
-        nextStatus: LOAN_STATUS.FINALIZED,
+        nextStatus: LOAN_STATUS.BILLING,
       });
     });
 
@@ -1044,12 +1106,16 @@ describe('LoanService', function () {
         ],
       });
 
-      return withMeteorUserId({ userId: 'adminId2' }, () =>
-        loanSetStatus.run({ loanId: 'myLoan', status: LOAN_STATUS.ONGOING }))
-        .then((result) => {
+      return ddpWithUserId('adminId2', () =>
+        loanSetStatus.run({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      )
+        .then(result => {
           expect(result).to.deep.equal({
             prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.ONGOING,
+            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
           });
 
           expect(spy.calledOnce).to.equal(true);
@@ -1067,7 +1133,7 @@ describe('LoanService', function () {
             loanPurchaseType: PURCHASE_TYPE.ACQUISITION,
             loanResidenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
             loanStep: STEPS.SOLVENCY,
-            nextStatus: LOAN_STATUS.ONGOING,
+            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
             prevStatus: LOAN_STATUS.LEAD,
             referredByOrganisation: 'Org 1',
             referredByUser: 'Pro 1',
@@ -1076,6 +1142,175 @@ describe('LoanService', function () {
         .finally(() => {
           Analytics.prototype.track.restore();
         });
+    });
+
+    it('does not allow to change to the same status', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.ONGOING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.ONGOING,
+        }),
+      ).to.throw('le même');
+    });
+
+    it('allows one step forward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.ONGOING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.CLOSING,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows one step backward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.ONGOING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows resurrections from UNSUCCESSFUL', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.UNSUCCESSFUL },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows resurrections from PENDING', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.PENDING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows resurrections from TEST', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.TEST },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows killings to UNSUCCESSFUL', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.QUALIFIED_LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.UNSUCCESSFUL,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows killings to PENDING', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.QUALIFIED_LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.PENDING,
+        }),
+      ).to.not.throw();
+    });
+
+    it('allows killings to TEST', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.QUALIFIED_LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.TEST,
+        }),
+      ).to.not.throw();
+    });
+
+    it('does not allow 2 steps forward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.ONGOING,
+        }),
+      ).to.throw('Vous ne pouvez pas');
+    });
+
+    it('does not allow 2 steps backward status change', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.BILLING },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.ONGOING,
+        }),
+      ).to.throw('Vous ne pouvez pas');
+    });
+
+    it('does not allow overflows', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.FINALIZED },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.LEAD,
+        }),
+      ).to.throw('Vous ne pouvez pas');
+    });
+
+    it('does not allow undeflows', () => {
+      generator({
+        loans: { _id: 'myLoan', status: LOAN_STATUS.LEAD },
+      });
+
+      expect(() =>
+        LoanService.setStatus({
+          loanId: 'myLoan',
+          status: LOAN_STATUS.FINALIZED,
+        }),
+      ).to.throw('Vous ne pouvez pas');
     });
   });
 
@@ -1122,7 +1357,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1162,7 +1397,9 @@ describe('LoanService', function () {
       });
 
       expect(canton).to.equal('GE');
-      expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+      expect(moment(date).format('YYYY-MM-DD')).to.equal(
+        moment().format('YYYY-MM-DD'),
+      );
       expect(main.min.borrowRatio).to.equal(0.65);
       expect(main.min.propertyValue).to.equal(1496000);
       expect(main.max.borrowRatio).to.equal(0.835);
@@ -1205,7 +1442,9 @@ describe('LoanService', function () {
       });
 
       expect(canton).to.equal('GE');
-      expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+      expect(moment(date).format('YYYY-MM-DD')).to.equal(
+        moment().format('YYYY-MM-DD'),
+      );
       expect(main.min).to.equal(undefined);
       expect(main.max.borrowRatio).to.equal(0.75);
       expect(main.max.propertyValue).to.equal(1988000);
@@ -1230,14 +1469,16 @@ describe('LoanService', function () {
     it('only updates loans from more than a week ago', async () => {
       const promises = [];
       for (let index = 0; index < 10; index++) {
-        promises.push(LoanService.rawCollection.insert({
-          anonymous: true,
-          updatedAt: moment()
-            .subtract(index, 'days')
-            .toDate(),
-          _id: index,
-          name: index,
-        }));
+        promises.push(
+          LoanService.rawCollection.insert({
+            anonymous: true,
+            updatedAt: moment()
+              .subtract(index, 'days')
+              .toDate(),
+            _id: index,
+            name: index,
+          }),
+        );
       }
 
       await Promise.all(promises);

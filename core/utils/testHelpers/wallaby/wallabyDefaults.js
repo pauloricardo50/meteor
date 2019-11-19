@@ -53,11 +53,18 @@ function setWallabyConfig(name, overrides = {}) {
           const jsdom = require('jsdom');
 
           const { JSDOM } = jsdom;
-          const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
+          const { document } = new JSDOM(
+            '<!doctype html><html><body></body></html>',
+          ).window;
           global.document = document;
           global.window = document.defaultView;
           global.navigator = { userAgent: 'node.js', platform: 'MacIntel' };
 
+          // Do this for react-use, which uses the global variable "history"
+          // Follow this issue: https://github.com/streamich/react-use/issues/73
+          global.history = {};
+
+          require('uniforms-bridge-simple-schema-2');
           const SimpleSchema = require('simpl-schema').default;
           SimpleSchema.extendOptions([
             'index',

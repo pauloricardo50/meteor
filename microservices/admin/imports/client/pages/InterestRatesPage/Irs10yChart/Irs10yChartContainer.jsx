@@ -32,8 +32,10 @@ const getConfig = () => ({
 });
 
 const getRatesOfMonth = ({ rates, month, year }) =>
-  rates.filter(({ date }) =>
-    moment(date).month() === month && moment(date).year() === year);
+  rates.filter(
+    ({ date }) =>
+      moment(date).month() === month && moment(date).year() === year,
+  );
 
 const getAllMonths = ({ rates }) =>
   rates.reduce((months, { date }) => {
@@ -41,7 +43,9 @@ const getAllMonths = ({ rates }) =>
     const rateYear = moment(date).year();
 
     if (
-      !months.find(({ month, year }) => month === rateMonth && year === rateYear)
+      !months.find(
+        ({ month, year }) => month === rateMonth && year === rateYear,
+      )
     ) {
       return [...months, { month: rateMonth, year: rateYear }];
     }
@@ -52,24 +56,26 @@ const getAllMonths = ({ rates }) =>
 const roundAndFormat = rate => Math.round(rate * 100000) / 1000;
 
 const findMinRate = rates =>
-  roundAndFormat(rates.reduce((min, { rate }) => (rate < min ? rate : min), 100));
+  roundAndFormat(
+    rates.reduce((min, { rate }) => (rate < min ? rate : min), 100),
+  );
 const findMaxRate = rates =>
   roundAndFormat(rates.reduce((max, { rate }) => (rate > max ? rate : max), 0));
 
 const getData = ({ formattedRates, type }) => {
   switch (type) {
-  case 'average':
-    return formattedRates.reduce(
-      (data, rate) => [...data, [rate.date, rate.average]],
-      [],
-    );
-  case 'range':
-    return formattedRates.reduce(
-      (data, rate) => [...data, [rate.date, rate.min, rate.max]],
-      [],
-    );
-  default:
-    return [];
+    case 'average':
+      return formattedRates.reduce(
+        (data, rate) => [...data, [rate.date, rate.average]],
+        [],
+      );
+    case 'range':
+      return formattedRates.reduce(
+        (data, rate) => [...data, [rate.date, rate.min, rate.max]],
+        [],
+      );
+    default:
+      return [];
   }
 };
 

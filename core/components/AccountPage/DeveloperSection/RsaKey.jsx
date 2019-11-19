@@ -7,6 +7,6 @@ type RsaKeyProps = {
 };
 
 const RsaKey = ({ keyValue, hide }: RsaKeyProps) =>
-  (hide ? null : <textarea className="rsa-key" value={keyValue} disabled />);
+  hide ? null : <textarea className="rsa-key" value={keyValue} disabled />;
 
 export default RsaKey;

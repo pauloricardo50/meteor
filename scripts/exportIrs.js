@@ -1,12 +1,13 @@
 const fs = require('fs');
 const https = require('https');
 
-const URL = 'https://kurse.vermoegenszentrum.ch/vermoegenszentrum/iChart?lid=211372,433,1&mode=snap&vt=yes&max=2800&period=1d';
+const URL =
+  'https://kurse.vermoegenszentrum.ch/vermoegenszentrum/iChart?lid=211372,433,1&mode=snap&vt=yes&max=2800&period=1d';
 const CSV_SEPARATOR = ';';
 const REPLACE_DOTS_WITH_COMMAS = false;
 const SAVE_PATH = '/tmp/IRS10Y_RAW.csv';
 
-const convertAndFormatUnixTimestamp = (timestamp) => {
+const convertAndFormatUnixTimestamp = timestamp => {
   const date = new Date(timestamp);
   const year = date.getFullYear();
   const month = `0${date.getMonth() + 1}`.slice(-2);
@@ -18,10 +19,10 @@ const makeRequest = url =>
   new Promise((resolve, reject) => {
     let obj = {};
 
-    const callback = (response) => {
+    const callback = response => {
       let str = '';
 
-      response.on('data', (chunk) => {
+      response.on('data', chunk => {
         str += chunk;
       });
       response.on('end', () => {
@@ -47,7 +48,8 @@ const saveRates = ({ prices }) => {
   let csv = items.map(row =>
     header
       .map(fieldName => JSON.stringify(row[fieldName], replacer))
-      .join(CSV_SEPARATOR));
+      .join(CSV_SEPARATOR),
+  );
   csv.unshift(header.join(CSV_SEPARATOR));
   csv = csv.join('\r\n');
 

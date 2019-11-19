@@ -1,0 +1,28 @@
+.google-drive-list {
+  &-item {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+
+    a {
+      display: flex;
+      align-items: center;
+
+      margin-bottom: 8px;
+
+      h4 {
+        margin: 0;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

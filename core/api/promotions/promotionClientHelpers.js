@@ -61,8 +61,16 @@ const shouldHideForLotStatus = (
   isAttributed,
 ) => {
   if (
-    promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE
-    && forLotStatus.includes(promotionLotStatus)
+    Object.values(PROMOTION_LOT_STATUS).every(status =>
+      forLotStatus.includes(status),
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE &&
+    forLotStatus.includes(promotionLotStatus)
   ) {
     return false;
   }
@@ -81,9 +89,13 @@ export const shouldAnonymize = ({
   promotionLotStatus = PROMOTION_LOT_STATUS.AVAILABLE,
   isAttributed,
 }) => {
+  if (!permissions || !Object.keys(permissions).length) {
+    return true;
+  }
+
   const { displayCustomerNames } = permissions;
 
-  if (displayCustomerNames === false || !customerOwnerType) {
+  if (displayCustomerNames === false) {
     return true;
   }
 
@@ -98,21 +110,21 @@ export const shouldAnonymize = ({
   }
 
   switch (customerOwnerType) {
-  case PROMOTION_INVITED_BY_TYPE.USER:
-    return (
-      shouldHide
-        || ![
+    case PROMOTION_INVITED_BY_TYPE.USER:
+      return (
+        shouldHide ||
+        ![
           PROMOTION_INVITED_BY_TYPE.USER,
           PROMOTION_INVITED_BY_TYPE.ORGANISATION,
         ].includes(displayCustomerNames.invitedBy)
-    );
-  case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
-    return (
-      shouldHide
-        || displayCustomerNames.invitedBy
-          !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
-    );
-  default:
-    return true;
+      );
+    case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
+      return (
+        shouldHide ||
+        displayCustomerNames.invitedBy !==
+          PROMOTION_INVITED_BY_TYPE.ORGANISATION
+      );
+    default:
+      return true;
   }
 };

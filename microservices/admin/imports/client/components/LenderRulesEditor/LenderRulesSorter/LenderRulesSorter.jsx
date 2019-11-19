@@ -18,7 +18,9 @@ const LenderRulesSorter = ({
   increaseOrder,
   decreaseOrder,
 }: LenderRulesSorterProps) => {
-  const sortedLenderRules = lenderRules.sort(({ _id: idA }, { _id: idB }) => orders[idA] - orders[idB]);
+  const sortedLenderRules = lenderRules.sort(
+    ({ _id: idA }, { _id: idB }) => orders[idA] - orders[idB],
+  );
   return (
     <AutoFormDialog
       buttonProps={{ label: "Choisir l'ordre", raised: true }}

@@ -39,7 +39,7 @@ const FinancingSectionExpansionPanel = ({
   expanded,
   changeExpanded,
   sectionProps,
-  noWrapper,
+  sectionItemProps,
 }: FinancingSectionExpansionPanelProps) => (
   <ExpansionPanel
     className={cx('financing-structures-section', className, { expanded })}
@@ -50,14 +50,13 @@ const FinancingSectionExpansionPanel = ({
     <FinancingSectionSummary
       summaryConfig={summaryConfig}
       sectionProps={sectionProps}
-      noWrapper={noWrapper}
       content={content}
       expandedClass={expandedClass}
     />
     <FinancingSectionDetails
       detailConfig={detailConfig}
       sectionProps={sectionProps}
-      noWrapper={noWrapper}
+      sectionItemProps={sectionItemProps}
     />
   </ExpansionPanel>
 );
@@ -74,14 +73,17 @@ export default compose(
       const { changeExpanded } = this.props;
       ClientEventService.addListener('expandAll', () => changeExpanded(true));
       ClientEventService.addListener('collapseAll', () =>
-        changeExpanded(false));
+        changeExpanded(false),
+      );
     },
     componentWillUnmount() {
       const { changeExpanded } = this.props;
       ClientEventService.removeListener('expandAll', () =>
-        changeExpanded(true));
+        changeExpanded(true),
+      );
       ClientEventService.removeListener('collapseAll', () =>
-        changeExpanded(false));
+        changeExpanded(false),
+      );
     },
   }),
   withStyles(styles),

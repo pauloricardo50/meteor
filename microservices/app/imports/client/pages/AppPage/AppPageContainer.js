@@ -14,9 +14,10 @@ import {
 import AnonymousAppPage from './AnonymousAppPage';
 import PropertyStartPage from './PropertyStartPage';
 
-const setReferralId = (paramsQuery) => {
+const setReferralId = paramsQuery => {
   const referralId = paramsQuery.get('ref') || undefined;
-  const oldReferralId = localStorage.getItem(LOCAL_STORAGE_OLD_REFERRAL) || undefined;
+  const oldReferralId =
+    localStorage.getItem(LOCAL_STORAGE_OLD_REFERRAL) || undefined;
 
   if (referralId) {
     localStorage.setItem(LOCAL_STORAGE_REFERRAL, referralId);
@@ -31,7 +32,7 @@ const setReferralId = (paramsQuery) => {
   }
 
   if (referralId) {
-    referralExists.run({ refId: referralId }).then((exists) => {
+    referralExists.run({ refId: referralId }).then(exists => {
       if (exists) {
         localStorage.setItem(LOCAL_STORAGE_OLD_REFERRAL, referralId);
       } else if (oldReferralId) {

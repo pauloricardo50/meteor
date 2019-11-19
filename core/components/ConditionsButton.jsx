@@ -27,7 +27,7 @@ export default class ConditionsButton extends Component {
     this.state = { open: false };
   }
 
-  handleOpen = (e) => {
+  handleOpen = e => {
     e.stopPropagation();
     this.setState({ open: true });
   };
@@ -49,7 +49,7 @@ export default class ConditionsButton extends Component {
     ];
 
     return (
-      <React.Fragment>
+      <>
         <Button
           raised
           label={<T id="ConditionsButton.title" />}
@@ -65,7 +65,7 @@ export default class ConditionsButton extends Component {
         >
           <div className="conditions-modal">
             {!!(conditions.length > 0) && (
-              <React.Fragment>
+              <>
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.mandatory" />
                 </h2>
@@ -74,11 +74,11 @@ export default class ConditionsButton extends Component {
                     <li key={i}>{c}</li>
                   ))}
                 </ul>
-              </React.Fragment>
+              </>
             )}
           </div>
         </Dialog>
-      </React.Fragment>
+      </>
     );
   }
 }

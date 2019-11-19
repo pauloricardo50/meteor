@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import T from 'core/components/Translation';
-import RadioButtons from 'core/components/RadioButtons';
-import FormValidator from './FormValidator';
+import T from '../Translation';
+import RadioButtons from '../RadioButtons';
 import ValidIcon from './ValidIcon';
 
 export default class AutoFormRadioInput extends Component {
@@ -31,14 +30,14 @@ export default class AutoFormRadioInput extends Component {
     }
     return (
       <T
-        id={`Forms.${this.props.inputProps.intlId
-          || this.props.inputProps.id}.${optionId}`}
+        id={`Forms.${this.props.inputProps.intlId ||
+          this.props.inputProps.id}.${optionId}`}
         values={intlValues}
       />
     );
   };
 
-  saveValue = (value) => {
+  saveValue = value => {
     this.setState({ saving: true });
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String
@@ -84,7 +83,7 @@ export default class AutoFormRadioInput extends Component {
             id: o.id,
             label: this.getOptionLabel(o.id, o.intlValues),
           }))}
-          onChange={(_, newValue) => {
+          onChange={newValue => {
             if (typeof onConditionalChange === 'function') {
               onConditionalChange(newValue);
             }
@@ -99,7 +98,6 @@ export default class AutoFormRadioInput extends Component {
           required={required}
           hide={admin}
         />
-        <FormValidator {...this.props} />
       </div>
     );
   }

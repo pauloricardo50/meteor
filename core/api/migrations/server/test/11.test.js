@@ -37,7 +37,8 @@ describe('Migration 11', () => {
             } else {
               expect(isMain).to.equal(false);
             }
-          }));
+          }),
+        );
       });
     });
   });
@@ -76,7 +77,8 @@ describe('Migration 11', () => {
         allUsers.forEach(({ organisations = [] }) =>
           organisations.forEach(({ $metadata: { isMain } }) => {
             expect(isMain).to.equal(undefined);
-          }));
+          }),
+        );
       });
     });
   });

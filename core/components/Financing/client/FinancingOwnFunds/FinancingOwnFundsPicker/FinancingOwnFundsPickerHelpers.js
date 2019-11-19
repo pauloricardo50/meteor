@@ -22,11 +22,13 @@ export const getOwnFundsOfTypeAndBorrower = ({
   type,
   borrowerId,
 }) =>
-  structure
-  && structure.ownFunds
+  structure &&
+  structure.ownFunds
     .filter((_, index) => index !== ownFundsIndex)
-    .filter(({ type: otherType, borrowerId: bId }) =>
-      otherType === type && bId === borrowerId)
+    .filter(
+      ({ type: otherType, borrowerId: bId }) =>
+        otherType === type && bId === borrowerId,
+    )
     .reduce((sum, { value }) => sum + value, 0);
 
 export const getAvailableFundsOfTypeAndBorrower = ({
@@ -104,7 +106,7 @@ export const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
     .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
-export const getNewWantedLoanAfterPledge = (props) => {
+export const getNewWantedLoanAfterPledge = props => {
   const { loan, structureId, usageType, value, ownFundsIndex } = props;
   const { wantedLoan, ownFunds } = Calculator.selectStructure({
     loan,
@@ -125,7 +127,7 @@ export const getNewWantedLoanAfterPledge = (props) => {
   return maxLoanWithNewPledge;
 };
 
-export const getMaxPledge = (props) => {
+export const getMaxPledge = props => {
   const { loan, structureId } = props;
   const { propertyWork } = Calculator.selectStructure({
     loan,
@@ -136,6 +138,8 @@ export const getMaxPledge = (props) => {
     structureId,
   });
 
-  return Math.round((Calculator.maxBorrowRatioWithPledge - Calculator.maxBorrowRatio)
-      * (propertyValue + propertyWork));
+  return Math.round(
+    (Calculator.maxBorrowRatioWithPledge - Calculator.maxBorrowRatio) *
+      (propertyValue + propertyWork),
+  );
 };

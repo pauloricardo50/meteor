@@ -9,7 +9,7 @@ const querySchema = new SimpleSchema({
 });
 
 const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
-  const { user, shareSolvency } = body;
+  const { user, shareSolvency, invitationNote } = body;
   const { 'impersonate-user': impersonateUser } = checkQuery({
     query,
     schema: querySchema,
@@ -19,9 +19,12 @@ const referCustomerAPI = ({ user: { _id: userId }, body, query }) => {
     proInviteUser.run({
       user: { ...user, invitedBy: userId },
       shareSolvency,
-    }))
+      invitationNote,
+    }),
+  )
     .then(() =>
-      updateCustomerReferral({ customer: user, userId, impersonateUser }))
+      updateCustomerReferral({ customer: user, userId, impersonateUser }),
+    )
     .then(() => ({
       message: `Successfully referred user "${user.email}"`,
     }));

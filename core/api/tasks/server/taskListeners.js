@@ -1,16 +1,23 @@
+import PropertyService from 'core/api/properties/server/PropertyService';
+import PromotionService from 'core/api/promotions/server/PromotionService';
+import { getUserNameAndOrganisation } from '../../helpers';
 import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   requestLoanVerification,
   adminCreateUser,
   anonymousCreateUser,
+  proInviteUser,
+  loanShareSolvency,
 } from '../../methods';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import TaskService from './TaskService';
 
 ServerEventService.addAfterMethodListener(
   requestLoanVerification,
-  ({ params: { loanId } }) => {
+  ({ context, params: { loanId } }) => {
+    context.unblock();
+
     TaskService.insert({
       object: {
         title: 'Vérification du dossier demandée',
@@ -21,32 +28,143 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
+const newUserTask = ({ userId, ...params }) =>
+  TaskService.insert({
+    object: {
+      title: 'Nouveau client, prendre contact',
+      docId: userId,
+      collection: USERS_COLLECTION,
+      ...params,
+    },
+  });
+
 ServerEventService.addAfterMethodListener(
   [adminCreateUser, anonymousCreateUser],
-  ({ result: userId }) => {
+  ({ context, result: userId }) => {
+    context.unblock();
+
     if (userId) {
+      newUserTask({ userId });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  proInviteUser,
+  async ({
+    result,
+    context,
+    params: { invitationNote, properties, propertyIds, promotionIds },
+  }) => {
+    const { userId: proId } = context;
+    context.unblock();
+
+    if (result) {
+      if (typeof result.then === 'function') {
+        // The result of the meteor method can be a promise
+        result = await result;
+      }
+
+      const { userId } = result;
+
       const user = UserService.fetchOne({
         $filters: { _id: userId },
         assignedEmployeeId: 1,
+        createdAt: 1,
       });
+      const pro = UserService.get(proId);
 
-      if (user && !user.assignedEmployeeId) {
-        TaskService.insert({
-          object: {
-            title: 'Assigner un conseiller',
-            docId: userId,
-            collection: USERS_COLLECTION,
-          },
+      let isNewUser = true;
+      const now = new Date();
+
+      // If a user has been created more than 10 seconds ago, assume it already existed
+      if (now.valueOf() - user.createdAt.valueOf() > 10000) {
+        isNewUser = false;
+      }
+
+      let taskDescription = `Invitation par ${getUserNameAndOrganisation({
+        user: pro,
+      })}`;
+
+      let addresses = [];
+      let promotions = [];
+
+      if (properties && properties.length) {
+        addresses = properties.map(({ address1 }) => address1);
+      }
+
+      if (propertyIds && propertyIds.length) {
+        addresses = [
+          ...addresses,
+          ...propertyIds.map(id => PropertyService.get(id).address1),
+        ];
+      }
+
+      if (promotionIds && promotionIds.length) {
+        promotions = promotionIds.map(id => PromotionService.get(id).name);
+      }
+
+      if (addresses.length) {
+        const formattedAddresses = [
+          addresses.slice(0, -1).join(', '),
+          addresses.slice(-1)[0],
+        ].join(addresses.length < 2 ? '' : ' et ');
+
+        taskDescription = `${taskDescription}. Invité sur ${
+          addresses.length === 1
+            ? 'le bien immobilier: '
+            : 'les biens immobiliers: '
+        } ${formattedAddresses}`;
+      }
+
+      if (promotions.length) {
+        const formattedPromotions = [
+          promotions.slice(0, -1).join(', '),
+          promotions.slice(-1)[0],
+        ].join(promotions.length < 2 ? '' : ' et');
+
+        taskDescription = `${taskDescription}. Invité sur ${
+          promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
+        } ${formattedPromotions}`;
+      }
+
+      if (invitationNote) {
+        taskDescription = `${taskDescription}. Note du referral: ${invitationNote}`;
+      }
+
+      if (isNewUser) {
+        newUserTask({
+          userId,
+          description: taskDescription,
         });
       } else {
         TaskService.insert({
           object: {
-            title: 'Nouveau compte utilisateur: prendre contact',
+            title: "Invitation d'un client déjà existant",
             docId: userId,
             collection: USERS_COLLECTION,
+            description: taskDescription,
           },
         });
       }
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  [loanShareSolvency],
+  ({ context, params: { shareSolvency, loanId } }) => {
+    context.unblock();
+
+    if (shareSolvency) {
+      TaskService.insert({
+        object: {
+          collection: LOANS_COLLECTION,
+          docId: loanId,
+          title:
+            'Contacter le courtier du client pour lui parler de la solvabilité',
+        },
+      });
     }
   },
 );

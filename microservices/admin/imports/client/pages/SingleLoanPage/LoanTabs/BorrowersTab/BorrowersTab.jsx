@@ -22,7 +22,7 @@ const borrowersTabLabel = (borrower, index) => {
   );
 };
 
-const BorrowersTab = (props) => {
+const BorrowersTab = props => {
   const { loan } = props;
   const { borrowers = [] } = loan;
 

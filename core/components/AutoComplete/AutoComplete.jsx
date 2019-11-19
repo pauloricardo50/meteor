@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import TextInput from 'core/components/TextInput';
 
-const renderInput = (inputProps) => {
+const renderInput = inputProps => {
   const {
     classes,
     autoFocus,
@@ -19,7 +19,6 @@ const renderInput = (inputProps) => {
     placeholder,
     ...other
   } = inputProps;
-
   return (
     <TextInput
       id={`${id}autocomplete`}
@@ -45,7 +44,7 @@ const renderSuggestion = (suggestion, { isHighlighted }) => (
   </MenuItem>
 );
 
-const renderSuggestionsContainer = (options) => {
+const renderSuggestionsContainer = options => {
   const { containerProps, children } = options;
 
   return (
@@ -95,7 +94,7 @@ class AutoComplete extends Component {
 
   handleSuggestionsClearRequested = () => this.setState({ suggestions: [] });
 
-  getSuggestions = (value) => {
+  getSuggestions = value => {
     const { suggestions, maxCount, filter } = this.props;
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
@@ -103,23 +102,23 @@ class AutoComplete extends Component {
 
     return inputLength === 0
       ? []
-      : suggestions.filter((suggestion) => {
-        const keep = count < maxCount && filter(suggestion, inputValue);
-        // suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
+      : suggestions.filter(suggestion => {
+          const keep = count < maxCount && filter(suggestion, inputValue);
+          // suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
 
-        if (keep) {
-          count += 1;
-        }
+          if (keep) {
+            count += 1;
+          }
 
-        return keep;
-      });
+          return keep;
+        });
   };
 
   // Fix for async data update
   componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(prevProps.suggestions)
-      !== JSON.stringify(this.props.suggestions)
+      JSON.stringify(prevProps.suggestions) !==
+      JSON.stringify(this.props.suggestions)
     ) {
       this.handleSuggestionsFetchRequested({ value: this.props.value });
     }

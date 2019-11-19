@@ -24,7 +24,8 @@ deleteFile.setHandler((context, { collection, docId, fileKey }) => {
   });
 
   return FileService.deleteFile(fileKey).then(() =>
-    FileService.updateDocumentsCache({ docId, collection }));
+    FileService.updateDocumentsCache({ docId, collection }),
+  );
 });
 
 setFileStatus.setHandler((context, { fileKey, newStatus }) => {
@@ -59,9 +60,9 @@ updateDocumentsCache.setHandler((context, params) => {
   return FileService.updateDocumentsCache(params);
 });
 
-getZipLoanUrl.setHandler(({ userId }, { loanId }) => {
+getZipLoanUrl.setHandler(({ userId }, { loanId, documents, options }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return FileService.getZipLoanUrl({ userId, loanId });
+  return FileService.getZipLoanUrl({ userId, loanId, documents, options });
 });
 
 setFileAdminName.setHandler((context, params) => {
@@ -70,40 +71,46 @@ setFileAdminName.setHandler((context, params) => {
   return FileService.setAdminName(params);
 });
 
-moveFile.setHandler((context, { Key, status, oldCollection, newId, newDocId, newCollection }) => {
-  context.unblock();
-  const oldDocId = Key.split('/')[0];
-  const oldId = Key.split('/')[1];
-  const name = Key.split('/')[2];
+moveFile.setHandler(
+  (context, { Key, status, oldCollection, newId, newDocId, newCollection }) => {
+    context.unblock();
+    const {
+      docId: oldDocId,
+      documentId: oldId,
+      fileName: name,
+    } = FileService.getKeyParts(Key);
 
-  SecurityService.isAllowedToModifyFiles({
-    collection: oldCollection,
-    docId: oldDocId,
-    userId: context.userId,
-    fileKey: Key,
-  });
-  SecurityService.isAllowedToModifyFiles({
-    collection: newCollection,
-    docId: newDocId,
-    userId: context.userId,
-    fileKey: `${newDocId}/${newId}/${name}`,
-  });
+    SecurityService.isAllowedToModifyFiles({
+      collection: oldCollection,
+      docId: oldDocId,
+      userId: context.userId,
+      fileKey: Key,
+    });
+    SecurityService.isAllowedToModifyFiles({
+      collection: newCollection,
+      docId: newDocId,
+      userId: context.userId,
+      fileKey: `${newDocId}/${newId}/${name}`,
+    });
 
-  if (
-    !SecurityService.isUserAdmin(context.userId)
-      && status === FILE_STATUS.VALID
-  ) {
-    SecurityService.handleUnauthorized('Vous ne pouvez pas déplacer un document vérifié');
-  }
+    if (
+      !SecurityService.isUserAdmin(context.userId) &&
+      status === FILE_STATUS.VALID
+    ) {
+      SecurityService.handleUnauthorized(
+        'Vous ne pouvez pas déplacer un document vérifié',
+      );
+    }
 
-  return FileService.moveFile({
-    Key,
-    name,
-    oldId,
-    oldDocId,
-    oldCollection,
-    newId,
-    newDocId,
-    newCollection,
-  });
-});
+    return FileService.moveFile({
+      Key,
+      name,
+      oldId,
+      oldDocId,
+      oldCollection,
+      newId,
+      newDocId,
+      newCollection,
+    });
+  },
+);

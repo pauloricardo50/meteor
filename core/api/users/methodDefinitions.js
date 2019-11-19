@@ -1,5 +1,4 @@
-import { check, Match } from 'meteor/check';
-import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { Method } from '../methods/methods';
 
@@ -19,14 +18,6 @@ export const sendVerificationLink = new Method({
 
 export const assignAdminToUser = new Method({
   name: 'assignAdminToUser',
-  params: {
-    userId: String,
-    adminId: String,
-  },
-});
-
-export const assignAdminToNewUser = new Method({
-  name: 'assignAdminToNewUser',
   params: {
     userId: String,
     adminId: String,
@@ -125,6 +116,7 @@ export const proInviteUser = new Method({
     promotionIds: Match.Maybe([String]),
     properties: Match.Maybe(Array),
     shareSolvency: Match.Maybe(Match.OneOf(Boolean, undefined)),
+    invitationNote: Match.Maybe(Match.OneOf(String, undefined)),
   },
 });
 
@@ -163,12 +155,31 @@ export const anonymousCreateUser = new Method({
   params: {
     loanId: Match.Maybe(String),
     user: {
-      firstName: String,
-      lastName: String,
       email: String,
-      phoneNumber: String,
+      firstName: Match.Maybe(String),
+      lastName: Match.Maybe(String),
+      phoneNumber: Match.Maybe(String),
     },
     trackingId: String,
     referralId: Match.Maybe(String),
+    ctaId: Match.Maybe(String),
   },
+});
+
+// Toggle user account - enable or disable
+export const toggleAccount = new Method({
+  name: 'toggleAccount',
+  params: {
+    userId: String,
+  },
+});
+
+// Used only to trigger activity listener
+export const userPasswordReset = new Method({
+  name: 'userPasswordReset',
+});
+
+// Used only to trigger activity listener
+export const userVerifyEmail = new Method({
+  name: 'userVerifyEmail',
 });

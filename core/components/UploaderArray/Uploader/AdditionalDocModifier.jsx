@@ -9,6 +9,7 @@ import Button from '../../Button';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
+  LOANS_COLLECTION,
 } from '../../../api/constants';
 
 type AdditionalDocModifierProps = {
@@ -17,7 +18,7 @@ type AdditionalDocModifierProps = {
   collection: String,
 };
 
-export const getAdditionalDocSchema = (collection) => {
+export const getAdditionalDocSchema = collection => {
   let allowedValues = [];
 
   if (collection === PROPERTIES_COLLECTION) {
@@ -30,6 +31,8 @@ export const getAdditionalDocSchema = (collection) => {
       'RETIREMENT',
       'OTHER',
     ];
+  } else {
+    allowedValues = ['OTHER'];
   }
 
   return new SimpleSchema({
@@ -59,7 +62,7 @@ const AdditionalDocModifier = ({
   docId,
   collection,
 }: AdditionalDocModifierProps) =>
-  (additionalDoc.label ? (
+  additionalDoc.label ? (
     <AutoFormDialog
       buttonProps={{ primary: true, label: <T id="general.modify" /> }}
       model={additionalDoc}
@@ -78,11 +81,12 @@ const AdditionalDocModifier = ({
         <Button
           onClick={() => {
             setDisableActions(true);
-            return removeAdditionalDoc.run({
-              collection,
-              id: docId,
-              additionalDocId: additionalDoc.id,
-            })
+            return removeAdditionalDoc
+              .run({
+                collection,
+                id: docId,
+                additionalDocId: additionalDoc.id,
+              })
               .then(closeDialog)
               .finally(() => setDisableActions(false));
           }}
@@ -92,6 +96,6 @@ const AdditionalDocModifier = ({
         </Button>
       )}
     />
-  ) : null);
+  ) : null;
 
 export default AdditionalDocModifier;

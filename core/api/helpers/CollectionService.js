@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
+import { createMeteorAsyncFunction } from './helpers';
 
 class CollectionService {
   constructor(collection) {
     if (!collection) {
-      throw new Error('A collection is needed in CollectionService, but none was passed');
+      throw new Error(
+        'A collection is needed in CollectionService, but none was passed',
+      );
     }
     this.collection = collection;
   }
@@ -28,17 +31,17 @@ class CollectionService {
     return this.collection.remove(...args);
   }
 
-  get(id) {
-    return this.collection.findOne(id);
+  get(...args) {
+    return this.collection.findOne(...args);
   }
 
   safeGet(id) {
     const result = this.get(id);
 
     if (!result) {
-      throw new Meteor.Error(`Could not find object with id "${id}" in collection "${
-        this.collection._name
-      }"`);
+      throw new Meteor.Error(
+        `Could not find object with id "${id}" in collection "${this.collection._name}"`,
+      );
     }
 
     return result;
@@ -54,7 +57,9 @@ class CollectionService {
 
   checkQuery(body) {
     if (body && body.$filter) {
-      throw new Meteor.Error('$filter found in query body, did you mean $filters?');
+      throw new Meteor.Error(
+        '$filter found in query body, did you mean $filters?',
+      );
     }
   }
 
@@ -73,7 +78,11 @@ class CollectionService {
     const result = this.fetchOne(...args);
 
     if (!result) {
-      throw new Meteor.Error(`Could not find object with filters "${JSON.stringify($filters)}" in collection "${this.collection._name}"`);
+      throw new Meteor.Error(
+        `Could not find object with filters "${JSON.stringify(
+          $filters,
+        )}" in collection "${this.collection._name}"`,
+      );
     }
 
     return result;
@@ -109,8 +118,11 @@ class CollectionService {
     return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
   }
 
-  aggregate(...args) {
-    return this.rawCollection.aggregate(...args);
+  aggregate(pipeline, options) {
+    const aggregate = createMeteorAsyncFunction(() =>
+      this.rawCollection.aggregate(pipeline, options).toArray(),
+    );
+    return aggregate();
   }
 
   // Don't return the results from linker
@@ -121,20 +133,20 @@ class CollectionService {
     } = linker;
 
     switch (strategy) {
-    case 'one':
-      linker.set(linkId);
-      return;
-    case 'many':
-      linker.add(linkId);
-      return;
-    case 'one-meta':
-      linker.set(linkId, metadata);
-      return;
-    case 'many-meta':
-      linker.add(linkId, metadata);
-      return;
-    default:
-      return null;
+      case 'one':
+        linker.set(linkId);
+        return;
+      case 'many':
+        linker.add(linkId);
+        return;
+      case 'one-meta':
+        linker.set(linkId, metadata);
+        return;
+      case 'many-meta':
+        linker.add(linkId, metadata);
+        return;
+      default:
+        return null;
     }
   }
 
@@ -146,14 +158,14 @@ class CollectionService {
     } = linker;
 
     switch (strategy.split('-')[0]) {
-    case 'one':
-      linker.unset(linkId);
-      return;
-    case 'many':
-      linker.remove(linkId);
-      return;
-    default:
-      return null;
+      case 'one':
+        linker.unset(linkId);
+        return;
+      case 'many':
+        linker.remove(linkId);
+        return;
+      default:
+        return null;
     }
   }
 
@@ -164,14 +176,14 @@ class CollectionService {
     } = linker;
 
     switch (strategy.split('-')[0]) {
-    case 'one':
-      linker.metadata(metadata);
-      return;
-    case 'many':
-      linker.metadata(linkId, metadata);
-      return;
-    default:
-      return null;
+      case 'one':
+        linker.metadata(metadata);
+        return;
+      case 'many':
+        linker.metadata(linkId, metadata);
+        return;
+      default:
+        return null;
     }
   }
 
@@ -195,7 +207,9 @@ class CollectionService {
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
     const { additionalDocuments } = this.get(id);
 
-    const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
+    const additionalDoc = additionalDocuments.find(
+      doc => doc.id === additionalDocId,
+    );
 
     if (additionalDoc) {
       const additionalDocumentsUpdate = [
@@ -229,9 +243,18 @@ class CollectionService {
     return this._update({
       id: docId,
       object: {
-        additionalDocuments: additionalDocuments.filter(({ id }) => id !== additionalDocId),
+        additionalDocuments: additionalDocuments.filter(
+          ({ id }) => id !== additionalDocId,
+        ),
       },
     });
+  }
+
+  distinct(key, query = {}, options = {}) {
+    const func = createMeteorAsyncFunction(
+      this.rawCollection.distinct.bind(this.rawCollection),
+    );
+    return func(key, query, options);
   }
 }
 

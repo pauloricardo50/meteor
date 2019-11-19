@@ -50,9 +50,11 @@ const { features: featureConfig } = Meteor.settings.public;
 const featureMap = {
   LITE_VERSION: {
     // change the link of the Continuer button to '/contact'
-    [WIDGET1_CONTINUE_BUTTON]: enhanceChildrenWith(withProps({
-      to: '/contact',
-    })),
+    [WIDGET1_CONTINUE_BUTTON]: enhanceChildrenWith(
+      withProps({
+        to: '/contact',
+      }),
+    ),
 
     // don't render the React UI that we don't want in the lite www version
     [STRIPPED_LITE_VERSION_UI]: enhanceChildrenWith(renderNothing),

@@ -6,21 +6,30 @@ const getOldCustomDocuments = ({
   conditionalDocuments,
 }) =>
   additionalDocuments
-    .filter(document =>
-      document.requiredByAdmin === undefined
-        && !initialDocuments.some(({ id }) => id === document.id)
-        && !conditionalDocuments.some(({ id }) => id === document.id))
+    .filter(
+      document =>
+        document.requiredByAdmin === undefined &&
+        !initialDocuments.some(({ id }) => id === document.id) &&
+        !conditionalDocuments.some(({ id }) => id === document.id),
+    )
     .map(document => ({ ...document, requiredByAdmin: true }));
 
 const keepInitialDocuments = ({ additionalDocuments, initialDocuments }) =>
   additionalDocuments.filter(document =>
-    initialDocuments.some(({ id }) => id === document.id && document.requiredByAdmin === undefined));
+    initialDocuments.some(
+      ({ id }) => id === document.id && document.requiredByAdmin === undefined,
+    ),
+  );
 
 const otherInitialDocuments = ({ initialDocuments, additionalDocuments }) =>
-  initialDocuments.filter(({ id }) => !additionalDocuments.some(document => document.id === id));
+  initialDocuments.filter(
+    ({ id }) => !additionalDocuments.some(document => document.id === id),
+  );
 
 const otherAdditionalDocuments = ({ additionalDocuments }) =>
-  additionalDocuments.filter(({ requiredByAdmin }) => requiredByAdmin !== undefined);
+  additionalDocuments.filter(
+    ({ requiredByAdmin }) => requiredByAdmin !== undefined,
+  );
 
 const getDocumentsToAdd = ({
   additionalDocuments,
@@ -28,7 +37,9 @@ const getDocumentsToAdd = ({
   doc,
 }) =>
   conditionalDocuments.reduce((docs, { id, condition }) => {
-    const document = additionalDocuments.find(additionalDocument => additionalDocument.id === id);
+    const document = additionalDocuments.find(
+      additionalDocument => additionalDocument.id === id,
+    );
 
     if (document && document.requiredByAdmin !== undefined) {
       return docs;

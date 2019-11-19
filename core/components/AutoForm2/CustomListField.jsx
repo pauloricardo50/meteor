@@ -32,23 +32,25 @@ const List = ({
     >
       {children
         ? value.map((item, index) =>
-          Children.map(children, child =>
-            React.cloneElement(child, {
-              key: index,
-              label: null,
-              name: joinName(
-                name,
-                child.props.name && child.props.name.replace('$', index),
-              ),
-            })))
+            Children.map(children, child =>
+              React.cloneElement(child, {
+                key: index,
+                label: null,
+                name: joinName(
+                  name,
+                  child.props.name && child.props.name.replace('$', index),
+                ),
+              }),
+            ),
+          )
         : value.map((item, index) => (
-          <ListItemField
-            key={index}
-            label={null}
-            name={joinName(name, index)}
-            {...itemProps}
-          />
-        ))}
+            <ListItemField
+              key={index}
+              label={null}
+              name={joinName(name, index)}
+              {...itemProps}
+            />
+          ))}
     </ListMaterial>
     <CustomListAddField
       key="listAddField"
@@ -72,7 +74,7 @@ export const OptimizedListField = shouldUpdate((props, nextProps) => {
 
   Object.keys(nextProps)
     .filter(propName => ![...FIELDS_TO_IGNORE, 'value'].includes(propName))
-    .some((propName) => {
+    .some(propName => {
       const prop = nextProps[propName];
 
       if (prop !== props[propName]) {

@@ -13,8 +13,7 @@ type OfferListDialogProps = {
 const OfferListDialog = ({ offers, disabled }: OfferListDialogProps) => (
   <DialogSimple
     label={<T id="FinancingOffers.showAll" />}
-    buttonProps={{ style: { margin: 8 }, disabled }}
-    rootStyle={{ margin: 'auto' }}
+    buttonProps={{ style: { marginBottom: 8 }, disabled }}
     raised={false}
     primary
     closeOnly

@@ -25,7 +25,7 @@ const appReducer = (state, action) => {
   return combineReducers({ widget1: widget1Reducer })(state, action);
 };
 
-const createRootReducer = (isClient) => {
+const createRootReducer = isClient => {
   const rootReducer = appReducer;
   return createPersistedReducer(rootReducer, isClient);
 };

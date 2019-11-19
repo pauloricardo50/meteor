@@ -83,6 +83,10 @@ import Notifications from '@material-ui/icons/Notifications';
 import Snooze from '@material-ui/icons/Snooze';
 import DragHandle from '@material-ui/icons/DragHandle';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
+import MarkunreadMailbox from '@material-ui/icons/MarkunreadMailbox';
+import ViewWeek from '@material-ui/icons/ViewWeek';
+import Airplay from '@material-ui/icons/Airplay';
+import HowToReg from '@material-ui/icons/HowToReg';
 
 export const iconMap = {
   close: CloseIcon,
@@ -166,61 +170,67 @@ export const iconMap = {
   snooze: Snooze,
   dragHandle: DragHandle,
   priorityHigh: PriorityHigh,
+  markunreadMailbox: MarkunreadMailbox,
+  viewWeek: ViewWeek,
+  airplay: Airplay,
+  howToReg: HowToReg,
 };
 
-const Icon = React.forwardRef((
-  {
-    type,
-    size,
-    tooltip,
-    tooltipPlacement,
-    style = {},
-    badgeContent,
-    ...props
+const Icon = React.forwardRef(
+  (
+    {
+      type,
+      size,
+      tooltip,
+      tooltipPlacement,
+      style = {},
+      badgeContent,
+      ...props
+    },
+    ref,
+  ) => {
+    const iconStyle = {
+      ...style,
+      ...(size ? { width: size, height: size } : {}),
+    };
+
+    if (type !== null && typeof type === 'object') {
+      return React.cloneElement(type, { style: iconStyle });
+    }
+
+    const MyIcon = iconMap[type];
+
+    if (!MyIcon) {
+      throw new Error(`invalid icon type: ${type}`);
+    } else if (MyIcon.component) {
+      return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
+    }
+
+    let icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
+
+    if (tooltip) {
+      icon = (
+        <Tooltip
+          placement={tooltipPlacement}
+          title={tooltip}
+          enterTouchDelay={0}
+        >
+          {icon}
+        </Tooltip>
+      );
+    }
+
+    if (badgeContent) {
+      icon = (
+        <Badge badgeContent={badgeContent} color="error">
+          {icon}
+        </Badge>
+      );
+    }
+
+    return icon;
   },
-  ref,
-) => {
-  const iconStyle = {
-    ...style,
-    ...(size ? { width: size, height: size } : {}),
-  };
-
-  if (type !== null && typeof type === 'object') {
-    return React.cloneElement(type, { style: iconStyle });
-  }
-
-  const MyIcon = iconMap[type];
-
-  if (!MyIcon) {
-    throw new Error(`invalid icon type: ${type}`);
-  } else if (MyIcon.component) {
-    return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
-  }
-
-  let icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
-
-  if (tooltip) {
-    icon = (
-      <Tooltip
-        placement={tooltipPlacement}
-        title={tooltip}
-        enterTouchDelay={0}
-      >
-        {icon}
-      </Tooltip>
-    );
-  }
-
-  if (badgeContent) {
-    icon = (
-      <Badge badgeContent={badgeContent} color="error">
-        {icon}
-      </Badge>
-    );
-  }
-
-  return icon;
-});
+);
 
 Icon.propTypes = {
   size: PropTypes.number,

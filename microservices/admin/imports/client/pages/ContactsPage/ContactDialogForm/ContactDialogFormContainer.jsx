@@ -39,15 +39,19 @@ const schema = existingOrganisations =>
       optional: true,
       defaultValue: null,
       condition: ({ organisations = [] }) =>
-        organisations.length >= 1
-        && organisations.some(({ _id }) =>
-          existingOrganisations.some(({ _id: organisationId }) => _id === organisationId)),
+        organisations.length >= 1 &&
+        organisations.some(({ _id }) =>
+          existingOrganisations.some(
+            ({ _id: organisationId }) => _id === organisationId,
+          ),
+        ),
       customAllowedValues: ({ organisations = [] }) =>
         organisations.filter(({ _id }) => _id).map(({ _id }) => _id),
       uniforms: {
-        transform: (organisationId) => {
-          const { name } = existingOrganisations.find(({ _id }) => organisationId === _id)
-            || {};
+        transform: organisationId => {
+          const { name } =
+            existingOrganisations.find(({ _id }) => organisationId === _id) ||
+            {};
           return name;
         },
         labelProps: { shrink: true },
@@ -118,8 +122,9 @@ export default compose(
           contactId,
           organisations,
           useSameAddress,
-        }).then(() => contactId)),
-    modifyContact: (data) => {
+        }).then(() => contactId),
+      ),
+    modifyContact: data => {
       const {
         _id: contactId,
         organisations = [],
@@ -129,7 +134,8 @@ export default compose(
       return contactUpdate
         .run({ contactId, object })
         .then(() =>
-          changeOrganisations({ contactId, organisations, useSameAddress }));
+          changeOrganisations({ contactId, organisations, useSameAddress }),
+        );
     },
     removeContact: contactId => contactRemove.run({ contactId }),
   })),

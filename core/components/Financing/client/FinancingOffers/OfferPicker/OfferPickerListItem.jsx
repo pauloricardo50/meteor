@@ -43,11 +43,11 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
 
       <OfferPickerListItemValue
         label={<T id="FinancingOffers.amortization" />}
-        value={(
+        value={
           <span>
             {toMoney(amortization)} <T id="general.perMonth" />
           </span>
-        )}
+        }
       />
 
       <OfferPickerListItemInterests

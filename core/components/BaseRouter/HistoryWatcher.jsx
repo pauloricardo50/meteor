@@ -17,10 +17,11 @@ export default class HistoryWatcher extends Component {
     this.unlisten = history.listen(({ pathname }) => this.loadPage(pathname));
 
     if (Meteor.isDevelopment && !(Meteor.isTest || Meteor.isAppTest)) {
+      const adminId = sessionStorage.getItem('dev_impersonate_adminId');
       const userId = sessionStorage.getItem('dev_impersonate_userId');
       const authToken = sessionStorage.getItem('dev_impersonate_authToken');
       if (userId && authToken) {
-        impersonate({ userId, authToken });
+        impersonate({ userId, authToken, adminId });
       }
     }
   }
@@ -35,10 +36,11 @@ export default class HistoryWatcher extends Component {
   generateTrackingId() {
     const trackingId = getCookie(TRACKING_COOKIE);
     if (!trackingId) {
-      const randomId = Math.random()
-        .toString(36)
-        .substr(2)
-        + Math.random()
+      const randomId =
+        Math.random()
+          .toString(36)
+          .substr(2) +
+        Math.random()
           .toString(36)
           .substr(2);
       setCookie(TRACKING_COOKIE, randomId);

@@ -57,8 +57,8 @@ const getCalculatorMemo = () =>
       // So if the same _id can be found from one array to the other,
       // the org hasn't changed
       if (
-        lenderRules[0]
-        && !newLenderRules.find(({ _id }) => _id === lenderRules[0]._id)
+        lenderRules[0] &&
+        !newLenderRules.find(({ _id }) => _id === lenderRules[0]._id)
       ) {
         return false;
       }
@@ -93,7 +93,7 @@ const getParams = ({ loan }) => {
   return false;
 };
 
-const withLenderRules = (Component) => {
+const withLenderRules = Component => {
   const WrappedComponent = withSmartQuery({
     query,
     params: getParams,
@@ -102,7 +102,7 @@ const withLenderRules = (Component) => {
     dataName: 'lenderRules',
   })(Component);
 
-  return (props) => {
+  return props => {
     // Only fetch lender Rules if necessary
     if (getParams(props)) {
       return <WrappedComponent {...props} />;
@@ -116,31 +116,28 @@ export const injectCalculator = (getStructureId = () => {}) => {
   // Insnstantiate a new memoizer for each place where this is calculated
   const getCalculator = getCalculatorMemo();
 
-  return compose(
-    withLenderRules,
-    Component => (props) => {
-      const { loan } = props;
-      const lenderRules = getLenderRules(props);
+  return compose(withLenderRules, Component => props => {
+    const { loan } = props;
+    const lenderRules = getLenderRules(props);
 
-      const calculator = getCalculator(
-        { loan, lenderRules },
-        getStructureId(props),
-      );
+    const calculator = getCalculator(
+      { loan, lenderRules },
+      getStructureId(props),
+    );
 
-      const WrappedComponent = (
-        <Provider value={calculator}>
-          <Component {...props} />
-        </Provider>
-      );
+    const WrappedComponent = (
+      <Provider value={calculator}>
+        <Component {...props} />
+      </Provider>
+    );
 
-      WrappedComponent.displayName = wrapDisplayName(
-        WrappedComponent,
-        'InjectCalculator',
-      );
+    WrappedComponent.displayName = wrapDisplayName(
+      WrappedComponent,
+      'InjectCalculator',
+    );
 
-      return WrappedComponent;
-    },
-  );
+    return WrappedComponent;
+  });
 };
 
 export const withCalculator = withContextConsumer({

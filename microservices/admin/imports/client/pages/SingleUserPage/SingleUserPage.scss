@@ -1,3 +1,5 @@
+@import './UserActivities/UserActivities.scss';
+
 .single-user-page {
   h1 {
     float: left;
@@ -55,7 +57,7 @@
     display: flex;
     align-items: center;
 
-     > * {
+    > * {
       margin-right: 4px;
     }
 
@@ -77,7 +79,7 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-       > * {
+      > * {
         padding: 8px;
       }
     }

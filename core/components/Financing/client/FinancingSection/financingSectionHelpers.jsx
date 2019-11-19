@@ -16,7 +16,7 @@ const renderArray = (configArray, sectionProps, structureId) =>
   configArray
     .filter(makeFilterConfig(sectionProps))
     .map(({ Component, id, ...props }) =>
-      (Component ? (
+      Component ? (
         <Component
           key={id}
           structureId={structureId}
@@ -27,7 +27,8 @@ const renderArray = (configArray, sectionProps, structureId) =>
         />
       ) : (
         <div className={cx('empty-line', id)} key={id} />
-      )));
+      ),
+    );
 
 export const makeRenderSummary = configArray => (structure, sectionProps) => {
   const { id: structureId } = structure;
@@ -39,20 +40,14 @@ export const makeRenderSummary = configArray => (structure, sectionProps) => {
   );
 };
 
-export const makeRenderDetail = (configArray, noWrapper) => (
+export const makeRenderDetail = (configArray, sectionItemProps = {}) => (
   structure,
   sectionProps,
 ) => {
   const { id: structureId } = structure;
-  if (noWrapper) {
-    return (
-      <div className="structure" key={structureId}>
-        {renderArray(configArray, { ...sectionProps, structure }, structureId)}
-      </div>
-    );
-  }
+  const { className } = sectionItemProps;
   return (
-    <div className="structure" key={structureId}>
+    <div className={cx('structure', className)} key={structureId}>
       <span className="card1">
         {renderArray(configArray, { ...sectionProps, structure }, structureId)}
       </span>

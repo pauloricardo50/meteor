@@ -13,7 +13,7 @@ export default class Download extends Component {
     this.state = { downloading: false };
   }
 
-  handleClick = (event) => {
+  handleClick = event => {
     event.preventDefault();
     const { fileKey, fileName } = this.props;
     this.setState({ downloading: true }, () => {

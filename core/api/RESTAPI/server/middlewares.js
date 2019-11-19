@@ -89,10 +89,12 @@ const filterMiddleware = (options = {}) => (req, res, next) => {
   const isMultipart = contentType.includes('multipart/form-data');
 
   if (!contentType || !contentType.includes(supportedContentType)) {
-    return next(REST_API_ERRORS.WRONG_CONTENT_TYPE(
-      contentType.split(';')[0],
-      supportedContentType,
-    ));
+    return next(
+      REST_API_ERRORS.WRONG_CONTENT_TYPE(
+        contentType.split(';')[0],
+        supportedContentType,
+      ),
+    );
   }
 
   if (isMultipart) {
@@ -111,13 +113,20 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
 
   if (endpointOptions.simpleAuth) {
     const { query } = req;
-    const { token, timestamp, 'user-id': userId } = query;
-    const authToken = getSimpleAuthToken(query);
+    const simpleAuthParams = JSON.parse(
+      Buffer.from(query['simple-auth-params'], 'base64').toString('ascii'),
+    );
+    const { token, timestamp, userId } = simpleAuthParams;
+    const authToken = getSimpleAuthToken(simpleAuthParams);
 
     const now = moment().unix();
 
     if (authToken !== token || timestamp < now - 30) {
-      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED('Wrong token or old timestamp'));
+      return next(
+        REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED(
+          'Wrong token or old timestamp',
+        ),
+      );
     }
 
     const user = UserService.fetchOne({
@@ -131,10 +140,15 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
     });
 
     if (!user) {
-      return next(REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED('No user found with this userId'));
+      return next(
+        REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED(
+          'No user found with this userId',
+        ),
+      );
     }
 
     req.user = user;
+    req.simpleAuthParams = simpleAuthParams;
   }
 
   next();
@@ -170,7 +184,11 @@ const authMiddleware = (options = {}) => (req, res, next) => {
   });
 
   if (!user) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED('No user found with this public key, or maybe it has a typo ?'));
+    return next(
+      REST_API_ERRORS.AUTHORIZATION_FAILED(
+        'No user found with this public key, or maybe it has a typo ?',
+      ),
+    );
   }
 
   req.publicKey = publicKey;
@@ -179,9 +197,11 @@ const authMiddleware = (options = {}) => (req, res, next) => {
   const verifiedSignature = verifySignature(req);
 
   if (!verifiedSignature.verified) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED({
-      expectedObjectToSign: verifiedSignature.toVerify,
-    }));
+    return next(
+      REST_API_ERRORS.AUTHORIZATION_FAILED({
+        expectedObjectToSign: verifiedSignature.toVerify,
+      }),
+    );
   }
 
   req.user = user;
@@ -222,10 +242,12 @@ const errorMiddleware = options => (error, req, res, next) => {
 
 // If no endpoint has sent a response, this should send back a 404
 const unknownEndpointMiddleware = options => (req, res, next) => {
-  next(REST_API_ERRORS.UNKNOWN_ENDPOINT({
-    path: getRequestPath(req),
-    method: getRequestMethod(req),
-  }));
+  next(
+    REST_API_ERRORS.UNKNOWN_ENDPOINT({
+      path: getRequestPath(req),
+      method: getRequestMethod(req),
+    }),
+  );
 };
 
 const multipartMiddleware = options => (req, res, next) => {

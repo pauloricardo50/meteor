@@ -10,6 +10,7 @@ import { Percent } from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Histogram from 'core/components/charts/Histogram';
 import IconButton from 'core/components/IconButton';
+import DialogSimple from 'core/components/DialogSimple';
 import StatItem from './StatItem';
 
 type NewLoansStatProps = {};
@@ -24,29 +25,47 @@ const NewLoansStat = ({
   showChart,
   setShowChart,
   loanHistogram,
+  withAnonymous,
+  setWithAnonymous,
 }: NewLoansStatProps) => (
   <StatItem
     value={<CountUp end={newLoans.count} />}
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
     title="Nouveaux dossiers"
-    top={(
+    top={
       <>
-        <Select
-          label="Période"
-          options={[
-            { id: 7, label: '7 derniers jours' },
-            { id: 30, label: '30 derniers jours' },
-          ]}
-          onChange={(_, v) => setPeriod(v)}
-          value={period}
-        />
+        <DialogSimple
+          buttonProps={{ label: 'Options', raised: false, primary: true }}
+          title="Options"
+          closeOnly
+        >
+          <Select
+            label="Période"
+            options={[
+              { id: 7, label: '7 derniers jours' },
+              { id: 30, label: '30 derniers jours' },
+              { id: 90, label: '90 derniers jours' },
+            ]}
+            onChange={setPeriod}
+            value={period}
+          />
+          <Select
+            label="Anonymes"
+            options={[
+              { id: true, label: 'Avec' },
+              { id: false, label: 'Sans' },
+            ]}
+            onChange={setWithAnonymous}
+            value={withAnonymous}
+          />
+        </DialogSimple>
         <IconButton
           type={showChart ? 'close' : 'chart'}
           onClick={() => setShowChart(!showChart)}
         />
       </>
-    )}
+    }
   >
     {showChart && (
       <div className="chart">
@@ -62,27 +81,16 @@ const NewLoansStat = ({
 
 export default compose(
   withState('period', 'setPeriod', 30),
+  withState('withAnonymous', 'setWithAnonymous', false),
   withState('showChart', 'setShowChart', false),
   withSmartQuery({
     query: newLoans,
     dataName: 'newLoans',
-    params: ({ period }) => ({ period }),
-    queryOptions: {
-      shouldRefetch: (
-        { props: { period } },
-        { props: { period: newPeriod } },
-      ) => period !== newPeriod,
-    },
+    params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
   }),
   withSmartQuery({
     query: loanHistogram,
     dataName: 'loanHistogram',
-    params: ({ period }) => ({ period }),
-    queryOptions: {
-      shouldRefetch: (
-        { props: { period } },
-        { props: { period: newPeriod } },
-      ) => period !== newPeriod,
-    },
+    params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
   }),
 )(NewLoansStat);

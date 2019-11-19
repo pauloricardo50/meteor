@@ -22,47 +22,46 @@ const getListItemDetails = (
   { anonymous, canton, city, name, roles, status, structure, user },
 ) => {
   switch (collectionName) {
-  case USERS_COLLECTION:
-    return {
-      primary: name,
-      secondary: <Roles roles={roles} />,
-    };
-  case LOANS_COLLECTION: {
-    const loanValue = structure && Calculator.selectLoanValue({ loan: { structure } });
-    const loanValueText = loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
+    case USERS_COLLECTION:
+      return {
+        primary: name,
+        secondary: <Roles roles={roles} />,
+      };
+    case LOANS_COLLECTION: {
+      const loanValue =
+        structure && Calculator.selectLoanValue({ loan: { structure } });
+      const loanValueText =
+        loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
 
-    return {
-      primary: `${name} - ${
-        anonymous ? 'Anonyme' : user ? user.name : 'Pas de compte'
-      }`,
-      secondary: (
-        <span>
-          <StatusLabel status={status} collection={LOANS_COLLECTION} />
-          {' '}
--
-          {' '}
-          {loanValueText}
-        </span>
-      ),
-    };
-  }
-  case PROMOTIONS_COLLECTION:
-    return {
-      primary: name || 'Promotion sans nom',
-      secondary: (
-        <div>
-          <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
-            &nbsp;
+      return {
+        primary: `${name} - ${
+          anonymous ? 'Anonyme' : user ? user.name : 'Pas de compte'
+        }`,
+        secondary: (
           <span>
-            {city}
-              &nbsp;
-            {canton}
+            <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
+            {loanValueText}
           </span>
-        </div>
-      ),
-    };
-  default:
-    throw new Error('invalid collection name');
+        ),
+      };
+    }
+    case PROMOTIONS_COLLECTION:
+      return {
+        primary: name || 'Promotion sans nom',
+        secondary: (
+          <div>
+            <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+            &nbsp;
+            <span>
+              {city}
+              &nbsp;
+              {canton}
+            </span>
+          </div>
+        ),
+      };
+    default:
+      throw new Error('invalid collection name');
   }
 };
 

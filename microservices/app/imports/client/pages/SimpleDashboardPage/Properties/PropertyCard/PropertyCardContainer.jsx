@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { createRoute } from 'core/utils/routerUtils';
-import { PROPERTY_DOCUMENTS } from 'core/api/constants';
+import { PROPERTY_DOCUMENTS, PROMOTIONS_COLLECTION } from 'core/api/constants';
 
 const getImage = ({ documents = {}, imageUrls = [] }) => {
   let images = [];
@@ -11,8 +11,8 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
   }
 
   if (
-    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
-    && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES] &&
+    documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
   ) {
     images = [
       ...images,
@@ -31,23 +31,26 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
   return images[0];
 };
 
-export default withProps(({
-  additionalInfos,
-  collection,
-  document,
-  loan: { _id: loanId },
-  shareSolvency,
-}) => ({
-  name: <span>{document.name || document.address1}</span>,
-  address: document.address,
-  category: document.category,
-  image: getImage(document),
-  additionalInfos,
-  loanId,
-  shareSolvency,
-  route: createRoute('/loans/:loanId/:collection/:docId', {
-    loanId,
+export default withProps(
+  ({
+    additionalInfos,
     collection,
-    docId: document._id,
+    document,
+    loan: { _id: loanId },
+    shareSolvency,
+  }) => ({
+    name: <span>{document.name || document.address1}</span>,
+    address: document.address,
+    category: document.category,
+    image: getImage(document),
+    additionalInfos,
+    loanId,
+    shareSolvency,
+    route: createRoute('/loans/:loanId/:collection/:docId/:tabId', {
+      loanId,
+      collection,
+      docId: document._id,
+      tabId: collection === PROMOTIONS_COLLECTION ? 'overview' : '',
+    }),
   }),
-}));
+);

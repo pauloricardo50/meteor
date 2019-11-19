@@ -15,9 +15,9 @@ Properties.addReducers({
       }
 
       if (
-        documents
-        && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES]
-        && documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
+        documents &&
+        documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES] &&
+        documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].length
       ) {
         return documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES][0].url;
       }
@@ -35,12 +35,12 @@ Properties.addReducers({
   valuePerSquareMeterInside: {
     body: { totalValue: 1, insideArea: 1 },
     reduce: ({ totalValue = 0, insideArea = 0 }) =>
-      (insideArea === 0 ? 0 : totalValue / insideArea),
+      insideArea === 0 ? 0 : totalValue / insideArea,
   },
   valuePerSquareMeterLand: {
     body: { totalValue: 1, landArea: 1 },
     reduce: ({ totalValue = 0, landArea = 0 }) =>
-      (landArea === 0 ? 0 : totalValue / landArea),
+      landArea === 0 ? 0 : totalValue / landArea,
   },
   organisation: {
     body: { users: { organisations: { name: 1 } } },

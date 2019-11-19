@@ -60,23 +60,27 @@ const addState = withStateHandlers(getInitialState, {
   reset: (_, props) => () => getInitialState(props),
 });
 
-const withDisableSubmit = withProps(({ type, borrowerId, value, usageType }) => ({
-  disableSubmit: !(
-    type
-      && borrowerId
-      && value >= 0
-      && (!shouldAskForUsageType(type) || usageType)
-  ),
-}));
+const withDisableSubmit = withProps(
+  ({ type, borrowerId, value, usageType }) => ({
+    disableSubmit: !(
+      type &&
+      borrowerId &&
+      value >= 0 &&
+      (!shouldAskForUsageType(type) || usageType)
+    ),
+  }),
+);
 
-const withStructureUpdate = withProps(({ loan: { _id: loanId }, structureId }) => ({
-  updateLoan: wantedLoan =>
-    updateStructure.run({ loanId, structureId, structure: { wantedLoan } }),
-  updateOwnFunds: ownFunds =>
-    updateStructure.run({ loanId, structureId, structure: { ownFunds } }),
-}));
+const withStructureUpdate = withProps(
+  ({ loan: { _id: loanId }, structureId }) => ({
+    updateLoan: wantedLoan =>
+      updateStructure.run({ loanId, structureId, structure: { wantedLoan } }),
+    updateOwnFunds: ownFunds =>
+      updateStructure.run({ loanId, structureId, structure: { ownFunds } }),
+  }),
+);
 
-const withAdditionalProps = withProps((props) => {
+const withAdditionalProps = withProps(props => {
   const {
     disableSubmit,
     updateOwnFunds,
@@ -103,15 +107,15 @@ const withAdditionalProps = withProps((props) => {
       updateOwnFunds(makeNewOwnFundsArray({ ...props, shouldDelete: true }));
       handleClose();
     },
-    handleSubmit: (event) => {
+    handleSubmit: event => {
       event.preventDefault();
       if (disableSubmit) {
         return false;
       }
 
       if (
-        shouldAskForUsageType(type)
-        && usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE
+        shouldAskForUsageType(type) &&
+        usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE
       ) {
         updateLoan(getNewWantedLoanAfterPledge(props));
       }
@@ -124,7 +128,7 @@ const withAdditionalProps = withProps((props) => {
         reset();
       }
     },
-    handleUpdateBorrower: (event) => {
+    handleUpdateBorrower: event => {
       if (event && event.preventDefault) {
         event.preventDefault();
       }
@@ -132,7 +136,8 @@ const withAdditionalProps = withProps((props) => {
 
       if (Calculator.isTypeWithArrayValues(type)) {
         const currentlyAvailable = getAvailableFundsOfTypeAndBorrower(props);
-        const deltaNeeded = otherValueOfTypeAndBorrower + value - currentlyAvailable;
+        const deltaNeeded =
+          otherValueOfTypeAndBorrower + value - currentlyAvailable;
         return pushBorrowerValue
           .run({
             borrowerId,
@@ -164,7 +169,7 @@ const FinancingOwnFundsPickerContainer = compose(
   FinancingDataContainer,
   addState,
   lifecycle({
-    componentWillReceiveProps({
+    UNSAFE_componentWillReceiveProps({
       structure: { ownFunds: nextFunds },
       ownFundsIndex: nextIndex,
     }) {
@@ -173,8 +178,8 @@ const FinancingOwnFundsPickerContainer = compose(
         ownFundsIndex,
       } = this.props;
       if (
-        JSON.stringify(ownFunds[ownFundsIndex])
-        !== JSON.stringify(nextFunds[nextIndex])
+        JSON.stringify(ownFunds[ownFundsIndex]) !==
+        JSON.stringify(nextFunds[nextIndex])
       ) {
         this.props.reset();
       }

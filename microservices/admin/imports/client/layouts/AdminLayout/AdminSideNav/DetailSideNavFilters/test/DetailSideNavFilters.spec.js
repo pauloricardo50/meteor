@@ -46,17 +46,23 @@ const assignedToMeFilter = {
 };
 
 describe('DetailSideNavFilters', () => {
-  [LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
-    describe(`for ${collectionName} collection`, () => {
-      it.skip(`should pass the 'Show assigned to me' filter
+  [LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION].forEach(
+    collectionName => {
+      describe(`for ${collectionName} collection`, () => {
+        it.skip(`should pass the 'Show assigned to me' filter
           option to DropdownMenu component`, () => {
-        const menuOptions = renderDropdownSelect(collectionName).prop('options');
+          const menuOptions = renderDropdownSelect(collectionName).prop(
+            'options',
+          );
 
-        expect(menuOptions[0].value).to.deep.equal(assignedToMeFilter);
-        expect(shallow(menuOptions[0].label).prop('id')).to.equal('DetailSideNavFilters.showAssignedToMe');
+          expect(menuOptions[0].value).to.deep.equal(assignedToMeFilter);
+          expect(shallow(menuOptions[0].label).prop('id')).to.equal(
+            'DetailSideNavFilters.showAssignedToMe',
+          );
+        });
       });
-    });
-  });
+    },
+  );
 
   it(`should run the setFilters redux action with the correct params
       when the filter options change`, () => {
@@ -89,6 +95,8 @@ describe('DetailSideNavFilters', () => {
     expect(selectedMenuOptions.length).to.equal(1);
     expect(selectedMenuOptions[0].value).to.deep.equal(assignedToMeFilter);
     const filterLabel = shallow(selectedMenuOptions[0].label);
-    expect(filterLabel.prop('id')).to.equal('DetailSideNavFilters.showAssignedToMe');
+    expect(filterLabel.prop('id')).to.equal(
+      'DetailSideNavFilters.showAssignedToMe',
+    );
   });
 });

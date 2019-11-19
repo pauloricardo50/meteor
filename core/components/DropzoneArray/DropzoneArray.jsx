@@ -21,7 +21,7 @@ export default class DropzoneArray extends Component {
     };
   }
 
-  handleClick = (i) => {
+  handleClick = i => {
     if (this.state.active === i) {
       this.setState({ active: -1 });
     } else {
@@ -29,24 +29,26 @@ export default class DropzoneArray extends Component {
     }
   };
 
-  handleMouseEnter = (i) => {
+  handleMouseEnter = i => {
     this.setState({ active: i });
   };
 
   render() {
     return (
       <div style={styles.div}>
-        {this.props.array.map((dropzoneItem, i) =>
-          dropzoneItem.condition !== false && (
-            <DropzoneArrayItem
-              {...this.props}
-              key={i}
-              {...dropzoneItem}
-              handleClick={() => this.handleClick(i)}
-              handleMouseEnter={() => this.handleMouseEnter(i)}
-              active={this.state.active === i}
-            />
-          ))}
+        {this.props.array.map(
+          (dropzoneItem, i) =>
+            dropzoneItem.condition !== false && (
+              <DropzoneArrayItem
+                {...this.props}
+                key={i}
+                {...dropzoneItem}
+                handleClick={() => this.handleClick(i)}
+                handleMouseEnter={() => this.handleMouseEnter(i)}
+                active={this.state.active === i}
+              />
+            ),
+        )}
       </div>
     );
   }

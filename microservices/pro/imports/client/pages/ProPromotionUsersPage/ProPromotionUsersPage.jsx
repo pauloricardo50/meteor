@@ -40,11 +40,12 @@ export default compose(
     dataName: 'loans',
   }),
   withProps(({ loans, currentUser }) => {
-    const promotion = loans
-      && loans.length > 0
-      && loans[0].promotions
-      && loans[0].promotions.length > 0
-      && loans[0].promotions[0];
+    const promotion =
+      loans &&
+      loans.length > 0 &&
+      loans[0].promotions &&
+      loans[0].promotions.length > 0 &&
+      loans[0].promotions[0];
     return {
       canModify:
         promotion && isAllowedToModifyPromotion({ promotion, currentUser }),

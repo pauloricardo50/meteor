@@ -14,6 +14,7 @@ import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
+import UserActivities from './UserActivities';
 
 const SingleUserPage = ({
   user,
@@ -21,6 +22,7 @@ const SingleUserPage = ({
   currentUser,
   children,
   history,
+  activities,
 }) => {
   const {
     loans,
@@ -31,6 +33,7 @@ const SingleUserPage = ({
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
   const isPro = user.roles.includes(ROLES.PRO);
+  const currentUserIsDev = currentUser.roles.includes(ROLES.DEV);
 
   return (
     <section
@@ -43,6 +46,7 @@ const SingleUserPage = ({
         }}
         currentUser={currentUser}
       />
+      <UserActivities userId={userId} />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}
@@ -55,7 +59,7 @@ const SingleUserPage = ({
         <>
           <h3>Biens immobiliers</h3>
           <Table
-            rows={proProperties.map(makeMapProperty(history))}
+            rows={proProperties.map(makeMapProperty({ history, currentUser }))}
             columnOptions={columnOptions}
           />
         </>
@@ -69,7 +73,7 @@ const SingleUserPage = ({
       )}
 
       {/* Make sure this component reloads when the userId changes */}
-      <EmailList userId={userId} key={userId} />
+      {currentUserIsDev && <EmailList userId={userId} key={userId} />}
       {children}
     </section>
   );

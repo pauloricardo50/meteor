@@ -12,7 +12,9 @@ const makeAddCommissionStatus = organisationId => ({
   amount,
   ...rest
 }) => {
-  const organisationCommission = organisations.find(({ _id }) => _id === organisationId);
+  const organisationCommission = organisations.find(
+    ({ _id }) => _id === organisationId,
+  );
   const {
     status: commissionStatus,
     commissionRate,
@@ -38,8 +40,7 @@ const makeAddCommissionStatus = organisationId => ({
           <>
             <Money value={commissionAmount} />
             &nbsp; (
-            <Percent value={commissionRate} />
-)
+            <Percent value={commissionRate} />)
           </>
         ),
       },

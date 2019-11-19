@@ -10,11 +10,11 @@ import {
   moneyField,
   userLinksSchema,
   documentsField,
-  cacheField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -51,7 +51,9 @@ export const propertyPermissionsSchema = {
   'displayCustomerNames.referredBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
+    allowedValues: Object.values(
+      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY,
+    ),
     uniforms: {
       displayEmpty: true,
       placeholder: 'Ne pas afficher le nom des clients',
@@ -69,8 +71,10 @@ export const propertyPermissionsSchema = {
   },
   'displayCustomerNames.forPropertyStatus.$': {
     type: String,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-      .FOR_PROPERTY_STATUS),
+    allowedValues: Object.values(
+      propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+        .FOR_PROPERTY_STATUS,
+    ),
   },
 };
 
@@ -85,11 +89,13 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     uniforms: { placeholder: null },
+    autoValue: autoValueSentenceCase,
   },
   description: {
     type: String,
     optional: true,
     uniforms: { placeholder: null, multiline: true, rows: 5, rowsMax: 15 },
+    autoValue: autoValueSentenceCase,
   },
   category: {
     type: String,
@@ -268,14 +274,13 @@ export const PropertySchema = new SimpleSchema({
     min: -180,
     max: 180,
   },
-  adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   yearlyExpenses: moneyField,
   landValue: moneyField,
   constructionValue: moneyField,
   additionalMargin: moneyField,
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
-  ...userLinksSchema(propertyPermissionsSchema),
+  ...userLinksSchema({ permissionsSchema: propertyPermissionsSchema }),
   externalId: {
     type: String,
     optional: true,
@@ -310,7 +315,6 @@ const protectedKeys = [
   '_id',
   'additionalDocuments',
   'address',
-  'adminValidation',
   'createdAt',
   'latitude',
   'longitude',

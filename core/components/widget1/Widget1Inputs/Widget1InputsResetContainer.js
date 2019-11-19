@@ -5,7 +5,4 @@ const mapDispatchToProps = dispatch => ({
   onClick: () => dispatch(widget1Actions.resetCalculator()),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-);
+export default connect(null, mapDispatchToProps);

@@ -1,7 +1,6 @@
 import { COMMISSION_STATUS } from 'imports/core/api/constants';
 import Revenues from '../revenues';
 import CollectionService from '../../helpers/CollectionService';
-import LoanService from '../../loans/server/LoanService';
 import { REVENUE_STATUS } from '../revenueConstants';
 
 class RevenueService extends CollectionService {
@@ -13,11 +12,7 @@ class RevenueService extends CollectionService {
     const revenueId = this.collection.insert(revenue);
 
     if (loanId) {
-      LoanService.addLink({
-        id: loanId,
-        linkName: 'revenues',
-        linkId: revenueId,
-      });
+      this.addLink({ id: revenueId, linkName: 'loan', linkId: loanId });
     }
 
     return revenueId;

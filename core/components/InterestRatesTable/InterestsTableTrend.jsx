@@ -8,17 +8,17 @@ const InterestsTableTrend = ({ trend }) => {
   let icon;
 
   switch (trend) {
-  case TRENDS.UP:
-    icon = 'trendingUp';
-    break;
-  case TRENDS.DOWN:
-    icon = 'trendingDown';
-    break;
-  case TRENDS.FLAT:
-    icon = 'trendingFlat';
-    break;
-  default:
-    return null;
+    case TRENDS.UP:
+      icon = 'trendingUp';
+      break;
+    case TRENDS.DOWN:
+      icon = 'trendingDown';
+      break;
+    case TRENDS.FLAT:
+      icon = 'trendingFlat';
+      break;
+    default:
+      return null;
   }
 
   return (

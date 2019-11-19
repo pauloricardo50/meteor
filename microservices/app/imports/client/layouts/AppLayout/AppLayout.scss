@@ -5,6 +5,10 @@
 }
 
 .app-root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
   width: 100%;
   min-width: 1200px;
   height: 100%;
@@ -21,6 +25,7 @@
 .app-layout {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 
   box-sizing: border-box;
   height: auto;

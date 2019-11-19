@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { getLocations } from 'core/utils/APIs';
 
 import ValidIcon from '../AutoForm/ValidIcon';
-import FormValidator from '../AutoForm/FormValidator';
 import AutoComplete from '../AutoComplete';
 
 const styles = {
@@ -42,7 +41,7 @@ class ZipAutoComplete extends Component {
 
     if (zipCode && zipCode.length === 4) {
       getLocations(zipCode)
-        .then((array) => {
+        .then(array => {
           if (array && array.length) {
             this.setState({
               data: array.map(city => ({
@@ -72,10 +71,12 @@ class ZipAutoComplete extends Component {
       const city = value.slice(5);
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
-        this.saveValue(zipCode, city));
+        this.saveValue(zipCode, city),
+      );
     } else {
       this.setState({ searchText: '', isValid: false }, () =>
-        this.saveValue(null, ''));
+        this.saveValue(null, ''),
+      );
     }
   };
 
@@ -149,7 +150,6 @@ class ZipAutoComplete extends Component {
           required={required}
           hide={admin}
         />
-        <FormValidator {...this.props} />
       </div>
     );
   }

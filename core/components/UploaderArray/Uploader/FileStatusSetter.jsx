@@ -42,7 +42,10 @@ const FileStatusSetter = ({
     <DropdownMenu
       noWrapper
       renderTrigger={({ handleOpen }) => (
-        <span onClick={handleOpen} className={`${status} bold`}>
+        <span
+          onClick={handleOpen}
+          className={`${status} bold file-status-setter`}
+        >
           <T id={`File.status.${status}`} />
         </span>
       )}
@@ -54,24 +57,25 @@ const FileStatusSetter = ({
             return setFileStatus(stat);
           }
 
-          openModal(<DialogForm
-            schema={
-              new SimpleSchema({
-                error: { type: String, optional: true },
-              })
-            }
-            model={{ error: currentError }}
-            title="Fichier non valide"
-            description="Entrez la raison"
-            className="animated fadeIn"
-            important
-            onSubmit={closeModal => ({ error }) => {
-              setFileError
-                .run({ fileKey, error })
-                .then(() => setFileStatus(stat))
-                .then(() => closeModal());
-            }}
-          />);
+          openModal(
+            <DialogForm
+              schema={
+                new SimpleSchema({
+                  error: { type: String, optional: true },
+                })
+              }
+              model={{ error: currentError }}
+              title="Fichier non valide"
+              description="Entrez la raison"
+              className="animated fadeIn"
+              important
+              onSubmit={({ error }) =>
+                setFileError
+                  .run({ fileKey, error })
+                  .then(() => setFileStatus(stat))
+              }
+            />,
+          );
         },
       }))}
     />

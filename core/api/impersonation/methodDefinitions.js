@@ -5,6 +5,7 @@ export const impersonateUser = new Method({
   params: {
     authToken: String,
     userId: String,
+    adminId: String,
   },
 });
 

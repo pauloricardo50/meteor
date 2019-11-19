@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
+
 import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
@@ -10,26 +10,26 @@ import {
 export const getDocFromCollection = (collectionName, docId) => {
   let collection;
   switch (collectionName) {
-  case 'loans':
-    collection = Loans;
-    break;
-  case 'borrowers':
-    collection = Borrowers;
-    break;
-  case 'properties':
-    collection = Properties;
-    break;
-  case 'offers':
-    collection = Offers;
-    break;
-  case 'tasks':
-    collection = Tasks;
-    break;
-  case 'users':
-    collection = Users;
-    break;
-  default:
-    break;
+    case 'loans':
+      collection = Loans;
+      break;
+    case 'borrowers':
+      collection = Borrowers;
+      break;
+    case 'properties':
+      collection = Properties;
+      break;
+    case 'offers':
+      collection = Offers;
+      break;
+    case 'tasks':
+      collection = Tasks;
+      break;
+    case 'users':
+      collection = Users;
+      break;
+    default:
+      break;
   }
 
   return collection.findOne(docId);
@@ -49,21 +49,26 @@ export const getCollectionNameFromIdField = idFieldName =>
     propertyId: PROPERTIES_COLLECTION,
   }[idFieldName]);
 
-export const createMeteorAsyncFunction = promiseFunc =>
-  Meteor.wrapAsync((params, callback) =>
-    promiseFunc(params)
+export const createMeteorAsyncFunction = (promiseFunc, context) => {
+  const promiseWithCallback = (...args) => {
+    const callback = args.pop();
+    return promiseFunc(...args)
       .then(result => callback(null, result))
-      .catch(callback));
+      .catch(callback);
+  };
+
+  return Meteor.wrapAsync(promiseWithCallback, context);
+};
 
 export const flattenObject = (object, delimiter) => {
   const delim = delimiter || '.';
   let flattened = {};
 
-  Object.keys(object).forEach((key) => {
+  Object.keys(object).forEach(key => {
     const val = object[key];
     if (val instanceof Object && !(val instanceof Array)) {
       const strip = flattenObject(val);
-      Object.keys(strip).forEach((k) => {
+      Object.keys(strip).forEach(k => {
         const v = strip[k];
         flattened = { ...flattened, [`${key}${delim}${k}`]: v };
       });
@@ -94,7 +99,7 @@ const isReferredByOrganisationUser = ({ organisationUsers, referredByUser }) =>
 
 export const getReferredBy = ({ user, proUser = {}, isAdmin, anonymous }) => {
   if (anonymous || !user) {
-    return { raw: null, label: '' };
+    return { raw: null, label: 'Anonyme' };
   }
 
   const { organisations = [] } = proUser;
@@ -104,17 +109,19 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin, anonymous }) => {
   let label = 'Déjà référé';
 
   if (
-    isAdmin
-    || isReferredByOrganisation({ organisations, referredByOrganisation })
-    || isReferredByOrganisationUser({ organisationUsers, referredByUser })
+    isAdmin ||
+    isReferredByOrganisation({ organisations, referredByOrganisation }) ||
+    isReferredByOrganisationUser({ organisationUsers, referredByUser })
   ) {
-    label = getUserNameAndOrganisation({ user: referredByUser });
+    label =
+      getUserNameAndOrganisation({ user: referredByUser }) ||
+      referredByOrganisation.name;
   }
 
-  return { raw: referredByUser.name, label };
+  return { raw: referredByUser.name || referredByOrganisation.name, label };
 };
 
-export const sortObject = (object) => {
+export const sortObject = object => {
   if (!object || typeof object !== 'object' || object instanceof Array) {
     return object;
   }
@@ -124,7 +131,7 @@ export const sortObject = (object) => {
 
   keys.sort();
 
-  keys.forEach((key) => {
+  keys.forEach(key => {
     sortedObject[key] = sortObject(object[key]);
   });
 

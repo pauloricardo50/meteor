@@ -6,21 +6,27 @@ import { Loans } from '../..';
 export const up = () => {
   const allLoans = Loans.find({}).fetch();
 
-  return Promise.all(allLoans.map(({ _id }) =>
-    Loans.rawCollection().update(
-      { _id },
-      { $set: { applicationType: APPLICATION_TYPES.FULL } },
-    )));
+  return Promise.all(
+    allLoans.map(({ _id }) =>
+      Loans.rawCollection().update(
+        { _id },
+        { $set: { applicationType: APPLICATION_TYPES.FULL } },
+      ),
+    ),
+  );
 };
 
 export const down = () => {
   const allLoans = Loans.find({}).fetch();
 
-  return Promise.all(allLoans.map(({ _id }) =>
-    Loans.rawCollection().update(
-      { _id },
-      { $unset: { applicationType: true } },
-    )));
+  return Promise.all(
+    allLoans.map(({ _id }) =>
+      Loans.rawCollection().update(
+        { _id },
+        { $unset: { applicationType: true } },
+      ),
+    ),
+  );
 };
 
 Migrations.add({

@@ -13,7 +13,7 @@ export const getMatchingPath = ({
   const searchParams = history.location.search;
   const queryString = {};
 
-  Object.keys(routes).forEach((route) => {
+  Object.keys(routes).forEach(route => {
     if (matchingPath === null && route !== 'NOT_FOUND') {
       const match = matchPath(pathname, routes[route]);
 

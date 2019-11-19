@@ -2,7 +2,6 @@
 import React from 'react';
 
 import AutoForm from 'core/components/AutoForm2/AutoForm';
-import T from 'core/components/Translation';
 import UserCreatorContainer from './UserCreatorContainer';
 
 type UserCreatorFormProps = {};
@@ -11,6 +10,7 @@ const UserCreatorForm = ({
   schema,
   buttonProps,
   onSubmit,
+  submitFieldProps,
 }: UserCreatorProps) => (
   <AutoForm
     schema={schema}
@@ -19,7 +19,8 @@ const UserCreatorForm = ({
       label: 'Créez votre compte',
       raised: true,
       secondary: true,
-      style: { width: '100%' },
+      style: { width: '100%', marginTop: 16 },
+      ...submitFieldProps,
     }}
     style={{ width: '100%' }}
   />

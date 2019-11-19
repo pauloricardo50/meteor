@@ -13,7 +13,7 @@ import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import Properties from '../../properties';
 
-describe('PropertyService', function () {
+describe('PropertyService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -65,7 +65,9 @@ describe('PropertyService', function () {
         },
       });
 
-      expect(PropertyService.remove({ propertyId: 'prop', loanId: 'loan' })).to.equal(1);
+      expect(
+        PropertyService.remove({ propertyId: 'prop', loanId: 'loan' }),
+      ).to.equal(1);
 
       expect(PropertyService.find({}).fetch().length).to.equal(1);
       expect(LoanService.get('loan').propertyIds).to.deep.equal([]);
@@ -148,7 +150,7 @@ describe('PropertyService', function () {
         expect(referredByUser._id).to.equal('proUser');
         expect(referredByOrganisation._id).to.equal('organisation');
 
-        return checkEmails(2).then((emails) => {
+        return checkEmails(2).then(emails => {
           expect(emails.length).to.equal(2);
           const {
             emailId,
@@ -158,7 +160,9 @@ describe('PropertyService', function () {
               template_name,
               message: { from_email, subject, from_name },
             },
-          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+          } = emails.find(
+            ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+          );
 
           expect(subject).to.equal('e-Potek - "Rue du parc 3"');
 
@@ -171,7 +175,9 @@ describe('PropertyService', function () {
                 template_name,
                 message: { from_email, subject, from_name },
               },
-            } = emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION);
+            } = emails.find(
+              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+            );
             expect(subject).to.equal('Invitation réussie');
           }
         });
@@ -207,7 +213,7 @@ describe('PropertyService', function () {
         propertyIds: ['proProperty'],
       });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         expect(emails.length).to.equal(2);
       });
     });
@@ -254,7 +260,7 @@ describe('PropertyService', function () {
         isNewUser,
       });
 
-      return checkEmails(1).then((emails) => {
+      return checkEmails(1).then(emails => {
         expect(emails.length).to.equal(1);
         const {
           emailId,
@@ -267,12 +273,16 @@ describe('PropertyService', function () {
         } = emails[0];
         expect(status).to.equal('sent');
         expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
-        expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+        expect(template_name).to.equal(
+          EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+        );
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('e-Potek - "Rue du parc 4"');
-        expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include('Lydia Abraha');
       });
     });
   });
@@ -312,7 +322,8 @@ describe('PropertyService', function () {
             imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
             externalLink: 'www.e-potek.ch',
           },
-        })).to.throw('externalId');
+        }),
+      ).to.throw('externalId');
     });
   });
 
@@ -343,7 +354,7 @@ describe('PropertyService', function () {
       expect(prop.organisation).to.deep.equal({
         _id: 'org',
         name: 'Org1',
-        userLinks: [{ _id: 'proId' }],
+        userLinks: [{ _id: 'proId', shareCustomers: true }],
       });
     });
   });

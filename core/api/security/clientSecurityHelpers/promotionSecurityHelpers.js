@@ -42,8 +42,9 @@ export const isAllowedToViewPromotion = ({
 
   const { userLinks = [], users = [] } = promotion;
 
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId);
 
   if (!user) {
     return false;
@@ -83,8 +84,8 @@ export const isAllowedToRemoveCustomerFromPromotion = ({
   });
 
   return (
-    isAllowedToInviteCustomersToPromotion({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToInviteCustomersToPromotion({ promotion, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -127,8 +128,9 @@ export const isAllowedToSeePromotionCustomers = ({
 
   const { userLinks = [], users = [] } = promotion;
 
-  const user = userLinks.find(({ _id }) => _id === userId)
-    || users.find(({ _id }) => _id === userId);
+  const user =
+    userLinks.find(({ _id }) => _id === userId) ||
+    users.find(({ _id }) => _id === userId);
 
   if (!user) {
     return false;
@@ -195,8 +197,8 @@ export const isAllowedToBookPromotionLotToCustomer = ({
     promotionId,
   });
   return (
-    isAllowedToBookPromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToBookPromotionLots({ promotion, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -224,7 +226,18 @@ export const isAllowedToSellPromotionLotToCustomer = ({
     promotionId,
   });
   return (
-    isAllowedToSellPromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwnerType, permissions })
+    isAllowedToSellPromotionLots({ promotion, currentUser }) &&
+    !shouldAnonymize({ customerOwnerType, permissions })
   );
+};
+
+export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {
+  const { _id: userId } = currentUser;
+  const requiredPermissions = { canSeeManagement: true };
+
+  return checkPromotionPermissions({
+    promotion,
+    userId,
+    requiredPermissions,
+  });
 };

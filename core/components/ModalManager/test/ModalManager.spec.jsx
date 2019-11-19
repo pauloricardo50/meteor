@@ -60,7 +60,7 @@ const TestComp = () => {
                   type="button"
                   className="dialog-close"
                   onClick={() =>
-                    new Promise((res) => {
+                    new Promise(res => {
                       res('Promise worked!');
                     }).then(closeModal)
                   }
@@ -115,9 +115,11 @@ describe('ModalManager', () => {
       .simulate('click');
 
     expect(component().find('.dialog-1-content').length).to.equal(1);
-    expect(component()
-      .find('.dialog-1-content')
-      .text()).to.equal('Hello world');
+    expect(
+      component()
+        .find('.dialog-1-content')
+        .text(),
+    ).to.equal('Hello world');
   });
 
   it('closes a modal', () => {
@@ -151,9 +153,11 @@ describe('ModalManager', () => {
 
     closeDialog();
 
-    expect(component()
-      .find(Dialog)
-      .prop('open')).to.equal(false);
+    expect(
+      component()
+        .find(Dialog)
+        .prop('open'),
+    ).to.equal(false);
   });
 
   it('allows passing an array of modals', () => {
@@ -174,12 +178,14 @@ describe('ModalManager', () => {
 
     closeDialog();
 
-    expect(component()
-      .find(Dialog)
-      .prop('open')).to.equal(false);
+    expect(
+      component()
+        .find(Dialog)
+        .prop('open'),
+    ).to.equal(false);
   });
 
-  it('can pass values between modals', (done) => {
+  it('can pass values between modals', done => {
     component()
       .find('#btn4')
       .first()
@@ -194,15 +200,19 @@ describe('ModalManager', () => {
       component().update();
 
       expect(component().find('.dialog-7-content').length).to.equal(1);
-      expect(component()
-        .find('.dialog-7-content')
-        .text()).to.equal('Promise worked!');
+      expect(
+        component()
+          .find('.dialog-7-content')
+          .text(),
+      ).to.equal('Promise worked!');
 
       closeDialog();
 
-      expect(component()
-        .find(Dialog)
-        .prop('open')).to.equal(false);
+      expect(
+        component()
+          .find(Dialog)
+          .prop('open'),
+      ).to.equal(false);
 
       done();
     }, 0);

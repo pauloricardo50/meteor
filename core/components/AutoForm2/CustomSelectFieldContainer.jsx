@@ -4,7 +4,7 @@ import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
 
-export default (Component) => {
+export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
     constructor(props) {
       super(props);
@@ -15,16 +15,24 @@ export default (Component) => {
       this.getAllowedValues(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       const { model: nextModel } = nextProps;
-      const { model } = this.props;
+      const { model, handleClick, name } = this.props;
 
       if (model !== nextModel) {
         this.getAllowedValues(nextProps);
       }
+
+      if (typeof handleClick === 'function') {
+        const currentValues = model[name] || [];
+        const nextValues = nextModel[name] || [];
+        if (currentValues.length !== nextValues.length) {
+          handleClick(nextModel);
+        }
+      }
     }
 
-    getAllowedValues = (props) => {
+    getAllowedValues = props => {
       const { customAllowedValues, model, parent } = props;
       const { values } = this.state;
 
@@ -35,12 +43,13 @@ export default (Component) => {
       if (customAllowedValues && typeof customAllowedValues === 'function') {
         Promise.resolve()
           .then(() =>
-            customAllowedValues(model, parent && Number(parent.name.slice(-1))))
+            customAllowedValues(model, parent && Number(parent.name.slice(-1))),
+          )
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (
-        customAllowedValues
-        && typeof customAllowedValues === 'object'
+        customAllowedValues &&
+        typeof customAllowedValues === 'object'
       ) {
         const { query, params = () => ({}), allowNull } = customAllowedValues;
 
@@ -61,19 +70,19 @@ export default (Component) => {
       }
     };
 
-    formatOption = (option) => {
+    formatOption = option => {
       const { allowedValuesIntlId, intlId, name } = this.props;
       return (
         <T id={`Forms.${allowedValuesIntlId || intlId || name}.${option}`} />
       );
     };
 
-    renderValue = (value) => {
+    renderValue = value => {
       const transform = this.makeTransform();
       const { placeholder } = this.props;
 
       if (!value) {
-        return placeholder;
+        return placeholder && <i className="secondary">{placeholder}</i>;
       }
 
       if (Array.isArray(value)) {
@@ -100,7 +109,7 @@ export default (Component) => {
       const { transform } = this.props;
       const { data } = this.state;
       if (data) {
-        return (value) => {
+        return value => {
           if (!value) {
             // If the value is falsy, just transform it
             return transform(value);
@@ -121,6 +130,7 @@ export default (Component) => {
         model,
         placeholder,
         uniforms,
+        handleClick,
         ...rest
       } = this.props;
 
@@ -135,7 +145,7 @@ export default (Component) => {
       return (
         <Component
           {...rest}
-          placeholder={displayEmpty ? placeholder : ''}
+          displayEmpty
           values={values}
           formatOption={this.formatOption}
           renderValue={this.renderValue}

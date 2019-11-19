@@ -20,7 +20,9 @@ export default compose(
     queryOptions: { reactive: false },
   }),
   withProps(({ organisations }) => ({
-    organisations: organisations.filter(({ lenderRules }) => lenderRules && lenderRules.length > 0),
+    organisations: organisations.filter(
+      ({ lenderRules }) => lenderRules && lenderRules.length > 0,
+    ),
   })),
   withState('showAll', 'setShowAll', false),
   withState('singleLender', 'setSingleLender', false),

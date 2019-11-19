@@ -16,7 +16,10 @@ Properties.cacheCount({
 });
 
 Meteor.startup(() => {
-  migrate('properties', 'loanCount', { loanCount: { $exists: false } });
+  // Caches
+  // migrate('promotionLots', 'promotionCache', {
+  //   promotionCache: { $exists: false },
+  // });
   // migrate('revenues', 'loanCache', { loanCache: { $exists: false } });
   //
   // Old migrations
@@ -27,14 +30,16 @@ Meteor.startup(() => {
   //     { 'assignedEmployeeCache.firstName': { $exists: false } },
   //   ],
   // });
-  // migrate('loans', 'userCache', { 'userCache._id': { $exists: false } });
+  // migrate('loans', 'userCache', { 'userCache.referredByUserLink': { $exists: false } });
   // migrate('loans', 'lendersCache', { lendersCache: { $exists: false } });
   // migrate('loans', 'tasksCache', { tasksCache: { $exists: false } });
   // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
   // migrate('lenderRules', 'organisationCache', {
   //   'organisationCache._id': { $exists: false },
   // });
+  // Cache counts
+  // migrate('properties', 'loanCount', { loanCount: { $exists: false } });
   // migrate('organisations', 'lenderRulesCount', {
-  //   lenderRulesCount: { $exists: false },
+  //   loanCount: { $exists: false },
   // });
 });

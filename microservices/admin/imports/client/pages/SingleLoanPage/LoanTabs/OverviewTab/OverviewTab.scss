@@ -142,37 +142,7 @@
     margin-bottom: 16px;
   }
 
-  &-title {
-    position: relative;
-
-    h4 {
-      margin: 0;
-
-      display: flex;
-      align-items: center;
-
-      margin: 0;
-
-      white-space: nowrap;
-      text-overflow: ellipsis;
-
-      &.title {
-        margin-left: -4px;
-
-        .text {
-          vertical-align: middle;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-          max-width: 250px;
-        }
-      }
-
-      .icon {
-        margin-right: 4px;
-      }
-    }
-
+  .timeline-title {
     .activity-modifier {
       position: absolute;
       z-index: 1;
@@ -189,6 +159,7 @@
     flex-basis: 250px;
     flex-grow: 0;
     flex-shrink: 0;
+
     padding-bottom: 16px; // To avoid the scroll-bar from overlapping with text
 
     &:hover {
@@ -209,7 +180,6 @@
 
       .today-dot {
         position: absolute;
-        // content: '';
         top: 0;
         left: -3px;
 

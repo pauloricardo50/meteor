@@ -16,15 +16,12 @@ type LoanBoardCardTopProps = {};
 
 const LoanBoardCardTop = ({
   admins,
-  borrowers,
   hasRenderedComplexOnce,
-  loanId,
-  name,
   renderComplex,
-  status,
-  user,
   additionalActions,
+  loan,
 }: LoanBoardCardTopProps) => {
+  const { borrowers, _id: loanId, name, status, user } = loan;
   const userId = user && user._id;
   const hasUser = !!userId;
   const title = getLoanLinkTitle({ user, name, borrowers });
@@ -77,7 +74,7 @@ const LoanBoardCardTop = ({
 export default compose(
   React.memo,
   lifecycle({
-    componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
+    UNSAFE_componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
       const { renderComplex } = this.props;
       if (!renderComplex && nextRenderComplex) {
         this.setState({ hasRenderedComplexOnce: true });

@@ -4,7 +4,8 @@ import { injectIntl } from 'react-intl';
 import { DOCUMENTS, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
 
 const getFileMetadata = (documentArray = [], id) => {
-  const { metadata = {} } = documentArray.find(({ id: docId }) => id === docId) || {};
+  const { metadata = {} } =
+    documentArray.find(({ id: docId }) => id === docId) || {};
   return metadata;
 };
 

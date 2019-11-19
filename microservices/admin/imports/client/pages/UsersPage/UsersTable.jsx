@@ -19,7 +19,4 @@ UsersTable.propTypes = {
   options: PropTypes.object.isRequired,
 };
 
-export default compose(
-  withRouter,
-  UsersTableContainer,
-)(UsersTable);
+export default compose(withRouter, UsersTableContainer)(UsersTable);

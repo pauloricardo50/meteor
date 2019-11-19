@@ -182,16 +182,6 @@ export class FinanceCalculator {
     });
   }
 
-  getBorrowRatioStatus({ borrowRatio }) {
-    if (borrowRatio <= this.maxBorrowRatio) {
-      return SUCCESS;
-    }
-    if (borrowRatio <= this.maxBorrowRatioWithPledge) {
-      return WARNING;
-    }
-    return ERROR;
-  }
-
   getRetirementForGender({ gender = GENDER.M }: { gender?: string } = {}) {
     return gender === GENDER.F ? 64 : 65;
   }
@@ -283,6 +273,10 @@ export class FinanceCalculator {
     }, 0);
   }
 
+  getAmountToAmortize({ borrowRatio }) {
+    return borrowRatio - this.amortizationGoal;
+  }
+
   getAmortizationRateBase({
     borrowRatio = 0,
     amortizationYears = this.amortizationYears,
@@ -291,7 +285,10 @@ export class FinanceCalculator {
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
       // whichever comes first
-      const amountToAmortize = borrowRatio - this.amortizationGoal;
+      const amountToAmortize = this.getAmountToAmortize({
+        borrowRatio,
+        cacheFix: this.amortizationGoal,
+      });
 
       // Make sure we don't create a black hole, or use negative values by error
       if (amortizationYears > 0) {
@@ -398,8 +395,9 @@ export class FinanceCalculator {
     const incomeLimited1 = (mR * income + fortune * i) / (m + (1 + nF) * i);
 
     // The second is with amortization factored in (and it could be negative due to math)
-    const incomeLimited2 = ((1 + r * i) * fortune + mR * r * income)
-      / (r * (m + i) + nF * (1 + r * i) + 0.35);
+    const incomeLimited2 =
+      ((1 + r * i) * fortune + mR * r * income) /
+      (r * (m + i) + nF * (1 + r * i) + 0.35);
 
     // Therefore, take the minimum value of both, which is the most limiting one
     // Because of the ratios, round this value down

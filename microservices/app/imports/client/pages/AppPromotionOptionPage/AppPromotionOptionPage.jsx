@@ -13,12 +13,14 @@ export default compose(
     queryOptions: { reactive: true, single: true },
     dataName: 'promotionOption',
   }),
-  withProps(({ promotionOption: { _id: promotionOptionId, promotionLots } }) => ({
-    promotionLot: promotionLots[0],
-    setCustom: value =>
-      promotionOptionUpdate.run({
-        promotionOptionId,
-        object: { custom: value },
-      }),
-  })),
+  withProps(
+    ({ promotionOption: { _id: promotionOptionId, promotionLots } }) => ({
+      promotionLot: promotionLots[0],
+      setCustom: value =>
+        promotionOptionUpdate.run({
+          promotionOptionId,
+          object: { custom: value },
+        }),
+    }),
+  ),
 )(AppPromotionLotPage);

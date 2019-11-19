@@ -1,10 +1,8 @@
 // @flow
 import React from 'react';
-import moment from 'moment';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import Icon from 'core/components/Icon';
+import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import { LoanActivityModifier } from './LoanActivityAdder';
 
 type LoanTimelineTitleProps = {};
@@ -14,30 +12,34 @@ const icons = {
   [ACTIVITY_TYPES.EVENT]: 'event',
   [ACTIVITY_TYPES.OTHER]: 'radioButtonChecked',
   [ACTIVITY_TYPES.PHONE]: 'phone',
-  [ACTIVITY_TYPES.SERVER]: 'computer',
+  [ACTIVITY_TYPES.MAIL]: 'markunreadMailbox',
   task: 'check',
 };
 
-const allowModify = type => type !== ACTIVITY_TYPES.SERVER && type !== 'task';
+const getIcon = (type, isServerGenerated) => {
+  if (isServerGenerated) {
+    return 'computer';
+  }
+
+  return icons[type] || 'computer';
+};
+
+const allowModify = (type, isServerGenerated) =>
+  !isServerGenerated && type !== 'task';
 
 const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
-  const { date, title, type } = activity;
+  const { date, title, type, isServerGenerated } = activity;
 
   return (
-    <div className="loan-timeline-title">
-      {allowModify(type) && (
+    <TimelineTitle
+      title={title}
+      icon={getIcon(type, isServerGenerated)}
+      date={date}
+    >
+      {allowModify(type, isServerGenerated) && (
         <LoanActivityModifier className="activity-modifier" model={activity} />
       )}
-      <h4 className="title">
-        <Icon className="icon secondary" fontSize="small" type={icons[type]} />
-        <Tooltip title={title} placement="top-start">
-          <span className="text">{title}</span>
-        </Tooltip>
-      </h4>
-      <h4 className="secondary">
-        <small>{moment(date).format("D MMM 'YY")}</small>
-      </h4>
-    </div>
+    </TimelineTitle>
   );
 };
 

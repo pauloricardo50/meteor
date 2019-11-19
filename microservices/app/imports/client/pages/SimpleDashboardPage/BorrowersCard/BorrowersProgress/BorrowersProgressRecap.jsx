@@ -10,7 +10,7 @@ import T from 'core/components/Translation';
 
 type BorrowersProgressRecapProps = {};
 
-const getBorrowerArray = (borrower) => {
+const getBorrowerArray = borrower => {
   const totalFunds = Calculator.getTotalFunds({ borrowers: borrower });
   const totalIncome = Calculator.getTotalIncome({ borrowers: borrower });
 
@@ -29,10 +29,11 @@ const getBorrowerArray = (borrower) => {
 const BorrowersProgressRecap = ({
   borrower,
   index,
+  handleClick,
 }: BorrowersProgressRecapProps) => {
   const { name } = borrower;
   return (
-    <div className="borrowers-progress-recap">
+    <div className="borrowers-progress-recap" onClick={handleClick}>
       <div className="header">
         <FontAwesomeIcon icon={faUserCircle} className="icon" />
         <h4>

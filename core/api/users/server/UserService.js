@@ -15,7 +15,7 @@ import OrganisationService from '../../organisations/server/OrganisationService'
 import SecurityService from '../../security';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
-import { roundRobinAdvisors } from './userServerContants';
+import roundRobinAdvisors from './roundRobinAdvisors';
 import Users from '../users';
 
 export class UserServiceClass extends CollectionService {
@@ -49,7 +49,14 @@ export class UserServiceClass extends CollectionService {
   };
 
   adminCreateUser = ({
-    options: { email, password, sendEnrollmentEmail, ...additionalData },
+    options: {
+      email,
+      password,
+      sendEnrollmentEmail,
+      referredByUserId,
+      referredByOrganisation,
+      ...additionalData
+    },
     role = ROLES.USER,
     adminId,
   }) => {
@@ -65,6 +72,16 @@ export class UserServiceClass extends CollectionService {
       this.assignAdminToUser({ userId: newUserId, adminId });
     } else if (!additionalData.assignedEmployeeId) {
       this.setAssigneeForNewUser(newUserId);
+    }
+
+    if (referredByUserId) {
+      this.setReferredBy({ userId: newUserId, proId: referredByUserId });
+    }
+    if (referredByOrganisation) {
+      this.setReferredByOrganisation({
+        userId: newUserId,
+        organisationId: referredByOrganisation._id,
+      });
     }
 
     if (sendEnrollmentEmail) {
@@ -130,8 +147,20 @@ export class UserServiceClass extends CollectionService {
   update = ({ userId, object }) =>
     this.allowUpdate({ object }) && Users.update(userId, { $set: object });
 
-  assignAdminToUser = ({ userId, adminId }) =>
-    adminId && this.update({ userId, object: { assignedEmployeeId: adminId } });
+  assignAdminToUser = ({ userId, adminId }) => {
+    if (adminId) {
+      const { assignedEmployee: oldAssignee = {} } =
+        this.fetchOne({
+          $filters: { _id: userId },
+          assignedEmployee: { name: 1 },
+        }) || {};
+      const newAssignee =
+        this.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+
+      this.update({ userId, object: { assignedEmployeeId: adminId } });
+      return { oldAssignee, newAssignee };
+    }
+  };
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 
@@ -140,18 +169,23 @@ export class UserServiceClass extends CollectionService {
   getUserById = ({ userId }) => Users.findOne(userId);
 
   getUserByPasswordResetToken = ({ token }) =>
-    Users.findOne(
-      { 'services.password.reset.token': token },
-      { fields: { firstName: 1, lastName: 1, emails: 1 } },
-    );
+    this.fetchOne({
+      $filters: { 'services.password.reset.token': token },
+      email: 1,
+      emails: 1,
+      firstName: 1,
+      lastName: 1,
+      name: 1,
+      phoneNumbers: 1,
+    });
 
   getLoginToken = ({ userId }) => {
     const user = Users.findOne(userId, { fields: { services: 1 } });
 
     return (
-      user.services.password
-      && user.services.password.reset
-      && user.services.password.reset.token
+      user.services.password &&
+      user.services.password.reset &&
+      user.services.password.reset.token
     );
   };
 
@@ -166,15 +200,18 @@ export class UserServiceClass extends CollectionService {
     if (!promotionId) {
       // Return true if any promotion exists
       return (
-        loans
-        && loans.some(({ promotionLinks }) => promotionLinks && promotionLinks.length > 0)
+        loans &&
+        loans.some(
+          ({ promotionLinks }) => promotionLinks && promotionLinks.length > 0,
+        )
       );
     }
 
     return (
-      loans
-      && loans.some(({ promotionLinks = [] }) =>
-        promotionLinks.some(({ _id }) => _id === promotionId))
+      loans &&
+      loans.some(({ promotionLinks = [] }) =>
+        promotionLinks.some(({ _id }) => _id === promotionId),
+      )
     );
   };
 
@@ -189,9 +226,10 @@ export class UserServiceClass extends CollectionService {
     });
 
     return (
-      loans
-      && loans.some(({ propertyIds = [] }) =>
-        propertyIds.some(id => id === propertyId))
+      loans &&
+      loans.some(({ propertyIds = [] }) =>
+        propertyIds.some(id => id === propertyId),
+      )
     );
   };
 
@@ -200,16 +238,20 @@ export class UserServiceClass extends CollectionService {
     Accounts.addEmail(userId, newEmail);
     Accounts.removeEmail(userId, emails[0].address);
     Accounts.sendVerificationEmail(userId);
+    return { oldEmail: emails[0].address, newEmail };
   };
 
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
-    const duplicateOrganisations = newOrganisations
-      .map(({ _id }) => _id)
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .length !== newOrganisations.length;
+    const duplicateOrganisations =
+      newOrganisations
+        .map(({ _id }) => _id)
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .length !== newOrganisations.length;
 
     if (duplicateOrganisations) {
-      throw new Meteor.Error('Vous ne pouvez pas lier un compte deux fois à la même organisation.');
+      throw new Meteor.Error(
+        'Vous ne pouvez pas lier un compte deux fois à la même organisation.',
+      );
     }
     const { organisations: oldOrganisations = [] } = this.get(userId);
 
@@ -218,10 +260,12 @@ export class UserServiceClass extends CollectionService {
         id: userId,
         linkName: 'organisations',
         linkId: organisationId,
-      }));
+      }),
+    );
 
     newOrganisations.forEach(({ _id: organisationId, metadata }) =>
-      this.linkOrganisation({ userId, organisationId, metadata }));
+      this.linkOrganisation({ userId, organisationId, metadata }),
+    );
   };
 
   testUserAccount = ({ email, password, role }) => {
@@ -255,7 +299,9 @@ export class UserServiceClass extends CollectionService {
   proReferUser = ({ user, proUserId, shareSolvency }) => {
     const { email } = user;
     if (this.doesUserExist({ email })) {
-      throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
+      throw new Meteor.Error(
+        "Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.",
+      );
     }
 
     const { userId, pro, admin } = this.proCreateUser({
@@ -267,15 +313,17 @@ export class UserServiceClass extends CollectionService {
     const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
-    return sendEmail.run({
-      emailId: EMAIL_IDS.REFER_USER,
-      userId,
-      params: {
-        proUserId,
-        proName: getUserNameAndOrganisation({ user: pro }),
-        ctaUrl: this.getEnrollmentUrl({ userId }),
-      },
-    });
+    return sendEmail
+      .run({
+        emailId: EMAIL_IDS.REFER_USER,
+        userId,
+        params: {
+          proUserId,
+          proName: getUserNameAndOrganisation({ user: pro }),
+          ctaUrl: this.getEnrollmentUrl({ userId }),
+        },
+      })
+      .then(() => ({ userId, isNewUser: true }));
   };
 
   proCreateUser = ({
@@ -344,9 +392,10 @@ export class UserServiceClass extends CollectionService {
     adminId,
     shareSolvency,
   }) => {
-    const referOnly = propertyIds.length === 0
-      && promotionIds.length === 0
-      && properties.length === 0;
+    const referOnly =
+      propertyIds.length === 0 &&
+      promotionIds.length === 0 &&
+      properties.length === 0;
 
     if (referOnly) {
       return this.proReferUser({ user, proUserId, shareSolvency });
@@ -389,11 +438,12 @@ export class UserServiceClass extends CollectionService {
             promotionLotIds: user.promotionLotIds,
             showAllLots: user.showAllLots,
             shareSolvency,
-          })),
+          }),
+        ),
       ];
     }
     if (properties && properties.length) {
-      const internalPropertyIds = properties.map((property) => {
+      const internalPropertyIds = properties.map(property => {
         let propertyId;
 
         const existingProperty = PropertyService.fetchOne({
@@ -429,7 +479,7 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => ({ userId, isNewUser }));
   };
 
   getEnrollmentUrl({ userId }) {
@@ -448,39 +498,71 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
+    const { referredByUser: oldReferral } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByUser: { name: 1, organisations: { name: 1 } },
+    });
+
     if (!proId) {
-      return this._update({
+      this._update({
         id: userId,
         object: { referredByUserLink: true },
         operator: '$unset',
       });
+
+      return {
+        oldReferral,
+        referralType: 'user',
+      };
     }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
       organisationId = mainOrg && mainOrg._id;
     }
 
-    return this.update({
+    const newReferral = this.fetchOne({
+      $filters: { _id: proId },
+      name: 1,
+      organisations: { name: 1 },
+    });
+
+    this.update({
       userId,
       object: {
         referredByUserLink: proId,
         referredByOrganisationLink: organisationId,
       },
     });
+
+    return {
+      oldReferral,
+      newReferral,
+      referralType: 'user',
+    };
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
+    const { referredByOrganisation: oldReferral = {} } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByOrganisation: { name: 1 },
+    });
     if (!organisationId) {
-      return this._update({
+      this._update({
         id: userId,
         object: { referredByOrganisationLink: true },
         operator: '$unset',
       });
+      return { oldReferral, referralType: 'org' };
     }
-    return this.update({
+    const newReferral = OrganisationService.fetchOne({
+      $filters: { _id: organisationId },
+      name: 1,
+    });
+    this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },
     });
+    return { oldReferral, newReferral, referralType: 'org' };
   }
 
   proInviteUserToOrganisation({ user, organisationId, title, proId, adminId }) {
@@ -527,8 +609,19 @@ export class UserServiceClass extends CollectionService {
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { ...metadata, isMain, shareCustomers: true },
+      metadata: { ...metadata, isMain },
     });
+  }
+
+  getMainOrg({ organisations, getIsMain }) {
+    let mainOrganisation;
+    if (organisations.length === 1) {
+      mainOrganisation = organisations[0];
+    } else if (organisations.length > 1) {
+      mainOrganisation = organisations.find(getIsMain) || organisations[0];
+    }
+
+    return mainOrganisation;
   }
 
   getUserMainOrganisation(userId) {
@@ -538,17 +631,55 @@ export class UserServiceClass extends CollectionService {
       name: 1,
     });
 
-    let mainOrganisation = null;
-    if (organisations.length === 1) {
-      mainOrganisation = organisations[0];
-    } else if (organisations.length > 1) {
-      mainOrganisation = organisations.find(({ userLinks }) => {
-        const userLink = userLinks.find(({ _id }) => _id === userId);
-        return userLink.isMain;
-      }) || organisations[0];
+    return this.getMainOrg({
+      organisations,
+      getIsMain: ({ userLinks }) =>
+        userLinks.find(({ _id }) => _id === userId).isMain,
+    });
+  }
+
+  getMainUsersOfOrg({ userId, orgId }) {
+    if (!!userId === !!orgId) {
+      throw new Meteor.Error(
+        'You should provide exactly one of "userId" or "orgId" to "getMainUsersOfOrg"',
+      );
     }
 
-    return mainOrganisation;
+    const query = { users: { organisations: { _id: 1 } } };
+    const organisations = OrganisationService.fetch({
+      $filters: { userLinks: { $elemMatch: { _id: userId } } },
+      ...query,
+    });
+
+    let mainOrganisation;
+
+    if (orgId) {
+      mainOrganisation = OrganisationService.fetchOne({
+        $filters: { _id: orgId },
+        ...query,
+      });
+    } else {
+      mainOrganisation = this.getMainOrg({
+        organisations,
+        getIsMain: ({ users }) =>
+          users.find(({ _id }) => _id === userId).$metadata.isMain,
+      });
+    }
+
+    if (!mainOrganisation) {
+      return {};
+    }
+
+    // Only return users for whom this organisation is their main org
+    const users = mainOrganisation.users.filter(
+      ({ $metadata, organisations: userOrganisations }) => {
+        if ($metadata.isMain || userOrganisations.length === 1) {
+          return true;
+        }
+      },
+    );
+
+    return { organisation: mainOrganisation, users };
   }
 
   proSetShareCustomers({ userId, organisationId, shareCustomers }) {
@@ -562,7 +693,7 @@ export class UserServiceClass extends CollectionService {
 
   setupRoundRobin(employees = []) {
     this.employees = employees
-      .map((email) => {
+      .map(email => {
         const employee = this.getByEmail(email);
         if (employee) {
           return employee._id;
@@ -595,7 +726,9 @@ export class UserServiceClass extends CollectionService {
       });
 
       if (lastCreatedUser && lastCreatedUser.assignedEmployeeId) {
-        const index = this.employees.indexOf(lastCreatedUser.assignedEmployeeId);
+        const index = this.employees.indexOf(
+          lastCreatedUser.assignedEmployeeId,
+        );
         if (index >= this.employees.length - 1) {
           newAssignee = this.employees[0];
         } else {
@@ -608,6 +741,47 @@ export class UserServiceClass extends CollectionService {
     }
 
     return this.update({ userId, object: { assignedEmployeeId: newAssignee } });
+  }
+
+  getReferral(userId) {
+    const { referredByUser, referredByOrganisation } = this.fetchOne({
+      $filters: { _id: userId },
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+    });
+
+    // If the referredByUser is not in the organisation referredByOrganisation,
+    // this could return inaccurate data. Make sure you understand what this does
+    if (referredByUser) {
+      const { _id: proId } = referredByUser;
+      const mainOrg = this.getUserMainOrganisation(proId);
+      return { user: referredByUser, organisation: mainOrg || {} };
+    }
+
+    return { organisation: referredByOrganisation || {}, user: {} };
+  }
+
+  // May be we can replace one of our existing method or keep this one here?
+  getUserDetails(userId) {
+    if (typeof userId === 'string') {
+      const user = this.get(userId);
+      if (!(user && typeof user)) {
+        throw new Meteor.Error('Utilisateur non trouvé');
+      }
+      return user;
+    }
+    throw new Meteor.Error('Valeur invalide');
+  }
+
+  toggleAccount({ userId }) {
+    const userDetails = this.getUserDetails(userId);
+    const { isDisabled } = userDetails;
+    const nextValue = !isDisabled;
+    this.update({
+      userId,
+      object: { isDisabled: nextValue, 'services.resume.loginTokens': [] },
+    });
+    return nextValue;
   }
 }
 

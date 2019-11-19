@@ -86,17 +86,21 @@ class LenderRulesService extends CollectionService {
 
     lenderRules.forEach(({ organisation: { _id } }) => {
       if (_id !== lenderRules[0].organisation._id) {
-        throw new Meteor.Error('Tous les filtres doivent appartenir à la même organisation');
+        throw new Meteor.Error(
+          'Tous les filtres doivent appartenir à la même organisation',
+        );
       }
     });
 
     numbers.forEach((num, index) => {
       if (index !== num) {
-        throw new Meteor.Error("L'ordre des filtres doit commencer par 0 et être continu");
+        throw new Meteor.Error(
+          "L'ordre des filtres doit commencer par 0 et être continu",
+        );
       }
     });
 
-    Object.keys(orders).forEach((lenderRulesId) => {
+    Object.keys(orders).forEach(lenderRulesId => {
       const nextOrder = orders[lenderRulesId];
       this.update({ lenderRulesId, object: { order: nextOrder } });
     });

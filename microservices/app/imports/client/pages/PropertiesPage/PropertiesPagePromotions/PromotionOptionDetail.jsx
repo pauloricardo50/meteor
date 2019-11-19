@@ -1,12 +1,9 @@
 // @flow
 import React from 'react';
-import Link from 'core/components/Link';
 
-import { createRoute } from 'core/utils/routerUtils';
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
-import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 type PromotionOptionDetailProps = {};
 
@@ -24,14 +21,7 @@ const PromotionOptionDetail = ({
   const { value, reducedStatus } = promotionLots[0];
 
   return (
-    <Link
-      to={createRoute(APP_ROUTES.APP_PROMOTION_OPTION_PAGE.path, {
-        loanId,
-        promotionId: promotion._id,
-        promotionOptionId,
-      })}
-      className="card1 card-hover promotion-option-detail"
-    >
+    <div className="card1 card-hover promotion-option-detail">
       <h2>
         <span>{name}</span>
         <StatusLabel
@@ -49,7 +39,7 @@ const PromotionOptionDetail = ({
           values={{ priority: priority + 1 }}
         />
       </h1>
-    </Link>
+    </div>
   );
 };
 

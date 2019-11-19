@@ -39,7 +39,9 @@ describe('PromotionOptionService', () => {
     });
 
     it('Removes the promotionOption', () => {
-      expect(PromotionOptionService.get(promotionOptionId)).to.not.equal(undefined);
+      expect(PromotionOptionService.get(promotionOptionId)).to.not.equal(
+        undefined,
+      );
       PromotionOptionService.remove({ promotionOptionId });
       expect(PromotionOptionService.get(promotionOptionId)).to.equal(undefined);
     });
@@ -91,7 +93,8 @@ describe('PromotionOptionService', () => {
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
 
       expect(() =>
-        PromotionOptionService.insert({ promotionLotId, loanId })).to.throw('Vous avez déjà');
+        PromotionOptionService.insert({ promotionLotId, loanId }),
+      ).to.throw('Vous avez déjà');
     });
 
     it('adds a link on the loan', () => {

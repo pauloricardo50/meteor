@@ -6,7 +6,7 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import { getIncomeRatio } from './financingResultHelpers';
+import { getIncomeRatio, getMaxIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator from '../FinancingCalculator';
 
@@ -44,7 +44,7 @@ const errors = [
   },
   {
     id: 'highIncomeRatio',
-    func: data => getIncomeRatio(data) > FinanceCalculator.maxIncomeRatio,
+    func: data => getIncomeRatio(data) > getMaxIncomeRatio(data),
     type: ERROR_TYPES.WARNING,
   },
   {
@@ -68,7 +68,7 @@ const errors = [
   },
   {
     id: 'missingCash',
-    func: (data) => {
+    func: data => {
       const { loan, structureId } = data;
       return !Calculator.hasEnoughCash({ loan, structureId });
     },

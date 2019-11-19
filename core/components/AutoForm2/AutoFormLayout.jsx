@@ -28,7 +28,7 @@ const AutoFormLayout = ({
   let fieldCount = 0;
   const renderedMap = {};
 
-  const renderField = (field) => {
+  const renderField = field => {
     if (field[field.length - 1] === '*') {
       return schemaKeys
         .filter(key => key.startsWith(field.slice(0, -1)))
@@ -36,7 +36,9 @@ const AutoFormLayout = ({
     }
 
     if (field === '__REST') {
-      const remainingFields = schemaKeys.filter(key => !renderedMap[key] && !key.includes('.'));
+      const remainingFields = schemaKeys.filter(
+        key => !renderedMap[key] && !key.includes('.'),
+      );
       return remainingFields.map(renderField);
     }
 
@@ -54,7 +56,7 @@ const AutoFormLayout = ({
     );
   };
 
-  const renderLayoutItem = (item) => {
+  const renderLayoutItem = item => {
     if (typeof item === 'string') {
       return renderField(item);
     }
@@ -73,11 +75,11 @@ const AutoFormLayout = ({
           : fields.map(renderField)}
         {subLayout
           ? renderLayout({
-            layout: subLayout,
-            renderLayoutItem,
-            renderField,
-            AutoField,
-          })
+              layout: subLayout,
+              renderLayoutItem,
+              renderField,
+              AutoField,
+            })
           : null}
       </Component>
     );

@@ -22,7 +22,9 @@ type LenderPickerProps = {
 const addAllLendersOfType = ({ organisations, type, addLender }) => () =>
   organisations[type].forEach(({ _id }) => addLender(_id));
 const isActive = ({ loan, org }) =>
-  loan.lenders.find(({ organisation }) => organisation && organisation._id === org._id);
+  loan.lenders.find(
+    ({ organisation }) => organisation && organisation._id === org._id,
+  );
 
 const LenderPicker = ({
   organisations,
@@ -37,7 +39,7 @@ const LenderPicker = ({
     label="Choisir prêteurs"
     closeOnly
     primary
-    rootStyle={{ marginRight: 8 }}
+    buttonProps={{ style: { marginRight: 8 } }}
     onClose={() => filterOrganisations({ tags: [] })}
   >
     <div className="lender-picker-dialog">

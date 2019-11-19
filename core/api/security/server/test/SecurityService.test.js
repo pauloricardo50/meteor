@@ -38,7 +38,8 @@ describe('Security service', () => {
   describe('checkRole', () => {
     it('should throw if the user does not have the role', () => {
       expect(() =>
-        SecurityService.checkRole(userId, 'incorrect-role')).to.throw(SECURITY_ERROR);
+        SecurityService.checkRole(userId, 'incorrect-role'),
+      ).to.throw(SECURITY_ERROR);
     });
 
     it('should not do anything if the user has the right role', () => {
@@ -47,15 +48,26 @@ describe('Security service', () => {
 
     it('should throw if no userId was passed', () => {
       expect(() =>
-        SecurityService.checkRole(undefined, 'incorrect-role')).to.throw(SECURITY_ERROR);
-      expect(() => SecurityService.checkRole(null, 'incorrect-role')).to.throw(SECURITY_ERROR);
+        SecurityService.checkRole(undefined, 'incorrect-role'),
+      ).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.checkRole(null, 'incorrect-role')).to.throw(
+        SECURITY_ERROR,
+      );
     });
 
     it('should throw if an inexistent userId was given', () => {
-      expect(() => SecurityService.checkRole('invalid-id', 'user')).to.throw(SECURITY_ERROR);
-      expect(() => SecurityService.checkRole(123, 'user')).to.throw(SECURITY_ERROR);
-      expect(() => SecurityService.checkRole({}, 'user')).to.throw(SECURITY_ERROR);
-      expect(() => SecurityService.checkRole(() => {}, 'user')).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.checkRole('invalid-id', 'user')).to.throw(
+        SECURITY_ERROR,
+      );
+      expect(() => SecurityService.checkRole(123, 'user')).to.throw(
+        SECURITY_ERROR,
+      );
+      expect(() => SecurityService.checkRole({}, 'user')).to.throw(
+        SECURITY_ERROR,
+      );
+      expect(() => SecurityService.checkRole(() => {}, 'user')).to.throw(
+        SECURITY_ERROR,
+      );
     });
   });
 
@@ -86,7 +98,9 @@ describe('Security service', () => {
     it('should throw if ownership is incorrect', () => {
       Meteor.userId.restore();
       sinon.stub(Meteor, 'userId').callsFake(() => devId);
-      expect(() => SecurityService.checkOwnership(loan)).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.checkOwnership(loan)).to.throw(
+        SECURITY_ERROR,
+      );
     });
   });
 
@@ -114,7 +128,9 @@ describe('Security service', () => {
 
   describe('minimumRole', () => {
     it('throws if an unknown role is used', () => {
-      expect(() => SecurityService.minimumRole('wut')(userId)).to.throw('Invalid');
+      expect(() => SecurityService.minimumRole('wut')(userId)).to.throw(
+        'Invalid',
+      );
     });
 
     it('does not let admins do dev-only stuff', () => {
@@ -140,7 +156,8 @@ describe('Security service', () => {
         SecurityService.isAllowedToModifyFiles({
           fileKey: 'docId1/some/path',
           docId: 'docId2',
-        })).to.throw('Invalid fileKey or docId');
+        }),
+      ).to.throw('Invalid fileKey or docId');
     });
 
     it('does let admins modify files', () => {
@@ -149,7 +166,8 @@ describe('Security service', () => {
           fileKey: 'docId/some/path',
           docId: 'docId',
           userId: adminId,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('lets a user modify property files', () => {
@@ -160,7 +178,8 @@ describe('Security service', () => {
           docId: propertyId,
           userId,
           collection: COLLECTIONS.PROPERTIES_COLLECTION,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('does not let a user modify property files if it does not own them', () => {
@@ -171,7 +190,8 @@ describe('Security service', () => {
           docId: propertyId,
           userId,
           collection: COLLECTIONS.PROPERTIES_COLLECTION,
-        })).to.throw('Checking ownership');
+        }),
+      ).to.throw('Checking ownership');
     });
 
     it('lets an admin modify promotion files', () => {
@@ -182,7 +202,8 @@ describe('Security service', () => {
           docId: promotionId,
           userId: adminId,
           collection: COLLECTIONS.PROMOTIONS_COLLECTION,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('lets a pro modify promotion files', () => {
@@ -200,7 +221,8 @@ describe('Security service', () => {
           docId: promotionId,
           userId: proId,
           collection: COLLECTIONS.PROMOTIONS_COLLECTION,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('does not let a pro modify promotion files if he does not have the permissions', () => {
@@ -218,7 +240,8 @@ describe('Security service', () => {
           docId: promotionId,
           userId: proId,
           collection: COLLECTIONS.PROMOTIONS_COLLECTION,
-        })).to.throw('Vous ne pouvez pas');
+        }),
+      ).to.throw('Vous ne pouvez pas');
     });
 
     it('lets an admin modify promotion lot files', () => {
@@ -237,7 +260,8 @@ describe('Security service', () => {
           docId: propertyId,
           userId: adminId,
           collection: COLLECTIONS.PROPERTIES_COLLECTION,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('lets a pro modify promotion lot files', () => {
@@ -262,7 +286,8 @@ describe('Security service', () => {
           docId: propertyId,
           userId: proId,
           collection: COLLECTIONS.PROPERTIES_COLLECTION,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
 
     it('does not let a pro modify promotion lot files if he does not have permissions', () => {
@@ -287,7 +312,8 @@ describe('Security service', () => {
           docId: propertyId,
           userId: proId,
           collection: COLLECTIONS.PROPERTIES_COLLECTION,
-        })).to.throw('Vous ne pouvez pas');
+        }),
+      ).to.throw('Vous ne pouvez pas');
     });
 
     it('lets a user modify loan files', () => {
@@ -298,7 +324,8 @@ describe('Security service', () => {
           docId: loanId,
           userId,
           collection: COLLECTIONS.LOANS_COLLECTION,
-        })).to.not.throw();
+        }),
+      ).to.not.throw();
     });
   });
 });

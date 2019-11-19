@@ -26,7 +26,7 @@ export default class Table extends Component {
     this.handleNewData(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { data } = this.state;
     const currentLength = data.length;
     const nextLength = nextProps.rows.length;
@@ -36,7 +36,7 @@ export default class Table extends Component {
       this.handleNewData(nextProps);
     } else if (data && nextProps.rows) {
       let differentProps = false;
-      nextProps.rows.every((row) => {
+      nextProps.rows.every(row => {
         if (!data.includes(row)) {
           differentProps = true;
         }
@@ -53,7 +53,7 @@ export default class Table extends Component {
     }
   }
 
-  handleNewData = (props) => {
+  handleNewData = props => {
     const { rows, columnOptions } = props;
     const { orderBy } = this.state;
     // Make sure columns and rows are the same length
@@ -66,16 +66,18 @@ export default class Table extends Component {
 
   handleSort = (newOrderBy, changeOrder) => {
     const { data, orderBy, order } = this.state;
-    this.setState(sortData({
-      data,
-      orderBy,
-      order,
-      newOrderBy,
-      changeOrder,
-    }));
+    this.setState(
+      sortData({
+        data,
+        orderBy,
+        order,
+        newOrderBy,
+        changeOrder,
+      }),
+    );
   };
 
-  handleSelect = (rowId) => {
+  handleSelect = rowId => {
     const { onRowSelect } = this.props;
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(rowId);
@@ -95,7 +97,8 @@ export default class Table extends Component {
     }
 
     this.setState({ selected: newSelected }, () =>
-      onRowSelect(this.state.selected));
+      onRowSelect(this.state.selected),
+    );
   };
 
   handleSelectAllClick = (event, checked) => {
@@ -112,7 +115,7 @@ export default class Table extends Component {
   handleChangeRowsPerPage = event =>
     this.setState({ rowsPerPage: event.target.value });
 
-  isSelected = (id) => {
+  isSelected = id => {
     const { selected, multiSelectable } = this.props;
     if (multiSelectable) {
       return this.state.selected.indexOf(id) !== -1;

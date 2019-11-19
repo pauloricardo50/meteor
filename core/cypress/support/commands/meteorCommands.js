@@ -5,14 +5,15 @@ import { USER_PASSWORD, USER_EMAIL } from '../../server/e2eConstants';
 // You have to have visited the app before this can work
 // Like: cy.visit('/')
 Cypress.Commands.add('getMeteor', () =>
-  cy.window().then((window) => {
+  cy.window().then(window => {
     if (!window.Meteor) {
       // https://github.com/cypress-io/cypress/issues/4249
       return null;
     }
 
     return window.Meteor;
-  }));
+  }),
+);
 
 Cypress.Commands.add('callMethod', (method, ...params) => {
   Cypress.log({
@@ -20,54 +21,62 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
     consoleProps: () => ({ name: method, params }),
   });
 
-  return cy.getMeteor().then(Meteor =>
-    new Cypress.Promise((resolve, reject) => {
-      // Be careful, if methods don't come back, you might be creating a new
-      // websocket connection, see the network tab if you have multiple ones
-      // https://github.com/meteor/meteor/issues/10392
-      Meteor.apply(method, params, (err, result) => {
-        if (err) {
-          // It would be great if you could catch cypress.Promise errors..
-          // But for now you have to resolve, or it fails the test
-          resolve(err);
-          return;
-        }
+  return cy.getMeteor().then(
+    Meteor =>
+      new Cypress.Promise((resolve, reject) => {
+        // Be careful, if methods don't come back, you might be creating a new
+        // websocket connection, see the network tab if you have multiple ones
+        // https://github.com/meteor/meteor/issues/10392
+        Meteor.apply(method, params, (err, result) => {
+          if (err) {
+            // It would be great if you could catch cypress.Promise errors..
+            // But for now you have to resolve, or it fails the test
+            resolve(err);
+            return;
+          }
 
-        resolve(result);
-      });
-    }));
+          resolve(result);
+        });
+      }),
+  );
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy.getMeteor().then(Meteor =>
-    new Cypress.Promise((resolve, reject) => {
-      if (!Meteor) {
-        return resolve();
-      }
-
-      Meteor.logout((err) => {
-        if (err) {
-          return reject(err);
+  cy.getMeteor().then(
+    Meteor =>
+      new Cypress.Promise((resolve, reject) => {
+        if (!Meteor) {
+          return resolve();
         }
 
-        resolve(true);
-      });
-    }));
+        Meteor.logout(err => {
+          if (err) {
+            return reject(err);
+          }
+
+          resolve(true);
+        });
+      }),
+  );
 });
 
 const waitForLoggedIn = Meteor =>
   new Promise((resolve, reject) =>
-    pollUntilReady(() =>
-      new Promise((resolve2, reject2) =>
-        Meteor.call('isLoggedIn', (err, userId) => {
-          if (err) {
-            reject2(err);
-          }
+    pollUntilReady(
+      () =>
+        new Promise((resolve2, reject2) =>
+          Meteor.call('isLoggedIn', (err, userId) => {
+            if (err) {
+              reject2(err);
+            }
 
-          resolve2(userId);
-        })))
+            resolve2(userId);
+          }),
+        ),
+    )
       .then(resolve)
-      .catch(reject));
+      .catch(reject),
+  );
 
 Cypress.Commands.add(
   'meteorLogin',
@@ -77,13 +86,13 @@ Cypress.Commands.add(
       consoleProps: () => ({ email, password }),
     });
 
-    cy.getMeteor().then((Meteor) => {
+    cy.getMeteor().then(Meteor => {
       if (Meteor.userId()) {
         return cy.meteorLogout();
       }
 
       return new Cypress.Promise((resolve, reject) => {
-        Meteor.loginWithPassword(email, password, (err) => {
+        Meteor.loginWithPassword(email, password, err => {
           if (err) {
             return reject(err);
           }
@@ -104,7 +113,7 @@ Cypress.Commands.add('refetch', () => {
   });
 });
 
-Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
+Cypress.Commands.add('routeShouldExist', expectedPageUri => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here
   const baseUrl = Cypress.config('baseUrl');
@@ -114,7 +123,8 @@ Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
   (routeConfig, testData, options = {}) => {
-    const pageRoute = typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
+    const pageRoute =
+      typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
 
     const {
       uri,
@@ -138,12 +148,12 @@ Cypress.Commands.add(
 );
 
 // select dropdown items and check if what we want gets rendered
-Cypress.Commands.add('dropdownShouldRender', (dropdownAssertionConfig) => {
+Cypress.Commands.add('dropdownShouldRender', dropdownAssertionConfig => {
   if (!dropdownAssertionConfig) {
     return;
   }
 
-  Object.keys(dropdownAssertionConfig).forEach((dropdownSelector) => {
+  Object.keys(dropdownAssertionConfig).forEach(dropdownSelector => {
     const items = dropdownAssertionConfig[dropdownSelector];
     items.forEach(({ item: itemSelector, shouldRender }) => {
       cy.selectDropdownOption(dropdownSelector, itemSelector);

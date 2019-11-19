@@ -1,9 +1,12 @@
 // @flow
 import React from 'react';
-
 import { withProps } from 'recompose';
+
 import IconButton from '../../../IconButton';
-import { increaseOptionPriority, reducePriorityOrder } from '../../../../api';
+import {
+  increaseOptionPriority,
+  reducePriorityOrder,
+} from '../../../../api/methods';
 
 type PrioritySetterProps = {};
 

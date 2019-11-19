@@ -1,7 +1,5 @@
 import React from 'react';
 
-const Conditions = () => (
-  <React.Fragment>Prochainement disponibles.</React.Fragment>
-);
+const Conditions = () => <>Prochainement disponibles.</>;
 
 export default Conditions;

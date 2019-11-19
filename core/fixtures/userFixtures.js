@@ -49,7 +49,7 @@ export const addUser = ({ email, role, password = USER_PASSWORD, ...data }) => {
   return newUserId;
 };
 
-export const createDevs = (currentEmail) => {
+export const createDevs = currentEmail => {
   const devs = [
     {
       email: 'florian@e-potek.ch',

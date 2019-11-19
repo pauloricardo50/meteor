@@ -4,7 +4,7 @@ import T from 'core/components/Translation';
 import DashboardInfoTeam from './DashboardInfoTeam';
 import DashboardInfoInterests from './DashboardInfoInterests';
 
-const DashboardInfo = (props) => {
+const DashboardInfo = props => {
   const { loan } = props;
 
   return (

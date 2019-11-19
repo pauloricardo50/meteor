@@ -2,6 +2,7 @@ import React from 'react';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import { getUserLocale, getFormats } from 'core/utils/localization';
+import { appUser } from 'core/api/users/queries';
 import messagesFR from '../../../lang/fr.json';
 import AppLayout from '../../client/layouts/AppLayout';
 import AppStore from '../../client/components/AppStore';
@@ -13,16 +14,18 @@ const AppRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
-    WrapperComponent={AppStore}
     routes={APP_ROUTES}
+    currentUser={{ query: appUser }}
   >
-    <AppLayout>
-      <Switch>
-        {Object.keys(APP_ROUTES).map(route => (
-          <Route {...APP_ROUTES[route]} key={route} />
-        ))}
-      </Switch>
-    </AppLayout>
+    <AppStore>
+      <AppLayout>
+        <Switch>
+          {Object.keys(APP_ROUTES).map(route => (
+            <Route {...APP_ROUTES[route]} key={route} />
+          ))}
+        </Switch>
+      </AppLayout>
+    </AppStore>
   </BaseRouter>
 );
 

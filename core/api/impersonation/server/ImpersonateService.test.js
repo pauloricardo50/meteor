@@ -10,19 +10,19 @@ import ImpersonateService from './ImpersonateService';
 function getDummies() {
   const adminId = Accounts.createUser({
     email: 'impersonator@epotek.ch',
-    password: '12345',
+    password: '12345678',
   });
 
   const userId = Accounts.createUser({
     email: 'sheep@epotek.ch',
-    password: '12345',
+    password: '12345678',
   });
 
   return { adminId, userId };
 }
 
 describe('ImpersonateService', () => {
-  it('Should be able to authenticate a user as an admin', (done) => {
+  it('Should be able to authenticate a user as an admin', done => {
     const { adminId, userId } = getDummies();
 
     const FICTIONAL_TOKEN = Random.id();

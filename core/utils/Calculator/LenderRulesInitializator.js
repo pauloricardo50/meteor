@@ -16,7 +16,9 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         return;
       }
 
-      const sortedlenderRules = lenderRules.sort(({ order: orderA }, { order: orderB }) => orderA - orderB);
+      const sortedlenderRules = lenderRules.sort(
+        ({ order: orderA }, { order: orderB }) => orderA - orderB,
+      );
 
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
@@ -51,21 +53,23 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.cleanUpUnusedRules();
     }
 
-    setOrganisationName = (lenderRules) => {
+    setOrganisationName = lenderRules => {
       this.organisationName = lenderRules.length
         ? lenderRules[0].organisation && lenderRules[0].organisation.name
         : null;
     };
 
     storeRuleOrigin(rules, lenderRulesId) {
-      Object.keys(rules).forEach((ruleName) => {
+      Object.keys(rules).forEach(ruleName => {
         this.ruleOrigin[ruleName] = lenderRulesId;
       });
     }
 
     getOriginOfRule(ruleName) {
       const lenderRulesId = this.ruleOrigin[ruleName];
-      const lenderRules = this.lenderRules.find(({ _id }) => _id === lenderRulesId);
+      const lenderRules = this.lenderRules.find(
+        ({ _id }) => _id === lenderRulesId,
+      );
       return lenderRules;
     }
 
@@ -107,11 +111,13 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           structureId,
           key: LENDER_RULES_VARIABLES.ZIP_CODE,
         }),
-        [LENDER_RULES_VARIABLES.REMAINING_BANK_FORTUNE]: this.getRemainingFundsOfType({
-          loan,
-          structureId,
-          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-        }),
+        [LENDER_RULES_VARIABLES.REMAINING_BANK_FORTUNE]: this.getRemainingFundsOfType(
+          {
+            loan,
+            structureId,
+            type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          },
+        ),
         [LENDER_RULES_VARIABLES.IS_NEW_PROPERTY]: this.isNewProperty({
           loan,
           structureId,
@@ -120,8 +126,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     }
 
     getGlobalLenderRules({ lenderRules }) {
-      const globalRules = lenderRules.filter(({ filter }) =>
-        filter.and && filter.and.length === 1 && filter.and[0] === true);
+      const globalRules = lenderRules.filter(
+        ({ filter }) =>
+          filter.and && filter.and.length === 1 && filter.and[0] === true,
+      );
       const matchingRules = getMatchingRules(
         globalRules,
         {},
@@ -131,7 +139,9 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     }
 
     getPrimaryLenderRules({ loan, structureId, lenderRules }) {
-      const primaryRules = lenderRules.filter(rules => !this.lenderRulesIsSecondary(rules));
+      const primaryRules = lenderRules.filter(
+        rules => !this.lenderRulesIsSecondary(rules),
+      );
       const matchingRules = getMatchingRules(
         primaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
@@ -159,7 +169,8 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           [
             LENDER_RULES_VARIABLES.BORROW_RATIO,
             LENDER_RULES_VARIABLES.INCOME,
-          ].includes(variable));
+          ].includes(variable),
+        );
     }
 
     applyRules(rules) {
@@ -187,6 +198,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'incomeConsiderationType',
         'investmentIncomeConsideration',
         'maxBorrowRatio',
+        'maxBorrowRatioWithPledge',
         'maxIncomeRatio',
         'pdfComments',
         'pensionIncomeConsideration',
@@ -198,7 +210,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'theoreticalMaintenanceRate',
       ];
 
-      rulesToApply.forEach((rule) => {
+      rulesToApply.forEach(rule => {
         if (rules[rule] !== undefined && rules[rule] !== null) {
           this[rule] = rules[rule];
         }
@@ -207,6 +219,5 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     cleanUpUnusedRules() {
       this.maxIncomeRatioTight = 0;
-      this.maxBorrowRatioWithPledge = 0;
     }
   };

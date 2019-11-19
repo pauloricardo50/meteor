@@ -8,12 +8,10 @@ import LoanBoardColumnHeader from './LoanBoardColumnHeader';
 import LoanBoardCard from './LoanBoardCard';
 import LoanModal from './LoanModal';
 import { ACTIONS } from './loanBoardConstants';
-import AdminDashboardTabs from '../AdminDashboardPage/AdminDashboardTabs';
 
 type LoanBoardProps = {};
 
 const LoanBoard = ({
-  options,
   dispatch,
   data,
   admins,
@@ -22,11 +20,11 @@ const LoanBoard = ({
   lenders,
   refetchLoans,
   currentUser,
-  activateSync,
-  setActivateSync,
+  activateLoanBoardSync,
+  setActivateLoanBoardSync,
+  options,
 }: LoanBoardProps) => (
   <>
-    <AdminDashboardTabs />
     <div className="loan-board">
       <LoanBoardOptions
         options={options}
@@ -36,8 +34,8 @@ const LoanBoard = ({
         promotions={promotions}
         lenders={lenders}
         refetchLoans={refetchLoans}
-        activateSync={activateSync}
-        setActivateSync={setActivateSync}
+        activateLoanBoardSync={activateLoanBoardSync}
+        setActivateLoanBoardSync={setActivateLoanBoardSync}
       />
       <Board
         data={data}
@@ -52,9 +50,7 @@ const LoanBoard = ({
       />
       <LoanModal
         loanId={options.loanId}
-        closeModal={() =>
-          dispatch({ type: ACTIONS.SET_LOAN_ID, payload: '' })
-        }
+        closeModal={() => dispatch({ type: ACTIONS.SET_LOAN_ID, payload: '' })}
         currentUser={currentUser}
       />
     </div>

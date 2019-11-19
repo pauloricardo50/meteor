@@ -8,26 +8,19 @@ import NotFound from 'core/components/NotFound/loadable';
 import DevPage from 'core/components/DevPage/loadable';
 import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
 import ProOrganisationPage from '../../client/pages/ProOrganisationPage/loadable';
-import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
 import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
 import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
 import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
 import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
 
 const PRO_ROUTES = {
-  PRO_DASHBOARD_PAGE: { component: ProDashboardPage, path: '/', exact: true },
-
-  PRO_PROMOTION_LOT_PAGE: {
-    component: ProPromotionLotPage,
-    path: '/promotions/:promotionId/promotionLots/:promotionLotId',
-  },
   PRO_PROMOTION_USERS_PAGE: {
     component: ProPromotionUsersPage,
     path: '/promotions/:promotionId/users',
   },
   PRO_PROMOTION_PAGE: {
     component: ProPromotionPage,
-    path: '/promotions/:promotionId',
+    path: '/promotions/:promotionId/:tabId?',
   },
   PRO_PROPERTY_PAGE: {
     component: ProProPropertyPage,
@@ -57,6 +50,10 @@ const PRO_ROUTES = {
   ACCOUNT_PAGE: { component: AccountPage, path: '/account' },
   DEV_PAGE: { component: DevPage, path: '/dev' },
   IMPERSONATE_PAGE: { component: ImpersonatePage, path: IMPERSONATE_ROUTE },
+  PRO_DASHBOARD_PAGE: {
+    component: ProDashboardPage,
+    path: '/:tabId?',
+  },
 
   // Not found
   NOT_FOUND: { component: NotFound },

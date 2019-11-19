@@ -19,7 +19,7 @@ const columnOptions = [
   { id: 'documents', label: <T id="Forms.documents" /> },
 ];
 
-const makeMapOffer = ({ setOfferDialog }) => (offer) => {
+const makeMapOffer = ({ setOfferDialog }) => offer => {
   const {
     _id: offerId,
     createdAt,

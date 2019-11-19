@@ -14,8 +14,8 @@ import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({
-  firstName: { type: String, optional: false },
-  lastName: { type: String, optional: false },
+  firstName: { type: String, optional: true },
+  lastName: { type: String, optional: true },
   organisations: {
     type: Array,
     condition: ({ roles = [] }) => roles.includes(ROLES.PRO),
@@ -83,16 +83,18 @@ export default compose(
     schema: userSchema,
     labels: { assignedEmployeeId: <T id="Forms.assignedEmployee" /> },
     createUser: data =>
-      adminCreateUser.run({ options: data, role: ROLES.USER }).then((newId) => {
+      adminCreateUser.run({ options: data, role: ROLES.USER }).then(newId => {
         history.push(`/users/${newId}`);
       }),
-    editUser: (data) => {
+    editUser: data => {
       const { organisations = [], ...object } = data;
       return updateUser
         .run({ userId: user._id, object })
-        .then(() =>
-          user.roles.includes(ROLES.PRO)
-            && updateOrganisations({ userId: user._id, organisations }));
+        .then(
+          () =>
+            user.roles.includes(ROLES.PRO) &&
+            updateOrganisations({ userId: user._id, organisations }),
+        );
     },
   })),
 );

@@ -15,6 +15,7 @@ type LoanStatusModifierProps = {
 const LoanStatusModifier = ({
   loan,
   additionalActions,
+  ...props
 }: LoanStatusModifierProps) => {
   const { openModal } = useContext(ModalManagerContext);
 
@@ -26,6 +27,7 @@ const LoanStatusModifier = ({
       docId={loan._id}
       additionalActions={additionalActions(openModal)}
       method={status => loanSetStatus.run({ loanId: loan._id, status })}
+      {...props}
     />
   );
 };

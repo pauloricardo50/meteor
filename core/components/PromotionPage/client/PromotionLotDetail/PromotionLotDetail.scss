@@ -1,0 +1,84 @@
+.promotion-lot-detail {
+  display: flex;
+  flex-direction: column;
+
+  section {
+    margin-bottom: 24px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .top {
+    display: grid;
+    justify-content: space-evenly;
+
+    grid-gap: 8px;
+    grid-template-columns: repeat(auto-fit, 400px);
+  }
+
+  .promotion-lots-manager {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .document-download-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    margin: 0;
+
+    .document {
+      align-items: center;
+      flex-direction: row;
+
+      width: unset;
+      padding: 16px;
+
+      p {
+        margin: 0;
+      }
+
+      svg {
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .promotion-lot-timeline {
+    border: 1px solid $border-grey;
+    border-radius: $border-radius;
+
+    .construction-timeline-header {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+
+      border-right: 1px solid $border-grey;
+      border-top-right-radius: 0;
+
+      h4 {
+        margin: 0;
+      }
+
+      &.end {
+        align-items: flex-end;
+      }
+    }
+
+    th:last-of-type .construction-timeline-header {
+      border-width: 0;
+    }
+
+    .construction-timeline-item {
+      h4 {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

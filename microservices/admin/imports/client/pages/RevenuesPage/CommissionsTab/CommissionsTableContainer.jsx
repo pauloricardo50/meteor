@@ -11,7 +11,7 @@ import {
 import CommissionsConsolidator from 'imports/client/components/RevenuesTable/CommissionConsolidator';
 import RevenuesTableContainer from '../../../components/RevenuesTable/RevenuesTableContainer';
 
-const addCommissionRows = (
+const makeAddCommissionRows = commissionStatus => (
   rows,
   { organisations = [], columns, id: revenueId, amount, ...rest },
 ) => {
@@ -21,62 +21,64 @@ const addCommissionRows = (
 
   return [
     ...rows,
-    ...organisations.map(({ name, _id, $metadata: { status, commissionRate, paidAt } }) => {
-      const commissionAmount = amount * commissionRate;
+    ...organisations
+      .filter(({ $metadata: { status } }) => commissionStatus.includes(status))
+      .map(({ name, _id, $metadata: { status, commissionRate, paidAt } }) => {
+        const commissionAmount = amount * commissionRate;
 
-      return {
-        id: revenueId + _id,
-        columns: [
-          {
-            raw: name,
-            label: (
-              <CollectionIconLink
-                relatedDoc={{
-                  _id,
-                  name,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            ),
-          },
-          {
-            raw: status,
-            label: (
-              <StatusLabel status={status} collection={REVENUES_COLLECTION} />
-            ),
-          },
-          ...columns,
-          {
-            raw: commissionAmount,
-            label: (
-              <b>
+        return {
+          id: revenueId + _id,
+          columns: [
+            {
+              raw: name,
+              label: (
+                <CollectionIconLink
+                  relatedDoc={{
+                    _id,
+                    name,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              ),
+            },
+            {
+              raw: status,
+              label: (
+                <StatusLabel status={status} collection={REVENUES_COLLECTION} />
+              ),
+            },
+            ...columns,
+            {
+              raw: commissionAmount,
+              label: (
+                <b>
                   (
-                <Percent value={commissionRate} />
+                  <Percent value={commissionRate} />
                   )&nbsp;
-                <Money value={commissionAmount} />
-              </b>
-            ),
-          },
-          <CommissionsConsolidator
-            revenueId={revenueId}
-            amount={amount}
-            paidAt={paidAt}
-            organisation={{ _id, name }}
-            commissionRate={commissionRate}
-            commissionAmount={commissionAmount}
-            key="commissions-consolidator"
-          />,
-        ],
-        ...rest,
-      };
-    }),
+                  <Money value={commissionAmount} />
+                </b>
+              ),
+            },
+            <CommissionsConsolidator
+              revenueId={revenueId}
+              amount={amount}
+              paidAt={paidAt}
+              organisation={{ _id, name }}
+              commissionRate={commissionRate}
+              commissionAmount={commissionAmount}
+              key="commissions-consolidator"
+            />,
+          ],
+          ...rest,
+        };
+      }),
   ];
 };
 
 export default compose(
-  withProps(() => ({ displayLoan: true })),
+  withProps(() => ({ displayLoan: true, displayOrganisationsToPay: false })),
   RevenuesTableContainer,
-  withProps(({ columnOptions, rows }) => ({
+  withProps(({ columnOptions, rows, commissionStatus }) => ({
     columnOptions: [
       { id: 'commissionOrganisation', label: 'À payer' },
       { id: 'commissionStatus', label: 'Statut de la commission' },
@@ -89,7 +91,7 @@ export default compose(
       },
       { id: 'actions' },
     ],
-    rows: rows.reduce(addCommissionRows, []),
-    initialOrderBy: 2,
+    rows: rows.reduce(makeAddCommissionRows(commissionStatus), []),
+    initialOrderBy: 4,
   })),
 );

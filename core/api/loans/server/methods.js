@@ -1,6 +1,8 @@
-import Analytics from '../../analytics/server/Analytics';
+import { Meteor } from 'meteor/meteor';
+
+import { sendEmailToAddress } from 'core/api/methods/index';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
-import EVENTS from '../../analytics/events';
 
 import Security from '../../security/Security';
 import ActivityService from '../../activities/server/ActivityService';
@@ -37,6 +39,7 @@ import {
   loanSetCreatedAtActivityDescription,
   loanSetStatus,
   loanUpdateCreatedAt,
+  sendLoanChecklist,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -227,9 +230,9 @@ anonymousLoanInsert.setHandler((context, params) => {
       });
 
       if (
-        existingLoan
-        && existingLoan.propertyIds
-        && !existingLoan.propertyIds.includes(proPropertyId)
+        existingLoan &&
+        existingLoan.propertyIds &&
+        !existingLoan.propertyIds.includes(proPropertyId)
       ) {
         // TODO: Quentin, track this
         LoanService.addPropertyToLoan({
@@ -243,17 +246,7 @@ anonymousLoanInsert.setHandler((context, params) => {
   }
 
   const loanId = LoanService.insertAnonymousLoan(params);
-  const analytics = new Analytics(context);
-  analytics.track(
-    EVENTS.LOAN_CREATED,
-    {
-      loanId,
-      propertyId: proPropertyId,
-      referralId,
-      anonymous: true,
-    },
-    trackingId,
-  );
+
   return loanId;
 });
 
@@ -291,6 +284,27 @@ loanSetStatus.setHandler(({ userId }, params) => {
 loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   const { loanId, createdAt } = params;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const date = new Date(createdAt);
+  date.setHours(0, 0, 0, 0);
+
+  if (date > today) {
+    throw new Meteor.Error(
+      'La date de création ne peut pas être dans le futur',
+    );
+  }
+
   LoanService.update({ loanId, object: { createdAt } });
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
+});
+
+sendLoanChecklist.setHandler(({ userId }, { address, emailParams }) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return sendEmailToAddress.run({
+    address,
+    emailId: EMAIL_IDS.LOAN_CHECKLIST,
+    params: emailParams,
+  });
 });

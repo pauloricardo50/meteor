@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 
 const Widget1MonthlyMaintenance = ({ onChange, value }) => (
   <RadioButtons
-    onChange={(_, newValue) => onChange(newValue)}
+    onChange={onChange}
     options={[
       { id: true, label: <T id="Widget1MonthlyMaintenance.yes" /> },
       { id: false, label: <T id="Widget1MonthlyMaintenance.no" /> },

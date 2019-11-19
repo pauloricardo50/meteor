@@ -8,6 +8,8 @@ import {
   TASK_PRIORITIES,
 } from './taskConstants';
 
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
@@ -60,10 +62,12 @@ export const TasksSchema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
+    autoValue: autoValueSentenceCase,
   },
   description: {
     type: String,
     optional: true,
+    autoValue: autoValueSentenceCase,
   },
   loanLink: {
     type: Object,

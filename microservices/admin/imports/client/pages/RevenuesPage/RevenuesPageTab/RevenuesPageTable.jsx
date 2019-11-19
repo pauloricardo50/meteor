@@ -20,10 +20,10 @@ const RevenuesPageTable = (props: RevenuesPageTableProps) => {
       <Select
         options={options}
         value={status.$in}
-        label="Statut"
-        onChange={(_, selected) => setStatus({ $in: selected })}
+        label="Statut du revenu"
+        onChange={selected => setStatus({ $in: selected })}
         multiple
-        style={{ display: 'inline-block' }}
+        style={{ display: 'inline-flex', minWidth: 150 }}
       />
       <RevenuesTable
         displayLoan

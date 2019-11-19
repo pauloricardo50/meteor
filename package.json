@@ -9,7 +9,7 @@
     "deploy-dev": "cd .deployment/ && npm run deploy-dev",
     "flow-typed": "flow-typed install",
     "flow": "flow",
-    "format": "npx eslint --fix .",
+    "format": "npx eslint --fix --ext .jsx,.js .",
     "generate-circleci-configs": "babel-node .circleci/generateConfig.js",
     "lang": "babel-node scripts/createLanguages.js",
     "lint": "npx eslint .",
@@ -30,16 +30,6 @@
     "test-all": "cd scripts/ && ./test-all.sh",
     "update-nginx": "cd .deployment/ && npm run update-nginx"
   },
-  "disabled-husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/e-Potek/epotek.git"
@@ -49,34 +39,33 @@
   },
   "homepage": "https://github.com/e-Potek/epotek#readme",
   "devDependencies": {
-    "@babel/core": "7.5.4",
-    "@babel/node": "7.5.0",
-    "@babel/plugin-proposal-class-properties": "7.5.0",
-    "@babel/preset-env": "7.5.4",
+    "@babel/core": "7.7.2",
+    "@babel/node": "7.7.0",
+    "@babel/plugin-proposal-class-properties": "7.7.0",
+    "@babel/preset-env": "7.7.1",
     "@cypress/browserify-preprocessor": "^2.1.1",
-    "babel-eslint": "^10.0.2",
+    "babel-eslint": "^10.0.3",
     "change-case": "^3.1.0",
-    "cypress": "^3.4.0",
-    "eslint": "5.16.0",
-    "eslint-config-airbnb": "^17.1.1",
-    "eslint-config-prettier": "^6.0.0",
+    "cypress": "^3.6.1",
+    "eslint": "6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-import-resolver-meteor": "^0.4.0",
-    "eslint-plugin-cypress": "^2.2.1",
-    "eslint-plugin-flowtype": "^3.11.1",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-cypress": "^2.7.0",
+    "eslint-plugin-flowtype": "^4.3.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-meteor": "^5.1.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-meteor": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
     "esm": "^3.2.25",
-    "flow-bin": "^0.102.0",
-    "flow-typed": "^2.5.2",
+    "flow-bin": "^0.111.3",
+    "flow-typed": "^2.6.2",
     "global": "^4.4.0",
-    "husky": "^3.0.0",
-    "lint-staged": "^9.2.0",
     "node-cmd": "^3.0.0",
-    "plop": "^2.4.0",
-    "prettier": "^1.18.2",
-    "rxjs": "^6.5.2"
+    "plop": "^2.5.3",
+    "prettier": "^1.19.1"
   }
 }

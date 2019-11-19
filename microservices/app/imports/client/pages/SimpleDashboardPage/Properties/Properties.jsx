@@ -49,13 +49,13 @@ const Properties = ({ loan }: PropertiesProps) => {
                 <T id="FinancingPropertyPicker.placeholder" />
               )
             }
-            subtitle={(
+            subtitle={
               <PropertyCardSubtitle
                 property={property}
                 maxPropertyValue={maxPropertyValue}
                 residenceType={residenceType}
               />
-            )}
+            }
           />
         )),
       ]}

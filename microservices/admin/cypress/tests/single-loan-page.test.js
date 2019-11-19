@@ -3,7 +3,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe('Loans', () => {
+describe('Single Loan Page', () => {
   before(() => {
     cy.initiateTest();
 
@@ -28,7 +28,16 @@ describe('Loans', () => {
     cy.contains('Nouvelle hypothèque').click();
     cy.get('.status-label').should('contain', 'Prospect');
     cy.contains('Prospect').click();
-    cy.contains('Closing').click();
+    cy.contains('Qualifié').click({ force: true });
+
+    cy.get('.status-label').should('contain', 'Qualifié');
+    cy.contains('Qualifié').click();
+    cy.contains('En cours').click({ force: true });
+
+    cy.get('.status-label').should('contain', 'En cours');
+    cy.contains('En cours').click();
+    cy.contains('Closing').click({ force: true });
+
     cy.contains('Ok').click();
     cy.get('.status-label').should('not.contain', 'Prospect');
     cy.get('.status-label').should('contain', 'Closing');
@@ -50,7 +59,9 @@ describe('Loans', () => {
   it('should add lenders', () => {
     cy.contains('Nouvelle hypothèque').click();
     cy.contains('Prospect').click();
-    cy.contains('En cours').click();
+    cy.contains('Qualifié').click({ force: true });
+    cy.contains('Qualifié').click();
+    cy.contains('En cours').click({ force: true });
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
 

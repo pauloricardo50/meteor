@@ -34,15 +34,21 @@ describe('AutoForm', () => {
   });
 
   it('renders a form with a field and submit button', () => {
-    expect(component()
-      .find('form')
-      .exists()).to.equal(true);
-    expect(component()
-      .find(TextField)
-      .exists()).to.equal(true);
-    expect(component()
-      .find(Button)
-      .exists()).to.equal(true);
+    expect(
+      component()
+        .find('form')
+        .exists(),
+    ).to.equal(true);
+    expect(
+      component()
+        .find(TextField)
+        .exists(),
+    ).to.equal(true);
+    expect(
+      component()
+        .find(Button)
+        .exists(),
+    ).to.equal(true);
   });
 
   it('does not render fields with a false condition', () => {
@@ -51,15 +57,21 @@ describe('AutoForm', () => {
         text: { type: String, condition: () => false },
       }),
     };
-    expect(component()
-      .find('form')
-      .exists()).to.equal(true);
-    expect(component()
-      .find(TextField)
-      .exists()).to.equal(false);
-    expect(component()
-      .find(Button)
-      .exists()).to.equal(true);
+    expect(
+      component()
+        .find('form')
+        .exists(),
+    ).to.equal(true);
+    expect(
+      component()
+        .find(TextField)
+        .exists(),
+    ).to.equal(false);
+    expect(
+      component()
+        .find(Button)
+        .exists(),
+    ).to.equal(true);
   });
 
   it('does not render fields based on changes to the model', () => {
@@ -103,7 +115,7 @@ describe('AutoForm', () => {
         'arr.$.text': String,
       }),
       model: { stuff: 'yo', arr: [{ text: 'dude' }], hello: 'dawg' },
-      onSubmit: (values) => {
+      onSubmit: values => {
         expect(values).to.deep.equal({ stuff: 'yo', arr: [{ text: 'dude' }] });
       },
     };
@@ -178,9 +190,11 @@ describe('AutoForm', () => {
         autoFieldProps: { labels: { myText: 'Yo' } },
       };
 
-      expect(component()
-        .find('label')
-        .text()).to.include('Yo');
+      expect(
+        component()
+          .find('label')
+          .text(),
+      ).to.include('Yo');
     });
 
     it('overrides the label if provided on the children', () => {
@@ -192,9 +206,11 @@ describe('AutoForm', () => {
         children: <CustomAutoField name="myText" overrideLabel="Dude" />,
       };
 
-      expect(component()
-        .find('label')
-        .text()).to.include('Dude');
+      expect(
+        component()
+          .find('label')
+          .text(),
+      ).to.include('Dude');
     });
 
     it('uses the label on the schema', () => {
@@ -204,9 +220,11 @@ describe('AutoForm', () => {
         }),
       };
 
-      expect(component()
-        .find('label')
-        .text()).to.include('mah dude');
+      expect(
+        component()
+          .find('label')
+          .text(),
+      ).to.include('mah dude');
     });
 
     it('sets a default label with Translation', () => {
@@ -214,9 +232,11 @@ describe('AutoForm', () => {
         schema: new SimpleSchema({ myText: { type: String } }),
       };
 
-      expect(component()
-        .find('label')
-        .text()).to.include('Forms.myText');
+      expect(
+        component()
+          .find('label')
+          .text(),
+      ).to.include('Forms.myText');
     });
 
     it('does not set the label if one of them is null', () => {
@@ -244,9 +264,11 @@ describe('AutoForm', () => {
           .at(0)
           .simulate('click');
 
-        expect(component()
-          .find('label')
-          .text()).to.include('Forms.myText.stuff');
+        expect(
+          component()
+            .find('label')
+            .text(),
+        ).to.include('Forms.myText.stuff');
       });
     });
   });
@@ -260,13 +282,17 @@ describe('AutoForm', () => {
         placeholder: false,
       };
 
-      expect(component()
-        .find(AutoForm)
-        .prop('placeholder')).to.equal(false);
+      expect(
+        component()
+          .find(AutoForm)
+          .prop('placeholder'),
+      ).to.equal(false);
 
-      expect(component()
-        .find('input')
-        .prop('placeholder')).to.equal('');
+      expect(
+        component()
+          .find('input')
+          .prop('placeholder'),
+      ).to.equal('');
     });
 
     it('sets the placeholder', () => {
@@ -277,9 +303,11 @@ describe('AutoForm', () => {
         placeholder: true,
       };
 
-      expect(component()
-        .find('input')
-        .prop('placeholder')).to.equal('p.ex: Howdy');
+      expect(
+        component()
+          .find('input')
+          .prop('placeholder'),
+      ).to.equal('p.ex: Howdy');
     });
 
     it('does not set the placeholder if null is used', () => {
@@ -290,9 +318,11 @@ describe('AutoForm', () => {
         placeholder: true,
       };
 
-      expect(component()
-        .find('input')
-        .prop('placeholder')).to.equal(null);
+      expect(
+        component()
+          .find('input')
+          .prop('placeholder'),
+      ).to.equal(null);
     });
 
     it('sets a default placeholder', () => {
@@ -303,9 +333,11 @@ describe('AutoForm', () => {
         placeholder: true,
       };
 
-      expect(component()
-        .find('input')
-        .prop('placeholder')).to.include('Forms.myText.placeholder');
+      expect(
+        component()
+          .find('input')
+          .prop('placeholder'),
+      ).to.include('Forms.myText.placeholder');
     });
 
     context('in nested fields', () => {
@@ -324,9 +356,11 @@ describe('AutoForm', () => {
 
         component().update();
 
-        expect(component()
-          .find(CustomSelectField)
-          .prop('placeholder')).to.equal('Forms.myText.placeholder');
+        expect(
+          component()
+            .find(CustomSelectField)
+            .prop('placeholder'),
+        ).to.equal('general.pick');
       });
 
       it('does not set a placeholder for a list item field', () => {
@@ -342,9 +376,11 @@ describe('AutoForm', () => {
           .at(0)
           .simulate('click');
 
-        expect(component()
-          .find('input')
-          .prop('placeholder')).to.equal('');
+        expect(
+          component()
+            .find('input')
+            .prop('placeholder'),
+        ).to.equal('');
       });
 
       context('sets the right placeholder on nested objects', () => {
@@ -363,9 +399,11 @@ describe('AutoForm', () => {
             .at(0)
             .simulate('click');
 
-          expect(component()
-            .find('input')
-            .prop('placeholder')).to.include('Forms.myText.stuff.placeholder');
+          expect(
+            component()
+              .find('input')
+              .prop('placeholder'),
+          ).to.include('Forms.myText.stuff.placeholder');
         });
 
         it('when parent label is null', () => {
@@ -386,9 +424,11 @@ describe('AutoForm', () => {
             .at(0)
             .simulate('click');
 
-          expect(component()
-            .find('input')
-            .prop('placeholder')).to.include('myPlaceholder');
+          expect(
+            component()
+              .find('input')
+              .prop('placeholder'),
+          ).to.include('myPlaceholder');
         });
       });
 
@@ -407,9 +447,11 @@ describe('AutoForm', () => {
           .at(0)
           .simulate('click');
 
-        expect(component()
-          .find('input')
-          .prop('placeholder')).to.equal('');
+        expect(
+          component()
+            .find('input')
+            .prop('placeholder'),
+        ).to.equal('');
       });
     });
   });
@@ -456,17 +498,21 @@ describe('AutoForm', () => {
         ),
       };
 
-      expect(component()
-        .find('[name="myText2"]')
-        .find('input')
-        .prop('value')).to.equal('yo dude');
+      expect(
+        component()
+          .find('[name="myText2"]')
+          .find('input')
+          .prop('value'),
+      ).to.equal('yo dude');
 
       setInput('myText1', 'hello');
 
-      expect(component()
-        .find('[name="myText2"]')
-        .find('input')
-        .prop('value')).to.equal('hello dude');
+      expect(
+        component()
+          .find('[name="myText2"]')
+          .find('input')
+          .prop('value'),
+      ).to.equal('hello dude');
     });
 
     it('can render custom components', () => {

@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Input from '../Material/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
+import T from '../Translation';
 
 type ClickToEditFieldProps = {
   isEditing: boolean,
@@ -19,7 +21,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     this.input = React.createRef();
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     const { onSubmit, toggleEdit, value } = this.props;
     const nextValue = this.input.current.value;
@@ -31,19 +33,18 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     }
   };
 
-  handleKeyDown = (e) => {
+  handleKeyDown = e => {
     if (e.keyCode === 13 && e.metaKey) {
       this.handleSubmit(e);
     }
   };
 
-  render() {
+  renderValue() {
     const {
       isEditing,
       toggleEdit,
       value,
       placeholder,
-      inputProps,
       className,
       allowEditing = true,
       disabled,
@@ -51,25 +52,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       style,
     } = this.props;
 
-    if (isEditing) {
-      return (
-        <form
-          className={cx('click-to-edit-field editing', className)}
-          onSubmit={this.handleSubmit}
-        >
-          <Input
-            defaultValue={value}
-            inputRef={this.input}
-            onBlur={this.handleSubmit}
-            disabled={disabled}
-            onKeyDown={this.handleKeyDown}
-            {...inputProps}
-          />
-          {typeof children === 'function'
-            && children({ value: value || placeholder, isEditing })}
-        </form>
-      );
-    }
+    const displayValue = value || placeholder;
 
     return (
       <div
@@ -86,10 +69,55 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
         style={style}
       >
         {typeof children === 'function'
-          ? children({ value: value || placeholder, isEditing })
-          : value || placeholder}
+          ? children({ value: displayValue, isEditing })
+          : displayValue}
       </div>
     );
   }
+
+  render() {
+    const {
+      isEditing,
+      toggleEdit,
+      value,
+      placeholder,
+      inputProps,
+      className,
+      allowEditing = true,
+      disabled,
+      children,
+      style,
+      tooltipWhenDisabled = <T id="general.clickToEditField.disabledTooltip" />,
+    } = this.props;
+
+    if (isEditing) {
+      return (
+        <form
+          className={cx('click-to-edit-field editing', className)}
+          onSubmit={this.handleSubmit}
+        >
+          <Input
+            defaultValue={value}
+            inputRef={this.input}
+            onBlur={this.handleSubmit}
+            disabled={disabled}
+            onKeyDown={this.handleKeyDown}
+            {...inputProps}
+          />
+          {typeof children === 'function' &&
+            children({ value: value || placeholder, isEditing })}
+        </form>
+      );
+    }
+
+    if (disabled && tooltipWhenDisabled) {
+      return (
+        <Tooltip title={tooltipWhenDisabled}>{this.renderValue()}</Tooltip>
+      );
+    }
+
+    return this.renderValue();
+  }
 }
+
 export default ClickToEditFieldContainer(ClickToEditField);

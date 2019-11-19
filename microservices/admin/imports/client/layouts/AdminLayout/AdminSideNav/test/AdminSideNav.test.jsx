@@ -53,16 +53,20 @@ describe('AdminSideNav', () => {
     getMountedComponent.reset();
   });
 
-  [(LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION)].forEach((collectionName) => {
-    describe(`for ${collectionName} collection`, () => {
-      it('renders DetailSideNavSort and DetailSideNavFilters components in the DetailSideNavHeader', () => {
-        const sidenavHeader = component({ collectionName }).find(DetailSideNavHeader);
+  [(LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION)].forEach(
+    collectionName => {
+      describe(`for ${collectionName} collection`, () => {
+        it('renders DetailSideNavSort and DetailSideNavFilters components in the DetailSideNavHeader', () => {
+          const sidenavHeader = component({ collectionName }).find(
+            DetailSideNavHeader,
+          );
 
-        expect(sidenavHeader.find(DetailSideNavSort).length).to.equal(1);
-        expect(sidenavHeader.find(DetailSideNavFilters).length).to.equal(1);
+          expect(sidenavHeader.find(DetailSideNavSort).length).to.equal(1);
+          expect(sidenavHeader.find(DetailSideNavFilters).length).to.equal(1);
+        });
       });
-    });
-  });
+    },
+  );
 
   it('passes `setSortOption` redux action to DetailSideNavSort', () => {
     const sidenavSort = component({ collectionName: LOANS_COLLECTION })
@@ -72,8 +76,12 @@ describe('AdminSideNav', () => {
   });
 
   it('passes the default `sortOption` redux state to DetailSideNavSort', () => {
-    const sidenavSort = component({ collectionName: LOANS_COLLECTION }).find(DetailSideNavSort);
-    expect(sidenavSort.prop('sortOption')).to.equal(defaultSortOption[LOANS_COLLECTION]);
+    const sidenavSort = component({ collectionName: LOANS_COLLECTION }).find(
+      DetailSideNavSort,
+    );
+    expect(sidenavSort.prop('sortOption')).to.equal(
+      defaultSortOption[LOANS_COLLECTION],
+    );
   });
 
   it.skip('passes the resolved `sortOption` prop to DetailSideNavList', () => {
@@ -89,12 +97,16 @@ describe('AdminSideNav', () => {
   });
 
   it('passes `setFilters` redux action to DetailSideNavFilters', () => {
-    const sidenavFilter = component({ collectionName: LOANS_COLLECTION }).find(DetailSideNavFilters);
+    const sidenavFilter = component({ collectionName: LOANS_COLLECTION }).find(
+      DetailSideNavFilters,
+    );
     expect(sidenavFilter.prop('setFilters')).to.be.a('function');
   });
 
   it.skip('passes `filters` redux state to DetailSideNavFilters', () => {
-    const sidenavFilter = component({ collectionName: LOANS_COLLECTION }).find(DetailSideNavFilters);
+    const sidenavFilter = component({ collectionName: LOANS_COLLECTION }).find(
+      DetailSideNavFilters,
+    );
     expect(sidenavFilter.prop('filters')).to.deep.equal({});
   });
 

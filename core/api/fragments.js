@@ -12,11 +12,14 @@ export const activity = () => ({
   date: 1,
   description: 1,
   loan: { name: 1 },
-  secondaryType: 1,
   shouldNotify: 1,
   title: 1,
   type: 1,
   updatedAt: 1,
+  user: { name: 1, email: 1 },
+  metadata: 1,
+  isServerGenerated: 1,
+  isImportant: 1,
 });
 
 // //
@@ -36,7 +39,6 @@ export const loanBorrower = ({ withSort } = {}) => ({
   additionalDocuments: 1,
   address1: 1,
   address2: 1,
-  adminValidation: 1,
   age: 1,
   bank3A: 1,
   bankFortune: 1,
@@ -171,12 +173,19 @@ export const lender = () => ({
   },
 });
 
-export const adminLender = () => ({
-  ...lender(),
-  status: 1,
-  adminNote: 1,
-  offers: adminOffer(),
-});
+export const adminLender = () => {
+  const lenderFragment = lender();
+  return {
+    ...lenderFragment,
+    adminNote: 1,
+    offers: adminOffer(),
+    organisation: {
+      ...lenderFragment.organisation,
+      commissionRates: 1,
+    },
+    status: 1,
+  };
+};
 
 // //
 // // LenderRules fragments
@@ -241,13 +250,14 @@ export const loan = () => ({
   previousLoanTranches: 1,
   promotions: {
     address: 1,
+    canton: 1,
     contacts: 1,
     lenderOrganisationLink: 1,
     name: 1,
     type: 1,
     users: { name: 1, email: 1, phoneNumber: 1 },
   },
-  properties: { totalValue: 1, address1: 1 },
+  properties: { totalValue: 1, address1: 1, category: 1 },
   propertyIds: 1,
   purchaseType: 1,
   residenceType: 1,
@@ -305,7 +315,6 @@ const adminMaxPropertyValue = {
 
 export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   ...loanBase(),
-  adminValidation: 1,
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
   displayWelcomeScreen: 1,
@@ -317,31 +326,31 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
-      promotions: {
-        address: 1,
-        contacts: 1,
-        documents: { promotionImage: 1 },
-        lenderOrganisationLink: 1,
-        name: 1,
-        status: 1,
-        type: 1,
-        canton: 1,
-        users: {
-          _id: 1,
+        promotions: {
+          address: 1,
+          contacts: 1,
+          documents: { promotionImage: 1 },
+          lenderOrganisationLink: 1,
           name: 1,
-          email: 1,
-          phoneNumber: 1,
-          organisations: { users: { title: 1 } },
-        },
-        loans: {
-          _id: 1,
-          $filter({ filters, params: { loanId } }) {
-            filters.userId = Meteor.userId();
-            filters._id = loanId;
+          status: 1,
+          type: 1,
+          canton: 1,
+          users: {
+            _id: 1,
+            name: 1,
+            email: 1,
+            phoneNumber: 1,
+            organisations: { users: { title: 1 } },
+          },
+          loans: {
+            _id: 1,
+            $filter({ filters, params: { loanId } }) {
+              filters.userId = Meteor.userId();
+              filters._id = loanId;
+            },
           },
         },
-      },
-    }
+      }
     : {}),
 });
 
@@ -353,7 +362,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
-  revenues: revenue(),
+  revenues: adminRevenue(),
   status: 1,
   tasksCache: {
     createdAt: 1,
@@ -403,12 +412,15 @@ export const proLoans = () => ({
     email: 1,
     referredByUser: { name: 1, organisations: { name: 1 } },
     referredByOrganisation: { name: 1 },
+    assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
   },
   hasPromotion: 1,
   hasProProperty: 1,
   maxPropertyValue: userMaxPropertyValue,
   properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
+  relatedTo: 1,
   referralId: 1,
+  referredByText: 1,
   residenceType: 1,
   shareSolvency: 1,
   structure: 1,
@@ -451,7 +463,7 @@ export const notification = () => ({
   relatedDoc: 1,
   task: task(),
   title: 1,
-  revenue: revenue(),
+  revenue: adminRevenue(),
   updatedAt: 1,
 });
 
@@ -538,6 +550,7 @@ export const adminOrganisation = () => ({
   lenders: adminLender(),
   adminNote: 1,
   documents: 1,
+  referredCustomers: { _id: 1 },
 });
 
 // //
@@ -561,6 +574,8 @@ export const proPromotionLot = () => ({
       description: 1,
       promotionLots: { _id: 1 },
     },
+    constructionTimeline: 1,
+    signingDate: 1,
   },
   promotionOptions: { _id: 1 },
   properties: promotionProperty(),
@@ -587,9 +602,11 @@ export const appPromotionLot = () => ({
 // // PromotionOption fragments
 // //
 export const fullPromotionOption = () => ({
+  agreementStatus: 1,
   canton: 1,
   createdAt: 1,
   custom: 1,
+  depositStatus: 1,
   loan: { name: 1 },
   lots: { name: 1, type: 1, status: 1, description: 1 },
   priority: 1,
@@ -599,9 +616,7 @@ export const fullPromotionOption = () => ({
 });
 
 export const proPromotionOption = () => ({
-  canton: 1,
-  createdAt: 1,
-  custom: 1,
+  ...fullPromotionOption(),
   loan: {
     name: 1,
     solvency: 1,
@@ -615,32 +630,28 @@ export const proPromotionOption = () => ({
     },
     loanProgress: 1,
   },
-  lots: { name: 1, type: 1, description: 1 },
-  priority: 1,
-  solvency: 1,
-  updatedAt: 1,
   promotion: { users: { _id: 1 } },
-  promotionLots: { _id: 1 },
+  proNote: 1,
 });
 
 export const appPromotionOption = () => ({
+  agreementStatus: 1,
   attributedToMe: 1,
   canton: 1,
   createdAt: 1,
   custom: 1,
+  depositStatus: 1,
   lots: { description: 1, name: 1, type: 1, value: 1 },
   promotionLots: appPromotionLot(),
   priority: 1,
   solvency: 1,
   updatedAt: 1,
+  loan: { user: { _id: 1 } },
 });
 
 export const loanPromotionOption = () => ({
-  attributedToMe: 1,
-  canton: 1,
-  custom: 1,
+  ...appPromotionOption(),
   name: 1,
-  priority: 1,
   promotion: 1,
   promotionLots: {
     name: 1,
@@ -648,8 +659,8 @@ export const loanPromotionOption = () => ({
     reducedStatus: 1,
     value: 1,
     properties: promotionProperty(),
+    attributedTo: { user: { _id: 1 } },
   },
-  solvency: 1,
   value: 1,
 });
 
@@ -668,7 +679,7 @@ export const basePromotion = () => ({
   createdAt: 1,
   documents: 1,
   lenderOrganisation: { name: 1, logo: 1 },
-  loans: { _id: 1 },
+  loans: { _id: 1, createdAt: 1 },
   lots: {
     value: 1,
     name: 1,
@@ -704,6 +715,7 @@ export const basePromotion = () => ({
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
+  adminNote: 1,
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
   promotionLots: {
@@ -718,14 +730,16 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     promotion: { _id: 1 },
   },
   promotionLoan: { _id: 1, name: 1 },
+  authorizationStatus: 1,
+  projectStatus: 1,
   ...(withFilteredLoan
     ? {
-      loans: {
-        $filter({ filters, params: { loanId } }) {
-          filters._id = loanId;
+        loans: {
+          $filter({ filters, params: { loanId } }) {
+            filters._id = loanId;
+          },
         },
-      },
-    }
+      }
     : {}),
 });
 
@@ -769,7 +783,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   ...propertySummary(),
   additionalDocuments: 1,
   additionalMargin: 1,
-  adminValidation: 1,
   areaNorm: 1,
   bathroomCount: 1,
   category: 1,
@@ -807,6 +820,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   updatedAt: 1,
   user: appUser(),
   users: { _id: 1 },
+  userLinks: 1,
   useOpenGraph: 1,
   volume: 1,
   volumeNorm: 1,
@@ -850,10 +864,13 @@ export const userProperty = ({ withSort } = {}) => {
 export const proPropertySummary = () => ({
   address1: 1,
   city: 1,
+  createdAt: 1,
   status: 1,
   totalValue: 1,
   loanCount: 1,
   country: 1,
+  userLinks: 1,
+  users: { name: 1 },
 });
 
 export const proProperty = ({ withSort } = {}) => ({
@@ -883,6 +900,7 @@ export const apiProperty = () => ({
   useOpenGraph: 1,
   imageUrls: 1,
   country: 1,
+  status: 1,
 });
 
 // //
@@ -920,6 +938,7 @@ export const simpleUser = () => ({
   phoneNumbers: 1,
   phoneNumber: 1,
   roles: 1,
+  isDisabled: 1,
 });
 
 export const organisationUser = () => ({
@@ -975,21 +994,23 @@ export const proUser = () => ({
   proProperties: {
     _id: 1,
     address1: 1,
+    city: 1,
     permissions: 1,
     status: 1,
     users: { _id: 1 },
+    zipCode: 1,
   },
 });
 
 // //
 // // Revenues fragments
 // //
-export const revenue = () => ({
+export const adminRevenue = () => ({
   amount: 1,
   createdAt: 1,
   description: 1,
   expectedAt: 1,
-  loan: { name: 1 },
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
@@ -998,4 +1019,19 @@ export const revenue = () => ({
   sourceOrganisation: { name: 1 },
   status: 1,
   type: 1,
+});
+
+// //
+// // Sessions fragments
+// //
+export const userSession = () => ({
+  updatedAt: 1,
+  isImpersonate: 1,
+  lastPageVisited: 1,
+  userId: 1,
+  connectionId: 1,
+  shared: 1,
+  userIsConnected: 1,
+  impersonatingAdmin: { name: 1, firstName: 1, lastName: 1 },
+  followed: 1,
 });

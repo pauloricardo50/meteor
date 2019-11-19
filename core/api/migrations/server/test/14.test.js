@@ -23,9 +23,15 @@ describe('Migration 14', () => {
       await up();
 
       expect(Properties.findOne({ _id: 'test' }).yearlyExpenses).to.equal(1200);
-      expect(Properties.findOne({ _id: 'test' }).monthlyExpenses).to.equal(undefined);
-      expect(Properties.findOne({ _id: 'test2' }).yearlyExpenses).to.equal(undefined);
-      expect(Properties.findOne({ _id: 'test2' }).monthlyExpenses).to.equal(undefined);
+      expect(Properties.findOne({ _id: 'test' }).monthlyExpenses).to.equal(
+        undefined,
+      );
+      expect(Properties.findOne({ _id: 'test2' }).yearlyExpenses).to.equal(
+        undefined,
+      );
+      expect(Properties.findOne({ _id: 'test2' }).monthlyExpenses).to.equal(
+        undefined,
+      );
     });
   });
 
@@ -41,10 +47,16 @@ describe('Migration 14', () => {
 
       await down();
 
-      expect(Properties.findOne({ _id: 'test' }).yearlyExpenses).to.equal(undefined);
+      expect(Properties.findOne({ _id: 'test' }).yearlyExpenses).to.equal(
+        undefined,
+      );
       expect(Properties.findOne({ _id: 'test' }).monthlyExpenses).to.equal(83);
-      expect(Properties.findOne({ _id: 'test2' }).yearlyExpenses).to.equal(undefined);
-      expect(Properties.findOne({ _id: 'test2' }).monthlyExpenses).to.equal(undefined);
+      expect(Properties.findOne({ _id: 'test2' }).yearlyExpenses).to.equal(
+        undefined,
+      );
+      expect(Properties.findOne({ _id: 'test2' }).monthlyExpenses).to.equal(
+        undefined,
+      );
     });
   });
 });

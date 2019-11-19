@@ -52,7 +52,7 @@ const OfferPickerDialog = (props: OfferPickerDialogProps) => {
 };
 
 export default lifecycle({
-  componentWillReceiveProps({ offer: nextOffer }) {
+  UNSAFE_componentWillReceiveProps({ offer: nextOffer }) {
     const { offer } = this.props;
     // Cache the last offer, to avoid jerky visuals in the dialog
     // Because the dialog takes 500ms to fade out, the offer first disappears

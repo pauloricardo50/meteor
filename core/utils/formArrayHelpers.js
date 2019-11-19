@@ -16,10 +16,10 @@ type formFieldType = {
 // shouldCountField - A boolean to determine if a field in an array
 // should be counted or not
 export const shouldCountField = (formField: formFieldType) =>
-  (formField.condition === undefined || formField.condition === true)
-  && formField.required !== false
-  && !formField.disabled
-  && formField.type !== 'h3';
+  (formField.condition === undefined || formField.condition === true) &&
+  formField.required !== false &&
+  !formField.disabled &&
+  formField.type !== 'h3';
 
 const conditionalInputIsTriggered = (rootField, doc) =>
   getCurrentValue(rootField.inputs[0], doc) === rootField.conditionalTrueValue;
@@ -29,12 +29,12 @@ const conditionalInputIsTriggered = (rootField, doc) =>
 export const getCountedArray = (formArray, doc, shouldCountAllFields) => {
   const arr = [];
 
-  formArray.forEach((i) => {
+  formArray.forEach(i => {
     if (shouldCountAllFields || shouldCountField(i)) {
       if (i.type === 'conditionalInput') {
         if (conditionalInputIsTriggered(i, doc)) {
           // If the conditional input is triggering the next input, add all values
-          i.inputs.forEach((input) => {
+          i.inputs.forEach(input => {
             if (shouldCountField(input)) {
               arr.push(getCurrentValue(input, doc));
             }
@@ -79,8 +79,8 @@ export const getMissingFieldIds = (formArray, doc) =>
           ...additionalFields.reduce(
             (missingConditionalFields, additionalField) => {
               if (
-                fieldIsValid(additionalField, doc)
-                || !shouldCountField(additionalField)
+                fieldIsValid(additionalField, doc) ||
+                !shouldCountField(additionalField)
               ) {
                 return missingConditionalFields;
               }
@@ -104,6 +104,34 @@ export const getMissingFieldIds = (formArray, doc) =>
     }
 
     return missingFieldIds;
+  }, []);
+
+export const getRequiredFieldIds = (formArray, doc) =>
+  formArray.reduce((fieldIds, field) => {
+    const { type, id, inputs } = field;
+
+    if (!shouldCountField(field)) {
+      return fieldIds;
+    }
+
+    if (type === 'conditionalInput') {
+      const [conditionalField, ...additionalFields] = inputs;
+      if (conditionalInputIsTriggered(field, doc)) {
+        return [
+          ...fieldIds,
+          ...additionalFields.reduce((conditionalFields, additionalField) => {
+            if (!shouldCountField(additionalField)) {
+              return [...conditionalFields];
+            }
+            return [...conditionalFields, additionalField.id];
+          }, []),
+        ];
+      }
+
+      return [...fieldIds, conditionalField.id];
+    }
+
+    return [...fieldIds, id];
   }, []);
 
 /**

@@ -5,10 +5,15 @@ import {
   getPropertyLoanArray,
 } from '../../arrays/PropertyFormArray';
 import { getPercent } from '../general';
-import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
+import {
+  getCountedArray,
+  getMissingFieldIds,
+  getRequiredFieldIds,
+} from '../formArrayHelpers';
 import {
   filesPercent,
   getMissingDocumentIds,
+  getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
 import { getPropertyDocuments } from '../../api/files/documents';
 import MiddlewareManager from '../MiddlewareManager';
@@ -55,11 +60,12 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     getPropAndWork({ loan, structureId }) {
       const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'propertyWork',
-      }) || 0;
+      const propertyWork =
+        this.selectStructureKey({
+          loan,
+          structureId,
+          key: 'propertyWork',
+        }) || 0;
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
@@ -125,6 +131,46 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       ];
     }
 
+    getRequiredPropertyFields({ loan, structureId, property }) {
+      const { borrowers } = loan;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+
+      const propertyToCalculateWith = property || selectedProperty;
+
+      const formArray1 = getPropertyArray({
+        loan,
+        borrowers,
+        property: propertyToCalculateWith,
+      });
+      const formArray2 = getPropertyLoanArray({
+        loan,
+        borrowers,
+        property: propertyToCalculateWith,
+      });
+
+      return [
+        ...getRequiredFieldIds(formArray1, propertyToCalculateWith),
+        ...getRequiredFieldIds(formArray2, loan),
+      ];
+    }
+
+    getValidPropertyFieldsRatio({ loan, structureId, property }) {
+      const requiredFields = this.getRequiredPropertyFields({
+        loan,
+        structureId,
+        property,
+      });
+      const missingFields = this.getMissingPropertyFields({
+        loan,
+        structureId,
+        property,
+      });
+      return {
+        valid: requiredFields.length - missingFields.length,
+        required: requiredFields.length,
+      };
+    }
+
     getMissingPropertyDocuments({ loan, structureId, property }) {
       const selectedProperty = this.selectProperty({ loan, structureId });
       const propertyToCalculateWith = property || selectedProperty;
@@ -136,6 +182,33 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
           id: propertyToCalculateWith._id,
         }),
       });
+    }
+
+    getRequiredPropertyDocumentIds({ loan, structureId, property }) {
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
+
+      return getRequiredDocumentIds(
+        getPropertyDocuments({ loan, id: propertyToCalculateWith._id }),
+      );
+    }
+
+    getValidPropertyDocumentsRatio({ loan, structureId, property }) {
+      const requiredDocments = this.getRequiredPropertyDocumentIds({
+        loan,
+        structureId,
+        property,
+      });
+      const missingDocuments = this.getMissingPropertyDocuments({
+        loan,
+        structureId,
+        property,
+      });
+
+      return {
+        valid: requiredDocments.length - missingDocuments.length,
+        required: requiredDocments.length,
+      };
     }
 
     hasDetailedPropertyValue({ loan, structureId }) {
@@ -165,9 +238,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     isNewProperty({ loan, structureId }) {
       return !!(
-        this.isPromotionProperty({ loan, structureId })
-        || this.selectPropertyKey({ loan, structureId, key: 'isNew' })
-        || loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
+        this.isPromotionProperty({ loan, structureId }) ||
+        this.selectPropertyKey({ loan, structureId, key: 'isNew' }) ||
+        loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
       );
     }
   };

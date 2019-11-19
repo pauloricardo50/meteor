@@ -14,7 +14,8 @@ type ModifyContactDialogFormProps = {
 };
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {
-  const { _id: organisationId } = organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
+  const { _id: organisationId } =
+    organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
   return organisationId || null;
 };
 

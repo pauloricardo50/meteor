@@ -27,16 +27,18 @@ export const ActivitySchema = new SimpleSchema({
   },
   type: {
     type: String,
-    allowedValues: Object.values(ACTIVITY_TYPES).filter(type => type !== ACTIVITY_TYPES.SERVER),
+    allowedValues: Object.values(ACTIVITY_TYPES),
     uniforms: { placeholder: null },
   },
   shouldNotify: { type: Boolean, defaultValue: false },
+  isImportant: { type: Boolean, defaultValue: false },
 });
 
 export const activityFormLayout = [
   { className: 'grid-col', fields: ['title', 'type'] },
   { className: 'grid-col', fields: ['date', 'shouldNotify'] },
   'description',
+  'isImportant',
 ];
 
 export const LoanActivityForm = ({

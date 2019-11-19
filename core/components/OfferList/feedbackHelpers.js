@@ -124,21 +124,27 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
 
   if (option) {
     feedback = feedback.concat(greetings({ contactName, formatMessage }));
-    feedback = feedback.concat(introduction({
-      option,
-      borrowers,
-      singleBorrower,
-      address,
-      date: moment(createdAt).format('DD.MM.YYYY'),
-      formatMessage,
-    }));
-    feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.body` }, { singleBorrower }));
+    feedback = feedback.concat(
+      introduction({
+        option,
+        borrowers,
+        singleBorrower,
+        address,
+        date: moment(createdAt).format('DD.MM.YYYY'),
+        formatMessage,
+      }),
+    );
+    feedback = feedback.concat(
+      formatMessage({ id: `Feedback.${option}.body` }, { singleBorrower }),
+    );
 
     if (comments.length && FEEDBACK_OPTIONS_SETTINGS[option].enableComments) {
-      feedback = feedback.concat(formatMessage(
-        { id: `Feedback.${option}.comments` },
-        { singleBorrower },
-      ));
+      feedback = feedback.concat(
+        formatMessage(
+          { id: `Feedback.${option}.comments` },
+          { singleBorrower },
+        ),
+      );
       feedback = feedback.concat(
         '<ul>',
         comments
@@ -150,7 +156,9 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
     }
 
     if (FEEDBACK_OPTIONS_SETTINGS[option].enableOutro) {
-      feedback = feedback.concat(outro({ option, singleBorrower, borrowers, formatMessage }));
+      feedback = feedback.concat(
+        outro({ option, singleBorrower, borrowers, formatMessage }),
+      );
     }
 
     feedback = feedback.concat(closing({ assignee, formatMessage }));

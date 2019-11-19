@@ -11,6 +11,8 @@ import {
   sendPromotionInvitationEmail,
   removeLoanFromPromotion,
   editPromotionLoan,
+  reuseConstructionTimeline,
+  toggleNotifications,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -33,24 +35,30 @@ insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
   return PromotionService.insertPromotionProperty({ promotionId, property });
 });
 
-setPromotionUserPermissions.setHandler(({ userId: currentUserId }, { promotionId, userId, permissions }) => {
-  SecurityService.checkUserIsAdmin(currentUserId);
-  return PromotionService.setUserPermissions({
-    promotionId,
-    userId,
-    permissions,
-  });
-});
+setPromotionUserPermissions.setHandler(
+  ({ userId: currentUserId }, { promotionId, userId, permissions }) => {
+    SecurityService.checkUserIsAdmin(currentUserId);
+    return PromotionService.setUserPermissions({
+      promotionId,
+      userId,
+      permissions,
+    });
+  },
+);
 
-addProUserToPromotion.setHandler(({ userId: currentUserId }, { promotionId, userId }) => {
-  SecurityService.checkUserIsAdmin(currentUserId);
-  return PromotionService.addProUser({ promotionId, userId });
-});
+addProUserToPromotion.setHandler(
+  ({ userId: currentUserId }, { promotionId, userId }) => {
+    SecurityService.checkUserIsAdmin(currentUserId);
+    return PromotionService.addProUser({ promotionId, userId });
+  },
+);
 
-removeProFromPromotion.setHandler(({ userId: currentUserId }, { promotionId, userId }) => {
-  SecurityService.checkUserIsAdmin(currentUserId);
-  return PromotionService.removeProUser({ promotionId, userId });
-});
+removeProFromPromotion.setHandler(
+  ({ userId: currentUserId }, { promotionId, userId }) => {
+    SecurityService.checkUserIsAdmin(currentUserId);
+    return PromotionService.removeProUser({ promotionId, userId });
+  },
+);
 
 sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
   SecurityService.promotions.isAllowedToInviteCustomers({
@@ -78,4 +86,15 @@ editPromotionLoan.setHandler(({ userId }, params) => {
     userId,
   });
   return PromotionService.editPromotionLoan(params);
+});
+
+reuseConstructionTimeline.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.reuseConstructionTimeline(params);
+});
+
+toggleNotifications.setHandler(({ userId }, { promotionId }) => {
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToView({ userId, promotionId });
+  return PromotionService.toggleNotifications({ userId, promotionId });
 });

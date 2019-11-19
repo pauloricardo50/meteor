@@ -1,6 +1,9 @@
 /* eslint-env mocha */
 import { LOAN_STATUS } from '../../imports/core/api/loans/loanConstants';
-import { PRO_EMAIL, PRO_PASSWORD } from '../../imports/core/cypress/server/e2eConstants';
+import {
+  PRO_EMAIL,
+  PRO_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 
 const inviteUser = ({ firstName, lastName, email, phoneNumber }) => {
   cy.contains('Inviter un client').click();
@@ -112,7 +115,7 @@ describe('Promotion pages', () => {
     cy.get(':nth-child(1) > .col-LEAD').should('have.text', '0');
     cy.get(':nth-child(1) > .col-ONGOING').should('have.text', '1');
     cy.get(':nth-child(2) > .col-LEAD').should('have.text', '-');
-    cy.get(':nth-child(2) > .col-ONGOING').should((cell) => {
+    cy.get(':nth-child(2) > .col-ONGOING').should(cell => {
       expect(cell.text()).to.contains('2 500');
     });
   });

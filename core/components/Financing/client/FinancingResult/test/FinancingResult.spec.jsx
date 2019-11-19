@@ -2,27 +2,31 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'core/utils/testHelpers/enzyme';
 import { IntlProvider, intlShape } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
-import messages from 'core/lang/fr.json';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
+import { mount } from 'core/utils/testHelpers/enzyme';
+import messages from 'core/lang/fr.json';
+import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
-import Calculator from '../../../../../utils/Calculator';
+import Calculator, {
+  Calculator as CalculatorClass,
+} from '../../../../../utils/Calculator';
+import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
 
 const expectResult = (component, name, value) => {
   const val = component()
     .find(name)
     .last();
-  console.log('val:', val.debug());
 
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
     // due to the web's "intl" API
-    expect(val.contains(`${value}`) || val.contains(`${value}`.replace('.', ','))).to.equal(true);
+    expect(
+      val.contains(`${value}`) || val.contains(`${value}`.replace('.', ',')),
+    ).to.equal(true);
   } else {
     expect(val.contains(`${value}`)).to.equal(true);
   }
@@ -35,10 +39,10 @@ describe('FinancingResult', () => {
     defaultLocale: 'fr',
     messages,
   }).getChildContext();
-  const component = () =>
+  const component = ({ calc } = {}) =>
     mount(
       <ScrollSync>
-        <Provider value={{ loan, Calculator }}>
+        <Provider value={{ loan, Calculator: calc || Calculator }}>
           <FinancingResult {...props} />
         </Provider>
       </ScrollSync>,
@@ -92,7 +96,9 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find('.financing-structures-result-chart .total');
+      const monthly = component().find(
+        '.financing-structures-result-chart .total',
+      );
       const string = monthly.text();
       const hasNonZeroNumber = /[1-9]/.test(string);
       // Interests rates change constantly, can't pin a precise value
@@ -203,7 +209,9 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find('.financing-structures-result-chart .total');
+      const monthly = component().find(
+        '.financing-structures-result-chart .total',
+      );
       const string = monthly.text();
       const value = string.match(/\d/g).join('');
       expect(value).to.equal('9720');
@@ -252,21 +260,53 @@ describe('FinancingResult', () => {
     });
   });
 
-  it.skip('renders an error if an interest rate is not defined', () => {
-    // FIXME: Enzyme does not support componentDidCatch yet
-    // https://github.com/airbnb/enzyme/issues/1553
+  it('uses the right calculator for 2 different structures', () => {
     loan = {
+      selectedStructure: 'a',
       structures: [
         {
           id: 'a',
-          loanTranches: [{ type: 'unknown_rate' }],
+          propertyValue: 1000000,
+          wantedLoan: 650000,
+          ownFunds: [],
+        },
+        {
+          id: 'b',
+          propertyValue: 1000000,
+          wantedLoan: 680000,
+          ownFunds: [],
         },
       ],
-      borrowers: [{}],
+      borrowers: [{ salary: 120000 }],
       properties: [{}],
     };
-    expect(component()
-      .find('.error')
-      .exists()).to.equal(true);
+
+    const calc = new CalculatorClass({
+      loan,
+      lenderRules: [
+        {
+          filter: {
+            and: [{ '<=': [{ var: 'borrowRatio' }, 0.66] }],
+          },
+          maxIncomeRatio: 0.39,
+        },
+      ],
+    });
+
+    const incomeRatios = component({ calc })
+      .find('.incomeRatio')
+      .find(PercentWithStatus);
+    const incomeRatio1 = incomeRatios.first();
+    const incomeRatio2 = incomeRatios.last();
+
+    // The first structure's borrow ratio is below 0.66, so it should
+    // allow an income ratio of 0.35+
+    expect(incomeRatio1.prop('value')).to.be.within(0.35, 0.36);
+    expect(incomeRatio1.prop('status')).to.equal('SUCCESS');
+
+    // This structure has a borrowRatio above 0.66, so it should not accept
+    // an incomeRatio above 0.38
+    expect(incomeRatio2.prop('value')).to.be.within(0.38, 0.39);
+    expect(incomeRatio2.prop('status')).to.equal('ERROR');
   });
 });

@@ -9,10 +9,21 @@ type MicroserviceHeadProps = {};
 const formatTitle = (name = '') =>
   `e-Potek | ${name.charAt(0).toUpperCase() + name.slice(1)}`;
 
-const MicroserviceHead = (props: MicroserviceHeadProps) => {
+export const defaultOgTags = {
+  app_id: '1868218996582233',
+  description: "La révolution de l'hypothèque",
+  image: 'https://d2gb1cl8lbi69k.cloudfront.net/facebook-img.png',
+  image_height: 627,
+  image_width: 1200,
+  title: 'e-Potek',
+  type: 'website',
+};
+
+const MicroserviceHead = ({ addOgTags }: MicroserviceHeadProps) => {
   const title = formatTitle(Meteor.microservice);
   const allowScale = Meteor.microservice !== 'app';
-  const addFacebookData = Meteor.microservice !== 'admin';
+  const addFacebookData =
+    addOgTags === undefined ? Meteor.microservice !== 'admin' : addOgTags;
   const rootUrl = Meteor.settings.public.subdomains[Meteor.microservice] || '';
 
   return (
@@ -125,19 +136,25 @@ const MicroserviceHead = (props: MicroserviceHeadProps) => {
 
       {addFacebookData && [
         <meta property="og:url" content={rootUrl} key="1" />,
+        <meta property="og:image" content={defaultOgTags.image} key="2" />,
         <meta
-          property="og:image"
-          content="https://d2gb1cl8lbi69k.cloudfront.net/facebook-img.png"
-          key="2"
+          property="og:image:height"
+          content={defaultOgTags.image_height}
+          key="3"
         />,
-        <meta property="og:type" content="website" key="3" />,
-        <meta property="og:title" content="e-Potek" key="4" />,
+        <meta
+          property="og:image:width"
+          content={defaultOgTags.image_width}
+          key="4"
+        />,
+        <meta property="og:type" content={defaultOgTags.type} key="5" />,
+        <meta property="og:title" content={defaultOgTags.title} key="6" />,
         <meta
           property="og:description"
-          content="La révolution de l'hypothèque"
-          key="5"
+          content={defaultOgTags.description}
+          key="7"
         />,
-        <meta property="fb:app_id" content="1868218996582233" key="6" />,
+        <meta property="fb:app_id" content={defaultOgTags.app_id} key="8" />,
       ]}
     </Helmet>
   );

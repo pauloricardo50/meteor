@@ -1,12 +1,11 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import connectField from 'uniforms/connectField';
 import nothing from 'uniforms/nothing';
 import AutoField from 'uniforms-material/AutoField';
 import BoolField from 'uniforms-material/BoolField';
-import RadioField from 'uniforms-material/RadioField';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
@@ -73,6 +72,22 @@ const determineComponentFromProps = ({
     };
   }
 
+  if (
+    uniforms &&
+    uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL
+  ) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: {
+        margin: 'normal',
+        decimal: true,
+        negative: true,
+        variant: 'outlined',
+      },
+    };
+  }
+
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW) {
     return {
       Component: HtmlPreview,
@@ -123,14 +138,18 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
-    const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
+    const { condition, customAllowedValues, customAutoValue } = schema.getField(
+      props.name,
+    );
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
-    let [{ Component, type, props: additionalProps = {} }] = useState(determineComponentFromProps({
-      allowedValues,
-      customAllowedValues,
-      field,
-      fieldType,
-    }));
+    let [{ Component, type, props: additionalProps = {} }] = useState(
+      determineComponentFromProps({
+        allowedValues,
+        customAllowedValues,
+        field,
+        fieldType,
+      }),
+    );
 
     Component = Component || AutoField;
 
@@ -141,17 +160,21 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     }
 
     // Don't recalculate these
-    const [label] = useState(getLabel({
-      ...props,
-      ...additionalProps,
-      intlPrefix,
-      label: labels[props.name],
-    }));
-    const [placeholder] = useState(getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }));
+    const [label] = useState(
+      getLabel({
+        ...props,
+        ...additionalProps,
+        intlPrefix,
+        label: labels[props.name],
+      }),
+    );
+    const placeholder = useMemo(() =>
+      getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
+    );
 
     if (
-      typeof condition === 'function'
-      && !condition(model, props.parent && Number(props.parent.name.slice(-1)))
+      typeof condition === 'function' &&
+      !condition(model, props.parent && Number(props.parent.name.slice(-1)))
     ) {
       return nothing;
     }

@@ -28,10 +28,14 @@ const makeSchema = loan =>
     organisationId: {
       type: String,
       optional: true,
-      allowedValues: loan.lenders.map(({ organisation }) => organisation && organisation._id),
+      allowedValues: loan.lenders.map(
+        ({ organisation }) => organisation && organisation._id,
+      ),
       uniforms: {
-        transform: (organisationId) => {
-          const lender = loan.lenders.find(({ organisation }) => organisation._id === organisationId);
+        transform: organisationId => {
+          const lender = loan.lenders.find(
+            ({ organisation }) => organisation._id === organisationId,
+          );
           return lender.organisation.name;
         },
         label: <T id="Forms.organisationName" />,

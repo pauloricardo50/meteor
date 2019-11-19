@@ -1,8 +1,10 @@
 .board {
   display: flex;
   overflow-x: scroll;
+  overflow-y: hidden;
   align-items: stretch;
 
+  height: 1rem;
   padding: 8px;
 
   //   Make sure the edge padding appears properly
@@ -17,12 +19,13 @@
 
   &-column {
     display: flex;
+    overflow-x: hidden;
     align-items: stretch;
     flex-basis: 300px;
     flex-direction: column;
     flex-shrink: 0;
 
-    margin: 8px;
+    margin: 4px;
     padding: 0;
 
     background-color: $grey3;

@@ -7,7 +7,7 @@ const filterIsValid = (filter, variables) => jsonLogic.apply(filter, variables);
 const mergeRules = ({ names = [], ...oldRules }, newRules) => {
   let mergedObject = { ...oldRules };
 
-  Object.keys(newRules).forEach((newRuleName) => {
+  Object.keys(newRules).forEach(newRuleName => {
     const newRule = newRules[newRuleName];
 
     if (rulesToMerge.includes(newRuleName) && mergedObject[newRuleName]) {
@@ -42,7 +42,7 @@ export const getMatchingRules = (
 
 export const isAllRule = ({ filter: { and } }) => and[0] === true;
 
-export const parseFilter = (ruleObject) => {
+export const parseFilter = ruleObject => {
   if (ruleObject === true) {
     // Handle exception for rules that are true, i.e. apply to all loans
     return { value: true };

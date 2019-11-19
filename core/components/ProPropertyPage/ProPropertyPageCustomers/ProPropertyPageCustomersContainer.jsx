@@ -16,15 +16,13 @@ import { removeCustomerFromProperty, getReferredBy } from '../../../api';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import Icon from '../../Icon';
+import ProCustomer from '../../ProCustomer';
 
 const columnOptions = [
   { id: 'loanName' },
   { id: 'status' },
-  { id: 'name' },
-  { id: 'phone' },
-  { id: 'email' },
+  { id: 'customer' },
   { id: 'createdAt' },
-  { id: 'referredBy' },
   { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'solvency' },
   { id: 'actions' },
@@ -57,28 +55,28 @@ const canRemoveCustomerFromProperty = ({
   });
 };
 
-const getSolvencyLabel = (solvent) => {
+const getSolvencyLabel = solvent => {
   const title = <T id={`Forms.solvency.${solvent}`} />;
   let props = {};
   switch (solvent) {
-  case PROPERTY_SOLVENCY.UNDETERMINED: {
-    props = { type: 'waiting', className: 'warning' };
-    break;
-  }
-  case PROPERTY_SOLVENCY.NOT_SHARED: {
-    props = { type: 'eyeCrossed', className: 'warning' };
-    break;
-  }
-  case PROPERTY_SOLVENCY.SOLVENT: {
-    props = { type: 'check', className: 'success' };
-    break;
-  }
-  case PROPERTY_SOLVENCY.INSOLVENT: {
-    props = { type: 'close', className: 'error' };
-    break;
-  }
-  default:
-    break;
+    case PROPERTY_SOLVENCY.UNDETERMINED: {
+      props = { type: 'waiting', className: 'warning' };
+      break;
+    }
+    case PROPERTY_SOLVENCY.NOT_SHARED: {
+      props = { type: 'eyeCrossed', className: 'warning' };
+      break;
+    }
+    case PROPERTY_SOLVENCY.SOLVENT: {
+      props = { type: 'check', className: 'success' };
+      break;
+    }
+    case PROPERTY_SOLVENCY.INSOLVENT: {
+      props = { type: 'close', className: 'error' };
+      break;
+    }
+    default:
+      break;
   }
 
   return (
@@ -95,7 +93,7 @@ const makeMapLoan = ({
   permissions,
   currentUser,
   property,
-}) => (loan) => {
+}) => loan => {
   const {
     _id: loanId,
     name: loanName,
@@ -125,11 +123,24 @@ const makeMapLoan = ({
         raw: status,
         label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
       },
-      anonymous ? 'Anonyme' : user && user.name,
-      user && user.phoneNumbers && user.phoneNumbers[0],
-      user && user.email,
+      {
+        raw: !anonymous && user.name,
+        label: anonymous ? (
+          'Anonyme'
+        ) : (
+          <ProCustomer
+            user={user}
+            invitedByUser={
+              getReferredBy({
+                user,
+                proUser: currentUser,
+                isAdmin,
+              }).label
+            }
+          />
+        ),
+      },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      getReferredBy({ user, proUser: currentUser, isAdmin }),
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
@@ -145,6 +156,7 @@ const makeMapLoan = ({
           }
           label={<T id="general.remove" />}
           key="remove"
+          type="modal"
         >
           <p>
             <T
@@ -161,9 +173,9 @@ const makeMapLoan = ({
     ],
     ...(isAdmin
       ? {
-        handleClick: () =>
-          history.push(createRoute('/loans/:loanId', { loanId })),
-      }
+          handleClick: () =>
+            history.push(createRoute('/loans/:loanId', { loanId })),
+        }
       : {}),
   };
 };
@@ -177,7 +189,9 @@ export default compose(
   }),
   withRouter,
   mapProps(({ loans = [], history, permissions, property, currentUser }) => ({
-    rows: loans.map(makeMapLoan({ history, permissions, currentUser, property })),
+    rows: loans.map(
+      makeMapLoan({ history, permissions, currentUser, property }),
+    ),
     columnOptions,
     permissions,
     property,

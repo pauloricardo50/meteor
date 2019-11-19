@@ -17,7 +17,9 @@ const FinmaRatio = ({ status, tooltip, id, ...props }: FinmaRatioProps) => (
     {value => (
       <PercentWithStatus
         value={value}
-        status={status({ ...props, value })}
+        status={
+          typeof status === 'function' ? status({ ...props, value }) : status
+        }
         tooltip={tooltip}
         id={id}
       />
@@ -25,7 +27,4 @@ const FinmaRatio = ({ status, tooltip, id, ...props }: FinmaRatioProps) => (
   </CalculatedValue>
 );
 
-export default compose(
-  FinancingDataContainer,
-  React.memo,
-)(FinmaRatio);
+export default compose(FinancingDataContainer, React.memo)(FinmaRatio);

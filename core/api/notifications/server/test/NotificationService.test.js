@@ -123,7 +123,9 @@ describe('NotificationService', () => {
 
       expect(notifications.length).to.equal(1);
       expect(notifications[0].recipientLinks.length).to.equal(3);
-      expect(notifications[0].recipientLinks.map(({ _id }) => _id)).to.deep.equal(['userId1', 'userId2', 'userId3']);
+      expect(
+        notifications[0].recipientLinks.map(({ _id }) => _id),
+      ).to.deep.equal(['userId1', 'userId2', 'userId3']);
     });
   });
 
@@ -175,7 +177,10 @@ describe('NotificationService', () => {
         },
       });
 
-      ActivityService._update({ id: 'a', object: { date: new Date() } });
+      ActivityService._update({
+        id: 'a',
+        object: { date: new Date(), type: ACTIVITY_TYPES.OTHER },
+      });
       const notifications = NotificationService.fetch({});
 
       expect(notifications.length).to.equal(0);

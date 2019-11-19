@@ -9,7 +9,7 @@ import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklis
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import AdminNoteExpand from '../../../../components/AdminNote/AdminNoteExpand';
+import AdminNoteExpand from 'core/components/AdminNote/AdminNoteExpand';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import VerificationSetter from './VerificationSetter';
@@ -18,7 +18,7 @@ import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
 import BorrowerAge from '../BorrowerAge';
 
-const OverviewTab = (props) => {
+const OverviewTab = props => {
   const {
     loan,
     currentUser: { roles },
@@ -75,6 +75,7 @@ const OverviewTab = (props) => {
           docId={loan._id}
           adminNote={loan.adminNote}
           collection={LOANS_COLLECTION}
+          allowEditing
         />
       </div>
 

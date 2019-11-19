@@ -21,7 +21,7 @@ import {
 type BorrowersRecapFinanceProps = {};
 
 const renderExpenses = (expenses, addTableMoneyLine) =>
-  Object.values(EXPENSE_TYPES).map((expense) => {
+  Object.values(EXPENSE_TYPES).map(expense => {
     const value = expenses[expense];
     return addTableMoneyLine({
       label: <T id={`PDF.borrowersInfos.expenses.${expense}`} />,
@@ -80,7 +80,8 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.otherIncome.${income}`} />,
         field: otherIncome[income],
-      })),
+      }),
+    ),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.realEstateIncome" />,
       field: realEstateIncome,
@@ -91,7 +92,8 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       label: <T id="PDF.borrowersInfos.totalIncome" />,
       data: getFormattedMoneyArray({
         array: borrowers.map(borrower =>
-          calculator.getTotalIncome({ borrowers: borrower })),
+          calculator.getTotalIncome({ borrowers: borrower }),
+        ),
         negative: false,
         twoBorrowers: multipleBorrowers,
       }),
@@ -106,7 +108,8 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
         field: borrowersInfos[ownFund],
-      })),
+      }),
+    ),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.realEstateValue" />,
       field: realEstateValue,
@@ -125,7 +128,8 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       label: <T id="PDF.borrowersInfos.totalFortune" />,
       data: getFormattedMoneyArray({
         array: borrowers.map(borrower =>
-          calculator.getTotalFunds({ borrowers: borrower })),
+          calculator.getTotalFunds({ borrowers: borrower }),
+        ),
         negative: false,
         twoBorrowers: multipleBorrowers,
       }),

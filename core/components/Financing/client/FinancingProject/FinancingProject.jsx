@@ -17,8 +17,8 @@ const MAX_NOTARY_FEES_RATE = 0.1;
 const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
 
 const calculateMaxNotaryFees = data =>
-  (Calculator.selectPropertyValue(data) + data.structure.propertyWork)
-  * MAX_NOTARY_FEES_RATE;
+  (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
+  MAX_NOTARY_FEES_RATE;
 
 const FinancingProject = (props: FinancingProjectProps) => (
   <FinancingSection
@@ -40,9 +40,10 @@ const FinancingProject = (props: FinancingProjectProps) => (
         Component: InputAndSlider,
         id: 'propertyValue',
         calculatePlaceholder: data => Calculator.selectPropertyValue(data),
-        max: 5000000,
+        max: 100000000,
         allowUndefined: true,
         forceUndefined: true,
+        maxSlider: 5000000,
       },
       {
         Component: FinancingProjectFees,

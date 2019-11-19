@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { LOANS_COLLECTION } from 'core/api/constants';
@@ -16,7 +15,7 @@ type PromotionLoanLinkerProps = {
   insertPromotionLoan: Function,
 };
 
-const PromotionLoanLinkerContent = ({
+const PromotionLoanLinker = ({
   promotion,
   unlinkPromotionLoan,
   insertPromotionLoan,
@@ -48,7 +47,7 @@ const PromotionLoanLinkerContent = ({
       ) : (
         <div className="flex-row center space-children">
           <p className="secondary center">
-            Aucun dossier de financement lié à cette promotion.
+            Aucun dossier de développement lié à cette promotion.
           </p>
           <Button primary raised onClick={() => insertPromotionLoan()}>
             Lier un nouveau dossier
@@ -60,9 +59,9 @@ const PromotionLoanLinkerContent = ({
       query={loanSearch}
       title="Rechercher un dossier existant"
       resultsFilter={loans =>
-        (promotion.promotionLoan
+        promotion.promotionLoan
           ? loans.filter(loan => promotion.promotionLoan._id !== loan._id)
-          : loans)
+          : loans
       }
       renderItem={(loan, hideResults) => (
         <div
@@ -78,8 +77,8 @@ const PromotionLoanLinkerContent = ({
             }
             primary
             disabled={
-              promotion.promotionLoan
-              && promotion.promotionLoan._id === loan._id
+              promotion.promotionLoan &&
+              promotion.promotionLoan._id === loan._id
             }
           >
             Lier
@@ -88,17 +87,6 @@ const PromotionLoanLinkerContent = ({
       )}
     />
   </div>
-);
-
-const PromotionLoanLinker = props => (
-  <DialogSimple
-    primary
-    raised
-    label="Lier un dossier de financement"
-    title="Lier un dossier de financement à la promotion"
-  >
-    <PromotionLoanLinkerContent {...props} />
-  </DialogSimple>
 );
 
 export default PromotionLoanLinkerContainer(PromotionLoanLinker);

@@ -87,7 +87,9 @@ getMountedComponent.reset = () => {
     global.window = undefined;
     const jsdom = require('jsdom');
     const { JSDOM } = jsdom;
-    const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
+    const { document } = new JSDOM(
+      '<!doctype html><html><body></body></html>',
+    ).window;
     global.document = document;
     global.window = document.defaultView;
     // Do this to avoid an annoying bug resulting of the mix of jsdom and kadira

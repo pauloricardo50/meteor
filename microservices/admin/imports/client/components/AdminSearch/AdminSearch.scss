@@ -1,0 +1,44 @@
+.admin-search {
+  width: 100%;
+
+  text-align: center;
+
+  .icon-link {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      width: 40px;
+      height: 40px;
+      margin-right: 16px;
+    }
+  }
+}
+
+.list {
+  width: 100%;
+}
+
+.search-field {
+  margin: 16px;
+
+  font-size: inherit;
+}
+
+.search-input {
+  font-size: 20px;
+}
+
+.search-results,
+.search-results-collection {
+  display: flex;
+  flex-direction: column;
+
+  .icon-link {
+    max-width: unset;
+  }
+}
+
+.link {
+  text-decoration: none;
+}

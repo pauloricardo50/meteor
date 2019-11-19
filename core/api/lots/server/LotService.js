@@ -11,6 +11,14 @@ export class LotService extends CollectionService {
     super(Lots);
   }
 
+  insert = ({ promotionLot: promotionLotId, ...lot }) => {
+    const lotId = super.insert(lot);
+    if (promotionLotId) {
+      PromotionLotService.addLotToPromotionLot({ promotionLotId, lotId });
+    }
+    return lotId;
+  };
+
   update = ({ lotId, object: { promotionLotId, ...rest } }) => {
     const currentPromotionLot = PromotionLotService.findOne({
       'lotLinks._id': lotId,
@@ -25,8 +33,8 @@ export class LotService extends CollectionService {
       : null;
 
     if (
-      currentPromotionLotStatus
-      && currentPromotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE
+      currentPromotionLotStatus &&
+      currentPromotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE
     ) {
       throw new Meteor.Error(
         ERROR_CODES.FORBIDDEN,

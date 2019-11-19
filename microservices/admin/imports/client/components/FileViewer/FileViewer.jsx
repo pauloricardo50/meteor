@@ -35,7 +35,7 @@ class FileViewer extends Component {
 
   handleMouseDown = () => this.setState({ isResizing: true });
 
-  handleMouseMove = (e) => {
+  handleMouseMove = e => {
     // we don't want to do anything if we aren't resizing.
     if (!this.state.isResizing) {
       return;

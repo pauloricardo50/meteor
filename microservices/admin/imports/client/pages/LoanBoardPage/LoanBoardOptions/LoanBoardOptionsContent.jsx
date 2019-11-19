@@ -47,8 +47,8 @@ const LoanBoardOptionsContent = ({
   promotions,
   lenders,
   refetchLoans,
-  activateSync,
-  setActivateSync,
+  activateLoanBoardSync,
+  setActivateLoanBoardSync,
 }: LoanBoardOptionsContentProps) => {
   const {
     assignedEmployeeId,
@@ -170,16 +170,16 @@ const LoanBoardOptionsContent = ({
 
         <div>
           <StickyPopover
-            component={(
+            component={
               <RadioButtons
                 options={groupByOptions}
-                onChange={(_, newValue) =>
+                onChange={newValue =>
                   dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
                 }
                 value={groupBy}
                 radioGroupStyle={{ flexDirection: 'column' }}
               />
-            )}
+            }
             placement="bottom"
           >
             <b>Mode d'affichage</b>
@@ -189,8 +189,8 @@ const LoanBoardOptionsContent = ({
 
         <LiveQueryMonitor
           devAndAdmins={devAndAdmins}
-          setActivateSync={setActivateSync}
-          activateSync={activateSync}
+          setActivateLoanBoardSync={setActivateLoanBoardSync}
+          activateLoanBoardSync={activateLoanBoardSync}
         />
       </div>
 

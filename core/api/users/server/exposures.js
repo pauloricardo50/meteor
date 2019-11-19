@@ -1,10 +1,14 @@
+import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
-import { Meteor } from 'meteor/meteor';
 
 import { exposeQuery } from '../../queries/queryHelpers';
 import { ROLES } from '../../constants';
 import SecurityService from '../../security';
+import {
+  createRegexQuery,
+  generateMatchAnyWordRegexp,
+} from '../../helpers/mongoHelpers';
 import {
   adminUsers,
   appUser,
@@ -14,15 +18,15 @@ import {
   userSearch,
   proUser,
 } from '../queries';
-import { proReferredByUsersResolver } from './resolvers';
+import UserService from './UserService';
 
 exposeQuery({
   query: adminUsers,
   overrides: {
-    embody: (body, params) => {
+    embody: body => {
       body.$filter = ({
         filters,
-        params: { roles, _id, admins, assignedEmployeeId, _userId },
+        params: { roles, _id, admins, assignedEmployeeId },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -50,7 +54,7 @@ exposeQuery({
     validateParams: {
       roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
-      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
+      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String, null)),
     },
   },
   options: { allowFilterById: true },
@@ -67,7 +71,7 @@ exposeQuery({
         params._userId = 'none';
       }
     },
-    embody: (body) => {
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };
@@ -86,7 +90,7 @@ exposeQuery({
         params._userId = 'none';
       }
     },
-    embody: (body) => {
+    embody: body => {
       // This will deepExtend your body
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
@@ -120,20 +124,73 @@ exposeQuery({
         SecurityService.checkUserIsAdmin(userId);
       }
     },
+    embody: body => {
+      body.$filter = ({
+        filters,
+        params: { userId, organisationId: providedOrganisationId },
+      }) => {
+        let organisationId;
+        if (!providedOrganisationId) {
+          const { organisations = [] } = UserService.fetchOne({
+            $filters: { _id: userId },
+            organisations: { _id: 1 },
+          });
+          organisationId = !!organisations.length && organisations[0]._id;
+        } else {
+          organisationId = providedOrganisationId;
+        }
+
+        const or = [
+          userId && { referredByUserLink: userId },
+          organisationId && { referredByOrganisationLink: organisationId },
+        ].filter(x => x);
+
+        filters.$or = or;
+      };
+    },
     validateParams: {
       userId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
       ownReferredUsers: Match.Maybe(Boolean),
     },
   },
-  resolver: proReferredByUsersResolver,
 });
 
-exposeQuery({ query: userEmails, options: { allowFilterById: true } });
+exposeQuery({
+  query: userEmails,
+  overrides: {
+    embody: body => {
+      body.$filter = ({ filters, params: { _id } }) => {
+        filters._id = _id;
+      };
+    },
+  },
+  options: { allowFilterById: true },
+});
 
 exposeQuery({
   query: userSearch,
   overrides: {
+    embody: body => {
+      body.$filter = ({ filters, params: { searchQuery, roles } }) => {
+        const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
+        if (roles) {
+          filters.roles = { $in: roles };
+        }
+        filters.$or = [
+          createRegexQuery('_id', searchQuery),
+          createRegexQuery('emails.0.address', searchQuery),
+          createRegexQuery('firstName', searchQuery),
+          createRegexQuery('lastName', searchQuery),
+          {
+            $and: [
+              createRegexQuery('firstName', formattedSearchQuery),
+              createRegexQuery('lastName', formattedSearchQuery),
+            ],
+          },
+        ];
+      };
+    },
     validateParams: {
       searchQuery: Match.Maybe(String),
       roles: Match.Maybe([String]),
@@ -144,8 +201,17 @@ exposeQuery({
 exposeQuery({
   query: proUser,
   overrides: {
-    firewall(userId, params) {},
-    embody: (body) => {
+    firewall: (userId, params) => {
+      if (userId) {
+        SecurityService.checkUserIsPro(userId);
+      } else {
+        // Don't throw unauthorized error here, it causes race-conditions in E2E tests
+        // to not reload this subscription
+        // So simply set userId to an impossible id
+        params._userId = 'none';
+      }
+    },
+    embody: body => {
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };

@@ -43,12 +43,15 @@ export default compose(
       if (currentUser) {
         const { loans = [] } = currentUser;
         const loanWithProperty = loans.find(({ properties }) =>
-          properties.some(({ _id }) => _id === propertyId));
+          properties.some(({ _id }) => _id === propertyId),
+        );
 
         if (loanWithProperty) {
-          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
-            loanId: loanWithProperty._id,
-          }));
+          history.push(
+            createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+              loanId: loanWithProperty._id,
+            }),
+          );
         }
       }
     },
@@ -57,9 +60,12 @@ export default compose(
     insertLoan: () => {
       if (Meteor.userId()) {
         return userLoanInsert.run({ proPropertyId: propertyId }).then(loanId =>
-          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
-            loanId,
-          })));
+          history.push(
+            createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+              loanId,
+            }),
+          ),
+        );
       }
 
       return anonymousLoanInsert
@@ -67,9 +73,11 @@ export default compose(
           proPropertyId: propertyId,
           referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
           trackingId: parseCookies()[TRACKING_COOKIE],
-          existingAnonymousLoanId: localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
+          existingAnonymousLoanId: localStorage.getItem(
+            LOCAL_STORAGE_ANONYMOUS_LOAN,
+          ),
         })
-        .then((loanId) => {
+        .then(loanId => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
           history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
         });

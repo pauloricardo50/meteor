@@ -17,7 +17,7 @@ const makeAutoTooltip = props => (content, key) => (
  * It is only rerendered if the id changes
  * @extends Component
  */
-export const T = (props) => {
+export const T = props => {
   const { noTooltips, id, values, tooltipPlacement, ...rest } = props;
 
   if (noTooltips) {

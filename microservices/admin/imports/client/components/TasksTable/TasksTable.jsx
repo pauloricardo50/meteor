@@ -30,7 +30,7 @@ const TasksTable = ({
   const TableComponent = withPriority ? TasksTablePriority : Table;
 
   return (
-    <React.Fragment>
+    <>
       {children}
       {renderTable && setStatus && (
         <TaskTableFilters
@@ -62,7 +62,7 @@ const TasksTable = ({
           setOpen={setShowDialog}
         />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

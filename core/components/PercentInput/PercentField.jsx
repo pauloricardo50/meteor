@@ -13,6 +13,10 @@ type PercentFieldProps = {
   required?: boolean,
 };
 
+// A hack for number inputs because material-ui can't be sure of the initial
+// shrink value: https://material-ui.com/components/text-fields/#floating-label
+const shouldShrinkLabel = value => !!value || undefined;
+
 const PercentField = ({
   fullWidth = true,
   helperText,
@@ -25,8 +29,14 @@ const PercentField = ({
 
   return (
     <FormControl required={required} fullWidth={fullWidth} margin={margin}>
-      <InputLabel ref={inputLabelRef}>{label}</InputLabel>
-      <PercentInput labelWidth={labelWidth} {...props} />
+      <InputLabel ref={inputLabelRef} shrink={shouldShrinkLabel(props.value)}>
+        {label}
+      </InputLabel>
+      <PercentInput
+        labelWidth={labelWidth}
+        notched={shouldShrinkLabel(props.value)}
+        {...props}
+      />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );

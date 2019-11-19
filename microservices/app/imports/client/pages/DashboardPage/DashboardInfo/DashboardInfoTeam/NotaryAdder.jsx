@@ -9,9 +9,11 @@ import notaries from 'core/arrays/notaries';
 type NotaryAdderProps = {};
 
 const findNotary = contacts =>
-  contacts.some(({ title = '', name = '' }) =>
-    name.toLowerCase().includes('notaire')
-      || title.toLowerCase().includes('notaire'));
+  contacts.some(
+    ({ title = '', name = '' }) =>
+      name.toLowerCase().includes('notaire') ||
+      title.toLowerCase().includes('notaire'),
+  );
 
 const ownNotary = ({ alreadyHaveNotary }) => alreadyHaveNotary === 'yes';
 const suggestNotary = ({ alreadyHaveNotary }) => alreadyHaveNotary === 'no';
@@ -76,9 +78,11 @@ const NotaryAdder = ({ contacts, property, addContact }: NotaryAdderProps) => {
       }}
       title={<T id="NotaryAdder.buttonLabel" />}
       onSubmit={({ alreadyHaveNotary, ...newContact }) =>
-        addContact(suggestNotary({ alreadyHaveNotary })
-          ? { ...notaries[property.canton], title: 'Notaire' }
-          : newContact)
+        addContact(
+          suggestNotary({ alreadyHaveNotary })
+            ? { ...notaries[property.canton], title: 'Notaire' }
+            : newContact,
+        )
       }
       model={{ title: 'Notaire' }}
     />

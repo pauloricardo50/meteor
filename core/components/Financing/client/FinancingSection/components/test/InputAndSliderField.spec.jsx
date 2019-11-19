@@ -6,8 +6,8 @@ import sinon from 'sinon';
 import { mount } from 'core/utils/testHelpers/enzyme';
 
 import { InputAndSliderField } from '../InputAndSliderField';
-import MoneyInput from '../../../../../MoneyInput/MoneyInput';
-import Slider from '../../../../../Material/Slider';
+import MoneyInput from '../../../../../MoneyInput';
+import Slider from '../../../../../Slider';
 
 describe('InputAndSliderField', () => {
   let props;
@@ -98,7 +98,10 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: 15 } });
+      wrapper
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 15 } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([15]);
@@ -113,7 +116,10 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: 60 } });
+      wrapper
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 60 } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([50]);
@@ -128,7 +134,10 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: '' } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([0]);
@@ -144,7 +153,10 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: '' } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal(['']);
@@ -160,7 +172,10 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: '' } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal(['']);
@@ -175,7 +190,10 @@ describe('InputAndSliderField', () => {
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: 0 } });
+      wrapper
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 0 } });
 
       expect(onChange.calledOnce).to.equal(true);
       expect(onChange.firstCall.args).to.deep.equal([0]);

@@ -70,7 +70,9 @@ describe('Conversion functions', () => {
 
       it('should handle negative values', () => {
         expect(toMoney(-0.9999999, { rounded: false })).to.equal('-1.00');
-        expect(toMoney(-123456.789, { rounded: false })).to.equal('-123 456.79');
+        expect(toMoney(-123456.789, { rounded: false })).to.equal(
+          '-123 456.79',
+        );
       });
     });
   });
@@ -140,6 +142,30 @@ describe('Conversion functions', () => {
 
     it('Should return -1 for -1', () => {
       expect(toDecimalNumber(-1)).to.equal(-1);
+    });
+
+    it("Should return -1000.1 for '-1000.1'", () => {
+      expect(toDecimalNumber('-1000.1')).to.equal(-1000.1);
+    });
+
+    it("Should return -1000.1 for '-1000,1'", () => {
+      expect(toDecimalNumber('-1000,1')).to.equal(-1000.1);
+    });
+
+    it("Should return -1000.1 for '-1 000,1'", () => {
+      expect(toDecimalNumber('-1 000,1')).to.equal(-1000.1);
+    });
+
+    it("Should return -0.1 for '-0,1'", () => {
+      expect(toDecimalNumber('-0,1')).to.equal(-0.1);
+    });
+
+    it('Should return -. for -.', () => {
+      expect(toDecimalNumber('-.')).to.equal('-.');
+    });
+
+    it('Should return - for -', () => {
+      expect(toDecimalNumber('-')).to.equal('-');
     });
 
     it('should return the same value if given a falsy non-number', () => {

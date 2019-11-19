@@ -9,7 +9,8 @@ type SingleContactPageInfosProps = {
 };
 
 const getAddress = ({ address, organisations }) => {
-  const { address: organisationAddress } = organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
+  const { address: organisationAddress } =
+    organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
   return organisationAddress || address;
 };
 
@@ -20,14 +21,14 @@ const SingleContactPageInfos = ({ contact }: SingleContactPageInfosProps) => {
       <div className="organisations">
         {organisations.length > 0
           ? organisations.map(organisation => (
-            <CollectionIconLink
-              key={organisation._id}
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          ))
+              <CollectionIconLink
+                key={organisation._id}
+                relatedDoc={{
+                  ...organisation,
+                  collection: ORGANISATIONS_COLLECTION,
+                }}
+              />
+            ))
           : "N'est lié à aucune organisation"}
       </div>
       <div className="contact-details space-children">

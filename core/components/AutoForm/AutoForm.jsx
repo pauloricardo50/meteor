@@ -46,53 +46,53 @@ const inputSwitch = (childProps, index, parentProps) => {
   } = childProps.inputProps;
 
   switch (type) {
-  case 'textInput':
-    return <AutoFormTextInput multiline={false} {...childProps} />;
-  case 'radioInput':
-    return <AutoFormRadioInput {...childProps} />;
-  case 'selectFieldInput':
-    return <AutoFormSelectFieldInput {...childProps} />;
-  case 'conditionalInput':
-    return (
-      <AutoFormConditionalInput
-        conditionalTrueValue={conditionalTrueValue}
-        key={index}
-        style={style}
-        doc={parentProps.doc}
-      >
-        {makeMapInputs(parentProps)(inputs[0], 0)}
-        {inputs.slice(1).map(makeMapInputs(parentProps))}
-      </AutoFormConditionalInput>
-    );
-  case 'h3':
-    return (
-      <h3 className={className} style={styles.subtitle} key={index}>
-        {label}
-      </h3>
-    );
-  case 'h2':
-    return (
-      <h2 className={className} style={styles.subtitle} key={index}>
-        {label}
-      </h2>
-    );
-  case 'space':
-    return (
-      <div style={{ width: '100%', height }} key={index}>
-        {text}
-      </div>
-    );
-  case 'dateInput':
-    return <AutoFormDateInput {...childProps} />;
-  case 'arrayInput':
-    return <ArrayInput {...childProps} />;
-  case 'custom':
-    if (component === 'ZipAutoComplete') {
-      return <ZipAutoComplete {...childProps} {...componentProps} />;
-    }
-    return component;
-  default:
-    throw new Error(`${type} is not a valid AutoForm type`);
+    case 'textInput':
+      return <AutoFormTextInput multiline={false} {...childProps} />;
+    case 'radioInput':
+      return <AutoFormRadioInput {...childProps} />;
+    case 'selectFieldInput':
+      return <AutoFormSelectFieldInput {...childProps} />;
+    case 'conditionalInput':
+      return (
+        <AutoFormConditionalInput
+          conditionalTrueValue={conditionalTrueValue}
+          key={index}
+          style={style}
+          doc={parentProps.doc}
+        >
+          {makeMapInputs(parentProps)(inputs[0], 0)}
+          {inputs.slice(1).map(makeMapInputs(parentProps))}
+        </AutoFormConditionalInput>
+      );
+    case 'h3':
+      return (
+        <h3 className={className} style={styles.subtitle} key={index}>
+          {label}
+        </h3>
+      );
+    case 'h2':
+      return (
+        <h2 className={className} style={styles.subtitle} key={index}>
+          {label}
+        </h2>
+      );
+    case 'space':
+      return (
+        <div style={{ width: '100%', height }} key={index}>
+          {text}
+        </div>
+      );
+    case 'dateInput':
+      return <AutoFormDateInput {...childProps} />;
+    case 'arrayInput':
+      return <ArrayInput {...childProps} />;
+    case 'custom':
+      if (component === 'ZipAutoComplete') {
+        return <ZipAutoComplete {...childProps} {...componentProps} />;
+      }
+      return component;
+    default:
+      throw new Error(`${type} is not a valid AutoForm type`);
   }
 };
 
@@ -103,8 +103,8 @@ const makeMapInputs = parentProps => (singleInput, index) => {
     inputProps: {
       ...singleInput,
       placeholder:
-        singleInput.placeholder
-        || `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
+        singleInput.placeholder ||
+        `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
       disabled: parentProps.disabled || singleInput.disabled,
       currentValue: get(parentProps.doc, singleInput.id),
       style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
@@ -125,8 +125,8 @@ const makeMapInputs = parentProps => (singleInput, index) => {
     childProps.inputProps.label = (
       <span>
         <T
-          id={`Forms.${childProps.inputProps.intlId
-            || childProps.inputProps.id}`}
+          id={`Forms.${childProps.inputProps.intlId ||
+            childProps.inputProps.id}`}
           values={childProps.inputProps.intlValues}
         />
         <span style={{ color: 'red' }}> *</span>
@@ -144,19 +144,20 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   // Support options that are only string/boolean ids instead of objects
   // check for undefined because of boolean false ids
   if (
-    childProps.inputProps.type === 'radioInput'
-    || childProps.inputProps.type === 'selectFieldInput'
+    childProps.inputProps.type === 'radioInput' ||
+    childProps.inputProps.type === 'selectFieldInput'
   ) {
     childProps.inputProps.options = childProps.inputProps.options.map(o =>
-      (o.id === undefined ? { id: o } : o));
+      o.id === undefined ? { id: o } : o,
+    );
   }
 
   // if info is true, map it to a i18n string
   if (childProps.inputProps.info) {
     childProps.inputProps.info = (
       <T
-        id={`Forms.${childProps.inputProps.intlId
-          || childProps.inputProps.id}.info`}
+        id={`Forms.${childProps.inputProps.intlId ||
+          childProps.inputProps.id}.info`}
       />
     );
   }

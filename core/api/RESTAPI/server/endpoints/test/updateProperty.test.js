@@ -5,7 +5,10 @@ import { expect } from 'chai';
 
 import PropertyService from '../../../../properties/server/PropertyService';
 import generator from '../../../../factories';
-import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
+import {
+  PROPERTY_CATEGORY,
+  PROPERTY_STATUS,
+} from '../../../../properties/propertyConstants';
 import {
   getTimestampAndNonce,
   fetchAndCheckResponse,
@@ -48,10 +51,10 @@ const updateProperty = ({
   });
 };
 
-describe('REST: updateProperty', function () {
+describe('REST: updateProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -76,6 +79,7 @@ describe('REST: updateProperty', function () {
           _id: 'prop',
           externalId: 'extId',
           category: PROPERTY_CATEGORY.PRO,
+          status: PROPERTY_STATUS.FOR_SALE,
           $metadata: {
             permissions: { canModifyProperty: true },
           },
@@ -85,18 +89,19 @@ describe('REST: updateProperty', function () {
   });
 
   it('updates a property', () => {
-    const update = { value: 300000 };
+    const update = { value: 300000, status: PROPERTY_STATUS.SOLD };
     return updateProperty({
       userId: 'pro',
       propertyId: 'prop',
       body: update,
-    }).then((response) => {
+    }).then(response => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
       expect(status).to.equal(200);
       expect(message).to.equal('Property with id "prop" updated !');
       expect(returnedProperty).to.not.equal(undefined);
+      expect(returnedProperty.status).to.equal(PROPERTY_STATUS.SOLD);
     });
   });
 
@@ -106,7 +111,7 @@ describe('REST: updateProperty', function () {
       userId: 'pro',
       propertyId: 'extId',
       body: update,
-    }).then((response) => {
+    }).then(response => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
@@ -131,7 +136,7 @@ describe('REST: updateProperty', function () {
       propertyId: 'prop',
       body: update,
       impersonateUser: 'pro@org.com',
-    }).then((response) => {
+    }).then(response => {
       const property = PropertyService.get('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;

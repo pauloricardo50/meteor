@@ -1,8 +1,11 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
-import { FormattedMessage } from 'react-intl';
-import Popover from 'react-bootstrap/lib/Popover';
+import Popper from '@material-ui/core/Popper';
+import Paper from '@material-ui/core/Paper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import DialogSimple from '../../DialogSimple/loadable';
 import Button from '../../Button';
@@ -16,6 +19,9 @@ const getTooltip2Id = id => (id.includes('tooltip') ? id : `tooltip2.${id}`);
 const Tooltip = ({
   tooltipConfig: { id, double: isDoubleTooltip },
   match,
+  open,
+  anchorRef,
+  handleClose,
   ...rest
 }) => {
   let content = null;
@@ -23,7 +29,7 @@ const Tooltip = ({
   if (isDoubleTooltip) {
     content = (
       <span className="tooltip">
-        <FormattedMessage id={getTooltip1Id(id)} />
+        <T id={getTooltip1Id(id)} />
         <DialogSimple
           title={match}
           // Dialogs normally have zIndex of 1500
@@ -31,39 +37,49 @@ const Tooltip = ({
           // at zindex 1501), but when you trigger a dialog from a tooltip,
           // it should be above the previous tooltip, hence 1502
           style={{ zIndex: 1502 }}
-          buttonStyle={{ marginTop: 16 }}
-          label={<FormattedMessage id="general.learnMore" />}
+          buttonStyle={{ marginTop: 16, margin: '0 auto' }}
+          label={<T id="general.learnMore" />}
           autoFocus
-          actions={handleClose => (
+          actions={handleCloseDialog => (
             <Button
               primary
               label={<T id="general.ok" />}
-              onClick={handleClose}
+              onClick={handleCloseDialog}
             />
           )}
         >
           <TooltipSynonyms tooltipId={id} match={match} />
           <br />
           <br />
-          <FormattedMessage id={getTooltip2Id(id)} values={defaultIntlValues} />
+          <T id={getTooltip2Id(id)} values={defaultIntlValues} />
         </DialogSimple>
       </span>
     );
   } else {
-    content = <FormattedMessage id={getTooltip1Id(id)} />;
+    content = <T id={getTooltip1Id(id)} />;
   }
 
-  const passedProps = omit(rest, ['trigger', 'hide', 'match']);
+  const passedProps = omit(rest, ['hide', 'match']);
+
+  if (Meteor.isServer) {
+    // Popper needs document to be defined, so it does not work on the server..
+    return null;
+  }
 
   return (
-    <Popover {...passedProps} id={id}>
-      {content}
-    </Popover>
+    <ClickAwayListener onClickAway={handleClose}>
+      <Popper {...passedProps} open={open} id={id} anchorEl={anchorRef.current}>
+        <Paper style={{ padding: 8, maxWidth: 300 }} elevation={15}>
+          {content}
+        </Paper>
+      </Popper>
+    </ClickAwayListener>
   );
 };
 
 Tooltip.propTypes = {
   match: PropTypes.string,
+  open: PropTypes.bool.isRequired,
   tooltipConfig: PropTypes.object.isRequired,
 };
 

@@ -32,7 +32,7 @@ const mapOptions = (
   },
 ) => {
   const array = [];
-  options.forEach((option) => {
+  options.forEach(option => {
     if (React.isValidElement(option)) {
       return option;
     }
@@ -50,31 +50,33 @@ const mapOptions = (
       array.push(<Divider key={`divider${id}`} />);
     }
 
-    array.push(<MenuItem
-      value={id}
-      key={id}
-      className={menuItemClass}
-      classes={{ root: menuItemRoot }}
-      {...otherProps}
-    >
-      <>
-        {icon && (
-          <ListItemIcon className={colorClass}>
-            <Icon type={icon} />
-          </ListItemIcon>
-        )}
-        <ListItemText
-          classes={{
-            primary: colorClass,
-            secondary: colorClass,
-            root: icon ? listItemTextWithIcon : listItemtext,
-          }}
-          // inset={!!icon}
-          primary={label}
-          secondary={secondary}
-        />
-      </>
-    </MenuItem>);
+    array.push(
+      <MenuItem
+        value={id}
+        key={id}
+        className={menuItemClass}
+        classes={{ root: menuItemRoot }}
+        {...otherProps}
+      >
+        <>
+          {icon && (
+            <ListItemIcon className={colorClass}>
+              <Icon type={icon} />
+            </ListItemIcon>
+          )}
+          <ListItemText
+            classes={{
+              primary: colorClass,
+              secondary: colorClass,
+              root: icon ? listItemTextWithIcon : listItemtext,
+            }}
+            // inset={!!icon}
+            primary={label}
+            secondary={secondary}
+          />
+        </>
+      </MenuItem>,
+    );
 
     if (dividerBottom) {
       array.push(<Divider key={`divider${id}`} />);
@@ -89,7 +91,7 @@ const SelectContainer = compose(
   mapProps(({ options, classes, onChange, id, ...otherProps }) => ({
     rawOptions: options,
     options: mapOptions(options, classes),
-    onChange: e => onChange(id, e.target.value),
+    onChange: e => onChange(e.target.value, id),
     id,
     ...otherProps,
   })),

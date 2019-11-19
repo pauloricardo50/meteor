@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Irs10y from '../irs10y';
 import CollectionService from '../../helpers/CollectionService';
+import { fetchIrs10y } from './fetchIrs10y';
 
 class Irs10yService extends CollectionService {
   constructor() {
@@ -24,6 +25,12 @@ class Irs10yService extends CollectionService {
 
     throw new Meteor.Error('Un taux existe déjà pour cette date');
   }
+
+  fetchIrs = async () => {
+    const rate = await fetchIrs10y();
+    this.insert({ date: new Date(), rate });
+    return rate;
+  };
 }
 
 export default new Irs10yService();

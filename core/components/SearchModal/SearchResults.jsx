@@ -30,7 +30,7 @@ class SearchResults extends Component {
     this.setupSearch();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Cancel viewing results if something new is typed/deleted
     if (nextProps.search !== this.props.search && this.state.showId) {
       this.setState({ showId: '' });
@@ -51,7 +51,7 @@ class SearchResults extends Component {
     const f = this.props.intl.formatMessage;
     const intlValues = { verticalSpace: ' ' };
 
-    return Object.keys(generalTooltips).map((match) => {
+    return Object.keys(generalTooltips).map(match => {
       const tooltipId = generalTooltips[match].id;
       const tooltip = {
         id: tooltipId,
@@ -72,7 +72,9 @@ class SearchResults extends Component {
     const results = this.search.search(search);
 
     if (showId) {
-      const selectedResult = this.tooltips.filter(result => result.id === showId)[0];
+      const selectedResult = this.tooltips.filter(
+        result => result.id === showId,
+      )[0];
       return (
         <div className="flex-col" style={styles.selected}>
           <h3>{selectedResult.tooltipMatch}</h3>

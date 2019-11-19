@@ -1,13 +1,9 @@
 // @flow
 import React from 'react';
 
-// // Add this to prevent .finally errors on MS Edge
-// //
-// import 'babel-polyfill';
-// import 'core-js/modules/es7.promise.finally';
-
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import { getUserLocale, getFormats } from 'core/utils/localization';
+import { proUser } from 'core/api/users/queries';
 
 import messagesFR from '../../../lang/fr.json';
 import ProLayout from '../../client/layout/loadable';
@@ -19,6 +15,7 @@ const ProRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={PRO_ROUTES}
+    currentUser={{ query: proUser }}
   >
     <ProLayout>
       <Switch>

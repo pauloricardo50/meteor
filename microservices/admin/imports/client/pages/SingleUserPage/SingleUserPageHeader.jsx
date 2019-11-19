@@ -8,12 +8,14 @@ import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamat
 import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'classnames';
 
+import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import { sendEnrollmentEmail } from 'core/api';
+import Toggle from 'core/components/Toggle';
+import { sendEnrollmentEmail, toggleAccount } from 'core/api';
 import {
   ROLES,
   USERS_COLLECTION,
@@ -34,18 +36,23 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     _id: userId,
     assignedEmployee,
     createdAt,
-    roles,
+    roles = [],
     phoneNumbers,
     name,
     email,
     organisations = [],
     emails = [],
+    isDisabled,
   } = user;
-
-  const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
+  const { roles: currentUserRoles = [] } = currentUser || {};
+  const allowAssign =
+    currentUserRoles.includes(ROLES.DEV) ||
+    (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
 
   const emailVerified = !!emails.length && emails[0].verified;
-
+  const toggleUserAccount = () => {
+    toggleAccount.run({ userId });
+  };
   return (
     <div className="single-user-page-header">
       <Helmet>
@@ -71,27 +78,33 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
-
+      <Toggle
+        labelLeft={<T id="SingleUserPage.Enabled" />}
+        toggled={!isDisabled}
+        onToggle={toggleUserAccount}
+      />
       <div className="bottom">
         <div>
           <LastSeen userId={userId} />
         </div>
         <div className="organisations">
-          {!!organisations.length
-            && organisations.map(organisation => (
-              <CollectionIconLink
-                key={organisation._id}
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            ))}
+          {!!organisations.length && (
+            <TooltipArray
+              items={organisations.map(organisation => (
+                <CollectionIconLink
+                  key={organisation._id}
+                  relatedDoc={{
+                    ...organisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              ))}
+              title="Organisations"
+            />
+          )}
         </div>
         <div className="email">
-          <Icon type="mail" />
-          {' '}
-          <a href={`mailto:${email}`}>{email}</a>
+          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
           <Tooltip
             title={
               emailVerified
@@ -101,27 +114,32 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           >
             <FontAwesomeIcon
               icon={emailVerified ? faCheckCircle : faExclamationCircle}
-              className={cx(emailVerified ? 'email-verified' : 'email-unverified')}
+              className={cx(
+                emailVerified ? 'email-verified' : 'email-unverified',
+              )}
             />
-          </Tooltip>
-          {' '}
+          </Tooltip>{' '}
           <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
-            <Icon type="phone" />
-            {' '}
-            {phoneNumbers.map(number => (
-              <a key={number} href={`tel:${number}`}>
-                {number}
-              </a>
-            ))}
+            <Icon type="phone" />{' '}
+            <TooltipArray
+              title="Numéros de téléphone"
+              items={phoneNumbers.map(number => (
+                <a key={number} href={`tel:${number}`}>
+                  <span>
+                    {number}
+                    &nbsp;
+                  </span>
+                </a>
+              ))}
+            />
           </div>
         )}
 
         <p className="secondary created-at">
-          <T id="UsersTable.createdAt" />
-          {' '}
+          <T id="UsersTable.createdAt" />{' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
 
@@ -155,6 +173,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 };
 
 SingleUserPageHeader.propTypes = {
+  currentUser: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
 };
 

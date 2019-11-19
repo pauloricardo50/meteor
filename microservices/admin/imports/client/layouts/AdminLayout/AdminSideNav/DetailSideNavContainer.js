@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 
 import { appendFilters } from './DetailSideNavFilters/filterOptions';
 
-const withFilterAndSortOptionsConnect = connect(({ sidenav: { filters, sortOption } }) => ({ filters, sortOption }));
+const withFilterAndSortOptionsConnect = connect(
+  ({ sidenav: { filters, sortOption } }) => ({ filters, sortOption }),
+);
 
 export default compose(
   withFilterAndSortOptionsConnect,

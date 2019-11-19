@@ -8,12 +8,12 @@ import { makeRenderDetail } from './financingSectionHelpers';
 export default class FinancingSectionDetails extends PureComponent {
   constructor(props) {
     super(props);
-    const { detailConfig } = props;
-    this.renderDetail = makeRenderDetail(detailConfig);
+    const { detailConfig, sectionItemProps } = props;
+    this.renderDetail = makeRenderDetail(detailConfig, sectionItemProps);
   }
 
   render() {
-    const { detailConfig, sectionProps, noWrapper } = this.props;
+    const { detailConfig, sectionProps } = this.props;
     const { structures } = sectionProps;
 
     return (
@@ -21,7 +21,8 @@ export default class FinancingSectionDetails extends PureComponent {
         <FinancingLabels config={detailConfig} />
 
         {structures.map(structure =>
-          this.renderDetail(structure, sectionProps))}
+          this.renderDetail(structure, sectionProps),
+        )}
       </ExpansionPanelDetails>
     );
   }

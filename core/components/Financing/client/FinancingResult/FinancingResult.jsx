@@ -17,19 +17,18 @@ import {
   getRemainingBank3A,
   getRemainingInsurance3B,
   getPropertyExpenses,
-  getBorrowRatio,
   getIncomeRatio,
-  getBorrowRatioStatus,
   getIncomeRatioStatus,
   makeHasOwnFundsOfType,
 } from './financingResultHelpers';
 import FinancingResultInterests from './FinancingResultInterests';
 import FinancingResultAmortization from './FinancingResultAmortization';
+import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 
 type FinancingResultProps = {};
 
 const FinancingResult = ({ error }: FinancingResultProps) =>
-  (error ? (
+  error ? (
     <h3 className="error">{error.message}</h3>
   ) : (
     <FinancingSection
@@ -79,10 +78,7 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
         {
           id: 'borrowRatio',
-          Component: FinmaRatio,
-          value: getBorrowRatio,
-          status: getBorrowRatioStatus,
-          tooltip: true,
+          Component: BorrowRatioStatus,
         },
         {
           id: 'incomeRatio',
@@ -131,6 +127,6 @@ const FinancingResult = ({ error }: FinancingResultProps) =>
         },
       ]}
     />
-  ));
+  );
 
 export default React.memo(FinancingResult);

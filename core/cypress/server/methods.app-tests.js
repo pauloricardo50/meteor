@@ -4,6 +4,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { check } from 'meteor/check';
 
 import UserService from 'core/api/users/server/UserService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
@@ -15,10 +16,9 @@ import {
   ORGANISATION_FEATURES,
 } from 'core/api/constants';
 import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
-import OrganisationService from 'imports/core/api/organisations/server/OrganisationService';
-import LoanService from 'imports/core/api/loans/server/LoanService';
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
+import LoanService from 'core/api/loans/server/LoanService';
 import PropertyService from 'core/api/properties/server/PropertyService';
-import { check } from 'meteor/check';
 import Loans from 'core/api/loans/loans';
 import { loanBase } from 'core/api/fragments';
 import Users from 'core/api/users/users';
@@ -28,6 +28,8 @@ import {
 } from 'core/utils/testHelpers/index';
 import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
+import { Services } from 'core/api/server/index';
+import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -82,6 +84,7 @@ Meteor.methods({
       zipCode: 1201,
       city: 'Genève',
       userLinks: [{ _id: userId }, { _id: userId2 }],
+      features: [ORGANISATION_FEATURES.PRO],
     });
     OrganisationService.insert({
       name: 'Organisation 2',
@@ -90,7 +93,18 @@ Meteor.methods({
       zipCode: 1201,
       city: 'Genève',
       userLinks: [{ _id: userId3 }],
+      features: [ORGANISATION_FEATURES.PRO],
     });
+
+    const organisationId = OrganisationService.insert({
+      name: 'Bank 1',
+      type: 'BANK',
+      address1: 'Rue du pré 1',
+      zipCode: 1201,
+      city: 'Genève',
+      features: [ORGANISATION_FEATURES.LENDER],
+    });
+    LenderRulesService.initialize({ organisationId });
   },
   insertPromotion() {
     const { _id: userId } = UserService.findOne({
@@ -123,9 +137,10 @@ Meteor.methods({
     const { _id: userId3 } = UserService.findOne({
       'emails.address': PRO_EMAIL_3,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }) || [];
+    const promotions =
+      PromotionService.find({
+        'userLinks._id': userId,
+      }) || [];
 
     promotions.forEach(({ _id: promotionId }) => {
       PromotionService.addProUser({ promotionId, userId: userId2 });
@@ -137,10 +152,11 @@ Meteor.methods({
       'emails.address': PRO_EMAIL,
     });
     const { _id: invitedBy } = UserService.findOne({ 'emails.address': email });
-    const promotions = PromotionService.find(
-      { 'userLinks._id': userId },
-      { fields: { _id: 1 } },
-    ).fetch() || [];
+    const promotions =
+      PromotionService.find(
+        { 'userLinks._id': userId },
+        { fields: { _id: 1 } },
+      ).fetch() || [];
 
     promotions.forEach(({ _id: promotionId }) => {
       const loans = LoanService.find({}).fetch() || [];
@@ -157,32 +173,37 @@ Meteor.methods({
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find(
-      { 'userLinks._id': userId },
-      { fields: { _id: 1 } },
-    ).fetch() || [];
+    const promotions =
+      PromotionService.find(
+        { 'userLinks._id': userId },
+        { fields: { _id: 1 } },
+      ).fetch() || [];
 
     promotions.forEach(({ _id: promotionId }) =>
-      PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+      PromotionService.setUserPermissions({ promotionId, userId, permissions }),
+    );
   },
   setPromotionStatus({ status }) {
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }) || [];
+    const promotions =
+      PromotionService.find({
+        'userLinks._id': userId,
+      }) || [];
 
     promotions.forEach(({ _id: promotionId }) =>
-      PromotionService.update({ promotionId, object: { status } }));
+      PromotionService.update({ promotionId, object: { status } }),
+    );
   },
   resetUserPermissions() {
     const { _id: userId } = UserService.findOne({
       'emails.address': PRO_EMAIL,
     });
-    const promotions = PromotionService.find({
-      'userLinks._id': userId,
-    }).fetch() || [];
+    const promotions =
+      PromotionService.find({
+        'userLinks._id': userId,
+      }).fetch() || [];
 
     const permissions = {
       canSellLots: false,
@@ -197,7 +218,8 @@ Meteor.methods({
     };
 
     promotions.forEach(({ _id: promotionId }) =>
-      PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+      PromotionService.setUserPermissions({ promotionId, userId, permissions }),
+    );
   },
   editOrganisation({ ...organisation }) {
     OrganisationService.baseUpdate({ name: ORG_NAME }, { $set: organisation });
@@ -252,6 +274,7 @@ Meteor.methods({
       emailVerificationToken,
       userId,
       passwordResetToken,
+      adminId: admin._id,
     };
   },
   inviteTestUser({ withPassword } = {}) {
@@ -262,6 +285,7 @@ Meteor.methods({
         lastName: 'User',
         sendEnrollmentEmail: true,
         password: withPassword && USER_PASSWORD,
+        phoneNumber: '0225660110',
       },
     });
     LoanService.fullLoanInsert({ userId });
@@ -278,8 +302,10 @@ Meteor.methods({
   updateLoan({ loanId, object }) {
     LoanService.update({ loanId, object });
   },
-  getLoginToken() {
-    const user = UserService.findOne({});
+  getLoginToken(email) {
+    const user = email
+      ? UserService.getByEmail(email)
+      : UserService.findOne({});
     const loginToken = UserService.getLoginToken({ userId: user._id });
     return loginToken;
   },
@@ -314,7 +340,7 @@ Meteor.methods({
       },
     });
   },
-  serverLog: (log) => {
+  serverLog: log => {
     check(log, String);
     if (Meteor.isServer) {
       console.log('Cypress logging from server: ', log);
@@ -330,8 +356,9 @@ Meteor.methods({
   addProUser() {
     const { _id } = UserService.getByEmail(PRO_EMAIL) || {};
 
-    const userId = _id
-      || UserService.adminCreateUser({
+    const userId =
+      _id ||
+      UserService.adminCreateUser({
         options: {
           email: PRO_EMAIL,
           firstName: 'Pro',
@@ -369,5 +396,9 @@ Meteor.methods({
       city: 'Genève',
       features: [ORGANISATION_FEATURES.PRO],
     });
+  },
+  updateCollectionDocument({ docId, collection, object, operator }) {
+    const service = Services[collection];
+    return service._update({ id: docId, object, operator });
   },
 });

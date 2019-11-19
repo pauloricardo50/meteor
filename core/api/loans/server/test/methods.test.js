@@ -21,7 +21,7 @@ describe('Loan methods', () => {
     userId = user._id;
     adminId = admin._id;
 
-    [userId, adminId].forEach((variable) => {
+    [userId, adminId].forEach(variable => {
       expect(variable).to.be.a('string');
     });
   });

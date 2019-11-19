@@ -11,7 +11,7 @@ import Checkbox from '../../Checkbox/Checkbox';
 import { setAdditionalDoc } from '../../../api';
 import { DOCUMENTS } from '../../../api/constants';
 
-const Uploader = (props) => {
+const Uploader = props => {
   const {
     handleAddFiles,
     displayFull,
@@ -21,7 +21,7 @@ const Uploader = (props) => {
     fileMeta: { id, requiredByAdmin, category },
     isDocumentToHide,
     allowRequireByAdmin,
-    handleMoveFile
+    handleMoveFile,
   } = props;
 
   return (
@@ -29,7 +29,7 @@ const Uploader = (props) => {
       {Meteor.microservice === 'admin' && allowRequireByAdmin && (
         <Checkbox
           value={requiredByAdmin !== false && !isDocumentToHide}
-          onChange={(event) => {
+          onChange={event => {
             setAdditionalDoc.run({
               collection,
               id: docId,
@@ -42,7 +42,12 @@ const Uploader = (props) => {
           className={cx({ 'visibility-hidden': id === DOCUMENTS.OTHER })}
         />
       )}
-      <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id} handleMoveFile={handleMoveFile}>
+      <FileDropper
+        handleAddFiles={handleAddFiles}
+        showFull={showFull}
+        id={id}
+        handleMoveFile={handleMoveFile}
+      >
         <UploaderTop {...props} />
         {displayFull && <UploaderBottom {...props} id={id} />}
       </FileDropper>

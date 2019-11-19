@@ -29,7 +29,7 @@ export const CurrentOwnFunds = ({
   structureId,
   ownFundsIndex,
 }: CurrentOwnFundsProps) => (
-  <React.Fragment>
+  <>
     <div
       className="current-own-funds"
       onClick={structure.disableForms ? null : handleOpen}
@@ -63,7 +63,7 @@ export const CurrentOwnFunds = ({
       structureId={structureId}
       ownFundsIndex={ownFundsIndex}
     />
-  </React.Fragment>
+  </>
 );
 
 export default FinancingOwnFundsDialogContainer(CurrentOwnFunds);

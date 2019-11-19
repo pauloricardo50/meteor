@@ -49,7 +49,7 @@ import RevenueService from '../revenues/server/RevenueService';
 import OrganisationService from '../organisations/server/OrganisationService';
 import '../liveSync';
 
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', error => {
   if (!Meteor.isProduction) {
     console.log('uncaughtException error', JSON.stringify(error, null, 2));
   }
@@ -60,7 +60,7 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-process.on('unhandledRejection', (error) => {
+process.on('unhandledRejection', error => {
   if (!Meteor.isProduction) {
     console.log('unhandledRejection error', JSON.stringify(error, null, 2));
   }

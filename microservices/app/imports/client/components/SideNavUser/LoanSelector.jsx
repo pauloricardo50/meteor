@@ -14,7 +14,7 @@ const handleChange = (value, closeDrawer, history) => {
   }
 };
 
-const getOptions = (loans) => {
+const getOptions = loans => {
   const array = loans.map(({ _id: loanId, name, customName }) => ({
     id: loanId,
     label: name ? (
@@ -41,9 +41,7 @@ const LoanSelector = ({
       <Select
         id="loan-selector"
         value={value}
-        onChange={(id, newValue) =>
-          handleChange(newValue, closeDrawer, history)
-        }
+        onChange={newValue => handleChange(newValue, closeDrawer, history)}
         options={options}
         displayEmpty
       />

@@ -76,13 +76,13 @@ const employees = [
 
 export const employeesByEmail = employees.reduce(
   (acc, employee) =>
-    (employee.email ? { ...acc, [employee.email]: employee } : acc),
+    employee.email ? { ...acc, [employee.email]: employee } : acc,
   {},
 );
 
 export const employeesById = employees.reduce(
   (acc, employee) =>
-    (employee._id ? { ...acc, [employee._id]: employee } : acc),
+    employee._id ? { ...acc, [employee._id]: employee } : acc,
   {},
 );
 

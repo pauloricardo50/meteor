@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Slider from 'core/components/Material/Slider';
+import Slider from 'core/components/Slider';
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
@@ -20,9 +20,9 @@ const getSliderValue = (value, sliderMax) => {
 const INCREASE_SLIDER_LIMIT = 0.9;
 
 const showIncreaseButton = (value, sliderMax, allowExtremeLoan) =>
-  sliderMax > 0
-  && value >= INCREASE_SLIDER_LIMIT * sliderMax
-  && !allowExtremeLoan;
+  sliderMax > 0 &&
+  value >= INCREASE_SLIDER_LIMIT * sliderMax &&
+  !allowExtremeLoan;
 
 const Widget1SingleInputSlider = ({
   value,
@@ -43,17 +43,18 @@ const Widget1SingleInputSlider = ({
       onChange={setValue}
       className="slider"
       tabIndex={-1}
+      debounce={false}
     />
     {showIncreaseButton(value, sliderMax, allowExtremeLoan) ? (
       <IconButton
         type="add"
-        tooltip={(
+        tooltip={
           <T
             id={`Widget1SingleInputSlider.${
               isLoanValue ? 'buttonTooltipLoan' : 'buttonTooltip'
             }`}
           />
-        )}
+        }
         onClick={increaseSliderMax}
         tabIndex={-1}
         size="small"

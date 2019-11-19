@@ -4,25 +4,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { impersonateUser } from '../../../api/methods';
+import impersonateNotification from './impersonateNotification';
 
-export const impersonate = ({ userId, authToken, history }) => {
+export const impersonate = ({ userId, authToken, history, adminId }) => {
   impersonateUser
-    .run({ userId, authToken })
+    .run({ userId, authToken, adminId })
     .then(({ emails }) => {
       Meteor.connection.setUserId(userId);
-      import('../../../utils/notification').then(({ default: notification }) => {
-        notification.success({
-          message: <span id="impersonation-success-message">Yay</span>,
-          description: `Actuellement connecté comme ${emails[0].address}`,
-          duration: 5,
-        });
-      });
+      impersonateNotification(emails);
       if (history) {
         history.push('/');
       }
     })
     .then(() => {
       if (Meteor.isDevelopment) {
+        sessionStorage.setItem('dev_impersonate_adminId', adminId);
         sessionStorage.setItem('dev_impersonate_userId', userId);
         sessionStorage.setItem('dev_impersonate_authToken', authToken);
       }
@@ -40,8 +36,9 @@ class ImpersonatePage extends Component {
     const paramsQuery = new URLSearchParams(location.search);
     const userId = paramsQuery.get('userId');
     const authToken = paramsQuery.get('authToken');
+    const adminId = paramsQuery.get('adminId');
 
-    impersonate({ userId, authToken, history });
+    impersonate({ userId, authToken, history, adminId });
   };
 
   render() {

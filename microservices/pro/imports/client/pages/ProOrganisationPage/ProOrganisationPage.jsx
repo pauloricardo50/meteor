@@ -25,8 +25,9 @@ const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
 
   let mainOrganisation = organisations[0];
   if (organisations.length > 1) {
-    mainOrganisation = organisations.find(({ $metadata: { isMain } }) => isMain)
-      || organisations[0];
+    mainOrganisation =
+      organisations.find(({ $metadata: { isMain } }) => isMain) ||
+      organisations[0];
   }
 
   const organisation = mainOrganisation;
@@ -44,9 +45,7 @@ const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
       />
       <div className="flex-col mb-16">
         <label htmlFor="" className="mb-8">
-          Code referral de
-          {' '}
-          {organisation.name}
+          Code referral de {organisation.name}
         </label>
         <b>{organisation._id}</b>
       </div>

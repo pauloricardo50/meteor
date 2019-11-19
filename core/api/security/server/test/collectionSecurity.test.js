@@ -40,27 +40,32 @@ describe('Collection Security', () => {
 
       it('throws if no argument is provided', () => {
         expect(() =>
-          SecurityService.users.isAllowedToInsertByRole()).to.throw();
+          SecurityService.users.isAllowedToInsertByRole(),
+        ).to.throw();
       });
 
       it('throws if no role is provided', () => {
         expect(() =>
-          SecurityService.users.isAllowedToInsertByRole({})).to.throw(SECURITY_ERROR);
+          SecurityService.users.isAllowedToInsertByRole({}),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('throws if passed another role than the ones defined', () => {
         expect(() =>
-          SecurityService.users.isAllowedToInsertByRole({ role: otherRole })).to.throw(SECURITY_ERROR);
+          SecurityService.users.isAllowedToInsertByRole({ role: otherRole }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('throws if you try to add devs without dev privileges', () => {
         expect(() =>
-          SecurityService.users.isAllowedToInsertByRole({ role: devRole })).to.throw(SECURITY_ERROR);
+          SecurityService.users.isAllowedToInsertByRole({ role: devRole }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('throws if you try to add admins without dev privileges', () => {
         expect(() =>
-          SecurityService.users.isAllowedToInsertByRole({ role: adminRole })).to.throw(SECURITY_ERROR);
+          SecurityService.users.isAllowedToInsertByRole({ role: adminRole }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('throws if you try to add users with user privileges', () => {
@@ -69,7 +74,8 @@ describe('Collection Security', () => {
         sinon.stub(Meteor, 'userId').callsFake(() => user._id);
 
         expect(() =>
-          SecurityService.users.isAllowedToInsertByRole({ role: userRole })).to.throw(SECURITY_ERROR);
+          SecurityService.users.isAllowedToInsertByRole({ role: userRole }),
+        ).to.throw(SECURITY_ERROR);
       });
     });
   });
@@ -100,7 +106,9 @@ describe('Collection Security', () => {
         Meteor.userId.restore();
         sinon.stub(Meteor, 'userId').callsFake(() => undefined);
 
-        expect(() => SecurityService.loans.isAllowedToInsert()).to.throw(SECURITY_ERROR);
+        expect(() => SecurityService.loans.isAllowedToInsert()).to.throw(
+          SECURITY_ERROR,
+        );
       });
 
       it('should not do anything if the user is logged in', () => {
@@ -111,7 +119,8 @@ describe('Collection Security', () => {
     describe('isAllowedToUpdate', () => {
       it('should not do anything if the user is the owner', () => {
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate(loanId)).to.not.throw();
+          SecurityService.loans.isAllowedToUpdate(loanId),
+        ).to.not.throw();
       });
 
       it('should not do anything if the user is an admin', () => {
@@ -119,7 +128,8 @@ describe('Collection Security', () => {
         sinon.stub(Meteor, 'userId').callsFake(() => adminId);
 
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate(loanId)).to.not.throw();
+          SecurityService.loans.isAllowedToUpdate(loanId),
+        ).to.not.throw();
       });
 
       it('should not do anything if the user is a dev', () => {
@@ -127,7 +137,8 @@ describe('Collection Security', () => {
         sinon.stub(Meteor, 'userId').callsFake(() => devId);
 
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate(loanId)).to.not.throw();
+          SecurityService.loans.isAllowedToUpdate(loanId),
+        ).to.not.throw();
       });
 
       it('should throw if the user is not the owner', () => {
@@ -135,21 +146,25 @@ describe('Collection Security', () => {
         sinon.stub(Meteor, 'userId').callsFake(() => userId2);
 
         expect(userId).to.not.equal(userId2);
-        expect(() => SecurityService.loans.isAllowedToUpdate(loanId)).to.throw(SECURITY_ERROR);
+        expect(() => SecurityService.loans.isAllowedToUpdate(loanId)).to.throw(
+          SECURITY_ERROR,
+        );
       });
 
       it('should not do anything for anonymous loans', () => {
         generator({ loans: { _id: 'loanId', anonymous: true } });
 
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate('loanId')).to.not.throw();
+          SecurityService.loans.isAllowedToUpdate('loanId'),
+        ).to.not.throw();
       });
 
       it('should not do anything for non anonymous loans without userIds', () => {
         generator({ loans: { _id: 'loanId' } });
 
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate('loanId')).to.throw(SECURITY_ERROR);
+          SecurityService.loans.isAllowedToUpdate('loanId'),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('should throw for expired anonymous loans', () => {
@@ -162,7 +177,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate('loanId')).to.throw(SECURITY_ERROR);
+          SecurityService.loans.isAllowedToUpdate('loanId'),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('should throw for accidental anonymous loans', () => {
@@ -171,7 +187,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.loans.isAllowedToUpdate('loanId')).to.throw(SECURITY_ERROR);
+          SecurityService.loans.isAllowedToUpdate('loanId'),
+        ).to.throw(SECURITY_ERROR);
       });
     });
   });
@@ -193,7 +210,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.not.throw();
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId'),
+        ).to.not.throw();
       });
 
       it('should not do anything if the user is an admin', () => {
@@ -205,7 +223,8 @@ describe('Collection Security', () => {
         sinon.stub(Meteor, 'userId').callsFake(() => 'adminId');
 
         expect(() =>
-          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.not.throw();
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId'),
+        ).to.not.throw();
       });
 
       it('should not do anything if the borrower is on one anonymous loan', () => {
@@ -214,7 +233,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.not.throw();
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId'),
+        ).to.not.throw();
       });
 
       it('should throw if the borrower is on multiple loans', () => {
@@ -223,7 +243,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId')).to.throw(SECURITY_ERROR);
+          SecurityService.borrowers.isAllowedToUpdate('borrowerId', 'userId'),
+        ).to.throw(SECURITY_ERROR);
       });
     });
   });
@@ -250,7 +271,8 @@ describe('Collection Security', () => {
         const promotionId = Factory.create('promotion')._id;
 
         expect(() =>
-          SecurityService.promotions.isAllowedToModify({ promotionId, userId })).to.throw(SECURITY_ERROR);
+          SecurityService.promotions.isAllowedToModify({ promotionId, userId }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('throws if the user is a PRO without permissions', () => {
@@ -264,7 +286,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.promotions.isAllowedToModify({ promotionId, userId })).to.throw(SECURITY_ERROR);
+          SecurityService.promotions.isAllowedToModify({ promotionId, userId }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the user is a PRO with MODIFY on it', () => {
@@ -278,7 +301,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.promotions.isAllowedToModify({ promotionId, userId })).to.not.throw();
+          SecurityService.promotions.isAllowedToModify({ promotionId, userId }),
+        ).to.not.throw();
       });
     });
 
@@ -291,7 +315,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotion({
             promotionId,
             userId,
-          })).to.throw(SECURITY_ERROR);
+          }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the user has a loan linked to this promotion', () => {
@@ -309,7 +334,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotion({
             promotionId,
             userId,
-          })).to.not.throw();
+          }),
+        ).to.not.throw();
       });
 
       it('does not throw if the user is a PRO with right permissions', () => {
@@ -326,7 +352,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotion({
             promotionId,
             userId,
-          })).to.not.throw();
+          }),
+        ).to.not.throw();
       });
 
       it('does not throw if user is an admin', () => {
@@ -337,7 +364,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotion({
             promotionId,
             userId,
-          })).to.not.throw();
+          }),
+        ).to.not.throw();
       });
     });
 
@@ -361,7 +389,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotionLot({
             promotionLotId: 'pLotId',
             userId: 'userId',
-          })).to.throw(SECURITY_ERROR);
+          }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the user is on the promotion', () => {
@@ -381,7 +410,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotionLot({
             promotionLotId: 'pLotId',
             userId: 'userId',
-          })).to.not.throw(SECURITY_ERROR);
+          }),
+        ).to.not.throw(SECURITY_ERROR);
       });
     });
 
@@ -402,7 +432,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotionOption({
             promotionOptionId,
             userId,
-          })).to.throw(SECURITY_ERROR);
+          }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the option is on the users loan', () => {
@@ -426,7 +457,8 @@ describe('Collection Security', () => {
           SecurityService.promotions.hasAccessToPromotionOption({
             promotionOptionId,
             userId,
-          })).to.not.throw(SECURITY_ERROR);
+          }),
+        ).to.not.throw(SECURITY_ERROR);
       });
     });
 
@@ -442,7 +474,8 @@ describe('Collection Security', () => {
             promotionId: 'promotionId',
             userId: 'adminId',
             loanId: 'loanId',
-          })).to.not.throw();
+          }),
+        ).to.not.throw();
       });
 
       it('throws if the pro is not on this promotion', () => {
@@ -456,7 +489,8 @@ describe('Collection Security', () => {
             promotionId: 'promotionId',
             userId: 'proId',
             loanId: 'loanId',
-          })).to.throw(SECURITY_ERROR);
+          }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('throws if the pro is not allowed to see customers', () => {
@@ -467,7 +501,7 @@ describe('Collection Security', () => {
             users: {
               _factory: 'pro',
               _id: 'proId',
-              $metadata: { permissions: {} },
+              $metadata: { permissions: { canSeeCustomerNames: false } },
             },
           },
         });
@@ -477,7 +511,8 @@ describe('Collection Security', () => {
             promotionId: 'promotionId',
             userId: 'proId',
             loanId: 'loanId',
-          })).to.throw(SECURITY_ERROR);
+          }),
+        ).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the pro is allowed to see customers', () => {
@@ -496,8 +531,10 @@ describe('Collection Security', () => {
                 permissions: {
                   displayCustomerNames: {
                     invitedBy: 'ANY',
-                    forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
-                      .FOR_LOT_STATUS),
+                    forLotStatus: Object.values(
+                      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                        .FOR_LOT_STATUS,
+                    ),
                   },
                 },
               },
@@ -510,7 +547,8 @@ describe('Collection Security', () => {
             promotionId: 'promotionId',
             userId: 'proId',
             loanId: 'loanId',
-          })).to.not.throw(SECURITY_ERROR);
+          }),
+        ).to.not.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the pro is allowed to see customers 2', () => {
@@ -566,14 +604,16 @@ describe('Collection Security', () => {
             promotionId: 'promotionId',
             userId: 'proId',
             loanId: 'loanId',
-          })).to.throw(SECURITY_ERROR);
+          }),
+        ).to.throw(SECURITY_ERROR);
 
         expect(() =>
           SecurityService.promotions.isAllowedToSeePromotionCustomer({
             promotionId: 'promotionId',
             userId: 'proId',
             loanId: 'loanId2',
-          })).to.not.throw(SECURITY_ERROR);
+          }),
+        ).to.not.throw(SECURITY_ERROR);
       });
     });
   });
@@ -591,7 +631,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'adminId')).to.not.throw();
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'adminId'),
+        ).to.not.throw();
       });
 
       it('does throw if user is pro and is not allowed to update', () => {
@@ -601,7 +642,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.throw('Vous ne pouvez pas modifier ce bien immobilier');
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId'),
+        ).to.throw('Vous ne pouvez pas modifier ce bien immobilier');
       });
 
       it('does throw if user is user and is not allowed to update', () => {
@@ -611,7 +653,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'userId')).to.throw('Checking ownership [NOT_AUTHORIZED]');
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'userId'),
+        ).to.throw('Checking ownership [NOT_AUTHORIZED]');
       });
 
       it('does not throw if user is user and is allowed to update', () => {
@@ -621,7 +664,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'userId')).to.not.throw();
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'userId'),
+        ).to.not.throw();
       });
 
       it('does not throw if user is pro and is allowed to update PRO property', () => {
@@ -638,7 +682,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.not.throw();
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId'),
+        ).to.not.throw();
       });
 
       it('does throw if user is pro and is not allowed to update PRO property', () => {
@@ -655,7 +700,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.throw('Vous ne pouvez pas modifier ce bien immobilier');
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId'),
+        ).to.throw('Vous ne pouvez pas modifier ce bien immobilier');
       });
 
       it('does throw if user is pro and is not allowed to update PROMOTION property', () => {
@@ -678,7 +724,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.throw('Vous ne pouvez pas modifier cette promotion');
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId'),
+        ).to.throw('Vous ne pouvez pas modifier cette promotion');
       });
 
       it('does not throw if user is pro and is allowed to update PROMOTION property', () => {
@@ -700,7 +747,8 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.not.throw();
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId'),
+        ).to.not.throw();
       });
     });
   });

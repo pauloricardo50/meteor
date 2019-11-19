@@ -33,7 +33,7 @@ export default class Accordion extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.content) {
       this.setState({
         isActive: nextProps.isActive,
@@ -68,13 +68,13 @@ export default class Accordion extends Component {
       <div
         className="Accordion-container"
         style={{ ...adjustedStyles, ...this.props.style }}
-        ref={(c) => {
+        ref={c => {
           this.container = c;
         }}
       >
         <div
           className="Accordion-content"
-          ref={(c) => {
+          ref={c => {
             this.content = c;
           }}
         >

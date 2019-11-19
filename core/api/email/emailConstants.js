@@ -4,9 +4,10 @@ export const FROM_NAME = 'e-Potek';
 export const FROM_EMAIL = 'info@e-potek.ch';
 export const FROM_DEFAULT = `${FROM_NAME} <${FROM_EMAIL}>`;
 export const CTA_URL_DEFAULT = Meteor.settings.public.subdomains.app;
-export const INTERNAL_EMAIL = Meteor.settings.public.environment === 'production'
-  ? FROM_EMAIL
-  : 'dev@e-potek.ch';
+export const INTERNAL_EMAIL =
+  Meteor.settings.public.environment === 'production'
+    ? FROM_EMAIL
+    : 'dev@e-potek.ch';
 export const EPOTEK_PHONE = '+41 22 566 01 10';
 
 export const EMAIL_I18N_NAMESPACE = 'emails';
@@ -77,6 +78,17 @@ export const EMAIL_TEMPLATES = {
       CSS: 'CSS',
     },
   },
+  NOTIFICATION_AND_CTA_V3: {
+    name: 'NOTIFICATION_AND_CTA_V3',
+    mandrillId: 'notification-cta-v3',
+    variables: {
+      TITLE: 'TITLE',
+      BODY: 'BODY',
+      CTA: 'CTA',
+      CTA_URL: 'CTA_URL',
+      CSS: 'CSS',
+    },
+  },
 };
 
 export const EMAIL_IDS = {
@@ -95,4 +107,7 @@ export const EMAIL_IDS = {
   FIND_LENDER_NOTIFICATION: 'FIND_LENDER_NOTIFICATION',
   CONFIRM_USER_INVITATION: 'CONFIRM_USER_INVITATION',
   LOAN_CHECKLIST: 'LOAN_CHECKLIST',
+  BOOK_PROMOTION_LOT: 'BOOK_PROMOTION_LOT',
+  CANCEL_PROMOTION_LOT_BOOKING: 'CANCEL_PROMOTION_LOT_BOOKING',
+  SELL_PROMOTION_LOT: 'SELL_PROMOTION_LOT',
 };

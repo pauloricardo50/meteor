@@ -37,7 +37,7 @@ export default class WaveController extends Component {
     }
   };
 
-  setPathRef = (node) => {
+  setPathRef = node => {
     this.path = node;
   };
 
@@ -53,7 +53,7 @@ export default class WaveController extends Component {
     );
   };
 
-  createGraph = (wave) => {
+  createGraph = wave => {
     const { width, height } = this.props;
 
     const data = [{ type: 'M', values: [0, 0] }];
@@ -80,9 +80,9 @@ export default class WaveController extends Component {
       this.squareRoots[x] = Math.sqrt(x * frequency);
     }
     return (
-      (Math.sin(this.squareRoots[x] - offset) * amplitude
-        + (noSlope ? 0 : WAVE_SLOPE))
-      * x
+      (Math.sin(this.squareRoots[x] - offset) * amplitude +
+        (noSlope ? 0 : WAVE_SLOPE)) *
+      x
     );
   };
 

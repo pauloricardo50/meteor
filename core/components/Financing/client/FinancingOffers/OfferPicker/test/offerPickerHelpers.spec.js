@@ -67,7 +67,9 @@ describe('offerPickerHelpers', () => {
       // 1500 amortization
       // 800 interests
 
-      expect(getMonthlyForStructureWithOffer(props)).to.equal(1000 + 1500 + 800);
+      expect(getMonthlyForStructureWithOffer(props)).to.equal(
+        1000 + 1500 + 800,
+      );
     });
   });
 });

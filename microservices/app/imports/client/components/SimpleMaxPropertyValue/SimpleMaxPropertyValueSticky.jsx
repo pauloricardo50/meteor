@@ -14,7 +14,7 @@ import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
 type SimpleMaxPropertyValueStickyProps = {};
 
-const displayPropertyValueRange = (values) => {
+const displayPropertyValueRange = values => {
   const { min, max } = values;
 
   if (min) {
@@ -43,19 +43,15 @@ const getFooter = ({
   }
 
   const { canton } = maxPropertyValue;
-  const values = residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-    ? maxPropertyValue.main
-    : maxPropertyValue.second;
+  const values =
+    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
+      ? maxPropertyValue.main
+      : maxPropertyValue.second;
 
   return (
     <div className="sticky-result">
       <label>
-        Capacité d'achat -
-        {' '}
-        <T id={`Forms.canton.${canton}`} />
-        {' '}
--
-        {' '}
+        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
       <h3>{displayPropertyValueRange(values)}</h3>
@@ -63,7 +59,9 @@ const getFooter = ({
   );
 };
 
-const SimpleMaxPropertyValueSticky = (props: SimpleMaxPropertyValueStickyProps) => {
+const SimpleMaxPropertyValueSticky = (
+  props: SimpleMaxPropertyValueStickyProps,
+) => {
   const {
     loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,

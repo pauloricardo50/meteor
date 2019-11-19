@@ -14,8 +14,8 @@ const CareersPageList = () => (
         {jobs[department].map((job, index) => (
           <CareersPageJob job={job} key={index} />
         ))}
-        {!jobs[department]
-          || (jobs[department].length === 0 && (
+        {!jobs[department] ||
+          (jobs[department].length === 0 && (
             <p className="careers-page-list-empty">
               <T id="CareersPageList.emptyDepartment" />
             </p>

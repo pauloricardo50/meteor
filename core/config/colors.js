@@ -8,6 +8,7 @@ const colors = {
   success: '#21d3b5',
   warning: '#F3AF50',
   error: '#e01076',
+  mix: '#95299D', // Mix between error and primary
   borderGrey: '#DEE2E6',
   charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#005bea'],
   iconColor: '#444',
@@ -19,6 +20,7 @@ const colors = {
     contrastText: '#fff',
     darkPrimary: '#0048bb', // Darken 20%
     darkSuccess: '#1aa890', // Darken 20%
+    darkError: '#b30c5e', // Darken 20%
   },
   interestRates: {
     [INTEREST_RATES.LIBOR]: '#0047AC',

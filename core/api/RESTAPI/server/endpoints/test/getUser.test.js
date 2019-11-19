@@ -36,10 +36,10 @@ const getUser = ({ email, userId, impersonateUser }) => {
   });
 };
 
-describe('REST: getUser', function () {
+describe('REST: getUser', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -101,9 +101,9 @@ describe('REST: getUser', function () {
     getUser({
       email: 'user1@test.com',
       userId: 'pro',
-    }).then((user) => {
-      expect(user.firstName).to.equal('firstName1');
-      expect(user.lastName).to.equal('lastName1');
+    }).then(user => {
+      expect(user.firstName).to.equal('FirstName1');
+      expect(user.lastName).to.equal('LastName1');
       expect(user.emails[0].address).to.equal('user1@test.com');
       expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
@@ -113,9 +113,9 @@ describe('REST: getUser', function () {
       email: 'user2@test.com',
       impersonateUser: 'pro2@org2.com',
       userId: 'pro',
-    }).then((user) => {
-      expect(user.firstName).to.equal('firstName2');
-      expect(user.lastName).to.equal('lastName2');
+    }).then(user => {
+      expect(user.firstName).to.equal('FirstName2');
+      expect(user.lastName).to.equal('LastName2');
       expect(user.emails[0].address).to.equal('user2@test.com');
       expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
@@ -124,9 +124,9 @@ describe('REST: getUser', function () {
     getUser({
       email: 'user2@test.com',
       userId: 'pro',
-    }).then((user) => {
-      expect(user.firstName).to.equal('firstName2');
-      expect(user.lastName).to.equal('lastName2');
+    }).then(user => {
+      expect(user.firstName).to.equal('FirstName2');
+      expect(user.lastName).to.equal('LastName2');
       expect(user.emails[0].address).to.equal('user2@test.com');
       expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
@@ -135,9 +135,9 @@ describe('REST: getUser', function () {
     getUser({
       email: 'user2@test.com',
       userId: 'pro2',
-    }).then((user) => {
-      expect(user.firstName).to.equal('firstName2');
-      expect(user.lastName).to.equal('lastName2');
+    }).then(user => {
+      expect(user.firstName).to.equal('FirstName2');
+      expect(user.lastName).to.equal('LastName2');
       expect(user.emails[0].address).to.equal('user2@test.com');
       expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
     }));
@@ -146,7 +146,7 @@ describe('REST: getUser', function () {
     getUser({
       email: 'user1@test.com',
       userId: 'pro3',
-    }).then((response) => {
+    }).then(response => {
       expect(response.status).to.equal(400);
       expect(response.message).to.include('"user1@test.com"');
     }));
@@ -155,7 +155,7 @@ describe('REST: getUser', function () {
     getUser({
       email: 'user3@test.com',
       userId: 'pro',
-    }).then((response) => {
+    }).then(response => {
       expect(response.status).to.equal(400);
       expect(response.message).to.include('"user3@test.com"');
     }));

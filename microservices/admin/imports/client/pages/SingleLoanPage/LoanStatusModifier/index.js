@@ -1,1 +1,1 @@
-export default from './LoanStatusModifier';
+export { default } from './LoanStatusModifier';

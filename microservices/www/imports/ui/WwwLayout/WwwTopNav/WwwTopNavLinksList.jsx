@@ -25,7 +25,7 @@ const WwwTopNavLinksList = ({ variant }) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       {links.map(link => (
         <Link
           key={link}
@@ -62,7 +62,7 @@ const WwwTopNavLinksList = ({ variant }) => {
           },
         ]}
       />
-    </React.Fragment>
+    </>
   );
 };
 

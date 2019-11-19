@@ -18,7 +18,7 @@ const grapherLinks = [
   'offers',
 ];
 
-const handleSubmit = loanId => (doc) => {
+const handleSubmit = loanId => doc => {
   let message;
   let hideLoader;
 

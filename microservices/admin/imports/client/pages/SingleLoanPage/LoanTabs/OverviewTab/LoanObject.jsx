@@ -6,7 +6,7 @@ import Button from 'core/components/Button';
 import { withState } from 'recompose';
 
 const LoanObject = ({ showObject, setShowObject, loan }) => (
-  <React.Fragment>
+  <>
     <div className="text-center">
       <Button
         raised
@@ -19,7 +19,7 @@ const LoanObject = ({ showObject, setShowObject, loan }) => (
         {Object.keys(loan).map(key => renderObject(key, loan))}
       </ul>
     )}
-  </React.Fragment>
+  </>
 );
 
 LoanObject.propTypes = {

@@ -25,9 +25,11 @@ const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
       <LoanProgress step={step} />
       <Button
         onClick={() =>
-          history.push(createRoute('/loans/:loanId', {
-            loanId,
-          }))
+          history.push(
+            createRoute('/loans/:loanId', {
+              loanId,
+            }),
+          )
         }
         primary
         raised

@@ -5,4 +5,6 @@ import WwwInterestRatesTableContainer, {
 
 export default WwwInterestRatesTableContainer(InterestRatesTable);
 
-export const WwwInterestRatesTableForTests = WwwInterestsTableContainerForTests(InterestRatesTable);
+export const WwwInterestRatesTableForTests = WwwInterestsTableContainerForTests(
+  InterestRatesTable,
+);

@@ -1,10 +1,4 @@
-import {
-  compose,
-  withReducer,
-  mapProps,
-  withState,
-  withProps,
-} from 'recompose';
+import { compose, mapProps, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminLoans } from 'core/api/loans/queries';
@@ -13,11 +7,7 @@ import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
 import { userCache } from 'core/api/loans/links';
-import {
-  groupLoans,
-  filterReducer,
-  getInitialOptions,
-} from './loanBoardHelpers';
+import { groupLoans } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
@@ -41,14 +31,13 @@ const defaultBody = {
     assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
   },
   financedPromotionLink: 1,
+  userId: 1,
 };
 
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
 export default compose(
-  withState('activateSync', 'setActivateSync', false),
-  withReducer('options', 'dispatch', filterReducer, getInitialOptions),
   addLiveSync,
   withLiveSync,
   withSmartQuery({

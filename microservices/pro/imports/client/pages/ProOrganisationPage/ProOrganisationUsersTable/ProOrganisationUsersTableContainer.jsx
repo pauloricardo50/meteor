@@ -9,6 +9,7 @@ const columnOptions = [
   { id: 'phoneNumber', label: <T id="Forms.phoneNumber" /> },
   { id: 'title', label: <T id="Forms.title" /> },
   { id: 'ref', label: <T id="Forms.refId" /> },
+  { id: 'shareCustomers', label: <T id="Forms.shareCustomers" /> },
 ];
 
 const mapUser = ({
@@ -16,10 +17,17 @@ const mapUser = ({
   name,
   email,
   phoneNumber,
-  $metadata: { title },
+  $metadata: { title, shareCustomers },
 }) => ({
   id: userId,
-  columns: [name, email, phoneNumber, title, userId],
+  columns: [
+    name,
+    email,
+    phoneNumber,
+    title,
+    userId,
+    <T id={`general.${shareCustomers ? 'yes' : 'no'}`} key="shareCustomers" />,
+  ],
 });
 
 export default withProps(({ users }) => ({

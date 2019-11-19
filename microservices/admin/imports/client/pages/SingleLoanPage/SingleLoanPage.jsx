@@ -7,7 +7,7 @@ import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
 import SingleLoanPageTasks from './SingleLoanPageTasks';
 
-const SingleLoanPage = (props) => {
+const SingleLoanPage = props => {
   const { loan } = props;
   return (
     <section className="single-loan-page">

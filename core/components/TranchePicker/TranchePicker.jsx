@@ -18,14 +18,18 @@ const interestRatesOrder = Object.values(INTEREST_RATES);
 
 const filterOptions = (options, tranches, currentType) => {
   const currentSelectedTypes = tranches.map(({ type }) => type);
-  const difference = options.filter(({ id }) => !currentSelectedTypes.includes(id));
+  const difference = options.filter(
+    ({ id }) => !currentSelectedTypes.includes(id),
+  );
   const currentOption = options.find(({ id }) => id === currentType);
   const withCurrentType = currentOption
     ? [...difference, currentOption]
     : difference;
 
-  const sortedOptions = withCurrentType.sort(({ id: id1 }, { id: id2 }) =>
-    interestRatesOrder.indexOf(id1) - interestRatesOrder.indexOf(id2));
+  const sortedOptions = withCurrentType.sort(
+    ({ id: id1 }, { id: id2 }) =>
+      interestRatesOrder.indexOf(id1) - interestRatesOrder.indexOf(id2),
+  );
   return sortedOptions;
 };
 
@@ -45,7 +49,7 @@ export const TranchePicker = ({
         type={type}
         removeTranche={() => removeTranche(type)}
         setValue={newValue => setValue(type, newValue)}
-        setType={(_, newType) => setType(type, newType)}
+        setType={newType => setType(type, newType)}
         options={filterOptions(options, tranches, type)}
       />
     ))}

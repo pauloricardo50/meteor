@@ -30,21 +30,27 @@ describe('DisableUserFormsToggle', () => {
   });
 
   it('renders the top label', () => {
-    expect(component(completeProps)
-      .find(Toggle)
-      .prop('labelTop')).to.deep.equal(<T id="Forms.userFormsEnabled" />);
+    expect(
+      component(completeProps)
+        .find(Toggle)
+        .prop('labelTop'),
+    ).to.deep.equal(<T id="Forms.userFormsEnabled" />);
   });
 
   it('renders the left label', () => {
-    expect(component(completeProps)
-      .find(Toggle)
-      .prop('labelLeft')).to.deep.equal(<T id="general.no" />);
+    expect(
+      component(completeProps)
+        .find(Toggle)
+        .prop('labelLeft'),
+    ).to.deep.equal(<T id="general.no" />);
   });
 
   it('renders the right label', () => {
-    expect(component(completeProps)
-      .find(Toggle)
-      .prop('labelRight')).to.deep.equal(<T id="general.yes" />);
+    expect(
+      component(completeProps)
+        .find(Toggle)
+        .prop('labelRight'),
+    ).to.deep.equal(<T id="general.yes" />);
   });
 
   it('is toggled on when user forms are enabled', () => {

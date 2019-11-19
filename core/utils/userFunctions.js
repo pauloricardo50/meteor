@@ -3,7 +3,7 @@ import flatten from 'lodash/flatten';
 
 import { ROLES } from '../api/users/userConstants';
 
-export const isUser = (user) => {
+export const isUser = user => {
   if (!user) {
     return false;
   }
@@ -17,7 +17,7 @@ export const isUser = (user) => {
   return userHasRoles && intersection(userRoles, [ADMIN, DEV]).length === 0;
 };
 
-export const getUserDisplayName = ({ firstName, lastName, emails }) =>
-  [firstName, lastName].filter(name => name).join(' ')
-  || (emails && emails[0] && emails[0].address)
-  || '';
+export const getUserDisplayName = ({ firstName, lastName, emails } = {}) =>
+  [firstName, lastName].filter(name => name).join(' ') ||
+  (emails && emails[0] && emails[0].address) ||
+  '';

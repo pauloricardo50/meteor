@@ -16,8 +16,8 @@ type LendersTabProps = {
 const shouldRenderTab = ({ status, lenders = [] }) => {
   const statusIndex = LOAN_STATUS_ORDER.indexOf(status);
   return (
-    statusIndex >= LOAN_STATUS_ORDER.indexOf(LOAN_STATUS.ONGOING)
-    || lenders.length > 0
+    statusIndex >= LOAN_STATUS_ORDER.indexOf(LOAN_STATUS.ONGOING) ||
+    lenders.length > 0
   );
 };
 
@@ -43,7 +43,9 @@ const LendersTab = (props: LendersTabProps) => {
             loanId={loanId}
             buttonProps={{
               disabled: disableOfferAdder,
-              tooltip: disableOfferAdder ? 'Ajoutez un prêteur pour ajouter des offres' : undefined,
+              tooltip: disableOfferAdder
+                ? 'Ajoutez un prêteur pour ajouter des offres'
+                : undefined,
             }}
           />
           <h1 className="text-center">Prêteurs</h1>

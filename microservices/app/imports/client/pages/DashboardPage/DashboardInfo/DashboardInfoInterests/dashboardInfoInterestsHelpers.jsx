@@ -39,7 +39,7 @@ export const formatInterestRates = interestRatesArray =>
 const getSameRatesFromOffers = (offers, interestKey) =>
   offers.reduce(
     (rates, offer) =>
-      (offer[interestKey] ? [...rates, offer[interestKey]] : rates),
+      offer[interestKey] ? [...rates, offer[interestKey]] : rates,
     [],
   );
 
@@ -51,7 +51,7 @@ export const getBestRate = (offers, interestKey) => {
 
 export const getInterestRatesFromOffers = offers =>
   interestRatesTableOptions
-    .map((interestKey) => {
+    .map(interestKey => {
       const rates = getBestRate(offers, interestKey);
 
       if (rates) {

@@ -43,7 +43,9 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
   INVITATION: settings => ({
     canInviteCustomers: true,
     displayCustomerNames: {
-      forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+      forLotStatus: Object.values(
+        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+      ),
       invitedBy:
         PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
     },
@@ -63,6 +65,7 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
     canRemoveLots: true,
     canModifyPromotion: true,
     canManageDocuments: true,
+    canSeeManagement: true,
   }),
   BOOKING: settings => ({ canBookLots: true }),
   SELLING: settings => ({ canSellLots: true }),
@@ -71,7 +74,9 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
 export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {
   const settings = {
     consultation: {
-      forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+      forLotStatus: Object.values(
+        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+      ),
       invitedBy: PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ANY,
     },
   };
@@ -81,4 +86,12 @@ export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {
       merge({}, bundles, PROMOTION_PERMISSIONS_BUNDLES[bundle](settings)),
     {},
   );
+};
+
+export const PROMOTION_AUTHORIZATION_STATUS = {
+  NONE: 'NONE',
+  PREPARATION: 'PREPARATION',
+  FILED: 'FILED',
+  PRE_APPROVED: 'PRE_APPROVED',
+  APPROVED: 'APPROVED',
 };

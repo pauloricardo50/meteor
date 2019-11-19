@@ -7,7 +7,8 @@ export const validateLoanPdf = ({ loan, structureIds }) => {
   checkObjectStructure({ obj: loan, template: TEMPLATES[PDF_TYPES.LOAN] });
 
   const structures = loan.structures.filter(({ id }) =>
-    structureIds.includes(id));
+    structureIds.includes(id),
+  );
   let id;
 
   structures.forEach(({ propertyId, promotionOptionId }) => {

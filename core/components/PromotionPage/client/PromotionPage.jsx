@@ -1,65 +1,70 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
-
-import React from 'react';
+import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
-import cx from 'classnames';
 
-import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
-
+import T from '../../Translation';
+import PromotionPageTabs from './PromotionPageTabs';
 import PromotionPageHeader from './PromotionPageHeader';
-import ProPromotionLotsTable from './ProPromotionLotsTable';
-import PromotionPageDocuments from './PromotionPageDocuments';
-import AdditionalLotsTable from './AdditionalLotsTable';
+import PromotionPageContent from './PromotionPageContent';
+import PromotionMetadataContext from './PromotionMetadata';
 
-import UserPromotionTables from './UserPromotionTables';
-import PromotionPageButtons from './PromotionPageButtons';
-import { APPLICATION_TYPES } from '../../../api/constants';
+const getTabs = ({
+  permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
+  promotion: { users = [], loans = [], documents },
+}) =>
+  [
+    { id: 'management', shouldDisplay: canSeeManagement },
+    { id: 'overview', shouldDisplay: true },
+    { id: 'map', shouldDisplay: true },
+    { id: 'partners', shouldDisplay: true },
+    {
+      id: 'files',
+      shouldDisplay:
+        documents &&
+        documents.promotionDocuments &&
+        documents.promotionDocuments.length > 0,
+    },
+    {
+      id: 'customers',
+      label: (
+        <T id="PromotionPageTabs.customers" values={{ count: loans.length }} />
+      ),
+      shouldDisplay: canSeeCustomers,
+    },
+    {
+      id: 'users',
+      label: (
+        <T id="PromotionPageTabs.users" values={{ count: users.length }} />
+      ),
+      shouldDisplay: canSeeUsers,
+    },
+  ]
+    .filter(({ shouldDisplay }) => shouldDisplay)
+    .map(tab => ({
+      ...tab,
+      label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
+    }));
 
-type PromotionPageProps = {
-  promotion: Object,
-  currentUser: Object,
-  loan: Object,
-  canInviteCustomers: boolean,
-  canManageDocuments: boolean,
-  canSeeCustomers: boolean,
-};
+type PromotionPageProps = {};
 
-const PromotionPage = (props: PromotionPageProps) => {
-  const { promotion, loan = {} } = props;
-  const { applicationType } = loan;
-
-  const isApp = Meteor.microservice === 'app';
+const PromotionPage = ({ promotion, route, ...props }: PromotionPageProps) => {
+  const { name } = promotion;
+  const { permissions } = useContext(PromotionMetadataContext);
+  const tabs = getTabs({ permissions, promotion });
 
   return (
-    <div
-      className={cx('card1 promotion-page', {
-        simple: applicationType === APPLICATION_TYPES.SIMPLE,
-      })}
-    >
+    <div className="promotion-page">
       <Helmet>
-        <title>{promotion.name}</title>
+        <title>{name}</title>
       </Helmet>
-      <PromotionPageHeader {...props} />
-
-      {Meteor.microservice !== 'app' && <PromotionPageButtons {...props} />}
-
-      <MapWithMarkerWrapper
-        address1={promotion.address1}
-        city={promotion.city}
-        zipCode={promotion.zipCode}
-        options={{ zoom: 12 }}
-        className="animated fadeIn delay-800"
+      <PromotionPageHeader promotion={promotion} />
+      <PromotionPageTabs promotion={promotion} route={route} tabs={tabs} />
+      <PromotionPageContent
+        promotion={promotion}
+        route={route}
+        tabs={tabs}
+        {...props}
       />
-
-      <PromotionPageDocuments promotion={promotion} />
-      {!isApp && (
-        <>
-          <ProPromotionLotsTable {...props} />
-          <AdditionalLotsTable {...props} />
-        </>
-      )}
-      {isApp && <UserPromotionTables loan={loan} promotion={promotion} />}
     </div>
   );
 };

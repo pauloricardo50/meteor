@@ -14,7 +14,7 @@ const makeComponentDecorator = props => (href, text, key) => {
         key={key}
         target={newTab ? '_blank' : '_self'}
         style={style}
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
         }}
       >

@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -11,6 +12,10 @@ export const UserSchema = new SimpleSchema({
     // optional here because the accounts-password package does its own validation.
     // Third-party login packages may not require either. Adjust this schema as necessary for your usage.
     optional: true,
+  },
+  isDisabled: {
+    type: Boolean,
+    defaultValue: false,
   },
   emails: {
     type: Array,
@@ -74,10 +79,12 @@ export const UserSchema = new SimpleSchema({
   firstName: {
     type: String,
     optional: true,
+    autoValue: autoValueSentenceCase,
   },
   lastName: {
     type: String,
     optional: true,
+    autoValue: autoValueSentenceCase,
   },
   phoneNumbers: {
     type: Array,

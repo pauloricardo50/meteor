@@ -21,13 +21,13 @@ const Widget1LenderCount = ({
   const count = getLenderCount(borrowStatus, incomeStatus);
 
   return (
-    <React.Fragment>
+    <>
       <hr className="widget1-lender-count-divider" />
       <div className="widget1-lender-count">
         <T id="Widget1LenderCount.label" />
         <span>{count}</span>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

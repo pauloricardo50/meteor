@@ -3,7 +3,10 @@ import SimpleSchema from 'simpl-schema';
 import { withRouter } from 'react-router-dom';
 
 import { anonymousCreateUser } from 'core/api/methods/index';
-import { LOCAL_STORAGE_ANONYMOUS_LOAN, LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
+import {
+  LOCAL_STORAGE_ANONYMOUS_LOAN,
+  LOCAL_STORAGE_REFERRAL,
+} from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { getCookie } from 'core/utils/cookiesHelpers';
@@ -18,11 +21,12 @@ export const userSchema = new SimpleSchema({
 
 export default compose(
   withRouter,
-  withProps(({ history }) => ({
-    schema: userSchema,
-    onSubmit: (values) => {
+  withProps(({ history, omitValues = [], ctaId }) => ({
+    schema: userSchema.omit(...omitValues),
+    onSubmit: values => {
       const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      const referralId = localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined;
+      const referralId =
+        localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined;
 
       return anonymousCreateUser
         .run({
@@ -32,13 +36,16 @@ export default compose(
 
           // Remove null values
           loanId: loanId || undefined,
+          ctaId,
         })
         .then(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
-          history.push(createRoute(APP_ROUTES.SIGNUP_SUCCESS_PAGE.path, {
-            email: values.email,
-          }));
+          history.push(
+            createRoute(APP_ROUTES.SIGNUP_SUCCESS_PAGE.path, {
+              email: values.email,
+            }),
+          );
         });
     },
   })),

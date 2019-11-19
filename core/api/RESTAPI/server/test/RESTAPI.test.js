@@ -28,21 +28,23 @@ import {
   uploadFile,
 } from './apiTestHelpers.test';
 
-const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
-  + 'MEgCQQCGZse2vDomKwX42nV3ZwJsbw/RGzbtCoz00xnciiHvJOGn\n'
-  + '79MDLQ93aXJVJb0YwqwYIqQHqJI/I1/2inD353lnAgMBAAE=\n'
-  + '-----END RSA PUBLIC KEY-----';
+const publicKey =
+  '-----BEGIN RSA PUBLIC KEY-----\n' +
+  'MEgCQQCGZse2vDomKwX42nV3ZwJsbw/RGzbtCoz00xnciiHvJOGn\n' +
+  '79MDLQ93aXJVJb0YwqwYIqQHqJI/I1/2inD353lnAgMBAAE=\n' +
+  '-----END RSA PUBLIC KEY-----';
 
-const privateKey = '-----BEGIN RSA PRIVATE KEY-----\n'
-  + 'MIIBOgIBAAJBAIZmx7a8OiYrBfjadXdnAmxvD9EbNu0KjPTTGdyKIe\n'
-  + '8k4afv0wMtD3dpclUlvRjCrBgipAeokj8jX/aKcPfneWcCAwEAAQJA\n'
-  + 'egy37A++Vo7XW4c3CPk4UDQDDwdBt7zPCDzzzTx7WGiqiQAX8aJiGS\n'
-  + 'C0hxtSk6yKd+xvKuXJH/GUyauNeQ7s0QIhAPy4AYr5a5MFitDc0vwW\n'
-  + 'um1e/tHm0/lhN2AiBS3pz8SrAiEAiCWB9yC93YpiggSoBRIbP5t5C9\n'
-  + 'ThAKnYQsg1Sr5XRjUCIQDZNydMVnnaEqdwQn2uY7K1kzMfI3ILJT49\n'
-  + 'iMA+6HrGpQIgMgJdB/Kt61eusYWWVi59ddLdFrx+XakFuBokgS0Dj9\n'
-  + 'UCIHkPp3g9B6FVrUs3cC4QA5S2XP0YGhvAJ6FykArwjWYy\n'
-  + '-----END RSA PRIVATE KEY-----';
+const privateKey =
+  '-----BEGIN RSA PRIVATE KEY-----\n' +
+  'MIIBOgIBAAJBAIZmx7a8OiYrBfjadXdnAmxvD9EbNu0KjPTTGdyKIe\n' +
+  '8k4afv0wMtD3dpclUlvRjCrBgipAeokj8jX/aKcPfneWcCAwEAAQJA\n' +
+  'egy37A++Vo7XW4c3CPk4UDQDDwdBt7zPCDzzzTx7WGiqiQAX8aJiGS\n' +
+  'C0hxtSk6yKd+xvKuXJH/GUyauNeQ7s0QIhAPy4AYr5a5MFitDc0vwW\n' +
+  'um1e/tHm0/lhN2AiBS3pz8SrAiEAiCWB9yC93YpiggSoBRIbP5t5C9\n' +
+  'ThAKnYQsg1Sr5XRjUCIQDZNydMVnnaEqdwQn2uY7K1kzMfI3ILJT49\n' +
+  'iMA+6HrGpQIgMgJdB/Kt61eusYWWVi59ddLdFrx+XakFuBokgS0Dj9\n' +
+  'UCIHkPp3g9B6FVrUs3cC4QA5S2XP0YGhvAJ6FykArwjWYy\n' +
+  '-----END RSA PRIVATE KEY-----';
 
 const makeTestRoute = method => ({ user }) => ({
   message: method,
@@ -83,9 +85,11 @@ describe('RESTAPI', () => {
         () =>
           new Promise((resolve, reject) =>
             Meteor.call('apiTestMethod', (err, res) =>
-              (err
+              err
                 ? reject(err)
-                : resolve(`${res} ${testBody} ${testQuery} ${id}`)))),
+                : resolve(`${res} ${testBody} ${testQuery} ${id}`),
+            ),
+          ),
       ),
   );
   api.addEndpoint('/multipart', 'POST', makeTestRoute('POST'), {
@@ -95,7 +99,7 @@ describe('RESTAPI', () => {
   api.addEndpoint('/isAPI', 'GET', () => ({ isAPI: isAPI() }));
   api.addEndpoint('/fiberAPIUser', 'GET', getAPIUser);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -179,12 +183,14 @@ describe('RESTAPI', () => {
           headers: makeHeaders({ publicKey: '12345' }),
         },
         // expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-      }).then((response) => {
+      }).then(response => {
         const { status, errorName, message, info } = response;
         expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
         expect(errorName).to.equal('AUTHORIZATION_FAILED');
         expect(message).to.equal('Wrong public key or signature.');
-        expect(info).to.equal('No user found with this public key, or maybe it has a typo ?');
+        expect(info).to.equal(
+          'No user found with this public key, or maybe it has a typo ?',
+        );
       }));
 
     it('signature is wrong', () =>
@@ -194,7 +200,7 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: makeHeaders({ publicKey }),
         },
-      }).then((response) => {
+      }).then(response => {
         const { status, errorName, message, info } = response;
         expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
         expect(errorName).to.equal('AUTHORIZATION_FAILED');
@@ -225,7 +231,8 @@ describe('RESTAPI', () => {
             }),
           },
           expectedResponse: REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT,
-        }));
+        }),
+      );
     });
 
     it('attempts a replay attack with old timestamp', () => {
@@ -470,7 +477,7 @@ describe('RESTAPI', () => {
       filePath,
       userId: user._id,
       url: '/multipart',
-    }).then((res) => {
+    }).then(res => {
       const { userId } = res;
       expect(userId).to.equal(user._id);
     });
@@ -483,7 +490,7 @@ describe('RESTAPI', () => {
       filePath,
       userId: user._id,
       url: '/test',
-    }).then((res) => {
+    }).then(res => {
       const { status, errorName, message } = res;
       expect(status).to.equal(400);
       expect(errorName).to.equal('WRONG_CONTENT_TYPE');
@@ -614,7 +621,7 @@ describe('RESTAPI', () => {
       });
     });
 
-    it('returns false when calling a method', (done) => {
+    it('returns false when calling a method', done => {
       Meteor.call('isAPI', (err, result) => {
         if (err) {
           done(err);
@@ -629,8 +636,12 @@ describe('RESTAPI', () => {
   describe('APIUser', () => {
     it('returns the logged in API user', () => {
       const { timestamp, nonce } = getTimestampAndNonce();
-      const expectedResponse = omit(user, ['createdAt', 'updatedAt', 'roles']);
-
+      const expectedResponse = omit(user, [
+        'createdAt',
+        'updatedAt',
+        'roles',
+        'isDisabled',
+      ]);
       return fetchAndCheckResponse({
         url: '/fiberAPIUser',
         data: {

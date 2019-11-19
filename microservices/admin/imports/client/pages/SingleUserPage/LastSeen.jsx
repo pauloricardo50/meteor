@@ -12,7 +12,7 @@ const LastSeen = ({ userId }: LastSeenProps) => {
 
   useEffect(() => {
     setLastSeen(null);
-    MixpanelService.getLastSeen({ userId }).then((result) => {
+    MixpanelService.getLastSeen({ userId }).then(result => {
       setLastSeen(result);
     });
   }, [userId]);

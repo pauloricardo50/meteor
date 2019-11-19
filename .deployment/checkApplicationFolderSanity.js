@@ -7,7 +7,7 @@ import {
 
 const checkIfDirectoryIncludesAllFiles = ({ directoryFiles, files }) =>
   new Promise((resolve, reject) => {
-    files.forEach((file) => {
+    files.forEach(file => {
       if (!directoryFiles.includes(file)) {
         reject(file);
       }
@@ -34,9 +34,10 @@ const main = () => {
 
   return getDirectoryFilesList(directory)
     .then(directoryFiles =>
-      checkIfDirectoryIncludesAllFiles({ directoryFiles, files }))
+      checkIfDirectoryIncludesAllFiles({ directoryFiles, files }),
+    )
     .then(() => touchFile(`${directory}/${APPLICATION_SANITY_CHECK_DONE}`))
-    .catch((missingFile) => {
+    .catch(missingFile => {
       touchFile(`${directory}/${APPLICATION_SANITY_CHECK_ERROR}`);
       throw new Error(`File ${missingFile} missing from ${directory}`);
     });

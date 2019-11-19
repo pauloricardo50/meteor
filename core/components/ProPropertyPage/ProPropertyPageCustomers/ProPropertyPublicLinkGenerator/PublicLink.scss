@@ -1,8 +1,9 @@
 .public-link {
   display: flex;
-  flex-direction: column;
-  min-width: 500px;
   align-items: center;
+  flex-direction: column;
+
+  min-width: 500px;
   padding: 16px;
 
   &-value {

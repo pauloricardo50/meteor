@@ -1,156 +1,223 @@
+@import './PromotionCustomers/PromotionCustomers.scss';
+@import './PromotionLotDetail/PromotionLotDetail.scss';
+
 .promotion-page {
   display: flex;
+  align-items: stretch;
   flex-direction: column;
+  flex-grow: 1;
 
-  padding: 16px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 
   &-header {
     display: flex;
     align-items: stretch;
-    flex-wrap: wrap-reverse;
+    flex-direction: column;
 
-    @include screen(small) {
-      flex-direction: column-reverse;
+    height: 50vw;
+    min-height: 200px;
+    max-height: 500px;
+    padding: 32px;
+
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+    @include screen(med) {
+      padding: 16px;
     }
 
-    &-right,
-    &-left {
-      flex-basis: 50%;
+    .decrement {
+      top: unset;
+      bottom: 8px;
+      left: 8px;
+    }
+
+    .increment {
+      top: unset;
+      bottom: 8px;
+      left: 72px;
+    }
+
+    &-top {
+      display: flex;
+      flex-wrap: wrap-reverse;
+      justify-content: space-between;
+    }
+
+    &-text {
+      padding: 8px;
+
+      border-radius: 4px;
+      background-color: rgba($color: #000, $alpha: 0.4);
+    }
+
+    &-title {
+      margin: 12px 0;
+    }
+
+    &-actions {
+      margin-bottom: 8px;
+
+      > *:last-child {
+        margin-left: 8px;
+      }
+    }
+
+    h1,
+    h3,
+    h4 {
+      margin: 0;
+
+      color: white;
+    }
+
+    h1 {
+      margin-right: 8px;
+    }
+
+    .priority-setter {
+      display: flex;
+      align-items: center;
+
+      > * {
+        margin-left: 4px;
+      }
+    }
+
+    &-linkers {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      width: 100%;
+
+      > * {
+        min-width: 200px;
+        margin-right: 8px;
+
+        @include screen(med) {
+          min-width: 200px;
+        }
+      }
+    }
+  }
+
+  .residence-type-setter {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    // On very small screens
+
+    min-width: 224px;
+    margin: 16px 0;
+    padding: 16px;
+
+    .icon {
+      width: 80px;
+      height: 80px;
+      padding: 8px 24px 8px 16px;
+
+      color: $primary;
+    }
+
+    > * {
       flex-grow: 1;
-      flex-shrink: 0;
+    }
+  }
+
+  &-overview {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    > button,
+    .mui-table {
+      margin-top: 24px;
     }
 
-    &-left {
+    .promotion-timeline {
+      overflow-x: scroll;
+      align-self: stretch;
+    }
+
+    .mui-table,
+    .additional-lots-table {
+      align-self: stretch;
+    }
+
+    .additional-lots-table {
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+    }
+  }
 
-      box-sizing: border-box;
-      padding-right: 16px;
+  .promotion-partners {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-      h1 {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-      }
+    .contacts,
+    .logos {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
 
-      .promotion-title {
-        align-self: center;
+      margin-top: 32px;
+    }
 
-        width: 100%;
-        max-width: 600px;
-      }
+    .contacts {
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-      .logos,
-      .contacts {
+    .contact {
+      display: flex;
+      flex-direction: column;
+
+      margin-right: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      margin: 16px;
+      padding: 32px;
+
+      &-wrapper {
         display: flex;
         align-items: center;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
 
-        .list {
-          display: flex;
-          align-items: flex-start;
-          align-self: stretch;
-          flex-wrap: wrap;
-          justify-content: space-around;
-        }
-      }
+        max-width: 200px;
+        height: 120px;
 
-      .logos {
-        .logo {
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          justify-content: flex-start;
-
-          width: 150px;
-          min-height: 100px;
-
-          p {
-            max-width: 150px;
-          }
-
-          .logo-wrapper {
-            max-width: 150px;
-            height: 50px;
-          }
-
-          img {
-            max-width: 150px;
-            max-height: 50px;
-            margin-bottom: 8px;
-          }
-        }
-      }
-
-      .contacts {
-        .contact {
-          display: flex;
-          align-items: flex-start;
-          flex-basis: 200px;
-          flex-direction: column;
-
-          margin-bottom: 16px;
-
-          h4 {
-            margin: 0;
-          }
-
-          .title {
-            margin-bottom: 8px;
-          }
+        img {
+          max-width: 100%;
+          max-height: 100%;
         }
       }
     }
-
-    &-right > * {
-      flex-basis: 50%;
-      flex-grow: 1;
-
-      min-width: 300px;
-      min-height: 500px;
-
-      @include screen(small) {
-        min-width: unset;
-        min-height: 300px;
-      }
-    }
   }
 
-  .buttons {
-    margin: 40px 0;
-    > * {
-      margin-right: 16px;
-      margin-bottom: 8px;
-    }
-  }
-
-  .map {
-    align-self: stretch;
-
-    height: 500px;
-    margin-top: 40px;
-  }
-
-  .promotion-table-actions {
-    display: flex;
-    align-self: flex-start;
-
-    > * {
-      margin-right: 8px;
-    }
-  }
-
-  .additional-lots {
-    display: flex;
-    flex-direction: column;
+  &-map {
+    flex-grow: 1;
 
     width: 100%;
-    margin: 32px 0;
+    min-height: 500px;
 
-    &-button {
-      align-self: center;
+    .map {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
     }
   }
 
@@ -162,42 +229,141 @@
       margin-left: 4px;
     }
   }
+}
 
-  .residence-type-setter {
+.modal-promotion-lot-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.priority-order {
+  display: flex;
+
+  > * {
+    margin-right: 4px;
+  }
+
+  .primary {
+    color: white;
+    background-color: $primary;
+  }
+
+  .success {
+    color: white;
+    background-color: $success;
+
+    &:hover {
+      background-color: $success-dark;
+    }
+  }
+
+  .error {
+    color: white;
+    background-color: $error;
+
+    &:hover {
+      background-color: $error-dark;
+    }
+  }
+
+  .icon {
+    color: white;
+  }
+}
+
+.book-client-infos {
+  display: flex;
+  flex-direction: column;
+
+  &-table {
+    border-spacing: 16px;
+  }
+}
+
+.promotion-progress {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 8px;
+  }
+}
+
+.promotion-lot-attributer {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 4px;
+  }
+}
+
+.promotion-management {
+  margin-top: 16px;
+
+  &-statuses form {
     display: flex;
     align-items: center;
-    align-self: center;
+    flex-direction: row;
+    justify-content: center;
 
-    width: 50%;
-    // On very small screens
-    min-width: 224px;
-    margin: 16px 0;
-    padding: 16px;
-
-    .icon {
-      width: 80x;
-      height: 80px;
-      color: $primary;
-    }
+    width: 100%;
 
     > * {
-      flex-grow: 1;
+      width: 200px;
+    }
+
+    > *:first-child {
+      margin-right: 8px;
     }
   }
-}
 
-.promotion-page.simple {
-  width: 100%;
-  max-width: 1200px;
-  margin-top: 16px;
-  align-self: center;
-  box-sizing: border-box;
+  .promotion-recap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  @include screen(wide) {
     width: 100%;
   }
-}
 
-.lot-chips {
-  display: flex;
+  &-charts {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    padding: 16px;
+
+    .chart {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 600px;
+      height: 400px;
+      padding: 8px;
+
+      @include screen(med) {
+        transform: scale(0.8);
+      }
+
+      .empty {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+
+        .icon {
+          width: 200px;
+          height: 200px;
+
+          opacity: 0.5;
+        }
+      }
+    }
+  }
 }

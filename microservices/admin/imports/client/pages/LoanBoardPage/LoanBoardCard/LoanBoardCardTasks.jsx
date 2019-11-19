@@ -42,7 +42,9 @@ const LoanBoardCardTasks = ({
       <LoanBoardCardTask title={nextDueTask.title} _id={nextDueTask._id} />
     </h5>
   );
-  const activeTasks = tasks.filter(({ status }) => status === TASK_STATUS.ACTIVE);
+  const activeTasks = tasks.filter(
+    ({ status }) => status === TASK_STATUS.ACTIVE,
+  );
   const sortedTasks = activeTasks.sort(sortTasks);
 
   return (
@@ -51,7 +53,7 @@ const LoanBoardCardTasks = ({
       {renderComplex ? (
         <StickyPopover
           title="Tâches"
-          component={(
+          component={
             <Timeline
               id={tasks[0]._id}
               className="tasks"
@@ -64,7 +66,7 @@ const LoanBoardCardTasks = ({
                 mainLabel: <LoanBoardCardTask title={title} _id={_id} />,
               }))}
             />
-          )}
+          }
         >
           {task}
         </StickyPopover>

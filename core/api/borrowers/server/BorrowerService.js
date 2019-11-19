@@ -61,7 +61,9 @@ export class BorrowerService extends CollectionService {
     const loan = LoanService.get(loanId);
     const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 
-    const borrowersNotOnLoan = userBorrowers.filter(({ _id }) => !loan.borrowerIds.includes(_id));
+    const borrowersNotOnLoan = userBorrowers.filter(
+      ({ _id }) => !loan.borrowerIds.includes(_id),
+    );
 
     return { borrowers: borrowersNotOnLoan, isLastLoan };
   }
@@ -80,7 +82,9 @@ export class BorrowerService extends CollectionService {
           loanId,
           structureId,
           structure: {
-            mortgageNoteIds: mortgageNoteIds.filter(id => !borrowerMortgageNoteIds.includes(id)),
+            mortgageNoteIds: mortgageNoteIds.filter(
+              id => !borrowerMortgageNoteIds.includes(id),
+            ),
           },
         });
       });

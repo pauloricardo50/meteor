@@ -20,7 +20,7 @@ const getTranslationId = parentNode =>
     .prop('id');
 
 const setSortOption = sinon.spy();
-const renderDropdownMenu = (collectionName) => {
+const renderDropdownMenu = collectionName => {
   const props = {
     collectionName,
     setSortOption,
@@ -40,17 +40,21 @@ describe('DetailSideNavSort', () => {
     menuOptions = renderDropdownMenu(LOANS_COLLECTION).prop('options');
   });
 
-  [LOANS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
+  [LOANS_COLLECTION, USERS_COLLECTION].forEach(collectionName => {
     describe(`for ${collectionName} collection`, () => {
       it(`should pass the created and updated at
       sort options to DropdownMenu component`, () => {
         menuOptions = renderDropdownMenu(collectionName).prop('options');
 
         expect(menuOptions[0].id).to.equal('createdAt');
-        expect(getTranslationId(menuOptions[0].label)).to.equal('TasksTable.createdAt');
+        expect(getTranslationId(menuOptions[0].label)).to.equal(
+          'TasksTable.createdAt',
+        );
 
         expect(menuOptions[1].id).to.equal('updatedAt');
-        expect(getTranslationId(menuOptions[1].label)).to.equal('TasksTable.updatedAt');
+        expect(getTranslationId(menuOptions[1].label)).to.equal(
+          'TasksTable.updatedAt',
+        );
       });
     });
   });

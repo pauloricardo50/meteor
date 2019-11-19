@@ -11,7 +11,7 @@ export const ignoreProps = propNames =>
 
     Object.keys(nextProps)
       .filter(propName => !propNames.includes(propName))
-      .some((propName) => {
+      .some(propName => {
         const prop = nextProps[propName];
 
         if (prop !== props[propName]) {

@@ -12,12 +12,13 @@
 body,
 html,
 #react-root {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -30,13 +31,14 @@ a:not([role='button']) {
   cursor: pointer;
 
   color: inherit;
-  &.color {
+  &.color,
+  &.color > * {
     transition: color 200ms $bezier;
 
-    color: $primary;
+    color: $primary !important;
 
     &:hover {
-      color: $success;
+      color: $success !important;
     }
   }
   &:hover {
@@ -110,30 +112,6 @@ hr {
 .card1.card-hover:hover {
   border-radius: 4px;
   box-shadow: $shadow-level-2;
-}
-
-// Pretty text effect for tooltips, shows a gradient underline on the text
-.tooltip-overlay {
-  position: relative;
-
-  padding: 0 1px;
-  padding-top: 0.1em;
-
-  cursor: help;
-  transition: background-size 0.2s ease-in, color 0.2s ease-in;
-  transform: scale(1);
-
-  border-radius: 4px;
-  background-image: linear-gradient(120deg, $primary 0%, $success 100%);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 100% 0.15em;
-  &:hover {
-    transform: scale(1.02);
-
-    color: white;
-    background-size: 100% 100%;
-  }
 }
 
 // Classes to color text according to our theme colors
@@ -368,7 +346,7 @@ p.description,
 }
 
 .mb-0 {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .mb-8 {
@@ -430,20 +408,44 @@ p.description,
 .grid {
   &-2 {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
     column-gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   &-3 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
     column-gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .grid-col {
   display: grid;
-  grid-gap: 8px;
+
   grid-auto-flow: column;
+  grid-gap: 8px;
   justify-items: stretch;
+}
+
+.markdown {
+  table {
+    border-spacing: 0;
+
+    thead {
+      color: $title-text;
+
+      font-weight: bold;
+    }
+
+    td,
+    th {
+      padding: 8px 12px 8px 12px;
+    }
+
+    th {
+      border-bottom: 1px solid $border-grey;
+    }
+  }
 }

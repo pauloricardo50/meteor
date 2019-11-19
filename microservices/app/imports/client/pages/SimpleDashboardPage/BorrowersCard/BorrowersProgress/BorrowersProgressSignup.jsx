@@ -26,6 +26,7 @@ const BorrowersProgressSignup = (props: BorrowersProgressSignupProps) => {
       </div>
       <UserCreator
         buttonProps={{ primary: true, label: 'Créez votre compte' }}
+        ctaId="borrowersProgress"
       />
     </Box>
   );

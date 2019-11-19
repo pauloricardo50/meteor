@@ -6,7 +6,7 @@ import {
   tmuxinatorScript,
 } from './settings/settings';
 
-const checkWriteApplicationPackageJSONArguments = (options) => {
+const checkWriteApplicationPackageJSONArguments = options => {
   const { applicationName, applicationImage, filePath } = options;
   if (!applicationName) {
     throw new Error('No application name provided');
@@ -21,7 +21,7 @@ const checkWriteApplicationPackageJSONArguments = (options) => {
   }
 };
 
-export const writeApplicationPackageJSON = (options) => {
+export const writeApplicationPackageJSON = options => {
   const { applicationName, applicationImage, filePath } = options;
   checkWriteApplicationPackageJSONArguments(options);
   return writeJSON({
@@ -30,12 +30,12 @@ export const writeApplicationPackageJSON = (options) => {
   });
 };
 
-export const writeApplicationsExpectedFilesListJSON = (options) => {
+export const writeApplicationsExpectedFilesListJSON = options => {
   const { filePath, data } = options;
   return writeJSON({ file: filePath, data });
 };
 
-const checkWriteApplicationManifestYAMLArguments = (options) => {
+const checkWriteApplicationManifestYAMLArguments = options => {
   const { applicationName, memory, instances, filePath } = options;
   if (!applicationName) {
     throw new Error('No application name provided');
@@ -54,7 +54,7 @@ const checkWriteApplicationManifestYAMLArguments = (options) => {
   }
 };
 
-export const writeApplicationManifestYAML = (options) => {
+export const writeApplicationManifestYAML = options => {
   const {
     environment,
     applicationName,
@@ -80,7 +80,7 @@ export const writeApplicationManifestYAML = (options) => {
   });
 };
 
-const checkWriteTmuxinatorScriptArguments = (options) => {
+const checkWriteTmuxinatorScriptArguments = options => {
   const { tmuxinatorConfigs, filePath } = options;
   if (!tmuxinatorConfigs) {
     throw new Error('No applications provided');
@@ -88,28 +88,30 @@ const checkWriteTmuxinatorScriptArguments = (options) => {
   if (!filePath) {
     throw new Error('No file path provided');
   }
-  tmuxinatorConfigs.forEach(({
-    microservicePath,
-    applicationName,
-    buildDirectoryPath,
-    applicationImage,
-  }) => {
-    if (!microservicePath) {
-      throw new Error('No microservice path provided');
-    }
-    if (!applicationName) {
-      throw new Error('No application name provided');
-    }
-    if (!buildDirectoryPath) {
-      throw new Error('No build directory path provided');
-    }
-    if (!applicationImage) {
-      throw new Error('No application image provided');
-    }
-  });
+  tmuxinatorConfigs.forEach(
+    ({
+      microservicePath,
+      applicationName,
+      buildDirectoryPath,
+      applicationImage,
+    }) => {
+      if (!microservicePath) {
+        throw new Error('No microservice path provided');
+      }
+      if (!applicationName) {
+        throw new Error('No application name provided');
+      }
+      if (!buildDirectoryPath) {
+        throw new Error('No build directory path provided');
+      }
+      if (!applicationImage) {
+        throw new Error('No application image provided');
+      }
+    },
+  );
 };
 
-export const writeTmuxinatorScript = (options) => {
+export const writeTmuxinatorScript = options => {
   const {
     tmuxinatorConfigs,
     filePath,
@@ -117,7 +119,8 @@ export const writeTmuxinatorScript = (options) => {
   } = options;
   checkWriteTmuxinatorScriptArguments(options);
   const tmuxinatorPanes = tmuxinatorConfigs.map(config =>
-    tmuxinatorPane(config));
+    tmuxinatorPane(config),
+  );
   return writeYAML({
     file: filePath,
     data: tmuxinatorScript({

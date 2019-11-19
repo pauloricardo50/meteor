@@ -37,7 +37,7 @@ class OfferList extends Component {
     this.state = { sort: 'maxAmount', isAscending: false };
   }
 
-  handleChange = (_, value) => this.setState({ sort: value });
+  handleChange = value => this.setState({ sort: value });
 
   handleChangeOrder = () =>
     this.setState(prev => ({ isAscending: !prev.isAscending }));

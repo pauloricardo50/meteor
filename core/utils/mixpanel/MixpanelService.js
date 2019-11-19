@@ -8,9 +8,10 @@ class MixpanelService {
     return getMixpanelAuthorization
       .run({})
       .then(Authorization =>
-        fetch(url, { method, headers: { Authorization, ...headers }, body }))
+        fetch(url, { method, headers: { Authorization, ...headers }, body }),
+      )
       .then(result => result.json())
-      .catch((error) => {
+      .catch(error => {
         throw error;
       });
   }
@@ -23,9 +24,13 @@ class MixpanelService {
   createQuery(params) {
     return params
       ? `?${Object.keys(params)
-        .map(param =>
-          `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
-        .join('&')}`
+          .map(
+            param =>
+              `${encodeURIComponent(param)}=${encodeURIComponent(
+                params[param],
+              )}`,
+          )
+          .join('&')}`
       : '';
   }
 
@@ -41,9 +46,10 @@ class MixpanelService {
   formatBody(body) {
     return Object.keys(body)
       .filter(key => body[key])
-      .map((key) => {
+      .map(key => {
         const value = body[key];
-        const stringified = typeof value === 'string' ? value : JSON.stringify(value);
+        const stringified =
+          typeof value === 'string' ? value : JSON.stringify(value);
         const bodyPart = encodeURI(stringified);
         return `${key}=${bodyPart}`;
       })
@@ -79,9 +85,7 @@ class MixpanelService {
     return this.getData({
       method: 'POST',
       body: this.formatBody(body),
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
       url: this.buildUrl({ endpoint: 'engage' }),
     }).then(result => result.results);
   }

@@ -1,0 +1,57 @@
+.user-activities-timeline {
+  overflow-x: scroll;
+
+  width: 100%;
+  margin-top: 40px;
+
+  h2 {
+    margin: 0;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 16px;
+  }
+
+  li {
+    position: relative;
+
+    flex-basis: 250px;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    padding-bottom: 16px; // To avoid the scroll-bar from overlapping with text
+
+    &:hover {
+      .activity-modifier {
+        display: block;
+      }
+    }
+
+    .today {
+      position: absolute;
+      top: 0;
+      left: -8px;
+
+      width: 2px;
+      height: 100%;
+
+      background-color: red;
+
+      .today-dot {
+        position: absolute;
+        // content: '';
+        top: 0;
+        left: -3px;
+
+        width: 8px;
+        height: 8px;
+
+        border-radius: 50%;
+        background-color: red;
+      }
+    }
+  }
+}

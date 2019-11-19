@@ -16,6 +16,7 @@ const ProRevenuesPageExplained = () => (
       raised: false,
       icon: <Icon type="help" />,
       iconAfter: true,
+      className: 'explained',
     }}
     title={<T id="ProRevenuesPage.explained" />}
     closeOnly
@@ -26,6 +27,12 @@ const ProRevenuesPageExplained = () => (
         lead: (
           <StatusLabel
             status={LOAN_STATUS.LEAD}
+            collection={LOANS_COLLECTION}
+          />
+        ),
+        qualifiedLead: (
+          <StatusLabel
+            status={LOAN_STATUS.QUALIFIED_LEAD}
             collection={LOANS_COLLECTION}
           />
         ),

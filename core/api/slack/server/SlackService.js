@@ -12,7 +12,8 @@ import Calculator from '../../../utils/Calculator';
 import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
 
-const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
+const LOGO_URL =
+  'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
@@ -43,7 +44,7 @@ export class SlackService {
         headers: {},
         body: JSON.stringify(body),
       },
-    ).catch((err) => {
+    ).catch(err => {
       // Somehow, this error is catched somewhere if we don't do this
       throw err;
     });
@@ -72,8 +73,8 @@ export class SlackService {
     }
 
     if (
-      (error && ERRORS_TO_IGNORE.includes(error.name))
-      || ERRORS_TO_IGNORE.includes(error.message || error.reason)
+      (error && ERRORS_TO_IGNORE.includes(error.name)) ||
+      ERRORS_TO_IGNORE.includes(error.message || error.reason)
     ) {
       return false;
     }
@@ -119,10 +120,12 @@ export class SlackService {
     ];
 
     if (additionalData.length > 0) {
-      attachments.push(...additionalData.map((data, index) => ({
-        title: `Additional data ${index + 1}`,
-        text: JSON.stringify(data),
-      })));
+      attachments.push(
+        ...additionalData.map((data, index) => ({
+          title: `Additional data ${index + 1}`,
+          text: JSON.stringify(data),
+        })),
+      );
     }
 
     if (connection) {
@@ -144,7 +147,7 @@ export class SlackService {
   };
 
   getChannelForAdmin = admin =>
-    (admin ? `#clients_${admin.email.split('@')[0]}` : '#clients_general');
+    admin ? `#clients_${admin.email.split('@')[0]}` : '#clients_general';
 
   notifyAssignee = ({
     currentUser,
@@ -154,9 +157,10 @@ export class SlackService {
     assignee,
     notifyAlways,
   }) => {
-    const isAdmin = currentUser
-      && (currentUser.roles.includes(ROLES.ADMIN)
-        || currentUser.roles.includes(ROLES.DEV));
+    const isAdmin =
+      currentUser &&
+      (currentUser.roles.includes(ROLES.ADMIN) ||
+        currentUser.roles.includes(ROLES.DEV));
 
     if (!notifyAlways && isAdmin) {
       return false;
@@ -172,8 +176,8 @@ export class SlackService {
     };
 
     if (
-      (Meteor.isStaging || Meteor.isDevEnvironment || Meteor.isDevelopment)
-      && !Meteor.isTest
+      (Meteor.isStaging || Meteor.isDevEnvironment || Meteor.isDevelopment) &&
+      !Meteor.isTest
     ) {
       console.log('Slack dev/staging notification');
       console.log('Payload:', slackPayload);
@@ -183,13 +187,36 @@ export class SlackService {
     return this.sendAttachments(slackPayload);
   };
 
-  getNotificationOrigin = (currentUser) => {
+  getNotificationOrigin = currentUser => {
     const APIUser = getAPIUser();
     const username = currentUser ? currentUser.name : undefined;
+    const isPro = currentUser && currentUser.roles.includes(ROLES.PRO);
 
     if (APIUser) {
       const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
-      return [username, `(API ${mainOrg && mainOrg.name})`].join(' ');
+      const proOrg = UserService.getUserMainOrganisation(currentUser._id);
+      return [
+        username,
+        `(${proOrg && proOrg.name}, API ${mainOrg && mainOrg.name})`,
+      ].join(' ');
+    }
+
+    if (isPro) {
+      const mainOrg = UserService.getUserMainOrganisation(currentUser._id);
+      return [username, `(${mainOrg && mainOrg.name})`].join(' ');
+    }
+
+    if (currentUser) {
+      const {
+        user: { name: referralUser } = {},
+        organisation: { name: referralOrg } = {},
+      } = UserService.getReferral(currentUser._id);
+      const referral = referralUser
+        ? `(ref ${referralUser} - ${referralOrg})`
+        : referralOrg
+        ? `(ref ${referralOrg})`
+        : undefined;
+      return [username, referral].filter(x => x).join(' ');
     }
 
     return username;

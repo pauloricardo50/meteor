@@ -40,10 +40,14 @@ export default compose(
     organisations: formatOrganisations(organisations),
     addLender: organisationId =>
       lenderInsert.run({ lender: { loanId }, organisationId, contactId: null }),
-    removeLender: (organisationId) => {
-      const lenderToRemove = lenders.find(({ organisation }) =>
-        organisation && organisation._id === organisationId);
-      const confirmed = window.confirm('Supprimera les offres de ce prêteur aussi, si il y en a.');
+    removeLender: organisationId => {
+      const lenderToRemove = lenders.find(
+        ({ organisation }) =>
+          organisation && organisation._id === organisationId,
+      );
+      const confirmed = window.confirm(
+        'Supprimera les offres de ce prêteur aussi, si il y en a.',
+      );
 
       if (confirmed) {
         return lenderRemove.run({ lenderId: lenderToRemove._id });

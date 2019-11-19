@@ -5,11 +5,11 @@ import { FILE_STATUS } from './fileConstants';
 const documentIsRequired = required => required !== false;
 
 const documentIsInvalid = (doc, id) =>
-  doc
-  && doc.documents
-  && doc.documents[id]
-  && doc.documents[id].length > 0
-  && doc.documents[id].some(({ status }) => status === FILE_STATUS.ERROR);
+  doc &&
+  doc.documents &&
+  doc.documents[id] &&
+  doc.documents[id].length > 0 &&
+  doc.documents[id].some(({ status }) => status === FILE_STATUS.ERROR);
 
 const getDocumentsToCount = (
   documentArray: Array<Object>,
@@ -35,7 +35,9 @@ const getDocumentsToCount = (
 
       if (checkDocumentStatus) {
         // Make sure all documents have a valid status
-        const allFilesAreValid = documents[documentId].every(({ status }) => status === FILE_STATUS.VALID);
+        const allFilesAreValid = documents[documentId].every(
+          ({ status }) => status === FILE_STATUS.VALID,
+        );
         return [...documentsToCount, allFilesAreValid ? true : undefined];
       }
 
@@ -69,9 +71,16 @@ const documentExists = (doc, id) =>
 
 export const getMissingDocumentIds = ({ fileArray, doc }) => {
   const ids = fileArray
-    .filter(({ required, id }) =>
-      (documentIsRequired(required) && !documentExists(doc, id))
-        || documentIsInvalid(doc, id))
+    .filter(
+      ({ required, id }) =>
+        (documentIsRequired(required) && !documentExists(doc, id)) ||
+        documentIsInvalid(doc, id),
+    )
     .map(({ id }) => id);
   return ids;
 };
+
+export const getRequiredDocumentIds = fileArray =>
+  fileArray
+    .filter(({ required }) => documentIsRequired(required))
+    .map(({ id }) => id);

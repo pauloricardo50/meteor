@@ -18,7 +18,7 @@ const mergeProps = (
     ...stateProps,
     ...ownProps,
     name,
-    onSubmit: (event) => {
+    onSubmit: event => {
       event.preventDefault();
       if (!disableSubmit) {
         onClick();
@@ -34,8 +34,4 @@ const mergeProps = (
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps,
-);
+export default connect(mapStateToProps, null, mergeProps);

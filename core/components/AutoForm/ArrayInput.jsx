@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from 'core/components/Button';
-
-import T from 'core/components/Translation';
+import Button from '../Button';
+import T from '../Translation';
 import AutoFormTextInput from './AutoFormTextInput';
 import AutoFormDateInput from './AutoFormDateInput';
 import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
-
-import FormValidator from './FormValidator';
 
 const styles = {
   button: {
@@ -44,9 +41,10 @@ class ArrayInput extends Component {
         transform,
         intlId,
         Component: CustomComponent,
-        inputLabelProps: {shrink} = {},
+        inputLabelProps: { shrink } = {},
       } = input;
-      const finalCurrentValue = currentValue && currentValue[i] && currentValue[i][inputId];
+      const finalCurrentValue =
+        currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,
         inputProps: {
@@ -64,51 +62,36 @@ class ArrayInput extends Component {
       };
 
       if (type === 'textInput') {
-        return (
-          <AutoFormTextInput
-            {...childProps}
-            noValidator
-            key={id + inputId + i}
-          />
-        );
+        return <AutoFormTextInput {...childProps} key={id + inputId + i} />;
       }
       if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
-          (opt.id === undefined
+          opt.id === undefined
             ? {
-              id: opt,
-              label: transform ? (
-                transform(opt)
-              ) : (
-                <T id={`Forms.${intlId || id}.${opt}`} />
-              ),
-            }
+                id: opt,
+                label: transform ? (
+                  transform(opt)
+                ) : (
+                  <T id={`Forms.${intlId || id}.${opt}`} />
+                ),
+              }
             : {
-              ...opt,
-              label: transform ? (
-                transform(opt)
-              ) : (
-                <T id={`Forms.${intlId || id}.${opt.id}`} />
-              ),
-            }));
+                ...opt,
+                label: transform ? (
+                  transform(opt)
+                ) : (
+                  <T id={`Forms.${intlId || id}.${opt.id}`} />
+                ),
+              },
+        );
         return (
-          <AutoFormSelectFieldInput
-            {...childProps}
-            noValidator
-            key={id + inputId + i}
-          />
+          <AutoFormSelectFieldInput {...childProps} key={id + inputId + i} />
         );
       }
       if (type === 'dateInput') {
-        return (
-          <AutoFormDateInput
-            {...childProps}
-            noValidator
-            key={id + inputId + i}
-          />
-        );
+        return <AutoFormDateInput {...childProps} key={id + inputId + i} />;
       }
 
       if (type === 'custom') {
@@ -118,13 +101,15 @@ class ArrayInput extends Component {
 
     for (let i = 0; i < this.state.count; i += 1) {
       // If there are multiple components per array item
-      array.push(<div
-        className="card1 card-top card-top"
-        style={styles.arrayItem}
-        key={`${id + i}item`}
-      >
-        {inputs.map(input => mapInput(input, i))}
-      </div>);
+      array.push(
+        <div
+          className="card1 card-top card-top"
+          style={styles.arrayItem}
+          key={`${id + i}item`}
+        >
+          {inputs.map(input => mapInput(input, i))}
+        </div>,
+      );
     }
 
     return array;
@@ -134,8 +119,8 @@ class ArrayInput extends Component {
 
   // Only remove a value if there's more than 1 left
   removeValue = () =>
-    this.state.count > 0
-    && this.props
+    this.state.count > 0 &&
+    this.props
       .popFunc({
         object: { [`${this.props.inputProps.id}`]: 1 },
         id: this.props.docId,
@@ -158,7 +143,6 @@ class ArrayInput extends Component {
         </label>
 
         {this.getArray()}
-        <FormValidator {...this.props} />
 
         <div className="text-center">
           {count <= 0 && (

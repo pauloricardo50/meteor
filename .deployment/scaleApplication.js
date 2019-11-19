@@ -20,7 +20,7 @@ const main = () => {
     .usage('Usage : $0 [options]')
     .example(
       '$0 -e staging -a www -c MB1024_2i',
-      'Scale \'www\' on staging with MB1024_2i config',
+      "Scale 'www' on staging with MB1024_2i config",
     )
     .alias('e', 'environment')
     .nargs('e', 1)
@@ -36,7 +36,9 @@ const main = () => {
     .alias('h', 'help').argv;
 
   const { applications } = createDeploySettingsForEnv(environment);
-  const applicationName = applications.filter(({ applicationName: appName }) => appName === application)[0].name;
+  const applicationName = applications.filter(
+    ({ applicationName: appName }) => appName === application,
+  )[0].name;
 
   CloudFoundryService.getScaleApplicationCommand({
     space: SPACES[environment],

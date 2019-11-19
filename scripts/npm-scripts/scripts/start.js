@@ -3,7 +3,6 @@ import runBackend from './run-backend';
 import Process from './Process';
 
 const path = require('path');
-const { Observable } = require('rxjs');
 
 const [microservice, ...args] = process.argv.slice(2);
 
@@ -47,7 +46,7 @@ prestart.spawn({
   },
 });
 
-prestart.stderr.on('data', (error) => {
+prestart.stderr.on('data', error => {
   prestart.throw(error);
   process.exit(1);
 });

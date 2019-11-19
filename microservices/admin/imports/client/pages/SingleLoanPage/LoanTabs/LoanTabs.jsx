@@ -22,7 +22,7 @@ import RefinancingTab from './RefinancingTab/loadable';
 import LendersTab from './LendersTab/loadable';
 import RevenuesTab from './RevenuesTab/loadable';
 
-const getTabs = (props) => {
+const getTabs = props => {
   const { loan, currentUser } = props;
   const borrowersProgress = Calculator.personalInfoPercent({ loan });
   const propertyProgress = Calculator.propertyPercent({ loan });
@@ -104,8 +104,8 @@ const formatTabs = (tabs, props) =>
         </span>
       ),
       to:
-        props.enableTabRouting
-        && createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
+        props.enableTabRouting &&
+        createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, {
           loanId: props.loan._id,
           tabId: id,
         }),
@@ -122,6 +122,7 @@ const LoanTabs = ({ tabs, ...props }) => {
       variant="scrollable"
       scrollButtons="auto"
       disableTouchRipple
+      className="single-loan-page-tabs"
     />
   );
 };

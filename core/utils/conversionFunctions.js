@@ -19,8 +19,8 @@ export function toMoney(value, { noPrefix, rounded = true } = {}) {
 
   if (rounded) {
     return (
-      negativePrefix
-      + String(parsedValue)
+      negativePrefix +
+      String(parsedValue)
         .replace(/\D/g, '')
         .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
     );
@@ -30,8 +30,9 @@ export function toMoney(value, { noPrefix, rounded = true } = {}) {
 
   const [integer, decimals] = String(roundedDecimals).split('.');
 
-  const integerPart = negativePrefix
-    + integer.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const integerPart =
+    negativePrefix +
+    integer.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   let decimalPart = decimals;
 
   if (!decimals) {
@@ -61,8 +62,14 @@ export function toDecimalNumber(value) {
   if (typeof value === 'number') {
     return value;
   }
+
+  // If only negative sign is typed
+  if (value === '-.' || value === '-') {
+    return value;
+  }
+
   // Remove unwanted characters, except digits, dots and commas
-  const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
+  const newValue = value ? String(value).replace(/[^\d.,\-]/g, '') : value;
   // replace commas with dots
   const commaReplaced = newValue
     ? Number(newValue.replace(',', '.'))
@@ -70,7 +77,7 @@ export function toDecimalNumber(value) {
   return commaReplaced;
 }
 
-export const toDistanceString = (dist) => {
+export const toDistanceString = dist => {
   if (dist <= 0) {
     return '0 m';
   }

@@ -1,26 +1,27 @@
 class AOP {
-    befores = [];
-    afters = [];
+  befores = [];
 
-    addBefore(fn) {
-        check(fn, Function);
+  afters = [];
 
-        this.befores.push(fn);
-    }
+  addBefore(fn) {
+    check(fn, Function);
 
-    addAfter(fn) {
-        check(fn, Function);
+    this.befores.push(fn);
+  }
 
-        this.afters.push(fn);
-    }
+  addAfter(fn) {
+    check(fn, Function);
 
-    executeBefores(...args) {
-        this.befores.forEach(fn => fn.call(null, ...args));
-    }
+    this.afters.push(fn);
+  }
 
-    executeAfters(...args) {
-        this.afters.forEach(fn => fn.call(null, ...args));
-    }
+  executeBefores(...args) {
+    this.befores.forEach(fn => fn.call(null, ...args));
+  }
+
+  executeAfters(...args) {
+    this.afters.forEach(fn => fn.call(null, ...args));
+  }
 }
 
 export default AOP;

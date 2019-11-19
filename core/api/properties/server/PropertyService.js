@@ -66,7 +66,8 @@ export class PropertyService extends CollectionService {
 
   hasOneOfProperties = ({ userId, propertyIds }) =>
     propertyIds.some(propertyId =>
-      UserService.hasProperty({ userId, propertyId }));
+      UserService.hasProperty({ userId, propertyId }),
+    );
 
   inviteUser = ({
     propertyIds,
@@ -181,7 +182,9 @@ export class PropertyService extends CollectionService {
     const existingProperty = this.fetchOne({ $filters: { externalId } });
 
     if (existingProperty) {
-      throw new Meteor.Error(`Property with externalId "${externalId}" exists already`);
+      throw new Meteor.Error(
+        `Property with externalId "${externalId}" exists already`,
+      );
     }
 
     return this.proPropertyInsert({

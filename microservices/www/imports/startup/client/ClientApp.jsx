@@ -10,7 +10,7 @@ import { WWW_ROUTES } from '../shared/Routes';
 
 const ClientApp = props => (
   <>
-    <MicroserviceHead />
+    <MicroserviceHead addOgTags={false} />
     <HistoryWatcher history={history} routes={WWW_ROUTES}>
       <App {...props} Router={BrowserRouter} history={history} />
     </HistoryWatcher>

@@ -41,15 +41,16 @@ export const getBorrowersSingleInfos = (borrowers, infos) =>
   );
 
 export const getBorrowersOtherIncome = (borrowers, types, calculator) =>
-  borrowers.map((borrower) => {
+  borrowers.map(borrower => {
     const { otherIncome = [] } = borrower;
     const otherIncomeValue = otherIncome
       .filter(income => types.includes(income.description))
       .reduce((sum, income) => sum + income.value, 0);
 
     // Only render comments if this is for one single expense type
-    const otherIncomeComments = types.length === 1
-      && calculator.getCommentsForOtherIncomeType({
+    const otherIncomeComments =
+      types.length === 1 &&
+      calculator.getCommentsForOtherIncomeType({
         borrowers: borrower,
         type: types[0],
       });
@@ -67,7 +68,7 @@ export const getBorrowersOtherIncomes = (borrowers, types, calculator) =>
   );
 
 export const getBorrowersExpense = (borrowers, types, calculator) =>
-  borrowers.map((borrower) => {
+  borrowers.map(borrower => {
     let allExpenses = calculator.getGroupedExpensesBySide({
       borrowers: borrower,
     });
@@ -81,8 +82,9 @@ export const getBorrowersExpense = (borrowers, types, calculator) =>
       .reduce((sum, expense) => sum + expense.value, 0);
 
     // Only render comments if this is for one single expense type
-    const expenseComments = types.length === 1
-      && calculator.getCommentsForExpenseType({
+    const expenseComments =
+      types.length === 1 &&
+      calculator.getCommentsForExpenseType({
         borrowers: borrower,
         type: types[0],
       });
@@ -103,17 +105,23 @@ export const getBorrowersOwnFunds = (borrowers, types) =>
   types.reduce(
     (ownFunds, type) => ({
       ...ownFunds,
-      [type]: borrowers.map(borrower =>
-        borrower[type]
-          && borrower[type].reduce((sum, ownFund) => sum + ownFund.value, 0)),
+      [type]: borrowers.map(
+        borrower =>
+          borrower[type] &&
+          borrower[type].reduce((sum, ownFund) => sum + ownFund.value, 0),
+      ),
     }),
     {},
   );
 
-export const getBorrowersAddress = (borrowers) => {
-  const borrowersHaveSameAddress = borrowers.some(({ sameAddress }) => sameAddress === true);
+export const getBorrowersAddress = borrowers => {
+  const borrowersHaveSameAddress = borrowers.some(
+    ({ sameAddress }) => sameAddress === true,
+  );
   if (borrowersHaveSameAddress) {
-    const borrowerWithAddress = borrowers.find(({ city, zipCode }) => city && zipCode);
+    const borrowerWithAddress = borrowers.find(
+      ({ city, zipCode }) => city && zipCode,
+    );
     const address = [
       borrowerWithAddress.zipCode,
       borrowerWithAddress.city,
@@ -126,10 +134,10 @@ export const getBorrowersAddress = (borrowers) => {
 };
 
 export const getBonus = (borrowers, calculator) =>
-  borrowers.map((borrower) => {
+  borrowers.map(borrower => {
     const bonus = calculator.getBonusIncome({ borrowers: borrower });
     const bonuses = calculator.getBonuses({ borrowers: borrower });
-    const comments = Object.keys(bonuses).map((key) => {
+    const comments = Object.keys(bonuses).map(key => {
       const value = bonuses[key];
 
       if (!value) {
@@ -160,9 +168,11 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'bankFortune',
   ]),
   realEstateIncome: borrowers.map(borrower =>
-    calculator.getRealEstateIncomeTotal({ borrowers: borrower })),
+    calculator.getRealEstateIncomeTotal({ borrowers: borrower }),
+  ),
   salary: borrowers.map(borrower =>
-    calculator.getSalary({ borrowers: borrower })),
+    calculator.getSalary({ borrowers: borrower }),
+  ),
   address: getBorrowersAddress(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(
@@ -190,11 +200,14 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
   },
   bonus: getBonus(borrowers, calculator),
   otherFortune: borrowers.map(borrower =>
-    calculator.getOtherFortune({ borrowers: borrower })),
+    calculator.getOtherFortune({ borrowers: borrower }),
+  ),
   realEstateValue: borrowers.map(borrower =>
-    calculator.getRealEstateValue({ borrowers: borrower })),
+    calculator.getRealEstateValue({ borrowers: borrower }),
+  ),
   realEstateDebt: borrowers.map(borrower =>
-    calculator.getRealEstateDebt({ borrowers: borrower })),
+    calculator.getRealEstateDebt({ borrowers: borrower }),
+  ),
   ...getBorrowersOwnFunds(borrowers, [
     OWN_FUNDS_TYPES.INSURANCE_2,
     OWN_FUNDS_TYPES.INSURANCE_3A,

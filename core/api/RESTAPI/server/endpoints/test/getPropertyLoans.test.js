@@ -47,10 +47,10 @@ const makeCustomers = count =>
     loans: [{ _id: `loan${index}`, propertyIds: ['property'] }],
   }));
 
-describe('REST: getPropertyLoans', function () {
+describe('REST: getPropertyLoans', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -101,11 +101,12 @@ describe('REST: getPropertyLoans', function () {
       permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
     });
     generator({ users: makeCustomers(5) });
+
     return getPropertyLoans({
       propertyId: 'property',
       userId: 'pro',
       impersonateUser: 'pro2@org.com',
-    }).then((loans) => {
+    }).then(loans => {
       expect(loans.length).to.equal(5);
       expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
     });
@@ -119,22 +120,26 @@ describe('REST: getPropertyLoans', function () {
       permissions: { displayCustomersNames: false },
     });
     generator({ users: makeCustomers(5) });
-    return getPropertyLoans({ propertyId: 'property', userId: 'pro3' }).then((loans) => {
-      expect(loans.length).to.equal(5);
-      expect(loans.every(({ user }) => user.name === 'XXX')).to.equal(true);
-      expect(loans.every(({ solvent }) => !solvent)).to.equal(true);
-    });
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro3' }).then(
+      loans => {
+        expect(loans.length).to.equal(5);
+        expect(loans.every(({ user }) => user.name === 'XXX')).to.equal(true);
+        expect(loans.every(({ solvent }) => !solvent)).to.equal(true);
+      },
+    );
   });
 
   it('returns an error if user has no access to property', () => {
     generator({ users: makeCustomers(5) });
-    return getPropertyLoans({ propertyId: 'property', userId: 'pro3' }).then((response) => {
-      expect(response).to.deep.equal({
-        status: 400,
-        message:
+    return getPropertyLoans({ propertyId: 'property', userId: 'pro3' }).then(
+      response => {
+        expect(response).to.deep.equal({
+          status: 400,
+          message:
             "Vous n'avez pas accès à ce bien immobilier [NOT_AUTHORIZED]",
-      });
-    });
+        });
+      },
+    );
   });
 
   it('returns property loans', () => {
@@ -148,7 +153,7 @@ describe('REST: getPropertyLoans', function () {
       propertyId: 'extId',
       userId: 'pro',
       impersonateUser: 'pro2@org.com',
-    }).then((loans) => {
+    }).then(loans => {
       expect(loans.length).to.equal(5);
       expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
     });
@@ -160,7 +165,7 @@ describe('REST: getPropertyLoans', function () {
       propertyId: '12345',
       userId: 'pro',
       impersonateUser: 'pro2@org.com',
-    }).then((response) => {
+    }).then(response => {
       expect(response.status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
       expect(response.message).to.include('not found');
     });

@@ -19,7 +19,7 @@ const RealRevenuesDialogContent = ({
     <DialogContentSection
       title="Insérer des revenus précis"
       description="Il est maintenant nécessaire d'insérer des revenus précis !"
-      buttons={(
+      buttons={
         <Button
           raised
           primary
@@ -27,7 +27,7 @@ const RealRevenuesDialogContent = ({
           onClick={onClick}
           icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />}
         />
-      )}
+      }
     />
   </div>
 );

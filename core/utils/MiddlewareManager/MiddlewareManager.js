@@ -46,7 +46,7 @@ class MiddlewareManager {
     const methods = this.getAllMethodNames(this._target);
 
     methods
-      .filter((name) => {
+      .filter(name => {
         if (omit) {
           return !omit.includes(name);
         }
@@ -61,7 +61,7 @@ class MiddlewareManager {
     const methodNames = [];
     let proto = Object.getPrototypeOf(obj);
     while (proto && proto !== stop) {
-      Object.getOwnPropertyNames(proto).forEach((name) => {
+      Object.getOwnPropertyNames(proto).forEach(name => {
         if (name !== 'constructor') {
           if (this.hasMethod(proto, name)) {
             methodNames.push(name);
@@ -82,24 +82,28 @@ class MiddlewareManager {
     const middlewares = this.arrayify(_middlewares);
 
     if (
-      typeof methodName === 'string'
-      && !this.stringStartsWithUnderscore(methodName)
+      typeof methodName === 'string' &&
+      !this.stringStartsWithUnderscore(methodName)
     ) {
       const method = this._methods[methodName] || this._target[methodName];
       if (typeof method === 'function') {
         this._methods[methodName] = method;
 
         if (
-          this._methodMiddlewares[methodName] === undefined
-          || !isArray(this._methodMiddlewares[methodName])
+          this._methodMiddlewares[methodName] === undefined ||
+          !isArray(this._methodMiddlewares[methodName])
         ) {
           this._methodMiddlewares[methodName] = [];
         }
 
-        middlewares.forEach(middleware =>
-          typeof middleware === 'function'
-            && this._methodMiddlewares[methodName].push(middleware(this._target)));
-        this._target[methodName] = compose(...this._methodMiddlewares[methodName])(method.bind(this._target));
+        middlewares.forEach(
+          middleware =>
+            typeof middleware === 'function' &&
+            this._methodMiddlewares[methodName].push(middleware(this._target)),
+        );
+        this._target[methodName] = compose(
+          ...this._methodMiddlewares[methodName],
+        )(method.bind(this._target));
       }
     }
 
@@ -113,14 +117,14 @@ class MiddlewareManager {
   useObjectMiddleware(_objectMiddlewares: MiddlewareObjectType) {
     const objectMiddlewares = this.arrayify(_objectMiddlewares);
 
-    Array.prototype.slice.call(objectMiddlewares).forEach((arg) => {
+    Array.prototype.slice.call(objectMiddlewares).forEach(arg => {
       // A middleware object can specify target functions within middlewareMethods (Array).
       // e.g. obj.middlewareMethods = ['method1', 'method2'];
       // only method1 and method2 will be the target function.
-      typeof arg === 'object'
-        && (arg.middlewareMethods || Object.keys(arg)).forEach((key) => {
-          typeof arg[key] === 'function'
-            && this.applyToMethod(key, arg[key].bind(arg));
+      typeof arg === 'object' &&
+        (arg.middlewareMethods || Object.keys(arg)).forEach(key => {
+          typeof arg[key] === 'function' &&
+            this.applyToMethod(key, arg[key].bind(arg));
         });
     });
 

@@ -1,35 +1,8 @@
-.promotion-users-table {
-  margin-bottom: 16px;
-
-   > div.flex {
-    justify-content: space-between;
-  }
-
-  h2 {
-    margin: 0;
-  }
-}
-
-.user-list {
-  width: 400px;
-}
-
-.user {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-
-  width: 100%;
-   > * {
-    padding: 8px;
-  }
-}
-
 .user-search-item {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
   justify-content: space-between;
+
   width: 100%;
 }

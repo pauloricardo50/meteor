@@ -8,7 +8,7 @@ import classnames from 'classnames';
 
 import Loading from '../Loading';
 
-const googleMapContainer = (WrappedComponent) => {
+const googleMapContainer = WrappedComponent => {
   class GoogleMapContainer extends Component {
     constructor(props) {
       super(props);
@@ -50,7 +50,7 @@ const googleMapContainer = (WrappedComponent) => {
         return (
           <div
             className={classnames({ 'map-container': true, [className]: true })}
-            ref={(c) => {
+            ref={c => {
               this.container = c;
             }}
           >

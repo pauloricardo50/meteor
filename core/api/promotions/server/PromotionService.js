@@ -102,7 +102,9 @@ export class PromotionService extends CollectionService {
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
-      throw new Meteor.Error("Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.");
+      throw new Meteor.Error(
+        "Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.",
+      );
     }
 
     if (UserService.hasPromotion({ userId, promotionId })) {
@@ -152,42 +154,45 @@ export class PromotionService extends CollectionService {
     firstName,
     proId,
   }) {
-    return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
-      const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
-      const logoUrls = logos && logos.map(({ url }) => url);
+    return FileService.listFilesForDocByCategory(promotionId).then(
+      ({ promotionImage, logos }) => {
+        const coverImageUrl =
+          promotionImage && promotionImage.length > 0 && promotionImage[0].url;
+        const logoUrls = logos && logos.map(({ url }) => url);
 
-      let ctaUrl = Meteor.settings.public.subdomains.app;
-      const promotion = this.get(promotionId);
-      const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
+        let ctaUrl = Meteor.settings.public.subdomains.app;
+        const promotion = this.get(promotionId);
+        const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
 
-      if (isNewUser) {
-        // Envoyer invitation avec enrollment link
-        ctaUrl = UserService.getEnrollmentUrl({ userId });
-      }
+        if (isNewUser) {
+          // Envoyer invitation avec enrollment link
+          ctaUrl = UserService.getEnrollmentUrl({ userId });
+        }
 
-      let invitedBy;
+        let invitedBy;
 
-      if (proId) {
-        invitedBy = UserService.fetchOne({
-          $filters: { _id: proId },
-          name: 1,
-        }).name;
-      }
+        if (proId) {
+          invitedBy = UserService.fetchOne({
+            $filters: { _id: proId },
+            name: 1,
+          }).name;
+        }
 
-      return sendEmail.run({
-        emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-        userId,
-        params: {
-          proUserId: proId,
-          promotion: { ...promotion, assignedEmployee },
-          coverImageUrl,
-          logoUrls,
-          ctaUrl,
-          name: firstName,
-          invitedBy,
-        },
-      });
-    });
+        return sendEmail.run({
+          emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+          userId,
+          params: {
+            proUserId: proId,
+            promotion: { ...promotion, assignedEmployee },
+            coverImageUrl,
+            logoUrls,
+            ctaUrl,
+            name: firstName,
+            invitedBy,
+          },
+        });
+      },
+    );
   }
 
   addProUser({ promotionId, userId }) {
@@ -228,6 +233,22 @@ export class PromotionService extends CollectionService {
       { _id: promotionId, 'userLinks._id': userId },
       { $set: { 'userLinks.$.permissions': permissions } },
     );
+  }
+
+  toggleNotifications({ promotionId, userId }) {
+    const promotion = this.fetchOne({
+      $filters: { _id: promotionId },
+      userLinks: 1,
+    });
+    const userLink = promotion.userLinks.find(({ _id }) => _id === userId);
+    const nextValue = !userLink.enableNotifications;
+    this.updateLinkMetadata({
+      id: promotionId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { enableNotifications: nextValue },
+    });
+    return nextValue;
   }
 
   removeLoan({ promotionId, loanId }) {
@@ -278,9 +299,11 @@ export class PromotionService extends CollectionService {
     });
 
     // Add any new promotionOptions if they don't already exist
-    promotionLotIds.forEach((promotionLotId) => {
-      const existingPromotionOption = promotionOptions.find(({ promotionLots: promotionOptionLots }) =>
-        promotionOptionLots[0]._id === promotionLotId);
+    promotionLotIds.forEach(promotionLotId => {
+      const existingPromotionOption = promotionOptions.find(
+        ({ promotionLots: promotionOptionLots }) =>
+          promotionOptionLots[0]._id === promotionLotId,
+      );
 
       if (!existingPromotionOption) {
         PromotionOptionService.insert({ promotionLotId, loanId });
@@ -288,18 +311,34 @@ export class PromotionService extends CollectionService {
     });
 
     // Remove all promotionOptions that aren't in the specified array
-    const promotionOptionsToRemove = promotionOptions.filter(({ promotionLots }) => promotionLotIds.indexOf(promotionLots[0]._id) < 0);
+    const promotionOptionsToRemove = promotionOptions.filter(
+      ({ promotionLots }) => promotionLotIds.indexOf(promotionLots[0]._id) < 0,
+    );
 
-    promotionOptionsToRemove.forEach((promotionOption) => {
+    promotionOptionsToRemove.forEach(promotionOption => {
       // Try to remove this promotion option
       const { promotionLots, _id: promotionOptionId } = promotionOption;
       const { attributedTo, name } = promotionLots[0];
 
       if (attributedTo && attributedTo._id === loanId) {
-        throw new Meteor.Error(`Vous ne pouvez pas supprimer le lot "${name}" de ce client, car il lui est attribué.`);
+        throw new Meteor.Error(
+          `Vous ne pouvez pas supprimer le lot "${name}" de ce client, car il lui est attribué.`,
+        );
       }
 
       PromotionOptionService.remove({ promotionOptionId });
+    });
+  }
+
+  reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
+    const { constructionTimeline } = this.fetchOne({
+      $filters: { _id: fromPromotionId },
+      constructionTimeline: 1,
+    });
+
+    return this.update({
+      promotionId: toPromotionId,
+      object: { constructionTimeline },
     });
   }
 }

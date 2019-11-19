@@ -1,15 +1,19 @@
-import DefaultNodeAnalytics from 'analytics-node';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import UserService from 'core/api/users/server/UserService';
-import { getClientHost } from 'core/utils/server/getClientUrl';
-import { EVENTS_CONFIG } from './eventsConfig';
-import { TRACKING_COOKIE } from '../analyticsConstants';
+import DefaultNodeAnalytics from 'analytics-node';
+
+import { getClientHost } from '../../../utils/server/getClientUrl';
+import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
+import UserService from '../../users/server/UserService';
+import { isAPI } from '../../RESTAPI/server/helpers';
+import SessionService from '../../sessions/server/SessionService';
 import MiddlewareManager from '../../../utils/MiddlewareManager';
+import { TRACKING_COOKIE } from '../analyticsConstants';
+import EVENTS from '../events';
+import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
 import { impersonateMiddleware } from './analyticsHelpers';
 import TestAnalytics from './TestAnalytics';
-import EVENTS from '../events';
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -18,7 +22,7 @@ class NodeAnalytics extends DefaultNodeAnalytics {
   }
 
   initAnalytics(context) {
-    ['identify', 'track', 'page', 'alias'].forEach((method) => {
+    ['identify', 'track', 'page', 'alias'].forEach(method => {
       this.middlewareManager.applyToMethod(
         method,
         impersonateMiddleware(context),
@@ -29,13 +33,12 @@ class NodeAnalytics extends DefaultNodeAnalytics {
 
 const { Segment = {} } = Meteor.settings.public.analyticsSettings;
 const { key } = Segment;
-const nodeAnalytics = new NodeAnalytics(key);
 if (Meteor.isProduction && !key) {
   throw new Meteor.Error('No segment key found !');
 }
 
 class Analytics {
-  constructor(context) {
+  constructor(context = {}) {
     this.init(context);
   }
 
@@ -44,24 +47,24 @@ class Analytics {
     if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
       this.analytics = new TestAnalytics();
     } else {
-      this.analytics = nodeAnalytics;
+      this.analytics = new NodeAnalytics(key);
     }
 
     this.context(context);
   }
 
   context(context) {
+    const { userId } = context;
+    const connection = context.connection || {};
     const {
-      userId,
-      connection: {
-        clientAddress,
-        httpHeaders: {
-          'user-agent': userAgent,
-          'x-real-ip': realIp,
-          referer: referrer,
-        } = {},
+      id: connectionId,
+      clientAddress,
+      httpHeaders: {
+        'user-agent': userAgent,
+        'x-real-ip': realIp,
+        referer: referrer,
       } = {},
-    } = context;
+    } = connection;
     this.userId = userId;
     this.user = UserService.fetchOne({
       $filters: { _id: userId },
@@ -74,8 +77,44 @@ class Analytics {
     this.host = getClientHost();
     this.userAgent = userAgent;
     this.referrer = referrer;
+    this.connectionId = connectionId;
 
-    this.analytics.initAnalytics(context);
+    this.analytics.initAnalytics({
+      ...context,
+      clientAddress: this.clientAddress,
+      host: this.host,
+    });
+  }
+
+  createAnalyticsUser(userId, data) {
+    const { firstName, lastName, email, roles } = UserService.fetchOne({
+      $filters: { _id: userId },
+      firstName: 1,
+      lastName: 1,
+      email: 1,
+      roles: 1,
+    });
+
+    this.analytics.identify({
+      userId,
+      traits: {
+        firstName,
+        lastName,
+        email,
+        role: roles[0],
+      },
+    });
+
+    const { name, properties } = this.getEventProperties(
+      EVENTS.USER_CREATED,
+      data,
+    );
+
+    this.analytics.track({
+      userId,
+      event: name,
+      properties,
+    });
   }
 
   identify(trackingId) {
@@ -92,20 +131,37 @@ class Analytics {
     });
   }
 
-  track(event, data, trackingId) {
-    if (!Object.keys(this.events).includes(event)) {
-      throw new Meteor.Error(`Unknown event ${event}`);
-    }
+  getTrackingOrigin() {
+    return isAPI() ? TRACKING_ORIGIN.API : TRACKING_ORIGIN.METEOR_METHOD;
+  }
+
+  getEventProperties(event, data) {
     const eventConfig = this.events[event];
     const { name, transform } = eventConfig;
 
     const eventProperties = transform ? transform(data) : data;
 
+    return {
+      name,
+      properties: {
+        ...eventProperties,
+        trackingOrigin: this.getTrackingOrigin(),
+      },
+    };
+  }
+
+  track(event, data, trackingId = getClientTrackingId()) {
+    if (!Object.keys(this.events).includes(event)) {
+      throw new Meteor.Error(`Unknown event ${event}`);
+    }
+
+    const { name, properties } = this.getEventProperties(event, data);
+
     this.analytics.track({
       ...(trackingId ? { anonymousId: trackingId } : {}),
       userId: this.userId,
       event: name,
-      properties: eventProperties,
+      properties,
       context: {
         ip: this.clientAddress,
         userAgent: this.userAgent,
@@ -155,14 +211,7 @@ class Analytics {
   }
 
   page(params) {
-    const {
-      cookies,
-      sessionStorage,
-      path,
-      route,
-      queryParams,
-      queryString,
-    } = params;
+    const { cookies, path, route, queryParams, queryString } = params;
     const trackingId = cookies[TRACKING_COOKIE];
     const formattedRoute = this.formatRouteName(route);
 
@@ -182,6 +231,11 @@ class Analytics {
         ...queryString,
         ...queryParams,
       },
+    });
+
+    SessionService.setLastActivity({
+      connectionId: this.connectionId,
+      lastPageVisited: path,
     });
   }
 }

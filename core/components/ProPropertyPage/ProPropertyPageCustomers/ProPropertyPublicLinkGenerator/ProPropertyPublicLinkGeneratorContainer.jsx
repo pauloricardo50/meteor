@@ -5,7 +5,7 @@ import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
 
-const makeGeneratePublicLink = propertyId => (ref) => {
+const makeGeneratePublicLink = propertyId => ref => {
   const propertyLink = `${Meteor.settings.public.subdomains.app}/?property-id=${propertyId}`;
 
   if (ref) {
@@ -15,13 +15,13 @@ const makeGeneratePublicLink = propertyId => (ref) => {
   return propertyLink;
 };
 
-const makeTransformRef = (users, organisations) => (id) => {
+const makeTransformRef = (users, organisations) => id => {
   const user = users.find(({ _id }) => _id === id);
   const org = organisations.find(({ _id }) => _id === id);
   return user ? user.name : org.name;
 };
 
-const makeDescription = (property, transformRef) => (ref) => {
+const makeDescription = (property, transformRef) => ref => {
   if (ref) {
     return (
       <span>

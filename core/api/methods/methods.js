@@ -1,16 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
+import { getCookie } from 'core/utils/cookiesHelpers';
+import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
 
-if (Meteor.isTest) {
+if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;
 } else {
   Mutation.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
 }
 
 export class Method extends Mutation {
-  run(callParams = {}, options = {}) {
-    const { config } = this;
+  appendClientParams({ config, callParams, options }) {
     let location;
     if (Meteor.isClient && window && window.location) {
       location = {
@@ -20,12 +21,13 @@ export class Method extends Mutation {
       };
     }
 
-    const aopData = { config, params: callParams };
-    Mutation.callAOP.executeBefores(aopData);
-    this.callAOP.executeBefores(aopData);
+    let trackingId;
+    if (Meteor.isClient && document && document.cookie) {
+      trackingId = getCookie(TRACKING_COOKIE);
+    }
 
-    const { name, params } = config;
-    const additionalData = { location };
+    const additionalData = { location, trackingId };
+    const { name } = config;
 
     return new Promise((resolve, reject) => {
       Meteor.apply(
@@ -53,6 +55,30 @@ export class Method extends Mutation {
     });
   }
 
+  setClientParams(additionalData) {
+    if (Meteor.isServer && additionalData.location) {
+      const { setClientUrl } = require('../../utils/server/getClientUrl');
+      setClientUrl(additionalData.location);
+    }
+
+    if (Meteor.isServer && additionalData.trackingId) {
+      const {
+        setClientTrackingId,
+      } = require('../../utils/server/getClientTrackingId');
+      setClientTrackingId(additionalData.trackingId);
+    }
+  }
+
+  run(callParams = {}, options = {}) {
+    const { config } = this;
+
+    const aopData = { config, params: callParams };
+    Mutation.callAOP.executeBefores(aopData);
+    this.callAOP.executeBefores(aopData);
+
+    return this.appendClientParams({ config, callParams, aopData, options });
+  }
+
   setHandler(fn) {
     const { config } = this;
     const { name, params } = config;
@@ -70,10 +96,7 @@ export class Method extends Mutation {
           }),
         );
 
-        if (Meteor.isServer && additionalData.location) {
-          const { setClientUrl } = require('../../utils/server/getClientUrl');
-          setClientUrl(additionalData.location);
-        }
+        self.setClientParams(additionalData);
 
         if (config.validate) {
           config.validate(params);

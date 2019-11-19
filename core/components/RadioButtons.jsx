@@ -11,9 +11,9 @@ const safeChange = (value, id, onChange, options) => {
   // If all options are booleans, transform the onChange handler's value
   // to booleans
   if (options.every(o => typeof o === 'boolean' || typeof o.id === 'boolean')) {
-    return onChange(id, value === 'true');
+    return onChange(value === 'true', id);
   }
-  return onChange(id, value);
+  return onChange(value, id);
 };
 
 // Cast value to strings, so that is plays nicely with material-ui,

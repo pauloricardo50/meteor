@@ -7,15 +7,14 @@ import {
   activityRemove,
 } from '../methodDefinitions';
 import ActivityService from './ActivityService';
-import { ACTIVITY_TYPES } from '../activityConstants';
 
-const allowModification = (activityId) => {
-  const { type } = ActivityService.fetchOne({
+const allowModification = activityId => {
+  const { isServerGenerated } = ActivityService.fetchOne({
     $filters: { _id: activityId },
-    type: 1,
+    isServerGenerated: 1,
   });
 
-  return type !== ACTIVITY_TYPES.SERVER;
+  return !isServerGenerated;
 };
 
 activityInsert.setHandler(({ userId }, { object }) => {
@@ -26,7 +25,9 @@ activityInsert.setHandler(({ userId }, { object }) => {
 activityUpdate.setHandler(({ userId }, { activityId, object }) => {
   SecurityService.checkUserIsAdmin(userId);
   if (!allowModification(activityId)) {
-    throw new Meteor.Error("Peut pas changer l'activité générée automatiquement");
+    throw new Meteor.Error(
+      "Peut pas changer l'activité générée automatiquement",
+    );
   }
   return ActivityService._update({ id: activityId, object });
 });
@@ -34,7 +35,9 @@ activityUpdate.setHandler(({ userId }, { activityId, object }) => {
 activityRemove.setHandler(({ userId }, { activityId }) => {
   SecurityService.checkUserIsAdmin(userId);
   if (!allowModification(activityId)) {
-    throw new Meteor.Error("Peut pas changer l'activité générée automatiquement");
+    throw new Meteor.Error(
+      "Peut pas changer l'activité générée automatiquement",
+    );
   }
   return ActivityService.remove(activityId);
 });

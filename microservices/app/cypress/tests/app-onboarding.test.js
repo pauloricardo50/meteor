@@ -6,7 +6,7 @@ import {
 
 describe('App onboarding', () => {
   [
-    { name: 'desktop', someString: 'yo' },
+    { name: 'desktop', forceNewLineInThisFile: 'yo' },
     { width: 320, height: 568, name: 'iPhone 5' },
   ].forEach(({ width, height, name }) => {
     context(name, () => {
@@ -23,21 +23,17 @@ describe('App onboarding', () => {
       });
 
       it('should login with the login token', () => {
-        cy.callMethod('inviteTestUser').then((loginToken) => {
+        cy.callMethod('inviteTestUser').then(loginToken => {
           cy.visit(`/enroll-account/${loginToken}`);
         });
 
         cy.get('.password-reset-page').contains('Test User');
 
-        cy.get('input')
-          .eq(0)
-          .type(USER_PASSWORD);
-        cy.get('input')
-          .eq(1)
-          .type(`${USER_PASSWORD}`);
+        cy.get('[name=newPassword]').type(USER_PASSWORD);
+        cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
         cy.get('[type="checkbox"]').check();
         cy.get('.password-reset-page')
-          .contains('Login')
+          .contains('Continuer')
           .click();
 
         cy.url().should('include', '/loans/');

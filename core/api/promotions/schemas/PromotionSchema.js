@@ -4,6 +4,7 @@ import {
   PROMOTION_TYPES,
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS,
+  PROMOTION_AUTHORIZATION_STATUS,
 } from '../promotionConstants';
 import {
   address,
@@ -55,19 +56,30 @@ export const promotionPermissionsSchema = {
   },
   'displayCustomerNames.forLotStatus.$': {
     type: String,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS,
+    ),
   },
   'displayCustomerNames.invitedBy': {
     type: String,
     optional: true,
-    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
+    allowedValues: Object.values(
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY,
+    ),
     uniforms: { displayEmpty: false, placeholder: '' },
   },
   canInviteCustomers: SCHEMA_BOOLEAN,
   canBookLots: SCHEMA_BOOLEAN,
   // canPreBookLots: SCHEMA_BOOLEAN,
   canSellLots: SCHEMA_BOOLEAN,
+  canSeeManagement: SCHEMA_BOOLEAN,
 };
+
+SimpleSchema.setDefaultMessages({
+  messages: {
+    fr: { incompleteTimeline: "Les pourcentages doivent s'additionner à 100%" },
+  },
+});
 
 const PromotionSchema = new SimpleSchema({
   createdAt,
@@ -97,16 +109,57 @@ const PromotionSchema = new SimpleSchema({
   'promotionLotLinks.$': Object,
   'promotionLotLinks.$._id': { type: String, optional: true },
   assignedEmployeeId: { type: String, optional: true },
-  ...userLinksSchema(promotionPermissionsSchema),
+  ...userLinksSchema({
+    permissionsSchema: promotionPermissionsSchema,
+    metadataSchema: {
+      enableNotifications: {
+        type: Boolean,
+        defaultValue: true,
+        optional: true,
+      },
+    },
+  }),
   documents: documentsField,
   lenderOrganisationLink: { type: Object, optional: true },
   'lenderOrganisationLink._id': { type: String, optional: true },
-  constructionTimeline: { type: Array, defaultValue: [] },
+  signingDate: dateField,
+  constructionTimeline: {
+    type: Array,
+    defaultValue: [],
+    custom() {
+      if (this.value.length === 0) {
+        return;
+      }
+
+      // Round up to 100 to avoid JS math rounding issues
+      if (
+        Math.round(
+          this.value.reduce((tot, { percent }) => tot + percent, 0) * 100,
+        ) !== 100
+      ) {
+        return 'incompleteTimeline';
+      }
+    },
+  },
   'constructionTimeline.$': Object,
   'constructionTimeline.$.description': String,
-  'constructionTimeline.$.duration': Number,
+  'constructionTimeline.$.duration': {
+    type: Number,
+    uniforms: { placeholder: null },
+  },
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
-  signingDate: dateField,
+  adminNote: { type: String, optional: true },
+  projectStatus: { type: String, optional: true },
+  authorizationStatus: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_AUTHORIZATION_STATUS),
+    optional: true,
+    defaultValue: PROMOTION_AUTHORIZATION_STATUS.NONE,
+    uniforms: {
+      displayEmpty: false,
+      placeholder: '',
+    },
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

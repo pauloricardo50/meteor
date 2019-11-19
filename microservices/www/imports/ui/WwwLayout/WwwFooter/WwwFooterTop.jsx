@@ -1,9 +1,14 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import { ctaClicked } from 'core/api/analytics/helpers';
+import CTAS from 'core/api/analytics/ctas';
+import { WWW_ROUTES } from 'imports/startup/shared/Routes';
 
-const WwwFooterTop = ({ children }) => {
+const WwwFooterTop = ({ children, history }) => {
   if (children) {
     return (
       <div className="www-footer-top">
@@ -18,11 +23,22 @@ const WwwFooterTop = ({ children }) => {
           <T id="HomePageHeader.title" />
         </h3>
       </b>
-      <Button className="cta" raised link to="/start/1">
+      <Button
+        className="cta"
+        raised
+        href={Meteor.settings.public.subdomains.app}
+        onClick={() => {
+          ctaClicked({
+            name: CTAS.START_BOTTOM,
+            history,
+            routes: WWW_ROUTES,
+          });
+        }}
+      >
         <T id="general.start" />
       </Button>
     </div>
   );
 };
 
-export default WwwFooterTop;
+export default withRouter(WwwFooterTop);

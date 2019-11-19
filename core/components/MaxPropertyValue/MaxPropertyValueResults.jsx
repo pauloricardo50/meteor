@@ -20,7 +20,7 @@ type MaxPropertyValueResultsProps = {
   setResidenceType: Function,
 };
 
-const getPropertyOrganisation = (loan) => {
+const getPropertyOrganisation = loan => {
   if (loan.hasProProperty && loan.properties.length === 1) {
     return loan.properties[0].organisation;
   }
@@ -70,13 +70,14 @@ const MaxPropertyValueResults = ({
 
           <Select
             value={residenceType}
-            onChange={(_, val) => setResidenceType(val)}
+            onChange={setResidenceType}
             options={Object.values(RESIDENCE_TYPE)
               .filter(type =>
                 [
                   RESIDENCE_TYPE.MAIN_RESIDENCE,
                   RESIDENCE_TYPE.SECOND_RESIDENCE,
-                ].includes(type))
+                ].includes(type),
+              )
               .map(type => ({
                 id: type,
                 label: <T id={`Forms.residenceType.${type}`} />,

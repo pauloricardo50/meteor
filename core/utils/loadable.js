@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Loadable from 'react-loadable';
 
 import { logError } from '../api/methods/index';
@@ -14,22 +14,35 @@ if (!ENABLE_LOADABLE && Meteor.isProduction) {
 }
 
 const LoadableLoading = ({ error, retry, pastDelay }) => {
+  const [hasLoggedAnError, setHasLoggedError] = useState(false);
+  useEffect(() => {
+    if (error && !hasLoggedAnError) {
+      setHasLoggedError(true);
+      logError.run({
+        error: JSON.parse(
+          JSON.stringify(error, Object.getOwnPropertyNames(error)),
+        ),
+        additionalData: ['Loadable error'],
+        url:
+          window && window.location && window.location.href
+            ? window.location.href
+            : '',
+      });
+    }
+  }, [error, hasLoggedAnError]);
+
   if (error) {
-    logError.run({
-      error: JSON.parse(
-        JSON.stringify(error, Object.getOwnPropertyNames(error)),
-      ),
-      additionalData: ['Loadable error'],
-      url:
-        window && window.location && window.location.href
-          ? window.location.href
-          : '',
-    });
     return <LayoutError error={error} />;
   }
+
+  if (hasLoggedAnError) {
+    setHasLoggedError(false);
+  }
+
   if (pastDelay) {
     return <Loading />;
   }
+
   return null;
 };
 

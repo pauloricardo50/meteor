@@ -15,7 +15,7 @@ const columnOptions = [
   { id: 'phoneNumber', label: <T id="Forms.phoneNumber" /> },
 ];
 
-const makeMapContact = ({ history }) => (contact) => {
+const makeMapContact = ({ history }) => contact => {
   const {
     _id: contactId,
     firstName,
@@ -41,14 +41,14 @@ const makeMapContact = ({ history }) => (contact) => {
         label:
           organisations && organisations.length > 0
             ? organisations.map(organisation => (
-              <CollectionIconLink
-                key={organisation._id}
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
-              />
-            ))
+                <CollectionIconLink
+                  key={organisation._id}
+                  relatedDoc={{
+                    ...organisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              ))
             : "N'appartient à aucune organisation pour l'instant",
       },
       {
@@ -60,7 +60,7 @@ const makeMapContact = ({ history }) => (contact) => {
         label: phoneNumber,
       },
     ],
-    handleClick: (event) => {
+    handleClick: event => {
       event.stopPropagation();
       history.push(createRoute('/contacts/:contactId', { contactId }));
     },

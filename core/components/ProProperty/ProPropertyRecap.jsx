@@ -22,12 +22,12 @@ const formatInfo = ({ property, key }) => {
   const value = property[key];
 
   switch (type) {
-  case 'number':
-    return value;
-  case 'area':
-    return `${value} m2`;
-  default:
-    return value;
+    case 'number':
+      return value;
+    case 'area':
+      return `${value} m2`;
+    default:
+      return value;
   }
 };
 

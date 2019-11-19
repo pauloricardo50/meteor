@@ -5,6 +5,33 @@ import Dialog from '@material-ui/core/Dialog';
 import ModalManagerContext from './ModalManagerContext';
 import DialogComponents from './DialogComponents';
 
+// Open modals from anywhere in React:
+
+// const { openModal } = useContext(ModalManagerContext);
+
+// // Open a simple modal that says hello world
+// <Button onClick={() => openModal({ title: 'Hello world' })}>
+//   Open modal
+// </Button>
+
+// // Open two modals that share data
+// <Button onClick={() => openModal([
+//   {
+//     title: <div>Hello world</div>,
+//     actions: ({ closeModal }) => (
+//       <button
+//        onClick={() => new Promise((res) => res('Promise worked!')).then(closeModal)}
+//       >
+//         Close me
+//       </button>
+//     ),
+//   },
+//   { title: ({ returnValue }) => <div>{returnValue}</div> },
+// ])}
+// >
+//   Open modal
+// </Button>
+
 type ModalManagerProps = {};
 
 const initialState = { activeModal: null };
@@ -34,44 +61,44 @@ const openFirstModal = (state, { payload: modals }) => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-  case 'OPEN_MODAL': {
-    if (Array.isArray(action.payload)) {
-      return openFirstModal(state, action);
+    case 'OPEN_MODAL': {
+      if (Array.isArray(action.payload)) {
+        return openFirstModal(state, action);
+      }
+
+      const modalId = id;
+      id += 1;
+      if (state.activeModal === null) {
+        return { ...state, [modalId]: action.payload, activeModal: modalId };
+      }
+      return { ...state, [modalId]: action.payload };
+    }
+    case 'CLOSE_MODAL': {
+      const {
+        [action.payload.activeModal]: removedModal,
+        activeModal,
+        ...newState
+      } = state;
+      const pendingModals = Object.keys(newState);
+      if (pendingModals.length > 0) {
+        const nextModal = Math.min(...pendingModals);
+        return {
+          ...newState,
+          activeModal: nextModal,
+          [nextModal]: {
+            ...newState[nextModal],
+            returnValue: action.payload.returnValue,
+          },
+        };
+      }
+      return { ...newState, activeModal: null };
+    }
+    case 'CLOSE_ALL': {
+      return initialState;
     }
 
-    const modalId = id;
-    id += 1;
-    if (state.activeModal === null) {
-      return { ...state, [modalId]: action.payload, activeModal: modalId };
-    }
-    return { ...state, [modalId]: action.payload };
-  }
-  case 'CLOSE_MODAL': {
-    const {
-      [action.payload.activeModal]: removedModal,
-      activeModal,
-      ...newState
-    } = state;
-    const pendingModals = Object.keys(newState);
-    if (pendingModals.length > 0) {
-      const nextModal = Math.min(...pendingModals);
-      return {
-        ...newState,
-        activeModal: nextModal,
-        [nextModal]: {
-          ...newState[nextModal],
-          returnValue: action.payload.returnValue,
-        },
-      };
-    }
-    return { ...newState, activeModal: null };
-  }
-  case 'CLOSE_ALL': {
-    return initialState;
-  }
-
-  default:
-    return state;
+    default:
+      return state;
   }
 };
 
@@ -89,7 +116,7 @@ const ModalManager = ({ children }: ModalManagerProps) => {
 
   const { props: { important: importantComponent = false } = {} } = dialogProps;
 
-  const openModal = (payload) => {
+  const openModal = payload => {
     dispatch({ type: 'OPEN_MODAL', payload });
   };
 

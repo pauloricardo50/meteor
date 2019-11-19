@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import SlackService from './SlackService';
 
 export const referralOnlyNotification = ({ currentUser, user }) => {
@@ -34,9 +33,7 @@ export const promotionInviteNotification = ({
     currentUser,
     title: `Promotion ${name}`,
     message: `${firstName} ${lastName} a été invité! ${email}`,
-    link: `${
-      Meteor.settings.public.subdomains.admin
-    }/promotions/${promotionId}`,
+    link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
   });
@@ -56,9 +53,7 @@ export const promotionLotBooked = ({
     currentUser,
     title: `Promotion ${promotionName}`,
     message: `Le lot ${lotName} a été réservé pour ${name}`,
-    link: `${
-      Meteor.settings.public.subdomains.admin
-    }/promotions/${promotionId}`,
+    link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
   });
@@ -78,9 +73,7 @@ export const promotionLotSold = ({
     currentUser,
     title: `Promotion ${promotionName}`,
     message: `Le lot ${lotName} a été vendu à ${name}`,
-    link: `${
-      Meteor.settings.public.subdomains.admin
-    }/promotions/${promotionId}`,
+    link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
   });
@@ -101,18 +94,6 @@ export const updateWatcherNotification = ({
   });
 };
 
-export const newAnonymousLoan = ({ loanName, loanId, property, referral }) => {
-  SlackService.notifyAssignee({
-    title: `Nouveau dossier anonyme: ${loanName}`,
-    link: `${Meteor.settings.public.subdomains.admin}/loans/${loanId}`,
-    message: property
-      ? `Pour le bien immo ${property.address1} ${
-        referral ? `de ${getUserNameAndOrganisation({ user: referral })}` : ''
-      }`
-      : '',
-  });
-};
-
 export const newLoan = ({ loanId, loanName, currentUser }) => {
   SlackService.notifyAssignee({
     currentUser,
@@ -121,12 +102,12 @@ export const newLoan = ({ loanId, loanName, currentUser }) => {
   });
 };
 
-export const newUser = ({ loans = [], currentUser }) => {
+export const newUser = ({ loans, currentUser, suffix }) => {
   SlackService.notifyAssignee({
     currentUser,
     title: `Nouveau compte utilisateur! ${
       loans.length ? `(dossier ${loans[0].name})` : ''
-    }`,
+    } ${suffix}`,
     link: `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`,
   });
 };

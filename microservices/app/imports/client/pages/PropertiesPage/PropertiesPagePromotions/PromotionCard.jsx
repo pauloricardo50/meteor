@@ -22,11 +22,12 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
       to={createRoute(APP_ROUTES.APP_PROMOTION_PAGE.path, {
         ':promotionId': promotion._id,
         ':loanId': loanId,
+        ':tabId': 'overview',
       })}
       className="card1 card-hover promotion-card"
       disabled={status !== PROMOTION_STATUS.OPEN}
     >
-      <React.Fragment>
+      <>
         <span
           style={
             promotionImage.length > 0
@@ -42,7 +43,7 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
           <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
         </h2>
         <h3 className="secondary">{promotion.address}</h3>
-      </React.Fragment>
+      </>
     </Link>
   );
 };

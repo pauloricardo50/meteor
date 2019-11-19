@@ -40,10 +40,10 @@ class LoanSecurity {
     });
 
     if (
-      !loan
-      || loan.anonymous !== true
-      || loan.status === LOAN_STATUS.UNSUCCESSFUL
-      || loan.userId
+      !loan ||
+      loan.anonymous !== true ||
+      loan.status === LOAN_STATUS.UNSUCCESSFUL ||
+      loan.userId
     ) {
       Security.handleUnauthorized();
     }

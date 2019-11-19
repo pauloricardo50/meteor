@@ -56,29 +56,31 @@ export const devTooltips = {
   match2: { id: 'id2' },
 };
 
-export const tooltips = (list) => {
+export const tooltips = list => {
   switch (list) {
-  case TOOLTIP_LISTS.GENERAL:
-    return generalTooltips;
-  case TOOLTIP_LISTS.OFFER_TABLE:
-    return offerTableTooltips;
-  case TOOLTIP_LISTS.DEV:
-    return devTooltips;
-  case TOOLTIP_LISTS.WIDGET1:
-    return widget1Tooltips;
-  default:
-    throw new Error(`Unknown tooltip list: "${list}"`);
+    case TOOLTIP_LISTS.GENERAL:
+      return generalTooltips;
+    case TOOLTIP_LISTS.OFFER_TABLE:
+      return offerTableTooltips;
+    case TOOLTIP_LISTS.DEV:
+      return devTooltips;
+    case TOOLTIP_LISTS.WIDGET1:
+      return widget1Tooltips;
+    default:
+      throw new Error(`Unknown tooltip list: "${list}"`);
   }
 };
 
-export const tooltipsById = (id) => {
+export const tooltipsById = id => {
   if (typeof id !== 'string') {
     throw new Error('not a string');
   }
   const [listId, ...ids] = id.split('.');
 
   if (ids.length < 1 || ids[0] === '') {
-    throw Error('Wrong id given for tooltips, requires 2 strings separated by a .');
+    throw Error(
+      'Wrong id given for tooltips, requires 2 strings separated by a .',
+    );
   }
 
   const list = tooltips(listId);

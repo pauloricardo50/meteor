@@ -1,8 +1,6 @@
 // Default
 @import '../imports/core/assets/css/core-styles.scss';
 @import '../imports/core/assets/css/external-styles/animate.scss';
-@import '../imports/core/assets/css/external-styles/bootstrap-popover.scss';
-@import '../imports/core/assets/css/external-styles/rc-slider.scss';
 
 // Layout
 @import '../imports/client/layouts/AdminLayout/AdminLayout.scss';
@@ -20,6 +18,7 @@
 @import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
 @import '../imports/client/pages/PropertiesPage/PropertiesPage.scss';
 @import '../imports/client/pages/OtherPage/OtherPage.scss';
+@import '../imports/client/pages/RevenuesPage/RevenuesPage.scss';
 
 // Components
 @import '../imports/client/components/Board/Board.scss';
@@ -28,8 +27,7 @@
 @import '../imports/client/components/LoanSummaryList/LoanSummaryList.scss';
 @import '../imports/client/components/MixpanelAnalytics/MixpanelAnalytics.scss';
 @import '../imports/client/components/NotificationsManager/NotificationsManager.scss';
-@import '../imports/client/components/PremiumBadge/PremiumBadge.scss';
-@import '../imports/client/components/Search/Search.scss';
+@import '../imports/client/components/AdminSearch/AdminSearch.scss';
 @import '../imports/client/components/TasksTable/TasksTable.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';

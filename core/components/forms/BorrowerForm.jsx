@@ -72,7 +72,7 @@ const otherSchema = BorrowerSchemaAdmin.omit(
   ...omittedFields,
 );
 
-const handleSubmit = borrowerId => (doc) => {
+const handleSubmit = borrowerId => doc => {
   let message;
   let hideLoader;
 
@@ -91,7 +91,7 @@ const handleSubmit = borrowerId => (doc) => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const insertMortgageNote = (borrowerId) => {
+const insertMortgageNote = borrowerId => {
   let message;
   let hideLoader;
 
@@ -111,7 +111,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
   const { mortgageNotes, _id: borrowerId } = borrower;
   return (
     <div className="borrower-admin-form">
-      <h3>Informations personelles</h3>
+      <h3>Informations personnelles</h3>
       <AutoForm
         schema={BorrowerSchemaAdmin.pick(...personalFields)}
         model={borrower}
@@ -183,12 +183,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
           },
           {
             Component: Box,
-            fields: [
-              'bankFortune',
-              'donation',
-              'otherFortune',
-              'realEstate',
-            ],
+            fields: ['bankFortune', 'donation', 'otherFortune', 'realEstate'],
             className: 'grid-col mb-32',
           },
           {

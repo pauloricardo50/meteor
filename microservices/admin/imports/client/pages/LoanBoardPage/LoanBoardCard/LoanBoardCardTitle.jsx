@@ -14,7 +14,9 @@ const LoanBoardCardTitle = ({
   title,
   user,
 }: LoanBoardCardTitleProps) => {
-  const borrowersToDisplay = borrowers.filter(({ name: borrowerName }) => borrowerName);
+  const borrowersToDisplay = borrowers.filter(
+    ({ name: borrowerName }) => borrowerName,
+  );
   const borrowerContent = borrowersToDisplay.length > 0 && (
     <div>
       <b>Emprunteurs</b>

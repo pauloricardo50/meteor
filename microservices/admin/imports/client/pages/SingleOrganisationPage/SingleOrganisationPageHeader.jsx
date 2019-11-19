@@ -44,7 +44,8 @@ const SingleOrganisationPage = ({
               {features.length > 0 && <>&nbsp;-&nbsp;</>}
               {features
                 .map(feature =>
-                  formatMessage({ id: `Forms.features.${feature}` }))
+                  formatMessage({ id: `Forms.features.${feature}` }),
+                )
                 .join(', ')}
             </h2>
             <h3 className="flex center space-children">
@@ -53,10 +54,12 @@ const SingleOrganisationPage = ({
                   label={formatMessage({ id: `Forms.tags.${tag}` })}
                   key={tag}
                   onClick={() =>
-                    history.push(`/organisations?${queryString.stringify(
-                      { tags: [tag] },
-                      { arrayFormat: 'bracket' },
-                    )}`)
+                    history.push(
+                      `/organisations?${queryString.stringify(
+                        { tags: [tag] },
+                        { arrayFormat: 'bracket' },
+                      )}`,
+                    )
                   }
                 />
               ))}
@@ -74,6 +77,7 @@ const SingleOrganisationPage = ({
                 className: 'mr-8',
               }}
               method={() => organisationRemove.run({ organisationId })}
+              type="modal"
             />
           )}
           <OrganisationModifier organisation={organisation} />
@@ -84,7 +88,4 @@ const SingleOrganisationPage = ({
   );
 };
 
-export default compose(
-  withRouter,
-  injectIntl,
-)(SingleOrganisationPage);
+export default compose(withRouter, injectIntl)(SingleOrganisationPage);

@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { getChecklistMissingInformations } from '../helpers';
-import styles from './styles';
 import LoanChecklistEmailSection from './LoanChecklistEmailSection';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 

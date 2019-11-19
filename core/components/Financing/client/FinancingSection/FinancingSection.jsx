@@ -28,6 +28,7 @@ const FinancingSection = ({
   noWrapper,
   summaryConfig,
   className,
+  sectionItemProps,
   ...sectionProps
 }: FinancingSectionProps) => (
   <ScrollSyncPane>
@@ -37,6 +38,7 @@ const FinancingSection = ({
       summaryConfig={summaryConfig}
       detailConfig={detailConfig}
       className={className}
+      sectionItemProps={sectionItemProps}
     />
   </ScrollSyncPane>
 );

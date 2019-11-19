@@ -34,7 +34,7 @@ export default compose(
   GoogleMapContainer,
   withState('address', 'changeAddress', ''),
   withProps(({ changeAddress }) => ({
-    handleSelect: (address) => {
+    handleSelect: address => {
       changeAddress(address);
       geocodeByAddress(address)
         .then(results => getLatLng(results[0]))

@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 import { checkEmails } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -15,11 +14,11 @@ import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
 
-describe('UserService', function () {
+describe('UserService', function() {
   this.timeout(10000);
 
-  const firstName = 'testFirstName';
-  const lastName = 'testLastName';
+  const firstName = 'TestFirstName';
+  const lastName = 'TestLastName';
   let user;
 
   beforeEach(() => {
@@ -78,7 +77,7 @@ describe('UserService', function () {
     });
 
     it('adds any additional info on options to the user', () => {
-      const options = { email: 'test@test.com', firstName: 'dude' };
+      const options = { email: 'test@test.com', firstName: 'Dude' };
       const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
       user = UserService.getUserById({ userId });
 
@@ -153,21 +152,36 @@ describe('UserService', function () {
     });
 
     it('returns undefined if no user exists', () => {
-      expect(UserService.getUserById({ userId: 'unknownId' })).to.equal(undefined);
+      expect(UserService.getUserById({ userId: 'unknownId' })).to.equal(
+        undefined,
+      );
     });
   });
 
   describe('update', () => {
     it('updates a user', () => {
-      const newFirstName = 'joe';
-      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(firstName);
+      const newFirstName = 'Joe';
+      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(
+        firstName,
+      );
       UserService.update({
         userId: user._id,
         object: { firstName: newFirstName },
       });
-      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(newFirstName);
+      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(
+        newFirstName,
+      );
     });
-
+    it('updates a user: check the sentence case', () => {
+      const newFirstName = 'jon';
+      UserService.update({
+        userId: user._id,
+        object: { firstName: newFirstName },
+      });
+      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(
+        'Jon',
+      );
+    });
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
       expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
@@ -176,6 +190,25 @@ describe('UserService', function () {
     it('does not do anything if object empty', () => {
       UserService.update({ userId: user._id, object: {} });
       expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
+    });
+  });
+
+  describe('toggle account', () => {
+    it('toggle account', () => {
+      UserService.toggleAccount({
+        userId: user._id,
+      });
+      expect(
+        UserService.getUserById({ userId: user._id }).isDisabled,
+      ).to.not.equal(user.isDisabled);
+    });
+    it('Throw error if userId is not defined', () => {
+      expect(() => UserService.toggleAccount({})).to.throw('Valeur invalide');
+    });
+    it('Throw error if user not found', () => {
+      expect(() =>
+        UserService.toggleAccount({ userId: 'yqweuqwheiqweqiwei' }),
+      ).to.throw('Utilisateur non trouvé');
     });
   });
 
@@ -245,16 +278,24 @@ describe('UserService', function () {
   describe('assignAdminToUser', () => {
     it('assigns an admin to a user', () => {
       const adminId = 'my dude';
-      expect(UserService.getUserById({ userId: user._id }).assignedEmployeeId).to.equal(undefined);
+      expect(
+        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
+      ).to.equal(undefined);
       UserService.assignAdminToUser({ userId: user._id, adminId });
-      expect(UserService.getUserById({ userId: user._id }).assignedEmployeeId).to.equal(adminId);
+      expect(
+        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
+      ).to.equal(adminId);
     });
 
     it('does not fail if adminId is undefined', () => {
       const adminId = undefined;
-      expect(UserService.getUserById({ userId: user._id }).assignedEmployeeId).to.equal(undefined);
+      expect(
+        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
+      ).to.equal(undefined);
       UserService.assignAdminToUser({ userId: user._id, adminId });
-      expect(UserService.getUserById({ userId: user._id }).assignedEmployeeId).to.equal(adminId);
+      expect(
+        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
+      ).to.equal(adminId);
     });
   });
 
@@ -275,16 +316,21 @@ describe('UserService', function () {
   describe('setRole', () => {
     it('changes the role of a user', () => {
       const newRole = ROLES.DEV;
-      expect(UserService.getUserById({ userId: user._id }).roles).to.deep.equal([ROLES.USER]);
+      expect(
+        UserService.getUserById({ userId: user._id }).roles,
+      ).to.deep.equal([ROLES.USER]);
       UserService.setRole({ userId: user._id, role: newRole });
-      expect(UserService.getUserById({ userId: user._id }).roles).to.deep.equal([newRole]);
+      expect(
+        UserService.getUserById({ userId: user._id }).roles,
+      ).to.deep.equal([newRole]);
     });
 
     it('throws if an unauthorized role is set', () => {
       const newRole = 'some role';
 
       expect(() =>
-        UserService.setRole({ userId: user._id, role: newRole })).to.throw(`${newRole} is not an allowed value`);
+        UserService.setRole({ userId: user._id, role: newRole }),
+      ).to.throw(`${newRole} is not an allowed value`);
     });
   });
 
@@ -314,7 +360,9 @@ describe('UserService', function () {
 
     it('returns false with totally different email', () => {
       const inexistentEmail = 'hello@world.com';
-      expect(UserService.doesUserExist({ email: inexistentEmail })).to.equal(false);
+      expect(UserService.doesUserExist({ email: inexistentEmail })).to.equal(
+        false,
+      );
     });
   });
 
@@ -326,32 +374,57 @@ describe('UserService', function () {
           services: { password: { reset: { token } } },
         },
       });
-      expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(true);
+      expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(
+        true,
+      );
     });
 
-    it('only returns the necessary data', () => {
-      const token = 'testToken';
-      const userId = UserService.testCreateUser({
-        user: {
-          services: { password: { reset: { token } } },
+    describe('getUserByPasswordResetToken', () => {
+      it('returns a user if found', () => {
+        const token = 'testToken';
+        UserService.testCreateUser({
+          user: {
+            services: { password: { reset: { token } } },
+          },
+        });
+        expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(
+          true,
+        );
+      });
+
+      it('only returns the necessary data', () => {
+        const token = 'testToken';
+        const userId = UserService.testCreateUser({
+          user: {
+            services: { password: { reset: { token } } },
+            firstName,
+            lastName,
+            emails: [{ address: 'yo@dude.com', verified: false }],
+            phoneNumbers: ['phoneNumber'],
+            username: 'secretUsername',
+          },
+        });
+        expect(
+          UserService.getUserByPasswordResetToken({ token }),
+        ).to.deep.equal({
+          _id: userId,
           firstName,
           lastName,
+          email: 'yo@dude.com',
           emails: [{ address: 'yo@dude.com', verified: false }],
-          phoneNumbers: ['secretNumber'],
-        },
-      });
-      expect(UserService.getUserByPasswordResetToken({ token })).to.deep.equal({
-        _id: userId,
-        firstName,
-        lastName,
-        emails: [{ address: 'yo@dude.com', verified: false }],
+          name: 'TestFirstName TestLastName',
+          phoneNumbers: ['phoneNumber'],
+          services: { password: { reset: { token } } },
+        });
       });
     });
 
     it('returns undefined if no user is found', () => {
-      expect(!!UserService.getUserByPasswordResetToken({
-        token: 'some unknown token',
-      })).to.equal(false);
+      expect(
+        !!UserService.getUserByPasswordResetToken({
+          token: 'some unknown token',
+        }),
+      ).to.equal(false);
     });
   });
 
@@ -363,7 +436,9 @@ describe('UserService', function () {
         promotionLinks: [{ _id: 'test' }],
       })._id;
 
-      expect(UserService.hasPromotion({ userId, promotionId: 'test2' })).to.equal(false);
+      expect(
+        UserService.hasPromotion({ userId, promotionId: 'test2' }),
+      ).to.equal(false);
     });
   });
 
@@ -403,9 +478,11 @@ describe('UserService', function () {
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByOrganisationLink).to.equal(
+          'organisationId',
+        );
 
-        return checkEmails(2).then((emails) => {
+        return checkEmails(2).then(emails => {
           expect(emails.length).to.equal(2);
           const {
             emailId,
@@ -418,12 +495,16 @@ describe('UserService', function () {
           } = emails.find(({ emailId }) => emailId === EMAIL_IDS.REFER_USER);
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.REFER_USER);
-          expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+          expect(template_name).to.equal(
+            EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+          );
           expect(address).to.equal('bob@dylan.com');
           expect(from_email).to.equal('info@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('Vous avez été invité sur e-Potek');
-          expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('John Doe (bank)');
+          expect(
+            global_merge_vars.find(({ name }) => name === 'BODY').content,
+          ).to.include('John Doe (bank)');
           {
             const {
               emailId,
@@ -433,15 +514,21 @@ describe('UserService', function () {
                 template_name,
                 message: { from_email, subject, global_merge_vars, from_name },
               },
-            } = emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION);
+            } = emails.find(
+              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+            );
             expect(status).to.equal('sent');
             expect(emailId).to.equal(EMAIL_IDS.CONFIRM_USER_INVITATION);
-            expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+            expect(template_name).to.equal(
+              EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+            );
             expect(address).to.equal('john@doe.com');
             expect(from_email).to.equal('info@e-potek.ch');
             expect(from_name).to.equal('e-Potek');
             expect(subject).to.equal('Invitation réussie');
-            expect(global_merge_vars.find(({ name }) => name === 'BODY').content).to.include('Bob Dylan (bob@dylan.com)');
+            expect(
+              global_merge_vars.find(({ name }) => name === 'BODY').content,
+            ).to.include('Bob Dylan (bob@dylan.com)');
           }
         });
       }));
@@ -456,7 +543,8 @@ describe('UserService', function () {
           user: userToInvite,
           referOnly: true,
           proUserId: 'proId',
-        })).to.throw('Ce client existe déjà');
+        }),
+      ).to.throw('Ce client existe déjà');
     });
 
     it('invites user to promotion', () => {
@@ -488,7 +576,9 @@ describe('UserService', function () {
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByOrganisationLink).to.equal(
+          'organisationId',
+        );
         expect(loan.promotionLinks[0]._id).to.equal('promotionId');
         expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
         expect(loan.promotionLinks[0].showAllLots).to.equal(false);
@@ -536,7 +626,9 @@ describe('UserService', function () {
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByOrganisationLink).to.equal(
+          'organisationId',
+        );
         expect(loans.length).to.equal(2);
         expect(loans[0].promotionLinks[0]._id).to.equal('promotionId1');
         expect(loans[0].promotionLinks[0].invitedBy).to.equal('proId');
@@ -568,13 +660,14 @@ describe('UserService', function () {
         proUserId: 'proId',
       })
         .then(() => checkEmails(2))
-        .then((emails) => {
+        .then(emails => {
           expect(() =>
             UserService.proInviteUser({
               user: userToInvite,
               promotionIds: ['promotionId'],
               proUserId: 'proId',
-            })).to.throw('Ce client est déjà invité à cette promotion');
+            }),
+          ).to.throw('Ce client est déjà invité à cette promotion');
         });
     });
 
@@ -600,12 +693,22 @@ describe('UserService', function () {
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByOrganisationLink).to.equal(
+          'organisationId',
+        );
         expect(loan.propertyIds[0]).to.equal('propertyId');
 
-        return checkEmails(2).then((emails) => {
-          expect(!!emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY)).to.equal(true);
-          expect(!!emails.find(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION)).to.equal(true);
+        return checkEmails(2).then(emails => {
+          expect(
+            !!emails.find(
+              ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+            ),
+          ).to.equal(true);
+          expect(
+            !!emails.find(
+              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+            ),
+          ).to.equal(true);
         });
       });
     });
@@ -642,7 +745,9 @@ describe('UserService', function () {
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByOrganisationLink).to.equal(
+          'organisationId',
+        );
         expect(loan.propertyIds.length).to.equal(2);
         expect(loan.propertyIds[0]).to.equal('propertyId1');
         expect(loan.propertyIds[1]).to.equal('propertyId2');
@@ -709,7 +814,9 @@ describe('UserService', function () {
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByOrganisationLink).to.equal(
+          'organisationId',
+        );
         expect(loans.length).to.equal(3);
         expect(loans[0].propertyIds.length).to.equal(2);
         expect(loans[0].propertyIds[0]).to.equal('propertyId1');
@@ -742,7 +849,7 @@ describe('UserService', function () {
         proUserId: 'proId',
       })
         .then(() => checkEmails(2))
-        .then((emails) => {
+        .then(emails => {
           expect(emails.length).to.equal(2);
           const {
             emailId,
@@ -752,16 +859,24 @@ describe('UserService', function () {
               template_name,
               message: { from_email, subject, merge_vars, from_name },
             },
-          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+          } = emails.find(
+            ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+          );
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
-          expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+          expect(template_name).to.equal(
+            EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+          );
           expect(address).to.equal('bob@dylan.com');
           expect(from_email).to.equal('info@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
           expect(subject).to.equal('e-Potek - "Rue du four 1"');
 
-          expect(emails.filter(({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION).length).to.equal(1);
+          expect(
+            emails.filter(
+              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+            ).length,
+          ).to.equal(1);
         });
     });
 
@@ -789,7 +904,8 @@ describe('UserService', function () {
               user: userToInvite,
               propertyIds: ['propertyId'],
               proUserId: 'proId',
-            })).to.throw('Ce client est déjà invité à ce bien immobilier');
+            }),
+          ).to.throw('Ce client est déjà invité à ce bien immobilier');
         });
     });
 
@@ -841,7 +957,8 @@ describe('UserService', function () {
 
     beforeEach(() => {
       employeeIds = employees.map(email =>
-        UserService.adminCreateUser({ options: { email }, role: ROLES.ADMIN }));
+        UserService.adminCreateUser({ options: { email }, role: ROLES.ADMIN }),
+      );
     });
 
     it('sets the first user to the first in the array', () => {

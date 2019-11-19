@@ -38,8 +38,10 @@ describe('WwwInterestRatesTable', () => {
   beforeEach(() => getMountedComponent.reset());
 
   it('renders a `InterestRatesTable` component with correct props', () => {
-    expect(component({ currentInterestRates })
-      .find(InterestRatesTable)
-      .props()).to.deep.equal(defaultProps);
+    expect(
+      component({ currentInterestRates })
+        .find(InterestRatesTable)
+        .props(),
+    ).to.deep.equal(defaultProps);
   });
 });

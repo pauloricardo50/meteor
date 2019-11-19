@@ -25,6 +25,12 @@ const items = [
     exact: true,
   },
   {
+    label: 'Dossiers',
+    icon: 'viewWeek',
+    to: '/loan-board',
+    exact: true,
+  },
+  {
     detail: true,
     collection: USERS_COLLECTION,
   },
@@ -42,7 +48,7 @@ const items = [
     collection: ORGANISATIONS_COLLECTION,
   },
   {
-    label: 'Revenus',
+    label: 'Monitoring',
     to: createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, { tabId: 'monitoring' }),
     collection: REVENUES_COLLECTION,
   },
@@ -52,8 +58,14 @@ const items = [
     icon: (
       <FontAwesomeIcon icon={faProjectDiagram} className="collection-icon" />
     ),
+    collection: 'other',
   },
-  { label: 'Dev', icon: 'developerMode', to: ADMIN_ROUTES.DEV_PAGE.path },
+  {
+    label: 'Dev',
+    icon: 'developerMode',
+    to: ADMIN_ROUTES.DEV_PAGE.path,
+    exact: true,
+  },
 ].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (

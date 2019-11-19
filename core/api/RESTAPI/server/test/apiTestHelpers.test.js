@@ -15,7 +15,7 @@ const FormData = require('form-data');
 export const API_PORT = process.env.CIRCLE_CI ? 3000 : 4105; // API in on pro
 
 const checkResponse = ({ res, expectedResponse, include }) =>
-  res.json().then((body) => {
+  res.json().then(body => {
     if (expectedResponse) {
       if (include) {
         expect(body).to.deep.include(expectedResponse);
@@ -44,11 +44,12 @@ export const fetchAndCheckResponse = ({
 }) => {
   const urlPath = query
     ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
-      encode: true,
-    })}`
+        encode: true,
+      })}`
     : `http://localhost:${API_PORT}/api${url}`;
   return fetch(urlPath, data).then(res =>
-    checkResponse({ res, expectedResponse, include }));
+    checkResponse({ res, expectedResponse, include }),
+  );
 };
 
 const signBody = ({ body, privateKey }) => {
@@ -77,7 +78,6 @@ export const signRequest = ({
 
   const key = new NodeRSA();
   key.importKey(privateKey.replace(/\r?\n|\r/g, ''), 'pkcs1-private-pem');
-
 
   let objectToSign = { security: sortObject({ timestamp, nonce }) };
 
@@ -153,8 +153,8 @@ export const makeHeaders = ({
     'X-EPOTEK-Authorization': `EPOTEK ${keyPair.publicKey.replace(
       /\r?\n|\r/g,
       '',
-    )}:${signature
-      || signRequest({
+    )}:${signature ||
+      signRequest({
         body,
         query,
         privateKey: keyPair.privateKey,
@@ -172,7 +172,7 @@ export const uploadFile = ({ filePath, userId, url, query, ...params }) => {
   const readStream = createReadStream(filePath);
   const form = new FormData();
   form.append('file', readStream);
-  Object.keys(params).forEach((param) => {
+  Object.keys(params).forEach(param => {
     form.append(param, params[param]);
   });
 
@@ -201,8 +201,8 @@ export const uploadFile = ({ filePath, userId, url, query, ...params }) => {
 
   const urlPath = query
     ? `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
-      encode: true,
-    })}`
+        encode: true,
+      })}`
     : `http://localhost:${API_PORT}/api${url}`;
 
   return fetch(urlPath, options).then(res => res.json());

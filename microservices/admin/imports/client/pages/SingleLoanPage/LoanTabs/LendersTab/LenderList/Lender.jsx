@@ -7,8 +7,7 @@ import {
 } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import ClickToEditField from 'core/components/ClickToEditField';
-import AdminNote from 'imports/client/components/AdminNote/AdminNote';
+import AdminNote from 'core/components/AdminNote';
 import LenderContact from './LenderContact';
 import LenderOffer from './LenderOffer';
 
@@ -61,6 +60,7 @@ const Lender = ({ lender }: LenderProps) => {
         adminNote={adminNote}
         collection={LENDERS_COLLECTION}
         placeholder="#### Ajouter un commentaire"
+        allowEditing
       />
       {/* <ClickToEditField
         placeholder="Ajouter un commentaire"

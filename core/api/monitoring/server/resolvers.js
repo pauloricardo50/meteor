@@ -3,6 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import merge from 'lodash/merge';
 
 import { REVENUE_STATUS, LOAN_STATUS } from 'core/api/constants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import { LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
+import { COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
+import ActivityService from '../../activities/server/ActivityService';
 import LoanService from '../../loans/server/LoanService';
 
 const defaultFilters = {
@@ -50,10 +54,45 @@ const getRevenues = ({ value }) => {
       {
         $addFields: {
           revenueDate: {
-            $cond: {
-              if: { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
-              then: '$revenues.expectedAt',
-              else: '$revenues.paidAt',
+            $cond: [
+              { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
+              '$revenues.expectedAt',
+              '$revenues.paidAt',
+            ],
+          },
+          commissionRateToPay: {
+            $sum: {
+              $map: {
+                input: '$revenues.organisationLinks',
+                as: 'organisation',
+                in: {
+                  $cond: [
+                    {
+                      $eq: [
+                        '$$organisation.status',
+                        COMMISSION_STATUS.TO_BE_PAID,
+                      ],
+                    },
+                    '$$organisation.commissionRate',
+                    0,
+                  ],
+                },
+              },
+            },
+          },
+          commissionRatePaid: {
+            $sum: {
+              $map: {
+                input: '$revenues.organisationLinks',
+                as: 'organisation',
+                in: {
+                  $cond: [
+                    { $eq: ['$$organisation.status', COMMISSION_STATUS.PAID] },
+                    '$$organisation.commissionRate',
+                    0,
+                  ],
+                },
+              },
             },
           },
         },
@@ -62,58 +101,67 @@ const getRevenues = ({ value }) => {
         $addFields: {
           revenueYear: { $year: { date: '$revenueDate' } },
           revenueMonth: { $month: { date: '$revenueDate' } },
+          'revenues.commissionsToPay': {
+            $multiply: ['$commissionRateToPay', '$revenues.amount'],
+          },
+          'revenues.commissionsPaid': {
+            $multiply: ['$commissionRatePaid', '$revenues.amount'],
+          },
         },
       },
     ];
   }
 };
 
-const getGroupBy = (groupBy) => {
+const getGroupBy = groupBy => {
   switch (groupBy) {
-  case 'status':
-    return '$status';
-  case 'revenueDate':
-    return { month: '$revenueMonth', year: '$revenueYear' };
-  case 'createdAt':
-    return { month: '$createdMonth', year: '$createdYear' };
+    case 'status':
+      return '$status';
+    case 'revenueDate':
+      return { month: '$revenueMonth', year: '$revenueYear' };
+    case 'createdAt':
+      return { month: '$createdMonth', year: '$createdYear' };
 
-  default:
-    throw new Meteor.Error(`Invalid groupBy: "${groupBy}"`);
+    default:
+      throw new Meteor.Error(`Invalid groupBy: "${groupBy}"`);
   }
 };
 
 const getGrouping = ({ groupBy, value }) => {
   const fields = {};
   switch (value) {
-  case 'count':
-    fields.count = { $sum: 1 };
-    break;
-  case 'revenues':
-    fields.revenues = { $sum: '$revenues.amount' };
-    fields.paidRevenues = {
-      $sum: {
-        $cond: {
-          if: { $eq: ['$revenues.status', REVENUE_STATUS.CLOSED] },
-          then: '$revenues.amount',
-          else: 0,
+    case 'count':
+      fields.count = { $sum: 1 };
+      break;
+    case 'revenues':
+      fields.revenues = { $sum: '$revenues.amount' };
+      fields.paidRevenues = {
+        $sum: {
+          $cond: {
+            if: { $eq: ['$revenues.status', REVENUE_STATUS.CLOSED] },
+            then: '$revenues.amount',
+            else: 0,
+          },
         },
-      },
-    };
-    fields.expectedRevenues = {
-      $sum: {
-        $cond: {
-          if: { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
-          then: '$revenues.amount',
-          else: 0,
+      };
+      fields.expectedRevenues = {
+        $sum: {
+          $cond: {
+            if: { $eq: ['$revenues.status', REVENUE_STATUS.EXPECTED] },
+            then: '$revenues.amount',
+            else: 0,
+          },
         },
-      },
-    };
-    break;
-  case 'loanValue':
-    fields.loanValue = { $sum: '$structure.wantedLoan' };
-    break;
-  default:
-    throw new Meteor.Error('Invalid grouping value');
+      };
+      fields.commissionsToPay = { $sum: '$revenues.commissionsToPay' };
+      fields.commissionsPaid = { $sum: '$revenues.commissionsPaid' };
+
+      break;
+    case 'loanValue':
+      fields.loanValue = { $sum: '$structure.wantedLoan' };
+      break;
+    default:
+      throw new Meteor.Error('Invalid grouping value');
   }
 
   return { $group: { _id: getGroupBy(groupBy), ...fields } };
@@ -136,8 +184,56 @@ const buildPipeline = ({ filters, groupBy, value }) =>
     .reduce((arr, val) => [...arr, ...(Array.isArray(val) ? val : [val])], [])
     .filter(x => x);
 
-export const loanMonitoring = async (args) => {
+export const loanMonitoring = args => {
   const pipeline = buildPipeline(args);
-  const agg = await LoanService.aggregate(pipeline).toArray();
-  return agg;
+  return LoanService.aggregate(pipeline);
+};
+
+export const loanStatusChanges = args => {
+  const { fromDate, toDate } = args;
+
+  if (!fromDate || !toDate) {
+    return [];
+  }
+
+  const pipeline = [
+    {
+      $match: {
+        'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+        createdAt: { $gte: fromDate, $lte: toDate },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          prevStatus: '$metadata.details.prevStatus',
+          nextStatus: '$metadata.details.nextStatus',
+        },
+        count: { $sum: 1 },
+        loanIds: { $push: '$loanLink._id' },
+      },
+    },
+  ];
+  const agg = ActivityService.aggregate(pipeline);
+  const sortedResults = agg.sort(({ _id: _idA }, { _id: _idB }) => {
+    if (_idA.prevStatus !== _idB.prevStatus) {
+      return (
+        LOAN_STATUS_ORDER.indexOf(_idA.prevStatus) -
+        LOAN_STATUS_ORDER.indexOf(_idB.prevStatus)
+      );
+    }
+
+    // If the 2 statuses are the same
+    const statusIndex = LOAN_STATUS_ORDER.indexOf(_idA.prevStatus);
+    const secondSort = [
+      ...LOAN_STATUS_ORDER.splice(statusIndex),
+      ...LOAN_STATUS_ORDER.slice(0, statusIndex),
+    ];
+
+    return (
+      secondSort.indexOf(_idA.nextStatus) - secondSort.indexOf(_idB.nextStatus)
+    );
+  });
+
+  return sortedResults;
 };

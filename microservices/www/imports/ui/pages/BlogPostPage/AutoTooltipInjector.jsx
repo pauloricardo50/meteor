@@ -6,7 +6,7 @@ import { autoTooltipParser } from 'core/components/tooltips/AutoTooltip';
 
 type AutoTooltipInjectorProps = {};
 
-const htmlDecode = (input) => {
+const htmlDecode = input => {
   const e = document.createElement('div');
   e.innerHTML = input;
   // handle case of empty input
@@ -14,31 +14,33 @@ const htmlDecode = (input) => {
 };
 
 const formatTags = array =>
-  array.map(({ type, name: Tag, children, attrs, content, voidElement }, index) => {
-    if (type === 'text') {
-      return autoTooltipParser(htmlDecode(content));
-    }
+  array.map(
+    ({ type, name: Tag, children, attrs, content, voidElement }, index) => {
+      if (type === 'text') {
+        return autoTooltipParser(htmlDecode(content));
+      }
 
-    if (type !== 'tag') {
-      return content;
-    }
+      if (type !== 'tag') {
+        return content;
+      }
 
-    if (voidElement) {
-      return <Tag />;
-    }
+      if (voidElement) {
+        return <Tag />;
+      }
 
-    if (Tag !== 'p') {
-      return (
-        <Tag
-          {...attrs}
-          key={index}
-          dangerouslySetInnerHTML={{ __html: htmlParse.stringify(children) }}
-        />
-      );
-    }
+      if (Tag !== 'p') {
+        return (
+          <Tag
+            {...attrs}
+            key={index}
+            dangerouslySetInnerHTML={{ __html: htmlParse.stringify(children) }}
+          />
+        );
+      }
 
-    return <p key={index}>{formatTags(children)}</p>;
-  });
+      return <p key={index}>{formatTags(children)}</p>;
+    },
+  );
 
 const AutoTooltipInjector = ({ html }: AutoTooltipInjectorProps) => {
   const parsedHtml = htmlParse.parse(html);

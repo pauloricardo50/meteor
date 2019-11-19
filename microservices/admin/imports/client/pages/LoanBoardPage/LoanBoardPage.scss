@@ -7,21 +7,27 @@
     flex-grow: 1;
   }
 
-  .loan-board-options.fixed + .board {
-    padding-top: 120px;
+  .loan-board .board-column {
+    margin-top: 32px;
+  }
+
+  .loan-board-column-header {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+
+    display: block;
+
+    margin-bottom: 1em;
+    padding: 8px;
+    padding-right: 24px;
+
+    background: #fff;
   }
 
   &-options {
     display: flex;
     justify-content: space-between;
-
-    &.fixed {
-      position: fixed;
-      top: 64px;
-      left: calc(120px + 16px);
-      right: 16px;
-      z-index: 1;
-    }
   }
 
   &-options > * {
@@ -72,6 +78,10 @@
   }
 
   .board-column {
+    position: relative;
+
+    overflow: auto;
+
     width: 300px;
   }
 }
@@ -90,6 +100,12 @@ $button-height: 30px;
 
     min-height: $button-height;
     padding: 4px 8px;
+
+
+    .left,
+    .right {
+      height: 30px;
+    }
 
     .status-label-dot,
     img {
@@ -110,31 +126,34 @@ $button-height: 30px;
     }
 
     .title {
-      margin: 0;
-      max-width: 200px;
-      white-space: nowrap;
       overflow: hidden;
+
+      max-width: 190px;
+      height: 24px;
+      margin: auto 0;
+
+      white-space: nowrap;
       text-overflow: ellipsis;
     }
 
     .title-placeholder {
+      height: 16px;
       padding: 4px;
     }
 
     .icon-link {
+      height: 16px;
+
       white-space: pre-wrap;
     }
   }
 
   .card-top {
-    padding: 12px;
+    padding: 4px 8px;
 
-    .wanted-loan {
-      margin: 0;
 
-      text-align: center;
-
-      font-family: 'Eina04-Regular';
+    hr {
+      margin: 4px 0;
     }
   }
 
@@ -155,7 +174,7 @@ $button-height: 30px;
     display: flex;
     align-items: center;
 
-    margin-bottom: 0;
+    margin: 0;
 
     .date {
       white-space: nowrap;
@@ -207,7 +226,7 @@ $button-height: 30px;
 
   flex-grow: 1;
 
-  padding: 8px 0;
+  padding: 0;
 
   .buttons {
     position: absolute;
@@ -275,5 +294,15 @@ $button-height: 30px;
 
   .radio {
     padding: 4px;
+  }
+}
+
+.loan-board-single-loan-page {
+  .single-loan-page-tabs > .core-tabs-top {
+    position: sticky;
+    z-index: 9;
+    top: 0;
+
+    background: #fff;
   }
 }

@@ -9,6 +9,7 @@ import {
   CTA_URL_DEFAULT,
   FOOTER_TYPES,
   EPOTEK_PHONE,
+  FROM_EMAIL,
 } from '../emailConstants';
 import {
   getAccountsUrl,
@@ -170,7 +171,9 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       templateContent: [
         {
           name: 'logos',
-          content: ReactDOMServer.renderToStaticMarkup(PromotionLogos({ logoUrls })),
+          content: ReactDOMServer.renderToStaticMarkup(
+            PromotionLogos({ logoUrls }),
+          ),
         },
       ],
     };
@@ -179,22 +182,22 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     ...params,
     promotionName: params.promotion.name,
     phoneNumber:
-      params.promotion.contacts.length
-      && params.promotion.contacts[0].phoneNumber,
+      params.promotion.contacts.length &&
+      params.promotion.contacts[0].phoneNumber,
     name: params.promotion.contacts.length && params.promotion.contacts[0].name,
     epotekNumber: EPOTEK_PHONE,
     assignedEmployeeName:
-      (params.promotion.assignedEmployee
-        && params.promotion.assignedEmployee.name)
-      || 'Yannis Eggert',
+      (params.promotion.assignedEmployee &&
+        params.promotion.assignedEmployee.name) ||
+      'Yannis Eggert',
     assignedEmployeeFirstName:
-      (params.promotion.assignedEmployee
-        && params.promotion.assignedEmployee.firstName)
-      || 'Yannis',
+      (params.promotion.assignedEmployee &&
+        params.promotion.assignedEmployee.firstName) ||
+      'Yannis',
     assignedEmployeePhone:
-      (params.promotion.assignedEmployee
-        && params.promotion.assignedEmployee.phoneNumbers[0])
-      || EPOTEK_PHONE,
+      (params.promotion.assignedEmployee &&
+        params.promotion.assignedEmployee.phoneNumbers[0]) ||
+      EPOTEK_PHONE,
     invitedBy: params.invitedBy || 'e-Potek',
   }),
 });
@@ -218,7 +221,7 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
-      bccAddress: assigneeAddress,
+      bccAddresses: [{ email: assigneeAddress, name: assigneeName }],
     };
   },
 });
@@ -285,13 +288,16 @@ addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
 });
 
 addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V2,
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V3,
   createOverrides(
     {
       loan,
       customMessage = '',
       assigneeName = 'e-Potek',
       assigneeAddress = 'info@e-potek.ch',
+      bccAddresses = [],
+      ccAddresses = [],
+      mainRecipientIsBcc = false,
       ...rest
     },
     { title, cta, ...rest2 },
@@ -310,21 +316,63 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       templateContent: [
         {
           name: 'body-content-1',
-          content: ReactDOMServer.renderToStaticMarkup(LoanChecklistEmail({
-            loan,
-            intl: { formatMessage: Intl.formatMessage.bind(Intl) },
-          })),
+          content: ReactDOMServer.renderToStaticMarkup(
+            LoanChecklistEmail({
+              loan,
+              intl: { formatMessage: Intl.formatMessage.bind(Intl) },
+            }),
+          ),
         },
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
-      bccAddress: assigneeAddress,
+      bccAddresses: [
+        { email: assigneeAddress, name: assigneeName },
+        ...bccAddresses.map(email => ({ email })),
+      ],
+      ccAddresses: ccAddresses.map(email => ({ email })),
+      mainRecipientIsBcc,
     };
   },
   createIntlValues: params => ({
     ...params,
     today: moment().format('DD MMM YYYY'),
   }),
+});
+
+const promotionLotEmailOverrides = function(
+  { promotionId, fromEmail },
+  { title, body, cta },
+) {
+  const { variables } = this.template;
+
+  return {
+    variables: [
+      { name: variables.TITLE, content: title },
+      { name: variables.BODY, content: body },
+      { name: variables.CTA, content: cta },
+      {
+        name: variables.CTA_URL,
+        content: `${Meteor.settings.public.subdomains.pro}/promotions/${promotionId}`,
+      },
+    ],
+    senderAddress: fromEmail || FROM_EMAIL,
+  };
+};
+
+addEmailConfig(EMAIL_IDS.BOOK_PROMOTION_LOT, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionLotEmailOverrides,
+});
+
+addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_BOOKING, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionLotEmailOverrides,
+});
+
+addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionLotEmailOverrides,
 });
 
 export default emailConfigs;

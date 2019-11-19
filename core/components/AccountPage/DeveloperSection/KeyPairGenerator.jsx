@@ -34,25 +34,30 @@ const KeyPairGenerator = ({
 
 export default compose(
   withState('loading', 'setLoading', false),
-  withProps(({
-    user: { _id: userId },
-    setLoading,
-    setKeyPair,
-    keyPair: { publicKey },
-  }) => ({
-    generateKeyPair: (event) => {
-      event.preventDefault();
-      const confirm = !publicKey
-          || window.confirm("Êtes-vous sûr de vouloir regénérer une nouvelle paire de clé API ? L'ancienne paire de clés sera immédiatement annulée.");
-      if (confirm) {
-        setLoading(true);
-        return generateApiKeyPair
-          .run({ userId })
-          .then(setKeyPair)
-          .finally(() => setLoading(false));
-      }
+  withProps(
+    ({
+      user: { _id: userId },
+      setLoading,
+      setKeyPair,
+      keyPair: { publicKey },
+    }) => ({
+      generateKeyPair: event => {
+        event.preventDefault();
+        const confirm =
+          !publicKey ||
+          window.confirm(
+            "Êtes-vous sûr de vouloir regénérer une nouvelle paire de clé API ? L'ancienne paire de clés sera immédiatement annulée.",
+          );
+        if (confirm) {
+          setLoading(true);
+          return generateApiKeyPair
+            .run({ userId })
+            .then(setKeyPair)
+            .finally(() => setLoading(false));
+        }
 
-      return Promise.resolve();
-    },
-  })),
+        return Promise.resolve();
+      },
+    }),
+  ),
 )(KeyPairGenerator);

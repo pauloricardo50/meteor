@@ -22,7 +22,7 @@ export default WrappedComponent =>
       this.timer = null;
     }
 
-    componentWillReceiveProps({ saving: nextSaving }) {
+    UNSAFE_componentWillReceiveProps({ saving: nextSaving }) {
       // If the animation is going on, don't trigger this again
       if (this.timer) {
         return;
@@ -50,8 +50,8 @@ export default WrappedComponent =>
         return STATUS.ERROR;
       }
       if (
-        todo
-        || (required === true && [undefined, '', null].includes(value))
+        todo ||
+        (required === true && [undefined, '', null].includes(value))
       ) {
         return STATUS.TODO;
       }

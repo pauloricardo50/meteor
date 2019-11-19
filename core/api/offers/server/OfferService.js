@@ -36,7 +36,8 @@ export class OfferService extends CollectionService {
       },
     } = this.fetchOne({ $filters: { _id: offerId }, ...fullOffer() });
 
-    const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
+    const { email: assigneeAddress, name: assigneeName } =
+      assignedEmployee || {};
 
     return sendEmailToAddress.run({
       emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,

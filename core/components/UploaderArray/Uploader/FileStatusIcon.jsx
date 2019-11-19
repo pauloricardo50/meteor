@@ -14,8 +14,8 @@ const styles = {
 };
 
 const statusIsTodo = (files, status) =>
-  status === FILE_STATUS.UNVERIFIED
-  || ((!files || files.length === 0) && !status);
+  status === FILE_STATUS.UNVERIFIED ||
+  ((!files || files.length === 0) && !status);
 
 const FileStatusIcon = ({ files, status }) => {
   // Support providing a single status

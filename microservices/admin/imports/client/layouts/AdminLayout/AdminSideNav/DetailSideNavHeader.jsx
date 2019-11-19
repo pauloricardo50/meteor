@@ -7,12 +7,12 @@ import DetailSideNavSort from './DetailSideNavSort';
 import DetailSideNavFilters from './DetailSideNavFilters';
 import CurrentFilters from './CurrentFilters';
 
-const DetailSideNavHeader = (props) => {
+const DetailSideNavHeader = props => {
   const { collectionName, hideDetailNav, filters } = props;
   const filterArray = filters[collectionName] || [];
 
   return (
-    <React.Fragment>
+    <>
       <div className="detail-side-nav-header">
         <DetailSideNavSort {...props} />
 
@@ -26,7 +26,7 @@ const DetailSideNavHeader = (props) => {
       </div>
 
       <CurrentFilters {...props} filterArray={filterArray} />
-    </React.Fragment>
+    </>
   );
 };
 

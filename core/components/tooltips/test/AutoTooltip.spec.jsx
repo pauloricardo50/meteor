@@ -27,20 +27,22 @@ describe('<AutoTooltip />', () => {
   });
 
   it('returns the child if it is not a string', () => {
-    props = { children: <React.Fragment>test</React.Fragment> };
-    expect(component().equals(<React.Fragment>test</React.Fragment>)).to.equal(true);
+    props = { children: <>test</> };
+    expect(component().equals(<>test</>)).to.equal(true);
   });
 
   it('returns a parsed string with tooltips', () => {
     const text = 'a match1 b';
     props = { children: text, tooltipList: TOOLTIP_LISTS.DEV };
-    expect(component().text()).to.equal('a <TooltipOverlay /> b');
+    expect(component().text()).to.equal('a <TextWithTooltip /> b');
   });
 
   it('returns a parsed string with multiple tooltips', () => {
     const text = 'a match1 b match2 c';
     props = { children: text, tooltipList: TOOLTIP_LISTS.DEV };
-    expect(component().text()).to.equal('a <TooltipOverlay /> b <TooltipOverlay /> c');
+    expect(component().text()).to.equal(
+      'a <TextWithTooltip /> b <TextWithTooltip /> c',
+    );
   });
 
   it('takes a list as a string to take tooltips from', () => {

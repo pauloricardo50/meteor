@@ -9,11 +9,12 @@ import PasswordChange from './PasswordChange';
 import DeveloperSection from './DeveloperSection';
 import AccountPageHeader from './AccountPageHeader';
 import AccountModifier from './AccountModifier';
+import TooltipArray from '../TooltipArray';
 
 type AccountPageBareProps = {};
 
 const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
-  const { email, _id: userId, phoneNumbers } = currentUser;
+  const { email, _id: userId, phoneNumbers = [] } = currentUser;
 
   return (
     <div className="card1 card-top account-page">
@@ -25,9 +26,7 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
             <T id="AccountPage.email" />
           </h4>
           <span className="secondary">
-            {email}
-            {' '}
-            <EmailModifier userId={userId} email={email} />
+            {email} <EmailModifier userId={userId} email={email} />
           </span>
         </div>
         {phoneNumbers && phoneNumbers.length > 0 && (
@@ -35,11 +34,17 @@ const AccountPageBare = ({ currentUser }: AccountPageBareProps) => {
             <h4>
               <T id="AccountPage.phone" />
             </h4>
-            {phoneNumbers.map(number => (
-              <span className="secondary" key={number}>
-                {number}
-              </span>
-            ))}
+            <TooltipArray
+              title="Numéros de téléphone"
+              items={phoneNumbers.map(number => (
+                <a key={number} href={`tel:${number}`}>
+                  <span>
+                    {number}
+                    &nbsp;
+                  </span>
+                </a>
+              ))}
+            />
           </div>
         )}
       </div>

@@ -46,4 +46,8 @@ HomePageDescriptionSeo.propTypes = {
   showText: PropTypes.bool.isRequired,
 };
 
-export default withState('showText', 'setShowText', false)(HomePageDescriptionSeo);
+export default withState(
+  'showText',
+  'setShowText',
+  false,
+)(HomePageDescriptionSeo);

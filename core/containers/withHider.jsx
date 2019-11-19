@@ -12,11 +12,21 @@ export default buttonProps => Component =>
     render() {
       const { hide } = this.state;
 
-      const props = typeof buttonProps === 'function' ? buttonProps(hide) : buttonProps;
+      const { callback, ...props } =
+        typeof buttonProps === 'function' ? buttonProps(hide) : buttonProps;
 
       return (
         <>
-          <Button {...props} onClick={() => this.setState({ hide: !hide })} />
+          <Button
+            {...props}
+            onClick={() =>
+              this.setState({ hide: !hide }, () => {
+                if (callback) {
+                  callback(!hide);
+                }
+              })
+            }
+          />
           {!hide && <Component {...this.props} />}
         </>
       );

@@ -22,7 +22,10 @@ const Toggle = ({
         <span className="toggle-label toggle-label-left">{labelLeft}</span>
       )}
 
-      <Switch checked={toggled} onChange={onToggle} />
+      <Switch
+        checked={toggled}
+        onChange={event => onToggle(event.target.checked)}
+      />
 
       {labelRight && (
         <span className="toggle-label toggle-label-right">{labelRight}</span>

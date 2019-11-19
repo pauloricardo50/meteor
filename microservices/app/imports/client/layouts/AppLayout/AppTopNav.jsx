@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
 import { withRouter } from 'react-router-dom';
@@ -8,6 +8,7 @@ import TopNavlogo from 'core/components/TopNav/TopNavLogo';
 import TopNavButtons from 'core/components/TopNav/TopNavButtons';
 import IconButton from 'core/components/IconButton';
 import useMedia from 'core/hooks/useMedia';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import UserCreator from '../../components/UserCreator';
 
 type AppTopNavProps = {};
@@ -34,8 +35,9 @@ const AppTopNav = ({
   toggleDrawer,
   shouldShowSideNav,
   history,
-  ...props
+  children,
 }: AppTopNavProps) => {
+  const currentUser = useContext(CurrentUserContext);
   const isMobile = useMedia({ maxWidth: 768 });
 
   return (
@@ -49,16 +51,17 @@ const AppTopNav = ({
 
         {renderButtons(history) && (
           <div className="flex space-children">
-            {!isMobile && !props.currentUser && (
+            {!isMobile && !currentUser && (
               <UserCreator
                 buttonProps={{
                   raised: true,
                   primary: true,
                   label: 'Créez votre compte',
                 }}
+                ctaId="topNav"
               />
             )}
-            <TopNavButtons {...props} />
+            <TopNavButtons>{children}</TopNavButtons>
           </div>
         )}
       </div>

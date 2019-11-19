@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import UploaderArray from 'core/components/UploaderArray';
-import AdminNote from '../../components/AdminNote';
+import AdminNote from 'core/components/AdminNote';
 
 type OrganisationInfoProps = {};
 
@@ -20,6 +20,7 @@ const OrganisationInfo = ({
       adminNote={adminNote}
       docId={_id}
       collection={ORGANISATIONS_COLLECTION}
+      allowEditing
     />
     <UploaderArray
       doc={{ _id, documents }}

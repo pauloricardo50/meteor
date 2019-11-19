@@ -9,7 +9,7 @@ import { activityFormLayout } from '../../SingleLoanPage/LoanTabs/OverviewTab/Lo
 
 type LoanBoardCardActionsProps = {};
 
-const handleKeyDown = (e) => {
+const handleKeyDown = e => {
   if (e.keyCode === 13 && e.metaKey) {
     document
       .getElementById('loan-card-form')
@@ -55,7 +55,7 @@ const LoanBoardCardActions = ({
       schema={taskSchema}
       open={openTask}
       onKeyDown={handleKeyDown}
-      onClick={(event) => {
+      onClick={event => {
         // Prevent the loan from opening when clicking on the autoform
         event.stopPropagation();
       }}
@@ -71,7 +71,7 @@ const LoanBoardCardActions = ({
       schema={activitySchema}
       open={openActivity}
       onKeyDown={handleKeyDown}
-      onClick={(event) => {
+      onClick={event => {
         // Prevent the loan from opening when clicking on the autoform
         event.stopPropagation();
       }}

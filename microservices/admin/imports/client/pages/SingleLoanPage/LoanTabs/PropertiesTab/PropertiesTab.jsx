@@ -27,12 +27,24 @@ const propertiesTabLabel = (loan, property, index) => {
 };
 
 const PropertiesTab = ({ loan }: PropertiesTabProps) => {
-  const { properties, userId, _id: loanId } = loan;
+  const { properties, userId, _id: loanId, hasPromotion } = loan;
   return (
     <div className="properties-tab">
+      {hasPromotion &&
+        'Peut pas avoir de biens immobilier sur un dossier avec une promotion.'}
       <div className="buttons">
-        <PropertyAdder loanId={loanId} propertyUserId={userId} />
-        {userId && <PropertyReuser loanId={loanId} propertyUserId={userId} />}
+        <PropertyAdder
+          loanId={loanId}
+          propertyUserId={userId}
+          disabled={hasPromotion}
+        />
+        {userId && (
+          <PropertyReuser
+            loanId={loanId}
+            propertyUserId={userId}
+            disabled={hasPromotion}
+          />
+        )}
       </div>
       {properties && properties.length > 0 && (
         <Tabs

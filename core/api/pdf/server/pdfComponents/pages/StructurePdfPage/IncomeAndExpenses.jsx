@@ -9,7 +9,7 @@ import BalanceSheetTable from '../../BalanceSheetTable';
 type IncomeAndExpensesProps = {};
 
 const renderExpenses = expenses =>
-  Object.keys(expenses).map((expenseType) => {
+  Object.keys(expenses).map(expenseType => {
     const value = expenses[expenseType];
     return {
       label: <T id={`Forms.expenses.${expenseType}`} />,

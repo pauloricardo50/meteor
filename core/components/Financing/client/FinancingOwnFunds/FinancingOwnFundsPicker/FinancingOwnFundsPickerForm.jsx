@@ -35,18 +35,17 @@ const FinancingOwnFundsPickerForm = ({
     <div className="form">
       <Select
         value={type}
-        onChange={(_, val) => handleChange(val, FIELDS.TYPE)}
+        onChange={val => handleChange(val, FIELDS.TYPE)}
         options={types.map(t => ({
           id: t,
           label: <T id={`Forms.${t}`} />,
         }))}
         label={<T id="FinancingOwnFundsPickerForm.type" />}
       />
-      {allowPledge
-        && shouldAskForUsageType(type) && (
+      {allowPledge && shouldAskForUsageType(type) && (
         <Select
           value={usageType}
-          onChange={(_, val) => handleChange(val, FIELDS.USAGE_TYPE)}
+          onChange={val => handleChange(val, FIELDS.USAGE_TYPE)}
           options={Object.values(OWN_FUNDS_USAGE_TYPES).map(usage => ({
             id: usage,
             label: <T id={`Forms.ownFundsUsageType.${usage}`} />,
@@ -57,7 +56,7 @@ const FinancingOwnFundsPickerForm = ({
       {borrowers.length > 1 && (
         <Select
           value={borrowerId}
-          onChange={(_, val) => handleChange(val, FIELDS.BORROWER_ID)}
+          onChange={val => handleChange(val, FIELDS.BORROWER_ID)}
           options={borrowers.map(({ _id: id, firstName }, index) => ({
             id,
             label: firstName || (

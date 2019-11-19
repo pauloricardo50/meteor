@@ -1,5 +1,3 @@
-import { DDPCommon } from 'meteor/ddp-common';
-import { DDP } from 'meteor/ddp-client';
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Random } from 'meteor/random';
@@ -14,6 +12,7 @@ import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
 import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
+import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES, SIMPLE_AUTH_SALT_GRAINS } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
@@ -42,14 +41,14 @@ const getAuthItem = ({ req, item }) => {
   }
 
   switch (item) {
-  case AUTH_ITEMS.RSA_PUBLIC_KEY: {
-    return authorization.replace('EPOTEK ', '').split(':')[0];
-  }
-  case AUTH_ITEMS.RSA_SIGNATURE: {
-    return authorization.replace('EPOTEK ', '').split(':')[1];
-  }
-  default:
-    return undefined;
+    case AUTH_ITEMS.RSA_PUBLIC_KEY: {
+      return authorization.replace('EPOTEK ', '').split(':')[0];
+    }
+    case AUTH_ITEMS.RSA_SIGNATURE: {
+      return authorization.replace('EPOTEK ', '').split(':')[1];
+    }
+    default:
+      return undefined;
   }
 };
 
@@ -59,7 +58,7 @@ export const getPublicKey = req =>
 export const getSignature = req =>
   getAuthItem({ req, item: AUTH_ITEMS.RSA_SIGNATURE });
 
-export const getRequestPath = (req) => {
+export const getRequestPath = req => {
   const { _parsedUrl: parsedUrl } = req;
   return parsedUrl && parsedUrl.pathname;
 };
@@ -88,16 +87,7 @@ export const withMeteorUserId = ({ userId, impersonateUser }, func) => {
     impersonateUserId = getImpersonateUserId({ userId, impersonateUser });
   }
 
-  const invocation = new DDPCommon.MethodInvocation({
-    userId: impersonateUserId || userId,
-    // isSimulation: false,
-    // setUserId,
-    // unblock,
-    // connection: self.connectionHandle,
-    // randomSeed,
-  });
-
-  return DDP._CurrentInvocation.withValue(invocation, func);
+  return ddpWithUserId(impersonateUserId || userId, func);
 };
 
 export const getErrorObject = (error, res) => {
@@ -111,9 +101,10 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
-    status = error.error && typeof error.error === 'number'
-      ? error.error
-      : HTTP_STATUS_CODES.BAD_REQUEST;
+    status =
+      error.error && typeof error.error === 'number'
+        ? error.error
+        : HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }
@@ -128,7 +119,7 @@ export const getErrorObject = (error, res) => {
   return { status, errorName, message };
 };
 
-export const stringToLiteral = (value) => {
+export const stringToLiteral = value => {
   const maps = {
     true: true,
     false: false,
@@ -145,24 +136,24 @@ export const stringToLiteral = (value) => {
   return Object.keys(maps).includes(value) ? maps[value] : value;
 };
 
-export const literalToString = (value) => {
+export const literalToString = value => {
   switch (value) {
-  case true:
-    return 'true';
-  case false:
-    return 'false';
-  case undefined:
-    return 'undefined';
-  case null:
-    return 'null';
-  case NaN:
-    return 'NaN';
-  case Infinity:
-    return 'Infinity';
-  case -Infinity:
-    return '-Infinity';
-  default:
-    return value.toString();
+    case true:
+      return 'true';
+    case false:
+      return 'false';
+    case undefined:
+      return 'undefined';
+    case null:
+      return 'null';
+    case NaN:
+      return 'NaN';
+    case Infinity:
+      return 'Infinity';
+    case -Infinity:
+      return '-Infinity';
+    default:
+      return value.toString();
   }
 };
 
@@ -173,8 +164,8 @@ const getObjectPropertiesPath = (obj, stack, res) => {
     if (obj.hasOwnProperty(property)) {
       if (obj[property] && typeof obj[property] === 'object') {
         if (
-          (Array.isArray(obj[property]) && obj[property].length === 0)
-          || Object.keys(obj[property]).length === 0
+          (Array.isArray(obj[property]) && obj[property].length === 0) ||
+          Object.keys(obj[property]).length === 0
         ) {
           const str = `${stack}.${property}`.substr(1);
           arr = [...arr, str];
@@ -203,21 +194,21 @@ export const formatObject = (obj, format) => {
   const properties = getObjectPropertiesPath(obj, '', []);
   const formattedObject = {};
 
-  properties.forEach((property) => {
+  properties.forEach(property => {
     const value = get(obj, property);
     switch (format) {
-    // String to literal
-    case OBJECT_FORMATS.TO_LITERRAL: {
-      set(formattedObject, property, stringToLiteral(value));
-      break;
-    }
-    // Literal to string
-    case OBJECT_FORMATS.TO_STRING: {
-      set(formattedObject, property, literalToString(value));
-      break;
-    }
-    default:
-      break;
+      // String to literal
+      case OBJECT_FORMATS.TO_LITERRAL: {
+        set(formattedObject, property, stringToLiteral(value));
+        break;
+      }
+      // Literal to string
+      case OBJECT_FORMATS.TO_STRING: {
+        set(formattedObject, property, literalToString(value));
+        break;
+      }
+      default:
+        break;
     }
   });
 
@@ -259,7 +250,7 @@ export const logRequest = ({ req, result }) => {
   console.log('-----------------');
 };
 
-export const verifySignature = (req) => {
+export const verifySignature = req => {
   const { publicKey, signature, body, query, isMultipart } = req;
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
@@ -292,7 +283,7 @@ export const verifySignature = (req) => {
     };
   }
 
-  const verified = Object.keys(OBJECT_FORMATS).some((format) => {
+  const verified = Object.keys(OBJECT_FORMATS).some(format => {
     const isValid = key.verify(
       JSON.stringify(formatObject(objectToVerify, format)),
       signature,
@@ -311,7 +302,8 @@ export const verifySignature = (req) => {
     toVerify: {
       object: objectToVerify,
       acceptedStringifiedVersions: Object.keys(OBJECT_FORMATS).map(format =>
-        JSON.stringify(formatObject(objectToVerify, format))),
+        JSON.stringify(formatObject(objectToVerify, format)),
+      ),
     },
   };
 };
@@ -346,19 +338,20 @@ export const getMatchingPathOptions = (req, options) => {
 
   let matchingPathOptions = {};
 
-  endpoints.forEach((endpoint) => {
+  endpoints.forEach(endpoint => {
     const endpointParts = endpoint
       .split('/')
       .filter(x => x)
       .map(part => (part.slice(0, 1) === ':' ? '*' : part));
-    const match = endpointParts.length === parts.length
-      && endpointParts.every((part, i) => {
+    const match =
+      endpointParts.length === parts.length &&
+      endpointParts.every((part, i) => {
         if (part === '*') {
           return true;
         }
         return part === parts[i];
-      })
-      && !!options[endpoint][method];
+      }) &&
+      !!options[endpoint][method];
 
     if (match) {
       matchingPathOptions = options[endpoint][method].options;
@@ -375,22 +368,21 @@ export const setIsAPI = () => {
 // Can be used to determine if server-side code is being run from an API call
 export const isAPI = () => !!getFromFiber('isAPI');
 
-export const setAPIUser = (user) => {
+export const setAPIUser = user => {
   storeOnFiber('APIUser', user);
 };
 
 export const getAPIUser = () => getFromFiber('APIUser');
 
-const getSimpleAuthSaltGrain = (timestamp) => {
+const getSimpleAuthSaltGrain = timestamp => {
   const index = timestamp % 10;
   return SIMPLE_AUTH_SALT_GRAINS[index];
 };
 
-export const getSimpleAuthToken = (params) => {
-  const { 'user-id': userId, timestamp, token, ...rest } = params;
+export const getSimpleAuthToken = params => {
+  const { userId, timestamp, token, ...rest } = params;
   const saltGrain = getSimpleAuthSaltGrain(timestamp);
   const sortedObject = sortObject({ userId, timestamp, saltGrain, ...rest });
 
   return hashObject.MD5(sortedObject);
 };
-

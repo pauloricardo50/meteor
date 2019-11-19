@@ -27,12 +27,14 @@ export const propertySearch = Properties.createQuery(
   {
     address1: 1,
     address2: 1,
+    category: 1,
     city: 1,
-    zipCode: 1,
-    totalValue: 1,
+    insideArea: 1,
+    name: 1,
     status: 1,
     style: 1,
-    insideArea: 1,
+    totalValue: 1,
+    zipCode: 1,
     $options: { limit: 5 },
   },
 );
@@ -50,9 +52,6 @@ export const proPropertyUsers = Properties.createQuery(
 export const userProperty = Properties.createQuery(
   PROPERTY_QUERIES.USER_PROPERTY,
   {
-    $filter({ filters, params: { propertyId } }) {
-      filters._id = propertyId;
-    },
     ...userPropertyFragment(),
     // Ask these for non-reactive queries, like ProPropertyPage
     openGraphData: 1,
