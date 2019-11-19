@@ -63,7 +63,7 @@ addEmailListener({
       return;
     }
 
-    const { name, email } = UserService.fetchOne({
+    const { name: customerName, email } = UserService.fetchOne({
       $filters: { _id: userId },
       name: 1,
       email: 1,
@@ -74,14 +74,14 @@ addEmailListener({
       return sendEmail.run({
         emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
         userId: params.proUserId,
-        params: { name, email, promotionName: promotion.name },
+        params: { customerName, email, promotionName: promotion.name },
       });
     }
 
     return sendEmail.run({
       emailId: EMAIL_IDS.CONFIRM_USER_INVITATION,
       userId: params.proUserId,
-      params: { name, email },
+      params: { customerName, email },
     });
   },
 });

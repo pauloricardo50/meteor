@@ -905,7 +905,7 @@ describe('UserService', function() {
       expect(emails.length).to.equal(2);
       const emailIds = emails.map(({ emailId }) => emailId);
       expect(emailIds).to.include(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-      expect(emailIds).to.include(EMAIL_IDS.CONFIRM_USER_INVITATION);
+      expect(emailIds).to.include(EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION);
 
       const {
         address,

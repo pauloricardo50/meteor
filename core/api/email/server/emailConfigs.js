@@ -284,7 +284,7 @@ addEmailConfig(EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION, {
 });
 
 addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V3,
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides(
     {
       loan,
@@ -336,12 +336,11 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   }),
 });
 
-const promotionLotEmailOverrides = function(
+const promotionEmailOverridesPro = function(
   { promotionId, fromEmail },
   { title, body, cta },
 ) {
   const { variables } = this.template;
-
   return {
     variables: [
       { name: variables.TITLE, content: title },
@@ -355,68 +354,101 @@ const promotionLotEmailOverrides = function(
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
+const promotionEmailOverridesUser = function(
+  { fromEmail },
+  { title, body, cta },
+) {
+  const { variables } = this.template;
+  return {
+    variables: [
+      { name: variables.TITLE, content: title },
+      { name: variables.BODY, content: body },
+      { name: variables.CTA, content: cta },
+      {
+        name: variables.CTA_URL,
+        content: Meteor.settings.public.subdomains.app,
+      },
+    ],
+    senderAddress: fromEmail || FROM_EMAIL,
+  };
+};
 
+//
+// Promotion email Configs
+//
 addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides: promotionLotEmailOverrides,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides: promotionLotEmailOverrides,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides: promotionLotEmailOverrides,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
 });
 
 addEmailConfig(EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.LOAN_VALIDATED_BY_BANK_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
 });
 
 addEmailConfig(EMAIL_IDS.PROMOTION_LOAN_SENT_TO_BANK, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_PRO, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
 });
 
 addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_PRO, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
 });
 
 addEmailConfig(EMAIL_IDS.NEW_RESERVATION_AGREEMENT_PRO, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.NEW_RESERVATION_AGREEMENT_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
 });
 
 addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
 });
 
 const checkAllEmailAreDefined = () => {

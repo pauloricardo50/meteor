@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import Fibers from 'fibers';
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
@@ -273,10 +272,16 @@ export default class Security {
   };
 
   static isInternalCall = context => {
+    if (!Meteor.isServer) {
+      return false;
+    }
+
     if (context && !context.connection) {
       // Server initiated call
       return true;
     }
+
+    const Fibers = require('fibers');
 
     // Dark, dark magic...
     if (Fibers.current && Fibers.current._meteor_dynamics[0]) {

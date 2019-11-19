@@ -13,11 +13,11 @@ import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../promotionOptionConstants';
 import LoanService from '../../loans/server/LoanService';
+import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import CollectionService from '../../helpers/CollectionService';
 import { fullPromotionOption } from '../../fragments';
 import PromotionOptions from '../promotionOptions';
 import FileService from '../../files/server/FileService';
-import TaskService from '../../tasks/server/TaskService';
 import {
   PROMOTIONS_COLLECTION,
   PROMOTION_USERS_ROLES,
@@ -133,12 +133,17 @@ export class PromotionOptionService extends CollectionService {
     const promotionOptionId = super.insert({
       promotionLotLinks: [{ _id: promotionLotId }],
     });
-    LoanService.addLink({
-      id: loanId,
-      linkName: 'promotionOptions',
-      linkId: promotionOptionId,
+    this.addLink({
+      id: promotionOptionId,
+      linkName: 'loan',
+      linkId: loanId,
     });
-    const promotionId = this.getPromotion(promotionOptionId)._id;
+    const {
+      promotion: { _id: promotionId },
+    } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
     this.addLink({
       id: promotionOptionId,
       linkName: 'promotion',
@@ -163,11 +168,16 @@ export class PromotionOptionService extends CollectionService {
     this._update({ id: promotionOptionId, ...rest });
 
   changePriorityOrder({ promotionOptionId, change }) {
-    const promotionOption = this.get(promotionOptionId);
-    const { loan } = promotionOption;
-    const { _id: promotionId } = this.getPromotion(promotionOptionId);
+    const {
+      promotion: { _id: promotionId },
+      loan: { _id: loanId },
+    } = this.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotion: { _id: 1 },
+    });
     const priorityOrder = LoanService.getPromotionPriorityOrder({
-      loanId: loan._id,
+      loanId,
       promotionId,
     });
     const optionIndex = priorityOrder.indexOf(promotionOptionId);
@@ -185,7 +195,7 @@ export class PromotionOptionService extends CollectionService {
     newPriorityOrder[optionIndex + change] = promotionOptionId;
 
     return LoanService.setPromotionPriorityOrder({
-      loanId: loan._id,
+      loanId,
       promotionId,
       priorityOrder: newPriorityOrder,
     });

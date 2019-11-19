@@ -254,7 +254,11 @@ describe('PromotionOptionService', function() {
           promotionLots: {
             _id: promotionLotId,
             propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+            promotionOptions: {
+              _id: promotionOptionId,
+              loan: { _id: loanId },
+              promotion: { _id: promotionId },
+            },
           },
         },
       });
@@ -272,6 +276,7 @@ describe('PromotionOptionService', function() {
       generator({
         promotionOptions: {
           _id: 'pOptId2',
+          promotion: { _id: promotionId },
           promotionLots: { _id: promotionLotId },
           loan: {
             _id: 'loanId2',
@@ -315,7 +320,11 @@ describe('PromotionOptionService', function() {
           promotionLots: {
             _id: promotionLotId,
             propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+            promotionOptions: {
+              _id: promotionOptionId,
+              loan: { _id: loanId },
+              promotion: { _id: promotionId },
+            },
           },
         },
       });
@@ -333,6 +342,7 @@ describe('PromotionOptionService', function() {
       generator({
         promotionOptions: {
           _id: 'pOptId2',
+          promotion: { _id: promotionId },
           promotionLots: { _id: promotionLotId },
           loan: {
             _id: 'loanId2',
@@ -768,9 +778,9 @@ describe('PromotionOptionService', function() {
       });
 
       const expiredReservations = await PromotionOptionService.expireReservations();
-      const emails = await checkEmails(2);
-
       expect(expiredReservations).to.equal(1);
+
+      const emails = await checkEmails(2);
 
       const { promotionLots = [] } = PromotionService.fetchOne({
         $filters: { _id: 'promo' },
@@ -821,9 +831,7 @@ describe('PromotionOptionService', function() {
       expect(address).to.equal('pro1@e-potek.ch');
       expect(from_email).to.equal('info@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
-      expect(subject).to.equal(
-        'Promotion "Test promotion", réservation annulée',
-      );
+      expect(subject).to.equal('Test promotion, Réservation annulée');
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
@@ -1250,7 +1258,7 @@ describe('PromotionOptionService', function() {
     });
   });
 
-  describe.only('setProgress', () => {
+  describe('setProgress', () => {
     it('updates a status and its date', () => {
       const startDate = new Date();
       generator({

@@ -36,7 +36,7 @@ export const EMAIL_TEMPLATES = {
   },
   NOTIFICATION_AND_CTA: {
     name: 'NOTIFICATION_AND_CTA',
-    mandrillId: 'notification-cta',
+    mandrillId: 'notification-cta-v3',
     variables: {
       TITLE: 'TITLE',
       BODY: 'BODY',
@@ -65,28 +65,6 @@ export const EMAIL_TEMPLATES = {
     variables: {
       TITLE: 'TITLE',
       BODY: 'BODY',
-    },
-  },
-  NOTIFICATION_AND_CTA_V2: {
-    name: 'NOTIFICATION_AND_CTA_V2',
-    mandrillId: 'notification-cta-v2',
-    variables: {
-      TITLE: 'TITLE',
-      BODY: 'BODY',
-      CTA: 'CTA',
-      CTA_URL: 'CTA_URL',
-      CSS: 'CSS',
-    },
-  },
-  NOTIFICATION_AND_CTA_V3: {
-    name: 'NOTIFICATION_AND_CTA_V3',
-    mandrillId: 'notification-cta-v3',
-    variables: {
-      TITLE: 'TITLE',
-      BODY: 'BODY',
-      CTA: 'CTA',
-      CTA_URL: 'CTA_URL',
-      CSS: 'CSS',
     },
   },
 };

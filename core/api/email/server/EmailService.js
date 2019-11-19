@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import S3Service from 'core/api/files/server/S3Service';
 import UserService from '../../users/server/UserService';
 import emailConfigs from './emailConfigs';

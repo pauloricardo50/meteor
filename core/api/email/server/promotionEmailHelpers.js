@@ -11,11 +11,12 @@ import {
   setPromotionOptionProgress,
   promotionOptionActivateReservation,
 } from '../../methods';
-import { sendEmail } from './methods';
 import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
-import { EMAIL_IDS } from '../emailConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
+import { getUserNameAndOrganisation } from '../../helpers/helpers';
+import { EMAIL_IDS } from '../emailConstants';
+import { sendEmail } from './methods';
 
 const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   const { anonymize } = recipient;
@@ -43,6 +44,12 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   ] = promotionLots;
   const [{ invitedBy }] = promotionLinks;
 
+  const invitedByUser = UserService.fetchOne({
+    $filters: { _id: invitedBy },
+    name: 1,
+    organisations: { name: 1 },
+  });
+
   let userName = 'e-Potek';
 
   if (userId) {
@@ -67,7 +74,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
     assignedEmployeeName: assignedEmployee
       ? assignedEmployee.name
       : 'Le conseiller',
-    invitedBy,
+    invitedBy: getUserNameAndOrganisation({ user: invitedByUser }),
   };
 };
 
@@ -90,7 +97,7 @@ export const PROMOTION_EMAILS = [
         type: PROMOTION_EMAIL_RECIPIENTS.USER,
         emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT_USER,
       },
-      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+      PROMOTION_EMAIL_RECIPIENTS.BROKER,
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
     ],
@@ -115,17 +122,10 @@ export const PROMOTION_EMAILS = [
     getEmailParams: getPromotionOptionMailParams,
   },
   {
-    description: [
-      "Annulation de la réservation d'un lot -> Client",
-      "Annulation de la réservation d'un lot -> Pros",
-    ],
+    description: "Annulation de la réservation d'un lot -> Pros",
     method: [cancelPromotionLotReservation, expirePromotionLotReservation],
     emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
     recipients: [
-      {
-        type: PROMOTION_EMAIL_RECIPIENTS.USER,
-        emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT_USER,
-      },
       PROMOTION_EMAIL_RECIPIENTS.BROKER,
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
