@@ -212,13 +212,7 @@ addEmailListener({
   },
 });
 
-const getPromotionOptionMailParams = async (
-  { context, params, result },
-  recipient,
-) => {
-  if (result && typeof result.then === 'function') {
-    result = await result;
-  }
+const getPromotionOptionMailParams = async ({ context, params }, recipient) => {
   const { anonymize } = recipient;
   const { userId } = context;
   const { promotionOptionId } = params;
@@ -302,49 +296,67 @@ const PROMOTION_EMAILS = [
     method: [cancelPromotionLotReservation, expirePromotionLotReservation],
     emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
     recipients: [
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.USER,
+        emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT_USER,
+      },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
       { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
       { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
     ],
     getEmailParams: getPromotionOptionMailParams,
   },
+  {
+    method: promotionOptionUploadAgreement,
+    recipients: [
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKER },
+      { type: PROMOTION_EMAIL_RECIPIENTS.BROKERS },
+      { type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER },
+    ],
+    description: [
+      'Nouvelle convention de réservation -> Client',
+      'Nouvelle convention de réservation -> Pros',
+    ],
+  },
 ];
 
-PROMOTION_EMAILS.forEach(({ method, emailId, recipients, getEmailParams }) => {
-  addEmailListener({
-    description: `${emailId} -> ???`,
-    method,
-    func: (...args) => {
-      const [
-        {
-          params: { promotionOptionId },
-        },
-      ] = args;
-      const emailRecipients = PromotionOptionService.getEmailRecipients({
-        promotionOptionId,
-      });
-      recipients.forEach(
-        ({
-          type,
-          emailId: emailIdOverride,
-          getEmailParams: getEmailParamsOverride,
-        }) => {
-          emailRecipients[type].forEach(async recipient => {
-            const { userId } = recipient;
-            const emailParams = getEmailParamsOverride
-              ? await getEmailParamsOverride(...args, recipient)
-              : await getEmailParams(...args, recipient);
-            sendEmail.run({
-              emailId: emailIdOverride || emailId,
-              userId,
-              params: emailParams,
+PROMOTION_EMAILS.forEach(
+  ({ method, emailId, recipients, getEmailParams, description }) => {
+    addEmailListener({
+      description,
+      method,
+      func: (...args) => {
+        const [
+          {
+            params: { promotionOptionId },
+          },
+        ] = args;
+        const emailRecipients = PromotionOptionService.getEmailRecipients({
+          promotionOptionId,
+        });
+        recipients.forEach(
+          ({
+            type,
+            emailId: emailIdOverride,
+            getEmailParams: getEmailParamsOverride,
+          }) => {
+            emailRecipients[type].forEach(async recipient => {
+              const { userId } = recipient;
+              const emailParams = getEmailParamsOverride
+                ? await getEmailParamsOverride(...args, recipient)
+                : await getEmailParams(...args, recipient);
+              sendEmail.run({
+                emailId: emailIdOverride || emailId,
+                userId,
+                params: emailParams,
+              });
             });
-          });
-        },
-      );
-    },
-  });
-});
+          },
+        );
+      },
+    });
+  },
+);
 
 addEmailListener({
   description: 'Étape du dossier à "Identification du prêteur" -> Client',
@@ -482,41 +494,6 @@ addEmailListener({
 
     return sendEmail.run({
       emailId: EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION,
-      userId: invitedBy,
-      params: {
-        promotionName,
-        name: user.name,
-        promotionLotName: promotionLots[0].name,
-      },
-    });
-  },
-});
-
-addEmailListener({
-  description: [
-    'Nouvelle convention de réservation -> Client',
-    'Nouvelle convention de réservation -> Pros',
-  ],
-  method: promotionOptionUploadAgreement,
-  func: async ({ params: { promotionOptionId } }) => {
-    const { loan, promotionLots } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
-      loan: {
-        promotions: { name: 1 },
-        user: { name: 1 },
-      },
-      promotionLots: { name: 1 },
-    });
-    const { promotions, user } = loan;
-    const [
-      {
-        name: promotionName,
-        $metadata: { invitedBy },
-      },
-    ] = promotions;
-
-    sendEmail.run({
-      emailId: EMAIL_IDS.PROMOTION_AGREEMENT_UPLOAD_NOTIFICATION,
       userId: invitedBy,
       params: {
         promotionName,
