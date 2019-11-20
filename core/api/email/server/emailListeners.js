@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import moment from 'moment';
 
+import { internalMethod } from 'core/api/methods/server/methodHelpers';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import {
   submitContactForm,
@@ -25,11 +26,13 @@ addEmailListener({
   description: 'Formulaire de contact -> Client',
   method: submitContactForm,
   func: ({ params }) => {
-    return sendEmailToAddress.run({
-      emailId: EMAIL_IDS.CONTACT_US,
-      address: params.email,
-      params,
-    });
+    return internalMethod(() =>
+      sendEmailToAddress.run({
+        emailId: EMAIL_IDS.CONTACT_US,
+        address: params.email,
+        params,
+      }),
+    );
   },
 });
 
@@ -37,18 +40,20 @@ addEmailListener({
   description: 'Formulaire de contact -> info@e-potek.ch',
   method: submitContactForm,
   func: ({ params }) => {
-    return sendEmailToAddress.run({
-      emailId: EMAIL_IDS.CONTACT_US_ADMIN,
-      address: INTERNAL_EMAIL,
-      params,
-    });
+    return internalMethod(() =>
+      sendEmailToAddress.run({
+        emailId: EMAIL_IDS.CONTACT_US_ADMIN,
+        address: INTERNAL_EMAIL,
+        params,
+      }),
+    );
   },
 });
 
 addEmailListener({
   description: "Confirmation d'invitation d'un client par un Pro -> Pro",
   method: sendEmail,
-  func: ({ params: { emailId, params, userId } }) => {
+  func: ({ params: { emailId, params, userId, proUserId } }) => {
     const emailsToWatch = [
       EMAIL_IDS.INVITE_USER_TO_PROMOTION,
       EMAIL_IDS.INVITE_USER_TO_PROPERTY,
@@ -71,18 +76,22 @@ addEmailListener({
 
     if (emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION) {
       const { promotion } = params;
-      return sendEmail.run({
-        emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
-        userId: params.proUserId,
-        params: { customerName, email, promotionName: promotion.name },
-      });
+      return internalMethod(() =>
+        sendEmail.run({
+          emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
+          userId: params.proUserId,
+          params: { customerName, email, promotionName: promotion.name },
+        }),
+      );
     }
 
-    return sendEmail.run({
-      emailId: EMAIL_IDS.CONFIRM_USER_INVITATION,
-      userId: params.proUserId,
-      params: { customerName, email },
-    });
+    return internalMethod(() =>
+      sendEmail.run({
+        emailId: EMAIL_IDS.CONFIRM_USER_INVITATION,
+        userId: proUserId,
+        params: { customerName, email },
+      }),
+    );
   },
 });
 
@@ -93,15 +102,17 @@ addEmailListener({
     if (shouldSendStepNotification(step, nextStep)) {
       if (!user || !user.assignedEmployee) {
         throw new Meteor.Error(
-          'Il faut un conseiller sur ce dossier pour envoyer un email',
+          'Il faut un client et un conseiller sur ce dossier pour envoyer un email',
         );
       }
 
-      sendEmail.run({
-        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
-        userId: user._id,
-        params: { loanId, assigneeName: user.assignedEmployee.name },
-      });
+      internalMethod(() =>
+        sendEmail.run({
+          emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
+          userId: user._id,
+          params: { loanId, assigneeName: user.assignedEmployee.name },
+        }),
+      );
     }
   },
 });
@@ -129,19 +140,21 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
 
   const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
 
-  return sendEmailToAddress.run({
-    emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
-    address,
-    name,
-    params: {
-      assigneeAddress,
-      assigneeName,
-      loanName,
-      organisationName,
-      date: moment(createdAt).format('DD.MM.YYYY'),
-      feedback,
-    },
-  });
+  return internalMethod(() =>
+    sendEmailToAddress.run({
+      emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
+      address,
+      name,
+      params: {
+        assigneeAddress,
+        assigneeName,
+        loanName,
+        organisationName,
+        date: moment(createdAt).format('DD.MM.YYYY'),
+        feedback,
+      },
+    }),
+  );
 };
 
 addEmailListener({
@@ -159,52 +172,56 @@ addEmailListener({
 });
 
 addEmailListener({
-  description: "Invitation d'un client par un Pro -> Client",
+  description: "Invitation d'un client par un Pro sur une promotion -> Client",
   method: proInviteUser,
-  func: ({ params, result }) => {
-    const { userId, isNewUser, pro, admin } = result;
-    const { promotionIds = [], propertyIds = [] } = params;
+  func: ({
+    params: { promotionIds = [] },
+    result: { userId, isNewUser, pro },
+  }) => {
+    if (!promotionIds.length) {
+      return;
+    }
 
-    if (promotionIds.length > 0) {
-      promotionIds.forEach(async promotionId => {
-        const {
-          promotionImage,
-          logos,
-        } = await FileService.listFilesForDocByCategory(promotionId);
-        const coverImageUrl =
-          promotionImage && promotionImage.length > 0 && promotionImage[0].url;
-        const logoUrls = logos && logos.map(({ url }) => url);
+    promotionIds.forEach(async promotionId => {
+      const {
+        promotionImage,
+        logos,
+      } = await FileService.listFilesForDocByCategory(promotionId);
+      const coverImageUrl =
+        promotionImage && promotionImage.length > 0 && promotionImage[0].url;
+      const logoUrls = logos && logos.map(({ url }) => url);
 
-        let ctaUrl = Meteor.settings.public.subdomains.app;
-        const promotion = PromotionService.fetchOne({
-          $filters: { _id: promotionId },
-          name: 1,
-          contacts: 1,
-          assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
+      let ctaUrl = Meteor.settings.public.subdomains.app;
+      const promotion = PromotionService.fetchOne({
+        $filters: { _id: promotionId },
+        name: 1,
+        contacts: 1,
+        assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
+      });
+      const user = UserService.fetchOne({
+        $filters: { _id: userId },
+        firstName: 1,
+      });
+
+      if (isNewUser) {
+        // Envoyer invitation avec enrollment link
+        ctaUrl = UserService.getEnrollmentUrl({ userId });
+      }
+
+      let invitedBy;
+
+      if (pro && pro._id) {
+        invitedBy = getUserNameAndOrganisation({
+          user: UserService.fetchOne({
+            $filters: { _id: pro._id },
+            name: 1,
+            organisations: { name: 1 },
+          }),
         });
-        const user = UserService.fetchOne({
-          $filters: { _id: userId },
-          firstName: 1,
-        });
+      }
 
-        if (isNewUser) {
-          // Envoyer invitation avec enrollment link
-          ctaUrl = UserService.getEnrollmentUrl({ userId });
-        }
-
-        let invitedBy;
-
-        if (pro && pro._id) {
-          invitedBy = getUserNameAndOrganisation({
-            user: UserService.fetchOne({
-              $filters: { _id: pro._id },
-              name: 1,
-              organisations: { name: 1 },
-            }),
-          });
-        }
-
-        return sendEmail.run({
+      return internalMethod(() =>
+        sendEmail.run({
           emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
           userId,
           params: {
@@ -216,29 +233,43 @@ addEmailListener({
             name: user.firstName,
             invitedBy,
           },
-        });
-      });
+        }),
+      );
+    });
+  },
+});
+
+addEmailListener({
+  description:
+    "Invitation d'un client par un Pro sur un ou plusieurs bien immo -> Client",
+  method: proInviteUser,
+  func: ({
+    params: { propertyIds = [] },
+    result: { userId, isNewUser, pro, admin },
+  }) => {
+    if (!propertyIds.length) {
+      return;
     }
 
-    if (propertyIds.length > 0) {
-      let ctaUrl = Meteor.settings.public.subdomains.app;
-      const properties = PropertyService.fetch({
-        $filters: { _id: { $in: propertyIds } },
-        address1: 1,
-      });
-      const addresses = properties.map(({ address1 }) => `"${address1}"`);
+    let ctaUrl = Meteor.settings.public.subdomains.app;
+    const properties = PropertyService.fetch({
+      $filters: { _id: { $in: propertyIds } },
+      address1: 1,
+    });
+    const addresses = properties.map(({ address1 }) => `"${address1}"`);
 
-      const formattedAddresses = [
-        addresses.slice(0, -1).join(', '),
-        addresses.slice(-1)[0],
-      ].join(addresses.length < 2 ? '' : ' et ');
+    const formattedAddresses = [
+      addresses.slice(0, -1).join(', '),
+      addresses.slice(-1)[0],
+    ].join(addresses.length < 2 ? '' : ' et ');
 
-      if (isNewUser) {
-        // Envoyer invitation avec enrollment link
-        ctaUrl = UserService.getEnrollmentUrl({ userId });
-      }
+    if (isNewUser) {
+      // Envoyer invitation avec enrollment link
+      ctaUrl = UserService.getEnrollmentUrl({ userId });
+    }
 
-      return sendEmail.run({
+    return internalMethod(() =>
+      sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
         userId,
         params: {
@@ -248,20 +279,32 @@ addEmailListener({
           ctaUrl,
           multiple: addresses.length > 1,
         },
-      });
+      }),
+    );
+  },
+});
+
+addEmailListener({
+  description:
+    "Invitation d'un client par un Pro en referral uniquement -> Client",
+  method: proInviteUser,
+  func: ({
+    params: { promotionIds = [], propertyIds = [] },
+    result: { userId, pro },
+  }) => {
+    if (propertyIds.length || promotionIds.length) {
+      return;
     }
 
-    if (propertyIds.length === 0 && promotionIds.length === 0) {
-      sendEmail.run({
-        emailId: EMAIL_IDS.REFER_USER,
-        userId,
-        params: {
-          proUserId: pro && pro._id,
-          proName: getUserNameAndOrganisation({ user: pro }),
-          ctaUrl: UserService.getEnrollmentUrl({ userId }),
-        },
-      });
-    }
+    sendEmail.run({
+      emailId: EMAIL_IDS.REFER_USER,
+      userId,
+      params: {
+        proUserId: pro && pro._id,
+        proName: getUserNameAndOrganisation({ user: pro }),
+        ctaUrl: UserService.getEnrollmentUrl({ userId }),
+      },
+    });
   },
 });
 

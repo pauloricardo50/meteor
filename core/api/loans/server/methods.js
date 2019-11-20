@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { internalMethod } from '../../methods/server/methodHelpers';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
@@ -293,9 +294,11 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
 
 sendLoanChecklist.setHandler(({ userId }, { address, emailParams }) => {
   SecurityService.checkUserIsAdmin(userId);
-  return sendEmailToAddress.run({
-    address,
-    emailId: EMAIL_IDS.LOAN_CHECKLIST,
-    params: emailParams,
-  });
+  return internalMethod(() =>
+    sendEmailToAddress.run({
+      address,
+      emailId: EMAIL_IDS.LOAN_CHECKLIST,
+      params: emailParams,
+    }),
+  );
 });

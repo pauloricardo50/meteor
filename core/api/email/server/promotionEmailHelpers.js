@@ -1,3 +1,4 @@
+import { internalMethod } from 'core/api/methods/server/methodHelpers';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
@@ -262,11 +263,13 @@ export const mapConfigToListener = ({
           ? getEmailParamsOverride(...args, recipient)
           : getEmailParams(...args, recipient);
 
-        sendEmail.run({
-          emailId: emailIdOverride || emailId,
-          userId,
-          params: emailParams,
-        });
+        internalMethod(() =>
+          sendEmail.run({
+            emailId: emailIdOverride || emailId,
+            userId,
+            params: emailParams,
+          }),
+        );
       });
     });
   };

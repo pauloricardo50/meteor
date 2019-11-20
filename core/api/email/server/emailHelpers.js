@@ -1,16 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import Intl from 'core/utils/server/intl';
-import ServerEventService from 'core/api/events/server/ServerEventService';
-import SecurityService from 'core/api/security/index';
+import SecurityService from '../../security';
+import Intl from '../../../utils/server/intl';
+import ServerEventService from '../../events/server/ServerEventService';
+import { ROLES } from '../../constants';
 import {
   FROM_DEFAULT,
   CTA_URL_DEFAULT,
   EMAIL_I18N_NAMESPACE,
   EMAIL_PARTS,
 } from '../emailConstants';
-import { ROLES } from '../../constants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;

@@ -5,7 +5,7 @@ import omit from 'lodash/omit';
 const skippedCollections = ['_cacheMigrations', 'grapher_counts'];
 const skippedFields = ['_id', 'createdAt', 'updatedAt'];
 
-const makeCleanDocument = collection => (doc) => {
+const makeCleanDocument = collection => doc => {
   const { _id } = doc;
   const schema = collection.instance.simpleSchema(doc);
 
