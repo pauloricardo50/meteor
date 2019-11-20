@@ -1,15 +1,17 @@
-import React from 'react';
-import { compose, withState } from 'recompose';
+import React, { useState } from 'react';
 
 export const ContactButtonContext = React.createContext();
 
 export const { Consumer, Provider } = ContactButtonContext;
 
-export const withContactButtonProvider = compose(
-  withState('openContact', 'toggleOpenContact', false),
-  Component => ({ openContact, toggleOpenContact, ...props }) => (
+export const withContactButtonProvider = Component => props => {
+  const [openContact, setOpenContact] = useState(false);
+  const toggleOpenContact = nextValue =>
+    setOpenContact(prevValue => nextValue || !prevValue);
+
+  return (
     <Provider value={{ openContact, toggleOpenContact }}>
       <Component {...props} />
     </Provider>
-  ),
-);
+  );
+};

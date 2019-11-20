@@ -20,7 +20,7 @@ export const ContactButton = (props: ContactButtonProps) => {
   if (impersonatedSession) {
     const { connectionId, userIsConnected, shared } = impersonatedSession;
     const currentSessionId = Meteor.connection._lastSessionId;
-    if (connectionId === currentSessionId) {
+    if (connectionId === currentSessionId && userIsConnected) {
       return (
         <AdminImpersonateNotification
           impersonatedSession={impersonatedSession}
@@ -49,7 +49,8 @@ export const ContactButton = (props: ContactButtonProps) => {
         onClick={event => {
           // Allow onClickAwayListener to work properly
           event.preventDefault();
-          toggleOpenContact(!openContact);
+
+          toggleOpenContact();
         }}
         color="primary"
       >
