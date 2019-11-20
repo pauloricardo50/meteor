@@ -272,23 +272,13 @@ export default class Security {
   };
 
   static isInternalCall = context => {
-    if (!Meteor.isServer) {
-      return false;
-    }
-
     if (context && !context.connection) {
       // Server initiated call
       return true;
     }
 
-    const Fibers = require('fibers');
-
-    // Dark, dark magic...
-    if (Fibers.current && Fibers.current._meteor_dynamics[0]) {
-      // Method within a method
-      return Fibers.current._meteor_dynamics[0].description.startsWith(
-        'internal',
-      );
+    if (context.userId && context.userId === 'INTERAL_CALL') {
+      return true;
     }
 
     return false;
