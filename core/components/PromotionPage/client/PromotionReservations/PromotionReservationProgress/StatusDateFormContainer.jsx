@@ -3,7 +3,7 @@ import { withProps } from 'recompose';
 
 import {
   loanUpdate,
-  promotionOptionUpdateObject,
+  setPromotionOptionProgress,
 } from '../../../../../api/methods';
 import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../../../api/constants';
 import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
@@ -32,10 +32,7 @@ const handleDialog = ({
         cancel: () => setOpenDialog(false),
         ok: () =>
           loanUpdate
-            .run({
-              loanId,
-              object: { userFormsEnabled: false },
-            })
+            .run({ loanId, object: { userFormsEnabled: false } })
             .then(() => setOpenDialog(false)),
       });
       setOpenDialog(true);
@@ -73,8 +70,8 @@ export default withProps(({ id, loanId, promotionOptionId }) => {
     openDialog,
     dialogProps,
     dialogActions,
-    onSubmit: async (values) => {
-      await promotionOptionUpdateObject.run({
+    onSubmit: async values => {
+      await setPromotionOptionProgress.run({
         promotionOptionId,
         id,
         object: values,

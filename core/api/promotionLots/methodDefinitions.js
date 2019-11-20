@@ -1,4 +1,3 @@
-import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const promotionLotInsert = new Method({
@@ -42,11 +41,7 @@ export const removeLotLink = new Method({
 
 export const reservePromotionLot = new Method({
   name: 'reservePromotionLot',
-  params: {
-    promotionOptionId: String,
-    startDate: Match.Maybe(Match.OneOf(Date, String, null)),
-    agreementFileKeys: Match.Maybe(Match.OneOf([String], null)),
-  },
+  params: { promotionOptionId: String },
 });
 
 export const cancelPromotionLotReservation = new Method({

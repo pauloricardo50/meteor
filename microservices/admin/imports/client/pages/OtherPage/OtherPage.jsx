@@ -19,6 +19,7 @@ import BorrowersPage from '../BorrowersPage/loadable';
 import PropertiesPage from '../PropertiesPage/loadable';
 import InterestRatesPage from '../InterestRatesPage/loadable';
 import ContactsPage from '../ContactsPage/loadable';
+import EmailList from './EmailList';
 
 type OtherPageProps = {};
 
@@ -40,11 +41,18 @@ const tabs = [
     id: CONTACTS_COLLECTION,
     content: <ContactsPage />,
   },
+  {
+    id: 'emails',
+    icon: 'mail',
+    label: 'Emails automatiques',
+    content: <EmailList />,
+  },
 ].map(obj => ({
   ...obj,
   label: (
     <span className="other-page-label">
-      <Icon type={collectionIcons[obj.id]} /> <T id={`collections.${obj.id}`} />
+      <Icon type={obj.icon || collectionIcons[obj.id]} />{' '}
+      {obj.label || <T id={`collections.${obj.id}`} />}
     </span>
   ),
   to: createRoute(ADMIN_ROUTES.OTHER_PAGE.path, { tabId: obj.id }),

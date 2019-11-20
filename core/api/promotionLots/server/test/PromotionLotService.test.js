@@ -32,7 +32,7 @@ const uploadTempPromotionAgreement = async userId => {
   return reservationAgreementFileKey;
 };
 
-describe('PromotionLotService', function () {
+describe('PromotionLotService', function() {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -73,6 +73,8 @@ describe('PromotionLotService', function () {
             },
             organisations: { _id: 'org1', name: 'Org 1' },
             emails: [{ address: 'pro1@e-potek.ch', verified: true }],
+            firstName: 'Pro',
+            lastName: 'User 1',
           },
           {
             _id: 'pro2',
@@ -83,16 +85,24 @@ describe('PromotionLotService', function () {
             },
             organisations: { _id: 'org2', name: 'Org 2' },
             emails: [{ address: 'pro2@e-potek.ch', verified: true }],
+            firstName: 'Pro',
+            lastName: 'User 2',
           },
           {
             _id: 'pro3',
             $metadata: { enableNotifications: false, roles: ['BROKER'] },
             organisations: { _id: 'org1', name: 'Org 1' },
+            firstName: 'Pro',
+            lastName: 'User 3',
           },
         ],
         loans: {
           _id: 'loanId',
-          user: { firstName: 'John', lastName: 'Doe' },
+          user: {
+            firstName: 'John',
+            lastName: 'Doe',
+            emails: [{ address: 'user@e-potek.ch', verified: true }],
+          },
           $metadata: { invitedBy: 'pro1' },
         },
         promotionLots: {
@@ -126,59 +136,75 @@ describe('PromotionLotService', function () {
         },
       });
 
-      return ddpWithUserId('pro1', () =>
-        reservePromotionLot.run({
-          promotionOptionId: 'pOptId',
-          startDate: moment().format('YYYY-MM-DD'),
-          agreementFileKeys: [reservationAgreementFileKey],
-        }),
-      )
-        .then(() => checkEmails(2))
-        .then(emails => {
-          const [
-            email1,
-            email2,
-          ] = emails.sort(({ address: a }, { address: b }) =>
-            a.localeCompare(b),
-          );
-          const {
-            address,
-            response: { status },
-            template: {
-              template_name,
-              message: { from_email, subject, global_merge_vars, from_name },
-            },
-          } = email1;
-          expect(status).to.equal('sent');
-          expect(address).to.equal('pro1@e-potek.ch');
-          expect(from_email).to.equal('test2@e-potek.ch');
-          expect(from_name).to.equal('e-Potek');
-          expect(subject).to.equal('Promotion "Test promotion", lot réservé');
-          expect(
-            global_merge_vars.find(({ name }) => name === 'BODY').content,
-          ).to.include(
-            'Le lot "Lot 1" a été réservé pour John Doe, par TestFirstName TestLastName.',
-          );
-          {
-            const {
-              address,
-              response: { status },
-              template: {
-                message: { from_email, subject, global_merge_vars, from_name },
-              },
-            } = email2;
-            expect(status).to.equal('sent');
-            expect(address).to.equal('pro2@e-potek.ch');
-            expect(from_email).to.equal('test2@e-potek.ch');
-            expect(from_name).to.equal('e-Potek');
-            expect(subject).to.equal('Promotion "Test promotion", lot réservé');
-            expect(
-              global_merge_vars.find(({ name }) => name === 'BODY').content,
-            ).to.include(
-              'Le lot "Lot 1" a été réservé pour une personne anonymisée, par TestFirstName TestLastName.',
-            );
-          }
-        });
+      await ddpWithUserId('pro1', () =>
+        reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
+      );
+      const emails = await checkEmails(3);
+
+      const [
+        email1,
+        email2,
+        email3,
+      ] = emails.sort(({ address: a }, { address: b }) => a.localeCompare(b));
+      const {
+        address,
+        response: { status },
+        template: {
+          template_name,
+          message: { from_email, subject, global_merge_vars, from_name },
+        },
+      } = email1;
+      expect(status).to.equal('sent');
+      expect(address).to.equal('pro1@e-potek.ch');
+      expect(from_email).to.equal('test2@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal('Test promotion, Réservation du lot Lot 1');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'TITLE').content,
+      ).to.equal('Test promotion, Réservation du lot Lot 1');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.equal(
+        'Le lot Lot 1 au sein de la promotion Test promotion a été attribué à un client de Pro User 1 (Org 1).',
+      );
+      {
+        const {
+          address,
+          response: { status },
+          template: {
+            message: { from_email, subject, global_merge_vars, from_name },
+          },
+        } = email2;
+        expect(status).to.equal('sent');
+        expect(address).to.equal('pro2@e-potek.ch');
+        expect(from_email).to.equal('test2@e-potek.ch');
+        expect(from_name).to.equal('e-Potek');
+        expect(subject).to.equal('Test promotion, Réservation du lot Lot 1');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.equal(
+          'Le lot Lot 1 au sein de la promotion Test promotion a été attribué à un client de Pro User 1 (Org 1).',
+        );
+      }
+      {
+        const {
+          address,
+          response: { status },
+          template: {
+            message: { from_email, subject, global_merge_vars, from_name },
+          },
+        } = email3;
+        expect(status).to.equal('sent');
+        expect(address).to.equal('user@e-potek.ch');
+        expect(from_email).to.equal('test2@e-potek.ch');
+        expect(from_name).to.equal('e-Potek');
+        expect(subject).to.equal('Test promotion, Réservation du lot Lot 1');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include(
+          "Votre conseiller.ère Admin User 2 va se mettre en relation avec la Banque, l'Entreprise Générale et Pro User 1 (Org 1)",
+        );
+      }
     });
 
     it('does not let a lot be reserved by a pro who did not invite the customer', async () => {

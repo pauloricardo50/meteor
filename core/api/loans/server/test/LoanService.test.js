@@ -7,7 +7,11 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { loanSetStatus } from '../../../methods/index';
+import {
+  loanSetStatus,
+  setLoanStep,
+  sendNegativeFeedbackToAllLenders,
+} from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
@@ -852,7 +856,7 @@ describe('LoanService', function() {
       loanId = 'someLoan';
       generator({
         users: [
-          { _id: 'adminId', _factory: 'adminEpotek' },
+          { _id: 'adminId', _factory: 'admin' },
           {
             _id: 'userId',
             assignedEmployee: { _id: 'adminId' },
@@ -875,7 +879,7 @@ describe('LoanService', function() {
       addresses = [];
     });
 
-    it('sends a negative feedback to all lenders', () => {
+    it('sends a negative feedback to all lenders', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 1;
 
@@ -889,19 +893,19 @@ describe('LoanService', function() {
         numberOfLenders * numberOfOffersPerLender,
       );
 
-      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(numberOfLenders))
-        .then(emails => {
-          expect(emails.length).to.equal(numberOfLenders);
-          addresses.forEach(email =>
-            expect(emails.some(({ address }) => address === email)).to.equal(
-              true,
-            ),
-          );
-        });
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
+
+      const emails = await checkEmails(numberOfLenders);
+
+      expect(emails.length).to.equal(numberOfLenders);
+      addresses.forEach(email =>
+        expect(emails.some(({ address }) => address === email)).to.equal(true),
+      );
     });
 
-    it('sends a negative feedback to all lenders once only', () => {
+    it('sends a negative feedback to all lenders once only', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 10;
 
@@ -915,26 +919,29 @@ describe('LoanService', function() {
         numberOfLenders * numberOfOffersPerLender,
       );
 
-      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(numberOfLenders))
-        .then(emails => {
-          expect(emails.length).to.equal(numberOfLenders);
-          addresses.forEach(email =>
-            expect(emails.some(({ address }) => address === email)).to.equal(
-              true,
-            ),
-          );
-        });
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
+
+      const emails = await checkEmails(numberOfLenders);
+
+      expect(emails.length).to.equal(numberOfLenders);
+      addresses.forEach(email =>
+        expect(emails.some(({ address }) => address === email)).to.equal(true),
+      );
     });
 
-    it('does not send any feedback if there is no lender', () =>
-      LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(0))
-        .then(emails => {
-          expect(emails.length).to.equal(0);
-        }));
+    it('does not send any feedback if there is no lender', async () => {
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
 
-    it('does not send any feedback if there is no offer', () => {
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
+    });
+
+    it('does not send any feedback if there is no offer', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 0;
 
@@ -946,15 +953,17 @@ describe('LoanService', function() {
 
       expect(offerIds.length).to.equal(0);
 
-      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(0))
-        .then(emails => {
-          expect(emails.length).to.equal(0);
-        });
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
+
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
     });
   });
 
-  describe('setStep', () => {
+  describe('setStep', async () => {
     it('sets the step', () => {
       generator({
         loans: { _id: 'id', step: STEPS.SOLVENCY },
@@ -967,7 +976,7 @@ describe('LoanService', function() {
       expect(loan.step).to.equal(STEPS.REQUEST);
     });
 
-    it('sends a notification email if the step goes from SOLVENCY to OFFERS', () => {
+    it('sends a notification email if the step goes from SOLVENCY to OFFERS', async () => {
       generator({
         users: {
           _id: 'admin',
@@ -985,40 +994,42 @@ describe('LoanService', function() {
         },
       });
 
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
 
       loan = LoanService.findOne('myLoan');
 
       expect(loan.step).to.equal(STEPS.OFFERS);
 
-      return checkEmails(1).then(emails => {
-        const {
+      const [
+        {
           emailId,
           address,
           response: { status },
           template: {
             message: { from_email, subject, global_merge_vars, from_name },
           },
-        } = emails[0];
+        },
+      ] = await checkEmails(1);
 
-        expect(status).to.equal('sent');
-        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
-        expect(address).to.equal('john@doe.com');
-        expect(from_email).to.equal('info@e-potek.ch');
-        expect(from_name).to.equal('e-Potek');
-        expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(
-          global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
-        ).to.include('/loans/myLoan');
-        expect(
-          global_merge_vars.find(({ name }) => name === 'BODY').content,
-        ).to.include('Admin User');
-      });
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+      expect(address).to.equal('john@doe.com');
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
+      ).to.include('/loans/myLoan');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('Admin User');
     });
 
-    it('sends a notification email if the step goes from REQUEST to OFFERS', () => {
+    it('sends a notification email if the step goes from REQUEST to OFFERS', async () => {
       generator({
-        users: { _id: 'admin' },
+        users: { _id: 'admin', _factory: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.REQUEST,
@@ -1028,32 +1039,39 @@ describe('LoanService', function() {
           },
         },
       });
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1).then(emails => {
-        const {
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
+
+      const [
+        {
           emailId,
           response: { status },
-        } = emails[0];
+        },
+      ] = await checkEmails(1);
 
-        expect(status).to.equal('sent');
-        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
-      });
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
     });
 
-    it('does not send a notification email if the step goes from REQUEST to OFFERS', () => {
+    it('does not send a notification email if the step goes from REQUEST to OFFERS', async () => {
       generator({
+        users: { _id: 'admin', _factory: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.CLOSING,
           user: { emails: [{ address: 'john@doe.com', verified: false }] },
         },
       });
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1, { timeout: 2000, noExpect: true }).then(emails => {
-        expect(emails.length).to.equal(0);
-      });
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
+
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
     });
   });
 

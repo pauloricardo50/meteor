@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
@@ -264,12 +265,22 @@ export default class Security {
     this.handleUnauthorized('Vous ne pouvez pas supprimer ce fichier');
   }
 
-  static checkIsServerCall(context) {
-    const { connection } = context;
-
-    // connection is null when server calls a method
-    if (connection) {
-      this.handleUnauthorized('Unauthorized server method');
+  static checkIsInternalCall = context => {
+    if (!this.isInternalCall(context)) {
+      this.handleUnauthorized('method is not internal');
     }
-  }
+  };
+
+  static isInternalCall = context => {
+    if (context && !context.connection) {
+      // Server initiated call
+      return true;
+    }
+
+    if (context.userId && context.userId === 'INTERAL_CALL') {
+      return true;
+    }
+
+    return false;
+  };
 }

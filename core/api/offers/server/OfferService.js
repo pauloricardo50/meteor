@@ -1,15 +1,10 @@
-import moment from 'moment';
-
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import LenderService from '../../lenders/server/LenderService';
 import { LENDER_STATUS } from '../../lenders/lenderConstants';
-import { fullOffer } from '../../fragments';
-import { EMAIL_IDS } from '../../email/emailConstants';
-import { sendEmailToAddress } from '../../methods';
 import Offers from '../offers';
 
-export class OfferService extends CollectionService {
+class OfferService extends CollectionService {
   constructor() {
     super(Offers);
   }
@@ -23,35 +18,6 @@ export class OfferService extends CollectionService {
         object: { feedback: { message: feedback, date: new Date() } },
       });
     }
-
-    const {
-      createdAt,
-      lender: {
-        organisation: { name: organisationName },
-        contact: { email: address, name },
-        loan: {
-          name: loanName,
-          user: { assignedEmployee },
-        },
-      },
-    } = this.fetchOne({ $filters: { _id: offerId }, ...fullOffer() });
-
-    const { email: assigneeAddress, name: assigneeName } =
-      assignedEmployee || {};
-
-    return sendEmailToAddress.run({
-      emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
-      address,
-      name,
-      params: {
-        assigneeAddress,
-        assigneeName,
-        loanName,
-        organisationName,
-        date: moment(createdAt).format('DD.MM.YYYY'),
-        feedback,
-      },
-    });
   };
 
   insert = ({ offer: { lenderId, ...offer } }) => {

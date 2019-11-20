@@ -22,10 +22,7 @@ describe('proInviteUserListener', function() {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: {
-        _id: 'pro2',
-        _factory: 'pro',
-      },
+      users: { _id: 'pro2', _factory: 'pro' },
       organisations: [
         {
           _id: 'org',

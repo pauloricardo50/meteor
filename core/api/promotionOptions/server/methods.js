@@ -7,7 +7,7 @@ import {
   promotionOptionRemove,
   increaseOptionPriority,
   reducePriorityOrder,
-  promotionOptionUpdateObject,
+  setPromotionOptionProgress,
   promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
   promotionOptionAddToWaitList,
@@ -39,27 +39,27 @@ const canUpdatePromotionOption = (_id, userId) => {
 
 promotionOptionUpdate.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.update(params);
+  return PromotionOptionService.update(params);
 });
 
 promotionOptionRemove.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.remove(params);
+  return PromotionOptionService.remove(params);
 });
 
 increaseOptionPriority.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.increasePriorityOrder(params);
+  return PromotionOptionService.increasePriorityOrder(params);
 });
 
 reducePriorityOrder.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.reducePriorityOrder(params);
+  return PromotionOptionService.reducePriorityOrder(params);
 });
 
-promotionOptionUpdateObject.setHandler(({ userId }, params) => {
+setPromotionOptionProgress.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.updateStatusObject(params);
+  return PromotionOptionService.setProgress(params);
 });
 
 promotionOptionActivateReservation.setHandler(({ userId }, params) => {
@@ -87,7 +87,7 @@ export const generateExpiringSoonReservationTasks = new Method({
 });
 
 generateExpiringSoonReservationTasks.setHandler(context => {
-  SecurityService.checkIsServerCall(context);
+  SecurityService.checkIsInternalCall(context);
   return PromotionOptionService.getExpiringSoonReservations();
 });
 
@@ -97,6 +97,6 @@ export const generateHalfLifeReservationReminderTasks = new Method({
 });
 
 generateHalfLifeReservationReminderTasks.setHandler(context => {
-  SecurityService.checkIsServerCall(context);
+  SecurityService.checkIsInternalCall(context);
   return PromotionOptionService.getHalfLifeReservations();
 });

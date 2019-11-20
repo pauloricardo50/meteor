@@ -22,7 +22,7 @@ ServerEventService.addAfterMethodListener(
 
     if (promotionOptions.length) {
       promotionOptions.forEach(({ _id: promotionOptionId }) =>
-        PromotionOptionService.updateStatusObject({
+        PromotionOptionService.setProgress({
           promotionOptionId,
           id: 'simpleVerification',
           object: {

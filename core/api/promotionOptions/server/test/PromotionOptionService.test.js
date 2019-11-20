@@ -6,6 +6,8 @@ import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
 import sinon from 'sinon';
 
+import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { checkEmails } from '../../../../utils/testHelpers/index';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
@@ -18,6 +20,7 @@ import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../../promotionOptionConstants';
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
@@ -31,6 +34,7 @@ import {
 } from '../../../promotions/promotionConstants';
 
 import { generateExpiringSoonReservationTasks } from '../methods';
+import { setPromotionOptionProgress } from '../../methodDefinitions';
 
 const makePromotionLotWithReservation = ({
   key,
@@ -253,7 +257,11 @@ describe('PromotionOptionService', function() {
           promotionLots: {
             _id: promotionLotId,
             propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+            promotionOptions: {
+              _id: promotionOptionId,
+              loan: { _id: loanId },
+              promotion: { _id: promotionId },
+            },
           },
         },
       });
@@ -271,6 +279,7 @@ describe('PromotionOptionService', function() {
       generator({
         promotionOptions: {
           _id: 'pOptId2',
+          promotion: { _id: promotionId },
           promotionLots: { _id: promotionLotId },
           loan: {
             _id: 'loanId2',
@@ -314,7 +323,11 @@ describe('PromotionOptionService', function() {
           promotionLots: {
             _id: promotionLotId,
             propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+            promotionOptions: {
+              _id: promotionOptionId,
+              loan: { _id: loanId },
+              promotion: { _id: promotionId },
+            },
           },
         },
       });
@@ -332,6 +345,7 @@ describe('PromotionOptionService', function() {
       generator({
         promotionOptions: {
           _id: 'pOptId2',
+          promotion: { _id: promotionId },
           promotionLots: { _id: promotionLotId },
           loan: {
             _id: 'loanId2',
@@ -767,9 +781,9 @@ describe('PromotionOptionService', function() {
       });
 
       const expiredReservations = await PromotionOptionService.expireReservations();
-      const emails = await checkEmails(2);
-
       expect(expiredReservations).to.equal(1);
+
+      const emails = await checkEmails(2);
 
       const { promotionLots = [] } = PromotionService.fetchOne({
         $filters: { _id: 'promo' },
@@ -820,9 +834,7 @@ describe('PromotionOptionService', function() {
       expect(address).to.equal('pro1@e-potek.ch');
       expect(from_email).to.equal('info@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
-      expect(subject).to.equal(
-        'Promotion "Test promotion", réservation annulée',
-      );
+      expect(subject).to.equal('Test promotion, Réservation annulée');
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
@@ -1245,6 +1257,348 @@ describe('PromotionOptionService', function() {
             { email: 'pro4@org3.com', anonymize: false, userId: 'pro4' },
           ],
         });
+      });
+    });
+  });
+
+  describe('setProgress', () => {
+    it('updates a status and its date', () => {
+      const startDate = new Date();
+      generator({
+        promotionOptions: {
+          _id: 'id',
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+            date: startDate,
+          },
+        },
+      });
+
+      PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'bank',
+        object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+      });
+
+      const promotionOption = PromotionOptionService.findOne('id');
+
+      expect(promotionOption.bank.status).to.equal(
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+      );
+      expect(promotionOption.bank.date.getTime()).to.be.above(
+        startDate.getTime(),
+      );
+    });
+
+    it('does not update the date if the status has not changed', () => {
+      const startDate = new Date();
+      generator({
+        promotionOptions: {
+          _id: 'id',
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+            date: startDate,
+          },
+        },
+      });
+
+      const result = PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'bank',
+        object: { status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE },
+      });
+      expect(result).to.equal(undefined);
+
+      const promotionOption = PromotionOptionService.findOne('id');
+
+      expect(promotionOption.bank.status).to.equal(
+        PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+      );
+      expect(promotionOption.bank.date.getTime()).to.equal(startDate.getTime());
+    });
+
+    it('returns the next and previous status if changed', () => {
+      generator({ promotionOptions: { _id: 'id' } });
+
+      const result = PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'simpleVerification',
+        object: {
+          status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+        },
+      });
+
+      expect(result).to.deep.equal({
+        prevStatus: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
+        nextStatus: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+      });
+    });
+
+    it('does not return anything if only a date is changed, to not trigger emails', () => {
+      generator({ promotionOptions: { _id: 'id' } });
+
+      const updatedDate = new Date();
+      const result = PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'simpleVerification',
+        object: { date: updatedDate },
+      });
+
+      expect(result).to.equal(undefined);
+
+      const promotionOption = PromotionOptionService.findOne('id');
+
+      expect(promotionOption.simpleVerification.status).to.equal(
+        PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
+      );
+      expect(promotionOption.simpleVerification.date.getTime()).to.equal(
+        updatedDate.getTime(),
+      );
+    });
+
+    describe('emails', () => {
+      it('sends emails when changing simpleVerification to VALIDATED', async () => {
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          promotions: {
+            users: [
+              {
+                _id: 'proId',
+                _factory: 'pro',
+                emails: [{ address: 'pro@e-potek.ch', verified: true }],
+              },
+              {
+                _id: 'proId2',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.NOTARY] },
+                _factory: 'pro',
+                emails: [{ address: 'notary@e-potek.ch', verified: true }],
+              },
+            ],
+            loans: {
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              $metadata: { invitedBy: 'proId' },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          setPromotionOptionProgress.run({
+            promotionOptionId: 'pOptId',
+            id: 'simpleVerification',
+            object: {
+              status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+            },
+          }),
+        );
+
+        const emails = await checkEmails(2);
+
+        const emailIds = emails.map(({ emailId }) => emailId);
+        expect(emailIds).to.include(
+          EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_PRO,
+        );
+        expect(emailIds).to.include(
+          EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_USER,
+        );
+
+        const proEmail = emails.find(
+          ({ emailId }) =>
+            emailId === EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_PRO,
+        );
+        const userEmail = emails.find(
+          ({ emailId }) =>
+            emailId === EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_USER,
+        );
+
+        expect(proEmail.address).to.equal('pro@e-potek.ch');
+        expect(userEmail.address).to.equal('user@e-potek.ch');
+      });
+
+      it('sends emails when changing simpleVerification to REJECTED', async () => {
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          promotions: {
+            users: {
+              _id: 'proId',
+              _factory: 'pro',
+              emails: [{ address: 'pro@e-potek.ch', verified: true }],
+            },
+            loans: {
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              $metadata: { invitedBy: 'proId' },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          setPromotionOptionProgress.run({
+            promotionOptionId: 'pOptId',
+            id: 'simpleVerification',
+            object: {
+              status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED,
+            },
+          }),
+        );
+
+        const emails = await checkEmails(2);
+
+        const emailIds = emails.map(({ emailId }) => emailId);
+        expect(emailIds).to.include(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_PRO);
+        expect(emailIds).to.include(
+          EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_USER,
+        );
+
+        const proEmail = emails.find(
+          ({ emailId }) =>
+            emailId === EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_PRO,
+        );
+        const userEmail = emails.find(
+          ({ emailId }) =>
+            emailId === EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_USER,
+        );
+
+        expect(proEmail.address).to.equal('pro@e-potek.ch');
+        expect(userEmail.address).to.equal('user@e-potek.ch');
+      });
+
+      it('sends emails when changing bank to SENT', async () => {
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          promotions: {
+            users: [
+              {
+                _id: 'proId1',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
+                _factory: 'pro',
+                emails: [{ address: 'broker@e-potek.ch', verified: true }],
+              },
+              {
+                _id: 'proId2',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.PROMOTER] },
+                _factory: 'pro',
+                emails: [{ address: 'promoter@e-potek.ch', verified: true }],
+              },
+              {
+                _id: 'proId3',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.VISITOR] },
+                _factory: 'pro',
+                emails: [{ address: 'visitor@e-potek.ch', verified: true }],
+              },
+            ],
+            loans: {
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              $metadata: { invitedBy: 'proId1' },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          setPromotionOptionProgress.run({
+            promotionOptionId: 'pOptId',
+            id: 'bank',
+            object: { status: PROMOTION_OPTION_BANK_STATUS.SENT },
+          }),
+        );
+
+        const emails = await checkEmails(2);
+
+        const emailIds = emails.map(({ emailId }) => emailId);
+        expect(emailIds).to.deep.equal([
+          EMAIL_IDS.PROMOTION_LOAN_SENT_TO_BANK,
+          EMAIL_IDS.PROMOTION_LOAN_SENT_TO_BANK,
+        ]);
+
+        expect(
+          !!emails.find(({ address }) => address === 'broker@e-potek.ch'),
+        ).to.equal(true);
+        expect(
+          !!emails.find(({ address }) => address === 'promoter@e-potek.ch'),
+        ).to.equal(true);
+      });
+
+      it('sends emails when changing bank to VALIDATED', async () => {
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          promotions: {
+            users: [
+              {
+                _id: 'proId1',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
+                _factory: 'pro',
+                emails: [{ address: 'broker@e-potek.ch', verified: true }],
+              },
+              {
+                _id: 'proId2',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.PROMOTER] },
+                _factory: 'pro',
+                emails: [{ address: 'promoter1@e-potek.ch', verified: true }],
+              },
+              {
+                _id: 'proId3',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.PROMOTER] },
+                _factory: 'pro',
+                emails: [{ address: 'promoter2@e-potek.ch', verified: true }],
+              },
+              {
+                _id: 'proId4',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.VISITOR] },
+                _factory: 'pro',
+                emails: [{ address: 'visitor@e-potek.ch', verified: true }],
+              },
+            ],
+            loans: {
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              $metadata: { invitedBy: 'proId1' },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          setPromotionOptionProgress.run({
+            promotionOptionId: 'pOptId',
+            id: 'bank',
+            object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+          }),
+        );
+
+        const emails = await checkEmails(4);
+
+        const emailIds = emails.map(({ emailId }) => emailId).sort();
+        expect(emailIds).to.deep.equal([
+          EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO,
+          EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO,
+          EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO,
+          EMAIL_IDS.LOAN_VALIDATED_BY_BANK_USER,
+        ]);
+
+        expect(
+          !!emails.find(({ address }) => address === 'broker@e-potek.ch'),
+        ).to.equal(true);
+        expect(
+          !!emails.find(({ address }) => address === 'promoter1@e-potek.ch'),
+        ).to.equal(true);
+        expect(
+          !!emails.find(({ address }) => address === 'promoter2@e-potek.ch'),
+        ).to.equal(true);
+        expect(
+          !!emails.find(({ address }) => address === 'user@e-potek.ch'),
+        ).to.equal(true);
       });
     });
   });

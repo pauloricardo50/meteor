@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import S3Service from 'core/api/files/server/S3Service';
 import UserService from '../../users/server/UserService';
 import emailConfigs from './emailConfigs';
@@ -15,9 +14,9 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-export const skipEmails =
-  (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
-// export const skipEmails = false;
+// export const skipEmails =
+//   (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
+export const skipEmails = false;
 
 class EmailService {
   sendEmail = async ({ emailId, address, name, params }) => {

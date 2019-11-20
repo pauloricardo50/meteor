@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import { checkEmails } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -13,6 +14,7 @@ import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
+import { proInviteUser } from '../../methodDefinitions';
 
 describe('UserService', function() {
   this.timeout(10000);
@@ -454,7 +456,12 @@ describe('UserService', function() {
       resetDatabase();
       generator({
         users: [
-          { _id: 'adminId', _factory: 'admin' },
+          {
+            _id: 'adminId',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: 'User',
+          },
           {
             _id: 'proId',
             assignedEmployeeId: 'adminId',
@@ -468,70 +475,66 @@ describe('UserService', function() {
       });
     });
 
-    it('invites user to refer only', () =>
-      UserService.proInviteUser({
-        user: userToInvite,
-        referOnly: true,
-        proUserId: 'proId',
-      }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+    it('invites user to refer only', async () => {
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({ user: userToInvite }),
+      );
 
-        expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal(
-          'organisationId',
+      const userCreated = UserService.getByEmail(userToInvite.email);
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+
+      const emails = await checkEmails(2);
+      expect(emails.length).to.equal(2);
+      const {
+        emailId,
+        address,
+        response: { status },
+        template: {
+          template_name,
+          message: { from_email, subject, global_merge_vars, from_name },
+        },
+      } = emails.find(({ emailId }) => emailId === EMAIL_IDS.REFER_USER);
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.REFER_USER);
+      expect(template_name).to.equal(
+        EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+      );
+      expect(address).to.equal('bob@dylan.com');
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal('Vous avez été invité sur e-Potek');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('John Doe (bank)');
+      {
+        const {
+          emailId,
+          address,
+          response: { status },
+          template: {
+            template_name,
+            message: { from_email, subject, global_merge_vars, from_name },
+          },
+        } = emails.find(
+          ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
         );
-
-        return checkEmails(2).then(emails => {
-          expect(emails.length).to.equal(2);
-          const {
-            emailId,
-            address,
-            response: { status },
-            template: {
-              template_name,
-              message: { from_email, subject, global_merge_vars, from_name },
-            },
-          } = emails.find(({ emailId }) => emailId === EMAIL_IDS.REFER_USER);
-          expect(status).to.equal('sent');
-          expect(emailId).to.equal(EMAIL_IDS.REFER_USER);
-          expect(template_name).to.equal(
-            EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
-          );
-          expect(address).to.equal('bob@dylan.com');
-          expect(from_email).to.equal('info@e-potek.ch');
-          expect(from_name).to.equal('e-Potek');
-          expect(subject).to.equal('Vous avez été invité sur e-Potek');
-          expect(
-            global_merge_vars.find(({ name }) => name === 'BODY').content,
-          ).to.include('John Doe (bank)');
-          {
-            const {
-              emailId,
-              address,
-              response: { status },
-              template: {
-                template_name,
-                message: { from_email, subject, global_merge_vars, from_name },
-              },
-            } = emails.find(
-              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
-            );
-            expect(status).to.equal('sent');
-            expect(emailId).to.equal(EMAIL_IDS.CONFIRM_USER_INVITATION);
-            expect(template_name).to.equal(
-              EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
-            );
-            expect(address).to.equal('john@doe.com');
-            expect(from_email).to.equal('info@e-potek.ch');
-            expect(from_name).to.equal('e-Potek');
-            expect(subject).to.equal('Invitation réussie');
-            expect(
-              global_merge_vars.find(({ name }) => name === 'BODY').content,
-            ).to.include('Bob Dylan (bob@dylan.com)');
-          }
-        });
-      }));
+        expect(status).to.equal('sent');
+        expect(emailId).to.equal(EMAIL_IDS.CONFIRM_USER_INVITATION);
+        expect(template_name).to.equal(
+          EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+        );
+        expect(address).to.equal('john@doe.com');
+        expect(from_email).to.equal('info@e-potek.ch');
+        expect(from_name).to.equal('e-Potek');
+        expect(subject).to.equal('Invitation réussie');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include('Bob Dylan (bob@dylan.com)');
+      }
+    });
 
     it('throws if user already exists and it is referOnly', () => {
       generator({
@@ -570,10 +573,15 @@ describe('UserService', function() {
         },
         promotionIds: ['promotionId'],
         proUserId: 'proId',
-      }).then(() => {
+      }).then(({ userId, isNewUser, proId, admin, pro }) => {
         const userCreated = UserService.getByEmail(userToInvite.email);
         const loan = LoanService.findOne({ userId: userCreated._id });
 
+        expect(userCreated._id).to.equal(userId);
+        expect(isNewUser).to.equal(true);
+        expect(proId).to.equal('proId');
+        expect(admin._id).to.equal(userCreated.assignedEmployeeId);
+        expect(pro._id).to.equal('proId');
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');
         expect(userCreated.referredByOrganisationLink).to.equal(
@@ -583,8 +591,6 @@ describe('UserService', function() {
         expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
         expect(loan.promotionLinks[0].showAllLots).to.equal(false);
         expect(loan.promotionOptionLinks.length).to.equal(1);
-
-        return checkEmails(2);
       });
     });
 
@@ -636,8 +642,6 @@ describe('UserService', function() {
         expect(loans[1].promotionLinks[0]._id).to.equal('promotionId2');
         expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
         expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
-
-        return checkEmails(4);
       });
     });
 
@@ -658,20 +662,18 @@ describe('UserService', function() {
         user: userToInvite,
         promotionIds: ['promotionId'],
         proUserId: 'proId',
-      })
-        .then(() => checkEmails(2))
-        .then(emails => {
-          expect(() =>
-            UserService.proInviteUser({
-              user: userToInvite,
-              promotionIds: ['promotionId'],
-              proUserId: 'proId',
-            }),
-          ).to.throw('Ce client est déjà invité à cette promotion');
-        });
+      }).then(() => {
+        expect(() =>
+          UserService.proInviteUser({
+            user: userToInvite,
+            promotionIds: ['promotionId'],
+            proUserId: 'proId',
+          }),
+        ).to.throw('Ce client est déjà invité à cette promotion');
+      });
     });
 
-    it('invites user to pro property', () => {
+    it('invites user to pro property', async () => {
       generator({
         properties: {
           _id: 'propertyId',
@@ -683,34 +685,30 @@ describe('UserService', function() {
         },
       });
 
-      return UserService.proInviteUser({
-        user: userToInvite,
-        propertyIds: ['propertyId'],
-        proUserId: 'proId',
-      }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.findOne({ userId: userCreated._id });
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId'] }),
+      );
 
-        expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal(
-          'organisationId',
-        );
-        expect(loan.propertyIds[0]).to.equal('propertyId');
+      const userCreated = UserService.getByEmail(userToInvite.email);
+      const loan = LoanService.findOne({ userId: userCreated._id });
 
-        return checkEmails(2).then(emails => {
-          expect(
-            !!emails.find(
-              ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-            ),
-          ).to.equal(true);
-          expect(
-            !!emails.find(
-              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
-            ),
-          ).to.equal(true);
-        });
-      });
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loan.propertyIds[0]).to.equal('propertyId');
+
+      const emails = await checkEmails(2);
+
+      expect(
+        !!emails.find(
+          ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+        ),
+      ).to.equal(true);
+      expect(
+        !!emails.find(
+          ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+        ),
+      ).to.equal(true);
     });
 
     it('invites user to multiple pro properties', () => {
@@ -751,8 +749,6 @@ describe('UserService', function() {
         expect(loan.propertyIds.length).to.equal(2);
         expect(loan.propertyIds[0]).to.equal('propertyId1');
         expect(loan.propertyIds[1]).to.equal('propertyId2');
-
-        return checkEmails(2);
       });
     });
 
@@ -825,12 +821,10 @@ describe('UserService', function() {
         expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
         expect(loans[2].promotionLinks[0]._id).to.equal('promotionId2');
         expect(loans[2].promotionLinks[0].invitedBy).to.equal('proId');
-
-        return checkEmails(6);
       });
     });
 
-    it('sends an invitation email', () => {
+    it('sends an invitation email', async () => {
       generator({
         properties: {
           address1: 'Rue du four 1',
@@ -843,41 +837,104 @@ describe('UserService', function() {
         },
       });
 
-      return UserService.proInviteUser({
-        user: userToInvite,
-        propertyIds: ['propertyId2'],
-        proUserId: 'proId',
-      })
-        .then(() => checkEmails(2))
-        .then(emails => {
-          expect(emails.length).to.equal(2);
-          const {
-            emailId,
-            address,
-            response: { status },
-            template: {
-              template_name,
-              message: { from_email, subject, merge_vars, from_name },
-            },
-          } = emails.find(
-            ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-          );
-          expect(status).to.equal('sent');
-          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
-          expect(template_name).to.equal(
-            EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
-          );
-          expect(address).to.equal('bob@dylan.com');
-          expect(from_email).to.equal('info@e-potek.ch');
-          expect(from_name).to.equal('e-Potek');
-          expect(subject).to.equal('e-Potek - "Rue du four 1"');
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId2'] }),
+      );
 
-          expect(
-            emails.filter(
-              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
-            ).length,
-          ).to.equal(1);
-        });
+      const emails = await checkEmails(2);
+
+      expect(emails.length).to.equal(2);
+      const {
+        emailId,
+        address,
+        response: { status },
+        template: {
+          template_name,
+          message: { from_email, subject, merge_vars, from_name },
+        },
+      } = emails.find(
+        ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+      );
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+      expect(template_name).to.equal(
+        EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+      );
+      expect(address).to.equal('bob@dylan.com');
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal('e-Potek - "Rue du four 1"');
+
+      expect(
+        emails.filter(
+          ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
+        ).length,
+      ).to.equal(1);
+    });
+
+    it('sends a promotion invitation email to the user', async () => {
+      generator({
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+        },
+      });
+
+      const { userId } = await ddpWithUserId('proId', () =>
+        proInviteUser.run({
+          user: userToInvite,
+          promotionIds: ['promotionId'],
+        }),
+      );
+
+      const emails = await checkEmails(2);
+
+      const {
+        services: {
+          password: {
+            reset: { token },
+          },
+        },
+      } = UserService.fetchOne({ $filters: { _id: userId }, services: 1 });
+
+      expect(emails.length).to.equal(2);
+      const emailIds = emails.map(({ emailId }) => emailId);
+      expect(emailIds).to.include(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
+      expect(emailIds).to.include(EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION);
+
+      const {
+        address,
+        template: {
+          template_name,
+          message: { from_email, subject, global_merge_vars, from_name },
+        },
+      } = emails.find(
+        ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+      );
+      const body = global_merge_vars.find(({ name }) => name === 'BODY')
+        .content;
+      const title = global_merge_vars.find(({ name }) => name === 'TITLE')
+        .content;
+      const ctaUrl = global_merge_vars.find(({ name }) => name === 'CTA_URL')
+        .content;
+      expect(address).to.equal(userToInvite.email);
+      expect(template_name).to.equal(
+        EMAIL_TEMPLATES.PROMOTION_INVITATION.mandrillId,
+      );
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal('Promotion immobilière Test promotion');
+      expect(title).to.equal(
+        'Processus de réservation d’un logement au sein de la promotion Test promotion',
+      );
+      expect(body).to.include('John Doe (bank)');
+      expect(body).to.include('Admin User');
+      expect(ctaUrl).to.include(`enroll-account/${token}`);
     });
 
     it('throws if user is already invited to pro property', () => {
@@ -896,20 +953,18 @@ describe('UserService', function() {
         user: userToInvite,
         propertyIds: ['propertyId'],
         proUserId: 'proId',
-      })
-        .then(() => checkEmails(2))
-        .then(() => {
-          expect(() =>
-            UserService.proInviteUser({
-              user: userToInvite,
-              propertyIds: ['propertyId'],
-              proUserId: 'proId',
-            }),
-          ).to.throw('Ce client est déjà invité à ce bien immobilier');
-        });
+      }).then(() => {
+        expect(() =>
+          UserService.proInviteUser({
+            user: userToInvite,
+            propertyIds: ['propertyId'],
+            proUserId: 'proId',
+          }),
+        ).to.throw('Ce client est déjà invité à ce bien immobilier');
+      });
     });
 
-    it('invites existing users to a new promotion', () => {
+    it('invites existing users to a new promotion', async () => {
       generator({
         users: {
           _id: 'userId',
@@ -937,17 +992,104 @@ describe('UserService', function() {
           invitedBy: 'proId',
         },
         promotionIds: ['promotionId'],
-        proUserId: 'proId',
         adminId: 'adminId',
-      }).then(() => {
+      }).then(({ isNewUser, proId }) => {
+        expect(isNewUser).to.equal(false);
+        expect(proId).to.equal('proId');
         const { loans } = UserService.fetchOne({
           $filters: { _id: 'userId' },
           loans: { _id: 1 },
         });
         expect(loans.length).to.equal(1);
-
-        return checkEmails(2);
       });
+    });
+
+    it('should send an email invite if it is done by an admin and the user exists already', async () => {
+      generator({
+        users: [
+          {
+            emails: [{ address: userToInvite.email, verified: true }],
+            assignedEmployee: {
+              _factory: 'admin',
+              _id: 'adminUser',
+              firstName: 'Lydia',
+              lastName: 'Abraha',
+              organisations: {},
+            },
+          },
+          {
+            _factory: 'pro',
+            _id: 'proUser',
+            assignedEmployeeId: 'adminUser',
+            organisations: { _id: 'organisation' },
+            properties: {
+              _id: 'proProperty',
+              category: PROPERTY_CATEGORY.PRO,
+              address1: 'Rue du parc 4',
+            },
+          },
+        ],
+      });
+
+      await ddpWithUserId('adminUser', () =>
+        proInviteUser.run({ user: userToInvite, propertyIds: ['proProperty'] }),
+      );
+
+      const emails = await checkEmails(1);
+
+      expect(emails.length).to.equal(1);
+      const [
+        {
+          emailId,
+          address,
+          response: { status },
+          template: {
+            template_name,
+            message: { from_email, subject, global_merge_vars, from_name },
+          },
+        },
+      ] = emails;
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+      expect(template_name).to.equal(
+        EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
+      );
+      expect(address).to.equal(userToInvite.email);
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal('e-Potek - "Rue du parc 4"');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('Lydia Abraha');
+    });
+
+    it('should send an email invite if it is done by an admin', async () => {
+      generator({
+        users: [
+          { _factory: 'admin', _id: 'adminUser', organisations: {} },
+          {
+            _factory: 'pro',
+            _id: 'proUser',
+            assignedEmployeeId: 'adminUser',
+            organisations: { _id: 'organisation' },
+            properties: {
+              _id: 'proProperty3',
+              category: PROPERTY_CATEGORY.PRO,
+              address1: 'Rue du parc 5',
+            },
+          },
+        ],
+      });
+
+      await ddpWithUserId('adminUser', () =>
+        proInviteUser.run({
+          user: userToInvite,
+          propertyIds: ['proProperty3'],
+        }),
+      );
+
+      const emails = await checkEmails(1);
+      expect(emails.length).to.equal(1);
     });
   });
 

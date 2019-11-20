@@ -35,8 +35,8 @@ export const reducePriorityOrder = new Method({
   params: { promotionOptionId: String },
 });
 
-export const promotionOptionUpdateObject = new Method({
-  name: 'promotionOptionUpdateObject',
+export const setPromotionOptionProgress = new Method({
+  name: 'setPromotionOptionProgress',
   params: { promotionOptionId: String, object: Object, id: String },
 });
 

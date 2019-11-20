@@ -8,7 +8,6 @@ import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
 import {
   makeFeedback,
@@ -22,9 +21,7 @@ import {
   RESIDENCE_TYPE,
   ORGANISATION_FEATURES,
   LOAN_STATUS,
-  LOAN_VERIFICATION_STATUS,
   CANTONS,
-  EMAIL_IDS,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -39,7 +36,6 @@ import PromotionService from '../../promotions/server/PromotionService';
 import UserService from '../../users/server/UserService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
-import { sendEmail } from '../../methods';
 import {
   ORGANISATION_NAME_SEPARATOR,
   STEPS,
@@ -114,7 +110,7 @@ class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, userId, user } = this.fetchOne({
+    const { step, user } = this.fetchOne({
       $filters: { _id: loanId },
       step: 1,
       userId: 1,
@@ -123,19 +119,7 @@ class LoanService extends CollectionService {
 
     this.update({ loanId, object: { step: nextStep } });
 
-    if (shouldSendStepNotification(step, nextStep)) {
-      if (!user || !user.assignedEmployee) {
-        throw new Meteor.Error(
-          'Il faut un conseiller sur ce dossier pour envoyer un email',
-        );
-      }
-
-      sendEmail.run({
-        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
-        userId,
-        params: { loanId, assigneeName: user.assignedEmployee.name },
-      });
-    }
+    return { step, nextStep, user };
   }
 
   setStatus({ loanId, status }) {
@@ -534,20 +518,16 @@ class LoanService extends CollectionService {
       return [...filtered, offer];
     }, []);
 
-    const promises = filteredOffers.map(offer => {
-      const feedback = makeFeedback({
-        offer: { ...offer, property },
-        model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-        formatMessage: Intl.formatMessage.bind(Intl),
-      });
-      return OfferService.sendFeedback({
+    return filteredOffers.map(offer => {
+      return {
+        feedback: makeFeedback({
+          offer: { ...offer, property },
+          model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
+          formatMessage: Intl.formatMessage.bind(Intl),
+        }),
         offerId: offer._id,
-        feedback,
-        saveFeedback: false,
-      });
+      };
     });
-
-    return Promise.all(promises);
   }
 
   updatePromotionInvitedBy({ loanId, promotionId, invitedBy }) {

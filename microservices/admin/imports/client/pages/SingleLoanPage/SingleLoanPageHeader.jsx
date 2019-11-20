@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import T, { IntlNumber } from 'core/components/Translation';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
 import {
