@@ -137,11 +137,7 @@ describe('PromotionLotService', function() {
       });
 
       await ddpWithUserId('pro1', () =>
-        reservePromotionLot.run({
-          promotionOptionId: 'pOptId',
-          startDate: moment().format('YYYY-MM-DD'),
-          agreementFileKeys: [reservationAgreementFileKey],
-        }),
+        reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
       );
       const emails = await checkEmails(3);
 

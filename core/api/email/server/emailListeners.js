@@ -53,7 +53,7 @@ addEmailListener({
 addEmailListener({
   description: "Confirmation d'invitation d'un client par un Pro -> Pro",
   method: sendEmail,
-  func: ({ params: { emailId, params, userId, proUserId } }) => {
+  func: ({ params: { emailId, params, userId } }) => {
     const emailsToWatch = [
       EMAIL_IDS.INVITE_USER_TO_PROMOTION,
       EMAIL_IDS.INVITE_USER_TO_PROPERTY,
@@ -74,12 +74,13 @@ addEmailListener({
       email: 1,
     });
 
+    const { promotion, proUserId } = params;
+
     if (emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION) {
-      const { promotion } = params;
       return internalMethod(() =>
         sendEmail.run({
           emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
-          userId: params.proUserId,
+          userId: proUserId,
           params: { customerName, email, promotionName: promotion.name },
         }),
       );

@@ -16,9 +16,7 @@ export const ddpWithUserId = (userId, func) => {
 
 // Used to call meteor methods that can be called internally only
 // This fake userId is asserted in SecurityService
-export const internalMethod = func => {
-  return ddpWithUserId('INTERNAL_CALL', func);
-};
+export const internalMethod = func => ddpWithUserId('INTERNAL_CALL', func);
 
 // This can help you determine whether you are allowed to call
 // Meteor.user() or Meteor.userId() on the server

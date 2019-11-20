@@ -127,22 +127,6 @@ class PromotionService extends CollectionService {
       UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
     }
 
-    // const { assignedEmployeeId } = UserService.fetchOne({
-    //   $filters: { _id: userId },
-    //   assignedEmployeeId: 1,
-    // });
-
-    // if (sendInvitation) {
-    //   return this.sendPromotionInvitationEmail({
-    //     userId,
-    //     isNewUser,
-    //     promotionId,
-    //     firstName: user.firstName,
-    //     proId: pro._id,
-    //     adminId: assignedEmployeeId,
-    //   }).then(() => loanId);
-    // }
-
     return Promise.resolve(loanId);
   }
 
