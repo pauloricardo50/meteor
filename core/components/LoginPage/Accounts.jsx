@@ -157,7 +157,7 @@ class FormMessage extends Accounts.ui.FormMessage {
     this.state = { open: false };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.message) {
       this.setState({ open: true });
     }

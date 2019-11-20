@@ -63,22 +63,6 @@ const schema = RevenueSchema.omit(
     uniforms: { labelProps: { shrink: true } },
     optional: false,
   }),
-  'organisationLinks.$.paidAt': {
-    type: Date,
-    optional: true,
-    defaultValue: null,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
-  'organisationLinks.$.status': {
-    type: String,
-    allowedValues: Object.values(COMMISSION_STATUS),
-    defaultValue: COMMISSION_STATUS.TO_BE_PAID,
-    uniforms: {
-      displayEmpty: false,
-      placeholder: '',
-      transform: status => <T id={`Forms.status.${status}`} />,
-    },
-  },
 });
 
 const revenueFormLayout = [
@@ -110,17 +94,14 @@ export default compose(
     schema,
     model: revenue,
     insertRevenue: model =>
-      revenueInsert.run({ revenue: model, loanId: loan && loan._id }),
+      revenueInsert
+        .run({ revenue: model, loanId: loan && loan._id })
+        .then(() => setOpen && setOpen(false)),
     modifyRevenue: ({ _id: revenueId, ...object }) => {
       setSubmitting(true);
       return revenueUpdate
         .run({ revenueId, object })
-        .then(() => {
-          setOpen(false);
-          import('../../../core/utils/message').then(({ default: message }) => {
-            message.success("C'est dans la boîte !", 2);
-          });
-        })
+        .then(() => setOpen(false))
         .finally(() => setSubmitting(false));
     },
     deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {

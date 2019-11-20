@@ -33,7 +33,7 @@ export default class Accordion extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.content) {
       this.setState({
         isActive: nextProps.isActive,

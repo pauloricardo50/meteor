@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 
 import { Money } from 'core/components/Translation';
 
@@ -10,24 +9,27 @@ const LoanBoardCardDescription = ({
   structure,
   adminNote,
 }: LoanBoardCardDescriptionProps) => {
-  // if (adminNote) {
-  //   return (
-  //     <div className="admin-note">
-  //       <ReactMarkdown source={adminNote} />
-  //     </div>
-  //   );
-  // }
-
-  if (structure && structure.wantedLoan) {
-    return (
-      <h4 className="wanted-loan">
-        <small className="secondary">Prêt hypothécaire</small>
-        <Money value={structure.wantedLoan} tag="div" />
-      </h4>
-    );
-  }
-
-  return <h4 className="secondary">Pas d'infos</h4>;
+  return (
+    <>
+      <div className="admin-note">
+        {adminNote ? (
+          adminNote.split('\n')[0]
+        ) : (
+          <i className="secondary">Pas de note</i>
+        )}
+      </div>
+      {structure && structure.wantedLoan ? (
+        <h5 className="flex center-align text-center">
+          <small className="secondary">PH:&nbsp;</small>
+          <Money value={structure.wantedLoan} />
+        </h5>
+      ) : (
+        <h5 className="secondary">
+          <i>Pas de plan financier</i>
+        </h5>
+      )}
+    </>
+  );
 };
 
 export default LoanBoardCardDescription;

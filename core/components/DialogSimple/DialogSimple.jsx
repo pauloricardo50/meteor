@@ -11,7 +11,7 @@ export default class DialogSimple extends Component {
     this.state = { open: false, disabled: false, isCancel: true };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.close && nextProps.close) {
       this.setState({ open: false });
     }

@@ -10,7 +10,7 @@ const makeSkipContainer = (container, skip) => WrappedComponent =>
       this.setWrappedComponent(props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       if (skip(this.props) !== skip(nextProps)) {
         this.setWrappedComponent(nextProps);
         this.forceUpdate();

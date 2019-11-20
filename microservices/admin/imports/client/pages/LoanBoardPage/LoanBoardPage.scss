@@ -42,7 +42,7 @@
   &-options .right {
     align-items: center;
 
-     > * {
+    > * {
       margin-left: 8px;
     }
   }
@@ -50,7 +50,7 @@
   &-options .left {
     flex-grow: 1;
 
-     > * {
+    > * {
       margin-right: 32px;
     }
   }
@@ -112,7 +112,7 @@ $button-height: 30px;
       flex-shrink: 0;
     }
 
-     > * {
+    > * {
       display: flex;
       align-items: center;
     }
@@ -149,14 +149,11 @@ $button-height: 30px;
   }
 
   .card-top {
-    padding: 12px;
+    padding: 4px 8px;
 
-    .wanted-loan {
-      margin: 0;
 
-      text-align: center;
-
-      font-family: 'Eina04-Regular';
+    hr {
+      margin: 4px 0;
     }
   }
 
@@ -177,7 +174,7 @@ $button-height: 30px;
     display: flex;
     align-items: center;
 
-    margin-bottom: 0;
+    margin: 0;
 
     .date {
       white-space: nowrap;
@@ -229,7 +226,7 @@ $button-height: 30px;
 
   flex-grow: 1;
 
-  padding: 8px 0;
+  padding: 0;
 
   .buttons {
     position: absolute;
@@ -283,7 +280,7 @@ $button-height: 30px;
 
   max-height: 400px;
 
-   > * {
+  > * {
     margin-left: 0;
   }
 

@@ -114,6 +114,10 @@ export const getPlaceholder = ({
     return '';
   }
 
+  if (type === COMPONENT_TYPES.SELECT) {
+    return formatMessage({ id: 'general.pick' });
+  }
+
   return `${placeholderPrefix}${formatMessage({
     id: `${formatStringId({
       intlPrefix,

@@ -72,18 +72,13 @@ class SessionService extends CollectionService {
       { connectionId },
       {
         $set: { shared: share },
-        $unset: { impersonatedUserLastPageVisited: true },
+        $unset: { followed: true },
       },
     );
   }
 
-  followImpersonatedSession({ connectionId }) {
-    const session = this.getByConnectionId(connectionId);
-
-    return this.baseUpdate(
-      { connectionId },
-      { $set: { impersonatedUserLastPageVisited: session.lastPageVisited } },
-    );
+  followImpersonatedSession({ connectionId, follow }) {
+    return this.baseUpdate({ connectionId }, { $set: { followed: follow } });
   }
 
   setUserConnected({ connectionId }) {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
@@ -11,7 +11,6 @@ import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
-import impersonateSessionNotification from './impersonateSessionNotification';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
@@ -46,10 +45,6 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
   if (redirect) {
     return <Redirect to={redirect} />;
   }
-
-  useEffect(() => {
-    impersonateSessionNotification(props);
-  }, [props.impersonatedSession]);
 
   return (
     <div className={rootClasses}>

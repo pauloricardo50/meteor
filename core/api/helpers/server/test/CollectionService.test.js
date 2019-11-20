@@ -111,11 +111,14 @@ describe('CollectionService', () => {
 
   beforeEach(() => {
     resetDatabase();
-    ADocId = AService.insert({ data: 'AData' });
-    BDocId = BService.insert({ data: 'BData' });
   });
 
   describe('addLink', () => {
+    beforeEach(() => {
+      ADocId = AService.insert({ data: 'AData' });
+      BDocId = BService.insert({ data: 'BData' });
+    });
+
     describe('should add link documents when link strategy is', () => {
       it('one with direct link', () => {
         AService.addLink({ id: ADocId, linkName: 'one', linkId: BDocId });
@@ -130,6 +133,7 @@ describe('CollectionService', () => {
           },
         );
       });
+
       it('one with inverse link', () => {
         BService.addLink({ id: BDocId, linkName: 'oneA', linkId: ADocId });
         expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
@@ -143,13 +147,14 @@ describe('CollectionService', () => {
           },
         );
       });
+
       it('one-meta with direct link', () => {
         const metadata = { meta: 'someData' };
         AService.addLink({
           id: ADocId,
           linkName: 'oneMeta',
           linkId: BDocId,
-          metadata: { ...metadata },
+          metadata,
         });
         expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
           {
@@ -162,14 +167,14 @@ describe('CollectionService', () => {
           },
         );
       });
-      // https://github.com/cult-of-coders/grapher/issues/335
-      it.skip('one-meta with inverse link', () => {
+
+      it('one-meta with inverse link', () => {
         const metadata = { meta: 'someData' };
         BService.addLink({
           id: BDocId,
           linkName: 'oneMetaA',
           linkId: ADocId,
-          metadata: { ...metadata },
+          metadata,
         });
         expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
           {
@@ -182,6 +187,7 @@ describe('CollectionService', () => {
           },
         );
       });
+
       it('many with direct link', () => {
         AService.addLink({
           id: ADocId,
@@ -199,6 +205,7 @@ describe('CollectionService', () => {
           },
         );
       });
+
       it('many with inverse link', () => {
         BService.addLink({
           id: BDocId,
@@ -217,13 +224,14 @@ describe('CollectionService', () => {
           },
         );
       });
+
       it('many-meta with direct link', () => {
         const metadata = { meta: 'someData' };
         AService.addLink({
           id: ADocId,
           linkName: 'manyMeta',
           linkId: BDocId,
-          metadata: { ...metadata },
+          metadata,
         });
         expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
           {
@@ -243,7 +251,7 @@ describe('CollectionService', () => {
           id: BDocId,
           linkName: 'manyMetaA',
           linkId: ADocId,
-          metadata: { ...metadata },
+          metadata,
         });
 
         expect(AService.createQuery(AQuery(ADocId)).fetchOne()).to.deep.include(
@@ -257,6 +265,30 @@ describe('CollectionService', () => {
           },
         );
       });
+    });
+  });
+
+  describe('distinct', () => {
+    it('return distinct values', () => {
+      CollectionA.insert({ data: '1' });
+      CollectionA.insert({ data: '1' });
+      CollectionA.insert({ data: '2' });
+
+      const distinct = AService.distinct('data');
+
+      expect(distinct).to.deep.equal(['1', '2']);
+    });
+
+    it('returns distinct values with a selector', () => {
+      CollectionA.insert({ data: '1' });
+      CollectionA.insert({ data: '1' });
+      CollectionA.insert({ data: '2' });
+      CollectionA.insert({ data: '2' });
+      CollectionA.insert({ data: '3' });
+
+      const distinct = AService.distinct('data', { data: { $ne: '1' } });
+
+      expect(distinct).to.deep.equal(['2', '3']);
     });
   });
 });

@@ -51,7 +51,7 @@ export default class BaseChart extends PureComponent {
     initializeHighcharts();
   }
 
-  componentWillReceiveProps({ data: nextData }) {
+  UNSAFE_componentWillReceiveProps({ data: nextData }) {
     const { data: prevData } = this.props;
     // If previous data[i].value is different from next data, update chart
 

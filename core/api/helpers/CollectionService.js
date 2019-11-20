@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { createMeteorAsyncFunction } from './helpers';
 
 class CollectionService {
   constructor(collection, { autoValues } = {}) {
@@ -134,8 +135,11 @@ class CollectionService {
     return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
   }
 
-  aggregate(...args) {
-    return this.rawCollection.aggregate(...args);
+  aggregate(pipeline, options) {
+    const aggregate = createMeteorAsyncFunction(() =>
+      this.rawCollection.aggregate(pipeline, options).toArray(),
+    );
+    return aggregate();
   }
 
   // Don't return the results from linker
@@ -261,6 +265,13 @@ class CollectionService {
         ),
       },
     });
+  }
+
+  distinct(key, query = {}, options = {}) {
+    const func = createMeteorAsyncFunction(
+      this.rawCollection.distinct.bind(this.rawCollection),
+    );
+    return func(key, query, options);
   }
 }
 

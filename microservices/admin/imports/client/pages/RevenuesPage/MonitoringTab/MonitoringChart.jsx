@@ -3,6 +3,7 @@ import React from 'react';
 
 import Chart from 'core/components/charts/Chart';
 import { injectIntl } from 'react-intl';
+import colors from 'core/config/colors';
 
 type MonitoringChartProps = {};
 
@@ -23,14 +24,40 @@ const getSeries = ({ data, value }) => {
     case 'revenues':
       return [
         {
-          name: 'Attendu',
+          name: 'Revenus bruts attendus',
           data: data.map(({ expectedRevenues }) =>
             Math.round(expectedRevenues),
           ),
+          stack: 'Revenus bruts',
+          color: '#90ee90',
         },
         {
-          name: 'Payé',
+          name: 'Revenus bruts perçus',
           data: data.map(({ paidRevenues }) => Math.round(paidRevenues)),
+          stack: 'Revenus bruts',
+          color: '#024b30',
+        },
+        {
+          name: 'Revenus nets',
+          data: data.map(({ revenues, commissionsToPay, commissionsPaid }) =>
+            Math.round(revenues - commissionsPaid - commissionsToPay),
+          ),
+          stack: 'Commissions',
+          color: colors.primary,
+        },
+        {
+          name: 'Commissions à payer',
+          data: data.map(({ commissionsToPay }) =>
+            Math.round(commissionsToPay),
+          ),
+          stack: 'Commissions',
+          color: '#f08080',
+        },
+        {
+          name: 'Commissions payées',
+          data: data.map(({ commissionsPaid }) => Math.round(commissionsPaid)),
+          stack: 'Commissions',
+          color: '#8b0000',
         },
       ];
     case 'loanValue':
@@ -67,6 +94,8 @@ const MonitoringChart = ({
               dataLabels: {
                 formatter() {
                   if (value === 'revenues') {
+                    console.log('this', this);
+
                     return `${Math.round(this.y / 1000)}k`;
                   }
                   if (value === 'loanValue') {

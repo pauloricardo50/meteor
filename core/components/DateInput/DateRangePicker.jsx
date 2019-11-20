@@ -32,6 +32,8 @@ const DateRangePicker = ({
       onFocusChange={onFocusChange}
       reopenPickerOnClearDates
       showClearDates
+      enableOutsideDays
+      isOutsideRange={() => false}
     />
   );
 };

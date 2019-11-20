@@ -187,10 +187,16 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
       SecurityService.properties.isAllowedToView({ propertyId, userId });
     },
-    validateParams: { propertyId: String, userId: String },
+    validateParams: {
+      propertyId: String,
+      userId: String,
+    },
   },
   resolver: ({ userId, propertyId }) =>
-    proPropertyLoansResolver({ calledByUserId: userId, propertyId }),
+    proPropertyLoansResolver({
+      calledByUserId: userId,
+      propertyId,
+    }),
 });
 
 exposeQuery({

@@ -20,6 +20,7 @@ const colors = {
     contrastText: '#fff',
     darkPrimary: '#0048bb', // Darken 20%
     darkSuccess: '#1aa890', // Darken 20%
+    darkError: '#b30c5e', // Darken 20%
   },
   interestRates: {
     [INTEREST_RATES.LIBOR]: '#0047AC',

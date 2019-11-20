@@ -19,6 +19,15 @@
     width: 100%;
   }
 
+  .pg-viewer-wrapper,
+  .pg-viewer {
+    width: 100%;
+
+    > * {
+      width: 100% !important;
+    }
+  }
+
   &-closer {
     position: absolute;
     z-index: 1;

@@ -58,7 +58,7 @@
 
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -70,7 +70,7 @@
     }
 
     &.success {
-       > span {
+      > span {
         color: $success;
       }
 
@@ -194,7 +194,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -354,12 +354,12 @@ h2 {
   }
 
   .form-group {
-     > div {
+    > div {
       max-width: 100% !important;
     }
   }
 
-   > div {
+  > div {
     max-width: 100% !important;
   }
 
@@ -373,7 +373,7 @@ h2 {
 .description {
   align-self: initial;
 
-   > p {
+  > p {
     justify-content: flex-start;
 
     max-width: 100%;

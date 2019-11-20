@@ -70,7 +70,7 @@ class AutoFormTextInput extends Component {
     Meteor.clearTimeout(this.timeout);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const valueIsDifferent =
       nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
     if (valueIsDifferent) {

@@ -106,7 +106,16 @@ module.exports = {
       },
       { enforceForRenamedProperties: false },
     ],
-    camelcase: ['error', { ignoreDestructuring: true }],
+    camelcase: [
+      'error',
+      {
+        ignoreDestructuring: true,
+        allow: [
+          'UNSAFE_componentWillMount',
+          'UNSAFE_componentWillReceiveProps',
+        ],
+      },
+    ],
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
     // and then remove these comments

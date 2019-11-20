@@ -14,10 +14,10 @@ const SessionSchema = new SimpleSchema({
   shared: { type: Boolean, optional: true, defaultValue: false },
   lastPageVisited: { type: String, optional: true },
   lastMethodCalled: { type: String, optional: true },
-  impersonatedUserLastPageVisited: { type: String, optional: true },
   userIsConnected: { type: Boolean, optional: true, defaultValue: false },
   impersonatingAdminLink: { type: Object, optional: true },
   'impersonatingAdminLink._id': { type: String, optional: true },
+  followed: { type: Boolean, optional: true, defaultValue: false },
 });
 
 export default SessionSchema;

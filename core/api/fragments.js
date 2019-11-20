@@ -177,12 +177,19 @@ export const lender = () => ({
   },
 });
 
-export const adminLender = () => ({
-  ...lender(),
-  status: 1,
-  adminNote: 1,
-  offers: adminOffer(),
-});
+export const adminLender = () => {
+  const lenderFragment = lender();
+  return {
+    ...lenderFragment,
+    adminNote: 1,
+    offers: adminOffer(),
+    organisation: {
+      ...lenderFragment.organisation,
+      commissionRates: 1,
+    },
+    status: 1,
+  };
+};
 
 
 // //
@@ -360,7 +367,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
   properties: adminProperty({ withSort }),
-  revenues: revenue(),
+  revenues: adminRevenue(),
   status: 1,
   tasksCache: {
     createdAt: 1,
@@ -462,7 +469,7 @@ export const notification = () => ({
   relatedDoc: 1,
   task: task(),
   title: 1,
-  revenue: revenue(),
+  revenue: adminRevenue(),
   updatedAt: 1,
 });
 
@@ -1026,12 +1033,12 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const revenue = () => ({
+export const adminRevenue = () => ({
   amount: 1,
   createdAt: 1,
   description: 1,
   expectedAt: 1,
-  loan: { name: 1 },
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
@@ -1052,7 +1059,7 @@ export const userSession = () => ({
   userId: 1,
   connectionId: 1,
   shared: 1,
-  impersonatedUserLastPageVisited: 1,
   userIsConnected: 1,
   impersonatingAdmin: { name: 1, firstName: 1, lastName: 1 },
+  followed: 1,
 });

@@ -32,7 +32,7 @@ class ProgressCircle extends Component {
     this.style = style;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ currentPercent: this.animated ? 0 : this.targetPercent });
   }
 

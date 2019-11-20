@@ -70,7 +70,6 @@ export const makeMapRevenue = ({
     sourceOrganisation,
     loan,
   } = revenue;
-  console.log('revenue:', revenue);
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   return {

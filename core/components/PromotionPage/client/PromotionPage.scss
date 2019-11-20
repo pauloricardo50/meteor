@@ -62,7 +62,7 @@
     &-actions {
       margin-bottom: 8px;
 
-       > *:last-child {
+      > *:last-child {
         margin-left: 8px;
       }
     }
@@ -83,7 +83,7 @@
       display: flex;
       align-items: center;
 
-       > * {
+      > * {
         margin-left: 4px;
       }
     }
@@ -95,7 +95,7 @@
 
       width: 100%;
 
-       > * {
+      > * {
         min-width: 200px;
         margin-right: 8px;
 
@@ -124,7 +124,7 @@
       color: $primary;
     }
 
-     > * {
+    > * {
       flex-grow: 1;
     }
   }
@@ -232,7 +232,7 @@
     display: flex;
     align-items: center;
 
-     > * {
+    > * {
       margin-left: 4px;
     }
   }
@@ -249,7 +249,7 @@
 .priority-order {
   display: flex;
 
-   > * {
+  > * {
     margin-right: 4px;
   }
 
@@ -294,7 +294,7 @@
   display: flex;
   align-items: center;
 
-   > * {
+  > * {
     margin-right: 8px;
   }
 }
@@ -303,7 +303,7 @@
   display: flex;
   align-items: center;
 
-   > * {
+  > * {
     margin-right: 4px;
   }
 }
@@ -319,11 +319,11 @@
 
     width: 100%;
 
-     > * {
+    > * {
       width: 200px;
     }
 
-     > *:first-child {
+    > *:first-child {
       margin-right: 8px;
     }
   }

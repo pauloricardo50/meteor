@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { userLoans } from 'core/api/loans/queries';
-import { userImpersonatedSession } from 'core/api/sessions/queries';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import getBaseRedirect, {
   isOnAllowedRoute,
@@ -89,13 +88,6 @@ const withRedirect = withProps(({ history }) => {
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });
 
-const withImpersonatedSession = withSmartQuery({
-  query: userImpersonatedSession,
-  queryOptions: { reactive: true, single: true },
-  dataName: 'impersonatedSession',
-  renderMissingDoc: false,
-});
-
 export default compose(
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
@@ -121,5 +113,4 @@ export default compose(
   withSideNavContextProvider,
   withSideNavContext,
   withContactButtonProvider,
-  withImpersonatedSession,
 );
