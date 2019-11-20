@@ -2,10 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import moment from 'moment';
 
-import FileService from 'core/api/files/server/FileService';
-import S3Service from 'core/api/files/server/S3Service';
 import PromotionService from 'core/api/promotions/server/PromotionService';
 import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 import generator from '../../../factories';
@@ -15,22 +12,6 @@ import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
-
-const uploadTempPromotionAgreement = async userId => {
-  const reservationAgreementFile = Buffer.from('hello', 'utf-8');
-  const reservationAgreementFileKey = FileService.getTempS3FileKey(
-    userId,
-    { name: 'Convention de réservation.pdf' },
-    { id: 'agreement' },
-  );
-
-  await S3Service.putObject(
-    reservationAgreementFile,
-    reservationAgreementFileKey,
-  );
-
-  return reservationAgreementFileKey;
-};
 
 describe('PromotionLotService', function() {
   this.timeout(20000);
@@ -121,9 +102,6 @@ describe('PromotionLotService', function() {
 
   describe('reservePromotionLot', () => {
     it('sends emails to those who need it', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement(
-        'pro1',
-      );
       PromotionService.setUserPermissions({
         promotionId: 'promoId',
         userId: 'pro1',
@@ -208,9 +186,6 @@ describe('PromotionLotService', function() {
     });
 
     it('does not let a lot be reserved by a pro who did not invite the customer', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement(
-        'pro2',
-      );
       PromotionService.setUserPermissions({
         promotionId: 'promoId',
         userId: 'pro2',
@@ -224,11 +199,7 @@ describe('PromotionLotService', function() {
       });
 
       return ddpWithUserId('pro2', () =>
-        reservePromotionLot.run({
-          promotionOptionId: 'pOptId',
-          startDate: moment().format('YYYY-MM-DD'),
-          agreementFileKeys: [reservationAgreementFileKey],
-        }),
+        reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
       )
         .then(() => expect(1).to.equal(2, 'Should throw'))
         .catch(error =>
@@ -239,16 +210,8 @@ describe('PromotionLotService', function() {
     });
 
     it('does not let a lot be reserved by a pro who cannot reserve lots', async () => {
-      const reservationAgreementFileKey = await uploadTempPromotionAgreement(
-        'pro1',
-      );
-
       return ddpWithUserId('pro1', () =>
-        reservePromotionLot.run({
-          promotionOptionId: 'pOptId',
-          startDate: moment().format('YYYY-MM-DD'),
-          agreementFileKeys: [reservationAgreementFileKey],
-        }),
+        reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
       )
         .then(() => expect(1).to.equal(2, 'Should throw'))
         .catch(error =>
@@ -259,14 +222,8 @@ describe('PromotionLotService', function() {
     });
 
     it('can reserve, cancel, and then reactivate an existing promotionReservation', async () => {
-      let reservationAgreementFileKey = await uploadTempPromotionAgreement(
-        'pro1',
-      );
-
       await PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',
-        startDate: moment().format('YYYY-MM-DD'),
-        agreementFileKeys: [reservationAgreementFileKey],
       });
 
       PromotionLotService.sellPromotionLot({
@@ -287,12 +244,8 @@ describe('PromotionLotService', function() {
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
 
-      reservationAgreementFileKey = await uploadTempPromotionAgreement('pro1');
-
       await PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',
-        startDate: moment().format('YYYY-MM-DD'),
-        agreementFileKeys: [reservationAgreementFileKey],
       });
 
       pO = PromotionOptionService.get('pOptId');
