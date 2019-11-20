@@ -39,27 +39,27 @@ const canUpdatePromotionOption = (_id, userId) => {
 
 promotionOptionUpdate.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.update(params);
+  return PromotionOptionService.update(params);
 });
 
 promotionOptionRemove.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.remove(params);
+  return PromotionOptionService.remove(params);
 });
 
 increaseOptionPriority.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.increasePriorityOrder(params);
+  return PromotionOptionService.increasePriorityOrder(params);
 });
 
 reducePriorityOrder.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.reducePriorityOrder(params);
+  return PromotionOptionService.reducePriorityOrder(params);
 });
 
 setPromotionOptionProgress.setHandler(({ userId }, params) => {
   canUpdatePromotionOption(params.promotionOptionId, userId);
-  PromotionOptionService.setProgress(params);
+  return PromotionOptionService.setProgress(params);
 });
 
 promotionOptionActivateReservation.setHandler(({ userId }, params) => {

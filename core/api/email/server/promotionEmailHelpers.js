@@ -102,7 +102,6 @@ export const PROMOTION_EMAILS = [
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
     ],
-    getEmailParams: getPromotionOptionMailParams,
   },
   {
     description: [
@@ -120,7 +119,6 @@ export const PROMOTION_EMAILS = [
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
     ],
-    getEmailParams: getPromotionOptionMailParams,
   },
   {
     description: "Annulation de la réservation d'un lot -> Pros",
@@ -131,7 +129,6 @@ export const PROMOTION_EMAILS = [
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
     ],
-    getEmailParams: getPromotionOptionMailParams,
   },
   {
     description: [
@@ -204,7 +201,7 @@ export const PROMOTION_EMAILS = [
   {
     description: [
       'Validation de la banque -> Client',
-      'Validation de la banque -> Coutier, Promoteur',
+      'Validation de la banque -> Courtier, Promoteur',
     ],
     method: setPromotionOptionProgress,
     shouldSend: ({ params: { id }, result: { nextStatus } }) =>
@@ -226,11 +223,10 @@ export const PROMOTION_EMAILS = [
 export const mapConfigToListener = ({
   emailId,
   recipients,
-  getEmailParams,
   shouldSend = () => true,
 }) => {
   return (...args) => {
-    if (!shouldSend(args)) {
+    if (!shouldSend(...args)) {
       return;
     }
 
@@ -257,11 +253,15 @@ export const mapConfigToListener = ({
         getEmailParamsOverride = recipientConfig.getEmailParams;
       }
 
+      if (!emailRecipients[type]) {
+        return;
+      }
+
       emailRecipients[type].forEach(recipient => {
         const { userId } = recipient;
         const emailParams = getEmailParamsOverride
           ? getEmailParamsOverride(...args, recipient)
-          : getEmailParams(...args, recipient);
+          : getPromotionOptionMailParams(...args, recipient);
 
         internalMethod(() =>
           sendEmail.run({

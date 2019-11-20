@@ -39,6 +39,7 @@ import {
 import Notifications from '../notifications/index';
 import Activities from '../activities/index';
 import { LOAN_CATEGORIES } from '../loans/loanConstants';
+import PropertyService from '../properties/server/PropertyService';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -129,7 +130,15 @@ Factory.define('promotion', Promotions, {
 });
 
 Factory.define('promotionOption', PromotionOptions, {});
-Factory.define('promotionLot', PromotionLots, {});
+Factory.define('promotionLot', PromotionLots, {
+  propertyLinks: () => {
+    const propertyId = PropertyService.insert({
+      address1: 'Rue du parc 1',
+      value: 1000000,
+    });
+    return [{ _id: propertyId }];
+  },
+});
 
 Factory.define('lot', Lots, {
   name: 'test',
