@@ -22,7 +22,7 @@ const getImages = (documents = {}, imageUrls = []) => {
   ) {
     images = [
       ...images,
-      documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].map(({ url }) => url),
+      ...documents[PROPERTY_DOCUMENTS.PROPERTY_PICTURES].map(({ url }) => url),
     ];
   }
 
