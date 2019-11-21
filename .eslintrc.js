@@ -87,7 +87,7 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 0,
     'no-nested-ternary': 0,
-    'newline-per-chained-call': [2, { ignoreChainWithDepth: 3 }],
+    'newline-per-chained-call': [2, { ignoreChainWithDepth: 4 }],
     'prefer-arrow-callback': 0,
     // Let this rule be managed by prettier
     // https://github.com/prettier/prettier/issues/5309

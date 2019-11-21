@@ -22,13 +22,17 @@ class PromotionService extends CollectionService {
 
   insert({ promotion = {}, userId }) {
     const isAdmin = SecurityService.isUserAdmin(userId);
+    const promotionId = super.insert(promotion);
 
-    return super.insert({
-      ...promotion,
-      userLinks: isAdmin
-        ? undefined
-        : [{ _id: userId, permissions: PROMOTION_PERMISSIONS_FULL_ACCESS() }],
-    });
+    if (userId && !isAdmin) {
+      this.addProUser({
+        promotionId,
+        userId,
+        permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+      });
+    }
+
+    return promotionId;
   }
 
   insertPromotionProperty({ promotionId, property }) {
@@ -128,12 +132,12 @@ class PromotionService extends CollectionService {
     return Promise.resolve(loanId);
   }
 
-  addProUser({ promotionId, userId }) {
+  addProUser({ promotionId, userId, permissions = {} }) {
     return this.addLink({
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      metadata: { permissions: {} },
+      metadata: { permissions },
     });
   }
 

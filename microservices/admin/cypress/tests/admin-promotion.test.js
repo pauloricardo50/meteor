@@ -105,6 +105,107 @@ describe('Admin promotion', () => {
   });
 
   describe('promotionReservations', () => {
+    it('can visit all working tabs', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+
+      cy.get('.promotion-management').should('exist');
+
+      cy.contains("Vue d'ensemble").click();
+      cy.get('.promotion-lots-table table tbody tr').then(trs => {
+        expect(trs.length).to.equal(5);
+      });
+
+      cy.contains('Carte').click();
+      cy.get('.google-map').should('exist');
+
+      cy.contains('Partenaires').click();
+      cy.get('.promotion-partners')
+        .contains('Architecte')
+        .should('exist');
+
+      cy.contains('Clients').click();
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
+
+      cy.contains('Pros').click();
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+    });
+
+    it('can change roles, remove a promotion Pro, and add one', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+      cy.contains('Pros').click();
+
+      cy.contains('visitor1@e-potek.ch')
+        .parents('tr')
+        .find(`input[name=roles]`)
+        .parent()
+        .click();
+
+      cy.get('#menu-roles')
+        .contains('Visiteur')
+        .click();
+      cy.get('#menu-roles')
+        .contains('Promoteur')
+        .click();
+
+      cy.get('body').type('{esc}');
+
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+
+      cy.contains('visitor1@e-potek.ch')
+        .parents('tr')
+        .find('[aria-label="Enlever de la promotion"]')
+        .click();
+
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
+
+      cy.contains('Ajouter un pro').click();
+      cy.get('[role=dialog]')
+        .find('input[name="collection-search"]')
+        .last()
+        .type('visi');
+
+      cy.get('[role=tooltip]')
+        .contains('Ajouter')
+        .click();
+
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+    });
+
+    it('can add and remove a customer', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+
+      cy.contains('Ajouter un client').click();
+
+      cy.get('[role=dialog]')
+        .find('input[name=email]')
+        .type('customer@e-potek.ch');
+      cy.get('[role=dialog]')
+        .find('input[name=firstName]')
+        .type('Customer');
+      cy.get('[role=dialog]')
+        .find('input[name=lastName]')
+        .type('Test');
+      cy.get('[role=dialog]')
+        .find('input[name=phoneNumber]')
+        .type('0790000000');
+      cy.setSelect('invitedBy', 1);
+      cy.setSelect('promotionLotIds', 1);
+      cy.get('[role=dialog] form').submit();
+
+      cy.contains('Clients').click();
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+
+      cy.get('.actions')
+        .first()
+        .click();
+      cy.contains('Supprimer').click();
+
+      cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
+    });
+
     it('test name', () => {
       cy.visit('/promotions');
       cy.contains('Pré Polly').click();
