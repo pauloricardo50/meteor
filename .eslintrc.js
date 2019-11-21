@@ -116,6 +116,7 @@ module.exports = {
         ],
       },
     ],
+    'arrow-body-style': ['error', 'as-needed'],
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
     // and then remove these comments
