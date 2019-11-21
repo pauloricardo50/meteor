@@ -40,6 +40,7 @@ import {
   ORGANISATION_NAME_SEPARATOR,
   STEPS,
   APPLICATION_TYPES,
+  LOAN_STATUS_ORDER,
 } from '../loanConstants';
 import { fullLoan } from '../queries';
 
@@ -642,9 +643,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-      max.organisationName
-      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+          max.organisationName
+        } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -835,7 +836,9 @@ class LoanService extends CollectionService {
   }
 
   insertBorrowers({ loanId, amount }) {
-    const { borrowerIds: existingBorrowers = [], userId } = this.findOne(loanId);
+    const { borrowerIds: existingBorrowers = [], userId } = this.findOne(
+      loanId,
+    );
 
     if (existingBorrowers.length === 2) {
       throw new Meteor.Error('Cannot insert more borrowers');

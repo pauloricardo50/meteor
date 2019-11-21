@@ -3,9 +3,8 @@ import React, { Children } from 'react';
 import connectField from 'uniforms/connectField';
 import joinName from 'uniforms/joinName';
 
-import ListDelField from 'uniforms-material/ListDelField';
 import { CustomAutoField } from './AutoFormComponents';
-import { iconMap as IconMap } from '../Icon/Icon';
+import CustomListDelField from './CustomListDelField';
 
 const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
   <ListItemMaterial
@@ -23,12 +22,7 @@ const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
     ) : (
       <CustomAutoField isListField {...props} />
     )}
-    <ListDelField
-      className="list-del-field"
-      name={props.name}
-      icon={<IconMap.remove />}
-      size="small"
-    />
+    <CustomListDelField name={props.name} />
   </ListItemMaterial>
 );
 

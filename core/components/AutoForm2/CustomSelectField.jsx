@@ -200,15 +200,15 @@ const CustomSelectField = ({
   values = [],
   renderValue,
   ...props
-}: CustomSelectFieldProps) => (
-    <SelectField
-      {...props}
-      allowedValues={values}
-      transform={transform}
-      renderValue={renderValue}
-      labelProps={{ shrink: true }}
-    />
-  );
+}) => (
+  <SelectField
+    {...props}
+    allowedValues={values}
+    transform={transform}
+    renderValue={renderValue}
+    labelProps={{ shrink: true }}
+  />
+);
 
 export default compose(
   CustomSelectFieldContainer,

@@ -166,7 +166,7 @@ Cypress.Commands.add(
   'uploadFile',
   { prevSubject: 'element' },
   (subject, fileName) => {
-    cy.window().then((window) => {
+    cy.window().then(window => {
       const blob = new window.Blob(
         [JSON.stringify({ hello: 'world' }, undefined, 2)],
         {
