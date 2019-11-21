@@ -88,7 +88,7 @@ export const getUserOrganisationName = ({ user }) => {
   return organisationName;
 };
 
-export const getUserNameAndOrganisation = ({ user }) => {
+export const getUserNameAndOrganisation = ({ user = {} }) => {
   const { name, organisations = [] } = user;
   const organisationName = !!organisations.length && organisations[0].name;
   return organisationName ? `${name} (${organisationName})` : name;

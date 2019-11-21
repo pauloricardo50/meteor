@@ -114,7 +114,18 @@ class DevPage extends Component {
               raised
               secondary
               className="mr20"
-              onClick={() => Meteor.call('generateTestData', currentUser.email)}
+              onClick={() =>
+                Meteor.call('generateTestData', {
+                  currentUserEmail: currentUser.email,
+                  generateDevs: true,
+                  generateAdmins: true,
+                  generateUsers: true,
+                  generateLoans: true,
+                  generateOrganisations: true,
+                  generateUnownedLoan: true,
+                  generateTestUser: true,
+                })
+              }
             >
               <Icon type="groupAdd" />
               Generate test data

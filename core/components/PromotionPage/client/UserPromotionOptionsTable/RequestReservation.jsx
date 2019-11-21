@@ -22,6 +22,7 @@ const RequestReservation = ({
   promotionLotName,
   status,
 }: RequestReservationProps) => {
+  console.log('promotionOption:', promotionOption);
   const {
     _id: promotionOptionId,
     loan: { promotions = [] },
@@ -50,7 +51,7 @@ const RequestReservation = ({
         style: { alignSelf: 'center' },
       }}
       title={<T id="PromotionPage.lots.requestReservation.title" />}
-      description={(
+      description={
         <div className="request-reservation-description">
           <span className="fa-layers fa-fw icon">
             <FontAwesomeIcon
@@ -70,7 +71,7 @@ const RequestReservation = ({
             values={{ promotionLotName, proName }}
           />
         </div>
-      )}
+      }
     />
   );
 };

@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-import { Roles } from 'meteor/alanning:roles';
+
 import range from 'lodash/range';
 import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';

@@ -49,40 +49,36 @@ const PromotionLotsTable = ({
 
       <TableWithModal
         modalType="dialog"
-        getModalProps={({ row: { promotionLot } }) => {
-          console.log('promotionLot:', promotionLot);
-
-          return {
-            fullWidth: true,
-            maxWidth: false,
-            title: (
-              <div className="modal-promotion-lot-title">
-                <span>{promotionLot && promotionLot.name}</span>
-                <div>
-                  {canModifyLots && (
-                    <PromotionLotModifier
-                      className="mr-8"
-                      promotionLot={promotionLot}
-                    />
-                  )}
-                  {canManageDocuments && (
-                    <LotDocumentsManager
-                      documents={promotionLot && promotionLot.documents}
-                      property={promotionLot && promotionLot.properties[0]}
-                      currentUser={currentUser}
-                    />
-                  )}
-                </div>
+        getModalProps={({ row: { promotionLot } }) => ({
+          fullWidth: true,
+          maxWidth: false,
+          title: (
+            <div className="modal-promotion-lot-title">
+              <span>{promotionLot && promotionLot.name}</span>
+              <div>
+                {canModifyLots && (
+                  <PromotionLotModifier
+                    className="mr-8"
+                    promotionLot={promotionLot}
+                  />
+                )}
+                {canManageDocuments && (
+                  <LotDocumentsManager
+                    documents={promotionLot && promotionLot.documents}
+                    property={promotionLot && promotionLot.properties[0]}
+                    currentUser={currentUser}
+                  />
+                )}
               </div>
-            ),
-            children: (
-              <PromotionLotDetail
-                promotionLot={promotionLot}
-                promotion={promotion}
-              />
-            ),
-          };
-        }}
+            </div>
+          ),
+          children: (
+            <PromotionLotDetail
+              promotionLot={promotionLot}
+              promotion={promotion}
+            />
+          ),
+        })}
         rows={rows}
         columnOptions={columnOptions}
         {...props}

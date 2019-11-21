@@ -123,7 +123,7 @@ Meteor.methods({
     });
   },
   async insertFullPromotion() {
-    await createPromotionDemo(this.userId, false, false, 10);
+    await createPromotionDemo(this.userId, false, false, 4);
   },
   removeAllPromotions() {
     PromotionService.remove({ promotionId: {} });
@@ -347,6 +347,8 @@ Meteor.methods({
     }
   },
   isLoggedIn() {
+    console.log('isLoggedIn???', this.userId);
+
     return this.userId;
   },
   resetDatabase,

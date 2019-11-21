@@ -8,7 +8,10 @@ describe('Single Loan Page', () => {
     cy.initiateTest();
 
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData');
+    cy.callMethod('generateTestData', {
+      generateAdmins: true,
+      generateOrganisations: true,
+    });
   });
 
   beforeEach(() => {

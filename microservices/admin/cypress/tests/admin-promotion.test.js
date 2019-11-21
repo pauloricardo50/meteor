@@ -91,7 +91,9 @@ describe('Admin promotion', () => {
     cy.initiateTest();
 
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData');
+    cy.callMethod('generateTestData', {
+      generateAdmins: true,
+    });
     cy.callMethod('insertFullPromotion');
   });
 
@@ -102,132 +104,141 @@ describe('Admin promotion', () => {
     cy.routeTo('/');
   });
 
-  it('adds construction timeline to promotion', () => {
-    cy.visit('/promotions');
-    cy.contains('Pré Polly').click();
-    cy.contains("Vue d'ensemble").click();
-
-    cy.contains('Répartition du financement').click();
-    cy.contains('Nouvelle répartition').click();
-
-    enterConstructionTimeline();
-
-    cy.contains('Janv. 2020').should('exist');
-    cy.contains('Mars 2021').should('exist');
+  describe('promotionReservations', () => {
+    it('test name', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+    });
   });
 
-  it('displays an error when construction timeline percent is not 100', () => {
-    cy.visit('/promotions');
-    cy.contains('Pré Polly').click();
-
-    cy.window().then(win => {
-      const promotionId = win.location.href.split('/').slice(-1)[0];
-      updateConstructionTimeline({
-        promotionId,
-      });
-      cy.reload();
+  describe('Construction timelines', () => {
+    it('adds construction timeline to promotion', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
       cy.contains("Vue d'ensemble").click();
-      cy.contains('Répartition du financement').click();
 
-      cy.get('.list-del-field')
-        .last()
-        .click();
+      cy.contains('Répartition du financement').click();
+      cy.contains('Nouvelle répartition').click();
+
+      enterConstructionTimeline();
+
+      cy.contains('Janv. 2020').should('exist');
+      cy.contains('Mars 2021').should('exist');
+    });
+
+    it('displays an error when construction timeline percent is not 100', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+
+      cy.window().then(win => {
+        const promotionId = win.location.href.split('/').slice(-1)[0];
+        updateConstructionTimeline({
+          promotionId,
+        });
+        cy.reload();
+        cy.contains("Vue d'ensemble").click();
+        cy.contains('Répartition du financement').click();
+
+        cy.get('.list-del-field')
+          .last()
+          .click();
+
+        cy.get('button[type=submit]').click();
+
+        cy.contains("Les pourcentages doivent s'additionner à 100%").should(
+          'exist',
+        );
+      });
+    });
+
+    it('displays the promotion timeline on a promotion lot', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+      cy.contains("Vue d'ensemble").click();
+
+      cy.window().then(win => {
+        const promotionId = win.location.href.split('/').slice(-1)[0];
+        updateConstructionTimeline({ promotionId });
+        cy.reload();
+      });
+
+      cy.contains('2.01').click();
+
+      cy.contains('Modifier').click();
+      cy.get('input[name=landValue]').type('{backspace}500000');
+      cy.get('input[name=constructionValue]').type('{backspace}500000');
+      cy.get('input[name=additionalMargin]').type('{backspace}500000');
 
       cy.get('button[type=submit]').click();
 
-      cy.contains("Les pourcentages doivent s'additionner à 100%").should(
-        'exist',
-      );
+      cy.get('[colspan="2"] > .construction-timeline-header > h4 > span')
+        .contains('Notaire')
+        .should('exist');
+      cy.get('[colspan="2"] > .construction-timeline-header > b > span')
+        .contains('1 000 000')
+        .should('exist');
+
+      cy.get('[colspan="6"] > .construction-timeline-header > h4 > span')
+        .contains('Construction')
+        .should('exist');
+      cy.get('[colspan="6"] > .construction-timeline-header > b > span')
+        .contains('500 000')
+        .should('exist');
+
+      cy.contains('Prix du terrain').should('exist');
+      cy.contains('Mise en valeur').should('exist');
+
+      cy.contains('Modifier').click();
+      cy.get('input[name=landValue]').type('{selectall}1000000');
+      cy.get('input[name=constructionValue]').type('{selectall}500000');
+      cy.get('input[name=additionalMargin]').type('{selectall}{backspace}');
+
+      cy.get('button[type=submit]').click();
+
+      cy.get('[colspan="1"] > .construction-timeline-header > h4 > span')
+        .contains('Notaire')
+        .should('exist');
+      cy.get('[colspan="1"] > .construction-timeline-header > b > span')
+        .contains('1 000 000')
+        .should('exist');
+
+      cy.get('[colspan="6"] > .construction-timeline-header > h4 > span')
+        .contains('Construction')
+        .should('exist');
+      cy.get('[colspan="6"] > .construction-timeline-header > b > span')
+        .contains('500 000')
+        .should('exist');
+
+      cy.contains('Prix du terrain').should('exist');
+      cy.contains('Mise en valeur').should('not.exist');
     });
-  });
 
-  it('displays the promotion timeline on a promotion lot', () => {
-    cy.visit('/promotions');
-    cy.contains('Pré Polly').click();
-    cy.contains("Vue d'ensemble").click();
+    it('reuses construction timeline', () => {
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
 
-    cy.window().then(win => {
-      const promotionId = win.location.href.split('/').slice(-1)[0];
-      updateConstructionTimeline({ promotionId });
-      cy.reload();
-    });
-
-    cy.contains('2.01').click();
-
-    cy.contains('Modifier').click();
-    cy.get('input[name=landValue]').type('{backspace}500000');
-    cy.get('input[name=constructionValue]').type('{backspace}500000');
-    cy.get('input[name=additionalMargin]').type('{backspace}500000');
-
-    cy.get('button[type=submit]').click();
-
-    cy.get('[colspan="2"] > .construction-timeline-header > h4 > span')
-      .contains('Notaire')
-      .should('exist');
-    cy.get('[colspan="2"] > .construction-timeline-header > b > span')
-      .contains('1 000 000')
-      .should('exist');
-
-    cy.get('[colspan="6"] > .construction-timeline-header > h4 > span')
-      .contains('Construction')
-      .should('exist');
-    cy.get('[colspan="6"] > .construction-timeline-header > b > span')
-      .contains('500 000')
-      .should('exist');
-
-    cy.contains('Prix du terrain').should('exist');
-    cy.contains('Mise en valeur').should('exist');
-
-    cy.contains('Modifier').click();
-    cy.get('input[name=landValue]').type('{selectall}1000000');
-    cy.get('input[name=constructionValue]').type('{selectall}500000');
-    cy.get('input[name=additionalMargin]').type('{selectall}{backspace}');
-
-    cy.get('button[type=submit]').click();
-
-    cy.get('[colspan="1"] > .construction-timeline-header > h4 > span')
-      .contains('Notaire')
-      .should('exist');
-    cy.get('[colspan="1"] > .construction-timeline-header > b > span')
-      .contains('1 000 000')
-      .should('exist');
-
-    cy.get('[colspan="6"] > .construction-timeline-header > h4 > span')
-      .contains('Construction')
-      .should('exist');
-    cy.get('[colspan="6"] > .construction-timeline-header > b > span')
-      .contains('500 000')
-      .should('exist');
-
-    cy.contains('Prix du terrain').should('exist');
-    cy.contains('Mise en valeur').should('not.exist');
-  });
-
-  it('reuse construction timeline', () => {
-    cy.visit('/promotions');
-    cy.contains('Pré Polly').click();
-
-    cy.window().then(win => {
-      const promotionId = win.location.href.split('/').slice(-1)[0];
-      updateConstructionTimeline({ promotionId });
-      cy.callMethod('updateCollectionDocument', {
-        docId: promotionId,
-        object: { name: 'Promotion template' },
-        collection: 'promotions',
+      cy.window().then(win => {
+        const promotionId = win.location.href.split('/').slice(-1)[0];
+        updateConstructionTimeline({ promotionId });
+        cy.callMethod('updateCollectionDocument', {
+          docId: promotionId,
+          object: { name: 'Promotion template' },
+          collection: 'promotions',
+        });
+        cy.callMethod('insertFullPromotion');
       });
-      cy.callMethod('insertFullPromotion');
+      cy.visit('/promotions');
+      cy.contains('Pré Polly').click();
+      cy.contains("Vue d'ensemble").click();
+
+      cy.contains('Répartition du financement').click();
+      cy.contains('Promotion template').click();
+
+      cy.get('input[name=signingDate]').type('2020-01-01');
+      cy.get('button[type=submit]').click();
+
+      cy.contains('Janv. 2020').should('exist');
+      cy.contains('Mars 2021').should('exist');
     });
-    cy.visit('/promotions');
-    cy.contains('Pré Polly').click();
-    cy.contains("Vue d'ensemble").click();
-
-    cy.contains('Répartition du financement').click();
-    cy.contains('Promotion template').click();
-
-    cy.get('input[name=signingDate]').type('2020-01-01');
-    cy.get('button[type=submit]').click();
-
-    cy.contains('Janv. 2020').should('exist');
-    cy.contains('Mars 2021').should('exist');
   });
 });

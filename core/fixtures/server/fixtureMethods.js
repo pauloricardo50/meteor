@@ -112,37 +112,63 @@ const createTestUserWithData = () => {
 };
 
 Meteor.methods({
-  generateTestData(currentUserEmail) {
+  generateTestData({
+    currentUserEmail,
+    generateDevs = false,
+    generateAdmins = false,
+    generateUsers = false,
+    generateLoans = false,
+    generateOrganisations = false,
+    generateUnownedLoan = false,
+    generateTestUser = false,
+  } = {}) {
     try {
       if (isAuthorizedToRun()) {
-        const devs = createDevs(currentUserEmail);
-        const admins = getAdmins();
-        const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
-        createOrganisations();
+        let devs;
+        let admins;
+        let newUsers;
+        if (generateDevs) {
+          devs = createDevs(currentUserEmail);
+        }
+        if (generateAdmins) {
+          admins = getAdmins();
+        }
+        if (generateUsers) {
+          newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
+        }
+        if (generateOrganisations) {
+          createOrganisations();
+        }
 
-        // for each regular fixture user, create a loan with a certain step
-        newUsers.forEach((userId, index) => {
-          const adminId = admins[Math.floor(Math.random() * admins.length)];
+        if (generateUsers) {
+          // for each regular fixture user, create a loan with a certain step
+          newUsers.forEach((userId, index) => {
+            const adminId = admins[Math.floor(Math.random() * admins.length)];
 
-          // based on index, always generate 0, 1 and 2 numbers
-          const loanStep = index % 3;
+            // based on index, always generate 0, 1 and 2 numbers
+            const loanStep = index % 3;
 
-          range(LOANS_PER_USER).forEach((_, loanIndex) => {
-            const step = LOANS_PER_USER < 3 ? loanStep : loanIndex % 3;
-            createFakeLoanFixture({
-              step: STEP_ORDER[step],
-              userId,
-              adminId,
-              twoBorrowers: true,
+            range(LOANS_PER_USER).forEach((_, loanIndex) => {
+              const step = LOANS_PER_USER < 3 ? loanStep : loanIndex % 3;
+              createFakeLoanFixture({
+                step: STEP_ORDER[step],
+                userId,
+                adminId,
+                twoBorrowers: true,
+              });
             });
           });
-        });
+        }
 
-        range(UNOWNED_LOANS_COUNT).forEach(() => {
-          createFakeLoan({});
-        });
+        if (generateUnownedLoan) {
+          range(UNOWNED_LOANS_COUNT).forEach(() => {
+            createFakeLoan({});
+          });
+        }
 
-        createTestUserWithData();
+        if (generateTestUser) {
+          createTestUserWithData();
+        }
       }
     } catch (error) {
       // FIXME: If you throw an error here it does not appear without this
