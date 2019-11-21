@@ -91,13 +91,11 @@ class PromotionService extends CollectionService {
     userId,
     isNewUser,
     pro = {},
-    sendInvitation = true,
     promotionLotIds,
     showAllLots,
     shareSolvency,
   }) {
     const promotion = this.findOne(promotionId);
-    const user = UserService.get(userId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {

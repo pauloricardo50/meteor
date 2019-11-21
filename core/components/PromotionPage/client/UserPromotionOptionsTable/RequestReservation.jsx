@@ -22,7 +22,6 @@ const RequestReservation = ({
   promotionLotName,
   status,
 }: RequestReservationProps) => {
-  console.log('promotionOption:', promotionOption);
   const {
     _id: promotionOptionId,
     loan: { promotions = [] },
