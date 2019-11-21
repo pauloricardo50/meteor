@@ -63,8 +63,12 @@ describe('Single Loan Page', () => {
     cy.contains('Nouvelle hypothèque').click();
     cy.contains('Prospect').click();
     cy.contains('Qualifié').click({ force: true });
+
+    cy.get('.status-label').should('contain', 'Qualifié');
     cy.contains('Qualifié').click();
     cy.contains('En cours').click({ force: true });
+    cy.get('.status-label').should('contain', 'En cours');
+
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
 
