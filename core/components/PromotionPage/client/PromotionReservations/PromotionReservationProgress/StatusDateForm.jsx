@@ -30,6 +30,7 @@ const StatusDateForm = ({
       model={model}
       onSubmit={onSubmit}
       className="status-date-form"
+      id={`${id}-form`}
       fullWidth={false}
       layout={layout}
       submitFieldProps={submitFieldProps}

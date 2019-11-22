@@ -19,7 +19,6 @@ import { fullPromotionOption } from '../../fragments';
 import PromotionOptions from '../promotionOptions';
 import FileService from '../../files/server/FileService';
 import {
-  PROMOTIONS_COLLECTION,
   PROMOTION_USERS_ROLES,
   PROMOTION_EMAIL_RECIPIENTS,
 } from '../../promotions/promotionConstants';
@@ -436,7 +435,7 @@ export class PromotionOptionService extends CollectionService {
     });
 
     if (!changedKeys.length) {
-      return;
+      return {};
     }
 
     // Send keys with dot-notation, to make sure simple-schema doesn't
@@ -454,6 +453,8 @@ export class PromotionOptionService extends CollectionService {
         nextStatus: object.status,
       };
     }
+
+    return {};
   }
 
   expireReservations = async () => {
@@ -548,6 +549,8 @@ export class PromotionOptionService extends CollectionService {
       promotion: { _id: promotionId, users: promotionUsers = [] },
       promotionLots = [],
     } = promotionOption;
+    console.log('promotionOption:', promotionOption);
+    console.log('promotions:', promotions);
 
     const [
       {

@@ -404,7 +404,7 @@ Meteor.methods({
     const service = Services[collection];
     return service._update({ id: docId, object, operator });
   },
-  startPromotionReservation({}) {
+  startPromotionReservation() {
     const { _id: promotionOptionId } = PromotionOptionService.fetchOne({});
     PromotionOptionService.activateReservation({ promotionOptionId });
   },

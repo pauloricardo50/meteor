@@ -206,9 +206,39 @@ describe('Admin promotion', () => {
       cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
     });
 
-    it('test name', () => {
+    it.only('can update a promotion reservation', () => {
+      cy.callMethod('startPromotionReservation');
       cy.visit('/promotions');
       cy.contains('Pré Polly').click();
+      cy.contains("Vue d'ensemble").click();
+
+      cy.contains('Réservations')
+        .closest('.card1')
+        .find('table tbody tr')
+        .should('have.length', 1)
+        .click();
+
+      cy.get('[role=dialog]')
+        .contains('Modifier')
+        .click();
+
+      cy.get(
+        '[role=dialog] form[id=simpleVerification-form] input[name=status]',
+      )
+        .parent()
+        .click()
+        .get(`[data-value=VALIDATED]`)
+        .click();
+
+      cy.contains('Vérouiller les formulaires')
+        .parents('[role=dialog]')
+        .contains('Oui')
+        .click();
+
+      cy.contains('Attestation de principe')
+        .parents('div')
+        .contains('Validé')
+        .should('exist');
     });
   });
 

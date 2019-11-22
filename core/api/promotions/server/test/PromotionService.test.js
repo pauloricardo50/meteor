@@ -18,7 +18,7 @@ import PromotionOptionService from '../../../promotionOptions/server/PromotionOp
 import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
 
-describe('PromotionService', function () {
+describe('PromotionService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -390,14 +390,18 @@ describe('PromotionService', function () {
         },
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        1,
+      );
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        0,
+      );
     });
 
     it('does not fail if no loans are attributed to the pro', () => {
@@ -409,14 +413,18 @@ describe('PromotionService', function () {
         },
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        1,
+      );
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        0,
+      );
     });
 
     it('only removes him from the current promotion', () => {
@@ -435,16 +443,24 @@ describe('PromotionService', function () {
         ],
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(1);
-      expect(PromotionService.findOne('promotionId2').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        1,
+      );
+      expect(
+        PromotionService.findOne('promotionId2').userLinks.length,
+      ).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(0);
-      expect(PromotionService.findOne('promotionId2').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        0,
+      );
+      expect(
+        PromotionService.findOne('promotionId2').userLinks.length,
+      ).to.equal(1);
       expect(
         LoanService.findOne('loanId').promotionLinks[0].invitedBy,
       ).to.equal(undefined);
@@ -666,6 +682,23 @@ describe('PromotionService', function () {
         _id: 'userId',
         enableNotifications: true,
       });
+    });
+  });
+
+  describe('addProUser', () => {
+    it('sets displayCustomerNames to an empty object ', () => {
+      generator({
+        promotions: { _id: 'promo' },
+        users: { _id: 'proId', _factory: 'pro' },
+      });
+
+      PromotionService.addProUser({ promotionId: 'promo', userId: 'proId' });
+
+      const promotion = PromotionService.findOne('promo');
+
+      expect(promotion.userLinks[0].permissions.displayCustomerNames).to.equal(
+        false,
+      );
     });
   });
 });

@@ -1307,7 +1307,7 @@ describe('PromotionOptionService', function() {
         id: 'bank',
         object: { status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE },
       });
-      expect(result).to.equal(undefined);
+      expect(result).to.deep.equal({});
 
       const promotionOption = PromotionOptionService.findOne('id');
 
@@ -1334,7 +1334,7 @@ describe('PromotionOptionService', function() {
       });
     });
 
-    it('does not return anything if only a date is changed, to not trigger emails', () => {
+    it('returns an empty object if only a date is changed, to not trigger emails', () => {
       generator({ promotionOptions: { _id: 'id' } });
 
       const updatedDate = new Date();
@@ -1344,7 +1344,7 @@ describe('PromotionOptionService', function() {
         object: { date: updatedDate },
       });
 
-      expect(result).to.equal(undefined);
+      expect(result).to.deep.equal({});
 
       const promotionOption = PromotionOptionService.findOne('id');
 

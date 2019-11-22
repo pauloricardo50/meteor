@@ -30,7 +30,7 @@ export const promotionPermissionsSchema = {
     type: SimpleSchema.oneOf(Boolean, Object),
     optional: true,
     autoValue() {
-      if (Meteor.isServer && this.isSet) {
+      if (Meteor.isServer) {
         if (this.value === undefined) {
           return false;
         }
@@ -44,8 +44,6 @@ export const promotionPermissionsSchema = {
             return false;
           }
         }
-
-        return this.value;
       }
     },
   },

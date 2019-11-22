@@ -61,12 +61,31 @@ Cypress.Commands.add(
   { prevSubject: 'optional' },
   (prevSubject, name, value) => {
     if (prevSubject) {
-      prevSubject
-        .find(`input[name=${name}]`)
-        .parent()
-        .click()
-        .get(`[data-value=${value}]`)
-        .click();
+      if (typeof value === 'string') {
+        prevSubject
+          .find(`input[name=${name}]`)
+          .parent()
+          .click()
+          .get(`[data-value=${value}]`)
+          .click();
+      } else {
+        prevSubject
+          .find(`input[name=${name}]`)
+          .then(res => {
+            console.log('res:', res);
+            return res;
+          })
+          .parent()
+          .then(res => {
+            console.log('res:', res);
+            return res;
+          })
+          .click()
+          .get('ul[role=listbox]')
+          .children()
+          .eq(value)
+          .click();
+      }
     } else if (typeof value === 'string') {
       cy.get(`input[name=${name}]`)
         .parent()
