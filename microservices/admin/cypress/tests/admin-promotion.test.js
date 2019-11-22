@@ -206,7 +206,7 @@ describe('Admin promotion', () => {
       cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
     });
 
-    it.only('can update a promotion reservation', () => {
+    it('can update a promotion reservation', () => {
       cy.callMethod('startPromotionReservation');
       cy.visit('/promotions');
       cy.contains('Pré Polly').click();
