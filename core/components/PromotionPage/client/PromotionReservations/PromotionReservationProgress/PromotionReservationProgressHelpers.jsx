@@ -97,8 +97,9 @@ export const getAdminNoteIcon = (
       note={note}
       placeholder="Pas de commentaire"
       variant={variant}
-      id="adminNote"
-      isEditing={isEditing}
+      id="proNote"
+      // Modify the note on the loan
+      isEditing={false}
       promotionOptionId={promotionOptionId}
     />
   );

@@ -32,7 +32,7 @@ describe('Migration 27', () => {
 
       const promotions = PromotionService.find().fetch();
       expect(promotions.length).to.equal(2);
-      promotions.forEach((p) => {
+      promotions.forEach(p => {
         expect(p.agreementDuration).to.equal(30);
       });
     });
@@ -78,27 +78,40 @@ describe('Migration 27', () => {
 
       const today = moment().format('YYYY MM DD');
 
-      promotionOptions.forEach(({
-        simpleVerification,
-        fullVerification,
-        adminNote,
-        bank,
-        deposit,
-        reservationAgreement,
-      }) => {
-        expect(moment(simpleVerification.date).format('YYYY MM DD')).to.equal(today);
-        expect(simpleVerification.status).to.equal(PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE);
-        expect(moment(fullVerification.date).format('YYYY MM DD')).to.equal(today);
-        expect(fullVerification.status).to.equal(PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE);
-        expect(moment(adminNote.date).format('YYYY MM DD')).to.equal(today);
-        expect(adminNote.note).to.equal('');
-        expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
-        expect(bank.status).to.equal(PROMOTION_OPTION_BANK_STATUS.INCOMPLETE);
-        expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
-        expect(deposit.status).to.equal(PROMOTION_OPTION_DEPOSIT_STATUS.WAITING);
-        expect(moment(reservationAgreement.date).format('YYYY MM DD')).to.equal(today);
-        expect(reservationAgreement.status).to.equal(PROMOTION_OPTION_AGREEMENT_STATUS.WAITING);
-      });
+      promotionOptions.forEach(
+        ({
+          simpleVerification,
+          fullVerification,
+          bank,
+          deposit,
+          reservationAgreement,
+        }) => {
+          expect(moment(simpleVerification.date).format('YYYY MM DD')).to.equal(
+            today,
+          );
+          expect(simpleVerification.status).to.equal(
+            PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
+          );
+          expect(moment(fullVerification.date).format('YYYY MM DD')).to.equal(
+            today,
+          );
+          expect(fullVerification.status).to.equal(
+            PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE,
+          );
+          expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
+          expect(bank.status).to.equal(PROMOTION_OPTION_BANK_STATUS.INCOMPLETE);
+          expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
+          expect(deposit.status).to.equal(
+            PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
+          );
+          expect(
+            moment(reservationAgreement.date).format('YYYY MM DD'),
+          ).to.equal(today);
+          expect(reservationAgreement.status).to.equal(
+            PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
+          );
+        },
+      );
     });
 
     it('sets the reservation for each reserved or sold promotionLot', async () => {
@@ -141,7 +154,9 @@ describe('Migration 27', () => {
         { sort: { status: 1 } },
       ).fetch();
       expect(pOs.length).to.equal(2);
-      expect(pOs[0].status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE);
+      expect(pOs[0].status).to.equal(
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      );
       expect(pOs[1].status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
     });
 
@@ -242,7 +257,7 @@ describe('Migration 27', () => {
 
       const pOs = PromotionOptionService.find({}).fetch();
 
-      pOs.forEach((pO) => {
+      pOs.forEach(pO => {
         expect(pO.status).to.equal(undefined);
         expect(pO.reservationAgreement).to.equal(undefined);
         expect(pO.bank).to.equal(undefined);

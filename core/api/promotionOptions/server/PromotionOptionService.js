@@ -415,7 +415,6 @@ export class PromotionOptionService extends CollectionService {
   setProgress({ promotionOptionId, id, object }) {
     const { [id]: model } = this.fetchOne({
       $filters: { _id: promotionOptionId },
-      adminNote: 1,
       bank: 1,
       deposit: 1,
       simpleVerification: 1,
@@ -425,11 +424,6 @@ export class PromotionOptionService extends CollectionService {
     const changedKeys = Object.keys(object).filter(key => {
       const newValue = object[key] && object[key].valueOf();
       const oldValue = model[key] && model[key].valueOf();
-
-      // Allow the adminNote.note to be updated to an empty string value
-      if (key === 'note') {
-        return newValue !== oldValue;
-      }
 
       return newValue && newValue !== oldValue;
     });

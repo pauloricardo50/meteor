@@ -22,15 +22,12 @@ import {
 
 type PromotionReservationProgressProps = {};
 
-const getAnimationDelay = (index, offset = 0) => {
-  return (index + offset) * 50;
-};
+const getAnimationDelay = (index, offset = 0) => (index + offset) * 50;
 
-const getAnimation = (variant, index, offset) => {
-  return `animated ${
+const getAnimation = (variant, index, offset) =>
+  `animated ${
     variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
   } delay-${getAnimationDelay(index, offset)}`;
-};
 
 const PromotionReservationProgressComponent = ({
   promotionOption,
@@ -47,9 +44,9 @@ const PromotionReservationProgressComponent = ({
     reservationAgreement,
     deposit,
     bank,
-    adminNote,
     loan,
     isAnonymized,
+    proNote = '',
   } = promotionOption;
   const { user, _id: loanId } = loan;
   const { info = {}, documents = {} } = loanProgress;
@@ -176,7 +173,7 @@ const PromotionReservationProgressComponent = ({
               ),
             )}
           >
-            {getAdminNoteIcon(adminNote, variant, isEditing, promotionOptionId)}
+            {getAdminNoteIcon(proNote, variant, isEditing, promotionOptionId)}
           </div>
         )}
       </div>
@@ -184,11 +181,9 @@ const PromotionReservationProgressComponent = ({
   );
 };
 
-export default withProps(({ loan }) => {
-  return {
-    loanProgress: getLoanProgress(loan),
-  };
-})(PromotionReservationProgressComponent);
+export default withProps(({ loan }) => ({
+  loanProgress: getLoanProgress(loan),
+}))(PromotionReservationProgressComponent);
 
 export const PromotionReservationProgress = withProps(
   ({

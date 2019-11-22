@@ -21,27 +21,30 @@ const handlePromotions = async () => {
 const handlePromotionOptions = async () => {
   const promotionOptions = PromotionOptionService.fetch({ loan: { _id: 1 } });
 
-  return Promise.all(promotionOptions.map(async ({ _id: promotionOptionId, loan: { _id: loanId } }) => {
-    await PromotionOptionService.setInitialSimpleVerification({
-      promotionOptionId,
-      loanId,
-    });
+  return Promise.all(
+    promotionOptions.map(
+      async ({ _id: promotionOptionId, loan: { _id: loanId } }) => {
+        await PromotionOptionService.setInitialSimpleVerification({
+          promotionOptionId,
+          loanId,
+        });
 
-    await PromotionOptionService.baseUpdate(promotionOptionId, {
-      $set: {
-        status: PROMOTION_OPTION_STATUS.INTERESTED,
-        adminNote: { date: new Date() },
-        bank: { date: new Date() },
-        deposit: { date: new Date() },
-        reservationAgreement: { date: new Date() },
-        fullVerification: { date: new Date() },
+        await PromotionOptionService.baseUpdate(promotionOptionId, {
+          $set: {
+            status: PROMOTION_OPTION_STATUS.INTERESTED,
+            bank: { date: new Date() },
+            deposit: { date: new Date() },
+            reservationAgreement: { date: new Date() },
+            fullVerification: { date: new Date() },
+          },
+          $unset: {
+            proNote: true,
+            solvency: true,
+          },
+        });
       },
-      $unset: {
-        proNote: true,
-        solvency: true,
-      },
-    });
-  }));
+    ),
+  );
 };
 
 const handleReservedLots = async () => {
@@ -57,35 +60,41 @@ const handleReservedLots = async () => {
     },
   });
 
-  return Promise.all(reservedPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
-    const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
-      promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
-    if (promotionOption) {
-      const id = await PromotionOptionService.activateReservation({
-        promotionOptionId: promotionOption._id,
-      });
+  return Promise.all(
+    reservedPromotionLots.map(
+      async ({ _id, attributedTo: { promotionOptions = [] } }) => {
+        const promotionOption = promotionOptions.find(
+          ({ promotionLotLinks }) =>
+            promotionLotLinks[0] && promotionLotLinks[0]._id === _id,
+        );
+        if (promotionOption) {
+          const id = await PromotionOptionService.activateReservation({
+            promotionOptionId: promotionOption._id,
+          });
 
-      const {
-        loan: { _id: loanId },
-      } = promotionOption;
+          const {
+            loan: { _id: loanId },
+          } = promotionOption;
 
-      PromotionOptionService.setInitialSimpleVerification({
-        promotionOptionId: promotionOption._id,
-        loanId,
-      });
+          PromotionOptionService.setInitialSimpleVerification({
+            promotionOptionId: promotionOption._id,
+            loanId,
+          });
 
-      PromotionOptionService.baseUpdate(id, {
-        $set: {
-          status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-          reservationAgreement: {
-            status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
-            date: new Date(),
-          },
-          fullVerification: { date: new Date() },
-        },
-      });
-    }
-  }));
+          PromotionOptionService.baseUpdate(id, {
+            $set: {
+              status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+              reservationAgreement: {
+                status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
+                date: new Date(),
+              },
+              fullVerification: { date: new Date() },
+            },
+          });
+        }
+      },
+    ),
+  );
 };
 
 const handleSoldLots = async () => {
@@ -101,43 +110,49 @@ const handleSoldLots = async () => {
     },
   });
 
-  return Promise.all(soldPromotionLots.map(async ({ _id, attributedTo: { promotionOptions = [] } }) => {
-    const promotionOption = promotionOptions.find(({ promotionLotLinks }) =>
-      promotionLotLinks[0] && promotionLotLinks[0]._id === _id);
-    if (promotionOption) {
-      const id = await PromotionOptionService.activateReservation({
-        promotionOptionId: promotionOption._id,
-      });
+  return Promise.all(
+    soldPromotionLots.map(
+      async ({ _id, attributedTo: { promotionOptions = [] } }) => {
+        const promotionOption = promotionOptions.find(
+          ({ promotionLotLinks }) =>
+            promotionLotLinks[0] && promotionLotLinks[0]._id === _id,
+        );
+        if (promotionOption) {
+          const id = await PromotionOptionService.activateReservation({
+            promotionOptionId: promotionOption._id,
+          });
 
-      const {
-        loan: { _id: loanId },
-      } = promotionOption;
+          const {
+            loan: { _id: loanId },
+          } = promotionOption;
 
-      PromotionOptionService.baseUpdate(promotionOption._id, {
-        $set: {
-          status: PROMOTION_OPTION_STATUS.SOLD,
-          reservationAgreement: {
-            status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
-            date: new Date(),
-          },
-          bank: {
-            status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
-            date: new Date(),
-          },
-          deposit: {
-            date: new Date(),
-            status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
-          },
-          fullVerification: { date: new Date() },
-        },
-      });
+          PromotionOptionService.baseUpdate(promotionOption._id, {
+            $set: {
+              status: PROMOTION_OPTION_STATUS.SOLD,
+              reservationAgreement: {
+                status: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
+                date: new Date(),
+              },
+              bank: {
+                status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+                date: new Date(),
+              },
+              deposit: {
+                date: new Date(),
+                status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+              },
+              fullVerification: { date: new Date() },
+            },
+          });
 
-      PromotionOptionService.setInitialSimpleVerification({
-        promotionOptionId: promotionOption._id,
-        loanId,
-      });
-    }
-  }));
+          PromotionOptionService.setInitialSimpleVerification({
+            promotionOptionId: promotionOption._id,
+            loanId,
+          });
+        }
+      },
+    ),
+  );
 };
 
 export const up = async () => {
@@ -152,24 +167,26 @@ export const down = async () => {
     simpleVerification: { status: 1 },
   });
 
-  return Promise.all(promotionOptions.map((promotionOption) => {
-    const { simpleVerification: { status } = {} } = promotionOption;
-    return PromotionOptions.rawCollection().update(
-      {},
-      {
-        $unset: {
-          status: true,
-          reservationAgreement: true,
-          bank: true,
-          deposit: true,
-          simpleVerification: true,
-          fullVerification: true,
+  return Promise.all(
+    promotionOptions.map(promotionOption => {
+      const { simpleVerification: { status } = {} } = promotionOption;
+      return PromotionOptions.rawCollection().update(
+        {},
+        {
+          $unset: {
+            status: true,
+            reservationAgreement: true,
+            bank: true,
+            deposit: true,
+            simpleVerification: true,
+            fullVerification: true,
+          },
+          $set: { solvency: status },
         },
-        $set: { solvency: status },
-      },
-      { multi: true },
-    );
-  }));
+        { multi: true },
+      );
+    }),
+  );
 };
 
 Migrations.add({

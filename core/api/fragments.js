@@ -191,7 +191,6 @@ export const adminLender = () => {
   };
 };
 
-
 // //
 // // LenderRules fragments
 // //
@@ -231,7 +230,6 @@ export const lenderRules = () => ({
   theoreticalMaintenanceRate: 1,
   updatedAt: 1,
 });
-
 
 // //
 // // Loan fragments
@@ -331,31 +329,31 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
-      promotions: {
-        address: 1,
-        contacts: 1,
-        documents: { promotionImage: 1 },
-        lenderOrganisationLink: 1,
-        name: 1,
-        status: 1,
-        type: 1,
-        canton: 1,
-        users: {
-          _id: 1,
+        promotions: {
+          address: 1,
+          contacts: 1,
+          documents: { promotionImage: 1 },
+          lenderOrganisationLink: 1,
           name: 1,
-          email: 1,
-          phoneNumber: 1,
-          organisations: { users: { title: 1 } },
-        },
-        loans: {
-          _id: 1,
-          $filter({ filters, params: { loanId } }) {
-            filters.userId = Meteor.userId();
-            filters._id = loanId;
+          status: 1,
+          type: 1,
+          canton: 1,
+          users: {
+            _id: 1,
+            name: 1,
+            email: 1,
+            phoneNumber: 1,
+            organisations: { users: { title: 1 } },
+          },
+          loans: {
+            _id: 1,
+            $filter({ filters, params: { loanId } }) {
+              filters.userId = Meteor.userId();
+              filters._id = loanId;
+            },
           },
         },
-      },
-    }
+      }
     : {}),
 });
 
@@ -445,7 +443,6 @@ export const proLoanWithRevenues = () => ({
     promotionOptionId: 1,
   },
 });
-
 
 // //
 // // MortgageNote fragments
@@ -646,7 +643,6 @@ export const proPromotionOption = () => ({
     loanProgress: 1,
   },
   promotion: { users: { _id: 1 }, agreementDuration: 1 },
-  adminNote: 1,
 });
 
 export const appPromotionOption = () => ({
@@ -759,12 +755,12 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   projectStatus: 1,
   ...(withFilteredLoan
     ? {
-      loans: {
-        $filter({ filters, params: { loanId } }) {
-          filters._id = loanId;
+        loans: {
+          $filter({ filters, params: { loanId } }) {
+            filters._id = loanId;
+          },
         },
-      },
-    }
+      }
     : {}),
 });
 

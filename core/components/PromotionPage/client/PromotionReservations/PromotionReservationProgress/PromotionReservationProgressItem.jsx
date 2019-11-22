@@ -88,7 +88,7 @@ const PromotionReservationProgressItem = ({
       type={icon}
       color={color}
       className="promotion-reservation-progress-icon"
-      tooltip={(
+      tooltip={
         <IconTooltip
           date={date}
           status={status}
@@ -96,7 +96,7 @@ const PromotionReservationProgressItem = ({
           note={note}
           placeholder={placeholder}
         />
-      )}
+      }
       {...iconProps}
     />
   );

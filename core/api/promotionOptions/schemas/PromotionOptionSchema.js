@@ -12,7 +12,7 @@ import {
 } from '../promotionOptionConstants';
 
 const dateAutoValue = (triggerField = 'status') =>
-  function () {
+  function() {
     if (this.isInsert && !this.value) {
       return new Date();
     }
@@ -37,18 +37,6 @@ const PromotionOptionSchema = new SimpleSchema({
   promotionLink: { type: Object, optional: true },
   'promotionLink._id': { type: String, optional: true },
   documents: documentsField,
-  adminNote: { type: Object, defaultValue: {} },
-  'adminNote.note': {
-    type: String,
-    defaultValue: '',
-    optional: true,
-    uniforms: { multiline: true, rows: 3, rowsMax: 5 },
-  },
-  'adminNote.date': {
-    type: Date,
-    autoValue: dateAutoValue('note'),
-    optional: true,
-  },
   status: {
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_STATUS),
