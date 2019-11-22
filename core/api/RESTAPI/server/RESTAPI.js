@@ -141,6 +141,22 @@ export default class RESTAPI {
       );
     }
 
+    if (!options.endpointName) {
+      throw new Error(
+        `Endpoint "${path}" for method "${method}" must have a name`,
+      );
+    }
+
+    if (
+      !['rsaAuth', 'simpleAuth', 'basicAuth', 'multipart', 'noAuth'].some(
+        auth => Object.keys(options).indexOf(auth) >= 0,
+      )
+    ) {
+      throw new Error(
+        `Endpoint "${path}" for method "${method}" must have a authentication type`,
+      );
+    }
+
     this.endpoints[path] = {
       ...(this.endpoints[path] || {}),
       [method]: { handler, options },
