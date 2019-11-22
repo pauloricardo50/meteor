@@ -41,6 +41,7 @@ const config = {
         'Lenders',
         'LoginPage',
         'MaxPropertyValue',
+        'methods',
         'Microlocation',
         'offer',
         'OfferAdder',
