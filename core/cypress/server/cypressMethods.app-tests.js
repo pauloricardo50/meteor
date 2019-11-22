@@ -8,6 +8,7 @@ import { check } from 'meteor/check';
 
 import UserService from 'core/api/users/server/UserService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
+import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import {
   ROLES,
   PROMOTION_TYPES,
@@ -402,5 +403,9 @@ Meteor.methods({
   updateCollectionDocument({ docId, collection, object, operator }) {
     const service = Services[collection];
     return service._update({ id: docId, object, operator });
+  },
+  startPromotionReservation({}) {
+    const { _id: promotionOptionId } = PromotionOptionService.fetchOne({});
+    PromotionOptionService.activateReservation({ promotionOptionId });
   },
 });
