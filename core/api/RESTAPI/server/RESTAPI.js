@@ -5,7 +5,13 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
+import {
+  logRequest,
+  trackRequest,
+  setIsAPI,
+  setAPIUser,
+  getRequestType,
+} from './helpers';
 import { HTTP_STATUS_CODES, RESPONSE_ALREADY_SENT } from './restApiConstants';
 import {
   setClientMicroservice,

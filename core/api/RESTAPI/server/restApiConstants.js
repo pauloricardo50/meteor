@@ -17,11 +17,12 @@ export const REST_API_ERRORS = {
     message: `Request content type must be ${supportedContentType}. Provided: ${contentType}`,
     errorName: 'WRONG_CONTENT_TYPE',
   }),
-  WRONG_AUTHORIZATION_TYPE: {
+  WRONG_AUTHORIZATION_TYPE: info => ({
     status: HTTP_STATUS_CODES.BAD_REQUEST,
     errorName: 'WRONG_AUTHORIZATION_TYPE',
-    message: "Authorization must be of type 'EPOTEK PublicKey:Signature'",
-  },
+    message: 'Wrong authorization type',
+    info,
+  }),
   AUTHORIZATION_FAILED: info => ({
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
@@ -45,6 +46,12 @@ export const REST_API_ERRORS = {
     message: 'Authorization failed',
     info,
   }),
+  RSA_AUTHORIZAZION_FAILED: info => ({
+    status: HTTP_STATUS_CODES.FORBIDDEN,
+    errorName: 'AUTHORIZATION_FAILED',
+    message: 'Wrong public key or signature.',
+    info,
+  }),
 };
 
 export const OS_TMP_DIR = os.tmpdir();
@@ -64,3 +71,18 @@ export const SIMPLE_AUTH_SALT_GRAINS = [
 ];
 
 export const RESPONSE_ALREADY_SENT = 'RESPONSE_ALREADY_SENT';
+
+export const AUTHENTICATION_TYPES = {
+  RSA: 'rsa',
+  BASIC: 'basic',
+  SIMPLE: 'simple',
+  NO_AUTH: 'no-auth',
+  MULTIPART: 'multipart',
+};
+
+export const AUTHORIZATION_HEADER = 'x-epotek-authorization';
+
+export const AUTHORIZATION_TYPES = {
+  [AUTHENTICATION_TYPES.RSA]: 'EPOTEK',
+  [AUTHENTICATION_TYPES.BASIC]: 'EPOTEK-BASIC',
+};
