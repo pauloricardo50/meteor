@@ -17,7 +17,10 @@ import { mortgageEstimateAPI } from '..';
 
 const url = '/calculator/mortgage-estimate';
 const api = new RESTAPI();
-api.addEndpoint(url, 'GET', mortgageEstimateAPI);
+api.addEndpoint(url, 'GET', mortgageEstimateAPI, {
+  rsaAuth: true,
+  endpointName: 'Mortgage estimate',
+});
 
 const getResult = ({ expectedResponse, query }) => {
   const { timestamp, nonce } = getTimestampAndNonce();

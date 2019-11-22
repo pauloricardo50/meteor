@@ -46,7 +46,7 @@ export const REST_API_ERRORS = {
     message: 'Authorization failed',
     info,
   }),
-  RSA_AUTHORIZAZION_FAILED: info => ({
+  RSA_AUTHORIZATION_FAILED: info => ({
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
     message: 'Wrong public key or signature.',
@@ -84,5 +84,6 @@ export const AUTHORIZATION_HEADER = 'x-epotek-authorization';
 
 export const AUTHORIZATION_TYPES = {
   [AUTHENTICATION_TYPES.RSA]: 'EPOTEK',
+  [AUTHENTICATION_TYPES.MULTIPART]: 'EPOTEK',
   [AUTHENTICATION_TYPES.BASIC]: 'EPOTEK-BASIC',
 };

@@ -33,6 +33,7 @@ api.addEndpoint(
   '/properties/invite-customer',
   'POST',
   inviteCustomerToProPropertiesAPI,
+  { rsaAuth: true, endpointName: 'Invite customer to property' }
 );
 
 const inviteCustomerToProProperties = ({
@@ -71,10 +72,10 @@ const inviteCustomerToProProperties = ({
   });
 };
 
-describe('REST: inviteCustomerToProProperties', function() {
+describe('REST: inviteCustomerToProProperties', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

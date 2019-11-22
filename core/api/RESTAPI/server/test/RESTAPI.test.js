@@ -58,19 +58,39 @@ Meteor.methods({
   isAPI,
 });
 
-describe('RESTAPI', () => {
+describe('RESTAPI', function () {
+  this.timeout(10000);
   let user;
 
   const api = new RESTAPI();
-  api.addEndpoint('/test', 'POST', makeTestRoute('POST'));
-  api.addEndpoint('/test', 'PUT', makeTestRoute('PUT'));
-  api.addEndpoint('/test', 'GET', () => {
-    throw new Error('secret error');
+  api.addEndpoint('/test', 'POST', makeTestRoute('POST'), {
+    rsaAuth: true,
+    endpointName: 'Test POST',
   });
-  api.addEndpoint('/test', 'DELETE', () => {
-    throw new Meteor.Error('meteor error');
+  api.addEndpoint('/test', 'PUT', makeTestRoute('PUT'), {
+    rsaAuth: true,
+    endpointName: 'Test PUT',
   });
-  api.addEndpoint('/undefined', 'GET', () => {});
+  api.addEndpoint(
+    '/test',
+    'GET',
+    () => {
+      throw new Error('secret error');
+    },
+    { rsaAuth: true, endpointName: 'Test GET' },
+  );
+  api.addEndpoint(
+    '/test',
+    'DELETE',
+    () => {
+      throw new Meteor.Error('meteor error');
+    },
+    { rsaAuth: true, endpointName: 'Test DELETE' },
+  );
+  api.addEndpoint('/undefined', 'GET', () => { }, {
+    rsaAuth: true,
+    endpointName: 'Test undefined',
+  });
   api.addEndpoint(
     '/method/:id/test',
     'POST',
@@ -91,15 +111,23 @@ describe('RESTAPI', () => {
             ),
           ),
       ),
+    { rsaAuth: true, endpointName: 'Test POST with id' },
   );
   api.addEndpoint('/multipart', 'POST', makeTestRoute('POST'), {
     multipart: true,
+    endpointName: 'Test multipart',
   });
 
-  api.addEndpoint('/isAPI', 'GET', () => ({ isAPI: isAPI() }));
-  api.addEndpoint('/fiberAPIUser', 'GET', getAPIUser);
+  api.addEndpoint('/isAPI', 'GET', () => ({ isAPI: isAPI() }), {
+    rsaAuth: true,
+    endpointName: 'Test isApi',
+  });
+  api.addEndpoint('/fiberAPIUser', 'GET', getAPIUser, {
+    rsaAuth: true,
+    endpointName: 'Test fiber API user',
+  });
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -152,18 +180,24 @@ describe('RESTAPI', () => {
       });
     });
 
-    it('content type is wrong', () =>
-      fetchAndCheckResponse({
+    it('content type is wrong', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+
+      return fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'POST',
-          headers: { 'Content-Type': 'plain/text' },
+          headers: {
+            ...makeHeaders({ publicKey, privateKey, timestamp, nonce }),
+            'Content-Type': 'plain/text',
+          },
         },
         expectedResponse: REST_API_ERRORS.WRONG_CONTENT_TYPE(
           'plain/text',
           'application/json',
         ),
-      }));
+      });
+    });
 
     it('authorization type is wrong', () =>
       fetchAndCheckResponse({
@@ -172,7 +206,9 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
         },
-        expectedResponse: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE,
+        expectedResponse: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE(
+          'You tried to authenticate with no-auth but this endpoint does not allow it',
+        ),
       }));
 
     it('public key is wrong', () =>
@@ -491,10 +527,10 @@ describe('RESTAPI', () => {
       userId: user._id,
       url: '/test',
     }).then(res => {
-      const { status, errorName, message } = res;
+      const { status, errorName, info } = res;
       expect(status).to.equal(400);
-      expect(errorName).to.equal('WRONG_CONTENT_TYPE');
-      expect(message).to.include('multipart');
+      expect(errorName).to.equal('WRONG_AUTHORIZATION_TYPE');
+      expect(info).to.include('multipart');
     });
   });
 

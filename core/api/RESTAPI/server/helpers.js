@@ -19,6 +19,7 @@ import {
   SIMPLE_AUTH_SALT_GRAINS,
   AUTHORIZATION_HEADER,
   AUTHORIZATION_TYPES,
+  AUTHENTICATION_TYPES,
 } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
 
@@ -45,12 +46,14 @@ export const getRequestType = req => {
   const authorization = getHeader(req, AUTHORIZATION_HEADER);
 
   if (authorization) {
-    if (authorization.includes(AUTHORIZATION_TYPES.RSA)) {
-      return 'rsa';
+    if (
+      authorization.includes(AUTHORIZATION_TYPES[AUTHENTICATION_TYPES.BASIC])
+    ) {
+      return 'basic';
     }
 
-    if (authorization.includes(AUTHORIZATION_TYPES.BASIC)) {
-      return 'basic';
+    if (authorization.includes(AUTHORIZATION_TYPES[AUTHENTICATION_TYPES.RSA])) {
+      return 'rsa';
     }
   }
 
@@ -64,8 +67,12 @@ export const getRequestType = req => {
 };
 
 export const requestTypeIsAllowed = ({ req, endpointOptions }) => {
-  const { simpleAuth, noAuth, basicAuth, rsaAuth } = endpointOptions;
+  const { simpleAuth, noAuth, basicAuth, rsaAuth, multipart } = endpointOptions;
   const { authenticationType } = req;
+
+  if (multipart && authenticationType === 'multipart') {
+    return true;
+  }
 
   if (simpleAuth && authenticationType === 'simple') {
     return true;
@@ -153,7 +160,6 @@ export const withMeteorUserId = ({ userId, impersonateUser }, func) => {
 };
 
 export const getErrorObject = (error, res) => {
-  console.log('error:', error);
   let { statusCode: status } = res;
   let message;
   let errorName;
@@ -316,7 +322,7 @@ export const logRequest = ({ req, result }) => {
 };
 
 export const verifySignature = req => {
-  const { publicKey, signature, body, query, isMultipart } = req;
+  const { publicKey, signature, body, query, authenticationType } = req;
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -339,7 +345,7 @@ export const verifySignature = req => {
     objectToVerify = { ...objectToVerify, body: sortObject(body) };
   }
 
-  if (isMultipart) {
+  if (authenticationType === AUTHENTICATION_TYPES.MULTIPART) {
     const { files: { file = {} } = {} } = req;
     const { originalFilename, size, type } = file;
     objectToVerify = {

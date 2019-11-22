@@ -20,6 +20,7 @@ api.addEndpoint(
   '/properties/:propertyId/set-user-permissions',
   'POST',
   setPropertyUserPermissionsAPI,
+  { rsaAuth: true, endpointName: 'Set property user permissions' },
 );
 
 const setPropertyUserPermissions = ({
