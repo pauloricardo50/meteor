@@ -58,7 +58,7 @@ Meteor.methods({
   isAPI,
 });
 
-describe('RESTAPI', function () {
+describe('RESTAPI', function() {
   this.timeout(10000);
   let user;
 
@@ -69,6 +69,8 @@ describe('RESTAPI', function () {
   });
   api.addEndpoint('/test', 'PUT', makeTestRoute('PUT'), {
     rsaAuth: true,
+    noAuth: true,
+    basicAuth: true,
     endpointName: 'Test PUT',
   });
   api.addEndpoint(
@@ -87,7 +89,7 @@ describe('RESTAPI', function () {
     },
     { rsaAuth: true, endpointName: 'Test DELETE' },
   );
-  api.addEndpoint('/undefined', 'GET', () => { }, {
+  api.addEndpoint('/undefined', 'GET', () => {}, {
     rsaAuth: true,
     endpointName: 'Test undefined',
   });
@@ -127,7 +129,7 @@ describe('RESTAPI', function () {
     endpointName: 'Test fiber API user',
   });
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -686,6 +688,71 @@ describe('RESTAPI', function () {
         },
         expectedResponse,
         include: true,
+      });
+    });
+  });
+
+  describe('Basic authentication', () => {
+    it('can authenticate and get a response', () => {
+      return fetchAndCheckResponse({
+        url: '/test',
+        data: {
+          method: 'PUT',
+          headers: {
+            'x-epotek-authorization': `EPOTEK-BASIC ${publicKey.replace(
+              /\r?\n|\r/g,
+              '',
+            )}`,
+          },
+        },
+      }).then(res => {
+        const { message } = res;
+        expect(message).to.contain('PUT');
+      });
+    });
+
+    it('throws if public key is wrong', () => {
+      return fetchAndCheckResponse({
+        url: '/test',
+        data: {
+          method: 'PUT',
+          headers: {
+            'x-epotek-authorization': `EPOTEK-BASIC 123`,
+          },
+        },
+      }).then(res => {
+        const { message } = res;
+        expect(message).to.contain('Wrong public key');
+      });
+    });
+  });
+
+  describe('allows multiple authentication types', () => {
+    it('using no-auth', () => {
+      return fetchAndCheckResponse({
+        url: '/test',
+        data: { method: 'PUT' },
+      }).then(res => {
+        const { message } = res;
+        expect(message).to.equal('PUT');
+      });
+    });
+
+    it('using basic', () => {
+      return fetchAndCheckResponse({
+        url: '/test',
+        data: {
+          method: 'PUT',
+          headers: {
+            'x-epotek-authorization': `EPOTEK-BASIC ${publicKey.replace(
+              /\r?\n|\r/g,
+              '',
+            )}`,
+          },
+        },
+      }).then(res => {
+        const { message } = res;
+        expect(message).to.equal('PUT');
       });
     });
   });

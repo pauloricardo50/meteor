@@ -52,6 +52,12 @@ export const REST_API_ERRORS = {
     message: 'Wrong public key or signature.',
     info,
   }),
+  BASIC_AUTHORIZATION_FAILED: info => ({
+    status: HTTP_STATUS_CODES.FORBIDDEN,
+    errorName: 'AUTHORIZATION_FAILED',
+    message: 'Wrong public key',
+    info,
+  }),
 };
 
 export const OS_TMP_DIR = os.tmpdir();

@@ -243,7 +243,7 @@ const basicAuthMiddleware = options => (req, res, next) => {
 
   if (!user) {
     return next(
-      REST_API_ERRORS.AUTHORIZATION_FAILED(
+      REST_API_ERRORS.BASIC_AUTHORIZATION_FAILED(
         'No user found with this public key, or maybe it has a typo ?',
       ),
     );
