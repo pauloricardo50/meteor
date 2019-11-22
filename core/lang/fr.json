@@ -1,4 +1,5 @@
 {
+  "Forms.proNote": "Note du conseiller",
   "methods.submitContactForm": "[www] Remplir formulaire de contact",
   "methods.sendEmail": "[Serveur] Envoyer un email automatique",
   "methods.setLoanStep": "[Admin] Changer l'étape d'un dossier",

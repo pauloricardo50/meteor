@@ -71,15 +71,7 @@ Cypress.Commands.add(
       } else {
         prevSubject
           .find(`input[name=${name}]`)
-          .then(res => {
-            console.log('res:', res);
-            return res;
-          })
           .parent()
-          .then(res => {
-            console.log('res:', res);
-            return res;
-          })
           .click()
           .get('ul[role=listbox]')
           .children()
