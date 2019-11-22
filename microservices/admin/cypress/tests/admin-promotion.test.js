@@ -112,9 +112,7 @@ describe('Admin promotion', () => {
       cy.get('.promotion-management').should('exist');
 
       cy.contains("Vue d'ensemble").click();
-      cy.get('.promotion-lots-table table tbody tr').then(trs => {
-        expect(trs.length).to.equal(5);
-      });
+      cy.get('.promotion-lots-table table tbody tr').should('have.length', 5);
 
       cy.contains('Carte').click();
       cy.get('.google-map').should('exist');

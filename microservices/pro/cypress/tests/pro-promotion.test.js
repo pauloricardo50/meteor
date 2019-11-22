@@ -183,8 +183,7 @@ describe('Pro promotion', () => {
         );
       });
 
-      // Some buttons are sometimes off-screen to the right, force click on them
-      cy.contains('Réserver').click({ force: true });
+      cy.contains('Réserver').click();
       cy.contains('Confirmer').click();
 
       cy.get('.promotion-lot-loans-table')

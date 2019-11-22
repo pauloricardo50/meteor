@@ -28,13 +28,13 @@ const AppPromotionPageOverview = ({
           <UserReservation
             promotionOption={promotionOption}
             key={promotionOption._id}
-            className="card1 card-top"
+            className="card1 card-top user-reservation"
             progressVariant="text"
             loan={loan}
           />
         ))}
       {residenceType && promotionOptions && promotionOptions.length > 0 && (
-        <div className="card1 card-top">
+        <div className="card1 card-top promotion-options-table">
           <UserPromotionOptionsTable promotion={promotion} loan={loan} />
         </div>
       )}

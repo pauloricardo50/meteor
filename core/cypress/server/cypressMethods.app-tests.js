@@ -278,18 +278,39 @@ Meteor.methods({
       adminId: admin._id,
     };
   },
-  inviteTestUser({ withPassword } = {}) {
-    const userId = UserService.adminCreateUser({
-      options: {
-        email: USER_EMAIL,
-        firstName: 'Test',
-        lastName: 'User',
-        sendEnrollmentEmail: true,
-        password: withPassword && USER_PASSWORD,
-        phoneNumber: '0225660110',
-      },
-    });
-    LoanService.fullLoanInsert({ userId });
+  inviteTestUser: async ({ withPassword, toPromotion } = {}) => {
+    let userId;
+
+    if (toPromotion) {
+      const { _id: promotionId } = PromotionService.fetchOne();
+      const { _id: proUserId } = UserService.getByEmail('broker1@e-potek.ch');
+      const result = await UserService.proInviteUser({
+        user: {
+          email: USER_EMAIL,
+          firstName: 'Test',
+          lastName: 'User',
+          phoneNumber: '0225660110',
+        },
+        promotionIds: [promotionId],
+        proUserId,
+      });
+      userId = result.userId;
+    } else {
+      userId = UserService.adminCreateUser({
+        options: {
+          email: USER_EMAIL,
+          firstName: 'Test',
+          lastName: 'User',
+          sendEnrollmentEmail: true,
+          phoneNumber: '0225660110',
+        },
+      });
+      LoanService.fullLoanInsert({ userId });
+    }
+
+    if (withPassword) {
+      Accounts.setPassword(userId, USER_PASSWORD);
+    }
 
     const loginToken = UserService.getLoginToken({ userId });
     return loginToken;
