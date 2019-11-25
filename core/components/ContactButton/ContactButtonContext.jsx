@@ -7,7 +7,9 @@ export const { Consumer, Provider } = ContactButtonContext;
 export const withContactButtonProvider = Component => props => {
   const [openContact, setOpenContact] = useState(false);
   const toggleOpenContact = nextValue =>
-    setOpenContact(prevValue => nextValue || !prevValue);
+    setOpenContact(prevValue =>
+      nextValue === undefined ? !prevValue : nextValue,
+    );
 
   return (
     <Provider value={{ openContact, toggleOpenContact }}>

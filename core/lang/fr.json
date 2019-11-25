@@ -1,4 +1,5 @@
 {
+  "DeactivatedFormInfo.description": "Votre conseiller à figé vos formulaires pour préserver leur état actuel. Contactez-le si vous souhaitez faire des modifications.",
   "ImpersonateNotification.dialog.description": "{adminFirstName} souhaite vous accompagner à travers e-Potek",
   "ImpersonateNotification.follow": "Suivre {adminFirstName}",
   "ImpersonateNotification.following": "Vous suivez {adminFirstName}",

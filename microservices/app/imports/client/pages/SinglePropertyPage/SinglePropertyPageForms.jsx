@@ -8,6 +8,7 @@ import {
   getPropertyLoanArray,
 } from 'core/arrays/PropertyFormArray';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
+import DeactivatedFormInfo from '../../components/DeactivatedFormInfo';
 
 type SinglePropertyPageFormsProps = {};
 
@@ -21,6 +22,8 @@ const SinglePropertyPageForms = ({
 
   return (
     <>
+      <DeactivatedFormInfo loan={loan} style={{ margin: '16px 0' }} />
+
       <div className="flex--helper flex-justify--center">
         <AutoForm
           formClasses="user-form user-form__info"
