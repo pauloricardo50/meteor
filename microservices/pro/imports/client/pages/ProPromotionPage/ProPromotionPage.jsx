@@ -28,6 +28,7 @@ const makePermissions = props => ({
   canRemoveLots: isAllowedToRemovePromotionLots(props),
   canSeeManagement: isAllowedToSeeManagement(props),
   canModifyAdminNote: false,
+  canSeeUsers: true,
 });
 
 const getEnableNotifications = ({

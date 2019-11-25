@@ -173,12 +173,7 @@ const exoscaleStorageService = {
     return {
       upload: bucketUrl,
       download: downloadUrl,
-      postData: [
-        {
-          name: 'key',
-          value: payload.key,
-        },
-      ].concat(
+      postData: [{ name: 'key', value: payload.key }].concat(
         _.chain(payload)
           .omit('key')
           .map(
@@ -225,7 +220,6 @@ const exoscaleStorageService = {
 
     const matchedPolicy = policy.match(payload);
     const base64Policy = matchedPolicy.stringify();
-    const jsonPolicy = JSON.parse(matchedPolicy.stringify('utf-8'));
 
     payload.policy = base64Policy;
     payload['x-amz-signature'] = this.signAwsV4(

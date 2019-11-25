@@ -55,7 +55,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
         label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
       },
       {
-        raw: loanProgress.verificationStatus,
+        raw: loanProgress.info + loanProgress.documents,
         label: <LoanProgress loanProgress={loanProgress} />,
       },
       {

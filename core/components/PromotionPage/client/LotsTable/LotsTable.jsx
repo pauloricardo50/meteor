@@ -59,7 +59,7 @@ const LotsTable = ({
         schema={canModifyLots && schema}
         title={<T id="PromotionPage.modifyLot" />}
         allow={({ status }) =>
-          ![PROMOTION_LOT_STATUS.BOOKED, PROMOTION_LOT_STATUS.SOLD].includes(
+          ![PROMOTION_LOT_STATUS.RESERVED, PROMOTION_LOT_STATUS.SOLD].includes(
             status,
           )
         }

@@ -12,7 +12,7 @@ Meteor.methods({
       this.userId,
       addCurrentUser,
       withPromotionOptions,
-      Number.parseInt(users, 10),
+      Number.parseInt(users, 5),
       withInvitedBy,
     );
   },

@@ -1,82 +1,41 @@
 import React from 'react';
-import {
-  compose,
-  mapProps,
-  withState,
-  withProps,
-  withStateHandlers,
-} from 'recompose';
+import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { toMoney } from '../../../../utils/conversionFunctions';
-import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
-import ClickToEditField from '../../../ClickToEditField';
 import StatusLabel from '../../../StatusLabel';
 import {
-  PROMOTION_LOTS_COLLECTION,
-  PROMOTION_LOT_STATUS,
-  PROMOTION_STATUS,
   PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_LOT_REDUCED_STATUS,
+  PROMOTION_STATUS,
 } from '../../../../api/constants';
-import UpdateField from '../../../UpdateField';
 import PrioritySetter from './PrioritySetter';
-
-export const getLotsAttributedToMe = promotionOptions =>
-  promotionOptions.filter(({ attributedToMe }) => attributedToMe);
-
-export const isAnyLotAttributedToMe = promotionOptions =>
-  getLotsAttributedToMe(promotionOptions).length > 0;
-
-const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>
-  !attributedToMe &&
-  status === PROMOTION_LOT_STATUS.AVAILABLE &&
-  promotionStatus === PROMOTION_STATUS.OPEN;
-
-const adminReducedStatus = ({ attributedTo = {}, userId, status }) => {
-  const { user: { _id: attributedToUserId } = {} } = attributedTo;
-  if (userId === attributedToUserId) {
-    switch (status) {
-      case PROMOTION_LOT_STATUS.BOOKED:
-        return PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME;
-      case PROMOTION_LOT_STATUS.SOLD:
-        return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
-      default:
-        return status;
-    }
-  }
-  if (status === PROMOTION_LOT_STATUS.BOOKED) {
-    return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
-  }
-  return status;
-};
+import RequestReservation from './RequestReservation';
+import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 
 const makeMapPromotionOption = ({
   isLoading,
   setLoading,
-  makeChangeCustom,
   isDashboardTable = false,
   promotionStatus,
+  loan,
+  promotion,
   isAdmin,
-  setPromotionOptionModal,
 }) => (promotionOption, index, arr) => {
   const {
     _id: promotionOptionId,
     promotionLots,
-    custom,
-    attributedToMe,
-    solvency,
     loan: {
       user: { _id: userId },
     },
+    status,
   } = promotionOption;
-  const { name, status, reducedStatus, value, attributedTo } =
-    (promotionLots && promotionLots[0]) || {};
+  const { name, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
+    promotionOption,
     columns: [
-      !attributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
+      promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
           <PrioritySetter
             index={index}
@@ -89,47 +48,32 @@ const makeMapPromotionOption = ({
         </div>
       ),
       { raw: name, label: name },
-      {
-        raw: reducedStatus,
+      !isDashboardTable && {
+        raw: status,
         label: (
           <StatusLabel
-            status={
-              !isAdmin
-                ? reducedStatus
-                : adminReducedStatus({ attributedTo, userId, status })
-            }
-            collection={PROMOTION_LOTS_COLLECTION}
+            status={status}
+            collection={PROMOTION_OPTIONS_COLLECTION}
           />
         ),
       },
       { raw: value, label: toMoney(value) },
-      !isDashboardTable && (
-        <div key="custom" onClick={e => e.stopPropagation()}>
-          <ClickToEditField
-            placeholder={<T id="Forms.promotionOptions.custom" />}
-            value={custom}
-            onSubmit={makeChangeCustom(promotionOptionId)}
-            inputProps={{ style: { width: '100%' } }}
-            allowEditing={allowEditingCustom({
-              attributedToMe,
-              status,
-              promotionStatus,
-            })}
-          />
-        </div>
+      !isAdmin && (
+        <RequestReservation
+          key="reservation"
+          promotionOption={promotionOption}
+          promotionLotName={name}
+          status={status}
+        />
       ),
       !!isAdmin && (
-        <UpdateField
-          doc={{ _id: promotionOptionId, solvency }}
-          collection={PROMOTION_OPTIONS_COLLECTION}
-          fields={['solvency']}
+        <PromotionLotReservation
+          loan={loan}
+          promotion={promotion}
+          promotionOption={promotionOption}
         />
       ),
     ].filter(x => x !== false),
-
-    handleClick: event => {
-      setPromotionOptionModal(promotionOptionId);
-    },
   };
 };
 
@@ -140,21 +84,19 @@ const makeSortByPriority = priorityOrder => (
 
 const columnOptions = ({
   isDashboardTable = false,
-  isLotAttributedToMe,
   promotionStatus,
   isAdmin,
 }) =>
   [
-    !isLotAttributedToMe &&
-      promotionStatus === PROMOTION_STATUS.OPEN && {
-        id: 'priorityOrder',
-        ...(isDashboardTable && { style: { width: '10%' } }),
-      },
+    promotionStatus === PROMOTION_STATUS.OPEN && {
+      id: 'priorityOrder',
+      ...(isDashboardTable && { style: { width: '10%' } }),
+    },
     { id: 'name' },
-    { id: 'status' },
+    !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
-    !isDashboardTable && { id: 'custom', style: { maxWidth: '400px' } },
-    !!isAdmin && { id: 'solvency' },
+    !isAdmin && { id: 'requestReservation' },
+    !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
     .map(({ id, ...rest }) => ({
@@ -164,50 +106,27 @@ const columnOptions = ({
         isDashboardTable && id === 'priorityOrder' ? (
           '#'
         ) : (
-          <T id={`PromotionPage.lots.${id}`} />
-        ),
+            <T id={`PromotionPage.lots.${id}`} />
+          ),
       ...(isDashboardTable &&
         id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
-const addState = withStateHandlers(
-  {},
-  {
-    setStatus: () => status => ({ status }),
-    setPromotionOptionModal: () => promotionOptionModal => ({
-      promotionOptionModal,
-    }),
-  },
-);
-
 export default compose(
   withRouter,
   withState('isLoading', 'setLoading', false),
-  withProps({
-    makeChangeCustom: promotionOptionId => value =>
-      promotionOptionUpdate.run({
-        promotionOptionId,
-        object: { custom: value },
-      }),
-  }),
-  addState,
   mapProps(
     ({
       promotion,
       loan,
       isLoading,
       setLoading,
-      makeChangeCustom,
       isDashboardTable,
       isAdmin,
       className,
-      setPromotionOptionModal,
       ...rest
     }) => {
       const { promotionOptions } = loan;
-      const options = isAnyLotAttributedToMe(promotionOptions)
-        ? getLotsAttributedToMe(promotionOptions)
-        : promotionOptions;
 
       let priorityOrder =
         promotion.loans &&
@@ -221,33 +140,27 @@ export default compose(
       }
 
       return {
-        rows: options.sort(makeSortByPriority(priorityOrder)).map(
+        rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(
           makeMapPromotionOption({
             isLoading,
             setLoading,
-            makeChangeCustom,
             isDashboardTable,
             promotionStatus: promotion.status,
             isAdmin,
-            setPromotionOptionModal,
+            loan,
+            promotion,
           }),
         ),
         columnOptions: columnOptions({
           isDashboardTable,
-          isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
           promotionStatus: promotion.status,
           isAdmin,
         }),
-        setCustom: (promotionOptionId, value) =>
-          promotionOptionUpdate.run({
-            promotionOptionId,
-            object: { custom: value },
-          }),
         isDashboardTable,
         className,
         promotionOptions,
-        setPromotionOptionModal,
         promotion,
+        loan,
         ...rest,
       };
     },

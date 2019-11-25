@@ -14,20 +14,29 @@ export const ALLOWED_FILE_TYPES = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
+export const ALLOWED_FILE_TYPES_TEMP = [
+  'image/png',
+  'image/jpeg',
+  'application/pdf',
+];
+
 export const ONE_KB = 1024;
 
 // 16 MB (use null for unlimited), https://community.exoscale.com/api/sos/
 export const MAX_FILE_SIZE = 16 * ONE_KB * ONE_KB;
 
 export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
+export const SLINGSHOT_DIRECTIVE_NAME_TEMP = 'exoscale-temp';
 
 export const EXOSCALE_PATH = 'sos-ch-dk-2.exo.io';
 
-export const BUCKET_NAME = Meteor.isServer
-  ? Meteor.settings.storage.bucketName
-  : '';
-
 export const TEST_BUCKET_NAME = 'e-potek-test-bucket';
+
+export const BUCKET_NAME = Meteor.isServer
+  ? Meteor.isTest || Meteor.isAppTest
+    ? TEST_BUCKET_NAME
+    : Meteor.settings.storage.bucketName
+  : '';
 
 export const OBJECT_STORAGE_PATH = `https://${BUCKET_NAME}.${EXOSCALE_PATH}`;
 

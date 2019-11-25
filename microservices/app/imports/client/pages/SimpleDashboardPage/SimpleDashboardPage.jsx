@@ -25,7 +25,7 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   return (
     <div className="simple-dashboard-page animated fadeIn">
       <div className="simple-dashboard-page-content">
-        <DashboardProgressBar currentStep={loan.step} variant="light" />
+        <DashboardProgressBar loan={loan} variant="light" />
         <SimpleDashboardPageCTAs
           loanId={loan._id}
           progress={progress}

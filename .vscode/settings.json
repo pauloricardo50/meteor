@@ -14,5 +14,6 @@
     "microservices/**/imports/core": true
   },
   "editor.suggest.showKeywords": true,
-  "search.followSymlinks": false
+  "search.followSymlinks": false,
+  "javascript.preferences.importModuleSpecifier": "relative",
 }

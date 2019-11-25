@@ -1,4 +1,3 @@
-import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
@@ -10,20 +9,9 @@ import {
   cacheField,
   documentsField,
 } from '../helpers/sharedSchemas';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Offers = new Mongo.Collection(OFFERS_COLLECTION);
-
-// Prevent all client side modifications of mongoDB
-Offers.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-Offers.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Offers = createCollection(OFFERS_COLLECTION);
 
 export const OfferSchema = new SimpleSchema({
   createdAt,

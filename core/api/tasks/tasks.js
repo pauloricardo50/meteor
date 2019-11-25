@@ -1,4 +1,3 @@
-import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
@@ -9,21 +8,9 @@ import {
 } from './taskConstants';
 
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Tasks = new Mongo.Collection(TASKS_COLLECTION);
-
-// Prevent all client side modifications of mongoDB
-Tasks.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-Tasks.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Tasks = createCollection(TASKS_COLLECTION);
 
 export const TasksSchema = new SimpleSchema({
   createdAt,

@@ -20,8 +20,6 @@ import PropertiesPage from '../PropertiesPage/loadable';
 import InterestRatesPage from '../InterestRatesPage/loadable';
 import ContactsPage from '../ContactsPage/loadable';
 
-type OtherPageProps = {};
-
 const tabs = [
   {
     id: INTEREST_RATES_COLLECTION,
@@ -44,13 +42,14 @@ const tabs = [
   ...obj,
   label: (
     <span className="other-page-label">
-      <Icon type={collectionIcons[obj.id]} /> <T id={`collections.${obj.id}`} />
+      <Icon type={collectionIcons[obj.id]} />{' '}
+      {<T id={`collections.${obj.id}`} />}
     </span>
   ),
   to: createRoute(ADMIN_ROUTES.OTHER_PAGE.path, { tabId: obj.id }),
 }));
 
-const OtherPage = (props: OtherPageProps) => (
+const OtherPage = () => (
   <div className="other-page">
     <Tabs tabs={tabs} routerParamName="tabId" />
   </div>

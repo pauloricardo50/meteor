@@ -12,7 +12,6 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import AdminNoteExpand from 'core/components/AdminNote/AdminNoteExpand';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
-import VerificationSetter from './VerificationSetter';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
@@ -55,7 +54,6 @@ const OverviewTab = props => {
             collection={LOANS_COLLECTION}
           />
           <LoanStepSetter loan={loan} />
-          <VerificationSetter loan={loan} />
         </div>
 
         <div className="card-bottom">

@@ -38,7 +38,7 @@ export class LotService extends CollectionService {
     ) {
       throw new Meteor.Error(
         ERROR_CODES.FORBIDDEN,
-        LOT_ERRORS.PROMOTION_LOT_BOOKED_OR_SOLD,
+        LOT_ERRORS.PROMOTION_LOT_RESERVED_OR_SOLD,
       );
     }
 

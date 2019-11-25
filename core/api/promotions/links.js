@@ -7,8 +7,11 @@ import {
   Users,
   Loans,
   Organisations,
+  PromotionOptions,
 } from '..';
 import Tasks from '../tasks';
+
+import LinkInitializer from '../links/LinkInitializer';
 
 Promotions.addLinks({
   properties: {
@@ -41,10 +44,6 @@ Promotions.addLinks({
     type: 'many',
     metadata: true,
   },
-  loans: {
-    collection: Loans,
-    inversedBy: 'promotions',
-  },
   assignedEmployee: {
     collection: Users,
     field: 'assignedEmployeeId',
@@ -56,14 +55,28 @@ Promotions.addLinks({
     metadata: true,
     collection: Organisations,
   },
-  tasks: {
-    inversedBy: 'promotion',
-    collection: Tasks,
-    autoremove: true,
-  },
-  promotionLoan: {
-    inversedBy: 'financedPromotion',
-    type: 'one',
-    collection: Loans,
-  },
+});
+
+LinkInitializer.inversedInit(() => {
+  Promotions.addLinks({
+    loans: {
+      collection: Loans,
+      inversedBy: 'promotions',
+    },
+    tasks: {
+      inversedBy: 'promotion',
+      collection: Tasks,
+      autoremove: true,
+    },
+    promotionLoan: {
+      inversedBy: 'financedPromotion',
+      type: 'one',
+      collection: Loans,
+    },
+    promotionOptions: {
+      inversedBy: 'promotion',
+      type: 'many',
+      collection: PromotionOptions,
+    },
+  });
 });

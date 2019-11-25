@@ -17,6 +17,7 @@ const PromotionUserModifier = ({
   schema,
   model,
   onSubmit,
+  canModify,
 }: PromotionUserModifierProps) => (
   <AutoFormDialog
     schema={schema}
@@ -24,10 +25,11 @@ const PromotionUserModifier = ({
     onSubmit={onSubmit}
     className="update-field"
     buttonProps={{
-      label: 'Modifier',
+      label: canModify ? 'Modifier' : 'Voir',
       raised: true,
       primary: true,
     }}
+    disabled={!canModify}
   />
 );
 

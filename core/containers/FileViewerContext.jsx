@@ -1,7 +1,8 @@
 import React from 'react';
 import { withStateHandlers, compose } from 'recompose';
 
-export const { Consumer, Provider } = React.createContext();
+export const FileViewerContext = React.createContext();
+export const { Consumer, Provider } = FileViewerContext;
 
 export const withFileViewer = compose(
   withStateHandlers(

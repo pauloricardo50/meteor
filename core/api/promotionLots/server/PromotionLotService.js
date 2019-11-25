@@ -1,8 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+
+import Calculator from '../../../utils/Calculator';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 
-export class PromotionLotService extends CollectionService {
+class PromotionLotService extends CollectionService {
   constructor() {
     super(PromotionLots);
   }
@@ -27,34 +31,109 @@ export class PromotionLotService extends CollectionService {
     });
   }
 
-  bookPromotionLot({ promotionLotId, loanId }) {
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.BOOKED },
+  reservePromotionLot({ promotionOptionId }) {
+    const promotionOption = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1, status: 1 },
+      bank: 1,
+      simpleVerification: 1,
+      fullVerification: 1,
+      reservationAgreement: 1,
+      deposit: 1,
     });
+    const { loan: { _id: loanId } = {}, promotionLots } = promotionOption;
 
-    return this.addLink({
+    const [{ _id: promotionLotId, status: promotionLotStatus }] = promotionLots;
+
+    if (promotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE) {
+      throw new Meteor.Error(403, 'Ce lot est déjà réservé');
+    }
+
+    if (!Calculator.canConfirmPromotionLotReservation({ promotionOption })) {
+      throw new Meteor.Error(
+        403,
+        "Cette réservation n'est pas encore complète",
+      );
+    }
+
+    this.addLink({
       id: promotionLotId,
       linkName: 'attributedTo',
       linkId: loanId,
     });
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.RESERVED },
+    });
+
+    return PromotionOptionService.completeReservation({
+      promotionOptionId,
+    });
   }
 
-  cancelPromotionLotBooking({ promotionLotId }) {
+  cancelPromotionLotReservation({ promotionOptionId }) {
+    const { promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
     this.update({
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
     });
-    return this.removeLink({
+    this.removeLink({
       id: promotionLotId,
       linkName: 'attributedTo',
     });
+
+    return PromotionOptionService.cancelReservation({
+      promotionOptionId,
+    });
   }
 
-  sellPromotionLot({ promotionLotId }) {
-    return this.update({
+  sellPromotionLot({ promotionOptionId }) {
+    const { promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      promotionLots: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    this.update({
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.SOLD },
+    });
+
+    return PromotionOptionService.sellLot({
+      promotionOptionId,
+    });
+  }
+
+  expirePromotionLotReservation({ promotionOptionId }) {
+    const { promotionLots } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      loan: { _id: 1 },
+      promotionLots: { _id: 1 },
+    });
+
+    const [{ _id: promotionLotId }] = promotionLots;
+
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
+    });
+    this.removeLink({
+      id: promotionLotId,
+      linkName: 'attributedTo',
+    });
+
+    return PromotionOptionService.expireReservation({
+      promotionOptionId,
     });
   }
 }

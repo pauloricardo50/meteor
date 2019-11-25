@@ -5,6 +5,7 @@ import {
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS,
   PROMOTION_AUTHORIZATION_STATUS,
+  PROMOTION_USERS_ROLES,
 } from '../promotionConstants';
 import {
   address,
@@ -29,7 +30,7 @@ export const promotionPermissionsSchema = {
     type: SimpleSchema.oneOf(Boolean, Object),
     optional: true,
     autoValue() {
-      if (Meteor.isServer && this.isSet) {
+      if (Meteor.isServer) {
         if (this.value === undefined) {
           return false;
         }
@@ -43,8 +44,6 @@ export const promotionPermissionsSchema = {
             return false;
           }
         }
-
-        return this.value;
       }
     },
   },
@@ -69,9 +68,7 @@ export const promotionPermissionsSchema = {
     uniforms: { displayEmpty: false, placeholder: '' },
   },
   canInviteCustomers: SCHEMA_BOOLEAN,
-  canBookLots: SCHEMA_BOOLEAN,
-  // canPreBookLots: SCHEMA_BOOLEAN,
-  canSellLots: SCHEMA_BOOLEAN,
+  canReserveLots: SCHEMA_BOOLEAN,
   canSeeManagement: SCHEMA_BOOLEAN,
 };
 
@@ -117,6 +114,16 @@ const PromotionSchema = new SimpleSchema({
         defaultValue: true,
         optional: true,
       },
+      roles: {
+        type: Array,
+        optional: true,
+        defaultValue: [PROMOTION_USERS_ROLES.BROKER],
+      },
+      'roles.$': {
+        type: String,
+        allowedValues: Object.values(PROMOTION_USERS_ROLES),
+        optional: true,
+      },
     },
   }),
   documents: documentsField,
@@ -160,6 +167,11 @@ const PromotionSchema = new SimpleSchema({
       placeholder: '',
     },
   },
+  agreementDuration: {
+    type: SimpleSchema.Integer,
+    min: 0,
+    max: 30,
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
@@ -171,6 +183,7 @@ export const BasePromotionSchema = PromotionSchema.pick(
   'city',
   'signingDate',
   'contacts',
+  'agreementDuration',
 );
 
 export default PromotionSchema;

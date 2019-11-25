@@ -1,3 +1,4 @@
+import SecurityService from 'core/api/security';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
@@ -6,8 +7,8 @@ import {
   clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
 import LoanService from '../../loans/server/LoanService';
+import { ANONYMIZED_STRING } from '../../security/constants';
 
-const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
   name: ANONYMIZED_STRING,
   phoneNumbers: [ANONYMIZED_STRING],
@@ -102,7 +103,7 @@ export const getPromotionCustomerOwnerType = ({
   });
 };
 
-const shouldAnonymize = ({
+export const shouldAnonymize = ({
   customerId,
   userId,
   promotionId,
@@ -158,7 +159,7 @@ export const makeLoanAnonymizer = ({
 
     if (!promotionLotId) {
       // If no promotionLot is passed here, we get the best one from the loan
-      // For statuses BOOKED and SOLD, we check that it is attributed to
+      // For statuses RESERVED and SOLD, we check that it is attributed to
       // this loan
       promotionLotStatus = getBestPromotionLotStatus({ loanId });
       isAttributed = true;
@@ -206,12 +207,12 @@ export const makePromotionLotAnonymizer = ({ userId }) => promotionLot => {
 export const makePromotionOptionAnonymizer = ({
   userId,
 }) => promotionOption => {
-  const { loan, custom, ...rest } = promotionOption;
+  const { loan, ...rest } = promotionOption;
   const {
     promotionLots,
     promotion: { _id: promotionId },
   } = promotionOption;
-  const { _id: promotionLotId } = promotionLots[0];
+  const [{ _id: promotionLotId }] = promotionLots;
 
   const anonymize = shouldAnonymize({
     customerId: loan.user._id,
@@ -228,7 +229,6 @@ export const makePromotionOptionAnonymizer = ({
       promotionLotId,
       anonymize,
     })(loan),
-    custom: anonymize ? ANONYMIZED_STRING : custom,
     isAnonymized: !!anonymize,
     ...rest,
   };

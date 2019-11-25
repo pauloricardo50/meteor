@@ -95,7 +95,7 @@ describe('LenderService', () => {
       expect(OfferService.find({}).fetch().length).to.equal(0);
       expect(TaskService.find({}).fetch().length).to.equal(0);
 
-      const loan = LoanService.get({});
+      const loan = LoanService.findOne({});
 
       loan.structures.map(({ offerId }) => {
         expect(offerId).to.not.equal('offer1');

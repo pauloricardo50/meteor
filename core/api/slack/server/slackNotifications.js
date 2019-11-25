@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import moment from 'moment';
 
 import SlackService from './SlackService';
 
@@ -24,22 +25,22 @@ export const propertyInviteNotification = ({ currentUser, property, user }) => {
 
 export const promotionInviteNotification = ({
   currentUser,
-  promotion: { name, assignedEmployee, _id: promotionId },
-  user,
+  promotionName,
+  assignedEmployee,
+  proName,
+  promotionId,
 }) => {
-  const { firstName, lastName, email } = user;
-
   SlackService.notifyAssignee({
     currentUser,
-    title: `Promotion ${name}`,
-    message: `${firstName} ${lastName} a été invité! ${email}`,
+    title: `Promotion ${promotionName}`,
+    message: `Nouveau prospect de ${proName}. Suivre l'avancement et prendre contact.`,
     link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
   });
 };
 
-export const promotionLotBooked = ({
+export const promotionLotReserved = ({
   currentUser,
   promotionLot,
   user: { name },
@@ -109,5 +110,47 @@ export const newUser = ({ loans, currentUser, suffix }) => {
       loans.length ? `(dossier ${loans[0].name})` : ''
     } ${suffix}`,
     link: `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`,
+  });
+};
+
+export const newPromotionReservation = ({
+  currentUser,
+  promotionLotName,
+  promotionName,
+  proName,
+  promotionId,
+  assignedEmployee,
+}) => {
+  SlackService.notifyAssignee({
+    currentUser,
+    title: `Promotion ${promotionName}`,
+    message: `A fait une demande de réservation à ${proName} pour le lot ${promotionLotName}`,
+    link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
+    assignee: assignedEmployee,
+    notifyAlways: true,
+  });
+};
+
+export const promotionAgreementUploaded = ({
+  currentUser,
+  promotionLotName,
+  promotionName,
+  promotionId,
+  userName,
+  assignedEmployee,
+  startDate,
+  expirationDate,
+}) => {
+  SlackService.notifyAssignee({
+    currentUser,
+    title: `Promotion ${promotionName}`,
+    message: `A uploadé une convention de réservation pour ${userName} sur le lot ${promotionLotName}. Date de début: ${moment(
+      startDate,
+    ).format('D MMM YYYY')}, date d'expiration: ${moment(expirationDate).format(
+      'D MMM YYYY',
+    )}`,
+    link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
+    assignee: assignedEmployee,
+    notifyAlways: true,
   });
 };

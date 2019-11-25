@@ -1,7 +1,6 @@
 // Export all method definitions here
 export * from '../borrowers/methodDefinitions';
 export * from '../contacts/methodDefinitions';
-export * from '../email/methodDefinitions';
 export * from '../files/methodDefinitions';
 export * from '../impersonation/methodDefinitions';
 export * from '../interestRates/methodDefinitions';

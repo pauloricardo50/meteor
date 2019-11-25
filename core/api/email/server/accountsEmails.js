@@ -2,6 +2,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+import { createMeteorAsyncFunction } from 'core/api/helpers/index';
 import { FROM_DEFAULT, EMAIL_IDS, EMAIL_PARTS } from '../emailConstants';
 import EmailService from './EmailService';
 
@@ -14,7 +15,16 @@ export const createAccountsEmailConfig = emailId => ({
   subject: () => EmailService.getEmailPart(emailId, EMAIL_PARTS.SUBJECT),
   html(user, url) {
     // TODO: Make sure this doesn't block
-    const template = EmailService.getAccountsTemplate(emailId, { user, url });
+    const getAccountsTemplate = createMeteorAsyncFunction(
+      EmailService.getAccountsTemplate.bind(EmailService),
+    );
+    const template = getAccountsTemplate({
+      emailId,
+      params: {
+        user,
+        url,
+      },
+    });
     const result = EmailService.renderTemplate(template, emailId);
 
     const { emails = [] } = user;

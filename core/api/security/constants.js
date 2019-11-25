@@ -2,3 +2,5 @@ export const DOCUMENT_USER_PERMISSIONS = {
   MODIFY: 'MODIFY',
   READ: 'READ',
 };
+
+export const ANONYMIZED_STRING = 'XXX';

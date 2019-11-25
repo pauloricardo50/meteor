@@ -30,7 +30,7 @@ const styles = theme => ({
   raised: {},
 });
 
-const getColor = ({ primary, secondary, color, error }) => {
+const getColor = ({ primary, secondary, color, error, warning }) => {
   if (primary) {
     return 'primary';
   }
@@ -39,6 +39,9 @@ const getColor = ({ primary, secondary, color, error }) => {
   }
   if (error) {
     return 'error';
+  }
+  if (warning) {
+    return 'warning';
   }
 
   return color;

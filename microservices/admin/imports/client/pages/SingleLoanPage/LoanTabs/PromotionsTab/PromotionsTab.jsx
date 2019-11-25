@@ -1,28 +1,25 @@
 // @flow
 import React from 'react';
 
-import Tabs from 'core/components/Tabs';
-import SinglePromotionTab from './SinglePromotionTab';
+import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
+import { CollectionIconLink } from 'core/components/IconLink';
+import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 
 type PromotionsTabProps = {};
 
-const PromotionsTab = (props: PromotionsTabProps) => {
-  const { loan } = props;
+const PromotionsTab = ({ loan }: PromotionsTabProps) => {
+  const [promotion] = loan.promotions;
 
   return (
-    <Tabs
-      tabs={loan.promotions.map(promotiomn => ({
-        id: promotiomn._id,
-        label: promotiomn.name,
-        content: (
-          <SinglePromotionTab
-            {...props}
-            promotion={promotiomn}
-            key={promotiomn._id}
-          />
-        ),
-      }))}
-    />
+    <>
+      <h2>
+        <CollectionIconLink
+          relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
+          iconStyle={{ maxWidth: 'unset' }}
+        />
+      </h2>
+      <UserPromotionOptionsTable loan={loan} promotion={promotion} isAdmin />
+    </>
   );
 };
 

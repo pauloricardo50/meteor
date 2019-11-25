@@ -66,12 +66,16 @@ const reducer = (state, action) => {
         return openFirstModal(state, action);
       }
 
+      // Use extraPayload in case you're passing a react component as the payload
+      // but still want extra props on the root dialog
+      const payload = { ...action.payload, ...action.extraPayload };
+
       const modalId = id;
       id += 1;
       if (state.activeModal === null) {
-        return { ...state, [modalId]: action.payload, activeModal: modalId };
+        return { ...state, [modalId]: payload, activeModal: modalId };
       }
-      return { ...state, [modalId]: action.payload };
+      return { ...state, [modalId]: payload };
     }
     case 'CLOSE_MODAL': {
       const {
@@ -116,8 +120,8 @@ const ModalManager = ({ children }: ModalManagerProps) => {
 
   const { props: { important: importantComponent = false } = {} } = dialogProps;
 
-  const openModal = payload => {
-    dispatch({ type: 'OPEN_MODAL', payload });
+  const openModal = (payload, extraPayload) => {
+    dispatch({ type: 'OPEN_MODAL', payload, extraPayload });
   };
 
   const closeModal = returnValue =>

@@ -7,29 +7,96 @@ import {
   promotionOptionRemove,
   increaseOptionPriority,
   reducePriorityOrder,
+  setPromotionOptionProgress,
+  promotionOptionActivateReservation,
+  promotionOptionUploadAgreement,
+  promotionOptionAddToWaitList,
 } from '../methodDefinitions';
+import { Method } from '../../methods/methods';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
-  const loan = LoanService.get(params.loanId);
-  SecurityService.checkOwnership(loan);
+  const loan = LoanService.findOne(params.loanId);
+  SecurityService.checkOwnership(loan, userId);
   return PromotionOptionService.insert(params);
 });
 
-promotionOptionUpdate.setHandler(({ userId }, params) =>
-  // TODO: Security check
-  PromotionOptionService.update(params),
-);
+const canUpdatePromotionOption = (_id, userId) => {
+  if (!SecurityService.isUserAdmin(userId)) {
+    try {
+      const { loan } = PromotionOptionService.fetchOne({
+        $filters: { _id },
+        loan: { _id: 1, userId: 1 },
+      });
+      SecurityService.checkOwnership(loan, userId);
+    } catch (error) {
+      SecurityService.promotions.isAllowedToManagePromotionReservation({
+        promotionOptionId: _id,
+        userId,
+      });
+    }
+  }
+};
 
-promotionOptionRemove.setHandler(({ userId }, params) =>
-  // TODO: Security check
+promotionOptionUpdate.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.update(params);
+});
 
-  PromotionOptionService.remove(params),
-);
+promotionOptionRemove.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.remove(params);
+});
 
-increaseOptionPriority.setHandler((context, params) =>
-  PromotionOptionService.increasePriorityOrder(params),
-);
+increaseOptionPriority.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.increasePriorityOrder(params);
+});
 
-reducePriorityOrder.setHandler((context, params) =>
-  PromotionOptionService.reducePriorityOrder(params),
-);
+reducePriorityOrder.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.reducePriorityOrder(params);
+});
+
+setPromotionOptionProgress.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.setProgress(params);
+});
+
+promotionOptionActivateReservation.setHandler(({ userId }, params) => {
+  canUpdatePromotionOption(params.promotionOptionId, userId);
+  return PromotionOptionService.activateReservation(params);
+});
+
+promotionOptionUploadAgreement.setHandler(({ userId }, params) => {
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
+    userId,
+  });
+  return PromotionOptionService.uploadAgreement(params);
+});
+
+promotionOptionAddToWaitList.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionOptionService.addToWaitList(params);
+});
+
+export const generateExpiringSoonReservationTasks = new Method({
+  name: 'generateExpiringSoonReservationTasks',
+  params: {},
+});
+
+generateExpiringSoonReservationTasks.setHandler(context => {
+  SecurityService.checkIsInternalCall(context);
+  return PromotionOptionService.getExpiringSoonReservations();
+});
+
+export const generateTenDayExpirationReminderTasks = new Method({
+  name: 'generateHalfLifeReservationReminderTasks',
+  params: {},
+});
+
+generateTenDayExpirationReminderTasks.setHandler(context => {
+  SecurityService.checkIsInternalCall(context);
+  return PromotionOptionService.getHalfLifeReservations();
+});

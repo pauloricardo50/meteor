@@ -36,6 +36,7 @@ const PromotionsPage = ({ addPromotion }: PromotionsPageProps) => (
           layout: [
             { className: 'grid-col', fields: ['address1', 'address2'] },
             { className: 'grid-col', fields: ['zipCode', 'city'] },
+            { className: 'grid-col', fields: ['agreementDuration'] },
           ],
         },
         'contacts',

@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import connectField from 'uniforms/connectField';
@@ -22,6 +22,7 @@ import MoneyInput from '../MoneyInput';
 import HtmlPreview from '../HtmlPreview';
 import { ignoreProps } from '../../containers/updateForProps';
 import CustomBooleanRadioField from './CustomBooleanRadioField';
+import FileUploadField from './FileUploadField';
 
 const container = ignoreProps(FIELDS_TO_IGNORE);
 
@@ -104,6 +105,10 @@ const determineComponentFromProps = ({
     };
   }
 
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.FILE_UPLOAD) {
+    return { Component: FileUploadField };
+  }
+
   if (fieldType === Array) {
     return { Component: OptimizedListField, type: COMPONENT_TYPES.ARRAY };
   }
@@ -142,13 +147,15 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       props.name,
     );
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
-    let [{ Component, type, props: additionalProps = {} }] = useState(
-      determineComponentFromProps({
-        allowedValues,
-        customAllowedValues,
-        field,
-        fieldType,
-      }),
+    let { Component, type, props: additionalProps = {} } = useMemo(
+      () =>
+        determineComponentFromProps({
+          allowedValues,
+          customAllowedValues,
+          field,
+          fieldType,
+        }),
+      [],
     );
 
     Component = Component || AutoField;
@@ -160,16 +167,19 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     }
 
     // Don't recalculate these
-    const [label] = useState(
-      getLabel({
-        ...props,
-        ...additionalProps,
-        intlPrefix,
-        label: labels[props.name],
-      }),
+    const label = useMemo(
+      () =>
+        getLabel({
+          ...props,
+          ...additionalProps,
+          intlPrefix,
+          label: labels[props.name],
+        }),
+      [],
     );
-    const placeholder = useMemo(() =>
-      getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
+    const placeholder = useMemo(
+      () => getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
+      [],
     );
 
     if (

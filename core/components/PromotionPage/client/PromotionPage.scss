@@ -1,5 +1,7 @@
 @import './PromotionCustomers/PromotionCustomers.scss';
 @import './PromotionLotDetail/PromotionLotDetail.scss';
+@import './UserReservation/UserReservation.scss';
+@import './UserPromotionOptionsTable/RequestReservation.scss';
 
 .promotion-page {
   display: flex;
@@ -107,7 +109,7 @@
   .residence-type-setter {
     display: flex;
     align-items: center;
-    align-self: center;
+    align-self: center !important;
     // On very small screens
 
     min-width: 224px;
@@ -131,6 +133,11 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+
+    > .card1 {
+      align-self: stretch;
+      margin: 16px 0;
+    }
 
     > button,
     .mui-table {
@@ -274,7 +281,7 @@
   }
 }
 
-.book-client-infos {
+.reserve-client-infos {
   display: flex;
   flex-direction: column;
 
@@ -363,6 +370,104 @@
 
           opacity: 0.5;
         }
+      }
+    }
+  }
+}
+
+.promotion-reservation-progress {
+  .status-date-form {
+    // Sometimes the form does not stretch properly when opening a
+    // select field
+    width: 100%;
+  }
+
+  &.editing &-icons {
+    display: block;
+    width: 100%;
+    .icon {
+      display: block;
+      span {
+        margin-right: 16px;
+      }
+
+      &::after,
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &.full &-icons {
+    display: block;
+
+    .icon {
+      display: block;
+      position: relative;
+
+      p {
+        width: 100%;
+      }
+
+      span {
+        margin-right: 16px;
+      }
+
+      &::after {
+        position: absolute;
+        height: 24px;
+        border-left: 1px solid black;
+        border-bottom: unset;
+        left: 12px;
+        content: '';
+      }
+
+      &::after {
+        top: 32px;
+      }
+
+      &::before {
+        display: none;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
+
+  &-icons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 8px;
+
+    .icon {
+      display: flex;
+      margin-right: 8px;
+      position: relative;
+
+      &::before,
+      &::after {
+        position: absolute;
+        width: 8px;
+        border-bottom: 1px solid black;
+        top: 50%;
+        content: '';
+      }
+
+      &::after {
+        left: 100%;
+      }
+
+      &::before {
+        right: 100%;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
       }
     }
   }

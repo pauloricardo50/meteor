@@ -24,14 +24,13 @@ Meteor.startup(() => {
   });
 
   Mutation.addBeforeExecution(({ context = {}, config }) => {
+    const { connection = {}, userId } = context;
+
     const {
-      connection: {
-        id: connectionId,
-        clientAddress,
-        httpHeaders: { 'x-real-ip': realIp } = {},
-      } = {},
-      userId,
-    } = context;
+      id: connectionId,
+      clientAddress,
+      httpHeaders: { 'x-real-ip': realIp } = {},
+    } = connection || {};
 
     const { name } = config;
 

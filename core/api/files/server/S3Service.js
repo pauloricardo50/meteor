@@ -1,7 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
-import { Loans, Borrowers, Properties, Promotions } from '../..';
+import {
+  Loans,
+  Borrowers,
+  Properties,
+  Promotions,
+  PromotionOptions,
+} from '../..';
 import {
   TEST_BUCKET_NAME,
   S3_ENDPOINT,
@@ -9,6 +15,7 @@ import {
 } from '../fileConstants';
 import { PROPERTY_CATEGORY } from '../../constants';
 import FileService from './FileService';
+import SecurityService from '../../security';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -34,11 +41,10 @@ class S3Service {
 
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
-  isAllowedToAccess = key => {
-    const loggedInUser = Meteor.userId();
+  isAllowedToAccess = ({ userId, key }) => {
     if (
-      Roles.userIsInRole(loggedInUser, 'admin') ||
-      Roles.userIsInRole(loggedInUser, 'dev')
+      Roles.userIsInRole(userId, 'admin') ||
+      Roles.userIsInRole(userId, 'dev')
     ) {
       return true;
     }
@@ -47,7 +53,7 @@ class S3Service {
     const { docId: keyId } = FileService.getKeyParts(key);
     const loanFound = !!Loans.findOne({
       _id: keyId,
-      userId: loggedInUser,
+      userId,
     });
 
     if (loanFound) {
@@ -56,7 +62,7 @@ class S3Service {
 
     const borrowerFound = !!Borrowers.findOne({
       _id: keyId,
-      userId: loggedInUser,
+      userId,
     });
 
     if (borrowerFound) {
@@ -67,7 +73,7 @@ class S3Service {
 
     if (property) {
       if (!property.category || property.category === PROPERTY_CATEGORY.USER) {
-        if (property.userId === loggedInUser) {
+        if (property.userId === userId) {
           return true;
         }
         throw new Meteor.Error('Unauthorized download');
@@ -80,6 +86,20 @@ class S3Service {
 
     if (promotionFound) {
       return true;
+    }
+
+    const promotionOption = PromotionOptions.findOne({ _id: keyId });
+
+    if (promotionOption) {
+      try {
+        SecurityService.promotions.isAllowedToManagePromotionReservation({
+          promotionOptionId: promotionOption._id,
+          userId,
+        });
+        return true;
+      } catch (error) {
+        throw new Meteor.Error('Unauthorized download');
+      }
     }
 
     throw new Meteor.Error('Unauthorized download');

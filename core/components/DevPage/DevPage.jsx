@@ -12,6 +12,26 @@ import ConfirmMethod from '../ConfirmMethod';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
 
+const SharedStuff = () => {
+  return (
+    <>
+      <ConfirmMethod
+        method={cb => migrateToLatest.run().then(cb)}
+        keyword="MIGRATE"
+        label="Migrate to latest"
+        buttonProps={{ error: true, raised: true }}
+      />
+      <ConfirmMethod
+        method={cb => cleanDatabase.run().then(cb)}
+        keyword="CLEAN_DATABASE"
+        label="Clean database"
+        buttonProps={{ error: true, raised: true }}
+      />
+      <ErrorThrower />
+    </>
+  );
+};
+
 class DevPage extends Component {
   constructor(props) {
     super(props);
@@ -58,10 +78,10 @@ class DevPage extends Component {
                 Try to use Delete fake data or Delete personal data instead!
               </h4>
             ) : (
-              <h4 className="success">
-                You're on a dev environment, do whatever you want! :)
+                <h4 className="success">
+                  You're on a dev environment, do whatever you want! :)
               </h4>
-            )}
+              )}
 
             <Tooltip title="Use with extra care!!! You will be deleting EVERYTHING in the database except your personal account!">
               <Button
@@ -94,7 +114,18 @@ class DevPage extends Component {
               raised
               secondary
               className="mr20"
-              onClick={() => Meteor.call('generateTestData', currentUser.email)}
+              onClick={() =>
+                Meteor.call('generateTestData', {
+                  currentUserEmail: currentUser.email,
+                  generateDevs: true,
+                  generateAdmins: true,
+                  generateUsers: true,
+                  generateLoans: true,
+                  generateOrganisations: true,
+                  generateUnownedLoan: true,
+                  generateTestUser: true,
+                })
+              }
             >
               <Icon type="groupAdd" />
               Generate test data
@@ -284,21 +315,6 @@ class DevPage extends Component {
             Add me in org
           </Button>
           <hr className="mbt20" />
-          <ConfirmMethod
-            method={cb => migrateToLatest.run().then(cb)}
-            keyword="MIGRATE"
-            label="Migrate to latest"
-            buttonProps={{ error: true, raised: true }}
-          />
-          <ConfirmMethod
-            method={cb => cleanDatabase.run().then(cb)}
-            keyword="CLEAN_DATABASE"
-            label="Clean database"
-            buttonProps={{ error: true, raised: true }}
-          />
-          <hr className="mbt20" />
-          <ErrorThrower />
-          <hr className="mbt20" />
           <Button
             raised
             primary
@@ -306,25 +322,15 @@ class DevPage extends Component {
           >
             Générer notifications
           </Button>
+          <hr className="mbt20" />
+          <SharedStuff />
         </section>
       );
     }
 
     return (
       <section id="dev-page">
-        <ConfirmMethod
-          method={cb => migrateToLatest.run().then(cb)}
-          keyword="MIGRATE"
-          label="Migrate to latest"
-          buttonProps={{ error: true, raised: true }}
-        />
-        <ConfirmMethod
-          method={cb => cleanDatabase.run().then(cb)}
-          keyword="CLEAN_DATABASE"
-          label="Clean database"
-          buttonProps={{ error: true, raised: true }}
-        />
-        <ErrorThrower />
+        <SharedStuff />
       </section>
     );
   }

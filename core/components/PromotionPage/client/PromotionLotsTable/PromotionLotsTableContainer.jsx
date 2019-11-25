@@ -1,7 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
-import { compose, withProps, withStateHandlers } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import {
@@ -17,19 +15,7 @@ import {
   PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
 } from '../../../../api/constants';
-
-export const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
-  const promotionLots = promotionOptions.filter(
-    option => option.promotionLots[0]._id === promotionLotId,
-  );
-  return !!(promotionLots[0] && promotionLots[0].attributedToMe);
-};
-
-const isAnyLotAttributedToMe = promotionLots =>
-  promotionLots.filter(
-    ({ attributedTo }) =>
-      attributedTo && attributedTo.user._id === Meteor.userId(),
-  ).length > 0;
+import PromotionCustomer from '../PromotionCustomer';
 
 const proColumnOptions = [
   { id: 'name' },
@@ -52,7 +38,7 @@ const proColumnOptions = [
   label: <T id={`PromotionPage.lots.${column.id}`} />,
 }));
 
-const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
+const appColumnOptions = ({ promotionStatus }) =>
   [
     { id: 'name' },
     { id: 'status' },
@@ -67,11 +53,10 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       ),
     },
     { id: 'lots' },
-    !isALotAttributedToMe &&
-      promotionStatus === PROMOTION_STATUS.OPEN && {
-        id: 'interested',
-        padding: 'checkbox',
-      },
+    promotionStatus === PROMOTION_STATUS.OPEN && {
+      id: 'interested',
+      padding: 'checkbox',
+    },
   ]
     .filter(x => x)
     .map(column => ({
@@ -79,7 +64,7 @@ const appColumnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
       label: <T id={`PromotionPage.lots.${column.id}`} />,
     }));
 
-const makeMapProPromotionLot = ({ setPromotionLotModal }) => promotionLot => {
+const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
   const {
     _id: promotionLotId,
     name,
@@ -90,8 +75,18 @@ const makeMapProPromotionLot = ({ setPromotionLotModal }) => promotionLot => {
     attributedTo,
   } = promotionLot;
 
+  let invitedBy;
+  const { _id: loanId } = attributedTo || {};
+  const { loans = [], users: promotionUsers = [] } = promotion;
+
+  if (loanId) {
+    const { $metadata = {} } = loans.find(({ _id }) => _id === loanId);
+    invitedBy = $metadata.invitedBy;
+  }
+
   return {
     id: promotionLotId,
+    promotionLot,
     columns: [
       name,
       {
@@ -114,17 +109,21 @@ const makeMapProPromotionLot = ({ setPromotionLotModal }) => promotionLot => {
         ),
       },
       promotionOptions.length,
-      attributedTo && attributedTo.user.name,
+      attributedTo && (
+        <PromotionCustomer
+          user={attributedTo.user}
+          invitedBy={invitedBy}
+          promotionUsers={promotionUsers}
+        />
+      ),
     ],
-    handleClick: () => setPromotionLotModal(promotionLotId),
   };
 };
 
 const makeMapAppPromotionLot = ({
-  setPromotionLotModal,
   loan: { _id: loanId, promotionOptions },
-  isALotAttributedToMe,
   promotionStatus,
+  promotionId,
 }) => promotionLot => {
   const {
     _id: promotionLotId,
@@ -137,6 +136,7 @@ const makeMapAppPromotionLot = ({
 
   return {
     id: promotionLotId,
+    promotionLot,
     columns: [
       name,
       {
@@ -157,34 +157,24 @@ const makeMapAppPromotionLot = ({
           </div>
         ),
       },
-      !isALotAttributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
+      promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
           <PromotionLotSelector
             promotionLotId={promotionLotId}
             promotionOptions={promotionOptions}
             loanId={loanId}
-            disabled={
-              isLotAttributedToMe({ promotionOptions, promotionLotId }) ||
-              status !== PROMOTION_LOT_STATUS.AVAILABLE
-            }
+            promotionId={promotionId}
           />
         </div>
       ),
     ].filter(x => x !== false),
-    handleClick: () => setPromotionLotModal(promotionLotId),
   };
 };
 
-const addState = withStateHandlers(
-  {},
-  {
-    setStatus: () => status => ({ status }),
-    setPromotionLotModal: () => promotionLotModal => ({ promotionLotModal }),
-  },
-);
+const withStatusFilter = withState('status', 'setStatus', undefined);
 
 export const ProPromotionLotsTableContainer = compose(
-  addState,
+  withStatusFilter,
   withSmartQuery({
     query: proPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
@@ -193,14 +183,13 @@ export const ProPromotionLotsTableContainer = compose(
     }),
     dataName: 'promotionLots',
   }),
-  withProps(({ promotionLots, setPromotionLotModal }) => ({
-    rows: promotionLots.map(makeMapProPromotionLot({ setPromotionLotModal })),
+  withProps(({ promotionLots, promotion }) => ({
+    rows: promotionLots.map(makeMapProPromotionLot({ promotion })),
     columnOptions: proColumnOptions,
   })),
 );
 
 export const AppPromotionLotsTableContainer = compose(
-  addState,
   withSmartQuery({
     query: appPromotionLots,
     params: ({ promotion: { _id: promotionId }, status }) => ({
@@ -212,26 +201,19 @@ export const AppPromotionLotsTableContainer = compose(
   withProps(
     ({
       promotionLots,
-      promotion: { status: promotionStatus },
-      setPromotionLotModal,
+      promotion: { status: promotionStatus, _id: promotionId },
       loan,
-    }) => {
-      const isALotAttributedToMe = isAnyLotAttributedToMe(promotionLots);
-
-      return {
-        rows: promotionLots.map(
-          makeMapAppPromotionLot({
-            setPromotionLotModal,
-            loan,
-            isALotAttributedToMe,
-            promotionStatus,
-          }),
-        ),
-        columnOptions: appColumnOptions({
-          isALotAttributedToMe,
+    }) => ({
+      rows: promotionLots.map(
+        makeMapAppPromotionLot({
+          loan,
           promotionStatus,
+          promotionId,
         }),
-      };
-    },
+      ),
+      columnOptions: appColumnOptions({
+        promotionStatus,
+      }),
+    }),
   ),
 );

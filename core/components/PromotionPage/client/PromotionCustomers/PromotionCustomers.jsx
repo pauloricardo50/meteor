@@ -11,13 +11,16 @@ type PromotionCustomersProps = {};
 
 const PromotionCustomers = (props: PromotionCustomersProps) => {
   const currentUser = useContext(CurrentUserContext);
+  const { loans = [] } = props;
 
   return (
-    <div className="animated fadeIn">
-      <h2>
-        <T id="PromotionUsersPage.title" />
-      </h2>
+    <div className="animated fadeIn mt-16">
       <div className="card1 card-top">
+        <h2>
+          <T id="PromotionUsersPage.title" />
+          &nbsp;
+          <small className="secondary">{`${loans.length} clients`}</small>
+        </h2>
         <PromotionCustomersTable {...props} currentUser={currentUser} />
       </div>
     </div>

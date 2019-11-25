@@ -16,7 +16,7 @@ describe('InterestRatesService', () => {
         interest10: { rateLow: 0.01234 },
         date: new Date(),
       });
-      const rates = InterestRatesService.get(id);
+      const rates = InterestRatesService.findOne(id);
       expect(rates.interest10).to.deep.equal({ rateLow: 0.0123 });
     });
 
@@ -25,7 +25,7 @@ describe('InterestRatesService', () => {
         interest10: { rateLow: 0.0093 },
         date: new Date(),
       });
-      const rates = InterestRatesService.get(id);
+      const rates = InterestRatesService.findOne(id);
       expect(rates.interest10).to.deep.equal({ rateLow: 0.0093 });
     });
   });

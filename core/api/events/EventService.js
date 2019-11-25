@@ -45,38 +45,46 @@ export default class EventService {
 
   addBeforeMethodListener(methods, listenerFunction) {
     if (Array.isArray(methods)) {
-      methods.forEach(method => {
+      return methods.map(method => {
         this.checkMethod(method);
         const {
           config: { name },
         } = method;
         this.addListener(this.getBeforeMethodEventName(name), listenerFunction);
+
+        return name;
       });
-    } else {
-      this.checkMethod(methods);
-      const {
-        config: { name },
-      } = methods;
-      this.addListener(this.getBeforeMethodEventName(name), listenerFunction);
     }
+
+    this.checkMethod(methods);
+    const {
+      config: { name },
+    } = methods;
+    this.addListener(this.getBeforeMethodEventName(name), listenerFunction);
+
+    return name;
   }
 
   addAfterMethodListener(methods, listenerFunction) {
     if (Array.isArray(methods)) {
-      methods.forEach(method => {
+      return methods.map(method => {
         this.checkMethod(method);
         const {
           config: { name },
         } = method;
         this.addListener(name, listenerFunction);
+
+        return name;
       });
-    } else {
-      this.checkMethod(methods);
-      const {
-        config: { name },
-      } = methods;
-      this.addListener(name, listenerFunction);
     }
+
+    this.checkMethod(methods);
+    const {
+      config: { name },
+    } = methods;
+    this.addListener(name, listenerFunction);
+
+    return name;
   }
 
   checkMethod(method) {

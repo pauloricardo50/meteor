@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { STEPS } from 'core/api/constants';
-import { loanUpdate } from 'core/api/loans/index';
+import { setLoanStep } from 'core/api/loans/index';
 import T from '../../../Translation';
 import ConfirmMethod from '../../../ConfirmMethod';
 import FinancingSection from '../FinancingSection';
@@ -35,7 +35,8 @@ const FinancingOffers = ({ loan }: FinancingOffersProps) => {
                   description={
                     <span>
                       Passera l'étape du dossier à "
-                      <T id="Forms.step.OFFERS" />"
+                      <T id="Forms.step.OFFERS" />" et envoie un mail au client
+                      pour l'inviter à consulter ses offres
                     </span>
                   }
                   buttonProps={{
@@ -45,9 +46,9 @@ const FinancingOffers = ({ loan }: FinancingOffersProps) => {
                     secondary: offers.length > 0,
                   }}
                   method={() =>
-                    loanUpdate.run({
+                    setLoanStep.run({
                       loanId: loan._id,
-                      object: { step: STEPS.OFFERS },
+                      nextStep: STEPS.OFFERS,
                     })
                   }
                 />

@@ -44,6 +44,10 @@ const emailDefaults = {
  * i18n strings
  */
 const addEmailConfig = (emailId, config) => {
+  if (emailConfigs[emailId]) {
+    throw new Error(`Duplicate emailConfig for emailId "${emailId}"`);
+  }
+
   if (config.template === EMAIL_TEMPLATES.NOTIFICATION) {
     emailConfigs[emailId] = {
       createOverrides: notificationTemplateDefaultOverride,
@@ -113,18 +117,6 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
       ],
     };
   },
-});
-
-addEmailConfig(EMAIL_IDS.VERIFICATION_REQUESTED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION,
-});
-
-addEmailConfig(EMAIL_IDS.VERIFICATION_ERROR, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
-addEmailConfig(EMAIL_IDS.VERIFICATION_PASSED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
 });
 
 const getFirstName = string => string.trim().split(' ')[0];
@@ -198,7 +190,7 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       (params.promotion.assignedEmployee &&
         params.promotion.assignedEmployee.phoneNumbers[0]) ||
       EPOTEK_PHONE,
-    invitedBy: params.invitedBy || 'e-Potek',
+    invitedBy: params.invitedBy,
   }),
 });
 
@@ -287,8 +279,12 @@ addEmailConfig(EMAIL_IDS.CONFIRM_USER_INVITATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
 });
 
+addEmailConfig(EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
 addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA_V3,
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides(
     {
       loan,
@@ -298,9 +294,8 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       bccAddresses = [],
       ccAddresses = [],
       mainRecipientIsBcc = false,
-      ...rest
     },
-    { title, cta, ...rest2 },
+    { title, cta },
   ) {
     const { variables } = this.template;
     const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
@@ -340,12 +335,11 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   }),
 });
 
-const promotionLotEmailOverrides = function(
+const promotionEmailOverridesPro = function(
   { promotionId, fromEmail },
   { title, body, cta },
 ) {
   const { variables } = this.template;
-
   return {
     variables: [
       { name: variables.TITLE, content: title },
@@ -359,20 +353,120 @@ const promotionLotEmailOverrides = function(
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
+const promotionEmailOverridesUser = function(
+  { fromEmail },
+  { title, body, cta },
+) {
+  const { variables } = this.template;
+  return {
+    variables: [
+      { name: variables.TITLE, content: title },
+      { name: variables.BODY, content: body },
+      { name: variables.CTA, content: cta },
+      {
+        name: variables.CTA_URL,
+        content: Meteor.settings.public.subdomains.app,
+      },
+    ],
+    senderAddress: fromEmail || FROM_EMAIL,
+  };
+};
 
-addEmailConfig(EMAIL_IDS.BOOK_PROMOTION_LOT, {
+//
+// Promotion email Configs
+//
+addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides: promotionLotEmailOverrides,
+  createOverrides: promotionEmailOverridesPro,
 });
 
-addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_BOOKING, {
+addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides: promotionLotEmailOverrides,
+  createOverrides: promotionEmailOverridesPro,
 });
 
 addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides: promotionLotEmailOverrides,
+  createOverrides: promotionEmailOverridesPro,
 });
+
+addEmailConfig(EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
+addEmailConfig(EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.LOAN_VALIDATED_BY_BANK_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
+addEmailConfig(EMAIL_IDS.PROMOTION_LOAN_SENT_TO_BANK, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_REJECTED_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.SIMPLE_VERIFICATION_VALIDATED_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
+addEmailConfig(EMAIL_IDS.NEW_RESERVATION_AGREEMENT_PRO, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.NEW_RESERVATION_AGREEMENT_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
+addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
+const checkAllEmailAreDefined = () => {
+  const undefinedEmailIds = [];
+  Object.values(EMAIL_IDS).forEach(emailId => {
+    if (!emailConfigs[emailId]) {
+      undefinedEmailIds.push(emailId);
+    }
+  });
+
+  if (undefinedEmailIds.length) {
+    throw new Error(
+      `No emailConfig found for emailIds: ${undefinedEmailIds.join(
+        ', ',
+      )}, please add them in "email/server/emailConfigs.js"`,
+    );
+  }
+};
+
+Meteor.startup(checkAllEmailAreDefined);
 
 export default emailConfigs;

@@ -42,7 +42,6 @@ UpdateWatcherService.addUpdateWatching({
     'purchaseType',
     'residenceType',
     'step',
-    'verificationStatus',
     // 'selectedStructure',
     // 'structures', // The structures notifications are hard to read in slack
   ],

@@ -3,12 +3,15 @@ import omit from 'lodash/omit';
 
 const skippedCollections = ['_cacheMigrations', 'grapher_counts'];
 const skippedFields = ['_id', 'createdAt', 'updatedAt'];
+
 const makeCleanDocument = collection => doc => {
   const { _id } = doc;
   const schema = collection.instance.simpleSchema(doc);
+
   if (!schema) {
     console.log(collection.name, doc);
   }
+
   const cleanDoc = schema.clean(doc, {
     mutate: true,
     filter: true,
@@ -37,9 +40,11 @@ const cleanCollection = async collection => {
     return;
   }
   console.log(`Cleaning ${collection.name}`);
+
   const allDocuments = collection.instance.find({}).fetch();
   const cleanDocument = makeCleanDocument(collection);
   await Promise.all(allDocuments.map(cleanDocument));
+
   console.log(`Cleaned ${allDocuments.length} docs for ${collection.name}`);
 };
 export const cleanAllData = async () => {

@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+import { PROMOTION_PERMISSIONS } from '../../imports/core/api/promotions/promotionConstants';
 import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
 import {
   PRO_EMAIL,
@@ -49,7 +50,7 @@ describe('Pro promotion', () => {
         },
       });
 
-      cy.get('tbody tr').should('have.length', 10);
+      cy.get('tbody tr').should('have.length', 4);
 
       cy.get('tbody tr')
         .first()
@@ -59,7 +60,6 @@ describe('Pro promotion', () => {
             .find('.icon-link')
             .last()
             .trigger('mouseover');
-          cy.get('.popover-content').should('contain', 'Personne');
           cy.get('.popover-content').should('contain', 'XXX');
           cy.wrap(tr)
             .get('.button')
@@ -137,20 +137,19 @@ describe('Pro promotion', () => {
 
       cy.get('tbody')
         .find('tr')
-        .should('have.length', 10 - 1);
+        .should('have.length', 4 - 1);
     });
 
-    it('Can access the promotion lot modal', () => {
+    it('Can access the promotion lot modal and start a reservation', () => {
       cy.callMethod('removeAllPromotions');
       cy.callMethod('insertFullPromotion');
       cy.callMethod('setUserPermissions', {
         permissions: {
-          canSellLots: true,
           canModifyLots: true,
           canRemoveLots: true,
           canModifyPromotion: true,
           canManageDocuments: true,
-          canBookLots: true,
+          canReserveLots: true,
           canInviteCustomers: true,
           canAddLots: true,
           displayCustomerNames: {
@@ -184,72 +183,36 @@ describe('Pro promotion', () => {
         );
       });
 
-      // Some buttons are sometimes off-screen to the right, force click on them
-      cy.contains('Réserver').click({ force: true });
+      cy.contains('Réserver').click();
       cy.contains('Confirmer').click();
-      cy.contains('Confirmer vente').should('exist');
-      cy.contains('Annuler réservation').should('exist');
-      cy.contains('Annuler réservation').click({ force: true });
-      cy.contains('Êtes-vous sûr')
-        .parents('[role="dialog"]')
-        .contains('Confirmer')
-        .click();
-      cy.contains('Réserver').should('exist');
 
-      cy.get('.promotion-lots-manager')
-        .children()
-        .then(children => {
-          cy.wrap(children.length).as('additionalLotsCount');
-        });
-
-      cy.get('.promotion-lots-manager')
-        .children()
-        .first()
-        .find('svg')
+      cy.get('.promotion-lot-loans-table')
+        .contains('Réservation en cours')
+        .should('exist');
+      cy.get('.promotion-lot-loans-table')
+        .contains('Détail')
+        .should('exist')
         .click();
 
-      cy.refetch();
+      cy.contains('Uploader convention').click();
+      cy.get('.uploader').uploadFile('test.pdf');
+      cy.get('[role=dialog] .temp-file').should('not.exist');
+      cy.contains('Ok').click();
 
-      cy.get('@lotIndex').then(lotIndex => {
-        cy.get('td.col-loans').each((td, index) => {
-          const loans = td.text();
+      cy.contains('Convention de réservation')
+        .parents('div')
+        .contains('Reçu')
+        .should('exist');
 
-          if (loans > 0 && td && index === lotIndex) {
-            td.click();
-          }
-        });
-      });
+      cy.contains('dans 1 mois').should('exist');
 
-      cy.get('@additionalLotsCount').then(count => {
-        cy.get('.promotion-lots-manager')
-          .children()
-          .should('have.length', count - 1);
-      });
+      cy.get('body').type('{esc}');
+      cy.get('body').type('{esc}');
 
-      cy.get('.promotion-lots-manager')
-        .children()
-        .last()
-        .click();
-
-      cy.get('[role="menuitem"').click();
-
-      cy.refetch();
-
-      cy.get('@lotIndex').then(lotIndex => {
-        cy.get('td.col-loans').each((td, index) => {
-          const loans = td.text();
-
-          if (loans > 0 && td && index === lotIndex) {
-            td.click();
-          }
-        });
-      });
-
-      cy.get('@additionalLotsCount').then(count => {
-        cy.get('.promotion-lots-manager')
-          .children()
-          .should('have.length', count);
-      });
+      cy.contains('Réservations')
+        .closest('.card1')
+        .find('table tbody tr')
+        .should('have.length', 1);
     });
   });
 
@@ -279,7 +242,8 @@ describe('Pro promotion', () => {
         cy.get('input[name=address1]').type('Chemin Auguste-Vilbert 14');
         cy.get('input[name=address2]').type('1er étage');
         cy.get('input[name=zipCode]').type('1218');
-        cy.get('input[name=city]').type('Le Grand-Saconnex{enter}');
+        cy.get('input[name=city]').type('Le Grand-Saconnex');
+        cy.get('input[name=agreementDuration]').type('14{enter}');
 
         cy.url().should('include', 'promotions/');
         cy.get('h1').should('contain', 'New promotion');
@@ -301,7 +265,13 @@ describe('Pro promotion', () => {
 
         // canModifyPromotion
         cy.callMethod('setUserPermissions', {
-          permissions: { canModifyPromotion: true },
+          permissions: {
+            canModifyPromotion: true,
+            displayCustomerNames: {
+              invitedBy:
+                PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ANY,
+            },
+          },
         });
         cy.refetch();
         cy.get('.promotion-page-header-actions > button').click();

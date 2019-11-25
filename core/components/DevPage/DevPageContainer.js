@@ -22,7 +22,16 @@ const DevPageContainer = compose(
         if (err) {
           alert(err.reason);
         } else {
-          Meteor.call('generateTestData', currentUserEmail);
+          Meteor.call('generateTestData', {
+            currentUserEmail,
+            generateDevs: true,
+            generateAdmins: true,
+            generateUsers: true,
+            generateLoans: true,
+            generateOrganisations: true,
+            generateUnownedLoan: true,
+            generateTestUser: true,
+          });
         }
       });
     },

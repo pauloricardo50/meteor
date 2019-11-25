@@ -216,7 +216,7 @@ describe('Public onboarding', () => {
 
     cy.get('.property-card').click();
 
-    cy.setSelect('residenceType', 0);
+    cy.setSelect('residenceType', 1);
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
   });

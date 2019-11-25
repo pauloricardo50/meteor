@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
+
 import Link from 'core/components/Link';
 import { createRoute } from 'core/utils/routerUtils';
-
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
+import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
-import cx from 'classnames';
 import { PROMOTION_STATUS } from 'core/api/constants';
+import Calculator from 'core/utils/Calculator';
 
 type DashboardRecapPromotionProps = {
   loan: Object,
@@ -40,11 +42,21 @@ const DashboardRecapPromotion = ({
         })}
       />
       <h2 className="secondary">{promotion.name}</h2>
-      <UserPromotionOptionsTable
-        promotion={promotion}
-        loan={loan}
-        isDashboardTable
-      />
+      {Calculator.hasActivePromotionOption({ loan }) ? (
+        <UserReservation
+          promotionOption={Calculator.getMostActivePromotionOption({
+            loan,
+          })}
+          progressVariant="label"
+          loan={loan}
+        />
+      ) : (
+        <UserPromotionOptionsTable
+          promotion={promotion}
+          loan={loan}
+          isDashboardTable
+        />
+      )}
     </Link>
   );
 };

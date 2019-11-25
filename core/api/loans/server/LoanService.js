@@ -8,7 +8,6 @@ import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import Intl from '../../../utils/server/intl';
 import {
   makeFeedback,
@@ -22,10 +21,7 @@ import {
   RESIDENCE_TYPE,
   ORGANISATION_FEATURES,
   LOAN_STATUS,
-  LOAN_VERIFICATION_STATUS,
   CANTONS,
-  EMAIL_IDS,
-  LOAN_STATUS_ORDER,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -40,11 +36,11 @@ import PromotionService from '../../promotions/server/PromotionService';
 import UserService from '../../users/server/UserService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
-import { sendEmail } from '../../methods';
 import {
   ORGANISATION_NAME_SEPARATOR,
   STEPS,
   APPLICATION_TYPES,
+  LOAN_STATUS_ORDER,
 } from '../loanConstants';
 import { fullLoan } from '../queries';
 
@@ -115,7 +111,7 @@ class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, userId, user } = this.fetchOne({
+    const { step, user } = this.fetchOne({
       $filters: { _id: loanId },
       step: 1,
       userId: 1,
@@ -124,19 +120,7 @@ class LoanService extends CollectionService {
 
     this.update({ loanId, object: { step: nextStep } });
 
-    if (shouldSendStepNotification(step, nextStep)) {
-      if (!user || !user.assignedEmployee) {
-        throw new Meteor.Error(
-          'Il faut un conseiller sur ce dossier pour envoyer un email',
-        );
-      }
-
-      sendEmail.run({
-        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
-        userId,
-        params: { loanId, assigneeName: user.assignedEmployee.name },
-      });
-    }
+    return { step, nextStep, user };
   }
 
   verifyStatusChange({ loanId, status }) {
@@ -187,28 +171,6 @@ class LoanService extends CollectionService {
     return { prevStatus, nextStatus: status };
   }
 
-  askVerification = ({ loanId }) => {
-    const loan = this.get(loanId);
-
-    if (
-      loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED ||
-      loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
-    ) {
-      // Don't do anything if this loan is already in requested mode
-      throw new Meteor.Error(
-        'La vérification est déjà en cours, ou effectuée.',
-      );
-    }
-
-    return this.update({
-      loanId,
-      object: {
-        verificationStatus: LOAN_VERIFICATION_STATUS.REQUESTED,
-        userFormsEnabled: false,
-      },
-    });
-  };
-
   insertPromotionLoan = ({
     userId,
     promotionId,
@@ -231,7 +193,7 @@ class LoanService extends CollectionService {
     });
 
     promotionLotIds.forEach(promotionLotId => {
-      PromotionOptionService.insert({ promotionLotId, loanId });
+      PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
     });
 
     this.addNewStructure({ loanId });
@@ -281,7 +243,7 @@ class LoanService extends CollectionService {
   };
 
   addNewStructure = ({ loanId, structure }) => {
-    const { structures, selectedStructure, propertyIds } = this.get(loanId);
+    const { structures, selectedStructure, propertyIds } = this.findOne(loanId);
     const isFirstStructure = structures.length === 0;
     const shouldCopyExistingStructure =
       !isFirstStructure && !structure && selectedStructure;
@@ -315,7 +277,7 @@ class LoanService extends CollectionService {
   };
 
   removeStructure = ({ loanId, structureId }) => {
-    const { selectedStructure: currentlySelected } = this.get(loanId);
+    const { selectedStructure: currentlySelected } = this.findOne(loanId);
 
     if (currentlySelected === structureId) {
       throw new Meteor.Error(
@@ -334,7 +296,7 @@ class LoanService extends CollectionService {
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
-    const currentStructure = this.get(loanId).structures.find(
+    const currentStructure = this.findOne(loanId).structures.find(
       ({ id }) => id === structureId,
     );
 
@@ -345,7 +307,7 @@ class LoanService extends CollectionService {
   };
 
   selectStructure = ({ loanId, structureId }) => {
-    const loan = this.get(loanId, {
+    const loan = this.findOne(loanId, {
       fields: { structures: 1, selectedStructure: 1 },
     });
 
@@ -375,7 +337,7 @@ class LoanService extends CollectionService {
   };
 
   duplicateStructure = ({ loanId, structureId }) => {
-    const { structures } = this.get(loanId);
+    const { structures } = this.findOne(loanId);
     const currentStructure = structures.find(({ id }) => id === structureId);
     const currentStructureIndex = structures.findIndex(
       ({ id }) => id === structureId,
@@ -396,7 +358,7 @@ class LoanService extends CollectionService {
   };
 
   addPropertyToLoan = ({ loanId, propertyId }) => {
-    const loan = this.get(loanId);
+    const loan = this.findOne(loanId);
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
 
     // Add this property to all structures that don't have a property
@@ -440,7 +402,7 @@ class LoanService extends CollectionService {
   }
 
   getPromotionPriorityOrder({ loanId, promotionId }) {
-    const promotionLink = this.get(loanId).promotionLinks.find(
+    const promotionLink = this.findOne(loanId).promotionLinks.find(
       ({ _id }) => _id === promotionId,
     );
     return promotionLink ? promotionLink.priorityOrder : [];
@@ -531,7 +493,7 @@ class LoanService extends CollectionService {
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
-    const { borrowerIds } = this.get(loanId);
+    const { borrowerIds } = this.findOne(loanId);
     const { loans: oldBorrowerLoans = [] } = BorrowerService.createQuery({
       $filters: { _id: oldBorrowerId },
       loans: { name: 1 },
@@ -591,20 +553,14 @@ class LoanService extends CollectionService {
       return [...filtered, offer];
     }, []);
 
-    const promises = filteredOffers.map(offer => {
-      const feedback = makeFeedback({
+    return filteredOffers.map(offer => ({
+      feedback: makeFeedback({
         offer: { ...offer, property },
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
         formatMessage: Intl.formatMessage.bind(Intl),
-      });
-      return OfferService.sendFeedback({
-        offerId: offer._id,
-        feedback,
-        saveFeedback: false,
-      });
-    });
-
-    return Promise.all(promises);
+      }),
+      offerId: offer._id,
+    }));
   }
 
   updatePromotionInvitedBy({ loanId, promotionId, invitedBy }) {
@@ -617,7 +573,7 @@ class LoanService extends CollectionService {
   }
 
   reuseProperty({ loanId, propertyId }) {
-    const loan = this.get(loanId);
+    const loan = this.findOne(loanId);
 
     if (loan.propertyIds.includes(propertyId)) {
       return false;
@@ -722,6 +678,9 @@ class LoanService extends CollectionService {
 
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
     const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+    const isRecalculate = !!(
+      loan.maxPropertyValue && loan.maxPropertyValue.date
+    );
 
     const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
       {
@@ -755,7 +714,7 @@ class LoanService extends CollectionService {
       },
     });
 
-    return Promise.resolve();
+    return Promise.resolve({ isRecalculate });
   }
 
   addNewMaxStructure({ loanId, residenceType: newResidenceType, canton }) {
@@ -878,7 +837,9 @@ class LoanService extends CollectionService {
   }
 
   insertBorrowers({ loanId, amount }) {
-    const { borrowerIds: existingBorrowers = [], userId } = this.get(loanId);
+    const { borrowerIds: existingBorrowers = [], userId } = this.findOne(
+      loanId,
+    );
 
     if (existingBorrowers.length === 2) {
       throw new Meteor.Error('Cannot insert more borrowers');

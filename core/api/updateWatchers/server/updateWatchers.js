@@ -1,24 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { UPDATE_WATCHERS_COLLECTION } from '../updateWatcherConstants';
+import { createCollection } from '../../helpers/collectionHelpers';
 
-const UpdateWatchers = new Mongo.Collection(UPDATE_WATCHERS_COLLECTION);
-
-UpdateWatchers.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-UpdateWatchers.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const UpdateWatchers = createCollection(UPDATE_WATCHERS_COLLECTION);
 
 const UpdateWatcherSchema = new SimpleSchema({
   createdAt,
