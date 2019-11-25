@@ -929,9 +929,7 @@ describe('UserService', function() {
       expect(from_email).to.equal('info@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Promotion immobilière Test promotion');
-      expect(title).to.equal(
-        'Processus de réservation d’un logement au sein de la promotion Test promotion',
-      );
+      expect(title).to.equal("Test promotion, Réservation d'un logement");
       expect(body).to.include('John Doe (bank)');
       expect(body).to.include('Admin User');
       expect(ctaUrl).to.include(`enroll-account/${token}`);

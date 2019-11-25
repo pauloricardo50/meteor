@@ -84,7 +84,7 @@ const main = () =>
     .then(() =>
       openSSHTunnel({
         sshIdNumber: 1,
-        mongoPort: 2,
+        mongoPort: 1,
         environmentOverride: 'staging',
       }),
     )

@@ -546,8 +546,6 @@ export class PromotionOptionService extends CollectionService {
       promotion: { _id: promotionId, users: promotionUsers = [] },
       promotionLots = [],
     } = promotionOption;
-    console.log('promotionOption:', promotionOption);
-    console.log('promotions:', promotions);
 
     const [
       {

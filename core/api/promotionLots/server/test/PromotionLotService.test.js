@@ -4,7 +4,14 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import PromotionService from 'core/api/promotions/server/PromotionService';
-import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
+import {
+  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+} from 'core/api/promotionOptions/promotionOptionConstants';
 import generator from '../../../factories';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 import { reservePromotionLot } from '../../../methods/index';
@@ -13,7 +20,7 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 
-describe('PromotionLotService', function() {
+describe('PromotionLotService', function () {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -93,6 +100,17 @@ describe('PromotionLotService', function() {
             _id: 'pOptId',
             loan: { _id: 'loanId' },
             promotion: { _id: 'promoId' },
+            reservationAgreement: {
+              status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+            },
+            deposit: { status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID },
+            bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+            simpleVerification: {
+              status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+            },
+            fullVerification: {
+              status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+            },
           },
         },
         assignedEmployee: { _id: 'adminId2' },
@@ -209,8 +227,8 @@ describe('PromotionLotService', function() {
         );
     });
 
-    it('does not let a lot be reserved by a pro who cannot reserve lots', async () => {
-      return ddpWithUserId('pro1', () =>
+    it('does not let a lot be reserved by a pro who cannot reserve lots', async () =>
+      ddpWithUserId('pro1', () =>
         reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
       )
         .then(() => expect(1).to.equal(2, 'Should throw'))
@@ -218,8 +236,7 @@ describe('PromotionLotService', function() {
           expect(error.message).to.include(
             'Vous ne pouvez pas réserver des lots',
           ),
-        );
-    });
+        ));
 
     it('can reserve, cancel, and then reactivate an existing promotionReservation', async () => {
       await PromotionLotService.reservePromotionLot({

@@ -61,7 +61,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function() {
+describe('PromotionOptionService', function () {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
@@ -784,7 +784,7 @@ describe('PromotionOptionService', function() {
       });
 
       const expiredReservations = await PromotionOptionService.expireReservations();
-      expect(expiredReservations).to.equal(1);
+      expect(expiredReservations.length).to.equal(1);
 
       const emails = await checkEmails(2);
 
@@ -852,8 +852,8 @@ describe('PromotionOptionService', function() {
         moment().isoWeekday() <= 5
           ? moment().isoWeekday(5)
           : moment()
-              .add(1, 'weeks')
-              .isoWeekday(5);
+            .add(1, 'weeks')
+            .isoWeekday(5);
 
       const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
 
@@ -978,32 +978,41 @@ describe('PromotionOptionService', function() {
 
       const tasks = TaskService.fetch({
         assignee: { _id: 1 },
-        promotion: { _id: 1 },
+        loan: { _id: 1 },
         title: 1,
         description: 1,
       });
 
-      expect(tasks.length).to.equal(3);
+      expect(tasks.length).to.equal(4);
       tasks.forEach(
-        ({
-          assignee: { _id: assigneeId },
-          promotion: { _id: promotionId },
-        }) => {
+        (
+          { assignee: { _id: assigneeId } = {}, loan: { _id: loanId } = {} },
+          index,
+        ) => {
           expect(assigneeId).to.equal('admin');
-          expect(promotionId).to.equal('promo');
+          expect(loanId).to.equal(`loan${index + 1}`);
         },
       );
       expect(tasks[0]).to.deep.include({
-        title: 'La réservation de User1 Lastname1 sur Lot 1 arrive à échéance',
-        description: `Valable jusqu'au ${moment(in2Days).format('DD MMM')}`,
+        title:
+          'La réservation de User1 Lastname1 sur le lot Lot 1 arrive à échéance',
+        description: `La convention de réservation est valable jusqu'au ${moment(
+          in2Days,
+        ).format('DD MMM')}`,
       });
       expect(tasks[1]).to.deep.include({
-        title: 'La réservation de User2 Lastname2 sur Lot 2 arrive à échéance',
-        description: `Valable jusqu'au ${moment(today).format('DD MMM')}`,
+        title:
+          'La réservation de User2 Lastname2 sur le lot Lot 2 arrive à échéance',
+        description: `La convention de réservation est valable jusqu'au ${moment(
+          today,
+        ).format('DD MMM')}`,
       });
       expect(tasks[2]).to.deep.include({
-        title: 'La réservation de User3 Lastname3 sur Lot 3 arrive à échéance',
-        description: `Valable jusqu'au ${moment(tomorrow).format('DD MMM')}`,
+        title:
+          'La réservation de User3 Lastname3 sur le lot Lot 3 arrive à échéance',
+        description: `La convention de réservation est valable jusqu'au ${moment(
+          tomorrow,
+        ).format('DD MMM')}`,
       });
       clock.restore();
     });
@@ -1606,7 +1615,7 @@ describe('PromotionOptionService', function() {
     });
   });
 
-  describe.only('activateReservation', () => {
+  describe('activateReservation', () => {
     it('sends emails when the user activates the reservation', async () => {
       generator({
         users: {
@@ -1675,12 +1684,12 @@ describe('PromotionOptionService', function() {
       expect(from_email).to.equal('admin@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal(
-        'Test promotion, Bob Dylan souhaite réserver le logement Lot A',
+        'Test promotion, Début de la réservation du logement Lot A',
       );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'Le client Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
       );
     });
 
@@ -1752,12 +1761,12 @@ describe('PromotionOptionService', function() {
       expect(from_email).to.equal('admin@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal(
-        'Test promotion, Bob Dylan souhaite réserver le logement Lot A',
+        'Test promotion, Début de la réservation du logement Lot A',
       );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'Le client Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
       );
     });
   });
