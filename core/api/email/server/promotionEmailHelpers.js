@@ -1,4 +1,5 @@
 import { internalMethod } from 'core/api/methods/server/methodHelpers';
+import { ROLES } from 'core/api/users/userConstants';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
@@ -32,10 +33,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
     },
   } = PromotionOptionService.fetchOne({
     $filters: { _id: promotionOptionId },
-    promotionLots: {
-      name: 1,
-      attributedTo: { borrowers: { name: 1 }, user: { name: 1 } },
-    },
+    promotionLots: { name: 1 },
     promotion: {
       userLinks: 1,
       name: 1,
@@ -43,9 +41,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
     },
     loan: { promotionLinks: 1, user: { name: 1 } },
   });
-  const [
-    { name: promotionLotName, attributedTo: { user } = {} },
-  ] = promotionLots;
+  const [{ name: promotionLotName }] = promotionLots;
   const [{ invitedBy }] = promotionLinks;
 
   const invitedByUser = UserService.fetchOne({
@@ -57,18 +53,25 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   let userName = 'e-Potek';
 
   if (userId) {
-    const { name } = UserService.fetchOne({
+    const { name, roles } = UserService.fetchOne({
       $filters: { _id: userId },
       name: 1,
+      roles: 1,
     });
-    userName = name;
+    const isUser = roles.includes(ROLES.USER);
+
+    if (isUser && anonymize) {
+      userName = 'un acquéreur';
+    } else {
+      userName = name;
+    }
   }
 
   return {
     promotionId,
     promotionName,
     promotionLotName,
-    userName: userId && anonymize ? 'un acquéreur' : userName,
+    userName,
     customerName: anonymize ? 'un acquéreur' : customerName,
     fromEmail: assignedEmployee && assignedEmployee.email,
     assignedEmployeeName: assignedEmployee

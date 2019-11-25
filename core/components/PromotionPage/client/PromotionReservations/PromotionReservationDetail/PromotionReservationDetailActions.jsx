@@ -68,7 +68,7 @@ const PromotionReservationDetailActions = ({
     {canReactivateReservation && (
       <Button
         raised
-        primary
+        secondary
         className="mr-8 mb-8"
         onClick={reactivateReservation}
         label={<T id="PromotionReservationActions.reactivateReservation" />}
@@ -123,4 +123,6 @@ const PromotionReservationDetailActions = ({
   </div>
 );
 
-export default PromotionReservationDetailActionsContainer(PromotionReservationDetailActions);
+export default PromotionReservationDetailActionsContainer(
+  PromotionReservationDetailActions,
+);
