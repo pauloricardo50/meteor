@@ -294,9 +294,8 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       bccAddresses = [],
       ccAddresses = [],
       mainRecipientIsBcc = false,
-      ...rest
     },
-    { title, cta, ...rest2 },
+    { title, cta },
   ) {
     const { variables } = this.template;
     const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;

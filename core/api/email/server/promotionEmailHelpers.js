@@ -67,10 +67,10 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
     promotionLotName,
     userName,
     customerName: anonymize
-      ? 'une personne anonymisée'
+      ? 'un acquéreur'
       : user
       ? user.name
-      : 'un acquéreur sans nom',
+      : 'un acquéreur',
     fromEmail: assignedEmployee && assignedEmployee.email,
     assignedEmployeeName: assignedEmployee
       ? assignedEmployee.name
@@ -224,53 +224,51 @@ export const mapConfigToListener = ({
   emailId,
   recipients,
   shouldSend = () => true,
-}) => {
-  return (...args) => {
-    if (!shouldSend(...args)) {
+}) => (...args) => {
+  if (!shouldSend(...args)) {
+    return;
+  }
+
+  const [
+    {
+      params: { promotionOptionId },
+    },
+  ] = args;
+
+  const emailRecipients = PromotionOptionService.getEmailRecipients({
+    promotionOptionId,
+  });
+
+  recipients.forEach(recipientConfig => {
+    let type;
+    let emailIdOverride;
+    let getEmailParamsOverride;
+
+    if (typeof recipientConfig === 'string') {
+      type = recipientConfig;
+    } else {
+      type = recipientConfig.type;
+      emailIdOverride = recipientConfig.emailId;
+      getEmailParamsOverride = recipientConfig.getEmailParams;
+    }
+
+    if (!emailRecipients[type]) {
       return;
     }
 
-    const [
-      {
-        params: { promotionOptionId },
-      },
-    ] = args;
+    emailRecipients[type].forEach(recipient => {
+      const { userId } = recipient;
+      const emailParams = getEmailParamsOverride
+        ? getEmailParamsOverride(...args, recipient)
+        : getPromotionOptionMailParams(...args, recipient);
 
-    const emailRecipients = PromotionOptionService.getEmailRecipients({
-      promotionOptionId,
+      internalMethod(() =>
+        sendEmail.run({
+          emailId: emailIdOverride || emailId,
+          userId,
+          params: emailParams,
+        }),
+      );
     });
-
-    recipients.forEach(recipientConfig => {
-      let type;
-      let emailIdOverride;
-      let getEmailParamsOverride;
-
-      if (typeof recipientConfig === 'string') {
-        type = recipientConfig;
-      } else {
-        type = recipientConfig.type;
-        emailIdOverride = recipientConfig.emailId;
-        getEmailParamsOverride = recipientConfig.getEmailParams;
-      }
-
-      if (!emailRecipients[type]) {
-        return;
-      }
-
-      emailRecipients[type].forEach(recipient => {
-        const { userId } = recipient;
-        const emailParams = getEmailParamsOverride
-          ? getEmailParamsOverride(...args, recipient)
-          : getPromotionOptionMailParams(...args, recipient);
-
-        internalMethod(() =>
-          sendEmail.run({
-            emailId: emailIdOverride || emailId,
-            userId,
-            params: emailParams,
-          }),
-        );
-      });
-    });
-  };
+  });
 };

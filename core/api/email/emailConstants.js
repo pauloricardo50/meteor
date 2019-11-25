@@ -28,25 +28,27 @@ export const FOOTER_TYPES = {
 export const EMAIL_TEMPLATES = {
   NOTIFICATION: {
     name: 'NOTIFICATION',
-    mandrillId: 'notification',
+    mandrillId: 'notification-v4',
     variables: {
       TITLE: 'TITLE',
       BODY: 'BODY',
     },
+    customTemplateContent: { 'body-content-1': 'body-content-1' },
   },
   NOTIFICATION_AND_CTA: {
     name: 'NOTIFICATION_AND_CTA',
-    mandrillId: 'notification-cta-v3',
+    mandrillId: 'notification-cta-v4',
     variables: {
       TITLE: 'TITLE',
       BODY: 'BODY',
       CTA: 'CTA',
       CTA_URL: 'CTA_URL',
     },
+    customTemplateContent: { 'body-content-1': 'body-content-1' },
   },
   PROMOTION_INVITATION: {
     name: 'PROMOTION_INVITATION',
-    mandrillId: 'promotion-invitation',
+    mandrillId: 'promotion-invitation-v2',
     variables: {
       TITLE: 'TITLE',
       MARKETING_BLURB: 'MARKETING_BLURB',
@@ -58,6 +60,7 @@ export const EMAIL_TEMPLATES = {
       LOGO_URL_2: 'LOGO_URL_2',
       LOGO_URL_3: 'LOGO_URL_3',
     },
+    customTemplateContent: { logos: 'logos', footer: 'footer' },
   },
   SIMPLE: {
     name: 'SIMPLE',

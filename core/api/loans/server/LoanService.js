@@ -553,16 +553,14 @@ class LoanService extends CollectionService {
       return [...filtered, offer];
     }, []);
 
-    return filteredOffers.map(offer => {
-      return {
-        feedback: makeFeedback({
-          offer: { ...offer, property },
-          model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-          formatMessage: Intl.formatMessage.bind(Intl),
-        }),
-        offerId: offer._id,
-      };
-    });
+    return filteredOffers.map(offer => ({
+      feedback: makeFeedback({
+        offer: { ...offer, property },
+        model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
+        formatMessage: Intl.formatMessage.bind(Intl),
+      }),
+      offerId: offer._id,
+    }));
   }
 
   updatePromotionInvitedBy({ loanId, promotionId, invitedBy }) {
@@ -680,6 +678,9 @@ class LoanService extends CollectionService {
 
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
     const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+    const isRecalculate = !!(
+      loan.maxPropertyValue && loan.maxPropertyValue.date
+    );
 
     const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
       {
@@ -713,7 +714,7 @@ class LoanService extends CollectionService {
       },
     });
 
-    return Promise.resolve();
+    return Promise.resolve({ isRecalculate });
   }
 
   addNewMaxStructure({ loanId, residenceType: newResidenceType, canton }) {

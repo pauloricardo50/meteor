@@ -23,7 +23,7 @@ export default class ConfirmMethod extends Component {
     this.setState({ open: true, anchorEl: event.currentTarget });
   };
 
-  handleClose = (event) => {
+  handleClose = event => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ open: false });
@@ -62,6 +62,8 @@ export default class ConfirmMethod extends Component {
       title,
       description,
       type = 'popover',
+      method,
+      ...rest
     } = this.props;
     const { open, text, loading, anchorEl } = this.state;
     const actions = [
@@ -110,6 +112,7 @@ export default class ConfirmMethod extends Component {
         onClose={this.handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        {...rest}
       >
         <div style={{ padding: 8 }}>
           {title && <h4>{title}</h4>}
@@ -127,6 +130,7 @@ export default class ConfirmMethod extends Component {
         important
         open={open}
         text={description}
+        {...rest}
       >
         {content}
       </Dialog>

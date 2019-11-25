@@ -25,29 +25,27 @@ import { PROMOTION_EMAILS, mapConfigToListener } from './promotionEmailHelpers';
 addEmailListener({
   description: 'Formulaire de contact -> Client',
   method: submitContactForm,
-  func: ({ params }) => {
-    return internalMethod(() =>
+  func: ({ params }) =>
+    internalMethod(() =>
       sendEmailToAddress.run({
         emailId: EMAIL_IDS.CONTACT_US,
         address: params.email,
         params,
       }),
-    );
-  },
+    ),
 });
 
 addEmailListener({
   description: 'Formulaire de contact -> info@e-potek.ch',
   method: submitContactForm,
-  func: ({ params }) => {
-    return internalMethod(() =>
+  func: ({ params }) =>
+    internalMethod(() =>
       sendEmailToAddress.run({
         emailId: EMAIL_IDS.CONTACT_US_ADMIN,
         address: INTERNAL_EMAIL,
         params,
       }),
-    );
-  },
+    ),
 });
 
 addEmailListener({

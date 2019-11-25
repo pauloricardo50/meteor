@@ -106,7 +106,7 @@ ServerEventService.addAfterMethodListener(
         addresses.length === 1
           ? 'le bien immobilier: '
           : 'les biens immobiliers: '
-        } ${formattedAddresses}`;
+      } ${formattedAddresses}`;
     }
 
     if (promotions.length) {
@@ -117,7 +117,7 @@ ServerEventService.addAfterMethodListener(
 
       taskDescription = `${taskDescription}. Invité sur ${
         promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
-        } ${formattedPromotions}`;
+      } ${formattedPromotions}`;
     }
 
     if (invitationNote) {
@@ -222,7 +222,7 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   setMaxPropertyValueWithoutBorrowRatio,
-  ({ params }) => {
+  ({ params, result: { isRecalculate } }) => {
     const { loanId } = params;
     const {
       hasPromotion,
@@ -235,7 +235,7 @@ ServerEventService.addAfterMethodListener(
       user: { name: 1 },
     });
 
-    if (hasPromotion) {
+    if (hasPromotion && !isRecalculate) {
       const [{ _id: promotionId, assignedEmployee }] = promotions;
 
       TaskService.insert({
@@ -243,7 +243,7 @@ ServerEventService.addAfterMethodListener(
           collection: PROMOTIONS_COLLECTION,
           docId: promotionId,
           assigneeLink: assignedEmployee,
-          title: `Le client ${userName} a effectué un caclul de solvabilité`,
+          title: `Le client ${userName} a effectué un calcul de solvabilité`,
           description:
             "Identifier s'il est nécessaire de le contacter pour valider son attestation préliminaire de financement et s'assurer qu'il ait établi une demande de réservation",
         },

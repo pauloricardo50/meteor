@@ -71,6 +71,9 @@ const RequestReservation = ({
           />
         </div>
       }
+      onClick={e => {
+        e.stopPropagation();
+      }}
     />
   );
 };
