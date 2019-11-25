@@ -26,7 +26,10 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   const {
     promotionLots = [],
     promotion: { _id: promotionId, name: promotionName, assignedEmployee },
-    loan: { promotionLinks },
+    loan: {
+      promotionLinks,
+      user: { name: customerName },
+    },
   } = PromotionOptionService.fetchOne({
     $filters: { _id: promotionOptionId },
     promotionLots: {
@@ -38,7 +41,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
       name: 1,
       assignedEmployee: { email: 1, name: 1 },
     },
-    loan: { promotionLinks: 1 },
+    loan: { promotionLinks: 1, user: { name: 1 } },
   });
   const [
     { name: promotionLotName, attributedTo: { user } = {} },
@@ -65,12 +68,8 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
     promotionId,
     promotionName,
     promotionLotName,
-    userName,
-    customerName: anonymize
-      ? 'une personne anonymisée'
-      : user
-      ? user.name
-      : 'un acquéreur sans nom',
+    userName: userId && anonymize ? 'un acquéreur' : userName,
+    customerName: anonymize ? 'un acquéreur' : customerName,
     fromEmail: assignedEmployee && assignedEmployee.email,
     assignedEmployeeName: assignedEmployee
       ? assignedEmployee.name
@@ -224,53 +223,51 @@ export const mapConfigToListener = ({
   emailId,
   recipients,
   shouldSend = () => true,
-}) => {
-  return (...args) => {
-    if (!shouldSend(...args)) {
+}) => (...args) => {
+  if (!shouldSend(...args)) {
+    return;
+  }
+
+  const [
+    {
+      params: { promotionOptionId },
+    },
+  ] = args;
+
+  const emailRecipients = PromotionOptionService.getEmailRecipients({
+    promotionOptionId,
+  });
+
+  recipients.forEach(recipientConfig => {
+    let type;
+    let emailIdOverride;
+    let getEmailParamsOverride;
+
+    if (typeof recipientConfig === 'string') {
+      type = recipientConfig;
+    } else {
+      type = recipientConfig.type;
+      emailIdOverride = recipientConfig.emailId;
+      getEmailParamsOverride = recipientConfig.getEmailParams;
+    }
+
+    if (!emailRecipients[type]) {
       return;
     }
 
-    const [
-      {
-        params: { promotionOptionId },
-      },
-    ] = args;
+    emailRecipients[type].forEach(recipient => {
+      const { userId } = recipient;
+      const emailParams = getEmailParamsOverride
+        ? getEmailParamsOverride(...args, recipient)
+        : getPromotionOptionMailParams(...args, recipient);
 
-    const emailRecipients = PromotionOptionService.getEmailRecipients({
-      promotionOptionId,
+      internalMethod(() =>
+        sendEmail.run({
+          emailId: emailIdOverride || emailId,
+          userId,
+          params: emailParams,
+        }),
+      );
     });
-
-    recipients.forEach(recipientConfig => {
-      let type;
-      let emailIdOverride;
-      let getEmailParamsOverride;
-
-      if (typeof recipientConfig === 'string') {
-        type = recipientConfig;
-      } else {
-        type = recipientConfig.type;
-        emailIdOverride = recipientConfig.emailId;
-        getEmailParamsOverride = recipientConfig.getEmailParams;
-      }
-
-      if (!emailRecipients[type]) {
-        return;
-      }
-
-      emailRecipients[type].forEach(recipient => {
-        const { userId } = recipient;
-        const emailParams = getEmailParamsOverride
-          ? getEmailParamsOverride(...args, recipient)
-          : getPromotionOptionMailParams(...args, recipient);
-
-        internalMethod(() =>
-          sendEmail.run({
-            emailId: emailIdOverride || emailId,
-            userId,
-            params: emailParams,
-          }),
-        );
-      });
-    });
-  };
+  });
 };

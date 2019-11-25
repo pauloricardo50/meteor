@@ -7,7 +7,7 @@ import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 
-export class PromotionLotService extends CollectionService {
+class PromotionLotService extends CollectionService {
   constructor() {
     super(PromotionLots);
   }
@@ -59,8 +59,9 @@ export class PromotionLotService extends CollectionService {
         this.update({
           promotionLotId,
           object: { status: PROMOTION_LOT_STATUS.RESERVED },
-        }))
-      .catch((error) => {
+        }),
+      )
+      .catch(error => {
         throw error;
       });
   }
