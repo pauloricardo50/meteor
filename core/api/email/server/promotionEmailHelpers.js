@@ -26,7 +26,10 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   const {
     promotionLots = [],
     promotion: { _id: promotionId, name: promotionName, assignedEmployee },
-    loan: { promotionLinks },
+    loan: {
+      promotionLinks,
+      user: { name: customerName },
+    },
   } = PromotionOptionService.fetchOne({
     $filters: { _id: promotionOptionId },
     promotionLots: {
@@ -38,7 +41,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
       name: 1,
       assignedEmployee: { email: 1, name: 1 },
     },
-    loan: { promotionLinks: 1 },
+    loan: { promotionLinks: 1, user: { name: 1 } },
   });
   const [
     { name: promotionLotName, attributedTo: { user } = {} },
@@ -65,12 +68,8 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
     promotionId,
     promotionName,
     promotionLotName,
-    userName,
-    customerName: anonymize
-      ? 'un acquéreur'
-      : user
-      ? user.name
-      : 'un acquéreur',
+    userName: userId && anonymize ? 'un acquéreur' : userName,
+    customerName: anonymize ? 'un acquéreur' : customerName,
     fromEmail: assignedEmployee && assignedEmployee.email,
     assignedEmployeeName: assignedEmployee
       ? assignedEmployee.name

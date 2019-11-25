@@ -134,6 +134,7 @@ Factory.define('promotionLot', PromotionLots, {
     const propertyId = Properties.insert({
       address1: 'Rue du parc 1',
       value: 1000000,
+      name: 'Lot A',
     });
     return [{ _id: propertyId }];
   },

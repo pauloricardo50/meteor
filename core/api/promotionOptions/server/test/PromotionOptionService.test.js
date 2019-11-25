@@ -34,7 +34,11 @@ import {
 } from '../../../promotions/promotionConstants';
 
 import { generateExpiringSoonReservationTasks } from '../methods';
-import { setPromotionOptionProgress } from '../../methodDefinitions';
+import {
+  setPromotionOptionProgress,
+  promotionOptionActivateReservation,
+} from '../../methodDefinitions';
+import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 
 const makePromotionLotWithReservation = ({
   key,
@@ -1600,6 +1604,162 @@ describe('PromotionOptionService', function() {
           !!emails.find(({ address }) => address === 'user@e-potek.ch'),
         ).to.equal(true);
       });
+    });
+  });
+
+  describe.only('activateReservation', () => {
+    it('sends emails when the user activates the reservation', async () => {
+      generator({
+        users: {
+          _id: 'adminId',
+          _factory: 'admin',
+          emails: [{ address: 'admin@e-potek.ch', verified: true }],
+        },
+        promotions: {
+          _id: 'promo',
+          users: [
+            {
+              _id: 'proId',
+              _factory: 'pro',
+              emails: [{ address: 'pro@e-potek.ch', verified: true }],
+              $metadata: {
+                permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+                roles: [PROMOTION_USERS_ROLES.BROKER],
+              },
+            },
+            {
+              _id: 'proId2',
+              $metadata: { roles: [PROMOTION_USERS_ROLES.NOTARY] },
+              _factory: 'pro',
+              emails: [{ address: 'notary@e-potek.ch', verified: true }],
+            },
+          ],
+          loans: {
+            user: {
+              _id: 'userId',
+              emails: [{ address: 'user@e-potek.ch', verified: true }],
+              firstName: 'Bob',
+              lastName: 'Dylan',
+            },
+            promotionOptions: {
+              _id: 'pOptId',
+              promotionLots: {
+                _id: 'pLot',
+                promotion: { _id: 'promo' },
+              },
+            },
+            $metadata: { invitedBy: 'proId' },
+          },
+          promotionOptions: { _id: 'pOptId' },
+          assignedEmployee: { _id: 'adminId' },
+        },
+      });
+
+      await ddpWithUserId('userId', () =>
+        promotionOptionActivateReservation.run({
+          promotionOptionId: 'pOptId',
+        }),
+      );
+
+      const [email] = await checkEmails(1);
+
+      const {
+        emailId,
+        address,
+        template: {
+          message: { from_email, subject, global_merge_vars, from_name },
+        },
+      } = email;
+
+      expect(emailId).to.equal(EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION);
+      expect(address).to.equal('pro@e-potek.ch');
+      expect(from_email).to.equal('admin@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal(
+        'Test promotion, Bob Dylan souhaite réserver le logement Lot A',
+      );
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include(
+        'Le client Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+      );
+    });
+
+    it('sends emails when the broker activates the reservation', async () => {
+      generator({
+        users: {
+          _id: 'adminId',
+          _factory: 'admin',
+          emails: [{ address: 'admin@e-potek.ch', verified: true }],
+        },
+        promotions: {
+          _id: 'promo',
+          users: [
+            {
+              _id: 'proId',
+              _factory: 'pro',
+              emails: [{ address: 'pro@e-potek.ch', verified: true }],
+              $metadata: {
+                permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+                roles: [PROMOTION_USERS_ROLES.BROKER],
+              },
+            },
+            {
+              _id: 'proId2',
+              $metadata: { roles: [PROMOTION_USERS_ROLES.NOTARY] },
+              _factory: 'pro',
+              emails: [{ address: 'notary@e-potek.ch', verified: true }],
+            },
+          ],
+          loans: {
+            user: {
+              _id: 'userId',
+              emails: [{ address: 'user@e-potek.ch', verified: true }],
+              firstName: 'Bob',
+              lastName: 'Dylan',
+            },
+            promotionOptions: {
+              _id: 'pOptId',
+              promotionLots: {
+                _id: 'pLot',
+                promotion: { _id: 'promo' },
+              },
+            },
+            $metadata: { invitedBy: 'proId' },
+          },
+          promotionOptions: { _id: 'pOptId' },
+          assignedEmployee: { _id: 'adminId' },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        promotionOptionActivateReservation.run({
+          promotionOptionId: 'pOptId',
+        }),
+      );
+
+      const [email] = await checkEmails(1);
+
+      const {
+        emailId,
+        address,
+        template: {
+          message: { from_email, subject, global_merge_vars, from_name },
+        },
+      } = email;
+
+      expect(emailId).to.equal(EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION);
+      expect(address).to.equal('pro@e-potek.ch');
+      expect(from_email).to.equal('admin@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.equal(
+        'Test promotion, Bob Dylan souhaite réserver le logement Lot A',
+      );
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include(
+        'Le client Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+      );
     });
   });
 });
