@@ -14,9 +14,9 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-// export const skipEmails =
-//   (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
-export const skipEmails = false;
+export const skipEmails =
+  (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
+// export const skipEmails = false;
 
 class EmailService {
   sendEmail = async ({ emailId, address, name, params }) => {
@@ -80,8 +80,7 @@ class EmailService {
     };
   };
 
-  getAttachments = attachments => {
-    return Promise.all(
+  getAttachments = attachments => Promise.all(
       attachments.map(async Key => {
         const {
           ContentType,
@@ -98,7 +97,6 @@ class EmailService {
         };
       }),
     );
-  };
 
   getAccountsTemplate = async ({ emailId, params = {} }) => {
     const templateOptions = await this.createTemplateOptions({
