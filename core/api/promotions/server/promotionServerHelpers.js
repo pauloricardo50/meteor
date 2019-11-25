@@ -130,6 +130,46 @@ const shouldAnonymize = ({
 
 export const promotionShouldAnonymize = shouldAnonymize;
 
+export const makeLoanAnonymizer2 = ({ currentUser, anonymize }) => {
+  const { promotions: currentUserPromotions = [] } = currentUser;
+
+  return loan => {
+    const { promotions } = loan;
+    const { user, ...rest } = loan;
+    const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
+
+    const customerOwnerType = getCustomerOwnerType({
+      invitedBy,
+      currentUser,
+    });
+
+    let permissions = {};
+    const currentUserPromotion = currentUserPromotions.find(
+      ({ _id }) => _id === promotionId,
+    );
+
+    if (currentUserPromotion) {
+      permissions =
+        currentUserPromotion.$metadata &&
+        currentUserPromotion.$metadata.permissions;
+    }
+
+    const anonymizeUser =
+      anonymize === undefined
+        ? clientShouldAnonymize({
+            customerOwnerType,
+            permissions,
+          })
+        : anonymize;
+
+    return {
+      user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
+      isAnonymized: !!anonymizeUser,
+      ...rest,
+    };
+  };
+};
+
 export const makeLoanAnonymizer = ({
   userId,
   promotionId,
@@ -201,6 +241,34 @@ export const makePromotionLotAnonymizer = ({ userId }) => promotionLot => {
     .map(makeLoanAnonymizer({ userId, promotionId, promotionLotId }));
 
   return { attributedTo: loan, ...rest };
+};
+
+export const makePromotionOptionAnonymizer2 = ({ currentUser }) => {
+  const { promotions: currentUserPromotions = [] } = currentUser;
+
+  return promotionOption => {
+    const { loan, custom, ...rest } = promotionOption;
+    const { promotionLots } = promotionOption;
+    const [{ status }] = promotionLots;
+    const { promotions } = loan;
+    const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
+
+    const customerOwnerType = getCustomerOwnerType({
+      invitedBy,
+      currentUser,
+    });
+
+    let permissions = {};
+    const currentUserPromotion = currentUserPromotions.find(
+      ({ _id }) => _id === promotionId,
+    );
+
+    if (currentUserPromotion) {
+      permissions =
+        currentUserPromotion.$metadata &&
+        currentUserPromotion.$metadata.permissions;
+    }
+  };
 };
 
 export const makePromotionOptionAnonymizer = ({

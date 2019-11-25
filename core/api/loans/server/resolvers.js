@@ -1,11 +1,15 @@
 // @flow
+import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
   PROPERTY_SOLVENCY,
 } from '../../properties/propertyConstants';
 import UserService from '../../users/server/UserService';
-import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import {
+  makeLoanAnonymizer as makePromotionLoanAnonymizer,
+  makeLoanAnonymizer2,
+} from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
@@ -76,18 +80,21 @@ const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
   };
 };
 
-const anonymizePromotionLoans = ({ loans = [], userId }) =>
-  loans.map(loan => {
-    const { promotions } = loan;
-    const promotionId = promotions[0]._id;
+const anonymizePromotionLoans = ({ loans = [], userId }) => {
+  const currentUser = UserService.fetchOne({
+    $filters: { _id: userId },
+    promotions: { _id: 1 },
+    organisations: { users: { _id: 1 } },
+  });
 
-    const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
-      userId,
-      promotionId,
+  return loans.map(loan => {
+    const promotionLoanAnonymizer = makeLoanAnonymizer2({
+      currentUser,
     });
 
     return promotionLoanAnonymizer(loan);
   });
+};
 
 const anonymizePropertyLoans = ({ loans = [], userId }) =>
   loans.map(loan => {
