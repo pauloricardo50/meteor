@@ -1086,7 +1086,7 @@
   "emails.RESERVE_PROMOTION_LOT.from": "e-Potek",
   "emails.RESERVE_PROMOTION_LOT.SUBJECT": "{promotionName}, Réservation du lot {promotionLotName}",
   "emails.RESERVE_PROMOTION_LOT.TITLE": "{promotionName}, Réservation du lot {promotionLotName}",
-  "emails.RESERVE_PROMOTION_LOT_USER.BODY": "Votre conseiller.ère {assignedEmployeeName} va se mettre en relation avec la Banque, l'Entreprise Générale et {invitedBy} afin de faire un point de situation pour orchestrer les dernières étapes:{verticalSpace}\n  - Ouvrir un compte bancaire et obtenir le contrat de crédit\n  - Organiser la disponibilités des fonds propres\n  - Signer le contrat d'entreprise générale\n  - Organiser une rencontre avec le notaire afin de signer le contrat notarié.{verticalSpace}Dans l'intervalle, n'hésitez pas à contacter {assignedEmployeeName} pour vous renseigner.",
+  "emails.RESERVE_PROMOTION_LOT_USER.BODY": "Votre conseiller.ère {assignedEmployeeName} va se mettre en relation avec la Banque, l'Entreprise Générale et {invitedBy} afin de faire un point de situation pour orchestrer les dernières étapes:{verticalSpace}<ul><li>Ouvrir un compte bancaire et obtenir le contrat de crédit</li><li>Organiser la disponibilité des fonds propres</li><li>Signer le contrat d'entreprise générale</li><li>Organiser une rencontre avec le notaire afin de signer le contrat notarié</li></ul>{verticalSpace}Dans l'intervalle, n'hésitez pas à contacter {assignedEmployeeName} pour vous renseigner.",
   "emails.RESERVE_PROMOTION_LOT_USER.CTA": "Se connecter",
   "emails.RESERVE_PROMOTION_LOT_USER.from": "e-Potek",
   "emails.RESERVE_PROMOTION_LOT_USER.SUBJECT": "{promotionName}, Réservation du lot {promotionLotName}",

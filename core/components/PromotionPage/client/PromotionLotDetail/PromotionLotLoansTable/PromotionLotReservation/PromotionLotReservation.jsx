@@ -42,10 +42,10 @@ const PromotionLotReservation = ({
   const anonymize = isAdmin
     ? false
     : shouldAnonymize({
-      customerOwnerType,
-      permissions,
-      promotionLotStatus,
-    });
+        customerOwnerType,
+        permissions,
+        promotionLotStatus,
+      });
 
   if (anonymize) {
     return null;
@@ -80,11 +80,21 @@ const PromotionLotReservation = ({
             promotionOption={promotionOption}
             className="mr-8"
           />
-          <Button raised primary onClick={handleOpen}>
+          <Button
+            raised
+            primary
+            onClick={event => {
+              event.stopPropagation();
+              handleOpen();
+            }}
+          >
             Détail
           </Button>
         </div>
       )}
+      onClick={e => {
+        e.stopPropagation();
+      }}
     >
       <PromotionReservationDetail
         promotionOption={promotionOption}

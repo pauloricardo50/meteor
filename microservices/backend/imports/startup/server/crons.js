@@ -9,7 +9,7 @@ import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOp
 
 import {
   generateExpiringSoonReservationTasks,
-  generateHalfLifeReservationReminderTasks,
+  generateTenDayExpirationReminderTasks,
 } from 'core/api/promotionOptions/server/methods';
 
 CronService.init();
@@ -75,16 +75,20 @@ CronService.addCron(
 
 CronService.addCron(
   {
-    name: 'Expire promotion reservations',
+    name: 'Generate tasks for promotion reservations expiring in 10 days',
     frequency: 'every 1 day',
-    func: () => PromotionOptionService.expireReservations(),
+    func: () =>
+      generateTenDayExpirationReminderTasks
+        .run({})
+        .then((promotionOptions = []) => promotionOptions.length),
   },
-  { cronitorId: 'cLKGgS' },
+  { cronitorId: 'KbK0Gy' },
 );
 
 CronService.addCron(
   {
-    name: 'Generate tasks for promotion reservations expiring soon',
+    name:
+      'Generate tasks for promotion reservations expiring the following business day',
     frequency: 'every weekday',
     func: () =>
       generateExpiringSoonReservationTasks
@@ -96,12 +100,12 @@ CronService.addCron(
 
 CronService.addCron(
   {
-    name: 'Generate tasks for promotion reservations reaching their half-life',
+    name: 'Expire promotion reservations',
     frequency: 'every 1 day',
     func: () =>
-      generateHalfLifeReservationReminderTasks
-        .run({})
-        .then((promotionOptions = []) => promotionOptions.length),
+      PromotionOptionService.expireReservations().then(
+        toExpire => toExpire.length,
+      ),
   },
-  { cronitorId: 'KbK0Gy' },
+  { cronitorId: 'cLKGgS' },
 );

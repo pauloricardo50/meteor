@@ -38,7 +38,6 @@ import {
   setPromotionOptionProgress,
   promotionOptionActivateReservation,
 } from '../../methodDefinitions';
-import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 
 const makePromotionLotWithReservation = ({
   key,
@@ -136,7 +135,7 @@ describe('PromotionOptionService', function() {
       ]);
     });
 
-    it('throws if there is an active/completed reservation', async () => {
+    it('throws if there is an active/completed reservation', () => {
       PromotionOptionService.updateStatus({
         promotionOptionId,
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
@@ -146,7 +145,7 @@ describe('PromotionOptionService', function() {
       ).to.throw('active');
     });
 
-    it('does not throw if there is a cancelled reservation', async () => {
+    it('does not throw if there is a cancelled reservation', () => {
       PromotionOptionService.updateStatus({
         promotionOptionId,
         status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,

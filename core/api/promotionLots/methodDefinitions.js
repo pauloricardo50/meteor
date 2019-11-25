@@ -51,13 +51,6 @@ export const cancelPromotionLotReservation = new Method({
   },
 });
 
-export const confirmPromotionLotReservation = new Method({
-  name: 'confirmPromotionLotReservation',
-  params: {
-    promotionOptionId: String,
-  },
-});
-
 export const sellPromotionLot = new Method({
   name: 'sellPromotionLot',
   params: {

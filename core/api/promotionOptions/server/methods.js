@@ -91,12 +91,12 @@ generateExpiringSoonReservationTasks.setHandler(context => {
   return PromotionOptionService.getExpiringSoonReservations();
 });
 
-export const generateHalfLifeReservationReminderTasks = new Method({
+export const generateTenDayExpirationReminderTasks = new Method({
   name: 'generateHalfLifeReservationReminderTasks',
   params: {},
 });
 
-generateHalfLifeReservationReminderTasks.setHandler(context => {
+generateTenDayExpirationReminderTasks.setHandler(context => {
   SecurityService.checkIsInternalCall(context);
   return PromotionOptionService.getHalfLifeReservations();
 });

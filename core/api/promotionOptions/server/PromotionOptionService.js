@@ -209,8 +209,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   updateStatus({ promotionOptionId, status }) {
-    this._update({ id: promotionOptionId, object: { status } });
-    return Promise.resolve();
+    return this._update({ id: promotionOptionId, object: { status } });
   }
 
   setInitialSimpleVerification({ promotionOptionId, loanId }) {
@@ -451,25 +450,24 @@ export class PromotionOptionService extends CollectionService {
     return {};
   }
 
-  expireReservations = async () => {
-    const today = moment()
-      .startOf('day')
+  expireReservations = () => {
+    const yesterdayNight = moment()
+      .subtract(1, 'day')
+      .endOf('day')
       .toDate();
 
     const toExpire = this.fetch({
       $filters: {
-        'reservationAgreement.expirationDate': { $lte: today },
+        'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
     });
 
-    await Promise.all(
+    return Promise.all(
       toExpire.map(({ _id: promotionOptionId }) =>
         expirePromotionLotReservation.run({ promotionOptionId }),
       ),
     );
-
-    return toExpire.length;
   };
 
   getExpiringSoonReservations = () => {
@@ -484,7 +482,10 @@ export class PromotionOptionService extends CollectionService {
     const expiringSoon = this.fetch({
       $filters: {
         'reservationAgreement.expirationDate': {
-          $lte: tomorrow.startOf('day').toDate(),
+          $gte: moment()
+            .endOf('day')
+            .toDate(),
+          $lte: tomorrow.endOf('day').toDate(),
         },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
@@ -499,17 +500,19 @@ export class PromotionOptionService extends CollectionService {
 
   getHalfLifeReservations = () => {
     const in10Days = moment().add(10, 'days');
+    const in9Days = moment().add(9, 'days');
 
     const expiringIn10Days = this.fetch({
       $filters: {
         'reservationAgreement.expirationDate': {
           $lte: in10Days.startOf('day').toDate(),
+          $gte: in9Days.startOf('day').toDate(),
         },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
       loan: { user: { name: 1 } },
       promotion: { name: 1, assignedEmployee: { _id: 1 } },
-      promotionLot: { name: 1 },
+      promotionLots: { name: 1 },
       reservationAgreement: { expirationDate: 1 },
     });
 

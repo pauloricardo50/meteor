@@ -9,7 +9,6 @@ import {
   reservePromotionLot,
   cancelPromotionLotReservation,
   sellPromotionLot,
-  confirmPromotionLotReservation,
 } from '../methodDefinitions';
 
 import { expirePromotionLotReservation } from './serverMethods';
@@ -73,13 +72,6 @@ cancelPromotionLotReservation.setHandler(({ userId }, params) => {
   return PromotionLotService.cancelPromotionLotReservation(params);
 });
 
-confirmPromotionLotReservation.setHandler(({ userId }, params) => {
-  // According to promotions process v1.1 - 201909
-  // Only admins can reserve promotionLots
-  SecurityService.checkUserIsAdmin(userId);
-  return PromotionLotService.confirmPromotionLotReservation(params);
-});
-
 sellPromotionLot.setHandler(({ userId }, params) => {
   // According to promotions process v1.1 - 201909
   // Only admins can sell promotionLots
@@ -88,4 +80,5 @@ sellPromotionLot.setHandler(({ userId }, params) => {
 });
 
 expirePromotionLotReservation.setHandler((context, params) =>
-  PromotionLotService.expirePromotionLotReservation(params));
+  PromotionLotService.expirePromotionLotReservation(params),
+);

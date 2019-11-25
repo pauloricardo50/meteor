@@ -6,8 +6,8 @@ import {
   promotionOptionActivateReservation,
   cancelPromotionLotReservation,
   promotionOptionAddToWaitList,
-  confirmPromotionLotReservation,
   sellPromotionLot,
+  reservePromotionLot,
 } from '../../../../../api/methods';
 import Calculator from '../../../../../utils/Calculator';
 import { CurrentUserContext } from '../../../../../containers/CurrentUserContext';
@@ -40,32 +40,40 @@ export default withProps(({ promotionOption }) => {
     currentUser,
   });
 
-  const isAllowedToManageReservation = isAllowedToManageCustomerPromotionReservation({ promotion, currentUser, customerOwnerType });
-  const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotReservation({ promotionOption });
+  const isAllowedToManageReservation = isAllowedToManageCustomerPromotionReservation(
+    { promotion, currentUser, customerOwnerType },
+  );
+  const confirmReservationIsDisabled = !Calculator.canConfirmPromotionLotReservation(
+    { promotionOption },
+  );
 
   const isAdmin = Meteor.microservice === 'admin';
 
-  const canUploadReservationAgreement = status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
-    && reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.WAITING
-    && isAllowedToManageReservation;
-  const canConfirmReservation = isAdmin
-    && [
+  const canUploadReservationAgreement =
+    status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE &&
+    reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.WAITING &&
+    isAllowedToManageReservation;
+  const canConfirmReservation =
+    isAdmin &&
+    [
       PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
     ].includes(status);
-  const canCancelReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-    PROMOTION_OPTION_STATUS.RESERVED,
-    PROMOTION_OPTION_STATUS.SOLD,
-    PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-  ].includes(status) && isAdmin;
-  const canAddToWaitList = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
-  const canReactivateReservation = [
-    PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
-    PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
-  ].includes(status) && isAllowedToManageReservation;
+  const canCancelReservation =
+    [
+      PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      PROMOTION_OPTION_STATUS.RESERVED,
+      PROMOTION_OPTION_STATUS.SOLD,
+      PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+    ].includes(status) && isAdmin;
+  const canAddToWaitList =
+    isAdmin && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE;
+  const canReactivateReservation =
+    [
+      PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+      PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
+    ].includes(status) && isAllowedToManageReservation;
   const canSellLot = isAdmin && status === PROMOTION_OPTION_STATUS.RESERVED;
-
 
   return {
     agreementDuration,
@@ -82,9 +90,7 @@ export default withProps(({ promotionOption }) => {
       promotionOptionActivateReservation.run({ promotionOptionId }),
     addToWaitList: () =>
       promotionOptionAddToWaitList.run({ promotionOptionId }),
-    confirmReservation: () =>
-      confirmPromotionLotReservation.run({ promotionOptionId }),
+    confirmReservation: () => reservePromotionLot.run({ promotionOptionId }),
     sellPromotionLot: () => sellPromotionLot.run({ promotionOptionId }),
-
   };
 });

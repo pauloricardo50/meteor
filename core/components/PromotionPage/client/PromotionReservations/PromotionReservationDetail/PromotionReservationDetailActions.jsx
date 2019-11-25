@@ -62,6 +62,7 @@ const PromotionReservationDetailActions = ({
         description={
           <T id="PromotionReservationActions.cancelReservation.description" />
         }
+        keyword="ANNULER"
       />
     )}
 
@@ -118,6 +119,7 @@ const PromotionReservationDetailActions = ({
         label={<T id="PromotionReservationActions.sellLot" />}
         method={sellPromotionLot}
         description={<T id="PromotionReservationActions.sellLot.description" />}
+        keyword="YES"
       />
     )}
   </div>

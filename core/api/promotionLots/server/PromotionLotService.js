@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import Calculator from '../../../utils/Calculator';
-import { PROMOTION_OPTION_STATUS } from '../../constants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
@@ -33,37 +32,45 @@ class PromotionLotService extends CollectionService {
   }
 
   reservePromotionLot({ promotionOptionId }) {
-    const {
-      loan: { _id: loanId } = {},
-      promotionLots,
-    } = PromotionOptionService.fetchOne({
+    const promotionOption = PromotionOptionService.fetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1 },
-      promotionLots: { _id: 1 },
+      promotionLots: { _id: 1, status: 1 },
+      bank: 1,
+      simpleVerification: 1,
+      fullVerification: 1,
+      reservationAgreement: 1,
+      deposit: 1,
+    });
+    const { loan: { _id: loanId } = {}, promotionLots } = promotionOption;
+
+    const [{ _id: promotionLotId, status: promotionLotStatus }] = promotionLots;
+
+    if (promotionLotStatus !== PROMOTION_LOT_STATUS.AVAILABLE) {
+      throw new Meteor.Error(403, 'Ce lot est déjà réservé');
+    }
+
+    if (!Calculator.canConfirmPromotionLotReservation({ promotionOption })) {
+      throw new Meteor.Error(
+        403,
+        "Cette réservation n'est pas encore complète",
+      );
+    }
+
+    this.addLink({
+      id: promotionLotId,
+      linkName: 'attributedTo',
+      linkId: loanId,
     });
 
-    const [{ _id: promotionLotId }] = promotionLots;
+    this.update({
+      promotionLotId,
+      object: { status: PROMOTION_LOT_STATUS.RESERVED },
+    });
 
-    return PromotionOptionService.updateStatus({
+    return PromotionOptionService.completeReservation({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.RESERVED,
-    })
-      .then(() => {
-        this.addLink({
-          id: promotionLotId,
-          linkName: 'attributedTo',
-          linkId: loanId,
-        });
-      })
-      .then(() =>
-        this.update({
-          promotionLotId,
-          object: { status: PROMOTION_LOT_STATUS.RESERVED },
-        }),
-      )
-      .catch(error => {
-        throw error;
-      });
+    });
   }
 
   cancelPromotionLotReservation({ promotionOptionId }) {
@@ -85,59 +92,6 @@ class PromotionLotService extends CollectionService {
     });
 
     return PromotionOptionService.cancelReservation({
-      promotionOptionId,
-    });
-  }
-
-  completePromotionLotReservation({ promotionOptionId }) {
-    const promotionOption = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
-      loan: { _id: 1 },
-      promotionLots: { _id: 1 },
-    });
-    const { promotionLots } = promotionOption;
-    const [{ _id: promotionLotId }] = promotionLots;
-
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.RESERVED },
-    });
-
-    return PromotionOptionService.completeReservation({
-      promotionOptionId,
-    });
-  }
-
-  confirmPromotionLotReservation({ promotionOptionId }) {
-    const promotionOption = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
-      promotionLots: { _id: 1, status: 1 },
-      bank: 1,
-      deposit: 1,
-      simpleVerification: 1,
-      fullVerification: 1,
-      reservationAgreement: 1,
-    });
-    const { promotionLots } = promotionOption;
-    const [{ _id: promotionLotId, status }] = promotionLots;
-
-    if (status !== PROMOTION_LOT_STATUS.AVAILABLE) {
-      throw new Meteor.Error(403, 'Ce lot est déjà réservé');
-    }
-
-    if (!Calculator.canConfirmPromotionLotReservation({ promotionOption })) {
-      throw new Meteor.Error(
-        403,
-        "Cette réservation n'est pas encore complète",
-      );
-    }
-
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.RESERVED },
-    });
-
-    return PromotionOptionService.completeReservation({
       promotionOptionId,
     });
   }
