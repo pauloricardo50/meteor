@@ -66,6 +66,7 @@ export default class RESTAPI {
       Fiber(() => {
         const { headers = {} } = req;
         const { host, location } = headers;
+        req.startTime = new Date().getTime();
 
         setClientMicroservice('api');
         setClientUrl({ host, href: location });
@@ -107,6 +108,8 @@ export default class RESTAPI {
   }
 
   handleSuccess(result, req, res) {
+    req.endTime = new Date().getTime();
+    req.duration = req.endTime - req.startTime;
     const stringified = JSON.stringify(result || '');
 
     // LOGS

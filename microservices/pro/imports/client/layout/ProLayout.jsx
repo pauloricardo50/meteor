@@ -22,11 +22,11 @@ const ProLayout = ({ children, redirect, ...props }: ProLayoutProps) => {
     <div className="pro-layout">
       <ProTopNav currentUser={currentUser} />
       <ProSideNav currentUser={currentUser} />
-      <LayoutErrorBoundary>
-        <div className="pro-layout-content" id="scroll-layout">
+      <div className="pro-layout-content" id="scroll-layout">
+        <LayoutErrorBoundary>
           {React.cloneElement(children, { ...props, currentUser })}
-        </div>
-      </LayoutErrorBoundary>
+        </LayoutErrorBoundary>
+      </div>
 
       <ContactButton currentUser={currentUser} />
     </div>

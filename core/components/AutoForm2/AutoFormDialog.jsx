@@ -79,8 +79,10 @@ export class AutoFormDialog extends Component<AutoFormDialogProps> {
       setOpen(true);
     };
     const handleClose = event => {
-      event.stopPropagation();
-      event.preventDefault();
+      if (event && event.stopPropagation) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
       setOpen(false);
     };
 

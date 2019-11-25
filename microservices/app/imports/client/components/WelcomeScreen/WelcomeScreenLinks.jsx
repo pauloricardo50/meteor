@@ -76,34 +76,38 @@ const getLinks = ({ handleContact }) => [
 ];
 
 const WelcomeScreenLinks = ({ handleContact }: WelcomeScreenLinksProps) => {
-  const { toggleOpenContact, openContact } = useContext(ContactButtonContext);
+  const { toggleOpenContact } = useContext(ContactButtonContext);
 
   return (
     <div className="welcome-screen-links">
-      {getLinks({ handleContact: () => toggleOpenContact(!openContact) }).map(
-        ({ icon, label, items }, index) => (
-          <div key={index} className="welcome-screen-links-link">
-            <FontAwesomeIcon icon={icon} className="icon" />
-            <h4>
-              <T id={label} />
-            </h4>
-            <div className="welcome-screen-links-link-items">
-              {items.map(({ href, label: itemLabel, onClick }, i) => (
-                <a
-                  primary
-                  href={href}
-                  key={i}
-                  target={href ? '_blank' : undefined}
-                  component={href ? 'a' : undefined}
-                  onClick={onClick}
-                >
-                  <T id={itemLabel} />
-                </a>
-              ))}
-            </div>
+      {getLinks({
+        handleContact: event => {
+          event.stopPropagation();
+          event.preventDefault();
+          toggleOpenContact();
+        },
+      }).map(({ icon, label, items }, index) => (
+        <div key={index} className="welcome-screen-links-link">
+          <FontAwesomeIcon icon={icon} className="icon" />
+          <h4>
+            <T id={label} />
+          </h4>
+          <div className="welcome-screen-links-link-items">
+            {items.map(({ href, label: itemLabel, onClick }, i) => (
+              <a
+                primary
+                href={href}
+                key={i}
+                target={href ? '_blank' : undefined}
+                component={href ? 'a' : undefined}
+                onClick={onClick}
+              >
+                <T id={itemLabel} />
+              </a>
+            ))}
           </div>
-        ),
-      )}
+        </div>
+      ))}
     </div>
   );
 };
