@@ -29,7 +29,14 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.API_CALLED]: {
     name: 'Api Called',
-    transform: curryPick(['endpoint', 'result']),
+    transform: curryPick([
+      'endpoint',
+      'result',
+      'startTime',
+      'endTime',
+      'duration',
+      'authenticationType',
+    ]),
   },
   [EVENTS.LOAN_CREATED]: {
     name: 'Loan Created',

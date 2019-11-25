@@ -1,5 +1,4 @@
 import { Mongo } from 'meteor/mongo';
-
 import omit from 'lodash/omit';
 
 const skippedCollections = ['_cacheMigrations', 'grapher_counts'];
@@ -21,20 +20,16 @@ const makeCleanDocument = collection => doc => {
     trimStrings: true,
     getAutoValues: true,
   });
-
   const withoutSkippedFields = omit(cleanDoc, skippedFields);
-
   //   Sometimes empty documents can slip through, and update will fail because $set is empty
   if (!withoutSkippedFields || Object.keys(withoutSkippedFields).length === 0) {
     console.log(`empty ${collection.name} document: ${_id}`);
     return Promise.resolve();
   }
-
   return collection.instance
     .rawCollection()
     .update({ _id }, { $set: withoutSkippedFields });
 };
-
 const cleanCollection = async collection => {
   if (
     !collection.name ||
@@ -42,7 +37,6 @@ const cleanCollection = async collection => {
     !collection.instance._c2
   ) {
     console.log(`Skipping ${collection.name}`);
-
     return;
   }
   console.log(`Cleaning ${collection.name}`);
@@ -53,7 +47,6 @@ const cleanCollection = async collection => {
 
   console.log(`Cleaned ${allDocuments.length} docs for ${collection.name}`);
 };
-
 export const cleanAllData = async () => {
   console.log('Data cleaning Start...');
   const collections = Mongo.Collection.getAll();

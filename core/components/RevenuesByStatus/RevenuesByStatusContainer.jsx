@@ -32,7 +32,12 @@ const calculateRevenuesByStatus = (loans = [], status, multiplier = 1) =>
     const { revenues = [] } = loan;
 
     if (revenues.length) {
-      return tot + revenues.reduce((tot2, { amount = 0 }) => tot2 + amount, 0);
+      return (
+        tot +
+        revenues
+          .filter(x => x)
+          .reduce((tot2, { amount = 0 }) => tot2 + amount, 0)
+      );
     }
 
     if (isEstimationStatus(status)) {

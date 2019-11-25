@@ -26,7 +26,7 @@ export const rows = interestRates =>
       <T id={`InterestsTable.${type}`} key={1} />,
       <InterestsTableTrend trend={trend} key={2} />,
       <span key={3}>
-        {formatRate(rateLow)} -{formatRate(rateHigh)}
+        {formatRate(rateLow)} - {formatRate(rateHigh)}
       </span>,
     ],
   }));

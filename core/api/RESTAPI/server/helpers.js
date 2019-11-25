@@ -232,6 +232,7 @@ export const logRequest = ({ req, result }) => {
     query = {},
     headers = {},
     verifiedFormat,
+    duration,
   } = req;
 
   if (Meteor.isTest) {
@@ -247,6 +248,7 @@ export const logRequest = ({ req, result }) => {
   console.log('QUERY:', JSON.stringify(query, null, 2));
   console.log('VERIFIED FORMAT:', verifiedFormat);
   console.log('RESULT:', result);
+  console.log('DURATION:', duration);
   console.log('-----------------');
 };
 
@@ -309,7 +311,14 @@ export const verifySignature = req => {
 };
 
 export const trackRequest = ({ req, result }) => {
-  const { user: { _id: userId } = {}, headers = {} } = req;
+  const {
+    user: { _id: userId } = {},
+    headers = {},
+    startTime,
+    endTime,
+    duration,
+    authenticationType,
+  } = req;
   const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
 
   const analytics = new Analytics({
@@ -324,7 +333,14 @@ export const trackRequest = ({ req, result }) => {
     analytics.identify(Random.id(16));
   }
 
-  analytics.track(EVENTS.API_CALLED, { endpoint: getRequestPath(req), result });
+  analytics.track(EVENTS.API_CALLED, {
+    endpoint: getRequestPath(req),
+    startTime,
+    endTime,
+    duration,
+    result,
+    authenticationType,
+  });
 };
 
 export const getMatchingPathOptions = (req, options) => {

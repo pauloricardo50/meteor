@@ -112,6 +112,7 @@ const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
   }
 
   if (endpointOptions.simpleAuth) {
+    req.authenticationType = 'simple';
     const { query } = req;
     const simpleAuthParams = JSON.parse(
       Buffer.from(query['simple-auth-params'], 'base64').toString('ascii'),
@@ -166,6 +167,7 @@ const authMiddleware = (options = {}) => (req, res, next) => {
     return next();
   }
 
+  req.authenticationType = 'rsa';
   const publicKey = getPublicKey(req);
   const signature = getSignature(req);
 
@@ -211,6 +213,8 @@ const authMiddleware = (options = {}) => (req, res, next) => {
 
 // Handles all errors, should be added as the very last middleware
 const errorMiddleware = options => (error, req, res, next) => {
+  req.endTime = new Date().getTime();
+  req.duration = req.endTime - req.startTime;
   const { info } = error;
   const { status, errorName, message } = getErrorObject(error, res);
   const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
@@ -257,6 +261,15 @@ const multipartMiddleware = options => (req, res, next) => {
   return isMultipart ? middleware(req, res, next) : next();
 };
 
+const noAuthMiddleware = options => (req, res, next) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  if (endpointOptions.noAuth) {
+    req.authenticationType = 'no-auth';
+  }
+  return next();
+};
+
 export const preMiddlewares = [
   filterMiddleware,
   multipartMiddleware,
@@ -264,6 +277,7 @@ export const preMiddlewares = [
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
   simpleAuthMiddleware,
+  noAuthMiddleware,
   replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];
