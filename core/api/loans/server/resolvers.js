@@ -93,17 +93,23 @@ const anonymizePromotionLoans = ({ loans = [], userId }) => {
   });
 };
 
-const anonymizePropertyLoans = ({ loans = [], userId }) =>
-  loans.map(loan => {
+const anonymizePropertyLoans = ({ loans = [], userId }) => {
+  const currentUser = UserService.fetchOne({
+    $filters: { _id: userId },
+    organisations: { users: { _id: 1 } },
+    proProperties: { _id: 1 },
+  });
+  return loans.map(loan => {
     const { properties } = loan;
-    const proPropertyIds = properties
-      .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
-      .map(({ _id }) => _id);
+    const proProperties = properties.filter(
+      ({ category }) => category === PROPERTY_CATEGORY.PRO,
+    );
     return makeProPropertyLoanAnonymizer({
-      userId,
-      propertyIds: proPropertyIds,
+      proProperties,
+      currentUser,
     })(loan);
   });
+};
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
   ...loans,

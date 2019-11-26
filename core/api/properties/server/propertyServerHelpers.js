@@ -76,50 +76,65 @@ export const getProPropertyCustomerOwnerType = ({ customerId, userId }) => {
   });
 };
 
-const shouldAnonymize = ({ customerId, userId, propertyId }) => {
-  const customerOwnerType = getProPropertyCustomerOwnerType({
-    customerId,
-    userId,
-  });
-  const permissions = getUserProPropertyPermissions({ userId, propertyId });
+// const shouldAnonymize = ({ customerId, userId, propertyId }) => {
+//   const customerOwnerType = getProPropertyCustomerOwnerType({
+//     customerId,
+//     userId,
+//   });
+//   const permissions = getUserProPropertyPermissions({ userId, propertyId });
 
-  const propertyStatus = getProPropertyStatus({ propertyId });
+//   const propertyStatus = getProPropertyStatus({ propertyId });
 
-  return clientShouldAnonymize({
-    customerOwnerType,
-    permissions,
-    propertyStatus,
-  });
-};
+//   return clientShouldAnonymize({
+//     customerOwnerType,
+//     permissions,
+//     propertyStatus,
+//   });
+// };
 
 export const makeProPropertyLoanAnonymizer = ({
-  userId,
-  propertyIds = [],
   anonymize,
+  currentUser,
+  proProperties = [],
 }) => {
   let propertiesPermissionsAndStatus;
+  const { proProperties: currentUserProperties = [] } = currentUser;
 
   if (anonymize === undefined) {
-    propertiesPermissionsAndStatus = propertyIds.map(propertyId => ({
-      propertyId,
-      permissions: getUserProPropertyPermissions({ userId, propertyId }),
-      status: getProPropertyStatus({ propertyId }),
-    }));
+    propertiesPermissionsAndStatus = proProperties.map(property => {
+      const { _id: propertyId, status } = property;
+      let permissions = {};
+
+      const proProperty = currentUserProperties.find(
+        ({ _id }) => _id === propertyId,
+      );
+
+      if (proProperty) {
+        permissions =
+          proProperty.$metadata && proProperty.$metadata.permissions;
+      }
+
+      return {
+        propertyId,
+        permissions,
+        status,
+      };
+    });
   }
 
   return loan => {
     const { user = {}, properties = [], ...rest } = loan;
-    const { _id: customerId } = user;
+    const { referredByOrganisation, referredByUser } = user;
+    const customerOwnerType = getCustomerOwnerType({
+      referredByUser,
+      referredByOrganisation,
+      currentUser,
+    });
 
     const shouldAnonymizeUser =
       anonymize === undefined
         ? propertiesPermissionsAndStatus
-            .map(({ propertyId, permissions, status: propertyStatus }) => {
-              const customerOwnerType = getProPropertyCustomerOwnerType({
-                customerId,
-                propertyId,
-                userId,
-              });
+            .map(({ permissions, status: propertyStatus }) => {
               return clientShouldAnonymize({
                 customerOwnerType,
                 permissions,
