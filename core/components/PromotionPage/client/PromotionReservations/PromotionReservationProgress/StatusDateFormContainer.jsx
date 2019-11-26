@@ -5,7 +5,10 @@ import {
   loanUpdate,
   setPromotionOptionProgress,
 } from '../../../../../api/methods';
-import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../../../api/constants';
+import {
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+} from '../../../../../api/constants';
 import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
 
 const handleDialog = ({
@@ -49,21 +52,33 @@ export default withProps(({ id, loanId, promotionOptionId }) => {
   });
 
   const isTextField = id === 'adminNote';
+  const isBankStatus = id === 'bank';
 
   return {
     autosave: !isTextField,
-    schema: PromotionOptionSchema.getObjectSchema(id).pick(
-      'date',
-      'status',
-      'note',
-    ),
+    schema: isBankStatus
+      ? PromotionOptionSchema.getObjectSchema(id)
+          .omit('status')
+          .extend({
+            status: {
+              type: String,
+              allowedValues: Object.values(PROMOTION_OPTION_BANK_STATUS).filter(
+                s => s !== PROMOTION_OPTION_BANK_STATUS.WAITLIST,
+              ),
+            },
+          })
+      : PromotionOptionSchema.getObjectSchema(id).pick(
+          'date',
+          'status',
+          'note',
+        ),
     layout: isTextField
       ? [{ fields: ['date'] }, { fields: ['note'] }]
       : [
           {
             className: 'grid-col',
             style: { gridTemplateColumns: '1fr 220px', width: '100%' },
-            fields: ['__REST'],
+            fields: ['status', 'date'],
           },
         ],
     submitFieldProps: { showSubmitField: isTextField },

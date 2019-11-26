@@ -48,10 +48,8 @@ const PromotionReservationProgressComponent = ({
     isAnonymized,
     proNote = '',
   } = promotionOption;
-  console.log('promotionOption:', promotionOption);
   const { user, _id: loanId } = loan;
   const { info = {}, documents = {} } = loanProgress;
-  console.log('loanProgress:', loanProgress);
 
   const icon = makeIcon(variant, isEditing, promotionOptionId, loanId);
 

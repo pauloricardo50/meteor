@@ -88,7 +88,7 @@
   "Forms.status.UNDETERMINED": "Pas effectué",
   "UserReservation.title": "Réservation du lot {promotionLotName}",
   "Forms.expirationDate": "Échéance de la convention de réservation",
-  "PromotionReservationsTable.modalTitle": "Réservation de {lotName} par {customerName}",
+  "PromotionReservationsTable.modalTitle": "Réservation du lot {lotName} par {customerName}",
   "PromotionReservationsTable.promotionLot": "Lot",
   "PromotionReservationsTable.customer": "Client",
   "PromotionReservationsTable.status": "Statut de la réservation",
