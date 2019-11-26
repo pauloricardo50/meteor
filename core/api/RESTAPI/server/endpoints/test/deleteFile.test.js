@@ -26,8 +26,14 @@ import { FILE_UPLOAD_DIR, HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 let propertyId = '';
-api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
-api.addEndpoint('/deleteFile', 'POST', deleteFileAPI);
+api.addEndpoint('/upload', 'POST', uploadFileAPI, {
+  multipart: true,
+  endpointName: 'Upload file',
+});
+api.addEndpoint('/deleteFile', 'POST', deleteFileAPI, {
+  rsaAuth: true,
+  endpointName: 'Delete file',
+});
 
 const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
   const { timestamp, nonce } = getTimestampAndNonce();

@@ -14,7 +14,10 @@ import {
 import { interestRatesAPI } from '..';
 
 const api = new RESTAPI();
-api.addEndpoint('/interest-rates/latest', 'GET', interestRatesAPI);
+api.addEndpoint('/interest-rates/latest', 'GET', interestRatesAPI, {
+  rsaAuth: true,
+  endpointName: 'Get interest rates',
+});
 
 const getRates = ({ expectedResponse }) => {
   const { timestamp, nonce } = getTimestampAndNonce();

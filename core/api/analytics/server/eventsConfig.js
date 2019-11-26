@@ -36,6 +36,7 @@ export const EVENTS_CONFIG = {
       'endTime',
       'duration',
       'authenticationType',
+      'endpointName',
     ]),
   },
   [EVENTS.LOAN_CREATED]: {

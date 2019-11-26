@@ -23,7 +23,10 @@ const customerToRefer = {
 };
 
 const api = new RESTAPI();
-api.addEndpoint('/users', 'POST', referCustomerAPI);
+api.addEndpoint('/users', 'POST', referCustomerAPI, {
+  rsaAuth: true,
+  endpointName: 'Refer customer',
+});
 
 const referCustomer = ({
   userData,

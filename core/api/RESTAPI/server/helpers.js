@@ -14,7 +14,13 @@ import { getClientHost } from 'core/utils/server/getClientUrl';
 import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
 import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
 import { sortObject } from '../../helpers';
-import { HTTP_STATUS_CODES, SIMPLE_AUTH_SALT_GRAINS } from './restApiConstants';
+import {
+  HTTP_STATUS_CODES,
+  SIMPLE_AUTH_SALT_GRAINS,
+  AUTHORIZATION_HEADER,
+  AUTHORIZATION_TYPES,
+  AUTHENTICATION_TYPES,
+} from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
 
 export const AUTH_ITEMS = {
@@ -30,22 +36,85 @@ export const OBJECT_FORMATS = {
 
 export const getHeader = (req, name) => req.headers[name];
 
+export const getRequestType = req => {
+  const contentType = getHeader(req, 'content-type');
+
+  if (contentType && contentType.includes('multipart/form-data')) {
+    return 'multipart';
+  }
+
+  const authorization = getHeader(req, AUTHORIZATION_HEADER);
+
+  if (authorization) {
+    if (
+      authorization.includes(AUTHORIZATION_TYPES[AUTHENTICATION_TYPES.BASIC])
+    ) {
+      return 'basic';
+    }
+
+    if (authorization.includes(AUTHORIZATION_TYPES[AUTHENTICATION_TYPES.RSA])) {
+      return 'rsa';
+    }
+  }
+
+  const { url } = req;
+
+  if (url.includes('simple-auth-params')) {
+    return 'simple';
+  }
+
+  return 'no-auth';
+};
+
+export const requestTypeIsAllowed = ({ req, endpointOptions }) => {
+  const { simpleAuth, noAuth, basicAuth, rsaAuth, multipart } = endpointOptions;
+  const { authenticationType } = req;
+
+  if (multipart && authenticationType === 'multipart') {
+    return true;
+  }
+
+  if (simpleAuth && authenticationType === 'simple') {
+    return true;
+  }
+
+  if (noAuth && authenticationType === 'no-auth') {
+    return true;
+  }
+
+  if (basicAuth && authenticationType === 'basic') {
+    return true;
+  }
+
+  if (rsaAuth && authenticationType === 'rsa') {
+    return true;
+  }
+
+  return false;
+};
+
 const getAuthItem = ({ req, item }) => {
+  const { authenticationType } = req;
+
   const authorization = getHeader(req, 'x-epotek-authorization');
   if (!authorization) {
     return undefined;
   }
 
-  if (!authorization.includes('EPOTEK')) {
+  if (!authorization.includes(AUTHORIZATION_TYPES[authenticationType])) {
     return undefined;
   }
 
   switch (item) {
     case AUTH_ITEMS.RSA_PUBLIC_KEY: {
-      return authorization.replace('EPOTEK ', '').split(':')[0];
+      return authorization
+        .replace(`${AUTHORIZATION_TYPES[authenticationType]} `, '')
+        .split(':')[0];
     }
     case AUTH_ITEMS.RSA_SIGNATURE: {
-      return authorization.replace('EPOTEK ', '').split(':')[1];
+      return authorization
+        .replace(`${AUTHORIZATION_TYPES[authenticationType]} `, '')
+        .split(':')[1];
     }
     default:
       return undefined;
@@ -253,7 +322,7 @@ export const logRequest = ({ req, result }) => {
 };
 
 export const verifySignature = req => {
-  const { publicKey, signature, body, query, isMultipart } = req;
+  const { publicKey, signature, body, query, authenticationType } = req;
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -276,7 +345,7 @@ export const verifySignature = req => {
     objectToVerify = { ...objectToVerify, body: sortObject(body) };
   }
 
-  if (isMultipart) {
+  if (authenticationType === AUTHENTICATION_TYPES.MULTIPART) {
     const { files: { file = {} } = {} } = req;
     const { originalFilename, size, type } = file;
     objectToVerify = {
@@ -318,6 +387,7 @@ export const trackRequest = ({ req, result }) => {
     endTime,
     duration,
     authenticationType,
+    endpointName,
   } = req;
   const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
 
@@ -340,6 +410,7 @@ export const trackRequest = ({ req, result }) => {
     duration,
     result,
     authenticationType,
+    endpointName,
   });
 };
 
@@ -401,4 +472,27 @@ export const getSimpleAuthToken = params => {
   const sortedObject = sortObject({ userId, timestamp, saltGrain, ...rest });
 
   return hashObject.MD5(sortedObject);
+};
+
+export const shouldSkipMiddleware = ({ middleware, req }) => {
+  const { authenticationType } = req;
+
+  if (AUTH_MIDDLEWARES[authenticationType].includes(middleware)) {
+    return false;
+  }
+
+  return true;
+};
+
+const AUTH_MIDDLEWARES = {
+  'no-auth': [],
+  basic: ['basicAuthMiddleware'],
+  simple: ['simpleAuthMiddleware'],
+  multipart: [
+    'multipartMiddleware',
+    'authMiddleware',
+    'filterMiddleware',
+    'replayHandlerMiddleware',
+  ],
+  rsa: ['replayHandlerMiddleware', 'filterMiddleware', 'authMiddleware'],
 };

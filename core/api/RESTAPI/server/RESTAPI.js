@@ -5,7 +5,13 @@ import Fiber from 'fibers';
 import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { logRequest, trackRequest, setIsAPI, setAPIUser } from './helpers';
+import {
+  logRequest,
+  trackRequest,
+  setIsAPI,
+  setAPIUser,
+  getRequestType,
+} from './helpers';
 import { HTTP_STATUS_CODES, RESPONSE_ALREADY_SENT } from './restApiConstants';
 import {
   setClientMicroservice,
@@ -132,6 +138,22 @@ export default class RESTAPI {
     if (this.endpoints[path] && this.endpoints[path][method]) {
       throw new Error(
         `Endpoint "${path}" for method "${method}" already exists in REST API`,
+      );
+    }
+
+    if (!options.endpointName) {
+      throw new Error(
+        `Endpoint "${path}" for method "${method}" must have a name`,
+      );
+    }
+
+    if (
+      !['rsaAuth', 'simpleAuth', 'basicAuth', 'multipart', 'noAuth'].some(
+        auth => Object.keys(options).indexOf(auth) >= 0,
+      )
+    ) {
+      throw new Error(
+        `Endpoint "${path}" for method "${method}" must have a authentication type`,
       );
     }
 

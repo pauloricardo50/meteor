@@ -17,14 +17,38 @@ import {
 let user;
 
 const api = new RESTAPI();
-api.addEndpoint('/test', 'POST', testEndpointAPI);
-api.addEndpoint('/test', 'GET', testEndpointAPI);
-api.addEndpoint('/test', 'PUT', testEndpointAPI);
-api.addEndpoint('/test', 'DELETE', testEndpointAPI);
-api.addEndpoint('/test/:id', 'POST', testEndpointAPI);
-api.addEndpoint('/test/:id', 'GET', testEndpointAPI);
-api.addEndpoint('/test/:id', 'PUT', testEndpointAPI);
-api.addEndpoint('/test/:id', 'DELETE', testEndpointAPI);
+api.addEndpoint('/test', 'POST', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test POST',
+});
+api.addEndpoint('/test', 'GET', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test GET',
+});
+api.addEndpoint('/test', 'PUT', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test PUT',
+});
+api.addEndpoint('/test', 'DELETE', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test DELETE',
+});
+api.addEndpoint('/test/:id', 'POST', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test POST with id',
+});
+api.addEndpoint('/test/:id', 'GET', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test GET with id',
+});
+api.addEndpoint('/test/:id', 'PUT', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test PUT with id',
+});
+api.addEndpoint('/test/:id', 'DELETE', testEndpointAPI, {
+  rsaAuth: true,
+  endpointName: 'Test DELETE with id',
+});
 
 const testEndpoint = ({
   id,

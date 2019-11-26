@@ -24,7 +24,10 @@ import { FILE_UPLOAD_DIR, HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 let propertyId = '';
-api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
+api.addEndpoint('/upload', 'POST', uploadFileAPI, {
+  multipart: true,
+  endpointName: 'Upload file',
+});
 
 describe('REST: uploadFile', function() {
   this.timeout(10000);
