@@ -43,10 +43,10 @@ export const FAKE_REAL_ESTATE = {
 
 export const FAKE_BONUS = {
   bonusExists: true,
-  bonus2015: 2000,
   bonus2016: 5000,
   bonus2017: 1500,
   bonus2018: 5000,
+  bonus2019: 2000,
 };
 
 export const FAKE_LOAN_NAME = '18-0001';

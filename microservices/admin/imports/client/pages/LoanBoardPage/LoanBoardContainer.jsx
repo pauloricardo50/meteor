@@ -37,6 +37,9 @@ const defaultBody = {
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
+const getPromotionId = promotionId =>
+  noPromotionIsChecked(promotionId) ? undefined : promotionId;
+
 export default compose(
   addLiveSync,
   withLiveSync,
@@ -59,7 +62,7 @@ export default compose(
       relevantOnly: true,
       hasPromotion: groupBy === GROUP_BY.PROMOTION,
       status,
-      promotionId,
+      promotionId: getPromotionId(promotionId),
       lenderId,
       category,
       noPromotion: noPromotionIsChecked(promotionId),

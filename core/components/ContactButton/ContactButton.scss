@@ -111,24 +111,26 @@
 
 .impersonate-notification {
   position: fixed;
-  bottom: 24px;
   right: 24px;
-  height: 50px;
+  bottom: 24px;
 
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
 
-  background-color: white;
+  height: 50px;
+
   border-radius: 50px;
+  background-color: white;
   box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
 
   img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     margin-right: 8px;
     margin-left: 4px;
+
+    border-radius: 50%;
   }
 
   h4 {
@@ -144,8 +146,8 @@
 
   &-dialog {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
 
     img {
       border-radius: 50%;
@@ -157,10 +159,10 @@
 
     .actions {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
 
-      >*:first-child {
+      > *:first-child {
         margin-bottom: 8px;
       }
     }

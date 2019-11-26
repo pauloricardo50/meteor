@@ -97,7 +97,7 @@ exposeQuery({
         }
 
         if (noPromotion) {
-          filters['promotionLinks.0._id'] = { $exists: false };
+          filters.promotionLinks = { $in: [[], null] };
         }
 
         if (lenderId) {

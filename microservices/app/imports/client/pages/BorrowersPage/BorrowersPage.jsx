@@ -14,6 +14,7 @@ import BorrowerHeader from './BorrowerHeader';
 import BorrowersPageTitle from './BorrowersPageTitle';
 import BorrowersPageNextTab from './BorrowersPageNextTab';
 import BorrowersPageContainer from './BorrowersPageContainer';
+import DeactivatedFormInfo from '../../components/DeactivatedFormInfo';
 
 const getTabs = props => {
   const { loan } = props;
@@ -32,6 +33,7 @@ const getTabs = props => {
     ...tab,
     content: (
       <>
+        <DeactivatedFormInfo loan={loan} style={{ marginBottom: 32 }} />
         <BorrowerHeader {...props} />
         {tab.content}
       </>

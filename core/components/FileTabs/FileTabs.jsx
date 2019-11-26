@@ -6,16 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 import cx from 'classnames';
 
-import Tabs from 'core/components/Tabs';
-import VerticalAligner from 'core/components/VerticalAligner';
-import Calculator from 'core/utils/Calculator';
+import Calculator from '../../utils/Calculator';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
-} from 'core/api/events/ClientEventService';
+} from '../../api/events/ClientEventService';
+import { addBorrower } from '../../api/methods';
+import VerticalAligner from '../VerticalAligner';
+import Tabs from '../Tabs';
 import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
 import T from '../Translation';
+import ConfirmMethod from '../ConfirmMethod';
 import ZipLoan from './ZipLoan';
 import LoanGoogleDrive from './LoanGoogleDrive';
 
@@ -80,6 +82,25 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                       </VerticalAligner>
                     </div>
                   ))}
+
+                  {isAdmin && borrowers.length === 0 && (
+                    <div>
+                      <h3 className="secondary">
+                        Pas encore d'emprunteur sur ce dossier
+                      </h3>
+                      <div>
+                        <ConfirmMethod
+                          method={() => addBorrower.run({ loanId: loan._id })}
+                          label="Ajouter emprunteur"
+                          buttonProps={{
+                            raised: true,
+                            primary: true,
+                            style: { marginBottom: 16 },
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               ),
             },
