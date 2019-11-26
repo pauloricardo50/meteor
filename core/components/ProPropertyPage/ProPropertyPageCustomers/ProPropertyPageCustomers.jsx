@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import Select from 'core/components/Select';
 import Table from '../../Table';
 import ProPropertyPageCustomersContainer from './ProPropertyPageCustomersContainer';
 import PropertyCustomerAdder from '../PropertyCustomerAdder';
@@ -15,6 +16,8 @@ const ProPropertyPageCustomers = ({
   property,
   permissions,
   loans,
+  withAnonymous,
+  setWithAnonymous,
 }: ProPropertyPageCustomersProps) => (
   <div className="card1 card-top customers-table">
     <span className="flex customers-table-header">
@@ -31,9 +34,16 @@ const ProPropertyPageCustomers = ({
         </div>
       )}
     </span>
-    <p className="description">
-      Les dossiers anonymes sans suite ne sont pas affichés
-    </p>
+    <Select
+      label="Anonymes"
+      value={withAnonymous}
+      onChange={setWithAnonymous}
+      options={[
+        { id: true, label: 'Avec' },
+        { id: false, label: 'Sans' },
+      ]}
+      className="mr-8"
+    />
     <Table rows={rows} columnOptions={columnOptions} />
   </div>
 );

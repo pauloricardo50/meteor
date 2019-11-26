@@ -190,12 +190,14 @@ exposeQuery({
     validateParams: {
       propertyId: String,
       userId: String,
+      anonymous: Match.Maybe(Object),
     },
   },
-  resolver: ({ userId, propertyId }) =>
+  resolver: ({ userId, propertyId, anonymous }) =>
     proPropertyLoansResolver({
       calledByUserId: userId,
       propertyId,
+      anonymous,
     }),
 });
 

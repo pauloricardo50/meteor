@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
@@ -174,21 +174,40 @@ const makeMapLoan = ({
   };
 };
 
+const getAnonymous = withAnonymous =>
+  withAnonymous ? undefined : { $in: [null, false] };
+
 export default compose(
+  withState('withAnonymous', 'setWithAnonymous', false),
   withSmartQuery({
     query: proPropertyLoans,
-    params: ({ property: { _id: propertyId } }) => ({ propertyId }),
+    params: ({ property: { _id: propertyId }, withAnonymous }) => ({
+      propertyId,
+      anonymous: getAnonymous(withAnonymous),
+    }),
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
   withRouter,
-  mapProps(({ loans = [], history, permissions, property, currentUser }) => ({
-    rows: loans.map(
-      makeMapLoan({ history, permissions, currentUser, property }),
-    ),
-    columnOptions,
-    permissions,
-    property,
-    loans,
-  })),
+  mapProps(
+    ({
+      loans = [],
+      history,
+      permissions,
+      property,
+      currentUser,
+      withAnonymous,
+      setWithAnonymous,
+    }) => ({
+      rows: loans.map(
+        makeMapLoan({ history, permissions, currentUser, property }),
+      ),
+      columnOptions,
+      permissions,
+      property,
+      loans,
+      withAnonymous,
+      setWithAnonymous,
+    }),
+  ),
 );
