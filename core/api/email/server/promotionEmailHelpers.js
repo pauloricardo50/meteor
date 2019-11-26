@@ -106,23 +106,6 @@ export const PROMOTION_EMAILS = [
     ],
   },
   {
-    description: [
-      "Confirmation de vente d'un lot -> Client",
-      "Confirmation de vente d'un lot -> Pros",
-    ],
-    method: sellPromotionLot,
-    emailId: EMAIL_IDS.SELL_PROMOTION_LOT,
-    recipients: [
-      {
-        type: PROMOTION_EMAIL_RECIPIENTS.USER,
-        emailId: EMAIL_IDS.SELL_PROMOTION_LOT_USER,
-      },
-      PROMOTION_EMAIL_RECIPIENTS.BROKER,
-      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
-      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
-    ],
-  },
-  {
     description: "Annulation de la réservation d'un lot -> Pros",
     method: [cancelPromotionLotReservation, expirePromotionLotReservation],
     emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
