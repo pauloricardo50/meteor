@@ -58,51 +58,46 @@ api.addEndpoint('/test', 'POST', testEndpointAPI, {
 api.addEndpoint('/test', 'GET', testEndpointAPI, {
   rsaAuth: true,
   basicAuth: true,
-  noAuth: true,
   endpointName: 'Test GET',
 });
 api.addEndpoint('/test', 'PUT', testEndpointAPI, {
   rsaAuth: true,
   basicAuth: true,
-  noAuth: true,
   endpointName: 'Test PUT',
 });
 api.addEndpoint('/test', 'DELETE', testEndpointAPI, {
   rsaAuth: true,
   basicAuth: true,
-  noAuth: true,
   endpointName: 'Test DELETE',
 });
 api.addEndpoint('/test/:id', 'POST', testEndpointAPI, {
   rsaAuth: true,
-  noAuth: true,
   basicAuth: true,
   endpointName: 'Test POST with id',
 });
 api.addEndpoint('/test/:id', 'GET', testEndpointAPI, {
   rsaAuth: true,
-  noAuth: true,
   basicAuth: true,
   endpointName: 'Test GET with id',
 });
 api.addEndpoint('/test/:id', 'PUT', testEndpointAPI, {
   rsaAuth: true,
-  noAuth: true,
   basicAuth: true,
   endpointName: 'Test PUT with id',
 });
 api.addEndpoint('/test/:id', 'DELETE', testEndpointAPI, {
   rsaAuth: true,
-  noAuth: true,
   basicAuth: true,
   endpointName: 'Test DELETE with id',
 });
 api.addEndpoint('/interest-rates/latest', 'GET', interestRatesAPI, {
   rsaAuth: true,
+  basicAuth: true,
   endpointName: 'Get interest rates',
 });
 api.addEndpoint('/calculator/mortgage-estimate', 'GET', mortgageEstimateAPI, {
   rsaAuth: true,
+  basicAuth: true,
   endpointName: 'Mortgage estimate',
 });
 api.addEndpoint('/properties', 'POST', insertPropertyAPI, {
