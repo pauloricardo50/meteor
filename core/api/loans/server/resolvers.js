@@ -217,21 +217,28 @@ export const proPropertyLoansResolver = ({
       status,
       anonymous,
       'userCache.referredByUserLink': referredByUserId,
-      $or: [
-        { anonymous: true, status: { $ne: LOAN_STATUS.UNSUCCESSFUL } },
-        { anonymous: { $ne: true } },
-      ],
     },
     ...proLoansFragment,
+    loanProgress: 0,
   });
 
   try {
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans.map(handleLoanSolvencySharing({ isAdmin: true }));
   } catch (error) {
-    return anonymizePropertyLoans({
-      loans: loans.map(handleLoanSolvencySharing({ isAdmin: false })),
-      userId: calledByUserId,
-    });
+    const anonymousLoans = loans
+      .filter(({ anonymous: isAnonymous }) => isAnonymous)
+      .map(handleLoanSolvencySharing({ isAdmin: false }));
+    const commonLoans = loans
+      .filter(({ anonymous: isAnonymous }) => !isAnonymous)
+      .map(handleLoanSolvencySharing({ isAdmin: false }));
+
+    return [
+      ...anonymousLoans,
+      ...anonymizePropertyLoans({
+        loans: commonLoans.map(handleLoanSolvencySharing({ isAdmin: false })),
+        userId: calledByUserId,
+      }),
+    ];
   }
 };
