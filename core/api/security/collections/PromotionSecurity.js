@@ -400,17 +400,28 @@ class PromotionSecurity {
     this.isAllowedToRemoveLots({ promotionId: promotions._id, userId });
   }
 
-  static isAllowedToSeePromotionCustomer({ userId, promotionId, loanId }) {
+  static isAllowedToSeePromotionCustomer({ userId, loanId }) {
     if (Security.isUserAdmin(userId)) {
       return;
     }
 
     const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
-      _id: 1,
+      promotions: { _id: 1 },
       user: { _id: 1 },
+      promotionOptions: { promotionLots: { status: 1, attributedToLink: 1 } },
     });
-    const anonymizer = makeLoanAnonymizer({ userId, promotionId });
+    const currentUser = UserService.fetchOne({
+      $filters: { _id: userId },
+      promotions: { _id: 1 },
+      organisations: { users: { _id: 1 } },
+    });
+    const { promotionOptions = [] } = loan;
+    const [promotionOption = {}] = promotionOptions;
+    const { promotionLots = [] } = promotionOption;
+    const [promotionLot] = promotionLots;
+
+    const anonymizer = makeLoanAnonymizer({ currentUser, promotionLot });
     if (anonymizer(loan).isAnonymized) {
       Security.handleUnauthorized("Vous n'avez pas accès à ce client");
     }

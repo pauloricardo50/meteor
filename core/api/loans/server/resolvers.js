@@ -6,10 +6,7 @@ import {
   PROPERTY_SOLVENCY,
 } from '../../properties/propertyConstants';
 import UserService from '../../users/server/UserService';
-import {
-  makeLoanAnonymizer as makePromotionLoanAnonymizer,
-  makeLoanAnonymizer2,
-} from '../../promotions/server/promotionServerHelpers';
+import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
@@ -88,7 +85,7 @@ const anonymizePromotionLoans = ({ loans = [], userId }) => {
   });
 
   return loans.map(loan => {
-    const promotionLoanAnonymizer = makeLoanAnonymizer2({
+    const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
       currentUser,
     });
 

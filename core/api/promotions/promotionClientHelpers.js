@@ -122,7 +122,7 @@ export const shouldAnonymize = ({
       return (
         shouldHide ||
         displayCustomerNames.invitedBy !==
-          PROMOTION_INVITED_BY_TYPE.ORGANISATION
+        PROMOTION_INVITED_BY_TYPE.ORGANISATION
       );
     default:
       return true;

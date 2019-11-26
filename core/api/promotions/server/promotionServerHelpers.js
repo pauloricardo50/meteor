@@ -130,85 +130,55 @@ const shouldAnonymize = ({
 
 export const promotionShouldAnonymize = shouldAnonymize;
 
-export const makeLoanAnonymizer2 = ({ currentUser, anonymize }) => {
+export const makeLoanAnonymizer = ({
+  currentUser,
+  anonymize,
+  promotionLot = {},
+}) => {
   const { promotions: currentUserPromotions = [] } = currentUser;
 
   return loan => {
-    const { promotions } = loan;
+    const { promotions = [], _id: loanId, promotionOptions = [] } = loan;
     const { user, ...rest } = loan;
-    const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
+    const { _id: userId } = user || {};
+    const [
+      { _id: promotionId, $metadata: { invitedBy } = {} } = {},
+    ] = promotions;
 
     const customerOwnerType = getCustomerOwnerType({
       invitedBy,
       currentUser,
     });
 
-    let permissions = {};
-    const currentUserPromotion = currentUserPromotions.find(
-      ({ _id }) => _id === promotionId,
-    );
+    let permissions;
+    let promotionLotStatus;
+    let attributedTo;
 
-    if (currentUserPromotion) {
-      permissions =
-        currentUserPromotion.$metadata &&
-        currentUserPromotion.$metadata.permissions;
+    if (anonymize === undefined) {
+      const currentUserPromotion = currentUserPromotions.find(
+        ({ _id }) => _id === promotionId,
+      );
+
+      if (currentUserPromotion) {
+        permissions =
+          currentUserPromotion.$metadata &&
+          currentUserPromotion.$metadata.permissions;
+      }
+
+      promotionLotStatus = promotionLot.status;
+      attributedTo =
+        promotionLot.attributedToLink && promotionLot.attributedToLink._id;
     }
-
-    const anonymizeUser =
-      anonymize === undefined
-        ? clientShouldAnonymize({
-            customerOwnerType,
-            permissions,
-          })
-        : anonymize;
-
-    return {
-      user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
-      isAnonymized: !!anonymizeUser,
-      ...rest,
-    };
-  };
-};
-
-export const makeLoanAnonymizer = ({
-  userId,
-  promotionId,
-  promotionLotId,
-  anonymize,
-}) => {
-  let permissions;
-  let promotionLotStatus;
-  let attributedTo;
-
-  if (anonymize === undefined) {
-    permissions = getUserPromotionPermissions({ userId, promotionId });
-    const { status, attributedTo: attr } = getPromotionLotStatus({
-      promotionLotId,
-      promotionId,
-    });
-    promotionLotStatus = status;
-    attributedTo = attr;
-  }
-
-  return loan => {
-    const { _id: loanId, user = {}, ...rest } = loan;
-    const { _id: customerId } = user;
 
     let isAttributed = loanId === attributedTo;
 
-    if (!promotionLotId) {
-      // If no promotionLot is passed here, we get the best one from the loan
-      // For statuses BOOKED and SOLD, we check that it is attributed to
-      // this loan
-      promotionLotStatus = getBestPromotionLotStatus({ loanId });
+    if (Object.keys(promotionLot).length) {
       isAttributed = true;
+      promotionLotStatus = clientGetBestPromotionLotStatus(
+        promotionOptions,
+        loanId,
+      );
     }
-
-    const customerOwnerType = getPromotionCustomerOwnerType({
-      customerId,
-      promotionId,
-      userId,
-    });
 
     const anonymizeUser =
       anonymize === undefined
@@ -221,36 +191,32 @@ export const makeLoanAnonymizer = ({
         : anonymize;
 
     return {
-      user: anonymizeUser ? { _id: user._id, ...ANONYMIZED_USER } : user,
-      _id: loanId,
+      user: anonymizeUser ? { _id: userId, ...ANONYMIZED_USER } : user,
       isAnonymized: !!anonymizeUser,
       ...rest,
     };
   };
 };
 
-export const makePromotionLotAnonymizer = ({ userId }) => promotionLot => {
+export const makePromotionLotAnonymizer = ({ currentUser }) => promotionLot => {
   const { attributedTo, ...rest } = promotionLot;
-  const {
-    _id: promotionLotId,
-    promotion: { _id: promotionId },
-  } = promotionLot;
 
   const [loan] = [attributedTo]
     .filter(x => x)
-    .map(makeLoanAnonymizer({ userId, promotionId, promotionLotId }));
+    .map(makeLoanAnonymizer({ currentUser, promotionLot }));
 
   return { attributedTo: loan, ...rest };
 };
 
-export const makePromotionOptionAnonymizer2 = ({ currentUser }) => {
+export const makePromotionOptionAnonymizer = ({ currentUser }) => {
   const { promotions: currentUserPromotions = [] } = currentUser;
 
   return promotionOption => {
     const { loan, custom, ...rest } = promotionOption;
     const { promotionLots } = promotionOption;
-    const [{ status }] = promotionLots;
-    const { promotions } = loan;
+    const [promotionLot] = promotionLots;
+    const { status: promotionLotStatus, attributedTo } = promotionLot;
+    const { promotions, _id: loanId } = loan;
     const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
 
     const customerOwnerType = getCustomerOwnerType({
@@ -268,36 +234,23 @@ export const makePromotionOptionAnonymizer2 = ({ currentUser }) => {
         currentUserPromotion.$metadata &&
         currentUserPromotion.$metadata.permissions;
     }
-  };
-};
 
-export const makePromotionOptionAnonymizer = ({
-  userId,
-}) => promotionOption => {
-  const { loan, custom, ...rest } = promotionOption;
-  const {
-    promotionLots,
-    promotion: { _id: promotionId },
-  } = promotionOption;
-  const { _id: promotionLotId } = promotionLots[0];
+    const anonymize = clientShouldAnonymize({
+      customerOwnerType,
+      permissions,
+      promotionLotStatus,
+      isAttributed: attributedTo === loanId,
+    });
 
-  const anonymize = shouldAnonymize({
-    customerId: loan.user._id,
-    userId,
-    promotionId,
-    promotionLotId,
-    loanId: loan._id,
-  });
-
-  return {
-    loan: makeLoanAnonymizer({
-      userId,
-      promotionId,
-      promotionLotId,
-      anonymize,
-    })(loan),
-    custom: anonymize ? ANONYMIZED_STRING : custom,
-    isAnonymized: !!anonymize,
-    ...rest,
+    return {
+      loan: makeLoanAnonymizer({
+        currentUser,
+        promotionLot,
+        anonymize,
+      })(loan),
+      custom: anonymize ? ANONYMIZED_STRING : custom,
+      isAnonymized: !!anonymize,
+      ...rest,
+    };
   };
 };
