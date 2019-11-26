@@ -1624,7 +1624,7 @@
   "emails.CONFIRM_USER_INVITATION.from": "e-Potek",
   "emails.CONFIRM_USER_INVITATION.SUBJECT": "Invitation réussie",
   "emails.CONFIRM_USER_INVITATION.TITLE": "Invitation réussie",
-  "emails.CONFIRM_PROMOTION_USER_INVITATION.BODY": "{customerName} ({email}) a bien été invité sur e-Potek. Vous pouvez consulter son avancement et tous vos autres dossiers reférés en vous connectant sur e-Potek Pro.",
+  "emails.CONFIRM_PROMOTION_USER_INVITATION.BODY": "{customerName} ({email}) a bien été invité sur e-Potek. Vous pouvez consulter son avancement et tous vos autres dossiers référés en vous connectant sur e-Potek Pro.",
   "emails.CONFIRM_PROMOTION_USER_INVITATION.CTA": "Se connecter",
   "emails.CONFIRM_PROMOTION_USER_INVITATION.from": "e-Potek",
   "emails.CONFIRM_PROMOTION_USER_INVITATION.SUBJECT": "{promotionName}, Nouveau prospect {customerName}",
