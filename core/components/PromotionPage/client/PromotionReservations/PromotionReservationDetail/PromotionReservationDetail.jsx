@@ -37,6 +37,7 @@ const PromotionReservationDetail = ({
     status,
     isAnonymized,
   } = promotionOption;
+  console.log('promotionOption detail:', promotionOption);
   const isAdmin = Meteor.microservice === 'admin';
   const isActive = Calculator.isActivePromotionOption({ promotionOption });
 
