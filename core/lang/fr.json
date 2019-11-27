@@ -87,7 +87,7 @@
   "PromotionReservationDeadline.SOLD": "Vendu",
   "PromotionReservationDeadline.SOLD.description": "Félicitations, vous êtes l'acquereur du lot",
   "Forms.status.UNDETERMINED": "Pas effectué",
-  "UserReservation.title": "Réservation du lot {promotionLotName}",
+  "UserReservation.title": "Lot {promotionLotName}",
   "Forms.expirationDate": "Échéance de la convention de réservation",
   "PromotionReservationsTable.modalTitle": "Réservation du lot {lotName} par {customerName}",
   "PromotionReservationsTable.promotionLot": "Lot",

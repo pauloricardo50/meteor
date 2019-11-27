@@ -40,15 +40,22 @@ const fullApplication = loanId =>
       window.location.reload();
     });
 
+// Use this function to coordinate the proper highlight of the various CTA
+// on the page. There should almost always be a single secondary CTA,
+// otherwise the user can get lost
+export const shouldHighlightNextStep = maxPropertyValue =>
+  !!(maxPropertyValue && maxPropertyValue.date);
+
 const SimpleDashboardPageCTAs = ({
   loanId,
-  progress,
   currentUser,
   withReturnToDashboard = true,
+  maxPropertyValue,
 }: SimpleDashboardPageCTAsProps) => {
+  const highlightNextStep = shouldHighlightNextStep(maxPropertyValue);
   const buttonProps = {
-    primary: progress < 1,
-    secondary: progress >= 1,
+    primary: !highlightNextStep,
+    secondary: highlightNextStep,
     raised: true,
     label: <T id="BorrowersProgress.fullApplication" />,
     icon: <Icon type="right" />,

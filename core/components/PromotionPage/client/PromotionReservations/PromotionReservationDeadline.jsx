@@ -90,14 +90,16 @@ const PromotionReservationDeadline = ({
   }
 
   return (
-    <div style={{ marginBottom: 24 }}>
+    <div style={{ marginBottom: 16 }}>
       <h1>
         <T id={`PromotionReservationDeadline.${status}`} />
       </h1>
-      <T
-        id={`PromotionReservationDeadline.${status}.description`}
-        values={{ proName }}
-      />
+      <p className="description">
+        <T
+          id={`PromotionReservationDeadline.${status}.description`}
+          values={{ proName }}
+        />
+      </p>
     </div>
   );
 };

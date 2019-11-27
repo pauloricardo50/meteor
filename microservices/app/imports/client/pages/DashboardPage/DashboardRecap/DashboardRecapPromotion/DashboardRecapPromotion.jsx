@@ -47,7 +47,7 @@ const DashboardRecapPromotion = ({
           promotionOption={Calculator.getMostActivePromotionOption({
             loan,
           })}
-          progressVariant="label"
+          progressVariant="icon"
           loan={loan}
         />
       ) : (

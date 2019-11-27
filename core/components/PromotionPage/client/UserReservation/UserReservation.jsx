@@ -47,7 +47,6 @@ const UserReservation = ({
           <PromotionReservationProgress
             promotionOption={promotionOption}
             variant={progressVariant}
-            className="full"
             loan={loan}
           />
         )}

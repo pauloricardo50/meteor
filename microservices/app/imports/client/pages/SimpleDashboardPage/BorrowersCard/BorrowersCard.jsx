@@ -8,12 +8,14 @@ import T from 'core/components/Translation';
 import BorrowersProgress from './BorrowersProgress/BorrowersProgress';
 import BorrowersForm from './BorrowersForm/BorrowersForm';
 import BorrowersCardHeader from './BorrowersCardHeader';
+import { shouldHighlightNextStep } from '../SimpleDashboardPageCTAs';
 
 type BorrowersCardProps = {};
 
 const BorrowersCard = (props: BorrowersCardProps) => {
   const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;
-  const { borrowers = [] } = loan;
+  const { borrowers = [], maxPropertyValue } = loan;
+  const canHighlightCTA = !shouldHighlightNextStep(maxPropertyValue);
 
   const hasBorrowers = !!borrowers.length;
 
@@ -36,8 +38,8 @@ const BorrowersCard = (props: BorrowersCardProps) => {
           <BorrowersProgress {...props} />
           <Button
             raised
-            secondary={progress < 1}
-            primary={progress >= 1}
+            secondary={canHighlightCTA && progress < 1}
+            primary={progress >= 1 || !canHighlightCTA}
             onClick={() => setOpenBorrowersForm(0)}
           >
             <T
