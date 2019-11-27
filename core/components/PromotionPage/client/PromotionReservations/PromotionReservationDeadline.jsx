@@ -44,26 +44,28 @@ const PromotionReservationDeadline = ({
   const proName = getUserNameAndOrganisation({ user: pro });
 
   if (
-    status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE
-    && reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
+    status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE &&
+    reservationAgreementStatus === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
   ) {
     return (
-      <label htmlFor="expirationDate">
+      <label htmlFor="expirationDate" style={{ marginBottom: 24 }}>
         <T id="Forms.expirationDate" />
         <Tooltip
-          title={(
+          title={
             <span>
               {moment(startDate).format('D MMMM YYYY')}
               &nbsp;-&nbsp;
               {momentDate.format('D MMMM YYYY')}
             </span>
-          )}
+          }
         >
           <h1 className={cx({ 'error-box': isTight })}>
             {momentDate.fromNow()}
             {isAdmin && (
               <AutoFormDialog
-                schema={PromotionOptionSchema.getObjectSchema('reservationAgreement').pick('startDate', 'expirationDate')}
+                schema={PromotionOptionSchema.getObjectSchema(
+                  'reservationAgreement',
+                ).pick('startDate', 'expirationDate')}
                 model={{ startDate, expirationDate }}
                 triggerComponent={handleOpen => (
                   <IconButton onClick={() => handleOpen(true)} type="edit" />
@@ -88,7 +90,7 @@ const PromotionReservationDeadline = ({
   }
 
   return (
-    <div>
+    <div style={{ marginBottom: 24 }}>
       <h1>
         <T id={`PromotionReservationDeadline.${status}`} />
       </h1>

@@ -33,7 +33,7 @@ const handlePromotionOptions = async () => {
           $set: {
             status: PROMOTION_OPTION_STATUS.INTERESTED,
             bank: { date: new Date() },
-            deposit: { date: new Date() },
+            reservationDeposit: { date: new Date() },
             reservationAgreement: { date: new Date() },
             fullVerification: { date: new Date() },
           },
@@ -137,7 +137,7 @@ const handleSoldLots = async () => {
                 status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
                 date: new Date(),
               },
-              deposit: {
+              reservationDeposit: {
                 date: new Date(),
                 status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
               },
@@ -177,7 +177,7 @@ export const down = async () => {
             status: true,
             reservationAgreement: true,
             bank: true,
-            deposit: true,
+            reservationDeposit: true,
             simpleVerification: true,
             fullVerification: true,
           },

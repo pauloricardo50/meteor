@@ -233,7 +233,7 @@ describe('Admin promotion', () => {
         .contains('Oui')
         .click();
 
-      cy.contains('Attestation de principe')
+      cy.contains('Attestation de financement')
         .parents('div')
         .contains('Validé')
         .should('exist');

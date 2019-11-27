@@ -61,7 +61,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function () {
+describe('PromotionOptionService', function() {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
@@ -595,7 +595,7 @@ describe('PromotionOptionService', function () {
           _id: 'pO2',
         });
         expect(promotionOption).to.deep.include({
-          deposit: {
+          reservationDeposit: {
             date: startDate,
             status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           },
@@ -852,8 +852,8 @@ describe('PromotionOptionService', function () {
         moment().isoWeekday() <= 5
           ? moment().isoWeekday(5)
           : moment()
-            .add(1, 'weeks')
-            .isoWeekday(5);
+              .add(1, 'weeks')
+              .isoWeekday(5);
 
       const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
 

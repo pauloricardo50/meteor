@@ -67,14 +67,14 @@ const PromotionOptionSchema = new SimpleSchema({
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
     optional: true,
   },
-  deposit: { type: Object, defaultValue: {} },
-  'deposit.status': {
+  reservationDeposit: { type: Object, defaultValue: {} },
+  'reservationDeposit.status': {
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_DEPOSIT_STATUS),
     defaultValue: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
     uniforms: { placeholder: null },
   },
-  'deposit.date': {
+  'reservationDeposit.date': {
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,

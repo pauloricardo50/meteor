@@ -289,7 +289,7 @@ export class PromotionOptionService extends CollectionService {
           date: startDate,
           status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
         },
-        deposit: {
+        reservationDeposit: {
           status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           date: startDate,
         },
@@ -415,7 +415,7 @@ export class PromotionOptionService extends CollectionService {
     const { [id]: model } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       bank: 1,
-      deposit: 1,
+      reservationDeposit: 1,
       simpleVerification: 1,
       fullVerification: 1,
       reservationAgreement: 1,

@@ -42,7 +42,7 @@ const PromotionReservationProgressComponent = ({
     simpleVerification,
     fullVerification,
     reservationAgreement,
-    deposit,
+    reservationDeposit,
     bank,
     loan,
     isAnonymized,
@@ -119,12 +119,12 @@ const PromotionReservationProgressComponent = ({
       id: 'reservationAgreement',
     }),
     icon({
-      ...deposit,
+      ...reservationDeposit,
       ...makeGetIcon({
         success: [PROMOTION_OPTION_DEPOSIT_STATUS.PAID],
         error: [PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID],
-      })(deposit.status),
-      id: 'deposit',
+      })(reservationDeposit.status),
+      id: 'reservationDeposit',
     }),
   ];
 

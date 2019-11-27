@@ -40,7 +40,7 @@ class PromotionLotService extends CollectionService {
       simpleVerification: 1,
       fullVerification: 1,
       reservationAgreement: 1,
-      deposit: 1,
+      reservationDeposit: 1,
     });
     const { loan: { _id: loanId } = {}, promotionLots } = promotionOption;
 

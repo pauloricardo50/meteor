@@ -158,7 +158,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         simpleVerification,
         fullVerification,
         reservationAgreement,
-        deposit,
+        reservationDeposit,
       },
     }) {
       return (
@@ -166,7 +166,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
           PROMOTION_OPTION_BANK_STATUS.VALIDATED,
           PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
         ].includes(bank.status) &&
-        deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID &&
+        reservationDeposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID &&
         simpleVerification.status ===
           PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED &&
         fullVerification.status ===
