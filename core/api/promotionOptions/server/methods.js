@@ -13,6 +13,7 @@ import {
   promotionOptionAddToWaitList,
 } from '../methodDefinitions';
 import { Method } from '../../methods/methods';
+import { expirePromotionOptionReservation } from './serverMethods';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
   const loan = LoanService.findOne(params.loanId);
@@ -100,3 +101,7 @@ generateTenDayExpirationReminderTasks.setHandler(context => {
   SecurityService.checkIsInternalCall(context);
   return PromotionOptionService.getHalfLifeReservations();
 });
+
+expirePromotionOptionReservation.setHandler((context, params) =>
+  PromotionOptionService.expireReservation(params),
+);

@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { asyncForEach } from '../../helpers/index';
-import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
@@ -23,6 +22,7 @@ import {
   PROMOTION_EMAIL_RECIPIENTS,
 } from '../../promotions/promotionConstants';
 import { shouldAnonymize } from '../../promotions/server/promotionServerHelpers';
+import { expirePromotionOptionReservation } from './serverMethods';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
@@ -386,9 +386,10 @@ export class PromotionOptionService extends CollectionService {
   }
 
   expireReservation({ promotionOptionId }) {
-    return this.updateStatus({
+    return this.setProgress({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+      id: 'reservationAgreement',
+      object: { status: PROMOTION_OPTION_AGREEMENT_STATUS.EXPIRED },
     });
   }
 
@@ -450,25 +451,27 @@ export class PromotionOptionService extends CollectionService {
     return {};
   }
 
-  expireReservations = () => {
+  getExpiringReservations = () => {
     const yesterdayNight = moment()
       .subtract(1, 'day')
       .endOf('day')
       .toDate();
 
-    const toExpire = this.fetch({
+    return this.fetch({
       $filters: {
         'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
     });
+  };
 
+  expireReservations() {
     return Promise.all(
-      toExpire.map(({ _id: promotionOptionId }) =>
-        expirePromotionLotReservation.run({ promotionOptionId }),
+      this.getExpiringReservations().map(({ _id: promotionOptionId }) =>
+        expirePromotionOptionReservation.run({ promotionOptionId }),
       ),
     );
-  };
+  }
 
   getExpiringSoonReservations = () => {
     const weekDay = moment().isoWeekday();

@@ -108,6 +108,17 @@ class PromotionService extends CollectionService {
       );
     }
 
+    if (
+      !promotion.documents ||
+      !promotion.documents.promotionGuide ||
+      !promotion.documents.promotionGuide.length ||
+      promotion.documents.promotionGuide.length > 1
+    ) {
+      throw new Meteor.Error(
+        'Il faut ajouter un (seul) guide du financement bancaire sur cette promotion',
+      );
+    }
+
     if (UserService.hasPromotion({ userId, promotionId })) {
       throw new Meteor.Error(
         HTTP_STATUS_CODES.CONFLICT,
