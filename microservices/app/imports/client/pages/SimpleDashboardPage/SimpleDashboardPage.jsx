@@ -34,6 +34,7 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
         />
         <div className="simple-dashboard-page-borrowers">
           <BorrowersCard {...props} />
+
           <div className="simple-dashboard-page-borrowers-right">
             {isMobile ? (
               <MuiThemeProvider theme={createTheme()}>

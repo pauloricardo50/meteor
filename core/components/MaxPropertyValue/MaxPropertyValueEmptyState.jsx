@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
+import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
 import cx from 'classnames';
 
 import { createRoute } from '../../utils/routerUtils';
@@ -107,7 +107,7 @@ const MaxPropertyValueEmptyState = (props: MaxPropertyValueEmptyStateProps) => {
   const { loan, state } = props;
   return (
     <div className="max-property-value-empty-state animated fadeIn">
-      <FontAwesomeIcon className="icon" icon={faUsers} />
+      <FontAwesomeIcon className="icon" icon={faScroll} />
       <div className="flex-col center">
         {state === STATE.MISSING_INFOS ? (
           <>

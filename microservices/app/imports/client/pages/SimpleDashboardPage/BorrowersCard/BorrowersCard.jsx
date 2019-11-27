@@ -15,13 +15,17 @@ const BorrowersCard = (props: BorrowersCardProps) => {
   const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;
   const { borrowers = [] } = loan;
 
+  const hasBorrowers = !!borrowers.length;
+
   return (
     <div className="borrowers-card">
-      <BorrowersCardHeader {...props} />
+      {hasBorrowers && <BorrowersCardHeader {...props} />}
+
       {openBorrowersForm !== false ? (
         <div className="flex-col animated fadeIn">
           <BorrowersForm {...props} />
-          {!!borrowers.length && (
+
+          {hasBorrowers && (
             <Button raised primary onClick={() => setOpenBorrowersForm(false)}>
               <T id="general.close" />
             </Button>

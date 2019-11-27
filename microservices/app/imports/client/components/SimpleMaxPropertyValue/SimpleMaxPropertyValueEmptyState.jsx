@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
+import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
 
 import { STATE } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import { MaxPropertyValueEmptyStateReady } from 'core/components/MaxPropertyValue/MaxPropertyValueEmptyState';
@@ -22,7 +22,7 @@ const SimpleMaxPropertyValueEmptyState = (
       <div className="max-property-value-empty-state">
         {state === STATE.MISSING_INFOS ? (
           <>
-            <FontAwesomeIcon className="icon" icon={faUsers} />
+            <FontAwesomeIcon className="icon" icon={faScroll} />
 
             <h4 className="secondary">
               <T id="MaxPropertyValue.missingInfos" />
