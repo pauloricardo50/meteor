@@ -6,9 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 
 import generator from 'core/api/factories';
 import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
-import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_STATUS } from '../../../constants';
-import { EMAIL_IDS } from '../../../email/emailConstants';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
 import LoanService from '../../../loans/server/LoanService';
@@ -17,12 +15,29 @@ import PromotionLotService from '../../../promotionLots/server/PromotionLotServi
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
+import { PROMOTION_TYPES } from '../../promotionConstants';
 
 describe('PromotionService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
     resetDatabase();
+  });
+
+  describe('insert', () => {
+    it('inserts a promotion without issue', () => {
+      PromotionService.insert({
+        promotion: {
+          name: 'Promo 1',
+          type: PROMOTION_TYPES.CREDIT,
+          zipCode: 1200,
+          agreementDuration: 30,
+          contacts: [{ name: 'joe', title: 'CEO' }],
+        },
+      });
+
+      expect(PromotionService.countAll()).to.equal(1);
+    });
   });
 
   describe('update', () => {
