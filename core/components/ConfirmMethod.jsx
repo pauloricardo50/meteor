@@ -143,6 +143,7 @@ export default class ConfirmMethod extends Component {
           onClick={this.handleOpen}
           style={style}
           disabled={disabled}
+          loading={loading}
           {...buttonProps}
         />
         {type === 'popover' && popover}
