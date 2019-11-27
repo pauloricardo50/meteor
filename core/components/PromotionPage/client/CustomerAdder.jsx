@@ -18,7 +18,7 @@ type CustomerAdderProps = {
 
 SimpleSchema.setDefaultMessages({
   messages: {
-    fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moin un lot' },
+    fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moins un lot' },
   },
 });
 
