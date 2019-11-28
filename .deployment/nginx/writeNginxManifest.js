@@ -84,6 +84,7 @@ const generateNginxManifestData = ({
         { route: 'backend.dev.e-potek.ch' },
         { route: 'pro.dev.e-potek.ch' },
         { route: 'www.dev.e-potek.ch' },
+        { route: 'api.dev.e-potek.ch' },
       ],
       env: {
         FORCE_HTTPS: true,
