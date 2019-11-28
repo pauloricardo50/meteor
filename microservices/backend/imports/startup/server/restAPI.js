@@ -104,11 +104,11 @@ api.addEndpoint('/properties', 'POST', insertPropertyAPI, {
   rsaAuth: true,
   endpointName: 'Insert property',
 });
-api.addEndpoint('/files/upload', 'POST', uploadFileAPI, {
+api.addEndpoint('/files', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
 });
-api.addEndpoint('/files/delete', 'POST', deleteFileAPI, {
+api.addEndpoint('/files', 'DELETE', deleteFileAPI, {
   rsaAuth: true,
   endpointName: 'Delete file',
 });
