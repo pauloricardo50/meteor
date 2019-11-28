@@ -66,6 +66,7 @@ const generateNginxManifestData = ({
         { route: 'pro.e-potek.ch' },
         { route: 'www.e-potek.ch' },
         { route: 'kadira.e-potek.ch' },
+        { route: 'api.e-potek.ch' },
 
         // Staging
         { route: '*.staging.e-potek.ch' },
@@ -74,6 +75,7 @@ const generateNginxManifestData = ({
         { route: 'backend.staging.e-potek.ch' },
         { route: 'pro.staging.e-potek.ch' },
         { route: 'www.staging.e-potek.ch' },
+        { route: 'api.staging.e-potek.ch' },
 
         // Dev
         { route: '*.dev.e-potek.ch' },
