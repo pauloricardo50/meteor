@@ -441,6 +441,15 @@ export class PromotionOptionService extends CollectionService {
     });
 
     if (changedKeys.includes('status')) {
+      if (
+        id === 'bank' &&
+        object.status.valueOf() === PROMOTION_OPTION_BANK_STATUS.SENT
+      ) {
+        this.updateStatus({
+          promotionOptionId,
+          status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        });
+      }
       return {
         prevStatus: model.status,
         nextStatus: object.status,
