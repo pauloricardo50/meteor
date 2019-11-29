@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { withProps } from 'recompose';
 
 import {
@@ -10,8 +10,51 @@ import {
   PROMOTION_OPTION_BANK_STATUS,
 } from '../../../../../api/constants';
 import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
+import T from '../../../../Translation';
 
-const handleDialog = ({
+const confirmDialog = ({
+  values,
+  id,
+  setDialogProps,
+  setDialogActions,
+  setOpenDialog,
+}) => {
+  const { status } = values;
+  setDialogProps({
+    title: (
+      <span>
+        Changement du statut&nbsp;
+        <T id={`Forms.${id}`} />
+      </span>
+    ),
+    important: true,
+    text: (
+      <span>
+        Passer le status&nbsp;
+        <T id={`Forms.${id}`} />
+        &nbsp;à&nbsp;
+        <T id={`Forms.status.${status}`} />
+        &nbsp;?
+      </span>
+    ),
+  });
+
+  return new Promise((resolve, reject) => {
+    setDialogActions({
+      cancel: () => {
+        setOpenDialog(false);
+        reject();
+      },
+      ok: () => {
+        setOpenDialog(false);
+        resolve();
+      },
+    });
+    setOpenDialog(true);
+  });
+};
+
+const additionalActionsDialog = ({
   values,
   id,
   loanId,
@@ -85,21 +128,31 @@ export default withProps(({ id, loanId, promotionOptionId }) => {
     openDialog,
     dialogProps,
     dialogActions,
-    onSubmit: async values => {
-      await setPromotionOptionProgress.run({
-        promotionOptionId,
-        id,
-        object: values,
-      });
-
-      handleDialog({
+    onSubmit: values =>
+      confirmDialog({
         values,
         id,
-        loanId,
-        setDialogProps,
-        setDialogActions,
         setOpenDialog,
-      });
-    },
+        setDialogActions,
+        setDialogProps,
+      })
+        .then(() =>
+          setPromotionOptionProgress.run({
+            promotionOptionId,
+            id,
+            object: values,
+          }),
+        )
+        .then(() =>
+          additionalActionsDialog({
+            values,
+            id,
+            loanId,
+            setDialogProps,
+            setDialogActions,
+            setOpenDialog,
+          }),
+        )
+        .catch(Promise.reject),
   };
 });
