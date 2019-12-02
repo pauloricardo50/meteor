@@ -8,7 +8,8 @@ import CronitorService from './CronitorService';
 const ACTIVATE_CRONITOR = !(
   Meteor.isTest ||
   Meteor.isAppTest ||
-  Meteor.isDevelopment
+  Meteor.isDevelopment ||
+  Meteor.isStaging
 );
 
 export const TestCronitor = {
