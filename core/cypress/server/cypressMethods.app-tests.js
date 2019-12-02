@@ -31,6 +31,7 @@ import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
 import { Services } from 'core/api/server/index';
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
+import { createUser } from 'core/fixtures/userFixtures';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -132,6 +133,16 @@ Meteor.methods({
     });
   },
   async insertFullPromotion() {
+    const admin = await UserService.fetchOne({
+      $filters: { roles: ROLES.ADMIN },
+    });
+    if (!admin) {
+      const adminId = await Accounts.createUser({
+        email: ADMIN_EMAIL,
+        password: PRO_PASSWORD,
+      });
+      UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+    }
     await createPromotionDemo(this.userId, false, false, 4);
   },
   removeAllPromotions() {
@@ -239,11 +250,25 @@ Meteor.methods({
 
   getAppEndToEndTestData() {
     const { _id: userId } = UserService.getByEmail(E2E_USER_EMAIL);
+    // console.log('testUser:', testUser);
 
-    const admin = Users.findOne(
-      { roles: { $in: [ROLES.ADMIN] } },
-      { fields: { _id: 1 } },
-    );
+    // if (!testUser) {
+    //   const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
+    //   testUser = { _id: testUserId };
+    // }
+    // const { _id: userId } = testUser || {};
+
+    // const adminId = Accounts.createUser({
+    //   email: ADMIN_EMAIL,
+    //   password: PRO_PASSWORD,
+    // });
+    // UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+
+    const admin =
+      Users.findOne(
+        { roles: { $in: [ROLES.ADMIN] } },
+        { fields: { _id: 1 } },
+      ) || {};
 
     const solvencyLoan = userLoansE2E
       .clone({ userId, step: STEPS.SOLVENCY })
@@ -269,7 +294,7 @@ Meteor.methods({
       // Wrap due to meteor toys issue
       // https://github.com/MeteorToys/meteor-devtools/issues/111
       Accounts.sendResetPasswordEmail(userId2);
-    } catch (error) {}
+    } catch (error) { }
 
     const user = UserService.findOne(userId2, { fields: { services: 1 } });
 

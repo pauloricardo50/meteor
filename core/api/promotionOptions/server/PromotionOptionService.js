@@ -28,14 +28,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function() {
+        'reservationAgreement.startDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function() {
+        'reservationAgreement.expirationDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -588,42 +588,28 @@ export class PromotionOptionService extends CollectionService {
       {
         type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
         role: PROMOTION_USERS_ROLES.PROMOTER,
-        withNotificationsFilter: false,
-        withMapAnonymize: true,
       },
       {
         type: PROMOTION_EMAIL_RECIPIENTS.BROKERS,
         role: PROMOTION_USERS_ROLES.BROKER,
-        withNotificationsFilter: true,
-        withMapAnonymize: true,
         customFilter: ({ email }) =>
           !broker.some(({ email: brokerEmail }) => brokerEmail === email),
       },
       {
         type: PROMOTION_EMAIL_RECIPIENTS.NOTARY,
         role: PROMOTION_USERS_ROLES.NOTARY,
-        withNotificationsFilter: true,
-        withMapAnonymize: true,
       },
-    ].reduce(
-      (
-        object,
-        { type, role, withMapAnonymize, withNotificationsFilter, customFilter },
-      ) => {
-        let recipient = promotionUsers.filter(makeFilterRole(role));
-        if (withNotificationsFilter) {
-          recipient = recipient.filter(filterEnableNotifications);
-        }
-        if (customFilter) {
-          recipient = recipient.filter(customFilter);
-        }
-        if (withMapAnonymize) {
-          recipient = recipient.map(mapAnonymize);
-        }
-        return { ...object, [type]: recipient };
-      },
-      {},
-    );
+    ].reduce((object, { type, role, customFilter }) => {
+      let recipient = promotionUsers.filter(makeFilterRole(role));
+      recipient = recipient.filter(filterEnableNotifications);
+
+      if (customFilter) {
+        recipient = recipient.filter(customFilter);
+      }
+      recipient = recipient.map(mapAnonymize);
+
+      return { ...object, [type]: recipient };
+    }, {});
 
     return {
       [PROMOTION_EMAIL_RECIPIENTS.USER]: user,
