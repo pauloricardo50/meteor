@@ -13,8 +13,6 @@ import {
 } from '../../../../../api/constants';
 import T from '../../../../Translation';
 import { CollectionIconLink } from '../../../../IconLink';
-import LoanProgress from '../../../../LoanProgress';
-import LoanProgressHeader from '../../../../LoanProgress/LoanProgressHeader';
 import StatusLabel from '../../../../StatusLabel';
 import PromotionCustomer from '../../PromotionCustomer';
 import PromotionLotReservation from './PromotionLotReservation';
@@ -26,13 +24,7 @@ const getColumns = ({ promotionLot, promotionOption }) => {
     promotion: { _id: promotionId },
   } = promotionLot;
   const { loan, createdAt, status: promotionOptionStatus } = promotionOption;
-  const {
-    status,
-    user,
-    loanProgress,
-    promotionOptions = [],
-    promotions,
-  } = loan;
+  const { status, user, promotionOptions = [], promotions } = loan;
 
   const promotion = promotions.find(({ _id }) => _id === promotionId);
 
@@ -75,10 +67,6 @@ const getColumns = ({ promotionLot, promotionOption }) => {
     },
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
-      raw: loanProgress.info + loanProgress.documents,
-      label: <LoanProgress loanProgress={loanProgress} />,
-    },
-    {
       raw: promotionOptions.length,
       label: (
         <PriorityOrder
@@ -112,7 +100,6 @@ const columnOptions = [
   { id: 'status', label: <T id="Forms.status" /> },
   { id: 'customer' },
   { id: 'date' },
-  { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'priorityOrder' },
   { id: 'attribute' },
 ].map(({ id, label }) => ({
