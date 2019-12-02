@@ -139,10 +139,7 @@ const PromotionReservationProgressComponent = ({
     >
       <div className="promotion-reservation-progress-icons">
         {verificationAndBankIcons.map((icon, index) => (
-          <div
-            className={cx('icon', getAnimation(variant, index))}
-            key={`verification${index}`}
-          >
+          <div className={cx('icon', getAnimation(variant, index))} key={index}>
             {icon}
           </div>
         ))}
@@ -154,7 +151,7 @@ const PromotionReservationProgressComponent = ({
               'icon',
               getAnimation(variant, index, verificationAndBankIcons.length),
             )}
-            key={`agreement${index}`}
+            key={index}
           >
             {icon}
           </div>

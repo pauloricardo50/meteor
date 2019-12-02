@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import AutoForm from 'uniforms-material/AutoForm';
+import { AutoForm } from 'uniforms-material';
 import pickBy from 'lodash/pickBy';
 import pick from 'lodash/pick';
 
@@ -99,7 +99,7 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;
   return {
-    onSubmit: (values) => onSubmit(pick(values, [...schemaKeys, '_id'])),
+    onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])),
     schemaKeys,
   };
 })(CustomAutoForm);
