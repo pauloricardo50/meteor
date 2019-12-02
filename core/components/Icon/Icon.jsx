@@ -198,6 +198,7 @@ const Icon = React.forwardRef(
     },
     ref,
   ) => {
+    let icon;
     const iconStyle = {
       ...(color ? getColorStyle(color) : {}),
       ...style,
@@ -205,18 +206,22 @@ const Icon = React.forwardRef(
     };
 
     if (type !== null && typeof type === 'object') {
-      return React.cloneElement(type, { style: iconStyle });
+      icon = React.cloneElement(type, { style: iconStyle });
+    } else if (typeof type === 'string') {
+      const MyIcon = iconMap[type];
+
+      if (!MyIcon) {
+        throw new Error(`invalid icon type: ${type}`);
+      } else if (MyIcon.component) {
+        icon = <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
+      } else {
+        icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
+      }
+    } else {
+      throw new Error(
+        `Icon type must be a string or a Fontawesome icon, but got ${type} instead`,
+      );
     }
-
-    const MyIcon = iconMap[type];
-
-    if (!MyIcon) {
-      throw new Error(`invalid icon type: ${type}`);
-    } else if (MyIcon.component) {
-      return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
-    }
-
-    let icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
 
     if (tooltip) {
       icon = (
