@@ -3,9 +3,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import RadioMaterial from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import React from 'react';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-material/wrapField';
+import { connectField, filterDOMProps, wrapField } from 'uniforms';
 
 import T from '../Translation';
 
