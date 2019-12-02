@@ -110,12 +110,14 @@ exposeQuery({
           organisations: { users: { _id: 1 } },
         });
 
+        const promotionLotAnonymizer = makePromotionLotAnonymizer({
+          currentUser,
+        });
+
         return promotions.map(promotion => {
           const { promotionLots = [], ...rest } = promotion;
           return {
-            promotionLots: promotionLots.map(
-              makePromotionLotAnonymizer({ currentUser }),
-            ),
+            promotionLots: promotionLots.map(promotionLotAnonymizer),
             ...rest,
           };
         });

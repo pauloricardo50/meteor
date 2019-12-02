@@ -138,8 +138,7 @@ export const makeLoanAnonymizer = ({
   const { promotions: currentUserPromotions = [] } = currentUser;
 
   return loan => {
-    const { promotions = [], _id: loanId, promotionOptions = [] } = loan;
-    const { user, ...rest } = loan;
+    const { promotions = [], _id: loanId, promotionOptions = [], user } = loan;
     const { _id: userId } = user || {};
     const [
       { _id: promotionId, $metadata: { invitedBy } = {} } = {},
@@ -191,9 +190,9 @@ export const makeLoanAnonymizer = ({
         : anonymize;
 
     return {
+      ...loan,
       user: anonymizeUser ? { _id: userId, ...ANONYMIZED_USER } : user,
       isAnonymized: !!anonymizeUser,
-      ...rest,
     };
   };
 };
@@ -212,8 +211,7 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
   const { promotions: currentUserPromotions = [] } = currentUser;
 
   return promotionOption => {
-    const { loan, custom, ...rest } = promotionOption;
-    const { promotionLots } = promotionOption;
+    const { loan, custom, promotionLots = [] } = promotionOption;
     const [promotionLot] = promotionLots;
     const { status: promotionLotStatus, attributedTo } = promotionLot;
     const { promotions, _id: loanId } = loan;
@@ -243,6 +241,7 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
     });
 
     return {
+      ...promotionOption,
       loan: makeLoanAnonymizer({
         currentUser,
         promotionLot,
@@ -250,7 +249,6 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
       })(loan),
       custom: anonymize ? ANONYMIZED_STRING : custom,
       isAnonymized: !!anonymize,
-      ...rest,
     };
   };
 };

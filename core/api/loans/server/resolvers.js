@@ -1,5 +1,4 @@
 // @flow
-import { getPromotionCustomerOwnerType } from 'core/api/promotions/promotionClientHelpers';
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
@@ -12,7 +11,6 @@ import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanService from './LoanService';
-import { LOAN_STATUS } from '../loanConstants';
 
 const proLoansFragment = proLoans();
 
@@ -84,13 +82,11 @@ const anonymizePromotionLoans = ({ loans = [], userId }) => {
     organisations: { users: { _id: 1 } },
   });
 
-  return loans.map(loan => {
-    const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
-      currentUser,
-    });
-
-    return promotionLoanAnonymizer(loan);
+  const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
+    currentUser,
   });
+
+  return loans.map(loan => promotionLoanAnonymizer(loan));
 };
 
 const anonymizePropertyLoans = ({ loans = [], userId }) => {

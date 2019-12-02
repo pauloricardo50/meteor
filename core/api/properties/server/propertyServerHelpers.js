@@ -76,22 +76,6 @@ export const getProPropertyCustomerOwnerType = ({ customerId, userId }) => {
   });
 };
 
-// const shouldAnonymize = ({ customerId, userId, propertyId }) => {
-//   const customerOwnerType = getProPropertyCustomerOwnerType({
-//     customerId,
-//     userId,
-//   });
-//   const permissions = getUserProPropertyPermissions({ userId, propertyId });
-
-//   const propertyStatus = getProPropertyStatus({ propertyId });
-
-//   return clientShouldAnonymize({
-//     customerOwnerType,
-//     permissions,
-//     propertyStatus,
-//   });
-// };
-
 export const makeProPropertyLoanAnonymizer = ({
   anonymize,
   currentUser,
@@ -134,14 +118,14 @@ export const makeProPropertyLoanAnonymizer = ({
     const shouldAnonymizeUser =
       anonymize === undefined
         ? propertiesPermissionsAndStatus
-            .map(({ permissions, status: propertyStatus }) => {
-              return clientShouldAnonymize({
-                customerOwnerType,
-                permissions,
-                propertyStatus,
-              });
-            })
-            .every(anonymizeForProperty => anonymizeForProperty)
+          .map(({ permissions, status: propertyStatus }) => {
+            return clientShouldAnonymize({
+              customerOwnerType,
+              permissions,
+              propertyStatus,
+            });
+          })
+          .every(anonymizeForProperty => anonymizeForProperty)
         : anonymize;
 
     return {
