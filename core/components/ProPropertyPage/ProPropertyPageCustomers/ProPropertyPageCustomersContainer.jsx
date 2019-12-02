@@ -1,12 +1,10 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { PROPERTY_SOLVENCY, LOANS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
-import LoanProgress from '../../LoanProgress/LoanProgress';
-import LoanProgressHeader from '../../LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
 import { proPropertyLoans } from '../../../api/loans/queries';
 import { createRoute } from '../../../utils/routerUtils';
@@ -23,7 +21,6 @@ const columnOptions = [
   { id: 'status' },
   { id: 'customer' },
   { id: 'createdAt' },
-  { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'solvency' },
   { id: 'actions' },
 ].map(({ id, label }) => ({
@@ -99,19 +96,20 @@ const makeMapLoan = ({
     name: loanName,
     user,
     createdAt,
-    loanProgress,
     properties,
     anonymous,
     status,
   } = loan;
   const { isAdmin } = permissions;
 
-  const canRemoveCustomer = canRemoveCustomerFromProperty({
-    customer: user,
-    currentUser,
-    property,
-    isAdmin,
-  });
+  const canRemoveCustomer =
+    !anonymous &&
+    canRemoveCustomerFromProperty({
+      customer: user,
+      currentUser,
+      property,
+      isAdmin,
+    });
 
   const { solvent } = properties.find(({ _id }) => _id === property._id) || {};
 
@@ -141,10 +139,6 @@ const makeMapLoan = ({
         ),
       },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      {
-        raw: loanProgress.verificationStatus,
-        label: <LoanProgress loanProgress={loanProgress} />,
-      },
       {
         raw: solvent,
         label: solvent ? getSolvencyLabel(solvent) : '-',
@@ -180,21 +174,40 @@ const makeMapLoan = ({
   };
 };
 
+const getAnonymous = withAnonymous =>
+  withAnonymous ? undefined : { $in: [null, false] };
+
 export default compose(
+  withState('withAnonymous', 'setWithAnonymous', false),
   withSmartQuery({
     query: proPropertyLoans,
-    params: ({ property: { _id: propertyId } }) => ({ propertyId }),
+    params: ({ property: { _id: propertyId }, withAnonymous }) => ({
+      propertyId,
+      anonymous: getAnonymous(withAnonymous),
+    }),
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
   withRouter,
-  mapProps(({ loans = [], history, permissions, property, currentUser }) => ({
-    rows: loans.map(
-      makeMapLoan({ history, permissions, currentUser, property }),
-    ),
-    columnOptions,
-    permissions,
-    property,
-    loans,
-  })),
+  mapProps(
+    ({
+      loans = [],
+      history,
+      permissions,
+      property,
+      currentUser,
+      withAnonymous,
+      setWithAnonymous,
+    }) => ({
+      rows: loans.map(
+        makeMapLoan({ history, permissions, currentUser, property }),
+      ),
+      columnOptions,
+      permissions,
+      property,
+      loans,
+      withAnonymous,
+      setWithAnonymous,
+    }),
+  ),
 );

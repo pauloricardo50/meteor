@@ -1,10 +1,10 @@
 import { PROPERTY_REFERRED_BY_TYPE } from './propertyConstants';
 
 export const getCurrentUserPermissionsForProProperty = ({
-  currentUser: { properties = [] } = {},
+  currentUser: { proProperties = [] } = {},
   propertyId,
 }) => {
-  const property = properties.find(({ _id }) => _id === propertyId);
+  const property = proProperties.find(({ _id }) => _id === propertyId);
   return property && property.$metadata.permissions;
 };
 

@@ -29,7 +29,7 @@ const LotDocumentsManager = ({
       title={
         <T
           id="PromotionPage.managePropertyDocuments"
-          values={{ name: property.name }}
+          values={{ name: property && property.name }}
         />
       }
       text={<T id="PromotionPage.managePropertyDocuments.description" />}
