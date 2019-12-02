@@ -200,7 +200,7 @@ describe('PromotionLotService', function() {
         expect(
           global_merge_vars.find(({ name }) => name === 'BODY').content,
         ).to.include(
-          "Votre conseiller.ère Admin User 2 va se mettre en relation avec la Banque, l'Entreprise Générale et Pro User 1 (Org 1)",
+          'Admin User 2 va se mettre en relation avec Pro User 1 (Org 1)',
         );
       }
     });

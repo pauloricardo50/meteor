@@ -605,6 +605,7 @@ describe('UserService', function() {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
+            promotionLots: [{ _id: 'pL1' }],
           },
           {
             _id: 'promotionId2',
@@ -655,6 +656,7 @@ describe('UserService', function() {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
+          promotionLots: [{ _id: 'pL1' }],
         },
       });
 
@@ -781,6 +783,7 @@ describe('UserService', function() {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
+            promotionLots: [{ _id: 'pL1' }],
           },
           {
             _id: 'promotionId2',
@@ -882,6 +885,7 @@ describe('UserService', function() {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
+          promotionLots: [{ _id: 'pL1' }],
         },
       });
 
@@ -976,6 +980,7 @@ describe('UserService', function() {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
+          promotionLots: [{ _id: 'pL1' }],
         },
       });
 

@@ -159,6 +159,7 @@ describe('PromotionService', function() {
           _id: promotionId,
           status: PROMOTION_STATUS.OPEN,
           assignedEmployeeId: adminId,
+          promotionLots: [{ _id: 'pL1' }],
         },
       });
     });

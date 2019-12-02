@@ -40,6 +40,7 @@ import {
   ORG_NAME,
   USER_EMAIL,
   USER_PASSWORD,
+  ADMIN_EMAIL,
 } from './e2eConstants';
 
 // remove login rate limits in E2E tests
@@ -78,6 +79,13 @@ Meteor.methods({
       password: PRO_PASSWORD,
     });
     UserService.update({ userId: userId3, object: { roles: [ROLES.PRO] } });
+
+    const adminId = Accounts.createUser({
+      email: ADMIN_EMAIL,
+      password: PRO_PASSWORD,
+    });
+    UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+
     OrganisationService.insert({
       name: ORG_NAME,
       type: 'DEVELOPER',

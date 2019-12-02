@@ -1,4 +1,6 @@
 import { Factory } from 'meteor/dburles:factory';
+import { Random } from 'meteor/random';
+
 import faker from 'faker';
 
 import {
@@ -126,6 +128,18 @@ Factory.define('promotion', Promotions, {
   type: PROMOTION_TYPES.CREDIT,
   zipCode: 1201,
   agreementDuration: 14,
+  city: 'Genève',
+  assignedEmployeeId: () => {
+    const adminId = Users.insert({
+      roles: [ROLES.ADMIN],
+      emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
+      lastName: TEST_LASTNAME,
+      firstName: TEST_FIRSTNAME,
+      phoneNumbers: [TEST_PHONE],
+    });
+
+    return adminId;
+  },
 });
 
 Factory.define('promotionOption', PromotionOptions, {});

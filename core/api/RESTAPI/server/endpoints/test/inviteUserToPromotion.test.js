@@ -4,6 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 
+import PromotionLotService from 'core/api/promotionLots/server/PromotionLotService';
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
@@ -72,10 +73,10 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function() {
+describe('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -91,7 +92,10 @@ describe('REST: inviteUserToPromotion', function() {
   beforeEach(() => {
     resetDatabase();
     user = Factory.create('pro');
-    promotionId = Factory.create('promotion')._id;
+    const promotionLotId = Factory.create('promotionLot')._id;
+    promotionId = Factory.create('promotion', {
+      promotionLotLinks: [{ _id: promotionLotId }],
+    })._id;
   });
 
   it('invites a user to promotion', () => {
