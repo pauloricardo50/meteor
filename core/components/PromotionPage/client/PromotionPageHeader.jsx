@@ -3,9 +3,10 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
 
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
-import ImageCarrousel from 'core/components/ImageCarrousel/ImageCarrousel';
-import { LightTheme } from 'core/components/Themes';
+import { PROMOTIONS_COLLECTION } from '../../../api/constants';
+import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
+import ImageCarrousel from '../../ImageCarrousel';
+import { LightTheme } from '../../Themes';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionMetadataContext from './PromotionMetadata';
@@ -51,6 +52,9 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
               collection={PROMOTIONS_COLLECTION}
               allowModify={canModifyStatus}
               docId={promotionId}
+              method={nextStatus =>
+                promotionSetStatus.run({ promotionId, status: nextStatus })
+              }
             />
           </div>
           <h4>

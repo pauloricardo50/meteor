@@ -70,7 +70,7 @@ class PromotionService extends CollectionService {
   update({ promotionId, ...rest }) {
     const result = this._update({ id: promotionId, ...rest });
 
-    const { propertyLinks, ...address } = this.fetchOne({
+    const { propertyLinks = [], ...address } = this.fetchOne({
       $filters: { _id: promotionId },
       propertyLinks: 1,
       address1: 1,
@@ -79,9 +79,11 @@ class PromotionService extends CollectionService {
       zipCode: 1,
     });
 
-    propertyLinks.forEach(({ _id }) => {
-      PropertyService.update({ propertyId: _id, object: address });
-    });
+    PropertyService.baseUpdate(
+      { _id: { $in: propertyLinks.map(({ _id }) => _id) } },
+      { $set: address },
+      { multi: true },
+    );
 
     return result;
   }
@@ -99,23 +101,13 @@ class PromotionService extends CollectionService {
     showAllLots,
     shareSolvency,
   }) {
+    this.checkPromotionIsReady({ promotionId });
     const promotion = this.findOne(promotionId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
       throw new Meteor.Error(
         "Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.",
-      );
-    }
-
-    if (
-      !promotion.documents ||
-      !promotion.documents.promotionGuide ||
-      !promotion.documents.promotionGuide.length ||
-      promotion.documents.promotionGuide.length > 1
-    ) {
-      throw new Meteor.Error(
-        'Il faut ajouter un (seul) guide du financement bancaire sur cette promotion',
       );
     }
 
@@ -295,6 +287,51 @@ class PromotionService extends CollectionService {
       linkId: userId,
       metadata: { roles },
     });
+  }
+
+  checkPromotionIsReady({ promotionId }) {
+    const {
+      documents = {},
+      promotionLotLinks = [],
+      assignedEmployeeId,
+      name,
+      city,
+      zipCode,
+    } = this.findOne(promotionId);
+
+    if (!name || !city || !zipCode) {
+      throw new Meteor.Error(
+        'Il faut ajouter un nom et une addresse à cette promotion',
+      );
+    }
+
+    if (promotionLotLinks.length === 0) {
+      throw new Meteor.Error('Il faut ajouter des lots sur une promotion');
+    }
+
+    if (!assignedEmployeeId) {
+      throw new Meteor.Error(
+        'Il faut assigner un conseiller à cette promotion',
+      );
+    }
+
+    if (
+      !documents.promotionGuide ||
+      !documents.promotionGuide.length ||
+      documents.promotionGuide.length !== 1
+    ) {
+      throw new Meteor.Error(
+        'Il faut ajouter un (seul) guide du financement bancaire sur cette promotion',
+      );
+    }
+  }
+
+  setStatus({ promotionId, status }) {
+    if (status === PROMOTION_STATUS.OPEN) {
+      this.checkPromotionIsReady({ promotionId });
+    }
+
+    return this.update({ promotionId, object: { status } });
   }
 }
 

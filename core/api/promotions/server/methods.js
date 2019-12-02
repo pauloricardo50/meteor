@@ -14,6 +14,7 @@ import {
   reuseConstructionTimeline,
   toggleNotifications,
   updatePromotionUserRoles,
+  promotionSetStatus,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -103,4 +104,9 @@ toggleNotifications.setHandler(({ userId }, { promotionId }) => {
 updatePromotionUserRoles.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.updateUserRoles(params);
+});
+
+promotionSetStatus.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.setStatus(params);
 });
