@@ -1,4 +1,5 @@
 {
+  "files.proDocuments": "Documents Pros",
   "Forms.proNote": "Note du conseiller",
   "methods.submitContactForm": "[www] Remplir formulaire de contact",
   "methods.sendEmail": "[Serveur] Envoyer un email automatique",
