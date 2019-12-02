@@ -80,6 +80,7 @@
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-flow": "^7.0.0",
+    "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-preset-meteor": "^7.6.1",
@@ -100,6 +101,12 @@
     "mainModule": {
       "client": "client/main.js",
       "server": "server/main.js"
+    },
+    "nodeModules": {
+      "recompile": {
+        "uniforms": true,
+        "uniforms-material": true
+      }
     }
   }
 }
