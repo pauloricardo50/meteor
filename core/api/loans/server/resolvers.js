@@ -11,7 +11,6 @@ import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanService from './LoanService';
-import { LOAN_STATUS } from '../loanConstants';
 
 const proLoansFragment = proLoans();
 
@@ -76,30 +75,37 @@ const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
   };
 };
 
-const anonymizePromotionLoans = ({ loans = [], userId }) =>
-  loans.map(loan => {
-    const { promotions } = loan;
-    const promotionId = promotions[0]._id;
-
-    const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
-      userId,
-      promotionId,
-    });
-
-    return promotionLoanAnonymizer(loan);
+const anonymizePromotionLoans = ({ loans = [], userId }) => {
+  const currentUser = UserService.fetchOne({
+    $filters: { _id: userId },
+    promotions: { _id: 1 },
+    organisations: { users: { _id: 1 } },
   });
 
-const anonymizePropertyLoans = ({ loans = [], userId }) =>
-  loans.map(loan => {
+  const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
+    currentUser,
+  });
+
+  return loans.map(loan => promotionLoanAnonymizer(loan));
+};
+
+const anonymizePropertyLoans = ({ loans = [], userId }) => {
+  const currentUser = UserService.fetchOne({
+    $filters: { _id: userId },
+    organisations: { users: { _id: 1 } },
+    proProperties: { _id: 1 },
+  });
+  return loans.map(loan => {
     const { properties } = loan;
-    const proPropertyIds = properties
-      .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
-      .map(({ _id }) => _id);
+    const proProperties = properties.filter(
+      ({ category }) => category === PROPERTY_CATEGORY.PRO,
+    );
     return makeProPropertyLoanAnonymizer({
-      userId,
-      propertyIds: proPropertyIds,
+      proProperties,
+      currentUser,
     })(loan);
   });
+};
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
   ...loans,
@@ -207,21 +213,28 @@ export const proPropertyLoansResolver = ({
       status,
       anonymous,
       'userCache.referredByUserLink': referredByUserId,
-      $or: [
-        { anonymous: true, status: { $ne: LOAN_STATUS.UNSUCCESSFUL } },
-        { anonymous: { $ne: true } },
-      ],
     },
     ...proLoansFragment,
+    loanProgress: 0,
   });
 
   try {
     SecurityService.checkUserIsAdmin(calledByUserId);
     return loans.map(handleLoanSolvencySharing({ isAdmin: true }));
   } catch (error) {
-    return anonymizePropertyLoans({
-      loans: loans.map(handleLoanSolvencySharing({ isAdmin: false })),
-      userId: calledByUserId,
-    });
+    const anonymousLoans = loans
+      .filter(({ anonymous: isAnonymous }) => isAnonymous)
+      .map(handleLoanSolvencySharing({ isAdmin: false }));
+    const commonLoans = loans
+      .filter(({ anonymous: isAnonymous }) => !isAnonymous)
+      .map(handleLoanSolvencySharing({ isAdmin: false }));
+
+    return [
+      ...anonymousLoans,
+      ...anonymizePropertyLoans({
+        loans: commonLoans.map(handleLoanSolvencySharing({ isAdmin: false })),
+        userId: calledByUserId,
+      }),
+    ];
   }
 };

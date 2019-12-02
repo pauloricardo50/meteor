@@ -43,7 +43,7 @@ const employees = [
     src: '/img/team/jeanluc.jpg',
     name: 'Jean-Luc Kringel',
     title: 'Responsable Assurances',
-    appTitle: 'Planification et prévoyance',
+    appTitle: 'Planification & prévoyance',
     phoneNumber: '+41 22 566 82 94',
     _id: 'efe2jpwvRh8J4z4p8',
     gender: 'M',
@@ -63,6 +63,13 @@ const employees = [
     appTitle: 'Financement',
     phoneNumber: '+41 22 566 82 95',
     _id: 'NumFEubdw2nra6Su8',
+    gender: 'M',
+  },
+  {
+    email: 'franco@e-potek.ch',
+    src: '/img/team/franco.jpg',
+    name: 'Franco Ponzetta',
+    title: 'Prévoyance & Opérations',
     gender: 'M',
   },
   {

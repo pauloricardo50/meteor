@@ -21,6 +21,9 @@ import {
   trackRequest,
   getMatchingPathOptions,
   getSimpleAuthToken,
+  getRequestType,
+  requestTypeIsAllowed,
+  shouldSkipMiddleware,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -33,21 +36,40 @@ const bodyParserUrlEncodedMiddleware = () =>
     limit: BODY_SIZE_LIMIT,
   });
 
+const selectAuthTypeMiddleware = (options = {}) => (req, res, next) => {
+  req.authenticationType = getRequestType(req);
+  const endpointOptions = getMatchingPathOptions(req, options);
+  const { endpointName } = endpointOptions;
+
+  // Unknown endpoint
+  if (!endpointName) {
+    return next();
+  }
+
+  req.endpointName = endpointName;
+
+  if (
+    requestTypeIsAllowed({
+      req,
+      endpointOptions,
+    })
+  ) {
+    return next();
+  }
+
+  return next(
+    REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE(
+      `You tried to authenticate with ${req.authenticationType} but this endpoint does not allow it`,
+    ),
+  );
+};
+
 // Handles replay attacks
 const replayHandlerMiddleware = (options = {}) => (req, res, next) => {
-  const endpointOptions = getMatchingPathOptions(req, options);
-
-  if (endpointOptions.simpleAuth) {
+  if (shouldSkipMiddleware({ req, middleware: 'replayHandlerMiddleware' })) {
     return next();
   }
 
-  if (endpointOptions.noAuth) {
-    return next();
-  }
-
-  if (req.isMultipart) {
-    return next();
-  }
   const timestamp = getHeader(req, 'x-epotek-timestamp');
   const nonce = getHeader(req, 'x-epotek-nonce');
 
@@ -72,21 +94,16 @@ const replayHandlerMiddleware = (options = {}) => (req, res, next) => {
 
 // Filters out badly formatted requests, or ones missing basic headers
 const filterMiddleware = (options = {}) => (req, res, next) => {
+  if (shouldSkipMiddleware({ req, middleware: 'filterMiddleware' })) {
+    return next();
+  }
+
   const endpointOptions = getMatchingPathOptions(req, options);
-
-  if (endpointOptions.simpleAuth) {
-    return next();
-  }
-
-  if (endpointOptions.noAuth) {
-    return next();
-  }
 
   const supportedContentType = endpointOptions.multipart
     ? 'multipart/form-data'
     : 'application/json';
   const contentType = getHeader(req, 'content-type');
-  const isMultipart = contentType.includes('multipart/form-data');
 
   if (!contentType || !contentType.includes(supportedContentType)) {
     return next(
@@ -97,82 +114,70 @@ const filterMiddleware = (options = {}) => (req, res, next) => {
     );
   }
 
-  if (isMultipart) {
-    req.isMultipart = true;
-  }
-
   next();
 };
 
 const simpleAuthMiddleware = (options = {}) => (req, res, next) => {
-  const endpointOptions = getMatchingPathOptions(req, options);
-
-  if (endpointOptions.noAuth) {
+  if (shouldSkipMiddleware({ req, middleware: 'simpleAuthMiddleware' })) {
     return next();
   }
 
-  if (endpointOptions.simpleAuth) {
-    req.authenticationType = 'simple';
-    const { query } = req;
-    const simpleAuthParams = JSON.parse(
-      Buffer.from(query['simple-auth-params'], 'base64').toString('ascii'),
+  const { query } = req;
+  const simpleAuthParams = JSON.parse(
+    Buffer.from(query['simple-auth-params'], 'base64').toString('ascii'),
+  );
+  const { token, timestamp, userId } = simpleAuthParams;
+  const authToken = getSimpleAuthToken(simpleAuthParams);
+
+  const now = moment().unix();
+
+  if (authToken !== token || timestamp < now - 30) {
+    return next(
+      REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED(
+        'Wrong token or old timestamp',
+      ),
     );
-    const { token, timestamp, userId } = simpleAuthParams;
-    const authToken = getSimpleAuthToken(simpleAuthParams);
-
-    const now = moment().unix();
-
-    if (authToken !== token || timestamp < now - 30) {
-      return next(
-        REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED(
-          'Wrong token or old timestamp',
-        ),
-      );
-    }
-
-    const user = UserService.fetchOne({
-      $filters: {
-        _id: userId,
-      },
-      emails: 1,
-      firstName: 1,
-      lastName: 1,
-      phoneNumbers: 1,
-    });
-
-    if (!user) {
-      return next(
-        REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED(
-          'No user found with this userId',
-        ),
-      );
-    }
-
-    req.user = user;
-    req.simpleAuthParams = simpleAuthParams;
   }
+
+  const user = UserService.fetchOne({
+    $filters: {
+      _id: userId,
+    },
+    emails: 1,
+    firstName: 1,
+    lastName: 1,
+    phoneNumbers: 1,
+  });
+
+  if (!user) {
+    return next(
+      REST_API_ERRORS.SIMPLE_AUTHORIZATION_FAILED(
+        'No user found with this userId',
+      ),
+    );
+  }
+
+  req.user = user;
+  req.simpleAuthParams = simpleAuthParams;
 
   next();
 };
 
 // Gets the public key from the request, fetches the user and adds it to the request
 const authMiddleware = (options = {}) => (req, res, next) => {
-  const endpointOptions = getMatchingPathOptions(req, options);
-
-  if (endpointOptions.simpleAuth) {
+  if (shouldSkipMiddleware({ req, middleware: 'authMiddleware' })) {
     return next();
   }
 
-  if (endpointOptions.noAuth) {
-    return next();
-  }
-
-  req.authenticationType = 'rsa';
   const publicKey = getPublicKey(req);
   const signature = getSignature(req);
 
   if (!publicKey || !signature) {
-    return next(REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE);
+    return next(
+      REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE(
+        "Authorization must be of type 'EPOTEK PublicKey:Signature'",
+      ),
+    );
   }
 
   const user = UserService.fetchOne({
@@ -187,7 +192,7 @@ const authMiddleware = (options = {}) => (req, res, next) => {
 
   if (!user) {
     return next(
-      REST_API_ERRORS.AUTHORIZATION_FAILED(
+      REST_API_ERRORS.RSA_AUTHORIZATION_FAILED(
         'No user found with this public key, or maybe it has a typo ?',
       ),
     );
@@ -203,6 +208,44 @@ const authMiddleware = (options = {}) => (req, res, next) => {
       REST_API_ERRORS.AUTHORIZATION_FAILED({
         expectedObjectToSign: verifiedSignature.toVerify,
       }),
+    );
+  }
+
+  req.user = user;
+
+  next();
+};
+
+const basicAuthMiddleware = options => (req, res, next) => {
+  if (shouldSkipMiddleware({ req, middleware: 'basicAuthMiddleware' })) {
+    return next();
+  }
+
+  const publicKey = getPublicKey(req);
+
+  if (!publicKey) {
+    return next(
+      REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE(
+        "Authorization must be of type 'EPOTEK-BASIC PublicKey'",
+      ),
+    );
+  }
+
+  const user = UserService.fetchOne({
+    $filters: {
+      'apiPublicKey.publicKey': publicKey,
+    },
+    emails: 1,
+    firstName: 1,
+    lastName: 1,
+    phoneNumbers: 1,
+  });
+
+  if (!user) {
+    return next(
+      REST_API_ERRORS.BASIC_AUTHORIZATION_FAILED(
+        'No user found with this public key, or maybe it has a typo ?',
+      ),
     );
   }
 
@@ -255,29 +298,23 @@ const unknownEndpointMiddleware = options => (req, res, next) => {
 };
 
 const multipartMiddleware = options => (req, res, next) => {
-  const middleware = multipart({ uploadDir: FILE_UPLOAD_DIR });
-  const { isMultipart } = req;
-
-  return isMultipart ? middleware(req, res, next) : next();
-};
-
-const noAuthMiddleware = options => (req, res, next) => {
-  const endpointOptions = getMatchingPathOptions(req, options);
-
-  if (endpointOptions.noAuth) {
-    req.authenticationType = 'no-auth';
+  if (shouldSkipMiddleware({ req, middleware: 'multipartMiddleware' })) {
+    return next();
   }
-  return next();
+  const middleware = multipart({ uploadDir: FILE_UPLOAD_DIR });
+
+  return middleware(req, res, next);
 };
 
 export const preMiddlewares = [
+  selectAuthTypeMiddleware,
   filterMiddleware,
   multipartMiddleware,
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
   simpleAuthMiddleware,
-  noAuthMiddleware,
+  basicAuthMiddleware,
   replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

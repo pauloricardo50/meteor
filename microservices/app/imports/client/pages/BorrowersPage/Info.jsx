@@ -3,7 +3,7 @@ import React from 'react';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
-import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
   gender: doc.gender,
@@ -15,24 +15,26 @@ const Info = props => {
   } = props;
 
   return (
-    <section className="animated borrower-page-info flex--helper fadeIn">
-      {borrowers.map(borrower => (
-        <div className="borrower-page__wrapper col--50" key={borrower._id}>
-          <TranslatedAutoForm
-            inputs={getBorrowerInfoArray({
-              borrowers,
-              borrowerId: borrower._id,
-              loanId,
-            })}
-            formClasses="user-form user-form__info"
-            docId={borrower._id}
-            collection="borrowers"
-            doc={borrower}
-            disabled={!userFormsEnabled}
-          />
-        </div>
-      ))}
-    </section>
+    <>
+      <section className="animated borrower-page-info flex--helper fadeIn">
+        {borrowers.map(borrower => (
+          <div className="borrower-page__wrapper col--50" key={borrower._id}>
+            <TranslatedAutoForm
+              inputs={getBorrowerInfoArray({
+                borrowers,
+                borrowerId: borrower._id,
+                loanId,
+              })}
+              formClasses="user-form user-form__info"
+              docId={borrower._id}
+              collection="borrowers"
+              doc={borrower}
+              disabled={!userFormsEnabled}
+            />
+          </div>
+        ))}
+      </section>
+    </>
   );
 };
 

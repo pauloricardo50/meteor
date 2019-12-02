@@ -13,7 +13,10 @@ import {
 } from '../../test/apiTestHelpers.test';
 
 const api = new RESTAPI();
-api.addEndpoint('/users', 'GET', getUserAPI);
+api.addEndpoint('/users', 'GET', getUserAPI, {
+  rsaAuth: true,
+  endpointName: 'Get user',
+});
 
 const getUser = ({ email, userId, impersonateUser }) => {
   const { timestamp, nonce } = getTimestampAndNonce();

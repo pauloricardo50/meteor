@@ -19,7 +19,10 @@ import {
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
-api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI);
+api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI, {
+  rsaAuth: true,
+  endpointName: 'Get property loans',
+});
 
 const getPropertyLoans = ({ propertyId, userId, impersonateUser }) => {
   const { timestamp, nonce } = getTimestampAndNonce();

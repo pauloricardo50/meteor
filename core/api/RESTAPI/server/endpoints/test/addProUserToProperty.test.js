@@ -20,6 +20,7 @@ api.addEndpoint(
   '/properties/:propertyId/add-user',
   'POST',
   addProUserToPropertyAPI,
+  { rsaAuth: true, endpointName: 'Add user to property' },
 );
 
 const addUser = ({

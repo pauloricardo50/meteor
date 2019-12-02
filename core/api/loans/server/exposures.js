@@ -97,7 +97,7 @@ exposeQuery({
         }
 
         if (noPromotion) {
-          filters['promotionLinks.0._id'] = { $exists: false };
+          filters.promotionLinks = { $in: [[], null] };
         }
 
         if (lenderId) {
@@ -190,12 +190,14 @@ exposeQuery({
     validateParams: {
       propertyId: String,
       userId: String,
+      anonymous: Match.Maybe(Object),
     },
   },
-  resolver: ({ userId, propertyId }) =>
+  resolver: ({ userId, propertyId, anonymous }) =>
     proPropertyLoansResolver({
       calledByUserId: userId,
       propertyId,
+      anonymous,
     }),
 });
 

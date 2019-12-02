@@ -18,7 +18,10 @@ import RESTAPI from '../../RESTAPI';
 import updatePropertyAPI from '../updateProperty';
 
 const api = new RESTAPI();
-api.addEndpoint('/properties/:propertyId', 'POST', updatePropertyAPI);
+api.addEndpoint('/properties/:propertyId', 'POST', updatePropertyAPI, {
+  rsaAuth: true,
+  endpointName: 'Update property',
+});
 
 const updateProperty = ({
   propertyId,

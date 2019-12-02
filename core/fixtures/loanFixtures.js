@@ -190,7 +190,15 @@ export const addLoanWithData = ({
   }
 
   const structureId = loan.structures[0].id;
-  const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
+  let borrowerId1;
+  if (borrowers.length > 0) {
+    borrowerId1 = BorrowerService.insert({ borrower: borrowers[0] });
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'borrowers',
+      linkId: borrowerId1,
+    });
+  }
 
   LoanService.updateStructure({
     loanId,
@@ -205,13 +213,8 @@ export const addLoanWithData = ({
     },
   });
 
-  if (borrowerId1) {
-    BorrowerService.update({ borrowerId: borrowerId1, object: borrowers[0] });
-  }
-
   if (borrowers.length > 1) {
     const borrowerId2 = BorrowerService.insert({ borrower: borrowers[1] });
-    BorrowerService.update({ borrowerId: borrowerId2, object: borrowers[1] });
     LoanService.addLink({
       id: loanId,
       linkName: 'borrowers',

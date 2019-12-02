@@ -4,6 +4,7 @@ import { makePromotionLotAnonymizer } from 'core/api/promotions/server/promotion
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { appPromotionLots, proPromotionLots } from '../queries';
+import UserService from '../../users/server/UserService';
 
 const promotionLotSecurity = ({ _id, userId, promotionId }) => {
   if (_id) {
@@ -70,7 +71,12 @@ exposeQuery({
           SecurityService.checkCurrentUserIsAdmin(_userId);
           return results;
         } catch (error) {
-          return results.map(makePromotionLotAnonymizer({ userId: _userId }));
+          const currentUser = UserService.fetchOne({
+            $filters: { _id: _userId },
+            promotions: { _id: 1 },
+            organisations: { users: { _id: 1 } },
+          });
+          return results.map(makePromotionLotAnonymizer({ currentUser }));
         }
       };
     },

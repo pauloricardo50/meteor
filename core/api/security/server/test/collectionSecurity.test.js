@@ -591,7 +591,7 @@ describe('Collection Security', () => {
                 permissions: {
                   displayCustomerNames: {
                     invitedBy: 'ANY',
-                    forLotStatus: 'SOLD',
+                    forLotStatus: ['SOLD'],
                   },
                 },
               },

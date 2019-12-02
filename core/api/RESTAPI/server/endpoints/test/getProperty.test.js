@@ -28,8 +28,14 @@ import { HTTP_STATUS_CODES, FILE_UPLOAD_DIR } from '../../restApiConstants';
 
 const api = new RESTAPI();
 
-api.addEndpoint('/properties/:propertyId', 'GET', getPropertyAPI);
-api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
+api.addEndpoint('/properties/:propertyId', 'GET', getPropertyAPI, {
+  rsaAuth: true,
+  endpointName: 'Get property',
+});
+api.addEndpoint('/upload', 'POST', uploadFileAPI, {
+  multipart: true,
+  endpointName: 'Upload file',
+});
 
 let propertyId = '';
 

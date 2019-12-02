@@ -1,0 +1,18 @@
+.deactivated-form-info {
+  display: flex;
+  justify-content: center;
+
+  &-box {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid $error;
+    border-radius: $border-radius;
+    max-width: 400px;
+
+    .icon {
+      margin-right: 8px;
+      color: $error;
+    }
+  }
+}

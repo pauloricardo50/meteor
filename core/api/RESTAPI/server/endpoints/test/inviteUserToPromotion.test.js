@@ -30,6 +30,7 @@ api.addEndpoint(
   '/promotions/:promotionId/invite-customer',
   'POST',
   inviteUserToPromotion,
+  { rsaAuth: true, endpointName: 'Invite customer to promotion' }
 );
 
 const inviteUser = ({
@@ -72,10 +73,10 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function() {
+describe('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

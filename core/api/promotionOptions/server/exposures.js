@@ -4,6 +4,7 @@ import { makePromotionOptionAnonymizer } from '../../promotions/server/promotion
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { appPromotionOption, proPromotionOptions } from '../queries';
+import UserService from '../../users/server/UserService';
 
 exposeQuery({
   query: appPromotionOption,
@@ -77,8 +78,15 @@ exposeQuery({
 
       body.$postFilter = (promotionOptions = [], params) => {
         const { anonymize = false, userId } = params;
+        const currentUser = UserService.fetchOne({
+          $filters: { _id: userId },
+          promotions: { _id: 1 },
+          organisations: { users: { _id: 1 } },
+        });
         return anonymize
-          ? promotionOptions.map(makePromotionOptionAnonymizer({ userId }))
+          ? promotionOptions.map(
+            makePromotionOptionAnonymizer({ currentUser }),
+          )
           : promotionOptions;
       };
     },

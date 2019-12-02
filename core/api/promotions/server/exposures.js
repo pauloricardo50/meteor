@@ -11,6 +11,7 @@ import {
   proPromotionUsers,
 } from '../queries';
 import { PROMOTION_STATUS } from '../promotionConstants';
+import UserService from '../../users/server/UserService';
 
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
@@ -103,12 +104,20 @@ exposeQuery({
           return promotions;
         }
 
+        const currentUser = UserService.fetchOne({
+          $filters: { _id: userId },
+          promotions: { _id: 1 },
+          organisations: { users: { _id: 1 } },
+        });
+
+        const promotionLotAnonymizer = makePromotionLotAnonymizer({
+          currentUser,
+        });
+
         return promotions.map(promotion => {
           const { promotionLots = [], ...rest } = promotion;
           return {
-            promotionLots: promotionLots.map(
-              makePromotionLotAnonymizer({ userId }),
-            ),
+            promotionLots: promotionLots.map(promotionLotAnonymizer),
             ...rest,
           };
         });

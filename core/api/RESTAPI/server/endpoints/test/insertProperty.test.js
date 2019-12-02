@@ -15,7 +15,7 @@ import RESTAPI from '../../RESTAPI';
 import insertPropertyAPI from '../insertProperty';
 
 const api = new RESTAPI();
-api.addEndpoint('/properties', 'POST', insertPropertyAPI);
+api.addEndpoint('/properties', 'POST', insertPropertyAPI, { rsaAuth: true, endpointName: 'Insert property' });
 
 const insertProperty = ({
   body,
@@ -47,10 +47,10 @@ const insertProperty = ({
   });
 };
 
-describe('REST: insertProperty', function() {
+describe('REST: insertProperty', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

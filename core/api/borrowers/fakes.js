@@ -26,11 +26,12 @@ export const fakeBorrower = {
 export const completeFakeBorrower = {
   ...fakeBorrower,
   salary: 300000,
+  netSalary: 250000,
   bonusExists: true,
-  bonus2015: 15490,
   bonus2016: 11140,
   bonus2017: 13780,
   bonus2018: 12300,
+  bonus2019: 12300,
   otherIncome: [
     {
       value: 10000,
@@ -57,5 +58,5 @@ export const completeFakeBorrower = {
   bankFortune: 300000,
   insurance2: [{ value: 120000, description: 'Allianz' }],
   insurance3A: [{ value: 50000, description: 'Swisslife' }],
-  logic: {},
+  hasOwnCompany: false,
 };

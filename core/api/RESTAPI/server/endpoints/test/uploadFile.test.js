@@ -24,7 +24,10 @@ import { FILE_UPLOAD_DIR, HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 let propertyId = '';
-api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
+api.addEndpoint('/files', 'POST', uploadFileAPI, {
+  multipart: true,
+  endpointName: 'Upload file',
+});
 
 describe('REST: uploadFile', function() {
   this.timeout(10000);
@@ -81,7 +84,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     }).then(res => {
@@ -106,7 +109,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath: filePath1,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
@@ -114,7 +117,7 @@ describe('REST: uploadFile', function() {
         uploadFile({
           filePath: filePath2,
           userId: 'pro',
-          url: '/upload',
+          url: '/files',
           propertyId,
           category: PROPERTY_DOCUMENTS.PROPERTY_PLANS,
         }),
@@ -137,7 +140,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro2',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     }).then(res => {
@@ -158,7 +161,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro2',
-      url: '/upload',
+      url: '/files',
       query: { 'impersonate-user': 'pro@org.com' },
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
@@ -177,7 +180,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro2',
-      url: '/upload',
+      url: '/files',
       propertyId: 'property',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     }).then(res => {
@@ -193,7 +196,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro2',
-      url: '/upload',
+      url: '/files',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     }).then(res => {
       const { status, message } = res;
@@ -208,7 +211,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro2',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: 'wrong',
     }).then(res => {
@@ -229,7 +232,7 @@ describe('REST: uploadFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId: 'extId',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     }).then(res => {

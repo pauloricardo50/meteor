@@ -26,8 +26,14 @@ import { FILE_UPLOAD_DIR, HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 let propertyId = '';
-api.addEndpoint('/upload', 'POST', uploadFileAPI, { multipart: true });
-api.addEndpoint('/deleteFile', 'POST', deleteFileAPI);
+api.addEndpoint('/files', 'POST', uploadFileAPI, {
+  multipart: true,
+  endpointName: 'Upload file',
+});
+api.addEndpoint('/files', 'DELETE', deleteFileAPI, {
+  rsaAuth: true,
+  endpointName: 'Delete file',
+});
 
 const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
@@ -38,10 +44,10 @@ const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
     : undefined;
 
   return fetchAndCheckResponse({
-    url: '/deleteFile',
+    url: '/files',
     query,
     data: {
-      method: 'POST',
+      method: 'DELETE',
       headers: makeHeaders({
         userId,
         timestamp,
@@ -54,10 +60,10 @@ const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
   });
 };
 
-describe('REST: deleteFile', function() {
+describe('REST: deleteFile', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -109,7 +115,7 @@ describe('REST: deleteFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
@@ -138,7 +144,7 @@ describe('REST: deleteFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
@@ -173,7 +179,7 @@ describe('REST: deleteFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
@@ -246,7 +252,7 @@ describe('REST: deleteFile', function() {
     return uploadFile({
       filePath,
       userId: 'pro',
-      url: '/upload',
+      url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     })
