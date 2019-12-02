@@ -9,7 +9,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import { filterDOMProps, connectField, wrapField } from 'uniforms';
+import { filterDOMProps, connectField } from 'uniforms';
+import { wrapField } from 'uniforms-material';
 import { compose } from 'recompose';
 
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';

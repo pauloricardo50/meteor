@@ -1,6 +1,7 @@
 import React from 'react';
 import FormLabel from '@material-ui/core/FormLabel';
-import { connectField, injectName, joinName, wrapField } from 'uniforms';
+import { connectField, injectName, joinName } from 'uniforms';
+import { wrapField } from 'uniforms-material';
 
 import { CustomAutoField } from './AutoFormComponents';
 
@@ -11,12 +12,12 @@ const Nest = ({ children, fields, itemProps, label, name, ...props }) =>
     children
       ? injectName(name, children)
       : fields.map(key => (
-          <CustomAutoField
-            key={key}
-            name={joinName(name, key)}
-            {...itemProps}
-          />
-        )),
+        <CustomAutoField
+          key={key}
+          name={joinName(name, key)}
+          {...itemProps}
+        />
+      )),
   );
 
 Nest.defaultProps = {
