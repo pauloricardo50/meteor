@@ -77,7 +77,15 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return;
       }
 
-      const property = promotionOption.promotionLots[0].properties[0];
+      const { promotionLots = [] } = promotionOption;
+      const [promotionLot] = promotionLots;
+
+      if (!promotionLot) {
+        return;
+      }
+
+      const { properties = [] } = promotionLot;
+      const [property] = properties;
 
       return {
         // Get the address from the promotion
