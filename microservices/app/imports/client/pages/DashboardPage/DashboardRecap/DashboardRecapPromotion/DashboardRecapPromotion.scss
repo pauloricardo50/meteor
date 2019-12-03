@@ -29,49 +29,16 @@
   }
 
   .user-reservation {
-    &-deadline {
+    .promotion-reservation-progress {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
       margin-bottom: 16px;
+      transform: scale(1.2);
     }
 
-    &-info {
-      flex-direction: column;
-
-      .promotion-reservation-progress {
-        flex-direction: row;
-        justify-content: center;
-
-        &-icons {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          margin-right: 8px;
-
-          .icon {
-            display: flex;
-            margin-right: 16px;
-            position: relative;
-
-            &::before,
-            &::after {
-              display: none;
-            }
-          }
-        }
-
-        // &-icon {
-        //   margin-bottom: 8px;
-        // }
-
-        // > * {
-        //   flex-direction: row;
-        //   // align-items: center;
-        //   // flex-basis: 25%;
-        //   flex-grow: 0;
-        //   flex-shrink: 0;
-        //   white-space: initial;
-        //   text-align: center;
-        // }
-      }
+    .description {
+      text-align: center;
     }
   }
 }

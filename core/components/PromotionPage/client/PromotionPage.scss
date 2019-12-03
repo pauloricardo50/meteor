@@ -1,7 +1,7 @@
-@import './PromotionCustomers/PromotionCustomers.scss';
-@import './PromotionLotDetail/PromotionLotDetail.scss';
-@import './UserReservation/UserReservation.scss';
-@import './UserPromotionOptionsTable/RequestReservation.scss';
+@import "./PromotionCustomers/PromotionCustomers.scss";
+@import "./PromotionLotDetail/PromotionLotDetail.scss";
+@import "./UserReservation/UserReservation.scss";
+@import "./UserPromotionOptionsTable/RequestReservation.scss";
 
 .promotion-page {
   display: flex;
@@ -103,6 +103,12 @@
           min-width: 200px;
         }
       }
+    }
+  }
+
+  &-tabs {
+    &.core-tabs-top {
+      margin: 0;
     }
   }
 
@@ -385,8 +391,10 @@
   &.editing &-icons {
     display: block;
     width: 100%;
+
     .icon {
       display: block;
+
       span {
         margin-right: 16px;
       }
@@ -419,7 +427,7 @@
         border-left: 1px solid black;
         border-bottom: unset;
         left: 12px;
-        content: '';
+        content: "";
       }
 
       &::after {
@@ -454,7 +462,7 @@
         width: 8px;
         border-bottom: 1px solid black;
         top: 50%;
-        content: '';
+        content: "";
       }
 
       &::after {

@@ -32,10 +32,6 @@ export const promotionTodoList = {
   solvency: true,
   uploadDocuments: true,
   chooseLots: true,
-  agreement: true,
-  verification: true,
-  deposit: true,
-  lender: true,
   callEpotek: true,
 };
 

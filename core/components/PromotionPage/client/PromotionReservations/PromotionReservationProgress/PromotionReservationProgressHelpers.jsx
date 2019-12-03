@@ -109,7 +109,7 @@ export const rawPromotionReservationProgress = ({
   simpleVerification,
   fullVerification,
   reservationAgreement,
-  deposit,
+  reservationDeposit,
   bank,
 }) =>
   [
@@ -118,6 +118,6 @@ export const rawPromotionReservationProgress = ({
     fullVerification.status ===
       PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
-    deposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+    reservationDeposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
   ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);

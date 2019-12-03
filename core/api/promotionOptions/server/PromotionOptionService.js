@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { asyncForEach } from '../../helpers/index';
-import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
@@ -23,19 +22,20 @@ import {
   PROMOTION_EMAIL_RECIPIENTS,
 } from '../../promotions/promotionConstants';
 import { shouldAnonymize } from '../../promotions/server/promotionServerHelpers';
+import { expirePromotionOptionReservation } from './serverMethods';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function() {
+        'reservationAgreement.startDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function() {
+        'reservationAgreement.expirationDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -289,7 +289,7 @@ export class PromotionOptionService extends CollectionService {
           date: startDate,
           status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
         },
-        deposit: {
+        reservationDeposit: {
           status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           date: startDate,
         },
@@ -386,9 +386,10 @@ export class PromotionOptionService extends CollectionService {
   }
 
   expireReservation({ promotionOptionId }) {
-    return this.updateStatus({
+    return this.setProgress({
       promotionOptionId,
-      status: PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+      id: 'reservationAgreement',
+      object: { status: PROMOTION_OPTION_AGREEMENT_STATUS.EXPIRED },
     });
   }
 
@@ -415,7 +416,7 @@ export class PromotionOptionService extends CollectionService {
     const { [id]: model } = this.fetchOne({
       $filters: { _id: promotionOptionId },
       bank: 1,
-      deposit: 1,
+      reservationDeposit: 1,
       simpleVerification: 1,
       fullVerification: 1,
       reservationAgreement: 1,
@@ -459,25 +460,27 @@ export class PromotionOptionService extends CollectionService {
     return {};
   }
 
-  expireReservations = () => {
+  getExpiringReservations = () => {
     const yesterdayNight = moment()
       .subtract(1, 'day')
       .endOf('day')
       .toDate();
 
-    const toExpire = this.fetch({
+    return this.fetch({
       $filters: {
         'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       },
     });
+  };
 
+  expireReservations() {
     return Promise.all(
-      toExpire.map(({ _id: promotionOptionId }) =>
-        expirePromotionLotReservation.run({ promotionOptionId }),
+      this.getExpiringReservations().map(({ _id: promotionOptionId }) =>
+        expirePromotionOptionReservation.run({ promotionOptionId }),
       ),
     );
-  };
+  }
 
   getExpiringSoonReservations = () => {
     const weekDay = moment().isoWeekday();
@@ -594,42 +597,28 @@ export class PromotionOptionService extends CollectionService {
       {
         type: PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
         role: PROMOTION_USERS_ROLES.PROMOTER,
-        withNotificationsFilter: false,
-        withMapAnonymize: true,
       },
       {
         type: PROMOTION_EMAIL_RECIPIENTS.BROKERS,
         role: PROMOTION_USERS_ROLES.BROKER,
-        withNotificationsFilter: true,
-        withMapAnonymize: true,
         customFilter: ({ email }) =>
           !broker.some(({ email: brokerEmail }) => brokerEmail === email),
       },
       {
         type: PROMOTION_EMAIL_RECIPIENTS.NOTARY,
         role: PROMOTION_USERS_ROLES.NOTARY,
-        withNotificationsFilter: true,
-        withMapAnonymize: true,
       },
-    ].reduce(
-      (
-        object,
-        { type, role, withMapAnonymize, withNotificationsFilter, customFilter },
-      ) => {
-        let recipient = promotionUsers.filter(makeFilterRole(role));
-        if (withNotificationsFilter) {
-          recipient = recipient.filter(filterEnableNotifications);
-        }
-        if (customFilter) {
-          recipient = recipient.filter(customFilter);
-        }
-        if (withMapAnonymize) {
-          recipient = recipient.map(mapAnonymize);
-        }
-        return { ...object, [type]: recipient };
-      },
-      {},
-    );
+    ].reduce((object, { type, role, customFilter }) => {
+      let recipient = promotionUsers.filter(makeFilterRole(role));
+      recipient = recipient.filter(filterEnableNotifications);
+
+      if (customFilter) {
+        recipient = recipient.filter(customFilter);
+      }
+      recipient = recipient.map(mapAnonymize);
+
+      return { ...object, [type]: recipient };
+    }, {});
 
     return {
       [PROMOTION_EMAIL_RECIPIENTS.USER]: user,

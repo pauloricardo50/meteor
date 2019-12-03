@@ -30,13 +30,16 @@ const PropertyCard = (props: PropertyCardProps) => {
         <PropertyCardInfos isMobile={isMobile} {...props} />
       </div>
       {Calculator.hasActivePromotionOption({ loan }) ? (
-        <UserReservation
-          promotionOption={Calculator.getMostActivePromotionOption({
-            loan,
-          })}
-          progressVariant="text"
-          loan={loan}
-        />
+        <>
+          <hr />
+          <UserReservation
+            promotionOption={Calculator.getMostActivePromotionOption({
+              loan,
+            })}
+            progressVariant="text"
+            loan={loan}
+          />
+        </>
       ) : (
         promotionOptions &&
         promotionOptions.length > 0 && (

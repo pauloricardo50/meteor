@@ -71,7 +71,15 @@ describe('App Pages', () => {
   before(() => {
     cy.initiateTest();
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData');
+    cy.callMethod('generateTestData', {
+      generateDevs: true,
+      generateAdmins: true,
+      generateUsers: true,
+      generateLoans: true,
+      generateOrganisations: true,
+      generateUnownedLoan: true,
+      generateTestUser: true,
+    });
     cy.callMethod('getAppEndToEndTestData').then(data => {
       testData = data;
     });

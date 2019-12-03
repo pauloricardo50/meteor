@@ -40,7 +40,7 @@ class PromotionLotService extends CollectionService {
       simpleVerification: 1,
       fullVerification: 1,
       reservationAgreement: 1,
-      deposit: 1,
+      reservationDeposit: 1,
     });
     const { loan: { _id: loanId } = {}, promotionLots } = promotionOption;
 
@@ -110,29 +110,6 @@ class PromotionLotService extends CollectionService {
     });
 
     return PromotionOptionService.sellLot({
-      promotionOptionId,
-    });
-  }
-
-  expirePromotionLotReservation({ promotionOptionId }) {
-    const { promotionLots } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
-      loan: { _id: 1 },
-      promotionLots: { _id: 1 },
-    });
-
-    const [{ _id: promotionLotId }] = promotionLots;
-
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
-    });
-    this.removeLink({
-      id: promotionLotId,
-      linkName: 'attributedTo',
-    });
-
-    return PromotionOptionService.expireReservation({
       promotionOptionId,
     });
   }

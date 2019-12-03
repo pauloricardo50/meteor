@@ -56,12 +56,12 @@ describe('App onboarding', () => {
           .click();
 
         cy.get('.simple-dashboard-page').should('exist');
-        cy.get('.borrowers-card').contains('0%');
 
         cy.get('.borrowers-adder')
           .find('button')
           .first()
           .click();
+        cy.get('.borrowers-card').contains('0%');
 
         cy.get('input#firstName').type('Test');
         cy.get('input#lastName').type('User');

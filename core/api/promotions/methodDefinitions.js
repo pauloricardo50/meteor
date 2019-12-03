@@ -109,3 +109,11 @@ export const updatePromotionUserRoles = new Method({
     roles: Array,
   },
 });
+
+export const promotionSetStatus = new Method({
+  name: 'promotionSetStatus',
+  params: {
+    promotionId: String,
+    status: String,
+  },
+});

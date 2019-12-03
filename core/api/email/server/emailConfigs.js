@@ -450,6 +450,11 @@ addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT_USER, {
   createOverrides: promotionEmailOverridesUser,
 });
 
+addEmailConfig(EMAIL_IDS.EXPIRE_PROMOTION_RESERVATION_AGREEMENT, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesUser,
+});
+
 const checkAllEmailAreDefined = () => {
   const undefinedEmailIds = [];
   Object.values(EMAIL_IDS).forEach(emailId => {

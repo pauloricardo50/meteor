@@ -67,12 +67,17 @@ const PromotionReservationDetailActions = ({
     )}
 
     {canReactivateReservation && (
-      <Button
-        raised
-        secondary
-        className="mr-8 mb-8"
-        onClick={reactivateReservation}
+      <ConfirmMethod
+        buttonProps={{
+          className: 'mr-8 mb-8',
+          raised: true,
+          secondary: true,
+        }}
         label={<T id="PromotionReservationActions.reactivateReservation" />}
+        method={reactivateReservation}
+        description={
+          <T id="PromotionReservationActions.addToWaitList.description" />
+        }
       />
     )}
     {canAddToWaitList && (

@@ -16,6 +16,10 @@ $borrowers-item-width: 600px;
     padding: 16px;
   }
 
+  hr {
+    width: 100%;
+  }
+
   .top {
     display: flex;
     flex-direction: column;
@@ -78,7 +82,9 @@ $borrowers-item-width: 600px;
   }
 
   .promotion-reservation-progress {
+    flex-direction: column;
     align-items: stretch !important;
+
     > * {
       justify-content: space-between;
     }

@@ -61,7 +61,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function () {
+describe('PromotionOptionService', function() {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
@@ -595,7 +595,7 @@ describe('PromotionOptionService', function () {
           _id: 'pO2',
         });
         expect(promotionOption).to.deep.include({
-          deposit: {
+          reservationDeposit: {
             date: startDate,
             status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           },
@@ -786,7 +786,7 @@ describe('PromotionOptionService', function () {
       const expiredReservations = await PromotionOptionService.expireReservations();
       expect(expiredReservations.length).to.equal(1);
 
-      const emails = await checkEmails(2);
+      const emails = await checkEmails(1);
 
       const { promotionLots = [] } = PromotionService.fetchOne({
         $filters: { _id: 'promo' },
@@ -799,10 +799,10 @@ describe('PromotionOptionService', function () {
 
       const [pL1, pL2, pL3, pL4] = promotionLots;
 
-      expect(pL1.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
-      expect(pL1.attributedTo).to.equal(undefined);
+      expect(pL1.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
+      expect(pL1.attributedTo).to.deep.include({ _id: 'loan1' });
       expect(pL1.promotionOptions[0].status).to.equal(
-        PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       );
 
       expect(pL2.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
@@ -835,13 +835,15 @@ describe('PromotionOptionService', function () {
       } = email1;
       expect(status).to.equal('sent');
       expect(address).to.equal('pro1@e-potek.ch');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.include('info');
       expect(from_name).to.equal('e-Potek');
-      expect(subject).to.equal('Test promotion, Réservation annulée');
+      expect(subject).to.equal(
+        'Test promotion, Convention de réservation expirée',
+      );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'La réservation pour le lot "Lot 1" a été annulée par e-Potek.',
+        'La convention de réservation du client John Doe pour le lot Lot 1 a expiré',
       );
     });
   });
@@ -852,8 +854,8 @@ describe('PromotionOptionService', function () {
         moment().isoWeekday() <= 5
           ? moment().isoWeekday(5)
           : moment()
-            .add(1, 'weeks')
-            .isoWeekday(5);
+              .add(1, 'weeks')
+              .isoWeekday(5);
 
       const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
 

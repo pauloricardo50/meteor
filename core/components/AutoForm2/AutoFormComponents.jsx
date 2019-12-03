@@ -2,10 +2,8 @@
 import React, { useMemo } from 'react';
 import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
-import connectField from 'uniforms/connectField';
-import nothing from 'uniforms/nothing';
-import AutoField from 'uniforms-material/AutoField';
-import BoolField from 'uniforms-material/BoolField';
+import { connectField, nothing } from 'uniforms';
+import { AutoField, BoolField } from 'uniforms-material';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';

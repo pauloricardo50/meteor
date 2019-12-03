@@ -185,6 +185,7 @@ addEmailListener({
       const {
         promotionImage,
         logos,
+        promotionGuide,
       } = await FileService.listFilesForDocByCategory(promotionId);
       const coverImageUrl =
         promotionImage && promotionImage.length > 0 && promotionImage[0].url;
@@ -219,6 +220,12 @@ addEmailListener({
         });
       }
 
+      let attachments = [];
+
+      if (promotionGuide) {
+        attachments = [promotionGuide[0].Key];
+      }
+
       return internalMethod(() =>
         sendEmail.run({
           emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
@@ -231,6 +238,7 @@ addEmailListener({
             ctaUrl,
             name: user.firstName,
             invitedBy,
+            attachments,
           },
         }),
       );

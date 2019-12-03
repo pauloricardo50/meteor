@@ -277,7 +277,7 @@ export default class Security {
       return true;
     }
 
-    if (context.userId && context.userId === 'INTERAL_CALL') {
+    if (context.userId && context.userId === 'INTERNAL_CALL') {
       return true;
     }
 

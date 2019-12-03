@@ -8,12 +8,11 @@ import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants'
 import {
   reservePromotionLot,
   cancelPromotionLotReservation,
-  sellPromotionLot,
   promotionOptionUploadAgreement,
   setPromotionOptionProgress,
   promotionOptionActivateReservation,
 } from '../../methods';
-import { expirePromotionLotReservation } from '../../promotionLots/server/serverMethods';
+import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
 import { getUserNameAndOrganisation } from '../../helpers/helpers';
@@ -87,33 +86,6 @@ export const PROMOTION_EMAILS = [
     method: promotionOptionActivateReservation,
     recipients: [PROMOTION_EMAIL_RECIPIENTS.BROKER],
     emailId: EMAIL_IDS.PROMOTION_RESERVATION_ACTIVATION,
-  },
-  {
-    description: [
-      "Confirmation de réservation d'un lot -> Client",
-      "Confirmation de réservation d'un lot -> Pros",
-    ],
-    method: reservePromotionLot,
-    emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT,
-    recipients: [
-      {
-        type: PROMOTION_EMAIL_RECIPIENTS.USER,
-        emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT_USER,
-      },
-      PROMOTION_EMAIL_RECIPIENTS.BROKER,
-      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
-      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
-    ],
-  },
-  {
-    description: "Annulation de la réservation d'un lot -> Pros",
-    method: [cancelPromotionLotReservation, expirePromotionLotReservation],
-    emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
-    recipients: [
-      PROMOTION_EMAIL_RECIPIENTS.BROKER,
-      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
-      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
-    ],
   },
   {
     description: [
@@ -202,6 +174,43 @@ export const PROMOTION_EMAILS = [
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
     ],
     emailId: EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO,
+  },
+  {
+    description: [
+      "Confirmation de réservation d'un lot -> Client",
+      "Confirmation de réservation d'un lot -> Pros",
+    ],
+    method: reservePromotionLot,
+    emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT,
+    recipients: [
+      {
+        type: PROMOTION_EMAIL_RECIPIENTS.USER,
+        emailId: EMAIL_IDS.RESERVE_PROMOTION_LOT_USER,
+      },
+      PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+    ],
+  },
+  {
+    description: "Annulation de la réservation d'un lot -> Pros",
+    method: cancelPromotionLotReservation,
+    emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
+    recipients: [
+      PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+    ],
+  },
+  {
+    description:
+      "Expiration de la convention de réservation d'un client -> Pros",
+    method: expirePromotionOptionReservation,
+    emailId: EMAIL_IDS.EXPIRE_PROMOTION_RESERVATION_AGREEMENT,
+    recipients: [
+      PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+    ],
   },
 ];
 

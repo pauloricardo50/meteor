@@ -20,7 +20,7 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 
-describe('PromotionLotService', function () {
+describe('PromotionLotService', function() {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -103,7 +103,9 @@ describe('PromotionLotService', function () {
             reservationAgreement: {
               status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
             },
-            deposit: { status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID },
+            reservationDeposit: {
+              status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+            },
             bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
             simpleVerification: {
               status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
@@ -198,7 +200,7 @@ describe('PromotionLotService', function () {
         expect(
           global_merge_vars.find(({ name }) => name === 'BODY').content,
         ).to.include(
-          "Votre conseiller.ère Admin User 2 va se mettre en relation avec la Banque, l'Entreprise Générale et Pro User 1 (Org 1)",
+          'Admin User 2 va se mettre en relation avec Pro User 1 (Org 1)',
         );
       }
     });

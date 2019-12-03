@@ -1,5 +1,5 @@
 import React from 'react';
-import filterDOMProps from 'uniforms/filterDOMProps';
+import { filterDOMProps } from 'uniforms';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';

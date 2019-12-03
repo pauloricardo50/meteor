@@ -3,7 +3,7 @@ import { Random } from 'meteor/random';
 
 import React, { useState, useEffect } from 'react';
 import { compose } from 'recompose';
-import connectField from 'uniforms/connectField';
+import { connectField } from 'uniforms';
 import { injectIntl } from 'react-intl';
 
 import { SLINGSHOT_DIRECTIVE_NAME_TEMP, FILE_STATUS } from 'core/api/constants';
@@ -33,7 +33,7 @@ export default compose(
 
     const handleUploadFailed = () => {};
 
-    const handleSuccess = (file) => {
+    const handleSuccess = file => {
       onChange([...value, file.Key]);
       setCurrentValue([
         ...currentValue,

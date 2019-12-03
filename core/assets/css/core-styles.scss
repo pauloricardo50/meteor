@@ -1,13 +1,13 @@
 // This @import must be at top of file, otherwise the custom fonts will not work
-@import url('//hello.myfonts.net/count/36c4a4');
+@import url("//hello.myfonts.net/count/36c4a4");
 
-@import '{}/node_modules/normalize-scss/sass/normalize';
+@import "{}/node_modules/normalize-scss/sass/normalize";
 @include normalize();
 
-@import './variables.scss';
-@import './mixins.scss';
-@import './core-components.scss';
-@import './typography.scss';
+@import "./variables.scss";
+@import "./mixins.scss";
+@import "./core-components.scss";
+@import "./typography.scss";
 
 body,
 html,
@@ -27,7 +27,7 @@ body {
 
 // Nicer styling for a tags, removes horrible blue color
 // And avoid it if this is a button
-a:not([role='button']) {
+a:not([role="button"]) {
   cursor: pointer;
 
   color: inherit;
@@ -189,6 +189,7 @@ p.description,
   text-align: left;
 
   line-height: 1.8em;
+  white-space: pre-wrap;
 }
 
 .description > p,
@@ -317,7 +318,7 @@ p.description,
 @mixin delays($n, $step) {
   @for $i from 1 to $n {
     &-#{$step*$i} {
-      animation-delay: #{$step*$i}ms;
+      animation-delay: #{$step * $i}ms;
     }
   }
 }

@@ -83,7 +83,7 @@ describe('Migration 27', () => {
           simpleVerification,
           fullVerification,
           bank,
-          deposit,
+          reservationDeposit,
           reservationAgreement,
         }) => {
           expect(moment(simpleVerification.date).format('YYYY MM DD')).to.equal(
@@ -100,8 +100,10 @@ describe('Migration 27', () => {
           );
           expect(moment(bank.date).format('YYYY MM DD')).to.equal(today);
           expect(bank.status).to.equal(PROMOTION_OPTION_BANK_STATUS.INCOMPLETE);
-          expect(moment(deposit.date).format('YYYY MM DD')).to.equal(today);
-          expect(deposit.status).to.equal(
+          expect(moment(reservationDeposit.date).format('YYYY MM DD')).to.equal(
+            today,
+          );
+          expect(reservationDeposit.status).to.equal(
             PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
           );
           expect(
@@ -213,7 +215,7 @@ describe('Migration 27', () => {
       expect(pOs[0].bank).to.deep.include({
         status: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
       });
-      expect(pOs[0].deposit).to.deep.include({
+      expect(pOs[0].reservationDeposit).to.deep.include({
         status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
       });
     });

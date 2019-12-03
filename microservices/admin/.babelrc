@@ -1,10 +1,48 @@
 {
-  "presets": ["meteor", "@babel/preset-flow"],
+  "presets": [
+    "meteor",
+    "@babel/preset-flow"
+  ],
   "plugins": [
-    ["@babel/plugin-proposal-class-properties"],
+    [
+      "@babel/plugin-proposal-class-properties"
+    ],
     [
       "module-resolver",
-      { "root": ["."], "alias": { "core": "./imports/core" } }
-    ]
+      {
+        "root": [
+          "."
+        ],
+        "alias": {
+          "core": "./imports/core"
+        }
+      }
+    ],
+    [
+      "transform-imports",
+      {
+        "@material-ui/core": {
+          "transform": "@material-ui/core/${member}",
+          "preventFullImport": true
+        },
+        "@material-ui/icons": {
+          "transform": "@material-ui/icons/${member}",
+          "preventFullImport": true
+        },
+        "@material-ui/styles": {
+          "transform": "@material-ui/styles/${member}",
+          "preventFullImport": true
+        },
+        "uniforms": {
+          "transform": "uniforms/src/${member}",
+          "preventFullImport": true
+        },
+        "uniforms-material": {
+          "transform": "uniforms-material/src/${member}",
+          "preventFullImport": true
+        }
+      }
+    ],
+    "lodash"
   ]
 }
