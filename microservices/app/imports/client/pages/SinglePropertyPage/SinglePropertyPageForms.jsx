@@ -39,7 +39,7 @@ const SinglePropertyPageForms = ({
       <div className="flex--helper flex-justify--center">
         <AutoForm
           formClasses="user-form user-form__info"
-          inputs={getPropertyArray({ loan, borrowers, property })}
+          inputs={getPropertyArray({ loan, property })}
           collection={PROPERTIES_COLLECTION}
           doc={property}
           docId={property._id}

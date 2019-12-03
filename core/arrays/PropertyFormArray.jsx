@@ -58,15 +58,15 @@ const getOwnerOptions = ({ borrowers }) =>
 
       return isFirst || isSecond
         ? {
-            id: isFirst ? 0 : 1,
-            intlValues: {
-              name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
-            },
-          }
+          id: isFirst ? 0 : 1,
+          intlValues: {
+            name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
+          },
+        }
         : value;
     });
 
-export const getPropertyLoanArray = ({ loan, borrowers }) => {
+export const getPropertyLoanArray = ({ loan, borrowers = [] }) => {
   const r = loan;
 
   if (!r) {
@@ -127,10 +127,10 @@ const shouldDisplayFloorNumber = ({ propertyType, flatType }) =>
   flatType !== FLAT_TYPE.PENTHOUSE_MAISONETTE &&
   flatType !== FLAT_TYPE.TERRACE_APARTMENT;
 
-const shouldDisplayTerraceArea = ({ propertyType, flatType }) =>
+const shouldDisplayTerraceArea = ({ propertyType }) =>
   propertyType === PROPERTY_TYPE.FLAT;
 
-export const getPropertyArray = ({ loan, borrowers, property }) => {
+export const getPropertyArray = ({ loan, property }) => {
   const r = loan;
 
   if (!r) {

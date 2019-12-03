@@ -51,14 +51,15 @@ const isSolventForProProperty = ({
         : PROPERTY_SOLVENCY.INSOLVENT;
     }
     default:
-      return null;
+      return PROPERTY_SOLVENCY.PICK_RESIDENCE_TYPE;
   }
 };
 
 const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
-  const { maxPropertyValue, shareSolvency, ...loan } = loanObject;
+  // Remove these 2 properties from the loan
+  const { maxPropertyValue, shareSolvency, properties, ...loan } = loanObject;
 
-  const propertiesWithSolvency = loan.properties.map(property => ({
+  const propertiesWithSolvency = properties.map(property => ({
     ...property,
     solvent: isSolventForProProperty({
       isAdmin,
@@ -231,10 +232,7 @@ export const proPropertyLoansResolver = ({
 
     return [
       ...anonymousLoans,
-      ...anonymizePropertyLoans({
-        loans: commonLoans.map(handleLoanSolvencySharing({ isAdmin: false })),
-        userId: calledByUserId,
-      }),
+      ...anonymizePropertyLoans({ loans: commonLoans, userId: calledByUserId }),
     ];
   }
 };

@@ -3,10 +3,14 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import {
+  RESIDENCE_TYPE,
+  PROPERTY_CATEGORY,
+} from 'core/api/properties/propertyConstants';
 import generator from '../../../factories/index';
 import { proLoans2 } from '../../queries';
 import LoanService from '../LoanService';
-import { LOAN_STATUS } from '../../loanConstants';
+import { LOAN_STATUS, SOLVENCY_TYPE } from '../../loanConstants';
 
 describe('proLoans2', () => {
   beforeEach(() => {

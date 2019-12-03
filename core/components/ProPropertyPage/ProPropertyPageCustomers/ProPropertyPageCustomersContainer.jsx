@@ -72,6 +72,10 @@ const getSolvencyLabel = solvent => {
       props = { type: 'close', className: 'error' };
       break;
     }
+    case PROPERTY_SOLVENCY.PICK_RESIDENCE_TYPE: {
+      props = { type: 'waiting', className: 'warning' };
+      break;
+    }
     default:
       break;
   }
@@ -100,6 +104,7 @@ const makeMapLoan = ({
     anonymous,
     status,
   } = loan;
+  console.log('loan:', loan);
   const { isAdmin } = permissions;
 
   const canRemoveCustomer =
