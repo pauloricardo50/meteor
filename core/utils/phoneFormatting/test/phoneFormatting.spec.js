@@ -21,4 +21,12 @@ describe('formatPhoneNumber', () => {
   it('formats foreign numbers properly', () => {
     expect(formatPhoneNumber('+33645781457')).to.equal('+33 6 45 78 14 57');
   });
+
+  it('does not fail if undefined is passed', () => {
+    expect(formatPhoneNumber(undefined)).to.equal(undefined);
+  });
+
+  it('does not fail if null is passed', () => {
+    expect(formatPhoneNumber(null)).to.equal(null);
+  });
 });

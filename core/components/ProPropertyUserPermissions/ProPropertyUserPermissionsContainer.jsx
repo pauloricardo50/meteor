@@ -41,7 +41,7 @@ const userPermissionsSchema = ({ user }) => {
       autoFormLabel: `Permissions de ${getUserNameAndOrganisation({ user })}`,
     }),
     ...displayCustomerNamesSchema,
-  }).omit('permissions.canSellProperty', 'permissions.canBookProperty');
+  }).omit('permissions.canSellProperty', 'permissions.canReserveProperty');
 };
 
 export default withProps(({ user, propertyId }) => ({

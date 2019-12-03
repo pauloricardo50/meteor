@@ -43,8 +43,8 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
             relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
           />
         ) : (
-            loanName
-          ),
+          loanName
+        ),
       },
       {
         raw: status,
@@ -55,19 +55,19 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
         label: anonymous ? (
           'Anonyme'
         ) : (
-            <ProCustomer user={user} invitedByUser={referredByText} />
-          ),
+          <ProCustomer user={user} invitedByUser={referredByText} />
+        ),
       },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       {
         raw: relatedDocs.length ? relatedDocs[0]._id : '-',
         label: relatedDocs.length
           ? relatedDocs.map(relatedDoc => (
-            <CollectionIconLink
-              key={relatedDoc._id}
-              relatedDoc={relatedDoc}
-            />
-          ))
+              <CollectionIconLink
+                key={relatedDoc._id}
+                relatedDoc={relatedDoc}
+              />
+            ))
           : '-',
       },
     ],

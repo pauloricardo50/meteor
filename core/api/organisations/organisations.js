@@ -14,20 +14,9 @@ import {
   ORGANISATION_FEATURES,
   ORGANISATION_TAGS,
 } from './organisationConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
-
-Organisations.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-Organisations.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Organisations = createCollection(ORGANISATIONS_COLLECTION);
 
 export const OrganisationSchema = new SimpleSchema({
   name: {

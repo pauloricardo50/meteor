@@ -2,14 +2,9 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
-import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { FILE_STATUS, ROLES } from 'core/api/constants';
-import {
-  setFileStatus as setFileStatusMethod,
-  updateDocumentsCache,
-} from 'core/api/methods';
 import DialogForm from 'core/components/ModalManager/DialogForm';
 import { setFileError } from 'core/api/methods/index';
 import T from '../../Translation';
@@ -21,9 +16,7 @@ type FileStatusSetterProps = {};
 const FileStatusSetter = ({
   status = FILE_STATUS.UNVERIFIED,
   fileKey,
-  docId,
-  collection,
-  setFileStatus,
+  handleChangeFileStatus,
   error: currentError,
 }: FileStatusSetterProps) => {
   const { openModal } = useContext(ModalManagerContext);
@@ -54,7 +47,7 @@ const FileStatusSetter = ({
         label: <T id={`File.status.${stat}`} />,
         onClick: () => {
           if (stat !== FILE_STATUS.ERROR) {
-            return setFileStatus(stat);
+            return handleChangeFileStatus(stat, fileKey);
           }
 
           openModal(
@@ -72,7 +65,7 @@ const FileStatusSetter = ({
               onSubmit={({ error }) =>
                 setFileError
                   .run({ fileKey, error })
-                  .then(() => setFileStatus(stat))
+                  .then(() => handleChangeFileStatus(stat, fileKey))
               }
             />,
           );
@@ -82,9 +75,4 @@ const FileStatusSetter = ({
   );
 };
 
-export default withProps(({ fileKey, docId, collection }) => ({
-  setFileStatus: newStatus =>
-    setFileStatusMethod
-      .run({ fileKey, newStatus })
-      .then(() => updateDocumentsCache.run({ docId, collection })),
-}))(FileStatusSetter);
+export default FileStatusSetter;

@@ -6,8 +6,6 @@ import moment from 'moment';
 
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
 import { LOANS_COLLECTION } from '../../../../api/constants';
-import LoanProgressHeader from '../../../LoanProgress/LoanProgressHeader';
-import LoanProgress from '../../../LoanProgress';
 import T from '../../../Translation';
 import { CollectionIconLink } from '../../../IconLink';
 import StatusLabel from '../../../StatusLabel';
@@ -24,7 +22,6 @@ const columnOptions = [
   { id: 'customer' },
   isAdmin && { id: 'invitedBy' },
   { id: 'createdAt' },
-  { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'priorityOrder' },
   { id: 'actions' },
 ]
@@ -46,7 +43,6 @@ const getColumns = ({
     name: loanName,
     status,
     user,
-    loanProgress,
     promotionOptions = [],
     promotions,
     createdAt,
@@ -99,10 +95,6 @@ const getColumns = ({
       ),
     },
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-    {
-      raw: loanProgress.verificationStatus,
-      label: <LoanProgress loanProgress={loanProgress} />,
-    },
     {
       raw: promotionOptions.length,
       label: (

@@ -1,48 +1,81 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import { STEP_ORDER } from 'core/api/constants';
-import useMedia from 'core/hooks/useMedia';
-import DashboardProgressBarStep from './DashboardProgressBarStep';
+import {
+  STEP_ORDER,
+  STEPS,
+  PROMOTION_OPTION_STATUS,
+} from 'core/api/constants';
+import ProgressBar from 'core/components/ProgressBar';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 
-const DashboardProgressBar = ({ currentStep, variant }) => {
-  const isSmallMobile = useMedia({ maxWidth: 400 });
+const DashboardProgressBar = ({ loan, variant }) => {
+  const {
+    step: currentStep,
+    promotionOptions = [],
+    promotions,
+    maxPropertyValue,
+  } = loan;
+  let currentIndex = STEP_ORDER.indexOf(currentStep);
+  let steps = STEP_ORDER.map(step => ({
+    label: <T id={`Forms.step.${step}`} />,
+    tooltip:
+      step === STEPS.CLOSING ? (
+        <Icon type="monetizationOn" size={40} />
+      ) : (
+        <T id={`Forms.step.${step}.tooltip`} />
+      ),
+  }));
+
+  if (loan.hasPromotion) {
+    currentIndex = 0;
+    steps = [
+      'purchasingCapacity',
+      'reserveLot',
+      'confirmReservation',
+      'notarySignature',
+    ].map(id => ({
+      id,
+      label: <T id={`PromotionSteps.${id}.title`} />,
+      tooltip: (
+        <T
+          id={`PromotionSteps.${id}.tooltip`}
+          values={{ agreementDuration: promotions[0].agreementDuration }}
+        />
+      ),
+    }));
+
+    if (loan.maxPropertyValue && loan.maxPropertyValue.date) {
+      currentIndex = steps.findIndex(({ id }) => id === 'reserveLot');
+    }
+
+    if (
+      promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE)
+    ) {
+      currentIndex = steps.findIndex(({ id }) => id === 'confirmReservation');
+    }
+
+    if (
+      promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.RESERVED)
+    ) {
+      currentIndex = steps.findIndex(({ id }) => id === 'notarySignature');
+    }
+
+    if (
+      promotionOptions.find(({ status }) => status === PROMOTION_OPTION_STATUS.SOLD)
+    ) {
+      currentIndex = steps.findIndex(({ id }) => id === 'notarySignature') + 1;
+    }
+  }
 
   return (
-    <div
+    <ProgressBar
       className={cx('dashboard-progress-bar', { light: variant === 'light' })}
-    >
-      <div className="steps">
-        {STEP_ORDER.map((step, index) => (
-          <DashboardProgressBarStep
-            isDone={STEP_ORDER.indexOf(currentStep) >= index}
-            step={step}
-            key={step}
-            id={step}
-            nb={index + 1}
-            displayLabel={
-              !isSmallMobile || STEP_ORDER.indexOf(currentStep) === index
-            }
-          />
-        ))}
-      </div>
-      <div className="absolute-lines">
-        {STEP_ORDER.slice(0, -1).map((_, index) => (
-          <span
-            className={cx('line', {
-              done: STEP_ORDER.indexOf(currentStep) > index,
-            })}
-            key={index}
-          />
-        ))}
-      </div>
-    </div>
+      steps={steps}
+      currentIndex={currentIndex}
+    />
   );
-};
-
-DashboardProgressBar.propTypes = {
-  currentStep: PropTypes.string.isRequired,
 };
 
 export default DashboardProgressBar;

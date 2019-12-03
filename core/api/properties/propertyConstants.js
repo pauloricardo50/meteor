@@ -3,7 +3,7 @@ export const PROPERTIES_COLLECTION = 'properties';
 
 export const PROPERTY_STATUS = {
   FOR_SALE: 'FOR_SALE',
-  BOOKED: 'BOOKED',
+  RESERVED: 'RESERVED',
   SOLD: 'SOLD',
 };
 
@@ -91,7 +91,7 @@ export const PROPERTY_PERMISSIONS_FULL_ACCESS = {
   canModifyProperty: true,
   canManagePermissions: true,
   canSellProperty: true,
-  canBookProperty: true,
+  canReserveProperty: true,
   displayCustomerNames: {
     forPropertyStatus: Object.values(PROPERTY_STATUS),
     referredBy: PROPERTY_REFERRED_BY_TYPE.ANY,

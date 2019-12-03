@@ -21,7 +21,6 @@ type AppPromotionLotPageProps = {
   promotionLot: Object,
   loan: Object,
   promotionId: String,
-  setCustom: Function,
 };
 
 export const AppPromotionLotPage = ({
@@ -29,7 +28,6 @@ export const AppPromotionLotPage = ({
   promotionLot,
   loan: { _id: loanId },
   promotionId,
-  setCustom,
 }: AppPromotionLotPageProps) => {
   const {
     name,
@@ -39,7 +37,7 @@ export const AppPromotionLotPage = ({
     documents,
     properties,
   } = promotionLot;
-  const { custom, attributedToMe } = promotionOption || {};
+  const { attributedToMe } = promotionOption || {};
   const property = properties.length > 0 && properties[0];
   const { description } = property;
 
@@ -81,23 +79,6 @@ export const AppPromotionLotPage = ({
           ))}
         </div>
         <PromotionLotRecapTable promotionLot={promotionLot} />
-
-        {setCustom && (
-          <>
-            <h4>
-              <T id="Forms.promotionOptions.custom" />
-            </h4>
-            <ClickToEditField
-              placeholder={<T id="Forms.promotionOptions.custom.placeholder" />}
-              value={custom}
-              onSubmit={setCustom}
-              className="custom-edit"
-              allowEditing={
-                !attributedToMe && promotion.status === PROMOTION_STATUS.OPEN
-              }
-            />
-          </>
-        )}
 
         <DocumentDownloadList
           files={documents && documents.promotionPropertyDocuments}

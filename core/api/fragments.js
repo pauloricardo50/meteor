@@ -94,6 +94,8 @@ export const adminBorrower = () => ({
   user: appUser(),
 });
 
+export const fullBorrower = adminBorrower;
+
 // //
 // // Contact fragments
 // //
@@ -115,6 +117,8 @@ export const contact = () => ({
   offers: { _id: 1 },
   country: 1,
 });
+
+export const fullContact = contact;
 
 // //
 // // InterestRate fragments
@@ -286,7 +290,6 @@ export const loan = () => ({
   },
   updatedAt: 1,
   userId: 1,
-  verificationStatus: 1,
   shareSolvency: 1,
   simpleBorrowersForm: 1,
 });
@@ -605,16 +608,21 @@ export const appPromotionLot = () => ({
 // // PromotionOption fragments
 // //
 export const fullPromotionOption = () => ({
-  agreementStatus: 1,
+  bank: 1,
   canton: 1,
   createdAt: 1,
-  custom: 1,
-  depositStatus: 1,
+  reservationDeposit: 1,
+  reservationDepositStatus: 1,
+  documents: 1,
   loan: { name: 1 },
   lots: { name: 1, type: 1, status: 1, description: 1 },
+  simpleVerification: 1,
+  fullVerification: 1,
   priority: 1,
   promotionLots: { name: 1, promotion: { name: 1 } },
+  reservationAgreement: 1,
   solvency: 1,
+  status: 1,
   updatedAt: 1,
 });
 
@@ -625,37 +633,48 @@ export const proPromotionOption = () => ({
     solvency: 1,
     status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
-    promotions: { users: { _id: 1, name: 1, organisations: { name: 1 } } },
+    promotions: {
+      users: { _id: 1, name: 1, organisations: { name: 1 } },
+      agreementDuration: 1,
+    },
     promotionOptions: {
       name: 1,
       promotionLots: { attributedTo: { user: { _id: 1 } }, status: 1 },
       solvency: 1,
+      loan: { loanProgress: 1 },
     },
     loanProgress: 1,
   },
-  promotion: { users: { _id: 1 } },
-  proNote: 1,
+  promotion: { users: { _id: 1 }, agreementDuration: 1 },
 });
 
 export const appPromotionOption = () => ({
-  agreementStatus: 1,
   attributedToMe: 1,
+  bank: 1,
   canton: 1,
   createdAt: 1,
-  custom: 1,
-  depositStatus: 1,
+  reservationDeposit: 1,
+  reservationDepositStatus: 1,
+  documents: 1,
+  loan: {
+    user: { _id: 1 },
+    promotions: { _id: 1, users: { name: 1, organisations: { name: 1 } } },
+  },
   lots: { description: 1, name: 1, type: 1, value: 1 },
-  promotionLots: appPromotionLot(),
+  simpleVerification: 1,
+  fullVerification: 1,
   priority: 1,
+  promotionLots: appPromotionLot(),
+  reservationAgreement: 1,
   solvency: 1,
+  status: 1,
   updatedAt: 1,
-  loan: { user: { _id: 1 } },
 });
 
 export const loanPromotionOption = () => ({
   ...appPromotionOption(),
   name: 1,
-  promotion: 1,
+  promotion: { name: 1 },
   promotionLots: {
     name: 1,
     status: 1,
@@ -674,7 +693,8 @@ export const basePromotion = () => ({
   address: 1,
   address1: 1,
   availablePromotionLots: 1,
-  bookedPromotionLots: 1,
+  agreementDuration: 1,
+  reservedPromotionLots: 1,
   canton: 1,
   city: 1,
   constructionTimeline: 1,
@@ -709,6 +729,7 @@ export const basePromotion = () => ({
     email: 1,
     roles: 1,
     phoneNumber: 1,
+    phoneNumbers: 1,
     organisations: { name: 1 },
   },
   zipCode: 1,
@@ -927,6 +948,9 @@ export const task = () => ({
   assignee: simpleUser(),
   loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
   user: { name: 1 },
+  promotion: { name: 1 },
+  lender: { name: 1 },
+  organisation: { name: 1 },
 });
 
 // //

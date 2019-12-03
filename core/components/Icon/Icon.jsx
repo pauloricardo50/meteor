@@ -85,8 +85,12 @@ import DragHandle from '@material-ui/icons/DragHandle';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import MarkunreadMailbox from '@material-ui/icons/MarkunreadMailbox';
 import ViewWeek from '@material-ui/icons/ViewWeek';
+import Schedule from '@material-ui/icons/Schedule';
+import Send from '@material-ui/icons/Send';
 import Airplay from '@material-ui/icons/Airplay';
 import HowToReg from '@material-ui/icons/HowToReg';
+
+import colors from '../../config/colors';
 
 export const iconMap = {
   close: CloseIcon,
@@ -172,9 +176,13 @@ export const iconMap = {
   priorityHigh: PriorityHigh,
   markunreadMailbox: MarkunreadMailbox,
   viewWeek: ViewWeek,
+  schedule: Schedule,
+  send: Send,
   airplay: Airplay,
   howToReg: HowToReg,
 };
+
+const getColorStyle = color => ({ color: colors[color], fill: colors[color] });
 
 const Icon = React.forwardRef(
   (
@@ -185,28 +193,35 @@ const Icon = React.forwardRef(
       tooltipPlacement,
       style = {},
       badgeContent,
+      color,
       ...props
     },
     ref,
   ) => {
+    let icon;
     const iconStyle = {
+      ...(color ? getColorStyle(color) : {}),
       ...style,
       ...(size ? { width: size, height: size } : {}),
     };
 
     if (type !== null && typeof type === 'object') {
-      return React.cloneElement(type, { style: iconStyle });
+      icon = React.cloneElement(type, { style: iconStyle });
+    } else if (typeof type === 'string') {
+      const MyIcon = iconMap[type];
+
+      if (!MyIcon) {
+        throw new Error(`invalid icon type: ${type}`);
+      } else if (MyIcon.component) {
+        icon = <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
+      } else {
+        icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
+      }
+    } else {
+      throw new Error(
+        `Icon type must be a string or a Fontawesome icon, but got ${type} instead`,
+      );
     }
-
-    const MyIcon = iconMap[type];
-
-    if (!MyIcon) {
-      throw new Error(`invalid icon type: ${type}`);
-    } else if (MyIcon.component) {
-      return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
-    }
-
-    let icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
 
     if (tooltip) {
       icon = (

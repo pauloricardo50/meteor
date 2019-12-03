@@ -1,4 +1,6 @@
 import { Factory } from 'meteor/dburles:factory';
+import { Random } from 'meteor/random';
+
 import faker from 'faker';
 
 import {
@@ -70,14 +72,6 @@ Factory.define('admin', Users, {
   phoneNumbers: [TEST_PHONE],
 });
 
-Factory.define('adminEpotek', Users, {
-  roles: [ROLES.ADMIN],
-  emails: () => [{ address: 'dev@e-potek.ch', verified: true }],
-  lastName: 'e-Potek',
-  firstName: 'Dev',
-  phoneNumbers: [TEST_PHONE],
-});
-
 Factory.define('pro', Users, {
   roles: [ROLES.PRO],
   emails: () => [{ address: faker.internet.email(), verified: false }],
@@ -133,10 +127,32 @@ Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
   zipCode: 1201,
+  agreementDuration: 14,
+  city: 'Genève',
+  assignedEmployeeId: () => {
+    const adminId = Users.insert({
+      roles: [ROLES.ADMIN],
+      emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
+      lastName: TEST_LASTNAME,
+      firstName: TEST_FIRSTNAME,
+      phoneNumbers: [TEST_PHONE],
+    });
+
+    return adminId;
+  },
 });
 
 Factory.define('promotionOption', PromotionOptions, {});
-Factory.define('promotionLot', PromotionLots, {});
+Factory.define('promotionLot', PromotionLots, {
+  propertyLinks: () => {
+    const propertyId = Properties.insert({
+      address1: 'Rue du parc 1',
+      value: 1000000,
+      name: 'Lot A',
+    });
+    return [{ _id: propertyId }];
+  },
+});
 
 Factory.define('lot', Lots, {
   name: 'test',

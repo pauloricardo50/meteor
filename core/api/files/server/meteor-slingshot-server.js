@@ -6,10 +6,13 @@ import { COLLECTIONS } from '../../constants';
 import SecurityService from '../../security';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
+  SLINGSHOT_DIRECTIVE_NAME_TEMP,
   MAX_FILE_SIZE,
   ALLOWED_FILE_TYPES,
+  ALLOWED_FILE_TYPES_TEMP,
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
+import uploadDirectiveTemp from './uploadDirectiveTemp';
 import FileService from './FileService';
 
 // export const getS3FileKey = (file, { docId, id }) =>
@@ -52,4 +55,25 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
     return true;
   },
   key: FileService.getS3FileKey,
+});
+
+Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME_TEMP, uploadDirectiveTemp, {
+  maxSize: MAX_FILE_SIZE,
+  allowedFileTypes: ALLOWED_FILE_TYPES_TEMP,
+  authorize() {
+    // Don't use arrow function, this is the current object here
+
+    // Deny uploads if user is not logged in.
+    if (!this.userId) {
+      throw new Meteor.Error(
+        'Login Required',
+        'Please login before uploading files',
+      );
+    }
+
+    return true;
+  },
+  key(...args) {
+    return FileService.getTempS3FileKey(this.userId, ...args);
+  },
 });

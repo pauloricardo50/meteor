@@ -25,13 +25,6 @@ export const loanDelete = new Method({
   },
 });
 
-export const requestLoanVerification = new Method({
-  name: 'requestLoanVerification',
-  params: {
-    loanId: String,
-  },
-});
-
 export const confirmClosing = new Method({
   name: 'confirmClosing',
   params: {

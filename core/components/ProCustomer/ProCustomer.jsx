@@ -11,6 +11,10 @@ type ProCustomerProps = {};
 const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
   const { _id, name, phoneNumbers = ['-'], email, assignedEmployee } = user;
   const isPro = Meteor.microservice === 'pro';
+  const assigneeNumber =
+    assignedEmployee &&
+    assignedEmployee.phoneNumbers &&
+    assignedEmployee.phoneNumbers[0];
 
   return (
     <CollectionIconLink
@@ -59,9 +63,7 @@ const ProCustomer = ({ user, invitedByUser }: ProCustomerProps) => {
 
                         <div>
                           <b>Tél:</b>{' '}
-                          <a href={`tel:${assignedEmployee.phoneNumbers[0]}`}>
-                            {assignedEmployee.phoneNumbers[0]}
-                          </a>
+                          <a href={`tel:${assigneeNumber}`}>{assigneeNumber}</a>
                         </div>
                       </div>
                     )

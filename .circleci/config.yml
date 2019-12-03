@@ -74,6 +74,7 @@ jobs:
       - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor backend
           key: 'meteor_microservice_master_1_backend-{{ .Branch }}-{{ .Revision }}'
@@ -140,7 +141,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/www && meteor npm run test-ci
-          no_output_timeout: 15m
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -219,7 +220,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/app && meteor npm run test-ci
-          no_output_timeout: 15m
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -298,7 +299,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/admin && meteor npm run test-ci
-          no_output_timeout: 15m
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -377,7 +378,7 @@ jobs:
       - run:
           name: Run unit tests
           command: cd ./microservices/pro && meteor npm run test-ci
-          no_output_timeout: 15m
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -459,6 +460,7 @@ jobs:
 
                     cd ./microservices/www && meteor npm run test-e2e-ci
                     
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -540,6 +542,7 @@ jobs:
 
                     cd ./microservices/app && meteor npm run test-e2e-ci
                     
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -621,6 +624,7 @@ jobs:
 
                     cd ./microservices/admin && meteor npm run test-e2e-ci
                     
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -702,6 +706,7 @@ jobs:
 
                     cd ./microservices/pro && meteor npm run test-e2e-ci
                     
+          no_output_timeout: 30m
       - save_cache:
           name: Cache meteor system
           key: >-

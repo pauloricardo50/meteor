@@ -67,12 +67,13 @@ const runTestsCommand = (name, testsType) => {
         `
         cd ./microservices/${name} && meteor npm run test-e2e-ci
         `,
+        '30m',
       );
     case 'unit':
       return runCommand(
         'Run unit tests',
         `cd ./microservices/${name} && meteor npm run test-ci`,
-        '15m',
+        '30m',
       );
     default:
       throw new Error(`Unknown tests type: ${testsType}`);
@@ -136,7 +137,7 @@ const makePrepareJob = () => ({
       'Install node_modules',
       'meteor npm --prefix microservices/backend ci',
     ),
-    runCommand('Build backend', './scripts/circleci/build_backend.sh'),
+    runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
     saveCache(
       'Cache meteor backend',
       cacheKeys.meteorMicroservice('backend'),

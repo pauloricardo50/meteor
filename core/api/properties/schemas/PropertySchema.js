@@ -24,7 +24,7 @@ export const propertyPermissionsSchema = {
   canModifyProperty: SCHEMA_BOOLEAN,
   canManagePermissions: SCHEMA_BOOLEAN,
   canSellProperty: SCHEMA_BOOLEAN,
-  canBookProperty: SCHEMA_BOOLEAN,
+  canReserveProperty: SCHEMA_BOOLEAN,
   displayCustomerNames: {
     type: SimpleSchema.oneOf(Boolean, Object),
     optional: true,

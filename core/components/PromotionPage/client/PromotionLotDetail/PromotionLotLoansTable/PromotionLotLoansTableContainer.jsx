@@ -7,34 +7,24 @@ import { withRouter } from 'react-router-dom';
 
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
 import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
-import { LOANS_COLLECTION } from '../../../../../api/constants';
-import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
+import {
+  LOANS_COLLECTION,
+  PROMOTION_OPTIONS_COLLECTION,
+} from '../../../../../api/constants';
 import T from '../../../../Translation';
 import { CollectionIconLink } from '../../../../IconLink';
-import LoanProgress from '../../../../LoanProgress';
-import LoanProgressHeader from '../../../../LoanProgress/LoanProgressHeader';
 import StatusLabel from '../../../../StatusLabel';
 import PromotionCustomer from '../../PromotionCustomer';
-import PromotionLotAttributer from './PromotionLotAttributer';
+import PromotionLotReservation from './PromotionLotReservation';
 import PriorityOrder from './PriorityOrder';
 
-const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
+const getColumns = ({ promotionLot, promotionOption }) => {
   const {
     _id: promotionLotId,
-    status: lotStatus,
     promotion: { _id: promotionId },
-    attributedTo,
-    name,
   } = promotionLot;
-  const { loan, custom, createdAt, solvency } = promotionOption;
-  const {
-    _id: loanId,
-    status,
-    user,
-    loanProgress,
-    promotionOptions = [],
-    promotions,
-  } = loan;
+  const { loan, createdAt, status: promotionOptionStatus } = promotionOption;
+  const { status, user, promotionOptions = [], promotions } = loan;
 
   const promotion = promotions.find(({ _id }) => _id === promotionId);
 
@@ -42,11 +32,6 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     $metadata: { invitedBy },
     users: promotionUsers = [],
   } = promotion;
-
-  const customerOwnerType = getPromotionCustomerOwnerType({
-    invitedBy,
-    currentUser,
-  });
 
   return [
     <CollectionIconLink
@@ -56,7 +41,19 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     />,
     {
       raw: status,
-      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      label: (
+        <>
+          <StatusLabel
+            status={status}
+            collection={LOANS_COLLECTION}
+            className="mr-8"
+          />
+          <StatusLabel
+            status={promotionOptionStatus}
+            collection={PROMOTION_OPTIONS_COLLECTION}
+          />
+        </>
+      ),
     },
     {
       raw: user.name,
@@ -70,11 +67,6 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     },
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
-      raw: loanProgress.verificationStatus,
-      label: <LoanProgress loanProgress={loanProgress} />,
-    },
-    custom,
-    {
       raw: promotionOptions.length,
       label: (
         <PriorityOrder
@@ -85,28 +77,21 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
         />
       ),
     },
-    <PromotionLotAttributer
-      promotionLotId={promotionLotId}
-      loanId={loanId}
-      promotionLotStatus={lotStatus}
-      attributedToId={attributedTo && attributedTo._id}
-      userName={user && user.name}
-      solvency={solvency}
-      promotionLotName={name}
-      currentUser={currentUser}
+    <PromotionLotReservation
+      loan={loan}
       promotion={promotion}
-      customerOwnerType={customerOwnerType}
+      promotionOption={promotionOption}
       key="promotionLotAttributer"
     />,
   ];
 };
 
-const makeMapOption = ({ promotionLot, currentUser }) => promotionOption => {
+const makeMapOption = ({ promotionLot }) => promotionOption => {
   const { _id: promotionOptionId } = promotionOption;
 
   return {
     id: promotionOptionId,
-    columns: getColumns({ promotionLot, promotionOption, currentUser }),
+    columns: getColumns({ promotionLot, promotionOption }),
   };
 };
 
@@ -115,8 +100,6 @@ const columnOptions = [
   { id: 'status', label: <T id="Forms.status" /> },
   { id: 'customer' },
   { id: 'date' },
-  { id: 'loanProgress', label: <LoanProgressHeader /> },
-  { id: 'custom' },
   { id: 'priorityOrder' },
   { id: 'attribute' },
 ].map(({ id, label }) => ({
@@ -125,10 +108,9 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
+  mapProps(({ promotionOptions = [], promotionLot }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
-    currentUser,
   })),
   withSmartQuery({
     query: proPromotionOptions,
@@ -137,8 +119,8 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
-    rows: promotionOptions.map(makeMapOption({ promotionLot, currentUser })),
+  withProps(({ promotionOptions = [], promotionLot }) => ({
+    rows: promotionOptions.map(makeMapOption({ promotionLot })),
     columnOptions,
   })),
 );

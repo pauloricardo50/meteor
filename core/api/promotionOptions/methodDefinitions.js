@@ -6,6 +6,7 @@ export const promotionOptionInsert = new Method({
   params: {
     promotionLotId: String,
     loanId: String,
+    promotionId: String,
   },
 });
 
@@ -32,4 +33,30 @@ export const increaseOptionPriority = new Method({
 export const reducePriorityOrder = new Method({
   name: 'reducePriorityOrder',
   params: { promotionOptionId: String },
+});
+
+export const setPromotionOptionProgress = new Method({
+  name: 'setPromotionOptionProgress',
+  params: { promotionOptionId: String, object: Object, id: String },
+});
+
+export const promotionOptionActivateReservation = new Method({
+  name: 'promotionOptionActivateReservation',
+  params: { promotionOptionId: String },
+});
+
+export const promotionOptionUploadAgreement = new Method({
+  name: 'promotionOptionUploadAgreement',
+  params: {
+    promotionOptionId: String,
+    startDate: Match.OneOf(String, Date),
+    agreementFileKeys: Array,
+  },
+});
+
+export const promotionOptionAddToWaitList = new Method({
+  name: 'promotionOptionAddToWaitList',
+  params: {
+    promotionOptionId: String,
+  },
 });

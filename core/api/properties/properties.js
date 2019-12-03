@@ -1,22 +1,8 @@
-import { Mongo } from 'meteor/mongo';
 import * as propertyConstants from './propertyConstants';
 import PropertySchema from './schemas/PropertySchema';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Properties = new Mongo.Collection(
-  propertyConstants.PROPERTIES_COLLECTION,
-);
-
-// Prevent all client side modifications of mongoDB
-Properties.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-Properties.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Properties = createCollection(propertyConstants.PROPERTIES_COLLECTION);
 
 // Attach schema
 Properties.attachSchema(PropertySchema);

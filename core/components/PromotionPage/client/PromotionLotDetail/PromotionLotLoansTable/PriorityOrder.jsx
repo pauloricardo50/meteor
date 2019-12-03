@@ -5,7 +5,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { createRoute } from '../../../../../utils/routerUtils';
 import Chip from '../../../../Material/Chip';
 import Link from '../../../../Link';
-import PromotionOptionSolvency from './PromotionOptionSolvency';
 
 type PriorityOrderProps = {};
 
@@ -74,7 +73,7 @@ const PriorityOrder = ({
                 clickable
                 label={name}
                 className={chipColor}
-                icon={<PromotionOptionSolvency solvency={solvency} />}
+                // icon={<PromotionOptionSolvency solvency={solvency} />}
                 style={{ cursor: 'pointer' }}
               />
             </Tooltip>

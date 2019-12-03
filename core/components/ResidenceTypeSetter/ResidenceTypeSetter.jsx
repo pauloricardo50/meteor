@@ -16,6 +16,7 @@ const ResidenceTypeSetter = ({
   image,
   onSubmitCallback,
   noIcon = false,
+  text = <T id="Forms.propertyPage.residenceTypeSetter.text" />
 }: ResidenceTypeSetterProps) => {
   const { residenceType } = loan;
   return (
@@ -24,7 +25,7 @@ const ResidenceTypeSetter = ({
       <div className="flex-col">
         {!residenceType && (
           <p>
-            <T id="Forms.propertyPage.residenceTypeSetter.text" />
+            {text}
           </p>
         )}
         <UpdateField

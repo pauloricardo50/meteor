@@ -12,13 +12,15 @@ const BorrowersForm = (props: BorrowersFormProps) => {
   const { loan, tabs, openBorrowersForm } = props;
   const { borrowers = [], _id: loanId, simpleBorrowersForm } = loan;
 
+  const hasBorrowers = !!borrowers.length;
+
   return (
     <div className="borrowers-form">
-      {!!borrowers.length && (
+      {hasBorrowers && (
         <SimpleFormSwitch simpleForm={simpleBorrowersForm} loanId={loanId} />
       )}
 
-      {!borrowers.length ? (
+      {!hasBorrowers ? (
         <BorrowersAdder loanId={loanId} />
       ) : (
         <Tabs

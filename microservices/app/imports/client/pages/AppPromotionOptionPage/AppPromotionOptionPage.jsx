@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 
-import { withSmartQuery, promotionOptionUpdate } from 'core/api';
+import { withSmartQuery } from 'core/api';
 import { appPromotionOption } from 'core/api/promotionOptions/queries';
 import withMatchParam from 'core/containers/withMatchParam';
 import { AppPromotionLotPage } from '../AppPromotionLotPage/AppPromotionLotPage';
@@ -13,14 +13,7 @@ export default compose(
     queryOptions: { reactive: true, single: true },
     dataName: 'promotionOption',
   }),
-  withProps(
-    ({ promotionOption: { _id: promotionOptionId, promotionLots } }) => ({
-      promotionLot: promotionLots[0],
-      setCustom: value =>
-        promotionOptionUpdate.run({
-          promotionOptionId,
-          object: { custom: value },
-        }),
-    }),
-  ),
+  withProps(({ promotionOption: { promotionLots } }) => ({
+    promotionLot: promotionLots[0],
+  })),
 )(AppPromotionLotPage);

@@ -5,6 +5,7 @@ import {
   getCurrentUserPermissionsForPromotion,
 } from '../../promotions/promotionClientHelpers';
 import { hasMinimumRole } from './generalSecurityHelpers';
+import { ANONYMIZED_STRING } from '../constants';
 
 const checkPromotionPermissions = ({
   promotion,
@@ -175,14 +176,14 @@ export const isAllowedToRemovePromotionLots = ({ promotion, currentUser }) => {
   return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
-export const isAllowedToBookPromotionLots = ({ promotion, currentUser }) => {
+export const isAllowedToReservePromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const requiredPermissions = { canBookLots: true };
+  const requiredPermissions = { canReserveLots: true };
 
   return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
-export const isAllowedToBookPromotionLotToCustomer = ({
+export const isAllowedToReservePromotionLotToCustomer = ({
   promotion,
   currentUser,
   customerOwnerType,
@@ -197,21 +198,12 @@ export const isAllowedToBookPromotionLotToCustomer = ({
     promotionId,
   });
   return (
-    isAllowedToBookPromotionLots({ promotion, currentUser }) &&
+    isAllowedToReservePromotionLots({ promotion, currentUser }) &&
     !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
-export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
-  const { _id: userId } = currentUser;
-  const requiredPermissions = {
-    canSellLots: true,
-  };
-
-  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
-};
-
-export const isAllowedToSellPromotionLotToCustomer = ({
+export const isAllowedToManageCustomerPromotionReservation = ({
   promotion,
   currentUser,
   customerOwnerType,
@@ -225,10 +217,7 @@ export const isAllowedToSellPromotionLotToCustomer = ({
     currentUser,
     promotionId,
   });
-  return (
-    isAllowedToSellPromotionLots({ promotion, currentUser }) &&
-    !shouldAnonymize({ customerOwnerType, permissions })
-  );
+  return !shouldAnonymize({ customerOwnerType, permissions });
 };
 
 export const isAllowedToSeeManagement = ({ promotion, currentUser }) => {

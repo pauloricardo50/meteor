@@ -153,6 +153,7 @@ const CollectionIconLink = ({
   data,
   replacementPopup,
   noRoute,
+  iconStyle,
   children,
   onClick,
 }: CollectionIconLinkProps) => {
@@ -186,6 +187,7 @@ const CollectionIconLink = ({
           className="collection-icon"
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
+          iconStyle={iconStyle}
           showIcon={showIcon}
           noRoute={noRoute}
           onClick={onClick}
@@ -204,6 +206,7 @@ const CollectionIconLink = ({
       stopPropagation={stopPropagation}
       className="collection-icon"
       iconClassName={iconClassName}
+      iconStyle={iconStyle}
       showIcon={showIcon}
       noIcon
       noRoute={noRoute}

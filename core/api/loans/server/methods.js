@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import { sendEmailToAddress } from 'core/api/methods/index';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { internalMethod } from '../../methods/server/methodHelpers';
+import { EMAIL_IDS } from '../../email/emailConstants';
+import { sendEmailToAddress } from '../../email/server/methods';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
-
 import Security from '../../security/Security';
 import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
@@ -11,7 +11,6 @@ import {
   loanInsert,
   loanUpdate,
   loanDelete,
-  requestLoanVerification,
   confirmClosing,
   pushLoanValue,
   popLoanValue,
@@ -57,11 +56,6 @@ loanUpdate.setHandler((context, { loanId, object }) => {
 loanDelete.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
   return LoanService.remove({ loanId });
-});
-
-requestLoanVerification.setHandler((context, { loanId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.askVerification({ loanId });
 });
 
 confirmClosing.setHandler((context, { loanId, object }) => {
@@ -161,7 +155,6 @@ switchBorrower.setHandler((context, params) => {
 sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
   const { userId } = context;
   Security.checkUserIsAdmin(userId);
-  context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
 
@@ -194,7 +187,6 @@ setLoanStep.setHandler((context, params) => {
     Security.checkUserIsAdmin(context.userId);
   }
 
-  context.unblock();
   return LoanService.setStep(params);
 });
 
@@ -302,9 +294,11 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
 
 sendLoanChecklist.setHandler(({ userId }, { address, emailParams }) => {
   SecurityService.checkUserIsAdmin(userId);
-  return sendEmailToAddress.run({
-    address,
-    emailId: EMAIL_IDS.LOAN_CHECKLIST,
-    params: emailParams,
-  });
+  return internalMethod(() =>
+    sendEmailToAddress.run({
+      address,
+      emailId: EMAIL_IDS.LOAN_CHECKLIST,
+      params: emailParams,
+    }),
+  );
 });

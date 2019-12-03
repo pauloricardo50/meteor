@@ -98,7 +98,7 @@ describe('REST: updateProperty', function() {
       propertyId: 'prop',
       body: update,
     }).then(response => {
-      const property = PropertyService.get('prop');
+      const property = PropertyService.findOne('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
       expect(status).to.equal(200);
@@ -115,7 +115,7 @@ describe('REST: updateProperty', function() {
       propertyId: 'extId',
       body: update,
     }).then(response => {
-      const property = PropertyService.get('prop');
+      const property = PropertyService.findOne('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
       expect(status).to.equal(200);
@@ -140,7 +140,7 @@ describe('REST: updateProperty', function() {
       body: update,
       impersonateUser: 'pro@org.com',
     }).then(response => {
-      const property = PropertyService.get('prop');
+      const property = PropertyService.findOne('prop');
       expect(property.value).to.equal(update.value);
       const { status, message, property: returnedProperty } = response;
       expect(status).to.equal(200);

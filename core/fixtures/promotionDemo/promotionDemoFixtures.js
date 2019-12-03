@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-import { Roles } from 'meteor/alanning:roles';
+
 import range from 'lodash/range';
 import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
+import { proPromotion } from 'core/api/fragments';
 import LoanService from '../../api/loans/server/LoanService';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';
@@ -17,8 +17,10 @@ import {
   PROMOTION_TYPES,
   PROMOTION_STATUS,
   ROLES,
+  PROMOTION_USERS_ROLES,
 } from '../../api/constants';
 import { properties } from './data';
+import { addUser } from '../userFixtures';
 
 const DEMO_PROMOTION = {
   name: 'Pré Polly',
@@ -41,6 +43,7 @@ const DEMO_PROMOTION = {
       phoneNumber: '+41 58 999 21 21',
     },
   ],
+  agreementDuration: 30,
 };
 
 const createLots = promotionId => {
@@ -85,6 +88,7 @@ const addPromotionOptions = (loanId, promotion) => {
       const promotionOptionId = PromotionOptionService.insert({
         loanId,
         promotionLotId,
+        promotionId: promotion._id,
       });
       return promotionOptionId;
     },
@@ -96,7 +100,10 @@ const createUsers = async ({
   promotionId,
   promotion,
   withInvitedBy,
+  proIds = [],
 }) => {
+  const brokerIds = proIds.slice(0, 2);
+
   console.log('creating users');
   const promises = [];
   for (let i = 0; i < range(users).length; i += 1) {
@@ -131,7 +138,7 @@ const createUsers = async ({
         promotionId,
         userId: promotionCustomerId,
         sendInvitation: false,
-        ...(withInvitedBy ? { pro: { _id: Meteor.userId() } } : {}),
+        pro: { _id: withInvitedBy ? Meteor.userId() : shuffle(brokerIds)[0] },
       }).then(loanId => {
         const promotionOptionIds = addPromotionOptions(loanId, promotion);
         LoanService.setPromotionPriorityOrder({
@@ -146,6 +153,23 @@ const createUsers = async ({
   await Promise.all(promises);
 };
 
+const addPromotionPros = ({ promotionId }) => {
+  const users = [
+    { email: 'broker1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.BROKER] },
+    { email: 'broker2@e-potek.ch', roles: [PROMOTION_USERS_ROLES.BROKER] },
+    { email: 'promoter1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.PROMOTER] },
+    { email: 'visitor1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.VISITOR] },
+    { email: 'notary1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.NOTARY] },
+  ];
+
+  return users.map(({ email, roles }) => {
+    const userId = addUser({ email, role: ROLES.PRO });
+    PromotionService.addProUser({ promotionId, userId });
+    PromotionService.updateUserRoles({ promotionId, userId, roles });
+    return userId;
+  });
+};
+
 export const createPromotionDemo = async (
   userId,
   addCurrentUser,
@@ -154,15 +178,22 @@ export const createPromotionDemo = async (
   withInvitedBy = false,
 ) => {
   console.log('Creating promotion demo...');
+  const admin = UserService.fetchOne({ $filters: { roles: ROLES.ADMIN } });
+
+
+  console.log('admin:', admin);
   const promotionId = PromotionService.insert({
-    promotion: DEMO_PROMOTION,
+    promotion: { ...DEMO_PROMOTION, assignedEmployeeId: admin && admin._id },
     userId,
   });
 
   console.log('creating lots');
   createLots(promotionId);
 
-  const promotion = PromotionService.get(promotionId);
+  const promotion = PromotionService.findOne(promotionId);
+
+  console.log('Adding promotion Pros');
+  const proIds = addPromotionPros({ promotionId });
 
   if (addCurrentUser) {
     console.log('Adding current user');
@@ -171,6 +202,7 @@ export const createPromotionDemo = async (
       promotionId,
       userId: Meteor.userId(),
       sendInvitation: false,
+      pro: { _id: proIds[0] },
     });
     if (withPromotionOptions) {
       const promotionOptionIds = addPromotionOptions(loanId, promotion);
@@ -187,6 +219,7 @@ export const createPromotionDemo = async (
     promotionId,
     promotion,
     withInvitedBy,
+    proIds,
   });
 
   console.log('Done creating promotion');

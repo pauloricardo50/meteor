@@ -5,28 +5,16 @@ import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
 import FileStatusIcon from './FileStatusIcon';
-import AdditionalDocModifier from './AdditionalDocModifier';
 
 const Title = ({
-  fileMeta: {
-    id,
-    label,
-    noTooltips,
-    tooltipSuffix,
-    required,
-    requiredByAdmin,
-    category,
-  },
+  fileMeta: { id, label, noTooltips, tooltipSuffix, required },
   doubleTooltip,
   currentValue,
   displayFull,
-  showFull,
-  hideFull,
-  collection,
-  docId,
-  canModify,
+  toggleDisplayFull,
+  uploaderTopRight,
 }) => {
-  // Construct the custom tooltip id for this file
+  // Construct the custom toocanModifyltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
 
   return (
@@ -54,20 +42,14 @@ const Title = ({
           />
         </h5>
       </div>
-      {canModify && (
-        <AdditionalDocModifier
-          collection={collection}
-          docId={docId}
-          additionalDoc={{ id, label, requiredByAdmin, category }}
-        />
-      )}
+      {uploaderTopRight}
 
       <IconButton
         type={displayFull ? 'up' : 'down'}
         onClick={event => {
           // Don't trigger the file upload due to the <label /> in FileDropper
           event.preventDefault();
-          return displayFull ? hideFull() : showFull();
+          return toggleDisplayFull();
         }}
       />
     </div>
@@ -80,11 +62,10 @@ Title.propTypes = {
   doubleTooltip: PropTypes.bool,
   fileMeta: PropTypes.object.isRequired,
   handleRemove: PropTypes.func.isRequired,
-  hideFull: PropTypes.func.isRequired,
   label: PropTypes.string,
   noTooltips: PropTypes.bool,
   required: PropTypes.bool,
-  showFull: PropTypes.func.isRequired,
+  toggleDisplayFull: PropTypes.func.isRequired,
   tooltipSuffix: PropTypes.string,
   userIsAdmin: PropTypes.bool.isRequired,
 };

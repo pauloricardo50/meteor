@@ -1,14 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import Intl from 'core/utils/server/intl';
+import SecurityService from '../../security';
+import Intl from '../../../utils/server/intl';
+import ServerEventService from '../../events/server/ServerEventService';
+import { ROLES } from '../../constants';
 import {
   FROM_DEFAULT,
   CTA_URL_DEFAULT,
   EMAIL_I18N_NAMESPACE,
   EMAIL_PARTS,
 } from '../emailConstants';
-import { ROLES } from '../../constants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
@@ -157,3 +159,39 @@ export function notificationAndCtaTemplateDefaultOverride(
     ],
   };
 }
+
+const emailListeners = {};
+
+export const addEmailListener = ({
+  method,
+  func,
+  description = 'no description',
+}) => {
+  let methodNames = ServerEventService.addAfterMethodListener(method, props => {
+    props.context.unblock();
+    func(props);
+  });
+
+  if (typeof methodNames === 'string') {
+    methodNames = [methodNames];
+  }
+
+  if (typeof description === 'string') {
+    description = [description];
+  }
+
+  methodNames.forEach(name => {
+    if (emailListeners[name]) {
+      emailListeners[name] = [...emailListeners[name], ...description];
+    } else {
+      emailListeners[name] = [...description];
+    }
+  });
+};
+
+Meteor.methods({
+  getEmailListeners() {
+    SecurityService.checkUserIsAdmin(this.userId);
+    return emailListeners;
+  },
+});

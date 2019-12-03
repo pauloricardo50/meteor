@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ type CustomerAdderProps = {
 
 SimpleSchema.setDefaultMessages({
   messages: {
-    fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moin un lot' },
+    fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moins un lot' },
   },
 });
 
@@ -88,6 +88,7 @@ const CustomerAdder = ({
   promotion,
   model,
   openOnMount = false,
+  resetForm,
 }: CustomerAdderProps) => {
   const { _id: promotionId, status } = promotion;
   const disabled = status !== PROMOTION_STATUS.OPEN;
@@ -107,13 +108,14 @@ const CustomerAdder = ({
       }}
       schema={CustomerAdderUserSchema({ promotion })}
       onSubmit={user =>
-        proInviteUser.run({ user, promotionIds: [promotionId] }).then(() =>
+        proInviteUser.run({ user, promotionIds: [promotionId] }).then(() => {
+          resetForm();
           history.push(
             createRoute('/promotions/:promotionId/customers', {
               promotionId,
             }),
-          ),
-        )
+          );
+        })
       }
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
@@ -125,11 +127,14 @@ const CustomerAdder = ({
 };
 
 export default withProps(() => {
-  const searchParams = useSearchParams();
+  const initialSearchParams = useSearchParams();
+  // Don't reinitialize searchParams after initialization, or the form breaks
+  const [searchParams, setSearchParams] = useState(initialSearchParams);
   return {
     model: searchParams,
     openOnMount: !!Object.keys(searchParams).filter(key =>
       ['email', 'firstName', 'lastName', 'phoneNumber'].includes(key),
     ).length,
+    resetForm: () => setSearchParams({}),
   };
 })(CustomerAdder);

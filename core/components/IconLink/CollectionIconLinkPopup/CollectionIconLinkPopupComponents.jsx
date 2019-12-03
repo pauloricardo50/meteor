@@ -456,7 +456,7 @@ export const components = {
   ),
   [PROMOTIONS_COLLECTION]: ({
     availablePromotionLots,
-    bookedPromotionLots,
+    reservedPromotionLots,
     soldPromotionLots,
     lenderOrganisation,
     children,
@@ -479,7 +479,7 @@ export const components = {
       />
 
       <Information label="Lots dispo" value={availablePromotionLots.length} />
-      <Information label="Lots réservés" value={bookedPromotionLots.length} />
+      <Information label="Lots réservés" value={reservedPromotionLots.length} />
       <Information label="Lots vendus" value={soldPromotionLots.length} />
 
       <Information

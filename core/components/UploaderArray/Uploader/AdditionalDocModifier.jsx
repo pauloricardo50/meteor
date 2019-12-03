@@ -3,7 +3,7 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { setAdditionalDoc, removeAdditionalDoc } from '../../../api/methods';
-import { AutoFormDialog } from '../../AutoForm2';
+import AutoFormDialog from '../../AutoForm2/AutoFormDialog';
 import T from '../../Translation';
 import Button from '../../Button';
 import {

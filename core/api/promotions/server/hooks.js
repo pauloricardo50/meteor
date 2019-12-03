@@ -9,8 +9,8 @@ Promotions.after.remove((userId, { _id }) =>
 );
 
 formatNumbersHook(Promotions, 'contacts', oldContacts =>
-  oldContacts.map(contact => ({
+  oldContacts.map(({ phoneNumber, ...contact }) => ({
     ...contact,
-    phoneNumber: formatPhoneNumber(contact.phoneNumber),
+    phoneNumber: formatPhoneNumber(phoneNumber),
   })),
 );

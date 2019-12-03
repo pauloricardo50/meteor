@@ -1,3 +1,4 @@
+import FileService from '../../files/server/FileService';
 import LoanService from '../../loans/server/LoanService';
 import PromotionOptions from '..';
 
@@ -22,3 +23,6 @@ PromotionOptions.before.remove((userId, { _id: promotionOptionId }) => {
     });
   });
 });
+
+PromotionOptions.after.remove((userId, { _id }) =>
+  FileService.deleteAllFilesForDoc(_id));

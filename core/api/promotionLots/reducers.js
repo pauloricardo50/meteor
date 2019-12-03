@@ -39,18 +39,21 @@ PromotionLots.addReducers({
         attributedTo.user &&
         attributedTo.user._id === Meteor.userId()
       ) {
+        // This lot is reserved for the user
         switch (status) {
-          case PROMOTION_LOT_STATUS.BOOKED:
-            return PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME;
+          case PROMOTION_LOT_STATUS.RESERVED:
+            return PROMOTION_LOT_REDUCED_STATUS.RESERVED_FOR_ME;
           case PROMOTION_LOT_STATUS.SOLD:
             return PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME;
           default:
             return status;
         }
       }
-      if (status === PROMOTION_LOT_STATUS.BOOKED) {
+
+      if ([PROMOTION_LOT_STATUS.SOLD].includes(status)) {
         return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
       }
+
       return status;
     },
   },

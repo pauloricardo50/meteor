@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
-import FileService from '../../files/server/FileService';
 import CollectionService from '../../helpers/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
@@ -11,31 +10,35 @@ import {
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS_FULL_ACCESS,
 } from '../../constants';
-import { sendEmail } from '../../email/methodDefinitions';
-import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import SecurityService from '../../security';
 import Promotions from '../promotions';
 
-export class PromotionService extends CollectionService {
+class PromotionService extends CollectionService {
   constructor() {
     super(Promotions);
   }
 
   insert({ promotion = {}, userId }) {
     const isAdmin = SecurityService.isUserAdmin(userId);
+    const promotionId = super.insert(promotion);
 
-    return super.insert({
-      ...promotion,
-      userLinks: isAdmin
-        ? undefined
-        : [{ _id: userId, permissions: PROMOTION_PERMISSIONS_FULL_ACCESS() }],
-    });
+    if (userId && !isAdmin) {
+      this.addProUser({
+        promotionId,
+        userId,
+        permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+      });
+    }
+
+    return promotionId;
   }
 
   insertPromotionProperty({ promotionId, property }) {
-    const { address1, address2, zipCode, city, canton } = this.get(promotionId);
+    const { address1, address2, zipCode, city, canton } = this.findOne(
+      promotionId,
+    );
     const propertyId = PropertyService.insert({
       property: {
         ...property,
@@ -67,7 +70,7 @@ export class PromotionService extends CollectionService {
   update({ promotionId, ...rest }) {
     const result = this._update({ id: promotionId, ...rest });
 
-    const { propertyLinks, ...address } = this.fetchOne({
+    const { propertyLinks = [], ...address } = this.fetchOne({
       $filters: { _id: promotionId },
       propertyLinks: 1,
       address1: 1,
@@ -76,9 +79,11 @@ export class PromotionService extends CollectionService {
       zipCode: 1,
     });
 
-    propertyLinks.forEach(({ _id }) => {
-      PropertyService.update({ propertyId: _id, object: address });
-    });
+    PropertyService.baseUpdate(
+      { _id: { $in: propertyLinks.map(({ _id }) => _id) } },
+      { $set: address },
+      { multi: true },
+    );
 
     return result;
   }
@@ -92,13 +97,12 @@ export class PromotionService extends CollectionService {
     userId,
     isNewUser,
     pro = {},
-    sendInvitation = true,
     promotionLotIds,
     showAllLots,
     shareSolvency,
   }) {
-    const promotion = this.get(promotionId);
-    const user = UserService.get(userId);
+    this.checkPromotionIsReady({ promotionId });
+    const promotion = this.findOne(promotionId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
@@ -128,79 +132,15 @@ export class PromotionService extends CollectionService {
       UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
     }
 
-    const { assignedEmployeeId } = UserService.fetchOne({
-      $filters: { _id: userId },
-      assignedEmployeeId: 1,
-    });
-
-    if (sendInvitation) {
-      return this.sendPromotionInvitationEmail({
-        userId,
-        isNewUser,
-        promotionId,
-        firstName: user.firstName,
-        proId: pro._id,
-        adminId: assignedEmployeeId,
-      }).then(() => loanId);
-    }
-
     return Promise.resolve(loanId);
   }
 
-  sendPromotionInvitationEmail({
-    userId,
-    isNewUser,
-    promotionId,
-    firstName,
-    proId,
-  }) {
-    return FileService.listFilesForDocByCategory(promotionId).then(
-      ({ promotionImage, logos }) => {
-        const coverImageUrl =
-          promotionImage && promotionImage.length > 0 && promotionImage[0].url;
-        const logoUrls = logos && logos.map(({ url }) => url);
-
-        let ctaUrl = Meteor.settings.public.subdomains.app;
-        const promotion = this.get(promotionId);
-        const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
-
-        if (isNewUser) {
-          // Envoyer invitation avec enrollment link
-          ctaUrl = UserService.getEnrollmentUrl({ userId });
-        }
-
-        let invitedBy;
-
-        if (proId) {
-          invitedBy = UserService.fetchOne({
-            $filters: { _id: proId },
-            name: 1,
-          }).name;
-        }
-
-        return sendEmail.run({
-          emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-          userId,
-          params: {
-            proUserId: proId,
-            promotion: { ...promotion, assignedEmployee },
-            coverImageUrl,
-            logoUrls,
-            ctaUrl,
-            name: firstName,
-            invitedBy,
-          },
-        });
-      },
-    );
-  }
-
-  addProUser({ promotionId, userId }) {
+  addProUser({ promotionId, userId, permissions = {} }) {
     return this.addLink({
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      metadata: { permissions: {} },
+      metadata: { permissions },
     });
   }
 
@@ -252,13 +192,9 @@ export class PromotionService extends CollectionService {
   }
 
   removeLoan({ promotionId, loanId }) {
-    const {
-      promotionOptionLinks = [],
-      attributedPromotionLots = [],
-    } = LoanService.fetchOne({
+    const { promotionOptions = [] } = LoanService.fetchOne({
       $filters: { _id: loanId },
-      promotionOptionLinks: { _id: 1 },
-      attributedPromotionLots: { _id: 1 },
+      promotionOptions: { _id: 1 },
     });
 
     this.removeLink({
@@ -267,12 +203,14 @@ export class PromotionService extends CollectionService {
       linkId: loanId,
     });
 
-    promotionOptionLinks.forEach(({ _id }) => {
-      PromotionOptionService.remove({ promotionOptionId: _id });
-    });
-
-    attributedPromotionLots.forEach(({ _id }) => {
-      PromotionLotService.cancelPromotionLotBooking({ promotionLotId: _id });
+    promotionOptions.forEach(({ _id }) => {
+      PromotionLotService.cancelPromotionLotReservation({
+        promotionOptionId: _id,
+      });
+      PromotionOptionService.remove({
+        promotionOptionId: _id,
+        isLoanRemoval: true,
+      });
     });
   }
 
@@ -306,7 +244,7 @@ export class PromotionService extends CollectionService {
       );
 
       if (!existingPromotionOption) {
-        PromotionOptionService.insert({ promotionLotId, loanId });
+        PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
       }
     });
 
@@ -340,6 +278,62 @@ export class PromotionService extends CollectionService {
       promotionId: toPromotionId,
       object: { constructionTimeline },
     });
+  }
+
+  updateUserRoles({ promotionId, userId, roles = [] }) {
+    this.updateLinkMetadata({
+      id: promotionId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { roles },
+    });
+  }
+
+  checkPromotionIsReady({ promotionId }) {
+    const {
+      documents = {},
+      promotionLotLinks = [],
+      assignedEmployeeId,
+      name,
+      city,
+      zipCode,
+    } = this.findOne(promotionId);
+
+    if (!name || !city || !zipCode) {
+      throw new Meteor.Error(
+        'Il faut ajouter un nom et une addresse à cette promotion',
+      );
+    }
+
+    if (promotionLotLinks.length === 0) {
+      throw new Meteor.Error('Il faut ajouter des lots sur une promotion');
+    }
+
+    if (!assignedEmployeeId) {
+      throw new Meteor.Error(
+        'Il faut assigner un conseiller à cette promotion',
+      );
+    }
+
+    if (
+      !Meteor.isTest &&
+      !Meteor.isAppTest &&
+      (!documents.promotionGuide ||
+        !documents.promotionGuide.length ||
+        documents.promotionGuide.length !== 1)
+    ) {
+      throw new Meteor.Error(
+        'Il faut ajouter un (seul) guide du financement bancaire sur cette promotion',
+      );
+    }
+  }
+
+  setStatus({ promotionId, status }) {
+    if (status === PROMOTION_STATUS.OPEN) {
+      this.checkPromotionIsReady({ promotionId });
+    }
+
+    return this.update({ promotionId, object: { status } });
   }
 }
 

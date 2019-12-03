@@ -1,4 +1,6 @@
-import React from 'react';
+import { Random } from 'meteor/random';
+
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
@@ -19,8 +21,9 @@ const styles = {
   },
 };
 
-const FileAdder = ({ docId, id, handleAddFiles }) => {
-  const uniqueId = docId + id;
+const FileAdder = ({ handleAddFiles }) => {
+  const [uniqueId] = useState(Random.id());
+
   return (
     <a>
       {/* Hide the input, and make the label interactive */}
@@ -43,10 +46,9 @@ const FileAdder = ({ docId, id, handleAddFiles }) => {
     </a>
   );
 };
+
 FileAdder.propTypes = {
-  docId: PropTypes.string.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
 };
 
 export default FileAdder;

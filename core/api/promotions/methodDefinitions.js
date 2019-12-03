@@ -100,3 +100,20 @@ export const toggleNotifications = new Method({
     promotionId: String,
   },
 });
+
+export const updatePromotionUserRoles = new Method({
+  name: 'updatePromotionUserRoles',
+  params: {
+    promotionId: String,
+    userId: String,
+    roles: Array,
+  },
+});
+
+export const promotionSetStatus = new Method({
+  name: 'promotionSetStatus',
+  params: {
+    promotionId: String,
+    status: String,
+  },
+});

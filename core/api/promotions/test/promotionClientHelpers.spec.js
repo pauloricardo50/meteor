@@ -51,7 +51,7 @@ describe('promotionClientHelpers', () => {
               forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
             },
           },
-          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
         }),
       ).to.equal(true);
     });
@@ -71,11 +71,11 @@ describe('promotionClientHelpers', () => {
               invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
               forLotStatus: [
                 PROMOTION_LOT_STATUS.AVAILABLE,
-                PROMOTION_LOT_STATUS.BOOKED,
+                PROMOTION_LOT_STATUS.RESERVED,
               ],
             },
           },
-          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
           isAttributed: false,
         }),
       ).to.equal(true);
@@ -96,11 +96,11 @@ describe('promotionClientHelpers', () => {
               invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
               forLotStatus: [
                 PROMOTION_LOT_STATUS.AVAILABLE,
-                PROMOTION_LOT_STATUS.BOOKED,
+                PROMOTION_LOT_STATUS.RESERVED,
               ],
             },
           },
-          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
           isAttributed: true,
         }),
       ).to.equal(false);
@@ -120,7 +120,7 @@ describe('promotionClientHelpers', () => {
             displayCustomerNames: {
               invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
               forLotStatus: [
-                PROMOTION_LOT_STATUS.BOOKED,
+                PROMOTION_LOT_STATUS.RESERVED,
                 PROMOTION_LOT_STATUS.SOLD,
               ],
             },
@@ -227,7 +227,7 @@ describe('promotionClientHelpers', () => {
         shouldAnonymize({
           customerOwnerType: null,
           permissions,
-          promotionLotStatus: PROMOTION_LOT_STATUS.BOOKED,
+          promotionLotStatus: PROMOTION_LOT_STATUS.RESERVED,
           isAttributed: false,
         }),
       ).to.equal(false);

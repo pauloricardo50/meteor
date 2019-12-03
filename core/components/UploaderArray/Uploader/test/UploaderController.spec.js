@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { propHasChanged } from '../UploaderController';
+import { propHasChanged } from '../uploaderHelpers';
 
 describe('UploaderController', () => {
   describe('propHasChanged', () => {

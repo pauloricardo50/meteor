@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+import S3Service from 'core/api/files/server/S3Service';
 import UserService from '../../users/server/UserService';
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
@@ -19,8 +19,8 @@ export const skipEmails =
 // export const skipEmails = false;
 
 class EmailService {
-  sendEmail = ({ emailId, address, name, params }) => {
-    const templateOptions = this.createTemplateOptions({
+  sendEmail = async ({ emailId, address, name, params }) => {
+    const templateOptions = await this.createTemplateOptions({
       emailId,
       address,
       name,
@@ -44,13 +44,20 @@ class EmailService {
 
   getEmailConfig = emailId => emailConfigs[emailId];
 
-  createTemplateOptions = ({ emailId, address, name, params }) => {
+  createTemplateOptions = async ({ emailId, address, name, params = {} }) => {
     const emailConfig = this.getEmailConfig(emailId);
     const {
       template: { mandrillId: templateName },
       createIntlValues,
       ...otherOptions
     } = emailConfig;
+
+    const { attachments = [] } = params;
+    let s3Attachments = [];
+
+    if (attachments.length) {
+      s3Attachments = await this.getAttachments(attachments);
+    }
 
     const intlValues = createIntlValues(params);
     const emailContent = getEmailContent(emailId, intlValues);
@@ -68,12 +75,34 @@ class EmailService {
       subject: emailContent.subject,
       sendAt: undefined,
       ...overrides,
+      attachments: s3Attachments.length ? s3Attachments : undefined,
       ...otherOptions,
     };
   };
 
-  getAccountsTemplate = (emailId, params = {}) => {
-    const templateOptions = this.createTemplateOptions({ emailId, params });
+  getAttachments = attachments => Promise.all(
+      attachments.map(async Key => {
+        const {
+          ContentType,
+          ContentDisposition,
+          Body,
+        } = await S3Service.getObject(Key);
+
+        return {
+          type: ContentType,
+          name: decodeURIComponent(
+            ContentDisposition.match(/filename="(.*)";/m)[1],
+          ),
+          content: Body.toString('base64'),
+        };
+      }),
+    );
+
+  getAccountsTemplate = async ({ emailId, params = {} }) => {
+    const templateOptions = await this.createTemplateOptions({
+      emailId,
+      params,
+    });
     return getSimpleMandrillTemplate(templateOptions);
   };
 

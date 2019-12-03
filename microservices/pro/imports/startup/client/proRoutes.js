@@ -9,15 +9,10 @@ import DevPage from 'core/components/DevPage/loadable';
 import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
 import ProOrganisationPage from '../../client/pages/ProOrganisationPage/loadable';
 import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
-import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
 import ProProPropertyPage from '../../client/pages/ProProPropertyPage/loadable';
 import ProRevenuesPage from '../../client/pages/ProRevenuesPage/loadable';
 
 const PRO_ROUTES = {
-  PRO_PROMOTION_USERS_PAGE: {
-    component: ProPromotionUsersPage,
-    path: '/promotions/:promotionId/users',
-  },
   PRO_PROMOTION_PAGE: {
     component: ProPromotionPage,
     path: '/promotions/:promotionId/:tabId?',

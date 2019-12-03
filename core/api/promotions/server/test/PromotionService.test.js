@@ -6,9 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 
 import generator from 'core/api/factories';
 import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
-import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_STATUS } from '../../../constants';
-import { EMAIL_IDS } from '../../../email/emailConstants';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
 import LoanService from '../../../loans/server/LoanService';
@@ -17,12 +15,29 @@ import PromotionLotService from '../../../promotionLots/server/PromotionLotServi
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
+import { PROMOTION_TYPES } from '../../promotionConstants';
 
 describe('PromotionService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
     resetDatabase();
+  });
+
+  describe('insert', () => {
+    it('inserts a promotion without issue', () => {
+      PromotionService.insert({
+        promotion: {
+          name: 'Promo 1',
+          type: PROMOTION_TYPES.CREDIT,
+          zipCode: 1200,
+          agreementDuration: 30,
+          contacts: [{ name: 'joe', title: 'CEO' }],
+        },
+      });
+
+      expect(PromotionService.countAll()).to.equal(1);
+    });
   });
 
   describe('update', () => {
@@ -81,7 +96,11 @@ describe('PromotionService', function() {
           promotionLots: {
             _id: promotionLotId,
             propertyLinks: [{ _id: 'propId' }],
-            promotionOptions: { _id: promotionOptionId, loan: { _id: loanId } },
+            promotionOptions: {
+              _id: promotionOptionId,
+              loan: { _id: loanId },
+              promotion: { _id: 'promoId' },
+            },
           },
           loans: { _id: loanId },
           lots: {},
@@ -140,127 +159,33 @@ describe('PromotionService', function() {
           _id: promotionId,
           status: PROMOTION_STATUS.OPEN,
           assignedEmployeeId: adminId,
+          promotionLots: [{ _id: 'pL1' }],
         },
       });
     });
 
-    it('creates user and sends the invitation email if user does not exist', () => {
+    it('creates user and sends the invitation email if user does not exist', async () => {
       const newUser = {
         email: 'new@user.com',
         firstName: 'New',
         lastName: 'User',
         phoneNumber: '1234',
       };
-
-      let resetToken;
 
       const { userId, isNewUser } = UserService.proCreateUser({
         user: newUser,
       });
 
-      return PromotionService.inviteUser({
+      const loanId = await PromotionService.inviteUser({
         promotionId,
         userId,
         isNewUser,
         pro: { _id: 'proId' },
-      })
-        .then(loanId => {
-          const user = UserService.getByEmail(newUser.email);
-          const {
-            services: {
-              password: {
-                reset: { token },
-              },
-            },
-          } = user;
-
-          resetToken = token;
-
-          expect(!!loanId).to.equal(true);
-          expect(!!userId).to.equal(true);
-          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(
-            true,
-          );
-
-          return checkEmails(2);
-        })
-        .then(emails => {
-          expect(emails.length).to.equal(2);
-          const {
-            emailId,
-            response: { status },
-            template: {
-              message: { global_merge_vars },
-            },
-          } = emails.find(
-            ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-          );
-
-          expect(status).to.equal('sent');
-          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-          expect(
-            global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
-          ).to.include(resetToken);
-          expect(
-            global_merge_vars
-              .find(({ name }) => name === 'BODY')
-              .content.startsWith('Pro User'),
-          ).to.equal(true);
-          expect(
-            global_merge_vars
-              .find(({ name }) => name === 'BODY')
-              .content.endsWith('Admin User'),
-          ).to.equal(true);
-
-          expect(
-            emails.filter(
-              ({ emailId }) => emailId === EMAIL_IDS.CONFIRM_USER_INVITATION,
-            ).length,
-          ).to.equal(1);
-        });
-    });
-
-    it('sends the invitation email if user exists', () => {
-      const newUser = {
-        email: 'new@user.com',
-        firstName: 'New',
-        lastName: 'User',
-        phoneNumber: '1234',
-      };
-
-      const userId = UserService.adminCreateUser({
-        options: {
-          email: newUser.email,
-          sendEnrollmentEmail: false,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          phoneNumbers: [newUser.phoneNumber],
-        },
-        role: ROLES.USER,
       });
 
-      return PromotionService.inviteUser({
-        promotionId,
-        userId,
-      })
-        .then(loanId => {
-          expect(!!loanId).to.equal(true);
-          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(
-            true,
-          );
-
-          return checkEmails(1);
-        })
-        .then(emails => {
-          expect(emails.length).to.equal(1);
-          const {
-            emailId,
-            response: { status },
-          } = emails[0];
-
-          expect(status).to.equal('sent');
-          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-        });
+      expect(!!loanId).to.equal(true);
+      expect(!!userId).to.equal(true);
+      expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
     });
 
     it('throws an error if user is already invited to the promotion', () => {
@@ -337,8 +262,6 @@ describe('PromotionService', function() {
         const user = UserService.getByEmail(newUser.email);
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
-
-        return checkEmails(1);
       });
     });
   });
@@ -359,7 +282,7 @@ describe('PromotionService', function() {
 
       PromotionService.removeLoan({ promotionId, loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.promotionLinks).to.deep.equal([
         { _id: 'someOtherPromotion', priorityOrder: [], showAllLots: true },
       ]);
@@ -372,11 +295,17 @@ describe('PromotionService', function() {
           _id: 'promotionId',
           promotionLots: [
             {
-              promotionOptions: { loan: { _id: 'loanId' } },
+              promotionOptions: {
+                loan: { _id: 'loanId' },
+                promotion: { _id: 'promotionId' },
+              },
               propertyLinks: [{ _id: 'prop1' }],
             },
             {
-              promotionOptions: { loan: { _id: 'loanId' } },
+              promotionOptions: {
+                loan: { _id: 'loanId' },
+                promotion: { _id: 'promotionId' },
+              },
               propertyLinks: [{ _id: 'prop2' }],
             },
           ],
@@ -402,13 +331,19 @@ describe('PromotionService', function() {
         properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
         promotions: {
           _id: 'promotionId',
-          promotionLots: {
-            _id: 'lot1',
-            status: 'SOLD',
-            promotionOptions: { loan: { _id: 'loanId' } },
-            propertyLinks: [{ _id: 'prop1' }],
-            attributedTo: { _id: 'loanId' },
-          },
+          promotionLots: [
+            {
+              _id: 'lot1',
+              status: 'SOLD',
+              promotionOptions: {
+                _id: 'promotionOptionId',
+                loan: { _id: 'loanId' },
+                promotion: { _id: 'promotionId' },
+              },
+              propertyLinks: [{ _id: 'prop1' }],
+              attributedTo: { _id: 'loanId' },
+            },
+          ],
           loans: { _id: 'loanId' },
         },
       });
@@ -417,7 +352,7 @@ describe('PromotionService', function() {
         promotionId: 'promotionId',
         loanId: 'loanId',
       });
-      const promotionLot = PromotionLotService.get('lot1');
+      const promotionLot = PromotionLotService.findOne('lot1');
 
       expect(promotionLot.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
       expect(promotionLot.attributedToLink).to.deep.equal({});
@@ -471,14 +406,18 @@ describe('PromotionService', function() {
         },
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        1,
+      );
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        0,
+      );
     });
 
     it('does not fail if no loans are attributed to the pro', () => {
@@ -490,14 +429,18 @@ describe('PromotionService', function() {
         },
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        1,
+      );
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        0,
+      );
     });
 
     it('only removes him from the current promotion', () => {
@@ -516,16 +459,24 @@ describe('PromotionService', function() {
         ],
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(1);
-      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        1,
+      );
+      expect(
+        PromotionService.findOne('promotionId2').userLinks.length,
+      ).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.get('promotionId').userLinks.length).to.equal(0);
-      expect(PromotionService.get('promotionId2').userLinks.length).to.equal(1);
+      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
+        0,
+      );
+      expect(
+        PromotionService.findOne('promotionId2').userLinks.length,
+      ).to.equal(1);
       expect(
         LoanService.findOne('loanId').promotionLinks[0].invitedBy,
       ).to.equal(undefined);
@@ -630,17 +581,20 @@ describe('PromotionService', function() {
             {
               _id: 'pLot1',
               propertyLinks: [{ _id: 'prop' }],
-              promotionOptions: { _id: 'pOpt1' },
+              promotionOptions: { _id: 'pOpt1', promotion: { _id: 'promoId' } },
             },
             {
               _id: 'pLot2',
               propertyLinks: [{ _id: 'prop' }],
-              promotionOptions: { _id: 'pOpt2' },
+              promotionOptions: { _id: 'pOpt2', promotion: { _id: 'promoId' } },
             },
           ],
           loans: {
             _id: 'loanId',
-            promotionOptions: [{ _id: 'pOpt1' }, { _id: 'pOpt2' }],
+            promotionOptions: [
+              { _id: 'pOpt1', promotion: { _id: 'promoId' } },
+              { _id: 'pOpt2', promotion: { _id: 'promoId' } },
+            ],
           },
         },
       });
@@ -744,6 +698,23 @@ describe('PromotionService', function() {
         _id: 'userId',
         enableNotifications: true,
       });
+    });
+  });
+
+  describe('addProUser', () => {
+    it('sets displayCustomerNames to an empty object ', () => {
+      generator({
+        promotions: { _id: 'promo' },
+        users: { _id: 'proId', _factory: 'pro' },
+      });
+
+      PromotionService.addProUser({ promotionId: 'promo', userId: 'proId' });
+
+      const promotion = PromotionService.findOne('promo');
+
+      expect(promotion.userLinks[0].permissions.displayCustomerNames).to.equal(
+        false,
+      );
     });
   });
 });

@@ -21,11 +21,14 @@ describe('EmailService', function() {
   });
 
   describe('renderTemplate', () => {
-    it('should not throw', () => {
+    it('should not throw', async () => {
       const emailId = EMAIL_IDS.ENROLL_ACCOUNT;
-      const template = EmailService.getAccountsTemplate(emailId, {
-        user: { roles: 'user' },
-        url: 'stuff/enroll-account/hello',
+      const template = await EmailService.getAccountsTemplate({
+        emailId,
+        params: {
+          user: { roles: 'user' },
+          url: 'stuff/enroll-account/hello',
+        },
       });
       expect(() =>
         EmailService.renderTemplate(template, emailId),

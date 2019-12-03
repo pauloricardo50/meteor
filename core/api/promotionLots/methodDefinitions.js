@@ -1,4 +1,3 @@
-import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const promotionLotInsert = new Method({
@@ -40,24 +39,21 @@ export const removeLotLink = new Method({
   },
 });
 
-export const bookPromotionLot = new Method({
-  name: 'bookPromotionLot',
-  params: {
-    promotionLotId: String,
-    loanId: String,
-  },
+export const reservePromotionLot = new Method({
+  name: 'reservePromotionLot',
+  params: { promotionOptionId: String },
 });
 
-export const cancelPromotionLotBooking = new Method({
-  name: 'cancelPromotionLotBooking',
+export const cancelPromotionLotReservation = new Method({
+  name: 'cancelPromotionLotReservation',
   params: {
-    promotionLotId: String,
+    promotionOptionId: String,
   },
 });
 
 export const sellPromotionLot = new Method({
   name: 'sellPromotionLot',
   params: {
-    promotionLotId: String,
+    promotionOptionId: String,
   },
 });

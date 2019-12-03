@@ -65,13 +65,8 @@ const findLinkKeys = ({ collection }) => {
 };
 
 const insertDoc = ({ doc, collection, useFactories, factory }) => {
-  let docExists = false;
-
-  if (doc._id) {
-    docExists = !!Mongo.Collection.get(collection).findOne(doc._id);
-  }
-
-  if (docExists) {
+  if (doc._id && !!Mongo.Collection.get(collection).findOne(doc._id)) {
+    // document already exists
     return doc;
   }
 
@@ -117,7 +112,7 @@ const generator = (scenario, { useFactories = true } = {}) => {
   };
 
   const createNestedObject = ({ doc, collection }) => {
-    const linkKeys = findLinkKeys({ doc, collection });
+    const linkKeys = findLinkKeys({ collection });
 
     const docToInsert = omit(doc, [...linkKeys, '_factory', '$metadata']);
 

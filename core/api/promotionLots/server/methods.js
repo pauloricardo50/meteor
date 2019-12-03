@@ -6,8 +6,8 @@ import {
   promotionLotRemove,
   addLotToPromotionLot,
   removeLotLink,
-  bookPromotionLot,
-  cancelPromotionLotBooking,
+  reservePromotionLot,
+  cancelPromotionLotReservation,
   sellPromotionLot,
 } from '../methodDefinitions';
 
@@ -48,30 +48,31 @@ removeLotLink.setHandler(({ userId }, params) => {
   return PromotionLotService.removeLotLink(params);
 });
 
-bookPromotionLot.setHandler(({ userId }, params) => {
-  const { promotionLotId, loanId } = params;
-  SecurityService.promotions.isAllowedToBookLotToCustomer({
-    promotionLotId,
-    loanId,
+reservePromotionLot.setHandler(({ userId }, params) => {
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToReserveLots({
+    promotionOptionId,
     userId,
   });
-  return PromotionLotService.bookPromotionLot(params);
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
+    userId,
+  });
+  return PromotionLotService.reservePromotionLot(params);
 });
 
-cancelPromotionLotBooking.setHandler(({ userId }, params) => {
-  const { promotionLotId } = params;
-  SecurityService.promotions.isAllowedToCancelLotBooking({
-    promotionLotId,
+cancelPromotionLotReservation.setHandler(({ userId }, params) => {
+  const { promotionOptionId } = params;
+  SecurityService.promotions.isAllowedToManagePromotionReservation({
+    promotionOptionId,
     userId,
   });
-  return PromotionLotService.cancelPromotionLotBooking(params);
+  return PromotionLotService.cancelPromotionLotReservation(params);
 });
 
 sellPromotionLot.setHandler(({ userId }, params) => {
-  const { promotionLotId } = params;
-  SecurityService.promotions.isAllowedToSellLotToCustomer({
-    promotionLotId,
-    userId,
-  });
+  // According to promotions process v1.1 - 201909
+  // Only admins can sell promotionLots
+  SecurityService.checkUserIsAdmin(userId);
   return PromotionLotService.sellPromotionLot(params);
 });

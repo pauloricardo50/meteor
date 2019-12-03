@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
@@ -255,4 +256,31 @@ export default class Security {
         this[collection].isAllowedToUpdate(docId);
     }
   }
+
+  static isAllowedToRemoveTempFile({ userId, fileKey }) {
+    if (fileKey && fileKey.startsWith(`temp/${userId}`)) {
+      return;
+    }
+
+    this.handleUnauthorized('Vous ne pouvez pas supprimer ce fichier');
+  }
+
+  static checkIsInternalCall = context => {
+    if (!this.isInternalCall(context)) {
+      this.handleUnauthorized('method is not internal');
+    }
+  };
+
+  static isInternalCall = context => {
+    if (context && !context.connection) {
+      // Server initiated call
+      return true;
+    }
+
+    if (context.userId && context.userId === 'INTERNAL_CALL') {
+      return true;
+    }
+
+    return false;
+  };
 }

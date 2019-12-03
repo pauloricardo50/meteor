@@ -18,6 +18,7 @@ import UsersPage from '../../client/pages/UsersPage/loadable';
 import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
 import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
 import OtherPage from '../../client/pages/OtherPage/loadable';
+import WikiPage from '../../client/pages/WikiPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
@@ -47,6 +48,10 @@ const ADMIN_ROUTES = {
   OTHER_PAGE: {
     component: OtherPage,
     path: '/other/:tabId?',
+  },
+  WIKI_PAGE: {
+    component: WikiPage,
+    path: '/wiki/:tabId?',
   },
 
   //   "Single" pages

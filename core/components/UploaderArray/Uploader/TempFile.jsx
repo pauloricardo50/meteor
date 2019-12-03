@@ -5,12 +5,8 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { updateDocumentsCache, logError } from 'core/api/methods/index';
-import {
-  SLINGSHOT_DIRECTIVE_NAME,
-  EXOSCALE_PATH,
-  FILE_STATUS,
-} from '../../../api/constants';
+import { logError } from 'core/api/methods/index';
+import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/constants';
 
 export default class TempFile extends Component {
   constructor(props) {
@@ -20,22 +16,14 @@ export default class TempFile extends Component {
 
   componentDidMount() {
     const {
-      collection,
-      docId,
-      id,
       file,
       handleUploadComplete,
-      acl,
-      maxSize,
+      handleUploadFailed,
+      uploadDirective,
+      uploadDirectiveProps,
     } = this.props;
 
-    this.uploader = new Slingshot.Upload(SLINGSHOT_DIRECTIVE_NAME, {
-      collection,
-      docId,
-      id,
-      acl,
-      maxSize,
-    });
+    this.uploader = new Slingshot.Upload(uploadDirective, uploadDirectiveProps);
 
     const progressSetter = Tracker.autorun(() => {
       const progress = this.uploader.progress();
@@ -52,6 +40,10 @@ export default class TempFile extends Component {
           additionalData: [file],
         });
         this.setState({ error: error.reason || error.message });
+
+        if (handleUploadFailed) {
+          handleUploadFailed(error);
+        }
       } else {
         const fileObject = {
           name: file.name,
@@ -61,8 +53,10 @@ export default class TempFile extends Component {
           type: file.type,
           status: FILE_STATUS.UNVERIFIED,
         };
-        handleUploadComplete(fileObject, downloadUrl);
-        updateDocumentsCache.run({ docId, collection });
+
+        if (handleUploadComplete) {
+          handleUploadComplete(fileObject, downloadUrl);
+        }
       }
     });
   }
@@ -101,11 +95,10 @@ export default class TempFile extends Component {
 }
 
 TempFile.propTypes = {
-  acl: PropTypes.string,
-  collection: PropTypes.string.isRequired,
-  docId: PropTypes.string.isRequired,
   file: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleUploadComplete: PropTypes.func.isRequired,
+  handleUploadComplete: PropTypes.func,
+  handleUploadFailed: PropTypes.func,
   id: PropTypes.string.isRequired,
-  maxSize: PropTypes.number,
+  uploadDirective: PropTypes.string.isRequired,
+  uploadDirectiveProps: PropTypes.object.isRequired,
 };

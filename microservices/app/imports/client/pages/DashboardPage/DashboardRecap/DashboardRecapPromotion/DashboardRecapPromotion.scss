@@ -27,6 +27,20 @@
   h2 {
     margin-bottom: 0;
   }
+
+  .user-reservation {
+    .promotion-reservation-progress {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-bottom: 16px;
+      transform: scale(1.2);
+    }
+
+    .description {
+      text-align: center;
+    }
+  }
 }
 
 .dashboard-recap-promotion .map {

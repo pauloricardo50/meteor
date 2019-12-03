@@ -1,6 +1,16 @@
 import pick from 'lodash/pick';
 
-import { PROMOTION_TYPES, PURCHASE_TYPE } from '../../api/constants';
+import {
+  PROMOTION_TYPES,
+  PURCHASE_TYPE,
+  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+} from '../../api/constants';
+import { sortByStatus } from '../sorting';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -119,5 +129,58 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       const promotion = promotions[0];
 
       return promotion.type === PROMOTION_TYPES.SHARE;
+    }
+
+    hasActivePromotionOption({ loan: { promotionOptions = [] } }) {
+      return (
+        promotionOptions.length > 0 &&
+        promotionOptions.some(
+          ({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status,
+        )
+      );
+    }
+
+    getActivePromotionOptions({ loan: { promotionOptions = [] } }) {
+      return promotionOptions.filter(
+        ({ status }) => PROMOTION_OPTION_STATUS.INTERESTED !== status,
+      );
+    }
+
+    getMostActivePromotionOption({ loan: { promotionOptions = [] } }) {
+      const sorted = promotionOptions.sort(
+        sortByStatus(Object.values(PROMOTION_OPTION_STATUS)),
+      );
+      return sorted.slice(-1)[0];
+    }
+
+    isActivePromotionOption({ promotionOption: { status } }) {
+      return ![
+        PROMOTION_OPTION_STATUS.INTERESTED,
+        PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED,
+      ].includes(status);
+    }
+
+    canConfirmPromotionLotReservation({
+      promotionOption: {
+        bank,
+        simpleVerification,
+        fullVerification,
+        reservationAgreement,
+        reservationDeposit,
+      },
+    }) {
+      return (
+        [
+          PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+          PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+        ].includes(bank.status) &&
+        reservationDeposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID &&
+        simpleVerification.status ===
+          PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED &&
+        fullVerification.status ===
+          PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED &&
+        reservationAgreement.status ===
+          PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED
+      );
     }
   };

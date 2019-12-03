@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { createMeteorAsyncFunction } from '../../helpers/index';
 import SlackService from '../../slack/server/SlackService';
 import ServerEventService from '../../events/server/ServerEventService';
 import { Method } from '../methods';
@@ -23,28 +24,37 @@ Method.addBeforeExecution(({ context, config, params }) => {
   });
 });
 
-Method.addAfterExecution(({ context, config, params, result, error }) => {
-  logMethod({ context, config, params, result, error });
+Method.addAfterExecution(
+  ({ context, config, params, result: maybePromiseResult, error }) => {
+    let result = maybePromiseResult;
 
-  if (error) {
-    SlackService.sendError({
-      error,
-      additionalData: [
-        `Server method error in method: "${config.name}"`,
-        { name: 'context', data: context },
-        { name: 'params', data: params },
-      ],
-      userId: context.userId,
-    });
-  }
+    if (maybePromiseResult && typeof maybePromiseResult.then === 'function') {
+      const awaitResult = createMeteorAsyncFunction(() => maybePromiseResult);
+      result = awaitResult();
+    }
 
-  if (!error) {
-    ServerEventService.emitAfterMethod(config, {
-      context,
-      config,
-      params,
-      result,
-      error,
-    });
-  }
-});
+    logMethod({ context, config, params, result, error });
+
+    if (error) {
+      SlackService.sendError({
+        error,
+        additionalData: [
+          `Server method error in method: "${config.name}"`,
+          { name: 'context', data: context },
+          { name: 'params', data: params },
+        ],
+        userId: context.userId,
+      });
+    }
+
+    if (!error) {
+      ServerEventService.emitAfterMethod(config, {
+        context,
+        config,
+        params,
+        result,
+        error,
+      });
+    }
+  },
+);

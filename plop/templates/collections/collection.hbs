@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-
 import {{schema}} from './schemas/{{schemaFile}}';
 import { {{collectionConstant}} } from './{{constantsFile}}';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const {{collection}} = new Mongo.Collection({{collectionConstant}});
-
-{{collection}}.deny({
-insert: () => true,
-update: () => true,
-remove: () => true,
-});
-
-{{collection}}.allow({
-insert: () => false,
-update: () => false,
-remove: () => false,
-});
+const {{collection}} = createCollection({{collectionConstant}});
 
 {{collection}}.attachSchema({{schema}});
 export default {{collection}};

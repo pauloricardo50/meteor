@@ -56,24 +56,46 @@ Cypress.Commands.add(
   },
 );
 
-Cypress.Commands.add('setSelect', (name, value) => {
-  if (typeof value === 'string') {
-    cy.get(`input[name=${name}]`)
-      .parent()
-      .click()
-      .get(`[data-value=${value}]`)
-      .click();
-  } else {
-    // Support clicking on nth item
-    cy.get(`input[name=${name}]`)
-      .parent()
-      .click()
-      .get('ul[role=listbox]')
-      .children()
-      .eq(value)
-      .click();
-  }
-});
+Cypress.Commands.add(
+  'setSelect',
+  { prevSubject: 'optional' },
+  (prevSubject, name, value) => {
+    if (prevSubject) {
+      if (typeof value === 'string') {
+        prevSubject
+          .find(`input[name=${name}]`)
+          .parent()
+          .click()
+          .get(`[data-value=${value}]`)
+          .click();
+      } else {
+        prevSubject
+          .find(`input[name=${name}]`)
+          .parent()
+          .click()
+          .get('ul[role=listbox]')
+          .children()
+          .eq(value)
+          .click();
+      }
+    } else if (typeof value === 'string') {
+      cy.get(`input[name=${name}]`)
+        .parent()
+        .click()
+        .get(`[data-value=${value}]`)
+        .click();
+    } else {
+      // Support clicking on nth item
+      cy.get(`input[name=${name}]`)
+        .parent()
+        .click()
+        .get('ul[role=listbox]')
+        .children()
+        .eq(value)
+        .click();
+    }
+  },
+);
 
 Cypress.Commands.add('routeTo', path => {
   cy.window().then(({ reactRouterDomHistory }) => {

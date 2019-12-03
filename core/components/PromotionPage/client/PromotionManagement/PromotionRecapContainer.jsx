@@ -23,7 +23,7 @@ const getRecapArray = (promotion = {}) => {
   const totalUndetailedValue = getTotalUndetailedValue(promotionLots);
   const totalValue = getTotalValue(promotionLots);
 
-  const { availableLots, bookedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
 
   return [
     {
@@ -84,8 +84,8 @@ const getRecapArray = (promotion = {}) => {
       value: availableLots.length,
     },
     {
-      label: 'Recap.bookedLots',
-      value: bookedLots.length,
+      label: 'Recap.reservedLots',
+      value: reservedLots.length,
     },
     {
       label: 'Recap.soldLots',

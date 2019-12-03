@@ -21,6 +21,8 @@ import {
   REVENUES_COLLECTION,
   REVENUE_STATUS,
   COMMISSION_STATUS,
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -60,10 +62,10 @@ export const getStatuses = collection => {
     case PROMOTION_LOTS_COLLECTION:
       return {
         [PROMOTION_LOT_STATUS.AVAILABLE]: colors.success,
-        [PROMOTION_LOT_STATUS.BOOKED]: colors.primary,
+        [PROMOTION_LOT_STATUS.RESERVED]: colors.primary,
         [PROMOTION_LOT_STATUS.SOLD]: colors.error,
         [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.tertiary,
-        [PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME]: colors.primary,
+        [PROMOTION_LOT_REDUCED_STATUS.RESERVED_FOR_ME]: colors.primary,
         [PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE]: colors.warning,
       };
 
@@ -85,7 +87,7 @@ export const getStatuses = collection => {
     case PROPERTIES_COLLECTION:
       return {
         [PROPERTY_STATUS.FOR_SALE]: colors.success,
-        [PROPERTY_STATUS.BOOKED]: colors.primary,
+        [PROPERTY_STATUS.RESERVED]: colors.primary,
         [PROPERTY_STATUS.SOLD]: colors.error,
       };
 
@@ -95,6 +97,18 @@ export const getStatuses = collection => {
         [REVENUE_STATUS.CLOSED]: colors.success,
         [COMMISSION_STATUS.TO_BE_PAID]: colors.primary,
         [COMMISSION_STATUS.PAID]: colors.success,
+      };
+
+    case PROMOTION_OPTIONS_COLLECTION:
+      return {
+        [PROMOTION_OPTION_STATUS.INTERESTED]: colors.secondary,
+        [PROMOTION_OPTION_STATUS.RESERVATION_REQUESTED]: colors.primary,
+        [PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED]: colors.error,
+        [PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED]: colors.error,
+        [PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE]: colors.tertiary,
+        [PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST]: colors.warning,
+        [PROMOTION_OPTION_STATUS.RESERVED]: colors.primary,
+        [PROMOTION_OPTION_STATUS.SOLD]: colors.error,
       };
 
     default:
@@ -115,7 +129,7 @@ const getLabel = ({
     case 'full':
       return props => (
         <span
-          className={cx('status-label', className, { allowModify })}
+          className={cx('status-label', { allowModify }, className)}
           style={{ backgroundColor: color || statuses[status] }}
           {...props}
         >
@@ -130,7 +144,7 @@ const getLabel = ({
         showTooltip ? (
           <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
             <span
-              className={cx('status-label-dot', className, { allowModify })}
+              className={cx('status-label-dot', { allowModify }, className)}
               {...props}
             >
               <span style={{ backgroundColor: color || statuses[status] }} />
@@ -138,7 +152,7 @@ const getLabel = ({
           </Tooltip>
         ) : (
           <span
-            className={cx('status-label-dot', className, { allowModify })}
+            className={cx('status-label-dot', { allowModify }, className)}
             {...props}
           >
             <span style={{ backgroundColor: color || statuses[status] }} />

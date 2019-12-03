@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-
 import LenderSchema from './schemas/lenderSchema';
 import { LENDERS_COLLECTION } from './lenderConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Lenders = new Mongo.Collection(LENDERS_COLLECTION);
-
-Lenders.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-Lenders.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Lenders = createCollection(LENDERS_COLLECTION);
 
 Lenders.attachSchema(LenderSchema);
 export default Lenders;

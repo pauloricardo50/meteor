@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 
 import {
@@ -86,7 +88,7 @@ export const getUserOrganisationName = ({ user }) => {
   return organisationName;
 };
 
-export const getUserNameAndOrganisation = ({ user }) => {
+export const getUserNameAndOrganisation = ({ user = {} }) => {
   const { name, organisations = [] } = user;
   const organisationName = !!organisations.length && organisations[0].name;
   return organisationName ? `${name} (${organisationName})` : name;
@@ -136,4 +138,10 @@ export const sortObject = object => {
   });
 
   return sortedObject;
+};
+
+export const asyncForEach = async (array, callback) => {
+  for (let i = 0; i < array.length; i++) {
+    await callback(array[i], i, array);
+  }
 };

@@ -1,3 +1,4 @@
+import SecurityService from 'core/api/security';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
@@ -6,8 +7,8 @@ import {
   clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
 import LoanService from '../../loans/server/LoanService';
+import { ANONYMIZED_STRING } from '../../security/constants';
 
-const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
   name: ANONYMIZED_STRING,
   phoneNumbers: [ANONYMIZED_STRING],
@@ -102,7 +103,7 @@ export const getPromotionCustomerOwnerType = ({
   });
 };
 
-const shouldAnonymize = ({
+export const shouldAnonymize = ({
   customerId,
   userId,
   promotionId,

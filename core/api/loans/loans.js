@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-
 import LoanSchema from './schemas/LoanSchema';
 import { LOANS_COLLECTION } from './loanConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Loans = new Mongo.Collection(LOANS_COLLECTION);
-
-// Prevent all client side modifications of mongoDB
-Loans.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-Loans.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const Loans = createCollection(LOANS_COLLECTION);
 
 Loans.attachSchema(LoanSchema);
 export default Loans;

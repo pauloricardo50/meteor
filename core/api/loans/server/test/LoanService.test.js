@@ -7,7 +7,11 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { loanSetStatus } from '../../../methods/index';
+import {
+  loanSetStatus,
+  setLoanStep,
+  sendNegativeFeedbackToAllLenders,
+} from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
@@ -45,12 +49,12 @@ describe('LoanService', function() {
       loanId = Factory.create('loan', {
         contacts: [{ name: 'Joe', title: 'Mah dude' }],
       })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.contacts.length).to.equal(1);
 
       LoanService.popValue({ loanId, object: { contacts: 1 } });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.contacts).to.deep.equal([]);
     });
   });
@@ -137,7 +141,7 @@ describe('LoanService', function() {
         propertyId: 'propertyId',
       });
 
-      loan = LoanService.get('loanId');
+      loan = LoanService.findOne('loanId');
 
       loan.structures.forEach(({ propertyId }) => {
         expect(propertyId).to.equal('propertyId');
@@ -162,7 +166,7 @@ describe('LoanService', function() {
         propertyId: 'propertyId',
       });
 
-      loan = LoanService.get('loanId');
+      loan = LoanService.findOne('loanId');
 
       loan.structures.forEach(({ propertyId, promotionOptionId }, i) => {
         if (i === 2) {
@@ -177,12 +181,12 @@ describe('LoanService', function() {
   describe('addNewStructure', () => {
     it('adds a new structure to a loan', () => {
       loanId = Factory.create('loan')._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures).to.deep.equal([]);
 
       LoanService.addNewStructure({ loanId });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures).to.have.length(1);
       expect(typeof loan.structures[0].id).to.equal('string');
@@ -192,7 +196,7 @@ describe('LoanService', function() {
       loanId = Factory.create('loan')._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.selectedStructure).to.equal(loan.structures[0].id);
     });
 
@@ -203,7 +207,7 @@ describe('LoanService', function() {
       })._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.selectedStructure).to.equal('first');
     });
 
@@ -221,7 +225,7 @@ describe('LoanService', function() {
       })._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, name, ...structure1 } = loan.structures[0];
@@ -235,7 +239,7 @@ describe('LoanService', function() {
       loanId = Factory.create('loan')._id;
       const structureId = LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.equal(structureId);
@@ -248,7 +252,7 @@ describe('LoanService', function() {
         structures: [{ id: '1' }, { id: '2' }],
         selectedStructure: '1',
       })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
 
@@ -256,7 +260,7 @@ describe('LoanService', function() {
 
       LoanService.removeStructure({ loanId, structureId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.not.equal(structureId);
@@ -282,7 +286,7 @@ describe('LoanService', function() {
 
       LoanService.duplicateStructure({ loanId, structureId: '1' });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
 
@@ -291,7 +295,7 @@ describe('LoanService', function() {
         structureId: loan.structures[1].id,
       });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
     });
@@ -312,7 +316,7 @@ describe('LoanService', function() {
 
       LoanService.removeStructure({ loanId, structureId: 'CfN4k8WKqRySCfvns' });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(1);
     });
@@ -329,7 +333,7 @@ describe('LoanService', function() {
           { id: `${structureId}1` },
         ],
       })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.structures.propertyId).to.equal(undefined);
       LoanService.updateStructure({
         loanId,
@@ -337,7 +341,7 @@ describe('LoanService', function() {
         structure: { propertyId },
       });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       // This structure is correct
       expect(
         loan.structures.find(({ id }) => id === structureId),
@@ -365,7 +369,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.selectStructure({ loanId, structureId: structureId2 });
-      const { selectedStructure } = LoanService.get(loanId);
+      const { selectedStructure } = LoanService.findOne(loanId);
 
       expect(selectedStructure).to.equal(structureId2);
     });
@@ -397,7 +401,7 @@ describe('LoanService', function() {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, name, ...structure1 } = loan.structures[0];
@@ -426,7 +430,7 @@ describe('LoanService', function() {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       const { id: id1, name, ...structure1 } = loan.structures[0];
       const { id: id2, name: name2, ...structure2 } = loan.structures[1];
@@ -443,7 +447,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures[1].name).to.equal(`${name} - copie`);
     });
@@ -459,7 +463,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId: structureId + 0 });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures.length).to.equal(3);
       expect(loan.structures[0].name).to.equal(name + 0);
@@ -473,7 +477,7 @@ describe('LoanService', function() {
         selectedStructure: 'testId',
       })._id;
       LoanService.duplicateStructure({ loanId, structureId: 'testId' });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.structures[1].name).to.equal('Plan financier - copie');
     });
   });
@@ -486,7 +490,7 @@ describe('LoanService', function() {
 
     it('returns 19-0002 for the second loan', () => {
       loanId = LoanService.insert({ loan: {} });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
       expect(loan.name).to.equal('19-0001');
 
       const name = LoanService.getNewLoanName();
@@ -582,7 +586,7 @@ describe('LoanService', function() {
       })._id;
 
       LoanService.cleanupRemovedBorrower({ borrowerId });
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.structures[0].ownFunds.length).to.equal(1);
       expect(loan.structures[0].ownFunds[0].borrowerId).to.equal(borrowerId2);
@@ -594,13 +598,13 @@ describe('LoanService', function() {
       const oldBorrowerId = Factory.create('borrower')._id;
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId] })._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([oldBorrowerId]);
 
       LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([borrowerId]);
     });
@@ -610,13 +614,13 @@ describe('LoanService', function() {
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId, 'dude'] })
         ._id;
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([oldBorrowerId, 'dude']);
 
       LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
 
-      loan = LoanService.get(loanId);
+      loan = LoanService.findOne(loanId);
 
       expect(loan.borrowerIds).to.deep.equal([borrowerId, 'dude']);
     });
@@ -673,11 +677,11 @@ describe('LoanService', function() {
 
       LoanService.assignLoanToUser({ loanId, userId });
 
-      expect(LoanService.get(loanId).userId).to.equal(userId);
+      expect(LoanService.findOne(loanId).userId).to.equal(userId);
       expect(BorrowerService.get(borrowerId1).userId).to.equal(userId);
       expect(BorrowerService.get(borrowerId2).userId).to.equal(userId);
-      expect(PropertyService.get(propertyId1).userId).to.equal(userId);
-      expect(PropertyService.get(propertyId2).userId).to.equal(userId);
+      expect(PropertyService.findOne(propertyId1).userId).to.equal(userId);
+      expect(PropertyService.findOne(propertyId2).userId).to.equal(userId);
     });
 
     it('throws if a borrower is assigned to multiple loans', () => {
@@ -720,8 +724,8 @@ describe('LoanService', function() {
       expect(() =>
         LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'dude' }),
       ).to.not.throw();
-      expect(PropertyService.get('propId1').userId).to.equal(undefined);
-      expect(PropertyService.get('propId2').userId).to.equal('dude');
+      expect(PropertyService.findOne('propId1').userId).to.equal(undefined);
+      expect(PropertyService.findOne('propId2').userId).to.equal('dude');
     });
 
     it('refers a user if this is his first loan', () => {
@@ -852,7 +856,7 @@ describe('LoanService', function() {
       loanId = 'someLoan';
       generator({
         users: [
-          { _id: 'adminId', _factory: 'adminEpotek' },
+          { _id: 'adminId', _factory: 'admin' },
           {
             _id: 'userId',
             assignedEmployee: { _id: 'adminId' },
@@ -875,7 +879,7 @@ describe('LoanService', function() {
       addresses = [];
     });
 
-    it('sends a negative feedback to all lenders', () => {
+    it('sends a negative feedback to all lenders', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 1;
 
@@ -889,19 +893,19 @@ describe('LoanService', function() {
         numberOfLenders * numberOfOffersPerLender,
       );
 
-      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(numberOfLenders))
-        .then(emails => {
-          expect(emails.length).to.equal(numberOfLenders);
-          addresses.forEach(email =>
-            expect(emails.some(({ address }) => address === email)).to.equal(
-              true,
-            ),
-          );
-        });
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
+
+      const emails = await checkEmails(numberOfLenders);
+
+      expect(emails.length).to.equal(numberOfLenders);
+      addresses.forEach(email =>
+        expect(emails.some(({ address }) => address === email)).to.equal(true),
+      );
     });
 
-    it('sends a negative feedback to all lenders once only', () => {
+    it('sends a negative feedback to all lenders once only', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 10;
 
@@ -915,26 +919,29 @@ describe('LoanService', function() {
         numberOfLenders * numberOfOffersPerLender,
       );
 
-      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(numberOfLenders))
-        .then(emails => {
-          expect(emails.length).to.equal(numberOfLenders);
-          addresses.forEach(email =>
-            expect(emails.some(({ address }) => address === email)).to.equal(
-              true,
-            ),
-          );
-        });
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
+
+      const emails = await checkEmails(numberOfLenders);
+
+      expect(emails.length).to.equal(numberOfLenders);
+      addresses.forEach(email =>
+        expect(emails.some(({ address }) => address === email)).to.equal(true),
+      );
     });
 
-    it('does not send any feedback if there is no lender', () =>
-      LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(0))
-        .then(emails => {
-          expect(emails.length).to.equal(0);
-        }));
+    it('does not send any feedback if there is no lender', async () => {
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
 
-    it('does not send any feedback if there is no offer', () => {
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
+    });
+
+    it('does not send any feedback if there is no offer', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 0;
 
@@ -946,15 +953,17 @@ describe('LoanService', function() {
 
       expect(offerIds.length).to.equal(0);
 
-      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
-        .then(() => checkEmails(0))
-        .then(emails => {
-          expect(emails.length).to.equal(0);
-        });
+      await ddpWithUserId('adminId', () =>
+        sendNegativeFeedbackToAllLenders.run({ loanId }),
+      );
+
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
     });
   });
 
-  describe('setStep', () => {
+  describe('setStep', async () => {
     it('sets the step', () => {
       generator({
         loans: { _id: 'id', step: STEPS.SOLVENCY },
@@ -962,12 +971,12 @@ describe('LoanService', function() {
 
       LoanService.setStep({ loanId: 'id', nextStep: STEPS.REQUEST });
 
-      loan = LoanService.get('id');
+      loan = LoanService.findOne('id');
 
       expect(loan.step).to.equal(STEPS.REQUEST);
     });
 
-    it('sends a notification email if the step goes from SOLVENCY to OFFERS', () => {
+    it('sends a notification email if the step goes from SOLVENCY to OFFERS', async () => {
       generator({
         users: {
           _id: 'admin',
@@ -985,40 +994,42 @@ describe('LoanService', function() {
         },
       });
 
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
 
-      loan = LoanService.get('myLoan');
+      loan = LoanService.findOne('myLoan');
 
       expect(loan.step).to.equal(STEPS.OFFERS);
 
-      return checkEmails(1).then(emails => {
-        const {
+      const [
+        {
           emailId,
           address,
           response: { status },
           template: {
             message: { from_email, subject, global_merge_vars, from_name },
           },
-        } = emails[0];
+        },
+      ] = await checkEmails(1);
 
-        expect(status).to.equal('sent');
-        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
-        expect(address).to.equal('john@doe.com');
-        expect(from_email).to.equal('info@e-potek.ch');
-        expect(from_name).to.equal('e-Potek');
-        expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(
-          global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
-        ).to.include('/loans/myLoan');
-        expect(
-          global_merge_vars.find(({ name }) => name === 'BODY').content,
-        ).to.include('Admin User');
-      });
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+      expect(address).to.equal('john@doe.com');
+      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_name).to.equal('e-Potek');
+      expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
+      ).to.include('/loans/myLoan');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('Admin User');
     });
 
-    it('sends a notification email if the step goes from REQUEST to OFFERS', () => {
+    it('sends a notification email if the step goes from REQUEST to OFFERS', async () => {
       generator({
-        users: { _id: 'admin' },
+        users: { _id: 'admin', _factory: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.REQUEST,
@@ -1028,32 +1039,39 @@ describe('LoanService', function() {
           },
         },
       });
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1).then(emails => {
-        const {
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
+
+      const [
+        {
           emailId,
           response: { status },
-        } = emails[0];
+        },
+      ] = await checkEmails(1);
 
-        expect(status).to.equal('sent');
-        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
-      });
+      expect(status).to.equal('sent');
+      expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
     });
 
-    it('does not send a notification email if the step goes from REQUEST to OFFERS', () => {
+    it('does not send a notification email if the step goes from REQUEST to OFFERS', async () => {
       generator({
+        users: { _id: 'admin', _factory: 'admin' },
         loans: {
           _id: 'myLoan',
           step: STEPS.CLOSING,
           user: { emails: [{ address: 'john@doe.com', verified: false }] },
         },
       });
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
-      return checkEmails(1, { timeout: 2000, noExpect: true }).then(emails => {
-        expect(emails.length).to.equal(0);
-      });
+      await ddpWithUserId('admin', () =>
+        setLoanStep.run({ loanId: 'myLoan', nextStep: STEPS.OFFERS }),
+      );
+
+      const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
+
+      expect(emails.length).to.equal(0);
     });
   });
 

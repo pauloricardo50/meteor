@@ -9,11 +9,18 @@ import UserService from '../../users/server/UserService';
 exposeQuery({
   query: appPromotionOption,
   overrides: {
-    firewall(userId, { promotionOptionId }) {
+    firewall(userId, { promotionOptionId, promotionId }) {
       SecurityService.promotions.hasAccessToPromotionOption({
         promotionOptionId,
         userId,
       });
+
+      if (promotionId) {
+        SecurityService.promotions.hasAccessToPromotion({
+          promotionId,
+          userId,
+        });
+      }
     },
     embody: body => {
       body.$filter = ({ filters, params: { promotionOptionId } }) => {
@@ -28,23 +35,45 @@ exposeQuery({
   query: proPromotionOptions,
   overrides: {
     firewall(userId, params) {
-      const { promotionOptionIds } = params;
+      const { promotionOptionIds, promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
-      promotionOptionIds.forEach(promotionOptionId => {
-        SecurityService.promotions.isAllowedToViewPromotionOption({
-          promotionOptionId,
+
+      if (promotionOptionIds) {
+        promotionOptionIds.forEach(promotionOptionId => {
+          SecurityService.promotions.isAllowedToViewPromotionOption({
+            promotionOptionId,
+            userId,
+          });
+        });
+      }
+
+      if (promotionId) {
+        SecurityService.promotions.hasAccessToPromotion({
+          promotionId,
           userId,
         });
-      });
+      }
+
       if (!SecurityService.isUserAdmin(userId)) {
         params.anonymize = true;
       }
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionOptionIds = [] } = params;
-        filters._id = { $in: promotionOptionIds };
+        const { promotionOptionIds, status, promotionId } = params;
+
+        if (promotionOptionIds) {
+          filters._id = { $in: promotionOptionIds };
+        }
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (promotionId) {
+          filters['promotionLink._id'] = promotionId;
+        }
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
@@ -62,9 +91,11 @@ exposeQuery({
       };
     },
     validateParams: {
-      promotionOptionIds: [String],
+      promotionId: Match.Maybe(String),
+      promotionOptionIds: Match.Maybe([String]),
       userId: String,
       anonymize: Match.Maybe(Boolean),
+      status: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

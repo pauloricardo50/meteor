@@ -125,13 +125,6 @@ export const STEP_ORDER = [
   STEPS.CLOSING,
 ];
 
-export const LOAN_VERIFICATION_STATUS = {
-  NONE: 'NONE',
-  REQUESTED: 'REQUESTED',
-  OK: 'OK',
-  ERROR: 'ERROR',
-};
-
 export const SOLVENCY_TYPE = {
   SIMPLE: 'SIMPLE',
   FULL: 'FULL',

@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
+
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import { EMAIL_IDS } from '../../email/emailConstants';
-import { sendEmail } from '../../methods';
 import { fullUser } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
@@ -13,19 +12,15 @@ import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
-import { getUserNameAndOrganisation } from '../../helpers';
 import { ROLES } from '../userConstants';
-import roundRobinAdvisors from './roundRobinAdvisors';
 import Users from '../users';
+import roundRobinAdvisors from './roundRobinAdvisors';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
     super(Users);
     this.setupRoundRobin(employees);
-  }
-
-  get(userId) {
-    return this.fetchOne({ $filters: { _id: userId }, ...fullUser() });
+    this.get = this.makeGet(fullUser());
   }
 
   getByEmail(email) {
@@ -313,17 +308,7 @@ export class UserServiceClass extends CollectionService {
     const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
 
-    return sendEmail
-      .run({
-        emailId: EMAIL_IDS.REFER_USER,
-        userId,
-        params: {
-          proUserId,
-          proName: getUserNameAndOrganisation({ user: pro }),
-          ctaUrl: this.getEnrollmentUrl({ userId }),
-        },
-      })
-      .then(() => ({ userId, isNewUser: true }));
+    return { userId, admin, pro, isNewUser: true };
   };
 
   proCreateUser = ({
@@ -479,7 +464,13 @@ export class UserServiceClass extends CollectionService {
       ];
     }
 
-    return Promise.all(promises).then(() => ({ userId, isNewUser }));
+    return Promise.all(promises).then(() => ({
+      userId,
+      isNewUser,
+      proId: proUserId || invitedBy,
+      admin,
+      pro,
+    }));
   };
 
   getEnrollmentUrl({ userId }) {

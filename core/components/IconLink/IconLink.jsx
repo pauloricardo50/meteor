@@ -15,6 +15,7 @@ const IconLink = React.forwardRef(
       className,
       stopPropagation = true,
       iconClassName,
+      iconStyle,
       showIcon,
       noRoute,
       onClick,
@@ -55,6 +56,7 @@ const IconLink = React.forwardRef(
             onClick();
           }
         }}
+        style={iconStyle}
         {...props}
         {...rest}
       >

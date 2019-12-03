@@ -33,7 +33,7 @@ class Tabs extends Component {
 
   getContent = () => {
     const { value } = this.state;
-    const { tabs } = this.props;
+    const { tabs = [] } = this.props;
 
     if (tabs.length === 0) {
       return null;
@@ -49,7 +49,7 @@ class Tabs extends Component {
     return currentTab.content;
   };
 
-  render() {
+  getTabs = () => {
     const {
       classes,
       tabs,
@@ -57,40 +57,58 @@ class Tabs extends Component {
       className,
       onChangeCallback,
       disableTouchRipple,
+      tabsOnly,
+      tabsClassName,
       ...otherProps
     } = this.props;
     const { value } = this.state;
+
+    return (
+      <MuiTabs
+        classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+        className={cx('core-tabs-top', tabsClassName)}
+        value={value}
+        onChange={this.handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        {...otherProps}
+      >
+        {tabs.map(({ label, to, id }, i) => (
+          <Tab
+            classes={{
+              root: classes.tabRoot,
+              selected: classes.tabSelected,
+              labelContainer: classes.labelContainer,
+            }}
+            label={label}
+            component={to ? Link : undefined}
+            to={to}
+            key={id || i}
+            className="core-tabs-tab"
+            disableTouchRipple={disableTouchRipple}
+          />
+        ))}
+      </MuiTabs>
+    );
+  };
+
+  render() {
+    const { classes, className, tabsOnly } = this.props;
     // initial index is destructured to avoid passing down an unrecognized prop
     // to MuiTabs
 
+    const renderedTabs = this.getTabs();
+
+    if (tabsOnly) {
+      return renderedTabs;
+    }
+
+    const content = this.getContent();
+
     return (
       <div className={cx('card1 card-top core-tabs', classes.root, className)}>
-        <MuiTabs
-          classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-          className="core-tabs-top"
-          value={value}
-          onChange={this.handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          {...otherProps}
-        >
-          {tabs.map(({ label, to, id }, i) => (
-            <Tab
-              classes={{
-                root: classes.tabRoot,
-                selected: classes.tabSelected,
-                labelContainer: classes.labelContainer,
-              }}
-              label={label}
-              component={to ? Link : undefined}
-              to={to}
-              key={id || i}
-              className="core-tabs-tab"
-              disableTouchRipple={disableTouchRipple}
-            />
-          ))}
-        </MuiTabs>
-        <div className="tab-content">{this.getContent()}</div>
+        {renderedTabs}
+        {content && <div className="tab-content">{content}</div>}
       </div>
     );
   }
@@ -102,6 +120,7 @@ Tabs.propTypes = {
   className: PropTypes.string,
   initialIndex: PropTypes.number,
   tabs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tabsOnly: PropTypes.bool,
 };
 
 Tabs.defaultProps = {

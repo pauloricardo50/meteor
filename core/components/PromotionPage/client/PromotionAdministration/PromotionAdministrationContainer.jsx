@@ -37,6 +37,8 @@ const promotionDocuments = [
     noTooltips: true,
   },
   { id: 'logos', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  { id: 'promotionGuide', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  { id: 'proDocuments', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
 ];
 
 export const promotionLotSchema = new SimpleSchema({
@@ -123,6 +125,7 @@ const getOptions = ({
             title={<T id="PromotionAdministration.updatePromotion" />}
             onSubmit={object => promotionUpdate.run({ promotionId, object })}
           />,
+          { maxWidth: 'sm', fullWidth: true },
         ),
     },
     {

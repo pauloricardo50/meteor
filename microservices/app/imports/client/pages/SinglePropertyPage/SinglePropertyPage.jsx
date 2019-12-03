@@ -21,6 +21,12 @@ const SinglePropertyPage = props => {
   const { borrowers, properties, _id: loanId, applicationType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
+  if (!property) {
+    // Do this when deleting the property, so it doesn't display a giant error
+    // before routing to the properties page
+    return null;
+  }
+
   if (property.category === PROPERTY_CATEGORY.PRO) {
     return (
       <ProProperty
@@ -29,12 +35,6 @@ const SinglePropertyPage = props => {
         loan={loan}
       />
     );
-  }
-
-  if (!property) {
-    // Do this when deleting the property, so it doesn't display a giant error
-    // before routing to the properties page
-    return null;
   }
 
   const { address1, zipCode, city } = property;

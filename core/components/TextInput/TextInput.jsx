@@ -122,7 +122,13 @@ const getEndAdornment = ({ endAdornment }) => {
 
 // A hack for number inputs because material-ui can't be sure of the initial
 // shrink value: https://material-ui.com/components/text-fields/#floating-label
-const shouldShrinkLabel = value => !!value || undefined;
+const shouldShrinkLabel = (value, notched) => {
+  if (notched !== undefined) {
+    return notched;
+  }
+
+  return !!value || undefined;
+};
 
 const TextInput = props => {
   const {
@@ -148,6 +154,7 @@ const TextInput = props => {
     inputType,
     inputLabelProps,
     endAdornment,
+    notched,
     ...otherProps
   } = props;
 
@@ -188,7 +195,7 @@ const TextInput = props => {
         type={inputType || 'text'}
         style={{ fontSize: 'inherit' }}
         inputComponent={showMask ? MaskedInput : inputComponent || undefined}
-        notched={shouldShrinkLabel(value)}
+        notched={shouldShrinkLabel(value, notched)}
         inputProps={{
           ...inputProps, // Backwards compatible
           ...InputProps,

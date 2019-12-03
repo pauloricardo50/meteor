@@ -19,21 +19,23 @@ type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
   const { loan, currentUser, openBorrowersForm, progress } = props;
+  const { _id: loanId, name, customName, maxPropertyValue } = loan;
 
   const isMobile = useMedia({ maxWidth: 1200 });
 
   return (
     <div className="simple-dashboard-page animated fadeIn">
       <div className="simple-dashboard-page-content">
-        <DashboardProgressBar currentStep={loan.step} variant="light" />
+        <DashboardProgressBar loan={loan} variant="light" />
         <SimpleDashboardPageCTAs
-          loanId={loan._id}
-          progress={progress}
+          loanId={loanId}
           currentUser={currentUser}
           withReturnToDashboard={false}
+          maxPropertyValue={maxPropertyValue}
         />
         <div className="simple-dashboard-page-borrowers">
           <BorrowersCard {...props} />
+
           <div className="simple-dashboard-page-borrowers-right">
             {isMobile ? (
               <MuiThemeProvider theme={createTheme()}>
@@ -50,9 +52,9 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
       </div>
       <div className="simple-dashboard-page-footer">
         <span>
-          <T id="LoanSelector.name" values={{ name: loan.name }} />
+          <T id="LoanSelector.name" values={{ name }} />
         </span>
-        <span className="secondary">{loan.customName}</span>
+        <span className="secondary">{customName}</span>
       </div>
     </div>
   );

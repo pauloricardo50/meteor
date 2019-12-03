@@ -9,11 +9,10 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-material/wrapField';
-
+import { filterDOMProps, connectField } from 'uniforms';
+import { wrapField } from 'uniforms-material';
 import { compose } from 'recompose';
+
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 import { ignoreProps } from '../../containers/updateForProps';
 
@@ -200,15 +199,15 @@ const CustomSelectField = ({
   values = [],
   renderValue,
   ...props
-}: CustomSelectFieldProps) => (
-    <SelectField
-      {...props}
-      allowedValues={values}
-      transform={transform}
-      renderValue={renderValue}
-      labelProps={{ shrink: true }}
-    />
-  );
+}) => (
+  <SelectField
+    {...props}
+    allowedValues={values}
+    transform={transform}
+    renderValue={renderValue}
+    labelProps={{ shrink: true }}
+  />
+);
 
 export default compose(
   CustomSelectFieldContainer,

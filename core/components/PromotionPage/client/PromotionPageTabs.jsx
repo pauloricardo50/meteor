@@ -1,27 +1,15 @@
 // @flow
-import React, { useState } from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
 
-import Link from 'core/components/Link/Link';
+import Tabs from 'core/components/Tabs';
 import { createRoute } from 'core/utils/routerUtils';
 import withMatchParam from 'core/containers/withMatchParam';
-import T from '../../Translation';
 
 type PromotionPageTabsProps = {};
 
 const useStyles = makeStyles({ root: { backgroundColor: 'white' } });
-
-const getInitialTab = (tabs, tabId) => {
-  const index = tabs.findIndex(({ id }) => id === tabId);
-
-  if (index < 0) {
-    return 0;
-  }
-
-  return index;
-};
 
 const PromotionPageTabs = ({
   promotion,
@@ -29,32 +17,20 @@ const PromotionPageTabs = ({
   tabId,
   tabs = [],
 }: PromotionPageTabsProps) => {
-  const { _id: promotionId, users, loans } = promotion;
+  const { _id: promotionId } = promotion;
   const classes = useStyles();
-  const [value, setValue] = useState(getInitialTab(tabs, tabId));
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   return (
     <Tabs
-      value={value}
-      onChange={handleChange}
-      className={classes.root}
-      indicatorColor="primary"
-      textColor="primary"
+      tabs={tabs.map(tab => ({
+        ...tab,
+        to: createRoute(route, { promotionId, tabId: tab.id }),
+      }))}
+      routerParamName="tabId"
       variant="fullWidth"
-    >
-      {tabs.map(({ id, label }) => (
-        <Tab
-          key={id}
-          label={label}
-          component={Link}
-          to={createRoute(route, { promotionId, tabId: id })}
-        />
-      ))}
-    </Tabs>
+      tabsOnly
+      tabsClassName={cx('promotion-page-tabs', classes.root)}
+    />
   );
 };
 

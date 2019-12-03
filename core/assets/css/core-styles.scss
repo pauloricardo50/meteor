@@ -1,13 +1,13 @@
 // This @import must be at top of file, otherwise the custom fonts will not work
-@import url('//hello.myfonts.net/count/36c4a4');
+@import url("//hello.myfonts.net/count/36c4a4");
 
-@import '{}/node_modules/normalize-scss/sass/normalize';
+@import "{}/node_modules/normalize-scss/sass/normalize";
 @include normalize();
 
-@import './variables.scss';
-@import './mixins.scss';
-@import './core-components.scss';
-@import './typography.scss';
+@import "./variables.scss";
+@import "./mixins.scss";
+@import "./core-components.scss";
+@import "./typography.scss";
 
 body,
 html,
@@ -27,7 +27,7 @@ body {
 
 // Nicer styling for a tags, removes horrible blue color
 // And avoid it if this is a button
-a:not([role='button']) {
+a:not([role="button"]) {
   cursor: pointer;
 
   color: inherit;
@@ -189,6 +189,7 @@ p.description,
   text-align: left;
 
   line-height: 1.8em;
+  white-space: pre-wrap;
 }
 
 .description > p,
@@ -217,6 +218,10 @@ p.description,
 
   &.center-align {
     align-items: center;
+  }
+
+  &.sb {
+    justify-content: space-between;
   }
 }
 
@@ -310,17 +315,16 @@ p.description,
   }
 }
 
-.delay-200 {
-  animation-delay: 200ms;
+@mixin delays($n, $step) {
+  @for $i from 1 to $n {
+    &-#{$step*$i} {
+      animation-delay: #{$step * $i}ms;
+    }
+  }
 }
-.delay-400 {
-  animation-delay: 400ms;
-}
-.delay-600 {
-  animation-delay: 600ms;
-}
-.delay-800 {
-  animation-delay: 800ms;
+
+.delay {
+  @include delays(20, 50);
 }
 
 .visibility-hidden {
@@ -347,6 +351,10 @@ p.description,
 
 .mb-0 {
   margin-bottom: 0;
+}
+
+.mt-16 {
+  margin-top: 16px;
 }
 
 .mb-8 {
@@ -397,6 +405,10 @@ p.description,
   margin-bottom: 32px;
 }
 
+.mt-32 {
+  margin-top: 32px;
+}
+
 .fb-50 > * {
   flex-basis: 50%;
 }
@@ -425,6 +437,14 @@ p.description,
   display: grid;
 
   grid-auto-flow: column;
+  grid-gap: 8px;
+  justify-items: stretch;
+}
+
+.grid-row {
+  display: grid;
+
+  grid-auto-flow: row;
   grid-gap: 8px;
   justify-items: stretch;
 }

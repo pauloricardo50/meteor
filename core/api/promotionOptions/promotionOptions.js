@@ -1,21 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-
 import PromotionOptionSchema from './schemas/PromotionOptionSchema';
 import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptionConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const PromotionOptions = new Mongo.Collection(PROMOTION_OPTIONS_COLLECTION);
-
-PromotionOptions.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
-
-PromotionOptions.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false,
-});
+const PromotionOptions = createCollection(PROMOTION_OPTIONS_COLLECTION);
 
 PromotionOptions.attachSchema(PromotionOptionSchema);
 export default PromotionOptions;

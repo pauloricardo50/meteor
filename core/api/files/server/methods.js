@@ -9,6 +9,8 @@ import {
   getZipLoanUrl,
   setFileAdminName,
   moveFile,
+  deleteTempFile,
+  autoRenameFile,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -44,7 +46,8 @@ setFileError.setHandler((context, { fileKey, error }) => {
 
 downloadFile.setHandler((context, { key }) => {
   context.unblock();
-  S3Service.isAllowedToAccess(key);
+  const { userId } = context;
+  S3Service.isAllowedToAccess({ userId, key });
   return S3Service.getObject(key);
 });
 
@@ -114,3 +117,13 @@ moveFile.setHandler(
     });
   },
 );
+
+deleteTempFile.setHandler(({ userId }, { fileKey }) => {
+  SecurityService.isAllowedToRemoveTempFile({ userId, fileKey });
+  return FileService.deleteFile(fileKey);
+});
+
+autoRenameFile.setHandler(({ userId }, { key, collection }) => {
+  S3Service.isAllowedToAccess({ userId, key });
+  return FileService.autoRenameFile(key, collection);
+});
