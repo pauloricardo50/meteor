@@ -31,6 +31,7 @@
     "connect-route": "^0.1.5",
     "core-js": "^3.3.6",
     "faker": "^4.1.0",
+    "file-saver": "^2.0.2",
     "googleapis": "^44.0.0",
     "highcharts-export-data": "^0.1.7",
     "html-parse-stringify": "^1.0.3",
