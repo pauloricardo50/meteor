@@ -3,7 +3,9 @@ import React from 'react';
 
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
+import Icon from 'core/components/Icon';
 import ProCustomersTable from 'core/components/ProCustomersTable';
+import collectionIcons from 'core/arrays/collectionIcons';
 import ProPromotionsTable from './ProPromotionsTable';
 import ProPropertiesTable from './ProPropertiesTable';
 
@@ -32,12 +34,15 @@ const getTabs = ({ currentUser }) => {
   ].map(tab => ({
     ...tab,
     label: (
-      <T
-        id={`ProDashboardPageTabs.${tab.id}`}
-        values={{
-          orgName: organisations[0] && organisations[0].name,
-        }}
-      />
+      <span className="flex center-align">
+        <Icon className="mr-8" type={collectionIcons[tab.id]} size={20} />
+        <T
+          id={`ProDashboardPageTabs.${tab.id}`}
+          values={{
+            orgName: organisations[0] && organisations[0].name,
+          }}
+        />
+      </span>
     ),
     to: `/${tab.id}`,
   }));

@@ -20,10 +20,10 @@ const ProDashboardPage = (props: ProDashboardPageProps) => {
         <T id="ProDashboardPage.title" />
       </h1>
       <div className="buttons">
+        <ProCustomerAdder currentUser={currentUser} />
         <PromotionAdder currentUser={currentUser} />
         <ProPropertyAdder currentUser={currentUser} />
         {currentUser.apiPublicKey && <ExternalPropertyAdder />}
-        <ProCustomerAdder currentUser={currentUser} />
       </div>
       <ProDashboardPageTabs currentUser={currentUser} />
     </div>

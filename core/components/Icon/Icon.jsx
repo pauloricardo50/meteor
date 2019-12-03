@@ -206,7 +206,7 @@ const Icon = React.forwardRef(
     };
 
     if (type !== null && typeof type === 'object') {
-      icon = React.cloneElement(type, { style: iconStyle });
+      icon = React.cloneElement(type, { ...props, style: iconStyle });
     } else if (typeof type === 'string') {
       const MyIcon = iconMap[type];
 
