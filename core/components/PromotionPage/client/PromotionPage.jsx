@@ -8,6 +8,11 @@ import PromotionPageHeader from './PromotionPageHeader';
 import PromotionPageContent from './PromotionPageContent';
 import PromotionMetadataContext from './PromotionMetadata';
 
+const shouldDisplayFilesTab = documents =>
+  documents &&
+  ((documents.promotionDocuments && documents.promotionDocuments.length > 0) ||
+    (documents.proDocuments && documents.proDocuments.length > 0));
+
 const getTabs = ({
   permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
   promotion: { users = [], loans = [], documents },
@@ -19,10 +24,7 @@ const getTabs = ({
     { id: 'partners', shouldDisplay: true },
     {
       id: 'files',
-      shouldDisplay:
-        documents &&
-        documents.promotionDocuments &&
-        documents.promotionDocuments.length > 0,
+      shouldDisplay: shouldDisplayFilesTab(documents),
     },
     {
       id: 'customers',
