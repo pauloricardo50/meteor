@@ -117,6 +117,7 @@
   "files.RESERVATION_AGREEMENT": "Convention de réservation signée",
   "files.agreementFileKeys": "Convention de réservation signée",
   "PromotionLotReservation.book": "Réserver",
+  "ProSideNav.documentation": "Documentation",
   "DeactivatedFormInfo.description": "Votre conseiller à figé vos formulaires pour préserver leur état actuel. Contactez-le si vous souhaitez faire des modifications.",
   "ImpersonateNotification.dialog.description": "{adminFirstName} souhaite vous accompagner à travers e-Potek",
   "ImpersonateNotification.follow": "Suivre {adminFirstName}",
