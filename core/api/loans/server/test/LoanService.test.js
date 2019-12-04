@@ -1540,7 +1540,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setAdminNote', () => {
+  describe.only('setAdminNote', () => {
     it('adds new adminNotes to a loan', () => {
       generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
 
@@ -1585,6 +1585,65 @@ describe('LoanService', function() {
       });
       expect(updated[0].note).to.equal('hello world');
       expect(updated[0].date.getTime()).to.be.above(now.getTime());
+    });
+
+    it('sorts notes from newest to oldest', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '1',
+          date: moment()
+            .subtract(1, 'd')
+            .toDate(),
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: '2', date: moment().toDate() },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '3',
+          date: moment()
+            .add(1, 'd')
+            .toDate(),
+        },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+      expect(adminNotes[0].note).to.equal('3');
+    });
+
+    it('caches the last proNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '1',
+          date: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          isSharedWithPros: true,
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '2',
+          date: moment().toDate(),
+          isSharedWithPros: true,
+        },
+      });
+
+      const { proNote } = LoanService.get('loanId', { proNote: 1 });
+      expect(proNote.note).to.equal('2');
     });
   });
 

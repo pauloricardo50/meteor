@@ -128,7 +128,6 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(LOAN_CATEGORIES),
     uniforms: { placeholder: null },
   },
-  ...adminNotesSchema,
   lendersCache: { type: Array, optional: true },
   'lendersCache.$': cacheField,
   tasksCache: { type: Array, optional: true },
@@ -136,6 +135,11 @@ const LoanSchema = new SimpleSchema({
   financedPromotionLink: { type: Object, optional: true },
   'financedPromotionLink._id': { type: String, optional: true },
   simpleBorrowersForm: { type: Boolean, defaultValue: true },
+  ...adminNotesSchema,
+  proNote: {
+    type: new SimpleSchema(adminNotesSchema).getObjectSchema('adminNotes.$'),
+    optional: true,
+  },
 });
 
 export default LoanSchema;

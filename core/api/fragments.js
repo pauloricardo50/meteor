@@ -359,11 +359,14 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 
 export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
-  adminNote: 1,
+  adminNotes: 1,
   category: 1,
+  financedPromotion: { name: 1 },
+  financedPromotionLink: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
+  proNote: 1,
   properties: adminProperty({ withSort }),
   revenues: adminRevenue(),
   status: 1,
@@ -376,8 +379,6 @@ export const adminLoan = ({ withSort } = {}) => ({
     assigneeLink: 1,
   },
   user: adminUser(),
-  financedPromotion: { name: 1 },
-  financedPromotionLink: 1,
 });
 
 export const adminLoans = () => ({

@@ -43,11 +43,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     case LOANS_COLLECTION: {
       let text;
 
-      // if (variant === 'TASKS_TABLE') {
       text = getLoanLinkTitle(data);
-      // } else {
-      //   text = data.name;
-      // }
 
       return {
         link: `/loans/${docId}`,

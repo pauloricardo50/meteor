@@ -998,6 +998,7 @@ class LoanService extends CollectionService {
   }
 
   setAdminNote({ loanId, adminNoteId, note, userId }) {
+    let result;
     const formattedNote = {
       ...note,
       updatedBy: userId,
@@ -1005,22 +1006,57 @@ class LoanService extends CollectionService {
     };
 
     if (adminNoteId) {
-      return this.baseUpdate(
+      result = this.baseUpdate(
         { _id: loanId, 'adminNotes.id': adminNoteId },
         { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
       );
+    } else {
+      result = this.update({
+        loanId,
+        operator: '$push',
+        object: { adminNotes: { ...formattedNote, id: Random.id() } },
+      });
+    }
+
+    // Sort adminNotes by date for faster retrieval of recent notes
+    // Most recent is always at the top
+    const { adminNotes } = this.get(loanId, { adminNotes: 1 });
+    this.update({
+      loanId,
+      object: {
+        adminNotes: adminNotes.sort(
+          ({ date: a }, { date: b }) => new Date(b) - new Date(a),
+        ),
+      },
+    });
+
+    this.updateProNote({ loanId });
+
+    return result;
+  }
+
+  removeAdminNote({ loanId, adminNoteId }) {
+    const result = this.baseUpdate(loanId, {
+      $pull: { adminNotes: { id: adminNoteId } },
+    });
+
+    this.updateProNote({ loanId });
+
+    return result;
+  }
+
+  updateProNote({ loanId }) {
+    const { adminNotes } = this.get(loanId, { adminNotes: 1 });
+    const proNote = adminNotes.find(note => note.isSharedWithPros);
+
+    if (proNote) {
+      return this.update({ loanId, object: { proNote } });
     }
 
     return this.update({
       loanId,
-      operator: '$push',
-      object: { adminNotes: { ...formattedNote, id: Random.id() } },
-    });
-  }
-
-  removeAdminNote({ loanId, adminNoteId }) {
-    return this.baseUpdate(loanId, {
-      $pull: { adminNotes: { id: adminNoteId } },
+      operator: '$unset',
+      object: { proNote: true },
     });
   }
 }
