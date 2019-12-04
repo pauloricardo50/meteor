@@ -7,8 +7,8 @@ import Tooltip from '../Material/Tooltip';
 
 type SliderProps = {};
 
-const formatTooltip = props => {
-  const { children, value, open, valueLabelFormat, valueLabelDisplay } = props;
+const ValueLabelComponent = props => {
+  const { children, value, open, valueLabelDisplay } = props;
 
   if (valueLabelDisplay === 'off') {
     return null;
@@ -23,10 +23,11 @@ const formatTooltip = props => {
 
   return (
     <Tooltip
-      title={valueLabelFormat(value)}
+      title={value}
       open={open}
       placement="top"
       PopperProps={{ popperRef }}
+      enterTouchDelay={0}
     >
       {children}
     </Tooltip>
@@ -67,7 +68,7 @@ const Slider = ({
       value={debouncedValue}
       onChange={(event, v) => debouncedOnChange(v)}
       valueLabelFormat={valueLabelFormat}
-      ValueLabelComponent={valueLabelFormat ? formatTooltip : undefined}
+      ValueLabelComponent={valueLabelFormat ? ValueLabelComponent : undefined}
       valueLabelDisplay={valueLabelFormat ? 'auto' : 'off'}
       {...rest}
     />
