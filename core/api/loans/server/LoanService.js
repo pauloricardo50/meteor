@@ -53,11 +53,12 @@ const zeroPadding = (num, places) => {
 class LoanService extends CollectionService {
   constructor() {
     super(Loans);
+    this.get = this.makeGet(adminLoan());
   }
 
   insert = ({ loan = {}, userId }) => {
     const name = this.getNewLoanName();
-    return Loans.insert({ ...loan, name, userId });
+    return super.insert({ ...loan, name, userId });
   };
 
   insertAnonymousLoan = ({ proPropertyId, referralId }) => {
@@ -99,7 +100,7 @@ class LoanService extends CollectionService {
   update = ({ loanId, object, operator = '$set' }) =>
     Loans.update(loanId, { [operator]: object });
 
-  remove = ({ loanId }) => Loans.remove(loanId);
+  remove = ({ loanId }) => super.remove(loanId);
 
   fullLoanInsert = ({ userId, loan = {} }) => {
     const loanId = this.insert({
@@ -223,11 +224,13 @@ class LoanService extends CollectionService {
   confirmClosing = ({ loanId, object }) =>
     this.update({ loanId, object: { status: LOAN_STATUS.BILLING, ...object } });
 
-  pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
+  pushValue = ({ loanId, object }) =>
+    this.baseUpdate(loanId, { $push: object });
 
-  popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
+  popValue = ({ loanId, object }) => this.baseUpdate(loanId, { $pop: object });
 
-  pullValue = ({ loanId, object }) => Loans.update(loanId, { $pull: object });
+  pullValue = ({ loanId, object }) =>
+    this.baseUpdate(loanId, { $pull: object });
 
   addStructure = ({ loanId, structure, atIndex }) => {
     const newStructureId = Random.id();
@@ -289,7 +292,7 @@ class LoanService extends CollectionService {
       $pull: { structures: { id: structureId } },
     };
 
-    return Loans.update(loanId, updateObj, {
+    return this.baseUpdate(loanId, updateObj, {
       // Edge case fix: https://github.com/meteor/meteor/issues/4342
       getAutoValues: false,
     });
@@ -992,6 +995,33 @@ class LoanService extends CollectionService {
     }
 
     return loanId;
+  }
+
+  setAdminNote({ loanId, adminNoteId, note, userId }) {
+    const formattedNote = {
+      ...note,
+      updatedBy: userId,
+      date: note.date || new Date(),
+    };
+
+    if (adminNoteId) {
+      return this.baseUpdate(
+        { _id: loanId, 'adminNotes.id': adminNoteId },
+        { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
+      );
+    }
+
+    return this.update({
+      loanId,
+      operator: '$push',
+      object: { adminNotes: { ...formattedNote, id: Random.id() } },
+    });
+  }
+
+  removeAdminNote({ loanId, adminNoteId }) {
+    return this.baseUpdate(loanId, {
+      $pull: { adminNotes: { id: adminNoteId } },
+    });
   }
 }
 

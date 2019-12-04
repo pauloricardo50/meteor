@@ -223,3 +223,20 @@ export const sendLoanChecklist = new Method({
     emailParams: Object,
   },
 });
+
+export const loanSetAdminNote = new Method({
+  name: 'loanSetAdminNote',
+  params: {
+    loanId: String,
+    adminNoteId: Match.Maybe(String),
+    note: Object,
+  },
+});
+
+export const loanRemoveAdminNote = new Method({
+  name: 'loanRemoveAdminNote',
+  params: {
+    loanId: String,
+    adminNoteId: String,
+  },
+});
