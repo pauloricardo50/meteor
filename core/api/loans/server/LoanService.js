@@ -999,11 +999,16 @@ class LoanService extends CollectionService {
 
   setAdminNote({ loanId, adminNoteId, note, userId }) {
     let result;
+    const now = new Date();
     const formattedNote = {
       ...note,
       updatedBy: userId,
-      date: note.date || new Date(),
+      date: note.date || now,
     };
+
+    if (formattedNote.date.getTime() > now.getTime()) {
+      throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
+    }
 
     if (adminNoteId) {
       result = this.baseUpdate(
