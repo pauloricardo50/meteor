@@ -40,7 +40,7 @@ export const makeGetIcon = ({
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-export const makeIcon = (variant, isEditing, promotionOptionId, loanId) => ({
+export const makeIcon = (variant, promotionOptionId, loanId) => ({
   icon,
   color,
   status,
@@ -49,20 +49,19 @@ export const makeIcon = (variant, isEditing, promotionOptionId, loanId) => ({
   component,
   placeholder,
 }) => (
-  <PromotionReservationProgressItem
-    icon={icon}
-    color={color}
-    date={date}
-    status={status}
-    variant={variant}
-    id={id}
-    isEditing={isEditing}
-    promotionOptionId={promotionOptionId}
-    component={component}
-    placeholder={placeholder}
-    loanId={loanId}
-  />
-);
+    <PromotionReservationProgressItem
+      icon={icon}
+      color={color}
+      date={date}
+      status={status}
+      variant={variant}
+      id={id}
+      promotionOptionId={promotionOptionId}
+      component={component}
+      placeholder={placeholder}
+      loanId={loanId}
+    />
+  );
 
 export const getPercent = ({ valid, required }) => {
   if (valid === 0 || required === 0) {
@@ -80,7 +79,6 @@ export const getRatio = ({ valid, required }) => ({
 export const getAdminNoteIcon = (
   { note, date, isAnonymized } = {},
   variant,
-  isEditing,
   promotionOptionId,
 ) => {
   const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
@@ -99,7 +97,6 @@ export const getAdminNoteIcon = (
       variant={variant}
       id="proNote"
       // Modify the note on the loan
-      isEditing={false}
       promotionOptionId={promotionOptionId}
     />
   );
@@ -114,9 +111,9 @@ export const rawPromotionReservationProgress = ({
 }) =>
   [
     simpleVerification.status ===
-      PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+    PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
     fullVerification.status ===
-      PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+    PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
     reservationDeposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,

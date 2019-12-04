@@ -37,6 +37,7 @@ const getAutoFormProps = props =>
     'schema',
     'showInlineError',
     'disabled',
+    'onChangeModel',
   ]);
 
 export class AutoFormDialog extends Component<AutoFormDialogProps> {

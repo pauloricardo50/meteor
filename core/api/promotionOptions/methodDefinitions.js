@@ -60,3 +60,8 @@ export const promotionOptionAddToWaitList = new Method({
     promotionOptionId: String,
   },
 });
+
+export const getEmailsToBeSentBySetPromotionOptionProgress = new Method({
+  name: 'getEmailsToBeSentBySetPromotionOptionProgress',
+  params: { id: String, nextStatus: String },
+});
