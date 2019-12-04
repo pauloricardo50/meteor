@@ -30,7 +30,6 @@
           "preventFullImport": true
         }
       }
-    ],
-    "lodash"
+    ]
   ]
 }
