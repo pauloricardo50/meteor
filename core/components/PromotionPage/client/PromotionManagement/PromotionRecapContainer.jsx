@@ -1,5 +1,6 @@
 import React from 'react';
 import { withProps } from 'recompose';
+import moment from 'moment';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import {
@@ -14,7 +15,12 @@ import {
 import T from '../../../Translation';
 
 const getRecapArray = (promotion = {}) => {
-  const { projectStatus, authorizationStatus, promotionLots = [] } = promotion;
+  const {
+    projectStatus,
+    authorizationStatus,
+    promotionLots = [],
+    signingDate,
+  } = promotion;
 
   const totalLandValue = getTotalLandValue(promotionLots);
   const totalConstructionValue = getTotalConstructionValue(promotionLots);
@@ -23,7 +29,9 @@ const getRecapArray = (promotion = {}) => {
   const totalUndetailedValue = getTotalUndetailedValue(promotionLots);
   const totalValue = getTotalValue(promotionLots);
 
-  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(
+    promotionLots,
+  );
 
   return [
     {
@@ -44,6 +52,10 @@ const getRecapArray = (promotion = {}) => {
       label: 'Forms.authorizationStatus',
       value: <T id={`Forms.authorizationStatus.${authorizationStatus}`} />,
       hide: !authorizationStatus,
+    },
+    {
+      label: 'Forms.signingDate',
+      value: signingDate ? moment(signingDate).format('Do MMMM YYYY') : '-',
       spacing: true,
     },
     {
