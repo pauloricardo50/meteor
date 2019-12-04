@@ -101,12 +101,6 @@
     "mainModule": {
       "client": "client/main.js",
       "server": "server/main.js"
-    },
-    "nodeModules": {
-      "recompile": {
-        "uniforms": true,
-        "uniforms-material": true
-      }
     }
   }
 }
