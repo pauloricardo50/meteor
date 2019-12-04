@@ -20,7 +20,7 @@ export const getEmailsToBeSent = async ({ id, status, nextStatus }) => {
   if (emails.length > 0) {
     return emails.reduce(
       (mails, description) =>
-        description.length
+        Array.isArray(description)
           ? [...mails, ...description]
           : [...mails, description],
       [],
