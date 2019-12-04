@@ -122,7 +122,7 @@ describe('Admin promotion', () => {
         .contains('Architecte')
         .should('exist');
 
-      cy.contains('Clients').click();
+      cy.contains('Acquéreurs').click();
       cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
 
       cy.contains('Pros').click();
@@ -193,7 +193,7 @@ describe('Admin promotion', () => {
       cy.setSelect('promotionLotIds', 1);
       cy.get('[role=dialog] form').submit();
 
-      cy.contains('Clients').click();
+      cy.contains('Acquéreurs').click();
       cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
 
       cy.get('.actions')
@@ -216,17 +216,16 @@ describe('Admin promotion', () => {
         .should('have.length', 1)
         .click();
 
-      cy.get('[role=dialog]')
-        .contains('Modifier')
-        .click();
+      cy.contains('Attestation de financement').click();
 
-      cy.get(
-        '[role=dialog] form[id=simpleVerification-form] input[name=status]',
-      )
+      cy.get('input[name=status]')
         .parent()
         .click()
         .get(`[data-value=VALIDATED]`)
         .click();
+
+      cy.contains('Ok').click();
+      cy.contains('Oui').click();
 
       cy.contains('Vérouiller les formulaires')
         .parents('[role=dialog]')
