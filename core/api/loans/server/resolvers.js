@@ -9,7 +9,6 @@ import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promoti
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
-import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanService from './LoanService';
 
 const proLoansFragment = proLoans();
@@ -106,74 +105,6 @@ const anonymizePropertyLoans = ({ loans = [], userId }) => {
       currentUser,
     })(loan);
   });
-};
-
-const anonymizeReferredByLoans = ({ loans = [], userId }) => [
-  ...loans,
-  // Don't anonymize referred loans
-  // ...anonymizePromotionLoans({
-  //   loans: loans.filter(({ hasPromotion }) => hasPromotion),
-  //   userId,
-  // }),
-
-  // ...anonymizePropertyLoans({
-  //   loans: loans.filter(({ hasProProperty }) => hasProProperty),
-  //   userId,
-  // }),
-  // ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
-];
-
-const doesUserShareCustomers = ({ $metadata: { shareCustomers } }) =>
-  shareCustomers;
-
-export const proReferredByLoansResolver = ({
-  userId,
-  calledByUserId,
-  status,
-  anonymous,
-  referredByUserId,
-}) => {
-  const mainOrganisation = UserService.getUserMainOrganisation(userId);
-  let mainOrganisationsUserIds = [];
-
-  if (mainOrganisation) {
-    const { _id: mainOrganisationId } = mainOrganisation;
-
-    const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
-      $filters: { _id: mainOrganisationId },
-      users: { _id: 1 },
-    });
-    mainOrganisationsUserIds = mainOrganisationUsers
-      .filter(({ _id }) => _id !== userId)
-      .filter(doesUserShareCustomers)
-      .map(({ _id }) => _id);
-  }
-
-  const users = UserService.fetch({
-    $filters: {
-      referredByUserLink: { $in: [userId, ...mainOrganisationsUserIds] },
-    },
-    loans: {
-      ...proLoansFragment,
-      $filters: {
-        status,
-        anonymous,
-        'userCache.referredByUserLink': referredByUserId,
-      },
-    },
-  });
-
-  const loans = users.reduce(
-    (allLoans, { loans: userLoans = [] }) => [...allLoans, ...userLoans],
-    [],
-  );
-
-  try {
-    SecurityService.checkUserIsAdmin(calledByUserId);
-    return loans;
-  } catch (error) {
-    return anonymizeReferredByLoans({ loans, userId: calledByUserId });
-  }
 };
 
 export const proPromotionLoansResolver = ({

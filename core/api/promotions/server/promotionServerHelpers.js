@@ -1,4 +1,3 @@
-import SecurityService from 'core/api/security';
 import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
@@ -7,13 +6,7 @@ import {
   clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
 import LoanService from '../../loans/server/LoanService';
-import { ANONYMIZED_STRING } from '../../security/constants';
-
-const ANONYMIZED_USER = {
-  name: ANONYMIZED_STRING,
-  phoneNumbers: [ANONYMIZED_STRING],
-  email: ANONYMIZED_STRING,
-};
+import { anonymizeLoan } from '../../loans/helpers';
 
 const getUserPromotionPermissions = ({ userId, promotionId }) => {
   const { promotions = [] } = UserService.fetchOne({
@@ -139,8 +132,7 @@ export const makeLoanAnonymizer = ({
   const { promotions: currentUserPromotions = [] } = currentUser;
 
   return loan => {
-    const { promotions = [], _id: loanId, promotionOptions = [], user } = loan;
-    const { _id: userId } = user || {};
+    const { promotions = [], _id: loanId, promotionOptions = [] } = loan;
     const [
       { _id: promotionId, $metadata: { invitedBy } = {} } = {},
     ] = promotions;
@@ -190,11 +182,7 @@ export const makeLoanAnonymizer = ({
           })
         : anonymize;
 
-    return {
-      ...loan,
-      user: anonymizeUser ? { _id: userId, ...ANONYMIZED_USER } : user,
-      isAnonymized: !!anonymizeUser,
-    };
+    return anonymizeLoan({ loan, shouldAnonymize: anonymizeUser });
   };
 };
 
@@ -212,7 +200,7 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
   const { promotions: currentUserPromotions = [] } = currentUser;
 
   return promotionOption => {
-    const { loan, custom, promotionLots = [] } = promotionOption;
+    const { loan, promotionLots = [] } = promotionOption;
     const [promotionLot] = promotionLots;
     const { status: promotionLotStatus, attributedTo } = promotionLot;
     const { promotions, _id: loanId } = loan;
@@ -243,12 +231,7 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
 
     return {
       ...promotionOption,
-      loan: makeLoanAnonymizer({
-        currentUser,
-        promotionLot,
-        anonymize,
-      })(loan),
-      custom: anonymize ? ANONYMIZED_STRING : custom,
+      loan: anonymizeLoan({ loan, shouldAnonymize: anonymize }),
       isAnonymized: !!anonymize,
     };
   };

@@ -15,14 +15,12 @@ import {
   proLoansAggregate,
   proPromotionLoans,
   proPropertyLoans,
-  proReferredByLoans,
   userLoans,
 } from '../queries';
 import { LOAN_STATUS } from '../loanConstants';
 import {
   proPromotionLoansResolver,
   proPropertyLoansResolver,
-  proReferredByLoansResolver,
 } from './resolvers';
 import { getProLoanFilters } from './exposureHelpers';
 
@@ -199,24 +197,6 @@ exposeQuery({
       propertyId,
       anonymous,
     }),
-});
-
-exposeQuery({
-  query: proReferredByLoans,
-  overrides: {
-    firewall(userId, params) {
-      const { userId: providedUserId } = params;
-      SecurityService.checkUserIsPro(userId);
-      if (SecurityService.isUserAdmin(userId)) {
-        params.userId = providedUserId;
-      } else {
-        params.userId = userId;
-      }
-      params.calledByUserId = userId;
-    },
-    validateParams: { userId: String, calledByUserId: String },
-  },
-  resolver: proReferredByLoansResolver,
 });
 
 exposeQuery({
