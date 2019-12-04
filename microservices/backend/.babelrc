@@ -17,19 +17,6 @@
           "core": "./imports/core"
         }
       }
-    ],
-    [
-      "transform-imports",
-      {
-        "uniforms": {
-          "transform": "uniforms/src/${member}",
-          "preventFullImport": true
-        },
-        "uniforms-material": {
-          "transform": "uniforms-material/src/${member}",
-          "preventFullImport": true
-        }
-      }
     ]
   ]
 }
