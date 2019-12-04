@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import ListDelField from 'uniforms-material/ListDelField';
+import { ListDelField } from 'uniforms-material';
 
 import { iconMap as IconMap } from '../Icon/Icon';
 

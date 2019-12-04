@@ -2,6 +2,8 @@
 import React from 'react';
 
 import Table from 'core/components/Table';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
 import ProOrganisationUserAdder from 'core/components/ProOrganisationUserAdder';
 import ProOrganisationUsersTableContainer from './ProOrganisationUsersTableContainer';
 
@@ -18,6 +20,16 @@ const ProOrganisationUsersTable = ({
     <ProOrganisationUserAdder
       organisationId={organisationId}
       organisationName={name}
+      trigger={handleOpen => (
+        <Button
+          raised
+          primary
+          onClick={handleOpen}
+          icon={<Icon type="personAdd" />}
+        >
+          Inviter un collègue
+        </Button>
+      )}
     />
     <Table rows={rows} columnOptions={columnOptions} />
   </>

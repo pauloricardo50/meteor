@@ -175,7 +175,7 @@ describe('Admin promotion', () => {
       cy.visit('/promotions');
       cy.contains('Pré Polly').click();
 
-      cy.contains('Ajouter un client').click();
+      cy.contains('Ajouter un acquéreur').click();
 
       cy.get('[role=dialog]')
         .find('input[name=email]')

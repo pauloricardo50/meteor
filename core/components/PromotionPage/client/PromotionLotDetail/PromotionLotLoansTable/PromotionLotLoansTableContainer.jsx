@@ -98,7 +98,7 @@ const makeMapOption = ({ promotionLot }) => promotionOption => {
 const columnOptions = [
   { id: 'loanName', style: { whiteSpace: 'nowrap' } },
   { id: 'status', label: <T id="Forms.status" /> },
-  { id: 'customer' },
+  { id: 'buyer' },
   { id: 'date' },
   { id: 'priorityOrder' },
   { id: 'attribute' },

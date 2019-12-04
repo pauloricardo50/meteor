@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
 import Button from '@material-ui/core/Button';
-import TextField from 'uniforms-material/TextField';
+import { TextField } from 'uniforms-material';
 
 import Loading from '../../../Loading';
 import pollUntilReady from '../../../../utils/pollUntilReady';

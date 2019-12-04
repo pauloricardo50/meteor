@@ -27,6 +27,7 @@ const onSubmit = ({ organisationId }) => ({ title, ...user }) =>
 const ProOrganisationUserAdder = ({
   organisationId,
   organisationName,
+  trigger,
 }: ProOrganisationUserAdderProps) => (
   <AutoFormDialog
     schema={schema}
@@ -40,18 +41,21 @@ const ProOrganisationUserAdder = ({
         values={{ organisationName }}
       />
     }
-    triggerComponent={handleOpen => (
-      <IconButton
-        onClick={handleOpen}
-        type="personAdd"
-        tooltip={
-          <T
-            id="ProOrganisationUserAdder.tooltip"
-            values={{ organisationName }}
-          />
-        }
-      />
-    )}
+    triggerComponent={
+      trigger ||
+      (handleOpen => (
+        <IconButton
+          onClick={handleOpen}
+          type="personAdd"
+          tooltip={
+            <T
+              id="ProOrganisationUserAdder.tooltip"
+              values={{ organisationName }}
+            />
+          }
+        />
+      ))
+    }
   />
 );
 

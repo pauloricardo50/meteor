@@ -1,7 +1,6 @@
 import { createElement } from 'react';
 import PropTypes from 'prop-types';
-
-import AutoField from 'uniforms-material/AutoField';
+import { AutoField } from 'uniforms-material';
 
 const CustomAutoFields = (
   { autoField, element, fields, omitFields, automaticFocus, ...props },

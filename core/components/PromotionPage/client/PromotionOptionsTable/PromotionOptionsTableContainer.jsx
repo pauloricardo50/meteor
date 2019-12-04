@@ -17,7 +17,7 @@ import PromotionCustomer from '../PromotionCustomer';
 const columnOptions = [
   { id: 'lotName' },
   { id: 'status' },
-  { id: 'customer' },
+  { id: 'buyer' },
   { id: 'createdAt' },
   { id: 'progress' },
 ].map(opt => ({

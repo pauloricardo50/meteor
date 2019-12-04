@@ -24,6 +24,7 @@ const PromotionUserModifier = ({
     model={model}
     onSubmit={onSubmit}
     className="update-field"
+    title={`Permissions de ${user.name}`}
     buttonProps={{
       label: canModify ? 'Modifier' : 'Voir',
       raised: true,

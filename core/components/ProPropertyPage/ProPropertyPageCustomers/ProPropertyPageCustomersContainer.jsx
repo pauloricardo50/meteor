@@ -104,7 +104,6 @@ const makeMapLoan = ({
     anonymous,
     status,
   } = loan;
-  console.log('loan:', loan);
   const { isAdmin } = permissions;
 
   const canRemoveCustomer =
@@ -131,17 +130,17 @@ const makeMapLoan = ({
         label: anonymous ? (
           'Anonyme'
         ) : (
-            <ProCustomer
-              user={user}
-              invitedByUser={
-                getReferredBy({
-                  user,
-                  proUser: currentUser,
-                  isAdmin,
-                }).label
-              }
-            />
-          ),
+          <ProCustomer
+            user={user}
+            invitedByUser={
+              getReferredBy({
+                user,
+                proUser: currentUser,
+                isAdmin,
+              }).label
+            }
+          />
+        ),
       },
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       {
@@ -167,14 +166,14 @@ const makeMapLoan = ({
           </p>
         </ConfirmMethod>
       ) : (
-          <span>-</span>
-        ),
+        <span>-</span>
+      ),
     ],
     ...(isAdmin
       ? {
-        handleClick: () =>
-          history.push(createRoute('/loans/:loanId', { loanId })),
-      }
+          handleClick: () =>
+            history.push(createRoute('/loans/:loanId', { loanId })),
+        }
       : {}),
   };
 };

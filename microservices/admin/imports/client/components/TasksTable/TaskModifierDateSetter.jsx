@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import connectField from 'uniforms/connectField';
+import { connectField } from 'uniforms';
 
 import Button from 'core/components/Button';
 
@@ -11,20 +11,20 @@ const TaskModifierDateSetter = ({
   uniforms: { onChange },
   buttonProps,
 }: TaskModifierDateSetterProps) => (
-  <div>
-    <label htmlFor="">Échéance rapide</label>
-    <div className="task-modifier-date-setter">
-      {funcs.map(({ func, label }) => (
-        <Button
-          {...buttonProps}
-          key={label}
-          onClick={() => func().map(args => onChange(...args))}
-        >
-          {label}
-        </Button>
-      ))}
+    <div>
+      <label htmlFor="">Échéance rapide</label>
+      <div className="task-modifier-date-setter">
+        {funcs.map(({ func, label }) => (
+          <Button
+            {...buttonProps}
+            key={label}
+            onClick={() => func().map(args => onChange(...args))}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 
 export default connectField(TaskModifierDateSetter);
