@@ -317,10 +317,7 @@ describe('PromotionService', function() {
         promotionId: 'promotionId',
         loanId: 'loanId',
       });
-      loan = LoanService.fetchOne({
-        $filters: { _id: 'loanId' },
-        promotionOptionLinks: 1,
-      });
+      loan = LoanService.get('loanId', { promotionOptionLinks: 1 });
 
       expect(loan.promotionOptionLinks).to.deep.equal([]);
       expect(PromotionOptionService.find({}).count()).to.equal(0);
@@ -504,8 +501,7 @@ describe('PromotionService', function() {
         },
       });
 
-      const { loans: loans1 } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans: loans1 } = PromotionService.get('promoId', {
         loans: { _id: 1 },
       });
 
@@ -520,10 +516,7 @@ describe('PromotionService', function() {
         showAllLots: false,
       });
 
-      const { loans } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
-        loans: { _id: 1 },
-      });
+      const { loans } = PromotionService.get('promoId', { loans: { _id: 1 } });
 
       expect(loans[0].$metadata.showAllLots).to.equal(false);
       expect(loans[0].$metadata.priorityOrder).to.deep.equal(['pOpt1']);
@@ -548,8 +541,7 @@ describe('PromotionService', function() {
         },
       });
 
-      const { loans: loans1 } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans: loans1 } = PromotionService.get('promoId', {
         loans: { promotionOptionLinks: 1 },
       });
 
@@ -561,8 +553,7 @@ describe('PromotionService', function() {
         promotionLotIds: ['pLot2'],
       });
 
-      const { loans } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans } = PromotionService.get('promoId', {
         loans: { promotionOptions: { promotionLots: { _id: 1 } } },
       });
 
@@ -599,8 +590,7 @@ describe('PromotionService', function() {
         },
       });
 
-      const { loans: loans1 } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans: loans1 } = PromotionService.get('promoId', {
         loans: { promotionOptionLinks: 1 },
       });
 
@@ -612,8 +602,7 @@ describe('PromotionService', function() {
         promotionLotIds: ['pLot2'],
       });
 
-      const { loans } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans } = PromotionService.get('promoId', {
         loans: { promotionOptions: { promotionLots: { _id: 1 } } },
       });
 
@@ -672,10 +661,7 @@ describe('PromotionService', function() {
         userId: 'userId',
       });
 
-      const promotion = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
-        userLinks: 1,
-      });
+      const promotion = PromotionService.get('promoId', { userLinks: 1 });
 
       expect(result).to.equal(false);
       expect(promotion.userLinks[0]).to.deep.include({
@@ -688,10 +674,7 @@ describe('PromotionService', function() {
         userId: 'userId',
       });
 
-      const promotion2 = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
-        userLinks: 1,
-      });
+      const promotion2 = PromotionService.get('promoId', { userLinks: 1 });
 
       expect(result2).to.equal(true);
       expect(promotion2.userLinks[0]).to.deep.include({

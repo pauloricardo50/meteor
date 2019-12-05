@@ -71,8 +71,7 @@ exposeQuery({
           SecurityService.checkCurrentUserIsAdmin(_userId);
           return results;
         } catch (error) {
-          const currentUser = UserService.fetchOne({
-            $filters: { _id: _userId },
+          const currentUser = UserService.get(_userId, {
             promotions: { _id: 1 },
             organisations: { users: { _id: 1 } },
           });

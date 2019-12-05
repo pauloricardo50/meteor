@@ -56,30 +56,23 @@ Loans.addReducers({
       }
 
       if (referralId) {
-        user = UserService.fetchOne({
-          $filters: { _id: referralId },
+        user = UserService.get(referralId, {
           name: 1,
           organisations: { name: 1 },
         });
         if (!user) {
-          org = OrganisationService.fetchOne({
-            $filters: { _id: referralId },
-            name: 1,
-            userLinks: 1,
-          });
+          org = OrganisationService.get(referralId, { name: 1, userLinks: 1 });
         }
       } else {
         if (userCache.referredByUserLink) {
-          user = UserService.fetchOne({
-            $filters: { _id: userCache.referredByUserLink },
+          user = UserService.get(userCache.referredByUserLink, {
             name: 1,
             organisations: { name: 1 },
           });
         }
 
         if (userCache.referredByOrganisationLink) {
-          org = OrganisationService.fetchOne({
-            $filters: { _id: userCache.referredByOrganisationLink },
+          org = OrganisationService.get(userCache.referredByOrganisationLink, {
             name: 1,
             userLinks: 1,
           });

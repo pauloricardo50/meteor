@@ -16,8 +16,7 @@ const ANONYMIZED_USER = {
 };
 
 const getUserPromotionPermissions = ({ userId, promotionId }) => {
-  const { promotions = [] } = UserService.fetchOne({
-    $filters: { _id: userId },
+  const { promotions = [] } = UserService.get(userId, {
     promotions: { _id: 1 },
   });
 
@@ -36,10 +35,7 @@ const getUserPromotionPermissions = ({ userId, promotionId }) => {
 
 const getCustomerInvitedBy = ({ customerId, promotionId }) => {
   const { loans = [] } =
-    UserService.fetchOne({
-      $filters: { _id: customerId },
-      loans: { promotions: { _id: 1 } },
-    }) || {};
+    UserService.get(customerId, { loans: { promotions: { _id: 1 } } }) || {};
 
   const { $metadata } =
     loans
@@ -58,8 +54,7 @@ const getPromotionLotStatus = ({ promotionLotId }) => {
   }
 
   const { status, attributedToLink = {} } =
-    PromotionLotService.fetchOne({
-      $filters: { _id: promotionLotId },
+    PromotionLotService.get(promotionLotId, {
       status: 1,
       attributedToLink: 1,
     }) || {};
@@ -75,8 +70,7 @@ const getPromotionLotStatus = ({ promotionLotId }) => {
  * @returns {String} PROMOTION_LOT_STATUS
  */
 export const getBestPromotionLotStatus = ({ loanId }) => {
-  const { promotionOptions = [] } = LoanService.fetchOne({
-    $filters: { _id: loanId },
+  const { promotionOptions = [] } = LoanService.get(loanId, {
     userId: 1,
     promotionOptions: {
       promotionLots: { status: 1, attributedToLink: 1 },
@@ -92,8 +86,7 @@ export const getPromotionCustomerOwnerType = ({
   userId,
 }) => {
   const invitedBy = getCustomerInvitedBy({ customerId, promotionId });
-  const { organisations = [] } = UserService.fetchOne({
-    $filters: { _id: userId },
+  const { organisations = [] } = UserService.get(userId, {
     organisations: { users: { _id: 1 } },
   });
 

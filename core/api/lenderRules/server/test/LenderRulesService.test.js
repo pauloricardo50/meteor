@@ -40,10 +40,7 @@ describe('LenderRulesService', () => {
 
       const {
         organisation: { name },
-      } = LenderRulesService.fetchOne({
-        $filters: { _id: rulesId },
-        organisation: { name: 1 },
-      });
+      } = LenderRulesService.get(rulesId, { organisation: { name: 1 } });
 
       expect(name).to.not.equal(undefined);
     });
@@ -52,14 +49,8 @@ describe('LenderRulesService', () => {
       const rulesId1 = LenderRulesService.insert({ organisationId });
       const rulesId2 = LenderRulesService.insert({ organisationId });
 
-      const { order: order1 } = LenderRulesService.fetchOne({
-        $filters: { _id: rulesId1 },
-        order: 1,
-      });
-      const { order: order2 } = LenderRulesService.fetchOne({
-        $filters: { _id: rulesId2 },
-        order: 1,
-      });
+      const { order: order1 } = LenderRulesService.get(rulesId1, { order: 1 });
+      const { order: order2 } = LenderRulesService.get(rulesId2, { order: 1 });
 
       expect(order1).to.equal(0);
       expect(order2).to.equal(1);

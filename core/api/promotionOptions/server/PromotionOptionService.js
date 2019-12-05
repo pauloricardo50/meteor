@@ -28,14 +28,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function () {
+        'reservationAgreement.startDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function () {
+        'reservationAgreement.expirationDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -44,15 +44,7 @@ export class PromotionOptionService extends CollectionService {
         },
       },
     });
-  }
-
-  get(promotionOptionId) {
-    return this.collection
-      .createQuery({
-        $filters: { _id: promotionOptionId },
-        ...fullPromotionOption(),
-      })
-      .fetchOne();
+    this.get = this.makeGet(fullPromotionOption);
   }
 
   getPromotion(promotionOptionId) {
@@ -110,8 +102,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   insert = ({ promotionLotId, loanId }) => {
-    const { promotionOptions } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const { promotionOptions } = LoanService.get(loanId, {
       promotionOptions: { _id: 1, promotionLots: { _id: 1 } },
     });
 
@@ -139,10 +130,7 @@ export class PromotionOptionService extends CollectionService {
     });
     const {
       promotion: { _id: promotionId },
-    } = PromotionLotService.fetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
-    });
+    } = PromotionLotService.get(promotionLotId, { promotion: { _id: 1 } });
     this.addLink({
       id: promotionOptionId,
       linkName: 'promotion',
@@ -213,10 +201,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   setInitialSimpleVerification({ promotionOptionId, loanId }) {
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      maxPropertyValue: { date: 1 },
-    });
+    const loan = LoanService.get(loanId, { maxPropertyValue: { date: 1 } });
 
     this._update({
       id: promotionOptionId,

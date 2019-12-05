@@ -5,10 +5,12 @@ import PromotionOptionService from '../../promotionOptions/server/PromotionOptio
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import { proPromotionLot } from '../../fragments';
 
 class PromotionLotService extends CollectionService {
   constructor() {
     super(PromotionLots);
+    this.get = this.makeGet(proPromotionLot());
   }
 
   update({ promotionLotId, ...rest }) {
@@ -32,8 +34,7 @@ class PromotionLotService extends CollectionService {
   }
 
   reservePromotionLot({ promotionOptionId }) {
-    const promotionOption = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const promotionOption = PromotionOptionService.get(promotionOptionId, {
       loan: { _id: 1 },
       promotionLots: { _id: 1, status: 1 },
       bank: 1,
@@ -74,8 +75,7 @@ class PromotionLotService extends CollectionService {
   }
 
   cancelPromotionLotReservation({ promotionOptionId }) {
-    const { promotionLots } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const { promotionLots } = PromotionOptionService.get(promotionOptionId, {
       loan: { _id: 1 },
       promotionLots: { _id: 1 },
     });
@@ -97,8 +97,7 @@ class PromotionLotService extends CollectionService {
   }
 
   sellPromotionLot({ promotionOptionId }) {
-    const { promotionLots } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const { promotionLots } = PromotionOptionService.get(promotionOptionId, {
       promotionLots: { _id: 1 },
     });
 

@@ -34,11 +34,7 @@ class EmailService {
   };
 
   sendEmailToUser = ({ emailId, userId, params }) => {
-    const { email, name } = UserService.fetchOne({
-      $filters: { _id: userId },
-      email: 1,
-      name: 1,
-    });
+    const { email, name } = UserService.get(userId, { email: 1, name: 1 });
     this.sendEmail({ emailId, address: email, name, params });
   };
 
@@ -80,7 +76,8 @@ class EmailService {
     };
   };
 
-  getAttachments = attachments => Promise.all(
+  getAttachments = attachments =>
+    Promise.all(
       attachments.map(async Key => {
         const {
           ContentType,

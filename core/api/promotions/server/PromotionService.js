@@ -194,8 +194,7 @@ class PromotionService extends CollectionService {
   }
 
   removeLoan({ promotionId, loanId }) {
-    const { promotionOptions = [] } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const { promotionOptions = [] } = LoanService.get(loanId, {
       promotionOptions: { _id: 1 },
     });
 
@@ -231,8 +230,7 @@ class PromotionService extends CollectionService {
       });
     }
 
-    const { promotionOptions = [] } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const { promotionOptions = [] } = LoanService.get(loanId, {
       promotionOptions: {
         promotionLots: { attributedTo: { _id: 1 }, name: 1 },
       },

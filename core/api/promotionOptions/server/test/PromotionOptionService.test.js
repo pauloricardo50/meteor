@@ -788,8 +788,7 @@ describe('PromotionOptionService', function() {
 
       const emails = await checkEmails(1);
 
-      const { promotionLots = [] } = PromotionService.fetchOne({
-        $filters: { _id: 'promo' },
+      const { promotionLots = [] } = PromotionService.get('promo', {
         promotionLots: {
           status: 1,
           promotionOptions: { status: 1 },

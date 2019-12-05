@@ -104,8 +104,7 @@ exposeQuery({
           return promotions;
         }
 
-        const currentUser = UserService.fetchOne({
-          $filters: { _id: userId },
+        const currentUser = UserService.get(userId, {
           promotions: { _id: 1 },
           organisations: { users: { _id: 1 } },
         });

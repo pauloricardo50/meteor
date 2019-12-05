@@ -185,12 +185,11 @@ generateScenario.setHandler(({ userId }, { scenario }) => {
 
 referralExists.setHandler((context, params) => {
   const { refId } = params;
-  const referralUser = UserService.fetchOne({
-    $filters: { _id: refId, roles: { $in: [ROLES.PRO] } },
-  });
-  const referralOrg = OrganisationService.fetchOne({
-    $filters: { _id: refId },
-  });
+  const referralUser = UserService.get(
+    { _id: refId, roles: { $in: [ROLES.PRO] } },
+    { _id: 1 },
+  );
+  const referralOrg = OrganisationService.get(refId, { _id: 1 });
 
   return !!referralUser || !!referralOrg;
 });

@@ -3,10 +3,12 @@ import { Meteor } from 'meteor/meteor';
 import Lenders from '../lenders';
 import CollectionService from '../../helpers/CollectionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
+import { adminLender } from '../../fragments';
 
 class LenderService extends CollectionService {
   constructor() {
     super(Lenders);
+    this.get = this.makeGet(adminLender());
   }
 
   insert({ lender, contactId, organisationId }) {
@@ -30,8 +32,7 @@ class LenderService extends CollectionService {
 
     // If no contact is set, fetch first contact of organisation
     if (!contactId && organisationId) {
-      const { contacts } = OrganisationService.fetchOne({
-        $filters: { _id: organisationId },
+      const { contacts } = OrganisationService.get(organisationId, {
         contacts: { _id: 1 },
       });
 

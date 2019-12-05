@@ -73,8 +73,7 @@ class PDFService {
 
         const organisation =
           organisationId &&
-          OrganisationService.fetchOne({
-            $filters: { _id: organisationId },
+          OrganisationService.get(organisationId, {
             lenderRules: lenderRules(),
             name: 1,
             logo: 1,

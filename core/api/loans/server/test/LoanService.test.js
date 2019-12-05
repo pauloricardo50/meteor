@@ -743,8 +743,7 @@ describe('LoanService', function() {
 
       LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
 
-      const user = UserService.fetchOne({
-        $filters: { _id: 'userId' },
+      const user = UserService.get('userId', {
         referredByUserLink: 1,
         referredByOrganisationLink: 1,
       });
@@ -770,8 +769,7 @@ describe('LoanService', function() {
 
       LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
 
-      const user = UserService.fetchOne({
-        $filters: { _id: 'userId' },
+      const user = UserService.get('userId', {
         referredByUserLink: 1,
         referredByOrganisationLink: 1,
       });
@@ -796,8 +794,7 @@ describe('LoanService', function() {
 
       LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
 
-      const user = UserService.fetchOne({
-        $filters: { _id: 'userId' },
+      const user = UserService.get('userId', {
         referredByUserLink: 1,
         referredByOrganisationLink: 1,
       });
@@ -1409,10 +1406,7 @@ describe('LoanService', function() {
 
       const {
         maxPropertyValue: { canton, date, main, second },
-      } = LoanService.fetchOne({
-        $filters: { _id: 'loanId' },
-        maxPropertyValue: 1,
-      });
+      } = LoanService.get('loanId', { maxPropertyValue: 1 });
 
       expect(canton).to.equal('GE');
       expect(moment(date).format('YYYY-MM-DD')).to.equal(
@@ -1454,10 +1448,7 @@ describe('LoanService', function() {
 
       const {
         maxPropertyValue: { canton, date, main, second },
-      } = LoanService.fetchOne({
-        $filters: { _id: 'loanId' },
-        maxPropertyValue: 1,
-      });
+      } = LoanService.get('loanId', { maxPropertyValue: 1 });
 
       expect(canton).to.equal('GE');
       expect(moment(date).format('YYYY-MM-DD')).to.equal(

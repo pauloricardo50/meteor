@@ -26,8 +26,7 @@ promotionOptionInsert.setHandler(({ userId }, params) => {
 const canUpdatePromotionOption = (_id, userId) => {
   if (!SecurityService.isUserAdmin(userId)) {
     try {
-      const { loan } = PromotionOptionService.fetchOne({
-        $filters: { _id },
+      const { loan } = PromotionOptionService.get(_id, {
         loan: { _id: 1, userId: 1 },
       });
       SecurityService.checkOwnership(loan, userId);

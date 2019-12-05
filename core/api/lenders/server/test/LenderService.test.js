@@ -56,10 +56,7 @@ describe('LenderService', () => {
         organisationId,
       });
 
-      const lender = LenderService.fetchOne({
-        $filters: { _id: lenderId },
-        contact: { firstName: 1 },
-      });
+      const lender = LenderService.get(lenderId, { contact: { firstName: 1 } });
 
       expect(lender.contact.firstName).to.equal('John');
     });

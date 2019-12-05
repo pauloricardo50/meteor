@@ -2,10 +2,12 @@ import { Meteor } from 'meteor/meteor';
 
 import MortgageNotes from '../mortgageNotes';
 import CollectionService from '../../helpers/CollectionService';
+import { mortgageNote as mortgageNoteFragment } from '../../fragments';
 
 class MortgageNoteService extends CollectionService {
   constructor() {
     super(MortgageNotes);
+    this.get = this.makeGet(mortgageNoteFragment());
   }
 
   insert({ mortgageNote = {}, propertyId, borrowerId }) {

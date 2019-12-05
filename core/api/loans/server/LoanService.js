@@ -180,10 +180,7 @@ class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const customName = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-    }).name;
+    const customName = PromotionService.get(promotionId, { name: 1 }).name;
     const loanId = this.insert({
       loan: {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
@@ -203,10 +200,8 @@ class LoanService extends CollectionService {
   };
 
   insertPropertyLoan = ({ userId, propertyIds, shareSolvency, loan }) => {
-    const customName = PropertyService.fetchOne({
-      $filters: { _id: propertyIds[0] },
-      address1: 1,
-    }).address1;
+    const customName = PropertyService.get(propertyIds[0], { address1: 1 })
+      .address1;
     const loanId = this.insert({
       loan: {
         propertyIds,
@@ -464,8 +459,7 @@ class LoanService extends CollectionService {
         const {
           referredByUserLink,
           referredByOrganisationLink,
-        } = UserService.fetchOne({
-          $filters: { _id: userId },
+        } = UserService.get(userId, {
           referredByUserLink: 1,
           referredByOrganisationLink: 1,
         });
@@ -478,8 +472,7 @@ class LoanService extends CollectionService {
         const {
           referredByUserLink,
           referredByOrganisationLink,
-        } = UserService.fetchOne({
-          $filters: { _id: userId },
+        } = UserService.get(userId, {
           referredByUserLink: 1,
           referredByOrganisationLink: 1,
         });
@@ -741,10 +734,10 @@ class LoanService extends CollectionService {
       ORGANISATION_NAME_SEPARATOR,
     )[0];
 
-    const organisation = OrganisationService.fetchOne({
-      $filters: { name: firstOrganisationName },
-      lenderRules: lenderRulesFragment(),
-    });
+    const organisation = OrganisationService.get(
+      { name: firstOrganisationName },
+      { lenderRules: lenderRulesFragment() },
+    );
 
     const calculator = new CalculatorClass({
       loan,
@@ -936,11 +929,13 @@ class LoanService extends CollectionService {
   }
 
   linkPromotion({ promotionId, loanId }) {
-    const { name: promotionName, promotionLoan } = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-      promotionLoan: { _id: 1 },
-    });
+    const { name: promotionName, promotionLoan } = PromotionService.get(
+      promotionId,
+      {
+        name: 1,
+        promotionLoan: { _id: 1 },
+      },
+    );
 
     if (promotionLoan && promotionLoan._id) {
       this.unlinkPromotion({ promotionId, loanId: promotionLoan._id });

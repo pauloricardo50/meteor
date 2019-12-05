@@ -8,10 +8,12 @@ import {
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
 } from '../lenderRulesConstants';
+import { lenderRules } from '../../fragments';
 
 class LenderRulesService extends CollectionService {
   constructor() {
     super(LenderRules);
+    this.get = this.makeGet(lenderRules());
   }
 
   remove({ lenderRulesId }) {
@@ -39,8 +41,7 @@ class LenderRulesService extends CollectionService {
   }
 
   insert({ organisationId, object = {}, logicRules }) {
-    const { lenderRules = [] } = OrganisationService.fetchOne({
-      $filters: { _id: organisationId },
+    const { lenderRules = [] } = OrganisationService.get(organisationId, {
       lenderRules: { _id: 1 },
     });
 

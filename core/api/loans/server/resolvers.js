@@ -77,8 +77,7 @@ const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
 };
 
 const anonymizePromotionLoans = ({ loans = [], userId }) => {
-  const currentUser = UserService.fetchOne({
-    $filters: { _id: userId },
+  const currentUser = UserService.get(userId, {
     promotions: { _id: 1 },
     organisations: { users: { _id: 1 } },
   });
@@ -91,8 +90,7 @@ const anonymizePromotionLoans = ({ loans = [], userId }) => {
 };
 
 const anonymizePropertyLoans = ({ loans = [], userId }) => {
-  const currentUser = UserService.fetchOne({
-    $filters: { _id: userId },
+  const currentUser = UserService.get(userId, {
     organisations: { users: { _id: 1 } },
     proProperties: { _id: 1 },
   });
@@ -139,10 +137,9 @@ export const proReferredByLoansResolver = ({
   if (mainOrganisation) {
     const { _id: mainOrganisationId } = mainOrganisation;
 
-    const { users: mainOrganisationUsers = [] } = OrganisationService.fetchOne({
-      $filters: { _id: mainOrganisationId },
-      users: { _id: 1 },
-    });
+    const {
+      users: mainOrganisationUsers = [],
+    } = OrganisationService.get(mainOrganisationId, { users: { _id: 1 } });
     mainOrganisationsUserIds = mainOrganisationUsers
       .filter(({ _id }) => _id !== userId)
       .filter(doesUserShareCustomers)

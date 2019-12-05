@@ -10,8 +10,7 @@ ServerEventService.addBeforeMethodListener(
     context.unblock();
     const { loanId, promotionId } = params;
 
-    const { promotionLots = [] } = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
+    const { promotionLots = [] } = PromotionService.get(promotionId, {
       promotionLots: { attributedTo: 1 },
     });
 
