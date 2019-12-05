@@ -5,12 +5,10 @@ import PromotionOptionService from '../../promotionOptions/server/PromotionOptio
 import CollectionService from '../../helpers/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
-import { proPromotionLot } from '../../fragments';
 
 class PromotionLotService extends CollectionService {
   constructor() {
     super(PromotionLots);
-    this.get = this.makeGet(proPromotionLot());
   }
 
   update({ promotionLotId, ...rest }) {

@@ -63,10 +63,10 @@ const referCustomer = ({
   });
 };
 
-describe('REST: referCustomer', function() {
+describe('REST: referCustomer', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -127,12 +127,14 @@ describe('REST: referCustomer', function() {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.fetchOne({
-        $filters: { 'emails.address': { $in: [customerToRefer.email] } },
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      });
+      const customer = UserService.get(
+        { 'emails.address': { $in: [customerToRefer.email] } },
+        {
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+        },
+      );
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
       expect(customer.loans[0].shareSolvency).to.equal(undefined);
@@ -145,12 +147,14 @@ describe('REST: referCustomer', function() {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
     }).then(() => {
-      const customer = UserService.fetchOne({
-        $filters: { 'emails.address': { $in: [customerToRefer.email] } },
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      });
+      const customer = UserService.get(
+        { 'emails.address': { $in: [customerToRefer.email] } },
+        {
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+        },
+      );
       expect(customer.referredByUserLink).to.equal('pro');
       expect(customer.referredByOrganisationLink).to.equal('org');
       expect(customer.loans[0].shareSolvency).to.equal(true);
@@ -164,13 +168,15 @@ describe('REST: referCustomer', function() {
       },
     })
       .then(() => {
-        const customer = UserService.fetchOne({
-          $filters: { 'emails.address': { $in: [customerToRefer.email] } },
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-          tasks: { description: 1 },
-        });
+        const customer = UserService.get(
+          { 'emails.address': { $in: [customerToRefer.email] } },
+          {
+            referredByUserLink: 1,
+            referredByOrganisationLink: 1,
+            loans: { shareSolvency: 1 },
+            tasks: { description: 1 },
+          },
+        );
         expect(customer.referredByUserLink).to.equal('pro');
         expect(customer.referredByOrganisationLink).to.equal('org');
         expect(customer.loans[0].shareSolvency).to.equal(undefined);
@@ -182,12 +188,12 @@ describe('REST: referCustomer', function() {
           const interval = Meteor.setInterval(() => {
             if (tasks.length === 0 && intervalCount < 10) {
               tasks =
-                UserService.fetchOne({
-                  $filters: {
+                UserService.get(
+                  {
                     'emails.address': { $in: [customerToRefer.email] },
                   },
-                  tasks: { description: 1 },
-                }).tasks || [];
+                  { tasks: { description: 1 } },
+                ).tasks || [];
               intervalCount++;
             } else {
               Meteor.clearInterval(interval);

@@ -10,12 +10,10 @@ import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { removePropertyFromLoan } from './propertyServerHelpers';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
-import { adminProperty } from '../../fragments';
 
 class PropertyService extends CollectionService {
   constructor() {
     super(Properties);
-    this.get = this.makeGet(adminProperty());
   }
 
   insert = ({ property, userId, loanId }) => {

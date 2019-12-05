@@ -31,7 +31,7 @@ api.addEndpoint(
   '/promotions/:promotionId/invite-customer',
   'POST',
   inviteUserToPromotion,
-  { rsaAuth: true, endpointName: 'Invite customer to promotion' }
+  { rsaAuth: true, endpointName: 'Invite customer to promotion' },
 );
 
 const inviteUser = ({
@@ -109,12 +109,14 @@ describe('REST: inviteUserToPromotion', function () {
       },
       status: HTTP_STATUS_CODES.OK,
     }).then(() => {
-      const invitedUser = UserService.fetchOne({
-        $filters: { 'emails.address': { $in: [userToInvite.email] } },
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      });
+      const invitedUser = UserService.get(
+        { 'emails.address': { $in: [userToInvite.email] } },
+        {
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+        },
+      );
 
       expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
     });
@@ -131,12 +133,14 @@ describe('REST: inviteUserToPromotion', function () {
       },
       status: HTTP_STATUS_CODES.OK,
     }).then(() => {
-      const invitedUser = UserService.fetchOne({
-        $filters: { 'emails.address': { $in: [userToInvite.email] } },
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      });
+      const invitedUser = UserService.get(
+        { 'emails.address': { $in: [userToInvite.email] } },
+        {
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+          loans: { shareSolvency: 1 },
+        },
+      );
 
       expect(invitedUser.loans[0].shareSolvency).to.equal(true);
     });
@@ -155,13 +159,15 @@ describe('REST: inviteUserToPromotion', function () {
       status: HTTP_STATUS_CODES.OK,
     })
       .then(() => {
-        const invitedUser = UserService.fetchOne({
-          $filters: { 'emails.address': { $in: [userToInvite.email] } },
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-          tasks: { description: 1 },
-        });
+        const invitedUser = UserService.get(
+          { 'emails.address': { $in: [userToInvite.email] } },
+          {
+            referredByUserLink: 1,
+            referredByOrganisationLink: 1,
+            loans: { shareSolvency: 1 },
+            tasks: { description: 1 },
+          },
+        );
 
         expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
@@ -172,12 +178,14 @@ describe('REST: inviteUserToPromotion', function () {
           const interval = Meteor.setInterval(() => {
             if (tasks.length === 0 && intervalCount < 10) {
               tasks =
-                UserService.fetchOne({
-                  $filters: {
+                UserService.get(
+                  {
                     'emails.address': { $in: [userToInvite.email] },
                   },
-                  tasks: { description: 1 },
-                }).tasks || [];
+                  {
+                    tasks: { description: 1 },
+                  },
+                ).tasks || [];
               intervalCount++;
             } else {
               Meteor.clearInterval(interval);

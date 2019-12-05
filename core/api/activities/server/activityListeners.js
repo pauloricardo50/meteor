@@ -25,6 +25,7 @@ import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+import { fullUser } from 'core/api/fragments';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
 
@@ -71,7 +72,7 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, params: { referralId }, context }) => {
     context.unblock();
 
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const { createdAt } = currentUser;
 
     let referredBy;
@@ -158,7 +159,7 @@ ServerEventService.addAfterMethodListener(
     } = currentUser;
 
     let description = '';
-    const referredBy = UserService.get(referredByUserLink);
+    const referredBy = UserService.get(referredByUserLink, fullUser());
     const referredByOrg = OrganisationService.findOne(
       referredByOrganisationLink,
     );
@@ -207,7 +208,7 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, context }) => {
     context.unblock();
     const { userId: adminId } = context;
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const { createdAt } = currentUser;
     const admin = UserService.get(adminId, { name: 1 }) || {};
     const { name: adminName } = admin;

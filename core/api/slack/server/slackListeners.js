@@ -25,6 +25,7 @@ import {
 } from './slackNotifications';
 import { sendPropertyInvitations } from './slackNotificationHelpers';
 import PromotionService from '../../promotions/server/PromotionService';
+import { fullUser } from 'core/api/fragments';
 
 ServerEventService.addAfterMethodListener(
   reservePromotionLot,
@@ -32,7 +33,7 @@ ServerEventService.addAfterMethodListener(
     context.unblock();
     const { userId } = context;
 
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const {
       promotionLots = [],
       loan: { _id: loanId },
@@ -60,7 +61,7 @@ ServerEventService.addAfterMethodListener(
   ({ context, params: { promotionOptionId } }) => {
     context.unblock();
     const { userId } = context;
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
 
     const {
       promotionLots = [],
@@ -98,7 +99,7 @@ ServerEventService.addAfterMethodListener(
       ...propertyIds,
       ...properties.map(({ _id, externalId }) => _id || externalId),
     ];
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const invitedUser = UserService.getByEmail(user.email);
 
     sendPropertyInvitations(notificationPropertyIds, currentUser, {
@@ -120,7 +121,7 @@ ServerEventService.addAfterMethodListener(
   ({ context, result: loanId }) => {
     context.unblock();
     const { userId } = context;
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const { name: loanName } = LoanService.fetchOne({
       $filters: { _id: loanId },
       name: 1,
@@ -134,14 +135,14 @@ ServerEventService.addAfterMethodListener(
   anonymousCreateUser,
   ({ context, result: userId }) => {
     context.unblock();
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const {
       loans = [],
       name,
       referredByUserLink,
       referredByOrganisationLink,
     } = currentUser;
-    const referredBy = UserService.get(referredByUserLink);
+    const referredBy = UserService.get(referredByUserLink, fullUser());
     const referredByOrg = OrganisationService.findOne(
       referredByOrganisationLink,
     );
@@ -150,14 +151,14 @@ ServerEventService.addAfterMethodListener(
       referredBy && referredBy.name,
       referredByOrg && referredByOrg.name,
       loans[0] &&
-        loans[0].properties &&
-        loans[0].properties[0] &&
-        loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
-        (loans[0].properties[0].address1 || loans[0].properties[0].name),
+      loans[0].properties &&
+      loans[0].properties[0] &&
+      loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
+      (loans[0].properties[0].address1 || loans[0].properties[0].name),
       loans[0] &&
-        loans[0].promotions &&
-        loans[0].promotions[0] &&
-        loans[0].promotions[0].name,
+      loans[0].promotions &&
+      loans[0].promotions[0] &&
+      loans[0].promotions[0].name,
     ]
       .filter(x => x)
       .map(x => `(${x})`)
@@ -195,7 +196,7 @@ ServerEventService.addAfterMethodListener(
     });
     const [{ name: promotionLotName }] = promotionLots;
 
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
 
     newPromotionReservation({
       currentUser,
@@ -226,7 +227,7 @@ ServerEventService.addAfterMethodListener(
         assignedEmployee: { email: 1 },
       });
 
-      const currentUser = UserService.get(userId);
+      const currentUser = UserService.get(userId, fullUser());
 
       const { name: proName } = UserService.fetchOne({
         $filters: { _id: proId },
@@ -267,7 +268,7 @@ ServerEventService.addAfterMethodListener(
 
     const [{ name: promotionLotName }] = promotionLots;
 
-    const currentUser = UserService.get(proId);
+    const currentUser = UserService.get(proId, fullUser());
 
     promotionAgreementUploaded({
       currentUser,

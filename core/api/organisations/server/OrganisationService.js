@@ -1,13 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { adminOrganisation } from 'core/api/fragments';
 import Organisations from '../organisations';
 import CollectionService from '../../helpers/CollectionService';
 
 export class OrganisationService extends CollectionService {
   constructor() {
     super(Organisations);
-    this.get = this.makeGet(adminOrganisation());
   }
 
   setCommissionRates({ commissionRates, organisationId }) {

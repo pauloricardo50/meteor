@@ -15,28 +15,9 @@ const ANONYMIZED_USER = {
 const anonymizeUser = ({ user, anonymous }) =>
   anonymous ? { name: 'Anonyme' } : { ...user, ...ANONYMIZED_USER };
 
-const getUserProPropertyPermissions = ({ userId, propertyId }) => {
-  const user = UserService.fetchOne({
-    $filters: { _id: userId },
-    proProperties: { _id: 1 },
-  });
-
-  if (!user) {
-    return {};
-  }
-
-  const { proProperties: properties = [] } = user;
-
-  const { $metadata: { permissions = {} } = {} } =
-    properties.find(({ _id }) => _id === propertyId) || {};
-
-  return permissions;
-};
-
 const getCustomerReferredBy = ({ customerId }) => {
   const { referredByUser, referredByOrganisation } =
-    UserService.fetchOne({
-      $filters: { _id: customerId },
+    UserService.get(customerId, {
       referredByUser: { _id: 1 },
       referredByOrganisation: { _id: 1 },
     }) || {};
@@ -44,22 +25,11 @@ const getCustomerReferredBy = ({ customerId }) => {
   return { referredByUser, referredByOrganisation };
 };
 
-const getProPropertyStatus = ({ propertyId }) => {
-  const { status } =
-    PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      status: 1,
-    }) || {};
-
-  return status;
-};
-
 export const getProPropertyCustomerOwnerType = ({ customerId, userId }) => {
   const { referredByUser, referredByOrganisation } = getCustomerReferredBy({
     customerId,
   });
-  const user = UserService.fetchOne({
-    $filters: { _id: userId },
+  const user = UserService.get(userId, {
     organisations: { users: { _id: 1 } },
   });
 
@@ -118,14 +88,14 @@ export const makeProPropertyLoanAnonymizer = ({
     const shouldAnonymizeUser =
       anonymize === undefined
         ? propertiesPermissionsAndStatus
-          .map(({ permissions, status: propertyStatus }) => {
-            return clientShouldAnonymize({
-              customerOwnerType,
-              permissions,
-              propertyStatus,
-            });
-          })
-          .every(anonymizeForProperty => anonymizeForProperty)
+            .map(({ permissions, status: propertyStatus }) =>
+              clientShouldAnonymize({
+                customerOwnerType,
+                permissions,
+                propertyStatus,
+              }),
+            )
+            .every(anonymizeForProperty => anonymizeForProperty)
         : anonymize;
 
     return {

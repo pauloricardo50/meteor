@@ -1,11 +1,9 @@
 import Contacts from '../contacts';
 import CollectionService from '../../helpers/CollectionService';
-import { fullContact } from '../../fragments';
 
 class ContactService extends CollectionService {
   constructor() {
     super(Contacts);
-    this.get = this.makeGet(fullContact);
   }
 
   changeOrganisations({ contactId, newOrganisations = [] }) {

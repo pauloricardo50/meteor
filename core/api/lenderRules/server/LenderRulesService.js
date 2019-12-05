@@ -8,12 +8,10 @@ import {
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
 } from '../lenderRulesConstants';
-import { lenderRules } from '../../fragments';
 
 class LenderRulesService extends CollectionService {
   constructor() {
     super(LenderRules);
-    this.get = this.makeGet(lenderRules());
   }
 
   remove({ lenderRulesId }) {

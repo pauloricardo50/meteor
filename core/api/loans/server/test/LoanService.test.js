@@ -35,7 +35,7 @@ import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
-describe('LoanService', function() {
+describe('LoanService', function () {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -678,8 +678,12 @@ describe('LoanService', function() {
       LoanService.assignLoanToUser({ loanId, userId });
 
       expect(LoanService.findOne(loanId).userId).to.equal(userId);
-      expect(BorrowerService.get(borrowerId1).userId).to.equal(userId);
-      expect(BorrowerService.get(borrowerId2).userId).to.equal(userId);
+      expect(BorrowerService.get(borrowerId1, { userId: 1 }).userId).to.equal(
+        userId,
+      );
+      expect(BorrowerService.get(borrowerId2, { userId: 1 }).userId).to.equal(
+        userId,
+      );
       expect(PropertyService.findOne(propertyId1).userId).to.equal(userId);
       expect(PropertyService.findOne(propertyId2).userId).to.equal(userId);
     });
@@ -1372,7 +1376,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {

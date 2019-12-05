@@ -3,12 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import Lenders from '../lenders';
 import CollectionService from '../../helpers/CollectionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import { adminLender } from '../../fragments';
 
 class LenderService extends CollectionService {
   constructor() {
     super(Lenders);
-    this.get = this.makeGet(adminLender());
   }
 
   insert({ lender, contactId, organisationId }) {

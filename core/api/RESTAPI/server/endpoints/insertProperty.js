@@ -19,10 +19,10 @@ const insertPropertyAPI = ({
   const { externalId } = property;
 
   if (externalId) {
-    const propertyByExternalId = PropertyService.fetchOne({
-      $filters: { externalId },
-      ...apiProperty(),
-    });
+    const propertyByExternalId = PropertyService.get(
+      { externalId },
+      apiProperty(),
+    );
 
     if (propertyByExternalId) {
       const { _id: propertyId } = propertyByExternalId;
@@ -59,10 +59,7 @@ const insertPropertyAPI = ({
     return proPropertyInsert
       .run({ userId: impersonateUserId || userId, property })
       .then(propertyId => {
-        const insertedProperty = PropertyService.fetchOne({
-          $filters: { _id: propertyId },
-          ...apiProperty(),
-        });
+        const insertedProperty = PropertyService.get(propertyId, apiProperty());
 
         return {
           message: `Successfully inserted property with id "${propertyId}"`,

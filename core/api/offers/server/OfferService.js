@@ -3,12 +3,10 @@ import LoanService from '../../loans/server/LoanService';
 import LenderService from '../../lenders/server/LenderService';
 import { LENDER_STATUS } from '../../lenders/lenderConstants';
 import Offers from '../offers';
-import { adminOffer } from '../../fragments';
 
 class OfferService extends CollectionService {
   constructor() {
     super(Offers);
-    this.get = this.makeGet(adminOffer());
   }
 
   update = ({ offerId, object }) => Offers.update(offerId, { $set: object });

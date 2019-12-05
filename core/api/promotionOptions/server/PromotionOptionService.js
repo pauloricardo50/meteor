@@ -14,7 +14,6 @@ import {
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import CollectionService from '../../helpers/CollectionService';
-import { fullPromotionOption } from '../../fragments';
 import PromotionOptions from '../promotionOptions';
 import FileService from '../../files/server/FileService';
 import {
@@ -28,14 +27,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function() {
+        'reservationAgreement.startDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function() {
+        'reservationAgreement.expirationDate': function () {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -44,7 +43,6 @@ export class PromotionOptionService extends CollectionService {
         },
       },
     });
-    this.get = this.makeGet(fullPromotionOption);
   }
 
   getPromotion(promotionOptionId) {

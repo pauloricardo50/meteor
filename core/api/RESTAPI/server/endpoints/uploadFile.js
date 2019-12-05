@@ -50,9 +50,10 @@ const uploadFileAPI = req => {
   const exists = PropertyService.exists(propertyId);
 
   if (!exists) {
-    const propertyByExternalId = PropertyService.fetchOne({
-      $filters: { externalId: propertyId },
-    });
+    const propertyByExternalId = PropertyService.get(
+      { externalId: propertyId },
+      { _id: 1 },
+    );
     if (propertyByExternalId) {
       propertyId = propertyByExternalId._id;
     } else {

@@ -61,7 +61,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function() {
+describe('PromotionOptionService', function () {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
@@ -112,11 +112,11 @@ describe('PromotionOptionService', function() {
     });
 
     it('Removes the promotionOption', () => {
-      expect(PromotionOptionService.get(promotionOptionId)).to.not.equal(
+      expect(PromotionOptionService.get(promotionOptionId, { _id: 1 })).to.not.equal(
         undefined,
       );
       PromotionOptionService.remove({ promotionOptionId });
-      expect(PromotionOptionService.get(promotionOptionId)).to.equal(undefined);
+      expect(PromotionOptionService.get(promotionOptionId, { _id: 1 })).to.equal(undefined);
     });
 
     it('Removes the link from the loan', () => {
@@ -185,7 +185,7 @@ describe('PromotionOptionService', function() {
         loanId,
         promotionId,
       });
-      expect(PromotionOptionService.get(id)).to.not.equal(undefined);
+      expect(PromotionOptionService.get(id, { _id: 1 })).to.not.equal(undefined);
     });
 
     it('throws if promotion lot exists in another promotionOption in the loan', () => {
@@ -194,7 +194,7 @@ describe('PromotionOptionService', function() {
         loanId,
         promotionId,
       });
-      expect(PromotionOptionService.get(id)).to.not.equal(undefined);
+      expect(PromotionOptionService.get(id, { _id: 1 })).to.not.equal(undefined);
 
       expect(() =>
         PromotionOptionService.insert({ promotionLotId, loanId, promotionId }),
@@ -853,8 +853,8 @@ describe('PromotionOptionService', function() {
         moment().isoWeekday() <= 5
           ? moment().isoWeekday(5)
           : moment()
-              .add(1, 'weeks')
-              .isoWeekday(5);
+            .add(1, 'weeks')
+            .isoWeekday(5);
 
       const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
 

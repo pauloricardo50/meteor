@@ -43,15 +43,25 @@ class CollectionService {
     return this.collection.remove(...args);
   }
 
-  get(...args) {
-    throw new Meteor.Error(
-      `Should initialize get in ${this.collection._name}Service`,
-    );
-    return this.collection.findOne(...args);
+  get(filters, fragment) {
+    if (!fragment) {
+      throw new Meteor.Error(
+        `Should provide a fragment for get in ${this.collection._name}Service`,
+      );
+    }
+    // When fetching by id
+    if (typeof filters === 'string') {
+      filters = { _id: filters };
+    }
+
+    return this.fetchOne({
+      $filters: filters,
+      ...fragment,
+    });
   }
 
   makeGet(defaultFragment) {
-    return function(filters, fields) {
+    return function (filters, fields) {
       // When fetching by id
       if (typeof filters === 'string') {
         filters = { _id: filters };
@@ -222,7 +232,7 @@ class CollectionService {
   }
 
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
-    const { additionalDocuments } = this.get(id);
+    const { additionalDocuments } = this.get(id, { additionalDocuments: 1 });
 
     const additionalDoc = additionalDocuments.find(
       doc => doc.id === additionalDocId,

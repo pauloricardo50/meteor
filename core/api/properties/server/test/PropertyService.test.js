@@ -67,7 +67,9 @@ describe('PropertyService', function() {
 
       expect(PropertyService.find({}).fetch().length).to.equal(1);
       expect(LoanService.findOne('loan').propertyIds).to.deep.equal([]);
-      expect(LoanService.findOne('loan').structures[0].propertyId).to.equal(null);
+      expect(LoanService.findOne('loan').structures[0].propertyId).to.equal(
+        null,
+      );
       expect(LoanService.findOne('loan2').propertyIds).to.deep.equal(['prop']);
     });
   });
@@ -125,13 +127,15 @@ describe('PropertyService', function() {
         isNewUser,
       });
 
-      const user = UserService.fetchOne({
-        $filters: { 'emails.address': 'john@doe.com' },
-        loans: { properties: { _id: 1 } },
-        assignedEmployee: { _id: 1 },
-        referredByUser: { _id: 1 },
-        referredByOrganisation: { _id: 1 },
-      });
+      const user = UserService.get(
+        { 'emails.address': 'john@doe.com' },
+        {
+          loans: { properties: { _id: 1 } },
+          assignedEmployee: { _id: 1 },
+          referredByUser: { _id: 1 },
+          referredByOrganisation: { _id: 1 },
+        },
+      );
 
       const {
         loans = [],
@@ -208,10 +212,7 @@ describe('PropertyService', function() {
         },
       });
 
-      const prop = PropertyService.fetchOne({
-        $filters: { _id: 'propertyId' },
-        organisation: 1,
-      });
+      const prop = PropertyService.get('propertyId', { organisation: 1 });
 
       expect(prop.organisation).to.deep.equal({
         _id: 'org',

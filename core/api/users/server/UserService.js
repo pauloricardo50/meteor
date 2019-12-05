@@ -5,7 +5,6 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import { fullUser } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -15,12 +14,12 @@ import SecurityService from '../../security';
 import { ROLES } from '../userConstants';
 import Users from '../users';
 import roundRobinAdvisors from './roundRobinAdvisors';
+import { fullUser } from 'core/api/fragments';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
     super(Users);
     this.setupRoundRobin(employees);
-    this.get = this.makeGet(fullUser());
   }
 
   getByEmail(email) {
@@ -248,7 +247,7 @@ export class UserServiceClass extends CollectionService {
         'Vous ne pouvez pas lier un compte deux fois à la même organisation.',
       );
     }
-    const { organisations: oldOrganisations = [] } = this.get(userId);
+    const { organisations: oldOrganisations = [] } = this.get(userId, { organisations: { _id: 1 } });
 
     oldOrganisations.forEach(({ _id: organisationId }) =>
       this.removeLink({
@@ -271,7 +270,7 @@ export class UserServiceClass extends CollectionService {
     }
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
-    return this.get(userId);
+    return this.get(userId, fullUser());
   };
 
   generateKeyPair = ({ userId }) => {
@@ -340,7 +339,7 @@ export class UserServiceClass extends CollectionService {
     let admin;
 
     if (isNewUser) {
-      admin = this.get(assignedEmployeeId);
+      admin = this.get(assignedEmployeeId, fullUser());
       userId = this.adminCreateUser({
         options: {
           email,
@@ -361,7 +360,7 @@ export class UserServiceClass extends CollectionService {
         assignedEmployeeId: existingAssignedEmployeeId,
       } = this.getByEmail(email);
 
-      admin = this.get(existingAssignedEmployeeId);
+      admin = this.get(existingAssignedEmployeeId, fullUser());
       userId = existingUserId;
     }
 
@@ -755,7 +754,7 @@ export class UserServiceClass extends CollectionService {
   // May be we can replace one of our existing method or keep this one here?
   getUserDetails(userId) {
     if (typeof userId === 'string') {
-      const user = this.get(userId);
+      const user = this.get(userId, fullUser());
       if (!(user && typeof user)) {
         throw new Meteor.Error('Utilisateur non trouvé');
       }

@@ -1,12 +1,11 @@
 import Borrowers from '../borrowers';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
-import { fullBorrower } from '../../fragments';
+import { adminBorrower } from 'core/api/fragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
     super(Borrowers);
-    this.get = this.makeGet(fullBorrower());
   }
 
   update = ({ borrowerId, object }) =>
@@ -17,7 +16,7 @@ export class BorrowerService extends CollectionService {
 
   remove = ({ borrowerId, loanId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    const borrower = this.get(borrowerId);
+    const borrower = this.get(borrowerId, adminBorrower());
     if (borrower.loans && borrower.loans.length > 1) {
       const loansLink = this.getLink(borrowerId, 'loans');
       if (loanId) {
@@ -45,7 +44,7 @@ export class BorrowerService extends CollectionService {
   getReusableBorrowers({ loanId, borrowerId }) {
     // borrowerId can be the previous removed borrower, and therefore
     // this line will fail if we don't provide a default empty object
-    const { userId, loans } = this.get(borrowerId) || {};
+    const { userId, loans } = this.get(borrowerId, adminBorrower()) || {};
     if (!userId) {
       return { borrowers: [], isLastLoan: true };
     }
