@@ -1,7 +1,9 @@
 // @flow
 import React, { useContext } from 'react';
+import { withState, compose } from 'recompose';
 
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { LOAN_STATUS } from '../../../../api/constants';
 import { withSmartQuery } from '../../../../api';
 import { proPromotionLoans } from '../../../../api/loans/queries';
 import T from '../../../Translation';
@@ -27,9 +29,19 @@ const PromotionCustomers = (props: PromotionCustomersProps) => {
   );
 };
 
-export default withSmartQuery({
-  query: proPromotionLoans,
-  params: ({ promotion: { _id: promotionId } }) => ({ promotionId }),
-  queryOptions: { reactive: false },
-  dataName: 'loans',
-})(PromotionCustomers);
+export default compose(
+  withState('status', 'setStatus', {
+    $in: Object.values(LOAN_STATUS).filter(
+      s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST,
+    ),
+  }),
+  withSmartQuery({
+    query: proPromotionLoans,
+    params: ({ promotion: { _id: promotionId }, status }) => ({
+      promotionId,
+      status,
+    }),
+    queryOptions: { reactive: false },
+    dataName: 'loans',
+  }),
+)(PromotionCustomers);

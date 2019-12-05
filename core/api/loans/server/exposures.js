@@ -170,10 +170,14 @@ exposeQuery({
       SecurityService.checkUserIsPro(userId);
       SecurityService.promotions.isAllowedToView({ userId, promotionId });
     },
-    validateParams: { promotionId: String, userId: String },
+    validateParams: {
+      promotionId: String,
+      userId: String,
+      status: Match.Maybe(Match.OneOf(Object, String)),
+    },
   },
-  resolver: ({ userId, promotionId }) =>
-    proPromotionLoansResolver({ calledByUserId: userId, promotionId }),
+  resolver: ({ userId, promotionId, status }) =>
+    proPromotionLoansResolver({ calledByUserId: userId, promotionId, status }),
 });
 
 exposeQuery({
