@@ -12,7 +12,7 @@ import {
   promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
   promotionOptionAddToWaitList,
-  getEmailsToBeSentBySetPromotionOptionProgress,
+  getPromotionOptionProgressEmails,
 } from '../methodDefinitions';
 import { Method } from '../../methods/methods';
 import { expirePromotionOptionReservation } from './serverMethods';
@@ -108,7 +108,7 @@ expirePromotionOptionReservation.setHandler((context, params) =>
   PromotionOptionService.expireReservation(params),
 );
 
-getEmailsToBeSentBySetPromotionOptionProgress.setHandler(
+getPromotionOptionProgressEmails.setHandler(
   ({ userId }, { id, nextStatus }) => {
     SecurityService.checkUserIsAdmin(userId);
 

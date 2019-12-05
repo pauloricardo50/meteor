@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import {
   loanUpdate,
-  getEmailsToBeSentBySetPromotionOptionProgress,
+  getPromotionOptionProgressEmails,
 } from '../../../../../api/methods';
 import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../../../api/constants';
 import T from '../../../../Translation';
@@ -12,7 +12,7 @@ export const getEmailsToBeSent = async ({ id, status, nextStatus }) => {
   if (status === nextStatus) {
     return null;
   }
-  const emails = await getEmailsToBeSentBySetPromotionOptionProgress.run({
+  const emails = await getPromotionOptionProgressEmails.run({
     id,
     nextStatus,
   });
@@ -43,7 +43,7 @@ export const getEmailsToBeSentWarning = emailsToBeSent =>
     </p>
   );
 
-export const preConfirmDialog = async ({
+export const openPreConfirmDialog = async ({
   values,
   id,
   setOpenConfirmDialog,
@@ -93,7 +93,7 @@ export const preConfirmDialog = async ({
   });
 };
 
-export const postConfirmDialog = ({
+export const openPostConfirmDialog = ({
   values,
   id,
   loanId,
@@ -103,31 +103,33 @@ export const postConfirmDialog = ({
 }) => {
   const isSimpleVerification = id === 'simpleVerification';
 
-  if (isSimpleVerification) {
-    const { status } = values;
+  if (!isSimpleVerification) {
+    return;
+  }
 
-    if (status === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED) {
-      setConfirmDialogProps({
-        title: 'Vérouiller les formulaires',
-        important: true,
-        text:
-          'Vérouiller tous les formulaires pour que le client ne puisse plus modifier ses informations ?',
-      });
-      setConfirmDialogActions({
-        cancel: event => {
-          event.preventDefault();
-          event.stopPropagation();
-          setOpenConfirmDialog(false);
-        },
-        ok: event => {
-          event.preventDefault();
-          event.stopPropagation();
-          return loanUpdate
-            .run({ loanId, object: { userFormsEnabled: false } })
-            .then(() => setOpenConfirmDialog(false));
-        },
-      });
-      setOpenConfirmDialog(true);
-    }
+  const { status } = values;
+
+  if (status === PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED) {
+    setConfirmDialogProps({
+      title: 'Vérouiller les formulaires',
+      important: true,
+      text:
+        'Vérouiller tous les formulaires pour que le client ne puisse plus modifier ses informations ?',
+    });
+    setConfirmDialogActions({
+      cancel: event => {
+        event.preventDefault();
+        event.stopPropagation();
+        setOpenConfirmDialog(false);
+      },
+      ok: event => {
+        event.preventDefault();
+        event.stopPropagation();
+        return loanUpdate
+          .run({ loanId, object: { userFormsEnabled: false } })
+          .then(() => setOpenConfirmDialog(false));
+      },
+    });
+    setOpenConfirmDialog(true);
   }
 };

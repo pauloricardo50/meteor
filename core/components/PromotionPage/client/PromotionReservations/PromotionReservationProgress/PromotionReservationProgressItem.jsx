@@ -11,7 +11,7 @@ type PromotionReservationProgressItemProps = {};
 
 const isAdmin = Meteor.microservice === 'admin';
 
-const allowModification = id => isAdmin && !['proNote'].includes(id);
+const allowModification = id => isAdmin && id !== 'proNote';
 
 const IconTooltip = ({ date, status, id, note, placeholder }) => (
   <div className="flex-col" style={{ flexGrow: 1 }}>

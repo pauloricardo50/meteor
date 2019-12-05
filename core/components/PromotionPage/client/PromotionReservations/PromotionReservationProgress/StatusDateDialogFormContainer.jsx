@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { withProps } from 'recompose';
 
 import { setPromotionOptionProgress } from '../../../../../api/methods';
@@ -8,8 +8,8 @@ import T from '../../../../Translation';
 import {
   getEmailsToBeSent,
   getEmailsToBeSentWarning,
-  preConfirmDialog,
-  postConfirmDialog,
+  openPreConfirmDialog,
+  openPostConfirmDialog,
 } from './statusDateFormDialogHelpers';
 
 export default withProps(
@@ -31,19 +31,25 @@ export default withProps(
     const [confirmDialogProps, setConfirmDialogProps] = useState({});
     const [emailsToBeSent, setEmailsToBeSent] = useState(undefined);
 
+    const schema = useMemo(
+      () =>
+        isBankStatus
+          ? PromotionOptionSchema.getObjectSchema(id)
+              .omit('status')
+              .extend({
+                status: {
+                  type: String,
+                  allowedValues: Object.values(
+                    PROMOTION_OPTION_BANK_STATUS,
+                  ).filter(s => s !== PROMOTION_OPTION_BANK_STATUS.WAITLIST),
+                },
+              })
+          : PromotionOptionSchema.getObjectSchema(id).pick('status', 'date'),
+      [id],
+    );
+
     return {
-      schema: isBankStatus
-        ? PromotionOptionSchema.getObjectSchema(id)
-            .omit('status')
-            .extend({
-              status: {
-                type: String,
-                allowedValues: Object.values(
-                  PROMOTION_OPTION_BANK_STATUS,
-                ).filter(s => s !== PROMOTION_OPTION_BANK_STATUS.WAITLIST),
-              },
-            })
-        : PromotionOptionSchema.getObjectSchema(id).pick('status', 'date'),
+      schema,
       title: <T id={`Forms.${id}`} />,
       model: { status, date },
       open: openDialog,
@@ -65,7 +71,7 @@ export default withProps(
         </div>
       ),
       onSubmit: values =>
-        preConfirmDialog({
+        openPreConfirmDialog({
           values,
           id,
           setOpenConfirmDialog,
@@ -81,7 +87,7 @@ export default withProps(
             }),
           )
           .then(() =>
-            postConfirmDialog({
+            openPostConfirmDialog({
               values,
               id,
               loanId,
