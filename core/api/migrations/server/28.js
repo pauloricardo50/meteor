@@ -32,7 +32,7 @@ export const up = () => {
 
       return LoanService.rawCollection.update(
         { _id },
-        { $set: { adminNotes } },
+        { $set: { adminNotes }, $unset: { adminNote: true } },
       );
     }),
   );
@@ -48,7 +48,10 @@ export const down = () => {
     allLoans.map(({ _id, adminNotes }) =>
       LoanService.rawCollection.update(
         { _id },
-        { $set: { adminNote: adminNotes.map(({ note }) => note).join('\n') } },
+        {
+          $set: { adminNote: adminNotes.map(({ note }) => note).join('\n') },
+          $unset: { adminNotes: true },
+        },
       ),
     ),
   );
