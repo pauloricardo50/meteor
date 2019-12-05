@@ -41,8 +41,7 @@ describe('assignAdminToUserListener', () => {
     await ddpWithUserId('admin', () =>
       assignAdminToUser.run({ userId: 'user', adminId: 'admin' }),
     );
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 
@@ -69,8 +68,7 @@ describe('assignAdminToUserListener', () => {
     await ddpWithUserId('admin', () =>
       assignAdminToUser.run({ userId: 'user', adminId: 'admin' }),
     );
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 
@@ -97,8 +95,7 @@ describe('assignAdminToUserListener', () => {
     await ddpWithUserId('admin', () =>
       assignAdminToUser.run({ userId: 'user', adminId: 'admin2' }),
     );
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 

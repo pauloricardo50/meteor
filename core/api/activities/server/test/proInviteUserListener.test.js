@@ -65,10 +65,10 @@ describe('proInviteUserListener', function() {
       }),
     );
     await checkEmails(2);
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { 'emails.address': 'john.doe@test.com' },
-      activities: { type: 1, description: 1, title: 1, metadata: 1 },
-    });
+    const { activities = [] } = UserService.get(
+      { 'emails.address': 'john.doe@test.com' },
+      { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
+    );
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EVENT,
@@ -98,10 +98,10 @@ describe('proInviteUserListener', function() {
     );
     await checkEmails(2);
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { 'emails.address': 'john.doe@test.com' },
-      activities: { type: 1, description: 1, title: 1, metadata: 1 },
-    });
+    const { activities = [] } = UserService.get(
+      { 'emails.address': 'john.doe@test.com' },
+      { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
+    );
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EVENT,
@@ -119,8 +119,7 @@ describe('proInviteUserListener', function() {
   });
 
   it('adds activity on user when user is referred by a pro via API', async () => {
-    const apiUser = UserService.fetchOne({
-      $filters: { _id: 'pro3' },
+    const apiUser = UserService.get('pro3', {
       name: 1,
       organisations: { name: 1 },
     });
@@ -137,10 +136,10 @@ describe('proInviteUserListener', function() {
     });
     await checkEmails(2);
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { 'emails.address': 'john.doe@test.com' },
-      activities: { type: 1, description: 1, title: 1, metadata: 1 },
-    });
+    const { activities = [] } = UserService.get(
+      { 'emails.address': 'john.doe@test.com' },
+      { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
+    );
 
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
@@ -199,10 +198,10 @@ describe('proInviteUserListener', function() {
       }),
     );
     await checkEmails(2);
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { 'emails.address': 'john.doe@test.com' },
-      activities: { type: 1, description: 1, title: 1, metadata: 1 },
-    });
+    const { activities = [] } = UserService.get(
+      { 'emails.address': 'john.doe@test.com' },
+      { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
+    );
 
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({

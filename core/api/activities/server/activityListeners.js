@@ -345,7 +345,7 @@ ServerEventService.addAfterMethodListener(
     const formattedNexStatus = formatMessage({
       id: `Forms.status.${nextStatus}`,
     });
-    const { name: adminName } = UserService.get({ _id: userId }, { name: 1 });
+    const { name: adminName } = UserService.get(userId, { name: 1 });
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
@@ -370,7 +370,7 @@ ServerEventService.addAfterMethodListener(
   }) => {
     context.unblock();
     const { userId } = context;
-    const { email } = UserService.get({ _id: userId }, { email: 1 });
+    const { email } = UserService.get(userId, { email: 1 });
     ActivityService.addEmailActivity({
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
       to: address,

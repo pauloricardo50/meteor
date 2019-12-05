@@ -9,8 +9,7 @@ import {
 import ActivityService from './ActivityService';
 
 const allowModification = activityId => {
-  const { isServerGenerated } = ActivityService.fetchOne({
-    $filters: { _id: activityId },
+  const { isServerGenerated } = ActivityService.get(activityId, {
     isServerGenerated: 1,
   });
 

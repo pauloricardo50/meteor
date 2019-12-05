@@ -28,8 +28,7 @@ describe('userPasswordResetListener', () => {
   it('adds activities on the user', async () => {
     await ddpWithUserId('user', () => userPasswordReset.run({}));
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
@@ -64,9 +63,8 @@ describe('userPasswordResetListener', () => {
     });
     await ddpWithUserId('user', () => userPasswordReset.run({}));
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
-      activities: { type: 1, description: 1, title: 1, metadata: 1, date: 1 },
+    const { activities = [] } = UserService.get('user', {
+      activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
