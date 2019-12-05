@@ -10,12 +10,13 @@ import {
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 
-const updateSchema = new SimpleSchema(adminNotesSchema)
-  .getObjectSchema('adminNotes.$')
-  .omit('updatedBy', 'id');
+const getUpdateSchema = () =>
+  new SimpleSchema(adminNotesSchema)
+    .getObjectSchema('adminNotes.$')
+    .omit('updatedBy', 'id');
 
 const getInsertSchema = referredByUser =>
-  updateSchema.extend({
+  getUpdateSchema().extend({
     notifyPro: {
       type: Boolean,
       defaultValue: false,
@@ -34,8 +35,9 @@ const AdminNoteSetter = ({
   referredByUser,
 }) => {
   const isInsert = !adminNote;
-  const schema = useMemo(() =>
-    isInsert ? getInsertSchema(referredByUser) : updateSchema,
+  const schema = useMemo(
+    () => (isInsert ? getInsertSchema(referredByUser) : getUpdateSchema()),
+    [],
   );
 
   return (
