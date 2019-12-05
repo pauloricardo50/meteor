@@ -1,3 +1,4 @@
+import { PROMOTION_EMAILS } from 'core/api/email/server/promotionEmailHelpers';
 import SecurityService from '../../security';
 import PromotionOptionService from './PromotionOptionService';
 import LoanService from '../../loans/server/LoanService';
@@ -11,6 +12,7 @@ import {
   promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
   promotionOptionAddToWaitList,
+  getPromotionOptionProgressEmails,
 } from '../methodDefinitions';
 import { Method } from '../../methods/methods';
 import { expirePromotionOptionReservation } from './serverMethods';
@@ -104,4 +106,16 @@ generateTenDayExpirationReminderTasks.setHandler(context => {
 
 expirePromotionOptionReservation.setHandler((context, params) =>
   PromotionOptionService.expireReservation(params),
+);
+
+getPromotionOptionProgressEmails.setHandler(
+  ({ userId }, { id, nextStatus }) => {
+    SecurityService.checkUserIsAdmin(userId);
+
+    return PROMOTION_EMAILS.filter(
+      ({ method, shouldSend = () => true }) =>
+        method.config.name === 'setPromotionOptionProgress' &&
+        shouldSend({ params: { id }, result: { nextStatus } }),
+    ).map(({ description }) => description);
+  },
 );
