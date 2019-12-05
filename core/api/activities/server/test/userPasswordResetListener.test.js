@@ -64,7 +64,7 @@ describe('userPasswordResetListener', () => {
     await ddpWithUserId('user', () => userPasswordReset.run({}));
 
     const { activities = [] } = UserService.get('user', {
-      activities: { type: 1, description: 1, title: 1, metadata: 1 },
+      activities: { type: 1, description: 1, title: 1, metadata: 1, date: 1 },
     });
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({

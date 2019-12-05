@@ -3,10 +3,12 @@ import moment from 'moment';
 import Sessions from '../sessions';
 import CollectionService from '../../helpers/CollectionService';
 import UserService from '../../users/server/UserService';
+import { userSession } from '../../fragments';
 
 class SessionService extends CollectionService {
   constructor() {
     super(Sessions);
+    this.get = this.makeGet(userSession());
   }
 
   getByConnectionId(connectionId) {

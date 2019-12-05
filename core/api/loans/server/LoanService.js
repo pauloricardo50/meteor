@@ -53,6 +53,7 @@ const zeroPadding = (num, places) => {
 class LoanService extends CollectionService {
   constructor() {
     super(Loans);
+    this.get = this.makeGet(adminLoan());
   }
 
   insert = ({ loan = {}, userId }) => {
