@@ -14,7 +14,7 @@ const isAdmin = Meteor.microservice === 'admin';
 const allowModification = id => isAdmin && id !== 'proNote';
 
 const IconTooltip = ({ date, status, id, note, placeholder }) => (
-  <div className="flex-col" style={{ flexGrow: 1 }}>
+  <div className="promotion-reservation-progress-item-tooltip">
     <b className="flex sb">
       <T id={`Forms.${id}`} />
       &nbsp;

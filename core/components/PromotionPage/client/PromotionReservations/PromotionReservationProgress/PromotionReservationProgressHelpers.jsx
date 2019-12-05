@@ -49,19 +49,19 @@ export const makeIcon = (variant, promotionOptionId, loanId) => ({
   component,
   placeholder,
 }) => (
-    <PromotionReservationProgressItem
-      icon={icon}
-      color={color}
-      date={date}
-      status={status}
-      variant={variant}
-      id={id}
-      promotionOptionId={promotionOptionId}
-      component={component}
-      placeholder={placeholder}
-      loanId={loanId}
-    />
-  );
+  <PromotionReservationProgressItem
+    icon={icon}
+    color={color}
+    date={date}
+    status={status}
+    variant={variant}
+    id={id}
+    promotionOptionId={promotionOptionId}
+    component={component}
+    placeholder={placeholder}
+    loanId={loanId}
+  />
+);
 
 export const getPercent = ({ valid, required }) => {
   if (valid === 0 || required === 0) {
@@ -76,11 +76,12 @@ export const getRatio = ({ valid, required }) => ({
   target: required,
 });
 
-export const getAdminNoteIcon = (
-  { note, date, isAnonymized } = {},
+export const getAdminNoteIcon = ({
+  proNote: { note, date },
   variant,
   promotionOptionId,
-) => {
+  isAnonymized,
+}) => {
   const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
 
   if (!shouldShowNote) {
@@ -111,9 +112,9 @@ export const rawPromotionReservationProgress = ({
 }) =>
   [
     simpleVerification.status ===
-    PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+      PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
     fullVerification.status ===
-    PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+      PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
     reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
     reservationDeposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
     bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
