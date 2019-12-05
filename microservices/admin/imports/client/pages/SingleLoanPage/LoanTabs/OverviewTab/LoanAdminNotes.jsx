@@ -10,7 +10,7 @@ import Button from 'core/components/Button';
 type LoanAdminNotesProps = {};
 
 const LoanAdminNotes = ({
-  loan: { _id: loanId, adminNotes, proNote },
+  loan: { _id: loanId, adminNotes, proNote, user: { referredByUser } = {} },
 }: LoanAdminNotesProps) => {
   const [showAll, setShowAll] = useState(false);
   const shownNotes = adminNotes.slice(0, showAll ? undefined : 2);
@@ -28,6 +28,7 @@ const LoanAdminNotes = ({
             primary: true,
             label: 'Ajouter une note',
           }}
+          referredByUser={referredByUser}
         />
       </div>
 

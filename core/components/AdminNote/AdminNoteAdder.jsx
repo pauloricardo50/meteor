@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { adminNotesSchema } from 'core/api/loans/schemas/otherSchemas';
@@ -10,45 +10,75 @@ import {
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 
-const schema = new SimpleSchema(adminNotesSchema)
+const updateSchema = new SimpleSchema(adminNotesSchema)
   .getObjectSchema('adminNotes.$')
   .omit('updatedBy', 'id');
 
-const AdminNoteSetter = ({ adminNote, loanId, buttonProps }) => (
-  <AutoFormDialog
-    title={adminNote ? 'Modifier note' : 'Ajouter une note'}
-    buttonProps={buttonProps}
-    schema={schema}
-    onSubmit={values =>
-      loanSetAdminNote.run({
-        loanId,
-        adminNoteId: adminNote ? adminNote.id : undefined,
-        note: values,
-      })
-    }
-    model={adminNote}
-    renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) => {
-      if (!adminNote) {
-        return null;
-      }
+const getInsertSchema = referredByUser =>
+  updateSchema.extend({
+    notifyPro: {
+      type: Boolean,
+      defaultValue: false,
+      condition: ({ isSharedWithPros }) =>
+        referredByUser && referredByUser.name && isSharedWithPros,
+      uniforms: {
+        label: `Notifier ${referredByUser && referredByUser.name} avec un mail`,
+      },
+    },
+  });
 
-      return (
-        <Button
-          onClick={() => {
-            setDisableActions(true);
-            loanRemoveAdminNote
-              .run({ loanId, adminNoteId: adminNote.id })
-              .then(closeDialog)
-              .finally(() => setDisableActions(false));
-          }}
-          error
-          disabled={disabled}
-        >
-          Supprimer
-        </Button>
-      );
-    }}
-  />
-);
+const AdminNoteSetter = ({
+  adminNote,
+  loanId,
+  buttonProps,
+  referredByUser,
+}) => {
+  const isInsert = !adminNote;
+  const schema = useMemo(() =>
+    isInsert ? getInsertSchema(referredByUser) : updateSchema,
+  );
+
+  return (
+    <AutoFormDialog
+      title={isInsert ? 'Ajouter une note' : 'Modifier note'}
+      buttonProps={buttonProps}
+      schema={schema}
+      onSubmit={({ notifyPro, ...values }) =>
+        loanSetAdminNote.run({
+          loanId,
+          adminNoteId: isInsert ? undefined : adminNote.id,
+          note: values,
+          notifyPro,
+        })
+      }
+      model={adminNote}
+      renderAdditionalActions={({
+        closeDialog,
+        setDisableActions,
+        disabled,
+      }) => {
+        if (isInsert) {
+          return null;
+        }
+
+        return (
+          <Button
+            onClick={() => {
+              setDisableActions(true);
+              loanRemoveAdminNote
+                .run({ loanId, adminNoteId: adminNote.id })
+                .then(closeDialog)
+                .finally(() => setDisableActions(false));
+            }}
+            error
+            disabled={disabled}
+          >
+            Supprimer
+          </Button>
+        );
+      }}
+    />
+  );
+};
 
 export default AdminNoteSetter;
