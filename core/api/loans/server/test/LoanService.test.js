@@ -1539,4 +1539,197 @@ describe('LoanService', function() {
       });
     });
   });
+
+  describe('setAdminNote', () => {
+    it('adds new adminNotes to a loan', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello' },
+      });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'world' },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+      expect(adminNotes.length).to.equal(2);
+      expect(adminNotes[0].note).to.equal('world');
+      expect(adminNotes[1].note).to.equal('hello');
+    });
+
+    it('updates an adminNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      const now = new Date();
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello', date: now },
+      });
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello world' },
+        adminNoteId: adminNotes[0].id,
+      });
+
+      const { adminNotes: updated } = LoanService.get('loanId', {
+        adminNotes: 1,
+      });
+      expect(updated[0].note).to.equal('hello world');
+      expect(updated[0].date.getTime()).to.be.above(now.getTime());
+    });
+
+    it('sorts notes from newest to oldest', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '1',
+          date: moment()
+            .subtract(3, 'd')
+            .toDate(),
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '2',
+          date: moment()
+            .subtract(2, 'd')
+            .toDate(),
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '3',
+          date: moment()
+            .subtract(1, 'd')
+            .toDate(),
+        },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+      expect(adminNotes[0].note).to.equal('3');
+    });
+
+    it('caches the last proNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '1',
+          date: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          isSharedWithPros: true,
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '2',
+          date: moment().toDate(),
+          isSharedWithPros: true,
+        },
+      });
+
+      const { proNote } = LoanService.get('loanId', { proNote: 1 });
+      expect(proNote.note).to.equal('2');
+    });
+
+    it('throws if you try to set a note in the future', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      expect(() =>
+        LoanService.setAdminNote({
+          loanId: 'loanId',
+          userId: 'userId',
+          note: {
+            note: '1',
+            date: moment()
+              .add(1, 'd')
+              .toDate(),
+            isSharedWithPros: true,
+          },
+        }),
+      ).to.throw('futur');
+    });
+  });
+
+  describe('removeAdminNote', () => {
+    it('removes an adminNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello' },
+      });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'world' },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+
+      LoanService.removeAdminNote({
+        loanId: 'loanId',
+        adminNoteId: adminNotes[1].id,
+      });
+
+      const { adminNotes: removed } = LoanService.get('loanId', {
+        adminNotes: 1,
+      });
+
+      expect(removed.length).to.equal(1);
+      expect(removed[0].note).to.equal('world');
+    });
+
+    it('removes the proNote if it is removed in adminNotes', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello' },
+      });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'world', isSharedWithPros: true },
+      });
+
+      const { adminNotes, proNote } = LoanService.get('loanId', {
+        adminNotes: 1,
+        proNote: 1,
+      });
+      expect(proNote.note).to.equal('world');
+
+      LoanService.removeAdminNote({
+        loanId: 'loanId',
+        adminNoteId: adminNotes[0].id,
+      });
+
+      const { proNote: removed } = LoanService.get('loanId', { proNote: 1 });
+
+      expect(removed).to.equal(undefined);
+    });
+  });
 });

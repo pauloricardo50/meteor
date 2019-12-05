@@ -26,6 +26,7 @@ import {
   propertyIdsSchema,
   previousLoanTranchesSchema,
   maxPropertyValueSchema,
+  adminNotesSchema,
 } from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
@@ -127,10 +128,6 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(LOAN_CATEGORIES),
     uniforms: { placeholder: null },
   },
-  adminNote: {
-    type: String,
-    optional: true,
-  },
   lendersCache: { type: Array, optional: true },
   'lendersCache.$': cacheField,
   tasksCache: { type: Array, optional: true },
@@ -138,6 +135,11 @@ const LoanSchema = new SimpleSchema({
   financedPromotionLink: { type: Object, optional: true },
   'financedPromotionLink._id': { type: String, optional: true },
   simpleBorrowersForm: { type: Boolean, defaultValue: true },
+  ...adminNotesSchema,
+  proNote: {
+    type: new SimpleSchema(adminNotesSchema).getObjectSchema('adminNotes.$'),
+    optional: true,
+  },
 });
 
 export default LoanSchema;

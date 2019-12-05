@@ -12,7 +12,7 @@ import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
-  adminNote: 1,
+  adminNotes: 1,
   borrowers: { name: 1 },
   category: 1,
   createdAt: 1,

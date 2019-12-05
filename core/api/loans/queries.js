@@ -56,11 +56,6 @@ export const proPropertyLoans = Loans.createQuery(
   () => {},
 );
 
-export const proReferredByLoans = Loans.createQuery(
-  LOAN_QUERIES.PRO_REFERRED_BY_LOANS,
-  () => {},
-);
-
 export const userLoans = Loans.createQuery(
   LOAN_QUERIES.USER_LOANS,
   {
