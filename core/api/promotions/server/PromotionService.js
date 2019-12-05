@@ -14,10 +14,12 @@ import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import SecurityService from '../../security';
 import Promotions from '../promotions';
+import { adminPromotions } from '../../fragments';
 
 class PromotionService extends CollectionService {
   constructor() {
     super(Promotions);
+    this.get = this.makeGet(adminPromotions());
   }
 
   insert({ promotion = {}, userId }) {

@@ -318,10 +318,10 @@ addEmailListener({
 //
 // PROMOTION EMAILS
 //
-// PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
-//   addEmailListener({
-//     description,
-//     method,
-//     func: mapConfigToListener(config),
-//   });
-// });
+PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
+  addEmailListener({
+    description,
+    method,
+    func: mapConfigToListener(config),
+  });
+});

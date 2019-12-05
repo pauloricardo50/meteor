@@ -1,10 +1,12 @@
 import CollectionService from '../../helpers/CollectionService';
 import Activities from '../activities';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
+import { activity as activityFragment } from '../../fragments';
 
 class ActivityService extends CollectionService {
   constructor() {
     super(Activities);
+    this.get = this.makeGet(activityFragment());
   }
 
   addServerActivity(activity) {
