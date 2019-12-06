@@ -1,7 +1,7 @@
+import { adminBorrower } from 'core/api/fragments';
 import Borrowers from '../borrowers';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
-import { adminBorrower } from 'core/api/fragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
@@ -65,8 +65,7 @@ export class BorrowerService extends CollectionService {
   }
 
   cleanUpMortgageNotes({ borrowerId }) {
-    const { mortgageNotes = [], loans = [] } = this.fetchOne({
-      $filters: { _id: borrowerId },
+    const { mortgageNotes = [], loans = [] } = this.get(borrowerId, {
       mortgageNotes: { _id: 1 },
       loans: { structures: 1 },
     });

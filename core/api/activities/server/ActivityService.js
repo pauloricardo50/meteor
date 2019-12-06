@@ -37,12 +37,13 @@ class ActivityService extends CollectionService {
   }
 
   updateCreatedAtActivity({ createdAt, loanId }) {
-    const createdAtActivity = this.fetchOne({
-      $filters: {
+    const createdAtActivity = this.get(
+      {
         'loanLink._id': loanId,
         metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
       },
-    });
+      { _id: 1 },
+    );
     this.rawCollection.update(
       {
         _id: createdAtActivity._id,

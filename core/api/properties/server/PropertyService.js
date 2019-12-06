@@ -29,11 +29,7 @@ class PropertyService extends CollectionService {
     Properties.update(propertyId, { $set: object });
 
   remove = ({ propertyId, loanId }) => {
-    const property = this.fetchOne({
-      $filters: { _id: propertyId },
-      loans: { _id: 1 },
-      category: 1,
-    });
+    const property = this.get(propertyId, { loans: { _id: 1 }, category: 1 });
 
     if (property && property.loans && property.loans.length > 1) {
       if (loanId) {
@@ -125,7 +121,7 @@ class PropertyService extends CollectionService {
   }
 
   insertExternalProperty({ userId, property: { externalId, ...property } }) {
-    const existingProperty = this.fetchOne({ $filters: { externalId } });
+    const existingProperty = this.get({ externalId }, { _id: 1 });
 
     if (existingProperty) {
       throw new Meteor.Error(

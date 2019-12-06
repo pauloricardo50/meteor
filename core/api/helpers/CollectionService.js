@@ -60,19 +60,7 @@ class CollectionService {
     });
   }
 
-  makeGet(defaultFragment) {
-    return function (filters, fields) {
-      // When fetching by id
-      if (typeof filters === 'string') {
-        filters = { _id: filters };
-      }
 
-      return this.fetchOne({
-        $filters: filters,
-        ...(fields || defaultFragment),
-      });
-    };
-  }
 
   find(...args) {
     return this.collection.find(...args);
@@ -215,7 +203,7 @@ class CollectionService {
   }
 
   getAssignedEmployee({ id }) {
-    const { assignee } = this.fetchOne({ $filters: { _id: id }, assignee: 1 });
+    const { assignee } = this.get(id, { assignee: 1 });
 
     return assignee;
   }
@@ -266,7 +254,9 @@ class CollectionService {
   }
 
   removeAdditionalDoc({ id: docId, additionalDocId }) {
-    const { additionalDocuments = [] } = this.get(docId);
+    const { additionalDocuments = [] } = this.get(docId, {
+      additionalDocuments: 1,
+    });
     return this._update({
       id: docId,
       object: {

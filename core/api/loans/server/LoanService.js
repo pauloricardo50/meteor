@@ -111,8 +111,7 @@ class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, user } = this.fetchOne({
-      $filters: { _id: loanId },
+    const { step, user } = this.get(loanId, {
       step: 1,
       userId: 1,
       user: { assignedEmployee: { name: 1 } },
@@ -124,10 +123,7 @@ class LoanService extends CollectionService {
   }
 
   verifyStatusChange({ loanId, status }) {
-    const { status: prevStatus } = this.fetchOne({
-      $filters: { _id: loanId },
-      status: 1,
-    });
+    const { status: prevStatus } = this.get(loanId, { status: 1 });
 
     if (prevStatus === status) {
       throw new Meteor.Error("Ce statut est le même qu'avant");
@@ -404,18 +400,15 @@ class LoanService extends CollectionService {
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const {
-      properties = [],
-      borrowers = [],
-      referralId,
-      anonymous,
-    } = this.fetchOne({
-      $filters: { _id: loanId },
-      referralId: 1,
-      properties: { loans: { _id: 1 }, address1: 1, category: 1 },
-      borrowers: { loans: { _id: 1 }, name: 1 },
-      anonymous: 1,
-    });
+    const { properties = [], borrowers = [], referralId, anonymous } = this.get(
+      loanId,
+      {
+        referralId: 1,
+        properties: { loans: { _id: 1 }, address1: 1, category: 1 },
+        borrowers: { loans: { _id: 1 }, name: 1 },
+        anonymous: 1,
+      },
+    );
 
     borrowers.forEach(({ loans = [], name }) => {
       if (loans.length > 1) {
@@ -634,9 +627,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+      max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -670,7 +663,7 @@ class LoanService extends CollectionService {
   }
 
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+    const loan = this.get(loanId, userLoan());
     const isRecalculate = !!(
       loan.maxPropertyValue && loan.maxPropertyValue.date
     );
@@ -716,10 +709,7 @@ class LoanService extends CollectionService {
       this.update({ loanId, object: { residenceType: newResidenceType } });
     }
 
-    const loan = this.fetchOne({
-      $filters: { _id: loanId },
-      ...userLoan(),
-    });
+    const loan = this.get(loanId, userLoan());
     const { properties = [], userId, borrowers, residenceType } = loan;
 
     // Get the highest property value
@@ -969,8 +959,7 @@ class LoanService extends CollectionService {
   }
 
   setCreatedAtActivityDescription({ loanId, description }) {
-    const { activities = [] } = this.fetchOne({
-      $filters: { _id: loanId },
+    const { activities = [] } = this.get(loanId, {
       activities: { metadata: 1 },
     });
     const { _id: createdAtActivityId } =

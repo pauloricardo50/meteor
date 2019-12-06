@@ -12,14 +12,16 @@ class LenderService extends CollectionService {
   insert({ lender, contactId, organisationId }) {
     const { loanId, ...data } = lender;
 
-    const existingLender = this.fetchOne({
-      $filters: {
+    const existingLender = this.get(
+      {
         'loanLink._id': loanId,
         'organisationLink._id': organisationId,
       },
-      organisationLink: 1,
-      loanLink: 1,
-    });
+      {
+        organisationLink: 1,
+        loanLink: 1,
+      },
+    );
 
     if (existingLender) {
       throw new Meteor.Error('Peut pas ajouter le même prêteur 2 fois');

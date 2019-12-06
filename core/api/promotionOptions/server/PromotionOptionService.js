@@ -46,8 +46,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   getPromotion(promotionOptionId) {
-    const promotionOption = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const promotionOption = this.get(promotionOptionId, {
       promotion: { _id: 1 },
     });
 
@@ -59,8 +58,7 @@ export class PromotionOptionService extends CollectionService {
       loan: { _id: loanId, promotionOptions },
       promotion: { _id: promotionId },
       status,
-    } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = this.get(promotionOptionId, {
       promotion: { _id: 1 },
       loan: { _id: 1, promotionOptions: { _id: 1 } },
       status: 1,
@@ -156,8 +154,7 @@ export class PromotionOptionService extends CollectionService {
     const {
       promotion: { _id: promotionId },
       loan: { _id: loanId },
-    } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = this.get(promotionOptionId, {
       loan: { _id: 1 },
       promotion: { _id: 1 },
     });
@@ -238,8 +235,7 @@ export class PromotionOptionService extends CollectionService {
     const {
       promotion: { agreementDuration },
       status,
-    } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = this.get(promotionOptionId, {
       promotion: { agreementDuration: 1 },
       status: 1,
     });
@@ -396,8 +392,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   setProgress({ promotionOptionId, id, object }) {
-    const { [id]: model } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const { [id]: model } = this.get(promotionOptionId, {
       bank: 1,
       reservationDeposit: 1,
       simpleVerification: 1,
@@ -515,8 +510,7 @@ export class PromotionOptionService extends CollectionService {
   };
 
   getEmailRecipients({ promotionOptionId }) {
-    const promotionOption = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const promotionOption = this.get(promotionOptionId, {
       loan: {
         user: {
           email: 1,
