@@ -21,56 +21,52 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_ci-test_2-{{ .Branch }}-{{ .Revision }}'
-            - 'source_ci-test_2-{{ .Branch }}-'
-            - source_ci-test_2-
-            - source_ci-
+            - 'source_ci_test_2-{{ .Branch }}-{{ .Revision }}'
+            - 'source_ci_test_2-{{ .Branch }}-'
+            - source_ci_test_2-
       - checkout
       - run:
           name: Init submodules
           command: git submodule sync && git submodule update --init --recursive
       - save_cache:
           name: Cache source
-          key: 'source_ci-test_2-{{ .Branch }}-{{ .Revision }}'
+          key: 'source_ci_test_2-{{ .Branch }}-{{ .Revision }}'
           paths:
             - .
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_ci-test_2-{{ .Branch }}-{{ .Revision }}'
-            - 'global_ci-test_2-{{ .Branch }}-'
-            - global_ci-test_2-
-            - global_ci-
+            - 'global_ci_test_2-{{ .Branch }}-{{ .Revision }}'
+            - 'global_ci_test_2-{{ .Branch }}-'
+            - global_ci_test_2-
       - run:
           name: Install project node_modules
           command: npm ci
       - save_cache:
           name: Cache globals
-          key: 'global_ci-test_2-{{ .Branch }}-{{ .Revision }}'
+          key: 'global_ci_test_2-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ~/.cache
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules_ci-test_2_{{ checksum "./package-lock.json" }}'
+          key: 'node_modules_ci_test_2_{{ checksum "./package-lock.json" }}'
           paths:
             - ./node_modules
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_ci-test_2_backend_{{ checksum
+              meteor_system_ci_test_2_backend_{{ checksum
               "./microservices/backend/.meteor/release" }}_{{ checksum
               "./microservices/backend/.meteor/versions" }}
-            - meteor_system_ci-
       - restore_cache:
           name: Restore meteor backend
           keys:
             - >-
-              meteor_microservice_ci-test_2_backend-{{ .Branch }}-{{ .Revision
+              meteor_microservice_ci_test_2_backend-{{ .Branch }}-{{ .Revision
               }}
-            - 'meteor_microservice_ci-test_2_backend-{{ .Branch }}-'
-            - meteor_microservice_ci-test_2_backend-
-            - meteor_microservice_ci-
+            - 'meteor_microservice_ci_test_2_backend-{{ .Branch }}-'
+            - meteor_microservice_ci_test_2_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -83,7 +79,7 @@ jobs:
           no_output_timeout: 30m
       - save_cache:
           name: Cache meteor backend
-          key: 'meteor_microservice_ci-test_2_backend-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_ci_test_2_backend-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/backend/.meteor/local/bundler-cache
             - ./microservices/backend/.meteor/local/isopacks
