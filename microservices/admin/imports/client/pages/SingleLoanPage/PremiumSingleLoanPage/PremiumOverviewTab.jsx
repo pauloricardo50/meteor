@@ -4,9 +4,9 @@ import React from 'react';
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import AdminNoteExpand from 'core/components/AdminNote/AdminNoteExpand';
 import LoanTimeline from '../LoanTabs/OverviewTab/LoanTimeline';
 import StructureForm from './StructureForm';
+import LoanAdminNotes from '../LoanTabs/OverviewTab/LoanAdminNotes'
 
 type PremiumOverviewTabProps = {};
 
@@ -30,15 +30,7 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
 
       <LoanTimeline loanId={loanId} />
 
-      <div className="admin-note">
-        <h2>Notes</h2>
-        <AdminNoteExpand
-          docId={loan._id}
-          adminNote={loan.adminNote}
-          collection={LOANS_COLLECTION}
-          allowEditing
-        />
-      </div>
+      <LoanAdminNotes loan={loan} />
 
       <div className="structure-form">
         <StructureForm {...props} />
