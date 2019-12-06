@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'ci_test_2'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'ci_test_4'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -23,7 +23,7 @@ const defaultJobValues = {
         DEBUG: false, // Helps
         // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
-        METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // https://github.com/meteor/meteor/issues/10786
+        METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
       },
     },
   ],
@@ -201,34 +201,34 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
-    // 'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
-    // 'Admin - unit tests': testMicroserviceJob({
-    //   name: 'admin',
-    //   testsType: 'unit',
-    // }),
-    // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    // 'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
-    // 'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
-    // 'Admin - e2e tests': testMicroserviceJob({
-    //   name: 'admin',
-    //   testsType: 'e2e',
-    // }),
-    // 'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
+    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    'Admin - unit tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'unit',
+    }),
+    'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
+    'Admin - e2e tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'e2e',
+    }),
+    'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
   },
   workflows: {
     version: 2,
     'Build and test': {
       jobs: [
         'Prepare',
-        // { 'Www - unit tests': { requires: ['Prepare'] } },
-        // { 'App - unit tests': { requires: ['Prepare'] } },
-        // { 'Admin - unit tests': { requires: ['Prepare'] } },
-        // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        // { 'Www - e2e tests': { requires: ['Prepare'] } },
-        // { 'App - e2e tests': { requires: ['Prepare'] } },
-        // { 'Admin - e2e tests': { requires: ['Prepare'] } },
-        // { 'Pro - e2e tests': { requires: ['Prepare'] } },
+        { 'Www - unit tests': { requires: ['Prepare'] } },
+        { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Admin - unit tests': { requires: ['Prepare'] } },
+        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        { 'Www - e2e tests': { requires: ['Prepare'] } },
+        { 'App - e2e tests': { requires: ['Prepare'] } },
+        { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        { 'Pro - e2e tests': { requires: ['Prepare'] } },
       ],
     },
   },
