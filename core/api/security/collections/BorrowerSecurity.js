@@ -16,8 +16,7 @@ class BorrowerSecurity {
       return;
     }
 
-    const borrower = BorrowerService.fetchOne({
-      $filters: { _id: borrowerId },
+    const borrower = BorrowerService.get(borrowerId, {
       userId: 1,
       loans: { anonymous: 1 },
     });

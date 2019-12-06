@@ -5,6 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
+import { fullUser } from 'core/api/fragments';
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -14,7 +15,6 @@ import SecurityService from '../../security';
 import { ROLES } from '../userConstants';
 import Users from '../users';
 import roundRobinAdvisors from './roundRobinAdvisors';
-import { fullUser } from 'core/api/fragments';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
@@ -98,11 +98,7 @@ export class UserServiceClass extends CollectionService {
       const referralUser = this.fetchOne({
         $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
       });
-      const referralOrg = OrganisationService.fetchOne({
-        $filters: {
-          _id: referralId,
-        },
-      });
+      const referralOrg = OrganisationService.get(referralId, { _id: 1 });
       if (referralUser) {
         this.setReferredBy({ userId, proId: referralId });
       } else if (referralOrg) {
@@ -247,7 +243,9 @@ export class UserServiceClass extends CollectionService {
         'Vous ne pouvez pas lier un compte deux fois à la même organisation.',
       );
     }
-    const { organisations: oldOrganisations = [] } = this.get(userId, { organisations: { _id: 1 } });
+    const { organisations: oldOrganisations = [] } = this.get(userId, {
+      organisations: { _id: 1 },
+    });
 
     oldOrganisations.forEach(({ _id: organisationId }) =>
       this.removeLink({
@@ -430,9 +428,10 @@ export class UserServiceClass extends CollectionService {
       const internalPropertyIds = properties.map(property => {
         let propertyId;
 
-        const existingProperty = PropertyService.fetchOne({
-          $filters: { externalId: property.externalId },
-        });
+        const existingProperty = PropertyService.get(
+          { externalId: property.externalId },
+          { _id: 1 },
+        );
 
         if (!existingProperty) {
           propertyId = PropertyService.insertExternalProperty({
@@ -544,10 +543,7 @@ export class UserServiceClass extends CollectionService {
       });
       return { oldReferral, referralType: 'org' };
     }
-    const newReferral = OrganisationService.fetchOne({
-      $filters: { _id: organisationId },
-      name: 1,
-    });
+    const newReferral = OrganisationService.get(organisationId, { name: 1 });
     this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },
@@ -644,10 +640,7 @@ export class UserServiceClass extends CollectionService {
     let mainOrganisation;
 
     if (orgId) {
-      mainOrganisation = OrganisationService.fetchOne({
-        $filters: { _id: orgId },
-        ...query,
-      });
+      mainOrganisation = OrganisationService.get(orgId, query);
     } else {
       mainOrganisation = this.getMainOrg({
         organisations,

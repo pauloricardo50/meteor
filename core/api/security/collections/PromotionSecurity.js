@@ -265,10 +265,12 @@ class PromotionSecurity {
     let lotId;
 
     if (promotionOptionId) {
-      const { promotionLots = [] } = PromotionOptionService.fetchOne({
-        $filters: { _id: promotionOptionId },
-        promotionLots: { _id: 1 },
-      });
+      const { promotionLots = [] } = PromotionOptionService.get(
+        promotionOptionId,
+        {
+          promotionLots: { _id: 1 },
+        },
+      );
       const [{ _id }] = promotionLots;
       lotId = _id;
     }
@@ -413,14 +415,12 @@ class PromotionSecurity {
       return;
     }
 
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const loan = LoanService.get(loanId, {
       promotions: { _id: 1 },
       user: { _id: 1 },
       promotionOptions: { promotionLots: { status: 1, attributedToLink: 1 } },
     });
-    const currentUser = UserService.fetchOne({
-      $filters: { _id: userId },
+    const currentUser = UserService.get(userId, {
       promotions: { _id: 1 },
       organisations: { users: { _id: 1 } },
     });

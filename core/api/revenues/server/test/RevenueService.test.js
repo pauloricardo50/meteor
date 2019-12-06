@@ -163,10 +163,7 @@ describe('RevenueService', () => {
 
       RevenueService.remove({ revenueId });
 
-      const loan = LoanService.fetchOne({
-        $filters: { _id: 'loan' },
-        revenueLinks: 1,
-      });
+      const loan = LoanService.get('loan', { revenueLinks: 1 });
 
       expect(loan.revenueLinks).to.deep.equal([]);
 

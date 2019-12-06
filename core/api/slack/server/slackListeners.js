@@ -1,6 +1,7 @@
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import { promotionOptionUploadAgreement } from 'core/api/methods/index';
+import { fullUser } from 'core/api/fragments';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   reservePromotionLot,
@@ -25,7 +26,6 @@ import {
 } from './slackNotifications';
 import { sendPropertyInvitations } from './slackNotificationHelpers';
 import PromotionService from '../../promotions/server/PromotionService';
-import { fullUser } from 'core/api/fragments';
 
 ServerEventService.addAfterMethodListener(
   reservePromotionLot,
@@ -37,8 +37,7 @@ ServerEventService.addAfterMethodListener(
     const {
       promotionLots = [],
       loan: { _id: loanId },
-    } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = PromotionOptionService.get(promotionOptionId, {
       loan: { _id: 1 },
       promotionLots: {
         name: 1,
@@ -47,10 +46,7 @@ ServerEventService.addAfterMethodListener(
     });
     const [promotionLot] = promotionLots;
 
-    const { user } = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      user: { name: 1 },
-    });
+    const { user } = LoanService.get(loanId, { user: { name: 1 } });
 
     promotionLotReserved({ currentUser, promotionLot, user });
   },
@@ -66,8 +62,7 @@ ServerEventService.addAfterMethodListener(
     const {
       promotionLots = [],
       loan: { _id: loanId },
-    } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = PromotionOptionService.get(promotionOptionId, {
       loan: { _id: 1 },
       promotionLots: {
         name: 1,
@@ -78,10 +73,7 @@ ServerEventService.addAfterMethodListener(
 
     const [{ attributedTo, ...promotionLot }] = promotionLots;
 
-    const { user } = LoanService.fetchOne({
-      $filters: { _id: attributedTo._id },
-      user: { name: 1 },
-    });
+    const { user } = LoanService.get(attributedTo._id, { user: { name: 1 } });
 
     promotionLotSold({ currentUser, promotionLot, user });
   },
@@ -122,10 +114,7 @@ ServerEventService.addAfterMethodListener(
     context.unblock();
     const { userId } = context;
     const currentUser = UserService.get(userId, fullUser());
-    const { name: loanName } = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      name: 1,
-    });
+    const { name: loanName } = LoanService.get(loanId, { name: 1 });
 
     newLoan({ loanId, loanName, currentUser });
   },
@@ -179,8 +168,7 @@ ServerEventService.addAfterMethodListener(
         _id: promotionId,
         assignedEmployee,
       } = {},
-    } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = PromotionOptionService.get(promotionOptionId, {
       loan: { user: { _id: 1 }, promotions: { _id: 1 } },
       promotionLots: { name: 1 },
       promotion: { name: 1, assignedEmployee: { email: 1 } },
@@ -190,10 +178,7 @@ ServerEventService.addAfterMethodListener(
         $metadata: { invitedBy },
       },
     ] = promotions;
-    const { name: proName } = UserService.fetchOne({
-      $filters: { _id: invitedBy },
-      name: 1,
-    });
+    const { name: proName } = UserService.get(invitedBy, { name: 1 });
     const [{ name: promotionLotName }] = promotionLots;
 
     const currentUser = UserService.get(userId, fullUser());
@@ -218,21 +203,17 @@ ServerEventService.addAfterMethodListener(
   }) => {
     if (promotionIds.length) {
       const [promotionId] = promotionIds;
-      const {
-        name: promotionName,
-        assignedEmployee,
-      } = PromotionService.fetchOne({
-        $filters: { _id: promotionId },
-        name: 1,
-        assignedEmployee: { email: 1 },
-      });
+      const { name: promotionName, assignedEmployee } = PromotionService.get(
+        promotionId,
+        {
+          name: 1,
+          assignedEmployee: { email: 1 },
+        },
+      );
 
       const currentUser = UserService.get(userId, fullUser());
 
-      const { name: proName } = UserService.fetchOne({
-        $filters: { _id: proId },
-        name: 1,
-      });
+      const { name: proName } = UserService.get(proId, { name: 1 });
 
       promotionInviteNotification({
         currentUser,
@@ -255,8 +236,7 @@ ServerEventService.addAfterMethodListener(
         user: { name: userName },
       },
       reservationAgreement: { startDate, expirationDate },
-    } = PromotionOptionService.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = PromotionOptionService.get(promotionOptionId, {
       promotion: {
         name: 1,
         assignedEmployee: { email: 1 },

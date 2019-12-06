@@ -178,8 +178,7 @@ export const createPromotionDemo = async (
   withInvitedBy = false,
 ) => {
   console.log('Creating promotion demo...');
-  const admin = UserService.fetchOne({ $filters: { roles: ROLES.ADMIN } });
-
+  const admin = UserService.get({ roles: ROLES.ADMIN }, { _id: 1 });
 
   console.log('admin:', admin);
   const promotionId = PromotionService.insert({

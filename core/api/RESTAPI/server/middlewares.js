@@ -230,15 +230,17 @@ const basicAuthMiddleware = options => (req, res, next) => {
     );
   }
 
-  const user = UserService.fetchOne({
-    $filters: {
+  const user = UserService.get(
+    {
       'apiPublicKey.publicKey': publicKey,
     },
-    emails: 1,
-    firstName: 1,
-    lastName: 1,
-    phoneNumbers: 1,
-  });
+    {
+      emails: 1,
+      firstName: 1,
+      lastName: 1,
+      phoneNumbers: 1,
+    },
+  );
 
   if (!user) {
     return next(

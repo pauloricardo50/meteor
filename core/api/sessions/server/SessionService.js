@@ -14,7 +14,7 @@ class SessionService extends CollectionService {
   }
 
   setUser(connectionId, userId) {
-    const user = UserService.fetchOne({ $filters: { _id: userId }, roles: 1 });
+    const user = UserService.get(userId, { roles: 1 });
     const { roles = [] } = user || {};
     return this.baseUpdate(
       { connectionId },

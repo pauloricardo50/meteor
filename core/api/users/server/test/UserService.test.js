@@ -16,7 +16,7 @@ import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
 import { proInviteUser } from '../../methodDefinitions';
 
-describe('UserService', function() {
+describe('UserService', function () {
   this.timeout(10000);
 
   const firstName = 'TestFirstName';
@@ -27,7 +27,7 @@ describe('UserService', function() {
     resetDatabase();
 
     user = Factory.create('user', { firstName, lastName });
-    sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
+    sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => { });
   });
 
   afterEach(() => {
@@ -904,7 +904,7 @@ describe('UserService', function() {
             reset: { token },
           },
         },
-      } = UserService.fetchOne({ $filters: { _id: userId }, services: 1 });
+      } = UserService.get(userId, { services: 1 });
 
       expect(emails.length).to.equal(2);
       const emailIds = emails.map(({ emailId }) => emailId);
@@ -999,10 +999,7 @@ describe('UserService', function() {
       }).then(({ isNewUser, proId }) => {
         expect(isNewUser).to.equal(false);
         expect(proId).to.equal('proId');
-        const { loans } = UserService.fetchOne({
-          $filters: { _id: 'userId' },
-          loans: { _id: 1 },
-        });
+        const { loans } = UserService.get('userId', { loans: { _id: 1 } });
         expect(loans.length).to.equal(1);
       });
     });
@@ -1115,8 +1112,7 @@ describe('UserService', function() {
         options: { email: '1@e-potek.ch' },
       });
 
-      const { assignedEmployee } = service.fetchOne({
-        $filters: { _id: newUserId },
+      const { assignedEmployee } = service.get(newUserId, {
         assignedEmployee: { email: 1 },
       });
 
@@ -1136,8 +1132,7 @@ describe('UserService', function() {
         options: { email: '2@e-potek.ch' },
       });
 
-      const { assignedEmployee } = service.fetchOne({
-        $filters: { _id: newUserId2 },
+      const { assignedEmployee } = service.get(newUserId2, {
         assignedEmployee: { email: 1 },
       });
 
@@ -1157,8 +1152,7 @@ describe('UserService', function() {
         options: { email: '1@e-potek.ch' },
       });
 
-      const { assignedEmployee } = service.fetchOne({
-        $filters: { _id: newUserId },
+      const { assignedEmployee } = service.get(newUserId, {
         assignedEmployee: { email: 1 },
       });
 
@@ -1184,8 +1178,7 @@ describe('UserService', function() {
         options: { email: '1@e-potek.ch' },
       });
 
-      const { assignedEmployee } = service.fetchOne({
-        $filters: { _id: newUserId },
+      const { assignedEmployee } = service.get(newUserId, {
         assignedEmployee: { email: 1 },
       });
 

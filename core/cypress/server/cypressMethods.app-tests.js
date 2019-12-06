@@ -133,9 +133,7 @@ Meteor.methods({
     });
   },
   async insertFullPromotion() {
-    const admin = await UserService.fetchOne({
-      $filters: { roles: ROLES.ADMIN },
-    });
+    const admin = await UserService.get({ roles: ROLES.ADMIN }, { _id: 1 });
     if (!admin) {
       const adminId = await Accounts.createUser({
         email: ADMIN_EMAIL,
@@ -315,7 +313,7 @@ Meteor.methods({
     let userId;
 
     if (toPromotion) {
-      const { _id: promotionId } = PromotionService.fetchOne();
+      const { _id: promotionId } = PromotionService.get({}, { _id: 1 });
       const { _id: proUserId } = UserService.getByEmail('broker1@e-potek.ch');
       const result = await UserService.proInviteUser({
         user: {
@@ -459,7 +457,10 @@ Meteor.methods({
     return service._update({ id: docId, object, operator });
   },
   startPromotionReservation() {
-    const { _id: promotionOptionId } = PromotionOptionService.fetchOne({});
+    const { _id: promotionOptionId } = PromotionOptionService.get(
+      {},
+      { _id: 1 },
+    );
     PromotionOptionService.activateReservation({ promotionOptionId });
   },
 });

@@ -16,11 +16,7 @@ class LoanSecurity {
       return;
     }
 
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      userId: 1,
-      userLinks: 1,
-    });
+    const loan = LoanService.get(loanId, { userId: 1, userLinks: 1 });
     if (loan.userId) {
       Security.checkOwnership(loan, userId);
     } else {
@@ -33,11 +29,7 @@ class LoanSecurity {
   }
 
   static checkAnonymousLoan(loanId) {
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      anonymous: 1,
-      status: 1,
-    });
+    const loan = LoanService.get(loanId, { anonymous: 1, status: 1 });
 
     if (
       !loan ||
