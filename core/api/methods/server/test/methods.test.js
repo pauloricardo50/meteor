@@ -14,8 +14,9 @@ import { getRateLimitedMethods } from '../../../../utils/rate-limit';
 import { submitContactForm } from '../../methodDefinitions';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import { Loans } from '../../..';
+import LoanService from '../../../loans/server/LoanService'
 
-describe('methods', function() {
+describe('methods', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -68,7 +69,7 @@ describe('methods', function() {
 
       await cleanAllData();
 
-      const { structures = [] } = Loans.findOne({ _id: 'loan' });
+      const { structures = [] } = LoanService.get('loan', { structures: 1 });
 
       expect(structures[0].wantedLoan).to.equal(1111000);
     });
@@ -81,7 +82,7 @@ describe('methods', function() {
 
       await cleanAllData();
 
-      const { name } = Loans.findOne({ _id: 'loan' });
+      const { name } = LoanService.get('loan', { name: 1 });
 
       expect(name).to.equal('');
     });
@@ -93,9 +94,7 @@ describe('methods', function() {
 
       await cleanAllData();
 
-      const { anonymous, category, status, step } = Loans.findOne({
-        _id: 'loan',
-      });
+      const { anonymous, category, status, step } = LoanService.get('loan', { anonymous: 1, category: 1, status: 1, step: 1 });
 
       expect(anonymous).to.equal(false);
       expect(category).to.equal(LOAN_CATEGORIES.STANDARD);

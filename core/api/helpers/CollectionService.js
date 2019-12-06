@@ -131,7 +131,7 @@ class CollectionService {
   }
 
   exists(_id) {
-    return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
+    return !!(_id && this.get(_id, { _id: 1 }));
   }
 
   aggregate(pipeline, options) {

@@ -37,8 +37,9 @@ class PromotionService extends CollectionService {
   }
 
   insertPromotionProperty({ promotionId, property }) {
-    const { address1, address2, zipCode, city, canton } = this.findOne(
+    const { address1, address2, zipCode, city, canton } = this.get(
       promotionId,
+      { address1: 1, address2: 1, zipCode: 1, city: 1, canton: 1 },
     );
     const propertyId = PropertyService.insert({
       property: {
@@ -102,7 +103,10 @@ class PromotionService extends CollectionService {
     shareSolvency,
   }) {
     this.checkPromotionIsReady({ promotionId });
-    const promotion = this.findOne(promotionId);
+    const promotion = this.get(promotionId, {
+      status: 1,
+      assignedEmployeeId: 1,
+    });
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
@@ -291,7 +295,14 @@ class PromotionService extends CollectionService {
       name,
       city,
       zipCode,
-    } = this.findOne(promotionId);
+    } = this.get(promotionId, {
+      documents: 1,
+      promotionLotLinks: 1,
+      assignedEmployeeId: 1,
+      name: 1,
+      city: 1,
+      zipCode: 1,
+    });
 
     if (!name || !city || !zipCode) {
       throw new Meteor.Error(

@@ -153,7 +153,7 @@ export class UserServiceClass extends CollectionService {
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
-  getUserById = ({ userId }) => Users.findOne(userId);
+  getUserById = ({ userId }) => this.get(userId, fullUser());
 
   getUserByPasswordResetToken = ({ token }) =>
     this.get(
@@ -169,7 +169,7 @@ export class UserServiceClass extends CollectionService {
     );
 
   getLoginToken = ({ userId }) => {
-    const user = Users.findOne(userId, { fields: { services: 1 } });
+    const user = this.get(userId, { services: 1 });
 
     return (
       user.services.password &&
@@ -223,7 +223,7 @@ export class UserServiceClass extends CollectionService {
   };
 
   changeEmail = ({ userId, newEmail }) => {
-    const { emails } = Users.findOne(userId);
+    const { emails } = this.get(userId, { emails: 1 });
     Accounts.addEmail(userId, newEmail);
     Accounts.removeEmail(userId, emails[0].address);
     Accounts.sendVerificationEmail(userId);

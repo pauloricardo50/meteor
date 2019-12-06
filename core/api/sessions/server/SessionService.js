@@ -3,6 +3,7 @@ import moment from 'moment';
 import Sessions from '../sessions';
 import CollectionService from '../../helpers/CollectionService';
 import UserService from '../../users/server/UserService';
+import { userSession } from 'core/api/fragments';
 
 class SessionService extends CollectionService {
   constructor() {
@@ -10,7 +11,7 @@ class SessionService extends CollectionService {
   }
 
   getByConnectionId(connectionId) {
-    return this.findOne({ connectionId });
+    return this.get({ connectionId }, userSession());
   }
 
   setUser(connectionId, userId) {

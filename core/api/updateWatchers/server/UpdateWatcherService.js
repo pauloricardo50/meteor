@@ -53,10 +53,10 @@ class UpdateWatcherService extends CollectionService {
   }
 
   updateWatcher({ collectionName, doc, changedFields, previousDoc, userId }) {
-    const existingUpdateWatcher = this.findOne({
+    const existingUpdateWatcher = this.get({
       collection: collectionName,
       docId: doc._id,
-    });
+    }, { userId: 1, docId: 1, collection: 1, updatedFields: 1 });
 
     if (!existingUpdateWatcher) {
       this.insertWatcher({

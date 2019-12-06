@@ -51,6 +51,7 @@ import {
 } from '../../api/borrowers/fakes';
 import { fakeProperty } from '../../api/properties/fakes';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
 
 const isAuthorizedToRun = () =>
   !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
@@ -316,7 +317,7 @@ Meteor.methods({
     SecurityService.checkCurrentUserIsDev();
 
     let orgId;
-    const org = Organisations.findOne({ name: 'Dev Org' });
+    const org = OrganisationService.get({ name: 'Dev Org' }, { _id: 1 });
 
     if (org) {
       orgId = org._id;
