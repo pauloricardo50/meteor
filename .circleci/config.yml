@@ -16,6 +16,7 @@ jobs:
             --min_semi_space_size=8 --max_semi_space_size=256
           CIRCLE_CI: 1
           DEBUG: false
+          METEOR_DISABLE_OPTIMISTIC_CACHING: 1
     resource_class: large
     steps:
       - restore_cache:
