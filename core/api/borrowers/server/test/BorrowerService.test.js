@@ -90,10 +90,10 @@ describe('BorrowerService ', () => {
 
       expect(BorrowerService.find({}).count()).to.equal(1);
 
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { borrowerIds: 1 });
       expect(loan.borrowerIds).to.deep.equal([]);
 
-      const loan2 = LoanService.findOne(loanId2);
+      const loan2 = LoanService.get(loanId2, { borrowerIds: 1 });
       expect(loan2.borrowerIds).to.deep.equal([borrowerId]);
     });
 

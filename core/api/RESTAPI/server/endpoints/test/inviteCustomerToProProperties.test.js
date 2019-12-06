@@ -72,10 +72,10 @@ const inviteCustomerToProProperties = ({
   });
 };
 
-describe('REST: inviteCustomerToProProperties', function() {
+describe('REST: inviteCustomerToProProperties', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -500,7 +500,7 @@ describe('REST: inviteCustomerToProProperties', function() {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"myId\"`,
       },
     }).then(() => {
-      const property = PropertyService.findOne({ externalId: 'myId' });
+      const property = PropertyService.get({ externalId: 'myId' }, { status: 1 });
       expect(property.status).to.equal(PROPERTY_STATUS.FOR_SALE);
     });
   });

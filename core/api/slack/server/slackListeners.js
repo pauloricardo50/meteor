@@ -132,8 +132,9 @@ ServerEventService.addAfterMethodListener(
       referredByOrganisationLink,
     } = currentUser;
     const referredBy = UserService.get(referredByUserLink, fullUser());
-    const referredByOrg = OrganisationService.findOne(
+    const referredByOrg = OrganisationService.get(
       referredByOrganisationLink,
+      { name: 1 }
     );
 
     const suffix = [

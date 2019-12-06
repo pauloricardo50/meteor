@@ -49,6 +49,9 @@ class CollectionService {
         `Should provide a fragment for get in ${this.collection._name}Service`,
       );
     }
+    if (!filters) {
+      return undefined;
+    }
     // When fetching by id
     if (typeof filters === 'string') {
       filters = { _id: filters };
@@ -59,8 +62,6 @@ class CollectionService {
       ...fragment,
     });
   }
-
-
 
   find(...args) {
     return this.collection.find(...args);

@@ -131,10 +131,7 @@ describe('RevenueService', () => {
         },
       });
 
-      const revenue = RevenueService.findOne(
-        { _id: 'rev' },
-        { fields: { loanCache: 1 } },
-      );
+      const revenue = RevenueService.get('rev', { loanCache: 1 });
 
       expect(revenue.loanCache).to.deep.equal([
         {

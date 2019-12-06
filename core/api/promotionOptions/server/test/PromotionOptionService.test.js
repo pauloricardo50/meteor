@@ -112,16 +112,18 @@ describe('PromotionOptionService', function () {
     });
 
     it('Removes the promotionOption', () => {
-      expect(PromotionOptionService.get(promotionOptionId, { _id: 1 })).to.not.equal(
-        undefined,
-      );
+      expect(
+        PromotionOptionService.get(promotionOptionId, { _id: 1 }),
+      ).to.not.equal(undefined);
       PromotionOptionService.remove({ promotionOptionId });
-      expect(PromotionOptionService.get(promotionOptionId, { _id: 1 })).to.equal(undefined);
+      expect(
+        PromotionOptionService.get(promotionOptionId, { _id: 1 }),
+      ).to.equal(undefined);
     });
 
     it('Removes the link from the loan', () => {
       PromotionOptionService.remove({ promotionOptionId });
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { promotionOptionLinks: 1 });
       expect(loan.promotionOptionLinks).to.deep.equal([
         { _id: promotionOptionId2 },
       ]);
@@ -129,7 +131,7 @@ describe('PromotionOptionService', function () {
 
     it('Removes the priority order from the loan', () => {
       PromotionOptionService.remove({ promotionOptionId });
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { promotionLinks: 1 });
       expect(loan.promotionLinks).to.deep.equal([
         { _id: promotionId, priorityOrder: [], showAllLots: true },
       ]);
@@ -185,7 +187,9 @@ describe('PromotionOptionService', function () {
         loanId,
         promotionId,
       });
-      expect(PromotionOptionService.get(id, { _id: 1 })).to.not.equal(undefined);
+      expect(PromotionOptionService.get(id, { _id: 1 })).to.not.equal(
+        undefined,
+      );
     });
 
     it('throws if promotion lot exists in another promotionOption in the loan', () => {
@@ -194,7 +198,9 @@ describe('PromotionOptionService', function () {
         loanId,
         promotionId,
       });
-      expect(PromotionOptionService.get(id, { _id: 1 })).to.not.equal(undefined);
+      expect(PromotionOptionService.get(id, { _id: 1 })).to.not.equal(
+        undefined,
+      );
 
       expect(() =>
         PromotionOptionService.insert({ promotionLotId, loanId, promotionId }),
@@ -203,7 +209,7 @@ describe('PromotionOptionService', function () {
 
     it('adds a link on the loan', () => {
       PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { promotionOptionLinks: 1 });
       expect(loan.promotionOptionLinks.length).to.equal(1);
     });
 
@@ -213,7 +219,7 @@ describe('PromotionOptionService', function () {
         loanId,
         promotionId,
       });
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { promotionLinks: 1 });
       expect(loan.promotionLinks[0].priorityOrder[0]).to.equal(id);
     });
 
@@ -222,7 +228,7 @@ describe('PromotionOptionService', function () {
       loanId = Factory.create('loan', {
         promotionLinks: [{ _id: promotionId, priorityOrder: ['test'] }],
       })._id;
-      let loan = LoanService.findOne(loanId);
+      let loan = LoanService.get(loanId, { promotionLinks: 1 });
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(1);
 
       const id = PromotionOptionService.insert({
@@ -230,7 +236,7 @@ describe('PromotionOptionService', function () {
         loanId,
         promotionId,
       });
-      loan = LoanService.findOne(loanId);
+      loan = LoanService.get(loanId, { promotionLinks: 1 });
 
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
       expect(loan.promotionLinks[0].priorityOrder[1]).to.equal(id);
@@ -272,7 +278,7 @@ describe('PromotionOptionService', function () {
 
     it('does nothing if priority is already max', () => {
       PromotionOptionService.increasePriorityOrder({ promotionOptionId });
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { promotionLinks: 1 });
       expect(loan.promotionLinks[0].priorityOrder).to.deep.equal([
         promotionOptionId,
       ]);
@@ -295,7 +301,7 @@ describe('PromotionOptionService', function () {
       PromotionOptionService.increasePriorityOrder({
         promotionOptionId: 'pOptId2',
       });
-      const loan = LoanService.findOne('loanId2');
+      const loan = LoanService.get('loanId2', { promotionLinks: 1 });
       expect(loan.promotionLinks[0].priorityOrder).to.deep.equal([
         'pOptId2',
         'test',
@@ -338,7 +344,7 @@ describe('PromotionOptionService', function () {
 
     it('does nothing if priority is already max', () => {
       PromotionOptionService.reducePriorityOrder({ promotionOptionId });
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { promotionLinks: 1 });
       expect(loan.promotionLinks[0].priorityOrder).to.deep.equal([
         promotionOptionId,
       ]);
@@ -361,7 +367,7 @@ describe('PromotionOptionService', function () {
       PromotionOptionService.reducePriorityOrder({
         promotionOptionId: 'pOptId2',
       });
-      const loan = LoanService.findOne('loanId2');
+      const loan = LoanService.get('loanId2', { promotionLinks: 1 });
       expect(loan.promotionLinks[0].priorityOrder).to.deep.equal([
         'test',
         'pOptId2',
@@ -470,8 +476,8 @@ describe('PromotionOptionService', function () {
         agreementFileKeys: files.map(({ key }) => key),
       });
 
-      const promotionOption = PromotionOptionService.findOne({
-        _id: 'promotionOption',
+      const promotionOption = PromotionOptionService.get('promotionOption', {
+        documents: 1,
       });
 
       expect(
@@ -591,8 +597,10 @@ describe('PromotionOptionService', function () {
         startDate,
         promotionOptionId: 'pO2',
       }).then(() => {
-        const promotionOption = PromotionOptionService.findOne({
-          _id: 'pO2',
+        const promotionOption = PromotionOptionService.get('pO2', {
+          reservationDeposit: 1,
+          promotionLink: 1,
+          reservationAgreement: 1,
         });
         expect(promotionOption).to.deep.include({
           reservationDeposit: {
@@ -635,7 +643,7 @@ describe('PromotionOptionService', function () {
           'bank.status': PROMOTION_OPTION_BANK_STATUS.VALIDATED,
         },
       });
-      const pO = PromotionOptionService.findOne('promotionOption');
+      const pO = PromotionOptionService.get('promotionOption', { bank: 1 });
 
       expect(moment(pO.bank.date).isAfter(now)).to.equal(true);
     });
@@ -661,7 +669,7 @@ describe('PromotionOptionService', function () {
           },
         },
       });
-      const pO = PromotionOptionService.findOne('promotionOption');
+      const pO = PromotionOptionService.get('promotionOption', { bank: 1 });
 
       expect(moment(pO.bank.date).isBefore(moment().subtract(5, 'd'))).to.equal(
         true,
@@ -685,7 +693,7 @@ describe('PromotionOptionService', function () {
         },
       });
 
-      const pO = PromotionOptionService.findOne('promotionOption');
+      const pO = PromotionOptionService.get('promotionOption', { reservationAgreement: 1 });
       expect(pO.reservationAgreement.startDate.getHours()).to.equal(0);
       expect(pO.reservationAgreement.startDate.getMinutes()).to.equal(0);
       expect(pO.reservationAgreement.startDate.getSeconds()).to.equal(0);
@@ -1293,7 +1301,7 @@ describe('PromotionOptionService', function () {
         object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
       });
 
-      const promotionOption = PromotionOptionService.findOne('id');
+      const promotionOption = PromotionOptionService.get('id', { bank: 1 });
 
       expect(promotionOption.bank.status).to.equal(
         PROMOTION_OPTION_BANK_STATUS.VALIDATED,
@@ -1322,7 +1330,7 @@ describe('PromotionOptionService', function () {
       });
       expect(result).to.deep.equal({});
 
-      const promotionOption = PromotionOptionService.findOne('id');
+      const promotionOption = PromotionOptionService.get('id', { bank: 1 });
 
       expect(promotionOption.bank.status).to.equal(
         PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
@@ -1359,7 +1367,7 @@ describe('PromotionOptionService', function () {
 
       expect(result).to.deep.equal({});
 
-      const promotionOption = PromotionOptionService.findOne('id');
+      const promotionOption = PromotionOptionService.get('id', { simpleVerification: 1 });
 
       expect(promotionOption.simpleVerification.status).to.equal(
         PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,

@@ -5,7 +5,7 @@ import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
-import { proPromotion } from 'core/api/fragments';
+import { proPromotion, adminPromotions } from 'core/api/fragments';
 import LoanService from '../../api/loans/server/LoanService';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';
@@ -189,7 +189,7 @@ export const createPromotionDemo = async (
   console.log('creating lots');
   createLots(promotionId);
 
-  const promotion = PromotionService.findOne(promotionId);
+  const promotion = PromotionService.get(promotionId, adminPromotions());
 
   console.log('Adding promotion Pros');
   const proIds = addPromotionPros({ promotionId });

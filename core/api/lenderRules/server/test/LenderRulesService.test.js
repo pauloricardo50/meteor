@@ -80,7 +80,8 @@ describe('LenderRulesService', () => {
       });
 
       expect(
-        LenderRulesService.findOne('rulesId').expensesSubtractFromIncome,
+        LenderRulesService.get('rulesId', { expensesSubtractFromIncome: 1 })
+          .expensesSubtractFromIncome,
       ).to.equal(undefined);
     });
   });
@@ -93,7 +94,7 @@ describe('LenderRulesService', () => {
         logicRules: [{ '>': [{ var: 'a' }, 2] }],
       });
 
-      const lenderRules = LenderRulesService.findOne(lenderRulesId);
+      const lenderRules = LenderRulesService.get(lenderRulesId, { filter: 1 });
 
       expect(jsonLogic.apply(lenderRules.filter, { a: 3 })).to.equal(true);
     });
@@ -110,8 +111,8 @@ describe('LenderRulesService', () => {
 
       LenderRulesService.setOrder({ orders: { [id1]: 1, [id2]: 0 } });
 
-      expect(LenderRulesService.findOne(id1).order).to.equal(1);
-      expect(LenderRulesService.findOne(id2).order).to.equal(0);
+      expect(LenderRulesService.get(id1, { order: 1 }).order).to.equal(1);
+      expect(LenderRulesService.get(id2, { order: 1 }).order).to.equal(0);
     });
 
     it('throws if you try to set an invalid order', () => {

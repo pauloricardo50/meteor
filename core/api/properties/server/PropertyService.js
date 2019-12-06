@@ -10,6 +10,7 @@ import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { removePropertyFromLoan } from './propertyServerHelpers';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
+import { adminLoan } from '../../fragments'
 
 class PropertyService extends CollectionService {
   constructor() {
@@ -36,7 +37,7 @@ class PropertyService extends CollectionService {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
         return removePropertyFromLoan({
-          loan: LoanService.findOne(loanId),
+          loan: LoanService.get(loanId, adminLoan()),
           propertyId,
         });
       }
@@ -110,7 +111,7 @@ class PropertyService extends CollectionService {
   }
 
   removeCustomerFromProperty({ propertyId, loanId }) {
-    const loan = LoanService.findOne({ _id: loanId });
+    const loan = LoanService.get(loanId, adminLoan());
     const { structures = [] } = loan;
 
     if (structures.length) {

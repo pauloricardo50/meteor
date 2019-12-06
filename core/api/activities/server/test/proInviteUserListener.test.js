@@ -16,7 +16,7 @@ import {
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import ActivityService from '../ActivityService';
 
-describe('proInviteUserListener', function() {
+describe('proInviteUserListener', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -91,7 +91,7 @@ describe('proInviteUserListener', function() {
         user: {
           firstName: 'John',
           lastName: 'Doe',
-          email: 'john.doe@test.com',
+          email: 'john.doe2@test.com',
           phoneNumber: '12345',
         },
       }),
@@ -99,7 +99,7 @@ describe('proInviteUserListener', function() {
     await checkEmails(2);
 
     const { activities = [] } = UserService.get(
-      { 'emails.address': 'john.doe@test.com' },
+      { 'emails.address': 'john.doe2@test.com' },
       { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
     );
     expect(activities.length).to.equal(2);

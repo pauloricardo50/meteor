@@ -84,14 +84,14 @@ ServerEventService.addAfterMethodListener(
       addresses = [
         ...addresses,
         ...propertyIds.map(
-          id => PropertyService.findOne(id, { address1: 1 }).address1,
+          id => PropertyService.get(id, { address1: 1 }).address1,
         ),
       ];
     }
 
     if (promotionIds && promotionIds.length) {
       promotions = promotionIds.map(
-        id => PromotionService.findOne(id, { name: 1 }).name,
+        id => PromotionService.get(id, { name: 1 }).name,
       );
     }
 

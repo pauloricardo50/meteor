@@ -54,7 +54,7 @@ export class BorrowerService extends CollectionService {
       name: 1,
       loans: { name: 1 },
     });
-    const loan = LoanService.findOne(loanId);
+    const loan = LoanService.get(loanId, { borrowerIds: 1 });
     const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 
     const borrowersNotOnLoan = userBorrowers.filter(

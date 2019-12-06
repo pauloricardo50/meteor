@@ -3,6 +3,7 @@ import pick from 'lodash/pick';
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import Intl from 'core/utils/server/intl';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { fullUser } from 'core/api/fragments';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -25,7 +26,6 @@ import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
-import { fullUser } from 'core/api/fragments';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
 
@@ -160,9 +160,9 @@ ServerEventService.addAfterMethodListener(
 
     let description = '';
     const referredBy = UserService.get(referredByUserLink, fullUser());
-    const referredByOrg = OrganisationService.findOne(
-      referredByOrganisationLink,
-    );
+    const referredByOrg = OrganisationService.get(referredByOrganisationLink, {
+      name: 1,
+    });
     let referredByAPIOrgLabel = '';
     let referredByAPIOrg;
 

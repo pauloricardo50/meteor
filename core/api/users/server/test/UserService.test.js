@@ -575,7 +575,10 @@ describe('UserService', function () {
         proUserId: 'proId',
       }).then(({ userId, isNewUser, proId, admin, pro }) => {
         const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.findOne({ userId: userCreated._id });
+        const loan = LoanService.get(
+          { userId: userCreated._id },
+          { promotionLinks: 1, promotionOptionLinks: 1 },
+        );
 
         expect(userCreated._id).to.equal(userId);
         expect(isNewUser).to.equal(true);
@@ -692,7 +695,7 @@ describe('UserService', function () {
       );
 
       const userCreated = UserService.getByEmail(userToInvite.email);
-      const loan = LoanService.findOne({ userId: userCreated._id });
+      const loan = LoanService.get({ userId: userCreated._id }, { propertyIds: 1 });
 
       expect(userCreated.assignedEmployeeId).to.equal('adminId');
       expect(userCreated.referredByUserLink).to.equal('proId');
@@ -741,7 +744,7 @@ describe('UserService', function () {
         proUserId: 'proId',
       }).then(() => {
         const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.findOne({ userId: userCreated._id });
+        const loan = LoanService.get({ userId: userCreated._id }, { propertyIds: 1 });
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');

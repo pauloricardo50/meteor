@@ -11,30 +11,26 @@ const defaultReducer = assigneeReducer().assignee.reduce;
 describe('assigneeReducer', () => {
   beforeEach(() => {
     sinon
-      .stub(UserService, 'findOne')
-      .callsFake(({ _id }) => ({ userId: _id, assignedEmployeeId: 'adminId' }));
+      .stub(UserService, 'get')
+      .callsFake(id => ({ userId: id, assignedEmployeeId: 'adminId' }));
   });
 
   afterEach(() => {
-    UserService.findOne.restore();
+    UserService.get.restore();
   });
 
   it('works with a userId', () => {
     const result = defaultReducer({ userId: 'myUserId' });
 
     expect(result).to.deep.include({ userId: 'adminId' });
-    expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      _id: 'myUserId',
-    });
+    expect(UserService.get.firstCall.args[0]).to.deep.equal('myUserId');
   });
 
   it('returns the assignedEmployee if assignedEmployeeId is found', () => {
     const result = defaultReducer({ assignedEmployeeId: 'assignee' });
 
     expect(result).to.deep.include({ userId: 'assignee' });
-    expect(UserService.findOne.lastCall.args[0]).to.deep.equal({
-      _id: 'assignee',
-    });
+    expect(UserService.get.lastCall.args[0]).to.deep.equal('assignee');
   });
 
   it("returns the promotion's first user", () => {
@@ -42,9 +38,7 @@ describe('assigneeReducer', () => {
       promotion: { userLinks: [{ _id: 'test2' }] },
     });
 
-    expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      _id: 'test2',
-    });
+    expect(UserService.get.firstCall.args[0]).to.deep.equal('test2');
     expect(result).to.deep.include({ userId: 'adminId' });
   });
 
@@ -53,9 +47,7 @@ describe('assigneeReducer', () => {
       promotions: [{ userLinks: [{ _id: 'test2' }] }],
     });
 
-    expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      _id: 'test2',
-    });
+    expect(UserService.get.firstCall.args[0]).to.deep.equal('test2');
     expect(result).to.deep.include({ userId: 'adminId' });
   });
 
@@ -67,9 +59,7 @@ describe('assigneeReducer', () => {
       data: { someId: 'dude' },
     });
 
-    expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      _id: 'dude',
-    });
+    expect(UserService.get.firstCall.args[0]).to.deep.equal('dude');
     expect(result).to.deep.include({ userId: 'adminId' });
   });
 });

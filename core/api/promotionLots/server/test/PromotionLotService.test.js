@@ -250,7 +250,7 @@ describe('PromotionLotService', function () {
       });
 
       let pO = PromotionOptionService.get('pOptId', { status: 1 });
-      let pL = PromotionLotService.findOne('promotionLotId');
+      let pL = PromotionLotService.get('promotionLotId', { status: 1 });
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.SOLD);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.SOLD);
 
@@ -259,7 +259,7 @@ describe('PromotionLotService', function () {
       });
 
       pO = PromotionOptionService.get('pOptId', { status: 1 });
-      pL = PromotionLotService.findOne('promotionLotId');
+      pL = PromotionLotService.get('promotionLotId', { status: 1 });
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
 
@@ -268,7 +268,7 @@ describe('PromotionLotService', function () {
       });
 
       pO = PromotionOptionService.get('pOptId', { status: 1 });
-      pL = PromotionLotService.findOne('promotionLotId');
+      pL = PromotionLotService.get('promotionLotId', { status: 1 });
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
     });
