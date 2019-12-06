@@ -40,7 +40,7 @@ export const makeGetIcon = ({
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-export const makeIcon = (variant, isEditing, promotionOptionId, loanId) => ({
+export const makeIcon = (variant, promotionOptionId, loanId) => ({
   icon,
   color,
   status,
@@ -56,7 +56,6 @@ export const makeIcon = (variant, isEditing, promotionOptionId, loanId) => ({
     status={status}
     variant={variant}
     id={id}
-    isEditing={isEditing}
     promotionOptionId={promotionOptionId}
     component={component}
     placeholder={placeholder}
@@ -77,12 +76,12 @@ export const getRatio = ({ valid, required }) => ({
   target: required,
 });
 
-export const getAdminNoteIcon = (
-  { note, date, isAnonymized } = {},
+export const getAdminNoteIcon = ({
+  proNote: { note, date },
   variant,
-  isEditing,
   promotionOptionId,
-) => {
+  isAnonymized,
+}) => {
   const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
 
   if (!shouldShowNote) {
@@ -99,7 +98,6 @@ export const getAdminNoteIcon = (
       variant={variant}
       id="proNote"
       // Modify the note on the loan
-      isEditing={false}
       promotionOptionId={promotionOptionId}
     />
   );

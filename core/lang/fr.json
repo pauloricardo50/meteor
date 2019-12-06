@@ -1,4 +1,6 @@
 {
+  "ProCustomersTable.proNote": "Note du conseiller",
+  "Forms.isSharedWithPros": "Partagé avec les Pros",
   "PromotionLotLoansTable.buyer": "Acquéreur",
   "PromotionOptionsTable.buyer": "Acquéreur",
   "files.proDocuments": "Documents Pros",
@@ -301,6 +303,10 @@
   "emails.LOAN_CHECKLIST.CTA": "Compléter mon dossier",
   "emails.LOAN_CHECKLIST.SUBJECT": "Invitation à compléter votre dossier",
   "emails.LOAN_CHECKLIST.TITLE": "Rapport du {today} sur la progression de votre dossier",
+  "emails.PRO_NOTE_NOTIFICATION.SUBJECT": "Nouvelle note pour le dossier de {customerName}",
+  "emails.PRO_NOTE_NOTIFICATION.TITLE": "Nouvelle note pour le dossier {loanName} de {customerName}",
+  "emails.PRO_NOTE_NOTIFICATION.BODY": "Par {adminName}:{verticalSpace}{note}",
+  "emails.PRO_NOTE_NOTIFICATION.CTA": "Se connecter",
   "Forms.type.COMMUNICATION": "Email, téléphone",
   "Forms.type.EMAIL": "Email",
   "Forms.type.PHONE": "Téléphone",

@@ -18,7 +18,7 @@ const LoanBoardCard = ({
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,
-    adminNote,
+    adminNotes = [],
     category,
     customName,
     nextDueTask = {},
@@ -29,6 +29,7 @@ const LoanBoardCard = ({
     tasksCache: tasks,
   } = loan;
   const structure = structures.find(({ id }) => id === selectedStructure);
+  const adminNote = adminNotes[0] && adminNotes[0].note;
 
   return (
     <div

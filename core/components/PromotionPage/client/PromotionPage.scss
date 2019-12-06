@@ -479,4 +479,17 @@
       }
     }
   }
+
+  .reservation-progress-item-modify:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s $bezier;
+  }
+}
+
+.promotion-reservation-progress-item-tooltip {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  white-space: pre-line;
 }

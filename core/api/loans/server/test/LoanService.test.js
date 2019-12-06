@@ -1,4 +1,6 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
+
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
@@ -11,6 +13,7 @@ import {
   loanSetStatus,
   setLoanStep,
   sendNegativeFeedbackToAllLenders,
+  loanSetAdminNote,
 } from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
@@ -1537,6 +1540,325 @@ describe('LoanService', function() {
       expect(LoanService.findOne({})).to.deep.include({
         propertyIds: ['propertyId'],
       });
+    });
+  });
+
+  describe('setAdminNote', () => {
+    it('adds new adminNotes to a loan', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello' },
+      });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'world' },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+      expect(adminNotes.length).to.equal(2);
+      expect(adminNotes[0].note).to.equal('world');
+      expect(adminNotes[1].note).to.equal('hello');
+    });
+
+    it('updates an adminNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      const now = new Date();
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello', date: now },
+      });
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello world' },
+        adminNoteId: adminNotes[0].id,
+      });
+
+      const { adminNotes: updated } = LoanService.get('loanId', {
+        adminNotes: 1,
+      });
+      expect(updated[0].note).to.equal('hello world');
+      expect(updated[0].date.getTime()).to.be.above(now.getTime());
+    });
+
+    it('sorts notes from newest to oldest', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '1',
+          date: moment()
+            .subtract(3, 'd')
+            .toDate(),
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '2',
+          date: moment()
+            .subtract(2, 'd')
+            .toDate(),
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '3',
+          date: moment()
+            .subtract(1, 'd')
+            .toDate(),
+        },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+      expect(adminNotes[0].note).to.equal('3');
+    });
+
+    it('caches the last proNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '1',
+          date: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          isSharedWithPros: true,
+        },
+      });
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: {
+          note: '2',
+          date: moment().toDate(),
+          isSharedWithPros: true,
+        },
+      });
+
+      const { proNote } = LoanService.get('loanId', { proNote: 1 });
+      expect(proNote.note).to.equal('2');
+    });
+
+    it('throws if you try to set a note in the future', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      expect(() =>
+        LoanService.setAdminNote({
+          loanId: 'loanId',
+          userId: 'userId',
+          note: {
+            note: '1',
+            date: moment()
+              .add(1, 'd')
+              .toDate(),
+            isSharedWithPros: true,
+          },
+        }),
+      ).to.throw('futur');
+    });
+
+    it('sends an email to a pro if asked', async () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          name: '20-0001',
+          user: {
+            _id: 'userId',
+            firstName: 'Joe',
+            lastName: 'Jackson',
+            referredByUser: {
+              firstName: 'Pro',
+              lastName: 'User',
+              emails: [{ address: 'pro@e-potek.ch', verified: true }],
+            },
+            assignedEmployee: {
+              _id: 'adminId',
+              _factory: 'admin',
+              firstName: 'Admin',
+              lastName: 'User',
+            },
+          },
+        },
+      });
+
+      await ddpWithUserId('adminId', () =>
+        loanSetAdminNote.run({
+          loanId: 'loanId',
+          note: { note: 'hello dude', isSharedWithPros: true },
+          notifyPro: true,
+        }),
+      );
+
+      const [
+        {
+          address,
+          template: {
+            message: { subject, global_merge_vars },
+          },
+        },
+      ] = await checkEmails(1);
+
+      expect(address).to.equal('pro@e-potek.ch');
+      expect(subject).to.equal('Nouvelle note pour le dossier de Joe Jackson');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'TITLE').content,
+      ).to.equal('Nouvelle note pour le dossier 20-0001 de Joe Jackson');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('Admin User');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'BODY').content,
+      ).to.include('hello dude');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
+      ).to.include(Meteor.settings.public.subdomains.pro);
+    });
+
+    it('does not send an email to a pro if there is no referredByUser', async () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          name: '20-0001',
+          user: {
+            _id: 'userId',
+            firstName: 'Joe',
+            lastName: 'Jackson',
+            assignedEmployee: {
+              _id: 'adminId',
+              _factory: 'admin',
+              firstName: 'Admin',
+              lastName: 'User',
+            },
+          },
+        },
+      });
+
+      await ddpWithUserId('adminId', () =>
+        loanSetAdminNote.run({
+          loanId: 'loanId',
+          note: { note: 'hello dude', isSharedWithPros: true },
+          notifyPro: true,
+        }),
+      );
+
+      const emails = await checkEmails(1, { noExpect: true, timeout: 2000 });
+
+      expect(emails.length).to.equal(0);
+    });
+
+    it('does not send an email to a pro if it is not shared with them', async () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          name: '20-0001',
+          user: {
+            _id: 'userId',
+            firstName: 'Joe',
+            lastName: 'Jackson',
+            referredByUser: {
+              firstName: 'Pro',
+              lastName: 'User',
+              emails: [{ address: 'pro@e-potek.ch', verified: true }],
+            },
+            assignedEmployee: {
+              _id: 'adminId',
+              _factory: 'admin',
+              firstName: 'Admin',
+              lastName: 'User',
+            },
+          },
+        },
+      });
+
+      await ddpWithUserId('adminId', () =>
+        loanSetAdminNote.run({
+          loanId: 'loanId',
+          note: { note: 'hello dude', isSharedWithPros: false },
+          notifyPro: true,
+        }),
+      );
+
+      const emails = await checkEmails(1, { noExpect: true, timeout: 2000 });
+
+      expect(emails.length).to.equal(0);
+    });
+  });
+
+  describe('removeAdminNote', () => {
+    it('removes an adminNote', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello' },
+      });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'world' },
+      });
+
+      const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
+
+      LoanService.removeAdminNote({
+        loanId: 'loanId',
+        adminNoteId: adminNotes[1].id,
+      });
+
+      const { adminNotes: removed } = LoanService.get('loanId', {
+        adminNotes: 1,
+      });
+
+      expect(removed.length).to.equal(1);
+      expect(removed[0].note).to.equal('world');
+    });
+
+    it('removes the proNote if it is removed in adminNotes', () => {
+      generator({ loans: { _id: 'loanId' }, users: { _id: 'userId' } });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'hello' },
+      });
+
+      LoanService.setAdminNote({
+        loanId: 'loanId',
+        userId: 'userId',
+        note: { note: 'world', isSharedWithPros: true },
+      });
+
+      const { adminNotes, proNote } = LoanService.get('loanId', {
+        adminNotes: 1,
+        proNote: 1,
+      });
+      expect(proNote.note).to.equal('world');
+
+      LoanService.removeAdminNote({
+        loanId: 'loanId',
+        adminNoteId: adminNotes[0].id,
+      });
+
+      const { proNote: removed } = LoanService.get('loanId', { proNote: 1 });
+
+      expect(removed).to.equal(undefined);
     });
   });
 });

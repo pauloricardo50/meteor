@@ -26,14 +26,13 @@ const getAnimationDelay = (index, offset = 0) => (index + offset) * 50;
 
 const getAnimation = (variant, index, offset) =>
   `animated ${
-    variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
+  variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
   } delay-${getAnimationDelay(index, offset)}`;
 
 const PromotionReservationProgressComponent = ({
   promotionOption,
   style,
   variant = 'icon',
-  isEditing,
   className,
   loanProgress = {},
 }: PromotionReservationProgressProps) => {
@@ -46,12 +45,11 @@ const PromotionReservationProgressComponent = ({
     bank,
     loan,
     isAnonymized,
-    proNote = '',
   } = promotionOption;
-  const { user, _id: loanId } = loan;
+  const { user, _id: loanId, proNote = {} } = loan;
   const { info = {}, documents = {} } = loanProgress;
 
-  const icon = makeIcon(variant, isEditing, promotionOptionId, loanId);
+  const icon = makeIcon(variant, promotionOptionId, loanId);
 
   const verificationAndBankIcons = [
     icon({
@@ -133,7 +131,6 @@ const PromotionReservationProgressComponent = ({
       className={cx(
         'promotion-reservation-progress flex center-align',
         className,
-        isEditing ? 'editing' : '',
       )}
       style={style}
     >
@@ -166,11 +163,16 @@ const PromotionReservationProgressComponent = ({
                 variant,
                 0,
                 verificationAndBankIcons.length +
-                  agreementAndDepositIcons.length,
+                agreementAndDepositIcons.length,
               ),
             )}
           >
-            {getAdminNoteIcon(proNote, variant, isEditing, promotionOptionId)}
+            {getAdminNoteIcon({
+              proNote,
+              variant,
+              promotionOptionId,
+              isAnonymized,
+            })}
           </div>
         )}
       </div>
@@ -184,7 +186,5 @@ export default withProps(
     promotionOption: {
       loan: { loanProgress },
     },
-  }) => ({
-    loanProgress: loanProgress || getLoanProgress(loan),
-  }),
+  }) => ({ loanProgress: loanProgress || getLoanProgress(loan) }),
 )(PromotionReservationProgressComponent);

@@ -1,15 +1,20 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
+import cx from 'classnames';
 
 import Icon from '../../../../Icon';
 import T from '../../../../Translation';
-import StatusDateForm from './StatusDateForm';
+import StatusDateDialogForm from './StatusDateDialogForm';
 
 type PromotionReservationProgressItemProps = {};
 
+const isAdmin = Meteor.microservice === 'admin';
+
+const allowModification = id => isAdmin && id !== 'proNote';
+
 const IconTooltip = ({ date, status, id, note, placeholder }) => (
-  <div className="flex-col" style={{ flexGrow: 1 }}>
+  <div className="promotion-reservation-progress-item-tooltip">
     <b className="flex sb">
       <T id={`Forms.${id}`} />
       &nbsp;
@@ -28,7 +33,6 @@ const PromotionReservationProgressItem = ({
   status,
   id,
   variant,
-  isEditing,
   promotionOptionId,
   iconProps,
   note,
@@ -36,21 +40,39 @@ const PromotionReservationProgressItem = ({
   component,
   loanId,
 }: PromotionReservationProgressItemProps) => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const allowModify = allowModification(id);
+
   if (variant === 'text') {
     if (component) {
       return (
-        !isEditing && (
-          <p className="flex center-align">
-            {component}
-            <IconTooltip id={id} placeholder={placeholder} />
-          </p>
-        )
+        <p className="flex center-align">
+          {component}
+          <IconTooltip id={id} placeholder={placeholder} />
+        </p>
       );
     }
     return (
       <>
-        <p className="flex center-align">
+        <p
+          className={cx(
+            'flex center-align',
+            allowModify && 'reservation-progress-item-modify',
+          )}
+          onClick={() => (allowModify ? setOpenDialog(!openDialog) : null)}
+        >
           <Icon type={icon} color={color} className="mr-16" {...iconProps} />
+          {allowModify && (
+            <StatusDateDialogForm
+              promotionOptionId={promotionOptionId}
+              loanId={loanId}
+              id={id}
+              status={status}
+              date={date}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+            />
+          )}
           <IconTooltip
             date={date}
             status={status}
@@ -59,14 +81,6 @@ const PromotionReservationProgressItem = ({
             placeholder={placeholder}
           />
         </p>
-        {isEditing && (
-          <StatusDateForm
-            model={{ status, note, date }}
-            id={id}
-            promotionOptionId={promotionOptionId}
-            loanId={loanId}
-          />
-        )}
       </>
     );
   }

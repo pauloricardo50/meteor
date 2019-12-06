@@ -1,0 +1,40 @@
+// @flow
+import React from 'react';
+
+import { AutoFormDialog } from '../../../../AutoForm2/AutoFormDialog';
+import StatusDateDialogFormContainer from './StatusDateDialogFormContainer';
+import Button from '../../../../Button';
+import Dialog from '../../../../Material/Dialog';
+import T from '../../../../Translation';
+
+type StatusDateDialogFormProps = {};
+
+const StatusDateDialogForm = ({
+  openConfirmDialog,
+  confirmDialogActions,
+  confirmDialogProps,
+  ...props
+}: StatusDateDialogFormProps) => (
+  <>
+    <AutoFormDialog {...props} noButton />
+    <Dialog
+      open={openConfirmDialog}
+      actions={[
+        <Button
+          label={<T id="general.no" />}
+          onClick={confirmDialogActions.cancel}
+          key="cancel"
+        />,
+        <Button
+          label={<T id="general.yes" />}
+          primary
+          onClick={confirmDialogActions.ok}
+          key="ok"
+        />,
+      ]}
+      {...confirmDialogProps}
+    />
+  </>
+);
+
+export default StatusDateDialogFormContainer(StatusDateDialogForm);

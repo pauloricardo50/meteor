@@ -29,6 +29,7 @@ export const withSelector = (SuperClass = class {}) =>
           const promotionOption = loan.promotionOptions.find(
             ({ _id }) => _id === structure.promotionOptionId,
           );
+
           return this.formatPromotionOptionIntoProperty(promotionOption);
         }
 
@@ -45,9 +46,10 @@ export const withSelector = (SuperClass = class {}) =>
       }
 
       if (promotionOptionId) {
-        return this.formatPromotionOptionIntoProperty(
-          loan.promotionOptions.find(({ _id }) => _id === promotionOptionId),
+        const promotionOption = loan.promotionOptions.find(
+          ({ _id }) => _id === promotionOptionId,
         );
+        return this.formatPromotionOptionIntoProperty(promotionOption);
       }
 
       return {};

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import { createMeteorAsyncFunction } from './helpers';
 
 class CollectionService {
@@ -23,8 +24,8 @@ class CollectionService {
     this.collection = collection;
   }
 
-  insert(object = {}) {
-    return this.collection.insert(object);
+  insert(object = {}, ...args) {
+    return this.collection.insert(object, ...args);
   }
 
   _update({ id, object, operator = '$set' }) {
@@ -43,11 +44,10 @@ class CollectionService {
     return this.collection.remove(...args);
   }
 
-  get(...args) {
+  get() {
     throw new Meteor.Error(
       `Should initialize get in ${this.collection._name}Service`,
     );
-    return this.collection.findOne(...args);
   }
 
   makeGet(defaultFragment) {
@@ -272,6 +272,14 @@ class CollectionService {
       this.rawCollection.distinct.bind(this.rawCollection),
     );
     return func(key, query, options);
+  }
+
+  rawInsert(doc = {}) {
+    const _id = doc._id || Random.id();
+    const func = createMeteorAsyncFunction(
+      this.rawCollection.insert.bind(this.rawCollection),
+    );
+    return func({ ...doc, _id });
   }
 }
 

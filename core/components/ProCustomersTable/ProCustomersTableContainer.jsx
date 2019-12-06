@@ -7,6 +7,7 @@ import { proLoans2 } from 'core/api/loans/queries';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import ProCustomer from 'core/components/ProCustomer';
+import Icon from 'core/components/Icon';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 
@@ -16,6 +17,7 @@ const columnOptions = [
   { id: 'customer' },
   { id: 'createdAt' },
   { id: 'relatedTo' },
+  { id: 'proNote' },
 ].map(({ id, label }) => ({
   id,
   label: label || <T id={`ProCustomersTable.${id}`} />,
@@ -31,6 +33,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
     relatedTo: relatedDocs = [],
     status,
     user,
+    proNote = {},
   } = loan;
 
   return {
@@ -70,6 +73,25 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
             ))
           : '-',
       },
+      {
+        raw: !!proNote.note,
+        label: proNote.note ? (
+          <Icon
+            type="info"
+            tooltip={
+              <div>
+                <div className="secondary">
+                  {moment(proNote.date).format("H:mm, D MMM 'YY")}
+                </div>
+                <div style={{ whiteSpace: 'pre-line' }}>{proNote.note}</div>
+              </div>
+            }
+            color="primary"
+          />
+        ) : (
+          '-'
+        ),
+      },
     ],
   };
 };
@@ -103,6 +125,7 @@ export default compose(
         anonymous: 1,
         createdAt: 1,
         name: 1,
+        proNote: 1,
         referredByText: 1,
         relatedTo: 1,
         status: 1,
