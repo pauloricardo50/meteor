@@ -9,7 +9,7 @@ jobs:
           LANGUAGE: C.UTF-8
           LC_ALL: C.UTF-8
           LC_NUMERIC: en_US.UTF-8
-          METEOR_VERSION: 1.8.1
+          METEOR_VERSION: 1.8.2
           NODE_ENV: development
           TOOL_NODE_FLAGS: >-
             --max_old_space_size=8192 --optimize_for_size --gc_interval=100
@@ -21,9 +21,9 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_ci-test_1-{{ .Branch }}-{{ .Revision }}'
-            - 'source_ci-test_1-{{ .Branch }}-'
-            - source_ci-test_1-
+            - 'source_ci-test_2-{{ .Branch }}-{{ .Revision }}'
+            - 'source_ci-test_2-{{ .Branch }}-'
+            - source_ci-test_2-
             - source_ci-
       - checkout
       - run:
@@ -31,34 +31,34 @@ jobs:
           command: git submodule sync && git submodule update --init --recursive
       - save_cache:
           name: Cache source
-          key: 'source_ci-test_1-{{ .Branch }}-{{ .Revision }}'
+          key: 'source_ci-test_2-{{ .Branch }}-{{ .Revision }}'
           paths:
             - .
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_ci-test_1-{{ .Branch }}-{{ .Revision }}'
-            - 'global_ci-test_1-{{ .Branch }}-'
-            - global_ci-test_1-
+            - 'global_ci-test_2-{{ .Branch }}-{{ .Revision }}'
+            - 'global_ci-test_2-{{ .Branch }}-'
+            - global_ci-test_2-
             - global_ci-
       - run:
           name: Install project node_modules
           command: npm ci
       - save_cache:
           name: Cache globals
-          key: 'global_ci-test_1-{{ .Branch }}-{{ .Revision }}'
+          key: 'global_ci-test_2-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ~/.cache
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules_ci-test_1_{{ checksum "./package-lock.json" }}'
+          key: 'node_modules_ci-test_2_{{ checksum "./package-lock.json" }}'
           paths:
             - ./node_modules
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_ci-test_1_backend_{{ checksum
+              meteor_system_ci-test_2_backend_{{ checksum
               "./microservices/backend/.meteor/release" }}_{{ checksum
               "./microservices/backend/.meteor/versions" }}
             - meteor_system_ci-
@@ -66,10 +66,10 @@ jobs:
           name: Restore meteor backend
           keys:
             - >-
-              meteor_microservice_ci-test_1_backend-{{ .Branch }}-{{ .Revision
+              meteor_microservice_ci-test_2_backend-{{ .Branch }}-{{ .Revision
               }}
-            - 'meteor_microservice_ci-test_1_backend-{{ .Branch }}-'
-            - meteor_microservice_ci-test_1_backend-
+            - 'meteor_microservice_ci-test_2_backend-{{ .Branch }}-'
+            - meteor_microservice_ci-test_2_backend-
             - meteor_microservice_ci-
       - run:
           name: Install meteor
@@ -83,7 +83,7 @@ jobs:
           no_output_timeout: 30m
       - save_cache:
           name: Cache meteor backend
-          key: 'meteor_microservice_ci-test_1_backend-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_ci-test_2_backend-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/backend/.meteor/local/bundler-cache
             - ./microservices/backend/.meteor/local/isopacks
