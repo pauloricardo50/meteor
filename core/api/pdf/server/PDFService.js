@@ -7,7 +7,6 @@ import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 
 import { adminLoans } from '../../loans/queries';
-import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
 import { lenderRules } from '../../fragments';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanBankPDF from './pdfComponents/LoanBankPDF';
@@ -79,15 +78,8 @@ class PDFService {
             name: 1,
             logo: 1,
           });
-        const loan = adminLoans.clone({ _id: loanId }).fetchOne();
 
-        if (loan.hasPromotion) {
-          return {
-            ...params,
-            loan: formatLoanWithPromotion(loan),
-            organisation,
-          };
-        }
+        const loan = adminLoans.clone({ _id: loanId }).fetchOne();
 
         return { ...params, loan, organisation };
       }
