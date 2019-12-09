@@ -371,7 +371,7 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
     },
   ];
 
-  const fortuneArray = [{ id: 'bankFortuneSimple', type: 'textInput', money: true }];
+  const fortuneArray = [{ id: 'bankFortuneSimple', type: 'textInput', money: true, progressReplacementId: 'bankFortune' }];
 
   const insuranceArray = [
     { id: 'insurance2Simple', type: 'textInput', money: true, required: false },

@@ -1,4 +1,8 @@
 {
+  "Forms.bankFortune.value": "Montant",
+  "Forms.bankFortune.value.placeholder": "250 000",
+  "Forms.bankFortune.description": "Description",
+  "Forms.bankFortune.description.placeholder": "Nom de la banque",
   "Forms.bankFortuneSimple": "Fortune bancaire",
   "ProCustomersTable.proNote": "Note du conseiller",
   "Forms.isSharedWithPros": "Partagé avec les Pros",

@@ -38,6 +38,7 @@ const overrides = {
       ? simpleParams[0]
       : createParams(rawParams, idKey);
 
+    console.log('params:', params)
     return borrowerUpdate.run(params);
   },
 };
