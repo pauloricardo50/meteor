@@ -6,6 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
 import { Loans } from '../../..';
 import { up, down } from '../21';
+import LoanService from '../../../loans/server/LoanService';
 
 describe('Migration 21', () => {
   beforeEach(() => {
@@ -70,8 +71,8 @@ describe('Migration 21', () => {
 
       await up();
 
-      const loan1 = Loans.findOne('l1');
-      const loan2 = Loans.findOne('l2');
+      const loan1 = LoanService.get('l1', { structures: 1 });
+      const loan2 = LoanService.get('l2', { structures: 1 });
 
       const { structures: structures1 } = loan1;
       const { structures: structures2 } = loan2;
@@ -181,8 +182,8 @@ describe('Migration 21', () => {
 
       await down();
 
-      const loan1 = Loans.findOne('l1');
-      const loan2 = Loans.findOne('l2');
+      const loan1 = LoanService.get('l1', { structures: 1 });
+      const loan2 = LoanService.get('l2', { structures: 1 });
 
       const { structures: structures1 } = loan1;
       const { structures: structures2 } = loan2;

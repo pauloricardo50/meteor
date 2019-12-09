@@ -10,6 +10,7 @@ import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { removePropertyFromLoan } from './propertyServerHelpers';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
+import { adminLoan } from '../../fragments'
 
 class PropertyService extends CollectionService {
   constructor() {
@@ -29,18 +30,14 @@ class PropertyService extends CollectionService {
     Properties.update(propertyId, { $set: object });
 
   remove = ({ propertyId, loanId }) => {
-    const property = this.fetchOne({
-      $filters: { _id: propertyId },
-      loans: { _id: 1 },
-      category: 1,
-    });
+    const property = this.get(propertyId, { loans: { _id: 1 }, category: 1 });
 
     if (property && property.loans && property.loans.length > 1) {
       if (loanId) {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
         return removePropertyFromLoan({
-          loan: LoanService.findOne(loanId),
+          loan: LoanService.get(loanId, adminLoan()),
           propertyId,
         });
       }
@@ -114,7 +111,7 @@ class PropertyService extends CollectionService {
   }
 
   removeCustomerFromProperty({ propertyId, loanId }) {
-    const loan = LoanService.findOne({ _id: loanId });
+    const loan = LoanService.get(loanId, adminLoan());
     const { structures = [] } = loan;
 
     if (structures.length) {
@@ -125,7 +122,7 @@ class PropertyService extends CollectionService {
   }
 
   insertExternalProperty({ userId, property: { externalId, ...property } }) {
-    const existingProperty = this.fetchOne({ $filters: { externalId } });
+    const existingProperty = this.get({ externalId }, { _id: 1 });
 
     if (existingProperty) {
       throw new Meteor.Error(

@@ -55,8 +55,7 @@ ServerEventService.addAfterMethodListener(
     const { userId: proId } = context;
     context.unblock();
 
-    const user = UserService.fetchOne({
-      $filters: { _id: userId },
+    const user = UserService.get(userId, {
       assignedEmployeeId: 1,
       createdAt: 1,
     });
@@ -85,14 +84,14 @@ ServerEventService.addAfterMethodListener(
       addresses = [
         ...addresses,
         ...propertyIds.map(
-          id => PropertyService.findOne(id, { address1: 1 }).address1,
+          id => PropertyService.get(id, { address1: 1 }).address1,
         ),
       ];
     }
 
     if (promotionIds && promotionIds.length) {
       promotions = promotionIds.map(
-        id => PromotionService.findOne(id, { name: 1 }).name,
+        id => PromotionService.get(id, { name: 1 }).name,
       );
     }
 
@@ -106,7 +105,7 @@ ServerEventService.addAfterMethodListener(
         addresses.length === 1
           ? 'le bien immobilier: '
           : 'les biens immobiliers: '
-      } ${formattedAddresses}`;
+        } ${formattedAddresses}`;
     }
 
     if (promotions.length) {
@@ -117,7 +116,7 @@ ServerEventService.addAfterMethodListener(
 
       taskDescription = `${taskDescription}. Invité sur ${
         promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
-      } ${formattedPromotions}`;
+        } ${formattedPromotions}`;
     }
 
     if (invitationNote) {
@@ -230,8 +229,7 @@ ServerEventService.addAfterMethodListener(
       hasPromotion,
       promotions = [],
       user: { name: userName } = {},
-    } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    } = LoanService.get(loanId, {
       hasPromotion: 1,
       promotions: { assignedEmployee: { email: 1 } },
       user: { name: 1 },

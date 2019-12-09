@@ -26,7 +26,10 @@ describe('UpdateWatcherService', () => {
 
       Todos.update(todoId, { title: 'Ha' });
 
-      const updateWatcher = UpdateWatcherService.findOne({});
+      const updateWatcher = UpdateWatcherService.get(
+        {},
+        { docId: 1, collection: 1, updatedFields: 1 },
+      );
 
       expect(updateWatcher).to.deep.include({
         docId: todoId,
@@ -50,7 +53,7 @@ describe('UpdateWatcherService', () => {
       Todos.update(todoId, { title: 'Ha1' });
       Todos.update(todoId, { title: 'Ha2' });
 
-      const updateWatcher = UpdateWatcherService.findOne({});
+      const updateWatcher = UpdateWatcherService.get({}, { updatedFields: 1 });
 
       expect(updateWatcher.updatedFields).to.deep.equal([
         { fieldName: 'title', previousValue: 'Yo!', currentValue: 'Ha2' },
@@ -70,7 +73,7 @@ describe('UpdateWatcherService', () => {
       Todos.update(todoId, { title: 'Ha1', checked: true });
       Todos.update(todoId, { title: 'Ha2', description: 'hi' });
 
-      const updateWatcher = UpdateWatcherService.findOne({});
+      const updateWatcher = UpdateWatcherService.get({}, { updatedFields: 1 });
 
       expect(updateWatcher.updatedFields).to.deep.equal([
         { fieldName: 'title', previousValue: 'Yo!', currentValue: 'Ha2' },
@@ -91,7 +94,10 @@ describe('UpdateWatcherService', () => {
 
       Todos.update(todoId, { names: ['ha1', 'ha3'] });
 
-      const updateWatcher = UpdateWatcherService.findOne({});
+      const updateWatcher = UpdateWatcherService.get(
+        {},
+        { docId: 1, collection: 1, updatedFields: 1 },
+      );
 
       expect(updateWatcher).to.deep.include({
         docId: todoId,
@@ -141,7 +147,12 @@ describe('UpdateWatcherService', () => {
         ],
       });
 
-      const updateWatcher = UpdateWatcherService.findOne(updateWatcherId);
+      const updateWatcher = UpdateWatcherService.get(updateWatcherId, {
+        userId: 1,
+        collection: 1,
+        docId: 1,
+        updatedFields: 1,
+      });
 
       UpdateWatcherService.processUpdateWatcher(updateWatcher);
 

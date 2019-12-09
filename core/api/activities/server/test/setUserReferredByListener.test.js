@@ -47,8 +47,7 @@ describe('setUserReferredByListener', () => {
     await ddpWithUserId('admin', () =>
       setUserReferredBy.run({ userId: 'user', proId: 'pro1' }),
     );
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 
@@ -76,8 +75,7 @@ describe('setUserReferredByListener', () => {
     await ddpWithUserId('admin', () =>
       setUserReferredBy.run({ userId: 'user', proId: 'pro1' }),
     );
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 
@@ -105,8 +103,7 @@ describe('setUserReferredByListener', () => {
     await ddpWithUserId('admin', () =>
       setUserReferredBy.run({ userId: 'user', proId: 'pro2' }),
     );
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 

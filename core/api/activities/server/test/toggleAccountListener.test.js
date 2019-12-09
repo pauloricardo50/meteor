@@ -30,8 +30,7 @@ describe('toggleAccountListener', () => {
   it('adds activity on the user', async () => {
     await ddpWithUserId('admin', () => toggleAccount.run({ userId: 'user' }));
     await ddpWithUserId('admin', () => toggleAccount.run({ userId: 'user' }));
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
+    const { activities = [] } = UserService.get('user', {
       activities: { description: 1, title: 1 },
     });
     expect(activities.length).to.equal(2);

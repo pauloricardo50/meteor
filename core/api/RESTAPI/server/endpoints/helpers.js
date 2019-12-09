@@ -15,8 +15,7 @@ const anyOrganisationMatches = ({
   );
 
 export const getImpersonateUserId = ({ userId, impersonateUser }) => {
-  const { organisations: userOrganisations = [] } = UserService.fetchOne({
-    $filters: { _id: userId },
+  const { organisations: userOrganisations = [] } = UserService.get(userId, {
     organisations: { _id: 1 },
   });
 
@@ -27,10 +26,8 @@ export const getImpersonateUserId = ({ userId, impersonateUser }) => {
   if (user) {
     proId = user._id;
     proOrganisations =
-      UserService.fetchOne({
-        $filters: { _id: user._id },
-        organisations: { _id: 1 },
-      }).organisations || [];
+      UserService.get(user._id, { organisations: { _id: 1 } }).organisations ||
+      [];
   }
 
   if (!proId) {
@@ -64,8 +61,7 @@ export const checkQuery = ({ query, schema }) => {
 };
 
 export const checkAccessToUser = ({ user, proId }) => {
-  const { organisations = [] } = UserService.fetchOne({
-    $filters: { _id: proId },
+  const { organisations = [] } = UserService.get(proId, {
     organisations: { users: { _id: 1 } },
   });
 

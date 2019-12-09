@@ -39,9 +39,10 @@ const addProUserToPropertyAPI = ({
   const exists = PropertyService.exists(propertyId);
 
   if (!exists) {
-    const propertyByExternalId = PropertyService.fetchOne({
-      $filters: { externalId: propertyId },
-    });
+    const propertyByExternalId = PropertyService.get(
+      { externalId: propertyId },
+      { _id: 1 },
+    );
     if (propertyByExternalId) {
       propertyId = propertyByExternalId._id;
     } else {
@@ -71,8 +72,7 @@ const addProUserToPropertyAPI = ({
       );
     }
 
-    const { users = [] } = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
+    const { users = [] } = PropertyService.get(propertyId, {
       users: { email: 1 },
     });
 
@@ -96,10 +96,7 @@ const addProUserToPropertyAPI = ({
         }),
       )
       .then(() => {
-        const property = PropertyService.fetchOne({
-          $filters: { _id: propertyId },
-          users: { _id: 1 },
-        });
+        const property = PropertyService.get(propertyId, { users: { _id: 1 } });
 
         const {
           $metadata: { permissions: newPermissions },

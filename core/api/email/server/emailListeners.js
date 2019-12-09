@@ -68,8 +68,7 @@ addEmailListener({
       return;
     }
 
-    const { name: customerName, email } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { name: customerName, email } = UserService.get(userId, {
       name: 1,
       email: 1,
     });
@@ -129,8 +128,7 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
         user: { assignedEmployee },
       },
     },
-  } = OfferService.fetchOne({
-    $filters: { _id: offerId },
+  } = OfferService.get(offerId, {
     createdAt: 1,
     lender: {
       organisation: { name: 1 },
@@ -194,16 +192,12 @@ addEmailListener({
       const logoUrls = logos && logos.map(({ url }) => url);
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
-      const promotion = PromotionService.fetchOne({
-        $filters: { _id: promotionId },
+      const promotion = PromotionService.get(promotionId, {
         name: 1,
         contacts: 1,
         assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
       });
-      const user = UserService.fetchOne({
-        $filters: { _id: userId },
-        firstName: 1,
-      });
+      const user = UserService.get(userId, { firstName: 1 });
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
@@ -214,8 +208,7 @@ addEmailListener({
 
       if (pro && pro._id) {
         invitedBy = getUserNameAndOrganisation({
-          user: UserService.fetchOne({
-            $filters: { _id: pro._id },
+          user: UserService.get(pro._id, {
             name: 1,
             organisations: { name: 1 },
           }),
@@ -320,59 +313,59 @@ addEmailListener({
 //
 // PROMOTION EMAILS
 //
-// PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
-//   addEmailListener({
-//     description,
-//     method,
-//     func: mapConfigToListener(config),
-//   });
-// });
+PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
+  addEmailListener({
+    description,
+    method,
+    func: mapConfigToListener(config),
+  });
 
-addEmailListener({
-  description: 'Notification pour une nouvelle note partagée -> Pro',
-  method: loanSetAdminNote,
-  func: ({ params }) => {
-    const {
-      notifyPro,
-      note: { isSharedWithPros, note },
-      loanId,
-    } = params;
 
-    if (!notifyPro || !isSharedWithPros) {
-      return;
-    }
+  addEmailListener({
+    description: 'Notification pour une nouvelle note partagée -> Pro',
+    method: loanSetAdminNote,
+    func: ({ params }) => {
+      const {
+        notifyPro,
+        note: { isSharedWithPros, note },
+        loanId,
+      } = params;
 
-    const {
-      name: loanName,
-      user: {
-        name: customerName,
-        referredByUser,
-        assignedEmployee: { name: adminName } = {},
-      } = {},
-    } = LoanService.get(loanId, {
-      name: 1,
-      user: {
+      if (!notifyPro || !isSharedWithPros) {
+        return;
+      }
+
+      const {
+        name: loanName,
+        user: {
+          name: customerName,
+          referredByUser,
+          assignedEmployee: { name: adminName } = {},
+        } = {},
+      } = LoanService.get(loanId, {
         name: 1,
-        referredByUser: { email: 1 },
-        assignedEmployee: { name: 1 },
-      },
-    });
-
-    if (!referredByUser) {
-      return;
-    }
-
-    internalMethod(() =>
-      sendEmailToAddress.run({
-        emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
-        address: referredByUser.email,
-        params: {
-          customerName,
-          loanName,
-          note,
-          adminName: adminName || 'e-Potek',
+        user: {
+          name: 1,
+          referredByUser: { email: 1 },
+          assignedEmployee: { name: 1 },
         },
-      }),
-    );
-  },
-});
+      });
+
+      if (!referredByUser) {
+        return;
+      }
+
+      internalMethod(() =>
+        sendEmailToAddress.run({
+          emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
+          address: referredByUser.email,
+          params: {
+            customerName,
+            loanName,
+            note,
+            adminName: adminName || 'e-Potek',
+          },
+        }),
+      );
+    },
+  });

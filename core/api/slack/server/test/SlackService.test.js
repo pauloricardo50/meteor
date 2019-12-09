@@ -8,10 +8,11 @@ import { expect } from 'chai';
 import SlackService from '../SlackService';
 import UserService from '../../../users/server/UserService';
 import LoanService from '../../../loans/server/LoanService';
+import { fullUser } from '../../../fragments'
 
 const TEST_CHANNEL = 'test';
 
-describe('SlackService', function() {
+describe('SlackService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -46,7 +47,7 @@ describe('SlackService', function() {
       })._id;
       const loanId1 = Factory.create('loan', { userId, name: '19-0001' })._id;
       const loanId2 = LoanService.fullLoanInsert({ userId });
-      const user = UserService.get(userId);
+      const user = UserService.get(userId, fullUser());
 
       return SlackService.notifyOfUpload({
         currentUser: user,
@@ -69,7 +70,7 @@ describe('SlackService', function() {
         firstName: 'John',
         lastName: 'Doe',
       })._id;
-      const user = UserService.get(userId);
+      const user = UserService.get(userId, fullUser());
 
       return SlackService.notifyOfUpload({
         currentUser: user,
@@ -93,7 +94,7 @@ describe('SlackService', function() {
         linkName: 'promotions',
         linkId: promotionId,
       });
-      const user = UserService.get(userId);
+      const user = UserService.get(userId, fullUser());
 
       return SlackService.notifyOfUpload({
         currentUser: user,

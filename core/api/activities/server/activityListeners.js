@@ -3,6 +3,7 @@ import pick from 'lodash/pick';
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import Intl from 'core/utils/server/intl';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { fullUser } from 'core/api/fragments';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -34,15 +35,8 @@ ServerEventService.addAfterMethodListener(
     context.unblock();
     const { userId } = context;
 
-    const { name } = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-    });
-    const { name: userName } =
-      UserService.fetchOne({
-        $filters: { _id: userId },
-        name: 1,
-      }) || {};
+    const { name } = PromotionService.get(promotionId, { name: 1 });
+    const { name: userName } = UserService.get(userId, { name: 1 }) || {};
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.REMOVE_LOAN_FROM_PROMOTION,
@@ -60,8 +54,7 @@ ServerEventService.addAfterMethodListener(
   ({ params: { userId }, context, result: isDisabled }) => {
     context.unblock();
     const { userId: adminId } = context;
-    const { name: adminName } =
-      UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const { name: adminName } = UserService.get(adminId, { name: 1 }) || {};
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.ACCOUNT_DISABLED,
@@ -79,7 +72,7 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, params: { referralId }, context }) => {
     context.unblock();
 
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const { createdAt } = currentUser;
 
     let referredBy;
@@ -87,17 +80,11 @@ ServerEventService.addAfterMethodListener(
     let mainOrg;
 
     if (referralId) {
-      referredBy = UserService.fetchOne({
-        $filters: { _id: referralId },
+      referredBy = UserService.get(referralId, {
         name: 1,
         organisations: { name: 1 },
       });
-      referredByOrg = OrganisationService.fetchOne({
-        $filters: {
-          _id: referralId,
-        },
-        name: 1,
-      });
+      referredByOrg = OrganisationService.get(referralId, { name: 1 });
     }
 
     let description = '';
@@ -141,13 +128,15 @@ ServerEventService.addAfterMethodListener(
     const { userId: proId } = context;
     const APIUser = getAPIUser();
 
-    const currentUser = UserService.fetchOne({
-      $filters: { 'emails.address': { $in: [email] } },
-      activities: { metadata: 1 },
-      referredByUserLink: 1,
-      referredByOrganisationLink: 1,
-      createdAt: 1,
-    });
+    const currentUser = UserService.get(
+      { 'emails.address': { $in: [email] } },
+      {
+        activities: { metadata: 1 },
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        createdAt: 1,
+      },
+    );
 
     const { activities = [] } = currentUser;
 
@@ -170,8 +159,10 @@ ServerEventService.addAfterMethodListener(
     } = currentUser;
 
     let description = '';
-    const referredBy = UserService.get(referredByUserLink);
-    const referredByOrg = OrganisationService.findOne(referredByOrganisationLink);
+    const referredBy = UserService.get(referredByUserLink, fullUser());
+    const referredByOrg = OrganisationService.get(referredByOrganisationLink, {
+      name: 1,
+    });
     let referredByAPIOrgLabel = '';
     let referredByAPIOrg;
 
@@ -217,10 +208,9 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, context }) => {
     context.unblock();
     const { userId: adminId } = context;
-    const currentUser = UserService.get(userId);
+    const currentUser = UserService.get(userId, fullUser());
     const { createdAt } = currentUser;
-    const admin =
-      UserService.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+    const admin = UserService.get(adminId, { name: 1 }) || {};
     const { name: adminName } = admin;
 
     ActivityService.addCreatedAtActivity({
@@ -237,12 +227,14 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(userPasswordReset, ({ context }) => {
   context.unblock();
   const { userId } = context;
-  const firstConnectionActivity = ActivityService.fetchOne({
-    $filters: {
+  const firstConnectionActivity = ActivityService.get(
+    {
       'userLink._id': userId,
       'metadata.event': ACTIVITY_EVENT_METADATA.USER_FIRST_CONNECTION,
     },
-  });
+    { _id: 1 },
+  );
+
   ActivityService.addEventActivity({
     event: ACTIVITY_EVENT_METADATA.USER_PASSWORD_SET,
     isServerGenerated: true,
@@ -354,10 +346,7 @@ ServerEventService.addAfterMethodListener(
     const formattedNexStatus = formatMessage({
       id: `Forms.status.${nextStatus}`,
     });
-    const { name: adminName } = UserService.fetchOne({
-      $filters: { _id: userId },
-      name: 1,
-    });
+    const { name: adminName } = UserService.get(userId, { name: 1 });
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
@@ -382,10 +371,7 @@ ServerEventService.addAfterMethodListener(
   }) => {
     context.unblock();
     const { userId } = context;
-    const { email } = UserService.fetchOne({
-      $filters: { _id: userId },
-      email: 1,
-    });
+    const { email } = UserService.get(userId, { email: 1 });
     ActivityService.addEmailActivity({
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
       to: address,

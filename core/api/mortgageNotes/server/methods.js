@@ -17,8 +17,8 @@ mortgageNoteInsert.setHandler(({ userId }, params) => {
 });
 
 mortgageNoteRemove.setHandler(({ userId }, { mortgageNoteId }) => {
-  const { borrower, property } = MortgageNoteService.fetchOne({
-    $filters: { _id: mortgageNoteId },
+  const { borrower, property } = MortgageNoteService.get(mortgageNoteId, {
+    _id: 1,
   });
   if (property) {
     SecurityService.properties.isAllowedToUpdate(property._id, userId);
@@ -31,8 +31,7 @@ mortgageNoteRemove.setHandler(({ userId }, { mortgageNoteId }) => {
 });
 
 mortgageNoteUpdate.setHandler(({ userId }, { mortgageNoteId, object }) => {
-  const { borrower, property } = MortgageNoteService.fetchOne({
-    $filters: { _id: mortgageNoteId },
+  const { borrower, property } = MortgageNoteService.get(mortgageNoteId, {
     borrower: { _id: 1 },
     property: { _id: 1 },
   });

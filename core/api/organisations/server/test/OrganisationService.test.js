@@ -27,8 +27,7 @@ describe('OrganisationService', function() {
         organisationId: 'id1',
       });
 
-      let org = OrganisationService.fetchOne({
-        $filters: { _id: 'id1' },
+      let org = OrganisationService.get('id1', {
         lenderRules: { _id: 1 },
         lenderRulesCount: 1,
       });
@@ -37,8 +36,7 @@ describe('OrganisationService', function() {
 
       LenderRulesService.remove({ lenderRulesId: id1 });
 
-      org = OrganisationService.fetchOne({
-        $filters: { _id: 'id1' },
+      org = OrganisationService.get('id1', {
         lenderRules: { _id: 1 },
         lenderRulesCount: 1,
       });

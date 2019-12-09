@@ -5,6 +5,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Properties } from '../../..';
 import { up, down } from '../14';
+import PropertyService from '../../../properties/server/PropertyService'
 
 describe('Migration 14', () => {
   beforeEach(() => {
@@ -22,14 +23,14 @@ describe('Migration 14', () => {
       });
       await up();
 
-      expect(Properties.findOne({ _id: 'test' }).yearlyExpenses).to.equal(1200);
-      expect(Properties.findOne({ _id: 'test' }).monthlyExpenses).to.equal(
+      expect(PropertyService.get('test', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(1200);
+      expect(PropertyService.get('test', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(
         undefined,
       );
-      expect(Properties.findOne({ _id: 'test2' }).yearlyExpenses).to.equal(
+      expect(PropertyService.get('test2', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(
         undefined,
       );
-      expect(Properties.findOne({ _id: 'test2' }).monthlyExpenses).to.equal(
+      expect(PropertyService.get('test2', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(
         undefined,
       );
     });
@@ -47,14 +48,14 @@ describe('Migration 14', () => {
 
       await down();
 
-      expect(Properties.findOne({ _id: 'test' }).yearlyExpenses).to.equal(
+      expect(PropertyService.get('test', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(
         undefined,
       );
-      expect(Properties.findOne({ _id: 'test' }).monthlyExpenses).to.equal(83);
-      expect(Properties.findOne({ _id: 'test2' }).yearlyExpenses).to.equal(
+      expect(PropertyService.get('test', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(83);
+      expect(PropertyService.get('test2', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(
         undefined,
       );
-      expect(Properties.findOne({ _id: 'test2' }).monthlyExpenses).to.equal(
+      expect(PropertyService.get('test2', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(
         undefined,
       );
     });

@@ -56,10 +56,7 @@ describe('LenderService', () => {
         organisationId,
       });
 
-      const lender = LenderService.fetchOne({
-        $filters: { _id: lenderId },
-        contact: { firstName: 1 },
-      });
+      const lender = LenderService.get(lenderId, { contact: { firstName: 1 } });
 
       expect(lender.contact.firstName).to.equal('John');
     });
@@ -95,7 +92,7 @@ describe('LenderService', () => {
       expect(OfferService.find({}).fetch().length).to.equal(0);
       expect(TaskService.find({}).fetch().length).to.equal(0);
 
-      const loan = LoanService.findOne({});
+      const loan = LoanService.get({}, { structures: { offerId: 1 } });
 
       loan.structures.map(({ offerId }) => {
         expect(offerId).to.not.equal('offer1');

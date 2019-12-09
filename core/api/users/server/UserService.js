@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
-import { fullUser } from '../../fragments';
+import { fullUser } from 'core/api/fragments';
 import CollectionService from '../../helpers/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -20,7 +20,6 @@ export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
     super(Users);
     this.setupRoundRobin(employees);
-    this.get = this.makeGet(fullUser());
   }
 
   getByEmail(email) {
@@ -96,14 +95,11 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (referralId) {
-      const referralUser = this.fetchOne({
-        $filters: { _id: referralId, roles: { $in: [ROLES.PRO] } },
-      });
-      const referralOrg = OrganisationService.fetchOne({
-        $filters: {
-          _id: referralId,
-        },
-      });
+      const referralUser = this.get(
+        { _id: referralId, roles: { $in: [ROLES.PRO] } },
+        { _id: 1 },
+      );
+      const referralOrg = OrganisationService.get(referralId, { _id: 1 });
       if (referralUser) {
         this.setReferredBy({ userId, proId: referralId });
       } else if (referralOrg) {
@@ -145,12 +141,8 @@ export class UserServiceClass extends CollectionService {
   assignAdminToUser = ({ userId, adminId }) => {
     if (adminId) {
       const { assignedEmployee: oldAssignee = {} } =
-        this.fetchOne({
-          $filters: { _id: userId },
-          assignedEmployee: { name: 1 },
-        }) || {};
-      const newAssignee =
-        this.fetchOne({ $filters: { _id: adminId }, name: 1 }) || {};
+        this.get(userId, { assignedEmployee: { name: 1 } }) || {};
+      const newAssignee = this.get(adminId, { name: 1 }) || {};
 
       this.update({ userId, object: { assignedEmployeeId: adminId } });
       return { oldAssignee, newAssignee };
@@ -161,21 +153,41 @@ export class UserServiceClass extends CollectionService {
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
-  getUserById = ({ userId }) => Users.findOne(userId);
-
-  getUserByPasswordResetToken = ({ token }) =>
-    this.fetchOne({
-      $filters: { 'services.password.reset.token': token },
-      email: 1,
+  getUserById = ({ userId }) =>
+    this.get(userId, {
+      createdAt: 1,
+      updatedAt: 1,
       emails: 1,
       firstName: 1,
       lastName: 1,
-      name: 1,
+      isDisabled: 1,
       phoneNumbers: 1,
+      roles: 1,
+      username: 1,
+      assignedEmployeeId: 1,
+      services: 1,
+      heartbeat: 1,
+      apiPublicKey: 1,
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      assignedEmployeeCache: 1,
     });
 
+  getUserByPasswordResetToken = ({ token }) =>
+    this.get(
+      { 'services.password.reset.token': token },
+      {
+        email: 1,
+        emails: 1,
+        firstName: 1,
+        lastName: 1,
+        name: 1,
+        phoneNumbers: 1,
+      },
+    );
+
   getLoginToken = ({ userId }) => {
-    const user = Users.findOne(userId, { fields: { services: 1 } });
+    const user = this.get(userId, { services: 1 });
 
     return (
       user.services.password &&
@@ -229,7 +241,7 @@ export class UserServiceClass extends CollectionService {
   };
 
   changeEmail = ({ userId, newEmail }) => {
-    const { emails } = Users.findOne(userId);
+    const { emails } = this.get(userId, { emails: 1 });
     Accounts.addEmail(userId, newEmail);
     Accounts.removeEmail(userId, emails[0].address);
     Accounts.sendVerificationEmail(userId);
@@ -248,7 +260,9 @@ export class UserServiceClass extends CollectionService {
         'Vous ne pouvez pas lier un compte deux fois à la même organisation.',
       );
     }
-    const { organisations: oldOrganisations = [] } = this.get(userId);
+    const { organisations: oldOrganisations = [] } = this.get(userId, {
+      organisations: { _id: 1 },
+    });
 
     oldOrganisations.forEach(({ _id: organisationId }) =>
       this.removeLink({
@@ -271,7 +285,7 @@ export class UserServiceClass extends CollectionService {
     }
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
-    return this.get(userId);
+    return this.get(userId, fullUser());
   };
 
   generateKeyPair = ({ userId }) => {
@@ -321,8 +335,7 @@ export class UserServiceClass extends CollectionService {
     let assignedEmployeeId;
 
     if (proUserId) {
-      pro = this.fetchOne({
-        $filters: { _id: proUserId },
+      pro = this.get(proUserId, {
         name: 1,
         assignedEmployeeId: 1,
         organisations: { name: 1 },
@@ -340,7 +353,7 @@ export class UserServiceClass extends CollectionService {
     let admin;
 
     if (isNewUser) {
-      admin = this.get(assignedEmployeeId);
+      admin = this.get(assignedEmployeeId, fullUser());
       userId = this.adminCreateUser({
         options: {
           email,
@@ -361,7 +374,7 @@ export class UserServiceClass extends CollectionService {
         assignedEmployeeId: existingAssignedEmployeeId,
       } = this.getByEmail(email);
 
-      admin = this.get(existingAssignedEmployeeId);
+      admin = this.get(existingAssignedEmployeeId, fullUser());
       userId = existingUserId;
     }
 
@@ -431,9 +444,10 @@ export class UserServiceClass extends CollectionService {
       const internalPropertyIds = properties.map(property => {
         let propertyId;
 
-        const existingProperty = PropertyService.fetchOne({
-          $filters: { externalId: property.externalId },
-        });
+        const existingProperty = PropertyService.get(
+          { externalId: property.externalId },
+          { _id: 1 },
+        );
 
         if (!existingProperty) {
           propertyId = PropertyService.insertExternalProperty({
@@ -489,8 +503,7 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredBy({ userId, proId, organisationId }) {
-    const { referredByUser: oldReferral } = this.fetchOne({
-      $filters: { _id: userId },
+    const { referredByUser: oldReferral } = this.get(userId, {
       referredByUser: { name: 1, organisations: { name: 1 } },
     });
 
@@ -511,8 +524,7 @@ export class UserServiceClass extends CollectionService {
       organisationId = mainOrg && mainOrg._id;
     }
 
-    const newReferral = this.fetchOne({
-      $filters: { _id: proId },
+    const newReferral = this.get(proId, {
       name: 1,
       organisations: { name: 1 },
     });
@@ -533,8 +545,7 @@ export class UserServiceClass extends CollectionService {
   }
 
   setReferredByOrganisation({ userId, organisationId }) {
-    const { referredByOrganisation: oldReferral = {} } = this.fetchOne({
-      $filters: { _id: userId },
+    const { referredByOrganisation: oldReferral = {} } = this.get(userId, {
       referredByOrganisation: { name: 1 },
     });
     if (!organisationId) {
@@ -545,10 +556,7 @@ export class UserServiceClass extends CollectionService {
       });
       return { oldReferral, referralType: 'org' };
     }
-    const newReferral = OrganisationService.fetchOne({
-      $filters: { _id: organisationId },
-      name: 1,
-    });
+    const newReferral = OrganisationService.get(organisationId, { name: 1 });
     this.update({
       userId,
       object: { referredByOrganisationLink: organisationId },
@@ -565,10 +573,7 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (proId) {
-      const { assignedEmployeeId } = this.fetchOne({
-        $filters: { _id: proId },
-        assignedEmployeeId: 1,
-      });
+      const { assignedEmployeeId } = this.get(proId, { assignedEmployeeId: 1 });
       assigneeId = assignedEmployeeId;
     } else {
       assigneeId = adminId;
@@ -590,8 +595,7 @@ export class UserServiceClass extends CollectionService {
   }
 
   linkOrganisation({ userId, organisationId, metadata }) {
-    const { organisations: userOrganisations = [] } = this.fetchOne({
-      $filters: { _id: userId },
+    const { organisations: userOrganisations = [] } = this.get(userId, {
       organisations: { _id: 1 },
     });
     const isMain = userOrganisations.length === 0;
@@ -645,10 +649,7 @@ export class UserServiceClass extends CollectionService {
     let mainOrganisation;
 
     if (orgId) {
-      mainOrganisation = OrganisationService.fetchOne({
-        $filters: { _id: orgId },
-        ...query,
-      });
+      mainOrganisation = OrganisationService.get(orgId, query);
     } else {
       mainOrganisation = this.getMainOrg({
         organisations,
@@ -694,8 +695,7 @@ export class UserServiceClass extends CollectionService {
   }
 
   setAssigneeForNewUser(userId) {
-    const { roles, assignedEmployeeId } = this.fetchOne({
-      $filters: { _id: userId },
+    const { roles, assignedEmployeeId } = this.get(userId, {
       assignedEmployeeId: 1,
       roles: 1,
     });
@@ -706,15 +706,17 @@ export class UserServiceClass extends CollectionService {
     let newAssignee;
 
     if (roles.includes(ROLES.USER)) {
-      const lastCreatedUser = this.fetchOne({
-        $filters: {
+      const lastCreatedUser = this.get(
+        {
           roles: ROLES.USER,
           assignedEmployeeId: { $in: this.employees },
         },
-        $options: { sort: { createdAt: -1 } },
-        assignedEmployeeId: 1,
-        createdAt: 1,
-      });
+        {
+          $options: { sort: { createdAt: -1 } },
+          assignedEmployeeId: 1,
+          createdAt: 1,
+        },
+      );
 
       if (lastCreatedUser && lastCreatedUser.assignedEmployeeId) {
         const index = this.employees.indexOf(
@@ -735,8 +737,7 @@ export class UserServiceClass extends CollectionService {
   }
 
   getReferral(userId) {
-    const { referredByUser, referredByOrganisation } = this.fetchOne({
-      $filters: { _id: userId },
+    const { referredByUser, referredByOrganisation } = this.get(userId, {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
     });
@@ -755,7 +756,7 @@ export class UserServiceClass extends CollectionService {
   // May be we can replace one of our existing method or keep this one here?
   getUserDetails(userId) {
     if (typeof userId === 'string') {
-      const user = this.get(userId);
+      const user = this.get(userId, fullUser());
       if (!(user && typeof user)) {
         throw new Meteor.Error('Utilisateur non trouvé');
       }
