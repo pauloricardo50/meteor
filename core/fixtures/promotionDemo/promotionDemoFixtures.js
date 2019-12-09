@@ -189,7 +189,7 @@ export const createPromotionDemo = async (
   console.log('creating lots');
   createLots(promotionId);
 
-  const promotion = PromotionService.get(promotionId, adminPromotions());
+  const promotion = PromotionService.get(promotionId, { promotionLotLinks: 1 });
 
   console.log('Adding promotion Pros');
   const proIds = addPromotionPros({ promotionId });

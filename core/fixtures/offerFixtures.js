@@ -12,7 +12,8 @@ import { adminLoan, adminProperty } from 'core/api/fragments';
 const getOrgIds = () => OrganisationService.fetch({}).map(({ _id }) => _id);
 
 export const createFakeOffer = loanId => {
-  const loan = LoanService.get(loanId, adminLoan());
+  console.log('loanId:', loanId)
+  const loan = LoanService.get(loanId, { ...adminLoan(), propertyIds: 1 });
   const property = PropertyService.get(loan.propertyIds[0], adminProperty());
   const offer = getRandomOffer(
     { loan: { ...loan, _id: loan._id }, property },

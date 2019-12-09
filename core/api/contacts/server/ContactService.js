@@ -7,7 +7,9 @@ class ContactService extends CollectionService {
   }
 
   changeOrganisations({ contactId, newOrganisations = [] }) {
-    const { organisations: oldOrganisations = [] } = this.get(contactId);
+    const { organisations: oldOrganisations = [] } = this.get(contactId, {
+      organisations: { _id: 1 },
+    });
 
     oldOrganisations.forEach(({ _id: organisationId }) =>
       this.removeLink({

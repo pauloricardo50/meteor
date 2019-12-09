@@ -106,6 +106,7 @@ class LoanService extends CollectionService {
       loan,
       userId,
     });
+    console.log('loanId:', loanId)
     this.addNewStructure({ loanId });
     return loanId;
   };

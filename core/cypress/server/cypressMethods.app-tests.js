@@ -44,7 +44,6 @@ import {
   ADMIN_EMAIL,
 } from './e2eConstants';
 
-
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
 
@@ -450,7 +449,11 @@ Meteor.methods({
     return userId;
   },
   getLoan(loanId) {
-    return LoanService.get(loanId, adminLoan());
+    return LoanService.get(loanId, {
+      ...adminLoan(),
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+    });
   },
   getUser(email) {
     return UserService.getByEmail(email);

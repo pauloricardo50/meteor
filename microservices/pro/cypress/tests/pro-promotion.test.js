@@ -38,7 +38,7 @@ describe('Pro promotion', () => {
       cy.contains('Promotions').click();
       cy.contains('En cours').click();
 
-      cy.contains('Clients').click();
+      cy.contains('Acquéreurs').click();
 
       // customers are invited by nobody
       cy.callMethod('setUserPermissions', {
@@ -277,7 +277,7 @@ describe('Pro promotion', () => {
         cy.get('.promotion-page-header-actions > button').click();
 
         cy.contains('Modifier la promotion').should('exist');
-        cy.contains('Clients').should('exist');
+        cy.contains('Acquéreurs').should('exist');
 
         // canAddLots
         cy.callMethod('setUserPermissions', {
@@ -304,7 +304,7 @@ describe('Pro promotion', () => {
         cy.callMethod('setPromotionStatus', { status: 'OPEN' });
         cy.refetch();
 
-        cy.contains('Ajouter un client').should('exist');
+        cy.contains('Ajouter un acquéreur').should('exist');
       });
 
       it('should add lots and promotionLots', () => {

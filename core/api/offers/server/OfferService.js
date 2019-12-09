@@ -37,7 +37,7 @@ class OfferService extends CollectionService {
       {
         structures: { $elemMatch: { offerId } },
       },
-      { _id: 1 },
+      { _id: 1, structures: 1 },
     );
 
     if (loan) {
