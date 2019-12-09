@@ -5,7 +5,6 @@ import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
-import { proPromotion } from 'core/api/fragments';
 import LoanService from '../../api/loans/server/LoanService';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';
@@ -179,7 +178,6 @@ export const createPromotionDemo = async (
 ) => {
   console.log('Creating promotion demo...');
   const admin = UserService.fetchOne({ $filters: { roles: ROLES.ADMIN } });
-
 
   console.log('admin:', admin);
   const promotionId = PromotionService.insert({
