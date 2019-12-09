@@ -455,6 +455,16 @@ addEmailConfig(EMAIL_IDS.EXPIRE_PROMOTION_RESERVATION_AGREEMENT, {
   createOverrides: promotionEmailOverridesUser,
 });
 
+addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides(params, strings) {
+    return notificationAndCtaTemplateDefaultOverride.call(this, params, {
+      ...strings,
+      ctaUrl: Meteor.settings.public.subdomains.pro,
+    });
+  },
+});
+
 const checkAllEmailAreDefined = () => {
   const undefinedEmailIds = [];
   Object.values(EMAIL_IDS).forEach(emailId => {

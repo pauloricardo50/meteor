@@ -5,15 +5,7 @@ import {
 } from '../propertyClientHelper';
 import PropertyService from './PropertyService';
 import LoanService from '../../loans/server/LoanService';
-import { ANONYMIZED_STRING } from '../../security/constants';
-
-const ANONYMIZED_USER = {
-  name: ANONYMIZED_STRING,
-  phoneNumbers: [ANONYMIZED_STRING],
-  email: ANONYMIZED_STRING,
-};
-const anonymizeUser = ({ user, anonymous }) =>
-  anonymous ? { name: 'Anonyme' } : { ...user, ...ANONYMIZED_USER };
+import { anonymizeLoan } from '../../loans/helpers';
 
 const getCustomerReferredBy = ({ customerId }) => {
   const { referredByUser, referredByOrganisation } =
@@ -77,7 +69,7 @@ export const makeProPropertyLoanAnonymizer = ({
   }
 
   return loan => {
-    const { user = {}, properties = [], ...rest } = loan;
+    const { user = {} } = loan;
     const { referredByOrganisation, referredByUser } = user;
     const customerOwnerType = getCustomerOwnerType({
       referredByUser,
@@ -88,26 +80,17 @@ export const makeProPropertyLoanAnonymizer = ({
     const shouldAnonymizeUser =
       anonymize === undefined
         ? propertiesPermissionsAndStatus
-            .map(({ permissions, status: propertyStatus }) =>
-              clientShouldAnonymize({
-                customerOwnerType,
-                permissions,
-                propertyStatus,
-              }),
-            )
-            .every(anonymizeForProperty => anonymizeForProperty)
+          .map(({ permissions, status: propertyStatus }) =>
+            clientShouldAnonymize({
+              customerOwnerType,
+              permissions,
+              propertyStatus,
+            }),
+          )
+          .every(anonymizeForProperty => anonymizeForProperty)
         : anonymize;
 
-    return {
-      user: shouldAnonymizeUser
-        ? anonymizeUser({ user, anonymous: loan.anonymous })
-        : user,
-      properties: shouldAnonymizeUser
-        ? properties.map(({ solvent, ...property }) => property)
-        : properties,
-      isAnonymized: !!shouldAnonymizeUser,
-      ...rest,
-    };
+    return anonymizeLoan({ loan, shouldAnonymize: shouldAnonymizeUser });
   };
 };
 

@@ -45,9 +45,8 @@ const PromotionReservationProgressComponent = ({
     bank,
     loan,
     isAnonymized,
-    proNote = '',
   } = promotionOption;
-  const { user, _id: loanId } = loan;
+  const { user, _id: loanId, proNote = {} } = loan;
   const { info = {}, documents = {} } = loanProgress;
 
   const icon = makeIcon(variant, promotionOptionId, loanId);
@@ -168,7 +167,12 @@ const PromotionReservationProgressComponent = ({
               ),
             )}
           >
-            {getAdminNoteIcon(proNote, variant, promotionOptionId)}
+            {getAdminNoteIcon({
+              proNote,
+              variant,
+              promotionOptionId,
+              isAnonymized,
+            })}
           </div>
         )}
       </div>
@@ -182,7 +186,5 @@ export default withProps(
     promotionOption: {
       loan: { loanProgress },
     },
-  }) => ({
-    loanProgress: loanProgress || getLoanProgress(loan),
-  }),
+  }) => ({ loanProgress: loanProgress || getLoanProgress(loan) }),
 )(PromotionReservationProgressComponent);

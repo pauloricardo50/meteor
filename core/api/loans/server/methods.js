@@ -39,6 +39,8 @@ import {
   loanSetStatus,
   loanUpdateCreatedAt,
   sendLoanChecklist,
+  loanSetAdminNote,
+  loanRemoveAdminNote,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -297,4 +299,14 @@ sendLoanChecklist.setHandler(({ userId }, { address, emailParams }) => {
       params: emailParams,
     }),
   );
+});
+
+loanSetAdminNote.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.setAdminNote({ ...params, userId });
+});
+
+loanRemoveAdminNote.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.removeAdminNote(params);
 });

@@ -146,7 +146,7 @@ export function notificationTemplateDefaultOverride(params, { title, body }) {
  */
 export function notificationAndCtaTemplateDefaultOverride(
   params,
-  { title, body, cta },
+  { title, body, cta, ctaUrl = CTA_URL_DEFAULT },
 ) {
   const { variables } = this.template;
 
@@ -155,7 +155,7 @@ export function notificationAndCtaTemplateDefaultOverride(
       { name: variables.TITLE, content: title },
       { name: variables.BODY, content: body },
       { name: variables.CTA, content: cta },
-      { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
+      { name: variables.CTA_URL, content: ctaUrl },
     ],
   };
 }

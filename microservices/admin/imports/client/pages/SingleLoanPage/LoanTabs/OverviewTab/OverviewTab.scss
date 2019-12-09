@@ -46,10 +46,25 @@
     }
   }
 
-  .admin-note {
+  .admin-notes {
     margin-top: 40px;
+
     h2 {
-      margin: 0;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    &-note {
+      white-space: pre-line;
+
+      &.shared {
+        padding-left: 8px;
+        border-left: 2px solid $primary;
+      }
+    }
+
+    .pro-note {
+      white-space: pre-line;
     }
   }
 }

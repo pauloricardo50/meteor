@@ -10,12 +10,14 @@ import {
   sendNegativeFeedbackToAllLenders,
   proInviteUser,
   offerSendFeedback,
+  loanSetAdminNote,
 } from '../../methods/index';
 import OfferService from '../../offers/server/OfferService';
 import FileService from '../../files/server/FileService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
 import UserService from '../../users/server/UserService';
+import LoanService from '../../loans/server/LoanService';
 import { getUserNameAndOrganisation } from '../../helpers/index';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from './methods';
@@ -317,4 +319,53 @@ PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
     method,
     func: mapConfigToListener(config),
   });
-});
+
+
+  addEmailListener({
+    description: 'Notification pour une nouvelle note partagée -> Pro',
+    method: loanSetAdminNote,
+    func: ({ params }) => {
+      const {
+        notifyPro,
+        note: { isSharedWithPros, note },
+        loanId,
+      } = params;
+
+      if (!notifyPro || !isSharedWithPros) {
+        return;
+      }
+
+      const {
+        name: loanName,
+        user: {
+          name: customerName,
+          referredByUser,
+          assignedEmployee: { name: adminName } = {},
+        } = {},
+      } = LoanService.get(loanId, {
+        name: 1,
+        user: {
+          name: 1,
+          referredByUser: { email: 1 },
+          assignedEmployee: { name: 1 },
+        },
+      });
+
+      if (!referredByUser) {
+        return;
+      }
+
+      internalMethod(() =>
+        sendEmailToAddress.run({
+          emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
+          address: referredByUser.email,
+          params: {
+            customerName,
+            loanName,
+            note,
+            adminName: adminName || 'e-Potek',
+          },
+        }),
+      );
+    },
+  });
