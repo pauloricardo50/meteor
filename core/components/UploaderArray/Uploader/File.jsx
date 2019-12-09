@@ -136,6 +136,7 @@ const File = props => {
                   />,
                 );
               }}
+              size="small"
             />
           )}
 
@@ -183,9 +184,10 @@ const File = props => {
                   important: true,
                 });
               }}
+              size="small"
             />
           )}
-          <Downloader fileKey={Key} fileName={name} />
+          <Downloader fileKey={Key} fileName={name} size="small" />
         </div>
       </div>
       {message && status === FILE_STATUS.ERROR && (
@@ -214,6 +216,7 @@ const File = props => {
                   />,
                 );
               }}
+              size="small"
             />
           )}
         </p>

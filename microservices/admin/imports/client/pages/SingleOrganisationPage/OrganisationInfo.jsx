@@ -28,6 +28,7 @@ const OrganisationInfo = ({
       documentArray={organisationDocuments}
       currentUser={currentUser}
       allowRequireByAdmin={false}
+      variant="simple"
     />
   </div>
 );

@@ -5,13 +5,7 @@ import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
 import { FILE_STATUS } from 'core/api/constants';
 
-const styles = {
-  icon: {
-    width: 32,
-    height: 24,
-    marginTop: 4,
-  },
-};
+const styles = { icon: { width: 32, height: 24 } };
 
 const statusIsTodo = (files, status) =>
   status === FILE_STATUS.UNVERIFIED ||
@@ -28,22 +22,42 @@ const FileStatusIcon = ({ files, status }) => {
           ...styles.icon,
           borderRadius: '50%',
           border: `2px solid ${colors.borderGrey}`,
-          width: 24,
+          width: 20,
+          height: 20,
           marginRight: 8,
+          flexShrink: 0,
         }}
+        className="file-status-icon"
       />
     );
   }
   if (statuses.indexOf(FILE_STATUS.ERROR) >= 0) {
-    return <Icon type="warning" className="error" style={styles.icon} />;
+    return (
+      <Icon
+        type="warning"
+        className="file-status-icon error"
+        style={styles.icon}
+      />
+    );
   }
   if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
     return (
-      <Icon type="waiting" color={colors.borderGrey} style={styles.icon} />
+      <Icon
+        type="waiting"
+        color={colors.borderGrey}
+        style={styles.icon}
+        className="file-status-icon"
+      />
     );
   }
 
-  return <Icon type="check" className="success" style={styles.icon} />;
+  return (
+    <Icon
+      type="check"
+      className="file-status-icon success"
+      style={styles.icon}
+    />
+  );
 };
 
 FileStatusIcon.propTypes = {

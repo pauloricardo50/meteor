@@ -40,7 +40,13 @@ const FileAdder = ({ handleAddFiles }) => {
         }}
       />
       {/* Use label component, so that the htmlFor triggers the file input */}
-      <Button htmlFor={uniqueId} style={styles.label} primary component="label">
+      <Button
+        htmlFor={uniqueId}
+        style={styles.label}
+        primary
+        component="label"
+        size="small"
+      >
         <T id="FileAdder.title" />
       </Button>
     </a>

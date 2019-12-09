@@ -5,7 +5,12 @@ import FileDropper from './FileDropper';
 import UploaderTop from './UploaderTop';
 import UploaderBottom from './UploaderBottom';
 
-const BaseUploader = ({ toggleDisplayFull, handleMoveFile, ...rest }) => {
+const BaseUploader = ({
+  toggleDisplayFull,
+  handleMoveFile,
+  variant,
+  ...rest
+}) => {
   const {
     handleAddFiles,
     displayFull,
@@ -18,6 +23,7 @@ const BaseUploader = ({ toggleDisplayFull, handleMoveFile, ...rest }) => {
       toggleDisplayFull={toggleDisplayFull}
       id={id}
       handleMoveFile={handleMoveFile}
+      variant={variant}
     >
       <UploaderTop toggleDisplayFull={toggleDisplayFull} {...rest} />
       {displayFull && <UploaderBottom {...rest} id={id} />}
