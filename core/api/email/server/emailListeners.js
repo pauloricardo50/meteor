@@ -310,62 +310,59 @@ addEmailListener({
   },
 });
 
-//
-// PROMOTION EMAILS
-//
 PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
   addEmailListener({
     description,
     method,
     func: mapConfigToListener(config),
   });
+});
 
+addEmailListener({
+  description: 'Notification pour une nouvelle note partagée -> Pro',
+  method: loanSetAdminNote,
+  func: ({ params }) => {
+    const {
+      notifyPro,
+      note: { isSharedWithPros, note },
+      loanId,
+    } = params;
 
-  addEmailListener({
-    description: 'Notification pour une nouvelle note partagée -> Pro',
-    method: loanSetAdminNote,
-    func: ({ params }) => {
-      const {
-        notifyPro,
-        note: { isSharedWithPros, note },
-        loanId,
-      } = params;
+    if (!notifyPro || !isSharedWithPros) {
+      return;
+    }
 
-      if (!notifyPro || !isSharedWithPros) {
-        return;
-      }
-
-      const {
-        name: loanName,
-        user: {
-          name: customerName,
-          referredByUser,
-          assignedEmployee: { name: adminName } = {},
-        } = {},
-      } = LoanService.get(loanId, {
+    const {
+      name: loanName,
+      user: {
+        name: customerName,
+        referredByUser,
+        assignedEmployee: { name: adminName } = {},
+      } = {},
+    } = LoanService.get(loanId, {
+      name: 1,
+      user: {
         name: 1,
-        user: {
-          name: 1,
-          referredByUser: { email: 1 },
-          assignedEmployee: { name: 1 },
+        referredByUser: { email: 1 },
+        assignedEmployee: { name: 1 },
+      },
+    });
+
+    if (!referredByUser) {
+      return;
+    }
+
+    internalMethod(() =>
+      sendEmailToAddress.run({
+        emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
+        address: referredByUser.email,
+        params: {
+          customerName,
+          loanName,
+          note,
+          adminName: adminName || 'e-Potek',
         },
-      });
-
-      if (!referredByUser) {
-        return;
-      }
-
-      internalMethod(() =>
-        sendEmailToAddress.run({
-          emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
-          address: referredByUser.email,
-          params: {
-            customerName,
-            loanName,
-            note,
-            adminName: adminName || 'e-Potek',
-          },
-        }),
-      );
-    },
-  });
+      }),
+    );
+  },
+});

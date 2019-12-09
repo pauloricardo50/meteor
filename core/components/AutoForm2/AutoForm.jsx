@@ -1,8 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { useMemo } from 'react';
 import { AutoForm } from 'uniforms-material';
 import pickBy from 'lodash/pickBy';
 import pick from 'lodash/pick';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 
 import { withProps } from 'recompose';
 import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
@@ -22,22 +23,22 @@ type CustomAutoFormProps = {
   submitting?: Boolean,
 };
 
-class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
-  constructor(props) {
-    super(props);
-    const { autoFieldProps } = props;
-
-    if (autoFieldProps) {
-      this.autoField = makeCustomAutoField(autoFieldProps);
-    } else {
-      this.autoField = CustomAutoField;
-    }
-  }
-
-  handleSubmit = (...args) => {
-    const { onSubmit, onSuccessMessage } = this.props;
-
-    return Promise.resolve(onSubmit(...args)).then(() =>
+const CustomAutoForm = ({
+  autoFieldProps,
+  children,
+  layout,
+  model,
+  omitFields,
+  onSubmit,
+  onSuccessMessage,
+  placeholder = true,
+  schema,
+  schemaKeys,
+  submitFieldProps,
+  ...props
+}: CustomAutoFormProps) => {
+  const handleSubmit = (...args) =>
+    Promise.resolve(onSubmit(...args)).then(() =>
       import('../../utils/message').then(({ default: message }) => {
         message.success(
           onSuccessMessage
@@ -49,52 +50,45 @@ class CustomAutoForm extends PureComponent<CustomAutoFormProps> {
         );
       }),
     );
-  };
 
-  render() {
-    const {
-      children,
-      model,
-      omitFields,
-      placeholder = true,
-      submitFieldProps,
-      layout,
-      schemaKeys,
-      onSubmit,
-      onSuccessMessage,
-      ...props
-    } = this.props;
+  const bridgedSchema = useMemo(() => new SimpleSchema2Bridge(schema), [
+    schema,
+  ]);
 
-    return (
-      <AutoForm
-        showInlineError
-        model={pickBy(model, (_, key) => !key.startsWith('$'))}
-        placeholder={placeholder}
-        className="autoform"
-        onSubmit={this.handleSubmit}
-        {...props}
-      >
-        {children || (
-          <>
-            {layout ? (
-              <AutoFormLayout
-                AutoField={this.autoField}
-                layout={layout}
-                schemaKeys={schemaKeys}
-              />
-            ) : (
-              <CustomAutoFields
-                omitFields={omitFields}
-                autoField={this.autoField}
-              />
-            )}
-            <CustomSubmitField {...submitFieldProps} />
-          </>
-        )}
-      </AutoForm>
-    );
-  }
-}
+  const autoField = useMemo(() => {
+    if (autoFieldProps) {
+      return makeCustomAutoField(autoFieldProps);
+    }
+    return CustomAutoField;
+  }, []);
+
+  return (
+    <AutoForm
+      showInlineError
+      model={pickBy(model, (_, key) => !key.startsWith('$'))}
+      placeholder={placeholder}
+      className="autoform"
+      onSubmit={handleSubmit}
+      schema={bridgedSchema}
+      {...props}
+    >
+      {children || (
+        <>
+          {layout ? (
+            <AutoFormLayout
+              AutoField={autoField}
+              layout={layout}
+              schemaKeys={schemaKeys}
+            />
+          ) : (
+            <CustomAutoFields omitFields={omitFields} autoField={autoField} />
+          )}
+          <CustomSubmitField {...submitFieldProps} />
+        </>
+      )}
+    </AutoForm>
+  );
+};
 
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;

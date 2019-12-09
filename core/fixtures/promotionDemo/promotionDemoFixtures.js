@@ -5,7 +5,6 @@ import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
-import { proPromotion, adminPromotions } from 'core/api/fragments';
 import LoanService from '../../api/loans/server/LoanService';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';

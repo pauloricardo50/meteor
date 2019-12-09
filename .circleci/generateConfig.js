@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_1'; // Use a different branch name if you're playing with the cache version outside of master
+const CACHE_VERSION = 'ci_test_4'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -14,7 +14,7 @@ const defaultJobValues = {
         LANGUAGE: 'C.UTF-8',
         LC_ALL: 'C.UTF-8',
         LC_NUMERIC: 'en_US.UTF-8',
-        METEOR_VERSION: '1.8.1',
+        METEOR_VERSION: '1.8.2',
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
@@ -23,6 +23,7 @@ const defaultJobValues = {
         DEBUG: false, // Helps
         // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
+        METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
       },
     },
   ],

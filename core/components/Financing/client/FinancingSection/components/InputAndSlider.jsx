@@ -3,6 +3,7 @@ import React from 'react';
 import cx from 'classnames';
 import { AutoForm } from 'uniforms-material';
 import SimpleSchema from 'simpl-schema';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 
 import { compose, withProps } from 'recompose';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
@@ -29,7 +30,7 @@ export const InputAndSlider = ({
   <div className={cx('input-and-slider', className)}>
     <AutoForm
       onSubmit={updateStructure}
-      schema={schema}
+      schema={new SimpleSchema2Bridge(schema)}
       model={{ [id]: value }}
       autosave
       autosaveDelay={500}
