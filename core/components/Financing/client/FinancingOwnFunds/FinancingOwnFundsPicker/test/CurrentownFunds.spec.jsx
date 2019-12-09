@@ -20,7 +20,7 @@ describe('CurrentOwnFunds', () => {
         type: OWN_FUNDS_TYPES.BANK_FORTUNE,
         borrowerId: 'id',
       },
-      borrowers: [{ bankFortune: 100, _id: 'id' }],
+      borrowers: [{ bankFortune: [{ value: 100 }], _id: 'id' }],
       structure: { ownFunds: [] },
     };
   });
@@ -62,7 +62,7 @@ describe('CurrentOwnFunds', () => {
   });
 
   it('displays an error message if funds have changed to be lower than used', () => {
-    props.borrowers = [{ firstName: 'joe', _id: 'id1', bankFortune: 20 }];
+    props.borrowers = [{ firstName: 'joe', _id: 'id1', bankFortune: [{ value: 20 }] }];
     props.ownFunds = [
       {
         borrowerId: 'id1',
@@ -79,7 +79,7 @@ describe('CurrentOwnFunds', () => {
   });
 
   it('displays an error message if funds have changed to be lower than used', () => {
-    props.borrowers = [{ firstName: 'joe', _id: 'id1', bankFortune: 150 }];
+    props.borrowers = [{ firstName: 'joe', _id: 'id1', bankFortune: [{ value: 150 }] }];
     props.ownFunds = {
       borrowerId: 'id1',
       value: 80,

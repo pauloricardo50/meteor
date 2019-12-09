@@ -78,7 +78,7 @@ describe('FinancingResult', () => {
         borrowers: [
           {
             _id: 'john',
-            bankFortune: 250000,
+            bankFortune: [{ value: 250000 }],
             salary: 200000,
             insurance2: [{ value: 50 }],
             insurance3A: [{ value: 60 }],
@@ -175,7 +175,7 @@ describe('FinancingResult', () => {
         borrowers: [
           {
             _id: 'John',
-            bankFortune: 250000,
+            bankFortune: [{ value: 250000 }],
             salary: 200000,
             insurance2: [{ value: 1000 }],
             insurance3A: [{ value: 500 }],

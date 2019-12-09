@@ -38,7 +38,7 @@ import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
-describe('LoanService', function() {
+describe('LoanService', function () {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1378,7 +1378,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1386,7 +1386,7 @@ describe('LoanService', function() {
         loans: {
           _id: 'loanId',
           borrowers: {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },
@@ -1436,7 +1436,7 @@ describe('LoanService', function() {
         loans: {
           _id: 'loanId',
           borrowers: {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },

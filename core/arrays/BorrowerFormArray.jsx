@@ -14,10 +14,10 @@ import BorrowerAddPartner from '../components/BorrowerAddPartner';
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
   civilStatus === constants.CIVIL_STATUS.MARRIED && !multiple && isFirst;
 
-const makeArrayOfObjectsInput = id => ({
+const makeArrayOfObjectsInput = (id, required = false) => ({
   id,
   type: 'arrayInput',
-  required: false,
+  required,
   inputs: [
     { id: 'description', type: 'textInput' },
     { id: 'value', type: 'textInput', money: true },
@@ -266,7 +266,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
       required: false,
       className: 'v-align-fortune',
     },
-    { id: 'bankFortune', type: 'textInput', money: true },
+    makeArrayOfObjectsInput('bankFortune', true),
     makeArrayOfObjectsInput('donation'),
     {
       id: 'realEstate',
@@ -288,31 +288,31 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
           Component: ({
             inputProps: { currentValue, label, itemValue = {} },
           }) => (
-            <div className="flex-col" style={{ paddingLeft: 12 }}>
-              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
-                {label}
-              </label>
-              <b>
-                <Money
-                  id="theoreticalExpenses"
-                  value={
-                    currentValue || Calculator.getRealEstateCost(itemValue)
-                  }
-                  tooltip={
-                    currentValue ? (
-                      undefined
-                    ) : (
-                      <T id="Forms.theoreticalExpenses.tooltip" />
-                    )
-                  }
-                />
-                <span>
-                  &nbsp;/
+              <div className="flex-col" style={{ paddingLeft: 12 }}>
+                <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                  {label}
+                </label>
+                <b>
+                  <Money
+                    id="theoreticalExpenses"
+                    value={
+                      currentValue || Calculator.getRealEstateCost(itemValue)
+                    }
+                    tooltip={
+                      currentValue ? (
+                        undefined
+                      ) : (
+                          <T id="Forms.theoreticalExpenses.tooltip" />
+                        )
+                    }
+                  />
+                  <span>
+                    &nbsp;/
                   <T id="general.month" />
-                </span>
-              </b>
-            </div>
-          ),
+                  </span>
+                </b>
+              </div>
+            ),
         },
       ],
     },
@@ -371,7 +371,7 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
     },
   ];
 
-  const fortuneArray = [{ id: 'bankFortune', type: 'textInput', money: true }];
+  const fortuneArray = [{ id: 'bankFortuneSimple', type: 'textInput', money: true }];
 
   const insuranceArray = [
     { id: 'insurance2Simple', type: 'textInput', money: true, required: false },

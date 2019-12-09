@@ -19,23 +19,23 @@ const MAX_BOUND_MULTIPLICATION_FACTOR = 2;
 const OWN_FUNDS_ROUNDING_ALGO = 100;
 const INITIAL_BORROW_RATIO_STEP_SIZE = 0.05;
 
-export const withSolvencyCalculator = (SuperClass = class {}) =>
+export const withSolvencyCalculator = (SuperClass = class { }) =>
   class extends SuperClass {
     getAllowedOwnFundsTypes({ residenceType }) {
       return residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
         ? [
-            OWN_FUNDS_TYPES.DONATION,
-            OWN_FUNDS_TYPES.BANK_FORTUNE,
-            OWN_FUNDS_TYPES.INSURANCE_3A,
-            OWN_FUNDS_TYPES.BANK_3A,
-            OWN_FUNDS_TYPES.INSURANCE_3B,
-            OWN_FUNDS_TYPES.INSURANCE_2,
-          ]
+          OWN_FUNDS_TYPES.DONATION,
+          OWN_FUNDS_TYPES.BANK_FORTUNE,
+          OWN_FUNDS_TYPES.INSURANCE_3A,
+          OWN_FUNDS_TYPES.BANK_3A,
+          OWN_FUNDS_TYPES.INSURANCE_3B,
+          OWN_FUNDS_TYPES.INSURANCE_2,
+        ]
         : [
-            OWN_FUNDS_TYPES.DONATION,
-            OWN_FUNDS_TYPES.BANK_FORTUNE,
-            OWN_FUNDS_TYPES.INSURANCE_3B,
-          ];
+          OWN_FUNDS_TYPES.DONATION,
+          OWN_FUNDS_TYPES.BANK_FORTUNE,
+          OWN_FUNDS_TYPES.INSURANCE_3B,
+        ];
     }
 
     ownFundTypeRequiresUsageType({ type }) {

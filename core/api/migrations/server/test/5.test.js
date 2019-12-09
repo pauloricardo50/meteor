@@ -49,7 +49,7 @@ describe.skip('Migration 5', () => {
         loans: loanIds.map(_id => ({
           _id,
           borrowers: {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },
@@ -99,7 +99,7 @@ describe.skip('Migration 5', () => {
         loans: loanIds.map(_id => ({
           _id,
           borrowers: {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },

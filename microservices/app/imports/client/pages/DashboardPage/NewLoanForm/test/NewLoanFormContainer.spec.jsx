@@ -70,7 +70,7 @@ describe('NewLoanFormContainer', () => {
     props.loan = {
       name: 'test',
       properties: [{ value: 100 }],
-      borrowers: [{ salary: 100, bankFortune: 100 }],
+      borrowers: [{ salary: 100, bankFortune: [{ value: 100 }] }],
     };
 
     expect(component().props())

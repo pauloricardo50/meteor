@@ -30,7 +30,7 @@ import MiddlewareManager from '../MiddlewareManager';
 import { borrowerExtractorMiddleware } from './middleware';
 import { getAgeFromBirthDate } from '../borrowerUtils';
 
-export const withBorrowerCalculator = (SuperClass = class {}) =>
+export const withBorrowerCalculator = (SuperClass = class { }) =>
   class extends SuperClass {
     constructor(config) {
       super(config);
@@ -167,6 +167,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         OWN_FUNDS_TYPES.BANK_3A,
         OWN_FUNDS_TYPES.INSURANCE_3B,
         OWN_FUNDS_TYPES.DONATION,
+        OWN_FUNDS_TYPES.BANK_FORTUNE
       ].includes(type);
 
     getFunds({ borrowers, type }) {
@@ -178,7 +179,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getFortune({ borrowers }) {
-      return this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
+      return this.getArrayValues({
+        borrowers,
+        key: OWN_FUNDS_TYPES.BANK_FORTUNE,
+      });
     }
 
     getDonationFortune({ borrowers }) {
@@ -809,7 +813,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }
 
       const bankFortune = this.getFortune({ borrowers });
-      if (!bankFortune || bankFortune === 0) {
+      if (!bankFortune) {
         return false;
       }
 

@@ -39,28 +39,33 @@ const BorrowerForm = ({
         doc={
           simple
             ? {
-                ...borrower,
-                insurance2Simple:
-                  (borrower.insurance2 &&
-                    !!borrower.insurance2.length &&
-                    borrower.insurance2[0].value) ||
-                  undefined,
-                bank3ASimple:
-                  (borrower.bank3A &&
-                    !!borrower.bank3A.length &&
-                    borrower.bank3A[0].value) ||
-                  undefined,
-                insurance3ASimple:
-                  (borrower.insurance3A &&
-                    !!borrower.insurance3A.length &&
-                    borrower.insurance3A[0].value) ||
-                  undefined,
-                insurance3BSimple:
-                  (borrower.insurance3B &&
-                    !!borrower.insurance3B.length &&
-                    borrower.insurance3B[0].value) ||
-                  undefined,
-              }
+              ...borrower,
+              bankFortuneSimple:
+                (borrower.bankFortune &&
+                  !!borrower.bankFortune.length &&
+                  borrower.bankFortune[0].value) ||
+                undefined,
+              insurance2Simple:
+                (borrower.insurance2 &&
+                  !!borrower.insurance2.length &&
+                  borrower.insurance2[0].value) ||
+                undefined,
+              bank3ASimple:
+                (borrower.bank3A &&
+                  !!borrower.bank3A.length &&
+                  borrower.bank3A[0].value) ||
+                undefined,
+              insurance3ASimple:
+                (borrower.insurance3A &&
+                  !!borrower.insurance3A.length &&
+                  borrower.insurance3A[0].value) ||
+                undefined,
+              insurance3BSimple:
+                (borrower.insurance3B &&
+                  !!borrower.insurance3B.length &&
+                  borrower.insurance3B[0].value) ||
+                undefined,
+            }
             : borrower
         }
         disabled={!userFormsEnabled}
