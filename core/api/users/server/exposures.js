@@ -131,8 +131,7 @@ exposeQuery({
       }) => {
         let organisationId;
         if (!providedOrganisationId) {
-          const { organisations = [] } = UserService.fetchOne({
-            $filters: { _id: userId },
+          const { organisations = [] } = UserService.get(userId, {
             organisations: { _id: 1 },
           });
           organisationId = !!organisations.length && organisations[0]._id;

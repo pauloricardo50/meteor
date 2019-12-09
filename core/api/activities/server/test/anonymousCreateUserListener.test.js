@@ -39,8 +39,7 @@ describe('anonymousCreateUserListener', function() {
 
     await checkEmails(1);
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { activities = [] } = UserService.get(userId, {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
@@ -71,8 +70,7 @@ describe('anonymousCreateUserListener', function() {
     });
     await checkEmails(1);
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { activities = [] } = UserService.get(userId, {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
@@ -107,8 +105,7 @@ describe('anonymousCreateUserListener', function() {
     });
     await checkEmails(1);
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { activities = [] } = UserService.get(userId, {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);
@@ -146,8 +143,7 @@ describe('anonymousCreateUserListener', function() {
     });
     await checkEmails(1);
 
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { activities = [] } = UserService.get(userId, {
       activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
     expect(activities.length).to.equal(2);

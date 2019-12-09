@@ -49,7 +49,7 @@ downloadPDF.setHandler(() => {
 
 addBorrower.setHandler((context, { loanId, borrower }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  const loan = LoanService.findOne(loanId);
+  const loan = LoanService.get(loanId, { userId: 1, borrowerIds: 1 });
 
   // A loan can't have more than 2 borrowers at the moment
   if (loan.borrowerIds.length >= 2) {
@@ -69,7 +69,7 @@ addBorrower.setHandler((context, { loanId, borrower }) => {
 
 setUserToLoan.setHandler((context, { loanId }) => {
   SecurityService.checkLoggedIn();
-  const loan = LoanService.findOne(loanId);
+  const loan = LoanService.get(loanId, { borrowerIds: 1, propertyId: 1 });
   const { borrowerIds, propertyId } = loan;
 
   if (loan.userId) {
@@ -89,7 +89,7 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
 
-  const loan = LoanService.findOne(loanId);
+  const loan = LoanService.get(loanId, { borrowerIds: 1 });
 
   // A loan has to have at least 1 borrower
   if (loan.borrowerIds.length <= 1) {
@@ -160,7 +160,7 @@ updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
     if (collection === LOANS_COLLECTION) {
       SecurityService.loans.isAllowedToUpdate(docId);
     } else {
-      const doc = service.findOne(docId);
+      const doc = service.get(docId, { userId: 1, userLinks: 1 });
       SecurityService.checkOwnership(doc);
     }
   }
@@ -185,12 +185,11 @@ generateScenario.setHandler(({ userId }, { scenario }) => {
 
 referralExists.setHandler((context, params) => {
   const { refId } = params;
-  const referralUser = UserService.fetchOne({
-    $filters: { _id: refId, roles: { $in: [ROLES.PRO] } },
-  });
-  const referralOrg = OrganisationService.fetchOne({
-    $filters: { _id: refId },
-  });
+  const referralUser = UserService.get(
+    { _id: refId, roles: { $in: [ROLES.PRO] } },
+    { _id: 1 },
+  );
+  const referralOrg = OrganisationService.get(refId, { _id: 1 });
 
   return !!referralUser || !!referralOrg;
 });

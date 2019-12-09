@@ -20,9 +20,12 @@ export class LotService extends CollectionService {
   };
 
   update = ({ lotId, object: { promotionLotId, ...rest } }) => {
-    const currentPromotionLot = PromotionLotService.findOne({
-      'lotLinks._id': lotId,
-    });
+    const currentPromotionLot = PromotionLotService.get(
+      {
+        'lotLinks._id': lotId,
+      },
+      { status: 1 },
+    );
 
     const currentPromotionLotId = currentPromotionLot
       ? currentPromotionLot._id

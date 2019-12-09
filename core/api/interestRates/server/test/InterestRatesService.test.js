@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import InterestRatesService from '../InterestRatesService';
+import { interestRates } from '../../../fragments'
 
 describe('InterestRatesService', () => {
   beforeEach(() => {
@@ -16,7 +17,7 @@ describe('InterestRatesService', () => {
         interest10: { rateLow: 0.01234 },
         date: new Date(),
       });
-      const rates = InterestRatesService.findOne(id);
+      const rates = InterestRatesService.get(id, interestRates());
       expect(rates.interest10).to.deep.equal({ rateLow: 0.0123 });
     });
 
@@ -25,7 +26,7 @@ describe('InterestRatesService', () => {
         interest10: { rateLow: 0.0093 },
         date: new Date(),
       });
-      const rates = InterestRatesService.findOne(id);
+      const rates = InterestRatesService.get(id, interestRates());
       expect(rates.interest10).to.deep.equal({ rateLow: 0.0093 });
     });
   });

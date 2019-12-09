@@ -72,8 +72,7 @@ exposeQuery({
         }
 
         if (fetchOrganisationProperties) {
-          const { organisations = [] } = UserService.fetchOne({
-            $filters: { _id: userId },
+          const { organisations = [] } = UserService.get(userId, {
             organisations: { users: { _id: 1 } },
           });
 

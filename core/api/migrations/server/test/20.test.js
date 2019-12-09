@@ -6,6 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { EXPENSES } from 'core/api/borrowers/borrowerConstants';
 import Borrowers from '../../../borrowers';
 import { up, down } from '../20';
+import BorrowerService from '../../../borrowers/server/BorrowerService';
 
 describe('Migration 20', () => {
   beforeEach(() => {
@@ -26,8 +27,16 @@ describe('Migration 20', () => {
 
       await up();
 
-      const borrower1 = Borrowers.findOne('b1');
-      const borrower2 = Borrowers.findOne('b2');
+      const borrower1 = BorrowerService.get('b1', {
+        thirdPartyFortune: 1,
+        donation: 1,
+        additionalDocuments: 1,
+      });
+      const borrower2 = BorrowerService.get('b2', {
+        thirdPartyFortune: 1,
+        donation: 1,
+        additionalDocuments: 1,
+      });
 
       expect(borrower1.thirdPartyFortune).to.equal(undefined);
       expect(borrower1.donation.length).to.equal(1);
@@ -64,8 +73,8 @@ describe('Migration 20', () => {
 
       await up();
 
-      const borrower1 = Borrowers.findOne('b1');
-      const borrower2 = Borrowers.findOne('b2');
+      const borrower1 = BorrowerService.get('b1', { expenses: 1 });
+      const borrower2 = BorrowerService.get('b2', { expenses: 1 });
 
       expect(borrower1.expenses.length).to.equal(3);
       expect(borrower1.expenses).to.deep.equal([
@@ -91,8 +100,8 @@ describe('Migration 20', () => {
 
       await down();
 
-      const borrower1 = Borrowers.findOne('b1');
-      const borrower2 = Borrowers.findOne('b2');
+      const borrower1 = BorrowerService.get('b1', { donation: 1, thirdPartyFortune: 1 });
+      const borrower2 = BorrowerService.get('b2', { donation: 1, thirdPartyFortune: 1 });
 
       expect(borrower1.donation).to.equal(undefined);
       expect(borrower1.thirdPartyFortune).to.equal(1500);
@@ -115,8 +124,8 @@ describe('Migration 20', () => {
 
       await down();
 
-      const borrower1 = Borrowers.findOne('b1');
-      const borrower2 = Borrowers.findOne('b2');
+      const borrower1 = BorrowerService.get('b1', { expenses: 1 });
+      const borrower2 = BorrowerService.get('b2', { expenses: 1 });
 
       expect(borrower1.expenses.length).to.equal(3);
       expect(borrower1.expenses).to.deep.equal([

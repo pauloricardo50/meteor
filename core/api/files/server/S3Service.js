@@ -16,6 +16,11 @@ import {
 import { PROPERTY_CATEGORY } from '../../constants';
 import FileService from './FileService';
 import SecurityService from '../../security';
+import LoanService from '../../loans/server/LoanService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -51,25 +56,31 @@ class S3Service {
 
     // Check if this user is the owner of the document
     const { docId: keyId } = FileService.getKeyParts(key);
-    const loanFound = !!Loans.findOne({
-      _id: keyId,
-      userId,
-    });
+    const loanFound = !!LoanService.get(
+      {
+        _id: keyId,
+        userId,
+      },
+      { _id: 1 },
+    );
 
     if (loanFound) {
       return true;
     }
 
-    const borrowerFound = !!Borrowers.findOne({
-      _id: keyId,
-      userId,
-    });
+    const borrowerFound = !!BorrowerService.get(
+      {
+        _id: keyId,
+        userId,
+      },
+      { _id: 1 },
+    );
 
     if (borrowerFound) {
       return true;
     }
 
-    const property = Properties.findOne({ _id: keyId });
+    const property = PropertyService.get(keyId, { category: 1, userId: 1 });
 
     if (property) {
       if (!property.category || property.category === PROPERTY_CATEGORY.USER) {
@@ -82,13 +93,13 @@ class S3Service {
       return true;
     }
 
-    const promotionFound = !!Promotions.findOne({ _id: keyId });
+    const promotionFound = !!PromotionService.get(keyId, { _id: 1 });
 
     if (promotionFound) {
       return true;
     }
 
-    const promotionOption = PromotionOptions.findOne({ _id: keyId });
+    const promotionOption = PromotionOptionService.get(keyId, { _id: 1 });
 
     if (promotionOption) {
       try {

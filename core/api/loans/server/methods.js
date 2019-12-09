@@ -135,10 +135,7 @@ export const duplicateStructureHandler = (context, { loanId, structureId }) => {
 duplicateStructure.setHandler(duplicateStructureHandler);
 
 assignLoanToUser.setHandler(({ userId }, params) => {
-  const { anonymous } = LoanService.fetchOne({
-    $filters: { _id: params.loanId },
-    anonymous: 1,
-  });
+  const { anonymous } = LoanService.get(params.loanId, { anonymous: 1 });
 
   if (anonymous) {
     SecurityService.loans.checkAnonymousLoan(params.loanId);
@@ -218,8 +215,7 @@ anonymousLoanInsert.setHandler((context, params) => {
     // If an anonymous loan exists on the client, don't add another one
     // If a new property is requested on it, add it to the existing loan
     if (proPropertyId) {
-      const existingLoan = LoanService.fetchOne({
-        $filters: { _id: existingAnonymousLoanId },
+      const existingLoan = LoanService.get(existingAnonymousLoanId, {
         propertyIds: 1,
       });
 

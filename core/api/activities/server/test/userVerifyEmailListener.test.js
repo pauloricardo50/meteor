@@ -27,9 +27,8 @@ describe('userVerifyEmailListener', () => {
 
   it('adds activity on the user', async () => {
     await ddpWithUserId('user', () => userVerifyEmail.run({}));
-    const { activities = [] } = UserService.fetchOne({
-      $filters: { _id: 'user' },
-      activities: { type: 1, title: 1, metadata: 1 },
+    const { activities = [] } = UserService.get('user', {
+      activities: { type: 1, description: 1, title: 1, metadata: 1 },
     });
 
     expect(activities.length).to.equal(1);

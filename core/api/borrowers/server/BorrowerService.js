@@ -1,12 +1,11 @@
+import { adminBorrower } from 'core/api/fragments';
 import Borrowers from '../borrowers';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
-import { fullBorrower } from '../../fragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
     super(Borrowers);
-    this.get = this.makeGet(fullBorrower());
   }
 
   update = ({ borrowerId, object }) =>
@@ -17,7 +16,7 @@ export class BorrowerService extends CollectionService {
 
   remove = ({ borrowerId, loanId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    const borrower = this.get(borrowerId);
+    const borrower = this.get(borrowerId, adminBorrower());
     if (borrower.loans && borrower.loans.length > 1) {
       const loansLink = this.getLink(borrowerId, 'loans');
       if (loanId) {
@@ -45,7 +44,7 @@ export class BorrowerService extends CollectionService {
   getReusableBorrowers({ loanId, borrowerId }) {
     // borrowerId can be the previous removed borrower, and therefore
     // this line will fail if we don't provide a default empty object
-    const { userId, loans } = this.get(borrowerId) || {};
+    const { userId, loans } = this.get(borrowerId, adminBorrower()) || {};
     if (!userId) {
       return { borrowers: [], isLastLoan: true };
     }
@@ -55,7 +54,7 @@ export class BorrowerService extends CollectionService {
       name: 1,
       loans: { name: 1 },
     });
-    const loan = LoanService.findOne(loanId);
+    const loan = LoanService.get(loanId, { borrowerIds: 1 });
     const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 
     const borrowersNotOnLoan = userBorrowers.filter(
@@ -66,8 +65,7 @@ export class BorrowerService extends CollectionService {
   }
 
   cleanUpMortgageNotes({ borrowerId }) {
-    const { mortgageNotes = [], loans = [] } = this.fetchOne({
-      $filters: { _id: borrowerId },
+    const { mortgageNotes = [], loans = [] } = this.get(borrowerId, {
       mortgageNotes: { _id: 1 },
       loans: { structures: 1 },
     });

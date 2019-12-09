@@ -158,9 +158,7 @@ proInviteUser.setHandler((context, params) => {
 
   if (properties && properties.length) {
     properties.forEach(({ externalId }) => {
-      const existingProperty = PropertyService.fetchOne({
-        $filters: { externalId },
-      });
+      const existingProperty = PropertyService.get({ externalId }, { _id: 1 });
       if (existingProperty) {
         SecurityService.properties.isAllowedToInviteCustomers({
           userId,
@@ -185,11 +183,13 @@ getUserByEmail.setHandler(({ userId }, { email }) => {
   const user = UserService.getByEmail(email);
 
   if (user) {
-    return UserService.fetchOne({
-      $filters: { $and: [{ _id: user._id }, { roles: { $in: [ROLES.PRO] } }] },
-      name: 1,
-      organisations: { name: 1 },
-    });
+    return UserService.get(
+      { $and: [{ _id: user._id }, { roles: { $in: [ROLES.PRO] } }] },
+      {
+        name: 1,
+        organisations: { name: 1 },
+      },
+    );
   }
 });
 

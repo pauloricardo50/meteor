@@ -21,7 +21,7 @@ import OrganisationService from 'core/api/organisations/server/OrganisationServi
 import LoanService from 'core/api/loans/server/LoanService';
 import PropertyService from 'core/api/properties/server/PropertyService';
 import Loans from 'core/api/loans/loans';
-import { loanBase } from 'core/api/fragments';
+import { loanBase, adminLoan, fullUser } from 'core/api/fragments';
 import Users from 'core/api/users/users';
 import {
   createLoginToken,
@@ -117,9 +117,12 @@ Meteor.methods({
     LenderRulesService.initialize({ organisationId });
   },
   insertPromotion() {
-    const { _id: userId } = UserService.findOne({
-      'emails.address': PRO_EMAIL,
-    });
+    const { _id: userId } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL,
+      },
+      { _id: 1 },
+    );
     PromotionService.insert({
       userId,
       promotion: {
@@ -133,9 +136,7 @@ Meteor.methods({
     });
   },
   async insertFullPromotion() {
-    const admin = await UserService.fetchOne({
-      $filters: { roles: ROLES.ADMIN },
-    });
+    const admin = await UserService.get({ roles: ROLES.ADMIN }, { _id: 1 });
     if (!admin) {
       const adminId = await Accounts.createUser({
         email: ADMIN_EMAIL,
@@ -149,15 +150,24 @@ Meteor.methods({
     PromotionService.remove({ promotionId: {} });
   },
   addProUsersToPromotion() {
-    const { _id: userId } = UserService.findOne({
-      'emails.address': PRO_EMAIL,
-    });
-    const { _id: userId2 } = UserService.findOne({
-      'emails.address': PRO_EMAIL_2,
-    });
-    const { _id: userId3 } = UserService.findOne({
-      'emails.address': PRO_EMAIL_3,
-    });
+    const { _id: userId } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL,
+      },
+      { _id: 1 },
+    );
+    const { _id: userId2 } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL_2,
+      },
+      { _id: 1 },
+    );
+    const { _id: userId3 } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL_3,
+      },
+      { _id: 1 },
+    );
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -169,10 +179,16 @@ Meteor.methods({
     });
   },
   setInvitedBy({ email }) {
-    const { _id: userId } = UserService.findOne({
-      'emails.address': PRO_EMAIL,
-    });
-    const { _id: invitedBy } = UserService.findOne({ 'emails.address': email });
+    const { _id: userId } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL,
+      },
+      { _id: 1 },
+    );
+    const { _id: invitedBy } = UserService.get(
+      { 'emails.address': email },
+      { _id: 1 },
+    );
     const promotions =
       PromotionService.find(
         { 'userLinks._id': userId },
@@ -191,9 +207,12 @@ Meteor.methods({
     });
   },
   setUserPermissions({ permissions }) {
-    const { _id: userId } = UserService.findOne({
-      'emails.address': PRO_EMAIL,
-    });
+    const { _id: userId } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL,
+      },
+      { _id: 1 },
+    );
     const promotions =
       PromotionService.find(
         { 'userLinks._id': userId },
@@ -205,9 +224,12 @@ Meteor.methods({
     );
   },
   setPromotionStatus({ status }) {
-    const { _id: userId } = UserService.findOne({
-      'emails.address': PRO_EMAIL,
-    });
+    const { _id: userId } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL,
+      },
+      { _id: 1 },
+    );
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -218,9 +240,12 @@ Meteor.methods({
     );
   },
   resetUserPermissions() {
-    const { _id: userId } = UserService.findOne({
-      'emails.address': PRO_EMAIL,
-    });
+    const { _id: userId } = UserService.get(
+      {
+        'emails.address': PRO_EMAIL,
+      },
+      { _id: 1 },
+    );
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -265,10 +290,7 @@ Meteor.methods({
     // UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
 
     const admin =
-      Users.findOne(
-        { roles: { $in: [ROLES.ADMIN] } },
-        { fields: { _id: 1 } },
-      ) || {};
+      UserService.get({ roles: { $in: [ROLES.ADMIN] } }, { _id: 1 }) || {};
 
     const solvencyLoan = userLoansE2E
       .clone({ userId, step: STEPS.SOLVENCY })
@@ -296,7 +318,7 @@ Meteor.methods({
       Accounts.sendResetPasswordEmail(userId2);
     } catch (error) { }
 
-    const user = UserService.findOne(userId2, { fields: { services: 1 } });
+    const user = UserService.get(userId2, { services: 1 });
 
     const passwordResetToken = user.services.password.reset.token;
 
@@ -315,7 +337,7 @@ Meteor.methods({
     let userId;
 
     if (toPromotion) {
-      const { _id: promotionId } = PromotionService.fetchOne();
+      const { _id: promotionId } = PromotionService.get({}, { _id: 1 });
       const { _id: proUserId } = UserService.getByEmail('broker1@e-potek.ch');
       const result = await UserService.proInviteUser({
         user: {
@@ -360,7 +382,7 @@ Meteor.methods({
   getLoginToken(email) {
     const user = email
       ? UserService.getByEmail(email)
-      : UserService.findOne({});
+      : UserService.get({}, { _id: 1 });
     const loginToken = UserService.getLoginToken({ userId: user._id });
     return loginToken;
   },
@@ -427,7 +449,11 @@ Meteor.methods({
     return userId;
   },
   getLoan(loanId) {
-    return LoanService.findOne(loanId);
+    return LoanService.get(loanId, {
+      ...adminLoan(),
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+    });
   },
   getUser(email) {
     return UserService.getByEmail(email);
@@ -440,7 +466,7 @@ Meteor.methods({
       borrowers: [borrower],
     } = loan;
 
-    const user = Users.findOne(loan.userId);
+    const user = UserService.get(loan.userId, fullUser());
 
     return { loan, user, property: properties[0], borrower };
   },
@@ -459,7 +485,10 @@ Meteor.methods({
     return service._update({ id: docId, object, operator });
   },
   startPromotionReservation() {
-    const { _id: promotionOptionId } = PromotionOptionService.fetchOne({});
+    const { _id: promotionOptionId } = PromotionOptionService.get(
+      {},
+      { _id: 1 },
+    );
     PromotionOptionService.activateReservation({ promotionOptionId });
   },
 });

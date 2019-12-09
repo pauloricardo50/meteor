@@ -22,7 +22,7 @@ class UpdateWatcherService extends CollectionService {
 
   addUpdateWatching({ collection, fields, shouldWatch = () => true }) {
     const that = this;
-    const hookHandle = collection.after.update(function(
+    const hookHandle = collection.after.update(function (
       userId,
       doc,
       fieldNames,
@@ -53,10 +53,10 @@ class UpdateWatcherService extends CollectionService {
   }
 
   updateWatcher({ collectionName, doc, changedFields, previousDoc, userId }) {
-    const existingUpdateWatcher = this.findOne({
+    const existingUpdateWatcher = this.get({
       collection: collectionName,
       docId: doc._id,
-    });
+    }, { userId: 1, docId: 1, collection: 1, updatedFields: 1 });
 
     if (!existingUpdateWatcher) {
       this.insertWatcher({
@@ -162,8 +162,7 @@ class UpdateWatcherService extends CollectionService {
     collection,
     updatedFields,
   }) {
-    const user = UserService.fetchOne({
-      $filters: { _id: userId },
+    const user = UserService.get(userId, {
       assignedEmployee: { email: 1 },
       name: 1,
       roles: 1,
@@ -208,8 +207,7 @@ class UpdateWatcherService extends CollectionService {
       }
 
       case LOANS_COLLECTION: {
-        const { name, promotions, hasPromotion } = LoanService.fetchOne({
-          $filters: { _id: docId },
+        const { name, promotions, hasPromotion } = LoanService.get(docId, {
           name: 1,
           promotions: { name: 1 },
           hasPromotion: 1,
@@ -285,19 +283,19 @@ class UpdateWatcherService extends CollectionService {
     const removedValues =
       previousValue.length > currentValue.length
         ? previousValue
-            .map((item, i) => {
-              if (i >= currentValue.length) {
-                const prefix = `\`${i + 1}\`\n`;
+          .map((item, i) => {
+            if (i >= currentValue.length) {
+              const prefix = `\`${i + 1}\`\n`;
 
-                return `${prefix}${this.formatValue(
-                  item,
-                  fieldName,
-                )} -> _supprimé_`;
-              }
-              return null;
-            })
-            .filter(x => x)
-            .join('\n')
+              return `${prefix}${this.formatValue(
+                item,
+                fieldName,
+              )} -> _supprimé_`;
+            }
+            return null;
+          })
+          .filter(x => x)
+          .join('\n')
         : '';
 
     return `*${Intl.formatMessage({
@@ -340,8 +338,8 @@ class UpdateWatcherService extends CollectionService {
       return value === 0
         ? '0'
         : value > 1
-        ? toMoney(value)
-        : `${percentFormatters.format(value)}%`;
+          ? toMoney(value)
+          : `${percentFormatters.format(value)}%`;
     }
 
     if (!value) {

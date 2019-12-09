@@ -53,7 +53,7 @@ describe('BorrowerService ', () => {
         object: { firstName: 'bob' },
       });
 
-      const { firstName } = BorrowerService.get(borrower._id);
+      const { firstName } = BorrowerService.get(borrower._id, { firstName: 1 });
 
       expect(firstName).to.equal('Bob');
     });
@@ -90,10 +90,10 @@ describe('BorrowerService ', () => {
 
       expect(BorrowerService.find({}).count()).to.equal(1);
 
-      const loan = LoanService.findOne(loanId);
+      const loan = LoanService.get(loanId, { borrowerIds: 1 });
       expect(loan.borrowerIds).to.deep.equal([]);
 
-      const loan2 = LoanService.findOne(loanId2);
+      const loan2 = LoanService.get(loanId2, { borrowerIds: 1 });
       expect(loan2.borrowerIds).to.deep.equal([borrowerId]);
     });
 
@@ -131,7 +131,9 @@ describe('BorrowerService ', () => {
 
   describe('additional documents', () => {
     it('adds initial documents when borrower is created', () => {
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
       expect(additionalDocuments).to.deep.equal(initialDocuments);
     });
 
@@ -159,7 +161,9 @@ describe('BorrowerService ', () => {
           donation: [{ value: 123, description: 'donation' }],
         },
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrower._id, {
+        additionalDocuments: 1,
+      });
       const expectedDocuments = [
         ...initialDocuments,
         { id: DOCUMENTS.RESIDENCY_PERMIT },
@@ -195,7 +199,9 @@ describe('BorrowerService ', () => {
           ],
         },
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -249,7 +255,9 @@ describe('BorrowerService ', () => {
           ],
         },
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -275,7 +283,9 @@ describe('BorrowerService ', () => {
         additionalDocId: 'testDoc',
         requiredByAdmin: true,
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -294,7 +304,9 @@ describe('BorrowerService ', () => {
         additionalDocId: 'testDoc',
         requiredByAdmin: false,
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -313,7 +325,9 @@ describe('BorrowerService ', () => {
         additionalDocId: DOCUMENTS.IDENTITY,
         requiredByAdmin: true,
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       const expectedDocuments = [
         ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
@@ -332,7 +346,9 @@ describe('BorrowerService ', () => {
         additionalDocId: DOCUMENTS.IDENTITY,
         requiredByAdmin: false,
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       const expectedDocuments = [
         ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
@@ -352,7 +368,9 @@ describe('BorrowerService ', () => {
         requiredByAdmin: true,
         label: 'test label',
       });
-      const { additionalDocuments } = BorrowerService.get(borrowerId);
+      const { additionalDocuments } = BorrowerService.get(borrowerId, {
+        additionalDocuments: 1,
+      });
 
       expect(additionalDocuments).to.deep.contain({
         id: 'testDoc',

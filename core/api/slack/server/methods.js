@@ -4,11 +4,12 @@ import { notifyAssignee, logError, notifyOfUpload } from '../methodDefinitions';
 import UserService from '../../users/server/UserService';
 import SlackService from './SlackService';
 import SecurityService from '../../security';
+import { fullUser } from 'core/api/fragments';
 
 notifyAssignee.setHandler((context, { message, title }) => {
   context.unblock();
   SecurityService.checkLoggedIn();
-  const user = UserService.get(context.userId);
+  const user = UserService.get(context.userId, fullUser());
   SlackService.notifyAssignee({
     currentUser: user,
     message,
@@ -20,7 +21,7 @@ notifyAssignee.setHandler((context, { message, title }) => {
 notifyOfUpload.setHandler((context, params) => {
   context.unblock();
   SecurityService.checkLoggedIn();
-  const user = UserService.get(context.userId);
+  const user = UserService.get(context.userId, fullUser());
   SlackService.notifyOfUpload({ currentUser: user, ...params });
 });
 

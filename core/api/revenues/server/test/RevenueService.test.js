@@ -131,10 +131,7 @@ describe('RevenueService', () => {
         },
       });
 
-      const revenue = RevenueService.findOne(
-        { _id: 'rev' },
-        { fields: { loanCache: 1 } },
-      );
+      const revenue = RevenueService.get('rev', { loanCache: 1 });
 
       expect(revenue.loanCache).to.deep.equal([
         {
@@ -163,10 +160,7 @@ describe('RevenueService', () => {
 
       RevenueService.remove({ revenueId });
 
-      const loan = LoanService.fetchOne({
-        $filters: { _id: 'loan' },
-        revenueLinks: 1,
-      });
+      const loan = LoanService.get('loan', { revenueLinks: 1 });
 
       expect(loan.revenueLinks).to.deep.equal([]);
 

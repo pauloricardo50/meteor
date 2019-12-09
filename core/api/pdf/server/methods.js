@@ -8,6 +8,8 @@ import PDFService from './PDFService';
 import { PDF_TYPES } from '../pdfConstants';
 import Loans from '../../loans';
 import Organisations from '../../organisations';
+import LoanService from '../../loans/server/LoanService';
+import OrganisationService from '../../organisations/server/OrganisationService';
 
 generatePDF.setHandler((context, params) => {
   context.unblock();
@@ -24,9 +26,9 @@ const orgName = 'Swisslife';
 Meteor.startup(() => {
   if (Meteor.isDevelopment && PDF_TESTING) {
     Meteor.defer(() => {
-      const loanId = Loans.findOne({ name: loanName })._id;
+      const loanId = LoanService.get({ name: loanName }, { _id: 1 })._id;
       const organisationId = orgName
-        ? Organisations.findOne({ name: orgName })._id
+        ? OrganisationService.get({ name: orgName }, { _id: 1 })._id
         : '';
 
       if (!loanId) {

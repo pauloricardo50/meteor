@@ -22,9 +22,10 @@ const updatePropertyAPI = ({
   const exists = PropertyService.exists(propertyId);
 
   if (!exists) {
-    const propertyByExternalId = PropertyService.fetchOne({
-      $filters: { externalId: propertyId },
-    });
+    const propertyByExternalId = PropertyService.get(
+      { externalId: propertyId },
+      { _id: 1 },
+    );
     if (propertyByExternalId) {
       propertyId = propertyByExternalId._id;
     } else {
@@ -34,10 +35,7 @@ const updatePropertyAPI = ({
 
   return withMeteorUserId({ userId, impersonateUser }, () =>
     propertyUpdate.run({ propertyId, object }).then(() => {
-      const property = PropertyService.fetchOne({
-        $filters: { _id: propertyId },
-        ...apiProperty(),
-      });
+      const property = PropertyService.get(propertyId, apiProperty());
       return Promise.resolve({
         status: HTTP_STATUS_CODES.OK,
         message: `Property with id "${params.propertyId}" updated !`,

@@ -39,8 +39,7 @@ class LenderRulesService extends CollectionService {
   }
 
   insert({ organisationId, object = {}, logicRules }) {
-    const { lenderRules = [] } = OrganisationService.fetchOne({
-      $filters: { _id: organisationId },
+    const { lenderRules = [] } = OrganisationService.get(organisationId, {
       lenderRules: { _id: 1 },
     });
 

@@ -10,6 +10,7 @@ import Tasks from '../tasks';
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
 import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
+import { task as taskFragment } from '../../fragments';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -68,7 +69,7 @@ class TaskService extends CollectionService {
 
   update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
 
-  getTaskById = taskId => Tasks.findOne(taskId);
+  getTaskById = taskId => this.get(taskId, taskFragment());
 
   getTasksForDoc = docId => Tasks.find({ docId }).fetch();
 

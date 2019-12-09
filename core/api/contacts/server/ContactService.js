@@ -1,15 +1,15 @@
 import Contacts from '../contacts';
 import CollectionService from '../../helpers/CollectionService';
-import { fullContact } from '../../fragments';
 
 class ContactService extends CollectionService {
   constructor() {
     super(Contacts);
-    this.get = this.makeGet(fullContact);
   }
 
   changeOrganisations({ contactId, newOrganisations = [] }) {
-    const { organisations: oldOrganisations = [] } = this.get(contactId);
+    const { organisations: oldOrganisations = [] } = this.get(contactId, {
+      organisations: { _id: 1 },
+    });
 
     oldOrganisations.forEach(({ _id: organisationId }) =>
       this.removeLink({

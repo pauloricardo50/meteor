@@ -40,10 +40,7 @@ describe('LenderRulesService', () => {
 
       const {
         organisation: { name },
-      } = LenderRulesService.fetchOne({
-        $filters: { _id: rulesId },
-        organisation: { name: 1 },
-      });
+      } = LenderRulesService.get(rulesId, { organisation: { name: 1 } });
 
       expect(name).to.not.equal(undefined);
     });
@@ -52,14 +49,8 @@ describe('LenderRulesService', () => {
       const rulesId1 = LenderRulesService.insert({ organisationId });
       const rulesId2 = LenderRulesService.insert({ organisationId });
 
-      const { order: order1 } = LenderRulesService.fetchOne({
-        $filters: { _id: rulesId1 },
-        order: 1,
-      });
-      const { order: order2 } = LenderRulesService.fetchOne({
-        $filters: { _id: rulesId2 },
-        order: 1,
-      });
+      const { order: order1 } = LenderRulesService.get(rulesId1, { order: 1 });
+      const { order: order2 } = LenderRulesService.get(rulesId2, { order: 1 });
 
       expect(order1).to.equal(0);
       expect(order2).to.equal(1);
@@ -89,7 +80,8 @@ describe('LenderRulesService', () => {
       });
 
       expect(
-        LenderRulesService.findOne('rulesId').expensesSubtractFromIncome,
+        LenderRulesService.get('rulesId', { expensesSubtractFromIncome: 1 })
+          .expensesSubtractFromIncome,
       ).to.equal(undefined);
     });
   });
@@ -102,7 +94,7 @@ describe('LenderRulesService', () => {
         logicRules: [{ '>': [{ var: 'a' }, 2] }],
       });
 
-      const lenderRules = LenderRulesService.findOne(lenderRulesId);
+      const lenderRules = LenderRulesService.get(lenderRulesId, { filter: 1 });
 
       expect(jsonLogic.apply(lenderRules.filter, { a: 3 })).to.equal(true);
     });
@@ -119,8 +111,8 @@ describe('LenderRulesService', () => {
 
       LenderRulesService.setOrder({ orders: { [id1]: 1, [id2]: 0 } });
 
-      expect(LenderRulesService.findOne(id1).order).to.equal(1);
-      expect(LenderRulesService.findOne(id2).order).to.equal(0);
+      expect(LenderRulesService.get(id1, { order: 1 }).order).to.equal(1);
+      expect(LenderRulesService.get(id2, { order: 1 }).order).to.equal(0);
     });
 
     it('throws if you try to set an invalid order', () => {

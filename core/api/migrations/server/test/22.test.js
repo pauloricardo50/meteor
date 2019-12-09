@@ -10,6 +10,7 @@ import {
 } from 'core/api/activities/activityConstants';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { up, down } from '../22';
+import ActivityService from '../../../activities/server/ActivityService';
 
 describe('Migration 22', () => {
   beforeEach(() => resetDatabase());
@@ -29,11 +30,11 @@ describe('Migration 22', () => {
 
       await up();
 
-      const activity1 = Activities.findOne('1');
-      const activity2 = Activities.findOne('2');
-      const activity3 = Activities.findOne('3');
-      const activity4 = Activities.findOne('4');
-      const activity5 = Activities.findOne('5');
+      const activity1 = ActivityService.get('1', { type: 1, metadata: 1 });
+      const activity2 = ActivityService.get('2', { type: 1, metadata: 1 });
+      const activity3 = ActivityService.get('3', { type: 1, metadata: 1 });
+      const activity4 = ActivityService.get('4', { type: 1, metadata: 1 });
+      const activity5 = ActivityService.get('5', { type: 1, metadata: 1 });
 
       expect(activity1.type).to.equal(ACTIVITY_TYPES.EVENT);
       expect(activity1.metadata).to.deep.equal({
@@ -75,11 +76,31 @@ describe('Migration 22', () => {
 
       await down();
 
-      const activity1 = Activities.findOne('1');
-      const activity2 = Activities.findOne('2');
-      const activity3 = Activities.findOne('3');
-      const activity4 = Activities.findOne('4');
-      const activity5 = Activities.findOne('5');
+      const activity1 = ActivityService.get('1', {
+        type: 1,
+        secondaryType: 1,
+        metadata: 1,
+      });
+      const activity2 = ActivityService.get('2', {
+        type: 1,
+        secondaryType: 1,
+        metadata: 1,
+      });
+      const activity3 = ActivityService.get('3', {
+        type: 1,
+        secondaryType: 1,
+        metadata: 1,
+      });
+      const activity4 = ActivityService.get('4', {
+        type: 1,
+        secondaryType: 1,
+        metadata: 1,
+      });
+      const activity5 = ActivityService.get('5', {
+        type: 1,
+        secondaryType: 1,
+        metadata: 1,
+      });
 
       expect(activity1).to.deep.include({
         type: 'SERVER',
