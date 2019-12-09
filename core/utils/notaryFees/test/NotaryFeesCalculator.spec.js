@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import NotaryFeesCalculator from '../NotaryFeesCalculator';
-import { PURCHASE_TYPE } from '../../../api/constants';
+import { PURCHASE_TYPE, PROMOTION_TYPES } from '../../../api/constants';
 import { GE } from '../cantonConstants';
 
 describe('NotaryFeesCalculator', () => {
@@ -163,6 +163,28 @@ describe('NotaryFeesCalculator', () => {
       });
       expect(fees.mortgageNoteFees).to.deep.include({
         total: 6357.88,
+      });
+    });
+
+    it('returns the right amount for a promotion property', () => {
+      loan = {
+        structure: {
+          property: { landValue: 395750, constructionValue: 824250 },
+          wantedLoan: 968000,
+          promotionOptionId: 'asd',
+        },
+        promotions: [{ type: PROMOTION_TYPES.SHARE }],
+      };
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees).to.deep.include({
+        total: 23743.96,
+      });
+      expect(fees.buyersContractFees).to.deep.include({
+        total: 16526.68,
+      });
+      expect(fees.mortgageNoteFees).to.deep.include({
+        total: 7217.28,
       });
     });
   });
