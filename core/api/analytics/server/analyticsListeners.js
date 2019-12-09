@@ -26,11 +26,11 @@ import {
   analyticsVerifyEmail,
   analyticsCTA,
 } from '../methodDefinitions';
+import { addAnalyticsListener } from './analyticsHelpers';
 
-ServerEventService.addAfterMethodListener(
-  [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
-  ({ context, params, result, config: { name: methodName } }) => {
-    context.unblock();
+addAnalyticsListener({
+  method: [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
+  func: ({ analytics, result, config: { name: methodName } }) => {
     let userId;
     let isNewUser = false;
 
@@ -55,7 +55,6 @@ ServerEventService.addAfterMethodListener(
         assignedEmployee: { _id: adminId } = {},
       } = user;
 
-      const analytics = new Analytics(context);
       let origin;
 
       if (methodName.includes('pro')) {
@@ -73,12 +72,16 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  loanSetStatus,
-  ({ context, result: { prevStatus, nextStatus }, params: { loanId } }) => {
-    context.unblock();
+addAnalyticsListener({
+  method: loanSetStatus,
+  func: ({
+    analytics,
+    context,
+    result: { nextStatus, prevStatus },
+    params: { loanId },
+  }) => {
     const { userId: adminId } = context;
     let referredByOrganisation;
     let referredByUser;
@@ -116,7 +119,6 @@ ServerEventService.addAfterMethodListener(
       customerName = user.name;
     }
 
-    const analytics = new Analytics(context);
     analytics.track(EVENTS.LOAN_STATUS_CHANGED, {
       adminId,
       adminName,
@@ -136,67 +138,56 @@ ServerEventService.addAfterMethodListener(
       referredByUser,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  followImpersonatedSession,
-  ({ context, params: { connectionId } }) => {
-    context.unblock();
+addAnalyticsListener({
+  method: followImpersonatedSession,
+  func: ({ analytics, params: { connectionId } }) => {
     const { impersonatingAdmin: admin } = SessionService.get(
       { connectionId },
       { impersonatingAdmin: { name: 1 } },
     );
 
-    const analytics = new Analytics(context);
     analytics.track(EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN, {
       adminId: admin._id,
       adminName: admin.name,
     });
   },
-);
-
-ServerEventService.addAfterMethodListener(analyticsLogin, ({ context }) => {
-  context.unblock();
-  const analytics = new Analytics(context);
-  analytics.identify();
-  analytics.track(EVENTS.USER_LOGGED_IN);
 });
 
-ServerEventService.addAfterMethodListener(
-  analyticsPage,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: analyticsLogin,
+  func: ({ analytics }) => {
+    analytics.identify();
+    analytics.track(EVENTS.USER_LOGGED_IN);
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsPage,
+  func: ({ analytics, params }) => {
     analytics.page(params);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  analyticsVerifyEmail,
-  ({ context, params: { trackingId } }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: analyticsVerifyEmail,
+  func: ({ analytics, params: { trackingId } }) => {
     analytics.identify(trackingId);
     analytics.track(EVENTS.USER_VERIFIED_EMAIL);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  analyticsCTA,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: analyticsCTA,
+  func: ({ analytics, params }) => {
     analytics.cta(params);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  setMaxPropertyValueWithoutBorrowRatio,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
-
-    const { loanId } = params;
+addAnalyticsListener({
+  method: setMaxPropertyValueWithoutBorrowRatio,
+  func: ({ analytics, params: { loanId } }) => {
     const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
       properties: { value: 1, category: 1, address: 1 },
@@ -278,15 +269,11 @@ ServerEventService.addAfterMethodListener(
       promotionName: promotion.name,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  loanInsertBorrowers,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
-    const { loanId, amount } = params;
-
+addAnalyticsListener({
+  method: loanInsertBorrowers,
+  func: ({ analytics, params: { loanId, amount } }) => {
     const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
       properties: { category: 1, address: 1 },
@@ -328,17 +315,15 @@ ServerEventService.addAfterMethodListener(
       promotionName: promotion.name,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  anonymousLoanInsert,
-  ({
-    context,
+addAnalyticsListener({
+  method: anonymousLoanInsert,
+  func: ({
+    analytics,
     params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
     const { name: loanName } = LoanService.get(loanId, { name: 1 });
     analytics.track(
       EVENTS.LOAN_CREATED,
@@ -352,14 +337,16 @@ ServerEventService.addAfterMethodListener(
       trackingId,
     );
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  anonymousCreateUser,
-  ({ context, params: { trackingId, loanId, ctaId }, result: userId }) => {
-    context.unblock();
-    const analytics = new Analytics({ ...context, userId });
-
+addAnalyticsListener({
+  method: anonymousCreateUser,
+  analyticsProps: ({ context, result: userId }) => ({ ...context, userId }),
+  func: ({
+    analytics,
+    params: { trackingId, loanId, ctaId },
+    result: userId,
+  }) => {
     const user = UserService.get(userId, {
       referredByUser: { _id: 1 },
       referredByOrganisation: { _id: 1 },
@@ -394,18 +381,16 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  proInviteUser,
-  ({
+addAnalyticsListener({
+  method: proInviteUser,
+  func: ({
+    analytics,
     context,
     params: { user, propertyIds = [], promotionIds = [], properties = [] },
     result: { userId: customerId },
   }) => {
-    context.unblock();
-
-    const analytics = new Analytics(context);
     const { userId } = context;
     const {
       firstName,
@@ -482,24 +467,19 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  adminCreateUser,
-  ({ context, result: userId }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: adminCreateUser,
+  func: ({ analytics, context, result: userId }) => {
     const { userId: adminId } = context;
-
     analytics.track(EVENTS.ADMIN_INVITED_USER, { userId, adminId });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  proInviteUserToOrganisation,
-  ({ context, result: userId }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: proInviteUserToOrganisation,
+  func: ({ analytics, context, result: userId }) => {
     const { userId: proId } = context;
 
     const { _id: orgId } = UserService.getUserMainOrganisation(proId);
@@ -510,4 +490,4 @@ ServerEventService.addAfterMethodListener(
       organisationId: orgId,
     });
   },
-);
+});
