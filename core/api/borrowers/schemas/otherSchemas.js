@@ -147,7 +147,7 @@ export const financeInfoSchema = {
   bonus2017: bonusField,
   bonus2018: bonusField,
   bonus2019: bonusField,
-  [OWN_FUNDS_TYPES.BANK_FORTUNE]: moneyField,
+  ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_FORTUNE),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_3A),
