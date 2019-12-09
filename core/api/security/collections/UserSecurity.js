@@ -32,8 +32,7 @@ class UserSecurity {
       return;
     }
 
-    const { organisations = [] } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { organisations = [] } = UserService.get(userId, {
       organisations: { _id: 1 },
     });
 

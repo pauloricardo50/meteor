@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { fullUser } from 'core/api/fragments';
 import Users from '../../users';
 import Security from '../../security';
 import SessionService from '../../sessions/server/SessionService';
+import UserService from '../../users/server/UserService'
 
 class ImpersonateService {
   /**
@@ -24,7 +26,7 @@ class ImpersonateService {
     SessionService.setIsImpersonate(connectionId, true);
 
     context.setUserId(userIdToImpersonate);
-    return Users.findOne(userIdToImpersonate);
+    return UserService.get(userIdToImpersonate, fullUser());
   }
 
   _throwNotAuthorized() {
@@ -45,10 +47,10 @@ class ImpersonateService {
     // eslint-disable-next-line
     const hashedToken = Accounts._hashLoginToken(authToken);
 
-    return Users.findOne(
+    return UserService.get(
       { 'services.resume.loginTokens.hashedToken': hashedToken },
       // We just need to check the validity, no need for other data
-      { fields: { _id: 1 } },
+      { _id: 1 },
     );
   }
 

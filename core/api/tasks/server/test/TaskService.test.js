@@ -20,12 +20,12 @@ describe('TaskService', () => {
   describe('hooks', () => {
     it('adds a completedAt date when status changes to COMPLETED', () => {
       taskId = Factory.create('task')._id;
-      task = TaskService.findOne(taskId);
+      task = TaskService.get(taskId, { completedAt: 1 });
       expect(task.completedAt).to.equal(undefined);
 
       TaskService.update({ taskId, object: { status: TASK_STATUS.COMPLETED } });
 
-      task = TaskService.findOne(taskId);
+      task = TaskService.get(taskId, { completedAt: 1 });
       expect(task.completedAt).to.not.equal(false);
     });
 
@@ -35,12 +35,12 @@ describe('TaskService', () => {
         status: TASK_STATUS.COMPLETED,
         completedAt: date,
       })._id;
-      task = TaskService.findOne(taskId);
+      task = TaskService.get(taskId, { completedAt: 1 });
       expect(task.completedAt.getTime()).to.equal(date.getTime());
 
       TaskService.update({ taskId, object: { status: TASK_STATUS.ACTIVE } });
 
-      task = TaskService.findOne(taskId);
+      task = TaskService.get(taskId, { completedAt: 1 });
       expect(task.completedAt).to.equal(null);
     });
   });

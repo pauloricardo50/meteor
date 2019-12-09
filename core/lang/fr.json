@@ -1753,7 +1753,6 @@
   "files.REIMBURSEMENT_STATEMENT.tooltip": "Le décompte de remboursement est produit par votre prêteur actuel",
   "files.REIMBURSEMENT_STATEMENT": "Décompte de remboursement",
   "files.INVESTMENT_PROPERTY_RENT_JUSTIFICATION.tooltip": "Loyer versé par le locataire existant ou justificatif du futur loyer",
-  "files.INVESTMENT_PROPERTY_RENT_JUSTIFICATION.tooltip2": "Vous pouvez obtenir cette information auprès du vendeur ou auprès de la régie qui va gérer vos locataires, si vous n'avez pas de régie nous vous recommandons de vous informer sur la régie qui s'occupe actuellement de la gestion de l'immeuble.",
   "files.INVESTMENT_PROPERTY_RENT_JUSTIFICATION": "Loyers perçus",
   "files.RESIDENCY_PERMIT.tooltip": "Permis d'établissement à jour",
   "files.RESIDENCY_PERMIT": "Permis d'établissement",

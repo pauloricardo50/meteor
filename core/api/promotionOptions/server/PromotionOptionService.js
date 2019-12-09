@@ -14,7 +14,6 @@ import {
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import CollectionService from '../../helpers/CollectionService';
-import { fullPromotionOption } from '../../fragments';
 import PromotionOptions from '../promotionOptions';
 import FileService from '../../files/server/FileService';
 import {
@@ -46,18 +45,8 @@ export class PromotionOptionService extends CollectionService {
     });
   }
 
-  get(promotionOptionId) {
-    return this.collection
-      .createQuery({
-        $filters: { _id: promotionOptionId },
-        ...fullPromotionOption(),
-      })
-      .fetchOne();
-  }
-
   getPromotion(promotionOptionId) {
-    const promotionOption = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const promotionOption = this.get(promotionOptionId, {
       promotion: { _id: 1 },
     });
 
@@ -69,8 +58,7 @@ export class PromotionOptionService extends CollectionService {
       loan: { _id: loanId, promotionOptions },
       promotion: { _id: promotionId },
       status,
-    } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = this.get(promotionOptionId, {
       promotion: { _id: 1 },
       loan: { _id: 1, promotionOptions: { _id: 1 } },
       status: 1,
@@ -110,8 +98,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   insert = ({ promotionLotId, loanId }) => {
-    const { promotionOptions } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const { promotionOptions } = LoanService.get(loanId, {
       promotionOptions: { _id: 1, promotionLots: { _id: 1 } },
     });
 
@@ -139,10 +126,7 @@ export class PromotionOptionService extends CollectionService {
     });
     const {
       promotion: { _id: promotionId },
-    } = PromotionLotService.fetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
-    });
+    } = PromotionLotService.get(promotionLotId, { promotion: { _id: 1 } });
     this.addLink({
       id: promotionOptionId,
       linkName: 'promotion',
@@ -170,8 +154,7 @@ export class PromotionOptionService extends CollectionService {
     const {
       promotion: { _id: promotionId },
       loan: { _id: loanId },
-    } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = this.get(promotionOptionId, {
       loan: { _id: 1 },
       promotion: { _id: 1 },
     });
@@ -213,10 +196,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   setInitialSimpleVerification({ promotionOptionId, loanId }) {
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      maxPropertyValue: { date: 1 },
-    });
+    const loan = LoanService.get(loanId, { maxPropertyValue: { date: 1 } });
 
     this._update({
       id: promotionOptionId,
@@ -255,8 +235,7 @@ export class PromotionOptionService extends CollectionService {
     const {
       promotion: { agreementDuration },
       status,
-    } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    } = this.get(promotionOptionId, {
       promotion: { agreementDuration: 1 },
       status: 1,
     });
@@ -413,8 +392,7 @@ export class PromotionOptionService extends CollectionService {
   }
 
   setProgress({ promotionOptionId, id, object }) {
-    const { [id]: model } = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const { [id]: model } = this.get(promotionOptionId, {
       bank: 1,
       reservationDeposit: 1,
       simpleVerification: 1,
@@ -532,8 +510,7 @@ export class PromotionOptionService extends CollectionService {
   };
 
   getEmailRecipients({ promotionOptionId }) {
-    const promotionOption = this.fetchOne({
-      $filters: { _id: promotionOptionId },
+    const promotionOption = this.get(promotionOptionId, {
       loan: {
         user: {
           email: 1,

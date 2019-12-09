@@ -101,7 +101,7 @@ describe('Migration 26', () => {
 
       await up();
 
-      const { userLinks = [] } = PromotionService.findOne({ _id: 'a' });
+      const { userLinks = [] } = PromotionService.get('a', { userLinks: 1 });
       const [
         { permissions: permissions1 },
         { permissions: permissions2 },
@@ -173,7 +173,7 @@ describe('Migration 26', () => {
 
       await up();
 
-      const { userLinks = [] } = PropertyService.findOne({ _id: 'a' });
+      const { userLinks = [] } = PropertyService.get('a', { userLinks: 1 });
       const [
         { permissions: permissions1 },
         { permissions: permissions2 },
@@ -293,7 +293,7 @@ describe('Migration 26', () => {
 
       await down();
 
-      const { userLinks = [] } = PromotionService.findOne({ _id: 'a' });
+      const { userLinks = [] } = PromotionService.get('a', { userLinks: 1 });
       const [
         { permissions: permissions1 },
         { permissions: permissions2 },
@@ -365,7 +365,7 @@ describe('Migration 26', () => {
 
       await down();
 
-      const { userLinks = [] } = PropertyService.findOne({ _id: 'a' });
+      const { userLinks = [] } = PropertyService.get('a', { userLinks: 1 });
       const [
         { permissions: permissions1 },
         { permissions: permissions2 },

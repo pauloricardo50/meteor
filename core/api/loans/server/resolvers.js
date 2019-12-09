@@ -76,8 +76,7 @@ const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
 };
 
 const anonymizePromotionLoans = ({ loans = [], userId }) => {
-  const currentUser = UserService.fetchOne({
-    $filters: { _id: userId },
+  const currentUser = UserService.get(userId, {
     promotions: { _id: 1 },
     organisations: { users: { _id: 1 } },
   });
@@ -90,8 +89,7 @@ const anonymizePromotionLoans = ({ loans = [], userId }) => {
 };
 
 const anonymizePropertyLoans = ({ loans = [], userId }) => {
-  const currentUser = UserService.fetchOne({
-    $filters: { _id: userId },
+  const currentUser = UserService.get(userId, {
     organisations: { users: { _id: 1 } },
     proProperties: { _id: 1 },
   });

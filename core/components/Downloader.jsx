@@ -29,7 +29,7 @@ export default class Download extends Component {
 
   render() {
     const { downloading } = this.state;
-    const { children } = this.props;
+    const { children, ...props } = this.props;
 
     if (children) {
       return children({ downloading, handleDownload: this.handleClick });
@@ -41,6 +41,7 @@ export default class Download extends Component {
         tooltip={<T id="general.download" />}
         onClick={this.handleClick}
         disabled={downloading}
+        {...props}
       />
     );
   }

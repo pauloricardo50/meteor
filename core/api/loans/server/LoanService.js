@@ -53,7 +53,6 @@ const zeroPadding = (num, places) => {
 class LoanService extends CollectionService {
   constructor() {
     super(Loans);
-    this.get = this.makeGet(adminLoan());
   }
 
   insert = ({ loan = {}, userId }) => {
@@ -80,7 +79,7 @@ class LoanService extends CollectionService {
   getNewLoanName = (now = new Date()) => {
     const year = now.getYear();
     const yearPrefix = year - 100;
-    const lastLoan = Loans.findOne({}, { sort: { name: -1 } });
+    const lastLoan = this.get({}, { name: 1, $options: { sort: { name: -1 } } });
     if (!lastLoan) {
       return `${yearPrefix}-0001`;
     }
@@ -107,13 +106,13 @@ class LoanService extends CollectionService {
       loan,
       userId,
     });
+    console.log('loanId:', loanId)
     this.addNewStructure({ loanId });
     return loanId;
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, user } = this.fetchOne({
-      $filters: { _id: loanId },
+    const { step, user } = this.get(loanId, {
       step: 1,
       userId: 1,
       user: { assignedEmployee: { name: 1 } },
@@ -125,10 +124,7 @@ class LoanService extends CollectionService {
   }
 
   verifyStatusChange({ loanId, status }) {
-    const { status: prevStatus } = this.fetchOne({
-      $filters: { _id: loanId },
-      status: 1,
-    });
+    const { status: prevStatus } = this.get(loanId, { status: 1 });
 
     if (prevStatus === status) {
       throw new Meteor.Error("Ce statut est le même qu'avant");
@@ -180,10 +176,7 @@ class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const customName = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-    }).name;
+    const customName = PromotionService.get(promotionId, { name: 1 }).name;
     const loanId = this.insert({
       loan: {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
@@ -203,10 +196,8 @@ class LoanService extends CollectionService {
   };
 
   insertPropertyLoan = ({ userId, propertyIds, shareSolvency, loan }) => {
-    const customName = PropertyService.fetchOne({
-      $filters: { _id: propertyIds[0] },
-      address1: 1,
-    }).address1;
+    const customName = PropertyService.get(propertyIds[0], { address1: 1 })
+      .address1;
     const loanId = this.insert({
       loan: {
         propertyIds,
@@ -246,7 +237,11 @@ class LoanService extends CollectionService {
   };
 
   addNewStructure = ({ loanId, structure }) => {
-    const { structures, selectedStructure, propertyIds } = this.findOne(loanId);
+    const { structures, selectedStructure, propertyIds } = this.get(loanId, {
+      structures: 1,
+      selectedStructure: 1,
+      propertyIds: 1,
+    });
     const isFirstStructure = structures.length === 0;
     const shouldCopyExistingStructure =
       !isFirstStructure && !structure && selectedStructure;
@@ -280,7 +275,9 @@ class LoanService extends CollectionService {
   };
 
   removeStructure = ({ loanId, structureId }) => {
-    const { selectedStructure: currentlySelected } = this.findOne(loanId);
+    const { selectedStructure: currentlySelected } = this.get(loanId, {
+      selectedStructure: 1,
+    });
 
     if (currentlySelected === structureId) {
       throw new Meteor.Error(
@@ -299,9 +296,9 @@ class LoanService extends CollectionService {
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
-    const currentStructure = this.findOne(loanId).structures.find(
-      ({ id }) => id === structureId,
-    );
+    const currentStructure = this.get(loanId, {
+      structures: 1,
+    }).structures.find(({ id }) => id === structureId);
 
     return Loans.update(
       { _id: loanId, 'structures.id': structureId },
@@ -310,9 +307,7 @@ class LoanService extends CollectionService {
   };
 
   selectStructure = ({ loanId, structureId }) => {
-    const loan = this.findOne(loanId, {
-      fields: { structures: 1, selectedStructure: 1 },
-    });
+    const loan = this.get(loanId, { structures: 1, selectedStructure: 1 });
 
     const currentStructure = loan.structures.find(
       ({ id }) => id === loan.selectedStructure,
@@ -340,7 +335,7 @@ class LoanService extends CollectionService {
   };
 
   duplicateStructure = ({ loanId, structureId }) => {
-    const { structures } = this.findOne(loanId);
+    const { structures } = this.get(loanId, { structures: 1 });
     const currentStructure = structures.find(({ id }) => id === structureId);
     const currentStructureIndex = structures.findIndex(
       ({ id }) => id === structureId,
@@ -361,7 +356,7 @@ class LoanService extends CollectionService {
   };
 
   addPropertyToLoan = ({ loanId, propertyId }) => {
-    const loan = this.findOne(loanId);
+    const loan = this.get(loanId, { structures: 1 });
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
 
     // Add this property to all structures that don't have a property
@@ -405,25 +400,22 @@ class LoanService extends CollectionService {
   }
 
   getPromotionPriorityOrder({ loanId, promotionId }) {
-    const promotionLink = this.findOne(loanId).promotionLinks.find(
-      ({ _id }) => _id === promotionId,
-    );
+    const promotionLink = this.get(loanId, {
+      promotionLinks: 1,
+    }).promotionLinks.find(({ _id }) => _id === promotionId);
     return promotionLink ? promotionLink.priorityOrder : [];
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const {
-      properties = [],
-      borrowers = [],
-      referralId,
-      anonymous,
-    } = this.fetchOne({
-      $filters: { _id: loanId },
-      referralId: 1,
-      properties: { loans: { _id: 1 }, address1: 1, category: 1 },
-      borrowers: { loans: { _id: 1 }, name: 1 },
-      anonymous: 1,
-    });
+    const { properties = [], borrowers = [], referralId, anonymous } = this.get(
+      loanId,
+      {
+        referralId: 1,
+        properties: { loans: { _id: 1 }, address1: 1, category: 1 },
+        borrowers: { loans: { _id: 1 }, name: 1 },
+        anonymous: 1,
+      },
+    );
 
     borrowers.forEach(({ loans = [], name }) => {
       if (loans.length > 1) {
@@ -466,8 +458,7 @@ class LoanService extends CollectionService {
         const {
           referredByUserLink,
           referredByOrganisationLink,
-        } = UserService.fetchOne({
-          $filters: { _id: userId },
+        } = UserService.get(userId, {
           referredByUserLink: 1,
           referredByOrganisationLink: 1,
         });
@@ -480,8 +471,7 @@ class LoanService extends CollectionService {
         const {
           referredByUserLink,
           referredByOrganisationLink,
-        } = UserService.fetchOne({
-          $filters: { _id: userId },
+        } = UserService.get(userId, {
           referredByUserLink: 1,
           referredByOrganisationLink: 1,
         });
@@ -496,7 +486,7 @@ class LoanService extends CollectionService {
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
-    const { borrowerIds } = this.findOne(loanId);
+    const { borrowerIds } = this.get(loanId, { borrowerIds: 1 });
     const { loans: oldBorrowerLoans = [] } = BorrowerService.createQuery({
       $filters: { _id: oldBorrowerId },
       loans: { name: 1 },
@@ -576,7 +566,7 @@ class LoanService extends CollectionService {
   }
 
   reuseProperty({ loanId, propertyId }) {
-    const loan = this.findOne(loanId);
+    const loan = this.get(loanId, { propertyIds: 1 });
 
     if (loan.propertyIds.includes(propertyId)) {
       return false;
@@ -644,9 +634,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+      max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -680,7 +670,7 @@ class LoanService extends CollectionService {
   }
 
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+    const loan = this.get(loanId, userLoan());
     const isRecalculate = !!(
       loan.maxPropertyValue && loan.maxPropertyValue.date
     );
@@ -726,10 +716,7 @@ class LoanService extends CollectionService {
       this.update({ loanId, object: { residenceType: newResidenceType } });
     }
 
-    const loan = this.fetchOne({
-      $filters: { _id: loanId },
-      ...userLoan(),
-    });
+    const loan = this.get(loanId, userLoan());
     const { properties = [], userId, borrowers, residenceType } = loan;
 
     // Get the highest property value
@@ -743,10 +730,10 @@ class LoanService extends CollectionService {
       ORGANISATION_NAME_SEPARATOR,
     )[0];
 
-    const organisation = OrganisationService.fetchOne({
-      $filters: { name: firstOrganisationName },
-      lenderRules: lenderRulesFragment(),
-    });
+    const organisation = OrganisationService.get(
+      { name: firstOrganisationName },
+      { lenderRules: lenderRulesFragment() },
+    );
 
     const calculator = new CalculatorClass({
       loan,
@@ -840,9 +827,10 @@ class LoanService extends CollectionService {
   }
 
   insertBorrowers({ loanId, amount }) {
-    const { borrowerIds: existingBorrowers = [], userId } = this.findOne(
-      loanId,
-    );
+    const { borrowerIds: existingBorrowers = [], userId } = this.get(loanId, {
+      borrowerIds: 1,
+      userId: 1,
+    });
 
     if (existingBorrowers.length === 2) {
       throw new Meteor.Error('Cannot insert more borrowers');
@@ -879,7 +867,7 @@ class LoanService extends CollectionService {
 
   // Useful for demos
   resetLoan({ loanId }) {
-    const loan = this.findOne({ _id: loanId });
+    const loan = this.get(loanId, { structures: 1, borrowerIds: 1, status: 1 });
     const { structures = [], borrowerIds = [], status } = loan;
 
     if (status !== LOAN_STATUS.TEST) {
@@ -938,11 +926,13 @@ class LoanService extends CollectionService {
   }
 
   linkPromotion({ promotionId, loanId }) {
-    const { name: promotionName, promotionLoan } = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-      promotionLoan: { _id: 1 },
-    });
+    const { name: promotionName, promotionLoan } = PromotionService.get(
+      promotionId,
+      {
+        name: 1,
+        promotionLoan: { _id: 1 },
+      },
+    );
 
     if (promotionLoan && promotionLoan._id) {
       this.unlinkPromotion({ promotionId, loanId: promotionLoan._id });
@@ -977,8 +967,7 @@ class LoanService extends CollectionService {
   }
 
   setCreatedAtActivityDescription({ loanId, description }) {
-    const { activities = [] } = this.fetchOne({
-      $filters: { _id: loanId },
+    const { activities = [] } = this.get(loanId, {
       activities: { metadata: 1 },
     });
     const { _id: createdAtActivityId } =

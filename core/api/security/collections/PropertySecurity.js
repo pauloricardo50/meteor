@@ -24,8 +24,7 @@ import { getProPropertyCustomerOwnerType } from '../../properties/server/propert
 
 class PropertySecurity {
   static getProperty({ propertyId }) {
-    const property = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
+    const property = PropertyService.get(propertyId, {
       category: 1,
       loans: { user: { _id: 1 } },
       status: 1,
@@ -38,8 +37,7 @@ class PropertySecurity {
   }
 
   static getCurrentUser({ userId }) {
-    const currentUser = UserService.fetchOne({
-      $filters: { _id: userId },
+    const currentUser = UserService.get(userId, {
       organisations: { users: { _id: 1 } },
       properties: { _id: 1, permissions: 1, status: 1 },
     });
@@ -48,10 +46,7 @@ class PropertySecurity {
   }
 
   static getLoan({ loanId }) {
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      user: { _id: 1 },
-    });
+    const loan = LoanService.get(loanId, { user: { _id: 1 } });
 
     return loan;
   }
@@ -99,10 +94,7 @@ class PropertySecurity {
   }
 
   static isPromotionLot(propertyId) {
-    const { category } = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      category: 1,
-    });
+    const { category } = PropertyService.get(propertyId, { category: 1 });
 
     return category === PROPERTY_CATEGORY.PROMOTION;
   }
@@ -176,10 +168,7 @@ class PropertySecurity {
   }
 
   static isPropertyPublic({ propertyId }) {
-    const property = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      category: 1,
-    });
+    const property = PropertyService.get(propertyId, { category: 1 });
 
     return property && property.category === PROPERTY_CATEGORY.PRO;
   }

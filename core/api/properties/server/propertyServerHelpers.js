@@ -9,8 +9,7 @@ import { anonymizeLoan } from '../../loans/helpers';
 
 const getCustomerReferredBy = ({ customerId }) => {
   const { referredByUser, referredByOrganisation } =
-    UserService.fetchOne({
-      $filters: { _id: customerId },
+    UserService.get(customerId, {
       referredByUser: { _id: 1 },
       referredByOrganisation: { _id: 1 },
     }) || {};
@@ -22,8 +21,7 @@ export const getProPropertyCustomerOwnerType = ({ customerId, userId }) => {
   const { referredByUser, referredByOrganisation } = getCustomerReferredBy({
     customerId,
   });
-  const user = UserService.fetchOne({
-    $filters: { _id: userId },
+  const user = UserService.get(userId, {
     organisations: { users: { _id: 1 } },
   });
 
@@ -82,14 +80,14 @@ export const makeProPropertyLoanAnonymizer = ({
     const shouldAnonymizeUser =
       anonymize === undefined
         ? propertiesPermissionsAndStatus
-            .map(({ permissions, status: propertyStatus }) =>
-              clientShouldAnonymize({
-                customerOwnerType,
-                permissions,
-                propertyStatus,
-              }),
-            )
-            .every(anonymizeForProperty => anonymizeForProperty)
+          .map(({ permissions, status: propertyStatus }) =>
+            clientShouldAnonymize({
+              customerOwnerType,
+              permissions,
+              propertyStatus,
+            }),
+          )
+          .every(anonymizeForProperty => anonymizeForProperty)
         : anonymize;
 
     return anonymizeLoan({ loan, shouldAnonymize: shouldAnonymizeUser });

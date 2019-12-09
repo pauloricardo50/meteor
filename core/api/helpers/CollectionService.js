@@ -44,24 +44,24 @@ class CollectionService {
     return this.collection.remove(...args);
   }
 
-  get() {
-    throw new Meteor.Error(
-      `Should initialize get in ${this.collection._name}Service`,
-    );
-  }
+  get(filters, fragment) {
+    if (!fragment) {
+      throw new Meteor.Error(
+        `Should provide a fragment for get in ${this.collection._name}Service`,
+      );
+    }
+    if (!filters) {
+      return undefined;
+    }
+    // When fetching by id
+    if (typeof filters === 'string') {
+      filters = { _id: filters };
+    }
 
-  makeGet(defaultFragment) {
-    return function(filters, fields) {
-      // When fetching by id
-      if (typeof filters === 'string') {
-        filters = { _id: filters };
-      }
-
-      return this.fetchOne({
-        $filters: filters,
-        ...(fields || defaultFragment),
-      });
-    };
+    return this.fetchOne({
+      $filters: filters,
+      ...fragment,
+    });
   }
 
   find(...args) {
@@ -132,7 +132,7 @@ class CollectionService {
   }
 
   exists(_id) {
-    return !!(_id && this.findOne({ _id }, { fields: { _id: 1 } }));
+    return !!(_id && this.get(_id, { _id: 1 }));
   }
 
   aggregate(pipeline, options) {
@@ -205,7 +205,7 @@ class CollectionService {
   }
 
   getAssignedEmployee({ id }) {
-    const { assignee } = this.fetchOne({ $filters: { _id: id }, assignee: 1 });
+    const { assignee } = this.get(id, { assignee: 1 });
 
     return assignee;
   }
@@ -222,7 +222,7 @@ class CollectionService {
   }
 
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label, category }) {
-    const { additionalDocuments } = this.get(id);
+    const { additionalDocuments } = this.get(id, { additionalDocuments: 1 });
 
     const additionalDoc = additionalDocuments.find(
       doc => doc.id === additionalDocId,
@@ -256,7 +256,9 @@ class CollectionService {
   }
 
   removeAdditionalDoc({ id: docId, additionalDocId }) {
-    const { additionalDocuments = [] } = this.get(docId);
+    const { additionalDocuments = [] } = this.get(docId, {
+      additionalDocuments: 1,
+    });
     return this._update({
       id: docId,
       object: {

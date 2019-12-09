@@ -7,6 +7,7 @@ import generator from '../../../factories';
 import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../../../constants';
 import { Loans } from '../../..';
 import { up, down } from '../5';
+import LoanService from '../../../loans/server/LoanService';
 
 // Tests are out of date with new max property calculation
 describe.skip('Migration 5', () => {
@@ -72,8 +73,14 @@ describe.skip('Migration 5', () => {
         )
         .then(up)
         .then(() => {
-          const loan1 = Loans.findOne({ _id: 'loanId1' });
-          const loan2 = Loans.findOne({ _id: 'loanId2' });
+          const loan1 = LoanService.get('loanId1', {
+            maxPropertyValue: 1,
+            maxSolvency: 1,
+          });
+          const loan2 = LoanService.get('loanId2', {
+            maxPropertyValue: 1,
+            maxSolvency: 1,
+          });
 
           expect(loan2.maxPropertyValue).to.equal(undefined);
           expect(loan1.maxSolvency).to.equal(undefined);
@@ -128,8 +135,14 @@ describe.skip('Migration 5', () => {
         )
         .then(down)
         .then(() => {
-          const loan1 = Loans.findOne({ _id: 'loanId1' });
-          const loan2 = Loans.findOne({ _id: 'loanId2' });
+          const loan1 = LoanService.get('loanId1', {
+            maxPropertyValue: 1,
+            maxSolvency: 1,
+          });
+          const loan2 = LoanService.get('loanId2', {
+            maxPropertyValue: 1,
+            maxSolvency: 1,
+          });
 
           expect(loan2.maxPropertyValue).to.equal(undefined);
           expect(loan1.maxPropertyValue).to.equal(undefined);

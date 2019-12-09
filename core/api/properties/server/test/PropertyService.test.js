@@ -9,7 +9,7 @@ import UserService from '../../../users/server/UserService';
 import generator from '../../../factories';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
 
-describe('PropertyService', function() {
+describe('PropertyService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -66,23 +66,25 @@ describe('PropertyService', function() {
       ).to.equal(1);
 
       expect(PropertyService.find({}).fetch().length).to.equal(1);
-      expect(LoanService.findOne('loan').propertyIds).to.deep.equal([]);
-      expect(LoanService.findOne('loan').structures[0].propertyId).to.equal(null);
-      expect(LoanService.findOne('loan2').propertyIds).to.deep.equal(['prop']);
+      expect(LoanService.get('loan', { propertyIds: 1 }).propertyIds).to.deep.equal([]);
+      expect(LoanService.get('loan', { structures: 1 }).structures[0].propertyId).to.equal(
+        null,
+      );
+      expect(LoanService.get('loan2', { propertyIds: 1 }).propertyIds).to.deep.equal(['prop']);
     });
   });
 
   describe('canton autovalue', () => {
     it('sets the canton on the property', () => {
       const propertyId = Factory.create('property', { zipCode: 1400 })._id;
-      const property = PropertyService.findOne(propertyId);
+      const property = PropertyService.get(propertyId, { canton: 1 });
 
       expect(property.canton).to.equal('VD');
     });
 
     it('removes the canton if an invalid zipcode is given', () => {
       const propertyId = Factory.create('property', { zipCode: 75000 })._id;
-      const property = PropertyService.findOne(propertyId);
+      const property = PropertyService.get(propertyId, { canton: 1 });
 
       expect(property.canton).to.equal(null);
     });
@@ -125,13 +127,15 @@ describe('PropertyService', function() {
         isNewUser,
       });
 
-      const user = UserService.fetchOne({
-        $filters: { 'emails.address': 'john@doe.com' },
-        loans: { properties: { _id: 1 } },
-        assignedEmployee: { _id: 1 },
-        referredByUser: { _id: 1 },
-        referredByOrganisation: { _id: 1 },
-      });
+      const user = UserService.get(
+        { 'emails.address': 'john@doe.com' },
+        {
+          loans: { properties: { _id: 1 } },
+          assignedEmployee: { _id: 1 },
+          referredByUser: { _id: 1 },
+          referredByOrganisation: { _id: 1 },
+        },
+      );
 
       const {
         loans = [],
@@ -208,10 +212,7 @@ describe('PropertyService', function() {
         },
       });
 
-      const prop = PropertyService.fetchOne({
-        $filters: { _id: 'propertyId' },
-        organisation: 1,
-      });
+      const prop = PropertyService.get('propertyId', { organisation: 1 });
 
       expect(prop.organisation).to.deep.equal({
         _id: 'org',

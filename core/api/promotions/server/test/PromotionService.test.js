@@ -17,7 +17,7 @@ import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROMOTION_TYPES } from '../../promotionConstants';
 
-describe('PromotionService', function() {
+describe('PromotionService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -282,7 +282,7 @@ describe('PromotionService', function() {
 
       PromotionService.removeLoan({ promotionId, loanId });
 
-      loan = LoanService.findOne(loanId);
+      loan = LoanService.get(loanId, { promotionLinks: 1 });
       expect(loan.promotionLinks).to.deep.equal([
         { _id: 'someOtherPromotion', priorityOrder: [], showAllLots: true },
       ]);
@@ -317,10 +317,7 @@ describe('PromotionService', function() {
         promotionId: 'promotionId',
         loanId: 'loanId',
       });
-      loan = LoanService.fetchOne({
-        $filters: { _id: 'loanId' },
-        promotionOptionLinks: 1,
-      });
+      loan = LoanService.get('loanId', { promotionOptionLinks: 1 });
 
       expect(loan.promotionOptionLinks).to.deep.equal([]);
       expect(PromotionOptionService.find({}).count()).to.equal(0);
@@ -352,7 +349,10 @@ describe('PromotionService', function() {
         promotionId: 'promotionId',
         loanId: 'loanId',
       });
-      const promotionLot = PromotionLotService.findOne('lot1');
+      const promotionLot = PromotionLotService.get('lot1', {
+        status: 1,
+        attributedToLink: 1,
+      });
 
       expect(promotionLot.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
       expect(promotionLot.attributedToLink).to.deep.equal({});
@@ -387,7 +387,12 @@ describe('PromotionService', function() {
         property: { value: 1000000 },
       });
 
-      expect(PropertyService.findOne()).to.deep.include({
+      expect(
+        PropertyService.get(
+          {},
+          { address1: 1, address2: 1, city: 1, zipCode: 1, canton: 1 },
+        ),
+      ).to.deep.include({
         address1: 'Address1',
         address2: 'Address2',
         city: 'City',
@@ -406,18 +411,18 @@ describe('PromotionService', function() {
         },
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
-        1,
-      );
+      expect(
+        PromotionService.get('promotionId', { userLinks: 1 }).userLinks.length,
+      ).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
-        0,
-      );
+      expect(
+        PromotionService.get('promotionId', { userLinks: 1 }).userLinks.length,
+      ).to.equal(0);
     });
 
     it('does not fail if no loans are attributed to the pro', () => {
@@ -429,18 +434,18 @@ describe('PromotionService', function() {
         },
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
-        1,
-      );
+      expect(
+        PromotionService.get('promotionId', { userLinks: 1 }).userLinks.length,
+      ).to.equal(1);
 
       PromotionService.removeProUser({
         promotionId: 'promotionId',
         userId: 'proId',
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
-        0,
-      );
+      expect(
+        PromotionService.get('promotionId', { userLinks: 1 }).userLinks.length,
+      ).to.equal(0);
     });
 
     it('only removes him from the current promotion', () => {
@@ -459,11 +464,11 @@ describe('PromotionService', function() {
         ],
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
-        1,
-      );
       expect(
-        PromotionService.findOne('promotionId2').userLinks.length,
+        PromotionService.get('promotionId', { userLinks: 1 }).userLinks.length,
+      ).to.equal(1);
+      expect(
+        PromotionService.get('promotionId2', { userLinks: 1 }).userLinks.length,
       ).to.equal(1);
 
       PromotionService.removeProUser({
@@ -471,17 +476,19 @@ describe('PromotionService', function() {
         userId: 'proId',
       });
 
-      expect(PromotionService.findOne('promotionId').userLinks.length).to.equal(
-        0,
-      );
       expect(
-        PromotionService.findOne('promotionId2').userLinks.length,
+        PromotionService.get('promotionId', { userLinks: 1 }).userLinks.length,
+      ).to.equal(0);
+      expect(
+        PromotionService.get('promotionId2', { userLinks: 1 }).userLinks.length,
       ).to.equal(1);
       expect(
-        LoanService.findOne('loanId').promotionLinks[0].invitedBy,
+        LoanService.get('loanId', { promotionLinks: 1 }).promotionLinks[0]
+          .invitedBy,
       ).to.equal(undefined);
       expect(
-        LoanService.findOne('loanId2').promotionLinks[0].invitedBy,
+        LoanService.get('loanId2', { promotionLinks: 2 }).promotionLinks[0]
+          .invitedBy,
       ).to.equal('proId');
     });
   });
@@ -504,8 +511,7 @@ describe('PromotionService', function() {
         },
       });
 
-      const { loans: loans1 } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans: loans1 } = PromotionService.get('promoId', {
         loans: { _id: 1 },
       });
 
@@ -520,10 +526,7 @@ describe('PromotionService', function() {
         showAllLots: false,
       });
 
-      const { loans } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
-        loans: { _id: 1 },
-      });
+      const { loans } = PromotionService.get('promoId', { loans: { _id: 1 } });
 
       expect(loans[0].$metadata.showAllLots).to.equal(false);
       expect(loans[0].$metadata.priorityOrder).to.deep.equal(['pOpt1']);
@@ -548,8 +551,7 @@ describe('PromotionService', function() {
         },
       });
 
-      const { loans: loans1 } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans: loans1 } = PromotionService.get('promoId', {
         loans: { promotionOptionLinks: 1 },
       });
 
@@ -561,8 +563,7 @@ describe('PromotionService', function() {
         promotionLotIds: ['pLot2'],
       });
 
-      const { loans } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans } = PromotionService.get('promoId', {
         loans: { promotionOptions: { promotionLots: { _id: 1 } } },
       });
 
@@ -599,8 +600,7 @@ describe('PromotionService', function() {
         },
       });
 
-      const { loans: loans1 } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans: loans1 } = PromotionService.get('promoId', {
         loans: { promotionOptionLinks: 1 },
       });
 
@@ -612,8 +612,7 @@ describe('PromotionService', function() {
         promotionLotIds: ['pLot2'],
       });
 
-      const { loans } = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
+      const { loans } = PromotionService.get('promoId', {
         loans: { promotionOptions: { promotionLots: { _id: 1 } } },
       });
 
@@ -672,10 +671,7 @@ describe('PromotionService', function() {
         userId: 'userId',
       });
 
-      const promotion = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
-        userLinks: 1,
-      });
+      const promotion = PromotionService.get('promoId', { userLinks: 1 });
 
       expect(result).to.equal(false);
       expect(promotion.userLinks[0]).to.deep.include({
@@ -688,10 +684,7 @@ describe('PromotionService', function() {
         userId: 'userId',
       });
 
-      const promotion2 = PromotionService.fetchOne({
-        $filters: { _id: 'promoId' },
-        userLinks: 1,
-      });
+      const promotion2 = PromotionService.get('promoId', { userLinks: 1 });
 
       expect(result2).to.equal(true);
       expect(promotion2.userLinks[0]).to.deep.include({
@@ -710,7 +703,7 @@ describe('PromotionService', function() {
 
       PromotionService.addProUser({ promotionId: 'promo', userId: 'proId' });
 
-      const promotion = PromotionService.findOne('promo');
+      const promotion = PromotionService.get('promo', { userLinks: 1 });
 
       expect(promotion.userLinks[0].permissions.displayCustomerNames).to.equal(
         false,

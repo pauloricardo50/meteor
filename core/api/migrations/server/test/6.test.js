@@ -4,6 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import generator from '../../../factories';
 import { Organisations } from '../../..';
+import OrganisationService from '../../../organisations/server/OrganisationService'
 
 import { up, down } from '../6';
 
@@ -30,9 +31,7 @@ describe('Migration 6', () => {
         )
         .then(up)
         .then(() => {
-          const { contactIds = [], userLinks = [] } = Organisations.findOne({
-            _id: 'org',
-          });
+          const { contactIds = [], userLinks = [] } = OrganisationService.get('org', { contactIds: 1, userLinks: 1 });
           expect(contactIds.length).to.equal(1);
           expect(userLinks.length).to.equal(1);
           expect(contactIds[0]._id).to.equal('contact');
@@ -58,9 +57,7 @@ describe('Migration 6', () => {
         )
         .then(down)
         .then(() => {
-          const { contactIds = [], userLinks = [] } = Organisations.findOne({
-            _id: 'org',
-          });
+          const { contactIds = [], userLinks = [] } = OrganisationService.get('org', { contactIds: 1, userLinks: 1 });
           expect(contactIds.length).to.equal(1);
           expect(userLinks.length).to.equal(1);
           expect(contactIds[0]._id).to.equal('contact');

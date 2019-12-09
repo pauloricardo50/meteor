@@ -30,8 +30,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
       promotionLinks,
       user: { name: customerName },
     },
-  } = PromotionOptionService.fetchOne({
-    $filters: { _id: promotionOptionId },
+  } = PromotionOptionService.get(promotionOptionId, {
     promotionLots: { name: 1 },
     promotion: {
       userLinks: 1,
@@ -43,8 +42,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   const [{ name: promotionLotName }] = promotionLots;
   const [{ invitedBy }] = promotionLinks;
 
-  const invitedByUser = UserService.fetchOne({
-    $filters: { _id: invitedBy },
+  const invitedByUser = UserService.get(invitedBy, {
     name: 1,
     organisations: { name: 1 },
   });
@@ -52,11 +50,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   let userName = 'e-Potek';
 
   if (userId) {
-    const { name, roles } = UserService.fetchOne({
-      $filters: { _id: userId },
-      name: 1,
-      roles: 1,
-    });
+    const { name, roles } = UserService.get(userId, { name: 1, roles: 1 });
     const isUser = roles.includes(ROLES.USER);
 
     if (isUser && anonymize) {

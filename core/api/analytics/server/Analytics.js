@@ -66,8 +66,7 @@ class Analytics {
       } = {},
     } = connection;
     this.userId = userId;
-    this.user = UserService.fetchOne({
-      $filters: { _id: userId },
+    this.user = UserService.get(userId, {
       firstName: 1,
       lastName: 1,
       email: 1,
@@ -87,8 +86,7 @@ class Analytics {
   }
 
   createAnalyticsUser(userId, data) {
-    const { firstName, lastName, email, roles } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { firstName, lastName, email, roles } = UserService.get(userId, {
       firstName: 1,
       lastName: 1,
       email: 1,

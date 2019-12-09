@@ -66,8 +66,8 @@ export const getFileName = ({
       .includes(documentId)
     ? `${root}${binPath}${prefix}${fileName}${suffix}.${extension}`
     : `${root}${binPath}${prefix}${Intl.formatMessage({
-        id: `files.${documentId}`,
-      })}${suffix}.${extension}`;
+      id: `files.${documentId}`,
+    })}${suffix}.${extension}`;
 };
 
 const makeFormatFileName = ({
@@ -77,18 +77,18 @@ const makeFormatFileName = ({
   filesBinPacker,
   options,
 }) => ({ name: originalName, Key, adminname: adminName }, index, total) =>
-  getFileName({
-    Key,
-    name: originalName,
-    index,
-    total,
-    adminName,
-    additionalDocuments,
-    root,
-    prefix,
-    filesBinPacker,
-    options,
-  });
+    getFileName({
+      Key,
+      name: originalName,
+      index,
+      total,
+      adminName,
+      additionalDocuments,
+      root,
+      prefix,
+      filesBinPacker,
+      options,
+    });
 
 const filterDocuments = (documentsToFilter, docId, documents) =>
   Object.keys(documentsToFilter)
@@ -200,8 +200,7 @@ const zipLoan = ({
   withMeteorUserId({ userId }, () => {
     const zip = new archiver.create('zip');
 
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const loan = LoanService.get(loanId, {
       borrowers: {
         firstName: 1,
         lastName: 1,

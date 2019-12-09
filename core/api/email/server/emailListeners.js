@@ -68,8 +68,7 @@ addEmailListener({
       return;
     }
 
-    const { name: customerName, email } = UserService.fetchOne({
-      $filters: { _id: userId },
+    const { name: customerName, email } = UserService.get(userId, {
       name: 1,
       email: 1,
     });
@@ -129,8 +128,7 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
         user: { assignedEmployee },
       },
     },
-  } = OfferService.fetchOne({
-    $filters: { _id: offerId },
+  } = OfferService.get(offerId, {
     createdAt: 1,
     lender: {
       organisation: { name: 1 },
@@ -194,16 +192,12 @@ addEmailListener({
       const logoUrls = logos && logos.map(({ url }) => url);
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
-      const promotion = PromotionService.fetchOne({
-        $filters: { _id: promotionId },
+      const promotion = PromotionService.get(promotionId, {
         name: 1,
         contacts: 1,
         assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
       });
-      const user = UserService.fetchOne({
-        $filters: { _id: userId },
-        firstName: 1,
-      });
+      const user = UserService.get(userId, { firstName: 1 });
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
@@ -214,8 +208,7 @@ addEmailListener({
 
       if (pro && pro._id) {
         invitedBy = getUserNameAndOrganisation({
-          user: UserService.fetchOne({
-            $filters: { _id: pro._id },
+          user: UserService.get(pro._id, {
             name: 1,
             organisations: { name: 1 },
           }),
@@ -317,9 +310,6 @@ addEmailListener({
   },
 });
 
-//
-// PROMOTION EMAILS
-//
 PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
   addEmailListener({
     description,

@@ -11,6 +11,7 @@ import { fullLoan } from '../../loans/queries';
 import Calculator from '../../../utils/Calculator';
 import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
+import { fullUser } from 'core/api/fragments';
 
 const LOGO_URL =
   'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
@@ -90,7 +91,7 @@ export class SlackService {
     }
 
     if (!user && userId) {
-      user = UserService.get(userId);
+      user = UserService.get(userId, fullUser());
     }
 
     const attachments = [
@@ -214,8 +215,8 @@ export class SlackService {
       const referral = referralUser
         ? `(ref ${referralUser} - ${referralOrg})`
         : referralOrg
-        ? `(ref ${referralOrg})`
-        : undefined;
+          ? `(ref ${referralOrg})`
+          : undefined;
       return [username, referral].filter(x => x).join(' ');
     }
 

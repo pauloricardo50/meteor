@@ -43,8 +43,7 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (isNewUser) {
-      const user = UserService.fetchOne({
-        $filters: { _id: userId },
+      const user = UserService.get(userId, {
         referredByUser: { _id: 1 },
         referredByOrganisation: { _id: 1 },
         assignedEmployee: { _id: 1 },
@@ -93,8 +92,7 @@ ServerEventService.addAfterMethodListener(
       purchaseType: loanPurchaseType,
       residenceType: loanResidenceType,
       step: loanStep,
-    } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    } = LoanService.get(loanId, {
       userId: 1,
       category: 1,
       name: 1,
@@ -102,13 +100,9 @@ ServerEventService.addAfterMethodListener(
       residenceType: 1,
       step: 1,
     });
-    const { name: adminName } = UserService.fetchOne({
-      $filters: { _id: adminId },
-      name: 1,
-    });
+    const { name: adminName } = UserService.get(adminId, { name: 1 });
     if (customerId) {
-      const user = UserService.fetchOne({
-        $filters: { _id: customerId },
+      const user = UserService.get(customerId, {
         referredByUser: { name: 1 },
         referredByOrganisation: { name: 1 },
         assignedEmployee: { name: 1 },
@@ -148,10 +142,10 @@ ServerEventService.addAfterMethodListener(
   followImpersonatedSession,
   ({ context, params: { connectionId } }) => {
     context.unblock();
-    const { impersonatingAdmin: admin } = SessionService.fetchOne({
-      $filters: { connectionId },
-      impersonatingAdmin: { name: 1 },
-    });
+    const { impersonatingAdmin: admin } = SessionService.get(
+      { connectionId },
+      { impersonatingAdmin: { name: 1 } },
+    );
 
     const analytics = new Analytics(context);
     analytics.track(EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN, {
@@ -203,8 +197,7 @@ ServerEventService.addAfterMethodListener(
     const analytics = new Analytics(context);
 
     const { loanId } = params;
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
       properties: { value: 1, category: 1, address: 1 },
       hasProProperty: 1,
@@ -294,8 +287,7 @@ ServerEventService.addAfterMethodListener(
     const analytics = new Analytics(context);
     const { loanId, amount } = params;
 
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
       properties: { category: 1, address: 1 },
       hasProProperty: 1,
@@ -347,10 +339,7 @@ ServerEventService.addAfterMethodListener(
   }) => {
     context.unblock();
     const analytics = new Analytics(context);
-    const { name: loanName } = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      name: 1,
-    });
+    const { name: loanName } = LoanService.get(loanId, { name: 1 });
     analytics.track(
       EVENTS.LOAN_CREATED,
       {
@@ -371,8 +360,7 @@ ServerEventService.addAfterMethodListener(
     context.unblock();
     const analytics = new Analytics({ ...context, userId });
 
-    const user = UserService.fetchOne({
-      $filters: { _id: userId },
+    const user = UserService.get(userId, {
       referredByUser: { _id: 1 },
       referredByOrganisation: { _id: 1 },
       assignedEmployee: { _id: 1 },
@@ -399,10 +387,7 @@ ServerEventService.addAfterMethodListener(
     );
 
     if (loanId) {
-      const { name: loanName } = LoanService.fetchOne({
-        $filters: { _id: loanId },
-        name: 1,
-      });
+      const { name: loanName } = LoanService.get(loanId, { name: 1 });
       analytics.track(EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED, {
         loanId,
         loanName,
@@ -430,10 +415,7 @@ ServerEventService.addAfterMethodListener(
       showAllLots = false,
     } = user;
 
-    const { name: pro } = UserService.fetchOne({
-      $filters: { _id: userId },
-      name: 1,
-    });
+    const { name: pro } = UserService.get(userId, { name: 1 });
     const { name: org, _id: orgId } =
       UserService.getUserMainOrganisation(userId) || {};
 
@@ -461,10 +443,7 @@ ServerEventService.addAfterMethodListener(
 
     if (propertyIds.length) {
       propertyIds.map(propertyId => {
-        const { address } = PropertyService.fetchOne({
-          $filters: { _id: propertyId },
-          address: 1,
-        });
+        const { address } = PropertyService.get(propertyId, { address: 1 });
 
         return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
           ...sharedEventProperties,
@@ -476,10 +455,7 @@ ServerEventService.addAfterMethodListener(
 
     if (promotionIds.length) {
       promotionIds.map(promotionId => {
-        const { name } = PromotionService.fetchOne({
-          $filters: { _id: promotionId },
-          name: 1,
-        });
+        const { name } = PromotionService.get(promotionId, { name: 1 });
 
         return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
           ...sharedEventProperties,
@@ -493,10 +469,10 @@ ServerEventService.addAfterMethodListener(
 
     if (properties.length) {
       properties.map(property => {
-        const { address, _id: propertyId } = PropertyService.fetchOne({
-          $filters: { externalId: property.externalId },
-          address: 1,
-        });
+        const { address, _id: propertyId } = PropertyService.get(
+          { externalId: property.externalId },
+          { address: 1 },
+        );
 
         return analytics.track(EVENTS.PRO_INVITED_CUSTOMER, {
           ...sharedEventProperties,

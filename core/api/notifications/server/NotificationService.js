@@ -42,10 +42,7 @@ class NotificationService extends CollectionService {
   }
 
   readNotificationAll({ filters }) {
-    const notification = this.fetchOne({
-      $filters: filters,
-      recipientLinks: 1,
-    });
+    const notification = this.get(filters, { recipientLinks: 1 });
 
     if (notification) {
       const { _id: notificationId, recipientLinks } = notification;
@@ -73,9 +70,10 @@ class NotificationService extends CollectionService {
 
     const admins = UserService.fetch({ $filters: { roles: ROLES.ADMIN } });
     tasks.forEach(({ _id: taskId, assigneeLink = {} }) => {
-      const existingNotification = this.fetchOne({
-        $filters: { 'taskLink._id': taskId },
-      });
+      const existingNotification = this.get(
+        { 'taskLink._id': taskId },
+        { _id: 1 },
+      );
 
       if (!existingNotification) {
         this.insert({
@@ -104,9 +102,10 @@ class NotificationService extends CollectionService {
     });
 
     activities.forEach(({ _id: activityId, createdBy = {}, loan }) => {
-      const existingNotification = this.fetchOne({
-        $filters: { 'activityLink._id': activityId },
-      });
+      const existingNotification = this.get(
+        { 'activityLink._id': activityId },
+        { _id: 1 },
+      );
 
       const recipients = [{ _id: createdBy }];
 
@@ -132,16 +131,17 @@ class NotificationService extends CollectionService {
 
     const admins = UserService.fetch({ $filters: { roles: ROLES.ADMIN } });
     revenues.forEach(({ _id: revenueId, loan = {} }) => {
-      const existingNotification = this.fetchOne({
-        $filters: { 'revenueLink._id': revenueId },
-      });
+      const existingNotification = this.get(
+        { 'revenueLink._id': revenueId },
+        { _id: 1 },
+      );
 
       if (!existingNotification) {
         this.insert({
           recipientLinks: this.getNotificationRecipient(
             loan.userCache &&
-              loan.userCache.assignedEmployeeCache &&
-              loan.userCache.assignedEmployeeCache._id,
+            loan.userCache.assignedEmployeeCache &&
+            loan.userCache.assignedEmployeeCache._id,
             admins,
           ),
           revenueLink: { _id: revenueId },

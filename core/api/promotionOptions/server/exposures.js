@@ -78,15 +78,12 @@ exposeQuery({
 
       body.$postFilter = (promotionOptions = [], params) => {
         const { anonymize = false, userId } = params;
-        const currentUser = UserService.fetchOne({
-          $filters: { _id: userId },
+        const currentUser = UserService.get(userId, {
           promotions: { _id: 1 },
           organisations: { users: { _id: 1 } },
         });
         return anonymize
-          ? promotionOptions.map(
-            makePromotionOptionAnonymizer({ currentUser }),
-          )
+          ? promotionOptions.map(makePromotionOptionAnonymizer({ currentUser }))
           : promotionOptions;
       };
     },

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { fullUser } from 'core/api/fragments';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
@@ -36,8 +37,9 @@ class PromotionService extends CollectionService {
   }
 
   insertPromotionProperty({ promotionId, property }) {
-    const { address1, address2, zipCode, city, canton } = this.findOne(
+    const { address1, address2, zipCode, city, canton } = this.get(
       promotionId,
+      { address1: 1, address2: 1, zipCode: 1, city: 1, canton: 1 },
     );
     const propertyId = PropertyService.insert({
       property: {
@@ -70,8 +72,7 @@ class PromotionService extends CollectionService {
   update({ promotionId, ...rest }) {
     const result = this._update({ id: promotionId, ...rest });
 
-    const { propertyLinks = [], ...address } = this.fetchOne({
-      $filters: { _id: promotionId },
+    const { propertyLinks = [], ...address } = this.get(promotionId, {
       propertyLinks: 1,
       address1: 1,
       address2: 1,
@@ -102,7 +103,10 @@ class PromotionService extends CollectionService {
     shareSolvency,
   }) {
     this.checkPromotionIsReady({ promotionId });
-    const promotion = this.findOne(promotionId);
+    const promotion = this.get(promotionId, {
+      status: 1,
+      assignedEmployeeId: 1,
+    });
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
@@ -128,7 +132,7 @@ class PromotionService extends CollectionService {
     });
 
     if (isNewUser) {
-      const admin = UserService.get(promotion.assignedEmployeeId);
+      const admin = UserService.get(promotion.assignedEmployeeId, fullUser());
       UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
     }
 
@@ -176,10 +180,7 @@ class PromotionService extends CollectionService {
   }
 
   toggleNotifications({ promotionId, userId }) {
-    const promotion = this.fetchOne({
-      $filters: { _id: promotionId },
-      userLinks: 1,
-    });
+    const promotion = this.get(promotionId, { userLinks: 1 });
     const userLink = promotion.userLinks.find(({ _id }) => _id === userId);
     const nextValue = !userLink.enableNotifications;
     this.updateLinkMetadata({
@@ -192,8 +193,7 @@ class PromotionService extends CollectionService {
   }
 
   removeLoan({ promotionId, loanId }) {
-    const { promotionOptions = [] } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const { promotionOptions = [] } = LoanService.get(loanId, {
       promotionOptions: { _id: 1 },
     });
 
@@ -229,8 +229,7 @@ class PromotionService extends CollectionService {
       });
     }
 
-    const { promotionOptions = [] } = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const { promotionOptions = [] } = LoanService.get(loanId, {
       promotionOptions: {
         promotionLots: { attributedTo: { _id: 1 }, name: 1 },
       },
@@ -269,8 +268,7 @@ class PromotionService extends CollectionService {
   }
 
   reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
-    const { constructionTimeline } = this.fetchOne({
-      $filters: { _id: fromPromotionId },
+    const { constructionTimeline } = this.get(fromPromotionId, {
       constructionTimeline: 1,
     });
 
@@ -297,7 +295,14 @@ class PromotionService extends CollectionService {
       name,
       city,
       zipCode,
-    } = this.findOne(promotionId);
+    } = this.get(promotionId, {
+      documents: 1,
+      promotionLotLinks: 1,
+      assignedEmployeeId: 1,
+      name: 1,
+      city: 1,
+      zipCode: 1,
+    });
 
     if (!name || !city || !zipCode) {
       throw new Meteor.Error(

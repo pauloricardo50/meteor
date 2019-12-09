@@ -1,4 +1,5 @@
 import UserService from '../users/server/UserService';
+import { fullUser } from '../fragments';
 
 const assigneeReducer = (body = {}, getUserId) => ({
   assignee: {
@@ -22,7 +23,7 @@ const assigneeReducer = (body = {}, getUserId) => ({
       let users = userLinks;
 
       if (assignedEmployeeId) {
-        return UserService.findOne({ _id: assignedEmployeeId });
+        return UserService.get(assignedEmployeeId, fullUser());
       }
 
       if (promotion && promotion.userLinks) {
@@ -42,9 +43,9 @@ const assigneeReducer = (body = {}, getUserId) => ({
       }
 
       if (userToFind) {
-        const user = UserService.findOne({ _id: userToFind });
+        const user = UserService.get(userToFind, { assignedEmployeeId: 1 });
         if (user) {
-          return UserService.findOne({ _id: user.assignedEmployeeId });
+          return UserService.get(user.assignedEmployeeId, fullUser());
         }
       }
 

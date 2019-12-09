@@ -72,5 +72,4 @@ export const getTwoBorrowersLoan = ({
   })._id;
 };
 
-export const getFullLoan = loanId =>
-  LoanService.fetchOne({ $filters: { id: loanId }, ...adminLoan() });
+export const getFullLoan = loanId => LoanService.get(loanId);

@@ -12,8 +12,7 @@ ServerEventService.addAfterMethodListener(
   setMaxPropertyValueWithoutBorrowRatio,
   ({ context, params }) => {
     const { loanId } = params;
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
+    const loan = LoanService.get(loanId, {
       maxPropertyValue: { date: 1 },
       promotionOptions: { _id: 1 },
     });

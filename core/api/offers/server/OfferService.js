@@ -33,11 +33,12 @@ class OfferService extends CollectionService {
   remove = ({ offerId }) => Offers.remove(offerId);
 
   cleanUpOffer = ({ offerId }) => {
-    const loan = LoanService.fetchOne({
-      $filters: {
+    const loan = LoanService.get(
+      {
         structures: { $elemMatch: { offerId } },
       },
-    });
+      { _id: 1, structures: 1 },
+    );
 
     if (loan) {
       LoanService.update({

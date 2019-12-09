@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // from https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
-const getDataTransferItems = (event) => {
+const getDataTransferItems = event => {
   let dataTransferItemsList = [];
   if (event.dataTransfer) {
     const dt = event.dataTransfer;
@@ -21,7 +21,7 @@ const getDataTransferItems = (event) => {
   return Array.prototype.slice.call(dataTransferItemsList);
 };
 
-const getMoveFileData = (event) => {
+const getMoveFileData = event => {
   const Key = event.dataTransfer.getData('Key');
   const status = event.dataTransfer.getData('status');
   const oldCollection = event.dataTransfer.getData('collection');
@@ -34,7 +34,7 @@ export default class FileDropper extends Component {
     this.state = {};
   }
 
-  handleDragEnter = (e) => {
+  handleDragEnter = e => {
     const { disabled, toggleDisplayFull } = this.props;
     e.preventDefault();
     e.stopPropagation();
@@ -44,7 +44,7 @@ export default class FileDropper extends Component {
     }
   };
 
-  handleDragLeave = (e) => {
+  handleDragLeave = e => {
     const { target } = this.state;
     e.preventDefault();
     e.stopPropagation();
@@ -53,7 +53,7 @@ export default class FileDropper extends Component {
     }
   };
 
-  handleDrop = (e) => {
+  handleDrop = e => {
     const { disabled, handleMoveFile, handleAddFiles } = this.props;
     e.preventDefault();
     e.stopPropagation();
@@ -71,12 +71,16 @@ export default class FileDropper extends Component {
   pD = e => e.preventDefault();
 
   render() {
-    const { children, id } = this.props;
+    const { children, id, variant } = this.props;
     const { dragging } = this.state;
 
     return (
       <label
-        className={classnames('uploader', { dragging })}
+        className={classnames('uploader', {
+          dragging,
+          normal: variant === 'normal',
+          simple: variant === 'simple',
+        })}
         onDragEnd={this.pD}
         onDragEnter={this.handleDragEnter}
         onDragLeave={this.handleDragLeave}
@@ -97,8 +101,10 @@ FileDropper.propTypes = {
   disabled: PropTypes.bool,
   handleAddFiles: PropTypes.func.isRequired,
   showFull: PropTypes.func.isRequired,
+  variant: PropTypes.oneOf(['normal', 'simple']),
 };
 
 FileDropper.defaultProps = {
   disabled: false,
+  variant: 'normal',
 };

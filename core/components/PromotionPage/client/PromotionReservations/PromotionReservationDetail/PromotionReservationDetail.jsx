@@ -66,6 +66,7 @@ const PromotionReservationDetail = ({
             disabled={!isAdmin}
             disableUpload={!isAdmin}
             autoRenameFiles
+            variant="simple"
           />
         )}
 
