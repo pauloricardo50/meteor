@@ -1,0 +1,15 @@
+{
+    "events": [
+        "issues",
+        "pull_request"
+    ],
+    "modules": {
+        "bug": {
+            "project": "Bugs",
+            "column": "Triage",
+            "triggerLabels": [
+                "bug"
+            ]
+        }
+    }
+}

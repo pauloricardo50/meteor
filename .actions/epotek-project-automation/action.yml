@@ -1,0 +1,15 @@
+name: 'e-Potek Project Automation+'
+description: 'Automate GitHub Project cards with any webhook event'
+inputs:
+  repo-token:
+    description: 'The GH_PAT secret can be passed in using {{ secrets.GH_PAT }}'
+    required: true
+  module:
+    description: 'The module to use'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'cpu'
+  color: 'gray-dark'
