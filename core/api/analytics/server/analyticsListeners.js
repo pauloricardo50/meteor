@@ -44,15 +44,22 @@ addAnalyticsListener({
 
     if (isNewUser) {
       const user = UserService.get(userId, {
-        referredByUser: { _id: 1 },
-        referredByOrganisation: { _id: 1 },
-        assignedEmployee: { _id: 1 },
+        name: 1,
+        email: 1,
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { name: 1 },
       });
 
       const {
-        referredByUser: { _id: proId } = {},
-        referredByOrganisation: { _id: orgId } = {},
-        assignedEmployee: { _id: adminId } = {},
+        name: userName,
+        email: userEmail,
+        referredByUser: { _id: referringUserId, name: referringUserName } = {},
+        referredByOrganisation: {
+          _id: referringOrganisationId,
+          name: referringOrganisationName,
+        } = {},
+        assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
       } = user;
 
       let origin;
@@ -65,10 +72,15 @@ addAnalyticsListener({
 
       analytics.createAnalyticsUser(userId, {
         userId,
+        userName,
+        userEmail,
+        referringUserId,
+        referringUserName,
+        referringOrganisationId,
+        referringOrganisationName,
+        assigneeId,
+        assigneeName,
         origin,
-        referralId: proId,
-        orgReferralId: orgId,
-        adminId,
       });
     }
   },
@@ -391,7 +403,7 @@ addAnalyticsListener({
     params: { user, propertyIds = [], promotionIds = [], properties = [] },
     result: { userId: customerId },
   }) => {
-    const { userId } = context;
+    const { userId: referringUserId } = context;
     const {
       firstName,
       lastName,
@@ -399,10 +411,15 @@ addAnalyticsListener({
       promotionLotIds = [],
       showAllLots = false,
     } = user;
+    const {
+      assignedEmployee: { _id: assigneeId, name: assigneeName },
+    } = UserService.get(customerId, { assignedEmployee: { name: 1 } });
 
-    const { name: pro } = UserService.get(userId, { name: 1 });
-    const { name: org, _id: orgId } =
-      UserService.getUserMainOrganisation(userId) || {};
+    const { name: referringUserName } = UserService.get(referringUserId, {
+      name: 1,
+    });
+    const { name: referringOrganisationName, _id: referringOrganisationId } =
+      UserService.getUserMainOrganisation(referringUserId) || {};
 
     const referOnly =
       propertyIds.length === 0 &&
@@ -413,9 +430,12 @@ addAnalyticsListener({
       customerId,
       customerName: `${firstName} ${lastName}`,
       customerEmail: email,
-      proId: userId,
-      proName: pro,
-      proOrganisation: org,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
+      assigneeId,
+      assigneeName,
       referOnly,
     };
 
@@ -471,23 +491,68 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: adminCreateUser,
-  func: ({ analytics, context, result: userId }) => {
-    const { userId: adminId } = context;
-    analytics.track(EVENTS.ADMIN_INVITED_USER, { userId, adminId });
+  func: ({ analytics, result: userId }) => {
+    const {
+      name: userName,
+      email: userEmail,
+      assignedEmployee: { name: assigneeName, _id: assigneeId },
+      referredByUser,
+      referredByOrganisation,
+    } = UserService.get(userId, {
+      name: 1,
+      email: 1,
+      assignedEmployee: { name: 1 },
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+    });
+    let referringUserId;
+    let referringUserName;
+    let referringOrganisationId;
+    let referringOrganisationName;
+
+    if (referredByUser) {
+      referringUserId = referredByUser._id;
+      referringUserName = referredByUser.name;
+    }
+
+    if (referredByOrganisation) {
+      referringOrganisationId = referredByOrganisation._id;
+      referringOrganisationName = referredByOrganisation.name;
+    }
+
+    analytics.track(EVENTS.ADMIN_INVITED_USER, {
+      userId,
+      userName,
+      userEmail,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
+      assigneeId,
+      assigneeName,
+    });
   },
 });
 
 addAnalyticsListener({
   method: proInviteUserToOrganisation,
-  func: ({ analytics, context, result: userId }) => {
-    const { userId: proId } = context;
-
-    const { _id: orgId } = UserService.getUserMainOrganisation(proId);
+  func: ({ analytics, context, result: proId }) => {
+    const { userId } = context;
+    const { name: proName, email: proEmail } = UserService.get(proId, {
+      name: 1,
+      email: 1,
+    });
+    const {
+      _id: organisationId,
+      name: organisationName,
+    } = UserService.getUserMainOrganisation(userId);
 
     analytics.track(EVENTS.PRO_INVITED_PRO, {
-      userId,
       proId,
-      organisationId: orgId,
+      proName,
+      proEmail,
+      organisationId,
+      organisationName,
     });
   },
 });
