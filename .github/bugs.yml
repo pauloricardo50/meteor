@@ -1,0 +1,15 @@
+  
+name: Move new bugs issues into Triage
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  automate-project-columns:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/epotek-project-automation
+        with:
+          module: bug
+          repo-token: ${{ secrets.GH_PAT }}
