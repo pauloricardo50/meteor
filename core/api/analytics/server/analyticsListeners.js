@@ -411,9 +411,10 @@ addAnalyticsListener({
       promotionLotIds = [],
       showAllLots = false,
     } = user;
-    const {
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
-    } = UserService.get(customerId, { assignedEmployee: { name: 1 } });
+    const { assignedEmployee = {} } = UserService.get(customerId, {
+      assignedEmployee: { name: 1 },
+    });
+    const { _id: assigneeId, name: assigneeName } = assignedEmployee;
 
     const { name: referringUserName } = UserService.get(referringUserId, {
       name: 1,
