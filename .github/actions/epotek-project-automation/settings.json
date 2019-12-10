@@ -8,7 +8,8 @@
             "project": "Bugs",
             "column": "Triage",
             "triggerLabels": [
-                "bug"
+                "bug",
+                "Bug"
             ]
         }
     }
