@@ -9,6 +9,7 @@ jobs:
   epotek-project-automation:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - uses: ./.github/actions/epotek-project-automation
         with:
           module: bug
