@@ -6,7 +6,7 @@ on:
     types: [opened, labeled]
 
 jobs:
-  automate-project-columns:
+  epotek-project-automation:
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/epotek-project-automation
