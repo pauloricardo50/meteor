@@ -1,9 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fs = require('fs');
 
-const settingsJson = require('./settings.json');
-
-const settings = JSON.parse(settingsJson);
+const settings = JSON.parse(fs.readFileSync('./settings.json').toString());
 
 const token = core.getInput('repo-token');
 const module = core.getInput('module');
