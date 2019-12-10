@@ -79,7 +79,10 @@ class LoanService extends CollectionService {
   getNewLoanName = (now = new Date()) => {
     const year = now.getYear();
     const yearPrefix = year - 100;
-    const lastLoan = this.get({}, { name: 1, $options: { sort: { name: -1 } } });
+    const lastLoan = this.get(
+      {},
+      { name: 1, $options: { sort: { name: -1 } } },
+    );
     if (!lastLoan) {
       return `${yearPrefix}-0001`;
     }
@@ -106,7 +109,7 @@ class LoanService extends CollectionService {
       loan,
       userId,
     });
-    console.log('loanId:', loanId)
+    console.log('loanId:', loanId);
     this.addNewStructure({ loanId });
     return loanId;
   };
@@ -634,9 +637,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-      max.organisationName
-      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+          max.organisationName
+        } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -651,7 +654,11 @@ class LoanService extends CollectionService {
       lenderRulesCount: { $gte: 1 },
     };
 
-    if (loan.hasPromotion && loan.promotions[0].lenderOrganisationLink) {
+    if (
+      loan.hasPromotion &&
+      loan.promotions[0].lenderOrganisationLink &&
+      loan.promotions[0].lenderOrganisationLink._id
+    ) {
       query = { _id: loan.promotions[0].lenderOrganisationLink._id };
     }
 
