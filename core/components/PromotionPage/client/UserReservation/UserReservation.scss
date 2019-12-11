@@ -2,21 +2,22 @@
   &-info {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     flex-wrap: wrap;
+    justify-content: space-around;
   }
 
   &-deadline {
-    flex-grow: 1;
     display: flex;
     align-items: center;
+    flex-grow: 1;
     justify-content: center;
+
     text-align: center;
   }
 
   .promotion-reservation-progress {
     align-items: flex-start !important;
-    justify-content: space-between;
     flex-grow: 1;
+    justify-content: space-between;
   }
 }

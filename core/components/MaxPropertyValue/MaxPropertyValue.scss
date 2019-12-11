@@ -78,12 +78,12 @@ $footer-height: 64px;
     .show-best-toggle {
       align-self: center;
 
-      > * {
+       > * {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        > * {
+         > * {
           font-size: initial;
         }
       }
