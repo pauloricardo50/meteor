@@ -26,11 +26,11 @@ import {
   analyticsVerifyEmail,
   analyticsCTA,
 } from '../methodDefinitions';
+import { addAnalyticsListener } from './analyticsHelpers';
 
-ServerEventService.addAfterMethodListener(
-  [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
-  ({ context, params, result, config: { name: methodName } }) => {
-    context.unblock();
+addAnalyticsListener({
+  method: [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
+  func: ({ analytics, result, config: { name: methodName } }) => {
     let userId;
     let isNewUser = false;
 
@@ -44,18 +44,24 @@ ServerEventService.addAfterMethodListener(
 
     if (isNewUser) {
       const user = UserService.get(userId, {
-        referredByUser: { _id: 1 },
-        referredByOrganisation: { _id: 1 },
-        assignedEmployee: { _id: 1 },
+        name: 1,
+        email: 1,
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { name: 1 },
       });
 
       const {
-        referredByUser: { _id: proId } = {},
-        referredByOrganisation: { _id: orgId } = {},
-        assignedEmployee: { _id: adminId } = {},
+        name: userName,
+        email: userEmail,
+        referredByUser: { _id: referringUserId, name: referringUserName } = {},
+        referredByOrganisation: {
+          _id: referringOrganisationId,
+          name: referringOrganisationName,
+        } = {},
+        assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
       } = user;
 
-      const analytics = new Analytics(context);
       let origin;
 
       if (methodName.includes('pro')) {
@@ -66,19 +72,28 @@ ServerEventService.addAfterMethodListener(
 
       analytics.createAnalyticsUser(userId, {
         userId,
+        userName,
+        userEmail,
+        referringUserId,
+        referringUserName,
+        referringOrganisationId,
+        referringOrganisationName,
+        assigneeId,
+        assigneeName,
         origin,
-        referralId: proId,
-        orgReferralId: orgId,
-        adminId,
       });
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  loanSetStatus,
-  ({ context, result: { prevStatus, nextStatus }, params: { loanId } }) => {
-    context.unblock();
+addAnalyticsListener({
+  method: loanSetStatus,
+  func: ({
+    analytics,
+    context,
+    result: { nextStatus, prevStatus },
+    params: { loanId },
+  }) => {
     const { userId: adminId } = context;
     let referredByOrganisation;
     let referredByUser;
@@ -116,7 +131,6 @@ ServerEventService.addAfterMethodListener(
       customerName = user.name;
     }
 
-    const analytics = new Analytics(context);
     analytics.track(EVENTS.LOAN_STATUS_CHANGED, {
       adminId,
       adminName,
@@ -136,67 +150,56 @@ ServerEventService.addAfterMethodListener(
       referredByUser,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  followImpersonatedSession,
-  ({ context, params: { connectionId } }) => {
-    context.unblock();
+addAnalyticsListener({
+  method: followImpersonatedSession,
+  func: ({ analytics, params: { connectionId } }) => {
     const { impersonatingAdmin: admin } = SessionService.get(
       { connectionId },
       { impersonatingAdmin: { name: 1 } },
     );
 
-    const analytics = new Analytics(context);
     analytics.track(EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN, {
       adminId: admin._id,
       adminName: admin.name,
     });
   },
-);
-
-ServerEventService.addAfterMethodListener(analyticsLogin, ({ context }) => {
-  context.unblock();
-  const analytics = new Analytics(context);
-  analytics.identify();
-  analytics.track(EVENTS.USER_LOGGED_IN);
 });
 
-ServerEventService.addAfterMethodListener(
-  analyticsPage,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: analyticsLogin,
+  func: ({ analytics }) => {
+    analytics.identify();
+    analytics.track(EVENTS.USER_LOGGED_IN);
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsPage,
+  func: ({ analytics, params }) => {
     analytics.page(params);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  analyticsVerifyEmail,
-  ({ context, params: { trackingId } }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: analyticsVerifyEmail,
+  func: ({ analytics, params: { trackingId } }) => {
     analytics.identify(trackingId);
     analytics.track(EVENTS.USER_VERIFIED_EMAIL);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  analyticsCTA,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
+addAnalyticsListener({
+  method: analyticsCTA,
+  func: ({ analytics, params }) => {
     analytics.cta(params);
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  setMaxPropertyValueWithoutBorrowRatio,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
-
-    const { loanId } = params;
+addAnalyticsListener({
+  method: setMaxPropertyValueWithoutBorrowRatio,
+  func: ({ analytics, params: { loanId } }) => {
     const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
       properties: { value: 1, category: 1, address: 1 },
@@ -278,15 +281,11 @@ ServerEventService.addAfterMethodListener(
       promotionName: promotion.name,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  loanInsertBorrowers,
-  ({ context, params }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
-    const { loanId, amount } = params;
-
+addAnalyticsListener({
+  method: loanInsertBorrowers,
+  func: ({ analytics, params: { loanId, amount } }) => {
     const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
       properties: { category: 1, address: 1 },
@@ -328,17 +327,15 @@ ServerEventService.addAfterMethodListener(
       promotionName: promotion.name,
     });
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  anonymousLoanInsert,
-  ({
-    context,
+addAnalyticsListener({
+  method: anonymousLoanInsert,
+  func: ({
+    analytics,
     params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
     const { name: loanName } = LoanService.get(loanId, { name: 1 });
     analytics.track(
       EVENTS.LOAN_CREATED,
@@ -352,14 +349,16 @@ ServerEventService.addAfterMethodListener(
       trackingId,
     );
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  anonymousCreateUser,
-  ({ context, params: { trackingId, loanId, ctaId }, result: userId }) => {
-    context.unblock();
-    const analytics = new Analytics({ ...context, userId });
-
+addAnalyticsListener({
+  method: anonymousCreateUser,
+  analyticsProps: ({ context, result: userId }) => ({ ...context, userId }),
+  func: ({
+    analytics,
+    params: { trackingId, loanId, ctaId },
+    result: userId,
+  }) => {
     const user = UserService.get(userId, {
       referredByUser: { _id: 1 },
       referredByOrganisation: { _id: 1 },
@@ -394,19 +393,17 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  proInviteUser,
-  ({
+addAnalyticsListener({
+  method: proInviteUser,
+  func: ({
+    analytics,
     context,
     params: { user, propertyIds = [], promotionIds = [], properties = [] },
     result: { userId: customerId },
   }) => {
-    context.unblock();
-
-    const analytics = new Analytics(context);
-    const { userId } = context;
+    const { userId: referringUserId } = context;
     const {
       firstName,
       lastName,
@@ -414,10 +411,16 @@ ServerEventService.addAfterMethodListener(
       promotionLotIds = [],
       showAllLots = false,
     } = user;
+    const { assignedEmployee = {} } = UserService.get(customerId, {
+      assignedEmployee: { name: 1 },
+    });
+    const { _id: assigneeId, name: assigneeName } = assignedEmployee;
 
-    const { name: pro } = UserService.get(userId, { name: 1 });
-    const { name: org, _id: orgId } =
-      UserService.getUserMainOrganisation(userId) || {};
+    const { name: referringUserName } = UserService.get(referringUserId, {
+      name: 1,
+    });
+    const { name: referringOrganisationName, _id: referringOrganisationId } =
+      UserService.getUserMainOrganisation(referringUserId) || {};
 
     const referOnly =
       propertyIds.length === 0 &&
@@ -428,9 +431,12 @@ ServerEventService.addAfterMethodListener(
       customerId,
       customerName: `${firstName} ${lastName}`,
       customerEmail: email,
-      proId: userId,
-      proName: pro,
-      proOrganisation: org,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
+      assigneeId,
+      assigneeName,
       referOnly,
     };
 
@@ -482,32 +488,72 @@ ServerEventService.addAfterMethodListener(
       });
     }
   },
-);
+});
 
-ServerEventService.addAfterMethodListener(
-  adminCreateUser,
-  ({ context, result: userId }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
-    const { userId: adminId } = context;
+addAnalyticsListener({
+  method: adminCreateUser,
+  func: ({ analytics, result: userId }) => {
+    const {
+      name: userName,
+      email: userEmail,
+      assignedEmployee: { name: assigneeName, _id: assigneeId },
+      referredByUser,
+      referredByOrganisation,
+    } = UserService.get(userId, {
+      name: 1,
+      email: 1,
+      assignedEmployee: { name: 1 },
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+    });
+    let referringUserId;
+    let referringUserName;
+    let referringOrganisationId;
+    let referringOrganisationName;
 
-    analytics.track(EVENTS.ADMIN_INVITED_USER, { userId, adminId });
-  },
-);
+    if (referredByUser) {
+      referringUserId = referredByUser._id;
+      referringUserName = referredByUser.name;
+    }
 
-ServerEventService.addAfterMethodListener(
-  proInviteUserToOrganisation,
-  ({ context, result: userId }) => {
-    context.unblock();
-    const analytics = new Analytics(context);
-    const { userId: proId } = context;
+    if (referredByOrganisation) {
+      referringOrganisationId = referredByOrganisation._id;
+      referringOrganisationName = referredByOrganisation.name;
+    }
 
-    const { _id: orgId } = UserService.getUserMainOrganisation(proId);
-
-    analytics.track(EVENTS.PRO_INVITED_PRO, {
+    analytics.track(EVENTS.ADMIN_INVITED_USER, {
       userId,
-      proId,
-      organisationId: orgId,
+      userName,
+      userEmail,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
+      assigneeId,
+      assigneeName,
     });
   },
-);
+});
+
+addAnalyticsListener({
+  method: proInviteUserToOrganisation,
+  func: ({ analytics, context, result: proId }) => {
+    const { userId } = context;
+    const { name: proName, email: proEmail } = UserService.get(proId, {
+      name: 1,
+      email: 1,
+    });
+    const {
+      _id: organisationId,
+      name: organisationName,
+    } = UserService.getUserMainOrganisation(userId);
+
+    analytics.track(EVENTS.PRO_INVITED_PRO, {
+      proId,
+      proName,
+      proEmail,
+      organisationId,
+      organisationName,
+    });
+  },
+});
