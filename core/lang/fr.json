@@ -1,4 +1,9 @@
 {
+  "files.category.INSURANCE": "Assurance",
+  "files.INSURANCE_CORRESPONDENCE": "Correspondance",
+  "files.INSURANCE_MANDATE": "Mandat assurance",
+  "files.INSURANCE_POLICY": "Polices d'assurance",
+  "files.INSURANCE_SIGNED_PROPOSAL": "Propositions signées",
   "ProCustomersTable.proNote": "Note du conseiller",
   "Forms.isSharedWithPros": "Partagé avec les Pros",
   "PromotionLotLoansTable.buyer": "Acquéreur",
