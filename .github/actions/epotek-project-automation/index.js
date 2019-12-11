@@ -97,6 +97,7 @@ const bugModule = async ({ action, githubData }) => {
         }`;
 
   const { resource } = await octokit.graphql(fetchColumnQuery);
+  console.log('resource:', JSON.stringify(resource, null, 2));
 
   // All the matching projects found
   const repoProjects = resource.repository.projects.nodes || [];
