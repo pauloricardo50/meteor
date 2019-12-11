@@ -198,7 +198,7 @@ const pullRequestReviewModule = async ({ action, githubData }) => {
         }`;
 
   const { resource } = await octokit.graphql(fetchColumnQuery);
-  console.log('resource:', resource);
+  console.log('resource:', JSON.stringify(resource, null, 2));
 };
 
 const runModules = async () => {
