@@ -152,11 +152,63 @@ const bugModule = async ({ action, githubData }) => {
   );
 };
 
+const pullRequestReviewModule = async ({ action, githubData }) => {
+  const { node_id: nodeId, html_url: url } = githubData;
+  const { column } = settings.modules.pull_request_review;
+
+  // Get the column ID  from searching for the project and card Id if it exists
+  const fetchColumnQuery = `query {
+			resource( url: "${url}" ) {
+				... on PullRequest {
+					projectCards {
+						nodes {
+							id
+						}
+					}
+					repository {
+						projects( first: 10, states: [OPEN] ) {
+							nodes {
+								id
+								columns( first: 100 ) {
+									nodes {
+										id
+										name
+									}
+								}
+							}
+						}
+						owner {
+							... on ProjectOwner {
+								projects( first: 10, states: [OPEN] ) {
+									nodes {
+										id
+										columns( first: 100 ) {
+											nodes {
+												id
+												name
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+        }`;
+
+  const { resource } = await octokit.graphql(fetchColumnQuery);
+  console.log('resource:', resource);
+};
+
 const runModules = async () => {
   const data = getData();
   switch (module) {
     case 'bug':
       await bugModule(data);
+      break;
+    case 'pull_request_review':
+      await pullRequestReviewModule(data);
       break;
     default:
       break;

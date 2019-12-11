@@ -6,6 +6,9 @@ const settings = {
       column: 'Triage',
       triggerLabels: ['bug', 'Bug'],
     },
+    pull_request_review: {
+      column: 'Review',
+    },
   },
 };
 
