@@ -2,7 +2,8 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
 
-const settings = JSON.parse(fs.readFileSync('./settings.json').toString());
+// Code is ran by ./dist/index.js so the path must be relative to it
+const settings = JSON.parse(fs.readFileSync('../settings.json').toString());
 
 const token = core.getInput('repo-token');
 const module = core.getInput('module');

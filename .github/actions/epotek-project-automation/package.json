@@ -18,5 +18,10 @@
     },
     "files": [
         "dist/index.js"
-    ]
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run build && git add ./dist/index.js"
+        }
+    }
 }
