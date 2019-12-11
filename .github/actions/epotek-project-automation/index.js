@@ -65,7 +65,7 @@ const bugModule = async ({ action, githubData }) => {
 						}
 					}
 					repository {
-						projects( search: "Issue", first: 10, states: [OPEN] ) {
+						projects( search: "${project}", first: 10, states: [OPEN] ) {
 							nodes {
 								id
 								columns( first: 100 ) {
@@ -78,7 +78,7 @@ const bugModule = async ({ action, githubData }) => {
 						}
 						owner {
 							... on ProjectOwner {
-								projects( search: "Issue", first: 10, states: [OPEN] ) {
+								projects( search: "${project}", first: 10, states: [OPEN] ) {
 									nodes {
 										id
 										columns( first: 100 ) {
@@ -97,7 +97,6 @@ const bugModule = async ({ action, githubData }) => {
         }`;
 
   const { resource } = await octokit.graphql(fetchColumnQuery);
-  console.log('resource:', JSON.stringify(resource, null, 2));
 
   // All the matching projects found
   const repoProjects = resource.repository.projects.nodes || [];
