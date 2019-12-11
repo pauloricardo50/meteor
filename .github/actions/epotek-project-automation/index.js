@@ -5,7 +5,6 @@ const github = require('@actions/github');
 
 const token = core.getInput('repo-token');
 const module = core.getInput('module');
-console.log('token:', token);
 
 const octokit = new github.GitHub(token);
 
@@ -44,7 +43,6 @@ const getData = () => {
 const bugModule = async ({ action, githubData }) => {
   const { node_id: nodeId, html_url: url, labels = [] } = githubData;
   const { project, column, triggerLabels } = settings.modules.bug;
-  console.log('url:', url);
 
   // Filter triggered labels
   if (!labels.length) {
@@ -157,6 +155,7 @@ const bugModule = async ({ action, githubData }) => {
 const pullRequestReviewModule = async ({ action, githubData }) => {
   const { node_id: nodeId, html_url: url } = githubData;
   const { column } = settings.modules.pull_request_review;
+  console.log('url:', url);
 
   // Get the column ID  from searching for the project and card Id if it exists
   const fetchColumnQuery = `query {
