@@ -28,7 +28,7 @@
 
   filter: blur(1px);
 
-  > * {
+   > * {
     pointer-events: none;
   }
 }
@@ -100,12 +100,12 @@
     flex-direction: row;
     justify-content: space-between;
 
-    > button {
+     > button {
       margin: 8px;
       padding: 8px;
     }
 
-    > span > button {
+     > span > button {
       margin: 8px;
       padding: 8px;
     }
