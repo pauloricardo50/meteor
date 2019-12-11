@@ -85,11 +85,13 @@ class EmailService {
           Body,
         } = await S3Service.getObject(Key);
 
+        const name = ContentDisposition
+          ? decodeURIComponent(ContentDisposition.match(/filename="(.*)";/m)[1])
+          : decodeURIComponent(Key.split('/').slice(-1)[0]);
+
         return {
           type: ContentType,
-          name: decodeURIComponent(
-            ContentDisposition.match(/filename="(.*)";/m)[1],
-          ),
+          name,
           content: Body.toString('base64'),
         };
       }),

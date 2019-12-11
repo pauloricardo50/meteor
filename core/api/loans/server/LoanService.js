@@ -653,7 +653,11 @@ class LoanService extends CollectionService {
       lenderRulesCount: { $gte: 1 },
     };
 
-    if (loan.hasPromotion && loan.promotions[0].lenderOrganisationLink) {
+    if (
+      loan.hasPromotion &&
+      loan.promotions[0].lenderOrganisationLink &&
+      loan.promotions[0].lenderOrganisationLink._id
+    ) {
       query = { _id: loan.promotions[0].lenderOrganisationLink._id };
     }
 
