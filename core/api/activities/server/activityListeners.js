@@ -316,7 +316,7 @@ ServerEventService.addAfterMethodListener(
       details: { oldEmail, newEmail },
       isServerGenerated: true,
       userLink: { _id: userId },
-      title: "Changemenet d'email",
+      title: "Changement d'email",
       description: newEmail,
       createdBy: adminId,
     });
