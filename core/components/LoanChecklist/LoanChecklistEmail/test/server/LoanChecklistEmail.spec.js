@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import Intl from 'core/utils/server/intl';
+import { formatMessage } from 'core/utils/server/intl';
 
 import { getChecklistMissingInformations } from '../../../helpers';
 
@@ -8,13 +8,17 @@ describe('LoanChecklist', () => {
   context('getChecklistMissingInformations', () => {
     describe('returns the right missing informations', () => {
       it('with one borrower without name', () => {
-        const { fields, documents } = getChecklistMissingInformations({
-          loan: {
-            borrowers: [{ _id: 'paul', additionalDocuments: [{ id: 'doc' }] }],
-            structure: {},
+        const { fields, documents } = getChecklistMissingInformations(
+          {
+            loan: {
+              borrowers: [
+                { _id: 'paul', additionalDocuments: [{ id: 'doc' }] },
+              ],
+              structure: {},
+            },
           },
-          intl: { formatMessage: Intl.formatMessage.bind(Intl) },
-        });
+          formatMessage,
+        );
         expect(fields.property).to.equal(undefined);
         expect(documents.property).to.equal(undefined);
         expect(fields.borrowers.length).to.equal(1);
@@ -26,20 +30,22 @@ describe('LoanChecklist', () => {
       });
 
       it('with two borrowers with name', () => {
-        const { fields, documents } = getChecklistMissingInformations({
-          loan: {
-            borrowers: [
-              {
-                _id: 'paul',
-                name: 'Paul',
-                additionalDocuments: [{ id: 'doc' }],
-              },
-              { _id: 'michel', name: 'Michel' },
-            ],
-            structure: {},
+        const { fields, documents } = getChecklistMissingInformations(
+          {
+            loan: {
+              borrowers: [
+                {
+                  _id: 'paul',
+                  name: 'Paul',
+                  additionalDocuments: [{ id: 'doc' }],
+                },
+                { _id: 'michel', name: 'Michel' },
+              ],
+              structure: {},
+            },
           },
-          intl: { formatMessage: Intl.formatMessage.bind(Intl) },
-        });
+          formatMessage,
+        );
         expect(fields.property).to.equal(undefined);
         expect(documents.property).to.equal(undefined);
         expect(fields.borrowers.length).to.equal(2);
@@ -55,23 +61,25 @@ describe('LoanChecklist', () => {
       });
 
       it('with two borrowers with name and property', () => {
-        const { fields, documents } = getChecklistMissingInformations({
-          loan: {
-            borrowers: [
-              {
-                _id: 'paul',
-                name: 'Paul',
-                additionalDocuments: [{ id: 'doc' }],
-              },
-              { _id: 'michel', name: 'Michel' },
-            ],
-            structure: { propertyId: 'property' },
-            properties: [
-              { _id: 'property', additionalDocuments: [{ id: 'doc' }] },
-            ],
+        const { fields, documents } = getChecklistMissingInformations(
+          {
+            loan: {
+              borrowers: [
+                {
+                  _id: 'paul',
+                  name: 'Paul',
+                  additionalDocuments: [{ id: 'doc' }],
+                },
+                { _id: 'michel', name: 'Michel' },
+              ],
+              structure: { propertyId: 'property' },
+              properties: [
+                { _id: 'property', additionalDocuments: [{ id: 'doc' }] },
+              ],
+            },
           },
-          intl: { formatMessage: Intl.formatMessage.bind(Intl) },
-        });
+          formatMessage,
+        );
         expect(fields.property).to.not.equal(undefined);
         expect(fields.property.title).to.equal('Bien immobilier');
         expect(fields.property.labels.length).to.equal(15);

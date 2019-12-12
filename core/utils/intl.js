@@ -1,10 +1,7 @@
 import IntlMessageFormat from 'intl-messageformat';
 import ReactDOMServer from 'react-dom/server';
 
-import {
-  getUserLocale,
-  //   getFormats,
-} from 'core/utils/localization/localization';
+import { getUserLocale } from 'core/utils/localization';
 import defaultIntlValues from 'core/components/Translation/defaultIntlValues';
 
 const defaultValues = Object.keys(defaultIntlValues).reduce((obj, key) => {
@@ -31,14 +28,11 @@ export class Intl {
     const message = new IntlMessageFormat(
       this.messages[id] || (fallback !== undefined ? fallback : id),
       getUserLocale(),
-      // getFormats(),
     );
     return message.format({ ...defaultValues, ...allValues });
   }
 }
 
 const intl = new Intl();
-
-export default intl;
-
 export const formatMessage = intl.formatMessage.bind(intl);
+export default intl;

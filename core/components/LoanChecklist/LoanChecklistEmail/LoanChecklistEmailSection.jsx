@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
+
+import LoanChecklistSection from '../LoanChecklistSection';
 import EmailLoanChecklist from './EmailLoanChecklist';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
-import LoanChecklistSection from '../LoanChecklistSection';
 
 type LoanChecklistEmailSectionProps = {
   missingInformations: Object,

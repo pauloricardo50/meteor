@@ -31,11 +31,8 @@ const formatFileTitle = ({ doc, formatMessage }) => file => {
   return label || formatMessage({ id: `files.${file}` });
 };
 
-const getPropertyMissingFields = props => {
-  const {
-    loan = {},
-    intl: { formatMessage },
-  } = props;
+const getPropertyMissingFields = (props, formatMessage) => {
+  const { loan = {} } = props;
   const displayPropertyChecklist = shouldDisplayPropertyChecklist(props);
   const property = Calculator.selectProperty({ loan });
 
@@ -55,11 +52,8 @@ const getPropertyMissingFields = props => {
   };
 };
 
-const getPropertyMissingDocuments = props => {
-  const {
-    loan = {},
-    intl: { formatMessage },
-  } = props;
+const getPropertyMissingDocuments = (props, formatMessage) => {
+  const { loan = {} } = props;
   const displayPropertyChecklist = shouldDisplayPropertyChecklist(props);
   const property = Calculator.selectProperty({ loan });
 
@@ -70,7 +64,7 @@ const getPropertyMissingDocuments = props => {
             title:
               (property && property.address1) ||
               formatMessage({ id: 'general.property' }),
-            labels: Calculator.getMissingPropertyDocuments({
+            missingIds: Calculator.getMissingPropertyDocuments({
               loan,
             }).map(formatFileTitle({ doc: property, formatMessage })),
           },
@@ -79,11 +73,8 @@ const getPropertyMissingDocuments = props => {
   };
 };
 
-const getBorrowersMissingFields = props => {
-  const {
-    loan = {},
-    intl: { formatMessage },
-  } = props;
+const getBorrowersMissingFields = (props, formatMessage) => {
+  const { loan = {} } = props;
   const { borrowers = [] } = loan;
 
   return {
@@ -101,11 +92,8 @@ const getBorrowersMissingFields = props => {
   };
 };
 
-const getLoanMissingFields = props => {
-  const {
-    loan = {},
-    intl: { formatMessage },
-  } = props;
+const getLoanMissingFields = (props, formatMessage) => {
+  const { loan = {} } = props;
 
   return {
     loan: {
@@ -117,11 +105,8 @@ const getLoanMissingFields = props => {
   };
 };
 
-const getBorrowersMissingDocuments = props => {
-  const {
-    loan = {},
-    intl: { formatMessage },
-  } = props;
+const getBorrowersMissingDocuments = (props, formatMessage) => {
+  const { loan = {} } = props;
   const { borrowers = [] } = loan;
 
   return {
@@ -157,14 +142,14 @@ export const getChecklistValidInformationsRatio = props =>
       { valid: 0, required: 0 },
     );
 
-export const getChecklistMissingInformations = props => ({
+export const getChecklistMissingInformations = (...args) => ({
   fields: {
-    ...getLoanMissingFields(props),
-    ...getPropertyMissingFields(props),
-    ...getBorrowersMissingFields(props),
+    ...getLoanMissingFields(...args),
+    ...getPropertyMissingFields(...args),
+    ...getBorrowersMissingFields(...args),
   },
   documents: {
-    ...getPropertyMissingDocuments(props),
-    ...getBorrowersMissingDocuments(props),
+    ...getPropertyMissingDocuments(...args),
+    ...getBorrowersMissingDocuments(...args),
   },
 });

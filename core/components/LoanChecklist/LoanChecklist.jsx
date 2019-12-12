@@ -9,8 +9,14 @@ import LoanChecklistList from './LoanChecklistList';
 
 type LoanChecklistProps = {};
 
-const LoanChecklist = (props: LoanChecklistProps) => {
-  const { fields, documents } = getChecklistMissingInformations(props);
+const LoanChecklist = ({
+  intl: { formatMessage },
+  ...props
+}: LoanChecklistProps) => {
+  const { fields, documents } = getChecklistMissingInformations(
+    props,
+    formatMessage,
+  );
 
   return (
     <div className="loan-checklist">

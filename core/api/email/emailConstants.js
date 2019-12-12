@@ -37,8 +37,9 @@ export const EMAIL_TEMPLATES = {
   },
   NOTIFICATION_AND_CTA: {
     name: 'NOTIFICATION_AND_CTA',
-    mandrillId: 'notification-cta-v4',
+    mandrillId: 'notification-cta-v5',
     variables: {
+      CSS: 'CSS',
       TITLE: 'TITLE',
       BODY: 'BODY',
       CTA: 'CTA',
