@@ -1,5 +1,11 @@
 // @flow
-import { OWN_FUNDS_TYPES, SUCCESS, WARNING, ERROR, OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
+import {
+  OWN_FUNDS_TYPES,
+  SUCCESS,
+  WARNING,
+  ERROR,
+  OWN_FUNDS_USAGE_TYPES,
+} from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
   filesPercent,
@@ -780,5 +786,25 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }
 
       return fees;
+    }
+
+    getRequiredLoanFields({ loan }) {
+      const { residenceType } = loan;
+      return Object.keys({ residenceType });
+    }
+
+    getMissingLoanFields({ loan }) {
+      const { residenceType } = loan;
+      const requiredFields = { residenceType };
+      return Object.keys(requiredFields).filter(key => !requiredFields[key]);
+    }
+
+    getLoanValidFieldsRatio({ loan }) {
+      const requiredFields = this.getRequiredLoanFields({ loan });
+      const missingFields = this.getMissingLoanFields({ loan });
+      return {
+        valid: requiredFields.length - missingFields.length,
+        required: requiredFields.length,
+      };
     }
   };

@@ -101,6 +101,22 @@ const getBorrowersMissingFields = props => {
   };
 };
 
+const getLoanMissingFields = props => {
+  const {
+    loan = {},
+    intl: { formatMessage },
+  } = props;
+
+  return {
+    loan: {
+      title: formatMessage({ id: 'general.general' }),
+      labels: Calculator.getMissingLoanFields({ loan }).map(field =>
+        formatMessage({ id: `Forms.${field}` }),
+      ),
+    },
+  };
+};
+
 const getBorrowersMissingDocuments = props => {
   const {
     loan = {},
@@ -126,6 +142,7 @@ const getBorrowersMissingDocuments = props => {
 
 export const getChecklistValidInformationsRatio = props =>
   [
+    Calculator.getLoanValidFieldsRatio(props),
     Calculator.getBorrowersValidFieldsRatio(props),
     Calculator.getBorrowersValidDocumentsRatio(props),
     Calculator.getPropertyValidFieldsRatio(props),
@@ -142,6 +159,7 @@ export const getChecklistValidInformationsRatio = props =>
 
 export const getChecklistMissingInformations = props => ({
   fields: {
+    ...getLoanMissingFields(props),
     ...getPropertyMissingFields(props),
     ...getBorrowersMissingFields(props),
   },

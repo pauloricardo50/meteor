@@ -10,13 +10,16 @@ type LoanChecklistSectionProps = {
 
 const LoanChecklistSection = (props: LoanChecklistSectionProps) => {
   const {
-    missingInformations: { property = {}, borrowers = [] } = {},
+    missingInformations: { property = {}, borrowers = [], loan = {} } = {},
     label,
   } = props;
 
   return (
     <div className="loan-checklist-section">
       <h3>{label}</h3>
+      {!!Object.keys(loan).length && (
+        <LoanChecklistList title={loan.title} labels={loan.labels} />
+      )}
       {!!Object.keys(property).length && (
         <LoanChecklistList title={property.title} labels={property.labels} />
       )}
