@@ -5,7 +5,6 @@ import PageApp from '../../components/PageApp';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
-// import NewLoanForm from './NewLoanForm';
 import DashboardPageContainer from './DashboardPageContainer';
 
 const DashboardPage = props => (
@@ -13,7 +12,6 @@ const DashboardPage = props => (
     <DashboardProgress {...props} />
     <DashboardRecap {...props} />
     <DashboardInfo {...props} />
-    {/* <NewLoanForm loan={loan} /> */}
   </PageApp>
 );
 

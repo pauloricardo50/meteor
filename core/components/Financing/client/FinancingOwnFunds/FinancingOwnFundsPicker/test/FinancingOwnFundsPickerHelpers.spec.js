@@ -76,7 +76,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 10, borrowerId: 'id' },
         ],
       };
-      const borrowers = [{ bankFortune: 10, _id: 'id' }];
+      const borrowers = [{ bankFortune: [{ value: 10 }], _id: 'id' }];
       expect(
         calculateRemainingFunds({
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,
@@ -156,7 +156,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 5, borrowerId: 'id2' },
         ],
       };
-      const borrowers = [{ bankFortune: 10, _id: 'id' }];
+      const borrowers = [{ bankFortune: [{ value: 10 }], _id: 'id' }];
       expect(
         calculateRemainingFunds({
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,

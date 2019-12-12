@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import { arrayify, simpleHash } from './general';
 
 // Returns the current value of an autoForm input
-const getCurrentValue = (input, doc) => get(doc, input.id);
+const getCurrentValue = (input, doc) => get(doc, input.progressReplacementId || input.id);
 
 type formFieldType = {
   condition?: boolean,

@@ -22,7 +22,7 @@ describe('SolvencyCalculator', () => {
     });
 
     it('suggests a structure with all bankFortune if possible', () => {
-      borrower.bankFortune = 500000;
+      borrower.bankFortune = [{ value: 500000 }];
       expect(
         Calculator.suggestStructure({ loan, propertyValue: 1000000 }),
       ).to.deep.equal([
@@ -35,7 +35,7 @@ describe('SolvencyCalculator', () => {
     });
 
     it('calculates exact notary fees if the canton is set', () => {
-      borrower.bankFortune = 500000;
+      borrower.bankFortune = [{ value: 500000 }];
       expect(
         Calculator.suggestStructure({
           loan,
@@ -52,7 +52,7 @@ describe('SolvencyCalculator', () => {
     });
 
     it('suggests a structure with multiple ownFunds', () => {
-      borrower.bankFortune = 200000;
+      borrower.bankFortune = [{ value: 200000 }];
       borrower.insurance3B = [{ value: 100000 }];
       expect(
         Calculator.suggestStructure({ loan, propertyValue: 1000000 }),
@@ -72,7 +72,7 @@ describe('SolvencyCalculator', () => {
     });
 
     it('does not use 2nd pillar if not a main residence', () => {
-      borrower.bankFortune = 200000;
+      borrower.bankFortune = [{ value: 200000 }];
       borrower.insurance2 = [{ value: 100000 }];
       expect(
         Calculator.suggestStructure({ loan, propertyValue: 1000000 }),
@@ -86,7 +86,7 @@ describe('SolvencyCalculator', () => {
     });
 
     it('uses 2nd pillar if not a main residence', () => {
-      borrower.bankFortune = 200000;
+      borrower.bankFortune = [{ value: 200000 }];
       borrower.insurance2 = [{ value: 100000 }];
       expect(
         Calculator.suggestStructure({
@@ -118,7 +118,7 @@ describe('SolvencyCalculator', () => {
       };
       loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
       const required = Calculator.getRequiredOwnFunds({ loan });
-      borrower.bankFortune = 200000;
+      borrower.bankFortune = [{ value: 200000 }];
       borrower.insurance2 = [{ value: 150000 }];
       const ownFunds = Calculator.suggestStructure({
         loan,
@@ -138,7 +138,7 @@ describe('SolvencyCalculator', () => {
     it('recommends a standard value with unlimited income', () => {
       expect(
         Calculator.getMaxPropertyValue({
-          borrowers: [{ bankFortune: 500000, salary: 1000000 }],
+          borrowers: [{ bankFortune: [{ value: 500000 }], salary: 1000000 }],
         }),
       ).to.equal(2000000);
     });
@@ -146,7 +146,7 @@ describe('SolvencyCalculator', () => {
     it('recommends a standard value with unlimited income', () => {
       expect(
         Calculator.getMaxPropertyValue({
-          borrowers: [{ bankFortune: 455000, salary: 1000000 }],
+          borrowers: [{ bankFortune: [{ value: 455000 }], salary: 1000000 }],
         }),
       ).to.equal(1820000);
     });
@@ -154,7 +154,7 @@ describe('SolvencyCalculator', () => {
     it('returns 0 with no income', () => {
       expect(
         Calculator.getMaxPropertyValue({
-          borrowers: [{ bankFortune: 500000, salary: 0 }],
+          borrowers: [{ bankFortune: [{ value: 500000 }], salary: 0 }],
         }),
       ).to.equal(0);
     });
@@ -162,7 +162,7 @@ describe('SolvencyCalculator', () => {
     it('returns 0 with no fortune', () => {
       expect(
         Calculator.getMaxPropertyValue({
-          borrowers: [{ bankFortune: 0, salary: 1000000 }],
+          borrowers: [{ bankFortune: [{ value: 0 }], salary: 1000000 }],
         }),
       ).to.equal(0);
     });
@@ -170,7 +170,7 @@ describe('SolvencyCalculator', () => {
     it('recommends a standard value with unlimited own Funds', () => {
       expect(
         Calculator.getMaxPropertyValue({
-          borrowers: [{ bankFortune: 500000, salary: 180000 }],
+          borrowers: [{ bankFortune: [{ value: 500000 }], salary: 180000 }],
         }),
       ).to.equal(1000000);
     });
@@ -182,7 +182,7 @@ describe('SolvencyCalculator', () => {
         Calculator.suggestStructureForLoan({
           loan: {
             borrowers: [
-              { bankFortune: 500000, salary: 180000, _id: 'borrower1' },
+              { bankFortune: [{ value: 500000 }], salary: 180000, _id: 'borrower1' },
             ],
             structures: [
               { id: 'struct1', propertyValue: 900000, propertyWork: 100000 },
@@ -202,7 +202,7 @@ describe('SolvencyCalculator', () => {
         borrowRatio,
         propertyValue,
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
-        borrowers: [{ bankFortune: 500000, salary: 1000000 }],
+        borrowers: [{ bankFortune: [{ value: 500000 }], salary: 1000000 }],
       });
       expect(borrowRatio).to.equal(0.8);
       expect(propertyValue).to.equal(2000000);
@@ -213,7 +213,7 @@ describe('SolvencyCalculator', () => {
         borrowRatio,
         propertyValue,
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
-        borrowers: [{ bankFortune: 250000, salary: 100000 }],
+        borrowers: [{ bankFortune: [{ value: 250000 }], salary: 100000 }],
       });
       expect(borrowRatio).to.equal(0.6938);
       expect(propertyValue).to.equal(700000);
@@ -224,7 +224,7 @@ describe('SolvencyCalculator', () => {
         borrowRatio,
         propertyValue,
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
-        borrowers: [{ bankFortune: 250000, salary: 50000 }],
+        borrowers: [{ bankFortune: [{ value: 250000 }], salary: 50000 }],
       });
       expect(borrowRatio).to.equal(0.515);
       expect(propertyValue).to.equal(466000);
@@ -235,7 +235,7 @@ describe('SolvencyCalculator', () => {
         borrowRatio,
         propertyValue,
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
-        borrowers: [{ bankFortune: 200000, salary: 83000 }],
+        borrowers: [{ bankFortune: [{ value: 200000 }], salary: 83000 }],
       });
       expect(borrowRatio).to.equal(0.7);
       expect(propertyValue).to.equal(571000);
@@ -248,7 +248,7 @@ describe('SolvencyCalculator', () => {
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
         borrowers: [
           {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },
@@ -266,7 +266,7 @@ describe('SolvencyCalculator', () => {
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
         borrowers: [
           {
-            bankFortune: 230000,
+            bankFortune: [{ value: 230000 }],
             salary: 120000,
           },
         ],
@@ -301,7 +301,7 @@ describe('SolvencyCalculator', () => {
 
       const borrowers = [
         {
-          bankFortune: 130000,
+          bankFortune: [{ value: 130000 }],
           insurance2: [{ value: 100000 }],
           netSalary: 125000,
           salary: 182000,
@@ -346,7 +346,7 @@ describe('SolvencyCalculator', () => {
 
       const borrowers = [
         {
-          bankFortune: 130000,
+          bankFortune: [{ value: 130000 }],
           insurance2: [{ value: 100000 }],
           netSalary: 125000,
           salary: 182000,

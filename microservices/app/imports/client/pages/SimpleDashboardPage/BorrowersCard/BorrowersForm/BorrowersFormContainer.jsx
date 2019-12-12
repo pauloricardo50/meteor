@@ -25,6 +25,7 @@ const getSimpleParams = (rawParams, key) => {
 const overrides = {
   updateFunc: idKey => rawParams => {
     const simpleParams = [
+      'bankFortuneSimple',
       'insurance2Simple',
       'bank3ASimple',
       'insurance3ASimple',

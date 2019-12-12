@@ -155,7 +155,7 @@ describe('dashboardTodos', () => {
           maxPropertyValue: { date: new Date() },
           structure: { property: {}, offer: {} },
           structures: [{}, {}],
-          borrowers: [{ salary: 2000, bankFortune: 3000 }],
+          borrowers: [{ salary: 2000, bankFortune: [{ value: 3000 }] }],
           properties: [{}],
         }),
       ).to.equal(false);
