@@ -316,7 +316,7 @@ Meteor.methods({
       // Wrap due to meteor toys issue
       // https://github.com/MeteorToys/meteor-devtools/issues/111
       Accounts.sendResetPasswordEmail(userId2);
-    } catch (error) { }
+    } catch (error) {}
 
     const user = UserService.get(userId2, { services: 1 });
 
@@ -451,6 +451,7 @@ Meteor.methods({
   getLoan(loanId) {
     return LoanService.get(loanId, {
       ...adminLoan(),
+      referralId: 1,
       referredByUserLink: 1,
       referredByOrganisationLink: 1,
     });

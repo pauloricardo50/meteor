@@ -7,7 +7,7 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import IconButton from 'core/components/IconButton';
 import { Money } from 'core/components/Translation';
 import { consolidateRevenue } from 'core/api/revenues/index';
-import { decimalMoneyField } from 'core/api/helpers/sharedSchemas';
+import { decimalNegativeMoneyField } from 'core/api/helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
@@ -16,7 +16,7 @@ type RevenueConsolidatorProps = {};
 
 const schema = new SimpleSchema({
   amount: {
-    ...decimalMoneyField,
+    ...decimalNegativeMoneyField,
     optional: false,
     uniforms: { label: 'Montant exact' },
   },

@@ -298,15 +298,17 @@ addEmailListener({
       return;
     }
 
-    sendEmail.run({
-      emailId: EMAIL_IDS.REFER_USER,
-      userId,
-      params: {
-        proUserId: pro && pro._id,
-        proName: getUserNameAndOrganisation({ user: pro }),
-        ctaUrl: UserService.getEnrollmentUrl({ userId }),
-      },
-    });
+    internalMethod(() =>
+      sendEmail.run({
+        emailId: EMAIL_IDS.REFER_USER,
+        userId,
+        params: {
+          proUserId: pro && pro._id,
+          proName: getUserNameAndOrganisation({ user: pro }),
+          ctaUrl: UserService.getEnrollmentUrl({ userId }),
+        },
+      }),
+    );
   },
 });
 

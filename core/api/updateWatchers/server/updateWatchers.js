@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
@@ -19,10 +17,5 @@ const UpdateWatcherSchema = new SimpleSchema({
 });
 
 UpdateWatchers.attachSchema(UpdateWatcherSchema);
-
-Meteor.startup(() => {
-  UpdateWatchers._ensureIndex({ docId: 1, collection: 1 });
-  UpdateWatchers._ensureIndex({ updatedAt: -1 });
-});
 
 export default UpdateWatchers;
