@@ -375,7 +375,7 @@ describe('BorrowerCalculator', () => {
     it('sums bankFortunes if given multiple borrowers', () => {
       expect(
         Calculator.getFortune({
-          borrowers: [{ bankFortune: 1 }, { bankFortune: 2 }],
+          borrowers: [{ bankFortune: [{ value: 1 }] }, { bankFortune: [{ value: 2 }] }],
         }),
       ).to.equal(3);
     });
@@ -568,7 +568,7 @@ describe('BorrowerCalculator', () => {
       expect(
         Calculator.getTotalFunds({
           borrowers: {
-            bankFortune: 1,
+            bankFortune: [{ value: 1 }],
             insurance2: [{ value: 2 }],
             insurance3A: [{ value: 3 }],
           },
@@ -601,7 +601,7 @@ describe('BorrowerCalculator', () => {
       expect(
         calc.getTotalIncome({
           borrowers: {
-            bankFortune: 100,
+            bankFortune: [{ value: 100 }],
             salary: 1,
             bonusExists: true,
             bonus2018: 2, // Adds 1
@@ -661,7 +661,7 @@ describe('BorrowerCalculator', () => {
               userId: 'fAksm7pJveZybme5F',
               salary: 100,
               netSalary: 80,
-              bankFortune: 1000,
+              bankFortune: [{ value: 1000 }],
               hasOwnCompany: false,
               ownCompanies: [],
             },
@@ -725,7 +725,7 @@ describe('BorrowerCalculator', () => {
     it('returns 0 if the ratio is not set', () => {
       expect(
         Calculator.getFortuneReturns({
-          borrowers: [{ bankFortune: 100 }],
+          borrowers: [{ bankFortune: [{ value: 100 }] }],
         }),
       ).to.equal(0);
     });
@@ -733,7 +733,7 @@ describe('BorrowerCalculator', () => {
     it('returns some revenue if the constant is set', () => {
       const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
       expect(
-        calc.getFortuneReturns({ borrowers: [{ bankFortune: 100 }] }),
+        calc.getFortuneReturns({ borrowers: [{ bankFortune: [{ value: 100 }] }] }),
       ).to.equal(1);
     });
   });

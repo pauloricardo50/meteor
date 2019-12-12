@@ -1405,7 +1405,7 @@ describe('LoanService', function () {
         loans: {
           _id: 'loanId',
           borrowers: {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },
@@ -1452,7 +1452,7 @@ describe('LoanService', function () {
         loans: {
           _id: 'loanId',
           borrowers: {
-            bankFortune: 500000,
+            bankFortune: [{ value: 500000 }],
             salary: 1000000,
             insurance2: [{ value: 100000 }],
           },

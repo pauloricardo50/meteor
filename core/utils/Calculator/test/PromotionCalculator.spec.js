@@ -16,7 +16,11 @@ describe('PromotionCalculator', () => {
       it('returns property value with bank fortune only', () => {
         expect(
           Calculator.getSolvency({
-            loan: { borrowers: [{ bankFortune: 250000, salary: 10000000 }] },
+            loan: {
+              borrowers: [
+                { bankFortune: [{ value: 250000 }], salary: 10000000 },
+              ],
+            },
             notaryFees: 50000,
           }),
         ).to.deep.include({ withBankFortune: 1000000 });
@@ -28,7 +32,7 @@ describe('PromotionCalculator', () => {
             loan: {
               borrowers: [
                 {
-                  bankFortune: 150000,
+                  bankFortune: [{ value: 150000 }],
                   insurance2: [{ value: 100000 }],
                   salary: 10000000,
                 },
@@ -45,7 +49,7 @@ describe('PromotionCalculator', () => {
             loan: {
               borrowers: [
                 {
-                  bankFortune: 150000,
+                  bankFortune: [{ value: 150000 }],
                   insurance2: [{ value: 60000 }],
                   salary: 10000000,
                 },
@@ -62,7 +66,7 @@ describe('PromotionCalculator', () => {
             loan: {
               borrowers: [
                 {
-                  bankFortune: 200000,
+                  bankFortune: [{ value: 200000 }],
                   insurance3A: [{ value: 50000 }],
                   salary: 10000000,
                 },
@@ -79,7 +83,7 @@ describe('PromotionCalculator', () => {
             loan: {
               borrowers: [
                 {
-                  bankFortune: 100000,
+                  bankFortune: [{ value: 100000 }],
                   insurance3A: [{ value: 50000 }],
                   insurance2: [{ value: 100000 }],
                   salary: 10000000,
@@ -96,7 +100,11 @@ describe('PromotionCalculator', () => {
       it('returns a salary limited value', () => {
         expect(
           Calculator.getSolvency({
-            loan: { borrowers: [{ bankFortune: 10000000, salary: 180000 }] },
+            loan: {
+              borrowers: [
+                { bankFortune: [{ value: 10000000 }], salary: 180000 },
+              ],
+            },
             notaryFees: 50000,
           }),
         ).to.deep.include({ withBankFortune: 1000000 });

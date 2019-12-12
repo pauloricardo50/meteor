@@ -55,7 +55,7 @@ export const completeFakeBorrower = {
       description: RESIDENCE_TYPE.MAIN_RESIDENCE,
     },
   ],
-  bankFortune: 300000,
+  bankFortune: [{ value: 300000, description: 'Crédit Suisse' }],
   insurance2: [{ value: 120000, description: 'Allianz' }],
   insurance3A: [{ value: 50000, description: 'Swisslife' }],
   hasOwnCompany: false,

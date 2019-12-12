@@ -13,7 +13,7 @@ import {
 } from '../../../../constants';
 
 export const FAKE_SALARY = 150000;
-export const FAKE_BANK_FORTUNE = 1000000;
+export const FAKE_BANK_FORTUNE = { bankFortune: [{ value: 1000000 }] };
 export const FAKE_INSURANCE_2 = { insurance2: [{ value: 200000 }] };
 export const FAKE_INSURANCE_3A = { insurance3A: [{ value: 150000 }] };
 export const FAKE_BANK_3A = { bank3A: [{ value: 250000 }] };
@@ -211,7 +211,7 @@ export const fakeBorrower = ({
   withSalary,
   withDonation,
 }) => ({
-  bankFortune: withBankFortune ? FAKE_BANK_FORTUNE : 0,
+  ...(withBankFortune ? FAKE_BANK_FORTUNE : {}),
   salary: withSalary ? FAKE_SALARY : 0,
   ...(withBank3A ? FAKE_BANK_3A : {}),
   ...(withBonus ? FAKE_BONUS : {}),

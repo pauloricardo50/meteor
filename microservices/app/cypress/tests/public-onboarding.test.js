@@ -90,7 +90,7 @@ describe('Public onboarding', () => {
 
     cy.get('input#salary').type('120000');
     cy.get('input#netSalary').type('100000');
-    cy.get('input#bankFortune').type('250000');
+    cy.get('input#bankFortuneSimple').type('250000');
     cy.wait(500);
 
     cy.setSelect('max-property-value-canton', 'GE');

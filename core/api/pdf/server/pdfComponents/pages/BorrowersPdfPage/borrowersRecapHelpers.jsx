@@ -165,7 +165,6 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'childrenCount',
     'company',
     'civilStatus',
-    'bankFortune',
   ]),
   realEstateIncome: borrowers.map(borrower =>
     calculator.getRealEstateIncomeTotal({ borrowers: borrower }),
@@ -209,6 +208,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     calculator.getRealEstateDebt({ borrowers: borrower }),
   ),
   ...getBorrowersOwnFunds(borrowers, [
+    OWN_FUNDS_TYPES.BANK_FORTUNE,
     OWN_FUNDS_TYPES.INSURANCE_2,
     OWN_FUNDS_TYPES.INSURANCE_3A,
     OWN_FUNDS_TYPES.BANK_3A,

@@ -71,7 +71,7 @@ describe('App onboarding', () => {
         cy.get('#bonusExists [type="radio"]')
           .last()
           .check();
-        cy.get('input#bankFortune').type('250000');
+        cy.get('input#bankFortuneSimple').type('250000');
 
         cy.get('.borrowers-card').contains('100%');
       });
