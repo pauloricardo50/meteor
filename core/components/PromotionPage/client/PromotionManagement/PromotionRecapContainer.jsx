@@ -20,6 +20,7 @@ const getRecapArray = (promotion = {}) => {
     authorizationStatus,
     promotionLots = [],
     signingDate,
+    type,
   } = promotion;
 
   const totalLandValue = getTotalLandValue(promotionLots);
@@ -44,6 +45,10 @@ const getRecapArray = (promotion = {}) => {
       noIntl: true,
     },
     {
+      label: 'Forms.type',
+      value: <T id={`Forms.type.${type}`} />,
+    },
+    {
       label: 'Forms.projectStatus',
       value: projectStatus,
       hide: !projectStatus,
@@ -55,7 +60,7 @@ const getRecapArray = (promotion = {}) => {
     },
     {
       label: 'Forms.signingDate',
-      value: signingDate ? moment(signingDate).format('Do MMMM YYYY') : '-',
+      value: signingDate ? moment(signingDate).format('D MMMM YYYY') : '-',
       spacing: true,
     },
     {
