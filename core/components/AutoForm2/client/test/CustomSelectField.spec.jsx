@@ -51,10 +51,7 @@ describe('CustomSelectField', () => {
           text: {
             type: String,
             allowedValues: ['yo', 'hola'],
-            uniforms: {
-              transform,
-              placeholder: '',
-            },
+            uniforms: { transform, placeholder: '' },
           },
         }),
       };
@@ -83,10 +80,7 @@ describe('CustomSelectField', () => {
           text: {
             type: String,
             allowedValues: ['yo', 'hola'],
-            uniforms: {
-              transform,
-              placeholder: 'test',
-            },
+            uniforms: { transform, placeholder: 'test' },
           },
         }),
       };
@@ -96,7 +90,7 @@ describe('CustomSelectField', () => {
         .at(0);
 
       expect(SelectField).to.not.equal(undefined);
-      SelectField.find('[role="button"]').simulate('click');
+      SelectField.find('[role="button"]').simulate('mousedown');
 
       const items = component()
         .find(CustomSelectField)
@@ -124,9 +118,7 @@ describe('CustomSelectField', () => {
             customAllowedValues: ({ value }) => [`${value}1`, `${value}2`],
             uniforms: { transform, placeholder: '', displayEmpty: false },
           },
-          value: {
-            type: String,
-          },
+          value: String,
         }),
       };
 
@@ -147,7 +139,7 @@ describe('CustomSelectField', () => {
           .find('[role="button"]');
 
         expect(SelectField).to.not.equal(undefined);
-        SelectField.find('[role="button"]').simulate('click');
+        SelectField.find('[role="button"]').simulate('mousedown');
 
         const items = component()
           .find(CustomSelectField)
