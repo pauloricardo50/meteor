@@ -7,9 +7,9 @@ import { proLoans2 } from 'core/api/loans/queries';
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import ProCustomer from 'core/components/ProCustomer';
-import Icon from 'core/components/Icon';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import ProCustomersTableAssigneeInfo from './ProCustomersTableAssigneeInfo';
 
 const columnOptions = [
   { id: 'loanName', style: { whiteSpace: 'nowrap' } },
@@ -75,21 +75,13 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
       },
       {
         raw: !!proNote.note,
-        label: proNote.note ? (
-          <Icon
-            type="info"
-            tooltip={
-              <div>
-                <div className="secondary">
-                  {moment(proNote.date).format("H:mm, D MMM 'YY")}
-                </div>
-                <div style={{ whiteSpace: 'pre-line' }}>{proNote.note}</div>
-              </div>
-            }
-            color="primary"
+        label: (
+          <ProCustomersTableAssigneeInfo
+            proNote={proNote}
+            user={user}
+            loanId={loanId}
+            anonymous={anonymous}
           />
-        ) : (
-          '-'
         ),
       },
     ],

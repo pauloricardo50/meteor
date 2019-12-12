@@ -37,3 +37,11 @@ export const setAssigneeOfTask = new Method({
     newAssigneeId: String,
   },
 });
+
+export const proAddLoanTask = new Method({
+  name: 'proAddLoanTask',
+  params: {
+    loanId: String,
+    note: String,
+  },
+});
