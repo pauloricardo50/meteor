@@ -37,4 +37,8 @@ export class Intl {
   }
 }
 
-export default new Intl();
+const intl = new Intl();
+
+export default intl;
+
+export const formatMessage = intl.formatMessage.bind(intl);

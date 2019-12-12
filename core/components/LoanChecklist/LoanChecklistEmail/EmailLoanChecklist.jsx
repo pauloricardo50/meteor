@@ -1,14 +1,12 @@
 // @flow
 import React from 'react';
+
+import { formatMessage } from 'core/utils/server/intl';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
 type EmailLoanChecklistProps = {};
 
-const EmailLoanChecklist = ({
-  labels,
-  title,
-  formatMessage,
-}: EmailLoanChecklistProps) => (
+const EmailLoanChecklist = ({ labels, title }: EmailLoanChecklistProps) => (
   <>
     <LoanChecklistEmailTable
       columns={[

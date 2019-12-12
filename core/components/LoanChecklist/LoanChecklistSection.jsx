@@ -1,37 +1,30 @@
 // @flow
 import React from 'react';
 
-import LoanChecklistList from './LoanChecklistList';
-
 type LoanChecklistSectionProps = {
   missingInformations: Object,
-  label: React.ReactNode,
+  Component: React.Node,
 };
 
-const LoanChecklistSection = (props: LoanChecklistSectionProps) => {
-  const {
-    missingInformations: { property = {}, borrowers = [], loan = {} } = {},
-    label,
-  } = props;
-
-  return (
-    <div className="loan-checklist-section">
-      <h3>{label}</h3>
-      {!!Object.keys(loan).length && (
-        <LoanChecklistList title={loan.title} labels={loan.labels} />
-      )}
-      {!!Object.keys(property).length && (
-        <LoanChecklistList title={property.title} labels={property.labels} />
-      )}
-      {borrowers.map(borrower => (
-        <LoanChecklistList
-          key={borrower.title}
-          title={borrower.title}
-          labels={borrower.labels}
-        />
-      ))}
-    </div>
-  );
-};
+const LoanChecklistSection = ({
+  missingInformations: { property = {}, borrowers = [], loan = {} } = {},
+  Component,
+}: LoanChecklistSectionProps) => (
+  <>
+    {!!Object.keys(loan).length && (
+      <Component title={loan.title} labels={loan.labels} />
+    )}
+    {!!Object.keys(property).length && (
+      <Component title={property.title} labels={property.labels} />
+    )}
+    {borrowers.map(borrower => (
+      <Component
+        key={borrower.title}
+        title={borrower.title}
+        labels={borrower.labels}
+      />
+    ))}
+  </>
+);
 
 export default LoanChecklistSection;
