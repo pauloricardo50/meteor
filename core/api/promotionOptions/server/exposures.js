@@ -35,16 +35,14 @@ exposeQuery({
   query: proPromotionOptions,
   overrides: {
     firewall(userId, params) {
-      const { promotionOptionIds, promotionId } = params;
+      const { promotionLotId, promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
 
-      if (promotionOptionIds) {
-        promotionOptionIds.forEach(promotionOptionId => {
-          SecurityService.promotions.isAllowedToViewPromotionOption({
-            promotionOptionId,
-            userId,
-          });
+      if (promotionLotId) {
+        SecurityService.promotions.hasAccessToPromotionLot({
+          promotionLotId,
+          userId,
         });
       }
 
@@ -61,11 +59,7 @@ exposeQuery({
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionOptionIds, status, promotionId } = params;
-
-        if (promotionOptionIds) {
-          filters._id = { $in: promotionOptionIds };
-        }
+        const { promotionLotId, status, promotionId } = params;
 
         if (status) {
           filters.status = status;
@@ -73,6 +67,12 @@ exposeQuery({
 
         if (promotionId) {
           filters['promotionLink._id'] = promotionId;
+        }
+
+        if (promotionLotId) {
+          filters.promotionLotLinks = {
+            $elemMatch: { _id: promotionLotId },
+          };
         }
       };
 
@@ -89,7 +89,7 @@ exposeQuery({
     },
     validateParams: {
       promotionId: Match.Maybe(String),
-      promotionOptionIds: Match.Maybe([String]),
+      promotionLotId: Match.Maybe(String),
       userId: String,
       anonymize: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
