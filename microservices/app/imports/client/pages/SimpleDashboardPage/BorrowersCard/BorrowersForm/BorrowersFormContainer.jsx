@@ -38,7 +38,6 @@ const overrides = {
       ? simpleParams[0]
       : createParams(rawParams, idKey);
 
-    console.log('params:', params)
     return borrowerUpdate.run(params);
   },
 };
@@ -89,10 +88,10 @@ const getBorrowersTabs = ({ loan }) => {
     twoBorrowers
       ? null
       : {
-        id: 'borrower2',
-        content: null,
-        label: <BorrowerAdder loanId={loan._id} />,
-      },
+          id: 'borrower2',
+          content: null,
+          label: <BorrowerAdder loanId={loan._id} />,
+        },
   ].filter(x => x);
 };
 
