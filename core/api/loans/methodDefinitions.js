@@ -219,6 +219,7 @@ export const loanUpdateCreatedAt = new Method({
 export const sendLoanChecklist = new Method({
   name: 'sendLoanChecklist',
   params: {
+    loanId: String,
     address: String,
     emailParams: Object,
   },

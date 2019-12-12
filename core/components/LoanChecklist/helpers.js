@@ -64,7 +64,7 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
             title:
               (property && property.address1) ||
               formatMessage({ id: 'general.property' }),
-            missingIds: Calculator.getMissingPropertyDocuments({
+            labels: Calculator.getMissingPropertyDocuments({
               loan,
             }).map(formatFileTitle({ doc: property, formatMessage })),
           },
@@ -94,6 +94,7 @@ const getBorrowersMissingFields = (props, formatMessage) => {
 
 const getLoanMissingFields = (props, formatMessage) => {
   const { loan = {} } = props;
+  console.log('loan:', loan);
 
   return {
     loan: {
