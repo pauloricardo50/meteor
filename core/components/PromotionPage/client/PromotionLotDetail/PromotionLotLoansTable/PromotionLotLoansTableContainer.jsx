@@ -108,13 +108,12 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions = [], promotionLot }) => ({
-    promotionOptionIds: promotionOptions.map(({ _id }) => _id),
-    promotionLot,
-  })),
+  mapProps(({ promotionLot }) => ({ promotionLot })),
   withSmartQuery({
     query: proPromotionOptions,
-    params: ({ promotionOptionIds }) => ({ promotionOptionIds }),
+    params: ({ promotionLot: { _id: promotionLotId } }) => ({
+      promotionLotId,
+    }),
     queryOptions: { reactive: false, shouldRefetch: () => false },
     dataName: 'promotionOptions',
   }),
