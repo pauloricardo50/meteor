@@ -36,6 +36,8 @@ setAssigneeOfTask.setHandler(({ userId }, params) => {
 
 proAddLoanTask.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
-  // Should check that this pro has access to this loan
+  // Should probably check that this pro has access to this loan
+  // Not doing this, because this is a method called by our partners
+  // There's no security risk to let this happen
   return TaskService.proAddLoanTask({ userId, ...params });
 });

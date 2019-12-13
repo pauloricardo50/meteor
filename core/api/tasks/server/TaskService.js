@@ -140,7 +140,7 @@ class TaskService extends CollectionService {
         collection: LOANS_COLLECTION,
         docId: loanId,
         title: `Nouvelle note de ${getUserNameAndOrganisation({ user: pro })}`,
-        description: `Note: "${note}"`,
+        description: `${note}`,
       },
     });
   };
