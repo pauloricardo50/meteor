@@ -5,7 +5,10 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Intl from '../../../utils/server/intl';
@@ -170,6 +173,34 @@ class LoanService extends CollectionService {
     return { prevStatus, nextStatus: status };
   }
 
+  setDisbursementDate({ loanId, disbursementDate }) {
+    this.update({ loanId, object: { disbursementDate } });
+    const { activities = [] } = this.get(loanId, {
+      activities: { type: 1, metadata: 1 },
+    });
+    const disbursementDateActivity = activities.find(
+      ({ type, metadata }) =>
+        type === ACTIVITY_TYPES.EVENT &&
+        metadata.event === ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
+    );
+
+    if (disbursementDateActivity) {
+      const { _id: activityId } = disbursementDateActivity;
+      ActivityService.rawCollection.update(
+        { _id: activityId },
+        { $set: { date: disbursementDate } },
+      );
+    } else {
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
+        isServerGenerated: true,
+        loanLink: { _id: loanId },
+        title: 'Décaissement des fonds',
+        date: disbursementDate
+      });
+    }
+  }
+
   insertPromotionLoan = ({
     userId,
     promotionId,
@@ -187,10 +218,13 @@ class LoanService extends CollectionService {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
         shareSolvency,
-        disbursementDate: signingDate,
       },
       userId,
     });
+
+    if (signingDate) {
+      this.setDisbursementDate({ loanId, disbursementDate: signingDate });
+    }
 
     promotionLotIds.forEach(promotionLotId => {
       PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
@@ -640,9 +674,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+      max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {

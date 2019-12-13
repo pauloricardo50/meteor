@@ -9,6 +9,7 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import {
   loanSetStatus,
   setLoanStep,
@@ -38,7 +39,7 @@ import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
-describe('LoanService', function () {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1397,7 +1398,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1904,11 +1905,16 @@ describe('LoanService', function () {
         shareSolvency: true,
       });
 
-      const { disbursementDate } = LoanService.get(newLoanId, {
+      const { disbursementDate, activities = [] } = LoanService.get(newLoanId, {
         disbursementDate: 1,
+        activities: { type: 1, metadata: 1, date: 1 },
       });
 
       expect(disbursementDate.getTime()).to.equal(today.getTime());
+      expect(activities[1].metadata).to.deep.include({
+        event: ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
+      });
+      expect(activities[1].date.getTime()).to.equal(today.getTime());
     });
   });
 });
