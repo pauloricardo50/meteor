@@ -1,5 +1,11 @@
 // @flow
-import { OWN_FUNDS_TYPES, SUCCESS, WARNING, ERROR, OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
+import {
+  OWN_FUNDS_TYPES,
+  SUCCESS,
+  WARNING,
+  ERROR,
+  OWN_FUNDS_USAGE_TYPES,
+} from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
   filesPercent,

@@ -12,5 +12,5 @@ import { Intl } from '../intl';
  */
 
 const ServerIntl = new Intl(messagesFR);
-
+export const formatMessage = ServerIntl.formatMessage.bind(ServerIntl);
 export default ServerIntl;

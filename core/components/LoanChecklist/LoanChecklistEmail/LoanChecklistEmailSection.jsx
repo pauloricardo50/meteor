@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+
+import LoanChecklistSection from '../LoanChecklistSection';
 import EmailLoanChecklist from './EmailLoanChecklist';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
@@ -9,11 +11,7 @@ type LoanChecklistEmailSectionProps = {
 };
 
 const LoanChecklistEmailSection = (props: LoanChecklistEmailSectionProps) => {
-  const {
-    missingInformations: { property = {}, borrowers = [] } = {},
-    label,
-    formatMessage,
-  } = props;
+  const { missingInformations = {}, label } = props;
 
   return (
     <>
@@ -24,21 +22,11 @@ const LoanChecklistEmailSection = (props: LoanChecklistEmailSectionProps) => {
           </h3>,
         ]}
       />
-      {!!Object.keys(property).length && (
-        <EmailLoanChecklist
-          title={property.title}
-          labels={property.labels}
-          formatMessage={formatMessage}
-        />
-      )}
-      {borrowers.map(borrower => (
-        <EmailLoanChecklist
-          key={borrower.title}
-          title={borrower.title}
-          labels={borrower.labels}
-          formatMessage={formatMessage}
-        />
-      ))}
+
+      <LoanChecklistSection
+        missingInformations={missingInformations}
+        Component={EmailLoanChecklist}
+      />
     </>
   );
 };
