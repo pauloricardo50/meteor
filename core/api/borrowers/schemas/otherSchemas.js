@@ -125,6 +125,16 @@ export const personalInfoSchema = {
     max: 2050,
   },
   job: { type: String, optional: true },
+  email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true,
+  },
+  phoneNumber: { type: String, optional: true },
+  jobStartDate: { type: Date, optional: true },
+  jobActivityRate: percentageField,
+  weddingDate: { type: Date, optional: true },
+  divorceDate: { type: Date, optional: true },
 };
 
 const bonusField = {
