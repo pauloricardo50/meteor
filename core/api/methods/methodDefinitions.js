@@ -5,30 +5,11 @@ export const getMixpanelAuthorization = new Method({
   name: 'getMixpanelAuthorization',
 });
 
-export const getServerTime = new Method({
-  name: 'getServerTime',
-});
-
-export const downloadPDF = new Method({
-  name: 'downloadPDF',
-  params: {
-    loanId: String,
-    type: String,
-  },
-});
-
 export const addBorrower = new Method({
   name: 'addBorrower',
   params: {
     loanId: String,
     borrower: Match.Optional(Object),
-  },
-});
-
-export const setUserToLoan = new Method({
-  name: 'setUserToLoan',
-  params: {
-    loanId: String,
   },
 });
 
@@ -53,16 +34,6 @@ export const submitContactForm = new Method({
       limit: 1,
       timeRange: 5000,
     },
-  },
-});
-
-export const addUserToDoc = new Method({
-  name: 'addUserToDoc',
-  params: {
-    docId: String,
-    collection: String,
-    options: Object,
-    userId: String,
   },
 });
 

@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 
 import { cleanAllData } from '../../migrations/server/dataCleaning';
 import { LOANS_COLLECTION } from '../../constants';
@@ -7,16 +6,11 @@ import SecurityService from '../../security';
 import { Services } from '../../server';
 import LoanService from '../../loans/server/LoanService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
-import PropertyService from '../../properties/server/PropertyService';
 import {
   getMixpanelAuthorization,
-  getServerTime,
-  downloadPDF,
   addBorrower,
-  setUserToLoan,
   removeBorrower,
   submitContactForm,
-  addUserToDoc,
   throwDevError,
   setAdditionalDoc,
   removeAdditionalDoc,
@@ -41,12 +35,6 @@ getMixpanelAuthorization.setHandler(() => {
   return `Basic ${btoa(`${API_SECRET}:${API_KEY}`)}`;
 });
 
-getServerTime.setHandler(() => new Date());
-
-downloadPDF.setHandler(() => {
-  // TODO
-});
-
 addBorrower.setHandler((context, { loanId, borrower }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   const loan = LoanService.get(loanId, { userId: 1, borrowerIds: 1 });
@@ -67,24 +55,6 @@ addBorrower.setHandler((context, { loanId, borrower }) => {
   });
 });
 
-setUserToLoan.setHandler((context, { loanId }) => {
-  SecurityService.checkLoggedIn();
-  const loan = LoanService.get(loanId, { borrowerIds: 1, propertyId: 1 });
-  const { borrowerIds, propertyId } = loan;
-
-  if (loan.userId) {
-    throw new Meteor.Error('loan-already-owned');
-  }
-
-  const currentUserId = Meteor.userId();
-
-  LoanService.update({ loanId, object: { userId: currentUserId } });
-  borrowerIds.forEach(borrowerId => {
-    BorrowerService.update({ borrowerId, object: { userId: currentUserId } });
-  });
-  PropertyService.update({ propertyId, object: { userId: currentUserId } });
-});
-
 removeBorrower.setHandler((context, { loanId, borrowerId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
@@ -103,20 +73,6 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
 
 // This method needs to exist as its being listened to in EmailListeners
 submitContactForm.setHandler(() => null);
-
-addUserToDoc.setHandler(
-  ({ userId }, { docId, collection, options, userId: newUserId }) => {
-    const doc = Mongo.Collection.get(collection).findOne(docId);
-    try {
-      SecurityService.checkUserIsAdmin(userId);
-    } catch (error) {
-      SecurityService.checkOwnership(doc);
-    }
-    Mongo.Collection.get(collection).update(docId, {
-      userLinks: { $push: { _id: newUserId, ...options } },
-    });
-  },
-);
 
 throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   console.log('Throwing dev error..');

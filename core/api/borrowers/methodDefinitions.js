@@ -34,4 +34,5 @@ export const pullBorrowerValue = new Method({
 export const getReusableBorrowers = new Method({
   name: 'getReusableBorrowers',
   params: { loanId: String, borrowerId: String },
+  doNotRefetchQueries: true,
 });
