@@ -39,7 +39,7 @@ import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
-describe('LoanService', function() {
+describe('LoanService', function () {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1398,7 +1398,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1881,7 +1881,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe.only('insertPromotionLoan', () => {
+  describe('insertPromotionLoan', () => {
     it('uses the promotion signing date for the loan disbursement date', () => {
       const today = new Date();
       generator({
