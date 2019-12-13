@@ -5,8 +5,10 @@ import { Helmet } from 'react-helmet';
 import { REVENUES_COLLECTION } from 'core/api/constants';
 import Icon from 'core/components/Icon/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
-import RevenuesPageTable from './RevenuesPageTable';
+import Tabs from 'core/components/Tabs';
 import RevenueAdder from '../../../components/RevenuesTable/RevenueAdder';
+import RevenuesPageTable from './RevenuesPageTable';
+import RevenuesPageCalendar from './RevenuesPageCalendar';
 
 type RevenuesPageTabProps = {};
 
@@ -33,7 +35,16 @@ const RevenuesPageTab = (props: RevenuesPageTabProps) => {
         />
       </div>
 
-      <RevenuesPageTable />
+      <Tabs
+        tabs={[
+          {
+            id: 'calendar',
+            label: 'Calendrier',
+            content: <RevenuesPageCalendar />,
+          },
+          { id: 'list', label: 'Liste', content: <RevenuesPageTable /> },
+        ]}
+      />
     </div>
   );
 };
