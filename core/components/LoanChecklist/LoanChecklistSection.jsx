@@ -7,13 +7,10 @@ type LoanChecklistSectionProps = {
 };
 
 const LoanChecklistSection = ({
-  missingInformations: { property = {}, borrowers = [], loan = {} } = {},
+  missingInformations: { property = {}, borrowers = [] } = {},
   Component,
 }: LoanChecklistSectionProps) => (
   <>
-    {!!Object.keys(loan).length && (
-      <Component title={loan.title} labels={loan.labels} />
-    )}
     {!!Object.keys(property).length && (
       <Component title={property.title} labels={property.labels} />
     )}
