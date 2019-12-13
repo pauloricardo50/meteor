@@ -2,6 +2,7 @@ import { Method } from '../methods/methods';
 
 export const analyticsLogin = new Method({
   name: 'analyticsLogin',
+  doNotRefetchQueries: true,
 });
 
 export const analyticsPage = new Method({
@@ -14,6 +15,7 @@ export const analyticsPage = new Method({
     queryParams: Object,
     queryString: Object,
   },
+  doNotRefetchQueries: true,
 });
 
 export const analyticsVerifyEmail = new Method({
@@ -21,6 +23,7 @@ export const analyticsVerifyEmail = new Method({
   params: {
     trackingId: String,
   },
+  doNotRefetchQueries: true,
 });
 
 export const analyticsCTA = new Method({
@@ -34,4 +37,5 @@ export const analyticsCTA = new Method({
     queryParams: Object,
     queryString: Object,
   },
+  doNotRefetchQueries: true,
 });
