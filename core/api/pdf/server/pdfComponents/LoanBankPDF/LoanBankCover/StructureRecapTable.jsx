@@ -10,7 +10,8 @@ import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
 type StructureRecapTableProps = {};
 
 const columnStyles = [
-  { width: '50%' },
+  { width: '30%' },
+  { width: '20%', textAlign: 'right' },
   { width: '20%', textAlign: 'right' },
   { width: '15%', textAlign: 'right' },
   { width: '15%', textAlign: 'right' },
@@ -21,10 +22,11 @@ const getRows = ({ loan, structureIds, organisation }) => {
 
   return [
     <tr key="0" className={classes[ROW_TYPES.TITLE]}>
-      <td style={columnStyles[0]}>Scénario</td>
-      <td style={columnStyles[1]}>Prêt hypothécaire</td>
-      <td style={columnStyles[2]}>Taux d'avance</td>
-      <td style={columnStyles[3]}>Taux d'effort</td>
+      <td style={columnStyles[0]}>Plan financier</td>
+      <td style={columnStyles[1]}>Valeur du bien</td>
+      <td style={columnStyles[2]}>Prêt hypothécaire</td>
+      <td style={columnStyles[3]}>Taux d'avance</td>
+      <td style={columnStyles[4]}>Taux d'effort</td>
     </tr>,
     ...structureIds
       .map(structureId => loan.structures.find(({ id }) => id === structureId))
@@ -37,14 +39,19 @@ const getRows = ({ loan, structureIds, organisation }) => {
         const loanValue = calculator.selectLoanValue({ loan, structureId });
         const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
         const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
+        const propertyValue = calculator.selectPropertyValue({
+          loan,
+          structureId,
+        });
 
         return (
           <tr key={structureId}>
             <td style={columnStyles[0]}>
               {name || index + 1} (page {index + 2})
             </td>
-            <td style={columnStyles[1]}>{toMoney(loanValue)}</td>
-            <td style={columnStyles[2]}>
+            <td style={columnStyles[1]}>{toMoney(propertyValue)}</td>
+            <td style={columnStyles[2]}>{toMoney(loanValue)}</td>
+            <td style={columnStyles[3]}>
               <div
                 style={{
                   display: 'flex',
@@ -60,7 +67,7 @@ const getRows = ({ loan, structureIds, organisation }) => {
                 />
               </div>
             </td>
-            <td style={columnStyles[3]}>
+            <td style={columnStyles[4]}>
               <div
                 style={{
                   display: 'flex',

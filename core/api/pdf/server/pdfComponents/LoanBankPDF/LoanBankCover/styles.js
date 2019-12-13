@@ -32,12 +32,6 @@ const stylesheet = `
         margin-bottom: 0;
     }
 
-    .cover-content .loan-name {
-        margin-top: 8px;
-        margin-bottom: 80px;
-        font-weight: normal;
-    }
-
     .cover-content .loan-type {
         margin: 0;
     }
@@ -51,11 +45,37 @@ const stylesheet = `
     .cover-content .property-value {
         margin-top: 8px;
         font-weight: normal;
-        margin-bottom: 120px;
+        margin-bottom: 30px;
+    }
+
+    .cover-content .property-type {
+        margin-top: 8px;
+        margin-bottom: 8px;
     }
 
     .cover-content .borrowers {
         margin: 0;
+        margin-top: 8px;
+        margin-bottom: 32px;
+    }
+
+    .cover-content .loan-context {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cover-content .loan-context h4 {
+        margin: 0;
+        margin-bottom: 8px;
+    }
+
+    .cover-content .loan-context p {
+        border: 1px solid ${BORDER_BLUE};
+        padding: 8px;
+        white-space: pre-line;
+        font-size: 10px;
     }
 
     .cover-page .cover-footer {
@@ -100,6 +120,15 @@ const stylesheet = `
         font-weight: normal;
     }
 
+    .cover-header h3 {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin: 0;
+        font-weight: normal;
+    }
+
     .cover-header .epotek-logo {
         width: 30px;
         height: 30px;
@@ -120,7 +149,7 @@ const stylesheet = `
     }
 
     .structure-recap-table {
-        margin-top: 100px;
+        margin-bottom: 30px;
         width: 100%;
     }
 
