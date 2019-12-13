@@ -31,11 +31,11 @@ const saveHtmlFile = ({ html, pdfName }) => {
 
 export default compose(
   withProps(({ loan: { _id: loanId } }) => ({
-    handlePDF: ({ anonymous, organisationId, structureIds }) =>
+    handlePDF: ({ anonymous, organisationId, structureIds, context }) =>
       generatePDF
         .run({
           type: PDF_TYPES.LOAN,
-          params: { loanId, organisationId, structureIds },
+          params: { loanId, organisationId, structureIds, context },
           options: { anonymous },
         })
         .then(savePdf)
@@ -44,11 +44,11 @@ export default compose(
             message.error(error.message, 5);
           });
         }),
-    handleHTML: ({ anonymous, organisationId, structureIds }) =>
+    handleHTML: ({ anonymous, organisationId, structureIds, context }) =>
       generatePDF
         .run({
           type: PDF_TYPES.LOAN,
-          params: { loanId, organisationId, structureIds },
+          params: { loanId, organisationId, structureIds, context },
           options: { anonymous },
           htmlOnly: true,
         })
