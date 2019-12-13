@@ -41,6 +41,7 @@ import {
   sendLoanChecklist,
   loanSetAdminNote,
   loanRemoveAdminNote,
+  loanSetDisbursementDate,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -309,4 +310,9 @@ loanSetAdminNote.setHandler(({ userId }, params) => {
 loanRemoveAdminNote.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.removeAdminNote(params);
+});
+
+loanSetDisbursementDate.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.setDisbursementDate(params);
 });

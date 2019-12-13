@@ -241,3 +241,8 @@ export const loanRemoveAdminNote = new Method({
     adminNoteId: String,
   },
 });
+
+export const loanSetDisbursementDate = new Method({
+  name: 'loanSetDisbursementDate',
+  params: { loanId: String, disbursementDate: Date },
+});
