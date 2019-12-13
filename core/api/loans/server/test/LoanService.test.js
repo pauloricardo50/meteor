@@ -1879,4 +1879,36 @@ describe('LoanService', function () {
       expect(removed).to.equal(undefined);
     });
   });
+
+  describe.only('insertPromotionLoan', () => {
+    it('uses the promotion signing date for the loan disbursement date', () => {
+      const today = new Date();
+      generator({
+        users: { _id: 'user', _factory: 'user' },
+        promotions: {
+          _id: 'promo',
+          _factory: 'promotion',
+          name: 'Promotion',
+          signingDate: today,
+          promotionLots: { _id: 'pLot1' },
+          users: { _id: 'pro', _factory: 'pro' },
+        },
+      });
+
+      const newLoanId = LoanService.insertPromotionLoan({
+        userId: 'user',
+        promotionId: 'promo',
+        invitedBy: 'pro',
+        showAllLots: true,
+        promotionLotIds: ['pLot1'],
+        shareSolvency: true,
+      });
+
+      const { disbursementDate } = LoanService.get(newLoanId, {
+        disbursementDate: 1,
+      });
+
+      expect(disbursementDate.getTime()).to.equal(today.getTime());
+    });
+  });
 });

@@ -178,12 +178,16 @@ class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const customName = PromotionService.get(promotionId, { name: 1 }).name;
+    const { name: customName, signingDate } = PromotionService.get(
+      promotionId,
+      { name: 1, signingDate: 1 },
+    );
     const loanId = this.insert({
       loan: {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
         customName,
         shareSolvency,
+        disbursementDate: signingDate,
       },
       userId,
     });
