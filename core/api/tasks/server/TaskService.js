@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 import moment from 'moment';
 
+import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
 import CollectionService from '../../helpers/CollectionService';
 import { TASK_STATUS } from '../taskConstants';
@@ -11,6 +12,7 @@ import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
 import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
 import { task as taskFragment } from '../../fragments';
+import UserService from '../../users/server/UserService';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -125,6 +127,22 @@ class TaskService extends CollectionService {
       .fetchOne();
 
     return doc && doc.assignee ? doc.assignee._id : null;
+  };
+
+  proAddLoanTask = ({ userId, loanId, note }) => {
+    const pro = UserService.get(userId, {
+      name: 1,
+      organisations: { name: 1 },
+    });
+
+    return this.insert({
+      object: {
+        collection: LOANS_COLLECTION,
+        docId: loanId,
+        title: `Nouvelle note de ${getUserNameAndOrganisation({ user: pro })}`,
+        description: `Note: "${note}"`,
+      },
+    });
   };
 }
 
