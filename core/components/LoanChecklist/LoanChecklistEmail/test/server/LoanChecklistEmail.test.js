@@ -120,7 +120,7 @@ describe('LoanChecklist', function() {
         firstName: 'Admin',
         lastName: 'User',
       },
-      loans: { _id: 'loanId', residenceType: null },
+      loans: { _id: 'loanId', borrowers: {} },
     });
 
     await ddpWithUserId('adminId', () =>
@@ -169,7 +169,8 @@ describe('LoanChecklist', function() {
       ({ name }) => name === 'body-content-1',
     ).content;
 
-    expect(bodyContent.indexOf('Type d&#x27;utilisation')).to.not.equal(-1);
+    expect(bodyContent.indexOf('Informations manquantes')).to.not.equal(-1);
+    expect(bodyContent.indexOf('Emprunteur 1')).to.not.equal(-1);
   });
 
   it('should put multiple people in bcc and/or cc', async () => {
