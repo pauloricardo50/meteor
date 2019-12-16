@@ -18,7 +18,13 @@ type LoanBankPDFProps = {
   pdfName: String,
 };
 
-const getPages = ({ loan, organisation, structureIds, options }) => {
+const getPages = ({
+  loan,
+  organisation,
+  structureIds,
+  backgroundInfo,
+  options,
+}) => {
   const { lenderRules } = organisation || {};
   const finalStructureIds = structureIds || loan.structures.map(({ id }) => id);
   const defaultCalculator = new Calculator({ loan, lenderRules });
@@ -32,6 +38,7 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
         organisation,
         structureIds: finalStructureIds,
         calculator: defaultCalculator,
+        backgroundInfo,
       },
     },
     ...finalStructureIds.map((structureId, index) => {

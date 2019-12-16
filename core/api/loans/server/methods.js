@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
+import UserService from 'core/api/users/server/UserService';
+import { adminLoan } from 'core/api/fragments';
 import { internalMethod } from '../../methods/server/methodHelpers';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
@@ -291,13 +293,18 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });
 
-sendLoanChecklist.setHandler(({ userId }, { address, emailParams }) => {
+sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams }) => {
   SecurityService.checkUserIsAdmin(userId);
+  const { email: assigneeAddress, name: assigneeName } = UserService.get(
+    userId,
+    { email: 1, name: 1 },
+  );
+  const loan = LoanService.get(loanId, adminLoan());
   return internalMethod(() =>
     sendEmailToAddress.run({
       address,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
-      params: emailParams,
+      params: { ...emailParams, loan, assigneeAddress, assigneeName },
     }),
   );
 });

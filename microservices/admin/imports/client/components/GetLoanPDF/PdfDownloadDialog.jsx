@@ -43,6 +43,13 @@ const makeSchema = loan =>
         placeholder: "Pas d'organisation",
       },
     },
+    backgroundInfo: {
+      type: String,
+      uniforms: {
+        multiline: true,
+        rows: 10,
+      },
+    },
   });
 
 const PdfDownloadDialog = ({

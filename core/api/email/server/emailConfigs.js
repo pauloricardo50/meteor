@@ -2,7 +2,6 @@ import ReactDOMServer from 'react-dom/server';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-import Intl from 'core/utils/server/intl';
 import {
   EMAIL_TEMPLATES,
   EMAIL_IDS,
@@ -17,7 +16,7 @@ import {
   notificationAndCtaTemplateDefaultOverride,
 } from './emailHelpers';
 import PromotionLogos from './components/PromotionLogos';
-import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmail';
+import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
 
 const emailConfigs = {};
@@ -312,10 +311,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
         {
           name: 'body-content-1',
           content: ReactDOMServer.renderToStaticMarkup(
-            LoanChecklistEmail({
-              loan,
-              intl: { formatMessage: Intl.formatMessage.bind(Intl) },
-            }),
+            LoanChecklistEmail({ loan }),
           ),
         },
       ],

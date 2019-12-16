@@ -367,7 +367,8 @@ ServerEventService.addAfterMethodListener(
   ({
     params: {
       address,
-      emailParams: { assigneeAddress, loan },
+      loanId,
+      emailParams: { assigneeAddress },
     },
     context,
   }) => {
@@ -379,7 +380,7 @@ ServerEventService.addAfterMethodListener(
       to: address,
       from: assigneeAddress,
       isServerGenerated: true,
-      loanLink: { _id: loan._id },
+      loanLink: { _id: loanId },
       title: 'Checklist envoyée',
       description: `Par ${email}`,
       createdBy: userId,

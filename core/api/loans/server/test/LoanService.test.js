@@ -1880,4 +1880,53 @@ describe('LoanService', function() {
       expect(removed).to.equal(undefined);
     });
   });
+
+  describe('insertBorrowers', () => {
+    beforeEach(() => {
+      generator({
+        users: {
+          _id: 'user',
+          _factory: 'user',
+          firstName: 'Bob',
+          lastName: 'Dylan',
+          phoneNumbers: ['12345'],
+          emails: [{ address: 'bob.dylan@example.com', verified: true }],
+        },
+      });
+
+      loanId = LoanService.fullLoanInsert({ userId: 'user' });
+    });
+
+    it('reuse user personal information on the first borrower', () => {
+      LoanService.insertBorrowers({ loanId, amount: 1 });
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
+      });
+      const [borrower] = borrowers;
+      expect(borrower).to.deep.include({
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        email: 'bob.dylan@example.com',
+        phoneNumber: '+41 12345',
+      });
+    });
+
+    it('does not reuse user personal information when second borrower', () => {
+      LoanService.insertBorrowers({ loanId, amount: 2 });
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
+      });
+      const [borrower1, borrower2] = borrowers;
+      expect(borrower1).to.deep.include({
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        email: 'bob.dylan@example.com',
+        phoneNumber: '+41 12345',
+      });
+      expect(borrower2.firstName).to.equal(undefined);
+      expect(borrower2.lastName).to.equal(undefined);
+      expect(borrower2.phoneNumber).to.equal(undefined);
+      expect(borrower2.email).to.equal(undefined);
+    });
+  });
 });

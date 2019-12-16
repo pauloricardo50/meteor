@@ -2,6 +2,7 @@ import { adminBorrower } from 'core/api/fragments';
 import Borrowers from '../borrowers';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
+import UserService from '../../users/server/UserService';
 
 export class BorrowerService extends CollectionService {
   constructor() {
@@ -11,8 +12,42 @@ export class BorrowerService extends CollectionService {
   update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
-  insert = ({ borrower = {}, userId }) =>
-    Borrowers.insert({ ...borrower, userId });
+  insert = ({ borrower = {}, userId, loanId }) => {
+    let borrowerPersonalInfo = {};
+
+    if (loanId) {
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { _id: 1 },
+      });
+      if (borrowers.length === 0) {
+        const { firstName, lastName, phoneNumber, email } =
+          UserService.get(userId, {
+            firstName: 1,
+            lastName: 1,
+            phoneNumber: 1,
+            email: 1,
+          }) || {};
+
+        borrowerPersonalInfo = {
+          firstName,
+          lastName,
+          phoneNumber,
+          email,
+        };
+      }
+    }
+
+    const borrowerId = Borrowers.insert({
+      ...borrowerPersonalInfo,
+      ...borrower,
+      userId,
+    });
+
+    if (loanId) {
+      this.addLink({ id: borrowerId, linkName: 'loans', linkId: loanId });
+    }
+    return borrowerId;
+  };
 
   remove = ({ borrowerId, loanId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
