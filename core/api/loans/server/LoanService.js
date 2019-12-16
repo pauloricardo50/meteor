@@ -636,9 +636,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+      max.organisationName
+      } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -847,7 +847,30 @@ class LoanService extends CollectionService {
     }
 
     if (amount === 1) {
-      const borrowerId = BorrowerService.insert({ userId });
+      let borrowerPersonalInfos = {};
+
+      if (existingBorrowers.length === 0) {
+        const { firstName, lastName, phoneNumber, email } = UserService.get(
+          userId,
+          {
+            firstName: 1,
+            lastName: 1,
+            phoneNumber: 1,
+            email: 1,
+          },
+        );
+
+        borrowerPersonalInfos = {
+          firstName,
+          lastName,
+          phoneNumber,
+          email,
+        };
+      }
+      const borrowerId = BorrowerService.insert({
+        borrower: borrowerPersonalInfos,
+        userId,
+      });
       this.addLink({
         id: loanId,
         linkName: 'borrowers',
