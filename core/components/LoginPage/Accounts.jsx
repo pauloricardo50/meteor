@@ -7,9 +7,7 @@ import cx from 'classnames';
 import TextField from '../Material/TextField';
 import MuiButton from '../Button';
 
-// Do this to pass the ref
-
-class LoginForm extends Accounts.ui.LoginForm {}
+const { LoginForm } = Accounts.ui;
 
 class Form extends Accounts.ui.Form {
   render() {
@@ -50,6 +48,7 @@ class Form extends Accounts.ui.Form {
     );
   }
 }
+console.log('3');
 
 class Buttons extends Accounts.ui.Buttons {}
 
