@@ -27,7 +27,10 @@ const getChartData = ({ loan, Calculator }) => {
   });
 
   if (expenses) {
-    data = [...data, { id: 'Forms.yearlyExpenses.short', value: expenses }];
+    data = [
+      ...data,
+      { id: 'Forms.yearlyExpenses.short', value: Math.round(expenses / 12) },
+    ];
   }
 
   return data.map(dataPoint => ({
