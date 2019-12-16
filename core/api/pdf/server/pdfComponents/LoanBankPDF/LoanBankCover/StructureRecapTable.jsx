@@ -9,12 +9,67 @@ import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type StructureRecapTableProps = {};
 
-const columnStyles = [
-  { width: '30%' },
-  { width: '20%', textAlign: 'right' },
-  { width: '20%', textAlign: 'right' },
-  { width: '15%', textAlign: 'right' },
-  { width: '15%', textAlign: 'right' },
+const columnsConfig = [
+  {
+    style: { width: '30%' },
+    title: 'Plan financier',
+    value: (calculator, { name }, loan, index) =>
+      `${name || index + 1} (page ${index + 2})`,
+  },
+  {
+    style: { width: '20%', textAlign: 'right' },
+    title: 'Valeur du bien',
+    value: (calculator, { id: structureId }, loan) =>
+      toMoney(calculator.selectPropertyValue({ loan, structureId })),
+  },
+  {
+    style: { width: '20%', textAlign: 'right' },
+    title: 'Prêt hypothécaire',
+    value: (calculator, { id: structureId }, loan) =>
+      toMoney(calculator.selectLoanValue({ loan, structureId })),
+  },
+  {
+    style: { width: '15%', textAlign: 'right' },
+    title: "Taux d'avance",
+    value: (calculator, { id: structureId }, loan) => {
+      const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
+      return (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <PercentWithStatus
+            value={borrowRatio}
+            status={borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    style: { width: '15%', textAlign: 'right' },
+    title: "Taux d'effort",
+    value: (calculator, { id: structureId }, loan) => {
+      const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
+      return (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <PercentWithStatus
+            value={incomeRatio}
+            status={incomeRatio > calculator.maxIncomeRatio ? ERROR : SUCCESS}
+          />
+        </div>
+      );
+    },
+  },
 ];
 
 const getRows = ({ loan, structureIds, organisation }) => {
@@ -22,67 +77,28 @@ const getRows = ({ loan, structureIds, organisation }) => {
 
   return [
     <tr key="0" className={classes[ROW_TYPES.TITLE]}>
-      <td style={columnStyles[0]}>Plan financier</td>
-      <td style={columnStyles[1]}>Valeur du bien</td>
-      <td style={columnStyles[2]}>Prêt hypothécaire</td>
-      <td style={columnStyles[3]}>Taux d'avance</td>
-      <td style={columnStyles[4]}>Taux d'effort</td>
+      {columnsConfig.map(({ title, style }, index) => (
+        <td style={style} key={`title${index}`}>
+          {title}
+        </td>
+      ))}
     </tr>,
     ...structureIds
       .map(structureId => loan.structures.find(({ id }) => id === structureId))
-      .map(({ id: structureId, name }, index) => {
+      .map((structure, index) => {
+        const { id: structureId } = structure;
         const calculator = new Calculator({
           loan,
           structureId,
           lenderRules,
         });
-        const loanValue = calculator.selectLoanValue({ loan, structureId });
-        const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
-        const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
-        const propertyValue = calculator.selectPropertyValue({
-          loan,
-          structureId,
-        });
-
         return (
           <tr key={structureId}>
-            <td style={columnStyles[0]}>
-              {name || index + 1} (page {index + 2})
-            </td>
-            <td style={columnStyles[1]}>{toMoney(propertyValue)}</td>
-            <td style={columnStyles[2]}>{toMoney(loanValue)}</td>
-            <td style={columnStyles[3]}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                }}
-              >
-                <PercentWithStatus
-                  value={borrowRatio}
-                  status={
-                    borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS
-                  }
-                />
-              </div>
-            </td>
-            <td style={columnStyles[4]}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                }}
-              >
-                <PercentWithStatus
-                  value={incomeRatio}
-                  status={
-                    incomeRatio > calculator.maxIncomeRatio ? ERROR : SUCCESS
-                  }
-                />
-              </div>
-            </td>
+            {columnsConfig.map(({ style, value }, i) => (
+              <td style={style} key={`${structureId}${i}`}>
+                {value(calculator, structure, loan, index)}
+              </td>
+            ))}
           </tr>
         );
       }),
