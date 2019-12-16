@@ -17,7 +17,7 @@ const schema = new SimpleSchema({
     uniforms: {
       multiline: true,
       rows: 3,
-      placeholder: 'Le client se rétracte du bien immobilier',
+      placeholder: 'Le client sera en vacances du 1er au 15 Août',
     },
   },
 });
@@ -45,8 +45,8 @@ const ProCustomersTableAssigneeInfo = ({
       <div style={{ whiteSpace: 'pre-line' }}>{note}</div>
     </div>
   ) : (
-    'Pas de commentaire'
-  );
+      'Pas de commentaire'
+    );
 
   const toWhom =
     user && user.assignedEmployee
