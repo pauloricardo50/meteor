@@ -375,7 +375,10 @@ describe('BorrowerCalculator', () => {
     it('sums bankFortunes if given multiple borrowers', () => {
       expect(
         Calculator.getFortune({
-          borrowers: [{ bankFortune: [{ value: 1 }] }, { bankFortune: [{ value: 2 }] }],
+          borrowers: [
+            { bankFortune: [{ value: 1 }] },
+            { bankFortune: [{ value: 2 }] },
+          ],
         }),
       ).to.equal(3);
     });
@@ -733,7 +736,9 @@ describe('BorrowerCalculator', () => {
     it('returns some revenue if the constant is set', () => {
       const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
       expect(
-        calc.getFortuneReturns({ borrowers: [{ bankFortune: [{ value: 100 }] }] }),
+        calc.getFortuneReturns({
+          borrowers: [{ bankFortune: [{ value: 100 }] }],
+        }),
       ).to.equal(1);
     });
   });
@@ -833,9 +838,7 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        1452524844,
-      );
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(309751116);
     });
 
     it('changes for non required form values as well', () => {
@@ -864,7 +867,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        5211477033,
+        2925929577,
       );
     });
   });

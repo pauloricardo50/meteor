@@ -847,25 +847,13 @@ class LoanService extends CollectionService {
     }
 
     if (amount === 1) {
-      const borrowerId = BorrowerService.insert({ userId });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId,
+      const borrowerId = BorrowerService.insert({
+        userId,
+        loanId,
       });
     } else if (amount === 2) {
-      const borrowerId1 = BorrowerService.insert({ userId });
-      const borrowerId2 = BorrowerService.insert({ userId });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId1,
-      });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId2,
-      });
+      const borrowerId1 = BorrowerService.insert({ userId, loanId });
+      const borrowerId2 = BorrowerService.insert({ userId, loanId });
     } else {
       throw new Meteor.Error('Invalid borrowers number');
     }

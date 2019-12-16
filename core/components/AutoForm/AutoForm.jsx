@@ -13,6 +13,7 @@ import AutoFormConditionalInput from './AutoFormConditionalInput';
 import AutoFormDateInput from './AutoFormDateInput';
 import ArrayInput from './ArrayInput';
 import AutoFormContainer from './AutoFormContainer';
+import AutoFormPercentInput from './AutoFormPercentInput';
 
 const styles = {
   subtitle: {
@@ -91,6 +92,8 @@ const inputSwitch = (childProps, index, parentProps) => {
         return <ZipAutoComplete {...childProps} {...componentProps} />;
       }
       return component;
+    case 'percent':
+      return <AutoFormPercentInput {...childProps} />;
     default:
       throw new Error(`${type} is not a valid AutoForm type`);
   }
