@@ -131,10 +131,12 @@ export const personalInfoSchema = {
     optional: true,
   },
   phoneNumber: { type: String, optional: true },
-  jobStartDate: { type: Date, optional: true },
+  jobStartDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
   jobActivityRate: percentageField,
-  weddingDate: { type: Date, optional: true },
-  divorceDate: { type: Date, optional: true },
 };
 
 const bonusField = {

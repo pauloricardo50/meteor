@@ -89,8 +89,6 @@ export const loanBorrower = ({ withSort } = {}) => ({
   phoneNumber: 1,
   jobStartDate: 1,
   jobActivityRate: 1,
-  weddingDate: 1,
-  divorceDate: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
