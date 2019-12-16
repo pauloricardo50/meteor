@@ -36,6 +36,7 @@ export const personalFields = [
   'jobStartDate',
   'jobActivityRate',
   'worksInSwitzerlandSince',
+  'activityType',
 ];
 export const financeFields = [
   'salary',
@@ -132,6 +133,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
               'marriedDate',
               'divorcedDate',
               'childrenCount',
+              'activityType',
               'company',
               'job',
               'worksInSwitzerlandSince',

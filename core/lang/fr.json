@@ -1,4 +1,8 @@
 {
+  "Forms.activityType": "Type d'activité",
+  "Forms.activityType.SALARIED": "Salarié",
+  "Forms.activityType.SELF_EMPLOYED": "Indépendant",
+  "Forms.activityType.ANNUITANT": "Rentier",
   "Forms.disbursementDate": "Décaissement des fonds",
   "Forms.backgroundInfo": "Contexte du dossier",
   "Forms.backgroundInfo.placeholder": "Bonjour,\nNous avons le plaisir de vous remettre une nouvelle demande de financement pour les clients précités.\nLe client souhaite un financement maximum, merci de nous faire une offre dans ce sens.",

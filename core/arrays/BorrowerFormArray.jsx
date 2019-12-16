@@ -31,6 +31,9 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   const isFirst = borrowers[0]._id === borrowerId;
   const isMarried = b.civilStatus === constants.CIVIL_STATUS.MARRIED;
   const isDivorced = b.civilStatus === constants.CIVIL_STATUS.DIVORCED;
+  const isWorking = Object.values(constants.BORROWER_ACTIVITY_TYPES)
+    .filter(x => x !== constants.BORROWER_ACTIVITY_TYPES.ANNUITANT)
+    .includes(b.activityType);
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -181,33 +184,41 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     },
     { id: 'childrenCount', type: 'textInput', number: true },
     {
+      id: 'activityType',
+      type: 'radioInput',
+      options: Object.values(constants.BORROWER_ACTIVITY_TYPES),
+    },
+    {
+      type: 'percent',
+      id: 'jobActivityRate',
+      required: false,
+      condition: isWorking,
+    },
+    {
       id: 'job',
       type: 'textInput',
       required: false,
+      condition: isWorking,
     },
     {
       id: 'company',
       type: 'textInput',
       required: false,
       autoComplete: 'organisation',
+      condition: isWorking,
     },
     {
       type: 'dateInput',
       id: 'jobStartDate',
       required: false,
-      condition: !!b.company,
-    },
-    {
-      type: 'percent',
-      id: 'jobActivityRate',
-      required: false,
-      condition: !!b.company,
+      condition: isWorking && !!b.company,
     },
     {
       id: 'worksInSwitzerlandSince',
       type: 'textInput',
       required: false,
       number: true,
+      condition: isWorking,
     },
   ];
 };
@@ -326,31 +337,31 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
           Component: ({
             inputProps: { currentValue, label, itemValue = {} },
           }) => (
-            <div className="flex-col" style={{ paddingLeft: 12 }}>
-              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
-                {label}
-              </label>
-              <b>
-                <Money
-                  id="theoreticalExpenses"
-                  value={
-                    currentValue || Calculator.getRealEstateCost(itemValue)
-                  }
-                  tooltip={
-                    currentValue ? (
-                      undefined
-                    ) : (
-                      <T id="Forms.theoreticalExpenses.tooltip" />
-                    )
-                  }
-                />
-                <span>
-                  &nbsp;/
+              <div className="flex-col" style={{ paddingLeft: 12 }}>
+                <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                  {label}
+                </label>
+                <b>
+                  <Money
+                    id="theoreticalExpenses"
+                    value={
+                      currentValue || Calculator.getRealEstateCost(itemValue)
+                    }
+                    tooltip={
+                      currentValue ? (
+                        undefined
+                      ) : (
+                          <T id="Forms.theoreticalExpenses.tooltip" />
+                        )
+                    }
+                  />
+                  <span>
+                    &nbsp;/
                   <T id="general.month" />
-                </span>
-              </b>
-            </div>
-          ),
+                  </span>
+                </b>
+              </div>
+            ),
         },
       ],
     },
