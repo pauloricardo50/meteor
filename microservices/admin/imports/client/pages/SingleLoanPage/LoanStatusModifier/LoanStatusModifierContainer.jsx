@@ -44,7 +44,7 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
         openModal({
           title: getTitle(status),
           description:
-            'Veuillez entrer une date pour le décaissement des fonds',
+            'Veuillez entrer une date approximative pour le décaissement des fonds',
           content: ({ closeAll }) => (
             <LoanDisbursementDate
               loan={loan}
