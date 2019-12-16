@@ -5,7 +5,10 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Intl from '../../../utils/server/intl';
@@ -170,6 +173,10 @@ class LoanService extends CollectionService {
     return { prevStatus, nextStatus: status };
   }
 
+  setDisbursementDate({ loanId, disbursementDate }) {
+    this.update({ loanId, object: { disbursementDate } });
+  }
+
   insertPromotionLoan = ({
     userId,
     promotionId,
@@ -178,7 +185,7 @@ class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const customName = PromotionService.get(promotionId, { name: 1 }).name;
+    const { name: customName } = PromotionService.get(promotionId, { name: 1 });
     const loanId = this.insert({
       loan: {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],

@@ -16,6 +16,7 @@ import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
 import BorrowerAge from '../BorrowerAge';
 import LoanAdminNotes from './LoanAdminNotes';
+import LoanDisbursementDate from './LoanDisbursementDate';
 
 const OverviewTab = props => {
   const {
@@ -54,6 +55,7 @@ const OverviewTab = props => {
             collection={LOANS_COLLECTION}
           />
           <LoanStepSetter loan={loan} />
+          <LoanDisbursementDate loan={loan} />
         </div>
 
         <div className="card-bottom">

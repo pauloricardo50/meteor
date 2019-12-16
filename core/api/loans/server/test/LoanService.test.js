@@ -9,6 +9,7 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import {
   loanSetStatus,
   setLoanStep,
