@@ -47,7 +47,7 @@ const coverContent = ({
   organisation,
   structureIds,
   calculator,
-  context,
+  backgroundInfo,
 }) => {
   const { residenceType, purchaseType, borrowers } = loan;
   const {
@@ -83,9 +83,9 @@ const coverContent = ({
         organisation={organisation}
         structureIds={structureIds}
       />
-      <div className="loan-context">
+      <div className="loan-background-info">
         <h4>Présentation du dossier</h4>
-        <p>{context}</p>
+        <p>{backgroundInfo}</p>
       </div>
     </div>
   );
@@ -98,24 +98,24 @@ const LoanBankCover = ({
   options,
   organisation,
   structureIds,
-  context,
+  backgroundInfo,
 }: LoanBankCoverProps) => (
-  <PdfPage
-    className="cover-page"
-    fullHeight
-    pageNb={pageNb}
-    pageCount={pageCount}
-  >
-    <LoanBankCoverHeader loanName={loan.name} />
-    {coverContent({
-      loan,
-      anonymous: options && options.anonymous,
-      organisation,
-      structureIds,
-      context,
-    })}
-    {footer(loan.user.assignedEmployee)}
-  </PdfPage>
-);
+    <PdfPage
+      className="cover-page"
+      fullHeight
+      pageNb={pageNb}
+      pageCount={pageCount}
+    >
+      <LoanBankCoverHeader loanName={loan.name} />
+      {coverContent({
+        loan,
+        anonymous: options && options.anonymous,
+        organisation,
+        structureIds,
+        backgroundInfo,
+      })}
+      {footer(loan.user.assignedEmployee)}
+    </PdfPage>
+  );
 
 export default LoanBankCover;

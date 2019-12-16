@@ -59,19 +59,19 @@ const stylesheet = `
         margin-bottom: 32px;
     }
 
-    .cover-content .loan-context {
+    .cover-content .loan-background-info {
         width: 100%;
         margin: 0;
         display: flex;
         flex-direction: column;
     }
 
-    .cover-content .loan-context h4 {
+    .cover-content .loan-background-info h4 {
         margin: 0;
         margin-bottom: 8px;
     }
 
-    .cover-content .loan-context p {
+    .cover-content .loan-background-info p {
         border: 1px solid ${BORDER_BLUE};
         padding: 8px;
         white-space: pre-line;

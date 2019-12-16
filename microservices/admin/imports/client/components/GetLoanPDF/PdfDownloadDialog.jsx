@@ -43,7 +43,7 @@ const makeSchema = loan =>
         placeholder: "Pas d'organisation",
       },
     },
-    context: {
+    backgroundInfo: {
       type: String,
       uniforms: {
         multiline: true,
