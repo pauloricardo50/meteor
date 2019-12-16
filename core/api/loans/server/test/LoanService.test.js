@@ -39,7 +39,7 @@ import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/server/methodHelpers';
 
-describe('LoanService', function () {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1398,7 +1398,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1878,43 +1878,6 @@ describe('LoanService', function () {
       const { proNote: removed } = LoanService.get('loanId', { proNote: 1 });
 
       expect(removed).to.equal(undefined);
-    });
-  });
-
-  describe('insertPromotionLoan', () => {
-    it('uses the promotion signing date for the loan disbursement date', () => {
-      const today = new Date();
-      generator({
-        users: { _id: 'user', _factory: 'user' },
-        promotions: {
-          _id: 'promo',
-          _factory: 'promotion',
-          name: 'Promotion',
-          signingDate: today,
-          promotionLots: { _id: 'pLot1' },
-          users: { _id: 'pro', _factory: 'pro' },
-        },
-      });
-
-      const newLoanId = LoanService.insertPromotionLoan({
-        userId: 'user',
-        promotionId: 'promo',
-        invitedBy: 'pro',
-        showAllLots: true,
-        promotionLotIds: ['pLot1'],
-        shareSolvency: true,
-      });
-
-      const { disbursementDate, activities = [] } = LoanService.get(newLoanId, {
-        disbursementDate: 1,
-        activities: { type: 1, metadata: 1, date: 1 },
-      });
-
-      expect(disbursementDate.getTime()).to.equal(today.getTime());
-      expect(activities[1].metadata).to.deep.include({
-        event: ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
-      });
-      expect(activities[1].date.getTime()).to.equal(today.getTime());
     });
   });
 });

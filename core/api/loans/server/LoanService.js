@@ -175,30 +175,6 @@ class LoanService extends CollectionService {
 
   setDisbursementDate({ loanId, disbursementDate }) {
     this.update({ loanId, object: { disbursementDate } });
-    const { activities = [] } = this.get(loanId, {
-      activities: { type: 1, metadata: 1 },
-    });
-    const disbursementDateActivity = activities.find(
-      ({ type, metadata }) =>
-        type === ACTIVITY_TYPES.EVENT &&
-        metadata.event === ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
-    );
-
-    if (disbursementDateActivity) {
-      const { _id: activityId } = disbursementDateActivity;
-      ActivityService.rawCollection.update(
-        { _id: activityId },
-        { $set: { date: disbursementDate } },
-      );
-    } else {
-      ActivityService.addEventActivity({
-        event: ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
-        isServerGenerated: true,
-        loanLink: { _id: loanId },
-        title: 'Décaissement des fonds',
-        date: disbursementDate
-      });
-    }
   }
 
   insertPromotionLoan = ({
@@ -209,10 +185,7 @@ class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const { name: customName, signingDate } = PromotionService.get(
-      promotionId,
-      { name: 1, signingDate: 1 },
-    );
+    const { name: customName } = PromotionService.get(promotionId, { name: 1 });
     const loanId = this.insert({
       loan: {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
@@ -221,10 +194,6 @@ class LoanService extends CollectionService {
       },
       userId,
     });
-
-    if (signingDate) {
-      this.setDisbursementDate({ loanId, disbursementDate: signingDate });
-    }
 
     promotionLotIds.forEach(promotionLotId => {
       PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
@@ -674,9 +643,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-      max.organisationName
-      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+          max.organisationName
+        } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
