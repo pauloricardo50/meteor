@@ -11,7 +11,7 @@ import {
   COMMISSION_STATUS,
 } from 'core/api/revenues/revenueConstants';
 import { loanSetStatus } from 'core/api/loans/index';
-import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
+import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import generator from '../../../factories/factoriesHelpers';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
 import { loanMonitoring, loanStatusChanges } from '../resolvers';

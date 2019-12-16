@@ -3,7 +3,7 @@ import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
 import { getCookie } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
-import { internalMethod } from './server/methodHelpers';
+import { internalMethod } from './methodHelpers';
 
 if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;

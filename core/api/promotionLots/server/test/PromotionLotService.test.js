@@ -13,7 +13,7 @@ import {
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
 } from 'core/api/promotionOptions/promotionOptionConstants';
 import generator from '../../../factories';
-import { ddpWithUserId } from '../../../methods/server/methodHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { reservePromotionLot } from '../../../methods/index';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';

@@ -7,7 +7,7 @@ import { proInviteUser } from '../../../methods';
 import generator from '../../../factories';
 import UserService from '../../../users/server/UserService';
 import { checkEmails } from '../../../../utils/testHelpers';
-import { ddpWithUserId } from '../../../methods/server/methodHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 
 import {
   ACTIVITY_TYPES,

@@ -36,7 +36,7 @@ import OfferService from '../../../offers/server/OfferService';
 import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
-import { ddpWithUserId } from '../../../methods/server/methodHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 
 describe('LoanService', function () {
   this.timeout(10000);
