@@ -18,7 +18,7 @@ const getIconConfig = ({ status, expectedAt, paidAt }) => {
   }
 
   if (expectedAt.getTime() < now.getTime()) {
-    return { type: 'close', color: 'error', tooltip: 'En retard' };
+    return { type: 'schedule', color: 'error', tooltip: 'En retard' };
   }
 
   return { type: 'schedule', color: 'warning', tooltip: 'En attente' };
