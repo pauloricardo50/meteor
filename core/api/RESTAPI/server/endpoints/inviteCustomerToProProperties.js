@@ -7,6 +7,7 @@ import PropertySchema, {
 } from '../../../properties/schemas/PropertySchema';
 import { withMeteorUserId, updateCustomerReferral } from '../helpers';
 import { checkQuery, impersonateSchema } from './helpers';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const formatPropertyIds = propertyIds => {
   const ids = propertyIds.map(id => `"${id}"`);
@@ -17,6 +18,13 @@ const formatPropertyIds = propertyIds => {
 
 const checkProperties = properties => {
   const schema = PropertySchema.pick(...userAllowedKeys);
+
+  if (!Array.isArray(properties)) {
+    throw new Meteor.Error(
+      HTTP_STATUS_CODES.BAD_REQUEST,
+      '"properties" should be an array',
+    );
+  }
 
   return properties.map(property => {
     const { _id, externalId } = property;
