@@ -40,7 +40,7 @@ export const makeGetIcon = ({
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-export const makeIcon = (variant, promotionOptionId, loanId) => ({
+export const makeGetProgressItem = (variant, promotionOptionId, loanId) => ({
   icon,
   color,
   status,
@@ -48,20 +48,23 @@ export const makeIcon = (variant, promotionOptionId, loanId) => ({
   id,
   component,
   placeholder,
-}) => (
-  <PromotionReservationProgressItem
-    icon={icon}
-    color={color}
-    date={date}
-    status={status}
-    variant={variant}
-    id={id}
-    promotionOptionId={promotionOptionId}
-    component={component}
-    placeholder={placeholder}
-    loanId={loanId}
-  />
-);
+}) => ({
+  id,
+  progressItem: (
+    <PromotionReservationProgressItem
+      icon={icon}
+      color={color}
+      date={date}
+      status={status}
+      variant={variant}
+      id={id}
+      promotionOptionId={promotionOptionId}
+      component={component}
+      placeholder={placeholder}
+      loanId={loanId}
+    />
+  ),
+});
 
 export const getPercent = ({ valid, required }) => {
   if (valid === 0 || required === 0) {

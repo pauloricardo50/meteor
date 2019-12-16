@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
+import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import generator from 'core/api/factories/index';
 import { checkEmails } from '../../../../utils/testHelpers';
 import LenderService from '../../../lenders/server/LenderService';

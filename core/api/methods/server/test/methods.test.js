@@ -10,13 +10,12 @@ import {
   STEPS,
 } from 'core/api/loans/loanConstants';
 import methods from '../../registerMethodDefinitions';
-import { getRateLimitedMethods } from '../../../../utils/rate-limit';
 import { submitContactForm } from '../../methodDefinitions';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import { Loans } from '../../..';
-import LoanService from '../../../loans/server/LoanService'
+import LoanService from '../../../loans/server/LoanService';
 
-describe('methods', function () {
+describe('methods', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -30,14 +29,6 @@ describe('methods', function () {
         method.run({}).catch(error => {
           expect(error.error).to.not.equal(404);
         }));
-
-      // In the future, remove the if conditional to test that all methods
-      // are rate-limited
-      // if (methodName === 'impersonateUser') {
-      //   it('is rate-limited', () => {
-      //     expect(getRateLimitedMethods()).to.include(methodName);
-      //   });
-      // }
     });
   });
 
@@ -94,7 +85,12 @@ describe('methods', function () {
 
       await cleanAllData();
 
-      const { anonymous, category, status, step } = LoanService.get('loan', { anonymous: 1, category: 1, status: 1, step: 1 });
+      const { anonymous, category, status, step } = LoanService.get('loan', {
+        anonymous: 1,
+        category: 1,
+        status: 1,
+        step: 1,
+      });
 
       expect(anonymous).to.equal(false);
       expect(category).to.equal(LOAN_CATEGORIES.STANDARD);

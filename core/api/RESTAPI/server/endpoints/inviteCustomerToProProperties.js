@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
+import { arrayify } from 'core/utils/general';
 import { proInviteUser } from '../../../methods';
 import PropertySchema, {
   userAllowedKeys,
@@ -18,7 +19,7 @@ const formatPropertyIds = propertyIds => {
 const checkProperties = properties => {
   const schema = PropertySchema.pick(...userAllowedKeys);
 
-  return properties.map(property => {
+  return arrayify(properties).map(property => {
     const { _id, externalId } = property;
     if ((!_id && !externalId) || (_id && externalId)) {
       throw new Meteor.Error(

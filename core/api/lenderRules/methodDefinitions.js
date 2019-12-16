@@ -10,6 +10,7 @@ export const lenderRulesInsert = new Method({
     object: Match.Maybe(Object),
   },
 });
+
 export const lenderRulesInitialize = new Method({
   name: 'lenderRulesInitialize',
   params: {

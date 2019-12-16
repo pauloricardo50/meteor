@@ -12,7 +12,7 @@ import EVENTS from 'core/api/analytics/events';
 import UserService from 'core/api/users/server/UserService';
 import { getClientHost } from 'core/utils/server/getClientUrl';
 import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
-import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
+import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import { sortObject } from '../../helpers';
 import {
   HTTP_STATUS_CODES,

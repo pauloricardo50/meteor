@@ -17,6 +17,7 @@ exposeQuery({
           organisationId,
           commissionStatus,
           expectedAt,
+          type,
         },
       }) => {
         if (_id) {
@@ -25,6 +26,10 @@ exposeQuery({
 
         if (status) {
           filters.status = status;
+        }
+
+        if (type) {
+          filters.type = type;
         }
 
         if (loanId) {
@@ -58,6 +63,7 @@ exposeQuery({
       sourceOrganisationId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(Object, String)),
+      type: Match.Maybe(Match.OneOf(Object, String)),
       commissionStatus: Match.Maybe(Match.OneOf(Object, String)),
       expectedAt: Match.Maybe(Match.OneOf(Object, Date)),
     },

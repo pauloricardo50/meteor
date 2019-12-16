@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { ddpWithUserId } from 'core/api/methods/server/methodHelpers';
+import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { checkEmails } from '../../../../utils/testHelpers/index';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';

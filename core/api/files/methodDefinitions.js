@@ -31,6 +31,7 @@ export const downloadFile = new Method({
   params: {
     key: String,
   },
+  doNotRefetchQueries: true,
 });
 
 export const getSignedUrl = new Method({
@@ -38,6 +39,7 @@ export const getSignedUrl = new Method({
   params: {
     key: String,
   },
+  doNotRefetchQueries: true,
 });
 
 export const updateDocumentsCache = new Method({
@@ -55,6 +57,7 @@ export const getZipLoanUrl = new Method({
     documents: Object,
     options: Object,
   },
+  doNotRefetchQueries: true,
 });
 
 export const setFileAdminName = new Method({

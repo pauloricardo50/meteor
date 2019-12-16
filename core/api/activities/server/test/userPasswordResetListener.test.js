@@ -6,7 +6,7 @@ import moment from 'moment';
 import { userPasswordReset } from '../../../methods';
 import generator from '../../../factories';
 import UserService from '../../../users/server/UserService';
-import { ddpWithUserId } from '../../../methods/server/methodHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import ActivityService from '../ActivityService';
 
 import {

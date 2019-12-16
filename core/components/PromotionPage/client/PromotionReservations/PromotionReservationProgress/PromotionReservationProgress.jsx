@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useMemo } from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';
 
@@ -13,7 +13,7 @@ import {
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import ProgressCircle from '../../../../ProgressCircle';
 import {
-  makeIcon,
+  makeGetProgressItem,
   makeGetIcon,
   getAdminNoteIcon,
   getPercent,
@@ -26,7 +26,7 @@ const getAnimationDelay = (index, offset = 0) => (index + offset) * 50;
 
 const getAnimation = (variant, index, offset) =>
   `animated ${
-  variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
+    variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
   } delay-${getAnimationDelay(index, offset)}`;
 
 const PromotionReservationProgressComponent = ({
@@ -49,10 +49,13 @@ const PromotionReservationProgressComponent = ({
   const { user, _id: loanId, proNote = {} } = loan;
   const { info = {}, documents = {} } = loanProgress;
 
-  const icon = makeIcon(variant, promotionOptionId, loanId);
+  const getProgressItem = useMemo(
+    () => makeGetProgressItem(variant, promotionOptionId, loanId),
+    [],
+  );
 
   const verificationAndBankIcons = [
-    icon({
+    getProgressItem({
       ...simpleVerification,
       ...makeGetIcon({
         error: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED],
@@ -65,7 +68,7 @@ const PromotionReservationProgressComponent = ({
       { data: info, id: 'info', tooltipPrefix: 'Informations:' },
       { data: documents, id: 'documents', tooltipPrefix: 'Documents:' },
     ].map(({ data, id, tooltipPrefix }) =>
-      icon({
+      getProgressItem({
         component: (
           <ProgressCircle
             percent={getPercent(data)}
@@ -86,7 +89,7 @@ const PromotionReservationProgressComponent = ({
         id,
       }),
     ),
-    icon({
+    getProgressItem({
       ...fullVerification,
       ...makeGetIcon({
         error: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED],
@@ -94,7 +97,7 @@ const PromotionReservationProgressComponent = ({
       })(fullVerification.status),
       id: 'fullVerification',
     }),
-    icon({
+    getProgressItem({
       ...bank,
       ...makeGetIcon({
         success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
@@ -108,7 +111,7 @@ const PromotionReservationProgressComponent = ({
   ];
 
   const agreementAndDepositIcons = [
-    icon({
+    getProgressItem({
       ...reservationAgreement,
       ...makeGetIcon({
         success: [PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED],
@@ -116,7 +119,7 @@ const PromotionReservationProgressComponent = ({
       })(reservationAgreement.status),
       id: 'reservationAgreement',
     }),
-    icon({
+    getProgressItem({
       ...reservationDeposit,
       ...makeGetIcon({
         success: [PROMOTION_OPTION_DEPOSIT_STATUS.PAID],
@@ -135,22 +138,22 @@ const PromotionReservationProgressComponent = ({
       style={style}
     >
       <div className="promotion-reservation-progress-icons">
-        {verificationAndBankIcons.map((icon, index) => (
-          <div className={cx('icon', getAnimation(variant, index))} key={index}>
-            {icon}
+        {verificationAndBankIcons.map(({ id, progressItem }, index) => (
+          <div className={cx('icon', getAnimation(variant, index))} key={id}>
+            {progressItem}
           </div>
         ))}
       </div>
       <div className="promotion-reservation-progress-icons">
-        {agreementAndDepositIcons.map((icon, index) => (
+        {agreementAndDepositIcons.map(({ id, progressItem }, index) => (
           <div
             className={cx(
               'icon',
               getAnimation(variant, index, verificationAndBankIcons.length),
             )}
-            key={index}
+            key={id}
           >
-            {icon}
+            {progressItem}
           </div>
         ))}
       </div>
@@ -163,7 +166,7 @@ const PromotionReservationProgressComponent = ({
                 variant,
                 0,
                 verificationAndBankIcons.length +
-                agreementAndDepositIcons.length,
+                  agreementAndDepositIcons.length,
               ),
             )}
           >

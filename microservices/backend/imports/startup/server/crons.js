@@ -79,7 +79,7 @@ CronService.addCron(
     frequency: 'every 1 day',
     func: () =>
       generateTenDayExpirationReminderTasks
-        .run({})
+        .serverRun({})
         .then((promotionOptions = []) => promotionOptions.length),
   },
   { cronitorId: 'KbK0Gy' },
@@ -92,7 +92,7 @@ CronService.addCron(
     frequency: 'every weekday',
     func: () =>
       generateExpiringSoonReservationTasks
-        .run({})
+        .serverRun({})
         .then((promotionOptions = []) => promotionOptions.length),
   },
   { cronitorId: 'N77C0a' },
