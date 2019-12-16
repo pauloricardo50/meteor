@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { ddpWithUserId } from '../../../methods/server/methodHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { loanSetDisbursementDate } from '../../../methods';
 import generator from '../../../factories';
 import LoanService from '../../../loans/server/LoanService';
