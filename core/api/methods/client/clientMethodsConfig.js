@@ -33,7 +33,11 @@ const handleSuccess = (config, params) => {
   ClientEventService.emitAfterMethod(config, params);
 
   // Refresh all non-reactive queries
-  if (!config.noRefreshAfterCall) {
+  // As long as they don't specify to not refetch
+  // and as long as the method called is supposed to refetch them
+  // for example: all tracking/analytics methods should not trigger
+  // query refetches
+  if (!config.noRefreshAfterCall && !config.doNotRefetchQueries) {
     refetchQueries(config.name);
   }
 };
