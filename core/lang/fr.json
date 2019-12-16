@@ -1719,7 +1719,7 @@
   "File.status.ERROR": "Non valide",
   "File.status.UNVERIFIED": "En vérification",
   "File.status.VALID": "Validé",
-  "FileAdder.title": "+ Uploader un fichier",
+  "FileAdder.title": "+ Uploader un fichier (ou glissez-deposez)",
   "files.BONUSES.tooltip": "Justificatif de tous les bonus et revenus variables",
   "files.BONUSES": "Justificatif des bonus",
   "files.CONTRACT": "Contrat",
