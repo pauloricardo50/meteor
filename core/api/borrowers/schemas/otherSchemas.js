@@ -125,6 +125,18 @@ export const personalInfoSchema = {
     max: 2050,
   },
   job: { type: String, optional: true },
+  email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true,
+  },
+  phoneNumber: { type: String, optional: true },
+  jobStartDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  jobActivityRate: percentageField,
 };
 
 const bonusField = {

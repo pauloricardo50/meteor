@@ -1,4 +1,8 @@
 {
+  "Forms.jobStartDate": "Date d'entrée en fonction",
+  "Forms.divorceDate": "Date du divorce",
+  "Forms.weddingDate": "Date du mariage",
+  "Forms.jobActivityRate": "Taux d'activité",
   "files.category.INSURANCE": "Assurance",
   "files.INSURANCE_CORRESPONDENCE": "Correspondance",
   "files.INSURANCE_MANDATE": "Mandat assurance",

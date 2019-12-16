@@ -29,6 +29,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
   const isFirst = borrowers[0]._id === borrowerId;
+  const isMarried = b.civilStatus === constants.CIVIL_STATUS.MARRIED;
+  const isDivorced = b.civilStatus === constants.CIVIL_STATUS.DIVORCED;
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -116,6 +118,18 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: addressFieldsAreNecessary,
     },
     {
+      type: 'textInput',
+      id: 'email',
+      placeholder: <T id="Forms.email.placeholder" />,
+      required: false,
+    },
+    {
+      type: 'textInput',
+      id: 'phoneNumber',
+      placeholder: <T id="Forms.phoneNumber.placeholder" />,
+      required: false,
+    },
+    {
       type: 'conditionalInput',
       conditionalTrueValue: false,
       inputs: [
@@ -147,6 +161,18 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       })),
     },
     {
+      type: 'dateInput',
+      id: 'marriedDate',
+      condition: isMarried,
+      required: false,
+    },
+    {
+      type: 'dateInput',
+      id: 'divorcedDate',
+      condition: isDivorced,
+      required: false,
+    },
+    {
       id: 'addPartner',
       type: 'custom',
       component: <BorrowerAddPartner loanId={loanId} />,
@@ -164,6 +190,18 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'textInput',
       required: false,
       autoComplete: 'organisation',
+    },
+    {
+      type: 'dateInput',
+      id: 'jobStartDate',
+      required: false,
+      condition: !!b.company,
+    },
+    {
+      type: 'percent',
+      id: 'jobActivityRate',
+      required: false,
+      condition: !!b.company,
     },
     {
       id: 'worksInSwitzerlandSince',
@@ -288,31 +326,31 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
           Component: ({
             inputProps: { currentValue, label, itemValue = {} },
           }) => (
-              <div className="flex-col" style={{ paddingLeft: 12 }}>
-                <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
-                  {label}
-                </label>
-                <b>
-                  <Money
-                    id="theoreticalExpenses"
-                    value={
-                      currentValue || Calculator.getRealEstateCost(itemValue)
-                    }
-                    tooltip={
-                      currentValue ? (
-                        undefined
-                      ) : (
-                          <T id="Forms.theoreticalExpenses.tooltip" />
-                        )
-                    }
-                  />
-                  <span>
-                    &nbsp;/
+            <div className="flex-col" style={{ paddingLeft: 12 }}>
+              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                {label}
+              </label>
+              <b>
+                <Money
+                  id="theoreticalExpenses"
+                  value={
+                    currentValue || Calculator.getRealEstateCost(itemValue)
+                  }
+                  tooltip={
+                    currentValue ? (
+                      undefined
+                    ) : (
+                      <T id="Forms.theoreticalExpenses.tooltip" />
+                    )
+                  }
+                />
+                <span>
+                  &nbsp;/
                   <T id="general.month" />
-                  </span>
-                </b>
-              </div>
-            ),
+                </span>
+              </b>
+            </div>
+          ),
         },
       ],
     },
@@ -371,7 +409,14 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
     },
   ];
 
-  const fortuneArray = [{ id: 'bankFortuneSimple', type: 'textInput', money: true, progressReplacementId: 'bankFortune' }];
+  const fortuneArray = [
+    {
+      id: 'bankFortuneSimple',
+      type: 'textInput',
+      money: true,
+      progressReplacementId: 'bankFortune',
+    },
+  ];
 
   const insuranceArray = [
     { id: 'insurance2Simple', type: 'textInput', money: true, required: false },
