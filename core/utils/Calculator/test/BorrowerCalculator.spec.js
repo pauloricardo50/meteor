@@ -2,7 +2,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
+import {
+  STEPS,
+  GENDER,
+  EXPENSES,
+  BORROWER_ACTIVITY_TYPES,
+} from 'core/api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
@@ -459,6 +464,7 @@ describe('BorrowerCalculator', () => {
         'isUSPerson',
         'civilStatus',
         'childrenCount',
+        'activityType',
         'salary',
         'netSalary',
         'bonusExists',
@@ -667,6 +673,7 @@ describe('BorrowerCalculator', () => {
               bankFortune: [{ value: 1000 }],
               hasOwnCompany: false,
               ownCompanies: [],
+              activityType: BORROWER_ACTIVITY_TYPES.SALARIED,
             },
           ],
         }),
@@ -838,7 +845,9 @@ describe('BorrowerCalculator', () => {
         },
       ];
 
-      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(309751116);
+      expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
+        -1865795269,
+      );
     });
 
     it('changes for non required form values as well', () => {
@@ -867,7 +876,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        2925929577,
+        -1425163193,
       );
     });
   });
