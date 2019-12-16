@@ -636,9 +636,9 @@ class LoanService extends CollectionService {
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
       ? `${secondMax &&
-      secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-      max.organisationName
-      } (${(max.borrowRatio * 100).toFixed(2)}%)`
+          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
+          max.organisationName
+        } (${(max.borrowRatio * 100).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -847,48 +847,13 @@ class LoanService extends CollectionService {
     }
 
     if (amount === 1) {
-      let borrowerPersonalInfos = {};
-
-      if (existingBorrowers.length === 0) {
-        const { firstName, lastName, phoneNumber, email } = UserService.get(
-          userId,
-          {
-            firstName: 1,
-            lastName: 1,
-            phoneNumber: 1,
-            email: 1,
-          },
-        );
-
-        borrowerPersonalInfos = {
-          firstName,
-          lastName,
-          phoneNumber,
-          email,
-        };
-      }
       const borrowerId = BorrowerService.insert({
-        borrower: borrowerPersonalInfos,
         userId,
-      });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId,
+        loanId,
       });
     } else if (amount === 2) {
-      const borrowerId1 = BorrowerService.insert({ userId });
-      const borrowerId2 = BorrowerService.insert({ userId });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId1,
-      });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId2,
-      });
+      const borrowerId1 = BorrowerService.insert({ userId, loanId });
+      const borrowerId2 = BorrowerService.insert({ userId, loanId });
     } else {
       throw new Meteor.Error('Invalid borrowers number');
     }

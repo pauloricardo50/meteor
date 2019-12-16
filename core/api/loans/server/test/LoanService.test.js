@@ -1910,22 +1910,8 @@ describe('LoanService', function() {
       });
     });
 
-    it('does not reuse user personal information when inserting two borrowers at once', () => {
-      LoanService.insertBorrowers({ loanId, amount: 2 });
-      const { borrowers = [] } = LoanService.get(loanId, {
-        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
-      });
-      borrowers.forEach(borrower => {
-        expect(borrower.firstName).to.equal(undefined);
-        expect(borrower.lastName).to.equal(undefined);
-        expect(borrower.phoneNumber).to.equal(undefined);
-        expect(borrower.email).to.equal(undefined);
-      });
-    });
-
     it('does not reuse user personal information when second borrower', () => {
-      LoanService.insertBorrowers({ loanId, amount: 1 });
-      LoanService.insertBorrowers({ loanId, amount: 1 });
+      LoanService.insertBorrowers({ loanId, amount: 2 });
       const { borrowers = [] } = LoanService.get(loanId, {
         borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
       });
