@@ -3,6 +3,7 @@ import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
 import { getCookie } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
+import { internalMethod } from './server/methodHelpers';
 
 if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;
@@ -77,6 +78,10 @@ export class Method extends Mutation {
     this.callAOP.executeBefores(aopData);
 
     return this.appendClientParams({ config, callParams, aopData, options });
+  }
+
+  serverRun(...args) {
+    return internalMethod(() => this.run(...args));
   }
 
   setHandler(fn) {

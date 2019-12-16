@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import UserService from 'core/api/users/server/UserService';
 import { adminLoan } from 'core/api/fragments';
-import { internalMethod } from '../../methods/server/methodHelpers';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
@@ -299,13 +298,11 @@ sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams }) => {
     { email: 1, name: 1 },
   );
   const loan = LoanService.get(loanId, adminLoan());
-  return internalMethod(() =>
-    sendEmailToAddress.run({
-      address,
-      emailId: EMAIL_IDS.LOAN_CHECKLIST,
-      params: { ...emailParams, loan, assigneeAddress, assigneeName },
-    }),
-  );
+  return sendEmailToAddress.serverRun({
+    address,
+    emailId: EMAIL_IDS.LOAN_CHECKLIST,
+    params: { ...emailParams, loan, assigneeAddress, assigneeName },
+  });
 });
 
 loanSetAdminNote.setHandler(({ userId }, params) => {

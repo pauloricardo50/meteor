@@ -1,4 +1,3 @@
-import { internalMethod } from 'core/api/methods/server/methodHelpers';
 import { ROLES } from 'core/api/users/userConstants';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
@@ -250,13 +249,11 @@ export const mapConfigToListener = ({
         ? getEmailParamsOverride(...args, recipient)
         : getPromotionOptionMailParams(...args, recipient);
 
-      internalMethod(() =>
-        sendEmail.run({
-          emailId: emailIdOverride || emailId,
-          userId,
-          params: emailParams,
-        }),
-      );
+      sendEmail.serverRun({
+        emailId: emailIdOverride || emailId,
+        userId,
+        params: emailParams,
+      });
     });
   });
 };

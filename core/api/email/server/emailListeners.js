@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import moment from 'moment';
 
-import { internalMethod } from 'core/api/methods/server/methodHelpers';
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import {
   submitContactForm,
@@ -28,26 +27,22 @@ addEmailListener({
   description: 'Formulaire de contact -> Client',
   method: submitContactForm,
   func: ({ params }) =>
-    internalMethod(() =>
-      sendEmailToAddress.run({
-        emailId: EMAIL_IDS.CONTACT_US,
-        address: params.email,
-        params,
-      }),
-    ),
+    sendEmailToAddress.serverRun({
+      emailId: EMAIL_IDS.CONTACT_US,
+      address: params.email,
+      params,
+    }),
 });
 
 addEmailListener({
   description: 'Formulaire de contact -> info@e-potek.ch',
   method: submitContactForm,
   func: ({ params }) =>
-    internalMethod(() =>
-      sendEmailToAddress.run({
-        emailId: EMAIL_IDS.CONTACT_US_ADMIN,
-        address: INTERNAL_EMAIL,
-        params,
-      }),
-    ),
+    sendEmailToAddress.serverRun({
+      emailId: EMAIL_IDS.CONTACT_US_ADMIN,
+      address: INTERNAL_EMAIL,
+      params,
+    }),
 });
 
 addEmailListener({
@@ -76,22 +71,18 @@ addEmailListener({
     const { promotion, proUserId } = params;
 
     if (emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION) {
-      return internalMethod(() =>
-        sendEmail.run({
-          emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
-          userId: proUserId,
-          params: { customerName, email, promotionName: promotion.name },
-        }),
-      );
+      return sendEmail.serverRun({
+        emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
+        userId: proUserId,
+        params: { customerName, email, promotionName: promotion.name },
+      });
     }
 
-    return internalMethod(() =>
-      sendEmail.run({
-        emailId: EMAIL_IDS.CONFIRM_USER_INVITATION,
-        userId: proUserId,
-        params: { customerName, email },
-      }),
-    );
+    return sendEmail.serverRun({
+      emailId: EMAIL_IDS.CONFIRM_USER_INVITATION,
+      userId: proUserId,
+      params: { customerName, email },
+    });
   },
 });
 
@@ -106,13 +97,11 @@ addEmailListener({
         );
       }
 
-      internalMethod(() =>
-        sendEmail.run({
-          emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
-          userId: user._id,
-          params: { loanId, assigneeName: user.assignedEmployee.name },
-        }),
-      );
+      return sendEmail.serverRun({
+        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
+        userId: user._id,
+        params: { loanId, assigneeName: user.assignedEmployee.name },
+      });
     }
   },
 });
@@ -139,21 +128,19 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
 
   const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
 
-  return internalMethod(() =>
-    sendEmailToAddress.run({
-      emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
-      address,
-      name,
-      params: {
-        assigneeAddress,
-        assigneeName,
-        loanName,
-        organisationName,
-        date: moment(createdAt).format('DD.MM.YYYY'),
-        feedback,
-      },
-    }),
-  );
+  return sendEmailToAddress.serverRun({
+    emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
+    address,
+    name,
+    params: {
+      assigneeAddress,
+      assigneeName,
+      loanName,
+      organisationName,
+      date: moment(createdAt).format('DD.MM.YYYY'),
+      feedback,
+    },
+  });
 };
 
 addEmailListener({
@@ -221,22 +208,20 @@ addEmailListener({
         attachments = [promotionGuide[0].Key];
       }
 
-      return internalMethod(() =>
-        sendEmail.run({
-          emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-          userId,
-          params: {
-            proUserId: pro && pro._id,
-            promotion,
-            coverImageUrl,
-            logoUrls,
-            ctaUrl,
-            name: user.firstName,
-            invitedBy,
-            attachments,
-          },
-        }),
-      );
+      return sendEmail.serverRun({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+        userId,
+        params: {
+          proUserId: pro && pro._id,
+          promotion,
+          coverImageUrl,
+          logoUrls,
+          ctaUrl,
+          name: user.firstName,
+          invitedBy,
+          attachments,
+        },
+      });
     });
   },
 });
@@ -270,19 +255,17 @@ addEmailListener({
       ctaUrl = UserService.getEnrollmentUrl({ userId });
     }
 
-    return internalMethod(() =>
-      sendEmail.run({
-        emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-        userId,
-        params: {
-          proUserId: pro && pro._id,
-          proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
-          address: formattedAddresses,
-          ctaUrl,
-          multiple: addresses.length > 1,
-        },
-      }),
-    );
+    return sendEmail.serverRun({
+      emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+      userId,
+      params: {
+        proUserId: pro && pro._id,
+        proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
+        address: formattedAddresses,
+        ctaUrl,
+        multiple: addresses.length > 1,
+      },
+    });
   },
 });
 
@@ -298,17 +281,15 @@ addEmailListener({
       return;
     }
 
-    internalMethod(() =>
-      sendEmail.run({
-        emailId: EMAIL_IDS.REFER_USER,
-        userId,
-        params: {
-          proUserId: pro && pro._id,
-          proName: getUserNameAndOrganisation({ user: pro }),
-          ctaUrl: UserService.getEnrollmentUrl({ userId }),
-        },
-      }),
-    );
+    return sendEmail.serverRun({
+      emailId: EMAIL_IDS.REFER_USER,
+      userId,
+      params: {
+        proUserId: pro && pro._id,
+        proName: getUserNameAndOrganisation({ user: pro }),
+        ctaUrl: UserService.getEnrollmentUrl({ userId }),
+      },
+    });
   },
 });
 
@@ -354,17 +335,15 @@ addEmailListener({
       return;
     }
 
-    internalMethod(() =>
-      sendEmailToAddress.run({
-        emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
-        address: referredByUser.email,
-        params: {
-          customerName,
-          loanName,
-          note,
-          adminName: adminName || 'e-Potek',
-        },
-      }),
-    );
+    return sendEmailToAddress.serverRun({
+      emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
+      address: referredByUser.email,
+      params: {
+        customerName,
+        loanName,
+        note,
+        adminName: adminName || 'e-Potek',
+      },
+    });
   },
 });

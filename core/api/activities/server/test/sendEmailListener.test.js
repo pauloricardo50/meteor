@@ -7,10 +7,6 @@ import { EMAIL_IDS } from '../../../email/emailConstants';
 import { sendEmail, sendEmailToAddress } from '../../../email/server/methods';
 import generator from '../../../factories';
 import UserService from '../../../users/server/UserService';
-import {
-  ddpWithUserId,
-  internalMethod,
-} from '../../../methods/server/methodHelpers';
 
 import { ACTIVITY_TYPES } from '../../activityConstants';
 import ActivityService from '../ActivityService';
@@ -38,18 +34,16 @@ describe('sendEmailListener', function() {
 
   describe('sendEmailToUser', () => {
     it('adds activity on the user', async () => {
-      await internalMethod(() =>
-        sendEmail.run({
-          emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-          userId: 'user',
-          params: {
-            proName: 'Pro Name',
-            address: 'Rue du test 1',
-            ctaUrl: 'www.e-potek.ch',
-            multiple: false,
-          },
-        }),
-      );
+      await sendEmail.serverRun({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+        userId: 'user',
+        params: {
+          proName: 'Pro Name',
+          address: 'Rue du test 1',
+          ctaUrl: 'www.e-potek.ch',
+          multiple: false,
+        },
+      });
 
       await checkEmails(1);
       const { activities = [] } = UserService.get('user', {
@@ -75,18 +69,16 @@ describe('sendEmailListener', function() {
 
   describe('sendEmailToAddress', () => {
     it('adds activity on the user', async () => {
-      await internalMethod(() =>
-        sendEmailToAddress.run({
-          emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-          address: 'john.doe@test.com',
-          params: {
-            proName: 'Pro Name',
-            address: 'Rue du test 1',
-            ctaUrl: 'www.e-potek.ch',
-            multiple: false,
-          },
-        }),
-      );
+      await sendEmailToAddress.serverRun({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+        address: 'john.doe@test.com',
+        params: {
+          proName: 'Pro Name',
+          address: 'Rue du test 1',
+          ctaUrl: 'www.e-potek.ch',
+          multiple: false,
+        },
+      });
 
       await checkEmails(1);
       const { activities = [] } = UserService.get('user', {
@@ -110,20 +102,18 @@ describe('sendEmailListener', function() {
     });
 
     it('does not throw if no user is registered with address', async () =>
-      expect(() => {
-        internalMethod(async () => {
-          await sendEmailToAddress.run({
-            emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
-            address: 'john2.doe@test.com',
-            params: {
-              proName: 'Pro Name',
-              address: 'Rue du test 1',
-              ctaUrl: 'www.e-potek.ch',
-              multiple: false,
-            },
-          });
-          await checkEmails(1);
+      expect(async () => {
+        await sendEmailToAddress.serverRun({
+          emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+          address: 'john2.doe@test.com',
+          params: {
+            proName: 'Pro Name',
+            address: 'Rue du test 1',
+            ctaUrl: 'www.e-potek.ch',
+            multiple: false,
+          },
         });
+        await checkEmails(1);
       }).to.not.throw());
     const activities = ActivityService.fetch();
     expect(activities.length).to.equal(0);
