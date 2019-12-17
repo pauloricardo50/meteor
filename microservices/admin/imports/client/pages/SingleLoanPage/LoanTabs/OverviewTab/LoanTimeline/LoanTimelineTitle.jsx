@@ -3,6 +3,7 @@ import React from 'react';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import TimelineTitle from 'core/components/Timeline/TimelineTitle';
+import colors from 'core/config/colors';
 import { LoanActivityModifier } from './LoanActivityAdder';
 
 type LoanTimelineTitleProps = {};
@@ -16,7 +17,10 @@ const icons = {
   task: 'check',
 };
 
-const getIcon = (type, isServerGenerated) => {
+const getIcon = (type, isServerGenerated, isImportant) => {
+  if (isImportant) {
+    return 'star';
+  }
   if (isServerGenerated) {
     return 'computer';
   }
@@ -28,13 +32,14 @@ const allowModify = (type, isServerGenerated) =>
   !isServerGenerated && type !== 'task';
 
 const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
-  const { date, title, type, isServerGenerated } = activity;
+  const { date, title, type, isServerGenerated, isImportant } = activity;
 
   return (
     <TimelineTitle
       title={title}
-      icon={getIcon(type, isServerGenerated)}
+      icon={getIcon(type, isServerGenerated, isImportant)}
       date={date}
+      iconStyle={isImportant ? { color: colors.warning } : {}}
     >
       {allowModify(type, isServerGenerated) && (
         <LoanActivityModifier className="activity-modifier" model={activity} />

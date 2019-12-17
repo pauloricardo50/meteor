@@ -413,6 +413,7 @@ ServerEventService.addAfterMethodListener(
         loanLink: { _id: loanId },
         title: 'Décaissement des fonds',
         date: disbursementDate,
+        isImportant: true,
       });
     }
   },
