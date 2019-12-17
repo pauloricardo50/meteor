@@ -1054,6 +1054,23 @@ class LoanService extends CollectionService {
       object: { proNote: true },
     });
   }
+
+  getDisbursedSoonLoans() {
+    const in10Days = moment().add(10, 'days');
+    const in11Days = moment().add(11, 'days');
+
+    const disbursedIn10Days = this.fetch({
+      $filters: {
+        disbursementDate: {
+          $lte: in11Days.startOf('day').toDate(),
+          $gte: in10Days.startOf('day').toDate(),
+        },
+      },
+      _id: 1,
+    });
+
+    return disbursedIn10Days.map(({ _id }) => _id);
+  }
 }
 
 export default new LoanService({});

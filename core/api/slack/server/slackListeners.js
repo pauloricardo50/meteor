@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import { promotionOptionUploadAgreement } from 'core/api/methods/index';
@@ -26,6 +27,8 @@ import {
 } from './slackNotifications';
 import { sendPropertyInvitations } from './slackNotificationHelpers';
 import PromotionService from '../../promotions/server/PromotionService';
+import { generateDisbursedSoonLoansNotificationsAndTasks } from '../../loans/server/methods';
+import SlackService from './SlackService';
 
 ServerEventService.addAfterMethodListener(
   reservePromotionLot,
@@ -132,10 +135,9 @@ ServerEventService.addAfterMethodListener(
       referredByOrganisationLink,
     } = currentUser;
     const referredBy = UserService.get(referredByUserLink, fullUser());
-    const referredByOrg = OrganisationService.get(
-      referredByOrganisationLink,
-      { name: 1 }
-    );
+    const referredByOrg = OrganisationService.get(referredByOrganisationLink, {
+      name: 1,
+    });
 
     const suffix = [
       referredBy && referredBy.name,
@@ -261,5 +263,32 @@ ServerEventService.addAfterMethodListener(
       startDate,
       expirationDate,
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  generateDisbursedSoonLoansNotificationsAndTasks,
+  ({ result: disbursedSoonLoanIds = [] }) => {
+    if (!disbursedSoonLoanIds.length) {
+      return;
+    }
+    const loans = disbursedSoonLoanIds.map(loanId =>
+      LoanService.get(loanId, {
+        disbursementDate: 1,
+        name: 1,
+      }),
+    );
+
+    const slackPayload = {
+      attachments: loans.map(({ _id: loanId, disbursementDate, name }) => ({
+        title: name,
+        title_link: `https://admin.e-potek.ch/loans/${loanId}`,
+        text: `La date de décaissement des fonds est prévue pour le ${moment(
+          disbursementDate,
+        ).format('DD.MM.YYYY')}`,
+      })),
+    };
+
+    SlackService.sendAttachments(slackPayload);
   },
 );
