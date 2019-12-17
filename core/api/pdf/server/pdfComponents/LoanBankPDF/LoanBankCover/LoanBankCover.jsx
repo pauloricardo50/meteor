@@ -78,9 +78,11 @@ const coverContent = ({
       <h2 className="property-value">
         <Money value={propertyValue} />
       </h2>
-      <h2 className="disbursement-date">
-        {`Déblocage prévu des fonds ${moment(disbursementDate).format('DD.MM.YYYY')}`}
-      </h2>
+      <h3 className="disbursement-date">
+        {`Déblocage prévu des fonds ${moment(disbursementDate).format(
+          'DD.MM.YYYY',
+        )}`}
+      </h3>
       <StructureRecapTable
         loan={loan}
         organisation={organisation}
@@ -103,22 +105,22 @@ const LoanBankCover = ({
   structureIds,
   backgroundInfo,
 }: LoanBankCoverProps) => (
-    <PdfPage
-      className="cover-page"
-      fullHeight
-      pageNb={pageNb}
-      pageCount={pageCount}
-    >
-      <LoanBankCoverHeader loanName={loan.name} />
-      {coverContent({
-        loan,
-        anonymous: options && options.anonymous,
-        organisation,
-        structureIds,
-        backgroundInfo,
-      })}
-      {footer(loan.user.assignedEmployee)}
-    </PdfPage>
-  );
+  <PdfPage
+    className="cover-page"
+    fullHeight
+    pageNb={pageNb}
+    pageCount={pageCount}
+  >
+    <LoanBankCoverHeader loanName={loan.name} />
+    {coverContent({
+      loan,
+      anonymous: options && options.anonymous,
+      organisation,
+      structureIds,
+      backgroundInfo,
+    })}
+    {footer(loan.user.assignedEmployee)}
+  </PdfPage>
+);
 
 export default LoanBankCover;
