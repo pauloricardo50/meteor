@@ -49,7 +49,7 @@ const coverContent = ({
   calculator,
   backgroundInfo,
 }) => {
-  const { residenceType, purchaseType, borrowers } = loan;
+  const { residenceType, purchaseType, borrowers, disbursementDate } = loan;
   const {
     address1,
     zipCode,
@@ -77,6 +77,9 @@ const coverContent = ({
       <h2 className="address">{`${address1}, ${zipCode} ${city}`}</h2>
       <h2 className="property-value">
         <Money value={propertyValue} />
+      </h2>
+      <h2 className="disbursement-date">
+        {`Déblocage prévu des fonds ${moment(disbursementDate).format('DD.MM.YYYY')}`}
       </h2>
       <StructureRecapTable
         loan={loan}

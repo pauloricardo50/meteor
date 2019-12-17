@@ -45,12 +45,16 @@ const stylesheet = `
     .cover-content .property-value {
         margin-top: 8px;
         font-weight: normal;
-        margin-bottom: 30px;
     }
 
     .cover-content .property-type {
         margin-top: 8px;
         margin-bottom: 8px;
+    }
+
+    .cover-content .disbursement-date {
+        margin: 0;
+        margin-bottom: 30px;
     }
 
     .cover-content .borrowers {
