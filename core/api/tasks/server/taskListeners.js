@@ -255,7 +255,7 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   generateDisbursedSoonLoansNotificationsAndTasks,
-  ({ result: disbursedSoonLoanIds }) => {
+  ({ result: disbursedSoonLoanIds = [] }) => {
     disbursedSoonLoanIds.forEach(loanId => {
       const { disbursementDate } = LoanService.get(loanId, {
         disbursementDate: 1,
@@ -266,7 +266,7 @@ ServerEventService.addAfterMethodListener(
           docId: loanId,
           title: `La date de décaissement du dossier est prévue pour le ${moment(
             disbursementDate,
-          ).format('DD.MM.YYY')}`,
+          ).format('DD.MM.YYYY')}`,
           description: "S'assurer que tout est prêt pour le décaissement",
         },
       });

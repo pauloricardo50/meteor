@@ -38,8 +38,11 @@ import { generateOrganisationsWithLenderRules } from '../../../organisations/ser
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { generateDisbursedSoonLoansNotificationsAndTasks } from '../methods';
+import TaskService from '../../../tasks/server/TaskService';
+import SlackService from '../../../slack/server/SlackService';
 
-describe('LoanService', function() {
+describe('LoanService', function () {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1398,7 +1401,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1927,6 +1930,72 @@ describe('LoanService', function() {
       expect(borrower2.lastName).to.equal(undefined);
       expect(borrower2.phoneNumber).to.equal(undefined);
       expect(borrower2.email).to.equal(undefined);
+    });
+  });
+
+  describe('generateDisbursedSoonLoansNotificationsAndTasks', () => {
+    const generateDisbursedLoans = (today, loansConfig) =>
+      loansConfig.map(({ offset }, index) => ({
+        _id: `l${index + 1}`,
+        _factory: 'loan',
+        name: `19-000${index + 1}`,
+        user: {
+          _id: `u${index + 1}`,
+          _factory: 'user',
+          assignedEmployeeId: 'admin',
+        },
+        disbursementDate: moment(today)
+          .add(offset, 'days')
+          .toDate(),
+      }));
+
+    afterEach(() => {
+      SlackService.send.restore();
+    });
+
+    it('generates the tasks and the slack notification for the loans disbursed in 10 days', async () => {
+      const today = new Date();
+      generator({
+        users: { _id: 'admin', _factory: 'admin' },
+        loans: generateDisbursedLoans(today, [
+          { offset: 0 },
+          { offset: 5 },
+          { offset: 9 },
+          { offset: 10 },
+          { offset: 11 },
+          { offset: 10 },
+        ]),
+      });
+      const spy = sinon.spy();
+      sinon.stub(SlackService, 'send').callsFake(spy);
+
+      await generateDisbursedSoonLoansNotificationsAndTasks.serverRun({});
+
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
+
+      expect(tasks.length).to.equal(2);
+      tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
+        expect(title).to.include(
+          moment(today)
+            .add(10, 'days')
+            .format('DD.MM.YYYY'),
+        );
+        expect(adminId).to.equal('admin');
+      });
+
+      expect(spy.calledOnce).to.equal(true);
+      expect(spy.args[0][0].attachments[0].title).to.equal('19-0004');
+      expect(spy.args[0][0].attachments[0].text).to.include(
+        moment(today)
+          .add(10, 'days')
+          .format('DD.MM.YYYY'),
+      );
+      expect(spy.args[0][0].attachments[1].title).to.equal('19-0006');
+      expect(spy.args[0][0].attachments[1].text).to.include(
+        moment(today)
+          .add(10, 'days')
+          .format('DD.MM.YYYY'),
+      );
     });
   });
 });
