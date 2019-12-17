@@ -16,23 +16,23 @@ const ProOrganisationUsersTable = ({
   name,
   _id: organisationId,
 }: ProOrganisationUsersTableProps) => (
-  <>
-    <ProOrganisationUserAdder
-      organisationId={organisationId}
-      organisationName={name}
-      trigger={handleOpen => (
-        <Button
-          raised
-          primary
-          onClick={handleOpen}
-          icon={<Icon type="personAdd" />}
-        >
-          Inviter un collègue
+    <>
+      <ProOrganisationUserAdder
+        organisationId={organisationId}
+        organisationName={name}
+        trigger={handleOpen => (
+          <Button
+            raised
+            primary
+            onClick={handleOpen}
+            icon={<Icon type="personAdd" />}
+          >
+            Inviter un collègue
         </Button>
-      )}
-    />
-    <Table rows={rows} columnOptions={columnOptions} />
-  </>
-);
+        )}
+      />
+      <Table rows={rows} columnOptions={columnOptions} />
+    </>
+  );
 
 export default ProOrganisationUsersTableContainer(ProOrganisationUsersTable);

@@ -3,21 +3,10 @@ import { compose, withState } from 'recompose';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { proLoansAggregate } from 'core/api/loans/queries';
 import { proOrganisation } from 'core/api/organisations/queries';
+import { getReferredBy } from 'core/components/ReferredUsersTable/ReferredUsersTableContainer';
 
 const getAnonymous = withAnonymous =>
   withAnonymous ? undefined : { $in: [null, false] };
-
-const getReferredBy = (referredByUserId, organisationId) => {
-  if (referredByUserId === true) {
-    return;
-  }
-
-  if (organisationId === referredByUserId) {
-    return 'nobody';
-  }
-
-  return referredByUserId;
-};
 
 export default compose(
   withSmartQuery({

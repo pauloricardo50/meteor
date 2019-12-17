@@ -5,9 +5,9 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
 import { createRoute } from 'core/utils/routerUtils';
+import ReferredUsersTable from 'core/components/ReferredUsersTable';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 import ProOrganisationUsersTable from './ProOrganisationUsersTable';
-import ReferredCustomersTable from './ReferredCustomersTable';
 
 type ProOrganisationPageTabsProps = {
   organisation: Object,
@@ -24,9 +24,8 @@ const getTabs = ({ organisation, currentUser }) => {
     },
     {
       id: 'referredCustomers',
-      Component: ReferredCustomersTable,
+      Component: ReferredUsersTable,
     },
-    // { id: 'contacts', condition: contacts && contacts.length > 0 },
     {
       id: 'commission',
       condition: !!(commissionRates && commissionRates.length > 0),
@@ -53,7 +52,7 @@ const ProOrganisationPageTabs = ({
   organisation,
   currentUser,
 }: ProOrganisationPageTabsProps) => (
-  <Tabs tabs={getTabs({ organisation, currentUser })} routerParamName="tabId" />
-);
+    <Tabs tabs={getTabs({ organisation, currentUser })} routerParamName="tabId" />
+  );
 
 export default ProOrganisationPageTabs;

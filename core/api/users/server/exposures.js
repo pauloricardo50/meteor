@@ -107,6 +107,7 @@ exposeQuery({
         userId: providedUserId,
         organisationId,
         ownReferredUsers,
+        referredByUserId,
       } = params;
 
       SecurityService.checkUserIsPro(userId);
@@ -123,11 +124,22 @@ exposeQuery({
       if (organisationId) {
         SecurityService.checkUserIsAdmin(userId);
       }
+
+      if (referredByUserId && referredByUserId !== 'nobody') {
+        const org = UserService.getUserMainOrganisation(userId);
+        if (!org.userLinks.find(({ _id }) => _id === userId)) {
+          SecurityService.handleUnauthorized('Not allowed');
+        }
+      }
     },
     embody: body => {
       body.$filter = ({
         filters,
-        params: { userId, organisationId: providedOrganisationId },
+        params: {
+          userId,
+          organisationId: providedOrganisationId,
+          referredByUserId,
+        },
       }) => {
         let organisationId;
         if (!providedOrganisationId) {
@@ -145,12 +157,21 @@ exposeQuery({
         ].filter(x => x);
 
         filters.$or = or;
+
+        if (referredByUserId) {
+          filters.referredByUserLink = referredByUserId;
+
+          if (referredByUserId === 'nobody') {
+            filters.referredByUserLink = { $in: [false, null] };
+          }
+        }
       };
     },
     validateParams: {
       userId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
       ownReferredUsers: Match.Maybe(Boolean),
+      referredByUserId: Match.Maybe(String),
     },
   },
 });

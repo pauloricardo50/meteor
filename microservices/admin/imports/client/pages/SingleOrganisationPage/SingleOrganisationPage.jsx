@@ -6,6 +6,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import { ORGANISATION_FEATURES } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
+import AdminReferredUsersTable from 'core/components/ReferredUsersTable/AdminReferredUsersTable';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import LenderRulesEditor from '../../components/LenderRulesEditor';
 import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
@@ -14,7 +15,6 @@ import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
 import CommissionEditor from './CommissionEditor';
-import ReferredUsersTable from './ReferredUsersTable';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
 
@@ -43,7 +43,7 @@ const tabs = ({ organisation, currentUser }) =>
     },
     {
       id: 'referredUsers',
-      Component: ReferredUsersTable,
+      Component: AdminReferredUsersTable,
     },
     {
       id: 'revenues',
@@ -74,16 +74,16 @@ const SingleOrganisationPage = ({
   organisation,
   currentUser,
 }: SingleOrganisationPageProps) => (
-  <div className="card1 card-top single-organisation-page">
-    <Helmet>
-      <title>{organisation.name}</title>
-    </Helmet>
-    <SingleOrganisationPageHeader
-      organisation={organisation}
-      currentUser={currentUser}
-    />
-    <Tabs tabs={tabs({ organisation, currentUser })} routerParamName="tabId" />
-  </div>
-);
+    <div className="card1 card-top single-organisation-page">
+      <Helmet>
+        <title>{organisation.name}</title>
+      </Helmet>
+      <SingleOrganisationPageHeader
+        organisation={organisation}
+        currentUser={currentUser}
+      />
+      <Tabs tabs={tabs({ organisation, currentUser })} routerParamName="tabId" />
+    </div>
+  );
 
 export default SingleOrganisationPageContainer(SingleOrganisationPage);
