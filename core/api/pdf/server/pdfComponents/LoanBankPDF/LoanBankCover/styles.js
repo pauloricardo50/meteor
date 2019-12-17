@@ -77,7 +77,7 @@ const stylesheet = `
 
     .cover-content .loan-background-info p {
         border: 1px solid ${BORDER_BLUE};
-        padding: 8px;
+        padding: 4px;
         white-space: pre-line;
         font-size: 10px;
     }
