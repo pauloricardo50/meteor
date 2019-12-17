@@ -119,7 +119,7 @@ CronService.addCron(
     func: () =>
       generateDisbursedSoonLoansNotificationsAndTasks
         .serverRun({})
-        .then((gettingDisbursed = []) => gettingDisbursed.length),
+        .then(gettingDisbursed => gettingDisbursed.length),
   },
   { cronitorId: 'wYNCRc' },
 );

@@ -1953,8 +1953,11 @@ describe('LoanService', function () {
       SlackService.send.restore();
     });
 
-    it('generates the tasks and the slack notification for the loans disbursed in 10 days', async () => {
-      const today = new Date();
+    let today;
+    let spy;
+
+    beforeEach(async () => {
+      today = new Date();
       generator({
         users: { _id: 'admin', _factory: 'admin' },
         loans: generateDisbursedLoans(today, [
@@ -1966,11 +1969,12 @@ describe('LoanService', function () {
           { offset: 10 },
         ]),
       });
-      const spy = sinon.spy();
+      spy = sinon.spy();
       sinon.stub(SlackService, 'send').callsFake(spy);
-
       await generateDisbursedSoonLoansNotificationsAndTasks.serverRun({});
+    });
 
+    it('generates the tasks for the loans disbursed in 10 days', async () => {
       const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
 
       expect(tasks.length).to.equal(2);
@@ -1982,7 +1986,9 @@ describe('LoanService', function () {
         );
         expect(adminId).to.equal('admin');
       });
+    });
 
+    it('generates the slack notifications for the loans disbursed in 10 days', () => {
       expect(spy.calledOnce).to.equal(true);
       expect(spy.args[0][0].attachments[0].title).to.equal('19-0004');
       expect(spy.args[0][0].attachments[0].text).to.include(
