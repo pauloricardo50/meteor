@@ -1,10 +1,14 @@
 import React from 'react';
+import moment from 'moment';
+
 import { toMoney } from 'core/utils/conversionFunctions';
+import T from 'core/components/Translation';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
 import { EXPENSE_TYPES } from '../../../../../lenderRules/lenderRulesConstants';
 import {
   OTHER_INCOME,
   OWN_FUNDS_TYPES,
+  CIVIL_STATUS,
 } from '../../../../../borrowers/borrowerConstants';
 
 const renderWithComments = (value, comments = []) => {
@@ -108,7 +112,12 @@ export const getBorrowersOwnFunds = (borrowers, types) =>
       [type]: borrowers.map(
         borrower =>
           borrower[type] &&
-          borrower[type].reduce((sum, ownFund) => sum + ownFund.value, 0),
+          renderWithComments(
+            borrower[type].reduce((sum, ownFund) => sum + ownFund.value, 0),
+            borrower[type].map(
+              ({ description, value }) => `${description} (${toMoney(value)})`,
+            ),
+          ),
       ),
     }),
     {},
@@ -135,7 +144,7 @@ export const getBorrowersAddress = borrowers => {
   const cities = getBorrowersSingleInfo(borrowers, 'city');
   const address1 = getBorrowersSingleInfo(borrowers, 'address1');
   return zipCodes.map(
-    (zipCode, index) => `${address1}, ${zipCode} ${cities[index]}`,
+    (zipCode, index) => `${address1[index]}, ${zipCode} ${cities[index]}`,
   );
 };
 
@@ -162,7 +171,60 @@ export const getBonus = (borrowers, calculator) =>
     return renderWithComments(bonus, comments);
   });
 
-const getBorrowersCitizenShip = borrowers => {};
+const getBorrowersCitizenship = borrowers =>
+  borrowers.map(borrower => {
+    const { isSwiss, citizenship, residencyPermit } = borrower;
+    if (isSwiss) {
+      return 'Suisse';
+    }
+
+    return residencyPermit ? (
+      <span>
+        {citizenship}&nbsp;(
+        <T id={`Forms.residencyPermit.${residencyPermit}`} />)
+      </span>
+    ) : (
+        citizenship
+      );
+  });
+
+const getBorrowerCivilStatusAndDate = borrower => {
+  const { civilStatus, marriedDate, divorcedDate } = borrower;
+  if (civilStatus === CIVIL_STATUS.MARRIED) {
+    return (
+      <span>
+        <T id={`PDF.borrowersInfos.civilStatus.${civilStatus}`} />
+        {marriedDate ? ` (${moment(marriedDate).format('DD.MM.YYYY')})` : ''}
+      </span>
+    );
+  }
+  if (civilStatus === CIVIL_STATUS.DIVORCED) {
+    return (
+      <span>
+        <T id={`PDF.borrowersInfos.civilStatus.${civilStatus}`} />
+        {divorcedDate ? ` (${moment(divorcedDate).format('DD.MM.YYYY')})` : ''}
+      </span>
+    );
+  }
+
+  return <T id={`PDF.borrowersInfos.civilStatus.${civilStatus}`} />;
+};
+
+const getBorrowerCompany = borrower => {
+  const { company, jobStartDate } = borrower;
+
+  return jobStartDate
+    ? `${company} (${moment(jobStartDate).format('DD.MM.YYYY')})`
+    : company;
+};
+
+const getBorrowerJob = borrower => {
+  const { job, jobActivityRate } = borrower;
+
+  return jobActivityRate
+    ? `${job} (${Math.round(100 * jobActivityRate)}%)`
+    : job;
+};
 
 export const getBorrowersInfos = (borrowers, calculator) => ({
   ...getBorrowersSingleInfos(borrowers, [
@@ -171,9 +233,12 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'age',
     'birthDate',
     'childrenCount',
-    'company',
     'civilStatus',
+    'activityType',
   ]),
+  company: borrowers.map(getBorrowerCompany),
+  job: borrowers.map(getBorrowerJob),
+  civilStatus: borrowers.map(getBorrowerCivilStatusAndDate),
   realEstateIncome: borrowers.map(borrower =>
     calculator.getRealEstateIncomeTotal({ borrowers: borrower }),
   ),
@@ -181,7 +246,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     calculator.getSalary({ borrowers: borrower }),
   ),
   address: getBorrowersAddress(borrowers),
-  citizenShip: getBorrowersCitizenShip(borrowers),
+  citizenship: getBorrowersCitizenship(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(
       borrowers,

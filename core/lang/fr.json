@@ -1,4 +1,7 @@
 {
+  "PDF.borrowersInfos.citizenship": "Nationalité",
+  "PDF.borrowersInfos.activityType": "Type d'activité",
+  "PDF.borrowersInfos.job": "Poste",
   "Forms.askForMaxLoan": "Demander le financement maximum",
   "Forms.includeMissingDocuments": "Inclure la liste des documents manquants",
   "Forms.additionalInfo": "Informations complémentaires",
