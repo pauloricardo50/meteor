@@ -294,6 +294,15 @@ describe('FinanceCalculator', () => {
         }),
       ).to.equal(90);
     });
+
+    it('allows any percent if specified', () => {
+      expect(
+        calc.getMaxLoanBase({
+          propertyValue: 100,
+          maxBorrowRatio: 0.95,
+        }),
+      ).to.equal(95);
+    });
   });
 
   describe('getAveragedInterestRate', () => {

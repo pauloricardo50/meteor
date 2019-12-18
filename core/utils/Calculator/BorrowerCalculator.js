@@ -9,6 +9,7 @@ import {
   INCOME_CONSIDERATION_TYPES,
   EXPENSE_TYPES,
   OWN_FUNDS_TYPES,
+  RESIDENCE_TYPE,
 } from '../../api/constants';
 import {
   getBorrowerInfoArray,
@@ -18,6 +19,7 @@ import {
 import {
   BONUS_ALGORITHMS,
   REAL_ESTATE_INCOME_ALGORITHMS,
+  AMORTIZATION_YEARS_INVESTMENT,
 } from '../../config/financeConstants';
 import { arrayify, getPercent } from '../general';
 import {
@@ -30,7 +32,7 @@ import MiddlewareManager from '../MiddlewareManager';
 import { borrowerExtractorMiddleware } from './middleware';
 import { getAgeFromBirthDate } from '../borrowerUtils';
 
-export const withBorrowerCalculator = (SuperClass = class { }) =>
+export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     constructor(config) {
       super(config);
@@ -167,7 +169,7 @@ export const withBorrowerCalculator = (SuperClass = class { }) =>
         OWN_FUNDS_TYPES.BANK_3A,
         OWN_FUNDS_TYPES.INSURANCE_3B,
         OWN_FUNDS_TYPES.DONATION,
-        OWN_FUNDS_TYPES.BANK_FORTUNE
+        OWN_FUNDS_TYPES.BANK_FORTUNE,
       ].includes(type);
 
     getFunds({ borrowers, type }) {
@@ -455,10 +457,15 @@ export const withBorrowerCalculator = (SuperClass = class { }) =>
         return offerToUse.amortizationYears;
       }
 
+      const { residenceType } = loan;
       const retirement = this.getRetirement({ borrowers });
-      return retirement
-        ? Math.min(this.amortizationYears, retirement)
-        : this.amortizationYears;
+      let min = [this.amortizationYears];
+
+      if (residenceType === RESIDENCE_TYPE.INVESTMENT) {
+        min = [...min, AMORTIZATION_YEARS_INVESTMENT];
+      }
+
+      return retirement ? Math.min(retirement, ...min) : Math.min(...min);
     }
 
     // personalInfoPercent - Determines the completion rate of the borrower's

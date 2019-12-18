@@ -6,15 +6,10 @@ import T from '../../../Translation';
 import FinancingSection, {
   InputAndSlider,
   CalculatedValue,
-  FinmaRatio,
 } from '../FinancingSection';
 import Calc, { getOffer } from '../FinancingCalculator';
 import FinancingTranchePicker from './FinancingTranchePicker';
 import MortgageNotesPicker from './MortgageNotesPicker';
-import {
-  getBorrowRatio,
-  getBorrowRatioStatus,
-} from '../FinancingResult/financingResultHelpers';
 import LoanPercent from './LoanPercent';
 import Calculator from '../../../../utils/Calculator';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
@@ -48,6 +43,7 @@ export const calculateMaxLoan = (data, pledgeOverride) => {
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
     residenceType: loan.residenceType,
+    maxBorrowRatio: Calculator.getMaxBorrowRatio({ loan, structureId }),
   });
   const rounding = 10 ** 3;
   return Math.floor(maxLoan / rounding) * rounding;

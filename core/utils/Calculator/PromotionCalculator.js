@@ -20,7 +20,6 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     }
 
     getSolvency({ loan, notaryFees = 0 }) {
-      const income = this.getTotalIncome({ loan });
       const bankFortune = this.getFortune({ loan });
       const cashFortune = this.getCashFortune({ loan });
       const insurance2 = this.getInsurance2({ loan });
@@ -30,6 +29,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
           (bankFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan })),
         ),
         withInsurance2: this.getMaxPropertyValueWithInsurance2({
+          loan,
           cash: bankFortune,
           insurance2,
           notaryFees,
@@ -38,6 +38,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
           (cashFortune - notaryFees) / (1 - this.getMaxBorrowRatio({ loan })),
         ),
         withInsurance2And3: this.getMaxPropertyValueWithInsurance2({
+          loan,
           cash: cashFortune,
           insurance2,
           notaryFees,
@@ -50,19 +51,20 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getMaxPropertyValueWithInsurance2({ cash, insurance2, notaryFees }) {
+    getMaxPropertyValueWithInsurance2({ loan, cash, insurance2, notaryFees }) {
       const availableFortune = cash - notaryFees;
       const maxPropertyValue = availableFortune / this.minCash;
       const canAffordProperty =
         (maxPropertyValue - availableFortune - insurance2) / maxPropertyValue <=
-        this.getMaxBorrowRatio();
+        this.getMaxBorrowRatio({ loan });
 
       if (canAffordProperty) {
         return Math.round(maxPropertyValue);
       }
 
       return Math.round(
-        (availableFortune + insurance2) / (1 - this.getMaxBorrowRatio()),
+        (availableFortune + insurance2) /
+          (1 - this.getMaxBorrowRatio({ loan })),
       );
     }
 
