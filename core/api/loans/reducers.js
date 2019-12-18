@@ -66,4 +66,9 @@ Loans.addReducers({
       ...promotions.map(p => ({ ...p, collection: PROMOTIONS_COLLECTION })),
     ],
   },
+  proNotes: {
+    body: { adminNotes: 1 },
+    reduce: ({ adminNotes }) =>
+      adminNotes.filter(({ isSharedWithPros }) => isSharedWithPros),
+  },
 });
