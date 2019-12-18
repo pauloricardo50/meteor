@@ -20,8 +20,8 @@ const getLinks = ({ handleContact }) => [
     label: 'WelcomeScreen.whoWeAre',
     items: [
       {
-        href: `${Meteor.settings.public.subdomains.app}/files/e-Potek SA.pdf`,
-        label: 'WelcomeScreen.companyDescription',
+        href: `${Meteor.settings.public.subdomains.app}/files/e-Potek - Guide du financement hypothécaire.pdf`,
+        label: 'WelcomeScreen.guide',
       },
       {
         href: `${Meteor.settings.public.subdomains.www}/blog`,
