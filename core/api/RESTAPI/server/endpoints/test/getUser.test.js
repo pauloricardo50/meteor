@@ -86,6 +86,11 @@ describe('REST: getUser', function() {
           emails: [{ address: 'user1@test.com', verified: true }],
           referredByUserLink: 'pro',
           referredByOrganisationLink: 'org',
+          assignedEmployee: {
+            _id: 'admin',
+            _factory: 'admin',
+            emails: [{ address: 'admin@e-potek.ch', verified: true }],
+          },
         },
         {
           _id: 'user2',
@@ -100,66 +105,100 @@ describe('REST: getUser', function() {
     });
   });
 
-  it('returns user referred by org and pro', () =>
-    getUser({
+  it('returns user referred by org and pro', async () => {
+    const user = await getUser({
       email: 'user1@test.com',
       userId: 'pro',
-    }).then(user => {
-      expect(user.firstName).to.equal('FirstName1');
-      expect(user.lastName).to.equal('LastName1');
-      expect(user.emails[0].address).to.equal('user1@test.com');
-      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
-    }));
+    });
 
-  it('returns user referred by org with impersonate', () =>
-    getUser({
+    expect(user).to.deep.equal({
+      _id: 'user1',
+      email: 'user1@test.com',
+      firstName: 'FirstName1',
+      lastName: 'LastName1',
+      name: 'FirstName1 LastName1',
+      phoneNumbers: ['+41 22 566 01 10'],
+      roles: ['user'],
+      assignedEmployee: {
+        _id: 'admin',
+        email: 'admin@e-potek.ch',
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
+        name: 'TestFirstName TestLastName',
+        phoneNumbers: ['+41 123456789'],
+      },
+    });
+  });
+
+  it('returns user referred by org with impersonate', async () => {
+    const user = await getUser({
       email: 'user2@test.com',
       impersonateUser: 'pro2@org2.com',
       userId: 'pro',
-    }).then(user => {
-      expect(user.firstName).to.equal('FirstName2');
-      expect(user.lastName).to.equal('LastName2');
-      expect(user.emails[0].address).to.equal('user2@test.com');
-      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
-    }));
+    });
 
-  it('returns user referred by org without impersonate', () =>
-    getUser({
+    expect(user).to.deep.equal({
+      _id: 'user2',
+      email: 'user2@test.com',
+      firstName: 'FirstName2',
+      lastName: 'LastName2',
+      name: 'FirstName2 LastName2',
+      phoneNumbers: ['+41 22 566 01 10'],
+      roles: ['user'],
+    });
+  });
+
+  it('returns user referred by org without impersonate', async () => {
+    const user = await getUser({
       email: 'user2@test.com',
       userId: 'pro',
-    }).then(user => {
-      expect(user.firstName).to.equal('FirstName2');
-      expect(user.lastName).to.equal('LastName2');
-      expect(user.emails[0].address).to.equal('user2@test.com');
-      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
-    }));
+    });
 
-  it('returns user referred by pro', () =>
-    getUser({
+    expect(user).to.deep.equal({
+      _id: 'user2',
+      email: 'user2@test.com',
+      firstName: 'FirstName2',
+      lastName: 'LastName2',
+      name: 'FirstName2 LastName2',
+      phoneNumbers: ['+41 22 566 01 10'],
+      roles: ['user'],
+    });
+  });
+
+  it('returns user referred by pro', async () => {
+    const user = await getUser({
       email: 'user2@test.com',
       userId: 'pro2',
-    }).then(user => {
-      expect(user.firstName).to.equal('FirstName2');
-      expect(user.lastName).to.equal('LastName2');
-      expect(user.emails[0].address).to.equal('user2@test.com');
-      expect(user.phoneNumbers[0]).to.equal('+41 22 566 01 10');
-    }));
+    });
 
-  it('returns an error when user is not referred by org neither by user', () =>
-    getUser({
+    expect(user).to.deep.equal({
+      _id: 'user2',
+      email: 'user2@test.com',
+      firstName: 'FirstName2',
+      lastName: 'LastName2',
+      name: 'FirstName2 LastName2',
+      phoneNumbers: ['+41 22 566 01 10'],
+      roles: ['user'],
+    });
+  });
+
+  it('returns an error when user is not referred by org neither by user', async () => {
+    const response = await getUser({
       email: 'user1@test.com',
       userId: 'pro3',
-    }).then(response => {
-      expect(response.status).to.equal(400);
-      expect(response.message).to.include('"user1@test.com"');
-    }));
+    });
 
-  it('returns an error when user does not exist', () =>
-    getUser({
+    expect(response.status).to.equal(400);
+    expect(response.message).to.include('"user1@test.com"');
+  });
+
+  it('returns an error when user does not exist', async () => {
+    const response = await getUser({
       email: 'user3@test.com',
       userId: 'pro',
-    }).then(response => {
-      expect(response.status).to.equal(400);
-      expect(response.message).to.include('"user3@test.com"');
-    }));
+    });
+
+    expect(response.status).to.equal(400);
+    expect(response.message).to.include('"user3@test.com"');
+  });
 });

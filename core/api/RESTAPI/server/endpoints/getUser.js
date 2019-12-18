@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
 
 import { getImpersonateUserId, checkQuery, checkAccessToUser } from './helpers';
@@ -31,7 +30,23 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
 
   checkAccessToUser({ user, proId: proId || userId });
 
-  return pick(user, ['firstName', 'lastName', 'emails', 'phoneNumbers']);
+  const { _id: returnedUserId } = user;
+
+  return UserService.get(returnedUserId, {
+    firstName: 1,
+    lastName: 1,
+    name: 1,
+    email: 1,
+    roles: 1,
+    phoneNumbers: 1,
+    assignedEmployee: {
+      firstName: 1,
+      lastName: 1,
+      name: 1,
+      email: 1,
+      phoneNumbers: 1,
+    },
+  });
 };
 
 export default getUserAPI;

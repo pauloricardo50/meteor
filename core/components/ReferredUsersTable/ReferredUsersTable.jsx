@@ -15,9 +15,15 @@ const ReferredUsersTable = ({
   users,
   referredByUserId,
   setReferredByUserId,
-}: ReferredCustomersTableProps) => (
+}: ReferredCustomersTableProps) => {
+  const verified = rows.filter(({ user }) => user.emails[0].verified);
+  return (
     <>
-      <h2>{rows.length} Utilisateurs</h2>
+      <h2>
+        <span>{rows.length} Utilisateurs</span>
+        &nbsp;
+        <small className="secondary">dont {verified.length} vérifiés</small>
+      </h2>
       <div>
         <Select
           label="Référé par"
@@ -34,5 +40,6 @@ const ReferredUsersTable = ({
       <Table rows={rows} columnOptions={columnOptions} />
     </>
   );
+};
 
 export default ReferredUsersTableContainer(ReferredUsersTable);

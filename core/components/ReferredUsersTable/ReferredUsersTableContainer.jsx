@@ -25,18 +25,22 @@ const columnOptions = [
   { id: 'createdAt' },
 ].map(({ id }) => ({ id, label: <T id={`Forms.${id}`} /> }));
 
-const mapUser = ({ _id, name, email, phoneNumber, createdAt }) => ({
-  id: _id,
-  columns: [
-    name,
-    email,
-    phoneNumber,
-    {
-      raw: createdAt.getTime(),
-      label: moment(createdAt).format('D MMM YY à HH:mm'),
-    },
-  ],
-});
+const mapUser = user => {
+  const { _id, name, email, phoneNumber, createdAt } = user;
+  return {
+    id: _id,
+    user,
+    columns: [
+      name,
+      email,
+      phoneNumber,
+      {
+        raw: createdAt.getTime(),
+        label: moment(createdAt).format('D MMM YY à HH:mm'),
+      },
+    ],
+  };
+};
 
 export default compose(
   withState('referredByUserId', 'setReferredByUserId', true),
@@ -54,6 +58,7 @@ export default compose(
       $body: {
         name: 1,
         email: 1,
+        emails: 1,
         phoneNumber: 1,
         createdAt: 1,
       },
