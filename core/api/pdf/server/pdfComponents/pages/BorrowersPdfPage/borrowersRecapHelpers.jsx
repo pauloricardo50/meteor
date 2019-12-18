@@ -123,14 +123,20 @@ export const getBorrowersAddress = borrowers => {
       ({ city, zipCode }) => city && zipCode,
     );
     const address = [
+      `${borrowerWithAddress.address1},`,
       borrowerWithAddress.zipCode,
       borrowerWithAddress.city,
-    ].join(' ');
+    ]
+      .filter(x => x)
+      .join(' ');
     return borrowers.map(() => address);
   }
   const zipCodes = getBorrowersSingleInfo(borrowers, 'zipCode');
   const cities = getBorrowersSingleInfo(borrowers, 'city');
-  return zipCodes.map((zipCode, index) => `${zipCode} ${cities[index]}`);
+  const address1 = getBorrowersSingleInfo(borrowers, 'address1');
+  return zipCodes.map(
+    (zipCode, index) => `${address1}, ${zipCode} ${cities[index]}`,
+  );
 };
 
 export const getBonus = (borrowers, calculator) =>
@@ -156,6 +162,8 @@ export const getBonus = (borrowers, calculator) =>
     return renderWithComments(bonus, comments);
   });
 
+const getBorrowersCitizenShip = borrowers => {};
+
 export const getBorrowersInfos = (borrowers, calculator) => ({
   ...getBorrowersSingleInfos(borrowers, [
     'name',
@@ -173,6 +181,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     calculator.getSalary({ borrowers: borrower }),
   ),
   address: getBorrowersAddress(borrowers),
+  citizenShip: getBorrowersCitizenShip(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(
       borrowers,

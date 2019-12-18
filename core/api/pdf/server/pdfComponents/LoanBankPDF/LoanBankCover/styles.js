@@ -54,7 +54,9 @@ const stylesheet = `
 
     .cover-content .disbursement-date {
         margin: 0;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        font-weight: normal;
     }
 
     .cover-content .borrowers {
@@ -70,16 +72,17 @@ const stylesheet = `
         flex-direction: column;
     }
 
-    .cover-content .loan-background-info h4 {
+    .cover-content .loan-background-info h5 {
         margin: 0;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
 
     .cover-content .loan-background-info p {
+        margin: 0;
         border: 1px solid ${BORDER_BLUE};
         padding: 4px;
         white-space: pre-line;
-        font-size: 10px;
+        font-size: 8px;
     }
 
     .cover-page .cover-footer {
@@ -113,6 +116,11 @@ const stylesheet = `
         justify-content: space-between;
         padding-bottom: 16px;
         border-bottom: 1px solid ${BORDER_BLUE};
+    }
+
+    .cover-header >* {
+        flex-basis: 33%;
+        flex-grow: 1;
     }
 
     .cover-header h1 {

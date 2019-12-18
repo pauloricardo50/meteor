@@ -1,8 +1,32 @@
 import { formatMessage } from 'core/utils/intl';
+import { getChecklistMissingInformations } from 'core/components/LoanChecklist/helpers';
 
 export const BACKGROUND_INFO_TYPE = {
   TEMPLATE: 'TEMPLATE',
   CUSTOM: 'CUSTOM',
+};
+
+const formatObjectMissingDocuments = ({ title, labels }) =>
+  labels.map(label => `- ${title}: ${label}`).join('\n');
+
+const formatMissingDocuments = loan => {
+  const {
+    documents: { borrowers = [], property = {} } = {},
+  } = getChecklistMissingInformations({ loan }, formatMessage);
+
+  let message = formatMessage({
+    id: 'Forms.backgroundInfoTemplate.missingDocuments',
+  });
+
+  if (borrowers.length) {
+    message = `${message}${borrowers.map(formatObjectMissingDocuments)}`;
+  }
+
+  if (property && property.labels && property.labels.length) {
+    message = `${message}\n${formatObjectMissingDocuments(property)}`;
+  }
+
+  return message;
 };
 
 const formatAdditionalInfo = additionalInfo =>
@@ -16,7 +40,9 @@ export const makeGenerateBackgroundInfo = loan => model => {
   const {
     backgroundInfoType,
     customBackgroundInfo,
-    additionalInfo = ['test1', 'test2'],
+    additionalInfo = [],
+    includeMissingDocuments,
+    askForMaxLoan,
   } = model;
   const isCustom = backgroundInfoType === BACKGROUND_INFO_TYPE.CUSTOM;
 
@@ -30,6 +56,17 @@ export const makeGenerateBackgroundInfo = loan => model => {
     id: 'Forms.backgroundInfoTemplate.introduction',
     values: { singleBorrower },
   });
+
+  if (askForMaxLoan) {
+    message = `${message}${formatMessage({
+      id: 'Forms.backgroundInfoTemplate.askForMaxLoan',
+      values: { singleBorrower },
+    })}`;
+  }
+
+  if (includeMissingDocuments) {
+    message = `${message}\n\n${formatMissingDocuments(loan)}\n`;
+  }
 
   if (additionalInfo.length) {
     message = `${message}${formatMessage({

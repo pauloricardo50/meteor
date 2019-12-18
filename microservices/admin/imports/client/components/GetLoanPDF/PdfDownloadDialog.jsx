@@ -66,6 +66,18 @@ const makeSchema = loan =>
           'Bonjour,\nNous avons le plaisir de vous remettre une nouvelle demande de financement pour les clients précités',
       },
     },
+    askForMaxLoan: {
+      type: Boolean,
+      optional: true,
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+    },
+    includeMissingDocuments: {
+      type: Boolean,
+      optional: true,
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+    },
     additionalInfo: {
       type: Array,
       optional: true,
@@ -98,19 +110,19 @@ const PdfDownloadDialog = ({
   dialogTitle,
   generateBackgroundInfo,
 }: PdfDownloadDialogProps) => (
-  <AutoFormDialog
-    title={dialogTitle}
-    schema={makeSchema(loan)}
-    onSubmit={onSubmit}
-    buttonProps={{
-      raised: true,
-      primary: true,
-      label: buttonLabel,
-      icon,
-      style: { marginRight: 4 },
-    }}
-    model={{ structureIds: loan.structures.map(({ id }) => id) }}
-  />
-);
+    <AutoFormDialog
+      title={dialogTitle}
+      schema={makeSchema(loan)}
+      onSubmit={onSubmit}
+      buttonProps={{
+        raised: true,
+        primary: true,
+        label: buttonLabel,
+        icon,
+        style: { marginRight: 4 },
+      }}
+      model={{ structureIds: loan.structures.map(({ id }) => id) }}
+    />
+  );
 
 export default PdfDownloadDialog;

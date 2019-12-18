@@ -75,13 +75,11 @@ const coverContent = ({
         {getPropertyType({ propertyType, flatType, houseType })}
       </h2>
       <h2 className="address">{`${address1}, ${zipCode} ${city}`}</h2>
-      <h2 className="property-value">
-        <Money value={propertyValue} />
-      </h2>
       <h3 className="disbursement-date">
-        {`Déblocage prévu des fonds ${moment(disbursementDate).format(
-          'DD.MM.YYYY',
-        )}`}
+        <span>
+          Déblocage prévu des fonds:{' '}
+          <b>{moment(disbursementDate).format('DD.MM.YYYY')}</b>
+        </span>
       </h3>
       <StructureRecapTable
         loan={loan}
@@ -89,7 +87,7 @@ const coverContent = ({
         structureIds={structureIds}
       />
       <div className="loan-background-info">
-        <h4>Présentation du dossier</h4>
+        <h5>Notes sur le dossier</h5>
         <p>{backgroundInfo}</p>
       </div>
     </div>

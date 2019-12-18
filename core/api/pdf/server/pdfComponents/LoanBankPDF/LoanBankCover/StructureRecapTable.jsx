@@ -11,20 +11,19 @@ type StructureRecapTableProps = {};
 
 const columnsConfig = [
   {
-    style: { width: '30%' },
+    style: { width: '20%' },
     title: 'Plan financier',
-    value: (calculator, { name }, loan, index) =>
-      `${name || index + 1} (page ${index + 2})`,
+    value: (calculator, { name }, loan, index) => `${name || index + 1}`,
   },
   {
     style: { width: '20%', textAlign: 'right' },
-    title: 'Valeur du bien',
+    title: "Prix d'achat",
     value: (calculator, { id: structureId }, loan) =>
       toMoney(calculator.selectPropertyValue({ loan, structureId })),
   },
   {
-    style: { width: '20%', textAlign: 'right' },
-    title: 'Prêt hypothécaire',
+    style: { width: '30%', textAlign: 'right' },
+    title: 'Prêt hypothécaire demandé',
     value: (calculator, { id: structureId }, loan) =>
       toMoney(calculator.selectLoanValue({ loan, structureId })),
   },
