@@ -184,8 +184,8 @@ const getBorrowersCitizenship = borrowers =>
         <T id={`Forms.residencyPermit.${residencyPermit}`} />)
       </span>
     ) : (
-        citizenship
-      );
+      citizenship
+    );
   });
 
 const getBorrowerCivilStatusAndDate = borrower => {
@@ -235,6 +235,8 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'childrenCount',
     'civilStatus',
     'activityType',
+    'email',
+    'phoneNumber',
   ]),
   company: borrowers.map(getBorrowerCompany),
   job: borrowers.map(getBorrowerJob),

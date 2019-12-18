@@ -57,6 +57,7 @@ const coverContent = ({
     propertyType,
     houseType,
     flatType,
+    canton,
   } = Calculator.selectProperty({ loan });
   const propertyValue = Calculator.selectPropertyValue({ loan });
 
@@ -74,7 +75,7 @@ const coverContent = ({
       <h2 className="property-type">
         {getPropertyType({ propertyType, flatType, houseType })}
       </h2>
-      <h2 className="address">{`${address1}, ${zipCode} ${city}`}</h2>
+      <h2 className="address">{`${address1}, ${zipCode} ${city} (${canton})`}</h2>
       <h3 className="disbursement-date">
         <span>
           Déblocage prévu des fonds:{' '}
@@ -103,22 +104,22 @@ const LoanBankCover = ({
   structureIds,
   backgroundInfo,
 }: LoanBankCoverProps) => (
-  <PdfPage
-    className="cover-page"
-    fullHeight
-    pageNb={pageNb}
-    pageCount={pageCount}
-  >
-    <LoanBankCoverHeader loanName={loan.name} />
-    {coverContent({
-      loan,
-      anonymous: options && options.anonymous,
-      organisation,
-      structureIds,
-      backgroundInfo,
-    })}
-    {footer(loan.user.assignedEmployee)}
-  </PdfPage>
-);
+    <PdfPage
+      className="cover-page"
+      fullHeight
+      pageNb={pageNb}
+      pageCount={pageCount}
+    >
+      <LoanBankCoverHeader loanName={loan.name} />
+      {coverContent({
+        loan,
+        anonymous: options && options.anonymous,
+        organisation,
+        structureIds,
+        backgroundInfo,
+      })}
+      {footer(loan.user.assignedEmployee)}
+    </PdfPage>
+  );
 
 export default LoanBankCover;

@@ -30,10 +30,13 @@ const stylesheet = `
     .cover-content .title {
         margin-top: 120px;
         margin-bottom: 0;
+        display: flex;
+        justify-content: center;
     }
 
     .cover-content .loan-type {
         margin: 0;
+        font-weight: normal;
     }
     
     .cover-content .address {
@@ -50,6 +53,7 @@ const stylesheet = `
     .cover-content .property-type {
         margin-top: 8px;
         margin-bottom: 8px;
+        font-weight: normal;
     }
 
     .cover-content .disbursement-date {
@@ -63,6 +67,8 @@ const stylesheet = `
         margin: 0;
         margin-top: 8px;
         margin-bottom: 32px;
+        display: flex;
+        justify-content: center;
     }
 
     .cover-content .loan-background-info {
@@ -82,7 +88,7 @@ const stylesheet = `
         border: 1px solid ${BORDER_BLUE};
         padding: 4px;
         white-space: pre-line;
-        font-size: 8px;
+        font-size: 10px;
     }
 
     .cover-page .cover-footer {

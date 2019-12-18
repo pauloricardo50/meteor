@@ -19,7 +19,9 @@ const formatMissingDocuments = loan => {
   });
 
   if (borrowers.length) {
-    message = `${message}${borrowers.map(formatObjectMissingDocuments)}`;
+    message = `${message}${borrowers
+      .map(formatObjectMissingDocuments)
+      .join('\n')}`;
   }
 
   if (property && property.labels && property.labels.length) {
@@ -65,14 +67,14 @@ export const makeGenerateBackgroundInfo = loan => model => {
   }
 
   if (includeMissingDocuments) {
-    message = `${message}\n\n${formatMissingDocuments(loan)}\n`;
+    message = `${message}\n\n${formatMissingDocuments(loan)}`;
   }
 
   if (additionalInfo.length) {
     message = `${message}${formatMessage({
       id: 'Forms.backgroundInfoTemplate.additionalInfo',
     })}`;
-    message = `${message}${formatAdditionalInfo(additionalInfo)}\n`;
+    message = `${message}${formatAdditionalInfo(additionalInfo)}`;
   }
 
   message = `${message}${formatMessage({

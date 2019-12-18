@@ -25,6 +25,16 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
       data: borrowersInfos.address,
     },
     {
+      label: <T id="PDF.borrowersInfos.email" />,
+      data: borrowersInfos.email,
+      condition: shouldRenderArray(borrowersInfos.email),
+    },
+    {
+      label: <T id="PDF.borrowersInfos.phoneNumber" />,
+      data: borrowersInfos.phoneNumber,
+      condition: shouldRenderArray(borrowersInfos.phoneNumber),
+    },
+    {
       label: <T id="PDF.borrowersInfos.citizenship" />,
       data: borrowersInfos.citizenship,
     },

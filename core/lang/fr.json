@@ -1,5 +1,8 @@
 {
+  "Forms.expenses.THIRD_PARTY_FORTUNE_REIMBURSEMENT": "Remboursement de prêt",
   "PDF.borrowersInfos.citizenship": "Nationalité",
+  "PDF.borrowersInfos.email": "Email",
+  "PDF.borrowersInfos.phoneNumber": "Téléphone",
   "PDF.borrowersInfos.activityType": "Type d'activité",
   "PDF.borrowersInfos.job": "Poste",
   "Forms.askForMaxLoan": "Demander le financement maximum",
@@ -13,7 +16,7 @@
   "Forms.backgroundInfoTemplate.additionalInfo": "\n\nNous attirons toutefois votre attention sur ce qui suit:\n",
   "Forms.backgroundInfoTemplate.askForMaxLoan": "{singleBorrower, select, true { Le client souhaite} other { Les clients souhaitent}} le financement maximum, merci de nous faire une offre dans ce sens.",
   "Forms.backgroundInfoTemplate.missingDocuments": "Nous avons identifié le manque des documents suivants:\n",
-  "Forms.backgroundInfoTemplate.closing": "\nBien entendu, si des documents ou des informations devraient manquer, nous restons à votre entière disposition. Nous vous remercions de bien vouloir accuser réception de cette nouvelle demande et de nous communiquer la personne qui sera en charge de ce dossier.\n\nMeilleures salutations,\n{assigneeName}",
+  "Forms.backgroundInfoTemplate.closing": "\n\nBien entendu, si des documents ou des informations devraient manquer, nous restons à votre entière disposition. Nous vous remercions de bien vouloir accuser réception de cette nouvelle demande et de nous communiquer la personne qui sera en charge de ce dossier.\n\nMeilleures salutations,\n{assigneeName}",
   "Forms.activityType": "Type d'activité",
   "Forms.activityType.SALARIED": "Salarié",
   "Forms.activityType.SELF_EMPLOYED": "Indépendant",
