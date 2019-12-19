@@ -231,7 +231,7 @@ export const loanSetAdminNote = new Method({
     loanId: String,
     adminNoteId: Match.Maybe(String),
     note: Object,
-    notifyPro: Match.Maybe(Boolean),
+    notifyPros: Match.Maybe(Array),
   },
 });
 

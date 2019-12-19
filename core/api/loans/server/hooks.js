@@ -63,7 +63,7 @@ Loans.after.insert((userId, doc) =>
   }),
 );
 
-formatNumbersHook(Loans, 'contacts', oldContacts =>
+formatNumbersHook(Loans, 'contacts', (oldContacts = []) =>
   oldContacts.map(({ phoneNumber, ...contact }) => ({
     ...contact,
     phoneNumber: formatPhoneNumber(phoneNumber),

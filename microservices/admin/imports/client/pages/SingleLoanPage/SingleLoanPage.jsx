@@ -18,7 +18,7 @@ const SingleLoanPage = props => {
       <SingleLoanPageHeader loan={loan} />
       <div className="single-loan-page-sub-header">
         <SingleLoanPageTasks loan={loan} />
-        <SingleLoanPageContacts loan={loan} />
+        <SingleLoanPageContacts loanId={loan._id} />
       </div>
       <LoanTabs {...props} />
     </section>
