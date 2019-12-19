@@ -5,6 +5,7 @@ import {
   WARNING,
   ERROR,
   OWN_FUNDS_USAGE_TYPES,
+  RESIDENCE_TYPE,
 } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
@@ -15,6 +16,7 @@ import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
+import { MAX_BORROW_RATIO_INVESTMENT_PROPERTY } from '../../config/financeConstants';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -291,6 +293,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           : this.maxBorrowRatio;
 
         return Math.min(maxBorrowRatio, 1);
+      }
+
+      const { residenceType } = loan;
+
+      if (residenceType === RESIDENCE_TYPE.INVESTMENT) {
+        return Math.min(
+          this.maxBorrowRatio,
+          MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
+        );
       }
 
       return this.maxBorrowRatio;

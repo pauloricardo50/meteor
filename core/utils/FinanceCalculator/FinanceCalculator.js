@@ -306,9 +306,10 @@ export class FinanceCalculator {
 
   getMaxLoanBase({
     propertyValue,
-    propertyWork,
+    propertyWork = 0,
     pledgedAmount = 0,
     residenceType,
+    maxBorrowRatio = this.maxBorrowRatio,
   }: {
     propertyValue: number,
     propertyWork: number,
@@ -317,12 +318,12 @@ export class FinanceCalculator {
   } = {}): number {
     if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
       return Math.min(
-        (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount,
+        (propertyValue + propertyWork) * maxBorrowRatio + pledgedAmount,
 
         (propertyValue + propertyWork) * this.maxBorrowRatioWithPledge,
       );
     }
-    return (propertyValue + propertyWork) * this.maxBorrowRatio;
+    return (propertyValue + propertyWork) * maxBorrowRatio;
   }
 
   getYearsToRetirement = ({
