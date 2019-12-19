@@ -5,7 +5,7 @@
 @import "./SingleLoanPageTasks/LoanTaskInserter/LoanTaskInserter.scss";
 
 .single-loan-page {
-  .single-loan-page-tasks {
+  &-tasks {
     margin-bottom: 16px;
   }
 
@@ -23,7 +23,7 @@
     }
   }
 
-  .single-loan-page-header {
+  &-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -77,6 +77,18 @@
 
     .impersonate-link {
       margin-right: 8px;
+    }
+  }
+
+  &-sub-header {
+    display: flex;
+
+    .single-loan-page-tasks {
+      flex-basis: 75%;
+    }
+
+    .single-loan-page-contacts {
+      flex-basis: 25%;
     }
   }
 }
@@ -175,6 +187,23 @@
   .admin-note {
     margin-top: 40px;
     h2 {
+      margin: 0;
+    }
+  }
+}
+
+.single-loan-page-contacts {
+  margin-bottom: 16px;
+  margin-left: 16px;
+
+  h3 {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  &-contact {
+    margin-bottom: 8px;
+    h4 {
       margin: 0;
     }
   }

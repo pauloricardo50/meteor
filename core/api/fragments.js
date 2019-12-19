@@ -781,6 +781,7 @@ export const searchPromotions = () => ({
   createdAt: 1,
   name: 1,
   promotionLotLinks: 1,
+  status: 1,
   updatedAt: 1,
 });
 
@@ -993,7 +994,12 @@ export const adminUser = () => ({
   assignedEmployeeCache: 1,
   promotions: { name: 1, status: 1 },
   proProperties: { address1: 1, status: 1, loanCount: 1, totalValue: 1 },
-  referredByUser: { name: 1, organisations: { name: 1 } },
+  referredByUser: {
+    name: 1,
+    organisations: { name: 1 },
+    email: 1,
+    phoneNumber: 1,
+  },
   referredByOrganisation: { name: 1 },
   referredByOrganisationLink: 1,
 });

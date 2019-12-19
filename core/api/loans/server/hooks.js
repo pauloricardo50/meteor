@@ -6,6 +6,9 @@ import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
 import { ROLES, PROPERTY_CATEGORY } from '../../constants';
 import Loans from '../loans';
+import formatNumbersHook, {
+  formatPhoneNumber,
+} from '../../../utils/phoneFormatting';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
@@ -58,4 +61,11 @@ Loans.after.insert((userId, doc) =>
     loanLink: { _id: doc._id },
     title: 'Dossier créé',
   }),
+);
+
+formatNumbersHook(Loans, 'contacts', oldContacts =>
+  oldContacts.map(({ phoneNumber, ...contact }) => ({
+    ...contact,
+    phoneNumber: formatPhoneNumber(phoneNumber),
+  })),
 );

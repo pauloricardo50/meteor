@@ -6,6 +6,7 @@ import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
 import SingleLoanPageTasks from './SingleLoanPageTasks';
+import SingleLoanPageContacts from './SingleLoanPageContacts';
 
 const SingleLoanPage = props => {
   const { loan } = props;
@@ -15,7 +16,10 @@ const SingleLoanPage = props => {
         <title>{loan.user ? loan.user.name : loan.name}</title>
       </Helmet>
       <SingleLoanPageHeader loan={loan} />
-      <SingleLoanPageTasks loan={loan} />
+      <div className="single-loan-page-sub-header">
+        <SingleLoanPageTasks loan={loan} />
+        <SingleLoanPageContacts loan={loan} />
+      </div>
       <LoanTabs {...props} />
     </section>
   );
