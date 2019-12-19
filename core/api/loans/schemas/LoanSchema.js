@@ -140,6 +140,7 @@ const LoanSchema = new SimpleSchema({
     type: new SimpleSchema(adminNotesSchema).getObjectSchema('adminNotes.$'),
     optional: true,
   },
+  disbursementDate: { type: Date, optional: true },
 });
 
 export default LoanSchema;

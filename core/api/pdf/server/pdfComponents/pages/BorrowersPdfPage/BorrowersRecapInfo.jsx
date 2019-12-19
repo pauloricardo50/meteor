@@ -25,6 +25,20 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
       data: borrowersInfos.address,
     },
     {
+      label: <T id="PDF.borrowersInfos.email" />,
+      data: borrowersInfos.email,
+      condition: shouldRenderArray(borrowersInfos.email),
+    },
+    {
+      label: <T id="PDF.borrowersInfos.phoneNumber" />,
+      data: borrowersInfos.phoneNumber,
+      condition: shouldRenderArray(borrowersInfos.phoneNumber),
+    },
+    {
+      label: <T id="PDF.borrowersInfos.citizenship" />,
+      data: borrowersInfos.citizenship,
+    },
+    {
       label: <T id="PDF.borrowersInfos.age" />,
       data: borrowersInfos.birthDate.map((date, index) => {
         if (!date) {
@@ -45,18 +59,24 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
       condition: shouldRenderArray(borrowersInfos.childrenCount),
     },
     {
+      label: <T id="PDF.borrowersInfos.activityType" />,
+      data: borrowersInfos.activityType.map(type => (
+        <T id={`Forms.activityType.${type}`} />
+      )),
+    },
+    {
+      label: <T id="PDF.borrowersInfos.job" />,
+      data: borrowersInfos.job,
+      condition: shouldRenderArray(borrowersInfos.job),
+    },
+    {
       label: <T id="PDF.borrowersInfos.company" />,
       data: borrowersInfos.company.map(company => company || '-'),
       condition: shouldRenderArray(borrowersInfos.company),
     },
     {
       label: <T id="PDF.borrowersInfos.civilStatus" />,
-      data: borrowersInfos.civilStatus.map(
-        status =>
-          (status && <T id={`PDF.borrowersInfos.civilStatus.${status}`} />) ||
-          '-',
-      ),
-
+      data: borrowersInfos.civilStatus,
       condition: shouldRenderArray(borrowersInfos.civilStatus),
     },
   ];

@@ -14,6 +14,7 @@ import {
   OTHER_INCOME,
   EXPENSES,
   OWN_FUNDS_TYPES,
+  BORROWER_ACTIVITY_TYPES,
 } from '../borrowerConstants';
 import { RESIDENCE_TYPE } from '../../constants';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
@@ -125,6 +126,24 @@ export const personalInfoSchema = {
     max: 2050,
   },
   job: { type: String, optional: true },
+  email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true,
+  },
+  phoneNumber: { type: String, optional: true },
+  jobStartDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  jobActivityRate: percentageField,
+  activityType: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(BORROWER_ACTIVITY_TYPES),
+    uniforms: { displayEmpty: false },
+  },
 };
 
 const bonusField = {

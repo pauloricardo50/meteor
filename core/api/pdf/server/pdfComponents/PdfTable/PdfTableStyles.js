@@ -12,7 +12,7 @@ export default `
 
     .pdf-table td {
         // width: 50%;
-        padding: 8px 0px;
+        padding: 4px 0px;
         vertical-align: middle;
     }
 

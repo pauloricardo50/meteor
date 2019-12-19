@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import { promotionOptionUploadAgreement } from 'core/api/methods/index';
@@ -132,23 +133,22 @@ ServerEventService.addAfterMethodListener(
       referredByOrganisationLink,
     } = currentUser;
     const referredBy = UserService.get(referredByUserLink, fullUser());
-    const referredByOrg = OrganisationService.get(
-      referredByOrganisationLink,
-      { name: 1 }
-    );
+    const referredByOrg = OrganisationService.get(referredByOrganisationLink, {
+      name: 1,
+    });
 
     const suffix = [
       referredBy && referredBy.name,
       referredByOrg && referredByOrg.name,
       loans[0] &&
-      loans[0].properties &&
-      loans[0].properties[0] &&
-      loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
-      (loans[0].properties[0].address1 || loans[0].properties[0].name),
+        loans[0].properties &&
+        loans[0].properties[0] &&
+        loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
+        (loans[0].properties[0].address1 || loans[0].properties[0].name),
       loans[0] &&
-      loans[0].promotions &&
-      loans[0].promotions[0] &&
-      loans[0].promotions[0].name,
+        loans[0].promotions &&
+        loans[0].promotions[0] &&
+        loans[0].promotions[0].name,
     ]
       .filter(x => x)
       .map(x => `(${x})`)

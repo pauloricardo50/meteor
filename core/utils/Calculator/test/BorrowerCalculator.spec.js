@@ -2,7 +2,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
+import {
+  STEPS,
+  GENDER,
+  EXPENSES,
+  BORROWER_ACTIVITY_TYPES,
+} from 'core/api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
@@ -375,7 +380,10 @@ describe('BorrowerCalculator', () => {
     it('sums bankFortunes if given multiple borrowers', () => {
       expect(
         Calculator.getFortune({
-          borrowers: [{ bankFortune: [{ value: 1 }] }, { bankFortune: [{ value: 2 }] }],
+          borrowers: [
+            { bankFortune: [{ value: 1 }] },
+            { bankFortune: [{ value: 2 }] },
+          ],
         }),
       ).to.equal(3);
     });
@@ -456,6 +464,7 @@ describe('BorrowerCalculator', () => {
         'isUSPerson',
         'civilStatus',
         'childrenCount',
+        'activityType',
         'salary',
         'netSalary',
         'bonusExists',
@@ -664,6 +673,7 @@ describe('BorrowerCalculator', () => {
               bankFortune: [{ value: 1000 }],
               hasOwnCompany: false,
               ownCompanies: [],
+              activityType: BORROWER_ACTIVITY_TYPES.SALARIED,
             },
           ],
         }),
@@ -733,7 +743,9 @@ describe('BorrowerCalculator', () => {
     it('returns some revenue if the constant is set', () => {
       const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
       expect(
-        calc.getFortuneReturns({ borrowers: [{ bankFortune: [{ value: 100 }] }] }),
+        calc.getFortuneReturns({
+          borrowers: [{ bankFortune: [{ value: 100 }] }],
+        }),
       ).to.equal(1);
     });
   });
@@ -834,7 +846,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        1452524844,
+        -1865795269,
       );
     });
 
@@ -864,7 +876,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        5211477033,
+        -1425163193,
       );
     });
   });

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import Money from 'core/components/Translation/numberComponents/Money';
 import T from '../../../../../../components/Translation';
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
 import { ERROR, SUCCESS } from '../../../../../constants';
@@ -19,9 +20,12 @@ const StructurePdfPage = ({
   pageCount,
   calculator,
 }: StructurePdfPageProps) => {
-  const structureName = calculator.selectStructure({ loan, structureId }).name;
   const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
   const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
+  const { wantedLoan, name: structureName } = calculator.selectStructure({
+    loan,
+    structureId,
+  });
   return (
     <PdfPage
       className="property-page"
@@ -43,6 +47,12 @@ const StructurePdfPage = ({
             status={borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
           />
         </span>
+      </h3>
+      <h3 className="wanted-loan">
+        Prêt hypothécaire demandé:&nbsp;
+        <b>
+          <Money value={wantedLoan} />
+        </b>
       </h3>
 
       <BalanceSheet

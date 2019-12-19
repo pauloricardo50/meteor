@@ -42,9 +42,11 @@ import {
   sendLoanChecklist,
   loanSetAdminNote,
   loanRemoveAdminNote,
+  loanSetDisbursementDate,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
+import { Method } from '../../methods/methods';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -313,4 +315,19 @@ loanSetAdminNote.setHandler(({ userId }, params) => {
 loanRemoveAdminNote.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.removeAdminNote(params);
+});
+
+loanSetDisbursementDate.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.setDisbursementDate(params);
+});
+
+export const generateDisbursedSoonLoansTasks = new Method({
+  name: 'generateDisbursedSoonLoansTasks',
+  params: {},
+});
+
+generateDisbursedSoonLoansTasks.setHandler(context => {
+  SecurityService.checkIsInternalCall(context);
+  return LoanService.getDisbursedSoonLoans();
 });

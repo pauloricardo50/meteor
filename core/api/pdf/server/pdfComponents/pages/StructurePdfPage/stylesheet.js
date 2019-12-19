@@ -44,6 +44,13 @@ export default `
         font-weight: normal;
     }
 
+    .wanted-loan {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: normal;
+    }
+
     .finma-ratio span {
         display: flex;
         align-items: center;

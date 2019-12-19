@@ -9,6 +9,7 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import {
   loanSetStatus,
   setLoanStep,
@@ -37,8 +38,11 @@ import { generateOrganisationsWithLenderRules } from '../../../organisations/ser
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { generateDisbursedSoonLoansTasks } from '../methods';
+import TaskService from '../../../tasks/server/TaskService';
+import SlackService from '../../../slack/server/SlackService';
 
-describe('LoanService', function () {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1397,7 +1401,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1877,6 +1881,111 @@ describe('LoanService', function () {
       const { proNote: removed } = LoanService.get('loanId', { proNote: 1 });
 
       expect(removed).to.equal(undefined);
+    });
+  });
+
+  describe('insertBorrowers', () => {
+    beforeEach(() => {
+      generator({
+        users: {
+          _id: 'user',
+          _factory: 'user',
+          firstName: 'Bob',
+          lastName: 'Dylan',
+          phoneNumbers: ['12345'],
+          emails: [{ address: 'bob.dylan@example.com', verified: true }],
+        },
+      });
+
+      loanId = LoanService.fullLoanInsert({ userId: 'user' });
+    });
+
+    it('reuses user personal information on the first borrower', () => {
+      LoanService.insertBorrowers({ loanId, amount: 1 });
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
+      });
+      const [borrower] = borrowers;
+      expect(borrower).to.deep.include({
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        email: 'bob.dylan@example.com',
+        phoneNumber: '+41 12345',
+      });
+    });
+
+    it('does not reuse user personal information when second borrower', () => {
+      LoanService.insertBorrowers({ loanId, amount: 2 });
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
+      });
+      const [borrower1, borrower2] = borrowers;
+      expect(borrower1).to.deep.include({
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        email: 'bob.dylan@example.com',
+        phoneNumber: '+41 12345',
+      });
+      expect(borrower2.firstName).to.equal(undefined);
+      expect(borrower2.lastName).to.equal(undefined);
+      expect(borrower2.phoneNumber).to.equal(undefined);
+      expect(borrower2.email).to.equal(undefined);
+    });
+  });
+
+  describe('generateDisbursedSoonLoansTasks', () => {
+    const generateDisbursedLoans = (today, loansConfig) =>
+      loansConfig.map(({ offset }, index) => ({
+        _id: `l${index + 1}`,
+        _factory: 'loan',
+        name: `19-000${index + 1}`,
+        user: {
+          _id: `u${index + 1}`,
+          _factory: 'user',
+          assignedEmployeeId: 'admin',
+        },
+        disbursementDate: moment(today)
+          .add(offset, 'days')
+          .toDate(),
+      }));
+
+    afterEach(() => {
+      SlackService.send.restore();
+    });
+
+    let today;
+    let spy;
+
+    beforeEach(async () => {
+      today = new Date();
+      generator({
+        users: { _id: 'admin', _factory: 'admin' },
+        loans: generateDisbursedLoans(today, [
+          { offset: 0 },
+          { offset: 5 },
+          { offset: 9 },
+          { offset: 10 },
+          { offset: 11 },
+          { offset: 10 },
+        ]),
+      });
+      spy = sinon.spy();
+      sinon.stub(SlackService, 'send').callsFake(spy);
+      await generateDisbursedSoonLoansTasks.serverRun({});
+    });
+
+    it('generates the tasks for the loans disbursed in 10 days', async () => {
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
+
+      expect(tasks.length).to.equal(2);
+      tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
+        expect(title).to.include(
+          moment(today)
+            .add(10, 'days')
+            .format('DD.MM.YYYY'),
+        );
+        expect(adminId).to.equal('admin');
+      });
     });
   });
 });

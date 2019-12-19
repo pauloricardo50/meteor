@@ -5,7 +5,10 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Intl from '../../../utils/server/intl';
@@ -170,6 +173,10 @@ class LoanService extends CollectionService {
     return { prevStatus, nextStatus: status };
   }
 
+  setDisbursementDate({ loanId, disbursementDate }) {
+    this.update({ loanId, object: { disbursementDate } });
+  }
+
   insertPromotionLoan = ({
     userId,
     promotionId,
@@ -178,7 +185,7 @@ class LoanService extends CollectionService {
     promotionLotIds = [],
     shareSolvency,
   }) => {
-    const customName = PromotionService.get(promotionId, { name: 1 }).name;
+    const { name: customName } = PromotionService.get(promotionId, { name: 1 });
     const loanId = this.insert({
       loan: {
         promotionLinks: [{ _id: promotionId, invitedBy, showAllLots }],
@@ -847,25 +854,13 @@ class LoanService extends CollectionService {
     }
 
     if (amount === 1) {
-      const borrowerId = BorrowerService.insert({ userId });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId,
+      const borrowerId = BorrowerService.insert({
+        userId,
+        loanId,
       });
     } else if (amount === 2) {
-      const borrowerId1 = BorrowerService.insert({ userId });
-      const borrowerId2 = BorrowerService.insert({ userId });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId1,
-      });
-      this.addLink({
-        id: loanId,
-        linkName: 'borrowers',
-        linkId: borrowerId2,
-      });
+      const borrowerId1 = BorrowerService.insert({ userId, loanId });
+      const borrowerId2 = BorrowerService.insert({ userId, loanId });
     } else {
       throw new Meteor.Error('Invalid borrowers number');
     }
@@ -1058,6 +1053,23 @@ class LoanService extends CollectionService {
       operator: '$unset',
       object: { proNote: true },
     });
+  }
+
+  getDisbursedSoonLoans() {
+    const in10Days = moment().add(10, 'days');
+    const in11Days = moment().add(11, 'days');
+
+    const disbursedIn10Days = this.fetch({
+      $filters: {
+        disbursementDate: {
+          $lte: in11Days.startOf('day').toDate(),
+          $gte: in10Days.startOf('day').toDate(),
+        },
+      },
+      _id: 1,
+    });
+
+    return disbursedIn10Days.map(({ _id }) => _id);
   }
 }
 

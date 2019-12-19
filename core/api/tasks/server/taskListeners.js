@@ -23,6 +23,7 @@ import {
 } from '../../constants';
 import TaskService from './TaskService';
 import LoanService from '../../loans/server/LoanService';
+import { generateDisbursedSoonLoansTasks } from '../../loans/server/methods';
 
 const newUserTask = ({ userId, ...params }) =>
   TaskService.insert({
@@ -249,5 +250,26 @@ ServerEventService.addAfterMethodListener(
         },
       });
     }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  generateDisbursedSoonLoansTasks,
+  ({ result: disbursedSoonLoanIds = [] }) => {
+    disbursedSoonLoanIds.forEach(loanId => {
+      const { disbursementDate } = LoanService.get(loanId, {
+        disbursementDate: 1,
+      });
+      TaskService.insert({
+        object: {
+          collection: LOANS_COLLECTION,
+          docId: loanId,
+          title: `La date de décaissement du dossier est prévue pour le ${moment(
+            disbursementDate,
+          ).format('DD.MM.YYYY')}`,
+          description: "S'assurer que tout est prêt pour le décaissement",
+        },
+      });
+    });
   },
 );

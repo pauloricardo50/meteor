@@ -4,6 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
+import { makeGenerateBackgroundInfo, BACKGROUND_INFO_TYPE } from './helpers';
 
 type PdfDownloadDialogProps = {};
 
@@ -43,6 +44,62 @@ const makeSchema = loan =>
         placeholder: "Pas d'organisation",
       },
     },
+    backgroundInfoType: {
+      type: String,
+      allowedValues: Object.values(BACKGROUND_INFO_TYPE),
+      defaultValue: BACKGROUND_INFO_TYPE.TEMPLATE,
+      uniforms: {
+        displayEmpty: false,
+        placeholder: '',
+      },
+    },
+    customBackgroundInfo: {
+      type: String,
+      optional: true,
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.CUSTOM,
+      uniforms: {
+        multiline: true,
+        rows: 10,
+        label: <T id="Forms.backgroundInfo" />,
+        placeholder:
+          'Bonjour,\nNous avons le plaisir de vous remettre une nouvelle demande de financement pour les clients précités',
+      },
+    },
+    askForMaxLoan: {
+      type: Boolean,
+      optional: true,
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+    },
+    includeMissingDocuments: {
+      type: Boolean,
+      optional: true,
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+    },
+    additionalInfo: {
+      type: Array,
+      optional: true,
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+    },
+    'additionalInfo.$': {
+      type: String,
+    },
+    backgroundInfoPreview: {
+      type: String,
+      optional: true,
+      uniforms: {
+        multiline: true,
+        rows: 10,
+        disabled: true,
+        label: <T id="Forms.backgroundInfo" />,
+      },
+      condition: ({ backgroundInfoType }) =>
+        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+      customAutoValue: makeGenerateBackgroundInfo(loan),
+    },
   });
 
 const PdfDownloadDialog = ({
@@ -51,20 +108,21 @@ const PdfDownloadDialog = ({
   buttonLabel,
   icon,
   dialogTitle,
+  generateBackgroundInfo,
 }: PdfDownloadDialogProps) => (
-  <AutoFormDialog
-    title={dialogTitle}
-    schema={makeSchema(loan)}
-    onSubmit={onSubmit}
-    buttonProps={{
-      raised: true,
-      primary: true,
-      label: buttonLabel,
-      icon,
-      style: { marginRight: 4 },
-    }}
-    model={{ structureIds: loan.structures.map(({ id }) => id) }}
-  />
-);
+    <AutoFormDialog
+      title={dialogTitle}
+      schema={makeSchema(loan)}
+      onSubmit={onSubmit}
+      buttonProps={{
+        raised: true,
+        primary: true,
+        label: buttonLabel,
+        icon,
+        style: { marginRight: 4 },
+      }}
+      model={{ structureIds: loan.structures.map(({ id }) => id) }}
+    />
+  );
 
 export default PdfDownloadDialog;

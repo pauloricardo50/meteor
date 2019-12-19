@@ -29,6 +29,11 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
   const isFirst = borrowers[0]._id === borrowerId;
+  const isMarried = b.civilStatus === constants.CIVIL_STATUS.MARRIED;
+  const isDivorced = b.civilStatus === constants.CIVIL_STATUS.DIVORCED;
+  const isWorking = Object.values(constants.BORROWER_ACTIVITY_TYPES)
+    .filter(x => x !== constants.BORROWER_ACTIVITY_TYPES.ANNUITANT)
+    .includes(b.activityType);
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -116,6 +121,18 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: addressFieldsAreNecessary,
     },
     {
+      type: 'textInput',
+      id: 'email',
+      placeholder: <T id="Forms.email.placeholder" />,
+      required: false,
+    },
+    {
+      type: 'textInput',
+      id: 'phoneNumber',
+      placeholder: <T id="Forms.phoneNumber.placeholder" />,
+      required: false,
+    },
+    {
       type: 'conditionalInput',
       conditionalTrueValue: false,
       inputs: [
@@ -147,6 +164,18 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       })),
     },
     {
+      type: 'dateInput',
+      id: 'marriedDate',
+      condition: isMarried,
+      required: false,
+    },
+    {
+      type: 'dateInput',
+      id: 'divorcedDate',
+      condition: isDivorced,
+      required: false,
+    },
+    {
       id: 'addPartner',
       type: 'custom',
       component: <BorrowerAddPartner loanId={loanId} />,
@@ -155,21 +184,41 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     },
     { id: 'childrenCount', type: 'textInput', number: true },
     {
+      id: 'activityType',
+      type: 'radioInput',
+      options: Object.values(constants.BORROWER_ACTIVITY_TYPES),
+    },
+    {
+      type: 'percent',
+      id: 'jobActivityRate',
+      required: false,
+      condition: isWorking,
+    },
+    {
       id: 'job',
       type: 'textInput',
       required: false,
+      condition: isWorking,
     },
     {
       id: 'company',
       type: 'textInput',
       required: false,
       autoComplete: 'organisation',
+      condition: isWorking,
+    },
+    {
+      type: 'dateInput',
+      id: 'jobStartDate',
+      required: false,
+      condition: isWorking && !!b.company,
     },
     {
       id: 'worksInSwitzerlandSince',
       type: 'textInput',
       required: false,
       number: true,
+      condition: isWorking,
     },
   ];
 };
@@ -371,7 +420,14 @@ export const getSimpleBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
     },
   ];
 
-  const fortuneArray = [{ id: 'bankFortuneSimple', type: 'textInput', money: true, progressReplacementId: 'bankFortune' }];
+  const fortuneArray = [
+    {
+      id: 'bankFortuneSimple',
+      type: 'textInput',
+      money: true,
+      progressReplacementId: 'bankFortune',
+    },
+  ];
 
   const insuranceArray = [
     { id: 'insurance2Simple', type: 'textInput', money: true, required: false },

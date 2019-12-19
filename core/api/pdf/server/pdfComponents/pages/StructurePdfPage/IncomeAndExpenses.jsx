@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import Percent from 'core/components/Translation/numberComponents/Percent';
 import T, { Money } from '../../../../../../components/Translation';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
@@ -83,20 +84,40 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
     loan,
     toSubtractFromIncome: false,
   });
+  const { theoreticalInterestRate, theoreticalMaintenanceRate } = calculator;
+  const amortizationRate = calculator.getAmortizationRate({
+    loan,
+    structureId,
+  });
 
   return [
     {
-      label: <i>Taux d'intérêt théorique</i>,
+      label: (
+        <i>
+          Taux d'intérêt théorique (
+          <Percent value={theoreticalInterestRate} />)
+        </i>
+      ),
       value: <i>{toMoney(propertyCost.interests * 12)}</i>,
       money: false,
     },
     {
-      label: <i>Amortissement théorique</i>,
+      label: (
+        <i>
+          Amortissement théorique (
+          <Percent value={amortizationRate} />)
+        </i>
+      ),
       value: <i>{toMoney(propertyCost.amortization * 12)}</i>,
       money: false,
     },
     {
-      label: <i>Frais d'entretien théorique</i>,
+      label: (
+        <i>
+          Frais d'entretien théorique (
+          <Percent value={theoreticalMaintenanceRate} />)
+        </i>
+      ),
       value: <i>{toMoney(propertyCost.maintenance * 12)}</i>,
       money: false,
     },

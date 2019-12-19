@@ -444,6 +444,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return cashRatio;
     }
 
+    getInsurance2Ratio({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const insurance2Used = this.getUsedFundsOfType({
+        loan,
+        type: OWN_FUNDS_TYPES.INSURANCE_2,
+        structureId,
+      });
+
+      const insurance2Ratio = insurance2Used / propAndWork;
+      return insurance2Ratio;
+    }
+
     hasEnoughCash({ loan, structureId }) {
       return this.getCashRatio({ loan, structureId }) >= this.minCash;
     }
