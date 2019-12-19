@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
@@ -11,28 +11,46 @@ const Toggle = ({
   labelLeft,
   labelRight,
   className,
-}) => (
-  <div className={cx('toggle', className)}>
-    {labelTop && (
-      <div className="toggle-label toggle-label-top">{labelTop}</div>
-    )}
+}) => {
+  const [disabled, setDisabled] = useState(false);
 
-    <div className="toggle-content">
-      {labelLeft && (
-        <span className="toggle-label toggle-label-left">{labelLeft}</span>
+  // onToggle resolves before new reactive data comes back
+  useEffect(() => {
+    if (disabled) {
+      setDisabled(false);
+    }
+  }, [toggled]);
+
+  return (
+    <div className={cx('toggle', className)}>
+      {labelTop && (
+        <div className="toggle-label toggle-label-top">{labelTop}</div>
       )}
 
-      <Switch
-        checked={toggled}
-        onChange={event => onToggle(event.target.checked)}
-      />
+      <div className="toggle-content">
+        {labelLeft && (
+          <span className="toggle-label toggle-label-left">{labelLeft}</span>
+        )}
 
-      {labelRight && (
-        <span className="toggle-label toggle-label-right">{labelRight}</span>
-      )}
+        <Switch
+          checked={toggled}
+          onChange={async event => {
+            setDisabled(true);
+            const res = onToggle(event.target.checked);
+            if (res && typeof res.then === 'function') {
+              await res;
+            }
+          }}
+          disabled={disabled}
+        />
+
+        {labelRight && (
+          <span className="toggle-label toggle-label-right">{labelRight}</span>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 Toggle.propTypes = {
   className: PropTypes.string,

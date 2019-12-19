@@ -50,6 +50,7 @@ export default {
           assignedEmployee: { name: 1 },
           email: 1,
           emails: 1,
+          isDisabled: 1,
           loans: { name: 1 },
           name: 1,
           organisations: { name: 1 },
