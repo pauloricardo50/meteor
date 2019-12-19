@@ -1,5 +1,6 @@
 // @flow
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { PROPERTY_CATEGORY } from 'core/api/constants';
 import {
   getPropertyArray,
   getPropertyLoanArray,
@@ -194,7 +195,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     getValidPropertyDocumentsRatio({ loan, structureId, property }) {
-      const requiredDocments = this.getRequiredPropertyDocumentIds({
+      const requiredDocuments = this.getRequiredPropertyDocumentIds({
         loan,
         structureId,
         property,
@@ -206,8 +207,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
 
       return {
-        valid: requiredDocments.length - missingDocuments.length,
-        required: requiredDocments.length,
+        valid: requiredDocuments.length - missingDocuments.length,
+        required: requiredDocuments.length,
       };
     }
 
@@ -242,5 +243,15 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         this.selectPropertyKey({ loan, structureId, key: 'isNew' }) ||
         loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
       );
+    }
+
+    isUserProperty({ loan, structureId }) {
+      const propertyCategory = this.selectPropertyKey({
+        loan,
+        structureId,
+        key: 'category',
+      });
+
+      return propertyCategory === PROPERTY_CATEGORY.USER;
     }
   };

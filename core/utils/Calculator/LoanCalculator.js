@@ -6,6 +6,7 @@ import {
   ERROR,
   OWN_FUNDS_USAGE_TYPES,
   RESIDENCE_TYPE,
+  PROPERTY_CATEGORY,
 } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
@@ -715,9 +716,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyValidFieldsRatio({ loan }) {
-      const { hasProProperty, hasPromotion, properties = [] } = loan;
+      const { hasPromotion, properties = [] } = loan;
 
-      if (hasProProperty || hasPromotion || properties.length === 0) {
+      if (
+        !this.isUserProperty({ loan }) ||
+        hasPromotion ||
+        properties.length === 0
+      ) {
         return null;
       }
 
@@ -736,15 +741,17 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyValidDocumentsRatio({ loan }) {
-      const { hasProProperty, hasPromotion, properties = [] } = loan;
+      const { hasPromotion, properties = [] } = loan;
 
-      if (hasProProperty || hasPromotion || properties.length === 0) {
+      if (
+        !this.isUserProperty({ loan }) ||
+        hasPromotion ||
+        properties.length === 0
+      ) {
         return null;
       }
 
-      return this.getValidPropertyDocumentsRatio({
-        loan,
-      });
+      return this.getValidPropertyDocumentsRatio({ loan });
     }
 
     getValidFieldsRatio({ loan }) {

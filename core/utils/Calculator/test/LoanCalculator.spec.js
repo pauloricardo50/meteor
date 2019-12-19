@@ -8,6 +8,7 @@ import {
   EXPENSES,
   OWN_FUNDS_TYPES,
   RESIDENCE_TYPE,
+  PROPERTY_CATEGORY,
 } from '../../../api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
@@ -1412,6 +1413,47 @@ describe('LoanCalculator', () => {
           );
         },
       );
+    });
+  });
+
+  describe('getPropertyValidFieldsRatio', () => {
+    it('returns the ratio of valid fields', () => {
+      const property = { address1: 'yo', category: PROPERTY_CATEGORY.USER };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.deep.equal({ valid: 1, required: 14 });
+    });
+
+    it('returns the ratio of valid fields', () => {
+      const property = {
+        address1: 'yo',
+        zipCode: 1400,
+        category: PROPERTY_CATEGORY.USER,
+      };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.deep.equal({ valid: 2, required: 14 });
+    });
+
+    it('does not count fields if it is a pro property, because Pros are responsible for it', () => {
+      const property = { address1: 'yo', category: PROPERTY_CATEGORY.PRO };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.equal(null);
+    });
+
+    it('does not count fields if it is a promotion property, because Pros are responsible for it', () => {
+      const property = {
+        address1: 'yo',
+        category: PROPERTY_CATEGORY.PROMOTION,
+      };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.equal(null);
     });
   });
 });
