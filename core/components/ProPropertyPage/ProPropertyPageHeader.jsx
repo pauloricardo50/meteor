@@ -19,7 +19,7 @@ const ProPropertyPageHeader = ({
   property,
   permissions,
 }: ProPropertyPageHeaderProps) => {
-  const { address1, totalValue, _id: propertyId, status } = property;
+  const { address, totalValue, _id: propertyId, status } = property;
   const { canModifyProperty } = permissions;
   const isDev = Meteor.user().roles.includes(ROLES.DEV);
 
@@ -27,7 +27,7 @@ const ProPropertyPageHeader = ({
     <div className="pro-property-page-header">
       <div className="flex-col">
         <div className="flex-row center space-children">
-          <h1>{address1}</h1>
+          <h1>{address}</h1>
           <StatusLabel
             status={status}
             collection={PROPERTIES_COLLECTION}

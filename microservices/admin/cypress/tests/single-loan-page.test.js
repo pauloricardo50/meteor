@@ -36,6 +36,9 @@ describe('Single Loan Page', () => {
     cy.get('.status-label').should('contain', 'Qualifié');
     cy.contains('Qualifié').click();
     cy.contains('En cours').click({ force: true });
+    cy.get('input[name=disbursementDate]')
+      .last()
+      .type('2020-01-01');
 
     cy.get('.status-label').should('contain', 'En cours');
     cy.contains('En cours').click();
@@ -67,6 +70,9 @@ describe('Single Loan Page', () => {
     cy.get('.status-label').should('contain', 'Qualifié');
     cy.contains('Qualifié').click();
     cy.contains('En cours').click({ force: true });
+    cy.get('input[name=disbursementDate]')
+      .last()
+      .type('2020-01-01');
     cy.get('.status-label').should('contain', 'En cours');
 
     cy.contains('Prêteurs').click();
