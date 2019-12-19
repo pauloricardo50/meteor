@@ -322,12 +322,12 @@ loanSetDisbursementDate.setHandler(({ userId }, params) => {
   return LoanService.setDisbursementDate(params);
 });
 
-export const generateDisbursedSoonLoansNotificationsAndTasks = new Method({
-  name: 'generateDisbursedSoonLoansNotificationsAndTasks',
+export const generateDisbursedSoonLoansTasks = new Method({
+  name: 'generateDisbursedSoonLoansTasks',
   params: {},
 });
 
-generateDisbursedSoonLoansNotificationsAndTasks.setHandler(context => {
+generateDisbursedSoonLoansTasks.setHandler(context => {
   SecurityService.checkIsInternalCall(context);
   return LoanService.getDisbursedSoonLoans();
 });

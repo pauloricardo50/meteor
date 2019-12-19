@@ -27,8 +27,6 @@ import {
 } from './slackNotifications';
 import { sendPropertyInvitations } from './slackNotificationHelpers';
 import PromotionService from '../../promotions/server/PromotionService';
-import { generateDisbursedSoonLoansNotificationsAndTasks } from '../../loans/server/methods';
-import SlackService from './SlackService';
 
 ServerEventService.addAfterMethodListener(
   reservePromotionLot,
@@ -143,14 +141,14 @@ ServerEventService.addAfterMethodListener(
       referredBy && referredBy.name,
       referredByOrg && referredByOrg.name,
       loans[0] &&
-      loans[0].properties &&
-      loans[0].properties[0] &&
-      loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
-      (loans[0].properties[0].address1 || loans[0].properties[0].name),
+        loans[0].properties &&
+        loans[0].properties[0] &&
+        loans[0].properties[0].category === PROPERTY_CATEGORY.PRO &&
+        (loans[0].properties[0].address1 || loans[0].properties[0].name),
       loans[0] &&
-      loans[0].promotions &&
-      loans[0].promotions[0] &&
-      loans[0].promotions[0].name,
+        loans[0].promotions &&
+        loans[0].promotions[0] &&
+        loans[0].promotions[0].name,
     ]
       .filter(x => x)
       .map(x => `(${x})`)
@@ -263,32 +261,5 @@ ServerEventService.addAfterMethodListener(
       startDate,
       expirationDate,
     });
-  },
-);
-
-ServerEventService.addAfterMethodListener(
-  generateDisbursedSoonLoansNotificationsAndTasks,
-  ({ result: disbursedSoonLoanIds = [] }) => {
-    if (!disbursedSoonLoanIds.length) {
-      return;
-    }
-    const loans = disbursedSoonLoanIds.map(loanId =>
-      LoanService.get(loanId, {
-        disbursementDate: 1,
-        name: 1,
-      }),
-    );
-
-    const slackPayload = {
-      attachments: loans.map(({ _id: loanId, disbursementDate, name }) => ({
-        title: name,
-        title_link: `https://admin.e-potek.ch/loans/${loanId}`,
-        text: `La date de décaissement des fonds est prévue pour le ${moment(
-          disbursementDate,
-        ).format('DD.MM.YYYY')}`,
-      })),
-    };
-
-    SlackService.sendAttachments(slackPayload);
   },
 );

@@ -23,7 +23,7 @@ import {
 } from '../../constants';
 import TaskService from './TaskService';
 import LoanService from '../../loans/server/LoanService';
-import { generateDisbursedSoonLoansNotificationsAndTasks } from '../../loans/server/methods';
+import { generateDisbursedSoonLoansTasks } from '../../loans/server/methods';
 
 const newUserTask = ({ userId, ...params }) =>
   TaskService.insert({
@@ -254,7 +254,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  generateDisbursedSoonLoansNotificationsAndTasks,
+  generateDisbursedSoonLoansTasks,
   ({ result: disbursedSoonLoanIds = [] }) => {
     disbursedSoonLoanIds.forEach(loanId => {
       const { disbursementDate } = LoanService.get(loanId, {

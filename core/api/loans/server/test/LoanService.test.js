@@ -38,11 +38,11 @@ import { generateOrganisationsWithLenderRules } from '../../../organisations/ser
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { generateDisbursedSoonLoansNotificationsAndTasks } from '../methods';
+import { generateDisbursedSoonLoansTasks } from '../methods';
 import TaskService from '../../../tasks/server/TaskService';
 import SlackService from '../../../slack/server/SlackService';
 
-describe('LoanService', function () {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1401,7 +1401,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1933,7 +1933,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('generateDisbursedSoonLoansNotificationsAndTasks', () => {
+  describe('generateDisbursedSoonLoansTasks', () => {
     const generateDisbursedLoans = (today, loansConfig) =>
       loansConfig.map(({ offset }, index) => ({
         _id: `l${index + 1}`,
@@ -1971,7 +1971,7 @@ describe('LoanService', function () {
       });
       spy = sinon.spy();
       sinon.stub(SlackService, 'send').callsFake(spy);
-      await generateDisbursedSoonLoansNotificationsAndTasks.serverRun({});
+      await generateDisbursedSoonLoansTasks.serverRun({});
     });
 
     it('generates the tasks for the loans disbursed in 10 days', async () => {
@@ -1986,22 +1986,6 @@ describe('LoanService', function () {
         );
         expect(adminId).to.equal('admin');
       });
-    });
-
-    it('generates the slack notifications for the loans disbursed in 10 days', () => {
-      expect(spy.calledOnce).to.equal(true);
-      expect(spy.args[0][0].attachments[0].title).to.equal('19-0004');
-      expect(spy.args[0][0].attachments[0].text).to.include(
-        moment(today)
-          .add(10, 'days')
-          .format('DD.MM.YYYY'),
-      );
-      expect(spy.args[0][0].attachments[1].title).to.equal('19-0006');
-      expect(spy.args[0][0].attachments[1].text).to.include(
-        moment(today)
-          .add(10, 'days')
-          .format('DD.MM.YYYY'),
-      );
     });
   });
 });

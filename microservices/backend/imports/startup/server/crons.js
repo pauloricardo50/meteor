@@ -12,7 +12,7 @@ import {
   generateTenDayExpirationReminderTasks,
 } from 'core/api/promotionOptions/server/methods';
 
-import { generateDisbursedSoonLoansNotificationsAndTasks } from 'core/api/loans/server/methods';
+import { generateDisbursedSoonLoansTasks } from 'core/api/loans/server/methods';
 
 CronService.init();
 
@@ -117,7 +117,7 @@ CronService.addCron(
     name: 'Generate tasks and notifications for loans getting disbursed soon',
     frequency: 'every 1 day',
     func: () =>
-      generateDisbursedSoonLoansNotificationsAndTasks
+      generateDisbursedSoonLoansTasks
         .serverRun({})
         .then(gettingDisbursed => gettingDisbursed.length),
   },
